@@ -7,3 +7,6 @@ coverage/
 *.log
 .DS_Store
 Thumbs.db
+e2e-shots/
+playwright-report/
+test-results/

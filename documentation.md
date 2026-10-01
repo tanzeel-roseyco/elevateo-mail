@@ -1,44 +1,56 @@
 # Product and design context
 
 ## Confirmed direction
-The user wants a Gmail-style interface with inbox, composer, campaigns, search, and settings for outreach to consenting / opted-in recipients. They want understandable architecture documentation that also guides an implementation agent.
+A Gmail-style workspace for outreach to explicitly opted-in recipients, built on **Resend for sending and receiving** with our own dashboard. Gmail and Google Workspace are not connected.
 
-## Assumptions requiring confirmation
-"18 emails" is provisionally interpreted as 18 connected mailboxes. Single-user operation is not confirmed. Frontend sketches are visual references, not implementation instructions.
+- Audience: approximately 800–900 opted-in CEO contacts.
+- Nine sender identities in one unified inbox: `lachlan.macdonald`, `lachlan`, `l.macdonald` at each of `boltloop.co`, `flooda.co`, `elevateoco.com`.
+- Outgoing campaign emails require an unsubscribe link.
+- Current scope: frontend prototype only, with realistic mock data and simulated sending.
 
-## Proposed architecture
-A modular backend API and worker share domain logic. PostgreSQL stores durable application records. Redis is optional. Choose either application-owned campaign execution or provider-owned execution; never let both independently schedule the same follow-up. Validate provider APIs against required inbox and reply functionality before selection.
+## Frontend prototype (built)
 
-## Candidate services
-Instantly or Smartlead for campaign execution; Resend for application notifications and only policy-compatible sending; EmailGuard for diagnostics; Hunter for address verification. These are candidates, not selected dependencies. Address verification is not consent. AMF and account-farm requirements are undefined.
+### Behaviour rules implemented in `src/domain`
+- **Suppression**: a contact can receive campaign email only if consent is `opted_in` and subscription is `subscribed`. Unsubscribed, bounced, suppressed, and consent-unconfirmed contacts are excluded when a campaign is created and re-checked when a batch is dispatched. A campaign-linked message to such a contact, or to an address with no contact record, is blocked; an ordinary 1:1 message shows a warning instead. A reply inside a campaign conversation counts as ordinary mail.
+- **Campaign times** are wall-clock times in the sending timezone from Settings, whatever timezone the browser is in.
+- **Replies** default to the identity that received the conversation. Reply-all never copies our own nine addresses.
+- **Banners** are per identity and opt-in. Changing the sender in the composer resets the banner to that identity's default, so one brand's banner is never carried onto another brand's mail.
+- **"Delivered"** always means accepted by the recipient's server. The UI never presents it as read or opened; there is no open tracking.
+- **Folders**: a thread is stored in one of inbox, sent, archive, spam, trash. Starred, Sent (any thread we wrote in), and Drafts are derived views.
+- **Message bodies** use a small markdown subset (bold, italic, links, lists) rendered as React nodes. Raw HTML is never rendered.
+- **Appearance**: accent text is adjusted to keep 4.5:1 contrast; sidebar/top-bar opacity over a custom background is limited to 70–100% for the same reason.
 
-## Correctness requirements to refine
-- Record applicable consent and enforce suppression at dispatch.
-- Track mailbox, recipient, campaign step, and attempt for every send.
-- Deduplicate events and reconcile missed provider updates.
-- Define reply stopping conditions and unsubscribe cancellation boundaries.
-- Treat provider timeouts as potentially unknown outcomes; do not blindly retry non-idempotent sends.
-- Distinguish provider acceptance from delivery and reading.
+### State
+- Navigation and filters live in the URL.
+- Mock entities live in a Zustand store persisted to `localStorage` under a versioned key and validated with zod on load. Unreadable state falls back to seed data with a visible notice.
+- Appearance preferences persist separately so resetting prototype data keeps the theme.
+
+### Backend seam
+`src/data/ports.ts` defines `MailroomGateway`. `src/data/mockGateway.ts` implements it in the browser. See the README for the Resend mapping.
+
+## Backend direction (not started, standards not yet drafted)
+A modular backend API and worker sharing domain logic, with durable storage. One authoritative owner for campaign scheduling. Requirements carried forward from initial planning:
+
+- Record consent and enforce suppression at dispatch.
+- Track identity, recipient, campaign step, and attempt for every send.
+- Deduplicate webhook events and reconcile missed provider updates.
+- Define reply-stopping conditions and unsubscribe cancellation boundaries.
+- Treat provider timeouts as unknown outcomes; do not blindly retry non-idempotent sends.
+- Distinguish provider acceptance from delivery; never infer reading.
 - Protect credentials and enforce access control.
+- Sanitise inbound HTML before it reaches the client.
 
-## Open questions
-1. Mailbox count, providers, and existing accounts?
-2. Personal tool, team tool, or multi-customer product?
-3. Consent scope, evidence, and recipient jurisdictions?
-4. Manual sends, sequences, daily volume, and follow-up rules?
-5. Campaign-only inbox or full mailbox synchronisation and history?
-6. Existing Resend use, sending domains, and meaning of AMF/account farm?
-7. Existing frontend, hosting, repository relationships, and budget?
-
-## Design deliverables
-Requirements with identifiers and acceptance criteria; C4 context/container diagrams; entity relationships; send/reply/unsubscribe sequence diagrams; API/event contracts; architecture decision records; operational recovery and verification plans. Mark each decision proposed, accepted, or unresolved.
+## Open questions for the backend phase
+1. Single user or a small team? Authentication method?
+2. Consent evidence: what is stored per contact, and which jurisdictions apply?
+3. Follow-up rules: how many steps, and what stops a sequence (reply, unsubscribe, bounce)?
+4. Sending volume per identity per day, and warm-up expectations per domain.
+5. Hosting and budget (fleet-02 / Coolify is the assumed build host).
+6. Unsubscribe landing page: hosted by us on which domain?
 
 ## References
-- https://c4model.com/introduction
+- https://resend.com/docs
 - https://resend.com/legal/acceptable-use
-- https://support.google.com/mail/answer/81126?hl=en
-- https://developer.instantly.ai/
-- https://hunter.io/api-documentation
-- https://emailguard.io/features/inbox-placement-test
+- https://c4model.com/introduction
 
-Provider capabilities and policies must be rechecked during selection. Domain separation reduces risk but does not guarantee reputation isolation.
+Provider capabilities and policies must be rechecked at integration time. Separate domains reduce risk but do not guarantee reputation isolation.
