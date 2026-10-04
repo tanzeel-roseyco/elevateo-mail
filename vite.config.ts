@@ -6,6 +6,9 @@ import { defineConfig } from 'vitest/config'
 export default defineConfig({
   plugins: [react(), tailwindcss()],
   resolve: { alias: { '@': fileURLToPath(new URL('./src', import.meta.url)) } },
+  // AIDEV-NOTE: API-backed builds call /v1 on their own origin (the server enables no CORS). The preview server
+  // forwards those calls only when a target is configured; without one they fail, and the app says so.
+  preview: process.env.API_PROXY_TARGET ? { proxy: { '/v1': { target: process.env.API_PROXY_TARGET, changeOrigin: true } } } : {},
   test: {
     environment: 'jsdom',
     setupFiles: ['src/test/setup.ts'],

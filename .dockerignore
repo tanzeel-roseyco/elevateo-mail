@@ -1,5 +1,6 @@
 node_modules
 dist
+dist-api
 coverage
 e2e-shots
 playwright-report

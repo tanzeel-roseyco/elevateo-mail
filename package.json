@@ -11,6 +11,9 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run --coverage",
     "e2e": "npm run build && playwright test",
+    "build:api": "VITE_BACKEND=api vite build --outDir dist-api",
+    "preview:api": "vite preview --outDir dist-api --host 0.0.0.0 --port 4174 --strictPort",
+    "e2e:integration": "npm run build:api && playwright test --config playwright.integration.config.ts",
     "check": "npm run lint && npm run typecheck && npm run test && npm run e2e"
   },
   "dependencies": {

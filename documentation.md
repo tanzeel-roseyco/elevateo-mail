@@ -106,3 +106,14 @@ Verification: all ten pages rendered and visually inspected; extracted text, ten
 **Resilience.** `src/ui/Async.tsx` provides `useLoad`/`LoadGate` (skeleton, error with retry) and the offline banner; connect, import and draft actions are disabled while offline.
 
 **Limits.** Quota figures are a display derived in the browser and must be replaced by a server usage figure; they are not enforcement. Gateway adapters still write the cache themselves (deferred). Saved appearance preferences keep their previous accent.
+
+## Backend integration (5 October 2026)
+
+- Two builds. The demonstration build is the prototype with fixture data. The API build (`VITE_BACKEND=api`) contains no fixtures and shows only what the server returns; when the server cannot be reached it shows an error, never sample mail or a simulated success.
+- One owner of server state: `createLive` in `src/data/http/live.ts`. The gateway (`httpGateway.ts`) only makes requests; pages call `live` actions and read the store. Sign-out, an expired session and a change of account drop all cached account data, in every tab.
+- A send request is a record with an idempotency key stored in the browser before the first request is made. If it cannot be stored, nothing is sent. States shown: draft, not confirmed, awaiting approval, queued, sending, accepted by provider, rejected, cancelled, outcome unknown. Approval is not sending and acceptance is not delivery; the wording says so.
+- Recovery: after a lost answer or a reload the same key is replayed or the same intent is read. Unknown outcomes are not polled and cannot be re-sent from the UI. Changing a submitted message cancels it and creates a new draft needing new approval.
+- Capacity is whatever the server reports (available, accepted, held). No browser-midnight arithmetic and no reset countdown when release time is unknown.
+- The inbox page position is the server cursor in the URL, so a reload reopens the same page.
+- Areas without server support (campaigns, contacts, assistant, provider connections, DNS, enrichment, search) are shown as unavailable.
+- Contract use and gaps: docs/contracts/integration-v1-frontend-notes.md. Evidence and production gates: docs/validation/2026-10-05-backend-integration.md.

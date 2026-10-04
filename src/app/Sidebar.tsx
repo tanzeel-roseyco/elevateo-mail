@@ -4,7 +4,7 @@ import { useData } from '@/data/store'
 import { openComposer } from '@/features/compose/composerStore'
 import { cx } from '@/lib/format'
 
-interface NavItem {
+export interface NavItem {
   to: string
   /** Path prefix that marks the item active (Mail stays active across folders and open threads). */
   match: string
@@ -49,9 +49,20 @@ function Item({ item, compact, badge, onNavigate }: { item: NavItem; compact: bo
   )
 }
 
-/** `compact` renders an icon rail on tablets that expands to full labels at the lg breakpoint. */
-export function Sidebar({ compact = false, onNavigate }: { compact?: boolean; onNavigate?(): void }) {
-  const unread = useData((s) => s.threads.reduce((n, t) => n + (t.folder === 'inbox' && t.unread ? 1 : 0), 0))
+interface FrameProps {
+  compact?: boolean
+  onNavigate?(): void
+  main: NavItem[]
+  settings: NavItem
+  /** Count shown beside the item whose `match` equals the key. */
+  badges?: Record<string, number>
+  onCompose(): void
+  /** One honest line about what this build does and does not do. */
+  footnote: string
+}
+
+/** Layout shared by the demo and API-backed sidebars. `compact` is an icon rail that expands at the lg breakpoint. */
+export function SidebarFrame({ compact = false, onNavigate, main, settings, badges, onCompose, footnote }: FrameProps) {
   return (
     <div className="flex h-full flex-col gap-1 p-3">
       <div className={cx('mb-3 flex h-9 items-center gap-2.5 px-2', compact && 'justify-center lg:justify-start')}>
@@ -63,7 +74,7 @@ export function Sidebar({ compact = false, onNavigate }: { compact?: boolean; on
       <button
         type="button"
         onClick={() => {
-          openComposer()
+          onCompose()
           onNavigate?.()
         }}
         className={cx('mb-4 flex h-10 items-center gap-2.5 rounded-lg bg-fg px-3.5 text-sm font-semibold text-surface shadow-sm transition hover:opacity-90', compact && 'justify-center lg:justify-start')}
@@ -72,15 +83,21 @@ export function Sidebar({ compact = false, onNavigate }: { compact?: boolean; on
         <span className={cx(compact && 'sr-only lg:not-sr-only')}>Compose</span>
       </button>
       <nav aria-label="Main" className="flex flex-1 flex-col gap-0.5">
-        {MAIN.map((item) => (
-          <Item key={item.to} item={item} compact={compact} badge={item.match === '/mail' ? unread : undefined} onNavigate={onNavigate} />
+        {main.map((item) => (
+          <Item key={item.to} item={item} compact={compact} badge={badges?.[item.match]} onNavigate={onNavigate} />
         ))}
         <div className="mt-auto border-t border-line pt-2">
-          <Item item={SETTINGS} compact={compact} onNavigate={onNavigate} />
+          <Item item={settings} compact={compact} onNavigate={onNavigate} />
         </div>
       </nav>
-      {/* Honest framing wherever the user is: nothing in this build leaves the browser. */}
-      <p className={cx('px-3 pt-1 text-[11px] leading-snug text-fg', compact && 'hidden lg:block')}>Prototype · mock data. No email is sent.</p>
+      {/* Honest framing wherever the user is. */}
+      <p className={cx('px-3 pt-1 text-[11px] leading-snug text-fg', compact && 'hidden lg:block')}>{footnote}</p>
     </div>
   )
+}
+
+/** Demo sidebar: mock data only, nothing leaves the browser. */
+export function Sidebar({ compact = false, onNavigate }: { compact?: boolean; onNavigate?(): void }) {
+  const unread = useData((s) => s.threads.reduce((n, t) => n + (t.folder === 'inbox' && t.unread ? 1 : 0), 0))
+  return <SidebarFrame compact={compact} onNavigate={onNavigate} main={MAIN} settings={SETTINGS} badges={{ '/mail': unread }} onCompose={() => openComposer()} footnote="Prototype · mock data. No email is sent." />
 }

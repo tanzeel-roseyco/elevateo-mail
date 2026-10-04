@@ -6,6 +6,7 @@ This repository currently contains a **frontend-only interactive prototype**. Th
 
 ## Current state
 
+- **Backend integration milestone, 5 October 2026 (committed locally, not pushed, not deployed):** a second build, `npm run build:api`, talks to the real backend foundation through an explicit HTTP adapter and shows no fixture data. One journey works end to end against the backend's simulated provider: load mailboxes, browse paginated messages, open a lazily loaded body, compose, review, approve and track a send request through awaiting approval, queued, sending, accepted, rejected, cancelled and unknown. A lost answer or a reload recovers the same request; nothing is re-sent. Limits, capacity and permissions are the server's. Campaigns, contacts, AI, provider connections, DNS, enrichment and search are shown as unavailable. The demonstration build is unchanged apart from the AI-permission fix (a disconnected or failed mailbox is never readable by the assistant) and reworded permission claims. Docker checks: lint and typecheck clean, 267 unit/component tests, 45 demonstration browser tests (one intentional mobile skip), 20 browser tests against the real backend; initial JS 183.13 KB gzip (demonstration) and 162.68 KB (API). 14 Codex reviewers: 21 confirmed source defects, 16 fixed, 5 open. **The application is not complete**: see [validation and production gates](docs/validation/2026-10-05-backend-integration.md), [contract notes](docs/contracts/integration-v1-frontend-notes.md), [handover](docs/handover/2026-10-05-backend-integration.md) and the [review log](code-reviews.md).
 - [Excalidraw agent brief PDF](output/pdf/elevateo-mail-excalidraw-agent-brief.pdf): four copyable prompt pages plus seven actual Fable screenshots across six reference pages. Includes the original PNGs and plain-text prompt as embedded attachments. All ten pages visually verified; no Excalidraw board or application code was created for this document handoff.
 - **Branch `design/fable-frontend`, 5 October 2026 (verified, committed locally, not pushed):** gold accent, white light theme, dark-grey dark theme and the transparent logo; sidebar is Overview, Inbox, Campaigns, Contacts, AI Assistant, Connections, Settings. New **Connections** area (Mailboxes, Sending, AI, Enrichment, Domains) and **AI Assistant** preview, all labelled as previews: nothing connects to Google, Resend, an AI, an enrichment service or DNS, and there is nowhere to enter a key. Up to ten mailboxes with per-mailbox usage against 30 a day (displayed, not enforced). Loading, empty, error-with-retry and offline states. Docker checks: lint, typecheck and build passed; 187 unit/component tests; 45 browser tests plus one intentional mobile skip; initial JS 183.23 KB gzip. Eleven Codex review agents found 14 source defects (all fixed) and 16 test weaknesses (all addressed); one design finding deferred. [Validation](docs/validation/2026-10-05-brand-connections.md), [review log](code-reviews.md), [decisions needing approval](docs/proposals/2026-10-05-open-decisions.md), screenshots in `output/fable/`.
 - **Earlier on `design/fable-frontend`:** Fable 5.1 designed the Ledger frontend: mailbox switching, visible filters, bulk actions, row Archive, pinned replies, a Next up work queue and clearer campaign progress. Codex review fixes include scoped counts, narrow-screen row wrapping, a 1280px split breakpoint and saved-data migration for the confirmed 30/day configuration ceiling. Actual per-mailbox quota enforcement remains backend work. Final Docker checks: lint/typecheck/build passed, 135 unit/component tests and 29 browser tests passed, one intentional mobile skip; initial JS 180.49 KB gzip. Desktop/mobile/light/dark visual checks are recorded in [validation](docs/validation/2026-10-04-fable.md). [Design report](docs/design/fable-design.md) and previews in `output/fable/`. Earlier PDF/image deliverables are copied into this worktree. Older verification figures below describe the previous branch.
@@ -35,6 +36,8 @@ npm run dev        # http://localhost:5173
 
 State is stored in `localStorage` (`mailroom:data:v1`, `mailroom:appearance:v1`). Settings → Account → **Reset prototype data** restores the demo dataset.
 
+API-backed mode is a separate build: `npm run build:api` then `npm run preview:api` (port 4174), with `API_PROXY_TARGET` pointing at a running backend so `/v1` is same-origin. It needs a session token issued by that backend and never falls back to demo data. The supported way to run it is the Docker integration stack below.
+
 ## Test
 
 All checks run in a container (the image is based on the Playwright image and must match the `@playwright/test` version):
@@ -45,6 +48,17 @@ docker run --rm elevateo-mail-check          # lint, typecheck, unit, build, e2e
 ```
 
 Individual scripts: `npm run lint`, `typecheck`, `test`, `build`, `e2e`, or `check` for all of them.
+
+Browser tests against the real backend (needs the backend worktree beside this one):
+
+```bash
+docker build -t elevateo-mail-it-web .
+docker build -f integration/server.Dockerfile --build-context harness=integration -t elevateo-mail-it-server "../Elevateo Mail - Backend"
+docker compose -f integration/compose.yaml up --abort-on-container-exit --exit-code-from web
+docker compose -f integration/compose.yaml down
+```
+
+This starts the backend Worker with local D1, synthetic sessions and its durable fake provider, builds the API bundle and runs `e2e-integration/`. No credentials are involved and no real email is sent.
 
 ## Deploy
 

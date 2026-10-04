@@ -1,0 +1,20 @@
+# AIDEV-NOTE: Frontend and real server together, on a private network with no published ports. Images are built
+# first (see README "Integration tests"); this file only runs them. Task-owned and disposable.
+name: elevateo-mail-it
+services:
+  server:
+    image: elevateo-mail-it-server
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:8787/v1/capabilities').then(r=>process.exit(r.status===401?0:1),()=>process.exit(1))"]
+      interval: 2s
+      timeout: 5s
+      retries: 60
+  web:
+    image: elevateo-mail-it-web
+    depends_on:
+      server:
+        condition: service_healthy
+    environment:
+      API_PROXY_TARGET: http://server:8787
+      IT_CONTROL_URL: http://server:8788
+    command: ["npm", "run", "e2e:integration"]

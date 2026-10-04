@@ -267,3 +267,79 @@ Open after review: zero confirmed source defects. Unresolved questions, not defe
 ### Verification
 
 See [validation](docs/validation/2026-10-05-brand-connections.md).
+
+## 2026-10-05 — Backend integration milestone (API-backed mode)
+
+Reviewers: 13 scoped adversarial Codex agents (`gpt-5.6-sol`, low reasoning, read-only, verified from each run header) using the full review rubric, each given at most 378 lines, plus one dedicated design-tradeoff reviewer. The Codex sandbox could not start a shell on this machine, so each reviewer received its lines inline and could not open other files; findings that depended on unseen code were checked by the parent before being counted.
+
+### Coverage
+
+| Assignment | Lines | Reported | Confirmed |
+|---|---:|---:|---:|
+| A `sendLifecycle.ts`, `contract.ts`, `ports.ts` | 283 | 3 | 3 |
+| B `httpClient.ts`, `httpGateway.ts`, `instance.ts`, `QuotaLine.tsx`, `SendPreview.tsx` | 289 | 4 | 4 |
+| C `live.ts` 1–280 | 280 | 2 | 2 |
+| D `live.ts` 281–556 | 277 | 4 | 3 |
+| E `ComposePage.tsx`, `SignInPage.tsx`, `LiveApp.tsx` | 353 | 0 | 0 |
+| F `SendsPage.tsx`, `UnavailablePage.tsx`, `LiveSettingsPage.tsx` | 333 | 2 | 2 |
+| G `LiveConnectionsPage.tsx`, `LiveInboxPage.tsx` | 368 | 2 | 1 |
+| H `LiveShell.tsx` (114 source) + harness, compose, Dockerfile, test support (230) | 344 | 3 | 1 source, 1 test |
+| M `connections.ts`, `main.tsx`, `vite.config.ts`, integration Playwright config | 194 | 0 | 0 |
+| **Source total** | **2,491** | | **16 scoped** |
+| I `journey.spec.ts` | 378 | 4 | test only |
+| J, K `live.test.ts` | 505 | 5 | test only |
+| L `visual.spec.ts`, `httpClient.test.ts`, `sendLifecycle.test.ts` | 362 | 5 | test only |
+| Design review (six core files, read as a whole) | 1,021 (overlaps above) | 7 | 5 new (1 duplicate of C, 1 rejected) |
+
+**Confirmed source defects: 21 in 2,491 unique source lines, 8.4 per thousand lines.** 1 P0, 16 P1, 4 P2. 16 fixed, 5 open.
+
+### Fixed (16)
+
+- **P0** A request was still sent when its idempotency key could not be stored, so a lost answer could not be recovered after a reload. Now nothing is sent and the draft says why.
+- Overlapping sign-ins shared one epoch and could finish on the wrong account; each attempt now has its own.
+- A late answer to an older page read could replace a newer page.
+- A second view watching a request reset the bounded check allowance.
+- The body cache dropped the oldest fetched body, not the least recently used.
+- An unknown outcome was re-read automatically when its page opened or the tab became visible.
+- Inbox page position was held in memory only; it is now the server cursor in the URL and survives reload.
+- "Simulated provider" was shown on the header badge and on accepted requests regardless of what the server reported (2 findings).
+- Capabilities for an account with zero connected mailboxes were rejected as malformed.
+- A mailbox inventory longer than three pages was silently cut off; it is now an explicit error.
+- A caller could ask for more than 50 summaries.
+- A response declaring an oversized length was read in full before being refused. A response with no declared length is still read before its size is checked.
+- Storage that allows reads but refuses writes was treated as usable.
+- A timestamp beyond the `Date` range passed validation and then threw during mapping.
+- A mailbox reference of only spaces passed the send check.
+
+### Open (5)
+
+| # | Severity | Finding | Why it is open |
+|---|---|---|---|
+| 1 | P1 | Send records are merged with a read-then-write on `localStorage`; two tabs writing in the same instant could lose one update | Each write re-reads first and the step is synchronous; a real fix needs Web Locks or a server list endpoint. The lost update would be a status, re-read from the server on the next check, never a second send |
+| 2 | P1 | Message text and recipients of send requests are stored in `localStorage` in plain text | The server cannot list a user's requests; removing this storage would remove reload recovery. Production gate |
+| 3 | P1 | The session token is readable by script (`sessionStorage`) | Needs backend session issuance with an HttpOnly cookie. Production gate |
+| 4 | P1 | Two tabs can each "cancel and edit" the same request and create two successor drafts | Each successor still needs its own explicit approval; a single-successor guarantee needs a server operation |
+| 5 | P2 | More than 100 unfinished requests are never trimmed | Only reachable with over 100 unfinished drafts; unfinished records are deliberately never dropped |
+
+### Rejected (4)
+
+- "Another account's records remain after a direct account change": they are removed once the new account is confirmed (`removeOtherNamespaces`, covered by a unit test).
+- "Mailbox and message ids are not URL-encoded": ids are validated against `[a-zA-Z0-9_-]` at the boundary before any use.
+- "Signing in as another account destroys the first account's recovery records" (design): this is the explicit requirement to clear user-specific data on account change; recorded as a tradeoff, not a defect.
+- "Harness reset reuses session tokens": intended, so a test can restore an expired session.
+
+### Test findings
+
+15 reported; 3 were artefacts of reviewers seeing half a file (an "unterminated" test, lifecycle coverage that lives in the other half, and a recovery test that does replay the create request with the same key). Addressed: the harness now fails when a staged crash matched no request; new unit tests cover the storage-failure refusal, overlapping sign-ins, stale page reads, least-recently-used eviction, the shared check allowance, the 50-summary cap, the cut-off inventory and oversized answers; every status label is asserted distinct; the journey test asserts the page position survives a reload. Not added: browser-level tests for session expiry seen from a second tab, an account change without sign-out, and literal rendering of markup in a message body (covered only by the schema and the plain-text element in code).
+
+### Design-tradeoff review
+
+Scenarios were reasoned from the code by the reviewer (lost answer, reload mid-send, two tabs, shared browser, outage, token theft). No Obsidian simulation was run, and none is claimed.
+
+- **Kept:** one vanilla store owning all server state; bounded polling with manual check as the final authority; no optimistic status changes; build-time separation of demonstration and API modes; edit as cancel + new key + new approval.
+- **Change when the backend allows:** an account id and a list endpoint for send requests (removes open findings 1, 2, 4); an HttpOnly session cookie (removes 3); a revision-checked draft update or atomic supersede.
+- **Deferred:** server push for status; a query library, if search or concurrent lists arrive.
+
+### Verification
+
+See [validation](docs/validation/2026-10-05-backend-integration.md).
