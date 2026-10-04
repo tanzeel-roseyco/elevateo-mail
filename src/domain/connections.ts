@@ -73,10 +73,17 @@ export function userDailyCeiling(mailboxCount: number): number {
 
 type AiScope = Pick<Connections, 'mailboxes' | 'ai'>
 
+/**
+ * Addresses the assistant may read right now. A read grant alone is not enough: a mailbox that is disconnected,
+ * failing or awaiting re-authorisation is unreadable even while its old grant is still recorded.
+ */
+export function aiReadableAddresses(connections: AiScope): Set<string> {
+  return new Set(connections.mailboxes.filter((m) => m.status === 'connected' && connections.ai.readMailboxIds.includes(m.id)).map((m) => m.address))
+}
+
 /** Conversations the assistant may prepare a reply for: awaiting a response, in a mailbox it is allowed to read. */
 export function assistantQueue(threads: Thread[], connections: AiScope): Thread[] {
-  const readable = new Set(connections.mailboxes.filter((m) => connections.ai.readMailboxIds.includes(m.id)).map((m) => m.address))
-  return awaitingResponse(threads).filter((t) => readable.has(t.identityId))
+  return awaitingResponse(threads).filter((t) => aiReadableAddresses(connections).has(t.identityId))
 }
 
 export type AiDraftCheck = { ok: true; thread: Thread } | { ok: false; reason: string }

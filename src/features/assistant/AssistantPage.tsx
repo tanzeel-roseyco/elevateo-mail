@@ -114,7 +114,7 @@ export function AssistantPage() {
             )}
           </section>
 
-          <p className="text-xs text-muted">Message content is treated as untrusted: the assistant never follows instructions written inside an email. AI-assisted sends are planned to count toward the daily limit of the mailbox they leave from; that rule is still to be confirmed and this preview enforces nothing.</p>
+          <p className="text-xs text-muted">Message content will be passed to the assistant marked as untrusted data. What can be enforced is its permissions: which connected mailboxes it may read, whether it may draft, and that nothing is sent without your approval. No setting can guarantee how an assistant interprets text inside an email, which is why every draft is yours to review. AI-assisted sends are planned to count toward the daily limit of the mailbox they leave from; that rule is still to be confirmed and this preview enforces nothing.</p>
         </div>
       </div>
     </div>

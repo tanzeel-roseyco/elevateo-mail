@@ -64,6 +64,7 @@ export function AiSection() {
               <span className="truncate" title={m.address}>
                 {m.address}
               </span>
+              {m.status !== 'connected' && <span className="shrink-0 text-xs text-muted">(not connected: unreadable)</span>}
             </label>
           ))}
         </div>
@@ -78,7 +79,7 @@ export function AiSection() {
       </section>
 
       <Callout tone="info" icon={Info}>
-        Email content is treated as untrusted: instructions written inside a message are never followed. The assistant gets no shell, no general file access and no mailbox outside the list above. AI-assisted sends are planned to count toward the same daily limit as your own; the counting rule is still to be confirmed and this preview enforces nothing. Try the preview in{' '}
+        Email content will be passed to the assistant marked as untrusted data. What can be enforced is its permissions: it is given no shell, no general file access and no mailbox outside the list above, a disconnected mailbox is unreadable even if still ticked, and nothing is sent without your approval. No setting can guarantee how an assistant interprets text inside an email, which is why drafts are for you to review. AI-assisted sends are planned to count toward the same daily limit as your own; the counting rule is still to be confirmed and this preview enforces nothing. Try the preview in{' '}
         <Link to="/assistant" className="font-medium text-accent-text underline underline-offset-2">
           AI Assistant
         </Link>

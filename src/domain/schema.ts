@@ -194,7 +194,8 @@ const mailboxConnectionSchema = z.object({
   /** Stored lower-case. Quota is keyed by this address so reconnecting never resets a day's count. */
   address: emailSchema.refine((a) => a === a.toLowerCase(), 'mailbox addresses are stored lower-case'),
   provider: z.literal('google'),
-  status: z.enum(['connected', 'needs_reauth']),
+  /** Only `connected` mailboxes can be read, drafted from or sent from; the others keep their slot and their id. */
+  status: z.enum(['connected', 'needs_reauth', 'disconnected', 'error']),
   connectedAt: timestampSchema,
   historyImport: z.enum(['not_started', 'complete']),
   importedConversations: z.number().int().min(0),

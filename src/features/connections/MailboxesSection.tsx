@@ -91,6 +91,7 @@ function MailboxRow({ mailbox, sent, online }: { mailbox: MailboxConnection; sen
         <DomainDot domain={identityDomain(mailbox.address)} />
         <span className="min-w-0 break-all text-sm font-semibold">{mailbox.address}</span>
         <Badge tone="neutral">{demo ? 'Demo mailbox · Google (simulated)' : 'Google · simulated'}</Badge>
+        {mailbox.status !== 'connected' && <Badge tone="danger">{mailbox.status === 'disconnected' ? 'Disconnected' : mailbox.status === 'error' ? 'Connection error' : 'Needs sign-in again'}</Badge>}
         <Badge tone={mailbox.sendEnabled ? 'success' : 'warn'}>{mailbox.sendEnabled ? 'Read and send' : 'Read only'}</Badge>
       </div>
       <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-[13px]">
