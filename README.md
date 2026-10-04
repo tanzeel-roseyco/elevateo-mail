@@ -1,11 +1,16 @@
 # Elevateo Mail
 
-A Gmail-style Windows inbox and consent-based campaign application, planned for ten independent users. The current browser prototype demonstrates a unified inbox, floating composer, campaigns, contacts and settings using nine fictional sender identities.
+A Gmail-style inbox and consent-based campaign application planned for web, Windows and macOS, for ten independent users. The current browser prototype demonstrates a unified inbox, floating composer, campaigns, contacts and settings using nine fictional sender identities.
 
 This repository currently contains a **frontend-only interactive prototype**. There is no backend. All data is fictional and lives in the browser; sending, scheduling, and domain verification are simulated and labelled as such in the UI. Nothing here connects to Resend, Gmail, or DNS.
 
 ## Current state
 
+- [Excalidraw agent brief PDF](output/pdf/elevateo-mail-excalidraw-agent-brief.pdf): four copyable prompt pages plus seven actual Fable screenshots across six reference pages. Includes the original PNGs and plain-text prompt as embedded attachments. All ten pages visually verified; no Excalidraw board or application code was created for this document handoff.
+- **Branch `design/fable-frontend`, 5 October 2026 (verified, committed locally, not pushed):** gold accent, white light theme, dark-grey dark theme and the transparent logo; sidebar is Overview, Inbox, Campaigns, Contacts, AI Assistant, Connections, Settings. New **Connections** area (Mailboxes, Sending, AI, Enrichment, Domains) and **AI Assistant** preview, all labelled as previews: nothing connects to Google, Resend, an AI, an enrichment service or DNS, and there is nowhere to enter a key. Up to ten mailboxes with per-mailbox usage against 30 a day (displayed, not enforced). Loading, empty, error-with-retry and offline states. Docker checks: lint, typecheck and build passed; 187 unit/component tests; 45 browser tests plus one intentional mobile skip; initial JS 183.23 KB gzip. Eleven Codex review agents found 14 source defects (all fixed) and 16 test weaknesses (all addressed); one design finding deferred. [Validation](docs/validation/2026-10-05-brand-connections.md), [review log](code-reviews.md), [decisions needing approval](docs/proposals/2026-10-05-open-decisions.md), screenshots in `output/fable/`.
+- **Earlier on `design/fable-frontend`:** Fable 5.1 designed the Ledger frontend: mailbox switching, visible filters, bulk actions, row Archive, pinned replies, a Next up work queue and clearer campaign progress. Codex review fixes include scoped counts, narrow-screen row wrapping, a 1280px split breakpoint and saved-data migration for the confirmed 30/day configuration ceiling. Actual per-mailbox quota enforcement remains backend work. Final Docker checks: lint/typecheck/build passed, 135 unit/component tests and 29 browser tests passed, one intentional mobile skip; initial JS 180.49 KB gzip. Desktop/mobile/light/dark visual checks are recorded in [validation](docs/validation/2026-10-04-fable.md). [Design report](docs/design/fable-design.md) and previews in `output/fable/`. Earlier PDF/image deliverables are copied into this worktree. Older verification figures below describe the previous branch.
+- Distribution scope now includes web plus directly downloadable Windows `.exe` and Mac `.dmg` apps; no store listing is planned. [Distribution PDF addendum](output/pdf/elevateo-mail-distribution-plan.pdf) extends the earlier Windows-focused master PDF. Local CLI AI is initially desktop-only; signed updates, OS-specific checks and separate signing/build costs are planned. No installers or production web app exist yet.
+- Reader edition: [10-page master plan PDF](output/pdf/elevateo-mail-master-plan.pdf), [frontend sketch](output/imagegen/elevateo-mail-frontend-sketch.png) and [system design sketch](output/imagegen/elevateo-mail-system-design.png). All PDF pages were rendered and visually inspected. Hunter and AMF provide optional enrichment; AI performs personalisation. Documentation and concept artwork only; no application code changed for this edition.
 - Product planning: [master plan](docs/product-master-plan.md), [backend blueprint](docs/backend-blueprint.md), [efficiency plan](docs/efficiency-plan.md), [draft standards](.planning/BACKEND-STANDARDS.md) and [research synthesis](docs/research/2026-10-04/README.md) completed as proposals. Six initial and ten follow-up research assignments are complete; the ten ran in waves of up to three children. No backend implementation approval is recorded.
 - Latest requirements: ten private users across Google organisations/personal Gmail, up to ten connected mailboxes each (100 total); Resend opted-in campaigns; maximum 30 outgoing emails per connected mailbox per day. Effective pilot ceiling: 300/user/day and 3,000 total/day. The earlier 600/user/day figure is a later expansion scenario. Aliases share quota; rolling-window/per-recipient counting is proposed. Private Connections will support selected-mailbox AI read/draft access, separately enabled sending, and reviewed DNS changes on explicitly approved subdomains. Preserve company root MX.
 - Repository renamed: local directory `C:\Users\Tanzeel\Code and projects\Elevateo Mail`; private remote [tanzeel-roseyco/elevateo-mail](https://github.com/tanzeel-roseyco/elevateo-mail). Product branding changed; existing browser-storage keys are intentionally preserved.
@@ -47,18 +52,20 @@ Not deployed. `npm run build` produces a static site in `dist/`; any static host
 
 ## Sitemap and navigation
 
-The left sidebar holds **Compose** and the four main areas; **Settings** is pinned at the bottom. Global search runs across the top. On tablets the sidebar becomes an icon rail; on phones it is a drawer and Compose moves to the top bar.
+The left sidebar holds **Compose** and six areas (Overview, Inbox, Campaigns, Contacts, AI Assistant, Connections); **Settings** is pinned at the bottom. Global search runs across the top. On tablets the sidebar becomes an icon rail; on phones it is a drawer and Compose moves to the top bar.
 
 | Route | Page |
 |---|---|
 | `/overview?range=&domain=` | Daily summary: alerts, sent / delivered / replies / bounces / unsubscribes, awaiting response, running campaigns, recent activity. Every metric links to its filtered list. |
 | `/activity?kind=&range=&domain=&page=` | The event list behind each metric. |
-| `/mail/:folder/:threadId?` + `?q=&domain=&identity=&campaign=&unread=` | Unified inbox. Folders: inbox, starred, sent, drafts, archive, spam, trash. List or split-pane reading. |
+| `/mail/:folder/:threadId?` + `?q=&domain=&identity=&campaign=&unread=` | Unified inbox. Folders: inbox, starred, sent, drafts, archive, spam, trash. List or split-pane reading. `domain`/`identity` are the mailbox scope set from the rail (selects on phones) and follow folder links. |
 | `/campaigns?q=&status=` | Campaign list. |
 | `/campaigns/new?step=` | Creation flow: details → recipients → message → schedule → review. |
 | `/campaigns/:id/:tab?` + `?status=&page=` | Detail tabs: overview, recipients, emails, replies, activity, settings. |
 | `/contacts?q=&status=&page=&contact=` | Contact table; `contact` opens the detail panel. |
 | `/contacts/import` | CSV import with preview and validation. |
+| `/assistant` | AI Assistant preview: conversations awaiting a reply in mailboxes the assistant may read; prepares a simulated draft for review. |
+| `/connections/:section` | mailboxes, sending, ai, enrichment, domains. All previews; nothing is connected. |
 | `/settings/:section` | appearance, identities, notifications, sending, account. |
 | `/search?q=` | Grouped results for messages, contacts, campaigns. |
 
@@ -114,6 +121,7 @@ Dependencies point inward: `features → data → domain`. Design tokens are CSS
 
 ## Planning documents
 
+- [Master plan PDF](output/pdf/elevateo-mail-master-plan.pdf) — reader edition with the two new concept sketches; confirmed requirements, proposals and unresolved decisions are labelled
 - `docs/product-master-plan.md` — plain-English product/stack plan, diagrams, budget and section-specific decisions
 - `docs/backend-blueprint.md` — data ownership, sending/recovery rules, API direction, operations and build gates
 - `docs/efficiency-plan.md` — cost worksheet, workload bounds and performance targets

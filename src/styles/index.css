@@ -20,14 +20,15 @@
 }
 
 /* [data-theme] is also matched on nested containers (the appearance preview), not only <html>. */
+/* AIDEV-NOTE: Brand palette: white light mode, dark-grey dark mode, gold accent. --surface/--fg mirror domain/appearance. */
 :root,
 [data-theme="light"] {
-  --bg: #f3f5f8;
+  --bg: #f4f4f5;
   --surface: #ffffff;
-  --surface-2: #f2f4f7;
-  --line: #dfe3e8;
-  --fg: #171a1f;
-  --muted: #56606d;
+  --surface-2: #f4f4f5;
+  --line: #e2e2e6;
+  --fg: #18181b;
+  --muted: #55555e;
   --danger: #b42318;
   --danger-fg: #ffffff;
   --success: #067647;
@@ -35,13 +36,14 @@
   color-scheme: light;
 }
 
+/* Dark grey, not black: panels (--surface) sit one step lighter than the canvas (--bg). */
 [data-theme="dark"] {
-  --bg: #0e1013;
-  --surface: #181b20;
-  --surface-2: #21252c;
-  --line: #2e333c;
-  --fg: #e9ebee;
-  --muted: #9ba4b0;
+  --bg: #1b1c1f;
+  --surface: #25262a;
+  --surface-2: #2f3035;
+  --line: #3c3d44;
+  --fg: #ececee;
+  --muted: #a9abb3;
   --danger: #f97066;
   --danger-fg: #1a0b09;
   --success: #47cd89;
@@ -49,11 +51,11 @@
   color-scheme: dark;
 }
 
-/* Runtime values below are overwritten inline by app/appearance.ts. */
+/* Runtime values below are overwritten inline by app/appearance.ts. Gold matches DEFAULT_APPEARANCE.accent. */
 :root {
-  --accent: #2563eb;
-  --accent-fg: #ffffff;
-  --accent-text: #1d4ed8;
+  --accent: #c9a227;
+  --accent-fg: #000000;
+  --accent-text: #7a6218;
   --chrome-opacity: 88%;
   --bg-blur: 0px;
   --row-py: 0.625rem;
@@ -97,6 +99,22 @@ body {
 
 .row {
   padding-block: var(--row-py);
+}
+
+/* Section label used above every panel and rail group: small caps carry hierarchy so headings can stay quiet. */
+.eyebrow {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  line-height: 1.2;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* Headline numbers: tabular so columns of counts align, tightened so large digits read as one figure. */
+.figure {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
 }
 
 @media (prefers-reduced-motion: reduce) {

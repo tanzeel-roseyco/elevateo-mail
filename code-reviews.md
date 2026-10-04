@@ -127,3 +127,143 @@ Scope: six branding changes only, plus master plan/blueprint/standards/research 
 Fresh verification: Docker lint, typecheck, 101 unit/component tests, production build, and Playwright 27 passed / one desktop-only test skipped on mobile. Domain coverage 99.69% lines / 98.68% branches; initial JS 176.72 KB gzip. Desktop overview and mobile drawer screenshots inspected: correct branding and no visible clipping. Existing draft/appearance persistence journeys pass; storage keys remain unchanged.
 
 Dependency audit separately found three moderate development-tool entries representing one Vitest advisory, not three new source defects. Upgrade requires a supported-major migration and is tracked separately; no production dependency entry was reported. [Evidence, advisory and test limits](docs/validation/2026-10-04.md).
+
+## 2026-10-04 — PDF reader edition and concept sketches
+
+Artifact review only: ten rendered PDF pages visually inspected, page count/text presence verified, and sketch responsibilities checked against the corrected enrichment/AI split. Remaining observed layout defects: **0**. Code defect density: **not applicable (0 application source lines changed)**. This was a manual artifact review, not a new adversarial source review or application test run. The architecture sketch simplifies provider events and file access; its caption and the backend blueprint supply the exact responsibilities. Backend standards remain a proposal.
+
+## 2026-10-04 — Web and desktop distribution addendum
+
+Artifact review only: both PDF pages rendered and visually inspected; text extraction and six source-link annotations checked. Remaining observed layout defects: **0**. Code defect density: **not applicable (0 application source lines changed)**. Canonical planning documents now distinguish browser access, native CLI access, OS signing, updater signing and release costs. No application tests were rerun for this documentation change; no installers or production website were built or published.
+
+## 2026-10-04 — Fable frontend design and management flows
+
+Implementation: installed Claude CLI, verified model `claude-fable-5-1`. Adversarial Codex reviewers used the user's complete review rubric, with at most 200 lines per assigned slice. A dedicated design reviewer assessed navigation, workload priorities and responsive tradeoffs; ESLint handled style.
+
+### Initial source coverage
+
+| Slice | Reviewed lines | Confirmed defects |
+|---|---:|---:|
+| MailRail 1–148 and Bits 145–178; dedicated design review | 182 | 1 |
+| Styles and appearance 1–65 | 192 | 0 |
+| Shell and Sidebar | 157 | 0 |
+| MailRows and Bits 1–55 | 183 | 1 |
+| MailListTools and MailPage 1–95 | 196 | 0 |
+| MailPage 96–295 | 200 | 0 |
+| ThreadView 1–200 | 200 | 0 |
+| NextUp, ThreadView 201–219 and MailPage 296 | 106 | 1 |
+| MailboxPanel and Overview 1–100 | 191 | 0 |
+| Overview 101–229 | 129 | 0 |
+| CampaignsPage | 128 | 0 |
+| **Total** | **1,864** | **3 P2** |
+
+Initial application defect density: **1.61 defects per 1,000 reviewed lines**. All three confirmed findings were fixed: folder badges now follow mailbox scope, mailbox identity is visible on every row, and paused campaigns cannot be pushed out of Next up by drafts.
+
+### Follow-up reviews and disposition
+
+These passes overlap earlier coverage and must not be added as unique reviewed lines.
+
+| Pass | Lines | Findings | Defects per 1,000 lines | Disposition |
+|---|---:|---:|---:|---|
+| Scoped badges and mail selection | 191 | 0 | 0 | Passed |
+| NextUp and MailRows | 199 | 1 P2 | 5.03 | Metadata overflow fixed with wrapping; geometry regression added |
+| Regression tests | 151 | 2 test weaknesses | 13.25 | Draft search uses real input; filtered navigation asserts exact expected ID |
+| Saved-data migration and regression cases | 172 | 0 | 0 | Passed |
+| Final row layout, browser regression and limit changes | 126 | 0 | 0 | Passed |
+
+Test weaknesses are reported separately from application source density. Parent integration also caught a compatibility problem outside the agent counts: tightening the daily-limit schema could discard otherwise valid saved data. A load-only migration now clamps previously valid values above 30 without relaxing new-input validation; 23 persistence cases verify preservation and rejection paths.
+
+### Design review
+
+- Mailbox scope lives beside the folders it affects; the global sidebar stays small. Scenario review compared single-mailbox work, switching domains and returning from a campaign.
+- Phones use selects; larger screens use a mailbox rail. Both write the same URL state, so back/forward has one contract.
+- Split reading begins at 1280px; at 1024px a single pane avoids compressing message content. Browser geometry checks cover both cases.
+- No new dependency was needed. Existing route splitting and system fonts keep the compressed initial JavaScript at 180.49 KB.
+- Obsidian was unavailable. These were documented local scenario comparisons, not an Obsidian simulation or measured production workload.
+
+### Verification and remaining limits
+
+Final Docker run: lint and typecheck passed, **135 unit/component tests passed**, production build passed, **29 browser tests passed and one desktop-only test was intentionally skipped on mobile**. Domain-only coverage: 99.69% lines, 98.71% branches, 100% functions. Desktop, phone, split-reader and dark screenshots were inspected. [Evidence and cleanup](docs/validation/2026-10-04-fable.md).
+
+No confirmed new source defect remains from these scoped reviews. Existing direct-store mutations remain deferred to API integration; this work does not certify the backend, arbitrary provider data or production sending. The 30/day rule is validated configuration, not enforced delivery accounting. The earlier development-tool audit advisory remains open. Nothing was committed, pushed or published during this frontend task.
+
+## Excalidraw brief document review — 2026-10-04
+
+Scope: ten-page PDF handoff, not application source. One content defect found and fixed; zero outstanding. Code defect density: not applicable (zero application lines changed). Document finding density: 1/4 reviewed prompt sections, not comparable with source KLOC figures.
+
+| Prompt section | Result |
+|---|---|
+| Product and boundaries | Passed: private users, mailbox/send limits, budget and implementation status agree with the plan |
+| System flows | Fixed: explicitly gate mailbox context on provider data-use review and CLI isolation; initial Claude fallback is tools-disabled drafting |
+| Frontend workflows | Passed: seven actual Fable captures identified; new wireframes and missing states are proposed |
+| Build map and handoff | Passed: cost/testing assumptions, decisions and editable portable deliverables remain explicit |
+
+Parent visually inspected every rendered page and re-rendered/rechecked the corrected page. Final structural checks: ten pages/bookmarks, eight embedded attachments, seven PNGs identical to their original files, corrected prompt present both as selectable PDF text and attached UTF-8 text. No application tests were rerun; no Docker resources, deployment or infrastructure changes were required.
+
+## 2026-10-05 — Brand theme, Connections, AI Assistant and resilience states
+
+Implementation: Claude Code, model `claude-fable-5-1`, inline on `design/fable-frontend`. Reviewers: eleven Codex CLI agents (`codex exec`, read-only sandbox, low reasoning) using the user's full review rubric, each given at most about 200 assigned lines, plus one dedicated design-tradeoff reviewer. Session metadata reports the reviewer model as `gpt-6.1-sol` (the installed Codex default), not the `gpt-5.6-sol` named in the routing rules; the pin was not applied. Formatting was left to ESLint.
+
+A first attempt produced no reviews: Codex's read-only sandbox could not read files on this Windows host, so every agent reported itself blocked. The run was repeated with the assigned code and its context supplied in the prompt, so no reviewer needed file access. `MailboxPanel.tsx` (four changed lines, an untracked file so absent from `git diff`) was reviewed by the parent only.
+
+### Source coverage (round 1)
+
+| Slice | Assigned lines | Confirmed defects |
+|---|---:|---:|
+| `domain/connections.ts` and connection schema | 147 | 1 P1, 1 P2 |
+| `mockConnections.ts`, new ports, store changes | 102 | 1 P2 |
+| `ui/Async.tsx`, `ConnectionsPage.tsx`, shell/nav/route diffs | 147 | 0 |
+| `MailboxesSection.tsx` | 148 | 1 P1, 2 P2 |
+| `SendingSection.tsx`, `EnrichmentSection.tsx` | 140 | 4 P1 |
+| `AiSection.tsx`, `DomainsSection.tsx` | 157 | 2 P1, 1 P2 |
+| `AssistantPage.tsx`, theme token and appearance diffs | 213 | 1 P1 |
+| **Total** | **1,054** | **14 (9 P1, 5 P2)** |
+
+Application defect density: **13.28 defects per 1,000 reviewed lines**. Eight of the nine P1 findings are truthfulness defects: wording that described planned behaviour as working, or an undecided limit rule as settled. The ninth is a real permission race.
+
+| Finding | Fix |
+|---|---|
+| Duplicate mailbox ids passed the schema, so one AI read grant could cover two mailboxes | Schema rejects duplicate ids and addresses; regression test |
+| Mixed-case mailbox address passed the schema but never matched its conversations | Schema requires lower-case; regression test |
+| `updateAiAccess` accepted non-boolean permissions | Gateway parses the merged value with `aiAccessSchema`; regression test |
+| Rapid AI-scope toggles were built from stale state and could re-grant a revoked mailbox | One change at a time: controls lock while a change is pending; regression test |
+| Disconnect not labelled as simulated; no pending guard | Confirmation and toast say what is removed; row is busy for the whole request |
+| Address input editable during a pending connect | Input disabled while busy |
+| Sending routes, suppression, Resend empty state and AI personalisation described as working | Reworded as planned; suppression claim limited to campaign email |
+| "AI-assisted sends count toward the daily limit" stated as fact (two pages) | Reworded as planned, rule unconfirmed, nothing enforced |
+| A Resend identity on a root domain was listed as a sending subdomain | `sendingDomains` marks only proper subdomains of known roots as approvable; others say they cannot be managed; section renamed "Sending domains" after the follow-up pass |
+
+### Test review (round 1)
+
+| Slice | Assigned lines | Test weaknesses |
+|---|---:|---:|
+| `domain/connections.test.ts` | 149 | 5 |
+| `Connections.test.tsx` | 176 | 7 |
+| `e2e/brand.spec.ts`, new persistence cases | 159 | 4 |
+| **Total** | **484** | **16** |
+
+All sixteen were addressed: exact-id and exact-body assertions, midnight/now/future boundaries, already-answered conversations, toast isolation between tests, cancelled disconnect, rejected connect/draft/access changes, offline controls, Review draft handing over the exact draft, loaded-content waits before overflow measurement (now both edges and including Enrichment), a pixel-level logo transparency check and real forward navigation. Test weaknesses are not counted in application density.
+
+### Design-tradeoff review
+
+Scenarios were reasoned from the code and the documented pilot; no Obsidian simulation was run, and none is claimed.
+
+- **Kept:** connections inside the one persisted data blob with a load-time default (a separate key would need coordinated hydration and reset); mailbox connections modelled apart from sender identities (a read-only tenth mailbox must not gain send rights); one page-level load across Connections sections; offline as a banner plus disabled network actions rather than a mutation queue; AI default of one readable demo mailbox, drafting on, sending off (real accounts should start with none readable).
+- **Kept as provisional only:** client-derived quota usage. A second device or the cloud scheduler makes local counts wrong; at handover the display must read a server usage DTO and never become enforcement.
+- **Changed:** gateway methods now return the resulting DTO (`Connections`, `MailboxConnection`, `AiAccess`) instead of `void`.
+- **Deferred, 1 DESIGN-P2:** adapters still write the zustand cache themselves. A single cache coordinator shared by mock and HTTP adapters belongs with the existing deferred finding about direct store mutations, to be done at backend integration.
+
+### Follow-up pass
+
+Overlaps round 1; not added to unique reviewed lines.
+
+| Pass | Lines | Findings | Disposition |
+|---|---:|---:|---|
+| `AiSection.tsx`, `mockConnections.ts` | 173 | 0 | Passed |
+| `MailboxesSection.tsx`, `DomainsSection.tsx` | 226 | 1 P1 | Root domains still sat under a "subdomains" heading; section renamed "Sending domains" |
+
+Open after review: zero confirmed source defects. Unresolved questions, not defects: whether a mailbox needing re-authorisation should lose AI access; whether an AI-scope change in flight should survive leaving the page.
+
+### Verification
+
+See [validation](docs/validation/2026-10-05-brand-connections.md).

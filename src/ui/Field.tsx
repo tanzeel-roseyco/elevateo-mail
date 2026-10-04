@@ -52,7 +52,7 @@ export function Select({ className, children, ...rest }: SelectHTMLAttributes<HT
   )
 }
 
-export function Switch({ checked, onChange, label, description }: { checked: boolean; onChange(next: boolean): void; label: string; description?: string }) {
+export function Switch({ checked, onChange, label, description, disabled }: { checked: boolean; onChange(next: boolean): void; label: string; description?: string; disabled?: boolean }) {
   const id = useId()
   return (
     <div className="flex items-start justify-between gap-4">
@@ -67,8 +67,9 @@ export function Switch({ checked, onChange, label, description }: { checked: boo
         role="switch"
         aria-checked={checked}
         aria-labelledby={id}
+        disabled={disabled}
         onClick={() => onChange(!checked)}
-        className={cx('relative mt-0.5 h-6 w-11 shrink-0 rounded-full border transition', checked ? 'border-accent bg-accent' : 'border-line bg-surface-2')}
+        className={cx('relative mt-0.5 h-6 w-11 shrink-0 rounded-full border transition disabled:cursor-not-allowed disabled:opacity-60', checked ? 'border-accent bg-accent' : 'border-line bg-surface-2')}
       >
         <span className={cx('absolute top-0.5 size-[18px] rounded-full shadow transition-all', checked ? 'left-[22px] bg-accent-fg' : 'left-0.5 bg-muted')} />
         <span className="sr-only">{checked ? 'On' : 'Off'}</span>

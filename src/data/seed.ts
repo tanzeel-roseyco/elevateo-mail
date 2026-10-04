@@ -1,6 +1,7 @@
+import { defaultConnections } from '@/domain/connections'
 import { DEFAULT_UNSUBSCRIBE_FOOTER, defaultDomains, defaultIdentities, defaultSettings, LOCAL_PARTS } from '@/domain/identities'
 import { isSendable, personalise } from '@/domain/rules'
-import type { ActivityEvent, Address, Attachment, Campaign, CampaignStatus, Contact, Data, DomainName, EventKind, Message, StoredFolder, Thread } from '@/domain/schema'
+import { DAILY_LIMIT_MAX, type ActivityEvent, type Address, type Attachment, type Campaign, type CampaignStatus, type Contact, type Data, type DomainName, type EventKind, type Message, type StoredFolder, type Thread } from '@/domain/schema'
 
 // AIDEV-NOTE: Deterministic fictional dataset (~840 opted-in CEO contacts). All people and companies are invented;
 // addresses use the reserved .example TLD so nothing here can be a real mailbox.
@@ -211,7 +212,8 @@ export function createSeed(now: number): Data {
         timezone: 'Europe/London',
         windowStart: '09:00',
         windowEnd: '17:00',
-        dailyLimit: 40,
+        // The pilot ceiling. Three identities × 30 also covers the largest seeded backlog (90 pending) in one batch.
+        dailyLimit: DAILY_LIMIT_MAX,
       },
       unsubscribeFooter: DEFAULT_UNSUBSCRIBE_FOOTER,
       createdAt: iso(createdAgo),
@@ -237,6 +239,7 @@ export function createSeed(now: number): Data {
     identities,
     domains: defaultDomains(),
     settings: defaultSettings(new Date(now - 2 * DAY).toISOString()),
+    connections: defaultConnections(identities, new Date(now - 30 * DAY).toISOString()),
   }
 }
 

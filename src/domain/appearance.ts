@@ -26,7 +26,8 @@ export type Appearance = z.infer<typeof appearanceSchema>
 
 export const DEFAULT_APPEARANCE: Appearance = {
   theme: 'system',
-  accent: '#2563eb',
+  // Brand gold; must match the --accent fallback in styles/index.css.
+  accent: '#c9a227',
   bgColor: null,
   bgImage: null,
   blur: 0,
@@ -36,6 +37,7 @@ export const DEFAULT_APPEARANCE: Appearance = {
 }
 
 export const ACCENT_PRESETS = [
+  { name: 'Gold', value: '#c9a227' },
   { name: 'Blue', value: '#2563eb' },
   { name: 'Indigo', value: '#4f46e5' },
   { name: 'Teal', value: '#0f766e' },
@@ -53,7 +55,7 @@ export const BACKGROUND_PRESETS = [
 ] as const
 
 // Must mirror --surface in styles/index.css.
-const SURFACE = { light: '#ffffff', dark: '#181b20' } as const
+const SURFACE = { light: '#ffffff', dark: '#25262a' } as const
 
 export interface ResolvedAppearance {
   theme: 'light' | 'dark'

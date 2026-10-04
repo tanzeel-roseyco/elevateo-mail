@@ -22,6 +22,11 @@ export function toast(message: string, options: { tone?: ToastTone; action?: Toa
   setTimeout(() => dismiss(id), options.action ? 9000 : 5000)
 }
 
+/** Removes every toast at once. Used when state is reset wholesale, and between tests. */
+export function clearToasts(): void {
+  useToasts.setState({ items: [] })
+}
+
 const ICONS = { info: Info, success: CheckCircle2, error: AlertTriangle }
 
 export function Toaster() {

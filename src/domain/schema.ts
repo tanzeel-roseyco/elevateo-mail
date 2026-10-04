@@ -8,11 +8,13 @@ export type DomainName = z.infer<typeof domainNameSchema>
 
 export const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 export const TIME_PATTERN = /^([01]\d|2[0-3]):[0-5]\d$/
-export const DAILY_LIMIT_MAX = 500
+// AIDEV-NOTE: Confirmed pilot rule: at most 30 sends per connected mailbox per day. Forms, seed and schema share this.
+// The prototype only validates the setting; nothing here counts or blocks real sends.
+export const DAILY_LIMIT_MAX = 30
 export const FOLLOW_UP_DELAY_MAX_DAYS = 30
 
-const emailSchema = z.string().regex(EMAIL_PATTERN)
-const timestampSchema = z.iso.datetime()
+export const emailSchema = z.string().regex(EMAIL_PATTERN)
+export const timestampSchema = z.iso.datetime()
 const timeOfDaySchema = z.string().regex(TIME_PATTERN)
 const dailyLimitSchema = z.number().int().min(1).max(DAILY_LIMIT_MAX)
 
@@ -97,7 +99,7 @@ const identitySchema = z.object({
 })
 export type Identity = z.infer<typeof identitySchema>
 
-const verificationSchema = z.enum(['verified', 'pending', 'failed'])
+export const verificationSchema = z.enum(['verified', 'pending', 'failed'])
 export type Verification = z.infer<typeof verificationSchema>
 const domainInfoSchema = z.object({
   domain: domainNameSchema,
@@ -184,6 +186,53 @@ const settingsSchema = z.object({
 })
 export type Settings = z.infer<typeof settingsSchema>
 
+// AIDEV-NOTE: Preview-only connection state (Connections + AI Assistant). No field holds a credential, token or key.
+export const MAX_MAILBOXES_PER_USER = 10
+
+const mailboxConnectionSchema = z.object({
+  id: z.string(),
+  /** Stored lower-case. Quota is keyed by this address so reconnecting never resets a day's count. */
+  address: emailSchema.refine((a) => a === a.toLowerCase(), 'mailbox addresses are stored lower-case'),
+  provider: z.literal('google'),
+  status: z.enum(['connected', 'needs_reauth']),
+  connectedAt: timestampSchema,
+  historyImport: z.enum(['not_started', 'complete']),
+  importedConversations: z.number().int().min(0),
+  /** Gmail send permission is granted separately from read access. */
+  sendEnabled: z.boolean(),
+})
+export type MailboxConnection = z.infer<typeof mailboxConnectionSchema>
+
+export const RESEND_PURPOSES = ['campaign', 'transactional'] as const
+const resendIdentitySchema = z.object({
+  id: z.string(),
+  address: emailSchema,
+  /** Campaign and transactional identities are never interchangeable. */
+  purpose: z.enum(RESEND_PURPOSES),
+  status: verificationSchema,
+})
+export type ResendIdentity = z.infer<typeof resendIdentitySchema>
+
+export const aiAccessSchema = z.object({
+  /** Mailbox connection ids the assistant may read. Empty = it can read nothing. */
+  readMailboxIds: z.array(z.string()),
+  allowDrafts: z.boolean(),
+  /** Separate from drafting; even when on, every send needs approval of the exact revision. */
+  allowSend: z.boolean(),
+})
+export type AiAccess = z.infer<typeof aiAccessSchema>
+
+export const connectionsSchema = z.object({
+  // Unique ids and addresses: AI read scope is granted by id, so an ambiguous id would widen access silently.
+  mailboxes: z
+    .array(mailboxConnectionSchema)
+    .max(MAX_MAILBOXES_PER_USER)
+    .refine((list) => new Set(list.map((m) => m.id)).size === list.length && new Set(list.map((m) => m.address)).size === list.length, 'mailbox ids and addresses must be unique'),
+  resendIdentities: z.array(resendIdentitySchema),
+  ai: aiAccessSchema,
+})
+export type Connections = z.infer<typeof connectionsSchema>
+
 export const dataSchema = z.object({
   version: z.literal(1),
   threads: z.array(threadSchema),
@@ -198,5 +247,6 @@ export const dataSchema = z.object({
     .refine((list) => new Set(list.map((i) => i.id)).size === 9 && list.every((i) => i.id === `${i.local}@${i.domain}`), 'identities must be the nine fixed addresses'),
   domains: z.array(domainInfoSchema),
   settings: settingsSchema,
+  connections: connectionsSchema,
 })
 export type Data = z.infer<typeof dataSchema>

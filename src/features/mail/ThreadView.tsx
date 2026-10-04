@@ -1,14 +1,15 @@
-import { Archive, ArrowLeft, ChevronDown, ChevronRight, FileText, Forward, Inbox, MailOpen, Megaphone, Reply, ReplyAll, ShieldAlert, Star, Trash2, X } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { Archive, ArrowLeft, ChevronDown, ChevronRight, ChevronUp, FileText, Forward, Inbox, MailOpen, Megaphone, Reply, ReplyAll, ShieldAlert, Star, Trash2, X } from 'lucide-react'
+import { useEffect, useState, type ReactNode } from 'react'
 import { Link } from 'react-router'
 import { useData } from '@/data/store'
+import { identityDomain } from '@/domain/identities'
 import { buildReply, lastMessage, type ReplyKind } from '@/domain/mail'
 import { plainPreview } from '@/domain/richText'
 import type { Message, StoredFolder, Thread } from '@/domain/schema'
 import { openComposer } from '@/features/compose/composerStore'
 import { cx, formatBytes, formatDateTime, formatWhen, initials } from '@/lib/format'
 import { Badge } from '@/ui/Badge'
-import { BrandBanner, RichText, UnsubscribeFooter } from '@/ui/Bits'
+import { BrandBanner, DomainDot, RichText, UnsubscribeFooter } from '@/ui/Bits'
 import { Button, IconButton } from '@/ui/Button'
 
 function MessageCard({ message, expanded, onToggle, bannerText }: { message: Message; expanded: boolean; onToggle(): void; bannerText?: string }) {
@@ -60,16 +61,37 @@ function MessageCard({ message, expanded, onToggle, bannerText }: { message: Mes
   )
 }
 
+/** Where the open conversation sits in the filtered list, with links to its neighbours when they exist. */
+export interface ReaderNav {
+  position: string
+  newer?: string
+  older?: string
+}
+
+function NavLink({ to, label, children }: { to?: string; label: string; children: ReactNode }) {
+  const base = 'inline-flex size-8 shrink-0 items-center justify-center rounded-full'
+  // At either end of the list there is nothing to link to: show the arrow dimmed rather than a dead control.
+  if (!to) return <span aria-hidden className={cx(base, 'text-muted opacity-40')}>{children}</span>
+  return (
+    <Link to={to} aria-label={label} title={label} className={cx(base, 'text-fg hover:bg-surface-2')}>
+      {children}
+    </Link>
+  )
+}
+
 interface Props {
   thread: Thread
   /** Split pane shows a close (×); the single-pane flow shows "back to list". */
   split: boolean
+  /** Absent when the conversation is not part of the current list (e.g. it stopped matching a filter). */
+  nav?: ReaderNav
   onClose(): void
   /** Moves the thread and offers Undo; owned by MailPage so list and reader behave identically. */
   onMove(ids: string[], folder: StoredFolder): void
 }
 
-export function ThreadView({ thread, split, onClose, onMove }: Props) {
+// AIDEV-NOTE: Reader = triage bar (top), one readable column, pinned reply bar (bottom) so the next action never scrolls away.
+export function ThreadView({ thread, split, nav, onClose, onMove }: Props) {
   const patchThreads = useData((s) => s.patchThreads)
   const identities = useData((s) => s.identities)
   const domains = useData((s) => s.domains)
@@ -136,33 +158,50 @@ export function ThreadView({ thread, split, onClose, onMove }: Props) {
         <IconButton label={thread.starred ? 'Remove star' : 'Add star'} aria-pressed={thread.starred} onClick={() => patchThreads([thread.id], { starred: !thread.starred })}>
           <Star aria-hidden className={cx('size-4', thread.starred && 'fill-warn text-warn')} />
         </IconButton>
+        {nav && (
+          <div className="ml-auto flex items-center gap-0.5">
+            <span className="px-1.5 text-xs tabular-nums text-muted">{nav.position}</span>
+            <NavLink to={nav.newer} label="Newer conversation">
+              <ChevronUp aria-hidden className="size-4" />
+            </NavLink>
+            <NavLink to={nav.older} label="Older conversation">
+              <ChevronDown aria-hidden className="size-4" />
+            </NavLink>
+          </div>
+        )}
       </div>
 
-      <div className="min-h-0 flex-1 overflow-y-auto px-3 py-4 md:px-6">
-        <h2 className="text-lg font-semibold leading-snug">{thread.subject}</h2>
-        <div className="mt-2 flex flex-wrap items-center gap-2">
-          {campaign ? (
-            <Link to={`/campaigns/${campaign.id}`}>
-              <Badge tone="accent" icon={Megaphone}>
-                Campaign: {campaign.name}
-              </Badge>
-            </Link>
-          ) : (
-            <Badge>Ordinary message</Badge>
-          )}
-          <span className="text-xs text-muted">
-            {thread.messages[0]?.direction === 'out' ? 'Sent from' : 'Received by'} {thread.identityId}
-          </span>
-        </div>
+      <div className="min-h-0 flex-1 overflow-y-auto px-3 py-5 md:px-8">
+        {/* A fixed measure keeps long emails readable on wide monitors instead of stretching edge to edge. */}
+        <div className="mx-auto max-w-3xl">
+          <h2 className="text-xl font-semibold leading-snug tracking-tight">{thread.subject}</h2>
+          <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-2">
+            {campaign ? (
+              <Link to={`/campaigns/${campaign.id}`}>
+                <Badge tone="accent" icon={Megaphone}>
+                  Campaign: {campaign.name}
+                </Badge>
+              </Link>
+            ) : (
+              <Badge>Ordinary message</Badge>
+            )}
+            <span className="flex items-center gap-1.5 text-xs text-muted">
+              <DomainDot domain={identityDomain(thread.identityId)} />
+              {thread.messages[0]?.direction === 'out' ? 'Sent from' : 'Received by'} {thread.identityId}
+            </span>
+          </div>
 
-        <div className="mt-4 flex flex-col gap-2">
-          {thread.messages.map((m) => (
-            <MessageCard key={m.id} message={m} expanded={expanded.has(m.id)} onToggle={() => toggle(m.id)} bannerText={domains.find((d) => d.domain === m.bannerDomain)?.bannerText} />
-          ))}
+          <div className="mt-5 flex flex-col gap-2">
+            {thread.messages.map((m) => (
+              <MessageCard key={m.id} message={m} expanded={expanded.has(m.id)} onToggle={() => toggle(m.id)} bannerText={domains.find((d) => d.domain === m.bannerDomain)?.bannerText} />
+            ))}
+          </div>
         </div>
+      </div>
 
-        <div className="mt-4 flex flex-wrap gap-2">
-          <Button icon={<Reply aria-hidden className="size-4" />} onClick={() => reply('reply')}>
+      <div className="shrink-0 border-t border-line bg-surface px-3 py-2.5 md:px-8">
+        <div className="mx-auto flex max-w-3xl flex-wrap items-center gap-2">
+          <Button variant="primary" icon={<Reply aria-hidden className="size-4" />} onClick={() => reply('reply')}>
             Reply
           </Button>
           <Button icon={<ReplyAll aria-hidden className="size-4" />} onClick={() => reply('replyAll')}>
@@ -171,6 +210,8 @@ export function ThreadView({ thread, split, onClose, onMove }: Props) {
           <Button icon={<Forward aria-hidden className="size-4" />} onClick={() => reply('forward')}>
             Forward
           </Button>
+          {/* buildReply defaults the sender to this address; saying so here saves opening the composer to check. */}
+          <span className="ml-auto hidden min-w-0 truncate text-xs text-muted sm:block">Replies go from {thread.identityId}</span>
         </div>
       </div>
     </div>

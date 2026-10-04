@@ -4,22 +4,25 @@ import { Link, useSearchParams } from 'react-router'
 import { useData } from '@/data/store'
 import { countByKind, EVENT_LABELS, filterEvents, isRange, RANGE_LABELS, RANGES, type Range } from '@/domain/activity'
 import { awaitingResponse, lastMessage } from '@/domain/mail'
-import { campaignMetrics, nextAction } from '@/domain/rules'
+import { campaignMetrics, nextAction, percent } from '@/domain/rules'
 import { DOMAIN_NAMES, type DomainName, type EventKind } from '@/domain/schema'
 import { formatDateTime, formatWhen } from '@/lib/format'
-import { Callout, PageHeader, ProgressBar, useNow, usePageTitle } from '@/ui/Bits'
 import { eventHref, threadHref } from '@/lib/routes'
+import { Callout, PageHeader, ProgressBar, useNow, usePageTitle } from '@/ui/Bits'
+import { MailboxPanel } from './MailboxPanel'
+import { NextUp } from './NextUp'
 
-const METRICS: Array<{ kind: EventKind; label: string; hint: string; icon: LucideIcon }> = [
+// `of` names the count a metric is a share of, matching the rates on a campaign's own Overview tab.
+const METRICS: Array<{ kind: EventKind; label: string; hint: string; icon: LucideIcon; of?: 'sent' | 'delivered' }> = [
   { kind: 'sent', label: 'Sent', hint: 'Handed to the sending service', icon: Send },
-  { kind: 'delivered', label: 'Delivered', hint: 'Accepted by the recipient’s server — not the same as read', icon: CheckCircle2 },
-  { kind: 'reply', label: 'Replies', hint: 'Replies received', icon: Reply },
-  { kind: 'bounce', label: 'Bounces', hint: 'Rejected by the recipient’s server', icon: AlertTriangle },
-  { kind: 'unsubscribe', label: 'Unsubscribes', hint: 'Recipients who opted out', icon: UserMinus },
+  { kind: 'delivered', label: 'Delivered', hint: 'Accepted by the recipient’s server — not the same as read', icon: CheckCircle2, of: 'sent' },
+  { kind: 'reply', label: 'Replies', hint: 'Replies received', icon: Reply, of: 'delivered' },
+  { kind: 'bounce', label: 'Bounces', hint: 'Rejected by the recipient’s server', icon: AlertTriangle, of: 'sent' },
+  { kind: 'unsubscribe', label: 'Unsubscribes', hint: 'Recipients who opted out', icon: UserMinus, of: 'delivered' },
 ]
 
 const selectClass = 'h-9 rounded-lg border border-line bg-surface px-2.5 text-[13px]'
-const panel = 'rounded-xl border border-line'
+const panel = 'overflow-hidden rounded-xl border border-line'
 const panelTitle = 'flex items-center justify-between border-b border-line px-4 py-2.5 text-sm font-semibold'
 const viewAll = 'text-[13px] font-medium text-accent-text underline underline-offset-2'
 
@@ -66,6 +69,8 @@ export function OverviewPage() {
   const threads = useData((s) => s.threads)
   const campaigns = useData((s) => s.campaigns)
   const domains = useData((s) => s.domains)
+  const identities = useData((s) => s.identities)
+  const draftCount = useData((s) => s.drafts.length)
 
   // Recomputed on data changes and on every clock tick, so "today" rolls over on a page left open. The clock is
   // read fresh rather than taken from the tick, or an event logged since the last tick would look future-dated.
@@ -73,7 +78,8 @@ export function OverviewPage() {
   const scoped = useMemo(() => filterEvents(events, { range, domain, kind: '', now: Math.max(tick, Date.now()) }), [events, range, domain, tick])
   const counts = useMemo(() => countByKind(scoped), [scoped])
   const waiting = useMemo(() => awaitingResponse(threads).filter((t) => !domain || t.identityId.endsWith(`@${domain}`)), [threads, domain])
-  const running = campaigns.filter((c) => c.status === 'running' && (!domain || c.identityIds.some((i) => i.endsWith(`@${domain}`))))
+  const scopedCampaigns = campaigns.filter((c) => !domain || c.identityIds.some((i) => i.endsWith(`@${domain}`)))
+  const running = scopedCampaigns.filter((c) => c.status === 'running')
   const unverified = domains.filter((d) => (!domain || d.domain === domain) && [d.spf, d.dkim, d.dmarc].some((v) => v !== 'verified'))
   const linkQuery = (kind: EventKind) => `/activity?kind=${kind}&range=${range}${domain ? `&domain=${domain}` : ''}`
 
@@ -105,15 +111,26 @@ export function OverviewPage() {
           </section>
         )}
 
-        <section aria-label="Sending summary" className="grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-5">
+        <NextUp waiting={waiting} campaigns={scopedCampaigns} draftCount={draftCount} />
+
+        {/* One ruled strip instead of five cards: the 1px gaps show the container colour as hairlines between cells. */}
+        <section aria-label="Sending summary" className="grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-line bg-line xl:grid-cols-5">
           {METRICS.map((m) => (
-            <Link key={m.kind} to={linkQuery(m.kind)} className="group rounded-xl border border-line p-3.5 transition hover:border-accent-text hover:bg-surface-2">
-              <span className="flex items-center gap-2 text-[13px] font-medium text-muted">
-                <m.icon aria-hidden className="size-4" />
+            <Link key={m.kind} to={linkQuery(m.kind)} className="group bg-surface p-4 last:col-span-2 hover:bg-surface-2 xl:last:col-span-1">
+              <span className="eyebrow flex items-center gap-1.5">
+                <m.icon aria-hidden className="size-3.5" />
                 {m.label}
               </span>
-              <span className="mt-1 block text-2xl font-semibold tabular-nums">{counts[m.kind].toLocaleString('en-GB')}</span>
-              <span className="mt-0.5 block text-xs text-muted">{m.hint}</span>
+              <span className="figure mt-2 block text-[28px] font-semibold leading-none">{counts[m.kind].toLocaleString('en-GB')}</span>
+              <span className="mt-2 block text-xs text-muted">
+                {/* Events are counted inside a time window, so a part can outnumber its base at the edges; skip the rate then. */}
+                {m.of && counts[m.of] >= counts[m.kind] && counts[m.of] > 0 && (
+                  <span className="font-medium text-fg">
+                    {percent(counts[m.kind], counts[m.of])} of {m.of} ·{' '}
+                  </span>
+                )}
+                {m.hint}
+              </span>
               <span className="mt-1.5 block text-xs font-medium text-accent-text group-hover:underline">View list</span>
             </Link>
           ))}
@@ -178,6 +195,8 @@ export function OverviewPage() {
             )}
           </section>
         </div>
+
+        <MailboxPanel identities={identities} threads={threads} waiting={waiting} events={events} domain={domain} tick={tick} />
 
         <section className={panel} aria-labelledby="ov-activity">
           <h2 id="ov-activity" className={panelTitle}>

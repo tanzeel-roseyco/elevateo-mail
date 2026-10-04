@@ -16,10 +16,10 @@ const contact = (over: Partial<Contact> = {}): Contact => ({ id: 'c1', name: 'Am
 const draft = (over: Partial<Draft> = {}): Draft => ({ id: 'd1', identityId: 'lachlan@boltloop.co', to: ['amara@northwind.example'], cc: [], bcc: [], subject: 'Hello', body: 'Body text', attachments: [], campaignId: null, threadId: null, banner: false, updatedAt: '2026-10-01T10:00:00.000Z', ...over })
 
 describe('form limits shared with the persisted schema', () => {
-  it('accepts whole daily limits from 1 to 500 and rejects everything else', () => {
+  it('accepts whole daily limits from 1 to the 30-per-mailbox pilot ceiling and rejects everything else', () => {
     expect(dailyLimitError(1)).toBeNull()
-    expect(dailyLimitError(500)).toBeNull()
-    for (const bad of [0, 501, 1.5, Number.NaN, -3]) expect(dailyLimitError(bad)).toMatch(/whole number between 1 and 500/)
+    expect(dailyLimitError(30)).toBeNull()
+    for (const bad of [0, 31, 40, 1.5, Number.NaN, -3]) expect(dailyLimitError(bad)).toMatch(/whole number between 1 and 30/)
   })
 
   it('accepts a sending window that ends after it starts', () => {

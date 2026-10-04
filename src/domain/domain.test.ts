@@ -254,7 +254,7 @@ describe('colour and appearance', () => {
   })
 
   it('makes a pale accent readable on light and dark surfaces', () => {
-    for (const surface of ['#ffffff', '#181b20']) {
+    for (const surface of ['#ffffff', '#25262a']) {
       const adjusted = readableAccent(rgb('#fde047'), rgb(surface))
       expect(contrast(rgb(adjusted), rgb(surface))).toBeGreaterThanOrEqual(4.5)
     }
@@ -263,7 +263,7 @@ describe('colour and appearance', () => {
 
   it('keeps accent text at AA contrast for every preset in both themes', () => {
     for (const theme of ['light', 'dark'] as const) {
-      const surface = rgb(theme === 'light' ? '#ffffff' : '#181b20')
+      const surface = rgb(theme === 'light' ? '#ffffff' : '#25262a')
       for (const preset of ACCENT_PRESETS) {
         const { vars } = resolveAppearance({ ...DEFAULT_APPEARANCE, theme, accent: preset.value }, false)
         expect(contrast(rgb(vars['--accent-text']!), mix(surface, rgb(preset.value), 0.14))).toBeGreaterThanOrEqual(4.5)
@@ -284,7 +284,7 @@ describe('colour and appearance', () => {
 
   it('keeps sidebar text readable at the minimum overlay strength over any background', () => {
     // Worst cases: light chrome over a black image, dark chrome over a white image.
-    const cases = [{ surface: '#ffffff', fg: '#171a1f', behind: '#000000' }, { surface: '#181b20', fg: '#e9ebee', behind: '#ffffff' }]
+    const cases = [{ surface: '#ffffff', fg: '#18181b', behind: '#000000' }, { surface: '#25262a', fg: '#ececee', behind: '#ffffff' }]
     for (const c of cases) {
       const blended = mix(rgb(c.behind), rgb(c.surface), CHROME_OPACITY_MIN / 100)
       expect(contrast(rgb(c.fg), blended)).toBeGreaterThanOrEqual(4.5)

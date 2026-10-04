@@ -2,6 +2,7 @@ import { identityDomain } from '@/domain/identities'
 import { batchSize, isSendable, validateSend } from '@/domain/rules'
 import type { ActivityEvent, Address, Campaign, CampaignRecipient, Contact, Data, Message, Thread } from '@/domain/schema'
 import { delay, uid } from '@/lib/format'
+import { mockConnections } from './mockConnections'
 import type { MailroomGateway } from './ports'
 import { createSeed } from './seed'
 import { loadPersisted, STORAGE_KEY, useData } from './store'
@@ -26,6 +27,8 @@ function event(partial: Omit<ActivityEvent, 'id' | 'at' | 'text'> & { text?: str
 }
 
 export const mockGateway: MailroomGateway = {
+  ...mockConnections,
+
   async load() {
     await delay(350)
     if (new URLSearchParams(window.location.search).get('simulate') === LOAD_ERROR_FLAG && !loadFailedOnce) {

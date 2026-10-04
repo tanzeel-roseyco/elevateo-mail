@@ -3,6 +3,7 @@ import { useMemo, useState } from 'react'
 import { Link } from 'react-router'
 import { useData } from '@/data/store'
 import { dailyLimitError, sendBlockReason, sendingWindowError } from '@/domain/rules'
+import { DAILY_LIMIT_MAX } from '@/domain/schema'
 import { StatusBadge } from '@/ui/Badge'
 import { Callout, UnsubscribeFooter } from '@/ui/Bits'
 import { Button } from '@/ui/Button'
@@ -53,8 +54,8 @@ export function SendingSettings() {
           <Field label="Sending window starts">{(p) => <Input {...p} type="time" value={form.windowStart} onChange={(e) => setForm({ ...form, windowStart: e.target.value })} />}</Field>
           <Field label="Sending window ends" error={show('window')}>{(p) => <Input {...p} type="time" value={form.windowEnd} onChange={(e) => setForm({ ...form, windowEnd: e.target.value })} />}</Field>
         </div>
-        <Field label="Daily sending limit per identity" error={show('limit')} hint="Paces campaign sends. Limits help you send steadily; they do not guarantee deliverability." className="max-w-sm">
-          {(p) => <Input {...p} type="number" min={1} max={500} value={form.dailyLimitPerIdentity} onChange={(e) => setForm({ ...form, dailyLimitPerIdentity: Number(e.target.value) })} />}
+        <Field label="Daily sending limit per identity" error={show('limit')} hint={`Paces campaign sends, up to the pilot ceiling of ${DAILY_LIMIT_MAX} per mailbox per day. This prototype does not enforce it on real mail, and limits do not guarantee deliverability.`} className="max-w-sm">
+          {(p) => <Input {...p} type="number" min={1} max={DAILY_LIMIT_MAX} value={form.dailyLimitPerIdentity} onChange={(e) => setForm({ ...form, dailyLimitPerIdentity: Number(e.target.value) })} />}
         </Field>
         <Field label="Default unsubscribe footer" error={show('footer')} hint="Used for new campaigns and campaign-linked messages. An unsubscribe link is always added after it.">
           {(p) => <Textarea {...p} rows={3} maxLength={500} value={form.unsubscribeFooter} onChange={(e) => setForm({ ...form, unsubscribeFooter: e.target.value })} />}

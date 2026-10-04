@@ -29,7 +29,7 @@ export function PageHeader({ title, description, actions, children }: { title: s
     <header className="border-b border-line px-4 py-4 md:px-6">
       <div className="flex flex-wrap items-start gap-3">
         <div className="min-w-0 flex-1">
-          <h1 className="text-xl font-semibold tracking-tight">{title}</h1>
+          <h1 className="text-[22px] font-semibold leading-tight tracking-tight">{title}</h1>
           {description && <p className="mt-0.5 text-[13px] text-muted">{description}</p>}
         </div>
         {actions && <div className="flex flex-wrap items-center gap-2">{actions}</div>}
@@ -144,6 +144,12 @@ export function RichText({ source, className }: { source: string; className?: st
 
 // Fixed brand colours (not themed): each pairs with white text at ≥4.5:1.
 const BRAND_COLORS: Record<DomainName, string> = { 'boltloop.co': '#1f2937', 'flooda.co': '#0e5a8a', 'elevateoco.com': '#5b2a86' }
+
+/** Decorative mailbox marker. Always shown beside the domain or address in text: colour never carries it alone. */
+export function DomainDot({ domain, className }: { domain: DomainName | null; className?: string }) {
+  // The ring keeps the darkest brand colour visible against the dark theme's surface.
+  return <span aria-hidden className={cx('inline-block size-2 shrink-0 rounded-[3px] ring-1 ring-line', className)} style={{ backgroundColor: domain ? BRAND_COLORS[domain] : 'var(--muted)' }} />
+}
 
 export function BrandBanner({ domain, text }: { domain: DomainName; text?: string }) {
   return (

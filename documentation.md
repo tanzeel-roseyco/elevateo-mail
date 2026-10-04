@@ -1,15 +1,17 @@
 # Product and design context
 
 ## Confirmed product
-Elevateo Mail is a Windows personal inbox and consent-based campaign application. Ten independent users can connect up to ten mailboxes each across separate Google Workspace organisations or personal Gmail. Users remain private from each other.
+Elevateo Mail is a personal inbox and consent-based campaign application planned for web, Windows and macOS. Ten independent users can connect up to ten mailboxes each across separate Google Workspace organisations or personal Gmail. Users remain private from each other.
 
 Each connected mailbox may send at most 30 emails per day through the app. This permits at most 300 per user and 3,000 across the pilot. Rolling 24-hour counting by recipient delivery, including CC/BCC, is proposed; aliases, reconnects and different sending routes must share the same mailbox quota. The app cannot limit messages sent elsewhere.
 
 Existing inboxes need real Gmail sync and notifications. Resend is suitable for eligible opted-in campaigns on owned verified domains, not a replacement for Gmail mailbox hosting. Named self-hosted providers follow through explicit capabilities; “any provider” is not an implemented promise. Users can add mailboxes, import recipients and import history.
 
-Cloud scheduling keeps approved campaigns running while the PC is off. Local Codex is the primary AI provider; restricted Claude fallback uses each user's own account. Read selected mailboxes and draft are defaults; sending requires separate permission and approval. Hunter is optional personalisation. AMF needs identification. Provider keys belong to their user.
+Cloud scheduling keeps approved campaigns running while the PC is off. Local Codex is the primary AI provider; restricted Claude fallback uses each user's own account. Read selected mailboxes and draft are defaults; sending requires separate permission and approval. Hunter and AMF provide optional enrichment data; AI performs personalisation. AMF's role is confirmed, but its exact product/API still needs identification. Provider keys belong to their user.
 
 ## Canonical planning documents
+- [Distribution PDF addendum](output/pdf/elevateo-mail-distribution-plan.pdf): web access, direct Windows/Mac downloads, desktop-only local AI, signed updates and separate release costs. Extends the earlier master PDF's Windows-only scope; implementation remains unstarted.
+- [Master plan PDF](output/pdf/elevateo-mail-master-plan.pdf): requested reader edition, with [frontend](output/imagegen/elevateo-mail-frontend-sketch.png) and [system architecture](output/imagegen/elevateo-mail-system-design.png) concept sketches. Generated using the built-in image tool; [generation and edit prompts](output/imagegen/sketch-prompts.txt). All ten PDF pages were rendered and visually inspected.
 - [Product master plan](docs/product-master-plan.md): plain-English decisions, diagrams and section-specific review.
 - [Backend blueprint](docs/backend-blueprint.md): data ownership, API boundaries, failure handling and rollout.
 - [Efficiency plan](docs/efficiency-plan.md): resource/cost controls and measurable performance targets.
@@ -29,6 +31,18 @@ The browser prototype has no real backend, provider integration, authentication,
 - Navigation and filters use URL state. Validated Zustand/localStorage data and seed fallback are prototype-only, not server persistence or recovery.
 - Existing mailroom:data:v1 and mailroom:appearance:v1 keys remain unchanged after the product rename.
 - MailroomGateway is the backend seam; several direct store mutations are a documented deferred review finding. Move these with pending/error/conflict UI when integrating the API.
+
+## Design direction on design/fable-frontend (final build verified)
+"Ledger": warm paper canvas, white work surface, ink text and hairlines; ink marks the constant action (Compose), the accent marks state (current area, active mailbox, selection, filters). System fonts only, no new dependencies. Full rationale: [design report](docs/design/fable-design.md). Actual Fable 5.1 delegation and Codex review completed. Final Docker checks passed: 135 unit/component tests, 29 browser tests, lint, typecheck and build; one intentional mobile skip. Initial JS 180.49 KB gzip. [Verification and visual evidence](docs/validation/2026-10-04-fable.md).
+
+- A mailbox is a URL scope (`?domain=`, `?identity=`) chosen in the mail rail from tablet width up and by selects on phones. It follows folder links; other filters reset on a folder change. Drafts honour it.
+- Folder badges count inside the mailbox scope, so a badge matches the list its link opens. Each row names its mailbox with a short label (`lachlan@boltloop`) in every layout.
+- Active filters are always shown as removable chips with a result count. Ticking rows swaps that row for the bulk toolbar. Ticks belong to the list as filtered: any filter, mailbox or folder change clears them; opening and closing a conversation does not.
+- Split reading needs a 1280px window; below that the list is single-pane.
+- The reader keeps Reply, Reply all and Forward pinned, states the address replies go from, and links to the newer and older conversation in the filtered list.
+- Overview separates problems (Alerts) from work (Next up: longest-waiting reply, stalled campaigns, drafts).
+- 30 sends per mailbox per day is the confirmed rule. In the prototype it is one constant (`DAILY_LIMIT_MAX`) that caps the Settings and campaign limit fields, sets their default and the seed, and is the reference figure in the Overview mailbox table. The prototype validates the setting only: it does not count or block sends per mailbox, and the table counts calendar-day simulated `sent` events, not a rolling window. A load-only migration clamps previously valid limits above 30 and preserves other saved data. Invalid records still fail validation.
+- Domain colour markers are decorative and always paired with the domain or address in text.
 
 ## Backend direction, not implemented
 One modular backend and one authoritative sending scheduler. Durable database records own users, mailbox connections, consent, suppression, campaign state, send intents and audit events. A queue wakes workers; it is not the source of truth.
@@ -67,3 +81,28 @@ See the master plan's review table rather than reopening already confirmed user/
 - [C4 diagrams](https://c4model.com/introduction)
 
 Capabilities, policies and prices were researched for planning and must be rechecked at integration. Separate domains reduce some reputation coupling but cannot guarantee isolation.
+
+## Excalidraw design handoff
+
+[Agent brief PDF](output/pdf/elevateo-mail-excalidraw-agent-brief.pdf) supplies the requested copy-and-paste prompt on pages 1–4 and actual Fable frontend captures on pages 5–10. Original PNGs and the identical prompt text are embedded as attachments. The prompt asks for eight linked planning sections, editable wireframes alongside the screenshots, plain-English explanations, missing/error states and portable Excalidraw/PDF/PNG deliverables. It distinguishes the existing simulated frontend from proposed backend, desktop, AI and DNS work.
+
+Verification: all ten pages rendered and visually inspected; extracted text, ten bookmarks and eight attachments checked; all seven attached PNGs match their source files byte-for-byte. Document review checked each prompt section and corrected one omitted AI launch gate. This handoff does not create diagrams or change application code; prior application validation remains unchanged.
+
+## Brand theme, Connections and AI Assistant (5 October 2026)
+
+**Theme.** Tokens live in `src/styles/index.css`; `src/domain/appearance.ts` mirrors `--surface` for contrast maths and holds the default accent. Light: white surface on a pale grey canvas. Dark: `#25262a` panels on a `#1b1c1f` canvas. Accent: gold `#c9a227`, used for state (current page, selection, progress, primary buttons), never body text; link-coloured text is darkened automatically to keep 4.5:1. Compose stays ink so it keeps its weight under any accent. The logo is `public/logo.png` (160px, transparent, from `output/branding/`), drawn with no backing shape.
+
+**Connections** (`src/features/connections/`, route `/connections/:section`). Rules are pure functions in `src/domain/connections.ts`; state is `connections` inside the persisted data (`mailboxes`, `resendIdentities`, `ai`), validated by `connectionsSchema`. No field holds a credential.
+- *Mailboxes:* up to ten; the nine demo identities appear as connected and cannot be removed. Connecting records an address only, read-only until send permission is granted. A `+tag` alias counts as the same mailbox. Usage shows simulated sends since local midnight against 30; nothing is blocked.
+- *Sending:* explains the two planned routes (the mailbox itself; Resend for opted-in campaigns on approved subdomains) and keeps campaign and transactional identities separate. Lists the limit rules still undecided.
+- *AI:* which mailboxes the assistant may read, whether it may draft, whether it may send with approval. Changes are applied one at a time. The browser can never reach a local CLI, so status is always "not detected".
+- *Enrichment:* Hunter and AMF, no key field.
+- *Domains:* root MX is shown as protected; only a proper subdomain of a known domain can await approval; nothing can edit DNS.
+
+**AI Assistant** (`/assistant`). Lists conversations awaiting a reply in readable mailboxes. "Prepare draft (simulated)" saves a fixed placeholder as an ordinary draft, built only from the sender's first name; message content is never copied into it. Sending is only ever done by the person from the composer.
+
+**Gateway.** `src/data/ports.ts` adds `loadConnections`, `connectMailbox`, `disconnectMailbox`, `importMailboxHistory`, `updateAiAccess` and `prepareAiDraft`, each returning the resulting DTO; the mock is `src/data/mockConnections.ts` and re-validates everything a server would. `?simulate=connections-error` fails the first Connections load to show the retry state.
+
+**Resilience.** `src/ui/Async.tsx` provides `useLoad`/`LoadGate` (skeleton, error with retry) and the offline banner; connect, import and draft actions are disabled while offline.
+
+**Limits.** Quota figures are a display derived in the browser and must be replaced by a server usage figure; they are not enforcement. Gateway adapters still write the cache themselves (deferred). Saved appearance preferences keep their previous accent.

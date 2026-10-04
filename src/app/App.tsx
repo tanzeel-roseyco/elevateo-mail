@@ -20,6 +20,8 @@ const CampaignDetailPage = lazy(() => import('@/features/campaigns/CampaignDetai
 const CampaignWizard = lazy(() => import('@/features/campaigns/CampaignWizard').then((m) => ({ default: m.CampaignWizard })))
 const ContactsPage = lazy(() => import('@/features/contacts/ContactsPage').then((m) => ({ default: m.ContactsPage })))
 const ImportPage = lazy(() => import('@/features/contacts/ImportPage').then((m) => ({ default: m.ImportPage })))
+const AssistantPage = lazy(() => import('@/features/assistant/AssistantPage').then((m) => ({ default: m.AssistantPage })))
+const ConnectionsPage = lazy(() => import('@/features/connections/ConnectionsPage').then((m) => ({ default: m.ConnectionsPage })))
 const SettingsPage = lazy(() => import('@/features/settings/SettingsPage').then((m) => ({ default: m.SettingsPage })))
 
 function RouteError() {
@@ -71,6 +73,9 @@ const router = createBrowserRouter([
       { path: 'campaigns/:campaignId/:tab?', element: <CampaignDetailPage /> },
       { path: 'contacts', element: <ContactsPage /> },
       { path: 'contacts/import', element: <ImportPage /> },
+      { path: 'assistant', element: <AssistantPage /> },
+      { path: 'connections', element: <Navigate to="/connections/mailboxes" replace /> },
+      { path: 'connections/:section', element: <ConnectionsPage /> },
       { path: 'settings', element: <Navigate to="/settings/appearance" replace /> },
       { path: 'settings/:section', element: <SettingsPage /> },
       { path: 'search', element: <SearchPage /> },

@@ -1,12 +1,26 @@
 import { create } from 'zustand'
+import { z } from 'zod'
+import { defaultConnections } from '@/domain/connections'
 import { defaultSettings } from '@/domain/identities'
-import { dataSchema, type Campaign, type Contact, type Data, type Draft, type Identity, type Settings, type StoredFolder, type Thread } from '@/domain/schema'
+import { DAILY_LIMIT_MAX, dataSchema, type Campaign, type Connections, type Contact, type Data, type Draft, type Identity, type Settings, type StoredFolder, type Thread } from '@/domain/schema'
 import { createSeed } from './seed'
 
 // AIDEV-NOTE: Client-side cache of mock entities. A real backend replaces data/mockGateway.ts; this store then
 // becomes the cache its responses are written into. Components read via selectors, never localStorage directly.
 
 export const STORAGE_KEY = 'mailroom:data:v1'
+
+// AIDEV-NOTE: Load-only migration preserves v1 data with former 1–500 limits; all other field validators stay intact.
+const persistedDailyLimitSchema = z.number().int().min(1).max(500).transform((limit) => Math.min(limit, DAILY_LIMIT_MAX))
+const persistedCampaignSchema = dataSchema.shape.campaigns.element.extend({
+  schedule: dataSchema.shape.campaigns.element.shape.schedule.extend({ dailyLimit: persistedDailyLimitSchema }),
+})
+const persistedDataSchema = dataSchema.extend({
+  settings: dataSchema.shape.settings.extend({ dailyLimitPerIdentity: persistedDailyLimitSchema }),
+  campaigns: persistedCampaignSchema.array(),
+  // Data saved before Connections existed has no such field; loadPersisted fills in the defaults.
+  connections: dataSchema.shape.connections.optional(),
+})
 
 interface Actions {
   replaceAll(data: Data): void
@@ -21,12 +35,13 @@ interface Actions {
   updateContact(id: string, patch: Partial<Pick<Contact, 'subscription'>>): void
   updateCampaign(id: string, patch: Partial<Omit<Campaign, 'id'>>): void
   deleteCampaign(id: string): void
+  setConnections(connections: Connections): void
 }
 
 export type DataState = Data & Actions
 
 export function emptyData(): Data {
-  return { version: 1, threads: [], drafts: [], contacts: [], campaigns: [], events: [], identities: [], domains: [], settings: defaultSettings(new Date(0).toISOString()) }
+  return { version: 1, threads: [], drafts: [], contacts: [], campaigns: [], events: [], identities: [], domains: [], settings: defaultSettings(new Date(0).toISOString()), connections: defaultConnections([], new Date(0).toISOString()) }
 }
 
 const mapById = <T extends { id: string }>(items: T[], id: string, fn: (item: T) => T): T[] => items.map((item) => (item.id === id ? fn(item) : item))
@@ -55,11 +70,12 @@ export const useData = create<DataState>()((set) => ({
         events: s.events.filter((e) => !(e.campaignId === id && e.kind === 'campaign')).map(unlink),
       }
     }),
+  setConnections: (connections) => set({ connections }),
 }))
 
 export function snapshot(state: DataState): Data {
-  const { version, threads, drafts, contacts, campaigns, events, identities, domains, settings } = state
-  return { version, threads, drafts, contacts, campaigns, events, identities, domains, settings }
+  const { version, threads, drafts, contacts, campaigns, events, identities, domains, settings, connections } = state
+  return { version, threads, drafts, contacts, campaigns, events, identities, domains, settings, connections }
 }
 
 export interface LoadResult {
@@ -68,7 +84,7 @@ export interface LoadResult {
   recovered: boolean
 }
 
-/** Reads and validates persisted state; anything unreadable falls back to fresh seed data. */
+/** Validates persisted state and migrates legacy limits; anything unreadable falls back to fresh seed data. */
 export function loadPersisted(storage: Pick<Storage, 'getItem'>, now: number): LoadResult {
   let raw: string | null
   try {
@@ -79,8 +95,11 @@ export function loadPersisted(storage: Pick<Storage, 'getItem'>, now: number): L
   }
   if (raw === null) return { data: createSeed(now), recovered: false }
   try {
-    const parsed = dataSchema.safeParse(JSON.parse(raw))
-    if (parsed.success) return { data: parsed.data, recovered: false }
+    const parsed = persistedDataSchema.safeParse(JSON.parse(raw))
+    if (parsed.success) {
+      const connections = parsed.data.connections ?? defaultConnections(parsed.data.identities, new Date(now).toISOString())
+      return { data: { ...parsed.data, connections }, recovered: false }
+    }
   } catch {
     // Malformed JSON is handled the same way as a schema mismatch below.
   }

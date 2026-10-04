@@ -1,4 +1,4 @@
-import { DOMAIN_NAMES, type DomainInfo, type DomainName, type Identity, type Settings } from './schema'
+import { DAILY_LIMIT_MAX, DOMAIN_NAMES, type DomainInfo, type DomainName, type Identity, type Settings } from './schema'
 
 // AIDEV-NOTE: The nine sender identities are fixed product data: 3 local parts × 3 domains, one unified inbox.
 export const LOCAL_PARTS = ['lachlan.macdonald', 'lachlan', 'l.macdonald'] as const
@@ -39,7 +39,7 @@ export function defaultSettings(nowIso: string): Settings {
     timezone: 'Europe/London',
     windowStart: '09:00',
     windowEnd: '17:00',
-    dailyLimitPerIdentity: 40,
+    dailyLimitPerIdentity: DAILY_LIMIT_MAX,
     unsubscribeFooter: DEFAULT_UNSUBSCRIBE_FOOTER,
     notifications: { replies: true, failures: true, completion: true },
     notificationsSeenAt: nowIso,

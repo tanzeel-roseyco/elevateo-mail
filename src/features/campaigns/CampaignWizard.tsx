@@ -4,7 +4,7 @@ import { Link, useNavigate, useSearchParams } from 'react-router'
 import { gateway } from '@/data/gateway'
 import { useData } from '@/data/store'
 import { dailyLimitError, isSendable, personalise, validateCampaignName } from '@/domain/rules'
-import { DOMAIN_NAMES, type DomainName, FOLLOW_UP_DELAY_MAX_DAYS } from '@/domain/schema'
+import { DAILY_LIMIT_MAX, DOMAIN_NAMES, type DomainName, FOLLOW_UP_DELAY_MAX_DAYS } from '@/domain/schema'
 import { cx } from '@/lib/format'
 import { Callout, RichText, UnsubscribeFooter, usePageTitle } from '@/ui/Bits'
 import { Button } from '@/ui/Button'
@@ -265,7 +265,7 @@ export function CampaignWizard() {
                   <Field label="Start time" hint={`Timezone: ${settings.timezone}`}>{(p) => <Input {...p} type="time" value={form.startTime} onChange={(e) => patch({ startTime: e.target.value })} />}</Field>
                 </div>
                 <Field label="Daily limit per sender identity" hint="A pacing control. It does not guarantee deliverability." className="max-w-72">
-                  {(p) => <Input {...p} type="number" min={1} max={500} value={form.dailyLimit} onChange={(e) => patch({ dailyLimit: Number(e.target.value) })} />}
+                  {(p) => <Input {...p} type="number" min={1} max={DAILY_LIMIT_MAX} value={form.dailyLimit} onChange={(e) => patch({ dailyLimit: Number(e.target.value) })} />}
                 </Field>
                 <p className="text-[13px] text-muted">
                   At {form.dailyLimit} per identity across {form.identityIds.length} identities, {eligible.length} recipients take about {Math.max(1, Math.ceil(eligible.length / Math.max(1, form.dailyLimit * form.identityIds.length)))} sending day(s), within {settings.windowStart}–{settings.windowEnd}.

@@ -5,6 +5,7 @@ import { useData } from '@/data/store'
 import { Composer } from '@/features/compose/Composer'
 import { openComposer, useComposer } from '@/features/compose/composerStore'
 import { initials } from '@/lib/format'
+import { OfflineBanner } from '@/ui/Async'
 import { Skeleton } from '@/ui/Bits'
 import { IconButton } from '@/ui/Button'
 import { Modal } from '@/ui/Modal'
@@ -20,7 +21,7 @@ function Background() {
   return <div aria-hidden className="pointer-events-none fixed inset-0 -z-10 scale-105 bg-cover bg-center" style={{ backgroundImage: `url("${image}")`, filter: 'blur(var(--bg-blur))' }} />
 }
 
-// AIDEV-NOTE: Layout follows the sketch: full-height sidebar, search across the top, one roomy content panel.
+// AIDEV-NOTE: Full-height sidebar, search across the top, one work panel. Ink (--fg) marks Compose; gold accent marks state.
 export function Shell() {
   const [drawerOpen, setDrawerOpen] = useState(false)
   const profileName = useData((s) => s.settings.profile.name)
@@ -47,18 +48,19 @@ export function Shell() {
           </IconButton>
           <GlobalSearch />
           {/* Small screens hide the sidebar in a drawer, so Compose lives in the top bar where it cannot cover page actions. */}
-          <button type="button" aria-label="Compose" title="Compose" onClick={() => openComposer()} className="flex size-10 shrink-0 items-center justify-center rounded-full bg-accent text-accent-fg shadow-sm md:hidden">
+          <button type="button" aria-label="Compose" title="Compose" onClick={() => openComposer()} className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-fg text-surface shadow-sm md:hidden">
             <Pencil aria-hidden className="size-[18px]" />
           </button>
           <div className="ml-auto flex items-center gap-1">
             <Notifications />
-            <Link to="/settings/account" aria-label="Account settings" title="Account settings" className="flex size-9 items-center justify-center rounded-full bg-accent text-xs font-semibold text-accent-fg">
+            <Link to="/settings/account" aria-label="Account settings" title="Account settings" className="flex size-9 items-center justify-center rounded-full border border-line bg-surface text-xs font-semibold text-fg hover:bg-surface-2">
               {initials(profileName)}
             </Link>
           </div>
         </header>
+        <OfflineBanner />
         <main id="main" tabIndex={-1} className="min-h-0 flex-1 md:pb-3 md:pr-3">
-          <div className="flex h-full flex-col overflow-hidden border-line bg-surface md:rounded-2xl md:border md:shadow-sm">
+          <div className="flex h-full flex-col overflow-hidden border-line bg-surface md:rounded-xl md:border md:shadow-sm">
             <Suspense fallback={<Skeleton />}>
               <Outlet />
             </Suspense>

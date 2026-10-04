@@ -1,9 +1,18 @@
 # Planning state
 
+Latest handoff: [Excalidraw agent brief PDF](../output/pdf/elevateo-mail-excalidraw-agent-brief.pdf), containing a four-page copyable prompt and seven actual Fable screenshots. Ten pages visually verified, eight embedded attachments checked. Section review correction makes provider data-use and CLI-isolation gates explicit. No actual Excalidraw board or application changes in this handoff.
+
+Latest frontend work: isolated `design/fable-frontend` worktree contains the verified Fable 5.1 Ledger redesign. Final Docker checks passed: 135 unit/component tests, 29 browser tests, one intentional mobile skip, lint/typecheck/build; initial JS 180.49 KB gzip. Desktop/mobile/light/dark visual evidence and cleanup: [Fable validation](../docs/validation/2026-10-04-fable.md). Changes remain uncommitted; original planning changes were preserved. Historical checks below remain historical.
+
+Platform scope now includes browser, Windows and macOS. See [distribution addendum](../output/pdf/elevateo-mail-distribution-plan.pdf) and master plan section 11. This supersedes the original reader PDF's Windows-only scope. Initial local AI is desktop-only. Backend/desktop implementation approval remains outstanding; no installers or production website exist.
 Canonical session state: [state.md](../state.md). Product decisions: [master plan](../docs/product-master-plan.md). Detailed implementation direction: [blueprint](../docs/backend-blueprint.md).
+
+Latest reader deliverable: [10-page PDF](../output/pdf/elevateo-mail-master-plan.pdf), with separate [frontend](../output/imagegen/elevateo-mail-frontend-sketch.png) and [system design](../output/imagegen/elevateo-mail-system-design.png) sketches. Hunter and AMF are optional enrichment; AI personalises drafts. All PDF pages were rendered and visually inspected. This edition changed documentation and artwork only; earlier application checks below were not rerun.
 
 4 October 2026: six initial research assignments plus ten connection/efficiency assignments and synthesis complete. Confirmed pilot: ten private users, up to ten mailboxes each, 30 sends/mailbox/day; effective maximum 300/user/day and 3,000 total. History/import allowances remain open. Local directory and private GitHub repository renamed to Elevateo Mail / elevateo-mail.
 
 Frontend-only prototype exists; branding updated and scoped adversarial review completed. Fresh Docker checks passed: lint, typecheck, build, 101 unit/component tests and 27 browser tests, with one intentional mobile skip. Desktop/mobile branding was visually inspected. Task-owned Docker resources were removed; see [validation](../docs/validation/2026-10-04.md). Three moderate development-tool audit entries for one Vitest advisory remain outstanding.
 
 No backend, installed desktop, real provider, DNS broker or AI integration implemented. [Backend standards](BACKEND-STANDARDS.md) remain a draft requiring section-specific approval. See canonical state for historical prototype deviations and launch/storage decisions. Research contracts do not substitute for implemented features.
+
+5 October 2026: `design/fable-frontend` now carries the gold/white/dark-grey brand theme, the transparent logo, Connections (Mailboxes, Sending, AI, Enrichment, Domains), an AI Assistant preview and loading/empty/error/offline states, committed locally and not pushed. Docker checks passed (187 unit/component, 45 browser, one intentional skip). Four limit decisions await approval: [open decisions](../docs/proposals/2026-10-05-open-decisions.md). Evidence: [validation](../docs/validation/2026-10-05-brand-connections.md).

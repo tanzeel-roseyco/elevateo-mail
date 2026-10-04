@@ -6,7 +6,7 @@ import { EVENT_LABELS } from '@/domain/activity'
 import { lastMessage, sortByRecent } from '@/domain/mail'
 import { campaignMetrics, dailyLimitError, percent, sendingWindowError } from '@/domain/rules'
 import { plainPreview } from '@/domain/richText'
-import { DELIVERY_STATES, type Campaign } from '@/domain/schema'
+import { DAILY_LIMIT_MAX, DELIVERY_STATES, type Campaign } from '@/domain/schema'
 import { formatDateTime, formatWhen } from '@/lib/format'
 import { StatusBadge } from '@/ui/Badge'
 import { Callout, clampPage, EmptyState, PAGE_SIZE, Pagination, ProgressBar, RichText, UnsubscribeFooter } from '@/ui/Bits'
@@ -269,7 +269,7 @@ export function SettingsTab({ campaign }: TabProps) {
           <Field label="Sending window starts">{(p) => <Input {...p} type="time" value={form.schedule.windowStart} onChange={(e) => setSchedule({ windowStart: e.target.value })} />}</Field>
           <Field label="Sending window ends">{(p) => <Input {...p} type="time" value={form.schedule.windowEnd} onChange={(e) => setSchedule({ windowEnd: e.target.value })} />}</Field>
           <Field label="Daily limit per identity" hint="A pacing control, not a deliverability guarantee.">
-            {(p) => <Input {...p} type="number" min={1} max={500} value={form.schedule.dailyLimit} onChange={(e) => setSchedule({ dailyLimit: Number(e.target.value) })} />}
+            {(p) => <Input {...p} type="number" min={1} max={DAILY_LIMIT_MAX} value={form.schedule.dailyLimit} onChange={(e) => setSchedule({ dailyLimit: Number(e.target.value) })} />}
           </Field>
           <Field label="Timezone" hint="Set under Settings → Sending and unsubscribe.">{(p) => <Input {...p} value={form.schedule.timezone} readOnly />}</Field>
         </fieldset>
