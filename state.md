@@ -1,6 +1,6 @@
 # Project state
 
-Status: frontend prototype exists on feature/frontend-prototype; backend and desktop are planned, not implemented.
+Status: backend foundation implemented on feature/backend-foundation under explicit 2026-10-05 authorisation. Frontend work belongs to the separate Fable worktree; desktop and live integration remain pending.
 
 ## Repository
 - Local: C:\Users\Tanzeel\Code and projects\Elevateo Mail
@@ -25,13 +25,13 @@ Private Connections can manage explicitly approved subdomains through a narrowly
 Hosting target: under A$15/month, excluding mailbox/provider/AI subscriptions, external verification and signing. Proposed 50 GB cloud file allowance and history/import limits remain subject to review; cost examples are conditional.
 
 ## Approval and launch decisions
-- Backend/desktop standards in .planning/BACKEND-STANDARDS.md are drafted, not approved. No backend execution.
+- Backend foundation implementation authorised explicitly on 2026-10-05, credentials last. Production/desktop standards and policy decisions remain open; the foundation uses conservative simulation defaults.
 - Review master plan sections individually: rolling 24-hour/per-recipient quota semantics; history, imports and storage; authentication/MFA and regions; one named self-hosted adapter and AMF identity; Google external OAuth and AI data-policy compliance; independent backup/key recovery and outage alerts.
 - Frontend STANDARDS section 3 private-helper amendment still needs confirmation.
 - Dependency maintenance: three moderate development-tool audit entries share one Vitest advisory. No production dependency entry was reported; upgrade and revalidation remain outstanding.
 - Deferred prototype review finding: some mutations bypass MailroomGateway. Route them through the API seam with pending/error/conflict handling during backend integration.
 
-## Next implementation sequence, after approval
+## Next live integration sequence, after release decisions
 1. Authentication and two-user isolation; one real Gmail connection and incremental sync.
 2. Durable sending ledger, quota reservation, consent/suppression, recovery and cloud scheduling.
 3. Resend and a named self-hosted adapter; controlled history imports.
@@ -39,3 +39,8 @@ Hosting target: under A$15/month, excluding mailbox/provider/AI subscriptions, e
 5. Scoped DNS changes only after record-level authorisation is proven; restore/load/security/Windows launch checks.
 
 Read docs/product-master-plan.md first, then docs/backend-blueprint.md. Research reports are evidence; older capacity scenarios do not override the pilot above.
+
+## Backend foundation handover (2026-10-05)
+Interrupted CLI backend files were preserved and extended. No frontend source or Fable worktree was changed. See docs/backend-foundation.md, code-reviews.md and output/backend-agent-result.md for contracts, verification, review dispositions and credentials-last gates. Real sending, DNS writes, deployment and pushing remain disabled.
+
+Backend completion verification (2026-10-05): final Docker types/lint/typecheck/dry-run bundle and 24 tests passed. Twelve adversarial/design defects fixed. Task-owned Docker image/cache removed; persistent volumes retained. See docs/validation/2026-10-05-backend.md. Committed implementation retains disabled real sending, DNS and deployment; original CLI artifacts remain uncommitted.

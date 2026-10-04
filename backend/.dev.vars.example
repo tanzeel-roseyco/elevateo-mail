@@ -1,0 +1,4 @@
+# Fake development only. Never put real keys in this file.
+PROVIDER_MODE=fake
+LIVE_SENDING=disabled
+DISPATCH_PAUSED=true

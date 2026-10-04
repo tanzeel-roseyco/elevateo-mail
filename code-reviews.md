@@ -127,3 +127,34 @@ Scope: six branding changes only, plus master plan/blueprint/standards/research 
 Fresh verification: Docker lint, typecheck, 101 unit/component tests, production build, and Playwright 27 passed / one desktop-only test skipped on mobile. Domain coverage 99.69% lines / 98.68% branches; initial JS 176.72 KB gzip. Desktop overview and mobile drawer screenshots inspected: correct branding and no visible clipping. Existing draft/appearance persistence journeys pass; storage keys remain unchanged.
 
 Dependency audit separately found three moderate development-tool entries representing one Vitest advisory, not three new source defects. Upgrade requires a supported-major migration and is tracked separately; no production dependency entry was reported. [Evidence, advisory and test limits](docs/validation/2026-10-04.md).
+
+## 2026-10-05 — Backend foundation
+
+Three adversarial reviewers used the full project rubric, with a dedicated design reviewer. Assignments below are bounded slices; repeated exposure is included in density, rather than presented as unique coverage. Linters handled formatting. No frontend code was changed.
+
+| Assignment | Reviewed lines | Confirmed defects | Defects/1,000 lines |
+|---|---:|---:|---:|
+| Ledger and core boundaries | 123 | 1 | 8.13 |
+| Gmail/Resend/HTTP provider contracts | 100 | 2 | 20.00 |
+| Events and owner-scoped resources | 152 | 2 | 13.16 |
+| Worker/queue and durable fake provider | 129 | 2 | 15.50 |
+| Schema, pause controls and durable receipt design | 121 | 1 | 8.26 |
+| Recipient/config/AI/DNS policies | 136 | 2 | 14.71 |
+| Corrected boundaries and ledger/provider tests | 135 | 0 | 0 |
+| Corrected resources/worker/migration and API/event tests | 163 | 0 | 0 |
+| AI route, recovery, enrichment, pilot cap and policy/recovery tests | 184 | 1 | 5.43 |
+| Corrected policies | 86 | 0 | 0 |
+| Docker/package/config/fixture and recovery tests | 133 | 1 | 7.52 |
+| Permission tests and fixture/recovery recheck | 102 | 0 | 0 |
+| Final persistence and trigger parser fixture | 52 | 0 | 0 |
+| HTTP-to-queue workflow test | 41 | 0 | 0 |
+
+Total review exposure: **1,657 lines, 12 confirmed defects, 7.24 defects/1,000 lines; all 12 fixed**. This is a scoped backend review, not a re-certification of the frontend or proof of production readiness.
+
+Fixed findings: JSON media-type validation; folded Gmail UTF-8 MIME headers; malformed UTF-8 provider responses; campaign retry returning stale state; concurrent mailbox creation conflicts; relay ignoring database pause; revoked approvals starving later queue pages; missing pause row failing open; weak AI IDs/hash validation; DNS policy rejecting DKIM underscores; inadequate pause test observation; fixture leaking workerd on initialization failure. Docker also exposed tooling API/date mismatch and incomplete migration parsing; these were corrected and are excluded from adversarial defect counts.
+
+Coverage checklist: owner/session/input boundaries; mailbox/user caps and stable identities; atomic all-path quota and exact approvals; current consent/suppression/permissions; ambiguous acceptance and durable receipts; signed event replay/conflicts and unsubscribe; paginated plaintext messages; AI selection/draft/send separation; protected DNS preview; disabled enrichment; migrations/restore/pause; relay/queue fairness; provider MIME/limits/errors; typed config, dependency locks, Docker checks and happy/failure tests. All reviewed within the foundation scope. Live OAuth, sync, alias governance, real webhooks, distributed broker behavior and frontend integration remain separately documented gates.
+
+Design simulations (local, because no Obsidian connection is available): at 100 pilot mailboxes/3,000 daily recipients, compare one D1 transactional ledger with Redis/distributed counters: retain D1 and fail closed, accepting serialization until measured contention justifies change. Compare reservation expiry with ambiguity retention: unknown remains reserved indefinitely to prevent duplicate sends; operator reconciliation is required. Compare 100-row due scans with revoked approvals: cancel invalid approvals so the next scan progresses. Compare same-account snapshots with independent backup: local restore proves schema/state recovery only, not outage independence. Compare rolling 24-hour recipient counting with calendar/message counting: retain conservative fixed 30-recipient configuration and document final live-policy approval. No Obsidian simulation, production load measurement or cost guarantee is claimed.
+
+Final checks and Docker cleanup evidence: [backend validation](docs/validation/2026-10-05-backend.md). New tests exercise the actual Worker handlers and real local D1; cloud queue delivery and browser/native QA are outside this backend-only task.

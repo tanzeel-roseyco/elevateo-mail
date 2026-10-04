@@ -14,7 +14,7 @@ Cloud scheduling keeps approved campaigns running while the PC is off. Local Cod
 - [Backend blueprint](docs/backend-blueprint.md): data ownership, API boundaries, failure handling and rollout.
 - [Efficiency plan](docs/efficiency-plan.md): resource/cost controls and measurable performance targets.
 - [Connections contracts](docs/connections/README.md): provider capabilities, AI permissions and approved-subdomain DNS.
-- [Draft backend standards](.planning/BACKEND-STANDARDS.md): approval required before backend/desktop execution.
+- [Draft backend standards](.planning/BACKEND-STANDARDS.md): backend foundation authorised on 2026-10-05; production and desktop decisions remain open.
 - [Research index](docs/research/2026-10-04/README.md): six initial and ten follow-up assignments, evidence and limitations.
 
 ## Current prototype and its limits
@@ -67,3 +67,8 @@ See the master plan's review table rather than reopening already confirmed user/
 - [C4 diagrams](https://c4model.com/introduction)
 
 Capabilities, policies and prices were researched for planning and must be rechecked at integration. Separate domains reduce some reputation coupling but cannot guarantee isolation.
+
+## Backend foundation (2026-10-05)
+The credential-free backend is implemented in backend/. Canonical contracts, conservative quota semantics, secure setup, restore procedure and remaining integration work are in [backend-foundation.md](docs/backend-foundation.md). The browser prototype remains separate; no live provider or DNS operation is enabled.
+
+Backend completion verification (2026-10-05): final Docker types/lint/typecheck/dry-run bundle and 24 tests passed. Twelve adversarial/design defects fixed. Task-owned Docker image/cache removed; persistent volumes retained. See docs/validation/2026-10-05-backend.md. Committed implementation retains disabled real sending, DNS and deployment; original CLI artifacts remain uncommitted.

@@ -2,11 +2,11 @@
 
 A Gmail-style Windows inbox and consent-based campaign application, planned for ten independent users. The current browser prototype demonstrates a unified inbox, floating composer, campaigns, contacts and settings using nine fictional sender identities.
 
-This repository currently contains a **frontend-only interactive prototype**. There is no backend. All data is fictional and lives in the browser; sending, scheduling, and domain verification are simulated and labelled as such in the UI. Nothing here connects to Resend, Gmail, or DNS.
+This repository contains the frontend prototype and a credential-free backend foundation in `backend/`. The frontend still uses fictional browser data. Backend dispatch is simulated; live sending, DNS writes and production deployment remain disabled. See [backend setup and contracts](docs/backend-foundation.md).
 
 ## Current state
 
-- Product planning: [master plan](docs/product-master-plan.md), [backend blueprint](docs/backend-blueprint.md), [efficiency plan](docs/efficiency-plan.md), [draft standards](.planning/BACKEND-STANDARDS.md) and [research synthesis](docs/research/2026-10-04/README.md) completed as proposals. Six initial and ten follow-up research assignments are complete; the ten ran in waves of up to three children. No backend implementation approval is recorded.
+- Product planning: [master plan](docs/product-master-plan.md), [backend blueprint](docs/backend-blueprint.md), [efficiency plan](docs/efficiency-plan.md), [draft standards](.planning/BACKEND-STANDARDS.md) and [research synthesis](docs/research/2026-10-04/README.md) completed as proposals. Six initial and ten follow-up research assignments are complete; the ten ran in waves of up to three children. Backend foundation implementation was explicitly authorised on 2026-10-05; production and desktop decisions remain open.
 - Latest requirements: ten private users across Google organisations/personal Gmail, up to ten connected mailboxes each (100 total); Resend opted-in campaigns; maximum 30 outgoing emails per connected mailbox per day. Effective pilot ceiling: 300/user/day and 3,000 total/day. The earlier 600/user/day figure is a later expansion scenario. Aliases share quota; rolling-window/per-recipient counting is proposed. Private Connections will support selected-mailbox AI read/draft access, separately enabled sending, and reviewed DNS changes on explicitly approved subdomains. Preserve company root MX.
 - Repository renamed: local directory `C:\Users\Tanzeel\Code and projects\Elevateo Mail`; private remote [tanzeel-roseyco/elevateo-mail](https://github.com/tanzeel-roseyco/elevateo-mail). Product branding changed; existing browser-storage keys are intentionally preserved.
 - Proposed stack: existing React + Tauri desktop, Workers/D1/R2/Queues cloud backend, local Codex and restricted Claude fallback. Under A$15 hosting is conditional on measured mailbox/history allowances; external Google approval and AI data-policy review remain launch gates.
@@ -15,7 +15,8 @@ This repository currently contains a **frontend-only interactive prototype**. Th
 - Fresh visual QA: rendered desktop overview and mobile drawer show Elevateo Mail without branding clipping; full browser journeys passed. No native Windows desktop shell exists yet.
 - Adversarial review: historical prototype 57 defects, 56 fixed, one deferred; this rename zero defects across 168 reviewed lines. Four planning findings have explicit dispositions in `code-reviews.md`. Dependency audit separately reports three moderate development-tool entries for one Vitest advisory; upgrade remains outstanding.
 - Known deviation: star, archive, draft, settings, contact, and campaign edits write to the store directly instead of going through `MailroomGateway` (deferred review finding; awaiting a decision).
-- Not started: backend, installed desktop host, local AI/MCP bridge, real Gmail/Resend/self-hosted integration, DNS broker, authentication, deployment. The new limits and permissions are documented, not implemented in the mock app.
+- Backend foundation implemented on `feature/backend-foundation`: owner-scoped API and D1 migrations, hashed sessions, durable outbox/quota, fake provider, dormant Gmail/Resend adapters, signed fake events, consent/suppression, AI read/draft scope and manual DNS policy. [Implementation and limitations](docs/backend-foundation.md). Frontend gateway integration, real authentication/OAuth, inbox sync, desktop/CLI bridge and production deployment remain outstanding.
+- Backend verification on 2026-10-05: Docker lint, strict typecheck, dry-run Worker bundle and 24 unit/integration/workflow tests pass. Adversarial/design reviews found 12 defects, all fixed; [validation and cleanup](docs/validation/2026-10-05-backend.md). Live sending, DNS and deployment stay disabled.
 
 ## Stack
 
@@ -40,6 +41,15 @@ docker run --rm elevateo-mail-check          # lint, typecheck, unit, build, e2e
 ```
 
 Individual scripts: `npm run lint`, `typecheck`, `test`, `build`, `e2e`, or `check` for all of them.
+
+Backend checks (no credentials; all commands run inside Docker):
+
+```bash
+docker build -t elevateo-mail-backend-check -f backend/Dockerfile .
+docker run --rm elevateo-mail-backend-check
+```
+
+Remove the task-owned image and build cache after checks. Backend dependencies and their justification are documented separately; root frontend dependencies are unchanged.
 
 ## Deploy
 
