@@ -54,7 +54,7 @@ export function Sidebar({ compact = false, onNavigate }: { compact?: boolean; on
         <span aria-hidden className="flex size-7 items-center justify-center rounded-lg bg-accent text-accent-fg">
           <Mail className="size-4" />
         </span>
-        <span className={cx('truncate text-[15px] font-semibold tracking-tight', compact && 'sr-only lg:not-sr-only')}>Outreach Mailroom</span>
+        <span className={cx('truncate text-[15px] font-semibold tracking-tight', compact && 'sr-only lg:not-sr-only')}>Elevateo Mail</span>
       </div>
       <button
         type="button"

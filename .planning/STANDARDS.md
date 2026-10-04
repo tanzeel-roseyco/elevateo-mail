@@ -1,6 +1,6 @@
 # Engineering standards — APPROVED 2026-10-01 (frontend prototype)
 
-Scope: frontend-only interactive prototype of the Outreach Mailroom dashboard. No backend, no real
+Scope: frontend-only interactive prototype of the Elevateo Mail dashboard (formerly Outreach Mailroom). No backend, no real
 sending, no Resend calls, no DNS changes. Each section was approved by the user on 2026-10-01, with Tailwind chosen for styling. Backend standards will be drafted separately when backend work is scoped.
 
 ## 1. Language and framework versions

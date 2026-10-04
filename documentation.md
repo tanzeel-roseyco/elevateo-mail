@@ -1,56 +1,69 @@
 # Product and design context
 
-## Confirmed direction
-A Gmail-style workspace for outreach to explicitly opted-in recipients, built on **Resend for sending and receiving** with our own dashboard. Gmail and Google Workspace are not connected.
+## Confirmed product
+Elevateo Mail is a Windows personal inbox and consent-based campaign application. Ten independent users can connect up to ten mailboxes each across separate Google Workspace organisations or personal Gmail. Users remain private from each other.
 
-- Audience: approximately 800–900 opted-in CEO contacts.
-- Nine sender identities in one unified inbox: `lachlan.macdonald`, `lachlan`, `l.macdonald` at each of `boltloop.co`, `flooda.co`, `elevateoco.com`.
-- Outgoing campaign emails require an unsubscribe link.
-- Current scope: frontend prototype only, with realistic mock data and simulated sending.
+Each connected mailbox may send at most 30 emails per day through the app. This permits at most 300 per user and 3,000 across the pilot. Rolling 24-hour counting by recipient delivery, including CC/BCC, is proposed; aliases, reconnects and different sending routes must share the same mailbox quota. The app cannot limit messages sent elsewhere.
 
-## Frontend prototype (built)
+Existing inboxes need real Gmail sync and notifications. Resend is suitable for eligible opted-in campaigns on owned verified domains, not a replacement for Gmail mailbox hosting. Named self-hosted providers follow through explicit capabilities; “any provider” is not an implemented promise. Users can add mailboxes, import recipients and import history.
 
-### Behaviour rules implemented in `src/domain`
-- **Suppression**: a contact can receive campaign email only if consent is `opted_in` and subscription is `subscribed`. Unsubscribed, bounced, suppressed, and consent-unconfirmed contacts are excluded when a campaign is created and re-checked when a batch is dispatched. A campaign-linked message to such a contact, or to an address with no contact record, is blocked; an ordinary 1:1 message shows a warning instead. A reply inside a campaign conversation counts as ordinary mail.
-- **Campaign times** are wall-clock times in the sending timezone from Settings, whatever timezone the browser is in.
-- **Replies** default to the identity that received the conversation. Reply-all never copies our own nine addresses.
-- **Banners** are per identity and opt-in. Changing the sender in the composer resets the banner to that identity's default, so one brand's banner is never carried onto another brand's mail.
-- **"Delivered"** always means accepted by the recipient's server. The UI never presents it as read or opened; there is no open tracking.
-- **Folders**: a thread is stored in one of inbox, sent, archive, spam, trash. Starred, Sent (any thread we wrote in), and Drafts are derived views.
-- **Message bodies** use a small markdown subset (bold, italic, links, lists) rendered as React nodes. Raw HTML is never rendered.
-- **Appearance**: accent text is adjusted to keep 4.5:1 contrast; sidebar/top-bar opacity over a custom background is limited to 70–100% for the same reason.
+Cloud scheduling keeps approved campaigns running while the PC is off. Local Codex is the primary AI provider; restricted Claude fallback uses each user's own account. Read selected mailboxes and draft are defaults; sending requires separate permission and approval. Hunter is optional personalisation. AMF needs identification. Provider keys belong to their user.
 
-### State
-- Navigation and filters live in the URL.
-- Mock entities live in a Zustand store persisted to `localStorage` under a versioned key and validated with zod on load. Unreadable state falls back to seed data with a visible notice.
-- Appearance preferences persist separately so resetting prototype data keeps the theme.
+## Canonical planning documents
+- [Product master plan](docs/product-master-plan.md): plain-English decisions, diagrams and section-specific review.
+- [Backend blueprint](docs/backend-blueprint.md): data ownership, API boundaries, failure handling and rollout.
+- [Efficiency plan](docs/efficiency-plan.md): resource/cost controls and measurable performance targets.
+- [Connections contracts](docs/connections/README.md): provider capabilities, AI permissions and approved-subdomain DNS.
+- [Draft backend standards](.planning/BACKEND-STANDARDS.md): approval required before backend/desktop execution.
+- [Research index](docs/research/2026-10-04/README.md): six initial and ten follow-up assignments, evidence and limitations.
 
-### Backend seam
-`src/data/ports.ts` defines `MailroomGateway`. `src/data/mockGateway.ts` implements it in the browser. See the README for the Resend mapping.
+## Current prototype and its limits
+The browser prototype has no real backend, provider integration, authentication, AI bridge or DNS access. Its 840 contacts, six campaigns and nine sender identities are fictional fixtures, not production capacity or permissions. Sending, scheduling, events and domain status are simulated.
 
-## Backend direction (not started, standards not yet drafted)
-A modular backend API and worker sharing domain logic, with durable storage. One authoritative owner for campaign scheduling. Requirements carried forward from initial planning:
+- Campaign recipients need recorded opt-in and subscribed status; rules recheck suppression at simulated dispatch. Ordinary replies currently show warnings instead of campaign blocks. Production must classify message purpose and cannot permit this path to bypass marketing suppression.
+- Campaign times use Settings' sending timezone. Replies default to the receiving identity; reply-all excludes our own addresses.
+- Banners are per identity and opt-in. Changing sender restores that identity's default.
+- Delivered means recipient-server acceptance, never read/opened. The backend must separately record provider acceptance and delivery evidence.
+- Single stored folder per thread is a prototype simplification; Gmail integration requires labels and provider identifiers.
+- Message bodies render a small markdown subset as React nodes. Real inbound HTML needs sanitisation and isolated display before rendering.
+- Navigation and filters use URL state. Validated Zustand/localStorage data and seed fallback are prototype-only, not server persistence or recovery.
+- Existing mailroom:data:v1 and mailroom:appearance:v1 keys remain unchanged after the product rename.
+- MailroomGateway is the backend seam; several direct store mutations are a documented deferred review finding. Move these with pending/error/conflict UI when integrating the API.
 
-- Record consent and enforce suppression at dispatch.
-- Track identity, recipient, campaign step, and attempt for every send.
-- Deduplicate webhook events and reconcile missed provider updates.
-- Define reply-stopping conditions and unsubscribe cancellation boundaries.
-- Treat provider timeouts as unknown outcomes; do not blindly retry non-idempotent sends.
-- Distinguish provider acceptance from delivery; never infer reading.
-- Protect credentials and enforce access control.
-- Sanitise inbound HTML before it reaches the client.
+## Backend direction, not implemented
+One modular backend and one authoritative sending scheduler. Durable database records own users, mailbox connections, consent, suppression, campaign state, send intents and audit events. A queue wakes workers; it is not the source of truth.
 
-## Open questions for the backend phase
-1. Single user or a small team? Authentication method?
-2. Consent evidence: what is stored per contact, and which jurisdictions apply?
-3. Follow-up rules: how many steps, and what stops a sequence (reply, unsubscribe, bounce)?
-4. Sending volume per identity per day, and warm-up expectations per domain.
-5. Hosting and budget (fleet-02 / Coolify is the assumed build host).
-6. Unsubscribe landing page: hosted by us on which domain?
+Reserve quota atomically before dispatch. Check ownership, permission, consent, suppression and approval at the final admission boundary. Deduplicate incoming events. Treat timeout after a send request as an unknown outcome until reconciled; do not promise exactly-once external delivery or blindly retry.
 
-## References
-- https://resend.com/docs
-- https://resend.com/legal/acceptable-use
-- https://c4model.com/introduction
+Bound sync, imports, search, retained bodies and attachments. Load message bodies when needed, keep local AI off until requested, and separate urgent inbox/send work from imports. All runtime inputs and provider events are untrusted. Keep credentials out of logs/client bundles and isolate each user on every read, write and object lookup.
 
-Provider capabilities and policies must be rechecked at integration time. Separate domains reduce risk but do not guarantee reputation isolation.
+## Hosting and performance
+Under A$15/month is the hosting target, excluding external email/AI subscriptions, Google verification and signing. Proposed 50 GB total cloud file storage including backups is not an agreed quota. Illustrative Workers/R2 base is A$10.47; a busy 100-mailbox, five-minute reconciliation scenario is about A$11.87 before push-driven work, retries, backup independence and other overages, using assumed FX/tax. These are estimates, not guarantees or measured benchmarks. See the efficiency plan for arithmetic and sources.
+
+A small health screen should expose stale sync, unknown sends, overdue work, auth errors, capacity and backup age. Reuse provider logs and bounded counters. Name an independent outage checker, alert destination, backup trust boundary, key-recovery owner and costs before launch.
+
+## Root MX incident and inbound routing
+The user's pasted CTO messages report accidental root MX replacement on boltloop.co, flooda.co and elevateoco.com, followed by restoration to Google. These messages are incident context, not independently verified DNS state or permission to modify infrastructure.
+
+Preserve company root MX. Gmail API access requires no MX change. MX priority is a preference among mail exchangers, not per-app routing or mail duplication. App-specific receiving can use a separately approved subdomain; in.elevateoco.com reportedly already has consumers and must not be repointed without checking ownership and dependencies. A campaign Reply-To on a subdomain does not capture mail addressed directly to a root-domain mailbox.
+
+Users requested DNS management for explicitly approved subdomains. The design uses a separate broker with exact record previews, explicit approval, server-side policy and audit. AI and the application must never receive unrestricted zone credentials. If provider credentials cannot enforce the required boundary, keep writes manual until the broker containment is established. Read-only status is the first stage.
+
+No DNS, AWS, Cloudflare or API-key changes were made. Recoverability of historical mail has not been investigated. The reported USD10 OpenAI project cap is unverified context, not authority to create keys or a guaranteed spending control.
+
+## Remaining section-specific decisions
+1. Quotas: approve rolling 24-hour/per-recipient counting, including manual mail and CC/BCC.
+2. Data: retained history, import batches, attachment storage, export/deletion and regions.
+3. Identity: authentication/MFA, external Google approval path and permitted Gmail-to-AI data use.
+4. Connections: identify AMF and the first self-hosted server/API; review provider capability contracts.
+5. Operations: independent backups/key recovery, outage destination, consent evidence and recipient jurisdictions.
+
+See the master plan's review table rather than reopening already confirmed user/mailbox counts.
+
+## Primary references
+- [Gmail sync](https://developers.google.com/workspace/gmail/api/guides/sync)
+- [Resend documentation](https://resend.com/docs) and [acceptable use](https://resend.com/legal/acceptable-use)
+- [SES receiving setup](https://docs.aws.amazon.com/ses/latest/dg/receiving-email-setting-up.html)
+- [C4 diagrams](https://c4model.com/introduction)
+
+Capabilities, policies and prices were researched for planning and must be rechecked at integration. Separate domains reduce some reputation coupling but cannot guarantee isolation.

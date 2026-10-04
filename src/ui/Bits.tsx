@@ -10,7 +10,7 @@ import { IconButton } from './Button'
 
 export function usePageTitle(title: string): void {
   useEffect(() => {
-    document.title = `${title} · Outreach Mailroom`
+    document.title = `${title} · Elevateo Mail`
   }, [title])
 }
 
