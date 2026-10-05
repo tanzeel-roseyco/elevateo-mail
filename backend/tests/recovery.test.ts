@@ -52,7 +52,10 @@ test('relay respects database pause and cancelled blocked page cannot starve lat
     let acknowledgements = 0
     const messages: Message<unknown>[] = jobs.results.map(body => ({ body, id: body.id, timestamp: new Date(now), attempts: 1,
       ack: () => { acknowledgements++ }, retry: () => { throw new Error('revoked approval must not retry') } }))
-    await worker.queue({ queue: 'test-send', messages, metadata: { metrics: { backlogCount: 104, backlogBytes: 0 } }, ackAll() {}, retryAll() {} }, f.env)
+    for (let offset = 0; offset < messages.length; offset += 10) {
+      await worker.queue({ queue: 'test-send', messages: messages.slice(offset, offset + 10),
+        metadata: { metrics: { backlogCount: 104, backlogBytes: 0 } }, ackAll() {}, retryAll() {} }, f.env)
+    }
     assert.equal(acknowledgements, 100)
     assert.equal((await f.env.DB.prepare("SELECT count(*) AS n FROM send_intents WHERE status='pending'").first())?.n, 4)
     await f.env.DB.prepare('UPDATE runtime_controls SET dispatch_paused=1').run()

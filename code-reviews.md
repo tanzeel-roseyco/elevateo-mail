@@ -158,3 +158,24 @@ Coverage checklist: owner/session/input boundaries; mailbox/user caps and stable
 Design simulations (local, because no Obsidian connection is available): at 100 pilot mailboxes/3,000 daily recipients, compare one D1 transactional ledger with Redis/distributed counters: retain D1 and fail closed, accepting serialization until measured contention justifies change. Compare reservation expiry with ambiguity retention: unknown remains reserved indefinitely to prevent duplicate sends; operator reconciliation is required. Compare 100-row due scans with revoked approvals: cancel invalid approvals so the next scan progresses. Compare same-account snapshots with independent backup: local restore proves schema/state recovery only, not outage independence. Compare rolling 24-hour recipient counting with calendar/message counting: retain conservative fixed 30-recipient configuration and document final live-policy approval. No Obsidian simulation, production load measurement or cost guarantee is claimed.
 
 Final checks and Docker cleanup evidence: [backend validation](docs/validation/2026-10-05-backend.md). New tests exercise the actual Worker handlers and real local D1; cloud queue delivery and browser/native QA are outside this backend-only task.
+
+
+## 2026-10-05 - Credential-free HTTP integration milestone
+
+Full project rubric used by adversarial agents; source assignments <=200 lines and each review agent's cumulative exposure <=400. Dedicated design review used concrete state/throughput simulations. Linters own formatting. Coverage includes Worker HTTP/scheduler/queue entry points, digest validation, migrations/admission, authoritative quota/identities, DTOs/client, permissions, offline fixture/session lifecycle and operational regression tests.
+
+| Review assignment | Lines (including rechecks) | Defects | Defects/1,000 lines |
+|---|---:|---:|---:|
+| Ledger/envelope/migrations/lifecycle and correction recheck | 358 | 1 | 2.79 |
+| Worker/quota/runner/resources/contracts/client | 366 | 3 | 8.20 |
+| Design, offline migration atomicity and HTTP journey | 331 | 2 | 6.04 |
+| Remaining resources, migration helper, AI, fixture and admission regressions | 188 | 0 | 0 |
+| Final operational permission/suppression/pause/cancel and strict-type corrections | 85 | 0 | 0 |
+
+Total exposure **1,328 lines; six source defects; density 4.52/KLOC**, all fixed: independent envelope digest, database pause before immediate enqueue, explicit deferred enqueue result, concurrent mailbox permission update, atomic local migration/marker, and HTTP fixture setup cleanup. One documentation mismatch (disconnected records consuming active slots) also corrected; excluded from source density. Repeated review is exposure, not unique coverage. Docker-discovered tooling/test issues are reported in validation separately.
+
+Design simulations (local tables; no Obsidian connection is available): ten mailboxes times30 gives300 owner capacity. Disconnect/replacement preserves owner charges, so a fully charged owner remains at zero. Unknown20 + accepted10 leaves zero; when accepted10 ages, remaining becomes10 while unknown20 stays held. A20-row reconciliation budget sweeps100 due unknowns in five ticks; five-minute backoff and ten attempts bound repeated checks, after which investigation is required. Favor positive receipt recovery over time-based release; favor one indexed D1 ledger over additional distributed state until real contention warrants complexity. Lost create responses reuse the same key; lost approval responses inspect saved state. No production latency, cost or readiness claim.
+
+Frontend worktree and UI were not changed or visually revalidated. Fable gateway wiring and actual application QA remain its owner's handoff. See integration contract and fixture instructions.
+
+Final milestone checks, download recovery and scoped cleanup: [integration validation](docs/validation/2026-10-05-integration.md).

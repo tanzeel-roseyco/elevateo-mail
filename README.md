@@ -2,7 +2,7 @@
 
 A Gmail-style Windows inbox and consent-based campaign application, planned for ten independent users. The current browser prototype demonstrates a unified inbox, floating composer, campaigns, contacts and settings using nine fictional sender identities.
 
-This repository contains the frontend prototype and a credential-free backend foundation in `backend/`. The frontend still uses fictional browser data. Backend dispatch is simulated; live sending, DNS writes and production deployment remain disabled. See [backend setup and contracts](docs/backend-foundation.md).
+This repository contains the frontend prototype and a credential-free HTTP backend in `backend/`. The frontend still uses fictional browser data. Backend dispatch is simulated; live sending, DNS writes and production deployment remain disabled. See [the integration contract](docs/contracts/integration-v1.md) and [Docker fixtures](docs/integration-fixtures.md).
 
 ## Current state
 
@@ -15,8 +15,8 @@ This repository contains the frontend prototype and a credential-free backend fo
 - Fresh visual QA: rendered desktop overview and mobile drawer show Elevateo Mail without branding clipping; full browser journeys passed. No native Windows desktop shell exists yet.
 - Adversarial review: historical prototype 57 defects, 56 fixed, one deferred; this rename zero defects across 168 reviewed lines. Four planning findings have explicit dispositions in `code-reviews.md`. Dependency audit separately reports three moderate development-tool entries for one Vitest advisory; upgrade remains outstanding.
 - Known deviation: star, archive, draft, settings, contact, and campaign edits write to the store directly instead of going through `MailroomGateway` (deferred review finding; awaiting a decision).
-- Backend foundation implemented on `feature/backend-foundation`: owner-scoped API and D1 migrations, hashed sessions, durable outbox/quota, fake provider, dormant Gmail/Resend adapters, signed fake events, consent/suppression, AI read/draft scope and manual DNS policy. [Implementation and limitations](docs/backend-foundation.md). Frontend gateway integration, real authentication/OAuth, inbox sync, desktop/CLI bridge and production deployment remain outstanding.
-- Backend verification on 2026-10-05: Docker lint, strict typecheck, dry-run Worker bundle and 24 unit/integration/workflow tests pass. Adversarial/design reviews found 12 defects, all fixed; [validation and cleanup](docs/validation/2026-10-05-backend.md). Live sending, DNS and deployment stay disabled.
+- Backend first journey implemented on `feature/backend-foundation`: real HTTP capability discovery, stable mailbox inventory/permissions, paginated summaries/lazy plaintext bodies, authoritative quota and immutable create/approve/inspect/cancel. Docker fixtures use local persisted D1 and a durable fake provider. Separate AI read/draft flags, conservative unknown recovery and bounded queue/reconciliation are implemented. [Implementation and limitations](docs/backend-foundation.md). Fable gateway/UI wiring, real authentication/OAuth, inbox sync, desktop/CLI bridge and production deployment remain outstanding.
+- Latest backend verification on 2026-10-05: Docker generated types, lint, strict typecheck, dry-run Worker bundle, all 38 tests and the HTTP demo passed. Six integration review defects fixed; [validation and cleanup](docs/validation/2026-10-05-integration.md). The integrated milestone uses local D1 and a durable fake provider. Fable UI wiring remains separate; real sending, DNS and deployment stay disabled.
 
 ## Stack
 

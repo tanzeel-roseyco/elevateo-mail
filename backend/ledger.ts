@@ -5,7 +5,8 @@ import { envelopeSchema, type SendEnvelope, type SendProvider } from './provider
 // AIDEV-NOTE: D1 triggers own atomic admission; the immutable intent row is also the durable outbox.
 export interface IntentRow {
   owner: string; id: string; mailbox_id: string; revision: string; envelope: string;
-  status: string; scheduled_at: number; dispatch_at: number | null; updated_at: number
+  status: string; scheduled_at: number; dispatch_at: number | null; updated_at: number;
+  recipients: string; recipient_count: number; kind: string; envelope_hash: string | null
 }
 export class SendLedger {
   constructor(private readonly db: D1Database) {}
@@ -24,10 +25,11 @@ export class SendLedger {
       to: input.to, cc: input.cc, bcc: input.bcc, subject: input.subject, body: input.body, kind: input.kind, revision }
     envelopeSchema.parse(envelope)
     await this.db.prepare(`INSERT INTO send_intents
-      (owner,id,mailbox_id,idempotency_key,revision,envelope,recipients,recipient_count,kind,campaign_id,scheduled_at,updated_at)
-      VALUES(?,?,?,?,?,?,?,?,?,?,?,?) ON CONFLICT(owner,idempotency_key) DO NOTHING`)
+      (owner,id,mailbox_id,idempotency_key,revision,envelope,recipients,recipient_count,kind,campaign_id,scheduled_at,updated_at,envelope_hash)
+      VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?) ON CONFLICT(owner,idempotency_key) DO NOTHING`)
       .bind(owner, id, input.mailboxId, input.idempotencyKey, revision, JSON.stringify(envelope),
-        JSON.stringify(recipients), recipientCount(input), input.kind, input.campaignId ?? null, scheduledAt, now).run()
+        JSON.stringify(recipients), recipientCount(input), input.kind, input.campaignId ?? null, scheduledAt, now,
+        await sha256(JSON.stringify(envelope))).run()
     const saved = await this.db.prepare('SELECT id,revision,status FROM send_intents WHERE owner=? AND idempotency_key=?')
       .bind(owner, input.idempotencyKey).first<{ id: string; revision: string; status: string }>()
     if (!saved || saved.revision !== revision) throw new ApiError('idempotency_conflict', 409)
@@ -50,33 +52,71 @@ export class SendLedger {
       WHERE owner=? AND id=? AND status IN ('draft','pending')`).bind(now, owner, id).run()
     if (!result.meta.changes) throw new ApiError('already_in_flight_or_missing', 409)
   }
+  private async envelope(row: IntentRow): Promise<SendEnvelope> {
+    // AIDEV-NOTE: The independent immutable digest detects valid-shaped corruption; legacy undigested rows fail closed.
+    if (!row.envelope_hash || await sha256(row.envelope) !== row.envelope_hash) throw new Error('envelope_digest_mismatch')
+    const envelope = envelopeSchema.parse(JSON.parse(row.envelope) as unknown)
+    if (envelope.owner !== row.owner || envelope.id !== row.id || envelope.mailboxId !== row.mailbox_id ||
+      envelope.revision !== row.revision || envelope.kind !== row.kind ||
+      JSON.stringify([...envelope.to, ...envelope.cc, ...envelope.bcc]) !== row.recipients ||
+      envelope.to.length + envelope.cc.length + envelope.bcc.length !== row.recipient_count) {
+      throw new Error('envelope_identity_mismatch')
+    }
+    return envelope
+  }
   async dispatch(owner: string, id: string, provider: SendProvider, now: number): Promise<void> {
+    const pending = await this.db.prepare("SELECT * FROM send_intents WHERE owner=? AND id=? AND status='pending'")
+      .bind(owner, id).first<IntentRow>()
+    if (!pending) return
+    let envelope: SendEnvelope
+    try { envelope = await this.envelope(pending) }
+    catch {
+      // AIDEV-NOTE: Invalid unclaimed data proves no call occurred; invalid unknown data must retain its reservation.
+      await this.db.prepare(`UPDATE send_intents SET status='rejected',error_code='invalid_envelope',correlation_id=?,updated_at=?
+        WHERE owner=? AND id=? AND status='pending'`).bind(crypto.randomUUID(), now, owner, id).run()
+      return
+    }
     const claim = await this.db.prepare(`UPDATE send_intents SET status='dispatching',dispatch_at=?,updated_at=?,attempts=attempts+1
       WHERE owner=? AND id=? AND status='pending' AND scheduled_at<=? RETURNING *`).bind(now, now, owner, id, now)
       .first<IntentRow>()
     if (!claim) return
     // AIDEV-NOTE: Once claimed, cancellation cannot recall an external call. A crashed claim becomes unknown, never pending.
     let outcome: Awaited<ReturnType<SendProvider['send']>>
-    try { outcome = await provider.send(envelopeSchema.parse(JSON.parse(claim.envelope) as unknown)) }
+    try { outcome = await provider.send(envelope) }
     catch { outcome = { status: 'unknown' } }
-    await this.db.prepare(`UPDATE send_intents SET status=?,provider_id=?,error_code=?,updated_at=?
+    await this.db.prepare(`UPDATE send_intents SET status=?,provider_id=?,error_code=?,correlation_id=?,updated_at=?,reconcile_at=?
       WHERE owner=? AND id=? AND status IN ('dispatching','unknown') AND dispatch_at=?`)
       .bind(outcome.status, outcome.status === 'accepted' ? outcome.providerId : null,
-        outcome.status === 'rejected' ? outcome.code : null, now, owner, id, claim.dispatch_at).run()
+        outcome.status === 'rejected' ? 'provider_rejected' : outcome.status === 'unknown' ? 'provider_outcome_unknown' : null,
+        outcome.status === 'accepted' ? null : crypto.randomUUID(), now, now, owner, id, claim.dispatch_at).run()
   }
   async reconcile(owner: string, id: string, provider: SendProvider, now: number): Promise<void> {
     const row = await this.db.prepare("SELECT * FROM send_intents WHERE owner=? AND id=? AND status='unknown'")
       .bind(owner, id).first<IntentRow>()
     if (!row) return
-    const outcome = await provider.reconcile(envelopeSchema.parse(JSON.parse(row.envelope) as unknown))
+    let outcome: Awaited<ReturnType<SendProvider['reconcile']>> = { status: 'unknown' }
+    let code = 'reconciliation_unknown'
+    let envelope: SendEnvelope | undefined
+    try { envelope = await this.envelope(row) }
+    catch { code = 'invalid_envelope' }
+    if (envelope) {
+      try { outcome = await provider.reconcile(envelope) }
+      catch { code = 'reconciliation_unavailable' }
+    }
     // Absence of a provider receipt is not proof of rejection. Only positive acceptance releases uncertainty.
-    if (outcome.status === 'accepted') await this.db.prepare(`UPDATE send_intents SET status='accepted',provider_id=?,updated_at=?
+    if (outcome.status === 'accepted') await this.db.prepare(`UPDATE send_intents SET status='accepted',provider_id=?,updated_at=?,error_code=NULL
       WHERE owner=? AND id=? AND status='unknown'`).bind(outcome.providerId, now, owner, id).run()
+    else await this.db.prepare(`UPDATE send_intents SET error_code=?,correlation_id=COALESCE(correlation_id,?),
+      reconcile_attempts=reconcile_attempts+1,reconcile_at=? WHERE owner=? AND id=? AND status='unknown'`)
+      .bind(code, crypto.randomUUID(), now + 300_000, owner, id).run()
   }
   async recover(now: number): Promise<void> {
-    await this.db.prepare(`UPDATE send_intents SET status='unknown',updated_at=?
-      WHERE status='dispatching' AND updated_at<?`).bind(now, now - 60_000).run()
+    await this.db.prepare(`UPDATE send_intents SET status='unknown',updated_at=?,error_code='dispatch_interrupted',
+      correlation_id=COALESCE(correlation_id,?),reconcile_at=? WHERE rowid IN
+      (SELECT rowid FROM send_intents WHERE status='dispatching' AND updated_at<? ORDER BY updated_at,id LIMIT 100)`)
+      .bind(now, crypto.randomUUID(), now, now - 60_000).run()
     await this.db.prepare(`UPDATE send_intents SET status='cancelled',updated_at=?
-      WHERE status='pending' AND approval_expires_at<=?`).bind(now, now).run()
+      WHERE rowid IN (SELECT rowid FROM send_intents WHERE status='pending' AND approval_expires_at<=?
+      ORDER BY approval_expires_at,id LIMIT 100)`).bind(now, now).run()
   }
 }

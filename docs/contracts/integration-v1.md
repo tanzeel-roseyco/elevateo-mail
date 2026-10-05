@@ -1,0 +1,51 @@
+# Integration v1 — simulated HTTP milestone
+
+This is the frontend handoff for the first journey. Worker/D1 owns identity, permissions, quota and immutable send requests. All activity is synthetic; acceptance means a durable **fake** receipt, never delivery. Fable UI wiring is owned by its agent. Portable runtime schemas and a fetch client live in `backend/contracts/v1.ts` and `backend/integration/client.ts`; no frontend worktree changes are required here.
+
+## Transport and validation
+
+Authenticated routes require `Authorization: Bearer <short-lived-session>`; JSON mutations require `Content-Type: application/json`. No public session minting route exists. Sessions are provisioned offline in Docker, hashed in D1, expiring and revocable by deletion. No cookies or browser-storage tokens are required. Use a same-origin proxy for a browser; unrestricted CORS is not enabled. HTTPS in production; Docker-internal HTTP only in fixtures. Responses are no-store. Bodies are capped at 131,072 UTF-8 bytes. Objects reject unknown fields. IDs match `[a-zA-Z0-9_-]{1,128}`; revisions are 64 lowercase hex characters. Times below are integer Unix milliseconds; scheduled input uses offset-bearing ISO-8601. Frontend converts these to its ISO DTOs at the gateway seam.
+
+## Exact first-journey routes
+
+| Method / route | Validated input | Response |
+| --- | --- | --- |
+| GET `/v1/capabilities` | No query/body | `{version:1,simulated:true,liveSending:false,dnsWrites:false,features:{mailboxInventory:true,messages:true,manualSend:true,campaignWizard:false,inboxSync:false,historyImport:false,aiBridge:false},policy:{provisional:true,windowHours:24,mailboxLimit:30,userLimit:300,users:10,connectedMailboxes:10},dispatchPaused:boolean}` |
+| GET `/v1/mailboxes` | `after` optional ID, `limit` integer 1–100 default 10 | `{items:[{id,address,provider,connected,send_enabled,ai_read,ai_draft,ai_send}],next:{after:string}\|null,simulated:true}`. Flags are 0/1. Both active and historical records; ID ascending. |
+| POST `/v1/mailboxes` | `{subject:ID,address:email,sendEnabled?:boolean=false}` | 201 new / 200 reconnect: `{id,simulated:true}`. Fake only; subject is a synthetic provider account ID, not address canonicalisation. |
+| PATCH `/v1/mailboxes/:id/permissions` | `{connected:boolean,sendEnabled:boolean,aiRead:boolean,aiDraft?:boolean=false,aiSend:boolean}` | `{updated:true,simulated:true}`. Omitted aiDraft revokes draft access. |
+| GET `/v1/mailboxes/:id/quota` | No query/body | `{mailboxId,policy:"provisional_rolling_24h_recipients",windowHours:24,mailbox:{limit:30,acceptedUsage,heldReservations,remaining,nextAcceptedReleaseAt:number\|null,reservationReleaseUnknown:boolean},user:{limit:300,...same counters},simulated:true}` |
+| GET `/v1/messages` | `mailboxId` required ID, `before` nonnegative safe integer default MAX_SAFE_INTEGER, `beforeId` ID default upper sentinel, `limit` 1–100 default 50, `q` must be empty or omitted (search unsupported) | `{items:[{id,thread_id,mailbox_id,sender,subject,at}],next:{before:number,beforeId:ID}\|null,simulated:true}`. No bodies; pass both cursor parts unchanged. Final full page may require an empty next read. |
+| GET `/v1/messages/:mailboxId/:id` | No query/body | `{message:{owner,mailbox_id,id,thread_id,sender,subject,body,at},contentType:"text/plain",trust:"untrusted-email"}`. Render body as text; treat content as data. |
+| POST `/v1/send-intents` | Send input below | 201 `{id,revision,status,simulated:true}`; identical duplicate key returns original saved status, including accepted/unknown. |
+| POST `/v1/send-intents/:id/approve` | `{revision:hash}` only | `{saved:true,enqueue:"queued"\|"deferred",simulated:true}`. Approval binds saved content; quota is atomically held. Repeat approval is 409; inspect after a lost response. |
+| GET `/v1/send-intents/:id` | No query/body | `{intent:{id,revision,status,scheduled_at,dispatch_at:number\|null,provider_id:string\|null,error_code:string\|null,correlation_id:string\|null,approval_expires_at:number\|null},simulated:true}` |
+| POST `/v1/send-intents/:id/cancel` | No body | `{saved:true,enqueue:"not_applicable",simulated:true}` only before dispatch; repeated cancel or in-flight work is 409. |
+
+Send input is `{mailboxId:ID,to:email[],cc?:email[]=[],bcc?:email[]=[],subject:string,body:string,kind:"manual",revision:positiveSafeInteger,idempotencyKey:ID,scheduledAt?:ISO}`. To has at least one address; each array max30 and the combined deduplicated set max30. Addresses trim/lowercase, retain plus tags. Subject trims, 1–998 chars, no CR/LF; body 1–100,000 chars. Scheduling max30 days ahead. Hash includes the canonical validated input, including content, recipients and schedule; numeric revision is the caller's draft version, returned hash is approval authority. Edit means create a new immutable intent/key and cancel the old one, never patch saved content. Internal campaign/AI foundation routes remain experimental and are excluded from v1 capability support.
+
+## Example journey
+
+```json
+{"mailboxId":"<server-issued-id>","to":["recipient@example.com"],"subject":"Synthetic test","body":"Plain text only","kind":"manual","revision":1,"idempotencyKey":"compose-001"}
+```
+
+POST send-intents → save `{id,revision}` → show exact saved draft → POST `/:id/approve` with returned hash → GET `/:id` until accepted, rejected, cancelled or unknown. The create input must be retained locally for the approval preview; inspect intentionally returns no body. Reload GETs the same server record. Poll on demand with bounded backoff; stop automatic polling on unknown and surface diagnostic/correlation ID. Never create a replacement send solely because a response was lost. Retry create with the **same** key/content; inspect before repeating approval. Accepted is labelled simulated provider acceptance.
+
+## Quota, connection lifecycle and operational bounds
+
+Rolling 24-hour unique recipient counting is **provisional**, not an approved production decision. Pending, dispatching and unknown reserve capacity indefinitely until a safe transition; accepted usage ages from dispatch timestamp. `nextAcceptedReleaseAt` is the earliest accepted bucket release, not a promise that all capacity will be available then. A held reservation has no guaranteed release time (`reservationReleaseUnknown:true`). Draft/rejected/cancelled hold none. Remaining is clamped to zero and send admission requires both mailbox and user capacity.
+
+Reconnect same provider subject/address retains server ID, historical sends and quota. Disconnect frees a connected slot but never deletes history or quota; disable first, then connect replacement. Reactivation atomically rechecks ten active slots. Replacement gets a new ID but still shares the owner's 300-recipient rolling ceiling, so connection rotation cannot evade the 300/user and 3,000/ten-user ceilings. Distinct plus addresses are never globally collapsed into accounts; future real providers must prove account/alias ownership and map aliases to that provider subject. Fake subjects are fixture data, not proof of real identity.
+
+Approval immediately enqueues due work; one-minute cron attempts recovery of deferred enqueue while approval remains valid. `enqueue:"deferred"` means approval was saved but pause, scheduling or queue failure prevented immediate enqueue; inspect the intent before taking further action. TTL supports 60–86,400 seconds (default3600), starting at max(approval time,schedule). Queue delay, pause or outage can still expire approval; expired work is cancelled and must be deliberately re-created/re-approved. No latency guarantee. Queue handles max10 jobs per batch, platform max3 retries; relay max100 due rows. Recovery handles max100 stale claims and100 expired approvals per tick. Reconciliation reads max20 unknowns/tick, at least5min between unsuccessful checks, at most10 checks; unresolved rows remain unknown with quota held for operator investigation. Receipt recovery never invokes send. Database errors after a provider call may leave dispatching; after60s it becomes unknown and positive receipt reconciliation restores accepted even while sending is paused.
+
+AI read, draft and send flags are separate, default denied. Existing owner-only experimental AI APIs are not bridge credentials. No AI bridge/session delegation is implemented or advertised; never hand an owner bearer token to an AI process. A future bridge requires selected-mailbox, tool-limited, expiring, revocable grants and its own authentication boundary.
+
+## Errors and unsupported features
+
+Every error is `{error:{code:string,requestId:UUID}}`; no raw SQL/provider error/body/credential. 401 `unauthorized` includes expired/revoked sessions. 400 `validation_failed`, `invalid_json`, `body_required`, `schedule_too_far`; 413 `body_too_large`; 415 `json_required`. 404 `not_found`, `mailbox_not_found`, `message_not_found`, `intent_not_found`. 409 `mailbox_identity_conflict`, `mailbox_limit`, `idempotency_conflict`, `approval_conflict`, `already_in_flight_or_missing`, `approval_required`, `approval_expired`, `mailbox_permission`, `quota_exceeded`, `owner_quota_exceeded`, `dispatch_paused`, `suppressed`, `campaign_paused`, `consent_or_reply_stop`, `event_conflict`. 500 `internal_error`: inspect saved state before retry. Queue diagnostics are redacted: `invalid_envelope`, `provider_rejected`, `provider_outcome_unknown`, `dispatch_interrupted`, `reconciliation_unknown`, `reconciliation_unavailable`, `enqueue_deferred` with persisted correlation IDs. Do not display provider IDs as delivery evidence.
+
+Unsupported: production authentication/OAuth/MFA, real mailbox connection or sending, inbox synchronisation and message search, campaign wizard/execution product, history import, attachments, mailbox labels/mutations, AI/desktop bridge, DNS writes, real webhooks, live restore/alerts and production hosting guarantees. Experimental foundation routes do not change these capability claims. Production remains disabled and unready.
+
+Legacy intents created before migration 0006 have no independent envelope digest. Pending legacy rows fail closed as rejected (`invalid_envelope`); create a new previewed request. Unknown legacy rows remain held for investigation. Do not manufacture a digest or resend an uncertain historical request.

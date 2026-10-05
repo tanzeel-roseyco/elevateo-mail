@@ -6,11 +6,18 @@ import { captureEvent, unsubscribe } from './events'
 import { parsePolicyConfig } from './policies/config'
 import { DurableFakeProvider } from './providers/durableFake'
 import { aiRoute } from './aiRoute'
+import { approvalInput, capabilitiesResponse, createdIntent, intentResponse, savedResponse } from './contracts/v1'
 
 // AIDEV-NOTE: No live adapter is wired into any entry point. Database and config pauses both fail closed.
 const jobSchema = z.object({ owner: idSchema, id: idSchema }).strict()
 export async function relay(env: Env, now: number): Promise<void> {
-  await new SendLedger(env.DB).recover(now)
+  const ledger = new SendLedger(env.DB)
+  await ledger.recover(now)
+  // AIDEV-NOTE: Reconciliation only reads receipts, even during pause; absence never authorises another send.
+  const unknown = await env.DB.prepare(`SELECT owner,id FROM send_intents WHERE status='unknown'
+    AND reconcile_at<=? AND reconcile_attempts<10 ORDER BY reconcile_at,id LIMIT 20`).bind(now)
+    .all<{ owner: string; id: string }>()
+  for (const row of unknown.results) await ledger.reconcile(row.owner, row.id, new DurableFakeProvider(env.DB), now)
   if (parsePolicyConfig(env).DISPATCH_PAUSED === 'true') return
   const control = await env.DB.prepare('SELECT dispatch_paused FROM runtime_controls WHERE id=1').first<{ dispatch_paused: number }>()
   if (control?.dispatch_paused !== 0) return
@@ -28,28 +35,50 @@ export async function handleRequest(request: Request, env: Env, now = Date.now()
     const optout = /^\/unsubscribe\/([a-zA-Z0-9_-]+)$/u.exec(path)
     if (optout) return await unsubscribe(request, optout[1]!, env.DB, now)
     const owner = await authenticate(request, env.DB, now)
+    if (path === '/v1/capabilities' && request.method === 'GET') {
+      const control = await env.DB.prepare('SELECT dispatch_paused FROM runtime_controls WHERE id=1').first<{ dispatch_paused: number }>()
+      return Response.json(capabilitiesResponse.parse({ version: 1, simulated: true, liveSending: false, dnsWrites: false,
+        features: { mailboxInventory: true, messages: true, manualSend: true, campaignWizard: false, inboxSync: false,
+          historyImport: false, aiBridge: false }, policy: { provisional: true, windowHours: 24, mailboxLimit: 30,
+          userLimit: 300, users: 10, connectedMailboxes: 10 }, dispatchPaused: policy.DISPATCH_PAUSED === 'true' || control?.dispatch_paused !== 0 }))
+    }
     const ai = await aiRoute(request, path, owner, env.DB, now)
     if (ai) return ai
-    const resource = await resourceRoute(request, path, owner, env)
+    const resource = await resourceRoute(request, path, owner, env, now)
     if (resource) return resource
     const ledger = new SendLedger(env.DB)
     if (path === '/v1/send-intents' && request.method === 'POST') {
-      return Response.json({ ...await ledger.create(owner, await jsonBody(request), now), simulated: true }, { status: 201 })
+      return Response.json(createdIntent.parse({ ...await ledger.create(owner, await jsonBody(request), now), simulated: true }), { status: 201 })
     }
     const action = /^\/v1\/send-intents\/([a-zA-Z0-9_-]+)\/(approve|cancel)$/u.exec(path)
     if (action && request.method === 'POST') {
+      let enqueue: 'queued' | 'deferred' | 'not_applicable' = 'not_applicable'
       if (action[2] === 'approve') {
-        const input = z.object({ revision: z.string().regex(/^[a-f0-9]{64}$/u) }).strict().parse(await jsonBody(request))
+        const input = approvalInput.parse(await jsonBody(request))
         await ledger.approve(owner, action[1]!, input.revision, now, policy.APPROVAL_TTL_SECONDS * 1000)
+        // AIDEV-NOTE: Approval commits before enqueue; relay may recover it only while approval remains valid.
+        enqueue = 'deferred'
+        const control = await env.DB.prepare('SELECT dispatch_paused FROM runtime_controls WHERE id=1').first<{ dispatch_paused: number }>()
+        if (policy.DISPATCH_PAUSED === 'false' && control?.dispatch_paused === 0) {
+          const due = await env.DB.prepare('SELECT scheduled_at FROM send_intents WHERE owner=? AND id=?')
+            .bind(owner, action[1]!).first<{ scheduled_at: number }>()
+          if (due && due.scheduled_at <= now) {
+            try { await env.SEND_QUEUE.send({ owner, id: action[1]! }); enqueue = 'queued' }
+            catch {
+              await env.DB.prepare(`UPDATE send_intents SET error_code='enqueue_deferred',correlation_id=?
+                WHERE owner=? AND id=? AND status='pending'`).bind(requestId, owner, action[1]!).run()
+            }
+          }
+        }
       } else await ledger.cancel(owner, action[1]!, now)
-      return Response.json({ saved: true, simulated: true })
+      return Response.json(savedResponse.parse({ saved: true, simulated: true, enqueue }))
     }
     const intent = /^\/v1\/send-intents\/([a-zA-Z0-9_-]+)$/u.exec(path)
     if (intent && request.method === 'GET') {
-      const row = await env.DB.prepare('SELECT id,revision,status,scheduled_at,dispatch_at,provider_id,error_code FROM send_intents WHERE owner=? AND id=?')
+      const row = await env.DB.prepare('SELECT id,revision,status,scheduled_at,dispatch_at,provider_id,error_code,correlation_id,approval_expires_at FROM send_intents WHERE owner=? AND id=?')
         .bind(owner, intent[1]!).first()
       if (!row) throw new ApiError('intent_not_found', 404)
-      return Response.json({ intent: row, simulated: true })
+      return Response.json(intentResponse.parse({ intent: row, simulated: true }))
     }
     if (path === '/v1/health' && request.method === 'GET') {
       const control = await env.DB.prepare('SELECT dispatch_paused FROM runtime_controls WHERE id=1').first<{ dispatch_paused: number }>()
@@ -61,7 +90,7 @@ export async function handleRequest(request: Request, env: Env, now = Date.now()
     throw new ApiError('not_found', 404)
   } catch (error) {
     const knownCodes = ['mailbox_limit', 'approval_required', 'approval_expired', 'mailbox_permission', 'campaign_paused',
-      'suppressed', 'consent_or_reply_stop', 'quota_exceeded', 'dispatch_paused', 'event_conflict']
+      'suppressed', 'consent_or_reply_stop', 'owner_quota_exceeded', 'quota_exceeded', 'dispatch_paused', 'event_conflict']
     const databaseCode = error instanceof Error ? knownCodes.find(code => error.message.includes(code)) : undefined
     const code = error instanceof ApiError ? error.code : error instanceof z.ZodError ? 'validation_failed' : databaseCode ?? 'internal_error'
     const status = error instanceof ApiError ? error.status : error instanceof z.ZodError ? 400 : databaseCode ? 409 : 500
@@ -78,7 +107,8 @@ export default {
   async scheduled(_controller: ScheduledController, env: Env): Promise<void> { await relay(env, Date.now()) },
   async queue(batch: MessageBatch<unknown>, env: Env): Promise<void> {
     const policy = parsePolicyConfig(env)
-    for (const message of batch.messages) {
+    for (const [index, message] of batch.messages.entries()) {
+      if (index >= 10) { message.retry({ delaySeconds: 60 }); continue }
       const job = jobSchema.safeParse(message.body)
       if (!job.success) { message.ack(); continue }
       if (policy.DISPATCH_PAUSED === 'true') { message.ack(); continue }

@@ -16,6 +16,8 @@ test('AI context defaults denied, isolates selection and drafts require separate
     assert.equal(response.status, 200)
     assert.match(JSON.stringify(await response.json()), /untrusted/i)
     assert.equal((await request(f.env, '/v1/ai/context', 'POST', { ...context, mailboxId: 'other' })).status, 403)
+    assert.equal((await request(f.env, '/v1/ai/drafts', 'POST', { mailboxId: 'mail', draft: draft('denied-ai', 1, 'ai') })).status, 403)
+    await f.env.DB.prepare('UPDATE mailboxes SET ai_draft=1,ai_read=0').run()
     const created = await request(f.env, '/v1/ai/drafts', 'POST', { mailboxId: 'mail', draft: draft('ai-route', 1, 'ai') })
     assert.equal(created.status, 201)
     const intent = await created.json() as { id: string; revision: string }

@@ -1,7 +1,7 @@
 import { z } from 'zod'
 
 // AIDEV-NOTE: Admission validates completed drafts; partial frontend draft addresses remain frontend-only.
-const identifier = z.string().trim().min(1).max(128)
+const identifier = z.string().trim().regex(/^[a-zA-Z0-9_-]{1,128}$/u)
 const address = z.string().trim().toLowerCase().pipe(z.email().max(254))
 const recipients = z.array(address).max(30).default([])
 
@@ -13,7 +13,7 @@ export const sendInputSchema = z.object({
   subject: z.string().trim().min(1).max(998).refine(value => !/[\r\n]/u.test(value), 'Header newline forbidden'),
   body: z.string().min(1).max(100_000),
   kind: z.enum(['manual', 'campaign', 'ai']),
-  revision: z.number().int().positive(),
+  revision: z.number().int().positive().max(Number.MAX_SAFE_INTEGER),
   idempotencyKey: identifier,
   campaignId: identifier.optional(),
   scheduledAt: z.iso.datetime({ offset: true }).optional(),
