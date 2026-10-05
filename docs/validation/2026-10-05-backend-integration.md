@@ -24,7 +24,7 @@ Neither build loads the other's code: the mode is chosen at build time in `src/m
 
 ## Real-backend evidence
 
-The browser tests in `e2e-integration/` talk to the actual backend Worker (backend worktree at `49fc23e` plus its uncommitted integration work) running on workerd with local D1, its queue consumer and its `DurableFakeProvider`. `integration/harness.ts` seeds two synthetic users and exposes a control port used only to stage conditions (outage, pause, expire a session, make the provider reject or go ambiguous, simulate a crashed worker). Responses are not intercepted, except one test that deliberately drops a single answer to prove recovery and one that delays the first answer to show the loading state. Log of the final run: `output/fable/m2/real-backend-run.log`.
+The browser tests in `e2e-integration/` talk to the actual backend Worker (backend worktree at `49fc23e` plus its uncommitted integration work) running on workerd with local D1, its queue consumer and its `DurableFakeProvider`. `integration/harness.ts` seeds two synthetic users and exposes a control port used only to stage conditions (outage, pause, expire a session, make the provider reject or go ambiguous, simulate a crashed worker). Responses are not intercepted, except one test that deliberately drops a single answer to prove recovery and one that delays the first answer to show the loading state. Log of the final run: [real-backend-run.txt](2026-10-05-backend-integration/real-backend-run.txt).
 
 | Requirement | Test (`e2e-integration/journey.spec.ts`) |
 |---|---|
@@ -45,7 +45,7 @@ Bounds: one page of at most 50 summaries is held and rendered; at most 20 messag
 
 ## Visual inspection
 
-Screenshots were taken from the running application against the real backend and inspected: `output/fable/m2/it-<desktop|mobile>-<light|dark>-*.png` (sign-in, loading, inbox, empty inbox, open message, offline with a failed load, compose, review, awaiting approval, queued, accepted, send list, connections, AI permissions, settings, unavailable area) plus `it-desktop-{outage-*,quota-refused,unknown,rejected,session-expired}.png`. Gold accent, white light theme, dark-grey dark theme and the transparent logo are unchanged. The phone-size screenshots inspected showed no overflow.
+Screenshots were taken from the running application against the real backend and inspected: `docs/validation/2026-10-05-backend-integration/it-<desktop|mobile>-<light|dark>-*.png` (committed) (sign-in, loading, inbox, empty inbox, open message, offline with a failed load, compose, review, awaiting approval, queued, accepted, send list, connections, AI permissions, settings, unavailable area) plus `it-desktop-{outage-*,quota-refused,unknown,rejected,session-expired}.png`. Gold accent, white light theme, dark-grey dark theme and the transparent logo are unchanged. The phone-size screenshots inspected showed no overflow.
 
 Not done: a manual click-through in a desktop browser on the laptop. The stack ran only on the remote build host, so inspection used the screenshots Playwright captured from the real application.
 

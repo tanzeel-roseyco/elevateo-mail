@@ -1,0 +1,118 @@
+ Network elevateo-mail-it_default Creating 
+ Network elevateo-mail-it_default Created 
+ Container elevateo-mail-it-server-1 Creating 
+ Container elevateo-mail-it-server-1 Created 
+ Container elevateo-mail-it-web-1 Creating 
+ Container elevateo-mail-it-web-1 Created 
+Attaching to server-1, web-1
+ Container elevateo-mail-it-server-1 Starting 
+ Container elevateo-mail-it-server-1 Started 
+ Container elevateo-mail-it-server-1 Waiting 
+server-1  | Integration harness ready: API 8787, test control 8788
+ Container elevateo-mail-it-server-1 Healthy 
+ Container elevateo-mail-it-web-1 Starting 
+ Container elevateo-mail-it-web-1 Started 
+web-1     | 
+web-1     | > elevateo-mail@0.1.0 e2e:integration
+web-1     | > npm run build:api && playwright test --config playwright.integration.config.ts
+web-1     | 
+web-1     | 
+web-1     | > elevateo-mail@0.1.0 build:api
+web-1     | > VITE_BACKEND=api vite build --outDir dist-api
+web-1     | 
+web-1     | vite v7.3.6 building client environment for production...
+web-1     | transforming...
+web-1     | node_modules/zod/v4/core/regexes.js (74:0): A comment
+web-1     | 
+web-1     | "/** Anchors a pattern source. The interpolation lives here rather than at the call site because
+web-1     |  * esbuild will not drop a `@__PURE__` call whose own argument interpolates a variable, but it
+web-1     |  * will drop `anchor(dateSource)`. Keeping it inline pinned `date` into every bundle. */"
+web-1     | 
+web-1     | in "node_modules/zod/v4/core/regexes.js" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.
+web-1     | node_modules/zod/v4/core/util.js (400:0): A comment
+web-1     | 
+web-1     | "// Wrapped in a `@__PURE__` IIFE: esbuild never tree-shakes a top-level initializer that contains a member access on `Number`, so the bare object literal survived into every bundle."
+web-1     | 
+web-1     | in "node_modules/zod/v4/core/util.js" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.
+web-1     | ✓ 1876 modules transformed.
+web-1     | rendering chunks...
+web-1     | computing gzip size...
+web-1     | dist-api/index.html                                0.50 kB │ gzip:  0.31 kB
+web-1     | dist-api/assets/index-D45NVZEm.css                37.60 kB │ gzip:  7.98 kB
+web-1     | dist-api/assets/trash-2-D5sCcVRX.js                0.33 kB │ gzip:  0.22 kB
+web-1     | dist-api/assets/SendPreview-B29LiHVd.js            0.88 kB │ gzip:  0.45 kB
+web-1     | dist-api/assets/QuotaLine-DTONm9hq.js              1.12 kB │ gzip:  0.66 kB
+web-1     | dist-api/assets/ComposePage-DngdWvBN.js            5.04 kB │ gzip:  2.12 kB
+web-1     | dist-api/assets/LiveConnectionsPage-DXfD83oh.js    8.60 kB │ gzip:  3.31 kB
+web-1     | dist-api/assets/SendsPage-DYkwY3Q0.js             10.67 kB │ gzip:  3.99 kB
+web-1     | dist-api/assets/LiveSettingsPage-B9lQEMph.js      11.47 kB │ gzip:  4.04 kB
+web-1     | dist-api/assets/index-DFnuIjG4.js                224.42 kB │ gzip: 70.15 kB
+web-1     | dist-api/assets/LiveApp-B0i8UTx3.js              287.99 kB │ gzip: 92.53 kB
+web-1     | ✓ built in 1.99s
+web-1     | 
+web-1     | Running 20 tests using 1 worker
+web-1     | 
+web-1     |   ✓   1 [desktop] › e2e-integration/journey.spec.ts:12:1 › browse pages, open a lazily loaded body, reply, approve and track to acceptance (5.5s)
+web-1     |   ✓   2 [desktop] › e2e-integration/journey.spec.ts:90:1 › a queued request can be cancelled and edited only as a new request needing new approval (2.3s)
+web-1     |   ✓   3 [desktop] › e2e-integration/journey.spec.ts:114:1 › the server refuses approval beyond the mailbox limit and the request stays unapproved (6.2s)
+web-1     |   ✓   4 [desktop] › e2e-integration/journey.spec.ts:138:1 › an unknown outcome is shown as unknown, is not polled, and offers no way to send again (8.3s)
+web-1     |   ✓   5 [desktop] › e2e-integration/journey.spec.ts:169:1 › a provider refusal is shown as rejected, with nothing claimed as sent (2.7s)
+web-1     |   ✓   6 [desktop] › e2e-integration/journey.spec.ts:185:1 › a lost answer is recovered after reload as the same request, never a second one (5.8s)
+web-1     | [WebServer] 6:43:33 PM [vite] http proxy error: /v1/send-intents/cf6e950d-ad17-4933-837b-49772e318a82/approve
+web-1     | [WebServer] Error: socket hang up
+web-1     | [WebServer]     at Socket.socketOnEnd (node:_http_client:542:25)
+web-1     | [WebServer]     at Socket.emit (node:events:531:35)
+web-1     | [WebServer]     at endReadableNT (node:internal/streams/readable:1698:12)
+web-1     | [WebServer]     at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+web-1     | [WebServer] 6:43:33 PM [vite] http proxy error: /v1/send-intents/cf6e950d-ad17-4933-837b-49772e318a82
+web-1     | [WebServer] Error: socket hang up
+web-1     | [WebServer]     at Socket.socketOnEnd (node:_http_client:542:25)
+web-1     | [WebServer]     at Socket.emit (node:events:531:35)
+web-1     | [WebServer]     at endReadableNT (node:internal/streams/readable:1698:12)
+web-1     | [WebServer]     at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+web-1     | [WebServer] 6:43:33 PM [vite] http proxy error: /v1/messages?mailboxId=alice-main&limit=50
+web-1     | [WebServer] Error: socket hang up
+web-1     | [WebServer]     at Socket.socketOnEnd (node:_http_client:542:25)
+web-1     | [WebServer]     at Socket.emit (node:events:531:35)
+web-1     | [WebServer]     at endReadableNT (node:internal/streams/readable:1698:12)
+web-1     | [WebServer]     at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+web-1     | [WebServer] 6:43:33 PM [vite] http proxy error: /v1/capabilities
+web-1     | [WebServer] Error: socket hang up
+web-1     | [WebServer]     at Socket.socketOnEnd (node:_http_client:542:25)
+web-1     | [WebServer]     at Socket.emit (node:events:531:35)
+web-1     | [WebServer]     at endReadableNT (node:internal/streams/readable:1698:12)
+web-1     | [WebServer]     at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+web-1     | [WebServer] 6:43:33 PM [vite] http proxy error: /v1/mailboxes?limit=100
+web-1     | [WebServer] Error: socket hang up
+web-1     | [WebServer]     at Socket.socketOnEnd (node:_http_client:542:25)
+web-1     | [WebServer]     at Socket.emit (node:events:531:35)
+web-1     | [WebServer]     at endReadableNT (node:internal/streams/readable:1698:12)
+web-1     | [WebServer]     at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+web-1     |   ✓   7 [desktop] › e2e-integration/journey.spec.ts:216:1 › a server outage shows errors, never mail or success, and recovers the pending request (4.8s)
+web-1     |   ✓   8 [desktop] › e2e-integration/journey.spec.ts:252:1 › an expired session clears what was on screen and asks to sign in again (1.2s)
+web-1     |   ✓   9 [desktop] › e2e-integration/journey.spec.ts:271:1 › two tabs stay consistent and a request is approved only once (4.4s)
+web-1     |   ✓  10 [desktop] › e2e-integration/journey.spec.ts:296:1 › one user cannot see another user's mailboxes, mail or send requests (3.9s)
+web-1     |   ✓  11 [desktop] › e2e-integration/journey.spec.ts:324:1 › status checks are bounded and stop when the request page closes (18.1s)
+web-1     |   ✓  12 [desktop] › e2e-integration/journey.spec.ts:346:1 › unsupported areas say they are unavailable and offer no working control (7.8s)
+web-1     |   ✓  13 [desktop] › e2e-integration/visual.spec.ts:42:3 › light: sign-in, loading, inbox, empty, message, offline and error states (3.7s)
+web-1     |   ✓  14 [desktop] › e2e-integration/visual.spec.ts:81:3 › light: send statuses, connections and unavailable areas (12.4s)
+web-1     |   ✓  15 [desktop] › e2e-integration/visual.spec.ts:42:3 › dark: sign-in, loading, inbox, empty, message, offline and error states (3.8s)
+web-1     |   ✓  16 [desktop] › e2e-integration/visual.spec.ts:81:3 › dark: send statuses, connections and unavailable areas (11.7s)
+web-1     |   ✓  17 [mobile] › e2e-integration/visual.spec.ts:42:3 › light: sign-in, loading, inbox, empty, message, offline and error states (3.6s)
+web-1     |   ✓  18 [mobile] › e2e-integration/visual.spec.ts:81:3 › light: send statuses, connections and unavailable areas (11.5s)
+web-1     |   ✓  19 [mobile] › e2e-integration/visual.spec.ts:42:3 › dark: sign-in, loading, inbox, empty, message, offline and error states (3.5s)
+web-1     |   ✓  20 [mobile] › e2e-integration/visual.spec.ts:81:3 › dark: send statuses, connections and unavailable areas (11.5s)
+web-1     | 
+web-1     |   20 passed (2.2m)
+[Kweb-1 exited with code 0
+ Compose Stopping Aborting on container exit...
+ Container elevateo-mail-it-web-1 Stopping 
+ Container elevateo-mail-it-web-1 Stopped 
+ Container elevateo-mail-it-server-1 Stopping 
+server-1  | npm error path /app/backend
+server-1  | npm error command failed
+server-1  | npm error signal SIGTERM
+server-1  | npm error command sh -c 'tsx' harness.ts
+server-1  | npm error A complete log of this run can be found in: /root/.npm/_logs/2026-10-04T18_42_53_626Z-debug-0.log
+ Container elevateo-mail-it-server-1 Stopped 
+[Kserver-1 exited with code 1
