@@ -5,7 +5,7 @@ import { Miniflare, convertV4MiniflareOptions } from 'miniflare'
 import { applyMigration } from './migrations'
 import { sha256 } from '../core'
 
-// AIDEV-NOTE: Offline Docker tooling is never imported by the Worker; there is no session-minting HTTP route.
+// AIDEV-NOTE: Docker tooling is never imported by the Worker; only the separate fixture proxy provisions cookies.
 export async function bootstrap(storage: string, initialize = true, consume = true, port = 0) {
   if (!existsSync('/.dockerenv')) throw new Error('Synthetic bootstrap must run inside Docker')
   const mf = new Miniflare({ ...convertV4MiniflareOptions({ scriptPath: 'dist/worker.js', modules: true,

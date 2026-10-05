@@ -33,11 +33,38 @@ export async function jsonBody(request: Request): Promise<unknown> {
   try { return JSON.parse(await boundedText(request)) as unknown }
   catch (error) { if (error instanceof ApiError) throw error; throw new ApiError('invalid_json') }
 }
-export async function authenticate(request: Request, db: D1Database, now: number): Promise<string> {
-  const header = request.headers.get('authorization') ?? ''
-  if (!/^Bearer [a-zA-Z0-9_-]{32,256}$/u.test(header)) throw new ApiError('unauthorized', 401)
-  const session = await db.prepare('SELECT owner FROM sessions WHERE token_hash=? AND expires_at>?')
-    .bind(await sha256(header.slice(7)), now).first<{ owner: string }>()
+export const sessionCookieName = '__Host-elevateo_session'
+export type AuthenticatedSession = { owner: string; expires_at: number; token_hash: string }
+
+// AIDEV-NOTE: Cookies require same-origin mutation proof; bearer compatibility is for non-browser tooling.
+export async function authenticateSession(request: Request, db: D1Database, now: number): Promise<AuthenticatedSession> {
+  const authorization = request.headers.get('authorization')
+  const cookies = (request.headers.get('cookie') ?? '').split(';').map(value => value.trim())
+    .filter(value => value.startsWith(sessionCookieName + '='))
+  if (cookies.length > 1 || (cookies.length && authorization)) throw new ApiError('unauthorized', 401)
+  let token: string
+  if (cookies.length) {
+    token = cookies[0]!.slice(sessionCookieName.length + 1)
+    const site = request.headers.get('sec-fetch-site')
+    const origin = request.headers.get('origin')
+    const unsafe = !['GET', 'HEAD', 'OPTIONS'].includes(request.method)
+    if ((site && site !== 'same-origin' && site !== 'none') ||
+      (origin !== null && origin !== new URL(request.url).origin) ||
+      (unsafe && (origin !== new URL(request.url).origin || request.headers.get('x-elevateo-csrf') !== '1'))) {
+      throw new ApiError('csrf_failed', 403)
+    }
+  } else {
+    if (request.headers.has('sec-fetch-site') || !authorization || !/^Bearer [a-zA-Z0-9_-]{32,256}$/u.test(authorization)) {
+      throw new ApiError('unauthorized', 401)
+    }
+    token = authorization.slice(7)
+  }
+  if (!/^[a-zA-Z0-9_-]{32,256}$/u.test(token)) throw new ApiError('unauthorized', 401)
+  const session = await db.prepare('SELECT owner,expires_at,token_hash FROM sessions WHERE token_hash=? AND expires_at>?')
+    .bind(await sha256(token), now).first<AuthenticatedSession>()
   if (!session) throw new ApiError('unauthorized', 401)
-  return session.owner
+  return session
+}
+export async function authenticate(request: Request, db: D1Database, now: number): Promise<string> {
+  return (await authenticateSession(request, db, now)).owner
 }

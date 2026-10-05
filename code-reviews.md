@@ -179,3 +179,21 @@ Design simulations (local tables; no Obsidian connection is available): ten mail
 Frontend worktree and UI were not changed or visually revalidated. Fable gateway wiring and actual application QA remain its owner's handoff. See integration contract and fixture instructions.
 
 Final milestone checks, download recovery and scoped cleanup: [integration validation](docs/validation/2026-10-05-integration.md).
+
+## 2026-10-05 — Server-owned recovery and browser session boundary
+
+Full mandated adversarial rubric used; individual source slices were no more than 200 lines and cumulative exposure per agent below 400. Linters handle formatting. Design reviewer simulated tab conflicts, dispatch races, pagination and expiry; no Obsidian connection was available.
+
+| Assignment | Reviewed lines including rechecks | Source/test defects | Defects/1,000 lines |
+| --- | ---: | ---: | ---: |
+| Recovery route, migration, ledger | 210 | 0 | 0 |
+| Session core, Docker proxy/bootstrap/run, cookie regression | 328 | 0 | 0 |
+| Worker contract/client schemas and logout corrections | 275 | 1 | 3.64 |
+| Recovery/session regression tests and corrected boundaries | 315 | 2 | 6.35 |
+| Dedicated design review: atomicity, storage, session and cursor tradeoffs | 356 | 0 | 0 |
+
+Exposure totals 1,484 lines (includes overlapping source and rechecks, not unique coverage). Three confirmed review source/test defects, density 2.02/KLOC, all fixed: logout accepted payloads; pagination test did not guarantee timestamp ties; Worker mint-route exclusion test used an expired session. One additional contract documentation defect fixed: obsolete opening bearer-only wording contradicted cookies. Zero unresolved findings in these assignments.
+
+Review-requested coverage added: replacement versus operational Worker queue entry, and corrupted saved content through HTTP. Docker subsequently caught a Node/Miniflare Headers type mismatch and the empty-stream bodyless POST adapter behavior; corrected and re-reviewed. These verification findings are recorded separately, not added to adversarial defect density.
+
+Coverage includes strict DTOs and query boundaries, every new owner-scoped route, D1 migration/account identity, single-successor transaction, HTTP persistence/lost responses, cookies/CSRF/expiry/revocation, and retained send safety. Actual browser Secure-cookie acceptance and frontend visual QA remain a combined-run requirement. [Handoff](docs/handover/2026-10-05-server-recovery.md).

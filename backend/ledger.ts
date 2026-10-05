@@ -10,7 +10,7 @@ export interface IntentRow {
 }
 export class SendLedger {
   constructor(private readonly db: D1Database) {}
-  async create(owner: string, raw: unknown, now: number): Promise<{ id: string; revision: string; status: string }> {
+  async prepare(owner: string, raw: unknown, now: number) {
     const input = sendInputSchema.parse(raw)
     const mailbox = await this.db.prepare('SELECT address FROM mailboxes WHERE owner=? AND id=?')
       .bind(owner, input.mailboxId).first<{ address: string }>()
@@ -24,12 +24,15 @@ export class SendLedger {
     const envelope: SendEnvelope = { id, owner, mailboxId: input.mailboxId, from: mailbox.address,
       to: input.to, cc: input.cc, bcc: input.bcc, subject: input.subject, body: input.body, kind: input.kind, revision }
     envelopeSchema.parse(envelope)
-    await this.db.prepare(`INSERT INTO send_intents
-      (owner,id,mailbox_id,idempotency_key,revision,envelope,recipients,recipient_count,kind,campaign_id,scheduled_at,updated_at,envelope_hash)
-      VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?) ON CONFLICT(owner,idempotency_key) DO NOTHING`)
-      .bind(owner, id, input.mailboxId, input.idempotencyKey, revision, JSON.stringify(envelope),
+    return { id, revision, input, values: [owner, id, input.mailboxId, input.idempotencyKey, revision, JSON.stringify(envelope),
         JSON.stringify(recipients), recipientCount(input), input.kind, input.campaignId ?? null, scheduledAt, now,
-        await sha256(JSON.stringify(envelope))).run()
+        await sha256(JSON.stringify(envelope)), now] }
+  }
+  async create(owner: string, raw: unknown, now: number): Promise<{ id: string; revision: string; status: string }> {
+    const { input, revision, values } = await this.prepare(owner, raw, now)
+    await this.db.prepare(`INSERT INTO send_intents
+      (owner,id,mailbox_id,idempotency_key,revision,envelope,recipients,recipient_count,kind,campaign_id,scheduled_at,updated_at,envelope_hash,created_at)
+      VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?) ON CONFLICT(owner,idempotency_key) DO NOTHING`).bind(...values).run()
     const saved = await this.db.prepare('SELECT id,revision,status FROM send_intents WHERE owner=? AND idempotency_key=?')
       .bind(owner, input.idempotencyKey).first<{ id: string; revision: string; status: string }>()
     if (!saved || saved.revision !== revision) throw new ApiError('idempotency_conflict', 409)
@@ -52,7 +55,7 @@ export class SendLedger {
       WHERE owner=? AND id=? AND status IN ('draft','pending')`).bind(now, owner, id).run()
     if (!result.meta.changes) throw new ApiError('already_in_flight_or_missing', 409)
   }
-  private async envelope(row: IntentRow): Promise<SendEnvelope> {
+  async envelope(row: IntentRow): Promise<SendEnvelope> {
     // AIDEV-NOTE: The independent immutable digest detects valid-shaped corruption; legacy undigested rows fail closed.
     if (!row.envelope_hash || await sha256(row.envelope) !== row.envelope_hash) throw new Error('envelope_digest_mismatch')
     const envelope = envelopeSchema.parse(JSON.parse(row.envelope) as unknown)

@@ -16,16 +16,16 @@ For the frontend developer's disposable local API:
 docker run --rm --name elevateo-mail-integration-fixture -p 127.0.0.1:8787:8787 elevateo-mail-integration-check sh -c "npm run build && npm run fixture"
 ```
 
-The API listens inside Docker at port8787. Use a same-origin frontend proxy; unrestricted CORS is disabled. Offline bootstrap seeds Alice and Bob, distinct plus-tagged mailboxes, three tied-timestamp messages each and fifteen-minute sessions. Synthetic bearer values are in `/tmp/elevateo-fixture/fixture-sessions.json` inside the container, never console output. Read locally with `docker exec elevateo-mail-integration-fixture cat /tmp/elevateo-fixture/fixture-sessions.json`; keep these values out of shared logs/source. There is no HTTP minting route. Bootstrap restart rotates/revokes old sessions. Tests demonstrate expiry and revocation. Container data is disposable unless a developer deliberately mounts persistent storage; preserve developer-owned storage.
+The Docker-only browser proxy listens at port8787. Open http://localhost:8787 through a same-origin frontend proxy preserving the original Host; proxy both /v1 and /__fixture. POST /__fixture/session with JSON {"user":"alice"} or {"user":"bob"}, Content-Type: application/json and X-Elevateo-CSRF: 1. Browser fetch supplies its matching Origin. The proxy sets a Secure, HttpOnly, SameSite=Strict, Path=/ cookie; no bearer appears in the response or application JavaScript. The Worker bundle contains no provisioning route. Cookies work on localhost through the browser Secure-cookie exception; production requires HTTPS and a future identity provider. Bootstrap seeds distinct users, plus-tagged mailboxes and three tied-timestamp messages each. Fifteen-minute sessions rotate on bootstrap; revoked/expired sessions cannot be reissued. The private token file is for non-browser tooling only, never frontend configuration or shared logs. Container data is disposable unless deliberately mounted; preserve developer-owned storage.
 
 Stop the named fixture container when finished. Clean only task-owned images/cache, never shared resources or volumes. Tests use Docker-internal HTTP sockets rather than a host localhost service.
 
-Portable consumer: `backend/integration/client.ts`; runtime DTOs: `backend/contracts/v1.ts`. See [the exact handoff contract](contracts/integration-v1.md). The Fable agent must adapt responses at MailroomGateway, retain the saved compose preview, implement pending/conflict/error states, and perform actual application visual QA. Its worktree was not edited here.
+Portable consumer: `backend/integration/client.ts`; runtime DTOs: `backend/contracts/v1.ts`. See [the exact handoff contract](contracts/integration-v1.md). The Fable agent must adapt responses at MailroomGateway, load the immutable saved compose preview from /:id/content, implement pending/conflict/error states, and perform actual application visual QA. Its worktree was not edited here.
 
 ## Credentials-last gates
 
 - Agree production quota semantics, authentication/MFA, region, provider/OAuth permissions and isolated AI grants.
-- Finish frontend gateway wiring and actual application visual QA.
+- Adapt the existing Fable gateway to server recovery/cookies and complete combined application visual QA.
 - Rehearse independent backup/key recovery, alerts, revocation and live-provider ambiguity handling in staging.
 - Verify provider contracts, alias identities, webhook authentication and measured performance/cost envelope.
 - Supply least-privilege staging credentials through secure settings only after those decisions; never chat/source/logs.

@@ -3,11 +3,13 @@ import { resolve } from 'node:path'
 import { z } from 'zod'
 import { bootstrap } from './bootstrap'
 import { MailHttpClient } from '../integration/client'
+import { startBrowserFixture } from './browser'
 
 // AIDEV-NOTE: This Docker-only demo uses a real HTTP socket and persisted D1; no production authentication exists.
 const storage = resolve(process.env.FIXTURE_STORAGE ?? '/tmp/elevateo-fixture')
-const local = await bootstrap(storage, true, true, 8787)
-const close = async () => { await local.close(); process.exit(0) }
+const local = await bootstrap(storage, true, true, 0)
+let browser: Awaited<ReturnType<typeof startBrowserFixture>> | undefined
+const close = async () => { await browser?.close(); await local.close(); process.exit(0) }
 process.on('SIGINT', close); process.on('SIGTERM', close)
 if (process.argv.includes('--demo')) {
   try {
@@ -27,5 +29,8 @@ if (process.argv.includes('--demo')) {
     console.log(JSON.stringify({ simulated: true, status, quota: await client.quota(mailbox.id) }))
   } finally { await local.close() }
 } else {
-  console.log('Synthetic HTTP API ready on container port 8787; private sessions file: ' + resolve(storage, 'fixture-sessions.json'))
+  try {
+    browser = await startBrowserFixture(local, resolve(storage, 'fixture-sessions.json'), 8787)
+    console.log('Synthetic browser API ready on container port 8787; cookie provisioning: POST /__fixture/session')
+  } catch (error) { await local.close(); throw error }
 }

@@ -38,3 +38,20 @@ export const capabilitiesResponse = z.object({ version: z.literal(1), simulated:
     windowHours: z.literal(24), mailboxLimit: z.literal(30), userLimit: z.literal(300), users: z.literal(10),
     connectedMailboxes: z.literal(10) }).strict(), dispatchPaused: z.boolean() }).strict()
 export const errorResponse = z.object({ error: z.object({ code: z.string(), requestId: z.string().uuid() }).strict() }).strict()
+export const currentUserResponse = z.object({ accountId: z.string().regex(/^[a-f0-9]{32}$/u),
+  session: z.object({ expiresAt: timestamp }).strict(), simulated: z.literal(true) }).strict()
+export const sendCursor = z.object({ before: timestamp, beforeId: id }).strict()
+export const sendListInput = z.object({ limit: z.coerce.number().int().min(1).max(50).default(25),
+  before: z.coerce.number().int().nonnegative().max(Number.MAX_SAFE_INTEGER).optional(), beforeId: id.optional() }).strict()
+  .refine(value => (value.before === undefined) === (value.beforeId === undefined), 'Complete cursor required')
+export const sendSummary = z.object({ id, mailbox_id: id, idempotency_key: id, revision: hash, status,
+  created_at: timestamp, updated_at: timestamp, scheduled_at: timestamp, successor_id: id.nullable() }).strict()
+export const sendRequestPage = z.object({ items: z.array(sendSummary).max(50), next: sendCursor.nullable(),
+  simulated: z.literal(true) }).strict()
+export const sendContentResponse = z.object({ intent: sendSummary, content: z.object({ from: z.email(),
+  to: z.array(z.email()).max(30), cc: z.array(z.email()).max(30), bcc: z.array(z.email()).max(30),
+  subject: z.string().min(1).max(998), body: z.string().min(1).max(100_000), kind: z.enum(['manual','campaign','ai']) }).strict(),
+  simulated: z.literal(true) }).strict()
+export const replacementInput = z.object({ revision: hash, draft: manualSendInput }).strict()
+export const replacementResponse = createdIntent.extend({ predecessorId: id }).strict()
+export const logoutResponse = z.object({ signedOut: z.literal(true), simulated: z.literal(true) }).strict()

@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { ApiError, authenticate, idSchema, jsonBody } from './core'
+import { ApiError, authenticateSession, sessionCookieName, idSchema, jsonBody, boundedText } from './core'
 import { SendLedger } from './ledger'
 import { resourceRoute } from './resources'
 import { captureEvent, unsubscribe } from './events'
@@ -7,6 +7,8 @@ import { parsePolicyConfig } from './policies/config'
 import { DurableFakeProvider } from './providers/durableFake'
 import { aiRoute } from './aiRoute'
 import { approvalInput, capabilitiesResponse, createdIntent, intentResponse, savedResponse } from './contracts/v1'
+import { currentUserResponse, logoutResponse } from './contracts/v1'
+import { recoveryRoute } from './recoveryRoute'
 
 // AIDEV-NOTE: No live adapter is wired into any entry point. Database and config pauses both fail closed.
 const jobSchema = z.object({ owner: idSchema, id: idSchema }).strict()
@@ -34,7 +36,22 @@ export async function handleRequest(request: Request, env: Env, now = Date.now()
     if (event && request.method === 'POST') return await captureEvent(request, event[1]!, env, now)
     const optout = /^\/unsubscribe\/([a-zA-Z0-9_-]+)$/u.exec(path)
     if (optout) return await unsubscribe(request, optout[1]!, env.DB, now)
-    const owner = await authenticate(request, env.DB, now)
+    const session = await authenticateSession(request, env.DB, now)
+    const owner = session.owner
+    if ((path === '/v1/me' && request.method === 'GET') || (path === '/v1/session/logout' && request.method === 'POST')) {
+      if (new URL(request.url).search) throw new ApiError('validation_failed')
+      if (path === '/v1/me') {
+        const account = await env.DB.prepare('SELECT account_id FROM accounts WHERE owner=?').bind(owner).first<{ account_id: string }>()
+        if (!account) throw new ApiError('internal_error', 500)
+        return Response.json(currentUserResponse.parse({ accountId: account.account_id,
+          session: { expiresAt: session.expires_at }, simulated: true }))
+      }
+      // AIDEV-NOTE: HTTP adapters may create an empty stream for bodyless POST; reject payload bytes, not stream presence.
+      if (request.body !== null && await boundedText(request) !== '') throw new ApiError('validation_failed')
+      await env.DB.prepare('DELETE FROM sessions WHERE token_hash=?').bind(session.token_hash).run()
+      return Response.json(logoutResponse.parse({ signedOut: true, simulated: true }), { headers: {
+        'set-cookie': `${sessionCookieName}=; Secure; HttpOnly; SameSite=Strict; Path=/; Max-Age=0` } })
+    }
     if (path === '/v1/capabilities' && request.method === 'GET') {
       const control = await env.DB.prepare('SELECT dispatch_paused FROM runtime_controls WHERE id=1').first<{ dispatch_paused: number }>()
       return Response.json(capabilitiesResponse.parse({ version: 1, simulated: true, liveSending: false, dnsWrites: false,
@@ -47,6 +64,8 @@ export async function handleRequest(request: Request, env: Env, now = Date.now()
     const resource = await resourceRoute(request, path, owner, env, now)
     if (resource) return resource
     const ledger = new SendLedger(env.DB)
+    const recovery = await recoveryRoute(request, path, owner, env.DB, now)
+    if (recovery) return recovery
     if (path === '/v1/send-intents' && request.method === 'POST') {
       return Response.json(createdIntent.parse({ ...await ledger.create(owner, await jsonBody(request), now), simulated: true }), { status: 201 })
     }
