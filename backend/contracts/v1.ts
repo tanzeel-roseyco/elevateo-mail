@@ -1,0 +1,68 @@
+import { z } from 'zod'
+import { sendInputSchema } from '../policies/send'
+
+// AIDEV-NOTE: Portable schemas have no Worker bindings; the HTTP consumer validates rather than trusting casts.
+export const id = z.string().regex(/^[a-zA-Z0-9_-]{1,128}$/u)
+export const hash = z.string().regex(/^[a-f0-9]{64}$/u)
+const timestamp = z.number().int().nonnegative().max(Number.MAX_SAFE_INTEGER)
+const flag = z.union([z.literal(0), z.literal(1)])
+export const permissionsInput = z.object({ connected: z.boolean(), sendEnabled: z.boolean(),
+  aiRead: z.boolean(), aiDraft: z.boolean().default(false), aiSend: z.boolean() }).strict()
+export const approvalInput = z.object({ revision: hash }).strict()
+export const manualSendInput = sendInputSchema.refine(value => value.kind === 'manual', 'manual_only')
+export const mailboxPage = z.object({ items: z.array(z.object({ id, address: z.email(), provider: z.enum(['fake','gmail','resend']),
+  connected: flag, send_enabled: flag, ai_read: flag, ai_draft: flag, ai_send: flag,
+  arrival_count: z.number().int().nonnegative().max(Number.MAX_SAFE_INTEGER) }).strict()).max(100),
+  next: z.object({ after: id }).strict().nullable(), simulated: z.boolean() }).strict()
+const counters = z.object({ limit: z.number().int().positive(), acceptedUsage: z.number().int().nonnegative(),
+  heldReservations: z.number().int().nonnegative(), remaining: z.number().int().nonnegative(),
+  nextAcceptedReleaseAt: timestamp.nullable(), reservationReleaseUnknown: z.boolean() }).strict()
+export const quotaResponse = z.object({ mailboxId: id, policy: z.literal('provisional_rolling_24h_recipients'),
+  windowHours: z.literal(24), mailbox: counters, user: counters, simulated: z.boolean() }).strict()
+export const summary = z.object({ id, thread_id: id, mailbox_id: id, sender: z.email(), subject: z.string(), at: timestamp }).strict()
+export const messagePage = z.object({ items: z.array(summary).max(100),
+  next: z.object({ before: timestamp, beforeId: id }).strict().nullable(), simulated: z.boolean() }).strict()
+export const messageDetail = z.object({ message: summary.extend({ owner: id, body: z.string().max(100_000) }).strict(),
+  contentType: z.literal('text/plain'), trust: z.literal('untrusted-email'), incomplete: z.boolean().default(false) }).strict()
+export const status = z.enum(['draft','pending','dispatching','accepted','rejected','unknown','cancelled'])
+export const createdIntent = z.object({ id, revision: hash, status, simulated: z.boolean() }).strict()
+export const intentResponse = z.object({ intent: z.object({ id, revision: hash, status, scheduled_at: timestamp,
+  dispatch_at: timestamp.nullable(), provider_id: z.string().nullable(), error_code: z.string().nullable(),
+  correlation_id: z.string().uuid().nullable(), approval_expires_at: timestamp.nullable() }).strict(), simulated: z.boolean() }).strict()
+export const savedResponse = z.object({ saved: z.literal(true), simulated: z.boolean(),
+  enqueue: z.enum(['queued','deferred','not_applicable']) }).strict()
+export const updatedResponse = z.object({ updated: z.literal(true), simulated: z.boolean() }).strict()
+export const capabilitiesResponse = z.object({ version: z.literal(1), simulated: z.boolean(),
+  liveSending: z.boolean(), dnsWrites: z.literal(false), features: z.object({ mailboxInventory: z.literal(true),
+    messages: z.literal(true), manualSend: z.literal(true), campaignWizard: z.literal(false), inboxSync: z.boolean(),
+    historyImport: z.literal(true), aiBridge: z.literal(false) }).strict(), policy: z.object({ provisional: z.literal(true),
+    windowHours: z.literal(24), mailboxLimit: z.literal(30), userLimit: z.literal(300), users: z.literal(10),
+    connectedMailboxes: z.literal(10) }).strict(), dispatchPaused: z.boolean() }).strict()
+export const errorResponse = z.object({ error: z.object({ code: z.string(), requestId: z.string().uuid() }).strict() }).strict()
+export const currentUserResponse = z.object({ accountId: z.string().regex(/^[a-f0-9]{32}$/u),
+  session: z.object({ expiresAt: timestamp }).strict(), simulated: z.boolean() }).strict()
+export const sendCursor = z.object({ before: timestamp, beforeId: id }).strict()
+export const sendListInput = z.object({ limit: z.coerce.number().int().min(1).max(50).default(25),
+  before: z.coerce.number().int().nonnegative().max(Number.MAX_SAFE_INTEGER).optional(), beforeId: id.optional() }).strict()
+  .refine(value => (value.before === undefined) === (value.beforeId === undefined), 'Complete cursor required')
+export const sendSummary = z.object({ id, mailbox_id: id, idempotency_key: id, revision: hash, status,
+  created_at: timestamp, updated_at: timestamp, scheduled_at: timestamp, successor_id: id.nullable() }).strict()
+export const sendLookupInput = z.object({ idempotencyKey: id }).strict()
+export const sendLookupResponse = z.object({ intent: sendSummary.nullable(), simulated: z.boolean() }).strict()
+export const sendRequestPage = z.object({ items: z.array(sendSummary).max(50), next: sendCursor.nullable(),
+  simulated: z.boolean() }).strict()
+export const sendContentResponse = z.object({ intent: sendSummary, content: z.object({ replyToMessageId: id.optional(), from: z.email(),
+  to: z.array(z.email()).max(30), cc: z.array(z.email()).max(30), bcc: z.array(z.email()).max(30),
+  subject: z.string().min(1).max(998), body: z.string().min(1).max(100_000), kind: z.enum(['manual','campaign','ai']) }).strict(),
+  simulated: z.boolean() }).strict()
+export const replacementInput = z.object({ revision: hash, draft: manualSendInput }).strict()
+export const replacementResponse = createdIntent.extend({ predecessorId: id }).strict()
+export const logoutResponse = z.object({ signedOut: z.literal(true), simulated: z.boolean() }).strict()
+// AIDEV-NOTE: Search continuations advance a bounded metadata window, including windows with no matches.
+export const messageSearchInput = z.object({ mailboxId: id, q: z.string().trim().min(3).max(100),
+  limit: z.coerce.number().int().min(1).max(25).default(25),
+  before: z.coerce.number().int().nonnegative().max(Number.MAX_SAFE_INTEGER).optional(), beforeId: id.optional() }).strict()
+  .refine(value => (value.before === undefined) === (value.beforeId === undefined), 'Complete cursor required')
+export const messageSearchPage = messagePage.extend({ items: z.array(summary).max(25),
+  search: z.object({ scope: z.literal('subject_sender'), scanned: z.number().int().min(0).max(1000),
+    scanLimit: z.literal(1000) }).strict() }).strict()

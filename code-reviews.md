@@ -420,3 +420,176 @@ Scenarios were reasoned from the code by the reviewer. No Obsidian simulation wa
 ### Verification
 
 See [validation](docs/validation/2026-10-05-server-recovery.md).
+
+## 2026-10-05 — Backend foundation
+
+Three adversarial reviewers used the full project rubric, with a dedicated design reviewer. Assignments below are bounded slices; repeated exposure is included in density, rather than presented as unique coverage. Linters handled formatting. No frontend code was changed.
+
+| Assignment | Reviewed lines | Confirmed defects | Defects/1,000 lines |
+|---|---:|---:|---:|
+| Ledger and core boundaries | 123 | 1 | 8.13 |
+| Gmail/Resend/HTTP provider contracts | 100 | 2 | 20.00 |
+| Events and owner-scoped resources | 152 | 2 | 13.16 |
+| Worker/queue and durable fake provider | 129 | 2 | 15.50 |
+| Schema, pause controls and durable receipt design | 121 | 1 | 8.26 |
+| Recipient/config/AI/DNS policies | 136 | 2 | 14.71 |
+| Corrected boundaries and ledger/provider tests | 135 | 0 | 0 |
+| Corrected resources/worker/migration and API/event tests | 163 | 0 | 0 |
+| AI route, recovery, enrichment, pilot cap and policy/recovery tests | 184 | 1 | 5.43 |
+| Corrected policies | 86 | 0 | 0 |
+| Docker/package/config/fixture and recovery tests | 133 | 1 | 7.52 |
+| Permission tests and fixture/recovery recheck | 102 | 0 | 0 |
+| Final persistence and trigger parser fixture | 52 | 0 | 0 |
+| HTTP-to-queue workflow test | 41 | 0 | 0 |
+
+Total review exposure: **1,657 lines, 12 confirmed defects, 7.24 defects/1,000 lines; all 12 fixed**. This is a scoped backend review, not a re-certification of the frontend or proof of production readiness.
+
+Fixed findings: JSON media-type validation; folded Gmail UTF-8 MIME headers; malformed UTF-8 provider responses; campaign retry returning stale state; concurrent mailbox creation conflicts; relay ignoring database pause; revoked approvals starving later queue pages; missing pause row failing open; weak AI IDs/hash validation; DNS policy rejecting DKIM underscores; inadequate pause test observation; fixture leaking workerd on initialization failure. Docker also exposed tooling API/date mismatch and incomplete migration parsing; these were corrected and are excluded from adversarial defect counts.
+
+Coverage checklist: owner/session/input boundaries; mailbox/user caps and stable identities; atomic all-path quota and exact approvals; current consent/suppression/permissions; ambiguous acceptance and durable receipts; signed event replay/conflicts and unsubscribe; paginated plaintext messages; AI selection/draft/send separation; protected DNS preview; disabled enrichment; migrations/restore/pause; relay/queue fairness; provider MIME/limits/errors; typed config, dependency locks, Docker checks and happy/failure tests. All reviewed within the foundation scope. Live OAuth, sync, alias governance, real webhooks, distributed broker behavior and frontend integration remain separately documented gates.
+
+Design simulations (local, because no Obsidian connection is available): at 100 pilot mailboxes/3,000 daily recipients, compare one D1 transactional ledger with Redis/distributed counters: retain D1 and fail closed, accepting serialization until measured contention justifies change. Compare reservation expiry with ambiguity retention: unknown remains reserved indefinitely to prevent duplicate sends; operator reconciliation is required. Compare 100-row due scans with revoked approvals: cancel invalid approvals so the next scan progresses. Compare same-account snapshots with independent backup: local restore proves schema/state recovery only, not outage independence. Compare rolling 24-hour recipient counting with calendar/message counting: retain conservative fixed 30-recipient configuration and document final live-policy approval. No Obsidian simulation, production load measurement or cost guarantee is claimed.
+
+Final checks and Docker cleanup evidence: [backend validation](docs/validation/2026-10-05-backend.md). New tests exercise the actual Worker handlers and real local D1; cloud queue delivery and browser/native QA are outside this backend-only task.
+
+
+## 2026-10-05 - Credential-free HTTP integration milestone
+
+Full project rubric used by adversarial agents; source assignments <=200 lines and each review agent's cumulative exposure <=400. Dedicated design review used concrete state/throughput simulations. Linters own formatting. Coverage includes Worker HTTP/scheduler/queue entry points, digest validation, migrations/admission, authoritative quota/identities, DTOs/client, permissions, offline fixture/session lifecycle and operational regression tests.
+
+| Review assignment | Lines (including rechecks) | Defects | Defects/1,000 lines |
+|---|---:|---:|---:|
+| Ledger/envelope/migrations/lifecycle and correction recheck | 358 | 1 | 2.79 |
+| Worker/quota/runner/resources/contracts/client | 366 | 3 | 8.20 |
+| Design, offline migration atomicity and HTTP journey | 331 | 2 | 6.04 |
+| Remaining resources, migration helper, AI, fixture and admission regressions | 188 | 0 | 0 |
+| Final operational permission/suppression/pause/cancel and strict-type corrections | 85 | 0 | 0 |
+
+Total exposure **1,328 lines; six source defects; density 4.52/KLOC**, all fixed: independent envelope digest, database pause before immediate enqueue, explicit deferred enqueue result, concurrent mailbox permission update, atomic local migration/marker, and HTTP fixture setup cleanup. One documentation mismatch (disconnected records consuming active slots) also corrected; excluded from source density. Repeated review is exposure, not unique coverage. Docker-discovered tooling/test issues are reported in validation separately.
+
+Design simulations (local tables; no Obsidian connection is available): ten mailboxes times30 gives300 owner capacity. Disconnect/replacement preserves owner charges, so a fully charged owner remains at zero. Unknown20 + accepted10 leaves zero; when accepted10 ages, remaining becomes10 while unknown20 stays held. A20-row reconciliation budget sweeps100 due unknowns in five ticks; five-minute backoff and ten attempts bound repeated checks, after which investigation is required. Favor positive receipt recovery over time-based release; favor one indexed D1 ledger over additional distributed state until real contention warrants complexity. Lost create responses reuse the same key; lost approval responses inspect saved state. No production latency, cost or readiness claim.
+
+Frontend worktree and UI were not changed or visually revalidated. Fable gateway wiring and actual application QA remain its owner's handoff. See integration contract and fixture instructions.
+
+Final milestone checks, download recovery and scoped cleanup: [integration validation](docs/validation/2026-10-05-integration.md).
+
+## 2026-10-05 — Server-owned recovery and browser session boundary
+
+Full mandated adversarial rubric used; individual source slices were no more than 200 lines and cumulative exposure per agent below 400. Linters handle formatting. Design reviewer simulated tab conflicts, dispatch races, pagination and expiry; no Obsidian connection was available.
+
+| Assignment | Reviewed lines including rechecks | Source/test defects | Defects/1,000 lines |
+| --- | ---: | ---: | ---: |
+| Recovery route, migration, ledger | 210 | 0 | 0 |
+| Session core, Docker proxy/bootstrap/run, cookie regression | 328 | 0 | 0 |
+| Worker contract/client schemas and logout corrections | 275 | 1 | 3.64 |
+| Recovery/session regression tests and corrected boundaries | 315 | 2 | 6.35 |
+| Dedicated design review: atomicity, storage, session and cursor tradeoffs | 356 | 0 | 0 |
+
+Exposure totals 1,484 lines (includes overlapping source and rechecks, not unique coverage). Three confirmed review source/test defects, density 2.02/KLOC, all fixed: logout accepted payloads; pagination test did not guarantee timestamp ties; Worker mint-route exclusion test used an expired session. One additional contract documentation defect fixed: obsolete opening bearer-only wording contradicted cookies. Zero unresolved findings in these assignments.
+
+Review-requested coverage added: replacement versus operational Worker queue entry, and corrupted saved content through HTTP. Docker subsequently caught a Node/Miniflare Headers type mismatch and the empty-stream bodyless POST adapter behavior; corrected and re-reviewed. These verification findings are recorded separately, not added to adversarial defect density.
+
+Coverage includes strict DTOs and query boundaries, every new owner-scoped route, D1 migration/account identity, single-successor transaction, HTTP persistence/lost responses, cookies/CSRF/expiry/revocation, and retained send safety. Actual browser Secure-cookie acceptance and frontend visual QA remain a combined-run requirement. [Handoff](docs/handover/2026-10-05-server-recovery.md).
+
+## 2026-10-06 — Integrated product and account-boundary review checkpoint
+
+This entry records the current uncommitted integration work, separately from the verified historical milestones above. Review scope includes exact send-key recovery, stale-account protection, bounded mailbox history, Contacts consent/suppression, single-recipient Campaign drafts and Overview status counts. Backend and frontend remain simulated; no live provider/DNS/deployment review is implied.
+
+Known product UI findings at this checkpoint: three campaign defects (clipped long content; unauthorized responses retaining visible account content; an old prepared-request link surviving draft edits), plus the analogous Contacts unauthorized-content issue. Fixes and focused regression tests were added. The Contacts gateway was also changed to reuse the shared account-bound HTTP client rather than bypass its identity binding. These are five confirmed product findings in this narrow record; they are not the aggregate count for all parallel integration reviews. The Contacts effect-cleanup lint warning is a separate tooling finding, not an adversarial defect.
+
+Defect density for this checkpoint is pending the reviewers' measured exposure reconciliation; no estimated denominator is used. Historical defect densities above apply only to their dated assignments. Final acceptance still requires the updated unit/build log, real-backend browser suite, desktop/mobile light/dark screenshots and final review dispositions. Current reported Docker evidence: 56 backend tests passed and 45 demonstration browser tests passed with one intentional skip. Newly added product browser coverage has not yet been recorded as executed here.
+
+Design decisions: keep the existing send ledger as the sole quota/approval authority; draft preparation is not dispatch; use exact indexed recovery rather than history scans; keep account-specific UI data transient; page disconnected mailbox history rather than loading it at startup. These reduce duplicate policy and unbounded work while retaining explicit review. Production identity, provider sync, desktop isolation and operational acceptance remain separate gates, not merely missing credentials.
+## Resend delivery integration review
+
+Independent review covered 286 unique requested lines (receipt ingestion, migration, tests and provider adapter), plus bounded supporting ledger/contracts context. One confirmed P2 defect: the send adapter allowed recipient shapes that receipt correlation could not accept. Defect density: 3.50 per 1,000 requested lines. Fixed by rejecting multiple To recipients and any CC/BCC before transport; regression tests cover these shapes. Independent coordinator inspection confirms the guard precedes transport. The preceding Docker checkpoint passed 193 backend tests; this subsequent regression still requires the next Docker run.
+
+Svix verification was independently reviewed across 101 unique lines with zero confirmed behavioral defects (0 per 1,000 lines). Docker subsequently exposed a TypeScript BufferSource generic incompatibility; explicitly typing the decoded buffer as ArrayBuffer fixed compilation. The 193-test checkpoint includes the verifier and receipt service.
+
+Resend connection recovery UI was independently reviewed across 234 unique lines with zero confirmed defects (0 per 1,000). Disabled or invalid server provider configuration retains metadata and revocation access. Final combined web validation remains pending.
+
+## 2026-10-06 — Dispatch, notifications, AI seam and desktop design follow-up
+
+Independent reviewers applied the mandated adversarial rubric: functional purpose; null, empty and maximum inputs; cross-system state; authorization and validation; focused responsibilities and complexity; meaningful happy/failure tests; documentation and hot-path work. Reads were bounded to 200 lines and each assignment to 400 lines. Formatting belongs to lint. This is measured assignment exposure, not all-source coverage; assignments may overlap.
+
+| Assignment | Reviewed lines | Confirmed defects | Defects/1,000 lines | Disposition |
+| --- | ---: | ---: | ---: | --- |
+| Dispatch composition and recovery | 389 | 1 P2 | 2.57 | Resend unknown rows could starve supported receipt reconciliation; selection now filters immutable fake bindings |
+| Send runtime and persisted receipts | 355 | 1 P2 | 2.82 | In-memory fake receipts lost restart recovery; replaced with DurableFakeProvider |
+| Campaign envelope and unsubscribe coupling | 360 | 1 P2 | 2.78 | Missing origin permitted footerless Resend campaigns; preparation now fails closed and dispatch independently verifies token/origin |
+| Resend signed event route | 317 | 0 | 0 | No actionable defect found |
+| Inbox arrival notifications and coupling | 347 | 0 | 0 | Open-tab refresh scope accurately limited; no background push claim |
+| Contacts agent review of runtime, tests, Worker and configuration | 390 | 0 | 0 | No actionable defect found |
+| Relay and UI capabilities | 180 | 0 | 0 | No actionable defect found |
+| Lifecycle acknowledgement and durable recovery regression | 118 | 0 | 0 | Tests follow durable relay ownership rather than expecting blind queue retries |
+| AI HTTP context/draft seam | 256 | 0 | 0 | No actionable defect found; no native CLI integration implied |
+| Dedicated native design review | 184 | 0 | 0 | Offline assets only; native tooling, IPC and installation limitations documented |
+
+Total assignment exposure: 2,896 lines, three confirmed P2 defects, density 1.04 per 1,000 reviewed lines; all three fixed. Zero findings in a slice is not proof of absence of defects elsewhere. Historical entries above retain their original checkpoint limitations.
+
+Dedicated design analysis compared durable receipt recovery against memory-only receipts, bounded supported reconciliation against unsupported-row starvation, and immutable approved unsubscribe content against late mutation. Tradeoffs were reasoned analytically; no Obsidian connection or simulation was performed. Native fixture work remains in progress and unvalidated. Current Docker evidence and outstanding visual/native/production gates are recorded in [takeover validation](docs/validation/2026-10-06-takeover.md).
+
+### Restore and native fixture follow-up
+
+Independent bounded reviews covered the cold D1 restore regression (103 unique lines, zero defects, density 0/1,000) and native fixture harness (163 unique lines, zero defects, density 0/1,000). These add 266 assignment lines with no confirmed defects; source review does not establish native compilation or execution. The focused restore regression passed in Docker after the Worker build, separately from the 214-test backend suite; see output/takeover/restore-check.log. No full 215-test suite execution is claimed.
+
+## 2026-10-06 — Gmail replies and CLI preparation
+
+Independent Gmail reply review covered 338 unique lines and found one P2 (2.96 defects per 1,000 lines): trimming the original subject could reject a valid reply. Fixed by retaining exact reply subjects while ordinary compose still trims; nine focused Docker tests and static checks passed after the fix. Immutable source snapshots bind approved thread, recipient and headers. Custom Reply-To and reply-all are not supported.
+
+Frontend reply review covered 428 unique lines, zero actionable defects (0/1,000). No individual read exceeded 200 lines; the reviewer exceeded the requested assignment cap by 28 lines, disclosed here rather than claiming strict compliance. Separate CLI preparation review covered 133 unique lines, zero defects (0/1,000). The adapter remains a disabled fixture and does not establish real CLI compatibility or isolation.
+
+Dedicated design assessment favored immutable reply metadata and fail-closed provenance. Obsidian was unavailable; tradeoffs were assessed analytically, without a claimed simulation. Counts describe reviewed slices, not whole-repository coverage.
+
+
+## 2026-10-06 — Sequences, native process I/O and handoff tickets
+
+Independent bounded source reviews: Windows process I/O 339 unique lines, zero defects (0/1,000); sequence backend 340 lines, zero defects (0/1,000); sequence frontend source/tests initially 251 lines, zero defects (0/1,000). Follow-up frontend review covered the aggregate UTF-8 envelope bound, unchanged retries after due time, and regression tests; no actionable defect. The 18-line unsupported-reply browser regression was also reviewed without a finding. These counts are slice coverage, not a whole-repository assurance.
+
+Native ticket review covered 159 unique baseline lines and found two P2 defects (12.58/1,000): a slow request could use stale request-start time, and revocation during context loading could precede ticket consumption. Fixed with elapsed-time expiry checks and an atomic consume condition that rechecks the session and mailbox grants. Five Docker regressions and static checks passed, including delayed body and mid-context session revocation.
+
+Design review accepts at most 25 sequence records and three steps each; bounded per-record step reads are an intentional pilot tradeoff. Real activation is blocked before quota reservation until reply correlation is implemented. Installed CLI executables and administrator configuration are trusted local software; Windows process containment is not filesystem/network sandboxing. Obsidian is unavailable; these tradeoffs were assessed analytically, not through an Obsidian simulation.
+
+## Final frontend and pilot checks — 2026-10-06
+
+- Hunter source: 122 lines reviewed by the backend teammate; 1 P2 defect, density 8.20/1,000. Configuration status failure incorrectly hid independent revocation. Fixed and regression tested; rereview found no further defect.
+- Pilot measurement: 83 lines independently reviewed by coordinator; 0 defects, density 0/1,000. Harness scheduled-entrypoint typing: 7 lines, 0 defects, density 0/1,000. Reads remained below the 200-line review limit.
+- Docker web lint/typecheck/build and 480 tests across 51 files passed. API browser suite 39/40, then corrected obsolete enrichment-placeholder expectation and affected journey passed 1/1; dedicated Hunter gate regression passed in full run.
+- Pilot 10 owners/100 mailboxes/10k messages: 3,100 approvals at concurrency20 yielded exactly 3,000 reservations and100 quota refusals. Detailed local latency/resource limits are in docs/validation/2026-10-06-frontend-completion.md. No cloud performance or cost claim.
+
+## Restricted DNS, receiving and operations follow-up — 2026-10-06
+
+| Independent review assignment | Reviewed lines | Confirmed defects | Defects/1,000 lines |
+| --- | ---: | ---: | ---: |
+| Resend receiving envelope, signed receipt service, route, migration, tests and immutable-send coupling | 217 | 0 | 0 |
+| Receiving follow-up: Worker routing, sequence channel forwarding and transport/route regressions | 50 | 0 | 0 |
+| Coordinator review: isolated DNS planner, reader and tests | 122 | 0 | 0 |
+| Coordinator review: maintenance | 93 | 0 | 0 |
+| Coordinator review: health | 23 | 0 | 0 |
+| Coordinator review: restore | 71 | 0 | 0 |
+| Coordinator review: operations | 45 | 0 | 0 |
+
+Counts describe bounded assignment exposure, not disjoint whole-repository coverage. Coordinator counts are recorded from the coordinator's independent review reports. Reads remained within the 200-line limit and each assignment within 400 lines. Reviews applied the required functionality, boundary/authorization, state coupling, failure tests, maintainability and cost checklist; formatting belongs to automated checks. Zero findings is not proof of production readiness.
+
+Receiving follow-up examined tests lines 32–54, Worker lines 70–78 and 161–169, and sequences lines 38–46. The signed receipt proves receipt by the provider, not sender identity. An opaque reply address plus original-recipient matching can stop a campaign; it cannot grant consent or send mail. Receipt deduplication, campaign stop and waiting-send cancellation are atomic. Already in-flight mail cannot be recalled. Trusted operators must approve the receiving subdomain: a three-label check is not public-suffix validation. Live sequence activation remains disabled pending operational acceptance. See [receiving scope](docs/resend-replies.md).
+
+DNS review covered plan 46, reader 36 and tests 40 lines. Four focused Docker tests, scoped strict typecheck and lint passed. This boundary is read-only and is not connected to a DNS management UI. Its before-state fingerprint does not supply provider-side atomic conditional writes. No mutation executor, deployment or DNS change is claimed. See [DNS boundary](docs/dns-broker.md). Disposable test containers used `--rm`; no new images or build cache were created, and the shared backend image was retained for active work.
+
+Dedicated design comparison favored stop-only receiving correlation over treating a webhook as sender authentication, and isolated read-only DNS planning over claiming unsafe read-then-write atomicity. Obsidian was unavailable; this was analytical tradeoff assessment, not an Obsidian simulation. Operations review counts do not establish independent off-site recovery or live monitoring acceptance.
+
+## Final visual and desktop handoff review — 2026-10-06
+
+- Actual 20-frame desktop/mobile light/dark review found one mobile sequence action clipping defect. Fixed with wrapping; independent 17-line contextual review found zero additional defects (0/1,000). Screenshot rerun asserted button bounds and verified both mobile themes. This is one visual defect across 20 inspected frames, not a source-line density measurement.
+- Assistant title fix: five changed lines independently reviewed, zero defects (0/1,000). Existing hook reused and regression checks document title.
+- Desktop handoff: 138 source lines plus 44 test lines independently reviewed in reads below 200 lines (182 unique total); zero defects (0/1,000). Checked local window capability/origin boundary, atomic overlap guard, bounded malformed/expired input, async cleanup, redacted failures, memory-only handoff/output and no false sandbox claim. Tests meaningfully exercise overlap/release, bad handoffs, unavailable runtime, loading and plaintext results. Live CLI and installed-app acceptance were not inferred from fixtures.
+- Packaging follow-up: approximately50 additional script/workflow/copy lines reviewed (combined desktop assignment232 unique), zero functional defects (0/1,000). Fixed target-OS invocation, nonpublication/read-only permissions and ad-hoc Mac signing were checked; native bundler execution remains unverified. Full lint found a missing explicit Node URL import; owner fixed it, preserving behavior. Style findings are kept separate from adversarial defect density.
+- Sequence capability follow-up: coordinator independently reviewed approximately90 lines including context/tests, zero defects (0/1,000). Response flag is strictly boolean, unloaded/disabled copy fails closed, configured Resend still requires per-mailbox checks and individual approval. Focused Docker13 tests plus typecheck/scoped lint passed.
+- Final combined frontend checkpoint: whole-project lint, TypeScript, 485 tests/52 files and production build passed (complete-web-final.log). Updated mobile sequence browser regression passed 1/1. Generated image-only tauri-validation/dist was removed inside the disposable container before full lint; no repository ignore or source deletion. All one-off containers exited with --rm; shared preview remains until coordinator cleanup.
+
+## 2026-10-06 — Guarded sequence activation and desktop design
+
+Coordinator bounded activation review covered helper 13, migration 25, route 49, ledger transition deltas and tests 75 lines; follow-up covered migration 25, helper 13, relay context 60 and tests approximately 80. No additional defect was found in either bounded slice (0/1,000 reviewed lines); overlapping reads are not additive unique coverage.
+
+Integration inspection found two defects in the 85-line relay/migration boundary: the relay still excluded all real sequences, and the transition trigger incorrectly required fresh proof for a same-status pending deferral. Both were fixed with regression assertions for gated queue admission and deferred status preservation. Defects: 2; density: 23.53 per 1,000 inspected lines. The SQL guard applies only to actual state transitions; proof remains consumed after approval/dispatch. Channel domain, endpoint and secret rotation are tested alongside removal, default-off and legacy drafts. This is scoped evidence, not all-source coverage.
+
+Dedicated desktop design review examined 241 source/config lines across main.rs, desktop_draft.rs, tauri.conf.json and native_runtime.rs. Zero actionable design defects (0/1,000). Bundled local UI plus a narrow command and one-use server handoff avoids giving remote pages native execution authority. Manual paste reduces listener/deep-link exposure at the cost of convenience. Process locks, bounded I/O and Windows job containment address concurrency/resource lifecycle, not filesystem/network sandboxing. The installed executable, profile and managed policy remain trusted inputs; installed-CLI acceptance, macOS execution and installer visual validation remain outstanding. Obsidian was unavailable: these were analytical tradeoffs, not an Obsidian simulation. No real CLI or provider was invoked by this review.

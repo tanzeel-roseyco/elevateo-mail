@@ -117,3 +117,8 @@ describe('records and errors', () => {
     expect(describeServerError('brand_new_code')).toBe('The server refused the request (brand_new_code). Nothing was changed.')
   })
 })
+
+it('preserves a validated reply source and rejects malformed source ids', () => {
+  expect(checkSendContent(content({ replyToMessageId: 'source_1' }))).toEqual({ ok: true, content: content({ replyToMessageId: 'source_1' }) })
+  for (const replyToMessageId of ['', '../message', 'x'.repeat(129)]) expect(checkSendContent(content({ replyToMessageId })).ok).toBe(false)
+})

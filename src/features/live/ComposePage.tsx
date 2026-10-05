@@ -21,6 +21,7 @@ const split = (value: string): string[] => value.split(/[,;\s]+/).filter(Boolean
 const join = (list: string[]): string => list.join(', ')
 
 interface FormState {
+  replyToMessageId?: string
   mailboxId: string
   to: string
   cc: string
@@ -28,7 +29,7 @@ interface FormState {
   subject: string
   body: string
 }
-const toContent = (form: FormState): SendContent => ({ mailboxId: form.mailboxId, to: split(form.to), cc: split(form.cc), bcc: split(form.bcc), subject: form.subject, body: form.body })
+const toContent = (form: FormState): SendContent => ({ mailboxId: form.mailboxId, to: split(form.to), cc: split(form.cc), bcc: split(form.bcc), subject: form.subject, body: form.body, ...(form.replyToMessageId ? { replyToMessageId: form.replyToMessageId } : {}) })
 
 function ComposeForm({ initial, replaces }: { initial: FormState; replaces: ReplaceTarget | null }) {
   const navigate = useNavigate()
@@ -110,9 +111,10 @@ function ComposeForm({ initial, replaces }: { initial: FormState; replaces: Repl
           }}
           className="flex max-w-3xl flex-col gap-3 p-4 md:p-6"
         >
+          {form.replyToMessageId && <Callout tone="info" icon={Info}>Replying in the original Gmail conversation. Sender, recipients and subject stay fixed to preserve threading. <Button onClick={() => set({ replyToMessageId: undefined })}>Start a new conversation</Button></Callout>}
           <Field label="From" error={errorFor('mailboxId')}>
             {(p) => (
-              <Select {...p} value={form.mailboxId} onChange={(e) => set({ mailboxId: e.target.value })}>
+              <Select {...p} disabled={!!form.replyToMessageId} value={form.mailboxId} onChange={(e) => set({ mailboxId: e.target.value })}>
                 {senders.map((m) => (
                   <option key={m.id} value={m.id}>
                     {m.address}
@@ -122,21 +124,21 @@ function ComposeForm({ initial, replaces }: { initial: FormState; replaces: Repl
             )}
           </Field>
           <Field label="To" error={errorFor('to')} hint="Separate addresses with commas. Up to 30 recipients across To, CC and BCC.">
-            {(p) => <Input {...p} type="text" inputMode="email" autoComplete="off" value={form.to} onChange={(e) => set({ to: e.target.value })} />}
+            {(p) => <Input {...p} type="text" inputMode="email" autoComplete="off" disabled={!!form.replyToMessageId} value={form.to} onChange={(e) => set({ to: e.target.value })} />}
           </Field>
           <div className="grid gap-3 sm:grid-cols-2">
             <Field label="CC" error={errorFor('cc')}>
-              {(p) => <Input {...p} type="text" inputMode="email" autoComplete="off" value={form.cc} onChange={(e) => set({ cc: e.target.value })} />}
+              {(p) => <Input {...p} type="text" inputMode="email" autoComplete="off" disabled={!!form.replyToMessageId} value={form.cc} onChange={(e) => set({ cc: e.target.value })} />}
             </Field>
             <Field label="BCC" error={errorFor('bcc')}>
-              {(p) => <Input {...p} type="text" inputMode="email" autoComplete="off" value={form.bcc} onChange={(e) => set({ bcc: e.target.value })} />}
+              {(p) => <Input {...p} type="text" inputMode="email" autoComplete="off" disabled={!!form.replyToMessageId} value={form.bcc} onChange={(e) => set({ bcc: e.target.value })} />}
             </Field>
           </div>
           <Field label="Subject" error={errorFor('subject')}>
-            {(p) => <Input {...p} type="text" maxLength={998} value={form.subject} onChange={(e) => set({ subject: e.target.value })} />}
+            {(p) => <Input {...p} type="text" maxLength={998} disabled={!!form.replyToMessageId} value={form.subject} onChange={(e) => set({ subject: e.target.value })} />}
           </Field>
           <Field label="Message" error={errorFor('body')}>
-            {(p) => <Textarea {...p} rows={12} value={form.body} onChange={(e) => set({ body: e.target.value })} />}
+            {(p) => <Textarea {...p} rows={12} maxLength={100000} value={form.body} onChange={(e) => set({ body: e.target.value })} />}
           </Field>
           <Callout tone="info" icon={Info}>
             Nothing is sent from this screen, and what you type is not stored in this browser: leaving before you submit discards it. After review you submit the exact version to the server; it is sent only after you approve that version, and only if the mailbox still has capacity.
@@ -156,8 +158,9 @@ function ComposeForm({ initial, replaces }: { initial: FormState; replaces: Repl
 }
 
 const fromSaved = (saved: SavedSend, senderIds: string[]): FormState => ({
-  // A request saved for a mailbox that may no longer send falls back to one that can, visibly, in the From field.
-  mailboxId: senderIds.includes(saved.summary.mailboxId) ? saved.summary.mailboxId : (senderIds[0] ?? ''),
+  // AIDEV-NOTE: Threaded replies never move to another mailbox; the page gates unavailable reply senders.
+  replyToMessageId: saved.replyToMessageId,
+  mailboxId: saved.replyToMessageId || senderIds.includes(saved.summary.mailboxId) ? saved.summary.mailboxId : (senderIds[0] ?? ''),
   to: join(saved.to),
   cc: join(saved.cc),
   bcc: join(saved.bcc),
@@ -193,11 +196,12 @@ export function ComposePage() {
 
   if (!replaceId) {
     if (replyKey && (!original || original.status === 'loading' || original.status === 'idle')) return <Skeleton rows={8} />
-    // A message that cannot be read leaves an empty form rather than a guess at who to answer.
     const source = original?.status === 'ready' ? original.data : null
+    const replyMailbox = mailboxes.find((m) => m.id === given.mailboxId)
+    // AIDEV-NOTE: Never silently convert a failed or foreign reply into ordinary mail or change its sending mailbox.
+    if (replyKey && (!source || source.id !== given.replyTo || source.mailboxId !== given.mailboxId || source.incomplete || replyMailbox?.provider !== 'gmail' || !senderIds.includes(given.mailboxId ?? ''))) return <EmptyState icon={AlertTriangle} title="This message cannot be replied to" body="A complete message from a Gmail mailbox with sending enabled is required. Open the original message again after reconnecting or synchronising." action={<Button onClick={() => { if (given.mailboxId && given.replyTo) void live.openBody(given.mailboxId, given.replyTo) }}>Try again</Button>} />
     const mailboxId = given.mailboxId && senderIds.includes(given.mailboxId) ? given.mailboxId : (senderIds[0] ?? '')
-    const subject = source ? (/^re:/i.test(source.subject) ? source.subject : `Re: ${source.subject}`) : ''
-    return <ComposeForm key={`${replyKey ?? 'new'}:${source ? 'ready' : 'blank'}`} initial={{ mailboxId, to: source?.sender ?? '', cc: '', bcc: '', subject, body: '' }} replaces={null} />
+    return <ComposeForm key={`${replyKey ?? 'new'}:${source ? 'ready' : 'blank'}`} initial={{ mailboxId, to: source?.sender ?? '', cc: '', bcc: '', subject: source?.subject ?? '', body: '', ...(source ? { replyToMessageId: source.id } : {}) }} replaces={null} />
   }
 
   const saved = detail?.saved
@@ -210,6 +214,7 @@ export function ComposePage() {
   )
   if (detail?.successorId) return <EmptyState icon={Info} title="This request has already been replaced" body="A request has one replacement. Open it to review, approve or edit it." action={openRequest} />
   if (!detail?.status || !detail.revision || !canReplace(detail.status) || saved.data.kind !== 'manual') return <EmptyState icon={Info} title="This request can no longer be changed" body="It is being sent, was accepted, or its outcome is unknown, so it cannot be replaced." action={openRequest} />
+  if (saved.data.replyToMessageId && !senderIds.includes(saved.data.summary.mailboxId)) return <EmptyState icon={Info} title="The reply mailbox cannot send" body="Reconnect and enable the original mailbox before editing this reply." action={openRequest} />
   // Keyed by the saved version, so the form starts from exactly what the server holds.
   return <ComposeForm key={`${replaceId}:${detail.revision}`} initial={fromSaved(saved.data, senderIds)} replaces={{ id: replaceId, revision: detail.revision }} />
 }

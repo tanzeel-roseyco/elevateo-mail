@@ -18,7 +18,7 @@ async function loseSubmissions(page: Page, reach: boolean): Promise<void> {
   })
 }
 
-test('browse pages, open a lazily loaded body, reply, approve and track to acceptance', async ({ page }, info) => {
+test('browse pages, open a lazily loaded body, compose, approve and track to acceptance', async ({ page }, info) => {
   const bodyRequests: string[] = []
   page.on('request', (r) => {
     if (/\/v1\/messages\/[^?]+\/[^?]+$/.test(new URL(r.url()).pathname)) bodyRequests.push(r.url())
@@ -51,9 +51,8 @@ test('browse pages, open a lazily loaded body, reply, approve and track to accep
   await page.getByRole('button', { name: 'Newer messages' }).click()
   await expect(page.getByText('Page 1')).toBeVisible()
 
-  // The server offers no search, so the page offers none.
-  await expect(page.getByText('Search is not available yet.')).toBeVisible()
-  await expect(page.getByRole('searchbox')).toHaveCount(0)
+  // Search is a separate bounded metadata request; opening the inbox still fetches no bodies.
+  await expect(page.getByRole('link', { name: 'Search stored mail' })).toBeVisible()
 
   await rows.first().getByRole('link').click()
   await expect(page.getByRole('heading', { name: 'Quarterly invoice query', level: 2 })).toBeVisible()
@@ -64,9 +63,10 @@ test('browse pages, open a lazily loaded body, reply, approve and track to accep
   expect(await page.locator('article img, article script').count()).toBe(0)
   await shot(page, info, 'inbox-message')
 
-  await page.getByRole('button', { name: 'Reply' }).click()
-  await expect(page.getByLabel('To', { exact: true })).toHaveValue('sender0@partner.example')
-  await expect(page.getByLabel('Subject')).toHaveValue('Re: Quarterly invoice query')
+  // AIDEV-NOTE: Fake-provider fixtures cover ordinary sending; Gmail reply identity has separate boundary tests.
+  await page.goto('/compose')
+  await page.getByLabel('To', { exact: true }).fill('sender0@partner.example')
+  await page.getByLabel('Subject').fill('Quarterly invoice query')
   await page.getByLabel('Message', { exact: true }).fill('Thanks, the invoice is attached to our records.')
   await shot(page, info, 'compose')
   await page.getByRole('button', { name: 'Review' }).click()
@@ -487,7 +487,8 @@ test('one user cannot see another user\'s mailboxes, mail or send requests', asy
 
   // Alice's server-issued ids give bob nothing.
   await page.goto('/mail/alice-main')
-  await expect(page.getByText('Mailbox not found')).toBeVisible()
+  await expect(page.getByText('Mailbox could not be loaded', { exact: true })).toBeVisible()
+  await expect(page.getByText('Quarterly invoice query')).toHaveCount(0)
   const probe = (path: string, body?: object) => page.evaluate(async ([p, b]) => (await fetch(p!, b === undefined ? {} : { method: 'POST', credentials: 'same-origin', headers: { 'x-elevateo-csrf': '1', ...(b === null ? {} : { 'content-type': 'application/json' }) }, ...(b === null ? {} : { body: b }) })).status, [path, body === undefined ? undefined : Object.keys(body).length ? JSON.stringify(body) : null] as const)
   // A well-formed replacement, so a refusal is about whose request it is and not about the payload.
   const replacement = { revision: 'a'.repeat(64), draft: { mailboxId: 'bob-main', to: ['x@partner.example'], subject: 'S', body: 'B', kind: 'manual', revision: 1, idempotencyKey: 'probe-key-1' } }
@@ -587,29 +588,32 @@ test('status checks are bounded and stop when the request page closes', async ({
   expect(checks).toBe(afterLeaving)
 })
 
-test('unsupported areas say they are unavailable and offer no working control', async ({ page }, info) => {
+test('provider gates stay disabled while selected-mailbox AI permissions are independent', async ({ page }, info) => {
   await signIn(page)
   const requests: string[] = []
   page.on('request', (r) => {
     if (new URL(r.url()).pathname.startsWith('/v1/') && r.method() !== 'GET') requests.push(r.url())
   })
-  for (const [path, heading] of [
-    ['/overview', 'Overview is not available yet'],
-    ['/campaigns', 'Campaigns is not available yet'],
-    ['/campaigns/new', 'Campaigns is not available yet'],
-    ['/contacts', 'Contacts is not available yet'],
-    ['/assistant', 'AI Assistant is not available yet'],
-  ] as const) {
-    await page.goto(path)
-    await expect(page.getByRole('heading', { name: heading })).toBeVisible()
-    await expect(page.locator('main').getByRole('button')).toHaveCount(0)
-  }
-  await shot(page, info, 'unavailable-assistant')
-  for (const section of ['sending', 'enrichment', 'domains']) {
+  // Overview, contacts and campaigns have real server-backed journeys in product.spec.ts.
+  await page.goto('/assistant')
+  await expect(page.getByRole('heading', { name: 'AI Assistant', exact: true })).toBeVisible()
+  await page.getByLabel('Mailbox', { exact: true }).selectOption('alice-main')
+  await expect(page.getByText('Enable AI reading for this mailbox in Connections to inspect context.')).toBeVisible()
+  await expect(page.getByText('Enable AI drafting for this mailbox in Connections to save a draft.')).toBeVisible()
+  await expect(page.getByRole('button', { name: 'Save draft without sending' })).toHaveCount(0)
+  await shot(page, info, 'assistant-permission-gates')
+  for (const section of ['domains']) {
     await page.goto(`/connections/${section}`)
     await expect(page.getByText('Not available yet.')).toBeVisible()
     await expect(page.locator('main').locator('input, textarea, select')).toHaveCount(0)
   }
+  // AIDEV-NOTE: Sending now has server-backed metadata; disabled configuration must hide secret entry and writes.
+  await page.goto('/connections/sending')
+  await expect(page.getByText('Resend is disabled until server encryption and provider configuration are ready.')).toBeVisible()
+  await expect(page.getByLabel('Resend API key')).toHaveCount(0)
+  await expect(page.getByRole('button', { name: 'Store key' })).toHaveCount(0)
+  await expect(page.getByRole('button', { name: 'Verify sender' })).toHaveCount(0)
+  await expect(page.getByLabel('Connection to manage')).toHaveValue('')
   // AI permissions are real server flags, kept separate, and all off by default.
   await page.goto('/connections/ai')
   const row = page.getByRole('list', { name: 'AI permissions by mailbox' }).getByRole('listitem').filter({ hasText: 'alice@pilot.example' }).first()
@@ -625,4 +629,36 @@ test('unsupported areas say they are unavailable and offer no working control', 
   // Exactly one write reached the server, and it was the permission change.
   expect(requests).toHaveLength(1)
   expect(requests[0]).toMatch(/\/v1\/mailboxes\/alice-main\/permissions$/)
+})
+
+
+test('search stored subjects and open only the selected body', async ({ page }, info) => {
+  await signIn(page)
+  const bodies: string[] = []
+  page.on('request', request => {
+    if (/\/v1\/messages\/alice-main\/[^/?]+$/.test(new URL(request.url()).pathname)) bodies.push(request.url())
+  })
+  await page.getByRole('link', { name: 'Search stored mail' }).click()
+  await page.getByLabel('Subject or sender').fill('Quarterly invoice')
+  await page.getByRole('button', { name: 'Search newest messages' }).click()
+  const results = page.getByRole('region', { name: 'Search results' })
+  await expect(results.getByRole('link')).toHaveCount(1)
+  expect(bodies).toHaveLength(0)
+  await shot(page, info, 'search-results')
+  await results.getByRole('link').click()
+  await expect(page.getByRole('heading', { name: 'Quarterly invoice query', level: 2 })).toBeVisible()
+  expect(bodies).toHaveLength(1)
+})
+
+test('unsupported reply source never becomes an ordinary send, including after retry', async ({ page }) => {
+  await signIn(page)
+  await page.getByRole('list', { name: 'Messages in alice@pilot.example' }).getByRole('listitem').first().getByRole('link').click()
+  await page.getByRole('button', { name: 'Reply' }).click()
+  await expect(page.getByRole('heading', { name: 'This message cannot be replied to' })).toBeVisible()
+  await expect(page.getByLabel('Message', { exact: true })).toHaveCount(0)
+  await expect(page.getByRole('button', { name: 'Review', exact: true })).toHaveCount(0)
+  await page.getByRole('button', { name: 'Try again' }).click()
+  await expect(page.getByRole('heading', { name: 'This message cannot be replied to' })).toBeVisible()
+  expect(await intents('alice')).toEqual([])
+  expect(await browserStorage(page)).not.toMatch(/Quarterly|sender0@partner/)
 })

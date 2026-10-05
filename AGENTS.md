@@ -1,6 +1,6 @@
 # Project instructions
 
-Read README.md, state.md, documentation.md, and .planning/STANDARDS.md before making changes. The frontend standards in .planning/STANDARDS.md were approved on 2026-10-01 and are binding; violations are defects. Read docs/product-master-plan.md, docs/backend-blueprint.md and the proposed .planning/BACKEND-STANDARDS.md for future work. Backend standards are drafted but not approved: obtain explicit user approval before backend/desktop implementation. Raw research reports and older planning scenarios do not override the latest requirements.
+Read README.md, state.md, documentation.md, and .planning/STANDARDS.md before making changes. The frontend standards in .planning/STANDARDS.md were approved on 2026-10-01 and are binding; violations are defects. Read docs/product-master-plan.md, docs/backend-blueprint.md and the proposed .planning/BACKEND-STANDARDS.md for future work. The user authorised autonomous backend foundation work on 5 October and credential-free integration/desktop takeover on 6 October 2026. Unresolved production policy and live activation remain pending; consult .planning/BACKEND-STANDARDS.md for the current boundary. Raw research reports and older planning scenarios do not override the latest requirements.
 
 Keep README "Current state", state.md, and relevant documentation synchronized in every implementation commit. Use strict typing, boundary validation, deliberate errors, and no secrets. Search AIDEV anchors before editing and preserve/update their intent.
 

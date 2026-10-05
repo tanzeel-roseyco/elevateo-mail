@@ -1,5 +1,6 @@
-import type { SendContent } from '@/domain/sendLifecycle'
-import { capabilitiesResponse, createdIntent, currentUserResponse, fixtureSessionResponse, intentResponse, isServerId, logoutResponse, mailboxPage, messageDetail, messagePage, quotaResponse, replacementResponse, savedResponse, sendContentResponse, sendRequestPage, toCurrentUser, toIntent, toMailbox, toMessageBody, toMessagePage, toSavedSend, toSendPage, updatedResponse, type ServerMailbox } from './contract'
+import { createAiGateway } from './aiGateway'
+import { sendContentSchema, type SendContent } from '@/domain/sendLifecycle'
+import { capabilitiesResponse, createdIntent, currentUserResponse, fixtureSessionResponse, intentResponse, isServerId, logoutResponse, mailboxPage, messageDetail, messagePage, quotaResponse, replacementResponse, savedResponse, sendContentResponse, sendLookupResponse, sendRequestPage, toCurrentUser, toIntent, toMailbox, toMessageBody, toMessagePage, toSavedSend, toSendLookup, toSendPage, updatedResponse } from './contract'
 import { ApiFailure, type HttpClient } from './httpClient'
 import type { FixtureSignIn, ServerGateway } from './ports'
 
@@ -11,13 +12,11 @@ function pathId(value: string): string {
   return value
 }
 
-/** Historical mailboxes are kept by the server, so the inventory can exceed ten; three pages is a generous ceiling. */
-const MAX_MAILBOX_PAGES = 3
 /** The most message or send-request summaries one request may ask for, whatever a caller passes. */
 const MAX_MESSAGE_LIMIT = 50
 const clampLimit = (limit: number): string => String(Number.isFinite(limit) ? Math.min(Math.max(1, Math.trunc(limit)), MAX_MESSAGE_LIMIT) : 1)
 // `revision: 1`: each immutable request is its own first version; an edit is a new request with a new key.
-const draftBody = (key: string, content: SendContent) => ({ ...content, kind: 'manual', revision: 1, idempotencyKey: pathId(key) })
+const draftBody = (key: string, content: SendContent) => ({ ...sendContentSchema.parse(content), kind: 'manual', revision: 1, idempotencyKey: pathId(key) })
 
 export function createHttpGateway(http: HttpClient): ServerGateway {
   return {
@@ -30,16 +29,21 @@ export function createHttpGateway(http: HttpClient): ServerGateway {
     capabilities: () => http.request('GET', '/v1/capabilities', capabilitiesResponse),
 
     async listMailboxes() {
-      const all: ServerMailbox[] = []
-      let after: string | undefined
-      for (let page = 0; page < MAX_MAILBOX_PAGES; page++) {
-        const result = await http.request('GET', `/v1/mailboxes?limit=100${after ? `&after=${pathId(after)}` : ''}`, mailboxPage)
-        all.push(...result.items.map(toMailbox))
-        if (!result.next) return all
-        after = result.next.after
-      }
-      // More pages remain than this build reads: say so rather than present a cut-off list as the whole inventory.
-      throw new ApiFailure('unavailable', 'This account has more mailboxes than this version can list.')
+      const result = await http.request('GET', '/v1/mailboxes?connected=true&limit=10', mailboxPage)
+      if (result.next || result.items.length > 10 || result.items.some((m) => !m.connected)) throw new ApiFailure('unavailable', 'The connected mailbox inventory is invalid.')
+      return result.items.map(toMailbox)
+    },
+
+    async listMailboxHistory(after) {
+      const result = await http.request('GET', `/v1/mailboxes?connected=false&limit=25${after ? `&after=${pathId(after)}` : ''}`, mailboxPage)
+      if (result.items.length > 25 || result.items.some((m) => m.connected)) throw new ApiFailure('unavailable', 'The mailbox history response is invalid.')
+      return { items: result.items.map(toMailbox), next: result.next }
+    },
+
+    async getMailbox(id) {
+      const result = await http.request('GET', `/v1/mailboxes?id=${pathId(id)}&limit=1`, mailboxPage)
+      if (result.next || result.items.some((m) => m.id !== id)) throw new ApiFailure('unavailable', 'The mailbox response did not match this request.')
+      return result.items[0] ? toMailbox(result.items[0]) : null
     },
 
     async updateMailboxPermissions(mailboxId, permissions) {
@@ -71,8 +75,16 @@ export function createHttpGateway(http: HttpClient): ServerGateway {
       return toSendPage(await http.request('GET', `/v1/send-intents?${query.toString()}`, sendRequestPage))
     },
 
+    async lookupSendRequest(key) {
+      const query = new URLSearchParams({ idempotencyKey: pathId(key) })
+      const found = toSendLookup(await http.request('GET', `/v1/send-intents/lookup?${query}`, sendLookupResponse))
+      if (found && found.idempotencyKey !== key) throw new ApiFailure('unavailable', 'The recovery response did not match this request.')
+      return found
+    },
+
     getSendContent: async (intentId) => toSavedSend(await http.request('GET', `/v1/send-intents/${pathId(intentId)}/content`, sendContentResponse)),
 
+    createAiDraft: (key, content) => createAiGateway(http).saveDraft(key, content),
     createSendRequest: (key, content) => http.request('POST', '/v1/send-intents', createdIntent, draftBody(key, content)),
 
     replaceSendRequest: (intentId, revision, key, content) => http.request('POST', `/v1/send-intents/${pathId(intentId)}/replace`, replacementResponse, { revision, draft: draftBody(key, content) }),

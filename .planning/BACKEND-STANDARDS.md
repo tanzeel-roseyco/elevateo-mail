@@ -1,8 +1,8 @@
-# Backend and desktop standards — DRAFT, not approved
+# Backend and desktop standards — foundation authorised; production decisions proposed
 
-4 October 2026. These extend, rather than silently replace, the approved frontend-only [STANDARDS.md](STANDARDS.md). Planning is authorised; backend/desktop implementation awaits explicit approval under the user's project-standards rule. The [master plan](../docs/product-master-plan.md) explains the product; the [blueprint](../docs/backend-blueprint.md) defines proposed behaviour.
+4 October 2026. These extend, rather than silently replace, the approved frontend-only [STANDARDS.md](STANDARDS.md). The user explicitly authorised autonomous backend foundation implementation on 5 October 2026, with credentials last. The 6 October takeover request also authorises credential-free desktop and integration implementation. Live configuration, deployment and unresolved production decisions remain pending. The [master plan](../docs/product-master-plan.md) explains the product; the [blueprint](../docs/backend-blueprint.md) defines proposed behaviour.
 
-Review and challenge each numbered section. Record approval or changes by section here before implementation. All sections currently **proposed**.
+The takeover authorises implementation within these constraints; it does not approve unresolved production policy. Review and record those decisions by section before live activation. Production decisions remain **proposed**. The implemented credential-free foundation is described in [backend-foundation.md](../docs/backend-foundation.md).
 
 ## 1. Languages and versions
 
@@ -82,4 +82,9 @@ A backup in the same cloud account is not independent disaster recovery. Agree a
 
 | Sections | Status | Evidence |
 | --- | --- | --- |
-| 1–11 | Proposed, awaiting section-specific review | No backend/desktop implementation approval recorded |
+| 1–11 | Proposed, awaiting section-specific review | Backend foundation explicitly authorised 2026-10-05; remaining production/desktop decisions proposed |
+
+## Authorised foundation defaults (2026-10-05)
+Rolling 24 hours; normalised unique recipient deliveries across To/CC/BCC; maximum 30 per mailbox. Reconnects preserve provider identity and quota. Only connected records occupy the ten active slots; disconnected history retains quota, and replacements share a 300-recipient owner ceiling. Pending, dispatching and unknown outcomes reserve quota until cancellation or positive reconciliation; accepted usage ages from dispatch time. Scheduled approvals expire at scheduled time plus configured TTL (default one hour; 60–86400 seconds); schedules are bounded to 30 days. These are conservative simulation choices, not silent approval of launch policy. Quota constants are validated against SQL: changing them requires a reviewed migration, not an ignored environment override.
+
+Tooling uses a separate pinned backend lockfile to preserve frontend work; portable v1 runtime schemas and a fetch consumer share the integration boundary without creating an unnecessary package. Strict checks, behavioural failure tests and adversarial review apply now. Domain coverage measurement and real cloud performance/cost verification remain release checks; no production-readiness claim is made.

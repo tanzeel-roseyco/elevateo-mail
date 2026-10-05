@@ -152,27 +152,73 @@ describe('HTTP gateway', () => {
     expect(fetchImpl.mock.calls[0]![0]).toBe('/v1/messages?mailboxId=mb&limit=50')
   })
 
-  it('reports an inventory it cannot read to the end instead of a cut-off list', async () => {
+  it('refuses an incomplete connected inventory in one bounded request instead of following history', async () => {
     const fetchImpl = vi.fn<typeof fetch>(async () => json({ items: [], next: { after: 'more' }, simulated: true }))
     await expect(createHttpGateway(client(fetchImpl)).listMailboxes()).rejects.toMatchObject({ kind: 'unavailable' })
-    expect(fetchImpl).toHaveBeenCalledTimes(3)
+    expect(fetchImpl).toHaveBeenCalledTimes(1)
+    expect(fetchImpl.mock.calls[0]![0]).toBe('/v1/mailboxes?connected=true&limit=10')
   })
 
-  it('refuses an answer that declares itself too large without reading it', async () => {
-    const big = new Response('{}', { status: 200, headers: { 'content-length': '999999' } })
+  it('cancels an answer that declares itself too large without pulling body chunks', async () => {
+    const cancel = vi.fn()
+    const pull = vi.fn()
+    const stream = new ReadableStream<Uint8Array>({ pull, cancel }, { highWaterMark: 0 })
+    const big = new Response(stream, { status: 200, headers: { 'content-length': '999999' } })
     const error = await failure(client(async () => big).request('GET', '/x', capabilitiesResponse))
     expect(error.kind).toBe('unavailable')
-    expect(big.bodyUsed).toBe(false)
+    expect(cancel).toHaveBeenCalledOnce()
+    expect(pull).not.toHaveBeenCalled()
   })
 
-  it('follows mailbox pages and maps flags to booleans', async () => {
+  it('loads bounded connected inventory and maps flags to booleans', async () => {
     const row = (id: string, connected: 0 | 1) => ({ id, address: `${id}@example.com`, provider: 'fake', connected, send_enabled: 1, ai_read: 0, ai_draft: 0, ai_send: 0 })
-    const fetchImpl = vi.fn<typeof fetch>().mockResolvedValueOnce(json({ items: [row('a', 1)], next: { after: 'a' }, simulated: true })).mockResolvedValueOnce(json({ items: [row('b', 0)], next: null, simulated: true }))
+    const fetchImpl = vi.fn<typeof fetch>().mockResolvedValueOnce(json({ items: [row('a', 1)], next: null, simulated: true }))
     const mailboxes = await createHttpGateway(client(fetchImpl)).listMailboxes()
-    expect(fetchImpl.mock.calls.map((c) => c[0])).toEqual(['/v1/mailboxes?limit=100', '/v1/mailboxes?limit=100&after=a'])
+    expect(fetchImpl.mock.calls.map((c) => c[0])).toEqual(['/v1/mailboxes?connected=true&limit=10'])
     expect(mailboxes.map((m) => [m.id, m.connected, m.sendEnabled, m.aiRead])).toEqual([
       ['a', true, true, false],
-      ['b', false, true, false],
     ])
   })
+})
+
+// AIDEV-NOTE: Chunked UTF-8 replies must obey the byte budget even without a Content-Length header.
+it('cancels an oversized streamed response before consuming its tail', async () => {
+  const cancel = vi.fn()
+  let reads = 0
+  const stream = new ReadableStream<Uint8Array>({
+    pull(controller) {
+      reads++
+      controller.enqueue(new TextEncoder().encode('é'.repeat(70_000)))
+    },
+    cancel,
+  }, { highWaterMark: 0 })
+  const error = await failure(client(async () => new Response(stream)).request('GET', '/x', capabilitiesResponse))
+  expect(error.kind).toBe('unavailable')
+  expect(cancel).toHaveBeenCalledOnce()
+  expect(reads).toBe(2)
+})
+
+it('decodes JSON correctly across split UTF-8 chunks', async () => {
+  const encoded = new TextEncoder().encode(JSON.stringify({ error: { code: 'unknown_é', requestId: 'r1' } }))
+  const split = encoded.indexOf(195) + 1
+  const stream = new ReadableStream<Uint8Array>({ start(controller) {
+    controller.enqueue(encoded.slice(0, split))
+    controller.enqueue(encoded.slice(split))
+    controller.close()
+  } })
+  const error = await failure(client(async () => new Response(stream, { status: 409 })).request('GET', '/x', capabilitiesResponse))
+  expect(error.code).toBe('unknown_é')
+})
+
+it('preserves reply linkage on create, replacement and saved recovery, rejecting malformed returned linkage', async () => {
+  const threaded = { ...draft, replyToMessageId: 'source_1' }
+  const fetchImpl = vi.fn<typeof fetch>(async () => json({ id: 'i1', predecessorId: 'i0', revision: 'b'.repeat(64), status: 'draft', simulated: true }))
+  const gateway = createHttpGateway(client(fetchImpl))
+  await gateway.createSendRequest('key-1', threaded)
+  await gateway.replaceSendRequest('i0', 'a'.repeat(64), 'key-2', threaded)
+  expect(JSON.parse(String(fetchImpl.mock.calls[0]![1]?.body))).toMatchObject({ replyToMessageId: 'source_1' })
+  expect(JSON.parse(String(fetchImpl.mock.calls[1]![1]?.body))).toMatchObject({ draft: { replyToMessageId: 'source_1' } })
+  const content = { ...threaded, from: 'me@example.com', kind: 'manual' }
+  expect(await createHttpGateway(client(async () => json({ intent: row, content }))).getSendContent('i1')).toMatchObject({ replyToMessageId: 'source_1' })
+  await expect(createHttpGateway(client(async () => json({ intent: row, content: { ...content, replyToMessageId: '../bad' } }))).getSendContent('i1')).rejects.toMatchObject({ kind: 'unavailable' })
 })

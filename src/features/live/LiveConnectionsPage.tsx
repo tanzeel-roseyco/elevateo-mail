@@ -10,7 +10,14 @@ import { Button } from '@/ui/Button'
 import { confirm } from '@/ui/confirm'
 import { Switch } from '@/ui/Field'
 import { toast } from '@/ui/toast'
+import { MailboxHistoryControls } from './MailboxHistoryControls'
 import { capacitySummary, releaseNote } from './QuotaLine'
+import { ConnectionGrants } from './ConnectionGrants'
+import { GmailConnection, GmailSyncButton } from './GmailConnection'
+import { MessageImport } from './MessageImport'
+import { ResendConnection } from './ResendConnection'
+import { GmailSending } from './GmailSending'
+import { HunterConnection } from './HunterConnection'
 
 const permissionsOf = (m: ServerMailbox): MailboxPermissions => ({ connected: m.connected, sendEnabled: m.sendEnabled, aiRead: m.aiRead, aiDraft: m.aiDraft, aiSend: m.aiSend })
 
@@ -79,7 +86,8 @@ function MailboxesSection() {
 
   const disconnect = async (mailbox: ServerMailbox) => {
     if (!(await confirm({ title: `Disconnect ${mailbox.address}?`, body: 'The server stops using this mailbox for reading, sending and AI access. Its history and the capacity it has used stay recorded. A request already being sent cannot be recalled.', confirmLabel: 'Disconnect', danger: true }))) return
-    change(mailbox, { connected: false })
+    // AIDEV-NOTE: Disconnect revokes every permission; real provider grants cannot retain AI or send flags.
+    change(mailbox, { connected: false, sendEnabled: false, aiRead: false, aiDraft: false, aiSend: false })
   }
 
   return (
@@ -89,7 +97,9 @@ function MailboxesSection() {
         {policy ? ` of ${policy.connectedMailboxes}` : ''} mailboxes connected, as recorded by the server.
         {policy ? ` Each may send to at most ${policy.mailboxLimit} recipients in any ${policy.windowHours} hours, and the account ${policy.userLimit}. These limits are provisional and are enforced by the server, not by this page.` : ''}
       </p>
-      <Unavailable>Connecting a real Gmail or Google Workspace mailbox, and importing its history, need Google sign-in that is not built. Mailboxes listed here were provisioned for the pilot.</Unavailable>
+      <GmailConnection />
+      <ConnectionGrants />
+      <MailboxHistoryControls />
       {mailboxes.length === 0 ? (
         <EmptyState icon={Inbox} title="No mailboxes on this account" body="The server lists no mailboxes for you." />
       ) : (
@@ -100,12 +110,15 @@ function MailboxesSection() {
                 <span className="min-w-0 break-all text-sm font-semibold">{m.address}</span>
                 <Badge tone={m.connected ? 'success' : 'neutral'}>{m.connected ? 'Connected' : 'Disconnected'}</Badge>
                 {m.provider === 'fake' && <Badge tone="warn">Simulated provider</Badge>}
-                <Button size="sm" variant="ghost" className="ml-auto" disabled={pending} onClick={() => (m.connected ? void disconnect(m) : change(m, { connected: true }))}>
+                <Button size="sm" variant="ghost" className="ml-auto" disabled={pending || (!m.connected && m.provider !== 'fake')} onClick={() => (m.connected ? void disconnect(m) : change(m, { connected: true }))}>
                   {m.connected ? 'Disconnect' : 'Reconnect'}
                 </Button>
               </div>
+              {m.provider !== 'fake' && <p className="text-sm text-muted">Reconnect Gmail through the Gmail connection section or set up its stored connection. Sending requires its own permission.</p>}
               <Capacity mailboxId={m.id} />
-              <Switch label="Allow sending from this mailbox" description="Separate from reading. With this off, the server refuses every send from this mailbox." checked={m.sendEnabled} disabled={pending || !m.connected} onChange={(sendEnabled) => change(m, { sendEnabled })} />
+              <MessageImport mailboxId={m.id} />
+              {m.provider === 'gmail' && m.connected && <GmailSyncButton mailboxId={m.id} />}
+              {m.provider === 'gmail' && m.connected ? <GmailSending mailboxId={m.id} /> : <Switch label="Allow sending from this mailbox" description="Separate from reading. With this off, the server refuses every send from this mailbox." checked={m.sendEnabled} disabled={pending || !m.connected || m.provider !== 'fake'} onChange={(sendEnabled) => change(m, { sendEnabled })} />}
             </li>
           ))}
         </ul>
@@ -120,6 +133,7 @@ function AiSection() {
   return (
     <div className="mt-4 flex flex-col gap-5">
       <Unavailable>No assistant is connected, so nothing reads mail or writes drafts for you. The permissions below are stored and enforced by the server for when one is.</Unavailable>
+      <MailboxHistoryControls />
       {mailboxes.length === 0 ? (
         <EmptyState icon={Bot} title="No mailboxes on this account" body="AI permissions are set per mailbox." />
       ) : (
@@ -130,9 +144,10 @@ function AiSection() {
                 <span className="min-w-0 break-all text-sm font-semibold">{m.address}</span>
                 {!m.connected && <Badge tone="neutral">Disconnected · no AI access while disconnected</Badge>}
               </div>
-              <Switch label="May read this mailbox" description="Without this, the server gives an assistant none of this mailbox's messages." checked={m.aiRead} disabled={pending || !m.connected} onChange={(aiRead) => change(m, { aiRead })} />
-              <Switch label="May prepare drafts" description="Separate from reading. A draft is saved for you to review; it is never approved automatically." checked={m.aiDraft} disabled={pending || !m.connected} onChange={(aiDraft) => change(m, { aiDraft })} />
-              <Switch label="AI-prepared messages may be sent after my approval" description="Separate again. Even when on, each message needs your approval of that exact version, and the mailbox must be allowed to send." checked={m.aiSend} disabled={pending || !m.connected} onChange={(aiSend) => change(m, { aiSend })} />
+              {m.provider !== 'fake' && <p className="text-sm text-muted">Manage real mailbox AI read and draft access through its verified stored connection. AI sending remains disabled.</p>}
+              <Switch label="May read this mailbox" description="Without this, the server gives an assistant none of this mailbox's messages." checked={m.aiRead} disabled={pending || !m.connected || m.provider !== 'fake'} onChange={(aiRead) => change(m, { aiRead })} />
+              <Switch label="May prepare drafts" description="Separate from reading. A draft is saved for you to review; it is never approved automatically." checked={m.aiDraft} disabled={pending || !m.connected || m.provider !== 'fake'} onChange={(aiDraft) => change(m, { aiDraft })} />
+              <Switch label="AI-prepared messages may be sent after my approval" description="Separate again. Even when on, each message needs your approval of that exact version, and the mailbox must be allowed to send." checked={m.aiSend} disabled={pending || !m.connected || m.provider !== 'fake'} onChange={(aiSend) => change(m, { aiSend })} />
             </li>
           ))}
         </ul>
@@ -144,15 +159,19 @@ function AiSection() {
   )
 }
 
-const SendingSection = () => (
+const SendingSection = () => {
+  const capabilities = useLive(state => state.capabilities)
+  return (
   <div className="mt-4 flex flex-col gap-4">
-    <p className="text-[13px] text-muted">Messages are sent from the mailbox you choose when composing, after you approve the exact version. The server's provider is a simulation: an accepted message is a recorded receipt, not a real email.</p>
-    <Unavailable>Sending through a real provider, campaign sending identities and scheduled sending are not connected.</Unavailable>
+    <ResendConnection />
+    <p className="text-[13px] text-muted">{capabilities?.liveSending ? 'Live delivery requires provider configuration, verified sender access and your approval of the exact message. Manage Gmail sending separately under Mailboxes.' : capabilities?.simulated ? 'The server provider is a simulation: an accepted message is a recorded receipt, not a real email.' : 'Live sending is disabled.'}</p>
+    <p className="text-[13px] text-muted">Campaign drafts can hold a future review time; saving one never approves or dispatches it. Sender verification alone does not enable delivery.</p>
   </div>
 )
+}
 const EnrichmentSection = () => (
   <div className="mt-4">
-    <Unavailable>Contact enrichment is not connected, and there is nowhere to enter a key.</Unavailable>
+    <HunterConnection />
   </div>
 )
 const DomainsSection = () => (

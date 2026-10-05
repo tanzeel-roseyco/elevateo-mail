@@ -1,5 +1,21 @@
 # Product and design context
 
+## Current integration milestone — 6 October 2026
+
+The active worktree is `C:\Users\Tanzeel\Code and projects\Elevateo Mail - Integration`, branch `feature/application-integration`. Frontend and backend are integrated locally. Nothing has been pushed or deployed; no live sending or DNS writes occurred.
+
+Implemented: owner-isolated inbox and plaintext reading, contacts and explicit consent, sticky suppression, immutable send approval and lost-response recovery, campaign drafts and short sequences, Google login, Gmail sync/manual threaded replies, Resend transport/events/unsubscribe/receiving reply stop, optional Hunter enrichment, bounded search/import, selected-message AI context, native draft tickets, job health and expired-record maintenance. Provider capabilities are configuration gated. Every campaign step needs separate approval. Resend sequence activation is default-off and bound to the exact receiving channel; live acceptance is still required before enabling it.
+
+The Windows Claude companion has bounded process and protocol fixture coverage. The local-only desktop draft handoff is implemented and the Tauri shell compiles; Codex primary/fallback and macOS companion remain incomplete. Unsigned Windows/macOS packaging is scripted but installers have not been built or accepted. No operating-system filesystem/network sandbox or installed-app acceptance is claimed. DNS currently provides restricted read/change-plan primitives, not a live write executor. Notifications require an open tab refresh; there is no closed-app push.
+
+Latest checkpoints: backend static checks and 264 tests passed; final web lint/typecheck/build and 485 tests passed; 39 of 40 API browser checks passed, with the obsolete enrichment assertion corrected and its affected journey passing separately. Four compiled Tauri tests, five native protocol tests and twelve Windows process fixtures passed; the mobile sequence browser regression passed separately. Local simulated load admitted exactly 3,000 sends across 100 mailboxes and rejected 100 over-limit attempts. These are separate checkpoints, not production acceptance. See `docs/validation/2026-10-06-takeover.md` and `docs/completion-matrix.md` for evidence and outstanding work.
+
+The ledger uses provisional rolling limits of 30 recipients/mailbox and 300/user, with ten mailboxes/user. Production policy approval, real provider acceptance, desktop packaging/signing, cloud backup/key recovery and measured hosting cost remain gates. Under A$15/month is unproven. Root MX stays untouched. Credentials remain last; see `docs/credentials-last.md` for the configuration checklist and `docs/completion-matrix.md` for implementation gaps.
+
+## Historical planning and milestone record
+
+The record below describes earlier stages; the current integration section above supersedes its status claims.
+
 ## Confirmed product
 Elevateo Mail is a personal inbox and consent-based campaign application planned for web, Windows and macOS. Ten independent users can connect up to ten mailboxes each across separate Google Workspace organisations or personal Gmail. Users remain private from each other.
 
@@ -16,7 +32,7 @@ Cloud scheduling keeps approved campaigns running while the PC is off. Local Cod
 - [Backend blueprint](docs/backend-blueprint.md): data ownership, API boundaries, failure handling and rollout.
 - [Efficiency plan](docs/efficiency-plan.md): resource/cost controls and measurable performance targets.
 - [Connections contracts](docs/connections/README.md): provider capabilities, AI permissions and approved-subdomain DNS.
-- [Draft backend standards](.planning/BACKEND-STANDARDS.md): approval required before backend/desktop execution.
+- [Draft backend standards](.planning/BACKEND-STANDARDS.md): backend foundation authorised on 2026-10-05; production and desktop decisions remain open.
 - [Research index](docs/research/2026-10-04/README.md): six initial and ten follow-up assignments, evidence and limitations.
 
 ## Current prototype and its limits
@@ -129,3 +145,24 @@ Verification: all ten pages rendered and visually inspected; extracted text, ten
 - What is typed in Compose lives in component memory until submitted. Leaving the page discards it. Reply passes two ids through router state, never an address or subject.
 - Records from the earlier version (`elevateo:sends:*`): a record is removed from the browser only when the server returns saved content under the same key that says the same thing. All others stay, are counted on the Send requests page without showing their text, and go only when the person chooses Discard. The old `elevateo:session` token is removed at start.
 - Sign-in: production has none. The Docker fixture build (`VITE_FIXTURE_SESSION=1`) shows two synthetic-user buttons; any other build shows "You are not signed in".
+
+## Backend foundation (2026-10-05)
+The credential-free backend is implemented in backend/. Canonical contracts, conservative quota semantics, secure setup, restore procedure and remaining integration work are in [backend-foundation.md](docs/backend-foundation.md). The browser prototype remains separate; no live provider or DNS operation is enabled.
+
+Backend completion verification (2026-10-05): final Docker types/lint/typecheck/dry-run bundle and 24 tests passed. Twelve adversarial/design defects fixed. Task-owned Docker image/cache removed; persistent volumes retained. See docs/validation/2026-10-05-backend.md. Committed implementation retains disabled real sending, DNS and deployment; original CLI artifacts remain uncommitted.
+
+
+## Credential-free HTTP integration milestone (2026-10-05)
+
+Backend-owned first journey implemented: capability discovery, stable mailbox inventory/independent AI read-draft flags, bounded summaries/lazy plaintext bodies, authoritative mailbox/owner quota and immutable create-approve-inspect-cancel. Portable runtime DTOs and HTTP client are the frontend seam: [integration v1](docs/contracts/integration-v1.md). [Docker-only synthetic fixture instructions](docs/integration-fixtures.md). Actual Fable gateway/UI wiring is still owned by Fable and has not been claimed complete here.
+
+Due approval enqueues immediately; one-minute relay performs bounded reconciliation. Unknown outcomes never release quota or trigger blind resend. Independent persisted-envelope digest rejects corruption before invocation; legacy undigested requests fail closed. Only connected records count toward ten connection slots, while historical charges survive replacement under the provisional 300 owner/30 mailbox rolling 24-hour recipient policy. Ten users therefore permit at most 3,000 recipient sends/day under this rule; production policy approval remains open.
+
+No credentials, DNS writes, real providers, external email, deployment or push. Original interrupted CLI artifacts remain preserved. Docker types/lint/typecheck/dry-run bundle, all 38 tests and the separate HTTP demo passed. Six review defects were fixed. [Validation and cleanup](docs/validation/2026-10-05-integration.md) records scoped image/cache removal, retained persistent volumes and the host-space/compaction limitation. Credentials-last production gates remain in fixture instructions.
+
+## Server-owned recovery and browser boundary (2026-10-05)
+
+Continued feature/backend-foundation from 5fe7193. Read Fable integration 5973eb4 and handover a5aa594; its worktree was not edited. Contract was extended before implementation: opaque GET /v1/me, bounded owner GET /v1/send-intents, lazy GET /:id/content, atomic POST /:id/replace, and bodyless POST /v1/session/logout. Identical replacements converge; conflicts never approve or send automatically. Docker-only cookie provisioning is separate from the Worker. HttpOnly/Secure/SameSite cookies, exact Origin plus CSRF marker, D1 expiry and revocation protect the browser boundary. Non-browser bearer compatibility remains.
+
+Canonical handoff: docs/handover/2026-10-05-server-recovery.md. Fixture instructions: docs/integration-fixtures.md. Recovery content lives in D1, not frontend localStorage. Separate AI permissions and all existing conservative send/quota/unknown recovery protections remain. Production IdP, actual combined browser cookie/visual verification and live integrations are incomplete. No credentials, external sending, DNS, deployment or push; original uncommitted CLI artifacts preserved.
+Final Docker verification: generated types, lint, strict typecheck, dry-run bundle and 45/45 tests passed; separate HTTP simulated acceptance demo passed. Adversarial/design review complete, three source/test and one documentation finding fixed. Task image and 24 exact build-cache records removed (1.203 GB reported); persistent volumes retained. Validation: docs/validation/2026-10-05-server-recovery.md.

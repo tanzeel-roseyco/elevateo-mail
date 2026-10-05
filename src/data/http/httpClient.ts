@@ -1,6 +1,6 @@
 import type { z } from 'zod'
 import { describeServerError } from '@/domain/sendLifecycle'
-import { errorResponse } from './contract'
+import { currentUserResponse, errorResponse } from './contract'
 
 // AIDEV-NOTE: The only place that calls fetch in API-backed mode. Pure transport: it never touches a store and has
 // no mock fallback. A failure is always thrown as ApiFailure, so "unavailable" can never look like success.
@@ -52,9 +52,14 @@ const MAX_RESPONSE_BYTES = 262_144
 export function createHttpClient(options: HttpClientOptions): HttpClient {
   const transport = options.fetch ?? ((input, init) => fetch(input, init))
   const timeoutMs = options.timeoutMs ?? DEFAULT_TIMEOUT_MS
+  let accountId: string | null = null
+  let identityRefresh = 0
 
   return {
     async request(method, path, schema, body) {
+      const refreshesIdentity = method === 'GET' && path === '/v1/me'
+      const refresh = refreshesIdentity ? ++identityRefresh : identityRefresh
+      const expectedAccount = accountId
       const controller = new AbortController()
       const timer = setTimeout(() => controller.abort(), timeoutMs)
       let response: Response
@@ -66,14 +71,37 @@ export function createHttpClient(options: HttpClientOptions): HttpClient {
           // The session is an HttpOnly cookie the browser attaches itself; this code never sees or stores it.
           credentials: 'same-origin',
           // Every state-changing request carries the marker the server requires, so another site cannot forge one.
-          headers: { accept: 'application/json', ...(method === 'GET' ? {} : { 'x-elevateo-csrf': '1' }), ...(body === undefined ? {} : { 'content-type': 'application/json' }) },
+          headers: { accept: 'application/json', ...(!refreshesIdentity && expectedAccount !== null ? { 'x-elevateo-account': expectedAccount } : {}), ...(method === 'GET' ? {} : { 'x-elevateo-csrf': '1' }), ...(body === undefined ? {} : { 'content-type': 'application/json' }) },
           ...(body === undefined ? {} : { body: JSON.stringify(body) }),
           cache: 'no-store',
           signal: controller.signal,
         })
-        // A declared length over the cap is refused without reading the body at all.
+        // A declared length over the cap is canceled without reading, stopping background downloads too.
         oversized = Number(response.headers.get('content-length') ?? 0) > MAX_RESPONSE_BYTES
-        text = oversized ? '' : await response.text()
+        text = ''
+        if (oversized) await response.body?.cancel()
+        if (!oversized && response.body) {
+          // AIDEV-NOTE: Bound streamed bytes before decoding; Content-Length may be absent or dishonest.
+          const reader = response.body.getReader()
+          const decoder = new TextDecoder()
+          let bytes = 0
+          try {
+            for (;;) {
+              const chunk = await reader.read()
+              if (chunk.done) break
+              bytes += chunk.value.byteLength
+              if (bytes > MAX_RESPONSE_BYTES) {
+                oversized = true
+                await reader.cancel()
+                break
+              }
+              text += decoder.decode(chunk.value, { stream: true })
+            }
+            if (!oversized) text += decoder.decode()
+          } finally {
+            reader.releaseLock()
+          }
+        }
       } catch {
         if (controller.signal.aborted) throw new ApiFailure('timeout', 'The server did not answer in time.')
         throw new ApiFailure('network', 'The server could not be reached.')
@@ -98,6 +126,16 @@ export function createHttpClient(options: HttpClientOptions): HttpClient {
       const parsed = schema.safeParse(data)
       // Fail loud: a shape we do not understand is never rendered as if it were data.
       if (!parsed.success) throw new ApiFailure('unavailable', 'The server sent an answer this version of the app does not understand.', null, response.status)
+      // AIDEV-NOTE: A late response must never repopulate a different account's cleared UI state.
+      if ((refreshesIdentity && refresh !== identityRefresh) || (!refreshesIdentity && expectedAccount !== accountId)) {
+        throw new ApiFailure('unauthorized', 'The account changed. Refresh the session.', 'unauthorized', 401)
+      }
+      if (refreshesIdentity) {
+        const identity = currentUserResponse.safeParse(data)
+        if (!identity.success) throw new ApiFailure('unavailable', 'The server sent an invalid account identity.', null, response.status)
+        // AIDEV-NOTE: Keep the binding on errors/logout; only a valid /me may unlock requests for another account.
+        accountId = identity.data.accountId
+      }
       return parsed.data
     },
   }

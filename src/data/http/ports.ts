@@ -19,8 +19,10 @@ export interface ServerGateway {
   /** Ends the current session on the server and expires its cookie. */
   logout(): Promise<void>
   capabilities(): Promise<Capabilities>
-  /** Connected and historical mailboxes, with server-issued ids. */
+  /** Connected operational inventory only, at most ten. History is fetched explicitly. */
   listMailboxes(): Promise<ServerMailbox[]>
+  listMailboxHistory(after: string | null): Promise<{ items: ServerMailbox[]; next: { after: string } | null }>
+  getMailbox(id: string): Promise<ServerMailbox | null>
   /** Replaces all five flags at once; the caller must send the full current set. */
   updateMailboxPermissions(mailboxId: string, permissions: MailboxPermissions): Promise<void>
   mailboxQuota(mailboxId: string): Promise<MailboxQuota>
@@ -29,8 +31,12 @@ export interface ServerGateway {
   getMessage(mailboxId: string, messageId: string): Promise<MessageBody>
   /** One page of the account's saved send requests, newest first, without content. */
   listSendRequests(cursor: SendCursor | null, limit: number): Promise<{ items: SendSummary[]; next: SendCursor | null }>
+  /** Exact owner-scoped recovery lookup; null confirms the key is absent. No message content is returned. */
+  lookupSendRequest(key: string): Promise<SendSummary | null>
   /** The exact saved content of one request. */
   getSendContent(intentId: string): Promise<SavedSend>
+  /** Optional AI seam; shares the idempotent key ledger but must never fall back to a manual draft. */
+  createAiDraft?(key: string, content: SendContent): Promise<CreatedIntent>
   /** Idempotent on `key`: repeating it with identical content returns the request already saved, in its current state. */
   createSendRequest(key: string, content: SendContent): Promise<CreatedIntent>
   /**

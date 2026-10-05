@@ -26,7 +26,7 @@ export const capabilitiesResponse = z.object({
 })
 export type Capabilities = z.infer<typeof capabilitiesResponse>
 
-const mailboxRow = z.object({ id, address: z.string(), provider: z.string(), connected: flag, send_enabled: flag, ai_read: flag, ai_draft: flag, ai_send: flag })
+const mailboxRow = z.object({ id, address: z.string(), provider: z.string(), connected: flag, send_enabled: flag, ai_read: flag, ai_draft: flag, ai_send: flag, arrival_count: z.number().int().nonnegative().max(Number.MAX_SAFE_INTEGER).default(0) })
 export const mailboxPage = z.object({ items: z.array(mailboxRow).max(100), next: z.object({ after: id }).nullable() })
 
 /** Server mailbox as the UI uses it. `id` is issued by the server and is the only handle ever sent back. */
@@ -39,8 +39,10 @@ export interface ServerMailbox {
   aiRead: boolean
   aiDraft: boolean
   aiSend: boolean
+  /** Monotonic incremental inbox arrivals; older servers omit this and cannot notify. */
+  arrivalCount?: number
 }
-export const toMailbox = (row: z.infer<typeof mailboxRow>): ServerMailbox => ({ id: row.id, address: row.address, provider: row.provider, connected: row.connected === 1, sendEnabled: row.send_enabled === 1, aiRead: row.ai_read === 1, aiDraft: row.ai_draft === 1, aiSend: row.ai_send === 1 })
+export const toMailbox = (row: z.infer<typeof mailboxRow>): ServerMailbox => ({ id: row.id, address: row.address, provider: row.provider, connected: row.connected === 1, sendEnabled: row.send_enabled === 1, aiRead: row.ai_read === 1, aiDraft: row.ai_draft === 1, aiSend: row.ai_send === 1, arrivalCount: row.arrival_count })
 
 export type MailboxPermissions = Pick<ServerMailbox, 'connected' | 'sendEnabled' | 'aiRead' | 'aiDraft' | 'aiSend'>
 
@@ -66,11 +68,12 @@ const toSummary = (row: z.infer<typeof summaryRow>): MessageSummary => ({ id: ro
 export const toMessagePage = (page: z.infer<typeof messagePage>): { items: MessageSummary[]; next: MessageCursor | null } => ({ items: page.items.map(toSummary), next: page.next })
 
 // The server marks every body as plain text from an untrusted sender; anything else is refused rather than rendered.
-export const messageDetail = z.object({ message: summaryRow.extend({ body: z.string().max(100_000) }), contentType: z.literal('text/plain'), trust: z.literal('untrusted-email') })
+export const messageDetail = z.object({ message: summaryRow.extend({ body: z.string().max(100_000) }), contentType: z.literal('text/plain'), trust: z.literal('untrusted-email'), incomplete: z.boolean().default(false) })
 export interface MessageBody extends MessageSummary {
   body: string
+  incomplete?: boolean
 }
-export const toMessageBody = (detail: z.infer<typeof messageDetail>): MessageBody => ({ ...toSummary(detail.message), body: detail.message.body })
+export const toMessageBody = (detail: z.infer<typeof messageDetail>): MessageBody => ({ ...toSummary(detail.message), body: detail.message.body, incomplete: detail.incomplete })
 
 const status = z.enum(SERVER_SEND_STATUSES)
 export const createdIntent = z.object({ id, revision: hash, status })
@@ -103,6 +106,7 @@ export interface CurrentUser {
 export const toCurrentUser = (me: z.infer<typeof currentUserResponse>): CurrentUser => ({ accountId: me.accountId, sessionExpiresAt: new Date(me.session.expiresAt).toISOString() })
 
 const sendSummaryRow = z.object({ id, mailbox_id: id, idempotency_key: id, revision: hash, status, created_at: timestamp, updated_at: timestamp, scheduled_at: timestamp, successor_id: id.nullable() })
+export const sendLookupResponse = z.object({ intent: sendSummaryRow.nullable(), simulated: z.boolean() })
 export type SendCursor = { before: number; beforeId: string }
 export const sendRequestPage = z.object({ items: z.array(sendSummaryRow).max(50), next: z.object({ before: timestamp, beforeId: id }).nullable() })
 
@@ -118,14 +122,16 @@ export interface SendSummary {
   successorId: string | null
 }
 const toSendSummary = (row: z.infer<typeof sendSummaryRow>): SendSummary => ({ id: row.id, mailboxId: row.mailbox_id, idempotencyKey: row.idempotency_key, revision: row.revision, status: row.status, createdAt: new Date(row.created_at).toISOString(), successorId: row.successor_id })
+export const toSendLookup = ({ intent }: z.infer<typeof sendLookupResponse>): SendSummary | null => intent ? toSendSummary(intent) : null
 export const toSendPage = (page: z.infer<typeof sendRequestPage>): { items: SendSummary[]; next: SendCursor | null } => ({ items: page.items.map(toSendSummary), next: page.next })
 
 export const sendContentResponse = z.object({
   intent: sendSummaryRow,
-  content: z.object({ from: z.string(), to: z.array(z.string()).max(30), cc: z.array(z.string()).max(30), bcc: z.array(z.string()).max(30), subject: z.string().max(998), body: z.string().max(100_000), kind: z.enum(['manual', 'campaign', 'ai']) }),
+  content: z.object({ replyToMessageId: id.optional(), from: z.string(), to: z.array(z.string()).max(30), cc: z.array(z.string()).max(30), bcc: z.array(z.string()).max(30), subject: z.string().max(998), body: z.string().max(100_000), kind: z.enum(['manual', 'campaign', 'ai']) }),
 })
 /** The exact saved content of one request, fetched only when it is opened. Kept in memory, never in browser storage. */
 export interface SavedSend {
+  replyToMessageId?: string
   summary: SendSummary
   from: string
   to: string[]

@@ -70,10 +70,16 @@ function fakeServer() {
     logout: async () => step('logout', () => void (cookie.user = null)),
     capabilities: async () => step('capabilities', () => capabilities),
     listMailboxes: async () => step('listMailboxes', () => [mailbox]),
+    listMailboxHistory: async () => step('listMailboxHistory', () => ({ items: [], next: null })),
+    getMailbox: async (id) => step('getMailbox', () => id === mailbox.id ? mailbox : null),
     updateMailboxPermissions: async () => step('updateMailboxPermissions', () => undefined),
     mailboxQuota: async () => step('mailboxQuota', () => quota),
     listMessages: async ({ cursor }) => step('listMessages', () => ({ items: [{ id: cursor ? 'old' : 'new', threadId: 't', mailboxId: 'mbx-1', sender: 's@example.com', subject: `For ${owner()}`, at: '2026-10-05T00:00:00.000Z' }], next: cursor ? null : { before: 1, beforeId: 'new' } })),
     getMessage: async (_m, id) => step('getMessage', () => ({ id, threadId: 't', mailboxId: 'mbx-1', sender: 's@example.com', subject: 'S', at: '2026-10-05T00:00:00.000Z', body: `body of ${id}` })),
+    lookupSendRequest: async (key) => step('lookupSendRequest', () => {
+      const found = mine().find((intent) => intent.key === key)
+      return found ? summary(found) : null
+    }),
     listSendRequests: async (cursor, limit) =>
       step('listSendRequests', () => {
         const sorted = mine().sort((x, y) => y.createdAt - x.createdAt)
@@ -87,7 +93,7 @@ function fakeServer() {
     getSendContent: async (id) =>
       step('getSendContent', () => {
         const i = byId(id)
-        return { summary: summary(i), from: mailbox.address, to: i.content.to, cc: i.content.cc, bcc: i.content.bcc, subject: i.content.subject, body: i.content.body, kind: 'manual' as const }
+        return { summary: summary(i), from: mailbox.address, to: i.content.to, cc: i.content.cc, bcc: i.content.bcc, subject: i.content.subject, body: i.content.body, replyToMessageId: i.content.replyToMessageId, kind: 'manual' as const }
       }),
     createSendRequest: async (key, body) =>
       step('createSendRequest', () => {
@@ -193,6 +199,37 @@ beforeEach(() => {
   live = tab(server, local)
 })
 afterEach(() => vi.useRealTimers())
+
+describe('AI draft submission shares durable recovery', () => {
+  it('refuses an unavailable AI adapter without falling back to manual creation', async () => {
+    await signedIn()
+    expect((await live.submitAi(content)).outcome).toBe('refused')
+    expect(server.count('createSendRequest')).toBe(0)
+  })
+  it('persists before AI creation and retries only the identical AI key after a lost answer', async () => {
+    await signedIn()
+    const ai = vi.fn(async (key: string, draft: SendContent) => {
+      expect(stored(local)).toContain(key)
+      return server.gateway.createSendRequest(key, draft)
+    })
+    server.gateway.createAiDraft = ai
+    server.failNext('createSendRequest', lost(), true)
+    const result = await live.submitAi(content)
+    expect(result.outcome).toBe('unconfirmed')
+    if (result.outcome !== 'unconfirmed') throw new Error('Expected recovery key')
+    expect(await live.resolvePending(result.key)).toBeTruthy()
+    expect(ai).toHaveBeenCalledTimes(2)
+    expect(ai.mock.calls[0]).toEqual(ai.mock.calls[1])
+    expect(server.intents).toHaveLength(1)
+  })
+  it('does not create an AI draft when key storage fails', async () => {
+    await signedIn()
+    server.gateway.createAiDraft = vi.fn()
+    local.refuseWrites(true)
+    expect((await live.submitAi(content)).outcome).toBe('refused')
+    expect(server.gateway.createAiDraft).not.toHaveBeenCalled()
+  })
+})
 
 describe('session', () => {
   it('starts signed out when the server knows no session, and holds nothing', async () => {
@@ -327,7 +364,7 @@ describe('account change in another tab', () => {
     expect(state().pending).toEqual([])
     await live.fixtureSignIn('alice')
     await flush()
-    // Nothing was saved, and after the sign-in the server list says so.
+    // Nothing was saved, and after the sign-in the exact lookup says so.
     expect(state().pending).toMatchObject([{ state: 'missing' }])
   })
 })
@@ -390,7 +427,7 @@ describe('submitting', () => {
     expect(state().pending).toEqual([])
   })
 
-  it('recovers a lost answer after a reload from the server list, without the content', async () => {
+  it('recovers a lost answer after a reload from the exact lookup, without the content', async () => {
     await signedIn()
     server.failNext('createSendRequest', lost(), true)
     await live.submit(content)
@@ -435,7 +472,7 @@ describe('submitting', () => {
     await live.submit(content)
     const key = state().pending[0]!.key
     live = tab(server, local)
-    server.failNext('listSendRequests', lost())
+    server.failNext('lookupSendRequest', lost())
     await live.start()
     await flush()
     expect(state().pending).toMatchObject([{ key, state: 'waiting' }])
@@ -528,7 +565,7 @@ describe('answers that arrive out of order or under the wrong account', () => {
     expect(detail(id)).toMatchObject({ status: 'pending', saved: { status: 'ready' } })
   })
 
-  it('continues a long search where it stopped instead of starting over', async () => {
+  it('recovers behind hundreds of newer requests with one exact lookup', async () => {
     await signedIn()
     server.failNext('createSendRequest', lost(), true)
     await live.submit(content)
@@ -537,9 +574,9 @@ describe('answers that arrive out of order or under the wrong account', () => {
     live = tab(server, local)
     await live.start()
     for (let i = 0; i < 10; i++) await flush()
-    expect(state().pending).toMatchObject([{ key, state: 'waiting' }])
-    expect(state().pending[0]!.notice).toContain('continue from where it stopped')
-    expect(await live.resolvePending(key)).toBe('intent-1')
+    expect(server.intents[0]!.key).toBe(key)
+    expect(server.count('lookupSendRequest')).toBe(1)
+    expect(server.count('listSendRequests')).toBe(0)
     expect(state().pending).toEqual([])
     expect(server.count('createSendRequest')).toBe(1)
   })
@@ -786,7 +823,7 @@ describe('records left by the earlier version', () => {
     expect(state().legacy).toEqual([])
   })
 
-  it('recovers an unconfirmed record by its key from the server list', async () => {
+  it('recovers an unconfirmed record by its key from the exact lookup', async () => {
     server.cookie.user = 'alice'
     server.insert('old-key-1', { ...content, body: 'Old private text' })
     // Far enough back that it is not on the first page of the list.
@@ -833,6 +870,26 @@ describe('records left by the earlier version', () => {
 })
 
 describe('mail and mailboxes', () => {
+  it('refreshes cached bodies and completeness, fences stale reads, and fails without stale text', async () => {
+    await signedIn()
+    await live.openList('mbx-1')
+    const original = server.gateway.getMessage
+    const old = await original('mbx-1', 'new')
+    let resolveOld!: (value: typeof old) => void
+    server.gateway.getMessage = () => new Promise(resolve => { resolveOld = resolve })
+    const pending = live.openBody('mbx-1', 'new')
+    server.gateway.getMessage = async () => ({ ...old, body: 'Current saved text', incomplete: true })
+    await live.reloadPage()
+    expect(state().bodies[0]?.body).toMatchObject({ status: 'ready', data: { incomplete: true, body: 'Current saved text' } })
+    resolveOld(old)
+    await pending
+    expect(state().bodies[0]?.body).toMatchObject({ status: 'ready', data: { incomplete: true } })
+    server.gateway.getMessage = async () => { throw lost() }
+    await live.reloadPage()
+    expect(state().bodies[0]?.body.status).toBe('error')
+    expect(JSON.stringify(state().bodies)).not.toContain('Current saved text')
+  })
+
   it('opens one page at a time and reports a page that cannot be read', async () => {
     await signedIn()
     await live.openList('mbx-1')
@@ -923,4 +980,43 @@ describe('status checks', () => {
     await vi.advanceTimersByTimeAsync(10 * 60_000)
     expect(server.calls.length).toBe(before)
   })
+})
+
+
+describe('bounded mailbox history', () => {
+  it('replaces history pages, retains the selected archive, and keeps it on failure', async () => {
+    const server = fakeServer()
+    const app = tab(server, memoryStorage())
+    await app.fixtureSignIn('alice')
+    const archive = (id: string): ServerMailbox => ({ ...mailbox, id, connected: false })
+    server.gateway.listMailboxHistory = async (after) => ({ items: Array.from({ length: 25 }, (_, n) => archive(`${after ?? 'first'}-${n}`)), next: { after: 'next' } })
+    server.gateway.getMailbox = async (id) => archive(id)
+    await app.loadMailboxHistory()
+    await app.ensureMailbox('first-0')
+    await app.loadMailboxHistory('next')
+    expect(app.store.getState().mailboxes).toHaveLength(27)
+    expect(app.store.getState().mailboxes.some(m => m.id === 'first-0')).toBe(true)
+    expect(app.store.getState().mailboxes.some(m => m.id === 'first-1')).toBe(false)
+    server.gateway.listMailboxHistory = async () => { throw lost() }
+    await app.loadMailboxHistory('later')
+    expect(app.store.getState().mailboxHistory.status).toBe('error')
+    expect(app.store.getState().mailboxes).toHaveLength(27)
+    await app.signOut()
+    expect(app.store.getState().mailboxHistory.items).toEqual([])
+  })
+})
+
+
+it('retains reply identity when recovering a submission whose answer was lost', async () => {
+  await signedIn()
+  server.failNext('createSendRequest', lost(), true)
+  const result = await live.submit({ ...content, replyToMessageId: 'source_1' }, null)
+  expect(result.outcome).toBe('unconfirmed')
+  if (result.outcome !== 'unconfirmed') throw new Error('expected unconfirmed')
+  const id = await live.resolvePending(result.key)
+  expect(server.intents).toHaveLength(1)
+  expect(server.intents[0]!.content.replyToMessageId).toBe('source_1')
+  if (!id) throw new Error('expected recovered intent')
+  await live.openRequest(id)
+  expect(state().details.find((d) => d.id === id)?.saved).toMatchObject({ status: 'ready', data: { replyToMessageId: 'source_1' } })
 })

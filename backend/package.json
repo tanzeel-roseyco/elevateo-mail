@@ -1,0 +1,23 @@
+{
+  "name": "elevateo-mail-backend",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "types": "wrangler types worker-configuration.d.ts",
+    "lint": "../node_modules/.bin/eslint . --ignore-pattern worker-configuration.d.ts --ignore-pattern dist",
+    "typecheck": "tsc --noEmit && tsc -p ../bridge/tsconfig.json --noEmit",
+    "build": "wrangler deploy --dry-run --outdir dist",
+    "test": "tsx --test tests/*.test.ts ../bridge/*.test.ts",
+    "fixture": "tsx local/run.ts",
+    "demo": "tsx local/run.ts --demo",
+    "check": "npm run types && npm run lint && npm run typecheck && npm run build && npm test"
+  },
+  "dependencies": { "zod": "4.6.5" },
+  "devDependencies": {
+    "@types/node": "24.5.0",
+    "miniflare": "5.20261001.0-alpha",
+    "typescript": "5.9.2",
+    "tsx": "4.23.15",
+    "wrangler": "4.147.0"
+  }
+}

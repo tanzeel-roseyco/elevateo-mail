@@ -10,8 +10,13 @@ import { Toaster } from '@/ui/toast'
 import { LiveInboxPage } from './LiveInboxPage'
 import { LiveShell, signOut } from './LiveShell'
 import { SignInPage } from './SignInPage'
-import { UnavailablePage } from './UnavailablePage'
+import { GmailCallbackPage } from './GmailConnection'
 
+const LiveAssistant = lazy(() => import('./LiveAssistant').then(m => ({ default: m.LiveAssistant })))
+const LiveSearch = lazy(() => import('./LiveSearch').then(m => ({ default: m.LiveSearch })))
+const LiveCampaigns = lazy(() => import('./LiveCampaigns').then((m) => ({ default: m.LiveCampaigns })))
+const LiveContacts = lazy(() => import('./LiveContacts').then((m) => ({ default: m.LiveContacts })))
+const LiveOverview = lazy(() => import('./LiveOverview').then((m) => ({ default: m.LiveOverview })))
 const ComposePage = lazy(() => import('./ComposePage').then((m) => ({ default: m.ComposePage })))
 const SendsPage = lazy(() => import('./SendsPage').then((m) => ({ default: m.SendsPage })))
 const LiveConnectionsPage = lazy(() => import('./LiveConnectionsPage').then((m) => ({ default: m.LiveConnectionsPage })))
@@ -46,11 +51,13 @@ const router = createBrowserRouter([
       { path: 'mail/:mailboxId?/:messageId?', element: <LiveInboxPage /> },
       { path: 'compose', element: <ComposePage /> },
       { path: 'sends/:id?', element: <SendsPage /> },
-      { path: 'overview', element: <UnavailablePage area="overview" /> },
-      { path: 'campaigns/*', element: <UnavailablePage area="campaigns" /> },
-      { path: 'contacts/*', element: <UnavailablePage area="contacts" /> },
-      { path: 'assistant', element: <UnavailablePage area="assistant" /> },
+      { path: 'overview', element: <LiveOverview /> },
+      { path: 'campaigns/*', element: <LiveCampaigns /> },
+      { path: 'contacts/*', element: <LiveContacts /> },
+      { path: 'assistant', element: <LiveAssistant /> },
+      { path: 'search', element: <LiveSearch /> },
       { path: 'connections', element: <Navigate to="/connections/mailboxes" replace /> },
+      { path: 'connections/gmail/callback', element: <GmailCallbackPage /> },
       { path: 'connections/:section', element: <LiveConnectionsPage /> },
       { path: 'settings', element: <Navigate to="/settings/account" replace /> },
       { path: 'settings/:section', element: <LiveSettingsPage /> },

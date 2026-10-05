@@ -3,6 +3,7 @@ import { Suspense, useState } from 'react'
 import { Link, Outlet } from 'react-router'
 import { useData } from '@/data/store'
 import { Composer } from '@/features/compose/Composer'
+import { DesktopPreviewNotice } from '@/features/desktop/DesktopPreviewNotice'
 import { openComposer, useComposer } from '@/features/compose/composerStore'
 import { initials } from '@/lib/format'
 import { OfflineBanner } from '@/ui/Async'
@@ -51,6 +52,7 @@ export function Shell() {
             </Link>
           </div>
         </header>
+        <DesktopPreviewNotice />
         <OfflineBanner />
         <main id="main" tabIndex={-1} className="min-h-0 flex-1 md:pb-3 md:pr-3">
           <div className="flex h-full flex-col overflow-hidden border-line bg-surface md:rounded-xl md:border md:shadow-sm">

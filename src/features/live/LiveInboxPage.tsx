@@ -1,5 +1,5 @@
 import { AlertTriangle, ArrowLeft, ChevronLeft, ChevronRight, Inbox, MailOpen, RefreshCw, Reply } from 'lucide-react'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, Navigate, useLocation, useNavigate, useParams } from 'react-router'
 import type { MessageSummary, ServerMailbox } from '@/data/http/contract'
 import { live, useLive } from '@/data/http/instance'
@@ -9,7 +9,9 @@ import { Badge } from '@/ui/Badge'
 import { EmptyState, Skeleton, usePageTitle } from '@/ui/Bits'
 import { Button, IconButton } from '@/ui/Button'
 import { Select } from '@/ui/Field'
+import { MailboxHistoryControls } from './MailboxHistoryControls'
 import { usePagePosition } from './paging'
+import { InboxNotifications } from './InboxNotifications'
 
 function ErrorPanel({ title, message, retry }: { title: string; message: string; retry(): void }) {
   return (
@@ -55,7 +57,7 @@ function MessageList({ mailbox, openId }: { mailbox: ServerMailbox; openId: stri
   return (
     <>
       {items.length === 0 ? (
-        <EmptyState icon={Inbox} title={cursor ? 'No older messages' : 'No messages stored'} body={cursor ? 'You have reached the end of this mailbox.' : 'The server holds no messages for this mailbox. Mail is not synchronised from a real provider yet.'} />
+        <EmptyState icon={Inbox} title={cursor ? 'No older messages' : 'No messages stored'} body={cursor ? 'You have reached the end of this mailbox.' : 'No messages have been stored for this mailbox. Check its connection and sync status in Connections, or import your message history.'} />
       ) : (
         <ul aria-label={`Messages in ${mailbox.address}`} className="min-h-0 flex-1 overflow-y-auto">
           {items.map((m) => (
@@ -96,7 +98,7 @@ function Reader({ mailbox, messageId, backHref }: { mailbox: ServerMailbox; mess
         </Link>
         <Badge tone="neutral">Plain text · external sender</Badge>
         {body?.status === 'ready' && (
-          <Button size="sm" className="ml-auto" disabled={!mailbox.connected || !mailbox.sendEnabled} title={mailbox.connected && mailbox.sendEnabled ? undefined : 'This mailbox is not allowed to send'} icon={<Reply aria-hidden className="size-3.5" />} onClick={() => void navigate('/compose', { state: { mailboxId: mailbox.id, replyTo: messageId } })}>
+          <Button size="sm" className="ml-auto" disabled={!mailbox.connected || !mailbox.sendEnabled || body.data.incomplete} title={body.data.incomplete ? 'Read the complete original before replying' : mailbox.connected && mailbox.sendEnabled ? undefined : 'This mailbox is not allowed to send'} icon={<Reply aria-hidden className="size-3.5" />} onClick={() => void navigate('/compose', { state: { mailboxId: mailbox.id, replyTo: messageId } })}>
             Reply
           </Button>
         )}
@@ -105,6 +107,8 @@ function Reader({ mailbox, messageId, backHref }: { mailbox: ServerMailbox; mess
       {body?.status === 'error' && <ErrorPanel title="This message could not be loaded" message={body.message} retry={() => void live.openBody(mailbox.id, messageId)} />}
       {body?.status === 'ready' && (
         <div className="min-h-0 flex-1 overflow-y-auto px-4 py-4 md:px-6">
+          {/* AIDEV-NOTE: A failed re-import can leave older text; warning and reply gating preserve that distinction. */}
+          {body.data.incomplete && <p role="alert" className="mb-4 rounded-xl border border-warn/40 bg-warn/10 p-4 text-sm">This message is incomplete. Saved text may be out of date. Open the original in your mail provider before replying.</p>}
           <h2 className="text-lg font-semibold leading-snug">{body.data.subject || '(no subject)'}</h2>
           <p className="mt-1 text-[13px] text-muted">
             From <span className="break-all font-medium text-fg">{body.data.sender}</span> to <span className="break-all">{mailbox.address}</span> · <time dateTime={body.data.at}>{formatDateTime(body.data.at)}</time>
@@ -118,7 +122,7 @@ function Reader({ mailbox, messageId, backHref }: { mailbox: ServerMailbox; mess
 }
 
 // AIDEV-NOTE: API-backed inbox. Mailbox and open message live in the URL; one page of summaries is held at a time
-// (its position is the server cursor in the query string) and a body is fetched only when its message is opened. The server offers no search, so none is shown.
+// (its position is the server cursor in the query string) and a body is fetched only when its message is opened. Search uses a separate bounded metadata route and never eagerly fetches message bodies.
 export function LiveInboxPage() {
   usePageTitle('Inbox')
   const { mailboxId, messageId } = useParams()
@@ -127,13 +131,24 @@ export function LiveInboxPage() {
   const mailboxes = useLive((s) => s.mailboxes)
   const connected = mailboxes.filter((m) => m.connected)
   const mailbox = mailboxes.find((m) => m.id === mailboxId)
+  const [lookup, setLookup] = useState<{ id: string; error: string | null } | null>(null)
+  useEffect(() => {
+    let active = true
+    if (mailboxId) void live.ensureMailbox(mailboxId).then(() => { if (active) setLookup({ id: mailboxId, error: null }) }).catch((error: unknown) => {
+      if (active) setLookup({ id: mailboxId, error: error instanceof Error ? error.message : 'Mailbox could not be loaded.' })
+    })
+    return () => { active = false }
+  }, [mailboxId])
+
 
   if (!mailboxId) {
     const first = connected[0] ?? mailboxes[0]
     if (first) return <Navigate to={`/mail/${first.id}`} replace />
-    return <EmptyState icon={Inbox} title="No mailboxes on this account" body="The server lists no mailboxes for you. Connecting a real mailbox is not available yet." />
+    return <div><MailboxHistoryControls /><EmptyState icon={Inbox} title="No connected mailboxes" body="Connect a mailbox in Connections, or browse disconnected mailboxes to read stored history." /></div>
   }
-  if (!mailbox) return <EmptyState icon={AlertTriangle} title="Mailbox not found" body="This account has no mailbox with that reference." action={<Link to="/mail" className="font-medium text-accent-text underline underline-offset-2">Go to inbox</Link>} />
+  if (!mailbox) return <div><MailboxHistoryControls />{lookup?.id === mailboxId && lookup.error
+    ? <ErrorPanel title="Mailbox could not be loaded" message={lookup.error} retry={() => { setLookup(null); void live.ensureMailbox(mailboxId).catch((error: unknown) => setLookup({ id: mailboxId, error: error instanceof Error ? error.message : 'Mailbox could not be loaded.' })) }} />
+    : <Skeleton rows={3} />}</div>
 
   const listHref = `/mail/${mailbox.id}${location.search}`
 
@@ -158,7 +173,9 @@ export function LiveInboxPage() {
               </option>
             ))}
           </Select>
-          <p className="text-xs text-muted">Search is not available yet.</p>
+          <MailboxHistoryControls />
+          <InboxNotifications />
+          <Link to="/search" className="text-xs text-muted hover:text-fg">Search stored mail</Link>
           {!mailbox.connected && <p className="text-xs text-muted">This mailbox is disconnected. Messages the server already holds are still listed.</p>}
         </div>
         <MessageList mailbox={mailbox} openId={messageId} />

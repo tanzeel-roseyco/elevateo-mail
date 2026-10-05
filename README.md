@@ -1,10 +1,22 @@
 # Elevateo Mail
 
-A Gmail-style inbox and consent-based campaign application planned for web, Windows and macOS, for ten independent users. The current browser prototype demonstrates a unified inbox, floating composer, campaigns, contacts and settings using nine fictional sender identities.
-
-This repository currently contains a **frontend-only interactive prototype**. There is no backend. All data is fictional and lives in the browser; sending, scheduling, and domain verification are simulated and labelled as such in the UI. Nothing here connects to Resend, Gmail, or DNS.
+A Gmail-style inbox and consent-based campaign application for ten independent users, targeting web, Windows and macOS. This repository integrates the React frontend and credential-free Worker/D1 backend. Live sending is disabled by default; optional Google login, Gmail inbox/manual replies and Resend campaign transport require final configuration and live acceptance. The demonstration build uses fictional data. See [the integration contract](docs/contracts/integration-v1.md) and [Docker fixtures](docs/integration-fixtures.md).
 
 ## Current state
+
+The active worktree is `C:\Users\Tanzeel\Code and projects\Elevateo Mail - Integration`, branch `feature/application-integration`. Frontend and backend are integrated locally. Nothing has been pushed or deployed; no live sending or DNS writes occurred.
+
+Implemented: owner-isolated inbox and plaintext reading, contacts and explicit consent, sticky suppression, immutable send approval and lost-response recovery, campaign drafts and short sequences, Google login, Gmail sync/manual threaded replies, Resend transport/events/unsubscribe/receiving reply stop, optional Hunter enrichment, bounded search/import, selected-message AI context, native draft tickets, job health and expired-record maintenance. Provider capabilities are configuration gated. Every campaign step needs separate approval. Resend sequence activation is default-off and bound to the exact receiving channel; live acceptance is still required before enabling it.
+
+The Windows Claude companion has bounded process and protocol fixture coverage. The local-only desktop draft handoff is implemented and the Tauri shell compiles; Codex primary/fallback and macOS companion remain incomplete. Unsigned Windows/macOS packaging is scripted but installers have not been built or accepted. No operating-system filesystem/network sandbox or installed-app acceptance is claimed. DNS currently provides restricted read/change-plan primitives, not a live write executor. Notifications require an open tab refresh; there is no closed-app push.
+
+Latest checkpoints: backend static checks and 264 tests passed; final web lint/typecheck/build and 485 tests passed; 39 of 40 API browser checks passed, with the obsolete enrichment assertion corrected and its affected journey passing separately. Four compiled Tauri tests, five native protocol tests and twelve Windows process fixtures passed; the mobile sequence browser regression passed separately. Local simulated load admitted exactly 3,000 sends across 100 mailboxes and rejected 100 over-limit attempts. These are separate checkpoints, not production acceptance. See `docs/validation/2026-10-06-takeover.md` and `docs/completion-matrix.md` for evidence and outstanding work.
+
+The ledger uses provisional rolling limits of 30 recipients/mailbox and 300/user, with ten mailboxes/user. Production policy approval, real provider acceptance, desktop packaging/signing, cloud backup/key recovery and measured hosting cost remain gates. Under A$15/month is unproven. Root MX stays untouched. Credentials remain last; see `docs/credentials-last.md` for the configuration checklist and `docs/completion-matrix.md` for implementation gaps.
+
+## Historical milestone evidence
+
+These dated records are retained as evidence of earlier stages. Their limitations and test counts are not the current integration status.
 
 - **Server-owned send requests and cookie session, 5 October 2026 (committed locally, not pushed, not deployed):** the API build now reads send-request history, saved content and state from the backend (`2305895`). The browser stores no message text, subject or recipient: only the idempotency key of a submission that has no answer yet, per account. Editing a saved request uses the server's atomic replacement, so two tabs converge on one successor, which still needs its own approval. The pasted pilot token is gone: the session is an HttpOnly cookie, and account data is dropped from memory on sign-out, expiry and account change, in every tab. History is paged by the server (25 per page); nothing unfinished is ever discarded to fit a browser limit. Records left by the earlier version are recovered from the server or kept until explicitly discarded. The five findings left open by the previous milestone are closed; one new low-severity finding is open. **The application is not complete**: production still has no sign-in, and only this one journey is connected. See [validation](docs/validation/2026-10-05-server-recovery.md), [handover](docs/handover/2026-10-05-server-recovery.md), [contract notes](docs/contracts/integration-v1-frontend-notes.md) and the [review log](code-reviews.md).
 - **Backend integration milestone, 5 October 2026 (committed locally, not pushed, not deployed):** a second build, `npm run build:api`, talks to the real backend foundation through an explicit HTTP adapter and shows no fixture data. One journey works end to end against the backend's simulated provider: load mailboxes, browse paginated messages, open a lazily loaded body, compose, review, approve and track a send request through awaiting approval, queued, sending, accepted, rejected, cancelled and unknown. A lost answer or a reload recovers the same request; nothing is re-sent. Limits, capacity and permissions are the server's. Campaigns, contacts, AI, provider connections, DNS, enrichment and search are shown as unavailable. The demonstration build is unchanged apart from the AI-permission fix (a disconnected or failed mailbox is never readable by the assistant) and reworded permission claims. Docker checks: lint and typecheck clean, 267 unit/component tests, 45 demonstration browser tests (one intentional mobile skip), 20 browser tests against the real backend; initial JS 183.13 KB gzip (demonstration) and 162.68 KB (API). 14 Codex reviewers: 21 confirmed source defects, 16 fixed, 5 open. **The application is not complete**: see [validation and production gates](docs/validation/2026-10-05-backend-integration.md), [contract notes](docs/contracts/integration-v1-frontend-notes.md), [handover](docs/handover/2026-10-05-backend-integration.md), [suggestions and decisions needed](docs/proposals/2026-10-05-integration-suggestions.md) and the [review log](code-reviews.md).
@@ -13,7 +25,7 @@ This repository currently contains a **frontend-only interactive prototype**. Th
 - **Earlier on `design/fable-frontend`:** Fable 5.1 designed the Ledger frontend: mailbox switching, visible filters, bulk actions, row Archive, pinned replies, a Next up work queue and clearer campaign progress. Codex review fixes include scoped counts, narrow-screen row wrapping, a 1280px split breakpoint and saved-data migration for the confirmed 30/day configuration ceiling. Actual per-mailbox quota enforcement remains backend work. Final Docker checks: lint/typecheck/build passed, 135 unit/component tests and 29 browser tests passed, one intentional mobile skip; initial JS 180.49 KB gzip. Desktop/mobile/light/dark visual checks are recorded in [validation](docs/validation/2026-10-04-fable.md). [Design report](docs/design/fable-design.md) and previews in `output/fable/`. Earlier PDF/image deliverables are copied into this worktree. Older verification figures below describe the previous branch.
 - Distribution scope now includes web plus directly downloadable Windows `.exe` and Mac `.dmg` apps; no store listing is planned. [Distribution PDF addendum](output/pdf/elevateo-mail-distribution-plan.pdf) extends the earlier Windows-focused master PDF. Local CLI AI is initially desktop-only; signed updates, OS-specific checks and separate signing/build costs are planned. No installers or production web app exist yet.
 - Reader edition: [10-page master plan PDF](output/pdf/elevateo-mail-master-plan.pdf), [frontend sketch](output/imagegen/elevateo-mail-frontend-sketch.png) and [system design sketch](output/imagegen/elevateo-mail-system-design.png). All PDF pages were rendered and visually inspected. Hunter and AMF provide optional enrichment; AI performs personalisation. Documentation and concept artwork only; no application code changed for this edition.
-- Product planning: [master plan](docs/product-master-plan.md), [backend blueprint](docs/backend-blueprint.md), [efficiency plan](docs/efficiency-plan.md), [draft standards](.planning/BACKEND-STANDARDS.md) and [research synthesis](docs/research/2026-10-04/README.md) completed as proposals. Six initial and ten follow-up research assignments are complete; the ten ran in waves of up to three children. No backend implementation approval is recorded.
+- Product planning: [master plan](docs/product-master-plan.md), [backend blueprint](docs/backend-blueprint.md), [efficiency plan](docs/efficiency-plan.md), [draft standards](.planning/BACKEND-STANDARDS.md) and [research synthesis](docs/research/2026-10-04/README.md) completed as proposals. Six initial and ten follow-up research assignments are complete; the ten ran in waves of up to three children. Backend foundation implementation was explicitly authorised on 2026-10-05; production and desktop decisions remain open.
 - Latest requirements: ten private users across Google organisations/personal Gmail, up to ten connected mailboxes each (100 total); Resend opted-in campaigns; maximum 30 outgoing emails per connected mailbox per day. Effective pilot ceiling: 300/user/day and 3,000 total/day. The earlier 600/user/day figure is a later expansion scenario. Aliases share quota; rolling-window/per-recipient counting is proposed. Private Connections will support selected-mailbox AI read/draft access, separately enabled sending, and reviewed DNS changes on explicitly approved subdomains. Preserve company root MX.
 - Repository renamed: local directory `C:\Users\Tanzeel\Code and projects\Elevateo Mail`; private remote [tanzeel-roseyco/elevateo-mail](https://github.com/tanzeel-roseyco/elevateo-mail). Product branding changed; existing browser-storage keys are intentionally preserved.
 - Proposed stack: existing React + Tauri desktop, Workers/D1/R2/Queues cloud backend, local Codex and restricted Claude fallback. Under A$15 hosting is conditional on measured mailbox/history allowances; external Google approval and AI data-policy review remain launch gates.
@@ -22,7 +34,12 @@ This repository currently contains a **frontend-only interactive prototype**. Th
 - Fresh visual QA: rendered desktop overview and mobile drawer show Elevateo Mail without branding clipping; full browser journeys passed. No native Windows desktop shell exists yet.
 - Adversarial review: historical prototype 57 defects, 56 fixed, one deferred; this rename zero defects across 168 reviewed lines. Four planning findings have explicit dispositions in `code-reviews.md`. Dependency audit separately reports three moderate development-tool entries for one Vitest advisory; upgrade remains outstanding.
 - Known deviation: star, archive, draft, settings, contact, and campaign edits write to the store directly instead of going through `MailroomGateway` (deferred review finding; awaiting a decision).
-- Not started: backend, installed desktop host, local AI/MCP bridge, real Gmail/Resend/self-hosted integration, DNS broker, authentication, deployment. The new limits and permissions are documented, not implemented in the mock app.
+- Backend first journey implemented on `feature/backend-foundation`: real HTTP capability discovery, stable mailbox inventory/permissions, paginated summaries/lazy plaintext bodies, authoritative quota and immutable create/approve/inspect/cancel. Docker fixtures use local persisted D1 and a durable fake provider. Separate AI read/draft flags, conservative unknown recovery and bounded queue/reconciliation are implemented. [Implementation and limitations](docs/backend-foundation.md). Fable owns the separate HTTP UI integration and combined browser QA. Real authentication/OAuth, inbox sync, desktop/CLI bridge and production deployment remain outstanding.
+- Latest backend verification on 2026-10-05: Docker generated types, lint, strict typecheck, dry-run Worker bundle, all 38 tests and the HTTP demo passed. Six integration review defects fixed; [validation and cleanup](docs/validation/2026-10-05-integration.md). The integrated milestone uses local D1 and a durable fake provider. Fable UI integration remains on its separate branch; real sending, DNS and deployment stay disabled.
+
+- Server-owned recovery now supplies opaque current-account identity, bounded owner request lists, lazy immutable content and atomic single-successor replacement. Docker browser fixtures use HttpOnly cookies with Origin/CSRF checks and revocable sessions. Frontend persistent recipients/bodies/tokens can be removed against [the updated contract](docs/contracts/integration-v1.md); [precise handoff](docs/handover/2026-10-05-server-recovery.md). Combined browser acceptance and visual QA remain pending.
+
+- Recovery verification: Docker types/lint/typecheck/dry-run build, 45 tests and the separate HTTP demo passed. Scoped adversarial/design reviews completed; task Docker resources removed, persistent volumes retained. [Evidence and limitations](docs/validation/2026-10-05-server-recovery.md).
 
 ## Stack
 
@@ -35,9 +52,9 @@ npm ci
 npm run dev        # http://localhost:5173
 ```
 
-State is stored in `localStorage` (`mailroom:data:v1`, `mailroom:appearance:v1`). Settings → Account → **Reset prototype data** restores the demo dataset.
+Demonstration state is stored in `localStorage` (`mailroom:data:v1`, `mailroom:appearance:v1`). Settings → Account → **Reset prototype data** restores the demo dataset.
 
-API-backed mode is a separate build: `npm run build:api` then `npm run preview:api` (port 4174), with `API_PROXY_TARGET` pointing at a running backend so `/v1` is same-origin. The session is an HttpOnly cookie set by the backend; the preview server forwards `/v1` and `/__fixture` with the original Host, so open it as `http://localhost:4174` (the cookie is `Secure`, which browsers accept over plain HTTP only for `localhost`). Production has no sign-in route yet. A build made with `VITE_FIXTURE_SESSION=1` (the Docker integration stack only) shows two buttons that ask the backend's test fixture to start a session for a synthetic user. It never falls back to demo data. The supported way to run it is the Docker integration stack below.
+API-backed mode is a separate build: `npm run build:api` then `npm run preview:api` (port 4174), with `API_PROXY_TARGET` pointing at a running backend so `/v1` is same-origin. The session is an HttpOnly cookie set by the backend; the preview server forwards `/v1` and `/__fixture` with the original Host, so open it as `http://localhost:4174` (the cookie is `Secure`, which browsers accept over plain HTTP only for `localhost`). Optional Google sign-in is implemented but disabled by default; see [application login configuration](docs/app-login-configuration.md). Production must route `/v1` and `/login/callback` to the Worker and serve the Gmail callback through the API SPA at the same HTTPS origin. Gmail configuration is separate: see [Gmail configuration](docs/gmail-configuration.md). A build made with `VITE_FIXTURE_SESSION=1` (the Docker integration stack only) shows two buttons that ask the backend's test fixture to start a session for a synthetic user. It never falls back to demo data. The supported way to run it is the Docker integration stack below.
 
 ## Test
 
@@ -50,11 +67,11 @@ docker run --rm elevateo-mail-check          # lint, typecheck, unit, build, e2e
 
 Individual scripts: `npm run lint`, `typecheck`, `test`, `build`, `e2e`, or `check` for all of them.
 
-Browser tests against the real backend (needs the backend worktree beside this one):
+Browser tests against the real simulated backend in this repository:
 
 ```bash
 docker build -t elevateo-mail-it-web .
-docker build -f integration/server.Dockerfile --build-context harness=integration -t elevateo-mail-it-server "../Elevateo Mail - Backend"
+docker build -f integration/server.Dockerfile -t elevateo-mail-it-server .
 docker compose -f integration/compose.yaml up --abort-on-container-exit --exit-code-from web
 docker compose -f integration/compose.yaml down
 ```
@@ -67,6 +84,15 @@ To click through the same stack by hand, add the preview overlay and forward the
 docker compose -f integration/compose.yaml -f integration/compose.preview.yaml up -d
 docker compose -f integration/compose.yaml -f integration/compose.preview.yaml down
 ```
+
+Backend checks (no credentials; all commands run inside Docker):
+
+```bash
+docker build -t elevateo-mail-backend-check -f backend/Dockerfile .
+docker run --rm elevateo-mail-backend-check
+```
+
+Remove the task-owned image and build cache after checks. Backend dependencies and their justification are documented separately; root frontend dependencies are unchanged.
 
 ## Deploy
 

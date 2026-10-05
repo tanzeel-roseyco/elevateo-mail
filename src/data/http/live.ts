@@ -16,8 +16,6 @@ export const PAGE_LIMIT = 50
 export const REQUEST_PAGE_LIMIT = 25
 const MAX_CACHED_BODIES = 20
 const MAX_CACHED_REQUESTS = 20
-/** Looking for one idempotency key reads at most this many list pages; beyond that the search is left unfinished. */
-const MAX_SCAN_PAGES = 10
 const MAX_LEGACY_CHECKS = 200
 const PENDING_PREFIX = 'elevateo:pending:'
 /** Written when the signed-in account changes, so other tabs re-check who they are. Holds an opaque id, no secret. */
@@ -70,7 +68,7 @@ export interface RequestDetail {
 }
 
 export interface PendingSubmission extends PendingKey {
-  /** `missing`: the server's list was read and does not contain it, so it was never saved. */
+  /** `missing`: the server's exact lookup confirmed no saved request under this key. */
   state: 'waiting' | 'checking' | 'missing'
   notice: string | null
 }
@@ -87,6 +85,7 @@ export interface LiveState {
   accountId: string | null
   capabilities: Capabilities | null
   mailboxes: ServerMailbox[]
+  mailboxHistory: { after: string | null; items: ServerMailbox[]; next: { after: string } | null; status: 'idle' | 'loading' | 'ready' | 'error'; error: string | null }
   quotas: Record<string, Loadable<MailboxQuota>>
   list: MessageList | null
   /** Recently opened bodies, newest last, keyed `mailboxId/messageId`. Bounded so a long session cannot grow it. */
@@ -100,7 +99,7 @@ export interface LiveState {
   stalled: string[]
 }
 
-const EMPTY: Omit<LiveState, 'session'> = { accountId: null, capabilities: null, mailboxes: [], quotas: {}, list: null, bodies: [], requests: null, details: [], pending: [], legacy: [], stalled: [] }
+const EMPTY: Omit<LiveState, 'session'> = { accountId: null, capabilities: null, mailboxes: [], mailboxHistory: { after: null, items: [], next: null, status: 'idle', error: null }, quotas: {}, list: null, bodies: [], requests: null, details: [], pending: [], legacy: [], stalled: [] }
 
 export interface LiveDeps {
   gateway: ServerGateway
@@ -149,6 +148,8 @@ export interface Live {
   /** Re-reads the session: another tab may have signed out or signed in as someone else. */
   recheckSession(): Promise<void>
   refreshMailboxes(): Promise<void>
+  loadMailboxHistory(after?: string | null): Promise<void>
+  ensureMailbox(id: string): Promise<void>
   loadQuota(mailboxId: string): Promise<void>
   setPermissions(mailboxId: string, permissions: MailboxPermissions): Promise<void>
   /** Loads one page: the newest, or the one a server-issued cursor points at. */
@@ -164,6 +165,7 @@ export interface Live {
    * still needs approval. The idempotency key is stored before the request is made.
    */
   submit(content: SendContent, replaces?: ReplaceTarget | null): Promise<SubmitResult>
+  submitAi(content: SendContent): Promise<SubmitResult>
   /** Finds out what became of a submission with no answer. Returns the saved request's id, or null. */
   resolvePending(key: string): Promise<string | null>
   /** Forgets a submission the server is known not to hold. */
@@ -186,13 +188,13 @@ export function createLive(deps: LiveDeps): Live {
   // Bumped whenever the account changes. A response that started under an older epoch belongs to someone else's
   // session and is dropped instead of being written.
   let epoch = 0
+  let mailboxHistoryVersion = 0
+  let selectedMailboxId: string | null = null
   const current = (started: number): boolean => started === epoch
   const nowIso = (): string => new Date(deps.now()).toISOString()
   // Content of submissions made in this tab, by idempotency key. Memory only: it lets a lost answer be retried with
-  // identical content, and is gone on reload, after which the key alone finds the saved request in the server list.
-  const inflight = new Map<string, { content: SendContent; replaces: ReplaceTarget | null }>()
-  // Where a search for a key stopped at its page limit, so the next check continues instead of starting over.
-  const scanFrom = new Map<string, SendCursor>()
+  // identical content, and is gone on reload, after which the key alone finds the saved request through an exact lookup.
+  const inflight = new Map<string, { content: SendContent; replaces: ReplaceTarget | null; ai: boolean }>()
   // A value no two changes share: writing the same value twice would not raise a storage event in other tabs.
   const changeMarker = (): string => `${deps.now()}:${deps.newKey()}`
 
@@ -201,7 +203,6 @@ export function createLive(deps: LiveDeps): Live {
     epoch++
     stopAllPolling()
     inflight.clear()
-    scanFrom.clear()
     stateReads.clear()
     store.setState({ session, ...EMPTY })
   }
@@ -317,30 +318,8 @@ export function createLive(deps: LiveDeps): Live {
     store.setState((state) => ({ pending: state.pending.filter((p) => p.key !== key) }))
   }
 
-  /** Looks for a request by its idempotency key in the server's list, newest first, within fixed bounds. */
-  async function findByKey(key: string): Promise<SendSummary | 'absent' | 'unfinished'> {
-    const resumed = scanFrom.get(key) ?? null
-    let cursor: SendCursor | null = resumed
-    const match = (items: SendSummary[]): SendSummary | undefined => items.find((item) => item.idempotencyKey === key)
-    for (let page = 0; page < MAX_SCAN_PAGES; page++) {
-      const result = await call(() => gateway.listSendRequests(cursor, PAGE_LIMIT))
-      const found = match(result.items)
-      if (found) {
-        scanFrom.delete(key)
-        return found
-      }
-      // Only the end of the list proves absence. Times are not compared: this browser's clock is not the server's.
-      if (!result.next) {
-        scanFrom.delete(key)
-        // A search that continued from an earlier stop skipped the newest page; it is read once before saying no.
-        const late = resumed ? match((await call(() => gateway.listSendRequests(null, PAGE_LIMIT))).items) : undefined
-        return late ?? 'absent'
-      }
-      cursor = result.next
-    }
-    if (cursor) scanFrom.set(key, cursor)
-    return 'unfinished'
-  }
+  // AIDEV-NOTE: Indexed owner/key recovery stays one request regardless of account history size.
+  const findByKey = (key: string): Promise<SendSummary | null> => call(() => gateway.lookupSendRequest(key))
 
   async function attempt(key: string): Promise<SubmitResult> {
     const job = inflight.get(key)
@@ -348,7 +327,7 @@ export function createLive(deps: LiveDeps): Live {
     const started = epoch
     const superseded: SubmitResult = { outcome: 'refused', message: 'The signed-in account changed, so nothing more was done.' }
     try {
-      const saved = job.replaces ? await call(() => gateway.replaceSendRequest(job.replaces!.id, job.replaces!.revision, key, job.content)) : await call(() => gateway.createSendRequest(key, job.content))
+      const saved = job.replaces ? await call(() => gateway.replaceSendRequest(job.replaces!.id, job.replaces!.revision, key, job.content)) : await call(() => job.ai ? gateway.createAiDraft!(key, job.content) : gateway.createSendRequest(key, job.content))
       if (!current(started)) return superseded
       settle(key)
       if (job.replaces) {
@@ -387,7 +366,8 @@ export function createLive(deps: LiveDeps): Live {
     }
   }
 
-  async function submit(content: SendContent, replaces: ReplaceTarget | null = null): Promise<SubmitResult> {
+  async function submit(content: SendContent, replaces: ReplaceTarget | null = null, ai = false): Promise<SubmitResult> {
+    if (ai && !gateway.createAiDraft) return { outcome: 'refused', message: 'AI draft saving is unavailable.' }
     const check = checkSendContent(content)
     if (!check.ok) return { outcome: 'refused', message: check.errors[0]?.message ?? 'The message is not ready.' }
     const pending = syncPending()
@@ -398,7 +378,7 @@ export function createLive(deps: LiveDeps): Live {
     if (!addPending({ key, startedAt: deps.now(), replaces: replaces?.id ?? null })) {
       return { outcome: 'refused', message: 'This browser could not store the reference needed to recover the request if its answer were lost. Nothing was sent to the server. Free some browser storage and try again.' }
     }
-    inflight.set(key, { content: check.content, replaces })
+    inflight.set(key, { content: check.content, replaces, ai })
     return attempt(key)
   }
 
@@ -415,11 +395,7 @@ export function createLive(deps: LiveDeps): Live {
     try {
       const found = await findByKey(key)
       if (!current(started)) return null
-      if (found === 'unfinished') {
-        patchPending(key, { state: 'waiting', notice: 'The server holds many newer requests, so the search is not finished. Check again to continue from where it stopped.' })
-        return null
-      }
-      if (found === 'absent') {
+      if (!found) {
         patchPending(key, { state: 'missing', notice: null })
         return null
       }
@@ -487,7 +463,7 @@ export function createLive(deps: LiveDeps): Live {
     if (!id) {
       if (record.status !== 'unconfirmed' || !isServerId(record.key)) return false
       const found = await findByKey(record.key)
-      if (found === 'absent' || found === 'unfinished') return false
+      if (!found) return false
       id = found.id
     }
     // That a request with this id exists proves nothing about this record. The browser copy is given up only when
@@ -700,6 +676,32 @@ export function createLive(deps: LiveDeps): Live {
     )
   }
 
+  // AIDEV-NOTE: Keep ten active rows, one 25-row history page and the current inbox; never accumulate history.
+  function publishMailboxes(connected: ServerMailbox[], history = store.getState().mailboxHistory.items, selected?: ServerMailbox) {
+    const old = store.getState()
+    const pinned = selected ?? old.mailboxes.find((m) => m.id === selectedMailboxId)
+    const rows = new Map([...(pinned ? [pinned] : []), ...connected, ...history].map((m) => [m.id, m]))
+    if (selected) rows.set(selected.id, selected)
+    // Fresh operational flags take precedence over an older historical row after a reconnect.
+    for (const m of connected) rows.set(m.id, m)
+    const quotas = Object.fromEntries(Object.entries(old.quotas).filter(([id]) => rows.has(id)))
+    store.setState({ mailboxes: [...rows.values()], quotas })
+  }
+
+  async function loadMailboxHistory(after: string | null = null): Promise<void> {
+    const started = epoch
+    const version = ++mailboxHistoryVersion
+    store.setState((s) => ({ mailboxHistory: { ...s.mailboxHistory, after, status: 'loading', error: null } }))
+    try {
+      const page = await call(() => gateway.listMailboxHistory(after))
+      if (!current(started) || version !== mailboxHistoryVersion) return
+      store.setState({ mailboxHistory: { after, ...page, status: 'ready', error: null } })
+      publishMailboxes(store.getState().mailboxes.filter((m) => m.connected), page.items)
+    } catch (error) {
+      if (current(started) && version === mailboxHistoryVersion) store.setState((s) => ({ mailboxHistory: { ...s.mailboxHistory, status: 'error', error: failureMessage(error) } }))
+    }
+  }
+
   async function loadQuota(mailboxId: string): Promise<void> {
     const started = epoch
     const previous = store.getState().quotas[mailboxId]
@@ -729,6 +731,24 @@ export function createLive(deps: LiveDeps): Live {
     }
   }
 
+  async function openBody(mailboxId: string, messageId: string): Promise<void> {
+    const key = `${mailboxId}/${messageId}`
+    const cached = store.getState().bodies.find(b => b.key === key)
+    if (cached && cached.body.status !== 'error') {
+      if (store.getState().bodies.at(-1) !== cached) store.setState(s => ({ bodies: [...s.bodies.filter(b => b.key !== key), cached] }))
+      return
+    }
+    const started = epoch
+    const loading: Loadable<MessageBody> = { status: 'loading' }
+    store.setState(s => ({ bodies: [...s.bodies.filter(b => b.key !== key), { key, body: loading }].slice(-MAX_CACHED_BODIES) }))
+    // AIDEV-NOTE: Identity fences refreshed/evicted reads without an unbounded per-message generation map.
+    const put = (body: Loadable<MessageBody>): void => {
+      if (!current(started) || store.getState().bodies.find(b => b.key === key)?.body !== loading) return
+      store.setState(s => ({ bodies: s.bodies.map(b => b.key === key ? { key, body } : b) }))
+    }
+    try { put({ status: 'ready', data: await call(() => gateway.getMessage(mailboxId, messageId)) }) }
+    catch (error) { put({ status: 'error', message: failureMessage(error) }) }
+  }
   return {
     store,
     canFixtureSignIn: deps.fixture !== null,
@@ -771,10 +791,27 @@ export function createLive(deps: LiveDeps): Live {
 
     async refreshMailboxes() {
       const started = epoch
-      const mailboxes = await call(() => gateway.listMailboxes())
-      if (current(started)) store.setState({ mailboxes })
+      const selectedId = selectedMailboxId
+      const [mailboxes, selected] = await call(() => Promise.all([
+        gateway.listMailboxes(), selectedId ? gateway.getMailbox(selectedId) : Promise.resolve(null),
+      ]))
+      if (current(started)) publishMailboxes(mailboxes, undefined, selectedId === selectedMailboxId ? selected ?? undefined : undefined)
     },
 
+    loadMailboxHistory,
+    async ensureMailbox(id) {
+      selectedMailboxId = id
+      const started = epoch
+      const found = await call(() => gateway.getMailbox(id))
+      if (current(started) && selectedMailboxId === id) {
+        if (!found) throw new ApiFailure('refused', 'This account has no mailbox with that reference.', 'mailbox_not_found', 404)
+        const state = store.getState()
+        const connected = state.mailboxes.filter((m) => m.connected && m.id !== id)
+        if (found.connected) connected.push(found)
+        const history = state.mailboxHistory.items.filter((m) => m.id !== id)
+        publishMailboxes(connected, history, found)
+      }
+    },
     loadQuota,
 
     async setPermissions(mailboxId, permissions) {
@@ -784,8 +821,15 @@ export function createLive(deps: LiveDeps): Live {
       } finally {
         // Success or failure, the list shown afterwards is what the server now holds, not what was requested.
         if (current(started)) {
-          const mailboxes = await call(() => gateway.listMailboxes()).catch(() => null)
-          if (mailboxes && current(started)) store.setState({ mailboxes })
+          const [mailboxes, changed] = await call(() => Promise.all([gateway.listMailboxes(), gateway.getMailbox(mailboxId)]))
+          if (current(started)) {
+            const state = store.getState()
+            const items = state.mailboxHistory.items.filter((m) => m.id !== mailboxId)
+            store.setState({ mailboxHistory: { ...state.mailboxHistory, items } })
+            publishMailboxes(mailboxes, items, changed?.id === selectedMailboxId ? changed : undefined)
+            // Permission changes can move rows between pages; restart history rather than keep a stale cursor.
+            if (state.mailboxHistory.status !== 'idle' || (changed && !changed.connected)) await loadMailboxHistory()
+          }
         }
       }
     },
@@ -793,34 +837,21 @@ export function createLive(deps: LiveDeps): Live {
     openList: (mailboxId, cursor = null) => loadPage({ mailboxId, cursor, page: { status: 'loading' } }),
     async reloadPage() {
       const list = store.getState().list
-      if (list) await loadPage(list)
+      if (!list) return
+      // AIDEV-NOTE: Refresh imported text and completeness together; cache size bounds this to twenty body requests.
+      const keys = store.getState().bodies.filter(b => b.key.startsWith(`${list.mailboxId}/`)).map(b => b.key)
+      store.setState(s => ({ bodies: s.bodies.filter(b => !keys.includes(b.key)) }))
+      await Promise.all([loadPage(list), ...keys.map(key => openBody(list.mailboxId, key.slice(list.mailboxId.length + 1)))])
     },
 
-    async openBody(mailboxId, messageId) {
-      const key = `${mailboxId}/${messageId}`
-      const cached = store.getState().bodies.find((b) => b.key === key)
-      if (cached && cached.body.status !== 'error') {
-        // Reading a kept body makes it the most recently used, so it is the last to be dropped.
-        if (store.getState().bodies.at(-1) !== cached) store.setState((s) => ({ bodies: [...s.bodies.filter((b) => b.key !== key), cached] }))
-        return
-      }
-      const started = epoch
-      const put = (body: Loadable<MessageBody>): void => {
-        if (!current(started)) return
-        store.setState((s) => ({ bodies: [...s.bodies.filter((b) => b.key !== key), { key, body }].slice(-MAX_CACHED_BODIES) }))
-      }
-      put({ status: 'loading' })
-      try {
-        put({ status: 'ready', data: await call(() => gateway.getMessage(mailboxId, messageId)) })
-      } catch (error) {
-        put({ status: 'error', message: failureMessage(error) })
-      }
-    },
+    openBody,
 
     openRequests: (cursor = null) => loadRequests(cursor),
     reloadRequests,
     openRequest,
     submit,
+    // AIDEV-NOTE: AI drafts share the manual key ledger and lost-answer recovery; never fall back to manual kind.
+    submitAi: (content) => submit(content, null, true),
     resolvePending,
 
     dismissPending(key) {

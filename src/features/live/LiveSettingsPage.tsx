@@ -16,7 +16,7 @@ function AccountPanel() {
       {capabilities && (
         <dl className="divide-y divide-line overflow-hidden rounded-xl border border-line text-[13px]">
           {[
-            ['Mail provider', capabilities.simulated ? 'Simulated: no real email is sent' : 'Live'],
+            ['Mail provider', capabilities.simulated ? 'Simulated: no real email is sent' : capabilities.liveSending ? 'Live sending enabled; mailbox permissions still apply' : 'Live sending disabled'],
             ['Sending', capabilities.dispatchPaused ? 'Paused on the server' : 'Enabled on the server'],
             ['Campaigns', capabilities.features.campaignWizard ? 'Available' : 'Not available'],
             ['Mailbox sync and history import', capabilities.features.inboxSync || capabilities.features.historyImport ? 'Available' : 'Not available'],

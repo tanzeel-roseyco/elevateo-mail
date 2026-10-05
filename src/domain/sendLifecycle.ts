@@ -16,8 +16,11 @@ export const MAX_RECIPIENTS = 30
 export const MAX_SUBJECT = 998
 export const MAX_BODY = 100_000
 
+export const replySourceSchema = z.string().regex(/^[a-zA-Z0-9_-]{1,128}$/)
+
 export const sendContentSchema = z.object({
   mailboxId: z.string(),
+  replyToMessageId: replySourceSchema.optional(),
   to: z.array(z.string()),
   cc: z.array(z.string()),
   bcc: z.array(z.string()),
@@ -103,7 +106,9 @@ export function checkSendContent(raw: SendContent): ContentCheck {
   // An address counts once: the server removes a CC/BCC that repeats an earlier recipient.
   const cc = clean(raw.cc).filter((a) => !to.includes(a))
   const bcc = clean(raw.bcc).filter((a) => !to.includes(a) && !cc.includes(a))
-  const subject = raw.subject.trim()
+  // AIDEV-NOTE: Reply identity stays exact; the server derives threading headers from this mailbox-bound source.
+  const subject = raw.replyToMessageId ? raw.subject : raw.subject.trim()
+  if (raw.replyToMessageId !== undefined && !replySourceSchema.safeParse(raw.replyToMessageId).success) errors.push({ field: 'replyToMessageId', message: 'The reply source is invalid. Open the original message again.' })
   const mailboxId = raw.mailboxId.trim()
   if (!mailboxId) errors.push({ field: 'mailboxId', message: 'Choose the mailbox to send from.' })
   if (to.length === 0) errors.push({ field: 'to', message: 'Add at least one recipient in To.' })
@@ -116,13 +121,15 @@ export function checkSendContent(raw: SendContent): ContentCheck {
   else if (subject.length > MAX_SUBJECT || /[\r\n]/.test(subject)) errors.push({ field: 'subject', message: `The subject must be one line of at most ${MAX_SUBJECT} characters.` })
   if (!raw.body) errors.push({ field: 'body', message: 'Write a message.' })
   else if (raw.body.length > MAX_BODY) errors.push({ field: 'body', message: `The message is longer than ${MAX_BODY.toLocaleString('en-GB')} characters.` })
-  return errors.length > 0 ? { ok: false, errors } : { ok: true, content: { mailboxId, to, cc, bcc, subject, body: raw.body } }
+  return errors.length > 0 ? { ok: false, errors } : { ok: true, content: { mailboxId, to, cc, bcc, subject, body: raw.body, ...(raw.replyToMessageId !== undefined ? { replyToMessageId: raw.replyToMessageId } : {}) } }
 }
 
 export const recipientCount = (content: Pick<SendContent, 'to' | 'cc' | 'bcc'>): number => new Set([...content.to, ...content.cc, ...content.bcc].map((a) => a.trim().toLowerCase()).filter(Boolean)).size
 
 // Stable error codes from the backend (backend/worker.ts, ledger.ts, resources.ts). Unknown codes get a generic line.
 const ERROR_TEXT: Record<string, string> = {
+  reply_identity_changed: 'The reply identity changed. Open the original message again or start a new conversation.',
+  reply_source_unavailable: 'The original Gmail message is unavailable for a threaded reply. Nothing was sent.',
   quota_exceeded: 'The server refused this: the mailbox does not have enough remaining capacity, counting sends already accepted and requests still held. Nothing was sent, and it is still awaiting approval.',
   owner_quota_exceeded: 'The server refused this: your account does not have enough remaining capacity across all mailboxes, counting sends already accepted and requests still held. Nothing was sent, and it is still awaiting approval.',
   mailbox_identity_conflict: 'That provider account is already connected under a different address.',

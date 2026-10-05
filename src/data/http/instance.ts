@@ -31,7 +31,7 @@ function safeStorage(pick: () => Storage): KeyValue {
   }
 }
 
-const http = createHttpClient({ baseUrl: '' })
+export const http = createHttpClient({ baseUrl: '' })
 
 export const live: Live = createLive({
   gateway: createHttpGateway(http),

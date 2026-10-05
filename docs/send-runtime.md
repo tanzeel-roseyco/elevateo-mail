@@ -1,0 +1,11 @@
+# Dispatch resolver
+
+`resolveSendRuntime` is a server-only, credential-free-tested composition function. It is mounted in the Worker queue through `dispatchJob`; live sending remains disabled by default. It returns an adapter plus the exact immutable credential binding; callers must pass both into `SendLedger.dispatch`. Never call the returned adapter directly, because the ledger owns approval, quotas, pause, current mailbox/domain binding and atomic credential-revision validation.
+
+Fake intents resolve only from an explicit stored fake binding. Unsupported or missing bindings fail closed. Resend requires `RESEND_SENDING_ENABLED=true`, a valid HTTPS `UNSUBSCRIBE_ORIGIN`, a single-To campaign with no CC/BCC, and an exact-origin footer whose token hash exists for that owner and recipient. Missing legacy footers are rejected. It decrypts only that owner's current credential and rejects revision changes. Neither an absent flag nor an error falls back to simulated sending.
+
+The caller supplies the encrypted vault and can inject transport for tests. Resolution itself sends no email. Tests cover a stubbed provider dispatch, foreign ownership, disabled/malformed configuration, rotation, changed origin, missing token proof and legacy footerless envelopes. Worker wiring is implemented. Operational approval, configured production secrets and real-provider acceptance remain launch gates.
+
+## Queue helper
+
+`dispatchJob(db, job, env, now, fetcher?)` processes one owned, due, pending intent. It uses persistent fake receipts only in fake mode. Live mode refuses fake bindings, requires both global and Resend sending permission, and constructs the encrypted vault before resolving the exact provider binding. Expired approval and permanently revoked eligibility cancel only pending work. Disabled or broken configuration leaves work pending with a sanitized error for later relay attempts; expiry eventually ends that approval. Exceptions never reset dispatching or unknown work, which may already have sent. The relay orders by `updated_at,id` so deferred work cannot monopolize its bounded page. The helper returns `noop`, `processed`, `deferred` or `cancelled`; the queue acknowledges all four because relay owns durable recovery.

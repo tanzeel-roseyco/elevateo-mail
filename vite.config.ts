@@ -10,8 +10,10 @@ export default defineConfig({
   // forwards those calls only when a target is configured; without one they fail, and the app says so.
   // The original Host is kept (no changeOrigin): the server checks a request's Origin against the host it was sent
   // to. /__fixture exists only on the Docker test server, where it starts a synthetic session.
-  preview: process.env.API_PROXY_TARGET ? { proxy: { '/v1': { target: process.env.API_PROXY_TARGET }, '/__fixture': { target: process.env.API_PROXY_TARGET } } } : {},
+  preview: process.env.API_PROXY_TARGET ? { proxy: { '/v1': { target: process.env.API_PROXY_TARGET }, '/login/callback': { target: process.env.API_PROXY_TARGET }, '/__fixture': { target: process.env.API_PROXY_TARGET } } } : {},
   test: {
+    // AIDEV-NOTE: Bound jsdom concurrency on shared Docker hosts; more workers caused CPU-contention timeouts.
+    maxWorkers: 2,
     environment: 'jsdom',
     setupFiles: ['src/test/setup.ts'],
     include: ['src/**/*.test.{ts,tsx}'],
