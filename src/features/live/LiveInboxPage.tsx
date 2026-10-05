@@ -1,8 +1,7 @@
 import { AlertTriangle, ArrowLeft, ChevronLeft, ChevronRight, Inbox, MailOpen, RefreshCw, Reply } from 'lucide-react'
 import { useEffect } from 'react'
-import { Link, Navigate, useLocation, useNavigate, useParams, useSearchParams } from 'react-router'
-import { z } from 'zod'
-import { isServerId, type MessageCursor, type MessageSummary, type ServerMailbox } from '@/data/http/contract'
+import { Link, Navigate, useLocation, useNavigate, useParams } from 'react-router'
+import type { MessageSummary, ServerMailbox } from '@/data/http/contract'
 import { live, useLive } from '@/data/http/instance'
 import { PAGE_LIMIT } from '@/data/http/live'
 import { cx, formatDateTime, formatWhen } from '@/lib/format'
@@ -10,6 +9,7 @@ import { Badge } from '@/ui/Badge'
 import { EmptyState, Skeleton, usePageTitle } from '@/ui/Bits'
 import { Button, IconButton } from '@/ui/Button'
 import { Select } from '@/ui/Field'
+import { usePagePosition } from './paging'
 
 function ErrorPanel({ title, message, retry }: { title: string; message: string; retry(): void }) {
   return (
@@ -18,22 +18,6 @@ function ErrorPanel({ title, message, retry }: { title: string; message: string;
     </div>
   )
 }
-
-// AIDEV-NOTE: The page position lives in the URL (?before=&beforeId=, the server's own cursor), so a reload or a
-// shared link reopens the same page. The cursors of the pages walked through ride in history state, only to offer
-// "Newer"; a link opened cold has no such trail and offers "Newest" instead.
-const trailSchema = z.object({ trail: z.array(z.object({ before: z.number().int().nonnegative(), beforeId: z.string().refine(isServerId) })).max(500) })
-const readTrail = (state: unknown): MessageCursor[] | null => {
-  const parsed = trailSchema.safeParse(state)
-  return parsed.success ? parsed.data.trail : null
-}
-function readCursor(params: URLSearchParams): MessageCursor | null {
-  const before = Number(params.get('before'))
-  const beforeId = params.get('beforeId')
-  if (!params.get('before') || !Number.isSafeInteger(before) || before < 0 || !beforeId || !isServerId(beforeId)) return null
-  return { before, beforeId }
-}
-const cursorSearch = (cursor: MessageCursor | undefined): string => (cursor ? `?before=${cursor.before}&beforeId=${cursor.beforeId}` : '')
 
 function MessageRow({ message, href, state, active }: { message: MessageSummary; href: string; state: unknown; active: boolean }) {
   return (
@@ -53,10 +37,8 @@ function MessageRow({ message, href, state, active }: { message: MessageSummary;
 
 function MessageList({ mailbox, openId }: { mailbox: ServerMailbox; openId: string | undefined }) {
   const list = useLive((s) => s.list)
-  const navigate = useNavigate()
-  const location = useLocation()
-  const [params] = useSearchParams()
-  const cursor = readCursor(params)
+  const position = usePagePosition()
+  const { cursor, pageNumber } = position
   const before = cursor?.before
   const beforeId = cursor?.beforeId
   // One page is fetched and rendered at a time, so the list never grows beyond PAGE_LIMIT rows.
@@ -65,18 +47,11 @@ function MessageList({ mailbox, openId }: { mailbox: ServerMailbox; openId: stri
   }, [mailbox.id, before, beforeId])
 
   const listHref = `/mail/${mailbox.id}`
-  // The trail is trusted only when it ends at the page the URL names; otherwise the position is simply not known.
-  const walked = readTrail(location.state)
-  const trail = !cursor ? [] : walked && walked.at(-1)?.before === cursor.before && walked.at(-1)?.beforeId === cursor.beforeId ? walked : null
-  const pageNumber = trail ? trail.length + 1 : null
   const onPage = list?.mailboxId === mailbox.id && (list.cursor?.beforeId ?? null) === (cursor?.beforeId ?? null) && (list.cursor?.before ?? null) === (cursor?.before ?? null)
 
   if (!list || !onPage || list.page.status === 'loading' || list.page.status === 'idle') return <Skeleton rows={8} />
   if (list.page.status === 'error') return <ErrorPanel title="Messages could not be loaded" message={list.page.message} retry={() => void live.reloadPage()} />
   const { items, next } = list.page.data
-  const older = () => next && void navigate(`${listHref}${cursorSearch(next)}`, { state: trail ? { trail: [...trail, next] } : null })
-  const newer = () => void navigate(`${listHref}${cursorSearch(trail?.at(-2))}`, { state: trail ? { trail: trail.slice(0, -1) } : null })
-
   return (
     <>
       {items.length === 0 ? (
@@ -84,7 +59,7 @@ function MessageList({ mailbox, openId }: { mailbox: ServerMailbox; openId: stri
       ) : (
         <ul aria-label={`Messages in ${mailbox.address}`} className="min-h-0 flex-1 overflow-y-auto">
           {items.map((m) => (
-            <MessageRow key={m.id} message={m} href={`${listHref}/${m.id}${location.search}`} state={location.state} active={m.id === openId} />
+            <MessageRow key={m.id} message={m} href={`${listHref}/${m.id}${position.search}`} state={position.state} active={m.id === openId} />
           ))}
         </ul>
       )}
@@ -92,10 +67,10 @@ function MessageList({ mailbox, openId }: { mailbox: ServerMailbox; openId: stri
         <span aria-live="polite">
           {pageNumber ? `Page ${pageNumber}` : 'Older messages'} · up to {PAGE_LIMIT} per page
         </span>
-        <IconButton label={pageNumber ? 'Newer messages' : 'Newest messages'} disabled={!cursor} onClick={newer}>
+        <IconButton label={pageNumber ? 'Newer messages' : 'Newest messages'} disabled={!cursor} onClick={() => position.newer(listHref)}>
           <ChevronLeft aria-hidden className="size-4" />
         </IconButton>
-        <IconButton label="Older messages" disabled={!next} onClick={older}>
+        <IconButton label="Older messages" disabled={!next} onClick={() => next && position.older(listHref, next)}>
           <ChevronRight aria-hidden className="size-4" />
         </IconButton>
       </div>
@@ -121,7 +96,7 @@ function Reader({ mailbox, messageId, backHref }: { mailbox: ServerMailbox; mess
         </Link>
         <Badge tone="neutral">Plain text · external sender</Badge>
         {body?.status === 'ready' && (
-          <Button size="sm" className="ml-auto" disabled={!mailbox.connected || !mailbox.sendEnabled} title={mailbox.connected && mailbox.sendEnabled ? undefined : 'This mailbox is not allowed to send'} icon={<Reply aria-hidden className="size-3.5" />} onClick={() => void navigate('/compose', { state: { mailboxId: mailbox.id, to: body.data.sender, subject: /^re:/i.test(body.data.subject) ? body.data.subject : `Re: ${body.data.subject}` } })}>
+          <Button size="sm" className="ml-auto" disabled={!mailbox.connected || !mailbox.sendEnabled} title={mailbox.connected && mailbox.sendEnabled ? undefined : 'This mailbox is not allowed to send'} icon={<Reply aria-hidden className="size-3.5" />} onClick={() => void navigate('/compose', { state: { mailboxId: mailbox.id, replyTo: messageId } })}>
             Reply
           </Button>
         )}

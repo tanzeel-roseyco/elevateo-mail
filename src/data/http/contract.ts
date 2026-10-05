@@ -91,3 +91,54 @@ export const toIntent = ({ intent }: z.infer<typeof intentResponse>): SendIntent
 
 export const savedResponse = z.object({ saved: z.literal(true) })
 export const updatedResponse = z.object({ updated: z.literal(true) })
+
+// ---- account, send history and browser session (contract "Recovery and browser session extension") -------------
+
+export const currentUserResponse = z.object({ accountId: z.string().regex(/^[a-f0-9]{32}$/), session: z.object({ expiresAt: timestamp }) })
+export interface CurrentUser {
+  /** Opaque and stable for the account across sessions. Used only to scope and clear what this browser keeps. */
+  accountId: string
+  sessionExpiresAt: string
+}
+export const toCurrentUser = (me: z.infer<typeof currentUserResponse>): CurrentUser => ({ accountId: me.accountId, sessionExpiresAt: new Date(me.session.expiresAt).toISOString() })
+
+const sendSummaryRow = z.object({ id, mailbox_id: id, idempotency_key: id, revision: hash, status, created_at: timestamp, updated_at: timestamp, scheduled_at: timestamp, successor_id: id.nullable() })
+export type SendCursor = { before: number; beforeId: string }
+export const sendRequestPage = z.object({ items: z.array(sendSummaryRow).max(50), next: z.object({ before: timestamp, beforeId: id }).nullable() })
+
+/** A saved send request as the server lists it: no recipients, subject or body. */
+export interface SendSummary {
+  id: string
+  mailboxId: string
+  idempotencyKey: string
+  revision: string
+  status: z.infer<typeof status>
+  createdAt: string
+  /** The single request that replaced this one, if it was replaced. */
+  successorId: string | null
+}
+const toSendSummary = (row: z.infer<typeof sendSummaryRow>): SendSummary => ({ id: row.id, mailboxId: row.mailbox_id, idempotencyKey: row.idempotency_key, revision: row.revision, status: row.status, createdAt: new Date(row.created_at).toISOString(), successorId: row.successor_id })
+export const toSendPage = (page: z.infer<typeof sendRequestPage>): { items: SendSummary[]; next: SendCursor | null } => ({ items: page.items.map(toSendSummary), next: page.next })
+
+export const sendContentResponse = z.object({
+  intent: sendSummaryRow,
+  content: z.object({ from: z.string(), to: z.array(z.string()).max(30), cc: z.array(z.string()).max(30), bcc: z.array(z.string()).max(30), subject: z.string().max(998), body: z.string().max(100_000), kind: z.enum(['manual', 'campaign', 'ai']) }),
+})
+/** The exact saved content of one request, fetched only when it is opened. Kept in memory, never in browser storage. */
+export interface SavedSend {
+  summary: SendSummary
+  from: string
+  to: string[]
+  cc: string[]
+  bcc: string[]
+  subject: string
+  body: string
+  kind: 'manual' | 'campaign' | 'ai'
+}
+export const toSavedSend = ({ intent, content }: z.infer<typeof sendContentResponse>): SavedSend => ({ summary: toSendSummary(intent), ...content })
+
+export const replacementResponse = createdIntent.extend({ predecessorId: id })
+export type Replacement = z.infer<typeof replacementResponse>
+export const logoutResponse = z.object({ signedOut: z.literal(true) })
+/** Docker fixture only: sets the session cookie for a synthetic user. Never present in production. */
+export const fixtureSessionResponse = z.object({ provisioned: z.literal(true) })

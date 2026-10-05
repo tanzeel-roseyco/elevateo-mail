@@ -37,8 +37,6 @@ export class ApiFailure extends Error {
 export interface HttpClientOptions {
   /** Same-origin prefix, e.g. "" so requests go to /v1/... through the serving proxy. The server enables no CORS. */
   baseUrl: string
-  /** Read on every request so a sign-out takes effect immediately. */
-  getToken(): string | null
   fetch?: typeof fetch
   timeoutMs?: number
 }
@@ -57,8 +55,6 @@ export function createHttpClient(options: HttpClientOptions): HttpClient {
 
   return {
     async request(method, path, schema, body) {
-      const token = options.getToken()
-      if (!token) throw new ApiFailure('unauthorized', describeServerError('unauthorized'), 'unauthorized', 401)
       const controller = new AbortController()
       const timer = setTimeout(() => controller.abort(), timeoutMs)
       let response: Response
@@ -67,7 +63,10 @@ export function createHttpClient(options: HttpClientOptions): HttpClient {
       try {
         response = await transport(`${options.baseUrl}${path}`, {
           method,
-          headers: { authorization: `Bearer ${token}`, accept: 'application/json', ...(body === undefined ? {} : { 'content-type': 'application/json' }) },
+          // The session is an HttpOnly cookie the browser attaches itself; this code never sees or stores it.
+          credentials: 'same-origin',
+          // Every state-changing request carries the marker the server requires, so another site cannot forge one.
+          headers: { accept: 'application/json', ...(method === 'GET' ? {} : { 'x-elevateo-csrf': '1' }), ...(body === undefined ? {} : { 'content-type': 'application/json' }) },
           ...(body === undefined ? {} : { body: JSON.stringify(body) }),
           cache: 'no-store',
           signal: controller.signal,

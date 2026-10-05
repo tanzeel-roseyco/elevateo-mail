@@ -1,3 +1,4 @@
+import { toast } from '@/ui/toast'
 import { Bot, Cable, LayoutDashboard, LogOut, Mail, Megaphone, Menu, PauseCircle, Pencil, Send, Settings, Users } from 'lucide-react'
 import { Suspense, useState } from 'react'
 import { Outlet, useNavigate } from 'react-router'
@@ -36,11 +37,13 @@ function LiveSidebar({ compact, onNavigate }: { compact?: boolean; onNavigate?()
   )
 }
 
+/** Ends the session on the server. If the server cannot be told, the person stays signed in and is told why. */
+export const signOut = (): void => void live.signOut().catch((error: unknown) => toast(`You are still signed in: ${error instanceof Error ? error.message : 'the server could not be reached.'}`, { tone: 'error' }))
+
 /** Shown on every page while something stops requests from working or from being sent. */
 function StatusBanners() {
   const online = useOnline()
   const paused = useLive((s) => s.capabilities?.dispatchPaused ?? false)
-  const unsaved = useLive((s) => s.unsaved)
   return (
     <>
       {!online && (
@@ -54,11 +57,6 @@ function StatusBanners() {
           <p>
             <span className="font-semibold">Sending is paused on the server.</span> Approved requests stay queued and may expire before they are sent.
           </p>
-        </div>
-      )}
-      {unsaved && (
-        <div role="alert" className="border-b border-danger/40 bg-danger/10 px-4 py-2 text-[13px]">
-          This browser could not store your send requests. They will not be recoverable here after a reload.
         </div>
       )}
     </>
@@ -96,7 +94,7 @@ export function LiveShell() {
             <button type="button" aria-label="Compose" title="Compose" onClick={() => void navigate('/compose')} className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-fg text-surface shadow-sm md:hidden">
               <Pencil aria-hidden className="size-[18px]" />
             </button>
-            <IconButton label="Sign out" className="size-9" onClick={() => live.signOut()}>
+            <IconButton label="Sign out" className="size-9" onClick={signOut}>
               <LogOut aria-hidden className="size-[18px]" />
             </IconButton>
           </div>

@@ -1,14 +1,17 @@
 import { useStore } from 'zustand'
 import { createHttpClient } from './httpClient'
-import { createHttpGateway } from './httpGateway'
+import { createFixtureSignIn, createHttpGateway } from './httpGateway'
 import { createLive, type Live, type LiveState } from './live'
 
 // AIDEV-NOTE: Wires the API-backed mode for the browser. Requests are same-origin (/v1/...): the serving proxy forwards
-// them, because the server enables no CORS. Imported only by the API-mode app, never by the demo.
+// them, because the server enables no CORS. The session is an HttpOnly cookie the browser sends by itself. Imported only by the API-mode app, never by the demo.
 
 type KeyValue = Pick<Storage, 'getItem' | 'setItem' | 'removeItem' | 'key' | 'length'>
 
-/** Browsers can block storage entirely, or allow reads but refuse writes; the session then lasts only as long as the page. */
+/**
+ * Browsers can block storage entirely, or allow reads but refuse writes. The stand-in then refuses every write
+ * rather than pretending: a recovery key that would vanish on reload must not be reported as stored.
+ */
 function safeStorage(pick: () => Storage): KeyValue {
   try {
     const storage = pick()
@@ -16,31 +19,27 @@ function safeStorage(pick: () => Storage): KeyValue {
     storage.removeItem('elevateo:probe')
     return storage
   } catch {
-    const memory = new Map<string, string>()
     return {
-      getItem: (key) => memory.get(key) ?? null,
-      setItem: (key, value) => void memory.set(key, value),
-      removeItem: (key) => void memory.delete(key),
-      key: (index) => [...memory.keys()][index] ?? null,
-      get length() {
-        return memory.size
+      getItem: () => null,
+      setItem: () => {
+        throw new Error('Browser storage is unavailable.')
       },
+      removeItem: () => undefined,
+      key: () => null,
+      length: 0,
     }
   }
 }
 
-/** First 24 hex characters of SHA-256: enough to tell accounts apart in storage keys without storing the token. */
-async function namespace(token: string): Promise<string> {
-  const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(token))
-  return Array.from(new Uint8Array(digest).slice(0, 12), (byte) => byte.toString(16).padStart(2, '0')).join('')
-}
+const http = createHttpClient({ baseUrl: '' })
 
 export const live: Live = createLive({
-  gateway: createHttpGateway(createHttpClient({ baseUrl: '', getToken: () => live.getToken() })),
-  // The token stays in this tab's session storage: it is gone when the tab closes and is never written to disk-wide storage.
+  gateway: createHttpGateway(http),
+  // AIDEV-NOTE: Only a build made for the Docker fixture (VITE_FIXTURE_SESSION=1) can start a synthetic session.
+  fixture: import.meta.env.VITE_FIXTURE_SESSION === '1' ? createFixtureSignIn(http) : null,
   session: safeStorage(() => sessionStorage),
+  // Holds idempotency keys of unanswered submissions and change markers for other tabs. Never a token or message text.
   local: safeStorage(() => localStorage),
-  namespace,
   now: () => Date.now(),
   newKey: () => crypto.randomUUID(),
 })

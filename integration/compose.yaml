@@ -17,4 +17,6 @@ services:
     environment:
       API_PROXY_TARGET: http://server:8787
       IT_CONTROL_URL: http://server:8788
+      # Shows the synthetic-user buttons on the sign-in screen. Never set for a production build.
+      VITE_FIXTURE_SESSION: "1"
     command: ["npm", "run", "e2e:integration"]

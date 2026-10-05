@@ -8,12 +8,9 @@ import { EMAIL_PATTERN } from './schema'
 export const SERVER_SEND_STATUSES = ['draft', 'pending', 'dispatching', 'accepted', 'rejected', 'unknown', 'cancelled'] as const
 export type ServerSendStatus = (typeof SERVER_SEND_STATUSES)[number]
 
-/**
- * `local_draft` exists only in this browser. `unconfirmed` means a create request was started but no response was
- * seen, so the server may or may not hold it; it is resolved by re-sending the SAME idempotency key, never a new one.
- */
-export const SEND_STATUSES = ['local_draft', 'unconfirmed', ...SERVER_SEND_STATUSES] as const
-export type SendStatus = (typeof SEND_STATUSES)[number]
+/** Every state shown for a saved request is the server's own. Nothing about a request is decided in the browser. */
+export type SendStatus = ServerSendStatus
+export const SEND_STATUSES = SERVER_SEND_STATUSES
 
 export const MAX_RECIPIENTS = 30
 export const MAX_SUBJECT = 998
@@ -29,28 +26,23 @@ export const sendContentSchema = z.object({
 })
 export type SendContent = z.infer<typeof sendContentSchema>
 
-export const sendRecordSchema = z.object({
-  /** Idempotency key, generated once in the browser. It identifies this request for its whole life. */
-  key: z.string().min(1).max(128),
-  content: sendContentSchema,
-  createdAt: z.string(),
-  status: z.enum(SEND_STATUSES),
-  /** Server id and content hash, known once the server has confirmed the request. */
-  intentId: z.string().nullable(),
-  revision: z.string().nullable(),
-  errorCode: z.string().nullable(),
-  /** Server diagnostic id for a rejected or unknown outcome; quoted to an operator, never shown as proof of delivery. */
-  correlationId: z.string().nullable(),
-  /** When the server status was last read successfully. */
-  checkedAt: z.string().nullable(),
-  /** Last refusal or failure the person should see, in plain words. Cleared by the next successful step. */
-  notice: z.string().nullable(),
+/**
+ * The only thing the browser keeps about a submission whose answer has not arrived: its idempotency key, when it
+ * started, and the request it replaces, if any. No recipients, subject or body. With the key, the saved request can
+ * be found again in the server's list after a reload.
+ */
+export const pendingKeySchema = z.object({
+  key: z.string().regex(/^[a-zA-Z0-9_-]{1,128}$/),
+  startedAt: z.number().int().nonnegative(),
+  replaces: z.string().regex(/^[a-zA-Z0-9_-]{1,128}$/).nullable(),
 })
-export type SendRecord = z.infer<typeof sendRecordSchema>
+export type PendingKey = z.infer<typeof pendingKeySchema>
+/** A full set is never trimmed to make room: new submissions are refused until one is resolved. */
+export const MAX_PENDING_KEYS = 20
+export const canStartSubmission = (pending: readonly PendingKey[]): boolean => pending.length < MAX_PENDING_KEYS
 
-export function newSendRecord(key: string, content: SendContent, nowIso: string): SendRecord {
-  return { key, content, createdAt: nowIso, status: 'local_draft', intentId: null, revision: null, errorCode: null, correlationId: null, checkedAt: null, notice: null }
-}
+/** Shown for a submission that has a key but no answer yet. It is not a server state. */
+export const UNCONFIRMED_VIEW = { label: 'Not confirmed', meaning: 'The request was submitted but no answer came back. The server is asked for this same request; a second one is never created.' } as const
 
 export type SendTone = 'neutral' | 'success' | 'warn' | 'danger' | 'accent'
 export interface SendStatusView {
@@ -61,8 +53,6 @@ export interface SendStatusView {
 }
 
 const VIEWS: Record<SendStatus, SendStatusView> = {
-  local_draft: { label: 'Draft', tone: 'neutral', meaning: 'Saved in this browser only. Nothing has been submitted.' },
-  unconfirmed: { label: 'Not confirmed', tone: 'warn', meaning: 'The request was submitted but no answer came back. Check again: the same request is looked up, never a second one.' },
   draft: { label: 'Awaiting approval', tone: 'accent', meaning: 'The server holds this exact version. Nothing is sent until you approve it.' },
   pending: { label: 'Queued', tone: 'neutral', meaning: 'Approved and waiting in the server queue. Approval is not sending: it has not been handed to the provider yet.' },
   dispatching: { label: 'Sending', tone: 'neutral', meaning: 'The server is handing the message to the provider. It can no longer be cancelled.' },
@@ -84,8 +74,11 @@ export function isSettled(status: SendStatus): boolean {
 export const canApprove = (status: SendStatus): boolean => status === 'draft'
 /** The server refuses cancellation once a provider call may have started. */
 export const canCancel = (status: SendStatus): boolean => status === 'draft' || status === 'pending'
-/** Content is immutable on the server; editing means cancelling this request and approving a new one. */
-export const canEdit = (status: SendStatus): boolean => status === 'local_draft' || canCancel(status)
+/**
+ * Content is immutable on the server. Editing means one atomic replacement: the server cancels this request and saves
+ * a single successor, which needs its own approval. Requests that may have reached the provider cannot be replaced.
+ */
+export const canReplace = (status: SendStatus): boolean => status === 'draft' || status === 'pending' || status === 'rejected' || status === 'cancelled'
 
 export const MAX_POLL_ATTEMPTS = 30
 
@@ -153,6 +146,10 @@ const ERROR_TEXT: Record<string, string> = {
   schedule_too_far: 'The scheduled time is too far ahead.',
   unauthorized: 'Your session has expired or is not valid. Sign in again.',
   body_too_large: 'The message is too large for the server to accept.',
+  replacement_conflict: 'This request has already been replaced by a different version. Nothing was changed.',
+  replacement_unavailable: 'This request can no longer be replaced: it is being sent, was accepted, or its outcome is unknown.',
+  invalid_saved_content: 'The server could not verify the saved content of this request, so it is not shown.',
+  csrf_failed: 'The server refused the request because it could not confirm it came from this page. Reload and try again.',
 }
 
 export function describeServerError(code: string): string {

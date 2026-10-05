@@ -11,7 +11,7 @@ function Row({ label, value }: { label: string; value: string }) {
 }
 
 /** The exact content of a send request, shown as text. Used for review and for the approval screen. */
-export function SendPreview({ content, from }: { content: SendContent; from: string }) {
+export function SendPreview({ content, from }: { content: Pick<SendContent, 'to' | 'cc' | 'bcc' | 'subject' | 'body'>; from: string }) {
   return (
     <section aria-label="Message to be sent" className="overflow-hidden rounded-xl border border-line">
       <dl className="divide-y divide-line">

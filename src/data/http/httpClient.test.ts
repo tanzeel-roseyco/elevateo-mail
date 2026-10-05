@@ -1,11 +1,13 @@
 import { describe, expect, it, vi } from 'vitest'
 import { capabilitiesResponse, messageDetail } from './contract'
+import type { SendContent } from '@/domain/sendLifecycle'
 import { ApiFailure, createHttpClient } from './httpClient'
-import { createHttpGateway } from './httpGateway'
+import { createFixtureSignIn, createHttpGateway } from './httpGateway'
 
-const TOKEN = 't'.repeat(48)
 const json = (body: unknown, status = 200) => new Response(JSON.stringify(body), { status, headers: { 'content-type': 'application/json' } })
-const client = (fetchImpl: typeof fetch, token: string | null = TOKEN, timeoutMs = 50) => createHttpClient({ baseUrl: '', getToken: () => token, fetch: fetchImpl, timeoutMs })
+const client = (fetchImpl: typeof fetch, timeoutMs = 50) => createHttpClient({ baseUrl: '', fetch: fetchImpl, timeoutMs })
+const draft: SendContent = { mailboxId: 'mb', to: ['a@example.com'], cc: [], bcc: [], subject: 'S', body: 'B' }
+const row = { id: 'i1', mailbox_id: 'mb', idempotency_key: 'key-1', revision: 'b'.repeat(64), status: 'draft', created_at: 1_800_000_000_000, updated_at: 1_800_000_000_000, scheduled_at: 1_800_000_000_000, successor_id: null }
 const failure = async (run: Promise<unknown>): Promise<ApiFailure> => {
   const error = await run.then(
     () => null,
@@ -17,21 +19,24 @@ const failure = async (run: Promise<unknown>): Promise<ApiFailure> => {
 const saved = { saved: true, simulated: true }
 
 describe('HTTP client', () => {
-  it('sends the bearer session and JSON body, and returns the parsed answer', async () => {
+  it('sends the cookie session, the CSRF marker and a JSON body, and never a bearer token', async () => {
     const fetchImpl = vi.fn<typeof fetch>(async () => json(saved))
     const gateway = createHttpGateway(client(fetchImpl))
     await gateway.approveSendRequest('intent-1', 'a'.repeat(64))
     const [url, init] = fetchImpl.mock.calls[0]!
     expect(url).toBe('/v1/send-intents/intent-1/approve')
     expect(init).toMatchObject({ method: 'POST', body: JSON.stringify({ revision: 'a'.repeat(64) }), cache: 'no-store' })
-    expect(init?.headers).toMatchObject({ authorization: `Bearer ${TOKEN}`, 'content-type': 'application/json' })
+    expect(init?.credentials).toBe('same-origin')
+    expect(init?.headers).toMatchObject({ 'x-elevateo-csrf': '1', 'content-type': 'application/json' })
+    expect(JSON.stringify(init?.headers).toLowerCase()).not.toContain('authorization')
   })
 
-  it('makes no request at all without a session', async () => {
-    const fetchImpl = vi.fn<typeof fetch>()
-    const error = await failure(client(fetchImpl, null).request('GET', '/v1/capabilities', capabilitiesResponse))
-    expect(error.kind).toBe('unauthorized')
-    expect(fetchImpl).not.toHaveBeenCalled()
+  it('sends no CSRF marker on a read', async () => {
+    const fetchImpl = vi.fn<typeof fetch>(async () => json({ accountId: 'a'.repeat(32), session: { expiresAt: 1_800_000_000_000 }, simulated: true }))
+    const me = await createHttpGateway(client(fetchImpl)).me()
+    expect(me).toEqual({ accountId: 'a'.repeat(32), sessionExpiresAt: '2027-01-15T08:00:00.000Z' })
+    expect(fetchImpl.mock.calls[0]![1]?.headers).not.toHaveProperty('x-elevateo-csrf')
+    expect(fetchImpl.mock.calls[0]![1]?.credentials).toBe('same-origin')
   })
 
   it('reports a 401 as an ended session', async () => {
@@ -56,7 +61,7 @@ describe('HTTP client', () => {
 
   it('aborts and reports a timeout when no answer arrives', async () => {
     const hang: typeof fetch = (_input, init) => new Promise((_resolve, reject) => init?.signal?.addEventListener('abort', () => reject(new DOMException('aborted', 'AbortError'))))
-    const error = await failure(client(hang, TOKEN, 10).request('GET', '/x', capabilitiesResponse))
+    const error = await failure(client(hang, 10).request('GET', '/x', capabilitiesResponse))
     expect(error).toMatchObject({ kind: 'timeout', outcomeUncertain: true })
   })
 
@@ -96,6 +101,42 @@ describe('HTTP gateway', () => {
     const created = await createHttpGateway(client(fetchImpl)).createSendRequest('key-1', { mailboxId: 'mb', to: ['a@example.com'], cc: [], bcc: [], subject: 'S', body: 'B' })
     expect(created).toEqual({ id: 'i1', revision: 'b'.repeat(64), status: 'draft' })
     expect(JSON.parse(String(fetchImpl.mock.calls[0]![1]?.body))).toEqual({ mailboxId: 'mb', to: ['a@example.com'], cc: [], bcc: [], subject: 'S', body: 'B', kind: 'manual', revision: 1, idempotencyKey: 'key-1' })
+  })
+
+  it('lists send requests a bounded page at a time, without content', async () => {
+    const fetchImpl = vi.fn<typeof fetch>(async () => json({ items: [row], next: { before: 7, beforeId: 'i0' }, simulated: true }))
+    const page = await createHttpGateway(client(fetchImpl)).listSendRequests({ before: 9, beforeId: 'i9' }, 500)
+    expect(fetchImpl.mock.calls[0]![0]).toBe('/v1/send-intents?limit=50&before=9&beforeId=i9')
+    expect(page).toEqual({ items: [{ id: 'i1', mailboxId: 'mb', idempotencyKey: 'key-1', revision: 'b'.repeat(64), status: 'draft', createdAt: '2027-01-15T08:00:00.000Z', successorId: null }], next: { before: 7, beforeId: 'i0' } })
+  })
+
+  it('reads saved content and refuses an answer of the wrong shape', async () => {
+    const content = { from: 'me@example.com', to: ['a@example.com'], cc: [], bcc: [], subject: 'S', body: 'B', kind: 'manual' }
+    const good = await createHttpGateway(client(async () => json({ intent: { ...row, successor_id: 'i2' }, content, simulated: true }))).getSendContent('i1')
+    expect(good).toMatchObject({ summary: { id: 'i1', successorId: 'i2' }, from: 'me@example.com', to: ['a@example.com'], body: 'B', kind: 'manual' })
+    const bad = await failure(createHttpGateway(client(async () => json({ intent: row, content: { ...content, body: 7 }, simulated: true }))).getSendContent('i1'))
+    expect(bad.kind).toBe('unavailable')
+  })
+
+  it('replaces a request atomically under a new key and the predecessor revision', async () => {
+    const fetchImpl = vi.fn<typeof fetch>(async () => json({ predecessorId: 'i1', id: 'i2', revision: 'c'.repeat(64), status: 'draft', simulated: true }))
+    const replaced = await createHttpGateway(client(fetchImpl)).replaceSendRequest('i1', 'b'.repeat(64), 'key-2', draft)
+    expect(replaced).toEqual({ predecessorId: 'i1', id: 'i2', revision: 'c'.repeat(64), status: 'draft' })
+    expect(fetchImpl.mock.calls[0]![0]).toBe('/v1/send-intents/i1/replace')
+    expect(JSON.parse(String(fetchImpl.mock.calls[0]![1]?.body))).toEqual({ revision: 'b'.repeat(64), draft: { ...draft, kind: 'manual', revision: 1, idempotencyKey: 'key-2' } })
+  })
+
+  it('signs out and starts a fixture session through their own routes', async () => {
+    const fetchImpl = vi.fn<typeof fetch>(async (url) => json(String(url).includes('logout') ? { signedOut: true, simulated: true } : { provisioned: true, simulated: true }))
+    const http = client(fetchImpl)
+    await createHttpGateway(http).logout()
+    await createFixtureSignIn(http).provision('alice')
+    expect(fetchImpl.mock.calls.map((c) => [c[0], c[1]?.method, c[1]?.body])).toEqual([['/v1/session/logout', 'POST', undefined], ['/__fixture/session', 'POST', JSON.stringify({ user: 'alice' })]])
+  })
+
+  it('reports a fixture refusal, whose error shape differs, as a failure rather than a session', async () => {
+    const error = await failure(createFixtureSignIn(client(async () => json({ error: 'fixture_session_expired' }, 401))).provision('alice'))
+    expect(error.kind).toBe('unavailable')
   })
 
   it('passes both cursor parts back unchanged and converts times to ISO', async () => {

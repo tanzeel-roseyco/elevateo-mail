@@ -1,10 +1,9 @@
 import type { SendContent } from '@/domain/sendLifecycle'
-import { capabilitiesResponse, createdIntent, intentResponse, isServerId, mailboxPage, messageDetail, messagePage, quotaResponse, savedResponse, toIntent, toMailbox, toMessageBody, toMessagePage, updatedResponse, type ServerMailbox } from './contract'
+import { capabilitiesResponse, createdIntent, currentUserResponse, fixtureSessionResponse, intentResponse, isServerId, logoutResponse, mailboxPage, messageDetail, messagePage, quotaResponse, replacementResponse, savedResponse, sendContentResponse, sendRequestPage, toCurrentUser, toIntent, toMailbox, toMessageBody, toMessagePage, toSavedSend, toSendPage, updatedResponse, type ServerMailbox } from './contract'
 import { ApiFailure, type HttpClient } from './httpClient'
-import type { ServerGateway } from './ports'
+import type { FixtureSignIn, ServerGateway } from './ports'
 
-// AIDEV-NOTE: HTTP adapter for ServerGateway. Returns DTOs only: it never writes a cache. Only routes named in the
-// integration-v1 contract are called; nothing is invented here.
+// AIDEV-NOTE: The explicit HTTP adapter: one method per contract route, DTOs out, no cache and no fallback data.
 
 /** Ids go into URL paths, so a value that is not a server id is refused before any request is made. */
 function pathId(value: string): string {
@@ -14,11 +13,20 @@ function pathId(value: string): string {
 
 /** Historical mailboxes are kept by the server, so the inventory can exceed ten; three pages is a generous ceiling. */
 const MAX_MAILBOX_PAGES = 3
-/** The most message summaries one request may ask for, whatever a caller passes. */
+/** The most message or send-request summaries one request may ask for, whatever a caller passes. */
 const MAX_MESSAGE_LIMIT = 50
+const clampLimit = (limit: number): string => String(Number.isFinite(limit) ? Math.min(Math.max(1, Math.trunc(limit)), MAX_MESSAGE_LIMIT) : 1)
+// `revision: 1`: each immutable request is its own first version; an edit is a new request with a new key.
+const draftBody = (key: string, content: SendContent) => ({ ...content, kind: 'manual', revision: 1, idempotencyKey: pathId(key) })
 
 export function createHttpGateway(http: HttpClient): ServerGateway {
   return {
+    me: async () => toCurrentUser(await http.request('GET', '/v1/me', currentUserResponse)),
+
+    async logout() {
+      await http.request('POST', '/v1/session/logout', logoutResponse)
+    },
+
     capabilities: () => http.request('GET', '/v1/capabilities', capabilitiesResponse),
 
     async listMailboxes() {
@@ -41,7 +49,7 @@ export function createHttpGateway(http: HttpClient): ServerGateway {
     mailboxQuota: (mailboxId) => http.request('GET', `/v1/mailboxes/${pathId(mailboxId)}/quota`, quotaResponse),
 
     async listMessages({ mailboxId, cursor, limit }) {
-      const query = new URLSearchParams({ mailboxId: pathId(mailboxId), limit: String(Math.min(Math.max(1, Math.trunc(limit)), MAX_MESSAGE_LIMIT)) })
+      const query = new URLSearchParams({ mailboxId: pathId(mailboxId), limit: clampLimit(limit) })
       // Both cursor parts are passed back unchanged, as the contract requires.
       if (cursor) {
         query.set('before', String(cursor.before))
@@ -54,9 +62,20 @@ export function createHttpGateway(http: HttpClient): ServerGateway {
       return toMessageBody(await http.request('GET', `/v1/messages/${pathId(mailboxId)}/${pathId(messageId)}`, messageDetail))
     },
 
-    createSendRequest: (key: string, content: SendContent) =>
-      // `revision: 1`: each immutable request is its own first version; an edit is a new request with a new key.
-      http.request('POST', '/v1/send-intents', createdIntent, { ...content, kind: 'manual', revision: 1, idempotencyKey: pathId(key) }),
+    async listSendRequests(cursor, limit) {
+      const query = new URLSearchParams({ limit: clampLimit(limit) })
+      if (cursor) {
+        query.set('before', String(cursor.before))
+        query.set('beforeId', pathId(cursor.beforeId))
+      }
+      return toSendPage(await http.request('GET', `/v1/send-intents?${query.toString()}`, sendRequestPage))
+    },
+
+    getSendContent: async (intentId) => toSavedSend(await http.request('GET', `/v1/send-intents/${pathId(intentId)}/content`, sendContentResponse)),
+
+    createSendRequest: (key, content) => http.request('POST', '/v1/send-intents', createdIntent, draftBody(key, content)),
+
+    replaceSendRequest: (intentId, revision, key, content) => http.request('POST', `/v1/send-intents/${pathId(intentId)}/replace`, replacementResponse, { revision, draft: draftBody(key, content) }),
 
     async approveSendRequest(intentId, revision) {
       await http.request('POST', `/v1/send-intents/${pathId(intentId)}/approve`, savedResponse, { revision })
@@ -68,6 +87,14 @@ export function createHttpGateway(http: HttpClient): ServerGateway {
 
     async getSendRequest(intentId) {
       return toIntent(await http.request('GET', `/v1/send-intents/${pathId(intentId)}`, intentResponse))
+    },
+  }
+}
+
+export function createFixtureSignIn(http: HttpClient): FixtureSignIn {
+  return {
+    async provision(user) {
+      await http.request('POST', '/__fixture/session', fixtureSessionResponse, { user })
     },
   }
 }

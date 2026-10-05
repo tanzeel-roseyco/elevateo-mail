@@ -117,3 +117,15 @@ Verification: all ten pages rendered and visually inspected; extracted text, ten
 - The inbox page position is the server cursor in the URL, so a reload reopens the same page.
 - Areas without server support (campaigns, contacts, assistant, provider connections, DNS, enrichment, search) are shown as unavailable.
 - Contract use and gaps: docs/contracts/integration-v1-frontend-notes.md. Evidence and production gates: docs/validation/2026-10-05-backend-integration.md.
+
+## Server-owned send requests and cookie session (5 October 2026)
+
+- The server owns send requests. The list (`GET /v1/send-intents`) has no subject or recipients; the exact saved content is read (`/:id/content`) when a request is opened and is held in memory only, at most twenty opened requests at a time.
+- The browser persists two kinds of thing for the API build: one entry per submission that has no answer yet (`elevateo:pending:<accountId>:<idempotency key>` holding a start time and the id it replaces), and two change markers other tabs listen for (`elevateo:account`, `elevateo:sync`). No message text, subject, recipient or token.
+- Each pending key is its own storage entry, so two tabs never rewrite a shared list. At twenty unresolved keys a new submission is refused; none is dropped.
+- Lost answer: in the same tab the identical request is repeated under the same key. After a reload the content is gone, so the key is looked for in the server's list, ten pages of fifty per check, continuing where the last check stopped. Only reaching the end of the list proves the request was never saved; clocks are not compared.
+- Edit is `POST /:id/replace`: the server cancels the old request and creates one successor atomically. A tab that loses the race is shown the winner's successor and told its own wording was not saved. A successor is never approved by being created.
+- Session: `__Host-elevateo_session`, HttpOnly. Every write sends `X-Elevateo-CSRF: 1`. The page learns who it is from `GET /v1/me`. Account data is dropped on sign-out, on any 401, and when another tab reports a different account (dropped first, then the server is asked). The account is confirmed twice while loading so one account's id is never stored beside another's data.
+- What is typed in Compose lives in component memory until submitted. Leaving the page discards it. Reply passes two ids through router state, never an address or subject.
+- Records from the earlier version (`elevateo:sends:*`): a record is removed from the browser only when the server returns saved content under the same key that says the same thing. All others stay, are counted on the Send requests page without showing their text, and go only when the person chooses Discard. The old `elevateo:session` token is removed at start.
+- Sign-in: production has none. The Docker fixture build (`VITE_FIXTURE_SESSION=1`) shows two synthetic-user buttons; any other build shows "You are not signed in".

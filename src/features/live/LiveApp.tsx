@@ -8,7 +8,7 @@ import { Button, buttonClass } from '@/ui/Button'
 import { ConfirmHost } from '@/ui/confirm'
 import { Toaster } from '@/ui/toast'
 import { LiveInboxPage } from './LiveInboxPage'
-import { LiveShell } from './LiveShell'
+import { LiveShell, signOut } from './LiveShell'
 import { SignInPage } from './SignInPage'
 import { UnavailablePage } from './UnavailablePage'
 
@@ -45,7 +45,7 @@ const router = createBrowserRouter([
       { index: true, element: <Navigate to="/mail" replace /> },
       { path: 'mail/:mailboxId?/:messageId?', element: <LiveInboxPage /> },
       { path: 'compose', element: <ComposePage /> },
-      { path: 'sends/:key?', element: <SendsPage /> },
+      { path: 'sends/:id?', element: <SendsPage /> },
       { path: 'overview', element: <UnavailablePage area="overview" /> },
       { path: 'campaigns/*', element: <UnavailablePage area="campaigns" /> },
       { path: 'contacts/*', element: <UnavailablePage area="contacts" /> },
@@ -79,10 +79,16 @@ export function LiveApp() {
 
   useEffect(() => {
     void live.start()
-    // Another tab of this browser changed a send request or signed out: reflect it here.
-    const onStorage = (event: StorageEvent) => live.onStorageEvent(event.key, event.newValue)
+    // Another tab of this browser changed a send request, signed out or signed in as someone else: reflect it here.
+    const onStorage = (event: StorageEvent) => live.onStorageEvent(event.key)
+    // The session cookie is shared by every tab, so a tab that was in the background asks again whose it is.
+    const onVisibility = () => document.visibilityState === 'visible' && void live.recheckSession()
     window.addEventListener('storage', onStorage)
-    return () => window.removeEventListener('storage', onStorage)
+    document.addEventListener('visibilitychange', onVisibility)
+    return () => {
+      window.removeEventListener('storage', onStorage)
+      document.removeEventListener('visibilitychange', onVisibility)
+    }
   }, [])
 
   // The next person to sign in must not land on the previous account's page or ids.
@@ -95,9 +101,12 @@ export function LiveApp() {
     <>
       {(session.status === 'signed_out' || session.status === 'expired') && <SignInPage expired={session.status === 'expired'} />}
       {session.status === 'loading' && (
-        <div className="mx-auto max-w-2xl pt-24">
-          <p className="px-6 text-sm text-muted">Contacting the server…</p>
-          <Skeleton rows={8} />
+        // On the panel colour, so the placeholder rows are visible in the light theme as well as the dark one.
+        <div className="min-h-dvh bg-surface">
+          <div className="mx-auto max-w-2xl pt-24">
+            <p className="px-6 text-sm text-muted">Contacting the server…</p>
+            <Skeleton rows={8} />
+          </div>
         </div>
       )}
       {session.status === 'unavailable' && (
@@ -111,7 +120,7 @@ export function LiveApp() {
                 <Button variant="primary" onClick={() => void live.retry()}>
                   Try again
                 </Button>
-                <Button onClick={() => live.signOut()}>Sign out</Button>
+                <Button onClick={signOut}>Sign out</Button>
               </div>
             }
           />

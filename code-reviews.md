@@ -343,3 +343,80 @@ Scenarios were reasoned from the code by the reviewer (lost answer, reload mid-s
 ### Verification
 
 See [validation](docs/validation/2026-10-05-backend-integration.md).
+
+## 2026-10-05 — Server-owned send requests, atomic replacement and cookie session
+
+Reviewers: 15 scoped adversarial Codex agents (`gpt-5.6-sol`, low reasoning, read-only) using the full review rubric, each given at most 409 lines, one dedicated design-tradeoff reviewer, then 3 scoped follow-up reviewers on the fixed regions. As before, the Codex sandbox cannot start a shell on this machine, so each reviewer received its lines inline. Each reviewer process was started directly and tracked by its own process id; all 19 exited by themselves and none was stopped.
+
+### Coverage
+
+| Assignment | Lines | Reported | Confirmed |
+|---|---:|---:|---:|
+| A `sendLifecycle.ts`, `contract.ts` 95–end, `ports.ts`, `paging.ts` | 313 | 1 | 1 |
+| B `httpClient.ts`, `httpGateway.ts`, `instance.ts`, Vite/Playwright/compose config | 337 | 3 | 1 |
+| C `live.ts` 1–300 | 300 | 1 | 1 |
+| D `live.ts` 301–590 | 290 | 4 | 4 |
+| E `live.ts` 591–end | 214 | 0 | 0 |
+| F `ComposePage.tsx`, `SignInPage.tsx`, `LiveApp.tsx` | 409 | 1 | 0 |
+| G `SendsPage.tsx`, `SendPreview.tsx` | 347 | 0 | 0 |
+| H `LiveShell.tsx`, `LiveSettingsPage.tsx`, `LiveInboxPage.tsx` | 361 | 1 | 1 |
+| **Source total** | **2,571** | | **8 scoped** |
+| I `harness.ts`, `support.ts`, `visual.spec.ts` | 373 | 2 | 1 test |
+| J, K `journey.spec.ts` | 617 | 8 | 3 test |
+| L, M, N `live.test.ts` | 830 | 7 | 3 test |
+| O `httpClient.test.ts`, `sendLifecycle.test.ts` | 299 | 0 | 0 |
+| Design review (five core files as a whole) | 1,250 (overlaps above) | 8 | 5 new, 3 duplicates of D |
+| Follow-up P, Q `live.ts` 190–620; R `ComposePage.tsx`, `instance.ts`, `paging.ts` | 750 (overlaps above) | 6 | 2 new, 1 duplicate |
+
+**Confirmed source defects: 15 in 2,571 unique source lines, 5.8 per thousand lines.** 2 P0, 10 P1, 3 P2. 14 fixed, 1 open. Test weaknesses confirmed: 7, all addressed.
+
+### Fixed (14)
+
+- **P0** While a page loaded, another tab could replace the cookie between "who am I" and the data that followed, leaving one account's id beside another account's mailboxes. The account is now asked for again after the data and loading restarts if it changed.
+- **P0** A legacy browser record was deleted once any server request with its id existed. It is now deleted only when the server returns saved content under the same key that says the same thing.
+- When another tab reported an account change, this tab kept its data until the server had answered. It now drops everything first and asks afterwards; the fixture sign-in also signals before it changes the cookie.
+- After a replacement made elsewhere, the recovery key was removed before the successor had been read; an outage at that moment lost it.
+- The search for a lost request compared server times with the browser clock to decide it was absent. It no longer compares times: only the end of the list proves absence.
+- That search restarted from the newest page every time, so a request behind more than 500 newer ones could never be found. It now continues where it stopped.
+- An older read of a request arriving late could overwrite a newer state and re-enable Approve. Reads are now ordered per request.
+- When browser storage was blocked, a memory stand-in accepted the recovery key, which a reload would then lose. The stand-in now refuses writes, so the submission is refused instead.
+- Reply put the sender's address and the subject into browser history state. It now passes two ids and reads the message through the store.
+- Two changes in the same millisecond wrote the same marker value, which raises no storage event in other tabs. Markers now carry a unique value.
+- Only the first 50 legacy records were ever checked. The bound is now 200, above the 100 the earlier version could hold.
+- The read-ordering table reused numbers after it was cleared (found in follow-up).
+- The page trail stopped validating after 500 pages, sending "Newer" to the first page.
+- A non-finite page limit was sent to the server as `NaN`.
+
+### Open (1)
+
+| Severity | Finding | Why it is open |
+|---|---|---|
+| P2 | The limit of 20 unresolved keys is checked and then written; two tabs at 19 can both add one | The result is 21 entries, each still recoverable and none dropped. A strict limit needs Web Locks; the limit exists to bound memory, which it still does |
+
+### Rejected (15)
+
+- Streaming byte cap on responses without `Content-Length`, and UTF-16 length: the origin is the application's own server; declared oversize is refused. Unchanged from the previous review.
+- The fixture's `{error:"code"}` shape reported as a generic failure: fixture-only, and the message still says the session could not be started.
+- "`!detail.revision` rejects revision 0" (twice): the revision is a 64-character hash, validated at the boundary.
+- "Projects share one server and reset it concurrently": the integration config runs one worker, in order.
+- Five "missing coverage" findings on the first half of `journey.spec.ts`: each case exists in the second half, which that reviewer was not given.
+- "Mutable revision in the unit fake" and "message ownership in the unit fake": the real-server suite covers stale revisions and isolation.
+- "Pending keys should be deleted on account change": they are account-scoped and unresolved; deleting them would discard unresolved work. They are never shown to another account.
+- "Compose text survives an account change": the router is unmounted whenever the session is not ready.
+- "The storage probe key could collide": the key is in the application's own namespace and never otherwise used.
+
+### Test findings (7, all addressed)
+
+The visual test now drops only the answer to a replacement, so "Check again" repeats a completed operation. Isolation probes send well-formed cancel and replace requests and compare a foreign id with a missing one. The legacy test compares the stored records byte for byte across navigation and reload, and includes a record whose id exists but whose text differs. The permission test asserts exactly one write. The unit fake requires both cursor parts. The two-tab replacement unit test starts both submissions before awaiting either. Legacy recovery by key is tested beyond the first list page.
+
+### Design-tradeoff review
+
+Scenarios were reasoned from the code by the reviewer. No Obsidian simulation was run, and none is claimed.
+
+- **Kept:** content off the device with recovery by key; compose text in memory only; refuse at the key limit rather than evict; reconcile-then-keep for legacy records; build-time gating of the fixture sign-in.
+- **Changed as a result:** resumable search without clock comparison; unique change markers; immediate drop on an account marker; content-verified legacy recovery; refusing writes when storage is unavailable.
+- **Deferred to the backend:** lookup by idempotency key; an account id on every response.
+
+### Verification
+
+See [validation](docs/validation/2026-10-05-server-recovery.md).

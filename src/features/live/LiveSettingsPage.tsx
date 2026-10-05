@@ -1,7 +1,8 @@
+import { signOut } from './LiveShell'
 import { LogOut, Palette, UserCircle, type LucideIcon } from 'lucide-react'
 import type { ComponentType } from 'react'
 import { Link, Navigate, useParams } from 'react-router'
-import { live, useLive } from '@/data/http/instance'
+import { useLive } from '@/data/http/instance'
 import { AppearanceSettings } from '@/features/settings/AppearanceSettings'
 import { cx } from '@/lib/format'
 import { usePageTitle } from '@/ui/Bits'
@@ -11,7 +12,7 @@ function AccountPanel() {
   const capabilities = useLive((s) => s.capabilities)
   return (
     <div className="mt-4 flex flex-col gap-4 text-sm">
-      <p className="text-[13px] text-muted">You are using a pilot session issued offline. Profile details, notification preferences and sender identities are not stored by the server yet, so they are not shown.</p>
+      <p className="text-[13px] text-muted">Your session is held by the server and kept by this browser as a cookie that page scripts cannot read. Profile details, notification preferences and sender identities are not stored by the server yet, so they are not shown.</p>
       {capabilities && (
         <dl className="divide-y divide-line overflow-hidden rounded-xl border border-line text-[13px]">
           {[
@@ -30,10 +31,10 @@ function AccountPanel() {
         </dl>
       )}
       <div>
-        <Button onClick={() => live.signOut()} icon={<LogOut aria-hidden className="size-4" />}>
+        <Button onClick={signOut} icon={<LogOut aria-hidden className="size-4" />}>
           Sign out
         </Button>
-        <p className="mt-1.5 text-xs text-muted">Signing out clears the session and the drafts and send requests kept in this browser. Requests the server already holds are not affected.</p>
+        <p className="mt-1.5 text-xs text-muted">Signing out ends this session on the server and clears the account details held in this page. Send requests are kept by the server and are not affected.</p>
       </div>
     </div>
   )

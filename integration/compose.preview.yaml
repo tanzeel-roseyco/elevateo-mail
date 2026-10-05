@@ -1,0 +1,12 @@
+# AIDEV-NOTE: Overlay for a manual click-through of the same stack: serves the API build instead of running tests,
+# and publishes the app and the harness control port on the host's loopback only. Reach them from a laptop with
+#   ssh -N -L 4174:127.0.0.1:4174 -L 8788:127.0.0.1:8788 <build host>
+#   docker compose -f integration/compose.yaml -f integration/compose.preview.yaml up -d
+services:
+  server:
+    ports:
+      - "127.0.0.1:8788:8788"
+  web:
+    command: ["sh", "-c", "npm run build:api && npm run preview:api"]
+    ports:
+      - "127.0.0.1:4174:4174"

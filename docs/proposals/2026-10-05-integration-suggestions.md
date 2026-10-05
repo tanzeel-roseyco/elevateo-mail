@@ -52,3 +52,15 @@ These remove four of the five open review findings. They are requests to the bac
 ## 5. Process note
 
 While stopping a stuck reviewer on 5 October, every `codex.exe` process on the laptop was killed, not only the reviewer's. Three processes ended. If another agent was running under Codex at that moment it was interrupted. Future runs should stop reviewers by process id.
+
+## 6. Update after the server-recovery milestone (5 October 2026, later)
+
+Done since this list was written: account identity, request listing, saved content, atomic replacement and the HttpOnly cookie session (backend `2305895`), and the frontend changes that use them. Items 1 to 4 of the previous review's open findings are closed by them.
+
+Still suggested, in order of value:
+
+1. **Lookup by idempotency key** (`GET /v1/send-intents?idempotencyKey=`). Recovery after a reload currently reads the list 500 requests per check.
+2. **Production sign-in.** Nothing can be used outside the Docker fixture until the server can issue a session.
+3. **Account id on responses** (a header is enough), so a tab can reject an answer that belongs to a different account without relying on another tab's marker.
+4. **Align `cancel` with the contract text** (404 for a missing or foreign request; it answers 409 today), and give the fixture's refusals the standard error shape.
+5. **A server-side draft**, if losing an unsubmitted message on reload proves unacceptable in the pilot. Drafts are deliberately not kept in the browser.

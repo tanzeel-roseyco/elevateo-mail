@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { canApprove, canCancel, canEdit, checkSendContent, describeServerError, isSettled, MAX_POLL_ATTEMPTS, newSendRecord, nextPollDelay, recipientCount, SEND_STATUSES, sendRecordSchema, sendStatusView, type SendContent } from './sendLifecycle'
+import { canApprove, canCancel, canReplace, canStartSubmission, checkSendContent, describeServerError, isSettled, MAX_PENDING_KEYS, MAX_POLL_ATTEMPTS, nextPollDelay, pendingKeySchema, recipientCount, SEND_STATUSES, sendStatusView, UNCONFIRMED_VIEW, type SendContent } from './sendLifecycle'
 
 const content = (patch: Partial<SendContent> = {}): SendContent => ({ mailboxId: 'mbx-1', to: ['a@example.com'], cc: [], bcc: [], subject: 'Hello', body: 'Text', ...patch })
 
@@ -19,14 +19,15 @@ describe('send status wording', () => {
     expect(sendStatusView('unknown').meaning).toContain('Do not send it again')
   })
 
-  it('gives every status, including unconfirmed and sending, its own label', () => {
-    const labels = SEND_STATUSES.map((status) => sendStatusView(status).label)
-    expect(new Set(labels).size).toBe(SEND_STATUSES.length)
+  it('gives every status, and a submission with no answer, its own label', () => {
+    const labels = [...SEND_STATUSES.map((status) => sendStatusView(status).label), UNCONFIRMED_VIEW.label]
+    expect(new Set(labels).size).toBe(SEND_STATUSES.length + 1)
+    expect(UNCONFIRMED_VIEW.meaning).toContain('a second one is never created')
   })
 
-  it('keeps the seven distinguishable outcomes distinct', () => {
-    const labels = (['local_draft', 'draft', 'pending', 'accepted', 'rejected', 'cancelled', 'unknown'] as const).map((s) => sendStatusView(s).label)
-    expect(labels).toEqual(['Draft', 'Awaiting approval', 'Queued', 'Accepted by provider', 'Rejected', 'Cancelled', 'Outcome unknown'])
+  it('keeps the distinguishable outcomes distinct', () => {
+    const labels = (['draft', 'pending', 'accepted', 'rejected', 'cancelled', 'unknown'] as const).map((s) => sendStatusView(s).label)
+    expect(labels).toEqual(['Awaiting approval', 'Queued', 'Accepted by provider', 'Rejected', 'Cancelled', 'Outcome unknown'])
   })
 })
 
@@ -39,8 +40,8 @@ describe('allowed actions', () => {
     expect(SEND_STATUSES.filter(canCancel)).toEqual(['draft', 'pending'])
   })
 
-  it('allows editing a local draft, or a request that can still be cancelled first', () => {
-    expect(SEND_STATUSES.filter(canEdit)).toEqual(['local_draft', 'draft', 'pending'])
+  it('allows replacing only a request that has not reached, and cannot reach, the provider', () => {
+    expect(SEND_STATUSES.filter(canReplace).sort()).toEqual(['cancelled', 'draft', 'pending', 'rejected'])
   })
 
   it('treats unknown as unsettled, because reconciliation may still resolve it', () => {
@@ -58,7 +59,7 @@ describe('status checking', () => {
   })
 
   it('never checks automatically for any other status, including unknown', () => {
-    for (const status of ['local_draft', 'unconfirmed', 'draft', 'accepted', 'rejected', 'cancelled', 'unknown'] as const) expect(nextPollDelay(status, 0)).toBeNull()
+    for (const status of ['draft', 'accepted', 'rejected', 'cancelled', 'unknown'] as const) expect(nextPollDelay(status, 0)).toBeNull()
   })
 })
 
@@ -98,11 +99,16 @@ describe('content checks', () => {
 })
 
 describe('records and errors', () => {
-  it('creates a local draft that passes its own schema', () => {
-    const record = newSendRecord('key-1', content(), '2026-10-05T00:00:00.000Z')
-    expect(record).toMatchObject({ key: 'key-1', status: 'local_draft', intentId: null, revision: null, notice: null })
-    expect(sendRecordSchema.safeParse(record).success).toBe(true)
-    expect(sendRecordSchema.safeParse({ ...record, status: 'sent' }).success).toBe(false)
+  it('keeps only a key, a time and the replaced id for an unanswered submission', () => {
+    const entry = { key: 'key-1', startedAt: 1, replaces: null }
+    expect(pendingKeySchema.parse({ ...entry, body: 'text', to: ['a@example.com'] })).toEqual(entry)
+    expect(pendingKeySchema.safeParse({ ...entry, key: 'a/b' }).success).toBe(false)
+  })
+
+  it('refuses a new submission at the limit rather than dropping one', () => {
+    const full = Array.from({ length: MAX_PENDING_KEYS }, (_, i) => ({ key: `k${i}`, startedAt: i, replaces: null }))
+    expect(canStartSubmission(full.slice(1))).toBe(true)
+    expect(canStartSubmission(full)).toBe(false)
   })
 
   it('explains known server codes and names unknown ones', () => {
