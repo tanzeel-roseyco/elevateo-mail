@@ -4,7 +4,9 @@ A planned shared company mailbox for approximately **10 people**, available on a
 
 ## Current state
 
-**Design package and six-repository source intake complete; Elevateo application implementation has not started.** Resend and self-hosted Supabase are selected by the user. This update replaces the earlier assumption that the primary product is a campaign engine across 18 existing mailboxes. The expanded brief specifies nine addresses across one or two domains; actual addresses, inbox/alias boundaries and migration requirements remain unresolved.
+BE-01-R1 repairs transaction ownership, immutable principals, role memberships, credential publication, worker heartbeat and egress verification. Regression sources and bounded review evidence are in `docs/evidence/be-01-r1.md`. No repair Docker tests have run; this branch is a review/test checkpoint, not an accepted foundation.
+
+**BE-01 security repair source checkpoint; implementation and acceptance remain incomplete.** Resend and self-hosted Supabase are selected by the user. This update replaces the earlier assumption that the primary product is a campaign engine across 18 existing mailboxes. The expanded brief specifies nine addresses across one or two domains; actual addresses, inbox/alias boundaries and migration requirements remain unresolved.
 
 Local execution is underway from main `103baeb0` in an isolated checkout. Three independent exact-model PLAN consultations completed successfully; [runtime evidence and opinions](.planning/consultations/results/initial-plan/metadata.json) distinguish these from the earlier failed attempts. Astra MAX has accepted the initial local architecture; see [ADR 0002](docs/decisions/0002-local-architecture.md). Fresh BE-01 task opinions are complete and their synthesis is underway. Official Devin MCP is authenticated and its read-only session verified this repository/base and working Docker. [Devin setup](docs/research/devin-cli/README.md) records the connection and its limitations. Fable retains frontend ownership; these assessments have not implemented the application.
 

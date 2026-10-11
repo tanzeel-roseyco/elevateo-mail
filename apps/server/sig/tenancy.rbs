@@ -1,0 +1,34 @@
+module Elevateo
+  module Tenancy
+    class ContextError < StandardError
+    end
+    UUID: Regexp
+    STACK_KEY: Symbol
+    class Principal < Data
+      attr_reader user_id: String
+      attr_reader org_id: String
+      def self.new: (user_id: String, org_id: String) -> Principal
+      def initialize: (user_id: String, org_id: String) -> void
+    end
+    interface _Transaction
+      def open?: () -> bool
+    end
+    interface _TenantConnection
+      def transaction_open?: () -> bool
+      def current_transaction: () -> _Transaction
+      def clear_query_cache: () -> void
+      def uncached: [T] (dirties: bool) { () -> T } -> T
+      # AIDEV-NOTE: Rails swallows ActiveRecord::Rollback and returns nil after rolling back owned claims.
+      def transaction: [T] () { () -> T } -> (T | nil)
+      def exec_query: (String, String, Array[ActiveRecord::Relation::QueryAttribute]) -> void
+    end
+    class Frame < Data
+      attr_reader principal: Principal
+      attr_reader connection: _TenantConnection
+      attr_reader transaction: _Transaction
+      def self.new: (principal: Principal, connection: _TenantConnection, transaction: _Transaction) -> Frame
+    end
+    def self.active_frame?: (Frame, _TenantConnection) -> bool
+    def self.with_context: [T] (Principal, ?connection: _TenantConnection) { (_TenantConnection) -> T } -> (T | nil)
+  end
+end

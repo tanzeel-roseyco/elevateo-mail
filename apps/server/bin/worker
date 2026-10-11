@@ -1,14 +1,15 @@
 #!/usr/bin/env ruby
-# Idle worker: validates configuration, verifies its restricted DB login, and holds.
+# Idle worker: validates configuration and holds; the heartbeat proves loop liveness only.
 require_relative "../config/environment"
+require_relative "../lib/elevateo/heartbeat"
 cfg = Elevateo::Config.current
 raise Elevateo::ConfigError, "worker requires outbound hold" unless cfg.outbound_hold
 $stdout.sync = true
 puts({ event: "worker.idle", outbound_hold: cfg.outbound_hold, dispatch: "disabled" }.to_json)
 stop = false
 %w[TERM INT].each { |s| Signal.trap(s) { stop = true } }
-File.write("/tmp/worker.alive", Time.now.to_i.to_s)
+Elevateo::Heartbeat.publish
 until stop
   sleep 1
-  File.write("/tmp/worker.alive", Time.now.to_i.to_s)
+  Elevateo::Heartbeat.publish
 end

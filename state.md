@@ -56,3 +56,8 @@ Single-VPS operation is not high availability. Resend's private-beta Inboxes is 
 ### Devin credit authorization (2026-10-12)
 
 The user explicitly approved use of existing $10 Devin credit; no purchases or top-ups. BE-01 task design is accepted. Implementation dispatch is being frozen to the planning commit. Codex polls at two-minute intervals and pauses at the 30-minute checkpoint or credit/capability loss. Official MCP sleep is verified; the Free account API omits dollar usage and offers no dollar-cap field, so no enforced task dollar cap is claimed.
+
+
+### BE-01-R1 source checkpoint, 2026-10-12
+
+Repair sources and regression tests are preserved for remote Docker verification. Six Unit A P2 findings have source repairs; bounded independent reviews and an Astra MAX design re-review are recorded in the coordinator review ledger. Runtime closure remains open, including actual malicious ownership/membership, separate baseline and repair clusters, migration lifecycle, row preservation, egress topology, filesystem behavior and platform checks. Host free disk is below 1 GB; no local application test was attempted. Existing Devin credit only; last visible balance $5.17, no topups. See docs/evidence/be-01-r1.md for exact physical-byte hashes and bounded slices. Git normalizes text line endings, so remote Git-blob hashes will be recorded separately.

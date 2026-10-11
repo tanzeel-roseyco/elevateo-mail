@@ -9,3 +9,8 @@ Updated 2026-10-12. Canonical detailed state: [state.md](../state.md).
 - Fable owns frontend. Read-only first-party Ledger inventory complete; frontend task implementation pending.
 - No application builds/tests, visual QA, native verification, live mail, purchases or production activation claimed.
 - Preserve original/sibling workspaces. Obsidian connection unavailable; no simulated claim of Obsidian execution.
+
+
+### BE-01-R1 source checkpoint, 2026-10-12
+
+Repair sources and regression tests are preserved for remote Docker verification. Six Unit A P2 findings have source repairs; bounded independent reviews and an Astra MAX design re-review are recorded in the coordinator review ledger. Runtime closure remains open, including actual malicious ownership/membership, separate baseline and repair clusters, migration lifecycle, row preservation, egress topology, filesystem behavior and platform checks. Host free disk is below 1 GB; no local application test was attempted. Existing Devin credit only; last visible balance $5.17, no topups. See docs/evidence/be-01-r1.md for exact physical-byte hashes and bounded slices. Git normalizes text line endings, so remote Git-blob hashes will be recorded separately.

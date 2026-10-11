@@ -84,3 +84,8 @@ Implemented on `devin/backend/be-01`:
 
 Evidence and the outstanding checks are listed in docs/evidence/be-01.md. This is not a completed foundation.
 
+
+
+### BE-01-R1 source checkpoint, 2026-10-12
+
+Repair sources and regression tests are preserved for remote Docker verification. Six Unit A P2 findings have source repairs; bounded independent reviews and an Astra MAX design re-review are recorded in the coordinator review ledger. Runtime closure remains open, including actual malicious ownership/membership, separate baseline and repair clusters, migration lifecycle, row preservation, egress topology, filesystem behavior and platform checks. Host free disk is below 1 GB; no local application test was attempted. Existing Devin credit only; last visible balance $5.17, no topups. See docs/evidence/be-01-r1.md for exact physical-byte hashes and bounded slices. Git normalizes text line endings, so remote Git-blob hashes will be recorded separately.

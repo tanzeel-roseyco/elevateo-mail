@@ -10,4 +10,6 @@ group :development, :test do
   gem "steep", "2.1.0", require: false
   gem "rubocop", require: false
   gem "minitest"
+  # AIDEV-NOTE: Minitest 6 extracts Object#stub; ops regression suites explicitly load minitest/mock.
+  gem "minitest-mock", "5.27.0", require: false
 end

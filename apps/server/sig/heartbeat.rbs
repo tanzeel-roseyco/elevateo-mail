@@ -1,0 +1,8 @@
+module Elevateo
+  module Heartbeat
+    PATH: String
+    MAX_BYTES: Integer
+    def self.publish: (?String path, ?now: Integer) -> void
+    def self.healthy?: (?String path, ?now: Integer) -> bool
+  end
+end

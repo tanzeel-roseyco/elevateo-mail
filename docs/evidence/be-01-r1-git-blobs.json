@@ -1,0 +1,160 @@
+{
+  "description": "Staged Git blob bytes; remote checkout must use LF without filters. Physical working-tree review hashes are separate.",
+  "files": [
+    {
+      "path": "apps/server/Gemfile",
+      "sha256": "19044c02efd7ed6fd03abec9f6e051e10248d53b820dd964592fc2e689abfe60",
+      "bytes": 379
+    },
+    {
+      "path": "apps/server/Gemfile.lock",
+      "sha256": "67b2f69a0ed30c1d9926ab2940fe54173991d238192feca38a8f04b97390ea23",
+      "bytes": 7423
+    },
+    {
+      "path": "apps/server/bin/worker",
+      "sha256": "37c80474a92ccc9dc963de10e96817e68c51203e3c0b847e578f3d62e22256ad",
+      "bytes": 582
+    },
+    {
+      "path": "apps/server/bin/worker-health",
+      "sha256": "e05b0003f57cbe83217818bdda1db9ac60d39e19f99ade4f8ca410c80b1af2f0",
+      "bytes": 139
+    },
+    {
+      "path": "apps/server/db/migrate/20261012000002_restrict_api_read_membership.rb",
+      "sha256": "031df44311df04768207b207b21a1a012f434f9d765c02005badee74b5d3aff8",
+      "bytes": 3331
+    },
+    {
+      "path": "apps/server/lib/elevateo/heartbeat.rb",
+      "sha256": "9ae5aeebfed65f6f00567484716668cdffc5f9993d489fd448b76748c55cfbee",
+      "bytes": 1023
+    },
+    {
+      "path": "apps/server/lib/elevateo/tenancy.rb",
+      "sha256": "e1b0727c00d985a0d48227406efe781c89b2dab343b5c97ac4a7d25b279d72e5",
+      "bytes": 2784
+    },
+    {
+      "path": "apps/server/sig/heartbeat.rbs",
+      "sha256": "2ad718574e60f884b290d047d8bec5a07630c05e9b683c0f4fc389e303bfa281",
+      "bytes": 206
+    },
+    {
+      "path": "apps/server/sig/tenancy.rbs",
+      "sha256": "a181caf20766cffc70926c81341f4179db94d7182ce4d2d30fb889e10bcdf405",
+      "bytes": 1360
+    },
+    {
+      "path": "apps/server/test/be_01_r1/authority_guards.rb",
+      "sha256": "e757c6dcdec9984526e35f002cfc4fac884e7a9eb4e5d7a5e91fbaa5d011894c",
+      "bytes": 3213
+    },
+    {
+      "path": "apps/server/test/be_01_r1/authority_guards_test.rb",
+      "sha256": "13d46189b2e700858a27c1e833b816b9a5ca376257571c7ec2cf33051a9eeccb",
+      "bytes": 3254
+    },
+    {
+      "path": "apps/server/test/be_01_r1/baseline_driver.rb",
+      "sha256": "3e279e4616a85456fabec59a3f2a3153dd533f0ca09804c0a1b7fc1ae95576b7",
+      "bytes": 3860
+    },
+    {
+      "path": "apps/server/test/be_01_r1/baseline_scenarios.rb",
+      "sha256": "29205f43bcf7229f4ca36f06b9ff34b2c82d4c6c15d67ba5504b09f9ca31e385",
+      "bytes": 6639
+    },
+    {
+      "path": "apps/server/test/be_01_r1/membership_migration_test.rb",
+      "sha256": "aeb3af2619151e38d75283ccda0e0cbc80e9efb0547baccd52e5223cec4bac2d",
+      "bytes": 4133
+    },
+    {
+      "path": "apps/server/test/be_01_r1/tenancy_test.rb",
+      "sha256": "43caa8eb047839d9951f64203958809ca0c17e9c4d3a325371dff1ecf3c67109",
+      "bytes": 10453
+    },
+    {
+      "path": "apps/server/test/be_01_r1/test_helper.rb",
+      "sha256": "fd8d08f84959ddccdd87c3f50e2ff77fe71fb5f017cd8d7607be701803e226b7",
+      "bytes": 1290
+    },
+    {
+      "path": "apps/server/test/be_01_r1/worker_role_test.rb",
+      "sha256": "a2cc90662d217f7ea5b81558690df6cd8b2666690e94775c66b21efafa9b9926",
+      "bytes": 576
+    },
+    {
+      "path": "compose.yaml",
+      "sha256": "3481affe11ee70aaefae2f65c7bc54aa250250f03207ae9dacf6517324d97d2a",
+      "bytes": 7930
+    },
+    {
+      "path": "ops/bin/generate-secrets.rb",
+      "sha256": "c622ff9697f02e8d2dac6fda65b782833a3807f2a9dd2b7dd2fc50cb7e3a143f",
+      "bytes": 5274
+    },
+    {
+      "path": "ops/compose.r1-test.yaml",
+      "sha256": "47e9352ef23d06f525e2b43022f50540f38ca59a4fa1f5973292637b7d7615a3",
+      "bytes": 2141
+    },
+    {
+      "path": "ops/db/bootstrap.sql",
+      "sha256": "1abda6871c0110dc7f374fdf0fadbe6243013c8b18904ac20e9ec9ff6d33eba1",
+      "bytes": 5304
+    },
+    {
+      "path": "ops/tests/db-fixtures.sql",
+      "sha256": "a20dd934aaabd2afef40c0b3c92a9d3e591aa6e498fadab6d3f63db8de60e989",
+      "bytes": 1267
+    },
+    {
+      "path": "ops/tests/egress-check.ps1",
+      "sha256": "ac7e97a468a830cfda441b089d5a469d670cf7ca9fe26642b0a23de2a5887732",
+      "bytes": 6912
+    },
+    {
+      "path": "ops/tests/egress-check.sh",
+      "sha256": "8b527c18cbde5616c2384a7c4b974087455a8ac85ee2f910d91900a101b9c18e",
+      "bytes": 5957
+    },
+    {
+      "path": "ops/tests/egress_assert.rb",
+      "sha256": "39ff773d684f6bf9d82acb8f21ecf86bf841f41cdb33c6e04c6ede9b9dd64120",
+      "bytes": 5403
+    },
+    {
+      "path": "ops/tests/egress_listener.rb",
+      "sha256": "2a76bc16d3075d0fdf2e2507f0450adbd75bd055c80f6d9a9834747bec23b580",
+      "bytes": 240
+    },
+    {
+      "path": "ops/tests/egress_probe.rb",
+      "sha256": "61c131badb6f0fe89e15a5f67318572703cc1bd4aa2ff28b3182ba5bab69f82c",
+      "bytes": 1359
+    },
+    {
+      "path": "ops/tests/egress_test.rb",
+      "sha256": "cab28e3380b550fcbf1abe818a3655a5b8e8dafe139f63541730cef646f3ffa9",
+      "bytes": 6562
+    },
+    {
+      "path": "ops/tests/heartbeat_test.rb",
+      "sha256": "3e389c563d07baa5f4d25cf1db5fb9d71ead35140bbedd50056f29f16db3ff01",
+      "bytes": 1319
+    },
+    {
+      "path": "ops/tests/membership-catalog.sql",
+      "sha256": "6dccd87f30746ca2c635afb116e4549bd5a4861fc856d1b318b2415b65ce77eb",
+      "bytes": 2428
+    },
+    {
+      "path": "ops/tests/secrets_test.rb",
+      "sha256": "c822e3870cb6359f15471d1cbc7775f5d6a9b69986b64d2af58807a4b39bbd04",
+      "bytes": 4270
+    }
+  ]
+}

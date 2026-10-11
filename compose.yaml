@@ -5,7 +5,6 @@ name: elevateo-local
 
 x-server: &server
   image: elevateo-server:be01
-  env_file: ./ops/local/.env
   networks: [runtime]
   depends_on:
     db: { condition: service_healthy }
@@ -51,13 +50,15 @@ services:
     image: supabase/postgres:17.6.1.136@sha256:f371b5f3f2ac0a05703f33d6e6134515fb2498cab708fb948a0aeb7481467c00
     profiles: [tools]
     networks: [runtime]
-    env_file: ./ops/local/.env
     depends_on:
       db: { condition: service_healthy }
     volumes:
       - ./ops/db/bootstrap.sql:/ops/bootstrap.sql:ro
     environment:
       PGPASSWORD: ${POSTGRES_PASSWORD:?}
+      MIGRATOR_DB_PASSWORD: ${MIGRATOR_DB_PASSWORD:?}
+      API_DB_PASSWORD: ${API_DB_PASSWORD:?}
+      WORKER_DB_PASSWORD: ${WORKER_DB_PASSWORD:?}
     entrypoint: ["psql", "-h", "db", "-U", "supabase_admin", "-d", "postgres", "-v", "ON_ERROR_STOP=1", "-q", "-f", "/ops/bootstrap.sql"]
 
   auth:
@@ -179,15 +180,26 @@ services:
       <<: *server-env
       ELEVATEO_DB_ROLE: elevateo_api
       ELEVATEO_PROCESS: api
+      # AIDEV-NOTE: Runtime credentials are role-specific; never inherit the bootstrap secret file.
+      API_DB_PASSWORD: ${API_DB_PASSWORD:?}
+      SECRET_KEY_BASE: ${SECRET_KEY_BASE:?}
 
   worker:
     <<: *server
     restart: unless-stopped
     command: ["bin/worker"]
+    healthcheck:
+      test: ["CMD", "ruby", "bin/worker-health"]
+      interval: 5s
+      timeout: 3s
+      retries: 3
+      start_period: 30s
     environment:
       <<: *server-env
       ELEVATEO_DB_ROLE: elevateo_worker
       ELEVATEO_PROCESS: worker
+      WORKER_DB_PASSWORD: ${WORKER_DB_PASSWORD:?}
+      SECRET_KEY_BASE: ${SECRET_KEY_BASE:?}
 
   migrate:
     <<: *server
@@ -197,6 +209,8 @@ services:
       <<: *server-env
       ELEVATEO_DB_ROLE: elevateo_migrator
       ELEVATEO_PROCESS: migrate
+      MIGRATOR_DB_PASSWORD: ${MIGRATOR_DB_PASSWORD:?}
+      SECRET_KEY_BASE: ${SECRET_KEY_BASE:?}
 
 networks:
   runtime:
