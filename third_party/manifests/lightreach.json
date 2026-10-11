@@ -1,0 +1,1407 @@
+{
+  "schema_version": 1,
+  "repository": "lightreach",
+  "commit": "c0723a25dbcc1b19ec4bdbd0f882de31ace2df87",
+  "files": [
+    {
+      "path": ".dockerignore",
+      "mode": "100644",
+      "git_blob": "1f1e67391760e9b121704332b6e473b66ae2b639",
+      "bytes": 314,
+      "sha256": "297f36ad11754080d52971f871afad847a612b9c5f1ce97eeb99ee4c759bb40e",
+      "disposition": "included"
+    },
+    {
+      "path": ".eslintrc.js",
+      "mode": "100644",
+      "git_blob": "e49b18befe0d42aa834f33c7bfe3688f9b9d6ce6",
+      "bytes": 335,
+      "sha256": "c3b3914027b142760a9c78a4e16f912ad65ee0bbb3cfe8a237f260458052d288",
+      "disposition": "included"
+    },
+    {
+      "path": ".gitignore",
+      "mode": "100644",
+      "git_blob": "31df505117d3d0ddd2edf0dd14f060bc2bb2fc95",
+      "bytes": 546,
+      "sha256": "339c46d8931d23cdc28b15e8504c8ff009fa871a615a95ee2ba5b9aa1d33a584",
+      "disposition": "included"
+    },
+    {
+      "path": ".npmrc",
+      "mode": "100644",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "disposition": "included"
+    },
+    {
+      "path": ".prettierignore",
+      "mode": "100644",
+      "git_blob": "461b0084104385d8cb1d4d6b5f6114033be973fe",
+      "bytes": 72,
+      "sha256": "af8057ae38f97ead3dc0b4d5dad97e403b25b64092c48bba0774afe2c9a5e9ce",
+      "disposition": "included"
+    },
+    {
+      "path": ".prettierrc",
+      "mode": "100644",
+      "git_blob": "40ce0679f4e184e0468c75c53c02383b57fc82fc",
+      "bytes": 274,
+      "sha256": "25c74a55c10a4dbb662117240b8d07a5afb191bded12c4e9ede104c2cf1733c2",
+      "disposition": "included"
+    },
+    {
+      "path": "AGENTS.md",
+      "mode": "100644",
+      "git_blob": "c8e68c36e4d65c5cbd5b5d52f5c7c93d8d004d5c",
+      "bytes": 17,
+      "sha256": "fd763a5e11a53d3a609645a5f17de86e6d35ffe71f09b04670b8aa164720ed58",
+      "disposition": "included"
+    },
+    {
+      "path": "CLAUDE.md",
+      "mode": "100644",
+      "git_blob": "b888987e372b1d62255860905bdbc71e1a7a5db6",
+      "bytes": 9818,
+      "sha256": "eca8de43f2102a98cfaed002f102e97c878757bb6b8459168bd9941d6e53b4b0",
+      "disposition": "included"
+    },
+    {
+      "path": "Caddyfile",
+      "mode": "100644",
+      "git_blob": "ba623e4b904b9fdc6da6037c94761e5a0f7b4759",
+      "bytes": 250,
+      "sha256": "635520b5c382caa097da54dd256c62c98881a535e94886161e0220fe6692b602",
+      "disposition": "included"
+    },
+    {
+      "path": "Dockerfile",
+      "mode": "100644",
+      "git_blob": "ffced622aa16b160fd3a24274d0cc5dc897a69de",
+      "bytes": 2800,
+      "sha256": "2bfb0199650a19add28a343ddb27664fe60955eb8dc99a38024a3ce9d74fbc6f",
+      "disposition": "included"
+    },
+    {
+      "path": "LICENSE",
+      "mode": "100644",
+      "git_blob": "dbd3efe8ffa7a73bf8c9314b2eb171b432624850",
+      "bytes": 1070,
+      "sha256": "f46502cef86bea4b425216ed7b991ab0f31d9bcc250048817b136e74ec80c382",
+      "disposition": "included"
+    },
+    {
+      "path": "README.md",
+      "mode": "100644",
+      "git_blob": "d43e2e2692eff4d7f7e81d9b7bc2a5d213eafbb4",
+      "bytes": 3221,
+      "sha256": "d1a4c676270e16f18c020fba1208c1591556d2746f3809e5b093eca07b143016",
+      "disposition": "included"
+    },
+    {
+      "path": "apps/web/app/(dashboard)/campaigns/actions.ts",
+      "mode": "100644",
+      "git_blob": "3c9bb3f1b0f1fdbd98aeb9bbbadff231d75c6701",
+      "bytes": 4490,
+      "sha256": "163fea78b75bb2ea3803d5fe7ff84c35dd2e8973a0cfe3ff2d6c9089ad7400f0",
+      "disposition": "included"
+    },
+    {
+      "path": "apps/web/app/(dashboard)/campaigns/campaigns-view.tsx",
+      "mode": "100644",
+      "git_blob": "0ea207f0e2111283fb431badbb287df61c6b7772",
+      "bytes": 8632,
+      "sha256": "382391cbc7aa2b2d3079d6541650db140bf61023f7b5bf64fc288eea422340e8",
+      "disposition": "included"
+    },
+    {
+      "path": "apps/web/app/(dashboard)/campaigns/new/campaign-form.tsx",
+      "mode": "100644",
+      "git_blob": "c599899eb6894e72f0896afadde853f1e76a4282",
+      "bytes": 13756,
+      "sha256": "c7ca3f023bc76321713224dbf823e42d00fd0d325c8272d32babfc7a36123e2f",
+      "disposition": "included"
+    },
+    {
+      "path": "apps/web/app/(dashboard)/campaigns/new/page.tsx",
+      "mode": "100644",
+      "git_blob": "2191ef0c398a4ca558df8c67f7d21422b3f0f522",
+      "bytes": 931,
+      "sha256": "c289290ca6aac556579c5667dd52a275e62f8697adc54bf96553cc0d2aef11ec",
+      "disposition": "included"
+    },
+    {
+      "path": "apps/web/app/(dashboard)/campaigns/page.tsx",
+      "mode": "100644",
+      "git_blob": "d66ca1f49f0be72701cd02378799c8bd818542be",
+      "bytes": 1653,
+      "sha256": "4713b775c49021f6cacf3fe13ba6b995e3d93b6c0e00de568e54533bb774b510",
+      "disposition": "included"
+    },
+    {
+      "path": "apps/web/app/(dashboard)/connections/actions.ts",
+      "mode": "100644",
+      "git_blob": "a008dc90bcb913f9d1e1375d1519d48ef6c75af7",
+      "bytes": 6276,
+      "sha256": "4a5a3937dc1cda2f68b4770148fa6a11e245060b46db9f9ec21cee0a306f6bf6",
+      "disposition": "included"
+    },
+    {
+      "path": "apps/web/app/(dashboard)/connections/connections-view.tsx",
+      "mode": "100644",
+      "git_blob": "59af9916e264b51025222bb1c28514ea740a838f",
+      "bytes": 22334,
+      "sha256": "4473ab1a35d97308768d54697a59a22936a71ac958eb647bf0f451413ccb3194",
+      "disposition": "included"
+    },
+    {
+      "path": "apps/web/app/(dashboard)/connections/page.tsx",
+      "mode": "100644",
+      "git_blob": "1d190ca7782b94815b2b07d78875e53b459f0392",
+      "bytes": 517,
+      "sha256": "01fe583b7e80da4be2c2693356054d49d22dba2bada10ba997f43f6889a8ccae",
+      "disposition": "included"
+    },
+    {
+      "path": "apps/web/app/(dashboard)/dashboard/activity-chart.tsx",
+      "mode": "100644",
+      "git_blob": "92d38533f2c3ed82db7a8caa16f4ff32889dd509",
+      "bytes": 1197,
+      "sha256": "3c813af8f1e4e5e98493bb5f6f192605162321c2d9cec6d3ad4dcc75c99e3498",
+      "disposition": "included"
+    },
+    {
+      "path": "apps/web/app/(dashboard)/dashboard/page.tsx",
+      "mode": "100644",
+      "git_blob": "8fc6b44a4179c74290d76d07d8af717b8e2b064b",
+      "bytes": 4106,
+      "sha256": "3c367308dfd51373404c08eec24d31005e2a894a2d0d635e07dee25529a95490",
+      "disposition": "included"
+    },
+    {
+      "path": "apps/web/app/(dashboard)/emails/emails-view.tsx",
+      "mode": "100644",
+      "git_blob": "39e5f99a9217b62a24ace520716a07fb0f6a128d",
+      "bytes": 11221,
+      "sha256": "2e69d28e00b56050cc3d1f79ca96e94be8c60572e23691660cb8895094576804",
+      "disposition": "included"
+    },
+    {
+      "path": "apps/web/app/(dashboard)/emails/page.tsx",
+      "mode": "100644",
+      "git_blob": "155c42f7fea1beb4f1ff2b477d73f69921b8f5dc",
+      "bytes": 6123,
+      "sha256": "dffafbd8bfeb9067dfdc54f3d3f7199ce153f1b314aed70efc4bfbc33939657b",
+      "disposition": "included"
+    },
+    {
+      "path": "apps/web/app/(dashboard)/inbox/actions.ts",
+      "mode": "100644",
+      "git_blob": "144412c9fd61257bfece8942463f8575e5125b5e",
+      "bytes": 13265,
+      "sha256": "32928e15b75298297e57438b277aab5087a51b4885a8e4ffaf43256eb17ea556",
+      "disposition": "included"
+    },
+    {
+      "path": "apps/web/app/(dashboard)/inbox/inbox-view.tsx",
+      "mode": "100644",
+      "git_blob": "9a367da6ff63007bbcd17972b413da5eab23e0da",
+      "bytes": 31425,
+      "sha256": "1c05f5e11576ad8643e56613d7efe66781927f1a5c96aee36139b4278a3c7ff1",
+      "disposition": "included"
+    },
+    {
+      "path": "apps/web/app/(dashboard)/inbox/page.tsx",
+      "mode": "100644",
+      "git_blob": "3f1677bf7c717a1d4aa871cf3aa208d6d7c980e6",
+      "bytes": 2197,
+      "sha256": "b157e5f94389f15be3d1a0f76dc1416171ecb6fb03d91a118c67444c4e911786",
+      "disposition": "included"
+    },
+    {
+      "path": "apps/web/app/(dashboard)/layout.tsx",
+      "mode": "100644",
+      "git_blob": "eebd47496aa1c26b7e97f57dc3db262a652dcfae",
+      "bytes": 634,
+      "sha256": "ca2e5e7862345be8ac905e230b711d9fab571576232967e90fdebedc366623b8",
+      "disposition": "included"
+    },
+    {
+      "path": "apps/web/app/(dashboard)/leads/actions.ts",
+      "mode": "100644",
+      "git_blob": "5e118439c85f93740e2027c62cbf6e9dc99ceaac",
+      "bytes": 3340,
+      "sha256": "224e24115427303cad61f72c2a5d09cd249500ec78b3ae2e877b06217811b9cd",
+      "disposition": "included"
+    },
+    {
+      "path": "apps/web/app/(dashboard)/leads/leads-view.tsx",
+      "mode": "100644",
+      "git_blob": "17ea709ad9e37756bf5a2fdd1cc8009b0c177aca",
+      "bytes": 37882,
+      "sha256": "1699798415ecf5483975b9194de7c46b159025fbfda5197bbe7dc73d0d1ade84",
+      "disposition": "included"
+    },
+    {
+      "path": "apps/web/app/(dashboard)/leads/page.tsx",
+      "mode": "100644",
+      "git_blob": "fed6a780ebbbfefc1bbf4393505622200f92fbc5",
+      "bytes": 954,
+      "sha256": "c005b046e543632254f06ed84a798035c0dda6a6f33e1030a8aa1c01c89b286f",
+      "disposition": "included"
+    },
+    {
+      "path": "apps/web/app/(dashboard)/mcp/actions.ts",
+      "mode": "100644",
+      "git_blob": "67102c5b6542e3ca77a450d15caa3158ccf30eaf",
+      "bytes": 1321,
+      "sha256": "52b521bdf690bea62c05c83078ac615da9f38b137171637164b6223a8e8237f7",
+      "disposition": "included"
+    },
+    {
+      "path": "apps/web/app/(dashboard)/mcp/mcp-view.tsx",
+      "mode": "100644",
+      "git_blob": "add95570d70aa1596616a11633dbee43961727f1",
+      "bytes": 15717,
+      "sha256": "842c307b7c315c41ec44c2baf1a4bf47ddcf11c61649fc32f7ca5251761eec3e",
+      "disposition": "included"
+    },
+    {
+      "path": "apps/web/app/(dashboard)/mcp/page.tsx",
+      "mode": "100644",
+      "git_blob": "67b58ef37947d9e86c0ee5bb2e9156ee1e7292bf",
+      "bytes": 384,
+      "sha256": "15e127cebec1e30a2ff75ddb4ab54269712a11c171362f01b4a077935537b186",
+      "disposition": "included"
+    },
+    {
+      "path": "apps/web/app/(dashboard)/sequences/[id]/page.tsx",
+      "mode": "100644",
+      "git_blob": "f9d67e00ac28d0c3f164b02e8cab6f7951ae2302",
+      "bytes": 1245,
+      "sha256": "5e4ca30a99988906e3c2c47883d8dd0b927d6e7d52bd29fba1e68d2f242cf7d9",
+      "disposition": "included"
+    },
+    {
+      "path": "apps/web/app/(dashboard)/sequences/actions.ts",
+      "mode": "100644",
+      "git_blob": "cbadce6742dea5e3ad094642cbcc3a0b926e968c",
+      "bytes": 1851,
+      "sha256": "ced9a84e41aae2b3759057f7419bbd6aae08efac5da0e8081e2cdfd786bae566",
+      "disposition": "included"
+    },
+    {
+      "path": "apps/web/app/(dashboard)/sequences/new/page.tsx",
+      "mode": "100644",
+      "git_blob": "1206ea6553f2482b42ae2747f29cb00afcb0f2eb",
+      "bytes": 494,
+      "sha256": "1e3ddda66d36d81177f3ca5ab11b4ed05b124bda9baef8ca8b2508a5ee03320e",
+      "disposition": "included"
+    },
+    {
+      "path": "apps/web/app/(dashboard)/sequences/new/sequence-editor.tsx",
+      "mode": "100644",
+      "git_blob": "8e91592463c251621f3d41538f823a65c8344aff",
+      "bytes": 17329,
+      "sha256": "b0a46e75a6d406fe006442562a217dde5d967b1147fcdc530dc6892c4c59be80",
+      "disposition": "included"
+    },
+    {
+      "path": "apps/web/app/(dashboard)/sequences/page.tsx",
+      "mode": "100644",
+      "git_blob": "1a4febfea6f665b54278434dfe10ae4c6b18c1e6",
+      "bytes": 1623,
+      "sha256": "558215552731096cba2844d971ffe7c657c08e401452260f264f8a82f289388b",
+      "disposition": "included"
+    },
+    {
+      "path": "apps/web/app/(dashboard)/sequences/sequences-view.tsx",
+      "mode": "100644",
+      "git_blob": "163317878ae2411b3fbdc55d5c8f4d7bf3b51582",
+      "bytes": 3144,
+      "sha256": "27dfc5bc5c52dd4c378a3e97979cfaf27ae7057da989fc8d91884b5804a2e9b6",
+      "disposition": "included"
+    },
+    {
+      "path": "apps/web/app/(dashboard)/settings/page.tsx",
+      "mode": "100644",
+      "git_blob": "e1a2f028976ec670162ae9f4d716c9593f563873",
+      "bytes": 6938,
+      "sha256": "226bf23ee79f225e8abbb782bc9a3b71537cadea70a99b6944727dc390239c3c",
+      "disposition": "included"
+    },
+    {
+      "path": "apps/web/app/(dashboard)/templates/page.tsx",
+      "mode": "100644",
+      "git_blob": "d17b5761edb9878a5ee9fc24682568ef964880f5",
+      "bytes": 113,
+      "sha256": "15ea968c41fa606205fbc0a4925222874749ef7ae90ff9c5da8ee9eaac64f2bf",
+      "disposition": "included"
+    },
+    {
+      "path": "apps/web/app/api/mcp/route.ts",
+      "mode": "100644",
+      "git_blob": "6f3607828528124729c9b83afac5479709c54d94",
+      "bytes": 1193,
+      "sha256": "b2ea7419cd76d5d6cc0e92fe1f1a0ab93ef7793cd48c6c34679cc6685059787d",
+      "disposition": "included"
+    },
+    {
+      "path": "apps/web/app/favicon.ico",
+      "mode": "100644",
+      "git_blob": "718d6fea4835ec2d246af9800eddb7ffb276240c",
+      "bytes": 25931,
+      "sha256": "2b8ad2d33455a8f736fc3a8ebf8f0bdea8848ad4c0db48a2833bd0f9cd775932",
+      "disposition": "included"
+    },
+    {
+      "path": "apps/web/app/layout.tsx",
+      "mode": "100644",
+      "git_blob": "6485647c51176dec4e31f864fa7e7b8211fd28b9",
+      "bytes": 1223,
+      "sha256": "5b62572d4e44cb3df0057db590612d87eed6919c639fb503d5d1691f702778bb",
+      "disposition": "included"
+    },
+    {
+      "path": "apps/web/app/page.tsx",
+      "mode": "100644",
+      "git_blob": "a0e250293dfad9567a1a4f9fe667fd4e6b02529d",
+      "bytes": 142,
+      "sha256": "3f30d13771b9e9b9978f32a8b8a44159dc6074e4ee26af78648132aa08cea518",
+      "disposition": "included"
+    },
+    {
+      "path": "apps/web/components.json",
+      "mode": "100644",
+      "git_blob": "cb732189b78e6ac0733519050679186e83b98eb6",
+      "bytes": 523,
+      "sha256": "7c7baf311bca949ec0418b639650eea910e73b48fbddd9fcdfb40ebbe451cc2d",
+      "disposition": "included"
+    },
+    {
+      "path": "apps/web/components/.gitkeep",
+      "mode": "100644",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "disposition": "included"
+    },
+    {
+      "path": "apps/web/components/app-header.tsx",
+      "mode": "100644",
+      "git_blob": "4ac3737fdba161faa0b67d974534981d29c286c0",
+      "bytes": 1688,
+      "sha256": "e00f1498072eb5fadbc10c6788c4b5e6dec7fe33784782d36407275f4cc4f156",
+      "disposition": "included"
+    },
+    {
+      "path": "apps/web/components/app-sidebar.tsx",
+      "mode": "100644",
+      "git_blob": "96175c7fa380acec9b1304db131631f32a641140",
+      "bytes": 5036,
+      "sha256": "a09bf67539c2b5b4749759773fa58828f3d8110df267a296e4a7c734a0f09221",
+      "disposition": "included"
+    },
+    {
+      "path": "apps/web/components/theme-provider.tsx",
+      "mode": "100644",
+      "git_blob": "999e07001de88e4e69385d2b18afdc59de5e0342",
+      "bytes": 1872,
+      "sha256": "23030660b58f99fd6f84979b384aac6b31bac7136fc9e91e6132640a1bc12a6a",
+      "disposition": "included"
+    },
+    {
+      "path": "apps/web/eslint.config.js",
+      "mode": "100644",
+      "git_blob": "5062ee3b28c2eda9c9c802c1478f2c17d823483b",
+      "bytes": 139,
+      "sha256": "18f1ba4bf4bf22321db394516b4b5e03bf80ef81300b5cd2baaab861fcd7a3b5",
+      "disposition": "included"
+    },
+    {
+      "path": "apps/web/hooks/.gitkeep",
+      "mode": "100644",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "disposition": "included"
+    },
+    {
+      "path": "apps/web/hooks/use-mobile.ts",
+      "mode": "100644",
+      "git_blob": "2b0fe1dfef3b17850bbac040665f514a8ffd0f15",
+      "bytes": 565,
+      "sha256": "ad0936f84f1df79d3697bfbff9c18f8ad58431c1cbaf2359c6a853b0fcc9f28b",
+      "disposition": "included"
+    },
+    {
+      "path": "apps/web/instrumentation.ts",
+      "mode": "100644",
+      "git_blob": "07d397117fe54849709773b664540bfee065d782",
+      "bytes": 876,
+      "sha256": "bcbaef23bdaeb03c5c9c99c72d410928e2d8b28d640e74aed43ff03718a27c5c",
+      "disposition": "included"
+    },
+    {
+      "path": "apps/web/lib/.gitkeep",
+      "mode": "100644",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "disposition": "included"
+    },
+    {
+      "path": "apps/web/lib/enqueue-leads.ts",
+      "mode": "100644",
+      "git_blob": "0f160cd3fda2cce1f17d35da71ae2347ec6a464d",
+      "bytes": 2373,
+      "sha256": "6e526611bd0eab8e5a166a1b1d679828e710bbca84b458e6ea2a5d475a8f8c04",
+      "disposition": "included"
+    },
+    {
+      "path": "apps/web/lib/inbox-poller.ts",
+      "mode": "100644",
+      "git_blob": "f7f4466e6a29db6658ce7b2f04fecc50fc41a347",
+      "bytes": 17040,
+      "sha256": "91e40930234b0eb95d7da8064fed4124698f3de555082c446f362dfb02947760",
+      "disposition": "included"
+    },
+    {
+      "path": "apps/web/lib/mcp/auth.ts",
+      "mode": "100644",
+      "git_blob": "f302eb4378c172815bf5dc08014b41f199f26e09",
+      "bytes": 1114,
+      "sha256": "1c1bde74385deb5f21bb1d2792064d1e70a7f5f21aeacd8c542a9cd858fcc737",
+      "disposition": "included"
+    },
+    {
+      "path": "apps/web/lib/mcp/redact.ts",
+      "mode": "100644",
+      "git_blob": "42eb26e44b5edc8cf67d8f8df32f45bf18784b29",
+      "bytes": 522,
+      "sha256": "61968f37ce45739c02b8a335c58f90413533426260a6da6acf383c4aca104b02",
+      "disposition": "included"
+    },
+    {
+      "path": "apps/web/lib/mcp/server.ts",
+      "mode": "100644",
+      "git_blob": "892a6622993c43e60ea845f61ea19cfabcd58dce",
+      "bytes": 1152,
+      "sha256": "d9b245d756d64f26aa4e6843007f6c7c43e84ee5162e1668bfa7059f31122159",
+      "disposition": "included"
+    },
+    {
+      "path": "apps/web/lib/mcp/tools/campaigns.ts",
+      "mode": "100644",
+      "git_blob": "49a0a545d13557e1cf2be69ac0a5510188252e04",
+      "bytes": 4609,
+      "sha256": "2ba1fe0f34eead85cbd9c90d76b271cb5fb919087db11206e8bac8a19a1c6aeb",
+      "disposition": "included"
+    },
+    {
+      "path": "apps/web/lib/mcp/tools/connections.ts",
+      "mode": "100644",
+      "git_blob": "050c78757a53d6ba8457acc73d3373bf18b0c4e2",
+      "bytes": 5699,
+      "sha256": "4aef6cffe8006bc1f696c60b181ad1c73121a7e68e06b9b9a58a9990ea27b63d",
+      "disposition": "included"
+    },
+    {
+      "path": "apps/web/lib/mcp/tools/inbox.ts",
+      "mode": "100644",
+      "git_blob": "5de1bd24abdc9a63147105f523d4bdae91da9cda",
+      "bytes": 4176,
+      "sha256": "6c0f5efbaf94506b49f5c4cdf3a206e9afac9fe5db46ddf0df53000d5e2fc354",
+      "disposition": "included"
+    },
+    {
+      "path": "apps/web/lib/mcp/tools/leads.ts",
+      "mode": "100644",
+      "git_blob": "49257063f75c19bd5c6819fcfd1f1e28a213cf72",
+      "bytes": 4254,
+      "sha256": "e8c0cd7e90934b77de4ced7cb8539e0bdfda3b8502847cf87de34a7fd5085322",
+      "disposition": "included"
+    },
+    {
+      "path": "apps/web/lib/mcp/tools/lists.ts",
+      "mode": "100644",
+      "git_blob": "277181edd76f780c29d18030c65a5c02b19d7e46",
+      "bytes": 1173,
+      "sha256": "13c41f922618a6d8dd647d3a8e3211242ca6ae318cc000e2b1c6029270cb3200",
+      "disposition": "included"
+    },
+    {
+      "path": "apps/web/lib/mcp/tools/messages.ts",
+      "mode": "100644",
+      "git_blob": "ce5722d0e0244e5d031680c360b851e00c8b4965",
+      "bytes": 1683,
+      "sha256": "0dec608c1bb0ebff863880d881bf7bb7d4b376c34a9b3b61d2025e20d55fa294",
+      "disposition": "included"
+    },
+    {
+      "path": "apps/web/lib/mcp/tools/sequences.ts",
+      "mode": "100644",
+      "git_blob": "0a431d840ff2e8b2fab7fcf175df76375c133f70",
+      "bytes": 3955,
+      "sha256": "2161c6586f67208e16fb3e445785989d21a9427570bfc4a3bd52e285eb20d9f3",
+      "disposition": "included"
+    },
+    {
+      "path": "apps/web/lib/mcp/tools/settings.ts",
+      "mode": "100644",
+      "git_blob": "56c1ae12eb525c6c8eb31e1a1ec18eb3371c1df3",
+      "bytes": 1036,
+      "sha256": "7511a452c6941df1ef071382d168a627bee0c1517e13dd717005ca95a150294f",
+      "disposition": "included"
+    },
+    {
+      "path": "apps/web/lib/mcp/tools/shared.ts",
+      "mode": "100644",
+      "git_blob": "0e5296c328b5c4b8bcc8b3befa0e5727b499d144",
+      "bytes": 640,
+      "sha256": "8848b47ed57c63b8aaf0220986ace5d815233d728d2ac740026839b315a08de4",
+      "disposition": "included"
+    },
+    {
+      "path": "apps/web/lib/mcp/tools/stats.ts",
+      "mode": "100644",
+      "git_blob": "30ede97cf42b17f6192f9ad72698f9d8d584738f",
+      "bytes": 2060,
+      "sha256": "2398eefec3bc300e140492b9b13acdd777688fc05d82744eb7a995fb2ea5b11d",
+      "disposition": "included"
+    },
+    {
+      "path": "apps/web/lib/scheduler.ts",
+      "mode": "100644",
+      "git_blob": "d97fd1df7c88cf4a5f6a408b5532e9c3e3ee3c7f",
+      "bytes": 20201,
+      "sha256": "050b5d55f706dd85a9edda7a14e0037fed221a6c0e5a29343a8a0fe946daad86",
+      "disposition": "included"
+    },
+    {
+      "path": "apps/web/next.config.ts",
+      "mode": "100644",
+      "git_blob": "9797871a7fc243ff056942cc2af98c815234bac2",
+      "bytes": 504,
+      "sha256": "56d073db25f2a987c50c396b3db880783e8f6dc2cb8d490fbd166721e2a30e09",
+      "disposition": "included"
+    },
+    {
+      "path": "apps/web/package.json",
+      "mode": "100644",
+      "git_blob": "fc880003cdb15f7369eca1487285750ac4241e5d",
+      "bytes": 988,
+      "sha256": "80d67c1b41da6e076b458e6d94e78a99270d6e3664c1b505c250d9ef57d03d6d",
+      "disposition": "included"
+    },
+    {
+      "path": "apps/web/postcss.config.mjs",
+      "mode": "100644",
+      "git_blob": "535dec4aedd3391b9b55e24d5dc1bff18098babe",
+      "bytes": 55,
+      "sha256": "177be1ba81ed1c12fa4c01dc3e7a42c595087be302f1308ff5e6f26fb499d186",
+      "disposition": "included"
+    },
+    {
+      "path": "apps/web/public/.gitkeep",
+      "mode": "100644",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "disposition": "included"
+    },
+    {
+      "path": "apps/web/tsconfig.json",
+      "mode": "100644",
+      "git_blob": "c4301c39f5ee8bfc0a94c91c302eb0473f2f5dc3",
+      "bytes": 445,
+      "sha256": "84f9944e2a8574e9be3b9b673fb485b8e13fc4cf66c5db93b26bb7fc6c1595d5",
+      "disposition": "included"
+    },
+    {
+      "path": "docker-compose.yml",
+      "mode": "100644",
+      "git_blob": "9d8fd745e9eb63f77c753d52c12aea6e536a261e",
+      "bytes": 1405,
+      "sha256": "bc7e13c6164d537fbbb2fc2d54353be1a2200eeb4dfdf0af0ba97029f2c7fc54",
+      "disposition": "included"
+    },
+    {
+      "path": "lightreach-demo-official.gif",
+      "mode": "100644",
+      "git_blob": "9cc84264adfe3463dd9678c075df2f5f068b7ef7",
+      "bytes": 23181302,
+      "sha256": "7432edb1bb9f133fed8945961694e24c2670aff78c540ee1a8ce24f249394323",
+      "disposition": "included"
+    },
+    {
+      "path": "package.json",
+      "mode": "100644",
+      "git_blob": "64f49a91a884e88d5f6e02ccf2cbe01e3ac343ea",
+      "bytes": 751,
+      "sha256": "3b27111d38b5d330581887cf0f13b87afca4cdcf7eac73c9e4bb4608831a1453",
+      "disposition": "included"
+    },
+    {
+      "path": "packages/core/package.json",
+      "mode": "100644",
+      "git_blob": "dc9f2d1e4626a176fa48fa814553a1a8017ff85b",
+      "bytes": 891,
+      "sha256": "d6d4609b2ffe72e3f6e6362fbc3ba58f61d48c647b5397c8f2cb9c0032044627",
+      "disposition": "included"
+    },
+    {
+      "path": "packages/core/src/crypto.ts",
+      "mode": "100644",
+      "git_blob": "e147dfa6a308051d732ee1009cf3198394847a21",
+      "bytes": 2071,
+      "sha256": "a727555fb3105cd7e8e0cfa92ebd853d32dc64934283f02cb68bbe3aa527bdce",
+      "disposition": "included"
+    },
+    {
+      "path": "packages/core/src/csv.ts",
+      "mode": "100644",
+      "git_blob": "f2e99a9c0d73abbf66b5326beffa8f2d83978bfd",
+      "bytes": 4378,
+      "sha256": "528063cee77e1d36d1fef939993a33bb08f877a5d9569cba57854586b624fe08",
+      "disposition": "included"
+    },
+    {
+      "path": "packages/core/src/email/dns.ts",
+      "mode": "100644",
+      "git_blob": "06d95266ab73c9916703118d998e6e5118a53b79",
+      "bytes": 5266,
+      "sha256": "f43b026af7ed7935eb80262f0d14d54fcdec2f88d43ab002ad30947223ee093e",
+      "disposition": "included"
+    },
+    {
+      "path": "packages/core/src/email/imap.ts",
+      "mode": "100644",
+      "git_blob": "157e97586f88c1ddb0a0a61ada247bbe49411ba5",
+      "bytes": 9810,
+      "sha256": "c07f0aa4139a44f84432428dc1ed2886591ff942a31ee8b6fa5880a2ca6136c4",
+      "disposition": "included"
+    },
+    {
+      "path": "packages/core/src/email/quote.ts",
+      "mode": "100644",
+      "git_blob": "8fcbcd5b0c7eb571d6deb1bcf63367476c7a4179",
+      "bytes": 3644,
+      "sha256": "c90b057e539a29aa53f12824aa20749df8ad0a2ccc0ba2d4bbc1ddad23c99b69",
+      "disposition": "included"
+    },
+    {
+      "path": "packages/core/src/email/transport.ts",
+      "mode": "100644",
+      "git_blob": "34b12119296eea5e61d2b1fcc4cf25f752ac8d12",
+      "bytes": 5740,
+      "sha256": "fd32da68a96812f96a096ccefe5c03666c6a506dbc547bc19157c9763cf84ba6",
+      "disposition": "included"
+    },
+    {
+      "path": "packages/core/src/rotation.ts",
+      "mode": "100644",
+      "git_blob": "d597aac8758ff186804f42b76268cbcd9afff232",
+      "bytes": 8607,
+      "sha256": "499e8ddce7ea52dc114ee67dcda2e69ae5dab6c0ac3c225ecba35353b8ae6545",
+      "disposition": "included"
+    },
+    {
+      "path": "packages/core/src/spintax.ts",
+      "mode": "100644",
+      "git_blob": "5e2f3ff7c121e84ee9602609c102a9cb8e4fbc75",
+      "bytes": 3048,
+      "sha256": "ec3d9a6aff5dcfe9bf1aa2f4a0c22ff57e5a8e638479caf84d087f89ab0245ca",
+      "disposition": "included"
+    },
+    {
+      "path": "packages/core/src/variables.ts",
+      "mode": "100644",
+      "git_blob": "409dda3cb1ce27972f10f6384a9342ee3bcf89db",
+      "bytes": 2223,
+      "sha256": "c01f8bc7b56bff42001671386a144efb96deca3434469b7685930fde0d6853bd",
+      "disposition": "included"
+    },
+    {
+      "path": "packages/core/tsconfig.json",
+      "mode": "100644",
+      "git_blob": "e3364d2be9e9c6c5c792595932428e7c62da41af",
+      "bytes": 151,
+      "sha256": "a8e223863bdf80b778faf4d9677504d906a1e2f553088b797ee7ff2c4f0340c7",
+      "disposition": "included"
+    },
+    {
+      "path": "packages/db/drizzle.config.ts",
+      "mode": "100644",
+      "git_blob": "cc2f0f253b793dcef333f77796133edcbcd4ed0a",
+      "bytes": 244,
+      "sha256": "031229fb2d09e60f49015b7387c53b66962325528994e05a7247d1a62747f839",
+      "disposition": "included"
+    },
+    {
+      "path": "packages/db/drizzle/0000_normal_chimera.sql",
+      "mode": "100644",
+      "git_blob": "44e52ca038d5f693ae837aaad6c9d2275cdd198c",
+      "bytes": 3536,
+      "sha256": "381c88cbf91c5705c293e2c453104bd7c2c49a8341790e78fba412dad5e2191e",
+      "disposition": "included"
+    },
+    {
+      "path": "packages/db/drizzle/0001_glossy_red_shift.sql",
+      "mode": "100644",
+      "git_blob": "8416d21b105b2906f5233392e700167396a1f516",
+      "bytes": 584,
+      "sha256": "59e318ae68e21f969a926504a6eca1510151f12578a207d7e07eae8500a25c52",
+      "disposition": "included"
+    },
+    {
+      "path": "packages/db/drizzle/0002_concerned_maria_hill.sql",
+      "mode": "100644",
+      "git_blob": "26eaa800307972d25fb3e99439cdf555983bdfc0",
+      "bytes": 35,
+      "sha256": "547e9f908fe1dfc9f33a3825d3c6f096fe81445d2bc2990af105fcfbccd34875",
+      "disposition": "included"
+    },
+    {
+      "path": "packages/db/drizzle/0003_lean_jean_grey.sql",
+      "mode": "100644",
+      "git_blob": "33edd713387e6f76f02a3dd6373638c0f0f06209",
+      "bytes": 38,
+      "sha256": "736fb45896accbfd905b48408009cb0ea1e95b801efc09fdff9be9fbc5190341",
+      "disposition": "included"
+    },
+    {
+      "path": "packages/db/drizzle/0004_add_sequences.sql",
+      "mode": "100644",
+      "git_blob": "941cd498cefbb0ab0ae6728012c3ab028472ec1c",
+      "bytes": 3428,
+      "sha256": "e1131c6865f7e21bfe43ee21ab4e55431e6cacc6c14fc886503a7ca5462849d6",
+      "disposition": "included"
+    },
+    {
+      "path": "packages/db/drizzle/0005_rapid_red_wolf.sql",
+      "mode": "100644",
+      "git_blob": "e30cb6260eaca117595968314c84c6e816db671b",
+      "bytes": 942,
+      "sha256": "8588c05acfaf187c122ae56bcf5c58887126c8c1605ba6fc8c030ee8c16f74e7",
+      "disposition": "included"
+    },
+    {
+      "path": "packages/db/drizzle/0006_faithful_zaladane.sql",
+      "mode": "100644",
+      "git_blob": "2ae9dda74e92f7c0103b3b52711cc18d76c6bfc1",
+      "bytes": 45,
+      "sha256": "a583f30fd30b0aeef8c3b5724e58c3c7d712b89dad3eedb0f0aad1953ac0facf",
+      "disposition": "included"
+    },
+    {
+      "path": "packages/db/drizzle/0007_sleepy_lilandra.sql",
+      "mode": "100644",
+      "git_blob": "0946187c7a2cd3e14ddaabee0743dd76ed557491",
+      "bytes": 73,
+      "sha256": "eefeef72392b9526c2fb33f0f9c15cfe2cda746ca2ebdd6b1b2a4bc6189df52d",
+      "disposition": "included"
+    },
+    {
+      "path": "packages/db/drizzle/0008_rename_is_warmup.sql",
+      "mode": "100644",
+      "git_blob": "fef8360b9a81b2b48679e2a6e549fe6f1490ba02",
+      "bytes": 73,
+      "sha256": "451d77d111bac25d80d119f71e35f99b5af9669ab865fc9a169498890ae61638",
+      "disposition": "included"
+    },
+    {
+      "path": "packages/db/drizzle/0009_add_replied_at.sql",
+      "mode": "100644",
+      "git_blob": "982a7776a969c3295f26972041e6271687ecf0dc",
+      "bytes": 55,
+      "sha256": "9f50ffe577860e4d19732021b3e1510e2305cac8d3c11e9e9047936959383ade",
+      "disposition": "included"
+    },
+    {
+      "path": "packages/db/drizzle/0010_shocking_vision.sql",
+      "mode": "100644",
+      "git_blob": "0b473f96e1ed6e577999cff2a959ce9b34bddfb6",
+      "bytes": 1370,
+      "sha256": "498b7724994f5031935325bfd419a1b7cfd68b9c003726870aaefeacb34126e5",
+      "disposition": "included"
+    },
+    {
+      "path": "packages/db/drizzle/0011_thankful_freak.sql",
+      "mode": "100644",
+      "git_blob": "b01a13d4287683fc898736a65abf0d1b8093b811",
+      "bytes": 49,
+      "sha256": "20037edd70c408e0a95f3c5b1646bfc99d937ebf7dcb6ad4fc5b781e549bed02",
+      "disposition": "included"
+    },
+    {
+      "path": "packages/db/drizzle/0012_shocking_nomad.sql",
+      "mode": "100644",
+      "git_blob": "a8b7b73b966f969ea005c0308a383665b2dc3ee2",
+      "bytes": 664,
+      "sha256": "ea0f7f764e180caf2ac22196d41491b1cfaaf0532ffca0fa6a1aa4bbb5cf42b5",
+      "disposition": "included"
+    },
+    {
+      "path": "packages/db/drizzle/0013_petite_nocturne.sql",
+      "mode": "100644",
+      "git_blob": "6d90e9734621fd2d91420c87cf04e6499b482e21",
+      "bytes": 78,
+      "sha256": "875c3cfd7410c85534d955f8a87c990778dcf71ce1cfd2c592b19247e74b714c",
+      "disposition": "included"
+    },
+    {
+      "path": "packages/db/drizzle/0014_add_is_duplicate.sql",
+      "mode": "100644",
+      "git_blob": "48190e740f80e017442cac53b214434e8a9b5268",
+      "bytes": 80,
+      "sha256": "7bf826e2aa847c29b0c8e2d593061c32caff9ebbc36be8261cfcc7bac742b85b",
+      "disposition": "included"
+    },
+    {
+      "path": "packages/db/drizzle/meta/0000_snapshot.json",
+      "mode": "100644",
+      "git_blob": "8a42c054ae5558dcb420403f8f876221b50750b3",
+      "bytes": 16995,
+      "sha256": "40a205f3771f392029ee1fe20a2eae2cded3c662a50e838cf239af4405be1953",
+      "disposition": "included"
+    },
+    {
+      "path": "packages/db/drizzle/meta/0001_snapshot.json",
+      "mode": "100644",
+      "git_blob": "afd1c2e3f7feb4a49571ee608b8f1f0e26e5a320",
+      "bytes": 18440,
+      "sha256": "b8a8766396373ccb87eed171477a169a72fd3911322118e08cfdc8cf2216514e",
+      "disposition": "included"
+    },
+    {
+      "path": "packages/db/drizzle/meta/0002_snapshot.json",
+      "mode": "100644",
+      "git_blob": "a1d4deb653d3604b5902db1509e31c8117def447",
+      "bytes": 18611,
+      "sha256": "bbd8a97f276256401935b1a7d7282d85b8df7efd2d8a01dcf30606167d7270dc",
+      "disposition": "included"
+    },
+    {
+      "path": "packages/db/drizzle/meta/0003_snapshot.json",
+      "mode": "100644",
+      "git_blob": "23596040e008a8efc75c10838a5619ded82abc65",
+      "bytes": 18440,
+      "sha256": "9688e5d86bf99f6f30353e4556001f8b53b1f2458d0008e8e1c059abff748564",
+      "disposition": "included"
+    },
+    {
+      "path": "packages/db/drizzle/meta/0004_snapshot.json",
+      "mode": "100644",
+      "git_blob": "49d692fdd9bfd82a9603aad5117fc0d53e88fefb",
+      "bytes": 14630,
+      "sha256": "ceeacfa94f5f1b6e45bc048c941eef8379ca1c4b689064c1bbe5d74c64fc59c7",
+      "disposition": "included"
+    },
+    {
+      "path": "packages/db/drizzle/meta/0005_snapshot.json",
+      "mode": "100644",
+      "git_blob": "ec1f87e71f4b983eb2e7415c6cfccfa308a04af1",
+      "bytes": 25292,
+      "sha256": "4a21052dad869dcbd71eb8f438560b5ce70a7e8cc388061c4926458077f69c68",
+      "disposition": "included"
+    },
+    {
+      "path": "packages/db/drizzle/meta/0006_snapshot.json",
+      "mode": "100644",
+      "git_blob": "b0fc6e0131a886620fe99137618cedb6bd866052",
+      "bytes": 25477,
+      "sha256": "df3a3369b71f9ca64a768bd1ea3525e78cce56001920474318964065f4d2490b",
+      "disposition": "included"
+    },
+    {
+      "path": "packages/db/drizzle/meta/0007_snapshot.json",
+      "mode": "100644",
+      "git_blob": "8cdc28fde207a4d394beecdb6d69ae17a1767f33",
+      "bytes": 25688,
+      "sha256": "ba1e0d92d34d078705a272e35d5f91eba5296dfca3b4a044f5ab8462c2c9d81f",
+      "disposition": "included"
+    },
+    {
+      "path": "packages/db/drizzle/meta/0008_snapshot.json",
+      "mode": "100644",
+      "git_blob": "e8aff26700b4a085965c19cd07d8c1edcbd54093",
+      "bytes": 25761,
+      "sha256": "5bed04f44ceefa8b856ef7207c8bfab760c1c8dc5becdf156db77d373b21a6db",
+      "disposition": "included"
+    },
+    {
+      "path": "packages/db/drizzle/meta/0009_snapshot.json",
+      "mode": "100644",
+      "git_blob": "0360e42944abb8486bc78a5f065da739aa5faf40",
+      "bytes": 25880,
+      "sha256": "16672506945959ef489e241d700ca1c924b69f728d6bb9e20d3c1fabc563d6cd",
+      "disposition": "included"
+    },
+    {
+      "path": "packages/db/drizzle/meta/0010_snapshot.json",
+      "mode": "100644",
+      "git_blob": "6a1d479beba235f6769caa1ba9b262528c807399",
+      "bytes": 25881,
+      "sha256": "cb90479d2e320e99d9ff1e9dab68b39aa4a562bc13686e3dbfd578f6ed11da5b",
+      "disposition": "included"
+    },
+    {
+      "path": "packages/db/drizzle/meta/0011_snapshot.json",
+      "mode": "100644",
+      "git_blob": "7736f926ec327e4a36516b91c5b91c17f232787e",
+      "bytes": 26068,
+      "sha256": "a7145fdb4acc4e1c40f720568af158b74568998a52102589d01e5a4c2af366f1",
+      "disposition": "included"
+    },
+    {
+      "path": "packages/db/drizzle/meta/0012_snapshot.json",
+      "mode": "100644",
+      "git_blob": "a6d8f5c6d9b40dc62c8945a5b55c804e7125c030",
+      "bytes": 27551,
+      "sha256": "abaa4af027908a82240f0fbf68c585612581375f2f6d809962dcc6c3aa4edd87",
+      "disposition": "included"
+    },
+    {
+      "path": "packages/db/drizzle/meta/0013_snapshot.json",
+      "mode": "100644",
+      "git_blob": "eb62bf8735382caf79a8903ca2a7aaff925f128c",
+      "bytes": 27768,
+      "sha256": "20ebdb621cd5710a99ed401a58bb55131f7d2a351a1ec90f399942b05b2b6ca7",
+      "disposition": "included"
+    },
+    {
+      "path": "packages/db/drizzle/meta/0014_snapshot.json",
+      "mode": "100644",
+      "git_blob": "90a6746c576a782c0f317b6e7ef1b63ac5a02982",
+      "bytes": 27987,
+      "sha256": "68b27f8b7a83139a9fe61c83bd5ec80fea4b97bbfa863ae7cdc2e5e7c63e5b46",
+      "disposition": "included"
+    },
+    {
+      "path": "packages/db/drizzle/meta/_journal.json",
+      "mode": "100644",
+      "git_blob": "2eee92a09c0688fe785079b8c03ea55fe1fb4fef",
+      "bytes": 2215,
+      "sha256": "c9e1b890866d4e6e1367f8d9a918d33418b52b685b7dd47e968958c53a9a6015",
+      "disposition": "included"
+    },
+    {
+      "path": "packages/db/package.json",
+      "mode": "100644",
+      "git_blob": "2dbe9553946288d7dab99a9339a4c051ad315239",
+      "bytes": 633,
+      "sha256": "0d87b2dc4ea0ea833621d572b3d11517282cbabee22119e92c594f82d07f4e04",
+      "disposition": "included"
+    },
+    {
+      "path": "packages/db/src/client.ts",
+      "mode": "100644",
+      "git_blob": "3e83bd46f1d0d9c1355cba8d1ca2cb8758c2e04d",
+      "bytes": 468,
+      "sha256": "75fe02273c9d605ab96928b4332ca56d3b280124e8ff0f5488a17ec1c2a1f8d9",
+      "disposition": "included"
+    },
+    {
+      "path": "packages/db/src/index.ts",
+      "mode": "100644",
+      "git_blob": "a21e6443d9817c3f7b620bbf4283b79ae47a05b1",
+      "bytes": 93,
+      "sha256": "a2282bf8cbb27e143795023912af51e93e82d60d4301c4be6c8ebf7a945768fd",
+      "disposition": "included"
+    },
+    {
+      "path": "packages/db/src/schema.ts",
+      "mode": "100644",
+      "git_blob": "e9ac0e9f0f664d3d25500298f9979a1dc7a7a9e9",
+      "bytes": 14446,
+      "sha256": "ad9f87c80f8ed9132c1b8c270139a5b1f446ea4963d009cbf2869ba186de0abb",
+      "disposition": "included"
+    },
+    {
+      "path": "packages/db/tsconfig.json",
+      "mode": "100644",
+      "git_blob": "87514e6efc314495d704ec2f0d92fcc6804da9b0",
+      "bytes": 209,
+      "sha256": "cd4b269c7bd7a407ca2ac13ba4c5c0594ca741b34a9423c798ebc8ad1f2d6b26",
+      "disposition": "included"
+    },
+    {
+      "path": "packages/eslint-config/README.md",
+      "mode": "100644",
+      "git_blob": "4a414ab1c939142925e3d9c4eb57f22c3025be89",
+      "bytes": 77,
+      "sha256": "5ccc9e04a77ac04308e61a11d3bab11470a7fd15855e535f1d08b320a1e6f374",
+      "disposition": "included"
+    },
+    {
+      "path": "packages/eslint-config/base.js",
+      "mode": "100644",
+      "git_blob": "8708a1b61d3b53992408707cb78882ac3963cc93",
+      "bytes": 691,
+      "sha256": "a7426bde87e7438b97b232dbc8dfe3aec9f790771bd5333b6c89b1e6006f8810",
+      "disposition": "included"
+    },
+    {
+      "path": "packages/eslint-config/next.js",
+      "mode": "100644",
+      "git_blob": "e40fffcd1f1fb8325453ffa7bf4135b47d5c58ca",
+      "bytes": 1336,
+      "sha256": "7bd157afc15cd8e4dadb1154fcaa9836e5c023205fc52b75d1125c63ddc37271",
+      "disposition": "included"
+    },
+    {
+      "path": "packages/eslint-config/package.json",
+      "mode": "100644",
+      "git_blob": "fa8b073a497c50a8339f009aaf3d1348c431fc3d",
+      "bytes": 721,
+      "sha256": "abaca2fec87eb3ccdb3f5b81ef80d78aa3eef8016a5f9a2d2c928f4d1c3fa233",
+      "disposition": "included"
+    },
+    {
+      "path": "packages/eslint-config/react-internal.js",
+      "mode": "100644",
+      "git_blob": "dda3143ea78f9afe073f8de37f36a7ac2c592264",
+      "bytes": 1114,
+      "sha256": "d4d552c215bd5bd65ba14c9fd16d00815c8e5e0681c4a7daff7f6f2c4f752a20",
+      "disposition": "included"
+    },
+    {
+      "path": "packages/typescript-config/README.md",
+      "mode": "100644",
+      "git_blob": "e5f0c936ca247b610e2913a825ff163f2ff2cc16",
+      "bytes": 85,
+      "sha256": "350d287d62eb70b4cbec06f06688ba9fa9d17c77d9c3e26e4ac354523dd09987",
+      "disposition": "included"
+    },
+    {
+      "path": "packages/typescript-config/base.json",
+      "mode": "100644",
+      "git_blob": "0f80cfd67c892c7a210f18a20ffa84f577ae015c",
+      "bytes": 524,
+      "sha256": "2cc3a29b47bd6f90030004b0f2732ecbd20326c7ffc7581ac91e83b96e02a016",
+      "disposition": "included"
+    },
+    {
+      "path": "packages/typescript-config/nextjs.json",
+      "mode": "100644",
+      "git_blob": "44f4289918f1d9502348b68a5f936fde231369ca",
+      "bytes": 296,
+      "sha256": "bad41c66b08c3f9768b9695b4e49317b770225412c43d9bc2b082118c2051225",
+      "disposition": "included"
+    },
+    {
+      "path": "packages/typescript-config/package.json",
+      "mode": "100644",
+      "git_blob": "94501168888941f80883b9be846e14ced38cd0fb",
+      "bytes": 163,
+      "sha256": "f742c2ef5d77ecf007f17db06128cfdc532c53c6e3756b428ef98028aa1c00e2",
+      "disposition": "included"
+    },
+    {
+      "path": "packages/typescript-config/react-library.json",
+      "mode": "100644",
+      "git_blob": "44924d9ed8778b33fa1953743fccbd1854a2be4d",
+      "bytes": 166,
+      "sha256": "85898b13f9809809596dd3f86bd75a521bdac45f0351c118782687f84584872d",
+      "disposition": "included"
+    },
+    {
+      "path": "packages/ui/components.json",
+      "mode": "100644",
+      "git_blob": "6d68093791c10c495358ab92e711ebbb52373616",
+      "bytes": 541,
+      "sha256": "e4b4b13254a41290e04f9c3f43044910d1dcf7eefb0a658ec59d90fb13d16004",
+      "disposition": "included"
+    },
+    {
+      "path": "packages/ui/eslint.config.js",
+      "mode": "100644",
+      "git_blob": "69da3ed0abeb918d19e52a87ee1f554aec8e6aa6",
+      "bytes": 134,
+      "sha256": "5da646c7663f513cc466324f336d93fe12a866a6acb208c4ce6c9eb2157c8198",
+      "disposition": "included"
+    },
+    {
+      "path": "packages/ui/package.json",
+      "mode": "100644",
+      "git_blob": "121f34da62a8d212e85185377a825c33bbe12c62",
+      "bytes": 1237,
+      "sha256": "2e03cba06c3128894b23f804be9fea5d6ac19c06b12024835335d2f845d96750",
+      "disposition": "included"
+    },
+    {
+      "path": "packages/ui/postcss.config.mjs",
+      "mode": "100644",
+      "git_blob": "4ae682d87fc68a3350b415a2d456c80242b5fadf",
+      "bytes": 141,
+      "sha256": "36540b4e3711ce38adec0fe1b577554c9a6b6514a74f8fefbe43a724946f8a63",
+      "disposition": "included"
+    },
+    {
+      "path": "packages/ui/src/components/.gitkeep",
+      "mode": "100644",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "disposition": "included"
+    },
+    {
+      "path": "packages/ui/src/components/avatar.tsx",
+      "mode": "100644",
+      "git_blob": "4f3f897deb30101cc5702c7d04217105a54c3165",
+      "bytes": 3110,
+      "sha256": "2ecf15b6108ba4196bf9dfc59be8fdcbb63becc04b9370428423faa3c00d8846",
+      "disposition": "included"
+    },
+    {
+      "path": "packages/ui/src/components/badge.tsx",
+      "mode": "100644",
+      "git_blob": "90263df963f7db76052e8399684c570a6bc22c45",
+      "bytes": 1877,
+      "sha256": "78c72f58fb2afa9aac2bea9aabc01bc038322fec4c0a5c82aaa8d4cec3088efa",
+      "disposition": "included"
+    },
+    {
+      "path": "packages/ui/src/components/button.tsx",
+      "mode": "100644",
+      "git_blob": "bebacf97fd9835626faf1b7e1e2a3e28837fbc02",
+      "bytes": 2998,
+      "sha256": "1fc96d57c637520254f190d8c2524713d7dbffaf10171debbe77e06a63fc8b1d",
+      "disposition": "included"
+    },
+    {
+      "path": "packages/ui/src/components/card.tsx",
+      "mode": "100644",
+      "git_blob": "e76524a0a1a99d59d529221d3c89c86c4343bb68",
+      "bytes": 2672,
+      "sha256": "03e40a5619753c2ad81cbea3f7bb59e29213917d116dc82c97ef25ff883c9d78",
+      "disposition": "included"
+    },
+    {
+      "path": "packages/ui/src/components/chart.tsx",
+      "mode": "100644",
+      "git_blob": "d8704e036baabfa95c0117a82901fd1392d0a9c9",
+      "bytes": 10559,
+      "sha256": "430786caed16667fb9b6c02b5a7805c0f6b8f4b17950864ffa18e429ea6cce4b",
+      "disposition": "included"
+    },
+    {
+      "path": "packages/ui/src/components/checkbox.tsx",
+      "mode": "100644",
+      "git_blob": "0ba11b43557b1fd989e6fd2def36aebe42275d94",
+      "bytes": 1420,
+      "sha256": "9540efcaa1b42beec80edb339977c270d4d5a6e2c1bd4609a88abced743bef57",
+      "disposition": "included"
+    },
+    {
+      "path": "packages/ui/src/components/dialog.tsx",
+      "mode": "100644",
+      "git_blob": "ca9e04d776d41f0f1d3b40aab85650aca324bb86",
+      "bytes": 4287,
+      "sha256": "24b5f8b53ff6932a354e5b3a23a02f81c72a0ead3e061d44d3667df587c8bc42",
+      "disposition": "included"
+    },
+    {
+      "path": "packages/ui/src/components/dropdown-menu.tsx",
+      "mode": "100644",
+      "git_blob": "64dd797ea5637eb6daf8601e0063d713db560b57",
+      "bytes": 8911,
+      "sha256": "3c23c0913717700c3f5d7aa27a214ec814556e89e039abf9753800e6e6ce3edc",
+      "disposition": "included"
+    },
+    {
+      "path": "packages/ui/src/components/input.tsx",
+      "mode": "100644",
+      "git_blob": "1253a37145b8f0bde04006dc7449de5919047615",
+      "bytes": 945,
+      "sha256": "b3ef56bddc172ed1da6c88907a03435c0cbe47f6a42e83675db7981d47ebd370",
+      "disposition": "included"
+    },
+    {
+      "path": "packages/ui/src/components/label.tsx",
+      "mode": "100644",
+      "git_blob": "231ec894ef6c9fc39a69e690256e8be5c3d07364",
+      "bytes": 618,
+      "sha256": "049b946e3833cc86ffacec766ce20e7c5614191c36323485d715212465fc059c",
+      "disposition": "included"
+    },
+    {
+      "path": "packages/ui/src/components/select.tsx",
+      "mode": "100644",
+      "git_blob": "3a60f2ac85d611cc06b8b5932912b5588e8a4be1",
+      "bytes": 6657,
+      "sha256": "6d1e33267c9726473195a64eb7df7a1d4f22b1707752cd250d91d8d3a773eb36",
+      "disposition": "included"
+    },
+    {
+      "path": "packages/ui/src/components/separator.tsx",
+      "mode": "100644",
+      "git_blob": "9919a17c890691b42e790ae6ff6b3ee5cde368cc",
+      "bytes": 656,
+      "sha256": "e8451848f53d1bc231087011df1e1e98a57d3da64fddc60ba6fa63bacad2093c",
+      "disposition": "included"
+    },
+    {
+      "path": "packages/ui/src/components/sheet.tsx",
+      "mode": "100644",
+      "git_blob": "542b0b600512c1ab5a12d1959e486202fa70b304",
+      "bytes": 4605,
+      "sha256": "7797b733a28b79b72c2060a2a79a58b6d0dcc15c8ef24a6ab0628f9c090f419e",
+      "disposition": "included"
+    },
+    {
+      "path": "packages/ui/src/components/sidebar.tsx",
+      "mode": "100644",
+      "git_blob": "5572d9245a32eaea948d0377bb39d0aa9343aa8b",
+      "bytes": 21513,
+      "sha256": "6aaa9f2e95341a5c50d142d45245b7f8cd9f36e8e146c5bb407d508048c157c7",
+      "disposition": "included"
+    },
+    {
+      "path": "packages/ui/src/components/skeleton.tsx",
+      "mode": "100644",
+      "git_blob": "2f1f2825d263e1a8871d2afeee9bdab42fe95cfa",
+      "bytes": 288,
+      "sha256": "10150aed628597bfdad35093a3034d7ef60883b3ea82685c6a1429db185dc415",
+      "disposition": "included"
+    },
+    {
+      "path": "packages/ui/src/components/sonner.tsx",
+      "mode": "100644",
+      "git_blob": "9c07efa1f17dc544066ce2dbed6c336963b14729",
+      "bytes": 1708,
+      "sha256": "d2311c2cb3ff75b7a18e7310e097adbfe7776f6d9f640f90971416b1957b550e",
+      "disposition": "included"
+    },
+    {
+      "path": "packages/ui/src/components/switch.tsx",
+      "mode": "100644",
+      "git_blob": "f32552fe7ac64000b00b65a0cc68e55ead0dfdbf",
+      "bytes": 1594,
+      "sha256": "d98c09b87fb3f28635061ae9525f6d0bea8bf0e9b141b3ae36b0406a6f44479c",
+      "disposition": "included"
+    },
+    {
+      "path": "packages/ui/src/components/table.tsx",
+      "mode": "100644",
+      "git_blob": "687cb675759d23034f88e1e2200d847aaed44665",
+      "bytes": 2414,
+      "sha256": "1ff4e15a77dfdaefbe64644c96fb11aeb2aaf8e06e5183c24711c8f5af0511a4",
+      "disposition": "included"
+    },
+    {
+      "path": "packages/ui/src/components/tabs.tsx",
+      "mode": "100644",
+      "git_blob": "e1aef17d3b7f71d2378b19c3afb4402da164945a",
+      "bytes": 3491,
+      "sha256": "72a0917b10b148a1cc2ada8ef43cb274437c3827203b58b28a19e4de18c6fafc",
+      "disposition": "included"
+    },
+    {
+      "path": "packages/ui/src/components/textarea.tsx",
+      "mode": "100644",
+      "git_blob": "ca8360f2e7cd46abc695c14b664aee64e0569f1c",
+      "bytes": 831,
+      "sha256": "7a3933e1332a640254b4d82e001f36582df9e02e62f22474888c70174f3f6717",
+      "disposition": "included"
+    },
+    {
+      "path": "packages/ui/src/components/tooltip.tsx",
+      "mode": "100644",
+      "git_blob": "c68b991b630eebc9bdca14159ca1dc9061172c57",
+      "bytes": 2199,
+      "sha256": "39401e634bff58334608e320809a77b0fae5c6bf59640bdc9aa2e64afdc636d6",
+      "disposition": "included"
+    },
+    {
+      "path": "packages/ui/src/hooks/.gitkeep",
+      "mode": "100644",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "disposition": "included"
+    },
+    {
+      "path": "packages/ui/src/hooks/use-mobile.ts",
+      "mode": "100644",
+      "git_blob": "2b0fe1dfef3b17850bbac040665f514a8ffd0f15",
+      "bytes": 565,
+      "sha256": "ad0936f84f1df79d3697bfbff9c18f8ad58431c1cbaf2359c6a853b0fcc9f28b",
+      "disposition": "included"
+    },
+    {
+      "path": "packages/ui/src/lib/.gitkeep",
+      "mode": "100644",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "disposition": "included"
+    },
+    {
+      "path": "packages/ui/src/lib/utils.ts",
+      "mode": "100644",
+      "git_blob": "bd0c391ddd1088e9067844c48835bf4abcd61783",
+      "bytes": 166,
+      "sha256": "7c8c3dfc0cdd370d44932828eb067ef771c8fe7996693221d5d4b90af6d54f2d",
+      "disposition": "included"
+    },
+    {
+      "path": "packages/ui/src/styles/globals.css",
+      "mode": "100644",
+      "git_blob": "20bee8ce391e19fad91d2d0666167f94383eec74",
+      "bytes": 5063,
+      "sha256": "27ae70c73e2b7e02913332e8c48848c97b237d8511f59166c91e23306830b9b2",
+      "disposition": "included"
+    },
+    {
+      "path": "packages/ui/tsconfig.json",
+      "mode": "100644",
+      "git_blob": "e137b450d25382f37a1cf19ce4e14252f6929e37",
+      "bytes": 352,
+      "sha256": "f245b81108946020041720351a6fac062857f47eec430dccf3698caf436c233f",
+      "disposition": "included"
+    },
+    {
+      "path": "packages/ui/tsconfig.lint.json",
+      "mode": "100644",
+      "git_blob": "eda508904ddabbfbe0371901841d411fd589de8e",
+      "bytes": 186,
+      "sha256": "b4e05541f046e41f36cd3dc49f7374c958c462e8fc390ba076b5fd81e7904a32",
+      "disposition": "included"
+    },
+    {
+      "path": "pnpm-lock.yaml",
+      "mode": "100644",
+      "git_blob": "31b8f6a57a1556f6089a771dff7ab688146ab6bc",
+      "bytes": 341114,
+      "sha256": "703f202bf43049547644c21ba0b6351e2a2cd69764f9c72c8bcfa5bc40674a41",
+      "disposition": "included"
+    },
+    {
+      "path": "pnpm-workspace.yaml",
+      "mode": "100644",
+      "git_blob": "8b10329a6b13b7de90b0d8d0d177d58076a77cb6",
+      "bytes": 126,
+      "sha256": "f97bd7ab3bdce1d4eae9a665924040e1cd93d2810c6e7f748d459c85d52aeda0",
+      "disposition": "included"
+    },
+    {
+      "path": "tsconfig.json",
+      "mode": "100644",
+      "git_blob": "c6a4ad5501163f9a93448afbc120d67e780c2406",
+      "bytes": 59,
+      "sha256": "7c607ee14a7e9d82256eab4e3b6c54cc85ffafffa181645367b9607c75b33eb9",
+      "disposition": "included"
+    },
+    {
+      "path": "turbo.json",
+      "mode": "100644",
+      "git_blob": "d40895a665429201daf68265182339ca2b1aea62",
+      "bytes": 559,
+      "sha256": "db584978cd366a3b4a3bc7725003a9e50c2094e76d956acc92bd118414e26d03",
+      "disposition": "included"
+    }
+  ]
+}

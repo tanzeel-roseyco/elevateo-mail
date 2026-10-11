@@ -1,0 +1,653 @@
+# cold-cli
+
+Open-source CLI cold email sequence engine. Single binary, SQLite by default, Postgres via `COLD_CLI_DATABASE_URL`, no SaaS required.
+
+Supports Google Workspace/Gmail through [gws](https://github.com/googleworkspace/cli), plus generic SMTP/IMAP accounts for other email hosts. Works great with coding agents (Claude Code, Cursor, etc.) or directly from the terminal.
+
+## Install
+
+```bash
+go install github.com/andersmyrmel/cold-cli/cmd/cold-cli@latest
+```
+
+[gws](https://github.com/googleworkspace/cli) is required only when using Google Workspace/Gmail accounts. Generic SMTP/IMAP accounts do not require gws.
+
+## Database Modes
+
+`cold-cli` supports two storage modes:
+
+- **SQLite (default)** - local file at `~/.cold-cli/data.db`
+- **Postgres** - activated by setting `COLD_CLI_DATABASE_URL`
+
+Examples:
+
+```bash
+# Local default mode
+cold-cli init
+
+# Shared/server mode
+export COLD_CLI_DATABASE_URL='postgresql://user:pass@host:5432/cold_cli?sslmode=require'
+cold-cli init
+```
+
+Important for Postgres mode:
+
+- use a direct Postgres connection for `tick`
+- do not use a transaction-pooled/pgbouncer pooler URL for the worker path
+- `tick` uses advisory locks in Postgres mode, which require stable session semantics
+
+## Quickstart
+
+```bash
+# Initialize
+cold-cli init
+
+# Check domain deliverability
+cold-cli doctor
+
+# Add a Google Workspace/Gmail sending account (opens browser for OAuth)
+cold-cli account add you@company.com
+
+# Or add a generic SMTP/IMAP account
+export MAIL_PASSWORD='app-password-or-mailbox-password'
+cold-cli account add-smtp you@company.com \
+  --smtp-host smtp.example.com \
+  --smtp-password-ref env:MAIL_PASSWORD \
+  --imap-host imap.example.com
+cold-cli account verify you@company.com
+
+# Scaffold example sequence + leads files (optional)
+cold-cli campaign init
+
+# Create a campaign
+cold-cli campaign create \
+  --name "q1-outreach" \
+  --sequence sequence.yml \
+  --leads leads.csv \
+  --accounts you@company.com
+
+# Or create an empty draft shell and add leads later
+cold-cli campaign create \
+  --name "q1-outreach" \
+  --sequence sequence.yml \
+  --accounts you@company.com
+
+# Review the full schedule before sending anything
+cold-cli campaign preview q1-outreach
+
+# Activate when ready
+cold-cli campaign activate q1-outreach
+
+# Send due emails (run manually or via cron)
+cold-cli tick
+
+# Check results
+cold-cli stats q1-outreach
+cold-cli stats q1-outreach --variants    # A/B test results
+cold-cli log                              # recent activity
+```
+
+## Sequence Format
+
+Sequences are YAML files with steps, delays, and optional A/B variants:
+
+```yaml
+name: Q1 Agency Outreach
+defaults:
+  from_name: "Alex"
+steps:
+  - step: 1
+    delay: 0
+    subject: "{{first_name}}, quick question about {{company}}"
+    body: |
+      Hi {{first_name}},
+
+      Saw that {{company}} is growing fast...
+    variants:
+      - subject: "{{company}} + lifecycle emails"
+        body: |
+          Hi {{first_name}}, wanted to reach out...
+  - step: 2
+    delay: 3
+    body: |
+      Hey {{first_name}}, circling back...
+  - step: 3
+    delay: 5
+    body: |
+      Last note - just wanted to make sure this didn't get buried.
+```
+
+- `delay` is in days after the previous step
+- Steps without a `subject` send as replies in the same thread
+- `{{placeholders}}` are replaced from CSV columns, plus sender fields such as `{{sender_name}}` and `{{sender_email}}`
+- `variants` enable A/B testing (assigned per lead at creation)
+
+## Leads CSV
+
+```csv
+email,first_name,company,schedule_timezone
+john@acme.com,John,Acme Inc,America/New_York
+jane@bigcorp.com,Jane,BigCorp,Europe/Oslo
+```
+
+`email` is the only required column when importing leads. All other columns are driven by what `{{placeholders}}` your sequence uses. Extra columns beyond the built-in fields (`first_name`, `last_name`, `company`) are stored as custom fields and available for templates at send time.
+
+Sender-derived placeholders are available without CSV columns:
+- `{{sender_email}}` - full assigned sending account email
+- `{{sender_local}}` - local part before `@`
+- `{{sender_domain}}` - domain after `@`
+- `{{sender_name}}` - display name derived from the local part, for example `maya@company.com` renders `Maya`
+
+Supported scheduling override columns:
+- `schedule_timezone` - optional IANA timezone per lead, for example `America/New_York` or `Europe/Oslo`
+
+Scheduling behavior:
+- Campaign `timezone` is still the default for leads without `schedule_timezone`
+- Campaign send window and send days remain campaign-level settings
+- If `schedule_timezone` is present, that lead uses the campaign window interpreted in that lead's local timezone
+- If leads need materially different local windows, split campaigns by geography for now
+
+- **Validation at creation** - mismatched variables produce actionable errors with "Did you mean?" suggestions
+- **Aliases** - common names like `{{name}}` → `first_name` are resolved automatically
+- **Reserved names blocked** - CSV columns named `subject`, `body`, `step`, `delay`, or `variant` are rejected (they conflict with sequence YAML fields)
+- **Schedule override validation** - invalid `schedule_timezone` values fail campaign creation / add-leads with a clear error
+- **Reimport updates** - if a lead already exists, its fields are updated from the new CSV (not silently skipped)
+- **Safety at send time** - unresolved variables are stripped (never sent literally); emails with empty subject or body are not sent
+
+## Commands
+
+```
+cold-cli init                              # set up ~/.cold-cli/, config, and the active DB backend
+cold-cli doctor [domain...]                # check MX, SPF, DKIM, DMARC, domain age
+
+cold-cli --workspace workspace-a account add <email>  # add Google Workspace/Gmail account with gws OAuth
+cold-cli --workspace workspace-a account add <email> --no-login  # add Google account without OAuth (already authed)
+cold-cli --workspace workspace-a account add-smtp <email>  # add generic SMTP/IMAP account
+cold-cli --workspace workspace-a account add-smtp <email> --smtp-host smtp.example.com --smtp-password-ref env:MAIL_PASSWORD --imap-host imap.example.com
+cold-cli account update-smtp <email>       # update SMTP/IMAP host, port, user, secret refs, TLS, or daily limit
+cold-cli account verify <email>            # verify SMTP/IMAP connectivity and auth
+cold-cli --workspace workspace-a account list  # list accounts in one workspace
+cold-cli account list --all-workspaces     # audit all accounts across workspaces
+cold-cli account update <email>            # update settings (--daily-limit)
+cold-cli account pause <email>             # deactivate, cancel pending sends
+cold-cli account resume <email>            # reactivate a paused account
+cold-cli account remove <email>            # deactivate (re-add later with account add)
+
+cold-cli campaign init [directory]         # scaffold example sequence.yml + leads.csv
+cold-cli campaign validate-leads --leads <csv>  # MX + SMTP recipient preflight before create/add-leads
+cold-cli --workspace workspace-a campaign preflight --leads <csv>
+                                            # duplicates + prior campaign history + suppression + recipient gate
+cold-cli --workspace workspace-a campaign create --name --sequence [--leads] --accounts [--start-date YYYY-MM-DD] [--send-days "1,2,3,4,5"]
+cold-cli --workspace workspace-a campaign create --name --sequence-inline '...' --leads-inline '...' --accounts  # no files needed
+cold-cli campaign clone <source> --name <new> --leads <csv> [--start-date YYYY-MM-DD]
+cold-cli campaign add-leads <name|id> --leads <csv> [--start-date YYYY-MM-DD] [--preview-only] [--reactivate]
+cold-cli campaign remove-lead <name|id> <email>        # remove one lead from a campaign
+cold-cli campaign preview <name|id>        # see full schedule before activating
+cold-cli campaign preview <name|id> --render  # see rendered emails for first lead, with stripped-var warnings
+cold-cli campaign preview <name|id> --render --lead <email>  # render for specific lead
+cold-cli campaign activate <name|id>       # start sending
+cold-cli campaign activate <name|id> --send-now  # activate and send immediately
+cold-cli campaign send-now <name|id>       # set all pending sends to now
+cold-cli campaign pause <name|id>          # stop sending
+cold-cli campaign resume <name|id>         # resume
+cold-cli campaign status <name|id>         # details + reply rate + next/last send
+cold-cli --workspace workspace-a campaign list  # list workspace campaigns (with send window + days)
+cold-cli campaign update <name|id>         # update sequence, send window/days, timezone, gaps
+cold-cli campaign update <name|id> --send-days "0,1,2,3,4,5,6"  # reschedule pending sends only
+cold-cli campaign delete <name|id>         # delete campaign and all data
+cold-cli campaign retry <name|id>          # reset failed sends and reactivate completed-with-failures campaigns
+cold-cli campaign retry <name|id> --step N # retry only failed sends for step N
+
+cold-cli tick                              # process replies, bounces, send due emails
+cold-cli tick --dry-run                    # show what would happen
+cold-cli tick --now                        # ignore schedule, send all pending immediately
+cold-cli inbox backfill --dry-run          # preview historical inbox thread snapshot backfill
+cold-cli inbox backfill                    # store missing reply + related sent snapshots
+cold-cli --workspace storeinspect inbox sync --campaign 123 --lead 456
+                                            # refresh one complete Gmail or IMAP Inbox + Sent thread
+cold-cli --workspace storeinspect inbox show --campaign 123 --lead 456
+                                            # refresh and print the complete thread
+cold-cli --workspace storeinspect inbox audit --since 120d
+                                            # read-only all-provider stale-state audit
+cold-cli --workspace storeinspect inbox reconcile --since 30d
+                                            # import provider-confirmed messages, then verify missing=0
+cold-cli --workspace storeinspect inbox followups --since 120d --min-age 7d
+                                            # fail-closed post-conversation candidate review
+cold-cli --workspace storeinspect inbox followups --since 120d --min-age 7d --reconcile
+                                            # reconcile, verify, then list candidates; never sends
+cold-cli --workspace storeinspect inbox needs-reply --since 120d --reconcile
+                                            # reconcile, verify, then list latest-inbound threads; never sends
+cold-cli --workspace storeinspect inbox reply --campaign 123 --lead 456 --body-file reply.txt
+                                            # refresh, then preview a manual thread reply; never sends by default
+cold-cli --workspace storeinspect inbox reply --campaign 123 --lead 456 --body-file reply.txt --send --confirm-to lead@example.com
+                                            # explicitly send the exact reviewed reply
+
+cold-cli stats [campaign]                  # sent/replied/bounced per campaign
+cold-cli stats <name> --leads             # per-lead breakdown
+cold-cli stats <name> --variants          # A/B test results with reply rates
+
+cold-cli log [campaign]                    # recent activity (sends, replies, bounces)
+cold-cli log --limit 50                    # show more events
+
+cold-cli lead list                         # list all leads
+cold-cli lead list --domain <domain>       # filter by domain
+cold-cli lead list --status <status>       # filter by status
+cold-cli lead pause <email>                # pause across all campaigns
+cold-cli lead resume <email>              # undo pause, restore pending sends
+cold-cli lead blacklist <email|domain>     # blacklist + cancel pending sends
+```
+
+All commands support `--json` for programmatic use.
+
+### Workspaces
+
+`cold-cli` is the source of truth for account and campaign ownership. Accounts
+and campaigns carry a `workspace_id`; commands use `--workspace <id>`, then
+`COLD_CLI_WORKSPACE_ID`, then `default`.
+
+Use explicit workspaces for hosted or multi-brand setups:
+
+```bash
+cold-cli --workspace workspace-a account add-smtp sender@workspace-a.example \
+  --smtp-host smtp.example.com \
+  --smtp-password-ref env:WORKSPACE_A_MAIL_PASSWORD \
+  --imap-host imap.example.com
+
+cold-cli --workspace workspace-a campaign create \
+  --name workspace-a-june \
+  --sequence sequence.yml \
+  --leads leads.csv \
+  --accounts sender@workspace-a.example
+```
+
+Campaign creation only accepts active accounts from the same workspace. Do not
+infer ownership from sender domains except as a one-time suggestion before
+writing the explicit `workspace_id`.
+
+For hosted dashboards or multi-tenant control planes, always pass the intended
+workspace explicitly:
+
+```bash
+cold-cli --workspace workspace-a campaign list
+```
+
+If a campaign is accidentally created in workspace `default`, it can still send
+through the assigned account, but workspace-filtered dashboards will not show it
+under the intended tenant.
+
+## Discord Reply Notifications
+
+`tick` can post new reply and unsubscribe alerts to a Discord channel through an
+incoming webhook. This is intended for SMTP/IMAP inboxes where there is no Gmail
+phone notification surface.
+
+```bash
+export DISCORD_WEBHOOK_URL='https://discord.com/api/webhooks/...'
+export DISCORD_WEBHOOK_USERNAME='cold-cli Replies'
+export DISCORD_WEBHOOK_AVATAR_URL='https://example.com/brand/logo.png'
+export COLD_CLI_DISCORD_WORKSPACES='storeinspect'
+cold-cli tick
+```
+
+Notes:
+
+- The webhook URL is a secret. Store it in your local/production env file, not in git.
+- Set `COLD_CLI_DISCORD_NOTIFY=0` to temporarily disable notifications while keeping the webhook configured.
+- By default, Discord only alerts on SMTP/IMAP account replies because Gmail/GWS accounts already have Gmail notifications. Set `COLD_CLI_DISCORD_PROVIDERS=all` to notify for every provider, or a comma-separated list such as `smtp_imap,gws`.
+- Set `COLD_CLI_DISCORD_WORKSPACES` to a comma-separated workspace list to enable operational alerts for those workspaces. `all` or `*` enables them globally. Leaving it unset disables only campaign-finished and sender-idle alerts; reply alerts are unaffected.
+- Set `DISCORD_WEBHOOK_USERNAME` and `DISCORD_WEBHOOK_AVATAR_URL` to override the Discord webhook's default display name and icon.
+- The first enabled run initializes the notification cursor before polling inboxes, so old historical replies are not dumped into Discord. Replies discovered during that same tick still notify.
+- Alerts include campaign, inbox, lead, sender, subject, and a short snippet. Full message bodies are not sent.
+- Campaign-finished alerts are emitted once when an active campaign reaches `completed` or `completed_with_failures`. They include delivery/response counts and identify campaign inboxes that now have no pending sends across any active campaign.
+- An active sender with no pending sends gets an immediate idle alert. The alert state clears when new pending work appears; while the sender remains idle, one reminder is sent every 24 hours.
+- Existing historical completed campaigns are not announced when this feature is first deployed. Existing active senders that are already idle are announced so the operational gap is visible.
+- Discord mentions are disabled in webhook payloads so prospect text cannot trigger `@everyone` or role pings.
+
+## How It Works
+
+### Eager Scheduling
+
+All send times are pre-computed when you create a campaign. Each send becomes a stored row with a specific `send_at` timestamp, assigned account, and variant. This means:
+
+- `campaign preview` shows the sender-capacity-aware schedule before you activate
+- schedules are rebalanced across `active` and `draft` campaigns that share an account
+- `tick` uses the same rebalance logic as preview before loading due rows
+- Agents can review and approve the full timeline
+- Optional lead-level `schedule_timezone` overrides use the campaign send window in each lead's local timezone
+- `campaign update --send-days/--send-window-*/--timezone` recalculates existing `pending` sends without touching `sent`, `failed`, `skipped`, or `cancelled` rows
+- For leads with no sent history, update recomputes the first pending send from `max(now, campaign start date)` under the new window/day/timezone rules, then chains later pending sends from that new anchor
+- For leads already in flight, update preserves sent history and only reschedules future pending sends
+- If a prior step is actually sent later than planned, future pending follow-ups are re-anchored from the actual `sent_at` so configured delays still hold
+
+Current limitation:
+- Only timezone is lead-specific today. Send window start/end and send days are still campaign-level.
+
+### Tick Engine
+
+`tick` is a single idempotent command that does everything per invocation:
+
+1. Poll inboxes for replies via the account provider → match via In-Reply-To headers → mark lead replied
+2. Poll inboxes for bounces via the account provider → detect via thread/message matching → mark bounced
+3. Detect unsubscribe requests → auto-blacklist lead globally
+4. Rebalance pending sends for the affected sender accounts using real daily-limit capacity
+5. Find sends where `send_at <= now` and campaign is active
+6. Re-check each pending row just before send so stale preloaded rows cannot fire
+7. Send each email through its account provider (`gws` or SMTP) with 90-140 second random gaps
+8. After each successful send, rebalance that sender again so future follow-ups chain from actual send time
+9. Respect daily limits, send windows, and send days
+
+Run it manually, via cron (`*/10 * * * *`), or have an agent call it. All tick activity is logged to `~/.cold-cli/tick.log` as structured JSON.
+
+### Lead Email Validation
+
+Run lead validation before `campaign create`, `campaign clone`, or `campaign add-leads`:
+
+```bash
+cold-cli campaign validate-leads --leads leads.csv
+```
+
+The validator expects the same `email` column used by campaign CSVs. It performs syntax validation, MX lookup, catch-all detection, and SMTP `RCPT TO` checks for company-domain recipients. By default it exits non-zero if any row fails or needs manual review, so it can be used as a hard preflight gate.
+
+Default policy:
+
+- `verified` company-domain recipients pass.
+- `rejected` recipients and no-MX domains fail.
+- Gmail/free-mail domains require manual review because exact mailboxes are not reliably SMTP-verifiable.
+- Catch-all domains require manual review because the exact mailbox is not verified.
+- Unknown SMTP results require manual review.
+
+Use overrides only when you have a stronger manual reason:
+
+```bash
+cold-cli campaign validate-leads --leads leads.csv --allow-free-email
+cold-cli campaign validate-leads --leads leads.csv --allow-catch-all
+cold-cli campaign validate-leads --leads leads.csv --allow-unknown
+```
+
+Do not run recipient validation inside `tick`: live SMTP checks are slow and can be inconclusive. Validate during campaign prep, then import only rows that pass or have an explicit manual approval.
+
+### Campaign Lead Preflight
+
+`campaign preflight` is the read-only gate to run before `campaign create`,
+`campaign clone`, or `campaign add-leads`. It combines input duplicate checks,
+cross-campaign history, global suppressions, and the same MX/SMTP policy used by
+`validate-leads`:
+
+```bash
+cold-cli --workspace storeinspect campaign preflight --leads leads.csv
+```
+
+By default it checks prior email and company-domain history across every
+workspace. This prevents a contact reached by one hosted project from being
+silently reused by another. It also blocks more than one candidate at the same
+company email domain. Use `--history-scope workspace` or `--allow-same-domain`
+only after reviewing why the narrower gate is appropriate.
+
+Use `--skip-email-validation` for a fast duplicate, history, and suppression
+pass before spending time on lead research. The command never creates,
+imports, schedules, or sends anything. It exits non-zero on manual-review or
+blocked rows unless `--no-strict-exit` is present.
+
+### Reply & Unsubscribe Detection
+
+Matches inbox messages to sent emails using `In-Reply-To` headers, with provider thread/message IDs as a fallback where available. When a reply is detected, the lead is marked `replied` and remaining sends for that lead are cancelled. With `stop_on_domain_reply`, all other leads on the same domain are paused.
+
+Unsubscribe requests ("unsubscribe", "remove me", "opt out", etc.) are auto-detected and blacklist the lead globally across all campaigns.
+
+### Manually Approved Thread Replies
+
+`inbox sync` makes the provider mailbox authoritative before follow-up review.
+For Google Workspace accounts it fetches the complete Gmail thread, including
+messages sent manually outside cold-cli. For SMTP/IMAP accounts it searches
+both `INBOX` and common `Sent` mailboxes by RFC `Message-ID`, `In-Reply-To`, and
+`References` headers, then stores only messages connected to the selected
+thread. `inbox show` refreshes by default and prints the stored conversation in
+chronological order; use `--stored-only` only for offline inspection.
+
+`inbox reply` sends a one-off reply through the account that owns the stored
+thread. It is preview-only unless `--send` is present, and sending also requires
+`--confirm-to` to match the resolved primary recipient. The command honors a
+message's `Reply-To`, preserves RFC reply references, blocks bounced,
+unsubscribed, auto-reply, and globally suppressed leads, and uses an
+idempotency record so an uncertain result cannot be retried silently.
+Provider refresh is mandatory for delivery. A refresh failure or a newly
+discovered bounce, unsubscribe, or auto-reply blocks the send. Preview-only
+inspection can opt out with `--stored-only`, but that flag cannot be combined
+with `--send`.
+
+For SMTP/IMAP accounts, the delivered message is also appended to the `Sent`
+mailbox. A Sent-copy failure is reported as a warning without misreporting the
+SMTP delivery as failed. Manual replies consume sender daily capacity and are
+matched by later reply polling like scheduled sends.
+
+Use `--reply-all` only after reviewing the previewed Cc list; `--confirm-cc` is
+then required when sending. Attachments are not currently supported.
+
+### Provider-Verified Follow-Up Review
+
+`inbox followups` lists post-conversation revival candidates. It is separate
+from scheduled campaign sequence steps. A candidate must have a human inbound
+reply followed by our outbound response, no newer prospect reply, an active
+sender and lead, and no recorded bounce or unsubscribe. By default, a thread
+that already received a revival follow-up is excluded. Use `--max-followups`
+only after explicitly reviewing why another touch is appropriate.
+This is a structural shortlist, not a send recommendation. Completed deals,
+polite declines and other closed conversations still require human review.
+
+The command always audits provider state first. It exits without candidates if
+any account audit fails or if a provider message is missing from cold-cli.
+`--reconcile` explicitly imports provider-confirmed inbound and outbound
+messages, repeats the read-only audit and requires zero remaining messages
+before candidate selection. It never drafts or sends email.
+
+Safe revival workflow:
+
+```bash
+cold-cli --workspace storeinspect inbox followups --since 120d --min-age 7d --reconcile
+cold-cli --workspace storeinspect inbox show --campaign 123 --lead 456
+cold-cli --workspace storeinspect inbox reply --campaign 123 --lead 456 --body-file reply.txt
+cold-cli --workspace storeinspect inbox reply --campaign 123 --lead 456 --body-file reply.txt --send --confirm-to lead@example.com
+```
+
+`inbox reconcile` is the unattended form of the same provider import plus
+verification gate. It holds the tick lock so scheduled sends cannot race a
+reconciliation write. `--notify-errors` sends a Discord operational alert when
+the provider audit cannot reach a verified clean state. A practical hosted
+schedule is a nightly 30-day pass plus a weekly 120-day pass:
+
+```cron
+2 2 * * * /usr/bin/nice -n 10 /usr/bin/ionice -c2 -n7 /home/coldcli/bin/cold-cli --env-file /home/coldcli/.cold-cli-env --workspace storeinspect inbox reconcile --since 30d --lock-wait 10m --notify-errors >> /home/coldcli/.cold-cli/reconcile.log 2>&1
+32 3 * * 0 /usr/bin/nice -n 10 /usr/bin/ionice -c2 -n7 /home/coldcli/bin/cold-cli --env-file /home/coldcli/.cold-cli-env --workspace storeinspect inbox reconcile --since 120d --lock-wait 10m --notify-errors >> /home/coldcli/.cold-cli/reconcile.log 2>&1
+```
+
+The exact production crontab is tracked in `ops/mova-coldcli.crontab`.
+
+Routine tick polling captures new inbound replies. The reconciliation schedule
+also imports messages sent manually through Gmail or IMAP webmail and messages
+moved out of INBOX. Messages deleted from the provider before reconciliation
+cannot be recovered. Discord labels replies imported by reconciliation as
+`Recovered historical reply` and retains their original arrival timestamp;
+only replies discovered by routine polling are labeled as new.
+
+### Provider-Verified Needs-Reply Review
+
+`inbox needs-reply` lists campaign conversations whose latest
+provider-confirmed message is a human inbound reply. It is ordered oldest first
+so missed replies are visible. The command uses the same mandatory provider
+audit as `inbox followups`: it fails closed if provider state cannot be read or
+if any campaign-thread message is missing.
+
+```bash
+cold-cli --workspace storeinspect inbox needs-reply --since 120d --reconcile
+cold-cli --workspace storeinspect inbox needs-reply --since 120d --reconcile --show-thread
+```
+
+This is a structural review queue, not a requirement to answer every message.
+Polite closings, declines, handoffs, and completed conversations still require
+human classification. The command never drafts or sends.
+
+### Bounce Detection
+
+Three-strategy fallback:
+1. **Thread/message matching** - NDR can be tied back to a sent email
+2. **X-Failed-Recipients header** - standard MTA header
+3. **Snippet parsing** - extract bounced email from NDR text
+
+### Account Providers
+
+Google Workspace/Gmail accounts use `gws` OAuth and Gmail API send/inbox operations:
+
+```bash
+cold-cli --workspace workspace-a account add sender@company.com
+```
+
+Generic SMTP/IMAP accounts store server settings and secret references. SMTP sends mail; IMAP polls for replies, unsubscribes, and bounces. Raw passwords are not stored. Use `env:NAME` references and provide the environment variable wherever `cold-cli tick` runs:
+
+```bash
+export MAIL_PASSWORD='app-password-or-mailbox-password'
+
+cold-cli account add-smtp sender@company.com \
+  --smtp-host smtp.example.com \
+  --smtp-password-ref env:MAIL_PASSWORD \
+  --imap-host imap.example.com
+
+cold-cli account verify sender@company.com
+```
+
+For cron, systemd, or VPS workers, prefer an explicit env file instead of
+shell-wide exports:
+
+```bash
+cat > ~/.cold-cli/secrets.env <<'EOF'
+MAIL_PASSWORD=app-password-or-mailbox-password
+EOF
+chmod 600 ~/.cold-cli/secrets.env
+
+cold-cli --env-file ~/.cold-cli/secrets.env account verify sender@company.com
+cold-cli --env-file ~/.cold-cli/secrets.env tick
+```
+
+`cold-cli` never auto-loads repo `.env` files. `--env-file` is explicit and
+applies before the command resolves `env:NAME` secret references.
+
+Hosted callers can also store opaque `secret:ID` references and provide a
+custom `SecretResolver` when running the engine. The default CLI resolver only
+resolves `env:NAME`.
+
+If provider settings change, update only the fields that changed and verify again:
+
+```bash
+cold-cli account update-smtp sender@company.com \
+  --smtp-host mail.example.com \
+  --smtp-password-ref env:MAIL_PASSWORD
+
+cold-cli account verify sender@company.com
+```
+
+Defaults:
+- `--smtp-user` defaults to the account email
+- `--imap-user` defaults to the SMTP username
+- `--imap-password-ref` defaults to the SMTP password reference
+- `--smtp-tls ssl` defaults to port `465`; `starttls` defaults to `587`; `none` defaults to `25`
+- `--imap-tls ssl` defaults to port `993`; `starttls` and `none` default to `143`
+
+### Multi-Account
+
+Campaigns can use one account or rotate across multiple accounts, regardless of provider:
+
+```bash
+cold-cli account add sender1@company.com
+cold-cli account add-smtp sender2@company.com --smtp-host smtp.example.com --smtp-password-ref env:MAIL_PASSWORD --imap-host imap.example.com
+
+# Single account
+cold-cli campaign create --accounts sender1@company.com ...
+
+# Round-robin across accounts
+cold-cli campaign create --accounts sender1@company.com,sender2@company.com ...
+```
+
+When round-robin is used, all steps for a given lead use the same account so follow-ups keep provider-specific thread/message continuity.
+
+### Campaign Cloning
+
+Clone a campaign with new leads. Copies sequence, settings, and accounts:
+
+```bash
+cold-cli campaign clone q1-outreach --name q2-outreach --leads new-leads.csv --start-date 2026-09-01
+```
+
+Add more leads to a running campaign:
+
+```bash
+cold-cli campaign validate-leads --leads more-leads.csv
+cold-cli campaign preflight --leads more-leads.csv
+cold-cli campaign add-leads q1-outreach --leads more-leads.csv --start-date 2026-09-08 --preview-only
+cold-cli campaign add-leads q1-outreach --leads more-leads.csv --start-date 2026-09-08
+```
+
+Automatically skips leads already in the campaign, blacklisted, or bounced.
+`--preview-only` performs the same insert, account assignment, shared schedule
+rebalance and template rendering inside a transaction that is always rolled
+back. It returns exact sender, recipient, subject, body and send time without
+saving a lead or send. Once an active campaign's stored start date has arrived,
+an explicit future `--start-date` is required for every added cohort. A
+completed campaign also requires `--reactivate`; include it in the rollback
+preview before using it on the real add.
+
+For mixed geographies, you can either:
+- use one campaign with per-lead `schedule_timezone` when the same local window is acceptable for everyone
+- split campaigns by geography when regions need different local windows or send days
+
+### Domain Diagnostics
+
+Check your sending domains for deliverability issues:
+
+```bash
+cold-cli doctor              # auto-checks all account domains
+cold-cli doctor example.com  # check specific domain
+```
+
+Checks MX records, SPF, DKIM (19 common selectors), DMARC, and domain age via WHOIS.
+
+## Configuration
+
+`~/.cold-cli/config.yml`:
+
+```yaml
+default_timezone: America/New_York
+default_daily_limit: 50
+min_gap_seconds: 90
+max_gap_seconds: 140
+send_window_start: "09:00"
+send_window_end: "17:00"
+send_days: "1,2,3,4,5"
+
+# Unsubscribe reply detection is always on.
+# List-Unsubscribe header is off by default (not needed for cold email from personal Gmail).
+unsubscribe_header: false
+unsubscribe_subject: Unsubscribe
+```
+
+`send_days` in config is the default for new campaigns. Override it per campaign with `cold-cli campaign create --send-days ...`.
+
+## Architecture
+
+- **Go** - single binary, no runtime deps
+- **SQLite or Postgres** - SQLite at `~/.cold-cli/data.db` by default, Postgres via `COLD_CLI_DATABASE_URL`
+- **gws CLI** - subprocess calls for Gmail API accounts (send, list, get)
+- **SMTP/IMAP** - native transports for generic email hosts
+- **Cobra** - CLI framework
+- **log/slog** - structured JSON logging to `~/.cold-cli/tick.log`
+
+Backend notes:
+
+- SQLite mode uses a local file lock at `~/.cold-cli/tick.lock`
+- Postgres mode uses an advisory lock for `tick`
+- `cold-cli init` bootstraps whichever backend is active
+- Postgres worker deployments should use a direct connection string, not a pooler URL
+
+See [ARCHITECTURE.md](ARCHITECTURE.md) for data model, tick flow diagrams, and design decisions.
+
+## License
+
+MIT

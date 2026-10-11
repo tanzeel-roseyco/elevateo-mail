@@ -1,0 +1,167 @@
+{
+  "scan_date": "2026-10-11",
+  "scanner": "Gitleaks directory scan with --redact",
+  "scope": "third_party/upstream after the explicit sample TLS key omission",
+  "raw_findings": 17,
+  "classification_counts": {
+    "nonsecret_pattern_match": 4,
+    "published_insecure_default_hash": 2,
+    "published_test_fixture": 11
+  },
+  "limitations": "Source-context triage only; credentials were not tested against providers. This scan is not a vulnerability certification. No directory-wide scanner ignore is added. Re-triage on any file/pin change.",
+  "findings": [
+    {
+      "path": "third_party/upstream/billionmail/bm.sh",
+      "rule": "generic-api-key",
+      "start_line": 420,
+      "end_line": 420,
+      "classification": "published_insecure_default_hash",
+      "reason": "Published installer fallback password verifier/hash. Retained as audited upstream code, not approved configuration; replacement required before execution/deployment.",
+      "file_sha256": "64f9f6dd8eb71c306d404f36b34e4c356a920e56664f1c130ab14233315bdcd5"
+    },
+    {
+      "path": "third_party/upstream/billionmail/core/internal/service/acme/acme.go",
+      "rule": "generic-api-key",
+      "start_line": 118,
+      "end_line": 118,
+      "classification": "nonsecret_pattern_match",
+      "reason": "Key-type enum, editor library identifier, or abbreviated PEM placeholder containing ellipses; not a complete credential.",
+      "file_sha256": "ed8e9a0845ccbb2dcb6f9fedecf3e975a5cc074a31757ba36efc2b6d0f77d7a0"
+    },
+    {
+      "path": "third_party/upstream/billionmail/core/public/dist/static/js/index.bc6e5fe9.js",
+      "rule": "private-key",
+      "start_line": 1,
+      "end_line": 1,
+      "classification": "nonsecret_pattern_match",
+      "reason": "Key-type enum, editor library identifier, or abbreviated PEM placeholder containing ellipses; not a complete credential.",
+      "file_sha256": "14f77adba868f10aab0f762882c949d55aa00e74dab6337690a05d3a911efe7b"
+    },
+    {
+      "path": "third_party/upstream/cold-cli/internal/secrets_test.go",
+      "rule": "generic-api-key",
+      "start_line": 12,
+      "end_line": 12,
+      "classification": "published_test_fixture",
+      "reason": "Pinned test/CI fixture value, retained for source fidelity; never provision production secrets from fixtures.",
+      "file_sha256": "2c7a8b8595ad68a9f4c287590882bb78b972b493d137f44833249bb44e62e117"
+    },
+    {
+      "path": "third_party/upstream/cold-cli/internal/secrets_test.go",
+      "rule": "generic-api-key",
+      "start_line": 72,
+      "end_line": 72,
+      "classification": "published_test_fixture",
+      "reason": "Pinned test/CI fixture value, retained for source fidelity; never provision production secrets from fixtures.",
+      "file_sha256": "2c7a8b8595ad68a9f4c287590882bb78b972b493d137f44833249bb44e62e117"
+    },
+    {
+      "path": "third_party/upstream/billionmail/install.sh",
+      "rule": "generic-api-key",
+      "start_line": 1215,
+      "end_line": 1215,
+      "classification": "published_insecure_default_hash",
+      "reason": "Published installer fallback password verifier/hash. Retained as audited upstream code, not approved configuration; replacement required before execution/deployment.",
+      "file_sha256": "c2b0c888c8bd33eb36f9b93f119f8b9aa924f8760b068b5f6a1b3112f0cd3b7e"
+    },
+    {
+      "path": "third_party/upstream/wu-wei-mail/.github/workflows/ci.yml",
+      "rule": "generic-api-key",
+      "start_line": 56,
+      "end_line": 56,
+      "classification": "published_test_fixture",
+      "reason": "Pinned test/CI fixture value, retained for source fidelity; never provision production secrets from fixtures.",
+      "file_sha256": "eecdde58c418f7ee02beb86c09d3c29402820137af58d7afd4abb0be04c99368"
+    },
+    {
+      "path": "third_party/upstream/wu-wei-mail/.github/workflows/ci.yml",
+      "rule": "generic-api-key",
+      "start_line": 56,
+      "end_line": 57,
+      "classification": "published_test_fixture",
+      "reason": "Pinned test/CI fixture value, retained for source fidelity; never provision production secrets from fixtures.",
+      "file_sha256": "eecdde58c418f7ee02beb86c09d3c29402820137af58d7afd4abb0be04c99368"
+    },
+    {
+      "path": "third_party/upstream/wu-wei-mail/backend/tests/conftest.py",
+      "rule": "generic-api-key",
+      "start_line": 34,
+      "end_line": 34,
+      "classification": "published_test_fixture",
+      "reason": "Pinned test/CI fixture value, retained for source fidelity; never provision production secrets from fixtures.",
+      "file_sha256": "a243a5b075fdc7532ff57cd0cf0f57ca85793c1dcb955171ecf486d5fb0e568f"
+    },
+    {
+      "path": "third_party/upstream/wu-wei-mail/backend/tests/test_config.py",
+      "rule": "generic-api-key",
+      "start_line": 27,
+      "end_line": 27,
+      "classification": "published_test_fixture",
+      "reason": "Pinned test/CI fixture value, retained for source fidelity; never provision production secrets from fixtures.",
+      "file_sha256": "3c6bfe6897e27c0f3f7e2b20025ef2a68e31827111a2e13b59f0e7556b05742d"
+    },
+    {
+      "path": "third_party/upstream/wu-wei-mail/backend/tests/test_config.py",
+      "rule": "generic-api-key",
+      "start_line": 29,
+      "end_line": 29,
+      "classification": "published_test_fixture",
+      "reason": "Pinned test/CI fixture value, retained for source fidelity; never provision production secrets from fixtures.",
+      "file_sha256": "3c6bfe6897e27c0f3f7e2b20025ef2a68e31827111a2e13b59f0e7556b05742d"
+    },
+    {
+      "path": "third_party/upstream/wu-wei-mail/backend/tests/test_config.py",
+      "rule": "generic-api-key",
+      "start_line": 30,
+      "end_line": 30,
+      "classification": "published_test_fixture",
+      "reason": "Pinned test/CI fixture value, retained for source fidelity; never provision production secrets from fixtures.",
+      "file_sha256": "3c6bfe6897e27c0f3f7e2b20025ef2a68e31827111a2e13b59f0e7556b05742d"
+    },
+    {
+      "path": "third_party/upstream/wu-wei-mail/backend/tests/test_api_tokens.py",
+      "rule": "generic-api-key",
+      "start_line": 16,
+      "end_line": 16,
+      "classification": "published_test_fixture",
+      "reason": "Pinned test/CI fixture value, retained for source fidelity; never provision production secrets from fixtures.",
+      "file_sha256": "e8db69d7bf657fe2ef90ae1c063d179857fec2d19c06fdda61ece91cc6b726e0"
+    },
+    {
+      "path": "third_party/upstream/wu-wei-mail/backend/tests/test_api_tokens.py",
+      "rule": "generic-api-key",
+      "start_line": 34,
+      "end_line": 34,
+      "classification": "published_test_fixture",
+      "reason": "Pinned test/CI fixture value, retained for source fidelity; never provision production secrets from fixtures.",
+      "file_sha256": "e8db69d7bf657fe2ef90ae1c063d179857fec2d19c06fdda61ece91cc6b726e0"
+    },
+    {
+      "path": "third_party/upstream/wu-wei-mail/backend/tests/test_prospecting_hardening.py",
+      "rule": "generic-api-key",
+      "start_line": 53,
+      "end_line": 53,
+      "classification": "published_test_fixture",
+      "reason": "Pinned test/CI fixture value, retained for source fidelity; never provision production secrets from fixtures.",
+      "file_sha256": "6e2bc71a2964ad193933e9860eb031894b1a451dcfb6d366cc38b97f20033203"
+    },
+    {
+      "path": "third_party/upstream/billionmail/core/public/dist/static/plugin/monaco/language/typescript/tsWorker.js",
+      "rule": "generic-api-key",
+      "start_line": 320,
+      "end_line": 320,
+      "classification": "nonsecret_pattern_match",
+      "reason": "Key-type enum, editor library identifier, or abbreviated PEM placeholder containing ellipses; not a complete credential.",
+      "file_sha256": "ffdf8b0d4d41c145afae6919beba110336860759dce0bdadc2a145c06a1a48ed"
+    },
+    {
+      "path": "third_party/upstream/billionmail/core/public/dist/static/plugin/monaco/editor/editor.main.js",
+      "rule": "generic-api-key",
+      "start_line": 631,
+      "end_line": 631,
+      "classification": "nonsecret_pattern_match",
+      "reason": "Key-type enum, editor library identifier, or abbreviated PEM placeholder containing ellipses; not a complete credential.",
+      "file_sha256": "90b588bc0b624e24052a576e1bcab2eaffec7bc666895188862eebd9c9745782"
+    }
+  ]
+}

@@ -42,8 +42,8 @@ Use a reproducible production deployment, pinned images, TLS, private database a
 
 ## 10. Documentation, reuse and cleanup
 
-Keep README Current state, state.md and relevant docs synchronized in each implementation commit. Preserve provenance/licenses for any copied/adapted MIT code; no BillionMail AGPL code is included by this plan. Record actual copied files when porting begins. Clean only task-owned disposable Docker resources; preserve persistent data. Repository/project deletion still requires the explicit user process in AGENTS.md.
+Keep README Current state, state.md and relevant docs synchronized in each implementation commit. Preserve provenance/licenses for any copied/adapted MIT code; BillionMail AGPL source is now included only as an explicitly requested reference snapshot, with its license preserved; no product integration is approved by archival inclusion. Record actual copied files when porting begins. Clean only task-owned disposable Docker resources; preserve persistent data. Repository/project deletion still requires the explicit user process in AGENTS.md.
 
 ## Approval record
 
-Status: **pending**. No user approval recorded as of this design update. Approval should explicitly cover these ten sections and the proposed stack, or identify requested changes. Credential setup, DNS migration, purchases and public release are separate later operational actions.
+Status: **pending**. No blanket application-standards approval recorded. The later user request explicitly authorizes upstream source intake and detailed documentation; that work does not require reopening this application-implementation gate. Approval should explicitly cover these ten sections and the proposed stack, or identify requested changes. Credential setup, DNS migration, purchases and public release are separate later operational actions.

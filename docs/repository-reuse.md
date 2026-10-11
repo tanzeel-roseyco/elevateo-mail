@@ -1,6 +1,6 @@
 # Selective reuse from the six audited repositories
 
-Status: porting plan only. No upstream application code has been copied into Elevateo in this update. The repositories were cloned and audited earlier in this conversation; this document carries that evidence forward rather than re-auditing a different revision. The exact source revisions are in [repository-pins.json](research/repository-pins.json); independent component scores and findings are in [audit-scorecards.json](research/audit-scorecards.json).
+Status: all six pinned source snapshots are now copied into `third_party/upstream` as reference material; no component has been ported into an Elevateo runtime. See [the complete source collection](../third_party/README.md), [six dossiers](reference-repositories/README.md) and [adoption matrix](component-adoption.md). The repositories were cloned and audited earlier in this conversation; this document carries that evidence forward rather than re-auditing a different revision. The exact source revisions are in [repository-pins.json](research/repository-pins.json); independent component scores and findings are in [audit-scorecards.json](research/audit-scorecards.json).
 
 ## Read the scores in context
 
@@ -39,9 +39,9 @@ The new product does not need six running backends, six authentication models or
 
 ## License and provenance rule
 
-The audit identified MIT licenses for the first five projects and AGPL-3.0 for BillionMail. Before porting an actual file, recheck that pinned file's license and any embedded third-party notices. Preserve the applicable copyright/license text for copied or adapted code. Track source repository, full commit, path, destination, adaptation and regression test in a `THIRD_PARTY_NOTICES`/provenance ledger when the first port is made. Do not claim copied code is original merely because it was translated to TypeScript.
+The audit identified MIT licenses for the first five projects and AGPL-3.0 for BillionMail. Before porting an actual file, recheck that pinned file's license and any embedded third-party notices. Preserve the applicable copyright/license text for copied or adapted code. The source collection already has [third-party notices](../THIRD_PARTY_NOTICES.md) and per-file provenance. For each later port, extend the ledger with source repository/revision/path, destination, adaptation and regression test. Do not claim copied code is original merely because it was translated to TypeScript.
 
-No AGPL code is included by this plan. If the team later wants BillionMail code, make a deliberate licensing decision with qualified advice before integration; separation into a service is not, by itself, a legal conclusion. This plan uses independently written architecture ideas only.
+BillionMail AGPL source is now included in the explicitly requested reference collection with its license intact; no AGPL implementation is integrated into an Elevateo runtime. If the team later wants BillionMail code, make a deliberate licensing decision with qualified advice before integration; separation into a service is not, by itself, a legal conclusion. This plan uses independently written architecture ideas only.
 
 ## Validation carried forward
 

@@ -40,7 +40,7 @@ Use an active Node LTS at implementation and pin exact tool/dependency versions 
 
 ## Why one language and few services
 
-The target repository has no application code to preserve. A TypeScript frontend and backend can share validation schemas and typed API contracts, while Tauri adds only a narrow Rust shell. That is a new design choice for this greenfield product; the audit's recommendation to start from Quickly was for a campaign-heavy product, not this changed requirement.
+Before source intake, the target repository contained no application implementation to preserve. It now holds upstream reference snapshots, while the Elevateo runtime remains unimplemented. A TypeScript frontend and backend can share validation schemas and typed API contracts, while Tauri adds only a narrow Rust shell. That is a new design choice for this greenfield product; the audit's recommendation to start from Quickly was for a campaign-heavy product, not this changed requirement.
 
 Do not merge Python, Go and Node servers simply to collect features from every repository. Port small, valuable rules and regression cases into the chosen architecture. Start with PostgreSQL search, a durable jobs table and modest polling for UI changes. Add Realtime only for measured UX need, Redis only for a measured queue/cache bottleneck, and an external search engine only when indexed database search no longer meets measured needs. There is no Kubernetes or microservice mesh requirement for 10 people.
 

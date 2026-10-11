@@ -256,4 +256,4 @@ This file supplies an educational model, not a complete implementation specifica
 - Set numeric RPO/RTO goals and a backup/failover design; test recovery without duplicating already accepted sends.
 - After approval and implementation, test cross-mailbox attacks, stale writes, duplicate/reordered webhooks, body-fetch expiry, crash boundaries, late workers, bounded-key expiry, and restore replay in Docker. Validate the real UI's conflicts, pending states, stale labels, and unknown-send warnings before any publication.
 
-No application tests or UI checks can establish these guarantees yet because this is documentation-only planning. This tutorial leaves standards approval unchanged and introduces no migration, installed package, provider call, or deployed service.
+No Elevateo application tests or UI checks can establish these guarantees yet because this database model remains unimplemented. Imported upstream source and provenance-tool tests are separate from product acceptance. This tutorial leaves standards approval unchanged and introduces no migration, installed package, provider call, or deployed service.

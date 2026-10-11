@@ -1,6 +1,6 @@
 # Implementation plan and release gates
 
-Status: proposed plan. No application code, installers or live infrastructure exists in this repository.
+Status: proposed application plan. Six upstream source snapshots are now present as reference material, but no integrated Elevateo application, installers or live infrastructure exists.
 
 ## Gate 0 — approve the concrete design standards
 

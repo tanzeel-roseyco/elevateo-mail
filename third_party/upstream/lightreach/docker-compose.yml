@@ -1,0 +1,41 @@
+services:
+  # One-shot: applies pending drizzle migrations to the shared volume, then exits.
+  # Reuses the `build` stage, which still has drizzle-kit + full source.
+  migrate:
+    build:
+      context: .
+      target: build
+    command: sh -c "pnpm db:migrate && chown -R 1001:1001 /data"
+    environment:
+      DATABASE_URL: file:/data/data.db
+    volumes:
+      - lightreach-data:/data
+
+  web:
+    build:
+      context: .
+      target: runner
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: file:/data/data.db
+    volumes:
+      - lightreach-data:/data
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.lightreach.rule=Host(`${DOMAIN}`)"
+      - "traefik.http.routers.lightreach.entrypoints=websecure"
+      - "traefik.http.routers.lightreach.tls=true"
+      - "traefik.http.routers.lightreach.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.lightreach.middlewares=lightreach-ratelimit,lightreach-auth"
+      - "traefik.http.middlewares.lightreach-auth.basicauth.users=${BASIC_AUTH_USERS}"
+      - "traefik.http.middlewares.lightreach-ratelimit.ratelimit.average=5"
+      - "traefik.http.middlewares.lightreach-ratelimit.ratelimit.burst=10"
+      - "traefik.http.services.lightreach.loadbalancer.server.port=3000"
+
+volumes:
+  lightreach-data:

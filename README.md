@@ -4,9 +4,9 @@ A planned shared company mailbox for approximately **10 people**, available on a
 
 ## Current state
 
-**Design package complete; application implementation has not started.** Resend and self-hosted Supabase are selected by the user. This update replaces the earlier assumption that the primary product is a campaign engine across 18 existing mailboxes. Existing mailbox count, domain and migration requirements remain unresolved.
+**Design package and six-repository source intake complete; Elevateo application implementation has not started.** Resend and self-hosted Supabase are selected by the user. This update replaces the earlier assumption that the primary product is a campaign engine across 18 existing mailboxes. Existing mailbox count, domain and migration requirements remain unresolved.
 
-The repository contains architecture, requirements, a database/backend tutorial, a reuse plan grounded in six audited repositories, connector and desktop designs, and a phased implementation plan. There are no running services, executable application, credentials, installers or deployment. Engineering standards remain **draft pending explicit approval**, as required by [the repository standards](.planning/STANDARDS.md).
+The repository contains 2,764 pinned upstream files under `third_party/upstream`, six independent technical dossiers, per-file integrity manifests, preserved licenses, architecture, requirements, a database/backend tutorial, connector/desktop designs and a phased implementation plan. The upstream snapshots contain executable source but are not installed, run or integrated. There is no working Elevateo application, installer or deployment. Engineering standards remain **draft pending explicit approval**, as required by [the repository standards](.planning/STANDARDS.md).
 
 ## Recommended design
 
@@ -18,6 +18,16 @@ The repository contains architecture, requirements, a database/backend tutorial,
 - **Proposed:** start on a VPS with Docker Compose, TLS reverse proxy and off-host backups. Railway remains an alternative if operational convenience outweighs infrastructure cost/control.
 
 These proposals are reviewable choices, not already approved or implemented dependencies. Resend now also documents a private-beta Inboxes API; it is not a launch dependency. See [delivery and hosting](docs/mail-delivery-and-hosting.md).
+
+## Source collection and goals
+
+- [All six source snapshots, exact revisions and integrity checks](third_party/README.md)
+- [Six independent repository dossiers](docs/reference-repositories/README.md)
+- [Best-component adoption matrix](docs/component-adoption.md)
+- [Our goals and acceptance evidence](docs/goals-and-traceability.md)
+- [Third-party licenses and notices](THIRD_PARTY_NOTICES.md)
+
+The source collection preserves all 2,765 tracked paths in its manifests. One published sample TLS private-key file is deliberately omitted; all other 2,764 files retain exact upstream bytes. Reference inclusion does not approve runtime adoption.
 
 ## Read in this order
 
@@ -34,6 +44,8 @@ These proposals are reviewable choices, not already approved or implemented depe
 
 ## Setup and testing
 
-There is no application to install yet. Clone this repository and read the design documents. Code blocks and route names are design examples, not runnable integrations. The next implementation milestone starts only after the standards gate is resolved.
+There is no Elevateo application to install yet. Do not execute the archived upstream setup instructions as a way to launch this design. Clone this repository and read the design documents. Code blocks and route names are design examples, not runnable integrations. The next implementation milestone starts only after the standards gate is resolved.
 
 Application lint, typecheck, unit/integration tests must run in Docker; browser validation and platform-specific packaging checks follow before release. Documentation checks for this update are recorded in `code-reviews.md`. No live email, domain change, infrastructure purchase or deployment occurred.
+
+Verify source intake with `python3 scripts/verify_upstream.py`; run isolated provenance-tool tests with `python3 -B scripts/test_snapshot_tools.py -v`. These are repository tooling checks, not application acceptance tests.
