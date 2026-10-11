@@ -4,6 +4,8 @@ This is the acceptance map for Elevateo Mail. User-selected requirements, implem
 
 ## Product goal
 
+Read [what the finished product looks like](end-goal.md) for the daily experience and end-state deliverables. This document maps those outcomes to requirements and evidence.
+
 Build an understandable, reliable shared company mailbox for about ten people. The web app and downloadable Mac/Windows clients use the same permissions and history. Claude and Codex can help with authorized search and drafting. Resend transports permitted email; self-hosted Supabase stores application data and identities. The system should use modest infrastructure and have a recovery path its operators understand.
 
 “Institutional grade” means demonstrated access isolation, traceable changes, recoverable side effects, safe content handling, repeatable deployment and restore evidence. It is not a claim conferred by an interface, test count, imported repository or single-server specification.

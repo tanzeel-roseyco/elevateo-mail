@@ -21,6 +21,7 @@ These proposals are reviewable choices, not already approved or implemented depe
 
 ## Source collection and goals
 
+- [What the finished Elevateo Mail looks like](docs/end-goal.md)
 - [All six source snapshots, exact revisions and integrity checks](third_party/README.md)
 - [Six independent repository dossiers](docs/reference-repositories/README.md)
 - [Best-component adoption matrix](docs/component-adoption.md)
