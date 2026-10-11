@@ -5,6 +5,8 @@ Status: **design, source intake, dossiers and local-completion handoff ready; in
 
 ## Completed
 
+- Prepared a clean feature/local-completion checkout from main cc02616. Downloaded Devin CLI documentation, installed native CLI 3000.11.3, verified browser authentication, and completed two bounded read-only Devin assessments through Codex shell invocation. Fable retains frontend ownership. See docs/research/devin-cli/README.md for verified connection details and assessment limitations.
+
 - Inspected the original planning-only repository and recorded its standards gate; the later local-completion brief now defines a scoped execution path.
 - Recorded the user-selected Resend and self-hosted Supabase stack and current approximately 10-person company-mailbox scope.
 - Produced architecture, requirements, database/backend/CAP tutorial, delivery/DNS/hosting guide, desktop/MCP design, reliability contracts, reuse plan and implementation milestones.

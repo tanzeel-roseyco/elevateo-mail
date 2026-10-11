@@ -4,6 +4,8 @@ A planned shared company mailbox for approximately **10 people**, available on a
 
 ## Current state
 
+Local agent setup is now verified: Devin CLI is installed and authenticated, and Codex has used it for two bounded backend assessments. Documentation snapshots and connection limitations are recorded in [Devin setup](docs/research/devin-cli/README.md). Fable retains frontend ownership; these assessments have not implemented the application.
+
 **Design package and six-repository source intake complete; Elevateo application implementation has not started.** Resend and self-hosted Supabase are selected by the user. This update replaces the earlier assumption that the primary product is a campaign engine across 18 existing mailboxes. Existing mailbox count, domain and migration requirements remain unresolved.
 
 The repository contains 2,764 pinned upstream files under `third_party/upstream`, six independent technical dossiers, per-file integrity manifests, preserved licenses, architecture, requirements, a database/backend tutorial, connector/desktop designs and a phased implementation plan. The upstream snapshots contain executable source but are not installed, run or integrated. There is no working Elevateo application, installer or deployment. The 2026-10-12 local-completion brief supplies the next agent's execution path; [the standards](.planning/STANDARDS.md) are its engineering baseline, with production decisions still open.
