@@ -1,5 +1,7 @@
 # BillionMail — independent source dossier
 
+Target-architecture update (2026-10-12): historical source findings below are unchanged. Elevateo destination suggestions are superseded by the current [adoption matrix](../component-adoption.md) and [polyglot proposal](../../.planning/POLYGLOT_ARCHITECTURE.md): Rails domain/API/worker, TypeScript UI/MCP, Mac Rust/Tauri and C# Windows. Required named opinions remain pending.
+
 **Disposition: retain the AGPL-3.0 source snapshot for reference; incorporate none of its application code into Elevateo's runtime.** Its useful lessons concern mail-server responsibilities, operational visibility and permission design. Running a conventional mail stack would add responsibilities that the user-selected Resend transport is intended to avoid.
 
 ## Identity, provenance and license boundary

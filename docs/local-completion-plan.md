@@ -1,14 +1,22 @@
 # Local completion plan — credentials last
 
-Status: implementation handoff, 2026-10-12. This document specifies work to build and prove; it does not report a running application. Follow the root agent instructions and the current user-authorized scope. Complete the local application with real Supabase services and a deterministic mail-provider simulator before requesting external credentials.
+Status: implementation handoff revised for the expanded 2026-10-12 planning request. This document specifies work to build and prove; it does not report a running application or finalized architecture. First complete the research/design/opinion gates below. Then complete the local application with real Supabase services and a deterministic mail-provider simulator before requesting production credentials. The current instruction prohibits live sends; Instantly warmup is therefore blocked as well.
 
 ## Target and boundaries
 
-Deliver a shared company mailbox for approximately ten people: authenticated web UI, mailbox permissions, incoming threads, assignments, notes, labels, per-user read state, search, versioned drafts, reviewed sending, attachments, audit history, a durable worker, local Claude/Codex MCP integration and native client source/build configuration. All clients use the same backend. Use Resend for the eventual live transport and self-hosted Supabase for PostgreSQL, Auth and private Storage.
+Deliver a shared company mailbox for approximately ten people and a planning fixture of nine addresses across one or two domains: authenticated web UI, mailbox permissions, incoming threads, assignments, notes, labels, per-user read state, search, versioned drafts, reviewed simulated sending, attachments, audit history, a durable worker, local Claude/Codex MCP, separate in-app agent adapters and native client source/build configuration. Actual addresses, aliases and mailboxes are still unknown. All clients use one backend. Use Resend for eventual separately authorized live transport and self-hosted Supabase for PostgreSQL, Auth and private Storage.
 
 The local demonstration must survive API/worker restarts and use real database transactions and real authentication. A polished UI with hardcoded data, browser-only persistence, bypassed authorization or an always-successful mock is incomplete. Simulated provider delivery must be visibly identified as simulated. Do not add campaign engines, IMAP hosting, Gmail/Graph synchronization or offline mailbox storage to the initial scope.
 
-Use [architecture](architecture.md), [reliability contracts](contracts-and-reliability.md), [desktop/connectors](desktop-and-connectors.md), [end goal](end-goal.md) and [component adoption](component-adoption.md) as the detailed design. Record intentional deviations and their evidence rather than silently replacing the contracts.
+Use [architecture](architecture.md), [reliability contracts](contracts-and-reliability.md), [desktop/connectors](desktop-and-connectors.md), [end goal](end-goal.md) and [component adoption](component-adoption.md), reconciled with the expanded [polyglot proposal](../.planning/POLYGLOT_ARCHITECTURE.md), [agent workflow](../.planning/AGENT_ORCHESTRATION.md) and [client/CLI plan](../.planning/CLIENTS_AND_CLI_CONNECTORS.md). The Rails/C# proposals supersede earlier Node/Tauri-for-both defaults only through the accepted ADR; their status is currently proposed. Preserve the existing reliability and permission contracts.
+
+## 0. Research, independent opinions and task ownership
+
+Codex's first assignment is the GitHub/Reddit reuse scan against these goals and the local frontend inventory. Verify exact source paths, revisions, license, maintenance, security and integration cost before adoption; Reddit supplies operational leads, not source-level proof. Reconcile larger candidates with the six archived dossiers instead of discarding their findings.
+
+GPT 6 ASTRA MAX owns design and backend architecture. For each bounded task, separately request Fable 5, Opus 5.5 and Fable 5.1 opinions and record what is accepted, adapted or rejected and why. Initial exact-model CLI attempts failed before inference because Claude OAuth expired and could not refresh; no opinions were returned. Keep those decision/implementation gates pending, continue independent research/preparation and never substitute fabricated reviews. Agent-login recovery is a tooling prerequisite, distinct from the production credentials that stay last.
+
+After the accepted design, assign Devin bounded backend milestones through the verified official connection, with isolated branches, cohesive commits, tested draft PRs and review-derived issues. Assign Astra LOW bounded reproduced fixes; architecture/security changes return to Astra MAX and the same opinion gate. Fable 5 or Opus 5.5 owns frontend implementation; Opus 5.5 owns Anime.js/motion and every C++ task. Use the orchestration plan's actual capability status and task brief; a named assignment is not a successful agent session.
 
 ## 1. Inspect and reuse the local frontend
 
@@ -21,7 +29,7 @@ Evidence: a short frontend inventory identifying what existed, what was retained
 
 ## 2. Establish a repeatable local stack
 
-Create the TypeScript workspace with `apps/web`, `apps/api`, `apps/worker`, shared domain/contracts/database/provider packages and the later desktop/MCP packages. Pin compatible versions and lock dependencies. Keep the business rules shared between API and worker; PostgreSQL is the durable job store.
+After the ADR, create the proposed Rails domain application with separate API and worker commands, a TypeScript/React web client, versioned OpenAPI/event contracts, Node MCP/process adapters and the later platform hosts. Keep Rails API/worker business rules and the provider adapter in one codebase with one reviewed application SQL migration lane. PostgreSQL is the durable job store; Supabase owns its internal schemas. Express supplies only the deterministic local provider simulator. PHP's API SDK, Go diagnostics and Python fixtures follow their bounded polyglot phases; they do not become competing backend writers. Pin compatible versions and lock dependencies.
 
 Provide a Docker-based development/test stack with real local Supabase PostgreSQL, Auth and private Storage, plus a local mail catcher for authentication messages. Distinguish this development setup from the eventual production self-hosted Supabase deployment. Bind services to loopback by default; prevent unintended external mail sending. Expose health/readiness checks and readable configuration errors.
 
@@ -47,6 +55,8 @@ Draft edits require an expected version; concurrent edits display a recoverable 
 
 Evidence: two separate browser sessions completing the workflow against actual local services; restart the API and reopen the browser to prove server persistence. Capture representative desktop and narrow-width screenshots plus keyboard navigation, focus, overflow and readable error-state checks.
 
+Opus 5.5 adds restrained Anime.js motion only after the persisted flows work. Meet the client plan's reduced-motion, focus, contrast and measured responsiveness budgets. Use Node.js contract scripts and Playwright as the primary browser suite; use Puppeteer only for a distinct diagnostic requirement. Do not add a graphics engine or native C++ dependency without its documented benefit and review.
+
 ## 5. Finish worker, receiving and recovery with the simulator
 
 Implement the provider interface and production Resend adapter, but default the running application to a local deterministic provider. The simulator must preserve its own acceptance/idempotency records across application/worker crashes and keep that ledger outside the application backup/restore target. Use an injectable clock and explicit fault controls; reject accidental live transport configuration in the local test profile.
@@ -67,15 +77,19 @@ Sanitize incoming HTML and render it in an isolated restrictive frame; block rem
 
 Evidence: cross-mailbox upload/download denial, a previously obtained application download link denied after revocation, malicious HTML and URL fixtures, oversized/failed downloads, scanner outage, quarantine release, attachment replacement after send approval, deletion/retention behavior and browser checks confirming no remote tracking request or script execution.
 
-## 7. Complete local MCP and native clients
+## 7. Complete mailbox MCP, in-app adapters and native clients
 
 Build a versioned stdio MCP package over the authenticated API with list/search/read/create-draft/update-draft tools only. Issue individually scoped, expiring, revocable development grants; store bearer-secret hashes on the server and secrets in OS secure storage after local enrollment. Test transport retries, draft idempotency, bounded output, mailbox revocation and malicious email instructions. Do not expose send, SQL, shell, arbitrary fetch or privileged keys.
 
 Run a protocol client/harness against the real local MCP process and API. Smoke-test installed Codex and Claude clients when their existing local sessions are available; record exact client/version/transport and results. If a client is absent or requires a new external login, finish the adapter and protocol tests and report that specific client check as pending. Do not claim harness tests prove both applications connected.
 
-Package the working frontend in Tauri with restricted capabilities, system-browser PKCE and strict callback/state checks. Store refresh material in OS secure storage; keep native token forwarding narrowly scoped. Test logout, callback replay, connection loss, forbidden native calls and shared draft state. No arbitrary remote UI may receive native privileges.
+Build separate in-app process adapters: Codex owns its stdio app-server adapter; Fable 5 owns the Claude runtime adapter, with Opus 5.5 reviewing. These are not mailbox MCP. First use a fake agent with the real local bridge to prove streaming, cancellation, crash/reconnect, malformed events and approval denial. Use supported structured protocols and fixed executable/argument arrays; no arbitrary command strings or inherited server secrets. Default mailbox assistance to read/search/draft capabilities with local filesystem/shell disabled by runtime policy. Optional workspace access requires separate explicit grants and sandboxing; mail must not automatically enter a shell-enabled context.
 
-Build and test unsigned development artifacts on the available target OS. macOS DMG verification needs a macOS runner; Windows installer verification needs Windows and its WebView2 prerequisite path. Add both build lanes and preserve checksums/logs. Missing Windows execution is a recorded native-validation gap, never a passing result. Production signing, notarization and release upload remain final activation work. Test updater rejection with development-only keys without enabling a public update channel.
+A public browser page cannot directly spawn local tools. Use a bundled trusted native UI; a later browser companion requires explicit pairing, authenticated loopback, exact origin/Host checks, CSRF, expiry, revocation and replay tests. Provider-supported product authentication and entitlement remain separate from developer CLI login. Do not extract subscription credentials or label fake-runtime tests as actual model execution.
+
+Package the working frontend in the proposed Rust/Tauri Mac host and selected C#/.NET Windows GUI, using narrow native capabilities, system-browser PKCE and strict callback/state checks. Store refresh material in OS secure storage; keep native token forwarding narrowly scoped. Test logout, callback replay, connection loss, forbidden native calls and shared draft state. No arbitrary remote UI may receive native privileges. Do not build a duplicate Tauri Windows client by default.
+
+Build and test unsigned development artifacts on the available target OS. macOS DMG verification needs a macOS runner; the C# Windows installer needs a Windows runner and WebView2 checks if that presentation is selected. Produce separate downloads, never one promised cross-OS executable. Preserve checksums/logs and record missing target execution as a gap. Production signing/notarization/release stays last; test updater rejection with development keys without a public channel. Java Android APK and SwiftUI iOS follow as later milestones with actual emulator/device lifecycle, auth and API tests. Qt, Electron and Ionic remain evaluated alternatives, not simultaneous duplicate clients.
 
 ## 8. Prove operations and finish the handoff
 
@@ -102,7 +116,7 @@ The following are **proposed command interfaces to implement**, not existing scr
 ./scripts/dev stop            # Stop task-owned services; retain persistent data
 ```
 
-Provide separately documented platform-native build/test commands for macOS and Windows and an MCP enrollment/smoke-test command. Do not label an unexecuted command successful. Never make ordinary bootstrap/stop delete volumes or overwrite unrelated local services. Any reset command must identify and require explicit selection of its disposable target.
+Provide separately documented platform-native build/test commands for Mac, Windows and later Android/iOS, an MCP enrollment/smoke-test command and fake-runtime in-app adapter checks. Do not label an unexecuted command successful. Never make ordinary bootstrap/stop delete volumes or overwrite unrelated local services. Any reset command must identify and require explicit selection of its disposable target.
 
 ## Required acceptance evidence
 
@@ -120,17 +134,18 @@ Run application checks in Docker; add actual browser validation and target-OS na
 | Mail and attachment safety | Scripts/tracking/native calls blocked; unauthorized and quarantined downloads denied; scanner failure remains closed |
 | Browser completion | Two users complete the full persisted workflow, conflict recovery, permission failure and restart/reconnect at desktop and narrow widths |
 | MCP | Actual stdio process accesses only permitted data and saves an unsent draft; retry is idempotent; invalid/revoked grants fail |
+| In-app adapters | Separate real local bridges with fake inference enforce read/search/draft-only mailbox mode, cancellation, replay rejection and no shell/file authority; real model checks remain separate |
 | Native | Per available target: install/launch/login/logout, protected storage, callback replay rejection and network-loss recovery verified |
 | Recovery | Separate DB/object restore retains the later external provider ledger; a pre-acceptance backup reconciles to the accepted send without resubmission; dispatch starts held and original development data is preserved |
 
-Report pass, fail, blocked or not run for each item; attach concrete evidence and remaining remediation. Local application completion requires the web/backend/database/worker/content/MCP-protocol/recovery checks. Native target gaps and unavailable AI-client checks remain explicit incomplete deliverables even when the web application passes.
+Report pass, fail, blocked or not run for each item; attach concrete evidence and remaining remediation. Local application completion requires web/backend/database/worker/content/MCP-protocol/in-app fake-runtime/recovery checks. Native/mobile target gaps and unavailable actual AI-client checks remain explicit incomplete deliverables even when the web application passes. Pending named opinions remain a design gate; tests cannot be presented as a substitute for those consultations.
 
 ## 9. Final activation: external credentials and real-world proof
 
 Only after local work and its evidence are complete, prepare a concise activation checklist describing each needed credential, its purpose, minimum permissions, secret-store destination and rotation owner. Do not request secret values in chat or commit them. Separate external credentials from development secrets already generated locally.
 
-Resolve domain/MX ownership, new-address versus migration plan, permitted message purposes, hosting region, retention, operating owner and recovery tier before live changes. Configure Resend keys/webhook secret and verified owned sending/receiving domains; server-side Supabase production secrets and storage; hosting/TLS/backups; desktop signing/notarization and updater signing. AI model API credentials are needed only if separately scoped embedded inference is added; local MCP does not require them.
+Resolve the actual nine addresses/aliases, one-or-two-domain routing, existing provider/MX ownership, migration plan, permitted message purposes, region, retention, operating owner and recovery tier before live changes. Verify any available Resend CLI provenance/version and use only safe read-only or local fixture operations in the current scope; no real sends. Final activation may configure Resend keys/webhook secret, production Supabase/storage, hosting/TLS/backups and platform signing. In-app inference needs its own supported authentication and entitlement; mailbox MCP alone does not require model API credentials.
 
-Then perform controlled send/reply tests with owned addresses, real signed provider callbacks, bounce/rejection handling, actual provider reconciliation, TLS and production session checks, off-host restore, and signed clean-machine installation/update tests on each supported OS. Remote Claude web OAuth/MCP, public deployment, DNS migration and external release each need their own activation evidence and authorized operational scope.
+Only after a later explicit activation instruction resolves the current no-live-send constraint, perform controlled send/reply tests with owned addresses, real signed callbacks, bounce/rejection handling and actual provider reconciliation. Instantly account linking/warmup is a separate blocked activation item: warmup sends real mail, and neither simulated tests nor CLI access authorizes it. Do not alter MX or connect guessed addresses. TLS/session checks, off-host restore, signed clean-machine installation/update, remote OAuth MCP, public deployment and external releases each need their own activation evidence and authorized scope.
 
 The final report must distinguish **locally implemented and tested**, **provider-simulated**, **awaiting external activation**, and **unverified platform/client checks**. Never call simulated acceptance internet delivery, a local Supabase stack a production deployment, an unsigned build a signed release, or planned configuration a functioning integration.

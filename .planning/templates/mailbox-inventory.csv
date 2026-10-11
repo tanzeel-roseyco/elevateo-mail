@@ -1,0 +1,10 @@
+slot,address,domain_group,provider,address_kind,canonical_inbox_or_alias_target,elevateo_mailbox,memberships,existing_mx_owner,instantly_connection,warmup_enabled
+MAIL-01,TBD,TBD-domain-1-or-2,TBD,TBD-inbox-or-alias,TBD,TBD,TBD,TBD,not_configured,FALSE
+MAIL-02,TBD,TBD-domain-1-or-2,TBD,TBD-inbox-or-alias,TBD,TBD,TBD,TBD,not_configured,FALSE
+MAIL-03,TBD,TBD-domain-1-or-2,TBD,TBD-inbox-or-alias,TBD,TBD,TBD,TBD,not_configured,FALSE
+MAIL-04,TBD,TBD-domain-1-or-2,TBD,TBD-inbox-or-alias,TBD,TBD,TBD,TBD,not_configured,FALSE
+MAIL-05,TBD,TBD-domain-1-or-2,TBD,TBD-inbox-or-alias,TBD,TBD,TBD,TBD,not_configured,FALSE
+MAIL-06,TBD,TBD-domain-1-or-2,TBD,TBD-inbox-or-alias,TBD,TBD,TBD,TBD,not_configured,FALSE
+MAIL-07,TBD,TBD-domain-1-or-2,TBD,TBD-inbox-or-alias,TBD,TBD,TBD,TBD,not_configured,FALSE
+MAIL-08,TBD,TBD-domain-1-or-2,TBD,TBD-inbox-or-alias,TBD,TBD,TBD,TBD,not_configured,FALSE
+MAIL-09,TBD,TBD-domain-1-or-2,TBD,TBD-inbox-or-alias,TBD,TBD,TBD,TBD,not_configured,FALSE

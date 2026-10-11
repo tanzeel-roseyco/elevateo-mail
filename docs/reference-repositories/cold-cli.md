@@ -1,5 +1,7 @@
 # cold-cli — independent source dossier
 
+Target-architecture update (2026-10-12): historical source findings below are unchanged. Elevateo destination suggestions are superseded by the current [adoption matrix](../component-adoption.md) and [polyglot proposal](../../.planning/POLYGLOT_ARCHITECTURE.md): Rails domain/API/worker, TypeScript UI/MCP, Mac Rust/Tauri and C# Windows. Required named opinions remain pending.
+
 **Disposition: preserve as an MIT-licensed reference snapshot; selectively port scheduling rules, parsing behavior and regression cases under the local-completion brief and engineering baseline. Do not embed its executable as Elevateo's mail backend.** Its strength is a focused sequence engine and unusually useful behavioral tests. It does not supply the shared company-mailbox application requested for ten people.
 
 ## Identity, provenance and audit boundary

@@ -17,14 +17,27 @@ Build an understandable, reliable shared company mailbox for about ten people. T
 | R01 | Shared company mailbox for about 10 people — requested | Company/mailbox memberships; Wu workspace concepts; Quickly/lightreach inbox behavior | Two users collaborate; another mailbox's messages, snippets, files and audit data remain inaccessible |
 | R02 | Resend — selected | New provider adapter; Instantly SDK injection/error patterns only | Controlled send/reply; signature and replay tests; provider acceptance distinct from delivery; unknown outcomes reconciled |
 | R03 | Self-hosted Supabase — selected | PostgreSQL/Auth/private Storage; new scoped schema and migrations | Real restricted-role RLS tests, versioned upgrades, private object downloads and coordinated restore |
-| R04 | Web application on a subdomain — requested | Shared React interface, authenticated Node API, TLS reverse proxy | Real HTTPS browser flow, invite-only login, safe message rendering, CSRF/origin tests and responsive UI |
-| R05 | Mac and Windows downloads — requested | Proposed Tauri shell around accepted UI | Signed/notarized DMG and signed Windows installer, clean-machine install/login/update/rollback evidence |
+| R04 | Web application on a subdomain — requested | Shared React interface, authenticated Rails API, TLS reverse proxy | Real HTTPS browser flow, invite-only login, safe message rendering, CSRF/origin tests and responsive UI |
+| R05 | Mac and Windows downloads — requested | Proposed Rust/Tauri Mac and C# Windows hosts around accepted UI | Signed/notarized DMG and signed Windows installer, clean-machine install/login/update/rollback evidence |
 | R06 | Claude and Codex connectors — requested | Proposed MCP bridge; lightreach registration ideas with replaced authority model | Both clients can search/read/draft only permitted content; expired/revoked grants denied; no initial send tool |
 | R07 | Efficient compute and resourcefulness — requested | One modular backend plus worker; PostgreSQL jobs; no unnecessary brokers/mail servers | Pilot measures RAM/CPU/disk, queue age, provider quotas and attachment scanning; operator/cost budget accepted |
 | R08 | Learn backend/system/database/CAP — requested | [Worked tutorial](backend-database-tutorial.md), failure matrices and actual upstream failure examples | Reader can explain tables/keys/RLS, transaction versus network effect, retry uncertainty and partition behavior |
 | R09 | Use Codex CLI and update repository — requested | CLI-authored tutorial plus CLI review/tests of import tools; Git publication | Versioned repository update with verified remote commit and usable documentation |
 | R10 | Upload all source or select best components; document strictly — explicitly authorized now | Six pinned source trees, full file manifests, six dossiers, adoption matrix and preserved notices | 2,764 exact included files; one documented sample-key omission; six original-tree checks; all dossier source links resolve |
 | R11 | Local frontend reuse and end-to-end completion prompt; credentials last — requested 2026-10-12 | [Agent prompt](../LOCAL_BUILD_PROMPT.md), [local completion plan](local-completion-plan.md), scoped engineering baseline | Handoff exists; future acceptance needs a working local UI/backend/auth/storage/worker, transport failure tests, connectors, available-platform packages and explicit pending live checks |
+
+## Expanded requirements
+
+The canonical R12–R17 definitions are in [product requirements](../documentation.md). [The expanded planning index](../.planning/README.md) maps their implementation dependencies and evidence.
+
+| ID | Plan and proof |
+| --- | --- |
+| R12 | Agent orchestration: actual research, model/session identities, three independent opinions and synthesis, Devin task PRs, reviewed issues and Astra LOW regression fixes |
+| R13 | Polyglot architecture plus research/adoption ledger: every language has a bounded role; new source requires exact pin, license and integration audit |
+| R14 | Client matrix: C# Windows, Java Android APK and SwiftUI iOS, with target-platform tests and separate release artifacts |
+| R15 | In-app Codex and Claude/Fable process adapters, separately from mailbox MCP; supported auth, enforced permissions and lifecycle/failure tests |
+| R16 | Opus 5.5 ownership of C++ and Anime.js/motion; measured responsive, accessible behavior with reduced motion |
+| R17 | Nine-address/one-to-two-domain inventory; Resend CLI preflight; Instantly connection with disabled warmup and no live sends until explicitly changed |
 
 ## State of the work
 

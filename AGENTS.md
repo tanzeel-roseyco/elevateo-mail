@@ -1,6 +1,6 @@
 # Project instructions
 
-Read README.md, state.md, documentation.md, and .planning/STANDARDS.md before making changes. For the user's 2026-10-12 local-completion request, follow LOCAL_BUILD_PROMPT.md and docs/local-completion-plan.md. Use the documented implementation defaults for that bounded workflow; do not repeat the earlier blanket standards-approval question. Production choices and activation remain separate, and no blanket approval is recorded.
+Read README.md, state.md, documentation.md, and .planning/STANDARDS.md before making changes. For the user's 2026-10-12 local-completion request, follow LOCAL_BUILD_PROMPT.md and docs/local-completion-plan.md. Read .planning/README.md and .planning/AGENT_ORCHESTRATION.md for the expanded research-first, named-model consultation and Devin execution workflow. The Rails/client architecture is provisional until those required opinions are synthesized. Use the accepted implementation decisions for that bounded workflow; do not repeat the earlier blanket standards-approval question. Production choices and activation remain separate, and no blanket approval is recorded.
 
 Keep README Current state, state.md, and relevant documentation synchronized in every implementation commit. Use strict typing, boundary validation, deliberate errors, and no secrets. Search AIDEV anchors before editing and preserve/update their intent.
 
@@ -14,4 +14,8 @@ The user explicitly authorized the six pinned reference snapshots under third_pa
 
 ## Local completion and credentials
 
+The latest user brief requires Codex research first; Astra MAX system/backend design with separately started Fable 5, Opus 5.5 and Fable 5.1 opinions for every task; Devin through Codex for backend branches/commits/PRs; review-derived issues and bounded Astra LOW repair. Assign all C++ and motion/Anime.js work to Opus 5.5. Distinguish requested identities from actual execution; no silent substitutes. Required agent authentication precedes its tasks; application credentials remain last. Continue independent preparation while a required runner/opinion is unavailable. Follow .planning/TASK_BACKLOG.md and record real evidence.
+
 Inspect and reuse existing first-party frontend work first, then the concrete local source candidates in LOCAL_BUILD_PROMPT.md. Build an integrated application using real local database/auth/storage and simulated mail transport. Generate disposable local development secrets in ignored files as needed; keep actual provider, host, DNS, AI and signing credentials until final activation. Do not ask for them to start or silently enable live sending. Treat native-platform and actual-client checks as separate evidence requirements when their runtimes are unavailable. Finish independent work and report exact blockers.
+
+No live sends include Instantly warmup, provider test sends, forwarding and campaigns. Follow .planning/MAIL_ACCOUNTS_AND_ACTIVATION.md for the nine-address/one-to-two-domain inventory and deferred account connection. Product mailbox MCP and in-app CLI adapters are separate deliverables. Reconcile every language/client with .planning/POLYGLOT_ARCHITECTURE.md and .planning/CLIENTS_AND_CLI_CONNECTORS.md; do not add independent domain backends or duplicate native shells merely to use all frameworks.

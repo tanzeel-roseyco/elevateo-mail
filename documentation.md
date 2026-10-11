@@ -1,6 +1,6 @@
 # Product requirements and decision record
 
-Design date: 2026-10-11. This document supersedes the earlier planning assumption of 18 connected outreach mailboxes. It does not erase the original requirement for consent-based sending.
+Design date: 2026-10-11; expanded planning revision: 2026-10-12. This document supersedes the earlier planning assumption of 18 connected outreach mailboxes. It does not erase the original requirement for consent-based sending.
 
 ## Confirmed by the user
 
@@ -17,6 +17,12 @@ Design date: 2026-10-11. This document supersedes the earlier planning assumptio
 | R09 | Use the user's Codex CLI and update this repository | CLI-authored tutorial and source tooling reviewed; Git commit and remote update verified |
 | R10 | Upload all six repositories or select their best components and document them strictly | Pinned source files, complete file manifests, preserved notices, six independent dossiers and adoption/goal traceability |
 | R11 | Give the next agent a local frontend reuse prompt and end-to-end local completion instructions; leave credentials last | LOCAL_BUILD_PROMPT.md and local completion plan; future implementation evidence must cover real local services, simulated transport, UI, connectors, desktop and final activation inputs |
+| R12 | Codex research first; Astra MAX designs with separate Fable 5, Opus 5.5 and Fable 5.1 opinions on each task; Devin backend branches/PRs/issues and Astra LOW fixes | Evidence ledger, actual execution identities, accepted synthesis, reviewed task/fix PRs and no invented consultation results |
+| R13 | Fit requested languages/frameworks to useful boundaries; reuse major projects and evaluate brick/math | Polyglot matrix, pinned/license-aware adoption decisions, one domain authority and conformance tests; no gratuitous services |
+| R14 | C# Windows GUI, Java Android APK, SwiftUI iOS and suitable desktop/mobile alternatives | Separate platform artifacts and target-runtime evidence; Qt/Ionic/Electron assessed as alternatives |
+| R15 | Distinct in-app Codex and Claude/Fable CLI connectors | Supported authentication/protocols, fixed-executable adapters, stream/cancel/approval tests and enforced tool/data scopes |
+| R16 | Opus 5.5 owns all C++ and motion design; use Anime.js for web polish | Actual assignment identity, accessible reduced-motion behavior and measured browser/native evidence |
+| R17 | Nine addresses across one or two domains; user Resend CLI; future computer-use connection to Instantly; no live sends | Inventory distinguishes aliases; read-only CLI discovery; separate account-connection and warmup gates; warmup stays disabled until no-live-send constraint explicitly changes |
 
 The current source-intake request explicitly authorizes collecting all six codebases in this repository. See [source inventory](third_party/README.md), [independent dossiers](docs/reference-repositories/README.md) and [goals](docs/goals-and-traceability.md). Archival source import is complete; runtime integration remains future work.
 
@@ -34,13 +40,14 @@ This is an API-based mailbox product. Full Gmail/Outlook history synchronization
 | --- | --- | --- |
 | Resend + self-hosted Supabase | User selected | Explicit current instruction |
 | Company mailbox + web + Mac + Windows + AI connectors | User requested | Current product direction |
-| Strict TypeScript / React-Vite / Node / Tauri 2 | Working defaults for scoped local completion | Shared contracts/UI; first inspect and reuse suitable existing local work |
+| Rails API/worker; React/TypeScript; Rust/Tauri Mac; C# Windows | Provisional Astra MAX proposal, named opinions pending | One domain authority and versioned cross-language contracts; inspect existing first-party work first |
 | PostgreSQL job queue, separate API and worker | Working defaults for scoped local completion | One durable source of truth; API restarts must not lose jobs |
 | VPS, Docker Compose, reverse proxy, off-host backups | Recommended, approval pending | Small fixed team; operational ownership must be deliberate |
 | Resend stable send/receive APIs, not private-beta Inboxes | Recommended | Avoid availability and response-shape dependency on limited beta |
 | MCP read/search/draft first; human-controlled sending | Recommended | Enforce permissions and prevent email content from granting actions |
 | Best-of reuse by selective adaptation | Recommended | Audited foundations need reliability/security fixes; no blind merge |
 | Engineering standards | Local engineering baseline; production decisions open | 2026-10-12 local-completion instruction supersedes the blanket wait within that scope; no blanket approval claimed |
+| Expanded orchestration/language/client plans | Requested workflow documented; implementation pending | Follow .planning/README.md; three required Claude consultations failed authentication and need real outputs before synthesis |
 
 ## Proposed permissions
 
@@ -50,10 +57,10 @@ Viewers can read approved content; contributors can draft, assign and label; sen
 
 ## Working assumptions, not settled facts
 
-Start with one company, 10 staff and a few shared addresses on a new receiving subdomain. Use online-first clients and the smallest useful service set. The old figure of 18 addresses is not confirmed. No actual company domain, provider account, budget, message volume, storage growth, data residency, legal retention, SSO vendor or continuity target is assumed known.
+Start with one company, about 10 staff and nine addresses across one or two domains. Actual inbox/alias mapping and receiving routes remain unknown. Use online-first clients and the smallest useful service set. The old figure of 18 addresses is superseded. No actual company domain, provider account, budget, message volume, storage growth, data residency, legal retention, SSO vendor or continuity target is assumed known.
 
 Before deployment, resolve the actual addresses and existing MX provider, new-address versus migration scope, ordinary correspondence versus marketing, peak inbound/outbound volume and attachment sizes, region, backup retention and who owns server maintenance. These questions do not block designing or reviewing the system. They do block safe DNS migration and final capacity/SLA commitments.
 
 ## Design artifacts
 
-The architecture contains C4-style context/container views and trust boundaries. The database tutorial contains the conceptual ER model and constraints. Contracts document route shapes, transaction boundaries and state transitions. [The local agent prompt](LOCAL_BUILD_PROMPT.md) and [completion plan](docs/local-completion-plan.md) now define the bounded execution path before credentials; the release plan describes later live gates. These documents are not evidence of implemented features.
+The architecture contains C4-style context/container views and trust boundaries. The database tutorial contains the conceptual ER model and constraints. Contracts document route shapes, transaction boundaries and state transitions. [The local agent prompt](LOCAL_BUILD_PROMPT.md) and [completion plan](docs/local-completion-plan.md) now define the bounded execution path before credentials; the release plan describes later live gates. These documents are not evidence of implemented features. The [expanded planning index](.planning/README.md) now governs research, exact agent routing, language ownership, later mobile targets and no-live-send activation. Application credentials stay last; implementation-agent authentication is a separate prerequisite.

@@ -4,26 +4,31 @@ A planned shared company mailbox for approximately **10 people**, available on a
 
 ## Current state
 
-**Design package and six-repository source intake complete; Elevateo application implementation has not started.** Resend and self-hosted Supabase are selected by the user. This update replaces the earlier assumption that the primary product is a campaign engine across 18 existing mailboxes. Existing mailbox count, domain and migration requirements remain unresolved.
+**Design package and six-repository source intake complete; Elevateo application implementation has not started.** Resend and self-hosted Supabase are selected by the user. This update replaces the earlier assumption that the primary product is a campaign engine across 18 existing mailboxes. The expanded brief specifies nine addresses across one or two domains; actual addresses, inbox/alias boundaries and migration requirements remain unresolved.
 
-The repository contains 2,764 pinned upstream files under `third_party/upstream`, six independent technical dossiers, per-file integrity manifests, preserved licenses, architecture, requirements, a database/backend tutorial, connector/desktop designs and a phased implementation plan. The upstream snapshots contain executable source but are not installed, run or integrated. There is no working Elevateo application, installer or deployment. The 2026-10-12 local-completion brief supplies the next agent's execution path; [the standards](.planning/STANDARDS.md) are its engineering baseline, with production decisions still open.
+The repository contains 2,764 pinned upstream files under `third_party/upstream`, six independent technical dossiers, per-file integrity manifests, preserved licenses, architecture, requirements, a database/backend tutorial, connector/desktop designs and a phased implementation plan. The upstream snapshots contain executable source but are not installed, run or integrated. There is no working Elevateo application, installer or deployment. The expanded 2026-10-12 [planning index](.planning/README.md) supplies the next agent's research, consultation and execution path; [the standards](.planning/STANDARDS.md) are its engineering baseline, with production decisions still open.
 
 ## Start the local build
 
-Give the implementation agent [LOCAL_BUILD_PROMPT.md](LOCAL_BUILD_PROMPT.md). It directs the agent to inspect and reuse the existing local frontend material, then complete [the end-to-end local plan](docs/local-completion-plan.md) with real local Supabase services and simulated mail transport. Leave provider, host, DNS, AI and signing credentials until final activation. This prompt is a handoff; writing it has not built the application.
+Start with [the planning index](.planning/README.md), then give the implementation agent [LOCAL_BUILD_PROMPT.md](LOCAL_BUILD_PROMPT.md). It directs the agent to inspect and reuse the existing local frontend material, then complete [the end-to-end local plan](docs/local-completion-plan.md) with real local Supabase services and simulated mail transport. Required agent authentication precedes named consultations and Devin work; application provider, host, DNS, AI and signing credentials stay at final activation. The three attempted Claude opinions failed authentication and remain pending. This prompt is a handoff; writing it has not built the application.
 
 ## Recommended design
 
 - **Resend** transports permitted outbound mail and delivers incoming-mail events. Elevateo owns the mailbox experience and durable history.
 - **Self-hosted Supabase** supplies PostgreSQL, Auth and private attachment Storage. It is not an IMAP/SMTP mail server.
-- **Proposed:** strict TypeScript, React/Vite, a Node API and separate worker sharing domain modules. Use PostgreSQL for the durable job queue; add Redis only if measurements justify it.
-- **Proposed:** Tauri 2 packages the same frontend for macOS and Windows. All clients use one central backend.
-- **Proposed:** an Elevateo MCP connector exposes authorized search/read/draft tools to Codex and Claude. Sending stays in the human-controlled application initially.
+- **Proposed by Astra MAX; opinion synthesis pending:** React/strict TypeScript and one Ruby on Rails domain application running as API and worker. Use PostgreSQL for the durable job queue; add Redis only if measurements justify it.
+- **Proposed:** Rust/Tauri Mac and C#/.NET Windows hosts; requested Java Android APK and SwiftUI iOS clients follow. Separate platform artifacts use one backend. PHP, Go and Python have bounded SDK, diagnostic and fixture roles; other requested languages have explicit conditional roles.
+- **Proposed:** an Elevateo MCP connector exposes authorized search/read/draft tools to Codex and Claude. Sending stays in the human-controlled application initially. Separate in-app Codex and Claude/Fable adapters use supported local runtimes, scoped tools and explicit authentication eligibility.
 - **Proposed:** start on a VPS with Docker Compose, TLS reverse proxy and off-host backups. Railway remains an alternative if operational convenience outweighs infrastructure cost/control.
 
-Use the frontend/backend/queue/desktop/connector proposals as local implementation defaults, adapting to verified existing first-party work where appropriate. They are not already implemented dependencies or blanket production approvals. Hosting remains a later decision. Resend now also documents a private-beta Inboxes API; it is not a launch dependency. See [delivery and hosting](docs/mail-delivery-and-hosting.md).
+Accept the [expanded architecture](.planning/POLYGLOT_ARCHITECTURE.md) only after the required independent opinions and synthesis; then use its decisions for implementation, preserving suitable existing first-party work. They are not already implemented dependencies or blanket production approvals. Hosting remains a later decision. Resend now also documents a private-beta Inboxes API; it is not a launch dependency. See [delivery and hosting](docs/mail-delivery-and-hosting.md).
 
 ## Source collection and goals
+
+- [Codex-first market/reuse scan: 25 repositories and eight Reddit threads](.planning/research/reuse-market-scan.md) — comparative discovery, with new pins/deep audits pending
+- [Devin, Astra MAX/LOW and independent Claude-agent workflow](.planning/AGENT_ORCHESTRATION.md)
+- [Language, platform and in-app CLI connector plan](.planning/CLIENTS_AND_CLI_CONNECTORS.md)
+- [Nine-address inventory, Resend CLI and disabled Instantly warmup](.planning/MAIL_ACCOUNTS_AND_ACTIVATION.md)
 
 - [What the finished Elevateo Mail looks like](docs/end-goal.md)
 - [All six source snapshots, exact revisions and integrity checks](third_party/README.md)

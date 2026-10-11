@@ -1,5 +1,7 @@
 # instantly-starter-kit — independent repository dossier
 
+Target-architecture update (2026-10-12): historical source findings below are unchanged. Elevateo destination suggestions are superseded by the current [adoption matrix](../component-adoption.md) and [polyglot proposal](../../.planning/POLYGLOT_ARCHITECTURE.md): Rails domain/API/worker, TypeScript UI/MCP, Mac Rust/Tauri and C# Windows. Required named opinions remain pending.
+
 Review date: 2026-10-11. Classification: **reference source and optional future provider integration; not Elevateo’s backend**.
 
 ## Identity, license and intake boundary

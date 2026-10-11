@@ -1,9 +1,13 @@
 # Project state
 
 Updated: 2026-10-12.
-Status: **design, source intake, dossiers and local-completion handoff ready; integrated application not yet implemented**.
+Status: **expanded plans and initial research ready; required opinion synthesis and application implementation pending**.
 
 ## Completed
+
+- Assigned the user's Codex CLI the first research task: completed an initial 25-repository/eight-Reddit-thread scan (six public opens, two snippets); no new commit pins or runtime audits claimed.
+- Actually assigned GPT-6 Astra at MAX effort the polyglot system/backend proposal. Added agent roles, task/PR/issue lifecycle, language boundaries, client/CLI connector design, nine-address/no-live-send activation plan and bounded backlog.
+- Attempted three independent exact-model Claude consultations. All failed before inference because OAuth had expired and could not refresh; zero opinions were produced. Recorded capability evidence without secrets. Devin is documented through its official MCP route but is not configured here and performed no backend work.
 
 - Inspected the original planning-only repository and recorded its standards gate; the later local-completion brief now defines a scoped execution path.
 - Recorded the user-selected Resend and self-hosted Supabase stack and current approximately 10-person company-mailbox scope.
@@ -21,15 +25,15 @@ Upstream application source is now present as an inert reference collection. No 
 
 ## Selected versus proposed
 
-Selected by user: Resend, self-hosted Supabase; web subdomain, Mac/Windows downloads, Claude/Codex connectors.
-Working defaults for the 2026-10-12 local-completion brief: strict TypeScript / React-Vite / Node, PostgreSQL durable jobs, Tauri 2 and local read/search/draft MCP. Reuse suitable existing first-party frontend work if it appears before implementation. VPS/Compose hosting remains a recommendation for later production decisions. The local brief supersedes the earlier blanket standards gate for its bounded scope; it does not claim blanket approval or live activation authority.
+Selected by user: Resend, self-hosted Supabase; ten staff/nine addresses across one or two domains; web, Mac/Windows, Java Android and SwiftUI iOS; Claude/Codex mailbox and in-app connectors; expanded language/agent workflow.
+Current provisional Astra MAX proposal: Rails API/worker, React/TypeScript, PostgreSQL durable jobs, Rust/Tauri Mac and C# Windows, bounded PHP/Go/Python tools, conditional other languages, local read/search/draft MCP and separate in-app process adapters. This supersedes the earlier Node/Tauri-for-both proposal. Named Claude opinions and synthesis remain pending. Reuse suitable existing first-party frontend work if it appears before implementation. VPS/Compose hosting remains a recommendation for later production decisions. The local brief supersedes the earlier blanket standards gate for its bounded scope; it does not claim blanket approval or live activation authority.
 
 ## Next steps
 
-1. Execute LOCAL_BUILD_PROMPT.md and docs/local-completion-plan.md when starting implementation. No application was built by this handoff edit.
+1. Read .planning/README.md; deepen pinned shortlist audits and obtain/synthesize the three required model opinions through supported authenticated runners. Then execute LOCAL_BUILD_PROMPT.md and docs/local-completion-plan.md. No application was built by this handoff edit.
 2. Complete the entire locally testable journey with real database/auth/storage, fake mail transport, actual browser validation, scoped connectors, available-platform desktop checks and restore evidence before asking for live credentials.
 3. Use current written requirements for review; the full historical rubric is absent, so do not claim conformance to it or let its absence block independent local work.
 4. Before deployment, confirm domain/MX ownership, mailbox/alias count, migration/history needs, message purposes/volume, region, retention, operating owner and recovery tier. Do not replace existing MX by assumption.
-5. Only after the local acceptance report, configure real credentials, controlled Resend send/reply, production hosting and signed distribution through the documented activation gates. Report untested target platforms or clients explicitly.
+5. Only after the local acceptance report, configure real credentials, production hosting and signed distribution through the documented activation gates. Controlled Resend sends and Instantly warmup additionally require an explicit change to the no-live-send constraint. Report untested target platforms or clients explicitly.
 
 Single-VPS operation is not high availability. Resend's private-beta Inboxes is not a launch dependency, and Resend does not permit unsolicited cold outreach. The application owns durable history and permissions while Resend remains an external processor.

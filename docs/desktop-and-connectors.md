@@ -1,27 +1,29 @@
 # Desktop clients and Claude / Codex connectors
 
-Status: proposed design, 2026-10-11; local execution scope updated 2026-10-12. The user requested a company mailbox on a web subdomain, downloadable macOS and Windows applications, and Claude / Codex connectors. Tauri and the connector design are working defaults under [the local completion brief](../LOCAL_BUILD_PROMPT.md); keep actual signing credentials and live activation last. No installer, connector, OAuth server, or configuration has been implemented by this document.
+Status: proposed design, updated 2026-10-12. The expanded [client/CLI plan](../.planning/CLIENTS_AND_CLI_CONNECTORS.md), [polyglot proposal](../.planning/POLYGLOT_ARCHITECTURE.md) and [agent workflow](../.planning/AGENT_ORCHESTRATION.md) supersede the earlier Tauri-for-both/Node proposal. Codex must finish the research/adoption gate first; Astra MAX must synthesize independent Fable 5, Opus 5.5 and Fable 5.1 opinions before accepting each task's implementation approach. All three initial Claude consultations failed before inference because authentication expired; those opinions and the final architecture remain pending. No installer, connector, OAuth server or application configuration has been implemented by this document. Keep actual provider/signing credentials and activation last; no live sends or warmup.
 
 ## 1. One application, three ways to open it
 
-Build the mailbox UI once and expose it through the company web subdomain and two thin native shells. All three call the same authenticated API, which owns authorization, drafts, message history, and sending rules. The desktop application is a client of the server: a laptop closing must not stop incoming mail or an approved queued send.
+Build a shared TypeScript/React mailbox interface for the company web subdomain and reuse its presentation in native hosts where suitable. The proposed desktop split is Rust/Tauri for Mac and the requested C#/.NET GUI for Windows, with its native-versus-bundled-WebView presentation resolved in the client ADR. All clients call the same Rails API, which shares domain rules with a separate Rails worker. A laptop closing must not stop incoming mail or an approved queued send. Java Android and SwiftUI iOS are later client milestones using that API, with no independent mailbox backend.
 
 ```mermaid
 flowchart LR
-    Web[Browser at mail.company.example] --> API[Company mailbox API]
+    Web[Browser at mail.company.example] --> API[Proposed Rails mailbox API]
     Mac[Tauri macOS client] --> API
-    Win[Tauri Windows client] --> API
+    Win[C# Windows client] --> API
     API --> Domain[Shared domain services]
     Domain --> PG[(Self-hosted Supabase Postgres)]
     Domain --> Queue[Durable send jobs]
-    Queue --> Worker[Worker and Resend adapter]
+    Queue --> Worker[Rails worker and provider adapter]
 ```
 
 `company.example` is a documentation placeholder, not an allocated domain. The web hostname does not determine which email addresses receive mail. DNS records for the application, the receiving mail domain, and the sending domain are separate deployment decisions.
 
-Recommend Tauri 2 for packaging the same frontend build with a small Rust host and the operating system webview. It introduces Rust build tooling and platform-specific testing, but does not require a second business backend. Keep native code limited to login return handling, secure session storage, approved attachment file dialogs, notifications, and updates. Start with the working web client before packaging native releases.
+Propose Tauri 2 for Mac and a C#/.NET host for Windows, keeping native code limited to login returns, secure session storage, approved attachment dialogs, notifications, updates and the separately constrained agent bridge below. Start with the working web client before packaging native releases. Do not build duplicate Tauri and C# Windows applications by default. Qt, Electron and Ionic are explicit alternatives to evaluate only for a concrete need; the [client plan](../.planning/CLIENTS_AND_CLI_CONNECTORS.md) records their decision gates.
 
-Bundle the UI in the installer. Fetch data over HTTPS. Do not load an arbitrary remote page into a window that has native privileges. Tauri capabilities control access to native commands; define explicit window and command permissions and audit custom command exposure. Rendering an email must never confer native privileges. See [Tauri capabilities](https://v2.tauri.app/security/capabilities/).
+Fable 5 or Opus 5.5 owns the frontend; Opus 5.5 owns Anime.js motion/refinement and every proposed C++ task. Preserve the local component adoption process, accessible keyboard/focus behavior, reduced-motion support and measured performance budgets. No graphics engine or ray tracer is required for the mailbox workflow.
+
+Bundle the UI in the installer. Fetch data over HTTPS. Do not load an arbitrary remote page into a window that has native privileges. Tauri capabilities control Mac native commands; enforce equivalent schema-validated allowlists in the C# host. Rendering an email must never confer native privileges. A public browser page cannot spawn a local CLI; only a reviewed native bridge or explicitly paired, authenticated loopback companion may invoke allowed operations. See [Tauri capabilities](https://v2.tauri.app/security/capabilities/).
 
 ### Proposed client requirements
 
@@ -55,14 +57,14 @@ Define session expiry, device revocation, and stolen-device handling before rele
 | --- | --- | --- |
 | macOS Apple Silicon | `.dmg` containing the application | macOS build runner; Developer ID signing; notarization; installation check on supported macOS |
 | macOS Intel, if needed by the team | Separate Intel artifact or universal application | Add the target only after confirming actual hardware and minimum supported macOS |
-| Windows x64 | Signed NSIS `.exe` installer; `.msi` only if company IT needs it | Windows build runner; signing provider; fresh-machine install including the WebView2 prerequisite path |
+| Windows x64 | Separate signed installer for the selected C#/.NET host; format selected in client ADR | Windows build runner; signing provider; fresh-machine install including WebView2 if the chosen presentation uses it |
 | Windows ARM64, if needed | Separate supported target | Explicit hardware demand and native dependency verification before adding a release lane |
 
-Tauri documents [DMG packaging](https://v2.tauri.app/distribute/dmg/) and [Windows installers](https://v2.tauri.app/distribute/windows-installer/). Build on the corresponding OS to keep packaging and verification understandable. Linux server deployment and desktop packaging are separate pipelines. Application checks remain subject to the repository's Docker testing requirement; OS packaging and native UI validation additionally require their actual platform environments.
+Tauri documents [DMG packaging](https://v2.tauri.app/distribute/dmg/); choose and verify the Windows packaging/signing mechanism for the selected .NET GUI in its ADR. Build on the corresponding OS. There is no single native executable for Mac and Windows; a universal Mac build addresses Mac CPU variants only. Java Android adds an APK lane and SwiftUI iOS adds its own simulator/device and distribution lane later. Linux server deployment and desktop packaging are separate pipelines. Application checks remain subject to Docker testing; native validation additionally requires actual platform environments.
 
-The macOS production path requires signing credentials and notarization; an unsigned development build is not the same distribution experience. See [macOS signing](https://v2.tauri.app/distribute/sign/macos/). Windows signing verifies publisher identity but does not guarantee a new release avoids SmartScreen reputation prompts. See [Windows signing](https://v2.tauri.app/distribute/sign/windows/). Credentials are not needed to write the design or build a local prototype; production release gates will require them.
+The macOS production path requires signing credentials and notarization; an unsigned development build is not the same distribution experience. See [macOS signing](https://v2.tauri.app/distribute/sign/macos/). Require signed Windows distribution and validate the selected .NET packaging route rather than treating Tauri's Windows workflow as applicable automatically. Credentials are not needed to write the design or build local prototypes; production release gates require them.
 
-Propose a single company release channel with a small pilot group before all ten users. Distribute immutable versioned installers and checksums from a download page. Keep release manifests, a dependency inventory, release notes, and the previous known-good installer. Separate application update signing from operating-system code signing. The Tauri updater uses signed update artifacts; retain its public verification key in the application and restrict the private signing key to release automation. See [Tauri updater](https://v2.tauri.app/plugin/updater/).
+Propose a single company release channel with a small pilot group before all ten users. Distribute immutable versioned installers and checksums from a download page. Keep release manifests, a dependency inventory, release notes and the previous known-good installer. Separate application update signing from operating-system code signing. The Mac Tauri updater uses signed update artifacts; retain its public verification key in the application and restrict the private signing key to release automation. The C# Windows host needs its own reviewed update verification/rollback implementation and tests. See [Tauri updater](https://v2.tauri.app/plugin/updater/).
 
 An update must not discard a draft or interrupt a send already accepted by the backend. Backend API versions must support the current and previous released desktop clients during rollout. A database change must not require every laptop to update simultaneously. Define a forward-fix and signed rollback procedure and test it before enabling unattended updates.
 
@@ -70,7 +72,9 @@ An update must not discard a draft or interrupt a send already accepted by the b
 
 An MCP connector exposes a controlled set of application tools to an AI client. The user can ask Claude or Codex to find a permitted conversation and prepare a reply. The connector calls this application's domain API under that person's permissions. It does not expose PostgreSQL directly, run arbitrary SQL, or give the AI a provider master key.
 
-This is different from adding an AI button inside the mailbox. An embedded summarization or drafting feature would call a model API from our backend, require separate API credentials and billing, and need its own data-handling settings. Installing an MCP connector does not grant our backend use of the user's Claude or ChatGPT subscription as a model API credential.
+The expanded request also includes an in-app agent conversation. That is a second connector product: Codex implements the Codex app-server adapter, and Fable 5 implements the Claude runtime adapter with Opus 5.5 reviewing. A native bridge drives supported structured protocols; it does not scrape a terminal or expose arbitrary shell command strings. Backend-hosted model inference is another possible route with distinct credentials/billing. Installing MCP does not grant use of a user's consumer subscription as a model API credential. Verify provider-supported product authentication and entitlement independently from an installed developer CLI; see [the detailed client contract](../.planning/CLIENTS_AND_CLI_CONNECTORS.md).
+
+Default the in-app mailbox agent to scoped read/search/draft tools with filesystem and shell capabilities disabled by runtime policy. Optional workspace coding is a distinct consent, sandbox and local-file permission boundary; never automatically copy mail into a shell-enabled session. Use fixed trusted executables/argument arrays, minimal environments, bounded output and cancellation. Keep server/provider secrets out of the bridge. Public web access requires an explicitly paired local companion with strict origin/Host, CSRF, expiry and revocation controls; never expose raw app-server endpoints publicly. Test with a fake runtime before actual model authentication, and preserve failed/blocked states honestly.
 
 ### Proposed capability set
 
@@ -124,9 +128,12 @@ Reading through Claude or Codex sends the returned content into that AI client's
 
 | Phase | Deliverable | Exit condition |
 | --- | --- | --- |
-| 1 | Shared web client and authenticated API | Mailbox permissions, drafts, sending state, and HTML safety verified before desktop packaging |
-| 2 | Tauri development clients | Mac and Windows login/redirect, session storage, file dialog, logout, network-loss, and native capability checks pass |
+| 0 | Research, architecture and per-task opinion gates | Codex source research accepted; Astra MAX records the three actual independent opinions and reconciles contracts/client ADR |
+| 1 | Shared web client and proposed Rails API/worker | Mailbox permissions, drafts, simulated sending state and HTML safety verified before desktop packaging |
+| 2 | Mac Tauri/Rust and Windows C# development clients | Actual OS login/redirect, session storage, file dialog, logout, network-loss and native capability checks pass |
 | 3 | Local MCP pilot | Codex CLI, Claude Code, and Claude Desktop can read permitted mail and create an unsent draft; negative permission tests pass |
+| 3b | In-app Codex and Claude/Fable adapters | Fake-runtime lifecycle/security checks, then separately authorized actual runtime/model evidence; unavailable authentication remains pending |
+| 3c | Later Java Android and SwiftUI iOS milestones | Actual emulator/device lifecycle, permissions, API parity and install evidence; no assumed desktop CLI support on mobile |
 | 4 | Signed company installers | OS signing / notarization, clean install, update, rollback, uninstall, and previous-client compatibility are verified |
 | 5 | Remote OAuth MCP | Public HTTPS deployment, client enrollment, consent, token audience validation, grant revocation, and provider-specific connection tests pass |
 
@@ -140,6 +147,6 @@ Desktop tests must cover rejected login callbacks, deep-link replay, logout foll
 2. The API resolves the connector grant and checks that you still belong to the company and can access that mailbox. PostgreSQL returns only records permitted by the server's authorization path.
 3. Codex reads the bounded result and proposes a reply with `create_draft`. The API stores a draft owned by the company, tied to the mailbox and thread, with a version and connector origin. No provider call happens.
 4. You open the web or desktop application. Both read the same draft record. If someone else edited it, the version check makes the conflict visible.
-5. You approve the exact message in the application. The normal send path records a durable job; a worker talks to Resend and records acceptance, failure, or an ambiguous outcome. Closing Codex or your laptop cannot remove that job.
+5. You approve the exact message in the application. The normal send path records a durable job; the proposed Rails worker talks to the local simulator and records acceptance, failure or an ambiguous outcome. After separately authorized live activation it can use Resend. Closing Codex or your laptop cannot remove that job. The current no-live-send instruction also blocks Instantly warmup because warmup sends real mail.
 
-The frontend is the screen. Tauri is the native wrapper. MCP is a controlled tool interface. The API is the authorization boundary. PostgreSQL stores shared facts. The worker performs asynchronous provider work. Keeping these responsibilities separate lets us reuse one backend safely across all clients and avoid building three competing mailbox systems.
+The frontend is the screen. Tauri/Rust and C# are proposed platform hosts; later Java/SwiftUI clients bind the same API. MCP is the mailbox tool interface; in-app agent process adapters are separate local capabilities. Rails is the proposed authorization/domain boundary, PostgreSQL stores shared facts and the worker performs asynchronous provider work. These choices remain a proposal until research and the pending named opinions are synthesized.

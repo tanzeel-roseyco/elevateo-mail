@@ -1,0 +1,941 @@
+{
+  "schema_version": 1,
+  "research_date": "2026-10-12",
+  "scope": "Research only; current ten-person shared mailbox; Resend and self-hosted Supabase remain selected.",
+  "execution": {
+    "candidate_count": 25,
+    "reddit_threads": 8,
+    "reddit_opened_public": 6,
+    "reddit_search_snippet_only": 2,
+    "tests_run": false,
+    "upstream_code_run": false,
+    "dependencies_installed": false,
+    "commit_shas_verified": false,
+    "upstream_snapshots_modified": false,
+    "notes": [
+      "Public web search and GitHub/project opens executed; source reads are bounded excerpts, not complete code audits.",
+      "Shell raw.githubusercontent.com read failed with DNS resolution error; web tool remained usable.",
+      "Repository root opened for every candidate. inspected_paths only records files whose content was retrieved, not directory listings.",
+      "Original six dossiers and registry are prior evidence, not this run's test results.",
+      "No stars, prices, current maintenance rankings or security certifications asserted."
+    ]
+  },
+  "rubric": {
+    "merit": {
+      "0": "No justified first-release use",
+      "1": "Peripheral/deferred operating or future-module reference",
+      "2": "Useful alternative or bounded component reference with integration gaps",
+      "3": "Direct current requirement; priority for next audit, not approval"
+    },
+    "confidence": {
+      "1": "Search-only/unresolved primary access",
+      "2": "Primary README/license or inherited dossier; runtime claims unverified",
+      "3": "Relevant implementation excerpt inspected; conclusions limited to that excerpt"
+    },
+    "interpretation": "Merit is contextual audit priority, not engineering quality. Confidence is evidence depth, not likelihood of safe production use. Scores are not combined. All pins remain pending."
+  },
+  "candidates": [
+    {
+      "id": "Chatwoot",
+      "name": "Chatwoot",
+      "repository_url": "https://github.com/chatwoot/chatwoot",
+      "languages": [
+        "Ruby/Rails",
+        "Vue/JS"
+      ],
+      "role": "Shared-inbox product",
+      "reuse_mode": "reference",
+      "pin_status": "pin_pending",
+      "verified_commit_sha": null,
+      "access_date": "2026-10-12",
+      "repository_access": "opened_public_github",
+      "license": {
+        "summary": "MIT outside enterprise; enterprise separately restricted",
+        "evidence_url": "https://raw.githubusercontent.com/chatwoot/chatwoot/develop/LICENSE",
+        "evidence_status": "opened"
+      },
+      "inspected_paths": [
+        "README.md",
+        "LICENSE",
+        "enterprise/LICENSE",
+        "app/models/conversation.rb",
+        "app/policies/conversation_policy.rb",
+        "docker-compose.production.yaml"
+      ],
+      "fit": "Strong assignment, notes and inbox workflow reference.",
+      "blockers": "Inspected policy permits administrator, bot or team access; differs from mandatory mailbox membership. Rails/Sidekiq/Redis adds operating scope; Supabase integration unverified.",
+      "next_audit": "Trace inbound email and concurrent reply approval; audit enterprise overrides and map permissions to Elevateo.",
+      "score": {
+        "merit": 3,
+        "confidence": 3
+      }
+    },
+    {
+      "id": "FreeScout",
+      "name": "FreeScout",
+      "repository_url": "https://github.com/freescout-help-desk/freescout",
+      "languages": [
+        "PHP/Laravel",
+        "JS"
+      ],
+      "role": "Shared-inbox product",
+      "reuse_mode": "reference",
+      "pin_status": "pin_pending",
+      "verified_commit_sha": null,
+      "access_date": "2026-10-12",
+      "repository_access": "opened_public_github",
+      "license": {
+        "summary": "AGPL-3.0; modules require separate review",
+        "evidence_url": "https://raw.githubusercontent.com/freescout-help-desk/freescout/dist/LICENSE",
+        "evidence_status": "opened"
+      },
+      "inspected_paths": [
+        "README.md",
+        "LICENSE"
+      ],
+      "fit": "Focused mailbox UX; collision notices, internal notes and conversation merge are relevant.",
+      "blockers": "Copyleft adoption decision; optional module terms/cost and identity integration unresolved; advertised lightweight operation unmeasured.",
+      "next_audit": "Inspect fetch/thread matching, mailbox ACL, collision implementation and module entitlement for SSO/API.",
+      "score": {
+        "merit": 3,
+        "confidence": 2
+      }
+    },
+    {
+      "id": "Zammad",
+      "name": "Zammad",
+      "repository_url": "https://github.com/zammad/zammad",
+      "languages": [
+        "Ruby/Rails",
+        "JS/TS"
+      ],
+      "role": "Helpdesk product",
+      "reuse_mode": "reference",
+      "pin_status": "pin_pending",
+      "verified_commit_sha": null,
+      "access_date": "2026-10-12",
+      "repository_access": "opened_public_github",
+      "license": {
+        "summary": "AGPL-3.0",
+        "evidence_url": "https://raw.githubusercontent.com/zammad/zammad/develop/LICENSE",
+        "evidence_status": "opened"
+      },
+      "inspected_paths": [
+        "README.md",
+        "LICENSE"
+      ],
+      "fit": "Compare ownership, ticket lifecycle and multi-channel support semantics.",
+      "blockers": "Helpdesk scope exceeds company mailbox; full runtime, identity replacement and operating footprint need audit.",
+      "next_audit": "Trace email channel, permissions and upgrade/restore requirements; distinguish ticket status from per-user read state.",
+      "score": {
+        "merit": 2,
+        "confidence": 2
+      }
+    },
+    {
+      "id": "listmonk",
+      "name": "listmonk",
+      "repository_url": "https://github.com/knadh/listmonk",
+      "languages": [
+        "Go",
+        "Vue/JS"
+      ],
+      "role": "Newsletter manager",
+      "reuse_mode": "reference",
+      "pin_status": "pin_pending",
+      "verified_commit_sha": null,
+      "access_date": "2026-10-12",
+      "repository_access": "opened_public_github",
+      "license": {
+        "summary": "AGPL-3.0",
+        "evidence_url": "https://raw.githubusercontent.com/knadh/listmonk/master/LICENSE",
+        "evidence_status": "opened"
+      },
+      "inspected_paths": [
+        "README.md",
+        "LICENSE"
+      ],
+      "fit": "Compact binary plus PostgreSQL is a useful operating-design comparison; future consent-based lists.",
+      "blockers": "Newsletter product does not supply shared-inbox collaboration; copyleft and campaign scope.",
+      "next_audit": "Audit suppression, unsubscribe and provider outcome model only if marketing becomes authorized.",
+      "score": {
+        "merit": 1,
+        "confidence": 2
+      }
+    },
+    {
+      "id": "Mautic",
+      "name": "Mautic",
+      "repository_url": "https://github.com/mautic/mautic",
+      "languages": [
+        "PHP",
+        "JS"
+      ],
+      "role": "Marketing automation",
+      "reuse_mode": "reject",
+      "pin_status": "pin_pending",
+      "verified_commit_sha": null,
+      "access_date": "2026-10-12",
+      "repository_access": "opened_public_github",
+      "license": {
+        "summary": "GPL-3.0-or-later per license header; exact file/dependency obligations pending",
+        "evidence_url": "https://raw.githubusercontent.com/mautic/mautic/7.x/LICENSE.txt",
+        "evidence_status": "opened"
+      },
+      "inspected_paths": [
+        "README.md",
+        "LICENSE.txt"
+      ],
+      "fit": "Evidence of a distinct marketing-automation architecture, not the first mailbox release.",
+      "blockers": "Campaign/contact automation adds runtime and maintenance without solving current core.",
+      "next_audit": "Revisit only for approved marketing requirements; inspect queue, consent and connector licensing.",
+      "score": {
+        "merit": 0,
+        "confidence": 2
+      }
+    },
+    {
+      "id": "Stalwart",
+      "name": "Stalwart",
+      "repository_url": "https://github.com/stalwartlabs/stalwart",
+      "languages": [
+        "Rust"
+      ],
+      "role": "Mail and collaboration server",
+      "reuse_mode": "reference",
+      "pin_status": "pin_pending",
+      "verified_commit_sha": null,
+      "access_date": "2026-10-12",
+      "repository_access": "opened_public_github",
+      "license": {
+        "summary": "AGPL-3.0 or enterprise licensing; inspect per-file notices",
+        "evidence_url": "https://raw.githubusercontent.com/stalwartlabs/stalwart/main/LICENSES/AGPL-3.0-only.txt",
+        "evidence_status": "opened"
+      },
+      "inspected_paths": [
+        "README.md (rendered repository page)",
+        "LICENSES/AGPL-3.0-only.txt"
+      ],
+      "fit": "Protocol/identity comparison for future IMAP/JMAP needs.",
+      "blockers": "Mail hosting duplicates selected transport responsibilities; enterprise split, reputation and server operations remain.",
+      "next_audit": "If protocol hosting becomes necessary, inspect exact edition, OAuth identity mapping, backup and routing.",
+      "score": {
+        "merit": 1,
+        "confidence": 2
+      }
+    },
+    {
+      "id": "mailcow",
+      "name": "mailcow",
+      "repository_url": "https://github.com/mailcow/mailcow-dockerized",
+      "languages": [
+        "PHP",
+        "Shell",
+        "multiple bundled runtimes"
+      ],
+      "role": "Conventional mail stack",
+      "reuse_mode": "reference",
+      "pin_status": "pin_pending",
+      "verified_commit_sha": null,
+      "access_date": "2026-10-12",
+      "repository_access": "opened_public_github",
+      "license": {
+        "summary": "GPL-3.0 for mailcow; bundled projects retain own licenses",
+        "evidence_url": "https://raw.githubusercontent.com/mailcow/mailcow-dockerized/master/LICENSE",
+        "evidence_status": "opened"
+      },
+      "inspected_paths": [
+        "README.md",
+        "LICENSE"
+      ],
+      "fit": "Operating-scope comparison for conventional mailbox hosting.",
+      "blockers": "Multiple independently licensed components; mail-server operations and MX migration beyond current release.",
+      "next_audit": "Inventory component licenses, persistent stores, restore and resource use only if hosting scope changes.",
+      "score": {
+        "merit": 1,
+        "confidence": 2
+      }
+    },
+    {
+      "id": "Mailpit",
+      "name": "Mailpit",
+      "repository_url": "https://github.com/axllent/mailpit",
+      "languages": [
+        "Go",
+        "web UI"
+      ],
+      "role": "Development SMTP catcher",
+      "reuse_mode": "service",
+      "pin_status": "pin_pending",
+      "verified_commit_sha": null,
+      "access_date": "2026-10-12",
+      "repository_access": "opened_public_github",
+      "license": {
+        "summary": "MIT",
+        "evidence_url": "https://raw.githubusercontent.com/axllent/mailpit/develop/LICENSE",
+        "evidence_status": "opened"
+      },
+      "inspected_paths": [
+        "README.md",
+        "LICENSE"
+      ],
+      "fit": "Local Auth invite/recovery capture; API and SMTP chaos useful for tests.",
+      "blockers": "Relay/forward and link-check features can cause outbound traffic; not a Resend idempotency/restore simulator.",
+      "next_audit": "Audit loopback binds, no-relay configuration, egress and retention; test Auth capture separately from durable simulator.",
+      "score": {
+        "merit": 3,
+        "confidence": 2
+      }
+    },
+    {
+      "id": "Apache James",
+      "name": "Apache James",
+      "repository_url": "https://github.com/apache/james-project",
+      "languages": [
+        "Java"
+      ],
+      "role": "Mail server and processing framework",
+      "reuse_mode": "reference",
+      "pin_status": "pin_pending",
+      "verified_commit_sha": null,
+      "access_date": "2026-10-12",
+      "repository_access": "opened_public_github",
+      "license": {
+        "summary": "Apache-2.0",
+        "evidence_url": "https://raw.githubusercontent.com/apache/james-project/master/LICENSE",
+        "evidence_status": "opened"
+      },
+      "inspected_paths": [
+        "LICENSE",
+        "docs/modules/servers/pages/index.adoc"
+      ],
+      "fit": "Real Java option for protocol processing and future mailbox interoperability.",
+      "blockers": "Full server duplicates transport; documented distributed packaging is complex; PostgreSQL packaging is not Supabase Auth integration.",
+      "next_audit": "Audit selected packaging, mailet boundary and protocol/auth adapter only after migration requirements exist.",
+      "score": {
+        "merit": 1,
+        "confidence": 2
+      }
+    },
+    {
+      "id": "MailKit",
+      "name": "MailKit",
+      "repository_url": "https://github.com/jstedfast/MailKit",
+      "languages": [
+        "C#/.NET"
+      ],
+      "role": "Mail protocol client library",
+      "reuse_mode": "reference",
+      "pin_status": "pin_pending",
+      "verified_commit_sha": null,
+      "access_date": "2026-10-12",
+      "repository_access": "opened_public_github",
+      "license": {
+        "summary": "MIT",
+        "evidence_url": "https://raw.githubusercontent.com/jstedfast/MailKit/master/LICENSE",
+        "evidence_status": "opened"
+      },
+      "inspected_paths": [
+        "README.md (rendered repository page)",
+        "LICENSE"
+      ],
+      "fit": "Future IMAP/SMTP adapter option if a .NET boundary is justified.",
+      "blockers": "No shared-inbox UI or Resend adapter; adding .NET solely for this library is unjustified now.",
+      "next_audit": "Audit MIME dependency, OAuth refresh, UID/UIDVALIDITY resync and cancellation against actual provider fixtures.",
+      "score": {
+        "merit": 2,
+        "confidence": 2
+      }
+    },
+    {
+      "id": "React Email",
+      "name": "React Email",
+      "repository_url": "https://github.com/resend/react-email",
+      "languages": [
+        "TypeScript",
+        "React"
+      ],
+      "role": "Email composition/rendering components",
+      "reuse_mode": "dependency",
+      "pin_status": "pin_pending",
+      "verified_commit_sha": null,
+      "access_date": "2026-10-12",
+      "repository_access": "opened_public_github",
+      "license": {
+        "summary": "MIT",
+        "evidence_url": "https://raw.githubusercontent.com/resend/react-email/canary/LICENSE.md",
+        "evidence_status": "opened"
+      },
+      "inspected_paths": [
+        "README.md",
+        "LICENSE.md"
+      ],
+      "fit": "Email HTML/plain-text templates; current README also advertises a Tiptap-based editor.",
+      "blockers": "Canary documentation is not a selected release; editor package availability/terms and output fidelity need verification; no inbound sanitizer.",
+      "next_audit": "Pin stable packages; compare editor export and paste handling with standalone Tiptap; test target email clients.",
+      "score": {
+        "merit": 3,
+        "confidence": 2
+      }
+    },
+    {
+      "id": "Tiptap",
+      "name": "Tiptap",
+      "repository_url": "https://github.com/ueberdosis/tiptap",
+      "languages": [
+        "TypeScript"
+      ],
+      "role": "Headless composer framework",
+      "reuse_mode": "dependency",
+      "pin_status": "pin_pending",
+      "verified_commit_sha": null,
+      "access_date": "2026-10-12",
+      "repository_access": "opened_public_github",
+      "license": {
+        "summary": "MIT core; Pro/cloud components separately evaluated",
+        "evidence_url": "https://raw.githubusercontent.com/ueberdosis/tiptap/main/LICENSE.md",
+        "evidence_status": "opened"
+      },
+      "inspected_paths": [
+        "README.md",
+        "LICENSE.md"
+      ],
+      "fit": "Leading composer candidate with extension-based React integration.",
+      "blockers": "Paid extensions/cloud not implied by core MIT; HTML export does not establish mail compatibility or sanitization.",
+      "next_audit": "Audit minimal extension set, paste/import URLs, tables, quotes, accessibility and versioned draft serialization.",
+      "score": {
+        "merit": 3,
+        "confidence": 2
+      }
+    },
+    {
+      "id": "Lexical",
+      "name": "Lexical",
+      "repository_url": "https://github.com/facebook/lexical",
+      "languages": [
+        "TypeScript",
+        "React bindings"
+      ],
+      "role": "Editor framework",
+      "reuse_mode": "reference",
+      "pin_status": "pin_pending",
+      "verified_commit_sha": null,
+      "access_date": "2026-10-12",
+      "repository_access": "opened_public_github",
+      "license": {
+        "summary": "MIT",
+        "evidence_url": "https://raw.githubusercontent.com/facebook/lexical/main/LICENSE",
+        "evidence_status": "opened"
+      },
+      "inspected_paths": [
+        "README.md",
+        "LICENSE"
+      ],
+      "fit": "Alternative composer with JSON/HTML serialization and React bindings.",
+      "blockers": "Mail-specific schema and export require work; advertised accessibility is not Elevateo validation.",
+      "next_audit": "Compare same compose/paste/undo/IME/keyboard fixtures against Tiptap before selecting one.",
+      "score": {
+        "merit": 2,
+        "confidence": 2
+      }
+    },
+    {
+      "id": "DOMPurify",
+      "name": "DOMPurify",
+      "repository_url": "https://github.com/cure53/DOMPurify",
+      "languages": [
+        "JavaScript/TypeScript"
+      ],
+      "role": "HTML sanitizer",
+      "reuse_mode": "dependency",
+      "pin_status": "pin_pending",
+      "verified_commit_sha": null,
+      "access_date": "2026-10-12",
+      "repository_access": "opened_public_github",
+      "license": {
+        "summary": "MPL-2.0 OR Apache-2.0 per README; opened LICENSE contains Apache-2.0",
+        "evidence_url": "https://raw.githubusercontent.com/cure53/DOMPurify/main/LICENSE",
+        "evidence_status": "opened"
+      },
+      "inspected_paths": [
+        "README.md",
+        "LICENSE"
+      ],
+      "fit": "Focused sanitizer dependency for hostile incoming and pasted HTML.",
+      "blockers": "Sanitization does not block all tracking or native access; post-processing can invalidate safety; server DOM version matters.",
+      "next_audit": "Pin version and DOM runtime; test sandbox/CSP, CSS URLs, remote images, malformed markup and final output sinks.",
+      "score": {
+        "merit": 3,
+        "confidence": 2
+      }
+    },
+    {
+      "id": "ClamAV",
+      "name": "ClamAV",
+      "repository_url": "https://github.com/Cisco-Talos/clamav",
+      "languages": [
+        "C/C++",
+        "Rust components"
+      ],
+      "role": "Attachment malware scanner",
+      "reuse_mode": "service",
+      "pin_status": "pin_pending",
+      "verified_commit_sha": null,
+      "access_date": "2026-10-12",
+      "repository_access": "opened_public_github",
+      "license": {
+        "summary": "GPL-2.0; bundled exceptions/components require review",
+        "evidence_url": "https://raw.githubusercontent.com/Cisco-Talos/clamav/main/COPYING.txt",
+        "evidence_status": "opened"
+      },
+      "inspected_paths": [
+        "README.md (rendered repository page)",
+        "COPYING.txt"
+      ],
+      "fit": "Separate scanner fulfills real quarantine requirement.",
+      "blockers": "Signature updates, RAM and archive expansion need limits; clean result is not safety proof; distribution obligations remain.",
+      "next_audit": "Audit daemon protocol/config, limits, timeout/fail-closed behavior, signature freshness and exact image notices.",
+      "score": {
+        "merit": 3,
+        "confidence": 2
+      }
+    },
+    {
+      "id": "Tauri",
+      "name": "Tauri",
+      "repository_url": "https://github.com/tauri-apps/tauri",
+      "languages": [
+        "Rust",
+        "TypeScript"
+      ],
+      "role": "Desktop shell",
+      "reuse_mode": "dependency",
+      "pin_status": "pin_pending",
+      "verified_commit_sha": null,
+      "access_date": "2026-10-12",
+      "repository_access": "opened_public_github",
+      "license": {
+        "summary": "MIT/Apache-2.0 licensing; select exact package terms",
+        "evidence_url": "https://raw.githubusercontent.com/tauri-apps/tauri/dev/LICENSE.spdx",
+        "evidence_status": "opened"
+      },
+      "inspected_paths": [
+        "README.md (rendered repository page)",
+        "ARCHITECTURE.md",
+        "LICENSE.spdx"
+      ],
+      "fit": "Reuses accepted web UI in a narrow native boundary.",
+      "blockers": "System webviews differ; capability, secure storage, PKCE and signing are application work; architecture document includes stale-looking mobile wording.",
+      "next_audit": "Pin Tauri 2 release; inspect capabilities/plugins; test actual macOS and Windows login, revoked grants and hostile email isolation.",
+      "score": {
+        "merit": 3,
+        "confidence": 2
+      }
+    },
+    {
+      "id": "brick/math",
+      "name": "brick/math",
+      "repository_url": "https://github.com/brick/math",
+      "languages": [
+        "PHP"
+      ],
+      "role": "Arbitrary-precision arithmetic library",
+      "reuse_mode": "reject",
+      "pin_status": "pin_pending",
+      "verified_commit_sha": null,
+      "access_date": "2026-10-12",
+      "repository_access": "opened_public_github",
+      "license": {
+        "summary": "MIT",
+        "evidence_url": "https://raw.githubusercontent.com/brick/math/master/LICENSE",
+        "evidence_status": "opened"
+      },
+      "inspected_paths": [
+        "README.md",
+        "LICENSE",
+        "src/BigDecimal.php (opening portion)"
+      ],
+      "fit": "Immutable decimal/integer/rational arithmetic is relevant only to a future PHP costing/billing module.",
+      "blockers": "No present financial requirement; do not add a PHP service for arithmetic; unbounded inputs consume CPU/memory.",
+      "next_audit": "If billing is scoped, audit decimal-string boundaries, rounding, input bounds and PHP-version compatibility.",
+      "score": {
+        "merit": 0,
+        "confidence": 3
+      }
+    },
+    {
+      "id": "Anime.js",
+      "name": "Anime.js",
+      "repository_url": "https://github.com/juliangarnier/anime",
+      "languages": [
+        "JavaScript",
+        "TypeScript declarations"
+      ],
+      "role": "UI motion dependency",
+      "reuse_mode": "dependency",
+      "pin_status": "pin_pending",
+      "verified_commit_sha": null,
+      "access_date": "2026-10-12",
+      "repository_access": "opened_public_github",
+      "license": {
+        "summary": "MIT",
+        "evidence_url": "https://raw.githubusercontent.com/juliangarnier/anime/master/LICENSE.md",
+        "evidence_status": "opened"
+      },
+      "inspected_paths": [
+        "README.md",
+        "LICENSE.md",
+        "package.json"
+      ],
+      "fit": "Optional subtle app-shell transitions; does not require another server runtime.",
+      "blockers": "Motion must not delay actions or imply delivery; bundle cost and reduced-motion behavior unmeasured.",
+      "next_audit": "Pin release; test cancellation/unmount, reduced motion, focus and large-list performance in browser and Tauri.",
+      "score": {
+        "merit": 2,
+        "confidence": 2
+      }
+    },
+    {
+      "id": "Twake Mail client",
+      "name": "Twake Mail client",
+      "repository_url": "https://github.com/linagora/tmail-flutter",
+      "languages": [
+        "Dart/Flutter"
+      ],
+      "role": "Multi-platform JMAP client",
+      "reuse_mode": "reference",
+      "pin_status": "pin_pending",
+      "verified_commit_sha": null,
+      "access_date": "2026-10-12",
+      "repository_access": "opened_public_github",
+      "license": {
+        "summary": "AGPL-3.0",
+        "evidence_url": "https://raw.githubusercontent.com/linagora/tmail-flutter/master/LICENSE",
+        "evidence_status": "opened"
+      },
+      "inspected_paths": [
+        "README.md",
+        "LICENSE"
+      ],
+      "fit": "Concrete mobile/web client comparison and JMAP workflow reference.",
+      "blockers": "Flutter/JMAP does not directly fit React plus Resend API; copyleft and collaboration semantics need audit.",
+      "next_audit": "Inspect auth/session storage, draft/sync semantics and attachment handling if mobile/JMAP scope is approved.",
+      "score": {
+        "merit": 2,
+        "confidence": 2
+      }
+    },
+    {
+      "id": "Quickly",
+      "name": "Quickly",
+      "repository_url": "https://github.com/AbdelftahZowail/Quickly",
+      "languages": [
+        "Python/FastAPI",
+        "React/JS"
+      ],
+      "role": "Existing archived reference",
+      "reuse_mode": "adapt",
+      "pin_status": "pin_pending",
+      "verified_commit_sha": null,
+      "access_date": "2026-10-12",
+      "repository_access": "opened_public_github",
+      "license": {
+        "summary": "MIT (local LICENSE reopened)",
+        "evidence_url": "https://github.com/AbdelftahZowail/Quickly/blob/HEAD/LICENSE",
+        "evidence_status": "local_license_opened",
+        "local_evidence_path": "third_party/upstream/quickly/LICENSE"
+      },
+      "inspected_paths": [
+        "third_party/upstream/quickly/frontend/src/components/EmailContent.jsx (lines 1-95)"
+      ],
+      "fit": "Inbox/quote behavior is useful; preserve provenance.",
+      "blockers": "Existing dossier reports auth/send and HTML risks; no fresh verification of those defects.",
+      "next_audit": "Re-audit safe renderer and quote transformation; replace send/auth paths.",
+      "score": {
+        "merit": 3,
+        "confidence": 2
+      },
+      "existing_dossier": "docs/reference-repositories/quickly.md",
+      "existing_pin_registry": "docs/research/repository-pins.json",
+      "pin_note": "Existing registry read; original commit and manifest integrity not reverified this scan. No new SHA asserted."
+    },
+    {
+      "id": "Wu-Wei-Mail",
+      "name": "Wu-Wei-Mail",
+      "repository_url": "https://github.com/LuiHedlund02/Wu-Wei-Mail",
+      "languages": [
+        "Python/FastAPI",
+        "React/TS"
+      ],
+      "role": "Existing archived reference",
+      "reuse_mode": "reference",
+      "pin_status": "pin_pending",
+      "verified_commit_sha": null,
+      "access_date": "2026-10-12",
+      "repository_access": "opened_public_github",
+      "license": {
+        "summary": "MIT (local LICENSE reopened)",
+        "evidence_url": "https://github.com/LuiHedlund02/Wu-Wei-Mail/blob/HEAD/LICENSE",
+        "evidence_status": "local_license_opened",
+        "local_evidence_path": "third_party/upstream/wu-wei-mail/LICENSE"
+      },
+      "inspected_paths": [
+        "third_party/upstream/wu-wei-mail/backend/app/models/workspace.py"
+      ],
+      "fit": "Workspace boundary and worker separation inform domain design.",
+      "blockers": "Workspace model alone does not prove mailbox authorization; dossier recovery/auth issues not retested.",
+      "next_audit": "Trace membership, revocation and recovery; avoid importing Celery/Redis for language breadth.",
+      "score": {
+        "merit": 2,
+        "confidence": 2
+      },
+      "existing_dossier": "docs/reference-repositories/wu-wei-mail.md",
+      "existing_pin_registry": "docs/research/repository-pins.json",
+      "pin_note": "Existing registry read; original commit and manifest integrity not reverified this scan. No new SHA asserted."
+    },
+    {
+      "id": "cold-cli",
+      "name": "cold-cli",
+      "repository_url": "https://github.com/andersmyrmel/cold-cli",
+      "languages": [
+        "Go"
+      ],
+      "role": "Existing archived reference",
+      "reuse_mode": "reference",
+      "pin_status": "pin_pending",
+      "verified_commit_sha": null,
+      "access_date": "2026-10-12",
+      "repository_access": "opened_public_github",
+      "license": {
+        "summary": "MIT (local LICENSE reopened)",
+        "evidence_url": "https://github.com/andersmyrmel/cold-cli/blob/HEAD/LICENSE",
+        "evidence_status": "local_license_opened",
+        "local_evidence_path": "third_party/upstream/cold-cli/LICENSE"
+      },
+      "inspected_paths": [],
+      "fit": "Scheduling invariants and tests are useful future audit inputs.",
+      "blockers": "CLI authority and send recovery differ from web product; historical tests not rerun.",
+      "next_audit": "Open scheduler/tick tests at verified pin; translate failure cases to PostgreSQL simulator tests.",
+      "score": {
+        "merit": 2,
+        "confidence": 2
+      },
+      "existing_dossier": "docs/reference-repositories/cold-cli.md",
+      "existing_pin_registry": "docs/research/repository-pins.json",
+      "pin_note": "Existing registry read; original commit and manifest integrity not reverified this scan. No new SHA asserted."
+    },
+    {
+      "id": "lightreach",
+      "name": "lightreach",
+      "repository_url": "https://github.com/nahumoore/lightreach",
+      "languages": [
+        "TypeScript/React"
+      ],
+      "role": "Existing archived reference",
+      "reuse_mode": "adapt",
+      "pin_status": "pin_pending",
+      "verified_commit_sha": null,
+      "access_date": "2026-10-12",
+      "repository_access": "opened_public_github",
+      "license": {
+        "summary": "MIT (local LICENSE reopened)",
+        "evidence_url": "https://github.com/nahumoore/lightreach/blob/HEAD/LICENSE",
+        "evidence_status": "local_license_opened",
+        "local_evidence_path": "third_party/upstream/lightreach/LICENSE"
+      },
+      "inspected_paths": [
+        "third_party/upstream/lightreach/packages/core/src/variables.ts"
+      ],
+      "fit": "Small UI/helpers and MCP shapes can inform narrow adaptations.",
+      "blockers": "Inspected variable lookup needs own-property/escaping policy; dossier says single-user authority is unsuitable.",
+      "next_audit": "Audit small UI units and MCP scopes; test inherited keys and hostile variable values.",
+      "score": {
+        "merit": 2,
+        "confidence": 2
+      },
+      "existing_dossier": "docs/reference-repositories/lightreach.md",
+      "existing_pin_registry": "docs/research/repository-pins.json",
+      "pin_note": "Existing registry read; original commit and manifest integrity not reverified this scan. No new SHA asserted."
+    },
+    {
+      "id": "Instantly starter kit",
+      "name": "Instantly starter kit",
+      "repository_url": "https://github.com/Instantly-ai/instantly-starter-kit",
+      "languages": [
+        "TypeScript",
+        "Python"
+      ],
+      "role": "Existing archived reference",
+      "reuse_mode": "adapt",
+      "pin_status": "pin_pending",
+      "verified_commit_sha": null,
+      "access_date": "2026-10-12",
+      "repository_access": "opened_public_github",
+      "license": {
+        "summary": "MIT (local LICENSE reopened)",
+        "evidence_url": "https://github.com/Instantly-ai/instantly-starter-kit/blob/HEAD/LICENSE",
+        "evidence_status": "local_license_opened",
+        "local_evidence_path": "third_party/upstream/instantly-starter-kit/LICENSE"
+      },
+      "inspected_paths": [
+        "third_party/upstream/instantly-starter-kit/js/sdk/src/client/create-client.ts"
+      ],
+      "fit": "Inspected injectable fetch factory is a useful adapter pattern.",
+      "blockers": "External Instantly service is not a local backend; generic retries unsuitable for ambiguous writes. Warmup remains future plan.",
+      "next_audit": "Audit factory/types/error contracts; implement separate Resend semantics only in later build.",
+      "score": {
+        "merit": 2,
+        "confidence": 2
+      },
+      "existing_dossier": "docs/reference-repositories/instantly-starter-kit.md",
+      "existing_pin_registry": "docs/research/repository-pins.json",
+      "pin_note": "Existing registry read; original commit and manifest integrity not reverified this scan. No new SHA asserted."
+    },
+    {
+      "id": "BillionMail",
+      "name": "BillionMail",
+      "repository_url": "https://github.com/Billionmail/BillionMail",
+      "languages": [
+        "Go",
+        "Vue/TS"
+      ],
+      "role": "Existing archived reference",
+      "reuse_mode": "reference",
+      "pin_status": "pin_pending",
+      "verified_commit_sha": null,
+      "access_date": "2026-10-12",
+      "repository_access": "opened_public_github",
+      "license": {
+        "summary": "AGPL-3.0 (existing dossier; license not reopened this scan)",
+        "evidence_url": "https://github.com/Billionmail/BillionMail/blob/HEAD/LICENSE",
+        "evidence_status": "existing_dossier",
+        "local_evidence_path": "third_party/upstream/billionmail/LICENSE"
+      },
+      "inspected_paths": [],
+      "fit": "Domain diagnostics and operator responsibility reference.",
+      "blockers": "AGPL; dossier records host privilege and token/TLS risks; full mail stack outside selected transport.",
+      "next_audit": "Use independent diagnostics requirements; no code port until explicit licensing/security decision.",
+      "score": {
+        "merit": 1,
+        "confidence": 2
+      },
+      "existing_dossier": "docs/reference-repositories/billionmail.md",
+      "existing_pin_registry": "docs/research/repository-pins.json",
+      "pin_note": "Existing registry read; original commit and manifest integrity not reverified this scan. No new SHA asserted."
+    }
+  ],
+  "reddit_threads": [
+    {
+      "id": "R01",
+      "title": "Recommendation for Shared Mailbox Software",
+      "url": "https://www.reddit.com/r/selfhosted/comments/ec3ogd",
+      "publication_date": "2019-12-17",
+      "publication_date_basis": "Explicit date in search result; opened pages often display relative ages",
+      "access_date": "2026-10-12",
+      "access_classification": "search_snippet_only",
+      "access_notes": "Cache miss on two public open attempts.",
+      "query_topic": "Shared inbox FreeScout Chatwoot",
+      "observations": "Comments distinguish focused shared mailboxes from broader ticketing products.",
+      "confidence": "Low",
+      "requirements_impact": "Keep ordinary company correspondence simple; compare FreeScout workflows without adopting helpdesk scope."
+    },
+    {
+      "id": "R02",
+      "title": "Helpdesk/tickets/sms channel suggestions",
+      "url": "https://www.reddit.com/r/selfhosted/comments/1udq6jt/helpdeskticketssms_channel_suggestions/",
+      "publication_date": "2026-06-23",
+      "publication_date_basis": "Explicit date in search result; opened pages often display relative ages",
+      "access_date": "2026-10-12",
+      "access_classification": "opened_public_thread",
+      "access_notes": "Short URL cache miss; full URL opened.",
+      "query_topic": "Shared inbox FreeScout Chatwoot",
+      "observations": "One operator reports update breakage with Chatwoot and heavier-than-needed Zammad, and wants merge/API functions.",
+      "confidence": "Medium for reported experience; low generalizability",
+      "requirements_impact": "Require upgrade/restore drills, resource measurements and explicit integration contracts; no project reliability ranking."
+    },
+    {
+      "id": "R03",
+      "title": "Selfhosted webmail client for teams",
+      "url": "https://www.reddit.com/r/selfhosted/comments/z25jv9",
+      "publication_date": "2022-11-22",
+      "publication_date_basis": "Explicit date in search result; opened pages often display relative ages",
+      "access_date": "2026-10-12",
+      "access_classification": "search_snippet_only",
+      "access_notes": "Cache miss then fetch error.",
+      "query_topic": "Shared inbox FreeScout Chatwoot",
+      "observations": "Four-user/five-mailbox request needs individual mailbox grants; customer ownership limits access to IMAP.",
+      "confidence": "Low",
+      "requirements_impact": "Separate people from addresses; resolve existing-account migration before assuming MX control."
+    },
+    {
+      "id": "R04",
+      "title": "At what point did your shared support inbox stop working?",
+      "url": "https://www.reddit.com/r/SaaS/comments/1tq7yrz/at_what_point_did_your_shared_support_inbox_stop/",
+      "publication_date": "2026-05-28",
+      "publication_date_basis": "Explicit date in search result; opened pages often display relative ages",
+      "access_date": "2026-10-12",
+      "access_classification": "opened_public_thread",
+      "access_notes": "Short URL cache miss; full URL opened.",
+      "query_topic": "Shared inbox email support frustrations",
+      "observations": "Post and reply identify duplicate responses, unclear ownership and missed follow-ups even with few simultaneous agents.",
+      "confidence": "Medium for pain signal; low sample size",
+      "requirements_impact": "Show assignee/unassigned/awaiting-reply states; keep draft conflict and approval uniqueness acceptance checks."
+    },
+    {
+      "id": "R05",
+      "title": "I'm tired of self-hosting email, even if I do everything right, my provider's IP address range gets blocked",
+      "url": "https://www.reddit.com/r/selfhosted/comments/1luk33a/im_tired_of_selfhosting_email_even_if_i_do/",
+      "publication_date": "2025-07-08",
+      "publication_date_basis": "Explicit date in search result; opened pages often display relative ages",
+      "access_date": "2026-10-12",
+      "access_classification": "opened_public_thread",
+      "access_notes": "Public short URL redirected successfully.",
+      "query_topic": "Email mailcow deliverability",
+      "observations": "OP reports range blocking and maintenance fatigue; others report successful hosting or relay use.",
+      "confidence": "Medium for operational concern; anecdotes conflict",
+      "requirements_impact": "Retain selected external transport, identify operator and expose bounce/rejection/unknown states; avoid guarantees about placement."
+    },
+    {
+      "id": "R06",
+      "title": "Self hosting email is... easy?",
+      "url": "https://www.reddit.com/r/selfhosted/comments/1hnff8j/self_hosting_email_is_easy/",
+      "publication_date": "2024-12-27",
+      "publication_date_basis": "Explicit date in search result; opened pages often display relative ages",
+      "access_date": "2026-10-12",
+      "access_classification": "opened_public_thread",
+      "access_notes": "Public short URL redirected successfully.",
+      "query_topic": "Email mailcow deliverability",
+      "observations": "Positive mailcow setup report contrasts with comments about IP history and port availability.",
+      "confidence": "Medium for contrasting discovery signal",
+      "requirements_impact": "A successful setup is not longitudinal reliability evidence; future live validation must cover ongoing observability."
+    },
+    {
+      "id": "R07",
+      "title": "Advice on email deliverability",
+      "url": "https://www.reddit.com/r/email/comments/1oi6mu4/advice_on_email_deliverability/",
+      "publication_date": "2025-10-28",
+      "publication_date_basis": "Explicit date in search result; opened pages often display relative ages",
+      "access_date": "2026-10-12",
+      "access_classification": "opened_public_thread",
+      "access_notes": "Short URL failed; full URL opened.",
+      "query_topic": "Email deliverability transactional email provider",
+      "observations": "User mixes manual, transactional and newsletter traffic and is unsure about domains/warmup; comments offer conflicting prescriptive advice.",
+      "confidence": "Medium for confusion; low for technical advice",
+      "requirements_impact": "Document message purposes and sender identities; do not treat subdomains or warmup as guaranteed reputation isolation."
+    },
+    {
+      "id": "R08",
+      "title": "Who offers the best transactional email api out there?",
+      "url": "https://www.reddit.com/r/webdev/comments/1qj0m6r/who_offers_the_best_transactional_email_api_out/",
+      "publication_date": "2026-01-21",
+      "publication_date_basis": "Explicit date in search result; opened pages often display relative ages",
+      "access_date": "2026-10-12",
+      "access_classification": "opened_public_thread",
+      "access_notes": "Short URL failed; full URL opened.",
+      "query_topic": "Email deliverability transactional email provider",
+      "observations": "Discussion asks for reliability/cost and reports provider-specific delivery visibility gaps; vendor endorsements appear in replies.",
+      "confidence": "Low to medium; promotional bias",
+      "requirements_impact": "Track recipient-provider outcomes and preserve provider request IDs; do not select vendors from endorsements."
+    }
+  ]
+}

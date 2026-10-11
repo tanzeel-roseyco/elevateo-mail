@@ -1,5 +1,7 @@
 # Quickly: engineering dossier and reuse contract
 
+Target-architecture update (2026-10-12): historical source findings below are unchanged. Elevateo destination suggestions are superseded by the current [adoption matrix](../component-adoption.md) and [polyglot proposal](../../.planning/POLYGLOT_ARCHITECTURE.md): Rails domain/API/worker, TypeScript UI/MCP, Mac Rust/Tauri and C# Windows. Required named opinions remain pending.
+
 Reviewed snapshot: **`edca964b8bfd56e621b491aba6302b0981545898`** (2026-09-23); audit evidence recorded **2026-10-11**. This dossier describes that pinned revision, not the current upstream default branch.
 
 | Item | Recorded value |

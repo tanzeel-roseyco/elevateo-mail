@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "observed_date": "2026-10-12",
+  "repository": "tanzeel-roseyco/elevateo-mail",
+  "base_commit": "cc026169f30daa335242ee56fefde946c3c16c33",
+  "scope": "Planning and public research only; no application implementation or live activation",
+  "codex_cli": {
+    "version": "0.159.3",
+    "research_run": "completed_exit_0",
+    "candidate_count": 25,
+    "reddit_threads": 8
+  },
+  "astra_design": {
+    "requested_model": "gpt-6-astra",
+    "requested_effort": "max",
+    "actual_route": "native collaboration subagent",
+    "task": "/root/astra_system_plan",
+    "status": "proposal_completed_pending_named_opinions"
+  },
+  "claude_cli": {
+    "version": "2.1.241",
+    "consultation_attempts": [
+      {
+        "requested_model": "claude-fable-5",
+        "result": "blocked_before_inference",
+        "exit_code": 1,
+        "opinion_produced": false,
+        "returned_model_usage": {},
+        "error": "Failed to authenticate: OAuth session expired and could not be refreshed"
+      },
+      {
+        "requested_model": "claude-opus-5-5",
+        "result": "blocked_before_inference",
+        "exit_code": 1,
+        "opinion_produced": false,
+        "returned_model_usage": {},
+        "error": "Failed to authenticate: OAuth session expired and could not be refreshed"
+      },
+      {
+        "requested_model": "claude-fable-5-1",
+        "result": "blocked_before_inference",
+        "exit_code": 1,
+        "opinion_produced": false,
+        "returned_model_usage": {},
+        "error": "Failed to authenticate: OAuth session expired and could not be refreshed"
+      }
+    ]
+  },
+  "devin": {
+    "native_tool_observed": false,
+    "plugin_search_match": false,
+    "configured_codex_mcp_server": false,
+    "cli_on_path": false,
+    "implementation_session_started": false,
+    "supported_plan": "official authenticated Devin MCP",
+    "endpoint": "https://mcp.devin.ai/mcp"
+  },
+  "resend_cli": {
+    "on_path": false,
+    "installed_elsewhere": "unknown",
+    "live_commands_run": false
+  },
+  "mail": {
+    "address_slots": 9,
+    "domains_requested": "1-2",
+    "actual_addresses_known": false,
+    "accounts_connected_by_this_task": false,
+    "live_sends_by_this_task": false,
+    "warmup_enabled_by_this_task": false,
+    "external_account_state": "unknown_not_inspected"
+  },
+  "limitations": [
+    "Public model/API documentation does not establish account entitlement.",
+    "No Claude session produced an opinion; no four-model consensus exists.",
+    "No Devin backend implementation occurred.",
+    "All new research commit pins and runtime audits remain pending.",
+    "No credentials, DNS, account setup, installers or production deployment occurred."
+  ]
+}

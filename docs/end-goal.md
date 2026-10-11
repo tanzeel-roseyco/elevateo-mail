@@ -2,7 +2,7 @@
 
 **Elevateo Mail becomes the company's everyday email workspace: one place where approximately ten people can receive, organize, discuss and respond to company correspondence, with clear ownership, controlled AI assistance and a recovery process the company understands.**
 
-This is the target outcome, not a description of working software today. The source collection and design documents exist; the integrated application remains to be built. Resend and self-hosted Supabase are selected by the user. The remaining implementation choices retain the status recorded in [the requirements](../documentation.md).
+This is the target outcome, not a description of working software today. The source collection and design documents exist; the integrated application remains to be built. Resend and self-hosted Supabase are selected by the user. The expanded [polyglot architecture](../.planning/POLYGLOT_ARCHITECTURE.md), [agent workflow](../.planning/AGENT_ORCHESTRATION.md) and [client/CLI plan](../.planning/CLIENTS_AND_CLI_CONNECTORS.md) are proposals pending research acceptance and named independent opinions. The current planning workload is nine addresses across one or two domains; the real addresses, aliases and existing provider still need verification.
 
 ## The experience for the team
 
@@ -29,11 +29,15 @@ Claude and Codex connect through an Elevateo connector with explicit search, rea
 
 The first release keeps sending under human control in the application. Removing a user's mailbox access or revoking a connector grant stops subsequent access. Instructions found inside an email cannot expand a connector's permissions. The product makes it clear when selected mail content is being shared with an external AI service.
 
+Inside the desktop application, a separate assistant panel can connect to supported local Codex and Claude runtimes. Codex owns its adapter; Fable 5 owns the Claude/Fable adapter. These process adapters are distinct from the mailbox MCP tools, and neither supplies unlimited local file or shell access. The browser cannot directly launch a local CLI. Runtime authentication, mailbox access and any optional workspace/file permissions remain separate, explicit grants. Product-supported provider authentication is required; a consumer subscription is not automatically an application credential.
+
 ## The system behind it
 
 All clients use one central application backend. Resend handles the selected email transport integration. Self-hosted Supabase supplies the application's PostgreSQL database, identity services and private attachment storage. Elevateo owns the conversation model, permissions, assignments, draft versions, send history and audit records. External email and AI services still process the data needed for their integrations.
 
-The proposed implementation uses a shared TypeScript web interface, a modular API, a separate background worker and a PostgreSQL job queue. Tauri is the proposed desktop packaging layer. A modest VPS is the proposed starting deployment; Railway remains an alternative. Final sizing follows measured message volume, attachment storage, scanning workload and operating costs. Ten desktop installations connect to the same system; they do not require ten servers.
+The updated proposal uses a shared TypeScript/React interface, one Ruby on Rails domain application running as API and worker processes, and a PostgreSQL job ledger. Rust/Tauri hosts the Mac client and C#/.NET hosts the Windows client; Java Android APK and SwiftUI iOS clients follow as later milestones. PHP, Go and Python have bounded integration, diagnostic and test roles in the polyglot plan, rather than independent mailbox backends. A modest VPS is proposed; Railway remains an alternative. Final sizing follows measured workload and costs. Ten desktop installations connect to one shared system.
+
+Fable 5 or Opus 5.5 builds the frontend from suitable existing local components. Opus 5.5 owns Anime.js motion and C++ tasks, with accessibility, reduced-motion behavior and measured responsiveness as acceptance criteria. The application should feel calm and precise when reading, assigning and replying; graphics-heavy experiments require a demonstrated benefit. Mac and Windows receive separate downloads; one OS executable does not serve both.
 
 The database should tell a coherent story: **who belongs to the company; which mailboxes they may use; which conversations and messages belong there; who owns the work; what was drafted and approved; what was submitted to the provider; and what happened afterward.** Attachments live in private object storage with database records governing access and lifecycle. Durable jobs let the system resume unfinished work after a restart.
 
@@ -61,15 +65,20 @@ These are release requirements. They do not imply formal certification, zero dow
 | Resend integration | Controlled end-to-end send and reply, verified inbound events, durable imports and tested recovery from ambiguous sends |
 | Self-hosted data platform | Versioned schema, tested mailbox access rules, private attachment storage, backups and a successful restore drill |
 | Claude and Codex connectors | Both clients complete authorized search/read/draft tasks; revoked grants and unauthorized mailbox requests are denied |
+| In-app agent adapters | Separate Codex and Claude/Fable process adapters complete lifecycle, cancellation and permission tests; real-provider checks follow supported authentication |
 | Team workflow | Two users can work the same conversation with clear assignment and draft conflict handling; access restrictions hold for a third user |
 | Efficient operations | A representative ten-person pilot establishes resource use, queue behavior, provider limits and an accepted operating budget |
 | Understandable ownership | Another operator can follow setup, deployment, monitoring and recovery instructions; the owner can explain the database and failure model using the tutorial |
 
 The release is complete when the team can run its agreed daily correspondence through this workflow and the failure/recovery checks pass. A mock interface, imported repository, passing unit-test count or built installer alone does not satisfy that outcome.
 
+The Java Android and SwiftUI iOS milestones need their own device/lifecycle and distribution evidence after the web/desktop core. Local application proof uses synthetic mail and a durable provider simulator. Real credentials, signed distribution and production activation come last. No live sends are currently authorized; connecting the intended addresses for Instantly warmup remains blocked until that conflict is resolved and the real mailbox/provider setup is verified.
+
 ## How the six repositories contribute
 
 The references supply candidate inbox interactions, workspace concepts, UI controls, connector registration patterns, provider error handling and delivery test ideas. Selected pieces are adapted into one consistent product, with provenance, retained notices and tests for Elevateo's own boundaries. Their existing authentication, schemas and send loops are assessed individually before any adoption. See the [component plan](component-adoption.md) and [independent dossiers](reference-repositories/README.md).
+
+Codex first researches larger reusable repositories and Reddit operational experience against the plans. GPT 6 ASTRA MAX owns system design and must separately consult Fable 5, Opus 5.5 and Fable 5.1 for each task before accepting the approach. The three initial consultations failed before inference because the Claude session had expired; no independent opinions or final synthesis exist yet. Devin is assigned bounded backend branches/commits/PRs through a verified connection, with review-derived issues and Astra LOW fixes; model assignments and documentation are not implementation evidence.
 
 The first complete release centers on company correspondence. Unsolicited cold outreach is outside this release's scope. Consent-based campaigns, additional provider synchronization, old-mail migration, advanced automation and offline operation can become separately defined milestones. The actual addresses, existing mail provider, migration needs, retention, region, maintenance owner and recovery objectives must be settled before production rollout. The current stack does not by itself establish those decisions.
 
