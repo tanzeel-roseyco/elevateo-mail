@@ -1,0 +1,2831 @@
+{
+  "schema_version": 1,
+  "repository": "Wu-Wei-Mail",
+  "commit": "6002b8850d685c9ad275eb1cc10a4ce0c8299145",
+  "files": [
+    {
+      "path": ".github/workflows/ci.yml",
+      "mode": "100644",
+      "git_blob": "6faadcf8967f7fee9a5954d75143b0e08323576f",
+      "bytes": 3682,
+      "sha256": "eecdde58c418f7ee02beb86c09d3c29402820137af58d7afd4abb0be04c99368",
+      "disposition": "included"
+    },
+    {
+      "path": ".gitignore",
+      "mode": "100644",
+      "git_blob": "1f9a678801af21aa98c9433ca2d4b5daf335dc03",
+      "bytes": 941,
+      "sha256": "df7b33ed9fe051afd5d4d5a444c9b471d3c6583662e0feadfa9aa624d8860a40",
+      "disposition": "included"
+    },
+    {
+      "path": "LICENSE",
+      "mode": "100644",
+      "git_blob": "2b92aa32d71aaf2e934dd5a890342a02d9ad7d1b",
+      "bytes": 1081,
+      "sha256": "80973a07fc47131fdde46c4e7875173cc7792feebd2372702d06924a36bc3a3d",
+      "disposition": "included"
+    },
+    {
+      "path": "README.md",
+      "mode": "100644",
+      "git_blob": "9d5fcb2e7729d84e7646ed69bd8bcbd38cb49e1b",
+      "bytes": 1800,
+      "sha256": "8d8c76f04a355173c4d82884bfe7e94889d3d1a69494f3ff0a194cda5a3e993b",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/.dockerignore",
+      "mode": "100644",
+      "git_blob": "767baaf28803699a8041a38b690f6d7f5d5dc144",
+      "bytes": 78,
+      "sha256": "3289cc1e37ee74ca44e06d9f5e1721329259ec5d3b3a175ece355fd3ce6f0afc",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/.env.example",
+      "mode": "100644",
+      "git_blob": "6cb8cd389c441c44367fe5e44eab1874cc0542df",
+      "bytes": 1783,
+      "sha256": "e7f140385ef03929841b5910ac838da2a85f903c3aa8d87e48c2874434e5a162",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/Dockerfile",
+      "mode": "100644",
+      "git_blob": "dcdf70e29a9ec3fbb012b72f0801a04264ffef17",
+      "bytes": 471,
+      "sha256": "8e4c4da3356d0ba2c2640c9954a0f2fcb87b4a59d3b4eabec3a4e0286e336ec6",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/alembic.ini",
+      "mode": "100644",
+      "git_blob": "a57448e6fc2c7364d743be86d0905ef48f669f8a",
+      "bytes": 607,
+      "sha256": "fce4003193ef4555ee69506f31e86e3ad5017df68ed025e302603d9c8eecc769",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/alembic/env.py",
+      "mode": "100644",
+      "git_blob": "222ad4012a9552aa58b6dee9ebb619aa297c7500",
+      "bytes": 1867,
+      "sha256": "46199853ccbd6821855d12bab0473f5a447d3d0d776f8f13d87df7211e00e5c2",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/alembic/versions/000_baseline.py",
+      "mode": "100644",
+      "git_blob": "53422d8edc29a0f1a3baf62aac179ffa06808bff",
+      "bytes": 31520,
+      "sha256": "ac68e3ca0a2851bcb2ee84635baeb34e5b53a561684b09ff5419c54f669b201e",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/alembic/versions/001_add_prospecting_tables.py",
+      "mode": "100644",
+      "git_blob": "2f2194e9a6186738c16238a03ac7675a1fed3657",
+      "bytes": 12600,
+      "sha256": "07552b55759ddbedcc6f075c293ddcb654eaf8a371942a341d52a028541271c8",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/alembic/versions/002_add_warmup_tables.py",
+      "mode": "100644",
+      "git_blob": "722efc9f65c98b648a749b457215311c20049dbf",
+      "bytes": 8617,
+      "sha256": "ec55d1710ddd7feb34a8ba1448366e9ab8950498ca8e7b2609cc7c8f723f72ed",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/alembic/versions/003_add_email_account_unique_constraint.py",
+      "mode": "100644",
+      "git_blob": "fb23f7911a38bda5d52c75f5189a69f79c7e31d9",
+      "bytes": 1041,
+      "sha256": "7ec6917dd5903cf42de8b5056101858d4f54c8a48d297d985e43500a4f423183",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/alembic/versions/004_add_refresh_tokens.py",
+      "mode": "100644",
+      "git_blob": "c361b61aabb641aa7e5f0ac8734db1c1ff7d13f4",
+      "bytes": 1138,
+      "sha256": "e7d99b5e3c142a2def27459813a734943dfd7b9fd7242bb8ca987116cf27c01c",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/alembic/versions/005_add_workflow_tables.py",
+      "mode": "100644",
+      "git_blob": "1de279987eec05c348f7662fd407736b01aed841",
+      "bytes": 9022,
+      "sha256": "23f3b74cbef196232e89807024005f4088aebc49bdc6d0ad27ecdb0761597656",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/alembic/versions/006_add_conversation_tables.py",
+      "mode": "100644",
+      "git_blob": "49cc6d5358db58abbd20fc9a39defe9d71950f04",
+      "bytes": 3842,
+      "sha256": "86464bce10c2ec0d36cd55c7c756c5e2101673ee11d6d0438ef47fbe6e2489a0",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/alembic/versions/007_workflow_top_level.py",
+      "mode": "100644",
+      "git_blob": "b823059e5f6f82fe6059ca7572f1bd553d2be196",
+      "bytes": 2327,
+      "sha256": "5b8f29713527725114dd375879e2cfc4dacb1bff7b372bdfaf3a728ad1974524",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/alembic/versions/008_add_execution_logs.py",
+      "mode": "100644",
+      "git_blob": "2b8ab39e99da0836f36c5c15bf1873b521a69f5b",
+      "bytes": 1936,
+      "sha256": "2bbd9dd3d625e2cdb38fab4cf3430fc7492ebdad53cbfc5b69ebeedf97a5af14",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/alembic/versions/009_add_compliance_tables.py",
+      "mode": "100644",
+      "git_blob": "06fdb90575e1e67879ffe5ae98656af0b8236eda",
+      "bytes": 2713,
+      "sha256": "b4d397d48c3d58832c709cf825dff2769690fb5cde98cb4b5b97bed718f28775",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/alembic/versions/009_campaign_execution_mode.py",
+      "mode": "100644",
+      "git_blob": "11401a5c4563e17f9a1a939aff9c8fb87df11f4f",
+      "bytes": 516,
+      "sha256": "16082ded9a4f4ea7b14286d731e8d4c2161d72c630351a01fca09ddd44906ae6",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/alembic/versions/011_reliability_columns.py",
+      "mode": "100644",
+      "git_blob": "52ef0cee281309fcd8351724513d5964d930b201",
+      "bytes": 2559,
+      "sha256": "83f6e8704627c8291d6b92f24af09b5cefe643f41daa4ee3a97e894fc34d33ee",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/alembic/versions/012_versioning_columns.py",
+      "mode": "100644",
+      "git_blob": "98188e2d2c0416f8306e26d60314c56984361d40",
+      "bytes": 773,
+      "sha256": "cd9eb66575819c3eb1fc595a85d567c1f2fc7b7400c79d014dfb5ef60dfee3b5",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/alembic/versions/013_merge_heads.py",
+      "mode": "100644",
+      "git_blob": "700a60a63194cb8551847d59d915cd8a32192768",
+      "bytes": 557,
+      "sha256": "df60b75ecc06bc9b94e962a415cd57f265fb64448d33a11c44dcc0e0458351b4",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/alembic/versions/014_workflow_lead_state_nullable_campaign.py",
+      "mode": "100644",
+      "git_blob": "d34384de5197a983f04eeadc05b13bba3a77208c",
+      "bytes": 1343,
+      "sha256": "138148ba63cb5af56211df2be010cba2385192a56e18d48e81beabc123347cd8",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/alembic/versions/015_sent_email_nullable_campaign.py",
+      "mode": "100644",
+      "git_blob": "dbe7cb187b963d95377be972f309294d6164f050",
+      "bytes": 906,
+      "sha256": "985072617c1fe11994616f7e42380031354db515ee9a919f6dd97029c7e8cee8",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/alembic/versions/016_add_workspace_api_tokens.py",
+      "mode": "100644",
+      "git_blob": "537a2633934158488eac684468d0e7f05218d913",
+      "bytes": 2906,
+      "sha256": "c3833a5cadaad050a6f3656d30a60347261d9f4fec955b7f265fc3b0a36b42bf",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/__init__.py",
+      "mode": "100644",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/config.py",
+      "mode": "100644",
+      "git_blob": "41c221eea29c06365c306497d89be189b1f3a9e8",
+      "bytes": 5815,
+      "sha256": "0fae631c65b492fa21993f2039404f11ad071b55d4e7ecbc4c89432961c1f3c8",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/database.py",
+      "mode": "100644",
+      "git_blob": "1e4f74c68214592f938b8e5b90631cdaa3757bbf",
+      "bytes": 905,
+      "sha256": "2e2c90efb013b01cd80dd93b16ce56f817144b69c5c5b9dde09d30302dd1bd44",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/main.py",
+      "mode": "100644",
+      "git_blob": "74a9d3c1d1bae69d360f4bbbac57429c1b6af1fe",
+      "bytes": 2957,
+      "sha256": "800ea232d7b999054114fd3bf804ca55726b935374db0f2658142c7ee583f79e",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/middleware/__init__.py",
+      "mode": "100644",
+      "git_blob": "3e1edc7cb37ca0467077099aab8f7f1531003330",
+      "bytes": 25,
+      "sha256": "ea9f1c05924345ba7ec6cbd2d37f5f45517157bfc802d962fd26ebaa839a7754",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/middleware/security_headers.py",
+      "mode": "100644",
+      "git_blob": "fc88019480f5fb4804b465894919855bf2499c5a",
+      "bytes": 1108,
+      "sha256": "0690ae7c34dee9503c6cf49c46b5aae97607695c47b6fa4d62f8f214c20c3584",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/models/__init__.py",
+      "mode": "100644",
+      "git_blob": "589013d638715e0ef1faed2bdc730c50ab329a4d",
+      "bytes": 2877,
+      "sha256": "95fafbff33092076e6ff73cea0c8a136e072a2dcab4f34bc8be8d65bf9691e29",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/models/api_token.py",
+      "mode": "100644",
+      "git_blob": "dc6d9b8bb20d60abd2f32d2173bbec90e3be0311",
+      "bytes": 1959,
+      "sha256": "43e921df37736f3befa1d194a72cdcb81f10916956ae7444967d2fc609f399fb",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/models/auto_responder.py",
+      "mode": "100644",
+      "git_blob": "9977024ad46f39df065b0af278773c0ef134b0bf",
+      "bytes": 7625,
+      "sha256": "ffbdc19eb365dfd25347c1587bbd98108bf7642f201b34a4762b4447bb4abc1e",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/models/campaign.py",
+      "mode": "100644",
+      "git_blob": "bc2a71b7e179ec9e83103d51ea37b6ee0e8540b4",
+      "bytes": 4651,
+      "sha256": "feecd737a6b812cc4ee316892b5bad6b02c940950efe19475a5d46d58a97cd4a",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/models/compliance.py",
+      "mode": "100644",
+      "git_blob": "aae3540fe6b5a3dc5ce8b5a1212a65f82b49a017",
+      "bytes": 2965,
+      "sha256": "7095379af3f1d87bbc2e568c943b008301410d8bb2e811458d794e8ce1f5e375",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/models/condition.py",
+      "mode": "100644",
+      "git_blob": "01b20d446d684edc8935396aa101f2b8329bdda5",
+      "bytes": 1017,
+      "sha256": "f9622f9fbdf687ff11a7314bac6d7a92661f4a680e3ca1d42c6c0214d71cb4d4",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/models/conversation.py",
+      "mode": "100644",
+      "git_blob": "d771a79ca2039441c74391fcc0defa7f7de1dc55",
+      "bytes": 4862,
+      "sha256": "6fb834ae5ce4ac686253a7b80b6f462c954e7e393cbf2a49a71616134ef11198",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/models/email_account.py",
+      "mode": "100644",
+      "git_blob": "fb542fa6f531f0b4d0e0a2c8d81dc850278dd273",
+      "bytes": 3293,
+      "sha256": "1ddd75535f9dbf2dfdb7a8cca5290435c9a47c9b919b950cfdc80d0c5ad84b01",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/models/email_event.py",
+      "mode": "100644",
+      "git_blob": "beb51951a5e411ca24ca9b5959f80bbef1d94508",
+      "bytes": 1245,
+      "sha256": "b89e25092f3d8dc81756b92e3fd8a09e723b0b10d117b7d983449bb5ae00d0c1",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/models/inbox_message.py",
+      "mode": "100644",
+      "git_blob": "af8faa8712d97657d9fd4d3c1dd90b33325974ac",
+      "bytes": 2061,
+      "sha256": "8fff5136d2f724f253f365efbd0fb24fa76f276f27a0fc0521f1e425a42a4271",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/models/lead.py",
+      "mode": "100644",
+      "git_blob": "b93a682395455a38e3eccb60ce535b10a5721f62",
+      "bytes": 3863,
+      "sha256": "4b53c34f0efb2341efac3f4aa30537a1d5a5ea1d9c46fe6e1702bf800d6e2b72",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/models/prospecting.py",
+      "mode": "100644",
+      "git_blob": "2b3b347b934884b824d04e014e7a8cac75064e0d",
+      "bytes": 15816,
+      "sha256": "7b2aa12578f69f040784ba520c57e00b62d9b8dafcfecf80e2c3e87c6c2908a1",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/models/refresh_token.py",
+      "mode": "100644",
+      "git_blob": "df2bb8bab974011f4cf23c03ae22b1bbd24e2ec5",
+      "bytes": 1066,
+      "sha256": "1fb79ae8f2a7d2094acaeb472eeb4e5562d476789ded9f181ea3b8d256de7647",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/models/sent_email.py",
+      "mode": "100644",
+      "git_blob": "b3f665c541e8058b2225db5ec9925f6aa0168685",
+      "bytes": 1852,
+      "sha256": "517a5aa37c3a37259fcdbe91c031e509292968f5ce96a86966cc2ce5a64b6905",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/models/sequence.py",
+      "mode": "100644",
+      "git_blob": "23fd38092c76720ae61530fad08a14354dcca967",
+      "bytes": 1062,
+      "sha256": "5e8830a2fb4e5c79d3663e99fda545de19a29ac0e57a18354cc83c8b5b8308e1",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/models/step.py",
+      "mode": "100644",
+      "git_blob": "d043b9d47fced8404ba598952a1b0b19b31f692e",
+      "bytes": 1481,
+      "sha256": "a4d51140f2e2ca551a8a5ecb7e459dc05eebe14134ff64fed24b83c181f7afe9",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/models/suppression.py",
+      "mode": "100644",
+      "git_blob": "74cbf37a59b5d43cf35f59db783ed7b9c5c0c9c7",
+      "bytes": 2542,
+      "sha256": "e69b5ee892237637006ad572ca2d5050ee3e1b9b1075d9fdf802804194899973",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/models/template.py",
+      "mode": "100644",
+      "git_blob": "fa7f3fe63f26381beffb7dd4cee054eb21ed2f8c",
+      "bytes": 1215,
+      "sha256": "e214bbad6764a29bd13da5d873c2809d31c7bea810ebb42be8207f78b19372cb",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/models/user.py",
+      "mode": "100644",
+      "git_blob": "2a35efae32dbd3d3cbf6ad9f9726f8ad2f9dfd9f",
+      "bytes": 1302,
+      "sha256": "246de55bba41d996209568063bdcf56977875ab11fb536bd4aeb62596fc5e16e",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/models/variant.py",
+      "mode": "100644",
+      "git_blob": "9fc57e6013a3e8556733047de1cd0283a504065a",
+      "bytes": 1394,
+      "sha256": "d084f9ca5418aea8852369c43547853321d759488f58494902187925d72ac004",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/models/warmup.py",
+      "mode": "100644",
+      "git_blob": "400aa7201c98716eebf67e7add912cd35c7ab82a",
+      "bytes": 10323,
+      "sha256": "21eb37a13fdff4a6d688295e7f2d09b9c5332148da764b8b5b6cc72517e7a1fd",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/models/workflow.py",
+      "mode": "100644",
+      "git_blob": "7b292b01b2104b2307de08bf9d361c935795c6fd",
+      "bytes": 14943,
+      "sha256": "ecc83abbb3c00b4bccb99bfef04328b1957662514898dcd029c6ea7919d244a9",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/models/workspace.py",
+      "mode": "100644",
+      "git_blob": "e5ef27fdb4740937a62ba02738af224ac148e2d7",
+      "bytes": 2007,
+      "sha256": "6e571154cf1d3fa576f482b1eeab64bf46dd8645d93b3b3ebcec90262a7f2c99",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/routers/__init__.py",
+      "mode": "100644",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/routers/accounts.py",
+      "mode": "100644",
+      "git_blob": "19ddd79236dc49ee4446452777770c677265812f",
+      "bytes": 10487,
+      "sha256": "5edaafab74a9309307e39c6b14877fcd0cbe16d6ebde10a103f005134bb019b6",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/routers/analytics.py",
+      "mode": "100644",
+      "git_blob": "80f5db65aea010854fafed1579afc6a52e7c6a03",
+      "bytes": 2455,
+      "sha256": "b37a0de7865bdeba2bd0ce9339885616777de3e25ba891373edd53bcdb5b9d49",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/routers/auth.py",
+      "mode": "100644",
+      "git_blob": "b19909b43a4dbb22cca180777f4c8229679eaf03",
+      "bytes": 5851,
+      "sha256": "4004bc48c5ae6f5c0ee591ec85d17842c1170281e998e1441737e576d728c00b",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/routers/auto_responder.py",
+      "mode": "100644",
+      "git_blob": "0458300c48c9637aa22655ea3eed108a3dacb04a",
+      "bytes": 16183,
+      "sha256": "2ef0100c2425ec64481a0d42cb879ebae8105450237524ce0856badfbd5af9fd",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/routers/campaigns.py",
+      "mode": "100644",
+      "git_blob": "ab5a9e05fa4345f1577dd106053ba8532862a788",
+      "bytes": 8128,
+      "sha256": "01cf53a04e030d8745228336d8e230864ff17bdec5e9391bb2c353818787a22c",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/routers/compliance.py",
+      "mode": "100644",
+      "git_blob": "46249e066af3fecd467805161e602f611d006d48",
+      "bytes": 5031,
+      "sha256": "cc05bb3a7d16ef57dc665b43177d5acb86d485e80fa6630d7e831100b12d99d9",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/routers/developer.py",
+      "mode": "100644",
+      "git_blob": "6e9fb846f915808387fac2f75f8e1a790bcf7787",
+      "bytes": 2959,
+      "sha256": "ca2da571a90f878735d50526df90fd7b7c90362034c1c170a62fbee915f31604",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/routers/external.py",
+      "mode": "100644",
+      "git_blob": "f89f4972c7f31e4640a95754a8aa8e3cc1e50b91",
+      "bytes": 14001,
+      "sha256": "000b775413c10d886f09572a4be3579d8df4179829850db1e95400d6cef5f67f",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/routers/inbox.py",
+      "mode": "100644",
+      "git_blob": "05a6e901ceace060e28326ffe85402b2b0dd5a69",
+      "bytes": 4215,
+      "sha256": "c613bc083d5c82787b22c0436d2d430db585783ea80d80e2b1c9bd2c13f2bdc6",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/routers/leads.py",
+      "mode": "100644",
+      "git_blob": "add3f1eee967aa3165e19e4b3c65f05d2b225a44",
+      "bytes": 9429,
+      "sha256": "043de753b2e6de415ec7bccf5d7764daafbed2c6b4e6f849feb3f0d74fc44900",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/routers/oauth.py",
+      "mode": "100644",
+      "git_blob": "139b288ee4167ff5e1605bfc78135b0c0aec0349",
+      "bytes": 7099,
+      "sha256": "8d1bea76a7fbc665d69822f09237efc13223f249c14bb30685e56640146cae11",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/routers/outreach.py",
+      "mode": "100644",
+      "git_blob": "ac78769e95c548158ce2e140e77d5ce71bba6e57",
+      "bytes": 4424,
+      "sha256": "ace9fd55832e786f85a70e22b27cc70bc48f42791b229e8388d8c8ab663f4e7a",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/routers/prospecting.py",
+      "mode": "100644",
+      "git_blob": "cf9393992502c7cbdc8c98bac676cdaa7abf2d60",
+      "bytes": 28411,
+      "sha256": "769813132a4ee2aa1ef13004c46a784b00e78428abda07cf1aab69f3e495464b",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/routers/templates.py",
+      "mode": "100644",
+      "git_blob": "9cf76af969323b64874bf1d772f74e6537963be9",
+      "bytes": 3885,
+      "sha256": "ca95b70cc1b7f68afc813cabc455d0a1c87a063a1d232baa51457d3242f1fdfc",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/routers/tracking.py",
+      "mode": "100644",
+      "git_blob": "032310a8dddb403e7e51a50edbd536268b884022",
+      "bytes": 11416,
+      "sha256": "3abfe6ade4eada6f63b27c53b94d3e375d03bc3706f0cfed29aacdeee729903d",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/routers/warmup.py",
+      "mode": "100644",
+      "git_blob": "049cd01f8148f9dafab814a0a6e3fba102f4627f",
+      "bytes": 6073,
+      "sha256": "7e9ccb253f6a84a597cee67d6693902648eecce37361e0af3776dbab0c0ed68a",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/routers/webhooks.py",
+      "mode": "100644",
+      "git_blob": "9017e953ad08b08203e132c0889ca19817df27da",
+      "bytes": 6942,
+      "sha256": "89c417b6996b01f912ae3810e5507bdaffdab21ed7268ed7367e46e92e3164b7",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/routers/workflows.py",
+      "mode": "100644",
+      "git_blob": "033c2512c8ef16ae83447bc1f7cb7fe4a3fa1eb5",
+      "bytes": 34216,
+      "sha256": "65b889dffe1db20bd66909e2b08a75a289e1951474d3aeee0a344bab44a46c27",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/routers/workspace.py",
+      "mode": "100644",
+      "git_blob": "97a19e14ac3907ee13614c2cab6990bb6550581d",
+      "bytes": 5992,
+      "sha256": "4513a1d343bfea3a564e3b7201bdf2de88c468f45a51baf8e880382cd8466408",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/schemas/__init__.py",
+      "mode": "100644",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/schemas/account.py",
+      "mode": "100644",
+      "git_blob": "bd1a35003f8fe79c4ec87174eb2a5d5fe43bcbc2",
+      "bytes": 1998,
+      "sha256": "b84efcf03bd812ed6217176f8c24b213096e88a02e31306784947265df33fe86",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/schemas/analytics.py",
+      "mode": "100644",
+      "git_blob": "f4f7a6ae5daffa7f866d75ef7024c33cd4252b0a",
+      "bytes": 1628,
+      "sha256": "3cd852d379e8040360e7bc4d2fece4c30ed97165d25c79dd358ceb49ae022f19",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/schemas/api_token.py",
+      "mode": "100644",
+      "git_blob": "7aa27d934e03423e888a80f5da2f4a5890cc1841",
+      "bytes": 1877,
+      "sha256": "bf16933cd22d6df61805387e2e0583a256e4582cf81aecc9ab89f197b9b24889",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/schemas/auth.py",
+      "mode": "100644",
+      "git_blob": "56bc51566341f41dc6a87cd8b87400d84fbcc745",
+      "bytes": 638,
+      "sha256": "4f444e096d759a327960d46a88a2b7c7f0de687af06cd6738244484cc55ea160",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/schemas/auto_responder.py",
+      "mode": "100644",
+      "git_blob": "0529e1e29c932e6ac2be60681b5839fa903df452",
+      "bytes": 6338,
+      "sha256": "a290455a39d77729c4f0af7b3efba40274deadfa3aa1ae2645ed5d8689c98313",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/schemas/campaign.py",
+      "mode": "100644",
+      "git_blob": "e867ae7195e1129c54017d6920dec516bb6f51ca",
+      "bytes": 2780,
+      "sha256": "0e05554a1c42cc6c308fde19ac39192bebb025b7c1ace73ad169a79eb090f75f",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/schemas/external.py",
+      "mode": "100644",
+      "git_blob": "4a09bbad2aac8e26e8cee9379cabd81d15991917",
+      "bytes": 2607,
+      "sha256": "f801a09c6e057995bbb50b9cc314ccdf5114a43ff6c73c1120994c66847bd8f7",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/schemas/inbox.py",
+      "mode": "100644",
+      "git_blob": "5412764c7dd03caf18640d836ca30f82814a1d9a",
+      "bytes": 1069,
+      "sha256": "42d72435bd0e1e1500723d927e56563df3eb6111bd61e1eb520b2d5529691f06",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/schemas/lead.py",
+      "mode": "100644",
+      "git_blob": "92013b529c821b5786799464b2b9553f4875a103",
+      "bytes": 3875,
+      "sha256": "f19c98ac947e68ae3b16f723242838b2b6f4b577abc9b7a74fd3b856b64d6af2",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/schemas/prospecting.py",
+      "mode": "100644",
+      "git_blob": "1352fda06bc1b1f9d10f5ae56fb8fbd264f76c87",
+      "bytes": 7744,
+      "sha256": "12bf3f65800b3244b1a489321a9f6c04d85850b44663c11c1545ff37db453896",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/schemas/template.py",
+      "mode": "100644",
+      "git_blob": "54f0133f410fd78bf94b02a5433a81683e6b939d",
+      "bytes": 1039,
+      "sha256": "1c4af1fffc05c990ae83245409b11ae1ea4711999920a348249601e6d1bede3c",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/schemas/warmup.py",
+      "mode": "100644",
+      "git_blob": "8a10a780d776bbdf9d15f556ba348cc56a2cbff2",
+      "bytes": 3426,
+      "sha256": "81d614b96a0bb76a8531e939a3ba65fe7214c84ca11d76614007e6b8da327111",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/schemas/workflow.py",
+      "mode": "100644",
+      "git_blob": "55357383e0fe93190054dd46c7208524fb0ed77b",
+      "bytes": 34262,
+      "sha256": "ea205f93d7ceaef9d1bd32245f044f38089ff3b698981189614b5e9029116c2d",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/schemas/workspace.py",
+      "mode": "100644",
+      "git_blob": "47906a0f8b6afda1f07b08a193ae2a60db2aea8a",
+      "bytes": 1295,
+      "sha256": "f8c78ab6453bfabdc4c9c86f933fd0ed8848d6e38bde5ff729c9735512573350",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/services/__init__.py",
+      "mode": "100644",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/services/ab_splitter.py",
+      "mode": "100644",
+      "git_blob": "2026c4d884782358ccb7ae1749ad97fc6e8fe485",
+      "bytes": 4063,
+      "sha256": "c9f46d56839bf852ce845b7d69ddeeab598c3980ee57fad5db0c296c8c6bff16",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/services/ai_provider.py",
+      "mode": "100644",
+      "git_blob": "733ae078863b789a60f2b86be5ff58140eb17fe0",
+      "bytes": 2188,
+      "sha256": "cd60b02e3f7b29d7ab120eb9838f1e7b67c7424e54e152c350629b97c5d81f84",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/services/analytics_service.py",
+      "mode": "100644",
+      "git_blob": "58bc1ef559ef0156191a28d3fc1f472d26f2529d",
+      "bytes": 11205,
+      "sha256": "7fe1efbe103851704baf5056dc9de6c3208415118d6817bc84658b6ffe16c07f",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/services/api_token_service.py",
+      "mode": "100644",
+      "git_blob": "2fd05c7042bc994dd8d03a2a24198ae147af3193",
+      "bytes": 3931,
+      "sha256": "b48c1850b4dd19dee104d6ddaa8f995b07cf16af941bdfad42e42ab481c1b415",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/services/auth_service.py",
+      "mode": "100644",
+      "git_blob": "5589a280dfb329a517a4fb6262c3d7584698ab09",
+      "bytes": 3933,
+      "sha256": "9de159716b5df9652738388fdebbad57a791ae4e749cba4ab2c5a4edd9df4cd0",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/services/auto_responder_service.py",
+      "mode": "100644",
+      "git_blob": "45ea25f22486d69085ced292d7098929349fbab8",
+      "bytes": 23641,
+      "sha256": "ffd1a8bdfef3164023ada7d64180491e88011d6187feb807b9e7340701448b61",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/services/campaign_service.py",
+      "mode": "100644",
+      "git_blob": "d1371a593496b74ddf3baf29a51b29f4b00e59f8",
+      "bytes": 13840,
+      "sha256": "9147e0afd27801c61c1b4795db1d96465f435a29e338233416b2a6f675d44d43",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/services/email_sender.py",
+      "mode": "100644",
+      "git_blob": "6fa19a455927c297acf8b31a03c07ec92f7d6dce",
+      "bytes": 13647,
+      "sha256": "4f05c673417ba6ff2c09f0090105f4777fa13742931fd2266c373cf569504f21",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/services/inbound_service.py",
+      "mode": "100644",
+      "git_blob": "275168a14b7a85ec7dd6c019deb876804b0e3ee8",
+      "bytes": 15529,
+      "sha256": "8ac42d72a8f0a939040467dcb9a1a47ebf8ff4243babc7659a0125a80c258cb4",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/services/inbox_service.py",
+      "mode": "100644",
+      "git_blob": "90d699dfee740e6d124fb79a0aca6be9bda171a5",
+      "bytes": 5481,
+      "sha256": "2a10d20e78cf0af0577be9a319c4d6ce2b8a7bb27613549b11cd7a6677c1affa",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/services/inbox_sync_service.py",
+      "mode": "100644",
+      "git_blob": "2682318e5fb5a777a092f3f93f8396dce6d0fcb7",
+      "bytes": 10816,
+      "sha256": "a26b54ce527f5666b9f1f0926d2580ef1d145f57e8608a25ac468073d06ca36a",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/services/lead_service.py",
+      "mode": "100644",
+      "git_blob": "ffb4361ffb6e412e7827d65fe19e4bc4439160ad",
+      "bytes": 29556,
+      "sha256": "c0e69d361082d35d8c599cdb09aff6dc614a0ebbbcf96a079d6fa600be8d008a",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/services/oauth_service.py",
+      "mode": "100644",
+      "git_blob": "f1cad8d782ef54843692d4f6b82b8319d5b21dc5",
+      "bytes": 6246,
+      "sha256": "f78dba2882e3e80011e4a3fe43d993012597a795865638096b166933999b93d6",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/services/prospecting/__init__.py",
+      "mode": "100644",
+      "git_blob": "9583a63cf224a637ed17fdb1da4dff901dee1f9f",
+      "bytes": 107,
+      "sha256": "873e13ff1d252240031fdf4a57fe51e594dbb118dca25e34a29e84c8bdfec574",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/services/prospecting/action_gate_service.py",
+      "mode": "100644",
+      "git_blob": "f99e063683e06e140534fd23ec1ababa252bd1f6",
+      "bytes": 6698,
+      "sha256": "7fb7d8479c2898af4ca5a15de5516598a1ff17bc48c9a98070b2b78c72467efe",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/services/prospecting/agent_loop.py",
+      "mode": "100644",
+      "git_blob": "28c4bba6386aa79131d995a40a7d476d80ba2d46",
+      "bytes": 13504,
+      "sha256": "1528f73817c8a4f5a2989f6ab2953c78044372d692d7a05c3227e5db8187953d",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/services/prospecting/campaign_builder_service.py",
+      "mode": "100644",
+      "git_blob": "bc9bb396c92ff1e05665204d1ac58e5bec54e97d",
+      "bytes": 12062,
+      "sha256": "cb44de78798e1dd034c092ac4656a7cd5c2885f190efcadb715a497ea7009401",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/services/prospecting/copywriting_service.py",
+      "mode": "100644",
+      "git_blob": "6f581dbe94e50521e16b181ea7a51a85a3dcb31e",
+      "bytes": 16877,
+      "sha256": "e12d9744ac7d6a95b7a2b7eb71efd300e437ed6cbf4974bb94ccf78b83bd085b",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/services/prospecting/dedupe_service.py",
+      "mode": "100644",
+      "git_blob": "e58a8782c26475fa5213f3190d2609734c37ae0e",
+      "bytes": 9210,
+      "sha256": "dac54d9ec6abfa9bd7662d2d149de62b8eca4c34e51fa2983fb12f8db5bb4100",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/services/prospecting/domain_utils.py",
+      "mode": "100644",
+      "git_blob": "dd99d59ff758d7726d28eb1bd537ece025e9a9b9",
+      "bytes": 940,
+      "sha256": "78f73854a166833fdeb46be6c262adfb84fb69f5f456fdcf11e44909b4171a27",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/services/prospecting/exclusion_service.py",
+      "mode": "100644",
+      "git_blob": "b030e43ce422bed4b9ef6e059e9b6caa46cac4ac",
+      "bytes": 10422,
+      "sha256": "fce91edf8648565f67e94845e65015ace181c8fc3c554cd29a72be5338df60cd",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/services/prospecting/journey_state_machine.py",
+      "mode": "100644",
+      "git_blob": "0148e2f459205b58317f96cb076b703e095d6e5e",
+      "bytes": 5592,
+      "sha256": "1ab8279b8498df56190c061e6eb416ea7ee88d89d4ee841cbc1410d8f5695707",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/services/prospecting/lead_discovery_service.py",
+      "mode": "100644",
+      "git_blob": "2672122d7a23c4a8999f4f8fe8f33e90d1d65c70",
+      "bytes": 24410,
+      "sha256": "6279006a72e200a8d863e2ae1372eda8a6546db8618f8db3aecf29f71a6ed13c",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/services/prospecting/lead_enrichment_service.py",
+      "mode": "100644",
+      "git_blob": "7379df8a4c5698343df2bdd9ee4d3360263d30f6",
+      "bytes": 12375,
+      "sha256": "0b9215a8c6ced4abc36e939b46510c408986429b4e652d68ef8bbdc8b508ad20",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/services/prospecting/lead_import_service.py",
+      "mode": "100644",
+      "git_blob": "b1a29fced5aad910ed3e691ad03228e656af9238",
+      "bytes": 8332,
+      "sha256": "53f9c96a5b30ebef0c7a0a5088d9a0e6489cca7197e2b4c2ac6130c38ebba49d",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/services/prospecting/model_router_service.py",
+      "mode": "100644",
+      "git_blob": "59524f019c7f93a0f1bfa8c46ada263822e4d954",
+      "bytes": 13746,
+      "sha256": "9a9e2c46ecf32cfc8f2463bab6541af34361a949b61af27c089c19554f5a0885",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/services/prospecting/openrouter_settings_service.py",
+      "mode": "100644",
+      "git_blob": "0a9df39220dc26488e863b774750261bd0285c1a",
+      "bytes": 4843,
+      "sha256": "0de509239ef9f98607dba93b2c101c3ecab7693ab20ea1ce39f7faa0c88e8d17",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/services/prospecting/orchestrator_service.py",
+      "mode": "100644",
+      "git_blob": "f0057277df5b2b7defa23dcc6c85f06269c5e18b",
+      "bytes": 34850,
+      "sha256": "862c5c56c1a7d2f3a94bf838e1b167e01630b770a14872369d6b2ec71a640f56",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/services/prospecting/prompt_engine.py",
+      "mode": "100644",
+      "git_blob": "1dacfbdd0fe8b037ac18e4c4e0c3cc9aff03eae7",
+      "bytes": 5435,
+      "sha256": "d632f30fbab578502c3188b89ffade3a57b881987b81cf23c03d16e6b18ff8cf",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/services/prospecting/quality_scoring_service.py",
+      "mode": "100644",
+      "git_blob": "2b6b9c37ed9af2f051100fb8aa1e023d46ef9d72",
+      "bytes": 10932,
+      "sha256": "d87b3591c11b80b20da22156eb4a785246f9a5a3c9926c8f6fe5aee8d0e144f6",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/services/prospecting/source_strategy_service.py",
+      "mode": "100644",
+      "git_blob": "bc6f19ddf50380d77906be6a62a33b10a9e2ea8c",
+      "bytes": 10520,
+      "sha256": "ac334fb87d4f406c711dad7d395bf4dcbbbd31c0583d61326589876e475a48fc",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/services/prospecting/tool_registry.py",
+      "mode": "100644",
+      "git_blob": "02a0172ce39d7f557bd3dd29f4248ff691d97faf",
+      "bytes": 3071,
+      "sha256": "6039266eb837d420faf8ae7b4175393d42e313aa89d8210863a1b822ea73ed56",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/services/prospecting/tools/__init__.py",
+      "mode": "100644",
+      "git_blob": "c19aa2c64828082e36f7dca4a5a984fdbbb69d6d",
+      "bytes": 768,
+      "sha256": "675b063a7b6617e39eae26c4f8f3c806e8bad2359b234ae4d61d2ba43f41f264",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/services/prospecting/tools/create_campaign.py",
+      "mode": "100644",
+      "git_blob": "24735acaa1fea6d07476d1a8a80871e794e6d4f8",
+      "bytes": 4034,
+      "sha256": "05cb30552669c72b6ccc8ff1994f68e9ff786d5608c5f77f11db7202486650e4",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/services/prospecting/tools/enrich_leads.py",
+      "mode": "100644",
+      "git_blob": "11cdec7def311e577484060de3e3ed14d0f127e1",
+      "bytes": 3424,
+      "sha256": "626c3483d67568fda05eb6852b0775e7c4f9ffc10e6ea5f72a11f9372a75ec2e",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/services/prospecting/tools/filter_leads.py",
+      "mode": "100644",
+      "git_blob": "b9cb1f914e87ee200a24f65364bf6f59ca609415",
+      "bytes": 6170,
+      "sha256": "78770502b05420666268638914cf0ffe30072f343340843341638a69b308bb7a",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/services/prospecting/tools/generate_copy.py",
+      "mode": "100644",
+      "git_blob": "15243bb4defbd779b297a27d75dee4f5282e388a",
+      "bytes": 2792,
+      "sha256": "b3f4ac77a37f0e651ffad03074cf91cdbd9d6bafdb2859f4f94233e6f951f712",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/services/prospecting/tools/get_campaign_status.py",
+      "mode": "100644",
+      "git_blob": "7ebfb2619cee95d265ba43deea539e77d3331813",
+      "bytes": 4598,
+      "sha256": "e43b69d09c47fac95cf3c464059eda68c5fdfc5394710bcd41107fec0c4ddd01",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/services/prospecting/tools/get_lead_stats.py",
+      "mode": "100644",
+      "git_blob": "5797376090e0030c1184a09dc1b0df78ad542c36",
+      "bytes": 4122,
+      "sha256": "9e893aff400e908b9db5381b76f7853eb4c3eb2693d51aef5f8a9005b338d332",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/services/prospecting/tools/list_leads.py",
+      "mode": "100644",
+      "git_blob": "b9c6ddf7c25773128a564e73dd7aac2437adc32e",
+      "bytes": 4353,
+      "sha256": "5a82bcbeda54a552615a863b2e7f8e91fce0416d103c0298bb0a10f9d441fa44",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/services/prospecting/tools/search_leads.py",
+      "mode": "100644",
+      "git_blob": "713d52ee889a6dc6c1a827a6663d7175510f60f2",
+      "bytes": 13713,
+      "sha256": "3b3330d390f0dbd0ea96161e557feee24a7248efaa5c38efb039f7e6deae2c5a",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/services/prospecting/website_validator.py",
+      "mode": "100644",
+      "git_blob": "a12ef537a9e1514e3d5c90d1e5f269015ea95a6c",
+      "bytes": 12409,
+      "sha256": "67679037b04be446c5058d3caa9266fe20209d0d278fc58fd6efefb23d2d0830",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/services/template_engine.py",
+      "mode": "100644",
+      "git_blob": "5cc4fb9efb6907f9cdc5d1e1289b1b99f3ef6be8",
+      "bytes": 8733,
+      "sha256": "2cbdbf362c68d382a7be0adc819f5e2fd30cf164819210e8fbf63236b89bb7aa",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/services/unipile/__init__.py",
+      "mode": "100644",
+      "git_blob": "e12f36e54e7541cd17cb54db0cafeb1f5d613853",
+      "bytes": 58,
+      "sha256": "b9bed049d4fc555fc84a2225f4280d9265861f5cb14067366096d56165368e3e",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/services/unipile/accounts.py",
+      "mode": "100644",
+      "git_blob": "b03fbc20fe87d1ad8f073e6d57128e58b2ceb7a5",
+      "bytes": 4733,
+      "sha256": "a2dd2f710850902ac390f87e4dea23f4b98d42ded0ca4bfb07dacad265842011",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/services/unipile/client.py",
+      "mode": "100644",
+      "git_blob": "9c2e40dba1dabaf899a636b4d433155a79461cce",
+      "bytes": 2571,
+      "sha256": "cf0c91e3ef5ec059569d7a2c2dd89ee5c7ca56108917e0c4b4ae9ece66bda5d3",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/services/unipile/linkedin_invites.py",
+      "mode": "100644",
+      "git_blob": "9751c72b0ccd65510a396662c751f9ba1ab9f671",
+      "bytes": 1768,
+      "sha256": "28d49cb7897b39f1f3030453412019baee5c664328361141ecbfafad13496f16",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/services/unipile/linkedin_messages.py",
+      "mode": "100644",
+      "git_blob": "b0a50a843e04f9934d309c4741f2345b4a1a915e",
+      "bytes": 1937,
+      "sha256": "4487001aef1a7faad8a3cd6bc078aac57262b97522ea5516ee75acce12026803",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/services/unipile/linkedin_users.py",
+      "mode": "100644",
+      "git_blob": "5e8cff27534e114d9c441cf403f3440f5ffc9cf8",
+      "bytes": 2429,
+      "sha256": "6869106f359c686e8a4742922d91b5d22b293c7eae51e04a4470784b1be59a9b",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/services/unipile/webhooks.py",
+      "mode": "100644",
+      "git_blob": "e80de60e2b937b92bec049a425ab53ac70609a0f",
+      "bytes": 6016,
+      "sha256": "489a2ba155cbd6f48062693bb7a250a9a6b72f7cb8d0ad222690afb3b9526b16",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/services/warmup_health_scorer.py",
+      "mode": "100644",
+      "git_blob": "da4e33aa5697e22bcba03f6226831a5955071cdd",
+      "bytes": 2413,
+      "sha256": "edc8739c64b7953cb548f206c891abd0967346e5d5a5f7c688984f83d97693ae",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/services/warmup_policy_engine.py",
+      "mode": "100644",
+      "git_blob": "39de2b437d3e7b2bb1628de0ae7424c6c4349628",
+      "bytes": 4980,
+      "sha256": "c1b8f593092d78d37b039c30ac8078c4c160557cf9b1a8bbde59b9e55ec05328",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/services/warmup_providers/__init__.py",
+      "mode": "100644",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/services/warmup_providers/base.py",
+      "mode": "100644",
+      "git_blob": "fba706c216e81461d2278f0ba59462b788962216",
+      "bytes": 1720,
+      "sha256": "d28ec97961d01a2b0e9f6e705a665d3898ee762dcb8a28f2d0f1fbd3f344d207",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/services/warmup_providers/mailreach_adapter.py",
+      "mode": "100644",
+      "git_blob": "afc2e4fc4ee262cba44e61e9022b0fcee2a2e40b",
+      "bytes": 4686,
+      "sha256": "48e74a9dbff7cda0841ba1329358e917df645a4ea168be8064f3f127e46065da",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/services/warmup_providers/noop_adapter.py",
+      "mode": "100644",
+      "git_blob": "6123b63897ca58e8cefd7c6a1d20b1a1daf89c38",
+      "bytes": 1869,
+      "sha256": "7ed7812bdab2c7d661058075830c4dec9000bac87d607bafb02ecfd420d97c48",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/services/warmup_service.py",
+      "mode": "100644",
+      "git_blob": "bbef8ae3c3df4480fad2012ffed0fa853460f3c2",
+      "bytes": 15200,
+      "sha256": "6275f6b022b45f3fd96d43e50c82aa31e15a88fc6eccbfeca44786d0cf2a472a",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/services/workflow/__init__.py",
+      "mode": "100644",
+      "git_blob": "db2160f5d7636557e9c2abd6c8a34bb50dadb104",
+      "bytes": 32,
+      "sha256": "aa7c1caacb660cceb131d1fd05e46c1ecd152754bc236d1c00b811cd04e6021f",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/services/workflow/compliance_engine.py",
+      "mode": "100644",
+      "git_blob": "1cc76021c3959857ac4a50796897fe962ed6bcf1",
+      "bytes": 9588,
+      "sha256": "214ee8cad2c5f1850a7286180fb50d6f28226285459a444baab0a5df8fce8533",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/services/workflow/event_bus.py",
+      "mode": "100644",
+      "git_blob": "6c013be4d8e0fe793123800762ce992e732ab687",
+      "bytes": 11927,
+      "sha256": "56279995b43ed504dc45312717e87792dc126813677a9a6656e3c70aaa880417",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/services/workflow/node_executors.py",
+      "mode": "100644",
+      "git_blob": "2a94117d95536361e9d45d816dc725aa10ed5663",
+      "bytes": 60000,
+      "sha256": "4b433b39426d40d50b8753eacb969bd326a34dc52cc06d659f6b00522ca7cad0",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/services/workflow/reliability.py",
+      "mode": "100644",
+      "git_blob": "d0010eff258db8447cdc85067d8960a7be7287b7",
+      "bytes": 6816,
+      "sha256": "abcf1461693277acd14dc3cf172035e30b14e04bbfdaf443ea328d3ffaa6466a",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/services/workflow/runtime.py",
+      "mode": "100644",
+      "git_blob": "6deaddfe54b8ff526de988840e6a21fa61cdc21d",
+      "bytes": 32996,
+      "sha256": "d92066a72cd39d1abc68339d50e27d8ab5d397208124cddda7fad78b1f3cdc89",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/services/workflow/schema_validator.py",
+      "mode": "100644",
+      "git_blob": "7171416cf5b000d324721cd485c42bb9f3398092",
+      "bytes": 16750,
+      "sha256": "568647b2a61f18eb0ac0e8d71534b1dd45f430e085dfacc4676863335639ce2f",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/services/workflow/sequence_converter.py",
+      "mode": "100644",
+      "git_blob": "ab8ef443d33034bdd197d3aba0ea4bb0ceb108db",
+      "bytes": 7637,
+      "sha256": "ded93801c71450ba9ea210cfc6e04b51c1c863a18f3523fde96f1fe1cdf0d2a8",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/services/workflow/simulator.py",
+      "mode": "100644",
+      "git_blob": "71a2705697f1dee6d8e442621a0ded389a381a6d",
+      "bytes": 15223,
+      "sha256": "dd949ae2ff59378700c0f706a23494bcdd6813524dec61d5a0421e076487d6d4",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/services/workflow/trigger_governance.py",
+      "mode": "100644",
+      "git_blob": "8fd4293c000cad402d44861d097f17cdbf7b0557",
+      "bytes": 6371,
+      "sha256": "692a11b676234055b4ac9e04cf54321bcfa3cbe6a51d604bc0bccaac5b321ab1",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/services/workflow/workflow_analytics.py",
+      "mode": "100644",
+      "git_blob": "ade4ea672b5d4f8118b98b722e537bc96ca35f06",
+      "bytes": 7425,
+      "sha256": "0e3b9bdfe09498f9a32f92933768986d2005163a78d92e299bafe667937307f7",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/services/workflow/workflow_service.py",
+      "mode": "100644",
+      "git_blob": "6503283e3590548d026a2366efb04a9e30e08325",
+      "bytes": 22277,
+      "sha256": "75749bc21b428a93a43cecb2fe8676cab442392faab6edf619cab695d787c1d3",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/utils/__init__.py",
+      "mode": "100644",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/utils/anymailfinder_client.py",
+      "mode": "100644",
+      "git_blob": "ace0f967af4d5383e58c88444a999322042f5208",
+      "bytes": 4537,
+      "sha256": "77a129bb9d4d063dc9b5e56a3fd23e9ccafbc0a3b9e48fe571ddb0579812bf2d",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/utils/dns_checker.py",
+      "mode": "100644",
+      "git_blob": "9f34034901af75987f6c1fe029b5d2c0a8966dbb",
+      "bytes": 4145,
+      "sha256": "86126c6d3e75c214c527a730c230720961a87d5b8dc8ae72a7b124550c30c6e6",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/utils/email_validator.py",
+      "mode": "100644",
+      "git_blob": "94edd99f82dc51a50e0f5ea7ac4996441b33a369",
+      "bytes": 2908,
+      "sha256": "d0be5b01d4de03b3a8a9140b4aec28353c3d20c48c08c36626548fd51b7c44b2",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/utils/encryption.py",
+      "mode": "100644",
+      "git_blob": "d252ca22278e44f9bc0f5389e49ba7e3b33e9e98",
+      "bytes": 1328,
+      "sha256": "6470c4ea7c37006c9305323799e00f674eba8dd5db1135b1a64e7f7ece8f4024",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/utils/openrouter_client.py",
+      "mode": "100644",
+      "git_blob": "4b50415f6641e60a45d9188887bb02b09799e0b0",
+      "bytes": 11024,
+      "sha256": "1c362318df826df59f97758aab607cf0c3d833dad05892e917b75568fc3f5f54",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/utils/redis_client.py",
+      "mode": "100644",
+      "git_blob": "e2e10ff6c18c30a54398334e6e3448c1d9da918d",
+      "bytes": 2332,
+      "sha256": "7267b7b60cf778edc644c558a3e76fcbfbd451c0edfccc868ead0a05298811c5",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/utils/security.py",
+      "mode": "100644",
+      "git_blob": "aed6c4c2673681f7aca96815d00237c159a1ef23",
+      "bytes": 7996,
+      "sha256": "efb0878bc29b089961a7ddf92a525b343e5f1039627bcd274be70d3d5cdd8f3d",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/utils/serper_client.py",
+      "mode": "100644",
+      "git_blob": "394fb661d6fd52615766e8fd41c849941bd634a2",
+      "bytes": 5202,
+      "sha256": "8b581836257194608184bd8cdc3e6b7616349475e533686f7ea980082d1ff8e6",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/utils/tracking_injector.py",
+      "mode": "100644",
+      "git_blob": "87bf0dcf7434dd322254736ca0b8b1a51ea7567e",
+      "bytes": 3521,
+      "sha256": "5d4bf3f46770c8b492d8f41d16792f78b4f39b79a0782bc6ab572dbfa44146e2",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/workers/__init__.py",
+      "mode": "100644",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/workers/auto_responder_worker.py",
+      "mode": "100644",
+      "git_blob": "e4ca26fae0ae70770fe50ed166af4d1fb3e6c7f4",
+      "bytes": 15946,
+      "sha256": "167040cca0f840a354c7cd63bd9b1a831e449087b045f7c5e85af978b150c274",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/workers/celery_app.py",
+      "mode": "100644",
+      "git_blob": "84c8073a05c9ae58790cefb2a055a8f6cd445f00",
+      "bytes": 3434,
+      "sha256": "ce032e125ab570dea50e7f2ca28053564f12ac2d933637e8a0bf964f1dbd6c22",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/workers/cron_trigger.py",
+      "mode": "100644",
+      "git_blob": "2d9f6eb055d6b0f5f31eca409bd7fff6fe0fd30c",
+      "bytes": 5056,
+      "sha256": "54e02be9a8ee8275fdd78a43b805dd6b9c230d304c94c655e80e5a40decd74fb",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/workers/event_processor.py",
+      "mode": "100644",
+      "git_blob": "5b8ce8388b87312e38753482f39b9c9281a46c2f",
+      "bytes": 15324,
+      "sha256": "5e1f898bc2afb068c30cfd96f6a62c85b61c167affe0b43a09a1b05d0cb411fa",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/workers/inbox_sync_worker.py",
+      "mode": "100644",
+      "git_blob": "a40f8cd6ee48c84873e5a2d0c7d8232cdf542710",
+      "bytes": 1893,
+      "sha256": "038f4df8eddf422487462eb7cf577ba0a9b020bc9167be4b1579c981c985f45a",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/workers/lead_personalization_worker.py",
+      "mode": "100644",
+      "git_blob": "10addf3a6d5f97f5601e839da0d29ede1fbc7974",
+      "bytes": 3462,
+      "sha256": "12c15d7600e2ec515580697cb6eb1672871feab79c32b2a9d034668ee688076e",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/workers/prospecting.py",
+      "mode": "100644",
+      "git_blob": "b76643135417016c94f8577fa369c6e8f75ff294",
+      "bytes": 3918,
+      "sha256": "eab67dd4c1b454e274c74df419c5f0ae7aa888d8106fd650681b8ea9e5aedee3",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/workers/scheduler.py",
+      "mode": "100644",
+      "git_blob": "0911de4446693ccbf8f8b6a31fe79ec0f5bd708c",
+      "bytes": 5349,
+      "sha256": "2fdbd347007863b0ed3c4c5a97f78c828dd58187321caa38aea3f50ba5771e70",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/workers/sender.py",
+      "mode": "100644",
+      "git_blob": "533c9051d126f969156867dfe99e560d8ec94331",
+      "bytes": 16583,
+      "sha256": "c62bd6596a8c2b0d581ee2552c07cfc6bc7a5a73fe41063ff0640d91190cb346",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/workers/warmup.py",
+      "mode": "100644",
+      "git_blob": "68bbd3bd87eb830bea0b3b33404c5c581ffade50",
+      "bytes": 12127,
+      "sha256": "ef69a5b8c8062bc0a0939aadf800a8665c22d04b533743ccc15beaadd1b01569",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/app/workers/workflow_runner.py",
+      "mode": "100644",
+      "git_blob": "c05c3b7b1ba384b323b7d04c9f2437a5305a0135",
+      "bytes": 955,
+      "sha256": "57261e6171b13de37bc9f34148f75e96a7cc6fa0346a56853c58a8e642a29390",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/create_tables.py",
+      "mode": "100644",
+      "git_blob": "f4336a436c240392cecdf029d7b8072000739973",
+      "bytes": 826,
+      "sha256": "ccd622a0f670a2770c4f27f0a4644467316a0060cffb26d6c9e4e17db4c25b2f",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/pytest.ini",
+      "mode": "100644",
+      "git_blob": "2b24c9945cd4365c6c69d8c60634626c1c8d6b50",
+      "bytes": 191,
+      "sha256": "d34a983e00cffb5ff80a0b62a927c2f57fd00d7adcbe81ff3179d1de217f5acf",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/requirements-test.txt",
+      "mode": "100644",
+      "git_blob": "5e11968cb5e7e7a5228ddedc8dac0d7ce08b6f78",
+      "bytes": 69,
+      "sha256": "a883b60407500468ebfd7aea607393191c43cb75c31d5c9bb87d8802363f99f0",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/requirements.txt",
+      "mode": "100644",
+      "git_blob": "349651b22a4631e423ca6e4287373ed123a61b9f",
+      "bytes": 453,
+      "sha256": "f1aa414764cfb7d6a61c8b98aabee2500d6c8757b51c8c3a250535ba528766b7",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/scripts/check_migrations.py",
+      "mode": "100644",
+      "git_blob": "7794edb35ab16bd6c29dfc3c70052fe0ccd59c3b",
+      "bytes": 2029,
+      "sha256": "31c98cae7f00c61757a7e3d74decaddfe17c0323460d57b75687d19de37cf227",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/scripts/test_warmup_e2e.py",
+      "mode": "100644",
+      "git_blob": "654fb69894a0752cfc6098b275fd1d0710205ff7",
+      "bytes": 8549,
+      "sha256": "5ec369b5427f7c887871a4c8da6f04f2f6f0849516ac6a55c59a9c8e701e1d0e",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/tests/__init__.py",
+      "mode": "100644",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/tests/conftest.py",
+      "mode": "100644",
+      "git_blob": "b94c659bf0a1442caa7cd09e3c05a079eb6a97c3",
+      "bytes": 5306,
+      "sha256": "a243a5b075fdc7532ff57cd0cf0f57ca85793c1dcb955171ecf486d5fb0e568f",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/tests/test_accounts.py",
+      "mode": "100644",
+      "git_blob": "9498144c71686dca9537cbb02ba8b9adac1ab375",
+      "bytes": 13744,
+      "sha256": "b3acf368b3fd3f37eb6f00c627d6c8e524024026f64785b78515d49bc55c75dd",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/tests/test_ai_governance.py",
+      "mode": "100644",
+      "git_blob": "d81cbd80772e114632693f52b7d70015d66d3cec",
+      "bytes": 26963,
+      "sha256": "9268f2865a53fb44f7fda64f5869a971797c47c3af481c36e17bf85b5cd87418",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/tests/test_api_token_auth.py",
+      "mode": "100644",
+      "git_blob": "a0b54841a1a57a01b98a894b7673b28c98b5e4ed",
+      "bytes": 6024,
+      "sha256": "e7d6e1e99b4056dd91a1e89548d9b508ff7a4e70d0ec3de585a0e94b6e96cf0b",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/tests/test_api_tokens.py",
+      "mode": "100644",
+      "git_blob": "a0bfd1fc2c10984901339f4659febee07782c311",
+      "bytes": 3077,
+      "sha256": "e8db69d7bf657fe2ef90ae1c063d179857fec2d19c06fdda61ece91cc6b726e0",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/tests/test_auth.py",
+      "mode": "100644",
+      "git_blob": "d0d71b09be1e6613e381b043c74ca90f59501e0e",
+      "bytes": 12339,
+      "sha256": "b051b9b9eb86003df9fd4d80085584a109b5ab39f78d8d15588d86cfbb86ae7a",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/tests/test_auto_respond_executor.py",
+      "mode": "100644",
+      "git_blob": "deb9b251eabdf55d6cd0b5a3310c706df9a69370",
+      "bytes": 6671,
+      "sha256": "007ec1baa91a51eff1841681b3c4f287bed9704e698f2a0f8d1199363143173f",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/tests/test_auto_responder.py",
+      "mode": "100644",
+      "git_blob": "00dca90215deb1b347e570fb5869c1a29b101a0c",
+      "bytes": 25971,
+      "sha256": "7ab88b74837d987d82e16169461106d5e4ab65b31c9522aa753c7fb3dcc2b88f",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/tests/test_auto_responder_api.py",
+      "mode": "100644",
+      "git_blob": "22370d62a6bcf56ded0ce6b0eb5dde5c297492b7",
+      "bytes": 22670,
+      "sha256": "aabdad95bb36a9250c038e753cdb7ab615af3ff14aeb80325cf9289bf8e7bd35",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/tests/test_auto_responder_worker.py",
+      "mode": "100644",
+      "git_blob": "0e26362106bed9cf0ecb8e53e84a8746cdfef440",
+      "bytes": 24094,
+      "sha256": "d3eb4ad2ea40fc6cec585b6924e8405cf3a37f2114d696f6490174c5f6bb9c3e",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/tests/test_campaigns.py",
+      "mode": "100644",
+      "git_blob": "152b657b4a62b6511b7f741da2fc1a432cd8979e",
+      "bytes": 11362,
+      "sha256": "8a1bd0d2bd552a7a8185b3d87d1dc5294d0b22649fa4b1961ce20766043fbdde",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/tests/test_compliance.py",
+      "mode": "100644",
+      "git_blob": "174686f3dcd9dc159d18a7c81fd3a95bb65ad6cb",
+      "bytes": 8142,
+      "sha256": "ee814fcb8b1bff067b0a406b42299ffc149db245a39b394663be686cb8161e89",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/tests/test_compliance_engine.py",
+      "mode": "100644",
+      "git_blob": "c8e31f3dafbc7a31250586340b81169027d3af38",
+      "bytes": 17064,
+      "sha256": "c8243a71a86283b6da8a000a02aabd1b4b50ce3f0f6bae1a927e58f1ef78b7fd",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/tests/test_config.py",
+      "mode": "100644",
+      "git_blob": "133e64fa5091bf6453f38d0c58ffea998b4a7eb0",
+      "bytes": 1457,
+      "sha256": "3c6bfe6897e27c0f3f7e2b20025ef2a68e31827111a2e13b59f0e7556b05742d",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/tests/test_conversations.py",
+      "mode": "100644",
+      "git_blob": "be1cfb95a96b168ffde9eb87233d6d3dc41649c7",
+      "bytes": 7134,
+      "sha256": "d856c3096d8ef2ce117286bacf505faeda7763eccf75cb8c4adc4027983fe505",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/tests/test_data_integrity.py",
+      "mode": "100644",
+      "git_blob": "fd15df014fefab0ce00f11db9172dcdbf2886343",
+      "bytes": 10320,
+      "sha256": "7b0c313ab41d90112bc0d05366791fb57d3660efc1c1039150ef728b486d9462",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/tests/test_dns_checker.py",
+      "mode": "100644",
+      "git_blob": "5b995193c4ea20c6d71f225f8dbffcffc7ac60cd",
+      "bytes": 2604,
+      "sha256": "a918d9856064e745ed17aee126f4d212f04018e5cf49498bf95fc25b58ae91cd",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/tests/test_event_bus.py",
+      "mode": "100644",
+      "git_blob": "4c2eb776b87b763d38a341db45c6c5b238453166",
+      "bytes": 10107,
+      "sha256": "f792d6cd1ab15b5881ef47a7c493c4f099bc5aeb57984c63f14a1bb264261a56",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/tests/test_health.py",
+      "mode": "100644",
+      "git_blob": "d20cce2131afa58fa3cffd60857e81658b4f04a7",
+      "bytes": 282,
+      "sha256": "d185ae2597dfae5ada6d02338a2434fa64e19173befaa7e9595fa28a8729812c",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/tests/test_inbox.py",
+      "mode": "100644",
+      "git_blob": "4883528a58b24f48564c9bce2ea8fbe7c9e56592",
+      "bytes": 13219,
+      "sha256": "8bcf3598df6da3e65a2bbeaaebecef4551e86d8449dffd29a3775227238032e2",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/tests/test_inbox_sync_service.py",
+      "mode": "100644",
+      "git_blob": "7555aff588765ff49d065015a4fa566830960bd1",
+      "bytes": 3977,
+      "sha256": "41ee579e5aa0b6ef0af877030a1c878ce154c80deb3ad843cf3e2f5da368c37d",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/tests/test_lead_personalization_service.py",
+      "mode": "100644",
+      "git_blob": "c05d6e901ac04489e6ad6d1e5f3273da96b2f2ae",
+      "bytes": 12904,
+      "sha256": "763924d32790a66e55b67755eaa78f3ec8d452addd083de987019348d0668c95",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/tests/test_lead_personalization_worker.py",
+      "mode": "100644",
+      "git_blob": "8bde0b2055205800893fad8b5fe3b044a0e0852b",
+      "bytes": 5983,
+      "sha256": "22ef91075cb828e009a827e490c651afc1310435f4df92225d8f1c80f5b1f2fe",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/tests/test_leads.py",
+      "mode": "100644",
+      "git_blob": "1f33e8f3fd9db504b3f086450949ea50742b1c75",
+      "bytes": 20215,
+      "sha256": "9719bae256ea2406581600e2a0feafd191f3673ddb2af49fd3b5853a3eb91e81",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/tests/test_oauth.py",
+      "mode": "100644",
+      "git_blob": "58f245ed1d87ef70831342c5e8fffb9f3acfe062",
+      "bytes": 8881,
+      "sha256": "5de7a6e097fa8955399daddccbe9040781de6c0cb9432717f8ac7e420fca897d",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/tests/test_pipeline_optimizations.py",
+      "mode": "100644",
+      "git_blob": "1097b140e214411f02ead650c3f41a4be189277c",
+      "bytes": 23440,
+      "sha256": "7d565c8f0fc81d697ef2ca271f298372b69f60fee489b032c7bb17615d489d03",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/tests/test_prospecting_agent_loop.py",
+      "mode": "100644",
+      "git_blob": "cc0ff8aeebf918e8cce8e94d68d9381165a22e47",
+      "bytes": 23259,
+      "sha256": "1a23c663951ad56253204bae871b64306b92570b3888fa6076f65aee1919802e",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/tests/test_prospecting_campaign.py",
+      "mode": "100644",
+      "git_blob": "9567f8c29b71ce0059386d7e3f263492bd42f6d9",
+      "bytes": 17532,
+      "sha256": "5bc1dba3dbcb6f27bdb43c2dec992643afad3beec5bcb3961be0c83d49a52639",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/tests/test_prospecting_copywriting.py",
+      "mode": "100644",
+      "git_blob": "9e0ebfcc87d870c9110951961f6975d6b9f19157",
+      "bytes": 14890,
+      "sha256": "24bfb3519f0780059c647ef39775bca6a007e810e931355338a4b17ca125a1fc",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/tests/test_prospecting_discovery.py",
+      "mode": "100644",
+      "git_blob": "199bae67f33c0b6a567a47aec54f7457c6cd2d27",
+      "bytes": 31397,
+      "sha256": "5c4c95768c742038acc37c08464a6fcbc4952edb9b3a3f04f3f6b3f80e0383de",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/tests/test_prospecting_foundation.py",
+      "mode": "100644",
+      "git_blob": "fdb17fbea2c5bd323fa3f64423db7c8ad24798fb",
+      "bytes": 12093,
+      "sha256": "2c8b5ce24ac6140a6b0e491620a6a86346c36605443ff78022ac87b3ef978562",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/tests/test_prospecting_hardening.py",
+      "mode": "100644",
+      "git_blob": "c06dcfb231e1b2f463bb1f6c4dfe2452d437ab2a",
+      "bytes": 21615,
+      "sha256": "6e2bc71a2964ad193933e9860eb031894b1a451dcfb6d366cc38b97f20033203",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/tests/test_prospecting_model_routing.py",
+      "mode": "100644",
+      "git_blob": "f63af16e4cd2a94977c4c42f0fef2a6c24d11d8b",
+      "bytes": 21009,
+      "sha256": "3ad13e7ab3ef6bd8baff11e1ca53af14e2159cd453bd73b4b4b7a05458f9039a",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/tests/test_prospecting_orchestrator.py",
+      "mode": "100644",
+      "git_blob": "0c360241f502a5c6f87c1e76c9aa1f8a689e5647",
+      "bytes": 17651,
+      "sha256": "d65792cd637d15581eabebc8bf81676ea8d1fe5390e52fb3c8fa917aa52e83d9",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/tests/test_prospecting_personalization_settings.py",
+      "mode": "100644",
+      "git_blob": "92d33e2ed49510a5c14d12559a495a7a7ede7bf8",
+      "bytes": 4596,
+      "sha256": "542788f0003f2228f134e9978ebcf0052909fe11d0103ce1ee6b42c389248f9c",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/tests/test_prospecting_quality.py",
+      "mode": "100644",
+      "git_blob": "13c45c9d0672fd64b97a70ab4664ed97bb43b57b",
+      "bytes": 19483,
+      "sha256": "0113f27a8a4db58139018603575e87f7291656c6f545fcda9193384556465af1",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/tests/test_prospecting_to_workflow.py",
+      "mode": "100644",
+      "git_blob": "7ec3dbffaa2b1b7a96975dc0651bda2c48038396",
+      "bytes": 7550,
+      "sha256": "f63514b49c165c10e1a92eb11ffa042f7f462b5248bec6b29ce05ca5a1cbe2c0",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/tests/test_prospecting_tool_calling.py",
+      "mode": "100644",
+      "git_blob": "bbd3df37e8098dfe0f96c54d23f28cab18b7f2da",
+      "bytes": 47200,
+      "sha256": "4927009ee1af7c23a0aa68ee3311aa5b82263c47ed407bcf7a96498cc3efb65f",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/tests/test_prospecting_tool_registry.py",
+      "mode": "100644",
+      "git_blob": "c416eced5f3dc1de09db7d7025cba07eca023ec5",
+      "bytes": 14325,
+      "sha256": "a8c0a1d0247d4f8b2642a9297765540993694583c23e492393fd3c9b3d44945d",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/tests/test_prospecting_website_validation.py",
+      "mode": "100644",
+      "git_blob": "ee2bb1352c92c9389b2f3f2be9a8810620ada846",
+      "bytes": 9965,
+      "sha256": "1c57055de995467e66d13b211e84758879c4cdfb5596189b70c8965a9c2c4976",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/tests/test_public_webhooks.py",
+      "mode": "100644",
+      "git_blob": "ff8772a47d134e0156252568c45de83471cd1d5b",
+      "bytes": 3076,
+      "sha256": "84fa88b45fb4dd2359840f2d8130d6fa08a5ca9aec45ce2abe931954355a409f",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/tests/test_reliability.py",
+      "mode": "100644",
+      "git_blob": "35a85220b582df5eeb38a5d287ca968a5a9bb2ca",
+      "bytes": 20534,
+      "sha256": "3f5345e19eaf5ae7c239942fac200b8a36f00e317a50f5b6ec2010741d6da64d",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/tests/test_security_headers.py",
+      "mode": "100644",
+      "git_blob": "5804645bc677857091a011ae4fe154d0e079f0da",
+      "bytes": 1345,
+      "sha256": "618d4648f8755414007332c1d642e2d444a194443d2d6aaecc557add169e5152",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/tests/test_sequence_converter.py",
+      "mode": "100644",
+      "git_blob": "1dc0e0d2953334836c13c15f7f505789bf57eeb5",
+      "bytes": 21676,
+      "sha256": "66cde6be051f7dd964f32d00cf9fd7a53ae43f69dcb062062f029698853bd3d2",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/tests/test_services/__init__.py",
+      "mode": "100644",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/tests/test_services/test_ab_splitter.py",
+      "mode": "100644",
+      "git_blob": "e0d8c11811a82de8d33608e14bb2dd1e060e5359",
+      "bytes": 7529,
+      "sha256": "e0f7fb3788ee7a23d99e0ad77043af8b16d738d4080388aa7b1dacb78edcecd8",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/tests/test_services/test_template_engine.py",
+      "mode": "100644",
+      "git_blob": "ab4dbe67510e6c85f7b9d98d8024718e0e09bc65",
+      "bytes": 9557,
+      "sha256": "504c7cab432e2c48688c150cbe54ec6697da996faeeedc4ede1724b744f3d6fe",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/tests/test_templates.py",
+      "mode": "100644",
+      "git_blob": "5a147c6c912af8e83409dcb4b9b351a1e0e29789",
+      "bytes": 8674,
+      "sha256": "8f781faa81f60a45b1cdc0143c3b660cda0815b7afcb7fbd79c6df94dd2ae69f",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/tests/test_tracking.py",
+      "mode": "100644",
+      "git_blob": "5e7bab5bd19bb6b6032f212a18e5d61d9fd7fb89",
+      "bytes": 15808,
+      "sha256": "99aa02f04aa0782b32b907e482a0b5d35b74332e10e50a8185a481f6ab1cef35",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/tests/test_unipile.py",
+      "mode": "100644",
+      "git_blob": "ced5f4e987fcb05c2d02fa66f7882dd3c777dd8c",
+      "bytes": 7634,
+      "sha256": "9bc4b009fec5ddbf71b95f9d0a91bac2abf79eb31df55ba721f0a6722a3697db",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/tests/test_versioning.py",
+      "mode": "100644",
+      "git_blob": "303e5357a694825fb35f725520cdb2a9e751ddd9",
+      "bytes": 25991,
+      "sha256": "617a9e1054f0bed9f4f916d2a4fc8db1ddac71d4449ddba58ae573c1dbc0985e",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/tests/test_warmup.py",
+      "mode": "100644",
+      "git_blob": "d1e55827e335fa21899ad4077d4bebffaef77957",
+      "bytes": 18856,
+      "sha256": "4dbab90b2bd670f988bbb1837fb42b586d620b7216904f44bd61bbedb2dc26e3",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/tests/test_warmup_adapter.py",
+      "mode": "100644",
+      "git_blob": "f96954958d56c46f6962173bcfb4ef49b61a9a98",
+      "bytes": 7832,
+      "sha256": "bd2688c9a982c0ef32162801d536d71da678a7501b23619e7b45f6143bf13885",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/tests/test_warmup_policy.py",
+      "mode": "100644",
+      "git_blob": "82ef1542231f6f4d5a9fabdf07b2eacfc77980a1",
+      "bytes": 9367,
+      "sha256": "778c2932c69c3f15a1d3fb375837c68022d6f34caafd944ea34c99fea9f3f7d3",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/tests/test_workers/__init__.py",
+      "mode": "100644",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/tests/test_workers/test_event_processor.py",
+      "mode": "100644",
+      "git_blob": "c3cf5f17f79497e4146212e0a99e048148d78d63",
+      "bytes": 9163,
+      "sha256": "07cd09e7831b9a8370ce2c3d6bedc6ac16616b78dee81c6bcfa36aeaf2ce13c6",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/tests/test_workers/test_scheduler.py",
+      "mode": "100644",
+      "git_blob": "0aed5549cb43b1f7042e712346dd45af7e48ad77",
+      "bytes": 9597,
+      "sha256": "25bb2b2730fe8ffde237b4d1f889db5f2c80f2887bb7b4b48e7e74dabc767a68",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/tests/test_workers/test_sender.py",
+      "mode": "100644",
+      "git_blob": "8327f565229a3849d944c522d1678ee2ffcfd2b7",
+      "bytes": 18736,
+      "sha256": "d2748fbe93188aa26bded86e70c8088e4f60ce496a2f53e457f7dc90b1679a87",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/tests/test_workflow_analytics.py",
+      "mode": "100644",
+      "git_blob": "8acb58ba5e77692072572b7d4ea7a2b4338b569d",
+      "bytes": 15523,
+      "sha256": "a931dd2708cb82a2cc30c698429bd951a57919ecc99bd4c311fcd464e20fe8ce",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/tests/test_workflow_api.py",
+      "mode": "100644",
+      "git_blob": "6c78566615667ccc0474dff02f4c6c5cf168f759",
+      "bytes": 8370,
+      "sha256": "de785fa6bc55fd2fa82c115eea6fb42492bb0c09cbdeb8acdff5fe451e81b688",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/tests/test_workflow_runner.py",
+      "mode": "100644",
+      "git_blob": "1880bd2545a2a640c37aa1e6ea38765ee7b55315",
+      "bytes": 11767,
+      "sha256": "dc05aeee4ccb6c779c8ead5a0556c23f611914462a06d59c3906192eb2b34357",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/tests/test_workflow_runtime.py",
+      "mode": "100644",
+      "git_blob": "ff56b9c1a38b99a4f5f7c5bac15ed4961151b8fa",
+      "bytes": 29607,
+      "sha256": "1bb3876fd69243fd4f665236f36c45f5ed0aacb3ef409da7f9131bb1a4d9c97f",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/tests/test_workflow_schema.py",
+      "mode": "100644",
+      "git_blob": "7233943ba1737353529fe4067b1a9c4cba2ef6fc",
+      "bytes": 29169,
+      "sha256": "6c37fdf02d9fe8d3922011f7927d22251218127ca8b120bf7047bad86a6e1871",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/tests/test_workflow_simulation.py",
+      "mode": "100644",
+      "git_blob": "001e7eac97f6fe77ff63b3fecd77c0137909b646",
+      "bytes": 15815,
+      "sha256": "232c842c0827ed936ceddb332f646257ac08742d56a80880a4a1795543e81ffb",
+      "disposition": "included"
+    },
+    {
+      "path": "backend/tests/test_workflow_top_level.py",
+      "mode": "100644",
+      "git_blob": "f2d205debff350ca1cbc9f9be34c33ed50a31858",
+      "bytes": 9664,
+      "sha256": "2d592c1ba869c583dee98cbe4fa8646293edeca9a3002ce25925e01d062fc33d",
+      "disposition": "included"
+    },
+    {
+      "path": "docker-compose.yml",
+      "mode": "100644",
+      "git_blob": "218e8edcf74d367d73e653ca185c8ece9c0f729a",
+      "bytes": 621,
+      "sha256": "8b500fb6df86cf26b01094ef9b93b9730415f4107104b8760dd4c49895958396",
+      "disposition": "included"
+    },
+    {
+      "path": "docs/GOOGLE_OAUTH_RUNBOOK.md",
+      "mode": "100644",
+      "git_blob": "f29f41968ad6a7c0e609794f8594d8b0c585f024",
+      "bytes": 2146,
+      "sha256": "94db719515ad605e374eb6c0941c8abfa79ec8352a963723d354baa7c9783aeb",
+      "disposition": "included"
+    },
+    {
+      "path": "docs/INBOUND_WEBHOOK_RUNBOOK.md",
+      "mode": "100644",
+      "git_blob": "17bbb2a9ab201815fca218d97225d54ebf48eb32",
+      "bytes": 1879,
+      "sha256": "e79b0cb96929aa310f9d9b5f754871991b2ed30a58cf01defd0e8ab0d3f99ba9",
+      "disposition": "included"
+    },
+    {
+      "path": "docs/auto-responder-runbook.md",
+      "mode": "100644",
+      "git_blob": "c1a11b2c3abb60961bbff0cebf370a0eb93df28d",
+      "bytes": 19307,
+      "sha256": "7b821c52a4f849174955ae3558d99a42311f3de683f9d8b036cb4d0de5b6a127",
+      "disposition": "included"
+    },
+    {
+      "path": "docs/oauth-setup.md",
+      "mode": "100644",
+      "git_blob": "8f850751a5bf9871219aeebc89f2c5d4d1a92581",
+      "bytes": 6324,
+      "sha256": "78839763ce179a3561794855fd2710c27db6a20b20398df472d3d293b781b5aa",
+      "disposition": "included"
+    },
+    {
+      "path": "docs/workers-guide.md",
+      "mode": "100644",
+      "git_blob": "6f531cd9291e4aa1642818943bf440f6c2f4d17b",
+      "bytes": 1827,
+      "sha256": "ec2da88f17129ec5419e697126b607bd405a308c8394394f1b04266bdca5082b",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/.dockerignore",
+      "mode": "100644",
+      "git_blob": "2ceb2187f0411480e2fa2ff3a08d95341c59eee9",
+      "bytes": 35,
+      "sha256": "15524215745bef6010b80ff78a1880655025a67ee1cedec4a4324bc972ae96a6",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/.gitignore",
+      "mode": "100644",
+      "git_blob": "5ef6a520780202a1d6addd833d800ccb1ecac0bb",
+      "bytes": 480,
+      "sha256": "207e265ff4901f9ad9f96d8ce08530e04f9fc600815472a66d0a446096d654cd",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/Dockerfile",
+      "mode": "100644",
+      "git_blob": "00b3b49cf8cc6f8df576035802649dce2b5993fb",
+      "bytes": 678,
+      "sha256": "8f1bd9db5f333322318c37574c826070fb0425dd35b80e6c25937111abd62be2",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/README.md",
+      "mode": "100644",
+      "git_blob": "e215bc4ccf138bbc38ad58ad57e92135484b3c0f",
+      "bytes": 1450,
+      "sha256": "60b55ff7df79af72590f9524208e46642bc32bdc175cdad41349681c0e2f958f",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/components.json",
+      "mode": "100644",
+      "git_blob": "03909d9d110439b118b8521e50026509ff7028f8",
+      "bytes": 467,
+      "sha256": "66a3a48694af66913f8cdbb7fb37ebf27ac793e5063acf97f8c1d41c289899bb",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/eslint.config.mjs",
+      "mode": "100644",
+      "git_blob": "05e726d1b4201bc8c7716d2b058279676582e8c0",
+      "bytes": 465,
+      "sha256": "870f1adccecf3051cbcd9fd307cef51d7633cf510979c181a81f4b1797273493",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/next.config.ts",
+      "mode": "100644",
+      "git_blob": "68a6c64d279aec8d7c6ede912928cd3f218b9b91",
+      "bytes": 129,
+      "sha256": "496898063c834c666510bdb5bb472bcf08e01ca8eef297da101ad12680c8fc93",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/package-lock.json",
+      "mode": "100644",
+      "git_blob": "e54fcce3dfa94fbe3910ca78e218c31a18b5d747",
+      "bytes": 445263,
+      "sha256": "d614237df73e50c85b157d286cae6923f5aa18f10d94cbd2474ae78c056b25c5",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/package.json",
+      "mode": "100644",
+      "git_blob": "518de74289fea310120f55797428b8e22e54a45b",
+      "bytes": 1350,
+      "sha256": "41a20ae4b265f5badca581a33d86948dbe0e91d99e83ec8c80cd5a35aac2b410",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/postcss.config.mjs",
+      "mode": "100644",
+      "git_blob": "61e36849cf7cfa9f1f71b4a3964a4953e3e243d3",
+      "bytes": 94,
+      "sha256": "dfac7ac2d86d326a0e5adb024e7943c181393ed17a5fcb8f0315b24c7da6ddde",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/public/file.svg",
+      "mode": "100644",
+      "git_blob": "004145cddf3f9db91b57b9cb596683c8eb420862",
+      "bytes": 391,
+      "sha256": "2b67812c325c199a02536cdbeea0c593a72f707d323b72ee3e08dbab06753bd4",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/public/globe.svg",
+      "mode": "100644",
+      "git_blob": "567f17b0d7c7fb662c16d4357dd74830caf2dccb",
+      "bytes": 1035,
+      "sha256": "b614b9bf183925957661ac851498fe1d8029fd43a62fbfed86f9e2624a57e7cf",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/public/next.svg",
+      "mode": "100644",
+      "git_blob": "5174b28c565c285e3e312ec5178be64fbeca8398",
+      "bytes": 1375,
+      "sha256": "55995dfad6ecb4945a1e856ddca03c5e16aa5bf13fd21b4df6a74ae79357bcfc",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/public/vercel.svg",
+      "mode": "100644",
+      "git_blob": "77053960334e2e34dc584dea8019925c3b4ccca9",
+      "bytes": 128,
+      "sha256": "f081337b2fee635b455b63275406a3e7f39d6a014e25ad90dab5a67e62a12ac4",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/public/window.svg",
+      "mode": "100644",
+      "git_blob": "b2b2a44f6ebc70c450043c05a002e7a93ba5d651",
+      "bytes": 385,
+      "sha256": "644768c4aaeb4767bce293344eeb0c125fb804a94d801440424072202d85e3a1",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/src/app/(app)/accounts/[id]/page.tsx",
+      "mode": "100644",
+      "git_blob": "20dd480d10c11b5ffeca9a95336473b00f92f738",
+      "bytes": 36489,
+      "sha256": "a65da417ef2fdd2fab4f6398caa6a2d8ad4c7f92e81f0064f1b46124b71bd667",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/src/app/(app)/accounts/page.tsx",
+      "mode": "100644",
+      "git_blob": "d7525563dfe0a0a91ce1e476e729a4fe233cc50a",
+      "bytes": 45910,
+      "sha256": "38b33726c12e9740e577a95e7c38dc93218480bfd7c0aa3623659e01aaf57162",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/src/app/(app)/analytics/page.tsx",
+      "mode": "100644",
+      "git_blob": "8eca6af04337875d1c236bf9d6e126c257ba8262",
+      "bytes": 16320,
+      "sha256": "ef2598dc16a5218d58db7c2c7990b7dfec0aae8f1fb600e2402e5024b9d6fd02",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/src/app/(app)/auto-responder/page.tsx",
+      "mode": "100644",
+      "git_blob": "d8365097ee5a4014c4de6c033e0d1b011f3c9280",
+      "bytes": 88409,
+      "sha256": "220427e004cece3a374a05b2d720cf4609cf47cac87f607c7999d99f15b21c63",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/src/app/(app)/campaigns/[id]/page.tsx",
+      "mode": "100644",
+      "git_blob": "4006e9b6583590afc360692474c53c2130ee9f2c",
+      "bytes": 33855,
+      "sha256": "653e8a464b73e60d85e0578f0da269d1f0f9f98c9f0bcbbc591c8e6011106af8",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/src/app/(app)/campaigns/[id]/workflow/page.tsx",
+      "mode": "100644",
+      "git_blob": "439feac01073b71c12768281231be3d18cbb34b1",
+      "bytes": 5465,
+      "sha256": "f12fc4a546e5702a5f7c689f60b3c7755b6327d7d5cdcfe62a12586a30f9bc15",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/src/app/(app)/campaigns/new/page.tsx",
+      "mode": "100644",
+      "git_blob": "e1e322519402132d7db5857a8284de005c06e96f",
+      "bytes": 38864,
+      "sha256": "6ff3177131acafebaeaa47065581dd2dccc81c0c49f0e4107f61acfb6e92c1f9",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/src/app/(app)/campaigns/page.tsx",
+      "mode": "100644",
+      "git_blob": "8afede261792b9f17c1983bb5070898e1cfb5361",
+      "bytes": 12259,
+      "sha256": "7339ab19a72baed053e13fe580569ae741e04ad10acc42cb06fa20442a30e8e0",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/src/app/(app)/dashboard/page.tsx",
+      "mode": "100644",
+      "git_blob": "51b3ea4a4eabe3ebc12421937b3e257a4e4803e0",
+      "bytes": 14717,
+      "sha256": "7185f6ee9d91548ff0e57bf9635d03ee92207dcb0982ab5e42631cd3ee9e3ebc",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/src/app/(app)/inbox/page.tsx",
+      "mode": "100644",
+      "git_blob": "cbd04b3c06e21c7e6c60b571cef49b01f9a9232b",
+      "bytes": 22140,
+      "sha256": "575713ebd74edcfad4536f4439477b6d164de02f98b5ffe54e6b2fad1ab69343",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/src/app/(app)/layout.tsx",
+      "mode": "100644",
+      "git_blob": "1fb162e19b48aa9e357f74ac9b036d2bdddc6961",
+      "bytes": 8000,
+      "sha256": "bc38f456ba337c302754291bbb0ff3364e489042b628aa8298a4392a803b8a0f",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/src/app/(app)/leads/import/page.tsx",
+      "mode": "100644",
+      "git_blob": "af2b1f1d8b97dc611bd9ec7091c8c411552deccd",
+      "bytes": 22125,
+      "sha256": "b2a2d8a95b1b153653508a311d0b880efb2a86672bf1a02d5bb0d2755898b770",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/src/app/(app)/leads/page.tsx",
+      "mode": "100644",
+      "git_blob": "f561a75acd13da2dd2a5118a991dbcf3a5ff812c",
+      "bytes": 67755,
+      "sha256": "d49d0615ab4ca999b2a5b1b7b5513baea0e39528d7d1fbb00680296f78102440",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/src/app/(app)/prospecting/page.tsx",
+      "mode": "100644",
+      "git_blob": "d5782d198ba76c94627f9a9befe175fed61b6f16",
+      "bytes": 53115,
+      "sha256": "5960fe624995e2c5df8feec4e75076816c3c85197f74adf50ee55d9257d1f659",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/src/app/(app)/settings/page.tsx",
+      "mode": "100644",
+      "git_blob": "aafe2d3cd732ad6911fc09e796c1f3b7fb44eb2f",
+      "bytes": 53023,
+      "sha256": "fdc6db88017c7a604f466baf2fa8068fc8829b73533213d8a8547a9b14d96ffd",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/src/app/(app)/templates/page.tsx",
+      "mode": "100644",
+      "git_blob": "e36a169681dadc39a2536b676a8fcac46301df00",
+      "bytes": 20566,
+      "sha256": "65d34ebe2a42f43656909607d62bcde511ebba2bce4dd425c1e62c0f63717b81",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/src/app/(app)/workflows/[id]/page.tsx",
+      "mode": "100644",
+      "git_blob": "bd27ec647684d2e2e51bab20c031887b1e221b9b",
+      "bytes": 6604,
+      "sha256": "d19597caa5a8e079934a339e9ae651f7eb35cc2eb41b7dc8ca4301609b7a3edd",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/src/app/(app)/workflows/new/page.tsx",
+      "mode": "100644",
+      "git_blob": "8811d54166727952a88c4e155ec1473d14634069",
+      "bytes": 3286,
+      "sha256": "8729ae02f90bdd813405e710a810b0a3bb50dd32057599c5e299b0c1a2d552f2",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/src/app/(app)/workflows/page.tsx",
+      "mode": "100644",
+      "git_blob": "48a1d52ce656071c6a1be312fc964465c1afa016",
+      "bytes": 4600,
+      "sha256": "24ea473ed7f217abf2cb0a67543583e21a85287d195f9be67e68ea44ffb27d24",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/src/app/(auth)/layout.tsx",
+      "mode": "100644",
+      "git_blob": "13977c6eaa2ef1e8630d268ec98e56c45add28d7",
+      "bytes": 877,
+      "sha256": "efdf9c3e9c78d5dd7f55f1cba90e81ccc82174e75ccccb956289f7ad090c7787",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/src/app/(auth)/login/page.tsx",
+      "mode": "100644",
+      "git_blob": "bcc2f4f3d7ca1c7513eaa5742226c1f462715bb7",
+      "bytes": 2596,
+      "sha256": "685f5546980d052537c5259006011d4e28da3f836c3bf518b8e9547cfcf5f26c",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/src/app/(auth)/register/page.tsx",
+      "mode": "100644",
+      "git_blob": "ae8c9ee5d02d851068576e2336b53ea257a176e9",
+      "bytes": 3503,
+      "sha256": "85bf24f868bdc2fbeb8ded4cb660d810b2ef9f7c3980a83f353b66ec77f8b149",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/src/app/favicon.ico",
+      "mode": "100644",
+      "git_blob": "718d6fea4835ec2d246af9800eddb7ffb276240c",
+      "bytes": 25931,
+      "sha256": "2b8ad2d33455a8f736fc3a8ebf8f0bdea8848ad4c0db48a2833bd0f9cd775932",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/src/app/globals.css",
+      "mode": "100644",
+      "git_blob": "927eab33c809a134cb0dba079432ee6eb3f904e1",
+      "bytes": 7288,
+      "sha256": "44bf2d5a07d13fb7d5dfe53d502df9939ea5a29e78ad7711513cb56379e150f5",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/src/app/layout.tsx",
+      "mode": "100644",
+      "git_blob": "659769ffa64349d915d71338c7fbc680c7f4e432",
+      "bytes": 1123,
+      "sha256": "21364de370fde691760387c4813840006636429c680f1c07195c2f8e2471cc0d",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/src/app/page.tsx",
+      "mode": "100644",
+      "git_blob": "6fb2458e93c49367e922d707259a17dc60845dd7",
+      "bytes": 106,
+      "sha256": "d3404d2283a41278c41d9c41357feedbcafaeff30cc55c5ceb50cdb2feacfc8f",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/src/components/app-sidebar.tsx",
+      "mode": "100644",
+      "git_blob": "70a08af30adcec6630bd69728320ceeba12b5b2a",
+      "bytes": 5644,
+      "sha256": "5854d8a7ba9b19ab47cc34b8493b2b41da0a7a1942fd0621f04c5e5a2e3c4bde",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/src/components/command-palette.tsx",
+      "mode": "100644",
+      "git_blob": "e497ccb892f6d6aa5df563f390ca3db7bc427db9",
+      "bytes": 4729,
+      "sha256": "d04d389aeb4a196bf4eee38618827fa8b66e91fd1a9f584e385dc6ee695713dd",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/src/components/onboarding-checklist.tsx",
+      "mode": "100644",
+      "git_blob": "d434664dce6061ca6261e97e34e487dfef28e2ce",
+      "bytes": 3638,
+      "sha256": "1c39bcbd1692db5f659610873a668a89283be2a34c457ee797fa3a7b458eba6c",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/src/components/ui/avatar.tsx",
+      "mode": "100644",
+      "git_blob": "1ac15704f747ac2f6eda0076f59ae5f6b4940021",
+      "bytes": 2916,
+      "sha256": "7f7372f72ad231e3743ef4c15d319029d96b50800624b8bc6a0c572269532730",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/src/components/ui/badge.tsx",
+      "mode": "100644",
+      "git_blob": "d874bf3aa989620539328edaecec1ff4f48e5cf8",
+      "bytes": 1803,
+      "sha256": "d2930a3df92453ec9812a184f22a1762a239b7c25f44609ac7c2246fd2263cc4",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/src/components/ui/breadcrumb.tsx",
+      "mode": "100644",
+      "git_blob": "542e76202a6744bb972d213723f5a62fb5bfc377",
+      "bytes": 2350,
+      "sha256": "2253084f33d3908b0631dad4d4a478d8bf6feaced421005af39035b9c05db30e",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/src/components/ui/button.tsx",
+      "mode": "100644",
+      "git_blob": "3d4a427eb8cf6166419b281f496a4f0faa27dfa1",
+      "bytes": 2789,
+      "sha256": "356665969c8612b90e595535adb95690e24a7949892e60d71ef8176dad86ee4f",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/src/components/ui/calendar.tsx",
+      "mode": "100644",
+      "git_blob": "9fb18ca995e975bc5cd201a702b89e0483b6c76d",
+      "bytes": 7793,
+      "sha256": "c8e67d15d8622135b72045d974a3234ea99f5ffcc1b981eafea8847a14ae1f12",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/src/components/ui/card.tsx",
+      "mode": "100644",
+      "git_blob": "bd696c2aaa21edbda017ef7ac055a83d5e198ca3",
+      "bytes": 2263,
+      "sha256": "c292abbce17a16135d1e3bc977e2198593a267f81cfcb413e9149a42f140a1da",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/src/components/ui/checkbox.tsx",
+      "mode": "100644",
+      "git_blob": "a3ec184106ba37378f68e7c8ad0a47b13f82727c",
+      "bytes": 1214,
+      "sha256": "ecef2a947a216ab8db86ed851bbe3902f6f8e5604e97d169c36a35ab4197b83d",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/src/components/ui/command.tsx",
+      "mode": "100644",
+      "git_blob": "8cb4ca7a583da481866f41692bb50ba7cfba709d",
+      "bytes": 4818,
+      "sha256": "4fb4f8f95dfbe884ae598661b80e541d62eacdfe2101beab58819ab58b96c2ea",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/src/components/ui/confirm-dialog.tsx",
+      "mode": "100644",
+      "git_blob": "105c562f0307732396f5204f016ef4a64338fd96",
+      "bytes": 1729,
+      "sha256": "623b2d826cefae12c758f9c887e73a6c93a0ade9c4c3a74b79a191f5ec4c7fa0",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/src/components/ui/dialog.tsx",
+      "mode": "100644",
+      "git_blob": "80d7ad60483a9c56cfe75504a230b67ec4661c06",
+      "bytes": 4303,
+      "sha256": "0596a93da7e192fd71780e43d1b7d9dcb55e98590b9f1240c3b3a14a06e63b91",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/src/components/ui/dropdown-menu.tsx",
+      "mode": "100644",
+      "git_blob": "bffc327629cd0e0ccc4309366a6b6d395ca55f53",
+      "bytes": 8418,
+      "sha256": "0aaca96982afd01a7b719cf6be95442b783c84e20867ddec5344aeeb5eba95a2",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/src/components/ui/input.tsx",
+      "mode": "100644",
+      "git_blob": "0d99e38f9de391d864c5dec92500b078287a0e6f",
+      "bytes": 988,
+      "sha256": "8ece36f6979c791fbd96b7a107db1430783b3420fa32349747e81a2f3182e25e",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/src/components/ui/label.tsx",
+      "mode": "100644",
+      "git_blob": "1ac80f701ebfe9dc02d632c08cafade732e46625",
+      "bytes": 606,
+      "sha256": "a476e41f08b9de5bd447de66a33d8bc2ad18f2fa6b96c064778bab4b6f439f4c",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/src/components/ui/popover.tsx",
+      "mode": "100644",
+      "git_blob": "9519cc488799a0b5ac420ac3e582283bf27154da",
+      "bytes": 2357,
+      "sha256": "4877cb84c5f777e4cb5bcf50f2af8dfdb57d302fa61bf53f52a9bf4102ef88c8",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/src/components/ui/progress.tsx",
+      "mode": "100644",
+      "git_blob": "bca13feb4b32bdc92fb07a729eef3249e8ddcc8d",
+      "bytes": 735,
+      "sha256": "623186ddc7daaf6b0a868b62c02a826a1fe8a793f531b9b071711e357bb32a4d",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/src/components/ui/select.tsx",
+      "mode": "100644",
+      "git_blob": "2fa641c74827bac14e5dea18aa9fd7c09ebb67ca",
+      "bytes": 6437,
+      "sha256": "2987f4fba3725a6f3aba84e888e3ae8dc7c42ab06ab8c285413830935651021c",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/src/components/ui/separator.tsx",
+      "mode": "100644",
+      "git_blob": "4c24b2a884d7526faa0e527ddf84fb5beb99289b",
+      "bytes": 694,
+      "sha256": "bbd16f077778bb123cc86a16384751f53bfd22cee5cfdf6715862bdcd711cf12",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/src/components/ui/sheet.tsx",
+      "mode": "100644",
+      "git_blob": "5963090576c441a3c5aab8e2fa34d7741a69801f",
+      "bytes": 4188,
+      "sha256": "da11633018b8af9a11eb86a0d64cd63eee031ef86a84ff35e9735f6d35333d49",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/src/components/ui/sidebar.tsx",
+      "mode": "100644",
+      "git_blob": "0e68ad6fe95704715d7b697c026899ab3a04a705",
+      "bytes": 22161,
+      "sha256": "c53305826be5d372d50c7dc3911fa696aa07a28d3856827cce6376daac43e6af",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/src/components/ui/skeleton.tsx",
+      "mode": "100644",
+      "git_blob": "32ea0ef7fb4d4f7cb0affa7a3b329533b5f2af23",
+      "bytes": 276,
+      "sha256": "f2aea81d8baf2b621945382aabac150e3db40f20d19ac1abea7aff805f1dc33c",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/src/components/ui/sonner.tsx",
+      "mode": "100644",
+      "git_blob": "9b20afe2e10fd9b94d1abc1ae732054b2fb9821c",
+      "bytes": 1034,
+      "sha256": "13ccc9b0fe4248e622f83a1d3b2f0566b72b5e04162d7d0c8db8945ecc71b55f",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/src/components/ui/switch.tsx",
+      "mode": "100644",
+      "git_blob": "41860c40e0c6da8edd42c442f29df2b880499a18",
+      "bytes": 1031,
+      "sha256": "df2c8e71723caa5524e04e26d43f5b780799b8552077833cdea718e933771416",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/src/components/ui/table.tsx",
+      "mode": "100644",
+      "git_blob": "995f96e621586bfe0d34d3c7307515a01dd596a9",
+      "bytes": 2637,
+      "sha256": "baa21552def532daa7062d9d8ab294d8d02b62422cc7a7d50657e95ae63bb410",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/src/components/ui/tabs.tsx",
+      "mode": "100644",
+      "git_blob": "f42464ac47ba388917f0769109b0bba3139f21d6",
+      "bytes": 3767,
+      "sha256": "f853d51eb5804a6e828997fdcec65f8d9aab4d855e3a037a77a2622b98e9898d",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/src/components/ui/textarea.tsx",
+      "mode": "100644",
+      "git_blob": "7f21b5e78a4c1c23bf41b6be206f3f81dc84fe99",
+      "bytes": 759,
+      "sha256": "de4e9fb0fd8e8ed10ea2e475ffe202a922ffe77e3f3edb2c517b0781447ad1b4",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/src/components/ui/tooltip.tsx",
+      "mode": "100644",
+      "git_blob": "bcbfb67f86a7eed9c8d10f195125676879ac6ff5",
+      "bytes": 1887,
+      "sha256": "7beb8268e4158df1ca98735c30aaf6659b2a2f04071b62495ed92dceaaa87d81",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/src/components/workflow/analytics-overlay.tsx",
+      "mode": "100644",
+      "git_blob": "6f050cdfdc5cb8f26f12e99e169f821f99c7467e",
+      "bytes": 3560,
+      "sha256": "3feba611d98463006daeb35f62294d0f3da89070b8b96e0655ba7c9ebb42cfbd",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/src/components/workflow/deletable-edge.tsx",
+      "mode": "100644",
+      "git_blob": "7020b4fb2e902401a72db41744a544d80ad957c7",
+      "bytes": 1904,
+      "sha256": "5cd05bd818a2cd049ea8c874666bd6069cf3af476fb3fe77fe8bed841c438731",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/src/components/workflow/enroll-leads-dialog.tsx",
+      "mode": "100644",
+      "git_blob": "aaff84efe20c98e4995d83616a608ac9cd84f0c8",
+      "bytes": 6502,
+      "sha256": "862828051a21cb3bae77d4e52d25e53476b7da9f17b09281b203d1eab5099520",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/src/components/workflow/node-detail-panel.tsx",
+      "mode": "100644",
+      "git_blob": "ab2c17a307671dbccbb21572a144fd8f8bdb23af",
+      "bytes": 23937,
+      "sha256": "7ef7afad20efbf74f6f14df41f9ffd087bda3dcda5f08d44d8a17024d0e6e800",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/src/components/workflow/node-palette.tsx",
+      "mode": "100644",
+      "git_blob": "fb07d28be75f674541ad580d26b34fe3bdf1cb46",
+      "bytes": 6680,
+      "sha256": "ba62ac2ceb4ab616443ff114eaf1ba8f88f31912d0517ad337a2332c48c54d8d",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/src/components/workflow/properties-panel.tsx",
+      "mode": "100644",
+      "git_blob": "fa24d092dee6d7a12d6d5622559df0b77d9aa332",
+      "bytes": 17405,
+      "sha256": "2063fbce94687958e722c79affc40d616899290abbb8f6a8b8223266ab1a2016",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/src/components/workflow/run-monitor.tsx",
+      "mode": "100644",
+      "git_blob": "7a4bbbc8ea5a336e5601d6c5c9487e5f3c6628ce",
+      "bytes": 35181,
+      "sha256": "a0f1af00ed3804c690cd82e9daeb7f411fcee1d66a63afae4209ac03878cff67",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/src/components/workflow/simple-mode.tsx",
+      "mode": "100644",
+      "git_blob": "7767843a331647858137a6a55634f51ab0bcfe20",
+      "bytes": 22928,
+      "sha256": "434a27ab11ae8511308c8eb757a41af60e8cf30a8b37b1deb705b6d47193789b",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/src/components/workflow/simulation-panel.tsx",
+      "mode": "100644",
+      "git_blob": "7466c0849243db9588a6bb8a41600209afb0828f",
+      "bytes": 9858,
+      "sha256": "051ec276e3adf1c4c8d565aebd03de01d490c0a6468a6e750e758b451165c539",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/src/components/workflow/variable-mapper.tsx",
+      "mode": "100644",
+      "git_blob": "1471a1980266fdad87f3c5bdea9c78e95d8c67cc",
+      "bytes": 7259,
+      "sha256": "80111537439898efa61843696e2fda343af34a070f514452397e6f77a4340e68",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/src/components/workflow/workflow-builder.tsx",
+      "mode": "100644",
+      "git_blob": "df10311465ed4100ff15eb2f8923c69676a627cc",
+      "bytes": 19429,
+      "sha256": "3021135b155e5bbf11679e8450ce6abd44e20d97fdf5c2f04c96189d7ed2bd77",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/src/components/workflow/workflow-node.tsx",
+      "mode": "100644",
+      "git_blob": "8af9368f847f0f783565ced14eb2ee7fe3990f7b",
+      "bytes": 9098,
+      "sha256": "04c4096568b2b9ba5163ad0f39f5320f80babbdff7e3c884bb961ac5a6a2695a",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/src/hooks/use-mobile.ts",
+      "mode": "100644",
+      "git_blob": "2b0fe1dfef3b17850bbac040665f514a8ffd0f15",
+      "bytes": 565,
+      "sha256": "ad0936f84f1df79d3697bfbff9c18f8ad58431c1cbaf2359c6a853b0fcc9f28b",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/src/lib/api.test.ts",
+      "mode": "100644",
+      "git_blob": "c6c7d1805b0e5a3361c9a864240f2c4263b6cf38",
+      "bytes": 2601,
+      "sha256": "f972fb33c6bdb2fc0a4171a79c9581c5e278579cc95e4c1aa96ba6efe2672c76",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/src/lib/api.ts",
+      "mode": "100644",
+      "git_blob": "f09227358602c99ae7018731a3a6b1cc22f2aa3c",
+      "bytes": 3516,
+      "sha256": "f53169dbbecb408838bf2f65ee58ea4fbe33295963bc5e70d0a525149c5e086a",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/src/lib/auth.test.tsx",
+      "mode": "100644",
+      "git_blob": "dde1f146dc5749a4b45d44e0ac7b6e3fe66472c5",
+      "bytes": 3783,
+      "sha256": "e24fd4b6d030b4d24b8a5bfa9e88da9acefa4739f7ec2846b53b0ae45ae594db",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/src/lib/auth.tsx",
+      "mode": "100644",
+      "git_blob": "6eab4a5fca6e5700ecd8eecf32d729d62b7c306f",
+      "bytes": 3395,
+      "sha256": "6c57a499770e36bbb95d2f89f715e9d35a47067d2f9eb7121c3f17ae0b822826",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/src/lib/mock-data.ts",
+      "mode": "100644",
+      "git_blob": "a1486361608a1082615f09af76a048d8d4feec0d",
+      "bytes": 20251,
+      "sha256": "6ba2dcaf36166d36181c7d998c47fecf38638674255d86236f3f4a181ea25ca9",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/src/lib/types.ts",
+      "mode": "100644",
+      "git_blob": "1a6c9a5d839f64d777955ca094333bf939c967fa",
+      "bytes": 26053,
+      "sha256": "f536a6cdca0fce42755e9229c2a2fb87b0fb225f5bb869eb3d03115be124b118",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/src/lib/utils.ts",
+      "mode": "100644",
+      "git_blob": "bd0c391ddd1088e9067844c48835bf4abcd61783",
+      "bytes": 166,
+      "sha256": "7c8c3dfc0cdd370d44932828eb067ef771c8fe7996693221d5d4b90af6d54f2d",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/src/test/setup.ts",
+      "mode": "100644",
+      "git_blob": "f149f27ae4bbd7cc4f6253570176a4fce144ef95",
+      "bytes": 43,
+      "sha256": "9b328c4843431fa76d8de00008fc159e95f99a840211085ff3b8f25e53d14409",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/tsconfig.json",
+      "mode": "100644",
+      "git_blob": "cf9c65d3e0676a0169374d827f7abb97497789ef",
+      "bytes": 670,
+      "sha256": "5c51df4c59f4510d8c7dadf07a5c32132228826a3b331da5e286207b4df7ef9c",
+      "disposition": "included"
+    },
+    {
+      "path": "frontend/vitest.config.ts",
+      "mode": "100644",
+      "git_blob": "8484cb33600be17e8ec438254a187a61ce503bf0",
+      "bytes": 467,
+      "sha256": "4d50ffd52661b93f959a18b51264f5bd663b166be6ea6f17fa42f31aa4e995bf",
+      "disposition": "included"
+    }
+  ]
+}

@@ -1,0 +1,1543 @@
+{
+  "audit_date": "2026-10-11",
+  "criteria": {
+    "Architecture": 15,
+    "Code maintainability": 15,
+    "Security / permissions": 20,
+    "Sending / data reliability": 20,
+    "Product fit": 10,
+    "Tests / verification": 10,
+    "Operations": 10
+  },
+  "formula": "sum(dimension_score_0_to_10 * weight_percent) / 10; rounded half up",
+  "repositories": [
+    {
+      "name": "Quickly",
+      "scores": [
+        6,
+        5,
+        4,
+        4,
+        9,
+        6,
+        5
+      ],
+      "reuse": 8,
+      "verdict": "Closest product scaffold; replace the sending core and strengthen the trust boundary before team deployment.",
+      "architecture": "React/Vite SPA \u2192 FastAPI routers \u2192 async SQLAlchemy/PostgreSQL. APScheduler starts inside the API lifespan and dispatches asyncio tasks. Gmail API, Microsoft Graph and SMTP/IMAP implement sending and inbox sync. Tracking, notifications, outbound webhooks, backup/restore and MCP share the application and database.",
+      "code": "Feature-rich but concentrated: unibox.py is 4,089 lines; CampaignDetail.jsx 3,365; campaign routes 2,959. Business rules, persistence and provider work are interleaved. Two large sending paths remain in jobs.py, increasing drift risk. The Python requirements use broad lower bounds and any-llm-sdk[all], making reproducible builds and the dependency surface harder to control.",
+      "components": [
+        {
+          "name": "Campaigns and sequences",
+          "score": 8,
+          "assessment": "Broad sequence, variant, preview and scheduling workflows; route and page size make safe change expensive.",
+          "evidence": {
+            "path": "app/routers/campaigns.py",
+            "line": 1519,
+            "url": "https://github.com/AbdelftahZowail/Quickly/blob/edca964b8bfd56e621b491aba6302b0981545898/app/routers/campaigns.py#L1519"
+          }
+        },
+        {
+          "name": "Mailbox/provider adapters",
+          "score": 8,
+          "assessment": "Gmail, Graph and SMTP support with token refresh and diagnostics; retain behind a narrow tested interface.",
+          "evidence": {
+            "path": "app/sender.py",
+            "line": 647,
+            "url": "https://github.com/AbdelftahZowail/Quickly/blob/edca964b8bfd56e621b491aba6302b0981545898/app/sender.py#L647"
+          }
+        },
+        {
+          "name": "Sending and scheduling",
+          "score": 4,
+          "assessment": "Preflight checks exist, but task ownership is process-local and provider/database outcomes are not atomic.",
+          "evidence": {
+            "path": "app/jobs.py",
+            "line": 1872,
+            "url": "https://github.com/AbdelftahZowail/Quickly/blob/edca964b8bfd56e621b491aba6302b0981545898/app/jobs.py#L1872"
+          }
+        },
+        {
+          "name": "Inbox and reply handling",
+          "score": 7,
+          "assessment": "Substantial unified-inbox implementation; split provider sync, matching and presentation into smaller modules.",
+          "evidence": {
+            "path": "app/unibox.py",
+            "line": 3,
+            "url": "https://github.com/AbdelftahZowail/Quickly/blob/edca964b8bfd56e621b491aba6302b0981545898/app/unibox.py#L3"
+          }
+        },
+        {
+          "name": "Identity and permissions",
+          "score": 4,
+          "assessment": "HttpOnly JWT sessions, API keys and admin checks exist; most feature routers require only a logged-in user.",
+          "evidence": {
+            "path": "app/main.py",
+            "line": 222,
+            "url": "https://github.com/AbdelftahZowail/Quickly/blob/edca964b8bfd56e621b491aba6302b0981545898/app/main.py#L222"
+          }
+        },
+        {
+          "name": "Data and migrations",
+          "score": 5,
+          "assessment": "Useful indexes and queue uniqueness; startup ALTER TABLE/create_all is weaker than reviewed versioned migrations.",
+          "evidence": {
+            "path": "app/database.py",
+            "line": 85,
+            "url": "https://github.com/AbdelftahZowail/Quickly/blob/edca964b8bfd56e621b491aba6302b0981545898/app/database.py#L85"
+          }
+        },
+        {
+          "name": "Integrations and AI",
+          "score": 6,
+          "assessment": "Useful MCP, n8n and AI classification surfaces; webhook delivery is best effort and broad provider extras increase maintenance.",
+          "evidence": {
+            "path": "app/webhooks.py",
+            "line": 60,
+            "url": "https://github.com/AbdelftahZowail/Quickly/blob/edca964b8bfd56e621b491aba6302b0981545898/app/webhooks.py#L60"
+          }
+        },
+        {
+          "name": "Frontend components",
+          "score": 6,
+          "assessment": "Functional React UI and sanitised inbox component, but large untyped JSX pages and inconsistent HTML sinks.",
+          "evidence": {
+            "path": "frontend/src/components/EmailContent.jsx",
+            "line": 16,
+            "url": "https://github.com/AbdelftahZowail/Quickly/blob/edca964b8bfd56e621b491aba6302b0981545898/frontend/src/components/EmailContent.jsx#L16"
+          }
+        },
+        {
+          "name": "Operations and tests",
+          "score": 5,
+          "assessment": "Backup/restore and health features are useful. Release workflow builds images without a visible test gate.",
+          "evidence": {
+            "path": "app/backup_package.py",
+            "line": 2,
+            "url": "https://github.com/AbdelftahZowail/Quickly/blob/edca964b8bfd56e621b491aba6302b0981545898/app/backup_package.py#L2"
+          }
+        }
+      ],
+      "findings": [
+        {
+          "id": "Q1",
+          "severity": "High",
+          "title": "Duplicate sending across processes or ambiguous retries",
+          "detail": "The scanner prevents duplicate dispatch with an in-memory set. send_slot_job reads an unclaimed queue row, commits an EmailLog before provider I/O, and removes the slot after success. Two app processes can select the same row; a crash after provider acceptance but before slot removal leaves work eligible for another send. Queue-row uniqueness does not enforce delivery uniqueness.",
+          "fix": "Use durable send attempts, an atomic claim/lease and one canonical delivery state machine; quarantine ambiguous provider outcomes for reconciliation.",
+          "validation": "Source-confirmed; failure scenario not exercised end to end",
+          "evidence": [
+            {
+              "path": "app/jobs.py",
+              "line": 1872,
+              "url": "https://github.com/AbdelftahZowail/Quickly/blob/edca964b8bfd56e621b491aba6302b0981545898/app/jobs.py#L1872"
+            },
+            {
+              "path": "app/jobs.py",
+              "line": 1122,
+              "url": "https://github.com/AbdelftahZowail/Quickly/blob/edca964b8bfd56e621b491aba6302b0981545898/app/jobs.py#L1122"
+            },
+            {
+              "path": "app/jobs.py",
+              "line": 850,
+              "url": "https://github.com/AbdelftahZowail/Quickly/blob/edca964b8bfd56e621b491aba6302b0981545898/app/jobs.py#L850"
+            }
+          ]
+        },
+        {
+          "id": "Q2",
+          "severity": "High",
+          "title": "Encryption key is stored with encrypted mailbox credentials",
+          "detail": "Settings initialization writes both generated and environment-supplied encryption keys into the settings database. A database-only disclosure can therefore reveal the key needed to decrypt sensitive columns; setting an environment key alone does not avoid the initial copy.",
+          "fix": "Keep wrapping keys outside the database in a secret manager/KMS; migrate existing key rows and test backup/key separation.",
+          "validation": "Source-confirmed; failure scenario not exercised end to end",
+          "evidence": [
+            {
+              "path": "app/settings_manager.py",
+              "line": 270,
+              "url": "https://github.com/AbdelftahZowail/Quickly/blob/edca964b8bfd56e621b491aba6302b0981545898/app/settings_manager.py#L270"
+            },
+            {
+              "path": "app/security.py",
+              "line": 115,
+              "url": "https://github.com/AbdelftahZowail/Quickly/blob/edca964b8bfd56e621b491aba6302b0981545898/app/security.py#L115"
+            }
+          ]
+        },
+        {
+          "id": "Q3",
+          "severity": "High",
+          "title": "Webhook endpoint accepts unrestricted destinations",
+          "detail": "An authenticated user can create/test webhooks. The schema accepts a plain string URL, the route only strips it, and the sender performs an HTTP request without the repository SSRF validator. Internal network destinations can be requested from the application host.",
+          "fix": "Restrict webhook configuration to administrators; validate resolved destinations and redirects at connection time; enforce outbound network policy.",
+          "validation": "Source-confirmed; failure scenario not exercised end to end",
+          "evidence": [
+            {
+              "path": "app/schemas.py",
+              "line": 452,
+              "url": "https://github.com/AbdelftahZowail/Quickly/blob/edca964b8bfd56e621b491aba6302b0981545898/app/schemas.py#L452"
+            },
+            {
+              "path": "app/routers/settings.py",
+              "line": 76,
+              "url": "https://github.com/AbdelftahZowail/Quickly/blob/edca964b8bfd56e621b491aba6302b0981545898/app/routers/settings.py#L76"
+            },
+            {
+              "path": "app/webhooks.py",
+              "line": 72,
+              "url": "https://github.com/AbdelftahZowail/Quickly/blob/edca964b8bfd56e621b491aba6302b0981545898/app/webhooks.py#L72"
+            }
+          ]
+        },
+        {
+          "id": "Q4",
+          "severity": "Medium",
+          "title": "Outbound events can disappear during outages",
+          "detail": "Webhook failures return False and the caller does not persist a retry or delivery record. Downstream CRM/reporting systems can silently miss events.",
+          "fix": "Transactional outbox, signed event IDs, retry schedule, dead-letter queue and replay UI.",
+          "validation": "Source-confirmed; failure scenario not exercised end to end",
+          "evidence": [
+            {
+              "path": "app/webhooks.py",
+              "line": 60,
+              "url": "https://github.com/AbdelftahZowail/Quickly/blob/edca964b8bfd56e621b491aba6302b0981545898/app/webhooks.py#L60"
+            },
+            {
+              "path": "app/webhooks.py",
+              "line": 114,
+              "url": "https://github.com/AbdelftahZowail/Quickly/blob/edca964b8bfd56e621b491aba6302b0981545898/app/webhooks.py#L114"
+            }
+          ]
+        },
+        {
+          "id": "Q5",
+          "severity": "Medium",
+          "title": "HTML sanitisation is inconsistent",
+          "detail": "The inbox has DOMPurify, but campaign HTML previews and schedule previews use raw HTML rendering. Imported/edited content can reach these sinks; exact exploitability also depends on CSP and content provenance.",
+          "fix": "Use one sanitised email renderer everywhere, preferably sandboxed with remote images blocked by default.",
+          "validation": "Source-confirmed; failure scenario not exercised end to end",
+          "evidence": [
+            {
+              "path": "frontend/src/pages/CampaignDetail.jsx",
+              "line": 2340,
+              "url": "https://github.com/AbdelftahZowail/Quickly/blob/edca964b8bfd56e621b491aba6302b0981545898/frontend/src/pages/CampaignDetail.jsx#L2340"
+            },
+            {
+              "path": "frontend/src/pages/Schedule.jsx",
+              "line": 101,
+              "url": "https://github.com/AbdelftahZowail/Quickly/blob/edca964b8bfd56e621b491aba6302b0981545898/frontend/src/pages/Schedule.jsx#L101"
+            }
+          ]
+        }
+      ],
+      "meta": {
+        "name": "Quickly",
+        "remote": "https://github.com/AbdelftahZowail/Quickly.git",
+        "commit": "edca964b8bfd56e621b491aba6302b0981545898",
+        "commit_date": "2026-09-23",
+        "tracked_files": 290,
+        "source_files": 183,
+        "source_lines": 66218,
+        "test_files": 39,
+        "ci": [
+          ".github/workflows/deploy-pages.yml",
+          ".github/workflows/release.yml"
+        ],
+        "largest_files": [
+          [
+            "app/unibox.py",
+            4089
+          ],
+          [
+            "frontend/src/pages/CampaignDetail.jsx",
+            3365
+          ],
+          [
+            "app/routers/campaigns.py",
+            2959
+          ],
+          [
+            "frontend/src/pages/Inboxes.jsx",
+            2511
+          ],
+          [
+            "tests/test_queue_logic.py",
+            2418
+          ],
+          [
+            "frontend/src/pages/Settings.jsx",
+            2144
+          ],
+          [
+            "app/jobs.py",
+            1928
+          ],
+          [
+            "app/queue_logic.py",
+            1771
+          ]
+        ]
+      },
+      "overall": 53
+    },
+    {
+      "name": "Wu-Wei-Mail",
+      "scores": [
+        7,
+        6,
+        5,
+        4,
+        8,
+        6,
+        4
+      ],
+      "reuse": 7,
+      "verdict": "Best architectural reference for workspaces and separated workers; delivery correctness and security recovery need repairs.",
+      "architecture": "Next.js/React frontend \u2192 FastAPI routers \u2192 service modules \u2192 SQLAlchemy/PostgreSQL, with Alembic migrations. Celery/Redis separates periodic scheduling, sending, inbox sync, workflows and prospecting. Workspace IDs appear throughout the schema and sampled service calls; user roles and scoped workspace API tokens are implemented.",
+      "code": "Clearer layering than Quickly and more explicit workspace concepts. Scope has expanded into visual workflows, prospecting, automatic replies and external warmup providers. That breadth creates many paths to the same side effects. Several frontend pages exceed 1,400 lines and the main workflow executor is 1,529 lines. Many backend tests use mocked sessions/authentication, so passing tests do not establish SQL or authorization correctness.",
+      "components": [
+        {
+          "name": "Workspace and team model",
+          "score": 7,
+          "assessment": "Explicit workspace IDs, owner/admin/member team controls and scoped API tokens are valuable reference designs.",
+          "evidence": {
+            "path": "backend/app/utils/security.py",
+            "line": 187,
+            "url": "https://github.com/LuiHedlund02/Wu-Wei-Mail/blob/6002b8850d685c9ad275eb1cc10a4ce0c8299145/backend/app/utils/security.py#L187"
+          }
+        },
+        {
+          "name": "Campaigns and leads",
+          "score": 7,
+          "assessment": "Service boundaries and workspace filters exist; campaign start is available to ordinary authenticated members.",
+          "evidence": {
+            "path": "backend/app/routers/campaigns.py",
+            "line": 25,
+            "url": "https://github.com/LuiHedlund02/Wu-Wei-Mail/blob/6002b8850d685c9ad275eb1cc10a4ce0c8299145/backend/app/routers/campaigns.py#L25"
+          }
+        },
+        {
+          "name": "Scheduler and sender",
+          "score": 3,
+          "assessment": "Queue isolation and row locks help, but enqueue-before-commit and optimistic recovery leave correctness gaps.",
+          "evidence": {
+            "path": "backend/app/workers/scheduler.py",
+            "line": 114,
+            "url": "https://github.com/LuiHedlund02/Wu-Wei-Mail/blob/6002b8850d685c9ad275eb1cc10a4ce0c8299145/backend/app/workers/scheduler.py#L114"
+          }
+        },
+        {
+          "name": "Inbox and conversations",
+          "score": 6,
+          "assessment": "Dedicated sync and conversation models; end-to-end provider consistency still needs fault tests.",
+          "evidence": {
+            "path": "backend/app/workers/inbox_sync_worker.py",
+            "line": 3,
+            "url": "https://github.com/LuiHedlund02/Wu-Wei-Mail/blob/6002b8850d685c9ad275eb1cc10a4ce0c8299145/backend/app/workers/inbox_sync_worker.py#L3"
+          }
+        },
+        {
+          "name": "Workflow engine",
+          "score": 6,
+          "assessment": "Nodes, execution logs and workflow versioning are useful, but too much scope for the initial 10-user core.",
+          "evidence": {
+            "path": "backend/app/services/workflow/node_executors.py",
+            "line": 15,
+            "url": "https://github.com/LuiHedlund02/Wu-Wei-Mail/blob/6002b8850d685c9ad275eb1cc10a4ce0c8299145/backend/app/services/workflow/node_executors.py#L15"
+          }
+        },
+        {
+          "name": "Prospecting and AI",
+          "score": 5,
+          "assessment": "Model routing, discovery and quality gates exist; website fetching needs an isolated network boundary.",
+          "evidence": {
+            "path": "backend/app/services/prospecting/website_validator.py",
+            "line": 87,
+            "url": "https://github.com/LuiHedlund02/Wu-Wei-Mail/blob/6002b8850d685c9ad275eb1cc10a4ce0c8299145/backend/app/services/prospecting/website_validator.py#L87"
+          }
+        },
+        {
+          "name": "Warmup and deliverability",
+          "score": 4,
+          "assessment": "Provider adapters and health policy exist; not a proven autonomous warmup network.",
+          "evidence": {
+            "path": "backend/app/config.py",
+            "line": 83,
+            "url": "https://github.com/LuiHedlund02/Wu-Wei-Mail/blob/6002b8850d685c9ad275eb1cc10a4ce0c8299145/backend/app/config.py#L83"
+          }
+        },
+        {
+          "name": "Frontend components",
+          "score": 6,
+          "assessment": "Typed Next.js UI, visual workflow library and some component tests; very large feature pages.",
+          "evidence": {
+            "path": "frontend/package.json",
+            "line": 17,
+            "url": "https://github.com/LuiHedlund02/Wu-Wei-Mail/blob/6002b8850d685c9ad275eb1cc10a4ce0c8299145/frontend/package.json#L17"
+          }
+        },
+        {
+          "name": "Migrations, CI and deployment",
+          "score": 5,
+          "assessment": "Alembic and CI definitions are positives; CI omits the separate test requirements and compose only starts data services.",
+          "evidence": {
+            "path": "docker-compose.yml",
+            "line": 1,
+            "url": "https://github.com/LuiHedlund02/Wu-Wei-Mail/blob/6002b8850d685c9ad275eb1cc10a4ce0c8299145/docker-compose.yml#L1"
+          }
+        }
+      ],
+      "findings": [
+        {
+          "id": "W1",
+          "severity": "High",
+          "title": "Interrupted send is promoted to sent without proof",
+          "detail": "The sender commits status=sending before provider I/O. On a subsequent execution, any existing sending record is changed to sent and finalized without asking the provider. A crash before the network call therefore produces a false sent record and advances the sequence.",
+          "fix": "Introduce unknown/ambiguous states and reconcile using a stable message identity; never infer acceptance from a reserved attempt.",
+          "validation": "Reproduced against actual sender function with mocked DB/provider: reserved attempt became sent without a provider call.",
+          "evidence": [
+            {
+              "path": "backend/app/workers/sender.py",
+              "line": 284,
+              "url": "https://github.com/LuiHedlund02/Wu-Wei-Mail/blob/6002b8850d685c9ad275eb1cc10a4ce0c8299145/backend/app/workers/sender.py#L284"
+            },
+            {
+              "path": "backend/app/workers/sender.py",
+              "line": 367,
+              "url": "https://github.com/LuiHedlund02/Wu-Wei-Mail/blob/6002b8850d685c9ad275eb1cc10a4ce0c8299145/backend/app/workers/sender.py#L367"
+            }
+          ]
+        },
+        {
+          "id": "W2",
+          "severity": "High",
+          "title": "No final pause/suppression gate in campaign sender",
+          "detail": "The scheduler checks active campaigns and suppression before enqueueing, but the sender does not recheck campaign status or suppression before the provider call. A pause or unsubscribe after enqueueing can be ignored. The scheduler also publishes the Celery task before committing the in_sequence state.",
+          "fix": "Recheck cancellation, suppression and permissions immediately before sending; dispatch from a committed outbox and enforce uniqueness on delivery attempts.",
+          "validation": "Paused-campaign send reproduced with mocked DB/provider. Suppression/enqueue ordering conclusions are source-confirmed.",
+          "evidence": [
+            {
+              "path": "backend/app/workers/scheduler.py",
+              "line": 114,
+              "url": "https://github.com/LuiHedlund02/Wu-Wei-Mail/blob/6002b8850d685c9ad275eb1cc10a4ce0c8299145/backend/app/workers/scheduler.py#L114"
+            },
+            {
+              "path": "backend/app/workers/sender.py",
+              "line": 212,
+              "url": "https://github.com/LuiHedlund02/Wu-Wei-Mail/blob/6002b8850d685c9ad275eb1cc10a4ce0c8299145/backend/app/workers/sender.py#L212"
+            },
+            {
+              "path": "backend/app/workers/sender.py",
+              "line": 367,
+              "url": "https://github.com/LuiHedlund02/Wu-Wei-Mail/blob/6002b8850d685c9ad275eb1cc10a4ce0c8299145/backend/app/workers/sender.py#L367"
+            }
+          ]
+        },
+        {
+          "id": "W3",
+          "severity": "High",
+          "title": "Refresh-token reuse revocation is rolled back",
+          "detail": "On reuse, rotate_refresh_token updates all tokens and flushes, then raises ValueError. The refresh route converts that to HTTPException; get_db rolls back on exceptions. The intended family revocation is therefore not committed on this path.",
+          "fix": "Commit security revocation in an independent transaction before returning the authentication failure; add a real-database replay test.",
+          "validation": "Source-confirmed; failure scenario not exercised end to end",
+          "evidence": [
+            {
+              "path": "backend/app/utils/security.py",
+              "line": 119,
+              "url": "https://github.com/LuiHedlund02/Wu-Wei-Mail/blob/6002b8850d685c9ad275eb1cc10a4ce0c8299145/backend/app/utils/security.py#L119"
+            },
+            {
+              "path": "backend/app/routers/auth.py",
+              "line": 134,
+              "url": "https://github.com/LuiHedlund02/Wu-Wei-Mail/blob/6002b8850d685c9ad275eb1cc10a4ce0c8299145/backend/app/routers/auth.py#L134"
+            },
+            {
+              "path": "backend/app/database.py",
+              "line": 35,
+              "url": "https://github.com/LuiHedlund02/Wu-Wei-Mail/blob/6002b8850d685c9ad275eb1cc10a4ce0c8299145/backend/app/database.py#L35"
+            }
+          ]
+        },
+        {
+          "id": "W4",
+          "severity": "High",
+          "title": "Website validation has no visible private-network guard",
+          "detail": "The website fetcher accepts a URL, follows redirects and can launch Playwright, with no address allow/deny check in these fetch paths. If untrusted lead/website data reaches it, the server can access private services. This is a source-level reachable-input concern; no internal-network request was made.",
+          "fix": "Run fetching in an egress-restricted worker; validate DNS and every redirect and cap response sizes and browser resources.",
+          "validation": "Source-confirmed; failure scenario not exercised end to end",
+          "evidence": [
+            {
+              "path": "backend/app/services/prospecting/website_validator.py",
+              "line": 87,
+              "url": "https://github.com/LuiHedlund02/Wu-Wei-Mail/blob/6002b8850d685c9ad275eb1cc10a4ce0c8299145/backend/app/services/prospecting/website_validator.py#L87"
+            },
+            {
+              "path": "backend/app/services/prospecting/website_validator.py",
+              "line": 116,
+              "url": "https://github.com/LuiHedlund02/Wu-Wei-Mail/blob/6002b8850d685c9ad275eb1cc10a4ce0c8299145/backend/app/services/prospecting/website_validator.py#L116"
+            }
+          ]
+        },
+        {
+          "id": "W5",
+          "severity": "Medium",
+          "title": "CI backend test dependencies are missing",
+          "detail": "The backend test job installs requirements.txt, then invokes pytest; pytest is only declared in requirements-test.txt. A clean runner is not guaranteed to have the test runner. Mock-heavy tests additionally bypass the DB/auth dependencies on many routes.",
+          "fix": "Install the test requirements explicitly; add real Postgres integration tests and role-boundary tests.",
+          "validation": "Source-confirmed; failure scenario not exercised end to end",
+          "evidence": [
+            {
+              "path": ".github/workflows/ci.yml",
+              "line": 50,
+              "url": "https://github.com/LuiHedlund02/Wu-Wei-Mail/blob/6002b8850d685c9ad275eb1cc10a4ce0c8299145/.github/workflows/ci.yml#L50"
+            },
+            {
+              "path": "backend/requirements-test.txt",
+              "line": 1,
+              "url": "https://github.com/LuiHedlund02/Wu-Wei-Mail/blob/6002b8850d685c9ad275eb1cc10a4ce0c8299145/backend/requirements-test.txt#L1"
+            },
+            {
+              "path": "backend/tests/conftest.py",
+              "line": 120,
+              "url": "https://github.com/LuiHedlund02/Wu-Wei-Mail/blob/6002b8850d685c9ad275eb1cc10a4ce0c8299145/backend/tests/conftest.py#L120"
+            }
+          ]
+        }
+      ],
+      "meta": {
+        "name": "Wu-Wei-Mail",
+        "remote": "https://github.com/LuiHedlund02/Wu-Wei-Mail.git",
+        "commit": "6002b8850d685c9ad275eb1cc10a4ce0c8299145",
+        "commit_date": "2026-05-18",
+        "tracked_files": 353,
+        "source_files": 319,
+        "source_lines": 81550,
+        "test_files": 70,
+        "ci": [
+          ".github/workflows/ci.yml"
+        ],
+        "largest_files": [
+          [
+            "frontend/src/app/(app)/auto-responder/page.tsx",
+            2082
+          ],
+          [
+            "frontend/src/app/(app)/leads/page.tsx",
+            1821
+          ],
+          [
+            "backend/app/services/workflow/node_executors.py",
+            1529
+          ],
+          [
+            "frontend/src/app/(app)/prospecting/page.tsx",
+            1478
+          ],
+          [
+            "frontend/src/app/(app)/settings/page.tsx",
+            1435
+          ],
+          [
+            "backend/tests/test_prospecting_tool_calling.py",
+            1187
+          ],
+          [
+            "frontend/src/app/(app)/accounts/page.tsx",
+            1183
+          ],
+          [
+            "frontend/src/lib/types.ts",
+            1084
+          ]
+        ]
+      },
+      "overall": 56
+    },
+    {
+      "name": "cold-cli",
+      "scores": [
+        7,
+        7,
+        5,
+        5,
+        5,
+        8,
+        5
+      ],
+      "reuse": 8,
+      "verdict": "Strongest focused scheduling/test reference; not a 10-user product or a drop-in horizontally scalable engine.",
+      "architecture": "Go/Cobra CLI and exported pkg/engine facade over a mostly flat internal package. SQLite is the default with a Postgres dialect alternative. Eager scheduled_sends records, per-account rotation, provider interfaces and explicit preview/preflight flows make the core behavior relatively understandable. Gmail uses a gws subprocess; SMTP/IMAP have native adapters.",
+      "code": "Good testability through injectable provider interfaces, time and secret resolution, with real SQLite in behavioral tests. However the CLI entry is 2,953 lines and campaign.go 2,150. The public engine Tick simply delegates to the internal engine; hosted callers must acquire the store lock themselves. Workspace identifiers are data ownership metadata, not an authenticated user boundary.",
+      "components": [
+        {
+          "name": "Scheduling and preflight",
+          "score": 8,
+          "assessment": "Eager plans, shared rebalance logic, previews and template validation are excellent behavioral references.",
+          "evidence": {
+            "path": "internal/scheduler.go",
+            "line": 1,
+            "url": "https://github.com/andersmyrmel/cold-cli/blob/041c834156e873a897f19fcf9b5e040896e39d1d/internal/scheduler.go#L1"
+          }
+        },
+        {
+          "name": "Send transport",
+          "score": 6,
+          "assessment": "Provider interfaces and secret references are useful; acceptance and database state still have a crash gap.",
+          "evidence": {
+            "path": "internal/tick.go",
+            "line": 308,
+            "url": "https://github.com/andersmyrmel/cold-cli/blob/041c834156e873a897f19fcf9b5e040896e39d1d/internal/tick.go#L308"
+          }
+        },
+        {
+          "name": "Locking and concurrency",
+          "score": 6,
+          "assessment": "SQLite file locks and Postgres advisory locks protect the CLI tick; public library consumers need explicit locking.",
+          "evidence": {
+            "path": "internal/store.go",
+            "line": 204,
+            "url": "https://github.com/andersmyrmel/cold-cli/blob/041c834156e873a897f19fcf9b5e040896e39d1d/internal/store.go#L204"
+          }
+        },
+        {
+          "name": "Reply and bounce processing",
+          "score": 7,
+          "assessment": "Per-account reply cursors, overlap and deduplication exist; polling failure does not stop outbound sends.",
+          "evidence": {
+            "path": "internal/reply.go",
+            "line": 156,
+            "url": "https://github.com/andersmyrmel/cold-cli/blob/041c834156e873a897f19fcf9b5e040896e39d1d/internal/reply.go#L156"
+          }
+        },
+        {
+          "name": "Data model",
+          "score": 7,
+          "assessment": "Dialect-aware store, indexed send ledger and event history; no application user/role system.",
+          "evidence": {
+            "path": "internal/db.go",
+            "line": 1,
+            "url": "https://github.com/andersmyrmel/cold-cli/blob/041c834156e873a897f19fcf9b5e040896e39d1d/internal/db.go#L1"
+          }
+        },
+        {
+          "name": "Security and governance",
+          "score": 4,
+          "assessment": "Secret references and workspace checks help operators; no shared application identity, approval or immutable audit boundary.",
+          "evidence": {
+            "path": "internal/secrets.go",
+            "line": 1,
+            "url": "https://github.com/andersmyrmel/cold-cli/blob/041c834156e873a897f19fcf9b5e040896e39d1d/internal/secrets.go#L1"
+          }
+        },
+        {
+          "name": "CLI and integration facade",
+          "score": 8,
+          "assessment": "Machine-friendly commands and engine facade are useful for operations and controlled adapters.",
+          "evidence": {
+            "path": "pkg/engine/engine.go",
+            "line": 103,
+            "url": "https://github.com/andersmyrmel/cold-cli/blob/041c834156e873a897f19fcf9b5e040896e39d1d/pkg/engine/engine.go#L103"
+          }
+        },
+        {
+          "name": "Team UI",
+          "score": 0,
+          "assessment": "No web UI or 10-person collaboration layer in this repository.",
+          "evidence": {
+            "path": "README.md",
+            "line": 1,
+            "url": "https://github.com/andersmyrmel/cold-cli/blob/041c834156e873a897f19fcf9b5e040896e39d1d/README.md#L1"
+          }
+        },
+        {
+          "name": "Operations and tests",
+          "score": 7,
+          "assessment": "Substantial behavioral test suite; cron-based deployment and no tracked CI workflow at this commit.",
+          "evidence": {
+            "path": "internal/tick_test.go",
+            "line": 1,
+            "url": "https://github.com/andersmyrmel/cold-cli/blob/041c834156e873a897f19fcf9b5e040896e39d1d/internal/tick_test.go#L1"
+          }
+        }
+      ],
+      "findings": [
+        {
+          "id": "C1",
+          "severity": "High",
+          "title": "Accepted messages can remain pending after DB failure",
+          "detail": "The provider send happens before the scheduled_sends update. An update error is logged and processing continues; the row can remain pending and be sent again. Event inserts are separate statements, so sent counts and stored state can diverge.",
+          "fix": "Persist a delivery attempt before I/O; classify ambiguous outcomes; commit the state/event/outbox changes together after reconciliation.",
+          "validation": "Source-confirmed; failure scenario not exercised end to end",
+          "evidence": [
+            {
+              "path": "internal/tick.go",
+              "line": 308,
+              "url": "https://github.com/andersmyrmel/cold-cli/blob/041c834156e873a897f19fcf9b5e040896e39d1d/internal/tick.go#L308"
+            },
+            {
+              "path": "internal/tick.go",
+              "line": 324,
+              "url": "https://github.com/andersmyrmel/cold-cli/blob/041c834156e873a897f19fcf9b5e040896e39d1d/internal/tick.go#L324"
+            }
+          ]
+        },
+        {
+          "id": "C2",
+          "severity": "Medium",
+          "title": "Global serial pacing constrains multi-mailbox throughput",
+          "detail": "The tick loop sleeps 90\u2013140 seconds between sends across accounts. In the long-run this is roughly 26\u201340 messages/hour for one loop, before provider latency. A typical 8-hour window therefore cannot meet the assumed 500\u20132,000/day envelope. This is a code-derived bound, not a benchmark.",
+          "fix": "Use independent per-mailbox scheduling and bounded concurrency with durable ownership; retain account-level limits.",
+          "validation": "Source-confirmed; failure scenario not exercised end to end",
+          "evidence": [
+            {
+              "path": "internal/tick.go",
+              "line": 381,
+              "url": "https://github.com/andersmyrmel/cold-cli/blob/041c834156e873a897f19fcf9b5e040896e39d1d/internal/tick.go#L381"
+            }
+          ]
+        },
+        {
+          "id": "C3",
+          "severity": "Medium",
+          "title": "Exported engine does not acquire its own tick lock",
+          "detail": "The CLI acquires a lock, but pkg/engine.Tick delegates directly. Wrapping the library in a web/worker service without reproducing the lock protocol permits concurrent ticks.",
+          "fix": "Expose a safe RunTick(Store) API or make ownership part of the engine contract; add two-worker tests.",
+          "validation": "Source-confirmed; failure scenario not exercised end to end",
+          "evidence": [
+            {
+              "path": "pkg/engine/engine.go",
+              "line": 103,
+              "url": "https://github.com/andersmyrmel/cold-cli/blob/041c834156e873a897f19fcf9b5e040896e39d1d/pkg/engine/engine.go#L103"
+            },
+            {
+              "path": "internal/store.go",
+              "line": 204,
+              "url": "https://github.com/andersmyrmel/cold-cli/blob/041c834156e873a897f19fcf9b5e040896e39d1d/internal/store.go#L204"
+            },
+            {
+              "path": "cmd/cold-cli/main.go",
+              "line": 1817,
+              "url": "https://github.com/andersmyrmel/cold-cli/blob/041c834156e873a897f19fcf9b5e040896e39d1d/cmd/cold-cli/main.go#L1817"
+            }
+          ]
+        },
+        {
+          "id": "C4",
+          "severity": "Medium",
+          "title": "Sending continues when reply polling fails",
+          "detail": "Tick logs reply/bounce polling errors and continues to sending. A stale inbox can therefore receive a follow-up despite an unseen reply or opt-out.",
+          "fix": "Gate sending per mailbox on sync freshness, with an explicit operator override and alerting.",
+          "validation": "Source-confirmed; failure scenario not exercised end to end",
+          "evidence": [
+            {
+              "path": "internal/tick.go",
+              "line": 93,
+              "url": "https://github.com/andersmyrmel/cold-cli/blob/041c834156e873a897f19fcf9b5e040896e39d1d/internal/tick.go#L93"
+            },
+            {
+              "path": "internal/tick.go",
+              "line": 177,
+              "url": "https://github.com/andersmyrmel/cold-cli/blob/041c834156e873a897f19fcf9b5e040896e39d1d/internal/tick.go#L177"
+            }
+          ]
+        }
+      ],
+      "meta": {
+        "name": "cold-cli",
+        "remote": "https://github.com/andersmyrmel/cold-cli.git",
+        "commit": "041c834156e873a897f19fcf9b5e040896e39d1d",
+        "commit_date": "2026-10-06",
+        "tracked_files": 80,
+        "source_files": 71,
+        "source_lines": 34097,
+        "test_files": 35,
+        "ci": [],
+        "largest_files": [
+          [
+            "cmd/cold-cli/main.go",
+            2953
+          ],
+          [
+            "internal/campaign_test.go",
+            2384
+          ],
+          [
+            "internal/campaign.go",
+            2150
+          ],
+          [
+            "internal/tick_test.go",
+            1844
+          ],
+          [
+            "internal/scheduler_test.go",
+            1665
+          ],
+          [
+            "cmd/cold-cli/cli_test.go",
+            1622
+          ],
+          [
+            "internal/reply_test.go",
+            1302
+          ],
+          [
+            "internal/email_message.go",
+            1044
+          ]
+        ]
+      },
+      "overall": 59
+    },
+    {
+      "name": "lightreach",
+      "scores": [
+        6,
+        6,
+        2,
+        3,
+        6,
+        2,
+        3
+      ],
+      "reuse": 5,
+      "verdict": "Good small UI/utility reference; unsuitable as-is for a shared or public-facing installation.",
+      "architecture": "TypeScript pnpm/Turborepo monorepo with Next.js Server Actions, shared UI/core/db packages and Drizzle/SQLite in WAL mode. Scheduler and IMAP poller run on timers inside the web process. SMTP credentials use AES-256-GCM. An MCP endpoint has bearer authentication, while the web application has no user authentication.",
+      "code": "The smallest complete web product here, about 14k selected source lines, with understandable package boundaries and pure utilities. Better TypeScript discipline than Quickly, but several pages are still large, and there are no tracked automated test files or CI workflows under the audit heuristic. Single-user assumptions permeate data access and actions.",
+      "components": [
+        {
+          "name": "App shell and UI primitives",
+          "score": 7,
+          "assessment": "Reusable typed components and a compact feature set; useful as design/component references.",
+          "evidence": {
+            "path": "packages/ui/src/components/button.tsx",
+            "line": 1,
+            "url": "https://github.com/nahumoore/lightreach/blob/c0723a25dbcc1b19ec4bdbd0f882de31ace2df87/packages/ui/src/components/button.tsx#L1"
+          }
+        },
+        {
+          "name": "Leads and sequences",
+          "score": 6,
+          "assessment": "CSV mapping, variables and spintax are useful; need stricter input and global-suppression policies.",
+          "evidence": {
+            "path": "packages/core/src/variables.ts",
+            "line": 12,
+            "url": "https://github.com/nahumoore/lightreach/blob/c0723a25dbcc1b19ec4bdbd0f882de31ace2df87/packages/core/src/variables.ts#L12"
+          }
+        },
+        {
+          "name": "Scheduler and retries",
+          "score": 3,
+          "assessment": "Serial guard and conditional claims help within one process; restart blindly requeues all sending rows.",
+          "evidence": {
+            "path": "apps/web/lib/scheduler.ts",
+            "line": 112,
+            "url": "https://github.com/nahumoore/lightreach/blob/c0723a25dbcc1b19ec4bdbd0f882de31ace2df87/apps/web/lib/scheduler.ts#L112"
+          }
+        },
+        {
+          "name": "SMTP transport",
+          "score": 6,
+          "assessment": "Explicit STARTTLS requirement, timeouts and header cleanup are positive.",
+          "evidence": {
+            "path": "packages/core/src/email/transport.ts",
+            "line": 107,
+            "url": "https://github.com/nahumoore/lightreach/blob/c0723a25dbcc1b19ec4bdbd0f882de31ace2df87/packages/core/src/email/transport.ts#L107"
+          }
+        },
+        {
+          "name": "IMAP/inbox",
+          "score": 3,
+          "assessment": "Reply matching and duplicate handling exist, but raw incoming HTML reaches the DOM.",
+          "evidence": {
+            "path": "apps/web/app/(dashboard)/inbox/inbox-view.tsx",
+            "line": 322,
+            "url": "https://github.com/nahumoore/lightreach/blob/c0723a25dbcc1b19ec4bdbd0f882de31ace2df87/apps/web/app/%28dashboard%29/inbox/inbox-view.tsx#L322"
+          }
+        },
+        {
+          "name": "Data storage",
+          "score": 5,
+          "assessment": "SQLite WAL is reasonable for a local tool; shared ownership, roles and durable attempt identity are absent.",
+          "evidence": {
+            "path": "packages/db/src/client.ts",
+            "line": 13,
+            "url": "https://github.com/nahumoore/lightreach/blob/c0723a25dbcc1b19ec4bdbd0f882de31ace2df87/packages/db/src/client.ts#L13"
+          }
+        },
+        {
+          "name": "Identity/MCP",
+          "score": 1,
+          "assessment": "MCP checks a bearer token, but unauthenticated server actions can reveal/rotate that token.",
+          "evidence": {
+            "path": "apps/web/app/(dashboard)/mcp/actions.ts",
+            "line": 23,
+            "url": "https://github.com/nahumoore/lightreach/blob/c0723a25dbcc1b19ec4bdbd0f882de31ace2df87/apps/web/app/%28dashboard%29/mcp/actions.ts#L23"
+          }
+        },
+        {
+          "name": "Deployment",
+          "score": 3,
+          "assessment": "Documented one-process deployment; no safe active/active or independent worker failover.",
+          "evidence": {
+            "path": "CLAUDE.md",
+            "line": 183,
+            "url": "https://github.com/nahumoore/lightreach/blob/c0723a25dbcc1b19ec4bdbd0f882de31ace2df87/CLAUDE.md#L183"
+          }
+        },
+        {
+          "name": "Tests",
+          "score": 2,
+          "assessment": "Typechecks pass; no existing behavioral test suite found. A parser probe confirms unsafe attributes survive.",
+          "evidence": {
+            "path": "packages/core/src/email/quote.ts",
+            "line": 87,
+            "url": "https://github.com/nahumoore/lightreach/blob/c0723a25dbcc1b19ec4bdbd0f882de31ace2df87/packages/core/src/email/quote.ts#L87"
+          }
+        }
+      ],
+      "findings": [
+        {
+          "id": "L1",
+          "severity": "High",
+          "title": "No web authentication; MCP token management is unprotected",
+          "detail": "The handbook explicitly defers auth. Web server actions perform writes without user checks, including revealing and rotating the MCP token. The bearer check on /api/mcp does not protect the surrounding application.",
+          "fix": "Add central identity/session enforcement to every read and action, server-side role checks, and authenticated token administration.",
+          "validation": "Source-confirmed; failure scenario not exercised end to end",
+          "evidence": [
+            {
+              "path": "CLAUDE.md",
+              "line": 147,
+              "url": "https://github.com/nahumoore/lightreach/blob/c0723a25dbcc1b19ec4bdbd0f882de31ace2df87/CLAUDE.md#L147"
+            },
+            {
+              "path": "apps/web/app/(dashboard)/mcp/actions.ts",
+              "line": 23,
+              "url": "https://github.com/nahumoore/lightreach/blob/c0723a25dbcc1b19ec4bdbd0f882de31ace2df87/apps/web/app/%28dashboard%29/mcp/actions.ts#L23"
+            },
+            {
+              "path": "apps/web/app/api/mcp/route.ts",
+              "line": 16,
+              "url": "https://github.com/nahumoore/lightreach/blob/c0723a25dbcc1b19ec4bdbd0f882de31ace2df87/apps/web/app/api/mcp/route.ts#L16"
+            }
+          ]
+        },
+        {
+          "id": "L2",
+          "severity": "High",
+          "title": "Stored HTML injection through incoming email",
+          "detail": "IMAP data is persisted as bodyHtml, quote splitting preserves markup and event attributes, and the inbox renders the result with dangerouslySetInnerHTML. A crafted incoming message can reach an active HTML sink when a user opens it.",
+          "fix": "Sanitise all email HTML and render in a sandboxed isolated frame; block remote assets by default.",
+          "validation": "Source-confirmed plus pure parser reproduction; browser execution not tested",
+          "evidence": [
+            {
+              "path": "apps/web/lib/inbox-poller.ts",
+              "line": 431,
+              "url": "https://github.com/nahumoore/lightreach/blob/c0723a25dbcc1b19ec4bdbd0f882de31ace2df87/apps/web/lib/inbox-poller.ts#L431"
+            },
+            {
+              "path": "packages/core/src/email/quote.ts",
+              "line": 87,
+              "url": "https://github.com/nahumoore/lightreach/blob/c0723a25dbcc1b19ec4bdbd0f882de31ace2df87/packages/core/src/email/quote.ts#L87"
+            },
+            {
+              "path": "apps/web/app/(dashboard)/inbox/inbox-view.tsx",
+              "line": 322,
+              "url": "https://github.com/nahumoore/lightreach/blob/c0723a25dbcc1b19ec4bdbd0f882de31ace2df87/apps/web/app/%28dashboard%29/inbox/inbox-view.tsx#L322"
+            }
+          ]
+        },
+        {
+          "id": "L3",
+          "severity": "High",
+          "title": "Restart can resend an already accepted message",
+          "detail": "Startup changes every sending row back to queued, without lease age or provider reconciliation. A crash after SMTP acceptance but before sent persistence causes a duplicate on restart.",
+          "fix": "Keep a stable attempt identity and unknown outcome state; reconcile before retrying and never globally reset in-flight rows.",
+          "validation": "Source-confirmed; failure scenario not exercised end to end",
+          "evidence": [
+            {
+              "path": "apps/web/lib/scheduler.ts",
+              "line": 112,
+              "url": "https://github.com/nahumoore/lightreach/blob/c0723a25dbcc1b19ec4bdbd0f882de31ace2df87/apps/web/lib/scheduler.ts#L112"
+            },
+            {
+              "path": "apps/web/lib/scheduler.ts",
+              "line": 454,
+              "url": "https://github.com/nahumoore/lightreach/blob/c0723a25dbcc1b19ec4bdbd0f882de31ace2df87/apps/web/lib/scheduler.ts#L454"
+            }
+          ]
+        }
+      ],
+      "meta": {
+        "name": "lightreach",
+        "remote": "https://github.com/nahumoore/lightreach.git",
+        "commit": "c0723a25dbcc1b19ec4bdbd0f882de31ace2df87",
+        "commit_date": "2026-07-23",
+        "tracked_files": 175,
+        "source_files": 97,
+        "source_lines": 13913,
+        "test_files": 0,
+        "ci": [],
+        "largest_files": [
+          [
+            "apps/web/app/(dashboard)/leads/leads-view.tsx",
+            1164
+          ],
+          [
+            "apps/web/app/(dashboard)/inbox/inbox-view.tsx",
+            924
+          ],
+          [
+            "packages/ui/src/components/sidebar.tsx",
+            705
+          ],
+          [
+            "apps/web/app/(dashboard)/connections/connections-view.tsx",
+            678
+          ],
+          [
+            "apps/web/lib/scheduler.ts",
+            605
+          ],
+          [
+            "apps/web/app/(dashboard)/sequences/new/sequence-editor.tsx",
+            483
+          ],
+          [
+            "apps/web/app/(dashboard)/mcp/mcp-view.tsx",
+            466
+          ],
+          [
+            "apps/web/lib/inbox-poller.ts",
+            463
+          ]
+        ]
+      },
+      "overall": 39
+    },
+    {
+      "name": "instantly-starter-kit",
+      "scores": [
+        7,
+        7,
+        2,
+        4,
+        5,
+        2,
+        3
+      ],
+      "reuse": 8,
+      "verdict": "Useful SDK and agency UI reference if retaining Instantly; not an independent sending platform.",
+      "architecture": "Generated TypeScript and Python SDKs from an OpenAPI specification; a handwritten operations layer composes SDK calls; Next.js agency dashboard and small templates expose workflows. Server-side configuration resolves client workspaces/API keys. The dashboard explicitly has no auth or database. Actual sending/deliverability lives in Instantly and was not audited.",
+      "code": "Clean separation between SDK, operations, templates and dashboard. A large fraction of lines are generated, which is not evidence of robustness. The TypeScript SDK typechecks and builds. No tracked behavioral test suite was found. Retry semantics are too generic for irreversible operations, and a server-side API key is not a substitute for user authorization.",
+      "components": [
+        {
+          "name": "OpenAPI and generated SDK",
+          "score": 8,
+          "assessment": "Strong reference for typed provider contracts and consistent API shapes.",
+          "evidence": {
+            "path": "js/sdk/src/client/create-client.ts",
+            "line": 5,
+            "url": "https://github.com/Instantly-ai/instantly-starter-kit/blob/7649e6e4f820ad18cc563d5075f34b1a8daceb36/js/sdk/src/client/create-client.ts#L5"
+          }
+        },
+        {
+          "name": "Transport/retry policy",
+          "score": 4,
+          "assessment": "Retries every 429/5xx operation, including writes, with fixed linear backoff and no default deadline.",
+          "evidence": {
+            "path": "js/sdk/src/client/request.ts",
+            "line": 86,
+            "url": "https://github.com/Instantly-ai/instantly-starter-kit/blob/7649e6e4f820ad18cc563d5075f34b1a8daceb36/js/sdk/src/client/request.ts#L86"
+          }
+        },
+        {
+          "name": "Operations layer",
+          "score": 7,
+          "assessment": "Useful domain adapters for campaigns, replies, analytics and client workspaces.",
+          "evidence": {
+            "path": "js/ops/src/campaigns.ts",
+            "line": 89,
+            "url": "https://github.com/Instantly-ai/instantly-starter-kit/blob/7649e6e4f820ad18cc563d5075f34b1a8daceb36/js/ops/src/campaigns.ts#L89"
+          }
+        },
+        {
+          "name": "Agency UI",
+          "score": 7,
+          "assessment": "Good roster and cross-client dashboard reference; no user boundary.",
+          "evidence": {
+            "path": "js/dashboard/core/package.json",
+            "line": 5,
+            "url": "https://github.com/Instantly-ai/instantly-starter-kit/blob/7649e6e4f820ad18cc563d5075f34b1a8daceb36/js/dashboard/core/package.json#L5"
+          }
+        },
+        {
+          "name": "Authorization",
+          "score": 1,
+          "assessment": "Mutation server actions invoke provider operations without identifying or authorizing a user.",
+          "evidence": {
+            "path": "js/dashboard/core/app/actions/campaigns.ts",
+            "line": 7,
+            "url": "https://github.com/Instantly-ai/instantly-starter-kit/blob/7649e6e4f820ad18cc563d5075f34b1a8daceb36/js/dashboard/core/app/actions/campaigns.ts#L7"
+          }
+        },
+        {
+          "name": "Webhooks",
+          "score": 3,
+          "assessment": "Reference handler acknowledges events but business handlers are placeholders and secret is optional.",
+          "evidence": {
+            "path": "js/dashboard/core/app/api/webhooks/instantly/route.ts",
+            "line": 10,
+            "url": "https://github.com/Instantly-ai/instantly-starter-kit/blob/7649e6e4f820ad18cc563d5075f34b1a8daceb36/js/dashboard/core/app/api/webhooks/instantly/route.ts#L10"
+          }
+        },
+        {
+          "name": "Independent sending engine",
+          "score": 0,
+          "assessment": "None. Every real send and deliverability feature depends on the external provider.",
+          "evidence": {
+            "path": "README.md",
+            "line": 5,
+            "url": "https://github.com/Instantly-ai/instantly-starter-kit/blob/7649e6e4f820ad18cc563d5075f34b1a8daceb36/README.md#L5"
+          }
+        },
+        {
+          "name": "Scaffolding and documentation",
+          "score": 8,
+          "assessment": "Helpful examples, docs and generated contract; retain where a provider-backed option is desired.",
+          "evidence": {
+            "path": "create-instantly-app/index.js",
+            "line": 11,
+            "url": "https://github.com/Instantly-ai/instantly-starter-kit/blob/7649e6e4f820ad18cc563d5075f34b1a8daceb36/create-instantly-app/index.js#L11"
+          }
+        },
+        {
+          "name": "Tests and operations",
+          "score": 2,
+          "assessment": "SDK build verified; no test suite or tracked CI; deployment/auth/persistence are application work.",
+          "evidence": {
+            "path": "js/sdk/package.json",
+            "line": 25,
+            "url": "https://github.com/Instantly-ai/instantly-starter-kit/blob/7649e6e4f820ad18cc563d5075f34b1a8daceb36/js/sdk/package.json#L25"
+          }
+        }
+      ],
+      "findings": [
+        {
+          "id": "I1",
+          "severity": "High",
+          "title": "Dashboard mutations have no user authorization",
+          "detail": "activateCampaignAction accepts client and campaign IDs and calls the operations layer. There is no session or permission check in this action. An exposed dashboard with live keys grants powerful operations to visitors.",
+          "fix": "Put OIDC/session middleware and explicit workspace permissions around every server action; require approval for campaign activation.",
+          "validation": "Source-confirmed; failure scenario not exercised end to end",
+          "evidence": [
+            {
+              "path": "js/dashboard/core/app/actions/campaigns.ts",
+              "line": 7,
+              "url": "https://github.com/Instantly-ai/instantly-starter-kit/blob/7649e6e4f820ad18cc563d5075f34b1a8daceb36/js/dashboard/core/app/actions/campaigns.ts#L7"
+            },
+            {
+              "path": "js/dashboard/core/package.json",
+              "line": 5,
+              "url": "https://github.com/Instantly-ai/instantly-starter-kit/blob/7649e6e4f820ad18cc563d5075f34b1a8daceb36/js/dashboard/core/package.json#L5"
+            }
+          ]
+        },
+        {
+          "id": "I2",
+          "severity": "High",
+          "title": "Automatic retry can repeat non-idempotent writes",
+          "detail": "executeOperation retries HTTP 500/429 independent of method or operation. A mock provider that accepts a POST but returns 500 receives the same POST twice. Actual duplicates depend on the endpoint\u2019s idempotency semantics.",
+          "fix": "Retry reads safely; use idempotency keys only where supported, reconcile writes and treat ambiguous mutation responses separately.",
+          "validation": "Reproduced with injected mock fetch: 2 POST requests; no live API used",
+          "evidence": [
+            {
+              "path": "js/sdk/src/client/request.ts",
+              "line": 86,
+              "url": "https://github.com/Instantly-ai/instantly-starter-kit/blob/7649e6e4f820ad18cc563d5075f34b1a8daceb36/js/sdk/src/client/request.ts#L86"
+            },
+            {
+              "path": "js/sdk/src/client/request.ts",
+              "line": 99,
+              "url": "https://github.com/Instantly-ai/instantly-starter-kit/blob/7649e6e4f820ad18cc563d5075f34b1a8daceb36/js/sdk/src/client/request.ts#L99"
+            }
+          ]
+        },
+        {
+          "id": "I3",
+          "severity": "Medium",
+          "title": "Webhook receiver accepts unauthenticated events by default",
+          "detail": "Missing INSTANTLY_WEBHOOK_SECRET returns authorized=true. The handler then acknowledges recognized events while its business cases are placeholders, so a naive deployment can accept forged or discard real events.",
+          "fix": "Fail startup when production secret is missing; validate and persist event IDs before acknowledgement; implement a durable consumer.",
+          "validation": "Source-confirmed; failure scenario not exercised end to end",
+          "evidence": [
+            {
+              "path": "js/dashboard/core/app/api/webhooks/instantly/route.ts",
+              "line": 10,
+              "url": "https://github.com/Instantly-ai/instantly-starter-kit/blob/7649e6e4f820ad18cc563d5075f34b1a8daceb36/js/dashboard/core/app/api/webhooks/instantly/route.ts#L10"
+            },
+            {
+              "path": "js/dashboard/core/app/api/webhooks/instantly/route.ts",
+              "line": 32,
+              "url": "https://github.com/Instantly-ai/instantly-starter-kit/blob/7649e6e4f820ad18cc563d5075f34b1a8daceb36/js/dashboard/core/app/api/webhooks/instantly/route.ts#L32"
+            }
+          ]
+        }
+      ],
+      "meta": {
+        "name": "instantly-starter-kit",
+        "remote": "https://github.com/Instantly-ai/instantly-starter-kit.git",
+        "commit": "7649e6e4f820ad18cc563d5075f34b1a8daceb36",
+        "commit_date": "2026-08-17",
+        "tracked_files": 384,
+        "source_files": 262,
+        "source_lines": 27676,
+        "test_files": 0,
+        "ci": [],
+        "largest_files": [
+          [
+            "js/sdk/src/generated/operations.ts",
+            8122
+          ],
+          [
+            "python/sdk/instantly/generated/operations.py",
+            3297
+          ],
+          [
+            "python/sdk/instantly/generated/metadata.py",
+            1359
+          ],
+          [
+            "js/sdk/src/generated/metadata.ts",
+            1351
+          ],
+          [
+            "js/sdk/src/generated/models.ts",
+            709
+          ],
+          [
+            "python/sdk/instantly/generated/models.py",
+            608
+          ],
+          [
+            "js/ops/src/demo-data.ts",
+            407
+          ],
+          [
+            "create-instantly-app/index.js",
+            339
+          ]
+        ]
+      },
+      "overall": 43
+    },
+    {
+      "name": "BillionMail",
+      "scores": [
+        6,
+        5,
+        4,
+        5,
+        4,
+        6,
+        4
+      ],
+      "reuse": 4,
+      "verdict": "Mail-server/newsletter platform with useful operational ideas; too much infrastructure and license coupling for the proposed core.",
+      "architecture": "GoFrame application with controllers/services and Vue/Pinia frontend, PostgreSQL and Redis, plus Postfix, Dovecot, Rspamd, Roundcube and Docker management. Batch sending uses a worker pool and in-process executors. This is closer to operating a mail hosting/marketing stack than rotating existing Google/Microsoft outreach mailboxes.",
+      "code": "Large feature surface (mail infrastructure, templates, analytics, AI/video outreach) and mixed responsibilities. The Go service tree and UI are modular in folders, but mail administration reaches host/container management. Role permissions and operation logs are meaningful positives. Frontend has a substantial suite. The AGPL-3.0 license is materially different from the other five MIT licenses; do not assume direct copying fits the chosen distribution model.",
+      "components": [
+        {
+          "name": "Mail-server stack",
+          "score": 7,
+          "assessment": "Integrated Postfix/Dovecot/Rspamd/Roundcube is capable but imposes DNS, IP reputation and mail-ops responsibility.",
+          "evidence": {
+            "path": "docker-compose.yml",
+            "line": 144,
+            "url": "https://github.com/Billionmail/BillionMail/blob/fc36c76c050c3775c5e899faf7403cf0262d2744/docker-compose.yml#L144"
+          }
+        },
+        {
+          "name": "Batch sender",
+          "score": 5,
+          "assessment": "Worker pool, pacing and circuit breaker; in-memory task coordination and deferred DB updates need crash tests.",
+          "evidence": {
+            "path": "core/internal/service/batch_mail/task_executor.go",
+            "line": 138,
+            "url": "https://github.com/Billionmail/BillionMail/blob/fc36c76c050c3775c5e899faf7403cf0262d2744/core/internal/service/batch_mail/task_executor.go#L138"
+          }
+        },
+        {
+          "name": "Roles and operations log",
+          "score": 6,
+          "assessment": "Default-deny route permission mapping and an operation-log model exist.",
+          "evidence": {
+            "path": "core/internal/service/middlewares/rbac.go",
+            "line": 129,
+            "url": "https://github.com/Billionmail/BillionMail/blob/fc36c76c050c3775c5e899faf7403cf0262d2744/core/internal/service/middlewares/rbac.go#L129"
+          }
+        },
+        {
+          "name": "Session/token implementation",
+          "score": 3,
+          "assessment": "Token classes are generated, but request authentication does not enforce access-token subject and API-token invalidation is incomplete.",
+          "evidence": {
+            "path": "core/internal/service/rbac/jwt.go",
+            "line": 136,
+            "url": "https://github.com/Billionmail/BillionMail/blob/fc36c76c050c3775c5e899faf7403cf0262d2744/core/internal/service/rbac/jwt.go#L136"
+          }
+        },
+        {
+          "name": "Transport security",
+          "score": 3,
+          "assessment": "Both implicit TLS and STARTTLS paths disable certificate verification.",
+          "evidence": {
+            "path": "core/internal/service/mail_service/sending.go",
+            "line": 210,
+            "url": "https://github.com/Billionmail/BillionMail/blob/fc36c76c050c3775c5e899faf7403cf0262d2744/core/internal/service/mail_service/sending.go#L210"
+          }
+        },
+        {
+          "name": "Frontend and editor",
+          "score": 7,
+          "assessment": "Vue component/editor structure and 404 passing frontend tests; not a cold-outreach feature parity claim.",
+          "evidence": {
+            "path": "core/frontend/package.json",
+            "line": 16,
+            "url": "https://github.com/Billionmail/BillionMail/blob/fc36c76c050c3775c5e899faf7403cf0262d2744/core/frontend/package.json#L16"
+          }
+        },
+        {
+          "name": "Analytics and deliverability",
+          "score": 6,
+          "assessment": "Mail-log statistics, domain checks and IP ramp policies are useful references; not evidence of inbox placement performance.",
+          "evidence": {
+            "path": "core/internal/service/warmup/rate_limiter.go",
+            "line": 1,
+            "url": "https://github.com/Billionmail/BillionMail/blob/fc36c76c050c3775c5e899faf7403cf0262d2744/core/internal/service/warmup/rate_limiter.go#L1"
+          }
+        },
+        {
+          "name": "Host isolation and deployment",
+          "score": 3,
+          "assessment": "Core mounts Docker socket and multiple sensitive host paths; compromise has a broad operational blast radius.",
+          "evidence": {
+            "path": "docker-compose.yml",
+            "line": 195,
+            "url": "https://github.com/Billionmail/BillionMail/blob/fc36c76c050c3775c5e899faf7403cf0262d2744/docker-compose.yml#L195"
+          }
+        },
+        {
+          "name": "Testing and maintenance",
+          "score": 6,
+          "assessment": "Many tests including integration-labelled Go files; no tracked CI workflows at this snapshot.",
+          "evidence": {
+            "path": "core/frontend/vitest.config.ts",
+            "line": 23,
+            "url": "https://github.com/Billionmail/BillionMail/blob/fc36c76c050c3775c5e899faf7403cf0262d2744/core/frontend/vitest.config.ts#L23"
+          }
+        }
+      ],
+      "findings": [
+        {
+          "id": "B1",
+          "severity": "High",
+          "title": "Refresh tokens are accepted by generic request authentication",
+          "detail": "GenerateRefreshToken sets subject=refresh_token, but ParseToken/JWTAuthMiddleware do not require subject=access_token. The middleware reloads roles for the account, so the absence of roles in the refresh token does not prevent access.",
+          "fix": "Use separate access/refresh validators with subject, issuer and algorithm checks; add negative tests for every token class.",
+          "validation": "Source-confirmed; failure scenario not exercised end to end",
+          "evidence": [
+            {
+              "path": "core/internal/service/rbac/jwt.go",
+              "line": 95,
+              "url": "https://github.com/Billionmail/BillionMail/blob/fc36c76c050c3775c5e899faf7403cf0262d2744/core/internal/service/rbac/jwt.go#L95"
+            },
+            {
+              "path": "core/internal/service/rbac/jwt.go",
+              "line": 189,
+              "url": "https://github.com/Billionmail/BillionMail/blob/fc36c76c050c3775c5e899faf7403cf0262d2744/core/internal/service/rbac/jwt.go#L189"
+            },
+            {
+              "path": "core/internal/service/rbac/jwt.go",
+              "line": 241,
+              "url": "https://github.com/Billionmail/BillionMail/blob/fc36c76c050c3775c5e899faf7403cf0262d2744/core/internal/service/rbac/jwt.go#L241"
+            }
+          ]
+        },
+        {
+          "id": "B2",
+          "severity": "High",
+          "title": "Non-expiring API tokens bypass the blacklist mechanism",
+          "detail": "GenerateApiToken omits expiration. InvalidateToken returns immediately for tokens without expiration, and IsTokenBlacklisted returns false. These API tokens cannot be revoked through this token blacklist path. Other account-level controls are separate.",
+          "fix": "Use opaque hashed API tokens with stored revocation or expiring JWTs with a revocable token ID checked on every request.",
+          "validation": "Source-confirmed; failure scenario not exercised end to end",
+          "evidence": [
+            {
+              "path": "core/internal/service/rbac/jwt.go",
+              "line": 110,
+              "url": "https://github.com/Billionmail/BillionMail/blob/fc36c76c050c3775c5e899faf7403cf0262d2744/core/internal/service/rbac/jwt.go#L110"
+            },
+            {
+              "path": "core/internal/service/rbac/jwt.go",
+              "line": 165,
+              "url": "https://github.com/Billionmail/BillionMail/blob/fc36c76c050c3775c5e899faf7403cf0262d2744/core/internal/service/rbac/jwt.go#L165"
+            },
+            {
+              "path": "core/internal/service/rbac/jwt.go",
+              "line": 176,
+              "url": "https://github.com/Billionmail/BillionMail/blob/fc36c76c050c3775c5e899faf7403cf0262d2744/core/internal/service/rbac/jwt.go#L176"
+            }
+          ]
+        },
+        {
+          "id": "B3",
+          "severity": "High",
+          "title": "SMTP TLS certificate verification is disabled",
+          "detail": "Implicit TLS and STARTTLS set InsecureSkipVerify=true. Encryption then does not authenticate the SMTP peer; exposure depends on network placement and the selected transport path.",
+          "fix": "Enable certificate verification; provision internal trust explicitly instead of globally accepting arbitrary certificates.",
+          "validation": "Source-confirmed; failure scenario not exercised end to end",
+          "evidence": [
+            {
+              "path": "core/internal/service/mail_service/sending.go",
+              "line": 207,
+              "url": "https://github.com/Billionmail/BillionMail/blob/fc36c76c050c3775c5e899faf7403cf0262d2744/core/internal/service/mail_service/sending.go#L207"
+            },
+            {
+              "path": "core/internal/service/mail_service/sending.go",
+              "line": 235,
+              "url": "https://github.com/Billionmail/BillionMail/blob/fc36c76c050c3775c5e899faf7403cf0262d2744/core/internal/service/mail_service/sending.go#L235"
+            }
+          ]
+        },
+        {
+          "id": "B4",
+          "severity": "High",
+          "title": "Web application has a high-privilege host-management boundary",
+          "detail": "The core container mounts the Docker socket and exposes host command helpers. A read-only socket mount is not a read-only Docker API authorization policy. This is an architectural privilege risk, not a demonstrated remote exploit.",
+          "fix": "Keep mail-host administration on a separate restricted control plane; do not import it into the user-facing outreach app.",
+          "validation": "Source-confirmed; failure scenario not exercised end to end",
+          "evidence": [
+            {
+              "path": "docker-compose.yml",
+              "line": 195,
+              "url": "https://github.com/Billionmail/BillionMail/blob/fc36c76c050c3775c5e899faf7403cf0262d2744/docker-compose.yml#L195"
+            },
+            {
+              "path": "core/internal/service/dockerapi/dockerapi.go",
+              "line": 366,
+              "url": "https://github.com/Billionmail/BillionMail/blob/fc36c76c050c3775c5e899faf7403cf0262d2744/core/internal/service/dockerapi/dockerapi.go#L366"
+            }
+          ]
+        }
+      ],
+      "meta": {
+        "name": "BillionMail",
+        "remote": "https://github.com/Billionmail/BillionMail.git",
+        "commit": "fc36c76c050c3775c5e899faf7403cf0262d2744",
+        "commit_date": "2026-06-11",
+        "tracked_files": 1483,
+        "source_files": 854,
+        "source_lines": 103874,
+        "test_files": 103,
+        "ci": [],
+        "largest_files": [
+          [
+            "core/internal/service/batch_mail/task_executor.go",
+            1566
+          ],
+          [
+            "core/internal/service/askai/project.go",
+            1271
+          ],
+          [
+            "core/internal/service/relay/config_sync.go",
+            1092
+          ],
+          [
+            "core/internal/service/domains/domains.go",
+            1006
+          ],
+          [
+            "core/internal/service/askai/openai.go",
+            984
+          ],
+          [
+            "core/frontend/src/components/base/bt-logs/index.vue",
+            932
+          ],
+          [
+            "core/internal/service/maillog_stat/maillog_stat.go",
+            848
+          ],
+          [
+            "core/frontend/src/features/EmailEditor/components/layout/Canvas.vue",
+            832
+          ]
+        ]
+      },
+      "overall": 49
+    }
+  ],
+  "verification": [
+    {
+      "check": "Quickly frontend build",
+      "result": "PASS",
+      "notes": "Vite production build completed; large chunk warnings. No frontend test script exists."
+    },
+    {
+      "check": "Quickly Python suite",
+      "result": "422 passed, 14 failed, 10 skipped, 4 errors (initial full run)",
+      "notes": "8 failures and 4 setup errors were blocked loopback sockets; separate SMTP rerun recorded below. Remaining 6 failures: stale auth expectations (4), inbox deletion contract (1), reply statistics (1). Required adding greenlet to isolated environment; repository requirements unchanged."
+    },
+    {
+      "check": "Quickly loopback SMTP rerun",
+      "result": "31 passed, 57 warnings in 3.50s",
+      "notes": "Deterministic fake relay with socket permission; isolates environment failures from software failures."
+    },
+    {
+      "check": "Wu Wei Mail backend suite",
+      "result": "1,247 passed; 1 failed; 15 skipped",
+      "notes": "One AI generation test expects a live unconfigured OpenRouter service. No provider credentials supplied. 27 warnings, including unawaited mocks."
+    },
+    {
+      "check": "Wu Wei Mail frontend",
+      "result": "6 tests passed; TypeScript check passed",
+      "notes": "Small component suite; not a full browser workflow test."
+    },
+    {
+      "check": "Wu Wei Mail migration graph",
+      "result": "PASS",
+      "notes": "Single Alembic head and full offline upgrade SQL generation. No live Postgres migration drill."
+    },
+    {
+      "check": "Lightreach TypeScript",
+      "result": "PASS: core, db, ui, web",
+      "notes": "Direct tsc checks bypassed a local Corepack sandbox/cache problem. No behavioral suite found."
+    },
+    {
+      "check": "cold-cli Go suite",
+      "result": "PASS: all three packages",
+      "notes": "go test ./... passed for cmd, internal and pkg/engine. Not a real-provider or production Postgres test."
+    },
+    {
+      "check": "BillionMail frontend",
+      "result": "404 tests passed across 51 files",
+      "notes": "Vitest, local DOM environment."
+    },
+    {
+      "check": "BillionMail selected Go suites",
+      "result": "PASS: rbac, middlewares, batch_mail",
+      "notes": "Focused package tests only; not a complete mail-server deployment. Some JWT tests manually parse rather than call the real revocation path."
+    },
+    {
+      "check": "Instantly TypeScript SDK",
+      "result": "Typecheck and build PASS",
+      "notes": "No existing behavioral test suite found; dashboard build not run."
+    },
+    {
+      "check": "Targeted audit probes",
+      "result": "4 findings reproduced",
+      "notes": "Mock POST retry (Instantly), retained HTML event attribute (Lightreach), paused-campaign send and false sent recovery (Wu Wei Mail). No live external side effects."
+    }
+  ]
+}

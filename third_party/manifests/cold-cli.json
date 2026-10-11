@@ -1,0 +1,647 @@
+{
+  "schema_version": 1,
+  "repository": "cold-cli",
+  "commit": "041c834156e873a897f19fcf9b5e040896e39d1d",
+  "files": [
+    {
+      "path": ".gitignore",
+      "mode": "100644",
+      "git_blob": "0c46fc8d1daad794ddb5c2ecad441c5f2bfd4f2c",
+      "bytes": 293,
+      "sha256": "8f347b70542d048829712a171841ae12741a5307218352a058e020bf0e7df181",
+      "disposition": "included"
+    },
+    {
+      "path": "AGENTS.md",
+      "mode": "100644",
+      "git_blob": "c085c0d99099727ba5102fd09e661e97a4065792",
+      "bytes": 8580,
+      "sha256": "264d7ec59cade2c3eaf0cc9f2df56f2086fc9411d8f09a6d02e31d6dc819335a",
+      "disposition": "included"
+    },
+    {
+      "path": "ARCHITECTURE.md",
+      "mode": "100644",
+      "git_blob": "0f1a179e5c7520f07f70c01ae21244597e01e286",
+      "bytes": 26690,
+      "sha256": "17a38274d1dbe41b767bf8fc111c4de443487a3635d50ac9bdf50f4cac1edcc7",
+      "disposition": "included"
+    },
+    {
+      "path": "LICENSE",
+      "mode": "100644",
+      "git_blob": "5c8dec56e74022a43215c2570e54da3a5af4b741",
+      "bytes": 1070,
+      "sha256": "55836bd2faef888a14b265c25aae660360afcd7133af0dfbd4f0134fb5203e4d",
+      "disposition": "included"
+    },
+    {
+      "path": "README.md",
+      "mode": "100644",
+      "git_blob": "047c04eea107b069794f249617ff5761ef6a20b3",
+      "bytes": 31803,
+      "sha256": "926509de6a46fd25cf2b37efadd1580fb53022441afd67188f40e3235ff0027b",
+      "disposition": "included"
+    },
+    {
+      "path": "cmd/cold-cli/cli_test.go",
+      "mode": "100644",
+      "git_blob": "0a0a1c6b0cd2a9de3d222979b7f015825aa8207c",
+      "bytes": 52943,
+      "sha256": "d8d90febd41b55ade5338b01288e21d315ed2d005ea702228a6e23ff4978c013",
+      "disposition": "included"
+    },
+    {
+      "path": "cmd/cold-cli/main.go",
+      "mode": "100644",
+      "git_blob": "718eae5c072631568005e3ce4e51fda9a0c14b40",
+      "bytes": 97478,
+      "sha256": "5ef7050fbb96d16599f16a2716bc9d51900ebdf690bc8dda2c4908e0f6dc835a",
+      "disposition": "included"
+    },
+    {
+      "path": "go.mod",
+      "mode": "100644",
+      "git_blob": "8bb0f09153abfbbf14b2ca87ebc465e8deaf75e6",
+      "bytes": 1409,
+      "sha256": "2395870c8e27859ae71e6544c59ac35ef6aa1bb16e56dfb12967658b48d64abf",
+      "disposition": "included"
+    },
+    {
+      "path": "go.sum",
+      "mode": "100644",
+      "git_blob": "e49f7fbaf5ca88757f413ac91c1e3ca3ae7f5521",
+      "bytes": 9723,
+      "sha256": "cd712701afc9ea1cdda9bb318442c5a688369c256b8db50fdc84e861564cfc17",
+      "disposition": "included"
+    },
+    {
+      "path": "internal/account.go",
+      "mode": "100644",
+      "git_blob": "492dbbffca7b7fdc5d847e4df1e14d67afaaa43f",
+      "bytes": 28248,
+      "sha256": "34531e1d9508d13f585cf608df02209a7a3d7b7b90ae2199f175f8c86ab12b66",
+      "disposition": "included"
+    },
+    {
+      "path": "internal/account_test.go",
+      "mode": "100644",
+      "git_blob": "643381234cba65ff616cc0f28cfb9c5c79834025",
+      "bytes": 18023,
+      "sha256": "b130ea490db01a97368e2a386d3ae812228449ee82b77dd0a931e4e259ec949b",
+      "disposition": "included"
+    },
+    {
+      "path": "internal/account_verify.go",
+      "mode": "100644",
+      "git_blob": "636174024f8f5a2d51839ffdae54e9a62dc1f3c0",
+      "bytes": 1289,
+      "sha256": "3b397744d470c78d269e4a24676f25a22b31dc85e650763285bd37b8ef8cbfd0",
+      "disposition": "included"
+    },
+    {
+      "path": "internal/account_verify_test.go",
+      "mode": "100644",
+      "git_blob": "c7a4dd7cba1a24b8a6ecf80f7613224cda649cfc",
+      "bytes": 1753,
+      "sha256": "f875e3c6d11301f992fe175b75d1144d408104f6e005e62143a53ad601826150",
+      "disposition": "included"
+    },
+    {
+      "path": "internal/campaign.go",
+      "mode": "100644",
+      "git_blob": "8dd07778f46436716735b9697f311bdaccffac28",
+      "bytes": 68253,
+      "sha256": "27e8251a0d7202b3b910e005815e54e9cc8718df7df8b166169e535eed5e6934",
+      "disposition": "included"
+    },
+    {
+      "path": "internal/campaign_preflight.go",
+      "mode": "100644",
+      "git_blob": "444e79e0d5832e1d75476bae57eda9c006e5d9a9",
+      "bytes": 9568,
+      "sha256": "c9300a8defd1ab4f884288569fc145c2aea5e93037c50d0ff32ace3bd4d5f531",
+      "disposition": "included"
+    },
+    {
+      "path": "internal/campaign_preflight_test.go",
+      "mode": "100644",
+      "git_blob": "2f625410b0f4294acb8e4a51d745ff6d15dfc1d7",
+      "bytes": 5963,
+      "sha256": "17ede089063e3e6c0eaaca2b2a615108e095a0197d95c68bfc17c2f3c7d4d398",
+      "disposition": "included"
+    },
+    {
+      "path": "internal/campaign_test.go",
+      "mode": "100644",
+      "git_blob": "21b07d0a95649e94f91de4bdfaa954fb6cd6b024",
+      "bytes": 86950,
+      "sha256": "5b9430aa2b594e092563cfa15088cf4e4bb17a91c2a4f07ec752b3f2bd67ec70",
+      "disposition": "included"
+    },
+    {
+      "path": "internal/config.go",
+      "mode": "100644",
+      "git_blob": "bddb5a6bbe93750879257d3760c38e86fc76c836",
+      "bytes": 2300,
+      "sha256": "1b45a1309d895b25b013db648d5c9eff327f79212bf39dd8db897ccaafd06867",
+      "disposition": "included"
+    },
+    {
+      "path": "internal/config_test.go",
+      "mode": "100644",
+      "git_blob": "5b475faf5b3df1f84deb01cf1477d4f1fe3fde14",
+      "bytes": 1348,
+      "sha256": "9840c056f3826b2bac2d34bff5f483533788c8d6ebe973ba217e2597a5587d19",
+      "disposition": "included"
+    },
+    {
+      "path": "internal/csv.go",
+      "mode": "100644",
+      "git_blob": "9a26b6b4b250d511b3e597029e45ccc2d89e40b8",
+      "bytes": 4363,
+      "sha256": "c7d9388679ec3997c622b4101e39ce19690a6375fcfaf9d20613ea83c0a79252",
+      "disposition": "included"
+    },
+    {
+      "path": "internal/csv_test.go",
+      "mode": "100644",
+      "git_blob": "4b6ae79dc6d8d3def12cca5d96c6bc19bdd2f27d",
+      "bytes": 8029,
+      "sha256": "2aa32148c50a76768807fbf82fb1d3abb0e9971653d20dfd2482156806618c5a",
+      "disposition": "included"
+    },
+    {
+      "path": "internal/db.go",
+      "mode": "100644",
+      "git_blob": "62c8ed5ffef1ab7f9acc4343f0e3e24d4756212b",
+      "bytes": 20740,
+      "sha256": "6cceec3398ddb1eacb0f1957195916d5925fec77ad97f87b05979e979eb3998f",
+      "disposition": "included"
+    },
+    {
+      "path": "internal/db_test.go",
+      "mode": "100644",
+      "git_blob": "4d708533c686fd677895824e61bdf8962b0004a1",
+      "bytes": 7289,
+      "sha256": "53fbdce7473ffda964cdaf3e24ba82da66da5c6993f11e67d34527b8826d7fcb",
+      "disposition": "included"
+    },
+    {
+      "path": "internal/discord_notify.go",
+      "mode": "100644",
+      "git_blob": "02168f2833abb7698d49f1f10008eb20fb2a9bc6",
+      "bytes": 29620,
+      "sha256": "ead79b4f7eaac791aa8cd3680beaacdede6c000dfd5058666af9f836aace6f10",
+      "disposition": "included"
+    },
+    {
+      "path": "internal/discord_notify_test.go",
+      "mode": "100644",
+      "git_blob": "fb3ec26f329b7f50408b6fdcc3f3a118d82fcf31",
+      "bytes": 27502,
+      "sha256": "18e5934f1f2cbcd79f8fa53aa7992ba40c0151bd8a56120c9987f8dfd461c06f",
+      "disposition": "included"
+    },
+    {
+      "path": "internal/email_body.go",
+      "mode": "100644",
+      "git_blob": "52bf5095d2b4ab44a8866163db823e3ea91f2ef9",
+      "bytes": 8422,
+      "sha256": "ce25d66775aaf7944f7e83e4d77ec4c61e7444f8f618eaceb0a2116a2e0920d0",
+      "disposition": "included"
+    },
+    {
+      "path": "internal/email_body_test.go",
+      "mode": "100644",
+      "git_blob": "0725e6ba232ffdbd75fc9d1179b326bb9ff2cc4c",
+      "bytes": 4605,
+      "sha256": "a51316141e1b5d104698b78c2ef88778c6506b7e1c2d373cc41c2044b791bc94",
+      "disposition": "included"
+    },
+    {
+      "path": "internal/email_message.go",
+      "mode": "100644",
+      "git_blob": "01ec3f872faa8668bf71e2789ca3efacad39b82e",
+      "bytes": 31423,
+      "sha256": "4b5625a442a1d2410503cbb4507984f1ab450e57eacf54e4c2c1440929d76189",
+      "disposition": "included"
+    },
+    {
+      "path": "internal/email_message_backfill.go",
+      "mode": "100644",
+      "git_blob": "cac91e77ad824531004940e5d0b4ec2b56591b0f",
+      "bytes": 16436,
+      "sha256": "ddb37ca582535939e435c5d4c420e8f7b910b6ca72f8d1c01a54dd8a75cb57bf",
+      "disposition": "included"
+    },
+    {
+      "path": "internal/email_message_backfill_test.go",
+      "mode": "100644",
+      "git_blob": "c8fae6d6a5d8ca2624d4b1f6538a5441faa69172",
+      "bytes": 8920,
+      "sha256": "db0b1c93b30ae54c29fba036d040221cc0b37dd245d87fa25020f6e3738339c5",
+      "disposition": "included"
+    },
+    {
+      "path": "internal/email_message_test.go",
+      "mode": "100644",
+      "git_blob": "7ef31b56f9469c1f1aab3ecd6cc7e2165f113096",
+      "bytes": 21168,
+      "sha256": "c1ad545a3f213f22f27f3d8c1f188c6bb18dbb55f4dc5071a4d538bc8fe1e601",
+      "disposition": "included"
+    },
+    {
+      "path": "internal/email_thread_sync.go",
+      "mode": "100644",
+      "git_blob": "0d7dfaf11c9a05a9abb3b0df8f229d18bf733ee1",
+      "bytes": 17263,
+      "sha256": "41939adb5b93c9340447969b0461506244c0e55289fcc6adc6fa245e6d0abc7d",
+      "disposition": "included"
+    },
+    {
+      "path": "internal/email_thread_sync_test.go",
+      "mode": "100644",
+      "git_blob": "4845db326a1605bbb24a6e00c4d9d1f6c74eac38",
+      "bytes": 10763,
+      "sha256": "417cf61f436ecff745beb3d2441e74c481b95deb4b47f0b86e74171fd3b78b55",
+      "disposition": "included"
+    },
+    {
+      "path": "internal/email_validation.go",
+      "mode": "100644",
+      "git_blob": "456cbc0285451e31b5985c408ccb4827d990ca64",
+      "bytes": 9407,
+      "sha256": "94bd30e31cf5011e89731c463fbe11a6602c2f7a0744f94050d96344f3959bc9",
+      "disposition": "included"
+    },
+    {
+      "path": "internal/email_validation_test.go",
+      "mode": "100644",
+      "git_blob": "b967ccc4f71ea07c1b1dbc899cf7fd8b24473fe4",
+      "bytes": 3292,
+      "sha256": "fa43a2c73fbe0a7273cfe886e9c61b3a3a5917098b08741db0ad0d7611ec8275",
+      "disposition": "included"
+    },
+    {
+      "path": "internal/env_file.go",
+      "mode": "100644",
+      "git_blob": "68f0966680b27dd5d4b7540537c71cc8c3e4ec99",
+      "bytes": 2847,
+      "sha256": "b9cb17537d5ef7c54a1b7a8e2a92c2c9f0a93f62b48211a97593925583e1f769",
+      "disposition": "included"
+    },
+    {
+      "path": "internal/env_file_test.go",
+      "mode": "100644",
+      "git_blob": "c6e5aa6534d0538e138808c1cc646c3f5e345250",
+      "bytes": 1644,
+      "sha256": "9cc7f1d0b282c4c2e4315810b423b608cd7262018702786f5e0d77667b538360",
+      "disposition": "included"
+    },
+    {
+      "path": "internal/gws.go",
+      "mode": "100644",
+      "git_blob": "3b47f42866b0fbbfc9682be04a2b258835ceab04",
+      "bytes": 11780,
+      "sha256": "b29c7c864052b76493041805d65b5f90d51e581875dfcd86d0e987b54696421d",
+      "disposition": "included"
+    },
+    {
+      "path": "internal/gws_test.go",
+      "mode": "100644",
+      "git_blob": "653305a9caabf5417e3a996e80a7b9f5d9faf7c1",
+      "bytes": 4142,
+      "sha256": "c8ce71e8b0d5a01b59acf8b3edc6e5a3645acc6614788979856ece03df257d29",
+      "disposition": "included"
+    },
+    {
+      "path": "internal/imap.go",
+      "mode": "100644",
+      "git_blob": "8271c2571f7a04c72b9fc066973cbbb24e8d9c8a",
+      "bytes": 23642,
+      "sha256": "e97a8cd7e4702496bf6bca8e87c314d38949d710d3d585d4bf12e210059dce0b",
+      "disposition": "included"
+    },
+    {
+      "path": "internal/imap_test.go",
+      "mode": "100644",
+      "git_blob": "faedec68ca94d3585f94ba5b76d56e3e73832d88",
+      "bytes": 10923,
+      "sha256": "5e3fd1b70b07ff2a16793674c30814896892f5f11197455c230293308a6d6b46",
+      "disposition": "included"
+    },
+    {
+      "path": "internal/inbox_audit.go",
+      "mode": "100644",
+      "git_blob": "dde2f99be7fe27e6b2a0517b3c5fcb5e498069d3",
+      "bytes": 20279,
+      "sha256": "c369e78ff381af38282e83f632e4a61b5b5344cc099af85ed707849415817113",
+      "disposition": "included"
+    },
+    {
+      "path": "internal/inbox_audit_test.go",
+      "mode": "100644",
+      "git_blob": "d4afe699511e0deba8e44d4a981cd1346c2d0d0c",
+      "bytes": 8261,
+      "sha256": "51785880571c7b6c63ec8dd5b518e54b3891711282ce610ea00e0e7837548e50",
+      "disposition": "included"
+    },
+    {
+      "path": "internal/inbox_followups.go",
+      "mode": "100644",
+      "git_blob": "dbc797d13949c910f19182ae7e082ce8141c33e9",
+      "bytes": 12025,
+      "sha256": "0c250ae171698b098533733dd5f374aa33c2927ce68af53d1c727d3222e6c429",
+      "disposition": "included"
+    },
+    {
+      "path": "internal/inbox_followups_test.go",
+      "mode": "100644",
+      "git_blob": "e5beeab969584c320f2148250281be8b8b316efc",
+      "bytes": 10066,
+      "sha256": "31add312bcfcdb32926c360b59a00e96840f8ff92105c916fec94fa6247341b3",
+      "disposition": "included"
+    },
+    {
+      "path": "internal/inbox_needs_reply.go",
+      "mode": "100644",
+      "git_blob": "d552056ce445960bc464133f2a28976dc0c36bab",
+      "bytes": 10139,
+      "sha256": "52d46e691eaa70f43793a381d8d118d4de82802e1e4935e22c3c97f83c1a2914",
+      "disposition": "included"
+    },
+    {
+      "path": "internal/inbox_needs_reply_test.go",
+      "mode": "100644",
+      "git_blob": "a0032eb44e0b7a57fe87a4cc05c7a12432895178",
+      "bytes": 5576,
+      "sha256": "89c8925417d21428024c1bfbeea4368cb48337981dbe2beac45a8a95eb744d9e",
+      "disposition": "included"
+    },
+    {
+      "path": "internal/lead.go",
+      "mode": "100644",
+      "git_blob": "30beef4c8b8ef6f0f742089ce56af693a7f2aa77",
+      "bytes": 9820,
+      "sha256": "ed325f3251b34feee0cfa580c3c7f7cbe8689b06ded0f8be6459b200bd34e02a",
+      "disposition": "included"
+    },
+    {
+      "path": "internal/lead_fields.go",
+      "mode": "100644",
+      "git_blob": "30347a758b8808547ced2bf3e32fdc949fe0f661",
+      "bytes": 2105,
+      "sha256": "5abe2e8d18379822a1e9b5bd648e6e83d9beebb8dbb61a59bab5b7806bd562f9",
+      "disposition": "included"
+    },
+    {
+      "path": "internal/lead_test.go",
+      "mode": "100644",
+      "git_blob": "43aa9617b6b762c58b17c842e4eeedb65e0bf0d3",
+      "bytes": 13888,
+      "sha256": "96a031ed0e1db6218f6e7ca9dec51b98b96d82fd105715b1dec90f520b5484e4",
+      "disposition": "included"
+    },
+    {
+      "path": "internal/mock_test.go",
+      "mode": "100644",
+      "git_blob": "29431529b99ab395206793b2fff14fa54a709fbf",
+      "bytes": 5245,
+      "sha256": "45eb6db84ac236836640e356462be97031d0c5868dbeb522998ed0842e89c893",
+      "disposition": "included"
+    },
+    {
+      "path": "internal/models.go",
+      "mode": "100644",
+      "git_blob": "9901c8f996998e35d246276897cb7402dd006c80",
+      "bytes": 5347,
+      "sha256": "861903b977a8d8aac3db7f0b438d488516ae7ca2c3f07cc67d959a1c1ee01ea6",
+      "disposition": "included"
+    },
+    {
+      "path": "internal/reply.go",
+      "mode": "100644",
+      "git_blob": "4094389502453c39015b91311f5f3bcfb9c20460",
+      "bytes": 26133,
+      "sha256": "2c95741fefa440b6f4586d4fca9f387fe9955f90cf94a54891969d3e707af730",
+      "disposition": "included"
+    },
+    {
+      "path": "internal/reply_test.go",
+      "mode": "100644",
+      "git_blob": "a1a735f0cd897d4f82097f7e59b81c26ea0609aa",
+      "bytes": 48452,
+      "sha256": "6ab868f6039b14d84f086c7b44ea4ba123d13ff034c75a214e2cc2f99843eefc",
+      "disposition": "included"
+    },
+    {
+      "path": "internal/schedule_overrides.go",
+      "mode": "100644",
+      "git_blob": "0f25d5d4ff7baf48ffe4c9c63a9add7c1da5a78a",
+      "bytes": 1297,
+      "sha256": "01d29321260ff817a2d9bf2807896f070bc73ffdeb60b0a37592d2d96dd1d8d3",
+      "disposition": "included"
+    },
+    {
+      "path": "internal/scheduler.go",
+      "mode": "100644",
+      "git_blob": "65dcf08c9d840feea91557210c314e9acbe70207",
+      "bytes": 25733,
+      "sha256": "06b514ed12f7dd5a1bbf23149f7efedd5a9529587e2244e35d8c968191b22af4",
+      "disposition": "included"
+    },
+    {
+      "path": "internal/scheduler_test.go",
+      "mode": "100644",
+      "git_blob": "1224f5bc5c7b0a2af948794b46c58d64e201a9c5",
+      "bytes": 54868,
+      "sha256": "410fa4c589ea3565ab9429bae3b9b9c7179ba3b09dd492999d154cd68b322327",
+      "disposition": "included"
+    },
+    {
+      "path": "internal/secrets.go",
+      "mode": "100644",
+      "git_blob": "cf5d3c789786344e355706129e02776d46b622da",
+      "bytes": 3958,
+      "sha256": "cf506ef3efd3553b41fb18da51b75b826bdc74f4be5e80f9ff6b7e0f83ae9062",
+      "disposition": "included"
+    },
+    {
+      "path": "internal/secrets_test.go",
+      "mode": "100644",
+      "git_blob": "719e54329de8fa44a4ce6b770db070109a2185f2",
+      "bytes": 3894,
+      "sha256": "2c7a8b8595ad68a9f4c287590882bb78b972b493d137f44833249bb44e62e117",
+      "disposition": "included"
+    },
+    {
+      "path": "internal/send.go",
+      "mode": "100644",
+      "git_blob": "0bcb2cf9a7f5a9fb7fe191ec2f8e7143bc58f389",
+      "bytes": 7866,
+      "sha256": "aa384b83babb4e2bbbe679f55b4ffad446f4d95c13ba09bd8d4503a31c7893e1",
+      "disposition": "included"
+    },
+    {
+      "path": "internal/send_test.go",
+      "mode": "100644",
+      "git_blob": "ec6e12166f9d7089084bcad118133e4d7be2d0dc",
+      "bytes": 11357,
+      "sha256": "93239fa7788e617016cdce38163357dce291f39d4a4c5fa2cbed8b73e3cf616d",
+      "disposition": "included"
+    },
+    {
+      "path": "internal/smtp.go",
+      "mode": "100644",
+      "git_blob": "f3538b604bbfab4567d90533bd0718b2b1c64590",
+      "bytes": 6277,
+      "sha256": "b8c93cb4fd60cdec3476e1b45eaab4fd14abe16e98d0b5b4d8683ebf6e85ad53",
+      "disposition": "included"
+    },
+    {
+      "path": "internal/smtp_test.go",
+      "mode": "100644",
+      "git_blob": "5b68d1453f6602913d5a42a359c762c7ecc2d482",
+      "bytes": 4871,
+      "sha256": "7ede57872a190614bb470c37c605621d496ffb59192ad6d451b4c5267e5b729e",
+      "disposition": "included"
+    },
+    {
+      "path": "internal/sql_runner.go",
+      "mode": "100644",
+      "git_blob": "c289e06e21c81b09173a1a7b041b8ba4b337c8d4",
+      "bytes": 4345,
+      "sha256": "419952fbbb2178cadb4980f2fd9b607121ac9e214814eea0b16d3fadfe328c65",
+      "disposition": "included"
+    },
+    {
+      "path": "internal/sql_runner_test.go",
+      "mode": "100644",
+      "git_blob": "6af51598d25b7f148aacfa75affec36e96717bde",
+      "bytes": 6171,
+      "sha256": "273889091cb6cc5a09cedbf9a354543926c4b2a24878ca0a1617202d34306b06",
+      "disposition": "included"
+    },
+    {
+      "path": "internal/stats.go",
+      "mode": "100644",
+      "git_blob": "d1673bcad49aaa1d1fa66e82942394156831300d",
+      "bytes": 6566,
+      "sha256": "8470f97bbc0e7162fccb5d66576af7c74983c3e278ad27d29dda4b3db7c5cc8d",
+      "disposition": "included"
+    },
+    {
+      "path": "internal/stats_test.go",
+      "mode": "100644",
+      "git_blob": "be5659d0ae7dec9c1a317b392c31c8e2c1cbdb61",
+      "bytes": 8308,
+      "sha256": "d09cbf231b5dae081367d7c542d1d60a39d710927e7e02b734a3a29b9ef12426",
+      "disposition": "included"
+    },
+    {
+      "path": "internal/store.go",
+      "mode": "100644",
+      "git_blob": "814bd97674dfde36df6cb1549a45d606dcfdca90",
+      "bytes": 8003,
+      "sha256": "a1adcf1b5020588fe9a3335645ebbbf7dbd231957bff52962b49a8ecafa56385",
+      "disposition": "included"
+    },
+    {
+      "path": "internal/store_test.go",
+      "mode": "100644",
+      "git_blob": "b17a47b69e92844449c62766f4505486c2de3e6e",
+      "bytes": 5982,
+      "sha256": "7e57471c31cf381b81a7e9429d7d19eda65a4d6fde2ed20d6f68fad1a71ca6e4",
+      "disposition": "included"
+    },
+    {
+      "path": "internal/template.go",
+      "mode": "100644",
+      "git_blob": "9463b5b2d166018a82f6058f7b0694d9c7dc79fc",
+      "bytes": 4905,
+      "sha256": "a4cd051e391258044abb6d718bf67b4af22dabdcc97d525a097425a0adb6e650",
+      "disposition": "included"
+    },
+    {
+      "path": "internal/template_test.go",
+      "mode": "100644",
+      "git_blob": "9a951363f287f5241dd3b730b096dc1dbc652293",
+      "bytes": 5669,
+      "sha256": "8169dd57e0c8ce744526c3eaf6cdb4b805e2823b3e121f0e51d1dc5c479cda8a",
+      "disposition": "included"
+    },
+    {
+      "path": "internal/test_email.go",
+      "mode": "100644",
+      "git_blob": "5ec04edfd09e58c113043855ea538f2fa5158142",
+      "bytes": 2228,
+      "sha256": "a9090014b59473d7bf94e222667f8a51955070d69e85bae120450a0cc82ecb55",
+      "disposition": "included"
+    },
+    {
+      "path": "internal/test_email_test.go",
+      "mode": "100644",
+      "git_blob": "0926c5b83530ffc6b8d391012f82bd7760cb4fef",
+      "bytes": 499,
+      "sha256": "08a77a1a3a69f22f44799d8d1a42af6d901c1fe8334e6f56de5df5670f641514",
+      "disposition": "included"
+    },
+    {
+      "path": "internal/testdata/seq.yml",
+      "mode": "100644",
+      "git_blob": "7d8a0e66297246c573ea157b86d80590a55c1a52",
+      "bytes": 300,
+      "sha256": "79ea86562746435263b985edd558dffbea222235465df3f8bf9cf864ff4237da",
+      "disposition": "included"
+    },
+    {
+      "path": "internal/tick.go",
+      "mode": "100644",
+      "git_blob": "4924c28855cdaaaa2a9187813b92eb0c323044ba",
+      "bytes": 25154,
+      "sha256": "cd619d8343b278a0d8ebb35489b50dc084c8aec9d76c86f77b8e5c7e4a48dad1",
+      "disposition": "included"
+    },
+    {
+      "path": "internal/tick_test.go",
+      "mode": "100644",
+      "git_blob": "c301b6b6213033caf1e8cb63bc3f9f2f10b350f3",
+      "bytes": 64023,
+      "sha256": "83dba8202f4abcfa5dbaa4096b3e78a9289433bf931396344b642bebc1ce6568",
+      "disposition": "included"
+    },
+    {
+      "path": "internal/workspace.go",
+      "mode": "100644",
+      "git_blob": "cc16b865961df5972f3ce5dd6e3ec0652ba5da80",
+      "bytes": 426,
+      "sha256": "813bdffb0c0745ab006b8032643704eabb04a2a0ad566e09623ff774421a5769",
+      "disposition": "included"
+    },
+    {
+      "path": "ops/mova-coldcli.crontab",
+      "mode": "100644",
+      "git_blob": "0ccce00f1a8e7e194e82994ab3fea1067d4e7aee",
+      "bytes": 701,
+      "sha256": "e1793065ae7409985de36626f631fb26da7e7042a699b586730f9e099a236ffc",
+      "disposition": "included"
+    },
+    {
+      "path": "pkg/engine/engine.go",
+      "mode": "100644",
+      "git_blob": "6b0d14e7e1f0a3271704ad882c9ea8266aa3aab4",
+      "bytes": 4555,
+      "sha256": "1a23a18fd0968de8d2714ddb5f6bf9e0db037eff15f7d710d2cbb1abef1bfbc2",
+      "disposition": "included"
+    },
+    {
+      "path": "pkg/engine/engine_test.go",
+      "mode": "100644",
+      "git_blob": "23ecf105a109eae56769b1284de5adea60969ff0",
+      "bytes": 379,
+      "sha256": "1cb683db0e363d064297e19767aa8eb8e3b26bc58bddb6ba3d11b6c9ecd38719",
+      "disposition": "included"
+    }
+  ]
+}

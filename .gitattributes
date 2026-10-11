@@ -1,0 +1,2 @@
+third_party/upstream/** -text linguist-vendored
+third_party/manifests/*.json linguist-generated

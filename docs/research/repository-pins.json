@@ -1,0 +1,38 @@
+[
+  {
+    "name": "BillionMail",
+    "remote": "https://github.com/Billionmail/BillionMail.git",
+    "commit": "fc36c76c050c3775c5e899faf7403cf0262d2744",
+    "commit_date": "2026-06-11"
+  },
+  {
+    "name": "Quickly",
+    "remote": "https://github.com/AbdelftahZowail/Quickly.git",
+    "commit": "edca964b8bfd56e621b491aba6302b0981545898",
+    "commit_date": "2026-09-23"
+  },
+  {
+    "name": "Wu-Wei-Mail",
+    "remote": "https://github.com/LuiHedlund02/Wu-Wei-Mail.git",
+    "commit": "6002b8850d685c9ad275eb1cc10a4ce0c8299145",
+    "commit_date": "2026-05-18"
+  },
+  {
+    "name": "cold-cli",
+    "remote": "https://github.com/andersmyrmel/cold-cli.git",
+    "commit": "041c834156e873a897f19fcf9b5e040896e39d1d",
+    "commit_date": "2026-10-06"
+  },
+  {
+    "name": "instantly-starter-kit",
+    "remote": "https://github.com/Instantly-ai/instantly-starter-kit.git",
+    "commit": "7649e6e4f820ad18cc563d5075f34b1a8daceb36",
+    "commit_date": "2026-08-17"
+  },
+  {
+    "name": "lightreach",
+    "remote": "https://github.com/nahumoore/lightreach.git",
+    "commit": "c0723a25dbcc1b19ec4bdbd0f882de31ace2df87",
+    "commit_date": "2026-07-23"
+  }
+]
