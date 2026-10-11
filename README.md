@@ -4,9 +4,12 @@ A planned shared company mailbox for approximately **10 people**, available on a
 
 ## Current state
 
+**FE-01 frontend authored as an unaccepted draft; compiler failures and review defects remain.** See the checkpoint record below.
+
+
 **Design and source intake complete; the first backend checkpoint is preserved in incomplete draft PR #5.** Resend and self-hosted Supabase are selected by the user. This update replaces the earlier assumption that the primary product is a campaign engine across 18 existing mailboxes. The expanded brief specifies nine addresses across one or two domains; actual addresses, inbox/alias boundaries and migration requirements remain unresolved.
 
-Local execution is underway from main `103baeb0` in an isolated checkout. Three independent exact-model PLAN consultations completed successfully; [runtime evidence and opinions](.planning/consultations/results/initial-plan/metadata.json) distinguish these from the earlier failed attempts. Astra MAX has accepted the initial local architecture; see [ADR 0002](docs/decisions/0002-local-architecture.md). Fresh BE-01 task opinions and Astra MAX synthesis are complete; Devin preserved a partial foundation checkpoint in draft PR #5 and is verified suspended. Official Devin MCP is authenticated and its read-only session verified this repository/base and working Docker. [Devin setup](docs/research/devin-cli/README.md) records the connection and its limitations. Fable retains frontend ownership; FE-01 has three completed exact-model opinions, accepted Astra MAX synthesis and a frozen canonical read contract; Fable implementation dispatch is next.
+Local execution is underway from main `103baeb0` in an isolated checkout. Three independent exact-model PLAN consultations completed successfully; [runtime evidence and opinions](.planning/consultations/results/initial-plan/metadata.json) distinguish these from the earlier failed attempts. Astra MAX has accepted the initial local architecture; see [ADR 0002](docs/decisions/0002-local-architecture.md). Fresh BE-01 task opinions and Astra MAX synthesis are complete; Devin preserved a partial foundation checkpoint in draft PR #5 and is verified suspended. Official Devin MCP is authenticated and its read-only session verified this repository/base and working Docker. [Devin setup](docs/research/devin-cli/README.md) records the connection and its limitations. Fable retains frontend ownership; FE-01 has three completed exact-model opinions, accepted Astra MAX synthesis and a frozen canonical read contract; Fable has authored an unaccepted FE-01 draft; its compiler and test failures require repair.
 
 The repository contains 2,764 pinned upstream files under `third_party/upstream`, six independent technical dossiers, per-file integrity manifests, preserved licenses, architecture, requirements, a database/backend tutorial, connector/desktop designs and a phased implementation plan. The upstream snapshots contain executable source but are not installed, run or integrated. There is no working Elevateo application, installer or deployment. The expanded 2026-10-12 [planning index](.planning/README.md) supplies the next agent's research, consultation and execution path; [the standards](.planning/STANDARDS.md) are its engineering baseline, with production decisions still open.
 
@@ -69,3 +72,17 @@ The user explicitly approved use of existing $10 Devin credit; no purchases or t
 BE-01 implementation is now assigned to [Devin](https://app.devin.ai/sessions/257567ddf6b743c8b9dad365f52e3f99), based on `5ae9771`; partial implementation is preserved in incomplete draft PR #5; independent verification remains pending and the session is suspended.
 
 FE-01 read contract and exact-model synthesis are frozen in .planning/consultations/results/fe-01 and contracts/v1. Docker generation with openapi-typescript 7.13.0 reproduced identical API types; tooling audit reported zero vulnerabilities across 34 packages. This is tooling evidence, not application acceptance. Full frontend/backend integration remains open.
+
+
+### FE-01 authored checkpoint (2026-10-12)
+
+Fable 5 authored the read-only React client under apps/web. This is an **unaccepted draft checkpoint**, not a completed or deployable application. Session/mailbox/inbox/plaintext-reader code, fixture/HTTP adapters, tests and Docker/browser configurations are present. The core API contract is unchanged. Docker API type regeneration passed, but strict compilation failed on the fixture resolver return union and missing Node declarations; unit diagnostics have three failures; the isolated Vite bundler succeeds. Mandatory lint and actual visual QA have not passed.
+
+Adversarial review covered all non-generated authored files (2,133 unique lines) plus a dedicated design review. Sixteen localized code/test defects, two documentation defects and one lint acceptance gap remain open; see code-reviews.md and docs/evidence/fe01-initial-review. Source/API design is not runtime integration: real Rails session/storage/mailbox behavior and all mutation flows remain pending. Fresh FE-01-R1 consultation and Astra synthesis must precede repair implementation. No mail, live deployment or purchase occurred.
+
+
+### FE-01 Docker diagnostic results
+
+API regeneration passed. Strict compilation failed on FE-R12 and FE-R15. Unit tests: 63 passed, 3 failed out of 66; all failures are retained DOM from previous SessionProvider tests (FE-R17, missing Testing Library cleanup with Vitest globals disabled and no setup hook). These failures prevent validation of the affected session assertions. The separate diagnostic Vite bundle succeeded (148 modules; JS 373.92 kB / gzip 115.76 kB), but does not constitute a passing production build because typechecking failed. Lint, browser/visual checks and real backend integration remain outstanding. See `docs/evidence/fe01-initial-review/unit-bundle.txt`.
+
+All task test containers were automatically removed. The task-owned Node image (332 MB reported image size) was removed; Docker reports zero containers and zero build cache. Pre-existing Playwright/Python images and nine persistent volumes were preserved. Host free space was only 1.42 GB after cleanup; virtual-disk reclaim remains under investigation, so no host-space recovery is claimed.
