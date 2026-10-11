@@ -4,6 +4,8 @@ A planned shared company mailbox for approximately **10 people**, available on a
 
 ## Current state
 
+BE-01-R1 reviewed source checkpoint `5785eba` is available on its repair branch; Devin is running bounded ops-only Docker verification. Runtime acceptance remains pending.
+
 **Repair work continues:** frontend data passes123unit tests/types/API regeneration/build at handoff79387b1; Fable UI repair and backend guard/migration review are in progress. Devin's successful grantor probe is archived; last balance is $5.17 with $0 on-demand. No end-to-end acceptance. See state.md and docs/evidence/be-01-r1-probe-result.
 
 **Design and source intake complete; the first backend checkpoint is preserved in incomplete draft PR #5.** Resend and self-hosted Supabase are selected by the user. This update replaces the earlier assumption that the primary product is a campaign engine across 18 existing mailboxes. The expanded brief specifies nine addresses across one or two domains; actual addresses, inbox/alias boundaries and migration requirements remain unresolved.
