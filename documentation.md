@@ -108,3 +108,11 @@ Local Docker cleanup removed the task Node image (332 MB reported) and all task 
 ### Reviewed grantor probe checkpoint
 The corrected isolated grantor probe is frozen in docs/evidence/be-01-r1-grantor-probe.md (SHA-256 5b1e35dfa6a7b8446eabbe1dfae6a6f19125f13ab6e4ca1f659682fad14f83a3). Independent cleanup re-review covered 169 Bash lines with zero new defects; execution remains pending. One bounded attempt on the existing Devin session is authorized using existing credit only; implementation remains frozen until catalog evidence is available.
 
+
+### Current repair checkpoint 2026-10-12
+
+The corrected Devin grantor probe succeeded and its authenticated raw attachment is preserved under docs/evidence/be-01-r1-probe-result (SHA2563263793b298326c2231a22fcd847b13ada0b365ae3ccb2bb44097534f1b69327). Actual Astra MAX disposition permits the narrow additive membership repair. Unit A sources are now authored; independent review identified four test/guard defects and repairs are underway. No backend runtime acceptance.
+
+FE data source checkpoint3ab182fd7100628758165111ba3bf32054ae7045 and evidence handoff79387b1bab0f5958b1a80028c0b35152fc10ecbc are pushed on fix/astra-low/fe-01-r1-data. Pinned Docker types, API regeneration,123unit tests and production build pass; lint and UI/visual gates remain open. Fresh exact claude-fable-5 session b878fb94-6e40-482d-9b26-1e39f8e98920 is authoring stage B in clean Elevateo Mail - Fable FE01 R1, branch fix/fable/fe-01-r1, parent79387b1. Runtime init verifies only Edit/Glob/Grep/Read/Write, no MCP. Runner2.1.296 restricted/safe mode, no fallback, $10 API-list-cost ceiling distinct from Devin credit,30minute checkpoint; root owns execution and stop control.
+
+Devin remains independently verified suspended; last visible credit$5.17 and on-demand$0.00. Existing $10-only authorization remains binding. Task Docker containers/Node image removed; zero containers/cache, pre-existing Playwright/Python images and nine persistent volumes retained. Last measured host free1,030,987,776bytes; no host-space recovery claim. Project remains incomplete and unpublished.

@@ -1,0 +1,169 @@
+docker.io/supabase/postgres@sha256:f371b5f3f2ac0a05703f33d6e6134515fb2498cab708fb948a0aeb7481467c00: Pulling from supabase/postgres
+9e88118ea305: Pulling fs layer
+99eec413ff9c: Pulling fs layer
+6a0ac1617861: Pulling fs layer
+f04e445057ae: Pulling fs layer
+d343daf747a6: Pulling fs layer
+7bd6db39b9a3: Pulling fs layer
+5f373982f445: Pulling fs layer
+a08f9afeb021: Pulling fs layer
+9705dc122b7f: Pulling fs layer
+934229c37c0f: Pulling fs layer
+abb565a09a47: Pulling fs layer
+66bdddd6039a: Pulling fs layer
+fbca7e993e1c: Pulling fs layer
+d57bc9046944: Pulling fs layer
+77a683edb945: Pulling fs layer
+09f359af2c8c: Pulling fs layer
+40b5286cf380: Pulling fs layer
+37896fbd0b4d: Pulling fs layer
+7e2a3209ccb0: Pulling fs layer
+90e0d490e65d: Pulling fs layer
+e7cd8a022c6d: Pulling fs layer
+57a2f2b49499: Pulling fs layer
+27080c64989e: Pulling fs layer
+15efbe177d1c: Pulling fs layer
+7caa0d6a85af: Pulling fs layer
+9c04f0608c11: Pulling fs layer
+5cc41111c814: Pulling fs layer
+8ddaf57867eb: Pulling fs layer
+050236ff9d6f: Pulling fs layer
+66bdddd6039a: Download complete
+7caa0d6a85af: Download complete
+9e88118ea305: Download complete
+99eec413ff9c: Download complete
+6a0ac1617861: Download complete
+f04e445057ae: Download complete
+d343daf747a6: Download complete
+5f373982f445: Download complete
+7bd6db39b9a3: Download complete
+9705dc122b7f: Download complete
+a08f9afeb021: Download complete
+934229c37c0f: Download complete
+abb565a09a47: Download complete
+77a683edb945: Download complete
+d57bc9046944: Download complete
+37896fbd0b4d: Download complete
+40b5286cf380: Download complete
+09f359af2c8c: Download complete
+7e2a3209ccb0: Download complete
+e7cd8a022c6d: Download complete
+90e0d490e65d: Download complete
+57a2f2b49499: Download complete
+15efbe177d1c: Download complete
+27080c64989e: Download complete
+050236ff9d6f: Download complete
+9c04f0608c11: Download complete
+5cc41111c814: Download complete
+8ddaf57867eb: Download complete
+1a175c5c4463: Download complete
+6a0ac1617861: Pull complete
+9e88118ea305: Pull complete
+d343daf747a6: Pull complete
+fbca7e993e1c: Download complete
+fbca7e993e1c: Pull complete
+66bdddd6039a: Pull complete
+7caa0d6a85af: Pull complete
+99eec413ff9c: Pull complete
+f04e445057ae: Pull complete
+7bd6db39b9a3: Pull complete
+9705dc122b7f: Pull complete
+a08f9afeb021: Pull complete
+934229c37c0f: Pull complete
+abb565a09a47: Pull complete
+77a683edb945: Pull complete
+d57bc9046944: Pull complete
+37896fbd0b4d: Pull complete
+40b5286cf380: Pull complete
+09f359af2c8c: Pull complete
+7e2a3209ccb0: Pull complete
+e7cd8a022c6d: Pull complete
+90e0d490e65d: Pull complete
+27080c64989e: Pull complete
+050236ff9d6f: Pull complete
+9c04f0608c11: Pull complete
+5cc41111c814: Pull complete
+8ddaf57867eb: Pull complete
+5f373982f445: Pull complete
+57a2f2b49499: Pull complete
+15efbe177d1c: Pull complete
+Digest: sha256:f371b5f3f2ac0a05703f33d6e6134515fb2498cab708fb948a0aeb7481467c00
+Status: Downloaded newer image for supabase/postgres@sha256:f371b5f3f2ac0a05703f33d6e6134515fb2498cab708fb948a0aeb7481467c00
+docker.io/supabase/postgres:17.6.1.136@sha256:f371b5f3f2ac0a05703f33d6e6134515fb2498cab708fb948a0aeb7481467c00
+["supabase/postgres@sha256:f371b5f3f2ac0a05703f33d6e6134515fb2498cab708fb948a0aeb7481467c00"]
+verified_container=1fcd476594f75994877673de6ac0ea34113747c6b934d2aa5e9f1573cfeaf63d profile=bare
+
+config_metadata supautils.conf 100 101 644 4947
+config_metadata wal-g.conf 100 101 644 463
+config_metadata read-replica.conf 100 101 644 218
+config_file_count=19
+config_readable=true
+verified_container=1fcd476594f75994877673de6ac0ea34113747c6b934d2aa5e9f1573cfeaf63d profile=bare
+
+1fcd476594f75994877673de6ac0ea34113747c6b934d2aa5e9f1573cfeaf63d
+verified_container=fb7fec66eed71f156607a4c7fd99811fa7ffab7e0c73b96120e2bc506f95a64b profile=config-rw
+volume|be01r1-grantor-9d4694cf-bba6-490a-9eb9-956b6e119188-config|/etc/postgresql-custom|true
+config_metadata supautils.conf 100 101 644 4947
+config_metadata wal-g.conf 100 101 644 463
+config_metadata read-replica.conf 100 101 644 218
+config_file_count=19
+config_readable=true
+verified_container=fb7fec66eed71f156607a4c7fd99811fa7ffab7e0c73b96120e2bc506f95a64b profile=config-rw
+volume|be01r1-grantor-9d4694cf-bba6-490a-9eb9-956b6e119188-config|/etc/postgresql-custom|true
+fb7fec66eed71f156607a4c7fd99811fa7ffab7e0c73b96120e2bc506f95a64b
+verified_container=3d4eabb859888308bbf5ff24f027915d9aa57d2ec54268309aca500132393fa0 profile=database
+bind|/tmp/tmp.pM44Swzewb/99-jwt.sql|/docker-entrypoint-initdb.d/init-scripts/99-jwt.sql|false
+bind|/tmp/tmp.pM44Swzewb/99-roles.sql|/docker-entrypoint-initdb.d/init-scripts/99-roles.sql|false
+bind|/tmp/tmp.pM44Swzewb/bootstrap.sql|/ops/bootstrap.sql|false
+tmpfs||/var/lib/postgresql/data|true
+volume|be01r1-grantor-9d4694cf-bba6-490a-9eb9-956b6e119188-config|/etc/postgresql-custom|true
+    status     
+---------------
+ bootstrap: ok
+(1 row)
+
+                                   version                                    |  session_user  |  current_user  
+------------------------------------------------------------------------------+----------------+----------------
+ PostgreSQL 17.6 on x86_64-pc-linux-gnu, compiled by gcc (GCC) 15.2.0, 64-bit | supabase_admin | supabase_admin
+(1 row)
+
+  oid  |    rolname     | rolsuper | rolcreaterole | rolbypassrls 
+-------+----------------+----------+---------------+--------------
+    10 | supabase_admin | t        | t             | t
+ 16664 | elevateo_owner | f        | f             | f
+ 16666 | elevateo_api   | f        | f             | f
+(3 rows)
+
+   granted_role    |      member       |    grantor     | admin_option | inherit_option | set_option | grantor_oid 
+-------------------+-------------------+----------------+--------------+----------------+------------+-------------
+ elevateo_app_read | elevateo_api      | supabase_admin | f            | t              | t          |          10
+ elevateo_owner    | elevateo_migrator | supabase_admin | f            | f              | t          |          10
+(2 rows)
+
+verified_container=3d4eabb859888308bbf5ff24f027915d9aa57d2ec54268309aca500132393fa0 profile=database
+bind|/tmp/tmp.pM44Swzewb/99-jwt.sql|/docker-entrypoint-initdb.d/init-scripts/99-jwt.sql|false
+bind|/tmp/tmp.pM44Swzewb/99-roles.sql|/docker-entrypoint-initdb.d/init-scripts/99-roles.sql|false
+bind|/tmp/tmp.pM44Swzewb/bootstrap.sql|/ops/bootstrap.sql|false
+tmpfs||/var/lib/postgresql/data|true
+volume|be01r1-grantor-9d4694cf-bba6-490a-9eb9-956b6e119188-config|/etc/postgresql-custom|true
+3d4eabb859888308bbf5ff24f027915d9aa57d2ec54268309aca500132393fa0
+verified_container=4430d93ce5fc46b3b21c986aa2a4dd31d5808966db03a2e1d3ba94b7cac366d1 profile=config-ro
+volume|be01r1-grantor-9d4694cf-bba6-490a-9eb9-956b6e119188-config|/etc/postgresql-custom|false
+config_metadata supautils.conf 100 101 644 4947
+config_metadata wal-g.conf 100 101 644 463
+config_metadata read-replica.conf 100 101 644 218
+config_file_count=20
+config_readable=true
+verified_container=4430d93ce5fc46b3b21c986aa2a4dd31d5808966db03a2e1d3ba94b7cac366d1 profile=config-ro
+volume|be01r1-grantor-9d4694cf-bba6-490a-9eb9-956b6e119188-config|/etc/postgresql-custom|false
+4430d93ce5fc46b3b21c986aa2a4dd31d5808966db03a2e1d3ba94b7cac366d1
+be01r1-grantor-9d4694cf-bba6-490a-9eb9-956b6e119188-config
+Untagged: supabase/postgres@sha256:f371b5f3f2ac0a05703f33d6e6134515fb2498cab708fb948a0aeb7481467c00
+Deleted: sha256:f371b5f3f2ac0a05703f33d6e6134515fb2498cab708fb948a0aeb7481467c00
+TYPE            TOTAL     ACTIVE    SIZE      RECLAIMABLE
+Images          0         0         0B        0B
+Containers      0         0         0B        0B
+Local Volumes   3         0         43.8MB    43.8MB (100%)
+Build Cache     6         0         118.5MB   118.5MB
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/vda1       124G   12G  113G   9% /

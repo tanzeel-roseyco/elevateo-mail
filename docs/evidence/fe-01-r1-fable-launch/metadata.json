@@ -1,0 +1,19 @@
+{
+    "max_budget_usd":  10,
+    "stop":  "Terminate owned exec process/session; preserve edits",
+    "prompt_sha256":  "4E694043CFB814A42E67FFEA96D8663D8B6A860629273143F7665B603FD71CA8",
+    "cwd":  "C:\\Users\\Tanzeel\\Code and projects\\Elevateo Mail - Fable FE01 R1",
+    "started_utc":  "2026-10-11T18:10:25.2282519Z",
+    "cli":  "2.1.296",
+    "base":  "79387b1bab0f5958b1a80028c0b35152fc10ecbc",
+    "checkpoint_minutes":  30,
+    "session":  "b878fb94-6e40-482d-9b26-1e39f8e98920",
+    "requested_model":  "claude-fable-5",
+    "tools":  [
+                  "Read",
+                  "Write",
+                  "Edit",
+                  "Glob",
+                  "Grep"
+              ]
+}

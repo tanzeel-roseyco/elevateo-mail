@@ -271,3 +271,23 @@ FE-R17 P2: SessionProvider tests omit DOM cleanup; retained renders make three t
 ### BE-01-R1 isolated probe cleanup review
 Initial review: 143 Bash lines, one P2 ownership/mount-verification defect (6.99 defects per 1,000 lines). Revised script: 169 Bash lines, zero new defects (0 per 1,000), original defect statically resolved. All removal paths now inspect nonce ownership and exact mounts, preserving resources on failed verification. Runtime startup, mount serialization, readiness and grantor catalog proof remain pending. Final document SHA-256: 5b1e35dfa6a7b8446eabbe1dfae6a6f19125f13ab6e4ca1f659682fad14f83a3. No application acceptance is claimed.
 
+### BE-01-R1 repair review checkpoint, 2026-10-12
+
+The corrected probe subsequently completed remotely with exit 0. Its exact output and attribution are archived in `docs/evidence/be-01-r1-probe-result`; SHA-256 `3263793b298326c2231a22fcd847b13ada0b365ae3ccb2bb44097534f1b69327`. This supersedes the pending probe status above, without accepting the application.
+
+Initial Unit A review covered 813 unique lines in six bounded assignments (94,155,142,111,187,124). Four P2 findings: ownership guard omitted non-relation catalogs; T2 could pass through the ambient-transaction guard alone; worker authority checks omitted inherited USAGE; migration failure injection could pass before executing the grant. The overlapping 159-line Astra MAX design review found two additional P2 defects: mutable UUID strings inside Data and an RBS return type excluding Rails rollback's nil. Six unique defects / 813 unique LOC = 7.38 defects per 1,000 LOC. The source writer repaired all six; runtime closure is outstanding.
+
+Repaired source manifest SHA-256 `1c55d2a8e93686efd296fd19cf352fc1608a3823fa491b0002333fbb408317cb` belongs to the isolated BE01 R1 checkout. Dedicated design re-review: 161 lines, zero new defects, both design findings statically closed. A4 re-review: 178 lines, zero new defects, independent clean-second-connection assertion confirmed. Remaining repaired A slices are undergoing review. Overlapping re-reviews do not increase unique coverage.
+
+B4 Compose lines 1–120: 120 lines, zero defects. B5 Compose lines 121–222, test overlay and fixtures: 183 lines, zero defects. A separate five-line JWT initialization review resolved the conditional missing-secret concern: the script requires only JWT_EXP, which is supplied. These reviews do not prove service startup or authentication.
+
+C1 checker/probe/listener: 138 lines, zero defects. Corrected C2 shell wrapper: 140 lines, zero new defects. Corrected C3 PowerShell wrapper: 127 lines, zero new defects. C4 egress tests: 127 lines, zero confirmed defects. Wrapper failure-protocol and PowerShell inspection findings are statically resolved; execution remains outstanding. C4 coverage still needs correct-token/wrong-exit and exit-42/wrong-token combinations. PowerShell tests explicitly skip without the configured runtime; Linux execution cannot establish Windows PowerShell 5.1 compatibility. No actual network-isolation or cleanup acceptance is claimed.
+
+All assignments used the user's adversarial rubric; formatting remains delegated to tools. Obsidian is unavailable, so design tradeoffs are analytical rather than connected simulations.
+
+### FE-01-R1 data checkpoint
+
+Data source review: 769 unique lines, one newly found cancellation-cleanup defect, repaired and statically re-reviewed (1.30 defects per 1,000 LOC). Configuration review: 113 lines, zero defects. README and final provenance review: 63 lines, zero defects. Combined unique coverage: 945 lines, one defect (1.06 per 1,000). Docker regression evidence and exact source manifest are preserved on `fix/astra-low/fe-01-r1-data` at `79387b1bab0f5958b1a80028c0b35152fc10ecbc`.
+
+Pinned Docker checks passed 123 unit tests, strict types, API regeneration and production build. Lint identified an unused import in the pending Fable session repair. These results cover the data checkpoint, not frontend end-to-end or backend integration. Fable repair session `b878fb94-6e40-482d-9b26-1e39f8e98920` is active from that commit with only Read/Write/Edit/Glob/Grep tools; runtime identity is claude-fable-5. No frontend visual acceptance yet.
+
