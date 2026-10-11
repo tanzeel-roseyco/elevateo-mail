@@ -1,6 +1,6 @@
 # Desktop clients and Claude / Codex connectors
 
-Status: proposed design, 2026-10-11. The user requested a company mailbox on a web subdomain, downloadable macOS and Windows applications, and Claude / Codex connectors. Tauri, the authentication details, and the connector implementation below are recommendations. Application implementation remains subject to the explicit standards approval required by `.planning/STANDARDS.md`. No installer, connector, OAuth server, or configuration has been implemented by this document.
+Status: proposed design, 2026-10-11; local execution scope updated 2026-10-12. The user requested a company mailbox on a web subdomain, downloadable macOS and Windows applications, and Claude / Codex connectors. Tauri and the connector design are working defaults under [the local completion brief](../LOCAL_BUILD_PROMPT.md); keep actual signing credentials and live activation last. No installer, connector, OAuth server, or configuration has been implemented by this document.
 
 ## 1. One application, three ways to open it
 

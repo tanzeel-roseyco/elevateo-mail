@@ -16,6 +16,7 @@ Design date: 2026-10-11. This document supersedes the earlier planning assumptio
 | R08 | Teach backend, system and database design, including CAP | Worked examples, ER model, failure cases and exercises in the tutorial |
 | R09 | Use the user's Codex CLI and update this repository | CLI-authored tutorial and source tooling reviewed; Git commit and remote update verified |
 | R10 | Upload all six repositories or select their best components and document them strictly | Pinned source files, complete file manifests, preserved notices, six independent dossiers and adoption/goal traceability |
+| R11 | Give the next agent a local frontend reuse prompt and end-to-end local completion instructions; leave credentials last | LOCAL_BUILD_PROMPT.md and local completion plan; future implementation evidence must cover real local services, simulated transport, UI, connectors, desktop and final activation inputs |
 
 The current source-intake request explicitly authorizes collecting all six codebases in this repository. See [source inventory](third_party/README.md), [independent dossiers](docs/reference-repositories/README.md) and [goals](docs/goals-and-traceability.md). Archival source import is complete; runtime integration remains future work.
 
@@ -33,13 +34,13 @@ This is an API-based mailbox product. Full Gmail/Outlook history synchronization
 | --- | --- | --- |
 | Resend + self-hosted Supabase | User selected | Explicit current instruction |
 | Company mailbox + web + Mac + Windows + AI connectors | User requested | Current product direction |
-| Strict TypeScript / React-Vite / Node / Tauri 2 | Recommended, approval pending | Greenfield repository; shared contracts and UI with few runtimes |
-| PostgreSQL job queue, separate API and worker | Recommended, approval pending | One durable source of truth; API restarts must not lose jobs |
+| Strict TypeScript / React-Vite / Node / Tauri 2 | Working defaults for scoped local completion | Shared contracts/UI; first inspect and reuse suitable existing local work |
+| PostgreSQL job queue, separate API and worker | Working defaults for scoped local completion | One durable source of truth; API restarts must not lose jobs |
 | VPS, Docker Compose, reverse proxy, off-host backups | Recommended, approval pending | Small fixed team; operational ownership must be deliberate |
 | Resend stable send/receive APIs, not private-beta Inboxes | Recommended | Avoid availability and response-shape dependency on limited beta |
 | MCP read/search/draft first; human-controlled sending | Recommended | Enforce permissions and prevent email content from granting actions |
 | Best-of reuse by selective adaptation | Recommended | Audited foundations need reliability/security fixes; no blind merge |
-| Engineering standards | Draft, not approved | Existing explicit repository gate remains in effect |
+| Engineering standards | Local engineering baseline; production decisions open | 2026-10-12 local-completion instruction supersedes the blanket wait within that scope; no blanket approval claimed |
 
 ## Proposed permissions
 
@@ -55,4 +56,4 @@ Before deployment, resolve the actual addresses and existing MX provider, new-ad
 
 ## Design artifacts
 
-The architecture contains C4-style context/container views and trust boundaries. The database tutorial contains the conceptual ER model and constraints. Contracts document route shapes, transaction boundaries and state transitions. The implementation plan turns them into measurable milestones. Each remains a proposal until its approval/implementation status changes explicitly.
+The architecture contains C4-style context/container views and trust boundaries. The database tutorial contains the conceptual ER model and constraints. Contracts document route shapes, transaction boundaries and state transitions. [The local agent prompt](LOCAL_BUILD_PROMPT.md) and [completion plan](docs/local-completion-plan.md) now define the bounded execution path before credentials; the release plan describes later live gates. These documents are not evidence of implemented features.

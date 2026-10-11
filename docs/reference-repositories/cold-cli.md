@@ -1,6 +1,6 @@
 # cold-cli — independent source dossier
 
-**Disposition: preserve as an MIT-licensed reference snapshot; selectively port scheduling rules, parsing behavior and regression cases after application standards approval. Do not embed its executable as Elevateo's mail backend.** Its strength is a focused sequence engine and unusually useful behavioral tests. It does not supply the shared company-mailbox application requested for ten people.
+**Disposition: preserve as an MIT-licensed reference snapshot; selectively port scheduling rules, parsing behavior and regression cases under the local-completion brief and engineering baseline. Do not embed its executable as Elevateo's mail backend.** Its strength is a focused sequence engine and unusually useful behavioral tests. It does not supply the shared company-mailbox application requested for ten people.
 
 ## Identity, provenance and audit boundary
 

@@ -24,6 +24,7 @@ Build an understandable, reliable shared company mailbox for about ten people. T
 | R08 | Learn backend/system/database/CAP — requested | [Worked tutorial](backend-database-tutorial.md), failure matrices and actual upstream failure examples | Reader can explain tables/keys/RLS, transaction versus network effect, retry uncertainty and partition behavior |
 | R09 | Use Codex CLI and update repository — requested | CLI-authored tutorial plus CLI review/tests of import tools; Git publication | Versioned repository update with verified remote commit and usable documentation |
 | R10 | Upload all source or select best components; document strictly — explicitly authorized now | Six pinned source trees, full file manifests, six dossiers, adoption matrix and preserved notices | 2,764 exact included files; one documented sample-key omission; six original-tree checks; all dossier source links resolve |
+| R11 | Local frontend reuse and end-to-end completion prompt; credentials last — requested 2026-10-12 | [Agent prompt](../LOCAL_BUILD_PROMPT.md), [local completion plan](local-completion-plan.md), scoped engineering baseline | Handoff exists; future acceptance needs a working local UI/backend/auth/storage/worker, transport failure tests, connectors, available-platform packages and explicit pending live checks |
 
 ## State of the work
 
@@ -34,7 +35,7 @@ Build an understandable, reliable shared company mailbox for about ten people. T
 | Audits | Earlier findings/tests preserved and independently organized | Reassess changes selected for actual product use |
 | Source tooling | Importer/verifier plus isolated fixture tests | Tools do not install, run or certify upstream applications |
 | New product | Requirements and design documented | No Elevateo API/UI/worker/schema/connector/installer implemented yet |
-| Application standards | Pending explicit approval under existing instructions | Source intake authorization does not silently approve all proposed product choices |
+| Local execution brief | Prompt and completion plan ready; implementation not started | Follow scoped engineering baseline without repeated blanket approval; production choices remain open |
 | Production operations | Design only | Domain/provider setup, measured capacity, owner, backup and restore validation |
 
 ## Non-negotiable correctness rules

@@ -2,9 +2,11 @@
 
 Status: proposed application plan. Six upstream source snapshots are now present as reference material, but no integrated Elevateo application, installers or live infrastructure exists.
 
-## Gate 0 — approve the concrete design standards
+## Gate 0 — use the local completion brief
 
-Review [the revised standards](../.planning/STANDARDS.md). Resend and self-hosted Supabase are already selected; language/framework, desktop shell, hosting topology and detailed engineering rules are proposed. Existing repository instructions require explicit standards approval before application implementation. The present documentation work does not imply approval.
+Start with [LOCAL_BUILD_PROMPT.md](../LOCAL_BUILD_PROMPT.md), [the local completion plan](local-completion-plan.md) and [the engineering baseline](../.planning/STANDARDS.md). The user's 2026-10-12 instruction supplies a scoped path for end-to-end local work using available frontend materials and leaving real credentials last. Use documented local implementation defaults and record justified adaptations; no blanket production approval is claimed.
+
+The milestones below describe product capabilities and eventual release gates. Execute their locally testable parts in the order given by the local completion plan before requesting credentials. In particular, live send/reply and production hosting checks in milestones 2–3 must not block offline adapter tests, local MCP, development desktop packages or restore exercises. Mark live and unavailable-platform checks pending until actually performed.
 
 Resolve the actual company domain/MX provider and whether the first pilot uses new addresses or imports existing accounts before DNS work. Credentials are unnecessary for this design review.
 

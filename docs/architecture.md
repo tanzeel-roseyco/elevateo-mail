@@ -71,7 +71,7 @@ For desktop, use the system browser with authorization code/PKCE, strict redirec
 
 Keep business tables in a non-public application schema, not automatically exposed through the Data API. Use explicit grants and RLS as defense in depth. If the API connects directly to PostgreSQL, its request connection must assume a restricted role with verified user claims set **transaction-locally**; pooled connections must not leak claims between requests. Do not run ordinary requests as a database owner, superuser or BYPASSRLS role. Validate this with actual PostgreSQL role tests. Worker operations use a separate narrowly granted role; any privileged helper must validate the job and mailbox boundary itself.
 
-Storage object access is mediated by authorized attachment metadata. A random object path is not authorization. Signed URLs are short-lived and generated only after current mailbox checks; quarantined objects never receive download URLs. Choose consistent Storage RLS and server access rules before implementation.
+Storage object access is mediated by authorized attachment metadata. A random object path is not authorization. User downloads pass through an authenticated API/proxy that rechecks current session/grant and mailbox access on each new request. Any short-lived Storage signed URL remains server-side; clients cannot bypass revocation by reusing it. Quarantined objects cannot be downloaded. Already received bytes cannot be recalled. Keep Storage RLS and server access rules consistent with this boundary.
 
 ## Where consistency matters
 

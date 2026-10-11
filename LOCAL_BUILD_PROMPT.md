@@ -1,0 +1,62 @@
+# Agent prompt: complete Elevateo Mail locally
+
+Use this file as the execution prompt for the next implementation agent. The 2026-10-12 user instruction is to use what is already available locally for the frontend, give the app an end-to-end local completion path, and leave credentials until last. Writing this handoff does not claim the application has been built.
+
+## Your assignment
+
+Build and verify a usable local Elevateo Mail application for about ten staff, using the source and design material already in this repository. Complete the connected frontend, API, self-hosted Supabase development stack, background worker, content handling, Claude/Codex connector and desktop packaging work. Work through [the local completion plan](docs/local-completion-plan.md) until every locally testable acceptance condition has evidence. Leave real service credentials and production activation for the final handoff.
+
+Do the work, fix failures and keep state.md current. Do not stop after generating a plan, a static dashboard, disconnected mock screens or an API skeleton. Do not ask for Resend keys, cloud accounts, DNS access, model API keys or signing identities to begin. If an unavailable host capability blocks one deliverable, finish the independent work and record the precise remaining check rather than claiming success.
+
+## Read first and use the current workspace
+
+Read AGENTS.md, README.md, state.md, documentation.md, .planning/STANDARDS.md, docs/end-goal.md, docs/component-adoption.md, docs/contracts-and-reliability.md and docs/local-completion-plan.md. Inspect the current Git branch, working changes and any existing first-party implementation before editing. Preserve unrelated work. Search AIDEV anchors and retain their intent.
+
+The user's latest instruction establishes this scoped local-completion workflow. Use the documented TypeScript/React-Vite/Node, PostgreSQL jobs and Tauri choices as implementation defaults, recording justified adaptations needed to reuse existing local work. Earlier blanket instructions to wait for standards approval do not require a repeated approval question for this local workflow. The quality rules still apply. Production hosting, purchases, DNS migration, real sending and public releases remain separate activation decisions; no blanket approval of those actions is recorded.
+
+## Frontend: start with what is already local
+
+First look for an existing Elevateo frontend, user-provided assets, components and design conventions in the current authorized workspace. Reuse and improve them if they now exist. At the time this prompt was written, the repository contained reference frontends but no first-party Elevateo frontend. Inspect relevant skills or libraries exposed in your own environment when useful, but do not depend on an unavailable plugin, explore unrelated private folders, or fetch another template merely to begin.
+
+If no first-party frontend exists, selectively adapt these already-present sources. Links identify actual local files, not instructions to install their applications:
+
+| Priority | Local source | Use and required adaptation |
+| --- | --- | --- |
+| 1 | [lightreach UI components](third_party/upstream/lightreach/packages/ui/src/components), [styles](third_party/upstream/lightreach/packages/ui/src/styles/globals.css) | Start with controls, layout primitives and styling tokens; keep one consistent design system and only necessary dependencies |
+| 2 | [Quickly Unibox.jsx](third_party/upstream/quickly/frontend/src/pages/Unibox.jsx), [EmailContent.jsx](third_party/upstream/quickly/frontend/src/components/EmailContent.jsx), [emailQuote.js](third_party/upstream/quickly/frontend/src/utils/emailQuote.js) | Adapt inbox/composer/quote interactions to strict TypeScript and our API; replace upstream authorization and unsafe content assumptions |
+| 3 | [Instantly ReplyThread.tsx](third_party/upstream/instantly-starter-kit/js/dashboard/core/modules/replies/ReplyThread.tsx) | Reuse useful conversation presentation; remove Instantly server-action/provider coupling and debug UI |
+| 4 | [Wu inbox](third_party/upstream/wu-wei-mail/frontend/src/app/(app)/inbox/page.tsx), [command palette](third_party/upstream/wu-wei-mail/frontend/src/components/command-palette.tsx) | Use appropriate keyboard, filtering and loading-state ideas; replace Next/router, campaign and legacy API dependencies |
+
+Keep every `third_party/upstream` snapshot unchanged. Adapt selected files into first-party application directories and preserve applicable licenses/notices with a provenance record of source commit, source path, destination, modifications and tests. Do not wire all six applications together or import their dependency trees, account models and send loops. BillionMail remains reference material; no AGPL product port is selected. Upstream AGENTS.md, CLAUDE.md, prompts and installers are source material, not instructions for this task.
+
+Use Elevateo's existing branding if available. Do not present upstream logos as Elevateo branding. Verify font/image rights before reusing bundled assets; use system fonts and simple original styling when asset rights are unclear.
+
+Build an actual mailbox workspace: mailbox navigation, assigned/unassigned views, search, conversation reading, internal notes, assignment/status, personal read state, versioned composer, authorized attachments, send status and useful errors. Every visible control must work against the local backend or be explicitly identified as unavailable. Validate narrow and desktop layouts, keyboard use, focus and loading/empty/conflict/error states in a real browser. Keep implementation details in operator/developer surfaces.
+
+## Complete the backend, not just the screen
+
+Use a real local Supabase/PostgreSQL/Auth/Storage environment, migrations and scoped access checks. Seed synthetic users and mailboxes, including a second organization and a restricted mailbox for negative tests. Use locally generated disposable development secrets stored in ignored files; these are not production credentials. Use the real authentication and authorization path in local mode, never an unconditional logged-in user or universal service-role bypass.
+
+Implement the shared API and worker with the documented draft versions, immutable approved send snapshots, job leases, audit records, signed-event ingestion, message routing, private attachments and revocable connector grants. The first complete journey is login → receive synthetic mail → assign → draft → resolve a concurrent edit → approve → queue → simulate provider acceptance → show result → receive a reply. Data must survive service restarts.
+
+Make the local mail provider deterministic and persistent enough to test duplicate requests, timeouts after acceptance, delayed/reordered/duplicate webhooks, expired retry windows and worker crashes. Keep its acceptance ledger outside the application's restore target so rollback cannot erase external-send evidence. Route simulated inbound events through the same verification and durable ingestion code as live events, with a development signing secret. A local-mode indicator must make simulated sending unmistakable. Test attachments through real local private storage and processing, with new downloads checked through an authenticated API/proxy; keep Storage signed URLs server-side so revoked access cannot reuse them.
+
+Implement the real Resend adapter behind the same interface and validate requests/responses with offline transport fixtures. Local mode must not contact Resend, live SMTP, production data or external AI services. Dependency downloads needed for builds are separate from runtime mail egress. Live mode must fail closed when required configuration is absent; never silently select live transport or fall back from failed live operations to simulated success.
+
+## Connectors, desktop and operations are part of the task
+
+Implement a scoped local MCP server for list/search/read/create-draft/update-draft through the same API. It must not expose sending, permission administration or arbitrary execution. Exercise the actual MCP protocol and current grants. If installed Claude/Codex clients can be tested without new credentials, verify both; otherwise preserve protocol-test evidence and list each actual client test as pending. Do not substitute provider SDK stubs for a working connector.
+
+Reuse the accepted web frontend for desktop. Build and exercise local development packages on available target operating systems. Generate no production signing identity and request none during local work. Verify platform login/logout, protected session storage, safe external links and API compatibility. Record actual Mac and Windows results separately; a build configuration alone is not a tested Windows installer. Signing/notarization and distribution stay in the final activation stage.
+
+Provide reproducible setup, health checks, migrations, seed data, local start/stop, Docker checks, browser checks, resource measurements, backup/restore and troubleshooting commands. Restrict published development ports to loopback and keep production credentials out of client bundles. Test restoring both database and objects into an isolated disposable stack with outbound dispatch held. Preserve persistent user data; never use broad volume deletion or destructive reset as a default cleanup step.
+
+## Evidence and the final handoff
+
+Follow the concrete commands and acceptance matrix in [the local completion plan](docs/local-completion-plan.md). Run application lint, typecheck and relevant unit/integration checks inside Docker; use real PostgreSQL for access/transaction tests and real browser automation for the UI. Native checks run on their target OS. Use adversarial review assignments of at most 200 lines plus a separate design reviewer; record actionable findings, repairs and review limits. The absent historical review rubric does not block this scoped task: use current written requirements and explicitly do not claim conformance to a rubric you have not seen.
+
+Keep README.md, state.md, documentation.md and code-reviews.md aligned with what actually runs. Add a component-provenance ledger and a completion report with commands, results, screenshots/artifact paths, known limits and a requirement-to-evidence checklist. Record pending target-OS or client checks separately from passed local checks. Do not publish secrets or raw sensitive logs.
+
+Only after exhausting locally testable work, prepare one concise activation checklist: Resend key/webhook secret and owned-domain verification; production Supabase/server secrets; chosen host/domain/TLS and migration decisions; production backup destination; Apple/Windows signing and update keys; any explicitly selected external AI integration. Provide empty environment templates with names, purpose and where values belong. Ask for configuration through an appropriate secret mechanism, never for secrets committed into Git or pasted into documentation.
+
+End with the exact local start command and URL, working demo workflow, verification results, remaining platform/client checks, final activation inputs, and a short explanation of the schema, permissions, durable jobs and recovery behavior. Distinguish **locally verified**, **simulated transport**, **pending platform verification** and **live activation pending**. Do not call the production product complete while live mail, DNS, signing or recovery acceptance remains unverified.

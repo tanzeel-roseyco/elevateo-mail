@@ -1,14 +1,15 @@
 # Project state
 
-Updated: 2026-10-11.
-Status: **design, source intake and repository dossiers complete; application implementation awaiting explicit standards approval**.
+Updated: 2026-10-12.
+Status: **design, source intake, dossiers and local-completion handoff ready; integrated application not yet implemented**.
 
 ## Completed
 
-- Inspected the planning-only repository and preserved its explicit standards gate.
+- Inspected the original planning-only repository and recorded its standards gate; the later local-completion brief now defines a scoped execution path.
 - Recorded the user-selected Resend and self-hosted Supabase stack and current approximately 10-person company-mailbox scope.
 - Produced architecture, requirements, database/backend/CAP tutorial, delivery/DNS/hosting guide, desktop/MCP design, reliability contracts, reuse plan and implementation milestones.
 - Added an end-state vision describing the daily team workflow, finished product deliverables and observable completion criteria in docs/end-goal.md.
+- Added LOCAL_BUILD_PROMPT.md and docs/local-completion-plan.md for the next agent: reuse local frontend components, complete real local services and simulated end-to-end mail, verify connectors/desktop/operations, and leave actual credentials to final activation.
 - Used the user's installed Codex CLI 0.159.3 (`codex exec`, exit 0) to author the database/backend tutorial, then reviewed and harmonized it with verified provider facts.
 - Imported 2,764 exact tracked files from all six pinned upstream repositories, with full per-file manifests and preserved notices. BillionMail AGPL source is included as reference material, not linked into an Elevateo runtime. One published sample TLS private-key file is explicitly omitted.
 - Added six independent dossiers, component adoption decisions, goal traceability and reproducible importer/verifier tooling. Used Codex CLI again for bounded tooling review and fixture tests; two tooling defects were fixed with regressions.
@@ -21,14 +22,14 @@ Upstream application source is now present as an inert reference collection. No 
 ## Selected versus proposed
 
 Selected by user: Resend, self-hosted Supabase; web subdomain, Mac/Windows downloads, Claude/Codex connectors.
-Recommended pending approval: strict TypeScript / React-Vite / Node, PostgreSQL durable jobs, Tauri 2, VPS/Compose, local read/search/draft MCP first. The revised engineering standards remain draft. The user explicitly authorized source intake and detailed documentation. This authorization is fulfilled without assuming blanket approval of the remaining application standards.
+Working defaults for the 2026-10-12 local-completion brief: strict TypeScript / React-Vite / Node, PostgreSQL durable jobs, Tauri 2 and local read/search/draft MCP. Reuse suitable existing first-party frontend work if it appears before implementation. VPS/Compose hosting remains a recommendation for later production decisions. The local brief supersedes the earlier blanket standards gate for its bounded scope; it does not claim blanket approval or live activation authority.
 
 ## Next steps
 
-1. Record explicit approval or requested changes to .planning/STANDARDS.md before application implementation, as required by the existing repository instructions.
-2. Build the local vertical slice with a fake provider, real PostgreSQL tests and actual UI validation; follow docs/implementation-plan.md.
-3. Recover the full originating review rubric before claiming application review conformance; it is absent from this checkout.
+1. Execute LOCAL_BUILD_PROMPT.md and docs/local-completion-plan.md when starting implementation. No application was built by this handoff edit.
+2. Complete the entire locally testable journey with real database/auth/storage, fake mail transport, actual browser validation, scoped connectors, available-platform desktop checks and restore evidence before asking for live credentials.
+3. Use current written requirements for review; the full historical rubric is absent, so do not claim conformance to it or let its absence block independent local work.
 4. Before deployment, confirm domain/MX ownership, mailbox/alias count, migration/history needs, message purposes/volume, region, retention, operating owner and recovery tier. Do not replace existing MX by assumption.
-5. Integrate controlled Resend send/receive, then web pilot, local connectors and signed native packages through the documented gates.
+5. Only after the local acceptance report, configure real credentials, controlled Resend send/reply, production hosting and signed distribution through the documented activation gates. Report untested target platforms or clients explicitly.
 
 Single-VPS operation is not high availability. Resend's private-beta Inboxes is not a launch dependency, and Resend does not permit unsolicited cold outreach. The application owns durable history and permissions while Resend remains an external processor.

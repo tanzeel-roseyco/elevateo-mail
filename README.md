@@ -6,7 +6,11 @@ A planned shared company mailbox for approximately **10 people**, available on a
 
 **Design package and six-repository source intake complete; Elevateo application implementation has not started.** Resend and self-hosted Supabase are selected by the user. This update replaces the earlier assumption that the primary product is a campaign engine across 18 existing mailboxes. Existing mailbox count, domain and migration requirements remain unresolved.
 
-The repository contains 2,764 pinned upstream files under `third_party/upstream`, six independent technical dossiers, per-file integrity manifests, preserved licenses, architecture, requirements, a database/backend tutorial, connector/desktop designs and a phased implementation plan. The upstream snapshots contain executable source but are not installed, run or integrated. There is no working Elevateo application, installer or deployment. Engineering standards remain **draft pending explicit approval**, as required by [the repository standards](.planning/STANDARDS.md).
+The repository contains 2,764 pinned upstream files under `third_party/upstream`, six independent technical dossiers, per-file integrity manifests, preserved licenses, architecture, requirements, a database/backend tutorial, connector/desktop designs and a phased implementation plan. The upstream snapshots contain executable source but are not installed, run or integrated. There is no working Elevateo application, installer or deployment. The 2026-10-12 local-completion brief supplies the next agent's execution path; [the standards](.planning/STANDARDS.md) are its engineering baseline, with production decisions still open.
+
+## Start the local build
+
+Give the implementation agent [LOCAL_BUILD_PROMPT.md](LOCAL_BUILD_PROMPT.md). It directs the agent to inspect and reuse the existing local frontend material, then complete [the end-to-end local plan](docs/local-completion-plan.md) with real local Supabase services and simulated mail transport. Leave provider, host, DNS, AI and signing credentials until final activation. This prompt is a handoff; writing it has not built the application.
 
 ## Recommended design
 
@@ -17,7 +21,7 @@ The repository contains 2,764 pinned upstream files under `third_party/upstream`
 - **Proposed:** an Elevateo MCP connector exposes authorized search/read/draft tools to Codex and Claude. Sending stays in the human-controlled application initially.
 - **Proposed:** start on a VPS with Docker Compose, TLS reverse proxy and off-host backups. Railway remains an alternative if operational convenience outweighs infrastructure cost/control.
 
-These proposals are reviewable choices, not already approved or implemented dependencies. Resend now also documents a private-beta Inboxes API; it is not a launch dependency. See [delivery and hosting](docs/mail-delivery-and-hosting.md).
+Use the frontend/backend/queue/desktop/connector proposals as local implementation defaults, adapting to verified existing first-party work where appropriate. They are not already implemented dependencies or blanket production approvals. Hosting remains a later decision. Resend now also documents a private-beta Inboxes API; it is not a launch dependency. See [delivery and hosting](docs/mail-delivery-and-hosting.md).
 
 ## Source collection and goals
 
@@ -40,12 +44,12 @@ The source collection preserves all 2,765 tracked paths in its manifests. One pu
 6. [What we will reuse from the audited repositories](docs/repository-reuse.md)
 7. [API contracts and failure recovery](docs/contracts-and-reliability.md)
 8. [Implementation roadmap and release gates](docs/implementation-plan.md)
-9. [Engineering standards awaiting approval](.planning/STANDARDS.md)
+9. [Engineering baseline and scope](.planning/STANDARDS.md)
 10. [Current state](state.md) and [review evidence](code-reviews.md)
 
 ## Setup and testing
 
-There is no Elevateo application to install yet. Do not execute the archived upstream setup instructions as a way to launch this design. Clone this repository and read the design documents. Code blocks and route names are design examples, not runnable integrations. The next implementation milestone starts only after the standards gate is resolved.
+There is no Elevateo application to install yet. Do not execute the archived upstream setup instructions as a way to launch this design. Clone this repository and start from LOCAL_BUILD_PROMPT.md. Code blocks and route names in the design remain examples until implemented. The local completion plan defines commands the next agent must create and prove, not scripts already available today.
 
 Application lint, typecheck, unit/integration tests must run in Docker; browser validation and platform-specific packaging checks follow before release. Documentation checks for this update are recorded in `code-reviews.md`. No live email, domain change, infrastructure purchase or deployment occurred.
 

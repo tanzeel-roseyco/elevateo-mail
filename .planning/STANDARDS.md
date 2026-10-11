@@ -1,6 +1,6 @@
-# Engineering standards — DRAFT, NOT APPROVED
+# Engineering standards — local implementation baseline
 
-No application implementation may begin until the user explicitly approves these standards. This document makes the proposed rules concrete for review; updating it does not mark it approved. Resend and self-hosted Supabase are already user-selected. Remaining technology recommendations and operational targets below await approval or measurement.
+The user's 2026-10-12 instruction is to leave an agent prompt that uses the available local frontend material and completes the app end to end locally, with credentials last. That scoped local workflow is recorded in [LOCAL_BUILD_PROMPT.md](../LOCAL_BUILD_PROMPT.md) and takes precedence over the earlier blanket wait-for-approval gate. Use these engineering rules and the documented stack as working defaults for that task. This is not a claim of blanket standards approval or production authorization. Resend and self-hosted Supabase remain user-selected; production topology, budget, recovery targets and activation still need their stated decisions/evidence.
 
 ## 1. Language and versions
 
@@ -46,4 +46,4 @@ Keep README Current state, state.md and relevant docs synchronized in each imple
 
 ## Approval record
 
-Status: **pending**. No blanket application-standards approval recorded. The later user request explicitly authorizes upstream source intake and detailed documentation; that work does not require reopening this application-implementation gate. Approval should explicitly cover these ten sections and the proposed stack, or identify requested changes. Credential setup, DNS migration, purchases and public release are separate later operational actions.
+Status: **scoped local-completion brief recorded on 2026-10-12; no blanket approval claimed**. The latest user instruction is: “leave a prompt in there, tell the AI Agent to use what it has locally (for a frontend). and then leave instructions for local completion of the app - end to end. leave credentials for last.” The local handoff uses these ten sections as the engineering baseline and documented technologies as defaults, while preserving justified local adaptations. It does not start implementation during this documentation edit. Credential setup, DNS migration, purchases, real mail, production hosting and public release remain later operational actions. Do not ask the user to reapprove routine local implementation choices covered by this brief.

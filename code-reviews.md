@@ -90,3 +90,28 @@ Added `docs/end-goal.md` and linked it from the README and acceptance map; synch
 An independent reviewer checked lines 1–76 against the current requirements and reliability contracts and reported no material findings. Two optional clarity improvements were adopted: explicit default blocking of remote content and explicit exclusion of unsolicited cold outreach from this release. The Mac deliverable now names the requested `.dmg` format. Reviewed application lines: 0; application defect density: N/A. No application behavior was tested.
 
 First-party documentation validation passed for 26 Markdown files, 333 local links, 111 pinned-source links/line anchors and the 17 existing scan-triage hashes. Whitespace checks passed. No runtime code or upstream snapshot changed, so application/source-tool test suites were not rerun for this prose-only change.
+
+## 2026-10-12 local-completion handoff
+
+Scope: documentation and future-agent instructions only. Added LOCAL_BUILD_PROMPT.md and docs/local-completion-plan.md; synchronized root instructions, status, requirements and affected design documents. Recorded the user's bounded local-completion direction, existing-frontend reuse and credentials-last ordering without claiming blanket production approval or executing implementation. No runtime code, dependencies, provider credentials or upstream snapshots were changed.
+
+### Independent review
+
+- Local frontend inventory: verified concrete lightreach, Quickly, Instantly and Wu-Wei-Mail source paths without executing upstream code. No first-party Elevateo frontend existed at inspection. Asset-rights cautions distinguish source reuse from permission to reuse upstream branding/fonts.
+- Prompt/scope review: LOCAL_BUILD_PROMPT.md 1–60, AGENTS.md 1–17 and .planning/STANDARDS.md 1–49; 126 primary lines. No material findings. The subsequent two-line asset-rights addition received parent consistency review.
+- Independent design review: docs/local-completion-plan.md 1–136. One material documentation issue and one proof clarification; both addressed below. Material finding density in this plan was 1 / 136 × 1,000 = **7.35 per 1,000 reviewed document lines**, not application defect density.
+
+| ID | Finding | Resolution |
+| --- | --- | --- |
+| L01 | Client-held Storage signed URLs could outlive membership/session revocation | Authenticated download API/proxy rechecks current authority for every new request; Storage signed URLs remain server-side; test old application links after revocation; align architecture/tutorial |
+| L02 | Restore proof could accidentally roll back the simulated provider's external acceptance history | Keep the provider ledger outside the app restore target; restore a pre-acceptance backup while retaining later provider acceptance, then prove reconciliation without fresh submission |
+
+These are instructions and future acceptance tests, not demonstrated application fixes. Application lines reviewed: 0; application defect density: N/A. Existing Docker/browser/native checks remain required when the next agent actually implements the product.
+
+The independent design reviewer rechecked 49 primary lines across the plan, prompt, architecture and tutorial and confirmed both resolutions with no remaining actionable findings in that bounded review. No runtime verification was performed.
+
+### Validation
+
+- First-party documentation validation: 28 Markdown files, 360 local links, 111 pinned-source links/line anchors and 17 unchanged secret-triage hashes passed.
+- Whitespace checks passed. The proposed local development commands are explicitly marked as interfaces the implementing agent must create and verify; no nonexistent script is reported as working.
+- No app, provider, native packaging or source-tool test suite was rerun for this documentation-only change. The scope of completion here is the saved handoff, not local or production software acceptance.

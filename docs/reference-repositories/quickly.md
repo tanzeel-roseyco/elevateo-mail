@@ -13,7 +13,7 @@ Reviewed snapshot: **`edca964b8bfd56e621b491aba6302b0981545898`** (2026-09-23); 
 
 Inventory numbers are audit heuristics, not coverage measurements or the number of files ultimately accepted by the intake policy. The source snapshot and provenance manifest, not an installed dependency directory or generated build, are the reference. Repository MIT permission does not automatically settle dependency, bundled asset or trademark terms. Preserve the copyright and permission notice with any substantial adaptation; inspect component dependencies and branding before shipping.
 
-This intake implements the user's request to retain and document the audited source. It does not make upstream setup instructions Elevateo operational instructions, resolve the [draft standards gate](../../.planning/STANDARDS.md), or turn this code into an approved production dependency. Architecture and deployment paths below are **proposed future Elevateo paths**, unless explicitly identified as imported source.
+This intake implements the user's request to retain and document the audited source. It does not make upstream setup instructions Elevateo operational instructions or turn this code into an approved production dependency. Later local adaptations follow [the engineering baseline](../../.planning/STANDARDS.md) and local-completion brief. Architecture and deployment paths below are **proposed future Elevateo paths**, unless explicitly identified as imported source.
 
 ## Independent assessment
 
