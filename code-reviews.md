@@ -163,3 +163,107 @@ Validation: 44 first-party Markdown files, 446 local links, 111 existing pinned-
 Initial PLAN and BE-01 design opinions were independently executed on the three exact requested Claude models, then synthesized by actual Astra MAX. Evidence, dissent, accepted decisions and analytical tradeoffs are retained under `.planning/consultations/results/`. Root reconciled active architecture and status documents. Obsidian connection remains unavailable; no connection-based simulation is claimed.
 
 Application code changed/reviewed: 0 lines. Application defects and defect density: N/A; no application review or passing build is claimed. Documentation consistency corrections reconcile historical pending architecture/authentication statements with current evidence; they are not counted as runtime defects. JSON parsing and whitespace validation performed; full adversarial application review remains required after implementation.
+
+## 2026-10-12 BE-01 incomplete draft review
+
+Revision: `5a9d83ad4de7403f349131bf0c3e45df7fd97c28`, draft PR #5. Full user rubric supplied to adversarial reviewers; formatting delegated to tooling. Static findings only; no runtime acceptance.
+
+Coverage, each assignment at most 200 lines:
+- Foundation: config.rb 65, tenancy.rb 40, health_controller.rb 36, application_controller.rb 8, bin/worker 14, config/application.rb 28: 191 lines.
+- Dedicated Astra MAX design: migration 85, tenancy.rb 40, bootstrap.sql 31, database.yml 14: 170 lines, including 40 overlapping tenancy lines.
+- Compose: compose.yaml 1-190: 190 lines.
+- Secret lifecycle/image: generate-secrets.rb 49, Dockerfile 13, compose.yaml 191-208: 80 lines.
+
+Additional wrapper/network-test assignment: scripts/dev, scripts/dev.ps1, ops/compose.secrets.yaml, ops/supabase/db/99-jwt.sql, ops/supabase/db/99-roles.sql and ops/tests/egress-check.sh: 74 lines.
+
+Unique coverage: **712 lines**. Unique findings: **10** (nine code defects and one worker-health standards/acceptance gap); code-defect density **12.64 per 1,000 reviewed lines**, combined finding density **14.04 per 1,000 reviewed lines**. This is partial coverage, not whole-application quality evidence.
+
+| ID | Severity | Finding | Required regression / resolution |
+| --- | --- | --- | --- |
+| B01-R01 | P1 | Tenant claims survive wrapper exit within an ambient transaction | Reject unrelated ambient transactions; prove subsequent unwrapped reads cannot inherit authority |
+| B01-R02 | P1 | Rails query cache can bypass RLS across tenant contexts | Uncached authorization boundary with deliberate cache clearing; cache-enabled A-to-B and A-to-unwrapped tests |
+| B01-R03 | P2 | Same-principal nesting accepts a different unconfigured connection | Track connection identity and reject mismatches; real two-connection test |
+| B01-R04 | P2 | Bootstrap grants runtime membership outside versioned migration ownership | Move application membership into narrowly privileged migration lane; rerun bootstrap cannot restore revoked membership |
+| B01-R05 | P1 | Shared env_file gives API/worker admin, migrator, JWT and service-role credentials | Explicit per-process environment; assert forbidden key names absent, then restricted-role integration tests |
+| B01-R06 | P2 | Credential generator truncates existing secrets before successful rewrite | Atomic same-directory replacement; failed-write/interruption preserves original credentials |
+| B01-R07 | P2 | Worker has no Compose or image healthcheck | Meaningful worker health signal and failure-detection test |
+
+| B01-R08 | P1 | Egress probe treats missing containers/executables and Docker errors as successful confinement | Require running services and working internal probes; missing/stopped/tool-failure regressions |
+| B01-R09 | P1 | Separate-bridge fixture proves bridge isolation, not external egress confinement | Equivalent unrestricted network must reach the same controlled external route and fail confinement |
+| B01-R10 | P2 | Static fixture names and unconditional cleanup can remove another invocation resources | Unique invocation names and cleanup only successfully created IDs; collision/concurrent regression |
+
+All ten remain open. Tenancy findings were deduplicated across foundation and design reviews; secret exposure was confirmed by the generator review. Design simulations were analytical, not executed through Obsidian (connection unavailable). Exact Rails 8.1.4 query-cache source and PostgreSQL transaction semantics supported the design review. Required Docker regressions, complete Auth/Storage foundation tests, full remaining-code review and actual integrated UI checks are pending.
+Final BE-01 configuration slice: independent reviewer covered 47 additional lines across `.dockerignore`, `Gemfile`, `Rakefile`, `Steepfile`, `bin/rails`, `config.ru`, `config/boot.rb`, `config/environment.rb`, `config/routes.rb` and `ops/local/.gitignore` at `5a9d83a`. Zero new confirmed defects (0 per 1,000 lines). Static only; dependency resolution, RBS completeness and executable permissions remain unverified.
+
+
+## FE-01 initial authored checkpoint: adversarial review (2026-10-12)
+
+Status: unaccepted source in `frontend/fable/fe-01`, based on ce95e89. Static review is not runtime or visual evidence. Each assignment uses the user's full review rubric and is <=200 lines. Formatting remains delegated to tooling. The coordinator retracted an unsupported navigation/session-generation finding after checking actual invalidate call sites.
+
+| Slice | Unique lines | Code/test defects | Defects per 1,000 lines |
+|---|---:|---:|---:|
+| transport + HTTP gateway | 151 | 3 | 19.87 |
+| session + scope | 159 | 1 | 6.29 |
+| Shell + Sidebar | 197 | 3 | 15.23 |
+| Inbox + App | 187 | 2 | 10.70 |
+| Thread reader + formatting | 181 | 2 | 11.05 |
+| runtime contract + gateway + errors | 169 | 0 | 0.00 |
+| fixture gateway + entries + Async + Badge | 162 | 1 | 6.17 |
+| conformance + browser tests | 175 | 0 | 0.00 |
+| session + contract tests | 180 | 1 | 5.56 |
+
+These completed slices total 1,561 unique lines and 13 localized defects (8.33/1,000 lines); the two cursor append findings share one root-cause pattern in different implementations. Additional slices and a dedicated design review remain pending. Findings are static until reproduced. Exact source hashes and final repair evidence will accompany acceptance.
+
+### Open localized findings
+
+- FE-R01 P2: transport ignores an already-aborted caller signal, allowing a request to start.
+- FE-R02 P2: response-body stream failures/timeouts escape fetch-only normalization into GatewayError.
+- FE-R03 P3: substring content-type matching accepts deceptive non-JSON MIME types.
+- FE-R04 P2: session refresh depends on focus/visibility events; continuously visible use lacks the required <=30-second authorization refresh.
+- FE-R05 P1: Shell retains mailbox state across session identity loss/replacement; an initial new-actor render can show old data before its effect clears state.
+- FE-R06 P2: mobile modal lacks initial focus, a focus trap, background inertness and focus restoration.
+- FE-R07 P2: mailbox pagination does not perform the required one-time expired-cursor reset.
+- FE-R08 P2: Inbox cursor recovery retains append mode, merging the reset first page with stale rows.
+- FE-R09 P2: empty Inbox pages hide continuation controls even when next_cursor exists.
+- FE-R10 P2: Thread message cursor recovery likewise retains append mode and stale rows.
+- FE-R11 P3: opening a thread and returning loses the unread filter in the URL.
+- FE-R12 P1, compiler reproduction pending: fixture resolver returns a union of operation DTOs rather than preserving operation-specific return types.
+- FE-R13 P2 test defect: session context_changed helper uses status 401 instead of canonical 409.
+
+### Coverage gaps (not added to defect totals)
+
+Conformance tests omit body-stream abort/timeouts, pre-aborted requests, deceptive MIME types, incremental/lying-length size cases and operation request options. Browser tests use programmatic focus rather than real keyboard traversal, do not wait for populated overflow targets, and omit cursor recovery, empty continuation, filter round-trip and session invalidation. Session tests call error handlers directly rather than proving delayed promises, actor replacement, DOM clearing and abortion. Boundary tests need exact-limit/limit-plus-one pairs and deeper malformed/null cases. These statements are scoped to the reviewed test files, not claims about every future test.
+
+The fixture adapter ignores request arguments and cannot by itself prove pagination or authorization fidelity. Production graph exclusion and real Rails conformance remain required. Obsidian is unavailable; no connected tradeoff simulation is claimed.
+
+
+### FE-01 additional slices
+
+- ThreadPage tests (57), scope tests (13), CSS (126): 196 unique lines, one P2 defect, 5.10/1,000 lines. FE-R14: dark themes retain accent text #7a6218 against #25262a (calculated contrast 2.58:1); browser validation remains pending. Tests do not prove browser resource blocking, actual continuation behavior, or both unavailable cases separately.
+- Button/icons/Vite/Playwright/Docker config: 186 unique lines, zero confirmed code defects, 0.00/1,000. Playwright does configure 390px and reduced motion. Unit Docker command omits browser checks, requiring separate execution. Dockerfile's claim that conformance.test.ts contains a production fixture-isolation runtime test is inaccurate and must be corrected; no such coverage is claimed.
+- Running total: 1,943 unique reviewed lines, 14 localized code/test defects, 7.21/1,000. The inaccurate Dockerfile coverage comment is an additional documentation finding; 15 combined findings gives 7.72/1,000. Dedicated design review and remaining metadata/HTML review are still pending.
+
+### Coordinator dependency tooling correction
+
+PowerShell 5 ConvertFrom-Json rejected the npm lock's empty root key. The attempted coordinator pinning command consequently wrote invalid temporary package metadata. Before testing, the coordinator reconstructed the manifest using Python's JSON parser and researched exact dependency pins, then restarted npm lock generation in Docker. An early check container was stopped because it had copied the unfinished lock. It supplies no acceptance evidence. No application source was changed by this tooling correction.
+
+
+Final HTML/metadata/documentation slice: 190 lines, two new findings (10.53/1,000): mandatory lint command/config absent (acceptance gap), and README dependency-range instructions stale after coordinator pinning (documentation defect). The repeated false production fixture-isolation test claim is deduplicated with the Dockerfile finding. All non-generated authored app files have now received a bounded review; generated API declarations rely on regeneration evidence, and the dependency lock on resolver/audit evidence. [Source manifest](docs/evidence/fe01-initial-review/source-manifest.json) records the exact checkpoint bytes. Total reviewed non-generated source/documentation: 2,133 unique lines, 14 localized code/test defects (6.56/1,000), two documentation defects, one lint acceptance gap (17 findings total, 7.97/1,000). Dedicated design review remains pending and does not inflate unique line coverage.
+
+
+### FE-01 runtime and design follow-up
+
+Docker Node 24.21.0/npm 11.19.0 installed 200 packages, audited 201 with zero reported vulnerabilities. `check:api` passed using openapi-typescript7.13.0. Strict typecheck failed: four TS2322 diagnostics in fixtureGateway.ts56-59 confirm FE-R12; TS2307 in vite.config.ts1 reveals missing Node declarations (FE-R15, P1 build defect). No `test` config-property compiler defect occurred. [Compiler transcript](docs/evidence/fe01-initial-review/compiler.log). Unit and bundler diagnostics are separately pending; the failed container was automatically removed.
+
+Dedicated design reviewer inspected session/scope/gateway (181 lines already in the unique total), finding FE-R16 P2: focus refresh can bypass exhausted context recovery. A second context_changed enters explicit-retry error, but focus/visibility after30seconds can bootstrap and reset the guard without explicit retry. The minimal proposed repair makes automatic-refresh eligibility explicit and applies it to both focus and new active polling. Analytic scenarios cover exhausted recovery, explicit retry, unchanged-context refresh overlapping a read, changed-context late data and current401 during bootstrap. No Obsidian connection exists, so these are analytical tradeoffs, not executed connected simulations. Background refresh invalidates generations while retaining ready state; consumer restart for unchanged context requires regression proof, not an unverified additional defect.
+
+Updated unique coverage stays2,133 lines. Confirmed localized code/test defects16 (7.50/1,000), documentation defects2, lint acceptance gap1:19 total findings (8.91/1,000). FE-R12 runtime reproduction adds confidence, not another defect.
+
+
+### FE-01 Docker diagnostic results
+
+API regeneration passed. Strict compilation failed on FE-R12 and FE-R15. Unit tests: 63 passed, 3 failed out of 66; all failures are retained DOM from previous SessionProvider tests (FE-R17, missing Testing Library cleanup with Vitest globals disabled and no setup hook). These failures prevent validation of the affected session assertions. The separate diagnostic Vite bundle succeeded (148 modules; JS 373.92 kB / gzip 115.76 kB), but does not constitute a passing production build because typechecking failed. Lint, browser/visual checks and real backend integration remain outstanding. See `docs/evidence/fe01-initial-review/unit-bundle.txt`.
+
+All task test containers were automatically removed. The task-owned Node image (332 MB reported image size) was removed; Docker reports zero containers and zero build cache. Pre-existing Playwright/Python images and nine persistent volumes were preserved. Host free space was only 1.42 GB after cleanup; virtual-disk reclaim remains under investigation, so no host-space recovery is claimed.
+
+FE-R17 P2: SessionProvider tests omit DOM cleanup; retained renders make three tests fail before their intended assertions. Final unique review coverage remains 2,133 lines: 17 code/test defects (7.97 per 1,000), two documentation defects and one lint acceptance gap, 20 combined findings (9.38 per 1,000). No failures have been repaired yet.

@@ -1,0 +1,126 @@
+/* Adapted from first-party Ledger frontend commit 4322cfbb639a383c4e8d940f2dbb019a9832e977,
+   src/styles/index.css (blob 98806313f6ce2b6a5ebb0aabbcb82159e58c1b91). See apps/web/PROVENANCE.md.
+   Removed: runtime appearance overrides from app/appearance.ts (no Settings surface in this checkpoint). */
+@import "tailwindcss";
+
+/* AIDEV-NOTE: Tokens stay CSS variables so a later Settings surface can restyle Tailwind utilities at runtime. */
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-line: var(--line);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-accent-fg: var(--accent-fg);
+  --color-accent-text: var(--accent-text);
+  --color-accent-soft: var(--accent-soft);
+  --color-danger: var(--danger);
+  --color-danger-fg: var(--danger-fg);
+  --color-success: var(--success);
+  --color-warn: var(--warn);
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* AIDEV-NOTE: Brand palette: white light mode, dark-grey dark mode, gold accent. */
+:root,
+[data-theme="light"] {
+  --bg: #f4f4f5;
+  --surface: #ffffff;
+  --surface-2: #f4f4f5;
+  --line: #e2e2e6;
+  --fg: #18181b;
+  --muted: #55555e;
+  --danger: #b42318;
+  --danger-fg: #ffffff;
+  --success: #067647;
+  --warn: #7a5200;
+  color-scheme: light;
+}
+
+/* Dark grey, not black: panels (--surface) sit one step lighter than the canvas (--bg). */
+[data-theme="dark"] {
+  --bg: #1b1c1f;
+  --surface: #25262a;
+  --surface-2: #2f3035;
+  --line: #3c3d44;
+  --fg: #ececee;
+  --muted: #a9abb3;
+  --danger: #f97066;
+  --danger-fg: #1a0b09;
+  --success: #47cd89;
+  --warn: #fdb022;
+  color-scheme: dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --bg: #1b1c1f;
+    --surface: #25262a;
+    --surface-2: #2f3035;
+    --line: #3c3d44;
+    --fg: #ececee;
+    --muted: #a9abb3;
+    --danger: #f97066;
+    --danger-fg: #1a0b09;
+    --success: #47cd89;
+    --warn: #fdb022;
+    color-scheme: dark;
+  }
+}
+
+:root {
+  --accent: #c9a227;
+  --accent-fg: #000000;
+  --accent-text: #7a6218;
+  --row-py: 0.625rem;
+}
+
+:root,
+[data-theme] {
+  --accent-soft: color-mix(in srgb, var(--accent) 14%, var(--surface));
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent-text);
+  outline-offset: 2px;
+}
+
+.row {
+  padding-block: var(--row-py);
+}
+
+/* Section label used above panels and rail groups: small caps carry hierarchy so headings can stay quiet. */
+.eyebrow {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  line-height: 1.2;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

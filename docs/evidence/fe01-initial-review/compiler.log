@@ -1,0 +1,46 @@
+docker : npm warn deprecated whatwg-encoding@3.1.1: Use @exodus/bytes instead for a more spec-conformant and faster
+implementation
+At line:2 char:1
++ docker run --rm --name elevateo-fe01-check --mount 'type=bind,source= ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (npm warn deprec... implementation:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+
+added 200 packages, and audited 201 packages in 3m
+
+39 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+npm warn install-scripts 1 package has install scripts not yet covered by allowScripts:
+npm warn install-scripts   esbuild@0.28.2 (postinstall: node install.js)
+npm warn install-scripts
+npm warn install-scripts Run `npm install-scripts ls` to review, or `npm install-scripts approve <pkg>` to allow.
+npm notice
+npm notice New major version of npm available! 11.19.0 -> 12.2.0
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0
+npm notice To update run: npm install -g npm@12.2.0
+npm notice
+
+> @elevateo/web@0.1.0-read.1 check:api
+> openapi-typescript ../../contracts/v1/openapi.json --output src/data/generated/api.d.ts --check
+
+✨ openapi-typescript 7.13.0
+
+> @elevateo/web@0.1.0-read.1 typecheck
+> tsc -p tsconfig.json --noEmit
+
+src/data/fixtures/fixtureGateway.ts(56,29): error TS2322: Type 'Promise<{ context_id: string; authorization_version: string; actor: { id: string; display_name: string | null; }; organization: { id: string; name: string; }; simulation_mode: true; csrf_token: string; } | { ...; } | { ...; } | { ...; }>' is not assignable to type 'Promise<{ context_id: string; authorization_version: string; actor: { id: string; display_name: string | null; }; organization: { id: string; name: string; }; simulation_mode: true; csrf_token: string; }>'.
+  Type '{ context_id: string; authorization_version: string; actor: { id: string; display_name: string | null; }; organization: { id: string; name: string; }; simulation_mode: true; csrf_token: string; } | { ...; } | { ...; } | { ...; }' is not assignable to type '{ context_id: string; authorization_version: string; actor: { id: string; display_name: string | null; }; organization: { id: string; name: string; }; simulation_mode: true; csrf_token: string; }'.
+    Type '{ context_id: string; authorization_version: string; next_cursor: string | null; items: { id: string; display_name: string; display_address: string | null; capabilities: { read: true; compose: boolean; approve_send: boolean; manage_members: boolean; }; }[]; }' is missing the following properties from type '{ context_id: string; authorization_version: string; actor: { id: string; display_name: string | null; }; organization: { id: string; name: string; }; simulation_mode: true; csrf_token: string; }': actor, organization, simulation_mode, csrf_token
+src/data/fixtures/fixtureGateway.ts(57,32): error TS2322: Type 'Promise<{ context_id: string; authorization_version: string; actor: { id: string; display_name: string | null; }; organization: { id: string; name: string; }; simulation_mode: true; csrf_token: string; } | { ...; } | { ...; } | { ...; }>' is not assignable to type 'Promise<{ context_id: string; authorization_version: string; next_cursor: string | null; items: { id: string; display_name: string; display_address: string | null; capabilities: { read: true; compose: boolean; approve_send: boolean; manage_members: boolean; }; }[]; }>'.
+  Type '{ context_id: string; authorization_version: string; actor: { id: string; display_name: string | null; }; organization: { id: string; name: string; }; simulation_mode: true; csrf_token: string; } | { ...; } | { ...; } | { ...; }' is not assignable to type '{ context_id: string; authorization_version: string; next_cursor: string | null; items: { id: string; display_name: string; display_address: string | null; capabilities: { read: true; compose: boolean; approve_send: boolean; manage_members: boolean; }; }[]; }'.
+    Type '{ context_id: string; authorization_version: string; actor: { id: string; display_name: string | null; }; organization: { id: string; name: string; }; simulation_mode: true; csrf_token: string; }' is missing the following properties from type '{ context_id: string; authorization_version: string; next_cursor: string | null; items: { id: string; display_name: string; display_address: string | null; capabilities: { read: true; compose: boolean; approve_send: boolean; manage_members: boolean; }; }[]; }': next_cursor, items
+src/data/fixtures/fixtureGateway.ts(58,30): error TS2322: Type 'Promise<{ context_id: string; authorization_version: string; actor: { id: string; display_name: string | null; }; organization: { id: string; name: string; }; simulation_mode: true; csrf_token: string; } | { ...; } | { ...; } | { ...; }>' is not assignable to type 'Promise<{ context_id: string; authorization_version: string; next_cursor: string | null; mailbox_id: string; items: { id: string; mailbox_id: string; subject: string | null; subject_truncated: boolean; ... 4 more ...; message_count: number; }[]; }>'.
+  Type '{ context_id: string; authorization_version: string; actor: { id: string; display_name: string | null; }; organization: { id: string; name: string; }; simulation_mode: true; csrf_token: string; } | { ...; } | { ...; } | { ...; }' is not assignable to type '{ context_id: string; authorization_version: string; next_cursor: string | null; mailbox_id: string; items: { id: string; mailbox_id: string; subject: string | null; subject_truncated: boolean; ... 4 more ...; message_count: number; }[]; }'.
+    Type '{ context_id: string; authorization_version: string; actor: { id: string; display_name: string | null; }; organization: { id: string; name: string; }; simulation_mode: true; csrf_token: string; }' is missing the following properties from type '{ context_id: string; authorization_version: string; next_cursor: string | null; mailbox_id: string; items: { id: string; mailbox_id: string; subject: string | null; subject_truncated: boolean; ... 4 more ...; message_count: number; }[]; }': next_cursor, mailbox_id, items
+src/data/fixtures/fixtureGateway.ts(59,28): error TS2322: Type 'Promise<{ context_id: string; authorization_version: string; actor: { id: string; display_name: string | null; }; organization: { id: string; name: string; }; simulation_mode: true; csrf_token: string; } | { ...; } | { ...; } | { ...; }>' is not assignable to type 'Promise<{ context_id: string; authorization_version: string; next_cursor: string | null; thread: { id: string; mailbox_id: string; subject: string | null; subject_truncated: boolean; unread: boolean; message_count: number; }; messages: { ...; }[]; }>'.
+  Type '{ context_id: string; authorization_version: string; actor: { id: string; display_name: string | null; }; organization: { id: string; name: string; }; simulation_mode: true; csrf_token: string; } | { ...; } | { ...; } | { ...; }' is not assignable to type '{ context_id: string; authorization_version: string; next_cursor: string | null; thread: { id: string; mailbox_id: string; subject: string | null; subject_truncated: boolean; unread: boolean; message_count: number; }; messages: { ...; }[]; }'.
+    Type '{ context_id: string; authorization_version: string; actor: { id: string; display_name: string | null; }; organization: { id: string; name: string; }; simulation_mode: true; csrf_token: string; }' is missing the following properties from type '{ context_id: string; authorization_version: string; next_cursor: string | null; thread: { id: string; mailbox_id: string; subject: string | null; subject_truncated: boolean; unread: boolean; message_count: number; }; messages: { ...; }[]; }': next_cursor, thread, messages
+vite.config.ts(1,31): error TS2307: Cannot find module 'node:url' or its corresponding type declarations.
