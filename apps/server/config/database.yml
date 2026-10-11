@@ -1,0 +1,14 @@
+<% cfg = Elevateo::Config.load! %>
+default: &default
+  adapter: postgresql
+  host: <%= cfg.db_host %>
+  database: <%= cfg.db_name %>
+  username: <%= cfg.db_role %>
+  password: <%= cfg.db_password %>
+  pool: <%= ENV.fetch("ELEVATEO_DB_POOL", "5") %>
+  schema_search_path: app,app_meta
+  migrations_paths: db/migrate
+development:
+  <<: *default
+test:
+  <<: *default

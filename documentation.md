@@ -70,3 +70,17 @@ The architecture contains C4-style context/container views and trust boundaries.
 ### Devin credit authorization (2026-10-12)
 
 The user explicitly approved use of existing $10 Devin credit; no purchases or top-ups. BE-01 task design is accepted. Implementation dispatch is being frozen to the planning commit. Codex polls at two-minute intervals and pauses at the 30-minute checkpoint or credit/capability loss. Official MCP sleep is verified; the Free account API omits dollar usage and offers no dollar-cap field, so no enforced task dollar cap is claimed.
+
+### BE-01 checkpoint A (2026-10-12, partial)
+
+Implemented on `devin/backend/be-01`:
+- `compose.yaml`: pinned tag@digest images, internal-only `runtime` network, no published ports, named `db-data`/`db-config`/`storage-data` volumes.
+- `ops/compose.secrets.yaml` with `ops/bin/generate-secrets.rb`: idempotent generation of ignored credentials into `ops/local/.env`.
+- `ops/supabase/db/*.sql`: upstream v0.8.2 initialization adapted with recorded provenance.
+- `ops/db/bootstrap.sql`: NOLOGIN `elevateo_owner`/`elevateo_app_read` roles plus `elevateo_migrator`/`elevateo_api`/`elevateo_worker` logins, and the `app`/`app_meta` schemas.
+- `apps/server`: Rails 8.1.4 API with `/health` and `/ready`, an idle `bin/worker`, `Elevateo::Config` fail-closed validation and the `Elevateo::Tenancy.with_context` wrapper.
+- First migration: four `app` tables with composite foreign keys, FORCE RLS and read-only policies.
+- `scripts/dev` and `scripts/dev.ps1` thin wrappers.
+
+Evidence and the outstanding checks are listed in docs/evidence/be-01.md. This is not a completed foundation.
+
