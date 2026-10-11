@@ -1,0 +1,55 @@
+{
+  "base_commit": "103baeb042925badbbc50dc0d3d3bfbf09ce8344",
+  "task": "BE-01",
+  "source_files": [
+    {
+      "path": "documentation.md",
+      "sha256": "60b7470ef910701e4aaf1e696b4afaa801e23b9c4a04c94e3ab8ba629f733b4d"
+    },
+    {
+      "path": ".planning/POLYGLOT_ARCHITECTURE.md",
+      "sha256": "69bcaaeb115fb13a7e06b73b44c6e53ba24da25c7ab8b0b5d4732d600fac513c"
+    },
+    {
+      "path": ".planning/CLIENTS_AND_CLI_CONNECTORS.md",
+      "sha256": "67a43643250e80359ba08140fa0efb4af90880ddd5099096111f83031d9c5856"
+    },
+    {
+      "path": ".planning/AGENT_ORCHESTRATION.md",
+      "sha256": "0d1f83b38b4a037c89db68bb16d6a67357b493d88cce4dfcba86fe2cb50b0911"
+    },
+    {
+      "path": ".planning/MAIL_ACCOUNTS_AND_ACTIVATION.md",
+      "sha256": "dd536dc0dd8d07a873c0d781f365c872ceacfea96d4d9a5e6cceb191f6b32b0d"
+    },
+    {
+      "path": ".planning/TASK_BACKLOG.md",
+      "sha256": "bb6b673d813ced7e260aa5b967eb6c7f0f82dc796a841bd177587b4dcbab5443"
+    },
+    {
+      "path": ".planning/research/reuse-market-scan.md",
+      "sha256": "6f798e4dfd837498cdc52aa1badd117c8c66d9298feb982d02f029bd6af83723"
+    },
+    {
+      "path": "docs/component-adoption.md",
+      "sha256": "757cbe529f93b89141edfd01e07602bd2041a1cfaea5528d29d65f1101f3dd03"
+    },
+    {
+      "path": "docs/contracts-and-reliability.md",
+      "sha256": "1f89345e48be2228dc0c14ceb531ae12c0146c10ce73444b1ab36b6dd7342f70"
+    },
+    {
+      "path": "docs/local-completion-plan.md",
+      "sha256": "b48bd046a014dba2fad80c418090067f74e4e44f08d6d87e60331f3aa7c42266"
+    },
+    {
+      "path": ".planning/consultations/results/initial-plan/accepted-decisions.md",
+      "sha256": "a7782c69046840925a5cfacc8c972972299b18d03fb98efcf763fb71fc0ca78b"
+    },
+    {
+      "path": ".planning/consultations/results/initial-plan/BE-01-brief.md",
+      "sha256": "c652c7ede440d659d30c6cc3452923cb56a132853a9064ae0fd3d5315f08ac52"
+    }
+  ],
+  "common_sha256": "0d78de54f791778b5528192775cdc4ec7f507cc4a0afd72e932f3a7ebe3ab335"
+}

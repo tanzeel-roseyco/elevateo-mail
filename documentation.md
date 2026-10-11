@@ -2,6 +2,8 @@
 
 Design date: 2026-10-11; expanded planning revision: 2026-10-12. This document supersedes the earlier planning assumption of 18 connected outreach mailboxes. It does not erase the original requirement for consent-based sending.
 
+Execution update 2026-10-12: the user has directed autonomous local completion. Initial exact-model consultations succeeded on base `103baeb0`; results are under `.planning/consultations/results/initial-plan`. Official Devin MCP has verified repository access and Docker. Application implementation and acceptance remain pending; initial planning opinions do not authorize skipping per-task gates. Message rendering remains text-only under the current conversation's explicit frontend rule. Production activation and live mail remain separate.
+
 ## Confirmed by the user
 
 | ID | Requirement | Acceptance evidence at implementation |
@@ -40,14 +42,14 @@ This is an API-based mailbox product. Full Gmail/Outlook history synchronization
 | --- | --- | --- |
 | Resend + self-hosted Supabase | User selected | Explicit current instruction |
 | Company mailbox + web + Mac + Windows + AI connectors | User requested | Current product direction |
-| Rails API/worker; React/TypeScript; Rust/Tauri Mac; C# Windows | Provisional Astra MAX proposal, named opinions pending | One domain authority and versioned cross-language contracts; inspect existing first-party work first |
+| Rails API/worker; React/TypeScript; Rust/Tauri Mac; C# Windows | Accepted local direction under ADR 0002; per-task gates remain | One domain authority and versioned cross-language contracts; inspect existing first-party work first |
 | PostgreSQL job queue, separate API and worker | Working defaults for scoped local completion | One durable source of truth; API restarts must not lose jobs |
 | VPS, Docker Compose, reverse proxy, off-host backups | Recommended, approval pending | Small fixed team; operational ownership must be deliberate |
 | Resend stable send/receive APIs, not private-beta Inboxes | Recommended | Avoid availability and response-shape dependency on limited beta |
 | MCP read/search/draft first; human-controlled sending | Recommended | Enforce permissions and prevent email content from granting actions |
 | Best-of reuse by selective adaptation | Recommended | Audited foundations need reliability/security fixes; no blind merge |
 | Engineering standards | Local engineering baseline; production decisions open | 2026-10-12 local-completion instruction supersedes the blanket wait within that scope; no blanket approval claimed |
-| Expanded orchestration/language/client plans | Requested workflow documented; implementation pending | Follow .planning/README.md; three required Claude consultations failed authentication and need real outputs before synthesis |
+| Expanded orchestration/language/client plans | Requested workflow documented; implementation pending | Follow .planning/README.md and ADR 0002; initial exact-model opinions and synthesis completed; BE-01 synthesis underway |
 
 ## Proposed permissions
 
@@ -64,3 +66,7 @@ Before deployment, resolve the actual addresses and existing MX provider, new-ad
 ## Design artifacts
 
 The architecture contains C4-style context/container views and trust boundaries. The database tutorial contains the conceptual ER model and constraints. Contracts document route shapes, transaction boundaries and state transitions. [The local agent prompt](LOCAL_BUILD_PROMPT.md) and [completion plan](docs/local-completion-plan.md) now define the bounded execution path before credentials; the release plan describes later live gates. These documents are not evidence of implemented features. The [expanded planning index](.planning/README.md) now governs research, exact agent routing, language ownership, later mobile targets and no-live-send activation. Application credentials stay last; implementation-agent authentication is a separate prerequisite.
+
+### Devin credit authorization (2026-10-12)
+
+The user explicitly approved use of existing $10 Devin credit; no purchases or top-ups. BE-01 task design is accepted. Implementation dispatch is being frozen to the planning commit. Codex polls at two-minute intervals and pauses at the 30-minute checkpoint or credit/capability loss. Official MCP sleep is verified; the Free account API omits dollar usage and offers no dollar-cap field, so no enforced task dollar cap is claimed.

@@ -1,15 +1,27 @@
 # Project state
 
 Updated: 2026-10-12.
-Status: **expanded plans and initial research ready; required opinion synthesis and application implementation pending**.
+Status: **autonomous local completion in progress; initial architecture accepted, BE-01 exact-model opinions complete and synthesis underway; application implementation pending**.
 
-## Completed
+## Current execution evidence
 
-- Saved the shared Claude consultation brief, three model-specific prompts, next-agent launch procedure and Astra MAX synthesis template in `.planning/consultations`. Per the latest user instruction, execution is left to the next agent; no consultation or authentication was retried while saving the handoff.
+- Active clean checkout: `Elevateo Mail - Local Completion`, branch `feature/local-completion`, base `103baeb042925badbbc50dc0d3d3bfbf09ce8344`. Original and sibling frontend/backend/integration workspaces are preserved.
+- Claude CLI 2.1.296 returned successful independent `claude-fable-5`, `claude-opus-5-5` and `claude-fable-5-1` opinions with matching runtime model identities. See `.planning/consultations/results/initial-plan/metadata.json`. Earlier failures below describe historical attempts.
+- Actual `gpt-6-astra` MAX initial synthesis completed as `/root/plan_synthesis`; see `docs/decisions/0002-local-architecture.md`. Every later bounded implementation task still needs its own three opinions and synthesis.
+- Official Devin MCP authenticated; read-only session `b111d44287f34ba4be9f62961e5b6424` verified repository main/base and Docker 29.7.2/Compose 5.4.0. No backend implementation yet. Current-user DPAPI protects the organization Member credential outside Git.
+- Fable 5.1 completed a read-only inventory of first-party Ledger frontend primitives and API components at integration commit `4322cfb`; implementation remains pending accepted task contracts.
+- Full user review rubric is available in the current conversation. Obsidian has no callable connection in this environment; analytical tradeoff scenarios cannot be claimed as Obsidian execution.
+- No application tests or visual QA have run. No mail, purchases, production changes or signing actions occurred.
+
+## Historical preparation and completed work
+
+- Saved the shared Claude consultation brief, three model-specific prompts, next-agent launch procedure and Astra MAX synthesis template in `.planning/consultations`. At that historical handoff, execution was left to the next agent; the current execution evidence above supersedes that status.
 
 - Assigned the user's Codex CLI the first research task: completed an initial 25-repository/eight-Reddit-thread scan (six public opens, two snippets); no new commit pins or runtime audits claimed.
 - Actually assigned GPT-6 Astra at MAX effort the polyglot system/backend proposal. Added agent roles, task/PR/issue lifecycle, language boundaries, client/CLI connector design, nine-address/no-live-send activation plan and bounded backlog.
 - Attempted three independent exact-model Claude consultations. All failed before inference because OAuth had expired and could not refresh; zero opinions were produced. Recorded capability evidence without secrets. Devin is documented through its official MCP route but is not configured here and performed no backend work.
+
+- Prepared a clean feature/local-completion checkout from main cc02616. Downloaded Devin CLI documentation, installed native CLI 3000.11.3, verified browser authentication, and completed two bounded read-only Devin assessments through Codex shell invocation. Fable retains frontend ownership. See docs/research/devin-cli/README.md for verified connection details and assessment limitations.
 
 - Inspected the original planning-only repository and recorded its standards gate; the later local-completion brief now defines a scoped execution path.
 - Recorded the user-selected Resend and self-hosted Supabase stack and current approximately 10-person company-mailbox scope.
@@ -28,14 +40,18 @@ Upstream application source is now present as an inert reference collection. No 
 ## Selected versus proposed
 
 Selected by user: Resend, self-hosted Supabase; ten staff/nine addresses across one or two domains; web, Mac/Windows, Java Android and SwiftUI iOS; Claude/Codex mailbox and in-app connectors; expanded language/agent workflow.
-Current provisional Astra MAX proposal: Rails API/worker, React/TypeScript, PostgreSQL durable jobs, Rust/Tauri Mac and C# Windows, bounded PHP/Go/Python tools, conditional other languages, local read/search/draft MCP and separate in-app process adapters. This supersedes the earlier Node/Tauri-for-both proposal. Named Claude opinions and synthesis remain pending. Reuse suitable existing first-party frontend work if it appears before implementation. VPS/Compose hosting remains a recommendation for later production decisions. The local brief supersedes the earlier blanket standards gate for its bounded scope; it does not claim blanket approval or live activation authority.
+Accepted local architecture (ADR 0002): Rails API/worker, React/TypeScript, PostgreSQL durable jobs, Rust/Tauri Mac and C# Windows, bounded PHP/Go/Python tools, conditional other languages, local read/search/draft MCP and separate in-app process adapters. This supersedes the earlier Node/Tauri-for-both proposal. Initial named Claude opinions and Astra MAX synthesis are complete; every implementation task retains its own consultation gate. Reuse suitable existing first-party frontend work if it appears before implementation. VPS/Compose hosting remains a recommendation for later production decisions. The local brief supersedes the earlier blanket standards gate for its bounded scope; it does not claim blanket approval or live activation authority.
 
 ## Next steps
 
-1. Read .planning/README.md; deepen pinned shortlist audits and obtain/synthesize the three required model opinions through supported authenticated runners. Then execute LOCAL_BUILD_PROMPT.md and docs/local-completion-plan.md. No application was built by this handoff edit.
+1. Finalize the fresh BE-01 synthesis and bounded official Devin dispatch for issue #3. Exact runtime pins and the five-service Supabase foundation are researched; application implementation remains pending.
 2. Complete the entire locally testable journey with real database/auth/storage, fake mail transport, actual browser validation, scoped connectors, available-platform desktop checks and restore evidence before asking for live credentials.
-3. Use current written requirements for review; the full historical rubric is absent, so do not claim conformance to it or let its absence block independent local work.
+3. Use the full user review rubric, at-most-200-line adversarial assignments and a dedicated design reviewer. Record actual coverage, defects and density. Obsidian execution remains unavailable.
 4. Before deployment, confirm domain/MX ownership, mailbox/alias count, migration/history needs, message purposes/volume, region, retention, operating owner and recovery tier. Do not replace existing MX by assumption.
 5. Only after the local acceptance report, configure real credentials, production hosting and signed distribution through the documented activation gates. Controlled Resend sends and Instantly warmup additionally require an explicit change to the no-live-send constraint. Report untested target platforms or clients explicitly.
 
 Single-VPS operation is not high availability. Resend's private-beta Inboxes is not a launch dependency, and Resend does not permit unsolicited cold outreach. The application owns durable history and permissions while Resend remains an external processor.
+
+### Devin credit authorization (2026-10-12)
+
+The user explicitly approved use of existing $10 Devin credit; no purchases or top-ups. BE-01 task design is accepted. Implementation dispatch is being frozen to the planning commit. Codex polls at two-minute intervals and pauses at the 30-minute checkpoint or credit/capability loss. Official MCP sleep is verified; the Free account API omits dollar usage and offers no dollar-cap field, so no enforced task dollar cap is claimed.

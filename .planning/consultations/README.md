@@ -1,14 +1,14 @@
 # Claude consultations — next-agent launch handoff
 
-Status: **pending; assigned to the next AI agent to launch**. The user asked to leave these consultations in the repository. Do not treat the prompts as completed opinions or retry authentication merely to publish this handoff. Earlier attempts failed before inference; retain that historical evidence in [capability status](../capability-status.json).
+Status: **initial PLAN opinions completed on 2026-10-12; initial Astra MAX synthesis complete; BE-01 synthesis in progress** under the user's subsequent autonomous-completion instruction. See [actual results](results/initial-plan/metadata.json). Earlier failed attempts remain historical evidence in [capability status](../capability-status.json). These initial opinions do not satisfy later bounded implementation-task gates.
 
 ## Three separate sessions
 
 | Session | Exact requested model | Additional focus prompt | Status |
 | --- | --- | --- | --- |
-| Second opinion | `claude-fable-5` | [Fable 5](fable-5.md) | Pending next-agent launch |
-| Third opinion | `claude-opus-5-5` | [Opus 5.5](opus-5-5.md) | Pending next-agent launch |
-| Fourth opinion | `claude-fable-5-1` | [Fable 5.1](fable-5-1.md) | Pending next-agent launch |
+| Second opinion | `claude-fable-5` | [Fable 5](fable-5.md) | Exact returned model; completed exit 0 |
+| Third opinion | `claude-opus-5-5` | [Opus 5.5](opus-5-5.md) | Exact returned model; completed exit 0 |
+| Fourth opinion | `claude-fable-5-1` | [Fable 5.1](fable-5-1.md) | Exact returned model; completed exit 0 |
 
 Use [the shared brief](shared-brief.md) for all three. These are independent initial opinions: each receives the same design/evidence packet and its own focus prompt, without the other two answers. Sequential fresh sessions are acceptable when concurrency is limited. Do not use a shared conversation, resume another opinion session, silently fall back to another model or claim success from a requested model label alone.
 
@@ -38,4 +38,4 @@ claude --safe-mode --print --model claude-fable-5-1 --tools "" --no-session-pers
   < "$ELEVATEO_CONSULT_INPUT_DIR/fable-5-1.txt" > "$ELEVATEO_CONSULT_OUTPUT_DIR/fable-5-1.json" 2> "$ELEVATEO_CONSULT_OUTPUT_DIR/fable-5-1.stderr"
 ```
 
-These are future consultation commands, not implementation commands and not evidence of execution. They do not request file edits, mail sends, account linking, installs or deployment. The latest user instruction leaves actual launching to the next agent.
+These are illustrative consultation commands, not implementation commands. Actual execution evidence is in the task-specific result directories. They do not request file edits, mail sends, account linking, installs or deployment. The subsequent autonomous-completion instruction authorized launching; exact-model initial and BE-01 consultations have now completed.

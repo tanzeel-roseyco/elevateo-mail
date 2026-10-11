@@ -1,6 +1,6 @@
 # Client applications, premium motion and in-app CLI connectors
 
-Status: planned work, 2026-10-12. No Elevateo client, connector or installer has been built or connected by this document. The capability checks below distinguish a running architecture lead from unsuccessful external consultations. This plan extends [the desktop/MCP design](../docs/desktop-and-connectors.md), [end-goal](../docs/end-goal.md) and [local completion plan](../docs/local-completion-plan.md). The latest agent orchestration and technology decisions govern role availability and stack choices; keep provider credentials, signing and live activation last.
+Status: planned work, 2026-10-12. No Elevateo client, connector or installer has been built or connected by this document. The initial architecture is accepted in ADR 0002; client implementation and its task-specific consultation gates remain outstanding. This plan extends [the desktop/MCP design](../docs/desktop-and-connectors.md), [end-goal](../docs/end-goal.md) and [local completion plan](../docs/local-completion-plan.md). The latest agent orchestration and technology decisions govern role availability and stack choices; keep provider credentials, signing and live activation last.
 
 ## 1. Product and ownership brief
 
@@ -16,9 +16,7 @@ Codex first inventories the existing frontend and the six local snapshots, then 
 
 Official Anthropic documentation identifies `claude-fable-5-1` and `claude-opus-5-5`; the legacy Fable 5 page identifies `claude-fable-5` as still available. Fable and Opus are Claude models, not separate CLI products. Preserve the exact model requested for each assignment. [Current model catalog](https://platform.claude.com/docs/en/models/overview), [Fable 5](https://platform.claude.com/docs/en/models/fable-5/overview).
 
-The coordinator verified Codex CLI 0.159.3 and Claude CLI 2.1.241 locally. A native GPT 6 ASTRA MAX architecture lead completed the provisional proposal. Three separate consultation attempts targeted the exact Fable 5, Opus 5.5 and Fable 5.1 model IDs through the installed Claude CLI with safe mode, tools disabled and session persistence disabled. Each failed before inference because the OAuth session had expired and could not be refreshed; no model usage or independent opinion was returned. These attempts establish an authentication blocker, not lack of model existence or a completed consultation.
-
-Runtime access and account entitlement for those Claude assignments remain pending. Continue independent work while retaining the three unresolved consultation gates; obtain an explicit replacement decision if a requested model cannot be used. Never relabel another model or simulate an independent opinion. The coordinator records actual model ID, effort, task/session ID, scope, output and reviewer. Refresh authentication only through the provider's supported user-controlled flow; never collect session secrets into repository files.
+Codex CLI 0.159.3 and Claude CLI 2.1.296 are verified. Independent initial opinions returned the exact claude-fable-5, claude-opus-5-5 and claude-fable-5-1 identities; actual gpt-6-astra MAX synthesized them in ADR 0002. Earlier expired-auth attempts are historical. Every client task still records its own input revision, identities, opinions, synthesis and execution evidence. Never relabel a substitute or store authentication secrets in the repository.
 
 Interpret the user's “C+++” as a request for C++ pending a more specific correction. It does not identify a separate language. Keep C/C++ native work behind narrow tested bindings when needed; ordinary mail interaction does not require a renderer or a ray tracer.
 

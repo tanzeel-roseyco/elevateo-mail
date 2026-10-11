@@ -1,0 +1,377 @@
+# Devin Docs
+
+- [Desktop (102 pages)](https://docs.devin.ai/_llms/en/desktop.txt): Documentation for Desktop.
+- [API (304 pages)](https://docs.devin.ai/_llms/en/api.txt): Documentation for API.
+
+## Cloud
+
+### Get Started
+
+- [Introducing Devin](https://docs.devin.ai/get-started/devin-intro.md): Devin is the AI software engineer, built to help ambitious engineering teams crush their backlogs.
+- [Your First Session](https://docs.devin.ai/get-started/first-run.md): Start your first Devin session: choose Ask or Agent mode, pick a repository and agent, use @ mentions, and try first-time prompt ideas.
+
+#### Tutorial Library
+
+- [Tutorial Library](https://docs.devin.ai/tutorial-library/index.md): Video and written tutorials from the Cognition team on using Devin across the IDE, DeepWiki, Ask Devin, Slack, and everyday development workflows.
+- [Devin repo setup tutorial](https://docs.devin.ai/tutorial-library/repo-setup.md): Set up Devin's environment for your repository, so sessions boot with dependencies, tools, and secrets ready.
+- [Fix a bug with Devin in Slack](https://docs.devin.ai/tutorial-library/slack-bug-fix.md): Watch Devin get tagged on a bug report in a Slack thread and turn it into a fix, from triage to a pull request, without leaving Slack.
+- [Build an iOS app with Devin](https://docs.devin.ai/tutorial-library/ios-app.md): Building an iOS app with Devin on a macOS VM: building SwiftUI code, testing in the iOS Simulator, and shipping to TestFlight
+- [Devin Automations tutorial](https://docs.devin.ai/tutorial-library/automations.md): Video walkthrough of Devin Automations: four examples of automating repetitive engineering tasks in plain English with triggers and schedules.
+
+### Essential Guidelines
+
+- [When to Use Devin](https://docs.devin.ai/essential-guidelines/when-to-use-devin.md): Learn when to use Devin: which tasks suit cloud Devin sessions, Devin CLI in your terminal, and other Devin surfaces for engineering work.
+- [Instructing Devin Effectively](https://docs.devin.ai/essential-guidelines/instructing-devin-effectively.md): Learn how to write clear Devin prompts, provide useful context, and define success criteria for reliable results across engineering tasks.
+- [Good vs. Bad Instructions](https://docs.devin.ai/essential-guidelines/good-vs-bad-instructions.md): What works and what doesn't
+- [Prompt Templates Cheat Sheet](https://docs.devin.ai/essential-guidelines/prompt-templates-cheat-sheet.md): Ready-to-use prompt templates for common tasks
+- [How does Devin fit into my existing SDLC?](https://docs.devin.ai/essential-guidelines/sdlc-integration.md): See how Devin supports software development lifecycle work, from code planning and testing through review, security, and deployment.
+
+### Onboarding Devin
+
+- [Index a Repository](https://docs.devin.ai/onboard-devin/index-repo.md): Index your repositories from the DeepWiki settings page so Devin can power Ask Devin and DeepWiki with an up-to-date understanding of your code.
+- [Devin VPN configuration](https://docs.devin.ai/onboard-devin/vpn.md): Configure a non-MFA VPN for Devin workspaces with blueprints, file attachments, Secrets, and connection knowledge.
+- [Knowledge Onboarding](https://docs.devin.ai/onboard-devin/knowledge-onboarding.md): Knowledge is a collection of instructions and advice that Devin can reference in all sessions. Think of it as onboarding a new employee with the relevant organizational context.
+- [AGENTS.md files for Devin](https://docs.devin.ai/onboard-devin/agents-md.md): Add AGENTS.md files to give Devin repository context and instructions, including the 16 KiB automatic injection limit and how to structure longer guidance.
+
+#### Environment configuration
+
+- [Devin environment setup](https://docs.devin.ai/onboard-devin/environment.md): Configure Devin's environment so sessions start with repos, tools, dependencies, environment variables, and secrets ready.
+- [Devin environment blueprints](https://docs.devin.ai/onboard-devin/environment/blueprints.md): Blueprints describe Devin's environment; Devin can generate them from your repository, and you can review or edit them before builds create snapshots.
+- [Blueprint reference](https://docs.devin.ai/onboard-devin/environment/blueprint-reference.md): Complete field reference for blueprints: sections, step types, GitHub Actions, environment variables, secrets, and file attachments.
+- [Android emulator support](https://docs.devin.ai/onboard-devin/environment/android-emulation.md): Build, run, and test Android apps on a full emulator inside Devin's session: blueprint setup, adb workflows, Computer Use, and recordings.
+- [Devin macOS support](https://docs.devin.ai/onboard-devin/environment/macos-support.md): Run Devin on macOS VMs with Xcode and the iOS Simulator to build, run, and test Apple-platform apps.
+- [Upload iOS builds to TestFlight with Devin](https://docs.devin.ai/onboard-devin/environment/testflight.md): Set up App Store Connect, an API key, and Devin secrets so Devin can archive an iOS app on a macOS VM and upload the build to TestFlight.
+- [Windows support](https://docs.devin.ai/onboard-devin/environment/windows-support.md): Run Devin on Windows VMs: configure the runs-on and shell blueprint fields, Git Bash or PowerShell steps, Chocolatey installs, and app testing.
+
+#### Devin Outposts
+
+- [Devin Outposts: self-hosted infrastructure](https://docs.devin.ai/cloud/outposts/overview.md): Learn how Devin Outposts runs sessions on your own infrastructure, including self-hosted workers, networking, machine setup, and partner integrations.
+- [Devin Outposts quickstart](https://docs.devin.ai/cloud/outposts/quickstart.md): Set up Devin Outposts on your own machines with a self-hosted worker, API token, and repository access to run sessions from one machine.
+- [Devin Outposts orchestration guide](https://docs.devin.ai/cloud/outposts/orchestration.md): Build a Devin Outposts orchestrator for your own infrastructure: watch the queue, claim sessions, provision machines, and run workers automatically.
+- [Devin Outposts API and CLI reference](https://docs.devin.ai/cloud/outposts/reference.md): Use the Devin Outposts reference for self-hosted workers: devin-remote, fleet API endpoints, CLI flags, binary downloads, and the spawn contract.
+- [Devin Outposts partner integrations](https://docs.devin.ai/cloud/outposts/partners.md): Connect Devin Outposts to your own infrastructure through a partner integration using PKCE, admin authorization, and secure server-to-server tokens.
+
+### Working with Devin
+
+- [Devin Review](https://docs.devin.ai/work-with-devin/devin-review.md): A new way to quickly review and understand complex PRs. Track review consumption and manage organization ACU limits.
+- [Stacked PRs](https://docs.devin.ai/work-with-devin/stacked-prs.md): How Devin splits large changes into ordered, reviewable stacks of pull requests
+- [Devin Session Tools](https://docs.devin.ai/work-with-devin/devin-session-tools.md): Learn how Devin's IDE, Browser, Shell, and Side Chat tools help you monitor, interact with, and guide your development sessions.
+- [Devin voice mode](https://docs.devin.ai/work-with-devin/voice-mode.md): Use Devin voice mode to talk through ideas, pressure-test an approach, and hand off work. Learn how to start and control a call.
+- [Computer Use](https://docs.devin.ai/work-with-devin/computer-use.md): How Devin uses a full desktop environment to interact with GUIs, test applications, and visually verify changes
+- [Devin browser authentication](https://docs.devin.ai/work-with-devin/browser-auth.md): Log in once in Devin's Interactive Browser, save the browser profile, and have every future Devin session start already authenticated to your web apps.
+- [Testing & Video Recordings](https://docs.devin.ai/work-with-devin/testing-and-recordings.md): How Devin tests your changes end-to-end after creating a PR and sends you video recordings as proof that they work
+- [Slash Commands](https://docs.devin.ai/work-with-devin/slash-commands.md): Use custom slash commands to quickly insert your organization's predefined text prompt templates and streamline your workflow with Devin
+- [Ask Devin](https://docs.devin.ai/work-with-devin/ask-devin.md): Use Ask Devin to ask questions about your codebase, plan tasks, and generate high-context sessions
+- [Data Analyst Agent](https://docs.devin.ai/work-with-devin/data-analyst.md): Use the Data Analyst agent (DANA) for fast database queries, data analysis, and visualizations in Slack or the web app.
+- [DeepWiki repository wikis](https://docs.devin.ai/work-with-devin/deepwiki.md): DeepWiki auto-generates architecture diagrams, documentation, and source links for every repo, configured with a .devin/wiki.json file.
+- [Security Swarm](https://docs.devin.ai/work-with-devin/security-swarm.md): Use Devin Security Swarm to find, triage, and remediate security vulnerabilities across your repositories with code scans and automated fixes
+- [Devin Code Scans](https://docs.devin.ai/work-with-devin/code-scans.md): Use Devin Code Scans to find performance, test coverage, dead code, accessibility, and other issues across your repositories, then fix them with Devin
+- [Hand off to Devin Cloud from Any Agent](https://docs.devin.ai/work-with-devin/devin-handoff.md): Hand off tasks to a cloud Devin session from the Devin CLI, Claude Code, Codex, or any coding agent.
+- [Devin MCP servers and marketplace](https://docs.devin.ai/work-with-devin/mcp.md): Connect Devin to external tools with MCP servers: install plugins from the marketplace or add custom STDIO, SSE, or HTTP servers.
+- [DeepWiki MCP](https://docs.devin.ai/work-with-devin/deepwiki-mcp.md): How to use the official DeepWiki MCP server
+- [Devin MCP](https://docs.devin.ai/work-with-devin/devin-mcp.md): Set up the official Devin MCP server so external AI tools can manage sessions, playbooks, knowledge, and repository docs.
+- [Devin CLI](https://docs.devin.ai/work-with-devin/devin-cli.md): Download and install Devin CLI, a local coding agent that runs in your terminal on macOS, Linux, WSL, and Windows, with handoff to cloud Devin.
+- [Advanced Capabilities](https://docs.devin.ai/work-with-devin/advanced-capabilities.md): Devin can orchestrate managed sessions in parallel, analyze past work, create playbooks, and keep your organization's knowledge base current.
+- [Devin Dynamic Workflows](https://docs.devin.ai/work-with-devin/dynamic-workflows.md): Orchestrate many Devin sessions with a deterministic Python script: fan out work, pipe structured results between stages, and resume a run where it stopped.
+
+### Product Guides
+
+- [Devin Skills](https://docs.devin.ai/product-guides/skills.md): Teach Devin reusable procedures by committing SKILL.md files to your repos, so testing, deployment, and review steps run the same way every session.
+- [Devin Memory and Dreaming](https://docs.devin.ai/product-guides/memory.md): Devin Memory saves your preferences, corrections, and project lessons as notes that carry across sessions, and Dreaming keeps those notes organized.
+- [Devin plugins and the Customize page](https://docs.devin.ai/product-guides/plugins.md): Install Devin plugins from Customize, resolve indexing issues, connect MCP servers, and manage personal, organization, and enterprise scopes.
+- [Set up your plugin ecosystem](https://docs.devin.ai/product-guides/plugin-ecosystem.md): Build, host, and govern a shared set of Devin plugins for your organization or enterprise, with managed distribution and policy controls.
+- [Session Insights](https://docs.devin.ai/product-guides/session-insights.md): Use Devin Session Insights to analyze completed sessions, review issues and knowledge usage, and get improved prompts for future sessions
+- [Secrets & Site Cookies](https://docs.devin.ai/product-guides/secrets.md): Store organization, personal, repo, and session secrets — API keys, site cookies, and TOTP codes — so Devin can sign in to tools.
+- [Security Profiles](https://docs.devin.ai/product-guides/security-profiles.md): Define reusable Devin security profiles that restrict network, MCP, git, and GitHub CLI access, and bind them to orgs, automations, and sessions.
+- [Cloud Authentication with OIDC](https://docs.devin.ai/product-guides/oidc.md): Give Devin short-lived, keyless access to AWS, GCP, Vault, JFrog, Databricks, and your own services with OpenID Connect workload identity federation.
+- [Creating Playbooks](https://docs.devin.ai/product-guides/creating-playbooks.md): Create Devin playbooks in the web app to build a library of reusable, detailed prompts that your organization can share and run across sessions.
+- [Using Playbooks](https://docs.devin.ai/product-guides/using-playbooks.md): Attach Devin playbooks to a session with a macro, refine them as Devin runs, and browse Organization, Enterprise, and System playbooks in Settings.
+- [Automations](https://docs.devin.ai/product-guides/automations.md): Set up Devin automations: event-driven workflows that start Devin sessions from Slack, GitHub, Linear, schedules, and webhooks.
+- [Auto-triage](https://docs.devin.ai/product-guides/auto-triage.md): A persistent Devin that monitors your Slack channel and automatically triages incoming bugs
+- [Scheduled Sessions](https://docs.devin.ai/product-guides/scheduled-sessions.md): Manage legacy Devin scheduled sessions and create new recurring or one-time scheduled work as automations with a Schedule trigger.
+- [Devin app deployments](https://docs.devin.ai/product-guides/deployment-capabilities.md): Devin-hosted deployments for standalone apps Devin builds: static frontends on devinapps.com, FastAPI backends on Fly.io, plus approval and availability rules.
+- [Devin PR bot comment settings](https://docs.devin.ai/product-guides/bot-comment-settings.md): Control which bot comments Devin responds to on pull requests with the Responding to bots setting: no bots, all bots, or an allowlist.
+- [Invite your Team](https://docs.devin.ai/product-guides/invite-team.md): Invite teammates to your Devin organization, assign roles, and manage members from the Membership settings page on Team and Enterprise plans.
+
+### Integrations
+
+- [Devin integrations overview](https://docs.devin.ai/integrations/overview.md): Connect Devin to your tools with native integrations, plugins, and MCP servers. Find connection settings and choose personal or shared access.
+- [Slack](https://docs.devin.ai/integrations/slack.md): Chat and collaborate with Devin directly in your company Slack: start sessions from any channel, sync threads, and run a session in a dedicated code channel.
+- [Microsoft Teams](https://docs.devin.ai/integrations/microsoft-teams.md): Connect Devin to Microsoft Teams to start sessions by tagging @Devin AI in a channel or chat, get replies in context, and control sessions with inline keywords.
+- [Devin GitHub integration](https://docs.devin.ai/integrations/gh.md): Connect Devin to GitHub to create pull requests, respond to review comments, and control repository access for your organization.
+- [GitLab](https://docs.devin.ai/integrations/gitlab.md): Connect Devin to GitLab (versions 15.0 and later) to create merge requests, respond to MR comments, and collaborate in your repositories.
+- [Bitbucket](https://docs.devin.ai/integrations/bitbucket.md): Connect Devin to Bitbucket Cloud or Bitbucket Data Center to create pull requests, and configure a webhook so Devin responds to PR comments.
+- [Linear](https://docs.devin.ai/integrations/linear.md): Assign Linear tickets to Devin and turn them into pull requests with playbook labels, @mentions, and automation triggers.
+- [Devin Jira integration](https://docs.devin.ai/integrations/jira.md): Connect Jira Cloud to Devin two ways: the Devin Rovo agent (Devin for Jira app) or a Jira service user over OAuth. Pick one, set it up, get pull requests.
+- [Connect Devin to Databricks](https://docs.devin.ai/integrations/databricks.md): Connect Devin to Databricks with a service principal, an OAuth client secret or OIDC token federation, the Databricks CLI, and Unity Catalog grants.
+- [Connect Devin to MongoDB](https://docs.devin.ai/integrations/mongodb.md): Connect Devin to MongoDB Atlas with a scoped database user, an Atlas service account, mongosh and the Atlas CLI in a blueprint, or the MongoDB MCP server.
+- [PagerDuty integration](https://docs.devin.ai/integrations/pagerduty.md): Connect PagerDuty to Devin to trigger automations from incidents and give Devin sessions access to incidents, services, and on-call schedules.
+- [Pylon integration](https://docs.devin.ai/integrations/pylon.md): Connect Pylon to Devin to escalate support tickets to engineering, delegate issues to Devin sessions, and trigger automations from Pylon events.
+- [GitHub Pull Request Templates](https://docs.devin.ai/integrations/pr-templates.md): How Devin discovers and uses GitHub-style pull request templates, including the custom Devin template filename.
+- [Self-Hosted SCM & Artifacts](https://docs.devin.ai/integrations/self-hosted-scm-artifacts.md): Connect Devin to self-hosted SCM systems like GitLab (15.0+) and artifact repositories like Artifactory using IP allowlisting or load balancers.
+
+### Admin
+
+- [Security at Cognition](https://docs.devin.ai/admin/security.md): We want Devin to be a core contributor in your organization, and have prioritized security, data privacy and compliance to make it possible
+- [Common Issues](https://docs.devin.ai/admin/common-issues.md): Fix common Devin setup issues: disconnect existing GitHub or Slack connections from another Devin account, and allowlist Devin IP addresses.
+
+#### Billing
+
+- [Billing](https://docs.devin.ai/admin/billing.md)
+- [Self-serve plans](https://docs.devin.ai/admin/billing/self-serve.md): Compare Devin's Free, Pro, Max, and Teams self-serve plans, including seat types, the Teams minimum, usage quota, and on-demand credits.
+- [Enterprise](https://docs.devin.ai/admin/billing/enterprise.md): How Devin Enterprise contracts are billed, how admins track ACU consumption, and how to set organization and per-user ACU limits.
+- [Usage](https://docs.devin.ai/admin/billing/usage.md): How Devin meters work, what counts toward consumption, and how to keep usage under control
+- [Use your ChatGPT plan in Devin](https://docs.devin.ai/admin/billing/chatgpt.md): Link your ChatGPT Go, Plus, or Pro subscription to Devin so GPT model usage in your sessions is billed to your ChatGPT plan instead of your Devin quota.
+
+### Release Notes
+
+- [Recent Updates](https://docs.devin.ai/release-notes/overview.md): The latest Devin updates: recently released features, improvements, and bug fixes across the product, updated with each release.
+- [2026](https://docs.devin.ai/release-notes/2026.md): Devin release notes for 2026: new features, improvements, and bug fixes across the product, organized by release date.
+- [2025](https://docs.devin.ai/release-notes/2025.md)
+- [2024](https://docs.devin.ai/release-notes/2024.md)
+
+## CLI
+
+### Getting Started
+
+- [Quickstart](https://docs.devin.ai/cli/index.md): Get up and running in 2 minutes with Devin CLI, a local command-line coding agent with deep Devin Cloud integration.
+- [Introducing Devin CLI](https://docs.devin.ai/cli/introducing-devin-cli.md): A two-minute video tour of Devin CLI: start a local coding agent in your terminal, hand work to Devin Cloud, and pick up PRs locally.
+- [Essential Commands](https://docs.devin.ai/cli/essential-commands.md): The must-know Devin CLI commands: starting and resuming sessions, cloud sessions, slash commands, and keyboard shortcuts.
+- [Subagents](https://docs.devin.ai/cli/subagents.md): Delegate tasks to independent subagents in the Devin CLI that run in the foreground or background with their own profiles and permissions
+- [Devin Cloud in the Devin CLI](https://docs.devin.ai/cli/cloud.md): Create, steer, resume, and watch Devin Cloud sessions from your terminal with devin --cloud, /cloud, /open, /model, and /archive.
+- [SSH into Devin Cloud sessions](https://docs.devin.ai/cli/ssh.md): Connect to a Devin Cloud session's VM over SSH with devin ssh, forward ports with devin forward, and copy files with scp from the Devin CLI.
+- [Hand off to cloud Devins](https://docs.devin.ai/cli/handoff.md): Hand off a task from the Devin CLI to a cloud Devin session with /handoff, and bring a cloud session's pull request back to your machine.
+- [Models](https://docs.devin.ai/cli/models.md): Available models in Devin CLI and how to configure them, including Adaptive routing and Fusion pairings.
+- [Adaptive](https://docs.devin.ai/cli/adaptive.md): Adaptive is Cognition's intelligent model router that automatically selects the best AI model for each task.
+- [Fusion in Devin CLI](https://docs.devin.ai/cli/fusion.md): Fusion pairs a frontier lead model with a cost-efficient sidekick, delivering frontier intelligence at a lower cost in Devin CLI.
+- [Sandbox](https://docs.devin.ai/cli/sandbox.md): OS-level isolation for Devin CLI sessions: how the sandbox works, network filtering, and enterprise enforcement.
+- [Troubleshooting](https://docs.devin.ai/cli/troubleshooting.md): Common issues and how to fix them
+
+### Editor Integrations
+
+- [JetBrains](https://docs.devin.ai/cli/acp/jetbrains.md): Run Devin inside JetBrains IDEs from AI Chat using the Agent Client Protocol (ACP), including JetBrains Remote Development.
+- [Zed](https://docs.devin.ai/cli/acp/zed.md): Run Devin CLI inside the Zed editor as a custom ACP agent in the Agent Panel, including install, authentication, and model selection.
+- [Xcode](https://docs.devin.ai/cli/acp/xcode.md): Run Devin inside Xcode's coding assistant via the Agent Client Protocol (ACP), or give the Devin CLI access to your Xcode project through Xcode's MCP bridge.
+
+### Extensibility
+
+- [Extensibility Overview](https://docs.devin.ai/cli/extensibility/index.md): Customize and extend Devin CLI with rules, skills, plugins, subagents, MCP servers, and hooks, or import configuration from other tools.
+- [Configuration](https://docs.devin.ai/cli/extensibility/configuration.md): How to configure Devin CLI behavior with config files
+- [Rules & AGENTS.md](https://docs.devin.ai/cli/extensibility/rules.md): Provide always-on instructions and context that guide the agent in every session
+- [MCP Overview](https://docs.devin.ai/cli/extensibility/mcp/overview.md): Extend Devin CLI with external tool servers using the Model Context Protocol
+- [MCP Configuration](https://docs.devin.ai/cli/extensibility/mcp/configuration.md): How to add, configure, authenticate, and troubleshoot MCP servers in Devin CLI, including stdio, Streamable HTTP, and SSE transports.
+- [Skills Overview](https://docs.devin.ai/cli/extensibility/skills/overview.md): Skills are reusable SKILL.md prompts and workflows for Devin CLI, invoked with a slash command or by the agent, with their own permissions.
+- [Creating Skills](https://docs.devin.ai/cli/extensibility/skills/creating-skills.md): Full reference for the Devin CLI SKILL.md format: frontmatter options, allowed-tools auto-approval, permissions, and subagent skills.
+- [Devin CLI plugins](https://docs.devin.ai/cli/extensibility/plugins/overview.md): Install, author, and govern plugins in the Devin CLI: plugin format, devin plugins commands, the manifest, and inheritance levels.
+- [Quickstart: team marketplace](https://docs.devin.ai/cli/extensibility/plugins/quickstart.md): Set up a shared Devin plugin marketplace for your team with reusable skills, rules, hooks, MCP servers, and governance.
+- [Hooks](https://docs.devin.ai/cli/extensibility/hooks/overview.md): Configure Devin CLI hooks to run shell commands or LLM prompts on lifecycle events, block or rewrite tool calls, and inject context.
+- [Lifecycle Hooks](https://docs.devin.ai/cli/extensibility/hooks/lifecycle-hooks.md): Understanding hook events and the data available at each stage
+
+### Enterprise
+
+- [Devin Auth](https://docs.devin.ai/cli/enterprise/devin-auth.md): Authenticate to Devin CLI with your existing Devin account, and use custom roles with the Use Devin CLI permission to control enterprise access.
+- [Legacy Windsurf Auth](https://docs.devin.ai/cli/enterprise/windsurf-auth.md): Authenticate to Devin CLI with your existing legacy Windsurf Enterprise account, including per-user CLI access requirements and billing.
+- [Devin CLI Team Settings](https://docs.devin.ai/cli/enterprise/team-settings.md): Configure team-wide Devin CLI settings for your enterprise, including model allowlists, the default model, MCP servers, and web search.
+- [System Configuration](https://docs.devin.ai/cli/enterprise/system-config.md): Pin Devin CLI login and proxy settings across managed devices with an MDM-distributed system.json policy
+- [Controls](https://docs.devin.ai/cli/enterprise/controls.md): Devin CLI is a local agent like Cascade, but does not yet implement all of the same features and controls.
+
+### Reference
+
+- [Commands & Flags](https://docs.devin.ai/cli/reference/commands.md): Complete Devin CLI reference for global flags, subcommands such as devin auth, mcp, ssh, and forward, and interactive slash commands.
+- [Keyboard Shortcuts](https://docs.devin.ai/cli/reference/keyboard-shortcuts.md): Common keyboard shortcuts in Devin CLI
+- [Terminal Compatibility](https://docs.devin.ai/cli/reference/terminal-compatibility.md): Devin CLI terminal compatibility: supported terminal emulators, recommendations per platform, and Option-as-Meta setup on macOS.
+- [Configuration File](https://docs.devin.ai/cli/reference/configuration/config-file.md): Complete reference for the Devin CLI config file format, including every user and project option such as permissions, proxy, sandbox, and read_config_from.
+- [Configuration Import](https://docs.devin.ai/cli/reference/configuration/read-config-from.md): Control how Devin CLI imports settings from Cursor, Windsurf, Claude Code, GitHub Copilot, OpenCode, and Zed
+- [Configuration Precedence](https://docs.devin.ai/cli/reference/configuration/global-vs-local.md): How global, project, and local settings interact
+- [Devin CLI permissions](https://docs.devin.ai/cli/reference/permissions.md): Configure Devin CLI permission rules to allow, deny, or prompt for commands, file access, and MCP tools with predictable precedence.
+
+### Changelog
+
+- [Changelog (Stable)](https://docs.devin.ai/cli/changelog/stable.md): Release notes for the Devin CLI stable channel: new features, improvements, and fixes in each stable release of the command-line interface.
+
+## Enterprise
+
+### Getting Started
+
+- [Getting Started with Devin Enterprise](https://docs.devin.ai/enterprise/getting-started/get-started.md): Step-by-step guide for configuring Devin Enterprise, including organizations, user roles, SSO, and integrations.
+- [Understanding Organizations](https://docs.devin.ai/enterprise/getting-started/organizations.md): Learn how organizations work in Devin Enterprise and how to map them to your teams, repositories, identity provider groups, and budgets.
+
+### Deployment
+
+- [Enterprise Deployment](https://docs.devin.ai/enterprise/deployment/overview.md): Learn about Devin's enterprise deployment options: Enterprise Cloud and Customer Dedicated Deployment architectures.
+- [Dedicated Deployment Private Networking](https://docs.devin.ai/enterprise/deployment/dedicated_saas_private_networking.md): Connect a Devin Dedicated Deployment to internal systems such as GitHub Enterprise Server, GitLab, and Artifactory privately over AWS PrivateLink.
+- [Devin Connect](https://docs.devin.ai/enterprise/deployment/devin-connect.md): Devin Connect gives Devin private access to internal systems: deploy a gateway as a policy proxy, reached by an outbound-only tunnel or AWS PrivateLink.
+
+### Environment management
+
+- [Enterprise environment overview](https://docs.devin.ai/enterprise/environment-management/overview.md): Enterprise-wide environment management: blueprint hierarchy, enterprise blueprint configuration, secrets, and enterprise-wide rebuilds.
+- [Devin environment rollout health](https://docs.devin.ai/enterprise/environment-management/rollout.md): Use Devin's Enterprise Rollout page to monitor blueprint adoption, build health, and environment readiness across organizations.
+- [Best practices](https://docs.devin.ai/enterprise/environment-management/best-practices.md): Enterprise best practices for organizing blueprints, managing secrets, monitoring builds, pinning, and migration at scale.
+
+### Local agent controls
+
+- [Local Agent Controls](https://docs.devin.ai/enterprise/local/controls.md): Configure Devin Desktop and Devin CLI settings across your enterprise with a root-level baseline and per-organization overrides.
+
+### Usage management
+
+- [Usage policies: per-user ACU limits](https://docs.devin.ai/enterprise/features/usage-policies.md): Cap each user's monthly ACU consumption with usage tiers, IdP group mappings, per-member overrides, and additional usage requests.
+- [Devin Coach: usage efficiency coaching](https://docs.devin.ai/enterprise/features/devin-coach.md): Devin Coach flags inefficient prompts in the input box before you send them and gives admins analytics on suggestion outcomes and blockers.
+
+### Integrations
+
+- [Git Integrations](https://docs.devin.ai/enterprise/integrations/git-integrations.md): Connect Devin Enterprise to your source code provider in Settings > Connections and grant organizations access to repositories in Settings > Repositories.
+- [GitHub Enterprise Server Integration](https://docs.devin.ai/enterprise/integrations/github-enterprise-server.md): Connect Devin with GitHub Enterprise Server or GitHub Enterprise Cloud with Data Residency
+- [GitLab Self-Managed Integration](https://docs.devin.ai/enterprise/integrations/gitlab-self-managed.md): Connect Devin with your self-managed GitLab instance (version 15.0 or later): admin setup, service accounts, webhooks, and user linking.
+- [Azure DevOps](https://docs.devin.ai/enterprise/integrations/azure-devops.md): Connect Devin to Azure DevOps with OAuth so Devin can clone repositories, open pull requests, and work within your Azure DevOps organization.
+- [Azure DevOps (Service Principal)](https://docs.devin.ai/enterprise/integrations/azure-devops-service-principal.md): Connect Devin to Azure DevOps using a Microsoft Entra service principal, then grant organizations repository access and add repos to environments.
+- [Artifacts](https://docs.devin.ai/enterprise/integrations/artifacts/overview.md): Connect Devin to JFrog Artifactory, AWS CodeArtifact, and Azure Artifacts by adding artifact credentials and tools to your environment blueprint.
+
+### Security & Access
+
+- [Enterprise security](https://docs.devin.ai/enterprise/security-access/security/enterprise-security.md)
+- [Customer Managed Keys](https://docs.devin.ai/enterprise/security-access/security/customer-managed-keys.md): Use your own AWS KMS key to encrypt data at rest in your Devin Enterprise Assured deployment.
+- [Custom Roles & RBAC](https://docs.devin.ai/enterprise/security-access/custom-roles.md): Configure fine-grained access control with custom roles and role-based access control (RBAC) in Devin Enterprise.
+- [Personal Analytics](https://docs.devin.ai/enterprise/security-access/personal-analytics.md): Devin Personal Analytics lets users view their own ACU consumption and usage analytics across your enterprise from My analytics.
+- [IP Access Lists](https://docs.devin.ai/enterprise/security-access/ip-access-lists.md): Restrict Devin API and webapp access to specific IP addresses or CIDR ranges using enterprise IP access lists managed through the Enterprise API v3.
+- [SSO Onboarding Guide](https://docs.devin.ai/enterprise/security-access/sso/guide.md): End-to-end guide for setting up SSO, provisioning users, and configuring IdP groups with Devin Enterprise.
+- [Okta SSO Setup](https://docs.devin.ai/enterprise/security-access/sso/okta.md): Set up Okta Single Sign-On for Devin: create an OIDC web app, add the auth.devin.ai sign-in redirect URI, and share credentials with Cognition.
+- [Entra ID SSO Setup](https://docs.devin.ai/enterprise/security-access/sso/azure.md): Configure Single Sign-On with Microsoft Entra ID (formerly Azure AD)
+- [SAML SSO Setup](https://docs.devin.ai/enterprise/security-access/sso/saml.md): Configure Devin Enterprise single sign-on (SSO) with a SAML identity provider, including group assertions for IdP group-based access control.
+- [OIDC SSO Setup](https://docs.devin.ai/enterprise/security-access/sso/oidc.md): Configure Devin Enterprise single sign-on (SSO) with a generic OpenID Connect (OIDC) identity provider, including group claims for IdP groups.
+- [SCIM Setup](https://docs.devin.ai/enterprise/security-access/scim.md): Automatically provision and deprovision users and groups from your identity provider using SCIM 2.0.
+- [IdP Group Integration](https://docs.devin.ai/enterprise/security-access/idp-groups.md): Configure Identity Provider (IdP) group integration for streamlined user access management in Devin Enterprise.
+- [Trust Center](https://docs.devin.ai/enterprise/security-access/trust-center.md): Security practices, compliance certifications, and data privacy commitments
+- [AI Guardrails](https://docs.devin.ai/enterprise/features/ai-guardrails.md): Configure safety guardrails to screen user messages and protect against prompt injection, data exfiltration, and policy violations
+- [Attribution Filtering](https://docs.devin.ai/enterprise/features/attribution-filtering.md): Screen Devin-generated code against public repositories and block matches before they are written to your codebase
+
+### Use Cases & Tutorials
+
+#### Overview
+
+- [Overview](https://docs.devin.ai/use-cases/index.md): Proven use cases deployed across hundreds of enterprises
+- [Best Practices](https://docs.devin.ai/use-cases/best-practices.md): How to structure work for Devin to maximize efficiency and ROI
+
+#### Use Cases
+
+- [Java Upgrades](https://docs.devin.ai/use-cases/examples/java-upgrades.md): Upgrade your Java applications to the latest versions with ease
+- [COBOL Modernization](https://docs.devin.ai/use-cases/examples/cobol-modernization.md): Modernize legacy COBOL systems to contemporary technologies
+- [Clear Engineering Backlogs](https://docs.devin.ai/use-cases/examples/clear-engineering-backlogs.md): Let Devin tackle your engineering backlogs
+- [SAS to PySpark Migration](https://docs.devin.ai/use-cases/examples/sas-to-pyspark.md): Migrate SAS analytics workflows to modern PySpark infrastructure
+- [JavaScript to TypeScript Migration](https://docs.devin.ai/use-cases/examples/javascript-to-typescript.md): Migrate JavaScript codebases to TypeScript for improved type safety and developer experience
+- [NoSQL to SQL Migration](https://docs.devin.ai/use-cases/examples/nosql-to-sql.md): Migrate from NoSQL databases to SQL for improved data consistency and relational integrity
+
+#### Prompts
+
+- [Testing & Refactoring](https://docs.devin.ai/use-cases/testing-refactoring.md)
+- [Data & Analysis](https://docs.devin.ai/use-cases/data-analysis.md)
+- [Web Scraping & Automation](https://docs.devin.ai/use-cases/web-scraping.md)
+- [Interactive Applications](https://docs.devin.ai/use-cases/interactive-applications.md)
+- [Migration & Modernization](https://docs.devin.ai/use-cases/migration-modernization.md)
+
+#### Tutorials
+
+- [API Integration](https://docs.devin.ai/use-cases/tutorials/api-integration.md): Devin can integrate, configure, and test third party APIs in your applications.
+- [Code Coverage](https://docs.devin.ai/use-cases/tutorials/code-coverage.md): Devin can analyze your codebase's test suite and write additional tests to increase code coverage for your team.
+- [Containerization](https://docs.devin.ai/use-cases/tutorials/containerization.md): In this tutorial, we’ll show you how Devin can configure a Docker container to standardize your team’s dev environment.
+- [Managing Frontend Components](https://docs.devin.ai/use-cases/tutorials/frontend-components.md): Devin can work with frontend libraries and share visuals with you during its sessions.
+- [MCP Use Cases](https://docs.devin.ai/use-cases/tutorials/mcp-use-cases.md)
+
+## Use Cases
+
+### Gallery
+
+- [Use Cases](https://docs.devin.ai/use-cases/gallery/index.md): Browse practical Devin use cases with copy-paste prompts for migrations, feature development, testing, debugging, and more.
+
+## Federal
+
+### Federal
+
+- [Introduction](https://docs.devin.ai/federal/introduction.md): Introduction to Devin for government: the AI software engineering platform built for federal deployments and public sector teams.
+- [Getting Started](https://docs.devin.ai/federal/getting-started.md): Get up and running with Devin in your federal environment: sign in, set up your team, and start your first session.
+- [Groups](https://docs.devin.ai/federal/groups.md): Manage team membership, model availability, and ACU limits by group on Devin federal deployments.
+- [Model Provisioning](https://docs.devin.ai/federal/model-provisioning.md): Control Cascade, Command, and CLI model availability by team and group on Devin federal deployments.
+- [ACU Limits](https://docs.devin.ai/federal/acu-limits.md): Set team, group, and per-user ACU limits to control agent compute usage on Devin federal deployments.
+- [Security](https://docs.devin.ai/federal/security.md): Security practices and controls for Devin Desktop in federal deployments, including data handling and access controls.
+- [Compliance and Availability](https://docs.devin.ai/federal/compliance.md): Compliance frameworks, certifications, and product availability for Devin federal deployments and public sector customers.
+- [Billing and Procurement](https://docs.devin.ai/federal/usage-and-billing.md): How usage measurement, billing, and procurement work for Devin federal customers and public sector agencies.
+- [Federal FAQs](https://docs.devin.ai/federal/faqs.md): Frequently asked questions about Devin federal deployments, covering access, security, models, and billing.
+
+#### API Reference
+
+- [API Overview](https://docs.devin.ai/federal/api/overview.md): Service-key API for ACU analytics, group management, and ACU limits on federal deployments.
+- [ACU Consumption](https://docs.devin.ai/federal/api/acu-consumption.md): Query team, group, and per-user ACU consumption over a historical window or the current billing cycle.
+- [Group Management](https://docs.devin.ai/federal/api/group-management.md): Create and manage groups, membership, model availability, and group ACU caps via the service-key API.
+- [User ACU Caps](https://docs.devin.ai/federal/api/acu-caps.md): Read and set per-user ACU limit overrides via the service-key API on Devin federal deployments.
+- [Python SDK](https://docs.devin.ai/federal/api/python-sdk.md): Query analytics and manage groups and ACU limits from the command line with the Python SDK.
+
+## OpenAPI Specs
+
+- [analytics-v2-openapi](/desktop/accounts/api-reference/analytics-v2-openapi.yaml)
+- [v3-openapi](/de/v3-openapi.yaml)
+- [v3-openapi](/es/v3-openapi.yaml)
+- [v3-openapi](/fr/v3-openapi.yaml)
+- [v3-openapi](/it/v3-openapi.yaml)
+- [v3-openapi](/ja/v3-openapi.yaml)
+- [v3-openapi](/pt-BR/v3-openapi.yaml)
+- [v3-openapi](/v3-openapi.yaml)
+- [v3-openapi](/zh/v3-openapi.yaml)
+- [v1-openapi](/de/v1-openapi.yaml)
+- [v1-openapi](/es/v1-openapi.yaml)
+- [v1-openapi](/fr/v1-openapi.yaml)
+- [v1-openapi](/it/v1-openapi.yaml)
+- [v1-openapi](/ja/v1-openapi.yaml)
+- [v1-openapi](/pt-BR/v1-openapi.yaml)
+- [v1-openapi](/v1-openapi.yaml)
+- [v1-openapi](/zh/v1-openapi.yaml)
+- [v2-openapi](/de/v2-openapi.yaml)
+- [v2-openapi](/es/v2-openapi.yaml)
+- [v2-openapi](/fr/v2-openapi.yaml)
+- [v2-openapi](/it/v2-openapi.yaml)
+- [v2-openapi](/ja/v2-openapi.yaml)
+- [v2-openapi](/pt-BR/v2-openapi.yaml)
+- [v2-openapi](/v2-openapi.yaml)
+- [v2-openapi](/zh/v2-openapi.yaml)
+- [v3-openapi-apigee](/de/v3-openapi-apigee.json)
+- [v3-openapi-apigee](/es/v3-openapi-apigee.json)
+- [v3-openapi-apigee](/fr/v3-openapi-apigee.json)
+- [v3-openapi-apigee](/it/v3-openapi-apigee.json)
+- [v3-openapi-apigee](/ja/v3-openapi-apigee.json)
+- [package-lock](/package-lock.json)
+- [v3-openapi-apigee](/pt-BR/v3-openapi-apigee.json)
+- [v3-openapi-apigee](/v3-openapi-apigee.json)
+- [v3-openapi](/v3-openapi.json)
+- [v3-openapi-apigee](/zh/v3-openapi-apigee.json)
+
+> The links below point to documentation indexes. Follow each `/_llms/` index recursively until you reach documentation pages.
+
+## Indexes
+
+- [English / Desktop (102 pages)](https://docs.devin.ai/_llms/en/desktop.txt): Documentation for English / Desktop.
+- [English / API (304 pages)](https://docs.devin.ai/_llms/en/api.txt): Documentation for English / API.
+- [Spanish (599 pages)](https://docs.devin.ai/_llms/es.txt): Documentation for Spanish.
+- [Spanish / Cloud (89 pages)](https://docs.devin.ai/_llms/es/cloud.txt): Documentation for Spanish / Cloud.
+- [Spanish / Escritorio (102 pages)](https://docs.devin.ai/_llms/es/escritorio.txt): Documentation for Spanish / Escritorio.
+- [Spanish / API (304 pages)](https://docs.devin.ai/_llms/es/api.txt): Documentation for Spanish / API.
+- [Japanese (599 pages)](https://docs.devin.ai/_llms/ja.txt): Documentation for Japanese.
+- [Japanese / API (304 pages)](https://docs.devin.ai/_llms/ja/api.txt): Documentation for Japanese / API.
+- [Chinese (599 pages)](https://docs.devin.ai/_llms/zh.txt): Documentation for Chinese.
+- [Chinese / API (304 pages)](https://docs.devin.ai/_llms/zh/api.txt): Documentation for Chinese / API.
+- [French (599 pages)](https://docs.devin.ai/_llms/fr.txt): Documentation for French.
+- [French / Cloud (89 pages)](https://docs.devin.ai/_llms/fr/cloud.txt): Documentation for French / Cloud.
+- [French / Desktop (102 pages)](https://docs.devin.ai/_llms/fr/desktop.txt): Documentation for French / Desktop.
+- [French / API (304 pages)](https://docs.devin.ai/_llms/fr/api.txt): Documentation for French / API.
+- [German (599 pages)](https://docs.devin.ai/_llms/de.txt): Documentation for German.
+- [German / Cloud (89 pages)](https://docs.devin.ai/_llms/de/cloud.txt): Documentation for German / Cloud.
+- [German / Desktop (102 pages)](https://docs.devin.ai/_llms/de/desktop.txt): Documentation for German / Desktop.
+- [German / API (304 pages)](https://docs.devin.ai/_llms/de/api.txt): Documentation for German / API.
+- [Brazilian Portuguese (599 pages)](https://docs.devin.ai/_llms/pt-br.txt): Documentation for Brazilian Portuguese.
+- [Brazilian Portuguese / Cloud (89 pages)](https://docs.devin.ai/_llms/pt-br/cloud.txt): Documentation for Brazilian Portuguese / Cloud.
+- [Brazilian Portuguese / Desktop (102 pages)](https://docs.devin.ai/_llms/pt-br/desktop.txt): Documentation for Brazilian Portuguese / Desktop.
+- [Brazilian Portuguese / API (304 pages)](https://docs.devin.ai/_llms/pt-br/api.txt): Documentation for Brazilian Portuguese / API.
+- [Italian (599 pages)](https://docs.devin.ai/_llms/it.txt): Documentation for Italian.
+- [Italian / Cloud (89 pages)](https://docs.devin.ai/_llms/it/cloud.txt): Documentation for Italian / Cloud.
+- [Italian / Desktop (102 pages)](https://docs.devin.ai/_llms/it/desktop.txt): Documentation for Italian / Desktop.
+- [Italian / API (304 pages)](https://docs.devin.ai/_llms/it/api.txt): Documentation for Italian / API.
+
+
+This documentation is built and hosted on [Mintlify](https://mintlify.com), a developer documentation platform.

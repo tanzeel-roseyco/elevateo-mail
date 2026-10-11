@@ -1,0 +1,309 @@
+{
+  "schema_version": 1,
+  "scope": "Initial planning decisions only; no implementation or future-task approval",
+  "verified_at_utc": "2026-10-11T16:14:54.558466+00:00",
+  "planning_local_date": "2026-10-12",
+  "base_commit": "103baeb042925badbbc50dc0d3d3bfbf09ce8344",
+  "repository": "https://github.com/tanzeel-roseyco/elevateo-mail",
+  "covered_tasks": [
+    "PLAN-RESEARCH",
+    "PLAN-ARCH",
+    "PLAN-AGENTS",
+    "PLAN-CLIENTS",
+    "PLAN-MAIL"
+  ],
+  "input_source_directory": "C:\\Users\\Tanzeel\\AppData\\Local\\Temp\\elevateo-consult-20261012",
+  "source_manifest_sha256": "ebbe572a46e5e4086bbaf55e580e99efa8dcf05cb5d20ff357912198cc73e893",
+  "common_evidence_bytes": 152132,
+  "common_evidence_sha256": "20121d3e44a0ba282e2fcd2d806f2c3ae5a06c093135f7a72f87d0ff00e45f76",
+  "common_evidence_lf_sha256": "7da00b4da0586d4d818c5f6e293479489a9d22d3d104b0fe5a34ea20cbd24d24",
+  "common_evidence_identical": true,
+  "source_files": [
+    {
+      "path": "documentation.md",
+      "input_checkout_sha256": "36ff2bf02b5caa45f860f4698af5582270ac9f562aa0d76331875c448dcb2238",
+      "base_git_blob_sha256": "ea4253daa0d17d795d69709183ba5f0ae7dc8bd4869914c22711aed994ea81f5",
+      "lf_content_sha256": "ea4253daa0d17d795d69709183ba5f0ae7dc8bd4869914c22711aed994ea81f5",
+      "base_matches_checkout_after_line_ending_normalization": true,
+      "packet_matches_base_after_line_ending_and_separator_normalization": true
+    },
+    {
+      "path": ".planning/POLYGLOT_ARCHITECTURE.md",
+      "input_checkout_sha256": "69bcaaeb115fb13a7e06b73b44c6e53ba24da25c7ab8b0b5d4732d600fac513c",
+      "base_git_blob_sha256": "4e93a41b810e08bd37c68553730c3fa622c34037e18be59730dfa9a572880197",
+      "lf_content_sha256": "4e93a41b810e08bd37c68553730c3fa622c34037e18be59730dfa9a572880197",
+      "base_matches_checkout_after_line_ending_normalization": true,
+      "packet_matches_base_after_line_ending_and_separator_normalization": true
+    },
+    {
+      "path": ".planning/CLIENTS_AND_CLI_CONNECTORS.md",
+      "input_checkout_sha256": "67a43643250e80359ba08140fa0efb4af90880ddd5099096111f83031d9c5856",
+      "base_git_blob_sha256": "03ba00538365f9897603914a8cd0fe60ed3dffb2b31650a16320ef08195c3c11",
+      "lf_content_sha256": "03ba00538365f9897603914a8cd0fe60ed3dffb2b31650a16320ef08195c3c11",
+      "base_matches_checkout_after_line_ending_normalization": true,
+      "packet_matches_base_after_line_ending_and_separator_normalization": true
+    },
+    {
+      "path": ".planning/AGENT_ORCHESTRATION.md",
+      "input_checkout_sha256": "0d1f83b38b4a037c89db68bb16d6a67357b493d88cce4dfcba86fe2cb50b0911",
+      "base_git_blob_sha256": "694459c7df2b0e270c4064f1dfa696ec5fea8f192055fb3e9a8f9364776573ee",
+      "lf_content_sha256": "694459c7df2b0e270c4064f1dfa696ec5fea8f192055fb3e9a8f9364776573ee",
+      "base_matches_checkout_after_line_ending_normalization": true,
+      "packet_matches_base_after_line_ending_and_separator_normalization": true
+    },
+    {
+      "path": ".planning/MAIL_ACCOUNTS_AND_ACTIVATION.md",
+      "input_checkout_sha256": "dd536dc0dd8d07a873c0d781f365c872ceacfea96d4d9a5e6cceb191f6b32b0d",
+      "base_git_blob_sha256": "43ee4ae950431f27f6c5a9633541c0707c752b53411dacedc9595059398514b0",
+      "lf_content_sha256": "43ee4ae950431f27f6c5a9633541c0707c752b53411dacedc9595059398514b0",
+      "base_matches_checkout_after_line_ending_normalization": true,
+      "packet_matches_base_after_line_ending_and_separator_normalization": true
+    },
+    {
+      "path": ".planning/TASK_BACKLOG.md",
+      "input_checkout_sha256": "bb6b673d813ced7e260aa5b967eb6c7f0f82dc796a841bd177587b4dcbab5443",
+      "base_git_blob_sha256": "938b0237132fa58099e902176f4c9c26b1c268197ebe2f84ee441c8be002711b",
+      "lf_content_sha256": "938b0237132fa58099e902176f4c9c26b1c268197ebe2f84ee441c8be002711b",
+      "base_matches_checkout_after_line_ending_normalization": true,
+      "packet_matches_base_after_line_ending_and_separator_normalization": true
+    },
+    {
+      "path": ".planning/research/reuse-market-scan.md",
+      "input_checkout_sha256": "6f798e4dfd837498cdc52aa1badd117c8c66d9298feb982d02f029bd6af83723",
+      "base_git_blob_sha256": "87146034aa8eb8ace2833bcd25e543c4cad5c672b6b2e596b1fd78b1737d3cb4",
+      "lf_content_sha256": "87146034aa8eb8ace2833bcd25e543c4cad5c672b6b2e596b1fd78b1737d3cb4",
+      "base_matches_checkout_after_line_ending_normalization": true,
+      "packet_matches_base_after_line_ending_and_separator_normalization": true
+    },
+    {
+      "path": "docs/component-adoption.md",
+      "input_checkout_sha256": "757cbe529f93b89141edfd01e07602bd2041a1cfaea5528d29d65f1101f3dd03",
+      "base_git_blob_sha256": "ea0d97c88323d33765e3ee2620fc20006b510f1807b0612a81ddc12c8d36fde3",
+      "lf_content_sha256": "ea0d97c88323d33765e3ee2620fc20006b510f1807b0612a81ddc12c8d36fde3",
+      "base_matches_checkout_after_line_ending_normalization": true,
+      "packet_matches_base_after_line_ending_and_separator_normalization": true
+    },
+    {
+      "path": "docs/contracts-and-reliability.md",
+      "input_checkout_sha256": "1f89345e48be2228dc0c14ceb531ae12c0146c10ce73444b1ab36b6dd7342f70",
+      "base_git_blob_sha256": "4a78d19f5ecf652a2fc13b4406752f793fc2bc7cd79322abd65412b6db9ff65e",
+      "lf_content_sha256": "4a78d19f5ecf652a2fc13b4406752f793fc2bc7cd79322abd65412b6db9ff65e",
+      "base_matches_checkout_after_line_ending_normalization": true,
+      "packet_matches_base_after_line_ending_and_separator_normalization": true
+    },
+    {
+      "path": "docs/local-completion-plan.md",
+      "input_checkout_sha256": "b48bd046a014dba2fad80c418090067f74e4e44f08d6d87e60331f3aa7c42266",
+      "base_git_blob_sha256": "0889498552db15810a4649cafe2e23e48f454efbeb591dab3d1582f12548c7aa",
+      "lf_content_sha256": "0889498552db15810a4649cafe2e23e48f454efbeb591dab3d1582f12548c7aa",
+      "base_matches_checkout_after_line_ending_normalization": true,
+      "packet_matches_base_after_line_ending_and_separator_normalization": true
+    }
+  ],
+  "independence_evidence": "Three distinct fresh session IDs and model-specific input prefixes; shared evidence bytes identical; inputs contain no other opinion. All three returned one completed turn, zero server web tools, zero spawned subagents. Coordinator supplied separate launch records.",
+  "input_preservation": "Original input and result hashes preserved. Model-specific prefixes are retained; ten evidence sections are pinned to base_commit. Original complete inputs remain in input_source_directory. Manifest uses Windows checkout bytes; git blobs differ only by CRLF/LF.",
+  "reported_total_cost_usd": 3.56579275,
+  "opinion_execution_bounds": {
+    "usd_per_process": 5,
+    "minutes_per_process": 15,
+    "source": "Current-facts paragraph in all three exact input packets"
+  },
+  "opinions": [
+    {
+      "requested_model": "claude-fable-5",
+      "observed_model": "claude-fable-5",
+      "observed_canonical_model": "claude-fable-5",
+      "runner": "Claude CLI",
+      "effort": "not specified in returned metadata",
+      "session_id": "5c4a0811-db38-4f36-80a2-479bb2d47ece",
+      "result_uuid": "b15bd76a-4d9c-4ad4-ac6f-a273cd996ba1",
+      "status": {
+        "requested_model": "claude-fable-5",
+        "exit_code": 0,
+        "elapsed_seconds": 76.9
+      },
+      "result_type": "result",
+      "result_subtype": "success",
+      "is_error": false,
+      "terminal_reason": "completed",
+      "num_turns": 1,
+      "duration_ms": 72792,
+      "reported_total_cost_usd": 1.38957,
+      "cost_basis": "list",
+      "model_usage": {
+        "inputTokens": 2,
+        "outputTokens": 4621,
+        "cacheReadInputTokens": 0,
+        "cacheCreationInputTokens": 57925,
+        "webSearchRequests": 0,
+        "costUSD": 1.38957,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 64000,
+        "thinkingTokens": 44,
+        "canonicalModel": "claude-fable-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "permission_denial_count": 0,
+      "spawned_subagents": 0,
+      "stderr_bytes": 0,
+      "input_bytes": 159979,
+      "input_sha256": "c9a736ea857598465f3daaa4a9c471fad1885beb7633a859d05e41f55c167689",
+      "input_lf_sha256": "ba0a8f0ac7122f6335a2b8f6d43ab1a9e641d5c07cf9bfbabef34cd9a9654df1",
+      "raw_result_sha256": "89530e1f0e749c5ab03efe54b688742b2f2ae5c95fe4256964850d82a35e2f68",
+      "status_sha256": "5e68b52ea3e190223f8c405c3e4e450cd05696190d2c5543aedceffccad956fd",
+      "opinion_path": "fable-5.opinion.md",
+      "opinion_lf_sha256": "44df8c7925b4c5676accfb34628bcc26e29f174e000089257ddfba2f8dceff1e",
+      "input_prefix_path": "fable-5.input-prefix.md",
+      "input_prefix_lf_sha256": "f1942975b6a9b82698782793aa13a514fe1896f5621aecee49f0550ec190497f",
+      "covered_tasks": [
+        "PLAN-RESEARCH",
+        "PLAN-ARCH",
+        "PLAN-AGENTS",
+        "PLAN-CLIENTS",
+        "PLAN-MAIL"
+      ],
+      "sanitization": "Preserved substantive result verbatim with LF normalization; no secret values were present or redacted. Raw result is not committed."
+    },
+    {
+      "requested_model": "claude-opus-5-5",
+      "observed_model": "claude-opus-5-5",
+      "observed_canonical_model": "claude-opus-5-5",
+      "runner": "Claude CLI",
+      "effort": "not specified in returned metadata",
+      "session_id": "1f6efa9d-9b93-4e98-9ed9-389479ad731c",
+      "result_uuid": "a580238d-ffaf-45b9-bfec-e4f83aef4fa0",
+      "status": {
+        "requested_model": "claude-opus-5-5",
+        "exit_code": 0,
+        "elapsed_seconds": 65.6
+      },
+      "result_type": "result",
+      "result_subtype": "success",
+      "is_error": false,
+      "terminal_reason": "completed",
+      "num_turns": 1,
+      "duration_ms": 61463,
+      "reported_total_cost_usd": 0.561159,
+      "cost_basis": "list",
+      "model_usage": {
+        "inputTokens": 2,
+        "outputTokens": 5509,
+        "cacheReadInputTokens": 535,
+        "cacheCreationInputTokens": 56358,
+        "webSearchRequests": 0,
+        "costUSD": 0.561159,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 1288,
+        "canonicalModel": "claude-opus-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "permission_denial_count": 0,
+      "spawned_subagents": 0,
+      "stderr_bytes": 0,
+      "input_bytes": 160032,
+      "input_sha256": "3697fcb72169f5fa9da7ee9f520b53d86c399524ac09917d2d07d4a60d9ae6ba",
+      "input_lf_sha256": "f65cc61db7225c53d3b8c147671148ecbda186d6bb3d9b98c383da595f902be0",
+      "raw_result_sha256": "a3a1293ec7c096a698ca3f324ac83b8ac9454d47a7eb20ed7bc6f047fc25f311",
+      "status_sha256": "3254d44bd633b94a698ffd73d95c4b3298e5aef7821b925fa526940eb1e7f139",
+      "opinion_path": "opus-5-5.opinion.md",
+      "opinion_lf_sha256": "04ff2c6174701e4caaa5c1cc160d1825b704f37c762052cbb733574111ee07e8",
+      "input_prefix_path": "opus-5-5.input-prefix.md",
+      "input_prefix_lf_sha256": "b95456b76f056adf4f8b5554099d5ac4ec46b56a505840fe931a1aaf3a0dcf40",
+      "covered_tasks": [
+        "PLAN-RESEARCH",
+        "PLAN-ARCH",
+        "PLAN-AGENTS",
+        "PLAN-CLIENTS",
+        "PLAN-MAIL"
+      ],
+      "sanitization": "Preserved substantive result verbatim with LF normalization; no secret values were present or redacted. Raw result is not committed."
+    },
+    {
+      "requested_model": "claude-fable-5-1",
+      "observed_model": "claude-fable-5-1",
+      "observed_canonical_model": "claude-fable-5-1",
+      "runner": "Claude CLI",
+      "effort": "not specified in returned metadata",
+      "session_id": "58fe3dc8-e9fa-4b09-885f-21a302e49b51",
+      "result_uuid": "9857394e-6d50-43ad-a38b-0227f4e823e4",
+      "status": {
+        "requested_model": "claude-fable-5-1",
+        "exit_code": 0,
+        "elapsed_seconds": 156.3
+      },
+      "result_type": "result",
+      "result_subtype": "success",
+      "is_error": false,
+      "terminal_reason": "completed",
+      "num_turns": 1,
+      "duration_ms": 152064,
+      "reported_total_cost_usd": 1.61506375,
+      "cost_basis": "list",
+      "model_usage": {
+        "inputTokens": 2,
+        "outputTokens": 9093,
+        "cacheReadInputTokens": 535,
+        "cacheCreationInputTokens": 58013,
+        "webSearchRequests": 0,
+        "costUSD": 1.61506375,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 64000,
+        "thinkingTokens": 5421,
+        "canonicalModel": "claude-fable-5-1",
+        "provider": "firstParty",
+        "costBasis": "list"
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "permission_denial_count": 0,
+      "spawned_subagents": 0,
+      "stderr_bytes": 0,
+      "input_bytes": 160037,
+      "input_sha256": "f50a22412d3992abada096b2fc943e817c1821261a0a7edcd1218af7213d9c0c",
+      "input_lf_sha256": "81e17607d182ca3c4a6c1c84ce767f2659105bdc2953714503d6f05fb51e66e8",
+      "raw_result_sha256": "cac2caec5d39b16acf51ba28288b981386cb2beccbd766a2d7eafc11083b0c20",
+      "status_sha256": "21b84439797c4a19698fed8f92ee399d10a338cfd44427578eed41c270a93082",
+      "opinion_path": "fable-5-1.opinion.md",
+      "opinion_lf_sha256": "8d0dbc7138422ba0b6f4b9176813316d584e426a2f25282236d82212d9e7517c",
+      "input_prefix_path": "fable-5-1.input-prefix.md",
+      "input_prefix_lf_sha256": "e46f31575188dd438a4c293d4e0e84a202e4f96c946b3e8b8bb9b471e3e47a14",
+      "covered_tasks": [
+        "PLAN-RESEARCH",
+        "PLAN-ARCH",
+        "PLAN-AGENTS",
+        "PLAN-CLIENTS",
+        "PLAN-MAIL"
+      ],
+      "sanitization": "Preserved substantive result verbatim with LF normalization; no secret values were present or redacted. Raw result is not committed."
+    }
+  ],
+  "synthesis": {
+    "runner": "native collaboration.spawn_agent",
+    "canonical_task": "/root/plan_synthesis",
+    "model": "gpt-6-astra",
+    "reasoning_effort": "max",
+    "fork_turns": "none",
+    "evidence": "Parent reports spawn tool confirmed the requested model and effort override for this canonical task. No opaque execution ID was returned.",
+    "opaque_execution_id": null
+  },
+  "limitations": [
+    "No application tests were run by the opinions.",
+    "First-party sibling UI bodies were not in the common packet.",
+    "No current external dependency/security audit was performed in the tools-disabled opinions.",
+    "Requested Obsidian tradeoff capture has no discovered callable connection; local analytical scenarios are separately labelled.",
+    "Official Devin MCP availability changed after the packet; coordinator must record current tool and bounded-cost proof before backend dispatch."
+  ]
+}

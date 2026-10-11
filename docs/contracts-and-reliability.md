@@ -1,6 +1,6 @@
 # API contracts and failure recovery
 
-Status: design specification; none of these endpoints or jobs are implemented.
+Status: design specification; none of these endpoints or jobs are implemented. Reconciled with accepted initial ADR 0002 on 2026-10-12.
 
 ## API conventions
 
@@ -19,7 +19,7 @@ Use `/v1`, strict boundary schemas, bounded page sizes, opaque keyset cursors an
 | `POST /v1/webhooks/resend` | valid provider signature | Raw-body verification, durable insert, then 2xx; no user cookie |
 | `POST /v1/connector-grants/:id/revoke` | grant owner/admin | Immediate grant revocation and audited event |
 
-`202` means the job is durably queued, not delivered. A duplicate idempotency key with the same immutable payload returns the same job. The same key with a different payload returns conflict. Hashes and keys are scoped to organization + mailbox + actor/action where appropriate. Also enforce database uniqueness for `(organization_id, mailbox_id, draft_id, approved_version)`: two devices using different request keys still receive the same logical send. An intentional resend requires a new explicitly approved intent/version. Retain application-level send identity independently of provider key expiry, including tombstones needed to prevent replay after retention cleanup.
+`202` means the job is durably queued, not delivered. A duplicate idempotency key with the same immutable payload returns the same job. The same key with a different payload returns conflict. Hashes and keys are scoped to organization + mailbox + actor/action where appropriate. Atomically consume the draft send intent exactly once and enforce one send job per draft: two devices using different request keys still receive the same logical send. Version uniqueness alone is insufficient. An intentional resend requires a new explicitly cloned draft and human approval. Retain application-level send identity independently of provider key expiry, including tombstones needed to prevent replay after retention cleanup.
 
 ## Example send command
 
@@ -54,11 +54,11 @@ Delivery/bounce/complaint facts are separate from this dispatch state and may ar
 
 ### Transaction boundaries
 
-1. In a short transaction, validate membership, mailbox status, draft version, sender identity and permission/consent applicable to the message type. Insert snapshot + job + audit with the draft-version uniqueness rule above and stable send identity.
+1. In a short transaction, validate membership, mailbox status, draft version, sender identity and permission/consent applicable to the message type. Atomically consume the draft and insert snapshot + job + audit under the one-intent-per-draft rule above and stable send identity.
 2. Worker claims a due row using row locking/`SKIP LOCKED`, lease expiry and increasing lease generation. Record the first possible provider-attempt time **before** network I/O. Commit.
 3. Immediately before dispatch authorization, recheck current mailbox access/disabled state, suppression and cancellation in a transaction. Commit a dispatch boundary; the UI must explain cancellation is no longer guaranteed after this point. A later revocation cannot recall a message already crossing the external boundary.
 4. Call the provider with a bounded timeout, the same immutable payload and stable idempotency key. Never keep a DB transaction open across the call.
-5. Persist provider ID/result using a generation-checked update. Reconcile concurrent webhook evidence. A stale worker cannot overwrite a newer lease owner's database result.
+5. Append authenticated, attempt-correlated provider observations even when the originating lease expired. Only a fresh, generation-checked reconciler may update the authoritative projection. A stale worker cannot overwrite a newer owner, and its delayed acceptance evidence must not be discarded.
 
 Provider idempotency lasts **24 hours**. Use a shorter application retry horizon (proposed 23 hours from persisted first attempt), accounting for clock skew, provider timeout and lease duration. Recheck the deadline immediately before every external call. No new automatic request after this boundary; escalate unknown state. Exactly-once internet email is not guaranteed. Application uniqueness, fencing and provider idempotency reduce duplicate risk within defined limits. A suspended worker cannot be perfectly fenced at the provider using a database generation number; bound worker lifetime/timeouts and prefer uncertainty over duplicate sending.
 
@@ -77,14 +77,14 @@ Provider idempotency lasts **24 hours**. Use a shorter application retry horizon
 | Duplicate/reordered webhook | One imported event effect; monotonic known facts | Replay same event and reorder sequence |
 | DB unavailable during webhook | Non-2xx, provider retry; alert | Do not acknowledge unpersisted work |
 | Body retrieval fails after webhook accepted | Persistent import job retries/backfills | Metadata survives API outage |
-| Stale lease owner finishes | Cannot overwrite current result | Generation mismatch |
+| Stale lease owner finishes | Preserve authenticated correlated observation; cannot overwrite projection | Generation mismatch followed by fresh reconciliation |
 | App restarts with `dispatching` rows | Reconcile; never reset all rows blindly | Crash/restart fixture |
 
 ## Receiving and threading
 
 Webhook signature verification must use the exact raw body with replay-time tolerance and an explicit payload limit. Deduplicate on `(provider account, provider delivery/event ID)` as documented by the provider. A transport retry identity and a logical email ID are distinct: also enforce the appropriate unique import key for an email delivered to a specific mailbox. Receiving the same email for two authorized company addresses can create two mailbox-visible records without granting either mailbox access to the other.
 
-Persist event + import job atomically before acknowledging. Unknown recipients go to a restricted quarantine, not a newly created public mailbox. Fetch body/headers separately, and retrieve fresh signed attachment URLs just in time. Bound bytes, time, redirects and allowed download origins. Do not fetch links embedded in the email. Scan attachments before release. Disable external image loads by default, sanitize HTML and display it in an isolated frame with a restrictive sandbox/CSP. Keep original content separately for authorized diagnostics; never inject it into the application DOM.
+Persist event + import job atomically before acknowledging. Route only from authenticated provider envelope facts; untrusted MIME To/Cc headers cannot select a mailbox. Unknown recipients go to a restricted quarantine, not a newly created public mailbox. Fetch body/headers separately, and retrieve fresh signed attachment URLs just in time. Bound bytes, time, redirects and allowed download origins. Do not fetch links embedded in the email. Scan attachments before release. Display message content as plain text, never HTML, and make no external image requests. Keep original content separately for authorized diagnostics; never inject it into the application DOM.
 
 Match replies using References/In-Reply-To and stored RFC Message-IDs within the relevant mailbox. Validate header lengths and malformed values. Message-ID is untrusted external input and is not a globally authoritative primary key. Subject matching alone is insufficient; uncertain matches start a new thread or enter review. Prevent an external sender from joining private threads merely by guessing an ID; require compatible participants and mailbox routing.
 
@@ -99,3 +99,7 @@ Run periodic reconciliation with provider list/retrieve endpoints, persisted cur
 Demonstrate these failure cases with real PostgreSQL transactions and a deterministic fake provider. Then validate provider sandbox/test events and a controlled send/reply with owned addresses. The local fake must model provider key expiry and ambiguous acceptance; a mock that always succeeds does not validate this design.
 
 Primary reference: [Resend idempotency keys](https://resend.com/docs/dashboard/emails/idempotency-keys), checked 2026-10-11. Further provider constraints are in [mail delivery and hosting](mail-delivery-and-hosting.md).
+
+## Restore dispatch boundary
+
+Keep a default-held dispatch control outside the restored application database. Restoring a backup cannot release outbound work. Reconcile preserved simulator/provider acceptance observations against restored send identities before an explicit operator release; expired or unresolved outcomes remain needs_review. The simulator acceptance ledger also lives outside the application backup target.

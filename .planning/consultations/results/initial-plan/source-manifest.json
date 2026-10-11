@@ -1,0 +1,16 @@
+{
+  "base": "103baeb042925badbbc50dc0d3d3bfbf09ce8344",
+  "files": {
+    "documentation.md": "36ff2bf02b5caa45f860f4698af5582270ac9f562aa0d76331875c448dcb2238",
+    ".planning/POLYGLOT_ARCHITECTURE.md": "69bcaaeb115fb13a7e06b73b44c6e53ba24da25c7ab8b0b5d4732d600fac513c",
+    ".planning/CLIENTS_AND_CLI_CONNECTORS.md": "67a43643250e80359ba08140fa0efb4af90880ddd5099096111f83031d9c5856",
+    ".planning/AGENT_ORCHESTRATION.md": "0d1f83b38b4a037c89db68bb16d6a67357b493d88cce4dfcba86fe2cb50b0911",
+    ".planning/MAIL_ACCOUNTS_AND_ACTIVATION.md": "dd536dc0dd8d07a873c0d781f365c872ceacfea96d4d9a5e6cceb191f6b32b0d",
+    ".planning/TASK_BACKLOG.md": "bb6b673d813ced7e260aa5b967eb6c7f0f82dc796a841bd177587b4dcbab5443",
+    ".planning/research/reuse-market-scan.md": "6f798e4dfd837498cdc52aa1badd117c8c66d9298feb982d02f029bd6af83723",
+    "docs/component-adoption.md": "757cbe529f93b89141edfd01e07602bd2041a1cfaea5528d29d65f1101f3dd03",
+    "docs/contracts-and-reliability.md": "1f89345e48be2228dc0c14ceb531ae12c0146c10ce73444b1ab36b6dd7342f70",
+    "docs/local-completion-plan.md": "b48bd046a014dba2fad80c418090067f74e4e44f08d6d87e60331f3aa7c42266"
+  },
+  "created_at": "2026-10-11T16:08:08.616570+00:00"
+}

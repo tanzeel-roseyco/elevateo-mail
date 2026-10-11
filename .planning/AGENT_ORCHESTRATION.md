@@ -1,6 +1,6 @@
 # Codex, Devin and the four-model design workflow
 
-Planning date: 2026-10-12. This is the requested execution policy for future implementation, not evidence that Devin or the Claude opinion agents have completed work. Use [capability-status.json](capability-status.json) for the actual observed state. The current task writes plans and performs public research; it does not activate mail or deploy the application.
+Execution updated 2026-10-12. The user authorized autonomous local completion. Initial exact-model consultations and actual Astra MAX synthesis are accepted in [ADR 0002](../docs/decisions/0002-local-architecture.md). BE-01 has fresh successful opinions and its task synthesis is underway. No application implementation or live activation is claimed. [capability-status.json](capability-status.json) retains historical observations separately from current execution.
 
 ## Roles and exact identities
 
@@ -27,13 +27,13 @@ The role split is the user's requested workflow, not a benchmark claim that a mo
 4. If authentication, a model or a connection is unavailable, record that exact gap. Continue independent research and document preparation; keep the affected decision/implementation gate pending. Ask for an explicit replacement only if a substitute is needed. Do not manufacture opinions or silently count another Astra session as Fable.
 5. Application/provider/signing credentials stay last. A missing agent account session is a tooling prerequisite, not permission to request production secrets, harvest a subscription token or change the user's authentication automatically.
 
-Observed here: Codex CLI 0.159.3 is available; Claude CLI 2.1.241 exists. Separate Fable 5, Opus 5.5 and Fable 5.1 consultation attempts all exited before inference because the existing Claude OAuth session expired and could not refresh. No opinions were produced. Astra MAX was actually assigned the architecture task. The public Devin plugin search returned no match, the active tool catalog exposes no Devin tool, and the installed Codex MCP listing contains no Devin server. These observations are scoped to this session, not a claim that those products are unavailable generally.
+Current observation: Codex CLI 0.159.3 and Claude CLI 2.1.296 are available. All three exact Claude models returned independent initial and BE-01 opinions, with provider identity recorded. Actual gpt-6-astra MAX completed initial synthesis. Official Devin MCP is authenticated and registered in Codex; direct official JSON-RPC works while this running session lacks hot-loaded tools. Read-only session b111d44287f34ba4be9f62961e5b6424 verified repository base 103baeb0 and Docker/Compose; its suspended/user_request state verifies the supported stop action. Earlier expired-auth observations are historical.
 
 ## Codex → Devin setup contract
 
 Use the official authenticated Streamable HTTP endpoint `https://mcp.devin.ai/mcp`. Its documented session tools include `devin_session_create`, `devin_session_interact` and `devin_session_gather`. Public DeepWiki documentation access is not an autonomous Devin session. Configure the connection only when its account/key and repository access are available; keep any key outside the repository. [Devin MCP](https://docs.devin.ai/work-with-devin/devin-mcp).
 
-Illustrative Codex configuration to provision later, not an installed connection:
+Installed Codex configuration (the bearer value stays outside Git):
 
 ```toml
 [mcp_servers.devin]
@@ -47,13 +47,13 @@ Before creating a Devin session, resolve the actual GitHub repository, base comm
 
 ## Every-task consultation and synthesis
 
-The next AI agent must use [the saved consultation launch handoff](consultations/README.md): a common evidence brief, separate Fable 5/Opus 5.5/Fable 5.1 prompts and an Astra MAX synthesis template. The latest user instruction leaves their actual launch to that next agent. No consultation was retried when these prompts were saved.
+Use [the consultation procedure](consultations/README.md) for each bounded task. Initial results are saved under consultations/results/initial-plan; fresh BE-01 results are being finalized under consultations/results/be-01. Earlier unsuccessful launches do not describe current access.
 
 Use the [task brief](templates/task-brief.md) for each task, including bounded fix tasks. Astra MAX supplies the design question and required invariants. Separately request Fable 5, Opus 5.5 and Fable 5.1 opinions before accepting that task's implementation approach. The task, not each shell command or keystroke, is the review unit; split changed scope into a new task. Request fresh opinions when a change invalidates their assumptions.
 
 Each opinion must identify assumptions, supported proposals, objections, a smaller alternative, affected contracts and concrete acceptance evidence. After receiving all three, Astra MAX records a decision with each suggestion accepted, adapted or rejected and why. Preserve unresolved dissent. Combine compatible ideas; select between conflicting database owners, client frameworks or retry semantics instead of installing all alternatives. Tests and measured behavior resolve disputes more strongly than a vote.
 
-The five initial planning tasks are PLAN-RESEARCH, PLAN-ARCH, PLAN-AGENTS, PLAN-CLIENTS and PLAN-MAIL. The three independent CLI attempts used one shared packet requesting an opinion on each task; all were blocked before inference. Their synthesis is therefore **pending**, and the current architecture remains a proposal. Current-document editorial review by available agents may improve it but cannot replace the user's specified opinion gate.
+The five initial planning tasks PLAN-RESEARCH, PLAN-ARCH, PLAN-AGENTS, PLAN-CLIENTS and PLAN-MAIL have completed three independent exact-model opinions and an actual Astra MAX synthesis. See ADR 0002 and its linked evidence. This acceptance does not replace fresh opinions for implementation or repair tasks.
 
 ## Branch, commit, PR and issue lifecycle
 

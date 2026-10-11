@@ -1,0 +1,237 @@
+{
+  "verified_at_utc": "2026-10-11T16:33:35.497748+00:00",
+  "scope": "Consultation artifact integrity only; no application tests or code review performed",
+  "full_opinion_checks": [
+    {
+      "opinion": "fable-5.opinion.md",
+      "full_substantive_text_matches": true,
+      "requested_observed_models_match": true,
+      "exit_code": 0
+    },
+    {
+      "opinion": "opus-5-5.opinion.md",
+      "full_substantive_text_matches": true,
+      "requested_observed_models_match": true,
+      "exit_code": 0
+    },
+    {
+      "opinion": "fable-5-1.opinion.md",
+      "full_substantive_text_matches": true,
+      "requested_observed_models_match": true,
+      "exit_code": 0
+    }
+  ],
+  "all_twelve_source_hashes_verified": true,
+  "source_packet_round_trip_sha256": "0d78de54f791778b5528192775cdc4ec7f507cc4a0afd72e932f3a7ebe3ab335",
+  "frozen_initial_decisions_and_brief_unchanged": true,
+  "local_markdown_links": [
+    {
+      "file": "decisions.md",
+      "target": "metadata.json",
+      "exists": true
+    },
+    {
+      "file": "decisions.md",
+      "target": "synthesis.md",
+      "exists": true
+    },
+    {
+      "file": "decisions.md",
+      "target": "foundation-dependencies.snapshot.md",
+      "exists": true
+    },
+    {
+      "file": "decisions.md",
+      "target": "tradeoff-scenarios.md",
+      "exists": true
+    },
+    {
+      "file": "dispatch-brief.md",
+      "target": "decisions.md",
+      "exists": true
+    },
+    {
+      "file": "dispatch-brief.md",
+      "target": "synthesis.md",
+      "exists": true
+    },
+    {
+      "file": "dispatch-brief.md",
+      "target": "foundation-dependencies.snapshot.md",
+      "exists": true
+    },
+    {
+      "file": "README.md",
+      "target": "decisions.md",
+      "exists": true
+    },
+    {
+      "file": "README.md",
+      "target": "dispatch-brief.md",
+      "exists": true
+    },
+    {
+      "file": "README.md",
+      "target": "synthesis.md",
+      "exists": true
+    },
+    {
+      "file": "README.md",
+      "target": "fable-5.opinion.md",
+      "exists": true
+    },
+    {
+      "file": "README.md",
+      "target": "opus-5-5.opinion.md",
+      "exists": true
+    },
+    {
+      "file": "README.md",
+      "target": "fable-5-1.opinion.md",
+      "exists": true
+    },
+    {
+      "file": "README.md",
+      "target": "metadata.json",
+      "exists": true
+    },
+    {
+      "file": "README.md",
+      "target": "source-manifest.json",
+      "exists": true
+    },
+    {
+      "file": "README.md",
+      "target": "source-packet.json",
+      "exists": true
+    },
+    {
+      "file": "README.md",
+      "target": "foundation-dependencies.snapshot.md",
+      "exists": true
+    },
+    {
+      "file": "README.md",
+      "target": "tradeoff-scenarios.md",
+      "exists": true
+    },
+    {
+      "file": "synthesis.md",
+      "target": "decisions.md",
+      "exists": true
+    },
+    {
+      "file": "synthesis.md",
+      "target": "dispatch-brief.md",
+      "exists": true
+    },
+    {
+      "file": "synthesis.md",
+      "target": "source-packet.json",
+      "exists": true
+    },
+    {
+      "file": "synthesis.md",
+      "target": "fable-5.opinion.md",
+      "exists": true
+    },
+    {
+      "file": "synthesis.md",
+      "target": "opus-5-5.opinion.md",
+      "exists": true
+    },
+    {
+      "file": "synthesis.md",
+      "target": "fable-5-1.opinion.md",
+      "exists": true
+    },
+    {
+      "file": "synthesis.md",
+      "target": "metadata.json",
+      "exists": true
+    },
+    {
+      "file": "synthesis.md",
+      "target": "foundation-dependencies.snapshot.md",
+      "exists": true
+    }
+  ],
+  "files": [
+    {
+      "path": "decisions.md",
+      "bytes": 15857,
+      "sha256": "754ca5896e251bd8cd4c3b31f616b6ad69061a8be2038cf03c0591bba5ff8318"
+    },
+    {
+      "path": "dispatch-brief.md",
+      "bytes": 10767,
+      "sha256": "728aa62084be47ea1c17c8687103a5d3e8d6789017380042b138b4ed190105db"
+    },
+    {
+      "path": "fable-5-1.input-prefix.md",
+      "bytes": 1072,
+      "sha256": "63d6d54b3df9c39525a734288d06ef128db3a67590ba2923a2afbae6a57b1b2d"
+    },
+    {
+      "path": "fable-5-1.opinion.md",
+      "bytes": 9416,
+      "sha256": "708cbce0e5bad66b7ff3da44aee35677e25f94e738547d6b552eaa8818e73abd"
+    },
+    {
+      "path": "fable-5.input-prefix.md",
+      "bytes": 1014,
+      "sha256": "0dc8f7591ea2ae5977a30d6558c11d9d74fee47c445c9feb7d08e78e328af932"
+    },
+    {
+      "path": "fable-5.opinion.md",
+      "bytes": 11890,
+      "sha256": "80e857710ce268b997bbe80fd849a5d903df828b16128dcf438721c03452ece2"
+    },
+    {
+      "path": "foundation-dependencies.snapshot.md",
+      "bytes": 10503,
+      "sha256": "88a652d7cce5b0bf4b34981c6a2d29e838b5054440bab9d5eacfdc8e3da40675"
+    },
+    {
+      "path": "metadata.json",
+      "bytes": 17376,
+      "sha256": "33178f760e4029725c9aebc6c2eceff0e3ac8dc11a175c637cf0b5b0f78ea065"
+    },
+    {
+      "path": "opus-5-5.input-prefix.md",
+      "bytes": 1067,
+      "sha256": "a900e374660b9eb68b91fe99bbe0b5b2e02df2266f26f62d28a33e014fc788f2"
+    },
+    {
+      "path": "opus-5-5.opinion.md",
+      "bytes": 13228,
+      "sha256": "4b6853a01663497c0bd1890b1b63eae8a12a3d7922b333616d0719ba94941fa8"
+    },
+    {
+      "path": "README.md",
+      "bytes": 2075,
+      "sha256": "6752f84d7ae4e6edb819bacb53a6fe8c52d8b6e58ac3a7c43ebb588bb4a22fba"
+    },
+    {
+      "path": "source-manifest.json",
+      "bytes": 2001,
+      "sha256": "4d260caeefadfe5000078c4863fc26448432aeda2d2384e43377099d074b39f7"
+    },
+    {
+      "path": "source-packet.json",
+      "bytes": 189196,
+      "sha256": "cf59b06521db8e454bf6f066c305ceb188adf2c4b42261c95d911ba065526d57"
+    },
+    {
+      "path": "synthesis.md",
+      "bytes": 18000,
+      "sha256": "54dcc80c28f716b9d01e099f9c088a58d28d87adae6b90e87fe8ff33cef47228"
+    },
+    {
+      "path": "tradeoff-scenarios.md",
+      "bytes": 3943,
+      "sha256": "499cf90b9bb3ffa1645037d0246095b2eb294d3d99ee8cc7bfdc1a33965b46f5"
+    }
+  ],
+  "application_tests_run": false
+}

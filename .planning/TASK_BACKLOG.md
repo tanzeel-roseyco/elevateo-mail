@@ -1,6 +1,6 @@
 # Task sequence and completion contract
 
-Status: planning backlog, not GitHub issues already created. Every task below requires its own [brief](templates/task-brief.md), Astra MAX design/synthesis and separate Fable 5, Opus 5.5 and Fable 5.1 opinions under [orchestration](AGENT_ORCHESTRATION.md). Model opinions for the initial planning packet are pending authentication. Existing research and proposals are useful evidence, not bypasses of that gate.
+Status: execution backlog; BE-01 is GitHub issue #3, later rows are not yet issue-backed. Every task below requires its own [brief](templates/task-brief.md), Astra MAX design/synthesis and separate Fable 5, Opus 5.5 and Fable 5.1 opinions under [orchestration](AGENT_ORCHESTRATION.md). Initial exact-model opinions and actual Astra MAX synthesis are complete (ADR 0002). Detailed adoption audits and each implementation gate remain separate. Existing research and proposals are useful evidence, not bypasses of that gate.
 
 | Task | Depends on | Implementation owner | Deliverable and acceptance |
 | --- | --- | --- | --- |

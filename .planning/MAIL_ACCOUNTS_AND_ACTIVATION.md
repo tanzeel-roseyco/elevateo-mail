@@ -26,7 +26,7 @@ After authorized account access, use the minimum necessary read-only operations 
 
 Disallow `emails send`, `emails batch`, `emails receiving forward`, `broadcasts send`, broadcast creation with a send option, scripts that call equivalent API endpoints and any provider test that delivers mail. Do not assume an undocumented dry-run flag is safe. Domain creation/verification, webhooks and DNS changes are external mutations requiring their activation scope; they are not part of read-only CLI discovery.
 
-Local implementation uses a deterministic provider simulator with external acceptance evidence, loopback mail capture for Auth, and an explicit no-live-send profile. Tests prove no fallback to Resend or live SMTP, no real recipients in fixtures and no accidental external model calls from the product. Approved build-agent research/consultation is a separate development activity, not application runtime mail access.
+Local implementation uses a deterministic provider simulator with external acceptance evidence, private Mailpit SMTP capture for Auth, with any host UI port bound to loopback, and an explicit no-live-send profile. Tests prove no fallback to Resend or live SMTP, no real recipients in fixtures and no accidental external model calls from the product. Approved build-agent research/consultation is a separate development activity, not application runtime mail access.
 
 ## Computer-use plan for Instantly
 
@@ -45,3 +45,7 @@ Before any future warmup activation: obtain the explicit change to no-live-sends
 - Read-only Resend preflight reports actual executable/version and redacted account/domain status only when available.
 - Instantly connection status and warmup state have separate evidence; unavailable credentials/provider capabilities are explicit pending items.
 - DNS/MX, production migration, live mail, hosting and installer signing each remain separate final activation decisions. Application completion does not silently perform them.
+
+## Local foundation enforcement (ADR 0002)
+
+Auth invite/recovery messages must use only mailpit:1025 with synthetic senders and local redirect URLs. Disable external Auth hooks/providers and all Mailpit relay, forwarding and webhooks. An internal-only runtime network denies external mail egress; dependency download networks are confined to builds. Route inbound events from authenticated provider envelope data, never untrusted MIME To/Cc headers. These are required controls, not claims that the unbuilt stack already enforces them.

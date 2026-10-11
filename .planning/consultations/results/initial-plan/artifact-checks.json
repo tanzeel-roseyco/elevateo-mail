@@ -1,0 +1,26 @@
+{
+  "verified_at_utc": "2026-10-11T16:24:15.582276+00:00",
+  "checks": [
+    "All three preserved UTF-8 opinion bodies equal normalized original result strings",
+    "Preserved opinion hashes match structured metadata",
+    "All relative Markdown links in the 12 Markdown files resolve",
+    "Earlier source verification matched all ten evidence sections to base after documented line-ending normalization"
+  ],
+  "application_tests": "Not run; documentation-only synthesis",
+  "artifacts": {
+    "accepted-decisions.md": "a7782c69046840925a5cfacc8c972972299b18d03fb98efcf763fb71fc0ca78b",
+    "BE-01-brief.md": "c652c7ede440d659d30c6cc3452923cb56a132853a9064ae0fd3d5315f08ac52",
+    "downstream-doc-updates.md": "c3010d28dca3259e6de59588f9fc45fa0234722dd70d5d9d8f981bc0b329451c",
+    "fable-5-1.input-prefix.md": "e46f31575188dd438a4c293d4e0e84a202e4f96c946b3e8b8bb9b471e3e47a14",
+    "fable-5-1.opinion.md": "8d0dbc7138422ba0b6f4b9176813316d584e426a2f25282236d82212d9e7517c",
+    "fable-5.input-prefix.md": "f1942975b6a9b82698782793aa13a514fe1896f5621aecee49f0550ec190497f",
+    "fable-5.opinion.md": "44df8c7925b4c5676accfb34628bcc26e29f174e000089257ddfba2f8dceff1e",
+    "metadata.json": "48873ef827379e084802efc351ebcacaf9f89f70bd14d2e7c6bfb35451a0df0a",
+    "opus-5-5.input-prefix.md": "b95456b76f056adf4f8b5554099d5ac4ec46b56a505840fe931a1aaf3a0dcf40",
+    "opus-5-5.opinion.md": "04ff2c6174701e4caaa5c1cc160d1825b704f37c762052cbb733574111ee07e8",
+    "README.md": "a21118bcf597ed5f5020fb1b576f6b836d6b8b8f3f5ce65b66df70544af3c644",
+    "source-manifest.json": "d014d0ad62cb964e1e2ffe6d592c80605960f7bd5a967339d5f12bad00d3e6cc",
+    "synthesis.md": "76e383d859f71e5868ac7ae25fd8a93c1fd5bad774416348cf49351a99513e71",
+    "tradeoff-scenarios.md": "04caebeb7282b273739f3a80b8549f7ce828d479ecd591d4a29c99e2f5752a21"
+  }
+}

@@ -1,0 +1,459 @@
+{
+  "schema_version": 1,
+  "scope": "BE-01 foundation design acceptance only; not implementation permission, passing application checks, merge approval or later-task consultation.",
+  "verified_at_utc": "2026-10-11T16:28:54.828928+00:00",
+  "local_planning_date": "2026-10-12",
+  "base_commit": "103baeb042925badbbc50dc0d3d3bfbf09ce8344",
+  "task": "BE-01",
+  "issue": "https://github.com/tanzeel-roseyco/elevateo-mail/issues/3",
+  "repository": "https://github.com/tanzeel-roseyco/elevateo-mail",
+  "source_directory": "C:\\Users\\Tanzeel\\AppData\\Local\\Temp\\elevateo-be01-consult-20261012",
+  "raw_manifest_sha256": "40c3fc67a9cf962d9faff71119edf74321887ee3eafa35f438de3f6290f91d5a",
+  "common_sha256": "0d78de54f791778b5528192775cdc4ec7f507cc4a0afd72e932f3a7ebe3ab335",
+  "common_bytes": 186682,
+  "identical_common_packet_verified": true,
+  "source_file_checks": [
+    {
+      "path": "documentation.md",
+      "packet_source_sha256": "60b7470ef910701e4aaf1e696b4afaa801e23b9c4a04c94e3ab8ba629f733b4d",
+      "manifest_match": true
+    },
+    {
+      "path": ".planning/POLYGLOT_ARCHITECTURE.md",
+      "packet_source_sha256": "69bcaaeb115fb13a7e06b73b44c6e53ba24da25c7ab8b0b5d4732d600fac513c",
+      "manifest_match": true
+    },
+    {
+      "path": ".planning/CLIENTS_AND_CLI_CONNECTORS.md",
+      "packet_source_sha256": "67a43643250e80359ba08140fa0efb4af90880ddd5099096111f83031d9c5856",
+      "manifest_match": true
+    },
+    {
+      "path": ".planning/AGENT_ORCHESTRATION.md",
+      "packet_source_sha256": "0d1f83b38b4a037c89db68bb16d6a67357b493d88cce4dfcba86fe2cb50b0911",
+      "manifest_match": true
+    },
+    {
+      "path": ".planning/MAIL_ACCOUNTS_AND_ACTIVATION.md",
+      "packet_source_sha256": "dd536dc0dd8d07a873c0d781f365c872ceacfea96d4d9a5e6cceb191f6b32b0d",
+      "manifest_match": true
+    },
+    {
+      "path": ".planning/TASK_BACKLOG.md",
+      "packet_source_sha256": "bb6b673d813ced7e260aa5b967eb6c7f0f82dc796a841bd177587b4dcbab5443",
+      "manifest_match": true
+    },
+    {
+      "path": ".planning/research/reuse-market-scan.md",
+      "packet_source_sha256": "6f798e4dfd837498cdc52aa1badd117c8c66d9298feb982d02f029bd6af83723",
+      "manifest_match": true
+    },
+    {
+      "path": "docs/component-adoption.md",
+      "packet_source_sha256": "757cbe529f93b89141edfd01e07602bd2041a1cfaea5528d29d65f1101f3dd03",
+      "manifest_match": true
+    },
+    {
+      "path": "docs/contracts-and-reliability.md",
+      "packet_source_sha256": "1f89345e48be2228dc0c14ceb531ae12c0146c10ce73444b1ab36b6dd7342f70",
+      "manifest_match": true
+    },
+    {
+      "path": "docs/local-completion-plan.md",
+      "packet_source_sha256": "b48bd046a014dba2fad80c418090067f74e4e44f08d6d87e60331f3aa7c42266",
+      "manifest_match": true
+    },
+    {
+      "path": ".planning/consultations/results/initial-plan/accepted-decisions.md",
+      "packet_source_sha256": "a7782c69046840925a5cfacc8c972972299b18d03fb98efcf763fb71fc0ca78b",
+      "manifest_match": true
+    },
+    {
+      "path": ".planning/consultations/results/initial-plan/BE-01-brief.md",
+      "packet_source_sha256": "c652c7ede440d659d30c6cc3452923cb56a132853a9064ae0fd3d5315f08ac52",
+      "manifest_match": true
+    }
+  ],
+  "independence": "Three distinct single-turn sessions; common packet identical; model-specific prefixes retained; no BE-01 opinion supplied to another input. Initial PLAN decisions and opinions in prior project context are not BE-01 opinions.",
+  "line_ending_reconstruction": "Raw input bytes contain one additional Windows CRLF serialization. Reverse exactly one b\\r\\n -> b\\n translation before slicing at TASK OVERRIDE:. Each nonfinal SOURCE body has two added newline separators. This reconstructs all 12 manifest source hashes.",
+  "sanitization": "Full substantive opinion texts retained, terminal newline normalized only. Inspected for credentials and real mail content; none found. Metadata omits no model/exit/usage fields. Source snapshot contains planning material and synthetic examples, not local credentials.",
+  "opinions": [
+    {
+      "file_stem": "fable-5",
+      "requested_model": "claude-fable-5",
+      "observed_model": "claude-fable-5",
+      "input_sha256": "86be625a985c373d5c5b7059d856411264cbe2441a702665dda991c69ded568e",
+      "input_bytes": 188909,
+      "raw_result_sha256": "f66aca59be3c1f81de6c344031b2ed5c646b8c0c1f775e02648ba58e2389f0fd",
+      "raw_status_sha256": "19c152fa823b785bbfb33d7c43536e96c54f7afe47f8805a54ac7e36c47c6f44",
+      "opinion_text_sha256": "5d0ad2403c3f30ca459de3d1add98f885ceefe1df264cdeb152f8efdc2491b12",
+      "opinion_path": "fable-5.opinion.md",
+      "prefix_path": "fable-5.input-prefix.md",
+      "process_status": {
+        "model": "claude-fable-5",
+        "exit_code": 0,
+        "elapsed_seconds": 81.7
+      },
+      "stderr_bytes": 0,
+      "execution_metadata": {
+        "duration_api_ms": 73619,
+        "stop_reason": "end_turn",
+        "session_id": "008f502d-83be-47dd-b366-ed10b3bcdb2e",
+        "total_cost_usd": 1.509923,
+        "usage": {
+          "input_tokens": 2,
+          "cache_creation_input_tokens": 64521,
+          "cache_read_input_tokens": 2733,
+          "output_tokens": 4335,
+          "output_tokens_details": {
+            "thinking_tokens": 226
+          },
+          "server_tool_use": {
+            "web_search_requests": 0,
+            "web_fetch_requests": 0
+          },
+          "service_tier": "standard",
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 64521,
+            "ephemeral_5m_input_tokens": 0
+          },
+          "inference_geo": "global",
+          "iterations": [
+            {
+              "input_tokens": 2,
+              "output_tokens": 4335,
+              "cache_read_input_tokens": 2733,
+              "cache_creation_input_tokens": 64521,
+              "cache_creation": {
+                "ephemeral_5m_input_tokens": 0,
+                "ephemeral_1h_input_tokens": 64521
+              },
+              "type": "message"
+            }
+          ],
+          "speed": "standard",
+          "fallback_credit": null
+        },
+        "modelUsage": {
+          "claude-fable-5": {
+            "inputTokens": 2,
+            "outputTokens": 4335,
+            "cacheReadInputTokens": 2733,
+            "cacheCreationInputTokens": 64521,
+            "webSearchRequests": 0,
+            "costUSD": 1.509923,
+            "contextWindow": 1000000,
+            "maxOutputTokens": 64000,
+            "thinkingTokens": 226,
+            "canonicalModel": "claude-fable-5",
+            "provider": "firstParty",
+            "costBasis": "list"
+          }
+        },
+        "permission_denials": [],
+        "terminal_reason": "completed",
+        "fast_mode_state": "off",
+        "fast_mode_disabled_reason": "sdk_opt_in_required",
+        "subagent_stats": {
+          "spawned": 0,
+          "requested": {
+            "background": 0,
+            "foreground": 0,
+            "unset": 0
+          },
+          "started_in_background": 0,
+          "max_depth": 0,
+          "spawned_by_subagents": 0,
+          "completed": 0,
+          "failed": 0,
+          "killed": {
+            "parent": 0,
+            "user": 0,
+            "system": 0
+          },
+          "refused": {
+            "depth_limit": 0,
+            "concurrency_limit": 0,
+            "budget": 0
+          },
+          "by_type": {}
+        },
+        "safety_stops": 0,
+        "is_error": false,
+        "num_turns": 1,
+        "subtype": "success",
+        "api_error_status": null,
+        "ttft_ms": 9757,
+        "type": "result",
+        "duration_ms": 75560,
+        "uuid": "52c30aab-81c4-4941-9f25-42f949440c2f",
+        "ttft_stream_ms": 6380,
+        "time_to_request_ms": 2027,
+        "first_content_frame_ms": 6381,
+        "queued_turn_count": 0,
+        "result_index": 0
+      }
+    },
+    {
+      "file_stem": "opus-5-5",
+      "requested_model": "claude-opus-5-5",
+      "observed_model": "claude-opus-5-5",
+      "input_sha256": "8948c13fa934af99994b7de32a5ac060271d220f99911c43500764e3b1cf3e49",
+      "input_bytes": 188962,
+      "raw_result_sha256": "5b76c889f075c1abea774ebabfc11efdb45dfcb503fedf0da60152c8037d2e50",
+      "raw_status_sha256": "de34f67ff9214e29a676d277eac1bb0c6ef9ab6a2a059cce0098e747fbc98ec4",
+      "opinion_text_sha256": "4fcc3f54837fc92c84dafea9197ac28f35e5990483487f04b5f2d6c409962318",
+      "opinion_path": "opus-5-5.opinion.md",
+      "prefix_path": "opus-5-5.input-prefix.md",
+      "process_status": {
+        "model": "claude-opus-5-5",
+        "exit_code": 0,
+        "elapsed_seconds": 83.8
+      },
+      "stderr_bytes": 0,
+      "execution_metadata": {
+        "duration_api_ms": 75726,
+        "stop_reason": "end_turn",
+        "session_id": "5ee49960-e945-42b5-bbe3-63129b88c4d8",
+        "total_cost_usd": 0.6562984000000001,
+        "usage": {
+          "input_tokens": 2,
+          "cache_creation_input_tokens": 64570,
+          "cache_read_input_tokens": 1652,
+          "output_tokens": 6970,
+          "output_tokens_details": {
+            "thinking_tokens": 2245
+          },
+          "server_tool_use": {
+            "web_search_requests": 0,
+            "web_fetch_requests": 0
+          },
+          "service_tier": "standard",
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 64570,
+            "ephemeral_5m_input_tokens": 0
+          },
+          "inference_geo": "global",
+          "iterations": [
+            {
+              "input_tokens": 2,
+              "output_tokens": 6970,
+              "cache_read_input_tokens": 1652,
+              "cache_creation_input_tokens": 64570,
+              "cache_creation": {
+                "ephemeral_5m_input_tokens": 0,
+                "ephemeral_1h_input_tokens": 64570
+              },
+              "type": "message"
+            }
+          ],
+          "speed": "standard",
+          "fallback_credit": null
+        },
+        "modelUsage": {
+          "claude-opus-5-5": {
+            "inputTokens": 2,
+            "outputTokens": 6970,
+            "cacheReadInputTokens": 1652,
+            "cacheCreationInputTokens": 64570,
+            "webSearchRequests": 0,
+            "costUSD": 0.6562984000000001,
+            "contextWindow": 1000000,
+            "maxOutputTokens": 128000,
+            "thinkingTokens": 2245,
+            "canonicalModel": "claude-opus-5-5",
+            "provider": "firstParty",
+            "costBasis": "list"
+          }
+        },
+        "permission_denials": [],
+        "terminal_reason": "completed",
+        "fast_mode_state": "off",
+        "fast_mode_disabled_reason": "sdk_opt_in_required",
+        "subagent_stats": {
+          "spawned": 0,
+          "requested": {
+            "background": 0,
+            "foreground": 0,
+            "unset": 0
+          },
+          "started_in_background": 0,
+          "max_depth": 0,
+          "spawned_by_subagents": 0,
+          "completed": 0,
+          "failed": 0,
+          "killed": {
+            "parent": 0,
+            "user": 0,
+            "system": 0
+          },
+          "refused": {
+            "depth_limit": 0,
+            "concurrency_limit": 0,
+            "budget": 0
+          },
+          "by_type": {}
+        },
+        "safety_stops": 0,
+        "is_error": false,
+        "num_turns": 1,
+        "subtype": "success",
+        "api_error_status": null,
+        "ttft_ms": 28979,
+        "type": "result",
+        "duration_ms": 77677,
+        "uuid": "f4571101-7413-47df-9c14-5a0513173528",
+        "ttft_stream_ms": 3730,
+        "time_to_request_ms": 1987,
+        "first_content_frame_ms": 3731,
+        "queued_turn_count": 0,
+        "result_index": 0
+      }
+    },
+    {
+      "file_stem": "fable-5-1",
+      "requested_model": "claude-fable-5-1",
+      "observed_model": "claude-fable-5-1",
+      "input_sha256": "246ff48dc8c4ba367ec406870d10a82dfa9fea5258e248dc1ba7d5505c659b8a",
+      "input_bytes": 188967,
+      "raw_result_sha256": "e4622eff469ee4ebb65c56725452e5c2050bfca9188c3d182a478181f2c6deee",
+      "raw_status_sha256": "490712239c7c034b53094de8a9cd896d7c0f4932b60ede55bf940fc2ce0fa24e",
+      "opinion_text_sha256": "f30e2941649b15525f0e9837fb9a1fdcdc86486fd040c9384442869292f0ca71",
+      "opinion_path": "fable-5-1.opinion.md",
+      "prefix_path": "fable-5-1.input-prefix.md",
+      "process_status": {
+        "model": "claude-fable-5-1",
+        "exit_code": 0,
+        "elapsed_seconds": 144.4
+      },
+      "stderr_bytes": 0,
+      "execution_metadata": {
+        "duration_api_ms": 136077,
+        "stop_reason": "end_turn",
+        "session_id": "aea2daef-76a6-4975-8dcb-f7539642c597",
+        "total_cost_usd": 1.68777825,
+        "usage": {
+          "input_tokens": 2,
+          "cache_creation_input_tokens": 64564,
+          "cache_read_input_tokens": 3313,
+          "output_tokens": 7913,
+          "output_tokens_details": {
+            "thinking_tokens": 4697
+          },
+          "server_tool_use": {
+            "web_search_requests": 0,
+            "web_fetch_requests": 0
+          },
+          "service_tier": "standard",
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 64564,
+            "ephemeral_5m_input_tokens": 0
+          },
+          "inference_geo": "global",
+          "iterations": [
+            {
+              "input_tokens": 2,
+              "output_tokens": 7913,
+              "cache_read_input_tokens": 3313,
+              "cache_creation_input_tokens": 64564,
+              "cache_creation": {
+                "ephemeral_5m_input_tokens": 0,
+                "ephemeral_1h_input_tokens": 64564
+              },
+              "type": "message"
+            }
+          ],
+          "speed": "standard",
+          "fallback_credit": null
+        },
+        "modelUsage": {
+          "claude-fable-5-1": {
+            "inputTokens": 2,
+            "outputTokens": 7913,
+            "cacheReadInputTokens": 3313,
+            "cacheCreationInputTokens": 64564,
+            "webSearchRequests": 0,
+            "costUSD": 1.68777825,
+            "contextWindow": 1000000,
+            "maxOutputTokens": 64000,
+            "thinkingTokens": 4697,
+            "canonicalModel": "claude-fable-5-1",
+            "provider": "firstParty",
+            "costBasis": "list"
+          }
+        },
+        "permission_denials": [],
+        "terminal_reason": "completed",
+        "fast_mode_state": "off",
+        "fast_mode_disabled_reason": "sdk_opt_in_required",
+        "subagent_stats": {
+          "spawned": 0,
+          "requested": {
+            "background": 0,
+            "foreground": 0,
+            "unset": 0
+          },
+          "started_in_background": 0,
+          "max_depth": 0,
+          "spawned_by_subagents": 0,
+          "completed": 0,
+          "failed": 0,
+          "killed": {
+            "parent": 0,
+            "user": 0,
+            "system": 0
+          },
+          "refused": {
+            "depth_limit": 0,
+            "concurrency_limit": 0,
+            "budget": 0
+          },
+          "by_type": {}
+        },
+        "safety_stops": 0,
+        "is_error": false,
+        "num_turns": 1,
+        "subtype": "success",
+        "api_error_status": null,
+        "ttft_ms": 89091,
+        "type": "result",
+        "duration_ms": 138109,
+        "uuid": "8a5103e1-4bf7-40c9-8fed-25c3234180dc",
+        "ttft_stream_ms": 6527,
+        "time_to_request_ms": 2043,
+        "first_content_frame_ms": 6529,
+        "queued_turn_count": 0,
+        "result_index": 0
+      }
+    }
+  ],
+  "total_reported_list_cost_usd": 3.85399965,
+  "cost_caveat": "Provider list-cost execution metadata, not an independently reconciled account charge or Devin budget.",
+  "synthesis_runner": {
+    "model": "gpt-6-astra",
+    "reasoning_effort": "max",
+    "task_path": "/root/plan_synthesis",
+    "evidence": "Root reports collaboration.spawn_agent returned canonical task /root/plan_synthesis with explicitly requested gpt-6-astra, reasoning_effort max, fork_turns none. No opaque execution ID returned. Same actual runner handles initial and BE-01 synthesis.",
+    "execution_id": null,
+    "evidence_source": "Coordinator tool-result message, not model self-identification."
+  },
+  "post_packet_research": {
+    "path": "docs/research/foundation-dependencies.md",
+    "input_sha256": "88a652d7cce5b0bf4b34981c6a2d29e838b5054440bab9d5eacfdc8e3da40675",
+    "snapshot": "foundation-dependencies.snapshot.md",
+    "seen_by_three_be01_consultants": false,
+    "decision_use": "All three requested a pin audit before dispatch. This primary-source audit resolves that expressly deferred input; it is not a consultant-reviewed runtime proof."
+  },
+  "application_tests_run_by_synthesis": false,
+  "implementation_authorized": false,
+  "post_packet_operational_update": {
+    "source": "Coordinator collaboration messages; not independently called by synthesis agent",
+    "user_authorization": "Existing USD 10 Devin credit; no purchases or top-ups",
+    "stop_control": "Coordinator reports actual MCP sleep verified",
+    "work_checkpoint_minutes": 30,
+    "monitoring_owner": "Codex coordinator",
+    "poll_interval_minutes": 2,
+    "dollar_telemetry": "Missing from actual Free-plan API; no per-session dollar-cap claim",
+    "remaining_dispatch_record": "Coordinator records frozen implementation base, write scope, session/task deduplication and actual monitoring/stop evidence."
+  }
+}
