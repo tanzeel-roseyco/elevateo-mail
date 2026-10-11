@@ -267,3 +267,7 @@ API regeneration passed. Strict compilation failed on FE-R12 and FE-R15. Unit te
 All task test containers were automatically removed. The task-owned Node image (332 MB reported image size) was removed; Docker reports zero containers and zero build cache. Pre-existing Playwright/Python images and nine persistent volumes were preserved. Host free space was only 1.42 GB after cleanup; virtual-disk reclaim remains under investigation, so no host-space recovery is claimed.
 
 FE-R17 P2: SessionProvider tests omit DOM cleanup; retained renders make three tests fail before their intended assertions. Final unique review coverage remains 2,133 lines: 17 code/test defects (7.97 per 1,000), two documentation defects and one lint acceptance gap, 20 combined findings (9.38 per 1,000). No failures have been repaired yet.
+
+### BE-01-R1 isolated probe cleanup review
+Initial review: 143 Bash lines, one P2 ownership/mount-verification defect (6.99 defects per 1,000 lines). Revised script: 169 Bash lines, zero new defects (0 per 1,000), original defect statically resolved. All removal paths now inspect nonce ownership and exact mounts, preserving resources on failed verification. Runtime startup, mount serialization, readiness and grantor catalog proof remain pending. Final document SHA-256: 5b1e35dfa6a7b8446eabbe1dfae6a6f19125f13ab6e4ca1f659682fad14f83a3. No application acceptance is claimed.
+
