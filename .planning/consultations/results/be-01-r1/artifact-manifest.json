@@ -1,0 +1,77 @@
+{
+  "task": "BE-01-R1",
+  "frozen_utc": "2026-10-11T17:34:31.392170+00:00",
+  "status": "design_ready_implementation_and_verification_pending",
+  "source_base_commit": "5a9d83ad4de7403f349131bf0c3e45df7fd97c28",
+  "common_input_sha256": "a7fd40b1483a10e3f71f7fbef1c949c3ca32758f9776b19d20f3ccd4bd51cb05",
+  "actual_synthesis_model": "gpt-6-astra",
+  "actual_synthesis_effort": "max",
+  "files": [
+    {
+      "path": "brief.md",
+      "bytes": 24989,
+      "sha256": "d6bd130b15979cc482182f0f329083c59669299555695ef20e3f2832dc8eed29"
+    },
+    {
+      "path": "decisions.md",
+      "bytes": 13449,
+      "sha256": "fde3be157ad389511661917cca50c84cdb4f9bb2a98f47ac5909e5b15923a173"
+    },
+    {
+      "path": "dispatch-brief.md",
+      "bytes": 11845,
+      "sha256": "8c2db91b55b3b284e627799208c5945f9269f4b26cbc1780957689ada583042c"
+    },
+    {
+      "path": "fable-5-1.opinion.md",
+      "bytes": 11121,
+      "sha256": "ff6b684cfbaace31d86ff1dbda231c5a9473028b2d1c1e238812abe9a5fd049d"
+    },
+    {
+      "path": "fable-5.opinion.md",
+      "bytes": 16360,
+      "sha256": "a1423de729ab024f0cfa6c47e4453e2ab1073292f675c3a7831e20142ead4db9"
+    },
+    {
+      "path": "failed-attempts.json",
+      "bytes": 8924,
+      "sha256": "e1f6d44df783d4c5ccbc73fe40fd47a21ad5beb9db54972a38e1f1d1c95dc5b0"
+    },
+    {
+      "path": "metadata.json",
+      "bytes": 20058,
+      "sha256": "978b4c84c09e05bb203d434030bea990e9028678a673085e0dc922bded28189f"
+    },
+    {
+      "path": "opus-5-5.opinion.md",
+      "bytes": 17626,
+      "sha256": "f77b9946c8ee3b6ab432b0c82e6e2e7e60c8093e5489c84d71584524dd9f45c1"
+    },
+    {
+      "path": "README.md",
+      "bytes": 2621,
+      "sha256": "6e0d458baa576e11c10053f9dd177cb597bb59537c7052956f3a334b16990995"
+    },
+    {
+      "path": "retry-2-manifest.json",
+      "bytes": 966,
+      "sha256": "a704283b704df1b47c8f0c35968ee99294abdbf2e2089c162b6923107cfa11f1"
+    },
+    {
+      "path": "retry-manifest.json",
+      "bytes": 904,
+      "sha256": "f90107b0544ce6a5aa5a65a0c52853ab942743fe8618993b252f76456efea8d0"
+    },
+    {
+      "path": "source-manifest.json",
+      "bytes": 16041,
+      "sha256": "79e9d4168317047b3d3cb01bbd193c1dea4dfb520efb7d9457bba431781414f2"
+    },
+    {
+      "path": "synthesis.md",
+      "bytes": 16299,
+      "sha256": "e594754b76584389d8d1ca10a9759967bda887227bdf5e690ee139025d7df9ef"
+    }
+  ],
+  "exclusion": "This manifest excludes its own hash; no application checks were executed by freezing these artifacts."
+}

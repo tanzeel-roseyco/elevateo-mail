@@ -6,10 +6,40 @@ Updated 2026-10-12. Canonical detailed state: [state.md](../state.md).
 - Initial three exact-model opinions and actual Astra MAX synthesis accepted in ADR 0002.
 - BE-01 issue #3: all three fresh opinions complete; Astra MAX task design accepted. Partial Rails/Supabase foundation is preserved in incomplete draft PR #5; Devin is verified suspended and independent verification is pending.
 - Official Devin MCP authenticated; repository access and sleep control verified. User approved existing $10 credit, no purchases/top-ups. Poll every two minutes; checkpoint at 30 minutes; supported sleep verified. API dollar telemetry/cap unavailable.
-- Fable owns frontend. Read-only first-party Ledger inventory complete; frontend task implementation pending.
-- No application builds/tests, visual QA, native verification, live mail, purchases or production activation claimed.
+- Fable owns frontend. Read-only first-party Ledger inventory complete; frontend draft preserved in PR #7; fresh repair consultations underway.
+- Docker frontend checks ran: API regeneration passes, typecheck fails, 63/66 units pass, standalone bundle passes. No visual QA, native verification, live mail, purchases or production activation claimed.
 - Preserve original/sibling workspaces. Obsidian connection unavailable; no simulated claim of Obsidian execution.
 
 BE-01 dispatched through official Devin MCP at 2026-10-11T16:34:21Z: session `257567ddf6b743c8b9dad365f52e3f99`, implementation base `5ae9771ad30923a66a2a5ed6aa5d6902d3e439d2`, branch `devin/backend/be-01`. Existing-credit-only $10 approval; no topups. First 30-minute checkpoint at 17:04:21Z. Partial commit 5a9d83ad4de7403f349131bf0c3e45df7fd97c28 is preserved in draft PR #5; no acceptance is claimed. Session suspension verified at 2026-10-11T16:50:37Z; dollar usage remains unavailable.
 
 FE-01 read contract and exact-model synthesis are frozen in .planning/consultations/results/fe-01 and contracts/v1. Docker generation with openapi-typescript 7.13.0 reproduced identical API types; tooling audit reported zero vulnerabilities across 34 packages. This is tooling evidence, not application acceptance. Full frontend/backend integration remains open.
+
+### Active implementation and review checkpoint (2026-10-12)
+
+Fable frontend writer `claude-fable-5`, session `01e556f7-b53b-417b-a529-fbfe867f989e`, has authored the accepted FE-01 read checkpoint from `ce95e89` in the isolated `Elevateo Mail - Fable FE01` checkout. Only `apps/web` is writable; generated contracts are frozen. Docker dependency resolution and static review are underway; application tests and visual verification remain pending.
+
+Devin has been sent to sleep after cleanup; incomplete draft PR #5 is at documentation-only follow-up `eedc43b`, with source unchanged from `5a9d83a`. Static adversarial review has identified ten findings (nine code defects and one worker-health acceptance gap) across 712 unique code lines; none is claimed fixed or runtime-verified. See `code-reviews.md`. The frozen BE-01-R1 security-repair brief is undergoing three fresh exact-model consultations before bounded Astra LOW repair and further Devin implementation.
+
+The visible Devin Usage & Limits page showed Free plan, **$7.74 remaining balance** and $0.00 on-demand usage at approximately 2026-10-11T16:58Z. Existing $10 credit authorization remains the ceiling; no purchases/top-ups. API dollar telemetry remains unavailable. Devin reports remote cleanup in `f7f3bb7`: seven stopped containers, runtime network, 905 MB built image and 15 cache records removed; approximately 1.09 GB host space reclaimed. Persistent volumes and credentials were preserved. The six pulled images (3.45 GB) were then removed by exact ID in `eedc43b`, reclaiming another approximately 3.19 GB on the remote host. Six cache records (118.5 MB) resisted scoped removal and remain; no broad prune was used. These are remote-agent observations, not independent measurements. Local FE contract-generator containers and their newly pulled image were removed; pre-existing images and nine persistent volumes were preserved. Host disk compaction and reclaimed-byte measurement were not performed.
+
+### Local checkpoint update (2026-10-12, approximately 17:17 UTC)
+
+Fable 5 session `01e556f7-b53b-417b-a529-fbfe867f989e` finished authoring the FE-01 read-only frontend in its isolated checkout. Review has covered 1,943 unique lines, finding 14 localized code/test defects plus one inaccurate coverage comment; a suspected navigation/session-generation defect was retracted. Supporting dependencies are exactly pinned and the Docker-generated lock reports zero npm vulnerabilities. Initial container checks are underway; no passing application check or visual validation is claimed yet.
+
+Devin BE-01 session `257567ddf6b743c8b9dad365f52e3f99` is independently verified suspended. Draft PR #5 remains unaccepted. BE-01-R1 has valid fresh Fable 5 and Opus 5.5 opinions; the first Fable 5.1 attempt exhausted its configured runner budget without an opinion. A bounded exact-model retry is underway. Implementation waits for all three substantive opinions and actual Astra MAX synthesis. Devin's approved existing $10 remains the only authorized Devin spending; no top-up or purchase occurred.
+
+
+### FE-01 Docker diagnostic results
+
+API regeneration passed. Strict compilation failed on FE-R12 and FE-R15. Unit tests: 63 passed, 3 failed out of 66; all failures are retained DOM from previous SessionProvider tests (FE-R17, missing Testing Library cleanup with Vitest globals disabled and no setup hook). These failures prevent validation of the affected session assertions. The separate diagnostic Vite bundle succeeded (148 modules; JS 373.92 kB / gzip 115.76 kB), but does not constitute a passing production build because typechecking failed. Lint, browser/visual checks and real backend integration remain outstanding. See `docs/evidence/fe01-initial-review/unit-bundle.txt`.
+
+All task test containers were automatically removed. The task-owned Node image (332 MB reported image size) was removed; Docker reports zero containers and zero build cache. Pre-existing Playwright/Python images and nine persistent volumes were preserved. Host free space was only 1.42 GB after cleanup; virtual-disk reclaim remains under investigation, so no host-space recovery is claimed.
+
+
+### Repair execution checkpoint (2026-10-12)
+
+Frontend draft `d7eac07` is preserved in [PR #7](https://github.com/tanzeel-roseyco/elevateo-mail/pull/7), based on `ce95e89`, and remains unaccepted. [Issue #8](https://github.com/tanzeel-roseyco/elevateo-mail/issues/8) tracks 17 code/test defects, two documentation defects and one lint gap across 2,133 reviewed lines. Fresh FE-01-R1 opinions are being collected before repairs.
+
+BE-01-R1 has three verified substantive exact-model opinions and actual Astra MAX accepted synthesis under `.planning/consultations/results/be-01-r1`. A separate actual Astra LOW writer is assigned to the bounded repair; Devin remains suspended, with backend source unchanged at `5a9d83a` under documentation-only head `eedc43b`. The refreshed Devin Usage page shows $6.59 remaining and $0.00 on-demand usage. No purchases/top-ups or hard API spending-cap claims.
+
+Local Docker cleanup removed the task Node image (332 MB reported) and all task containers; cache is zero. Pre-existing images and nine persistent volumes remain. WSL fstrim returned 0 bytes; measured host free space is approximately 1.68 GB, not attributed to trim. Full VHD compaction is unavailable in the non-administrator session (Optimize-VHD absent). This limits further large local test environments; no persistent data was deleted.

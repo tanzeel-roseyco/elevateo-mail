@@ -1,0 +1,17 @@
+{
+  "name": "fable-5-1-retry-2",
+  "model": "claude-fable-5-1",
+  "focus_path": ".planning/consultations/fable-5-1.md",
+  "focus_sha256": "95d740050c77d242a452bc20b82313928426df11747658a02848411d0e3ff5cc",
+  "prefix_sha256": "d2bcc6f7dc42518f8d3df635ac5b3bd0cdcc814a8d0598cc066667cccbdd2739",
+  "input_sha256": "794a4a4436dd92f8e8bc2eb9283e51b9b70c577a083ad264dd8d9f4883301dc1",
+  "input_bytes": 350053,
+  "common_sha256": "a7fd40b1483a10e3f71f7fbef1c949c3ca32758f9776b19d20f3ccd4bd51cb05",
+  "original_attempt": "fable-5-1",
+  "effort": "low",
+  "max_budget_usd": 6,
+  "timeout_seconds": 600,
+  "maximum_response_words": 1500,
+  "authorization": "Coordinator explicitly authorized one final fresh exact-model attempt after two budget-exhausted calls; unchanged common evidence, low effort, concise complete opinion, $6 configured threshold, ten-minute timeout. The threshold is not a hard per-call bill cap.",
+  "captured_utc": "2026-10-11T17:22:40.606124+00:00"
+}

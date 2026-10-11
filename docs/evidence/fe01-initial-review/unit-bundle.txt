@@ -1,0 +1,345 @@
+docker : npm warn deprecated whatwg-encoding@3.1.1: Use @exodus/bytes instead for a more spec-conformant and faster
+implementation
+At line:2 char:1
++ docker run --rm --name elevateo-fe01-unit --mount 'type=bind,source=C ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (npm warn deprec... implementation:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+
+added 200 packages, and audited 201 packages in 4m
+
+39 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+npm warn install-scripts 1 package has install scripts not yet covered by allowScripts:
+npm warn install-scripts   esbuild@0.28.2 (postinstall: node install.js)
+npm warn install-scripts
+npm warn install-scripts Run `npm install-scripts ls` to review, or `npm install-scripts approve <pkg>` to allow.
+npm notice
+npm notice New major version of npm available! 11.19.0 -> 12.2.0
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0
+npm notice To update run: npm install -g npm@12.2.0
+npm notice
+
+> @elevateo/web@0.1.0-read.1 test:coverage
+> vitest run --coverage
+
+
+ RUN  v4.1.11 /workspace/apps/web
+      Coverage enabled with v8
+
+ ✓ src/app/scope.test.ts (1 test) 22ms
+ ✓ src/data/contract.test.ts (24 tests) 175ms
+ ✓ src/data/conformance.test.ts (32 tests) 262ms
+ ❯ src/app/session.test.tsx (5 tests | 3 failed) 2351ms
+     ✓ bootstraps to ready with the fixture session 227ms
+     ✓ an unauthenticated bootstrap shows the session-unavailable state 28ms
+     × a current 401 from any read clears the session; a stale 401 is ignored 54ms
+     × context_changed re-bootstraps once, then demands explicit retry 1017ms
+     × other API errors are left to the page 1013ms
+ ✓ src/features/thread/ThreadPage.test.tsx (4 tests) 2273ms
+     ✓ renders hostile content inertly and performs no network request  782ms
+     ✓ shows truncation honestly and a separate message continuation control  957ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/app/session.test.tsx > SessionProvider > a current 401 from any read
+clears the session; a stale 401 is ignored
+TestingLibraryElementError: Found multiple elements with the text: status:ready
+
+Here are the matching elements:
+
+Ignored nodes: comments, script, style
+<p>
+  status:
+  ready
+</p>
+
+Ignored nodes: comments, script, style
+<p>
+  status:
+  ready
+</p>
+
+(If this is intentional, then use the `*AllBy*` variant of the query (like `queryAllByText`, `getAllByText`, or
+`findAllByText`)).
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <p>
+      status:
+      ready
+    </p>
+  </div>
+  <div>
+    <p>
+      status:
+      unauthenticated
+    </p>
+  </div>
+  <div>
+    <p>
+      status:
+      ready
+    </p>
+  </div>
+</body>
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ getElementError node_modules/@testing-library/dom/dist/query-helpers.js:20:35
+ ❯ getMultipleElementsFoundError
+node_modules/@testing-library/dom/dist/query-helpers.js:23:10
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:55:13
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/app/session.test.tsx:48:19
+     46|       expect(controller().handleError(apiError('unauthenticated'), old…
+     47|     })
+     48|
+expect(screen.getByText('status:ready')).toBeTruthy()
+       |                   ^
+     49|     // Current: the same error under the live generation clears the se…
+     50|     act(() => {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  src/app/session.test.tsx > SessionProvider > context_changed re-bootstraps
+once, then demands explicit retry
+TestingLibraryElementError: Found multiple elements with the text: status:ready
+
+Here are the matching elements:
+
+Ignored nodes: comments, script, style
+<p>
+  status:
+  ready
+</p>
+
+Ignored nodes: comments, script, style
+<p>
+  status:
+  ready
+</p>
+
+Ignored nodes: comments, script, style
+<p>
+  status:
+  ready
+</p>
+
+(If this is intentional, then use the `*AllBy*` variant of the query (like `queryAllByText`, `getAllByText`, or
+`findAllByText`)).
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <p>
+      status:
+      ready
+    </p>
+  </div>
+  <div>
+    <p>
+      status:
+      unauthenticated
+    </p>
+  </div>
+  <div>
+    <p>
+      status:
+      ready
+    </p>
+  </div>
+  <div>
+    <p>
+      status:
+      ready
+    </p>
+  </div>
+</body>
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <p>
+      status:
+      ready
+    </p>
+  </div>
+  <div>
+    <p>
+      status:
+      unauthenticated
+    </p>
+  </div>
+  <div>
+    <p>
+      status:
+      ready
+    </p>
+
+ Test Files  1 failed | 4 passed (5)
+  </div>
+      Tests  3 failed | 63 passed (66)
+   Start at  17:25:59
+  <div>
+    <p>
+      status:
+      ready
+   Duration  15.10s (transform 3.53s, setup 0ms, import 11.19s, tests 5.08s, environment 24.61s)
+    </p>
+  </div>
+</body>
+
+ ❯ waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/app/session.test.tsx:68:18
+     66|     }
+     67|     const { controller } = renderSession(gateway)
+     68|     await screen.findByText('status:ready')
+       |                  ^
+     69|     expect(sessionCalls).toBe(1)
+     70|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  src/app/session.test.tsx > SessionProvider > other API errors are left to
+the page
+TestingLibraryElementError: Found multiple elements with the text: status:ready
+
+Here are the matching elements:
+
+Ignored nodes: comments, script, style
+<p>
+  status:
+  ready
+</p>
+
+Ignored nodes: comments, script, style
+<p>
+  status:
+  ready
+</p>
+
+Ignored nodes: comments, script, style
+<p>
+  status:
+  ready
+</p>
+
+Ignored nodes: comments, script, style
+<p>
+  status:
+  ready
+</p>
+
+(If this is intentional, then use the `*AllBy*` variant of the query (like `queryAllByText`, `getAllByText`, or
+`findAllByText`)).
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <p>
+      status:
+      ready
+    </p>
+  </div>
+  <div>
+    <p>
+      status:
+      unauthenticated
+    </p>
+  </div>
+  <div>
+    <p>
+      status:
+      ready
+    </p>
+  </div>
+  <div>
+    <p>
+      status:
+      ready
+    </p>
+  </div>
+  <div>
+    <p>
+      status:
+      ready
+    </p>
+  </div>
+</body>
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <p>
+      status:
+      ready
+    </p>
+  </div>
+  <div>
+    <p>
+      status:
+      unauthenticated
+    </p>
+  </div>
+  <div>
+    <p>
+      status:
+      ready
+    </p>
+  </div>
+  <div>
+    <p>
+      status:
+      ready
+    </p>
+  </div>
+  <div>
+    <p>
+      status:
+      ready
+    </p>
+  </div>
+</body>
+ ❯ waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/app/session.test.tsx:90:18
+     88|   it('other API errors are left to the page', async ()
+=> {
+     89|     const { controller } =
+renderSession(createFixtureGateway())
+     90|     await screen.findByText('status:ready')
+       |                  ^
+     91|     const unhandled = new GatewayError('api', 'rate_limited', 'synthet…
+     92|     expect(controller().handleError(unhandled, controller().scope.curr…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+vite v7.3.6 building client environment for production...
+transforming...
+node_modules/zod/v4/core/util.js (400:0): A comment
+
+"// Wrapped in a `@__PURE__` IIFE: esbuild never tree-shakes a top-level initializer that contains a member access on
+`Number`, so the bare object literal survived into every bundle."
+
+in "node_modules/zod/v4/core/util.js" contains an annotation that Rollup cannot interpret due to the position of the
+comment. The comment will be removed to avoid issues.
+node_modules/zod/v4/core/regexes.js (74:0): A comment
+
+"/** Anchors a pattern source. The interpolation lives here rather than at the call site because
+ * esbuild will not drop a `@__PURE__` call whose own argument interpolates a variable, but it
+ * will drop `anchor(dateSource)`. Keeping it inline pinned `date` into every bundle. */"
+
+in "node_modules/zod/v4/core/regexes.js" contains an annotation that Rollup cannot interpret due to the position of
+the comment. The comment will be removed to avoid issues.
+✓ 148 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                 0.45 kB │ gzip:   0.28 kB
+dist/assets/app-BiXEhek7.css   18.99 kB │ gzip:   4.71 kB
+dist/assets/app-18XTDJ9V.js   373.92 kB │ gzip: 115.76 kB
+✓ built in 20.04s
+UNIT_EXIT=1 BUNDLE_EXIT=0

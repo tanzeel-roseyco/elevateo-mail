@@ -1,0 +1,269 @@
+{
+  "task": "BE-01-R1",
+  "attempts": [
+    {
+      "file_stem": "fable-5-1",
+      "requested_model": "claude-fable-5-1",
+      "observed_model": "claude-fable-5-1",
+      "provider": "firstParty",
+      "input_sha256": "66ba58058298fce39baff6e030e46de21ef561c6fc3463c86d6ed5b3e84bf14e",
+      "input_bytes": 349665,
+      "raw_result_sha256": "2a01e1ca95d96c37eea1a75d6b2760013899511bf64c2132c362dc93d6db47cc",
+      "raw_status_sha256": "8f39cb3285c435e5268a5d1db370603ce4cfde47282f1b136441975eced884fe",
+      "raw_launch_sha256": "06e94af2f1e26c21789ca9006577d796778b09bf36f8f9d8b1eb85f427596412",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "process_status": {
+        "name": "fable-5-1",
+        "model": "claude-fable-5-1",
+        "exit_code": 1,
+        "elapsed_seconds": 381.19,
+        "started_utc": "2026-10-11T17:08:01.408563+00:00",
+        "completed_utc": "2026-10-11T17:14:22.600931+00:00",
+        "timed_out": false,
+        "input_sha256": "66ba58058298fce39baff6e030e46de21ef561c6fc3463c86d6ed5b3e84bf14e",
+        "raw_result_sha256": "2a01e1ca95d96c37eea1a75d6b2760013899511bf64c2132c362dc93d6db47cc",
+        "stderr_bytes": 0
+      },
+      "runner_arguments": [
+        "--safe-mode",
+        "--print",
+        "--model",
+        "claude-fable-5-1",
+        "--tools",
+        "",
+        "--disable-slash-commands",
+        "--permission-mode",
+        "manual",
+        "--permission-prompts",
+        "none",
+        "--no-session-persistence",
+        "--output-format",
+        "json",
+        "--max-budget-usd",
+        "3"
+      ],
+      "configured_max_budget_usd": 3,
+      "execution_metadata": {
+        "duration_api_ms": 0,
+        "stop_reason": "end_turn",
+        "session_id": "1cfef950-7dcc-4870-931f-278c0abeaba2",
+        "total_cost_usd": 3.7460782500000005,
+        "usage": {
+          "output_tokens_details": {
+            "thinking_tokens": 0
+          },
+          "input_tokens": 0,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "output_tokens": 0,
+          "server_tool_use": {
+            "web_search_requests": 0,
+            "web_fetch_requests": 0
+          },
+          "service_tier": "standard",
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 0
+          },
+          "inference_geo": "",
+          "iterations": [],
+          "speed": "standard",
+          "fallback_credit": null
+        },
+        "modelUsage": {
+          "claude-fable-5-1": {
+            "inputTokens": 2,
+            "outputTokens": 24067,
+            "cacheReadInputTokens": 3313,
+            "cacheCreationInputTokens": 127094,
+            "webSearchRequests": 0,
+            "costUSD": 3.7460782500000005,
+            "contextWindow": 1000000,
+            "maxOutputTokens": 64000,
+            "thinkingTokens": 19132,
+            "canonicalModel": "claude-fable-5-1",
+            "provider": "firstParty",
+            "costBasis": "list"
+          }
+        },
+        "permission_denials": [],
+        "terminal_reason": "budget_exhausted",
+        "fast_mode_state": "off",
+        "fast_mode_disabled_reason": "sdk_opt_in_required",
+        "subagent_stats": {
+          "spawned": 0,
+          "requested": {
+            "background": 0,
+            "foreground": 0,
+            "unset": 0
+          },
+          "started_in_background": 0,
+          "max_depth": 0,
+          "spawned_by_subagents": 0,
+          "completed": 0,
+          "failed": 0,
+          "killed": {
+            "parent": 0,
+            "user": 0,
+            "system": 0
+          },
+          "refused": {
+            "depth_limit": 0,
+            "concurrency_limit": 0,
+            "budget": 0
+          },
+          "by_type": {}
+        },
+        "safety_stops": 0,
+        "is_error": true,
+        "num_turns": 1,
+        "subtype": "error_max_budget_usd",
+        "errors": [
+          "Reached maximum budget ($3)"
+        ],
+        "type": "result",
+        "duration_ms": 377054,
+        "uuid": "15d448fc-7587-4096-bccb-9c55857e1256",
+        "queued_turn_count": 0,
+        "result_index": 0
+      },
+      "opinion_available": false,
+      "counts_toward_gate": false,
+      "cost_caveat": "Reported list cost exceeded the configured threshold before failure; no opinion text was returned or reconstructed."
+    },
+    {
+      "file_stem": "fable-5-1-retry-1",
+      "requested_model": "claude-fable-5-1",
+      "observed_model": "claude-fable-5-1",
+      "provider": "firstParty",
+      "input_sha256": "d0e5446ae87771d122f272d269489b0ba689755627876a1d34cf965ecd78972f",
+      "input_bytes": 349910,
+      "raw_result_sha256": "4bb2895f697e68a95a86300be617ca5ba02ae866183130e3e734dee94dc6e1ec",
+      "raw_status_sha256": "b2acdea9777f987b1da690279d4a085caa49c0824cc95670536c9ce2ae250323",
+      "raw_launch_sha256": "e17249342c48d3d95243283fa8aeb121bcc274e3b613f498c593eefd9d0c7de7",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "process_status": {
+        "name": "fable-5-1-retry-1",
+        "model": "claude-fable-5-1",
+        "exit_code": 1,
+        "elapsed_seconds": 331.058,
+        "started_utc": "2026-10-11T17:15:24.203496+00:00",
+        "completed_utc": "2026-10-11T17:20:55.274289+00:00",
+        "timed_out": false,
+        "input_sha256": "d0e5446ae87771d122f272d269489b0ba689755627876a1d34cf965ecd78972f",
+        "raw_result_sha256": "4bb2895f697e68a95a86300be617ca5ba02ae866183130e3e734dee94dc6e1ec",
+        "stderr_bytes": 0
+      },
+      "runner_arguments": [
+        "--safe-mode",
+        "--print",
+        "--model",
+        "claude-fable-5-1",
+        "--effort",
+        "medium",
+        "--tools",
+        "",
+        "--disable-slash-commands",
+        "--permission-mode",
+        "manual",
+        "--permission-prompts",
+        "none",
+        "--no-session-persistence",
+        "--output-format",
+        "json",
+        "--max-budget-usd",
+        "3"
+      ],
+      "configured_max_budget_usd": 3,
+      "execution_metadata": {
+        "duration_api_ms": 0,
+        "stop_reason": "end_turn",
+        "session_id": "25efee08-02d4-4b37-ae5c-473719dab5a1",
+        "total_cost_usd": 3.5420182500000004,
+        "usage": {
+          "output_tokens_details": {
+            "thinking_tokens": 0
+          },
+          "input_tokens": 0,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "output_tokens": 0,
+          "server_tool_use": {
+            "web_search_requests": 0,
+            "web_fetch_requests": 0
+          },
+          "service_tier": "standard",
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 0
+          },
+          "inference_geo": "",
+          "iterations": [],
+          "speed": "standard",
+          "fallback_credit": null
+        },
+        "modelUsage": {
+          "claude-fable-5-1": {
+            "inputTokens": 2,
+            "outputTokens": 19955,
+            "cacheReadInputTokens": 3313,
+            "cacheCreationInputTokens": 127171,
+            "webSearchRequests": 0,
+            "costUSD": 3.5420182500000004,
+            "contextWindow": 1000000,
+            "maxOutputTokens": 64000,
+            "thinkingTokens": 13927,
+            "canonicalModel": "claude-fable-5-1",
+            "provider": "firstParty",
+            "costBasis": "list"
+          }
+        },
+        "permission_denials": [],
+        "terminal_reason": "budget_exhausted",
+        "fast_mode_state": "off",
+        "fast_mode_disabled_reason": "sdk_opt_in_required",
+        "subagent_stats": {
+          "spawned": 0,
+          "requested": {
+            "background": 0,
+            "foreground": 0,
+            "unset": 0
+          },
+          "started_in_background": 0,
+          "max_depth": 0,
+          "spawned_by_subagents": 0,
+          "completed": 0,
+          "failed": 0,
+          "killed": {
+            "parent": 0,
+            "user": 0,
+            "system": 0
+          },
+          "refused": {
+            "depth_limit": 0,
+            "concurrency_limit": 0,
+            "budget": 0
+          },
+          "by_type": {}
+        },
+        "safety_stops": 0,
+        "is_error": true,
+        "num_turns": 1,
+        "subtype": "error_max_budget_usd",
+        "errors": [
+          "Reached maximum budget ($3)"
+        ],
+        "type": "result",
+        "duration_ms": 316641,
+        "uuid": "cc21a3cb-b971-4833-89f4-aa9c99f2d59b",
+        "queued_turn_count": 0,
+        "result_index": 0
+      },
+      "opinion_available": false,
+      "counts_toward_gate": false,
+      "cost_caveat": "Reported list cost exceeded the configured threshold before failure; no opinion text was returned or reconstructed."
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "name": "fable-5-1-retry-1",
+  "model": "claude-fable-5-1",
+  "focus_path": ".planning/consultations/fable-5-1.md",
+  "focus_sha256": "95d740050c77d242a452bc20b82313928426df11747658a02848411d0e3ff5cc",
+  "prefix_sha256": "b84de665d02d28bcc97158b5c66c7eea4a94334efec7cfb9d62ad12bfc0a30b9",
+  "input_sha256": "d0e5446ae87771d122f272d269489b0ba689755627876a1d34cf965ecd78972f",
+  "input_bytes": 349910,
+  "common_sha256": "a7fd40b1483a10e3f71f7fbef1c949c3ca32758f9776b19d20f3ccd4bd51cb05",
+  "original_attempt": "fable-5-1",
+  "effort": "medium",
+  "max_budget_usd": 3,
+  "timeout_seconds": 600,
+  "maximum_response_words": 2500,
+  "authorization": "Coordinator explicitly authorized one fresh exact-model retry after budget exhaustion; unchanged common evidence, medium effort, concise complete opinion, $3 configured limit, ten-minute timeout.",
+  "captured_utc": "2026-10-11T17:15:24.201967+00:00"
+}
