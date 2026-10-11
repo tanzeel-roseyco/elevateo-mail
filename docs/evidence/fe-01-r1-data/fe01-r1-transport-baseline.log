@@ -1,0 +1,209 @@
+docker : npm warn deprecated whatwg-encoding@3.1.1: Use @exodus/bytes instead for a more spec-conformant and faster
+implementation
+At line:4 char:1
++ docker run --rm --pull never --name elevateo-fe01-r1-transport-baseli ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (npm warn deprec... implementation:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+
+added 200 packages, and audited 201 packages in 1m
+
+39 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+npm notice
+npm notice New major version of npm available! 11.16.0 -> 12.2.0
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0
+npm notice To update run: npm install -g npm@12.2.0
+npm notice
+
+ RUN  v4.1.11 /work/apps/web
+
+ ❯ src/data/http/transport.test.ts (21 tests | 10 failed) 83ms
+     × pre-aborted caller does not dispatch fetch 34ms
+     × caller cancellation after headers settles and releases reader 8ms
+     × deadline cancellation after headers settles and releases reader 4ms
+     × a body rejection is classified as network and releases its reader 5ms
+     × success releases the reader and caller listener 4ms
+     × rejects headers text/html/200 and cancels the unconsumed body 3ms
+     × rejects headers application/json/302 and cancels the unconsumed body 2ms
+     ✓ a fetch rejection is classified as network 1ms
+     × rejects application/jsonp 3ms
+     × rejects text/application/json 2ms
+     ✓ rejects application/problem+json 1ms
+     ✓ rejects  1ms
+     ✓ accepts application/json 1ms
+     ✓ accepts Application/JSON; charset=utf-8 1ms
+     ✓ accepts application/json ; charset=UTF-8 1ms
+     ✓ counts actual UTF-8 bytes with Content-Length undefined 2ms
+     ✓ counts actual UTF-8 bytes with Content-Length 1 1ms
+     ✓ counts actual UTF-8 bytes with Content-Length 999999 1ms
+     ✓ decodes Unicode split across chunks 2ms
+     × cancels as soon as the stream exceeds the limit 2ms
+     ✓ uses the error budget independently of the success budget 1ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 10 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/data/http/transport.test.ts > full request lifecycle > pre-aborted
+caller does not dispatch fetch
+AssertionError: promise resolved "{ value: 'ok' }" instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   "message": "rejected promise",
++ {
++   "value": "ok",
+  }
+
+ ❯ src/data/http/transport.test.ts:37:96
+     35|     caller.abort()
+     36|     const fetchImpl = vi.fn(async () => new Response(json, { headers }…
+     37|     await expect(requestJson('/v1/session', schema, 1024, { signal: ca…
+       |
+^
+     38|       .rejects.toMatchObject({ kind:
+'transport', code: 'aborted' })
+     39|     expect(fetchImpl).not.toHaveBeenCalled()
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/10]⎯
+
+ FAIL  src/data/http/transport.test.ts > full request lifecycle > caller
+cancellation after headers settles and releases reader
+ FAIL  src/data/http/transport.test.ts > full request lifecycle > deadline
+cancellation after headers settles and releases reader
+AssertionError: expected 'pending' to be an instance of GatewayError
+ ❯ src/data/http/transport.test.ts:58:22
+     56|     if (cancelled === 0) source.close()
+     57|     await pending
+     58|     expect(observed).toBeInstanceOf(GatewayError)
+       |                      ^
+     59|     expect(observed).toMatchObject({ code: cause === 'caller' ? 'abort…
+     60|     expect(cancelled).toBe(1)
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/10]⎯
+
+ FAIL  src/data/http/transport.test.ts > full request lifecycle > a body
+rejection is classified as network and releases its reader
+AssertionError: expected TypeError: connection reset to match object { kind: 'transport', code:
+'network' }
+
+- Expected
++ Received
+
+- {
+-   "code": "network",
+-   "kind": "transport",
++ TypeError {
++   "message": "connection reset",
+  }
+
+ ❯ src/data/http/transport.test.ts:70:27
+     68|     await vi.advanceTimersByTimeAsync(0)
+     69|     source.error(new TypeError('connection
+reset'))
+     70|     expect(await pending).toMatchObject({ kind: 'transport', code: 'ne…
+       |                           ^
+     71|
+expect(response.body?.locked).toBe(false)
+     72|   })
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/10]⎯
+
+ FAIL  src/data/http/transport.test.ts > full request lifecycle > success
+releases the reader and caller listener
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ src/data/http/transport.test.ts:79:35
+     77|     const response = new Response(json, { headers
+})
+     78|     await expect(request(response, caller.signal)).resolves.toEqual({ …
+     79|
+expect(response.body?.locked).toBe(false)
+       |                                   ^
+     80|     expect(remove).toHaveBeenCalledWith('abort',
+expect.any(Function))
+     81|   })
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/10]⎯
+
+ FAIL  src/data/http/transport.test.ts > full request lifecycle > rejects headers
+text/html/200 and cancels the unconsumed body
+ FAIL  src/data/http/transport.test.ts > full request lifecycle > rejects headers
+application/json/302 and cancels the unconsumed body
+AssertionError: expected "vi.fn()" to be called once, but got 0 times
+ ❯ src/data/http/transport.test.ts:87:22
+     85|       const { response, cancel } =
+streamResponse(contentType, status)
+     86|       await
+expect(request(response)).rejects.toMatchObject({ code })
+     87|       expect(cancel).toHaveBeenCalledOnce()
+       |                      ^
+     88|
+expect(response.body?.locked).toBe(false)
+     89|     },
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/10]⎯
+
+ FAIL  src/data/http/transport.test.ts > content type and byte boundaries >
+rejects application/jsonp
+ FAIL  src/data/http/transport.test.ts > content type and byte boundaries >
+rejects text/application/json
+AssertionError: promise resolved "{ value: 'ok' }" instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   "message": "rejected promise",
++ {
++   "value": "ok",
+  }
+
+ ❯ src/data/http/transport.test.ts:100:91
+     98| describe('content type and byte boundaries', () => {
+     99|   it.each(['application/jsonp', 'text/application/json', 'application/…
+    100|     await expect(request(new Response(json, { headers: { 'Content-Type…
+       |
+^
+    101|       .rejects.toMatchObject({ code:
+'wrong_content_type' })
+    102|   })
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/10]⎯
+
+ FAIL  src/data/http/transport.test.ts > content type and byte boundaries >
+cancels as soon as the stream exceeds the limit
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ src/data/http/transport.test.ts:127:35
+    125|     await expect(request(response)).rejects.toMatchObject({ code: 'ove…
+    126|     expect(cancel).toHaveBeenCalledOnce()
+    127|
+expect(response.body?.locked).toBe(false)
+       |                                   ^
+    128|   })
+    129|   it('uses the error budget independently of the success budget', asyn…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/10]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  10 failed | 11 passed (21)
+   Start at  17:53:58
+   Duration  1.04s (transform 161ms, setup 0ms, import 269ms, tests 83ms, environment 461ms)

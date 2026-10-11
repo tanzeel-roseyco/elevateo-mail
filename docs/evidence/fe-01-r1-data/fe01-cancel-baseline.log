@@ -1,0 +1,90 @@
+docker : npm warn deprecated whatwg-encoding@3.1.1: Use @exodus/bytes instead for a more spec-conformant and faster
+implementation
+At line:14 char:1
++ docker run --rm --pull never --name elevateo-fe01-cancel-baseline --l ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (npm warn deprec... implementation:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+
+added 324 packages, and audited 325 packages in 28s
+
+67 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+npm notice
+npm notice New major version of npm available! 11.16.0 -> 12.2.0
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0
+npm notice To update run: npm install -g npm@12.2.0
+npm notice
+
+ RUN  v4.1.11 /work/apps/web
+
+ ❯ src/data/http/transport-cancellation.test.ts (7 tests | 2 failed) 53ms
+     × preserves header rejection when body cancellation throws 25ms
+     ✓ preserves header rejection when body cancellation rejects 3ms
+     × preserves oversize and unlocks the reader when cancellation throws 9ms
+     ✓ preserves oversize and unlocks the reader when cancellation rejects 2ms
+     ✓ settles pending fetch on caller cancellation and disposes its late response 3ms
+     ✓ settles pending fetch on deadline cancellation and disposes its late response 2ms
+     ✓ removes the identical caller listener after a successful response 6ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/data/http/transport-cancellation.test.ts > cleanup cannot replace the request
+outcome > preserves header rejection when body cancellation throws
+AssertionError: expected Error: cancel failed to match object { kind: 'transport', …(1) }
+
+- Expected
++ Received
+
+- {
+-   "code": "wrong_content_type",
+-   "kind": "transport",
++ Error {
++   "message": "cancel failed",
+  }
+
+ ❯ src/data/http/transport-cancellation.test.ts:25:95
+     23|     if (failure === 'throws') cancel.mockImplementation(() => { throw …
+     24|     else cancel.mockRejectedValue(cleanupError)
+     25|     await expect(requestJson('/v1/session', schema, 1024, { fetchImpl:…
+       |
+^
+     26|       .rejects.toMatchObject({ kind: 'transport', code: 'wrong_content…
+     27|     expect(cancel).toHaveBeenCalledOnce()
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/data/http/transport-cancellation.test.ts > cleanup cannot replace the request
+outcome > preserves oversize and unlocks the reader when cancellation throws
+AssertionError: expected GatewayError: The server response could n… { …(5) } to match object { Object
+(kind, code) }
+(4 matching properties omitted from actual)
+
+- Expected
++ Received
+
+- {
+-   "code": "oversized",
++ GatewayError {
++   "code": "network",
+    "kind": "transport",
+  }
+
+ ❯ src/data/http/transport-cancellation.test.ts:46:21
+     44|     // Release the broken baseline ourselves only after capturing its …
+     45|     reader.releaseLock()
+     46|     expect(outcome).toMatchObject({ kind: 'transport', code: 'oversize…
+       |                     ^
+     47|     expect(unlocked).toBe(true)
+     48|     expect(cancel).toHaveBeenCalledOnce()
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 5 passed (7)
+   Start at  17:58:44
+   Duration  1.05s (transform 115ms, setup 162ms, import 172ms, tests 53ms, environment 471ms)
