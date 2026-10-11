@@ -1,0 +1,75 @@
+{
+  "task": "FE-01",
+  "base_commit": "5ae9771ad30923a66a2a5ed6aa5d6902d3e439d2",
+  "common_sha256": "fbf683bf40f34fbf654be29cb0d02fa56587064c3d4db626ed9dfae86d7b91e6",
+  "common_bytes": 138523,
+  "consultations": [
+    {
+      "name": "fable-5",
+      "model": "claude-fable-5",
+      "input_sha256": "87ae255358ab7e53f44fad516f914a5ef365a7f48e49359e053651c92b42f33f"
+    },
+    {
+      "name": "opus-5-5",
+      "model": "claude-opus-5-5",
+      "input_sha256": "0e2ae8cc334eaa69e3957056ec559e81dcf276e76ad2485336da18b0804cb4c1"
+    },
+    {
+      "name": "fable-5-1",
+      "model": "claude-fable-5-1",
+      "input_sha256": "be158654b455bd702e882e3444d23499c088d139249ffd50f2e8f9c4ef5e9a92"
+    }
+  ],
+  "source_files": [
+    {
+      "path": ".planning/consultations/results/fe-01/brief.md",
+      "sha256": "2a19a174bf088baec1e178e6204c28cbeaef535eee246fab99ca98804f8a859a",
+      "verified_in_common_packet": true
+    },
+    {
+      "path": ".planning/STANDARDS.md",
+      "sha256": "7c01430086ed2dc263c8edcb1b2a9f41b572a23a11b36c1179be802e2874bd10",
+      "verified_in_common_packet": true
+    },
+    {
+      "path": ".planning/CLIENTS_AND_CLI_CONNECTORS.md",
+      "sha256": "82c92e8c007de491709e5149df7031651028ad5b6272d5fc3713f9d6d0d55801",
+      "verified_in_common_packet": true
+    },
+    {
+      "path": ".planning/consultations/results/initial-plan/accepted-decisions.md",
+      "sha256": "a7782c69046840925a5cfacc8c972972299b18d03fb98efcf763fb71fc0ca78b",
+      "verified_in_common_packet": true
+    },
+    {
+      "path": ".planning/consultations/results/be-01/decisions.md",
+      "sha256": "754ca5896e251bd8cd4c3b31f616b6ad69061a8be2038cf03c0591bba5ff8318",
+      "verified_in_common_packet": true
+    },
+    {
+      "path": "docs/decisions/0002-local-architecture.md",
+      "sha256": "5a9c7bd24bb35f8a19f78925ea25786ec77e632622535ea3da184da03eef223b",
+      "verified_in_common_packet": true
+    },
+    {
+      "path": "docs/contracts-and-reliability.md",
+      "sha256": "6210dcedd89eb678afe9f9f6f9dbf4270cdb1eded81f8e3e35d3f2656d6fbaa6",
+      "verified_in_common_packet": true
+    },
+    {
+      "path": "docs/research/frontend-reuse-audit.md",
+      "sha256": "ea0d15e9d6bd64b10ac9fdab6e38ede575256ab6881d6b594d17b91be033ec09",
+      "verified_in_common_packet": true
+    },
+    {
+      "path": "docs/local-completion-plan.md",
+      "sha256": "7e7355a889fd0a24bb62d80dbef752d67b761b7bd97ad4b2c5b8f699b9f5adfa",
+      "verified_in_common_packet": true
+    },
+    {
+      "path": ".planning/TASK_BACKLOG.md",
+      "sha256": "aba7e19ad1640015e30210d9d37fbfc55410bc5819f0747d4e2ba075dbb7487e",
+      "verified_in_common_packet": true
+    }
+  ]
+}

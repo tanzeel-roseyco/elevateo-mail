@@ -1,0 +1,12 @@
+{
+  "name": "elevateo-contract-generation",
+  "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "generate:web": "openapi-typescript ../v1/openapi.json --output ../../apps/web/src/data/generated/api.d.ts"
+  },
+  "devDependencies": {
+    "openapi-typescript": "7.13.0",
+    "typescript": "5.9.3"
+  }
+}

@@ -12,7 +12,7 @@ Use `/v1`, strict boundary schemas, bounded page sizes, opaque keyset cursors an
 | `GET /v1/mailboxes/:id/threads?cursor=...` | mailbox read | Stable cursor, bounded result count, team status and per-user read state |
 | `GET /v1/threads/:id` | mailbox read | Authorized thread and safe content representation |
 | `POST /v1/mailboxes/:id/drafts` | draft write | Validated envelope/body; version 1 |
-| `PATCH /v1/drafts/:id` | draft write | Expected version/If-Match; stale write returns 409/412 |
+| `PATCH /v1/drafts/:id` | draft write | Future accepted direction: expected_version; stale write returns 409 draft_conflict (mutation schema remains pending) |
 | `POST /v1/drafts/:id/send` | human send + mailbox send | Immutable version and request idempotency key; returns 202 plus job ID |
 | `GET /v1/send-jobs/:id` | mailbox read | Authoritative queued/accepted/unknown/delivery facts |
 | `POST /v1/send-jobs/:id/cancel` | human send | Cancels only before dispatch authorization; returns conflict if too late |

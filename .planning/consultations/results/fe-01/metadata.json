@@ -1,0 +1,447 @@
+{
+  "schema_version": 1,
+  "task": "FE-01",
+  "scope": "Read-only UI checkpoint design acceptance; full FE-01 remains pending real integration and application checks.",
+  "base_commit": "5ae9771ad30923a66a2a5ed6aa5d6902d3e439d2",
+  "repository": "https://github.com/tanzeel-roseyco/elevateo-mail",
+  "verified_at_utc": "2026-10-11T16:42:36.378166+00:00",
+  "local_planning_date": "2026-10-12",
+  "source_directory": "C:\\Users\\Tanzeel\\AppData\\Local\\Temp\\elevateo-fe01-consult-20261012",
+  "raw_manifest_sha256": "8dfcdf752ed4fed0af17d33ba46ac943c19c78fab6848f0326a27e48c6853a1d",
+  "common_sha256": "fbf683bf40f34fbf654be29cb0d02fa56587064c3d4db626ed9dfae86d7b91e6",
+  "common_bytes": 138523,
+  "identical_common_packet_verified": true,
+  "source_file_checks": [
+    {
+      "path": ".planning/consultations/results/fe-01/brief.md",
+      "sha256": "2a19a174bf088baec1e178e6204c28cbeaef535eee246fab99ca98804f8a859a",
+      "verified_in_common_packet": true
+    },
+    {
+      "path": ".planning/STANDARDS.md",
+      "sha256": "7c01430086ed2dc263c8edcb1b2a9f41b572a23a11b36c1179be802e2874bd10",
+      "verified_in_common_packet": true
+    },
+    {
+      "path": ".planning/CLIENTS_AND_CLI_CONNECTORS.md",
+      "sha256": "82c92e8c007de491709e5149df7031651028ad5b6272d5fc3713f9d6d0d55801",
+      "verified_in_common_packet": true
+    },
+    {
+      "path": ".planning/consultations/results/initial-plan/accepted-decisions.md",
+      "sha256": "a7782c69046840925a5cfacc8c972972299b18d03fb98efcf763fb71fc0ca78b",
+      "verified_in_common_packet": true
+    },
+    {
+      "path": ".planning/consultations/results/be-01/decisions.md",
+      "sha256": "754ca5896e251bd8cd4c3b31f616b6ad69061a8be2038cf03c0591bba5ff8318",
+      "verified_in_common_packet": true
+    },
+    {
+      "path": "docs/decisions/0002-local-architecture.md",
+      "sha256": "5a9c7bd24bb35f8a19f78925ea25786ec77e632622535ea3da184da03eef223b",
+      "verified_in_common_packet": true
+    },
+    {
+      "path": "docs/contracts-and-reliability.md",
+      "sha256": "6210dcedd89eb678afe9f9f6f9dbf4270cdb1eded81f8e3e35d3f2656d6fbaa6",
+      "verified_in_common_packet": true
+    },
+    {
+      "path": "docs/research/frontend-reuse-audit.md",
+      "sha256": "ea0d15e9d6bd64b10ac9fdab6e38ede575256ab6881d6b594d17b91be033ec09",
+      "verified_in_common_packet": true
+    },
+    {
+      "path": "docs/local-completion-plan.md",
+      "sha256": "7e7355a889fd0a24bb62d80dbef752d67b761b7bd97ad4b2c5b8f699b9f5adfa",
+      "verified_in_common_packet": true
+    },
+    {
+      "path": ".planning/TASK_BACKLOG.md",
+      "sha256": "aba7e19ad1640015e30210d9d37fbfc55410bc5819f0747d4e2ba075dbb7487e",
+      "verified_in_common_packet": true
+    }
+  ],
+  "independence": "Three distinct single-turn sessions; identical common packet; no FE opinion supplied to another. Model-specific prefixes retained.",
+  "line_endings": "Raw bytes already reconstruct exactly; slice at Task override: without normalization. Preserve mixed source line endings in JSON strings.",
+  "sanitization": "Full substantive opinions preserved with terminal newline normalized; no credential or real-mail content found. Execution model/exit/usage metadata retained. Planning source snapshot contains synthetic examples only.",
+  "opinions": [
+    {
+      "file_stem": "fable-5",
+      "requested_model": "claude-fable-5",
+      "observed_model": "claude-fable-5",
+      "input_sha256": "87ae255358ab7e53f44fad516f914a5ef365a7f48e49359e053651c92b42f33f",
+      "input_bytes": 139537,
+      "raw_result_sha256": "541b164252fb7b0521c58907cc61e93b4f3ddd508a7ca96bb089977cb3ac1ced",
+      "raw_status_sha256": "18d3c799963d4ab821610446075c21f379798a971e3123c136fc8afb30e32b9a",
+      "opinion_path": "fable-5.opinion.md",
+      "opinion_sha256": "c0997baf1120d798383b3a9006ad1b332fa8f2a4a988beaa2b1573c69a2d82d0",
+      "prefix_path": "fable-5.input-prefix.md",
+      "process_status": {
+        "model": "claude-fable-5",
+        "exit_code": 0,
+        "elapsed_seconds": 57.6
+      },
+      "stderr_bytes": 0,
+      "execution_metadata": {
+        "duration_api_ms": 50230,
+        "stop_reason": "end_turn",
+        "session_id": "283558b0-8e6a-44f5-addf-8c7b0ab1de35",
+        "total_cost_usd": 1.128793,
+        "usage": {
+          "input_tokens": 2,
+          "cache_creation_input_tokens": 48322,
+          "cache_read_input_tokens": 2733,
+          "output_tokens": 3192,
+          "output_tokens_details": {
+            "thinking_tokens": 52
+          },
+          "server_tool_use": {
+            "web_search_requests": 0,
+            "web_fetch_requests": 0
+          },
+          "service_tier": "standard",
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 48322,
+            "ephemeral_5m_input_tokens": 0
+          },
+          "inference_geo": "global",
+          "iterations": [
+            {
+              "input_tokens": 2,
+              "output_tokens": 3192,
+              "cache_read_input_tokens": 2733,
+              "cache_creation_input_tokens": 48322,
+              "cache_creation": {
+                "ephemeral_5m_input_tokens": 0,
+                "ephemeral_1h_input_tokens": 48322
+              },
+              "type": "message"
+            }
+          ],
+          "speed": "standard",
+          "fallback_credit": null
+        },
+        "modelUsage": {
+          "claude-fable-5": {
+            "inputTokens": 2,
+            "outputTokens": 3192,
+            "cacheReadInputTokens": 2733,
+            "cacheCreationInputTokens": 48322,
+            "webSearchRequests": 0,
+            "costUSD": 1.128793,
+            "contextWindow": 1000000,
+            "maxOutputTokens": 64000,
+            "thinkingTokens": 52,
+            "canonicalModel": "claude-fable-5",
+            "provider": "firstParty",
+            "costBasis": "list"
+          }
+        },
+        "permission_denials": [],
+        "terminal_reason": "completed",
+        "fast_mode_state": "off",
+        "fast_mode_disabled_reason": "sdk_opt_in_required",
+        "subagent_stats": {
+          "spawned": 0,
+          "requested": {
+            "background": 0,
+            "foreground": 0,
+            "unset": 0
+          },
+          "started_in_background": 0,
+          "max_depth": 0,
+          "spawned_by_subagents": 0,
+          "completed": 0,
+          "failed": 0,
+          "killed": {
+            "parent": 0,
+            "user": 0,
+            "system": 0
+          },
+          "refused": {
+            "depth_limit": 0,
+            "concurrency_limit": 0,
+            "budget": 0
+          },
+          "by_type": {}
+        },
+        "safety_stops": 0,
+        "is_error": false,
+        "num_turns": 1,
+        "subtype": "success",
+        "api_error_status": null,
+        "ttft_ms": 5545,
+        "type": "result",
+        "duration_ms": 52106,
+        "uuid": "336f3094-b87e-43f1-86ec-5207026bfc41",
+        "ttft_stream_ms": 4450,
+        "time_to_request_ms": 1899,
+        "first_content_frame_ms": 4451,
+        "queued_turn_count": 0,
+        "result_index": 0
+      }
+    },
+    {
+      "file_stem": "opus-5-5",
+      "requested_model": "claude-opus-5-5",
+      "observed_model": "claude-opus-5-5",
+      "input_sha256": "0e2ae8cc334eaa69e3957056ec559e81dcf276e76ad2485336da18b0804cb4c1",
+      "input_bytes": 139590,
+      "raw_result_sha256": "b10abfeae8e05c79ad2ee3d2cd59122dae3dde143278e662e340bd41f92be688",
+      "raw_status_sha256": "3608566059267928c946995f468d1e812f07357769c9bba675a8d404f3f7d659",
+      "opinion_path": "opus-5-5.opinion.md",
+      "opinion_sha256": "8c3581ba049fc45a34ba2cea683e401381631d8565477d14d026f644dedf73e9",
+      "prefix_path": "opus-5-5.input-prefix.md",
+      "process_status": {
+        "model": "claude-opus-5-5",
+        "exit_code": 0,
+        "elapsed_seconds": 59.1
+      },
+      "stderr_bytes": 0,
+      "execution_metadata": {
+        "duration_api_ms": 51655,
+        "stop_reason": "end_turn",
+        "session_id": "84d2a80e-4b90-4068-87ff-7397a119bf8a",
+        "total_cost_usd": 0.48228639999999995,
+        "usage": {
+          "input_tokens": 2,
+          "cache_creation_input_tokens": 48371,
+          "cache_read_input_tokens": 1652,
+          "output_tokens": 4749,
+          "output_tokens_details": {
+            "thinking_tokens": 748
+          },
+          "server_tool_use": {
+            "web_search_requests": 0,
+            "web_fetch_requests": 0
+          },
+          "service_tier": "standard",
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 48371,
+            "ephemeral_5m_input_tokens": 0
+          },
+          "inference_geo": "global",
+          "iterations": [
+            {
+              "input_tokens": 2,
+              "output_tokens": 4749,
+              "cache_read_input_tokens": 1652,
+              "cache_creation_input_tokens": 48371,
+              "cache_creation": {
+                "ephemeral_5m_input_tokens": 0,
+                "ephemeral_1h_input_tokens": 48371
+              },
+              "type": "message"
+            }
+          ],
+          "speed": "standard",
+          "fallback_credit": null
+        },
+        "modelUsage": {
+          "claude-opus-5-5": {
+            "inputTokens": 2,
+            "outputTokens": 4749,
+            "cacheReadInputTokens": 1652,
+            "cacheCreationInputTokens": 48371,
+            "webSearchRequests": 0,
+            "costUSD": 0.48228639999999995,
+            "contextWindow": 1000000,
+            "maxOutputTokens": 128000,
+            "thinkingTokens": 748,
+            "canonicalModel": "claude-opus-5-5",
+            "provider": "firstParty",
+            "costBasis": "list"
+          }
+        },
+        "permission_denials": [],
+        "terminal_reason": "completed",
+        "fast_mode_state": "off",
+        "fast_mode_disabled_reason": "sdk_opt_in_required",
+        "subagent_stats": {
+          "spawned": 0,
+          "requested": {
+            "background": 0,
+            "foreground": 0,
+            "unset": 0
+          },
+          "started_in_background": 0,
+          "max_depth": 0,
+          "spawned_by_subagents": 0,
+          "completed": 0,
+          "failed": 0,
+          "killed": {
+            "parent": 0,
+            "user": 0,
+            "system": 0
+          },
+          "refused": {
+            "depth_limit": 0,
+            "concurrency_limit": 0,
+            "budget": 0
+          },
+          "by_type": {}
+        },
+        "safety_stops": 0,
+        "is_error": false,
+        "num_turns": 1,
+        "subtype": "success",
+        "api_error_status": null,
+        "ttft_ms": 12614,
+        "type": "result",
+        "duration_ms": 53664,
+        "uuid": "8e939f77-0a5a-47b9-9869-68e322679663",
+        "ttft_stream_ms": 3478,
+        "time_to_request_ms": 2031,
+        "first_content_frame_ms": 3479,
+        "queued_turn_count": 0,
+        "result_index": 0
+      }
+    },
+    {
+      "file_stem": "fable-5-1",
+      "requested_model": "claude-fable-5-1",
+      "observed_model": "claude-fable-5-1",
+      "input_sha256": "be158654b455bd702e882e3444d23499c088d139249ffd50f2e8f9c4ef5e9a92",
+      "input_bytes": 139595,
+      "raw_result_sha256": "043121b3e79bcb57a2c77135b6c124065c7dc6c501ebe438ad3e2de2c24ffa7c",
+      "raw_status_sha256": "38d80cf44d87c1ff31470ddd57b052cea674e9a7782e126a5684ecf2e3f0e1d3",
+      "opinion_path": "fable-5-1.opinion.md",
+      "opinion_sha256": "ca4a62646637674e0e144053fb0cb8de03d61dfc7dfe2ebe7403ec326932913a",
+      "prefix_path": "fable-5-1.input-prefix.md",
+      "process_status": {
+        "model": "claude-fable-5-1",
+        "exit_code": 0,
+        "elapsed_seconds": 115.2
+      },
+      "stderr_bytes": 0,
+      "execution_metadata": {
+        "duration_api_ms": 107558,
+        "stop_reason": "end_turn",
+        "session_id": "2182e4ac-95cc-4689-839e-3be9599633de",
+        "total_cost_usd": 1.29969825,
+        "usage": {
+          "input_tokens": 2,
+          "cache_creation_input_tokens": 48365,
+          "cache_read_input_tokens": 3313,
+          "output_tokens": 6631,
+          "output_tokens_details": {
+            "thinking_tokens": 3564
+          },
+          "server_tool_use": {
+            "web_search_requests": 0,
+            "web_fetch_requests": 0
+          },
+          "service_tier": "standard",
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 48365,
+            "ephemeral_5m_input_tokens": 0
+          },
+          "inference_geo": "global",
+          "iterations": [
+            {
+              "input_tokens": 2,
+              "output_tokens": 6631,
+              "cache_read_input_tokens": 3313,
+              "cache_creation_input_tokens": 48365,
+              "cache_creation": {
+                "ephemeral_5m_input_tokens": 0,
+                "ephemeral_1h_input_tokens": 48365
+              },
+              "type": "message"
+            }
+          ],
+          "speed": "standard",
+          "fallback_credit": null
+        },
+        "modelUsage": {
+          "claude-fable-5-1": {
+            "inputTokens": 2,
+            "outputTokens": 6631,
+            "cacheReadInputTokens": 3313,
+            "cacheCreationInputTokens": 48365,
+            "webSearchRequests": 0,
+            "costUSD": 1.29969825,
+            "contextWindow": 1000000,
+            "maxOutputTokens": 64000,
+            "thinkingTokens": 3564,
+            "canonicalModel": "claude-fable-5-1",
+            "provider": "firstParty",
+            "costBasis": "list"
+          }
+        },
+        "permission_denials": [],
+        "terminal_reason": "completed",
+        "fast_mode_state": "off",
+        "fast_mode_disabled_reason": "sdk_opt_in_required",
+        "subagent_stats": {
+          "spawned": 0,
+          "requested": {
+            "background": 0,
+            "foreground": 0,
+            "unset": 0
+          },
+          "started_in_background": 0,
+          "max_depth": 0,
+          "spawned_by_subagents": 0,
+          "completed": 0,
+          "failed": 0,
+          "killed": {
+            "parent": 0,
+            "user": 0,
+            "system": 0
+          },
+          "refused": {
+            "depth_limit": 0,
+            "concurrency_limit": 0,
+            "budget": 0
+          },
+          "by_type": {}
+        },
+        "safety_stops": 0,
+        "is_error": false,
+        "num_turns": 1,
+        "subtype": "success",
+        "api_error_status": null,
+        "ttft_ms": 62370,
+        "type": "result",
+        "duration_ms": 109558,
+        "uuid": "c14d06fb-db72-47d2-bcdb-e2c670a007da",
+        "ttft_stream_ms": 3234,
+        "time_to_request_ms": 2008,
+        "first_content_frame_ms": 3235,
+        "queued_turn_count": 0,
+        "result_index": 0
+      }
+    }
+  ],
+  "total_reported_list_cost_usd": 2.91077765,
+  "cost_caveat": "Provider reported list cost, not reconciled account billing or an implementation budget.",
+  "synthesis_runner": {
+    "model": "gpt-6-astra",
+    "reasoning_effort": "max",
+    "task_path": "/root/plan_synthesis",
+    "execution_id": null,
+    "evidence": "Coordinator observed collaboration.spawn_agent result with requested exact override and fork_turns none; same actual runner continues initial, BE-01 and FE-01 synthesis. Not a model self-identity assertion."
+  },
+  "post_packet_research": {
+    "path": "docs/research/frontend-runtime.md",
+    "sha256": "3872dd9893c0b725726e520950a884c67ab3cdd86533cb9c25055844feb41701",
+    "snapshot": "frontend-runtime.snapshot.md",
+    "seen_by_consultants": false,
+    "use": "Resolves expressly deferred runtime/advisory questions. Metadata research and parent digest inspection, not installed compatibility or full-tree audit.",
+    "final_appendices": "Generator 7.13.0 and Playwright 1.64.0/package-image digests appended after the opinions; final source bytes preserved, original packet unchanged."
+  },
+  "application_tests_run": false,
+  "canonical_contract": {
+    "path": "contracts/v1/openapi.json",
+    "sha256": "94c5f31bc5d514fed420dcbcee2f6ce49bf4254e325000ea0794fe6a1140e8ca",
+    "version": "1.0.0-read.1",
+    "backend_implemented": false,
+    "generated_output": "apps/web/src/data/generated/api.d.ts",
+    "generator": "openapi-typescript 7.13.0",
+    "generation_owner": "coordinator"
+  },
+  "issue": "https://github.com/tanzeel-roseyco/elevateo-mail/issues/4"
+}

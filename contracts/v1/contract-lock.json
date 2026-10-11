@@ -1,0 +1,13 @@
+{
+  "version": "1.0.0-read.1",
+  "stage": "accepted_design_real_backend_pending",
+  "files": {
+    "openapi.json": "94c5f31bc5d514fed420dcbcee2f6ce49bf4254e325000ea0794fe6a1140e8ca",
+    "README.md": "17d899805779a043d952be9fa8e894cc084ed758412b0c9c8d6ba01bab2bfc4e",
+    "fixtures.json": "b9ff0ec817d9fb311ca5e05df443edb0ccda91aca452079c010dfb2c52d353c2"
+  },
+  "generated_output": "apps/web/src/data/generated/api.d.ts",
+  "generation_owner": "coordinator",
+  "generator": "openapi-typescript 7.13.0",
+  "app_tests_or_schema_fixture_conformance_executed_here": false
+}

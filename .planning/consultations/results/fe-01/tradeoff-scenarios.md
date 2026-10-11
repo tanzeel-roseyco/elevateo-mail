@@ -1,0 +1,17 @@
+# FE-01 design scenarios
+
+These are analytical walkthroughs, not executed tests or an Obsidian simulation. The requested Obsidian connection is unavailable. They record the dedicated synthesis-level tradeoffs; implementation still needs its separate design reviewer and executable tests.
+
+| Scenario | Competing choices | Accepted behavior / reason |
+|---|---|---|
+| A late mailbox-A response arrives after navigation to B; abort raced with completion | Rely on cancellation, or also compare request context | Compare actor/org/context/version/mailbox/filter plus local generation before any state write. Prevent display leakage even when cancellation cannot retract a response. |
+| User's membership changes while a mailbox request is in flight | Treat client capability as permission, or recheck in Rails | Rails rechecks current permission and context/version. 401 clears all mail; stale context returns no data and re-bootstrap; object denial is indistinguishable from absence. Polling improves UI freshness but is not authorization. |
+| API becomes unavailable in a production build | Fall back to a polished fixture, or show deliberate error | Show retry/unavailable state. Fixture entrypoint/data excluded. Extra development wiring is justified by preventing false evidence of real integration. |
+| Two devices save: A's operation commits but its response is lost; B later saves successfully | Compare A's ID to a single last_mutation_id, or preserve durable operation evidence | Last ID now names B, so mismatch cannot prove A failed. Do not label A unsaved or reapply blindly. Require durable operation lookup/idempotency ownership/retention before draft implementation. |
+| Device A approves and loses 202; B edits/retries with another ID | Infer timeout means no send, or recover the consumed intent/job | Never create a second intent. Same-ID recovery under server rules and current-authorized job linkage; unknown stays unknown until evidence resolves it. No approval code in the read checkpoint. |
+| Fifty summaries contain unusual Unicode/control characters | Field character counts alone, or serialized byte bounds too | Bound each field and final escaped UTF-8 body. 256 KiB summary ceiling; fewer rows plus continuation if necessary. A valid JSON prefix is not a valid truncation strategy. |
+| A forged unsafe request sends a familiar static custom header | Marker/Origin metadata alone, or per-session token plus exact Origin | Token plus exact Origin for future unsafe routes. GET session bootstrap requires current authentication; login bootstrap remains separate. No claims that the four read routes implement login/logout. |
+| Review data lives in every draft read versus a separate stated-version review | Fewer endpoints versus explicit review freshness | Prefer separate authorized review; full DTO and operation recovery must be reviewed before implementation. No half-defined endpoint just to accelerate composer UI. |
+| A narrow checkpoint looks complete while drafts, jobs and attachments do not exist | Close FE-01 early or track partial acceptance | Record read checkpoint only. Preserve full product closure and real backend dependencies; smaller batches improve reviewability without dropping the requested product. |
+
+The tradeoff favors a little explicit context/contract plumbing over guessed behavior and duplicate mock authority. It does not justify a general state framework, an extra permanent proxy, or native/motion scope in this checkpoint.

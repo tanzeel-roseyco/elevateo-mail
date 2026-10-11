@@ -1,15 +1,15 @@
 # Project state
 
 Updated: 2026-10-12.
-Status: **autonomous local completion in progress; initial architecture accepted, BE-01 exact-model opinions complete and synthesis underway; application implementation pending**.
+Status: **autonomous local completion in progress; initial architecture and BE-01 task design accepted; Devin partial draft preserved and suspended; FE-01 read checkpoint accepted**.
 
 ## Current execution evidence
 
 - Active clean checkout: `Elevateo Mail - Local Completion`, branch `feature/local-completion`, base `103baeb042925badbbc50dc0d3d3bfbf09ce8344`. Original and sibling frontend/backend/integration workspaces are preserved.
 - Claude CLI 2.1.296 returned successful independent `claude-fable-5`, `claude-opus-5-5` and `claude-fable-5-1` opinions with matching runtime model identities. See `.planning/consultations/results/initial-plan/metadata.json`. Earlier failures below describe historical attempts.
 - Actual `gpt-6-astra` MAX initial synthesis completed as `/root/plan_synthesis`; see `docs/decisions/0002-local-architecture.md`. Every later bounded implementation task still needs its own three opinions and synthesis.
-- Official Devin MCP authenticated; read-only session `b111d44287f34ba4be9f62961e5b6424` verified repository main/base and Docker 29.7.2/Compose 5.4.0. No backend implementation yet. Current-user DPAPI protects the organization Member credential outside Git.
-- Fable 5.1 completed a read-only inventory of first-party Ledger frontend primitives and API components at integration commit `4322cfb`; implementation remains pending accepted task contracts.
+- Official Devin MCP authenticated; read-only session `b111d44287f34ba4be9f62961e5b6424` verified repository main/base and Docker 29.7.2/Compose 5.4.0. The subsequent BE-01 session produced incomplete draft PR #5 at 5a9d83a and is verified suspended; code and reported checks remain unaccepted. Current-user DPAPI protects the organization Member credential outside Git.
+- Fable 5.1 completed a read-only inventory of first-party Ledger frontend primitives and API components at integration commit `4322cfb`; the read checkpoint contract is accepted and implementation dispatch is next.
 - Full user review rubric is available in the current conversation. Obsidian has no callable connection in this environment; analytical tradeoff scenarios cannot be claimed as Obsidian execution.
 - No application tests or visual QA have run. No mail, purchases, production changes or signing actions occurred.
 
@@ -44,7 +44,7 @@ Accepted local architecture (ADR 0002): Rails API/worker, React/TypeScript, Post
 
 ## Next steps
 
-1. Finalize the fresh BE-01 synthesis and bounded official Devin dispatch for issue #3. Exact runtime pins and the five-service Supabase foundation are researched; application implementation remains pending.
+1. Monitor the bounded BE-01 Devin implementation for issue #3, review its actual diff and Docker evidence, and pause at its checkpoint. Complete fresh FE-01 opinions and Astra synthesis before assigning the frontend writer.
 2. Complete the entire locally testable journey with real database/auth/storage, fake mail transport, actual browser validation, scoped connectors, available-platform desktop checks and restore evidence before asking for live credentials.
 3. Use the full user review rubric, at-most-200-line adversarial assignments and a dedicated design reviewer. Record actual coverage, defects and density. Obsidian execution remains unavailable.
 4. Before deployment, confirm domain/MX ownership, mailbox/alias count, migration/history needs, message purposes/volume, region, retention, operating owner and recovery tier. Do not replace existing MX by assumption.
@@ -54,4 +54,8 @@ Single-VPS operation is not high availability. Resend's private-beta Inboxes is 
 
 ### Devin credit authorization (2026-10-12)
 
-The user explicitly approved use of existing $10 Devin credit; no purchases or top-ups. BE-01 task design is accepted. Implementation dispatch is being frozen to the planning commit. Codex polls at two-minute intervals and pauses at the 30-minute checkpoint or credit/capability loss. Official MCP sleep is verified; the Free account API omits dollar usage and offers no dollar-cap field, so no enforced task dollar cap is claimed.
+The user explicitly approved use of existing $10 Devin credit; no purchases or top-ups. BE-01 task design is accepted. Implementation was dispatched from frozen planning commit `5ae9771`. Codex polls at two-minute intervals and pauses at the 30-minute checkpoint or credit/capability loss. Official MCP sleep is verified; the Free account API omits dollar usage and offers no dollar-cap field, so no enforced task dollar cap is claimed.
+
+BE-01 dispatched through official Devin MCP at 2026-10-11T16:34:21Z: session `257567ddf6b743c8b9dad365f52e3f99`, implementation base `5ae9771ad30923a66a2a5ed6aa5d6902d3e439d2`, branch `devin/backend/be-01`. Existing-credit-only $10 approval; no topups. First 30-minute checkpoint at 17:04:21Z. Partial commit 5a9d83ad4de7403f349131bf0c3e45df7fd97c28 is preserved in draft PR #5; no acceptance is claimed. Session suspension verified at 2026-10-11T16:50:37Z; dollar usage remains unavailable.
+
+FE-01 read contract and exact-model synthesis are frozen in .planning/consultations/results/fe-01 and contracts/v1. Docker generation with openapi-typescript 7.13.0 reproduced identical API types; tooling audit reported zero vulnerabilities across 34 packages. This is tooling evidence, not application acceptance. Full frontend/backend integration remains open.

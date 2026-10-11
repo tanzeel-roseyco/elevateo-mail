@@ -1,0 +1,41 @@
+{
+  "verified_at_utc": "2026-10-11T16:51:12.567782+00:00",
+  "checks": {
+    "common_packet_exact_bytes_and_sha256": true,
+    "all_three_input_reconstructions_exact": true,
+    "all_three_full_opinion_hashes_match": true,
+    "all_three_exact_model_and_success_metadata": true,
+    "original_brief_unchanged": true,
+    "canonical_openapi_hash_frozen": true,
+    "openapi_json_parse_and_all_67_local_refs_resolve": true,
+    "fixture_json_parse_and_17_schema_names_resolve": true,
+    "application_tests_run": false,
+    "full_openapi_validator_run": false,
+    "schema_fixture_conformance_run": false,
+    "real_backend_integration": false,
+    "visual_validation": false,
+    "obsidian_simulation": false
+  },
+  "artifacts": {
+    ".planning/consultations/results/fe-01/brief.md": "2a19a174bf088baec1e178e6204c28cbeaef535eee246fab99ca98804f8a859a",
+    ".planning/consultations/results/fe-01/decisions.md": "3d83b5740c74fde3ec9255c67e3cfe6d8c8a6b590ca0077e301809875b309a3e",
+    ".planning/consultations/results/fe-01/dispatch-brief.md": "2c08c690e59b8485cd30dcd3171bf2d656b0709f974d8c303d1a658e6bf0849f",
+    ".planning/consultations/results/fe-01/fable-5-1.input-prefix.md": "63d6d54b3df9c39525a734288d06ef128db3a67590ba2923a2afbae6a57b1b2d",
+    ".planning/consultations/results/fe-01/fable-5-1.opinion.md": "ca4a62646637674e0e144053fb0cb8de03d61dfc7dfe2ebe7403ec326932913a",
+    ".planning/consultations/results/fe-01/fable-5.input-prefix.md": "0dc8f7591ea2ae5977a30d6558c11d9d74fee47c445c9feb7d08e78e328af932",
+    ".planning/consultations/results/fe-01/fable-5.opinion.md": "c0997baf1120d798383b3a9006ad1b332fa8f2a4a988beaa2b1573c69a2d82d0",
+    ".planning/consultations/results/fe-01/frontend-runtime.snapshot.md": "3872dd9893c0b725726e520950a884c67ab3cdd86533cb9c25055844feb41701",
+    ".planning/consultations/results/fe-01/metadata.json": "90f3cd3320ee9a374df1a174d647b13277b1bfef60a7e3adf5c2c94359bb319f",
+    ".planning/consultations/results/fe-01/opus-5-5.input-prefix.md": "a900e374660b9eb68b91fe99bbe0b5b2e02df2266f26f62d28a33e014fc788f2",
+    ".planning/consultations/results/fe-01/opus-5-5.opinion.md": "8c3581ba049fc45a34ba2cea683e401381631d8565477d14d026f644dedf73e9",
+    ".planning/consultations/results/fe-01/README.md": "7d88885c4775cc5efc3a0128b93b48e5c4d0b92dad13c419b690158121225a43",
+    ".planning/consultations/results/fe-01/source-manifest.json": "9e085a7534e8e94d065f7f157b5393d9af138ce6e9f4c5227ab80472ed143ae9",
+    ".planning/consultations/results/fe-01/source-packet.json": "e1654e8a34b4c5ae918392882ca26c9ef048e6c7c552518c192decf342db1ab0",
+    ".planning/consultations/results/fe-01/synthesis.md": "21001e36991cdbd5158a3bd75c5d7a551dbcea415575eee2fb9f805ef6c0a699",
+    ".planning/consultations/results/fe-01/tradeoff-scenarios.md": "826e5794b1bb8c3e2784c5405cc9394dd5e06245d0eab2d040d051faccca918c",
+    "contracts/v1/contract-lock.json": "a3c873700889142a68e6d1677f849e104949e64185b1562b6736effa8de6bc7b",
+    "contracts/v1/fixtures.json": "b9ff0ec817d9fb311ca5e05df443edb0ccda91aca452079c010dfb2c52d353c2",
+    "contracts/v1/openapi.json": "94c5f31bc5d514fed420dcbcee2f6ce49bf4254e325000ea0794fe6a1140e8ca",
+    "contracts/v1/README.md": "17d899805779a043d952be9fa8e894cc084ed758412b0c9c8d6ba01bab2bfc4e"
+  }
+}
