@@ -75,5 +75,17 @@
     "No Devin backend implementation occurred.",
     "All new research commit pins and runtime audits remain pending.",
     "No credentials, DNS, account setup, installers or production deployment occurred."
-  ]
+  ],
+  "consultation_handoff": {
+    "status": "pending_next_agent_launch",
+    "guide": ".planning/consultations/README.md",
+    "shared_brief": ".planning/consultations/shared-brief.md",
+    "prompts": {
+      "claude-fable-5": ".planning/consultations/fable-5.md",
+      "claude-opus-5-5": ".planning/consultations/opus-5-5.md",
+      "claude-fable-5-1": ".planning/consultations/fable-5-1.md"
+    },
+    "synthesis_template": ".planning/consultations/synthesis-template.md",
+    "new_consultations_run_while_saving_handoff": false
+  }
 }

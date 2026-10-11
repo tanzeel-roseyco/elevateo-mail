@@ -13,6 +13,8 @@ Updated 2026-10-12. This folder turns the latest user brief into a staged build 
 
 ## Current decision state
 
+The [Claude consultation handoff](consultations/README.md) contains ready-to-use shared and model-specific prompts, supported-runner launch examples, evidence requirements and the synthesis template. The next agent is responsible for spawning the three separate sessions; their status remains pending.
+
 The user's choices are Resend, self-hosted Supabase, the requested agent workflow, language coverage and client targets. Rails authority, exact client hosts, contracts and deployment topology are proposals by the actual Astra MAX design agent. The three separately attempted Claude consultations failed before inference because the installed CLI's OAuth session expired and could not refresh. Their opinions and the final synthesis remain pending. No alternative model's editorial review counts as those opinions.
 
 Complete independent research, inventory, fixtures and documentation while those gates are pending. Do not claim the backend design is accepted or ask for production credentials to resolve an agent login. Credentials for mail, hosting, DNS, signing and external product inference remain the final activation inputs. Restore agent access through the supported account flow when implementation resumes.

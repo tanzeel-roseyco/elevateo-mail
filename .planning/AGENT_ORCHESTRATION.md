@@ -47,6 +47,8 @@ Before creating a Devin session, resolve the actual GitHub repository, base comm
 
 ## Every-task consultation and synthesis
 
+The next AI agent must use [the saved consultation launch handoff](consultations/README.md): a common evidence brief, separate Fable 5/Opus 5.5/Fable 5.1 prompts and an Astra MAX synthesis template. The latest user instruction leaves their actual launch to that next agent. No consultation was retried when these prompts were saved.
+
 Use the [task brief](templates/task-brief.md) for each task, including bounded fix tasks. Astra MAX supplies the design question and required invariants. Separately request Fable 5, Opus 5.5 and Fable 5.1 opinions before accepting that task's implementation approach. The task, not each shell command or keystroke, is the review unit; split changed scope into a new task. Request fresh opinions when a change invalidates their assumptions.
 
 Each opinion must identify assumptions, supported proposals, objections, a smaller alternative, affected contracts and concrete acceptance evidence. After receiving all three, Astra MAX records a decision with each suggestion accepted, adapted or rejected and why. Preserve unresolved dissent. Combine compatible ideas; select between conflicting database owners, client frameworks or retry semantics instead of installing all alternatives. Tests and measured behavior resolve disputes more strongly than a vote.

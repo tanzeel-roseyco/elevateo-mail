@@ -149,3 +149,11 @@ Separate architecture/client specialists reconciled the existing architecture, i
 - `python3 scripts/verify_upstream.py`: passed for six repositories, 2,764 files, one omission and 81,939,734 bytes. This run checks the committed inventory/manifests, not original external Git trees. Previous original-tree verification remains historical evidence above.
 - Whitespace checks passed. No application/Docker/browser/native tests were run because this change contains plans and research, not an implemented application. Source-tool unit tests were not rerun because the tools did not change.
 - Planned commands, integration configuration, platform packages, backend capabilities and live-send acceptance tests are not reported as working. Instantly warmup remains prohibited under the current no-live-send instruction. Actual addresses/MX ownership, production setup and platform/provider activation remain pending.
+
+## 2026-10-12 Claude consultation launch handoff
+
+The user asked to leave the Claude consultations for the next AI agent to spawn. Added six files under `.planning/consultations`: shared brief, three independent exact-model focus prompts, launch/evidence procedure and Astra MAX synthesis template. Linked the package from the agent prompt, planning index/orchestration and README; recorded pending-next-agent status without overwriting historical failed attempts. No consultation, login or inference was retried.
+
+An independent editorial reviewer covered README 1–41, shared brief 1–40, each focus prompt 1–9 and synthesis template 1–18 (126 document lines, each scope below 200). One P3 clarity defect was fixed: the reusable brief now date-scopes its initial no-application statement and requires current implementation/decision/evidence facts for each later packet. No material findings; application lines reviewed: 0 and application defect density: N/A. This review is not one of the pending named Claude opinions.
+
+Validation: 44 first-party Markdown files, 446 local links, 111 existing pinned-source links/line anchors and 17 triage-file hashes passed. The illustrative launch block passes `sh -n` and `zsh -n` without executing it. Capability JSON parses and all three exact model IDs match their prompt files. Whitespace checks pass. No runtime code or upstream snapshot changed, so application/source-tool test suites were not rerun.
