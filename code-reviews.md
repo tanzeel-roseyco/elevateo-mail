@@ -291,3 +291,25 @@ Data source review: 769 unique lines, one newly found cancellation-cleanup defec
 
 Pinned Docker checks passed 123 unit tests, strict types, API regeneration and production build. Lint identified an unused import in the pending Fable session repair. These results cover the data checkpoint, not frontend end-to-end or backend integration. Fable repair session `b878fb94-6e40-482d-9b26-1e39f8e98920` is active from that commit with only Read/Write/Edit/Glob/Grep tools; runtime identity is claude-fable-5. No frontend visual acceptance yet.
 
+
+### FE-01-R1 stage B interim review, 2026-10-12
+
+Read-only snapshot while Fable authors tests. Four bounded assignments cover 670 unique lines: readPage/Drawer 86, session 1-190 190, session 191-219 plus Shell 1-165 194, Shell 166-205 plus Inbox 1-160 200. Three confirmed defects: P3 misleading Drawer CSS/focus comment; P2 fixed-interval refresh can delay a visible-session refresh nearly 60 seconds after an offset focus refresh; P1 successful stale Inbox request can overwrite the current mailbox because success lacks an ownership guard. Density: 3/670 = 4.48 defects per 1,000 LOC. Repairs and runtime regression tests remain pending; this is not acceptance.
+
+Snapshot SHA256: readPage 167d7e18063fadb2d5e34d40603db5328ce0dfb7aa08ad663bbaa1bbdf6dd87f; Drawer 30126788b864549b15f6c9af846ecf1a607639880d717c9c715b2708d6179afe; session 3f86ba637d4d2626dc3871c88a78190997f0573cd842fb3e3f436e15d02071c8; Shell 4b4157235b18a1e0a066aa5802cea43806c092f22e15b059e42354e1c5524333; Inbox 96b4a4e567ea4992a531c0584fbaf6ec7acca8fd012792273980e8f39f39c56d.
+
+Shell ownership/keying, guarded mailbox traversal, explicit breakpoint drawer closure and focusable main markup passed static inspection. Actual focus restoration, visual QA, remaining source/test review and Docker checks remain open. Review used the full user rubric; no formatting review or host application tests were performed.
+
+### BE-01-R1 full-bundle runner initial review
+
+Main runner 121 LOC, SHA256 fbbf64d9329b9056bea105ddb8c7dfa38abd238ac85ddcc98004aafe49e50aa2: zero confirmed defects (0/1,000 LOC). Helper independently pending. The runner's subset explicitly excludes legacy/rollback closure and final acceptance. No runtime result is claimed.
+
+
+FE stage B follow-up: Inbox remainder 19 + Thread 171 =190 new LOC. Reader repeats the stale-success ownership defect (same root cause); one additional P2 empty-continuation defect. Source total860 unique LOC, four distinct defects =4.65/KLOC (five affected occurrences =5.81/KLOC). Session tests reviewed in180+142-line assignments:322LOC, zero new code defects, but blocked-state timing and offset-cadence coverage gaps. These gaps are queued for Fable; no runtime closure. Thread SHA ddd966a6539cf3745e53b88a801dd85467411feee6b3e77a9b84e92d6be73de2; session tests SHA f39b4e6a884c460ef45dc82ac2645599c824cacc34552f6e67a4d0c6b082bd16.
+
+Runner helper134LOC initial independent review found zero defects; overlapping dedicated design review found one P2 inspection-error/absence conflation permitting unverified builder removal. Helper density1/134=7.46/KLOC; combined runner unique coverage255LOC,1defect=3.92/KLOC. Repair/re-review pending. Analysis used Docker upstream control flow; no runtime or Obsidian execution claimed.
+
+
+Runner final helper re-review:184LOC SHA256 c134518c1122e0b4d9e51c79ebaa9a54fdcd9cf595265dfeda5d31ac0ad6637f, independently reviewed and separately design-reviewed with zero new confirmed defects. Inspection-error/absence defect class is statically resolved across containers, networks and images; timed-out suites are removed before later suites, or abort on uncertainty. Final main121+helper184=305 unique LOC; one original defect class=3.28/KLOC, zero outstanding static findings. Runtime Docker representation, build and suite execution, timeout cleanup and host free-space verification remain pending.
+
+FE readPage tests100LOC SHA3a2893be607d99f8c7536104dc0bdeff36cb5fac66f47ae9f85475482602a837 and Inbox tests152LOC SHAceb6574c1087c64cf828ef7a66895c3db928ae0387f313d06d0fc4c2d6e1f108: zero new confirmed code defects; stale success and request-argument regression gaps remain. These are distinct assignments, each below200LOC.

@@ -4,11 +4,9 @@ A planned shared company mailbox for approximately **10 people**, available on a
 
 ## Current state
 
-Latest runtime checkpoint: BE-01-R1 heartbeat passed (2 tests), egress passed (9 tests, one PowerShell skip), and secrets could not load in the partial harness. [Raw evidence](docs/evidence/be-01-r1-ops-result/README.md) records the failed batch and cleanup; the exact raw log is tracked despite the default log ignore rule. Devin balance is $4.20 remaining with $0.00 on-demand. Fable continuation session `44db3665-c21c-45f2-872b-e62917d7fb1f` is running; frontend source remains incomplete and unaccepted.
+Current checkpoint: Devin is suspended with $4.20 of the approved existing credit remaining and $0.00 on-demand. Backend source 5785eba is not accepted: the partial ops batch passed heartbeat and egress (one PowerShell skip), but secrets failed to load. The full-bundle Docker runner passed static re-review after cleanup-control repair; execution is pending. Fable completed its source/test draft and review-repair session f85838f4-99dd-42dc-93bc-7dad6b950aab is running. Static review found stale-success ownership defects in inbox and reader, delayed freshness scheduling, misleading empty-continuation text, and a drawer comment defect; repairs and visual validation remain pending.
 
-BE-01-R1 reviewed source checkpoint `5785eba` is available on its repair branch; Devin is running bounded ops-only Docker verification. Runtime acceptance remains pending.
-
-**Repair work continues:** frontend data passes123unit tests/types/API regeneration/build at handoff79387b1; Fable UI repair and backend guard/migration review are in progress. Devin's successful grantor probe is archived; last balance is $5.17 with $0 on-demand. No end-to-end acceptance. See state.md and docs/evidence/be-01-r1-probe-result.
+Frontend data passed 123 unit tests, typechecking, API regeneration and build at handoff `79387b1`. These results do not validate the subsequent Fable UI changes. Devin's successful grantor probe and partial ops results are archived under `docs/evidence`; end-to-end acceptance remains open.
 
 **Design and source intake complete; the first backend checkpoint is preserved in incomplete draft PR #5.** Resend and self-hosted Supabase are selected by the user. This update replaces the earlier assumption that the primary product is a campaign engine across 18 existing mailboxes. The expanded brief specifies nine addresses across one or two domains; actual addresses, inbox/alias boundaries and migration requirements remain unresolved.
 
@@ -33,7 +31,7 @@ Use [ADR 0002](docs/decisions/0002-local-architecture.md) to interpret the expan
 
 ## Source collection and goals
 
-- [Codex-first market/reuse scan: 25 repositories and eight Reddit threads](.planning/research/reuse-market-scan.md) — comparative discovery, with new pins/deep audits pending
+- [Codex-first market/reuse scan: 25 repositories and eight Reddit threads](.planning/research/reuse-market-scan.md) â€” comparative discovery, with new pins/deep audits pending
 - [Devin, Astra MAX/LOW and independent Claude-agent workflow](.planning/AGENT_ORCHESTRATION.md)
 - [Language, platform and in-app CLI connector plan](.planning/CLIENTS_AND_CLI_CONNECTORS.md)
 - [Nine-address inventory, Resend CLI and disabled Instantly warmup](.planning/MAIL_ACCOUNTS_AND_ACTIVATION.md)
