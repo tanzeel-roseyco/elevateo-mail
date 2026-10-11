@@ -26,6 +26,7 @@ export default defineConfig(({ mode }) => ({
   test: {
     environment: 'jsdom',
     include: ['src/**/*.test.{ts,tsx}'],
-    setupFiles: [],
+    // AIDEV-NOTE: Vitest globals are disabled; the setup imports cleanup hooks explicitly.
+    setupFiles: ['./src/test/setup.ts'],
   },
 }))

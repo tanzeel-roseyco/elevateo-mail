@@ -2,8 +2,9 @@
 // reachable from the dev-fixtures entry point and tests; production builds exclude them and no
 // runtime failure may fall back here (contract README, R5).
 import fixtures from '../../../../../contracts/v1/fixtures.json'
-import { GatewayError, type ApiErrorCode } from '../errors'
-import { MailboxPageSchema, SessionSchema, ThreadDetailPageSchema, ThreadPageSchema } from '../contract'
+import type { z } from 'zod'
+import { GatewayError } from '../errors'
+import { ErrorSchema, MailboxPageSchema, SessionSchema, ThreadDetailPageSchema, ThreadPageSchema } from '../contract'
 import type { MailroomGateway } from '../gateway'
 
 type Operation = 'getSession' | 'listMailboxes' | 'listThreads' | 'getThread'
@@ -20,13 +21,6 @@ const DEFAULTS: Record<Operation, string> = {
   getThread: 'thread_hostile_plaintext',
 }
 
-const SCHEMAS = {
-  getSession: SessionSchema,
-  listMailboxes: MailboxPageSchema,
-  listThreads: ThreadPageSchema,
-  getThread: ThreadDetailPageSchema,
-} as const
-
 interface Example {
   status: number
   body: unknown
@@ -38,24 +32,26 @@ function example(name: string): Example {
   return found
 }
 
-function resolve<O extends Operation>(operation: O, script: FixtureScript) {
+function resolve<S extends z.ZodType>(operation: Operation, script: FixtureScript, schema: S): z.output<S> {
   const name = script[operation] ?? DEFAULTS[operation]
   const data = example(name)
   if (data.status >= 400) {
-    const body = data.body as { code: ApiErrorCode; message: string; request_id: string }
+    const result = ErrorSchema.safeParse(data.body)
+    if (!result.success) throw new GatewayError('transport', 'malformed', `Fixture ${name} does not match the error contract.`)
+    const body = result.data
     throw new GatewayError('api', body.code, body.message, { status: data.status, requestId: body.request_id })
   }
-  // Fixture bodies pass the same runtime validation as HTTP responses (shared conformance, R2).
-  const parsed = SCHEMAS[operation].safeParse(data.body)
+  // AIDEV-NOTE: Passing each concrete schema preserves its output type and the HTTP boundary validation.
+  const parsed = schema.safeParse(data.body)
   if (!parsed.success) throw new GatewayError('transport', 'malformed', `Fixture ${name} does not match the contract.`)
   return parsed.data
 }
 
 export function createFixtureGateway(script: FixtureScript = {}): MailroomGateway {
   return {
-    getSession: async () => resolve('getSession', script),
-    listMailboxes: async () => resolve('listMailboxes', script),
-    listThreads: async () => resolve('listThreads', script),
-    getThread: async () => resolve('getThread', script),
+    getSession: async () => resolve('getSession', script, SessionSchema),
+    listMailboxes: async () => resolve('listMailboxes', script, MailboxPageSchema),
+    listThreads: async () => resolve('listThreads', script, ThreadPageSchema),
+    getThread: async () => resolve('getThread', script, ThreadDetailPageSchema),
   }
 }

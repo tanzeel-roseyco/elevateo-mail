@@ -1,0 +1,232 @@
+{
+  "task": "FE-01-R1",
+  "verified_utc": "2026-10-11T17:49:00.842624+00:00",
+  "purpose": "Artifact and design provenance integrity only; not repaired application test evidence.",
+  "status": "pass",
+  "application_head": "d7eac0791fd6483e47677fe8faa26c70a6522485",
+  "application_worktree_clean": true,
+  "frozen_brief_and_scenarios_unchanged": true,
+  "source_manifest_matches_external_frozen_manifest": true,
+  "collector_read_only_revalidation": {
+    "exit_code": 0,
+    "successful_exact_models": 3,
+    "failed_attempts": 0,
+    "identical_common_input": true,
+    "distinct_sessions": true,
+    "all_54_captured_full_bodies_verified": true
+  },
+  "persisted_opinion_and_prefix_bytes_verified": true,
+  "new_authored_markdown_lf_and_trailing_whitespace_checks": "pass",
+  "local_links_checked": [
+    {
+      "from": "synthesis.md",
+      "target": "source-manifest.json"
+    },
+    {
+      "from": "synthesis.md",
+      "target": "brief.md"
+    },
+    {
+      "from": "synthesis.md",
+      "target": "fable-5.opinion.md"
+    },
+    {
+      "from": "synthesis.md",
+      "target": "opus-5-5.opinion.md"
+    },
+    {
+      "from": "synthesis.md",
+      "target": "fable-5-1.opinion.md"
+    },
+    {
+      "from": "synthesis.md",
+      "target": "metadata.json"
+    },
+    {
+      "from": "synthesis.md",
+      "target": "failed-attempts.json"
+    },
+    {
+      "from": "synthesis.md",
+      "target": "decisions.md"
+    },
+    {
+      "from": "synthesis.md",
+      "target": "dispatch-brief.md"
+    },
+    {
+      "from": "synthesis.md",
+      "target": "tradeoff-scenarios.md"
+    },
+    {
+      "from": "synthesis.md",
+      "target": "dispatch-brief.md"
+    },
+    {
+      "from": "dispatch-brief.md",
+      "target": "brief.md"
+    },
+    {
+      "from": "dispatch-brief.md",
+      "target": "synthesis.md"
+    },
+    {
+      "from": "dispatch-brief.md",
+      "target": "decisions.md"
+    },
+    {
+      "from": "dispatch-brief.md",
+      "target": "brief.md#7-required-verification-matrix"
+    },
+    {
+      "from": "README.md",
+      "target": "brief.md"
+    },
+    {
+      "from": "README.md",
+      "target": "tradeoff-scenarios.md"
+    },
+    {
+      "from": "README.md",
+      "target": "fable-5.opinion.md"
+    },
+    {
+      "from": "README.md",
+      "target": "opus-5-5.opinion.md"
+    },
+    {
+      "from": "README.md",
+      "target": "fable-5-1.opinion.md"
+    },
+    {
+      "from": "README.md",
+      "target": "metadata.json"
+    },
+    {
+      "from": "README.md",
+      "target": "source-manifest.json"
+    },
+    {
+      "from": "README.md",
+      "target": "failed-attempts.json"
+    },
+    {
+      "from": "README.md",
+      "target": "synthesis.md"
+    },
+    {
+      "from": "README.md",
+      "target": "decisions.md"
+    },
+    {
+      "from": "README.md",
+      "target": "dispatch-brief.md"
+    },
+    {
+      "from": "README.md",
+      "target": "synthesis-metadata.json"
+    }
+  ],
+  "self_hash_policy": "This file excludes itself; its SHA-256 is supplied to root separately. README's link to this file is checked after creation.",
+  "external_harness": [
+    {
+      "path": "consult.py",
+      "bytes": 15136,
+      "sha256": "f74212e398136815ffdea764c3ada46b2456dc0ef90dc7c947d8bf657dea1cfe"
+    },
+    {
+      "path": "collect.py",
+      "bytes": 9499,
+      "sha256": "49eb9100fe95bae020f6494824b37348b0062d1f4d0a461ac30c26672f0456b1"
+    },
+    {
+      "path": "finalize.py",
+      "bytes": 9190,
+      "sha256": "9654039a163c67e57c9a08960c13c8a0556995df2b25c79e20ef83741121cce0"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "brief.md",
+      "bytes": 27831,
+      "sha256": "37be48f9a7f4d746a7219118308b6bdd6a17483b12dcbe19c305d345d01d4828"
+    },
+    {
+      "path": "decisions.md",
+      "bytes": 12358,
+      "sha256": "8e249cae2c51435ce117c6c7cf231a2a669700b9da8cfd44778c600f36ec19a8"
+    },
+    {
+      "path": "dispatch-brief.md",
+      "bytes": 16143,
+      "sha256": "3681de5a4dcf597cefc6dc6f88919cd1d4f6709afbc933cd4ffe5d92aa686a13"
+    },
+    {
+      "path": "fable-5-1.input-prefix.md",
+      "bytes": 1167,
+      "sha256": "e6f56f815e404920b7210b53bfd91169c99f083cafb3b9fb81d557c26bb49dbe"
+    },
+    {
+      "path": "fable-5-1.opinion.md",
+      "bytes": 11109,
+      "sha256": "4a4a50f81971879f7c92204dc2f958b4cbe72f6ebe8340456ada06e44de5d3bb"
+    },
+    {
+      "path": "fable-5.input-prefix.md",
+      "bytes": 1107,
+      "sha256": "8e11fdba558128fcee6f24a9f7cbc24f1290f3ff35759b1db09e4d1262338160"
+    },
+    {
+      "path": "fable-5.opinion.md",
+      "bytes": 13830,
+      "sha256": "8841e2da75cfcece54150939398d3ae14575c74c578cf06c51b54eb713450068"
+    },
+    {
+      "path": "failed-attempts.json",
+      "bytes": 43,
+      "sha256": "c8e262aef5b4ea950249a2e51c59927c7a3d0e2a877a21e5aa11ef682a2976bf"
+    },
+    {
+      "path": "metadata.json",
+      "bytes": 17927,
+      "sha256": "5add07a91e0999af019c862cc1bdd10c1955782c83a95a2c578c9184b56de8c7"
+    },
+    {
+      "path": "opus-5-5.input-prefix.md",
+      "bytes": 1161,
+      "sha256": "de53704faf61024d215d25b247a2f749b1ecac8f1b30a47e5d4923c9c72399d0"
+    },
+    {
+      "path": "opus-5-5.opinion.md",
+      "bytes": 12355,
+      "sha256": "f7a2ff775e13a6645ce74a40d56fff835bdb89fce69846b10b3443eaa782abe5"
+    },
+    {
+      "path": "README.md",
+      "bytes": 2790,
+      "sha256": "5612b3347cac18252f60cc19cd977ea09f8b67d45bd025e1bb466bddf8f21117"
+    },
+    {
+      "path": "source-manifest.json",
+      "bytes": 21511,
+      "sha256": "ff3752118ad67d5173ffad06d3e0103403ddbd95af1b83375c90503382920515"
+    },
+    {
+      "path": "synthesis-metadata.json",
+      "bytes": 5142,
+      "sha256": "9929b34574f98d25b9c4f403c093d4aa2abe1cc352b0dd064c6a3dd8fbcc6520"
+    },
+    {
+      "path": "synthesis.md",
+      "bytes": 12530,
+      "sha256": "b131b37d50379a4862c51602de05e26286474ac9f1aa9d7cfaa299112416981b"
+    },
+    {
+      "path": "tradeoff-scenarios.md",
+      "bytes": 8670,
+      "sha256": "c89453c2f84cabf55582e0fccfbe4486c7c3364ff26ccf53ce7cf92b4d275565"
+    }
+  ],
+  "application_checks_executed": false,
+  "acceptance_pending": true
+}

@@ -4,7 +4,7 @@ A planned shared company mailbox for approximately **10 people**, available on a
 
 ## Current state
 
-**FE-01 frontend authored as an unaccepted draft; compiler failures and review defects remain.** See the checkpoint record below.
+**FE-01-R1 data checkpoint passes types, 123 unit tests, API regeneration and build; lint and Fable UI repairs remain open.** See [stage A evidence](docs/evidence/fe-01-r1-data/README.md). No frontend or project acceptance is claimed.
 
 
 **Design and source intake complete; the first backend checkpoint is preserved in incomplete draft PR #5.** Resend and self-hosted Supabase are selected by the user. This update replaces the earlier assumption that the primary product is a campaign engine across 18 existing mailboxes. The expanded brief specifies nine addresses across one or two domains; actual addresses, inbox/alias boundaries and migration requirements remain unresolved.

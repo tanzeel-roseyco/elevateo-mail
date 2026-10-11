@@ -10,11 +10,34 @@ export const REQUEST_TIMEOUT_MS = 10_000
 
 export type FetchLike = (input: string, init: RequestInit) => Promise<Response>
 
-async function readBounded(response: Response, maxBytes: number): Promise<string> {
+async function untilAborted<T>(pending: Promise<T>, signal: AbortSignal): Promise<T> {
+  let onAbort = () => {}
+  const cancelled = new Promise<never>((_resolve, reject) => {
+    onAbort = () => reject(signal.reason)
+    signal.addEventListener('abort', onAbort, { once: true })
+    if (signal.aborted) onAbort()
+  })
+  try {
+    return await Promise.race([pending, cancelled])
+  } finally {
+    signal.removeEventListener('abort', onAbort)
+  }
+}
+
+function discardBody(body: ReadableStream<Uint8Array> | null): void {
+  // AIDEV-NOTE: Cleanup is best-effort and never awaited: a broken source must not mask or stall the outcome.
+  try {
+    if (body && !body.locked) void body.cancel().catch(() => undefined)
+  } catch {
+    // Injected streams may throw synchronously; preserve the classified request outcome.
+  }
+}
+
+async function readBounded(response: Response, maxBytes: number, signal: AbortSignal): Promise<string> {
   // AIDEV-NOTE: Always bound the stream; Content-Length alone is not trusted (R2 oversized case).
   const body = response.body
   if (!body) {
-    const text = await response.text()
+    const text = await untilAborted(response.text(), signal)
     if (new TextEncoder().encode(text).byteLength > maxBytes) throw new GatewayError('transport', 'oversized', 'Response exceeded its size limit.')
     return text
   }
@@ -22,17 +45,29 @@ async function readBounded(response: Response, maxBytes: number): Promise<string
   const decoder = new TextDecoder('utf-8')
   let received = 0
   let text = ''
-  for (;;) {
-    const { done, value } = await reader.read()
-    if (done) break
-    received += value.byteLength
-    if (received > maxBytes) {
-      await reader.cancel().catch(() => undefined)
-      throw new GatewayError('transport', 'oversized', 'Response exceeded its size limit.')
+  let complete = false
+  try {
+    for (;;) {
+      const { done, value } = await untilAborted(reader.read(), signal)
+      if (done) {
+        complete = true
+        break
+      }
+      received += value.byteLength
+      if (received > maxBytes) throw new GatewayError('transport', 'oversized', 'Response exceeded its size limit.')
+      text += decoder.decode(value, { stream: true })
     }
-    text += decoder.decode(value, { stream: true })
+    return text + decoder.decode()
+  } finally {
+    // AIDEV-NOTE: Attempt cancellation before release; injected cancellation must not mask the request error.
+    try {
+      if (!complete) void reader.cancel().catch(() => undefined)
+    } catch {
+      // Preserve the request outcome even when an injected reader throws synchronously.
+    } finally {
+      reader.releaseLock()
+    }
   }
-  return text + decoder.decode()
 }
 
 async function toApiError(response: Response, raw: string): Promise<GatewayError> {
@@ -62,36 +97,37 @@ export async function requestJson<S extends z.ZodType>(
   options: { headers?: Record<string, string>; signal?: AbortSignal | undefined; fetchImpl?: FetchLike },
 ): Promise<z.output<S>> {
   if (!path.startsWith('/v1/')) throw new GatewayError('transport', 'network', 'Only relative /v1 paths are allowed.')
+  if (options.signal?.aborted) throw new GatewayError('transport', 'aborted', 'The request was cancelled.')
   const fetchImpl = options.fetchImpl ?? ((input, init) => fetch(input, init))
   const controller = new AbortController()
   const timeout = setTimeout(() => controller.abort(new GatewayError('transport', 'timeout', 'The request timed out.')), REQUEST_TIMEOUT_MS)
   const onOuterAbort = () => controller.abort(new GatewayError('transport', 'aborted', 'The request was cancelled.'))
   options.signal?.addEventListener('abort', onOuterAbort, { once: true })
+  let response: Response | undefined
   try {
-    let response: Response
-    try {
-      response = await fetchImpl(path, {
+    // AIDEV-NOTE: Race both fetch and reads so even an abort-ignoring implementation obeys the same deadline.
+    const receivedResponse = await untilAborted(fetchImpl(path, {
         method: 'GET',
         credentials: 'same-origin',
         cache: 'no-store',
         redirect: 'manual',
         headers: { Accept: 'application/json', ...options.headers },
         signal: controller.signal,
-      })
-    } catch (cause) {
-      if (cause instanceof GatewayError) throw cause
-      if (controller.signal.aborted && controller.signal.reason instanceof GatewayError) throw controller.signal.reason
-      throw new GatewayError('transport', 'network', 'The server could not be reached.')
+      }).then((received) => {
+        response = received
+        // A fetch may resolve after the race has already rejected and run its outer finally.
+        if (controller.signal.aborted) discardBody(received.body)
+        return received
+      }), controller.signal)
+    if (receivedResponse.type === 'opaqueredirect' || (receivedResponse.status >= 300 && receivedResponse.status < 400)) {
+      throw new GatewayError('transport', 'redirected', 'Unexpected redirect was rejected.', { status: receivedResponse.status })
     }
-    if (response.type === 'opaqueredirect' || (response.status >= 300 && response.status < 400)) {
-      throw new GatewayError('transport', 'redirected', 'Unexpected redirect was rejected.', { status: response.status })
+    const contentType = receivedResponse.headers.get('Content-Type') ?? ''
+    if (contentType.split(';', 1)[0]?.trim().toLowerCase() !== 'application/json') {
+      throw new GatewayError('transport', 'wrong_content_type', 'The server returned a non-JSON response.', { status: receivedResponse.status })
     }
-    const contentType = response.headers.get('Content-Type') ?? ''
-    if (!contentType.toLowerCase().includes('application/json')) {
-      throw new GatewayError('transport', 'wrong_content_type', 'The server returned a non-JSON response.', { status: response.status })
-    }
-    if (!response.ok) throw await toApiError(response, await readBounded(response, MAX_BYTES.error))
-    const raw = await readBounded(response, maxBytes)
+    if (!receivedResponse.ok) throw await toApiError(receivedResponse, await readBounded(receivedResponse, MAX_BYTES.error, controller.signal))
+    const raw = await readBounded(receivedResponse, maxBytes, controller.signal)
     let parsed: unknown
     try {
       parsed = JSON.parse(raw)
@@ -101,8 +137,13 @@ export async function requestJson<S extends z.ZodType>(
     const result = schema.safeParse(parsed)
     if (!result.success) throw new GatewayError('transport', 'malformed', 'The server returned data that does not match the contract.')
     return result.data
+  } catch (cause) {
+    if (cause instanceof GatewayError) throw cause
+    if (controller.signal.aborted && controller.signal.reason instanceof GatewayError) throw controller.signal.reason
+    throw new GatewayError('transport', 'network', 'The server response could not be read.')
   } finally {
     clearTimeout(timeout)
     options.signal?.removeEventListener('abort', onOuterAbort)
+    if (response) discardBody(response.body)
   }
 }

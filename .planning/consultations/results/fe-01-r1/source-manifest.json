@@ -1,0 +1,520 @@
+{
+  "task": "FE-01-R1",
+  "issue": 8,
+  "source_base": "d7eac0791fd6483e47677fe8faa26c70a6522485",
+  "working_tree_head": "de874683a58a37204cc2d4b2d87219459f629d77",
+  "captured_utc": "2026-10-11T17:37:29.762875+00:00",
+  "runner_version": "2.1.296 (Claude Code)",
+  "runner_path": "C:\\Users\\Tanzeel\\.local\\bin\\claude.exe",
+  "brief_sha256": "37be48f9a7f4d746a7219118308b6bdd6a17483b12dcbe19c305d345d01d4828",
+  "common_sha256": "672442e890ac3fe4d92b05bdf9f5f541ef9141f73d90f95ff52d1c0cde0ab5f6",
+  "common_bytes": 518490,
+  "pinned_design_source_lines": 1474,
+  "design_context_is_not_review_coverage": true,
+  "source_files": [
+    {
+      "path": ".planning/consultations/shared-brief.md",
+      "kind": "working_tree_document",
+      "working_tree_head": "de874683a58a37204cc2d4b2d87219459f629d77",
+      "captured_utc": "2026-10-11T17:37:29.762875+00:00",
+      "sha256": "3895880fe89c255d3f00429fcd875e37bca64e55ac7e5b057bf1018b3c405bdd",
+      "bytes": 6237
+    },
+    {
+      "path": ".planning/consultations/results/fe-01-r1/brief.md",
+      "kind": "working_tree_document",
+      "working_tree_head": "de874683a58a37204cc2d4b2d87219459f629d77",
+      "captured_utc": "2026-10-11T17:37:29.762875+00:00",
+      "sha256": "37be48f9a7f4d746a7219118308b6bdd6a17483b12dcbe19c305d345d01d4828",
+      "bytes": 27831
+    },
+    {
+      "path": ".planning/consultations/results/fe-01-r1/tradeoff-scenarios.md",
+      "kind": "working_tree_document",
+      "working_tree_head": "de874683a58a37204cc2d4b2d87219459f629d77",
+      "captured_utc": "2026-10-11T17:37:29.762875+00:00",
+      "sha256": "c89453c2f84cabf55582e0fccfbe4486c7c3364ff26ccf53ce7cf92b4d275565",
+      "bytes": 8670
+    },
+    {
+      "path": "documentation.md",
+      "kind": "working_tree_document",
+      "working_tree_head": "de874683a58a37204cc2d4b2d87219459f629d77",
+      "captured_utc": "2026-10-11T17:37:29.762875+00:00",
+      "sha256": "7321e295d09c1bac5fbd08a0ef70e1a8a4b4b7edc8f23abfd1e4f8e8d0b6e182",
+      "bytes": 16529
+    },
+    {
+      "path": ".planning/POLYGLOT_ARCHITECTURE.md",
+      "kind": "working_tree_document",
+      "working_tree_head": "de874683a58a37204cc2d4b2d87219459f629d77",
+      "captured_utc": "2026-10-11T17:37:29.762875+00:00",
+      "sha256": "c8d3656cf7c8acc4a898c9a1603241b84ba9da254725856595c25be85ece2cea",
+      "bytes": 21799
+    },
+    {
+      "path": ".planning/CLIENTS_AND_CLI_CONNECTORS.md",
+      "kind": "working_tree_document",
+      "working_tree_head": "de874683a58a37204cc2d4b2d87219459f629d77",
+      "captured_utc": "2026-10-11T17:37:29.762875+00:00",
+      "sha256": "82c92e8c007de491709e5149df7031651028ad5b6272d5fc3713f9d6d0d55801",
+      "bytes": 18610
+    },
+    {
+      "path": ".planning/AGENT_ORCHESTRATION.md",
+      "kind": "working_tree_document",
+      "working_tree_head": "de874683a58a37204cc2d4b2d87219459f629d77",
+      "captured_utc": "2026-10-11T17:37:29.762875+00:00",
+      "sha256": "ccb27c98e654b636f33bd5acfd737902b5fd28f2a7d970c45add0cf40cb00ea7",
+      "bytes": 12348
+    },
+    {
+      "path": ".planning/MAIL_ACCOUNTS_AND_ACTIVATION.md",
+      "kind": "working_tree_document",
+      "working_tree_head": "de874683a58a37204cc2d4b2d87219459f629d77",
+      "captured_utc": "2026-10-11T17:37:29.762875+00:00",
+      "sha256": "9d759caa3ffb1430af0cf3b81a062a584122895fef659246d0c1f37d5028e9e9",
+      "bytes": 8034
+    },
+    {
+      "path": ".planning/TASK_BACKLOG.md",
+      "kind": "working_tree_document",
+      "working_tree_head": "de874683a58a37204cc2d4b2d87219459f629d77",
+      "captured_utc": "2026-10-11T17:37:29.762875+00:00",
+      "sha256": "aba7e19ad1640015e30210d9d37fbfc55410bc5819f0747d4e2ba075dbb7487e",
+      "bytes": 6095
+    },
+    {
+      "path": ".planning/research/reuse-market-scan.md",
+      "kind": "working_tree_document",
+      "working_tree_head": "de874683a58a37204cc2d4b2d87219459f629d77",
+      "captured_utc": "2026-10-11T17:37:29.762875+00:00",
+      "sha256": "6f798e4dfd837498cdc52aa1badd117c8c66d9298feb982d02f029bd6af83723",
+      "bytes": 28477
+    },
+    {
+      "path": "docs/component-adoption.md",
+      "kind": "working_tree_document",
+      "working_tree_head": "de874683a58a37204cc2d4b2d87219459f629d77",
+      "captured_utc": "2026-10-11T17:37:29.762875+00:00",
+      "sha256": "99cdcc56128a4c4ae0864d17c5f95fdf063c72b5f2112336ec9118810936f7e3",
+      "bytes": 10322
+    },
+    {
+      "path": "docs/contracts-and-reliability.md",
+      "kind": "working_tree_document",
+      "working_tree_head": "de874683a58a37204cc2d4b2d87219459f629d77",
+      "captured_utc": "2026-10-11T17:37:29.762875+00:00",
+      "sha256": "6834eee80f7bdfb9dd9437a3417e4a621554ec6f367530ed64fdd5b024a2a6d2",
+      "bytes": 11887
+    },
+    {
+      "path": "docs/local-completion-plan.md",
+      "kind": "working_tree_document",
+      "working_tree_head": "de874683a58a37204cc2d4b2d87219459f629d77",
+      "captured_utc": "2026-10-11T17:37:29.762875+00:00",
+      "sha256": "7e7355a889fd0a24bb62d80dbef752d67b761b7bd97ad4b2c5b8f699b9f5adfa",
+      "bytes": 25230
+    },
+    {
+      "path": "AGENTS.md",
+      "kind": "working_tree_document",
+      "working_tree_head": "de874683a58a37204cc2d4b2d87219459f629d77",
+      "captured_utc": "2026-10-11T17:37:29.762875+00:00",
+      "sha256": "33415df7f7cc5a595c45f5ef526744dd52a1d72d9d0a462fea8a9d9674d88971",
+      "bytes": 4279
+    },
+    {
+      "path": "LOCAL_BUILD_PROMPT.md",
+      "kind": "working_tree_document",
+      "working_tree_head": "de874683a58a37204cc2d4b2d87219459f629d77",
+      "captured_utc": "2026-10-11T17:37:29.762875+00:00",
+      "sha256": "7bc9ffe8a3e8556fbba5b78f123941827a9f4bcd5043af35ecd39736eb5041d7",
+      "bytes": 14417
+    },
+    {
+      "path": ".planning/STANDARDS.md",
+      "kind": "working_tree_document",
+      "working_tree_head": "de874683a58a37204cc2d4b2d87219459f629d77",
+      "captured_utc": "2026-10-11T17:37:29.762875+00:00",
+      "sha256": "7c01430086ed2dc263c8edcb1b2a9f41b572a23a11b36c1179be802e2874bd10",
+      "bytes": 7218
+    },
+    {
+      "path": "README.md",
+      "kind": "working_tree_document",
+      "working_tree_head": "de874683a58a37204cc2d4b2d87219459f629d77",
+      "captured_utc": "2026-10-11T17:37:29.762875+00:00",
+      "sha256": "19850a82243a00efffc08632a6e5a342e29a22647328b2572e0b663b7f69d559",
+      "bytes": 14525
+    },
+    {
+      "path": "state.md",
+      "kind": "working_tree_document",
+      "working_tree_head": "de874683a58a37204cc2d4b2d87219459f629d77",
+      "captured_utc": "2026-10-11T17:37:29.762875+00:00",
+      "sha256": "479b16156b348a4bb44227f9a0860358c3f80ccd794f67a74a665d21fc002ee5",
+      "bytes": 15066
+    },
+    {
+      "path": ".planning/consultations/README.md",
+      "kind": "working_tree_document",
+      "working_tree_head": "de874683a58a37204cc2d4b2d87219459f629d77",
+      "captured_utc": "2026-10-11T17:37:29.762875+00:00",
+      "sha256": "26c1665ea5220654ef84d7393272edf2ff66efae3e8534f3cd8851ad3c2e4338",
+      "bytes": 6500
+    },
+    {
+      "path": ".planning/consultations/results/fe-01/decisions.md",
+      "kind": "working_tree_document",
+      "working_tree_head": "de874683a58a37204cc2d4b2d87219459f629d77",
+      "captured_utc": "2026-10-11T17:37:29.762875+00:00",
+      "sha256": "3d83b5740c74fde3ec9255c67e3cfe6d8c8a6b590ca0077e301809875b309a3e",
+      "bytes": 9396
+    },
+    {
+      "path": ".planning/consultations/results/fe-01/synthesis.md",
+      "kind": "working_tree_document",
+      "working_tree_head": "de874683a58a37204cc2d4b2d87219459f629d77",
+      "captured_utc": "2026-10-11T17:37:29.762875+00:00",
+      "sha256": "21001e36991cdbd5158a3bd75c5d7a551dbcea415575eee2fb9f805ef6c0a699",
+      "bytes": 12939
+    },
+    {
+      "path": ".planning/consultations/results/fe-01/dispatch-brief.md",
+      "kind": "working_tree_document",
+      "working_tree_head": "de874683a58a37204cc2d4b2d87219459f629d77",
+      "captured_utc": "2026-10-11T17:37:29.762875+00:00",
+      "sha256": "2c08c690e59b8485cd30dcd3171bf2d656b0709f974d8c303d1a658e6bf0849f",
+      "bytes": 8841
+    },
+    {
+      "path": "code-reviews.md",
+      "kind": "pinned_contract_or_sanitized_evidence",
+      "commit": "d7eac0791fd6483e47677fe8faa26c70a6522485",
+      "git_blob": "b4ef181fb81b620d7ec77fb13725c5b2b2c59a2a",
+      "sha256": "7b7ee6be8fa9e50c2e7bad49193fec22cd00a0f4bed90a4e960f19ea24bb1d7a",
+      "bytes": 36524,
+      "lines": 269
+    },
+    {
+      "path": "docs/evidence/fe01-initial-review/review.md",
+      "kind": "pinned_contract_or_sanitized_evidence",
+      "commit": "d7eac0791fd6483e47677fe8faa26c70a6522485",
+      "git_blob": "820c6bdfc7c4547ae0ab420f6b3d1c828f2edb30",
+      "sha256": "47e59df52ed8e4945b9f49a2027a76260c2dbb8fb81a2057708f31b3e22c9639",
+      "bytes": 14953,
+      "lines": 115
+    },
+    {
+      "path": "docs/evidence/fe01-initial-review/source-manifest.json",
+      "kind": "pinned_contract_or_sanitized_evidence",
+      "commit": "d7eac0791fd6483e47677fe8faa26c70a6522485",
+      "git_blob": "a7df033d8d52ae081191d42fe9ee1a06e18367db",
+      "sha256": "141a3e23d1d19a091b279ed2df7b9a44a60b482c012829593ddce59c4ceaad7f",
+      "bytes": 7084,
+      "lines": 235
+    },
+    {
+      "path": "docs/evidence/fe01-initial-review/checkpoint-manifest.json",
+      "kind": "pinned_contract_or_sanitized_evidence",
+      "commit": "d7eac0791fd6483e47677fe8faa26c70a6522485",
+      "git_blob": "792af9818483194a1d7d35ad13954058ed9bd693",
+      "sha256": "18b6a9daab7c3b370603bd9d93f16b19cad1d12ef759b99580d64703891244d9",
+      "bytes": 7298,
+      "lines": 236
+    },
+    {
+      "path": "docs/evidence/fe01-initial-review/compiler.log",
+      "kind": "pinned_contract_or_sanitized_evidence",
+      "commit": "d7eac0791fd6483e47677fe8faa26c70a6522485",
+      "git_blob": "cdb77825a982e41dbd4f9e7fe9041b6e90097062",
+      "sha256": "d31e2a5a261b1926b375c262b3f2d7d9cf7326a476322a7aa77923e2fbfca6ad",
+      "bytes": 7916,
+      "lines": 46
+    },
+    {
+      "path": "docs/evidence/fe01-initial-review/unit-bundle.txt",
+      "kind": "pinned_contract_or_sanitized_evidence",
+      "commit": "d7eac0791fd6483e47677fe8faa26c70a6522485",
+      "git_blob": "4e766c95955bd43b7ab4bea88972702c3634a84e",
+      "sha256": "1b541fe25e540ef4956efa17e5b041beff9f1eac0af40abaa424ffe0e182c28c",
+      "bytes": 8764,
+      "lines": 345
+    },
+    {
+      "path": "contracts/v1/README.md",
+      "kind": "pinned_contract_or_sanitized_evidence",
+      "commit": "d7eac0791fd6483e47677fe8faa26c70a6522485",
+      "git_blob": "a78d8ff5fa2a132ea3f8ab564ccc425c1cdfcc86",
+      "sha256": "17d899805779a043d952be9fa8e894cc084ed758412b0c9c8d6ba01bab2bfc4e",
+      "bytes": 8248,
+      "lines": 39
+    },
+    {
+      "path": "contracts/v1/openapi.json",
+      "kind": "pinned_contract_or_sanitized_evidence",
+      "commit": "d7eac0791fd6483e47677fe8faa26c70a6522485",
+      "git_blob": "d4e2ea636304bb0a30c4d37722720d80c992e867",
+      "sha256": "94c5f31bc5d514fed420dcbcee2f6ce49bf4254e325000ea0794fe6a1140e8ca",
+      "bytes": 47227,
+      "lines": 1677
+    },
+    {
+      "path": "apps/web/README.md",
+      "kind": "pinned_contract_or_sanitized_evidence",
+      "commit": "d7eac0791fd6483e47677fe8faa26c70a6522485",
+      "git_blob": "5c9e21092dc86d9c7a316b504e72c67386059f8a",
+      "sha256": "d597930a6a4aeba40bcce1d2e08fe260020f41923685dae761e0b48f48657673",
+      "bytes": 4429,
+      "lines": 75
+    },
+    {
+      "path": "apps/web/PROVENANCE.md",
+      "kind": "pinned_contract_or_sanitized_evidence",
+      "commit": "d7eac0791fd6483e47677fe8faa26c70a6522485",
+      "git_blob": "0f18ae2a2b0d20bd5c9088256ca7eeea31afa70f",
+      "sha256": "a19591d14d725b5d8feb55ee784d9f55b6ab6a33d241de3bde144a97a611a41b",
+      "bytes": 2777,
+      "lines": 24
+    },
+    {
+      "path": "apps/web/src/app/session.tsx",
+      "kind": "pinned_design_source_context",
+      "commit": "d7eac0791fd6483e47677fe8faa26c70a6522485",
+      "git_blob": "c070b2fe085fb8e217805437701725820e2555d8",
+      "sha256": "85391e8dcc3b3ac1a3bd1c8da489a2f248f818d6ae896b8f46c8df1493359271",
+      "bytes": 5167,
+      "lines": 138
+    },
+    {
+      "path": "apps/web/src/app/scope.ts",
+      "kind": "pinned_design_source_context",
+      "commit": "d7eac0791fd6483e47677fe8faa26c70a6522485",
+      "git_blob": "f67bdb840fa00d7804ff6ddd7a4e0e2c0f0e3606",
+      "sha256": "39912ced3b9ad7e4a6006e501ad809f29b2c2d3235ec254e9d6e58e029b459ce",
+      "bytes": 580,
+      "lines": 21
+    },
+    {
+      "path": "apps/web/src/data/gateway.ts",
+      "kind": "pinned_design_source_context",
+      "commit": "d7eac0791fd6483e47677fe8faa26c70a6522485",
+      "git_blob": "5333e0697b25a4e07ba6a05bf1ff8460b26f8d2b",
+      "sha256": "00ba496e845bdc804a49163a0a189c8a94c48e6626a41061ef7e22e8ca5ce26e",
+      "bytes": 930,
+      "lines": 22
+    },
+    {
+      "path": "apps/web/src/data/errors.ts",
+      "kind": "pinned_design_source_context",
+      "commit": "d7eac0791fd6483e47677fe8faa26c70a6522485",
+      "git_blob": "53c6891cfffd7d40ac4ee63475b6c2437022ea33",
+      "sha256": "b05e8a230cac33f7b62c7126ccf8d5b748d4468b154457cff5c599cd21d1b7fd",
+      "bytes": 1303,
+      "lines": 36
+    },
+    {
+      "path": "apps/web/src/data/http/transport.ts",
+      "kind": "pinned_design_source_context",
+      "commit": "d7eac0791fd6483e47677fe8faa26c70a6522485",
+      "git_blob": "b99be7fe6d097bac1c92f89998b328971ea2ae95",
+      "sha256": "e54951c2c80028197499f67de1fe40ba4c465a68effc4b4387d4056915afbc69",
+      "bytes": 5299,
+      "lines": 108
+    },
+    {
+      "path": "apps/web/src/data/http/httpGateway.ts",
+      "kind": "pinned_design_source_context",
+      "commit": "d7eac0791fd6483e47677fe8faa26c70a6522485",
+      "git_blob": "1506d75803b5e817ce125f9cf9c3b7b74118dd9d",
+      "sha256": "afef45bc4eba42f185ebcfd646684121ac32e12b825fc747cc8311745868d8c8",
+      "bytes": 2058,
+      "lines": 43
+    },
+    {
+      "path": "apps/web/src/data/fixtures/fixtureGateway.ts",
+      "kind": "pinned_design_source_context",
+      "commit": "d7eac0791fd6483e47677fe8faa26c70a6522485",
+      "git_blob": "374c50a244c54f12c17a57fb2cc37bf82ed7b109",
+      "sha256": "c5bb2b3d8f86e05ea8a92badcfcd9b4ea64bd7f45d15788dad520fe9d3882ef1",
+      "bytes": 2420,
+      "lines": 61
+    },
+    {
+      "path": "apps/web/src/app/App.tsx",
+      "kind": "pinned_design_source_context",
+      "commit": "d7eac0791fd6483e47677fe8faa26c70a6522485",
+      "git_blob": "c93b59ebf28be5f7363ddf477d68986484ab0d13",
+      "sha256": "309b883b07f1b1293618eafdb871aa244f2e440e084be31685a92cc0e0173804",
+      "bytes": 1177,
+      "lines": 26
+    },
+    {
+      "path": "apps/web/src/app/Shell.tsx",
+      "kind": "pinned_design_source_context",
+      "commit": "d7eac0791fd6483e47677fe8faa26c70a6522485",
+      "git_blob": "c83528fcdc766cbf532464d663cc3b8c17457ba0",
+      "sha256": "32bc540fcc5d87850030c60b593834f15c8d2139452a7c8807bdf44124fdd465",
+      "bytes": 6050,
+      "lines": 138
+    },
+    {
+      "path": "apps/web/src/app/Sidebar.tsx",
+      "kind": "pinned_design_source_context",
+      "commit": "d7eac0791fd6483e47677fe8faa26c70a6522485",
+      "git_blob": "34331c59c85976e69baec24c400f652e249c9ca1",
+      "sha256": "01712705e6e087660c29ae8a0a44ca4a8ccf1c2eed55bbc62ebab711f800a761",
+      "bytes": 2812,
+      "lines": 59
+    },
+    {
+      "path": "apps/web/src/features/inbox/InboxPage.tsx",
+      "kind": "pinned_design_source_context",
+      "commit": "d7eac0791fd6483e47677fe8faa26c70a6522485",
+      "git_blob": "c08cd960bdfe08a6699b8018495e7d8bc35db3da",
+      "sha256": "0cf49e174cdc9a9b22ffe6ad2c105316216e98bab5205b28325e22763bfecac9",
+      "bytes": 8096,
+      "lines": 161
+    },
+    {
+      "path": "apps/web/src/features/thread/ThreadPage.tsx",
+      "kind": "pinned_design_source_context",
+      "commit": "d7eac0791fd6483e47677fe8faa26c70a6522485",
+      "git_blob": "6423188494ca5a1e98d8551d4160ccc37dabd3d2",
+      "sha256": "a2716bafc06b2265db17f1f1b1bf72655b354cbcbabef77d9b4d45a66f9bc9ca",
+      "bytes": 7516,
+      "lines": 156
+    },
+    {
+      "path": "apps/web/src/app/session.test.tsx",
+      "kind": "pinned_design_source_context",
+      "commit": "d7eac0791fd6483e47677fe8faa26c70a6522485",
+      "git_blob": "d8c21ad4b6ddb4fdd2b5aca5f52232ece4f60dca",
+      "sha256": "cb1a1596f54912bd14fd58470a310c8fd52f0235c90b21563e1444e0713ccf62",
+      "bytes": 3927,
+      "lines": 95
+    },
+    {
+      "path": "apps/web/src/features/thread/ThreadPage.test.tsx",
+      "kind": "pinned_design_source_context",
+      "commit": "d7eac0791fd6483e47677fe8faa26c70a6522485",
+      "git_blob": "140f6ebeff77b66bb8d39f3ec30af2c6ea8ed836",
+      "sha256": "14aa29b7c4f3a65a72c50c4c848ac55f8c5c958bd763aa01fca275b1e2c4f720",
+      "bytes": 2624,
+      "lines": 57
+    },
+    {
+      "path": "apps/web/src/styles/index.css",
+      "kind": "pinned_design_source_context",
+      "commit": "d7eac0791fd6483e47677fe8faa26c70a6522485",
+      "git_blob": "aae83bf71fcc53cb954c88b81525e8f3526fd74f",
+      "sha256": "df98d381bd8f05b9686c32506ae86ed3133b74295906b0b705409705168a0913",
+      "bytes": 3062,
+      "lines": 126
+    },
+    {
+      "path": "apps/web/src/ui/Async.tsx",
+      "kind": "pinned_design_source_context",
+      "commit": "d7eac0791fd6483e47677fe8faa26c70a6522485",
+      "git_blob": "9ba8775dc18bbe919ec5ef3196ece6658a017ea0",
+      "sha256": "d9464aa937a57b6163de13dd247beaa5735a53a27a532fce8dc2c97acd518f64",
+      "bytes": 1778,
+      "lines": 41
+    },
+    {
+      "path": "apps/web/vite.config.ts",
+      "kind": "pinned_design_source_context",
+      "commit": "d7eac0791fd6483e47677fe8faa26c70a6522485",
+      "git_blob": "021efb0e1596b74db430b05c82802164fad31071",
+      "sha256": "8673adabec73b526208bf175093589061c3bdb492784a04179968a92546120ce",
+      "bytes": 1115,
+      "lines": 31
+    },
+    {
+      "path": "apps/web/tsconfig.json",
+      "kind": "pinned_design_source_context",
+      "commit": "d7eac0791fd6483e47677fe8faa26c70a6522485",
+      "git_blob": "bb4ae76a981f788f0b852e548a205062abd80fa7",
+      "sha256": "77c5d7b4c9545e373c84262cd56dcca5c91c6ea5ae4d572634ac50646ebe6508",
+      "bytes": 695,
+      "lines": 24
+    },
+    {
+      "path": "apps/web/package.json",
+      "kind": "pinned_design_source_context",
+      "commit": "d7eac0791fd6483e47677fe8faa26c70a6522485",
+      "git_blob": "9fc49a728194518b166a6d3d8d4b0ab0212d58bf",
+      "sha256": "e24754d75b4764b7d830209a2ebad972785d32148cdbdbcf50cf2e773aee9599",
+      "bytes": 1357,
+      "lines": 40
+    },
+    {
+      "path": "apps/web/playwright.config.ts",
+      "kind": "pinned_design_source_context",
+      "commit": "d7eac0791fd6483e47677fe8faa26c70a6522485",
+      "git_blob": "88f198014350f0ae34c20a45ee225a4ff6021eeb",
+      "sha256": "8fd383b7fa802e1e9ff94e28cec0db29fac8bbd2d9b9dae860d74b857a074ef8",
+      "bytes": 983,
+      "lines": 26
+    },
+    {
+      "path": "apps/web/docker/test.Dockerfile",
+      "kind": "pinned_design_source_context",
+      "commit": "d7eac0791fd6483e47677fe8faa26c70a6522485",
+      "git_blob": "c5faae3e794a4c60e62913d67bfc37dad08968a6",
+      "sha256": "1a01a210dfaa134c0a456bffd4d7aafeb51200989100363cc8112d81319d9647",
+      "bytes": 1038,
+      "lines": 18
+    },
+    {
+      "path": "apps/web/e2e/read.spec.ts",
+      "kind": "pinned_design_source_context",
+      "commit": "d7eac0791fd6483e47677fe8faa26c70a6522485",
+      "git_blob": "f57d7af92042246be66a7b166763a265732198df",
+      "sha256": "a390546c06b9dd75f37afd4fac11cdf880b6c045f3dd9c10339263aceaffcc35",
+      "bytes": 2323,
+      "lines": 47
+    }
+  ],
+  "consultations": [
+    {
+      "name": "fable-5",
+      "model": "claude-fable-5",
+      "focus_path": ".planning/consultations/fable-5.md",
+      "focus_sha256": "8f2ddb6f9916650a8f8cb93c98e9e7cddaff7f44751e42460cb81b97ac11fc11",
+      "prefix_sha256": "8e11fdba558128fcee6f24a9f7cbc24f1290f3ff35759b1db09e4d1262338160",
+      "input_sha256": "553e12341e33afe16a312b31b6f46da3b158262d952959283bebb43f5b55792c",
+      "input_bytes": 519597,
+      "common_sha256": "672442e890ac3fe4d92b05bdf9f5f541ef9141f73d90f95ff52d1c0cde0ab5f6"
+    },
+    {
+      "name": "opus-5-5",
+      "model": "claude-opus-5-5",
+      "focus_path": ".planning/consultations/opus-5-5.md",
+      "focus_sha256": "b0ae63e509cf23ed7283e0962a6305dfcb607d77f619047096203ddc83911704",
+      "prefix_sha256": "de53704faf61024d215d25b247a2f749b1ecac8f1b30a47e5d4923c9c72399d0",
+      "input_sha256": "bdce388eca07190b57959277295ea4f78b184bae203c5fbc63460bbb99514305",
+      "input_bytes": 519651,
+      "common_sha256": "672442e890ac3fe4d92b05bdf9f5f541ef9141f73d90f95ff52d1c0cde0ab5f6"
+    },
+    {
+      "name": "fable-5-1",
+      "model": "claude-fable-5-1",
+      "focus_path": ".planning/consultations/fable-5-1.md",
+      "focus_sha256": "95d740050c77d242a452bc20b82313928426df11747658a02848411d0e3ff5cc",
+      "prefix_sha256": "e6f56f815e404920b7210b53bfd91169c99f083cafb3b9fb81d557c26bb49dbe",
+      "input_sha256": "36e79b976155f5c2811803fa15b40dedda0a099d37713b4f7439a893e61fa6c2",
+      "input_bytes": 519657,
+      "common_sha256": "672442e890ac3fe4d92b05bdf9f5f541ef9141f73d90f95ff52d1c0cde0ab5f6"
+    }
+  ],
+  "effort": "low",
+  "max_budget_usd_each": 6,
+  "budget_caveat": "SDK threshold, not a hard bill cap",
+  "timeout_seconds_each": 600,
+  "tools": [],
+  "safe_mode": true,
+  "fresh_processes": true,
+  "disclosed_omissions": "Unrelated source, generated api.d.ts and lockfile bodies, raw logs and earlier independent opinion outputs omitted. Committed manifests capture all app source identity. No omitted body was reviewed by these design opinions."
+}

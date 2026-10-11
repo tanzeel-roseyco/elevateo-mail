@@ -267,3 +267,12 @@ API regeneration passed. Strict compilation failed on FE-R12 and FE-R15. Unit te
 All task test containers were automatically removed. The task-owned Node image (332 MB reported image size) was removed; Docker reports zero containers and zero build cache. Pre-existing Playwright/Python images and nine persistent volumes were preserved. Host free space was only 1.42 GB after cleanup; virtual-disk reclaim remains under investigation, so no host-space recovery is claimed.
 
 FE-R17 P2: SessionProvider tests omit DOM cleanup; retained renders make three tests fail before their intended assertions. Final unique review coverage remains 2,133 lines: 17 code/test defects (7.97 per 1,000), two documentation defects and one lint acceptance gap, 20 combined findings (9.38 per 1,000). No failures have been repaired yet.
+
+
+### FE-01-R1 stage A independent review
+
+Final data source/test coverage: transport149, transport tests133, cancellation tests91, fixture57+49, setup5, conformance167, contract118 =769 unique final lines. One P2 synchronous-cancel cleanup defect was found, reproduced by two failing cases, fixed and re-reviewed (149lines, zero new defects); deduplicated discovery density1.30/1,000 final lines. Temporary compiler/test issues were caught during coordinator runs and corrected; they are not additional independent-review findings. All113 data tests now pass on pinned Node.
+
+Coordinator config review113lines, zero defects (0/1,000); app README/provenance59lines, zero confirmed defects (0/1,000). Combined final scoped review941unique lines, one independently discovered defect (1.06/1,000), now regression-verified. Generated declarations are checked by regeneration and lock by resolver/audit, not line review. Full reviewer rubric applied; formatting delegated to lint. Dedicated accepted Astra MAX design remains under coordinator .planning/consultations/results/fe-01-r1; Obsidian unavailable, no connected simulation claimed.
+
+Coverage gaps remain: exact supplementary-Unicode counting semantics, each adapter's caller-signal propagation, exact timer boundary, production runtime isolation, session/identity/cursor/UI repairs and visual QA. Contract tests use BMP characters for an unambiguous limit. No suite overclaim closes these gates. Config lint fails on the Fable-owned unused session import. Historical FE findings remain in prior ledger; this is a separate repair checkpoint rather than a reset of totals.

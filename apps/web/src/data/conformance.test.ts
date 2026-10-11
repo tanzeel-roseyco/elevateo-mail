@@ -58,7 +58,7 @@ describe.each(BOTH)('shared cases via %s gateway', (_label, make) => {
     expect(detail.next_cursor).toBe('synthetic_next_cursor_2')
     expect(detail.messages[0]?.body_truncated).toBe(true)
   })
-  it.each(['unauthenticated', 'not_available', 'context_changed', 'cursor_invalid', 'rate_limited', 'temporarily_unavailable', 'internal_error'] as const)(
+  it.each(['unauthenticated', 'not_available', 'context_changed', 'cursor_invalid', 'request_invalid', 'rate_limited', 'temporarily_unavailable', 'internal_error'] as const)(
     'stable %s error surfaces its code',
     async (code) => {
       const error = await make(code).getSession().catch((e: unknown) => e)
@@ -66,6 +66,45 @@ describe.each(BOTH)('shared cases via %s gateway', (_label, make) => {
       expect((error as GatewayError).kind).toBe('api')
       expect((error as GatewayError).code).toBe(code)
       expect((error as GatewayError).requestId).toBe('fixture-request-001')
+      expect((error as GatewayError).status).toBe(examples[code]!.status)
+    },
+  )
+})
+
+// AIDEV-NOTE: These assertions pin the wire boundary for all operations without claiming real Rails integration.
+describe('HTTP request contract', () => {
+  it('preserves paths, opaque queries, context headers and same-origin GET options', async () => {
+    const seen: Array<{ path: string; init: RequestInit }> = []
+    const names = ['session_a', 'mailboxes', 'threads', 'thread_empty']
+    const gateway = createHttpGateway(async (path, init) => {
+      seen.push({ path, init })
+      return jsonResponse(names[seen.length - 1]!)
+    })
+    const caller = new AbortController()
+    const cursor = 'opaque +/&=?'
+    await gateway.getSession(caller.signal)
+    await gateway.listMailboxes(CTX, { cursor, limit: 50 }, caller.signal)
+    await gateway.listThreads(CTX, 'mail/box', { cursor, limit: 50, filter: 'unread' }, caller.signal)
+    await gateway.getThread(CTX, 'thread/id', 'mail/box', { cursor, limit: 20 }, caller.signal)
+    expect(seen[0]?.path).toBe('/v1/session')
+    expect(seen[1]?.path).toBe('/v1/mailboxes?cursor=opaque+%2B%2F%26%3D%3F&limit=50')
+    expect(seen[2]?.path).toBe('/v1/mailboxes/mail%2Fbox/threads?cursor=opaque+%2B%2F%26%3D%3F&limit=50&filter=unread')
+    expect(seen[3]?.path).toBe('/v1/threads/thread%2Fid?mailbox_id=mail%2Fbox&cursor=opaque+%2B%2F%26%3D%3F&limit=20')
+    seen.forEach(({ init }, index) => {
+      expect(init).toMatchObject({ method: 'GET', credentials: 'same-origin', cache: 'no-store', redirect: 'manual' })
+      expect(init.signal?.aborted).toBe(false)
+      expect(init.headers).toEqual(index === 0 ? { Accept: 'application/json' } : {
+        Accept: 'application/json', 'X-Session-Context': CTX.contextId, 'X-Authorization-Version': CTX.authorizationVersion,
+      })
+    })
+  })
+
+  it.each([['1', 1], ['300', 300], ['0', undefined], ['301', undefined], ['garbage', undefined]] as const)(
+    'bounds Retry-After %s', async (value, expected) => {
+      const response = jsonResponse('rate_limited')
+      response.headers.set('Retry-After', value)
+      const error: unknown = await httpWith(() => response).getSession().catch((cause: unknown) => cause)
+      expect(error).toMatchObject({ code: 'rate_limited', status: 429, retryAfterSeconds: expected })
     },
   )
 })

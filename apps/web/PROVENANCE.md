@@ -3,8 +3,8 @@
 Source: user's first-party Ledger frontend, commit `4322cfbb639a383c4e8d940f2dbb019a9832e977`,
 supplied as the coordinator's read-only export (`ElevateoCoordinator/fe01-source-4322cfb`). Blob
 IDs are from docs/research/frontend-reuse-audit.md. First-party code; no third-party notices were
-attached to these files in the export. Dependency licenses are covered by the coordinator's lock
-audit, not this ledger.
+attached to these files in the export. Declared dependency licenses are inventoried separately in
+`docs/evidence/fe-01-r1-data/lock-license-inventory.json`; vulnerability audit results do not establish license review.
 
 | Destination | Source path (blob) | Modifications |
 |---|---|---|
@@ -22,3 +22,7 @@ markers, `richText.ts`, composer/send lifecycle, Zustand, Tauri tooling, lucide-
 First-party new files: `src/ui/icons.tsx`, `src/app/scope.ts`, `src/app/session.tsx`,
 `src/data/*` (except transport behavior noted above), `src/features/thread/ThreadPage.tsx`,
 entries, configs and tests.
+
+## FE-01-R1 data repair
+
+Astra LOW updated transport lifecycle cleanup, strict JSON media-type handling and operation-specific fixture validation under the accepted repair dispatch. Coordinator added pinned Node declarations/lint tooling and shared test cleanup wiring. Source/test hashes and Docker evidence are in `docs/evidence/fe-01-r1-data`. This changes the adapted behavior described above without changing its first-party provenance.

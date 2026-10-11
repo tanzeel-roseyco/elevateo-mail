@@ -9,10 +9,9 @@ COPY contracts/v1 ./contracts/v1
 COPY apps/web ./apps/web
 
 WORKDIR /workspace/apps/web
-# The coordinator resolves and commits package-lock.json first; npm ci enforces it offline-stable.
+# AIDEV-NOTE: npm ci enforces the committed resolution; installation still needs registry access.
 RUN npm ci
 
-# R1 regeneration check, strict typecheck, unit/integration tests, then a production build whose
-# output must contain no fixture entry or fixture data (verified by the grep below; the negative
-# runtime test lives in conformance.test.ts).
-CMD ["bash", "-ceu", "npm run check:api && npm run typecheck && npm run test -- --coverage && npm run build && ! grep -rl 'dev-fixtures\\|Development fixtures\\|fixture_token_a' dist"]
+# Regeneration, lint, types and tests precede the production bundle marker check.
+# AIDEV-NOTE: Bundle markers alone do not prove runtime fixture isolation; browser QA is separate.
+CMD ["bash", "-ceu", "npm run check:api && npm run lint && npm run typecheck && npm run test -- --coverage && npm run build && ! grep -rl 'dev-fixtures\\|Development fixtures\\|fixture_token_a' dist"]

@@ -1,0 +1,80 @@
+{
+  "base": "d7eac0791fd6483e47677fe8faa26c70a6522485",
+  "files": [
+    {
+      "path": "apps/web/src/data/http/transport.ts",
+      "bytes": 7311,
+      "sha256": "c931e842f5698d9119fda32ff601b98ff7aa2917684dafa01e9c727d35b1c151"
+    },
+    {
+      "path": "apps/web/src/data/http/transport.test.ts",
+      "bytes": 6787,
+      "sha256": "c7b23999f6974be5cb2b512d6a83d65f4ff9b63f090a83d45c354498d914ded5"
+    },
+    {
+      "path": "apps/web/src/data/http/transport-cancellation.test.ts",
+      "bytes": 4666,
+      "sha256": "cbb76a366a1710af5ab20704e0021256862d757296977e1c8905d5fd8050c8bb"
+    },
+    {
+      "path": "apps/web/src/data/fixtures/fixtureGateway.ts",
+      "bytes": 2545,
+      "sha256": "c552d7e36568871b002306a7461aed144b926c5ba9ff080d2a072349523f0e54"
+    },
+    {
+      "path": "apps/web/src/data/fixtures/fixtureGateway.test.ts",
+      "bytes": 2767,
+      "sha256": "cf5d5a6591447164d88884c0a0d338bd8eb103f90bf8d676bdd7cd8088feab17"
+    },
+    {
+      "path": "apps/web/src/data/conformance.test.ts",
+      "bytes": 9087,
+      "sha256": "a90735adfd93be3a64c41b2e67a498b637a3009f9ef176a21e3e62bdb9717b33"
+    },
+    {
+      "path": "apps/web/src/data/contract.test.ts",
+      "bytes": 6155,
+      "sha256": "bd7814b90bacbcb7d1fd1e04faad5ac999e3b2ca104975e31ab7686894fad8c1"
+    },
+    {
+      "path": "apps/web/src/test/setup.ts",
+      "bytes": 212,
+      "sha256": "236346a5886e734049d4a320d5906d086eb23e381fdb2ccca52556e3e302ff0a"
+    },
+    {
+      "path": "apps/web/package.json",
+      "bytes": 1631,
+      "sha256": "c0d00fd7bd50ebc4792991d741da553eec80ffeb5a50ec0363282008f74b0001"
+    },
+    {
+      "path": "apps/web/package-lock.json",
+      "bytes": 211046,
+      "sha256": "ae1899908955eb45002e8793bcc66b919d9fe0a11a73f6963c0e5493297e3daf"
+    },
+    {
+      "path": "apps/web/eslint.config.js",
+      "bytes": 630,
+      "sha256": "64b814d8f55ecd8ea85ae905f7f15b5debab5d9e6f5520afbf6f3e33408fcb67"
+    },
+    {
+      "path": "apps/web/vite.config.ts",
+      "bytes": 1258,
+      "sha256": "6007669cd75afe6213ff16e59b933e78e4048d906697d19f0512f0726b95f178"
+    },
+    {
+      "path": "apps/web/docker/test.Dockerfile",
+      "bytes": 1007,
+      "sha256": "e4d752317a68f2dd702f8f539d1e18657072c0ca0f9b48a3d1575f7c538a6c5b"
+    },
+    {
+      "path": "apps/web/src/data/generated/api.d.ts",
+      "bytes": 24641,
+      "sha256": "a72fac903d5bacd8872d5d21501db474ccb40937e79a26213578cdce195ee51d"
+    },
+    {
+      "path": "contracts/v1/openapi.json",
+      "bytes": 47227,
+      "sha256": "94c5f31bc5d514fed420dcbcee2f6ce49bf4254e325000ea0794fe6a1140e8ca"
+    }
+  ]
+}

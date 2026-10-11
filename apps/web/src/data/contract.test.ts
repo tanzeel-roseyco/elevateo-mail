@@ -3,7 +3,6 @@
 import { describe, expect, it } from 'vitest'
 import type { z } from 'zod'
 import fixtures from '../../../../contracts/v1/fixtures.json'
-import type { components } from './generated/api'
 import {
   ErrorSchema,
   MailboxPageSchema,
@@ -25,7 +24,6 @@ const _threadPage: Mutual<z.infer<typeof ThreadPageSchema>, ThreadPage> = true
 const _detail: Mutual<z.infer<typeof ThreadDetailPageSchema>, ThreadDetailPage> = true
 const _error: Mutual<z.infer<typeof ErrorSchema>, ApiError> = true
 void [_session, _mailboxPage, _threadPage, _detail, _error]
-type _componentsUsed = components['schemas']['Mailbox']
 
 const examples = fixtures.examples as Record<string, { status: number; body: unknown }>
 
@@ -58,7 +56,8 @@ describe('malformed payloads are rejected', () => {
     expect(SessionSchema.safeParse({ ...session, surprise: 1 }).success).toBe(false)
   })
   it('rejects a missing csrf_token', () => {
-    const { csrf_token: _omit, ...rest } = session
+    const rest = { ...session }
+    delete rest.csrf_token
     expect(SessionSchema.safeParse(rest).success).toBe(false)
   })
   it('rejects simulation_mode false', () => {
@@ -81,5 +80,39 @@ describe('malformed payloads are rejected', () => {
   })
   it('rejects an unknown error code', () => {
     expect(ErrorSchema.safeParse({ code: 'mystery', message: 'x', request_id: 'r1' }).success).toBe(false)
+  })
+})
+
+// AIDEV-NOTE: Pin the 16,384-character schema limit with BMP Unicode; transport separately bounds UTF-8 bytes.
+describe('exact contract boundaries', () => {
+  it.each([50, 51])('mailbox page entry limit: %i', (count) => {
+    const page = structuredClone(fixtures.examples.mailboxes.body)
+    page.items = Array.from({ length: count }, () => structuredClone(page.items[0]!))
+    expect(MailboxPageSchema.safeParse(page).success).toBe(count === 50)
+  })
+  it.each([20, 21])('message page entry limit: %i', (count) => {
+    const page = structuredClone(fixtures.examples.thread_truncated.body)
+    page.messages = Array.from({ length: count }, () => structuredClone(page.messages[0]!))
+    expect(ThreadDetailPageSchema.safeParse(page).success).toBe(count === 20)
+  })
+  it.each([16384, 16385])('Unicode message character bound: %i characters', (count) => {
+    const page = structuredClone(fixtures.examples.thread_truncated.body)
+    page.messages[0]!.body_text = '\u00e9'.repeat(count)
+    expect(ThreadDetailPageSchema.safeParse(page).success).toBe(count === 16384)
+  })
+  it('rejects malformed actor IDs and timestamps', () => {
+    const session = structuredClone(fixtures.examples.session_a.body)
+    session.actor.id = 'not-a-uuid'
+    expect(SessionSchema.safeParse(session).success).toBe(false)
+    const page = structuredClone(fixtures.examples.thread_truncated.body)
+    expect(ThreadDetailPageSchema.safeParse({ ...page, messages: [{ ...page.messages[0]!, sent_at: 'yesterday' }] }).success).toBe(false)
+  })
+  it('accepts nested nullable fields but rejects null collections and required objects', () => {
+    const page = structuredClone(fixtures.examples.thread_truncated.body)
+    const message = page.messages[0]!
+    expect(ThreadDetailPageSchema.safeParse({ ...page, messages: [{ ...message, sender: null, sent_at: null, to: [{ address: null, display_name: null }] }] }).success).toBe(true)
+    expect(ThreadDetailPageSchema.safeParse({ ...page, messages: null }).success).toBe(false)
+    expect(ThreadDetailPageSchema.safeParse({ ...page, thread: null }).success).toBe(false)
+    expect(ThreadDetailPageSchema.safeParse({ ...page, messages: [{ ...message, to: [null] }] }).success).toBe(false)
   })
 })
