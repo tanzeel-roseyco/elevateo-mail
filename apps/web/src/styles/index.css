@@ -81,6 +81,20 @@
   --accent-soft: color-mix(in srgb, var(--accent) 14%, var(--surface));
 }
 
+/* AIDEV-NOTE: FE-R14 — the light-theme gold (#7a6218) is too dark against dark surfaces. Calculated
+   WCAG ratios for #e3c35c: 8.8:1 on --surface #25262a, 7.7:1 on --surface-2 #2f3035, ≥6.9:1 on the
+   dark --accent-soft mix; light theme keeps #7a6218 (5.9:1 on #ffffff). Browser-measured computed
+   contrast in both themes remains a coordinator acceptance gate. */
+[data-theme="dark"] {
+  --accent-text: #e3c35c;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --accent-text: #e3c35c;
+  }
+}
+
 html,
 body,
 #root {

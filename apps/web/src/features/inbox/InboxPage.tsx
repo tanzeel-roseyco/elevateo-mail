@@ -2,11 +2,12 @@
 // URL mailbox selection and paged summary/detail separation adapted from first-party Ledger
 // frontend 4322cfbb, src/features/live/LiveInboxPage.tsx (blob 54b1284b…); old Gmail/history
 // wiring, permission assumptions and account cache keys are replaced by the FE-01 contract.
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { Link, useParams, useSearchParams } from 'react-router'
-import type { ThreadSummary } from '@/data/contract'
+import type { ThreadPage, ThreadSummary } from '@/data/contract'
 import { GatewayError, isApiError } from '@/data/errors'
 import { useGateway, useSession } from '@/app/session'
+import { newTraversalBudget, readPage } from '@/lib/readPage'
 import { cx, formatWhen } from '@/lib/format'
 import { Badge } from '@/ui/Badge'
 import { Button } from '@/ui/Button'
@@ -23,55 +24,76 @@ export function InboxPage() {
   const [searchParams] = useSearchParams()
   const rawFilter = searchParams.get('filter')
   const filter = rawFilter === 'unread' ? 'unread' : 'all'
+  if (mailboxId === undefined) return null
+  // AIDEV-NOTE: Resource owner key (D3): list state, traversal budget and in-flight controller live
+  // in a component keyed by mailbox+filter, so a changed resource begins with fresh loading state
+  // in its first committed render and unmount cleanup aborts the old traversal at that commit.
+  // Clearing state in a passive effect is insufficient: it would show the old rows under the new
+  // URL for a frame and let an old completion landing before cleanup pass isCurrent.
+  return <MailboxThreadList key={`${mailboxId}\n${filter}`} mailboxId={mailboxId} filter={filter} />
+}
+
+function MailboxThreadList({ mailboxId, filter }: { mailboxId: string; filter: 'all' | 'unread' }) {
   const gateway = useGateway()
   const { scope, context, handleError } = useSession()
   const [state, setState] = useState<ListState>({ status: 'loading' })
-  // AIDEV-NOTE: One cursor reset per load sequence (R4); repeated cursor_invalid needs explicit retry.
+  // AIDEV-NOTE: One traversal budget shared by the initial load and every continuation; only a
+  // fresh traversal (initial load, mailbox/filter change, explicit retry) renews it (D4, FE-R08).
+  const budgetRef = useRef(newTraversalBudget())
   const abortRef = useRef<AbortController | null>(null)
   const listRef = useRef<HTMLOListElement | null>(null)
 
   const load = useCallback(
     (cursor: string | undefined, append: boolean) => {
-      if (!context || mailboxId === undefined) return
-      // Mailbox/filter changes re-run the effect below, abort this controller and bump nothing
-      // globally: the captured generation plus the aborted controller reject late responses.
+      if (!context) return
+      // Mailbox/filter changes remount this keyed owner, whose unmount cleanup aborts; within one
+      // resource, explicit retry and continuations abort the prior controller here. The captured
+      // generation plus the controller reject late responses that ignore abort.
       const generation = scope.current()
       abortRef.current?.abort()
       const controller = new AbortController()
       abortRef.current = controller
+      const isCurrent = () => scope.isCurrent(generation) && !controller.signal.aborted
+      if (!append) budgetRef.current = newTraversalBudget()
       if (append) setState((prev) => (prev.status === 'ready' ? { ...prev, loadingMore: true } : prev))
       else setState({ status: 'loading' })
 
-      const run = async (requestCursor: string | undefined, cursorResetUsed: boolean): Promise<void> => {
-        try {
-          const page = await gateway.listThreads(
+      void readPage<ThreadPage>({
+        read: (requestCursor) =>
+          gateway.listThreads(
             context,
             mailboxId,
             requestCursor === undefined ? { filter } : { filter, cursor: requestCursor },
             controller.signal,
-          )
-          if (!scope.isCurrent(generation) || controller.signal.aborted) return
-          setState((prev) => {
-            const existing = append && prev.status === 'ready' ? prev.items : []
-            // Concurrent updates may reorder summaries; deduplicate by thread id.
-            const seen = new Set(existing.map((t) => t.id))
-            const merged = [...existing, ...page.items.filter((t) => !seen.has(t.id))]
-            return { status: 'ready', items: merged, nextCursor: page.next_cursor, loadingMore: false }
-          })
-        } catch (error) {
-          if (controller.signal.aborted || handleError(error, generation)) return
-          if (isApiError(error, 'cursor_invalid') && requestCursor !== undefined && !cursorResetUsed) {
-            await run(undefined, true) // reset to first page once, retaining the URL filter
-            return
-          }
-          if (isApiError(error, 'not_available')) {
+          ),
+        cursor,
+        budget: budgetRef.current,
+        isCurrent,
+      }).then((outcome) => {
+        // Post-await ownership is caller-owned by the readPage contract: a deferred response from a
+        // gateway that ignores abort must not apply success or failure to a newer mailbox/filter.
+        if (outcome.kind === 'stale' || !isCurrent()) return
+        if (outcome.kind === 'failed') {
+          if (handleError(outcome.error, generation)) return
+          if (isApiError(outcome.error, 'not_available')) {
             setState({ status: 'unavailable' })
             return
           }
-          setState({ status: 'error', message: error instanceof GatewayError ? error.message : 'Conversations could not be loaded.' })
+          setState({
+            status: 'error',
+            message: outcome.error instanceof GatewayError ? outcome.error.message : 'Conversations could not be loaded.',
+          })
+          return
         }
-      }
-      void run(cursor, false)
+        setState((prev) => {
+          // A reset replaces accumulated rows with the fresh first page (FE-R08); otherwise an
+          // append merges. Concurrent updates may reorder summaries; deduplicate by thread id.
+          const existing = append && !outcome.replace && prev.status === 'ready' ? prev.items : []
+          const seen = new Set(existing.map((t) => t.id))
+          const merged = [...existing, ...outcome.page.items.filter((t) => !seen.has(t.id))]
+          return { status: 'ready', items: merged, nextCursor: outcome.page.next_cursor, loadingMore: false }
+        })
+      })
     },
     [gateway, context, mailboxId, filter, scope, handleError],
   )
@@ -80,6 +102,11 @@ export function InboxPage() {
     load(undefined, false)
     return () => abortRef.current?.abort()
   }, [load])
+
+  // Abort synchronously in the unmounting commit: passive cleanups flush after paint, so a late
+  // completion could otherwise pass isCurrent (same generation, not yet aborted) in that window
+  // and reach handleError. Abort supplements ownership checks (D3).
+  useLayoutEffect(() => () => abortRef.current?.abort(), [])
 
   // Roving focus with arrow keys over the conversation links.
   const onListKeyDown = (event: React.KeyboardEvent) => {
@@ -92,7 +119,8 @@ export function InboxPage() {
     event.preventDefault()
   }
 
-  if (mailboxId === undefined) return null
+  // The active filter travels into the reader so its back link can restore this view (FE-R11).
+  const filterSuffix = filter === 'unread' ? '?filter=unread' : ''
   return (
     <section aria-label="Conversations" className="mx-auto max-w-3xl p-3">
       <div className="mb-2 flex items-center gap-2 px-1">
@@ -119,34 +147,41 @@ export function InboxPage() {
           <EmptyState title="Conversations could not be loaded" body={state.message} action={<Button variant="primary" onClick={() => load(undefined, false)}>Try again</Button>} />
         </div>
       )}
-      {state.status === 'ready' && state.items.length === 0 && (
-        <EmptyState title={filter === 'unread' ? 'No unread conversations' : 'No conversations'} body="This mailbox has nothing to show for the current filter." />
-      )}
-      {state.status === 'ready' && state.items.length > 0 && (
+      {state.status === 'ready' && (
         <>
-          <ol ref={listRef} onKeyDown={onListKeyDown} className="divide-y divide-line rounded-lg border border-line bg-surface">
-            {state.items.map((thread) => (
-              <li key={thread.id}>
-                <Link
-                  data-thread
-                  to={`/mailboxes/${mailboxId}/threads/${thread.id}`}
-                  className="row flex items-baseline gap-3 px-3 hover:bg-surface-2"
-                >
-                  <span className={cx('min-w-0 flex-1 truncate text-sm', thread.unread && 'font-semibold')}>
-                    {thread.sender?.display_name ?? thread.sender?.address ?? 'Unknown sender'}
-                    <span className="text-muted"> — </span>
-                    {thread.subject ?? '(no subject)'}
-                    {thread.subject_truncated && <span title="Subject shortened">…</span>}
-                  </span>
-                  <span className="hidden max-w-[18rem] truncate text-[13px] text-muted sm:inline">{thread.preview_text}</span>
-                  {thread.unread && <Badge tone="accent">Unread</Badge>}
-                  <span className="shrink-0 text-[12px] tabular-nums text-muted">
-                    {thread.last_message_at === null ? 'No date' : formatWhen(thread.last_message_at)}
-                  </span>
-                </Link>
-              </li>
-            ))}
-          </ol>
+          {/* An empty page with a continuation cursor is not a terminal empty mailbox (FE-R09). */}
+          {state.items.length === 0 && state.nextCursor === null && (
+            <EmptyState title={filter === 'unread' ? 'No unread conversations' : 'No conversations'} body="This mailbox has nothing to show for the current filter." />
+          )}
+          {state.items.length === 0 && state.nextCursor !== null && (
+            <EmptyState title="Nothing on this page" body="This page of results was empty, but more conversations may be available below." />
+          )}
+          {state.items.length > 0 && (
+            <ol ref={listRef} onKeyDown={onListKeyDown} className="divide-y divide-line rounded-lg border border-line bg-surface">
+              {state.items.map((thread) => (
+                <li key={thread.id}>
+                  <Link
+                    data-thread
+                    to={`/mailboxes/${mailboxId}/threads/${thread.id}${filterSuffix}`}
+                    className="row flex items-baseline gap-3 px-3 hover:bg-surface-2"
+                  >
+                    <span className={cx('min-w-0 flex-1 truncate text-sm', thread.unread && 'font-semibold')}>
+                      {thread.sender?.display_name ?? thread.sender?.address ?? 'Unknown sender'}
+                      <span className="text-muted"> — </span>
+                      {thread.subject ?? '(no subject)'}
+                      {thread.subject_truncated && <span title="Subject shortened">…</span>}
+                    </span>
+                    <span className="hidden max-w-[18rem] truncate text-[13px] text-muted sm:inline">{thread.preview_text}</span>
+                    {thread.unread && <Badge tone="accent">Unread</Badge>}
+                    <span className="shrink-0 text-[12px] tabular-nums text-muted">
+                      {thread.last_message_at === null ? 'No date' : formatWhen(thread.last_message_at)}
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ol>
+          )}
+          {/* Continuation depends on next_cursor, never on the row count (D4, FE-R09). */}
           {state.nextCursor !== null && (
             <div className="mt-2 flex justify-center">
               <Button size="sm" disabled={state.loadingMore} onClick={() => load(state.nextCursor ?? undefined, true)}>

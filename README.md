@@ -4,6 +4,8 @@ A planned shared company mailbox for approximately **10 people**, available on a
 
 ## Current state
 
+Frontend review checkpoint: Fable authored session freshness, recovery, pagination, responsive shell, resource-owned navigation and regression repairs. The user requested at most two Claude CLI ultrareviews; this frontend is prioritized on review/ultra/frontend-reader against ce95e89. Review findings, current-source Docker checks and actual visual validation are pending. Earlier 123-test results cover only the data checkpoint and do not accept this source. No production publication or live mail occurred.
+
 **FE-01-R1 data checkpoint passes types, 123 unit tests, API regeneration and build; lint and Fable UI repairs remain open.** See [stage A evidence](docs/evidence/fe-01-r1-data/README.md). No frontend or project acceptance is claimed.
 
 

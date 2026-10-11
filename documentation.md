@@ -1,5 +1,7 @@
 # Product requirements and decision record
 
+Frontend review checkpoint: Fable authored session freshness, recovery, pagination, responsive shell, resource-owned navigation and regression repairs. The user requested at most two Claude CLI ultrareviews; this frontend is prioritized on review/ultra/frontend-reader against ce95e89. Review findings, current-source Docker checks and actual visual validation are pending. Earlier 123-test results cover only the data checkpoint and do not accept this source. No production publication or live mail occurred.
+
 Design date: 2026-10-11; expanded planning revision: 2026-10-12. This document supersedes the earlier planning assumption of 18 connected outreach mailboxes. It does not erase the original requirement for consent-based sending.
 
 Execution update 2026-10-12: the user has directed autonomous local completion. Initial exact-model consultations succeeded on base `103baeb0`; results are under `.planning/consultations/results/initial-plan`. Official Devin MCP has verified repository access and Docker. Application implementation and acceptance remain pending; initial planning opinions do not authorize skipping per-task gates. Message rendering remains text-only under the current conversation's explicit frontend rule. Production activation and live mail remain separate.

@@ -1,5 +1,7 @@
 # Current execution state
 
+Frontend review checkpoint: Fable authored session freshness, recovery, pagination, responsive shell, resource-owned navigation and regression repairs. The user requested at most two Claude CLI ultrareviews; this frontend is prioritized on review/ultra/frontend-reader against ce95e89. Review findings, current-source Docker checks and actual visual validation are pending. Earlier 123-test results cover only the data checkpoint and do not accept this source. No production publication or live mail occurred.
+
 Updated 2026-10-12. Canonical detailed state: [state.md](../state.md).
 
 - Isolated checkout: Elevateo Mail - Local Completion; branch feature/local-completion; base 103baeb042925badbbc50dc0d3d3bfbf09ce8344.

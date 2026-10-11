@@ -278,3 +278,8 @@ Coordinator config review113lines, zero defects (0/1,000); app README/provenance
 Coverage gaps remain: exact supplementary-Unicode counting semantics, each adapter's caller-signal propagation, exact timer boundary, production runtime isolation, session/identity/cursor/UI repairs and visual QA. Contract tests use BMP characters for an unambiguous limit. No suite overclaim closes these gates. Config lint fails on the Fable-owned unused session import. Historical FE findings remain in prior ledger; this is a separate repair checkpoint rather than a reset of totals.
 
 Final provenance wording re-review: 28 documentation lines, 0 defects, 0/KLOC; SHA256 2ff233b774f1d74048fc777fad7a5abbb07a9244827f0ef7f891aefc4a83cd9e. Prior 24-line provenance review is superseded; no additional code LOC counted.
+
+
+## Claude CLI ultrareview checkpoint (2026-10-12)
+
+The user authorized a maximum of two ultrareviews across frontend and backend. Frontend source will be frozen on review/ultra/frontend-reader, with ce95e89 as the explicit base. Review launch/results are pending at this checkpoint. New ultrareview defects: not yet known; reviewed-line count and defect density are unavailable until results. Earlier review counts remain historical evidence. Current UI tests and actual visual validation remain pending.

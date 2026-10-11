@@ -1,11 +1,12 @@
 // Paginated plaintext conversation reader. Escaped-text-in-<pre> presentation follows the audited
 // first-party live reader; no HTML, Markdown, autolinks, remote images or attachment fetching.
 // A read never marks mail read (GET-only contract).
-import { useCallback, useEffect, useRef, useState } from 'react'
-import { Link, useParams } from 'react-router'
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { Link, useParams, useSearchParams } from 'react-router'
 import type { Message, ThreadDetailPage } from '@/data/contract'
 import { GatewayError, isApiError } from '@/data/errors'
 import { useGateway, useSession } from '@/app/session'
+import { newTraversalBudget, readPage } from '@/lib/readPage'
 import { formatDateTime } from '@/lib/format'
 import { Badge } from '@/ui/Badge'
 import { Button } from '@/ui/Button'
@@ -25,57 +26,85 @@ function sameAddressLine(message: Message): string {
 
 export function ThreadPage() {
   const { mailboxId, threadId } = useParams<{ mailboxId: string; threadId: string }>()
+  if (mailboxId === undefined || threadId === undefined) return null
+  // AIDEV-NOTE: Resource owner key (D3): reader state, traversal budget and in-flight controller
+  // live in a component keyed by mailboxId+threadId, so a changed conversation begins with fresh
+  // loading state in its first committed render and unmount cleanup aborts the old traversal at
+  // that commit. Clearing state in a passive effect is insufficient: the same actor navigating
+  // A->B would see A's subject/messages under B's URL for a frame, and an A completion landing
+  // before cleanup could pass isCurrent. The filter is presentational (back link only), so it
+  // stays outside the key and must not remount the reader.
+  return <ConversationReader key={`${mailboxId}\n${threadId}`} mailboxId={mailboxId} threadId={threadId} />
+}
+
+function ConversationReader({ mailboxId, threadId }: { mailboxId: string; threadId: string }) {
+  const [searchParams] = useSearchParams()
+  // Normalized like the inbox: anything but 'unread' is 'all', and 'all' stays out of the URL.
+  const filter = searchParams.get('filter') === 'unread' ? 'unread' : 'all'
   const gateway = useGateway()
   const { scope, context, handleError } = useSession()
   const [state, setState] = useState<ReaderState>({ status: 'loading' })
+  // AIDEV-NOTE: One traversal budget for the whole conversation read; continuations share it and
+  // a second invalid cursor surfaces manual retry instead of another automatic reset (D4, FE-R10).
+  const budgetRef = useRef(newTraversalBudget())
   const abortRef = useRef<AbortController | null>(null)
   const headingRef = useRef<HTMLHeadingElement | null>(null)
 
   const load = useCallback(
     (cursor: string | undefined, append: boolean) => {
-      if (!context || mailboxId === undefined || threadId === undefined) return
+      if (!context) return
+      // Thread changes remount this keyed owner, whose unmount cleanup aborts; within one
+      // conversation, explicit retry and continuations abort the prior controller here.
       const generation = scope.current()
       abortRef.current?.abort()
       const controller = new AbortController()
       abortRef.current = controller
+      const isCurrent = () => scope.isCurrent(generation) && !controller.signal.aborted
+      if (!append) budgetRef.current = newTraversalBudget()
       if (append) setState((prev) => (prev.status === 'ready' ? { ...prev, loadingMore: true } : prev))
       else setState({ status: 'loading' })
 
-      const run = async (requestCursor: string | undefined, cursorResetUsed: boolean): Promise<void> => {
-        try {
-          const page = await gateway.getThread(
+      void readPage<ThreadDetailPage>({
+        read: (requestCursor) =>
+          gateway.getThread(
             context,
             threadId,
             mailboxId,
             requestCursor === undefined ? {} : { cursor: requestCursor },
             controller.signal,
-          )
-          if (!scope.isCurrent(generation) || controller.signal.aborted) return
-          setState((prev) => {
-            const existing = append && prev.status === 'ready' ? prev.messages : []
-            const seen = new Set(existing.map((m) => m.id))
-            return {
-              status: 'ready',
-              thread: page.thread,
-              messages: [...existing, ...page.messages.filter((m) => !seen.has(m.id))],
-              nextCursor: page.next_cursor,
-              loadingMore: false,
-            }
-          })
-        } catch (error) {
-          if (controller.signal.aborted || handleError(error, generation)) return
-          if (isApiError(error, 'cursor_invalid') && requestCursor !== undefined && !cursorResetUsed) {
-            await run(undefined, true)
-            return
-          }
-          if (isApiError(error, 'not_available')) {
+          ),
+        cursor,
+        budget: budgetRef.current,
+        isCurrent,
+      }).then((outcome) => {
+        // Post-await ownership is caller-owned by the readPage contract: a deferred response from a
+        // gateway that ignores abort must not apply success or failure to a newer thread (FE-R10).
+        if (outcome.kind === 'stale' || !isCurrent()) return
+        if (outcome.kind === 'failed') {
+          if (handleError(outcome.error, generation)) return
+          if (isApiError(outcome.error, 'not_available')) {
             setState({ status: 'unavailable' })
             return
           }
-          setState({ status: 'error', message: error instanceof GatewayError ? error.message : 'The conversation could not be loaded.' })
+          setState({
+            status: 'error',
+            message: outcome.error instanceof GatewayError ? outcome.error.message : 'The conversation could not be loaded.',
+          })
+          return
         }
-      }
-      void run(cursor, false)
+        setState((prev) => {
+          // A reset replaces accumulated messages with the fresh first page (FE-R10).
+          const existing = append && !outcome.replace && prev.status === 'ready' ? prev.messages : []
+          const seen = new Set(existing.map((m) => m.id))
+          return {
+            status: 'ready',
+            thread: outcome.page.thread,
+            messages: [...existing, ...outcome.page.messages.filter((m) => !seen.has(m.id))],
+            nextCursor: outcome.page.next_cursor,
+            loadingMore: false,
+          }
+        })
+      })
     },
     [gateway, context, mailboxId, threadId, scope, handleError],
   )
@@ -85,16 +114,22 @@ export function ThreadPage() {
     return () => abortRef.current?.abort()
   }, [load])
 
+  // Abort synchronously in the unmounting commit: passive cleanups flush after paint, so a late
+  // completion could otherwise pass isCurrent (same generation, not yet aborted) in that window
+  // and reach handleError. Abort supplements ownership checks (D3).
+  useLayoutEffect(() => () => abortRef.current?.abort(), [])
+
   // Move focus to the conversation heading once loaded so keyboard reading starts at the content.
   useEffect(() => {
     if (state.status === 'ready') headingRef.current?.focus()
   }, [state.status])
 
-  if (mailboxId === undefined || threadId === undefined) return null
+  // The back link restores the inbox exactly as it was filtered when the user left it (FE-R11).
+  const backTo = `/mailboxes/${mailboxId}${filter === 'unread' ? '?filter=unread' : ''}`
   return (
     <article aria-label="Conversation" className="mx-auto max-w-3xl p-3">
       <div className="mb-2 flex items-center gap-2">
-        <Link to={`/mailboxes/${mailboxId}`} className="inline-flex items-center gap-1 rounded-lg px-2 py-1 text-[13px] text-fg hover:bg-surface-2">
+        <Link to={backTo} className="inline-flex items-center gap-1 rounded-lg px-2 py-1 text-[13px] text-fg hover:bg-surface-2">
           <BackIcon className="size-4" /> Back to conversations
         </Link>
       </div>
@@ -116,7 +151,13 @@ export function ThreadPage() {
           <p className="mb-3 text-[12px] text-muted">
             {state.thread.message_count} message{state.thread.message_count === 1 ? '' : 's'} in this conversation
           </p>
-          {state.messages.length === 0 && <EmptyState title="No messages" body="This conversation exists but has no readable messages yet." />}
+          {/* An empty page with a continuation cursor is not a terminal empty conversation (D4). */}
+          {state.messages.length === 0 && state.nextCursor === null && (
+            <EmptyState title="No messages" body="This conversation exists but has no readable messages yet." />
+          )}
+          {state.messages.length === 0 && state.nextCursor !== null && (
+            <EmptyState title="Nothing on this page" body="This page of the conversation was empty, but more messages may be available below." />
+          )}
           <ol className="flex flex-col gap-3">
             {state.messages.map((message) => (
               <li key={message.id} className="rounded-lg border border-line bg-surface p-3">
