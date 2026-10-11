@@ -1,0 +1,15 @@
+#!/bin/sh
+# Thin wrapper: all lifecycle logic lives in compose.yaml / ops/compose.secrets.yaml.
+set -eu
+cd "$(dirname "$0")/.."
+dc() { docker compose -f compose.yaml --env-file ops/local/.env "$@"; }
+case "${1:-}" in
+  bootstrap) docker compose -f ops/compose.secrets.yaml run --rm secrets
+             dc build api && dc up -d --wait db && dc run --rm bootstrap ;;
+  up)        dc up -d --wait db auth rest storage mailpit api worker ;;
+  migrate)   dc run --rm migrate ;;
+  seed)      dc run --rm seed ;;
+  check)     dc run --rm check ;;
+  stop)      dc stop ;;
+  *) echo "usage: scripts/dev {bootstrap|up|migrate|seed|check|stop}" >&2; exit 2 ;;
+esac

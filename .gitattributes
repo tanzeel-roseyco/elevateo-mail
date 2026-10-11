@@ -1,2 +1,8 @@
 third_party/upstream/** -text linguist-vendored
 third_party/manifests/*.json linguist-generated
+*.sh text eol=lf
+scripts/dev text eol=lf
+apps/server/bin/* text eol=lf
+ops/**/*.sql text eol=lf
+ops/**/*.rb text eol=lf
+*.ps1 text eol=crlf

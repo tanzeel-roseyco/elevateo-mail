@@ -1,10 +1,11 @@
 # Project state
 
 Updated: 2026-10-12.
-Status: **autonomous local completion in progress; initial architecture accepted, BE-01 exact-model opinions complete and synthesis underway; application implementation pending**.
+Status: **autonomous local completion in progress; BE-01 design accepted; BE-01 implementation checkpoint A partial on draft branch `devin/backend/be-01`; BE-01 incomplete**.
 
 ## Current execution evidence
 
+- BE-01 (Devin session 257567ddf6b743c8b9dad365f52e3f99, base `5ae9771`): checkpoint A partially implemented and committed to a draft PR. A01, A05, A11 and A13 are partial; A02 and A04 passed their listed cases; A03, A06-A10, A12 and A14 were not run; A15 ran on Linux only, with no Windows run; A16 is partial. Blockers: the `seed`/`check` Compose services, fixture role, Auth admin seed, Storage adapter, RBS/Steep/lint/tests, SBOM/advisories and a `pg_dump` structure-dump tool do not exist yet. Persistent local volumes and ignored credentials are retained. The coordinator observed no Devin credit/usage figure.
 - Active clean checkout: `Elevateo Mail - Local Completion`, branch `feature/local-completion`, base `103baeb042925badbbc50dc0d3d3bfbf09ce8344`. Original and sibling frontend/backend/integration workspaces are preserved.
 - Claude CLI 2.1.296 returned successful independent `claude-fable-5`, `claude-opus-5-5` and `claude-fable-5-1` opinions with matching runtime model identities. See `.planning/consultations/results/initial-plan/metadata.json`. Earlier failures below describe historical attempts.
 - Actual `gpt-6-astra` MAX initial synthesis completed as `/root/plan_synthesis`; see `docs/decisions/0002-local-architecture.md`. Every later bounded implementation task still needs its own three opinions and synthesis.

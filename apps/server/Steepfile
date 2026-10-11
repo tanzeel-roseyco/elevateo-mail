@@ -1,0 +1,12 @@
+# frozen_string_literal: true
+
+target :app do
+  signature "sig"
+  check "lib/elevateo"
+  check "app/controllers"
+  library "uri", "net-http"
+  configure_code_diagnostics(Steep::Diagnostic::Ruby.strict) do |hash|
+    # Rails controller DSL/framework seams are untyped; see sig/rails_seams.rbs.
+    hash[Steep::Diagnostic::Ruby::UnknownConstant] = :error
+  end
+end

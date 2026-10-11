@@ -8,3 +8,9 @@ coverage/
 .DS_Store
 Thumbs.db
 scripts/__pycache__/
+ops/local/*
+!ops/local/.gitignore
+apps/server/log/*
+apps/server/tmp/*
+!apps/server/log/.keep
+!apps/server/tmp/.keep
