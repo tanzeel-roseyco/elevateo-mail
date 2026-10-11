@@ -1,5 +1,7 @@
 # Product requirements and decision record
 
+Latest runtime checkpoint: BE-01-R1 heartbeat passed (2 tests), egress passed (9 tests, one PowerShell skip), and secrets could not load in the partial harness. [Raw evidence](docs/evidence/be-01-r1-ops-result/README.md) records the failed batch and cleanup. Devin balance is $4.20 remaining with $0.00 on-demand. Fable continuation session `44db3665-c21c-45f2-872b-e62917d7fb1f` is running; frontend source remains incomplete and unaccepted.
+
 Design date: 2026-10-11; expanded planning revision: 2026-10-12. This document supersedes the earlier planning assumption of 18 connected outreach mailboxes. It does not erase the original requirement for consent-based sending.
 
 Execution update 2026-10-12: the user has directed autonomous local completion. Initial exact-model consultations succeeded on base `103baeb0`; results are under `.planning/consultations/results/initial-plan`. Official Devin MCP has verified repository access and Docker. Application implementation and acceptance remain pending; initial planning opinions do not authorize skipping per-task gates. Message rendering remains text-only under the current conversation's explicit frontend rule. Production activation and live mail remain separate.

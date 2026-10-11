@@ -1,0 +1,19 @@
+{
+  "session_id": "44db3665-c21c-45f2-872b-e62917d7fb1f",
+  "model": "claude-fable-5",
+  "cli_version": "2.1.296",
+  "tools": [
+    "Edit",
+    "Glob",
+    "Grep",
+    "Read",
+    "Write"
+  ],
+  "mcp_servers": [],
+  "status": "running; intermediate source unaccepted",
+  "previous_session": "b878fb94-6e40-482d-9b26-1e39f8e98920",
+  "previous_outcome": "stopped near CLI session budget after session.tsx and readPage.ts only",
+  "previous_estimated_cost_usd": 9.849013,
+  "billing_note": "CLI estimate is separate from Devin credit; no billing changes",
+  "prompt_sha256": "adf896b079e6e718adb9b1c84fa09424bc7bcd3feae24276945c105e126dbd87"
+}

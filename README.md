@@ -4,6 +4,8 @@ A planned shared company mailbox for approximately **10 people**, available on a
 
 ## Current state
 
+Latest runtime checkpoint: BE-01-R1 heartbeat passed (2 tests), egress passed (9 tests, one PowerShell skip), and secrets could not load in the partial harness. [Raw evidence](docs/evidence/be-01-r1-ops-result/README.md) records the failed batch and cleanup. Devin balance is $4.20 remaining with $0.00 on-demand. Fable continuation session `44db3665-c21c-45f2-872b-e62917d7fb1f` is running; frontend source remains incomplete and unaccepted.
+
 BE-01-R1 reviewed source checkpoint `5785eba` is available on its repair branch; Devin is running bounded ops-only Docker verification. Runtime acceptance remains pending.
 
 **Repair work continues:** frontend data passes123unit tests/types/API regeneration/build at handoff79387b1; Fable UI repair and backend guard/migration review are in progress. Devin's successful grantor probe is archived; last balance is $5.17 with $0 on-demand. No end-to-end acceptance. See state.md and docs/evidence/be-01-r1-probe-result.

@@ -1,5 +1,7 @@
 # Project state
 
+Latest runtime checkpoint: BE-01-R1 heartbeat passed (2 tests), egress passed (9 tests, one PowerShell skip), and secrets could not load in the partial harness. [Raw evidence](docs/evidence/be-01-r1-ops-result/README.md) records the failed batch and cleanup. Devin balance is $4.20 remaining with $0.00 on-demand. Fable continuation session `44db3665-c21c-45f2-872b-e62917d7fb1f` is running; frontend source remains incomplete and unaccepted.
+
 Updated: 2026-10-12.
 Status: **autonomous local completion in progress; initial architecture and BE-01 task design accepted; Devin partial draft preserved and suspended; FE-01 design accepted, authored draft unaccepted**.
 

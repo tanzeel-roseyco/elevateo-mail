@@ -1,5 +1,7 @@
 # Current execution state
 
+Latest runtime checkpoint: BE-01-R1 heartbeat passed (2 tests), egress passed (9 tests, one PowerShell skip), and secrets could not load in the partial harness. [Raw evidence](../docs/evidence/be-01-r1-ops-result/README.md) records the failed batch and cleanup. Devin balance is $4.20 remaining with $0.00 on-demand. Fable continuation session `44db3665-c21c-45f2-872b-e62917d7fb1f` is running; frontend source remains incomplete and unaccepted.
+
 Updated 2026-10-12. Canonical detailed state: [state.md](../state.md).
 
 - Isolated checkout: Elevateo Mail - Local Completion; branch feature/local-completion; base 103baeb042925badbbc50dc0d3d3bfbf09ce8344.
