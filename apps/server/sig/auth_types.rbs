@@ -1,0 +1,44 @@
+module Elevateo
+  # AIDEV-NOTE: External JSON narrows from this recursive type; credentials never enter a public Session representation.
+  type auth_value = nil | bool | String | Integer | Float | Array[auth_value] | Hash[String, auth_value]
+  type auth_object = Hash[String, auth_value]
+  type session_argument = String | Integer | bool | nil
+
+  interface _AuthConfig
+    def session_key: () -> String
+    def cursor_signing_key: () -> String
+    def browser_origin: () -> String
+    def auth_url: () -> String
+    def auth_jwt_issuer: () -> String
+    def auth_jwt_audience: () -> String
+    def auth_jwt_algorithm: () -> String
+    def auth_password_minimum: () -> Integer
+    def cookie_secure: () -> bool
+  end
+
+  interface _SessionConnection
+    def transaction_open?: () -> bool
+    def uncached: [T] () { () -> T } -> T
+    def transaction: [T] (requires_new: bool) { (ActiveRecord::Transaction) -> T } -> (T | nil)
+    # AIDEV-NOTE: Rails materializes a Result, whose nullable first row still needs the SessionStore JSON checks.
+    def exec_query: (String, String, Array[ActiveRecord::Relation::QueryAttribute]) -> ActiveRecord::Result
+  end
+
+  interface _SessionPool
+    def with_connection: [T] () { (_SessionConnection) -> T } -> T
+  end
+
+  interface _SessionStore
+    def call: (String, Array[session_argument], deadline: RequestDeadline, ?connection: _SessionConnection?) -> auth_object
+  end
+
+  interface _AuthClient
+    def login: (String, String, deadline: RequestDeadline) -> auth_object
+    def refresh: (String, deadline: RequestDeadline) -> auth_object
+    def user: (String, deadline: RequestDeadline) -> auth_object
+    def recover: (String, deadline: RequestDeadline) -> bool
+    def verify: (String, String, deadline: RequestDeadline) -> auth_object
+    def password: (String, String, deadline: RequestDeadline) -> auth_object
+    def logout: (String, String, deadline: RequestDeadline) -> bool
+  end
+end

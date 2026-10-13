@@ -1,0 +1,2930 @@
+{
+  "files": [
+    {
+      "path": "apps/web/dev-fixtures.html",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "61ff20cd39bed0d5a8ab975db1c4a671ce240ee2d91e0eedc305989f40533374"
+    },
+    {
+      "path": "apps/web/docker/test.Dockerfile",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "670ce0f10d783d883628e637e749e87f3fda531d30cde514068c64c95896529c"
+    },
+    {
+      "path": "apps/web/e2e/collaboration.spec.ts",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "2ce9f901f33ab03569c552ec2a9293bfd61f9508eb63e9d6d25ae5d6ea9833cf"
+    },
+    {
+      "path": "apps/web/e2e/production.spec.ts",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "ac941add3700cc304e03995b6f9ed6bf622bc1b42f93f6647f09737cada2330f"
+    },
+    {
+      "path": "apps/web/e2e/read.spec.ts",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "c97ad650788d727d83d6392cf428d4024f78e339848e37e94c3fade6ff27f89c"
+    },
+    {
+      "path": "apps/web/e2e/session.spec.ts",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "903e493dcac5a0d78e61c1f1d4b80c4fcb46a99cdd3594577b75e052d431c7e2"
+    },
+    {
+      "path": "apps/web/e2e/support.ts",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "802e11b8eb803fae1b4bb6d3f12ed42bac56c9e6d967a7dfe9bba4f5f32ddb3f"
+    },
+    {
+      "path": "apps/web/e2e/visual-states.spec.ts",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "0c404aa6e2b4833619fae34b0ce8851c96f87302e9326fe4431b33e1e6753d14"
+    },
+    {
+      "path": "apps/web/eslint.config.js",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "64b814d8f55ecd8ea85ae905f7f15b5debab5d9e6f5520afbf6f3e33408fcb67"
+    },
+    {
+      "path": "apps/web/index.html",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "4feee5c2172dda95254b7b312d0d549f8741a6f9de4b2c2b8374f48d33de47ae"
+    },
+    {
+      "path": "apps/web/package-lock.json",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "243b52271400f657f1c5b10015b24491f49495dda1abf0c6c4cd3cedf406f022"
+    },
+    {
+      "path": "apps/web/package.json",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "72ad074b9a52a77753bce785fd3e55a7b419112b5df550f2c088934118a8acfe"
+    },
+    {
+      "path": "apps/web/playwright.config.ts",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "8fd383b7fa802e1e9ff94e28cec0db29fac8bbd2d9b9dae860d74b857a074ef8"
+    },
+    {
+      "path": "apps/web/PROVENANCE.md",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "639a1d90e41e623692a2599a20f821708c160b8f291f80391ce9271449a28c15"
+    },
+    {
+      "path": "apps/web/README.md",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "5d7e213433c6f479b7627449c8844936ba856c6b754dc32130a465f8da129697"
+    },
+    {
+      "path": "apps/web/src/app/AccountSheet.tsx",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "1684e368bd36ee5509b12a680f96287b1d8a230a3ac998d28f5fa3f817444bc4"
+    },
+    {
+      "path": "apps/web/src/app/actionFailure.ts",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "70ab35c1aa2b514a78ba8c1272f21669685a5b79080fd6442dd442a96147a178"
+    },
+    {
+      "path": "apps/web/src/app/App.tsx",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "575587a133d457cfc6bdcade7619e24584231f4579f953dedbeaa2eec5d04506"
+    },
+    {
+      "path": "apps/web/src/app/collaborationFailure.ts",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "6b8b395235ad3c106e82aa0364e4c9b5c61b759ed438dd893813683dc3102704"
+    },
+    {
+      "path": "apps/web/src/app/collaborationNav.test.tsx",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "e4eb7ddecef95987c0aac7b40c13201aadc146077927126530940fb41fea2571"
+    },
+    {
+      "path": "apps/web/src/app/draftIntent.tsx",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "1e4f5639eb1b990918b8013002aeaaf6851f21c31c151a5757dc0b24e609769f"
+    },
+    {
+      "path": "apps/web/src/app/entry.test.ts",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "07d910426728f93e7d51266dad8e9f91dd53ca82c6b2b42be26cdbed7e5c35ea"
+    },
+    {
+      "path": "apps/web/src/app/entry.ts",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "5f58c9c7a5463989b852f3ac8b81ff75142b3a44910c17c69b91847dfdaa3b44"
+    },
+    {
+      "path": "apps/web/src/app/mailboxes.tsx",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "d89065522efd37a552b2daeb1a6cbf1225343c1b6e7fe7423be3b3770d01a573"
+    },
+    {
+      "path": "apps/web/src/app/membershipRecovery.test.tsx",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "b56f1d582162cc156e821a2404261d315a7f22b8fe7ea613e766c920ff4c481f"
+    },
+    {
+      "path": "apps/web/src/app/protectedRequest.ts",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "f389ff712b5a570c4305e3c42a5cadc444a8f83c396ad0206f4ced35aa318b70"
+    },
+    {
+      "path": "apps/web/src/app/scope.test.ts",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "bf4a063dbb3dd04453c7079dd7549583e1c3df99fc24258650644475ac8c09e7"
+    },
+    {
+      "path": "apps/web/src/app/scope.ts",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "51a4b28f8fe892ff03249d29bfa0f6b010c203f3998e8027e69ccd86619890ac"
+    },
+    {
+      "path": "apps/web/src/app/SearchBox.tsx",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "3a58e44e08201bbf6fde5270505982e7e66fc3857ebac9fcf91b8097eba61d13"
+    },
+    {
+      "path": "apps/web/src/app/session-lifecycle.test.tsx",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "a4487e1f256023ade530e0b1a47cfe228ae841cd95a049bfca9bc3732f0a5b9f"
+    },
+    {
+      "path": "apps/web/src/app/session.test.tsx",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "9c2b46c183226fbc2d041bd3d2fd6a743f9f0b19775b86d0bece8de66d4ef7ed"
+    },
+    {
+      "path": "apps/web/src/app/session.tsx",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "28ddde7b0e01858011ffda49b703e40142fc8541b35294e700e7b65b2f2094ed"
+    },
+    {
+      "path": "apps/web/src/app/Shell.test.tsx",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "f45aeee55d668de150f355b23c80812a4f4f33d6f0167c72742f8bbf1cac875a"
+    },
+    {
+      "path": "apps/web/src/app/Shell.tsx",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "139569c869b74ae212f3cc6a006639ca5692c7f04c7ec3e7ff70cdc90d53b72a"
+    },
+    {
+      "path": "apps/web/src/app/Sidebar.tsx",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "36064b10dd2834388ae3c50a456a95d891bfe9478e5d3d0177d51ed382634c56"
+    },
+    {
+      "path": "apps/web/src/data/cd-conformance.test.ts",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "6bac6091fa5d44e3598b1fa3250fd1b9c095aa4650011dcc3babc60a726186b9"
+    },
+    {
+      "path": "apps/web/src/data/conformance.test.ts",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "b6a24616f2a3320531222f7fd48a9ef8c160dc080f6d13437e7c550702f586a9"
+    },
+    {
+      "path": "apps/web/src/data/contract-collaboration.test.ts",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "a5be9542ea02cd7ff76c28f8b455aa5fe6149f78d079fb41dc45d6c43749dd4c"
+    },
+    {
+      "path": "apps/web/src/data/contract-unicode.test.ts",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "94c10bf2e77457d1559316fb96876f518bba10f9c342c916cc2dd1240d462eec"
+    },
+    {
+      "path": "apps/web/src/data/contract.test.ts",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "10f903f11b420aef1c59cc8acd095019d031716776c99a3287317043b7992cb8"
+    },
+    {
+      "path": "apps/web/src/data/contract.ts",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "6e8179015aa47f0afa540f9d5c7cae4872d0f25137b0230a45bce872f45b7d85"
+    },
+    {
+      "path": "apps/web/src/data/errors.ts",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "0c3a7eb1ce489a034950950e8194497df79f2c6646c9cb1f9ad7efc3ef3c938c"
+    },
+    {
+      "path": "apps/web/src/data/fixtures/collaborationState.test.ts",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "276da8b0989fe4ef9cbac15dce24a0d3c64de4927061da2fd5464a0272c0ccaf"
+    },
+    {
+      "path": "apps/web/src/data/fixtures/collaborationState.ts",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "daff35faad4d83047da5bcc868892588beedb936090b06ca21037562eb593fb9"
+    },
+    {
+      "path": "apps/web/src/data/fixtures/fixtureGateway.test.ts",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "fdafe014a5728158195aeb28c6dee50cbaf804afbb8ce2aa1e5e325c0620fb15"
+    },
+    {
+      "path": "apps/web/src/data/fixtures/fixtureGateway.ts",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "7daf82c2209d9a2406f2721c483ffe72939e0865cd28c4a5693ef94ea091f5c9"
+    },
+    {
+      "path": "apps/web/src/data/gateway.ts",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "22fb24afb0614938a200f54dd90fd05bc4570c31ff5a75affc02b245550f3f19"
+    },
+    {
+      "path": "apps/web/src/data/generated/api.d.ts",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "bb43a39e6fb514268ab9b89e1b443edb752f6e6eb3a7b0c87468cae5a75b077a"
+    },
+    {
+      "path": "apps/web/src/data/http/httpGateway.ts",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "b800cb7eacfe6ce60c4f8f0762f9795a1bf12160a76a494ccbb9302b38bf46a8"
+    },
+    {
+      "path": "apps/web/src/data/http/transport-boundaries.test.ts",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "86d24bbddf4e5d9843b9b944da9371208e63f7a50d6360f08dc190f1ad00f493"
+    },
+    {
+      "path": "apps/web/src/data/http/transport-cancellation.test.ts",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "cbb76a366a1710af5ab20704e0021256862d757296977e1c8905d5fd8050c8bb"
+    },
+    {
+      "path": "apps/web/src/data/http/transport.test.ts",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "423308f0744bcfdd91a5b4761cf75b597f2d870d75346a27df065403c501a4ed"
+    },
+    {
+      "path": "apps/web/src/data/http/transport.ts",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "a116f5a7d526b1bb9ab2c155bbd22b8d298bf7d1da5c95ee19ef00746b1a1e49"
+    },
+    {
+      "path": "apps/web/src/data/lifecycle-conformance.test.ts",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "91092bc1770952854f9188f06e459a05abb84938bd0e11ab898bbb98e37dbb2e"
+    },
+    {
+      "path": "apps/web/src/data/signal-propagation.test.ts",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "f316e3dee1df2f5154514bdf1586e2a588bf72e0b85ee4c0e04afd6baf384098"
+    },
+    {
+      "path": "apps/web/src/dev/fixtureMain.tsx",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "9800ad02c91f8d5fe1b5b073d11cce1dbdd223526a6a8fc7f05421bc4700053d"
+    },
+    {
+      "path": "apps/web/src/domain/draftOperation.test.ts",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "9ace8db6acd9684d564aa9e70417eac658c33e035c2263889510f6acadee3328"
+    },
+    {
+      "path": "apps/web/src/domain/draftOperation.ts",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "2c4cbb9031e31b269e7ea0ea386174b816bd4ede09de2dccbbd64c01f70f78fa"
+    },
+    {
+      "path": "apps/web/src/features/auth/AuthCompletePage.test.tsx",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "11f194ba9224715f30b06076596fdc2c4fb50ef83928a799259da873eee32be7"
+    },
+    {
+      "path": "apps/web/src/features/auth/AuthCompletePage.tsx",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "359d4c2d8da93dccaf74327bad7a4b1f4e5962924d2684cdeee4e811f96e24a8"
+    },
+    {
+      "path": "apps/web/src/features/auth/SignInPage.test.tsx",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "e2e584b128b1c7cfbd12ac60d8c2f3501a731a6bf99f9041ca9ff7a6ec0ebe5b"
+    },
+    {
+      "path": "apps/web/src/features/auth/SignInPage.tsx",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "48f72be606b9ad8a9eb15043f3d506567635f22463670cf403f9b72871fe8cac"
+    },
+    {
+      "path": "apps/web/src/features/drafts/DraftEditorPage.test.tsx",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "cc4512ba31005f4d4302beb3cceb50dbb3b4ccbb003937ce65b7354e232a0145"
+    },
+    {
+      "path": "apps/web/src/features/drafts/DraftEditorPage.tsx",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "51157f0426f956deae55a9eaa35c705460cd814e336ebb2a9ab89ea7d815990a"
+    },
+    {
+      "path": "apps/web/src/features/drafts/DraftsPage.tsx",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "36517d3505120137a84b48eea69dbb7a60cf5f19aa58fa34f4520a281cd4abdd"
+    },
+    {
+      "path": "apps/web/src/features/inbox/InboxPage.test.tsx",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "26e0a156afbd27f59919d7982a5fa8181c89dc09d68b675ea9fe25785e8f3c4e"
+    },
+    {
+      "path": "apps/web/src/features/inbox/InboxPage.tsx",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "d175834b4ac04b23d36c5d2fd67f5a262ecda34ffafc75044471be2f162de98c"
+    },
+    {
+      "path": "apps/web/src/features/members/MembersPage.test.tsx",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "08ede4fd52dfb707c5c0def8083c394b581249ff76eee12afad6a09da64740b5"
+    },
+    {
+      "path": "apps/web/src/features/members/MembersPage.tsx",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "8c2409a2c0d2b83bb762b7680b2ee050dcbc3997c32eafc89e21c5f2cd4f1839"
+    },
+    {
+      "path": "apps/web/src/features/search/SearchPage.test.tsx",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "e28f8b88323bd630e7b94dcca26ad58ebcc44de69750bd1dc2487c2c3fe7e48a"
+    },
+    {
+      "path": "apps/web/src/features/search/SearchPage.tsx",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "bf9e78e781ad858fb738b66ad25facdb09f3597822762438ad9f2ca903890556"
+    },
+    {
+      "path": "apps/web/src/features/thread/AssignmentPanel.tsx",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "c28aa5fd5145a1ecf47859a3dd78a7a2271106eab5068830dff9a4417ef847f3"
+    },
+    {
+      "path": "apps/web/src/features/thread/CollaborationPanels.test.tsx",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "d7b8ffc781b7ad00eb7083c1ff84ba854b7052c867b858c360b373796b56ab4d"
+    },
+    {
+      "path": "apps/web/src/features/thread/NotesPanel.tsx",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "30436ce171d0899eefe353795116a4a1bcba0bd58573641b1743cd98ba33a360"
+    },
+    {
+      "path": "apps/web/src/features/thread/ReadStateControl.tsx",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "b72722d62721310fbabe31f6a7fdc127de8135f9b15937822cc3df9d2bd59a52"
+    },
+    {
+      "path": "apps/web/src/features/thread/ThreadPage.test.tsx",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "08bdf55768b1a7211c335f21facdc521f7423335cd2f7728eebf21783be6bcf1"
+    },
+    {
+      "path": "apps/web/src/features/thread/ThreadPage.tsx",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "0f86df36ad2be92de9c23e70e8377df440ce0713988f07af9f3d4eb03c2db645"
+    },
+    {
+      "path": "apps/web/src/lib/format.ts",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "1df91b4ba60277c9236eac72310d405a9c33de477f67b69ed686354aa594a15e"
+    },
+    {
+      "path": "apps/web/src/lib/ids.ts",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "2386bceadf86d8abf7a50f3590994f06eb955cf926eb5b8710cbf3ab782a25b6"
+    },
+    {
+      "path": "apps/web/src/lib/readPage.test.ts",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "3a2893be607d99f8c7536104dc0bdeff36cb5fac66f47ae9f85475482602a837"
+    },
+    {
+      "path": "apps/web/src/lib/readPage.ts",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "167d7e18063fadb2d5e34d40603db5328ce0dfb7aa08ad663bbaa1bbdf6dd87f"
+    },
+    {
+      "path": "apps/web/src/main.tsx",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "e0e8abe74a861a5f9d765cfc800abcf62c8115449bc0f6354608ecdedaf4d469"
+    },
+    {
+      "path": "apps/web/src/styles/index.css",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "5d00d5ae76e61e55525a120580d572df2865bab710ade2053cf44b167fa151a3"
+    },
+    {
+      "path": "apps/web/src/test/setup.ts",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "236346a5886e734049d4a320d5906d086eb23e381fdb2ccca52556e3e302ff0a"
+    },
+    {
+      "path": "apps/web/src/ui/Async.tsx",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "d6252d68e4b94ad22766e792a9cdf882391ccf22374478a91279110b08e47f5c"
+    },
+    {
+      "path": "apps/web/src/ui/Badge.tsx",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "8743b4883c6ce9972236532ca997ddca4fc302e5474bdb93789643a69854fc7a"
+    },
+    {
+      "path": "apps/web/src/ui/Button.tsx",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "ca08a7d27aff9fc70cc56b76e1a1d780020696a412e256507a4e9cccd69d44ae"
+    },
+    {
+      "path": "apps/web/src/ui/Drawer.tsx",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "f6158d4bf608da5e0f4cfeb653625f44526a0684ba495a635dc53e641633bb89"
+    },
+    {
+      "path": "apps/web/src/ui/Field.tsx",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "24a1925f23ddcf87b17d5447ee1f3515e61eddaa5fc0ae8cdef98f626071cff3"
+    },
+    {
+      "path": "apps/web/src/ui/icons.tsx",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "7ccfd984c9987d782c114dbdc147c31647342186a5752aedd8ac58e4ca796171"
+    },
+    {
+      "path": "apps/web/src/ui/Sheet.tsx",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "d8d62dcfded212eb05a1858bed337594989a0926be21e458829569f9fc6449b4"
+    },
+    {
+      "path": "apps/web/tsconfig.json",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "77c5d7b4c9545e373c84262cd56dcca5c91c6ea5ae4d572634ac50646ebe6508"
+    },
+    {
+      "path": "apps/web/vite.config.ts",
+      "source": "Elevateo Mail - Fable FE01 R1",
+      "sha256": "2aad1a83237ee903e5f5515959ceb70293a2d1b7d5104d74e7b7f8a816e9e010"
+    },
+    {
+      "path": "apps/server/.dockerignore",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "6106c5e69f8e4fc7e8c0214e7802e1e1afe8f8bcd18f6bd8c79367babc56d6bf"
+    },
+    {
+      "path": "apps/server/app/controllers/application_controller.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "5fed6f27575e5519f9a13045f84eee809fd358c506867b61a965cab9ed3d8c98"
+    },
+    {
+      "path": "apps/server/app/controllers/auth_entries_controller.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "f9df1cb997a01dc3cb40d9171938deb6de29f8029cf837661acab34f77abed7d"
+    },
+    {
+      "path": "apps/server/app/controllers/health_controller.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "66f196e1341b631296e88791bb86e1407a7c321a008f356be783565cb5ff846e"
+    },
+    {
+      "path": "apps/server/app/controllers/v1/api_controller.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "13394057005c8fa546619cba2849c44355660f8c71c98fcf3a14e36bd0f81635"
+    },
+    {
+      "path": "apps/server/app/controllers/v1/auth_controller.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "02f51808c91c8fb99ab4a7a4016d00985e4d717ec27479fbb5d5c7f21bf3192b"
+    },
+    {
+      "path": "apps/server/app/controllers/v1/draft_operations_controller.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "1c24ec24f58f22bbd57a75681ba5a1157d5a8e1176cbaa417c60b321badea89e"
+    },
+    {
+      "path": "apps/server/app/controllers/v1/drafts_controller.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "c73bd590b1c79939ca55a82e1aaea74ab1f20c81a7e24399f48840fb4edfecf0"
+    },
+    {
+      "path": "apps/server/app/controllers/v1/mailbox_members_controller.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "00d878968c96197ddb8015f56c0385a740cea5798850e3166f4cba642851a51b"
+    },
+    {
+      "path": "apps/server/app/controllers/v1/mailboxes_controller.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "8e7a5ca8f95c157105af540268af89844f2adda8166ef82d72390d9dfbc5cf8f"
+    },
+    {
+      "path": "apps/server/app/controllers/v1/organizations_controller.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "8237a4a95257d408b62bc581c9eb3b2404aeb57eeb1583958c3be0f51dc49b37"
+    },
+    {
+      "path": "apps/server/app/controllers/v1/read_controller.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "ddc2c03838d884915b57b584d2c8f716229d0de825665b65e4f2c183a02df97b"
+    },
+    {
+      "path": "apps/server/app/controllers/v1/search_controller.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "06c8c95cc51f985be08bb1ded4ca2dd71aabcb8902efa3704211b17642055f85"
+    },
+    {
+      "path": "apps/server/app/controllers/v1/sessions_controller.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "f8b0dcfdaacbf15d24faa9dfde8afdb221199e9a89d23bc461abdf4cbb506d63"
+    },
+    {
+      "path": "apps/server/app/controllers/v1/thread_assignments_controller.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "436ea2f9db5aa639a6a2f985692aca571ca7b2f35e07ffbd26815b93b5319940"
+    },
+    {
+      "path": "apps/server/app/controllers/v1/thread_notes_controller.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "96b56c8305a2393d31749d8e755f752803173580db98a7a748f3399765d0dca3"
+    },
+    {
+      "path": "apps/server/app/controllers/v1/thread_read_states_controller.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "00a915d7c7029bdc59a6cac079485707c7f82f9cb39de14f729e3c81493f4cb6"
+    },
+    {
+      "path": "apps/server/app/controllers/v1/threads_controller.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "81d46498e8a72dea4f17b46a2a6af30e12307ecd673b684f8b9bc2dba81ffd83"
+    },
+    {
+      "path": "apps/server/app/controllers/v1/write_controller.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "b77201b8eb4e6765bc5b59cd47c746efe8a16d1b9345c80cf29b2c9322b48ebe"
+    },
+    {
+      "path": "apps/server/bin/rails",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "0862d7bc09d5ed61785d677ef2dba10ce285387d4d5d9e3d90d97630e3f69ab6"
+    },
+    {
+      "path": "apps/server/bin/worker",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "04c1f2ebec259f442a782bb08e26cd86d3383281ec065bbb3f6bb761d6a082f5"
+    },
+    {
+      "path": "apps/server/bin/worker-health",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "e05b0003f57cbe83217818bdda1db9ac60d39e19f99ade4f8ca410c80b1af2f0"
+    },
+    {
+      "path": "apps/server/config/application.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "15f3a2b5af260be13173b59fae34e72bb8ca27fe41eab952dfff51be76158fce"
+    },
+    {
+      "path": "apps/server/config/boot.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "22c9bd4f8a795557470dde3e9c2b3a1c6a19a6906cdf8add692bc8cd4261b0d7"
+    },
+    {
+      "path": "apps/server/config/database.yml",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "5db77f655405144f4ee892375a83a6aee987001d024dad4a58da641dd6888bfd"
+    },
+    {
+      "path": "apps/server/config/environment.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "dd5c34405b8ad268a97c0798e345a183cddebe7c8f3e250db87be8a4a20e7c91"
+    },
+    {
+      "path": "apps/server/config/routes.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "64e46d57be35229723054543a139595e6741e28676c1bfbce3b892165978888c"
+    },
+    {
+      "path": "apps/server/config.ru",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "cd06f4ca6833c03189e939314b78470244f616e69f68560ddc609d43f1ca566d"
+    },
+    {
+      "path": "apps/server/db/be02/down.sql",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "9b8caf4c61a37481b15b58913c93f3385629e2a8c9b64084d60bdf149c315f20"
+    },
+    {
+      "path": "apps/server/db/be02/entry.sql",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "22474c1b1a59c0997a172c90668b6d283df8da4f48dc156d295ea500b85de8af"
+    },
+    {
+      "path": "apps/server/db/be02/generations.sql",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "c3155d5d3f334fde296adfb88825a3f6459dda3dbd606122b320712494499498"
+    },
+    {
+      "path": "apps/server/db/be02/grants.sql",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "840f1e348288540b0b7121c9680ff2aa89ae3df73409831c4e4fa7aeb79e7ee1"
+    },
+    {
+      "path": "apps/server/db/be02/helpers.sql",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "e0e0d76c503c9739b4e8b5194ff6faa53ee2eacc8424d70469fcca39013a2f9f"
+    },
+    {
+      "path": "apps/server/db/be02/pending.sql",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "71d074f7a5c799755c604892756d6101d0c52938367e54d4551c5102a71b7a2f"
+    },
+    {
+      "path": "apps/server/db/be02/rate_limits.sql",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "de8d39d09f0dca2d5f3d8351b95f4b574471a38a6e62bd51ccf9da3614cca7b4"
+    },
+    {
+      "path": "apps/server/db/be02/read.sql",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "e81e13c42ae10c352486411547e6f392acd8db6fa40c5d6c8a30f9e4827d57d0"
+    },
+    {
+      "path": "apps/server/db/be02/refresh.sql",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "74355cb47301123afef7b9d9e3981c4a71d1d983fdb7848e9db3dcaafea60ff0"
+    },
+    {
+      "path": "apps/server/db/be02/revocation.sql",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "ed02dbff56c5d46acb477192172a0788a5e684509a49f13274d543c7f0fdb834"
+    },
+    {
+      "path": "apps/server/db/be02/tables.sql",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "9e6c0ce57fb67d285228e221a49463df86e0e5bbc6378cffe92c426f8b40dc19"
+    },
+    {
+      "path": "apps/server/db/be02/triggers.sql",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "af6892033d65e6df13f2072b26826ee4a91c4fd02d472993ab6f4a573efd5073"
+    },
+    {
+      "path": "apps/server/db/be02_collaboration/down.sql",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "fdaf33aaac456d3e0583ac6b3749e92e501085fde651187fb7159d4a59bd3dbc"
+    },
+    {
+      "path": "apps/server/db/be02_collaboration/policies.sql",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "11c6c70800c35905329304ef5653a13223464f4c4988ed3bd22256a98a4b82c9"
+    },
+    {
+      "path": "apps/server/db/be02_collaboration/tables.sql",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "c51df0e1c54c6c4d2fe85c6a0fd5d83d0477b381bcd6051510325d51864a890a"
+    },
+    {
+      "path": "apps/server/db/be02_collaboration/target_reader.sql",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "90ea633b5fa615554aad73c8ca2f4866046ceb0029e5897ef9ac0f7c345a59b8"
+    },
+    {
+      "path": "apps/server/db/be02_drafts/down.sql",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "366b25b0ccbc783bd0cf6ae319e5293c51425771ee7d3a7fee50fcc76ba164ea"
+    },
+    {
+      "path": "apps/server/db/be02_drafts/grants.sql",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "5bef9b13237e5dfb7d0ea53d6ad87988370847a58136079cdc5da7087d642058"
+    },
+    {
+      "path": "apps/server/db/be02_drafts/operations.sql",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "9b2999a43136a27432a12d72d60793e29ac4a7693fc2f7114ab9dfe43b11d4a1"
+    },
+    {
+      "path": "apps/server/db/be02_drafts/policies.sql",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "059696491b0bee3f60d6e7db665e10eeaec2cefed85cb02d4bc02df9a35a38c7"
+    },
+    {
+      "path": "apps/server/db/be02_drafts/save.sql",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "9709c44e1fb4fa981ac2dc96c199869c11de00a7d5a4f2facd715b105bc4a815"
+    },
+    {
+      "path": "apps/server/db/be02_drafts/scope.sql",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "0412b8a8f12ba7cfe5fc05d8b3208e5801e1c731ca3987e3f25c36b5250d22e2"
+    },
+    {
+      "path": "apps/server/db/be02_drafts/tables.sql",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "c2c507d3d301703eca1091b7e5243242bbdb76b3ffe6e1f592fad362f4947cf1"
+    },
+    {
+      "path": "apps/server/db/be02_memberships/down.sql",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "250d372a3855d0af63b05a04381cdf4d4e2bcdc89f735a46f2dccf05c7cd46ac"
+    },
+    {
+      "path": "apps/server/db/be02_memberships/grants.sql",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "46dd7a4203481153e7414b34ab729bccae08e135f6b3962127bd7b64adfb469d"
+    },
+    {
+      "path": "apps/server/db/be02_memberships/mutation.sql",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "3ae401e7954a8a7f3f41623ab80304a897de2aaf135adbf27bc2b0c4d169d7f1"
+    },
+    {
+      "path": "apps/server/db/be02_memberships/reads.sql",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "0f1d89ec1e43fa4ac62c3184694728949a32290dd30a93723b64f123f1b5ded7"
+    },
+    {
+      "path": "apps/server/db/be02_memberships/revision.sql",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "cf44ec8a1a45d80ff4fb308a584bc8e15cd6a413c9c9f8ed2c65bade01e40902"
+    },
+    {
+      "path": "apps/server/db/be02_memberships/tables.sql",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "7c6dd7a77fc5beab533a7710724065509395ad947b7dd1cbb86b4b564aeecf12"
+    },
+    {
+      "path": "apps/server/db/be02_threads/down.sql",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "827709477f5665a755bf37115762d7924fa94721684c3b3b2b603b1362c33bfd"
+    },
+    {
+      "path": "apps/server/db/be02_threads/policies.sql",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "55b0ddedfe1c180a51fa60713c9f47e684700a84b480231662a3eba19b374d8f"
+    },
+    {
+      "path": "apps/server/db/be02_threads/tables.sql",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "dce2ada3d0cc33aad99a02e5411dd3dc64fb55e6080449f280fe3451cb456a80"
+    },
+    {
+      "path": "apps/server/db/be02_threads/validation.sql",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "8ba289ff6897f462fc20c8d3ac0c05cdf71384732b5718ad4e693608bcd0bb46"
+    },
+    {
+      "path": "apps/server/db/be02_writes/assertions.sql",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "9b4dee564c225213135e7d16b421436d3262126e6b9f98975b4694efeb29ba8b"
+    },
+    {
+      "path": "apps/server/db/be02_writes/down.sql",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "1d926930aee2f32009490f5bec09e705f73691eba70b7d6c74da0baab7d0fcb1"
+    },
+    {
+      "path": "apps/server/db/be02_writes/grants.sql",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "e46f8fbf6898e91cdb1120b0c504dd2f4bccdd6b121d97223209a7ce6cef736d"
+    },
+    {
+      "path": "apps/server/db/be02_writes/guard.sql",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "f663b0a6acb00b1c92fcdd0bb1c6ba69f2409ba81356a14b72293594686edbcc"
+    },
+    {
+      "path": "apps/server/db/migrate/20261012000001_create_app_foundation.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "cf06387268570e5920b3bbf7e84dc06dc1ed9242a23038a5288fb7f3cd36e459"
+    },
+    {
+      "path": "apps/server/db/migrate/20261012000002_restrict_api_read_membership.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "031df44311df04768207b207b21a1a012f434f9d765c02005badee74b5d3aff8"
+    },
+    {
+      "path": "apps/server/db/migrate/20261013000001_create_private_sessions.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "14c480c927b70749e4f002fcdb1f133c29e0cd3832d6934d1b83f7ef25bdf3bd"
+    },
+    {
+      "path": "apps/server/db/migrate/20261013000002_create_app_threads_messages.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "d984dff0f27bba53360d6e22e221cb9558fe2598d7f23c26876f9b6eb5eb1cd1"
+    },
+    {
+      "path": "apps/server/db/migrate/20261013000003_create_protected_writes.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "885214de2130f5d66b638a0967435eb180fd3714f67a2d738959ddd25aa7ae81"
+    },
+    {
+      "path": "apps/server/db/migrate/20261013000004_create_app_drafts_operations.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "ef47e2bbc9ecd2fee1fbad78d0249bedbd4384517c3fe1ab06c8e4686259d8f8"
+    },
+    {
+      "path": "apps/server/db/migrate/20261013000005_create_app_collaboration.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "b8a0cb8790d138fbb58d47bbb56049d0df9be1f2231ca488c8f8f74d37a01a4a"
+    },
+    {
+      "path": "apps/server/db/migrate/20261013000006_create_mailbox_membership_writes.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "27ecff0cc7d24929403a8b9f0d5258cf0f9c38ed0e33efcbc2c28c664c886a62"
+    },
+    {
+      "path": "apps/server/Dockerfile",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "776db14f1252ba97891ac8ce8575f95af324cda52715325d7277a43ee79de88f"
+    },
+    {
+      "path": "apps/server/Gemfile",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "19044c02efd7ed6fd03abec9f6e051e10248d53b820dd964592fc2e689abfe60"
+    },
+    {
+      "path": "apps/server/Gemfile.lock",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "67b2f69a0ed30c1d9926ab2940fe54173991d238192feca38a8f04b97390ea23"
+    },
+    {
+      "path": "apps/server/lib/elevateo/auth_callback_redaction.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "65a851476fd527b61e2b1a9a5efdd451f0f622352fca75592646a78c772f73e2"
+    },
+    {
+      "path": "apps/server/lib/elevateo/auth_client.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "3506e173cbc4ae52245766162df54bf39e0dd3140f2236e6b4beb81435daca32"
+    },
+    {
+      "path": "apps/server/lib/elevateo/auth_entry.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "53ed27ccd3144d12798b2ea685e3163319320167173b2eb90814984aba758859"
+    },
+    {
+      "path": "apps/server/lib/elevateo/auth_error.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "98307297c57f7cafdd254d5e53b993f2cee621642cb6656016162065369fae86"
+    },
+    {
+      "path": "apps/server/lib/elevateo/auth_input.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "e539c594c75541571f4081ea4a05e400c8dc62e68b5372cde949e21426716b0f"
+    },
+    {
+      "path": "apps/server/lib/elevateo/auth_revocations.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "6e341ba7ae71c093eb6420c0af73aaa0e3c7ed0dfb261a509934da8b4651d1d5"
+    },
+    {
+      "path": "apps/server/lib/elevateo/auth_tokens.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "ed6f922a6fcb5515e40f8afa164ce797920ad6a4d39599e3f71f01dc4a7e95b9"
+    },
+    {
+      "path": "apps/server/lib/elevateo/collaboration_error.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "bf6e4fc1e32fddff67a871b7450f0bef46da93780d5bbb21d5d8f598c52f4ad3"
+    },
+    {
+      "path": "apps/server/lib/elevateo/config.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "5d062c1de9978ff249755e3722f23045b234fa8280d136cb259fcdbf1c8f9312"
+    },
+    {
+      "path": "apps/server/lib/elevateo/cursors.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "bf752da8421ac12db52a9fce37ca8752b4cc376b5efdf6c3dddbb2fb9e13efeb"
+    },
+    {
+      "path": "apps/server/lib/elevateo/draft_operations.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "9fc8842e45ad69e20a81fd92e43e94dad5a3527b15510f91187b39acb6a925b7"
+    },
+    {
+      "path": "apps/server/lib/elevateo/drafts/database.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "c7e7118385f86da05ce8542941a692f2ba7e3bc323cbef9a5de112f0d39c143f"
+    },
+    {
+      "path": "apps/server/lib/elevateo/drafts/payload.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "8aaf5b23dee01ba32e6f43aac299d366c7f62e8f2dbeec975a23994a9c5fc310"
+    },
+    {
+      "path": "apps/server/lib/elevateo/drafts/projection.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "f8926db020285695a7f38a271321f57bba362c46fc7eaf9527b0439f023428cc"
+    },
+    {
+      "path": "apps/server/lib/elevateo/drafts.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "b30e8e8f13a0a0dbb836e52be8959d25ca00abc885a567d2571ed9ee001c6c0c"
+    },
+    {
+      "path": "apps/server/lib/elevateo/heartbeat.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "9ae5aeebfed65f6f00567484716668cdffc5f9993d489fd448b76748c55cfbee"
+    },
+    {
+      "path": "apps/server/lib/elevateo/mail_search.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "59f4f97351468cf7aae61810dec2f724e374dace482e8c97177fd38ef9e45acc"
+    },
+    {
+      "path": "apps/server/lib/elevateo/mail_search_sql.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "1be834d88c85e0df88f327a62c5b63544bda6b3edd8396fdad008308235b2bee"
+    },
+    {
+      "path": "apps/server/lib/elevateo/mailbox_membership_input.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "5840d6c8e7227db458c3e81c30a4f47e9d152ffb33a9ce211c37251686389a7c"
+    },
+    {
+      "path": "apps/server/lib/elevateo/mailbox_memberships.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "4e1f78b319c1cbeb713cb2e3d4d0b5dd79feec1f641ce037d0a2e504a4f54050"
+    },
+    {
+      "path": "apps/server/lib/elevateo/mailbox_reads.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "f4b5750eee3be8a6ab66842445a3fc34d41f2f1935497946d89db162befc5e1e"
+    },
+    {
+      "path": "apps/server/lib/elevateo/read_response.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "8659884bcf6321ce8a4ebf320c7bc8a6c45d874e17ed017a22d38b437e4e2915"
+    },
+    {
+      "path": "apps/server/lib/elevateo/request_deadline.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "54850453cb28826a66ae0e9faf33c7194d120dcd7eb4c6490e59b8e39879f3ad"
+    },
+    {
+      "path": "apps/server/lib/elevateo/session_challenges.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "35f8f2f9f96e71c26c2b392d7ba34fea0ad915c4f5b25ebe962ec8e4970a6b3b"
+    },
+    {
+      "path": "apps/server/lib/elevateo/session_crypto.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "bb7fc0f5818ebc9b8dd4efe411ab006ca7ba7933a4634d9ec6961260b6714f20"
+    },
+    {
+      "path": "apps/server/lib/elevateo/session_organizations.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "31f6207282e1dc2179245a9de5e05950c261c83d52fbc4440834db74e62b4251"
+    },
+    {
+      "path": "apps/server/lib/elevateo/session_presentation.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "cd23d39d32fa42deecbb544f893cbba2efffa32bd533c538cf986ac7f97cea5c"
+    },
+    {
+      "path": "apps/server/lib/elevateo/session_store.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "0a5f005a868d75370f9c6b8e82948a652849af964bfda4d8d9d756508fd3185c"
+    },
+    {
+      "path": "apps/server/lib/elevateo/session_writes.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "515cd4a86158c37e3f6fe82faee46ed306995a11314f4864f48e0e154836a84c"
+    },
+    {
+      "path": "apps/server/lib/elevateo/sessions.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "ba2e611ec28da3e46807a74e6bc46adc04e7b99d7b279a241769e5b9e6aab254"
+    },
+    {
+      "path": "apps/server/lib/elevateo/tenancy.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "cadefac546c11c1fe119e9ff6b5fe66af6f39ab0b9a721989a085e46cc966a34"
+    },
+    {
+      "path": "apps/server/lib/elevateo/thread_assignment.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "9a99d0d2f11ddf7b26a9c530a2cc11294b325e133aea4e843573ab09202ab9c8"
+    },
+    {
+      "path": "apps/server/lib/elevateo/thread_collaboration.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "c4abf9d245c4b1d82183166bad67ac0e6859d133f02ce23690f79282184283b0"
+    },
+    {
+      "path": "apps/server/lib/elevateo/thread_notes.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "161024d2d079bace051db792a30eb6a7b13f117238a72a302d478087432b3437"
+    },
+    {
+      "path": "apps/server/lib/elevateo/thread_projection.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "3f8907387257095c17ecf2707490c542967acc0cf8d40e09e6fb1df4187f532c"
+    },
+    {
+      "path": "apps/server/lib/elevateo/thread_read_state.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "a05f3af1b6a163b2df8b11cf7b2b63758fa532543acc3c7543cd16d030f9e6c0"
+    },
+    {
+      "path": "apps/server/lib/elevateo/thread_reads.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "167c2a62dca3da4f0307fa609435d8251b168f1484dd47604b4111bcf42c53d6"
+    },
+    {
+      "path": "apps/server/lib/elevateo/write_input.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "87aa266b2c9f54eb921e57581009970081b3dc82a0b6ec8d9049f27317985f76"
+    },
+    {
+      "path": "apps/server/lib/elevateo/write_response.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "64964fd1ae92f0c94470e80a1937a2050c10fe62637010126d08f5e98c5a6b39"
+    },
+    {
+      "path": "apps/server/lib/elevateo/write_statements.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "a490f59904a2fa8005dbd1b64edc1e7084b1fc455e855fdd37900a9af9544977"
+    },
+    {
+      "path": "apps/server/Rakefile",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "ec561de742a266784cc94e681a29b5b3c19b73ffa4898a7077e742d370618a14"
+    },
+    {
+      "path": "apps/server/sig/auth_callback_redaction.rbs",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "c62da8e199422c7559ca7c88bd21f345f9d3433f38609649642201bd5c3f7de7"
+    },
+    {
+      "path": "apps/server/sig/auth_client.rbs",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "eec4e390cd863f62b2ec186881272d34205d4fa95087dcf09beeb84fe0ad850f"
+    },
+    {
+      "path": "apps/server/sig/auth_controllers.rbs",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "0480c9bea76c36069bf3a5a2abd4a7747825eaad906c64d8de3b86ed955dda3c"
+    },
+    {
+      "path": "apps/server/sig/auth_entry.rbs",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "e59afc6a2a859e9e4e1a5067beb7017fa22bb984437edc599e0d8cdcf7fb10bc"
+    },
+    {
+      "path": "apps/server/sig/auth_error.rbs",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "deae4ef751c7f297acd937bf0793ba2730100fd093afd67a8b12c5581dcba14f"
+    },
+    {
+      "path": "apps/server/sig/auth_input.rbs",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "063cd1991daeb7fca9148b950c661012b87d9913ea358ed05e7fb3213ffa081f"
+    },
+    {
+      "path": "apps/server/sig/auth_revocations.rbs",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "f8925138ef927b71985614c4ea643d07c6bc9b89dae9dbfec367921d5efe7f4d"
+    },
+    {
+      "path": "apps/server/sig/auth_tokens.rbs",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "635ffcf925fab9ea4a984b8cefbbfc95ecafb6b0896dbad67685106bdb171cfd"
+    },
+    {
+      "path": "apps/server/sig/auth_types.rbs",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "929fdc62ce1c1985d8823e8af3217fcfed6a75e656819b50c5e535cd5d10b935"
+    },
+    {
+      "path": "apps/server/sig/collaboration_error.rbs",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "101eb25d0ca89a5301b338086857821be14d182f32099d80090d2821e56a5a63"
+    },
+    {
+      "path": "apps/server/sig/config.rbs",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "7e6ded031203193ed2019722c06b978dfce2dc511cb02bd3e6b168e234b95a77"
+    },
+    {
+      "path": "apps/server/sig/cursors.rbs",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "cb58e92e6a4d9bf873daa35e5188a06027cf256302c87d937b62b2ba1a7da716"
+    },
+    {
+      "path": "apps/server/sig/draft_operations.rbs",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "ae43997d3b843878deb554381ab7f31c80de7b517e2d9c06b3a161af0d0e2cf6"
+    },
+    {
+      "path": "apps/server/sig/drafts.rbs",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "4724f723de1408e5e4b9d19042c16b7e1d20d35a91b2735948699b1f9fa28ff3"
+    },
+    {
+      "path": "apps/server/sig/drafts_controller.rbs",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "19686015ae9c53b46381ccc5c4fc76adc37f6fa9ee26f5bab34fada822f9f26a"
+    },
+    {
+      "path": "apps/server/sig/heartbeat.rbs",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "2ad718574e60f884b290d047d8bec5a07630c05e9b683c0f4fc389e303bfa281"
+    },
+    {
+      "path": "apps/server/sig/mail_search.rbs",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "e352e7796f7d4c334607860c7ad7455d6277aa4c1451212c95bd7e375e3cd192"
+    },
+    {
+      "path": "apps/server/sig/mailbox_memberships.rbs",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "b9dfd77f75cf6f8125dd8c26b7d321358e05bb7328eefd6cfa55b1f0833d8b63"
+    },
+    {
+      "path": "apps/server/sig/mailbox_reads.rbs",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "f8ebf6d205db00f7b450c9d2f748927275c431272ba50c74d202834d9b11a7eb"
+    },
+    {
+      "path": "apps/server/sig/mailboxes_controller.rbs",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "80585b58ec510a7f2dc83cf021fbcb4f2171c5ec2e8b9d985986ae993571d14c"
+    },
+    {
+      "path": "apps/server/sig/rails_seams.rbs",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "634de9e85515e003254c31cbb1c3d9a91427ee69e3a8064a5c1acdf129b37cc7"
+    },
+    {
+      "path": "apps/server/sig/read_controller.rbs",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "5c43d1e9ca2f09967b65fa4ffaa7f4263e97ada1924e9751ff9d3fb112d62e0c"
+    },
+    {
+      "path": "apps/server/sig/read_response.rbs",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "e05a4addaab4645cc7518f91230b036117ac9ead03675ed6ccaba6bebf53c7c3"
+    },
+    {
+      "path": "apps/server/sig/request_deadline.rbs",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "91443644ae9fd3575a675fdd03ac433f54541efed0b5b8c050d166617401ad6f"
+    },
+    {
+      "path": "apps/server/sig/session_challenges.rbs",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "6a93fa81f03461027ce82204dffd2a4d14552236811f9eebe6102103ed653be7"
+    },
+    {
+      "path": "apps/server/sig/session_crypto.rbs",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "eb2e96ca0ca32d1ec5a66564e5e77231aa939643877da7142f2deb766d4781a8"
+    },
+    {
+      "path": "apps/server/sig/session_organizations.rbs",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "204afd5559d5d38330f325b62da03dc1dc7b251bf22a6504fd97683a392765e8"
+    },
+    {
+      "path": "apps/server/sig/session_presentation.rbs",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "082aaf8915814e3b815e717a3fda7a3452441ffa0f3dd1849a4f29f99614a5ec"
+    },
+    {
+      "path": "apps/server/sig/session_store.rbs",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "61cf15544b1ec433a78efd36e21510d609cb469dfd98b5e1b23b463299675ee2"
+    },
+    {
+      "path": "apps/server/sig/session_writes.rbs",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "30d8a476926f983d3d897bb926afbcb436f1e7b8d800f28d1740b7b82f696d54"
+    },
+    {
+      "path": "apps/server/sig/sessions.rbs",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "2f5d8b9e99b657fda31931cf5c01b56c519706413f692b913b64558af6b5a84c"
+    },
+    {
+      "path": "apps/server/sig/tenancy.rbs",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "4b29a1e516a984c56ac5c97bef31fd83708a5906dc0e07a92c37da0955009e4b"
+    },
+    {
+      "path": "apps/server/sig/thread_assignment.rbs",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "9c6acf27d2466b05373bb39d9269796051b425bea7a59edf9392309a387b273e"
+    },
+    {
+      "path": "apps/server/sig/thread_collaboration.rbs",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "370c3d368e11d3f3bc35a4683bec848e1f648886cceb3eb8e4e4c11eb17e5e39"
+    },
+    {
+      "path": "apps/server/sig/thread_notes.rbs",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "de00bdc099d6217ef980950a922f8a9c9e4e80110879f2be61aa4a640e158274"
+    },
+    {
+      "path": "apps/server/sig/thread_projection.rbs",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "707cc13093437a0bba32f72a643f090f978f74590b65b04a0d7a68f8f5617528"
+    },
+    {
+      "path": "apps/server/sig/thread_read_state.rbs",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "a69490ae704238566c1e7b0dad5566d8327b3ac2216e78d4b608399c45edacfe"
+    },
+    {
+      "path": "apps/server/sig/thread_reads.rbs",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "90b06c278d9add26cf832adc31eb7220d28651a8b5624bf300f6095bf555b029"
+    },
+    {
+      "path": "apps/server/sig/threads_controller.rbs",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "dd9643c09a28dfc1cee9f7dc0b90f7e13e33c2eb7ce34bc51f2d9fb5abbdb69b"
+    },
+    {
+      "path": "apps/server/sig/write_controller.rbs",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "abaa6e9cc28007426724275f9fe340fd539aad7987049dd2e3b01d1789972f21"
+    },
+    {
+      "path": "apps/server/sig/write_input.rbs",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "1a84a2e6f5234bd25940e03f0cbec5ad5e62304838722b2a1d37db085193e407"
+    },
+    {
+      "path": "apps/server/sig/write_response.rbs",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "bde029fd025b65c960214436fb2c6e5145093fbe240c584b698c8ef7cf4c8861"
+    },
+    {
+      "path": "apps/server/sig/write_statements.rbs",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "8cebbe839aa6d570ab971fef8f85d41774f0a94517808c4c091ad5c831f56d1a"
+    },
+    {
+      "path": "apps/server/Steepfile",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "224d2fcdd4e39b0974fb47a3a7154588471ea3d85880da5804da342c02dca748"
+    },
+    {
+      "path": "apps/server/test/be_01_r1/authority_guards.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "e757c6dcdec9984526e35f002cfc4fac884e7a9eb4e5d7a5e91fbaa5d011894c"
+    },
+    {
+      "path": "apps/server/test/be_01_r1/authority_guards_test.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "13d46189b2e700858a27c1e833b816b9a5ca376257571c7ec2cf33051a9eeccb"
+    },
+    {
+      "path": "apps/server/test/be_01_r1/baseline_driver.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "3e279e4616a85456fabec59a3f2a3153dd533f0ca09804c0a1b7fc1ae95576b7"
+    },
+    {
+      "path": "apps/server/test/be_01_r1/baseline_scenarios.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "29205f43bcf7229f4ca36f06b9ff34b2c82d4c6c15d67ba5504b09f9ca31e385"
+    },
+    {
+      "path": "apps/server/test/be_01_r1/membership_migration_test.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "aeb3af2619151e38d75283ccda0e0cbc80e9efb0547baccd52e5223cec4bac2d"
+    },
+    {
+      "path": "apps/server/test/be_01_r1/tenancy_test.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "ea6f7e2dfd25358831f5e60ae771b7a3c4936b97079cefb2fc84ed7e80998c49"
+    },
+    {
+      "path": "apps/server/test/be_01_r1/test_helper.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "fd8d08f84959ddccdd87c3f50e2ff77fe71fb5f017cd8d7607be701803e226b7"
+    },
+    {
+      "path": "apps/server/test/be_01_r1/worker_role_test.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "2212ca8a045b3fe82746c8105f693ebf11d58801013e4e7203ff40022212b57a"
+    },
+    {
+      "path": "apps/server/test/be_02/auth_client_test.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "f0adf47ce618b64d0b0cc59055e57f88e5ee440d2e51139fcb889b80de286a26"
+    },
+    {
+      "path": "apps/server/test/be_02/auth_config_test.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "4fdb8b9ba3354beb235dd0960b92a43c9251657823ecf2a508885cd3bee57bfb"
+    },
+    {
+      "path": "apps/server/test/be_02/auth_entry_test.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "ef8b60d1b64902175b748e3361dcd3d8b9a7cb58a2a8a7858773b67c23c0b438"
+    },
+    {
+      "path": "apps/server/test/be_02/auth_revocations_test.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "26bba879f805358ed9210bd4d0fe2fe60972e6abc65d22d67cf1247d1f6b43b0"
+    },
+    {
+      "path": "apps/server/test/be_02/auth_test_helper.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "eb9a1ace881abf20e2415042b102f2a770236bc92796e258caa8d7bdcee67821"
+    },
+    {
+      "path": "apps/server/test/be_02/authorization_generation_test.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "8f9340e1759338dc0c98d0eb1b78cdcf05845d76e1a902053ac231bfd12c1647"
+    },
+    {
+      "path": "apps/server/test/be_02/collaboration_concurrency_test.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "0e4aa70031d8a82a4efeb9cb3ed229e64eabe9fa607ab6afe3bd3e5e805722aa"
+    },
+    {
+      "path": "apps/server/test/be_02/collaboration_controller_helper.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "af4d2ce8e4dca289782f23d1ffc4f1d6e4d0e062c3c36ec3c9c604ee55c447e8"
+    },
+    {
+      "path": "apps/server/test/be_02/collaboration_controller_test.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "824133c3f2f731be0c92355b619bac89f65e78754394240a557b2c1276efc09d"
+    },
+    {
+      "path": "apps/server/test/be_02/collaboration_database_helper.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "ed14323962ffa2258addd7432928f8284ce74218ba8ed9e49001555eb3d50b58"
+    },
+    {
+      "path": "apps/server/test/be_02/collaboration_database_test.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "c45a685feda972497e8089ee016dd890c1abb8c9f5aebaa95ca193535755c8ba"
+    },
+    {
+      "path": "apps/server/test/be_02/collaboration_schema_test.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "bdfad94afeeb1d350c193d2c7ca6fc8bb33a07d343a5541e6a630dd8c761eceb"
+    },
+    {
+      "path": "apps/server/test/be_02/collaboration_services_test.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "604ed91e2413ce1df23412822e2ce797d7b5e715723817be334e43c6b07831e1"
+    },
+    {
+      "path": "apps/server/test/be_02/cursors_test.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "792817e3ac84cd31828f3c449501559c5e39e62b6c8e88a90fa4fefeecf7e141"
+    },
+    {
+      "path": "apps/server/test/be_02/database_helper_test.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "63bf13efe6421aa54e1593a1edc91895edc9c248490ea5f2fb0e5c591f200045"
+    },
+    {
+      "path": "apps/server/test/be_02/database_test_helper.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "c614ed0098555a7404d166f224949a591a4f74d64b0a54cb00b2bb085f140a2e"
+    },
+    {
+      "path": "apps/server/test/be_02/draft_authorization_test.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "22f7eef04a7f0aa577c4e7f35e8f3315e00d20a03f4aff05e275e664862b28d1"
+    },
+    {
+      "path": "apps/server/test/be_02/draft_concurrency_test.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "58cceee542291b5f19bb280e590492c9e4ca5b0bd382d67accf73c904e48086d"
+    },
+    {
+      "path": "apps/server/test/be_02/draft_database_test.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "015663b9a0b062db29f8a4ea4978a12320be0fa5e72e15ec8d2a9d09b2600656"
+    },
+    {
+      "path": "apps/server/test/be_02/draft_database_test_helper.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "93f8e02b887400cc646719fe45a89ba147533a77c4d68e32c3f76cc9a1051e5e"
+    },
+    {
+      "path": "apps/server/test/be_02/draft_payload_test.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "2dd71fc87f9ab386f0a94afb6c3db88f0af92d23510d9f637d669097cfa7ad54"
+    },
+    {
+      "path": "apps/server/test/be_02/draft_reads_test.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "00acc66dc1cbba3e87d9d6b21a9709d146b3e2043359f7b592211e5d49d339b6"
+    },
+    {
+      "path": "apps/server/test/be_02/framework_boundaries_test.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "860188f1aea36f6527c725d7aa4616c2ec4ff2787fa6fe8fb83fff4ce9fd7e15"
+    },
+    {
+      "path": "apps/server/test/be_02/mail_search_database_test.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "f249904b0d54a4842ec250e1a702339cad5fd629a3aff4f49dfe945019d349d9"
+    },
+    {
+      "path": "apps/server/test/be_02/mail_search_test.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "e4a0988bbbef51e464577181427a71ddaa1676137306726b362c0a310787ee2b"
+    },
+    {
+      "path": "apps/server/test/be_02/mailbox_membership_concurrency_test.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "65a3f5789e1330d1d837119e2280152c2f49c7c2bc5afa098c16fb7e05cc042f"
+    },
+    {
+      "path": "apps/server/test/be_02/mailbox_membership_database_helper.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "b9e7c939c804f40ceb6302ece846c54544898ad1d216776e4dad452ab9c2be29"
+    },
+    {
+      "path": "apps/server/test/be_02/mailbox_membership_database_test.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "f182cb092d31cd97fde022700fc7e6f6cd62e05f10aa9a8bf9bd42c23f958e8b"
+    },
+    {
+      "path": "apps/server/test/be_02/mailbox_membership_test.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "dcbaf465c08bcc4e46b812a21d82af610e5b444368c01befa686c090871eebed"
+    },
+    {
+      "path": "apps/server/test/be_02/mailbox_membership_test_helper.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "ec2122734dbeb77145172f170465865d135d2312c77fc98b11aaea15e2ac4410"
+    },
+    {
+      "path": "apps/server/test/be_02/mailbox_reads_test.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "ee191c526d9155f2f48b43770cbf4bb16d932b74d1c54b2afae91c0835da3992"
+    },
+    {
+      "path": "apps/server/test/be_02/rate_limits_test.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "dee28780f8338af5b32163b2a05a2bfa3697c7a0dcd837c12880b403c9f526b5"
+    },
+    {
+      "path": "apps/server/test/be_02/read_controller_test.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "89515434f8967ed71bd498e5d9629e724e8deacb2a8d1db63ed352368fa7effb"
+    },
+    {
+      "path": "apps/server/test/be_02/read_response_test.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "43850d9a584a39c8428e5a1c32219ed307249aa36f65015705e2b87beb3d0da7"
+    },
+    {
+      "path": "apps/server/test/be_02/refresh_publication_test.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "229c6a1e398e64af64bce4e1aab7d220cd72e5203b4e6988812db5d2e5d366d3"
+    },
+    {
+      "path": "apps/server/test/be_02/revocation_worker_test.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "1585696533be1e5228893b5a15c0e994b6cfefcf6c498a8d34ca511c5cfc8f58"
+    },
+    {
+      "path": "apps/server/test/be_02/session_database_test.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "50496a45ab1c564536792e739bed61f78cada9eef10f74de48b0e5d96ea16a3e"
+    },
+    {
+      "path": "apps/server/test/be_02/session_expiry_race_test.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "8666614868adc23c6d635e0f79bab4bb0ea09314c4aae79fc2d43ea9eecb450e"
+    },
+    {
+      "path": "apps/server/test/be_02/session_lifecycle_test.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "2f6326edf1698ff4ae60ff497b91269260609f3a0f220f626562311358175b2f"
+    },
+    {
+      "path": "apps/server/test/be_02/session_logout_cut_test.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "451641dbdd67c2841eb3e8dba9188888cb73994154ac0c0a80ada184e1eb28f2"
+    },
+    {
+      "path": "apps/server/test/be_02/session_organizations_test.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "901cf393ac710b7ea91bd901d7ca683422108a32a83135ae7e7c864a5a3abed7"
+    },
+    {
+      "path": "apps/server/test/be_02/session_security_test.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "a7ec223be079cf705de8d66abd41a4ea6478f3423f856a559d3b8c9de3e1fc65"
+    },
+    {
+      "path": "apps/server/test/be_02/session_store_test.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "4e0c0e3d7279369d1767ea770ebf6ba3ef0d8447c57058613eefb223cd97ca75"
+    },
+    {
+      "path": "apps/server/test/be_02/thread_database_test.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "dfee8c750cb2aed03bd45166ba4012dd18457a1bae119a889a670ff95f392700"
+    },
+    {
+      "path": "apps/server/test/be_02/thread_notes_cursor_test.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "4b537a65b5624576d8330fc13737be864b92f2a7570ee44e86e17634d6229c75"
+    },
+    {
+      "path": "apps/server/test/be_02/thread_notes_database_test.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "fa9e63ef0e4f19fa125d4e022f397d8951a7feb600dcfc68dfa2509091c17fdf"
+    },
+    {
+      "path": "apps/server/test/be_02/thread_projection_test.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "441e5afd14fb8dcff13396002d3e8aca077a01dd8907048bd98355f80bba8f79"
+    },
+    {
+      "path": "apps/server/test/be_02/thread_reads_test.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "cdbb5d2dfeab35c656b5ecc2335e9f1213f1460534ff1507fff02a0c7095fba1"
+    },
+    {
+      "path": "apps/server/test/be_02/write_boundary_concurrency_test.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "6013c99b6ae3808083c035dca6fd5d6167d92edb3687f41a2cf66dda27692b4a"
+    },
+    {
+      "path": "apps/server/test/be_02/write_boundary_controller_test.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "27cf2e4c455759039161393af8f26cffa6dce94b8fa26851de19f238ea7a21fc"
+    },
+    {
+      "path": "apps/server/test/be_02/write_boundary_database_deadline_test.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "546f34a5221248d6a5429e2f48780e3c4f2791af4943469faa5b580dc1f6e575"
+    },
+    {
+      "path": "apps/server/test/be_02/write_boundary_database_test.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "c04e0428b1a1a8716c8b80e55336c2f9106e780e12d22fca5934cf382752cfff"
+    },
+    {
+      "path": "apps/server/test/be_02/write_boundary_database_test_helper.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "708bdd3a4e0a14f93686ebf71ea7a8f73e259207a8b1c01a9375d4a55935011e"
+    },
+    {
+      "path": "apps/server/test/be_02/write_boundary_deadline_test.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "fe9b512ce52c63e6e21e6567c525cf5be82a9e9f565e83223d7ba4eeaae0f68f"
+    },
+    {
+      "path": "apps/server/test/be_02/write_boundary_input_test.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "420cfc02e72288300be7ddbca5dc079225996b7fb6ba969701f46d6dccd27d80"
+    },
+    {
+      "path": "apps/server/test/be_02/write_boundary_pool_disposition_test.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "99e87489420c5bd99a02e042b61f011a8d3a1a8677d0bf77426547a4ce209151"
+    },
+    {
+      "path": "apps/server/test/be_02/write_boundary_pool_test.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "c167c5af5018e28f34122845c15da1fb646a8e214b0fa3a23ff8299fd0f320a8"
+    },
+    {
+      "path": "apps/server/test/be_02/write_boundary_pool_test_helper.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "434e753e3b600d04092cd3424c9931681350fc89d9a89771745945e94e9d95d5"
+    },
+    {
+      "path": "apps/server/test/be_02/write_boundary_pool_unwind_test.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "eb7cc7db261d9a9caa003444eeb291ca80ae9c4306cb6b4924856610052beb86"
+    },
+    {
+      "path": "apps/server/test/be_02/write_boundary_test_helper.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "5d5cda9b3a642c45a3bdc5fd2517419355b2a90cb692cc58a9daab4f392c1fa2"
+    },
+    {
+      "path": "apps/server/test/be_02/write_statements_test.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "ad323c788e3f22ba131bb728a5b3343f18b46753a16a3fe612eb91c89f0c9f48"
+    },
+    {
+      "path": "apps/server/test/requests/drafts_test.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "eadd07467d20d69c29af3e3c6b9b8f906d3354e4df060f398561dc7739df8a7f"
+    },
+    {
+      "path": "ops/bin/generate-secrets.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "c622ff9697f02e8d2dac6fda65b782833a3807f2a9dd2b7dd2fc50cb7e3a143f"
+    },
+    {
+      "path": "ops/compose.acceptance-test.yaml",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "215d985a3d9b6831dbbe2ac60a4de7c615dd832769694bbb222eb25d7df321e3"
+    },
+    {
+      "path": "ops/compose.be02-test.yaml",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "0489257e5600f16db380e9d5241686e76563cb92b29b8f91768b8e6802284f5c"
+    },
+    {
+      "path": "ops/compose.fleet02-egress.yaml",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "ee26c30bcb80900dbe989083180a967527cbae934f7887c5f0e245867ec2087f"
+    },
+    {
+      "path": "ops/compose.r1-test.yaml",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "47e9352ef23d06f525e2b43022f50540f38ca59a4fa1f5973292637b7d7615a3"
+    },
+    {
+      "path": "ops/compose.secrets.yaml",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "7f222cc1391dfc78b4fd29b0a2ccb8b6bd2571a78826fc3a2394dc3fc6626999"
+    },
+    {
+      "path": "ops/db/bootstrap-auth-grants.sql",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "2f63d116e2b23af69d7abd0452893509231e39658d298a9ad207e75a8a96fcd6"
+    },
+    {
+      "path": "ops/db/bootstrap.sql",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "5a665cf865cf84246f38ec8819f6e64e6a49e14105768a46ba8b3ba1df15a225"
+    },
+    {
+      "path": "ops/supabase/db/99-jwt.sql",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "9db312f7d5f5a6f42788f30069dd632da2bcf295ee16178ae9849864f8b5fa13"
+    },
+    {
+      "path": "ops/supabase/db/99-roles.sql",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "dc1c7c6117a3c94f9993f22b49fc41d5e4cc301ec9580321459261177bb1a183"
+    },
+    {
+      "path": "ops/tests/be02/acceptance_cleanup.py",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "9a5996ccd0224fa412b803d033be4660ab1830cc684d9d06d6d3f243eede29da"
+    },
+    {
+      "path": "ops/tests/be02/acceptance_evidence.mjs",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "5ee48efe830cb5841abac2f5e7562661cbcad634e74f43056cb2b551343e01ff"
+    },
+    {
+      "path": "ops/tests/be02/acceptance_runtime.py",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "0299d3123b67932328062a31abec3987df10f0b22db808b57a92bedfcfefa56b"
+    },
+    {
+      "path": "ops/tests/be02/acceptance_seed.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "d11cc2e713ad7f3bdc60722198606645139419a22d7a2c88ec574bed59a774a3"
+    },
+    {
+      "path": "ops/tests/be02/acceptance_seed_support.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "1766348f4a8217d721ded4d92a6164a6d6dfc471f4849514107043580c018851"
+    },
+    {
+      "path": "ops/tests/be02/cleanup.py",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "9d4610004ba76922d4e2bc05d47bfecc270e86d7b649c5e38b7b04a6aa0c8654"
+    },
+    {
+      "path": "ops/tests/be02/docker_task.py",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "fd37788e2e7afce717d20b0872682676f8f03f98e7bfb3d6d120f6bf97d935d1"
+    },
+    {
+      "path": "ops/tests/be02/http_support.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "33aae3e77b8de442c0489c56c0ef9a62a33f0c85b068a2912d577053e0f81a8f"
+    },
+    {
+      "path": "ops/tests/be02/http_test.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "ae434f7c6d2045715fffb9c0331edd9cb51c030748e27a13c27736f4c2946a35"
+    },
+    {
+      "path": "ops/tests/be02/run.py",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "9b739d525d2d8913adfa0fa70c49a3e36c5359c58b69e384fe9e3fda68399df1"
+    },
+    {
+      "path": "ops/tests/be02/snapshot.sha256",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "83013278bc07710dbd5f3f9fd5b2cb6529eb29c8d4f7a417cf1a641ece285f5d"
+    },
+    {
+      "path": "ops/tests/be02/test-suites.sh",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "0ca742e604204566315d293cfc61c102ab793df7b2886529ddcbd7541cb17557"
+    },
+    {
+      "path": "ops/tests/be02/test_acceptance_evidence.mjs",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "fe60b560d9a68e047387126fca2623b3ad79c031c6d65e16a911dddb2be5a078"
+    },
+    {
+      "path": "ops/tests/be02/test_acceptance_policy.py",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "eab59f7ae46ed466b2580042f3af8fa4d18968b84c9823254b12689586127410"
+    },
+    {
+      "path": "ops/tests/be02/test_finalization.py",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "803c1e9b138d9380e1562f0d3bcf1a3a015b1ff5096dac3c301a19f393d3670c"
+    },
+    {
+      "path": "ops/tests/be02/worker_check.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "1008c3409a1894d29407d9d50523b9b992f6c0bb707674083fa3e46bcc57d01e"
+    },
+    {
+      "path": "ops/tests/be02-guards/auth-rls-concurrency-catalog.sh",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "b9d31ec5d9c6fa5f63ee389aabcf6f9224c4257e58e44f8ed32ecbf5c9f98065"
+    },
+    {
+      "path": "ops/tests/be02-guards/auth-rls-concurrency-harness-regression-cleanup.sh",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "996ea7fb45cc23c634b499f8ac868d24210dd727e8c89496728c4eedec605327"
+    },
+    {
+      "path": "ops/tests/be02-guards/auth-rls-concurrency-harness-regression-errors.sh",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "36cead291153bd45dde8f5b791c53385bc5e9d36981308dc8c64a6b3f88b8bbd"
+    },
+    {
+      "path": "ops/tests/be02-guards/auth-rls-concurrency-harness-regression.sh",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "028fcd7736b019b90febf252e4b69f093eab52f2beb46deb9317521dff822d52"
+    },
+    {
+      "path": "ops/tests/be02-guards/auth-rls-concurrency-processes.sh",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "9c08211610cde922df845367139596a789b4a8c07ebfe07c5683203c19ddb508"
+    },
+    {
+      "path": "ops/tests/be02-guards/auth-rls-concurrency.sh",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "45607d692294380623575d7fef7ba0579172b0c4138a319ad34ca0985092d68e"
+    },
+    {
+      "path": "ops/tests/be02-guards/auth-rls-runtime-denial.sql",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "6fa43fefc27e3798e6dfacf4fa768034e81fd5b94a83b0cd73c0eda284246322"
+    },
+    {
+      "path": "ops/tests/be02-guards/auth-rls-sessions.sql",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "98074b3c694cc5231e9694d76d08abd035bf6abbe075a5aaa4e498b3ea35b2e2"
+    },
+    {
+      "path": "ops/tests/be02-guards/auth-rls-setup.sql",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "d129fd361f2198b714efcbb87ef332c95df3101898c55cf086479d25fa9c91ba"
+    },
+    {
+      "path": "ops/tests/be02-guards/auth-rls-visibility.sql",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "073e97ace4f79cd084e67adf1ecb73622ecaabc640fa076186c29731ff9ba9aa"
+    },
+    {
+      "path": "ops/tests/be02-guards/auth.sh",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "69f66bc0264109f65f31126e97115985e92028eebb8252ef51be1543e454e1ff"
+    },
+    {
+      "path": "ops/tests/be02-guards/fixture.sql",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "48f1b6cbf9d6c31989d0204d92fd7e1cb7bfcfa253317b02df111d5dbe5181d9"
+    },
+    {
+      "path": "ops/tests/be02-guards/membership.sh",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "4b507c8a0b7b79284c7a2135c13c2b651e48b06f2dfd64ba87e8a050f15f1675"
+    },
+    {
+      "path": "ops/tests/be02-guards/private-grants.sql",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "d911e107c5aa12be9be315e63d5bd6c4483a78475c2552dafc6c57e2d54a035f"
+    },
+    {
+      "path": "ops/tests/be02-guards/run.sh",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "83b948bde7b357466d8b668c86bd1d64e5ee4f6001433c5fd5d0ad551189567d"
+    },
+    {
+      "path": "ops/tests/db-fixtures.sql",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "a20dd934aaabd2afef40c0b3c92a9d3e591aa6e498fadab6d3f63db8de60e989"
+    },
+    {
+      "path": "ops/tests/egress-check-fleet02.sh",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "54df513b4eb38d8569bf5c7ffc356455468f1c5f3c81b6f2d601ae168f78e1db"
+    },
+    {
+      "path": "ops/tests/egress-check.ps1",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "ac7e97a468a830cfda441b089d5a469d670cf7ca9fe26642b0a23de2a5887732"
+    },
+    {
+      "path": "ops/tests/egress-check.sh",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "8b527c18cbde5616c2384a7c4b974087455a8ac85ee2f910d91900a101b9c18e"
+    },
+    {
+      "path": "ops/tests/egress_assert.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "39ff773d684f6bf9d82acb8f21ecf86bf841f41cdb33c6e04c6ede9b9dd64120"
+    },
+    {
+      "path": "ops/tests/egress_listener.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "2a76bc16d3075d0fdf2e2507f0450adbd75bd055c80f6d9a9834747bec23b580"
+    },
+    {
+      "path": "ops/tests/egress_probe.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "61c131badb6f0fe89e15a5f67318572703cc1bd4aa2ff28b3182ba5bab69f82c"
+    },
+    {
+      "path": "ops/tests/egress_test.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "d31859d7747c9035b994f167bd84c5f80268af2d2d5c499514183838a5f237bf"
+    },
+    {
+      "path": "ops/tests/fleet02-egress-baked.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "8f6623be67c715e3aa7aa95f86068f486fdd60c62d41df672a880982266a49e9"
+    },
+    {
+      "path": "ops/tests/fleet02-egress-compose.sh",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "a8d1e2d61de4871f5a4da672e593c6474df3587d37478f27a8cb9bd87197cfbc"
+    },
+    {
+      "path": "ops/tests/fleet02-egress-context-regression.sh",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "de1968ba3426f4edb1e8e765ec2d102b2575df8af121d29fb733c11b31007890"
+    },
+    {
+      "path": "ops/tests/fleet02-egress-create-regression.sh",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "759ecf0544262e40beac0ceb5714c5fd39265bd6bf46f23b976e7442d52f20b2"
+    },
+    {
+      "path": "ops/tests/fleet02-egress-inspect.jq",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "ee8df9810329ea884b4e706e0b9dee558026262fd7488afeff8abde2af873f4e"
+    },
+    {
+      "path": "ops/tests/fleet02-egress-package.sha256",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "46b296fd1158da3e9df1362162d903e01013c5fedd33465bf8ab323ed4217862"
+    },
+    {
+      "path": "ops/tests/fleet02-egress-readiness-regression.sh",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "38603fc91c2e1690ca56c49929183c76775ae93d650076a3947aad763fe1323c"
+    },
+    {
+      "path": "ops/tests/fleet02-egress-regression.sh",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "cdf0e32c0ee2e68a3130fa11132343408a5cf88b04ae777882a5b053f34b4694"
+    },
+    {
+      "path": "ops/tests/fleet02-egress-resources.sh",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "c4ce5cf3ada3c2bebe92d3557c82d7de92bdef27738603a182e32f5272e8a363"
+    },
+    {
+      "path": "ops/tests/fleet02-egress-source.sha256",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "03d590ddaa39b22c6b1851c9911405473c0b01b0a50fff08001144e66a14638b"
+    },
+    {
+      "path": "ops/tests/fleet02_powershell_protocol.sh",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "5c011bd57503af6d17f570a3b2793e7e255c5c45bd50b79dcc6f5aeecc861701"
+    },
+    {
+      "path": "ops/tests/fleet02_runner_regression.sh",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "a8ff7b5c2a616bd9542d577f239fca00f4eea23fcf96a9510e536039b523883d"
+    },
+    {
+      "path": "ops/tests/heartbeat_test.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "3e389c563d07baa5f4d25cf1db5fb9d71ead35140bbedd50056f29f16db3ff01"
+    },
+    {
+      "path": "ops/tests/membership-catalog.sql",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "e1a347ce15e6779b93b9b8e4f1dd2baa3d3eac520d3ad294b919193aa1cdc77a"
+    },
+    {
+      "path": "ops/tests/secrets_test.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "c822e3870cb6359f15471d1cbc7775f5d6a9b69986b64d2af58807a4b39bbd04"
+    },
+    {
+      "path": "ops/tools/lane-c-app/app.sha256",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "1eeeca5c896bc1082e43202478b5816e8d909efdf0c40e712c367df4ad50f9c4"
+    },
+    {
+      "path": "ops/tools/lane-c-app/parent-run.sh",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "c18bf4df32f373e5c6f00535d7ed2e688504790f5898a28024138eb586321f45"
+    },
+    {
+      "path": "ops/tools/lane-c-app/regression.sh",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "dde4730db073af7e1a61a8a3bf1bffbc55976406a0ef898ec4422b5ad2ab79d0"
+    },
+    {
+      "path": "ops/tools/lane-c-app/source.sh",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "339cc168f1ce84fbb581ed4bcf26d37a0d80d5aa30b5bb559dd9575771e1ccd8"
+    },
+    {
+      "path": "ops/tools/lane-c-synthetic/checks.sh",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "e92a416815a8a8e499bac7686484a5be8b83d24884c34f71c605715b6c81cc10"
+    },
+    {
+      "path": "ops/tools/lane-c-synthetic/cleanup-regression.sh",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "564276a8850672c41bb7821ce9a61f5a194b35482377072ca6f52ce7fa4472d6"
+    },
+    {
+      "path": "ops/tools/lane-c-synthetic/cleanup.sh",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "095fb2a580620b724070a0dc3c0d5400e38a98fc347d034c97f3fe3e47dcc3ec"
+    },
+    {
+      "path": "ops/tools/lane-c-synthetic/Dockerfile",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "8fce6bd5ebfc4c85f8805a886627b0ac260093b1776968bab43590007386ec2f"
+    },
+    {
+      "path": "ops/tools/lane-c-synthetic/parent-run.sh",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "1af110b569c506396122500936dbadb53e5396041aa4422acb7d658bcab1dae8"
+    },
+    {
+      "path": "ops/tools/lane-c-synthetic/preflight-regression.sh",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "77bc8b48def7cdb18f0b13c473035190eca5da4810d5cae805125f746e260e3a"
+    },
+    {
+      "path": "ops/tools/lane-c-synthetic/preflight.sh",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "7783d8678d2941ec54cb5fff84c17270be15ceed8016e2108ed1b47f4dbcb444"
+    },
+    {
+      "path": "ops/tools/lane-c-synthetic/run-container.sh",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "5d5a3a202a637c2f01cf43c505362130bf65def4113f82ca1f56bbf0789d5d25"
+    },
+    {
+      "path": "ops/tools/lane-c-synthetic/tools.sha256",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "f799b9edefd8f88fccd10ab6c452e253d6174cf68b2cdee919a3d5d15e046b6e"
+    },
+    {
+      "path": "ops/tools/lane-p-dispatch/dispatch.sha256",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "4509ce8417eb93167847a67093b435eb000e11b1e82755e8ddcd0803402cdb25"
+    },
+    {
+      "path": "ops/tools/lane-p-dispatch/parent-run.sh",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "091abb67db93b235655520115f51f7dd245f4479ae76e99c4239c3e7b7c6d114"
+    },
+    {
+      "path": "ops/tools/lane-p-dispatch/preflight.sh",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "bbded0f0293175732e60c42251b54bc1010a3f895ea5b6d49bd37f05f6dfc613"
+    },
+    {
+      "path": "ops/tools/lane-p-dispatch/run-container.sh",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "3b847a5faa7a59b3c0f8cf325d91429f1d9a5be757fb5ffe29975f9bedde7289"
+    },
+    {
+      "path": "ops/tools/lane-p-protocol/checks.sh",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "1d67265211561f1e490db657acbf1bc294876157cb292b134428314ee3078f27"
+    },
+    {
+      "path": "ops/tools/lane-p-protocol/Dockerfile",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "815122c2b11123910e890218c6344bd7250eb34d322891a29cb50bd9f7e97ad0"
+    },
+    {
+      "path": "ops/tools/lane-p-protocol/gems.rb",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "47cb5b490e706b30d962b85c961f2b72875a4df4ecf16c35449a8fca8b025b55"
+    },
+    {
+      "path": "ops/tools/lane-p-protocol/package.sha256",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "a86ec51727ac71f3984ef7d5f13649afe2b95c8e1dc719468d357799a34abb1b"
+    },
+    {
+      "path": "ops/tools/lane-p-protocol/provenance.json",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "85c3b448fb36e48f53eb05a4c3ea5d8c5f86351d476a42aaa9506847119572eb"
+    },
+    {
+      "path": "scripts/dev",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "c815d042a5528acc4f5b9ea98d6c22f95c846e19d7e05f56af6d844303aab77a"
+    },
+    {
+      "path": "scripts/dev.ps1",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "ff6516b88fd7eb7c8d6ee96aa9ab20315a8130ed2ba0dc3abb85404599bb76e8"
+    },
+    {
+      "path": "scripts/import_upstream.py",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "6d96fce01d8d978f5ff85f27391f7cb8ad44e70b8a98dca06710602e2f98580d"
+    },
+    {
+      "path": "scripts/test_snapshot_tools.py",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "f8b40c52e158d38ce7323a3b11e02530131a9e763a97d0ca33258da15965ba8c"
+    },
+    {
+      "path": "scripts/verify_upstream.py",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "ea5ddf3cd666852891e6e3e6580203afe8b2187cb3ca65467f6a867d5d681fb0"
+    },
+    {
+      "path": "tests/acceptance/contracts/case-result.schema.json",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "544194e93a839a690dc5332b26fb4f810344c6a4b4741c4f6248f46f97976542"
+    },
+    {
+      "path": "tests/acceptance/contracts/report-validation.spec.ts",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "7d1451a35eeb8eac25f1be467edb2c4d6fc04f27cfd41d6d85713a9cae66ddf8"
+    },
+    {
+      "path": "tests/acceptance/contracts/run-manifest.schema.json",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "6d88a548aa7aed4576dbaa12ff5e285b03b1a3952d126279dc4122322b96acb5"
+    },
+    {
+      "path": "tests/acceptance/package-lock.json",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "9783b43070c571a848c06f863c0f57d06645818e731269d80640b84769d7e5c6"
+    },
+    {
+      "path": "tests/acceptance/package.json",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "ea619ae639a7aa368a462e4f32a6fbe259c9543fe9976c54f09557fc41baa99a"
+    },
+    {
+      "path": "tests/acceptance/playwright/auth.e2e.ts",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "44d14d32bdd2aab2371be4c2f61b48cf5e39a4c0bd4feff0d8b4320b1eedcc7c"
+    },
+    {
+      "path": "tests/acceptance/playwright/boundaries.ts",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "9ed6af050c697b3083c23d4df3239d81bbe6a2c37c3247e6efb34b35f5747766"
+    },
+    {
+      "path": "tests/acceptance/playwright/boundaries.unit.spec.ts",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "cf00b1d8f3367c90291c951e60c03dc9e8c98164a69d85b14731ac4b4f72d0bf"
+    },
+    {
+      "path": "tests/acceptance/playwright/cases.ts",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "e588cec7c78380d039dc94d0d79e41b46e815cf932f6391ebfb4a427faea5298"
+    },
+    {
+      "path": "tests/acceptance/playwright/credential-fill.unit.spec.ts",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "27cc1e1ebe64ed7c2f313bac3faedd8dcad483f0db8f51e15ef75f9e7649e787"
+    },
+    {
+      "path": "tests/acceptance/playwright/credential-origin.ts",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "2f8ec06f36282f794f8a19bdc2e0f3302af4f796c041439a97b0e3f75ee0ec6e"
+    },
+    {
+      "path": "tests/acceptance/playwright/credential-origin.unit.spec.ts",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "e1682b27ee075f52441bba5063ea6d329d05aac1bb2d04789d0f5d47ebb08dc6"
+    },
+    {
+      "path": "tests/acceptance/playwright/draft.e2e.ts",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "45f62ba8a546331949cb3edef8e23517ceb5267c45478f335d9e47606daa3d59"
+    },
+    {
+      "path": "tests/acceptance/playwright/playwright.config.ts",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "933205fea4a2d50f97643de3db6853f71eddf9df6affadd75e21515a8edf9914"
+    },
+    {
+      "path": "tests/acceptance/playwright/quiet-reporter.ts",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "c89d93bf78170ac286d6d6c83c59ccdc2d47e3f284010e24f4aad596709ef5e3"
+    },
+    {
+      "path": "tests/acceptance/playwright/read.e2e.ts",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "771ed994d91926ed3e64d745cee58a07d99f54b70f9d380e641da3c28d8dff54"
+    },
+    {
+      "path": "tests/acceptance/playwright/screenshots.ts",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "4805eeb95659579abf6c4ffa56e77b0794df329515467edd8a0fd9c870ebeb57"
+    },
+    {
+      "path": "tests/acceptance/playwright/screenshots.unit.spec.ts",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "b5dac72ab42c9c7e2ca6f9d7055e65193732ae561efd9f56726c64fa5339fe88"
+    },
+    {
+      "path": "tests/acceptance/playwright/support.ts",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "57e6cbdd67e479f3003b926e089d605118b3e88189a35c8a349599b579a96beb"
+    },
+    {
+      "path": "tests/acceptance/playwright/unavailable.e2e.ts",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "7a9e882e53d03e4c24b951ae615a6809aaab6b0b119670d7de21609ccd7c8852"
+    },
+    {
+      "path": "tests/acceptance/proxy/main.ts",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "1153e64f5f98658da1f28253d91ed1d313c54c7f69f1ff6189f3682f9dd9585a"
+    },
+    {
+      "path": "tests/acceptance/proxy/proxy.spec.ts",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "36d398bbbe03fd60afa3f4868d41bb33dc32f68510fae27bd4e7ac0fcf2c744d"
+    },
+    {
+      "path": "tests/acceptance/proxy/routing.ts",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "5cab41383ae6ee4d91b6c8d71474a4abb9c6600cd522a84ad713d1c2a00facb6"
+    },
+    {
+      "path": "tests/acceptance/proxy/server.ts",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "27e5f9b7f915c62b6596d9e9759cc5085a76650a06a13e9ebaa0dfcae1e2d265"
+    },
+    {
+      "path": "tests/acceptance/proxy/static.ts",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "bcd6e77b6314ad3b43174b7ba1b744d7d993b8f716a765dc6e3f114d646c766a"
+    },
+    {
+      "path": "tests/acceptance/proxy/upstream.ts",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "18c3f845a630e3d2fb1bdfa4a127cbea02525c83b6c6d65eb9cc6b0b5fbfeb9d"
+    },
+    {
+      "path": "tests/acceptance/puppeteer/boundaries.ts",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "93b110863540e245333489964938f7e5b68380fe0b2fa497ebae72e372d829c9"
+    },
+    {
+      "path": "tests/acceptance/puppeteer/boundaries.unit.spec.ts",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "c314f53db4f34e565293d1251d31472bb029550fb7357d9dc2a17c2f8c5604a4"
+    },
+    {
+      "path": "tests/acceptance/puppeteer/files.ts",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "9e16ee10f3121a1952ad3e24dc52e12cd1ff73395807a522856f40c996b159f8"
+    },
+    {
+      "path": "tests/acceptance/puppeteer/journeys.ts",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "23a9682ea5c2494954a9937eadf73f5a9e43cb82bb5e38ca61bb709c61c324f6"
+    },
+    {
+      "path": "tests/acceptance/puppeteer/run.ts",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "cef56562b0f1699197c33024d9913e2fa19f8a61f31e0f5bd85984a1f6aae5a7"
+    },
+    {
+      "path": "tests/acceptance/puppeteer/ui.browser-probe.ts",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "d9af08eab9b083ecb40c1e4b9605ac3b4423f39e0de7aabf5d36c3d593d87778"
+    },
+    {
+      "path": "tests/acceptance/puppeteer/ui.ts",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "db22a74339ec98fef94801c83c34917617a316b5c3f200d00eafc94bc08351c9"
+    },
+    {
+      "path": "tests/acceptance/README.md",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "d8e7a7cec4e7e67973f166a94f191adefc4e902b731d67b6aa3bbcfc5d66fef9"
+    },
+    {
+      "path": "tests/acceptance/selenium/boundaries.ts",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "82fdfbac5a412814b7a7de06de536e21a8fc16130272002d752fbe546dbeb817"
+    },
+    {
+      "path": "tests/acceptance/selenium/boundaries.unit.spec.ts",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "1b9f9255f57ec2abc42085fbf07a26e28784f9ba50f66246dee4aae6ab8b0b64"
+    },
+    {
+      "path": "tests/acceptance/selenium/credentials.ts",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "487aea4f62bb1016e47055b565836276fd0d19025f65126438af28648a5c323c"
+    },
+    {
+      "path": "tests/acceptance/selenium/journeys.ts",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "d5d417e6e6e9bd5b6023f9e5e51dc7584d2749d8c5fa719a6a63f40f81c08572"
+    },
+    {
+      "path": "tests/acceptance/selenium/run.ts",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "bd4b8119457b13838332eebc9f0d94a2e4a21b586921438e7f3149927e26a342"
+    },
+    {
+      "path": "tests/acceptance/selenium/ui.browser-probe.ts",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "0cd9b0d1908e6d337c3de03b57d6b8813518a74f9e93a2ca6c99a25184c49190"
+    },
+    {
+      "path": "tests/acceptance/selenium/ui.ts",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "653c21555f9fac14502db88807cb4b11013d2cb03f1ef1ed56442c1ba299c8b7"
+    },
+    {
+      "path": "tests/acceptance/shared/config.ts",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "6f0b56b5f8241e7ae229960389a0365d3ed5df99ddedded9eab4d375822e7776"
+    },
+    {
+      "path": "tests/acceptance/shared/report.ts",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "ae9d5fee3b15c686dbea5a498d17503c4ccf0dc019b33ae31b77861e5af63e3f"
+    },
+    {
+      "path": "tests/acceptance/shared/schema.ts",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "78599d8a46244720d6302583b9c26a07e198a684121fa3d6e4a998bbdbfc32ee"
+    },
+    {
+      "path": "tests/acceptance/shared/seed-contract.json",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "221d49259f52f2dcc9944a3af7744327cc2cbc1a3030fa4d13ae85b292e6a952"
+    },
+    {
+      "path": "tests/acceptance/tsconfig.json",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "d280f2810ecaaaa1d2218e1c2396ac1cedc1809d5b730f05880550e3ad32dd91"
+    },
+    {
+      "path": "docs/completion/acceptance-browser-final-repairs.md",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "9d622423af2ae6761b2b56b515bf3a430c93c7ceef5760ac4f9081c04fe06e08"
+    },
+    {
+      "path": "docs/completion/acceptance-browser-repairs.md",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "137050b4e533a468bb85656af01f56775b266b2278761c999d6edb055e02901f"
+    },
+    {
+      "path": "docs/completion/acceptance-controls-design.md",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "db0bfcb372cf69df928fece8e526bad076dd4e979f8a76a5b0c620c287be1656"
+    },
+    {
+      "path": "docs/completion/acceptance-existing-cases-design.md",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "dc49dbade1a5b409f4008ceb820d8c26f5012ef1d853be7745d58ff3637f9e2d"
+    },
+    {
+      "path": "docs/completion/acceptance-fixture-observer-design.md",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "3a7b12d19f5b22f4195a515b33a263c1bc4f49b6c42ffd4f967753e2324d8150"
+    },
+    {
+      "path": "docs/completion/acceptance-proxy-handoff.md",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "9fd3c860cf7ce9df5e192ea645293093e52db92fdd31c41503ef8e4e9644708e"
+    },
+    {
+      "path": "docs/completion/acceptance-runner-handoff.md",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "a7d2c589f5a1fb14e8aa2880402a2ae1ec4e558db52c7fb5b5a87db9b830f24c"
+    },
+    {
+      "path": "docs/completion/acceptance-runtime-repair.md",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "7d0ac03974afd7e708ff29e48d09101de5890e0b92246cc768ae4f7559d30ecd"
+    },
+    {
+      "path": "docs/completion/acceptance-t0-handoff.md",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "bee1690cf1f1ddadda68414c56e486647deb900810923226d413a0cce8785c2f"
+    },
+    {
+      "path": "docs/completion/acceptance-t1-handoff.md",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "bb334e8feaad35dbb5bf07a2ebe1812629ea2fbff696b682a4e6fb6b9400cab4"
+    },
+    {
+      "path": "docs/completion/acceptance-t2-handoff.md",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "9a343999c9472c4b8f238b0f0e5de9099ce150f5062de43b281e153e1252297d"
+    },
+    {
+      "path": "docs/completion/acceptance-t3-handoff.md",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "a624117824c23312c8a58778f5d7787f52e362fb79197a8e51817c0290c39a0e"
+    },
+    {
+      "path": "docs/completion/be01-c1-correctness-review.md",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "c79fe46aed3a5b027cbb3bacafd3c46fd934823af6a8172e6b0664ef0839ae3c"
+    },
+    {
+      "path": "docs/completion/be01-c1-design-review.md",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "9c2b3f515d68a9b139be001ec62e18cb08965541543577689b06208d39b30b08"
+    },
+    {
+      "path": "docs/completion/be01-controls-design-review.md",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "0468705fddae6589704c4185db948dcceba87f649e5f584e562cdb349db1e7bc"
+    },
+    {
+      "path": "docs/completion/be01-controls-review.md",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "52fc5be94af6a36bb1a54986897b94adcbc6d36e9986ea329cbb63a184b82a36"
+    },
+    {
+      "path": "docs/completion/be02-auth-rls-decision.md",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "dc55258802eaaadb1ab4e2cf8107d3bb76baf74658fe3344e46101d8fda74570"
+    },
+    {
+      "path": "docs/completion/be02-cd-contract.md",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "0f94baaaefdc35044017b60e8210aee261d502c80858c3caa927a9cd15074a89"
+    },
+    {
+      "path": "docs/completion/be02-cd-generation.md",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "1a6086f04ff0bebee3f729a789067c36796ee712bec47bccb1252a2953315288"
+    },
+    {
+      "path": "docs/completion/be02-gate-disposition.md",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "9a7d3b4ca303e2e4a9497f6c97ce7730a4703409de7f56aebe6e190a6cd63341"
+    },
+    {
+      "path": "docs/completion/be02-implementation-brief.md",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "3dd5a83272b9e9e3278c4f05452b81bb93555537e618736d324a95858173abd8"
+    },
+    {
+      "path": "docs/completion/be02-issue.md",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "40380f1b458ee4305a7ea69c6ec43d3385e2dd05044d05c572caac811022bfc4"
+    },
+    {
+      "path": "docs/completion/be02-pool-disposition-amendment.md",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "a10703d661ce70bebcf12170c9842d92f79a177a12dd8b90d4dc96645ed4bfa5"
+    },
+    {
+      "path": "docs/completion/be02-repair-review-index.md",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "277c56bf8369a959059f4f39a678324ed37173f4fc9e8cfa06147a64eb4ce420"
+    },
+    {
+      "path": "docs/completion/be02-write-deadline-decision.md",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "0874d5ae89f66bd4fc1972276fe1205678a8b0e1ac6adb8d866e2f72ff293953"
+    },
+    {
+      "path": "docs/completion/be03-consultation-brief.md",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "e5b5f2e926602fbcb6dcf2c4bbf96620a8ca5fd0dd3ee5ae9b7419a9044d6bbe"
+    },
+    {
+      "path": "docs/completion/be03-implementation-brief.md",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "730a6420c7a4d4a95d2d899771e05f538cc59642aa0642550e59cf4a1946b9c5"
+    },
+    {
+      "path": "docs/completion/codex-integration-map.md",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "c4893773872d69060cf5b17337ccbffd4746d812e725c640e30c6fd145890814"
+    },
+    {
+      "path": "docs/completion/fe02-cd-review-index.md",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "016a63e6e927f346818d186934d16ae5c70a6c2cd21cd7126bd8c9f85ed22934"
+    },
+    {
+      "path": "docs/completion/review-acceptance-browser-final-repairs.md",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "d3bf361a43d100df4762aabe203928dc1cdf49fb1f06f70f28d40ed45ed8af8d"
+    },
+    {
+      "path": "docs/completion/review-acceptance-browser-repairs.md",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "1ad17a66faacd286b504747ebcda2d988b202aac2314c5392eeedfbffafa7dc1"
+    },
+    {
+      "path": "docs/completion/review-acceptance-design.md",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "cf23fc09023127a3fc285f262e9dfd6300f7cd793d01e94b8a5f922ca6e83c92"
+    },
+    {
+      "path": "docs/completion/review-acceptance-evidence-repair.md",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "442ad81ceb5df455ffaca7df97874b261fb990a8e7fde8f4ec465af196f6ba9a"
+    },
+    {
+      "path": "docs/completion/review-acceptance-mount-oracle-r2.md",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "0556fa9835b135539761f0ed6f13a0817faeeec36e774c99a26f0edb3e742812"
+    },
+    {
+      "path": "docs/completion/review-acceptance-mount-oracle-repair.md",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "9d51f5977bd1197d730f1e449a3981d53014a47d76a10da1cd0627842d382512"
+    },
+    {
+      "path": "docs/completion/review-acceptance-mount-packaging.md",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "93967fa27e22bd42cb70633ead696851107a8dbff79bfd2e69213eeca8c0f2a4"
+    },
+    {
+      "path": "docs/completion/review-acceptance-playwright-repairs.md",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "4fd440a37177f744d03017e0839bcacc54be68c40b857979982371467e05d141"
+    },
+    {
+      "path": "docs/completion/review-acceptance-playwright.md",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "fe84724f8f1dea1901ff4e4808cde5ba0e4169e69eabe240913b34d235a40420"
+    },
+    {
+      "path": "docs/completion/review-acceptance-policy-repair.md",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "5fb4cfd58146c849fcdf99d091f34dadece3e1b5bebc95c171c684fdebdcaf62"
+    },
+    {
+      "path": "docs/completion/review-acceptance-proxy.md",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "61a1fb91a60247b8ee8c8080a2ee095531f14a3272dcb43ee47d35abcbbc1c4d"
+    },
+    {
+      "path": "docs/completion/review-acceptance-puppeteer.md",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "aa45c01678ab89ca111bbd80c7d4b24e58088e073cdb3d55173fd63a35069bf6"
+    },
+    {
+      "path": "docs/completion/review-acceptance-recipes.md",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "0b428459e77dd79b8dd6690070daeff0357691e874b555142cf70eb6357f9aa4"
+    },
+    {
+      "path": "docs/completion/review-acceptance-runtime.md",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "23107fd32f5ecd8d6b369043110682c3535b2c9f224eae1883c8474fffb5bf11"
+    },
+    {
+      "path": "docs/completion/review-acceptance-seed.md",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "23b22c4f9bd585ce1ce9a8894afb472042601890f93b66c1bd1f146aa73fd152"
+    },
+    {
+      "path": "docs/completion/review-acceptance-selenium.md",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "2cb6e3f2da06f72eb250f6b0f90bab3365a574f52c29b23a8864bd36f288165b"
+    },
+    {
+      "path": "docs/completion/review-acceptance-shared.md",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "37423539e0c59566244d67c383e4f877ebeafd8b907209dcb94f1866fbf5f052"
+    },
+    {
+      "path": "docs/completion/review-be02-auth-cleanup.md",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "5f00307a6a9a5f2f59956a94ca61d23308fb663b0f30b61c5ae81f60dd8aaafc"
+    },
+    {
+      "path": "docs/completion/review-be02-auth-rls-concurrency-processes.md",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "a08fb6b4167367eaea96e0afc913fe7546fce1cf32343336543817ad8d1500a6"
+    },
+    {
+      "path": "docs/completion/review-be02-auth-rls-production.md",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "e15804140c2c0f22a044e776adc28611968e57f052490e285ac2b27e967a05b1"
+    },
+    {
+      "path": "docs/completion/review-be02-busybox-timeout.md",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "635d55c5d34dc4174620b5ae94550388ed2f7e31747182f6dce4ff226419d347"
+    },
+    {
+      "path": "docs/completion/review-be02-cd-transaction-design.md",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "0ec3395340161b4e2a7167aa20f7f111984382f825ff39d1beb6f40234692d30"
+    },
+    {
+      "path": "docs/completion/review-be02-collaboration-b-compat.md",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "ad1c45caa68e3b0f54ef493ee7f4e901eacdca9dba0e506749a8760e8528b977"
+    },
+    {
+      "path": "docs/completion/review-be02-collaboration-database.md",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "cfbbf9eedd580bf950da3c58aadd644ab2958be652ba5c855f50c40923b8e0a6"
+    },
+    {
+      "path": "docs/completion/review-be02-collaboration-design.md",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "ec33d3d7568ff86052fbd34adb87fdc53909490ebdb8c593bfaf5fe18974dc96"
+    },
+    {
+      "path": "docs/completion/review-be02-collaboration-http.md",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "6e5ad577835bfd2b1cb5e78ec1d28bc22822edf436ebb53101f0d2d6d618ddf4"
+    },
+    {
+      "path": "docs/completion/review-be02-collaboration-races.md",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "a163dbc9637268f6d4e534d2b5ae86744a881200948d6d935ce2d5a7d2547cd0"
+    },
+    {
+      "path": "docs/completion/review-be02-collaboration-schema.md",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "8579ebd1f1adb188772310a4d9db9ea797e9537f1001f2446b5c421c189bed62"
+    },
+    {
+      "path": "docs/completion/review-be02-collaboration-services.md",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "53150c814d6a6c1acd4db207cfa9e885f50c77248672afa1877d4dfd28c39c51"
+    },
+    {
+      "path": "docs/completion/review-be02-draft-http-boundary.md",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "f87138e2efcc51bbad460fbcc6859aa74a8e89b4d0a5d91ea1406b461c67b2f8"
+    },
+    {
+      "path": "docs/completion/review-be02-draft-races.md",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "ba7db1c232b493743e9ee2672361b49d3853c8b1a800d900d09bf320710155d6"
+    },
+    {
+      "path": "docs/completion/review-be02-draft-schema-ledger.md",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "abf8e2d112c654031bf0d6875ac4b7cc1081791324dadb7656ebeacc9c4c3c26"
+    },
+    {
+      "path": "docs/completion/review-be02-draft-services.md",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "8faaab253fe5237bb09e057d9b68fdbce89b4feb0dbff4a3811e8632ac2e831d"
+    },
+    {
+      "path": "docs/completion/review-be02-draft-test-boundaries.md",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "f7072df12aaba4a36440fc27ef008d2cb6e5310d48f3634ec0620ab1148c99c9"
+    },
+    {
+      "path": "docs/completion/review-be02-membership-service.md",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "715c8418f5841be21ccba4dc4584321063339b5166232b37ebfd04ea31d68546"
+    },
+    {
+      "path": "docs/completion/review-be02-membership-sql-races.md",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "6a41bae17ee762296ef01f4b5fef7558ef3818121929dfac76b4f9e8238f4339"
+    },
+    {
+      "path": "docs/completion/review-be02-pool-design.md",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "27d64b75610ec8842db145a25014cd287c3fe7e30ccc49b15beea43f7fa07b22"
+    },
+    {
+      "path": "docs/completion/review-be02-pool-lifecycle.md",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "5f5c13ce627bf34dd7f908d5ea1c02927a731e5bcabf30d041834cb0140df072"
+    },
+    {
+      "path": "docs/completion/review-be02-pool-schedules.md",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "dac58fc0a06553968c419ca1a0247d149d313669d486f3870864c76c0daa03ac"
+    },
+    {
+      "path": "docs/completion/review-be02-pool-unwind-final.md",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "3aece7d0c530272659cd3126067a0a630a6aecc40363f1b2ebfad3cbc39b1273"
+    },
+    {
+      "path": "docs/completion/review-be02-private-parameter.md",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "e68030081f8b1e289c439375ae43ed1004545149206fb3f31c498d298b1c2c53"
+    },
+    {
+      "path": "docs/completion/review-be02-repair-launch-queue.json",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "3208105a2e4c0dea365e29a4a9c9405f4101bb61f211a1580148e18d3c712197"
+    },
+    {
+      "path": "docs/completion/review-be02-repair-numeric-input.md",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "ecb4a0d72c8ec1cdcc1ab31e3f518c6547833b60202590f461ea60e9ab8bcd88"
+    },
+    {
+      "path": "docs/completion/review-be02-runtime-guard-fixes.md",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "3444e90d24ca1cc3c2091a9e97617413ded2b83275da113f975249e2306dc27e"
+    },
+    {
+      "path": "docs/completion/review-be02-search-service.md",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "b1ef14386e291395f1e1647a8dfeb1b030c715b318410e11bc256481823c1e6b"
+    },
+    {
+      "path": "docs/completion/review-be02-write-boundary-races.md",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "280086353207e099f56b97f9ed9cbada2d314b3760b707de97f518cd9bb36907"
+    },
+    {
+      "path": "docs/completion/review-be02-write-boundary-tests.md",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "7cf0003dc74b7195c0a69aeb022746689c8ba659c039055de3e684ba12673b13"
+    },
+    {
+      "path": "docs/completion/review-be02-write-deadline-design.md",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "230d5ffa0d5fc98a5b01e5eb4593e1750375cd5ab95f30312eada9ca2c93a91f"
+    },
+    {
+      "path": "docs/completion/review-be02-write-deadline-repair.md",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "d05a789f3ed648d1f53376fdd65bca883d0946ff2dcfd7e9ae243d9de883a216"
+    },
+    {
+      "path": "docs/completion/review-be02-write-design.md",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "b1527801a8f338144ed0a183a94dc4bd3994807a383411c78953498c8b48e856"
+    },
+    {
+      "path": "docs/completion/review-be02-write-guard-schema.md",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "b27aa4050d8458a6e347f285dd549dadaf93959acff8b6e14c3bbaf014df3188"
+    },
+    {
+      "path": "docs/completion/review-be02-write-transport.md",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "2b7dbc7ecc0d12d98e6de8a1b2966e114042a5abec28cdbaf3e57f5b5c8b6bff"
+    },
+    {
+      "path": "docs/completion/review-fe02-cd-22-design.md",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "3c5a6cc10e75632981723b1c3bce83229c3f83e3c454cf62bdd4ab932faccf82"
+    },
+    {
+      "path": "docs/completion/review-fe02-cd-launch-queue.json",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "1836ea3d6d8c570f29e5276a81391551e3cd7bf56bd12c6219f29dae40d41bb8"
+    },
+    {
+      "path": "docs/completion/review-fe02-dark-repair.md",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "6b07e6d6be5adf8fede482d2eb5785879061c7629c9abeda8fe43d6b92b415fb"
+    },
+    {
+      "path": "docs/completion/review-fe02-postrun-repairs.md",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "27c9849d094f2a6372be0d01d036d48948c9ee785b9a5e6a390e26aa3112f86d"
+    },
+    {
+      "path": "docs/completion/review-fe02-recovery-core.md",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "aa8f0b010746c39cc9ecd5a8acb81c3a9bd022ff3ed7cb1943fdb36589b99db9"
+    },
+    {
+      "path": "docs/completion/review-fe02-session-repairs.md",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "dbdd0be247e8dd2a0325064928e0778cde6a9364972cc3b37cf393bd01b3cb69"
+    },
+    {
+      "path": "docs/completion/review-runner-command-and-fe-fixture.md",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "969e4665af30d9ede28d2c5b1cc79a67f8f81fe311de7a3599ce22c2a9cbda42"
+    },
+    {
+      "path": "docs/completion/review-runner-finalization-repair.md",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "9c49a0036d41004a9c992da2801b241e2e0858589e472ad753caaa2ccf9809b1"
+    },
+    {
+      "path": "docs/completion/runner-finalization-repair.md",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "87c53efe58b888d19c49dfcdb21abddf48452a986ca9447aca5d40757c436600"
+    },
+    {
+      "path": "docs/completion/test-expansion-plan.md",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "809770209cdbdcbcaba120e26d9693c375ad8ec4a6b33bfa997e2dcb2f92cb81"
+    },
+    {
+      "path": "docs/completion/verification-20261014.md",
+      "source": "Elevateo Mail - Local Completion",
+      "sha256": "46dee14fbe090633bd7e0467b8f5e71635644b16109264eb12f1d795336cde9d"
+    },
+    {
+      "path": "ops/perf/cleanup.sh",
+      "source": "Elevateo Mail - Backend Performance",
+      "sha256": "1b2db1cb8ab72f491d7f56e0a7aac524af957fadaca2e54ea4c669dcf85a4bbb"
+    },
+    {
+      "path": "ops/perf/compose.perf.yaml",
+      "source": "Elevateo Mail - Backend Performance",
+      "sha256": "a74a14e04f80b2947d437480117b005db4f5a4d39d9d060f819bf207c256af24"
+    },
+    {
+      "path": "ops/perf/lib.sh",
+      "source": "Elevateo Mail - Backend Performance",
+      "sha256": "3c610695deb35da1a122ae031b5ece4689b20cef95d3b6e20576f3d406ad1cc7"
+    },
+    {
+      "path": "ops/perf/load.rb",
+      "source": "Elevateo Mail - Backend Performance",
+      "sha256": "a96e691e72b782b8d3a4e790ef68333d60924927d4c923a1256af5838a58807e"
+    },
+    {
+      "path": "ops/perf/preflight.sh",
+      "source": "Elevateo Mail - Backend Performance",
+      "sha256": "bbec80781758797776235f424ea77f416600c45ad652566fc50ed3594269e755"
+    },
+    {
+      "path": "ops/perf/run-baseline.sh",
+      "source": "Elevateo Mail - Backend Performance",
+      "sha256": "c6e2ce861507b13d4000ca463003d98d50cff0bc16a56cbb4b75fb700b5e9521"
+    },
+    {
+      "path": "ops/perf/sample.sh",
+      "source": "Elevateo Mail - Backend Performance",
+      "sha256": "85bb5aa87310fab85c5a7be58ab1ad30052b780116f333587b08e2c655b83706"
+    },
+    {
+      "path": "ops/perf/sql/explain-rls.sql",
+      "source": "Elevateo Mail - Backend Performance",
+      "sha256": "9e5798fae47ddceb72c6eccc0071cd836692453b18d7f1ee1934db6cd0480feb"
+    },
+    {
+      "path": "ops/perf/tests/cleanup-guards.sh",
+      "source": "Elevateo Mail - Backend Performance",
+      "sha256": "6cd40c70c6a7ebca3255bae51a39705b66f3ac714bc73847016d02dbf05c21b3"
+    },
+    {
+      "path": "ops/perf/tests/fakebin/date",
+      "source": "Elevateo Mail - Backend Performance",
+      "sha256": "67b8c6cb251880ce314af90fea6084214e69232a11452a95a04bba8f81a2984d"
+    },
+    {
+      "path": "ops/perf/tests/fakebin/docker",
+      "source": "Elevateo Mail - Backend Performance",
+      "sha256": "3fb934d82966c519264dacabd4978b17e33df28fae943f9d3c9525fcdfdc35bd"
+    },
+    {
+      "path": "ops/perf/tests/fleet-guards-guards.sh",
+      "source": "Elevateo Mail - Backend Performance",
+      "sha256": "2809024fa6306d3ca259a495d82f052e57088d487f904e147c24f64fa806aab4"
+    },
+    {
+      "path": "ops/perf/tests/fleet-guards.sh",
+      "source": "Elevateo Mail - Backend Performance",
+      "sha256": "1e24bfac0b0e69825b2206411b91ff3df7a638b2005d76ecfaa642c5310ddf16"
+    },
+    {
+      "path": "ops/perf/tests/pack-guards.sh",
+      "source": "Elevateo Mail - Backend Performance",
+      "sha256": "01dadb738d48d6e8c0b627f3e9a65376920a730f3603218ce75dbdcb56a38a95"
+    },
+    {
+      "path": "ops/perf/tests/pack-modes-guards.sh",
+      "source": "Elevateo Mail - Backend Performance",
+      "sha256": "6e99025b73560d88f087d1610055941fb91933d9700e31fad49ad002b2d4262d"
+    },
+    {
+      "path": "ops/perf/tests/run-baseline-guards.sh",
+      "source": "Elevateo Mail - Backend Performance",
+      "sha256": "e6f3fb6d0c7f973d6356f3d10e2b29e2f1e4f2398263fbfe6ded619bbb39d128"
+    },
+    {
+      "path": "ops/perf/transfer.sh",
+      "source": "Elevateo Mail - Backend Performance",
+      "sha256": "94d24a2c2b71b88031c1ba04a379c1ceb9d64cc5c1dac0672b1dbdfd60cb55bd"
+    },
+    {
+      "path": "ops/tests/be01-services/auth.rb",
+      "source": "Elevateo Mail - BE01 R1",
+      "sha256": "adfcc933e220022b26e9cbbf17c2d769520cf6881defe9ea42a6c5f973d314e3"
+    },
+    {
+      "path": "ops/tests/be01-services/authorized-storage.rb",
+      "source": "Elevateo Mail - BE01 R1",
+      "sha256": "a2538b852d965ef905e6714b71f97536a0c3edb5ddc6f32fe16d08afe9878a83"
+    },
+    {
+      "path": "ops/tests/be01-services/boundary_test.rb",
+      "source": "Elevateo Mail - BE01 R1",
+      "sha256": "4344d3eba939e9c9d2baab42cf59d55f8e73758d24f064d0669255b1d84d5173"
+    },
+    {
+      "path": "ops/tests/be01-services/credentials.rb",
+      "source": "Elevateo Mail - BE01 R1",
+      "sha256": "7c065908df06878dc7e2e127cc078441c5f93227e208d95d7a90691e03e8c5ae"
+    },
+    {
+      "path": "ops/tests/be01-services/database.rb",
+      "source": "Elevateo Mail - BE01 R1",
+      "sha256": "eeeb37061bd031ca20de3d10be1beb5305673f8e56219d1f08692b4b28c23fee"
+    },
+    {
+      "path": "ops/tests/be01-services/http.rb",
+      "source": "Elevateo Mail - BE01 R1",
+      "sha256": "79375775aa33cb39756e07d819119bf3e426a921f206b791d6b323d45f8b4acb"
+    },
+    {
+      "path": "ops/tests/be01-services/package.sha256",
+      "source": "Elevateo Mail - BE01 R1",
+      "sha256": "028c90c20b356ffaa8c4ba285524d4835dd8513685c096aa41acaa12b22a476d"
+    },
+    {
+      "path": "ops/tests/be01-services/services.rb",
+      "source": "Elevateo Mail - BE01 R1",
+      "sha256": "82198f2503f4a23fc5b0406d966d6b8dd84e5d768623510f904fc0de669860fa"
+    },
+    {
+      "path": "ops/tests/be01-services/state.rb",
+      "source": "Elevateo Mail - BE01 R1",
+      "sha256": "151846f49026327c8f6f8a4c935ea8959cbbaf6a3c3f41db09eef18259e92881"
+    },
+    {
+      "path": "ops/tests/be01-services/storage.rb",
+      "source": "Elevateo Mail - BE01 R1",
+      "sha256": "e574fe0783062e318241b3dedb25128f498cc968d4e1f65a5f4a131c9c9a47fd"
+    }
+  ],
+  "contracts": {
+    "Elevateo Mail - Local Completion": {
+      "contracts/tooling/package-lock.json": "65132a7eaded1decac12c44f001b0cd1c9deb7c07694ed2cc05a38afb7200a74",
+      "contracts/tooling/package.json": "38c232b37479b0a5459c1ba63f83291dc4f8e9caf57e17fac7b1b383ef4ff56d",
+      "contracts/tooling/README.md": "e7cfcc536779d4708425a25e7a907a1239c2176261f2d776f3caee1d533281f2",
+      "contracts/v1/contract-lock.json": "98b7379b024b639b22ef757552da859a5e7151d41b039ef17a3d5d7ccf9f2a07",
+      "contracts/v1/fixtures.json": "182d8dfad62c49d3a5b9eba836716808709255c66320e3a8a09fc4e7ddae2833",
+      "contracts/v1/openapi.json": "859041382484a3a001ae087ca88e02eeb23540f2cf46aec795b064aa8ea66073",
+      "contracts/v1/README.md": "24592cbb5a42e269dc85e813d72d06ebaee6b856c56826a02e3df94912e5ddb2"
+    },
+    "Elevateo Mail - Fable FE01 R1": {
+      "contracts/tooling/package-lock.json": "65132a7eaded1decac12c44f001b0cd1c9deb7c07694ed2cc05a38afb7200a74",
+      "contracts/tooling/package.json": "38c232b37479b0a5459c1ba63f83291dc4f8e9caf57e17fac7b1b383ef4ff56d",
+      "contracts/tooling/README.md": "e7cfcc536779d4708425a25e7a907a1239c2176261f2d776f3caee1d533281f2",
+      "contracts/v1/contract-lock.json": "98b7379b024b639b22ef757552da859a5e7151d41b039ef17a3d5d7ccf9f2a07",
+      "contracts/v1/fixtures.json": "182d8dfad62c49d3a5b9eba836716808709255c66320e3a8a09fc4e7ddae2833",
+      "contracts/v1/openapi.json": "859041382484a3a001ae087ca88e02eeb23540f2cf46aec795b064aa8ea66073",
+      "contracts/v1/README.md": "24592cbb5a42e269dc85e813d72d06ebaee6b856c56826a02e3df94912e5ddb2"
+    },
+    "Elevateo Mail - BE02 Codex": {
+      "contracts/v1/contract-lock.json": "98b7379b024b639b22ef757552da859a5e7151d41b039ef17a3d5d7ccf9f2a07",
+      "contracts/v1/fixtures.json": "182d8dfad62c49d3a5b9eba836716808709255c66320e3a8a09fc4e7ddae2833",
+      "contracts/v1/openapi.json": "859041382484a3a001ae087ca88e02eeb23540f2cf46aec795b064aa8ea66073",
+      "contracts/v1/README.md": "24592cbb5a42e269dc85e813d72d06ebaee6b856c56826a02e3df94912e5ddb2"
+    }
+  }
+}

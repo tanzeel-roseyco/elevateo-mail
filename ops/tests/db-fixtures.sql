@@ -1,0 +1,16 @@
+-- AIDEV-NOTE: Synthetic tenant fixtures use a separate admin process; restricted tests never receive its password.
+BEGIN;
+INSERT INTO app.organizations(id, name) VALUES
+  ('10000000-0000-0000-0000-000000000001', 'R1 organization A'),
+  ('10000000-0000-0000-0000-000000000002', 'R1 organization B');
+INSERT INTO app.organization_memberships(organization_id, user_id) VALUES
+  ('10000000-0000-0000-0000-000000000001', '20000000-0000-0000-0000-000000000001'),
+  ('10000000-0000-0000-0000-000000000001', '20000000-0000-0000-0000-000000000002'),
+  ('10000000-0000-0000-0000-000000000002', '20000000-0000-0000-0000-000000000003');
+INSERT INTO app.mailboxes(id, organization_id, address, visibility) VALUES
+  ('30000000-0000-0000-0000-000000000001', '10000000-0000-0000-0000-000000000001', 'shared-a@r1.invalid', 'shared'),
+  ('30000000-0000-0000-0000-000000000002', '10000000-0000-0000-0000-000000000001', 'private-a@r1.invalid', 'private'),
+  ('30000000-0000-0000-0000-000000000003', '10000000-0000-0000-0000-000000000002', 'shared-b@r1.invalid', 'shared');
+INSERT INTO app.mailbox_memberships(organization_id, mailbox_id, user_id) VALUES
+  ('10000000-0000-0000-0000-000000000001', '30000000-0000-0000-0000-000000000002', '20000000-0000-0000-0000-000000000001');
+COMMIT;

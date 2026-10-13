@@ -1,0 +1,15 @@
+module Elevateo
+  class AuthEntry
+    @sessions: Sessions
+    @config: _AuthConfig
+    @store: _SessionStore
+    @client: _AuthClient
+    @crypto: SessionCrypto
+    @tokens: AuthTokens
+    def initialize: (sessions: Sessions, ?config: _AuthConfig) -> void
+    def stage: (raw_query: String, deadline: RequestDeadline) -> { cookie: String, expires_at: Time, location: String }
+    def accept: (pending_cookie: String?, password: auth_value, caller_cookie: String?, deadline: RequestDeadline) -> SessionResult
+    private
+    def entry_credentials: (auth_object, String, String, RequestDeadline) -> AuthTokens::Verified
+  end
+end

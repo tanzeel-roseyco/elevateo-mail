@@ -1,0 +1,14 @@
+module V1
+  class DraftsController < WriteController
+    def index: () -> void
+    def show: () -> void
+    def update: () -> void
+    private
+    def path_id: () -> String
+    def reader: (Elevateo::_ThreadConnection, Elevateo::_ThreadIdentity,
+                 Elevateo::ReadResponse::item) -> Elevateo::Drafts
+  end
+  class DraftOperationsController < WriteController
+    def show: () -> void
+  end
+end

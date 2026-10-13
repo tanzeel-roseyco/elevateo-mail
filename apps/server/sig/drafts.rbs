@@ -1,0 +1,51 @@
+module Elevateo
+  class Drafts
+    SUMMARY_BYTES: Integer
+    FULL_BYTES: Integer
+    LIST_SQL: String
+    DETAIL_SQL: String
+    @database: Database
+    @identity: _ThreadIdentity
+    @cursors: Cursors
+    def initialize: (connection: _ThreadConnection, identity: _ThreadIdentity,
+                     session: ReadResponse::item, cursors: Cursors) -> void
+    def detail: (draft_id: String, query: Hash[String, String]) -> String
+    def list: (query: Hash[String, String]) -> String
+    private
+    def page_limit: (Hash[String, String]) -> Integer
+    def position: (String?, Cursors::scope) -> Cursors::position
+
+    class Payload
+      FIELDS: Array[String]
+      attr_reader draft_id: String
+      attr_reader mailbox_id: String
+      attr_reader operation_id: String
+      attr_reader expected_version: Integer
+      attr_reader subject: String
+      attr_reader recipients: Array[Hash[String, String?]]
+      attr_reader body_text: String
+      attr_reader reply_id: String?
+      def initialize: (draft_id: String, input: WriteInput::object) -> void
+      def canonical_bytes: () -> String
+      def digest: () -> String
+      private
+      def addresses: (WriteInput::value) -> Array[Hash[String, String?]]
+    end
+
+    class Database
+      @connection: _ThreadConnection
+      @session: ReadResponse::item
+      def initialize: (connection: _ThreadConnection, session: ReadResponse::item) -> void
+      def rows: (String, Array[String?]) -> Array[ReadResponse::item]
+      def object: (String, Array[String?]) -> ReadResponse::item
+      def envelope: () -> Hash[String, String]
+      def authorize: (String, ?String?) -> void
+      def encode: (ReadResponse::json_value, budget: Integer) -> String
+    end
+
+    module Projection
+      def self.draft: (ReadResponse::item, summary: bool) -> ReadResponse::item
+      def self.timestamp: (ReadResponse::json_value) -> String
+    end
+  end
+end

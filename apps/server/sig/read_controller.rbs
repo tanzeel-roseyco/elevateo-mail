@@ -1,0 +1,16 @@
+module V1
+  class ReadController < ApiController
+    CONTEXT_TOKEN: Regexp
+    @read_config: Elevateo::Config?
+    @read_sessions: Elevateo::Sessions?
+    protected
+    def read_config: () -> Elevateo::Config
+    def read_sessions: () -> Elevateo::Sessions
+    # AIDEV-NOTE: The checked-out Rails adapter supplies the session, tenancy and reader interfaces in one snapshot.
+    def protected_read: (allowed_query: Array[String], ?context_required: bool, ?budget: Integer)
+      { (connection: ActiveRecord::ConnectionAdapters::AbstractAdapter,
+         identity: Elevateo::SessionIdentity, session: Elevateo::ReadResponse::item,
+         query: Hash[String, String], deadline: Elevateo::RequestDeadline) -> String } -> void
+    def read_context: (required: bool) -> Array[String?]
+  end
+end

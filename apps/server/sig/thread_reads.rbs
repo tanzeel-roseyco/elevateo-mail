@@ -1,0 +1,39 @@
+module Elevateo
+  interface _ThreadIdentity
+    def user_id: () -> String
+    def org_id: () -> String
+  end
+  interface _ThreadResult
+    def to_a: () -> Array[ReadResponse::item]
+  end
+  interface _ThreadConnection
+    def exec_query: (String, String, Array[ActiveRecord::Relation::QueryAttribute]) -> _ThreadResult
+  end
+  class ThreadReads
+    class NotAvailable < StandardError
+    end
+    class InvalidQuery < StandardError
+    end
+    MAILBOX_SQL: String
+    LIST_SQL: String
+    THREAD_SQL: String
+    MESSAGES_SQL: String
+    @connection: _ThreadConnection
+    @identity: _ThreadIdentity
+    @session: ReadResponse::item
+    @cursors: Cursors
+    def initialize: (connection: _ThreadConnection, identity: _ThreadIdentity,
+                     session: ReadResponse::item, cursors: Cursors) -> void
+    def list: (mailbox_id: String?, query: Hash[String, String]) -> String
+    def detail: (thread_id: String?, query: Hash[String, String]) -> String
+    private
+    def rows: (String, Array[String?]) -> Array[ReadResponse::item]
+    def query_limit: (Hash[String, String], maximum: Integer, allowed: Array[String]) -> Integer
+    def request_uuid: (String?) -> String
+    def session_envelope: () -> ReadResponse::item
+    # AIDEV-NOTE: Search reuses thread cursors and binds an omitted mailbox filter as nil.
+    def cursor_scope: (resource: String, filters: Hash[String, String?], order: String, limit: Integer) -> Cursors::scope
+    def position: (String?, Cursors::scope, String) -> Cursors::position
+    def encode_position: (ReadResponse::item, String, Cursors::scope) -> String
+  end
+end

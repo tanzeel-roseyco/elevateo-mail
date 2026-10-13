@@ -1,0 +1,16 @@
+module Elevateo
+  module AuthInput
+    UUID: Regexp
+    class UniqueObject < Hash[String, auth_value]
+      def []=: (String, auth_value) -> auth_value
+    end
+    def self.object: (String?, ?maximum: Integer) -> auth_object
+    def self.body: (String, required: Array[String], ?optional: Array[String]) -> auth_object
+    def self.query: (String, ?allowed: Array[String]) -> Hash[String, String]
+    def self.text: (auth_value, maximum: Integer, ?minimum: Integer) -> String
+    def self.email: (auth_value) -> String
+    def self.password: (auth_value, ?minimum: Integer) -> String
+    def self.uuid: (auth_value) -> String
+    def self.ip: (auth_value) -> String
+  end
+end

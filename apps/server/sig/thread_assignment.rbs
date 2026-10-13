@@ -1,0 +1,21 @@
+module Elevateo
+  class ThreadAssignment < ThreadCollaboration
+    REQUIRED: Array[String]
+    STATE_SQL: String
+    INITIAL_SQL: String
+    SAVE_SQL: String
+    TARGET_SQL: String
+    def self.validate!: (WriteInput::object) -> nil
+    def get: (thread_id: String, query: Hash[String, String]) -> String
+    def put: (thread_id: String, input: WriteInput::object) -> WriteResponse
+    private
+    def initial: () -> ReadResponse::item
+    def project: (ReadResponse::item, String, String) -> ReadResponse::item
+  end
+end
+module V1
+  class ThreadAssignmentsController < WriteController
+    def show: () -> void
+    def update: () -> void
+  end
+end

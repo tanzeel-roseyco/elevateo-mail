@@ -1,0 +1,65 @@
+# AIDEV-NOTE: R1_PROJECT must be a fresh be01r1-UUID; wrappers refuse existing resources before creating fixtures.
+x-r1-environment: &r1-environment
+  RAILS_ENV: test
+  ELEVATEO_MODE: local
+  ELEVATEO_OUTBOUND_HOLD: "true"
+  ELEVATEO_DB_HOST: db
+  ELEVATEO_DB_NAME: postgres
+  ELEVATEO_AUTH_URL: http://auth:9999
+  ELEVATEO_STORAGE_URL: http://storage:5000
+  ELEVATEO_SMTP_HOST: mailpit
+  ELEVATEO_SMTP_PORT: "1025"
+  ELEVATEO_MAILPIT_URL: http://mailpit:8025
+  SECRET_KEY_BASE: ${SECRET_KEY_BASE:?}
+
+services:
+  api:
+    image: ${R1_PROJECT:?}-server:repair
+  worker:
+    image: ${R1_PROJECT:?}-server:repair
+  migrate:
+    image: ${R1_PROJECT:?}-server:repair
+  r1-fixtures:
+    image: supabase/postgres:17.6.1.136@sha256:f371b5f3f2ac0a05703f33d6e6134515fb2498cab708fb948a0aeb7481467c00
+    profiles: [r1]
+    networks: [runtime]
+    environment:
+      PGPASSWORD: ${POSTGRES_PASSWORD:?}
+    volumes:
+      - ./ops/tests/db-fixtures.sql:/ops/fixtures.sql:ro
+    entrypoint: ["psql", "-h", "db", "-U", "supabase_admin", "-d", "postgres", "-v", "ON_ERROR_STOP=1", "-f", "/ops/fixtures.sql"]
+  r1-api-test:
+    image: ${R1_PROJECT:?}-server:repair
+    profiles: [r1]
+    networks: [runtime]
+    environment:
+      <<: *r1-environment
+      ELEVATEO_DB_ROLE: elevateo_api
+      ELEVATEO_PROCESS: api
+      API_DB_PASSWORD: ${API_DB_PASSWORD:?}
+      ELEVATEO_DB_POOL: ${R1_DB_POOL:-5}
+    command: ["bundle", "exec", "rails", "test", "test/be_01_r1/tenancy_test.rb"]
+  r1-worker-test:
+    image: ${R1_PROJECT:?}-server:repair
+    profiles: [r1]
+    networks: [runtime]
+    environment:
+      <<: *r1-environment
+      ELEVATEO_DB_ROLE: elevateo_worker
+      ELEVATEO_PROCESS: worker
+      WORKER_DB_PASSWORD: ${WORKER_DB_PASSWORD:?}
+    command: ["bundle", "exec", "rails", "test", "test/be_01_r1/worker_role_test.rb"]
+
+volumes:
+  db-data:
+    name: ${R1_PROJECT:?}-db-data
+    labels:
+      elevateo.r1.project: ${R1_PROJECT:?}
+  db-config:
+    name: ${R1_PROJECT:?}-db-config
+    labels:
+      elevateo.r1.project: ${R1_PROJECT:?}
+  storage-data:
+    name: ${R1_PROJECT:?}-storage-data
+    labels:
+      elevateo.r1.project: ${R1_PROJECT:?}

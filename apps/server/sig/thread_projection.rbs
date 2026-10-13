@@ -1,0 +1,15 @@
+module Elevateo
+  module ThreadProjection
+    TIMESTAMP: Regexp
+    def self.thread: (ReadResponse::item, summary: bool) -> ReadResponse::item
+    def self.message: (ReadResponse::item) -> ReadResponse::item
+    def self.address: (ReadResponse::json_value, nullable: bool) -> ReadResponse::item?
+    def self.timestamp: (ReadResponse::json_value) -> String?
+    def self.source_json: (ReadResponse::json_value, Integer) -> ReadResponse::json_value
+    def self.uuid: (ReadResponse::json_value) -> String
+    def self.text: (ReadResponse::json_value, Integer) -> String
+    def self.nullable_text: (ReadResponse::json_value, Integer) -> String?
+    def self.boolean: (ReadResponse::json_value) -> bool
+    def self.integer: (ReadResponse::json_value, Integer) -> Integer
+  end
+end

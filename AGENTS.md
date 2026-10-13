@@ -1,5 +1,13 @@
 # Project instructions
 
+## Current wave routing (2026-10-14)
+
+Follow [.planning/wave-20261014/INT-401.md](.planning/wave-20261014/INT-401.md); its current mandate supersedes older paid-opinion routing below. GPT-6.1-Sol LOW/Fast is requested; report actual identities honestly. No additional Devin spending or Claude ultrareviews. Root owns strategy, approval, verification and Obsidian vault mirroring. Cassian owns source reconciliation only in integrate/cassian-unified; original checkouts remain untouched. Soren schedules all fleet-02 container builds/tests under a remote mutation lease. No host app tests, local builds or dependency installs. When laptop memory is low, root routes implementation CLI execution to fleet-02.
+
+Named owners: Cassian OFF-401 integration; Soren infrastructure/Supabase; Rowan backend; Mira frontend; Elara acceptance; Nadia runtime/deliverability research. Root advisors Ada ADV-714 and Linus ADV-729 cover infrastructure/design and merge/provenance. Specialist identities use SPEC-<ticket><sequence>, with bounded purpose and recorded evidence. See docs/issues.md for responsibility and blocker accounting. Keep separate live/test persistent Supabase databases, storage, secrets and networks. Neither stack authorization permits live mail or public release.
+
+Do not count historical test results as verification of this integrated baseline. Every new check runs on fleet-02 through Soren. Adversarial assignments cover <=200 source lines (up to 400 only when clearly divided), use the full rubric in INT-401, and include a dedicated design-tradeoff reviewer. Record defects/KLOC and evidence in code-reviews.md.
+
 Read README.md, state.md, documentation.md, and .planning/STANDARDS.md before making changes. For the user's 2026-10-12 local-completion request, follow LOCAL_BUILD_PROMPT.md and docs/local-completion-plan.md. Read .planning/README.md and .planning/AGENT_ORCHESTRATION.md for the expanded research-first, named-model consultation and Devin execution workflow. Initial Rails/client architecture is accepted in docs/decisions/0002-local-architecture.md; each implementation task still requires its own opinions and synthesis. Use the accepted implementation decisions for that bounded workflow; do not repeat the earlier blanket standards-approval question. Production choices and activation remain separate, and no blanket approval is recorded.
 
 Keep README Current state, state.md, and relevant documentation synchronized in every implementation commit. Use strict typing, boundary validation, deliberate errors, and no secrets. Search AIDEV anchors before editing and preserve/update their intent.

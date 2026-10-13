@@ -1,0 +1,29 @@
+module Elevateo
+  class SessionWrites
+    type disposition = { started: bool, detached: bool }
+    @sessions: Sessions
+    def initialize: (sessions: Sessions) -> void
+    def transaction: (SessionIdentity, context: String?, version: String?, csrf: String,
+                      guard_users: Array[String], budget: Integer, deadline: RequestDeadline)
+      { (connection: WriteStatements, session: auth_object) -> WriteResponse }
+      -> WriteResponse
+    private
+    def execute: (SessionIdentity, context: String?, version: String?, csrf: String,
+                  guard_users: Array[String], budget: Integer, deadline: RequestDeadline)
+      { (connection: WriteStatements, session: auth_object) -> WriteResponse }
+      -> WriteResponse
+    def with_write_connection: (RequestDeadline)
+      { (ActiveRecord::ConnectionAdapters::AbstractAdapter) -> WriteResponse? } -> WriteResponse?
+    def discard_connection: (ActiveRecord::ConnectionAdapters::ConnectionPool,
+                            ActiveRecord::ConnectionAdapters::AbstractAdapter, String, Exception?,
+                            disposition, Array[[String, Exception]]) -> void
+    def quarantine_connection: (ActiveRecord::ConnectionAdapters::ConnectionPool,
+                               ActiveRecord::ConnectionAdapters::AbstractAdapter,
+                               disposition, Array[[String, Exception]]) -> void
+    def detached_from_pool?: (ActiveRecord::ConnectionAdapters::ConnectionPool,
+                             ActiveRecord::ConnectionAdapters::AbstractAdapter) -> bool
+    def acquire: (WriteStatements, SessionIdentity,
+                  Array[String], RequestDeadline) -> auth_object
+    def bind: (String) -> ActiveRecord::Relation::QueryAttribute
+  end
+end

@@ -1,0 +1,15 @@
+module Elevateo
+  module MailSearchSQL
+    PAGE: String
+  end
+  class MailSearch < ThreadReads
+    WHITE_SPACE: Regexp
+    def search: (query: Hash[String, String]) -> String
+  end
+end
+
+module V1
+  class SearchController < WriteController
+    def index: () -> void
+  end
+end

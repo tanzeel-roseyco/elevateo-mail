@@ -1,0 +1,13 @@
+module Elevateo
+  class SessionOrganizations
+    @store: _SessionStore
+    @crypto: SessionCrypto
+    @clock: ^() -> Integer
+    def initialize: (store: _SessionStore, crypto: SessionCrypto, ?clock: ^() -> Integer) -> void
+    def page: (identity: SessionIdentity, session: auth_object, query: Hash[String, String],
+               connection: _SessionConnection, deadline: RequestDeadline) -> auth_object
+    private
+    def encode: (String, SessionIdentity, auth_object, Integer) -> String
+    def decode: (String, SessionIdentity, auth_object, Integer) -> String
+  end
+end

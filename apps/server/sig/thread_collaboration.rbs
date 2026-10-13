@@ -1,0 +1,27 @@
+class ActionDispatch::Request
+  def path_parameters: () -> Hash[Symbol, String]
+end
+
+module Elevateo
+  interface _CollaborationIdentity
+    def user_id: () -> String
+    def org_id: () -> String
+    def digest: () -> String
+  end
+  class ThreadCollaboration
+    MAX_VERSION: Integer
+    RESOURCE_SQL: String
+    @connection: _ThreadConnection
+    @identity: _CollaborationIdentity
+    @session: ReadResponse::item
+    def initialize: (connection: _ThreadConnection, identity: _CollaborationIdentity, session: ReadResponse::item) -> void
+    def self.keys!: (WriteInput::object, Array[String]) -> nil
+    def rows: (String, Array[String?]) -> Array[ReadResponse::item]
+    def resource!: (String, String) -> nil
+    def envelope: (String, String) -> ReadResponse::item
+    def serialized: (ReadResponse::item, ?budget: Integer) -> String
+    def response: (ReadResponse::item, ?status: Integer, ?budget: Integer) -> WriteResponse
+    def version: (ReadResponse::item, String) -> Integer
+    def advance!: (Integer) -> nil
+  end
+end

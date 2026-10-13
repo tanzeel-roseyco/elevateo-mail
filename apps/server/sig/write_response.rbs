@@ -1,0 +1,8 @@
+module Elevateo
+  class WriteResponse
+    attr_reader json: String
+    attr_reader status: Integer
+    def initialize: (json: String, status: Integer) -> void
+    def verify!: (budget: Integer) -> WriteResponse
+  end
+end

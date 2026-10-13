@@ -1,0 +1,27 @@
+module Elevateo
+  class ThreadNotes < ThreadCollaboration
+    REQUIRED: Array[String]
+    COLUMNS: String
+    INSERT_SQL: String
+    EXISTING_SQL: String
+    LIST_SQL: String
+    @cursors: Cursors
+    def initialize: (connection: _ThreadConnection, identity: _CollaborationIdentity,
+                     session: ReadResponse::item, cursors: Cursors) -> void
+    def self.validate!: (WriteInput::object) -> nil
+    def post: (thread_id: String, input: WriteInput::object) -> WriteResponse
+    def list: (thread_id: String, query: Hash[String, String]) -> String
+    private
+    def position: (String?, Cursors::scope) -> Cursors::position
+    def project: (ReadResponse::item) -> ReadResponse::item
+  end
+end
+module V1
+  class ThreadNotesController < WriteController
+    def index: () -> void
+    def create: () -> void
+    private
+    def notes: (Elevateo::_ThreadConnection, Elevateo::_CollaborationIdentity,
+                Elevateo::ReadResponse::item) -> Elevateo::ThreadNotes
+  end
+end
