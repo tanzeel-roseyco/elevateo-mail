@@ -4,7 +4,7 @@ A planned shared company mailbox for approximately **10 people**, available on a
 
 ## Current state
 
-**Design package and six-repository source intake complete; Elevateo application implementation has not started.** Resend and self-hosted Supabase are selected by the user. This update replaces the earlier assumption that the primary product is a campaign engine across 18 existing mailboxes. The expanded brief specifies nine addresses across one or two domains; actual addresses, inbox/alias boundaries and migration requirements remain unresolved.
+**Design package and six-repository source intake complete; Elevateo application implementation has not started.** Rails backend, Laravel Blade/Livewire frontend, Resend and self-hosted Supabase are selected by the user. The 2026-10-13 update is documentation only. This update replaces the earlier assumption that the primary product is a campaign engine across 18 existing mailboxes. The expanded brief specifies nine addresses across one or two domains; actual addresses, inbox/alias boundaries and migration requirements remain unresolved.
 
 The repository contains 2,764 pinned upstream files under `third_party/upstream`, six independent technical dossiers, per-file integrity manifests, preserved licenses, architecture, requirements, a database/backend tutorial, connector/desktop designs and a phased implementation plan. The upstream snapshots contain executable source but are not installed, run or integrated. There is no working Elevateo application, installer or deployment. The expanded 2026-10-12 [planning index](.planning/README.md) supplies the next agent's research, consultation and execution path; [the standards](.planning/STANDARDS.md) are its engineering baseline, with production decisions still open.
 
@@ -16,12 +16,12 @@ Start with [the planning index](.planning/README.md), then give the implementati
 
 - **Resend** transports permitted outbound mail and delivers incoming-mail events. Elevateo owns the mailbox experience and durable history.
 - **Self-hosted Supabase** supplies PostgreSQL, Auth and private attachment Storage. It is not an IMAP/SMTP mail server.
-- **Proposed by Astra MAX; opinion synthesis pending:** React/strict TypeScript and one Ruby on Rails domain application running as API and worker. Use PostgreSQL for the durable job queue; add Redis only if measurements justify it.
-- **Proposed:** Rust/Tauri Mac and C#/.NET Windows hosts; requested Java Android APK and SwiftUI iOS clients follow. Separate platform artifacts use one backend. PHP, Go and Python have bounded SDK, diagnostic and fixture roles; other requested languages have explicit conditional roles.
+- **User-selected:** Laravel Blade/Livewire renders the web UI and calls the Rails API for the signed-in user. Rails API and worker share one domain application. Alpine/plain JavaScript handles immediate interactions; Anime.js supplies accessible motion. PostgreSQL holds durable job intent.
+- **Proposed:** Rust/Tauri Mac and C#/.NET Windows hosts; requested Java Android APK and SwiftUI iOS clients follow. Separate platform artifacts use one backend. Laravel adds a PHP presentation server; optional PHP SDK, Go and Python have bounded integration, diagnostic and fixture roles; other requested languages have explicit conditional roles.
 - **Proposed:** an Elevateo MCP connector exposes authorized search/read/draft tools to Codex and Claude. Sending stays in the human-controlled application initially. Separate in-app Codex and Claude/Fable adapters use supported local runtimes, scoped tools and explicit authentication eligibility.
 - **Proposed:** start on a VPS with Docker Compose, TLS reverse proxy and off-host backups. Railway remains an alternative if operational convenience outweighs infrastructure cost/control.
 
-Accept the [expanded architecture](.planning/POLYGLOT_ARCHITECTURE.md) only after the required independent opinions and synthesis; then use its decisions for implementation, preserving suitable existing first-party work. They are not already implemented dependencies or blanket production approvals. Hosting remains a later decision. Resend now also documents a private-beta Inboxes API; it is not a launch dependency. See [delivery and hosting](docs/mail-delivery-and-hosting.md).
+The stack is selected; implementation details still require the documented independent opinions and synthesis. Read [ADR 0002](docs/decisions/0002-rails-laravel-presentation.md) and [the diagram](docs/architecture-diagram.md) before the expanded plan. Laravel owns presentation and browser sessions; Rails owns permissions, mailbox data and sending. Desktop mailbox views have no native powers; separate trusted panels own CLI integration. Hosting remains a later decision. Resend private-beta Inboxes is not a launch dependency; see [delivery and hosting](docs/mail-delivery-and-hosting.md).
 
 ## Source collection and goals
 
@@ -42,13 +42,13 @@ The source collection preserves all 2,765 tracked paths in its manifests. One pu
 ## Read in this order
 
 1. [Product requirements and decisions](documentation.md)
-2. [System architecture](docs/architecture.md) and [ownership decision](docs/decisions/0001-mailbox-ownership.md)
+2. [System architecture](docs/architecture.md), [GitHub diagram](docs/architecture-diagram.md) and [Rails/Laravel decision](docs/decisions/0002-rails-laravel-presentation.md)
 3. [Backend and database tutorial, including CAP](docs/backend-database-tutorial.md)
 4. [Mail delivery, DNS, Supabase and hosting tutorial](docs/mail-delivery-and-hosting.md)
 5. [Mac/Windows and Claude/Codex connectors](docs/desktop-and-connectors.md)
-6. [What we will reuse from the audited repositories](docs/repository-reuse.md)
+6. [Exact component reuse instructions](docs/component-reuse-playbook.md) and [adoption matrix](docs/component-adoption.md)
 7. [API contracts and failure recovery](docs/contracts-and-reliability.md)
-8. [Implementation roadmap and release gates](docs/implementation-plan.md)
+8. [Implementation roadmap](docs/implementation-plan.md) and [web, desktop and mobile test gates](docs/cross-platform-testing.md)
 9. [Engineering baseline and scope](.planning/STANDARDS.md)
 10. [Current state](state.md) and [review evidence](code-reviews.md)
 

@@ -1,6 +1,6 @@
 # lightreach — independent repository dossier
 
-Target-architecture update (2026-10-12): historical source findings below are unchanged. Elevateo destination suggestions are superseded by the current [adoption matrix](../component-adoption.md) and [polyglot proposal](../../.planning/POLYGLOT_ARCHITECTURE.md): Rails domain/API/worker, TypeScript UI/MCP, Mac Rust/Tauri and C# Windows. Required named opinions remain pending.
+Target-architecture update (2026-10-13): source-language facts, scores and historical tests below remain unchanged. [ADR 0002](../decisions/0002-rails-laravel-presentation.md) selects Rails domain/API/worker + Laravel Blade/Livewire/Alpine presentation, Supabase and Resend. The [current adoption matrix](../component-adoption.md) and [reuse playbook](../component-reuse-playbook.md) supersede earlier Node/React destination suggestions; React components are translated, not installed as the product UI. Named consultations remain for the next agent; none is completed by this update.
 
 Review date: 2026-10-11. Classification: **reference source; not an Elevateo runtime dependency**.
 
@@ -19,7 +19,7 @@ The upstream [AGENTS.md](../../third_party/upstream/lightreach/AGENTS.md) routes
 
 Lightreach is a compact self-hosted outreach application: SMTP connections, IMAP collection, lead import, multistep sequences, campaigns, schedules, analytics and an MCP interface. It has a recognizable inbox and useful pure TypeScript helpers. It is not a ten-person shared mailbox with individual permissions, personal read state or organizational isolation.
 
-The strongest contribution is understandable small components. The weakest boundaries are identity, incoming HTML and crash recovery. It should inform our React interface and narrowly scoped utilities after adaptation; copying its complete web server would import the defects below.
+The strongest contribution is understandable small components. The weakest boundaries are identity, incoming HTML and crash recovery. It should inform our Blade/Livewire interface and narrowly scoped Ruby utilities through reviewed behavior translation; copying its complete web server would import the defects below.
 
 ## Architecture and dataflow
 
@@ -37,7 +37,7 @@ MCP HTTP route → global bearer check → tools → shared actions / database
 
 | Source location | Responsibility | Elevateo disposition |
 | --- | --- | --- |
-| [apps/web/app](../../third_party/upstream/lightreach/apps/web/app/) | Next pages, server actions and MCP HTTP endpoint | UI behavior reference; rewrite requests against authorized Node API |
+| [apps/web/app](../../third_party/upstream/lightreach/apps/web/app/) | Next pages, server actions and MCP HTTP endpoint | UI behavior reference; rewrite requests against authorized Rails API |
 | [apps/web/instrumentation.ts](../../third_party/upstream/lightreach/apps/web/instrumentation.ts) | Starts scheduler/poller on web process boot | Do not port; explicit separate worker process |
 | [apps/web/lib/scheduler.ts](../../third_party/upstream/lightreach/apps/web/lib/scheduler.ts) | Claim rows, choose connections, check windows/caps, render and send | Failure-case reference; new durable PostgreSQL jobs |
 | [apps/web/lib/enqueue-leads.ts](../../third_party/upstream/lightreach/apps/web/lib/enqueue-leads.ts) | Adds campaign step-one work for new leads | Deferred campaign reference, not mailbox MVP |
@@ -75,7 +75,7 @@ The inbox combines received content with outbound history using message headers 
 
 The pinned MCP implementation registers lists, leads, sequences, connections, campaigns, messages, inbox, settings and stats. In particular, `apps/web/lib/mcp/tools/inbox.ts` exposes `reply_to_email`, which directly calls a sending action. That authority is excluded from the initial Elevateo connector. Our read/search/draft connector must call the same authorized API as the UI, intersect current user mailbox permissions with a revocable grant, redact response fields and audit tool use. Incoming email is untrusted data, never permission to invoke another tool.
 
-No macOS or Windows native shell is supplied. Only portable React primitives are candidates for our proposed Tauri UI. Next server actions, the SQLite driver and SMTP secrets must remain outside the desktop bundle. All clients should share the company backend instead of each laptop running a scheduler and database.
+No macOS or Windows native shell is supplied. React control behavior is translated into Blade/Alpine, served remotely to unprivileged Tauri Mac/C# Windows views; trusted bundled CLI panels remain isolated. Next server actions, the SQLite driver and SMTP secrets must remain outside the desktop bundle. All clients should share the company backend instead of each laptop running a scheduler and database.
 
 ## Independent scorecard
 
@@ -162,13 +162,13 @@ All destinations below are **proposed**, not files already integrated into the a
 
 | ID | Exact upstream source | Decision / proposed target | Required change and acceptance proof |
 | --- | --- | --- | --- |
-| L-PORT-01 | [packages/core/src/variables.ts](../../third_party/upstream/lightreach/packages/core/src/variables.ts) | Candidate adaptation → `packages/domain/src/templates/variables.ts` | Limit template/input length; use own-property or Map lookup; define missing/fallback semantics; escape per rendering context. Test mixed case, blank, fallback, inherited-key and HTML values. Do not label this a sanitizer. |
-| L-PORT-02 | [packages/core/src/csv.ts](../../third_party/upstream/lightreach/packages/core/src/csv.ts) | Deferred contact-import adaptation → `packages/domain/src/contacts/import.ts` | File/row/column limits, duplicate headers/contacts, malformed address errors and row-level feedback. Consent is independent of valid email syntax. Keep formula-safe exports a separate boundary. |
-| L-PORT-03 | [packages/core/src/email/quote.ts](../../third_party/upstream/lightreach/packages/core/src/email/quote.ts) | Candidate quote-boundary reference → `packages/domain/src/mail/quote-boundaries.ts` | Prefer plain-text first; sanitize every HTML fragment at the render boundary. Test malformed/nested HTML, multilingual separators, empty content and the retained-event-attribute regression. Never use regex tag stripping as a security control. |
-| L-PORT-04 | [packages/ui/src/components/button.tsx](../../third_party/upstream/lightreach/packages/ui/src/components/button.tsx), [packages/ui/src/components/sidebar.tsx](../../third_party/upstream/lightreach/packages/ui/src/components/sidebar.tsx) | Selective React design/component candidates → `packages/ui` | Audit embedded notices and actual needed dependencies; accessible focus/keyboard/reduced-motion behavior; responsive web and native-shell UI verification. Avoid importing the whole UI tree by default. |
-| L-PORT-05 | [apps/web/lib/mcp/server.ts](../../third_party/upstream/lightreach/apps/web/lib/mcp/server.ts), [apps/web/lib/mcp/tools/inbox.ts](../../third_party/upstream/lightreach/apps/web/lib/mcp/tools/inbox.ts) | Tool catalog reference → `apps/mcp` | Rewrite handlers to authorized Node API, scoped grants and revocation. No direct SQL, shared global token or sending tool. Prove two users cannot cross mailbox boundaries. |
+| L-PORT-01 | [packages/core/src/variables.ts](../../third_party/upstream/lightreach/packages/core/src/variables.ts) | Candidate adaptation → `apps/server/app/domain/templates/variables.rb` | Limit template/input length; use explicit string-keyed Ruby hashes with no reflective method lookup; define missing/fallback semantics; escape per rendering context. Test mixed case, blank, fallback, method-like keys and HTML values. Do not label this a sanitizer. |
+| L-PORT-02 | [packages/core/src/csv.ts](../../third_party/upstream/lightreach/packages/core/src/csv.ts) | Deferred contact-import adaptation → `apps/server/app/domain/contacts/import.rb` | File/row/column limits, duplicate headers/contacts, malformed address errors and row-level feedback. Consent is independent of valid email syntax. Keep formula-safe exports a separate boundary. |
+| L-PORT-03 | [packages/core/src/email/quote.ts](../../third_party/upstream/lightreach/packages/core/src/email/quote.ts) | Candidate quote-boundary reference → `apps/server/app/domain/content/quote_boundaries.rb` | Prefer plain-text first; sanitize every HTML fragment at the render boundary. Test malformed/nested HTML, multilingual separators, empty content and the retained-event-attribute regression. Never use regex tag stripping as a security control. |
+| L-PORT-04 | [packages/ui/src/components/button.tsx](../../third_party/upstream/lightreach/packages/ui/src/components/button.tsx), [packages/ui/src/components/sidebar.tsx](../../third_party/upstream/lightreach/packages/ui/src/components/sidebar.tsx) | Blade/Alpine control translations → `apps/web/resources/views/components/ui` | Audit embedded notices and actual needed dependencies; accessible focus/keyboard/reduced-motion behavior; responsive web and native-shell UI verification. Avoid importing the whole UI tree by default. |
+| L-PORT-05 | [apps/web/lib/mcp/server.ts](../../third_party/upstream/lightreach/apps/web/lib/mcp/server.ts), [apps/web/lib/mcp/tools/inbox.ts](../../third_party/upstream/lightreach/apps/web/lib/mcp/tools/inbox.ts) | Tool catalog reference → `packages/mcp` | Rewrite handlers to authorized Rails API, scoped grants and revocation. No direct SQL, shared global token or sending tool. Prove two users cannot cross mailbox boundaries. |
 | L-PORT-06 | [apps/web/lib/mcp/redact.ts](../../third_party/upstream/lightreach/apps/web/lib/mcp/redact.ts) | Redaction intention → `packages/contracts` | Explicit output allowlist instead of subtracting today’s secret columns; future secret field must remain absent in API/MCP responses. |
-| L-PORT-07 | [packages/core/src/email/transport.ts](../../third_party/upstream/lightreach/packages/core/src/email/transport.ts) | Behavior reference only → `packages/providers/src/resend` | New Resend implementation with stable request identity, timeout handling and typed errors; no Nodemailer/SMTP credential table required for initial release. |
+| L-PORT-07 | [packages/core/src/email/transport.ts](../../third_party/upstream/lightreach/packages/core/src/email/transport.ts) | Behavior reference only → `apps/server/app/adapters/providers/resend` | New Resend implementation with stable request identity, timeout handling and typed errors; no Nodemailer/SMTP credential table required for initial release. |
 | L-REPLACE-01 | [apps/web/lib/scheduler.ts](../../third_party/upstream/lightreach/apps/web/lib/scheduler.ts), [packages/db/src/schema.ts](../../third_party/upstream/lightreach/packages/db/src/schema.ts) | Do not port execution/schema → PostgreSQL worker and migrations | Real Postgres concurrency tests; persist attempt before I/O; reconcile unknown sends; per-user read state and mailbox-scoped foreign keys/RLS. |
 
 ## Traceability to our goals
@@ -179,7 +179,7 @@ All destinations below are **proposed**, not files already integrated into the a
 | R02 — Resend | Transport separation and mail-header examples | New Resend adapter and authenticated/deduplicated receive events; no automatic SMTP substitution |
 | R03 — self-hosted Supabase | Small explicit schema and versioned migrations | PostgreSQL schema, Auth/RLS, private Storage and actual restore test |
 | R04 — web subdomain | React components and responsive shell references | Authorized API, TLS/origin controls and validated email rendering |
-| R05 — Mac/Windows downloads | Portable React primitives | Tauri integration and separate target-OS signing/install/update tests |
+| R05 — Mac/Windows downloads | Portable React primitives | Behavior translation to Blade/Alpine, unprivileged remote desktop views and separate target-OS signing/install/update tests |
 | R06 — Claude/Codex | MCP tool registration ergonomics | Per-user scoped grants; search/read/draft only; integration tests in both clients |
 | R07 — efficient compute | Compact feature set; one application codebase | Separate API/worker, durable jobs and measured Supabase/VPS capacity |
 | R08 — architecture/database tutorial | Concrete example of single-user assumptions becoming schema constraints | Explain why durable rows differ from reliable execution and why read state belongs to membership |

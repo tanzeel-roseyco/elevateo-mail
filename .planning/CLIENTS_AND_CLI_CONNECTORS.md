@@ -1,10 +1,10 @@
 # Client applications, premium motion and in-app CLI connectors
 
-Status: planned work, 2026-10-12. No Elevateo client, connector or installer has been built or connected by this document. The capability checks below distinguish a running architecture lead from unsuccessful external consultations. This plan extends [the desktop/MCP design](../docs/desktop-and-connectors.md), [end-goal](../docs/end-goal.md) and [local completion plan](../docs/local-completion-plan.md). The latest agent orchestration and technology decisions govern role availability and stack choices; keep provider credentials, signing and live activation last.
+Status: documentation only, updated 2026-10-13. The user selected Rails backend, Laravel Blade/Livewire frontend, self-hosted Supabase and Resend. [ADR 0002](../docs/decisions/0002-rails-laravel-presentation.md) and [the architecture](../docs/architecture.md) supersede the earlier React/TypeScript product frontend. TypeScript remains for MCP/adapters and tooling. No client, connector or installer is built by this document; the three unsuccessful consultations remain [saved for the next agent](consultations/README.md), not retried here. Implementation-detail reviews remain pending. Read the [diagram](../docs/architecture-diagram.md), [reuse playbook](../docs/component-reuse-playbook.md), [desktop/MCP design](../docs/desktop-and-connectors.md), [local completion plan](../docs/local-completion-plan.md) and [test matrix](../docs/cross-platform-testing.md). Keep provider credentials, signing and live activation last.
 
 ## 1. Product and ownership brief
 
-Codex first inventories the existing frontend and the six local snapshots, then completes the research/adoption gate before assigning implementation. Reuse audited interaction patterns and components through [the adoption matrix](../docs/component-adoption.md); preserve provenance and replace unsafe authentication, raw HTML rendering and send loops. A frontend mock is never evidence of backend completion.
+Codex first inventories the existing frontend and six snapshots, then completes the research/adoption gate. Follow [the adoption matrix](../docs/component-adoption.md) and reuse playbook: translate useful React interaction/markup/style patterns into Blade/Livewire and Alpine/plain JavaScript rather than adding a React frontend. Preserve licenses/provenance, replace unsafe authentication/raw HTML/send loops and record what was ported versus merely studied. A frontend mock is never evidence of backend completion.
 
 | Work package | Requested owner | Required handoff |
 | --- | --- | --- |
@@ -24,20 +24,24 @@ Interpret the user's “C+++” as a request for C++ pending a more specific cor
 
 ## 2. Clients and delivery sequence
 
-One shared API owns permissions and business rules. Client adapters bind those contracts to platform controls, token storage, dialogs and notifications. Never duplicate authorization, sending logic or the database in each client. Generate or validate client bindings against a versioned contract, and support the previous released client during server upgrades.
+Rails owns shared permissions and business rules. Laravel renders the web UI and forwards allowlisted requests under each user's current identity; mobile/MCP use Rails directly. Never duplicate authorization, sending logic or mailbox tables in the presentation server or clients. Validate bindings against versioned contracts and support the previous released client during server upgrades.
 
 | Client | Planned path and role | Completion evidence |
 | --- | --- | --- |
-| Web subdomain | Shared strict TypeScript/React interface using existing suitable local UI; HTML/CSS and Anime.js | Real local login and mailbox workflows at narrow and desktop widths in Chromium, Firefox and WebKit |
-| macOS | Tauri/Rust host for bundled UI and narrow native commands; `.dmg` | macOS build/install/login/logout, secure storage, callback replay rejection and update checks |
-| Windows | Requested C#/.NET GUI lane; assess a native host with bundled shared UI before duplicating screen implementations | Actual Windows build/install, WebView or native accessibility, credentials, callbacks, network-loss and update checks |
-| Android | Requested Java client using Android SDK and the same API; `.apk` development/distribution lane | Android emulator/device permissions, secure storage, lifecycle/reconnect and authenticated workflow tests |
+| Web subdomain | Laravel Blade/Livewire BFF, Alpine/plain JavaScript and Anime.js; reuse through explicit ports | Real local login, BFF/Rails user isolation and mailbox workflows in Chromium, Firefox and WebKit |
+| macOS | Tauri/Rust host with unprivileged remote Laravel mailbox WebView and separate trusted bundled assistant panel; `.dmg` | Actual macOS WebView isolation, separate enrollment/logout, secure storage, callback replay rejection and update checks |
+| Windows | C#/WinUI 3 GUI with WebView2 using the same two-surface boundary | Actual Windows install, no remote host objects/command forwarding, accessibility, separate credentials, lifecycle and update checks |
+| Android | Java Android Views calling Rails directly; `.apk` development/distribution lane | Android emulator/device permissions, secure storage, lifecycle/reconnect and authenticated workflow tests |
 | iOS | Requested SwiftUI client using the same API | Simulator/device lifecycle and auth tests; signing/distribution remains final activation |
 | Qt | Alternative native C++ client experiment owned by Opus 5.5 | Adopt only if a documented platform capability justifies replacing a selected host |
 | Ionic / Capacitor | Alternative shared mobile UI experiment | Compare to Java/SwiftUI before choosing; do not ship duplicate mobile clients by default |
 | Electron | Alternative desktop host if a required integration cannot be supported efficiently in the chosen host | Measure package size, idle RAM, security isolation and integration compatibility before replacing Tauri/C# |
 
-The C# Windows request changes the earlier Tauri-for-both default: resolve it in the client ADR and update existing implementation instructions before coding. Tauri remains the current reference baseline for comparison; do not silently build both Windows clients. Java Android and SwiftUI iOS are requested additional milestones after the web/Mac/Windows core, not prerequisites for proving the first shared mailbox workflow.
+The selected C# Windows lane replaces the earlier Tauri-for-both default; do not build both Windows hosts. Hosted Blade/Livewire cannot be bundled as an offline static mailbox. Do not ship a PHP server or Supabase on devices or promise offline mail. Native mailbox WebViews have zero IPC/native capabilities, host objects or web-message command forwarding. Remote scripts, URLs and cross-window events cannot invoke the assistant panel. If separation cannot be demonstrated, native release remains pending. Java Android and SwiftUI iOS follow the web/Mac/Windows core as native API clients.
+
+Laravel stores encrypted per-user Supabase access/refresh material only in a protected server-side session store, using a separate private PostgreSQL schema/role if applicable. Its role cannot read domain/Auth tables or hold Resend/privileged Supabase keys. Use host-only secure cookies, CSRF/origin checks, refresh serialization and defined session expiry. Rails checks authoritative session validity and current mailbox access on every forwarded call. Stream authorized attachments through Laravel to Rails; keep Storage signed URLs server-side and deny new downloads after revocation. Test no-store/cross-user cache isolation and invalidate restored sessions unless replay-safe recovery is proven.
+
+The remote mailbox's web session and trusted assistant enrollment are separate. No browser cookie/token is transferred to a native bridge. Enroll the assistant through its supported user-controlled flow, hold its credentials in OS secure storage, and expose only allowlisted operations to its bundled panel. Native mobile and any assistant user-session flow use reviewed system-browser/PKCE callbacks. Define individual session/grant logout and all-device revocation; current membership and revoked-token tests apply to each surface.
 
 Use one product/release page with platform-specific downloads. A single OS executable does not run on both macOS and Windows; a macOS universal binary only addresses Mac CPU architectures. Produce separate signed/notarized Mac and signed Windows artifacts, plus their checksums and provenance. Unsigned local builds precede production credentials. Actual target-OS tests are required: browser emulation does not prove native behavior. [Tauri distribution](https://v2.tauri.app/distribute/).
 
@@ -47,7 +51,7 @@ Mobile clients initially offer mailbox operations and scoped remote assistant se
 
 Start with useful polish: legible typography, spacing, dense but readable conversation lists, strong focus states, consistent surfaces, restrained color and clear delivery status. Propose two annotated visual directions using actual inbox/composer data shapes before committing to one design token set. Use locally available suitable components before introducing a replacement framework.
 
-Apply Anime.js to small transitions: opening a conversation pane, moving an assignment indicator, resizing the composer and acknowledging a saved draft. Animation must reflect committed state; it must never imply delivery, hide an error, delay a send action or distract from reading. Prefer opacity and transform where feasible, dispose animations when views unmount, and avoid continuous background effects. The documented Scope/media-query integration supports responding to reduced-motion settings. [Anime.js documentation](https://animejs.com/documentation/), [media queries](https://animejs.com/documentation/scope/scope-parameters/mediaqueries/).
+Apply Anime.js to small transitions: opening a conversation pane, moving an assignment indicator, resizing the composer and acknowledging a saved draft. Animation must reflect committed state; never imply delivery, hide errors or delay sending/typing. Keep keystrokes/focus/menu behavior local in Alpine/plain JavaScript; debounce persistence and do not add a duplicate Alpine runtime. Preserve composer state/focus across Livewire updates and dispose animation/listener resources on replacement. Prefer opacity/transform and avoid continuous effects. Scope/media-query integration supports reduced-motion settings. [Anime.js documentation](https://animejs.com/documentation/), [media queries](https://animejs.com/documentation/scope/scope-parameters/mediaqueries/).
 
 Project acceptance budgets, to measure on an agreed ordinary laptop: common transitions 120–220 ms; immediate pressed/loading feedback; smooth transitions targeting a 16.7 ms frame budget at 60 Hz; no animation task exceeding 50 ms in the measured scenario; interaction responsiveness target at or below 200 ms. These are design targets, not measurements or blanket performance guarantees. Record browser/device, fixture size and trace before/after each substantial effect.
 
@@ -64,7 +68,7 @@ If Opus proposes shaders, ray tracing or a custom native renderer, require a spe
 
 Mailbox MCP remains required even if an in-app assistant exists. Registering MCP does not implement an embedded CLI, and spawning a CLI does not authorize mailbox access. Keep human approval of the exact outgoing draft in the ordinary application send flow. Mail contents and model output are untrusted data, never shell arguments, installer instructions or authority to expand capabilities.
 
-The public web application cannot directly spawn a machine's CLI. Start with a packaged desktop bridge using a bundled trusted UI and narrow native IPC. If browser access is later needed, pair an installed local companion explicitly. Do not expose the raw agent server to the internet or permit an arbitrary remote page to invoke native functions.
+The public web application and remote desktop mailbox cannot spawn a CLI or call native IPC. Only the separate bundled trusted assistant panel can use its narrowly scoped desktop bridge; enforce origin/window capability separation and prohibit remote event forwarding. A browser companion is a deferred feature requiring a new reviewed boundary and explicit pairing, not an exception to current zero remote capabilities. Never expose a raw agent server to the internet.
 
 The optional loopback companion must bind only loopback, enforce exact allowed origins and Host values, reject unexpected or absent origins for browser calls, require a high-entropy pairing capability and CSRF protection, rate-limit and expire sessions, and validate every request. Pairing is a user-visible local ceremony, not a secret in a URL or a blanket localhost exemption. Test hostile origins, DNS rebinding, replay, a stolen pairing token and revocation. Local hostile processes remain a distinct OS trust concern; loopback is not authentication.
 
@@ -94,8 +98,8 @@ Separate mailbox authorization, machine access and provider billing consent. Non
 
 ## 7. Implementation sequence and required evidence
 
-1. Resolve remaining runtime authentication and client ADR; inventory local frontend candidates and research findings. The explicitly requested consultation attempts above do not establish account linking or successful inference; this document itself does not authorize installing additional CLIs or activating application credentials.
-2. Fable/Opus implements accessible web flows against typed contracts and real local backend services. Opus owns the isolated Anime.js refinement branch; integrate only after functional flows pass.
+1. The next agent launches the saved consultations against the user-selected Rails/Laravel split, then resolves implementation details and inventories reusable sources. Earlier failed attempts do not establish successful inference or account linking; this documentation change does not install CLIs or activate credentials.
+2. Fable/Opus ports suitable UI into accessible Blade/Livewire with Alpine/plain JavaScript, a user-scoped Laravel-to-Rails adapter and real local services. Opus owns the isolated Anime.js branch; integrate only after functional flows pass.
 3. Codex and the assigned Fable agent implement separate protocol adapters behind the same fake-runtime harness; a third agent reviews trust boundaries and cancellation behavior.
 4. Complete mailbox MCP against the actual local API, then prove the default in-app mailbox agent cannot access arbitrary files/shell or send mail.
 5. Build one selected host per desktop platform, followed by the Java Android and SwiftUI iOS milestones; add native adapters without forking business logic.
@@ -106,7 +110,8 @@ Separate mailbox authorization, machine access and provider billing consent. Non
 | Node.js scripts | Schema/adapter contract checks, malformed frames, process crash, timeout, cancellation, bounded output and no secret leakage |
 | Playwright primary browser suite | Real login, two-user assignment/draft conflicts, hostile mail content, keyboard/zoom/reduced motion, cross-browser and responsive journeys |
 | Puppeteer where uniquely useful | A targeted Chromium tracing/diagnostic requirement not already covered by Playwright; no duplicate full end-to-end suite |
-| Agent bridge integration | Real local process with fake inference, denied shell/file actions, approved workspace isolation, replay/stale approval rejection and failure recovery |
+| Presentation/session boundary | Laravel uses the current individual token, has no domain/provider privileges, denies revoked sessions, protects encrypted refresh material and streams authorized attachments |
+| Agent bridge integration | Real local process with fake inference, denied shell/file actions, approved workspace isolation, replay/stale approval rejection, no remote WebView/native event path and failure recovery |
 | Loopback companion if selected | Wrong origin/Host, pairing replay, CSRF, DNS rebinding, token expiry, revocation and no non-loopback listener |
 | Actual provider activation | Exact client/model/auth version, supported login, stream, cancellation, approval denial and narrow permitted MCP draft; no mail send |
 | Native/mobile | Actual target runtime install/launch/session/logout and platform lifecycle, with unsupported targets explicitly pending |

@@ -17,8 +17,8 @@ Build an understandable, reliable shared company mailbox for about ten people. T
 | R01 | Shared company mailbox for about 10 people — requested | Company/mailbox memberships; Wu workspace concepts; Quickly/lightreach inbox behavior | Two users collaborate; another mailbox's messages, snippets, files and audit data remain inaccessible |
 | R02 | Resend — selected | New provider adapter; Instantly SDK injection/error patterns only | Controlled send/reply; signature and replay tests; provider acceptance distinct from delivery; unknown outcomes reconciled |
 | R03 | Self-hosted Supabase — selected | PostgreSQL/Auth/private Storage; new scoped schema and migrations | Real restricted-role RLS tests, versioned upgrades, private object downloads and coordinated restore |
-| R04 | Web application on a subdomain — requested | Shared React interface, authenticated Rails API, TLS reverse proxy | Real HTTPS browser flow, invite-only login, safe message rendering, CSRF/origin tests and responsive UI |
-| R05 | Mac and Windows downloads — requested | Proposed Rust/Tauri Mac and C# Windows hosts around accepted UI | Signed/notarized DMG and signed Windows installer, clean-machine install/login/update/rollback evidence |
+| R04 | Web application on a subdomain — requested | Laravel Blade/Livewire presentation, user-scoped Rails API, TLS reverse proxy | Real HTTPS browser flow, invite-only login, safe message rendering, CSRF/origin tests and responsive UI |
+| R05 | Mac and Windows downloads — requested | Proposed Rust/Tauri Mac and C# Windows hosts: remote unprivileged mailbox view plus separate trusted CLI panel | Signed/notarized DMG and signed Windows installer, clean-machine install/login/update/rollback evidence |
 | R06 | Claude and Codex connectors — requested | Proposed MCP bridge; lightreach registration ideas with replaced authority model | Both clients can search/read/draft only permitted content; expired/revoked grants denied; no initial send tool |
 | R07 | Efficient compute and resourcefulness — requested | One modular backend plus worker; PostgreSQL jobs; no unnecessary brokers/mail servers | Pilot measures RAM/CPU/disk, queue age, provider quotas and attachment scanning; operator/cost budget accepted |
 | R08 | Learn backend/system/database/CAP — requested | [Worked tutorial](backend-database-tutorial.md), failure matrices and actual upstream failure examples | Reader can explain tables/keys/RLS, transaction versus network effect, retry uncertainty and partition behavior |
@@ -28,7 +28,7 @@ Build an understandable, reliable shared company mailbox for about ten people. T
 
 ## Expanded requirements
 
-The canonical R12–R17 definitions are in [product requirements](../documentation.md). [The expanded planning index](../.planning/README.md) maps their implementation dependencies and evidence.
+The canonical R12–R19 definitions are in [product requirements](../documentation.md). [The expanded planning index](../.planning/README.md) maps their implementation dependencies and evidence.
 
 | ID | Plan and proof |
 | --- | --- |
@@ -38,6 +38,8 @@ The canonical R12–R17 definitions are in [product requirements](../documentati
 | R15 | In-app Codex and Claude/Fable process adapters, separately from mailbox MCP; supported auth, enforced permissions and lifecycle/failure tests |
 | R16 | Opus 5.5 ownership of C++ and Anime.js/motion; measured responsive, accessible behavior with reduced motion |
 | R17 | Nine-address/one-to-two-domain inventory; Resend CLI preflight; Instantly connection with disabled warmup and no live sends until explicitly changed |
+| R18 | Confirmed Rails + Laravel Blade/Livewire + Supabase + Resend; [ADR 0002](decisions/0002-rails-laravel-presentation.md) and [GitHub diagram](architecture-diagram.md); documentation-only revision |
+| R19 | [Cross-platform test plan](cross-platform-testing.md): real web, Mac/Windows and Android/iOS runtime evidence, security/fault tests and measured resource budgets |
 
 ## State of the work
 
@@ -64,9 +66,9 @@ The canonical R12–R17 definitions are in [product requirements](../documentati
 
 ## Resource and ownership model
 
-One continuously running backend serves all staff; installing a desktop client does not provision another database or mail server. The database is the durable queue initially. Worker concurrency and quotas are controlled at provider/account and ingestion boundaries; a noisy receiving domain cannot consume unbounded disk or scanning capacity.
+One Rails domain application, running as API and worker, plus a Laravel presentation service serves all staff; installing a desktop client does not provision another database or mail server. The database is the durable queue initially. Worker concurrency and quotas are controlled at provider/account and ingestion boundaries; a noisy receiving domain cannot consume unbounded disk or scanning capacity.
 
-A VPS is a recommended pilot option, not an already purchased deployment. The complete Supabase stack, object storage, malware scanning and backups need measured headroom. A single VPS remains one failure domain. Railway is a cost/operating-effort comparison, not a substitute for owning self-hosted database maintenance. Provider pricing and policy references remain in [the hosting guide](mail-delivery-and-hosting.md).
+A VPS is a recommended pilot option, not an already purchased deployment. The PHP/Rails processes, complete Supabase stack, object storage, malware scanning and backups need measured headroom. A single VPS remains one failure domain. Railway is a cost/operating-effort comparison, not a substitute for owning self-hosted database maintenance. Provider pricing and policy references remain in [the hosting guide](mail-delivery-and-hosting.md).
 
 Suggested responsibility roles, not assigned people: product owner resolves mail purposes/domain/migration; security owner reviews access/retention; implementation owner delivers schema/API/UI/worker; operator owns upgrades/monitoring/restore; release owner handles signing and installer distribution. For ten staff, one person may hold several roles, but none may be left implicit.
 

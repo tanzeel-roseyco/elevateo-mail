@@ -1,6 +1,6 @@
 # cold-cli — independent source dossier
 
-Target-architecture update (2026-10-12): historical source findings below are unchanged. Elevateo destination suggestions are superseded by the current [adoption matrix](../component-adoption.md) and [polyglot proposal](../../.planning/POLYGLOT_ARCHITECTURE.md): Rails domain/API/worker, TypeScript UI/MCP, Mac Rust/Tauri and C# Windows. Required named opinions remain pending.
+Target-architecture update (2026-10-13): source-language facts, scores and historical tests below remain unchanged. [ADR 0002](../decisions/0002-rails-laravel-presentation.md) selects Rails domain/API/worker + Laravel Blade/Livewire/Alpine presentation, Supabase and Resend. The [current adoption matrix](../component-adoption.md) and [reuse playbook](../component-reuse-playbook.md) supersede earlier Node/React destination suggestions; React components are translated, not installed as the product UI. Named consultations remain for the next agent; none is completed by this update.
 
 **Disposition: preserve as an MIT-licensed reference snapshot; selectively port scheduling rules, parsing behavior and regression cases under the local-completion brief and engineering baseline. Do not embed its executable as Elevateo's mail backend.** Its strength is a focused sequence engine and unusually useful behavioral tests. It does not supply the shared company-mailbox application requested for ten people.
 
@@ -124,7 +124,7 @@ The following are **proposed ports**, not code already integrated. The full snap
 
 | Candidate | Source and existing behavioral tests | Target design / acceptance gate |
 | --- | --- | --- |
-| Deterministic schedule allocation | `internal/scheduler.go` and `internal/scheduler_test.go` | Optional future scheduling module, pure TypeScript functions. Verify timezone/DST boundaries, shared sender budgets and preview-versus-dispatch agreement |
+| Deterministic schedule allocation | `internal/scheduler.go` and `internal/scheduler_test.go` | Optional future scheduling module, pure Ruby functions. Verify timezone/DST boundaries, shared sender budgets and preview-versus-dispatch agreement |
 | Budget and same-sender invariants | `internal/tick_test.go`: `TestTick_DailyLimitEnforcement`, `TestTick_DailyLimitTimezone`, `TestTick_Step1BackfillsThreadID`, `TestTick_RebalancesFollowUpsFromActualSentTime` | Express invariants as PostgreSQL-backed tests around Elevateo's jobs/attempts, not its original tick implementation |
 | Reply deduplication and bounce distinction | `internal/reply.go`, `internal/reply_test.go`: `TestProcessReplies_Dedup`, `TestProcessReplies_GmailDSNClassifiedAsBounce`; `internal/tick_test.go`: `TestTick_DSNClassifiedAsBounceNotReply` | Resend event/import pipeline. Duplicate event IDs cannot duplicate messages; DSNs cannot be misclassified as human replies |
 | Template/CSV validation behavior | `internal/template.go`, `internal/template_test.go`, `internal/csv.go`, `internal/csv_test.go` | Later permitted marketing import/composer tools. Surface invalid fields before immutable approval; do not silently strip meaningful approved content at dispatch |
@@ -141,7 +141,7 @@ Reject direct reuse of CLI-wide mutable state as application authorization, the 
 | R01: ten-person company mailbox | Scheduling/inbox behavior only; users, assignments, private mailboxes and per-user read state are new work |
 | R02: Resend | Provider-interface lessons; a new send/receive/webhook adapter is required |
 | R03: self-hosted Supabase | PostgreSQL concepts only; no Supabase Auth, RLS or private Storage integration supplied |
-| R04: web subdomain | No reusable web application; build the proposed React/API surface |
+| R04: web subdomain | No reusable web application; build the selected Laravel presentation/Rails API surface |
 | R05: Mac and Windows downloads | CLI binary is not the requested desktop mailbox; Tauri packaging remains separate |
 | R06: Claude/Codex connectors | Command clarity informs MCP contracts; scoped and revocable connector access is new work |
 | R07: efficient compute | Small core and database-first scheduling are useful; do not run one CLI/database per staff member |

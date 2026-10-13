@@ -2,6 +2,8 @@
 
 Status: design specification; none of these endpoints or jobs are implemented.
 
+2026-10-13 stack reconciliation: these are **Rails domain contracts** under [ADR 0002](decisions/0002-rails-laravel-presentation.md). Laravel Blade/Livewire calls them through an allowlisted presentation adapter with encrypted server-side per-user Supabase session material; it does not own mailbox tables, permissions or sending jobs. The browser cookie authorizes the Laravel session, while Rails verifies the forwarded individual user's current session and mailbox access. Native and MCP sessions remain separate. No API/BFF service identity substitutes for the user.
+
 ## API conventions
 
 Use `/v1`, strict boundary schemas, bounded page sizes, opaque keyset cursors and stable error codes. Every resource query includes verified organization **and mailbox** scope. A missing or inaccessible object returns a non-enumerating response; authentication failures remain 401. Request IDs correlate logs without including email bodies, tokens or sensitive headers.
@@ -11,6 +13,7 @@ Use `/v1`, strict boundary schemas, bounded page sizes, opaque keyset cursors an
 | `GET /v1/mailboxes` | authenticated membership | Only mailboxes currently visible to the user |
 | `GET /v1/mailboxes/:id/threads?cursor=...` | mailbox read | Stable cursor, bounded result count, team status and per-user read state |
 | `GET /v1/threads/:id` | mailbox read | Authorized thread and safe content representation |
+| `GET /v1/attachments/:id/download` | current session/grant + mailbox read | Authenticated bounded stream after scan/quarantine check; Storage signed URLs stay server-side |
 | `POST /v1/mailboxes/:id/drafts` | draft write | Validated envelope/body; version 1 |
 | `PATCH /v1/drafts/:id` | draft write | Expected version/If-Match; stale write returns 409/412 |
 | `POST /v1/drafts/:id/send` | human send + mailbox send | Immutable version and request idempotency key; returns 202 plus job ID |
@@ -20,6 +23,8 @@ Use `/v1`, strict boundary schemas, bounded page sizes, opaque keyset cursors an
 | `POST /v1/connector-grants/:id/revoke` | grant owner/admin | Immediate grant revocation and audited event |
 
 `202` means the job is durably queued, not delivered. A duplicate idempotency key with the same immutable payload returns the same job. The same key with a different payload returns conflict. Hashes and keys are scoped to organization + mailbox + actor/action where appropriate. Also enforce database uniqueness for `(organization_id, mailbox_id, draft_id, approved_version)`: two devices using different request keys still receive the same logical send. An intentional resend requires a new explicitly approved intent/version. Retain application-level send identity independently of provider key expiry, including tombstones needed to prevent replay after retention cleanup.
+
+Laravel enforces CSRF, session rotation/expiry, fixed Rails origin and bounded deadlines, forwards stable mutation identities and preserves error/unknown states. Never retry a timed-out write with a new identity. Livewire properties/action parameters are untrusted, and hiding an action is not authorization. No-store protects authenticated HTML/API responses; stale pages cannot establish current access. Browser attachments stream through Laravel to the authenticated Rails proxy without exposing Storage URLs or bypassing revocation checks. Laravel's session role cannot access mail tables.
 
 ## Example send command
 
@@ -84,7 +89,7 @@ Provider idempotency lasts **24 hours**. Use a shorter application retry horizon
 
 Webhook signature verification must use the exact raw body with replay-time tolerance and an explicit payload limit. Deduplicate on `(provider account, provider delivery/event ID)` as documented by the provider. A transport retry identity and a logical email ID are distinct: also enforce the appropriate unique import key for an email delivered to a specific mailbox. Receiving the same email for two authorized company addresses can create two mailbox-visible records without granting either mailbox access to the other.
 
-Persist event + import job atomically before acknowledging. Unknown recipients go to a restricted quarantine, not a newly created public mailbox. Fetch body/headers separately, and retrieve fresh signed attachment URLs just in time. Bound bytes, time, redirects and allowed download origins. Do not fetch links embedded in the email. Scan attachments before release. Disable external image loads by default, sanitize HTML and display it in an isolated frame with a restrictive sandbox/CSP. Keep original content separately for authorized diagnostics; never inject it into the application DOM.
+Persist event + import job atomically before acknowledging. Unknown recipients go to a restricted quarantine, not a newly created public mailbox. The worker fetches body/headers and fresh provider attachment URLs just in time, server-side only. Bound bytes, time, redirects and allowed download origins. Do not fetch links embedded in the email. Scan attachments before release through the authenticated application download proxy. Disable external image loads by default, sanitize HTML and display it in an isolated frame with a restrictive sandbox/CSP. Keep original content separately for authorized diagnostics; never inject it into the application DOM.
 
 Match replies using References/In-Reply-To and stored RFC Message-IDs within the relevant mailbox. Validate header lengths and malformed values. Message-ID is untrusted external input and is not a globally authoritative primary key. Subject matching alone is insufficient; uncertain matches start a new thread or enter review. Prevent an external sender from joining private threads merely by guessing an ID; require compatible participants and mailbox routing.
 
@@ -96,6 +101,6 @@ Run periodic reconciliation with provider list/retrieve endpoints, persisted cur
 
 ## Acceptance before live email
 
-Demonstrate these failure cases with real PostgreSQL transactions and a deterministic fake provider. Then validate provider sandbox/test events and a controlled send/reply with owned addresses. The local fake must model provider key expiry and ambiguous acceptance; a mock that always succeeds does not validate this design.
+Demonstrate these failure cases with real PostgreSQL transactions and a deterministic fake provider. The local fake must model provider key expiry and ambiguous acceptance; a mock that always succeeds does not validate this design. Actual provider connection and sandbox/test events belong to final activation after checking for hidden sends. A controlled send/reply with owned addresses remains prohibited until the user explicitly changes the no-live-send instruction. [Cross-platform tests](cross-platform-testing.md) add browser/BFF/native verification without activating mail.
 
 Primary reference: [Resend idempotency keys](https://resend.com/docs/dashboard/emails/idempotency-keys), checked 2026-10-11. Further provider constraints are in [mail delivery and hosting](mail-delivery-and-hosting.md).

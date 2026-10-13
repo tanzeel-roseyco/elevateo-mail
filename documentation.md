@@ -1,6 +1,6 @@
 # Product requirements and decision record
 
-Design date: 2026-10-11; expanded planning revision: 2026-10-12. This document supersedes the earlier planning assumption of 18 connected outreach mailboxes. It does not erase the original requirement for consent-based sending.
+Design date: 2026-10-11; expanded planning revision: 2026-10-12; confirmed framework revision: 2026-10-13. This document supersedes the earlier planning assumption of 18 connected outreach mailboxes. It does not erase the original requirement for consent-based sending.
 
 ## Confirmed by the user
 
@@ -9,7 +9,7 @@ Design date: 2026-10-11; expanded planning revision: 2026-10-12. This document s
 | R01 | Shared company mailbox for about 10 people | Two simultaneous users can read and work the same thread with distinct permissions/read state |
 | R02 | Resend for email transport | Verified domain, authenticated inbound webhook, provider test events and controlled end-to-end send/reply |
 | R03 | Self-hosted Supabase | Repeatable production Compose deployment, Auth, schema/RLS tests, private attachments and restore drill |
-| R04 | Web application at a subdomain | HTTPS URL, authentication and authorized mailbox operations in supported browsers |
+| R04 | Laravel Blade/Livewire web application at a subdomain | HTTPS URL, authentication and authorized mailbox operations in supported browsers |
 | R05 | Downloadable Mac and Windows clients | Install, login, logout and update validation on macOS and Windows; signed distribution artifacts |
 | R06 | Claude and Codex connectors | Both clients complete authorized mailbox search/read/draft tests; cross-mailbox access denied |
 | R07 | Efficient compute and resource use | Measure CPU/RAM/disk/queue age on representative workload before choosing final server size |
@@ -23,6 +23,8 @@ Design date: 2026-10-11; expanded planning revision: 2026-10-12. This document s
 | R15 | Distinct in-app Codex and Claude/Fable CLI connectors | Supported authentication/protocols, fixed-executable adapters, stream/cancel/approval tests and enforced tool/data scopes |
 | R16 | Opus 5.5 owns all C++ and motion design; use Anime.js for web polish | Actual assignment identity, accessible reduced-motion behavior and measured browser/native evidence |
 | R17 | Nine addresses across one or two domains; user Resend CLI; future computer-use connection to Instantly; no live sends | Inventory distinguishes aliases; read-only CLI discovery; separate account-connection and warmup gates; warmup stays disabled until no-live-send constraint explicitly changes |
+| R18 | Rails backend, Laravel Blade/Livewire frontend, Supabase and Resend; docs and architecture diagram on main | ADR 0002, diagram and synchronized plans; this update contains no app code changes |
+| R19 | Concrete web, desktop and mobile test instructions | Cross-platform matrix covering real browsers, target OS/device tests, isolation, faults, performance and evidence; planned checks are not passed tests |
 
 The current source-intake request explicitly authorizes collecting all six codebases in this repository. See [source inventory](third_party/README.md), [independent dossiers](docs/reference-repositories/README.md) and [goals](docs/goals-and-traceability.md). Archival source import is complete; runtime integration remains future work.
 
@@ -40,7 +42,8 @@ This is an API-based mailbox product. Full Gmail/Outlook history synchronization
 | --- | --- | --- |
 | Resend + self-hosted Supabase | User selected | Explicit current instruction |
 | Company mailbox + web + Mac + Windows + AI connectors | User requested | Current product direction |
-| Rails API/worker; React/TypeScript; Rust/Tauri Mac; C# Windows | Provisional Astra MAX proposal, named opinions pending | One domain authority and versioned cross-language contracts; inspect existing first-party work first |
+| Rails backend + Laravel Blade/Livewire frontend + Supabase + Resend | User selected and confirmed 2026-10-13; implementation opinions pending | Laravel presentation calls Rails with individual user identity; Rails alone owns mailbox rules and provider submission |
+| Rust/Tauri Mac; C# Windows; Java Android; SwiftUI iOS | Proposed hosts for requested platforms; native evidence pending | Separate platform artifacts and isolated desktop mailbox/assistant surfaces |
 | PostgreSQL job queue, separate API and worker | Working defaults for scoped local completion | One durable source of truth; API restarts must not lose jobs |
 | VPS, Docker Compose, reverse proxy, off-host backups | Recommended, approval pending | Small fixed team; operational ownership must be deliberate |
 | Resend stable send/receive APIs, not private-beta Inboxes | Recommended | Avoid availability and response-shape dependency on limited beta |

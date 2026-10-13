@@ -1,109 +1,91 @@
 # System architecture
 
-Status: **expanded provisional design, not implementation**. The [polyglot proposal](../.planning/POLYGLOT_ARCHITECTURE.md) recommends one Rails domain application with separate API and worker processes from the same codebase. Required independent Fable 5, Opus 5.5 and Fable 5.1 opinions remain pending: all three attempts failed authentication before inference. This document aligns the proposed architecture; it does not claim an accepted final synthesis or a built application.
+Updated 2026-10-13. **User-selected stack: Rails backend, Laravel Blade/Livewire frontend, self-hosted Supabase and Resend.** The user confirmed the two-server Rails/Laravel interpretation. Implementation design reviews and the three named Claude consultations remain pending for the next agent. This update changes documentation only; no application exists yet.
 
-## Context: what each system owns
+Read [ADR 0002](decisions/0002-rails-laravel-presentation.md) for framework boundaries, [the diagram](architecture-diagram.md), [component reuse](component-reuse-playbook.md) and [cross-platform tests](cross-platform-testing.md). They supersede earlier React/TypeScript frontend and Node-domain defaults. TypeScript remains allowed for scoped tooling/MCP, not the product frontend.
 
-```mermaid
-flowchart LR
-    Person[Company member] --> Client[Web / desktop / later mobile client]
-    Claude[Claude / Codex] --> MCP[Elevateo connector]
-    Client --> API[Elevateo Rails API]
-    MCP --> API
-    API --> DB[(Supabase PostgreSQL)]
-    API --> Auth[Supabase Auth]
-    API --> Storage[Private Supabase Storage]
-    Worker[Rails worker: shared domain code] --> DB
-    Worker --> Resend[Resend send / receive APIs]
-    Resend --> Hook[Rails signed webhook endpoint]
-    Hook --> DB
-    Resend --> Internet[External mail systems]
-```
+## Context and ownership
 
-Elevateo owns users' mailbox access, conversations, assignments, immutable send intent, reconciliation and audit records. Supabase is the application data/identity foundation. Resend handles internet email transport. This is self-hosted application storage with an external mail processor; mail also exists at Resend and recipient providers. Self-hosting Supabase does not make the whole email path private or self-hosted.
+The web path is **browser → Laravel presentation → Rails API → PostgreSQL**. Native mobile and mailbox MCP call Rails directly with their own scoped user identity. Rails API and worker share one domain codebase; the worker alone submits mail. Supabase Auth owns identity; Storage holds private quarantined objects. Resend is external mail transport, so self-hosting Supabase does not make the full email chain self-hosted.
 
-The planning workload is approximately ten staff and nine email addresses across one or two domains; exact addresses, aliases, mailbox boundaries and existing MX ownership remain unknown. Local execution replaces Resend with a deterministic provider simulator and blocks live mail transport. The production path in the diagram is a target, not an activated integration.
+About ten staff use nine addresses across one or two domains; actual addresses, aliases, routing and MX ownership are still unknown. Local tests use synthetic addresses and a durable provider simulator; no live sends, warmup, DNS changes or provider connection are authorized by this documentation update.
 
-## Containers and runtime responsibilities
+## Containers and data boundaries
 
-| Component | Responsibility | Persistent data |
+| Component | Responsibility | Persistent data / authority |
 | --- | --- | --- |
-| React/Vite UI | Inbox, composer, search, settings, review before send | No authoritative message state on device |
-| Rust/Tauri Mac host | Bundled UI and tightly scoped macOS integration; separate DMG | Protected session material only; offline mail deferred |
-| C#/.NET Windows host | Requested Windows GUI/host and separate installer; assess shared UI integration in the client ADR | Protected session material only; no local domain database |
-| Later Java Android / SwiftUI iOS clients | Native mobile views and lifecycle integration over the same API | Protected session material only; offline mail deferred |
-| Rails API | Authentication, authorization, validation, domain commands, transactions, webhook receipt | PostgreSQL and Storage |
-| Rails worker | Same domain code; claimed jobs, send/reconcile, inbound import and attachment processing | PostgreSQL job/attempt/event ledgers |
-| Supabase Auth | Identity, sign-in, token issuance | Supabase database |
-| PostgreSQL | Company records, constraints, RLS, durable queue | Encrypted disk plus independent backups |
-| Supabase Storage | Private attachments and optionally archived raw messages | Persistent object storage plus backups |
-| Reverse proxy | HTTPS, request size limits, route separation | Certificates and config |
-| TypeScript local stdio MCP bridge | Adapts Claude/Codex tools to Elevateo API | Scoped expiring user grant, never provider secret |
-| TypeScript/Express provider simulator | Local/test-only provider behavior, signing and controlled faults | Independent durable acceptance ledger outside application restore |
+| Laravel / PHP presentation server | Blade views, Livewire actions, allowlisted Rails adapter, browser session/CSRF | Separate protected session store only; no mail-table, provider or Supabase privileged access |
+| Alpine/plain JavaScript + Anime.js | Immediate local interaction, editor integration, accessible motion | Necessary render/unsaved state; no authoritative send result or browser token store |
+| Rails API | Per-request identity/authorization, domain commands, transactions, signed webhooks | Restricted PostgreSQL domain role; private Storage adapter |
+| Rails worker | Same domain code, durable jobs, send/reconcile, import and attachment pipeline | Separate limited worker role; only provider submission authority |
+| Supabase Auth / PostgreSQL / Storage | Identity, durable application data and private objects | Separately owned internal schemas and domain/session roles; encrypted backups |
+| Mac Rust/Tauri and Windows C# host | Remote mailbox WebView without native powers; separate trusted assistant panel | Web session isolated from OS-protected assistant credentials |
+| Java Android / SwiftUI iOS | Later native mailbox clients of Rails | Platform-protected session material; offline mail deferred |
+| TypeScript mailbox MCP | Read/search/draft tools calling Rails | Expiring mailbox grant; no send, direct SQL or provider keys |
+| Local Express provider simulator | Deterministic signed events and fault-controlled submission | External acceptance ledger outside application restore target |
+| Scanner / reverse proxy / backup services | Quarantine, TLS and bounded routing, recovery | Include footprint and operational ownership in capacity planning |
 
-Pin supported Ruby/Rails, Node and native toolchains after compatibility checks. TypeScript remains strict; check Ruby domain signatures with one selected type checker and validate wire values independently in every runtime. No dependency is installed by this design update. See the [client plan](../.planning/CLIENTS_AND_CLI_CONNECTORS.md) for platform choices and Anime.js ownership.
+Laravel adds a PHP process and a network hop. Co-locate it with Rails initially, aggregate API reads and measure complete request latency. The service split satisfies the selected stack; no claim of superiority comes from framework count. Avoid an additional Spring/Ktor/ASP.NET/Go/Python domain backend.
 
-## Why one domain authority and few services
+## Proposed repository structure
 
-The repository contains reference snapshots but no integrated Elevateo runtime to migrate. The expanded brief proposes Rails for the transaction-heavy domain and preserves React/Vite for the UI. This replaces the earlier Node-domain proposal; it is not an additional backend. Rails API and worker share one domain implementation and one application migration lane. Only the worker's provider adapter submits mail. Supabase Auth and Storage continue to own their internal schemas.
-
-The tradeoff is losing same-language server/client domain reuse. Versioned OpenAPI/event schemas, TypeScript bindings and cross-language contract tests replace that assumption. PHP has a scoped SDK/example, Go a read-only diagnostics CLI and Python fixture/provenance tools; these do not become always-on domain servers. All requested languages, conditional roles and phases are recorded in the [polyglot matrix](../.planning/POLYGLOT_ARCHITECTURE.md).
-
-Do not merge Python, Go and Node servers simply to collect features from every repository. Port small, valuable rules and regression cases into the chosen architecture. Start with PostgreSQL search, a durable jobs table and modest polling for UI changes. Add Realtime only for measured UX need, Redis only for a measured queue/cache bottleneck, and an external search engine only when indexed database search no longer meets measured needs. There is no Kubernetes or microservice mesh requirement for 10 people.
-
-## Module boundaries
-
-Proposed repository structure (illustrative; these directories do not exist yet):
+These paths are implementation destinations, not directories created by this documentation change:
 
 ```text
-apps/web/                              React/Vite browser and reusable desktop UI
-apps/server/app/controllers/           Rails HTTP/session/webhook boundary
-apps/server/app/domain/                Ruby mailbox access, drafts, sends, threading
-apps/server/app/workers/               shared-domain lease/import/reconciliation loop
-apps/server/app/adapters/providers/    Ruby Resend and simulator HTTP adapters
-apps/server/db/                        sole application SQL migration/schema lane
-apps/server/test/                      Ruby/domain and real-PostgreSQL tests
-apps/provider-simulator/               TypeScript/Express local-only fake provider
-apps/desktop-macos/                    Rust/Tauri host and Mac packaging
-apps/desktop-windows/                  C#/.NET host and Windows packaging
-apps/mobile-android/                   later Java Android client
-apps/mobile-ios/                       later SwiftUI iOS client
-contracts/                            canonical OpenAPI/event/CLI wire schemas
-packages/contracts/                   TypeScript bindings and boundary validators
-packages/ui/                          shared React presentation primitives
-packages/mcp/                         TypeScript stdio tools calling the Rails API
-tools/                                bounded Go/PHP/Python tools and fixtures
-infra/                                app deployment and pinned Supabase integration
+apps/web/app/Livewire/                 PHP presentation components
+apps/web/app/Services/RailsApi/        allowlisted user-scoped Rails HTTP adapter
+apps/web/resources/views/             Blade layouts and components
+apps/web/resources/js/                Alpine/plain JS, editor and Anime.js hooks
+apps/web/resources/css/               shared design tokens and web styles
+apps/web/database/                    presentation-session schema only if required
+apps/server/app/controllers/          Rails HTTP/auth/webhook boundary
+apps/server/app/domain/               access, conversations, drafts, delivery, audit
+apps/server/app/workers/              lease/import/reconciliation processing
+apps/server/app/adapters/providers/   Ruby Resend and simulator adapters
+apps/server/db/                       sole domain migration lane
+apps/server/test/                     Ruby and real-PostgreSQL tests
+apps/provider-simulator/              local-only TypeScript/Express provider
+apps/desktop-macos/                   Rust/Tauri host, isolated views and DMG
+apps/desktop-windows/                 C# host, isolated WebViews and installer
+apps/mobile-android/                  Java Android client
+apps/mobile-ios/                      SwiftUI client
+packages/desktop-assistant-ui/        trusted bundled CLI panel; no remote mailbox DOM
+packages/design-tokens/               portable CSS tokens and interaction specifications
+contracts/                           OpenAPI/event/CLI schemas and fixtures
+packages/contracts/                  tooling/MCP bindings and validators
+packages/mcp/                        TypeScript stdio mailbox tools
+third_party/upstream/                immutable reference snapshots
+infra/                               future deployment and Supabase integration
 ```
 
-Rails routes call Ruby domain services; domain services use a transaction/repository interface; the provider adapter translates Resend-specific responses. The API and worker are two commands from one server image. UI, SDKs and MCP have no direct database or Resend credentials. TypeScript contracts describe wire data, not a second domain implementation. The simulator owns only simulated external effects; it cannot write application state directly.
+Rails controllers call explicit domain operations such as approve draft or assign conversation; those operations enforce transactions and authorization. Provider-specific mapping stays in the Ruby adapter. Livewire calls the PHP HTTP adapter, never a mailbox database model. The UI may validate inputs for helpful errors, but Rails and database constraints decide validity.
 
-## Trust and authorization
+## Identity, sessions and untrusted content
 
-For web, use a same-origin backend-for-frontend session: secure HttpOnly cookies, CSRF protection on mutations and restricted origins. Supabase Auth verifies identity; the API verifies token signature/issuer/audience/expiry and checks authoritative session validity plus current membership for every operation. A still-unexpired JWT alone is insufficient after device/session revocation; use a narrow server-side session lookup and fail closed when it is unavailable. Do not trust a client-supplied organization ID or a role cached forever in a JWT.
+Laravel owns the browser cookie/session boundary; Supabase remains identity authority. Store encrypted user access/refresh tokens server-side, not in Livewire public properties, HTML or browser storage. Use secure host-only cookies, CSRF/origin checks, session rotation, refresh serialization and defined expiry. If PostgreSQL holds presentation sessions, give Laravel only a separate private schema/role; it has no domain or Auth-table access. Login/logout, session-store restore and individual/all-device revocation must be designed and tested as in ADR 0002.
 
-Rails API-only applications omit browser middleware by default; add and test the required cookie/session and CSRF boundary explicitly. Keep Supabase as the identity authority. Enforce configured time/inactivity limits as well as session existence. [Rails API middleware](https://guides.rubyonrails.org/api_app.html), [Supabase sessions](https://supabase.com/docs/guides/auth/sessions).
+Rails selects a defined credential validator: Supabase JWTs require signature/issuer/audience/expiry and authoritative session checks; opaque connector grants require secure hash/constant-time verification plus current grant owner, expiry, revocation and scope checks. Every protected operation also checks current user status and mailbox membership. It cannot trust a BFF-supplied user ID, cached UI role or service identity as the user. For JWT sessions, check inactivity/time limits as well as session existence. Keep any cookie-authenticated Rails endpoints under their own CSRF boundary; public webhook routes use signature validation and bounded ingestion. [Supabase sessions](https://supabase.com/docs/guides/auth/sessions), [Rails API middleware](https://guides.rubyonrails.org/api_app.html).
 
-For desktop, use the system browser with authorization code/PKCE, strict redirect handling and OS-protected session storage. For connectors, issue revocable grants scoped to a user, organization, explicit mailboxes and read/draft actions. Never expose a Supabase secret/service-role key, database URL, signing key or Resend key in the UI, installer or MCP configuration.
+Ordinary Rails connections assume restricted database roles and transaction-local verified claims; pooled connections must not leak identities. No owner/superuser/BYPASSRLS role for ordinary requests. Supabase owns Auth/Storage schemas; Rails owns domain migrations; Laravel's optional session migrations own only presentation storage. Mobile and assistant native sessions use reviewed system-browser/PKCE flows and OS secure storage. MCP grants intersect current user/mailbox permissions.
 
-Keep business tables in a non-public application schema, not automatically exposed through the Data API. Use explicit grants and RLS as defense in depth. If the API connects directly to PostgreSQL, its request connection must assume a restricted role with verified user claims set **transaction-locally**; pooled connections must not leak claims between requests. Do not run ordinary requests as a database owner, superuser or BYPASSRLS role. Validate this with actual PostgreSQL role tests. Worker operations use a separate narrowly granted role; any privileged helper must validate the job and mailbox boundary itself.
+Every Livewire action argument is untrusted. Rails checks authorization even when a page was allowed moments earlier. Incoming/pasted HTML is sanitized and rendered in a restrictive isolated frame; remote images are blocked by default. Authenticated data is no-store, with no cross-user cache or persistent browser mailbox cache. Never expose secrets in application/native bundles.
 
-Storage object access is mediated by authorized attachment metadata. A random object path is not authorization. User downloads pass through an authenticated API/proxy that rechecks current session/grant and mailbox access on each new request. Any short-lived Storage signed URL remains server-side; clients cannot bypass revocation by reusing it. Quarantined objects cannot be downloaded. Already received bytes cannot be recalled. Keep Storage RLS and server access rules consistent with this boundary.
+Attachments stay private and quarantined until scanning succeeds. Downloads pass through a currently authorized streaming API/proxy; Laravel forwards to Rails without becoming a new attachment authority. Storage signed URLs remain server-side, never issued to clients. Old application links must fail after revocation. Set size/type limits and backpressure and deny arbitrary email-supplied fetch URLs. Previously received bytes cannot be recalled.
 
-## Where consistency matters
+## Reliable mail and recovery
 
-One database transaction records the approved immutable draft version, a uniquely identified send job and audit event. It does not send the email. A worker atomically leases the job, records an attempt and commits, then calls Resend outside that transaction. This separates durable intent from an unreliable network operation.
+Approval freezes the reviewed draft version, recipients, body and attachments. Approval, uniquely identified send intent/job and audit record commit in one PostgreSQL transaction. A worker leases it and commits before external I/O. The stable payload/key and first-attempt time survive restarts; lease generations protect database writes but cannot fence a provider that already accepted mail.
 
-The application job ledger remains authoritative in Rails. Do not substitute Action Mailer or a generic after-commit enqueue for atomic send intent; queue transaction behavior depends on backend/database placement. [Rails job transactions](https://guides.rubyonrails.org/active_job_basics.html#transactional-integrity-on-jobs).
+Use the explicit Rails-owned send ledger from [reliability contracts](contracts-and-reliability.md). Framework jobs can assist scheduling but must not replace durable atomic intent or introduce automatic ambiguous-send retries. Rails queue transaction semantics depend on backend/database placement. [Rails job transactions](https://guides.rubyonrails.org/active_job_basics.html#transactional-integrity-on-jobs).
 
-Provider acceptance, delivery, bounce and human reading are different facts. UI labels must reflect evidence. The worker persists a stable provider idempotency key and a first-attempt time. A timed-out request is `unknown`, not `failed`. Retries may use the same bytes/key within the provider's safe window; after that window, reconciliation or an explicit human resolution is necessary. A lease alone cannot fence an external provider; see [the failure matrix](contracts-and-reliability.md).
+Acceptance, delivery, bounce and reading are distinct states. A timeout is unknown, not failure. Retry identical payload/key only within the documented safe horizon; later work requires reconciliation or explicit resolution. Persist signed inbound events and import intent before acknowledging; deduplicate provider receipts and mailbox routes and tolerate reordered events. Laravel and every native client display only the state supported by backend evidence.
 
-Incoming events are authenticated and saved before a success response. Separate import work obtains body/attachments, checks known recipient addresses and builds mailbox-scoped conversations. Duplicates and out-of-order events are normal. Event replay must not duplicate messages or reopen cancelled jobs.
+Back up database and objects, retain the simulator's external acceptance evidence across app restore and start restores with outbound dispatch held. Reconcile accepted effects before releasing old jobs. Include presentation-session invalidation, backup keys, object consistency, scanner outages and expired provider URLs in recovery drills.
 
-## Resource efficiency and failure domains
+## Native and operating boundaries
 
-A VPS can run the Rails API, one worker and essential Supabase services behind TLS, with the required scanner and backup facilities included in resource measurements. It is economical in service count but is one failure domain: a VPS outage stops the app and database. Backups improve recoverability; they do not provide high availability. Start with a measured pilot, then separate database/object storage or add a standby only when recovery requirements justify the cost.
+Desktop mailbox UI is the hosted Laravel experience inside an unprivileged WebView. A separate bundled assistant panel alone has narrow native CLI capabilities; no remote mailbox event, script or URL can invoke that panel. Do not package PHP/Supabase on user devices or promise offline mailbox functionality. If the host cannot prove this separation, native release is blocked while the web product remains testable. See [desktop/connectors](desktop-and-connectors.md).
 
-Web, desktop and mobile are clients of the same service, not copies of Supabase on every device. Closing every client must not stop inbound ingestion or accepted send jobs. Client disconnection may preserve a local draft later, but it cannot safely approve or report a send as successful without the server. Mac/Tauri and Windows/C# have separate installers; Java Android and SwiftUI iOS follow the stable core. Electron, Ionic/Capacitor and Qt remain alternatives rather than additional shipped shells.
+One VPS can initially run Laravel, Rails API/worker, required Supabase services, scanner and backup facilities, subject to measurement. It remains one failure domain; backups are not high availability. Start with indexed PostgreSQL search and bounded polling. Add Redis, external search or more services only after measured need. Closing clients must not stop inbound processing or accepted jobs.
 
-See [hosting](mail-delivery-and-hosting.md) for operator responsibilities, [desktop/connectors](desktop-and-connectors.md) for distribution, and [the tutorial](backend-database-tutorial.md) for the database model and CAP.
+Prove local two-user flows, cross-mailbox denial, web/desktop/mobile lifecycle, latency under representative history, full-stack CPU/RAM/storage, crash recovery and restore. [Cross-platform testing](cross-platform-testing.md) defines the evidence matrix and distinguishes proposed targets from measured results. No “ultra” performance/security/reliability label is an acceptance substitute.

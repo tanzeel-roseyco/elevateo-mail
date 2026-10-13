@@ -2,6 +2,8 @@
 
 Status: all six pinned source snapshots are now copied into `third_party/upstream` as reference material; no component has been ported into an Elevateo runtime. See [the complete source collection](../third_party/README.md), [six dossiers](reference-repositories/README.md) and [adoption matrix](component-adoption.md). The repositories were cloned and audited earlier in this conversation; this document carries that evidence forward rather than re-auditing a different revision. The exact source revisions are in [repository-pins.json](research/repository-pins.json); independent component scores and findings are in [audit-scorecards.json](research/audit-scorecards.json).
 
+2026-10-13 reconciliation: [ADR 0002](decisions/0002-rails-laravel-presentation.md) selects Rails domain/API/worker and Laravel Blade/Livewire presentation. Historical source languages, scores and audit results remain unchanged; prior Node/React target recommendations are superseded. Follow [the concrete reuse playbook](component-reuse-playbook.md) before implementing any port.
+
 ## Read the scores in context
 
 Scores are weighted engineering judgments for the earlier Instantly/Smartlead-style outreach brief, not security certifications or a new benchmark of company-mailbox suitability. Weights: architecture 15%, maintainability 15%, security/permissions 20%, sending/data reliability 20%, product fit 10%, tests 10%, operations 10%. Dimension scores are 0–10 and weighted totals are 0–100. Reuse value is a separate judgment, not readiness to deploy.
@@ -17,11 +19,11 @@ Scores are weighted engineering judgments for the earlier Instantly/Smartlead-st
 
 ## What “combine the best” means here
 
-The new product does not need six running backends, six authentication models or their combined dependency trees. Keep one canonical company/mailbox schema and one sending authority. Adapt proven workflows and small utilities into it, with regression tests derived from the failures found in the audit. This greenfield TypeScript proposal supersedes the earlier campaign-heavy recommendation to retain Quickly's Python backend.
+The new product does not need six running backends, six authentication models or their combined dependency trees. Rails owns one canonical company/mailbox schema and sending authority. Adapt proven workflows and small utilities into it, with regression tests derived from the failures found in the audit. Laravel owns presentation and encrypted server-side per-user Supabase sessions only; its separate session migration lane cannot touch domain tables. TypeScript remains available for contracts, MCP and development tools, not a React frontend.
 
 | Source | Adapt or learn from | Explicitly replace or avoid | Destination / proof |
 | --- | --- | --- | --- |
-| Quickly (MIT) | Unified-inbox/composer interaction, quote display, provider abstraction ideas | In-process scheduler ownership, DB-stored encryption key beside secrets, unrestricted webhooks, large mixed-responsibility modules | React mailbox modules; Resend adapter; race/timeout/HTML tests |
+| Quickly (MIT) | Unified-inbox/composer interaction, quote display, provider abstraction ideas | In-process scheduler ownership, DB-stored encryption key beside secrets, unrestricted webhooks, large mixed-responsibility modules | Blade/Livewire/Alpine behavior ports; Rails Resend adapter; race/timeout/HTML tests |
 | Wu-Wei-Mail (MIT) | Workspace boundary, dedicated worker, versioned migrations, broad testing patterns | Marking reserved sends successful, missing final suppression checks, refresh-token revocation rolled back on errors, unrestricted URL enrichment | Supabase identity/RLS; transactional jobs; crash-before-call and revoke tests |
 | cold-cli (MIT) | Stable logical work, account budget invariants, actual SQLite integration-test discipline | Send-before-durable-result gap, global per-send sleep bottleneck, relying on a CLI-only outer lock | Real PostgreSQL concurrency tests; per-provider rate budget; durable send ledger |
 | lightreach (MIT) | Lightweight mailbox interface, typed component boundaries, local MCP ergonomics | No-auth baseline, unsafe incoming HTML sink, resetting all sending jobs to queued | Authenticated UI/MCP contracts, isolated content renderer and reconciliation |
@@ -39,7 +41,7 @@ The new product does not need six running backends, six authentication models or
 
 ## License and provenance rule
 
-The audit identified MIT licenses for the first five projects and AGPL-3.0 for BillionMail. Before porting an actual file, recheck that pinned file's license and any embedded third-party notices. Preserve the applicable copyright/license text for copied or adapted code. The source collection already has [third-party notices](../THIRD_PARTY_NOTICES.md) and per-file provenance. For each later port, extend the ledger with source repository/revision/path, destination, adaptation and regression test. Do not claim copied code is original merely because it was translated to TypeScript.
+The audit identified MIT licenses for the first five projects and AGPL-3.0 for BillionMail. Before porting an actual file, recheck that pinned file's license and any embedded third-party notices. Preserve the applicable copyright/license text for copied or adapted code. The source collection already has [third-party notices](../THIRD_PARTY_NOTICES.md) and per-file provenance. For each later port, extend the ledger with source repository/revision/path, destination, adaptation and regression test. Do not claim copied code is original merely because it was translated to Ruby, PHP/Blade or another language.
 
 BillionMail AGPL source is now included in the explicitly requested reference collection with its license intact; no AGPL implementation is integrated into an Elevateo runtime. If the team later wants BillionMail code, make a deliberate licensing decision with qualified advice before integration; separation into a service is not, by itself, a legal conclusion. This plan uses independently written architecture ideas only.
 

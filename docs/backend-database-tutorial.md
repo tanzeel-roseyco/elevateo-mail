@@ -1,6 +1,6 @@
 # Backend and database tutorial: a shared company mailbox
 
-> **Design only — not implemented or approved.** This tutorial proposes a system for about ten colleagues, using the requested self-hosted Supabase and Resend direction. It does not approve standards, select final deployment technology, create database migrations, or establish an SLA. The root documentation now records the shift from an outreach-first tool to a company mailbox. Nothing here implies that SMTP/IMAP hosting, desktop packaging, or connectors already exist.
+> **Design only — not implemented.** On 2026-10-13 the user selected Rails backend, Laravel Blade/Livewire presentation, self-hosted Supabase and Resend; see [ADR 0002](decisions/0002-rails-laravel-presentation.md). This tutorial does not establish completed consultations, production approval, migrations or an SLA. Nothing here implies that SMTP/IMAP hosting, desktop packaging or connectors already exist.
 
 ## 1. Start with a conversation, not a server
 
@@ -12,23 +12,30 @@ These examples reveal the backend's real job. It preserves agreements about who 
 
 ## 2. The proposed system and its boundaries
 
-A **modular monolith** keeps domain rules together in one codebase, divided into modules such as identity and access, mailboxes, conversations, sending, receiving, and auditing. It avoids requiring a network service for every module. Separate API and worker processes can share these modules and their database while running independently.
+A **Rails modular monolith** keeps domain rules together in one codebase, divided into modules such as identity and access, mailboxes, conversations, sending, receiving, and auditing. Separate API and worker processes share these modules and their database while running independently. A thin Laravel presentation server renders Blade/Livewire UI and calls the Rails API; it adds a request hop and an operating responsibility, not a second mailbox backend.
 
 The **API** handles short requests: loading conversations, saving drafts, checking access, and approving sends. The **durable worker** performs asynchronous work: dispatching sends, processing provider events, fetching received bodies, scanning attachments, and reconciling ambiguous outcomes. Durable means that pending work survives a process restart because its authoritative record is in the database. A worker's in-memory queue alone does not meet that requirement.
 
 ```mermaid
 flowchart LR
-    Web[Web app at company subdomain] --> API[API: authentication and domain rules]
-    Desktop[Mac and Windows clients] --> API
+    Web[Web browser at company subdomain] --> BFF[Laravel Blade/Livewire presentation]
+    Desktop[Mac and Windows unprivileged mailbox views] --> BFF
+    BFF --> API[Rails API: authentication and domain rules]
+    BFF --> Sessions[(Private presentation sessions)]
+    Mobile[Java Android / SwiftUI iOS] --> API
     Connector[Claude / Codex connector] --> API
     API --> DB[(Postgres: durable records)]
     API --> Auth[Supabase Auth]
-    Worker[Durable worker: same domain modules] --> DB
+    Worker[Rails worker: same domain modules] --> DB
     Worker --> Storage[Supabase Storage]
     Worker --> Transport[Resend: external transport]
     Transport --> Hook[Authenticated webhook ingress]
     Hook --> DB
 ```
+
+Laravel keeps encrypted per-user Supabase access/refresh material in its protected server-side presentation session store, with a host-only Secure/HttpOnly/SameSite cookie and CSRF checks. Rails verifies individual identity, current session/grants and mailbox membership on every protected call. Laravel owns only a separate restricted presentation-session schema/migration lane; Rails owns domain migrations and Supabase owns its internal schemas. A service identity cannot authorize a supplied user ID. Refresh rotation and logout/revocation require concurrency tests; do not expose tokens through Livewire state, HTML or logs.
+
+Desktop remote mailbox views have no native privileges; a separate trusted bundled panel owns explicitly granted CLI capabilities. Blade requires the remote PHP server and is not an offline desktop bundle. See [the full diagram](architecture-diagram.md) for the connector and attachment-proxy boundaries.
 
 **Self-hosted Supabase provides Postgres, Auth, and Storage capabilities; it is not SMTP or IMAP mailbox hosting.** Postgres stores relationships and transactionally durable state. Auth supplies identities and authentication sessions. Storage holds objects such as attachments and retained message bodies, with access policies and lifecycle rules. Self-hosting also creates responsibility for upgrades, backups, restore testing, security, and availability.
 
@@ -250,7 +257,7 @@ This file supplies an educational model, not a complete implementation specifica
 
 - Confirm actual mailbox count, aliases, existing history and migration/coexistence requirements; the current root documents use the roughly ten-person company-mailbox brief.
 - Integration-test Resend inbound routing, retention, webhook identity, event ordering, recipient reporting and idempotency against the verified documentation and actual account. Provider behavior must not be inferred from mocks alone.
-- Approve standards and finalize role permissions, administrator access, dispatch/revocation boundaries, and delegated connector capabilities.
+- Follow the scoped engineering baseline; finalize role permissions, administrator access, dispatch/revocation boundaries and delegated connector capabilities through the pending design reviews, without reinstating blanket approval for already-authorized local work.
 - Specify exact supporting-table constraints, draft-head concurrency, canonical snapshots, stable send keys, business-event guards, lease fencing, retry margin, and reconciliation operations.
 - Define organizational versus mailbox suppression precedence, purpose-specific consent needs, retention/tombstone policy, quarantine handling, and local desktop cache behavior. Ordinary customer support and marketing must not silently share one consent assumption.
 - Set numeric RPO/RTO goals and a backup/failover design; test recovery without duplicating already accepted sends.

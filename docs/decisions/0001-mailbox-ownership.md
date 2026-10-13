@@ -1,6 +1,6 @@
 # ADR 0001: own the mailbox state, delegate internet email transport
 
-Date: 2026-10-11. Status: **proposed**, with Resend and self-hosted Supabase already user-selected.
+Date: 2026-10-11; amended 2026-10-13 by [ADR 0002](0002-rails-laravel-presentation.md). Status: **stack selected; implementation review pending**. This ownership principle remains; obsolete Node/React implementation defaults are superseded.
 
 ## Context
 
@@ -8,7 +8,7 @@ The product is now a roughly ten-person company mailbox across web, macOS, Windo
 
 ## Decision proposed
 
-Use self-hosted Supabase PostgreSQL as the canonical store for company/mailbox membership, conversations, drafts, send jobs, incoming receipts and audit. Use Resend's stable HTTPS sending/receiving APIs for internet mail. Run one modular TypeScript codebase as an interactive API and a separate durable worker. Reuse the React frontend through Tauri and the same authorized API through MCP.
+Use self-hosted Supabase PostgreSQL as the canonical store for company/mailbox membership, conversations, drafts, send jobs, incoming receipts and audit. Use Resend's stable HTTPS sending/receiving APIs for internet mail. Run one modular Rails codebase as an interactive API and separate durable worker. Laravel Blade/Livewire owns web presentation and calls Rails as the signed-in user. Desktop uses an unprivileged hosted mailbox view plus a separate trusted assistant panel; native mobile and scoped MCP use the Rails API. Laravel has no direct mailbox-table or provider authority.
 
 No Postfix/Dovecot or conventional IMAP service is required in the first release. No Resend private-beta Inboxes dependency, additional queue broker, separate search cluster or microservice fleet is selected. [Architecture](../architecture.md) and [reliability contracts](../contracts-and-reliability.md) contain the boundary details.
 

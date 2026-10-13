@@ -1,5 +1,7 @@
 # Repository dossiers and source map
 
+Target-architecture update (2026-10-13): source-language facts, scores and historical tests below remain unchanged. [ADR 0002](../decisions/0002-rails-laravel-presentation.md) selects Rails domain/API/worker + Laravel Blade/Livewire/Alpine presentation, Supabase and Resend. The [current adoption matrix](../component-adoption.md) and [reuse playbook](../component-reuse-playbook.md) supersede earlier Node/React destination suggestions; React components are translated, not installed as the product UI. Named consultations remain for the next agent; none is completed by this update.
+
 This collection documents every imported repository independently at the exact audited revision. It accompanies real source files under [third_party/upstream](../../third_party/upstream), not just GitHub links or submodules. [The inventory](../../third_party/README.md) explains provenance, included/omitted files, licenses and verification.
 
 | Repository | Earlier engineering score | Product role in Elevateo | Dossier |

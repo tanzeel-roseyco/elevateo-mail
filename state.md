@@ -1,9 +1,11 @@
 # Project state
 
-Updated: 2026-10-12.
+Updated: 2026-10-13.
 Status: **expanded plans and initial research ready; required opinion synthesis and application implementation pending**.
 
 ## Completed
+
+- Confirmed and documented Rails API/worker + Laravel Blade/Livewire presentation + self-hosted Supabase + Resend. Added a GitHub-renderable architecture diagram, framework decision, exact source-reuse playbook and web/desktop/mobile test plan; reconciled the agent handoff. This update changes documentation only; no application code or tests were created.
 
 - Saved the shared Claude consultation brief, three model-specific prompts, next-agent launch procedure and Astra MAX synthesis template in `.planning/consultations`. Per the latest user instruction, execution is left to the next agent; no consultation or authentication was retried while saving the handoff.
 
@@ -27,8 +29,8 @@ Upstream application source is now present as an inert reference collection. No 
 
 ## Selected versus proposed
 
-Selected by user: Resend, self-hosted Supabase; ten staff/nine addresses across one or two domains; web, Mac/Windows, Java Android and SwiftUI iOS; Claude/Codex mailbox and in-app connectors; expanded language/agent workflow.
-Current provisional Astra MAX proposal: Rails API/worker, React/TypeScript, PostgreSQL durable jobs, Rust/Tauri Mac and C# Windows, bounded PHP/Go/Python tools, conditional other languages, local read/search/draft MCP and separate in-app process adapters. This supersedes the earlier Node/Tauri-for-both proposal. Named Claude opinions and synthesis remain pending. Reuse suitable existing first-party frontend work if it appears before implementation. VPS/Compose hosting remains a recommendation for later production decisions. The local brief supersedes the earlier blanket standards gate for its bounded scope; it does not claim blanket approval or live activation authority.
+Selected by user: Rails backend, Laravel Blade/Livewire frontend, Resend, self-hosted Supabase; ten staff/nine addresses across one or two domains; web, Mac/Windows, Java Android and SwiftUI iOS; Claude/Codex mailbox and in-app connectors; expanded language/agent workflow.
+Current selected stack supersedes the older React/Node defaults. Rails owns domain API/worker rules; Laravel is a presentation/BFF server with separate browser sessions and no direct mailbox-table access. Proposed native hosts are Rust/Tauri Mac and C# Windows, using an unprivileged remote mailbox view and a separate trusted assistant panel. Java Android and SwiftUI iOS call Rails directly. PostgreSQL durable jobs, bounded tools, read/search/draft MCP and VPS/Compose remain documented design choices to review and measure. Named Claude opinions and synthesis remain pending for the next agent; this user framework selection is not model consensus or production authorization.
 
 ## Next steps
 

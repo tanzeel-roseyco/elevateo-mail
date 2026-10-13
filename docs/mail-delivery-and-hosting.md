@@ -2,6 +2,8 @@
 
 Status: design proposal for approximately 10 company users. Resend and self-hosted Supabase are user-selected. Infrastructure sizes, operating targets, and implementation details below remain proposed; no accounts, DNS records, credentials, servers, or mailboxes were changed. Provider documentation checked **11 October 2026**.
 
+Architecture reconciled **13 October 2026**: [Rails domain/API/worker + Laravel Blade/Livewire presentation](decisions/0002-rails-laravel-presentation.md) is user-selected. This edit preserves the dated provider/pricing evidence below; it is not a new price check. Include the always-running PHP presentation service and its protected session store in future sizing, deployment and recovery measurements.
+
 ## What we are actually hosting
 
 Elevateo Mail will provide the company's interface, permissions, conversation history, drafts, assignments, and operational records. Self-hosted Supabase provides PostgreSQL, authentication, and optional storage/realtime services. **Supabase is not an email server.**
@@ -90,7 +92,7 @@ The proposed ingestion pipeline must:
 2. Fetch only URLs obtained from the authenticated provider response. Enforce HTTPS, bounded redirects, public-network destinations, timeouts, and byte limits; reject redirects or resolved addresses outside the permitted policy.
 3. Save under generated object IDs in a private quarantine area, never a sender-controlled filesystem path. Preserve the original filename only as untrusted metadata.
 4. Validate content type from bytes, scan attachments before release, and keep scanner failures quarantined. Antivirus lowers risk; it does not prove a document safe.
-5. Authorize every download against mailbox membership. Prefer attachment downloads rather than executing active file content inside the app's origin. Use short-lived signed links and avoid logging their secrets.
+5. Authorize every download against the current session/grant, mailbox membership and scan status at the Rails download proxy. Browser downloads stream through Laravel to that proxy; keep short-lived Storage signed URLs server-side, never in client DTOs, HTML, redirects or logs. Prefer downloads rather than executing active files in the app's origin.
 
 Render message text safely by default. An optional HTML view needs sanitization and an isolated sandbox with scripts disabled; block remote images by default to avoid automatic tracking and network requests. Incoming email, attachments, and quoted text are untrusted data for both people and AI connectors. They cannot grant an AI tool permission to send mail or disclose other conversations.
 
@@ -108,7 +110,7 @@ Separate queued, submitting, provider-accepted, delivered, bounced, failed, and 
 
 ## Compute recommendation and its limits
 
-Proposed first deployment: one Linux VPS, a reverse proxy with HTTPS, a modular API, one worker process, and the official self-hosted Supabase Docker stack. Use PostgreSQL for durable jobs initially. Do not add Redis, Kafka, Kubernetes, or an always-running AI model without a measured need. Ten users usually create modest interactive load; mail volume, attachment scanning, storage growth, and maintenance jobs determine the real capacity requirement.
+Proposed first deployment: one Linux VPS, an HTTPS reverse proxy, Laravel/PHP presentation service, Rails API and same-code worker, and the official self-hosted Supabase Docker stack. Include a protected presentation-session store with encrypted per-user Supabase tokens and separate least-privilege access; measure full browser-to-Laravel-to-Rails latency and resource use. Use PostgreSQL for durable jobs initially. Do not add Redis, Kafka, Kubernetes, or an always-running AI model without a measured need. Ten users usually create modest interactive load; mail volume, attachment scanning, storage growth, and maintenance jobs determine the real capacity requirement.
 
 Supabase currently publishes **4 GB RAM / 2 CPU cores / 40 GB SSD minimum**, and **8 GB+ / 4 cores+ / 80 GB+ SSD recommended** for its components. Unneeded services can be removed to reduce resource use. The local CLI development stack is not a production deployment; use the self-hosting instructions. [Supabase Docker requirements](https://supabase.com/docs/guides/self-hosting/docker), [Self-hosting responsibilities](https://supabase.com/docs/guides/self-hosting)
 
@@ -126,14 +128,14 @@ Resend's published Pro transactional plan is US$20/month for 50,000 emails; rece
 
 1. **Create a staging installation.** Pin a reviewed Supabase release and application images. Generate unique secrets outside Git; keep service credentials on the server and use a secret store or protected deployment mechanism.
 2. **Limit public exposure.** Publish only necessary HTTPS endpoints. Keep PostgreSQL, administrative Studio access, metrics, and worker controls private. Apply firewall rules and maintenance access deliberately.
-3. **Configure authentication.** Disable open company signup, invite users, require the chosen MFA policy, and assign mailbox membership. Test that a member cannot read another mailbox by changing an API ID.
-4. **Apply migrations and storage policy.** Create versioned schema changes, private attachment storage, quotas, and retention rules. Database backups do not automatically include object bytes.
-5. **Verify the test domain.** Configure sending and receiving records without replacing existing company MX. Send and receive only controlled test conversations; inspect authentication and threading.
+3. **Configure authentication.** Supabase remains identity authority. Disable open company signup, require the chosen MFA policy and assign mailbox membership. Laravel uses encrypted server-side per-user token storage and protected session cookies/CSRF; Rails enforces current identity/session/mailbox rights. Test revoked sessions, refresh races and changed resource IDs.
+4. **Apply migrations and storage policy.** Rails alone owns domain migrations; Laravel owns only its isolated presentation-session schema, and Supabase manages internal schemas. Create private attachment storage, quotas and retention rules. Database backups do not automatically include object bytes.
+5. **Verify the test domain only at authorized activation.** Configure sending/receiving without replacing existing company MX. Controlled test mail stays prohibited until the user explicitly changes no-live-sends; before then use synthetic local events and the durable simulator.
 6. **Register the signed webhook.** Exercise a duplicate delivery, invalid signature, provider retry, delayed body retrieval, and backfill. Verify success is acknowledged only after durable persistence.
 7. **Exercise send failure recovery.** Simulate a timeout after provider acceptance and verify the same-key recovery path. Simulate expiry and confirm it requires review rather than resending.
 8. **Back up off-host.** Back up PostgreSQL, private objects, and the configuration needed to restore. Encrypt backups; keep access and encryption keys separately recoverable. Plan WAL archiving/PITR if the accepted recovery point requires it; self-hosting does not provide managed PITR automatically.
 9. **Restore behind an outbound barrier.** In both a drill and real recovery, start with outbound sending disabled; a drill also isolates production webhooks. Hold every restored outbound job until provider effects across the backup-loss interval are reconciled. A restored job can look queued even though it was accepted, and its first-attempt timestamp may have been lost. Never restart the retry horizon from restore time; missing evidence remains under review. Reconcile metadata/objects and permissions, then explicitly release safe work and measure recovery. A backup file existing is not proof of a restorable mailbox.
-10. **Enable monitored production traffic.** Alert on disk pressure, failed backups, job age, API/provider errors, bounce/complaint changes, and certificate expiry. Publish a runbook for upgrades, webhook re-enablement, and provider outages.
+10. **Enable monitored production traffic only after activation authorization.** Alert on Laravel/session-store and Rails health, disk pressure, failed backups, job age, provider errors and certificate expiry. Publish upgrade/outage runbooks. Production mail requires the explicit no-live-send decision; browser/native session recovery must not resurrect revoked sessions.
 
 Proposed primary-mailbox recovery discussion: target an **RPO of 15 minutes** (maximum acceptable lost committed data) and an **RTO of 4 hours** (time to restore service), subject to the user's acceptance and measured restore drills. These are design targets, not an SLA or achieved guarantees. An earlier noncritical pilot may use the implementation plan's 24-hour RPO, but it must not silently become the primary company mailbox with that weaker protection. Nightly backups alone cannot meet a 15-minute RPO. PostgreSQL WAL recovery and object backup/versioning must satisfy the same retention window. Record actual recovery results before declaring these targets met.
 
