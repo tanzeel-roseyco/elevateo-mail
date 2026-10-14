@@ -1,39 +1,17 @@
 {
-  "task_id": "task_b9e0ccc5f6a3",
-  "dispatch_id": "ctx_a9df73deec58",
-  "baseline": "837e66859013ff62596ab5407b3a9151f489c303",
-  "merge_parents": [
-    "837e66859013ff62596ab5407b3a9151f489c303",
-    "9a0f75ce10bf3a0a0761721c88b83c5b9fe66887",
-    "f59c35f672a152cf5240a9ecdfd6009aff49fff2"
+  "base": "ef7b2f92eaf06a1306abaaf39d6ba1d7141e7541",
+  "parents": [
+    "ef7b2f92eaf06a1306abaaf39d6ba1d7141e7541",
+    "45405cc50a5d76b78ee9584614bd99f7785bc186",
+    "c131fc12d8ed71514043367c3d2bba96a01521d0",
+    "3819f91af8cf982e09ed2520fac8ab2187d460af"
   ],
-  "excluded_candidates": {
-    "Rowan3c": "bounded-wait defect superseded; replacement review pending",
-    "Elara f22": "two fence defects under repair",
-    "Nadia R5": "frozen review receipt pending"
+  "selection": "Exact owned Mira/Nadia files; only Elara d0 initializer and3819 compatibility deltas. Ancestor observer changes intentionally not adopted.",
+  "authority": {
+    "task": "task_8763f4f578dc",
+    "dispatch": "ctx_1e413440b965"
   },
-  "contracts_verified": [
-    "contracts/v1/README.md",
-    "contracts/v1/openapi.json",
-    "contracts/v1/fixtures.json",
-    "contracts/v1/contract-lock.json"
-  ],
-  "runtime": "NOT_RUN for new integrated SHA",
-  "recipe_source": "C:/Users/Tanzeel/Code and projects/Elevateo Mail - Local Completion/ops/acceptance",
-  "recipes": {
-    "browsers.Dockerfile": {
-      "bytes": 4406,
-      "sha256": "dbc9d8aa333f2482f2ad3ef01b5f9c92a22d35ea0b797630e389db71d4a14f5b"
-    },
-    "seccomp.json": {
-      "bytes": 12997,
-      "sha256": "cc3e61cabda6bbc1e53e54d27ba4d55a9d3be829b6dd1a596f4a7b31b1cc7849"
-    },
-    "web.Dockerfile": {
-      "bytes": 1751,
-      "sha256": "210476d9b267758cb573bf1a431804511d6ccc201e4a394553a3e9afef3effe0"
-    }
-  },
-  "profile_provenance": "docs/completion/acceptance-runner-handoff.md:47; ops/tests/be02/acceptance_runtime.py SECCOMP_SHA256; prior recipes review excludes profile itself",
-  "direct_copy_closure": "all source paths present; generated dist requires Soren Docker compilation"
+  "runtime": "NOT_RUN on this freeze; diagnostic observer OFF only",
+  "excluded": "Rowan644/c2 corrections and advanced observerDDL; later integration",
+  "reviews": "ADV751,754,756 and Mira SPEC40507/08; scope/counts in code-reviews.md"
 }

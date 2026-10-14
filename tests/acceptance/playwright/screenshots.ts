@@ -4,7 +4,14 @@ import type { FileHandle } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
 
 // AIDEV-NOTE: Fixed lane artifacts are the durable ledger; worker replacement must not reset the byte budget.
-const screenshotIds = ['SCN-READ-002-F1-unavailable', 'SCN-GUI-006-P-1280', 'SCN-GUI-006-P-390'];
+const screenshotIds = ['SCN-READ-001-F1-empty-denied', 'SCN-READ-002-F1-unavailable', 'SCN-GUI-006-P-1280', 'SCN-GUI-006-P-390',
+  'SCN-GUI-006-P-1440-light', 'SCN-GUI-006-P-1440-dark', 'SCN-GUI-006-P-375-light', 'SCN-GUI-006-P-375-dark',
+  'SCN-GUI-006-P-inbox-1440-light', 'SCN-GUI-006-P-inbox-1440-dark',
+  'SCN-GUI-006-P-inbox-375-light', 'SCN-GUI-006-P-inbox-375-dark',
+  'SCN-GUI-006-P-search-1440-light', 'SCN-GUI-006-P-search-1440-dark',
+  'SCN-GUI-006-P-search-375-light', 'SCN-GUI-006-P-search-375-dark',
+  'SCN-DRAFT-001-P-1440-light', 'SCN-DRAFT-001-P-1440-dark',
+  'SCN-DRAFT-001-P-375-light', 'SCN-DRAFT-001-P-375-dark'];
 // AIDEV-NOTE: Only target opening is injectable so regressions exercise real lock, ledger and cleanup paths.
 type OpenTarget = (path: string, flags: number, mode: number) =>
   Promise<Pick<FileHandle, 'writeFile' | 'sync' | 'close'>>;

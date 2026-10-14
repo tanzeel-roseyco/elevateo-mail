@@ -8,8 +8,10 @@ import os
 from pathlib import Path
 import re
 import stat
+import secrets
 import time
 from acceptance_cleanup import acceptance_owner, validate_container
+from acceptance_observer_bridge import ObserverBridge
 from docker_task import Task
 
 NODE = "node:24.21.0-bookworm-slim@sha256:d6aa754f16b3197301076f047b5def2f02ea1dbbc2ca920407d46d7ec7f87b20"
@@ -33,9 +35,12 @@ UNITS = ["contracts/report-validation.spec", "proxy/proxy.spec", "playwright/bou
 
 def add_arguments(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("--acceptance", action="store_true")
+    parser.add_argument("--acceptance-diagnostic", action="store_true", help="Labeled Chromium smoke subset; never full acceptance PASS")
     parser.add_argument("--acceptance-lanes", default="playwright,puppeteer,selenium")
     parser.add_argument("--acceptance-browsers", default="chromium,firefox,webkit")
     parser.add_argument("--acceptance-dispatch-id")
+    parser.add_argument("--acceptance-observer", action="store_true", help="Reviewed disposable metadata observer bridge")
+    parser.add_argument("--acceptance-variant", choices=["base", "multi_mailbox", "literal_read"], default="base")
     parser.add_argument("--acceptance-grid-image", default=GRID,
                         help="Official standalone-chrome:4.49.0-20260909@sha256 digest")
     parser.add_argument("--acceptance-seccomp-sha256", default=SECCOMP_SHA256,
@@ -46,6 +51,10 @@ class Acceptance:
     # AIDEV-NOTE: Register all images/mounts before creating resources, including partially failed starts/builds.
     def __init__(self, task: Task, args: argparse.Namespace) -> None:
         self.task = task
+        self.diagnostic = args.acceptance_diagnostic
+        self.observer_enabled = args.acceptance_observer
+        if self.diagnostic and (args.acceptance_lanes != "playwright" or args.acceptance_browsers != "chromium"):
+            raise RuntimeError("diagnostic requires exactly Playwright Chromium")
         self.lanes = args.acceptance_lanes.split(",")
         self.browsers = args.acceptance_browsers.split(",")
         for values, allowed in ((self.lanes, {"playwright", "puppeteer", "selenium"}),
@@ -94,6 +103,8 @@ class Acceptance:
         self.outputs = [task.evidence / (lane + "-" + browser) for lane, browser in self.runs]
         self.private = task.evidence / "acceptance-private"
         task.acceptance_private = self.private
+        self.observer_config = task.evidence / "observer-config"
+        self.observer_control = task.evidence / "observer-control"
         self.web, self.image = task.project + ":acceptance-web", task.project + ":acceptance-browser"
         task.owned_image_tags.update({self.web, self.image})
         task.acceptance_mounts = {
@@ -104,13 +115,27 @@ class Acceptance:
                 ("tests/acceptance/shared/seed-contract.json", "/acceptance-contract/seed-contract.json"))},
             "acceptance-browser": {(self.private / "seed.json", "/acceptance/seed.json", False),
                 (self.private / "acceptance-credentials.json", "/run/secrets/acceptance-credentials.json", False),
+                (self.observer_control, "/observer-control", True),
                 *((path, "/output", True) for path in self.outputs)}}
         task.acceptance_mounts["acceptance-seed"].add((self.private, "/acceptance", True))
-        self.env = {"BE02_ACCEPTANCE_PRIVATE": str(self.private), "BE02_ACCEPTANCE_WEB_IMAGE": self.web,
+        base_mounts = {(task.root / path, destination, False) for path, destination in (
+            ("apps/server", "/workspace/apps/server"), ("contracts", "/workspace/contracts"),
+            ("ops/tests/be02", "/workspace/ops/tests/be02"))}
+        task.acceptance_mounts["acceptance-observer-setup"] = base_mounts | {
+            (self.private / "seed.json", "/acceptance/seed.json", False),
+            (self.observer_config, "/observer-config", True), (self.observer_control, "/observer-control", True)}
+        task.acceptance_mounts["acceptance-observer"] = {
+            (task.root / "apps/server", "/workspace/apps/server", False),
+            (task.root / "ops/tests/be02", "/workspace/ops/tests/be02", False),
+            (self.observer_config, "/observer-config", False), (self.observer_control, "/observer-control", True)}
+        self.env = {"BE02_OBSERVER_CONFIG": str(self.observer_config), "BE02_OBSERVER_CONTROL": str(self.observer_control),
+                    "BE02_ACCEPTANCE_PRIVATE": str(self.private), "BE02_ACCEPTANCE_WEB_IMAGE": self.web,
                     "BE02_ACCEPTANCE_BROWSER_IMAGE": self.image, "BE02_ACCEPTANCE_GRID_IMAGE": self.grid,
                     "BE02_ACCEPTANCE_UID": str(uid), "BE02_ACCEPTANCE_GID": str(gid),
                     "BE02_ACCEPTANCE_SECCOMP": str(self.seccomp),
-                    "BE02_ACCEPTANCE_DISPATCH_ID": args.acceptance_dispatch_id}
+                    "BE02_ACCEPTANCE_DISPATCH_ID": args.acceptance_dispatch_id,
+                    "BE02_ACCEPTANCE_VARIANT": args.acceptance_variant,
+                    "BE02_ACCEPTANCE_NONCE": secrets.token_hex(32)}
         self.base_env = task.env_file.read_text()
         task.deadline = time.monotonic() + 7200
 
@@ -125,7 +150,7 @@ class Acceptance:
         if any(item["Config"]["Labels"].get("com.docker.compose.service") == service
                for item in self.task.project_containers()):
             raise RuntimeError("acceptance service already exists; retain it for inspected final cleanup")
-        self.task.compose("acceptance-create", ["create", "--no-deps", service], 45, quiet=True)
+        self.task.compose("acceptance-create", ["create", service], 45, quiet=True)
         items = [item for item in self.task.project_containers()
                  if item["Config"]["Labels"].get("com.docker.compose.service") == service]
         if len(items) != 1:
@@ -137,6 +162,36 @@ class Acceptance:
 
     def execute(self, identity: str, command: list[str], seconds: int = 90) -> None:
         self.task.docker("acceptance-exec", ["container", "exec", identity, *command], seconds, quiet=True)
+
+    def invoke_observer(self) -> None:
+        end = time.monotonic() + 8
+        identity = ""
+
+        def remaining() -> int:
+            seconds = int(end - time.monotonic())
+            if seconds < 1:
+                raise RuntimeError("observer invocation deadline exceeded")
+            return seconds
+
+        try:
+            self.task.compose("observer-create", ["create", "acceptance-observer"], remaining(), quiet=True)
+            ids = self.task.docker("observer-identity", ["container", "ls", "-aq", "--filter",
+                "label=com.docker.compose.project=" + self.task.project, "--filter",
+                "label=com.docker.compose.service=acceptance-observer"], remaining()).split()
+            if len(ids) != 1:
+                raise RuntimeError("observer identity missing or ambiguous")
+            identity = ids[0]
+            items = json.loads(self.task.docker("observer-inspect", ["container", "inspect", identity], remaining()))
+            validate_container(self.task, items[0])
+            self.task.docker("observer-start", ["container", "start", identity], remaining(), quiet=True)
+            code = self.task.docker("observer-wait", ["container", "wait", identity], remaining()).strip()
+            if code != "0":
+                raise RuntimeError("readonly observer failed")
+        finally:
+            if identity:
+                items = json.loads(self.task.docker("observer-cleanup-inspect", ["container", "inspect", identity], 3))
+                validate_container(self.task, items[0])
+                self.task.docker("observer-remove", ["container", "rm", "-f", identity], 3)
 
     def readiness(self, identity: str, grid: bool = False) -> None:
         urls = {"http://selenium:4444/status": 200} if grid else {
@@ -153,7 +208,8 @@ class Acceptance:
     def run(self) -> None:
         task = self.task
         uid, gid = acceptance_owner(task)
-        for path in [self.private, *self.outputs, *(path / "cases" for path in self.outputs)]:
+        for path in [self.private, self.observer_config, self.observer_control, *self.outputs,
+                     *(path / "cases" for path in self.outputs), *(path / "native-private" for path in self.outputs)]:
             path.mkdir(mode=0o700)
             info = path.lstat()
             if (path.resolve() != path or not stat.S_ISDIR(info.st_mode) or info.st_uid != uid
@@ -172,7 +228,8 @@ class Acceptance:
                         "--platform", "linux/amd64", "--label", "elevateo.be02.project=" + task.project,
                         "--tag", tag,
                         "-f", str(task.root / f"ops/acceptance/{recipe}.Dockerfile"), str(task.root)], 900)
-        images = {"acceptance-web": self.web, "acceptance-browser": self.image, "acceptance-seed": task.image}
+        images = {"acceptance-web": self.web, "acceptance-browser": self.image, "acceptance-seed": task.image,
+                  "acceptance-observer-setup": task.image, "acceptance-observer": task.image}
         if "selenium" in self.lanes:
             images["selenium"] = self.grid
         task.acceptance_images = {service: task.inspect("image", [pin])[0]["Id"] for service, pin in images.items()}
@@ -202,6 +259,15 @@ class Acceptance:
                     or info.st_nlink != 1 or not 0 < info.st_size <= 65536):
                 raise RuntimeError("seed output private-file contract mismatch")
         task.write("acceptance-seed.sha256.json", {"seed.json": hashlib.sha256((self.private / "seed.json").read_bytes()).hexdigest()})
+        if self.observer_enabled:
+            setup = self.start("acceptance-observer-setup")
+            try:
+                code = task.docker("observer-setup-wait", ["container", "wait", setup], 30).strip()
+                if code != "0":
+                    raise RuntimeError("disposable observer setup failed")
+            finally:
+                validate_container(task, task.inspect("container", [setup])[0])
+                task.docker("observer-setup-remove", ["container", "rm", "-f", setup], 30)
         task.compose("acceptance-consumers-start", ["up", "-d", "--no-deps", "--force-recreate", "api", "worker"], 45, quiet=True)
         task.runtime_credentials()
         self.start("acceptance-web")
@@ -228,23 +294,37 @@ class Acceptance:
                     self.execute(identity, ["node", "--input-type=module", "-e", smoke])
                     command = ["node", "node_modules/@playwright/test/cli.js", "test",
                                "--config=playwright/playwright.config.ts", "--output=/tmp/playwright-native"]
+                    if self.diagnostic:
+                        command.extend(["--grep", r"(^|\s)(SCN-AUTH-001-P|SCN-READ-002-P|SCN-DRAFT-001-P|SCN-GUI-006-P)(\s|$)"])
                 else:
                     engine = "puppeteer" if lane == "puppeteer_cdp" else "selenium"
                     # AIDEV-NOTE: Prove browser predicates with synthetic DOM fixtures before trusting app case results.
                     self.execute(identity, ["node", "--test", f"dist/{engine}/ui.browser-probe.js"], 90)
                     command = ["node", f"dist/{engine}/run.js"]
-                self.execute(identity, command, 600)
+                if self.diagnostic:
+                    listed = task.docker("diagnostic-case-list", ["container", "exec", identity, *command, "--list"], 90)
+                    selected = re.findall(r"\bSCN-[A-Z]+-\d{3}-(?:P|F1|F2)\b", listed)
+                    expected = ["SCN-AUTH-001-P", "SCN-READ-002-P", "SCN-DRAFT-001-P", "SCN-GUI-006-P"]
+                    if sorted(selected) != sorted(expected):
+                        raise RuntimeError("diagnostic case inventory mismatch")
+                    task.write("diagnostic-selected-cases.json", {"source": "actual container Playwright --list", "cases": selected})
+                if self.observer_enabled:
+                    bridge = ObserverBridge(self.observer_control, self.invoke_observer, uid,
+                                            self.env["BE02_ACCEPTANCE_NONCE"])
+                    bridge.execute(lambda: self.execute(identity, command, 600), 600)
+                else:
+                    self.execute(identity, command, 600)
                 # AIDEV-NOTE: Parse the wire schema before comparing the frozen unique scenario set for this run.
                 check = (Path(__file__).with_name("acceptance_evidence.mjs").read_text() + """
                   import {readdirSync,readFileSync} from 'node:fs';
                   import {caseResultSchema} from './dist/shared/schema.js';
                   const records=readdirSync('/output/cases').map(name =>
                     caseResultSchema.parse(JSON.parse(readFileSync('/output/cases/'+name,'utf8'))));
-                  validateEvidence(records, SELECTION);""")
+                  VALIDATOR(records, SELECTION);""")
                 selection = {"lane": lane, "browser": browser, "runId": task.project + "-" + str(index),
                              "dispatchId": self.env["BE02_ACCEPTANCE_DISPATCH_ID"], "profile": "internal_http"}
-                self.execute(identity, ["node", "--input-type=module", "-e", check.replace("SELECTION", json.dumps(selection))])
-                results.append({"lane": lane, "browser": browser, "status": "PASSED"})
+                self.execute(identity, ["node", "--input-type=module", "-e", check.replace("SELECTION", json.dumps(selection)).replace("VALIDATOR", "validateDiagnosticEvidence" if self.diagnostic else "validateEvidence")])
+                results.append({"lane": lane, "browser": browser, "status": "DIAGNOSTIC_COMPLETED" if self.diagnostic else "PASSED"})
             except Exception as error:
                 results.append({"lane": lane, "browser": browser, "status": "FAILED_OR_INCOMPLETE", "error": str(error)})
             finally:
@@ -252,6 +332,6 @@ class Acceptance:
                     if container:
                         validate_container(task, task.inspect("container", [container])[0])
                         task.docker("acceptance-lane-remove", ["container", "rm", "-f", container], 30)
-                task.write("acceptance-results.json", {"scope": "selected internal HTTP lanes only", "runs": results})
-        if any(result["status"] != "PASSED" for result in results):
+                task.write("acceptance-results.json", {"scope": "DIAGNOSTIC smoke subset; advanced scenarios and full gates unverified" if self.diagnostic else "selected internal HTTP lanes only", "runs": results})
+        if any(result["status"] != ("DIAGNOSTIC_COMPLETED" if self.diagnostic else "PASSED") for result in results):
             raise RuntimeError("acceptance failed or incomplete; inspect sanitized cases and acceptance-results.json")

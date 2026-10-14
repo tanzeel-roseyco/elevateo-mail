@@ -40,6 +40,12 @@ services:
       - /workspace/apps/server/log:uid=${BE02_ACCEPTANCE_UID:?},gid=${BE02_ACCEPTANCE_GID:?},mode=1770
       - /tmp:rw,nosuid,nodev,size=512m,mode=1777
     environment:
+      BE02_ACCEPTANCE_RUN_ID: ${BE02_ACCEPTANCE_RUN_ID:?}
+      BE02_ACCEPTANCE_DISPATCH_ID: ${BE02_ACCEPTANCE_DISPATCH_ID:?}
+      BE02_ACCEPTANCE_BROWSER: ${BE02_ACCEPTANCE_BROWSER:?}
+      BE02_ACCEPTANCE_NONCE: ${BE02_ACCEPTANCE_NONCE:?}
+      BE02_ACCEPTANCE_VARIANT: ${BE02_ACCEPTANCE_VARIANT:-base}
+      BE02_ACCEPTANCE_CASE_ID: ${BE02_ACCEPTANCE_CASE_ID:-shared-diagnostic}
       ELEVATEO_MODE: local
       ELEVATEO_OUTBOUND_HOLD: "true"
       ELEVATEO_BROWSER_ORIGIN: http://app.test
@@ -49,6 +55,45 @@ services:
       - ${BE02_SOURCE:?}/tests/acceptance/shared/seed-contract.json:/acceptance-contract/seed-contract.json:ro
       - ${BE02_ACCEPTANCE_PRIVATE:?}:/acceptance
     command: [bundle, exec, ruby, /workspace/ops/tests/be02/acceptance_seed.rb]
+    logging: {driver: none}
+  acceptance-observer-setup:
+    extends: {file: compose.be02-test.yaml, service: fixture}
+    user: "${BE02_ACCEPTANCE_UID:?}:${BE02_ACCEPTANCE_GID:?}"
+    tmpfs: !override
+      - /workspace/apps/server/tmp:uid=${BE02_ACCEPTANCE_UID:?},gid=${BE02_ACCEPTANCE_GID:?},mode=1770
+      - /workspace/apps/server/log:uid=${BE02_ACCEPTANCE_UID:?},gid=${BE02_ACCEPTANCE_GID:?},mode=1770
+      - /tmp:rw,nosuid,nodev,size=512m,mode=1777
+    environment:
+      ELEVATEO_MODE: local
+      ELEVATEO_OUTBOUND_HOLD: "true"
+      BE02_ACCEPTANCE_DISPOSABLE: "true"
+      BE02_ACCEPTANCE_NONCE: ${BE02_ACCEPTANCE_NONCE:?}
+    volumes:
+      - ${BE02_ACCEPTANCE_PRIVATE:?}/seed.json:/acceptance/seed.json:ro
+      - ${BE02_OBSERVER_CONFIG:?}:/observer-config
+      - ${BE02_OBSERVER_CONTROL:?}:/observer-control
+    command: [bundle, exec, ruby, /workspace/ops/tests/be02/acceptance_observer_setup.rb]
+    logging: {driver: none}
+  acceptance-observer:
+    image: ${BE02_SERVER_IMAGE:?}
+    pull_policy: never
+    working_dir: /workspace/apps/server
+    user: "${BE02_ACCEPTANCE_UID:?}:${BE02_ACCEPTANCE_GID:?}"
+    read_only: true
+    init: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    networks: [isolated]
+    mem_limit: 128m
+    cpus: 1
+    pids_limit: 64
+    tmpfs: ["/tmp:rw,nosuid,nodev,size=512m,mode=1777"]
+    volumes:
+      - ${BE02_SOURCE:?}/apps/server:/workspace/apps/server:ro
+      - ${BE02_SOURCE:?}/ops/tests/be02:/workspace/ops/tests/be02:ro
+      - ${BE02_OBSERVER_CONFIG:?}:/observer-config:ro
+      - ${BE02_OBSERVER_CONTROL:?}:/observer-control
+    command: [bundle, exec, ruby, /workspace/ops/tests/be02/acceptance_observer_io.rb]
     logging: {driver: none}
   acceptance-web:
     image: ${BE02_ACCEPTANCE_WEB_IMAGE:?}
@@ -98,6 +143,7 @@ services:
       - ${BE02_ACCEPTANCE_PRIVATE:?}/seed.json:/acceptance/seed.json:ro
       - ${BE02_ACCEPTANCE_PRIVATE:?}/acceptance-credentials.json:/run/secrets/acceptance-credentials.json:ro
       - ${BE02_ACCEPTANCE_OUTPUT:?}:/output
+      - ${BE02_OBSERVER_CONTROL:?}:/observer-control
   selenium:
     <<: *browser
     image: ${BE02_ACCEPTANCE_GRID_IMAGE:?}

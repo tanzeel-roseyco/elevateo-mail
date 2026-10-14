@@ -16,7 +16,7 @@ module Be02Acceptance
   class Failure < StandardError; end
   ACTORS = %w[manager_primary manager_backup reader composer approver disabled revoked no_membership other_org].freeze
   UUID = /\A[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}\z/
-  CONTRACT_SHA256 = "221d49259f52f2dcc9944a3af7744327cc2cbc1a3030fa4d13ae85b292e6a952"
+  CONTRACT_SHA256 = "892eaea14246c66c9ac0a65c96d56bd97bc6f3361455dfcb143ef1361c0854e7"
 
   def self.check(condition, code)
     raise Failure, code unless condition
@@ -51,6 +51,19 @@ module Be02Acceptance
         @seed = JSON.parse(bytes)
       end
       @seed["kind"] = "runtime"
+      @seed["fixture_variant"] = ENV.fetch("BE02_ACCEPTANCE_VARIANT", "base")
+      Be02Acceptance.check(%w[base multi_mailbox literal_read].include?(@seed.fetch("fixture_variant")), "variant_invalid")
+      @seed["fixture_identity"] = { "run_id" => ENV.fetch("BE02_ACCEPTANCE_RUN_ID"),
+        "dispatch_id" => ENV.fetch("BE02_ACCEPTANCE_DISPATCH_ID"),
+        "case_id" => ENV.fetch("BE02_ACCEPTANCE_CASE_ID", "shared-diagnostic"),
+        "engine" => ENV.fetch("BE02_ACCEPTANCE_BROWSER"), "attempt" => 0,
+        "dataset_id" => SecureRandom.uuid, "nonce" => ENV.fetch("BE02_ACCEPTANCE_NONCE") }
+      identity = @seed.fetch("fixture_identity")
+      Be02Acceptance.check(%w[run_id dispatch_id].all? { |key| /\A[A-Za-z0-9][A-Za-z0-9_-]{0,79}\z/.match?(identity.fetch(key)) } &&
+        %w[chromium firefox webkit chrome].include?(identity.fetch("engine")) &&
+        /\A[0-9a-f]{64}\z/.match?(identity.fetch("nonce")) &&
+        (identity.fetch("case_id") == "shared-diagnostic" ||
+          /\ASCN-[A-Z][A-Z0-9]{1,19}-\d{3}-(P|F1|F2)\z/.match?(identity.fetch("case_id"))), "fixture_identity_invalid")
       @passwords = ACTORS.to_h { |name| [name, "Be02!#{SecureRandom.hex(24)}"] }
     end
 
@@ -81,7 +94,9 @@ module Be02Acceptance
     def publish
       ids = @seed.fetch("actors").values.map { |actor| actor.fetch("user_id") } +
         @seed.fetch("organizations").values + @seed.fetch("mailboxes").values +
-        @seed.fetch("data").values_at("thread_primary", "thread_other", "draft_primary", "draft_other")
+        @seed.fetch("data").values_at("thread_primary", "thread_other", "draft_primary", "draft_other") +
+        @seed.fetch("extra_mailboxes").values + @seed.fetch("literal_threads").values +
+        [@seed.fetch("fixture_identity").fetch("dataset_id")]
       Be02Acceptance.check(ids.uniq.length == ids.length, "seed_ids_not_unique")
       # AIDEV-NOTE: Root starts consumers only after exit 0; the public manifest is published last as the ready marker.
       write_private("acceptance-credentials.json", { schema_version: 1, passwords: @passwords })
