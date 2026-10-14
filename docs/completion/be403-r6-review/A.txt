@@ -1,0 +1,169 @@
+apps/server/test/be_02/read_controller_test.rb:1-16
+# frozen_string_literal: true
+
+require "rails"
+require "logger"
+require "active_record"
+require "action_controller"
+require "action_controller/api"
+require "rack/mock"
+require "minitest/mock"
+require_relative "auth_test_helper"
+require_relative "../../app/controllers/application_controller"
+require_relative "../../app/controllers/v1/api_controller"
+require_relative "../../app/controllers/v1/read_controller"
+
+class ReadControllerTest < Minitest::Test
+  include AuthFixtures
+
+apps/server/test/be_02/read_controller_test.rb:94-148
+
+  def setup
+    @service, @store, @client, @cookie = harness
+    @logs = StringIO.new
+    @logger = Logger.new(@logs)
+    @events = []
+    @connection = Connection.new(@events)
+    @sessions = ObservedSessions.new(@service, @events)
+    @wire = "{\n  \"items\": [], \"next_cursor\": null\n}\n"
+    @projection = lambda do |**inputs|
+      @events << :business_read
+      @seen = inputs
+      @wire
+    end
+  end
+
+  def teardown
+    assert_nil Thread.current[Elevateo::Tenancy::STACK_KEY]
+    refute @connection.transaction_open?
+  end
+
+  def test_exact_serialization_headers_and_one_read_only_authorization_snapshot
+    @sessions.after_authenticate = -> { refute @connection.transaction_open? }
+    @sessions.before_touch = -> { refute @connection.transaction_open? }
+    original = @projection
+    @projection = lambda do |**inputs|
+      frame = Thread.current[Elevateo::Tenancy::STACK_KEY]
+      assert frame.read_only
+      assert_same @connection, frame.connection
+      assert_same @connection.current_transaction, frame.transaction
+      original.call(**inputs)
+    end
+    status, headers, body = dispatch(query: "limit=2")
+    assert_equal 200, status
+    assert_equal @wire, body
+    assert_empty @logs.string
+    assert_security_headers(headers)
+    assert_equal({ isolation: :repeatable_read }, @connection.options)
+    assert_equal "SET TRANSACTION READ ONLY", @connection.statements.first
+    assert_equal [USER, ORG], @connection.claims
+    assert_equal [@connection], @store.connections.compact
+    assert_same @connection, @sessions.authorization_connection
+    assert_same @connection, @seen.fetch(:connection)
+    assert_equal({ "limit" => "2" }, @seen.fetch(:query))
+    assert_equal @service.presentation.session(@store.row, display_name: "Test"), @seen.fetch(:session)
+    order = @events - [:clear_cache]
+    assert_equal %i[authenticate begin claims authorize business_read commit touch], order
+    assert_equal(1, @store.calls.count { |name, _| name == "touch_session" })
+  end
+
+  def test_no_organization_authentication_returns_generic_404_before_tenant_reads
+    @store.row.merge!("status" => "not_found", "organization_id" => nil, "organization_name" => nil)
+    assert_response_error(404, "not_available", dispatch(context_required: false))
+    assert_equal [:authenticate], @events
+    assert_empty @connection.statements
+
+apps/server/test/be_02/read_controller_test.rb:184-191
+  def test_transient_auth_never_opens_a_tenant_snapshot_or_deletes_the_cookie
+    @client.failure = Elevateo::AuthError.new
+    assert_response_error(503, "temporarily_unavailable", dispatch)
+    assert_equal [:authenticate], @events
+    assert_empty @connection.statements
+    refute @store.state[:revoked]
+    assert_unavailable_log
+  end
+
+apps/server/test/be_02/read_controller_test.rb:223-287
+  def test_database_failure_rolls_back_without_touching_or_releasing_rows
+    @projection = lambda do |**_inputs|
+      @events << :business_read
+      raise ActiveRecord::StatementInvalid, "sensitive SQL fixture@example.invalid #{@cookie}"
+    end
+    assert_response_error(503, "temporarily_unavailable", dispatch)
+    assert_rolled_back_snapshot(business_read: true)
+    assert_unavailable_log
+  end
+
+  def test_authorizer_rollback_discards_the_result_before_business_read_or_touch
+    @sessions.before_authorize = -> { raise ActiveRecord::Rollback }
+    assert_response_error(500, "internal_error", dispatch)
+    assert_rolled_back_snapshot
+    assert_empty @logs.string
+  end
+
+  def test_renderer_rollback_discards_the_result_before_touch
+    @projection = lambda do |**_inputs|
+      @events << :business_read
+      raise ActiveRecord::Rollback
+    end
+    assert_response_error(500, "internal_error", dispatch)
+    assert_rolled_back_snapshot(business_read: true)
+  end
+
+  def test_invalid_serialization_rolls_back_before_touch
+    [nil, "x" * 16_385, "\xFF".dup.force_encoding("UTF-8")].each do |invalid|
+      @projection = ->(**_inputs) { @events << :business_read; invalid }
+      assert_response_error(500, "internal_error", dispatch)
+      assert_rolled_back_snapshot(business_read: true)
+    end
+  end
+
+  private
+
+  def dispatch(query: "", body: "", context_required: true, context: CONTEXT)
+    env = Rack::MockRequest.env_for("https://app.test/v1/session", method: "GET", input: body)
+    env.merge!("QUERY_STRING" => query, "HTTP_COOKIE" => "elevateo_session=#{@cookie}",
+      "HTTP_X_SESSION_CONTEXT" => context_required ? context : nil,
+      "HTTP_X_AUTHORIZATION_VERSION" => context_required ? @service.presentation.version(metadata) : nil,
+      "action_dispatch.request_id" => "be02-read-test", "be02.sessions" => @sessions,
+      "be02.options" => { allowed_query: %w[limit cursor], context_required: context_required, budget: 16_384 },
+      "be02.projection" => @projection)
+    # AIDEV-NOTE: Isolated Rack tests supply the boot logger; production Rails initializes it from config.logger.
+    status, headers, rack_body = Rails.stub(:logger, @logger) do
+      ActiveRecord::Base.stub(:connection_pool, Pool.new(@connection)) do
+        ProbeController.action("show").call(env)
+      end
+    end
+    serialized = +""
+    rack_body.each { |part| serialized << part }
+    [status, headers.transform_keys(&:downcase), serialized]
+  ensure
+    rack_body.close if rack_body.respond_to?(:close)
+  end
+
+  def assert_unavailable_log
+    assert_equal 1, @logs.string.lines.length
+    event = JSON.parse(@logs.string.lines.first.split(" -- : ", 2).last)
+    assert_equal({ "event" => "auth.boundary_unavailable", "request_id" => "be02-read-test" }, event)
+    ["sensitive SQL", "fixture@example.invalid", @cookie, @wire].each do |private_value|
+      refute_includes @logs.string, private_value
+    end
+  end
+
+apps/server/test/be_02/read_controller_test.rb:299-314
+    assert_equal status, actual_status
+    assert_security_headers(headers)
+    assert_equal({ "code" => code, "message" => Elevateo::AuthError::MESSAGES.fetch(code),
+      "request_id" => "be02-read-test" }, JSON.parse(body))
+    refute_equal @wire, body
+  end
+
+  def assert_rolled_back_snapshot(business_read: false)
+    assert_includes @events, :authorize
+    assert_includes @events, :rollback
+    refute_includes @events, :commit
+    assert_equal business_read, @events.include?(:business_read)
+    refute_includes @events, :touch
+    refute(@store.calls.any? { |name, _| name == "touch_session" })
+  end
+end

@@ -1,0 +1,78 @@
+{
+  "A": {
+    "loc": 160,
+    "sha256": "b99bf8ac3945d63510365e12cfa63e64f2003f5adfc464a385747dd9569c01bd",
+    "ranges": [
+      {
+        "path": "apps/server/test/be_02/read_controller_test.rb",
+        "start": 1,
+        "end": 16,
+        "loc": 16,
+        "file_sha256": "0d93b017ba0275110c1ef94deefc59d9942850a70f66b9257661caa2a66a2df2",
+        "range_sha256": "9a231c6e82681eb6e723145c16f79ce96c3c9447f0fde18f929eba868086b499"
+      },
+      {
+        "path": "apps/server/test/be_02/read_controller_test.rb",
+        "start": 94,
+        "end": 148,
+        "loc": 55,
+        "file_sha256": "0d93b017ba0275110c1ef94deefc59d9942850a70f66b9257661caa2a66a2df2",
+        "range_sha256": "0913a87d027442060bb5c9ed907ab679ac50671a1252347db8dd84fd7855ac68"
+      },
+      {
+        "path": "apps/server/test/be_02/read_controller_test.rb",
+        "start": 184,
+        "end": 191,
+        "loc": 8,
+        "file_sha256": "0d93b017ba0275110c1ef94deefc59d9942850a70f66b9257661caa2a66a2df2",
+        "range_sha256": "69a6b3a80006f958bcf6fcf38a6dc0901a34e8ce67e1ae3c9634077e26b226f0"
+      },
+      {
+        "path": "apps/server/test/be_02/read_controller_test.rb",
+        "start": 223,
+        "end": 287,
+        "loc": 65,
+        "file_sha256": "0d93b017ba0275110c1ef94deefc59d9942850a70f66b9257661caa2a66a2df2",
+        "range_sha256": "7707d45cdc2b78e4df253bd9e3e24c09f1c422b4a96a2eab2ce0f08ff653157d"
+      },
+      {
+        "path": "apps/server/test/be_02/read_controller_test.rb",
+        "start": 299,
+        "end": 314,
+        "loc": 16,
+        "file_sha256": "0d93b017ba0275110c1ef94deefc59d9942850a70f66b9257661caa2a66a2df2",
+        "range_sha256": "cb7dcf6a553931cc7a6dc6ae72440de4d32669c4388796a940aa371e9487acf6"
+      }
+    ]
+  },
+  "B": {
+    "loc": 92,
+    "sha256": "3f6a0ff190558494b7c07181e9bf44f316ba205ef2b4256fa39685da03bf519f",
+    "ranges": [
+      {
+        "path": "apps/server/app/controllers/v1/api_controller.rb",
+        "start": 1,
+        "end": 77,
+        "loc": 77,
+        "file_sha256": "8c9e5ccd39ad65038979bc1f5d25c725ff01dd49dfdac38193686bf8fc9c0276",
+        "range_sha256": "0470fbe67284f03b8663028536bfe87ec92a7d007b5e861058290c4597a120d4"
+      },
+      {
+        "path": "apps/server/config/application.rb",
+        "start": 20,
+        "end": 27,
+        "loc": 8,
+        "file_sha256": "15f3a2b5af260be13173b59fae34e72bb8ca27fe41eab952dfff51be76158fce",
+        "range_sha256": "3e6bbc72861e82ce0cd277c071b696fb2798853b37b99e7c387470c0738abd59"
+      },
+      {
+        "path": "apps/server/sig/rails_seams.rbs",
+        "start": 1,
+        "end": 7,
+        "loc": 7,
+        "file_sha256": "235400d84b86ba907ffaafae169ecda82cbbacf19509a2f265a85537a4d437dd",
+        "range_sha256": "ec389cf4a68078edb0b819d9c3e301f7e0d61b506654c0900a2dd25f9f59e830"
+      }
+    ]
+  }
+}
