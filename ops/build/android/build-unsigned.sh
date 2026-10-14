@@ -26,6 +26,7 @@ mkdir -p "$CARGO_HOME" "$CARGO_TARGET_DIR" "$HOME"
 [[ "$(cargo tauri --version)" == 'tauri-cli 2.12.2' ]] || { echo 'Tauri CLI 2.12.2 required' >&2; exit 2; }
 [[ "$(javac -version 2>&1)" == 'javac 17.'* ]] || { echo 'JDK 17 required' >&2; exit 2; }
 [[ -d "$ANDROID_HOME/platforms/android-37.0" ]] || { echo 'Android API 37.0 required' >&2; exit 2; }
+[[ -d "$ANDROID_HOME/platforms/android-36" ]] || { echo 'Android API 36 required for Tauri library' >&2; exit 2; }
 [[ -d "$ANDROID_HOME/build-tools/36.0.0" ]] || { echo 'Build Tools 36.0.0 required' >&2; exit 2; }
 [[ "$(basename "$NDK_HOME")" == '28.2.13676358' ]] || { echo 'NDK 28.2.13676358 required' >&2; exit 2; }
 rustup target list --installed | grep -Fx 'aarch64-linux-android' >/dev/null || { echo 'Android Rust target required' >&2; exit 2; }
