@@ -77,3 +77,5 @@ Rowan pre-runtime source correction: removed duplicate bootstrap role candidate;
 Rowan SQL timestamp projection now uses frozen C/D UTC microsecond Z spelling; added exact projection assertions. Runtime still pending.
 
 Independent Rowan review found two MEDIUM issues (post-wait replay expiry and incomplete fresh distinct-key race coverage); fixes/regressions are prepared, awaiting re-review and Docker.
+
+Rowan repair re-review found zero remaining actionable issues in scope. Added exact mutation-fault, save/approval ordering and empty-down regressions; legacy destructive schema probe first downgrades the empty send schema within rollback-only fixture. Docker syntax/lint on ae90c13 PASS; database runtime still NOT_RUN.

@@ -68,4 +68,19 @@ class SendSchemaDatabaseTest < SendDatabaseTestCase
     @admin.exec("RESET ROLE") if @admin
     @admin.exec("ROLLBACK") if @admin && @admin.transaction_status != PG::PQTRANS_IDLE
   end
+  def test_empty_down_removes_only_send_objects_and_transaction_rollback_restores_them
+    @admin.exec("BEGIN")
+    @admin.exec("SET LOCAL ROLE elevateo_send_owner")
+    down = File.read(File.expand_path("../../db/be03_send/down.sql", __dir__))
+    @admin.exec(down)
+    assert_nil @admin.exec("SELECT to_regclass('app_send_private.intents')").getvalue(0, 0)
+    assert_equal "1", @admin.exec_params("SELECT version FROM app.drafts WHERE id = $1", [@draft]).getvalue(0, 0)
+    assert_nil @admin.exec("SELECT to_regprocedure('app.send_review(uuid,uuid)')").getvalue(0, 0)
+    @admin.exec("ROLLBACK")
+    refute_nil @admin.exec("SELECT to_regclass('app_send_private.intents')").getvalue(0, 0)
+    refute approve.key?("code")
+  ensure
+    @admin.exec("ROLLBACK") if @admin && @admin.transaction_status != PG::PQTRANS_IDLE
+  end
+
 end

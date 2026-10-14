@@ -25,6 +25,11 @@ class DraftSchemaContractTest < SessionDatabaseTestCase
 
   def test_creation_default_privilege_leakage_fails_atomically
     transaction do
+      # AIDEV-NOTE: A newer empty send schema intentionally restricts draft deletion; downgrade it within this rollback-only probe.
+      if @admin.exec("SELECT to_regclass('app_send_private.intents')").getvalue(0, 0)
+        @admin.exec("SET LOCAL ROLE elevateo_send_owner")
+        @admin.exec(File.read(File.expand_path("../../db/be03_send/down.sql", __dir__)))
+      end
       @admin.exec("SET LOCAL ROLE elevateo_owner")
       @admin.exec(File.read(File.join(PARTS, "prerequisite.sql")))
       @admin.exec(File.read(File.join(PARTS, "down.sql")))
