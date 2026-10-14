@@ -1,9 +1,9 @@
 # RUST_IMAGE must be a reviewed immutable Rust 1.90.0 Debian image digest.
 ARG RUST_IMAGE
 FROM ${RUST_IMAGE}
-ARG NODE_ARCHIVE_SHA256
-ARG SDK_TOOLS_URL
-ARG SDK_TOOLS_SHA256
+ARG NODE_ARCHIVE_SHA256=dafe2e8f82cb97de1bd10db9e2ec4c07bbf53389b0799b1e095a918951e78fd4
+ARG SDK_TOOLS_URL=https://dl.google.com/android/repository/commandlinetools-linux-15859902_latest.zip
+ARG SDK_TOOLS_SHA256=4e4c464f145a7512b57d088ac6c278c03c9eea610886b35a5e0804e74eedf583
 ENV ANDROID_HOME=/opt/android-sdk \
     JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 \
     NDK_HOME=/opt/android-sdk/ndk/28.2.13676358 \

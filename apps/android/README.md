@@ -12,14 +12,11 @@ Native secrets will require Android Keystore backed authenticated encryption, ke
 
 ## Fleet-only unsigned APK request
 
-Soren alone runs this under `/home/tanzeel/elevateo-mail-wave-20261014/control/soren-docker.lock` on fleet-02 from an integrated checkout containing Orion's `apps/native` plus `apps/web` and this APK lane. A reviewed `apps/native/src-tauri/Cargo.lock` is required. The container requires an immutable Rust 1.90.0 image digest and checked SHA-256 archives for Node 22.15.0 and official Android command-line tools. `Dockerfile` installs JDK 17, API 37/Build Tools 36.0.0, NDK 28.2.13676358, Rust aarch64 target and exact Tauri CLI 2.12.0. Its Debian packages and SDK repository metadata remain mutable inputs to record in the build receipt; successful compile alone is not a bit-for-bit reproducibility claim.
+Soren alone runs this under `/home/tanzeel/elevateo-mail-wave-20261014/control/soren-docker.lock` on fleet-02 from an integrated checkout containing Orion's `apps/native` plus `apps/web` and this APK lane. A reviewed `apps/native/src-tauri/Cargo.lock` is required. The container requires an immutable Rust 1.90.0 image digest. Node 22.15.0 and official Android command-line tools archive SHA-256 values are pinned in the Dockerfile from the [Node release checksums](https://nodejs.org/dist/v22.15.0/SHASUMS256.txt) and [Android Studio downloads](https://developer.android.com/studio). `Dockerfile` installs JDK 17, API 37/Build Tools 36.0.0, NDK 28.2.13676358, Rust aarch64 target and exact Tauri CLI 2.12.0. Its Debian packages and SDK repository metadata remain mutable inputs to record in the build receipt; successful compile alone is not a bit-for-bit reproducibility claim.
 
 ```sh
 docker build -f ops/build/android/Dockerfile \
   --build-arg RUST_IMAGE="$RUST_IMAGE" \
-  --build-arg NODE_ARCHIVE_SHA256="$NODE_ARCHIVE_SHA256" \
-  --build-arg SDK_TOOLS_URL="$SDK_TOOLS_URL" \
-  --build-arg SDK_TOOLS_SHA256="$SDK_TOOLS_SHA256" \
   -t elevateo-apk813-build .
 docker run --rm -v "$PWD:/src" -v "$APK813_BUILD_ROOT:/artifacts" \
   -e APK813_BUILD_ROOT=/artifacts -w /src elevateo-apk813-build \
