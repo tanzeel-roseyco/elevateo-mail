@@ -21,6 +21,7 @@ Corin's continuation adds migration `00011`, an atomic receipt/thread/message SQ
 The first integrated fleet migration failed parsing the attachment CASE in `00011`; Corin's `e94631f` parenthesizes that expression for a rerun. A bounded protected direct-message permalink reader is now a candidate, with its V2 route and fleet checks pending. Fake ingress does not connect to a receive provider and cannot establish live inbound readiness.
 
 A separate held IMAP worker candidate adds account mapping, synthetic server-only credential references, atomic UIDVALIDITY/UID receipts and cursors, plaintext-only MIME import, and verified-TLS transport code. It has no public route or live credentials; its migration, protocol behavior, crash recovery and capacity remain unverified on fleet-02. See [Corin's record](docs/completion/corin.md).
+Soren's first network-none fleet unit pass covered isolated MIME normalization, worker store mapping and TLS-constructor options on exact `a9089b7`; the sync file exposed a Minitest helper name collision before cases and has a test-only repair at `5e0625d`. Migration `00012`, sync rerun, actual TLS handshake and integration acceptance remain pending.
 
 
 ### R25 approval reload recovery candidate
