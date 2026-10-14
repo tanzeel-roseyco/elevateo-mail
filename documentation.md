@@ -452,3 +452,5 @@ The authorized database fixture now exercises a full positive restricted-role wr
 QA815 backend successor receipt `docs/completion/qa815-evidence/backend-065ec91bf5a3/` records 21 migrations, a single remaining organization role Ruby failure, 111 Steep problems and exact cleanup. See `docs/completion/soren.md` for limits; the corrected thread fixture does not close backend acceptance.
 
 QA815 current full web receipt `docs/completion/qa815-evidence/web-c5a873765a0c.log` records exact `c5a8737` V1/V2/lint/type/unit/build PASS and cleanup. The f70 visual artifact is separate exact-source evidence; see `docs/completion/soren.md`.
+
+The attachment client RBS `http_factory` returns Net::HTTP; its slow-stream test fake now inherits Net::HTTP and overrides network methods in process, preserving aggregate timeout and close assertions. ADV122 found the earlier nominal mismatch; current test-only repair remains unverified by fleet Docker and independent successor review.

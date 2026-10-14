@@ -7,10 +7,10 @@ class AttachmentGatewayClientTest < Minitest::Test
   Config = Struct.new(:attachment_gateway_url, :attachment_gateway_hmac_key)
   ID = "00000000-0000-4000-8000-000000000001"
 
-  class SlowHttp
-    attr_accessor :max_retries, :open_timeout, :read_timeout, :write_timeout
+  class SlowHttp < Net::HTTP
     attr_reader :chunks, :closed
     def initialize
+      super("attachment-gateway", 4708)
       @chunks = 0
       @closed = false
     end
@@ -94,6 +94,7 @@ class AttachmentGatewayClientTest < Minitest::Test
 
   def test_slow_trickled_http_body_expires_and_closes_without_bytes
     http = SlowHttp.new
+    assert_kind_of Net::HTTP, http
     started = Process.clock_gettime(Process::CLOCK_MONOTONIC)
     assert_raises(Elevateo::AttachmentGatewayClient::Unavailable) do
       client(nil, http_factory: ->(_host, _port, _proxy) { http })

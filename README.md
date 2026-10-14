@@ -444,3 +444,5 @@ ADV111 reviewed exact 2f255b9 source with zero confirmed defects across 303 uniq
 QA815 `065ec91` backend retest: 21 migrations PASS, Ruby 522/7080 with one protected organization role failure and zero errors; Rowan's prior thread fixture ownership error is absent. Steep 111 problems; HTTP/worker/browser still pending. Cleanup passed. See `docs/completion/soren.md`.
 
 QA815 current `c5a8737` web successor passes V1/V2, lint, strict type, 842/842 units and production build with exact cleanup. Its attachment-only source changes do not transfer the older f70 screenshots; real-backend browser remains blocked by the backend role failure. See `docs/completion/soren.md`.
+
+ADV122 found one P2 client RBS/fake mismatch (211 reviewed LOC, 4.74/KLOC); the slow-stream test fake now subclasses Net::HTTP while preserving in-process timeout coverage. This successor needs bounded rereview and Soren fleet unit/Steep before a PASS claim.
