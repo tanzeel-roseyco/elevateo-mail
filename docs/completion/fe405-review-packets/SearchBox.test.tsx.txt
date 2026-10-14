@@ -1,0 +1,55 @@
+1: import { fireEvent, render, screen } from '@testing-library/react'
+2: import { MemoryRouter, useLocation, useNavigate } from 'react-router'
+3: import { describe, expect, it } from 'vitest'
+4: import { SearchBox } from './SearchBox'
+5: 
+6: function Harness() {
+7:   const navigate = useNavigate()
+8:   const location = useLocation()
+9:   return <>
+10:     <SearchBox expanded />
+11:     <output aria-label="URL">{location.search}</output>
+12:     <button onClick={() => navigate('/search?q=second&mailbox=unknown')}>Next URL</button>
+13:     <button onClick={() => navigate(-1)}>Back</button>
+14:   </>
+15: }
+16: 
+17: function setup() {
+18:   render(<MemoryRouter initialEntries={['/search?q=first']}><Harness /></MemoryRouter>)
+19:   return screen.getByRole('searchbox', { name: 'Search mail' }) as HTMLInputElement
+20: }
+21: 
+22: describe('search form URL ownership', () => {
+23:   it('refreshes idle fields on navigation and history, including an unavailable scope', () => {
+24:     const input = setup()
+25:     fireEvent.click(screen.getByRole('button', { name: 'Next URL' }))
+26:     expect(input.value).toBe('second')
+27:     expect((screen.getByRole('combobox', { name: 'Search scope' }) as HTMLSelectElement).value).toBe('unknown')
+28:     fireEvent.click(screen.getByRole('button', { name: 'Back' }))
+29:     expect(input.value).toBe('first')
+30:     expect((screen.getByRole('combobox', { name: 'Search scope' }) as HTMLSelectElement).value).toBe('')
+31:   })
+32: 
+33:   it('preserves a focused edit during URL changes and refreshes after leaving the form', () => {
+34:     const input = setup()
+35:     fireEvent.focus(input)
+36:     fireEvent.change(input, { target: { value: 'unfinished' } })
+37:     fireEvent.click(screen.getByRole('button', { name: 'Next URL' }))
+38:     expect(input.value).toBe('unfinished')
+39:     fireEvent.blur(input)
+40:     expect(input.value).toBe('second')
+41:     fireEvent.click(screen.getByRole('button', { name: 'Back' }))
+42:     expect(input.value).toBe('first')
+43:   })
+44: 
+45:   it('submits literal query and scope in the URL and refuses an empty submission', () => {
+46:     const input = setup()
+47:     fireEvent.click(screen.getByRole('button', { name: 'Next URL' }))
+48:     fireEvent.change(input, { target: { value: '<img %' } })
+49:     fireEvent.submit(screen.getByRole('search'))
+50:     expect(screen.getByLabelText('URL').textContent).toBe('?q=%3Cimg+%25&mailbox=unknown')
+51:     fireEvent.change(input, { target: { value: '' } })
+52:     fireEvent.submit(screen.getByRole('search'))
+53:     expect(screen.getByLabelText('URL').textContent).toBe('?q=%3Cimg+%25&mailbox=unknown')
+54:   })
+55: })

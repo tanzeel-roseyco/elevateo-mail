@@ -1,0 +1,45 @@
+1: // Scoped literal search (BE-02 D §9). The query and optional mailbox live in the URL; results are
+2: // unchanged ThreadSummary rows (one per thread, canonical preview, no highlights) that link into
+3: // the reader. Metacharacters are literal on the server; the client only enforces the 1..256
+4: // code-point, non-whitespace rule before asking.
+5: import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
+6: import { Link, useSearchParams } from 'react-router'
+7: import { describeFailure, type CollaborationFailure } from '@/app/collaborationFailure'
+8: import { SearchBox } from '@/app/SearchBox'
+9: import { useMailboxes } from '@/app/mailboxes'
+10: import { useProtectedRequest } from '@/app/protectedRequest'
+11: import { useGateway } from '@/app/session'
+12: import { SearchQuerySchema, type SearchPage as SearchPageResult, type ThreadSummary } from '@/data/contract'
+13: import { isApiError } from '@/data/errors'
+14: import { cx, formatWhen } from '@/lib/format'
+15: import { Badge } from '@/ui/Badge'
+16: import { Button } from '@/ui/Button'
+17: import { EmptyState, Skeleton } from '@/ui/Async'
+18: 
+19: type ResultState =
+20:   | { status: 'idle' }
+21:   | { status: 'invalid'; message: string }
+22:   | { status: 'loading' }
+23:   | { status: 'ready'; items: ThreadSummary[]; nextCursor: string | null; loadingMore: boolean; mailboxId: string | null }
+24:   | { status: 'unavailable' }
+25:   | { status: 'error'; failure: CollaborationFailure }
+26: 
+27: export function SearchPage() {
+28:   const [searchParams] = useSearchParams()
+29:   const q = searchParams.get('q') ?? ''
+30:   const mailboxId = searchParams.get('mailbox') ?? ''
+31:   // Resource owner key (D3): a new query starts with fresh result state and aborts the old one.
+32:   return <>
+33:     <div className="mx-auto max-w-3xl px-3 pt-3"><SearchBox expanded /></div>
+34:     <SearchResults key={JSON.stringify([q, mailboxId])} q={q} mailboxId={mailboxId === '' ? undefined : mailboxId} />
+35:   </>
+36: }
+37: 
+38: function SearchResults({ q, mailboxId }: { q: string; mailboxId: string | undefined }) {
+39:   const gateway = useGateway()
+40:   const mailboxes = useMailboxes()
+41:   const { request } = useProtectedRequest()
+42:   const [state, setState] = useState<ResultState>({ status: 'idle' })
+43:   const resetUsedRef = useRef(false)
+44:   const abortRef = useRef<AbortController | null>(null)
+45: 
