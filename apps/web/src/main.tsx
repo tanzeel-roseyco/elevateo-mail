@@ -9,6 +9,7 @@ import { createHttpGateway } from './data/http/httpGateway'
 import { createV2Gateway } from './data/v2Gateway'
 import { createV2OutreachGateway } from './data/v2OutreachGateway'
 import { createV2AssigneeOptionsGateway } from './data/v2AssigneeOptionsGateway'
+import { createV2AttachmentGateway } from './data/v2AttachmentGateway'
 import type { OutreachGateway } from './features/outreach/contract'
 import { AuthCompletePage } from './features/auth/AuthCompletePage'
 import './styles/index.css'
@@ -28,6 +29,7 @@ const v2 = createV2Gateway()
 const featureGateways: FeatureGateways = {
   outreach,
   assigneeOptions: createV2AssigneeOptionsGateway(),
+  attachmentPort: createV2AttachmentGateway(),
   readDirectMessage: (ctx, mailboxId, threadId, messageId, signal) => v2.getDirectMessage(ctx, mailboxId, threadId, messageId, signal),
 }
 createRoot(root).render(

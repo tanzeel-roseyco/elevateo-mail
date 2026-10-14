@@ -509,3 +509,5 @@ Corin 487ca33d anonymous guard keyword repair imported feature/core; a2f58b34 on
 Nadia QA816 attachment fixture producer 8acae6a0 imported source-only; ATT content route inactive, private Storage/clamd/Auth fixture and sidecar runtime NOT_RUN. Independent bounded review pending.
 
 QA815 feature7cae15a7 focused Corin lint PASS; Steep FAIL two Nadia ATT902 controller types (NoStorage keyword signature, download binding), cleanup PASS. Full feature backend/HTTP/worker not reached.
+
+ATT902 dual metadata/content V2 routes and browser port are active only in the isolated feature source candidate for disposable fleet proof, following ADV150. No private byte/scan/session/browser PASS: Nadia Steep two errors, TEST929 suite manifest review, generated declaration check and full feature runtime pending. No live deployment/sends.

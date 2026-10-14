@@ -30,7 +30,7 @@ const headers = (ctx: ReadContext): Record<string, string> => ({
 })
 const maxBytes = 10 * 1024 * 1024
 
-/** Prepared private read port. The production shell does not inject it until the Rails routes are accepted. */
+/** Isolated candidate private read port. The caller still requires current scope and a clean private gateway. */
 export function createV2AttachmentGateway(fetchImpl: FetchLike = fetch) {
   return {
     listInboxAttachments(ctx: ReadContext, mailboxId: string, threadId: string, messageId: string,

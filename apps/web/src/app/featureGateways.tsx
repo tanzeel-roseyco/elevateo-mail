@@ -22,7 +22,7 @@ export interface FeatureGateways {
   readonly readDirectMessage?: DirectMessageRead
   /** Protected mailbox-scoped SQL backs the candidate route; exact fleet proof remains pending. */
   readonly assigneeOptions?: AssigneeOptionsReadPort
-  /** Inject only after private byte, scan and scope gates pass on one exact source. */
+  /** Isolated candidate private read port; real byte, scan and scope fleet proof remains pending. */
   readonly attachmentPort?: AttachmentReadPort
 }
 

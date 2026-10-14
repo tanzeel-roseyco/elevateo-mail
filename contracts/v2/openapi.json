@@ -3,7 +3,7 @@
   "info": {
     "title": "Elevateo additive administration, outreach and scoped read API",
     "version": "2.0.0-draft.8",
-    "description": "V1 schemas unchanged. Guarded mailbox-scoped assignee options are active in the isolated candidate; private inbound attachment reads remain disabled while fleet gates are pending. Delivery, enrollment and worker status remain disabled."
+    "description": "V1 schemas unchanged. Guarded mailbox-scoped assignee options and private inbound attachment reads are active in the isolated candidate for fleet proof. Delivery, enrollment and worker status remain disabled."
   },
   "servers": [
     {
@@ -92,7 +92,7 @@
     "/v2/mailboxes/{mailbox_id}/threads/{thread_id}/messages/{message_id}/attachments": {
       "get": {
         "operationId": "listInboxAttachments",
-        "x-elevateo-status": "disabled",
+        "x-elevateo-status": "active",
         "summary": "List bounded attachment metadata for one currently readable message",
         "parameters": [
           {
@@ -182,7 +182,7 @@
     "/v2/mailboxes/{mailbox_id}/threads/{thread_id}/messages/{message_id}/attachments/{attachment_id}/content": {
       "get": {
         "operationId": "downloadCleanInboxAttachment",
-        "x-elevateo-status": "disabled",
+        "x-elevateo-status": "active",
         "summary": "Stream bytes only after current read authorization and clean scan verdict",
         "parameters": [
           {

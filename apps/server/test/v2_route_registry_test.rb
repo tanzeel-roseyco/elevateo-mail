@@ -12,10 +12,10 @@ class V2RouteRegistryTest < Minitest::Test
     end
   end
 
-  def test_ready_registry_exposes_only_nineteen_active_versioned_routes
+  def test_ready_registry_exposes_only_twenty_one_active_versioned_routes
     mapper = Mapper.new
     assert V2RouteRegistry.register!(mapper, enabled: true, controllers_ready: true)
-    assert_equal 19, mapper.routes.size
+    assert_equal 21, mapper.routes.size
     assert(mapper.routes.all? { |_, path, _| path.start_with?("/v2/") })
     refute(mapper.routes.any? { |_, path, _| path.start_with?("/v2/worker/") })
   end
@@ -70,14 +70,16 @@ class V2RouteRegistryTest < Minitest::Test
       "v2/admin/mailbox_assignee_options#index"]], mapper.routes
   end
 
-  def test_prepared_attachment_routes_remain_inactive
-    %w[listInboxAttachments downloadCleanInboxAttachment].each do |operation|
-      mapper = Mapper.new
-      assert_raises(ArgumentError) do
-        V2RouteRegistry.register!(mapper, enabled: true, controllers_ready: true, operations: [operation])
-      end
-      assert_empty mapper.routes
-    end
+  def test_attachment_routes_register_only_the_scoped_read_controller
+    mapper = Mapper.new
+    assert V2RouteRegistry.register!(mapper, enabled: true, controllers_ready: true,
+      operations: %w[listInboxAttachments downloadCleanInboxAttachment])
+    assert_equal [
+      [:get, "/v2/mailboxes/:mailbox_id/threads/:thread_id/messages/:message_id/attachments",
+        "v2/inbox_attachments#index"],
+      [:get, "/v2/mailboxes/:mailbox_id/threads/:thread_id/messages/:message_id/attachments/:attachment_id/content",
+        "v2/inbox_attachments#content"]
+    ], mapper.routes
   end
 
   def test_unready_registry_fails_before_any_route_is_added
