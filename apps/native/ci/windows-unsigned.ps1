@@ -11,6 +11,7 @@ if ($parsed.HostNameType -ne [UriHostNameType]::Dns) { throw 'DNS host required'
 $native = Join-Path $RepositoryRoot 'apps/native/src-tauri'
 if (-not (Test-Path (Join-Path $native 'Cargo.lock'))) { throw 'Reviewed Cargo.lock is missing' }
 $env:ELEVATEO_WEB_ORIGIN = $ApprovedWebOrigin
+$env:ELEVATEO_NATIVE_ARTIFACT = 'unsigned-candidate'
 Push-Location $native
 try {
   cargo test --locked
@@ -23,4 +24,5 @@ try {
 } finally {
   Pop-Location
   Remove-Item Env:ELEVATEO_WEB_ORIGIN -ErrorAction SilentlyContinue
+  Remove-Item Env:ELEVATEO_NATIVE_ARTIFACT -ErrorAction SilentlyContinue
 }
