@@ -401,3 +401,5 @@ REV867 Theo and REV869 Lyra bounded static reviews found zero confirmed defects 
 REV868 Felix bounded browser review found one context-header test-oracle defect in 343 LOC (2.92/KLOC); exact five-line repair was rereviewed with zero new defects, fleet runtime pending.
 
 Corin d4a34f4 direct-message serialization and reversible thread fixture repair is imported as source; current integrated real DB/HTTP/worker Docker proof pending.
+
+Soren exact 6c626e2 Docker web V1/V2 declaration checks passed but lint failed four Cassian sequence-test unused parameters and one Mira attachment regex; Cassian source repair is in this branch, Mira owner repair pending, type/unit/build not reached.

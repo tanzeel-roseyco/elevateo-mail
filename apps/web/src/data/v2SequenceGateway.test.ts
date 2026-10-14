@@ -13,7 +13,10 @@ const json = (value: unknown, status = 200) => new Response(JSON.stringify(value
 
 describe('V2 inert sequence draft gateway', () => {
   it('reads then saves a campaign-bound draft with current context and CSRF proof', async () => {
-    const fetchImpl = vi.fn(async (_path: string, _init: RequestInit) => json(draft))
+    const fetchImpl = vi.fn(async (_path: string, _init: RequestInit) => {
+      void _path; void _init
+      return json(draft)
+    })
     const gateway = createV2OutreachGateway(fetchImpl)
     const signal = new AbortController().signal
     expect((await gateway.getOutreachSequenceDraft(context, campaign, signal)).steps).toHaveLength(1)
@@ -47,7 +50,10 @@ describe('V2 inert sequence draft gateway', () => {
   })
 
   it('permits the contract maximum of twenty bounded Unicode steps', async () => {
-    const fetchImpl = vi.fn(async (_path: string, _init: RequestInit) => json(draft))
+    const fetchImpl = vi.fn(async (_path: string, _init: RequestInit) => {
+      void _path; void _init
+      return json(draft)
+    })
     const steps = Array.from({ length: 20 }, (_, index) => ({
       id: `00000000-0000-4000-8000-${String(index + 1).padStart(12, '0')}`,
       position: index + 1, delay_seconds: 2_592_000, local_time: '23:59:59', label: '界'.repeat(120),
