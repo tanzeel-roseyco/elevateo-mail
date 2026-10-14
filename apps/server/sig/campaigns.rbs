@@ -17,7 +17,8 @@ end
 module Elevateo
   module Campaigns
     class Repository
-      def initialize: (connection: untyped) -> void
+      @connection: _ThreadConnection
+      def initialize: (connection: _ThreadConnection) -> void
       def save: (Input, organization_id: String) -> String
       def suppress: (organization_id: String, email: String, reason: String) -> String
       def analytics: (organization_id: String, campaign_id: String) -> Hash[String, untyped]
