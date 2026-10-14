@@ -1,0 +1,8 @@
+module Elevateo
+  module OrganizationRoleAudit
+    ROLE_NAMES: Hash[String, String]
+    OPERATION: String
+    def self.limit: (Hash[String, String]) -> Integer
+    def self.items: (untyped, organization: String, limit: Integer) -> Array[Hash[String, untyped]]
+  end
+end
