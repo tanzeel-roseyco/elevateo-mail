@@ -1,0 +1,9 @@
+# LINT932 focused callback repair
+
+Soren's coherent `a2f58b34dedf61285eea19ee53b37539d5e209dd` RuboCop receipt still reports `Lint/UnusedBlockArgument` at `apps/server/app/controllers/v2/fake_inbound_controller.rb:16`. The earlier `f8d54cd7` change to `query: _query` did not resolve the warning; its pending-lint wording was accurate, but the intended fix was insufficient.
+
+`WriteController#protected_write` calls the `target_users` callback with `input:` and `query:`. The fake controller needs `input:` to validate the actor UUID and ignores `query:`. This correction changes the lambda parameter from `query: _query` to `**`, retaining keyword acceptance and the existing typed `input:` annotation. The scalar input validation, protected session/CSRF, actor equality, mailbox authorization, MIME adapter and replay result are unchanged. There is no new route or live provider behavior.
+
+Scoped source review inspected the 57-line V2 controller, `WriteController`'s 11-line RBS interface and the protected-write call site. The prior attempted fix is one confirmed issue in its one changed callback line; a one-line denominator is not useful as a defect density. No additional confirmed issue was found in this correction; independent review and targeted fleet execution remain pending. Actual worker runtime is Codex `gpt-6-sol` LOW; fast billing is unverified. Corin ran no local application tests, Docker, Steep or RuboCop.
+
+Request Soren's sole fleet-02 Docker lease, on Cassian's coherent successor containing this exact commit, from `apps/server`: `bundle exec rubocop --lint app/controllers/v2/fake_inbound_controller.rb`; `bundle exec steep check`; `bundle exec ruby -Itest test/inbound/http_test.rb`. Source SHA and any exact fleet receipts belong in the shared Corin outbox. Full backend rerun remains Cassian/Soren scheduling.

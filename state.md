@@ -503,3 +503,5 @@ QA815 a2f58b34 fleet targeted authority fixture lint PASS; full RuboCop 308 file
 ADV147 no-follow privacy repair: 152 LOC/0 defects; six fleet units were three actual Node filesystem plus three FakeTask, not browser mount proof. ADV148 five-owner lint source:177 LOC/0 defects, yet a2f58b34 full RuboCop still fails one Corin warning. ADV149 Mira reply oracle:174 LOC/0, source-only; successor runtime pending.
 
 QA815 feature58edb11c targeted fleet TypeScript and CollaborationPanels 10/10 PASS/cleanup; prior fdecd0d5 full856/build source-specific, no real browser or HTTP inference.
+
+Corin 487ca33d anonymous guard keyword repair imported feature/core; a2f58b34 one-offense lint failure remains source-specific. Coherent feature full new-suite/Steep/lint/HTTP/worker gate awaits Orion manifest inventory and Soren fleet run.
