@@ -1357,3 +1357,5 @@ INT801 integration inspection found one QA816 attachment test-oracle defect befo
 QA816 earlier Content-Disposition oracle finding is fixed in Tessa `012df586` source and imported at `998c7710`; narrow integration inspection confirms the fixed expected header matches Nadia controller. No independent complete review or browser runtime, so reviewed LOC/density remain unassessed for this import.
 
 ADV142 Vera reviewed canonical draft.8 old e411f58f scoped core: 322 unique LOC/one P2 defect, 3.11 defects/KLOC; 300 target exceeded22, hard400 met, source-only. Current shared-envelope repair addresses the reported description-only failure DTOs and earlier 401 omission statically, but is not yet independently rereviewed or fleet generated; zero reviewed LOC and unassessed defect density for the repair itself.
+
+Mira COL910 36-line test rewrite imported source-only; no independent review or integrated runtime claimed, reviewed LOC/density unassessed for this packet.

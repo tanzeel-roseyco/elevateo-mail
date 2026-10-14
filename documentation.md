@@ -529,3 +529,5 @@ QA816 staged Playwright cases cover top reply V1 persistence and missing selecte
 QA816 ATT902 browser case now checks the controller's fixed safe `Content-Disposition: attachment; filename="attachment"`, separate metadata filename, clean byte hash, held/rejected 423 and fully foreign tuple 404. This is gated source only: private fixture producer and fleet real-browser execution remain pending.
 
 Canonical V2 scoped read errors now declare JSON `{code,message,request_id}` with no extra fields on new assignee/attachment 400/401/404 and content 503 responses; 423 retains fixed `attachment_held`. This follows the inherited V1/V2 error renderer and addresses ADV142's description-only finding statically, pending independent successor review and fleet code generation.
+
+Mira COL910 test source binds assignment to `FeatureGateways.assigneeOptions`, checks current context/mailbox arguments, then exercises assignment conflict/ineligible target through the existing V1 write authority. The integrated source has not run this test in Docker.

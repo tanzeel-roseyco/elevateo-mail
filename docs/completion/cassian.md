@@ -387,3 +387,5 @@ Tessa `d3f2528` top-reply and assignee Playwright files imported at `0af7d2f4`, 
 Tessa owner correction `012df586` imported at `998c7710`: the attachment browser oracle now expects the actual fixed safe disposition and checks rejected content 423 plus complete foreign tuple. Tests requested from Soren after private fixture and route gates; tests executed on integrated source: none.
 
 ADV142 reviewed old canonical e411f58f (322 unique LOC/one P2 defect, 3.11/KLOC, target300 exceeded22, source-only): new failure responses lacked closed JSON envelopes and attachment 401. The current successor adds attachment 401, retains the separately fixed 423, and adds `ScopedReadError` to remaining 400/401/404/503 responses without V1 changes. This is a source repair, not a reviewer closure or generated-type PASS; request a bounded successor review and Soren fleet generation/check.
+
+Mira COL910 exact owner test `a7b55af` imported at `0ffb0c52`; its picker mock proves the UI passes the current context and scoped mailbox, then leaves V1 assignment authority final. Tests requested: Soren feature web unit/type/build after fleet V2 codegen; executed here: none.

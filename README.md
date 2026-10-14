@@ -524,3 +524,5 @@ QA816 owner top-reply and assignee real-browser cases are staged from Tessa `d3f
 QA816 attachment real-browser source now uses Tessa's corrected `012df586` oracle: clean private bytes/headers and SHA-256, held/rejected 423 without bytes, and foreign tuple 404. The route is still inactive and the private fixture producer, fleet browser cases and screenshots have not run.
 
 ADV142 found that the new V2 scoped read failures had description-only responses. INT801 added a closed shared `ScopedReadError` envelope to assignee and attachment 400/401/404 plus content 503 while retaining the fixed 423 `attachment_held` schema. This is contract source only; Soren's exact fleet codegen/check remains pending.
+
+Mira COL910 `a7b55af` collaboration test now drives the scoped picker and server-authoritative assignment rather than the removed manual UUID field. The imported test is authored on this integrated source, pending Soren fleet web unit/type checks.

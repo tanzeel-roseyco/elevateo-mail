@@ -469,3 +469,5 @@ QA816 gated top-reply and assignee real-browser cases are imported from Tessa `d
 QA816 corrected ATT902 browser case source `012df586` is staged but unexecuted; the byte route remains inactive and private fixture/runtime proof pending.
 
 ADV142 V2 canonical error-envelope finding is addressed in source by a closed shared scoped read error schema for new 400/401/404/503 responses; fixed 423 remains explicit. Independent successor review and fleet V2 generation/check are pending.
+
+Mira COL910 exact scoped-picker assignment regression is imported; integrated web unit/type checks remain pending Soren fleet Docker.
