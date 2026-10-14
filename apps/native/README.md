@@ -12,9 +12,9 @@ Soren alone may acquire the Docker lease and run from the repository root after 
 
 ```sh
 # Run inside Soren's fleet-02 Docker lane; never on the host.
-docker run --rm -v "$PWD:/work" -w /work/apps/native/src-tauri rust:1.83-bookworm sh -lc 'cargo test --locked'
+docker run --rm -v "$PWD:/work" -w /work/apps/native/src-tauri <SOREN_VERIFIED_RUST_IMAGE_DIGEST> sh -lc 'cargo test --locked'
 ```
 
-A Cargo.lock must be produced and reviewed in that lane before `--locked` is meaningful. The Rust source pins Tauri 2.12.0 and tauri-build 2.7.0; Soren must confirm toolchain compatibility and dependency resolution. The image tag is a draft and must be pinned to a verified digest by the fleet owner. A second gated build needs the existing web production build and Tauri Linux system libraries; Linux success would not establish Windows installation. Windows NSIS signing, WebView2 install/run/upgrade/uninstall and native OAuth/security validation need a real Windows lane and later authorized credentials. `embedBootstrapper` requires network when WebView2 is absent; offline clean-machine behavior is an open release gate.
+A Cargo.lock must be produced and reviewed in that lane before `--locked` is meaningful. The Rust source pins Tauri 2.12.0 and tauri-build 2.7.0; Soren must confirm toolchain compatibility and dependency resolution. Soren supplies the verified Rust image digest and Tauri Linux system packages; the placeholder is not an executable command as written. A second gated build needs the existing web production build and Tauri Linux system libraries; Linux success would not establish Windows installation. Windows NSIS signing, WebView2 install/run/upgrade/uninstall and native OAuth/security validation need a real Windows lane and later authorized credentials. `embedBootstrapper` requires network when WebView2 is absent; offline clean-machine behavior is an open release gate.
 
 `ci/windows-unsigned.ps1` is a target-Windows runner script requiring preinstalled pinned Rust, Tauri CLI, NSIS and a reviewed Cargo.lock. It emits only an unsigned setup EXE and SHA-256; signing and installed-app behavior remain separate gates.
