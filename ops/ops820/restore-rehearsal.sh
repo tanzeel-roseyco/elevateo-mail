@@ -6,6 +6,8 @@ packet=$(cd -- "$(dirname -- "$0")" && pwd)
 snapshot=${1:?paired backup directory required}
 [[ "$snapshot" = /* ]] || exit 66
 mode=${2:-base}
+python_image=${OPS820_PYTHON_IMAGE:?pinned Python image required}
+[[ "$python_image" =~ ^sha256:[a-f0-9]{64}$ ]] || exit 66
 case "$mode" in base|full) ;; *) echo 'usage: restore-rehearsal.sh SNAPSHOT base|full' >&2; exit 64;; esac
 if [[ "$mode" == full ]]; then
   # AIDEV-NOTE: no partial full gate when owner migrations and identity fixtures are absent.
@@ -142,4 +144,4 @@ replication=$(compose exec -T db psql -U supabase_admin -d postgres -X -At -v ON
 echo "PASS catalog/RLS/role reachability; negative_fixture_exit=$negative_exit direct_negative_exit=$direct_exit cleanup=0"
 docker run --rm --network "${project}_private" --read-only --cap-drop ALL --memory 128m \
   --env-file "$envfile" -v "$base/drill-object.py:/drill.py:ro" --entrypoint python3 \
-  sha256:f040863673aea2570c3ff6a5c3fb4c673a016cbc5375005ad145915922b6b78a /drill.py verify
+  "$python_image" /drill.py verify
