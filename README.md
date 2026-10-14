@@ -14,7 +14,7 @@ Shared company mailroom with one Rails domain authority and a React/TypeScript c
 
 ## Current state
 
-Nadia attachment backend candidate adds private quarantine metadata (migration 00015), a bounded service, restricted internal Storage adapter and bounded ClamAV INSTREAM worker; objects remain held until genuine scanner proof. Owner FORCE RLS, private-key grants and import replay were repaired after REV878; routes, gateway, fleet tests and review remain pending; see `docs/completion/nadia-attachments.md`.
+Nadia attachment backend candidate adds private quarantine metadata (migration 00015), a bounded service, restricted internal Storage adapter and bounded ClamAV INSTREAM worker; objects remain held until genuine scanner proof. Owner FORCE RLS, private-key grants, concurrent import and terminal-state replay were repaired after REV878/ADV099; routes, gateway, fleet tests and repair review remain pending; see `docs/completion/nadia-attachments.md`.
 
 
 SEND-810 simulated cancellation source is integrated over Rowan worker authority and Elara direct store/ledger in the isolated `completion-nadia-send810` branch. A possible call remains a stop request until evidence reconciliation. First integrated DB migration found a schema privilege defect; the grant/revoke repair awaits fleet rerun. Independent review and release gates remain pending; see `docs/completion/nadia.md`.
