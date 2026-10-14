@@ -686,3 +686,10 @@ Celeste authored the read-only feature and three boundary tests. Independent bou
 ## FE808 isolated author receipt (2026-10-14)
 
 Scope: `apps/web/src/features/members/adminModel.ts`, `AdministrationPage.tsx` and paired tests. Author self-check covered the configuration roster, DTO validation, generic denial, stale-revision and revoked-session handling by source inspection; zero confirmed defects in this check. This is not an independent bounded adversarial or design-tradeoff review, so no independent defect density is claimed. Root must assign <=200-LOC review packets and a dedicated design reviewer after integration. Docker tests and visual acceptance are NOT_RUN.
+## FE-806 candidate review request
+
+Changed source `apps/web/src/features/inbox/InboxPage.tsx` (6 added lines) and test (29 added lines) form a bounded packet under 200 lines. Independent functional/adversarial review and dedicated design tradeoff review are requested from root; neither has executed. Confirmed defects: unknown pending review; defect density: not calculated without an actual review. Fleet tests and visual validation are NOT_RUN.
+
+## FE-806 message reply review request
+
+Bounded source packet: `apps/web/src/features/thread/ThreadPage.tsx` (about 28 changed lines), `ThreadPage.test.tsx` (about 75 added lines) and provider wiring in `CollaborationPanels.test.tsx` (3 added lines). Request independent functional/adversarial and separate design tradeoff review from root; no such review is claimed here. Confirmed defects/density remain unmeasured until review. Authored tests and Docker request are not execution evidence.

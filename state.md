@@ -125,3 +125,10 @@ Read-only campaigns, leads, accounts and analytics pages are authored on the iso
 ### FE808 isolated candidate (2026-10-14)
 
 People/settings view and strict DTO draft exist in `apps/web/src/features/members/`. The exact twelve configuration identities have null email and Auth ID, unbound enrollment and no invented login. Cassian V2 gateway, Theo/Sabine authority and Fable route registration remain integration dependencies. Tests are authored, NOT_RUN; no live sending or credentials are enabled.
+### FE-806 candidate
+
+Inbox compose entry is gated by a successful read and explicit compose capability. The existing plaintext reader, draft/reply and simulated send flow remain the implementation seams. Three bounded component cases are authored; fleet execution and integrated visual acceptance are pending. See `docs/completion/mira.md`.
+
+### FE-806 message reply candidate
+
+Selected-message reply prefill now carries recipient, editable subject and thread binding into a new unsaved draft without putting addresses in the URL. The existing draft operation path performs the first write only on Save. Four regression cases are authored; Docker runtime and integrated visual/HTTP acceptance are pending.

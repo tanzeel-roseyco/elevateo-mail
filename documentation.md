@@ -193,3 +193,10 @@ Cassian manifest reconciliation: contract-lock now seals actual generated client
 ### FE808 administration UI seam
 
 `AdministrationPage` exports a `people` or `settings` section and accepts an `AdminGateway` port. The port expects redacted roster/current-grant reads and revision-guarded grant writes; Cassian owns the final V2 adapter and route contract. The view uses `useProtectedRequest` for session generation, abort and revoked-session handling. Organization grants do not imply mailbox content access. The twelve configuration rows remain unbound until verified enrollment.
+### FE-806 inbox journey
+
+The inbox offers an explicit route to drafts only when its current read succeeded and the mailbox capability snapshot permits compose. That navigation performs no write. Unknown or denied capability and denied mailbox reads do not expose the entry; server authorization remains authoritative for every subsequent draft/send operation. Fleet tests and integrated visual review remain pending.
+
+### FE-806 message reply prefill
+
+For a readable message with a sender address and explicit mailbox compose capability, the reader creates a new in-memory draft intent using the selected sender and thread ID. It prefixes an untruncated subject with `Re:` and leaves a truncated subject blank to avoid copying incomplete text. The draft editor still requires its authorized read, all fields remain editable, and saving uses the existing version-zero operation identity; no send is triggered by reply navigation.
