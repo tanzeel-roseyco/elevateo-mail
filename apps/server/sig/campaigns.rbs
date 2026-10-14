@@ -22,6 +22,7 @@ module Elevateo
       def replay_same?: (Input, Hash[String, untyped]) -> bool
       def suppress: (organization_id: String, email: String, reason: String) -> String
       def analytics: (organization_id: String, campaign_id: String) -> Hash[String, untyped]
+      def timestamp: (untyped) -> String?
       def rows: (String, Array[untyped]) -> Array[Hash[String, untyped]]
     end
   end

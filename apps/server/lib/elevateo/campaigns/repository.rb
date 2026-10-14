@@ -76,7 +76,7 @@ module Elevateo
           row["name"] == input.attributes["name"] && row["status"] == input.attributes["status"]
         when "lead"
           row["email"] == input.attributes["email"] && row["consent_status"] == input.attributes["consent_status"] &&
-            row["consent_recorded_at"]&.utc&.iso8601 == input.attributes["consent_recorded_at"] &&
+            timestamp(row["consent_recorded_at"]) == input.attributes["consent_recorded_at"] &&
             row["consent_source"] == input.attributes["consent_source"] &&
             (!row["suppressed_at"].nil?) == input.attributes["suppressed"]
         when "account"
@@ -216,7 +216,7 @@ module Elevateo
         when "lead"
           { "id" => row.fetch("id"), "campaign_id" => row.fetch("campaign_id"), "email" => row.fetch("email"),
             "consent_status" => row.fetch("consent_status"), "suppressed" => !row["suppressed_at"].nil? || row["globally_suppressed"] == true,
-            "consent_recorded_at" => row["consent_recorded_at"]&.utc&.iso8601,
+            "consent_recorded_at" => timestamp(row["consent_recorded_at"]),
             "consent_source" => row["consent_source"], "consent_recorded_by" => row["consent_recorded_by"],
             "version" => row.fetch("version").to_i }
         when "account"
@@ -224,6 +224,14 @@ module Elevateo
             "label" => row.fetch("label"), "status" => row.fetch("status"), "version" => row.fetch("version").to_i }
         else WriteInput.invalid!
         end
+      end
+
+      def timestamp(value)
+        return nil if value.nil?
+        parsed = value.is_a?(Time) ? value : Time.iso8601(value.to_s)
+        parsed.utc.iso8601
+      rescue ArgumentError
+        raise CollaborationError.new("internal_error")
       end
 
       def rows(sql, values)
