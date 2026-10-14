@@ -747,3 +747,5 @@ QA-817 independent SEC-802 peer review: Sabine `apps/server/db/sec802/access.sql
 QA-817 independent SEND-809 peer review: Rowan `apps/server/db/be03_send/worker_authority.sql` SHA-256 `fdabd8e612cd2aca944a06d9197592874468a968da844143be10688356c393dd`, packets lines 1–180 and 180–223, 223 unique LOC; each <=200 LOC. Full rubric applied; 0 confirmed defects observed, 0/KLOC bounded static review. Adapter trust, recipient cap and worker race runtime remain evidence gaps, not passed checks. See `docs/completion/felix-send809-review.md`; separate design review and Docker NOT_RUN.
 
 MAC-814 continuation: new `apps/native` macOS overlay/script/validator/tests await independent bounded source and design tradeoff review. Coverage 0 independently reviewed LOC; defects/KLOC N/A. No runtime test claim.
+
+QA816 continuation source remains unreviewed: `qa816-matrix.e2e.ts` is a candidate, independent reviewed LOC 0 and defect density not computed. Functional and design review are requested from root; no runtime verification claimed.
