@@ -1,5 +1,7 @@
 ### INT-801 integrated source candidate (2026-10-14)
 
+PREF-822 browser preparation now adds an unbound typed gateway for current-actor GET/PUT display name with strict input, revision ceiling, CSRF proof and response context/version binding. The route remains absent from canonical V2/Rails; Theo isolated backend, fleet type/unit/SQL/HTTP and independent review are pending. The integration also narrows the existing V1 simulated-send cancel mailbox ID through its current UUID validator for strict Steep typing, without changing the frozen request schema.
+
 Soren exact integrated 4a0ba0b disposable PostgreSQL/Auth runner passed the repaired Outreach migration, then failed Rowan AddMailpitTestReceipt migration at `mailpit_test_receipt.sql:65-67` with a CASE-expression `PG::SyntaxError` at end of input. Later Ruby, authenticated HTTP and worker checks did not run; cleanup passed. Rowan owner repair and a new exact fleet rerun are pending.
 
 Elara `f060f18` strict worker/SMTP type repair and Dorian `82d438e` controller-test lint repair are merged into the isolated core source. Cassian added pinned `net-smtp` to shared Steep libraries for the declared SMTP transport; these repairs have no exact integrated fleet static PASS yet.

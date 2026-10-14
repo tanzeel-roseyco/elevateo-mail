@@ -24,7 +24,8 @@ module V1
           []
         }) do |connection:, identity:, session:, input:, **|
         # @type var input: Elevateo::WriteInput::object
-        send_service(connection, session).cancel(send_id: send_path(:send_id), mailbox_id: input["mailbox_id"],
+        mailbox_id = Elevateo::WriteInput.uuid(input.fetch("mailbox_id"))
+        send_service(connection, session).cancel(send_id: send_path(:send_id), mailbox_id: mailbox_id,
           session_digest: identity.digest, epoch: send_epoch)
       end
     end
