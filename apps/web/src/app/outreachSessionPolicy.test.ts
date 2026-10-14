@@ -25,7 +25,35 @@ function policy(generation = 7, consumed = false): SessionPolicy & { handleError
 }
 
 describe('outreach session policy', () => {
-  it('reports a 401 from a write to the central policy with the call-time generation and rethrows (happy path)', async () => {
+  it('passes a successful operation through untouched and never consults the policy (happy path)', async () => {
+    const page = { items: [], next_cursor: null }
+    const listCampaigns = vi.fn(async () => page)
+    const sessionPolicy = policy(5)
+    const gateway = policeOutreachGateway(rawGateway({ listCampaigns }), sessionPolicy)
+    await expect(gateway.listCampaigns(context, {}, signal)).resolves.toBe(page)
+    expect(listCampaigns).toHaveBeenCalledWith(context, {}, signal)
+    expect(sessionPolicy.handleError).not.toHaveBeenCalled()
+  })
+
+  it('still rethrows a stale 401 that the policy consumed, so the caller cannot mistake it for success', async () => {
+    // The policy answers true for a stale generation (session.tsx); the wrapper must not swallow it
+    // into a resolved promise, because the awaiting page would then commit a non-existent result.
+    const sessionPolicy = policy(9, true)
+    const gateway = policeOutreachGateway(rawGateway({ listLeads: vi.fn(async () => { throw unauthenticated() }) }), sessionPolicy)
+    await expect(gateway.listLeads(context, id, {}, signal)).rejects.toMatchObject({ code: 'unauthenticated' })
+    expect(sessionPolicy.handleError).toHaveBeenCalledWith(expect.any(GatewayError), 9)
+  })
+
+  it('reports a current context change with its own generation and rethrows after the policy consumed it', async () => {
+    const changed = new GatewayError('api', 'context_changed', 'synthetic', { status: 409, requestId: 'r3' })
+    const sessionPolicy = policy(4, true)
+    const gateway = policeOutreachGateway(rawGateway({ getCampaign: vi.fn(async () => { throw changed }) }), sessionPolicy)
+    await expect(gateway.getCampaign(context, id, signal)).rejects.toBe(changed)
+    expect(sessionPolicy.handleError).toHaveBeenCalledTimes(1)
+    expect(sessionPolicy.handleError).toHaveBeenCalledWith(changed, 4)
+  })
+
+  it('reports a 401 from a write to the central policy with the call-time generation and rethrows', async () => {
     const createCampaign = vi.fn(async () => { throw unauthenticated() })
     let generation = 1
     const sessionPolicy: SessionPolicy = { current: () => generation, handleError: vi.fn(() => true) }

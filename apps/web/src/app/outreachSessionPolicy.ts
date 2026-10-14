@@ -7,6 +7,10 @@
 //
 // AIDEV-NOTE: handleError is called even when it returns false (ordinary error): the page then
 // renders its own state from the rethrown error, exactly as useProtectedRequest does for V1.
+// AIDEV-NOTE: A consumed error (stale generation, current 401, context change) is rethrown too.
+// That is safe because every consuming path unmounts or remounts the protected subtree, Celeste's
+// read effects abort on context change/unmount and her write handlers abort on unmount, and every
+// catch is guarded by `controller.signal.aborted`. Shell.test "stale consumed 401" proves it (REV866).
 import type { OutreachGateway } from '@/features/outreach/contract'
 
 export interface SessionPolicy {
