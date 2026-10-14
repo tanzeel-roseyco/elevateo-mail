@@ -926,3 +926,14 @@ SEND-810 matched due-drain merge: Rowan840ab4c/Elara5945e92 exact owner source i
 QA816 thread transport candidate at 069257f remains authored but independently unreviewed, with 0 reviewed LOC and no computed density; fleet browser runtime NOT_RUN.
 
 QA816 list-only reporter probe is runtime setup evidence with zero browser assertions or independent source review. Independent reviewed LOC remains 0, defect density not computed, actual visual review pending.
+QA-817 cancellation privilege DB candidate `apps/server/test/qa817/cancellation_privileges_database_test.rb`: independent review NOT_RUN (0 LOC, density unmeasured); request <=200 LOC full-rubric packet plus design review. Migration and Docker NOT_RUN for this source.
+
+QA-817 independent SEND-810 migration repair review: Nadia 08ee821 migration SHA-256 `0e87bce8ad59dd5a56c3989b936f99907b603d17aceb770b89d926e2bf5c629c`, 19 LOC full rubric, 0 confirmed defects observed (0/KLOC static); companion cancellation DB test SHA `6dfcada2c4e8924677b67698dd3d8a9bd2c309ef65951a299b57d57fe2594f79`, 57 LOC context, 76 unique LOC across two <=200 packets. Prior migration permission failure statically addressed; Docker migration apply/rollback/reapply NOT_RUN. See `docs/completion/felix-send810-migration-review.md`.
+
+QA-817 independent ADM-803 role audit review: Theo `organization_role_audit.rb` SHA `70e6534e` lines 1–48 plus `organization_role_audit_controller.rb` SHA `3f6355e9` lines 1–62, 110 unique LOC full rubric in one <=200 packet, 0 confirmed defects observed (0/KLOC static). Sabine SQL audit excerpts 112 LOC context in a second <=200 packet, 222 unique total. Actual API-role DB/HTTP, design and Docker NOT_RUN. See `docs/completion/felix-adm803-audit-review.md`.
+
+QA-817 role audit real-DB candidate `apps/server/test/qa817/role_audit_database_test.rb`: independent source review NOT_RUN (0 LOC, density unmeasured), request <=200 LOC full-rubric packet and dedicated design review. Docker/lint NOT_RUN.
+
+QA-817 native review routing correction: Felix's 201-LOC Orion OAuth review (two packets, zero observed static defects) covers historical source removed from the active online-only shell. Current native exact-origin/capability/popup source review and actual runtime remain NOT_RUN; no current native defect density is claimed from the historical packet.
+
+QA-817 online-only native bounded review: Orion `5108625` four Rust files, 137 unique physical LOC in one <=200 packet, exact per-file SHA-256 in `docs/completion/felix-native812-online-review.md`. Full rubric source pass found 0 confirmed defects (0/KLOC observed static) and one unconfirmed trailing-dot placeholder-host alias; root/Orion were sent the exact probe. Tauri capability/config, verifier, Rust/native/Windows runtime and design review remain pending. This supersedes the previous current-native NOT_RUN source wording without accepting runtime.

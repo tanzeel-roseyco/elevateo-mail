@@ -10,7 +10,7 @@ Requested Soren command (fleet-02, under `/home/tanzeel/elevateo-mail-wave-20261
 
 Design tradeoff simulation for root (analytical, not executed): a pure input test catches malformed bytes quickly but cannot prove that SQL claims use the same tenant and generation as the request. A locked race fixture costs more setup yet is required to distinguish stale-generation rejection from an incidental 404. For performance, request count and query count are more stable initial oracles than a fabricated latency target; record latency only with fleet environment details.
 
-Candidate SHA: pending commit. Review coverage: pending independent bounded review. Tests requested: above; tests executed: none. Limitations: no integrated acceptance or benchmark evidence.
+Initial candidate commit: `6729ef8cc6693f5b79e849174567fd09b15835b6`; later exact commits are recorded in the continuation sections and the Felix outbox. Review coverage: pending independent bounded review. Tests requested: above; tests executed: none. Limitations: no integrated acceptance or benchmark evidence.
 
 ## Continuation: actual database candidate
 
@@ -59,3 +59,23 @@ Added `apps/server/test/qa817/role_escalation_database_test.rb`: real API-role s
 Independently reviewed Theo's 200-line protected grants controller at exact SHA `584fcee9`, with 179 lines of HTTP/input test coverage context in separate bounded packets (379 unique LOC). Zero observed controller defects (0/KLOC static), actual HTTP/DB and design pending; see `docs/completion/felix-adm803-review.md`.
 
 Integrated Cassian SEND-809 delta at SHA `e242ce37` was independently reviewed in 82 bounded contextual LOC: new due discovery and explicit final false, zero observed static defects (0/KLOC), runtime tests for empty/canceled/busy/epoch and claim race pending. See `docs/completion/felix-send809-integrated-delta-review.md`.
+
+## Integrated migration privilege blocker
+
+Soren's integrated f787bbc backend migration failed before QA817 cases with `permission denied for schema app` in Nadia `AddSendCancellation`: migration selects `elevateo_send_owner` then creates `app.cancel_send`. I sent Nadia the exact source seam and requested a narrow, reversible owner fix. Added `apps/server/test/qa817/cancellation_privileges_database_test.rb` as a post-repair real-DB check: private function owner, API-only execution grant, public/worker denial and no runtime schema CREATE privilege. Soren command after owner fix and migration success from `/workspace/apps/server`: `bundle exec ruby test/qa817/cancellation_privileges_database_test.rb`; NOT_RUN. No performance budget can be defined from the failed migration gate.
+
+Independently reviewed Nadia SEND-810 temporary schema CREATE repair commit 08ee821, 19 migration LOC plus 57 test context LOC in two bounded packets. Zero observed repair defects (0/KLOC), previous permission failure statically addressed; fleet apply/rollback/reapply pending. Exact hashes and limits: `docs/completion/felix-send810-migration-review.md`.
+
+Independently reviewed Theo's role-audit projection/controller (110 LOC full rubric, 112 Sabine SQL context LOC in separate bounded packets), zero observed static defects; exact hashes and untested real-role gates are in `docs/completion/felix-adm803-audit-review.md`.
+
+## Role audit real-database candidate
+
+Added `apps/server/test/qa817/role_audit_database_test.rb`: one exact role-only audit row and canonical UTC on real change; no new row on no-op/stale/denied request; owner/admin/auditor metadata read; forged tenant, foreign cursor and revoked auditor denial. Uses actual API login and disposable PostgreSQL. Soren command after Sabine/Theo audit integration from `/workspace/apps/server`: `bundle exec ruby test/qa817/role_audit_database_test.rb`, plus owner audit HTTP/pure suites. NOT_RUN; independent QA source review and dedicated design review pending. The prior integrated cancellation migration failure blocks this until Nadia repair reruns successfully.
+
+## Current integration gate and native scope
+
+Cassian candidate `93f7b14` contains nine of eleven QA-817 files from Felix head `ae67ad6`; `cancellation_privileges_database_test.rb` and `role_audit_database_test.rb` still need intake. Cassian's later outbox records Soren `ea92754` getting past Nadia's cancellation migration, then failing Corin `CreateIsolatedInbound#up` with SQL syntax error. QA-817 SQL/HTTP cases remain NOT_REACHED; no hot-path latency, RSS or query-count budget is measured. This is a read-only reconciliation of owner reports, not an executed QA result.
+
+Root's online-only native decision supersedes the earlier OAuth/IPC review target. Current Orion source is intended to load one exact HTTPS origin with no native IPC/callback capability; the bounded OAuth review remains historical only. Request Soren's fleet static boundary verifier and actual native compile/launch evidence on the accepted immutable shell, plus origin-denial and popup-denial checks. The `.invalid` origin is a compile-only fixture and gives no usable launch or release proof.
+
+Independently reviewed 137 LOC of Orion's online-only Rust shell at candidate `5108625` in one bounded full-rubric packet. Zero confirmed static defects (0/KLOC); one unconfirmed trailing-dot placeholder hostname alias was escalated for a fleet Rust regression. Exact hashes, scope and limitations: `docs/completion/felix-native812-online-review.md`. No native or Docker execution by Felix.
