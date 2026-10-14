@@ -1,0 +1,12 @@
+module Elevateo
+  module SendWorker
+    class CallDeadline
+      class Expired < StandardError
+      end
+      @clock: ^() -> Float
+      @expires: Float
+      def initialize: (seconds: Float, ?clock: ^() -> Float) -> void
+      def check!: () -> nil
+    end
+  end
+end

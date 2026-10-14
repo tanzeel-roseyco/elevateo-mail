@@ -1,0 +1,76 @@
+{
+  "baseline": "03ae770c56271cd8236726bfd8fe63248e81283d",
+  "stage": "isolated_candidate_intake_NOT_root_acceptance",
+  "BE02": "OPEN",
+  "release": "GATED",
+  "owners": {
+    "Cassian": {
+      "tested_source": "013fe663563165a986f866ca9119b8b49c4332bf",
+      "contract_tests": "8runs78assertionsPASS",
+      "lint": "1file0offensesPASS"
+    },
+    "Elara": {
+      "head": "50c5747a45b03a4a633e31f1acf43d448c4842f9",
+      "tested_source": "3d7b61f519c0696c70a3d5c33a8c9641b852ee69",
+      "unchanged_owner_bytes": [
+        {
+          "path": "apps/server/lib/elevateo/send_worker/call_deadline.rb",
+          "sha256": "4582fe74ab80eb909b734943db0be5c4a798f80e1cea8b28cd1e5463de6abc27"
+        },
+        {
+          "path": "apps/server/lib/elevateo/send_worker/control.rb",
+          "sha256": "60c2c80fa44563a29ee6e8f6946db4bcb5363d4cf74281e6014334bf7557e07e"
+        },
+        {
+          "path": "apps/server/lib/elevateo/send_worker/local_failure_driver.rb",
+          "sha256": "180719f67539bc6484abebd181f9692db193cf6091d28327989ac69fa29c6f35"
+        },
+        {
+          "path": "apps/server/lib/elevateo/send_worker/submission_result.rb",
+          "sha256": "c9d3994653c4daaac28fd4d325516e6171847632d2ad3708a8117a9e0d8930a3"
+        },
+        {
+          "path": "apps/server/sig/send_worker/call_deadline.rbs",
+          "sha256": "9505d38b7c92f2ec8b59bde068a0c392fffe93aa5faa38732eb60b95b74bceb4"
+        },
+        {
+          "path": "apps/server/sig/send_worker/control.rbs",
+          "sha256": "15b98d1d0cf0bedca1942a13aeb64e55cebd9fd8012c5812d4673fd01ddca4a8"
+        },
+        {
+          "path": "apps/server/sig/send_worker/local_failure_driver.rbs",
+          "sha256": "83978718e1dbf7f8aec1df4725bcac110b0ca4b7cba326db64dee862e5b52db8"
+        },
+        {
+          "path": "apps/server/sig/send_worker/submission_result.rbs",
+          "sha256": "ffc417ef22daa23f6b1a6338e0c584be7bae4bef5c415cbb22e5a180d2a8cb60"
+        },
+        {
+          "path": "apps/server/test/send_worker/control_test.rb",
+          "sha256": "237de33c0a7b2aceaa241116e380ace3e1f8c9318b98fa8916c1d16c87a3d0d5"
+        },
+        {
+          "path": "apps/server/test/send_worker/local_failure_driver_test.rb",
+          "sha256": "d86590f630e8c2beb51f38fdf4e9cae0c5340fd0748c52cd56f499a454f96cc1"
+        }
+      ],
+      "source_results": "14runs125assertionsPASS; Steep0; lint6files0offenses0; exact8containerabsencePASS",
+      "candidate_integrated_runtime": "NOT_RUN"
+    },
+    "Rowan": {
+      "intake": "PENDING final review/test receipt"
+    },
+    "Nadia": {
+      "intake": "PENDING final review/type/lint/test receipt"
+    },
+    "Mira": {
+      "intake": "PENDING final generated/review/test receipt"
+    }
+  },
+  "root_documentation": {
+    "head": "f1c1295b036cbda21247425975f230aba350602d",
+    "closure": "a1b27ac63b16d296f29ef5ed7da4825875e5c0e2",
+    "actual_vault": "NOT_WRITTEN"
+  },
+  "execution": "Soren lease only for real DB/API; lightweight source checks delegated. No live activation."
+}

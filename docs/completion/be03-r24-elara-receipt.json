@@ -1,0 +1,67 @@
+{
+  "recorded_at": "2026-10-14T10:53:57.554774+00:00",
+  "branch": "delivery/elara-r24",
+  "source_commit": "3d7b61f519c0696c70a3d5c33a8c9641b852ee69",
+  "final_commit": "50c5747a45b03a4a633e31f1acf43d448c4842f9",
+  "changed_paths": [
+    "README.md",
+    "apps/server/lib/elevateo/send_worker/call_deadline.rb",
+    "apps/server/lib/elevateo/send_worker/control.rb",
+    "apps/server/lib/elevateo/send_worker/local_failure_driver.rb",
+    "apps/server/lib/elevateo/send_worker/submission_result.rb",
+    "apps/server/sig/send_worker/call_deadline.rbs",
+    "apps/server/sig/send_worker/control.rbs",
+    "apps/server/sig/send_worker/local_failure_driver.rbs",
+    "apps/server/sig/send_worker/submission_result.rbs",
+    "apps/server/test/send_worker/control_test.rb",
+    "apps/server/test/send_worker/local_failure_driver_test.rb",
+    "code-reviews.md",
+    "docs/completion/be03-elara-r24-worker.md",
+    "documentation.md",
+    "state.md"
+  ],
+  "image": "sha256:7dc61d4b7e12f94764f95f4f1bfe8e3940049247e6d409898ce9d3ed2810f348",
+  "dependencies": "Exact Gemfile.lock matched runtime; Ruby3.4.11/Minitest6.0.6/Steep2.1.0/RuboCop1.92.0",
+  "results": {
+    "unit": {
+      "exit": 0,
+      "log_sha256": "2bac5cf8f17c6adb5bab681909f56a236bbd0b8fc772d12a1d4c7b971320dc50",
+      "runs": 14,
+      "assertions": 125,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0
+    },
+    "steep": {
+      "exit": 0,
+      "log_sha256": "116d134f80462836829461eebe9c2fc6bc5a737b6f5e92b83aa1699220c0a750"
+    },
+    "lint": {
+      "exit": 0,
+      "log_sha256": "727e0581f1a5ecd077b4eadc954c85443ce71ccbc7dee0ec873b42b64602172b",
+      "files": 6,
+      "offenses": 0
+    }
+  },
+  "history": "fc912d7 initial strictSteep exit1 tuple inference; explicit typed local binding repair, reviews3defects plus type1 repaired0remaining",
+  "cleanup": {
+    "exact_containers_absent": [
+      "elara-r24-gem-inventory",
+      "elara-r24-worker-unit-fc912d7",
+      "elara-r24-pinned-unit-fc912d7",
+      "elara-r24-steep-fc912d7",
+      "elara-r24-lint-fc912d7",
+      "elara-r24-steep-3d7b61f",
+      "elara-r24-unit-3d7b61f",
+      "elara-r24-lint-3d7b61f"
+    ],
+    "task_images_created": 0,
+    "task_volumes_created": 0,
+    "shared_dependency_image": "retained unchanged; Soren sole cleanup owner",
+    "persistent_resources_modified": false,
+    "lyra18140": "untouched"
+  },
+  "integration": "No SQL dispatch/auth/lease/fence/restore claim; NOT_RUN",
+  "be02": "OPEN/unaccepted; integration/release root-gated",
+  "fast_billing": "UNVERIFIED"
+}
