@@ -236,6 +236,24 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v2/outreach/campaigns/{campaign_id}/sequence": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Inert campaign sequence draft metadata; no send, due claim or enrollment authority. */
+        get: operations["getOutreachSequenceDraft"];
+        /** @description Inert campaign sequence draft metadata; no send, due claim or enrollment authority. */
+        put: operations["saveOutreachSequenceDraft"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -415,6 +433,49 @@ export interface components {
             /** @description Null clears the preference; a string must contain at least one non-whitespace code point and no control characters. */
             display_name: string | null;
             revision: number;
+        };
+        OutreachSequenceStep: {
+            /** Format: uuid */
+            id: string;
+            position: number;
+            delay_seconds: number;
+            local_time: string;
+            label: string;
+        };
+        OutreachSequenceDraft: {
+            /** Format: uuid */
+            id: string;
+            /** Format: uuid */
+            campaign_id: string;
+            /** @enum {string} */
+            status: "draft" | "held";
+            /** @description Server validates an IANA timezone identifier. */
+            timezone: string;
+            /** @description Positions must be unique and exactly 1..N in array order. */
+            steps: components["schemas"]["OutreachSequenceStep"][];
+            version: number;
+        };
+        OutreachSequenceChange: {
+            /** Format: uuid */
+            id: string;
+            /** Format: uuid */
+            campaign_id: string;
+            /** @enum {string} */
+            status: "draft" | "held";
+            /** @description Server validates an IANA timezone identifier. */
+            timezone: string;
+            /** @description Positions must be unique and exactly 1..N in array order. */
+            steps: components["schemas"]["OutreachSequenceStep"][];
+            /** Format: uuid */
+            operation_id: string;
+            /** @description Null creates the one campaign draft; an integer replaces its exact version. */
+            expected_version: number | null;
+        };
+        OutreachSequenceError: {
+            /** @enum {string} */
+            code: "request_invalid" | "not_available" | "draft_conflict" | "operation_mismatch";
+            message: string;
+            request_id: string;
         };
     };
     responses: {
@@ -966,6 +1027,101 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
+            };
+        };
+    };
+    getOutreachSequenceDraft: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                campaign_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Current campaign draft metadata */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["OutreachSequenceDraft"];
+                };
+            };
+            /** @description Absent or inaccessible campaign/draft */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["OutreachSequenceError"];
+                };
+            };
+        };
+    };
+    saveOutreachSequenceDraft: {
+        parameters: {
+            query?: never;
+            header: {
+                "X-CSRF-Token": string;
+            };
+            path: {
+                campaign_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["OutreachSequenceChange"];
+            };
+        };
+        responses: {
+            /** @description Replaced or exact replayed draft */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["OutreachSequenceDraft"];
+                };
+            };
+            /** @description Created draft */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["OutreachSequenceDraft"];
+                };
+            };
+            /** @description Malformed or extra input */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["OutreachSequenceError"];
+                };
+            };
+            /** @description Absent or inaccessible campaign/draft */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["OutreachSequenceError"];
+                };
+            };
+            /** @description Revision, operation or reschedule conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["OutreachSequenceError"];
+                };
             };
         };
     };

@@ -9,6 +9,12 @@ const binary = (body: string, length = body.length) => new Response(body, { head
   'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff',
   'Content-Disposition': 'attachment; filename="attachment"',
 } })
+const blobText = (blob: Blob): Promise<string> => new Promise((resolve, reject) => {
+  const reader = new FileReader()
+  reader.onload = () => resolve(String(reader.result))
+  reader.onerror = () => reject(reader.error)
+  reader.readAsText(blob)
+})
 
 describe('inert private attachment gateway port', () => {
   it('validates rejected metadata and reads bounded same-origin bytes', async () => {
@@ -23,7 +29,7 @@ describe('inert private attachment gateway port', () => {
     const page = await gateway.listInboxAttachments(context, id, id, id, { limit: 50 }, signal())
     expect(page.items[0]?.scan_status).toBe('rejected')
     const blob = await gateway.downloadCleanInboxAttachment(context, id, id, id, id, signal())
-    expect(await blob.text()).toBe('abc')
+    expect(await blobText(blob)).toBe('abc')
     expect(fetchImpl.mock.calls[1]?.[1]).toMatchObject({ credentials: 'same-origin', cache: 'no-store', redirect: 'manual' })
   })
 
