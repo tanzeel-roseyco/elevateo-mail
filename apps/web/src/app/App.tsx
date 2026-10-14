@@ -11,6 +11,7 @@ import { SearchPage } from '@/features/search/SearchPage'
 import { ThreadPage } from '@/features/thread/ThreadPage'
 import { MailboxSelection } from './MailboxSelection'
 import { DraftIntentProvider } from './draftIntent'
+import { featureRoutes } from './features'
 import { SessionProvider } from './session'
 import { Shell } from './Shell'
 
@@ -35,6 +36,10 @@ export function App({ gateway }: { gateway: MailroomGateway }) {
             <Route path="/mailboxes/:mailboxId/send-intents/:sendId" element={<SendStatusPage />} />
             <Route path="/mailboxes/:mailboxId/members" element={<MembersPage />} />
             <Route path="/search" element={<SearchPage />} />
+            {/* FE-805: registered feature routes (Outreach etc.) come from the validated registry. */}
+            {featureRoutes.map((route) => (
+              <Route key={route.path} path={route.path} element={route.element} />
+            ))}
             <Route path="*" element={<Navigate to="/" replace />} />
           </Route>
         </Routes>

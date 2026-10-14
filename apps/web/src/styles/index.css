@@ -20,6 +20,7 @@
   --color-danger-fg: var(--danger-fg);
   --color-success: var(--success);
   --color-warn: var(--warn);
+  --color-brand-tile: var(--brand-tile);
   --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
@@ -81,6 +82,9 @@
   --accent-fg: #000000;
   --accent-text: #7a6218;
   --row-py: 0.625rem;
+  /* AIDEV-NOTE: FE-805 brand tile is theme-independent on purpose: the authentic gold PNG mark is
+     only guaranteed legible on a dark neutral surface (elevateoco.com uses #080a0e/#0a0b0f). */
+  --brand-tile: #0a0b0f;
 }
 
 :root,

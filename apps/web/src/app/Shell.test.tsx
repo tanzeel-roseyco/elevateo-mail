@@ -13,6 +13,7 @@ import type { MailroomGateway } from '@/data/gateway'
 import { SESSION_FRESHNESS_INTERVAL_MS, SessionProvider } from './session'
 import { Shell } from './Shell'
 import { MailboxSelection } from './MailboxSelection'
+import { featureRoutes } from './features'
 
 const contextChanged = () => new GatewayError('api', 'context_changed', 'synthetic', { status: 409, requestId: 'r1' })
 const cursorInvalid = () => new GatewayError('api', 'cursor_invalid', 'synthetic', { status: 400, requestId: 'r1' })
@@ -422,5 +423,29 @@ describe('initial mailbox selection guidance (Mira R16)', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Try again' }))
     await screen.findByRole('heading', { name: 'No visible mailboxes', level: 2 })
     expect(readCalls()).toBe(2)
+  })
+})
+
+describe('registered feature routes (FE-805)', () => {
+  it('an Outreach link in the rail reaches the truthful placeholder page inside the shell', async () => {
+    render(
+      <SessionProvider gateway={createFixtureGateway()}>
+        <MemoryRouter initialEntries={['/outreach/campaigns']}>
+          <Routes>
+            <Route element={<Shell />}>
+              <Route index element={<MailboxSelection />} />
+              {featureRoutes.map((route) => (
+                <Route key={route.path} path={route.path} element={route.element} />
+              ))}
+            </Route>
+          </Routes>
+        </MemoryRouter>
+      </SessionProvider>,
+    )
+    await screen.findByText('Synthetic organization A')
+    await screen.findByText('Campaigns is not available in this build')
+    expect(screen.getByRole('navigation', { name: 'Outreach' })).toBeTruthy()
+    expect(screen.getByRole('link', { name: 'Campaigns' }).getAttribute('aria-current')).toBe('page')
+    expect(screen.getByText('Simulated local mail')).toBeTruthy()
   })
 })

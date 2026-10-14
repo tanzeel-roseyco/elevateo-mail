@@ -4,6 +4,10 @@ Cassian prepared disabled organization grant, simulation-only outreach and inter
 
 # Project state
 
+### Fable FE-805 shell/sidebar/brand candidate (2026-10-15)
+
+Isolated on fleet baseline `bbf2353`, branch `completion/fable-fe805`; not integrated. Adds the authentic Elevateo mark under `apps/web/public/brand` (hashes match root's provenance), a `BrandMark` primitive on a fixed dark tile, a pure validated feature registry with an Outreach seam for Celeste, and a rail split into independent Personal and Outreach landmarks with no global switcher. Existing routes, session gate, drawer names and frozen contracts are unchanged. Registry, sidebar and shell tests are added but **not executed**; Docker lint/type/unit/build and visual evidence are requested from Soren/Tessa. See [Fable record](docs/completion/fable.md).
+
 Application IN PROGRESS — R24 isolated BE03 candidate (2026-10-14). Root authorizes implementation on baseline `03ae770c56271cd8236726bfd8fe63248e81283d` in parallel with BE02 acceptance. BE02 remains OPEN/unaccepted; integration/release gated. S1+S2 priority: saved draft -> consistent review -> human approval -> durable queued intent. Canonical additive `contracts/v1/openapi.json` version `1.0.0-send.1` is prepared; every baseline C/D operation/component and original fixture is preserved.
 ### Mira BE03 UI isolated R24 implementation (2026-10-14)
 
