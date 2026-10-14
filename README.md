@@ -24,6 +24,7 @@ A separate held IMAP worker candidate adds account mapping, synthetic server-onl
 Soren's first network-none fleet unit pass covered isolated MIME normalization, worker store mapping and TLS-constructor options on exact `a9089b7`; the sync file exposed a Minitest helper name collision before cases and has a test-only repair at `5e0625d`. Migration `00012`, sync rerun, actual TLS handshake and integration acceptance remain pending.
 The next source candidate orders discovered IMAP UIDs and imports at most the oldest 50 per pass, validating a whole page before any cursor advance. Rhea's isolated localhost:1993 Mox certificate fixture is pending actual peer-and-hostname-verified handshake proof.
 Corin's next focused repair addresses exact fleet Steep/RuboCop failures in the held IMAP store, TLS option types and owned HTTP/unit assertions; the successor strict gate is pending Soren.
+An additive inbound attachment candidate now parses bounded PDF/PNG/JPEG/plaintext parts, stages bytes in private quarantine, and binds pending-scan metadata with the IMAP receipt before cursor advance. It depends on Nadia's ATT823 migration `00015` and a restricted worker Storage adapter; fleet migration, strict checks and storage behavior remain unverified.
 
 
 ### R25 approval reload recovery candidate

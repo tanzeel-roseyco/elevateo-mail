@@ -16,6 +16,12 @@ class ImapIngressTest < Minitest::Test
     end
   end
 
+  class Storage
+    attr_reader :staged
+    def initialize = (@staged = [])
+    def put_once(key, bytes) = @staged << [key, bytes]
+  end
+
   def setup
     @store = Store.new
     @ingress = Elevateo::Inbound::ImapIngress.new(store: @store)
@@ -44,6 +50,18 @@ class ImapIngressTest < Minitest::Test
       ingest(raw_mime: multipart)
     }.code
     assert_empty @store.calls
+  end
+
+  def test_supported_attachment_stages_before_atomic_store_call
+    storage = Storage.new
+    ingress = Elevateo::Inbound::ImapIngress.new(store: @store, attachment_storage: storage)
+    raw = MIME.sub("Content-Type: text/plain; charset=UTF-8\r\n\r\nhello",
+      "Content-Type: multipart/mixed; boundary=x\r\n\r\n--x\r\nContent-Type: text/plain\r\n\r\nhello\r\n" \
+      "--x\r\nContent-Type: application/pdf\r\nContent-Disposition: attachment; filename=report.pdf\r\n\r\n%PDF-demo\r\n--x--\r\n")
+    result = ingress.ingest(account_id: ACCOUNT, credential_version: 1, uidvalidity: 42, uid: 7, raw_mime: raw)
+    assert_equal "created", result.fetch("result")
+    assert_equal [["quarantine/imap/#{ACCOUNT}/42/7/0", "%PDF-demo"]], storage.staged
+    assert_equal "report.pdf", @store.calls.first.fetch(:attachments).first.fetch(:filename)
   end
 
   private

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative "fake_ingress"
+require_relative "imap_attachment_parser"
 
 module Elevateo
   module Inbound
@@ -17,8 +18,9 @@ module Elevateo
         end
       end
 
-      def initialize(store:)
+      def initialize(store:, attachment_storage: nil)
         @store = store
+        @attachment_storage = attachment_storage
       end
 
       def ingest(account_id:, credential_version:, uidvalidity:, uid:, raw_mime:)
@@ -35,12 +37,27 @@ module Elevateo
           raw_mime: raw_mime)
         parsed = capture.record
         raise Rejected, "invalid_mime" unless parsed
-        # Attachments need quarantine/storage before IMAP import; never silently discard their bytes.
-        raise Rejected, "unsupported_mime" unless parsed.fetch(:attachments).empty?
+        handles = []
+        unless parsed.fetch(:attachments).empty?
+          raise Rejected, "attachment_storage_unavailable" unless @attachment_storage
+
+          extracted = ImapAttachmentParser.new.parse(raw_mime: raw_mime).fetch(:attachments)
+          raise Rejected, "invalid_mime" unless extracted.length == parsed.fetch(:attachments).length
+
+          extracted.each do |attachment|
+            ordinal = attachment.fetch(:ordinal)
+            key = "quarantine/imap/#{account_id.downcase}/#{uidvalidity}/#{uid}/#{ordinal}"
+            @attachment_storage.put_once(key, attachment.fetch(:bytes))
+            handles << { ordinal: ordinal, filename: attachment.fetch(:filename),
+              content_type: attachment.fetch(:content_type), byte_size: attachment.fetch(:byte_size),
+              sha256: attachment.fetch(:sha256), storage_key: key }
+          end
+        end
 
         @store.insert_once(account_id: account_id.downcase, credential_version: credential_version,
           uidvalidity: uidvalidity, uid: uid, content_sha256: parsed.fetch(:content_sha256),
-          from: parsed.fetch(:from), to: parsed.fetch(:to), subject: parsed.fetch(:subject), text: parsed.fetch(:text))
+          from: parsed.fetch(:from), to: parsed.fetch(:to), subject: parsed.fetch(:subject), text: parsed.fetch(:text),
+          attachments: handles)
       end
     end
   end
