@@ -69,3 +69,5 @@ Soren exact c4fa27c fleet web run passed frozen V1 `check:api` and lint, then ty
 The direct-message browser response bound now matches `ReadResponse::MESSAGE_BYTES` at 2 MiB; the first 64 KiB browser draft could reject contract-legal messages with up to 100 bounded recipient addresses and a 16,384 code-point body. The JSON schema still validates each field and the transport enforces the byte ceiling before parse. This is source reasoning, not an executed boundary test.
 
 The canonical OpenAPI version was advanced to `2.0.0-draft.4` for the direct-message addition; Soren must regenerate/check V2 declarations from this exact source. No generated artifact is committed yet.
+
+Lyra 3039bcd fleet type-fixture repair and Mira 1923c16 later-page direct-message UI were merged. Mira's ThreadPage accepts Cassian's exact gateway method signature, but Fable App.tsx still renders the page without that optional prop; root/Fable were asked to bind it. Thus the direct message UI remains inactive in production source until that owner seam lands.
