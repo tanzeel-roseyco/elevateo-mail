@@ -740,3 +740,5 @@ QA815 `b3aaa07e` exact full backend lint found four fatal syntax offenses in one
 QA815 ADV144 independent review found one P2 in a 233-LOC browser runner packet (4.29 defects/KLOC): dangling symlink could redirect original proof creation. Exclusive no-follow repair and six cases are authored but not yet fleet-tested; the reviewer packet and density belong to Jules, not a QA815 self-review claim.
 
 QA815 first six-case fleet run on `7738f8fd` exposed one test fixture mode error, not a new source defect; source P2 status remains open pending corrected runtime proof. Independent source review LOC and density are unchanged.
+
+QA815 ADV144 repair `1fcb462f` six-case fleet PASS verifies exclusive/no-follow probe behavior against real Node fixtures; it is execution evidence, not a new independent review. Jules' prior 233-LOC/one-P2 review remains the bounded review record.

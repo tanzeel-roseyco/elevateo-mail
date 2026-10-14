@@ -176,3 +176,5 @@ QA815 `b3aaa07e` focused strict and ten units PASS 58/266. Full backend 21 migra
 QA815 ADV144 browser proof symlink P2 repaired in source with exclusive no-follow creation and target-preservation tests; new fleet result pending.
 
 QA815 first `7738f8fd` browser proof six-case unit run 5 PASS/1 fixture FAIL: intermediate output dir 0755. Test setup corrected; rerun pending.
+
+QA815 corrected `1fcb462f` ADV144 private output six-case fleet unit PASS, cleanup PASS; actual browser mount/reporter smoke NOT_RUN.

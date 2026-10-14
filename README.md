@@ -234,3 +234,5 @@ QA815 exact `b3aaa07e` focused Steep plus ten units PASS 58/266. Its full dispos
 QA815 browser proof P2 symlink repair uses exclusive no-follow file creation; six scoped cases are authored, with fleet execution pending. The earlier three-case PASS applies only to the predecessor.
 
 QA815 first six-case symlink repair unit run failed one test fixture setup (intermediate output dir 0755); five passed, cleanup passed. Corrected private directory fixture awaits fleet rerun.
+
+QA815 corrected `1fcb462f` browser privacy probe regressions passed 6/6 in fleet Playwright base, including symlink target preservation; task cleanup passed. Actual mounted browser preflight and reporter smoke remain pending.

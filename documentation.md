@@ -244,3 +244,5 @@ QA815 `b3aaa07e` focused PASS receipt `docs/completion/qa815-evidence/focused-st
 QA815 ADV144 browser private-output proof P2 repair and six-case regression source are in `ops/tests/be02/acceptance_runtime.py` and `test_acceptance_private_output.py`; new fleet execution pending. Prior three-case receipt is predecessor only.
 
 QA815 first `7738f8fd` browser proof test receipt `docs/completion/qa815-evidence/acceptance-private-7738f8fd5d81.txt` records one 0755 test-fixture failure and cleanup; corrected fixture rerun pending.
+
+QA815 corrected browser proof receipt `docs/completion/qa815-evidence/acceptance-private-1fcb462f985e.txt` records six real Node/Python regression PASS on exact `1fcb462f` with cleanup; predecessor fixture failure remains linked in `docs/completion/soren.md`.
