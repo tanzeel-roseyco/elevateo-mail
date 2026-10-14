@@ -216,3 +216,5 @@ QA816 ADV046/047 repairs require a real send-review denial response and alert, a
 QA816 Outreach detail screenshot is gated by exact case-owned campaign name plus draft state. This avoids selecting unrelated paused-mode text; runtime and independent repair review remain pending.
 
 QA816 six-partition visual case waits for real mailbox GET200 and seeded thread before each screenshot, then checks branded navigation and overflow at 390/768/1440 in light/dark. It uses the Fable f295b35 mobile labels. No pixel acceptance is inferred until Soren returns real PNGs for root/Tessa inspection.
+
+QA816 V2 logout cache case now binds its prelogout claim to a real grants GET 200 and one concrete rendered UUID grant item, then checks that item is absent after logout. The marker stays in test memory and is not exported as evidence. Runtime and review closure remain pending.

@@ -206,3 +206,5 @@ QA816 source now repairs three additional independent review findings: delayed s
 QA816 campaign detail evidence now waits for the exact case-owned name and draft status; source and screenshot checks remain pending fleet browser execution.
 
 QA816 now requests six additional real API-backed branded shell screenshots at 390, 768 and 1440 pixels in light and dark themes. Fleet capture, pixel inspection and independent review remain pending.
+
+QA816 logout acceptance now waits for a real populated V2 grants response and rendered grant marker before verifying post-logout cache clearing. Independent repair review and fleet browser evidence remain pending.

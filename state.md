@@ -148,3 +148,5 @@ QA816 head 1c41d40 repins ADV046/047 repairs in send/outreach/reply browser orac
 QA816 head 0c21185 repins Outreach packet C after exact campaign name/status oracle tightening. Current source has not been compiled or run in fleet browser; earlier 6f91c53 compile/unit receipt remains nontransferable.
 
 QA816 head fa34ea3 adds SCN-QA-822-P (390/768/1440 light/dark) and expands fixed screenshot admission to 34 IDs. Felix's prior B182 review excludes the three new allowlist lines; D36 and B delta reviews plus actual browser images remain pending.
+
+QA816 head 487f422 repairs Ada ADV050's People heading-only logout oracle: real nonempty V2 grants GET and exact rendered marker are required before logout, then marker disappearance on protected deep links. Source-only; current browser/screenshots remain NOT_RUN.
