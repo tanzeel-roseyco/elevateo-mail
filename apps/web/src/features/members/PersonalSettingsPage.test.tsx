@@ -56,6 +56,14 @@ describe('personal settings', () => {
     expect(update).not.toHaveBeenCalled()
   })
 
+  it('rejects a read from another authorization context', async () => {
+    read.mockResolvedValue({ context_id: 'other', authorization_version: 'v1', display_name: 'Foreign', revision: 2 })
+    render(<PersonalSettingsPage />)
+    expect(await screen.findByText('Personal settings could not be loaded')).toBeTruthy()
+    expect(screen.queryByDisplayValue('Foreign')).toBeNull()
+    expect(update).not.toHaveBeenCalled()
+  })
+
   it('blocks stale writes until a fresh read', async () => {
     update.mockRejectedValue(new GatewayError('api', 'membership_conflict', 'stale', { status: 409 }))
     render(<PersonalSettingsPage />)
