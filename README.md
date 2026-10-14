@@ -4,6 +4,8 @@ A planned shared company mailbox for approximately **10 people**, available on a
 
 ## Current state
 
+2026-10-14 FE-405 / GitHub #14: IN PROGRESS. Authored mobile search query/scope controls, focus-owned search edits with URL/history synchronization, and exact sidebar aria-current while preserving mailbox group styling. Independent bounded source and design reviews repaired one duplicated history defect; runtime gates and actual visual evidence remain pending through Soren/Elara. Baseline generated API check failed; regeneration is queued in Docker. See docs/completion/fe405-search-navigation.md.
+
 INT-401 bounded repair (2026-10-14): restored canonical BE02 compose.yaml, 37 nested BE01 tooling files, three evidence-script dependencies and eight Backend Performance docs. 629 overlay hashes match; 63 static dependency checks leave one inherited frozen-manifest hash conflict, plus scripts/dev seed/check name absent Compose services. Linus ADV-729 reviewed 172 source lines, confirmed two integration defects (11.63/KLOC); repairs are statically observed, independent re-review and all runtime/visual checks remain pending. Application IN PROGRESS; root owns testing and GitHub issues. See docs/completion/int401-repair.md.
 
 INT-401 handoff: source preservation/integration complete, application IN PROGRESS. Verified 45,507 archived source entries and 580 canonical overlay files with zero hash mismatches; original executable modes restored. Remote tests and independent review remain pending. See docs/completion/int401-handoff.md. An ignored partial runtime export copy remains after automatic cleanup approval rejection; no original data removed.

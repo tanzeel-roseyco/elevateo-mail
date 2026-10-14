@@ -1,0 +1,63 @@
+1: // BE-02 C/D shell wiring: capability-gated sub-links (Drafts for compose, Members for
+2: // manage_members) appear under the active mailbox only, the search entry exists in the header
+3: // form and the sidebar, and the footnote states that drafts and notes stay local.
+4: import { render, screen } from '@testing-library/react'
+5: import { MemoryRouter, Route, Routes } from 'react-router'
+6: import { describe, expect, it } from 'vitest'
+7: import { createFixtureGateway } from '@/data/fixtures/fixtureGateway'
+8: import { CD_FIXTURE as CD } from '@/data/fixtures/collaborationState'
+9: import { SessionProvider } from './session'
+10: import { Shell } from './Shell'
+11: 
+12: const INBOX = '00000000-0000-4000-8000-000000000021'
+13: 
+14: function renderShellAt(entry: string) {
+15:   return render(
+16:     <SessionProvider gateway={createFixtureGateway()}>
+17:       <MemoryRouter initialEntries={[entry]}>
+18:         <Routes>
+19:           <Route element={<Shell />}>
+20:             <Route index element={<p>outlet-content</p>} />
+21:             <Route path="mailboxes/:mailboxId" element={<p>outlet-content</p>} />
+22:             <Route path="mailboxes/:mailboxId/drafts" element={<p>outlet-content</p>} />
+23:             <Route path="mailboxes/:mailboxId/members" element={<p>outlet-content</p>} />
+24:             <Route path="search" element={<p>outlet-content</p>} />
+25:           </Route>
+26:         </Routes>
+27:       </MemoryRouter>
+28:     </SessionProvider>,
+29:   )
+30: }
+31: 
+32: describe('collaboration navigation', () => {
+33:   it('shows Drafts and Members under the active C/D mailbox, plus the search entries', async () => {
+34:     renderShellAt(`/mailboxes/${CD.mailboxId}`)
+35:     const mailbox = await screen.findByRole('link', { name: 'C/D fixture mailbox' })
+36:     expect(mailbox.getAttribute('aria-current')).toBe('page')
+37:     expect(screen.getByRole('link', { name: 'Drafts' }).getAttribute('href')).toBe(`/mailboxes/${CD.mailboxId}/drafts`)
+38:     expect(screen.getByRole('link', { name: 'Members' }).getAttribute('href')).toBe(`/mailboxes/${CD.mailboxId}/members`)
+39:     expect(screen.getByRole('link', { name: 'Search' }).getAttribute('href')).toBe('/search')
+40:     expect(screen.getByRole('search')).toBeTruthy()
+41:     expect(screen.getByText('Simulated local mail')).toBeTruthy()
+42:     expect(screen.getByText(/drafts and notes stay on this installation/)).toBeTruthy()
+43:   })
+44: 
+45:   it('hides the sub-links for a read-only mailbox and for inactive mailboxes', async () => {
+46:     renderShellAt(`/mailboxes/${INBOX}`)
+47:     const inbox = await screen.findByRole('link', { name: 'Fixture inbox' })
+48:     expect(inbox.getAttribute('aria-current')).toBe('page')
+49:     expect(screen.getByRole('link', { name: 'C/D fixture mailbox' })).toBeTruthy()
+50:     expect(screen.queryByRole('link', { name: 'Drafts' })).toBeNull()
+51:     expect(screen.queryByRole('link', { name: 'Members' })).toBeNull()
+52:   })
+53: 
+54:   it('marks only the exact Members destination current and retains mailbox group styling', async () => {
+55:     renderShellAt(`/mailboxes/${CD.mailboxId}/members`)
+56:     const members = await screen.findByRole('link', { name: 'Members' })
+57:     expect(members.getAttribute('aria-current')).toBe('page')
+58:     expect(screen.getByRole('link', { name: 'Drafts' }).getAttribute('aria-current')).toBeNull()
+59:     expect(screen.getByRole('link', { name: 'C/D fixture mailbox' }).getAttribute('aria-current')).toBeNull()
+60:     expect(screen.getByRole('link', { name: 'C/D fixture mailbox' }).className).toContain('bg-accent-soft')
+61:     expect(document.querySelectorAll('nav [aria-current="page"]')).toHaveLength(1)
+62:   })
+63: })

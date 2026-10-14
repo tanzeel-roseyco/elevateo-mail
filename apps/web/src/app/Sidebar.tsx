@@ -22,7 +22,7 @@ function Item({ mailbox, onNavigate }: { mailbox: Mailbox; onNavigate?: (() => v
       <Link
         to={base}
         onClick={onNavigate}
-        aria-current={active ? 'page' : undefined}
+        aria-current={pathname === base ? 'page' : undefined}
         className={cx(
           'relative flex h-9 items-center gap-3 rounded-lg px-3 text-sm',
           active ? 'bg-accent-soft font-semibold text-accent-text' : 'text-fg hover:bg-surface-2',
@@ -36,7 +36,7 @@ function Item({ mailbox, onNavigate }: { mailbox: Mailbox; onNavigate?: (() => v
       {active && subLinks.length > 0 && (
         <ul className="mb-1 ml-8 flex flex-col gap-0.5">
           {subLinks.map((link) => {
-            const current = pathname === link.to || pathname.startsWith(`${link.to}/`)
+            const current = pathname === link.to
             return (
               <li key={link.to}>
                 <Link

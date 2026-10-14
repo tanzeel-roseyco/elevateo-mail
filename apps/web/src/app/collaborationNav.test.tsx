@@ -51,11 +51,13 @@ describe('collaboration navigation', () => {
     expect(screen.queryByRole('link', { name: 'Members' })).toBeNull()
   })
 
-  it('marks the Members sub-link current while inside it and keeps the mailbox marked current', async () => {
+  it('marks only the exact Members destination current and retains mailbox group styling', async () => {
     renderShellAt(`/mailboxes/${CD.mailboxId}/members`)
     const members = await screen.findByRole('link', { name: 'Members' })
     expect(members.getAttribute('aria-current')).toBe('page')
     expect(screen.getByRole('link', { name: 'Drafts' }).getAttribute('aria-current')).toBeNull()
-    expect(screen.getByRole('link', { name: 'C/D fixture mailbox' }).getAttribute('aria-current')).toBe('page')
+    expect(screen.getByRole('link', { name: 'C/D fixture mailbox' }).getAttribute('aria-current')).toBeNull()
+    expect(screen.getByRole('link', { name: 'C/D fixture mailbox' }).className).toContain('bg-accent-soft')
+    expect(document.querySelectorAll('nav [aria-current="page"]')).toHaveLength(1)
   })
 })
