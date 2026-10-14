@@ -1,7 +1,6 @@
 SET LOCAL ROLE elevateo_session_owner;
-REVOKE EXECUTE ON FUNCTION app_auth.resolve_session(text) FROM elevateo_owner;
-SET LOCAL ROLE elevateo_owner;
 DROP FUNCTION app.organization_grants_page(text,uuid,integer);
+SET LOCAL ROLE elevateo_owner;
 DROP FUNCTION app.enroll_verified_organization_grant(uuid,uuid,text,text);
 DROP TABLE app.organization_enrollment_receipts;
 DROP FUNCTION app.authorize_outreach_draft_write(text);

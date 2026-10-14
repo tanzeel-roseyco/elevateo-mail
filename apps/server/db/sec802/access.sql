@@ -12,7 +12,10 @@ CREATE UNIQUE INDEX organization_single_owner ON app.organization_access (organi
 ALTER TABLE app.organization_access ENABLE ROW LEVEL SECURITY;
 ALTER TABLE app.organization_access FORCE ROW LEVEL SECURITY;
 CREATE POLICY access_owner_routine ON app.organization_access TO elevateo_owner USING (true) WITH CHECK (true);
+CREATE POLICY access_session_read ON app.organization_access FOR SELECT TO elevateo_session_owner
+  USING (organization_id = NULLIF(current_setting('app.org_id', true), '')::uuid);
 REVOKE ALL ON app.organization_access FROM PUBLIC, elevateo_api, elevateo_app_read, elevateo_worker;
+GRANT SELECT (organization_id, user_id, role, revision) ON app.organization_access TO elevateo_session_owner;
 -- AIDEV-NOTE: A sole owner cannot disappear through membership cascade or direct owner-role mutation.
 CREATE FUNCTION app.prevent_owner_loss() RETURNS trigger
 LANGUAGE plpgsql VOLATILE SECURITY DEFINER SET search_path = pg_catalog AS $$
@@ -287,8 +290,6 @@ GRANT EXECUTE ON FUNCTION app.authorize_outreach_draft_write(text) TO elevateo_a
 
 -- AIDEV-NOTE: A digest-backed session proof is required; caller-controlled tenant GUCs alone cannot list grants.
 SET LOCAL ROLE elevateo_session_owner;
-GRANT EXECUTE ON FUNCTION app_auth.resolve_session(text) TO elevateo_owner;
-SET LOCAL ROLE elevateo_owner;
 CREATE FUNCTION app.organization_grants_page(p_digest text, p_after uuid, p_limit integer)
 RETURNS jsonb LANGUAGE plpgsql STABLE SECURITY DEFINER SET search_path = pg_catalog AS $$
 DECLARE proof jsonb; org uuid; actor uuid; actor_role text; actor_revision integer; rows jsonb; extra uuid; cursor_id uuid;
@@ -313,7 +314,6 @@ BEGIN
       'role', page.role, 'revision', page.revision) ORDER BY page.user_id), '[]'::jsonb)
     INTO rows FROM (
       SELECT a.user_id, a.role, a.revision FROM app.organization_access a
-      JOIN app.organization_memberships m ON (m.organization_id, m.user_id) = (a.organization_id, a.user_id)
       WHERE a.organization_id = org AND (p_after IS NULL OR a.user_id > p_after)
       ORDER BY a.user_id LIMIT p_limit
     ) page;
@@ -322,7 +322,6 @@ BEGIN
     ORDER BY (item.value->>'user_id')::uuid DESC LIMIT 1;
   IF cursor_id IS NOT NULL THEN
     SELECT a.user_id INTO extra FROM app.organization_access a
-      JOIN app.organization_memberships m ON (m.organization_id, m.user_id) = (a.organization_id, a.user_id)
       WHERE a.organization_id = org AND a.user_id > cursor_id ORDER BY a.user_id LIMIT 1;
   END IF;
   RETURN jsonb_build_object('status', 'ok', 'actor',
@@ -332,3 +331,4 @@ END $$;
 REVOKE ALL ON FUNCTION app.organization_grants_page(text,uuid,integer)
   FROM PUBLIC, elevateo_api, elevateo_app_read, elevateo_worker;
 GRANT EXECUTE ON FUNCTION app.organization_grants_page(text,uuid,integer) TO elevateo_api;
+SET LOCAL ROLE elevateo_owner;
