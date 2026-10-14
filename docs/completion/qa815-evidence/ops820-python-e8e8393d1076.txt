@@ -1,0 +1,61 @@
+source=e8e8393d10764e8d979877f57d7ac3b59a1ba8cf
+image=sha256:48a11b7ba705fd53bf15248d1f94d36c39549903c5d59edcfa2f3f84126e7b44
+started=2026-10-14T18:07:21Z
+Python 3.12.9
+RUN test_make_test_env.py
+...
+----------------------------------------------------------------------
+Ran 3 tests in 0.002s
+
+OK
+test_exit=0 file=test_make_test_env.py
+RUN test_verify_snapshot.py
+....
+----------------------------------------------------------------------
+Ran 4 tests in 0.003s
+
+OK
+test_exit=0 file=test_verify_snapshot.py
+RUN test_runtime_env.py
+.....
+----------------------------------------------------------------------
+Ran 5 tests in 0.002s
+
+OK
+test_exit=0 file=test_runtime_env.py
+RUN test_probe_cleanup.py
+.
+----------------------------------------------------------------------
+Ran 1 test in 0.080s
+
+OK
+test_exit=0 file=test_probe_cleanup.py
+RUN test_compose_absence.py
+.
+----------------------------------------------------------------------
+Ran 1 test in 0.051s
+
+OK
+test_exit=0 file=test_compose_absence.py
+RUN test_gateway_runtime_env.py
+...
+----------------------------------------------------------------------
+Ran 3 tests in 0.001s
+
+OK
+test_exit=0 file=test_gateway_runtime_env.py
+RUN test_clamav_probe.py
+......
+----------------------------------------------------------------------
+Ran 6 tests in 0.002s
+
+OK
+clean.txt sha256=f7077fb928b2535246d18af56bbd4f1bbd3db58e14467dbceb4c2784734bb2ed
+eicar.txt sha256=275a021bbfb6489e54d471899f7db9d1663fc695ec2fe2a2c4538aabf651fd0f
+clean.txt sha256=f7077fb928b2535246d18af56bbd4f1bbd3db58e14467dbceb4c2784734bb2ed
+eicar.txt sha256=275a021bbfb6489e54d471899f7db9d1663fc695ec2fe2a2c4538aabf651fd0f
+test_exit=0 file=test_clamav_probe.py
+run_exit=0
+archive_absent=yes
+remaining_task_containers=0
+finished=2026-10-14T18:07:24Z

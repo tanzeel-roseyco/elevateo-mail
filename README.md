@@ -508,3 +508,5 @@ ATT902 candidate now contains Nadia's private inbound attachment content action 
 The three new V2 route mappings are prepared in the central registry but excluded from its active allowlist; explicit registration is rejected until the feature gates pass.
 
 The thread shell has an optional attachment read port seam, still absent from production until private byte and real-auth fleet gates pass.
+
+QA815 exact `e8e8393d` offline OPS820 Python checks passed seven scripts/23 cases after a task-only noexec tmpfs correction; no application restore, ClamAV or real-auth browser PASS follows. Playwright reporter path mismatch remains a preflight blocker.

@@ -513,3 +513,5 @@ The ATT902 inactive content source uses `Attachments::DownloadService` to rechec
 `V2RouteRegistry::ROUTES` now records the draft.8 assignee, attachment metadata and private content controller targets, while `ACTIVE_OPERATIONS` excludes them. `v2_route_registry_test.rb` checks explicit activation denial; this is source-only until Soren fleet execution.
 
 `FeatureGateways.attachmentPort` is optional and App passes it to ThreadPage only when injected. Main omits it until the private content route and scanner/authority/HTTP/browser gates pass.
+
+OPS820 offline fleet Python runner/receipts are `ops/tests/qa815/run-ops820-python.sh` and `docs/completion/qa815-evidence/ops820-python-e8e8393d1076*.txt`. The passing rerun covers seven scripts/23 cases with cleanup only; no application restore or real ClamAV. A separate real-auth browser reporter path correction is pending.

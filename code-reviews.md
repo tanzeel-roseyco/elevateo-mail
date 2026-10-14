@@ -1337,3 +1337,5 @@ Nadia ATT902 final `95acc3b3` content source/test/RBS is integrated inactive. Ad
 Cassian draft.8 route registry preparation adds only three inactive mappings plus a denial regression; independent review and fleet route tests pending, reviewed LOC/defects/KLOC unclaimed. Review must confirm active allowlist equality and that private byte route cannot be registered explicitly.
 
 ATT902 Cassian optional shell seam adds an AttachmentReadPort capability and conditional ThreadPage prop only; main injection and route activation remain off. Independent source review and runtime pending, reviewed LOC/defects/KLOC unclaimed.
+
+QA815 OPS820 exact `e8e8393d` offline suite seven scripts/23 cases PASS after an earlier noexec task-harness failure is executed test evidence, not independent source review. Source/base/full restore, real ClamAV and browser runtime are outside coverage; reviewed LOC/defects/KLOC unchanged.

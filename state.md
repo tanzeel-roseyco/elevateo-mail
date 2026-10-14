@@ -453,3 +453,5 @@ Nadia ATT902 final `95acc3b3` private content source/tests are imported as inact
 V2 registry knows the draft.8 assignee and attachment controller mappings but keeps all three inactive; a new unexecuted registry regression asserts explicit requests fail closed.
 
 ATT902 App/featureGateways now carry an optional attachment read port to ThreadPage, with production main injection still absent. No viewer activation or byte PASS follows.
+
+Soren fleet OPS820 offline Python suite passed seven scripts/23 cases on exact e8e8393d after initial noexec task-runner failure; cleanup PASS. The source/base/full restore and real ClamAV remain NOT_RUN; browser reporter `.ts`/`.js` preflight mismatch remains open.
