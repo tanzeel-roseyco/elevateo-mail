@@ -38,7 +38,7 @@ class WriteBoundaryControllerTest < Minitest::Test
     assert_equal "no-store", result[1].fetch("cache-control")
     assert_equal "Cookie", result[1].fetch("vary")
     assert_equal "nosniff", result[1].fetch("x-content-type-options")
-    refute @store.calls.any? { |name, _| name == "touch_session" }
+    refute(@store.calls.any? { |name, _| name == "touch_session" })
   end
 
   def test_keyword_target_callable_and_bodyless_delete

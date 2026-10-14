@@ -117,7 +117,7 @@ class MailboxMembershipDatabaseTest < MailboxMembershipDatabaseCase
     assert_equal "ok", raw_change(@user, 2_147_483_647, flags: FLAGS.merge("manage_members" => true)).fetch("status")
     assert_equal "temporarily_unavailable", raw_change(other.user_id, 2_147_483_647).fetch("status")
     assert_equal [2_147_483_647, before], [revision, generation(other.user_id)]
-    assert_equal [@user], roster.fetch("items").map { |row| row.fetch("user_id") }
+    assert_equal([@user], roster.fetch("items").map { |row| row.fetch("user_id") })
   end
 
   def test_runtime_cannot_write_membership_tables_or_bypass_cookie_bound_guards

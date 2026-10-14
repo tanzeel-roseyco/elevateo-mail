@@ -86,7 +86,7 @@ class WriteBoundaryInputTest < Minitest::Test
       assert_equal expected, normalized
     end
     %w[0.99999999999999999 1e-400 -1e-400 2147483647.0000001 -1 2147483648
-      1e400 1e-999999999999999999999999 "1" true null].each do |token|
+      1e400 1e-999999999999999999999999 true null].push('"1"').each do |token|
       invalid do
         Input.integer(Input.object('{"version":' + token + '}').fetch("version"),
           minimum: 0, maximum: 2_147_483_647)
@@ -102,6 +102,15 @@ class WriteBoundaryInputTest < Minitest::Test
     end
     invalid { Input.object('{"x":' + ('[' * 16) + '0' + (']' * 16) + '}') }
     invalid { Input.object('{"x":1,"\u0078":2}') }
+  end
+
+  def test_extreme_decimal_true_zero_and_signed_nonzero
+    %w[0e-999999999999999999999999 -0.0e-999999999999999999999999].each do |token|
+      assert_equal 0, Input.integer(Input.object('{"n":' + token + '}').fetch("n"), minimum: 0, maximum: 1)
+    end
+    %w[1e-999999999999999999999999 -1e-999999999999999999999999].each do |token|
+      invalid { Input.object('{"n":' + token + '}') }
+    end
   end
 
   def test_preserves_exception_modes_on_success_and_parse_failures

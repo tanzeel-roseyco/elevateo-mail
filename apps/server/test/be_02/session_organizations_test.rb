@@ -10,6 +10,7 @@ class SessionOrganizationsTest < Minitest::Test
     attr_reader :calls
     def initialize = (@calls = [])
     def call(name, arguments, deadline:, connection: nil)
+      deadline.check!
       @calls << [name, arguments, connection]
       { "status" => "ok", "organizations" => [{ "id" => AuthFixtures::ORG, "name" => "Org" }],
         "next_after" => AuthFixtures::ORG }

@@ -32,6 +32,8 @@ module V1
       identity = read_sessions.authenticate(cookie: session_cookie, deadline: api_deadline)
       result = Elevateo::SessionWrites.new(sessions: read_sessions).transaction(identity,
         context: context, version: version, csrf: csrf, guard_users: users, budget: budget, deadline: api_deadline) do |connection:, session:|
+        # @type var connection: Elevateo::WriteStatements
+        # @type var session: Elevateo::auth_object
         yield(connection: connection, identity: identity, session: session, input: input, query: query, deadline: api_deadline)
       end
       api_deadline.check!

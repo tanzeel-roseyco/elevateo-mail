@@ -71,9 +71,9 @@ class ThreadDatabaseTest < SessionDatabaseTestCase
     (nulls + dated).reverse_each { |id| fixture_message(id: id, sent_at: dated.include?(id) ? "2026-10-12T00:00:00.000001Z" : nil) }
     later = fixture_message(sent_at: "2026-10-12T00:00:00.000002Z")
     pages = walk { |cursor| detail(query: { "limit" => "1" }.merge(cursor ? { "cursor" => cursor } : {})) }
-    assert_equal nulls + dated + [later], pages.flat_map { |page| page.fetch("messages").map { |row| row.fetch("id") } }
+    assert_equal(nulls + dated + [later], pages.flat_map { |page| page.fetch("messages").map { |row| row.fetch("id") } })
     assert_nil pages.last.fetch("next_cursor")
-    assert pages.all? { |page| page.fetch("thread").fetch("message_count") == 5 }
+    assert(pages.all? { |page| page.fetch("thread").fetch("message_count") == 5 })
   end
 
   def test_thread_seek_orders_derived_activity_then_uuid_with_nulls_last
@@ -83,7 +83,7 @@ class ThreadDatabaseTest < SessionDatabaseTestCase
     latest = thread
     fixture_message(thread_id: latest, sent_at: "2026-10-12T00:00:01Z", body: "latest visible preview")
     pages = walk { |cursor| list(query: { "limit" => "1" }.merge(cursor ? { "cursor" => cursor } : {})) }
-    assert_equal [latest] + dated + nulls, pages.flat_map { |page| page.fetch("items").map { |row| row.fetch("id") } }
+    assert_equal([latest] + dated + nulls, pages.flat_map { |page| page.fetch("items").map { |row| row.fetch("id") } })
     assert_equal "latest visible preview", pages.first.fetch("items").first.fetch("preview_text")
     assert_nil pages.last.fetch("items").first.fetch("last_message_at")
   end
@@ -96,7 +96,7 @@ class ThreadDatabaseTest < SessionDatabaseTestCase
     read_state(@thread, @user, true)
     read_state(unread, other, true)
     before = business_snapshot
-    assert_equal [unread], list(query: { "filter" => "unread" }).fetch("items").map { |row| row.fetch("id") }
+    assert_equal([unread], list(query: { "filter" => "unread" }).fetch("items").map { |row| row.fetch("id") })
     refute detail.fetch("thread").fetch("unread")
     assert detail(thread_id: unread).fetch("thread").fetch("unread")
     assert_equal before, business_snapshot
@@ -121,7 +121,7 @@ class ThreadDatabaseTest < SessionDatabaseTestCase
     [[private_thread, private_box], [foreign_thread, foreign_box], [missing, @box], [@thread, private_box]].each do |id, box|
       assert_equal "not available", assert_raises(NotAvailable) { detail(thread_id: id, box: box) }.message
     end
-    assert_equal [@thread], list.fetch("items").map { |row| row.fetch("id") }
+    assert_equal([@thread], list.fetch("items").map { |row| row.fetch("id") })
     assert_equal 0, detail.fetch("thread").fetch("message_count")
   end
 

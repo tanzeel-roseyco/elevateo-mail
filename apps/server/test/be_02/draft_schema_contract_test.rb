@@ -10,7 +10,9 @@ class DraftSchemaContractTest < SessionDatabaseTestCase
   def test_bootstrap_rerun_preserves_nonempty_schema_and_acl_representation
     [false, true].each do |explicit|
       transaction do
+        assert_nil namespace.fetch("nspacl"), "default ACL prerequisite must be proven"
         @admin.exec("GRANT CREATE, USAGE ON SCHEMA app_drafts_private TO elevateo_owner") if explicit
+        refute_nil namespace.fetch("nspacl") if explicit
         @admin.exec("CREATE TABLE app_drafts_private.be403_bootstrap_sentinel (id integer)")
         @admin.exec("INSERT INTO app_drafts_private.be403_bootstrap_sentinel VALUES (11)")
         before = namespace

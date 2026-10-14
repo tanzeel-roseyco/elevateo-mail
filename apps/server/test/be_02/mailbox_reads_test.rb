@@ -74,7 +74,7 @@ class MailboxReadsTest < Minitest::Test
     first = read(connection, "limit" => "2")
     second = read(connection, "limit" => "2", "cursor" => first.fetch("next_cursor"))
     third = read(connection, "limit" => "2", "cursor" => second.fetch("next_cursor"))
-    assert_equal rows.map { |row| row.fetch("id") }, [first, second, third].flat_map { |page| page.fetch("items").map { |item| item.fetch("id") } }
+    assert_equal(rows.map { |row| row.fetch("id") }, [first, second, third].flat_map { |page| page.fetch("items").map { |item| item.fetch("id") } })
     assert_nil third.fetch("next_cursor")
     assert_equal uuid(2), connection.calls.fetch(1).fetch(2).fetch(2)
     assert_raises(Elevateo::Cursors::Invalid) { read(connection, "limit" => "3", "cursor" => first.fetch("next_cursor")) }
@@ -90,7 +90,7 @@ class MailboxReadsTest < Minitest::Test
     refute_empty first.fetch("items")
     second = read(connection, "cursor" => first.fetch("next_cursor"))
     assert_equal first.fetch("items").last.fetch("id"), connection.calls.last.fetch(2).fetch(2)
-    assert_equal rows.map { |row| row.fetch("id") }, (first.fetch("items") + second.fetch("items")).map { |item| item.fetch("id") }
+    assert_equal(rows.map { |row| row.fetch("id") }, (first.fetch("items") + second.fetch("items")).map { |item| item.fetch("id") })
     assert_nil second.fetch("next_cursor")
   end
 
@@ -100,7 +100,7 @@ class MailboxReadsTest < Minitest::Test
     first = read(connection)
     assert_equal 50, first.fetch("items").length
     second = read(connection, "cursor" => first.fetch("next_cursor"))
-    assert_equal [uuid(51)], second.fetch("items").map { |item| item.fetch("id") }
+    assert_equal([uuid(51)], second.fetch("items").map { |item| item.fetch("id") })
     assert_nil second.fetch("next_cursor")
   end
 
@@ -161,7 +161,7 @@ class MailboxReadsRlsTest < SessionDatabaseTestCase
     @admin.exec_params("INSERT INTO app.organizations(id, name) VALUES ($1, 'Foreign fixture')", [foreign])
     add_mailbox(org: foreign)
     page = read
-    assert_equal [visible], page.fetch("items").map { |item| item.fetch("id") }
+    assert_equal([visible], page.fetch("items").map { |item| item.fetch("id") })
     assert_nil page.fetch("next_cursor")
     assert_equal({ "read" => true, "compose" => false, "approve_send" => false, "manage_members" => false },
                  page.fetch("items").first.fetch("capabilities"))
@@ -201,7 +201,7 @@ class MailboxReadsRlsTest < SessionDatabaseTestCase
     before = business_snapshot
     first = read("limit" => "2")
     second = read("limit" => "2", "cursor" => first.fetch("next_cursor"))
-    assert_equal ids, (first.fetch("items") + second.fetch("items")).map { |item| item.fetch("id") }
+    assert_equal(ids, (first.fetch("items") + second.fetch("items")).map { |item| item.fetch("id") })
     assert_nil second.fetch("next_cursor")
     assert_equal before, business_snapshot
   end

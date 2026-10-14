@@ -104,7 +104,7 @@ class SessionDatabaseTestCase < Minitest::Test
         threads.each do |thread|
           begin
             thread.join
-          rescue Exception => error # Minitest::Assertion is outside StandardError; re-raise after all joins.
+          rescue StandardError, Minitest::Assertion => error # Minitest::Assertion is outside StandardError; re-raise after all joins.
             failure ||= error
           end
         end

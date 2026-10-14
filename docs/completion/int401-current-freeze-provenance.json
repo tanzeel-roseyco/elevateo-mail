@@ -1,17 +1,331 @@
 {
-  "base": "ef7b2f92eaf06a1306abaaf39d6ba1d7141e7541",
-  "parents": [
-    "ef7b2f92eaf06a1306abaaf39d6ba1d7141e7541",
-    "45405cc50a5d76b78ee9584614bd99f7785bc186",
-    "c131fc12d8ed71514043367c3d2bba96a01521d0",
-    "3819f91af8cf982e09ed2520fac8ab2187d460af"
+  "base": "2f744e0bd8f532c495bf16c85e513b7d7df74ec3",
+  "owner": "c2f887c1ddd91d8017edca428dc65002fb4f849b",
+  "owner_parent": "644988f6f28d10b36a458c75b1740fc4c1632c3a",
+  "selection": "All exact differing apps/server owned blobs/modes; no frontend/QA/observer source intake",
+  "task": "task_87574a2d4eb4",
+  "dispatch": "ctx_4d4bddf35785",
+  "runtime": "UNTESTED; GUI2f744e0 retains priority",
+  "source_manifest": [
+    {
+      "file": "apps/server/app/controllers/v1/draft_operations_controller.rb",
+      "mode": "100644",
+      "blob": "da63f3d6f7afc532cf3be540184557d45c9c4512",
+      "sha256": "7090411e180e872272ad587c44534c85fa399169d5a36a3146f2d3e4bb6b3630"
+    },
+    {
+      "file": "apps/server/app/controllers/v1/drafts_controller.rb",
+      "mode": "100644",
+      "blob": "82c0000b00d8854e19495cf66a08dfd5aae0d5dc",
+      "sha256": "8a3c6c2d9b660c5379f9e92a908f079798294084c0765ffc575cb3a109c10103"
+    },
+    {
+      "file": "apps/server/app/controllers/v1/mailbox_members_controller.rb",
+      "mode": "100644",
+      "blob": "979b6b7ce2745b533c0440127808b5c56d38371a",
+      "sha256": "5554fd624057c0183d5760e7a55a7d367067d4ab41e1d83d8c34c30afa6edc2c"
+    },
+    {
+      "file": "apps/server/app/controllers/v1/mailboxes_controller.rb",
+      "mode": "100644",
+      "blob": "c0fae2b11a8d1469b6d55aa69b284df976b36a12",
+      "sha256": "7253d2104fb04c461c0456f96189a21b21fe22875f76888b4fca20a8a121686c"
+    },
+    {
+      "file": "apps/server/app/controllers/v1/organizations_controller.rb",
+      "mode": "100644",
+      "blob": "6c8533144bd54897c15841464dca87a492878e92",
+      "sha256": "6171332ce9888b288442d8f916ec5ac60ae9c30fd62db6ff86188763339839a4"
+    },
+    {
+      "file": "apps/server/app/controllers/v1/search_controller.rb",
+      "mode": "100644",
+      "blob": "da8819fa5cdf95087c48cd36a11a35c2f52e687c",
+      "sha256": "b3c137fd0b8a066d87c226e0a5c9e8e5bf73c2fd1eba6ded4aec397d3fe10d2b"
+    },
+    {
+      "file": "apps/server/app/controllers/v1/sessions_controller.rb",
+      "mode": "100644",
+      "blob": "0e7d9620089e29c7a8542e0fcdf93de572d6cb14",
+      "sha256": "1af794fc36a0ffb6a1e660158c7dd9ceb1c0f5834bb24cc17fea735023c80d61"
+    },
+    {
+      "file": "apps/server/app/controllers/v1/thread_assignments_controller.rb",
+      "mode": "100644",
+      "blob": "3ac8cce222eb8e8378d6a403ded9912d5b813d3f",
+      "sha256": "a54bbffd14b30781ce46cb2df6b9c66e61d99485b0bc0ed49d5600d219595c6b"
+    },
+    {
+      "file": "apps/server/app/controllers/v1/thread_notes_controller.rb",
+      "mode": "100644",
+      "blob": "cb0b724574934230bed4cd4329f1ed55b82d4090",
+      "sha256": "669447f8e0ebe99091ea526929f6e71ba58c334d268e91e726c8b67bfba7577e"
+    },
+    {
+      "file": "apps/server/app/controllers/v1/thread_read_states_controller.rb",
+      "mode": "100644",
+      "blob": "5dbd24e898b30b90befd111e8e21a3a98b635ea5",
+      "sha256": "8e11e69502e157c6277d7dba6d3014e2f2543b97d308adc435fc276c4790b49f"
+    },
+    {
+      "file": "apps/server/app/controllers/v1/threads_controller.rb",
+      "mode": "100644",
+      "blob": "29abafa1e6b4d30ca81c1bc383770081930c252f",
+      "sha256": "dbd7067fa264a6050c83b7082dc7442a1bdb766c7d1bf9f05ead05ec427466f6"
+    },
+    {
+      "file": "apps/server/app/controllers/v1/write_controller.rb",
+      "mode": "100644",
+      "blob": "13b5913a25efb76c7aa2710669ecc35e664a6404",
+      "sha256": "4ed8b18f57e656c61c275ca850518c51d822317eb6c8c2de4d54073d90a861a9"
+    },
+    {
+      "file": "apps/server/bin/worker-health",
+      "mode": "100755",
+      "blob": "883f4f12d8186248050bbabd54feb144a4fb15f2",
+      "sha256": "e05b0003f57cbe83217818bdda1db9ac60d39e19f99ade4f8ca410c80b1af2f0"
+    },
+    {
+      "file": "apps/server/lib/elevateo/collaboration_error.rb",
+      "mode": "100644",
+      "blob": "973a2e2b390ad2273e657f61bc32583ff2f79111",
+      "sha256": "ad3ff312facc0004e1db37211d289625cf1d4d91ac9b827258d1cf5804cb6505"
+    },
+    {
+      "file": "apps/server/lib/elevateo/config.rb",
+      "mode": "100644",
+      "blob": "9d4802cbfeea80a8f0ee0fa00b584de87df01077",
+      "sha256": "e5ebbb041c308abf9628c665c8b765cb82ef4642ddd518e3d8ca8e6ff2d1eead"
+    },
+    {
+      "file": "apps/server/lib/elevateo/session_writes.rb",
+      "mode": "100644",
+      "blob": "2c23b7fdd6f3b97561bfbeab6c73ea36c104be3e",
+      "sha256": "64fe808fd6e964a660abb5c068452ee0bbcf2e2b4d167dda3d4a4036eb8450b7"
+    },
+    {
+      "file": "apps/server/lib/elevateo/tenancy.rb",
+      "mode": "100644",
+      "blob": "0caf289f6c0ed5c43d44d99039602593a81601e5",
+      "sha256": "6ec32eafc68d29d4dfdad47e4d824de1bc7224301d96703a9d75c1000bed3acf"
+    },
+    {
+      "file": "apps/server/lib/elevateo/thread_projection.rb",
+      "mode": "100644",
+      "blob": "c0e3f954f021eafe9590659f655cf70311bf8146",
+      "sha256": "c9395c98b0af53f2008f3a2a746202de1c02425574d9c8932fb78682e94d8b07"
+    },
+    {
+      "file": "apps/server/lib/elevateo/write_input.rb",
+      "mode": "100644",
+      "blob": "75b9afb3250679dc717bfc8dd1cc1292232ef706",
+      "sha256": "23dcc3322ebc14240c579be13476dbe7d0cbda04d2f59fa060d97ba7ee7fae0a"
+    },
+    {
+      "file": "apps/server/test/be_02/auth_entry_test.rb",
+      "mode": "100644",
+      "blob": "8b5d97fd6b3278e2885c7fad9db6551113724947",
+      "sha256": "c1f3778ff8bb7771c51a985a9b422c5ff558abc7ac156f536872b3490a578dd3"
+    },
+    {
+      "file": "apps/server/test/be_02/auth_revocations_test.rb",
+      "mode": "100644",
+      "blob": "b4ded9b3d2717f29380320a42285923946262d9d",
+      "sha256": "1e43ec90853506f7da9a3c0f480b749a39f5fea68d53d64c9c43f692df338a0a"
+    },
+    {
+      "file": "apps/server/test/be_02/auth_test_helper.rb",
+      "mode": "100644",
+      "blob": "922465b1265d6c02ecafe00a3ede10c1911ebb3e",
+      "sha256": "76a22d96f241033ae45bbb775d3f3fc18a945a3f61cdc447753893a2475d79cc"
+    },
+    {
+      "file": "apps/server/test/be_02/collaboration_concurrency_test.rb",
+      "mode": "100644",
+      "blob": "2dd3941c48cf8b8167cd6d5381a9ce45e125498e",
+      "sha256": "a1ccda5bbb1138c9d67277fe6d71ec1aee73964596dc388c211d4e2ccf7af9fe"
+    },
+    {
+      "file": "apps/server/test/be_02/collaboration_controller_test.rb",
+      "mode": "100644",
+      "blob": "0d4aca4e69feaccfa4cdadca6b08f56b6b738b43",
+      "sha256": "f3121a4e34540422cc512a044a89982191c18bb596aab4e0b0517325af8eef4c"
+    },
+    {
+      "file": "apps/server/test/be_02/collaboration_database_helper.rb",
+      "mode": "100644",
+      "blob": "91d0cfcec8701c6862b05b2b7fb3fb3813630226",
+      "sha256": "2adc97714e4453fdcf99a927978eac42d6c3ce5be950f7dc6095ac6631304f59"
+    },
+    {
+      "file": "apps/server/test/be_02/collaboration_database_test.rb",
+      "mode": "100644",
+      "blob": "66cc7076ce0cde035ea7bb28c38a824bc419e28c",
+      "sha256": "1caac4e7aa1786c346fc96ab29f3e40c9e167ec5975b5c94cdedaac55d3b837b"
+    },
+    {
+      "file": "apps/server/test/be_02/collaboration_schema_test.rb",
+      "mode": "100644",
+      "blob": "f5142ce197b46bb186b17fb66d31dbbd1bbd33af",
+      "sha256": "10703da884bab901db4d37734b2b5e2280d5ff0a42946677965ebf0d4cd63b82"
+    },
+    {
+      "file": "apps/server/test/be_02/collaboration_services_test.rb",
+      "mode": "100644",
+      "blob": "70918ea522a346c7b8002d591897d5b498aba01f",
+      "sha256": "6fabdefa188e11f2e420502db5836abb0caaf8ba2b0777697fdc07dff3653165"
+    },
+    {
+      "file": "apps/server/test/be_02/database_test_helper.rb",
+      "mode": "100644",
+      "blob": "a6d017d5db5b9da351ef8ce06c6d9a0159ed2b47",
+      "sha256": "5b475ba4a638bef718edd2da4126c8e186eb6709f747ed083e80de2f2d6f3a9a"
+    },
+    {
+      "file": "apps/server/test/be_02/draft_concurrency_test.rb",
+      "mode": "100644",
+      "blob": "ca5f397243928ec3fe8bc34a3b6ed2b8c67f46bd",
+      "sha256": "b4623e11a7c6c3cf9d420caa4f81cd997f806cf3af54b1859029122e20c37057"
+    },
+    {
+      "file": "apps/server/test/be_02/draft_database_test.rb",
+      "mode": "100644",
+      "blob": "cd68c04b8389ffd5f2baac30e54a33fd3e366846",
+      "sha256": "2af8283397756ca52f48afd132a8107235dc2147da0ff20ac15587cfd3aad12a"
+    },
+    {
+      "file": "apps/server/test/be_02/draft_reads_test.rb",
+      "mode": "100644",
+      "blob": "5bbe25ee69d54e93fdd3c6ee34199d8e375af3dc",
+      "sha256": "1269df6bcca19cc6047a58ff6a4192ce4989d849dd355ef7563674598532d7ab"
+    },
+    {
+      "file": "apps/server/test/be_02/draft_schema_contract_test.rb",
+      "mode": "100644",
+      "blob": "238ce33ce8bff3c24bfac4b4c792970d4cb904ab",
+      "sha256": "0b77e77b1997eccdae85627bf9af347539f4b4ad7498d9ae6b7e87797f0288e2"
+    },
+    {
+      "file": "apps/server/test/be_02/mail_search_database_test.rb",
+      "mode": "100644",
+      "blob": "00552bd72ab6a583c45c6a16b3af32bd3522e8ce",
+      "sha256": "f6fc3ebcbfce46fcd94c2d07060283da0acdbc4068cf27dc80d1dbc9dec10e91"
+    },
+    {
+      "file": "apps/server/test/be_02/mailbox_membership_concurrency_test.rb",
+      "mode": "100644",
+      "blob": "ce5df0dcfe93f338cde5dceb15f5acf380472df7",
+      "sha256": "3259c1884c4255c8b763f3c2829383e68444fe1220e4316c18cee107483d6c62"
+    },
+    {
+      "file": "apps/server/test/be_02/mailbox_membership_database_helper.rb",
+      "mode": "100644",
+      "blob": "0e9c856d8e816262c018f035f9849a516c58ec8b",
+      "sha256": "ae715b6224dd66297f5706d92297e22bbeae4b0b86b86645c463520c4685fabe"
+    },
+    {
+      "file": "apps/server/test/be_02/mailbox_membership_database_test.rb",
+      "mode": "100644",
+      "blob": "6f8e04a4761876c957b2a9ef71bb7a4381c71346",
+      "sha256": "aab07349725eb55ebcddeba4f9031eedf1a02e6c919e9b78d8c427524a57ec0d"
+    },
+    {
+      "file": "apps/server/test/be_02/mailbox_reads_test.rb",
+      "mode": "100644",
+      "blob": "72faf60c29cdf7e4a2c673effc09e318ddff84cf",
+      "sha256": "08326fc301625d3a87d13288f9c81cd253ff0579ac78169e25eb73ad44abb0a2"
+    },
+    {
+      "file": "apps/server/test/be_02/read_controller_test.rb",
+      "mode": "100644",
+      "blob": "68a946168e9e7569cd5a01500e00aa371ecf58f1",
+      "sha256": "a66946df954ab49dd46febb89209a97dac7edb1a2938089800b9f440644f3372"
+    },
+    {
+      "file": "apps/server/test/be_02/session_lifecycle_test.rb",
+      "mode": "100644",
+      "blob": "7a041e9758fe82a8fcd7810c0156e84cc34416d0",
+      "sha256": "6a1db58a9ec28357ce4785afa07f25f310ace8854124b444b8641c7c5aa33ea1"
+    },
+    {
+      "file": "apps/server/test/be_02/session_organizations_test.rb",
+      "mode": "100644",
+      "blob": "5367b4ff867c5348a647c0541f0b7e61e2e8cd3a",
+      "sha256": "bb4daaf4c2b521d567d835e6c1fd4ddddee836da3b94c992968a06293d2074d4"
+    },
+    {
+      "file": "apps/server/test/be_02/thread_database_test.rb",
+      "mode": "100644",
+      "blob": "50ddad32f208b8874a4962733e2faceaeb3baa27",
+      "sha256": "401ba504a995bf5944b9e6c385cc8f3abab83de063b192b8b9136885cd585b7b"
+    },
+    {
+      "file": "apps/server/test/be_02/thread_notes_database_test.rb",
+      "mode": "100644",
+      "blob": "ac6250e98ed4d102a66e717e6437beb6752176dc",
+      "sha256": "f45a83fc35c26962b07b07b15a91c05d5c117aa7bd5ccfbc18d03dde7047af49"
+    },
+    {
+      "file": "apps/server/test/be_02/thread_reads_test.rb",
+      "mode": "100644",
+      "blob": "5c1db480a2836ecac288e708eb2757107cce78b2",
+      "sha256": "e469fda9fecf3f8ed9be54479c62f92412fb128c93098c23372c1940680d71e3"
+    },
+    {
+      "file": "apps/server/test/be_02/write_boundary_controller_test.rb",
+      "mode": "100644",
+      "blob": "5b5504f247898ab065ac64801ccfde5f1b5bbe8c",
+      "sha256": "81c65039e96f1d7d2044efdb40b0c76b5f58ed52952291019b5fc91539bb61a8"
+    },
+    {
+      "file": "apps/server/test/be_02/write_boundary_database_deadline_test.rb",
+      "mode": "100644",
+      "blob": "b88d6463ccf3ccd207c19078169d438223878aa7",
+      "sha256": "ef95de5ed5b2810ca4e7f920505f5421d57c9f7b0433dcf67bb3f608b414a2fe"
+    },
+    {
+      "file": "apps/server/test/be_02/write_boundary_database_test.rb",
+      "mode": "100644",
+      "blob": "6fa49aa418c9275beed684d0be7b8fa7ffad099a",
+      "sha256": "ba8a3466f9f931ce46c27f18ff082d6bf4b22bfbaad23397081d39221e8f48ea"
+    },
+    {
+      "file": "apps/server/test/be_02/write_boundary_database_test_helper.rb",
+      "mode": "100644",
+      "blob": "2a11e1a14907eed1e5a2808b589c6329a0f88e1b",
+      "sha256": "71539ab4df94d5eea4f2685b3398172abd1df52c0995ddf860b2a9addb351068"
+    },
+    {
+      "file": "apps/server/test/be_02/write_boundary_deadline_test.rb",
+      "mode": "100644",
+      "blob": "b3996fef67edf24264a4f37dcabeef5d45cfd313",
+      "sha256": "e540308705e52040e69a53e2ff66ee12f6a5bdde77b1e95be12cbf76307e2fd2"
+    },
+    {
+      "file": "apps/server/test/be_02/write_boundary_input_test.rb",
+      "mode": "100644",
+      "blob": "06ee9a9221d7926d4361c976ccc8d10fa7d04f65",
+      "sha256": "60a928006690d01e2d861996dac12c9fc073e0db0e46d493d9042ba41fc71a2a"
+    },
+    {
+      "file": "apps/server/test/be_02/write_boundary_pool_fatal_test.rb",
+      "mode": "100644",
+      "blob": "9ed45907710b7120a45cdba3c66731b602b31160",
+      "sha256": "3778de93e1ced42a17c21e9feed6696ca620b62fcce8d6030ca785637b64e0d0"
+    },
+    {
+      "file": "apps/server/test/be_02/write_boundary_pool_test.rb",
+      "mode": "100644",
+      "blob": "5212409cc48b9f93193eb1c9f07dd304f775033e",
+      "sha256": "14d063e9a5a84887e56417fe3775d522d310d543af703d73316c2237169a7257"
+    },
+    {
+      "file": "apps/server/test/be_02/write_boundary_test_helper.rb",
+      "mode": "100644",
+      "blob": "f4494cd89bf8ada1292e3d4596e30d41b3129111",
+      "sha256": "123806bab3625ac4a31fe88171a87b4973f1706c817067f1f0ddeb5bc55ba7b7"
+    }
   ],
-  "selection": "Exact owned Mira/Nadia files; only Elara d0 initializer and3819 compatibility deltas. Ancestor observer changes intentionally not adopted.",
-  "authority": {
-    "task": "task_8763f4f578dc",
-    "dispatch": "ctx_1e413440b965"
-  },
-  "runtime": "NOT_RUN on this freeze; diagnostic observer OFF only",
-  "excluded": "Rowan644/c2 corrections and advanced observerDDL; later integration",
-  "reviews": "ADV751,754,756 and Mira SPEC40507/08; scope/counts in code-reviews.md"
+  "intake_bundle_prerequisite": "e0c2d358894ba6b87d6275b5e8076cc09e53879a",
+  "intake_sha256": "d23850fbbf4baae5ac5ccca0d675be8c54a7515982ea3ab6092e130bc4ac0cdb"
 }

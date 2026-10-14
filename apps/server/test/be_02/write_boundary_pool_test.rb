@@ -182,7 +182,7 @@ class WriteBoundaryPoolTest < WriteBoundaryPoolTestCase
       entered, gate = Queue.new, Queue.new
       deadline = Elevateo::RequestDeadline.new(seconds: 0.5)
       wire = response
-      wire.define_singleton_method(:verify!) { |budget:| entered << true; gate.pop } if phase == :serializer
+      wire.define_singleton_method(:verify!) { |budget:| raise "serializer budget changed" unless budget == 4096; entered << true; gate.pop } if phase == :serializer
       thread = Thread.new do
         assert_raises(Elevateo::AuthError) do
           deadline.within do
@@ -401,6 +401,24 @@ class WriteBoundaryPoolTest < WriteBoundaryPoolTestCase
     refute_includes @pool.connections, @adapter
   ensure
     original&.call
+  end
+
+  def test_process_fatal_cleanup_signal_propagates_after_adapter_detachment
+    original = instrument(@adapter, :disconnect!) do |disconnect|
+      disconnect.call
+      raise SystemExit.new(77)
+    end
+    error = assert_raises(SystemExit) do
+      protected_call { raise Elevateo::CollaborationError.new("not_available") }
+    end
+    assert_equal 77, error.status
+    refute_includes @pool.connections, @adapter
+    refute @adapter.active?
+    assert_nil marker
+    @adapter.define_singleton_method(:disconnect!, original)
+    assert_next_tenant_request
+  ensure
+    @adapter.define_singleton_method(:disconnect!, original) if original
   end
 
   private

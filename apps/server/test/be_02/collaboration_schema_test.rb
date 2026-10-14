@@ -43,8 +43,8 @@ class CollaborationSchemaTest < CollaborationDatabaseCase
     # AIDEV-NOTE: Reapplying D assigns version 1 to existing B rows without rewriting their boolean or timestamp.
     restored = @admin.exec("SELECT is_read, read_state_version, updated_at::text FROM app.thread_read_states").first
     assert_equal ["f", "1"], restored.values_at("is_read", "read_state_version")
-    assert_equal JSON.parse(before).fetch("states").first.fetch("updated_at"),
-      @admin.exec("SELECT to_jsonb(updated_at)::text FROM app.thread_read_states").getvalue(0, 0).then { |value| JSON.parse(value) }
+    assert_equal(JSON.parse(before).fetch("states").first.fetch("updated_at"),
+      @admin.exec("SELECT to_jsonb(updated_at)::text FROM app.thread_read_states").getvalue(0, 0).then { |value| JSON.parse(value) })
     assert_equal "t", @admin.exec("SELECT has_column_privilege('elevateo_api', 'app.thread_read_states', 'is_read', 'UPDATE')").getvalue(0, 0)
     refute_nil @admin.exec("SELECT to_regprocedure('app_auth.collaboration_reader(text,uuid,uuid)')").getvalue(0, 0)
     @admin.exec("ROLLBACK")

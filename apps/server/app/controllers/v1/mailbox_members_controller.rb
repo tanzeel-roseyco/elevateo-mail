@@ -7,15 +7,28 @@ module V1
       mailbox = path_id(:mailbox_id)
       protected_read(allowed_query: %w[cursor limit], budget: Elevateo::ReadResponse::MAILBOX_BYTES) do
         |connection:, identity:, session:, query:, **|
+        # @type var connection: ActiveRecord::ConnectionAdapters::AbstractAdapter
+        # @type var identity: Elevateo::SessionIdentity
+        # @type var session: Elevateo::auth_object
+        # @type var query: Hash[String, String]
         reader(connection, identity, session).list(mailbox_id: mailbox, query: query)
       end
     end
 
     def update
       mailbox, user = path_id(:mailbox_id), path_id(:user_id)
-      protected_write(required: %w[expected_membership_version capabilities],
-                      guard_users: ->(input:, query:) { Elevateo::MailboxMembershipInput.put(input); [user] }) do
+      # @type var guards: V1::WriteController::target_users
+      guards = ->(input:, **) do
+        # @type var input: Elevateo::WriteInput::object
+        Elevateo::MailboxMembershipInput.put(input)
+        [user]
+      end
+      protected_write(required: %w[expected_membership_version capabilities], guard_users: guards) do
         |connection:, identity:, session:, input:, **|
+        # @type var connection: Elevateo::WriteStatements
+        # @type var identity: Elevateo::SessionIdentity
+        # @type var session: Elevateo::auth_object
+        # @type var input: Elevateo::WriteInput::object
         reader(connection, identity, session).put(mailbox_id: mailbox, user_id: user, input: input,
           digest: identity.digest, presentation: read_sessions.presentation)
       end
@@ -23,9 +36,18 @@ module V1
 
     def destroy
       mailbox, user = path_id(:mailbox_id), path_id(:user_id)
-      protected_write(allowed_query: %w[expected_membership_version], body: false,
-                      guard_users: ->(input:, query:) { Elevateo::MailboxMembershipInput.delete(query); [user] }) do
+      # @type var guards: V1::WriteController::target_users
+      guards = ->(query:, **) do
+        # @type var query: Hash[String, String]
+        Elevateo::MailboxMembershipInput.delete(query)
+        [user]
+      end
+      protected_write(allowed_query: %w[expected_membership_version], body: false, guard_users: guards) do
         |connection:, identity:, session:, query:, **|
+        # @type var connection: Elevateo::WriteStatements
+        # @type var identity: Elevateo::SessionIdentity
+        # @type var session: Elevateo::auth_object
+        # @type var query: Hash[String, String]
         reader(connection, identity, session).delete(mailbox_id: mailbox, user_id: user, query: query,
           digest: identity.digest, presentation: read_sessions.presentation)
       end
