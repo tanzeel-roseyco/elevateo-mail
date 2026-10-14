@@ -202,3 +202,5 @@ The QA-817 legacy ceiling regression covers an alternate authorization path: a m
 `apps/server/test/qa817/role_owner_race_database_test.rb` uses two actual disposable admin DB connections and a bounded start gate to challenge the one-owner unique index with distinct candidates. The expected outcomes are one insert and one unique violation, with one durable owner. It runs only in Soren's fleet Docker lane.
 
 `apps/server/test/qa817/role_escalation_database_test.rb` tests the protected role mutation through the real API database role and checks the owner-loss trigger. A direct admin-to-owner argument must fail before business mutation; a legitimate owner change obeys revision CAS; direct owner demotion stays forbidden. Soren runs this only in disposable fleet Docker.
+
+`apps/server/test/qa817/cancellation_privileges_database_test.rb` verifies the cancellation SQL migration's function owner and grants using actual database logins. It also checks API and worker roles lack schema CREATE privilege. This addresses the observed migration schema permission failure without changing Nadia-owned source.

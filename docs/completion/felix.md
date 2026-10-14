@@ -59,3 +59,7 @@ Added `apps/server/test/qa817/role_escalation_database_test.rb`: real API-role s
 Independently reviewed Theo's 200-line protected grants controller at exact SHA `584fcee9`, with 179 lines of HTTP/input test coverage context in separate bounded packets (379 unique LOC). Zero observed controller defects (0/KLOC static), actual HTTP/DB and design pending; see `docs/completion/felix-adm803-review.md`.
 
 Integrated Cassian SEND-809 delta at SHA `e242ce37` was independently reviewed in 82 bounded contextual LOC: new due discovery and explicit final false, zero observed static defects (0/KLOC), runtime tests for empty/canceled/busy/epoch and claim race pending. See `docs/completion/felix-send809-integrated-delta-review.md`.
+
+## Integrated migration privilege blocker
+
+Soren's integrated f787bbc backend migration failed before QA817 cases with `permission denied for schema app` in Nadia `AddSendCancellation`: migration selects `elevateo_send_owner` then creates `app.cancel_send`. I sent Nadia the exact source seam and requested a narrow, reversible owner fix. Added `apps/server/test/qa817/cancellation_privileges_database_test.rb` as a post-repair real-DB check: private function owner, API-only execution grant, public/worker denial and no runtime schema CREATE privilege. Soren command after owner fix and migration success from `/workspace/apps/server`: `bundle exec ruby test/qa817/cancellation_privileges_database_test.rb`; NOT_RUN. No performance budget can be defined from the failed migration gate.

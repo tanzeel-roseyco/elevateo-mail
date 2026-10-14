@@ -136,3 +136,5 @@ QA-817 protected-grants DB test source checks stable current actor projection ac
 QA-817 owner race DB candidate checks two distinct concurrent owner insertions leave exactly one owner; it is source-only until integrated SEC-802 migration and fleet execution.
 
 QA-817 role escalation DB candidate checks owner success/stale revision and failure of admin self-promotion to owner plus direct owner demotion. It uses actual API-role guarded SQL and is unexecuted until SEC-802 integration reaches Soren.
+
+QA-817 cancellation privilege DB candidate checks the facade exists under private send owner, API can execute, worker/public cannot execute, and runtime roles lack schema CREATE privilege. Integrated migration previously failed before any QA suite; owner fix and fleet proof pending.

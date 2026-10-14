@@ -192,3 +192,5 @@ QA-817 adds a protected-grants actual-role database candidate for actor identity
 QA-817 adds a disposable real-database distinct-owner insert race candidate to check the single-owner index under concurrent actors. Soren execution is pending.
 
 QA-817 adds actual-role SQL regression source for authorized subordinate role change, stale revision, direct admin-to-owner self escalation and owner demotion denial. Fleet execution remains pending.
+
+QA-817 adds a disposable database privilege regression for the cancellation facade after the observed integrated migration permission failure. It is unexecuted pending Nadia's owner repair and Soren's rerun.
