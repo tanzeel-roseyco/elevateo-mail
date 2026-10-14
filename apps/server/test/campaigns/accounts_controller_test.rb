@@ -54,6 +54,7 @@ class OutreachAccountsControllerTest < Minitest::Test
     sql = @connection.sql.find { |statement| statement.include?("FROM app.campaign_accounts WHERE") }
     assert_includes sql, "campaign_id=$2::uuid"
     assert_includes sql, "EXISTS (SELECT 1 FROM app.mailboxes mb"
+    assert_includes sql, "app.mailbox_memberships mm"
   end
 
   def test_mixed_visible_and_hidden_mailboxes_return_only_visible_account
@@ -63,6 +64,7 @@ class OutreachAccountsControllerTest < Minitest::Test
     assert_equal 200, status
     assert_equal [NOTE], response.fetch("items").map { |item| item.fetch("id") }
     assert(@connection.sql.any? { |sql| sql.include?("mb.id=campaign_accounts.mailbox_id") })
+    assert(@connection.sql.any? { |sql| sql.include?("mm.user_id=app.context_uuid('app.user_id')") })
   end
 
   def test_detail_denies_account_from_another_campaign
@@ -79,5 +81,6 @@ class OutreachAccountsControllerTest < Minitest::Test
     assert_equal [404, "not_available"], [status, response.fetch("code")]
     detail_sql = @connection.sql.reverse.find { |sql| sql.include?("FROM app.campaign_accounts WHERE") }
     assert_includes detail_sql, "EXISTS (SELECT 1 FROM app.mailboxes mb"
+    assert_includes detail_sql, "app.mailbox_memberships mm"
   end
 end

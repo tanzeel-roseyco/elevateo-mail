@@ -31,7 +31,9 @@ module Elevateo
         else WriteInput.invalid!
         end
         if input.kind == "account"
-          visible = rows("SELECT id FROM app.mailboxes WHERE organization_id=$1::uuid AND id=$2::uuid",
+          visible = rows("SELECT mb.id FROM app.mailboxes mb WHERE mb.organization_id=$1::uuid AND mb.id=$2::uuid " \
+            "AND EXISTS (SELECT 1 FROM app.mailbox_memberships mm WHERE mm.organization_id=mb.organization_id " \
+            "AND mm.mailbox_id=mb.id AND mm.user_id=app.context_uuid('app.user_id'))",
             [org, input.attributes.fetch("mailbox_id")]).first
           raise CollaborationError.new("not_available") unless visible
         end
@@ -212,7 +214,9 @@ module Elevateo
 
       def account_mailbox_visible
         "EXISTS (SELECT 1 FROM app.mailboxes mb WHERE mb.organization_id=campaign_accounts.organization_id " \
-          "AND mb.id=campaign_accounts.mailbox_id)"
+          "AND mb.id=campaign_accounts.mailbox_id) AND EXISTS (SELECT 1 FROM app.mailbox_memberships mm " \
+          "WHERE mm.organization_id=campaign_accounts.organization_id " \
+          "AND mm.mailbox_id=campaign_accounts.mailbox_id AND mm.user_id=app.context_uuid('app.user_id'))"
       end
 
       def table_for(kind)

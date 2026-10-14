@@ -65,6 +65,20 @@ class CampaignRepositoryTest < Minitest::Test
     assert_equal "not_available", error.code
     assert_includes connection.calls.last.first, "organization_id=$1::uuid"
   end
+
+  def test_account_create_requires_current_actor_mailbox_membership
+    account = Elevateo::Campaigns::Input.new(kind: "account", value: {
+      "id" => ID, "operation_id" => OP, "campaign_id" => ORG,
+      "mailbox_id" => ID, "label" => "Pilot mailbox"
+    })
+    connection = Connection.new([[]])
+    error = assert_raises(Elevateo::CollaborationError) do
+      Elevateo::Campaigns::Repository.new(connection: connection).save(account, organization_id: ORG)
+    end
+    assert_equal "not_available", error.code
+    assert_includes connection.calls.first.first, "app.mailbox_memberships mm"
+    refute(connection.calls.any? { |call| call.first.include?("INSERT INTO app.campaign_accounts") })
+  end
 end
 
 class CampaignRepositoryMutationTest < Minitest::Test

@@ -125,7 +125,10 @@ class CreateCampaignFoundation < ActiveRecord::Migration[8.1]
       execute "REVOKE ALL ON app.#{table} FROM PUBLIC"
       visible_mailbox = if table == "campaign_accounts"
         " AND EXISTS (SELECT 1 FROM app.mailboxes mb WHERE mb.organization_id = " \
-          "campaign_accounts.organization_id AND mb.id = campaign_accounts.mailbox_id)"
+          "campaign_accounts.organization_id AND mb.id = campaign_accounts.mailbox_id)" \
+          " AND EXISTS (SELECT 1 FROM app.mailbox_memberships mm WHERE mm.organization_id = " \
+          "campaign_accounts.organization_id AND mm.mailbox_id = campaign_accounts.mailbox_id " \
+          "AND mm.user_id = app.context_uuid('app.user_id'))"
       elsif table == "campaign_mutations"
         " AND (campaign_mutations.resource_kind <> 'account' OR EXISTS " \
           "(SELECT 1 FROM app.campaign_accounts a WHERE a.organization_id = " \
