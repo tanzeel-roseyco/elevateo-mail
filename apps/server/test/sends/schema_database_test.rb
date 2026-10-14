@@ -37,12 +37,14 @@ class SendSchemaDatabaseTest < SendDatabaseTestCase
   def test_runtime_roles_cannot_read_tables_or_execute_private_bridges
     %w[elevateo_api elevateo_worker elevateo_app_read].each do |role|
       row = @admin.exec_params(<<~SQL, [role]).first
-        SELECT has_schema_privilege($1,'app_send_private','USAGE,CREATE') AS schema_access,
+        SELECT has_schema_privilege($1,'app_send_private','USAGE') AS schema_usage,
+          has_schema_privilege($1,'app_send_private','CREATE') AS schema_create,
           pg_has_role($1,'elevateo_send_owner','SET,USAGE,MEMBER') AS owner_access,
           has_function_privilege($1,'app_send_private.read_draft_binding(uuid,uuid)','EXECUTE') AS bridge_access,
           has_table_privilege($1,'app_send_private.intents','SELECT,INSERT,UPDATE,DELETE,TRUNCATE') AS table_access
       SQL
-      assert_equal({ "schema_access" => "f", "owner_access" => "f", "bridge_access" => "f", "table_access" => "f" }, row)
+      assert_equal({ "schema_usage" => role == "elevateo_worker" ? "t" : "f", "schema_create" => "f",
+        "owner_access" => "f", "bridge_access" => "f", "table_access" => "f" }, row)
     end
     assert_raises(PG::InsufficientPrivilege) { @api.exec("SELECT * FROM app_send_private.intents") }
     assert_raises(PG::InsufficientPrivilege) { @worker.exec_params("SELECT app.approve_draft_send($1,$2,$3,$4,1,$5,NULL,$6)", [@digest,@box,@draft,@operation,@review_digest,@epoch]) }
