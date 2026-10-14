@@ -14,13 +14,14 @@ class OutreachSequenceRepositoryTest < Minitest::Test
 
   class Connection
     Result = Struct.new(:to_a)
-    attr_accessor :existing, :replay, :authorized, :history
+    attr_accessor :existing, :replay, :authorized, :read_authorized, :history, :steps
     attr_reader :sql, :transactions
 
     def initialize
       @sql = []
       @transactions = 0
       @authorized = true
+      @read_authorized = true
       @history = false
     end
 
@@ -33,8 +34,14 @@ class OutreachSequenceRepositoryTest < Minitest::Test
       @sql << sql
       rows = if sql.include?("authorize_outreach_draft_write")
         [{ "result" => { "status" => @authorized ? "ok" : "denied" } }]
+      elsif sql.include?("authorize_outreach_content_read")
+        [{ "result" => { "status" => @read_authorized ? "ok" : "not_found" } }]
       elsif sql.include?("SELECT fingerprint,result")
         @replay ? [@replay] : []
+      elsif sql.include?("SELECT id,campaign_id,status,timezone,version")
+        @existing ? [@existing] : []
+      elsif sql.include?("to_char(local_time")
+        @steps || []
       elsif sql.include?("SELECT id,version,timezone FROM app.campaign_sequences")
         @existing ? [@existing] : []
       elsif sql.include?("SELECT 1 FROM app.campaign_sequence_occurrences")
@@ -100,5 +107,30 @@ class OutreachSequenceRepositoryTest < Minitest::Test
     end
     assert_equal "not_available", error.code
     refute connection.sql.any? { |sql| sql.include?("INSERT INTO app.campaign_sequences") }
+  end
+
+  def test_fetch_uses_read_authority_and_returns_ordered_draft
+    connection = Connection.new
+    connection.existing = { "id" => ID, "campaign_id" => CAMPAIGN, "status" => "held",
+      "timezone" => "Europe/Berlin", "version" => 2 }
+    connection.steps = [{ "id" => STEP, "position" => 1, "delay_seconds" => 0,
+      "local_time" => "09:00:00", "label" => "First" }]
+    result = Repository.new(connection: connection).fetch(campaign_id: CAMPAIGN,
+      organization_id: CAMPAIGN, session_digest: DIGEST)
+    assert_equal 2, result.fetch("version")
+    assert_equal "09:00:00", result.fetch("steps").first.fetch("local_time")
+    assert connection.sql.any? { |sql| sql.include?("authorize_outreach_content_read") }
+    refute connection.sql.any? { |sql| sql.include?("authorize_outreach_draft_write") }
+  end
+
+  def test_fetch_hides_absent_and_forbidden_draft
+    connection = Connection.new
+    repository = Repository.new(connection: connection)
+    assert_nil repository.fetch(campaign_id: CAMPAIGN, organization_id: CAMPAIGN, session_digest: DIGEST)
+    reads = connection.sql.count { |sql| sql.include?("SELECT id,campaign_id,status,timezone,version") }
+    connection.existing = { "id" => ID, "campaign_id" => CAMPAIGN }
+    connection.read_authorized = false
+    assert_nil repository.fetch(campaign_id: CAMPAIGN, organization_id: CAMPAIGN, session_digest: DIGEST)
+    assert_equal reads, connection.sql.count { |sql| sql.include?("SELECT id,campaign_id,status,timezone,version") }
   end
 end

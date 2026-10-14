@@ -82,24 +82,35 @@ class CreateOutreachSequences < ActiveRecord::Migration[8.1]
       execute "ALTER TABLE app.#{table} FORCE ROW LEVEL SECURITY"
       execute "REVOKE ALL ON app.#{table} FROM PUBLIC"
     end
-    # AIDEV-NOTE: Both tenant claim and current outreach role proof are required; absent digest denies every row.
+    # AIDEV-NOTE: Reads use current content role; each mutation also requires protected write proof.
     %w[campaign_sequences campaign_sequence_steps campaign_sequence_mutations].each do |table|
       execute <<~SQL
-        CREATE POLICY sequence_editor ON app.#{table} FOR ALL TO elevateo_app_read
+        CREATE POLICY sequence_reader ON app.#{table} FOR SELECT TO elevateo_app_read
           USING (organization_id=app.context_uuid('app.org_id')
             AND NULLIF(current_setting('app.outreach_digest',true),'') IS NOT NULL
-            AND (app.authorize_outreach_draft_write(current_setting('app.outreach_digest',true))->>'status')='ok')
+            AND (app.authorize_outreach_content_read(current_setting('app.outreach_digest',true))->>'status')='ok');
+        CREATE POLICY sequence_insert ON app.#{table} FOR INSERT TO elevateo_app_read
           WITH CHECK (organization_id=app.context_uuid('app.org_id')
             AND NULLIF(current_setting('app.outreach_digest',true),'') IS NOT NULL
             AND (app.authorize_outreach_draft_write(current_setting('app.outreach_digest',true))->>'status')='ok');
       SQL
     end
+    execute <<~SQL
+      CREATE POLICY sequence_update ON app.campaign_sequences FOR UPDATE TO elevateo_app_read
+        USING (organization_id=app.context_uuid('app.org_id')
+          AND (app.authorize_outreach_draft_write(current_setting('app.outreach_digest',true))->>'status')='ok')
+        WITH CHECK (organization_id=app.context_uuid('app.org_id')
+          AND (app.authorize_outreach_draft_write(current_setting('app.outreach_digest',true))->>'status')='ok');
+      CREATE POLICY sequence_delete ON app.campaign_sequence_steps FOR DELETE TO elevateo_app_read
+        USING (organization_id=app.context_uuid('app.org_id')
+          AND (app.authorize_outreach_draft_write(current_setting('app.outreach_digest',true))->>'status')='ok');
+    SQL
     # Inert occurrence history is visible to an editor; no API role may insert, claim or cancel rows yet.
     execute <<~SQL
       CREATE POLICY sequence_occurrence_read ON app.campaign_sequence_occurrences FOR SELECT TO elevateo_app_read
         USING (organization_id=app.context_uuid('app.org_id')
           AND NULLIF(current_setting('app.outreach_digest',true),'') IS NOT NULL
-          AND (app.authorize_outreach_draft_write(current_setting('app.outreach_digest',true))->>'status')='ok');
+          AND (app.authorize_outreach_content_read(current_setting('app.outreach_digest',true))->>'status')='ok');
     SQL
     execute "GRANT SELECT ON app.campaign_sequence_occurrences TO elevateo_app_read"
     execute "GRANT SELECT,INSERT,UPDATE ON app.campaign_sequences TO elevateo_app_read"

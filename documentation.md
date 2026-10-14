@@ -191,3 +191,5 @@ MAC-814 sequence planning: `apps/server/lib/elevateo/outreach_sequence/schedule.
 # Sequence draft candidate (MAC-814)
 
 One campaign owns one draft/held sequence with 1–20 steps. Replacement requires an expected version and stable operation ID; prior occurrence history remains frozen, and timezone change with history requires explicit reschedule. Occurrences have no API write/claim grant, so this source cannot send. SEC802 authorization grant review and integrated fleet Docker checks remain pending. See [implementation and limits](docs/completion/maeve-sequence-persistence.md).
+
+GET reads a tenant-scoped draft under current outreach content-read proof and returns only draft metadata and ordered steps; absent and unauthorized drafts share a nil repository result. Write operations use separate protected draft-write policies. Integrated SEC802 helper grant `338a442` is a prerequisite; runtime checks remain pending.

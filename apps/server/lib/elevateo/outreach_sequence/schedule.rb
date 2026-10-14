@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require "date"
 require "digest"
 require "time"
 require "tzinfo"
@@ -19,8 +18,14 @@ module Elevateo
       def due_utc(local_at:, timezone:)
         raise ArgumentError, "invalid local time" unless local_at.is_a?(String) && local_at.valid_encoding? && local_at.ascii_only? &&
           (match = LOCAL_AT.match(local_at))
-        year, month, day, hour, minute, second = match.captures.map(&:to_i)
-        unless Date.valid_date?(year, month, day) && hour.between?(0, 23) &&
+        parts = match.captures.map(&:to_i)
+        year = parts.fetch(0)
+        month = parts.fetch(1)
+        day = parts.fetch(2)
+        hour = parts.fetch(3)
+        minute = parts.fetch(4)
+        second = parts.fetch(5)
+        unless month.between?(1, 12) && day.between?(1, 31) && hour.between?(0, 23) &&
                minute.between?(0, 59) && second.between?(0, 59)
           raise ArgumentError, "invalid local time"
         end
@@ -28,6 +33,9 @@ module Elevateo
           timezone.bytesize.between?(1, 128)
         zone = TZInfo::Timezone.get(timezone)
         local = Time.utc(year, month, day, hour, minute, second)
+        unless [local.year, local.month, local.day, local.hour, local.min, local.sec] == parts
+          raise ArgumentError, "invalid local time"
+        end
         zone.local_to_utc(local, nil).utc
       rescue TZInfo::InvalidTimezoneIdentifier
         raise ArgumentError, "invalid timezone"
@@ -47,12 +55,12 @@ module Elevateo
         zone = TZInfo::Timezone.get(timezone)
         not_before = anchor_utc + delay_seconds
         wall = zone.utc_to_local(not_before)
-        day = Date.new(wall.year, wall.month, wall.day)
+        day = Time.utc(wall.year, wall.month, wall.day)
         2.times do
           candidate = due_utc(local_at: "#{day.strftime('%Y-%m-%d')}T#{local_time}", timezone: timezone)
           return nil if candidate.nil? # DST uncertainty holds this occurrence for author correction.
           return candidate if candidate >= not_before
-          day += 1
+          day += 86_400
         end
         nil
       rescue TZInfo::InvalidTimezoneIdentifier

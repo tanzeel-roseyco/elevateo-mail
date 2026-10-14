@@ -123,3 +123,5 @@ MAC-814 sequence draft primitive is source-only and untested: timezone/DST resol
 # MAC-814 isolated sequence draft persistence
 
 Migration 00016, DTO validation, transactional replay/version repository and inert occurrence schema are candidate source only. The SEC802 helper EXECUTE role seam and fleet Docker tests remain open; no sequence delivery path is enabled. See [candidate record](docs/completion/maeve-sequence-persistence.md).
+
+Follow-up candidate: `Repository#fetch` uses content-read proof and returns nil for absent or forbidden drafts; RLS mutations retain protected write proof. SEC802 `338a442` resolves the helper EXECUTE grant in integrated ancestry, with fleet runtime still pending.
