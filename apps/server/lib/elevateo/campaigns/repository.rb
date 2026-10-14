@@ -166,9 +166,10 @@ module Elevateo
             ["UPDATE app.campaign_leads SET version=version+1 WHERE organization_id=$1::uuid AND id=$2::uuid AND version=$3::integer AND email=$4 AND campaign_id=$5::uuid RETURNING *",
               [org, input.id, expected_version, fields.fetch("email"), fields.fetch("campaign_id")]]
           else
-            [<<~SQL, [org, input.id, expected_version, fields.fetch("email"), fields.fetch("consent_status"), fields.fetch("consent_recorded_at"), fields.fetch("consent_source"), fields.fetch("suppressed"), fields.fetch("campaign_id"), actor]]
+            [<<~SQL, [org, input.id, expected_version, fields.fetch("email"), fields.fetch("consent_status"), fields.fetch("consent_recorded_at"), fields.fetch("consent_source"), fields.fetch("suppressed"), fields.fetch("campaign_id"), actor, input.operation_id]]
             UPDATE app.campaign_leads SET email=$4,consent_status=$5,consent_recorded_at=$6::timestamptz,
               consent_source=$7,consent_recorded_by=CASE WHEN $5='granted' THEN $10::uuid ELSE NULL END,
+              consent_operation_id=$11::uuid,
               suppressed_at=CASE WHEN $8::boolean THEN COALESCE(suppressed_at,now()) ELSE suppressed_at END,
               version=version+1
             WHERE organization_id=$1::uuid AND id=$2::uuid AND version=$3::integer AND campaign_id=$9::uuid
@@ -180,20 +181,21 @@ module Elevateo
             [org, input.id, expected_version, fields.fetch("label"), fields.fetch("campaign_id"), fields.fetch("mailbox_id")]]
         else WriteInput.invalid!
         end
+        if input.kind == "lead" && !preserve_consent
+          event_values = [org, fields.fetch("campaign_id"), input.id, input.operation_id, actor,
+            fields.fetch("email"), fields.fetch("consent_status"),
+            fields.fetch("consent_status") == "granted" ? "manual_attestation" : "status_change",
+            fields.fetch("consent_source"), fields.fetch("consent_recorded_at")]
+          rows(<<~SQL, event_values)
+            INSERT INTO app.campaign_consent_events(organization_id,campaign_id,lead_id,operation_id,
+              actor_id,email,status,evidence_kind,source,observed_at)
+            VALUES ($1::uuid,$2::uuid,$3::uuid,$4::uuid,$5::uuid,$6,$7,$8,$9,$10::timestamptz)
+          SQL
+        end
         updated = rows(sql, values).first
         unless updated
           visible = rows("SELECT id FROM app.#{table_for(input.kind)} WHERE organization_id=$1::uuid AND id=$2::uuid", [org, input.id]).first
           raise CollaborationError.new(visible ? "draft_conflict" : "not_available")
-        end
-        if input.kind == "lead" && !preserve_consent
-          event_values = [org, fields.fetch("campaign_id"), input.id, input.operation_id, actor,
-            fields.fetch("consent_status"), fields.fetch("consent_status") == "granted" ? "manual_attestation" : "status_change",
-            fields.fetch("consent_source"), fields.fetch("consent_recorded_at")]
-          rows(<<~SQL, event_values)
-            INSERT INTO app.campaign_consent_events(organization_id,campaign_id,lead_id,operation_id,
-              actor_id,status,evidence_kind,source,observed_at)
-            VALUES ($1::uuid,$2::uuid,$3::uuid,$4::uuid,$5::uuid,$6,$7,$8,$9::timestamptz)
-          SQL
         end
         result = detail(kind: input.kind, organization_id: org, id: input.id)
         rows(<<~SQL, [org, input.operation_id, input.kind, input.id, fingerprint, JSON.generate(result)])
