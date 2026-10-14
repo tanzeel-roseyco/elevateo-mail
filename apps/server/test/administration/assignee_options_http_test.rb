@@ -25,7 +25,9 @@ class AssigneeOptionsHttpTest < Minitest::Test
   end
 
   class Pool < WriteBoundaryHarness::Pool
-    def with_connection = yield(@connection)
+    def with_connection
+      yield(@connection)
+    end
   end
 
   class Controller < V2::Admin::MailboxAssigneeOptionsController

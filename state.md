@@ -439,3 +439,5 @@ Android integration adopted six previously missing exact Astrid `d93c331` classi
 Sabine DIR903 migration 00019 and Theo DIR904 mailbox assignee-options controller/projection/tests are integrated as unexecuted candidates behind a disabled V2 route. SQL rechecks session/context/generation and existing V1 target eligibility; Soren fleet real-role DB/HTTP/Steep and UI proof remain pending.
 
 DIR905 shared feature gateway declares an optional assignee-options read port with production injection still absent. Lyra's picker and runtime proof remain pending.
+
+Sabine DIR903 and Theo DIR904 test-only follow-ups are imported after their source candidates; protected SQL and controller runtime remain unverified on this integrated feature SHA.

@@ -501,3 +501,5 @@ Android fail-closed permission/unsigned parsers and the invoking Dockerfile/buil
 The additive mailbox assignee options source is `apps/server/db/directory/assignment_member_options.sql` with migration 00019 and Theo's `V2::Admin::MailboxAssigneeOptionsController`. It returns only eligible Auth UUIDs, uses current session and signed mailbox cursor scope, and is not registered until Soren verifies SQL/RLS/HTTP and the generated DTO matches canonical draft.8.
 
 `AssigneeOptionsReadPort` is exported by the V2 client adapter and available as an optional `FeatureGateways.assigneeOptions` capability for the AssignmentPanel child. The app entry does not inject it until server activation and fleet verification.
+
+Final DIR903/904 owner follow-ups strengthen the cross-organization DB witness and fake HTTP harness without changing the protected SQL or controller source. Soren fleet role/migration/HTTP checks remain required.

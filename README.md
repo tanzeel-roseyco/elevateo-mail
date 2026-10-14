@@ -496,3 +496,5 @@ The assembled Android lane now includes Astrid's previously omitted permission/u
 DIR903/904 candidate now includes protected mailbox assignee UUID SQL and a bounded V2 read controller/adapter, with the route still inactive. It lists only current eligible Auth UUIDs; the twelve staff references remain unbound. Fleet DB/HTTP/strict/browser checks are pending.
 
 The mailbox assignee picker now has an optional typed feature port for Lyra's UI; production injection remains off until protected SQL, V2 route and fleet proof are accepted.
+
+DIR903/904 source tests now include a real foreign mailbox denial fixture and corrected fake HTTP connection yield; fleet execution remains pending.

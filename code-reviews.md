@@ -1321,3 +1321,5 @@ Astrid exact `d93c331` classifier/test/build source blobs were adopted without n
 DIR903 Sabine exact `9644bba5` and DIR904 Theo exact `77007498` source/test candidates are imported without route activation. Sabine supplied divided 83/178-LOC review packets (261 unique source LOC aggregate); Theo bounded packet is in `docs/completion/theo-dir904.md`. Independent review and fleet DB/HTTP/Steep/units are NOT_RUN on this integration; reviewed LOC/defects/KLOC unclaimed. Source inspection found no roster name/email mapping or V1 assignment-write change.
 
 DIR905 Cassian optional feature port adds only the exact V2 assignee read signature and shared capability field; source reviewed LOC/defects/KLOC unclaimed pending independent inspection. No UI or runtime activation follows the declaration.
+
+Sabine DIR903 final `bd1969ae` adds a real foreign organization/mailbox fixture; Theo DIR904 final `1edd3b3c` updates fake HTTP connection yield and scope documentation. These are source/test candidates, not independent review or runtime PASS. Sabine owner packet totals 272 unique LOC in bounded reads; actual independently reviewed LOC/defects/KLOC pending.
