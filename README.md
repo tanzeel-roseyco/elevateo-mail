@@ -416,3 +416,6 @@ ATT870 Nadia 8192bbc typed PrivateStorage repair is imported after ADV115 Vera s
 Soren exact 845d422 web Docker V1/V2 declaration checks, lint and strict TypeScript passed; 841/842 Vitest cases passed, one jsdom Blob.text test fixture error blocked build/8PNG. Cassian adopted fleet-generated V2 draft.7 declaration (SHA256 c22bde3...69610) from matching OpenAPI (45b8214...e4dc67) and repaired the fixture with FileReader; current-source rerun pending.
 
 ATT877 Sabine af518d5 migration00018 now consumes/asserts Leonie precreated private schema and preserves it on down, with gateway test keyword/checksum fixture repair; exact fleet SQL/gateway proof pending, public byte route inactive.
+QA815 independent units: exact `845d422` sequence repository/controller 10 runs/45 assertions PASS; exact `58ab588` ClamAV fake transport/IMAP attachment parser 9/30 PASS. Real gateway/clamd/Mox, database and HTTP gates remain separate. Receipts in `docs/completion/soren.md`.
+
+QA815 exact `f70b654` full fleet web gate PASSED V1/V2, lint, strict type, 842/842 units and production build; same-source repaired SEEDED-SIMULATED eight-PNG visual capture passed with cleanup. Private images await root/Tessa manual inspection. Real-backend QA816, protected migration/worker and native installation remain OPEN. See `docs/completion/soren.md`.
