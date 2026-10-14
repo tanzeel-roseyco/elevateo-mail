@@ -178,3 +178,5 @@ Cassian manifest reconciliation: contract-lock now seals actual generated client
 Migration 00008 adds guarded organization roles and mailbox classification metadata on the frozen baseline. Runtime and legacy membership-hook integration are pending; see [SEC-802 record](docs/completion/sabine.md).
 
 SEC-802 continuation adds a migration-installed security replacement for the legacy mailbox membership routine and a digest-verified redacted grants page. Existing mailbox mutation fixtures and V2 role DTOs require reconciliation before route activation; Docker tests are pending.
+
+SEC-802 review repaired a personal-owner manager-stranding path in the legacy mutation guard and added a protected current-role check for outreach draft writes. The repaired SQL awaits fleet Docker execution and re-review.

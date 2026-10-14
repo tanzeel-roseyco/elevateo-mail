@@ -128,7 +128,10 @@ BEGIN
     WHERE organization_id = box.organization_id AND user_id = p_manager;
   IF box.id IS NULL OR manager.user_id IS NULL OR NOT manager.manage_members
     OR manager_role NOT IN ('owner', 'admin', 'sales_manager') OR manager_role IS NULL
-    OR (p_class = 'personal' AND (box.visibility <> 'private' OR p_owner <> p_manager))
+    OR (p_class = 'personal' AND (box.visibility <> 'private' OR p_owner <> p_manager
+      OR NOT p_manage OR EXISTS (SELECT 1 FROM app.mailbox_memberships extra
+        WHERE extra.organization_id = box.organization_id AND extra.mailbox_id = p_box
+          AND extra.user_id <> p_owner AND extra.manage_members)))
     OR (p_compose AND NOT manager.compose) OR (p_approve AND NOT manager.approve_send)
     OR (p_manage AND NOT manager.manage_members) THEN
     RAISE EXCEPTION 'verified mailbox policy authority required' USING ERRCODE = '23514';
@@ -231,6 +234,26 @@ END $$;
 REVOKE ALL ON FUNCTION app.change_organization_role(text,uuid,integer,text)
   FROM PUBLIC, elevateo_api, elevateo_app_read, elevateo_worker;
 GRANT EXECUTE ON FUNCTION app.change_organization_role(text,uuid,integer,text) TO elevateo_api;
+
+-- AIDEV-NOTE: Outreach draft authority is rechecked inside the caller's protected write transaction.
+CREATE FUNCTION app.authorize_outreach_draft_write(p_digest text)
+RETURNS jsonb LANGUAGE plpgsql VOLATILE SECURITY DEFINER SET search_path = pg_catalog AS $$
+DECLARE proof jsonb; org uuid; actor uuid; current_role text; current_revision integer;
+BEGIN
+  proof := app_auth.assert_protected_write(p_digest, app.context_uuid('app.user_id'));
+  IF proof->>'status' <> 'ok' THEN RETURN proof; END IF;
+  org := (proof->>'organization_id')::uuid;
+  actor := (proof->>'user_id')::uuid;
+  SELECT role, revision INTO current_role, current_revision FROM app.organization_access
+    WHERE organization_id = org AND user_id = actor;
+  IF current_role NOT IN ('owner', 'admin', 'sales_manager', 'sales') OR current_role IS NULL THEN
+    RETURN '{"status":"not_found"}'::jsonb;
+  END IF;
+  RETURN jsonb_build_object('status', 'ok', 'role', current_role, 'revision', current_revision);
+END $$;
+REVOKE ALL ON FUNCTION app.authorize_outreach_draft_write(text)
+  FROM PUBLIC, elevateo_api, elevateo_app_read, elevateo_worker;
+GRANT EXECUTE ON FUNCTION app.authorize_outreach_draft_write(text) TO elevateo_api;
 
 -- AIDEV-NOTE: A digest-backed session proof is required; caller-controlled tenant GUCs alone cannot list grants.
 SET LOCAL ROLE elevateo_session_owner;

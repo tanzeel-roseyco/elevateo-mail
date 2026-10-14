@@ -120,3 +120,5 @@ SEC-802 candidate: migration 00008 and organization-role database fixtures autho
 SEC-802 continuation: legacy membership mutation now requires current role, classified mailbox, explicit ceiling and personal-owner consent; grants read routine and migrator-only unbound bootstrap source are drafted. Existing BE02 fixture adaptation, V2 role enum alignment, Docker security/race tests and independent review remain pending.
 
 SEC-802 also includes migrator-only mailbox policy bootstrap source with no real UUID values; it remains uninvoked and unverified in Docker.
+
+SEC-802 independent review found a personal-owner last-manager defect in the first patch; source repair and regressions are present, but fleet runtime and re-review remain pending. Outreach draft role check is source-only and does not authorize send.
