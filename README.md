@@ -1,7 +1,3 @@
-### INT-801 integrated source candidate (2026-10-14)
-
-Cassian merged the Foundation, Frontend, Delivery, Native, QA and Mail owner candidates in the isolated `completion-cassian-int801` worktree. The isolated candidate registers guarded V2 organization grants/roster and inert campaign/lead/analytics routes for fleet verification; no V2 route can dispatch mail. Account, worker status, native authentication and inbound ingestion routes remain gated while their authorization and persistence seams settle. The first fleet contract probe of intermediate `696549b` failed JSON parsing before assertions; the V2 source was repaired in the current candidate, and retesting is pending. A strict V2 Outreach browser adapter is committed for campaign/lead/analytics routes; production shell binding and all exact-candidate Docker/HTTP checks are pending. Account methods return an explicit unavailable error without a request. No integrated acceptance, live sending or production release is claimed. See `docs/completion/cassian.md` and owner records.
-
 # Elevateo Mail
 
 ### Mira BE03 UI isolated R24 implementation (2026-10-14)
@@ -17,6 +13,11 @@ Private synthetic frontend preview is running; Docker lint/typecheck/build and 6
 Shared company mailroom with one Rails domain authority and a React/TypeScript client.
 
 ## Current state
+
+### INT-801 integrated source candidate (2026-10-14)
+
+Cassian merged the Foundation, Frontend, Delivery, Native, QA and Mail owner candidates in the isolated `completion-cassian-int801` worktree. The isolated candidate registers guarded V2 organization grants/roster and inert campaign/lead/analytics routes for fleet verification; no V2 route can dispatch mail. Account, worker status, native authentication and inbound ingestion routes remain gated while their authorization and persistence seams settle. The first fleet contract probe of intermediate `696549b` failed JSON parsing before assertions; the V2 source was repaired in the current candidate, and retesting is pending. A strict V2 Outreach browser adapter is committed for campaign/lead/analytics routes; production shell binding and all exact-candidate Docker/HTTP checks are pending. Account methods return an explicit unavailable error without a request. No integrated acceptance, live sending or production release is claimed. See `docs/completion/cassian.md` and owner records.
+
 
 ### INT-801 additive V2 interface candidate (2026-10-14)
 

@@ -1,7 +1,9 @@
-# V2 draft interface packet
+# V2 isolated integration contract
 
-This additive proposal is disabled. It does not alter the frozen V1 session, read, collaboration or send contracts. Route registration waits for owning backend modules and security review. The grant route cannot transfer ownership: that requires a separate verified workflow. Organization administration returns redacted role metadata, never mailbox content. Outreach is simulation only, and worker status requires a distinct worker principal; the security mechanism remains to be validated by the infrastructure owner.
+V2 adds organization administration and inert Outreach interfaces without changing frozen V1 session, read, collaboration or send schemas. `openapi.json` marks each operation as an isolated candidate or disabled proposal. Source-registered candidates use the existing authenticated session, current context/CSRF and tenant transaction boundaries; fleet SQL/HTTP/browser acceptance remains pending. No V2 operation can dispatch mail or connect a provider.
+
+Organization grant GET returns a bounded redacted page with seven effective roles and per-row revisions. PUT cannot assign owner; verified enrollment and owner transfer are separate workflows. The roster GET projects unbound display configuration only, with no email, Auth UUID or mailbox content. Outreach campaign/lead operations remain draft or paused; account, consent/suppression, worker and native interfaces are withheld pending owner review.
 
 AIDEV-NOTE: No-live-send is a contract boundary, not a UI toggle. Reject unknown request fields and stale revisions. Authorization must be rechecked inside the transaction after waits.
 
-The provisional web boundary is `apps/web/src/data/v2Contract.ts`. Canonical OpenAPI declaration generation is pending fleet execution and must be checked against these runtime schemas before a browser gateway is wired.
+Runtime browser schemas live in `apps/web/src/data/v2Contract.ts`. Generate OpenAPI declaration types only inside Soren's fleet Docker lane with `npm run generate:api:v2` from `apps/web`; pin output to the exact canonical source and verify schema agreement before adoption. The V2 browser adapter is source-committed but production shell injection awaits fleet checks.
