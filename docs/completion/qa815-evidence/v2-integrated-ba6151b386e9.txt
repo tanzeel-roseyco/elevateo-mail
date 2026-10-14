@@ -1,0 +1,5 @@
+source=ba6151b386e93b1e181a7f22f1fbee8f3a5d2462
+image=sha256:7dc61d4b7e12f94764f95f4f1bfe8e3940049247e6d409898ce9d3ed2810f348
+Could not locate Gemfile or .bundle/ directory
+exit=10
+archive_absent=yes

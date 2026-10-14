@@ -1,0 +1,32 @@
+source=ba6151b386e93b1e181a7f22f1fbee8f3a5d2462
+image=sha256:7dc61d4b7e12f94764f95f4f1bfe8e3940049247e6d409898ce9d3ed2810f348
+command=bundle exec ruby contracts/v2/contract_test.rb; bundle exec ruby test/v2_route_registry_test.rb; bundle exec ruby -Itest test/inbound/fake_ingress_test.rb
+Run options: --seed 59576
+
+# Running:
+
+...
+
+Finished in 0.010334s, 290.2969 runs/s, 1741.7814 assertions/s.
+
+3 runs, 18 assertions, 0 failures, 0 errors, 0 skips
+Run options: --seed 62520
+
+# Running:
+
+.....
+
+Finished in 0.001079s, 4635.9267 runs/s, 12053.4095 assertions/s.
+
+5 runs, 13 assertions, 0 failures, 0 errors, 0 skips
+Run options: --seed 51007
+
+# Running:
+
+......
+
+Finished in 0.066922s, 89.6560 runs/s, 478.1655 assertions/s.
+
+6 runs, 32 assertions, 0 failures, 0 errors, 0 skips
+exit=0
+archive_absent=yes

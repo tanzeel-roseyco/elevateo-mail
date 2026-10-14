@@ -1,5 +1,7 @@
 # Product requirements and decision record
 
+QA-815 fleet checkpoint (2026-10-14 15:11 UTC): exact `8eb840d` integrated frontend passed API check/lint/typecheck but failed ten of 789 units before build/browser; exact `ba6151b` V2 contract, route and fake ingress units passed 14/63 without database/HTTP. Android compile-only image from `7b9f314` stopped before APK at unavailable SDK API 37; exact derived resources were cleaned. Corin `a9089b7` IMAP sync test has an owner harness error; separate ingress/store/TLS units passed. These do not establish integrated acceptance or protocol delivery. See `docs/completion/soren.md`.
+
 QA-815 fleet evidence update (2026-10-14 15:02 UTC): exact `2184127` integrated web API check/lint passed, typecheck failed in Mira direct reader before unit/build; exact `45be80b` real migrations passed, backend suite fixture dependencies failed. Orion `4028d8d` locked Linux Rust seven tests and `52f7dee` native static boundary passed. See `docs/completion/soren.md` for Docker commands, source limits and cleanup; no browser/native package/restore acceptance follows.
 
 QA-815 continuation receipts in `docs/completion/soren.md` distinguish isolated PASS from integrated FAIL: all `45be80b` migrations passed, then the backend suite failed; `c4fa27c` web typecheck failed. The list-only quiet-reporter probe passed with a synthetic valid seed; it ran no browser case. Native and restore gates remain unaccepted.

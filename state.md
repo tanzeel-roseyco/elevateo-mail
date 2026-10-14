@@ -1,5 +1,7 @@
 # Project state
 
+QA-815 fleet checkpoint (2026-10-14 15:11 UTC): integrated `8eb840d` web check:api/lint/typecheck passed, then 779/789 unit cases passed and ten failed; build/browser NOT_REACHED. Integrated `ba6151b` V2 contract/routes/fake ingress units passed 14 cases/63 assertions without DB. Android `7b9f314` tool image failed SDK API 37 resolution before APK compile and was cleaned. Backend full DB/HTTP fixture repair remains pending. See `docs/completion/soren.md`.
+
 QA-815 latest fleet checkpoint (2026-10-14 15:02 UTC): integrated `2184127` web API check/lint passed, strict TypeScript failed in Mira direct-message code before unit/build; `45be80b` PostgreSQL migrations passed but the backend suite failed fixture dependencies. Orion `4028d8d` Linux Rust seven tests and `52f7dee` static native boundary passed in Docker. These are exact-source partial results; browser, target-OS packaging and restore remain open. See `docs/completion/soren.md`.
 
 QA-815 continuation: real integrated `45be80b` database migrations passed through inbound 00011; backend suite FAILED and cleanup PASSED. Integrated `c4fa27c` web typecheck failed after lint; latest isolated Dorian Ruby gates passed. Real browser, APK, target native compile, Mox pilot and restore remain pending; `docs/completion/soren.md` holds exact receipts.

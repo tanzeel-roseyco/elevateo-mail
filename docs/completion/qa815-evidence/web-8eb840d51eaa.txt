@@ -1,0 +1,772 @@
+source=8eb840d51eaa20200cf565313525b21ea09c7c12
+started=2026-10-14T15:09:16Z
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from test.Dockerfile
+#1 transferring dockerfile:
+#1 transferring dockerfile: 1.04kB done
+#1 DONE 0.2s
+
+#2 [internal] load metadata for docker.io/library/node:24.21.0-bookworm-slim@sha256:d6aa754f16b3197301076f047b5def2f02ea1dbbc2ca920407d46d7ec7f87b20
+#2 DONE 0.1s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 140B done
+#3 DONE 0.0s
+
+#4 [1/6] FROM docker.io/library/node:24.21.0-bookworm-slim@sha256:d6aa754f16b3197301076f047b5def2f02ea1dbbc2ca920407d46d7ec7f87b20
+#4 resolve docker.io/library/node:24.21.0-bookworm-slim@sha256:d6aa754f16b3197301076f047b5def2f02ea1dbbc2ca920407d46d7ec7f87b20 0.0s done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 5.91MB 0.0s done
+#5 DONE 0.0s
+
+#6 [2/6] WORKDIR /workspace
+#6 CACHED
+
+#7 [3/6] COPY contracts/v1 ./contracts/v1
+#7 CACHED
+
+#8 [4/6] COPY apps/web ./apps/web
+#8 DONE 0.2s
+
+#9 [5/6] WORKDIR /workspace/apps/web
+#9 DONE 0.1s
+
+#10 [6/6] RUN npm ci
+#10 1.048 npm warn deprecated whatwg-encoding@3.1.1: Use @exodus/bytes instead for a more spec-conformant and faster implementation
+#10 8.003 
+#10 8.003 added 324 packages, and audited 325 packages in 8s
+#10 8.003 
+#10 8.003 67 packages are looking for funding
+#10 8.003   run `npm fund` for details
+#10 8.004 
+#10 8.004 found 0 vulnerabilities
+#10 8.004 npm warn install-scripts 1 package has install scripts not yet covered by allowScripts:
+#10 8.004 npm warn install-scripts   esbuild@0.28.2 (postinstall: node install.js)
+#10 8.004 npm warn install-scripts
+#10 8.004 npm warn install-scripts Run `npm install-scripts ls` to review, or `npm install-scripts approve <pkg>` to allow.
+#10 8.005 npm notice
+#10 8.005 npm notice New major version of npm available! 11.19.0 -> 12.2.0
+#10 8.005 npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0
+#10 8.005 npm notice To update run: npm install -g npm@12.2.0
+#10 8.005 npm notice
+#10 DONE 8.3s
+
+#11 exporting to image
+#11 exporting layers
+#11 exporting layers 5.7s done
+#11 exporting manifest sha256:c80c4f21b343f82507b0ffc9c6897e5917346917de0e9a486cd4f9641deef9f0 done
+#11 exporting config sha256:40246d0eb448569165927b31806096de10005729b51da31c5780563e470830fa done
+#11 exporting attestation manifest sha256:62fd281c8165b68cfca9718083833908949b9310cb52da1e831b3821f2afe6a6 0.0s done
+#11 exporting manifest list sha256:74c6fda5e900c22a54f31c6403d684975240436ed54bcbb7fcd6d5e49a2fd9e1 0.0s done
+#11 naming to docker.io/library/qa815-web-8eb840d51eaa:latest done
+#11 unpacking to docker.io/library/qa815-web-8eb840d51eaa:latest
+#11 unpacking to docker.io/library/qa815-web-8eb840d51eaa:latest 1.8s done
+#11 DONE 7.6s
+
+> @elevateo/web@0.1.0-read.1 check:api
+> openapi-typescript ../../contracts/v1/openapi.json --output src/data/generated/api.d.ts --check
+
+✨ openapi-typescript 7.13.0
+
+> @elevateo/web@0.1.0-read.1 lint
+> eslint . --max-warnings 0
+
+
+> @elevateo/web@0.1.0-read.1 typecheck
+> tsc -p tsconfig.json --noEmit
+
+
+> @elevateo/web@0.1.0-read.1 test
+> vitest run --coverage
+
+
+[1m[30m[46m RUN [49m[39m[22m [36mv4.1.11 [39m[90m/workspace/apps/web[39m
+      [2mCoverage enabled with [22m[33mv8[39m
+
+ [32m✓[39m src/features/drafts/DraftEditorPage.test.tsx [2m([22m[2m33 tests[22m[2m)[22m[33m 1611[2mms[22m[39m
+ [32m✓[39m src/features/thread/ThreadPage.test.tsx [2m([22m[2m34 tests[22m[2m)[22m[33m 921[2mms[22m[39m
+[90mstderr[2m | src/app/Shell.test.tsx[2m > [22m[2mOutreach operations under the central session policy (FE-805)[2m > [22m[2ma 401 from a campaign write clears the protected shell and restores access centrally (happy path)
+[22m[39mYou called act(async () => ...) without await. This could lead to unexpected testing behaviour, interleaving multiple act calls and mixing their scopes. You should - await act(async () => ...);
+The current testing environment is not configured to support act(...)
+The current testing environment is not configured to support act(...)
+
+ [31m❯[39m src/app/Shell.test.tsx [2m([22m[2m26 tests[22m[2m | [22m[31m3 failed[39m[2m)[22m[33m 4300[2mms[22m[39m
+     [32m✓[39m a signed-out session shows the sign-in form instead of a terminal screen[32m 94[2mms[22m[39m
+     [32m✓[39m signing in from the form reaches the protected shell[32m 66[2mms[22m[39m
+     [32m✓[39m a valid identity without an organization is an explicit state with sign-out[32m 29[2mms[22m[39m
+     [32m✓[39m the account sheet lists memberships and an explicit switch replaces the identity[32m 98[2mms[22m[39m
+     [32m✓[39m a failed switch reports in the sheet and keeps the current organization[32m 77[2mms[22m[39m
+     [32m✓[39m sign-out hides the mail at once and ends on the sign-in form with the sign-out notice[32m 58[2mms[22m[39m
+     [32m✓[39m an unconfirmed sign-out keeps the mail hidden and offers to retry or return[32m 100[2mms[22m[39m
+     [32m✓[39m shows the ready shell with the fixture mailboxes and outlet content[32m 32[2mms[22m[39m
+     [32m✓[39m hides protected content and shows a recovery status while the one recovery runs[32m 45[2mms[22m[39m
+     [32m✓[39m a second context change blocks in retry_required until the explicit retry[32m 29[2mms[22m[39m
+     [32m✓[39m one invalid continuation cursor resets the whole loop and replaces accumulated mailboxes[32m 37[2mms[22m[39m
+     [32m✓[39m a second invalid cursor surfaces manual retry, and retrying starts a fresh traversal[32m 45[2mms[22m[39m
+     [32m✓[39m opens as a named dialog, closes on route selection, Escape restores trigger focus[32m 129[2mms[22m[39m
+     [32m✓[39m growing past the md breakpoint closes an open drawer[32m 45[2mms[22m[39m
+     [32m✓[39m the first committed render of a replaced identity contains no previous-identity content[32m 39[2mms[22m[39m
+     [32m✓[39m offers access guidance for a completed zero-visible-mailbox list[32m 24[2mms[22m[39m
+     [32m✓[39m retains selection guidance when a visible mailbox exists[32m 46[2mms[22m[39m
+     [32m✓[39m does not infer an empty list while an empty first page has a pending continuation[32m 79[2mms[22m[39m
+     [32m✓[39m shows a load failure without claiming an empty or accessible mailbox list, then allows retry[32m 45[2mms[22m[39m
+     [32m✓[39m an Outreach link in the rail reaches Celeste's real page, which reports the missing Outreach API[32m 48[2mms[22m[39m
+     [32m✓[39m a route change scrolls main to the top and only rescues focus stranded on body[32m 50[2mms[22m[39m
+     [32m✓[39m an offline drop shows the notice inside the shell and a return offers reload[32m 27[2mms[22m[39m
+     [32m✓[39m shows the transport-only simulation footnote and badge for a simulated session, without any local-only storage claim[32m 13[2mms[22m[39m
+[31m     [31m×[31m a 401 from a campaign write clears the protected shell and restores access centrally (happy path)[39m[33m 1036[2mms[22m[39m
+[31m     [31m×[31m one context change from a campaign read recovers the session and the list reloads with the new epoch[39m[33m 1003[2mms[22m[39m
+[31m     [31m×[31m an ordinary failure stays on Celeste's page as her own alert without any session transition[39m[33m 1002[2mms[22m[39m
+ [32m✓[39m src/domain/draftOperation.test.ts [2m([22m[2m39 tests[22m[2m)[22m[32m 13[2mms[22m[39m
+ [32m✓[39m src/features/inbox/InboxPage.test.tsx [2m([22m[2m19 tests[22m[2m)[22m[33m 697[2mms[22m[39m
+ [32m✓[39m src/app/session-lifecycle.test.tsx [2m([22m[2m25 tests[22m[2m)[22m[32m 220[2mms[22m[39m
+ [32m✓[39m src/data/fixtures/collaborationState.test.ts [2m([22m[2m19 tests[22m[2m)[22m[32m 25[2mms[22m[39m
+ [32m✓[39m src/data/contract-collaboration.test.ts [2m([22m[2m59 tests[22m[2m)[22m[32m 50[2mms[22m[39m
+ [32m✓[39m src/app/session.test.tsx [2m([22m[2m16 tests[22m[2m)[22m[33m 309[2mms[22m[39m
+ [32m✓[39m src/data/cd-conformance.test.ts [2m([22m[2m44 tests[22m[2m)[22m[32m 40[2mms[22m[39m
+ [31m❯[39m src/features/outreach/OutreachPages.test.tsx [2m([22m[2m18 tests[22m[2m | [22m[31m2 failed[39m[2m)[22m[33m 344[2mms[22m[39m
+     [32m✓[39m creates a draft and navigates to its detail without any send control[32m 95[2mms[22m[39m
+     [32m✓[39m reports an uncertain create failure without automatic duplicate submission[32m 19[2mms[22m[39m
+     [32m✓[39m adds an unknown-consent lead and never submits a consent assertion[32m 21[2mms[22m[39m
+     [32m✓[39m shows a read failure and rejects incompatible active campaign data[32m 8[2mms[22m[39m
+[31m     [31m×[31m keeps pause failure visible without claiming a state transition[39m[32m 27[2mms[22m[39m
+     [32m✓[39m hides loaded campaign content after a revoked write[32m 17[2mms[22m[39m
+     [32m✓[39m sends a versioned pause intent and reloads server-owned status[32m 12[2mms[22m[39m
+     [32m✓[39m keeps a failed lead mutation uncertain and blocks a second submission[32m 27[2mms[22m[39m
+     [32m✓[39m shows unavailable without an adapter and disables draft creation[32m 6[2mms[22m[39m
+     [32m✓[39m keeps a definitive validation rejection editable[32m 16[2mms[22m[39m
+[31m     [31m×[31m records separate attested consent evidence without a send action[39m[32m 40[2mms[22m[39m
+     [32m✓[39m rejects a malformed campaign route before any gateway request[32m 7[2mms[22m[39m
+     [32m✓[39m navigates a bounded cursor page without silently hiding more campaigns[32m 17[2mms[22m[39m
+     [32m✓[39m shows server evidence on a distinct lead detail route without claiming send authority[32m 7[2mms[22m[39m
+     [32m✓[39m rejects an account detail returned for another campaign[32m 10[2mms[22m[39m
+     [32m✓[39m shows a disabled account endpoint as unavailable[32m 5[2mms[22m[39m
+     [32m✓[39m shows no campaign contents or create link after a denied read[32m 5[2mms[22m[39m
+     [32m✓[39m labels the server aggregate as consented and unsuppressed[32m 5[2mms[22m[39m
+ [32m✓[39m src/features/thread/CollaborationPanels.test.tsx [2m([22m[2m10 tests[22m[2m)[22m[33m 787[2mms[22m[39m
+ [32m✓[39m src/data/contract.test.ts [2m([22m[2m40 tests[22m[2m)[22m[32m 19[2mms[22m[39m
+ [32m✓[39m src/data/http/transport.test.ts [2m([22m[2m27 tests[22m[2m)[22m[32m 29[2mms[22m[39m
+ [32m✓[39m src/features/send/SendReviewPage.test.tsx [2m([22m[2m12 tests[22m[2m)[22m[33m 683[2mms[22m[39m
+ [32m✓[39m src/data/lifecycle-conformance.test.ts [2m([22m[2m24 tests[22m[2m)[22m[32m 27[2mms[22m[39m
+ [32m✓[39m src/app/membershipRecovery.test.tsx [2m([22m[2m2 tests[22m[2m)[22m[33m 327[2mms[22m[39m
+ [32m✓[39m src/data/conformance.test.ts [2m([22m[2m40 tests[22m[2m)[22m[32m 30[2mms[22m[39m
+ [32m✓[39m src/features/auth/SignInPage.test.tsx [2m([22m[2m8 tests[22m[2m)[22m[32m 290[2mms[22m[39m
+ [32m✓[39m src/features/members/MembersPage.test.tsx [2m([22m[2m8 tests[22m[2m)[22m[33m 318[2mms[22m[39m
+ [32m✓[39m src/features/members/AdministrationPage.test.tsx [2m([22m[2m10 tests[22m[2m)[22m[32m 289[2mms[22m[39m
+ [32m✓[39m src/data/signal-propagation.test.ts [2m([22m[2m100 tests[22m[2m)[22m[32m 65[2mms[22m[39m
+ [32m✓[39m src/data/fixtures/fixtureGateway.test.ts [2m([22m[2m31 tests[22m[2m)[22m[32m 19[2mms[22m[39m
+ [32m✓[39m src/features/auth/AuthCompletePage.test.tsx [2m([22m[2m6 tests[22m[2m)[22m[32m 233[2mms[22m[39m
+ [32m✓[39m src/data/send-conformance.test.ts [2m([22m[2m9 tests[22m[2m)[22m[32m 24[2mms[22m[39m
+ [32m✓[39m src/app/App.test.tsx [2m([22m[2m3 tests[22m[2m)[22m[32m 286[2mms[22m[39m
+ [32m✓[39m src/lib/readPage.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 7[2mms[22m[39m
+ [32m✓[39m src/data/contract-unicode.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 9[2mms[22m[39m
+ [32m✓[39m src/data/http/transport-cancellation.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 24[2mms[22m[39m
+ [32m✓[39m src/data/http/transport-boundaries.test.ts [2m([22m[2m14 tests[22m[2m)[22m[32m 20[2mms[22m[39m
+ [32m✓[39m src/features/search/SearchPage.test.tsx [2m([22m[2m5 tests[22m[2m)[22m[32m 184[2mms[22m[39m
+ [31m❯[39m src/app/collaborationNav.test.tsx [2m([22m[2m4 tests[22m[2m | [22m[31m1 failed[39m[2m)[22m[33m 363[2mms[22m[39m
+[31m     [31m×[31m shows Drafts and Members under the active C/D mailbox, plus the search entries[39m[32m 154[2mms[22m[39m
+     [32m✓[39m hides the sub-links for a read-only mailbox and for inactive mailboxes[32m 63[2mms[22m[39m
+     [32m✓[39m marks only Drafts current and keeps reader navigation ancestors unannounced[32m 86[2mms[22m[39m
+     [32m✓[39m marks only the exact Members destination current and retains mailbox group styling[32m 58[2mms[22m[39m
+ [31m❯[39m src/app/Sidebar.test.tsx [2m([22m[2m3 tests[22m[2m | [22m[31m1 failed[39m[2m)[22m[32m 118[2mms[22m[39m
+[31m     [31m×[31m renders Personal and Outreach as independent landmarks with the authentic mark[39m[32m 83[2mms[22m[39m
+     [32m✓[39m marks only the exact Outreach page current while a nested path keeps its parent highlighted[32m 20[2mms[22m[39m
+     [32m✓[39m hides every empty feature section and keeps Personal intact[32m 13[2mms[22m[39m
+ [31m❯[39m src/app/features/index.test.tsx [2m([22m[2m5 tests[22m[2m | [22m[31m2 failed[39m[2m)[22m[33m 1111[2mms[22m[39m
+[31m     [31m×[31m registers Celeste's ten Outreach routes and Lyra's three personal routes with top-level nav only[39m[32m 6[2mms[22m[39m
+     [32m✓[39m passes the session context and Outreach gateway to Celeste's campaigns page (happy path)[32m 74[2mms[22m[39m
+     [32m✓[39m shows Celeste's own unavailable state when no Outreach gateway is connected[32m 13[2mms[22m[39m
+     [32m✓[39m renders Lyra's personal settings from the live session without any gateway[32m 10[2mms[22m[39m
+[31m     [31m×[31m routes a campaign-scoped account read through the real V2 adapter, which fails explicitly without any dispatch[39m[33m 1007[2mms[22m[39m
+ [32m✓[39m src/app/outreachSessionPolicy.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 6[2mms[22m[39m
+ [32m✓[39m src/features/drafts/DraftsPage.test.tsx [2m([22m[2m2 tests[22m[2m)[22m[32m 222[2mms[22m[39m
+ [32m✓[39m src/features/send/SendStatusPage.test.tsx [2m([22m[2m5 tests[22m[2m)[22m[32m 159[2mms[22m[39m
+ [32m✓[39m src/app/approvalRecovery.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 11[2mms[22m[39m
+ [32m✓[39m src/features/send/SavedDraftSendFlow.test.tsx [2m([22m[2m1 test[22m[2m)[22m[33m 334[2mms[22m[39m
+     [33m[2m✓[22m[39m offers review only after saving current edits and approves exactly the reviewed version [33m 333[2mms[22m[39m
+ [32m✓[39m src/data/contract-send.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 12[2mms[22m[39m
+ [32m✓[39m src/features/members/adminModel.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 6[2mms[22m[39m
+ [31m❯[39m src/features/outreach/contract.test.ts [2m([22m[2m5 tests[22m[2m | [22m[31m1 failed[39m[2m)[22m[32m 12[2mms[22m[39m
+     [32m✓[39m accepts a paused campaign and granted but suppressed lead without inferring eligibility[32m 4[2mms[22m[39m
+     [32m✓[39m rejects a legacy active status or omitted suppression field[32m 0[2mms[22m[39m
+     [32m✓[39m rejects impossible analytics and extra fields[32m 1[2mms[22m[39m
+     [32m✓[39m accepts only draft/paused mutations and no client consent claim[32m 1[2mms[22m[39m
+[31m     [31m×[31m requires explicit evidence and rejects control characters for a consent record[39m[32m 4[2mms[22m[39m
+ [32m✓[39m src/app/sendIntent.test.tsx [2m([22m[2m2 tests[22m[2m)[22m[32m 133[2mms[22m[39m
+ [32m✓[39m src/dev/demoGateway.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 17[2mms[22m[39m
+ [32m✓[39m src/data/send-signal.test.ts [2m([22m[2m12 tests[22m[2m)[22m[32m 14[2mms[22m[39m
+ [32m✓[39m src/app/SearchBox.test.tsx [2m([22m[2m3 tests[22m[2m)[22m[32m 120[2mms[22m[39m
+ [32m✓[39m src/data/v2OutreachGateway.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 17[2mms[22m[39m
+ [32m✓[39m src/app/featureRegistry.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 5[2mms[22m[39m
+ [32m✓[39m src/ui/ConnectivityBanner.test.tsx [2m([22m[2m3 tests[22m[2m)[22m[32m 67[2mms[22m[39m
+ [32m✓[39m src/data/v2DirectMessageGateway.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 16[2mms[22m[39m
+ [32m✓[39m src/data/v2Contract.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 7[2mms[22m[39m
+ [32m✓[39m src/features/outreach/featureModule.test.tsx [2m([22m[2m1 test[22m[2m)[22m[32m 4[2mms[22m[39m
+ [32m✓[39m src/app/entry.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 3[2mms[22m[39m
+ [32m✓[39m src/app/scope.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 3[2mms[22m[39m
+
+[31m⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 10 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m src/app/Shell.test.tsx[2m > [22mOutreach operations under the central session policy (FE-805)[2m > [22ma 401 from a campaign write clears the protected shell and restores access centrally (happy path)
+[31m[1mTestingLibraryElementError[22m: Unable to find an element with the text: Synthetic organization A. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body[31m
+  [33mstyle[31m=[32m""[31m
+[36m>[31m
+  [36m<div>[31m
+    [36m<div[31m
+      [33maria-label[31m=[32m"Restoring access"[31m
+      [33mclass[31m=[32m"mx-auto max-w-lg p-8"[31m
+      [33mrole[31m=[32m"status"[31m
+    [36m>[31m
+      [36m<div[31m
+        [33maria-hidden[31m=[32m"true"[31m
+        [33mclass[31m=[32m"flex flex-col gap-2 p-4"[31m
+      [36m>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"h-9 animate-pulse rounded-lg bg-skeleton"[31m
+        [36m/>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"h-9 animate-pulse rounded-lg bg-skeleton"[31m
+        [36m/>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"h-9 animate-pulse rounded-lg bg-skeleton"[31m
+        [36m/>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"h-9 animate-pulse rounded-lg bg-skeleton"[31m
+        [36m/>[31m
+      [36m</div>[31m
+    [36m</div>[31m
+  [36m</div>[31m
+[36m</body>[31m
+
+Ignored nodes: comments, script, style
+[36m<body[31m
+  [33mstyle[31m=[32m""[31m
+[36m>[31m
+  [36m<div>[31m
+    [36m<div[31m
+      [33maria-label[31m=[32m"Restoring access"[31m
+      [33mclass[31m=[32m"mx-auto max-w-lg p-8"[31m
+      [33mrole[31m=[32m"status"[31m
+    [36m>[31m
+      [36m<div[31m
+        [33maria-hidden[31m=[32m"true"[31m
+        [33mclass[31m=[32m"flex flex-col gap-2 p-4"[31m
+      [36m>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"h-9 animate-pulse rounded-lg bg-skeleton"[31m
+        [36m/>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"h-9 animate-pulse rounded-lg bg-skeleton"[31m
+        [36m/>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"h-9 animate-pulse rounded-lg bg-skeleton"[31m
+        [36m/>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"h-9 animate-pulse rounded-lg bg-skeleton"[31m
+        [36m/>[31m
+      [36m</div>[31m
+    [36m</div>[31m
+  [36m</div>[31m
+[36m</body>[31m[39m
+[90m [2m❯[22m waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:[2m163:27[22m[39m
+[90m [2m❯[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m86:33[22m[39m
+[36m [2m❯[22m src/app/Shell.test.tsx:[2m553:18[22m[39m
+    [90m551|[39m     [35mawait[39m [34mwaitFor[39m(() [33m=>[39m [34mexpect[39m(finishRefresh)[33m.[39m[34mtoBeDefined[39m())
+    [90m552|[39m     [34mact[39m(() [33m=>[39m [34mfinishRefresh[39m[33m![39m())
+    [90m553|[39m     [35mawait[39m screen[33m.[39m[34mfindByText[39m([32m'Synthetic organization A'[39m)
+    [90m   |[39m                  [31m^[39m
+    [90m554|[39m     [34mexpect[39m([35mawait[39m screen[33m.[39m[34mfindByLabelText[39m([32m'Campaign name'[39m))[33m.[39m[34mtoBeTruthy[39m()
+    [90m555|[39m   })
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/10]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/app/Shell.test.tsx[2m > [22mOutreach operations under the central session policy (FE-805)[2m > [22mone context change from a campaign read recovers the session and the list reloads with the new epoch
+[31m[1mTestingLibraryElementError[22m: Unable to find an element with the text: Synthetic organization A. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body[31m
+  [33mstyle[31m=[32m""[31m
+[36m>[31m
+  [36m<div />[31m
+[36m</body>[31m
+
+Ignored nodes: comments, script, style
+[36m<body[31m
+  [33mstyle[31m=[32m""[31m
+[36m>[31m
+  [36m<div />[31m
+[36m</body>[31m[39m
+[90m [2m❯[22m waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:[2m163:27[22m[39m
+[90m [2m❯[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m86:33[22m[39m
+[36m [2m❯[22m src/app/Shell.test.tsx:[2m565:18[22m[39m
+    [90m563|[39m     })
+    [90m564|[39m     renderOutreach(createFixtureGateway(), '/outreach/campaigns', { ou…
+    [90m565|[39m     [35mawait[39m screen[33m.[39m[34mfindByText[39m([32m'Synthetic organization A'[39m)
+    [90m   |[39m                  [31m^[39m
+    [90m566|[39m     // Recovery replaces the protected subtree; the remounted page re-…
+    [90m567|[39m     expect(await screen.findByRole('link', { name: 'Pilot' })).toBeTru…
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/10]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/app/Shell.test.tsx[2m > [22mOutreach operations under the central session policy (FE-805)[2m > [22man ordinary failure stays on Celeste's page as her own alert without any session transition
+[31m[1mTestingLibraryElementError[22m: Unable to find an element with the text: Synthetic organization A. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body[31m
+  [33mstyle[31m=[32m""[31m
+[36m>[31m
+  [36m<div />[31m
+[36m</body>[31m
+
+Ignored nodes: comments, script, style
+[36m<body[31m
+  [33mstyle[31m=[32m""[31m
+[36m>[31m
+  [36m<div />[31m
+[36m</body>[31m[39m
+[90m [2m❯[22m waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:[2m163:27[22m[39m
+[90m [2m❯[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m86:33[22m[39m
+[36m [2m❯[22m src/app/Shell.test.tsx:[2m575:18[22m[39m
+    [90m573|[39m     const createCampaign = vi.fn(async () => { throw new GatewayError(…
+    [90m574|[39m     renderOutreach(createFixtureGateway(), '/outreach/campaigns/new', …
+    [90m575|[39m     [35mawait[39m screen[33m.[39m[34mfindByText[39m([32m'Synthetic organization A'[39m)
+    [90m   |[39m                  [31m^[39m
+    [90m576|[39m     fireEvent.change(await screen.findByLabelText('Campaign name'), { …
+    [90m577|[39m     fireEvent[33m.[39m[34mclick[39m(screen[33m.[39m[34mgetByRole[39m([32m'button'[39m[33m,[39m { name[33m:[39m [32m'Save draft'[39m }))
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/10]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/app/Sidebar.test.tsx[2m > [22msidebar sections[2m > [22mrenders Personal and Outreach as independent landmarks with the authentic mark
+[31m[1mAssertionError[22m: expected [ Array(3) ] to deeply equal [ 'Search', 'Fixture inbox', 'People' ][39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  [[22m
+[32m-   "Search",[39m
+[31m+   "⌕Search",[39m
+[2m    "Fixture inbox",[22m
+[2m    "People",[22m
+[2m  ][22m
+
+[36m [2m❯[22m src/app/Sidebar.test.tsx:[2m36:77[22m[39m
+    [90m 34|[39m     const outreachNav = screen.getByRole('navigation', { name: 'Outrea…
+    [90m 35|[39m     // Registered personal links (Lyra's People/settings) follow the m…
+    [90m 36|[39m     expect(within(personal).getAllByRole('link').map((l) => l.textCont…
+    [90m   |[39m                                                                             [31m^[39m
+    [90m 37|[39m     expect(screen.getAllByRole('navigation').map((n) => n.getAttribute…
+    [90m 38|[39m     expect(within(personal).getByRole('link', { name: 'Fixture inbox' …
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/10]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/app/collaborationNav.test.tsx[2m > [22mcollaboration navigation[2m > [22mshows Drafts and Members under the active C/D mailbox, plus the search entries
+[31m[1mTestingLibraryElementError[22m[39m: Unable to find an element with the text: /drafts and notes stay on this installation/. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"flex h-full min-h-0"[39m
+    [36m>[39m
+      [36m<a[39m
+        [33mclass[39m=[32m"sr-only focus:not-sr-only focus:absolute focus:left-2 focus:top-2 focus:z-20 focus:rounded-lg focus:bg-surface focus:px-3 focus:py-2"[39m
+        [33mhref[39m=[32m"#main"[39m
+      [36m>[39m
+        [0mSkip to content[0m
+      [36m</a>[39m
+      [36m<aside[39m
+        [33mclass[39m=[32m"hidden w-64 shrink-0 border-r border-line bg-surface md:block"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"flex h-full flex-col gap-1 p-3"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"mb-3 flex h-10 items-center gap-2.5 px-1"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"inline-flex shrink-0 items-center justify-center rounded-lg bg-brand-tile p-1"[39m
+              [33mdata-testid[39m=[32m"brand-mark"[39m
+            [36m>[39m
+              [36m<img[39m
+                [33malt[39m=[32m""[39m
+                [33mclass[39m=[32m"block object-contain"[39m
+                [33mdecoding[39m=[32m"async"[39m
+                [33mheight[39m=[32m"26"[39m
+                [33msrc[39m=[32m"/brand/logo-icon.png"[39m
+                [33mstyle[39m=[32m"width: 28px; height: 26px;"[39m
+                [33mwidth[39m=[32m"28"[39m
+              [36m/>[39m
+            [36m</span>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"truncate text-[15px] font-semibold tracking-tight"[39m
+            [36m>[39m
+              [0mElevateo Mail[0m
+            [36m</span>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex flex-1 flex-col gap-3 overflow-y-auto"[39m
+          [36m>[39m
+            [36m<nav[39m
+              [33maria-labelledby[39m=[32m"sidebar-personal"[39m
+              [33mclass[39m=[32m"flex flex-col gap-0.5"[39m
+            [36m>[39m
+              [36m<p[39m
+                [33mclass[39m=[32m"eyebrow px-3 pb-1 pt-2"[39m
+                [33mid[39m=[32m"sidebar-personal"[39m
+              [36m>[39m
+                [0mPersonal[0m
+              [36m</p>[39m
+              [36m<ul[39m
+                [33mclass[39m=[32m"flex flex-col gap-0.5"[39m
+              [36m>[39m
+                [36m<li>[39m
+                  [36m<a[39m
+                    [33mclass[39m=[32m"flex h-9 items-center gap-3 rounded-lg px-3 text-sm text-fg hover:bg-surface-2"[39m
+                    [33mdata-discover[39m=[32m"true"[39m
+                    [33mhref[39m=[32m"/search"[39m
+                  [36m>[39m
+                    [36m<span[39m
+                      [33maria-hidden[39m=[32m"true"[39m
+                      [33mclass[39m=[32m"inline-block size-[18px] shrink-0 text-center"[39m
+                    [36m>[39m
+                      [0m⌕[0m
+                    [36m</span>[39m
+                    [36m<span>[39m
+                      [0mSearch[0m
+                    [36m</span>[39m
+                  [36m</a>[39m
+                [36m</li>[39m
+                [36m<li>[39m
+                  [36m<a[39m
+                    [33mclass[39m=[32m"relative flex h-9 items-center gap-3 rounded-lg px-3 text-sm text-fg hover:bg-surface-2"[39m
+                    [33mdata-discover[39m=[32m"true"[39m
+                    [33mhref[39m=[32m"/mailboxes/00000000-0000-4000-8000-000000000021"[39m
+                  [36m>[39m
+                    [36m<svg[39m
+                      [33maria-hidden[39m=[32m"true"[39m
+                      [33mclass[39m=[32m"size-[18px] shrink-0"[39m
+                      [33mfill[39m=[32m"none"[39m
+                      [33mheight[39m=[32m"16"[39m
+                      [33mstroke[39m=[32m"currentColor"[39m
+                      [33mstroke-linecap[39m=[32m"round"[39m
+                      [33mstroke-linejoin[39m=[32m"round"[39m
+                      [33mstroke-width[39m=[32m"2"[39m
+                      [33mviewBox[39m=[32m"0 0 24 24"[39m
+                      [33mwidth[39m=[32m"16"[39m
+                    [36m>[39m
+                      [36m<rect[39m
+                        [33mheight[39m=[32m"14"[39m
+                        [33mrx[39m=[32m"2"[39m
+                        [33mwidth[39m=[32m"18"[39m
+                        [33mx[39m=[32m"3"[39m
+                        [33my[39m=[32m"5"[39m
+                      [36m/>[39m
+                      [36m<path[39m
+                        [33md[39m=[32m"m3 7 9 6 9-6"[39m
+                      [36m/>[39m
+                    [36m</svg>[39m
+                    [36m<span[39m
+                      [33mclass[39m=[32m"min-w-0 flex-1 truncate"[39m
+                    [36m>[39m
+                      [0mFixture inbox[0m
+                    [36m</span>[39m
+                  [36m</a>[39m
+                [36m</li>[39m
+                [36m<li>[39m
+                  [36m<a[39m
+                    [33maria-current[39m=[32m"page"[39m
+                    [33mclass[39m=[32m"relative flex h-9 items-center gap-3 rounded-lg px-3 text-sm bg-accent-soft font-semibold text-accent-text"[39m
+                    [33mdata-discover[39m=[32m"true"[39m
+                    [33mhref[39m=[32m"/mailboxes/00000000-0000-4000-8000-000000000023"[39m
+                  [36m>[39m
+                    [36m<span[39m
+                      [33maria-hidden[39m=[32m"true"[39m
+                      [33mclass[39m=[32m"absolute inset-y-2 left-0 w-[3px] rounded-full bg-accent"[39m
+                    [36m/>[39m
+                    [36m<svg[39m
+                      [33maria-hidden[39m=[32m"true"[39m
+                      [33mclass[39m=[32m"size-[18px] shrink-0"[39m
+                      [33mfill[39m=[32m"none"[39m
+                      [33mheight[39m=[32m"16"[39m
+                      [33mstroke[39m=[32m"currentColor"[39m
+                      [33mstroke-linecap[39m=[32m"round"[39m
+                      [33mstroke-linejoin[39m=[32m"round"[39m
+                      [33mstroke-width[39m=[32m"2"[39m
+                      [33mviewBox[39m=[32m"0 0 24 24"[39m
+                      [33mwidth[39m=[32m"16"[39m
+                    [36m>[39m
+                      [36m<rect[39m
+                        [33mheight[39m=[32m"14"[39m
+                        [33mrx[39m=[32m"2"[39m
+                        [33mwidth[39m=[32m"18"[39m
+                        [33mx[39m=[32m"3"[39m
+                        [33my[39m=[32m"5"[39m
+                      [36m/>[39m
+                      [36m<path[39m
+                        [33md[39m=[32m"m3 7 9 6 9-6"[39m
+                      [36m/>[39m
+                    [36m</svg>[39m
+                    [36m<span[39m...
+[90m [2m❯[22m Object.getElementError node_modules/@testing-library/dom/dist/config.js:[2m37:19[22m[39m
+[90m [2m❯[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m76:38[22m[39m
+[90m [2m❯[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m52:17[22m[39m
+[90m [2m❯[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m95:19[22m[39m
+[36m [2m❯[22m src/app/collaborationNav.test.tsx:[2m43:19[22m[39m
+    [90m 41|[39m     [34mexpect[39m(screen[33m.[39m[34mgetByRole[39m([32m'search'[39m))[33m.[39m[34mtoBeTruthy[39m()
+    [90m 42|[39m     [34mexpect[39m(screen[33m.[39m[34mgetByText[39m([32m'Simulated local mail'[39m))[33m.[39m[34mtoBeTruthy[39m()
+    [90m 43|[39m     expect(screen.getByText(/drafts and notes stay on this installatio…
+    [90m   |[39m                   [31m^[39m
+    [90m 44|[39m   })
+    [90m 45|[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/10]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/app/features/index.test.tsx[2m > [22mfeature route wiring[2m > [22mregisters Celeste's ten Outreach routes and Lyra's three personal routes with top-level nav only
+[31m[1mAssertionError[22m: expected [ '/outreach/campaigns', …(10) ] to have a length of 10 but got 11[39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 10[39m
+[31m+ 11[39m
+
+[36m [2m❯[22m src/app/features/index.test.tsx:[2m45:88[22m[39m
+    [90m 43|[39m [34mdescribe[39m([32m'feature route wiring'[39m[33m,[39m () [33m=>[39m {
+    [90m 44|[39m   it('registers Celeste\'s ten Outreach routes and Lyra\'s three perso…
+    [90m 45|[39m     expect(featureRoutes.map((r) => r.path).filter((p) => p.startsWith…
+    [90m   |[39m                                                                                        [31m^[39m
+    [90m 46|[39m     expect(featureRegistry.navBySection.outreach.map((e) => e.label)).…
+    [90m 47|[39m     expect(featureRegistry.navBySection.personal.map((e) => e.path)).t…
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/10]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/app/features/index.test.tsx[2m > [22mfeature route wiring[2m > [22mroutes a campaign-scoped account read through the real V2 adapter, which fails explicitly without any dispatch
+[31m[1mTestingLibraryElementError[22m: Unable to find role="alert"
+
+Ignored nodes: comments, script, style
+[36m<body>[31m
+  [36m<div>[31m
+    [36m<section[31m
+      [33maria-label[31m=[32m"Outreach accounts"[31m
+      [33mclass[31m=[32m"mx-auto max-w-3xl space-y-4 p-4"[31m
+    [36m>[31m
+      [36m<header>[31m
+        [36m<h1[31m
+          [33mclass[31m=[32m"text-xl font-semibold"[31m
+        [36m>[31m
+          [0mOutreach accounts[0m
+        [36m</h1>[31m
+        [36m<p>[31m
+          [0mOutreach is draft or paused. Sending and enrollment are unavailable.[0m
+        [36m</p>[31m
+      [36m</header>[31m
+      [36m<p[31m
+        [33mrole[31m=[32m"status"[31m
+      [36m>[31m
+        [0mOutreach API unavailable for this account.[0m
+      [36m</p>[31m
+    [36m</section>[31m
+  [36m</div>[31m
+[36m</body>[31m
+
+Ignored nodes: comments, script, style
+[36m<body>[31m
+  [36m<div>[31m
+    [36m<section[31m
+      [33maria-label[31m=[32m"Outreach accounts"[31m
+      [33mclass[31m=[32m"mx-auto max-w-3xl space-y-4 p-4"[31m
+    [36m>[31m
+      [36m<header>[31m
+        [36m<h1[31m
+          [33mclass[31m=[32m"text-xl font-semibold"[31m
+        [36m>[31m
+          [0mOutreach accounts[0m
+        [36m</h1>[31m
+        [36m<p>[31m
+          [0mOutreach is draft or paused. Sending and enrollment are unavailable.[0m
+        [36m</p>[31m
+      [36m</header>[31m
+      [36m<p[31m
+        [33mrole[31m=[32m"status"[31m
+      [36m>[31m
+        [0mOutreach API unavailable for this account.[0m
+      [36m</p>[31m
+    [36m</section>[31m
+  [36m</div>[31m
+[36m</body>[31m[39m
+[90m [2m❯[22m waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:[2m163:27[22m[39m
+[90m [2m❯[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m86:33[22m[39m
+[36m [2m❯[22m src/app/features/index.test.tsx:[2m72:25[22m[39m
+    [90m 70|[39m     const fetchImpl = vi.fn(async () => new Response('{}', { headers: …
+    [90m 71|[39m     renderRoute('/outreach/campaigns/1a40d184-987d-4b50-98d2-f674e4184…
+    [90m 72|[39m     [34mexpect[39m([35mawait[39m screen[33m.[39m[34mfindByRole[39m([32m'alert'[39m))[33m.[39m[34mtoBeTruthy[39m()
+    [90m   |[39m                         [31m^[39m
+    [90m 73|[39m     [34mexpect[39m(fetchImpl)[33m.[39mnot[33m.[39m[34mtoHaveBeenCalled[39m()
+    [90m 74|[39m     [34mexpect[39m(screen[33m.[39m[34mqueryByRole[39m([32m'button'[39m))[33m.[39m[34mtoBeNull[39m()
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/10]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/features/outreach/OutreachPages.test.tsx[2m > [22mOutreach routed pages[2m > [22mkeeps pause failure visible without claiming a state transition
+[31m[1mTestingLibraryElementError[22m: Unable to find an element with the text: /Pilot · draft/. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[31m
+  [36m<div>[31m
+    [36m<section[31m
+      [33maria-label[31m=[32m"Campaign detail"[31m
+      [33mclass[31m=[32m"mx-auto max-w-3xl space-y-4 p-4"[31m
+    [36m>[31m
+      [36m<header>[31m
+        [36m<h1[31m
+          [33mclass[31m=[32m"text-xl font-semibold"[31m
+        [36m>[31m
+          [0mCampaign detail[0m
+        [36m</h1>[31m
+        [36m<p>[31m
+          [0mOutreach is draft or paused. Sending and enrollment are unavailable.[0m
+        [36m</p>[31m
+      [36m</header>[31m
+      [36m<p>[31m
+        [36m<strong>[31m
+          [0mPilot[0m
+        [36m</strong>[31m
+        [0m · [0m
+        [0mdraft[0m
+      [36m</p>[31m
+      [36m<nav[31m
+        [33maria-label[31m=[32m"Campaign sections"[31m
+        [33mclass[31m=[32m"flex gap-4"[31m
+      [36m>[31m
+        [36m<a[31m
+          [33mdata-discover[31m=[32m"true"[31m
+          [33mhref[31m=[32m"/outreach/campaigns/1a40d184-987d-4b50-98d2-f674e41842f9/leads"[31m
+        [36m>[31m
+          [0mLeads[0m
+        [36m</a>[31m
+        [36m<a[31m
+          [33mdata-discover[31m=[32m"true"[31m
+          [33mhref[31m=[32m"/outreach/campaigns/1a40d184-987d-4b50-98d2-f674e41842f9/accounts"[31m
+        [36m>[31m
+          [0mAccounts[0m
+        [36m</a>[31m
+        [36m<a[31m
+          [33mdata-discover[31m=[32m"true"[31m
+          [33mhref[31m=[32m"/outreach/campaigns/1a40d184-987d-4b50-98d2-f674e41842f9/analytics"[31m
+        [36m>[31m
+          [0mAnalytics[0m
+        [36m</a>[31m
+      [36m</nav>[31m
+      [36m<form[31m
+        [33mclass[31m=[32m"space-y-3"[31m
+      [36m>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"flex flex-col gap-1"[31m
+        [36m>[31m
+          [36m<label[31m
+            [33mclass[31m=[32m"text-[13px] font-medium"[31m
+            [33mfor[31m=[32m"edit-campaign-name"[31m
+          [36m>[31m
+            [0mCampaign name[0m
+          [36m</label>[31m
+          [36m<input[31m
+            [33mclass[31m=[32m"h-9 rounded-lg border border-line bg-surface px-3 text-sm text-fg disabled:opacity-55"[31m
+            [33mid[31m=[32m"edit-campaign-name"[31m
+            [33mmaxlength[31m=[32m"160"[31m
+            [33mplaceholder[31m=[32m"Pilot"[31m
+            [33mvalue[31m=[32m""[31m
+          [36m/>[31m
+        [36m</div>[31m
+        [36m<p[31m
+          [33mrole[31m=[32m"alert"[31m
+        [36m>[31m
+          [0mChange was not confirmed. Check the saved resource before trying again.[0m
+        [36m</p>[31m
+        [36m<button[31m
+          [33mclass[31m=[32m"inline-flex shrink-0 items-center justify-center rounded-lg font-medium transition disabled:cursor-not-allowed disabled:opacity-55 border border-line bg-surface text-fg hover:bg-surface-2 h-9 gap-2 px-3.5 text-sm"[31m
+          [33mdisabled[31m=[32m""[31m
+          [33mtype[31m=[32m"submit"[31m
+        [36m>[31m
+          [0mSave changes[0m
+        [36m</button>[31m
+        [36m<button[31m
+          [33mclass[31m=[32m"inline-flex shrink-0 items-center justify-center rounded-lg font-medium transition disabled:cursor-not-allowed disabled:opacity-55 border border-line bg-surface text-fg hover:bg-surface-2 h-9 gap-2 px-3.5 text-sm"[31m
+          [33mdisabled[31m=[32m""[31m
+          [33mtype[31m=[32m"button"[31m
+        [36m>[31m
+          [0mPause campaign[0m
+        [36m</button>[31m
+        [36m<a[31m
+          [33mdata-discover[31m=[32m"true"[31m
+          [33mhref[31m=[32m"/outreach/campaigns"[31m
+        [36m>[31m
+          [0mCheck campaign list[0m
+        [36m</a>[31m
+      [36m</form>[31m
+    [36m</section>[31m
+  [36m</div>[31m
+[36m</body>[31m[39m
+[90m [2m❯[22m Object.getElementError node_modules/@testing-library/dom/dist/config.js:[2m37:19[22m[39m
+[90m [2m❯[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m76:38[22m[39m
+[90m [2m❯[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m52:17[22m[39m
+[90m [2m❯[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m95:19[22m[39m
+[36m [2m❯[22m src/features/outreach/OutreachPages.test.tsx:[2m84:19[22m[39m
+    [90m 82|[39m     fireEvent.click(screen.getByRole('button', { name: 'Pause campaign…
+    [90m 83|[39m     expect(await screen.findByRole('alert')).toHaveProperty('textConte…
+    [90m 84|[39m     [34mexpect[39m(screen[33m.[39m[34mgetByText[39m([36m/Pilot · draft/[39m))[33m.[39m[34mtoBeTruthy[39m()
+    [90m   |[39m                   [31m^[39m
+    [90m 85|[39m   })
+    [90m 86|[39m   it('hides loaded campaign content after a revoked write', async () =…
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/10]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/features/outreach/OutreachPages.test.tsx[2m > [22mOutreach routed pages[2m > [22mrecords separate attested consent evidence without a send action
+[31m[1mAssertionError[22m: expected "vi.fn()" to be called with arguments: [ { contextId: 'ctx', …(1) }, …(5) ][90m
+
+Number of calls: [1m0[22m
+[31m[39m
+[36m [2m❯[22m src/features/outreach/OutreachPages.test.tsx:[2m134:29[22m[39m
+    [90m132|[39m     fireEvent[33m.[39m[34mclick[39m(screen[33m.[39m[34mgetByRole[39m([32m'checkbox'[39m[33m,[39m { name[33m:[39m [36m/I attest/[39m }))
+    [90m133|[39m     fireEvent.click(screen.getByRole('button', { name: 'Record evidenc…
+    [90m134|[39m     expect(g.recordConsent).toHaveBeenCalledWith(context, proof, campa…
+    [90m   |[39m                             [31m^[39m
+    [90m135|[39m       operation_id: expect.any(String), expected_version: 1, source: '…
+    [90m136|[39m     })[33m,[39m expect[33m.[39m[34many[39m([33mAbortSignal[39m))
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/10]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/features/outreach/contract.test.ts[2m > [22mOutreach provisional read boundary[2m > [22mrequires explicit evidence and rejects control characters for a consent record
+[31m[1mAssertionError[22m: expected false to be true // Object.is equality[39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- true[39m
+[31m+ false[39m
+
+[36m [2m❯[22m src/features/outreach/contract.test.ts:[2m27:65[22m[39m
+    [90m 25|[39m   it('requires explicit evidence and rejects control characters for a …
+    [90m 26|[39m     const input = { operation_id: campaignId, expected_version: 1, sou…
+    [90m 27|[39m     expect(consentEvidenceInputSchema.safeParse(input).success).toBe(t…
+    [90m   |[39m                                                                 [31m^[39m
+    [90m 28|[39m     expect(consentEvidenceInputSchema.safeParse({ ...input, attested: …
+    [90m 29|[39m     expect(consentEvidenceInputSchema.safeParse({ ...input, source: 'f…
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/10]⎯[22m[39m
+
+
+[2m Test Files [22m [1m[31m6 failed[39m[22m[2m | [22m[1m[32m48 passed[39m[22m[90m (54)[39m
+[2m      Tests [22m [1m[31m10 failed[39m[22m[2m | [22m[1m[32m779 passed[39m[22m[90m (789)[39m
+[2m   Start at [22m 15:09:42
+[2m   Duration [22m 43.11s[2m (transform 831ms, setup 3.75s, import 4.15s, tests 14.96s, environment 12.73s)[22m
+
+Error response from daemon: No such container: qa815-web-8eb840d51eaa
+Untagged: qa815-web-8eb840d51eaa:latest
+Deleted: sha256:74c6fda5e900c22a54f31c6403d684975240436ed54bcbb7fcd6d5e49a2fd9e1
+remaining_containers=0
+remaining_image=0

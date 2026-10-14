@@ -1,0 +1,40 @@
+source=a9089b795eb27029d8c70c405abc7389929efa61
+image=sha256:7dc61d4b7e12f94764f95f4f1bfe8e3940049247e6d409898ce9d3ed2810f348
+command=bounded Ruby IMAP units without database
+Run options: --seed 48532
+
+# Running:
+
+...
+
+Finished in 0.055642s, 53.9159 runs/s, 251.6077 assertions/s.
+
+3 runs, 14 assertions, 0 failures, 0 errors, 0 skips
+Run options: --seed 20302
+
+# Running:
+
+..
+
+Finished in 0.120772s, 16.5601 runs/s, 74.5206 assertions/s.
+
+2 runs, 9 assertions, 0 failures, 0 errors, 0 skips
+test/inbound/imap_sync_test.rb:64:in 'run': wrong number of arguments (given 0, expected 1) (ArgumentError)
+	from /usr/local/bundle/ruby/3.4.0/gems/minitest-6.0.6/lib/minitest.rb:486:in 'Minitest::Runnable.run'
+	from /usr/local/bundle/ruby/3.4.0/gems/minitest-6.0.6/lib/minitest.rb:473:in 'block (2 levels) in Minitest::Runnable.run_suite'
+	from /usr/local/bundle/ruby/3.4.0/gems/minitest-6.0.6/lib/minitest.rb:469:in 'Array#each'
+	from /usr/local/bundle/ruby/3.4.0/gems/minitest-6.0.6/lib/minitest.rb:469:in 'block in Minitest::Runnable.run_suite'
+	from /usr/local/bundle/ruby/3.4.0/gems/minitest-6.0.6/lib/minitest.rb:511:in 'Minitest::Runnable.on_signal'
+	from /usr/local/bundle/ruby/3.4.0/gems/minitest-6.0.6/lib/minitest.rb:498:in 'Minitest::Runnable.with_info_handler'
+	from /usr/local/bundle/ruby/3.4.0/gems/minitest-6.0.6/lib/minitest.rb:468:in 'Minitest::Runnable.run_suite'
+	from /usr/local/bundle/ruby/3.4.0/gems/minitest-6.0.6/lib/minitest.rb:361:in 'block in Minitest.run_all_suites'
+	from /usr/local/bundle/ruby/3.4.0/gems/minitest-6.0.6/lib/minitest.rb:361:in 'Array#map'
+	from /usr/local/bundle/ruby/3.4.0/gems/minitest-6.0.6/lib/minitest.rb:361:in 'Minitest.run_all_suites'
+	from /usr/local/bundle/ruby/3.4.0/gems/minitest-6.0.6/lib/minitest.rb:316:in 'Minitest.run'
+	from /usr/local/bundle/ruby/3.4.0/gems/minitest-6.0.6/lib/minitest.rb:84:in 'block in Minitest.autorun'
+Run options: --seed 51114
+
+# Running:
+
+exit=1
+archive_absent=yes
