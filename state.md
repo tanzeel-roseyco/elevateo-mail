@@ -59,6 +59,9 @@ The `cb1ec5be` fleet Steep receipt found grants and preferences write-guard call
 
 # Project state
 
+QA815 `b3aaa07` attachment database fixture repair: the seven SQL bind values move into a local before the heredoc call, leaving authorization assertions intact. Its parser fix is source-only until Soren's fleet `rubocop --lint` gate. The 522-case Ruby gate omitted `test/attachment_gateway/*` by explicit manifest glob; HTTP/worker remain NOT_REACHED. See [repair evidence](docs/completion/orion-authority-syntax.md).
+
+
 **Newer integrated source checkpoint:** `7ec5925` imports Leonie OPS820 isolated gateway role/scanner fixture source, Corin held IMAP attachment ingest at migration 00017, and Sabine gateway helper at migration 00018 after Nadia 00015; no live ingestion or gateway public route is active. Exact fleet migration/role/scan and independent review remain pending for these imports.
 
 **Latest integrated candidate:** `3c781f27246eced3a8c218c2b333ab080cd35530` registers PREF-822 session-scoped GET/PUT in canonical V2 draft.6 and includes Theo/Lyra settings, Maeve/Celeste inert sequence, Nadia/Mira held attachment UI/backend, Rowan/Elara/Dorian source repairs, and Cassian OUT839 grants plus ATT838 pure signer. Sequence and attachment public routes remain inactive; the V2 generated declaration, current SQL/HTTP/web/browser fleet gates, seeded screenshots and independent review are pending. No live send, live credentials or release is enabled. Earlier dated paragraphs below record historical source/evidence states and do not supersede this checkpoint.

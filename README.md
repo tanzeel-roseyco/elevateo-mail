@@ -14,6 +14,9 @@ Shared company mailroom with one Rails domain authority and a React/TypeScript c
 
 ## Current state
 
+**QA815 attachment fixture parser candidate:** The `b3aaa07` fleet gate passed 21 migrations, 522 Ruby cases/7089 assertions and Steep, then RuboCop `--lint` found four fatal syntax diagnostics in `test/attachment_gateway/authority_database_test.rb`. A narrow fixture argument repair preserves its SQL binds and assertions; Soren's focused fleet lint is pending. The Ruby suite manifest selects only `test/be_02`, `test/requests` and `test/sends`, so this attachment database fixture was never among the 522 cases. See [bounded repair note](docs/completion/orion-authority-syntax.md).
+
+
 **SMTP888 source candidate:** The pinned net-smtp 0.5.2 implements the local Mailpit TLS toggles, but its bundled RBS omits them. A narrow local declaration and preconnect factory regression are added; Soren fleet Steep/unit execution and independent review are pending. Remote SMTP remains held.
 
 **OPS820 bootstrap source intake:** Leonie `f8b07b2` now precreates the private gateway schema as an administrative step and checks its owner/ACL around migration; Sabine 00018 must consume that schema. Fleet database/role proof remains pending; no gateway byte route is enabled.

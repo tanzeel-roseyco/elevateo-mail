@@ -54,6 +54,9 @@ The subsequent `cb1ec5be` Steep repair gives grants and preference write guards 
 
 # Product requirements and decision record
 
+Attachment gateway QA815 syntax repair: the database authority fixture's multiline bind array crossed a heredoc opener, producing four RuboCop parser diagnostics on exact core `b3aaa07`. The proposed source repair precomputes the same seven binds; SQL, privilege expectations and denied-claim assertions are unchanged. The full Ruby manifest omits attachment gateway suites, explaining why its 522 passing cases did not exercise this fixture. Fleet focused lint and later actual database execution remain pending; see [bounded record](docs/completion/orion-authority-syntax.md).
+
+
 QA-815 owns serialized fleet Docker checks under the shared Soren lock. The exact Mira FE-806 candidate passed focused frontend checks; the immutable-source scheduler, receipt and cleanup limits are recorded in `docs/completion/soren.md`. This is not integrated or browser acceptance.
 INB887 inbound boundary note: a syntactically supported IMAP attachment without configured private quarantine returns `attachment_storage_unavailable` before database insertion. An unsupported attachment type with storage configured returns `unsupported_mime` before staging or insertion. The isolated fake HTTP controller retains session, CSRF, actor and mailbox grant checks; only its existing Steep block annotations changed. Fleet validation is pending.
 
