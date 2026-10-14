@@ -62,11 +62,11 @@ describe('isolated V2 outreach gateway', () => {
     ])
   })
 
-  it('rejects false consent attestation before dispatch', async () => {
+  it('rejects false consent attestation before dispatch', () => {
     const fetchImpl = vi.fn(async () => response({}))
-    await expect(createV2OutreachGateway(fetchImpl).recordConsent(context, { csrfToken: 'proof' }, id, id,
+    expect(() => createV2OutreachGateway(fetchImpl).recordConsent(context, { csrfToken: 'proof' }, id, id,
       { operation_id: id, expected_version: 1, source: 'Signed intake form', observed_at: '2026-10-14T12:00:00Z', attested: false },
-      new AbortController().signal)).rejects.toBeDefined()
+      new AbortController().signal)).toThrow()
     expect(fetchImpl).not.toHaveBeenCalled()
   })
 
@@ -75,5 +75,15 @@ describe('isolated V2 outreach gateway', () => {
       consent_status: 'granted', suppressed: false, version: 2 }))
     await expect(createV2OutreachGateway(fetchImpl).getLead(context, id, id, new AbortController().signal))
       .rejects.toMatchObject({ kind: 'transport', code: 'malformed' })
+  })
+
+  it('preserves a consent operation conflict without automatic replay', async () => {
+    const fetchImpl = vi.fn(async () => new Response(JSON.stringify({ code: 'operation_mismatch',
+      message: 'Operation changed.', request_id: 'request-2' }),
+    { status: 409, headers: { 'Content-Type': 'application/json' } }))
+    await expect(createV2OutreachGateway(fetchImpl).recordConsent(context, { csrfToken: 'proof' }, id, id,
+      { operation_id: id, expected_version: 1, source: 'Signed intake form', observed_at: '2026-10-14T12:00:00Z', attested: true },
+      new AbortController().signal)).rejects.toMatchObject({ kind: 'api', status: 409, code: 'operation_mismatch' })
+    expect(fetchImpl).toHaveBeenCalledTimes(1)
   })
 })

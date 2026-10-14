@@ -1,6 +1,7 @@
 import type { FetchLike } from './http/transport'
 import { requestJson } from './http/transport'
 import { GatewayError } from './errors'
+import { CollaborationErrorSchema } from './contract'
 import type { CsrfProof, ReadContext } from './gateway'
 import {
   CampaignAnalyticsSchema, CampaignPageSchema, CampaignUpdateSchema, IdSchema,
@@ -28,7 +29,7 @@ const page = (query: { cursor?: string; limit?: number }): string => {
 
 /** Isolated V2 adapter. No send, provider, account activation or fixture fallback is reachable here. */
 export function createV2OutreachGateway(fetchImpl?: FetchLike) {
-  const base = fetchImpl === undefined ? {} : { fetchImpl }
+  const base = fetchImpl === undefined ? { errorSchema: CollaborationErrorSchema } : { fetchImpl, errorSchema: CollaborationErrorSchema }
   return {
     listCampaigns(ctx: ReadContext, query: { cursor?: string; limit?: number }, signal: AbortSignal) {
       return requestJson(`/v2/outreach/campaigns${page(query)}`, CampaignPageSchema, 65_536, { ...base, headers: headers(ctx), signal })

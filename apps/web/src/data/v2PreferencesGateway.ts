@@ -2,6 +2,7 @@ import { z } from 'zod'
 import type { FetchLike } from './http/transport'
 import { requestJson } from './http/transport'
 import { GatewayError } from './errors'
+import { CollaborationErrorSchema } from './contract'
 import type { CsrfProof, ReadContext } from './gateway'
 
 // AIDEV-NOTE: PREF822 is a noncanonical proposal. This port is not injected into the production shell.
@@ -26,7 +27,7 @@ const headers = (ctx: ReadContext, proof?: CsrfProof): Record<string, string> =>
 })
 
 export function createV2PreferencesGateway(fetchImpl?: FetchLike) {
-  const base = fetchImpl === undefined ? {} : { fetchImpl }
+  const base = fetchImpl === undefined ? { errorSchema: CollaborationErrorSchema } : { fetchImpl, errorSchema: CollaborationErrorSchema }
   return {
     async getUserDisplayPreference(ctx: ReadContext, signal: AbortSignal) {
       const page = await requestJson('/v2/me/preferences', UserDisplayPreferencePageSchema, 4_096,

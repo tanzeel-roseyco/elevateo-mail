@@ -1,6 +1,7 @@
 import type { FetchLike } from './http/transport'
 import { requestJson } from './http/transport'
 import { createV2PreferencesGateway } from './v2PreferencesGateway'
+import { CollaborationErrorSchema } from './contract'
 import type { CsrfProof, ReadContext } from './gateway'
 import {
   GrantChangeSchema,
@@ -38,7 +39,7 @@ const headers = (ctx: ReadContext, proof?: CsrfProof): Record<string, string> =>
 })
 
 export function createV2Gateway(fetchImpl?: FetchLike) {
-  const base = fetchImpl === undefined ? {} : { fetchImpl }
+  const base = fetchImpl === undefined ? { errorSchema: CollaborationErrorSchema } : { fetchImpl, errorSchema: CollaborationErrorSchema }
   return {
     // PREF822 remains a separate proposal until its Rails route and SQL evidence are admitted.
     ...createV2PreferencesGateway(fetchImpl),
