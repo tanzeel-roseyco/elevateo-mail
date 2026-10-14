@@ -4,9 +4,9 @@ The combined app transport/ingress source inventory and bounded next seam are
 in [the adapter inventory](rhea-adapter-inventory.md).
 
 Scope: isolated `ops/mail/mox-pilot/` synthetic Mox/Mailpit SMTP/IMAP fixture only. Baseline
-`bbf2353b254a05d48c2da7a508c143e6fba78691`; source candidate
-`669f134f35aa78eff966ae071a1c4cbdbe0a5510` (the outbox tracks any
-documentation-only successor). No production integration is
+`bbf2353b254a05d48c2da7a508c143e6fba78691`; current TLS source candidate
+`3ea8d264f30deaf560c3e2daca6d88e047989fc4` (the earlier SMTP/IMAP
+protocol packet was `669f134f35aa78eff966ae071a1c4cbdbe0a5510`). No production integration is
 dependent on this pilot. Existing BE02/BE03 contracts and application runtime
 are untouched.
 
