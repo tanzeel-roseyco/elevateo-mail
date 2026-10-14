@@ -717,3 +717,6 @@ Exact `251546499f6f3d72dcdcefeb08584f7607b6a97b` OpenAPI blob `9811af7048fa03e8d
 ### REV875 Tessa later-page and Cassian missing-parent tests — Lyra
 
 Exact Tessa `bc02fc1b929dc05061fbda3335d71f43770eca6f` and Cassian `6e987853be5e81e717e8e8312e38d89702586089`: 322 unique versioned LOC including bounded ordering/seed/response context, zero confirmed static defects (**0/KLOC**). The target is provably the 21st ascending message and the controller test observes 404 before a fake save; real browser, database and cleanup remain Soren fleet work. See [REV875 report](docs/completion/lyra-rev875.md) for blob hashes, exact ranges and exclusions.
+### REV892 Rhea SMTP signature review — Lyra, incomplete
+
+Rhea exact `afc5fd6365a31dfcb13d4257186d084c307ff4f8`: 222 assigned repo LOC inspected, zero confirmed defects within that partial scope (**0/KLOC**). A pinned upstream web fetch unexpectedly returned about 330 source lines, breaching the 180/read and 400-total limits; review stopped and root was notified. The TLS toggle definitions and signature compatibility remain unverified; this is **not** an accepted independent review or runtime PASS. See [REV892 report](docs/completion/lyra-rev892.md).
