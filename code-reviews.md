@@ -1,3 +1,5 @@
+R24 follow-up on aa35c3d: SPEC-BE03-C09 reviewed128-line preservation plus30-line lock (158 overlappingLOC), confirmed reseal closed,0 new defects. SPEC-BE03-C10 reviewed200 overlapping schemaLOC, confirmed two schema defects closed,0 new. SPEC-BE03-C08 reviewed152 testLOC, found1 MEDIUM residual fixture-pin gap (6.58/KLOC): manifest fixture hash was outside independent frozen-section pin. Immutable fixture hash now independently pinned; exact210/211 issue boundaries added. This is a fourth unique finding across stages; do not aggregate overlapping re-review LOC. Repair re-review/runtime pending.
+
 # R24 BE03-CONTRACT adversarial source review — 2026-10-14
 
 Actual native Codex subagents SPEC-BE03-C01..C07 independently reviewed immutable `3d01babe0fff976e9ea14045981ad7e7c77810fa` under the full INT-401 rubric. Requested model/tier is not audited billing. Each source read/assignment <=200 LOC; divided referenced context <=400. No host application tests. Initial unique changed-code coverage968 LOC, three unique MEDIUM defects,3.10/KLOC; overlapping context/design and repeated manifest finding are nonadditive. Repaired-source re-review and Docker evidence pending.

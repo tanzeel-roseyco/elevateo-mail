@@ -22,6 +22,8 @@ class SendContractTest < Minitest::Test
   # AIDEV-NOTE: Pin immutable03ae keysets+seals independently; a manifest resealed from additive source must fail.
   def test_preservation_manifest_is_pinned_to_immutable_baseline
     assert_equal "03ae770c56271cd8236726bfd8fe63248e81283d", PRESERVATION.fetch("baseline_commit")
+    assert_equal "bfa2f8832395fcd7c43e4a7671d3e83c687af44ad09488bc722a54a0fc2eb455",
+                 PRESERVATION.fetch("baseline_fixtures_sha256")
     assert_equal "65a5f926c661cb028e934e861892a995c2d9271853275546518b78588fa66597",
                  PRESERVATION.fetch("baseline_openapi_sha256")
     assert_equal "d3de289b10ed86f528a1b3b959d39ec00c5768a0d94296f4324146e85dabe01e",
@@ -138,7 +140,9 @@ class SendContractTest < Minitest::Test
       "recipient_checks" => checks, "issues" => issues + [{ "code" => "purpose_unavailable", "recipient_index" => nil }])
     assert valid?(schema("SendReview"), candidate)
     refute valid?(schema("SendReview"), candidate.merge("policy_revision" => "-1"))
-    refute valid?(schema("SendReview"), candidate.merge("issues" => issues * 2))
+    boundary = Array.new(210) { { "code" => "purpose_unavailable", "recipient_index" => nil } }
+    assert valid?(schema("SendReview"), candidate.merge("issues" => boundary))
+    refute valid?(schema("SendReview"), candidate.merge("issues" => boundary + boundary.first(1)))
   end
 
   def test_status_cannot_claim_delivery_or_expose_snapshot
