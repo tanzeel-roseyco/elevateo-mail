@@ -58,7 +58,7 @@ class AttachmentGatewayMigrationAclTest < Minitest::Test
     assert_equal "1", state.fetch("functions")
     assert_equal "true", state.fetch("owner_auth")
     assert_equal [["elevateo_attachment_gateway", "USAGE", "false"]],
-      state.fetch("acl").select { |grant| grant.first != "elevateo_owner" }
+      (state.fetch("acl").select { |grant| grant.first != "elevateo_owner" })
   end
 
   def assert_bootstrap_only(state)
@@ -67,6 +67,6 @@ class AttachmentGatewayMigrationAclTest < Minitest::Test
     assert_equal "false", state.fetch("gateway_create")
     assert_equal "0", state.fetch("functions")
     assert_equal "false", state.fetch("owner_auth")
-    assert_empty state.fetch("acl").reject { |grant| grant.first == "elevateo_owner" }
+    assert_empty(state.fetch("acl").reject { |grant| grant.first == "elevateo_owner" })
   end
 end
