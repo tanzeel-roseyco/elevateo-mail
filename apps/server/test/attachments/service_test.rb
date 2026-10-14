@@ -2,6 +2,8 @@
 
 require "minitest/autorun"
 require_relative "../../lib/elevateo/attachments"
+require_relative "../../lib/elevateo/attachments_scan"
+require_relative "../../lib/elevateo/attachments_storage"
 
 class AttachmentServiceTest < Minitest::Test
   ORG = "11111111-1111-4111-8111-111111111111"
@@ -21,6 +23,21 @@ class AttachmentServiceTest < Minitest::Test
     attr_reader :rows
     def initialize = @rows = {}
     def create(**attributes) = @rows[attributes.fetch(:id)] = attributes.transform_keys(&:to_s)
+    def page(cursor:, limit:, **scope)
+      @rows.values.select do |row|
+        %i[organization_id mailbox_id thread_id message_id].all? { |key| row.fetch(key.to_s) == scope.fetch(key) } &&
+          (cursor.nil? || row.fetch("id") > cursor)
+      end.sort_by { |row| row.fetch("id") }.first(limit)
+    end
+    def pending_scan(id:)
+      row = @rows[id]
+      row if row && row.fetch("scan_status") == "pending_scan"
+    end
+    def record_scan(id:, sha256:, verdict:)
+      row = pending_scan(id: id)
+      raise Elevateo::Attachments::NotAvailable unless row && row.fetch("sha256") == sha256
+      row["scan_status"] = verdict
+    end
     def find(**scope)
       row = @rows[scope.fetch(:id)]
       return nil unless row
@@ -53,6 +70,61 @@ class AttachmentServiceTest < Minitest::Test
     assert_equal [:write, :write, :read, :read, :read], @checks.map { |item| item.fetch(:capability) }
   end
 
+  def test_list_exposes_only_safe_fields_and_fresh_authorization
+    id = stage.fetch("id")
+    item = @service.list(**scope).fetch("items").fetch(0)
+    assert_equal id, item.fetch("id")
+    assert_equal false, item.fetch("downloadable")
+    refute item.key?("storage_key")
+    refute item.key?("sha256")
+    assert_nil @service.list(**scope).fetch("next_cursor")
+    @allowed = false
+    assert_raises(Elevateo::Attachments::NotAvailable) { @service.list(**scope) }
+  end
+
+  def test_list_paginates_and_rejects_invalid_cursor_and_limit
+    first = stage.fetch("id")
+    second = stage(bytes: "second").fetch("id")
+    page = @service.list(**scope, limit: 1)
+    assert_equal 1, page.fetch("items").length
+    assert_equal [first, second].min, page.fetch("items").first.fetch("id")
+    assert_equal [first, second].min, page.fetch("next_cursor")
+    last = @service.list(**scope, limit: 1, cursor: page.fetch("next_cursor"))
+    assert_equal [first, second].max, last.fetch("items").first.fetch("id")
+    assert_nil last.fetch("next_cursor")
+    [0, 51, "1"].each do |bad|
+      assert_raises(Elevateo::Attachments::Invalid) { @service.list(**scope, limit: bad) }
+    end
+    assert_raises(Elevateo::Attachments::Invalid) { @service.list(**scope, cursor: "bad") }
+  end
+
+  def test_default_scanner_holds_and_simulated_scanner_records_verified_clean
+    id = stage.fetch("id")
+    unavailable = Elevateo::Attachments::ScanService.new(repository: @repository, storage: @storage)
+    assert_raises(Elevateo::Attachments::ScanService::Unavailable) { unavailable.inspect(id: id) }
+    assert_equal "pending_scan", @repository.rows.fetch(id).fetch("scan_status")
+    scanner = Object.new
+    def scanner.scan(_bytes) = "clean" # Fixture-only verdict; no installed scanner is implied.
+    service = Elevateo::Attachments::ScanService.new(repository: @repository, storage: @storage, scanner: scanner)
+    assert_equal "clean", service.inspect(id: id)
+    assert_equal "clean", @service.list(**scope).fetch("items").fetch(0).fetch("scan_status")
+  end
+
+  def test_scanner_rejects_modified_bytes_and_invalid_verdict
+    id = stage.fetch("id")
+    key = @repository.rows.fetch(id).fetch("storage_key")
+    @storage.objects[key][0] = "tampered"
+    scanner = Object.new
+    def scanner.scan(_bytes) = "clean"
+    service = Elevateo::Attachments::ScanService.new(repository: @repository, storage: @storage, scanner: scanner)
+    assert_raises(Elevateo::Attachments::ScanService::Unavailable) { service.inspect(id: id) }
+    assert_equal "pending_scan", @repository.rows.fetch(id).fetch("scan_status")
+    @storage.objects[key][0] = "safe text"
+    def scanner.scan(_bytes) = "unknown"
+    assert_raises(Elevateo::Attachments::ScanService::Unavailable) { service.inspect(id: id) }
+    assert_equal "pending_scan", @repository.rows.fetch(id).fetch("scan_status")
+  end
+
   def test_malware_and_scan_failure_never_download
     id = stage.fetch("id")
     %w[malware scan_failed pending_scan].each do |status|
@@ -72,6 +144,30 @@ class AttachmentServiceTest < Minitest::Test
     end
     assert_empty @storage.objects
     assert_empty @repository.rows
+  end
+
+
+  def test_private_storage_rejects_api_process_and_changed_inbound_retry
+    constructor = { base_url: "http://storage:5000", bucket: "inbox-private", service_token: "x" * 32 }
+    assert_raises(ArgumentError) { Elevateo::Attachments::PrivateStorage.new(**constructor, process: "api") }
+    klass = Class.new(Elevateo::Attachments::PrivateStorage) do
+      attr_accessor :existing
+      private
+      def private_bucket? = true
+      def request(_method, _key, bytes: nil, expected:)
+        raise "unexpected status" unless expected.include?(409)
+        bytes
+      end
+      public
+      def get(_key) = existing
+    end
+    adapter = klass.new(**constructor, process: "worker")
+    key = "quarantine/imap/#{ORG}/1/2/0"
+    adapter.existing = "same"
+    assert_nil adapter.put_once(key, "same")
+    adapter.existing = "different"
+    assert_raises(Elevateo::Attachments::PrivateStorage::Unavailable) { adapter.put_once(key, "same") }
+    assert_raises(ArgumentError) { adapter.delete(key) }
   end
 
   def test_cross_tenant_and_cross_mailbox_ids_are_not_downloadable

@@ -9,15 +9,29 @@ class CreateInboxAttachments < ActiveRecord::Migration[8.1]
         mailbox_id uuid NOT NULL,
         thread_id uuid NOT NULL,
         message_id uuid NOT NULL,
-        storage_key text NOT NULL UNIQUE CHECK (storage_key ~ '^quarantine/[0-9a-f-]{36}/[0-9a-f-]{36}$'),
+        storage_key text UNIQUE CHECK (storage_key IS NULL OR storage_key ~ '^quarantine/([0-9a-f-]{36}/[0-9a-f-]{36}|imap/[0-9a-f-]{36}/[0-9]+/[0-9]+/[0-9]+)$'),
         filename text NOT NULL CHECK (octet_length(filename) BETWEEN 1 AND 255),
-        content_type text NOT NULL CHECK (content_type IN ('application/pdf','image/png','image/jpeg','text/plain')),
-        byte_size integer NOT NULL CHECK (byte_size BETWEEN 1 AND 10485760),
-        scan_status text NOT NULL DEFAULT 'pending_scan' CHECK (scan_status IN ('pending_scan','clean','malware','scan_failed')),
+        content_type text NOT NULL CHECK (content_type IN ('application/pdf','image/png','image/jpeg','text/plain','application/octet-stream')),
+        byte_size integer NOT NULL CHECK (byte_size BETWEEN 0 AND 10485760),
+        sha256 text CHECK (sha256 IS NULL OR sha256 ~ '^[0-9a-f]{64}$'),
+        scan_status text NOT NULL DEFAULT 'pending_scan' CHECK (scan_status IN ('pending_scan','clean','malware','scan_failed','rejected')),
+        rejection_reason text CHECK (rejection_reason IN ('oversize','unsupported_type','invalid_name','invalid_signature')),
+        source_account_id uuid,
+        source_uidvalidity bigint,
+        source_uid bigint,
+        source_ordinal integer,
+        CHECK ((scan_status='rejected' AND storage_key IS NULL AND sha256 IS NULL AND byte_size=0 AND rejection_reason IS NOT NULL) OR
+          (scan_status<>'rejected' AND storage_key IS NOT NULL AND sha256 IS NOT NULL AND byte_size>0 AND rejection_reason IS NULL
+            AND content_type<>'application/octet-stream')),
+        CHECK ((source_account_id IS NULL AND source_uidvalidity IS NULL AND source_uid IS NULL AND source_ordinal IS NULL) OR
+          (source_account_id IS NOT NULL AND source_uidvalidity IS NOT NULL AND source_uidvalidity>0 AND
+            source_uid IS NOT NULL AND source_uid>0 AND source_ordinal IS NOT NULL AND source_ordinal BETWEEN 0 AND 999)),
         created_at timestamptz NOT NULL DEFAULT now(),
         FOREIGN KEY (organization_id, mailbox_id, thread_id, message_id)
           REFERENCES app.messages(organization_id, mailbox_id, thread_id, id) ON DELETE CASCADE
       );
+      CREATE UNIQUE INDEX inbox_attachments_source_once ON app.inbox_attachments
+        (source_account_id,source_uidvalidity,source_uid,source_ordinal) WHERE source_account_id IS NOT NULL;
       CREATE INDEX inbox_attachments_message_idx ON app.inbox_attachments
         (organization_id, mailbox_id, thread_id, message_id);
       ALTER TABLE app.inbox_attachments ENABLE ROW LEVEL SECURITY;
@@ -31,26 +45,92 @@ class CreateInboxAttachments < ActiveRecord::Migration[8.1]
       -- AIDEV-NOTE: API cannot INSERT directly; the definer checks current compose rights and fixed pending state.
       REVOKE ALL ON app.inbox_attachments FROM elevateo_app_read, elevateo_api;
       GRANT SELECT (id, organization_id, mailbox_id, thread_id, message_id, storage_key, filename,
-        content_type, byte_size, scan_status) ON app.inbox_attachments TO elevateo_app_read;
+        content_type, byte_size, sha256, scan_status, rejection_reason) ON app.inbox_attachments TO elevateo_app_read;
       CREATE FUNCTION app.stage_inbox_attachment(p_id uuid, p_org uuid, p_box uuid, p_thread uuid,
-        p_message uuid, p_key text, p_filename text, p_type text, p_bytes integer) RETURNS void
+        p_message uuid, p_key text, p_filename text, p_type text, p_bytes integer, p_sha text) RETURNS void
       LANGUAGE plpgsql SECURITY DEFINER SET search_path = pg_catalog, app AS $$
       BEGIN
-        IF p_org IS DISTINCT FROM app.context_uuid('app.org_id') OR
+        IF p_key IS DISTINCT FROM ('quarantine/' || p_org::text || '/' || p_id::text) OR
+          p_type='application/octet-stream' OR p_org IS DISTINCT FROM app.context_uuid('app.org_id') OR
           NOT app.draft_scope(p_box, NULL) OR
           NOT EXISTS (SELECT 1 FROM app.messages m WHERE m.organization_id = p_org
             AND m.mailbox_id = p_box AND m.thread_id = p_thread AND m.id = p_message) THEN
           RAISE EXCEPTION 'attachment not available' USING ERRCODE = '42501';
         END IF;
         INSERT INTO app.inbox_attachments(id,organization_id,mailbox_id,thread_id,message_id,
-          storage_key,filename,content_type,byte_size,scan_status)
-        VALUES (p_id,p_org,p_box,p_thread,p_message,p_key,p_filename,p_type,p_bytes,'pending_scan');
+          storage_key,filename,content_type,byte_size,sha256,scan_status)
+        VALUES (p_id,p_org,p_box,p_thread,p_message,p_key,p_filename,p_type,p_bytes,p_sha,'pending_scan');
       END
       $$;
-      REVOKE ALL ON FUNCTION app.stage_inbox_attachment(uuid,uuid,uuid,uuid,uuid,text,text,text,integer)
+      REVOKE ALL ON FUNCTION app.stage_inbox_attachment(uuid,uuid,uuid,uuid,uuid,text,text,text,integer,text)
         FROM PUBLIC, elevateo_app_read, elevateo_api, elevateo_worker;
-      GRANT EXECUTE ON FUNCTION app.stage_inbox_attachment(uuid,uuid,uuid,uuid,uuid,text,text,text,integer)
+      GRANT EXECUTE ON FUNCTION app.stage_inbox_attachment(uuid,uuid,uuid,uuid,uuid,text,text,text,integer,text)
         TO elevateo_api;
+      -- AIDEV-NOTE: Corin's definer ingest calls this before cursor advance; worker has no direct EXECUTE grant.
+      CREATE FUNCTION app.bind_imported_inbox_attachment(p_id uuid, p_org uuid, p_box uuid, p_thread uuid,
+        p_message uuid, p_account uuid, p_epoch bigint, p_uid bigint, p_ordinal integer,
+        p_key text, p_filename text, p_type text, p_bytes integer, p_sha text, p_reason text)
+        RETURNS uuid LANGUAGE plpgsql SECURITY DEFINER SET search_path = pg_catalog, app AS $$
+      DECLARE existing app.inbox_attachments%ROWTYPE;
+      BEGIN
+        IF session_user <> 'elevateo_worker' OR p_account IS NULL OR p_epoch<=0 OR p_uid<=0 OR
+          p_ordinal NOT BETWEEN 0 AND 999 THEN
+          RAISE EXCEPTION 'attachment import unavailable' USING ERRCODE='42501';
+        END IF;
+        IF p_reason IS NULL AND (p_key IS DISTINCT FROM
+          ('quarantine/imap/' || p_account::text || '/' || p_epoch::text || '/' || p_uid::text || '/' || p_ordinal::text)
+          OR p_bytes NOT BETWEEN 1 AND 262144 OR p_sha IS NULL OR p_type='application/octet-stream') THEN
+          RAISE EXCEPTION 'invalid staged attachment' USING ERRCODE='22023';
+        END IF;
+        IF p_reason IS NOT NULL AND (p_key IS NOT NULL OR p_sha IS NOT NULL OR p_bytes<>0) THEN
+          RAISE EXCEPTION 'invalid rejected attachment' USING ERRCODE='22023';
+        END IF;
+        SELECT * INTO existing FROM app.inbox_attachments a WHERE a.source_account_id=p_account
+          AND a.source_uidvalidity=p_epoch AND a.source_uid=p_uid AND a.source_ordinal=p_ordinal FOR UPDATE;
+        IF FOUND THEN
+          IF existing.organization_id IS DISTINCT FROM p_org OR existing.mailbox_id IS DISTINCT FROM p_box OR
+            existing.thread_id IS DISTINCT FROM p_thread OR existing.message_id IS DISTINCT FROM p_message OR
+            existing.storage_key IS DISTINCT FROM p_key OR existing.sha256 IS DISTINCT FROM p_sha OR
+            existing.filename IS DISTINCT FROM p_filename OR existing.content_type IS DISTINCT FROM p_type OR
+            existing.byte_size IS DISTINCT FROM p_bytes OR existing.rejection_reason IS DISTINCT FROM p_reason THEN
+            RAISE EXCEPTION 'attachment import conflict' USING ERRCODE='23505';
+          END IF;
+          RETURN existing.id;
+        END IF;
+        INSERT INTO app.inbox_attachments(id,organization_id,mailbox_id,thread_id,message_id,storage_key,
+          filename,content_type,byte_size,sha256,scan_status,rejection_reason,source_account_id,
+          source_uidvalidity,source_uid,source_ordinal)
+        VALUES (p_id,p_org,p_box,p_thread,p_message,p_key,p_filename,p_type,p_bytes,p_sha,
+          CASE WHEN p_reason IS NULL THEN 'pending_scan' ELSE 'rejected' END,p_reason,
+          p_account,p_epoch,p_uid,p_ordinal);
+        RETURN p_id;
+      END
+      $$;
+      REVOKE ALL ON FUNCTION app.bind_imported_inbox_attachment(uuid,uuid,uuid,uuid,uuid,uuid,bigint,bigint,
+        integer,text,text,text,integer,text,text) FROM PUBLIC, elevateo_app_read, elevateo_api, elevateo_worker;
+      -- AIDEV-NOTE: Only the scanner worker can read held object metadata or record a verdict.
+      CREATE FUNCTION app.pending_inbox_attachment(p_id uuid) RETURNS TABLE (
+        storage_key text, byte_size integer, sha256 text, scan_status text)
+      LANGUAGE sql SECURITY DEFINER SET search_path = pg_catalog, app AS $$
+        SELECT a.storage_key,a.byte_size,a.sha256,a.scan_status FROM app.inbox_attachments a
+        WHERE a.id=p_id AND a.scan_status='pending_scan'
+      $$;
+      CREATE FUNCTION app.record_inbox_attachment_verdict(p_id uuid, p_sha text, p_verdict text)
+        RETURNS boolean LANGUAGE plpgsql SECURITY DEFINER SET search_path = pg_catalog, app AS $$
+      BEGIN
+        IF p_verdict NOT IN ('clean','malware') THEN
+          RAISE EXCEPTION 'invalid scan verdict' USING ERRCODE = '22023';
+        END IF;
+        UPDATE app.inbox_attachments SET scan_status=p_verdict
+          WHERE id=p_id AND sha256=p_sha AND scan_status='pending_scan';
+        RETURN FOUND;
+      END
+      $$;
+      REVOKE ALL ON FUNCTION app.pending_inbox_attachment(uuid),
+        app.record_inbox_attachment_verdict(uuid,text,text)
+        FROM PUBLIC, elevateo_app_read, elevateo_api, elevateo_worker;
+      GRANT EXECUTE ON FUNCTION app.pending_inbox_attachment(uuid),
+        app.record_inbox_attachment_verdict(uuid,text,text) TO elevateo_worker;
     SQL
   end
 

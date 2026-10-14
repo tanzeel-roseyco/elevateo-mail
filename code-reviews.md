@@ -693,3 +693,5 @@ SEND-810 matched due-drain merge: Rowan840ab4c/Elara5945e92 exact owner source i
 ## Nadia attachment backend candidate — review pending
 
 Source added in `apps/server/lib/elevateo/attachments.rb`, `attachments_repository.rb`, migration `20261015000015_create_inbox_attachments.rb`, and `test/attachments/service_test.rb`. Author inspection covered validation and held-state logic; this is **not independent adversarial review** and defect density is therefore not claimed. Root must assign bounded functional/security and design-tradeoff reviews before integration. Runtime tests NOT_RUN; Soren owns fleet execution.
+
+ATT823 continuation on Nadia branch adds private Storage/scan ports, page projection, inbound metadata binding and one SEND810 type boundary fix. Author static inspection only; independent bounded functional, security/DB-role and design reviews remain unassigned. No defensible independent defect count or density is claimed; runtime NOT_RUN. See `docs/completion/nadia-attachments.md` for exact seams and limitations.
