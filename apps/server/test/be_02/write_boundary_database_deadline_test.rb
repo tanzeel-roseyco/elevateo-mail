@@ -18,7 +18,14 @@ class WriteBoundaryDatabaseDeadlineTest < WriteBoundaryDatabaseTestCase
       # AIDEV-NOTE: Each statement fits its own timeout; only the cumulative PG17 deadline aborts this write.
       assert_transaction_timeout(connection, backend, notices) do
         connection.send_query("SELECT pg_sleep(0.15)")
-        result = connection.sync_get_result
+        result = begin
+          connection.get_result
+        rescue PG::ConnectionBad => transport_error
+          # AIDEV-NOTE: A failed async read may still retain the first structured result; never accept transport alone.
+          buffered = connection.sync_get_result
+          raise transport_error unless buffered
+          buffered
+        end
         refute_nil result, "first native result must be observed before draining the closed socket"
         result.check
       end
@@ -37,6 +44,7 @@ class WriteBoundaryDatabaseDeadlineTest < WriteBoundaryDatabaseTestCase
       assert_equal "ok", write_guard(connection: connection).fetch("status")
       sleep 0.25
       assert_transaction_timeout(connection, backend, notices) do
+        raise "native idle fatal readiness missing" unless connection.socket_io.wait_readable(2)
         begin
           connection.consume_input
         rescue PG::ConnectionBad
