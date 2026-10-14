@@ -24,11 +24,8 @@ class DraftDatabaseTestCase < WriteBoundaryDatabaseTestCase
     end
   end
 
-  def teardown
-    @api.exec("ROLLBACK") if @api && @api.transaction_status != PG::PQTRANS_IDLE
-    @admin.exec("ROLLBACK") if @admin && @admin.transaction_status != PG::PQTRANS_IDLE
+  def prepare_organization_fixture_cleanup
     @admin.exec_params("DELETE FROM app_drafts_private.operations WHERE organization_id = $1", [@org]) if @admin && @org
-    super
   end
 
   def fixture_change
@@ -66,14 +63,24 @@ class DraftDatabaseTestCase < WriteBoundaryDatabaseTestCase
     connection.exec("COMMIT")
     result
   ensure
-    connection.exec("ROLLBACK") if connection.transaction_status != PG::PQTRANS_IDLE
+    original_error = $!
+    begin
+      connection.exec("ROLLBACK") if connection && !connection.finished? && connection.transaction_status != PG::PQTRANS_IDLE
+    rescue PG::Error => cleanup_error
+      raise cleanup_error unless original_error
+    end
   end
 
   def lookup(operation: @operation, box: @box, draft: @draft)
     begin_write
     JSON.parse(@api.exec_params("SELECT app.draft_operation($1::uuid, $2::uuid, $3::uuid)", [box, draft, operation]).getvalue(0, 0))
   ensure
-    @api.exec("ROLLBACK") if @api.transaction_status != PG::PQTRANS_IDLE
+    original_error = $!
+    begin
+      @api.exec("ROLLBACK") if @api && !@api.finished? && @api.transaction_status != PG::PQTRANS_IDLE
+    rescue PG::Error => cleanup_error
+      raise cleanup_error unless original_error
+    end
   end
 
   def ledger
