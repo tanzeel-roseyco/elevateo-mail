@@ -435,3 +435,5 @@ ATT902 internal fixed error vocabulary now includes authorized `attachment_held`
 Exact QA815 `215080a4` eight pure Ruby suites passed 51 runs/225 assertions with cleanup, while Steep failed ten diagnostics in three files; no full backend/HTTP/worker PASS follows. Cassian gateway Float conversion repair is source-only; Nadia/Corin own the remaining strict files.
 
 Android integration adopted six previously missing exact Astrid `d93c331` classifier/test/build blobs. Soren's exact `d93c331` compile-only Docker run passed 20 Python methods, seven Rust units, Gradle packaging and policy on a retained unsigned fixture APK; current integrated-SHA build and installed runtime remain NOT_RUN.
+
+Sabine DIR903 migration 00019 and Theo DIR904 mailbox assignee-options controller/projection/tests are integrated as unexecuted candidates behind a disabled V2 route. SQL rechecks session/context/generation and existing V1 target eligibility; Soren fleet real-role DB/HTTP/Steep and UI proof remain pending.

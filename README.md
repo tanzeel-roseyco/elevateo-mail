@@ -492,3 +492,5 @@ ATT902 candidate adds a fixed V2 `attachment_held` 423 error for an authorized u
 QA815 exact `215080a4` focused backend gate passed eight pure Ruby suites (51 runs/225 assertions), but Steep failed ten diagnostics across gateway client, attachment metadata controller and fake inbound controller. Full backend/HTTP/worker remain held; owner strict repairs are in progress.
 
 The assembled Android lane now includes Astrid's previously omitted permission/unsigned classifiers, tests and exact build recipe. QA815 exact `d93c331` fleet compile-only policy passed on a fixture APK byte-identical to the older rejected artifact; installed Android and release signing remain untested. The receipt is not a build of this later integrated SHA.
+
+DIR903/904 candidate now includes protected mailbox assignee UUID SQL and a bounded V2 read controller/adapter, with the route still inactive. It lists only current eligible Auth UUIDs; the twelve staff references remain unbound. Fleet DB/HTTP/strict/browser checks are pending.
