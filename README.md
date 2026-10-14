@@ -216,3 +216,5 @@ QA815 exact `211df76` focused Steep found 80 problems/8 files. Four of eight sel
 QA815 exact `37b20c2` reviewed `business_role` successor passed the single protected outreach same-scope case 1 run/14 assertions: both read and write returned `ok` with sales role and live session; 21 migrations and exact cleanup passed. Full backend, HTTP, worker and real-auth browser remain unrun on this source.
 
 QA815 pure Ruby focused runner now loads Minitest mock for future candidates; its corrected behavior is verified only by the separate `211df76` two-suite probe so far.
+
+QA815 exact Astrid `b3fec57` pinned Build Tools36 parser/signer probe passed 17 Python methods and validated actual manifest/unsigned classifiers against the retained older rejected APK; apksigner returned its expected missing-signature diagnostic. Disposable tool container and archive were removed. No new APK, signing, installation or native runtime acceptance. See `docs/completion/soren.md`.

@@ -158,3 +158,5 @@ QA815 exact `211df76` Steep 80 problems/8 files, focused pure Ruby partial PASS;
 QA815 exact `37b20c2` protected role one-case 1/14 PASS after 21 migrations; same-scope read/write both `ok`, live sales session, cleanup PASS. This closes only the focused role diagnostic; broader backend/HTTP/worker/browser remain OPEN.
 
 QA815 future focused pure Ruby runner adds `minitest/mock`; new coherent source is NOT_RUN pending owner pins.
+
+QA815 exact `b3fec57` pinned Android Build Tools36 manifest/unsigned/permissions units 17/17 PASS; actual retained rejected APK manifest classifier and unsigned classifier exit0 around apksigner expected exit1. Task container/archive absent; no accepted new APK or native runtime.

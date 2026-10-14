@@ -722,3 +722,5 @@ QA815 `a0a60b6` same-scope authorization failure and retained-APK `aapt` output 
 QA815 `211df76` focused Steep/unit failures and gateway ACL PASS are executed test findings, not independent bounded review. The first API-role setup failure and mock-import harness corrections are preserved; additional independent reviewed source remains 0 LOC and defect density unclaimed.
 
 QA815 `37b20c2` focused protected role PASS is one executed real PostgreSQL case, not an independent source review or full backend gate. Additional independent reviewed source remains 0 LOC; defect density unclaimed.
+
+QA815 `b3fec57` pinned Build Tools36 parser/signer and 17 Python methods are executed tests on a retained rejected APK, not QA815 independent source review. ADV128 review belongs to root's separate packet; additional QA815 independently reviewed source remains 0 LOC and density unclaimed.

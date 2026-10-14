@@ -226,3 +226,5 @@ QA815 exact `211df76` focused Steep/unit and gateway ACL receipts are `docs/comp
 QA815 exact `37b20c2` focused protected outreach role receipt `docs/completion/qa815-evidence/backend-37b20c2556e8/` records 21 migrations and the single same-scope read/write case 1/14 PASS with cleanup; broad runtime remains pending. See `docs/completion/soren.md`.
 
 QA815 future focused pure Ruby gate includes the Minitest mock import established by the separate `211df76` probe; no newer coherent source has run yet.
+
+QA815 actual pinned Build Tools36 retained-APK parser/signer receipt `docs/completion/qa815-evidence/android-parser-b3fec5772901.txt` records exact Astrid `b3fec57`, 17 passing Python methods, real aapt/apksigner outputs and task cleanup. The inspected artifact remains older, unsigned and permission-rejected; see `docs/completion/soren.md`.
