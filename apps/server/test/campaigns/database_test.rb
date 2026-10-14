@@ -46,20 +46,20 @@ class CampaignDatabaseTest < Minitest::Test
   end
 
   def test_missing_digest_denies_reads_and_writes_despite_valid_tenant_claims
-    @admin.exec_params("INSERT INTO app.campaigns(id,organization_id,operation_id,name,status) VALUES ($1,$2,$3,'Pilot','draft')",
+    @admin.exec_params("INSERT INTO app.campaigns(id,organization_id,operation_id,name,status,creation_fingerprint) VALUES ($1,$2,$3,'Pilot','draft',repeat('a',64))",
       [@campaign, @org, SecureRandom.uuid])
     claims(@user, @org)
     assert_equal "0", @api.exec_params("SELECT count(*) FROM app.campaigns WHERE id=$1", [@campaign]).getvalue(0, 0)
     @api.exec("SAVEPOINT denied_insert")
     assert_raises(PG::InsufficientPrivilege) do
-      @api.exec_params("INSERT INTO app.campaigns(id,organization_id,operation_id,name,status) VALUES ($1,$2,$3,'Other','draft')",
+      @api.exec_params("INSERT INTO app.campaigns(id,organization_id,operation_id,name,status,creation_fingerprint) VALUES ($1,$2,$3,'Other','draft',repeat('a',64))",
         [SecureRandom.uuid, @org, SecureRandom.uuid])
     end
     @api.exec("ROLLBACK TO SAVEPOINT denied_insert")
   end
 
   def test_foreign_claims_and_invalid_digest_remain_hidden
-    @admin.exec_params("INSERT INTO app.campaigns(id,organization_id,operation_id,name,status) VALUES ($1,$2,$3,'Pilot','draft')",
+    @admin.exec_params("INSERT INTO app.campaigns(id,organization_id,operation_id,name,status,creation_fingerprint) VALUES ($1,$2,$3,'Pilot','draft',repeat('a',64))",
       [@campaign, @org, SecureRandom.uuid])
     claims(@other_user, @other_org)
     @api.exec_params("SELECT set_config('app.outreach_digest',$1,true)", [SecureRandom.hex(32)])
@@ -67,11 +67,11 @@ class CampaignDatabaseTest < Minitest::Test
   end
 
   def test_no_digest_hides_private_accounts_and_mutation_history
-    @admin.exec_params("INSERT INTO app.campaigns(id,organization_id,operation_id,name,status) VALUES ($1,$2,$3,'Pilot','draft')",
+    @admin.exec_params("INSERT INTO app.campaigns(id,organization_id,operation_id,name,status,creation_fingerprint) VALUES ($1,$2,$3,'Pilot','draft',repeat('a',64))",
       [@campaign, @org, SecureRandom.uuid])
     @admin.exec_params(<<~SQL, [@account, @org, @campaign, @private_box, SecureRandom.uuid])
-      INSERT INTO app.campaign_accounts(id,organization_id,campaign_id,mailbox_id,operation_id,label)
-      VALUES ($1,$2,$3,$4,$5,'Private')
+      INSERT INTO app.campaign_accounts(id,organization_id,campaign_id,mailbox_id,operation_id,label,creation_fingerprint)
+      VALUES ($1,$2,$3,$4,$5,'Private',repeat('a',64))
     SQL
     @admin.exec_params(<<~SQL, [@org, SecureRandom.uuid, @account])
       INSERT INTO app.campaign_mutations(organization_id,operation_id,resource_kind,resource_id,fingerprint,result)

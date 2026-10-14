@@ -24,8 +24,9 @@ class OutreachLeadsControllerTest < Minitest::Test
   def dispatch(action, input)
     path = "https://app.test/v2/outreach/campaigns/#{THREAD}/leads"
     path += "/#{NOTE}/consent" if action == "record_consent"
-    path += "/#{NOTE}" if action == "update"
-    env = Rack::MockRequest.env_for(path, method: action == "update" ? "PUT" : "POST", input: JSON.generate(input))
+    path += "/#{NOTE}" if %w[update show].include?(action)
+    method = action == "show" ? "GET" : action == "update" ? "PUT" : "POST"
+    env = Rack::MockRequest.env_for(path, method: method, input: action == "show" ? "" : JSON.generate(input))
     env.merge!("CONTENT_TYPE" => "application/json", "HTTP_ORIGIN" => "https://app.test",
       "HTTP_COOKIE" => "elevateo_session=#{@cookie}", "HTTP_X_SESSION_CONTEXT" => AuthFixtures::CONTEXT,
       "HTTP_X_AUTHORIZATION_VERSION" => @service.presentation.version(metadata),
@@ -78,7 +79,8 @@ class OutreachLeadsControllerTest < Minitest::Test
     assert_equal 200, result[0]
     assert_equal "granted", result[2].fetch("consent_status")
     update = @connection.sql.find { |sql| sql.include?("UPDATE app.campaign_leads") }
-    assert_includes update, "consent_recorded_by=$10::uuid"
+    assert_includes update, "consent_recorded_by=CASE WHEN $5='granted' THEN $10::uuid ELSE NULL END"
+    assert(@connection.sql.any? { |sql| sql.include?("evidence_kind") })
     assert(@connection.sql.any? { |sql| sql.include?("INSERT INTO app.campaign_consent_events") })
     assert(@connection.sql.any? { |sql| sql.include?("INSERT INTO app.campaign_mutations") })
   end
@@ -94,6 +96,28 @@ class OutreachLeadsControllerTest < Minitest::Test
     assert_equal "granted", result[2].fetch("consent_status")
     assert(@connection.sql.any? { |sql| sql.include?("SET version=version+1") })
     refute(@connection.sql.any? { |sql| sql.include?("INSERT INTO app.campaign_consent_events") })
+  end
+
+  def test_detail_exposes_manual_attestation_label_and_recorded_evidence
+    granted = lead_row.merge("consent_status" => "granted", "consent_recorded_at" => Time.utc(2026, 10, 14, 10),
+      "consent_source" => "confirmed opt-in", "consent_recorded_by" => AuthFixtures::USER)
+    @connection.rows = [[{ "result" => { "status" => "ok" } }], [granted]]
+    result = dispatch("show", {})
+    assert_equal 200, result[0]
+    assert_equal ["manual_attestation", "confirmed opt-in", AuthFixtures::USER],
+      result[2].values_at("consent_evidence_kind", "consent_source", "consent_recorded_by")
+  end
+
+  def test_withdrawal_clears_current_attestation_actor_but_retains_event
+    granted = lead_row.merge("consent_status" => "granted", "consent_recorded_at" => Time.utc(2026, 10, 14, 10),
+      "consent_source" => "confirmed opt-in", "consent_recorded_by" => AuthFixtures::USER)
+    withdrawn = lead_row.merge("consent_status" => "withdrawn", "version" => 2)
+    @connection.rows = [[{ "result" => { "status" => "ok" } }], [granted], [], [], [withdrawn], [], [withdrawn], []]
+    result = dispatch("withdraw_consent", { "operation_id" => TARGET, "expected_version" => 1 })
+    assert_equal [200, "withdrawn"], [result[0], result[2].fetch("consent_status")]
+    update = @connection.sql.find { |sql| sql.include?("UPDATE app.campaign_leads") }
+    assert_includes update, "consent_recorded_by=CASE WHEN $5='granted' THEN $10::uuid ELSE NULL END"
+    assert(@connection.sql.any? { |sql| sql.include?("INSERT INTO app.campaign_consent_events") })
   end
 
   def test_consent_attestation_requires_explicit_true_before_sql

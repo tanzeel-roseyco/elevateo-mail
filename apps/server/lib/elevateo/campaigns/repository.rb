@@ -16,16 +16,18 @@ module Elevateo
       def save(input, organization_id:)
         WriteInput.invalid! unless input.is_a?(Input)
         org = WriteInput.uuid(organization_id)
+        creation_fingerprint = Digest::SHA256.hexdigest(JSON.generate([input.kind, input.id, input.operation_id,
+          input.attributes.sort.to_h]))
         values = case input.kind
         when "campaign"
-          [input.id, org, input.operation_id, input.attributes.fetch("name"), input.attributes.fetch("status")]
+          [input.id, org, input.operation_id, input.attributes.fetch("name"), input.attributes.fetch("status"), creation_fingerprint]
         when "lead"
           [input.id, org, input.attributes.fetch("campaign_id"), input.operation_id,
             input.attributes.fetch("email"), input.attributes.fetch("consent_status"),
-            input.attributes.fetch("consent_recorded_at"), input.attributes.fetch("consent_source"), input.attributes.fetch("suppressed")]
+            input.attributes.fetch("consent_recorded_at"), input.attributes.fetch("consent_source"), input.attributes.fetch("suppressed"), creation_fingerprint]
         when "account"
           [input.id, org, input.attributes.fetch("campaign_id"), input.operation_id,
-            input.attributes.fetch("mailbox_id"), input.attributes.fetch("label")]
+            input.attributes.fetch("mailbox_id"), input.attributes.fetch("label"), creation_fingerprint]
         else WriteInput.invalid!
         end
         if input.kind == "account"
@@ -36,24 +38,24 @@ module Elevateo
         sql = case input.kind
         when "campaign"
           <<~SQL
-            INSERT INTO app.campaigns(id, organization_id, operation_id, name, status)
-            VALUES ($1::uuid,$2::uuid,$3::uuid,$4,$5)
+            INSERT INTO app.campaigns(id, organization_id, operation_id, name, status, creation_fingerprint)
+            VALUES ($1::uuid,$2::uuid,$3::uuid,$4,$5,$6)
             ON CONFLICT DO NOTHING
             RETURNING id
           SQL
         when "lead"
           <<~SQL
             INSERT INTO app.campaign_leads(id, organization_id, campaign_id, operation_id, email,
-              consent_status, consent_recorded_at, consent_source, suppressed_at)
+              consent_status, consent_recorded_at, consent_source, suppressed_at, creation_fingerprint)
             VALUES ($1::uuid,$2::uuid,$3::uuid,$4::uuid,$5,$6,$7::timestamptz,$8,
-              CASE WHEN $9::boolean THEN now() ELSE NULL END)
+              CASE WHEN $9::boolean THEN now() ELSE NULL END,$10)
             ON CONFLICT DO NOTHING
             RETURNING id
           SQL
         when "account"
           <<~SQL
-            INSERT INTO app.campaign_accounts(id, organization_id, campaign_id, operation_id, mailbox_id, label)
-            VALUES ($1::uuid,$2::uuid,$3::uuid,$4::uuid,$5::uuid,$6)
+            INSERT INTO app.campaign_accounts(id, organization_id, campaign_id, operation_id, mailbox_id, label, creation_fingerprint)
+            VALUES ($1::uuid,$2::uuid,$3::uuid,$4::uuid,$5::uuid,$6,$7)
             ON CONFLICT DO NOTHING
             RETURNING id
           SQL
@@ -62,28 +64,13 @@ module Elevateo
         inserted = rows(sql, values)
         return inserted.first.fetch("id") if inserted.length == 1
         existing = rows(case input.kind
-          when "campaign" then "SELECT id,name,status FROM app.campaigns WHERE organization_id=$1::uuid AND operation_id=$2::uuid"
-          when "lead" then "SELECT id,email,consent_status,consent_recorded_at,consent_source,suppressed_at FROM app.campaign_leads WHERE organization_id=$1::uuid AND campaign_id=$3::uuid AND operation_id=$2::uuid"
-          when "account" then "SELECT id,mailbox_id,label FROM app.campaign_accounts WHERE organization_id=$1::uuid AND campaign_id=$3::uuid AND operation_id=$2::uuid"
+          when "campaign" then "SELECT id,creation_fingerprint FROM app.campaigns WHERE organization_id=$1::uuid AND operation_id=$2::uuid"
+          when "lead" then "SELECT id,creation_fingerprint FROM app.campaign_leads WHERE organization_id=$1::uuid AND campaign_id=$3::uuid AND operation_id=$2::uuid"
+          when "account" then "SELECT id,creation_fingerprint FROM app.campaign_accounts WHERE organization_id=$1::uuid AND campaign_id=$3::uuid AND operation_id=$2::uuid"
           end, [org, input.operation_id, input.attributes["campaign_id"]].compact).first
         raise CollaborationError.new("not_available") unless existing && existing.fetch("id") == input.id
-        raise CollaborationError.new("operation_mismatch") unless replay_same?(input, existing)
+        raise CollaborationError.new("operation_mismatch") unless existing.fetch("creation_fingerprint") == creation_fingerprint
         input.id
-      end
-
-      def replay_same?(input, row)
-        case input.kind
-        when "campaign"
-          row["name"] == input.attributes["name"] && row["status"] == input.attributes["status"]
-        when "lead"
-          row["email"] == input.attributes["email"] && row["consent_status"] == input.attributes["consent_status"] &&
-            timestamp(row["consent_recorded_at"]) == input.attributes["consent_recorded_at"] &&
-            row["consent_source"] == input.attributes["consent_source"] &&
-            (!row["suppressed_at"].nil?) == input.attributes["suppressed"]
-        when "account"
-          row["mailbox_id"] == input.attributes["mailbox_id"] && row["label"] == input.attributes["label"]
-        else false
-        end
       end
 
       def suppress(organization_id:, email:, reason:)
@@ -125,7 +112,7 @@ module Elevateo
         table = table_for(kind)
         values = [org]
         filter = "organization_id=$1::uuid"
-        WriteInput.invalid! if kind == "lead" && campaign_id.nil?
+        WriteInput.invalid! if %w[lead account].include?(kind) && campaign_id.nil?
         if campaign_id
           values << WriteInput.uuid(campaign_id)
           filter += " AND campaign_id=$2::uuid"
@@ -178,7 +165,7 @@ module Elevateo
           else
             [<<~SQL, [org, input.id, expected_version, fields.fetch("email"), fields.fetch("consent_status"), fields.fetch("consent_recorded_at"), fields.fetch("consent_source"), fields.fetch("suppressed"), fields.fetch("campaign_id"), actor]]
             UPDATE app.campaign_leads SET email=$4,consent_status=$5,consent_recorded_at=$6::timestamptz,
-              consent_source=$7,consent_recorded_by=$10::uuid,
+              consent_source=$7,consent_recorded_by=CASE WHEN $5='granted' THEN $10::uuid ELSE NULL END,
               suppressed_at=CASE WHEN $8::boolean THEN COALESCE(suppressed_at,now()) ELSE suppressed_at END,
               version=version+1
             WHERE organization_id=$1::uuid AND id=$2::uuid AND version=$3::integer AND campaign_id=$9::uuid
@@ -197,11 +184,12 @@ module Elevateo
         end
         if input.kind == "lead" && !preserve_consent
           event_values = [org, fields.fetch("campaign_id"), input.id, input.operation_id, actor,
-            fields.fetch("consent_status"), fields.fetch("consent_source"), fields.fetch("consent_recorded_at")]
+            fields.fetch("consent_status"), fields.fetch("consent_status") == "granted" ? "manual_attestation" : "status_change",
+            fields.fetch("consent_source"), fields.fetch("consent_recorded_at")]
           rows(<<~SQL, event_values)
             INSERT INTO app.campaign_consent_events(organization_id,campaign_id,lead_id,operation_id,
-              actor_id,status,source,observed_at)
-            VALUES ($1::uuid,$2::uuid,$3::uuid,$4::uuid,$5::uuid,$6,$7,$8::timestamptz)
+              actor_id,status,evidence_kind,source,observed_at)
+            VALUES ($1::uuid,$2::uuid,$3::uuid,$4::uuid,$5::uuid,$6,$7,$8,$9::timestamptz)
           SQL
         end
         result = detail(kind: input.kind, organization_id: org, id: input.id)
@@ -235,6 +223,7 @@ module Elevateo
             "consent_status" => row.fetch("consent_status"), "suppressed" => !row["suppressed_at"].nil? || row["globally_suppressed"] == true,
             "consent_recorded_at" => timestamp(row["consent_recorded_at"]),
             "consent_source" => row["consent_source"], "consent_recorded_by" => row["consent_recorded_by"],
+            "consent_evidence_kind" => row.fetch("consent_status") == "granted" ? "manual_attestation" : nil,
             "version" => row.fetch("version").to_i }
         when "account"
           { "id" => row.fetch("id"), "campaign_id" => row.fetch("campaign_id"), "mailbox_id" => row.fetch("mailbox_id"),

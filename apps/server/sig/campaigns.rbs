@@ -19,7 +19,6 @@ module Elevateo
     class Repository
       def initialize: (connection: untyped) -> void
       def save: (Input, organization_id: String) -> String
-      def replay_same?: (Input, Hash[String, untyped]) -> bool
       def suppress: (organization_id: String, email: String, reason: String) -> String
       def analytics: (organization_id: String, campaign_id: String) -> Hash[String, untyped]
       def timestamp: (untyped) -> String?

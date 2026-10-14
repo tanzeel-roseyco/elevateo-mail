@@ -60,7 +60,7 @@ module V2
       def public_detail(kind, item)
         result = public_item(kind, item)
         return result unless kind == "lead"
-        result.merge(item.slice("consent_recorded_at", "consent_source", "consent_recorded_by"))
+        result.merge(item.slice("consent_recorded_at", "consent_source", "consent_recorded_by", "consent_evidence_kind"))
       end
 
       def public_page(kind, page)

@@ -39,13 +39,22 @@ class CampaignRepositoryTest < Minitest::Test
   end
 
   def test_idempotent_replay_requires_same_fields
-    connection = Connection.new([[], [{ "id" => ID, "name" => "Pilot", "status" => "paused" }]])
+    fingerprint = Digest::SHA256.hexdigest(JSON.generate(["campaign", ID, OP, draft.attributes.sort.to_h]))
+    connection = Connection.new([[], [{ "id" => ID, "creation_fingerprint" => fingerprint }]])
     assert_equal ID, Elevateo::Campaigns::Repository.new(connection: connection).save(draft, organization_id: ORG)
-    mismatch = Connection.new([[], [{ "id" => ID, "name" => "Changed", "status" => "paused" }]])
+    mismatch = Connection.new([[], [{ "id" => ID, "creation_fingerprint" => "0" * 64 }]])
     error = assert_raises(Elevateo::CollaborationError) do
       Elevateo::Campaigns::Repository.new(connection: mismatch).save(draft, organization_id: ORG)
     end
     assert_equal "operation_mismatch", error.code
+  end
+
+  def test_create_replay_uses_original_intent_after_draft_changes
+    fingerprint = Digest::SHA256.hexdigest(JSON.generate(["campaign", ID, OP, draft.attributes.sort.to_h]))
+    connection = Connection.new([[], [{ "id" => ID, "creation_fingerprint" => fingerprint }]])
+    assert_equal ID, Elevateo::Campaigns::Repository.new(connection: connection).save(draft, organization_id: ORG)
+    assert_includes connection.calls.last.first, "creation_fingerprint"
+    refute_includes connection.calls.last.first, "name,status"
   end
 
   def test_missing_or_cross_tenant_replay_fails_closed

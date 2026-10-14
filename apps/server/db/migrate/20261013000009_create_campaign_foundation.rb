@@ -10,6 +10,7 @@ class CreateCampaignFoundation < ActiveRecord::Migration[8.1]
         name text NOT NULL CHECK (length(name) BETWEEN 1 AND 160),
         status text NOT NULL DEFAULT 'draft' CHECK (status IN ('draft', 'paused')),
         operation_id uuid NOT NULL,
+        creation_fingerprint text NOT NULL CHECK (creation_fingerprint ~ '^[0-9a-f]{64}$'),
         version integer NOT NULL DEFAULT 1 CHECK (version BETWEEN 1 AND 2147483647),
         created_at timestamptz NOT NULL DEFAULT now(),
         updated_at timestamptz NOT NULL DEFAULT now(),
@@ -27,6 +28,7 @@ class CreateCampaignFoundation < ActiveRecord::Migration[8.1]
         consent_source text CHECK (consent_source IS NULL OR length(consent_source) BETWEEN 1 AND 200),
         suppressed_at timestamptz,
         operation_id uuid NOT NULL,
+        creation_fingerprint text NOT NULL CHECK (creation_fingerprint ~ '^[0-9a-f]{64}$'),
         version integer NOT NULL DEFAULT 1 CHECK (version BETWEEN 1 AND 2147483647),
         created_at timestamptz NOT NULL DEFAULT now(),
         UNIQUE (organization_id, campaign_id, id),
@@ -42,13 +44,14 @@ class CreateCampaignFoundation < ActiveRecord::Migration[8.1]
         operation_id uuid NOT NULL,
         actor_id uuid NOT NULL,
         status text NOT NULL CHECK (status IN ('unknown', 'granted', 'withdrawn')),
+        evidence_kind text NOT NULL CHECK (evidence_kind IN ('manual_attestation', 'status_change')),
         source text CHECK (source IS NULL OR length(source) BETWEEN 1 AND 200),
         observed_at timestamptz,
         recorded_at timestamptz NOT NULL DEFAULT now(),
         PRIMARY KEY (organization_id, operation_id),
         FOREIGN KEY (organization_id, campaign_id, lead_id)
           REFERENCES app.campaign_leads(organization_id, campaign_id, id) ON DELETE CASCADE,
-        CHECK (status <> 'granted' OR (source IS NOT NULL AND observed_at IS NOT NULL))
+        CHECK (status <> 'granted' OR (evidence_kind = 'manual_attestation' AND source IS NOT NULL AND observed_at IS NOT NULL))
       );
       CREATE TABLE app.campaign_accounts (
         id uuid PRIMARY KEY,
@@ -58,6 +61,7 @@ class CreateCampaignFoundation < ActiveRecord::Migration[8.1]
         label text NOT NULL CHECK (length(label) BETWEEN 1 AND 120),
         status text NOT NULL DEFAULT 'disabled' CHECK (status = 'disabled'),
         operation_id uuid NOT NULL,
+        creation_fingerprint text NOT NULL CHECK (creation_fingerprint ~ '^[0-9a-f]{64}$'),
         version integer NOT NULL DEFAULT 1 CHECK (version BETWEEN 1 AND 2147483647),
         created_at timestamptz NOT NULL DEFAULT now(),
         UNIQUE (organization_id, campaign_id, id),
