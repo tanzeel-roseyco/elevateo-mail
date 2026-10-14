@@ -82,15 +82,27 @@ describe('BE03 saved review and approval', () => {
   })
   it('preserves original retry across context recovery without carrying the old proof', async () => {
     const calls: SendApprovalInput[] = []
+    let reads = 0; let sessions = 0
+    const proofs: string[] = []
     const base = createFixtureGateway()
     const g = gateway({
+      getSession: async (signal) => ({ ...await base.getSession(signal), csrf_token: ++sessions === 1 ? 'old_csrf_token_012345' : 'fresh_csrf_token_012345' }),
+      getSendReview: async () => (++reads === 1 ? REVIEW : { ...REVIEW, draft_version: 2, review_digest: 'b'.repeat(64) }),
       listMailboxes: async (...args) => { const page = await base.listMailboxes(...args); return { ...page, items: page.items.map((m) => ({ ...m, capabilities: { ...m.capabilities, approve_send: true } })) } },
-      approveDraftSend: async (_ctx, _proof, _id, input) => { calls.push(input); if (calls.length === 1) throw new GatewayError('api', 'context_changed', 'synthetic', { status: 409 }); return APPROVAL },
+      approveDraftSend: async (_ctx, proof, _id, input) => { proofs.push(proof.csrfToken); calls.push(input); if (calls.length === 1) throw new GatewayError('api', 'context_changed', 'synthetic', { status: 409 }); return APPROVAL },
     })
     setup(g, true); await ready(); confirm(); approve()
     const retry = await screen.findByRole('button', { name: 'Retry original approval' })
+    expect(screen.getByRole('heading', { name: 'Review saved draft version 2' })).not.toBeNull()
     fireEvent.click(retry); await screen.findByRole('heading', { name: 'Send intent: queued' })
-    expect(calls[1]).toEqual(calls[0])
+    expect(calls[1]).toEqual(calls[0]); expect(calls[1]?.expected_version).toBe(1); expect(proofs).toEqual(['old_csrf_token_012345', 'fresh_csrf_token_012345'])
+  })
+  it('renders every recipient in order at the 100-recipient boundary', async () => {
+    const recipients = Array.from({ length: 100 }, (_, index) => ({ display_name: `<name ${index}>`, address: `recipient${index}@example.test` }))
+    setup(gateway({ getSendReview: async () => ({ ...REVIEW, to: recipients }) })); await ready()
+    const items = screen.getAllByRole('listitem')
+    expect(items.map((item) => item.textContent)).toEqual(recipients.map((recipient) => `${recipient.display_name} ${recipient.address}`))
+    expect(document.querySelector('img, script')).toBeNull()
   })
   it('drops a late approval after logout and clears retry details', async () => {
     let resolve: ((value: ApprovalResult) => void) | undefined

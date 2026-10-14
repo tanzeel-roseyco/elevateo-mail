@@ -15,3 +15,18 @@ Coordination: `incoming/be03-r24-coordination/mira-signatures.md`, `mira-status.
 Canonical receipt paired by merge `405056f` with exact Cassian `3d01babe0fff976e9ea14045981ad7e7c77810fa`, preserving both parents. State conflict preserved both owner notes. Validator aligned to sender320/policy_revision19/issues120 and ready/digest conditional. Self-inspection corrected unconfigured DOM matchers in new tests (no new dependency), added editor save->review->queued regression and guarded a stale completion from downgrading an already approved binding; runtime still pending.
 
 Corrected canonical receipt `aa35c3d` supersedes `3d01babe`: validator allows policy revision `0` for nonready display and up to210 readiness issues; no client policy authority added. Original generated artifact pending Soren-authorized lightweight Docker recipe, now available.
+
+## Observed lightweight Docker evidence on607fcb2c
+
+Soren recipe/root authorization: immutable retained fixture image `sha256:27bde67943dfe9c1ddf5c862e305957474f56457c786f641768b10aad13c9f53`, Node24.21.0, exact package-lock `cmp` PASS. Task-owned read-only/network-none containers, user1001, memory768MiB/CPU1/PIDs128, task-private tmpfs and owner0700 output; no install/build/pull/database lease.
+
+- Check1 exit126: private output permission setup, zero checks/cases; retained.
+- Check2: generate-api0/check-api0/lint0/typecheck0; unit1 startup EROFS Vite cache, zero cases; retained.
+- Check3: generate-api0/check-api0/lint0/typecheck0; unit1 startup EACCES private tmpfs mode, zero cases; retained.
+- Check4: corrected disposable cache mode, affected suite **8files/260tests PASS, exit0** (new send20 + existing affected240). Original source identity remains607fcb2c; follow-up generated/type-parity/tests require their own checks.
+
+All four exact `--rm` containers independently absent immediately after jobs. No image/volume/network created or removed. Retained shared image/Lyra preview18140 and all persistent resources preserved. Evidence: `reports/mira-r24-ui/source-receipt.json`, `check-607fcb2c/`, `check-607fcb2c-unit/`, `check-607fcb2c-unit4/`, `cleanup-607fcb2c.json` (private task evidence outside Git).
+
+Independent reviewed source607fcb2c: SPEC-BE03M01 data/gateway/status271unique changedLOC/0confirmeddefects/0KLOC; SPEC-BE03M02 review/store/tests367unique changedLOC/0confirmeddefects/0KLOC; SPEC-BE03M03 dedicated design~358productionLOC/0confirmeddefects/0KLOC (overlaps functional coverage, nonadditive). Full INT401 rubric, each read<=200LOC and divided assignment<=400. Reports in incoming coordination `spec-mira-{data,ui,design}-review.md`; source review does not establish runtime/visual acceptance. Root/Cassian own central review integration.
+
+Follow-up: exact Docker-generated artifact applied unchanged; runtime validators alias generated send component types, bidirectional compile-time parity and canonical fixture tests added. Reviewer-suggested maximum100recipient rendering, original-binding retry against newer review with fresh CSRF, and owner/logout store-isolation tests added. New runtime checks and bounded follow-up review pending.

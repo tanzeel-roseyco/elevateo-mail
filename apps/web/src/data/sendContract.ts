@@ -1,5 +1,6 @@
 // BE03 boundary schemas are separate: frozen C/D envelopes and enums remain unchanged.
 import { z } from 'zod'
+import type { components } from './generated/api'
 import { codePoints } from '@/lib/ids'
 import { AddressSchema } from './contract'
 import { SEND_ERROR_CODES } from './errors'
@@ -30,7 +31,7 @@ export const SendReviewSchema = z.strictObject({
   sender: z.strictObject({ display_name: z.null(), address: text(320).nullable() }),
   to: z.array(AddressSchema).max(100), subject: text(998), body_text: text(65536), reply_to_thread_id: id.nullable(),
   purpose: z.literal('correspondence'), consent_basis: z.literal('human_attestation_required'),
-  attachments: z.array(z.never()).max(0), attachments_supported: z.literal(false), policy_revision: z.string().max(19).regex(/^(0|[1-9][0-9]*)$/),
+  attachments: z.array(z.unknown()).max(0), attachments_supported: z.literal(false), policy_revision: z.string().max(19).regex(/^(0|[1-9][0-9]*)$/),
   recipient_checks: z.array(z.strictObject({ index: z.number().int().min(0).max(99), status: z.enum(['ok', 'invalid', 'duplicate', 'suppressed']) })).max(100),
   ready: z.boolean(), issues: z.array(z.strictObject({ code: ReadinessCodeSchema, recipient_index: z.number().int().min(0).max(99).nullable() })).max(210),
   review_digest: digest.nullable(), simulated: z.literal(true),
@@ -50,9 +51,9 @@ export const SendCancellationInputSchema = z.strictObject({ mailbox_id: id })
 export const CancellationResultSchema = z.strictObject({
   ...envelope, send_id: id, result: z.enum(['cancelled', 'stop_requested']), state: SendStateSchema, cancel_requested: z.literal(true), simulated: z.literal(true),
 })
-export type SendReview = z.infer<typeof SendReviewSchema>
-export type SendApprovalInput = z.infer<typeof SendApprovalInputSchema>
-export type ApprovalResult = z.infer<typeof ApprovalResultSchema>
-export type SendStatus = z.infer<typeof SendStatusSchema>
-export type SendCancellationInput = z.infer<typeof SendCancellationInputSchema>
-export type CancellationResult = z.infer<typeof CancellationResultSchema>
+export type SendReview = components['schemas']['SendReview']
+export type SendApprovalInput = components['schemas']['SendApprovalInput']
+export type ApprovalResult = components['schemas']['ApprovalResult']
+export type SendStatus = components['schemas']['SendStatus']
+export type SendCancellationInput = components['schemas']['SendCancellationInput']
+export type CancellationResult = components['schemas']['CancellationResult']
