@@ -28,6 +28,7 @@ export function AssigneePicker({ mailboxId, actorId, currentAssigneeId, disabled
   const { state: sessionState } = useSession()
   const { request } = useProtectedRequest()
   const { assigneeOptions } = useFeatureGateways()
+  const portAvailable = assigneeOptions !== undefined
   const [directory, setDirectory] = useState<DirectoryState>({ kind: 'closed' })
   const epoch = useRef(0)
   const controller = useRef<AbortController | null>(null)
@@ -47,7 +48,7 @@ export function AssigneePicker({ mailboxId, actorId, currentAssigneeId, disabled
       controller.current?.abort()
       controller.current = null
     }
-  }, [mailboxId, sessionKey])
+  }, [mailboxId, sessionKey, portAvailable])
 
   const load = useCallback(async (cursor: string | null, previous: string[]) => {
     if (!assigneeOptions) return
@@ -109,7 +110,7 @@ export function AssigneePicker({ mailboxId, actorId, currentAssigneeId, disabled
 
   return (
     <div className="flex flex-col gap-2">
-      {!assigneeOptions ? (
+      {!portAvailable ? (
         <p className="text-[12px] text-muted">Assignee choices are unavailable.</p>
       ) : directory.kind === 'closed' ? (
         <Button size="sm" disabled={disabled || sessionKey === null} onClick={open}>Choose assignee</Button>
