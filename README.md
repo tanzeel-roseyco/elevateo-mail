@@ -14,6 +14,8 @@ Shared company mailroom with one Rails domain authority and a React/TypeScript c
 
 ## Current state
 
+SEQ-863 candidate adds four real PostgreSQL role tests for sequence GET and protected draft mutations, addressing Nadia REV-858's mocked-evidence gap. They are authored only; fleet Docker execution and independent review are pending. See [Maeve SEQ-863 record](docs/completion/maeve-seq863-real-role-review.md).
+
 MAC-814 isolated sequence draft persistence candidate: migration 00016 and strict draft/held authoring source are prepared with atomic versioned replacement and inert occurrence history. No due send consumer, runtime PASS, or live mail authorization is claimed. SEC802 role grant review and fleet Docker checks are pending; see [Maeve candidate](docs/completion/maeve-sequence-persistence.md).
 
 MAC-814 follow-up source splits content reads from protected writes and adds a minimal draft GET repository method; integrated SEC802 grant commit `338a442` supplies restricted helper execution. Fleet SQL, GET and Steep checks remain pending.

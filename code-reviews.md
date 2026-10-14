@@ -66,6 +66,10 @@ See docs/completion/int401-frozen-app.md.
 
 # Code reviews
 
+## SEQ-863 database fixture static self-review
+
+Nadia REV-858 `ec9e7a6` found one MEDIUM evidence defect in the prior fake repository tests. This candidate adds 153 unique test LOC across four real PostgreSQL role cases; self-review found zero confirmed new source defects (0/KLOC), while independent review and fleet execution remain NOT_RUN. The MEDIUM evidence gap is not closed by source alone; see [SEQ-863 record](docs/completion/maeve-seq863-real-role-review.md).
+
 ## MAC-814 00016 candidate self-review (2026-10-14)
 
 Follow-up static self-review: GET/policy/type repair covered repository and test delta, migration policy delta and schedule/RBS delta (about 125 unique changed source LOC); zero new defects confirmed in the repair (0/KLOC). This is not independent review or runtime validation. Historical SEC802 grant seam is resolved in integrated source `338a442`, and exact cb1 Steep errors drove the narrow TZInfo/nil corrections; Soren's next fleet run is required to verify the candidate.
