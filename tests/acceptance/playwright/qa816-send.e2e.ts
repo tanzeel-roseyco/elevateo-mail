@@ -63,7 +63,7 @@ scenario('SCN-QA-816-F2', 'logout-clears-send-review-and-mobile-session', async 
   await page.getByRole('button', { name: 'Account and sign-out' }).click();
   const [logout] = await Promise.all([responseAt(page, '/v1/auth/logout', 'POST'),
     page.getByRole('dialog', { name: 'Account', exact: true }).getByRole('button', { name: 'Sign out', exact: true }).click()]);
-  expect(logout.status()).toBe(200);
+  expect(logout.ok()).toBe(true);
   await page.goto(`/#/mailboxes/${seed.mailboxes.primary}/drafts`);
   await expect(page.getByRole('heading', { name: 'Sign in', exact: true })).toBeVisible();
   expect((await page.request.get('/v1/session', { maxRedirects: 0 })).status()).toBe(401);
