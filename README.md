@@ -186,3 +186,5 @@ FE808 People now checks the authenticated V2 unbound roster projection against t
 Successful V2 grant GET remains blocked by a strict DTO mismatch: the protected backend now includes actor role/revision, while the browser schema does not. The owner was escalated to root for reconciliation; no UI or runtime acceptance is claimed from the source candidate.
 
 FE808 now consumes Cassian's required protected actor projection on every V2 grant page. It checks actor UUID, organization, owner/admin role and unchanged role/revision across the traversal before showing any role controls; target revision still guards each PUT. Fleet tests and actual browser acceptance remain pending.
+
+The FE808 roster test fixture now uses the canonical V2 roster schema to retain its closed department type. Fleet typecheck and tests must be rerun before the integrated result can be claimed.

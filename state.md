@@ -128,3 +128,5 @@ FE808 roster continuation: the People view reads paginated `/v2/organizations/{i
 FE808 current blocker: Sabine/Theo successful grant GET includes protected actor, but Cassian strict browser DTO has not yet added it. No successful admin read acceptance is claimed. Root was asked to re-dispatch the inactive Cassian owner; latest FE808 source is committed and awaits exact DTO integration plus Soren/Tessa checks.
 
 FE808 actor DTO follow-up: source now uses the required `OrganizationGrantPage.actor` from Cassian `be12a48`, including cases where the actor is outside paginated `items`. A mismatched/stale actor projection fails closed before showing grants or controls. Authenticated fleet/browser verification is NOT_RUN on this incremental candidate.
+
+FE808 fleet typecheck follow-up: `web-c4fa27c01f5e` API/lint PASS, TypeScript FAIL in the roster test fixture's widened department inference. A test-only canonical schema parse repairs the fixture type; the fix is source-only until Soren reruns the exact integrated candidate in fleet Docker.

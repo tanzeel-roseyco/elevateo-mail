@@ -33,3 +33,7 @@ At the latest source inspection, Sabine `70bcfd9` and Theo's V2 controller inclu
 ## Protected actor DTO follow-up
 
 Cassian `be12a48` made `OrganizationGrantPage.actor` required. FE808 now verifies actor user/organization against the ready session, owner/admin role, stable role/revision across all pages and consistency with an actor item if present. `editableRoles` takes this protected actor directly, including when the actor lies outside the paginated items. The target's revision remains the PUT precondition. Tests cover actor outside page, changed revision, wrong actor and existing stale writes; all are authored and NOT_RUN pending Soren fleet Docker. No other feature was changed.
+
+## QA815 typecheck repair
+
+Fleet candidate `web-c4fa27c01f5e` reported API/lint PASS and TypeScript FAIL in `adminModel.test.ts` at the roster fixture: the local reference model's `department` type is wider than the canonical V2 roster enum. The test fixture now parses each projected row through Cassian's `RosterPersonSchema`, yielding the exact closed DTO type without a cast or production-contract change. Current actor controls and target revision handling were not changed. Soren must rerun fleet Docker typecheck and affected tests on an integrated SHA; Lyra ran no local application tests.

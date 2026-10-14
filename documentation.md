@@ -196,3 +196,5 @@ The V2 unbound roster read uses the same protected request ownership and a three
 The protected grants GET must expose the same required `actor:{user_id,role,revision}` in SQL, Rails and the canonical V2 browser DTO. Until that contract is synchronized, strict browser validation rejects successful responses. FE808 currently uses a conservative complete-list actor hint and will switch to the explicit actor projection after Cassian's exact schema commit.
 
 For V2 grants, each page's required protected `actor` must match the ready session's user and organization, carry owner/admin role, and keep the same role/revision across all pages. The UI uses that actor for role choices and checks any duplicate actor item for consistency. It never infers current authority from page membership. PUT still uses the target grant's own revision, and the server remains final authority.
+
+FE808 roster test data is parsed with `RosterPersonSchema` so fixture typing matches the versioned DTO's closed department enum. This does not alter the production roster reference or gateway boundary.

@@ -688,3 +688,7 @@ Scope: `apps/web/src/features/members/{adminModel,AdministrationPage,PersonalSet
 ### FE808 protected actor incremental source check
 
 Scope: `apps/web/src/features/members/{adminModel,AdministrationPage}.ts*` plus paired tests; only actor projection handling changed. Author check found the prior pagination-derived authority limitation and replaced it with Cassian's required protected actor DTO. This is not an independent adversarial or design review; independent defect density and runtime acceptance remain pending. No local application tests were executed.
+
+### FE808 fleet typecheck fixture repair
+
+Soren reported `web-c4fa27c01f5e` API/lint PASS and TypeScript FAIL at two `adminModel.test.ts` lines due a widened fixture department type. Lyra changed only the test projection to parse through the canonical `RosterPersonSchema`; no cast or production contract was changed. Source diff check passed; fleet rerun and independent review remain pending, so no runtime PASS or independent defect density is claimed.
