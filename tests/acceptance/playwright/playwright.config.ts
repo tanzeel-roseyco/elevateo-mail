@@ -1,5 +1,6 @@
 import { defineConfig } from '@playwright/test';
-import { join } from 'node:path';
+import { lstatSync } from 'node:fs';
+import { join, resolve } from 'node:path';
 import { loadAcceptanceConfig } from '../shared/config.js';
 import { browserName } from './boundaries.js';
 
@@ -10,10 +11,16 @@ const config = (() => {
 })();
 if (config.baseURL !== 'http://app.test' || config.lane !== 'playwright_real'
   || config.profile !== 'internal_http') throw new Error('T1 requires internal real browser configuration');
+// AIDEV-NOTE: The browser image builds TypeScript to dist before the TS config loads; reporter
+// resolution must name that exact compiled module, or Playwright fails before case publication.
+const reporterPath = resolve(process.cwd(), 'dist/playwright/quiet-reporter.js');
+try {
+  if (!lstatSync(reporterPath).isFile()) throw new Error('not a regular file');
+} catch { throw new Error('Compiled acceptance reporter unavailable'); }
 export default defineConfig({
   testDir: '.', testMatch: /.*\.e2e\.ts$/, fullyParallel: false, workers: 1, retries: 0,
   timeout: config.limits.timeoutMs, expect: { timeout: 15000 },
-  reporter: [['./quiet-reporter.ts']], outputDir: join(config.outputDir, 'native-private'),
+  reporter: [[reporterPath]], outputDir: join(config.outputDir, 'native-private'),
   use: { baseURL: config.baseURL, browserName: browserName(process.env.ACCEPTANCE_BROWSER),
     // AIDEV-NOTE: The container must support Chromium namespaces; never silently disable its browser sandbox.
     launchOptions: { chromiumSandbox: true },

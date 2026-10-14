@@ -512,3 +512,5 @@ The thread shell has an optional attachment read port seam, still absent from pr
 QA815 exact `e8e8393d` offline OPS820 Python checks passed seven scripts/23 cases after a task-only noexec tmpfs correction; no application restore, ClamAV or real-auth browser PASS follows. Playwright reporter path mismatch remains a preflight blocker.
 
 The inactive ATT902 content candidate now includes Nadia's typed metadata authorization repair; core strict-only and later feature gates remain separate.
+
+The real-browser acceptance config now resolves the compiled JS quiet reporter with an explicit missing-artifact failure; fleet build/list/cases remain pending and earlier setup failures stand.

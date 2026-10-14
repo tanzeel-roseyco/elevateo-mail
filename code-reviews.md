@@ -1341,3 +1341,5 @@ ATT902 Cassian optional shell seam adds an AttachmentReadPort capability and con
 QA815 OPS820 exact `e8e8393d` offline suite seven scripts/23 cases PASS after an earlier noexec task-harness failure is executed test evidence, not independent source review. Source/base/full restore, real ClamAV and browser runtime are outside coverage; reviewed LOC/defects/KLOC unchanged.
 
 Nadia STRICT909 ATT902 carry `1c87999e` adds the same typed index authorization/RBS/test to the inactive content candidate. Owner packet <=216 LOC, independent review and fleet runtime pending; no new reviewed LOC/defects/KLOC claim. Core strict-only b6c0ac00 remains a distinct test source.
+
+QA816 Tessa `b2613089` browser reporter config repair (nine changed/new LOC) is imported source-only. Independent bounded review and fleet browser build/--list/real cases pending; no browser PASS or reviewed LOC/defects/KLOC claim.
