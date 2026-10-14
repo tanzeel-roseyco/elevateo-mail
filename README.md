@@ -178,3 +178,5 @@ Cassian manifest reconciliation: contract-lock now seals actual generated client
 A real-auth Playwright browser candidate now covers a case-owned simulated send review/approval/status chain, reader nonactionability and mobile-viewport logout. Fleet Docker execution and actual screenshots are requested through Soren; no QA816 runtime pass or installed Android claim. See [QA816 record](docs/completion/tessa.md).
 
 QA816 continuation adds a candidate inbox/history/keyboard/empty-search and branded-shell visual matrix. It requires Fable's shell and Soren's real-auth fleet execution; no new runtime or visual PASS is claimed.
+
+QA816 now includes supplemental reporter-compatible Chromium visual zoom and real V1 manager/reader roster scenarios. Fleet browser execution and screenshots remain pending; visual viewport zoom does not establish browser text zoom or installed Android.

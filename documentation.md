@@ -188,3 +188,5 @@ Cassian manifest reconciliation: contract-lock now seals actual generated client
 `tests/acceptance/playwright/qa816-send.e2e.ts` uses the existing real-auth internal_http Playwright harness. It requires a disposable seeded BE03-enabled stack under Soren's fleet Docker lease; no host execution or screenshots were made. It observes endpoint statuses only and stores sanitized case assertions. See docs/completion/tessa.md for execution request and limits.
 
 QA816 continuation: `qa816-matrix.e2e.ts` requests a merged Fable shell and the seeded real-auth stack; Soren alone runs it. Campaigns read UI is paused by design, and no create/detail API or installed Android claim is made. See docs/completion/tessa.md.
+
+QA816 head d8abe4a adds a real V1 roster permission scenario and measured Chromium visual viewport zoom; the latter is not desktop browser text zoom. Reporter and screenshot IDs are statically reconciled, while full browser execution and screenshot inspection are pending Soren's fleet run.
