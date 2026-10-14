@@ -188,3 +188,5 @@ QA815 feature `fdecd0d5` full web PASS 62/62 files, 856/856 units, build/cleanup
 QA815 `58edb11c` targeted web strict type and CollaborationPanels 10/10 PASS, cleanup PASS; full web/build/Playwright on this SHA NOT_RUN.
 
 QA815 `e8e8393d` real pinned ClamAV private clean/EICAR verdicts PASS with exact task cleanup; application Storage/attachment promotion, source/base/full restore and realAuth NOT_RUN.
+
+QA815 `7cae15a7` fake inbound lint one file/zero offenses PASS; Steep two inbox attachment controller errors FAIL, cleanup PASS. Full feature runtime held.

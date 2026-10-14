@@ -256,3 +256,5 @@ QA815 feature full web receipt `docs/completion/qa815-evidence/web-fdecd0d56071.
 QA815 targeted feature receipt `docs/completion/qa815-evidence/web-targeted-58edb11c6375.log` records exact `58edb11c` TypeScript and ten CollaborationPanels cases PASS with cleanup; see `docs/completion/soren.md`.
 
 QA815 real clamd protocol receipt `docs/completion/qa815-evidence/real-clamd-e8e8393d1076.txt` records exact official manifest pin, architecture/image size, preloaded signature hashes, version/PONG, clean/EICAR verdicts, caps and cleanup. It does not establish app clean promotion; see `docs/completion/soren.md`.
+
+QA815 focused feature strict receipt `docs/completion/qa815-evidence/focused-inbound-7cae15a7fe92.txt` records Corin lint PASS, two ATT902 controller Steep errors and cleanup; see `docs/completion/soren.md`.

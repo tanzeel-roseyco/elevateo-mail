@@ -246,3 +246,5 @@ QA815 exact `fdecd0d5` feature web full gate PASS: V1/V2 checks, lint, TypeScrip
 QA815 feature `58edb11c` targeted TypeScript and CollaborationPanels 10/10 PASS in fleet Docker with exact cleanup; this is a successor to, not a rerun of, the earlier full web gate.
 
 QA815 exact `e8e8393d` isolated real ClamAV1.5.4 pinned private-network protocol PASS: clean verdict clean, EICAR verdict malware, preloaded signature hashes/health recorded, task containers/network/volume/image/fixtures removed. App attachment promotion and restore remain unrun.
+
+QA815 feature `7cae15a7` fake inbound targeted lint PASS, but Steep has two attachment controller type errors; full feature backend/HTTP/worker held. Exact task cleanup passed.
