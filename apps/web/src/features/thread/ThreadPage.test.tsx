@@ -117,7 +117,7 @@ describe('message reply draft', () => {
     const save = renderReply(replyPage({ display_name: 'Ada', address: 'ada@example.test' }))
     fireEvent.click(await screen.findByRole('button', { name: 'Reply to this sender as draft' }))
     expect(await screen.findByRole('heading', { name: 'New draft' })).toBeTruthy()
-    expect((screen.getByLabelText('To') as HTMLTextAreaElement).value).toBe('Ada <ada@example.test>')
+    expect((screen.getByLabelText('To') as HTMLTextAreaElement).value).toBe('ada@example.test')
     expect((screen.getByLabelText('Subject') as HTMLInputElement).value).toBe('Re: Project update')
     expect(save).not.toHaveBeenCalled()
     fireEvent.click(screen.getByRole('button', { name: 'Save draft' }))
@@ -128,6 +128,12 @@ describe('message reply draft', () => {
 
   it('does not offer sender reply without a usable address', async () => {
     renderReply(replyPage({ display_name: 'Unknown', address: null }))
+    await screen.findByText('Hello')
+    expect(screen.queryByRole('button', { name: 'Reply to this sender as draft' })).toBeNull()
+  })
+
+  it('does not turn a line-broken sender field into multiple recipients', async () => {
+    renderReply(replyPage({ display_name: 'Untrusted', address: 'ada@example.test\nother@example.test' }))
     await screen.findByText('Hello')
     expect(screen.queryByRole('button', { name: 'Reply to this sender as draft' })).toBeNull()
   })

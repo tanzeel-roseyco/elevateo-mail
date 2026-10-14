@@ -67,11 +67,11 @@ function ConversationReader({ mailboxId, threadId }: { mailboxId: string; thread
   const replyToMessage = (message: Message) => {
     if (stateRef.current.status !== 'ready' || sessionState.status !== 'ready' || mailbox?.capabilities.compose !== true) return
     const address = message.sender?.address?.trim()
-    if (!address) return
+    if (!address || /[\r\n<>]/.test(address)) return
     const draftId = newId()
     const subject = stateRef.current.thread.subject_truncated ? '' : (stateRef.current.thread.subject ?? '')
     const replySubject = subject === '' ? '' : /^re:\s*/i.test(subject) ? subject : `Re: ${subject}`
-    const content = { subject: Array.from(replySubject).slice(0, 998).join(''), to: [{ display_name: message.sender?.display_name ?? null, address }], body_text: '', reply_to_thread_id: threadId }
+    const content = { subject: Array.from(replySubject).slice(0, 998).join(''), to: [{ display_name: null, address }], body_text: '', reply_to_thread_id: threadId }
     const buffer = edit(newDraftBuffer(draftId, mailboxId, { subject: '', to: [], body_text: '', reply_to_thread_id: threadId }, 0), content)
     // AIDEV-NOTE: Keep recipient and subject out of the URL; the editor restores only after an authorized draft read.
     draftIntent.write(draftIntentKey({ actorId: sessionState.session.actor.id, organizationId: sessionState.session.organization.id, mailboxId, draftId }), { buffer, recipientsText: formatRecipients(content.to) })
@@ -222,7 +222,7 @@ function ConversationReader({ mailboxId, threadId }: { mailboxId: string; thread
                 <pre className="whitespace-pre-wrap break-words font-sans text-sm">{message.body_text}</pre>
                 {/* flex-wrap: both badges together overflow a 390px viewport otherwise (r10 visual QA). */}
                 <footer className="mt-2 flex flex-wrap gap-2">
-                  {mailbox?.capabilities.compose === true && message.sender?.address?.trim() && (
+                  {mailbox?.capabilities.compose === true && message.sender?.address?.trim() && !/[\r\n<>]/.test(message.sender.address) && (
                     <Button size="sm" onClick={() => replyToMessage(message)}>Reply to this sender as draft</Button>
                   )}
                   {message.body_truncated && <Badge tone="warn">Message shortened by the server</Badge>}
