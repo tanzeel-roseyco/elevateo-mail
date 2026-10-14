@@ -34,6 +34,13 @@ class OrganizationRoleAuditTest < Minitest::Test
     assert_equal "internal_error", error.code
   end
 
+  def test_noncanonical_time_is_rejected
+    error = assert_raises(Elevateo::CollaborationError) do
+      Audit.items([row.merge("occurred_at" => "2026-10-14T00:00:00+00:00")], organization: ORG, limit: 1)
+    end
+    assert_equal "internal_error", error.code
+  end
+
   def test_content_or_noop_cannot_enter_audit_projection
     [row.merge("email" => "private@example.invalid"), row.merge("new_role" => "associate")].each do |value|
       error = assert_raises(Elevateo::CollaborationError) do
