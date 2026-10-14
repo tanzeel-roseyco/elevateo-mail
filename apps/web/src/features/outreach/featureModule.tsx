@@ -3,6 +3,7 @@ import {
   OutreachAccountDetailPage, OutreachAccountsPage, OutreachAnalyticsPage, OutreachCampaignAccountsPage,
   OutreachCampaignAnalyticsPage, OutreachCampaignCreatePage, OutreachCampaignDetailPage,
   OutreachCampaignLeadsPage, OutreachCampaignsPage, OutreachLeadsPage,
+  OutreachLeadDetailPage,
   type OutreachPageProps,
 } from './OutreachPages'
 
@@ -20,6 +21,7 @@ export function createOutreachFeatureModule(props: OutreachPageProps): OutreachF
     '/outreach/campaigns/new': <OutreachCampaignCreatePage {...props} />,
     '/outreach/campaigns/:campaignId': <OutreachCampaignDetailPage {...props} />,
     '/outreach/campaigns/:campaignId/leads': <OutreachCampaignLeadsPage {...props} />,
+    '/outreach/campaigns/:campaignId/leads/:leadId': <OutreachLeadDetailPage {...props} />,
     '/outreach/campaigns/:campaignId/analytics': <OutreachCampaignAnalyticsPage {...props} />,
     '/outreach/leads': <OutreachLeadsPage {...props} />,
     '/outreach/accounts': <OutreachAccountsPage {...props} />,

@@ -4,7 +4,7 @@ import { createOutreachFeatureModule } from './featureModule'
 describe('Outreach route registration seam', () => {
   it('exports distinct URL-addressed routes without duplicates or an activation route', () => {
     const module = createOutreachFeatureModule({})
-    expect(module.routes).toHaveLength(10)
+    expect(module.routes).toHaveLength(11)
     expect(new Set(module.routes).size).toBe(module.routes.length)
     expect(module.routes).toContain('/outreach/campaigns/:campaignId/leads')
     expect(module.routes).toContain('/outreach/campaigns/:campaignId/accounts/:accountId')

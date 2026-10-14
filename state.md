@@ -151,3 +151,7 @@ FE807 continuation: separate Outreach route pages and draft/paused campaign/lead
 ### FE-806 message permalink candidate
 
 A validated `message` query parameter selects and focuses an individual loaded thread message without placing content in the URL. Later-page selection waits for deliberate continuation; no automatic unbounded page walk occurs. Invalid IDs fail before read, terminal missing IDs show generic unavailable, and denied threads reveal no messages. Direct arbitrary-message lookup is a Cassian API dependency; Docker and actual browser acceptance remain pending.
+
+FE807 controller-shaped follow-up: DTOs and forms are being aligned to Dorian's in-progress versioned/cursor V2 controller source, with separate optional consent evidence recording and no send authority. Account URL scope and canonical Cassian adapter remain pending; no runtime result is claimed.
+
+FE807 correction: Cassian confirmed campaign-scoped account routes and lead detail; global-account assumptions are superseded. Soren's exact a460c5a web recipe stopped at two lint errors after API check; type/unit/build not reached. Current Celeste source repairs lint and earlier type findings; rerun pending.

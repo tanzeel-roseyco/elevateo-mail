@@ -219,3 +219,7 @@ FE807 continuation: `apps/web/src/features/outreach/featureModule.tsx` exports t
 ### FE-806 individual message links
 
 Each message in the plaintext reader has an accessible link using only its UUID (`?message=`), preserving the inbox unread filter. A selected loaded message gains focus and a visible border. A valid ID outside loaded pages is pending until the person requests the next bounded page; after the terminal page it is unavailable. Invalid IDs do not dispatch a read, and an inaccessible thread remains unavailable without message disclosure. A direct single-message endpoint is requested from Cassian to resolve deep links beyond the first page immediately.
+
+FE807 controller-shaped candidate: campaign/lead writes carry caller UUID operation IDs and expected resource versions; list routes navigate cursor pages, consent evidence is a distinct attested backend action, and analytics is a single aggregate object. Exact account scope and canonical V2 schema are unresolved between Dorian/Cassian drafts; see `docs/completion/celeste.md`.
+
+FE807 account and lead detail correction: account reads remain campaign scoped per Cassian, and the distinct lead detail route displays optional server provenance. Prior global-account wording is historical candidate text and superseded by `docs/completion/celeste.md`. Fleet lint/type rerun remains pending.
