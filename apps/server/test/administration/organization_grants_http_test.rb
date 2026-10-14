@@ -10,7 +10,7 @@ class OrganizationGrantsHttpTest < Minitest::Test
   FOREIGN = "66666666-6666-4666-8666-666666666666"
 
   class Connection < WriteBoundaryHarness::Connection
-    attr_accessor :role_result, :page_result
+    attr_accessor :role_result, :page_result, :simulate_post_mutation_failure
     attr_reader :role_arguments
 
     def exec_query(sql, name, binds)
@@ -19,6 +19,7 @@ class OrganizationGrantsHttpTest < Minitest::Test
       end
       return super unless sql.include?("app.change_organization_role")
       @role_arguments = binds.map(&:value_for_database)
+      @business.concat(%i[role_changed audit_appended]) if @simulate_post_mutation_failure
       ActiveRecord::Result.new(["result"], [[@role_result]])
     end
   end
@@ -95,6 +96,17 @@ class OrganizationGrantsHttpTest < Minitest::Test
     status, _headers, body = dispatch(action: "index", method: "GET")
     assert_equal 500, status
     assert_equal "internal_error", body.fetch("code")
+  end
+
+  def test_non_ok_after_mutation_rolls_back_role_and_audit
+    @connection.simulate_post_mutation_failure = true
+    @connection.role_result = { "status" => "not_found" }
+    status, _headers, body = dispatch
+    assert_equal 404, status
+    assert_equal "not_available", body.fetch("code")
+    assert_empty @connection.business
+    assert_includes @connection.events, :rollback
+    refute_includes @connection.events, :commit
   end
 
   def test_guarded_http_role_change
