@@ -1,0 +1,63 @@
+source=e8e8393d10764e8d979877f57d7ac3b59a1ba8cf
+pin=clamav/clamav@sha256:638d90201ee7ee6a82d249a2fc23b132e578673b5f1f2766852b127676ca1ef6
+python_image=sha256:48a11b7ba705fd53bf15248d1f94d36c39549903c5d59edcfa2f3f84126e7b44
+started=2026-10-14T18:31:58Z
+image_was_present=0
+docker.io/clamav/clamav@sha256:638d90201ee7ee6a82d249a2fc23b132e578673b5f1f2766852b127676ca1ef6: Pulling from clamav/clamav
+fe5bd983a40a: Pulling fs layer
+9b392526e73d: Pulling fs layer
+c03aeff1bf16: Pulling fs layer
+134b4d67f1e4: Pulling fs layer
+c8c770fdac25: Pulling fs layer
+d7a6a000bfe6: Pulling fs layer
+9b392526e73d: Download complete
+134b4d67f1e4: Download complete
+d7a6a000bfe6: Download complete
+c03aeff1bf16: Download complete
+c03aeff1bf16: Pull complete
+2c0ec434fb4a: Download complete
+7ba90793925d: Download complete
+c8c770fdac25: Download complete
+9b392526e73d: Pull complete
+134b4d67f1e4: Pull complete
+d7a6a000bfe6: Pull complete
+c8c770fdac25: Pull complete
+fe5bd983a40a: Download complete
+fe5bd983a40a: Pull complete
+Digest: sha256:638d90201ee7ee6a82d249a2fc23b132e578673b5f1f2766852b127676ca1ef6
+Status: Downloaded newer image for clamav/clamav@sha256:638d90201ee7ee6a82d249a2fc23b132e578673b5f1f2766852b127676ca1ef6
+docker.io/clamav/clamav@sha256:638d90201ee7ee6a82d249a2fc23b132e578673b5f1f2766852b127676ca1ef6
+clamd_image_id=sha256:638d90201ee7ee6a82d249a2fc23b132e578673b5f1f2766852b127676ca1ef6
+clamd_image_bytes=158622171
+clamd_arch=amd64
+clamd_repo_digests=["clamav/clamav@sha256:638d90201ee7ee6a82d249a2fc23b132e578673b5f1f2766852b127676ca1ef6"]
+49e19bb6f49441487a4b53fe3e662f5f1e50821131610f185b02f5ed25a34a8f
+qa815-clamd-e8e8393d1076-865a5e2e-signatures
+98acba68022d0d5942ff3dbc82c195b795b744c4d4c2dc63849c6e8aa0f2308e
+clamd_port_bindings={}
+clamd_networks=qa815-clamd-e8e8393d1076-865a5e2e-net
+94eb76eff8cf3ab90ec3a67992727e84f9be257f294d72504228e89fa566592f  /var/lib/clamav/bytecode-339.cvd.sign
+6d4aa01f219e988060fc419f495d07f27e0cdf1a2cccc065971da922c76f7ffb  /var/lib/clamav/bytecode.cvd
+ba466e1ade81c298bd01ba9107ea00c9dad2081e5afca0ca94cc71844010c37d  /var/lib/clamav/daily-28150.cvd.sign
+5f449c739feee6bc85c66a72faee3307d4ee377dbaf5606942be6a25e6b68851  /var/lib/clamav/daily.cvd
+c030a2235e0ac8b53f95bc6f79563c2b3ddfdcf4fd1d722634578a79530898e2  /var/lib/clamav/main-63.cvd.sign
+0b2182d229f46981ec8f535382222f7c9dfdd656b250ad47988b910a8d302365  /var/lib/clamav/main.cvd
+ClamAV 1.5.4/28150/Sun Oct 11 06:26:01 2026
+clean.txt sha256=f7077fb928b2535246d18af56bbd4f1bbd3db58e14467dbceb4c2784734bb2ed
+eicar.txt sha256=275a021bbfb6489e54d471899f7db9d1663fc695ec2fe2a2c4538aabf651fd0f
+clamd_health=PONG
+PASS real clamd clean.txt verdict=clean
+PASS real clamd eicar.txt verdict=malware
+qa815-clamd-e8e8393d1076-865a5e2e-server
+qa815-clamd-e8e8393d1076-865a5e2e-net
+qa815-clamd-e8e8393d1076-865a5e2e-signatures
+Untagged: clamav/clamav@sha256:638d90201ee7ee6a82d249a2fc23b132e578673b5f1f2766852b127676ca1ef6
+Deleted: sha256:638d90201ee7ee6a82d249a2fc23b132e578673b5f1f2766852b127676ca1ef6
+run_exit=0
+source_archive_absent=yes
+fixtures_absent=yes
+remaining_containers=0
+remaining_network=0
+remaining_volume=0
+remaining_pulled_pin=no
+finished=2026-10-14T18:32:15Z

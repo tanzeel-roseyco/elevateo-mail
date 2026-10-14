@@ -750,3 +750,5 @@ QA815 `555acbff` eight frontend lint errors are tool findings, not independent b
 QA815 `fdecd0d5` full web PASS and `a2f58b34` one remaining lint warning are execution/tool findings, not independent source review. Additional independently reviewed LOC remains 0; source defect density unclaimed pending owner repair/review.
 
 QA815 `58edb11c` targeted TypeScript/ten-case PASS is execution evidence, not independent source review. No new reviewed LOC or source defect-density claim.
+
+QA815 `e8e8393d` real ClamAV clean/EICAR PASS is executed protocol evidence, not independent source review of OPS820 or attachment integration. Additional QA815 independently reviewed LOC remains 0; source defect density unclaimed.
