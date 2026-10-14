@@ -235,4 +235,6 @@ The 00009 policy now separates ordinary content reads from inert writes: SELECT 
 
 Soren's exact integrated 882a471 disposable fleet receipt confirms the new 15-policy 00009 migration applied. The runner stopped later at attachment migration 00018, so Outreach role/no-marker database tests and HTTP remain unexecuted.
 
+Correction: the 882a471 00009 source blob was `7412dd6` (old FOR ALL policy), while the revised split-policy source blob is `eece1c9`. The earlier migration receipt cannot verify the revised policy; its PostgreSQL migration and all role/HTTP checks remain NOT_RUN.
+
 ADV111 reviewed exact 2f255b9 source with zero confirmed defects across 303 unique LOC, while identifying a missing positive restricted-role mutation test. The disposable fixture now covers protected `app_read` INSERT and UPDATE, valid digest without marker denial, and revoked-session read denial; these added cases remain unexecuted.

@@ -177,4 +177,6 @@ OUT-804 source audit found a direct-table write gap in 00009: the previous FOR A
 
 Exact integrated 882a471 fleet migration receipt `backend-882a4710860f/028-migrate.txt` shows the new 00009 15-policy migration PASSED SQL application (0.0269s). Later attachment 00018 migration failed before Outreach role tests, generated policy test and HTTP; their status remains NOT_RUN.
 
+Evidence correction from exact Git blobs: 882a471 migration 00009 was `7412dd6`, the old FOR ALL content-read policy. Current split-policy migration blob is `eece1c9`; no fleet migration PASS transfers to it. Revised policy PostgreSQL application, generated-policy unit, authenticated SQL/role and HTTP remain NOT_RUN.
+
 Ada ADV111 independent review of exact 2f255b9 covered 303 unique LOC, found zero confirmed source defects (0/KLOC) and requested a stronger positive mutation oracle. OUT-804 authored actual restricted-role protected campaign INSERT/UPDATE plus revoked-session stale-digest read denial in the named disposable fixture; no fleet assertion PASS yet.
