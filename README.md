@@ -16,7 +16,7 @@ Shared company mailroom with one Rails domain authority and a React/TypeScript c
 
 ### INT-801 integrated source candidate (2026-10-14)
 
-Soren exact 7aa61be disposable PostgreSQL/Auth run passed migrations through Mailpit 00013 and reached isolated Minitest/Steep, then failed the full Ruby suites. The first failure is a BE02 mail-search fixture hitting `app.prevent_owner_loss()` while deleting an owner membership; later fixture dependency, protected-write-guard and lock-timeout errors also appear. Cleanup passed. Authenticated HTTP, worker and browser gates were not reached; the stronger owner guard is preserved while owners repair fixtures/security seams.
+Soren exact 7aa61be disposable PostgreSQL/Auth run passed migrations through Mailpit 00013 and reached isolated Minitest/Steep, then failed the full Ruby suites: 74 suite summaries, 518 runs/6,935 assertions/6 failures/17 errors/0 skips across 11 failing suites; Steep also reported 70 problems in 8 files. The first failure is a BE02 mail-search fixture hitting `app.prevent_owner_loss()` while deleting an owner membership; later fixture dependency, protected-write-guard, lock-timeout, missing-send-ID and snapshot-byte errors also appear. Cleanup passed. Authenticated HTTP, worker and browser gates were not reached; the stronger owner guard is preserved while owners repair fixtures/security seams.
 
 The isolated preference gateway is now re-exported through `createV2Gateway()` to match Lyra’s proposed PersonalSettingsPage call names. The Lyra UI and Theo route remain unmerged/unregistered pending bounded review and fleet checks, so this adapter seam does not expose a production preferences page yet.
 
