@@ -4,6 +4,63 @@
  */
 
 export interface paths {
+    "/v2/mailboxes/{mailbox_id}/assignee-options": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List current eligible assignee Auth UUIDs for one assignable mailbox
+         * @description Requires current mailbox assignment authority inside the protected read transaction. Eligible subjects are sorted by UUID. The opaque cursor is signed and bound to actor, organization, mailbox, session authorization version and ordering. The V1 assignment write remains final authority.
+         */
+        get: operations["listMailboxAssigneeOptions"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v2/mailboxes/{mailbox_id}/threads/{thread_id}/messages/{message_id}/attachments": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List bounded attachment metadata for one currently readable message
+         * @description Use id-sorted UUID cursor pagination scoped to the current message; clean status alone never guarantees byte access.
+         */
+        get: operations["listInboxAttachments"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v2/mailboxes/{mailbox_id}/threads/{thread_id}/messages/{message_id}/attachments/{attachment_id}/content": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Stream bytes only after current read authorization and clean scan verdict */
+        get: operations["downloadCleanInboxAttachment"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/v2/threads/{thread_id}/messages/{message_id}": {
         parameters: {
             query?: never;
@@ -258,6 +315,39 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
+        ScopedReadError: {
+            code: string;
+            message: string;
+            request_id: string;
+        };
+        MailboxAssigneeOption: {
+            /** Format: uuid */
+            user_id: string;
+        };
+        MailboxAssigneeOptionPage: {
+            context_id: string;
+            authorization_version: string;
+            /** Format: uuid */
+            mailbox_id: string;
+            items: components["schemas"]["MailboxAssigneeOption"][];
+            next_cursor: string | null;
+        };
+        InboxAttachmentSummary: {
+            /** Format: uuid */
+            id: string;
+            filename: string;
+            /** @enum {string} */
+            content_type: "application/pdf" | "image/png" | "image/jpeg" | "text/plain";
+            /** @description Zero only for a rejected attachment that never entered private Storage. */
+            byte_size: number;
+            /** @enum {string} */
+            scan_status: "pending_scan" | "clean" | "malware" | "scan_failed" | "rejected";
+        } & unknown;
+        InboxAttachmentPage: {
+            items: components["schemas"]["InboxAttachmentSummary"][];
+            /** Format: uuid */
+            next_cursor: string | null;
+        };
         /** Format: date-time */
         UtcTimestamp: string;
         Address: {
@@ -505,6 +595,191 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
+    listMailboxAssigneeOptions: {
+        parameters: {
+            query?: {
+                cursor?: string;
+                limit?: number;
+            };
+            header?: never;
+            path: {
+                mailbox_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Bounded eligible Auth UUID page, without profile or grant data */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MailboxAssigneeOptionPage"];
+                };
+            };
+            /** @description Malformed path, limit, or invalid or expired cursor */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ScopedReadError"];
+                };
+            };
+            /** @description Unauthenticated session */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ScopedReadError"];
+                };
+            };
+            /** @description Mailbox missing or inaccessible; foreign organization is indistinguishable */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ScopedReadError"];
+                };
+            };
+        };
+    };
+    listInboxAttachments: {
+        parameters: {
+            query?: {
+                cursor?: string;
+                limit?: number;
+            };
+            header?: never;
+            path: {
+                mailbox_id: string;
+                thread_id: string;
+                message_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Metadata only; never private object keys */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InboxAttachmentPage"];
+                };
+            };
+            /** @description Malformed scope or page query */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ScopedReadError"];
+                };
+            };
+            /** @description Unauthenticated or revoked session */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ScopedReadError"];
+                };
+            };
+            /** @description Missing or inaccessible mailbox, message or attachment */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ScopedReadError"];
+                };
+            };
+        };
+    };
+    downloadCleanInboxAttachment: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                mailbox_id: string;
+                thread_id: string;
+                message_id: string;
+                attachment_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Private bytes; no signed or public URL */
+            200: {
+                headers: {
+                    "Cache-Control"?: "no-store";
+                    "X-Content-Type-Options"?: "nosniff";
+                    /** @description Attachment disposition with sanitized filename */
+                    "Content-Disposition"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/octet-stream": string;
+                };
+            };
+            /** @description Malformed scope or page query */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ScopedReadError"];
+                };
+            };
+            /** @description Unauthenticated or revoked session */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ScopedReadError"];
+                };
+            };
+            /** @description Missing or inaccessible mailbox, message or attachment */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ScopedReadError"];
+                };
+            };
+            /** @description Current authorized attachment is held or rejected without a clean verdict; no bytes are released */
+            423: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @constant */
+                        code: "attachment_held";
+                        message: string;
+                        request_id: string;
+                    };
+                };
+            };
+            /** @description Private gateway or storage unavailable; no bytes released */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ScopedReadError"];
+                };
+            };
+        };
+    };
     getDirectMessage: {
         parameters: {
             query: {
