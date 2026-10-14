@@ -210,3 +210,5 @@ QA815 exact `e01c64ad` ATT823 database 6/40 PASS; internal Mailpit `.invalid` si
 QA815 prepared a distinct task-only 74-suite diagnostic path with guarded count and `DIAGNOSTIC_COMPLETED` status; it has NOT_RUN and cannot replace the failed 137-suite result. Coordinator choice is pending before allocation; no HTTP/worker/real Auth inference.
 
 QA815 exact FIX948 `df11a0c1` focused logging/controller test gate FAILED: new unit 2/9 with one failure; four standalone controller suites all fail expected statuses as 500; Steep one unknown Logger constant, targeted lint PASS. Task-only sanitized diagnostics pinpoint ReadController line20 `NoMethodError#read` and ThreadsController line46 `NameError#ThreadReads`. Cleanup PASS, no full backend/HTTP worker/real Auth claim.
+
+QA815 third task-only FIX948 probe confirms `NoMethodError#read` receiver class `NilClass` in standalone GET Rack fixture; task cleanup PASS. No production body-check change or acceptance claim.

@@ -1,32 +1,32 @@
 source=df11a0c120fb2a4a4e88723565add47d5566cad8
 image=sha256:7dc61d4b7e12f94764f95f4f1bfe8e3940049247e6d409898ce9d3ed2810f348
-started=2026-10-14T19:45:39Z
+started=2026-10-14T19:48:59Z
 task_source_overlay=fixed class and NoMethodError method name only; no message, receiver, payload or backtrace; canonical commit unchanged
 RUN test/administration/assignee_options_http_test.rb
 /workspace/apps/server/test/be_02/auth_test_helper.rb:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
 You can add ostruct to your Gemfile or gemspec to silence this warning.
-QA815_DIAGNOSTIC class=NoMethodError method=read source=app/controllers/v1/read_controller.rb line=20
-E, [2026-10-14T19:45:40.777835 #7] ERROR -- : {"event":"request.error","class":"NoMethodError","request_id":"dir904-http"}
-Run options: --seed 11752
+QA815_DIAGNOSTIC class=NoMethodError method=read receiver_class=NilClass source=app/controllers/v1/read_controller.rb line=20
+E, [2026-10-14T19:49:01.372308 #7] ERROR -- : {"event":"request.error","class":"NoMethodError","request_id":"dir904-http"}
+Run options: --seed 45421
 
 # Running:
 
-FQA815_DIAGNOSTIC class=NoMethodError method=read source=app/controllers/v1/read_controller.rb line=20
-E, [2026-10-14T19:45:40.780168 #7] ERROR -- : {"event":"request.error","class":"NoMethodError","request_id":"dir904-http"}
-FQA815_DIAGNOSTIC class=NoMethodError method=read source=app/controllers/v1/read_controller.rb line=20
-E, [2026-10-14T19:45:40.780766 #7] ERROR -- : {"event":"request.error","class":"NoMethodError","request_id":"dir904-http"}
+FQA815_DIAGNOSTIC class=NoMethodError method=read receiver_class=NilClass source=app/controllers/v1/read_controller.rb line=20
+E, [2026-10-14T19:49:01.375070 #7] ERROR -- : {"event":"request.error","class":"NoMethodError","request_id":"dir904-http"}
+FQA815_DIAGNOSTIC class=NoMethodError method=read receiver_class=NilClass source=app/controllers/v1/read_controller.rb line=20
+E, [2026-10-14T19:49:01.376567 #7] ERROR -- : {"event":"request.error","class":"NoMethodError","request_id":"dir904-http"}
 F
 
-Finished in 0.216096s, 13.8827 runs/s, 13.8827 assertions/s.
+Finished in 0.215483s, 13.9222 runs/s, 13.9222 assertions/s.
 
   1) Failure:
-AssigneeOptionsHttpTest#test_revoked_actor_and_target_and_oversized_limit_fail_closed [test/administration/assignee_options_http_test.rb:83]:
-Expected: 404
+AssigneeOptionsHttpTest#test_tampered_expired_and_cross_mailbox_cursor_are_denied [test/administration/assignee_options_http_test.rb:72]:
+Expected: 400
   Actual: 500
 
   2) Failure:
-AssigneeOptionsHttpTest#test_tampered_expired_and_cross_mailbox_cursor_are_denied [test/administration/assignee_options_http_test.rb:72]:
-Expected: 400
+AssigneeOptionsHttpTest#test_revoked_actor_and_target_and_oversized_limit_fail_closed [test/administration/assignee_options_http_test.rb:83]:
+Expected: 404
   Actual: 500
 
   3) Failure:
@@ -39,27 +39,27 @@ SUITE_RESULT path=test/administration/assignee_options_http_test.rb exit=1
 RUN test/administration/organization_role_audit_http_test.rb
 /workspace/apps/server/test/be_02/auth_test_helper.rb:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
 You can add ostruct to your Gemfile or gemspec to silence this warning.
-QA815_DIAGNOSTIC class=NoMethodError method=read source=app/controllers/v1/read_controller.rb line=20
-E, [2026-10-14T19:45:41.608856 #27] ERROR -- : {"event":"request.error","class":"NoMethodError","request_id":"adm803-audit-http"}
-Run options: --seed 54294
+QA815_DIAGNOSTIC class=NoMethodError method=read receiver_class=NilClass source=app/controllers/v1/read_controller.rb line=20
+E, [2026-10-14T19:49:02.202107 #27] ERROR -- : {"event":"request.error","class":"NoMethodError","request_id":"adm803-audit-http"}
+Run options: --seed 28805
 
 # Running:
 
-FQA815_DIAGNOSTIC class=NoMethodError method=read source=app/controllers/v1/read_controller.rb line=20
-E, [2026-10-14T19:45:41.610916 #27] ERROR -- : {"event":"request.error","class":"NoMethodError","request_id":"adm803-audit-http"}
-FQA815_DIAGNOSTIC class=NoMethodError method=read source=app/controllers/v1/read_controller.rb line=20
-E, [2026-10-14T19:45:41.611970 #27] ERROR -- : {"event":"request.error","class":"NoMethodError","request_id":"adm803-audit-http"}
+FQA815_DIAGNOSTIC class=NoMethodError method=read receiver_class=NilClass source=app/controllers/v1/read_controller.rb line=20
+E, [2026-10-14T19:49:02.204416 #27] ERROR -- : {"event":"request.error","class":"NoMethodError","request_id":"adm803-audit-http"}
+FQA815_DIAGNOSTIC class=NoMethodError method=read receiver_class=NilClass source=app/controllers/v1/read_controller.rb line=20
+E, [2026-10-14T19:49:02.205537 #27] ERROR -- : {"event":"request.error","class":"NoMethodError","request_id":"adm803-audit-http"}
 F
 
-Finished in 0.222989s, 13.4536 runs/s, 13.4536 assertions/s.
+Finished in 0.194263s, 15.4429 runs/s, 15.4429 assertions/s.
 
   1) Failure:
-OrganizationRoleAuditHttpTest#test_revoked_and_contentful_sql_rows_fail_closed [test/administration/organization_role_audit_http_test.rb:74]:
+OrganizationRoleAuditHttpTest#test_foreign_org_and_forged_cursor_are_denied [test/administration/organization_role_audit_http_test.rb:63]:
 Expected: 404
   Actual: 500
 
   2) Failure:
-OrganizationRoleAuditHttpTest#test_foreign_org_and_forged_cursor_are_denied [test/administration/organization_role_audit_http_test.rb:63]:
+OrganizationRoleAuditHttpTest#test_revoked_and_contentful_sql_rows_fail_closed [test/administration/organization_role_audit_http_test.rb:74]:
 Expected: 404
   Actual: 500
 
@@ -73,62 +73,62 @@ SUITE_RESULT path=test/administration/organization_role_audit_http_test.rb exit=
 RUN test/campaigns/accounts_controller_test.rb
 /workspace/apps/server/test/be_02/auth_test_helper.rb:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
 You can add ostruct to your Gemfile or gemspec to silence this warning.
-QA815_DIAGNOSTIC class=NoMethodError method=read source=app/controllers/v1/read_controller.rb line=20
-E, [2026-10-14T19:45:42.431073 #47] ERROR -- : {"event":"request.error","class":"NoMethodError","request_id":"account-test"}
-Run options: --seed 58553
+QA815_DIAGNOSTIC class=NoMethodError method=read receiver_class=NilClass source=app/controllers/v1/read_controller.rb line=20
+E, [2026-10-14T19:49:03.019034 #47] ERROR -- : {"event":"request.error","class":"NoMethodError","request_id":"account-test"}
+Run options: --seed 4830
 
 # Running:
 
-FQA815_DIAGNOSTIC class=NoMethodError method=read source=app/controllers/v1/read_controller.rb line=20
-E, [2026-10-14T19:45:42.433111 #47] ERROR -- : {"event":"request.error","class":"NoMethodError","request_id":"account-test"}
-FQA815_DIAGNOSTIC class=NoMethodError method=read source=app/controllers/v1/read_controller.rb line=20
-E, [2026-10-14T19:45:42.433713 #47] ERROR -- : {"event":"request.error","class":"NoMethodError","request_id":"account-test"}
-FQA815_DIAGNOSTIC class=NoMethodError method=read source=app/controllers/v1/read_controller.rb line=20
-E, [2026-10-14T19:45:42.434283 #47] ERROR -- : {"event":"request.error","class":"NoMethodError","request_id":"account-test"}
+FQA815_DIAGNOSTIC class=NoMethodError method=read receiver_class=NilClass source=app/controllers/v1/read_controller.rb line=20
+E, [2026-10-14T19:49:03.021247 #47] ERROR -- : {"event":"request.error","class":"NoMethodError","request_id":"account-test"}
+FQA815_DIAGNOSTIC class=NoMethodError method=read receiver_class=NilClass source=app/controllers/v1/read_controller.rb line=20
+E, [2026-10-14T19:49:03.021891 #47] ERROR -- : {"event":"request.error","class":"NoMethodError","request_id":"account-test"}
+FQA815_DIAGNOSTIC class=NoMethodError method=read receiver_class=NilClass source=app/controllers/v1/read_controller.rb line=20
+E, [2026-10-14T19:49:03.022672 #47] ERROR -- : {"event":"request.error","class":"NoMethodError","request_id":"account-test"}
 F
 
-Finished in 0.201467s, 19.8543 runs/s, 59.5630 assertions/s.
+Finished in 0.212109s, 18.8582 runs/s, 56.5746 assertions/s.
 
   1) Failure:
-OutreachAccountsControllerTest#test_detail_denies_account_from_another_campaign [test/campaigns/accounts_controller_test.rb:73]:
-Expected: [404, "not_available"]
-  Actual: [500, "internal_error"]
-
-  2) Failure:
-OutreachAccountsControllerTest#test_list_is_filtered_by_campaign_and_returns_disabled_account [test/campaigns/accounts_controller_test.rb:52]:
-Expected: 200
-  Actual: 500
-
-  3) Failure:
 OutreachAccountsControllerTest#test_mixed_visible_and_hidden_mailboxes_return_only_visible_account [test/campaigns/accounts_controller_test.rb:64]:
 Expected: 200
   Actual: 500
 
-  4) Failure:
+  2) Failure:
 OutreachAccountsControllerTest#test_revoked_private_mailbox_membership_hides_prior_detail [test/campaigns/accounts_controller_test.rb:78]:
 Expected: 200
   Actual: 500
+
+  3) Failure:
+OutreachAccountsControllerTest#test_list_is_filtered_by_campaign_and_returns_disabled_account [test/campaigns/accounts_controller_test.rb:52]:
+Expected: 200
+  Actual: 500
+
+  4) Failure:
+OutreachAccountsControllerTest#test_detail_denies_account_from_another_campaign [test/campaigns/accounts_controller_test.rb:73]:
+Expected: [404, "not_available"]
+  Actual: [500, "internal_error"]
 
 4 runs, 12 assertions, 4 failures, 0 errors, 0 skips
 SUITE_RESULT path=test/campaigns/accounts_controller_test.rb exit=1
 RUN test/inbound/permalink_http_test.rb
 /workspace/apps/server/test/be_02/auth_test_helper.rb:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
 You can add ostruct to your Gemfile or gemspec to silence this warning.
-QA815_DIAGNOSTIC class=NameError method=ThreadReads source=app/controllers/v1/threads_controller.rb line=46
-E, [2026-10-14T19:45:43.295843 #67] ERROR -- : {"event":"request.error","class":"NameError","request_id":"permalink-test"}
-QA815_DIAGNOSTIC class=NameError method=ThreadReads source=app/controllers/v1/threads_controller.rb line=46
-E, [2026-10-14T19:45:43.297660 #67] ERROR -- : {"event":"request.error","class":"NameError","request_id":"permalink-test"}
-Run options: --seed 58667
+QA815_DIAGNOSTIC class=NameError method=ThreadReads receiver_class=Module source=app/controllers/v1/threads_controller.rb line=46
+E, [2026-10-14T19:49:03.933128 #67] ERROR -- : {"event":"request.error","class":"NameError","request_id":"permalink-test"}
+QA815_DIAGNOSTIC class=NameError method=ThreadReads receiver_class=Module source=app/controllers/v1/threads_controller.rb line=46
+E, [2026-10-14T19:49:03.934881 #67] ERROR -- : {"event":"request.error","class":"NameError","request_id":"permalink-test"}
+Run options: --seed 21980
 
 # Running:
 
-FQA815_DIAGNOSTIC class=NameError method=ThreadReads source=app/controllers/v1/threads_controller.rb line=46
-E, [2026-10-14T19:45:43.298791 #67] ERROR -- : {"event":"request.error","class":"NameError","request_id":"permalink-test"}
-FQA815_DIAGNOSTIC class=NameError method=ThreadReads source=app/controllers/v1/threads_controller.rb line=46
-E, [2026-10-14T19:45:43.299408 #67] ERROR -- : {"event":"request.error","class":"NameError","request_id":"permalink-test"}
+FQA815_DIAGNOSTIC class=NameError method=ThreadReads receiver_class=Module source=app/controllers/v1/threads_controller.rb line=46
+E, [2026-10-14T19:49:03.936092 #67] ERROR -- : {"event":"request.error","class":"NameError","request_id":"permalink-test"}
+FQA815_DIAGNOSTIC class=NameError method=ThreadReads receiver_class=Module source=app/controllers/v1/threads_controller.rb line=46
+E, [2026-10-14T19:49:03.936670 #67] ERROR -- : {"event":"request.error","class":"NameError","request_id":"permalink-test"}
 F
 
-Finished in 0.209137s, 14.3447 runs/s, 14.3447 assertions/s.
+Finished in 0.256307s, 11.7047 runs/s, 11.7047 assertions/s.
 
   1) Failure:
 InboundPermalinkHTTPTest#test_missing_and_denied_have_same_http_result [test/inbound/permalink_http_test.rb:53]:
@@ -136,18 +136,18 @@ Expected: [404, "not_available"]
   Actual: [500, "internal_error"]
 
   2) Failure:
-InboundPermalinkHTTPTest#test_plaintext_message_resolves_by_exact_path [test/inbound/permalink_http_test.rb:44]:
-Expected: 200
-  Actual: 500
-
-  3) Failure:
 InboundPermalinkHTTPTest#test_malformed_path_never_queries_message [test/inbound/permalink_http_test.rb:59]:
 Expected: [400, "request_invalid"]
   Actual: [500, "internal_error"]
+
+  3) Failure:
+InboundPermalinkHTTPTest#test_plaintext_message_resolves_by_exact_path [test/inbound/permalink_http_test.rb:44]:
+Expected: 200
+  Actual: 500
 
 3 runs, 3 assertions, 3 failures, 0 errors, 0 skips
 SUITE_RESULT path=test/inbound/permalink_http_test.rb exit=1
 run_exit=1
 archive_absent=yes
 remaining_task_containers=0
-finished=2026-10-14T19:45:43Z
+finished=2026-10-14T19:49:04Z

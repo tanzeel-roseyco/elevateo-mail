@@ -268,3 +268,5 @@ QA815 additional exact `e01c64ad` dedicated profiles: ATT823 database 6/40 PASS,
 QA815 historical 74-suite core diagnostic runner is prepared with a distinct `DIAGNOSTIC_COMPLETED` result and remains UNEXECUTED pending coordinator choice; the exact 137-suite expanded failure remains authoritative. No new HTTP/worker/browser result is claimed.
 
 QA815 exact FIX948 `df11a0c1` focused fleet gate FAILED: logging unit 1/2 cases, four affected standalone controller suites all returned 500, Steep one unknown Logger constant, six-file lint PASS; task cleanup PASS. Bounded task-only diagnostics locate masked primary exceptions at ReadController GET body read and ThreadsController missing ThreadReads constant. Owner review/repair pending; no authenticated backend or browser acceptance.
+
+QA815 further task-only FIX948 diagnosis confirms the GET body `read` receiver is `NilClass` in standalone Rack fixtures; no production body-boundary relaxation was applied. Owner test-fixture/constant repair remains pending, with task cleanup PASS.

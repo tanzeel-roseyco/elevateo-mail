@@ -278,3 +278,5 @@ QA815 further exact `e01c64ad` dedicated receipts: `backend-e01c64adfdf1-fresh-a
 QA815 `run-backend-candidate.sh` now includes a guarded task-only 74-suite core diagnostic mode, distinct receipt path and `DIAGNOSTIC_COMPLETED` final status. It is unexecuted pending coordinator choice; full expanded 137-suite failure and nine-profile ledger remain authoritative.
 
 QA815 FIX948 exact `df11a0c1` receipt `docs/completion/qa815-evidence/focused-fix948-df11a0c120fb.txt` records logging unit and four controller suite failures, Steep unknown Logger and six-file lint PASS. `fix948-cause-df11a0c120fb-noframe.txt` and `fix948-cause-df11a0c120fb.txt` contain task-only sanitized exception names/source paths: ReadController GET body read and ThreadsController rescue constant. All task containers/archives absent. These are owner repair findings, not authenticated HTTP or browser proof.
+
+QA815 third diagnostic `fix948-cause-df11a0c120fb.txt` now adds only receiver class to the fixed names/paths, confirming nil GET body; prior source-frame-only receipt is retained as `fix948-cause-df11a0c120fb-sourceframe.txt`. Task cleanup PASS; no production boundary change.

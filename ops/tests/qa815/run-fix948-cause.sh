@@ -42,7 +42,8 @@ needle = '    error_logger = Rails.respond_to?(:logger) ? Rails.logger : Logger.
 if source.count(needle) != 1:
     raise SystemExit('QA815 FIX948 diagnostic source anchor mismatch')
 addition = ('    frame = error.backtrace_locations.find { |entry| entry.path.start_with?("/workspace/apps/server/") }\n'
-            '    warn "QA815_DIAGNOSTIC class=#{error.class.name} method=#{error.respond_to?(:name) ? error.name : :none} source=#{frame&.path&.sub("/workspace/apps/server/", "")} line=#{frame&.lineno}"\n')
+            '    receiver_class = error.respond_to?(:receiver) ? error.receiver.class.name : :none\n'
+            '    warn "QA815_DIAGNOSTIC class=#{error.class.name} method=#{error.respond_to?(:name) ? error.name : :none} receiver_class=#{receiver_class} source=#{frame&.path&.sub("/workspace/apps/server/", "")} line=#{frame&.lineno}"\n')
 path.write_text(source.replace(needle, addition + needle))
 PY
 printf 'task_source_overlay=fixed class and NoMethodError method name only; no message, receiver, payload or backtrace; canonical commit unchanged\n' >> "$log"
