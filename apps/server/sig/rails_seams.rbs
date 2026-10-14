@@ -80,6 +80,8 @@ end
 module ActiveRecord
   class ActiveRecordError < StandardError
   end
+  class StatementInvalid < ActiveRecordError
+  end
   class Rollback < ActiveRecordError
   end
   # AIDEV-NOTE: This target selects JSON/scalars or SQL-formatted dates; domain validators narrow row values.

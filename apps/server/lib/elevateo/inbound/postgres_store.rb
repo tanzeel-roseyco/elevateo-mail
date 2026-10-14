@@ -24,7 +24,7 @@ module Elevateo
         values = [organization_id, mailbox_id].map do |value|
           ActiveRecord::Relation::QueryAttribute.new("inbound_scope", value, ActiveRecord::Type::String.new)
         end
-        !@connection.exec_query(SCOPE_SQL, "Inbound mailbox scope", values).empty?
+        !@connection.exec_query(SCOPE_SQL, "Inbound mailbox scope", values).to_a.empty?
       end
 
       def insert_once(record)
@@ -40,7 +40,10 @@ module Elevateo
         row = @connection.exec_query(SQL, "Inbound ingest", binds).first
         raise ReadResponse::Invalid unless row
 
-        result = JSON.parse(row.fetch("result"))
+        raw = row.fetch("result")
+        raise ReadResponse::Invalid unless raw.is_a?(String)
+
+        result = JSON.parse(raw)
         unless result.is_a?(Hash) && result.keys.sort == %w[message_id result thread_id] &&
                %w[created duplicate].include?(result["result"]) &&
                FakeIngress::UUID.match?(result["thread_id"]) && FakeIngress::UUID.match?(result["message_id"])

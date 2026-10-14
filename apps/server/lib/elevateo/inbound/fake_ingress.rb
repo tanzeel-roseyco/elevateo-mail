@@ -95,10 +95,14 @@ module Elevateo
       def record_for(mail, raw, body, selection, scope)
         text_part, parts = selection
         senders, recipients = mail.from || [], mail.to || []
-        { **scope, provider: "fake", content_sha256: Digest::SHA256.hexdigest(raw.b),
+        # @type var record: Inbound::record
+        record = { organization_id: scope.fetch(:organization_id), mailbox_id: scope.fetch(:mailbox_id),
+          provider_account_id: scope.fetch(:provider_account_id), provider_event_id: scope.fetch(:provider_event_id),
+          provider: "fake", content_sha256: Digest::SHA256.hexdigest(raw.b),
           from: clean_header(senders.first), to: recipients.map { |address| clean_header(address) },
           subject: clean_header(mail.subject), text: body,
           attachments: parts.reject { |part| part.equal?(text_part) }.map { |part| attachment(part) } }
+        record
       end
 
       def attachment(part)
@@ -119,11 +123,16 @@ module Elevateo
       end
 
       def leaf_parts(message)
+        # @type var stack: Array[[Mail::Message, Integer]]
         stack = [[message, 0]]
+        # @type var leaves: Array[Mail::Message]
         leaves = []
         seen = 0
         until stack.empty?
-          part, depth = stack.pop
+          frame = stack.pop
+          break unless frame
+
+          part, depth = frame
           seen += 1
           reject("invalid_mime") if seen > MAX_PARTS * 2 || depth > 8
           part.multipart? ? add_children(stack, part, depth) : leaves << part
