@@ -196,3 +196,5 @@ QA816 V2 People case observes the versioned grants GET and truthful unbound rost
 Latest QA816 head eb0f394 provides partitioned `--grep` commands in docs/completion/tessa.md. Current integrated Outreach gateway defaults absent, so shell route/copy evidence must remain distinct from campaign API create/list/detail evidence. Browser and screenshot evidence remain NOT_RUN.
 
 QA816 `qa816-outreach.e2e.ts` requests real V2 campaign create/list/detail/reload, empty-name no-POST and reader API denial through the browser. It is gated on a bound V2 Outreach adapter and active routes; no send/enrollment path or live transport is exercised. Twenty-five screenshot IDs are admitted, with no new images captured.
+
+The QA816 V2 logout case requires a real campaign GET, then tests protected Outreach/People deep links after logout and V1 session 401. It captures no sign-in image or protected response body; integrated browser execution remains pending.

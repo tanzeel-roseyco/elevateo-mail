@@ -186,3 +186,5 @@ QA816 V2 People candidate now requests real manager/reader grants GET and `/peop
 Latest QA816 source is `eb0f394`; run partitions and exact dependencies are recorded in `docs/completion/tessa.md`. Only earlier `302142c` acceptance compile/unit source has fleet evidence; no current browser or screenshot result is established.
 
 QA816 also has a gated V2 draft campaign browser candidate for create/list/detail, invalid input and reader denial. Cassian's Outreach adapter and active routes, disposable seed, fleet execution and visual review are still required; no campaign acceptance PASS is claimed.
+
+QA816 V2 logout candidate checks that Outreach and People deep links clear after revocation; it is source-only until the integrated adapter and Soren browser run exist.
