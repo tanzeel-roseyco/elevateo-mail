@@ -480,3 +480,5 @@ The Android lane now targets Orion’s shared Tauri shell and online React web a
 INT801 current attachment metadata controller strict candidate binds path UUIDs and the read-only authorization callback to declared types after exact QA815 `211df76` Steep diagnostics. Its route and private byte gateway state are unchanged; successor fleet strict/unit/HTTP proof is pending.
 
 QA815 exact `b3fec577` pinned-tool Android parser probe passed 17 Python methods plus manifest/permission/unsigned classification on a retained older rejected unsigned APK. Cleanup passed; no new APK or installed Android behavior is accepted from this probe.
+
+ATT898 Nadia repository/test import repair is integrated for the exact QA815 attachment strict and standalone test-load failures. Soren fleet Steep and focused attachment tests on the coherent source remain pending; no byte route or live sending was activated.

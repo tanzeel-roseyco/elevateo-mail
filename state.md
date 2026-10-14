@@ -423,3 +423,5 @@ Android now has a Tauri-specific configuration and pinned fleet build request us
 INT801 attachment metadata controller strict candidate resolves the five Cassian Steep diagnostics in exact QA815 `211df76` by preserving concrete path UUID types and declaring its authorization callback port. Soren successor strict/unit/HTTP checks remain NOT_RUN; no new route, byte access or live mail is enabled.
 
 QA815 imported exact `b3fec577` Android pinned Build Tools 36 focused probe: 17 Python methods and retained unsigned APK manifest/permission/signature classifiers PASS with task-only cleanup. The artifact was generated previously under a failed permission gate; no new APK, signing or installed runtime PASS follows.
+
+Nadia ATT898 exact `4557fd73` narrows attachment repository integer values to decimal string binds and imports Minitest mock/Repository in standalone service tests, preserving Cassian's V2 metadata controller source. It is an unexecuted owner repair pending coherent fleet Steep and focused units.

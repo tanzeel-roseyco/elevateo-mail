@@ -485,3 +485,5 @@ QA815 future focused pure Ruby gate includes the Minitest mock import establishe
 The V2 inbox attachment metadata adapter now binds path UUIDs separately and declares its service authorization port for strict Rails typing. Its guarded list behavior is unchanged and remains subject to Soren's successor Steep and focused endpoint checks.
 
 The bounded QA815 Android parser probe script and exact retained-APK receipt are at `ops/tests/qa815/run-android-parser-probe.sh` and `docs/completion/qa815-evidence/android-parser-b3fec5772901.txt`. It validates parser/classifier behavior under pinned tools only; build, signing and installed runtime require separate evidence.
+
+The ATT898 attachment repository bind/test-import repair is documented in `docs/completion/nadia-att898-focused-repair.md`. It retains SQL casts and transaction authority; Soren's coherent strict and focused service/scanner/database checks are still required.

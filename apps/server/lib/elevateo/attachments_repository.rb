@@ -57,7 +57,9 @@ module Elevateo
 
       def rows(sql, values)
         binds = values.map do |value|
-          ActiveRecord::Relation::QueryAttribute.new("attachment", value, ActiveRecord::Type::String.new)
+          # The SQL casts numeric placeholders; String bind metadata must receive their text form.
+          bind_value = value.is_a?(Integer) ? value.to_s : value
+          ActiveRecord::Relation::QueryAttribute.new("attachment", bind_value, ActiveRecord::Type::String.new)
         end
         @connection.exec_query(sql, "Attachment", binds).to_a
       end
