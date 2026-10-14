@@ -746,3 +746,5 @@ QA815 ADV144 repair `1fcb462f` six-case fleet PASS verifies exclusive/no-follow 
 QA815 `263047b4` V2 declaration generation/check PASS is tool execution, not independent contract/source review. Additional QA815 independently reviewed LOC remains 0, and feature defect density remains unclaimed pending bounded review and runtime.
 
 QA815 `555acbff` eight frontend lint errors are tool findings, not independent bounded source review; no new independently reviewed LOC or defect-density claim. Cassian routes the assignee test repair.
+
+QA815 `fdecd0d5` full web PASS and `a2f58b34` one remaining lint warning are execution/tool findings, not independent source review. Additional independently reviewed LOC remains 0; source defect density unclaimed pending owner repair/review.

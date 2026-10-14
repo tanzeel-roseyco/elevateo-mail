@@ -250,3 +250,5 @@ QA815 corrected browser proof receipt `docs/completion/qa815-evidence/acceptance
 QA815 V2 draft.8 exact-source generation receipt `docs/completion/qa815-evidence/v2-codegen-263047b4e7df.txt` and declaration `generated-v2-263047b4e7df/api-v2.d.ts` record source/spec and output hashes, two command exits and cleanup. Cassian import pending; see `docs/completion/soren.md`.
 
 QA815 feature web receipt `docs/completion/qa815-evidence/web-555acbff98d3.log` records exact `555acbff` V1/V2 checks, eight assignee test lint errors and exact cleanup; see `docs/completion/soren.md`.
+
+QA815 feature full web receipt `docs/completion/qa815-evidence/web-fdecd0d56071.log` records exact `fdecd0d5` 856/856 PASS and cleanup. Core focused lint receipt `rubocop-a2f58b34dedf.txt` records one remaining fake inbound warning; see `docs/completion/soren.md`.

@@ -182,3 +182,5 @@ QA815 corrected `1fcb462f` ADV144 private output six-case fleet unit PASS, clean
 QA815 feature `263047b4` V2 draft.8 codegen/check PASS, generated declaration SHA256 `0c5f0969…`, task container/image/archive absent. Feature lint/type/unit/build and route runtime NOT_RUN; core lint19 still blocks HTTP/worker.
 
 QA815 feature `555acbff` V1/V2 check PASS; web lint eight unused test params FAIL, type/unit/build NOT_REACHED, task cleanup PASS.
+
+QA815 feature `fdecd0d5` full web PASS 62/62 files, 856/856 units, build/cleanup. Core `a2f58b34` targeted authority lint PASS, full lint one fake inbound unused argument FAIL; HTTP/worker/realAuth held.

@@ -39,6 +39,9 @@ timeout 300s docker run --rm --name "$name" --pull never --network none \
   --user "$(id -u):$(id -g)" -e HOME=/tmp -e BUNDLE_APP_CONFIG=/tmp/bundle \
   --tmpfs /tmp:rw,size=256m -v "$context":/workspace:ro -w /workspace/apps/server \
   "$image" bash -c '
+    bundle exec rubocop --lint test/attachment_gateway/authority_database_test.rb --format simple
+    targeted=$?; printf "targeted_exit=%s\n" "$targeted"
+    if [ "$targeted" -ne 0 ]; then exit "$targeted"; fi
     bundle exec rubocop --lint --format json > /tmp/rubocop.json 2>/tmp/rubocop.err
     status=$?
     ruby -rjson -e '\''data=JSON.parse(File.read("/tmp/rubocop.json")); data.fetch("files").each do |file|
@@ -47,7 +50,7 @@ timeout 300s docker run --rm --name "$name" --pull never --network none \
       end
     end; puts "files=#{data.fetch("summary").fetch("inspected_file_count")} offenses=#{data.fetch("summary").fetch("offense_count")}"'\''
     printf "rubocop_exit=%s\n" "$status"
-    exit 0
+    exit "$status"
   ' >> "$log" 2>&1
 status=$?
 set -e
