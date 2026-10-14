@@ -10,7 +10,7 @@ Push-Location $native
 try {
   cargo test --locked
   if ($LASTEXITCODE -ne 0) { throw 'Native unit tests failed' }
-  cargo tauri build --locked --bundles nsis
+  cargo tauri build --bundles nsis -- --locked
   if ($LASTEXITCODE -ne 0) { throw 'NSIS build failed' }
   $artifacts = @(Get-ChildItem 'target/release/bundle/nsis/*-setup.exe' -ErrorAction Stop)
   if ($artifacts.Count -ne 1) { throw 'Expected one unsigned NSIS setup artifact' }
