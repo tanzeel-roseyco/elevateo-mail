@@ -413,3 +413,5 @@ ADV146 Vera exact 263047b4 error-envelope successor: 134 unique versioned source
 QA815 exact feature `555acbff` fleet web: V1/V2 codegen/check PASS; ESLint eight unused parameters in Cassian assignee adapter test FAIL, type/unit/build NOT_REACHED, cleanup PASS. Narrow test-only repair removes unused callback arguments and keeps the successful fetch argument/header oracle; fleet successor requested, no host tests.
 
 Orion435333b1 exact authority fixture source imported feature d696f7fb/core a2f58b34, completing five-owner lint assembly. The prior 522/7089 Ruby set omitted this authority fixture; request Soren targeted fixture lint/unit and coherent full RuboCop/backend/HTTP/worker on a2f58b34. No host tests or runtime PASS on successor.
+
+Mira REPLY927 exact 20e8c46e and Tessa QA816 exact f46a958b tests imported at f4a754a9. Reply test now pins no save before user action, initial draft read and zero-version/session-bound save; browser denials require closed public envelope and fixed messages. No integrated web/browser execution on this successor; Soren prior web pin fdecd0d5 may run independently and must not be repinned mid-task.

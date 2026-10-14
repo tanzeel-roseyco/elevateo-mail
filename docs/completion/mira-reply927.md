@@ -1,0 +1,9 @@
+# REPLY927 — top reply save oracle repair
+
+Parent Mira source: `a7b55af027f3880d223777efa35bc01f44c20efa`. Felix REV920 reported a medium **test-proof gap** in REPLY906; this is not a confirmed production defect. Actual author identity: Codex GPT-6 in Orca, billed tier unverified.
+
+Only the top-reply case in `CollaborationPanels.test.tsx` changes. It now proves the conversation reader makes no draft GET or save before the top button is clicked. The draft editor legitimately GETs the new UUID to establish a pre-create 404; the test captures that ID and proves fixture storage is absent before Save, with zero `saveDraft` calls. After explicit Save, it asserts one write for the same ID and current context, with mailbox ID, `expected_version: 0`, exact `Re:` subject, one sender recipient, empty plaintext body and `reply_to_thread_id`; the visible saved version remains 1. Assignment COL910 and all other tests are untouched.
+
+Self-check against the requested rubric: the oracle covers the actual interaction boundary and versioned write rather than mirroring the UI implementation; null/empty sender cases remain in `ThreadPage.test.tsx`; no source state, authorization, API, storage or query behavior changed. No extra helper or class was added. The editor's pre-create GET must not be mistaken for a persisted draft or suppressed in production.
+
+Soren sole fleet-02 Docker request on Cassian's exact integrated successor after narrow import: `cd apps/web && npm run typecheck && npm run lint && npm run test -- src/features/thread/CollaborationPanels.test.tsx src/features/thread/ThreadPage.test.tsx src/features/thread/AssigneePicker.test.tsx`. Request exact source SHA, exits, logs and cleanup. Tests/build/browser are **NOT_RUN** by Mira; independent bounded review and QA816 real-auth evidence remain pending. No live operations.

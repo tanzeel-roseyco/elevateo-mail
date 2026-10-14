@@ -1383,3 +1383,5 @@ ADV146 Vera independently reviewed exact 263047b4 closed V2 error-envelope succe
 QA815 555acbff web lint eight no-unused-vars findings are executed tool diagnostics, not source review. Cassian test-only repair is unreviewed/unexecuted successor; reviewed LOC/defects/density remain unassessed for this patch until bounded review.
 
 Orion435333b1 authority fixture syntax repair changes five test lines source-only; no independent review or exact-successor lint/runtime yet, reviewed LOC/defects/density unassessed. The prior four fatal RuboCop Syntax findings remain historical until Soren confirms a2f58b34.
+
+Mira REPLY927 and Tessa QA816 denial-oracle test imports are source-only; root's split review packets may cover them later, but no independent review artifact imported here and no runtime. Reviewed LOC/defects/density unassessed for these deltas.
