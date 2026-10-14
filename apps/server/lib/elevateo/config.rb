@@ -22,13 +22,16 @@ module Elevateo
 
     attr_reader :db_host, :db_name, :db_role, :db_password, :auth_url, :storage_url, :mailpit_url,
                 :send_api_enabled, :send_control_path, :outbound_hold, :process, :session_key, :browser_origin, :auth_jwt_issuer,
-                :auth_jwt_audience, :auth_jwt_algorithm, :cookie_secure, :auth_password_minimum, :cursor_signing_key
+                :auth_jwt_audience, :auth_jwt_algorithm, :cookie_secure, :auth_password_minimum, :cursor_signing_key,
+                :attachment_gateway_hmac_key
 
     def self.current = (@current ||= load!)
 
     def self.load!(env = ENV) = new(env)
 
     def initialize(env)
+      # AIDEV-NOTE: Even migration/worker Rails processes must never inherit the gateway's Storage authority.
+      raise ConfigError, "attachment storage token is gateway-only" if env.key?("ELEVATEO_ATTACHMENT_STORAGE_SERVICE_TOKEN")
       fetch = ->(key) { value = env[key].to_s; raise ConfigError, "missing required setting #{key}" if value.empty?; value }
       raise ConfigError, "ELEVATEO_MODE must be local" unless fetch.("ELEVATEO_MODE") == "local"
       # AIDEV-NOTE: BE03 API is opt-in; enabling it never releases outbound hold or supplies a default epoch.
@@ -60,7 +63,12 @@ module Elevateo
     # AIDEV-NOTE: The runtime gets an encryption key, never Auth's signing/admin key; issuer is an identifier only.
     def configure_auth(env, fetch)
       forbidden = %w[JWT_SECRET GOTRUE_JWT_SECRET SERVICE_ROLE_KEY SUPABASE_SERVICE_ROLE_KEY AUTH_ADMIN_PASSWORD]
-      raise ConfigError, "privileged Auth settings are forbidden" if forbidden.any? { |name| env.key?(name) }
+      raise ConfigError, "privileged service settings are forbidden" if forbidden.any? { |name| env.key?(name) }
+      @attachment_gateway_hmac_key = if env.key?("ELEVATEO_ATTACHMENT_GATEWAY_HMAC_KEY_BASE64")
+        key = Base64.strict_decode64(fetch.("ELEVATEO_ATTACHMENT_GATEWAY_HMAC_KEY_BASE64"))
+        raise ConfigError, "attachment gateway key must contain 32 bytes" unless key.bytesize == 32
+        key.freeze
+      end
       @session_key = Base64.strict_decode64(fetch.("ELEVATEO_SESSION_KEY_BASE64"))
       raise ConfigError, "session key must contain 32 bytes" unless @session_key.bytesize == 32
       @session_key.freeze

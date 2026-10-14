@@ -40,11 +40,28 @@ class AuthConfigTest < Minitest::Test
   end
 
   def test_forbids_signing_admin_keys_and_internal_url_redirect_surface
-    %w[JWT_SECRET GOTRUE_JWT_SECRET SERVICE_ROLE_KEY SUPABASE_SERVICE_ROLE_KEY AUTH_ADMIN_PASSWORD].each do |name|
+    %w[JWT_SECRET GOTRUE_JWT_SECRET SERVICE_ROLE_KEY SUPABASE_SERVICE_ROLE_KEY AUTH_ADMIN_PASSWORD
+      ELEVATEO_ATTACHMENT_STORAGE_SERVICE_TOKEN].each do |name|
       assert_raises(Elevateo::ConfigError) { Elevateo::Config.load!(environment.merge(name => "secret")) }
     end
     ["https://auth:9999", "http://user:password@auth:9999", "http://auth:9999/path"].each do |url|
       assert_raises(Elevateo::ConfigError) { Elevateo::Config.load!(environment.merge("ELEVATEO_AUTH_URL" => url)) }
+    end
+  end
+
+  def test_attachment_gateway_key_is_optional_and_exactly_32_bytes
+    assert_nil Elevateo::Config.load!(environment).attachment_gateway_hmac_key
+    valid = Base64.strict_encode64("g" * 32)
+    assert_equal "g" * 32, Elevateo::Config.load!(environment.merge("ELEVATEO_ATTACHMENT_GATEWAY_HMAC_KEY_BASE64" => valid)).attachment_gateway_hmac_key
+    assert_raises(Elevateo::ConfigError) do
+      Elevateo::Config.load!(environment.merge("ELEVATEO_ATTACHMENT_GATEWAY_HMAC_KEY_BASE64" => Base64.strict_encode64("short")))
+    end
+    assert_raises(Elevateo::ConfigError) do
+      Elevateo::Config.load!(environment.merge("ELEVATEO_ATTACHMENT_GATEWAY_HMAC_KEY_BASE64" => "not-base64"))
+    end
+    assert_raises(Elevateo::ConfigError) do
+      Elevateo::Config.load!(environment.merge("ELEVATEO_DB_ROLE" => "elevateo_migrator",
+        "MIGRATOR_DB_PASSWORD" => "disposable", "ELEVATEO_ATTACHMENT_STORAGE_SERVICE_TOKEN" => "secret"))
     end
   end
 
