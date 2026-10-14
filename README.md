@@ -448,3 +448,5 @@ QA815 current `c5a8737` web successor passes V1/V2, lint, strict type, 842/842 u
 ADV122 found one P2 client RBS/fake mismatch (211 reviewed LOC, 4.74/KLOC); the slow-stream test fake now subclasses Net::HTTP while preserving in-process timeout coverage. This successor needs bounded rereview and Soren fleet unit/Steep before a PASS claim.
 
 Elara's focused protected outreach role witness is integrated test source: under one guarded sales scope it observes content-read and draft-write statuses while keeping original sales-ok and auditor-denied expectations. Soren's disposable fleet result is pending; no production authorization change or real enrollment is claimed.
+
+FE807 sequence editor test now binds its reread mock to the exact created draft ID and strict read-only DTO, closing an inconsistent fixture that the preceding web gate did not exercise. Soren's 842/842 web PASS was on the earlier test blob; current strengthened case needs fleet rerun.

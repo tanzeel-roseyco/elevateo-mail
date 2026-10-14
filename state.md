@@ -393,3 +393,5 @@ INB887 strict followup: fleet `065ec91` showed nullable IMAP session accesses an
 ADV122 client RBS review found one P2 nominal factory/fake mismatch. The test fake is now a Net::HTTP subclass with in-process overrides; production transport and RBS unchanged. Successor rereview and fleet unit/Steep NOT_RUN.
 
 Elara same-scope protected outreach read/write witness is integrated test-only source. Current protected role `not_found` cause remains UNKNOWN until Soren's focused disposable fleet run; no auth policy or enrollment changed.
+
+FE807 sequence editor fixture now rereads the created draft ID/DTO after the generic 404 create path. The earlier c5a8737 842/842 web PASS predates this strengthened test; current-source web unit/type evidence pending Soren.

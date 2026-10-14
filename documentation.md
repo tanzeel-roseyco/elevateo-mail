@@ -456,3 +456,5 @@ QA815 current full web receipt `docs/completion/qa815-evidence/web-c5a873765a0c.
 The attachment client RBS `http_factory` returns Net::HTTP; its slow-stream test fake now inherits Net::HTTP and overrides network methods in process, preserving aggregate timeout and close assertions. ADV122 found the earlier nominal mismatch; current test-only repair remains unverified by fleet Docker and independent successor review.
 
 The protected outreach authorization diagnostic executes content-read and draft-write checks for the same synthetic sales actor in one guarded scope after inspecting member, role and function owner. It retains existing expected `ok`/auditor-denied assertions and is a test witness only; exact fleet result is pending.
+
+The sequence editor's create-after-404 unit mock now stores the exact created inert draft and returns that same ID/version on reread, so the saved-version UI assertion follows the actual write result. This is test-only and remains unexecuted on the integrated successor.
