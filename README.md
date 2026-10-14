@@ -14,6 +14,8 @@ Shared company mailroom with one Rails domain authority and a React/TypeScript c
 
 ## Current state
 
+QA-815 continuation (2026-10-14): isolated fleet Docker web suites passed on exact Mira `e31da54` (40 files/693 tests) and Fable `dc1db82` (42 files/692 tests). Integrated `f787bbc` remains blocked: web lint failed and disposable PostgreSQL/Auth migration stopped in SEND-810 with `permission denied for schema app`; cleanup passed. Later SQL/HTTP/browser/native/restore checks remain pending. See [Soren queue receipt](docs/completion/soren.md).
+
 QA-815 fleet scheduler: Mira FE-806 exact `140218de` passed isolated Docker typecheck, lint, 17 focused inbox tests and build; task container/image cleanup passed. Integrated browser/backend acceptance and other owner requests remain pending. See [Soren receipt](docs/completion/soren.md).
 
 

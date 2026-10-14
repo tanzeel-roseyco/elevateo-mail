@@ -24,7 +24,7 @@ trap cleanup EXIT
 printf 'source=%s\nstarted=%s\n' "$candidate" "$(date -u +%FT%TZ)" > "$log"
 git archive "$candidate" | tar -x -C "$context"
 docker build --label qa815.owner=soren -f "$context/apps/web/docker/test.Dockerfile" -t "$tag" "$context" >> "$log" 2>&1
-docker run --rm --name "$tag" --network none "$tag" bash -ceu \
+docker run --rm --name "$tag" --network none --memory 2g --cpus 2 --pids-limit 256 "$tag" bash -ceu \
   'npm run check:api && npm run lint && npm run typecheck && npm run test -- --coverage && npm run build' \
   >> "$log" 2>&1
 printf 'checks_exit=0\nfinished=%s\n' "$(date -u +%FT%TZ)" >> "$log"

@@ -680,3 +680,7 @@ R25 lint repair: one tooling defect in the unmount cleanup (ref must be captured
 ## QA-815 scheduler and receipt
 
 Soren authored `ops/tests/qa815/run-web-candidate.sh` and `docs/completion/soren.md`. No independent bounded adversarial or dedicated design-tradeoff reviewer has examined this candidate. Independently reviewed source lines: 0; defects and defects/KLOC are unclaimed. Root review scheduling remains pending. Analytical tradeoff: immutable `git archive` prevents owner edits during Docker build, while each candidate still needs integrated browser/backend checks after merge.
+
+## QA-815 continuation source and evidence review limit
+
+The one-line QA scheduler resource cap change received `bash -n` and `git diff --check`, but no independent bounded functional or dedicated design-tradeoff review. Coverage by independent reviewers: 0 LOC; defects and density are unclaimed. Fleet results in `docs/completion/soren.md` are runtime receipts, not adversarial review. Root schedules the separate rubric review after candidate freeze.

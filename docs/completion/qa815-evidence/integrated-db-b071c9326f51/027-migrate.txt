@@ -1,0 +1,5 @@
+ Container [opaque value redacted] Creating 
+ Container [opaque value redacted] Created 
+Error response from daemon: failed to create task for container: failed to create shim task: OCI runtime create failed: runc create failed: unable to start container process: error during container init: error mounting "tmpfs" to rootfs at "/workspace/apps/server/log": create mountpoint for /workspace/apps/server/log mount: make mountpoint "/workspace/apps/server/log": mkdirat [opaque value redacted]: read-only file system
+
+exit=1 seconds=2.51

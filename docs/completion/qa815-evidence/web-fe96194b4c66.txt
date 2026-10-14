@@ -1,0 +1,122 @@
+source=fe96194b4c668f456f70cf853263e751cf46dc0b
+started=2026-10-14T14:29:45Z
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from test.Dockerfile
+#1 transferring dockerfile:
+#1 transferring dockerfile: 1.04kB done
+#1 DONE 0.1s
+
+#2 [internal] load metadata for docker.io/library/node:24.21.0-bookworm-slim@sha256:d6aa754f16b3197301076f047b5def2f02ea1dbbc2ca920407d46d7ec7f87b20
+#2 DONE 0.1s
+
+#3 [internal] load .dockerignore
+#3 transferring context:
+#3 transferring context: 140B done
+#3 DONE 0.2s
+
+#4 [internal] load build context
+#4 DONE 0.0s
+
+#5 [1/6] FROM docker.io/library/node:24.21.0-bookworm-slim@sha256:d6aa754f16b3197301076f047b5def2f02ea1dbbc2ca920407d46d7ec7f87b20
+#5 resolve docker.io/library/node:24.21.0-bookworm-slim@sha256:d6aa754f16b3197301076f047b5def2f02ea1dbbc2ca920407d46d7ec7f87b20 0.1s done
+#5 DONE 0.2s
+
+#4 [internal] load build context
+#4 transferring context: 1.56MB 0.0s done
+#4 DONE 0.0s
+
+#6 [2/6] WORKDIR /workspace
+#6 CACHED
+
+#7 [3/6] COPY contracts/v1 ./contracts/v1
+#7 CACHED
+
+#8 [4/6] COPY apps/web ./apps/web
+#8 DONE 0.2s
+
+#9 [5/6] WORKDIR /workspace/apps/web
+#9 DONE 0.0s
+
+#10 [6/6] RUN npm ci
+#10 1.081 npm warn deprecated whatwg-encoding@3.1.1: Use @exodus/bytes instead for a more spec-conformant and faster implementation
+#10 6.289 
+#10 6.289 added 324 packages, and audited 325 packages in 6s
+#10 6.289 
+#10 6.289 67 packages are looking for funding
+#10 6.289   run `npm fund` for details
+#10 6.290 
+#10 6.290 found 0 vulnerabilities
+#10 6.291 npm warn install-scripts 1 package has install scripts not yet covered by allowScripts:
+#10 6.291 npm warn install-scripts   esbuild@0.28.2 (postinstall: node install.js)
+#10 6.291 npm warn install-scripts
+#10 6.291 npm warn install-scripts Run `npm install-scripts ls` to review, or `npm install-scripts approve <pkg>` to allow.
+#10 6.292 npm notice
+#10 6.292 npm notice New major version of npm available! 11.19.0 -> 12.2.0
+#10 6.292 npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0
+#10 6.292 npm notice To update run: npm install -g npm@12.2.0
+#10 6.292 npm notice
+#10 DONE 6.6s
+
+#11 exporting to image
+#11 exporting layers
+#11 exporting layers 6.1s done
+#11 exporting manifest sha256:25ce656ec7bd05468579af702f3ed93c6c326f39ba661823cac02794bcfce3fe 0.0s done
+#11 exporting config sha256:33ec76e599a48cda42bb4e7034bed5bdab57dadf8e78c4d812f538ab51739ef0 done
+#11 exporting attestation manifest sha256:037e059f6cb190716bfa45ecb185db5cb8a6895550cf1adfbc48fdc5adebc2c6 0.0s done
+#11 exporting manifest list sha256:adebecf22f92296fe6418d0acc9276b64e21e3e4368073454f514fb62a58b760 0.1s done
+#11 naming to docker.io/library/qa815-web-fe96194b4c66:latest
+#11 naming to docker.io/library/qa815-web-fe96194b4c66:latest 0.0s done
+#11 unpacking to docker.io/library/qa815-web-fe96194b4c66:latest
+#11 unpacking to docker.io/library/qa815-web-fe96194b4c66:latest 2.0s done
+#11 DONE 8.2s
+
+> @elevateo/web@0.1.0-read.1 check:api
+> openapi-typescript ../../contracts/v1/openapi.json --output src/data/generated/api.d.ts --check
+
+✨ openapi-typescript 7.13.0
+
+> @elevateo/web@0.1.0-read.1 lint
+> eslint . --max-warnings 0
+
+
+> @elevateo/web@0.1.0-read.1 typecheck
+> tsc -p tsconfig.json --noEmit
+
+src/features/outreach/OutreachPages.test.tsx(36,49): error TS2375: Type '{ gateway: OutreachGateway | undefined; context: { contextId: string; authorizationVersion: string; }; proof: { csrfToken: string; }; }' is not assignable to type 'OutreachPageProps' with 'exactOptionalPropertyTypes: true'. Consider adding 'undefined' to the types of the target's properties.
+  Types of property 'gateway' are incompatible.
+    Type 'OutreachGateway | undefined' is not assignable to type 'OutreachGateway'.
+      Type 'undefined' is not assignable to type 'OutreachGateway'.
+src/features/outreach/OutreachPages.test.tsx(37,53): error TS2375: Type '{ gateway: OutreachGateway | undefined; context: { contextId: string; authorizationVersion: string; }; proof: { csrfToken: string; }; }' is not assignable to type 'OutreachPageProps' with 'exactOptionalPropertyTypes: true'. Consider adding 'undefined' to the types of the target's properties.
+  Types of property 'gateway' are incompatible.
+    Type 'OutreachGateway | undefined' is not assignable to type 'OutreachGateway'.
+      Type 'undefined' is not assignable to type 'OutreachGateway'.
+src/features/outreach/OutreachPages.test.tsx(38,61): error TS2375: Type '{ gateway: OutreachGateway | undefined; context: { contextId: string; authorizationVersion: string; }; proof: { csrfToken: string; }; }' is not assignable to type 'OutreachPageProps' with 'exactOptionalPropertyTypes: true'. Consider adding 'undefined' to the types of the target's properties.
+  Types of property 'gateway' are incompatible.
+    Type 'OutreachGateway | undefined' is not assignable to type 'OutreachGateway'.
+      Type 'undefined' is not assignable to type 'OutreachGateway'.
+src/features/outreach/OutreachPages.test.tsx(39,67): error TS2375: Type '{ gateway: OutreachGateway | undefined; context: { contextId: string; authorizationVersion: string; }; proof: { csrfToken: string; }; }' is not assignable to type 'OutreachPageProps' with 'exactOptionalPropertyTypes: true'. Consider adding 'undefined' to the types of the target's properties.
+  Types of property 'gateway' are incompatible.
+    Type 'OutreachGateway | undefined' is not assignable to type 'OutreachGateway'.
+      Type 'undefined' is not assignable to type 'OutreachGateway'.
+src/features/outreach/OutreachPages.test.tsx(40,75): error TS2375: Type '{ gateway: OutreachGateway | undefined; context: { contextId: string; authorizationVersion: string; }; proof: { csrfToken: string; }; }' is not assignable to type 'OutreachPageProps' with 'exactOptionalPropertyTypes: true'. Consider adding 'undefined' to the types of the target's properties.
+  Types of property 'gateway' are incompatible.
+    Type 'OutreachGateway | undefined' is not assignable to type 'OutreachGateway'.
+      Type 'undefined' is not assignable to type 'OutreachGateway'.
+src/features/outreach/OutreachPages.test.tsx(41,81): error TS2375: Type '{ gateway: OutreachGateway | undefined; context: { contextId: string; authorizationVersion: string; }; proof: { csrfToken: string; }; }' is not assignable to type 'OutreachPageProps' with 'exactOptionalPropertyTypes: true'. Consider adding 'undefined' to the types of the target's properties.
+  Types of property 'gateway' are incompatible.
+    Type 'OutreachGateway | undefined' is not assignable to type 'OutreachGateway'.
+      Type 'undefined' is not assignable to type 'OutreachGateway'.
+src/features/outreach/OutreachPages.test.tsx(42,70): error TS2375: Type '{ gateway: OutreachGateway | undefined; context: { contextId: string; authorizationVersion: string; }; proof: { csrfToken: string; }; }' is not assignable to type 'OutreachPageProps' with 'exactOptionalPropertyTypes: true'. Consider adding 'undefined' to the types of the target's properties.
+  Types of property 'gateway' are incompatible.
+    Type 'OutreachGateway | undefined' is not assignable to type 'OutreachGateway'.
+      Type 'undefined' is not assignable to type 'OutreachGateway'.
+src/features/outreach/OutreachPages.test.tsx(43,71): error TS2375: Type '{ gateway: OutreachGateway | undefined; context: { contextId: string; authorizationVersion: string; }; proof: { csrfToken: string; }; }' is not assignable to type 'OutreachPageProps' with 'exactOptionalPropertyTypes: true'. Consider adding 'undefined' to the types of the target's properties.
+  Types of property 'gateway' are incompatible.
+    Type 'OutreachGateway | undefined' is not assignable to type 'OutreachGateway'.
+      Type 'undefined' is not assignable to type 'OutreachGateway'.
+Error response from daemon: No such container: qa815-web-fe96194b4c66
+Untagged: qa815-web-fe96194b4c66:latest
+Deleted: sha256:adebecf22f92296fe6418d0acc9276b64e21e3e4368073454f514fb62a58b760
+remaining_containers=0
+remaining_image=0

@@ -1,0 +1,15 @@
+source=302142c8380049803090f021246215c5a721822e
+started=2026-10-14T14:14:37Z
+npm notice
+npm notice New major version of npm available! 11.19.0 -> 12.2.0
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0
+npm notice To update run: npm install -g npm@12.2.0
+npm notice
+Acceptance framework error; inspect sanitized case records.
+Acceptance framework error; inspect sanitized case records.
+Acceptance framework status: failed
+list_exit=1
+Error response from daemon: No such container: qa815-tessa-list
+remaining=0
+temp_absent=yes
+finished=2026-10-14T14:14:44Z

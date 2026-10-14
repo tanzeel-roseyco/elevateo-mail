@@ -1,0 +1,90 @@
+image=be03-r24-dependencies:ruby sha256:7dc61d4b7e12f94764f95f4f1bfe8e3940049247e6d409898ce9d3ed2810f348
+started=2026-10-14T14:09:08Z
+
+=== cassian bbed59cd688a43a19723ddf43daaf76db3c23821 ===
+command=bundle exec ruby /src/contracts/v2/contract_test.rb && bundle exec ruby test/v2_route_registry_test.rb
+Run options: --seed 58109
+
+# Running:
+
+...
+
+Finished in 0.005446s, 550.8352 runs/s, 1836.1174 assertions/s.
+
+3 runs, 10 assertions, 0 failures, 0 errors, 0 skips
+Run options: --seed 27695
+
+# Running:
+
+...
+
+Finished in 0.000910s, 3295.4286 runs/s, 9886.2859 assertions/s.
+
+3 runs, 9 assertions, 0 failures, 0 errors, 0 skips
+exit=0
+Error response from daemon: No such container: qa815-cassian-bbed59c
+remaining=0
+
+=== theo 769c42ff5fe8bffaf0a8b1be6c11b496293b2404 ===
+command=bundle exec ruby -Itest test/administration/organization_grants_input_test.rb
+/src/apps/server/test/be_02/auth_test_helper.rb:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+Run options: --seed 11353
+
+# Running:
+
+...
+
+Finished in 0.001184s, 2533.2305 runs/s, 8444.1016 assertions/s.
+
+3 runs, 10 assertions, 0 failures, 0 errors, 0 skips
+exit=0
+Error response from daemon: No such container: qa815-theo-769c42f
+remaining=0
+
+=== dorian 21536e5d06756b55ae4b08f1145fbaa9d6484ac8 ===
+command=bundle exec ruby -Itest test/campaigns/repository_test.rb
+Run options: --seed 52172
+
+# Running:
+
+FEE
+
+Finished in 0.002091s, 1434.8213 runs/s, 478.2738 assertions/s.
+
+  1) Failure:
+CampaignRepositoryTest#test_missing_or_cross_tenant_replay_fails_closed [test/campaigns/repository_test.rb:50]:
+[Elevateo::CollaborationError] exception expected, not
+Class: <NameError>
+Message: <"uninitialized constant Elevateo::Campaigns::Repository::ActiveRecord">
+---Backtrace---
+/src/apps/server/lib/elevateo/campaigns/repository.rb:127:in 'block in Elevateo::Campaigns::Repository#rows'
+/src/apps/server/lib/elevateo/campaigns/repository.rb:126:in 'Array#map'
+/src/apps/server/lib/elevateo/campaigns/repository.rb:126:in 'Elevateo::Campaigns::Repository#rows'
+/src/apps/server/lib/elevateo/campaigns/repository.rb:52:in 'Elevateo::Campaigns::Repository#save'
+test/campaigns/repository_test.rb:51:in 'block in CampaignRepositoryTest#test_missing_or_cross_tenant_replay_fails_closed'
+---------------
+
+  2) Error:
+CampaignRepositoryTest#test_insert_returns_durable_identity_without_transport:
+NameError: uninitialized constant Elevateo::Campaigns::Repository::ActiveRecord
+    lib/elevateo/campaigns/repository.rb:127:in 'block in Elevateo::Campaigns::Repository#rows'
+    lib/elevateo/campaigns/repository.rb:126:in 'Array#map'
+    lib/elevateo/campaigns/repository.rb:126:in 'Elevateo::Campaigns::Repository#rows'
+    lib/elevateo/campaigns/repository.rb:52:in 'Elevateo::Campaigns::Repository#save'
+    test/campaigns/repository_test.rb:33:in 'CampaignRepositoryTest#test_insert_returns_durable_identity_without_transport'
+
+  3) Error:
+CampaignRepositoryTest#test_idempotent_replay_requires_same_fields:
+NameError: uninitialized constant Elevateo::Campaigns::Repository::ActiveRecord
+    lib/elevateo/campaigns/repository.rb:127:in 'block in Elevateo::Campaigns::Repository#rows'
+    lib/elevateo/campaigns/repository.rb:126:in 'Array#map'
+    lib/elevateo/campaigns/repository.rb:126:in 'Elevateo::Campaigns::Repository#rows'
+    lib/elevateo/campaigns/repository.rb:52:in 'Elevateo::Campaigns::Repository#save'
+    test/campaigns/repository_test.rb:40:in 'CampaignRepositoryTest#test_idempotent_replay_requires_same_fields'
+
+3 runs, 1 assertions, 1 failures, 2 errors, 0 skips
+exit=1
+Error response from daemon: No such container: qa815-dorian-21536e5
+remaining=0
+finished=2026-10-14T14:09:13Z

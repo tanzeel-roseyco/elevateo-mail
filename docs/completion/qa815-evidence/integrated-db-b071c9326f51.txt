@@ -1,0 +1,10 @@
+source=b071c9326f519b3ec80f9bb934864fd2f3a65c35
+started=2026-10-14T14:19:30Z
+BE02 project=be02-fb5e2c7ef8fc4bedb052ac17982fd22a evidence=/tmp/qa815-integrated.njQlFYfY/ops/local/be02-fb5e2c7ef8fc4bedb052ac17982fd22a
+Building bounded task image
+tests=FAILED cleanup=PASSED evidence=/tmp/qa815-integrated.njQlFYfY/ops/local/be02-fb5e2c7ef8fc4bedb052ac17982fd22a
+runner_exit=1
+evidence_dirs:
+/tmp/qa815-integrated.njQlFYfY/ops/local/be02-fb5e2c7ef8fc4bedb052ac17982fd22a/result.json
+temp_absent=yes
+finished=2026-10-14T14:21:12Z

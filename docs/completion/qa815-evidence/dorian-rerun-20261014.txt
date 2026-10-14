@@ -1,0 +1,89 @@
+image=be03-r24-dependencies:ruby sha256:7dc61d4b7e12f94764f95f4f1bfe8e3940049247e6d409898ce9d3ed2810f348
+started=2026-10-14T14:11:45Z
+
+=== dorian d0b7a9abc5bea1ffbe2d5bd6d91c5211099152e3 ===
+command=bundle exec ruby -Itest test/campaigns/input_test.rb && bundle exec ruby -Itest test/campaigns/repository_test.rb && bundle exec rubocop db/migrate/20261013000009_create_campaign_foundation.rb lib/elevateo/campaigns test/campaigns && bundle exec steep check
+Run options: --seed 20131
+
+# Running:
+
+....
+
+Finished in 0.003897s, 1026.3170 runs/s, 1796.0547 assertions/s.
+
+4 runs, 7 assertions, 0 failures, 0 errors, 0 skips
+Run options: --seed 13206
+
+# Running:
+
+EFEFEE
+
+Finished in 0.003472s, 1728.2727 runs/s, 576.0909 assertions/s.
+
+  1) Error:
+CampaignRepositoryMutationTest#test_update_serializes_operation_and_returns_persisted_version:
+NameError: uninitialized constant Elevateo::Campaigns::Repository::ActiveRecord
+    lib/elevateo/campaigns/repository.rb:223:in 'block in Elevateo::Campaigns::Repository#rows'
+    lib/elevateo/campaigns/repository.rb:222:in 'Array#map'
+    lib/elevateo/campaigns/repository.rb:222:in 'Elevateo::Campaigns::Repository#rows'
+    lib/elevateo/campaigns/repository.rb:153:in 'Elevateo::Campaigns::Repository#replace'
+    test/campaigns/repository_test.rb:73:in 'CampaignRepositoryMutationTest#test_update_serializes_operation_and_returns_persisted_version'
+
+  2) Failure:
+CampaignRepositoryMutationTest#test_stale_version_fails_without_ledger_insert [test/campaigns/repository_test.rb:82]:
+[Elevateo::CollaborationError] exception expected, not
+Class: <NameError>
+Message: <"uninitialized constant Elevateo::Campaigns::Repository::ActiveRecord">
+---Backtrace---
+/src/apps/server/lib/elevateo/campaigns/repository.rb:223:in 'block in Elevateo::Campaigns::Repository#rows'
+/src/apps/server/lib/elevateo/campaigns/repository.rb:222:in 'Array#map'
+/src/apps/server/lib/elevateo/campaigns/repository.rb:222:in 'Elevateo::Campaigns::Repository#rows'
+/src/apps/server/lib/elevateo/campaigns/repository.rb:153:in 'Elevateo::Campaigns::Repository#replace'
+test/campaigns/repository_test.rb:83:in 'block in CampaignRepositoryMutationTest#test_stale_version_fails_without_ledger_insert'
+---------------
+
+  3) Error:
+CampaignRepositoryMutationTest#test_page_caps_and_scopes_cursor_to_tenant:
+NameError: uninitialized constant Elevateo::Campaigns::Repository::ActiveRecord
+    lib/elevateo/campaigns/repository.rb:223:in 'block in Elevateo::Campaigns::Repository#rows'
+    lib/elevateo/campaigns/repository.rb:222:in 'Array#map'
+    lib/elevateo/campaigns/repository.rb:222:in 'Elevateo::Campaigns::Repository#rows'
+    lib/elevateo/campaigns/repository.rb:132:in 'Elevateo::Campaigns::Repository#page'
+    test/campaigns/repository_test.rb:94:in 'CampaignRepositoryMutationTest#test_page_caps_and_scopes_cursor_to_tenant'
+
+  4) Failure:
+CampaignRepositoryTest#test_missing_or_cross_tenant_replay_fails_closed [test/campaigns/repository_test.rb:50]:
+[Elevateo::CollaborationError] exception expected, not
+Class: <NameError>
+Message: <"uninitialized constant Elevateo::Campaigns::Repository::ActiveRecord">
+---Backtrace---
+/src/apps/server/lib/elevateo/campaigns/repository.rb:223:in 'block in Elevateo::Campaigns::Repository#rows'
+/src/apps/server/lib/elevateo/campaigns/repository.rb:222:in 'Array#map'
+/src/apps/server/lib/elevateo/campaigns/repository.rb:222:in 'Elevateo::Campaigns::Repository#rows'
+/src/apps/server/lib/elevateo/campaigns/repository.rb:59:in 'Elevateo::Campaigns::Repository#save'
+test/campaigns/repository_test.rb:51:in 'block in CampaignRepositoryTest#test_missing_or_cross_tenant_replay_fails_closed'
+---------------
+
+  5) Error:
+CampaignRepositoryTest#test_insert_returns_durable_identity_without_transport:
+NameError: uninitialized constant Elevateo::Campaigns::Repository::ActiveRecord
+    lib/elevateo/campaigns/repository.rb:223:in 'block in Elevateo::Campaigns::Repository#rows'
+    lib/elevateo/campaigns/repository.rb:222:in 'Array#map'
+    lib/elevateo/campaigns/repository.rb:222:in 'Elevateo::Campaigns::Repository#rows'
+    lib/elevateo/campaigns/repository.rb:59:in 'Elevateo::Campaigns::Repository#save'
+    test/campaigns/repository_test.rb:33:in 'CampaignRepositoryTest#test_insert_returns_durable_identity_without_transport'
+
+  6) Error:
+CampaignRepositoryTest#test_idempotent_replay_requires_same_fields:
+NameError: uninitialized constant Elevateo::Campaigns::Repository::ActiveRecord
+    lib/elevateo/campaigns/repository.rb:223:in 'block in Elevateo::Campaigns::Repository#rows'
+    lib/elevateo/campaigns/repository.rb:222:in 'Array#map'
+    lib/elevateo/campaigns/repository.rb:222:in 'Elevateo::Campaigns::Repository#rows'
+    lib/elevateo/campaigns/repository.rb:59:in 'Elevateo::Campaigns::Repository#save'
+    test/campaigns/repository_test.rb:40:in 'CampaignRepositoryTest#test_idempotent_replay_requires_same_fields'
+
+6 runs, 2 assertions, 2 failures, 4 errors, 0 skips
+exit=1
+Error response from daemon: No such container: qa815-dorian-d0b7a9a
+remaining=0
+finished=2026-10-14T14:11:47Z

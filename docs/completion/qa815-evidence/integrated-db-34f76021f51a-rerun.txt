@@ -1,0 +1,14 @@
+source=34f76021f51aeef83ccbba2f6b6fd9726dd46aa2
+started=2026-10-14T14:23:56Z
+BE02 project=be02-793f48803b654f50ad58a7c71733e6b6 evidence=/tmp/qa815-integrated.6VQGDuEX/ops/local/be02-793f48803b654f50ad58a7c71733e6b6
+Building bounded task image
+tests=FAILED cleanup=PASSED evidence=/tmp/qa815-integrated.6VQGDuEX/ops/local/be02-793f48803b654f50ad58a7c71733e6b6
+runner_exit=1
+evidence_dirs:
+/tmp/qa815-integrated.6VQGDuEX/ops/local/be02-793f48803b654f50ad58a7c71733e6b6/result.json
+cp: cannot create regular file '/home/tanzeel/orca/workspaces/integration/completion-soren-qa815/docs/completion/qa815-evidence/integrated-db-34f76021f51a/': Not a directory
+cp: cannot create regular file '/home/tanzeel/orca/workspaces/integration/completion-soren-qa815/docs/completion/qa815-evidence/integrated-db-34f76021f51a/': Not a directory
+cp: cannot create regular file '/home/tanzeel/orca/workspaces/integration/completion-soren-qa815/docs/completion/qa815-evidence/integrated-db-34f76021f51a/': Not a directory
+cp: cannot create regular file '/home/tanzeel/orca/workspaces/integration/completion-soren-qa815/docs/completion/qa815-evidence/integrated-db-34f76021f51a/': Not a directory
+temp_absent=yes
+finished=2026-10-14T14:25:39Z

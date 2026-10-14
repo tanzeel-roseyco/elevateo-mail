@@ -1,0 +1,38 @@
+image=be03-r24-dependencies:ruby sha256:7dc61d4b7e12f94764f95f4f1bfe8e3940049247e6d409898ce9d3ed2810f348
+started=2026-10-14T14:04:18Z
+
+=== cassian 696549b13cdc72f6216f266d7736e8b4301a7005 ===
+command=bundle exec ruby /src/contracts/v2/contract_test.rb && bundle exec ruby test/v2_route_registry_test.rb
+Could not locate Gemfile or .bundle/ directory
+exit=10
+Error response from daemon: No such container: qa815-cassian-696549b
+remaining=0
+
+=== theo 769c42ff5fe8bffaf0a8b1be6c11b496293b2404 ===
+command=bundle exec ruby -Itest test/administration/roster_test.rb test/administration/organization_grants_input_test.rb
+Could not locate Gemfile or .bundle/ directory
+exit=10
+Error response from daemon: No such container: qa815-theo-769c42f
+remaining=0
+
+=== dorian 21536e5d06756b55ae4b08f1145fbaa9d6484ac8 ===
+command=bundle exec ruby -Itest test/campaigns/input_test.rb test/campaigns/repository_test.rb
+Could not locate Gemfile or .bundle/ directory
+exit=10
+Error response from daemon: No such container: qa815-dorian-21536e5
+remaining=0
+
+=== elara 342d701dd0148fb1c9df0fec42027738d188b20c ===
+command=bundle exec ruby -Itest test/send_worker/executor_test.rb
+Could not locate Gemfile or .bundle/ directory
+exit=10
+Error response from daemon: No such container: qa815-elara-342d701
+remaining=0
+
+=== corin 8101cf80a90cc691f4cbbe8f351ed7d8ae6fa915 ===
+command=bundle exec ruby -Itest test/inbound/fake_ingress_test.rb
+Could not locate Gemfile or .bundle/ directory
+exit=10
+Error response from daemon: No such container: qa815-corin-8101cf8
+remaining=0
+finished=2026-10-14T14:04:25Z

@@ -1,0 +1,99 @@
+image=be03-r24-dependencies:ruby sha256:7dc61d4b7e12f94764f95f4f1bfe8e3940049247e6d409898ce9d3ed2810f348
+started=2026-10-14T14:05:31Z
+
+=== cassian 696549b13cdc72f6216f266d7736e8b4301a7005 ===
+command=bundle exec ruby /src/contracts/v2/contract_test.rb && bundle exec ruby test/v2_route_registry_test.rb
+Run options: --seed 7489
+
+# Running:
+
+EEE
+
+Finished in 0.002094s, 1432.4121 runs/s, 0.0000 assertions/s.
+
+  1) Error:
+ContractV2Test#test_failure_worker_does_not_inherit_browser_authority:
+JSON::ParserError: expected ',' or '}' after object value, got: EOF at line 38 column 1
+    /usr/local/bundle/ruby/3.4.0/gems/json-3.0.2/lib/json/common.rb:302:in 'JSON::Ext::Parser.parse'
+    /usr/local/bundle/ruby/3.4.0/gems/json-3.0.2/lib/json/common.rb:302:in 'JSON.parse'
+    /src/contracts/v2/contract_test.rb:11:in 'ContractV2Test#setup'
+
+  2) Error:
+ContractV2Test#test_happy_path_has_additive_interfaces:
+JSON::ParserError: expected ',' or '}' after object value, got: EOF at line 38 column 1
+    /usr/local/bundle/ruby/3.4.0/gems/json-3.0.2/lib/json/common.rb:302:in 'JSON::Ext::Parser.parse'
+    /usr/local/bundle/ruby/3.4.0/gems/json-3.0.2/lib/json/common.rb:302:in 'JSON.parse'
+    /src/contracts/v2/contract_test.rb:11:in 'ContractV2Test#setup'
+
+  3) Error:
+ContractV2Test#test_failure_no_live_dispatch_or_v1_collision:
+JSON::ParserError: expected ',' or '}' after object value, got: EOF at line 38 column 1
+    /usr/local/bundle/ruby/3.4.0/gems/json-3.0.2/lib/json/common.rb:302:in 'JSON::Ext::Parser.parse'
+    /usr/local/bundle/ruby/3.4.0/gems/json-3.0.2/lib/json/common.rb:302:in 'JSON.parse'
+    /src/contracts/v2/contract_test.rb:11:in 'ContractV2Test#setup'
+
+3 runs, 0 assertions, 0 failures, 3 errors, 0 skips
+exit=1
+Error response from daemon: No such container: qa815-cassian-696549b
+remaining=0
+
+=== theo 769c42ff5fe8bffaf0a8b1be6c11b496293b2404 ===
+command=bundle exec ruby -Itest test/administration/roster_test.rb test/administration/organization_grants_input_test.rb
+Run options: --seed 26889
+
+# Running:
+
+....
+
+Finished in 0.001889s, 2117.2859 runs/s, 7410.5005 assertions/s.
+
+4 runs, 14 assertions, 0 failures, 0 errors, 0 skips
+exit=0
+Error response from daemon: No such container: qa815-theo-769c42f
+remaining=0
+
+=== dorian 21536e5d06756b55ae4b08f1145fbaa9d6484ac8 ===
+command=bundle exec ruby -Itest test/campaigns/input_test.rb test/campaigns/repository_test.rb
+Run options: --seed 22665
+
+# Running:
+
+....
+
+Finished in 0.001118s, 3578.1495 runs/s, 6261.7616 assertions/s.
+
+4 runs, 7 assertions, 0 failures, 0 errors, 0 skips
+exit=0
+Error response from daemon: No such container: qa815-dorian-21536e5
+remaining=0
+
+=== elara 342d701dd0148fb1c9df0fec42027738d188b20c ===
+command=bundle exec ruby -Itest test/send_worker/executor_test.rb
+Run options: --seed 14798
+
+# Running:
+
+....
+
+Finished in 0.004903s, 815.8437 runs/s, 2855.4528 assertions/s.
+
+4 runs, 14 assertions, 0 failures, 0 errors, 0 skips
+exit=0
+Error response from daemon: No such container: qa815-elara-342d701
+remaining=0
+
+=== corin 8101cf80a90cc691f4cbbe8f351ed7d8ae6fa915 ===
+command=bundle exec ruby -Itest test/inbound/fake_ingress_test.rb
+Run options: --seed 65366
+
+# Running:
+
+....
+
+Finished in 0.045450s, 88.0090 runs/s, 440.0449 assertions/s.
+
+4 runs, 20 assertions, 0 failures, 0 errors, 0 skips
+exit=0
+Error response from daemon: No such container: qa815-corin-8101cf8
+remaining=0
+finished=2026-10-14T14:05:38Z

@@ -1,0 +1,953 @@
+image=be03-r24-dependencies:ruby sha256:7dc61d4b7e12f94764f95f4f1bfe8e3940049247e6d409898ce9d3ed2810f348
+started=2026-10-14T14:18:33Z
+
+=== dorian 383503e55b1d886cfb0dd5d6a1e538b3460cbdb3 ===
+command=bundle exec ruby -Itest test/campaigns/input_test.rb; echo input_exit=$?; bundle exec ruby -Itest test/campaigns/repository_test.rb; echo repository_exit=$?; bundle exec rubocop --lint --format simple db/migrate/20261013000009_create_campaign_foundation.rb lib/elevateo/campaigns test/campaigns; echo lint_exit=$?; bundle exec steep check; echo steep_exit=$?
+Run options: --seed 41662
+
+# Running:
+
+....
+
+Finished in 0.002004s, 1995.9854 runs/s, 3492.9744 assertions/s.
+
+4 runs, 7 assertions, 0 failures, 0 errors, 0 skips
+input_exit=0
+Run options: --seed 57715
+
+# Running:
+
+FEEEFEE
+
+Finished in 0.003493s, 2003.9878 runs/s, 572.5679 assertions/s.
+
+  1) Failure:
+CampaignRepositoryTest#test_missing_or_cross_tenant_replay_fails_closed [test/campaigns/repository_test.rb:50]:
+[Elevateo::CollaborationError] exception expected, not
+Class: <NameError>
+Message: <"uninitialized constant Elevateo::Campaigns::Repository::ActiveRecord">
+---Backtrace---
+/src/apps/server/lib/elevateo/campaigns/repository.rb:239:in 'block in Elevateo::Campaigns::Repository#rows'
+/src/apps/server/lib/elevateo/campaigns/repository.rb:238:in 'Array#map'
+/src/apps/server/lib/elevateo/campaigns/repository.rb:238:in 'Elevateo::Campaigns::Repository#rows'
+/src/apps/server/lib/elevateo/campaigns/repository.rb:61:in 'Elevateo::Campaigns::Repository#save'
+test/campaigns/repository_test.rb:51:in 'block in CampaignRepositoryTest#test_missing_or_cross_tenant_replay_fails_closed'
+---------------
+
+  2) Error:
+CampaignRepositoryTest#test_insert_returns_durable_identity_without_transport:
+NameError: uninitialized constant Elevateo::Campaigns::Repository::ActiveRecord
+    lib/elevateo/campaigns/repository.rb:239:in 'block in Elevateo::Campaigns::Repository#rows'
+    lib/elevateo/campaigns/repository.rb:238:in 'Array#map'
+    lib/elevateo/campaigns/repository.rb:238:in 'Elevateo::Campaigns::Repository#rows'
+    lib/elevateo/campaigns/repository.rb:61:in 'Elevateo::Campaigns::Repository#save'
+    test/campaigns/repository_test.rb:33:in 'CampaignRepositoryTest#test_insert_returns_durable_identity_without_transport'
+
+  3) Error:
+CampaignRepositoryTest#test_idempotent_replay_requires_same_fields:
+NameError: uninitialized constant Elevateo::Campaigns::Repository::ActiveRecord
+    lib/elevateo/campaigns/repository.rb:239:in 'block in Elevateo::Campaigns::Repository#rows'
+    lib/elevateo/campaigns/repository.rb:238:in 'Array#map'
+    lib/elevateo/campaigns/repository.rb:238:in 'Elevateo::Campaigns::Repository#rows'
+    lib/elevateo/campaigns/repository.rb:61:in 'Elevateo::Campaigns::Repository#save'
+    test/campaigns/repository_test.rb:40:in 'CampaignRepositoryTest#test_idempotent_replay_requires_same_fields'
+
+  4) Error:
+CampaignRepositoryMutationTest#test_update_serializes_operation_and_returns_persisted_version:
+NameError: uninitialized constant Elevateo::Campaigns::Repository::ActiveRecord
+    lib/elevateo/campaigns/repository.rb:239:in 'block in Elevateo::Campaigns::Repository#rows'
+    lib/elevateo/campaigns/repository.rb:238:in 'Array#map'
+    lib/elevateo/campaigns/repository.rb:238:in 'Elevateo::Campaigns::Repository#rows'
+    lib/elevateo/campaigns/repository.rb:159:in 'Elevateo::Campaigns::Repository#replace'
+    test/campaigns/repository_test.rb:73:in 'CampaignRepositoryMutationTest#test_update_serializes_operation_and_returns_persisted_version'
+
+  5) Failure:
+CampaignRepositoryMutationTest#test_stale_version_fails_without_ledger_insert [test/campaigns/repository_test.rb:82]:
+[Elevateo::CollaborationError] exception expected, not
+Class: <NameError>
+Message: <"uninitialized constant Elevateo::Campaigns::Repository::ActiveRecord">
+---Backtrace---
+/src/apps/server/lib/elevateo/campaigns/repository.rb:239:in 'block in Elevateo::Campaigns::Repository#rows'
+/src/apps/server/lib/elevateo/campaigns/repository.rb:238:in 'Array#map'
+/src/apps/server/lib/elevateo/campaigns/repository.rb:238:in 'Elevateo::Campaigns::Repository#rows'
+/src/apps/server/lib/elevateo/campaigns/repository.rb:159:in 'Elevateo::Campaigns::Repository#replace'
+test/campaigns/repository_test.rb:83:in 'block in CampaignRepositoryMutationTest#test_stale_version_fails_without_ledger_insert'
+---------------
+
+  6) Error:
+CampaignRepositoryMutationTest#test_page_caps_and_scopes_cursor_to_tenant:
+NameError: uninitialized constant Elevateo::Campaigns::Repository::ActiveRecord
+    lib/elevateo/campaigns/repository.rb:239:in 'block in Elevateo::Campaigns::Repository#rows'
+    lib/elevateo/campaigns/repository.rb:238:in 'Array#map'
+    lib/elevateo/campaigns/repository.rb:238:in 'Elevateo::Campaigns::Repository#rows'
+    lib/elevateo/campaigns/repository.rb:135:in 'Elevateo::Campaigns::Repository#page'
+    test/campaigns/repository_test.rb:94:in 'CampaignRepositoryMutationTest#test_page_caps_and_scopes_cursor_to_tenant'
+
+  7) Error:
+CampaignRepositoryReplayTest#test_exact_http_intent_replays_original_result_after_current_state_changes:
+NameError: uninitialized constant Elevateo::Campaigns::Repository::ActiveRecord
+    lib/elevateo/campaigns/repository.rb:239:in 'block in Elevateo::Campaigns::Repository#rows'
+    lib/elevateo/campaigns/repository.rb:238:in 'Array#map'
+    lib/elevateo/campaigns/repository.rb:238:in 'Elevateo::Campaigns::Repository#rows'
+    lib/elevateo/campaigns/repository.rb:159:in 'Elevateo::Campaigns::Repository#replace'
+    test/campaigns/repository_test.rb:117:in 'CampaignRepositoryReplayTest#test_exact_http_intent_replays_original_result_after_current_state_changes'
+
+7 runs, 2 assertions, 2 failures, 5 errors, 0 skips
+repository_exit=1
+The following cops were added to RuboCop, but are not configured. Please set Enabled to either `true` or `false` in your `.rubocop.yml` file.
+
+Please also note that you can opt-in to new cops by default by adding this to your config:
+  AllCops:
+    NewCops: enable
+Gemspec/AddRuntimeDependency: # new in 1.65
+  Enabled: true
+Gemspec/AttributeAssignment: # new in 1.77
+  Enabled: true
+Gemspec/DeprecatedAttributeAssignment: # new in 1.30
+  Enabled: true
+Gemspec/DevelopmentDependencies: # new in 1.44
+  Enabled: true
+Gemspec/RequireMFA: # new in 1.23
+  Enabled: true
+Layout/EmptyLinesAfterModuleInclusion: # new in 1.79
+  Enabled: true
+Layout/LineContinuationLeadingSpace: # new in 1.31
+  Enabled: true
+Layout/LineContinuationSpacing: # new in 1.31
+  Enabled: true
+Layout/LineEndStringConcatenationIndentation: # new in 1.18
+  Enabled: true
+Layout/SpaceBeforeBrackets: # new in 1.7
+  Enabled: true
+Lint/AmbiguousAssignment: # new in 1.7
+  Enabled: true
+Lint/AmbiguousOperatorPrecedence: # new in 1.21
+  Enabled: true
+Lint/AmbiguousRange: # new in 1.19
+  Enabled: true
+Lint/ArgumentMismatch: # new in 1.90
+  Enabled: true
+Lint/ArrayLiteralInRegexp: # new in 1.71
+  Enabled: true
+Lint/ConstantOverwrittenInRescue: # new in 1.31
+  Enabled: true
+Lint/ConstantReassignment: # new in 1.70
+  Enabled: true
+Lint/DataDefineOverride: # new in 1.85
+  Enabled: true
+Lint/DeprecatedConstants: # new in 1.8
+  Enabled: true
+Lint/DeprecatedReference: # new in 1.89
+  Enabled: true
+Lint/DuplicateBranch: # new in 1.3
+  Enabled: true
+Lint/DuplicateMagicComment: # new in 1.37
+  Enabled: true
+Lint/DuplicateMatchPattern: # new in 1.50
+  Enabled: true
+Lint/DuplicateRegexpCharacterClassElement: # new in 1.1
+  Enabled: true
+Lint/DuplicateSetElement: # new in 1.67
+  Enabled: true
+Lint/EmptyBlock: # new in 1.1
+  Enabled: true
+Lint/EmptyClass: # new in 1.3
+  Enabled: true
+Lint/EmptyInPattern: # new in 1.16
+  Enabled: true
+Lint/HashNewWithKeywordArgumentsAsDefault: # new in 1.69
+  Enabled: true
+Lint/IncompatibleIoSelectWithFiberScheduler: # new in 1.21
+  Enabled: true
+Lint/ItWithoutArgumentsInBlock: # new in 1.59
+  Enabled: true
+Lint/LambdaWithoutLiteralBlock: # new in 1.8
+  Enabled: true
+Lint/LiteralAssignmentInCondition: # new in 1.58
+  Enabled: true
+Lint/MisplacedMagicComment: # new in 1.91
+  Enabled: true
+Lint/MixedCaseRange: # new in 1.53
+  Enabled: true
+Lint/NameTypo: # new in 1.89
+  Enabled: true
+Lint/NoReturnInBeginEndBlocks: # new in 1.2
+  Enabled: true
+Lint/NonAtomicFileOperation: # new in 1.31
+  Enabled: true
+Lint/NumberedParameterAssignment: # new in 1.9
+  Enabled: true
+Lint/NumericOperationWithConstantResult: # new in 1.69
+  Enabled: true
+Lint/OrAssignmentToConstant: # new in 1.9
+  Enabled: true
+Lint/RedundantDirGlobSort: # new in 1.8
+  Enabled: true
+Lint/RedundantRegexpQuantifiers: # new in 1.53
+  Enabled: true
+Lint/RedundantTypeConversion: # new in 1.72
+  Enabled: true
+Lint/RefinementImportMethods: # new in 1.27
+  Enabled: true
+Lint/RequireRangeParentheses: # new in 1.32
+  Enabled: true
+Lint/RequireRelativeSelfPath: # new in 1.22
+  Enabled: true
+Lint/SharedMutableDefault: # new in 1.70
+  Enabled: true
+Lint/SuperArgumentMismatch: # new in 1.90
+  Enabled: true
+Lint/SuppressedExceptionInNumberConversion: # new in 1.72
+  Enabled: true
+Lint/SymbolConversion: # new in 1.9
+  Enabled: true
+Lint/ToEnumArguments: # new in 1.1
+  Enabled: true
+Lint/TripleQuotes: # new in 1.9
+  Enabled: true
+Lint/UnescapedBracketInRegexp: # new in 1.68
+  Enabled: true
+Lint/UnexpectedBlockArity: # new in 1.5
+  Enabled: true
+Lint/UnmodifiedReduceAccumulator: # new in 1.1
+  Enabled: true
+Lint/UnreachablePatternBranch: # new in 1.85
+  Enabled: true
+Lint/UselessConstantScoping: # new in 1.72
+  Enabled: true
+Lint/UselessDefaultValueArgument: # new in 1.76
+  Enabled: true
+Lint/UselessDefined: # new in 1.69
+  Enabled: true
+Lint/UselessNumericOperation: # new in 1.66
+  Enabled: true
+Lint/UselessOr: # new in 1.76
+  Enabled: true
+Lint/UselessRescue: # new in 1.43
+  Enabled: true
+Lint/UselessRuby2Keywords: # new in 1.23
+  Enabled: true
+Metrics/CollectionLiteralLength: # new in 1.47
+  Enabled: true
+Naming/BlockForwarding: # new in 1.24
+  Enabled: true
+Naming/PredicateMethod: # new in 1.76
+  Enabled: true
+Security/CompoundHash: # new in 1.28
+  Enabled: true
+Security/IoMethods: # new in 1.22
+  Enabled: true
+Style/AmbiguousEndlessMethodDefinition: # new in 1.68
+  Enabled: true
+Style/ArgumentsForwarding: # new in 1.1
+  Enabled: true
+Style/ArrayIntersect: # new in 1.40
+  Enabled: true
+Style/ArrayIntersectWithSingleElement: # new in 1.81
+  Enabled: true
+Style/BitwisePredicate: # new in 1.68
+  Enabled: true
+Style/CollectionCompact: # new in 1.2
+  Enabled: true
+Style/CollectionQuerying: # new in 1.77
+  Enabled: true
+Style/CombinableDefined: # new in 1.68
+  Enabled: true
+Style/ComparableBetween: # new in 1.74
+  Enabled: true
+Style/ComparableClamp: # new in 1.44
+  Enabled: true
+Style/ConcatArrayLiterals: # new in 1.41
+  Enabled: true
+Style/DataInheritance: # new in 1.49
+  Enabled: true
+Style/DigChain: # new in 1.69
+  Enabled: true
+Style/DirEmpty: # new in 1.48
+  Enabled: true
+Style/DirectiveScope: # new in 1.90
+  Enabled: true
+Style/DocumentDynamicEvalDefinition: # new in 1.1
+  Enabled: true
+Style/EmptyClassDefinition: # new in 1.84
+  Enabled: true
+Style/EmptyHeredoc: # new in 1.32
+  Enabled: true
+Style/EmptyStringInsideInterpolation: # new in 1.76
+  Enabled: true
+Style/EndlessMethod: # new in 1.8
+  Enabled: true
+Style/EnvHome: # new in 1.29
+  Enabled: true
+Style/ExactRegexpMatch: # new in 1.51
+  Enabled: true
+Style/FetchEnvVar: # new in 1.28
+  Enabled: true
+Style/FileEmpty: # new in 1.48
+  Enabled: true
+Style/FileNull: # new in 1.69
+  Enabled: true
+Style/FileOpen: # new in 1.85
+  Enabled: true
+Style/FileRead: # new in 1.24
+  Enabled: true
+Style/FileTouch: # new in 1.69
+  Enabled: true
+Style/FileWrite: # new in 1.24
+  Enabled: true
+Style/HashConversion: # new in 1.10
+  Enabled: true
+Style/HashExcept: # new in 1.7
+  Enabled: true
+Style/HashFetchChain: # new in 1.75
+  Enabled: true
+Style/HashSlice: # new in 1.71
+  Enabled: true
+Style/IfWithBooleanLiteralBranches: # new in 1.9
+  Enabled: true
+Style/InPatternThen: # new in 1.16
+  Enabled: true
+Style/ItAssignment: # new in 1.70
+  Enabled: true
+Style/ItBlockParameter: # new in 1.75
+  Enabled: true
+Style/KeywordArgumentsMerging: # new in 1.68
+  Enabled: true
+Style/MagicCommentFormat: # new in 1.35
+  Enabled: true
+Style/MapCompactWithConditionalBlock: # new in 1.30
+  Enabled: true
+Style/MapIntoArray: # new in 1.63
+  Enabled: true
+Style/MapJoin: # new in 1.85
+  Enabled: true
+Style/MapToHash: # new in 1.24
+  Enabled: true
+Style/MapToSet: # new in 1.42
+  Enabled: true
+Style/MinMaxComparison: # new in 1.42
+  Enabled: true
+Style/ModuleMemberExistenceCheck: # new in 1.82
+  Enabled: true
+Style/MultilineInPatternThen: # new in 1.16
+  Enabled: true
+Style/NegatedIfElseCondition: # new in 1.2
+  Enabled: true
+Style/NegativeArrayIndex: # new in 1.84
+  Enabled: true
+Style/NestedFileDirname: # new in 1.26
+  Enabled: true
+Style/NilLambda: # new in 1.3
+  Enabled: true
+Style/NumberedParameters: # new in 1.22
+  Enabled: true
+Style/NumberedParametersLimit: # new in 1.22
+  Enabled: true
+Style/ObjectThen: # new in 1.28
+  Enabled: true
+Style/OneClassPerFile: # new in 1.85
+  Enabled: true
+Style/OpenStructUse: # new in 1.23
+  Enabled: true
+Style/OperatorMethodCall: # new in 1.37
+  Enabled: true
+Style/PartitionInsteadOfDoubleSelect: # new in 1.85
+  Enabled: true
+Style/PredicateWithKind: # new in 1.85
+  Enabled: true
+Style/QuotedSymbols: # new in 1.16
+  Enabled: true
+Style/ReduceToHash: # new in 1.85
+  Enabled: true
+Style/RedundantArgument: # new in 1.4
+  Enabled: true
+Style/RedundantArrayConstructor: # new in 1.52
+  Enabled: true
+Style/RedundantArrayFlatten: # new in 1.76
+  Enabled: true
+Style/RedundantConstantBase: # new in 1.40
+  Enabled: true
+Style/RedundantCurrentDirectoryInPath: # new in 1.53
+  Enabled: true
+Style/RedundantDoubleSplatHashBraces: # new in 1.41
+  Enabled: true
+Style/RedundantEach: # new in 1.38
+  Enabled: true
+Style/RedundantFilterChain: # new in 1.52
+  Enabled: true
+Style/RedundantFormat: # new in 1.72
+  Enabled: true
+Style/RedundantHeredocDelimiterQuotes: # new in 1.45
+  Enabled: true
+Style/RedundantInitialize: # new in 1.27
+  Enabled: true
+Style/RedundantInterpolationUnfreeze: # new in 1.66
+  Enabled: true
+Style/RedundantLineContinuation: # new in 1.49
+  Enabled: true
+Style/RedundantMinMaxBy: # new in 1.85
+  Enabled: true
+Style/RedundantRegexpArgument: # new in 1.53
+  Enabled: true
+Style/RedundantRegexpConstructor: # new in 1.52
+  Enabled: true
+Style/RedundantSelfAssignmentBranch: # new in 1.19
+  Enabled: true
+Style/RedundantStringEscape: # new in 1.37
+  Enabled: true
+Style/ReturnNilInPredicateMethodDefinition: # new in 1.53
+  Enabled: true
+Style/ReverseFind: # new in 1.84
+  Enabled: true
+Style/SafeNavigationChainLength: # new in 1.68
+  Enabled: true
+Style/SelectByKind: # new in 1.85
+  Enabled: true
+Style/SelectByRange: # new in 1.85
+  Enabled: true
+Style/SelectByRegexp: # new in 1.22
+  Enabled: true
+Style/SendWithLiteralMethodName: # new in 1.64
+  Enabled: true
+Style/SingleLineDoEndBlock: # new in 1.57
+  Enabled: true
+Style/StringChars: # new in 1.12
+  Enabled: true
+Style/SuperArguments: # new in 1.64
+  Enabled: true
+Style/SuperWithArgsParentheses: # new in 1.58
+  Enabled: true
+Style/SwapValues: # new in 1.1
+  Enabled: true
+Style/TallyMethod: # new in 1.85
+  Enabled: true
+Style/TimeNow: # new in 1.90
+  Enabled: true
+Style/YAMLFileRead: # new in 1.53
+  Enabled: true
+For more information: https://docs.rubocop.org/rubocop/versioning.html
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+== test/campaigns/repository_test.rb ==
+W: 11: 23: Lint/StructNewOverride: :to_a member overrides Struct#to_a and it may be unexpected.
+
+8 files inspected, 1 offense detected
+lint_exit=1
+# Type checking files:
+
+....................F.............FF.F....F........................................................................................
+
+lib/elevateo/campaigns/repository.rb:12:8: [error] Cannot find the declaration of instance variable: `@connection`
+│ Diagnostic ID: Ruby::UnknownInstanceVariable
+│
+└         @connection = connection
+          ~~~~~~~~~~~
+
+lib/elevateo/campaigns/repository.rb:132:18: [error] Cannot pass a value of type `(nil | ::String)` as an argument of type `::String`
+│   (nil | ::String) <: ::String
+│     nil <: ::String
+│
+│ Diagnostic ID: Ruby::ArgumentTypeMismatch
+│
+└         values << after
+                    ~~~~~
+
+lib/elevateo/campaigns/repository.rb:133:18: [error] Cannot pass a value of type `::Integer` as an argument of type `::String`
+│   ::Integer <: ::String
+│     ::Numeric <: ::String
+│       ::Object <: ::String
+│         ::BasicObject <: ::String
+│
+│ Diagnostic ID: Ruby::ArgumentTypeMismatch
+│
+└         values << (limit + 1)
+                    ~~~~~~~~~~~
+
+lib/elevateo/campaigns/repository.rb:239:92: [error] Cannot find the declaration of constant: `Value`
+│ Diagnostic ID: Ruby::UnknownConstant
+│
+└           ActiveRecord::Relation::QueryAttribute.new("campaign", value, ActiveRecord::Type::Value.new)
+                                                                                              ~~~~~
+
+lib/elevateo/campaigns/repository.rb:241:8: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└         @connection.exec_query(sql, "Campaign foundation", binds).to_a
+          ~~~~~~~~~~~
+
+app/controllers/v2/outreach/accounts_controller.rb:10:39: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           cursor, limit = page_options(query)
+                                         ~~~~~
+
+app/controllers/v2/outreach/accounts_controller.rb:11:61: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           encoded(public_page("account", campaign_repository(connection).page(kind: "account",
+                                                               ~~~~~~~~~~
+
+app/controllers/v2/outreach/accounts_controller.rb:12:29: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└             organization_id: identity.org_id, cursor: cursor, limit: limit)))
+                               ~~~~~~~~
+
+app/controllers/v2/outreach/accounts_controller.rb:19:61: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           encoded(public_item("account", campaign_repository(connection).detail(kind: "account",
+                                                               ~~~~~~~~~~
+
+app/controllers/v2/outreach/accounts_controller.rb:20:29: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└             organization_id: identity.org_id, id: id)))
+                               ~~~~~~~~
+
+app/controllers/v2/outreach/accounts_controller.rb:27:75: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           payload = Elevateo::Campaigns::Input.new(kind: "account", value: input)
+                                                                             ~~~~~
+
+app/controllers/v2/outreach/accounts_controller.rb:28:43: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           repository = campaign_repository(connection)
+                                             ~~~~~~~~~~
+
+app/controllers/v2/outreach/accounts_controller.rb:29:63: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           repository.detail(kind: "campaign", organization_id: identity.org_id,
+                                                                 ~~~~~~~~
+
+app/controllers/v2/outreach/accounts_controller.rb:31:52: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           repository.save(payload, organization_id: identity.org_id)
+                                                      ~~~~~~~~
+
+app/controllers/v2/outreach/accounts_controller.rb:33:29: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└             organization_id: identity.org_id, id: payload.id)), status: 201)
+                               ~~~~~~~~
+
+app/controllers/v2/outreach/accounts_controller.rb:41:43: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           repository = campaign_repository(connection)
+                                             ~~~~~~~~~~
+
+app/controllers/v2/outreach/accounts_controller.rb:42:68: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           old = repository.detail(kind: "account", organization_id: identity.org_id, id: id)
+                                                                      ~~~~~~~~
+
+app/controllers/v2/outreach/accounts_controller.rb:44:42: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└             "id" => id, "operation_id" => input.fetch("operation_id"),
+                                            ~~~~~
+
+app/controllers/v2/outreach/accounts_controller.rb:46:23: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└             "label" => input.fetch("label")
+                         ~~~~~
+
+app/controllers/v2/outreach/accounts_controller.rb:48:64: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           result = repository.replace(payload, organization_id: identity.org_id,
+                                                                  ~~~~~~~~
+
+app/controllers/v2/outreach/accounts_controller.rb:49:59: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└             expected_version: Elevateo::WriteInput.integer(input.fetch("expected_version"), minimum: 1, maximum: 2_147_483_646),
+                                                             ~~~~~
+
+app/controllers/v2/outreach/accounts_controller.rb:50:20: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└             intent: input)
+                      ~~~~~
+
+app/controllers/v2/outreach/analytics_controller.rb:11:36: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           row = campaign_repository(connection).analytics(organization_id: identity.org_id, campaign_id: campaign)
+                                      ~~~~~~~~~~
+
+app/controllers/v2/outreach/analytics_controller.rb:11:75: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           row = campaign_repository(connection).analytics(organization_id: identity.org_id, campaign_id: campaign)
+                                                                             ~~~~~~~~
+
+app/controllers/v2/outreach/campaigns_controller.rb:10:39: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           cursor, limit = page_options(query)
+                                         ~~~~~
+
+app/controllers/v2/outreach/campaigns_controller.rb:11:62: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           encoded(public_page("campaign", campaign_repository(connection).page(kind: "campaign",
+                                                                ~~~~~~~~~~
+
+app/controllers/v2/outreach/campaigns_controller.rb:12:29: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└             organization_id: identity.org_id, cursor: cursor, limit: limit)))
+                               ~~~~~~~~
+
+app/controllers/v2/outreach/campaigns_controller.rb:19:62: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           encoded(public_item("campaign", campaign_repository(connection).detail(kind: "campaign",
+                                                                ~~~~~~~~~~
+
+app/controllers/v2/outreach/campaigns_controller.rb:20:29: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└             organization_id: identity.org_id, id: id)))
+                               ~~~~~~~~
+
+app/controllers/v2/outreach/campaigns_controller.rb:27:76: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           payload = Elevateo::Campaigns::Input.new(kind: "campaign", value: input)
+                                                                              ~~~~~
+
+app/controllers/v2/outreach/campaigns_controller.rb:28:43: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           repository = campaign_repository(connection)
+                                             ~~~~~~~~~~
+
+app/controllers/v2/outreach/campaigns_controller.rb:29:52: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           repository.save(payload, organization_id: identity.org_id)
+                                                      ~~~~~~~~
+
+app/controllers/v2/outreach/campaigns_controller.rb:31:29: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└             organization_id: identity.org_id, id: payload.id)), status: 201)
+                               ~~~~~~~~
+
+app/controllers/v2/outreach/campaigns_controller.rb:40:42: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└             "id" => id, "operation_id" => input.fetch("operation_id"),
+                                            ~~~~~
+
+app/controllers/v2/outreach/campaigns_controller.rb:41:22: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└             "name" => input.fetch("name"), "status" => input.fetch("status")
+                        ~~~~~
+
+app/controllers/v2/outreach/campaigns_controller.rb:41:55: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└             "name" => input.fetch("name"), "status" => input.fetch("status")
+                                                         ~~~~~
+
+app/controllers/v2/outreach/campaigns_controller.rb:43:39: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           result = campaign_repository(connection).replace(payload, organization_id: identity.org_id,
+                                         ~~~~~~~~~~
+
+app/controllers/v2/outreach/campaigns_controller.rb:43:85: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           result = campaign_repository(connection).replace(payload, organization_id: identity.org_id,
+                                                                                       ~~~~~~~~
+
+app/controllers/v2/outreach/campaigns_controller.rb:44:59: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└             expected_version: Elevateo::WriteInput.integer(input.fetch("expected_version"), minimum: 1, maximum: 2_147_483_646),
+                                                             ~~~~~
+
+app/controllers/v2/outreach/campaigns_controller.rb:45:20: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└             intent: input)
+                      ~~~~~
+
+app/controllers/v2/outreach/leads_controller.rb:11:43: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           repository = campaign_repository(connection)
+                                             ~~~~~~~~~~
+
+app/controllers/v2/outreach/leads_controller.rb:12:63: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           repository.detail(kind: "campaign", organization_id: identity.org_id, id: campaign)
+                                                                 ~~~~~~~~
+
+app/controllers/v2/outreach/leads_controller.rb:13:39: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           cursor, limit = page_options(query)
+                                         ~~~~~
+
+app/controllers/v2/outreach/leads_controller.rb:14:85: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           encoded(public_page("lead", repository.page(kind: "lead", organization_id: identity.org_id,
+                                                                                       ~~~~~~~~
+
+app/controllers/v2/outreach/leads_controller.rb:22:43: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           repository = campaign_repository(connection)
+                                             ~~~~~~~~~~
+
+app/controllers/v2/outreach/leads_controller.rb:23:66: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           item = repository.detail(kind: "lead", organization_id: identity.org_id, id: id)
+                                                                    ~~~~~~~~
+
+app/controllers/v2/outreach/leads_controller.rb:33:43: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           repository = campaign_repository(connection)
+                                             ~~~~~~~~~~
+
+app/controllers/v2/outreach/leads_controller.rb:34:63: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           repository.detail(kind: "campaign", organization_id: identity.org_id, id: campaign)
+                                                                 ~~~~~~~~
+
+app/controllers/v2/outreach/leads_controller.rb:36:20: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└             "id" => input.fetch("id"), "operation_id" => input.fetch("operation_id"),
+                      ~~~~~
+
+app/controllers/v2/outreach/leads_controller.rb:36:57: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└             "id" => input.fetch("id"), "operation_id" => input.fetch("operation_id"),
+                                                           ~~~~~
+
+app/controllers/v2/outreach/leads_controller.rb:37:50: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└             "campaign_id" => campaign, "email" => input.fetch("email"), "consent_status" => "unknown",
+                                                    ~~~~~
+
+app/controllers/v2/outreach/leads_controller.rb:40:52: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           repository.save(payload, organization_id: identity.org_id)
+                                                      ~~~~~~~~
+
+app/controllers/v2/outreach/leads_controller.rb:42:29: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└             organization_id: identity.org_id, id: payload.id)), status: 201)
+                               ~~~~~~~~
+
+app/controllers/v2/outreach/leads_controller.rb:50:43: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           repository = campaign_repository(connection)
+                                             ~~~~~~~~~~
+
+app/controllers/v2/outreach/leads_controller.rb:51:65: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           old = repository.detail(kind: "lead", organization_id: identity.org_id, id: id)
+                                                                   ~~~~~~~~
+
+app/controllers/v2/outreach/leads_controller.rb:55:42: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└             "id" => id, "operation_id" => input.fetch("operation_id"), "campaign_id" => campaign,
+                                            ~~~~~
+
+app/controllers/v2/outreach/leads_controller.rb:56:23: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└             "email" => input.fetch("email"), "consent_status" => "unknown", "consent_recorded_at" => nil,
+                         ~~~~~
+
+app/controllers/v2/outreach/leads_controller.rb:59:64: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           result = repository.replace(payload, organization_id: identity.org_id,
+                                                                  ~~~~~~~~
+
+app/controllers/v2/outreach/leads_controller.rb:60:59: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└             expected_version: Elevateo::WriteInput.integer(input.fetch("expected_version"), minimum: 1, maximum: 2_147_483_646),
+                                                             ~~~~~
+
+app/controllers/v2/outreach/leads_controller.rb:61:20: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└             intent: input.merge("campaign_id" => campaign))
+                      ~~~~~
+
+app/controllers/v2/outreach/leads_controller.rb:69:47: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           Elevateo::WriteInput.invalid! unless input.fetch("attested") == true
+                                                 ~~~~~
+
+app/controllers/v2/outreach/leads_controller.rb:70:43: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           repository = campaign_repository(connection)
+                                             ~~~~~~~~~~
+
+app/controllers/v2/outreach/leads_controller.rb:71:65: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           old = repository.detail(kind: "lead", organization_id: identity.org_id, id: id)
+                                                                   ~~~~~~~~
+
+app/controllers/v2/outreach/leads_controller.rb:74:42: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└             "id" => id, "operation_id" => input.fetch("operation_id"), "campaign_id" => campaign,
+                                            ~~~~~
+
+app/controllers/v2/outreach/leads_controller.rb:76:37: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└             "consent_recorded_at" => input.fetch("observed_at"), "consent_source" => input.fetch("source"),
+                                       ~~~~~
+
+app/controllers/v2/outreach/leads_controller.rb:76:85: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└             "consent_recorded_at" => input.fetch("observed_at"), "consent_source" => input.fetch("source"),
+                                                                                       ~~~~~
+
+app/controllers/v2/outreach/leads_controller.rb:79:64: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           result = repository.replace(payload, organization_id: identity.org_id,
+                                                                  ~~~~~~~~
+
+app/controllers/v2/outreach/leads_controller.rb:80:59: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└             expected_version: Elevateo::WriteInput.integer(input.fetch("expected_version"), minimum: 1, maximum: 2_147_483_646),
+                                                             ~~~~~
+
+app/controllers/v2/outreach/leads_controller.rb:81:22: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└             actor_id: identity.user_id, intent: input.merge("campaign_id" => campaign))
+                        ~~~~~~~~
+
+app/controllers/v2/outreach/leads_controller.rb:81:48: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└             actor_id: identity.user_id, intent: input.merge("campaign_id" => campaign))
+                                                  ~~~~~
+
+app/controllers/v2/outreach/leads_controller.rb:90:43: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           repository = campaign_repository(connection)
+                                             ~~~~~~~~~~
+
+app/controllers/v2/outreach/leads_controller.rb:91:65: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           old = repository.detail(kind: "lead", organization_id: identity.org_id, id: id)
+                                                                   ~~~~~~~~
+
+app/controllers/v2/outreach/leads_controller.rb:94:42: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└             "id" => id, "operation_id" => input.fetch("operation_id"), "campaign_id" => campaign,
+                                            ~~~~~
+
+app/controllers/v2/outreach/leads_controller.rb:98:64: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           result = repository.replace(payload, organization_id: identity.org_id,
+                                                                  ~~~~~~~~
+
+app/controllers/v2/outreach/leads_controller.rb:99:59: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└             expected_version: Elevateo::WriteInput.integer(input.fetch("expected_version"), minimum: 1, maximum: 2_147_483_646),
+                                                             ~~~~~
+
+app/controllers/v2/outreach/leads_controller.rb:100:20: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└             intent: input.merge("campaign_id" => campaign))
+                      ~~~~~
+
+app/controllers/v2/outreach/leads_controller.rb:108:43: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           repository = campaign_repository(connection)
+                                             ~~~~~~~~~~
+
+app/controllers/v2/outreach/leads_controller.rb:109:65: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           old = repository.detail(kind: "lead", organization_id: identity.org_id, id: id)
+                                                                   ~~~~~~~~
+
+app/controllers/v2/outreach/leads_controller.rb:111:47: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           repository.suppress(organization_id: identity.org_id, email: old.fetch("email"), reason: input.fetch("reason"))
+                                                 ~~~~~~~~
+
+app/controllers/v2/outreach/leads_controller.rb:111:99: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           repository.suppress(organization_id: identity.org_id, email: old.fetch("email"), reason: input.fetch("reason"))
+                                                                                                     ~~~~~
+
+app/controllers/v2/outreach/leads_controller.rb:113:29: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└             organization_id: identity.org_id, id: id)))
+                               ~~~~~~~~
+
+Detected 81 problems from 5 files
+steep_exit=1
+exit=0
+Error response from daemon: No such container: qa815-dorian-383503e
+remaining=0
+finished=2026-10-14T14:18:51Z

@@ -1,0 +1,46 @@
+started=2026-10-14T14:11:15Z
+3.12.9-slim-bookworm: Pulling from library/python
+d9612276b664: Pulling fs layer
+e639439a2713: Pulling fs layer
+b365a43716b1: Pulling fs layer
+8a628cdd7ccc: Pulling fs layer
+d9612276b664: Download complete
+e639439a2713: Download complete
+b365a43716b1: Download complete
+8a628cdd7ccc: Download complete
+4af028da91c9: Download complete
+a2cd82c7dc96: Download complete
+8a628cdd7ccc: Pull complete
+d9612276b664: Pull complete
+e639439a2713: Pull complete
+e639439a2713: Pull complete
+b365a43716b1: Pull complete
+Digest: sha256:48a11b7ba705fd53bf15248d1f94d36c39549903c5d59edcfa2f3f84126e7b44
+Status: Downloaded newer image for python:3.12.9-slim-bookworm
+docker.io/library/python:3.12.9-slim-bookworm
+pull_exit=0
+image=sha256:48a11b7ba705fd53bf15248d1f94d36c39549903c5d59edcfa2f3f84126e7b44 repo_digest=python@sha256:48a11b7ba705fd53bf15248d1f94d36c39549903c5d59edcfa2f3f84126e7b44
+
+=== leonie d445156009e961a91c00453392219826089ba8fa ===
+command=python3 ops/ops820/test_verify_snapshot.py
+....
+----------------------------------------------------------------------
+Ran 4 tests in 0.004s
+
+OK
+exit=0
+Error response from daemon: No such container: qa815-leonie-d445156
+remaining=0
+
+=== maeve b79095c5e57051b0a8b8e9fd82c728ae1eb2de9a ===
+command=python3 apps/native/validate_macos_config.py apps/native/src-tauri && python3 -m unittest discover -s apps/native -p test_validate_macos_config.py
+MAC-814 static configuration PASS; macOS build and native auth NOT RUN
+...
+----------------------------------------------------------------------
+Ran 3 tests in 0.002s
+
+OK
+exit=0
+Error response from daemon: No such container: qa815-maeve-b79095c
+remaining=0
+finished=2026-10-14T14:11:22Z

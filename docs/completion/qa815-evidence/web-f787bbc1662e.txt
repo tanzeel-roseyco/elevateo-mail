@@ -1,0 +1,94 @@
+source=f787bbc1662ef1ae90bbb89b5c6087e76510dd23
+started=2026-10-14T14:26:08Z
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from test.Dockerfile
+#1 transferring dockerfile: 1.04kB done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:24.21.0-bookworm-slim@sha256:d6aa754f16b3197301076f047b5def2f02ea1dbbc2ca920407d46d7ec7f87b20
+#2 DONE 0.6s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 140B done
+#3 DONE 0.0s
+
+#4 [1/6] FROM docker.io/library/node:24.21.0-bookworm-slim@sha256:d6aa754f16b3197301076f047b5def2f02ea1dbbc2ca920407d46d7ec7f87b20
+#4 resolve docker.io/library/node:24.21.0-bookworm-slim@sha256:d6aa754f16b3197301076f047b5def2f02ea1dbbc2ca920407d46d7ec7f87b20 0.0s done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 5.85MB 0.0s done
+#5 DONE 0.0s
+
+#6 [2/6] WORKDIR /workspace
+#6 CACHED
+
+#7 [3/6] COPY contracts/v1 ./contracts/v1
+#7 CACHED
+
+#8 [4/6] COPY apps/web ./apps/web
+#8 DONE 0.2s
+
+#9 [5/6] WORKDIR /workspace/apps/web
+#9 DONE 0.0s
+
+#10 [6/6] RUN npm ci
+#10 0.998 npm warn deprecated whatwg-encoding@3.1.1: Use @exodus/bytes instead for a more spec-conformant and faster implementation
+#10 7.824 
+#10 7.824 added 324 packages, and audited 325 packages in 8s
+#10 7.824 
+#10 7.824 67 packages are looking for funding
+#10 7.824   run `npm fund` for details
+#10 7.824 
+#10 7.824 found 0 vulnerabilities
+#10 7.824 npm warn install-scripts 1 package has install scripts not yet covered by allowScripts:
+#10 7.824 npm warn install-scripts   esbuild@0.28.2 (postinstall: node install.js)
+#10 7.824 npm warn install-scripts
+#10 7.824 npm warn install-scripts Run `npm install-scripts ls` to review, or `npm install-scripts approve <pkg>` to allow.
+#10 7.825 npm notice
+#10 7.825 npm notice New major version of npm available! 11.19.0 -> 12.2.0
+#10 7.825 npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0
+#10 7.825 npm notice To update run: npm install -g npm@12.2.0
+#10 7.825 npm notice
+#10 DONE 8.1s
+
+#11 exporting to image
+#11 exporting layers
+#11 exporting layers 5.9s done
+#11 exporting manifest sha256:bdb2611cabcca90b472c8e9bb1af02f46e24b41abb834d6a7d47368cd226d9e8 done
+#11 exporting config sha256:16619ef04d9be32cecda969ee624f007d0970466b08c14b9e6c47f666c1bb2f3 done
+#11 exporting attestation manifest sha256:9e07d5acbf358c1deaf8482ec2c1abeb75be8a5a402d3d1eb3def5346a291993 0.0s done
+#11 exporting manifest list sha256:d325bf212ffb8221f83def39e63eac3ee87fa13bc304c8423c52c1cd0acfabc6 done
+#11 naming to docker.io/library/qa815-web-f787bbc1662e:latest done
+#11 unpacking to docker.io/library/qa815-web-f787bbc1662e:latest
+#11 unpacking to docker.io/library/qa815-web-f787bbc1662e:latest 1.8s done
+#11 DONE 7.8s
+
+> @elevateo/web@0.1.0-read.1 check:api
+> openapi-typescript ../../contracts/v1/openapi.json --output src/data/generated/api.d.ts --check
+
+✨ openapi-typescript 7.13.0
+
+> @elevateo/web@0.1.0-read.1 lint
+> eslint . --max-warnings 0
+
+
+/workspace/apps/web/src/app/Shell.test.tsx
+  430:51  error  Parsing error: ',' expected
+
+/workspace/apps/web/src/data/v2OutreachGateway.test.ts
+  11:36  error  '_input' is defined but never used  @typescript-eslint/no-unused-vars
+  11:52  error  '_init' is defined but never used   @typescript-eslint/no-unused-vars
+  20:36  error  '_input' is defined but never used  @typescript-eslint/no-unused-vars
+  20:52  error  '_init' is defined but never used   @typescript-eslint/no-unused-vars
+  26:36  error  '_input' is defined but never used  @typescript-eslint/no-unused-vars
+  26:52  error  '_init' is defined but never used   @typescript-eslint/no-unused-vars
+
+✖ 7 problems (7 errors, 0 warnings)
+
+Error response from daemon: No such container: qa815-web-f787bbc1662e
+Untagged: qa815-web-f787bbc1662e:latest
+Deleted: sha256:d325bf212ffb8221f83def39e63eac3ee87fa13bc304c8423c52c1cd0acfabc6
+remaining_containers=0
+remaining_image=0

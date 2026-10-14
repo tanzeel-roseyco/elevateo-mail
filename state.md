@@ -1,5 +1,7 @@
 # Project state
 
+QA-815 continuation: exact Mira `e31da54` and Fable `dc1db82` isolated fleet web checks passed; integrated `f787bbc` web lint and SEND-810 SQL migration failed, with disposable cleanup passed. Real integrated suites, browser and native acceptance remain pending; details in `docs/completion/soren.md`.
+
 QA-815: exact Mira FE-806 `140218de` isolated fleet Docker typecheck, lint, 17 focused tests and build passed; task resources removed. Other candidate tests and integrated acceptance remain pending; see `docs/completion/soren.md`.
 
 Application IN PROGRESS — R24 isolated BE03 candidate (2026-10-14). Root authorizes implementation on baseline `03ae770c56271cd8236726bfd8fe63248e81283d` in parallel with BE02 acceptance. BE02 remains OPEN/unaccepted; integration/release gated. S1+S2 priority: saved draft -> consistent review -> human approval -> durable queued intent. Canonical additive `contracts/v1/openapi.json` version `1.0.0-send.1` is prepared; every baseline C/D operation/component and original fixture is preserved.
