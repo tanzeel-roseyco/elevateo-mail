@@ -190,3 +190,5 @@ An early fleet Ruby receipt found a missing standalone Active Record import in O
 OUT-804 V2 reads and writes now call the digest-backed Sabine role checks within the tenant transaction for the root-approved outreach roles. RLS still needs the matching owner-provided role predicate before role-policy acceptance.
 
 OUT-804 RLS now also checks a current digest-backed outreach role in each tenant transaction, using Sabine's existing read authority function. The integrated migration and authenticated role probes are untested.
+
+Soren's exact b3438e4 fleet diagnostic exposed an OUT-804 repository syntax error and controller typing/lint issues; source repairs are prepared for a new exact Docker run. The later integrated migration failure was in Nadia's send cancellation migration.

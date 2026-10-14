@@ -8,6 +8,8 @@ module V2
       def show
         campaign = path_uuid(:campaign_id)
         protected_read(allowed_query: [], budget: 4096) do |connection:, identity:, **|
+          # @type var connection: ActiveRecord::ConnectionAdapters::AbstractAdapter
+          # @type var identity: Elevateo::SessionIdentity
           row = campaign_repository(connection, identity: identity, write: false).analytics(organization_id: identity.org_id, campaign_id: campaign)
           encoded({ "campaign_id" => row.fetch("id"), "lead_count" => row.fetch("lead_count").to_i,
             "consented_count" => row.fetch("consented_count").to_i })

@@ -132,3 +132,5 @@ OUT-804 fleet diagnostic on older 21536e5 found a standalone repository NameErro
 Root specified OUT-804 draft access roles owner/admin/sales lead/sales member, mapped to SQL owner/admin/sales_manager/sales. Controller actions now call Sabine's current-session role routines; matching RLS role predicate, fleet execution and review remain pending. Manual consent is recorded as an attestation, never automatic send eligibility.
 
 OUT-804 role RLS source follow-up: every new campaign table policy denies missing session digest and rechecks Sabine's current-role read authorization through a transaction-local setting. The existing tenant/private mailbox checks remain. This exact migration and HTTP journey are NOT_RUN in fleet Docker.
+
+OUT-804 b3438e4 fleet diagnostic: input 5 runs/8 assertions PASS; repository SyntaxError, lint syntax/Struct warning and 95 controller Steep warnings FAILED. Author repaired the event bind expression, test result class and block type annotations; exact repaired-source Docker rerun is pending. Integrated migration failure is attributed to Nadia schema permission, not OUT-804; b071c93 was runner mount setup.
