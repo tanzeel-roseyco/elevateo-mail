@@ -1,7 +1,7 @@
 // @ts-check
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { expectedScenarios, validateEvidence } from './acceptance_evidence.mjs';
+import { expectedScenarios, validateEvidence, validateDiagnosticEvidence } from './acceptance_evidence.mjs';
 
 // AIDEV-NOTE: Same-count substitutions reproduce the prior false pass independently of schema validation.
 for (const [lane, scenarios] of Object.entries(expectedScenarios)) {
@@ -37,3 +37,18 @@ for (const [lane, scenarios] of Object.entries(expectedScenarios)) {
     assert.throws(() => validateEvidence(records, { ...selection, lane: 'unknown' }));
   });
 }
+
+// AIDEV-NOTE: Diagnostic success cannot stand in for the exhaustive scenario gate.
+test('diagnostic has a separate closed inventory and cannot satisfy full acceptance', () => {
+  const selected = { lane: 'playwright_real', browser: 'chromium', profile: 'internal_http', runId: 'diag', dispatchId: 'actual' };
+  const rows = ['SCN-AUTH-001-P', 'SCN-READ-002-P', 'SCN-DRAFT-001-P', 'SCN-GUI-006-P'].map(id => ({
+    scenario_path_id: id, status: 'passed', run_id: 'diag', dispatch_id: 'actual', lane: 'playwright_real',
+    transport_profile: 'internal_http', implementation_mode: 'real', attempt: 0,
+  }));
+  assert.doesNotThrow(() => validateDiagnosticEvidence(rows, selected));
+  assert.throws(() => validateEvidence(rows, selected));
+  assert.throws(() => validateDiagnosticEvidence(rows.slice(1), selected));
+  assert.throws(() => validateDiagnosticEvidence([...rows, rows[0]], selected));
+  assert.throws(() => validateDiagnosticEvidence([{ ...rows[0], status: 'not_run' }, ...rows.slice(1)], selected));
+  assert.throws(() => validateDiagnosticEvidence(rows, { ...selected, dispatchId: 'different' }));
+});

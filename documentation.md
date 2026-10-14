@@ -1,3 +1,5 @@
+QA-404 current: authorized root837e668 merged at05c6dc3 preserving repairs. Nadia97d6403 variants incorporated with seedv2 strict consumer and new readonly post-commit verification. Labeled real Chromium DIAGNOSTIC entrypoint/4-case smoke+visual matrix authored; no full-gate bypass/PASS claim. Observer private bridge remains under wiring/review; all runtime NOT_RUN.
+
 QA-404 observer adversarial review: Ada ADV-734 found one P1 policy-confinement defect in146LOC (6.849/KLOC). Source repair adds a restrictive literal fence, owner/forced-RLS prerequisites and per-snapshot policy hash; real-PG broad-PUBLIC/disabled-RLS regressions authored. Runtime NOT_RUN.
 
 QA-404 attempt4 update: 14 scenario sources authored /12 unavailable after real delayed-response logout stimulus. Runtime/visual NOT_RUN. Empty-member screenshot allowlist defect fixed with durable-budget regression. See docs/completion/qa404-attempt4.md.

@@ -411,3 +411,5 @@ QA-404 Ada ADV-734 adversarial/design packetA on2f15faed9374eed29fab7d9b7881270d
 ## OFF-406 attempt4 application acceptance/design review (2026-10-14)
 
 Frozen Rowan fb79811 source-only full-rubric independent review: Packet J120 distinct LOC,0 confirmed defects,0.00 defects/KLOC; Packet L119 distinct LOC,0 confirmed defects,0.00 defects/KLOC. Dedicated practical zero/null/runtime tradeoffs recorded in docs/completion/review-rowan-fb79811-j-l.md. Actual file lengths corrected estimates; no silent scope expansion. Immediate Rowan/root inbox delivery completed. No app source edits/tests; all runtime gates remain IN PROGRESS.
+
+QA-404 ADV733 transport/read-empty review frozen2f15fae117uniqueLOC1medium=8.55/KLOC: post-ack delivery failure could be swallowed.8ed583f terminal handlerFailed repair source-authored; dedicated real regressions NOT_RUN. Rowan OFF403 frozenf22A173LOC full-rubric0confirmed defects=0/KLOC within declared metadata-only scope, no content/fullphase/lock certification. Nadia97d variants113/test92 source incorporated by exactref; independent review required. New bounded diagnostic/v2/bridge packets forthcoming, all runtime unverified.

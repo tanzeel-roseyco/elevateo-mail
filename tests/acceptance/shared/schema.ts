@@ -66,7 +66,16 @@ const actorSchema = z.strictObject({
   membership_generation: z.null(),
 });
 export const seedSchema = z.strictObject({
-  schema_version: z.literal(1), kind: z.enum(['example', 'runtime']),
+  schema_version: z.literal(2), kind: z.enum(['example', 'runtime']),
+  fixture_variant: z.enum(['base', 'multi_mailbox', 'literal_read']),
+  extra_mailboxes: z.strictObject({ secondary: uuid.optional(), excluded: uuid.optional() }),
+  literal_threads: z.strictObject({ read_empty: uuid.optional(), read_literal: uuid.optional() }),
+  fixture_identity: z.strictObject({ run_id: idSchema, dispatch_id: idSchema,
+    case_id: z.union([scenarioSchema, z.literal('shared-diagnostic')]),
+    engine: z.enum(['chromium', 'firefox', 'webkit', 'chrome']), attempt: z.number().int().min(0).max(20),
+    dataset_id: uuid, nonce: z.string().regex(/^[0-9a-f]{64}$/) }),
+  expected_mailbox_memberships: z.record(z.enum(actorAliases), z.array(z.strictObject({ mailbox_id: uuid,
+    capabilities: z.array(z.enum(['manage', 'read', 'compose', 'approve_send'])).max(4) })).max(2)),
   actors: z.strictObject({ manager_primary: actorSchema, manager_backup: actorSchema, reader: actorSchema,
     composer: actorSchema, approver: actorSchema, disabled: actorSchema, revoked: actorSchema,
     no_membership: actorSchema, other_org: actorSchema }),
@@ -79,9 +88,15 @@ export const seedSchema = z.strictObject({
   }),
 }).superRefine((value, ctx) => {
   const actors = Object.values(value.actors);
+  const boxKeys = Object.keys(value.extra_mailboxes).sort().join(',');
+  const threadKeys = Object.keys(value.literal_threads).sort().join(',');
+  if (boxKeys !== (value.fixture_variant === 'multi_mailbox' ? 'excluded,secondary' : '')
+    || threadKeys !== (value.fixture_variant === 'literal_read' ? 'read_empty,read_literal' : ''))
+    ctx.addIssue({ code: 'custom', message: 'Fixture variant resources mismatch' });
   const ids = [...actors.map(actor => actor.user_id), ...Object.values(value.organizations),
     ...Object.values(value.mailboxes), value.data.thread_primary, value.data.thread_other,
-    value.data.draft_primary, value.data.draft_other];
+    value.data.draft_primary, value.data.draft_other, value.fixture_identity.dataset_id,
+    ...Object.values(value.extra_mailboxes), ...Object.values(value.literal_threads)];
   if (new Set(ids).size !== ids.length || new Set(actors.map(actor => actor.email)).size !== 9)
     ctx.addIssue({ code: 'custom', message: 'Seed identities must be unique' });
   for (const alias of actorAliases) {
@@ -92,6 +107,15 @@ export const seedSchema = z.strictObject({
       : alias === 'reader' || alias === 'other_org' ? ['read'] : alias === 'composer' ? ['read', 'compose']
       : alias === 'approver' ? ['read', 'compose', 'approve_send'] : [];
     const cannotEnterSession = alias === 'disabled' || alias === 'no_membership';
+    const expected = capabilities.length === 0 ? [] : [{ mailbox_id: value.mailboxes[scope ?? 'primary'],
+      capabilities: [...capabilities].sort() }];
+    if (alias === 'composer' && value.fixture_variant === 'multi_mailbox' && value.extra_mailboxes.secondary)
+      expected.push({ mailbox_id: value.extra_mailboxes.secondary, capabilities: ['read'] });
+    const memberships = value.expected_mailbox_memberships[alias].map(row => ({ mailbox_id: row.mailbox_id,
+      capabilities: [...row.capabilities].sort() })).sort((a, b) => a.mailbox_id.localeCompare(b.mailbox_id));
+    expected.sort((a, b) => a.mailbox_id.localeCompare(b.mailbox_id));
+    if (JSON.stringify(memberships) !== JSON.stringify(expected))
+      ctx.addIssue({ code: 'custom', message: `Fixture membership mismatch: ${alias}` });
     if (actor.organization !== scope || actor.mailbox !== scope || actor.state !== state
       || [...actor.capabilities].sort().join() !== capabilities.sort().join()
       || (actor.authorization_version === null) !== cannotEnterSession)

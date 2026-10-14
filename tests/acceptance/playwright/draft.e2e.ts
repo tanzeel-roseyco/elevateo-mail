@@ -1,7 +1,7 @@
 import { expect } from '@playwright/test';
 import { scenario } from './cases.js';
 import { draftReceipt } from './boundaries.js';
-import { responseAt, seed, signIn } from './support.js';
+import { responseAt, screenshot, seed, signIn } from './support.js';
 
 // AIDEV-NOTE: Each case creates its own author-owned draft; no ordering dependency or shared seeded draft mutation.
 for (const id of ['SCN-DRAFT-001-P', 'SCN-DRAFT-008-P']) {
@@ -40,6 +40,16 @@ for (const id of ['SCN-DRAFT-001-P', 'SCN-DRAFT-008-P']) {
     await expect(page.getByText('Saved version 1', { exact: true })).toBeVisible();
     await page.reload();
     await expect(page.getByLabel('Message', { exact: true })).toHaveValue(body);
+    if (id === 'SCN-DRAFT-001-P') {
+      for (const viewport of [{ width: 1440, height: 900 }, { width: 375, height: 812 }]) {
+        for (const colorScheme of ['light', 'dark'] as const) {
+          await page.setViewportSize(viewport);
+          await page.emulateMedia({ colorScheme });
+          await expect(page.getByLabel('Message', { exact: true })).toHaveValue(body);
+          record.artifacts.push(await screenshot(page, `SCN-DRAFT-001-P-${viewport.width}-${colorScheme}`));
+        }
+      }
+    }
     record.assertions.push('New draft receipt ID/version matches route; list summary and reopened exact fields survive reload');
     record.evidence.push('Observed real PUT draft 200 JSON editable version 1, then GET detail 200 JSON; bodies not retained');
   });

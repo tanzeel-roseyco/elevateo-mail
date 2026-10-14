@@ -8,6 +8,7 @@ import os
 from pathlib import Path
 import re
 import stat
+import secrets
 import time
 from acceptance_cleanup import acceptance_owner, validate_container
 from docker_task import Task
@@ -33,9 +34,11 @@ UNITS = ["contracts/report-validation.spec", "proxy/proxy.spec", "playwright/bou
 
 def add_arguments(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("--acceptance", action="store_true")
+    parser.add_argument("--acceptance-diagnostic", action="store_true", help="Labeled Chromium smoke subset; never full acceptance PASS")
     parser.add_argument("--acceptance-lanes", default="playwright,puppeteer,selenium")
     parser.add_argument("--acceptance-browsers", default="chromium,firefox,webkit")
     parser.add_argument("--acceptance-dispatch-id")
+    parser.add_argument("--acceptance-variant", choices=["base", "multi_mailbox", "literal_read"], default="base")
     parser.add_argument("--acceptance-grid-image", default=GRID,
                         help="Official standalone-chrome:4.49.0-20260909@sha256 digest")
     parser.add_argument("--acceptance-seccomp-sha256", default=SECCOMP_SHA256,
@@ -46,6 +49,9 @@ class Acceptance:
     # AIDEV-NOTE: Register all images/mounts before creating resources, including partially failed starts/builds.
     def __init__(self, task: Task, args: argparse.Namespace) -> None:
         self.task = task
+        self.diagnostic = args.acceptance_diagnostic
+        if self.diagnostic and (args.acceptance_lanes != "playwright" or args.acceptance_browsers != "chromium"):
+            raise RuntimeError("diagnostic requires exactly Playwright Chromium")
         self.lanes = args.acceptance_lanes.split(",")
         self.browsers = args.acceptance_browsers.split(",")
         for values, allowed in ((self.lanes, {"playwright", "puppeteer", "selenium"}),
@@ -110,7 +116,9 @@ class Acceptance:
                     "BE02_ACCEPTANCE_BROWSER_IMAGE": self.image, "BE02_ACCEPTANCE_GRID_IMAGE": self.grid,
                     "BE02_ACCEPTANCE_UID": str(uid), "BE02_ACCEPTANCE_GID": str(gid),
                     "BE02_ACCEPTANCE_SECCOMP": str(self.seccomp),
-                    "BE02_ACCEPTANCE_DISPATCH_ID": args.acceptance_dispatch_id}
+                    "BE02_ACCEPTANCE_DISPATCH_ID": args.acceptance_dispatch_id,
+                    "BE02_ACCEPTANCE_VARIANT": args.acceptance_variant,
+                    "BE02_ACCEPTANCE_NONCE": secrets.token_hex(32)}
         self.base_env = task.env_file.read_text()
         task.deadline = time.monotonic() + 7200
 
@@ -228,6 +236,8 @@ class Acceptance:
                     self.execute(identity, ["node", "--input-type=module", "-e", smoke])
                     command = ["node", "node_modules/@playwright/test/cli.js", "test",
                                "--config=playwright/playwright.config.ts", "--output=/tmp/playwright-native"]
+                    if self.diagnostic:
+                        command.extend(["--grep", "^(SCN-AUTH-001-P|SCN-READ-002-P|SCN-DRAFT-001-P|SCN-GUI-006-P)$"])
                 else:
                     engine = "puppeteer" if lane == "puppeteer_cdp" else "selenium"
                     # AIDEV-NOTE: Prove browser predicates with synthetic DOM fixtures before trusting app case results.
@@ -240,11 +250,11 @@ class Acceptance:
                   import {caseResultSchema} from './dist/shared/schema.js';
                   const records=readdirSync('/output/cases').map(name =>
                     caseResultSchema.parse(JSON.parse(readFileSync('/output/cases/'+name,'utf8'))));
-                  validateEvidence(records, SELECTION);""")
+                  VALIDATOR(records, SELECTION);""")
                 selection = {"lane": lane, "browser": browser, "runId": task.project + "-" + str(index),
                              "dispatchId": self.env["BE02_ACCEPTANCE_DISPATCH_ID"], "profile": "internal_http"}
-                self.execute(identity, ["node", "--input-type=module", "-e", check.replace("SELECTION", json.dumps(selection))])
-                results.append({"lane": lane, "browser": browser, "status": "PASSED"})
+                self.execute(identity, ["node", "--input-type=module", "-e", check.replace("SELECTION", json.dumps(selection)).replace("VALIDATOR", "validateDiagnosticEvidence" if self.diagnostic else "validateEvidence")])
+                results.append({"lane": lane, "browser": browser, "status": "DIAGNOSTIC_COMPLETED" if self.diagnostic else "PASSED"})
             except Exception as error:
                 results.append({"lane": lane, "browser": browser, "status": "FAILED_OR_INCOMPLETE", "error": str(error)})
             finally:
@@ -252,6 +262,6 @@ class Acceptance:
                     if container:
                         validate_container(task, task.inspect("container", [container])[0])
                         task.docker("acceptance-lane-remove", ["container", "rm", "-f", container], 30)
-                task.write("acceptance-results.json", {"scope": "selected internal HTTP lanes only", "runs": results})
-        if any(result["status"] != "PASSED" for result in results):
+                task.write("acceptance-results.json", {"scope": "DIAGNOSTIC smoke subset; advanced scenarios and full gates unverified" if self.diagnostic else "selected internal HTTP lanes only", "runs": results})
+        if any(result["status"] != ("DIAGNOSTIC_COMPLETED" if self.diagnostic else "PASSED") for result in results):
             raise RuntimeError("acceptance failed or incomplete; inspect sanitized cases and acceptance-results.json")

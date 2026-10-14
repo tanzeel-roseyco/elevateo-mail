@@ -4,6 +4,9 @@ A shared team mailroom using Rails, PostgreSQL, Supabase Auth/Storage and a Reac
 
 ## Current state
 
+QA-404 current: authorized root837e668 merged at05c6dc3 preserving repairs. Nadia97d6403 variants incorporated with seedv2 strict consumer and new readonly post-commit verification. Labeled real Chromium DIAGNOSTIC entrypoint/4-case smoke+visual matrix authored; no full-gate bypass/PASS claim. Observer private bridge remains under wiring/review; all runtime NOT_RUN.
+
+
 Application IN PROGRESS (2026-10-14): frozen integration joins exact Rowan 28390d7, Mira 5ec1851, Elara 2f15fae and Nadia 75fc041 over Cassian 3bedd32, preserving all five parents. Rowan adds the real bootstrap read-only mount/cleanup boundary; Mira repairs shared heading semantics with a strict regression; Elara supplies restricted CI observation and real-response transport helpers. Canonical contracts/v1 remain unchanged. Soren dirty infrastructure is excluded until an immutable source commit is supplied.
 
 Source-only review receipts from root: Tessa 304 LOC, Linus I142/K190, Ada G/B/M312 and F/H154, Nadia J120/L119, each zero defects (0/KLOC) within their bounded assignments. Aggregate labels describe multiple packets, not one oversized review. Elara observer146 and transport/read-empty63 LOC are independently delegated and pending; no whole-app approval. Linus prior noexec46 LOC remains zero defects; 43 digests and four contracts matched. This new integrated revision has no runtime PASS: Docker gates, browser/visual acceptance and lifecycle proofs remain pending under Soren. Historical failures remain evidence, not validation of current source.
