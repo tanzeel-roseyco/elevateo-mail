@@ -401,3 +401,5 @@ Maeve `ba4323f` exact sequence repository test-only lint repair imported into fe
 Soren `7738f8fd` no-follow privacy source, `1fcb462f` corrected fixture and `3546f570` six-case fleet receipt imported at `7d1aa2b7`. Tests executed: only source-specific Python unit cases; integrated real browser --list/mount proof/screenshots NOT_RUN. Backend lint remains blocker.
 
 Nadia `200fc016` attachment lint repair imported feature `4b6448e3` and core `bbc68ba3` using exact two owner source/test hunks, preserving the feature content controller beyond her core-only baseline. No runtime result on successor; Soren full coherent lint gate requested after other owner fixes.
+
+Sabine 28ef4d56 exact two-predicate ACL lint repair imported feature c13c730b and core 84f23338; no behavior change or test execution claimed. Remaining Orion fatal syntax and Corin unused argument repair await owner SHAs before coherent lint gate.

@@ -541,3 +541,5 @@ Maeve ba4323f adjusts only the outreach sequence repository test to address its 
 QA815 ADV144 no-follow browser proof now rejects symlink redirection while checking private output modes. The corrected fixture passed six scoped Python cases in Soren fleet Docker on `1fcb462f`; integrated browser --list/mount proof and real cases remain pending.
 
 Nadia 200fc016 changes NoStorage#put to accept unused keyword options while still raising Invalid, and parenthesizes one service test map for lint clarity. It is integrated in both candidate branches without host execution; Soren will verify on a coherent source.
+
+Sabine 28ef4d56 disambiguates two migration ACL test block assertions while retaining the same grant predicates and down/up/down/up test sequence. The patch is source-only until Soren's coherent core RuboCop and targeted test run.

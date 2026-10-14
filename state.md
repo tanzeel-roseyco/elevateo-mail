@@ -481,3 +481,5 @@ Maeve ba4323f sequence test lint repair is imported source-only into feature/cor
 QA815 no-follow browser privacy source and six-case fleet unit receipt are imported. Source-specific unit PASS does not prove real browser private mounts/compiled reporter; backend lint still gates realAuth.
 
 Nadia 200fc016 attachment controller/service lint repair is imported source-only into feature/core; remaining owner lint fixes and exact fleet rerun pending.
+
+Sabine 28ef4d56 two gateway ACL test lint repairs imported source-only feature/core; exact fleet rerun pending.
