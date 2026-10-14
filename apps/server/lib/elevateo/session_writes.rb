@@ -106,7 +106,9 @@ module Elevateo
               begin
                 quarantine_connection(pool, leased, disposition, failures) unless handed_off
               ensure
-                # AIDEV-NOTE: Removal may throw; restore a raised primary before outer detached-adapter disposal.
+                # AIDEV-NOTE: Fatal cleanup takes precedence; ordinary request failures still survive cleanup throws.
+                cleanup_error = $!
+                raise cleanup_error if cleanup_error && !cleanup_error.is_a?(StandardError)
                 raise primary if primary
               end
             end
@@ -122,15 +124,19 @@ module Elevateo
     # AIDEV-NOTE: Collect recoverable cleanup failures; process-fatal signals propagate through ownership ensures.
     def discard_connection(pool, connection, correlation, primary, disposition, failures)
       connection.lock.synchronize do
-        unless disposition[:started]
-          pool.synchronize { quarantine_connection(pool, connection, disposition, failures) }
-        end
-        # AIDEV-NOTE: Proven detachment prevents a new lease; disconnect outside the monitor even after remove fails.
-        if disposition[:detached]
+        begin
+          unless disposition[:started]
+            pool.synchronize { quarantine_connection(pool, connection, disposition, failures) }
+          end
+        ensure
+          pending_exit = $!
           begin
-            connection.disconnect!
+            # AIDEV-NOTE: After proven detachment, even fatal/nonlocal removal must attempt one native disposal.
+            connection.disconnect! if disposition[:detached]
           rescue StandardError => error
             failures << ["disconnect", error]
+          ensure
+            raise pending_exit if pending_exit && !pending_exit.is_a?(StandardError)
           end
         end
       end
