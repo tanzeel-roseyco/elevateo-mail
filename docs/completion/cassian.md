@@ -71,3 +71,5 @@ The direct-message browser response bound now matches `ReadResponse::MESSAGE_BYT
 The canonical OpenAPI version was advanced to `2.0.0-draft.4` for the direct-message addition; Soren must regenerate/check V2 declarations from this exact source. No generated artifact is committed yet.
 
 Lyra 3039bcd fleet type-fixture repair and Mira 1923c16 later-page direct-message UI were merged. Mira's ThreadPage accepts Cassian's exact gateway method signature, but Fable App.tsx still renders the page without that optional prop; root/Fable were asked to bind it. Thus the direct message UI remains inactive in production source until that owner seam lands.
+
+Fable 10a64a1 central Outreach session-loss policy merged into 09cd4ef. It is source-only pending Soren fleet web checks; direct-message ThreadPage prop is still unbound in Fable App.tsx. The latest integrated web candidate includes both fixes for the c4fa typecheck failures, but no full web rerun result has been observed.
