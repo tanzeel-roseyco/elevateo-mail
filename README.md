@@ -214,3 +214,5 @@ OUT-804 review repair binds update replay to the consent-preservation flag, reje
 OUT-804 lead consent projections now carry their event operation ID. A changed status or email is written only after an append-only event for that exact lead, email and status exists in the same protected transaction; SQL policy checks the match. Initial unknown leads have no event. This source invariant awaits real fleet PostgreSQL and concurrency checks.
 
 OUT-804 event snapshots now also bind the lead version, and a database trigger requires version advance on updates. Same-address lead edits lock and return the unchanged row while storing an idempotent operation result. These rules prevent a withdrawn lead from becoming granted again by pointing at an older consent event; fleet proof remains pending.
+
+OUT-804 lead update guard now rejects clearing an existing evidence link and requires a fresh versioned event whenever email or consent fields change. Metadata-only version changes may keep their matching historical evidence link. Real API-role negative and metadata cases remain requested.
