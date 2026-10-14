@@ -714,3 +714,6 @@ Exact Elara `cc2ac33cb9eab3c847b2b4e6633887d464b6a4d6` and Theo `f12d25c335763a3
 ### REV869 Cassian canonical V2 sequence contract — Lyra
 
 Exact `251546499f6f3d72dcdcefeb08584f7607b6a97b` OpenAPI blob `9811af7048fa03e8d5910e2c8fcde98c2da29aa0`: 340 unique versioned LOC across three bounded reads, zero confirmed static defects (**0/KLOC**). Root session security, PUT CSRF, closed read/write shapes, limits and inert status were inspected; server/gateway validation and runtime remain outside cap. Full ranges and exclusions: [REV869 report](docs/completion/lyra-rev869.md).
+### REV875 Tessa later-page and Cassian missing-parent tests — Lyra
+
+Exact Tessa `bc02fc1b929dc05061fbda3335d71f43770eca6f` and Cassian `6e987853be5e81e717e8e8312e38d89702586089`: 322 unique versioned LOC including bounded ordering/seed/response context, zero confirmed static defects (**0/KLOC**). The target is provably the 21st ascending message and the controller test observes 404 before a fake save; real browser, database and cleanup remain Soren fleet work. See [REV875 report](docs/completion/lyra-rev875.md) for blob hashes, exact ranges and exclusions.
