@@ -248,3 +248,5 @@ QA815 first `7738f8fd` browser proof test receipt `docs/completion/qa815-evidenc
 QA815 corrected browser proof receipt `docs/completion/qa815-evidence/acceptance-private-1fcb462f985e.txt` records six real Node/Python regression PASS on exact `1fcb462f` with cleanup; predecessor fixture failure remains linked in `docs/completion/soren.md`.
 
 QA815 V2 draft.8 exact-source generation receipt `docs/completion/qa815-evidence/v2-codegen-263047b4e7df.txt` and declaration `generated-v2-263047b4e7df/api-v2.d.ts` record source/spec and output hashes, two command exits and cleanup. Cassian import pending; see `docs/completion/soren.md`.
+
+QA815 feature web receipt `docs/completion/qa815-evidence/web-555acbff98d3.log` records exact `555acbff` V1/V2 checks, eight assignee test lint errors and exact cleanup; see `docs/completion/soren.md`.

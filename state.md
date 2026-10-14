@@ -180,3 +180,5 @@ QA815 first `7738f8fd` browser proof six-case unit run 5 PASS/1 fixture FAIL: in
 QA815 corrected `1fcb462f` ADV144 private output six-case fleet unit PASS, cleanup PASS; actual browser mount/reporter smoke NOT_RUN.
 
 QA815 feature `263047b4` V2 draft.8 codegen/check PASS, generated declaration SHA256 `0c5f0969…`, task container/image/archive absent. Feature lint/type/unit/build and route runtime NOT_RUN; core lint19 still blocks HTTP/worker.
+
+QA815 feature `555acbff` V1/V2 check PASS; web lint eight unused test params FAIL, type/unit/build NOT_REACHED, task cleanup PASS.
