@@ -20,7 +20,7 @@ RUN test -n "$SDK_TOOLS_URL" && test -n "$SDK_TOOLS_SHA256" \
     && mv "$ANDROID_HOME/cmdline-tools/cmdline-tools" "$ANDROID_HOME/cmdline-tools/latest"
 RUN yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses >/dev/null \
     && "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" \
-      'platforms;android-37' 'build-tools;36.0.0' 'ndk;28.2.13676358' 'platform-tools'
+      'platforms;android-36' 'build-tools;36.0.0' 'ndk;28.2.13676358' 'platform-tools'
 RUN rustup target add aarch64-linux-android \
     && cargo install tauri-cli --version '=2.12.2' --locked
 WORKDIR /src
