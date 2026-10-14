@@ -46,6 +46,8 @@ Private synthetic frontend preview is running; Docker lint/typecheck/build and 6
 
 ## Current execution status
 
+SEND809 affected send database tests passed on Soren fleet integrated `cb1ec5be454686fc647e0c6131f3dc9f3884eeb7` after the four fixture repairs: cancellation 5/37 and races 4/40, receipt 8/72, Mailpit worker 3/24, schema 6/82 and worker authority 9/89 all had zero failures/errors; cleanup passed. The overall Ruby gate still failed in other suites and Steep, and authenticated HTTP and actual Mailpit network remain unverified.
+
 SEND809 exact integrated `7aa61be4649ca251c3faff368ba61dfa7e313708` passed real PostgreSQL migrations but the affected send database suites had eight cancellation guard setup errors, two fixture lock timeouts, three mismatched Mailpit snapshot approval errors, and one binary/UTF-8 oracle failure. Rowan committed bounded test fixture repairs `49aaad8`, `f9f13a0`, `3fe86b7`, `bf2748f`; Soren fleet rerun is pending. Production write guard, lease, approval and Mailpit authority were not loosened.
 
 ### Fable FE-805 shell/sidebar/brand candidate (2026-10-15)
