@@ -869,3 +869,7 @@ ADM-803 additive role audit source through `b27273a`: audit projection 45 LOC, a
 OUT-804 root policy decision led to a controller authorization repair: every outreach read/write action now invokes Sabine's digest-backed current-role routine before business SQL. A corresponding RLS role predicate is still requested from Sabine; no independent review or current-candidate runtime PASS is claimed.
 
 FE807 analytics copy self-review: backend's candidate `consented_count` excludes suppressions, while UI said merely “consented.” Source now labels the aggregate “consented and unsuppressed” and adds a component case; no execution or independent review claim.
+
+### FE-805 R4 online-only shell self-inspection (Fable, 2026-10-15)
+
+Coverage: `ui/ConnectivityBanner.tsx` (52 LOC), Shell route-hygiene hunk and banner wiring (~20), CSS mobile frame (~18). ~90 production LOC, one bounded pass; author self-inspection only, no independent review claimed. Self-found before commit: 1 (route-change focus rescue initially stole focus from the drawer trigger and from page-owned focus, contradicting e2e/read.spec.ts; narrowed to body-stranded focus only). Provisional density 11.1/KLOC, author evidence. Tests: 5 new cases (3 banner, 2 shell), not executed.

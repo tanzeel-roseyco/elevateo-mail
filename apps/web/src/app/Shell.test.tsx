@@ -71,6 +71,7 @@ function renderShell(gateway: MailroomGateway, outlet = <p>outlet-content</p>) {
             {/* Sidebar/drawer links target mailbox routes; without this route a drawer selection
                 would leave the Shell's route tree and unmount the whole shell under test. */}
             <Route path="mailboxes/:mailboxId" element={outlet} />
+            <Route path="search" element={outlet} />
           </Route>
         </Routes>
       </MemoryRouter>
@@ -449,5 +450,34 @@ describe('registered feature routes (FE-805)', () => {
     expect(screen.getByRole('link', { name: 'Campaigns' }).getAttribute('aria-current')).toBe('page')
     expect(within(screen.getByRole('navigation', { name: 'Personal' })).getByRole('link', { name: 'People' })).toBeTruthy()
     expect(screen.getByText('Simulated local mail')).toBeTruthy()
+  })
+})
+
+describe('online-only shell hygiene (FE-805)', () => {
+  it('a route change scrolls main to the top and only rescues focus stranded on body', async () => {
+    renderShell(createFixtureGateway())
+    await screen.findByText('Synthetic organization A')
+    const main = document.getElementById('main') as HTMLElement
+    const inbox = screen.getByRole('link', { name: 'Fixture inbox' })
+    inbox.focus()
+    fireEvent.click(inbox)
+    await screen.findByText('outlet-content')
+    // Focus stayed on the rail link (not stranded), so the shell leaves it alone.
+    expect(document.activeElement).toBe(inbox)
+    ;(document.activeElement as HTMLElement).blur()
+    fireEvent.click(screen.getByRole('link', { name: 'Search' }))
+    await waitFor(() => expect(document.activeElement).toBe(main))
+  })
+
+  it('an offline drop shows the notice inside the shell and a return offers reload', async () => {
+    renderShell(createFixtureGateway())
+    await screen.findByText('Synthetic organization A')
+    act(() => { window.dispatchEvent(new Event('offline')) })
+    expect(screen.getByRole('status').textContent).toMatch(/You are offline/)
+    expect(screen.getByText('outlet-content')).toBeTruthy()
+    act(() => { window.dispatchEvent(new Event('online')) })
+    fireEvent.click(screen.getByRole('button', { name: 'Reload' }))
+    await waitFor(() => expect(screen.queryByText(/Connection is back/)).toBeNull())
+    await screen.findByText('Synthetic organization A')
   })
 })

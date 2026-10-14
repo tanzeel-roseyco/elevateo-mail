@@ -126,10 +126,28 @@ Gateway reconciliation now reduces to one item: Cassian/Dorian publish an `Outre
 
 Updated Soren request: same Docker recipe on the R3 SHA; expected FE-805 files `featureRegistry.test.ts`, `Sidebar.test.tsx`, `Shell.test.tsx`, `features/index.test.tsx`, plus all merged owner suites. Updated Tessa items: Personal rail shows Search, mailboxes, People, Personal settings, Organization settings; `/#/outreach/campaigns` shows Celeste's heading, "Create draft campaign" link and the unavailable status; `/#/settings/personal` shows "Signed in as"; `/#/people` shows Lyra's denied or error state (not a crash); mobile drawer with both sections.
 
+## R4 — online-only mobile/WebView shell UX (2026-10-15)
+
+Merged exact owner heads `--no-ff`, untouched: Celeste `7a26ce3b235297ffaf4a525ac8ce863e6c5c8f48`, Lyra `849f63d6c38524caadddae1e307293d6de9d81f8`, Mira `0f3ae5cfae1acc6e4470da4cf40b0405b52c473f`. Cassian's inert Outreach V2 routes (`cb771ca`) and grant routes (`11ee31b`) are noted; he owns the browser adapter and session invalidation, so `featureGateways` in `main.tsx` stays `{}` until his adapter lands (one-line wiring then).
+
+Shell changes (owned paths), built for the initial native shape: exact HTTPS WebView over the existing cookie session, no native IPC, token storage or PKCE.
+
+- `ui/ConnectivityBanner.tsx` (new) with `useConnectivity()`: offline drop shows an honest notice (no cache, content may be stale, no action); a return shows "Connection is back" with an explicit **Reload** (calls the session `refresh()`, which re-bootstraps through the existing gate) or **Dismiss**. Nothing refetches automatically; `navigator.onLine` is never presented as proof of connectivity.
+- `Shell.tsx`: banner between header and main; route-change hygiene scrolls `#main` to the top and moves focus to it only when focus is stranded on `<body>`. Focus owned by a page (reader heading, editor field, Mira's pagination) or restored by Radix to the drawer trigger is left alone, so `e2e/read.spec.ts` focus assertions still hold.
+- `styles/index.css`: `#root` uses `min-height: 100dvh` plus safe-area insets; coarse-pointer devices get 44 px rail/drawer/header targets. Request to the host owner: add `viewport-fit=cover` to `index.html`'s viewport meta (not a Fable path) so the safe-area insets take effect under notches.
+- Logout and back: sign-out already unmounts the keyed protected subtree (drawer, banner and page state included) before the request; the hash router gives the WebView back button ordinary history. No background sync exists, so a killed WebView loses only unsaved editor text, which the existing draft-intent provider already scopes to the session.
+
+Drawer rename proposal for Tessa (not applied; her `read.spec.ts` and QA818 depend on today's names): trigger `button "Open navigation menu"`, `dialog "Navigation"`. Fable will change `Shell.tsx` in the same integration commit as her selector update once she confirms.
+
+Tests added (not executed): `ui/ConnectivityBanner.test.tsx` (online no-op, offline then reload, pre-offline start then dismiss) and two Shell cases (route-change focus/scroll rules; offline notice inside the shell with reload re-bootstrap). FE-805 total: 16 cases.
+
+Screenshot requirements for Tessa, R4: widths **390, 768 and 1440**, light and dark, each with (a) populated fixture inbox, (b) empty mailbox list, (c) load error in the rail with Try again, (d) denied mailbox page; plus offline notice (DevTools offline) and the restored-connection bar at 390; the drawer at 390 showing Personal and Outreach. No visual PASS will be claimed without these images.
+
 ## Limitations
 
 - No lint, typecheck, unit test, build or visual check has been executed by Fable; Soren owns execution and Tessa owns visual evidence.
 - R2 superseded the placeholder note: the owners' exact commits are merged and wired; their gateways remain unconnected pending the reconciliation above.
 - The drawer label still says "Mailboxes" although it now also contains Outreach; renaming requires a coordinated change to the QA-owned e2e spec.
 - `elevateo-logo.png` is shipped but unused in the shell; sign-in/auth brand placement belongs to a later scoped request.
-- No independent review has been performed on this candidate; see `code-reviews.md` for the self-inspection record only.
+- No independent review has been performed on this candidate; see `code-reviews.md` for the self-inspection record only. Root's bounded review is underway; concrete defects will be fixed in this branch as they arrive.
+- No fleet screenshots have been supplied yet, so no visual correction has been possible and no visual state is claimed.
