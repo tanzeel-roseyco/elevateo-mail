@@ -35,6 +35,8 @@ available=$(awk '/MemAvailable:/ {printf "%.0f\n", $2*1024}' /proc/meminfo)
 awk -v a="$available" 'BEGIN {exit !(a >= 8589934592)}' || exit 75
 project="ops402-restore-$(date +%s)-$$"
 envfile=$(mktemp "$base/.env.restore.XXXXXX")
+gateway_dir=$(mktemp -d)
+gateway_env="$gateway_dir/gateway.env"
 compose() { docker compose -p "$project" --env-file "$envfile" -f "$base/compose.yaml" "$@"; }
 source "$packet/compose_absence.sh"
 started=0
@@ -43,6 +45,8 @@ cleanup() {
   if (( started )); then compose down --volumes --remove-orphans >/dev/null 2>&1 || clean=$?; fi
   ops820_compose_absent "$project" || clean=1
   rm -f -- "$envfile"
+  rm -f -- "$gateway_env"
+  rmdir -- "$gateway_dir" || clean=1
   echo "restore_job_exit=$job restore_cleanup_exit=$clean"
   (( clean == 0 )) || job=1
   exit "$job"
@@ -52,6 +56,7 @@ cp "$snapshot/credentials.env" "$envfile"
 # Fresh names and ports: restored credentials never connect this drill to a live network.
 sed -i -e 's/^AUTH_PORT=.*/AUTH_PORT=18310/' \
   -e 's/^REST_PORT=.*/REST_PORT=18311/' -e 's/^STORAGE_PORT=.*/STORAGE_PORT=18312/' "$envfile"
+python3 "$packet/gateway_runtime_env.py" "$envfile" "$gateway_env" >/dev/null
 started=1
 compose up -d --wait --wait-timeout 180 db mailpit
 # Globals contain credentials: transform privately and pipe directly, never log SQL.
@@ -73,7 +78,29 @@ compose exec -T db psql -U supabase_admin -d postgres -X -q -v ON_ERROR_STOP=1 \
   < "$packet/gateway-bootstrap-smoke.sql" >/dev/null
 compose exec -T db psql -U supabase_admin -d postgres -X -q -v ON_ERROR_STOP=1 \
   < "$packet/gateway-helper-smoke.sql" >/dev/null
-for fixture in gateway_negative_createrole.sql gateway_negative_membership.sql; do
+for fixture in gateway_negative_private_schema.sql gateway_negative_private_function.sql; do
+  set +e
+  private_output=$(cat "$packet/$fixture" "$packet/gateway-helper-smoke.sql" |
+    compose exec -T db psql -U supabase_admin -d postgres -X -q -v ON_ERROR_STOP=1 2>&1)
+  private_exit=$?
+  set -e
+  case "$fixture" in
+    gateway_negative_private_schema.sql) expected='gateway private helper boundary failed' ;;
+    gateway_negative_private_function.sql) expected='gateway helper effective grant drift' ;;
+  esac
+  if (( private_exit == 0 )) || [[ "$private_output" != *"$expected"* ]]; then
+    echo "gateway private grant fixture failed expected oracle: $fixture exit=$private_exit" >&2
+    exit 1
+  fi
+done
+compose exec -T db psql -U supabase_admin -d postgres -X -q -v ON_ERROR_STOP=1 \
+  < "$packet/gateway-helper-smoke.sql" >/dev/null
+docker run --rm --network "${project}_private" --read-only --cap-drop ALL \
+  --env-file "$gateway_env" \
+  -v "$packet/gateway-runtime-smoke.sql:/gateway-runtime-smoke.sql:ro" --entrypoint bash "$image" \
+  -c 'exec psql "$ELEVATEO_ATTACHMENT_GATEWAY_DATABASE_URL" -X -q -v ON_ERROR_STOP=1 -f /gateway-runtime-smoke.sql' >/dev/null
+for fixture in gateway_negative_createrole.sql gateway_negative_membership.sql \
+  gateway_negative_wrong_owner.sql; do
   set +e
   gateway_output=$(cat "$packet/$fixture" "$packet/gateway-bootstrap-smoke.sql" |
     compose exec -T db psql -U supabase_admin -d postgres -X -q -v ON_ERROR_STOP=1 2>&1)

@@ -1,8 +1,12 @@
 """Protocol fault cases for a disposable Python Docker job; no local runner."""
 import struct
+import os
+import pathlib
+import tempfile
 import unittest
+from unittest.mock import patch
 
-from clamav_probe import CLEAN, EICAR, scan
+from clamav_probe import CLEAN, EICAR, prepare, scan, verify
 
 
 class FakeSocket:
@@ -12,6 +16,9 @@ class FakeSocket:
 
     def sendall(self, payload: bytes) -> None:
         self.sent += payload
+
+    def settimeout(self, timeout: float) -> None:
+        self.timeout = timeout
 
     def recv(self, count: int) -> bytes:
         if not self.reply:
@@ -40,6 +47,33 @@ class ClamdProtocolTest(unittest.TestCase):
     def test_unrecognized_reply_fails_closed(self):
         with self.assertRaisesRegex(ValueError, "did not return"):
             scan(CLEAN, FakeSocket(b"stream: ERROR\0"))
+
+    def test_whole_reply_deadline_stops_trickle(self):
+        with patch("clamav_probe.time.monotonic", side_effect=[0, 21]):
+            with self.assertRaisesRegex(ValueError, "whole reply timeout"):
+                scan(CLEAN, FakeSocket(b"stream: OK\0"))
+
+    def test_changed_size_rejected_before_socket(self):
+        with tempfile.TemporaryDirectory() as parent:
+            directory = pathlib.Path(parent) / "fixtures"
+            prepare(directory)
+            with (directory / "clean.txt").open("ab") as target:
+                target.write(b"extra")
+            with patch("clamav_probe.socket.create_connection") as connect:
+                with self.assertRaisesRegex(ValueError, "fixture bytes changed"):
+                    verify(directory)
+                connect.assert_not_called()
+
+    def test_fifo_fixture_rejected_without_blocking(self):
+        with tempfile.TemporaryDirectory() as parent:
+            directory = pathlib.Path(parent) / "fixtures"
+            prepare(directory)
+            (directory / "clean.txt").unlink()
+            os.mkfifo(directory / "clean.txt")
+            with patch("clamav_probe.socket.create_connection") as connect:
+                with self.assertRaisesRegex(ValueError, "fixture bytes changed"):
+                    verify(directory)
+                connect.assert_not_called()
 
 
 if __name__ == "__main__":

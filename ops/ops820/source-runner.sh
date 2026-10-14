@@ -54,6 +54,14 @@ docker run --rm --network "${project}_private" --read-only --cap-drop ALL \
   "$server_image" exec rails db:migrate
 docker run --rm --network "${project}_private" --read-only --cap-drop ALL \
   --env-file "$envfile" -e PGHOST=db -e PGUSER=supabase_admin -e PGDATABASE=postgres \
+  -v "$root/ops/ops820/gateway-bootstrap-smoke.sql:/gateway-bootstrap-smoke.sql:ro" --entrypoint bash "$db_image" \
+  -c 'export PGPASSWORD="$POSTGRES_PASSWORD"; exec psql -v ON_ERROR_STOP=1 -f /gateway-bootstrap-smoke.sql' >/dev/null
+docker run --rm --network "${project}_private" --read-only --cap-drop ALL \
+  --env-file "$envfile" -e PGHOST=db -e PGUSER=supabase_admin -e PGDATABASE=postgres \
   -v "$root/ops/ops820/gateway-helper-smoke.sql:/gateway-helper-smoke.sql:ro" --entrypoint bash "$db_image" \
   -c 'export PGPASSWORD="$POSTGRES_PASSWORD"; exec psql -v ON_ERROR_STOP=1 -f /gateway-helper-smoke.sql' >/dev/null
+docker run --rm --network "${project}_private" --read-only --cap-drop ALL \
+  --env-file "$scratch/gateway.env" \
+  -v "$root/ops/ops820/gateway-runtime-smoke.sql:/gateway-runtime-smoke.sql:ro" --entrypoint bash "$db_image" \
+  -c 'exec psql "$ELEVATEO_ATTACHMENT_GATEWAY_DATABASE_URL" -X -q -v ON_ERROR_STOP=1 -f /gateway-runtime-smoke.sql' >/dev/null
 echo 'PASS disposable source migrations'

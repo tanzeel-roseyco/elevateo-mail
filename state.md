@@ -1,3 +1,5 @@
+OPS820 source intake (2026-10-14): Leonie f8b07b2 administrative private-gateway schema bootstrap and pre/post role checks are imported. Sabine 00018 consumer repair and Soren fleet SQL/process separation remain pending; public bytes inactive.
+
 
 INT-801 draft.7 source checkpoint (2026-10-14): Maeve b3204ce read/write RLS and fetch is imported; canonical inert sequence GET/PUT, guarded Rails controller/routes and typed browser adapter are authored. Fable optional-operation session-policy binding, fleet-generated draft.7 declaration, exact PostgreSQL/Auth/HTTP/web Docker checks and independent review are pending. This source does not grant due claims, enrollment, live sending or release. Earlier dated source checkpoints below are historical.
 

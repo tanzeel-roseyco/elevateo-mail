@@ -3,11 +3,17 @@ DO $$
 DECLARE helper oid; candidate record;
 BEGIN
   helper := to_regprocedure('app_attachment_gateway.private_binding(text,uuid,uuid,uuid,bigint,uuid,text,uuid,uuid,uuid,uuid,uuid)');
-  IF helper IS NULL OR to_regnamespace('app_attachment_gateway') IS NULL OR
+  IF helper IS NULL OR to_regnamespace('app_attachment_gateway') IS NULL THEN
+    RAISE EXCEPTION 'gateway private helper missing';
+  END IF;
+  IF NOT EXISTS (SELECT 1 FROM pg_namespace WHERE nspname='app_attachment_gateway'
+      AND nspowner='elevateo_owner'::regrole) OR
     NOT has_schema_privilege('elevateo_attachment_gateway','app_attachment_gateway','USAGE') OR
     has_schema_privilege('elevateo_attachment_gateway','app_attachment_gateway','CREATE') OR
-    has_schema_privilege('elevateo_attachment_gateway','app','USAGE,CREATE') OR
-    has_schema_privilege('elevateo_attachment_gateway','app_auth','USAGE,CREATE') OR
+    EXISTS (SELECT 1 FROM pg_namespace n
+      WHERE (n.nspname IN ('app','auth','storage') OR left(n.nspname,4)='app_')
+        AND n.nspname<>'app_attachment_gateway'
+        AND has_schema_privilege('elevateo_attachment_gateway',n.oid,'USAGE,CREATE')) OR
     NOT has_function_privilege('elevateo_attachment_gateway',helper,'EXECUTE') OR
     has_function_privilege('elevateo_attachment_gateway',helper,'EXECUTE WITH GRANT OPTION') OR
     NOT has_function_privilege('elevateo_owner',
@@ -27,6 +33,10 @@ BEGIN
     EXISTS (SELECT 1 FROM pg_proc p CROSS JOIN LATERAL
       aclexplode(coalesce(p.proacl,acldefault('f',p.proowner))) a
       WHERE p.oid=helper AND a.grantee=0 AND a.privilege_type='EXECUTE') OR
+    EXISTS (SELECT 1 FROM pg_proc p JOIN pg_namespace n ON n.oid=p.pronamespace
+      CROSS JOIN LATERAL aclexplode(coalesce(p.proacl,acldefault('f',p.proowner))) a
+      WHERE (n.nspname IN ('app','auth','storage') OR left(n.nspname,4)='app_') AND p.oid<>helper
+        AND a.grantee='elevateo_attachment_gateway'::regrole AND a.privilege_type='EXECUTE') OR
     has_function_privilege('elevateo_api',helper,'EXECUTE') OR
     has_function_privilege('elevateo_worker',helper,'EXECUTE')
   THEN RAISE EXCEPTION 'gateway helper effective grant drift'; END IF;

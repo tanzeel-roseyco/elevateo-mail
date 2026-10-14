@@ -14,6 +14,8 @@ Shared company mailroom with one Rails domain authority and a React/TypeScript c
 
 ## Current state
 
+**OPS820 bootstrap source intake:** Leonie `f8b07b2` now precreates the private gateway schema as an administrative step and checks its owner/ACL around migration; Sabine 00018 must consume that schema. Fleet database/role proof remains pending; no gateway byte route is enabled.
+
 **INT-801 draft.7 source checkpoint (2026-10-14):** Maeve `b3204ce` split sequence read/write RLS and fetch is imported. Canonical V2 draft.7 now defines inert campaign sequence GET/PUT; Cassian has added a guarded Rails controller, active route registry entries and typed browser adapter with happy/denial/input tests. Fable session-policy binding, fleet-generated draft.7 DTO, exact PostgreSQL/Auth/HTTP/web Docker gates and review remain pending. No due claim, enrollment, live sending or production release follows from this source. The dated checkpoints below are historical.
 
 **Newer integrated source checkpoint:** `7ec5925` imports Leonie OPS820 isolated gateway role/scanner fixture source, Corin held IMAP attachment ingest at migration 00017, and Sabine gateway helper at migration 00018 after Nadia 00015; no live ingestion or gateway public route is active. Exact fleet migration/role/scan and independent review remain pending for these imports.
