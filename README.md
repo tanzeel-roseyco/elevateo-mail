@@ -18,6 +18,7 @@ QA-817 adversarial source candidates and bounded peer reviews are committed; int
 Felix's bounded review of the current native shell has an unconfirmed trailing-dot placeholder hostname probe; fleet Rust regression and native runtime remain pending.
 Felix's bounded QA-816 browser matrix review found one MEDIUM premature empty-search screenshot oracle; Tessa owns repair before visual acceptance. See `docs/completion/felix-qa816-review.md`.
 Tessa's exact repair is statically re-reviewed, but browser execution remains pending. Cassian has all eleven QA fixtures; Corin's migration syntax repair awaits a fleet rerun.
+The later fleet rerun passed migrations through inbound 00011 but broad Ruby suites failed on older fixture dependencies before QA-817 tests; per-file QA-817 execution has been requested from Soren on a frozen integrated source.
 
 
 ### R25 approval reload recovery candidate
