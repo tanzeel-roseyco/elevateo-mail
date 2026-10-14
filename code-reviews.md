@@ -692,3 +692,7 @@ Scope: `apps/web/src/features/members/{adminModel,AdministrationPage}.ts*` plus 
 ### FE808 fleet typecheck fixture repair
 
 Soren reported `web-c4fa27c01f5e` API/lint PASS and TypeScript FAIL at two `adminModel.test.ts` lines due a widened fixture department type. Lyra changed only the test projection to parse through the canonical `RosterPersonSchema`; no cast or production contract was changed. Source diff check passed; fleet rerun and independent review remain pending, so no runtime PASS or independent defect density is claimed.
+
+### OUT804 lead consent bounded adversarial source review — Lyra
+
+Exact source `35273bae8c07550df77e6503ca1e62991bb986c0`; assigned coverage 143-line `leads_controller.rb` and 130-line `leads_controller_test.rb` = 273 LOC, plus 118 bounded context LOC, total 391 under the 400-LOC cap. Two confirmed findings (manual attestation represented as granted consent in compact output; incorrect rejected-attestation test oracle) = **7.33 defects/KLOC** over assigned files. One withdrawal timestamp/history concern is unconfirmed pending DB-default evidence. No runtime tests or source-owner edits. Full severity, evidence, fixes, uncovered scope and limits: [Lyra Dorian lead review](docs/completion/lyra-review-dorian-leads-35273bae.md).
