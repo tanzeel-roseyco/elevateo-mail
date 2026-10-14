@@ -258,3 +258,4 @@ FE807 sequence create test was tightened to re-read the same returned id and str
 FE807 sequence source repair follows Soren's exact integrated lint parse failure at `SequencePage.tsx:100`; focused fleet lint/type/unit rerun pending.
 
 ATT838 wire now validates the signed authorization_version as an exact 43-character URL-safe SessionCrypto token, alongside equal context UUIDs. Sabine gateway helper uses migration 00018 because 00016/00017 are occupied; interop remains untested.
+Cassian 338a442 integrated both narrow SEC802 grants with PUBLIC/worker revokes retained. The next OUT-804 role fixture assertion captures expected `session_user=elevateo_api` across the explicit `SET LOCAL ROLE elevateo_app_read` probe and worker helper denial; source expectation only, fleet execution pending.

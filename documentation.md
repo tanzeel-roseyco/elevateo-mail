@@ -322,3 +322,4 @@ FE807 sequence create regression checks one id across PUT receipt and subsequent
 FE807 sequence editor lint diagnostic: Remove step's `setSteps` callback was missing its final call-closing parenthesis. The source now closes the callback and call before the JSX tag; Soren must rerun fleet checks on the repair SHA.
 
 ATT838 wire now validates the signed authorization_version as an exact 43-character URL-safe SessionCrypto token, alongside equal context UUIDs. Sabine gateway helper uses migration 00018 because 00016/00017 are occupied; interop remains untested.
+Integration 338a442 supplies both narrow SEC802 grants. The role fixture additionally asserts the actual login role via `session_user`, effective role via `current_user` before/after `SET LOCAL ROLE`, and lack of worker EXECUTE on draft-write. This explicit restricted-role switch is a probe; production V2/Tenancy source does not switch role, so fleet runtime must confirm its actual API pool identity.

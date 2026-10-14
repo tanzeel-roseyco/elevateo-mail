@@ -55,6 +55,7 @@ class CampaignAuthorizedDatabaseTest < MailboxMembershipDatabaseCase
     result = nil
     outreach_scope(write: true) do |connection|
       assert_equal "elevateo_api", connection.select_value("SELECT current_user")
+      assert_equal "elevateo_api", connection.select_value("SELECT session_user")
       result = connection.exec_query("UPDATE app.campaign_leads SET suppressed_at=now(),version=version+1 " \
         "WHERE organization_id=$1::uuid AND id=$2::uuid RETURNING version,consent_operation_id",
         "OUT804 metadata", [bind(@org), bind(lead)]).first
@@ -75,8 +76,11 @@ class CampaignAuthorizedDatabaseTest < MailboxMembershipDatabaseCase
     outreach_scope(write: true) do |connection|
       connection.execute("SET LOCAL ROLE elevateo_app_read")
       assert_equal "elevateo_app_read", connection.select_value("SELECT current_user")
+      assert_equal "elevateo_api", connection.select_value("SELECT session_user")
       assert_equal true, connection.select_value("SELECT has_function_privilege(current_user, " \
         "'app.authorize_outreach_content_read(text)', 'EXECUTE')")
+      assert_equal false, connection.select_value("SELECT has_function_privilege('elevateo_worker', " \
+        "'app.authorize_outreach_draft_write(text)', 'EXECUTE')")
       raw = connection.exec_query("SELECT app.authorize_outreach_draft_write($1::text) AS result",
         "OUT804 restricted role proof", [bind(@identity.digest)]).first.fetch("result")
       result = raw.is_a?(String) ? JSON.parse(raw) : raw

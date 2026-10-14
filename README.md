@@ -318,3 +318,4 @@ FE807 sequence test fixture now returns the exact created id and only server dra
 FE807 sequence candidate has a fleet lint parse failure at the Remove step handler on the integrated web SHA; a one-parenthesis source repair is committed separately for exact rerun. No sequence unit/build PASS is claimed.
 
 ATT838 wire now validates the signed authorization_version as an exact 43-character URL-safe SessionCrypto token, alongside equal context UUIDs. Sabine gateway helper uses migration 00018 because 00016/00017 are occupied; interop remains untested.
+Cassian integrated the two narrow helper grants at 338a442. OUT-804 role proof now records both `session_user` and `current_user` before and after restricted-role switch and asserts worker still lacks draft-write EXECUTE; actual fleet results remain pending.
