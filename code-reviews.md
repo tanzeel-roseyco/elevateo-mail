@@ -708,3 +708,7 @@ Scope: `apps/web/src/features/members/{adminModel,AdministrationPage,PersonalSet
 FE807 continuation: author self-inspection of uncommitted Outreach route/forms candidate found the unconfirmed-write duplicate-submission risk; form locks now require navigation after an ambiguous error. Independent bounded source/data review and dedicated design review remain pending; independently reviewed LOC 0, independently confirmed defect density not applicable. Docker/browser/runtime tests not executed by Celeste. Exact source and Soren request: `docs/completion/celeste.md`.
 
 FE807 author follow-up: self-review found that treating every write error as uncertain would block correction after a definitive 400, while a malformed success could have committed. The page now distinguishes definitive validation rejection from uncertain/malformed outcomes and includes a targeted 400 regression. Independent source/design review and fleet execution remain pending; no independent defect-density claim.
+
+## FE-806 message permalink review request
+
+Bounded packet: `apps/web/src/features/thread/ThreadPage.tsx` (about 23 changed lines) and `ThreadPage.test.tsx` (about 53 added lines). Request independent adversarial source review plus dedicated design tradeoff review: URL parsing, stale scope, page termination, accessibility/focus and cross-mailbox disclosure. No review was performed in this worker turn; defects and density are pending. Tests and browser evidence are authored/requested, not executed.
