@@ -263,13 +263,15 @@ BEGIN
     OR p_kind IS NULL OR p_kind NOT IN ('accepted','rejected','unknown')
     OR p_digest IS NULL OR octet_length(p_digest) <> 32
     OR (p_kind='accepted') IS DISTINCT FROM (p_receipt IS NOT NULL)
-    OR (p_receipt IS NOT NULL AND char_length(p_receipt) NOT BETWEEN 1 AND 256) THEN
+    OR (p_receipt IS NOT NULL AND (char_length(p_receipt) NOT BETWEEN 1 AND 256
+      OR p_receipt !~ '^local:[0-9a-f]{64}$')) THEN
     RETURN '{"code":"request_invalid"}'::jsonb;
   END IF;
   SELECT * INTO j FROM app_send_private.jobs WHERE send_id=p_send FOR UPDATE;
   IF NOT FOUND THEN RETURN '{"code":"not_available"}'::jsonb; END IF;
   SELECT * INTO a FROM app_send_private.attempts WHERE send_id=p_send AND attempt_id=p_attempt;
-  IF NOT FOUND OR j.lease_id IS DISTINCT FROM p_lease OR j.lease_generation <> p_generation
+  IF NOT FOUND OR a.attempt_no <> j.attempt_count
+    OR j.lease_id IS DISTINCT FROM p_lease OR j.lease_generation <> p_generation
     OR j.lease_expires_at <= n OR j.state NOT IN ('dispatching','unknown') THEN
     RETURN '{"code":"stale_lease"}'::jsonb;
   END IF;
