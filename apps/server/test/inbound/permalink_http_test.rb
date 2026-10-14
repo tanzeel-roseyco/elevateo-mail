@@ -44,7 +44,7 @@ class InboundPermalinkHTTPTest < Minitest::Test
     assert_equal 200, status
     assert_equal NOTE, body.fetch("message").fetch("id")
     assert_equal "<b>plain</b>", body.fetch("message").fetch("body_text")
-    assert_equal 1, @connection.sql.count { |sql| sql.include?("FROM app.mailboxes AS mailbox") }
+    assert_equal 1, (@connection.sql.count { |sql| sql.include?("FROM app.mailboxes AS mailbox") })
   end
 
   def test_missing_and_denied_have_same_http_result
@@ -57,6 +57,6 @@ class InboundPermalinkHTTPTest < Minitest::Test
   def test_malformed_path_never_queries_message
     status, body = dispatch(message: "bad")
     assert_equal [400, "request_invalid"], [status, body.fetch("code")]
-    refute @connection.sql.any? { |sql| sql.include?("FROM app.mailboxes AS mailbox") }
+    refute(@connection.sql.any? { |sql| sql.include?("FROM app.mailboxes AS mailbox") })
   end
 end

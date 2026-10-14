@@ -23,7 +23,7 @@ class ImapWorkerStoreTest < Minitest::Test
     assert_equal "created", result.fetch("result")
     assert_includes connection.queries.first.first, "app.ingest_imap_mail"
     assert_equal 9, connection.queries.first.last.length
-    refute connection.queries.first.last.any? { |value| value.to_s.include?("credential_ref") }
+    refute(connection.queries.first.last.any? { |value| value.to_s.include?("credential_ref") })
   end
 
   def test_changed_epoch_is_explicit_and_reset_uses_named_function

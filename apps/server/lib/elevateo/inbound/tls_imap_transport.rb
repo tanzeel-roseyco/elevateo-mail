@@ -73,10 +73,12 @@ module Elevateo
         raise Rejected, "account_unavailable" unless credentials.is_a?(Array) && credentials.length == 2 &&
           credentials.all? { |value| value.is_a?(String) && !value.empty? }
 
+        # @type var ssl_options: Hash[Symbol, Integer | String | bool]
         ssl_options = { verify_mode: OpenSSL::SSL::VERIFY_PEER, verify_hostname: true }
-        ssl_options[:ca_file] = @ca_file if @ca_file
+        ca_file = @ca_file
+        ssl_options[:ca_file] = ca_file if ca_file
         client = @factory.new(@host, port: @port, ssl: ssl_options)
-        client.login(*credentials)
+        client.login(credentials.fetch(0), credentials.fetch(1))
         client.select(@mailbox)
         Session.new(client)
       rescue StandardError

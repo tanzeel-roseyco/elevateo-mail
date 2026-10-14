@@ -56,8 +56,8 @@ class TlsImapTransportTest < Minitest::Test
     transport = Elevateo::Inbound::TlsImapTransport.new(host: "mox.test",
       credential_resolver: ->(_) { ["user", "synthetic-password"] }, client_factory: BacklogClient)
     session = transport.open(credential_ref: "test:synthetic")
-    assert_equal (1..50).to_a, session.fetch_after(0, limit: 50).map { |event| event.fetch(:uid) }
-    assert_equal (51..75).to_a, session.fetch_after(50, limit: 50).map { |event| event.fetch(:uid) }
+    assert_equal (1..50).to_a, (session.fetch_after(0, limit: 50).map { |event| event.fetch(:uid) })
+    assert_equal (51..75).to_a, (session.fetch_after(50, limit: 50).map { |event| event.fetch(:uid) })
     assert_equal (1..75).to_a, session.instance_variable_get(:@client).fetched
     session.close
   end
