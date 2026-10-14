@@ -97,7 +97,7 @@ scenario('SCN-QA-818-P', 'branded-shell-keyboard-mobile-and-outreach-read', asyn
     await outreach.getByRole('link', { name: 'Campaigns' }).press('Enter');
     await expect(page.getByRole('heading', { name: 'Campaigns' })).toBeVisible();
     await expect(outreach.getByRole('link', { name: 'Campaigns' })).toHaveAttribute('aria-current', 'page');
-    await expect(page.getByText('Outreach is paused. Sending and enrollment are unavailable.')).toBeVisible();
+    await expect(page.getByText('Outreach is draft or paused. Sending and enrollment are unavailable.')).toBeVisible();
     record.artifacts.push(await screenshot(page, `QA816-SHELL-P-campaigns-${colorScheme}`));
   }
   await page.setViewportSize({ width: 375, height: 812 });

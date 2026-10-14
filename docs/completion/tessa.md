@@ -23,3 +23,5 @@ Screenshot admission repair: the shared screenshot writer uses a closed ID list 
 `SCN-QA-819-P` adds a current V1 roster boundary: manager GET 200 and rendered revision, plus a separate real reader session with API denial and nonactionable UI. It does not mutate membership or claim Lyra V2 grant coverage. Two fixed admin screenshot IDs bring the supplemental screenshot set to eighteen.
 
 `SCN-QA-819-F1` is a pending integrated V2 People candidate: real manager grants GET 200 versus separate reader 403/404, with truthful unbound planning identities and no reader save control. It requires Cassian's active V2 grants GET, Lyra/Fable integrated `/people`, and a seed with a reader denied administration. No grant is changed; no V2 runtime outcome is claimed. Two more fixed screenshot IDs bring the supplemental set to twenty.
+
+Cassian's integrated Celeste page currently says “Outreach is draft or paused. Sending and enrollment are unavailable.” The shell assertion follows that exact source copy; it still requires a bound Outreach gateway for actual list data. This static alignment does not establish the active V2 browser path.
