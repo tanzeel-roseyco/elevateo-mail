@@ -1,9 +1,8 @@
-// Online-only shell notice (FE-805). The app has no cache or offline queue: when the device loses
-// its connection the banner says so, and when it returns the person chooses to reload the session.
+// Online-only shell notice (FE-805). Browser connectivity is a hint; the person explicitly
+// reloads the session after a reported change. No offline cache or queue is implied.
 // Browser and native HTTPS WebView share this path; there is no native IPC or background sync.
 //
-// AIDEV-NOTE: navigator.onLine can report true on a captive network, so the banner never claims
-// "connected"; the only positive claim is the explicit reload the person triggers after a drop.
+// AIDEV-NOTE: navigator.onLine can be wrong in either direction; actual API responses remain authoritative.
 import { useEffect, useState } from 'react'
 import { Button } from './Button'
 import { AlertIcon } from './icons'
@@ -34,13 +33,13 @@ export function ConnectivityBanner({ onReload }: { onReload(): void }) {
     return (
       <div role="status" aria-live="polite" className="flex items-center gap-2 border-b border-warn/40 bg-warn/10 px-3 py-2 text-[13px] text-fg">
         <AlertIcon className="size-4 shrink-0 text-warn" />
-        <span className="min-w-0 flex-1">You are offline. Elevateo Mail needs a connection and keeps nothing on this device; what you see may be stale.</span>
+        <span className="min-w-0 flex-1">Your device reports a connection problem. Mail may be out of date; unsaved changes stay only in this window.</span>
       </div>
     )
   }
   return (
     <div role="status" aria-live="polite" className="flex items-center gap-2 border-b border-line bg-surface-2 px-3 py-2 text-[13px] text-fg">
-      <span className="min-w-0 flex-1">Connection is back. Reload to check your session and current mail.</span>
+      <span className="min-w-0 flex-1">Your device reports a restored connection. Reload to check your session and current mail.</span>
       <Button size="sm" variant="primary" onClick={() => { acknowledge(); onReload() }}>Reload</Button>
       <Button size="sm" variant="ghost" onClick={acknowledge}>Dismiss</Button>
     </div>

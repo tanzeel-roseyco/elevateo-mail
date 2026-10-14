@@ -1,5 +1,5 @@
-// FE-805 online-only notice: nothing while online, an honest offline notice, and after a drop
-// returns an explicit reload that the person triggers (no automatic refetch, no cache claim).
+// FE-805 reports the browser's connectivity hint, which does not prove API reachability.
+// Reload remains explicit after a reported return; no automatic refetch or offline cache is implied.
 import { act, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { ConnectivityBanner } from './ConnectivityBanner'
@@ -16,14 +16,15 @@ describe('connectivity banner', () => {
     expect(onReload).not.toHaveBeenCalled()
   })
 
-  it('announces offline without any action, then offers reload once the connection returns', () => {
+  it('reports the browser hint without reloading, then offers an explicit reload after return', () => {
     const onReload = vi.fn()
     render(<ConnectivityBanner onReload={onReload} />)
     act(() => { window.dispatchEvent(new Event('offline')) })
-    expect(screen.getByRole('status').textContent).toMatch(/You are offline/)
+    expect(screen.getByRole('status').textContent).toMatch(/Your device reports a connection problem/)
     expect(screen.queryByRole('button')).toBeNull()
+    expect(onReload).not.toHaveBeenCalled()
     act(() => { window.dispatchEvent(new Event('online')) })
-    expect(screen.getByRole('status').textContent).toMatch(/Connection is back/)
+    expect(screen.getByRole('status').textContent).toMatch(/Your device reports a restored connection/)
     fireEvent.click(screen.getByRole('button', { name: 'Reload' }))
     expect(onReload).toHaveBeenCalledTimes(1)
     expect(screen.queryByRole('status')).toBeNull()
@@ -33,7 +34,7 @@ describe('connectivity banner', () => {
     vi.spyOn(navigator, 'onLine', 'get').mockReturnValue(false)
     const onReload = vi.fn()
     render(<ConnectivityBanner onReload={onReload} />)
-    expect(screen.getByRole('status').textContent).toMatch(/You are offline/)
+    expect(screen.getByRole('status').textContent).toMatch(/Your device reports a connection problem/)
     act(() => { window.dispatchEvent(new Event('online')) })
     fireEvent.click(screen.getByRole('button', { name: 'Dismiss' }))
     expect(screen.queryByRole('status')).toBeNull()
