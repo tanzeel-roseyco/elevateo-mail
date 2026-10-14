@@ -1,5 +1,7 @@
 # Elevateo Mail
 
+Private synthetic frontend preview is running; Docker lint/typecheck/build and 629 tests passed. Root visually inspected it. Isolated BE03 work is authorized in parallel; integration/release still require BE02 acceptance. See [preview checkpoint](docs/completion/fe-preview-01.md).
+
 Shared company mailroom with one Rails domain authority and a React/TypeScript client.
 
 ## Current state

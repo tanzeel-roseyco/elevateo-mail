@@ -565,3 +565,7 @@ ADV868 Tessa R21e source review: 165 source LOC (31 old +39 new wrapper +26 help
 
 
 Vale BE03 read-cap exception is a process note, not code acceptance; see docs/completion/int403-r23-application-state.md.
+
+## FE-PREVIEW-01 dedicated design checkpoint
+
+Coverage: 202 source lines, individual files/read sections <=200 lines; zero confirmed defects, density **0 per 1,000 reviewed lines**. See [exact ranges, limitations and Docker evidence](docs/completion/fe-preview-01.md). This is design review, not complete adversarial code coverage or BE03 acceptance. Root delegates independent preview-recipe review.
