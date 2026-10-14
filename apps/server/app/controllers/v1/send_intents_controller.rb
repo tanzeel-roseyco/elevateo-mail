@@ -23,6 +23,9 @@ module V1
           send_path(:send_id)
           []
         }) do |connection:, identity:, session:, input:, **|
+        # @type var connection: Elevateo::WriteStatements
+        # @type var identity: Elevateo::SessionIdentity
+        # @type var session: Elevateo::auth_object
         # @type var input: Elevateo::WriteInput::object
         mailbox_id = Elevateo::WriteInput.uuid(input.fetch("mailbox_id"))
         send_service(connection, session).cancel(send_id: send_path(:send_id), mailbox_id: mailbox_id,
