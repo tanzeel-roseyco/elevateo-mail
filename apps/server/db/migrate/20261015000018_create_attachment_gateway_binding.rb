@@ -17,6 +17,17 @@ class CreateAttachmentGatewayBinding < ActiveRecord::Migration[8.1]
           (SELECT pg_get_userbyid(proowner) FROM pg_proc
             WHERE oid='app_auth.authorize_session(text,uuid,uuid,uuid,bigint)'::regprocedure)
               <> 'elevateo_session_owner' OR
+          NOT EXISTS (SELECT 1 FROM pg_namespace WHERE nspname='app_attachment_gateway'
+            AND nspowner='elevateo_owner'::regrole) OR
+          EXISTS (SELECT 1 FROM pg_namespace n CROSS JOIN LATERAL
+            aclexplode(coalesce(n.nspacl,acldefault('n',n.nspowner))) acl
+            WHERE n.nspname='app_attachment_gateway' AND NOT (
+              acl.grantee=n.nspowner OR
+              (acl.grantee='elevateo_attachment_gateway'::regrole AND
+                acl.grantor='elevateo_owner'::regrole AND acl.privilege_type='USAGE' AND NOT acl.is_grantable))) OR
+          EXISTS (SELECT 1 FROM pg_proc p JOIN pg_namespace n ON n.oid=p.pronamespace
+            WHERE n.nspname='app_attachment_gateway') OR
+          has_schema_privilege('elevateo_attachment_gateway','app_attachment_gateway','CREATE') OR
           has_schema_privilege('elevateo_attachment_gateway','app','USAGE') OR
           has_schema_privilege('elevateo_attachment_gateway','app_auth','USAGE') OR
           has_table_privilege('elevateo_attachment_gateway','app.inbox_attachments','SELECT') OR
@@ -26,9 +37,7 @@ class CreateAttachmentGatewayBinding < ActiveRecord::Migration[8.1]
         END IF;
       END $$;
 
-      -- AIDEV-NOTE: A separate session-owner grant above permits this narrow nested call only.
-      CREATE SCHEMA app_attachment_gateway AUTHORIZATION elevateo_owner;
-      REVOKE ALL ON SCHEMA app_attachment_gateway FROM PUBLIC;
+      -- AIDEV-NOTE: Bootstrap owns the precreated private schema; migration owns only this function and grant.
       CREATE FUNCTION app_attachment_gateway.private_binding(p_digest text,p_user uuid,p_auth uuid,
         p_context uuid,p_generation bigint,p_context_id uuid,p_version text,p_attachment uuid,
         p_org uuid,p_box uuid,p_thread uuid,p_message uuid) RETURNS TABLE (
@@ -78,7 +87,6 @@ class CreateAttachmentGatewayBinding < ActiveRecord::Migration[8.1]
   def down
     execute "SET LOCAL ROLE elevateo_owner"
     execute "DROP FUNCTION app_attachment_gateway.private_binding(#{SIGNATURE})"
-    execute "DROP SCHEMA app_attachment_gateway"
     execute "SET LOCAL ROLE elevateo_session_owner"
     execute "REVOKE EXECUTE ON FUNCTION app_auth.authorize_session(text,uuid,uuid,uuid,bigint) FROM elevateo_owner"
   end
