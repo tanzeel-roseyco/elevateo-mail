@@ -867,3 +867,5 @@ SEC-802 audit SQL/table/read and companion database tests are new source and hav
 
 ADM-803 additive role audit source through `b27273a`: audit projection 45 LOC, audit controller 65 LOC, pure test 47 LOC, HTTP test 103 LOC, RBS 16 LOC. Proposed functional review packets remain <=200 LOC with separate design reviewer; reviewed LOC 0 and defect density unclaimed until independent review. Root delegated audit SQL to Sabine and API to Theo, so SQL atomics/privileges and Rails output require distinct evidence; no Docker runtime claim.
 OUT-804 root policy decision led to a controller authorization repair: every outreach read/write action now invokes Sabine's digest-backed current-role routine before business SQL. A corresponding RLS role predicate is still requested from Sabine; no independent review or current-candidate runtime PASS is claimed.
+
+FE807 analytics copy self-review: backend's candidate `consented_count` excludes suppressions, while UI said merely “consented.” Source now labels the aggregate “consented and unsuppressed” and adds a component case; no execution or independent review claim.

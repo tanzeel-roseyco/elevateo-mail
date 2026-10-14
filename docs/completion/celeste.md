@@ -35,3 +35,5 @@ Root Outreach policy (14:24 UTC): content reads and draft/lead/account mutations
 When Cassian's account adapter remains explicitly disabled, its `temporarily_unavailable` response renders the Outreach unavailable state rather than a generic load error. A component case covers this; fleet execution pending.
 
 A denied campaign-list read now hides the create-draft navigation link as well as campaign content; direct-route mutations remain backend-authorized and must deny independently. A component case covers this presentation state, without claiming role-policy enforcement.
+
+The analytics label says “consented and unsuppressed” because Dorian's current aggregate excludes local/global suppressions from `consented_count`; a component case pins the label. Backend analytics semantics remain subject to exact contract review.

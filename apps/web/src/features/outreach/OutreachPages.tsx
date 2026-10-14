@@ -330,5 +330,5 @@ export function OutreachCampaignAnalyticsPage(props: OutreachPageProps) {
 function CampaignAnalytics({ campaignId, ...props }: OutreachPageProps & { campaignId: string | undefined }) {
   const state = useOutreachRead('analytics', props, campaignId)
   return <Page title="Campaign analytics"><Content state={state}>{(row: Analytics) =>
-    <p>{row.consented_count} consented of {row.lead_count} leads (server aggregate)</p>}</Content></Page>
+    <p>{row.consented_count} consented and unsuppressed of {row.lead_count} leads (server aggregate)</p>}</Content></Page>
 }
