@@ -176,3 +176,5 @@ Cassian manifest reconciliation: contract-lock now seals actual generated client
 ### MAC-814 native packaging checkpoint
 
 The Orion macOS universal DMG template and offline validator are in `apps/orion/macos`. This is configuration only: the Orion shell, Mac build, signing, notarization and installed-app validation remain pending. See `docs/completion/maeve.md`.
+
+MAC-814 continuation: Orion NATIVE-812 shell lineage is present in the Mac branch; `apps/native/src-tauri/tauri.macos.conf.json` and `apps/native/macos-release.sh` now provide a real macOS DMG configuration and gated release command. Native auth, Mac build, signing and installation remain unverified.
