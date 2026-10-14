@@ -1240,3 +1240,5 @@ REV874 Theo bounded independent source review of Corin `d4a34f45fe7a48fa885de5d1
 REV884 Theo independent bounded re-review of Corin `1ab4c12e370c05233af639833909cf2ebaa0c28f`: exact `thread_database_test.rb` blob `992dee99fab94eac21790835863ae53ff22d591b`, lines1–55 and235–345, 166 unique LOC, <=111/read; 76 changed test LOC, 0 new defects/0 KLOC. REV874 P2 broad-FK detach is statically closed by six exact catalog tuples checked before DDL plus unknown/missing/redefined regressions. No production DB/lib files changed; Soren fleet DB/runtime pending. Full limits in docs/completion/theo-rev884.md.
 
 INT801 `9b41975` client RBS independent review request is a 151 unique-LOC packet (RBS 19, production client 78, test 54; max read 78), pinned by blobs in `docs/completion/cassian-client-rbs-review.md`. Independent review and design tradeoff result pending; confirmed successor defects/density unclaimed. Soren focused Steep/unit runtime pending.
+
+QA815 `c5a8737` full web PASS is runtime evidence, not independent bounded source review. Additional independent reviewed LOC remains 0; density unclaimed.

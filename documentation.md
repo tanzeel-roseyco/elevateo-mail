@@ -445,3 +445,5 @@ The later 651b63a integration contains exact revised blob `eece1c964e02c94f03f4b
 The authorized database fixture now exercises a full positive restricted-role write under a genuine API protected marker: `SET LOCAL ROLE elevateo_app_read`, INSERT draft campaign, UPDATE its version and name, then verify persisted version after commit. It separately checks copied digest without marker cannot write and a locally revoked session with stale digest reads zero campaign rows. These are test source, pending the exact fleet disposable database run.
 
 QA815 backend successor receipt `docs/completion/qa815-evidence/backend-065ec91bf5a3/` records 21 migrations, a single remaining organization role Ruby failure, 111 Steep problems and exact cleanup. See `docs/completion/soren.md` for limits; the corrected thread fixture does not close backend acceptance.
+
+QA815 current full web receipt `docs/completion/qa815-evidence/web-c5a873765a0c.log` records exact `c5a8737` V1/V2/lint/type/unit/build PASS and cleanup. The f70 visual artifact is separate exact-source evidence; see `docs/completion/soren.md`.

@@ -384,3 +384,5 @@ New exact integrated 651b63a PostgreSQL/Auth receipt carries the revised 00009 b
 Ada ADV111 independent review of exact 2f255b9 covered 303 unique LOC, found zero confirmed source defects (0/KLOC) and requested a stronger positive mutation oracle. OUT-804 authored actual restricted-role protected campaign INSERT/UPDATE plus revoked-session stale-digest read denial in the named disposable fixture; no fleet assertion PASS yet.
 
 QA815 `065ec91` migrations 21 PASS; Ruby 522/7080, 1 role failure, 0 errors; thread fixture repair passes its formerly failing path. Steep111, HTTP/worker/browser NOT_REACHED, cleanup PASS.
+
+QA815 `c5a8737` current web full PASS 842/842/build with task cleanup; V2 declaration/spec hashes unchanged. Current-source real-browser acceptance NOT_RUN; protected backend role remains OPEN.

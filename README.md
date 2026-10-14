@@ -439,3 +439,5 @@ The later exact integrated 651b63a fleet receipt carries revised 00009 blob `eec
 ADV111 reviewed exact 2f255b9 source with zero confirmed defects across 303 unique LOC, while identifying a missing positive restricted-role mutation test. The disposable fixture now covers protected `app_read` INSERT and UPDATE, valid digest without marker denial, and revoked-session read denial; these added cases remain unexecuted.
 
 QA815 `065ec91` backend retest: 21 migrations PASS, Ruby 522/7080 with one protected organization role failure and zero errors; Rowan's prior thread fixture ownership error is absent. Steep 111 problems; HTTP/worker/browser still pending. Cleanup passed. See `docs/completion/soren.md`.
+
+QA815 current `c5a8737` web successor passes V1/V2, lint, strict type, 842/842 units and production build with exact cleanup. Its attachment-only source changes do not transfer the older f70 screenshots; real-backend browser remains blocked by the backend role failure. See `docs/completion/soren.md`.
