@@ -134,6 +134,7 @@ describe('Outreach routed pages', () => {
     expect(g.recordConsent).toHaveBeenCalledWith(context, proof, campaignId, leadId, expect.objectContaining({
       operation_id: expect.any(String), expected_version: 1, source: 'Signed intake form', observed_at: expect.stringMatching(/Z$/), attested: true,
     }), expect.any(AbortSignal))
+    expect(await screen.findByText(/Manual attestation recorded for this lead/)).toBeTruthy()
     expect(screen.queryByRole('button', { name: /send/i })).toBeNull()
   })
   it('rejects a malformed campaign route before any gateway request', async () => {

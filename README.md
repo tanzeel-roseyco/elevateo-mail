@@ -182,3 +182,5 @@ FE807 continuation adds separate draft/paused campaign, lead, disabled account a
 FE807 consent presentation follow-up: compact lead rows call `granted` a backend consent record and direct operators to detail for evidence; manual attestation detail says independent verification is not shown. Analytics identifies a server count of granted, unsuppressed records that may include manual claims. Sending stays unavailable; fleet execution of this copy/test change is pending.
 
 FE807 fleet finding on integrated `8eb840d`: API/lint/typecheck passed, but three FE807 unit failures included a whole-second UTC consent evidence validator defect. The isolated repair accepts canonical `...:00Z` timestamps while rejecting invalid calendar dates; fleet retest is pending. Seven additional shell/route/nav tests belong to integration owners, and build was not reached.
+
+FE807 consent journey now shows an accessible success status after the backend confirms manual evidence: operator attestation recorded, independent verification not shown, sending unavailable. It does not infer eligibility from `granted`.

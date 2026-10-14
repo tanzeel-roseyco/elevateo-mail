@@ -232,6 +232,7 @@ function CampaignLeads({ campaignId, ...props }: OutreachPageProps & { campaignI
   const [email, setEmail] = useState('')
   const [editId, setEditId] = useState<string | null>(null)
   const [consentId, setConsentId] = useState<string | null>(null)
+  const [consentSavedId, setConsentSavedId] = useState<string | null>(null)
   const [busy, setBusy] = useState(false)
   const [uncertain, setUncertain] = useState(false)
   const [accessLost, setAccessLost] = useState(false)
@@ -265,8 +266,9 @@ function CampaignLeads({ campaignId, ...props }: OutreachPageProps & { campaignI
       <li key={lead.id}><Link to={`/outreach/campaigns/${campaignId}/leads/${lead.id}`}>{lead.email}</Link> · consent record {lead.consent_status} (evidence in detail) · {lead.suppressed ? 'suppressed' : 'not suppressed (server report)'}
         <Button onClick={() => { setEditId(lead.id); setEmail(lead.email) }}>Edit address</Button>
         {props.gateway?.recordConsent && lead.consent_status !== 'granted' &&
-          <Button onClick={() => setConsentId((current) => current === lead.id ? null : lead.id)}>Record consent evidence</Button>}
-        {consentId === lead.id && campaignId && <ConsentEvidenceForm key={`${lead.id}:${lead.version}`} lead={lead} campaignId={campaignId} {...props} onSaved={() => { setConsentId(null); setRevision((value) => value + 1) }} onAccessLost={() => setAccessLost(true)} />}
+          <Button onClick={() => { setConsentSavedId(null); setConsentId((current) => current === lead.id ? null : lead.id) }}>Record consent evidence</Button>}
+        {consentSavedId === lead.id && <p role="status">Manual attestation recorded for this lead. Independent verification is not shown; sending remains unavailable.</p>}
+        {consentId === lead.id && campaignId && <ConsentEvidenceForm key={`${lead.id}:${lead.version}`} lead={lead} campaignId={campaignId} {...props} onSaved={() => { setConsentSavedId(lead.id); setConsentId(null); setRevision((value) => value + 1) }} onAccessLost={() => setAccessLost(true)} />}
       </li>)}</ul>
     {page.next_cursor && <Link to={`?cursor=${encodeURIComponent(page.next_cursor)}`}>Next leads page</Link>}
   </>}</Content>
