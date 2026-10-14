@@ -1,5 +1,7 @@
 # Product requirements and decision record
 
+NATIVE-946 keeps signed and unsigned macOS packaging paths behind the same origin guard and now rejects terminal-dot host aliases, including case variants. This is an authored source repair with NOT_RUN Docker tests; no DMG or installed-app acceptance is claimed. See `docs/completion/maeve-native946.md`.
+
 NATIVE-942 distinguishes an unsigned macOS test candidate from a signed downloadable release. The candidate requires a real Mac build runner and reviewed public HTTPS origin; signed release still needs Developer ID, notarization/stapling, Gatekeeper and installed auth/navigation/upgrade acceptance. Source and preflight tests are authored, not executed; see `docs/completion/maeve-native942.md`.
 
 ### Mira BE03 UI isolated R24 implementation (2026-10-14)

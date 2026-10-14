@@ -25,6 +25,10 @@ if [ "$authority" != "$host" ]; then
   case "$port" in ''|*[!0-9]*) echo 'MAC-814 invalid origin port' >&2; exit 2 ;; esac
 fi
 host=$(printf '%s' "$host" | tr '[:upper:]' '[:lower:]')
+# AIDEV-NOTE: Reject terminal DNS dots before placeholder matching; they can alias blocked hosts.
+case "$host" in
+  *.) echo 'MAC-814 trailing-dot origin refused' >&2; exit 2 ;;
+esac
 case "$host" in
   localhost|*.localhost|example.com|*.example.com|*.invalid|*.test)
     echo 'MAC-814 placeholder origin refused' >&2; exit 2 ;;

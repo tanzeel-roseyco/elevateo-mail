@@ -36,6 +36,14 @@ class MacPackagingPreflightTest(unittest.TestCase):
         self.assertEqual(2, result.returncode)
         self.assertIn("placeholder origin refused", result.stderr)
 
+    def test_terminal_dns_dots_denied_on_both_paths(self):
+        for mode in ("--unsigned-candidate", ""):
+            for host in ("mail.example.com.", "mail.invalid..", "MAIL.EXAMPLE.COM."):
+                with self.subTest(mode=mode, host=host):
+                    result = self.invoke(mode, f"https://{host}", pretend_mac=True)
+                    self.assertEqual(2, result.returncode)
+                    self.assertIn("trailing-dot origin refused", result.stderr)
+
     def test_valid_candidate_origin_needs_toolchain_not_signing_identity(self):
         result = self.invoke("--unsigned-candidate", "https://mail.company.org", pretend_mac=True)
         self.assertEqual(2, result.returncode)

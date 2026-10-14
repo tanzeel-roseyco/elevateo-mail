@@ -14,6 +14,8 @@ Shared company mailroom with one Rails domain authority and a React/TypeScript c
 
 ## Current state
 
+NATIVE-946 repairs the NATIVE-942 origin preflight to reject terminal DNS dots on both signed and unsigned Mac paths; six authored preflight cases remain fleet Docker NOT_RUN. See [Maeve repair](docs/completion/maeve-native946.md).
+
 NATIVE-942 adds a macOS unsigned test-only DMG candidate command alongside the unchanged signed-release gate. No Mac runner, DMG, installed-app validation or release evidence exists yet; fleet Docker preflight tests are requested. See [Maeve native record](docs/completion/maeve-native942.md).
 
 SEQ-876 source repair addresses Soren's exact `e9ead714` sequence controller load SyntaxError at repository line 123. Repository/controller fleet retest is pending; see [Maeve repair record](docs/completion/maeve-seq876-syntax-repair.md).

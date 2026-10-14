@@ -695,6 +695,8 @@ R25 lint repair: one tooling defect in the unmount cleanup (ref must be captured
 
 ## MAC-814 macOS template (pending independent review)
 
+ADV160 NATIVE-942 source review found one P2 defect: `macos-release.sh` accepted trailing-dot aliases of blocked placeholder hosts (reviewed 184 unique LOC; 1/184 = 5.43 defects/KLOC). NATIVE-946 adds a fail-closed terminal-dot check and regression source; independent repair closure and Soren fleet runtime remain NOT_RUN. See `docs/completion/maeve-native946.md`.
+
 NATIVE-942 unsigned candidate source and preflight tests: independent adversarial review NOT_RUN; 0 independently reviewed LOC, defect density N/A. Self-inspection is not acceptance. Soren fleet preflight and real Mac package/runtime evidence remain pending; bounded review packets requested in `docs/completion/maeve-native942.md`.
 
 Author self-review only; independent coverage 0 LOC, defects and defects/KLOC not established. Bounded review requested for `apps/orion/macos` template, validator and tests, with a separate design tradeoff review of universal versus architecture-specific DMGs. Runtime evidence pending Soren QA815 static Docker check and eventual Mac runner.
