@@ -30,5 +30,10 @@ Rails.application.routes.draw do
   get "/v1/mailboxes/:mailbox_id/members", to: "v1/mailbox_members#index"
   put "/v1/mailboxes/:mailbox_id/members/:user_id", to: "v1/mailbox_members#update"
   delete "/v1/mailboxes/:mailbox_id/members/:user_id", to: "v1/mailbox_members#destroy"
+  # AIDEV-NOTE: BE03 uses independent SendError and defaults disabled until root accepts the SQL/auth bridge.
+  get "/v1/drafts/:draft_id/send-review", to: "v1/send_reviews#show"
+  post "/v1/drafts/:draft_id/send-approvals", to: "v1/send_approvals#create"
+  get "/v1/send-intents/:send_id", to: "v1/send_intents#show"
+  post "/v1/send-intents/:send_id/cancellation", to: "v1/send_intents#cancel"
   get "/v1/search", to: "v1/search#index"
 end

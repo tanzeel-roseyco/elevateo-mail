@@ -149,7 +149,93 @@
       "bootstrap": "explicit bootstrap-send.sql after baseline bootstrap, before00007"
     },
     "Nadia": {
-      "intake": "PENDING final review/type/lint/test receipt"
+      "head": "50ba21dbba66291979339538b3aade1602e77613",
+      "tested_source": "45d3d69b2dc434e787d29ce356a134a55a5e6304",
+      "unchanged_owner_bytes": [
+        {
+          "path": "apps/server/app/controllers/v1/send_approvals_controller.rb",
+          "sha256": "fc714756ac4b625cca3ea0bd4a573826201890bbe23848476ff6eb5652f83405"
+        },
+        {
+          "path": "apps/server/app/controllers/v1/send_controller.rb",
+          "sha256": "8af52533ef5b81a54fa18b9c664ca5998e3b65637658c8fde12b6a3953fd6afc"
+        },
+        {
+          "path": "apps/server/app/controllers/v1/send_intents_controller.rb",
+          "sha256": "02eace75eec84870390cfcc7e9a7f0ff018ca905d2f177f2fdda3b3531833c0e"
+        },
+        {
+          "path": "apps/server/app/controllers/v1/send_reviews_controller.rb",
+          "sha256": "d12b2aa6a45ce985382f575d061371143e215920d74ae2372e63385690fb54da"
+        },
+        {
+          "path": "apps/server/config/routes.rb",
+          "sha256": "cf3c6b6b3890da8adaa1d6ece76dc503f488f8f6fc2ba80628a19583ccf3e2bf"
+        },
+        {
+          "path": "apps/server/lib/elevateo/config.rb",
+          "sha256": "14c1d741704f33b116c6ad4ae362f4c58a8dcb34bbce23f6845c2d5928a4db25"
+        },
+        {
+          "path": "apps/server/lib/elevateo/send_api/address.rb",
+          "sha256": "5056803566ad044d4770f23ef564d0fe45f011df902aef567d2ad6c962fadf5a"
+        },
+        {
+          "path": "apps/server/lib/elevateo/send_api/canonical.rb",
+          "sha256": "a00fde33a19d56e0b5546f83f071ff11ad006dc7228bed843cf79b904b0500a6"
+        },
+        {
+          "path": "apps/server/lib/elevateo/send_api/database.rb",
+          "sha256": "e25d05f6e5fed504fdcbb0c0e9c248334aa03f3fbbf36a1c693b8bed42867c8b"
+        },
+        {
+          "path": "apps/server/lib/elevateo/send_api/input.rb",
+          "sha256": "f2790e32f40882f396bac7ace445f103ccb2096bd47e7cd32905fbbf3e84f518"
+        },
+        {
+          "path": "apps/server/lib/elevateo/send_api/review.rb",
+          "sha256": "b1d23a84f8a75a13ef69368a79ebda62dbeb10939565f9bd4b17f8262552949e"
+        },
+        {
+          "path": "apps/server/lib/elevateo/send_api/service.rb",
+          "sha256": "747aa7462dcd6c83b7005a0b4e4505eb28c2deb01264ee9b0deac7be51ed9c76"
+        },
+        {
+          "path": "apps/server/lib/elevateo/send_api/status.rb",
+          "sha256": "a1a2325a232aa5f38a2fadb2c4bf832a87b5232660a45d15025c579968828a70"
+        },
+        {
+          "path": "apps/server/lib/elevateo/send_error.rb",
+          "sha256": "44928d0304841079eeb815a0dafe4befc7d2cf3e48076a253c438c798e7b4941"
+        },
+        {
+          "path": "apps/server/sig/config.rbs",
+          "sha256": "6abc329b2fa342fb68e36713b6448b1992c5fab7e3429c93d400289265d85dad"
+        },
+        {
+          "path": "apps/server/sig/send_api.rbs",
+          "sha256": "5e5eed980c2a37da4a0a816dc90161aba66ef8d116ab8b43e80635991967e8b2"
+        },
+        {
+          "path": "apps/server/test/sends/send_api_boundary_test.rb",
+          "sha256": "0f97eeffbca16f2d39eed54a81558870179eac21ebd745ca61b45a164da90cba"
+        },
+        {
+          "path": "apps/server/test/sends/send_api_controller_test.rb",
+          "sha256": "f2d453456d6319a318c8fd8f12b8c0f87c695006a17df5be0518ae61d9dc1fbd"
+        },
+        {
+          "path": "apps/server/test/sends/send_api_reads_test.rb",
+          "sha256": "0963647b8d9cfbd4b04e807a19a3b75f05ee7639edbb0cf3de7fc8900055d621"
+        }
+      ],
+      "source_results": "Combined API fixtures22runs193assertionsPASS0; strictSteep0 on product-identical525295e+exactElara3d7; affectedlint16files0offenses0 plusGETfixture1file0offenses0; all exactcontainersabsent",
+      "real_sql_auth_http": "NOT_RUN",
+      "config_defaults": {
+        "ELEVATEO_SEND_API_ENABLED": false,
+        "ELEVATEO_SEND_CONTROL_PATH": ""
+      },
+      "S3_cancellation": "guarded503; no SQL bridge"
     },
     "Mira": {
       "intake": "PENDING final generated/review/test receipt"

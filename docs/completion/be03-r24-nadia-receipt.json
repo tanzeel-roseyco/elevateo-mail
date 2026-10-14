@@ -1,0 +1,130 @@
+{
+  "owner": "Nadia BE03-API",
+  "baseline": "03ae770c56271cd8236726bfd8fe63248e81283d",
+  "runtime_source": "45d3d69b2dc434e787d29ce356a134a55a5e6304",
+  "worker_dependency": "3d7b61f519c0696c70a3d5c33a8c9641b852ee69",
+  "dependency_image": "sha256:7dc61d4b7e12f94764f95f4f1bfe8e3940049247e6d409898ce9d3ed2810f348",
+  "gemfile_lock_sha256": "67b2f69a0ed30c1d9926ab2940fe54173991d238192feca38a8f04b97390ea23",
+  "source_sha256": {
+    "README.md": "aea48b94b4614c87d3cb439b2d8739febd27fcc483fe38cce5817253c52e004c",
+    "apps/server/app/controllers/v1/send_approvals_controller.rb": "fc714756ac4b625cca3ea0bd4a573826201890bbe23848476ff6eb5652f83405",
+    "apps/server/app/controllers/v1/send_controller.rb": "8af52533ef5b81a54fa18b9c664ca5998e3b65637658c8fde12b6a3953fd6afc",
+    "apps/server/app/controllers/v1/send_intents_controller.rb": "02eace75eec84870390cfcc7e9a7f0ff018ca905d2f177f2fdda3b3531833c0e",
+    "apps/server/app/controllers/v1/send_reviews_controller.rb": "d12b2aa6a45ce985382f575d061371143e215920d74ae2372e63385690fb54da",
+    "apps/server/config/routes.rb": "cf3c6b6b3890da8adaa1d6ece76dc503f488f8f6fc2ba80628a19583ccf3e2bf",
+    "apps/server/lib/elevateo/config.rb": "14c1d741704f33b116c6ad4ae362f4c58a8dcb34bbce23f6845c2d5928a4db25",
+    "apps/server/lib/elevateo/send_api/address.rb": "5056803566ad044d4770f23ef564d0fe45f011df902aef567d2ad6c962fadf5a",
+    "apps/server/lib/elevateo/send_api/canonical.rb": "a00fde33a19d56e0b5546f83f071ff11ad006dc7228bed843cf79b904b0500a6",
+    "apps/server/lib/elevateo/send_api/database.rb": "e25d05f6e5fed504fdcbb0c0e9c248334aa03f3fbbf36a1c693b8bed42867c8b",
+    "apps/server/lib/elevateo/send_api/input.rb": "f2790e32f40882f396bac7ace445f103ccb2096bd47e7cd32905fbbf3e84f518",
+    "apps/server/lib/elevateo/send_api/review.rb": "b1d23a84f8a75a13ef69368a79ebda62dbeb10939565f9bd4b17f8262552949e",
+    "apps/server/lib/elevateo/send_api/service.rb": "747aa7462dcd6c83b7005a0b4e4505eb28c2deb01264ee9b0deac7be51ed9c76",
+    "apps/server/lib/elevateo/send_api/status.rb": "a1a2325a232aa5f38a2fadb2c4bf832a87b5232660a45d15025c579968828a70",
+    "apps/server/lib/elevateo/send_error.rb": "44928d0304841079eeb815a0dafe4befc7d2cf3e48076a253c438c798e7b4941",
+    "apps/server/sig/config.rbs": "6abc329b2fa342fb68e36713b6448b1992c5fab7e3429c93d400289265d85dad",
+    "apps/server/sig/send_api.rbs": "5e5eed980c2a37da4a0a816dc90161aba66ef8d116ab8b43e80635991967e8b2",
+    "apps/server/test/sends/send_api_boundary_test.rb": "0f97eeffbca16f2d39eed54a81558870179eac21ebd745ca61b45a164da90cba",
+    "apps/server/test/sends/send_api_controller_test.rb": "f2d453456d6319a318c8fd8f12b8c0f87c695006a17df5be0518ae61d9dc1fbd",
+    "apps/server/test/sends/send_api_reads_test.rb": "0963647b8d9cfbd4b04e807a19a3b75f05ee7639edbb0cf3de7fc8900055d621",
+    "code-reviews.md": "8ae4cdeeb63be1df9a46d9a17e92f29dee22156cc5783a9fe091d8fc99af9158",
+    "docs/completion/be03-nadia-r24-api.md": "518f386a0c26d54c984ad65d14805b7573be12f59bf103515bd7c113d05021c4",
+    "documentation.md": "88608c34607347bd3b1fc9a0cf5bb1f83b33277063015de00283fb23c4cdd729",
+    "state.md": "b20889c726e349daa238c8c60e751bb2cf1a4bf7be3e1b72f1ca25da06310869"
+  },
+  "checks": [
+    {
+      "stage": "unit-88d7d9e",
+      "exit": 1,
+      "log_sha256": "55c55a4f38f9be16014a2832d33c88ad2ddaba8c6837e4d4ff8e367e96d69b54",
+      "exact_absence": "independently checked by container-name listing"
+    },
+    {
+      "stage": "type-88d7d9e",
+      "exit": 1,
+      "log_sha256": "dfce6283a9d268b7e2e95ca7e24dce738cb051ae0f87e2b9d334ec9e706b2774",
+      "exact_absence": "independently checked by container-name listing"
+    },
+    {
+      "stage": "unit-4e27c1d",
+      "exit": 0,
+      "log_sha256": "e7a64ca27ef7334ce38f4f1f354eb986dd7a0d76a9ba1aa43d42e03f67be13ca",
+      "exact_absence": true
+    },
+    {
+      "stage": "type-4e27c1d",
+      "exit": 1,
+      "log_sha256": "eacafffd3c775e7ea1844d42b396f4b3578004068dd0fe0f60819c904f247d2d",
+      "exact_absence": true
+    },
+    {
+      "stage": "lint-4e27c1d",
+      "exit": 1,
+      "log_sha256": "b505d66b88c6938168db8017ad6bd2a04cbc61f4885ed29ad15c7a43824a0db2",
+      "exact_absence": true
+    },
+    {
+      "stage": "lint-required-4e27c1d",
+      "exit": 1,
+      "log_sha256": "2271ee1f17e7461407cb09c7c6571f5210a8f6748518f7850749caf7eb11ed17",
+      "exact_absence": true
+    },
+    {
+      "stage": "unit-525295e",
+      "exit": 0,
+      "log_sha256": "5c61563397c1ff9f61781f1f8e951d1d22813ba418f7895bb404997be804324d",
+      "exact_absence": true
+    },
+    {
+      "stage": "type-525295e",
+      "exit": 0,
+      "log_sha256": "a6c74aeefec8bdd4d522e69ccee1b9803175eea9de89a43462f4b4bc54a00da5",
+      "exact_absence": true
+    },
+    {
+      "stage": "lint-required-525295e",
+      "exit": 0,
+      "log_sha256": "865edcf37e5b1bbf95651daa7151bef8774ad09613dcc4bae4d5ffc66de05108",
+      "exact_absence": true
+    },
+    {
+      "stage": "unit-43129ee",
+      "exit": 1,
+      "log_sha256": "2eea8a5b90829bfce59b3bd6abb9112c21ea57d2e1582ec0c28512adc10efb97",
+      "exact_absence": true
+    },
+    {
+      "stage": "read-diagnostic-43129ee",
+      "exit": 1,
+      "log_sha256": "9015da15268ab0ae7066c6efcafe18875bc6a624c78b04ba1d024bd2a63c6a48",
+      "exact_absence": true
+    },
+    {
+      "stage": "unit-45d3d69",
+      "exit": 0,
+      "log_sha256": "32f8a3f74f07e10119c5585ea2e0b98a111b0502612fe68742116c661ccfdad4",
+      "exact_absence": true
+    },
+    {
+      "stage": "lint-reads-45d3d69",
+      "exit": 0,
+      "log_sha256": "18d8b9d40eec3a7b7965a40b85f252189116a599f4841abc32eac0d6d72c4201",
+      "exact_absence": true
+    }
+  ],
+  "final_unit": {
+    "runs": 22,
+    "assertions": 193,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0
+  },
+  "strict_type": "PASS on525295e product source unchanged at45d3d69",
+  "required_lint": "PASS16affectedfiles on525295e plus1newtest on45d3d69",
+  "sql_auth_durable_queue": "NOT_RUN",
+  "s3_cancellation": "guarded503",
+  "be02": "OPEN/unaccepted",
+  "integration_release": "gated",
+  "cleanup": "all own containers absent; no image or volume created; shared dependency retained",
+  "review": "2MEDIUM product +1LOW test coverage repaired independently; runtime type/fixture failures preserved; no complete BE03 claim",
+  "effective_fast": "unverified"
+}
