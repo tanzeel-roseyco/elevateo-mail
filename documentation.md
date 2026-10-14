@@ -1,5 +1,7 @@
 ### INT-801 integrated source candidate (2026-10-14)
 
+Soren’s exact older f210b5b frontend fleet gate passed API generation/check, lint, typecheck, 791 units and build; draft.5 consent/UI source still requires its own rerun and generated declaration.
+
 V2 draft.5 adds `recordOutreachLeadConsent` with strict source/time/attestation input and a redacted lead detail response. The route reuses Dorian’s guarded controller and the browser gateway binds Celeste’s typed manual-evidence UI interface. This remains unverified source pending fleet HTTP, SQL, web and browser checks; no live sending is enabled.
 
 Latest INT-801 source retains the frozen V1 OpenAPI bytes and activates only the reviewed V2 source allowlist. Dorian's monotonic consent-history source is merged; account and worker operations are still disabled. The latest candidate awaits Soren's exact fleet web/backend/contract checks and V2 declaration generation; see `docs/completion/cassian.md` for prior failures and limits.

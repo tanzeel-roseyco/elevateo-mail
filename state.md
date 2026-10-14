@@ -1,5 +1,7 @@
 ### INT-801 integrated source candidate (2026-10-14)
 
+Soren’s exact older f210b5b frontend fleet gate passed API generation/check, lint, typecheck, 791 units and build; draft.5 consent/UI source still requires its own rerun and generated declaration.
+
 V2 draft.5 adds a guarded manual lead consent action and redacted detail evidence projection to complete the inert draft-to-lead source journey. The browser gateway validates attestation input and exposes the detail read; no send route or independently verified consent state exists. Fleet DTO generation and exact integrated tests remain pending.
 
 Current isolated source includes Dorian's monotonic consent-history follow-up and Cassian's strict V2 operation allowlist. Account/worker routes remain gated. Exact latest-source fleet web, DTO, backend SQL/HTTP and browser checks are pending; the prior 8eb840d web unit and 45be80b backend fixture failures are not acceptance.

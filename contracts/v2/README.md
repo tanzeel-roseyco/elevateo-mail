@@ -4,7 +4,7 @@ Draft.5 source-registers manual lead consent attestation through the existing gu
 
 V2 adds organization administration and inert Outreach interfaces without changing frozen V1 session, read, collaboration or send schemas. `openapi.json` marks each operation as an isolated candidate or disabled proposal. Source-registered candidates use the existing authenticated session, current context/CSRF and tenant transaction boundaries; fleet SQL/HTTP/browser acceptance remains pending. No V2 operation can dispatch mail or connect a provider.
 
-Organization grant GET returns a bounded redacted page with seven effective roles and per-row revisions. PUT cannot assign owner; verified enrollment and owner transfer are separate workflows. The roster GET projects unbound display configuration only, with no email, Auth UUID or mailbox content. Outreach campaign/lead operations remain draft or paused; guarded draft writes are source-registered for isolated fleet verification. Account, consent/suppression, worker and native interfaces are withheld pending owner review.
+Organization grant GET returns a bounded redacted page with seven effective roles and per-row revisions. PUT cannot assign owner; verified enrollment and owner transfer are separate workflows. The roster GET projects unbound display configuration only, with no email, Auth UUID or mailbox content. Outreach campaign/lead operations remain draft or paused; guarded draft writes are source-registered for isolated fleet verification. Account, suppression, worker and native interfaces are withheld pending owner review.
 
 AIDEV-NOTE: No-live-send is a contract boundary, not a UI toggle. Reject unknown request fields and stale revisions. Authorization must be rechecked inside the transaction after waits.
 

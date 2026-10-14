@@ -16,6 +16,8 @@ Shared company mailroom with one Rails domain authority and a React/TypeScript c
 
 ### INT-801 integrated source candidate (2026-10-14)
 
+Soren’s exact older f210b5b frontend fleet gate passed API generation/check, lint, typecheck, 791 units and build; draft.5 consent/UI source still requires its own rerun and generated declaration.
+
 V2 draft.5 now source-registers manual lead consent attestation and redacted evidence detail through Dorian’s guarded controller and the production browser adapter. It is an unverified manual claim and cannot send mail. Dorian’s actor mailbox-membership account repair is merged, while account routes remain gated pending mixed-private/shared/revocation fleet proof.
 
 Latest isolated integration adds Dorian's monotonic consent-history binding and strict V2 route allowlist. Account and worker routes remain disabled; the independent account-policy finding and generated V2 declaration remain open. The latest merged source has not passed fleet Docker; prior exact web and DB failures remain recorded below and in `docs/completion/cassian.md`.
