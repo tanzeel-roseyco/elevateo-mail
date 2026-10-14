@@ -3,6 +3,22 @@
 require_relative "mailbox_membership_database_helper"
 
 class OrganizationAccessDatabaseTest < MailboxMembershipDatabaseCase
+  def teardown
+    if @admin && @org
+      # AIDEV-NOTE: Disposable fixture cleanup alone may bypass the immutable-owner trigger as superuser.
+      @admin.exec("ROLLBACK") if @admin.transaction_status != PG::PQTRANS_IDLE
+      @admin.exec("BEGIN")
+      @admin.exec("ALTER TABLE app.organization_access DISABLE TRIGGER guard_owner_loss")
+      @admin.exec_params("DELETE FROM app.organization_enrollment_receipts WHERE organization_id=$1", [@org])
+      @admin.exec_params("DELETE FROM app.organization_access WHERE organization_id=$1", [@org])
+      @admin.exec("ALTER TABLE app.organization_access ENABLE TRIGGER guard_owner_loss")
+      @admin.exec("COMMIT")
+    end
+    super
+  ensure
+    @admin.exec("ROLLBACK") if @admin && @admin.transaction_status != PG::PQTRANS_IDLE
+  end
+
   def grant(actor, role)
     @admin.exec_params("INSERT INTO app.organization_access(organization_id,user_id,role) VALUES ($1,$2,$3)",
       [@org, actor.user_id, role])
@@ -36,6 +52,29 @@ class OrganizationAccessDatabaseTest < MailboxMembershipDatabaseCase
     grant(admin, "admin")
     assert_equal "not_found", change(admin, admin, 0, "admin").fetch("status")
     assert_equal "not_found", change(admin, @identity, 0, "associate").fetch("status")
+  end
+
+  def test_two_simultaneous_owner_removals_both_reject
+    grant(@identity, "owner")
+    connections = Array.new(2) { connect("BE02_ADMIN_DATABASE_URL", "supabase_admin") }
+    start = Queue.new
+    threads = connections.map do |connection|
+      Thread.new do
+        start.pop
+        begin
+          connection.exec_params("DELETE FROM app.organization_access WHERE organization_id=$1 AND user_id=$2", [@org, @user])
+          :unexpected_success
+        rescue PG::CheckViolation
+          :denied
+        end
+      end.tap { |thread| thread.report_on_exception = false }
+    end
+    2.times { start << true }
+    assert_equal %i[denied denied], threads.map(&:value)
+    assert_equal "owner", @admin.exec_params("SELECT role FROM app.organization_access WHERE user_id=$1", [@user]).getvalue(0, 0)
+  ensure
+    threads&.each(&:join)
+    close_connections(connections || [])
   end
 
   def test_sole_owner_cannot_be_deleted_or_demoted_directly

@@ -4,9 +4,11 @@
 class CreateOrganizationAccess < ActiveRecord::Migration[8.1]
   def up
     execute File.read(File.expand_path('../sec802/access.sql', __dir__))
+    execute File.read(File.expand_path('../sec802/membership_patch.sql', __dir__))
   end
 
   def down
+    execute File.read(File.expand_path('../be02_memberships/mutation.sql', __dir__).sub('CREATE FUNCTION', 'CREATE OR REPLACE FUNCTION'))
     execute File.read(File.expand_path('../sec802/down.sql', __dir__))
   end
 end

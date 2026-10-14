@@ -771,3 +771,5 @@ Independent adversarial functional and design-tradeoff reviews are requested fro
 ### FE-805 R2 wiring self-inspection (Fable, 2026-10-15)
 
 Coverage: `featureGateways.tsx` (27 LOC), rewritten `features/index.tsx` (86), `FeatureNotConnectedPage.tsx` (18), changed hunks in `featureRegistry.ts`/`Sidebar.tsx`/`App.tsx`/`main.tsx`/`index.css` (~60). Total ~191 production LOC in one bounded pass. Author self-inspection only; no independent review claimed. Self-found before commit: 1 (explicit `undefined` props would violate exactOptionalPropertyTypes against Celeste's optional props; replaced with conditional spreads). Provisional density 5.24/KLOC, author evidence. Owner commits merged unmodified are not counted. Tests: 10 FE-805 cases authored across four files, not executed.
+
+SEC-802 continuation author inspection corrected migration dependency order and receipt cascade behavior before commit. This is not an independent adversarial review. `db/sec802/access.sql` and `membership_patch.sql` need separate <=200 LOC reviews, plus a dedicated design-tradeoff review; confirmed independent defect density remains unreported.
