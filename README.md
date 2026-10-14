@@ -214,3 +214,5 @@ QA816 FE806 browser candidate adds keyboard permalink/reload, missing-message V2
 QA816 exact e3ac16b fleet acceptance typecheck/build and 73/73 harness unit cases passed under Soren; browser/API cases and candidate screenshots remain pending. The separate seeded-simulated visual run is requested and must not be counted as real-auth acceptance.
 
 QA816 inspected eight actual fleet browser PNGs on f210b5bf, labeled SEEDED-SIMULATED: desktop/390 light/dark inbox layout is readable without visible clipping, but reader captures expose two visual-fixture defects in assignment/notes mocking and message count. See docs/completion/tessa-visual-f210.md. Real-auth/API QA816 browser and screenshots remain pending.
+
+QA816 authored a focused visual-fixture repair after inspecting the eight simulated PNGs: thread detail routing is scoped, assignment/notes receive valid synthetic responses, and the ready-reader screenshot waits for settled nonerror panels with a consistent message count. Fleet rerun and replacement images are pending; original f210b5bf evidence is retained.
