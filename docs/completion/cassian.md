@@ -397,3 +397,5 @@ ADV143 exact bounded source report imported: b3aaa07e gateway nil guard and 732f
 ADV141 exact Nadia 3f3562a6 typed index authorization report imported: 224 unique LOC/0 defects, source-only. It verifies current reader invocation and denial propagation at the callable boundary but excludes direct-message implementation and actual DB revocation; Soren b3aaa07e Ruby/Steep proof is separate.
 
 Maeve `ba4323f` exact sequence repository test-only lint repair imported into feature `285efc19` and strict-only core `79ace5fb`; no production source changed and no host test run. Soren fleet-only targeted RuboCop and Ruby test requested on the eventual coherent owner-lint successor. Remaining Orion/Corin/Nadia/Sabine lint offenses remain open.
+
+Soren `7738f8fd` no-follow privacy source, `1fcb462f` corrected fixture and `3546f570` six-case fleet receipt imported at `7d1aa2b7`. Tests executed: only source-specific Python unit cases; integrated real browser --list/mount proof/screenshots NOT_RUN. Backend lint remains blocker.

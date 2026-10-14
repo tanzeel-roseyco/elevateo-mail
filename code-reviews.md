@@ -1367,3 +1367,5 @@ ADV143 Ada reviewed exact b3aaa07e Float guard and 732f2749 assignee activation 
 ADV141 Ada reviewed Nadia final 3f3562a6 typed index authorization controller/RBS/test over 224 unique versioned LOC, zero confirmed defects (0/KLOC), source only. Direct-message implementation and actual revocation/runtime were excluded; the final eight-line denial test does not change production behavior relative to prior 2418 source.
 
 Maeve sequence repository test-only lint repair 22 changed lines imported source-only; no independent review or runtime, so reviewed LOC/defects/density unassessed for this repair. QA815 prior 10 reported Maeve lint offenses require Soren exact successor rerun to close.
+
+ADV144 reported P2 browser output symlink redirection; Soren no-follow successor imported source-only and six scoped fleet unit cases PASS on his pin. No independent successor source re-review or real browser proof yet; repair reviewed LOC/density unassessed, prior finding remains historical until accepted.

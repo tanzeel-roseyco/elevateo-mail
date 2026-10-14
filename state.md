@@ -477,3 +477,5 @@ QA815 exact core-only b3aaa07e: 21 migrations, Ruby 522/7089 and Steep zero prob
 ADV143 source review of b3aaa07e guard plus 732f2749 directory activation: 270 unique LOC/0 defects, source-only, with SQL/RLS and real-role/browser proof excluded. Core backend lint remains failed; feature runtime not run.
 
 Maeve ba4323f sequence test lint repair is imported source-only into feature/core. RuboCop/targeted Ruby rerun and four other owner areas remain pending; no lint PASS claim.
+
+QA815 no-follow browser privacy source and six-case fleet unit receipt are imported. Source-specific unit PASS does not prove real browser private mounts/compiled reporter; backend lint still gates realAuth.

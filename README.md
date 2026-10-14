@@ -532,3 +532,5 @@ QA815 core-only exact `b3aaa07e` fleet gate passed 21 migrations, 74 Ruby suites
 ADV143 independently reviewed the gateway guard and candidate assignee activation, 270 source LOC/zero confirmed defects; it did not cover protected SQL internals or real-role/browser execution. The exact core backend still fails lint, and the feature route remains a candidate pending fleet evidence.
 
 Maeve's test-only sequence repository lint repair is staged in both feature and core candidates; the broader 19-offense QA815 lint gate remains failed until all owner patches pass on one exact fleet source.
+
+QA815 ADV144 private browser proof successor is staged from Soren `7738f8fd`/`1fcb462f`: no-follow path checks plus corrected fixture. His exact six-case fleet unit receipt `3546f570` passed; actual browser --list, mount proof and screenshots remain unexecuted.
