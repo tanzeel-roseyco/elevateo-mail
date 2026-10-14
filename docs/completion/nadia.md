@@ -8,7 +8,7 @@ Tradeoff simulations for root (not executed): (1) cancellation wins the job lock
 
 Requested fleet tests (not executed by Nadia): apply migration on an isolated test database, run `bundle exec ruby -Itest test/sends/cancellation_database_test.rb` and `bundle exec ruby -Itest test/sends/send_api_controller_test.rb` within the project's pinned server Docker runner, then run strict Steep and affected RuboCop. Ask Elara for lease/admission race and unknown-then-reconciliation coverage. Soren alone owns Docker and cleanup under the shared lease. No tests, review agents, Docker build or live send were executed here.
 
-Dependencies: Rowan must expose protected worker admission and observation writes using the job lock and current membership/capability checks; Elara owns execution evidence. Cassian owns canonical versioned cancellation DTO and endpoint registration. The existing Rails route already names the endpoint, so this branch wires its action without editing the canonical contract. Root owns integration and acceptance. Candidate SHA: pending commit.
+Dependencies: Rowan must expose protected worker admission and observation writes using the job lock and current membership/capability checks; Elara owns execution evidence. Cassian owns canonical versioned cancellation DTO and endpoint registration. The existing Rails route already names the endpoint, so this branch wires its action without editing the canonical contract. Root owns integration and acceptance. Initial cancellation source SHA: `e0578825105c6993677fe3cf578d591bc5221297`. Integrated source SHA: `3f979fba6230215aac7c415e6fa7dfad09b909aa` (documentation-only successor may follow).
 
 ## Integrated worker bridge candidate
 
