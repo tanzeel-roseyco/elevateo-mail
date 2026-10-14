@@ -10,6 +10,7 @@ Source candidate: `c151ecd` (ADV046/047 oracle repairs; source hashes below). Re
 | D | `qa816-visual.e2e.ts` 1–36 | 36 | `0c3fb47a54e1f578b74a7bab1d1578694d725bd1d5b9cf51c412d2351f1b7e22` |
 | E | `qa816-message.e2e.ts` 1–59 | 59 | `9567464119cdbf4c1c60f14ee74f8792ca79b39dc011ca17861fcb697f84e502` |
 | F (new; source only) | `tests/acceptance/qa816-later-page-seed.rb` 1–88; `playwright/qa816-later-page.e2e.ts` 1–43; `playwright/screenshots.ts` 76–78 | 134 | `561b2f0a94da32b1c4ebb91ef7bf23a1898bc9f14b5d9076f9d28d85e679d933`, `c9a881ef916dd5015023fa0706499cc1189d7bd6e6d892270f87079269d62ee5`, `2feb44dafe05fcee7031504498c89a031d6e9701a909374e35db1a4e666f0c72` |
+| F2 (delta after REV875; source only) | `playwright/qa816-later-page.e2e.ts` 1–51 | 51 context; 8 added | `5dd7743844fa318d23d9f847438d8e0dfd56024342a71c9a5231f4e6141d287b` |
 
 Dedicated design reviewer: examine A+B as two divided packets totaling 340 LOC, then C+D+E as separate divided packets totaling 280 LOC. Focus on genuine API/Auth observations, task-owned data and cleanup, transport barriers, response race assertions, role/tenant assumptions, screenshot admission/privacy and difference between visual viewport and text zoom. The same lines are overlapping design context, not extra unique coverage. Each functional packet stays below 200 LOC; each design assignment stays below 400 LOC.
 
