@@ -1,0 +1,34 @@
+source=fc45037b3d111e8325c859cf22b9a6ae01109c85
+image=sha256:7dc61d4b7e12f94764f95f4f1bfe8e3940049247e6d409898ce9d3ed2810f348
+started=2026-10-14T18:43:27Z
+tests/acceptance/qa816-attachments-seed-test.rb:5:in 'Kernel#require_relative': --> /workspace/tests/acceptance/qa816-attachments-seed.rb
+
+Unmatched `(', missing `)' ?
+
+   13  module Qa816AttachmentsSeed
+  105    def self.insert_stored(admin, storage, scope, filename)
+> 106      id = SecureRandom.uuid
+> 107      key = "quarantine/#{scope.fetch(:organization_id)}/#{id}"
+> 108      storage.put(key, BYTES, content_type: "application/octet-stream")
+> 109      admin.exec_params(<<~SQL, scope.values_at(:organization_id, :mailbox_id, :thread_id, :message_id) +
+> 110        [id, key, filename, BYTES.bytesize, SHA])
+> 111        INSERT INTO app.inbox_attachments(organization_id,mailbox_id,thread_id,message_id,id,storage_key,
+> 112          filename,content_type,byte_size,sha256,scan_status)
+> 113        VALUES ($1::uuid,$2::uuid,$3::uuid,$4::uuid,$5::uuid,$6,$7,'text/plain',$8::integer,$9,'pending_scan')
+> 114      SQL
+  116    end
+  229  end
+
+/workspace/tests/acceptance/qa816-attachments-seed.rb:116: syntax error found (SyntaxError)
+  114 |     SQL
+  115 |     { id: id, key: key, filename: filename }
+> 116 |   end
+      |   ^~~ unexpected 'end'; expected a `)` to close the arguments
+  117 | 
+  118 |   def self.insert_rejected(admin, scope)
+
+	from tests/acceptance/qa816-attachments-seed-test.rb:5:in '<main>'
+run_exit=1
+archive_absent=yes
+remaining_task_containers=0
+finished=2026-10-14T18:43:28Z
