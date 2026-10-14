@@ -1,0 +1,31 @@
+{
+  "source": "37861fc4f89f5b05a81dbe89e1024051aabf0e73",
+  "image": "sha256:06a9939e57531807f8d5fd76ce44b53165ffb7d7501d87ab10e285c20b1e971f",
+  "observed_at": "2026-10-14T11:25:47.619185+00:00",
+  "command": "python3 -B -m unittest discover -s ops/tests/be02 -p test_send_runner.py",
+  "runs": [
+    {
+      "container": "cassian-r25-runner378-check",
+      "exit": 1,
+      "cases": 4,
+      "failures": 2,
+      "cause": "task tmpfs omitted explicit exec; test executable stub rejected",
+      "product_changed": false
+    },
+    {
+      "container": "cassian-r25-runner378-check-exec",
+      "exit": 0,
+      "cases": 4,
+      "failures": 0,
+      "tmpfs": "/tmp:rw,exec,nosuid,size=128m"
+    }
+  ],
+  "independent_absence": {
+    "cassian-r25-runner378-check": true,
+    "cassian-r25-runner378-check-exec": true
+  },
+  "source_byte_comparison": "UNCHANGED",
+  "resources": "no builds/pulls/installs/DB/images/volumes/networks created; shared image and previews retained",
+  "scope": "runner admission/shell discovery regression ONLY; not PostgreSQL/Auth runtime",
+  "effectiveFast": "UNVERIFIED"
+}
