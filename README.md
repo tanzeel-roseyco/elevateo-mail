@@ -60,6 +60,8 @@ R24 continuation: prepared a bounded real HTTP/Auth/PostgreSQL S1/S2 fixture und
 
 R24 Nadia BE03 API isolated work is explicitly authorized by root while BE02 remains OPEN and integration/release gated. S1/S2 Rails API source and regression fixtures are committed; routes default disabled. Independent source/design reviews found two MEDIUM defects and one LOW test gap, repaired and re-reviewed. Capped fleet API fixtures PASS22runs193assertions, strict Steep and affected --lint PASS after preserved initial failures; exact own container cleanup verified. Integrated SQL/Auth runtime remains pending. See [Nadia API evidence](docs/completion/be03-nadia-r24-api.md). Historical R23 BE03-CLOSED wording below is superseded only for isolated implementation.
 
+FE-805 (Fable) R12 FE864, 2026-10-15: `outreachSessionPolicy.ts` now binds Cassian 578baa6e's optional `getOutreachSequenceDraft`/`saveOutreachSequenceDraft` with the same call-time session policy (intake 6b18fb99 is the exact 578baa6e `apps/web` tree); absence stays absent and no fixture fallback exists. Four regressions added, 35 FE-805 cases authored, none executed; no runtime or visual claim. See [Fable record](docs/completion/fable.md).
+
 ## Historical R23 checkpoint — sequencing superseded only for isolated R24
 
 Application IN PROGRESS — R23 documentation checkpoint (2026-10-14). BE02 OPEN/unaccepted; BE03 CLOSED until root accepts BE02. Application completion has priority; R&D remains separate. Invitation source is exact 51ca5d2eadd74b7ac4c1a2f5f82cd49323b15dc5; core/empty/revoked/logout evidence belongs to exact 86036e276df9c3294206e6bfa14d478c223c54dd. Observer remains OFF. Production, contracts, observer boundary and four Docker recipes are unchanged.

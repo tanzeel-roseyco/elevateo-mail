@@ -174,3 +174,5 @@ FE808 roster continuation: the People view reads paginated `/v2/organizations/{i
 FE808 current blocker: Sabine/Theo successful grant GET includes protected actor, but Cassian strict browser DTO has not yet added it. No successful admin read acceptance is claimed. Root was asked to re-dispatch the inactive Cassian owner; latest FE808 source is committed and awaits exact DTO integration plus Soren/Tessa checks.
 
 FE-805 (Fable) R10, 2026-10-15: fleet 8eb840d's seven FE-805 unit failures repaired at source without weakening semantics; apps/web intaken at the integrated 8eb840d tree; tests authored, not executed; see docs/completion/fable.md R10.
+
+FE-805 (Fable) R12 FE864, 2026-10-15: sequence-draft optional methods bound in the Outreach session policy over exact Cassian 578baa6e apps/web intake; four regressions authored, none executed. See docs/completion/fable.md R12.
