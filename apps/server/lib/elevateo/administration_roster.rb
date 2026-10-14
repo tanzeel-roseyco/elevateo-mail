@@ -55,7 +55,9 @@ module Elevateo
       invalid! unless auth_user_id.is_a?(String) && UUID.match?(auth_user_id)
       invalid! unless existing_bindings.is_a?(Hash) && existing_bindings.keys.all? { |key| KEYS.include?(key) }
       invalid! unless existing_bindings.values.all? { |value| value.is_a?(String) && UUID.match?(value) }
-      invalid! if existing_bindings.values.map(&:downcase).include?(auth_user_id.downcase) || existing_bindings.key?(config_key)
+      bound_ids = existing_bindings.values.map(&:downcase)
+      invalid! unless bound_ids.uniq.length == bound_ids.length
+      invalid! if bound_ids.include?(auth_user_id.downcase) || existing_bindings.key?(config_key)
       { "key" => config_key, "auth_user_id" => auth_user_id.downcase }
     end
 

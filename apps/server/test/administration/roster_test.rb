@@ -32,6 +32,15 @@ class AdministrationRosterTest < Minitest::Test
     end
   end
 
+  def test_rejects_preexisting_duplicate_mapping
+    existing = { "elev-person-001" => USER_ID, "elev-person-002" => USER_ID.upcase }
+    another = "00000000-0000-4000-8000-000000000002"
+    assert_raises(Roster::Invalid) do
+      Roster.binding(config_key: "elev-person-003", auth_user_id: another,
+        existing_bindings: existing, verified_subject: another)
+    end
+  end
+
   def test_rejects_unverified_subject_and_forged_configuration
     assert_raises(Roster::Invalid) { Roster.binding(config_key: "elev-person-001", auth_user_id: USER_ID, existing_bindings: {}, verified_subject: nil) }
     roster = Roster.load
