@@ -15,23 +15,37 @@ class AttachmentGatewayClientTest < Minitest::Test
       @closed = false
     end
     def start
-      yield self
-    ensure
-      @closed = true
+      return self unless block_given?
+      begin
+        yield self
+      ensure
+        @closed = true
+      end
     end
-    def request(_request)
-      yield Response.new(self)
+    def request(_request, _body = nil)
+      response = Response.new(self)
+      return response unless block_given?
+      yield response
     end
     def next_chunk = (@chunks += 1)
 
-    class Response
-      def initialize(http) = (@http = http)
-      def read_body
+    class Response < Net::HTTPResponse
+      def initialize(http)
+        super('1.1', '200', 'OK')
+        @http = http
+      end
+      def read_body(dest = nil)
+        body = dest || +''
         20.times do
           @http.next_chunk
-          yield "a"
+          if block_given?
+            yield 'a'
+          else
+            body << 'a'
+          end
           sleep 0.02
         end
+        body unless block_given?
       end
     end
   end
@@ -95,6 +109,7 @@ class AttachmentGatewayClientTest < Minitest::Test
   def test_slow_trickled_http_body_expires_and_closes_without_bytes
     http = SlowHttp.new
     assert_kind_of Net::HTTP, http
+    assert_kind_of Net::HTTPResponse, http.request(Net::HTTP::Post.new('/internal/attachments/read'))
     started = Process.clock_gettime(Process::CLOCK_MONOTONIC)
     assert_raises(Elevateo::AttachmentGatewayClient::Unavailable) do
       client(nil, http_factory: ->(_host, _port, _proxy) { http })

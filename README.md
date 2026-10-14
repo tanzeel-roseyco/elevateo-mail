@@ -453,3 +453,5 @@ Elara's focused protected outreach role witness is integrated test source: under
 
 FE807 sequence editor test now binds its reread mock to the exact created draft ID and strict read-only DTO, closing an inconsistent fixture that the preceding web gate did not exercise. Soren's 842/842 web PASS was on the earlier test blob; current strengthened case needs fleet rerun.
 QA815 focused `a0a60b6` disposable PostgreSQL witness: 21 migrations passed, but the single protected outreach case failed 1/5; both same-scope read and write returned `not_found` despite a live session, sales role and correct function owner. Exact Docker cleanup passed. A bounded container `aapt` dump of the retained rejected `32d043f` unsigned APK confirmed its INTERNET and generated AndroidX dynamic-receiver permissions; this is parser input evidence, not APK acceptance. See `docs/completion/soren.md`.
+
+ADV124 found a retained P2 in the attachment client's nominal HTTP fake. The successor uses a Net::HTTPResponse subclass and optional request/start forms while keeping the slow-stream path in process; production transport remains unchanged. Bounded rereview and fleet unit/Steep are pending.

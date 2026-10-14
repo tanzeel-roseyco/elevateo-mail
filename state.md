@@ -398,3 +398,5 @@ FE807 sequence editor fixture now rereads the created draft ID/DTO after the gen
 
 QA815 `a0a60b6` one-case same-scope outreach witness FAIL 1/5: read=not_found, write=not_found, DB current_user=elevateo_api, sales membership and live session; 21 migrations and exact cleanup PASS. Retained rejected `32d043f` APK `aapt` dump PASS under Docker, confirms generated dynamic-receiver permission; native acceptance remains OPEN.
 SMTP888 (source candidate, 2026-10-14): net-smtp 0.5.2 local Mailpit TLS toggle methods are declared for Steep and covered by a no-connection factory regression. Soren fleet strict/unit verification is NOT_RUN; remote SMTP remains held. See docs/completion/rhea-smtp888.md.
+
+ADV124 reported one retained P2 on the nominal attachment HTTP fake. Its response and optional request/start forms are now test-only successors with no production byte-path change; rereview and focused fleet tests remain pending.
