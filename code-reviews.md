@@ -680,3 +680,5 @@ R25 lint repair: one tooling defect in the unmount cleanup (ref must be captured
 ## FE807 Outreach candidate review request
 
 Celeste authored the read-only feature and three boundary tests. Independent bounded functional review and dedicated design-tradeoff review are pending; reviewed source LOC: 0, confirmed defects: not established, defect density: not applicable. Docker/type/browser verification is requested only; see `docs/completion/celeste.md`.
+
+FE807 continuation: author self-inspection of uncommitted Outreach route/forms candidate found the unconfirmed-write duplicate-submission risk; form locks now require navigation after an ambiguous error. Independent bounded source/data review and dedicated design review remain pending; independently reviewed LOC 0, independently confirmed defect density not applicable. Docker/browser/runtime tests not executed by Celeste. Exact source and Soren request: `docs/completion/celeste.md`.

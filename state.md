@@ -118,3 +118,5 @@ Cassian manifest reconciliation: contract-lock now seals actual generated client
 ### FE807 Outreach candidate
 
 Read-only campaigns, leads, accounts and analytics pages are authored on the isolated Celeste branch. Their optional capability shows unavailable until Cassian/Fable wire the versioned gateway and routes. Consent/suppression authority stays server-side; Docker/browser checks remain requested, not executed. See `docs/completion/celeste.md`.
+
+FE807 continuation: separate Outreach route pages and draft/paused campaign/lead mutation forms are authored; no send or consent-grant control. Dorian/Cassian persisted V2 seam, Fable route registration and Soren/Tessa tests are pending. The read-only checkpoint above is superseded as source scope but remains historical evidence.
