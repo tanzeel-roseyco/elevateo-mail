@@ -1285,3 +1285,11 @@ QA815 `37b20c2` focused protected role PASS is one executed real PostgreSQL case
 APK-813 follow-up: Soren's exact `8625387` fleet compile exposed one owner classifier defect after ADV107: the manifest-root pattern required column zero while actual retained-APK Debian aapt output indents it by two spaces. This is runtime evidence, not a new independent review packet, so no additional reviewed LOC or defects/KLOC are claimed. Owner correction changes only the manifest-tree parser and regression fixtures; pinned-tool fleet verification and successor review remain pending.
 
 REV894 Theo reviewed exact `82df7b0` manifest parser and found one P2 nesting defect: independent regex matches could accept a four-space application after a two-space unrelated sibling, without manifest ancestry. Owner successor requires the namespace followed immediately by the manifest root and an application before any root-level sibling; a counterexample regression is added. Exact reviewed LOC and defects/KLOC await Theo's bounded packet; no fleet result is inferred.
+
+ADV128 Ada independently reviewed Astrid `b3fec577` Android parser over 250 unique versioned LOC, zero confirmed defects (0/KLOC), bounded packets below 180 LOC. Source only; pinned aapt verification, APK identity and installed Android behavior remain outside coverage. Report: `docs/completion/ada-adv128-manifest-parser.md`.
+
+ADV129 Vera independently reviewed Elara `6af7df4` and `2b310d1` send-intent annotations/mock-load repair over 158 unique versioned LOC, zero confirmed defects (0/KLOC), source only. Exact successor Steep and units remain pending. Report: `docs/completion/vera-adv129-elara-annotations.md`.
+
+ADV130 Ada independently reviewed Corin `b8ef426` fake inbound/IMAP repair over 341 unique versioned LOC in packets below 180 LOC, zero confirmed defects (0/KLOC), source only. Exact successor strict/unit runtime remains pending. Report: `docs/completion/ada-adv130-corin-inbound.md`.
+
+ADV131 Vera independently reviewed only Sabine `afdf997` organization grants controller plus bounded V1/RBS context over 316 unique versioned LOC, zero confirmed defects (0/KLOC), source only. Preferences and audit controllers are excluded pending separate review; exact successor strict/unit runtime remains pending. Report: `docs/completion/vera-adv131-admin-grants.md`.
