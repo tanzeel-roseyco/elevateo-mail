@@ -115,7 +115,7 @@ describe('Outreach routed pages', () => {
     await screen.findByText(/test@example.invalid/)
     fireEvent.click(screen.getByRole('button', { name: 'Record consent evidence' }))
     fireEvent.change(screen.getByLabelText('Evidence source'), { target: { value: 'Signed intake form' } })
-    fireEvent.change(screen.getByLabelText('Observed date and time'), { target: { value: '2026-10-14T12:00' } })
+    fireEvent.change(screen.getByLabelText('Observed date and time (local)'), { target: { value: '2026-10-14T12:00' } })
     fireEvent.click(screen.getByRole('checkbox', { name: /I attest/ }))
     fireEvent.click(screen.getByRole('button', { name: 'Record evidence' }))
     expect(g.recordConsent).toHaveBeenCalledWith(context, proof, campaignId, leadId, expect.objectContaining({
