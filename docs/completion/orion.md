@@ -1,5 +1,10 @@
 # NATIVE-812 Orion checkpoint
 
+## ADV081 bare reserved-host repair candidate
+
+Vera's bounded ADV081 review of exact `0e8f9cc` covered `config.rs` 81 LOC, Windows preflight 30 LOC and its regression 12 LOC (123 unique LOC). It confirmed one P2 omission: bare `invalid` and `test`, with or without terminal DNS dots, passed both reserved-host predicates (8.13 defects/KLOC); no runtime tests were performed in that review. The follow-up candidate adds exact normalized-host predicates and Rust/PowerShell regressions for bare and terminal-dot forms while retaining suffix, localhost, example.com, HTTPS, credential, route, query, fragment and DNS-host fences. Orion has not run application tests; Soren fleet Docker execution, ICO/ICNS generation and target OS packaging remain pending. Source review covers only the stated 123 prior-source LOC, not this repair's independent re-review.
+
+
 ## Terminal DNS dot release preflight candidate
 
 Source inspection found that `https://app.elevateo.invalid.` bypassed both the Rust placeholder suffix check and the Windows unsigned-package preflight regex. The candidate trims terminal DNS dots for reserved-host checks in both places. Rust regressions cover one, uppercase one, and two terminal dots; a PowerShell preflight regression requires the same three inputs to stop with `Placeholder origin rejected` before Cargo. The original reviewed `icon.png` is unchanged. These tests are authored but NOT_RUN by Orion under the fleet-only rule; Soren was asked to execute them in pinned fleet Docker and generate `.ico`/`.icns` using pinned Tauri CLI 2.12.2, returning exact hashes and cleanup evidence. No Windows/macOS package or installed runtime exists from this change.

@@ -38,7 +38,8 @@ pub fn validate_web_origin(raw: &str) -> Result<Url, ConfigError> {
     if canonical_host.is_empty() ||
         canonical_host.eq_ignore_ascii_case("localhost") || canonical_host.ends_with(".localhost") ||
         canonical_host.eq_ignore_ascii_case("example.com") || canonical_host.ends_with(".example.com") ||
-        canonical_host.ends_with(".invalid") || canonical_host.ends_with(".test") {
+        canonical_host.eq_ignore_ascii_case("invalid") || canonical_host.ends_with(".invalid") ||
+        canonical_host.eq_ignore_ascii_case("test") || canonical_host.ends_with(".test") {
         return Err(ConfigError::InsecureOrigin);
     }
     if !parsed.username().is_empty() || parsed.password().is_some() ||
@@ -68,6 +69,10 @@ mod tests {
         assert_eq!(validate_web_origin("http://mail.company.org"), Err(ConfigError::InsecureOrigin));
         assert_eq!(validate_web_origin("https://localhost"), Err(ConfigError::InsecureOrigin));
         assert_eq!(validate_web_origin("https://example.com"), Err(ConfigError::InsecureOrigin));
+        assert_eq!(validate_web_origin("https://invalid"), Err(ConfigError::InsecureOrigin));
+        assert_eq!(validate_web_origin("https://test"), Err(ConfigError::InsecureOrigin));
+        assert_eq!(validate_web_origin("https://INVALID."), Err(ConfigError::InsecureOrigin));
+        assert_eq!(launch_origin("https://TEST./", "unsigned-candidate"), Err(ConfigError::InsecureOrigin));
         assert_eq!(validate_web_origin("https://app.elevateo.invalid."), Err(ConfigError::InsecureOrigin));
         assert_eq!(launch_origin("https://APP.ELEVATEO.INVALID./", "unsigned-candidate"), Err(ConfigError::InsecureOrigin));
         assert_eq!(validate_web_origin("https://app.elevateo.invalid.."), Err(ConfigError::InsecureOrigin));

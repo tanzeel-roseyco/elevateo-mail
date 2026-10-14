@@ -1,6 +1,6 @@
 # Project state
 
-NATIVE-812: reserved `app.elevateo.invalid.` and equivalent terminal-dot origins are rejected by the candidate native Rust validator and Windows preflight source. Focused regressions and fleet icon generation await Soren; Windows/macOS packaging and runtime remain unverified. See [Orion evidence](docs/completion/orion.md).
+NATIVE-812: candidate Rust and Windows preflight source rejects bare `invalid`/`test` and reserved suffix hosts after terminal-dot normalization. ADV081 found the bare-host omission in prior source (1 defect/123 LOC, 8.13/KLOC); focused regressions and fleet icon generation await Soren. Windows/macOS packaging and runtime remain unverified. See [Orion evidence](docs/completion/orion.md).
 
 Application IN PROGRESS — R24 isolated BE03 candidate (2026-10-14). Root authorizes implementation on baseline `03ae770c56271cd8236726bfd8fe63248e81283d` in parallel with BE02 acceptance. BE02 remains OPEN/unaccepted; integration/release gated. S1+S2 priority: saved draft -> consistent review -> human approval -> durable queued intent. Canonical additive `contracts/v1/openapi.json` version `1.0.0-send.1` is prepared; every baseline C/D operation/component and original fixture is preserved.
 ### Mira BE03 UI isolated R24 implementation (2026-10-14)

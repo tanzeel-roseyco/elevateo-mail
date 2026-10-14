@@ -1,6 +1,6 @@
 # Product requirements and decision record
 
-Native release preflight candidate: canonical DNS host checks reject reserved `.invalid`/`.test` fixtures with terminal dots in Rust and the Windows unsigned script. Focused regressions are authored but not executed by Orion; Soren owns fleet Docker tests and pinned ICO/ICNS generation. Target OS packaging and install/run remain separate gates. See [NATIVE-812 checkpoint](docs/completion/orion.md).
+Native release preflight candidate: canonical DNS host checks reject exact `invalid`/`test` and reserved `.invalid`/`.test` suffixes with terminal dots in Rust and the Windows unsigned script. ADV081 confirmed the prior bare-host gap (1 defect/123 LOC, 8.13/KLOC). Focused regressions are authored but not executed by Orion; Soren owns fleet Docker tests and pinned ICO/ICNS generation. Target OS packaging and install/run remain separate gates. See [NATIVE-812 checkpoint](docs/completion/orion.md).
 
 ### Mira BE03 UI isolated R24 implementation (2026-10-14)
 
