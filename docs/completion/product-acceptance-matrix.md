@@ -1,6 +1,6 @@
 # Product journey acceptance matrix — 2026-10-15
 
-Current source: `67e7323eb19e` on `fix/inline949-completion`; INT963 capture-readiness changes are pending verification. This replaces the obsolete 2026-10-14 failure snapshot. PASS is restricted to the source and scope below. Diagnostic completion is not full acceptance. Credentials, live mail, DNS and production activation remain deferred.
+Latest verified Chromium source: `d697096a3945` on `fix/inline949-completion`; INT964 Puppeteer harness corrections are pending verification. This replaces the obsolete 2026-10-14 failure snapshot. PASS is restricted to the source and scope below. Diagnostic completion is not full acceptance. Credentials, live mail, DNS and production activation remain deferred.
 
 ## Verified automated foundations
 
@@ -22,10 +22,10 @@ All listed runs used fleet-02 Docker and passed scoped cleanup. Earlier failed a
 | --- | --- | --- |
 | Sign-in, sessions and permissions | Actual Auth HTTP/worker revocation plus Chromium password login; missing/wrong CSRF and foreign-origin logout rejected while the valid session remains usable. | Current invitation/recovery, logout/stale-session and organization-switch browser cases; full authority/denial matrix. |
 | Personal inbox and reader | Real authorized list/read, literal plaintext, direct thread URL, reload, back/forward and keyboard focus pass. Desktop/mobile light/dark screenshots were inspected. | Multi-page/multi-mailbox, empty/error/revoked states; message permalink beyond first page; full current visual suite. |
-| Search | Genuine API 200, expected thread result, keyboard submit and URL query/scope history pass. | Four images were captured while the restored search was loading; INT963 now requires the actual result again before capture. Settled rerun pending. |
+| Search | Genuine API 200, expected thread result, keyboard submit and URL query/scope history pass. | INT963 settled rerun passes exact results/loading readiness; new screenshots await visual inspection. |
 | Draft composition and persistence | Real PUT receipt/version, list, exact subject/recipient/body and reload persistence pass. Four draft screenshots inspected. | Conflict, boundary rejection, privacy/revocation, reload recovery and complete frozen cases. |
 | Uncertain save recovery | Real committed PUT with a lost browser response; original operation GET reconciles version while newer raw fields remain unsaved, with one PUT and one original-ID lookup. | Unapplied operation, conflict, unrelated lookup and navigation/reload paths remain distinct cases. |
-| Assignment, notes and read state | Source and standard backend/web suites pass; reader displays seeded assignment/note. | Two-user persistence/conflict/revocation browser proof. One mobile screenshot caught loading; INT963 waits for both collaboration results. |
+| Assignment, notes and read state | Source and standard backend/web suites pass; reader displays seeded assignment/note. | Two-user persistence/conflict/revocation browser proof. INT963 rerun passes both settled collaboration assertions; new screenshots await visual inspection. |
 | Private attachments | Canonical private gateway/storage/scanner source and actual-role DB profile exist; six DB tests / 40 assertions pass. | Actual Storage bytes, scanner/quarantine, authorized download and revocation; outbound attachment MIME/snapshot workflow is not implemented. |
 | Review, approval, cancel and send status | Source plus broad backend/web and held-worker checks pass; internal Mailpit protocol is tested. | Full actual browser review-to-durable-intent-to-held-worker/status chain, races and restore. No real SMTP or live delivery claim. |
 | Outreach campaigns, leads, consent, sequences | Canonical V2 source and web/backend units; dedicated campaign DB seven tests / 17 assertions pass. Sequence drafts are inert; manual consent is labelled unverified. | Current real browser CRUD/roles/denials, consent/revision/sequence proofs; provider dispatch remains disabled. |
@@ -36,7 +36,7 @@ All listed runs used fleet-02 Docker and passed scoped cleanup. Earlier failed a
 
 ## Current priorities and limits
 
-1. Finish Puppeteer/Selenium and the corrected settled Chromium screenshots, then Firefox/WebKit and negative/revocation scenarios.
+1. Selenium four real journeys pass; repair/rerun Puppeteer and inspect the successful settled Chromium screenshots, then Firefox/WebKit and negative/revocation scenarios.
 2. Prove remaining product journeys against real Auth/API/DB; resolve failures without weakening authority or fixture isolation.
 3. Complete private attachment bytes, outbound attachments, restore and platform packaging/runtime gates.
 4. Configure live credentials, providers, DNS and hosting only after the non-live gates are ready.

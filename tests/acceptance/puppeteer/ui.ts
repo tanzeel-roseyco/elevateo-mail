@@ -38,9 +38,15 @@ export class UI {
   }
   async value(label: string, expected: string): Promise<void> {
     await this.ready(field(label));
-    const actual = await this.page.$eval(field(label), element =>
-      element instanceof HTMLInputElement || element instanceof HTMLTextAreaElement ? element.value : null);
-    if (actual !== expected) throw new Error('Field value mismatch');
+    const element = await this.page.$(field(label));
+    if (!element) throw new Error('Missing UI control');
+    try {
+      // AIDEV-NOTE: A visible form may precede its persisted data; poll exact values without editing or saving again.
+      const ready = await this.page.waitForFunction((node, wanted) =>
+        (node instanceof HTMLInputElement || node instanceof HTMLTextAreaElement) && node.value === wanted,
+      { timeout: this.timeout }, element, expected);
+      await ready.dispose();
+    } finally { await element.dispose(); }
   }
   async plaintext(marker: string): Promise<void> {
     const handle = await this.page.waitForFunction(value => Array.from(

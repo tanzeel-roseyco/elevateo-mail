@@ -35,7 +35,9 @@ test('draft identity rejects foreign scope, origin, credentials and URL suffixes
   const draft = 'b1111111-1111-4111-8111-111111111111';
   const url = `http://app.test/#/mailboxes/${mailbox}/drafts/${draft}`;
   assert.equal(draftIdFromURL(url, mailbox), draft);
+  assert.equal(draftIdFromURL(`${url}?new=1`, mailbox), draft);
   for (const value of [url.replace('app.test', 'evil.test'), url.replace('app.test', 'user:pass@app.test'),
-    url.replace('/#', '/?token=x#'), `${url}?x`, `${url}/`, url.replace(draft, 'invalid'), url.replace(mailbox, draft)])
+    url.replace('/#', '/?token=x#'), `${url}?x`, `${url}/`, url.replace(draft, 'invalid'), url.replace(mailbox, draft),
+    `${url}?new=0`, `${url}?new=1&extra=x`, `${url}?new=1?new=1`, `${url}?new=1/`, `${url}?new=1\n`])
     assert.throws(() => draftIdFromURL(value, mailbox));
 });

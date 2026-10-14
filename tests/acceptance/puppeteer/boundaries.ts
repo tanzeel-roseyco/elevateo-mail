@@ -26,9 +26,11 @@ export function parseCredentials(input: unknown): z.infer<typeof credentials> {
   return parsed.data;
 }
 export function draftIdFromURL(value: string, mailbox: string): string {
+  if (value.length > 512 || /[\s\u0000-\u001f\u007f]/.test(value)) throw new Error('Invalid draft location');
   const parsed = new URL(value);
   const prefix = `#/mailboxes/${mailbox}/drafts/`;
-  const id = parsed.hash.slice(prefix.length);
+  // AIDEV-NOTE: DraftsPage uses this exact flag until first save; no other hash query is accepted.
+  const id = parsed.hash.slice(prefix.length).replace(/\?new=1$/, '');
   if (parsed.origin !== 'http://app.test' || parsed.username || parsed.password || parsed.pathname !== '/'
     || parsed.search || !parsed.hash.startsWith(prefix) || !z.uuid().safeParse(id).success)
     throw new Error('Invalid draft location');

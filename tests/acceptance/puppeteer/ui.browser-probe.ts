@@ -56,6 +56,26 @@ test('fixture-only browser regressions', { timeout: 60000 }, async context => {
         else await assert.rejects(ui.plaintext(expected));
       });
     }
+    for (const variant of ['delayed-input', 'delayed-textarea', 'empty', 'wrong', 'not-a-field']) {
+      await probe(context, `field value ${variant}`, async () => {
+        const expected = variant === 'empty' ? '' : 'Literal <b>draft</b> & exact whitespace.\n';
+        await page.evaluate(({ kind, value }) => {
+          document.body.replaceChildren();
+          const element = document.createElement(kind === 'not-a-field' ? 'button'
+            : kind === 'delayed-textarea' ? 'textarea' : 'input');
+          element.setAttribute('aria-label', 'Probe value');
+          document.body.append(element);
+          if (kind.startsWith('delayed')) {
+            // AIDEV-NOTE: Delay the data, not control visibility, to reproduce reload hydration ordering.
+            setTimeout(() => { element.value = value; }, 100);
+          }
+        }, { kind: variant, value: variant === 'delayed-input' ? expected.trimEnd() : expected });
+        const valueUI = new UI(page, 1000);
+        if (variant === 'wrong' || variant === 'not-a-field')
+          await assert.rejects(valueUI.value('Probe value', expected));
+        else await valueUI.value('Probe value', variant === 'delayed-input' ? expected.trimEnd() : expected);
+      });
+    }
     await page.setRequestInterception(true);
     let interceptionFailed = false;
     page.on('request', request => {
