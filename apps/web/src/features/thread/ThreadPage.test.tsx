@@ -223,10 +223,57 @@ describe('individual message permalink', () => {
 
   it('never renders a message after direct lookup reports a revoked session', async () => {
     const direct = vi.fn<DirectMessageRead>(async () => { throw new GatewayError('api', 'unauthenticated', 'Session ended', { status: 401, requestId: 'r1' }) })
-    renderReaderWith(pagedGateway([detailPage([MESSAGE_A], 'next')]).gateway, `/mailboxes/${MB}/threads/${THREAD}?message=${MESSAGE_B}`, direct)
-    await waitFor(() => expect(direct).toHaveBeenCalledTimes(1))
+    const gateway = pagedGateway([detailPage([MESSAGE_A], 'next')]).gateway
+    const challenge = vi.spyOn(gateway, 'getLoginChallenge')
+    renderReaderWith(gateway, `/mailboxes/${MB}/threads/${THREAD}?message=${MESSAGE_B}`, direct)
+    await waitFor(() => expect(challenge).toHaveBeenCalledTimes(1))
+    expect(direct).toHaveBeenCalledTimes(1)
     expect(screen.queryByText('Direct plaintext')).toBeNull()
     expect(screen.queryByLabelText('Selected message')).toBeNull()
+  })
+
+  it.each(['resolve', 'reject'] as const)('drops a direct %s at the keyed thread commit boundary', async (outcome) => {
+    let resolveOld!: (value: ReturnType<typeof directPage>) => void
+    let rejectOld!: (reason: unknown) => void
+    const direct = vi.fn<DirectMessageRead>(async () => new Promise<ReturnType<typeof directPage>>((resolve, reject) => {
+      resolveOld = resolve
+      rejectOld = reject
+    }))
+    const base = createFixtureGateway()
+    const gateway: MailroomGateway = {
+      ...base,
+      getThread: async (_ctx, threadId) => threadId === THREAD
+        ? detailPage([MESSAGE_A], 'next')
+        : detailPage(['New thread content'], null),
+    }
+    const challenge = vi.spyOn(gateway, 'getLoginChallenge')
+    function CommitSettlement() {
+      const { threadId } = useParams<{ threadId: string }>()
+      useLayoutEffect(() => {
+        if (threadId !== THREAD2) return
+        if (outcome === 'resolve') resolveOld(directPage(MESSAGE_B))
+        else rejectOld(new GatewayError('api', 'unauthenticated', 'old thread revoked', { status: 401, requestId: 'r1' }))
+      }, [threadId])
+      return null
+    }
+    render(
+      <SessionProvider gateway={gateway}>
+        <DraftIntentProvider>
+          <MemoryRouter initialEntries={[`/mailboxes/${MB}/threads/${THREAD}?message=${MESSAGE_B}`]}>
+            <Link to={`/mailboxes/${MB}/threads/${THREAD2}`}>Next thread</Link>
+            <Routes>
+              <Route path="/mailboxes/:mailboxId/threads/:threadId" element={<><ThreadPage readDirectMessage={direct} /><CommitSettlement /></>} />
+            </Routes>
+          </MemoryRouter>
+        </DraftIntentProvider>
+      </SessionProvider>,
+    )
+    await waitFor(() => expect(direct).toHaveBeenCalledTimes(1))
+    fireEvent.click(screen.getByRole('link', { name: 'Next thread' }))
+    await screen.findByText('New thread content')
+    await act(async () => {})
+    expect(screen.queryByText('Direct plaintext')).toBeNull()
+    expect(challenge).not.toHaveBeenCalled()
   })
 
   it('offers explicit retry after a direct lookup network failure', async () => {
