@@ -47,9 +47,9 @@ class SendWorkerDatabaseTest < SendDatabaseTestCase
     Dir.mktmpdir("send-ledger-") do |dir|
       path = File.join(dir, "acceptance.jsonl")
       store = Elevateo::SendWorker::DatabaseStore.new(connection: @worker, send_id: send_id)
-      control_state = Elevateo::SendWorker::ControlState.new(epoch: @epoch, outbound_held: false)
-      control = Object.new
-      control.define_singleton_method(:read) { control_state }
+      control_path = File.join(dir, "control.json")
+      File.write(control_path, JSON.generate(epoch: @epoch, outbound_held: false))
+      control = Elevateo::SendWorker::Control.new(path: control_path)
       driver = Elevateo::SendWorker::DurableLocalDriver.new(path: path, outcome: outcome)
       yield Elevateo::SendWorker::Executor.new(store: store, driver: driver, control: control), store
     end
@@ -57,9 +57,9 @@ class SendWorkerDatabaseTest < SendDatabaseTestCase
 
   def execute(send_id, ledger, outcome)
     store = Elevateo::SendWorker::DatabaseStore.new(connection: @worker, send_id: send_id)
-    control_state = Elevateo::SendWorker::ControlState.new(epoch: @epoch, outbound_held: false)
-    control = Object.new
-    control.define_singleton_method(:read) { control_state }
+    control_path = File.join(File.dirname(ledger), "control.json")
+    File.write(control_path, JSON.generate(epoch: @epoch, outbound_held: false))
+    control = Elevateo::SendWorker::Control.new(path: control_path)
     driver = Elevateo::SendWorker::DurableLocalDriver.new(path: ledger, outcome: outcome)
     Elevateo::SendWorker::Executor.new(store: store, driver: driver, control: control).run_once
   end
