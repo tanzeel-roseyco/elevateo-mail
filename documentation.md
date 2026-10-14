@@ -37,6 +37,10 @@ Evidence: [R23 journal](docs/completion/int403-r23-application-state.md), [R18 s
 
 Design date: 2026-10-11; expanded planning revision: 2026-10-12. Current scoped decisions override older planning assumptions; consent-based sending remains required.
 
+MAIL-818 adds an isolated synthetic Mox SMTP/IMAP protocol fixture as R&D.
+The app's mail provider and no-live-send boundary are unchanged. Pilot design,
+license and execution limits are in [the pilot README](mox-pilot/README.md).
+
 ## Confirmed by the user
 
 | ID | Requirement | Acceptance evidence at implementation |

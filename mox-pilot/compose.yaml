@@ -1,0 +1,40 @@
+services:
+  mox:
+    image: ${MOX_IMAGE:?immutable Mox image digest required}
+    command: ["localserve", "-dir", "/pilot-data"]
+    read_only: true
+    tmpfs:
+      - /tmp:size=64m
+    volumes:
+      - pilot-data:/pilot-data
+    networks:
+      - pilot
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    mem_limit: 2g
+    cpus: 2
+    pids_limit: 256
+    restart: "no"
+
+  probe:
+    image: ${PROBE_IMAGE:?immutable Python image digest required}
+    command: ["python", "/pilot/probe.py"]
+    working_dir: /pilot
+    volumes:
+      - ./probe.py:/pilot/probe.py:ro
+    networks:
+      - pilot
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    mem_limit: 256m
+    cpus: 0.5
+    pids_limit: 64
+    restart: "no"
+    depends_on: [mox]
+
+networks:
+  pilot:
+    internal: true
+
+volumes:
+  pilot-data:
