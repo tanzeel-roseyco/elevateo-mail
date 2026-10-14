@@ -1,0 +1,17 @@
+# Nadia attachment backend slice
+
+This is an isolated backend candidate for inbox attachment metadata and a private storage gateway interface. It is **not** a complete attachment UI, transport integration, scanner, or live mail capability. No application tests or Docker builds have run on this candidate.
+
+## Contract and boundaries
+
+- Additive V2 only: Cassian owns route and contract registration. Proposed upload accepts one file, a scoped organization/mailbox/thread/message identity, UTF-8 basename (1–255 bytes), and MIME allowlist `application/pdf`, `image/png`, `image/jpeg`, `text/plain`. File size is 1–10 MiB, matching the configured self-hosted Storage limit. Signature checks cover PDF/PNG/JPEG; text rejects invalid UTF-8 and NUL. The MIME allowlist is intentionally narrow and still requires scanner verification.
+- `Attachments::Service#stage` checks current write capability, validates content, writes through an injected **private** storage adapter, checks capability again, and inserts a `pending_scan` row through a definer function. Repository failures delete the staged object. The caller must arrange separate short authenticated database scopes around storage I/O; no database transaction may span object transfer.
+- No scanner is configured in the repository or Compose. There is no API path to mark an attachment clean. All staged objects remain held; `download` denies `pending_scan`, `malware`, and `scan_failed`. An independently reviewed scanner and restricted verdict writer must be added before any object becomes downloadable.
+- `download` requires current read authorization on every call, exact composite identity, and a clean verdict; it returns bytes to a trusted Rails response adapter and never returns a public or signed URL or storage key. Cassian must wire a streaming response with `nosniff`, attachment disposition, no-store, and safe filename handling. No route/contract change was made in this branch.
+- Migration `20261015000015` stores composite message binding, private object key, bounded metadata and scan state. API role cannot directly INSERT; the definer checks current compose rights and message existence. SELECT inherits message/mailbox RLS. Scan status UPDATE has no API/worker grant. Populated rollback is deliberately refused to preserve metadata and objects. Database and private Supabase storage must be reviewed and run by Soren on a disposable fleet stack.
+
+## Validation requests and limits
+
+Tests authored but **NOT_RUN**: stage/held/clean simulation and revocation, malware/scan failure denial, oversize/type/path/signature rejection, and cross-tenant/mailbox denial. The clean simulation mutates a fake repository row and does not imply an installed scanner. Ask Soren to run bounded Docker Ruby unit tests and a disposable PostgreSQL migration/RLS fixture for current compose versus viewer, wrong organization/message, direct INSERT denied, and rollback preservation. Exact command for Soren after integration: `docker compose -f ops/compose.be02-test.yaml run --rm --no-deps test bundle exec ruby -Itest test/attachments/service_test.rb` (Soren supplies the recipe environment and task-owned project name). No local or host tests were run.
+
+Remaining integration: Cassian routes/DTO, trusted private Storage adapter and bucket setup, real scanner with restricted verdict transition, source review, Soren fleet runtime, and inbox UI. No attachment is downloadable in the current candidate. The service is a backend seam, not finished inbox acceptance.

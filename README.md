@@ -15,6 +15,10 @@ Shared company mailroom with one Rails domain authority and a React/TypeScript c
 ## Current state
 
 SEND809 exact integrated `7aa61be4649ca251c3faff368ba61dfa7e313708` passed real PostgreSQL migrations but the affected send database suites had eight cancellation guard setup errors, two fixture lock timeouts, three mismatched Mailpit snapshot approval errors, and one binary/UTF-8 oracle failure. Rowan committed bounded test fixture repairs `49aaad8`, `f9f13a0`, `3fe86b7`, `bf2748f`; Soren fleet rerun is pending. Production write guard, lease, approval and Mailpit authority were not loosened.
+Nadia attachment backend candidate adds private quarantine metadata (migration 00015) and a bounded service; uploads remain held because no scanner is installed. Routes, private Storage adapter, fleet tests, and UI are pending; see `docs/completion/nadia-attachments.md`.
+
+
+SEND-810 simulated cancellation source is integrated over Rowan worker authority and Elara direct store/ledger in the isolated `completion-nadia-send810` branch. A possible call remains a stop request until evidence reconciliation. First integrated DB migration found a schema privilege defect; the grant/revoke repair awaits fleet rerun. Independent review and release gates remain pending; see `docs/completion/nadia.md`.
 
 ### INT-801 integrated source candidate (2026-10-14)
 
