@@ -9,5 +9,7 @@ DROP FUNCTION app.provision_verified_mailbox_policy(uuid,text,uuid,uuid,boolean,
 DROP TABLE app.mailbox_policy_receipts;
 DROP TABLE app.mailbox_grant_ceilings;
 DROP TABLE app.mailbox_security;
+DROP FUNCTION app.validate_personal_mailbox_security();
+DROP FUNCTION app.prevent_personal_mailbox_sharing();
 DROP TABLE app.organization_access;
 DROP FUNCTION app.prevent_owner_loss();

@@ -43,6 +43,33 @@ ALTER TABLE app.mailbox_security ENABLE ROW LEVEL SECURITY;
 ALTER TABLE app.mailbox_security FORCE ROW LEVEL SECURITY;
 CREATE POLICY mailbox_security_owner_routine ON app.mailbox_security TO elevateo_owner USING (true) WITH CHECK (true);
 REVOKE ALL ON app.mailbox_security FROM PUBLIC, elevateo_api, elevateo_app_read, elevateo_worker;
+CREATE FUNCTION app.validate_personal_mailbox_security() RETURNS trigger
+LANGUAGE plpgsql VOLATILE SECURITY DEFINER SET search_path = pg_catalog AS $$
+BEGIN
+  IF NEW.classification = 'personal' AND NOT EXISTS (
+    SELECT 1 FROM app.mailboxes WHERE organization_id = NEW.organization_id
+      AND id = NEW.mailbox_id AND visibility = 'private') THEN
+    RAISE EXCEPTION 'personal mailbox must be private' USING ERRCODE = '23514';
+  END IF;
+  RETURN NEW;
+END $$;
+CREATE TRIGGER guard_personal_mailbox_security BEFORE INSERT OR UPDATE ON app.mailbox_security
+  FOR EACH ROW EXECUTE FUNCTION app.validate_personal_mailbox_security();
+REVOKE ALL ON FUNCTION app.validate_personal_mailbox_security()
+  FROM PUBLIC, elevateo_api, elevateo_app_read, elevateo_worker;
+CREATE FUNCTION app.prevent_personal_mailbox_sharing() RETURNS trigger
+LANGUAGE plpgsql VOLATILE SECURITY DEFINER SET search_path = pg_catalog AS $$
+BEGIN
+  IF NEW.visibility = 'shared' AND OLD.visibility IS DISTINCT FROM NEW.visibility
+    AND EXISTS (SELECT 1 FROM app.mailbox_security WHERE mailbox_id = NEW.id AND classification = 'personal') THEN
+    RAISE EXCEPTION 'personal mailbox must remain private' USING ERRCODE = '23514';
+  END IF;
+  RETURN NEW;
+END $$;
+CREATE TRIGGER guard_personal_mailbox_visibility BEFORE UPDATE OF visibility ON app.mailboxes
+  FOR EACH ROW EXECUTE FUNCTION app.prevent_personal_mailbox_sharing();
+REVOKE ALL ON FUNCTION app.prevent_personal_mailbox_sharing()
+  FROM PUBLIC, elevateo_api, elevateo_app_read, elevateo_worker;
 CREATE TABLE app.mailbox_grant_ceilings (
   organization_id uuid NOT NULL,
   mailbox_id uuid NOT NULL,
@@ -76,7 +103,7 @@ REVOKE ALL ON app.mailbox_policy_receipts FROM PUBLIC, elevateo_api, elevateo_ap
 CREATE FUNCTION app.provision_verified_mailbox_policy(p_box uuid, p_class text, p_owner uuid,
   p_manager uuid, p_compose boolean, p_approve boolean, p_manage boolean, p_receipt text)
 RETURNS void LANGUAGE plpgsql VOLATILE SECURITY DEFINER SET search_path = pg_catalog AS $$
-DECLARE box app.mailboxes; manager app.mailbox_memberships; manager_role text;
+DECLARE box app.mailboxes; manager app.mailbox_memberships; manager_role text; expected_org uuid;
 BEGIN
   IF session_user <> 'elevateo_migrator' OR p_box IS NULL OR p_manager IS NULL
     OR p_class NOT IN ('personal', 'team') OR p_class IS NULL
@@ -86,7 +113,15 @@ BEGIN
     OR p_receipt !~ '^[A-Za-z0-9._:/-]+$' THEN
     RAISE EXCEPTION 'verified mailbox policy arguments required' USING ERRCODE = '22023';
   END IF;
+  SELECT organization_id INTO expected_org FROM app.mailboxes WHERE id = p_box;
+  IF expected_org IS NULL THEN
+    RAISE EXCEPTION 'verified mailbox required' USING ERRCODE = '23503';
+  END IF;
+  PERFORM app_auth.lock_authorization_generations(expected_org, p_manager);
   SELECT * INTO box FROM app.mailboxes WHERE id = p_box FOR UPDATE;
+  IF box.organization_id IS DISTINCT FROM expected_org THEN
+    RAISE EXCEPTION 'mailbox organization changed' USING ERRCODE = '40001';
+  END IF;
   SELECT * INTO manager FROM app.mailbox_memberships
     WHERE organization_id = box.organization_id AND mailbox_id = p_box AND user_id = p_manager;
   SELECT role INTO manager_role FROM app.organization_access
@@ -137,6 +172,7 @@ BEGIN
     OR p_receipt !~ '^[A-Za-z0-9._:/-]+$' THEN
     RAISE EXCEPTION 'verified enrollment arguments required' USING ERRCODE = '22023';
   END IF;
+  PERFORM app_auth.lock_authorization_generations(p_org, p_user);
   PERFORM 1 FROM app.organizations WHERE id = p_org FOR UPDATE;
   IF NOT FOUND OR NOT EXISTS (SELECT 1 FROM app.organization_memberships
       WHERE organization_id = p_org AND user_id = p_user) THEN

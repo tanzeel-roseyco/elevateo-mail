@@ -91,8 +91,14 @@ class OrganizationAccessPolicyTest < MailboxMembershipDatabaseCase
   end
 
   def test_personal_owner_consent_blocks_other_manager_even_with_ceiling
+    fixture_change(@org) do
+      @admin.exec_params("UPDATE app.mailboxes SET visibility='private' WHERE id=$1", [@box])
+    end
     @admin.exec_params("DELETE FROM app.mailbox_security WHERE mailbox_id=$1", [@box])
     classify(@box, "personal", owner: @user)
+    assert_raises(PG::CheckViolation) do
+      @admin.exec_params("UPDATE app.mailboxes SET visibility='shared' WHERE id=$1", [@box])
+    end
     other = add_actor
     grant(other, "admin")
     explicit_member(other, manager: true)
@@ -151,6 +157,17 @@ class OrganizationAccessPolicyTest < MailboxMembershipDatabaseCase
     end
     assert_raises(PG::InsufficientPrivilege) do
       @api.exec_params("SELECT app.enroll_verified_organization_grant($1,$2,'owner','SEC802-TEST-RECEIPT')", [@org, @user])
+    end
+  end
+
+  def test_forged_tenant_context_cannot_read_grants
+    scope(write: false) do |connection|
+      connection.execute("SET LOCAL app.org_id = '#{SecureRandom.uuid}'")
+      sql = "SELECT app.organization_grants_page($1::text,NULL::uuid,50) AS result"
+      bind = ActiveRecord::Relation::QueryAttribute.new("fixture", @digest, ActiveRecord::Type::String.new)
+      raw = connection.exec_query(sql, "Forged context", [bind]).first.fetch("result")
+      result = raw.is_a?(String) ? JSON.parse(raw) : raw
+      assert_equal "not_found", result.fetch("status")
     end
   end
 
