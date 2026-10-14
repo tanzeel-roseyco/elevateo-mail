@@ -1,5 +1,7 @@
 # INT-801 Cassian implementation packet
 
+Soren exact integrated 4a0ba0b disposable PostgreSQL/Auth runner passed the repaired Outreach migration, then failed Rowan AddMailpitTestReceipt migration at `mailpit_test_receipt.sql:65-67` with a CASE-expression `PG::SyntaxError` at end of input. Later Ruby, authenticated HTTP and worker checks did not run; cleanup passed. Rowan owner repair and a new exact fleet rerun are pending.
+
 Elara `f060f18` strict worker/SMTP type repair and Dorian `82d438e` controller-test lint repair are merged into the isolated core source. Cassian added pinned `net-smtp` to shared Steep libraries for the declared SMTP transport; these repairs have no exact integrated fleet static PASS yet.
 
 Separate proposal alignment: Theo `81cb542` GET projects `{context_id,authorization_version,display_name,revision}` while PUT returns `{display_name,revision}`; the noncanonical PREF-822 schema now distinguishes those responses. Nadia ATT-823 review removed the provisional `message_id` and `downloadable` fields: the path already binds message ID, and clean status cannot guarantee byte access without a reviewed private gateway. The proposal now uses five metadata fields and UUID cursor pagination (limit 1..50). Neither proposal changes canonical V2 or registers a route.
