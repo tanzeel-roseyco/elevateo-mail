@@ -34,5 +34,12 @@ module V2
     class AnalyticsController < BaseController
       def show: () -> void
     end
+    class SequencesController < BaseController
+      def show: () -> void
+      def update: () -> void
+      private
+      def validated_draft: (Elevateo::WriteInput::object) -> Elevateo::OutreachSequence::DraftInput
+      def repository: (untyped) -> Elevateo::OutreachSequence::Repository
+    end
   end
 end

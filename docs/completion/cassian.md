@@ -235,3 +235,5 @@ Static self-check of the draft.7 browser test found its success input accidental
 The canonical contract's existing version assertion still expected draft.6 after draft.7 activation. Updated the source contract test to assert draft.7, both active sequence operations, inert statuses and no due/enroll path; this is authored test source, not an executed test result.
 
 A static size calculation found that 20 valid Unicode labels can exceed the initial 8 KiB request cap. Raised only the sequence PUT Rails/browser request cap to 16 KiB (response remains 16 KiB) and added a 20-step Unicode gateway regression. The contract limit remains 20 steps/120 characters/480 UTF-8 bytes per label; no unbounded body path was introduced. Fleet execution remains NOT_RUN.
+
+Strict Rails typing follow-up declares the new `SequencesController` actions and its private draft/repository seams in the existing outreach RBS; otherwise the source class lacks the declared controller interface used by Steep. This is an authored declaration, not a Steep PASS; Soren exact Docker check is pending.
