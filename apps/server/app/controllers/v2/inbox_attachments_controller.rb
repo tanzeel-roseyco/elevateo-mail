@@ -18,7 +18,9 @@ module V2
     end
 
     def index
-      mailbox, thread, message = %i[mailbox_id thread_id message_id].map { |key| path_uuid(key) }
+      mailbox = path_uuid(:mailbox_id)
+      thread = path_uuid(:thread_id)
+      message = path_uuid(:message_id)
       protected_read(allowed_query: %w[cursor limit], budget: 262_144) do |connection:, identity:, session:, query:, **|
         # @type var connection: ActiveRecord::ConnectionAdapters::AbstractAdapter
         # @type var identity: Elevateo::SessionIdentity
@@ -32,6 +34,7 @@ module V2
         cursor = Elevateo::WriteInput.uuid(cursor) if cursor
         reader = Elevateo::ThreadReads.new(connection: connection, identity: identity, session: session,
           cursors: Elevateo::Cursors.new(secret: read_config.cursor_signing_key))
+        # @type var authorize: Elevateo::Attachments::_Authorization
         authorize = ->(organization_id:, mailbox_id:, thread_id:, message_id:, capability:) {
           raise Elevateo::CollaborationError.new("not_available") unless capability == :read &&
             organization_id == identity.org_id && mailbox_id == mailbox && thread_id == thread && message_id == message

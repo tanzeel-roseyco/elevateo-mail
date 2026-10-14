@@ -1293,3 +1293,5 @@ ADV129 Vera independently reviewed Elara `6af7df4` and `2b310d1` send-intent ann
 ADV130 Ada independently reviewed Corin `b8ef426` fake inbound/IMAP repair over 341 unique versioned LOC in packets below 180 LOC, zero confirmed defects (0/KLOC), source only. Exact successor strict/unit runtime remains pending. Report: `docs/completion/ada-adv130-corin-inbound.md`.
 
 ADV131 Vera independently reviewed only Sabine `afdf997` organization grants controller plus bounded V1/RBS context over 316 unique versioned LOC, zero confirmed defects (0/KLOC), source only. Preferences and audit controllers are excluded pending separate review; exact successor strict/unit runtime remains pending. Report: `docs/completion/vera-adv131-admin-grants.md`.
+
+INT801 attachment metadata controller strict candidate responds to QA815 `211df76` five prior Steep errors. Cassian changed only separate path UUID bindings and the authorization port type annotation; packet `apps/server/app/controllers/v2/inbox_attachments_controller.rb` lines 1–57 (57 unique LOC). Independent source review and successor Steep/HTTP runtime remain pending, so reviewed LOC and defects/KLOC are not claimed.
