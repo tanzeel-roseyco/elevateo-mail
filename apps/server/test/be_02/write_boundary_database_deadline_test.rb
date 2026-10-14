@@ -19,6 +19,7 @@ class WriteBoundaryDatabaseDeadlineTest < WriteBoundaryDatabaseTestCase
       assert_transaction_timeout(connection, backend, notices) do
         connection.send_query("SELECT pg_sleep(0.15)")
         result = begin
+          raise "native result readiness missing" unless connection.block(2)
           connection.get_result
         rescue PG::ConnectionBad => transport_error
           # AIDEV-NOTE: A failed async read may still retain the first structured result; never accept transport alone.
