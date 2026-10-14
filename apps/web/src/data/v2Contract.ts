@@ -28,6 +28,7 @@ export const OutreachCampaignSchema = z.strictObject({
   id,
   name: z.string().min(1).max(160),
   status: z.enum(['draft', 'paused']),
+  version: z.number().int().min(1).max(2_147_483_647),
 })
 export const WorkerJobSchema = z.strictObject({
   id,
@@ -38,7 +39,7 @@ export type GrantChange = z.infer<typeof GrantChangeSchema>
 export type OutreachPlan = z.infer<typeof OutreachPlanSchema>
 export type OutreachCampaign = z.infer<typeof OutreachCampaignSchema>
 
-export const CampaignPageSchema = z.strictObject({ items: z.array(OutreachCampaignSchema).max(100) })
+export const CampaignPageSchema = z.strictObject({ items: z.array(OutreachCampaignSchema).max(100), next_cursor: id.nullable() })
 
 export const RosterPersonSchema = z.strictObject({
   key: z.string().regex(/^elev-person-0(0[1-9]|1[0-2])$/),
@@ -53,3 +54,13 @@ export const RosterPageSchema = z.strictObject({
   items: z.array(RosterPersonSchema).max(50),
   next_cursor: z.string().max(2048).nullable(),
 })
+
+export const LeadSummarySchema = z.strictObject({
+  id, campaign_id: id, email: z.email().max(254),
+  consent_status: z.enum(['unknown', 'granted', 'withdrawn']),
+  suppressed: z.boolean(), version: z.number().int().min(1),
+})
+export const LeadPageSchema = z.strictObject({ items: z.array(LeadSummarySchema).max(100), next_cursor: id.nullable() })
+export const CampaignAnalyticsSchema = z.strictObject({
+  campaign_id: id, lead_count: z.number().int().nonnegative(), consented_count: z.number().int().nonnegative(),
+}).refine((value) => value.consented_count <= value.lead_count)

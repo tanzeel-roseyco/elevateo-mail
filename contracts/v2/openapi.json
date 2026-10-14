@@ -2,8 +2,8 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Elevateo additive administration and inert outreach API",
-    "version": "2.0.0-draft.2",
-    "description": "V1 schemas unchanged. Only GET outreach campaigns is active; other operations are draft pending owner authorization and runtime gates."
+    "version": "2.0.0-draft.3",
+    "description": "V1 schemas unchanged. Organization and worker routes remain disabled; inert outreach campaign and lead metadata routes are integration candidates requiring fleet validation."
   },
   "servers": [
     {
@@ -120,11 +120,29 @@
           "403": {
             "$ref": "#/components/responses/Forbidden"
           }
-        }
+        },
+        "parameters": [
+          {
+            "name": "cursor",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/Id"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100
+            }
+          }
+        ]
       },
       "post": {
         "operationId": "createOutreachCampaign",
-        "x-elevateo-status": "disabled",
+        "x-elevateo-status": "active",
         "description": "Proposed idempotent inert plan creation; no dispatch.",
         "requestBody": {
           "required": true,
@@ -138,7 +156,7 @@
         },
         "responses": {
           "201": {
-            "description": "Inert campaign created",
+            "description": "Current tenant-scoped inert metadata",
             "content": {
               "application/json": {
                 "schema": {
@@ -218,6 +236,285 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/RosterPage"
+                }
+              }
+            }
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          }
+        }
+      }
+    },
+    "/v2/outreach/campaigns/{campaign_id}": {
+      "get": {
+        "operationId": "getOutreachCampaign",
+        "x-elevateo-status": "active",
+        "parameters": [
+          {
+            "name": "campaign_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Current tenant-scoped inert metadata",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CampaignSummary"
+                }
+              }
+            }
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          }
+        }
+      },
+      "put": {
+        "operationId": "updateOutreachCampaign",
+        "x-elevateo-status": "active",
+        "parameters": [
+          {
+            "name": "campaign_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CampaignUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Current tenant-scoped inert metadata",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CampaignSummary"
+                }
+              }
+            }
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          }
+        }
+      }
+    },
+    "/v2/outreach/campaigns/{campaign_id}/leads": {
+      "get": {
+        "operationId": "listOutreachLeads",
+        "x-elevateo-status": "active",
+        "parameters": [
+          {
+            "name": "campaign_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Id"
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/Id"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Current tenant-scoped inert metadata",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LeadPage"
+                }
+              }
+            }
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          }
+        }
+      },
+      "post": {
+        "operationId": "addOutreachLead",
+        "x-elevateo-status": "active",
+        "parameters": [
+          {
+            "name": "campaign_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LeadCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Current tenant-scoped inert metadata",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LeadSummary"
+                }
+              }
+            }
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          }
+        }
+      }
+    },
+    "/v2/outreach/campaigns/{campaign_id}/leads/{lead_id}": {
+      "get": {
+        "operationId": "getOutreachLead",
+        "x-elevateo-status": "active",
+        "parameters": [
+          {
+            "name": "campaign_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Id"
+            }
+          },
+          {
+            "name": "lead_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Current tenant-scoped inert metadata",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LeadSummary"
+                }
+              }
+            }
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          }
+        }
+      },
+      "put": {
+        "operationId": "updateOutreachLead",
+        "x-elevateo-status": "active",
+        "parameters": [
+          {
+            "name": "campaign_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Id"
+            }
+          },
+          {
+            "name": "lead_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LeadUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Current tenant-scoped inert metadata",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LeadSummary"
+                }
+              }
+            }
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          }
+        }
+      }
+    },
+    "/v2/outreach/campaigns/{campaign_id}/analytics": {
+      "get": {
+        "operationId": "getOutreachAnalytics",
+        "x-elevateo-status": "active",
+        "parameters": [
+          {
+            "name": "campaign_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Current tenant-scoped inert metadata",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CampaignAnalytics"
                 }
               }
             }
@@ -342,7 +639,8 @@
         "required": [
           "id",
           "name",
-          "status"
+          "status",
+          "version"
         ],
         "properties": {
           "id": {
@@ -358,6 +656,11 @@
               "draft",
               "paused"
             ]
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 2147483647
           }
         }
       },
@@ -365,7 +668,8 @@
         "type": "object",
         "additionalProperties": false,
         "required": [
-          "items"
+          "items",
+          "next_cursor"
         ],
         "properties": {
           "items": {
@@ -374,6 +678,13 @@
             "items": {
               "$ref": "#/components/schemas/CampaignSummary"
             }
+          },
+          "next_cursor": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uuid"
           }
         }
       },
@@ -538,6 +849,166 @@
               "null"
             ],
             "maxLength": 2048
+          }
+        }
+      },
+      "CampaignUpdate": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "operation_id",
+          "expected_version",
+          "name",
+          "status"
+        ],
+        "properties": {
+          "operation_id": {
+            "$ref": "#/components/schemas/Id"
+          },
+          "expected_version": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 160
+          },
+          "status": {
+            "enum": [
+              "draft",
+              "paused"
+            ]
+          }
+        }
+      },
+      "LeadSummary": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "campaign_id",
+          "email",
+          "consent_status",
+          "suppressed",
+          "version"
+        ],
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/Id"
+          },
+          "campaign_id": {
+            "$ref": "#/components/schemas/Id"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "maxLength": 254
+          },
+          "consent_status": {
+            "enum": [
+              "unknown",
+              "granted",
+              "withdrawn"
+            ]
+          },
+          "suppressed": {
+            "type": "boolean"
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 1
+          }
+        }
+      },
+      "LeadPage": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "items",
+          "next_cursor"
+        ],
+        "properties": {
+          "items": {
+            "type": "array",
+            "maxItems": 100,
+            "items": {
+              "$ref": "#/components/schemas/LeadSummary"
+            }
+          },
+          "next_cursor": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uuid"
+          }
+        }
+      },
+      "LeadCreate": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "operation_id",
+          "email"
+        ],
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/Id"
+          },
+          "operation_id": {
+            "$ref": "#/components/schemas/Id"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "maxLength": 254
+          }
+        }
+      },
+      "LeadUpdate": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "operation_id",
+          "expected_version",
+          "email"
+        ],
+        "properties": {
+          "operation_id": {
+            "$ref": "#/components/schemas/Id"
+          },
+          "expected_version": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "maxLength": 254
+          }
+        }
+      },
+      "CampaignAnalytics": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "campaign_id",
+          "lead_count",
+          "consented_count"
+        ],
+        "properties": {
+          "campaign_id": {
+            "$ref": "#/components/schemas/Id"
+          },
+          "lead_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "consented_count": {
+            "type": "integer",
+            "minimum": 0
           }
         }
       }
