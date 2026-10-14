@@ -3,7 +3,7 @@
   "info": {
     "title": "Elevateo additive administration, outreach and scoped read API",
     "version": "2.0.0-draft.8",
-    "description": "V1 schemas unchanged. Disabled mailbox-scoped assignee options and private inbound attachment read additions are specified while SQL, controller and fleet gates remain pending. Delivery, enrollment and worker status remain disabled."
+    "description": "V1 schemas unchanged. Guarded mailbox-scoped assignee options are active in the isolated candidate; private inbound attachment reads remain disabled while fleet gates are pending. Delivery, enrollment and worker status remain disabled."
   },
   "servers": [
     {
@@ -139,6 +139,9 @@
           "400": {
             "description": "Malformed scope or page query"
           },
+          "401": {
+            "description": "Unauthenticated or revoked session"
+          },
           "404": {
             "description": "Missing or inaccessible mailbox, message or attachment"
           }
@@ -224,11 +227,14 @@
           "400": {
             "description": "Malformed scope or page query"
           },
+          "401": {
+            "description": "Unauthenticated or revoked session"
+          },
           "404": {
             "description": "Missing or inaccessible mailbox, message or attachment"
           },
           "423": {
-            "description": "Current authorized attachment is held pending a clean verdict",
+            "description": "Current authorized attachment is held or rejected without a clean verdict; no bytes are released",
             "content": {
               "application/json": {
                 "schema": {
