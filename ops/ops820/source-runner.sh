@@ -11,6 +11,9 @@ server_image=${OPS820_SERVER_IMAGE:?pinned server image required}
 db_image=$(docker compose -p "$project" --env-file "$envfile" \
   -f "$root/ops/supabase/compose.yaml" images -q db)
 [[ -n "$db_image" ]] || exit 66
+scratch=$(mktemp -d)
+trap 'rm -f -- "$scratch/runtime.env"; rmdir -- "$scratch"' EXIT
+python3 "$root/ops/ops820/runtime_env.py" "$envfile" "$scratch/runtime.env" >/dev/null
 docker run --rm --network "${project}_private" --read-only --cap-drop ALL \
   --env-file "$envfile" -e PGHOST=db -e PGUSER=supabase_admin -e PGDATABASE=postgres \
   -v "$root/ops/db:/ops:ro" --entrypoint bash "$db_image" \
@@ -25,7 +28,7 @@ docker run --rm --network "${project}_private" --read-only --cap-drop ALL \
   -c 'export PGPASSWORD="$POSTGRES_PASSWORD"; exec psql -v ON_ERROR_STOP=1 -f /ops/bootstrap-auth-grants.sql' >/dev/null
 docker run --rm --network "${project}_private" --read-only --cap-drop ALL \
   --user 10001:10001 --memory 768m --pids-limit 256 \
-  --env-file "$envfile" -e RAILS_ENV=test -e ELEVATEO_MODE=local \
+  --env-file "$scratch/runtime.env" -e RAILS_ENV=test -e ELEVATEO_MODE=local \
   -e ELEVATEO_OUTBOUND_HOLD=true -e ELEVATEO_SEND_API_ENABLED=false \
   -e ELEVATEO_DB_HOST=db -e ELEVATEO_DB_NAME=postgres \
   -e ELEVATEO_DB_ROLE=elevateo_migrator -e ELEVATEO_PROCESS=migrate \

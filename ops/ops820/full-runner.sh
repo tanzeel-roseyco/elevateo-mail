@@ -23,7 +23,7 @@ files=("$root"/apps/server/db/migrate/20261015000008*.rb)
 if [[ -f ${files[0]} ]]; then versions+=(20261015000008); fi
 rails() {
   docker run --rm --network "${project}_private" --read-only --cap-drop ALL \
-    --user 10001:10001 --memory 768m --pids-limit 256 --env-file "$envfile" \
+    --user 10001:10001 --memory 768m --pids-limit 256 --env-file "$scratch/runtime.env" \
     -e RAILS_ENV=test -e ELEVATEO_MODE=local -e ELEVATEO_OUTBOUND_HOLD=true \
     -e ELEVATEO_SEND_API_ENABLED=false -e ELEVATEO_DB_HOST=db \
     -e ELEVATEO_DB_NAME=postgres -e ELEVATEO_DB_ROLE=elevateo_migrator \
@@ -38,7 +38,8 @@ rails() {
 }
 compose() { docker compose -p "$project" --env-file "$envfile" -f "$root/ops/supabase/compose.yaml" "$@"; }
 scratch=$(mktemp -d)
-trap 'rm -f -- "$scratch/before" "$scratch/after"; rmdir -- "$scratch"' EXIT
+trap 'rm -f -- "$scratch/before" "$scratch/after" "$scratch/runtime.env"; rmdir -- "$scratch"' EXIT
+python3 "$root/ops/ops820/runtime_env.py" "$envfile" "$scratch/runtime.env" >/dev/null
 schema_dump() {
   compose exec -T db pg_dump -U supabase_admin -d postgres --schema-only -n 'app*'
   compose exec -T db pg_dump -U supabase_admin -d postgres --data-only --column-inserts -n 'app*'
@@ -57,7 +58,7 @@ cmp -s -- "$scratch/before" "$scratch/after" || {
 compose exec -T db psql -U supabase_admin -d postgres -v ON_ERROR_STOP=1 \
   < "$root/ops/ops820/post_restore.sql" >/dev/null
 docker run --rm --network "${project}_private" --read-only --cap-drop ALL \
-  --user 10001:10001 --memory 256m --env-file "$envfile" \
+  --user 10001:10001 --memory 256m --env-file "$scratch/runtime.env" \
   -e ELEVATEO_MODE=local -e ELEVATEO_OUTBOUND_HOLD=true \
   -e ELEVATEO_SEND_API_ENABLED=false -e ELEVATEO_DB_HOST=db \
   -e ELEVATEO_DB_NAME=postgres -e ELEVATEO_DB_ROLE=elevateo_api \
@@ -75,6 +76,6 @@ docker run --rm --network none --read-only --cap-drop ALL --user 10001:10001 \
   --memory 128m -v "$root/apps/server:/workspace/apps/server:ro" \
   --entrypoint ruby "$image" -I/workspace/apps/server/lib \
   -relevateo/administration_roster -e 'roster = Elevateo::AdministrationRoster.load; abort "roster not unbound" unless roster.fetch("people").length == 12 && roster.fetch("people").all? { |p| p["auth_user_id"].nil? && p["email"].nil? } && roster.fetch("mailbox_grants") == [] && roster.fetch("live_activation") == false'
-"$root/ops/ops820/health-probe.sh" "$project" "$envfile" "$root"
-"$root/ops/ops820/worker-probe.sh" "$project" "$envfile" "$root"
+"$root/ops/ops820/health-probe.sh" "$project" "$scratch/runtime.env" "$root"
+"$root/ops/ops820/worker-probe.sh" "$project" "$scratch/runtime.env" "$root"
 echo 'PASS disposable migrations down/up and app schema/data fingerprint'
