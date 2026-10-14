@@ -4,6 +4,8 @@ Shared company mailroom with one Rails domain authority and a React/TypeScript c
 
 ## Current state
 
+Elara OFF404 R15: source-confirmed unavailable inbox retained All/Unread destinations to the revoked mailbox. Minimal filter guard and denied/authorized-empty regressions authored from exact130cb5c; strict real SCN-READ-001-F2 unchanged. Original3bf FAILED16769ms cause UNKNOWN; separate diagnostic FAILED16771ms reached139:85 after real409/recovery/empty-list assertions. Cleanup/independent absence PASS for both historical runs; new runtime/lint/typecheck/browser NOT_RUN. R14ad04d030 preserved separately. See [R15 handoff](docs/completion/elara-r15-revocation.md).
+
 Imported accepted Rowan ADV807, Nadia ADV806 and Elara ADV808 proof sources after immutable **3bf323c**. Permanent GUI-before-HTTP restoration, baseline Auth lifetime and opt-in policy wiring are source accepted by ADV821/822; candidate runtime NOT_RUN. Soren's separate immutable 3bf R12 is untouched: supervisor reports four actual core GUI cases and 16 screenshots, final immutable receipt/manual Mira review pending. Observer OFF; BE02 unaccepted; BE03 closed.
 
 R9 c8 backend390/5792 and frontend624/all eight gates PASS retain original provenance. R10 c3 browser compilation/image and authenticated HTTP1/33/worker drain passed, but seed failed before GUI. R11 confirmed `fresh_auth_fixture_required` with pre-seed Auth count1; both diagnostics cleanup/independent absence passed. These failures remain historical evidence, not new-source test results.

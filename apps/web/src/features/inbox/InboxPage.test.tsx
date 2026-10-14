@@ -87,6 +87,19 @@ describe('URL filter (FE-R11)', () => {
   })
 })
 
+describe('denied mailbox navigation', () => {
+  it('removes mailbox filter destinations after a gateway denial without another read', async () => {
+    const { gateway, readCalls } = pagedGateway([
+      new GatewayError('api', 'not_available', 'Mailbox unavailable', { status: 404, requestId: 'r1' }),
+    ])
+    renderInbox(gateway)
+    await screen.findByRole('heading', { name: 'This mailbox is unavailable', level: 2 })
+    expect(screen.queryByRole('navigation', { name: 'Filter' })).toBeNull()
+    expect(screen.queryAllByRole('link')).toHaveLength(0)
+    expect(readCalls()).toBe(1)
+  })
+})
+
 describe('continuation and reset (FE-R08/R09)', () => {
   it('an empty page with a cursor stays usable and is distinct from a terminal empty mailbox', async () => {
     const { gateway } = pagedGateway([threadPage([], 'c1'), threadPage(['Late arrival'], null)])
@@ -104,6 +117,8 @@ describe('continuation and reset (FE-R08/R09)', () => {
     renderInbox(createFixtureGateway({ listThreads: 'threads_empty' }))
     await screen.findByText('No conversations')
     expect(screen.queryByRole('button', { name: 'Show more conversations' })).toBeNull()
+    expect(screen.getByRole('link', { name: 'All', exact: true }).getAttribute('href')).toBe(`/mailboxes/${MB}`)
+    expect(screen.getByRole('link', { name: 'Unread', exact: true }).getAttribute('href')).toBe(`/mailboxes/${MB}?filter=unread`)
   })
 
   it('a reset replaces accumulated rows with the fresh first page', async () => {
