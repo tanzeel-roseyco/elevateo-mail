@@ -728,3 +728,5 @@ QA815 `b3fec57` pinned Build Tools36 parser/signer and 17 Python methods are exe
 QA815 `d93c331` unsigned compile-only APK build/policy PASS and `215080a4` focused 51/225 pure Ruby PASS plus Steep 10 diagnostics are execution findings, not independent source review. Additional QA815 independently reviewed source remains 0 LOC and defect density unclaimed. Root/Cassian route owner fixes and acceptance.
 
 QA815 `e8e8393d` OPS820 offline Python seven-script PASS and initial noexec task-harness failure are bounded execution evidence, not an independent source review. Static reporter/umask preflight covers the named acceptance files only; additional independently reviewed source remains 0 LOC, and source defect density is unclaimed pending owner review and runtime confirmation.
+
+QA815 acceptance umask patch and three authored cases have been self-inspected for exact command wrapping, output modes and failure paths; independent review and fleet runtime remain pending. No independent reviewed LOC or defect density is claimed.
