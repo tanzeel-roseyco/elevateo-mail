@@ -1,16 +1,15 @@
 // Versioned thread assignment (BE-02 D §6). The panel shows the server's current assignee and
 // revision, and every change carries the revision it was decided against; a stale revision is a
 // 409 even when the desired value matches, and the person then reloads before choosing again.
-// There is no user directory in this contract: targets are the current actor or a typed user id.
+// V2 mailbox options may add eligible UUID targets; the V1 assignment write remains authoritative.
 import { useCallback, useEffect, useId, useState } from 'react'
 import { describeFailure, type CollaborationFailure } from '@/app/collaborationFailure'
 import { useProtectedRequest } from '@/app/protectedRequest'
 import { useGateway, useSession } from '@/app/session'
 import type { ThreadAssignment } from '@/data/contract'
-import { canonicalId } from '@/lib/ids'
 import { formatDateTime } from '@/lib/format'
 import { Button } from '@/ui/Button'
-import { Field, TextInput } from '@/ui/Field'
+import { AssigneePicker } from './AssigneePicker'
 
 type PanelState =
   | { status: 'loading' }
@@ -26,8 +25,6 @@ export function AssignmentPanel({ threadId, mailboxId }: { threadId: string; mai
   const [state, setState] = useState<PanelState>({ status: 'loading' })
   const [writing, setWriting] = useState(false)
   const [writeFailure, setWriteFailure] = useState<CollaborationFailure | null>(null)
-  const [targetText, setTargetText] = useState('')
-  const [targetError, setTargetError] = useState<string | null>(null)
   const ids = { target: useId() }
 
   const load = useCallback(async () => {
@@ -61,18 +58,7 @@ export function AssignmentPanel({ threadId, mailboxId }: { threadId: string; mai
       setWriteFailure(describeFailure(outcome.error, 'write'))
       return
     }
-    setTargetText('')
     setState({ status: 'ready', assignment: outcome.value })
-  }
-
-  const assignTyped = () => {
-    const target = canonicalId(targetText)
-    if (target === null) {
-      setTargetError('Enter a user id in UUID form.')
-      return
-    }
-    setTargetError(null)
-    void assign(target)
   }
 
   const describeAssignee = (assignment: ThreadAssignment): string => {
@@ -109,24 +95,9 @@ export function AssignmentPanel({ threadId, mailboxId }: { threadId: string; mai
               <Button size="sm" disabled={writing || !proof} onClick={() => void assign(null)}>Clear assignment</Button>
             )}
           </div>
-          <div className="flex flex-wrap items-end gap-2">
-            <div className="min-w-0 flex-1">
-              <Field id={ids.target} label="Assign to user id" hint="UUID of a current organization member. No user directory exists in this build." error={targetError}>
-                <TextInput
-                  id={ids.target}
-                  value={targetText}
-                  onChange={(e) => setTargetText(e.target.value)}
-                  disabled={writing || !proof}
-                  autoComplete="off"
-                  spellCheck={false}
-                  aria-invalid={targetError ? true : undefined}
-                  aria-describedby={`${ids.target}-hint`}
-                  className="w-full font-mono text-[12px]"
-                />
-              </Field>
-            </div>
-            <Button size="sm" disabled={writing || !proof || targetText.trim() === ''} onClick={assignTyped}>Assign</Button>
-          </div>
+          <AssigneePicker key={mailboxId} mailboxId={mailboxId} actorId={actorId}
+            currentAssigneeId={state.assignment.assignee_id} disabled={writing || !proof}
+            onAssign={(id) => void assign(id)} />
           {writing && <p role="status" className="text-[12px] text-muted">Saving assignment…</p>}
           {writeFailure && (
             <div role="alert" className="flex flex-wrap items-center gap-2 text-[12px] text-danger">

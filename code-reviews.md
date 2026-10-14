@@ -720,3 +720,7 @@ Exact Tessa `bc02fc1b929dc05061fbda3335d71f43770eca6f` and Cassian `6e987853be5e
 ### REV892 Rhea SMTP signature review — Lyra, incomplete
 
 Rhea exact `afc5fd6365a31dfcb13d4257186d084c307ff4f8`: 222 assigned repo LOC inspected, zero confirmed defects within that partial scope (**0/KLOC**). A pinned upstream web fetch unexpectedly returned about 330 source lines, breaching the 180/read and 400-total limits; review stopped and root was notified. The TLS toggle definitions and signature compatibility remain unverified; this is **not** an accepted independent review or runtime PASS. See [REV892 report](docs/completion/lyra-rev892.md).
+
+## DIR905 isolated picker author checkpoint
+
+Lyra authored `AssignmentPanel.tsx`, `AssigneePicker.tsx` and `AssigneePicker.test.tsx`; this is an author consistency pass, not an independent adversarial or design review. Independently reviewed source LOC: 0; confirmed independent defects: unmeasured; density: N/A. The focused tests and application typecheck/lint/browser gates are NOT_RUN pending Soren fleet-02 Docker on an integrated SHA. Cassian's inactive adapter/backend and Mira's existing typed-ID test migration remain integration dependencies; no acceptance or live-mail claim follows from this source.
