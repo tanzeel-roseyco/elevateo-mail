@@ -689,3 +689,7 @@ SEND-809 bounded continuation self-review accounting (not independent): 210 adde
 SEND-809 bounded due-discovery repair packet for independent review: worker_authority.sql changed next_due_send function (~23 lines) plus down/grant signature and DB fixture (~12 lines); inspect array boundary validation, NULL handling, exclusion starvation, and no row-lock/authority drift. Independent review NOT_RUN; self review found no confirmed defects in this packet (0/KLOC self-only).
 
 SEND-810 matched due-drain merge: Rowan840ab4c/Elara5945e92 exact owner source imported with lineage. Independent functional/design review and fleet runtime are pending; no new defects/KLOC claim is made for the merge.
+
+## Nadia attachment backend candidate — review pending
+
+Source added in `apps/server/lib/elevateo/attachments.rb`, `attachments_repository.rb`, migration `20261015000015_create_inbox_attachments.rb`, and `test/attachments/service_test.rb`. Author inspection covered validation and held-state logic; this is **not independent adversarial review** and defect density is therefore not claimed. Root must assign bounded functional/security and design-tradeoff reviews before integration. Runtime tests NOT_RUN; Soren owns fleet execution.
