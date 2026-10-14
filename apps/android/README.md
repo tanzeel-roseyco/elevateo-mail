@@ -1,6 +1,6 @@
 # APK-813 Android lane: shared Tauri/React candidate
 
-`apps/android/tauri.android.conf.json` extends Orion's `apps/native` Tauri 2 shell for Android. It does not ship a second Java UI. The old Java offline activity was removed. Root selected an online-only exact HTTPS app origin and existing same-origin web session for the initial native client; Orion source `625bef13fd1328beb407c208f70a171fea9fd12d` is merged in the isolated APK branch; Orion mobile library target and dependency repair `5108625` are merged, while a reviewed Cargo.lock and fleet compile remain pending.
+`apps/android/tauri.android.conf.json` extends Orion's `apps/native` Tauri 2 shell for Android. It does not ship a second Java UI. The old Java offline activity was removed. Root selected an online-only exact HTTPS app origin and existing same-origin web session for the initial native client; Orion source `625bef13fd1328beb407c208f70a171fea9fd12d` is merged in the isolated APK branch; Orion mobile library target and dependency repair `5108625` are merged, and a reviewed Cargo.lock `abdf268` are merged; fleet Android compile remains pending.
 
 ## Architecture and route boundary
 
