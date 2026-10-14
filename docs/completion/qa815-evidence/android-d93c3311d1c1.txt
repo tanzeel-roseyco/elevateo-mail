@@ -7,7 +7,8 @@ DEPRECATED: The legacy builder is deprecated and will be removed in a future rel
             BuildKit is currently disabled; enable it by removing the DOCKER_BUILDKIT=0
             environment-variable.
 
-Sending build context to Docker daemon   80.1MB
+Sending build context to Docker daemon   80.1MB
+
 Step 1/10 : ARG RUST_IMAGE
 Step 2/10 : FROM ${RUST_IMAGE}
  ---> 3914072ca0c3
@@ -491,14 +492,56 @@ Get:291 http://deb.debian.org/debian-security bookworm-security/main amd64 unzip
 [91mdebconf: delaying package configuration, since apt-utils is not installed
 [0mFetched 283 MB in 3s (84.7 MB/s)
 Selecting previously unselected package libargon2-1:amd64.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 23257 files and directories currently installed.)
+(Reading database ...
+(Reading database ... 5%
+(Reading database ... 10%
+(Reading database ... 15%
+(Reading database ... 20%
+(Reading database ... 25%
+(Reading database ... 30%
+(Reading database ... 35%
+(Reading database ... 40%
+(Reading database ... 45%
+(Reading database ... 50%
+(Reading database ... 55%
+(Reading database ... 60%
+(Reading database ... 65%
+(Reading database ... 70%
+(Reading database ... 75%
+(Reading database ... 80%
+(Reading database ... 85%
+(Reading database ... 90%
+(Reading database ... 95%
+(Reading database ... 100%
+(Reading database ... 23257 files and directories currently installed.)
 Preparing to unpack .../libargon2-1_0~20171227-0.3+deb12u1_amd64.deb ...
 Unpacking libargon2-1:amd64 (0~20171227-0.3+deb12u1) ...
 Preparing to unpack .../libudev1_252.39-1~deb12u2_amd64.deb ...
 Unpacking libudev1:amd64 (252.39-1~deb12u2) over (252.39-1~deb12u1) ...
 Setting up libudev1:amd64 (252.39-1~deb12u2) ...
 Selecting previously unselected package dmsetup.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 23262 files and directories currently installed.)
+(Reading database ...
+(Reading database ... 5%
+(Reading database ... 10%
+(Reading database ... 15%
+(Reading database ... 20%
+(Reading database ... 25%
+(Reading database ... 30%
+(Reading database ... 35%
+(Reading database ... 40%
+(Reading database ... 45%
+(Reading database ... 50%
+(Reading database ... 55%
+(Reading database ... 60%
+(Reading database ... 65%
+(Reading database ... 70%
+(Reading database ... 75%
+(Reading database ... 80%
+(Reading database ... 85%
+(Reading database ... 90%
+(Reading database ... 95%
+(Reading database ... 100%
+(Reading database ... 23262 files and directories currently installed.)
 Preparing to unpack .../0-dmsetup_2%3a1.02.185-2_amd64.deb ...
 Unpacking dmsetup (2:1.02.185-2) ...
 Selecting previously unselected package libdevmapper1.02.1:amd64.
@@ -527,7 +570,28 @@ Preparing to unpack .../9-libcap2_1%3a2.66-4+deb12u3+b1_amd64.deb ...
 Unpacking libcap2:amd64 (1:2.66-4+deb12u3+b1) over (1:2.66-4+deb12u2) ...
 Setting up libcap2:amd64 (1:2.66-4+deb12u3+b1) ...
 Selecting previously unselected package libip4tc2:amd64.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 23318 files and directories currently installed.)
+(Reading database ...
+(Reading database ... 5%
+(Reading database ... 10%
+(Reading database ... 15%
+(Reading database ... 20%
+(Reading database ... 25%
+(Reading database ... 30%
+(Reading database ... 35%
+(Reading database ... 40%
+(Reading database ... 45%
+(Reading database ... 50%
+(Reading database ... 55%
+(Reading database ... 60%
+(Reading database ... 65%
+(Reading database ... 70%
+(Reading database ... 75%
+(Reading database ... 80%
+(Reading database ... 85%
+(Reading database ... 90%
+(Reading database ... 95%
+(Reading database ... 100%
+(Reading database ... 23318 files and directories currently installed.)
 Preparing to unpack .../libip4tc2_1.8.9-2_amd64.deb ...
 Unpacking libip4tc2:amd64 (1.8.9-2) ...
 Selecting previously unselected package libsystemd-shared:amd64.
@@ -538,7 +602,28 @@ Unpacking libsystemd0:amd64 (252.39-1~deb12u2) over (252.39-1~deb12u1) ...
 Setting up libsystemd0:amd64 (252.39-1~deb12u2) ...
 Setting up libssl3:amd64 (3.0.22-1~deb12u1) ...
 Selecting previously unselected package systemd.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 23332 files and directories currently installed.)
+(Reading database ...
+(Reading database ... 5%
+(Reading database ... 10%
+(Reading database ... 15%
+(Reading database ... 20%
+(Reading database ... 25%
+(Reading database ... 30%
+(Reading database ... 35%
+(Reading database ... 40%
+(Reading database ... 45%
+(Reading database ... 50%
+(Reading database ... 55%
+(Reading database ... 60%
+(Reading database ... 65%
+(Reading database ... 70%
+(Reading database ... 75%
+(Reading database ... 80%
+(Reading database ... 85%
+(Reading database ... 90%
+(Reading database ... 95%
+(Reading database ... 100%
+(Reading database ... 23332 files and directories currently installed.)
 Preparing to unpack .../systemd_252.39-1~deb12u2_amd64.deb ...
 Unpacking systemd (252.39-1~deb12u2) ...
 Setting up libargon2-1:amd64 (0~20171227-0.3+deb12u1) ...
@@ -551,16 +636,44 @@ Setting up libsystemd-shared:amd64 (252.39-1~deb12u2) ...
 Setting up libdevmapper1.02.1:amd64 (2:1.02.185-2) ...
 Setting up libcryptsetup12:amd64 (2:2.6.1-4~deb12u2) ...
 Setting up systemd (252.39-1~deb12u2) ...
-Created symlink /etc/systemd/system/getty.target.wants/getty@tty1.service → /lib/systemd/system/getty@.service.
-Created symlink /etc/systemd/system/multi-user.target.wants/remote-fs.target → /lib/systemd/system/remote-fs.target.
-Created symlink /etc/systemd/system/sysinit.target.wants/systemd-pstore.service → /lib/systemd/system/systemd-pstore.service.
-Initializing machine ID from random generator.
-Creating group 'systemd-journal' with GID 999.
-Creating group 'systemd-network' with GID 998.
-Creating user 'systemd-network' (systemd Network Management) with UID 998 and GID 998.
+Created symlink /etc/systemd/system/getty.target.wants/getty@tty1.service → /lib/systemd/system/getty@.service.
+
+Created symlink /etc/systemd/system/multi-user.target.wants/remote-fs.target → /lib/systemd/system/remote-fs.target.
+
+Created symlink /etc/systemd/system/sysinit.target.wants/systemd-pstore.service → /lib/systemd/system/systemd-pstore.service.
+
+Initializing machine ID from random generator.
+
+Creating group 'systemd-journal' with GID 999.
+
+Creating group 'systemd-network' with GID 998.
+
+Creating user 'systemd-network' (systemd Network Management) with UID 998 and GID 998.
+
 Setting up dmsetup (2:1.02.185-2) ...
 Selecting previously unselected package systemd-sysv.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 24171 files and directories currently installed.)
+(Reading database ...
+(Reading database ... 5%
+(Reading database ... 10%
+(Reading database ... 15%
+(Reading database ... 20%
+(Reading database ... 25%
+(Reading database ... 30%
+(Reading database ... 35%
+(Reading database ... 40%
+(Reading database ... 45%
+(Reading database ... 50%
+(Reading database ... 55%
+(Reading database ... 60%
+(Reading database ... 65%
+(Reading database ... 70%
+(Reading database ... 75%
+(Reading database ... 80%
+(Reading database ... 85%
+(Reading database ... 90%
+(Reading database ... 95%
+(Reading database ... 100%
+(Reading database ... 24171 files and directories currently installed.)
 Preparing to unpack .../000-systemd-sysv_252.39-1~deb12u2_amd64.deb ...
 Unpacking systemd-sysv (252.39-1~deb12u2) ...
 Selecting previously unselected package libdbus-1-3:amd64.
@@ -1894,7 +2007,216 @@ To learn more about the Android CLI and how to use it, see the documentation (ht
 The 'android' binary can also be found in the cmdline-tools directory, and 'android sdk' is the replacement for 'sdkmanager'.
 To learn more about the Android CLI and how to use it, see the documentation (https://d.android.com/tools/agents/android-cli)
 
-[0mLoading package information...                                                  Loading local repository...                                                     [                                       ] 3% Loading local repository...        [                                       ] 3% Fetch remote repository...         [=                                      ] 3% Fetch remote repository...         [=                                      ] 4% Fetch remote repository...         [=                                      ] 5% Fetch remote repository...         [==                                     ] 5% Fetch remote repository...         [==                                     ] 6% Fetch remote repository...         [==                                     ] 7% Fetch remote repository...         [==                                     ] 7% Computing updates...               [===                                    ] 8% Computing updates...               [===                                    ] 10% Computing updates...              [===                                    ] 10% Installing Android SDK Platform-To[===                                    ] 10% Downloading platform-tools_r37.0.1[====                                   ] 10% Downloading platform-tools_r37.0.1[====                                   ] 11% Downloading platform-tools_r37.0.1[====                                   ] 12% Downloading platform-tools_r37.0.1[=====                                  ] 13% Downloading platform-tools_r37.0.1[=====                                  ] 14% Downloading platform-tools_r37.0.1[=====                                  ] 15% Downloading platform-tools_r37.0.1[=====                                  ] 15% Unzipping...                      [=====                                  ] 15% Unzipping... platform-tools/NOTICE[=====                                  ] 15% Unzipping... platform-tools/adb   [======                                 ] 15% Unzipping... platform-tools/adb   [======                                 ] 16% Unzipping... platform-tools/adb   [======                                 ] 17% Unzipping... platform-tools/adb   [======                                 ] 17% Unzipping... platform-tools/etc1to[======                                 ] 17% Unzipping... platform-tools/fastbo[=======                                ] 18% Unzipping... platform-tools/fastbo[=======                                ] 18% Unzipping... platform-tools/hprof-[=======                                ] 18% Unzipping... platform-tools/lib64/[=======                                ] 18% Unzipping... platform-tools/make_f[=======                                ] 18% Unzipping... platform-tools/mke2fs[=======                                ] 18% Unzipping... platform-tools/source[=======                                ] 18% Unzipping... platform-tools/sqlite[=======                                ] 19% Unzipping... platform-tools/sqlite[===========                            ] 28% Unzipping... platform-tools/sqlite[===========                            ] 28% Installing NDK (Side by side) 28.2[===========                            ] 28% Downloading android-ndk-r28c-linux[===========                            ] 29% Downloading android-ndk-r28c-linux[===========                            ] 30% Downloading android-ndk-r28c-linux[============                           ] 30% Downloading android-ndk-r28c-linux[============                           ] 31% Downloading android-ndk-r28c-linux[============                           ] 32% Downloading android-ndk-r28c-linux[============                           ] 33% Downloading android-ndk-r28c-linux[============                           ] 33% Unzipping... platform-tools/sqlite[============                           ] 33% Unzipping... android-ndk-r28c/    [============                           ] 33% Unzipping... android-ndk-r28c/READ[=============                          ] 33% Unzipping... android-ndk-r28c/READ[=============                          ] 33% Unzipping... android-ndk-r28c/meta[=============                          ] 33% Unzipping... android-ndk-r28c/shad[=============                          ] 33% Unzipping... android-ndk-r28c/ndk-[=============                          ] 33% Unzipping... android-ndk-r28c/wrap[=============                          ] 33% Unzipping... android-ndk-r28c/ndk-[=============                          ] 33% Unzipping... android-ndk-r28c/tool[=============                          ] 34% Unzipping... android-ndk-r28c/tool[=============                          ] 35% Unzipping... android-ndk-r28c/tool[==============                         ] 35% Unzipping... android-ndk-r28c/tool[==============                         ] 36% Unzipping... android-ndk-r28c/tool[==============                         ] 37% Unzipping... android-ndk-r28c/tool[==============                         ] 37% Unzipping... android-ndk-r28c/buil[==============                         ] 37% Unzipping... android-ndk-r28c/sour[==============                         ] 37% Unzipping... android-ndk-r28c/NOTI[==============                         ] 37% Unzipping... android-ndk-r28c/ndk-[==============                         ] 37% Unzipping... android-ndk-r28c/NOTI[==============                         ] 37% Unzipping... android-ndk-r28c/pyth[==============                         ] 37% Unzipping... android-ndk-r28c/preb[==============                         ] 37% Unzipping... android-ndk-r28c/ndk-[==============                         ] 37% Unzipping... android-ndk-r28c/sour[==============                         ] 37% Unzipping... android-ndk-r28c/simp[==============                         ] 37% Unzipping... android-ndk-r28c/CHAN[==================                     ] 46% Unzipping... android-ndk-r28c/CHAN[==================                     ] 46% Installing Android SDK Build-Tools[==================                     ] 46% Downloading build-tools_r36_linux.[==================                     ] 47% Downloading build-tools_r36_linux.[===================                    ] 48% Downloading build-tools_r36_linux.[===================                    ] 49% Downloading build-tools_r36_linux.[===================                    ] 50% Downloading build-tools_r36_linux.[====================                   ] 50% Downloading build-tools_r36_linux.[====================                   ] 51% Downloading build-tools_r36_linux.[====================                   ] 51% Unzipping... android-ndk-r28c/CHAN[====================                   ] 51% Unzipping... android-16/NOTICE.txt[====================                   ] 51% Unzipping... android-16/aapt      [====================                   ] 51% Unzipping... android-16/aapt2     [====================                   ] 51% Unzipping... android-16/aarch64-li[====================                   ] 51% Unzipping... android-16/aidl      [====================                   ] 51% Unzipping... android-16/apksigner [====================                   ] 51% Unzipping... android-16/arm-linux-[====================                   ] 51% Unzipping... android-16/bcc_compat[====================                   ] 51% Unzipping... android-16/core-lambd[====================                   ] 51% Unzipping... android-16/d8        [====================                   ] 51% Unzipping... android-16/dexdump   [====================                   ] 51% Unzipping... android-16/i686-linux[====================                   ] 51% Unzipping... android-16/lld       [====================                   ] 51% Unzipping... android-16/llvm-rs-cc[====================                   ] 51% Unzipping... android-16/mipsel-lin[====================                   ] 51% Unzipping... android-16/runtime.pr[====================                   ] 51% Unzipping... android-16/source.pro[====================                   ] 51% Unzipping... android-16/split-sele[====================                   ] 51% Unzipping... android-16/x86_64-lin[====================                   ] 51% Unzipping... android-16/zipalign  [====================                   ] 51% Unzipping... android-16/lib/apksig[====================                   ] 51% Unzipping... android-16/lib/d8.jar[====================                   ] 52% Unzipping... android-16/lib/d8.jar[====================                   ] 52% Unzipping... android-16/lib64/libL[=====================                  ] 53% Unzipping... android-16/lib64/libL[=====================                  ] 53% Unzipping... android-16/lib64/libb[=====================                  ] 53% Unzipping... android-16/lib64/libc[=====================                  ] 54% Unzipping... android-16/lib64/libc[=====================                  ] 54% Unzipping... android-16/lld-bin/ll[=====================                  ] 54% Unzipping... android-16/renderscri[=====================                  ] 55% Unzipping... android-16/renderscri[=========================              ] 64% Unzipping... android-16/renderscri[=========================              ] 64% Installing Android SDK Platform 37[=========================              ] 64% Downloading platform-37.0_r02.zip.[=========================              ] 65% Downloading platform-37.0_r02.zip.[==========================             ] 65% Downloading platform-37.0_r02.zip.[==========================             ] 66% Downloading platform-37.0_r02.zip.[==========================             ] 67% Downloading platform-37.0_r02.zip.[===========================            ] 68% Downloading platform-37.0_r02.zip.[===========================            ] 69% Downloading platform-37.0_r02.zip.[===========================            ] 69% Unzipping... android-16/renderscri[===========================            ] 69% Unzipping... android-37.0/android-[===========================            ] 69% Unzipping... android-37.0/android.[===========================            ] 70% Unzipping... android-37.0/android.[============================           ] 70% Unzipping... android-37.0/android.[============================           ] 71% Unzipping... android-37.0/android.[============================           ] 71% Unzipping... android-37.0/build.pr[============================           ] 71% Unzipping... android-37.0/core-for[============================           ] 71% Unzipping... android-37.0/data/NOT[============================           ] 71% Unzipping... android-37.0/data/act[============================           ] 71% Unzipping... android-37.0/data/ann[============================           ] 71% Unzipping... android-37.0/data/api[============================           ] 71% Unzipping... android-37.0/data/bro[============================           ] 71% Unzipping... android-37.0/data/cat[============================           ] 71% Unzipping... android-37.0/data/fea[============================           ] 71% Unzipping... android-37.0/data/res[============================           ] 72% Unzipping... android-37.0/data/res[=============================          ] 73% Unzipping... android-37.0/data/res[=============================          ] 73% Unzipping... android-37.0/data/ser[=============================          ] 73% Unzipping... android-37.0/data/wid[=============================          ] 73% Unzipping... android-37.0/framewor[=============================          ] 73% Unzipping... android-37.0/optional[=============================          ] 73% Unzipping... android-37.0/sdk.prop[=============================          ] 73% Unzipping... android-37.0/skins/HV[=============================          ] 73% Unzipping... android-37.0/skins/NO[=============================          ] 73% Unzipping... android-37.0/skins/QV[=============================          ] 73% Unzipping... android-37.0/skins/WQ[=============================          ] 73% Unzipping... android-37.0/skins/WS[=============================          ] 73% Unzipping... android-37.0/skins/WV[=============================          ] 73% Unzipping... android-37.0/skins/WX[=============================          ] 73% Unzipping... android-37.0/source.p[=============================          ] 73% Unzipping... android-37.0/template[=============================          ] 73% Unzipping... android-37.0/uiautoma[================================       ] 82% Unzipping... android-37.0/uiautoma[================================       ] 82% Installing Android SDK Platform 36[================================       ] 82% Downloading platform-36_r02.zip...[=================================      ] 83% Downloading platform-36_r02.zip...[=================================      ] 84% Downloading platform-36_r02.zip...[=================================      ] 85% Downloading platform-36_r02.zip...[==================================     ] 85% Downloading platform-36_r02.zip...[==================================     ] 86% Downloading platform-36_r02.zip...[==================================     ] 87% Downloading platform-36_r02.zip...[==================================     ] 87% Unzipping... android-37.0/uiautoma[==================================     ] 87% Unzipping... android-36/android-st[==================================     ] 87% Unzipping... android-36/android.ja[===================================    ] 88% Unzipping... android-36/android.ja[===================================    ] 89% Unzipping... android-36/android.ja[===================================    ] 89% Unzipping... android-36/build.prop[===================================    ] 89% Unzipping... android-36/core-for-s[===================================    ] 89% Unzipping... android-36/data/NOTIC[===================================    ] 89% Unzipping... android-36/data/activ[===================================    ] 89% Unzipping... android-36/data/annot[===================================    ] 89% Unzipping... android-36/data/api-v[===================================    ] 89% Unzipping... android-36/data/broad[===================================    ] 89% Unzipping... android-36/data/categ[===================================    ] 89% Unzipping... android-36/data/featu[===================================    ] 89% Unzipping... android-36/data/res/a[===================================    ] 89% Unzipping... android-36/data/res/c[===================================    ] 89% Unzipping... android-36/data/res/d[===================================    ] 90% Unzipping... android-36/data/res/d[===================================    ] 90% Unzipping... android-36/data/res/i[===================================    ] 90% Unzipping... android-36/data/res/l[====================================   ] 90% Unzipping... android-36/data/res/l[====================================   ] 90% Unzipping... android-36/data/res/m[====================================   ] 90% Unzipping... android-36/data/res/r[====================================   ] 90% Unzipping... android-36/data/res/t[====================================   ] 90% Unzipping... android-36/data/res/v[====================================   ] 91% Unzipping... android-36/data/res/v[====================================   ] 91% Unzipping... android-36/data/res/x[====================================   ] 91% Unzipping... android-36/data/servi[====================================   ] 91% Unzipping... android-36/data/widge[====================================   ] 91% Unzipping... android-36/framework.[====================================   ] 91% Unzipping... android-36/optional/a[====================================   ] 91% Unzipping... android-36/optional/l[====================================   ] 91% Unzipping... android-36/optional/o[====================================   ] 91% Unzipping... android-36/optional/w[====================================   ] 91% Unzipping... android-36/sdk.proper[====================================   ] 91% Unzipping... android-36/skins/HVGA[====================================   ] 91% Unzipping... android-36/skins/NOTI[====================================   ] 91% Unzipping... android-36/skins/QVGA[====================================   ] 91% Unzipping... android-36/skins/WQVG[====================================   ] 91% Unzipping... android-36/skins/WSVG[====================================   ] 91% Unzipping... android-36/skins/WVGA[====================================   ] 91% Unzipping... android-36/skins/WXGA[====================================   ] 91% Unzipping... android-36/source.pro[====================================   ] 91% Unzipping... android-36/templates/[====================================   ] 91% Unzipping... android-36/uiautomato[=======================================] 100% Unzipping... android-36/uiautomat
+[0mLoading package information...
+Loading local repository...
+[                                       ] 3% Loading local repository...
+[                                       ] 3% Fetch remote repository...
+[=                                      ] 3% Fetch remote repository...
+[=                                      ] 4% Fetch remote repository...
+[=                                      ] 5% Fetch remote repository...
+[==                                     ] 5% Fetch remote repository...
+[==                                     ] 6% Fetch remote repository...
+[==                                     ] 7% Fetch remote repository...
+[==                                     ] 7% Computing updates...
+[===                                    ] 8% Computing updates...
+[===                                    ] 10% Computing updates...
+[===                                    ] 10% Installing Android SDK Platform-To
+[===                                    ] 10% Downloading platform-tools_r37.0.1
+[====                                   ] 10% Downloading platform-tools_r37.0.1
+[====                                   ] 11% Downloading platform-tools_r37.0.1
+[====                                   ] 12% Downloading platform-tools_r37.0.1
+[=====                                  ] 13% Downloading platform-tools_r37.0.1
+[=====                                  ] 14% Downloading platform-tools_r37.0.1
+[=====                                  ] 15% Downloading platform-tools_r37.0.1
+[=====                                  ] 15% Unzipping...
+[=====                                  ] 15% Unzipping... platform-tools/NOTICE
+[=====                                  ] 15% Unzipping... platform-tools/adb
+[======                                 ] 15% Unzipping... platform-tools/adb
+[======                                 ] 16% Unzipping... platform-tools/adb
+[======                                 ] 17% Unzipping... platform-tools/adb
+[======                                 ] 17% Unzipping... platform-tools/etc1to
+[======                                 ] 17% Unzipping... platform-tools/fastbo
+[=======                                ] 18% Unzipping... platform-tools/fastbo
+[=======                                ] 18% Unzipping... platform-tools/hprof-
+[=======                                ] 18% Unzipping... platform-tools/lib64/
+[=======                                ] 18% Unzipping... platform-tools/make_f
+[=======                                ] 18% Unzipping... platform-tools/mke2fs
+[=======                                ] 18% Unzipping... platform-tools/source
+[=======                                ] 18% Unzipping... platform-tools/sqlite
+[=======                                ] 19% Unzipping... platform-tools/sqlite
+[===========                            ] 28% Unzipping... platform-tools/sqlite
+[===========                            ] 28% Installing NDK (Side by side) 28.2
+[===========                            ] 28% Downloading android-ndk-r28c-linux
+[===========                            ] 29% Downloading android-ndk-r28c-linux
+[===========                            ] 30% Downloading android-ndk-r28c-linux
+[============                           ] 30% Downloading android-ndk-r28c-linux
+[============                           ] 31% Downloading android-ndk-r28c-linux
+[============                           ] 32% Downloading android-ndk-r28c-linux
+[============                           ] 33% Downloading android-ndk-r28c-linux
+[============                           ] 33% Unzipping... platform-tools/sqlite
+[============                           ] 33% Unzipping... android-ndk-r28c/
+[============                           ] 33% Unzipping... android-ndk-r28c/READ
+[=============                          ] 33% Unzipping... android-ndk-r28c/READ
+[=============                          ] 33% Unzipping... android-ndk-r28c/meta
+[=============                          ] 33% Unzipping... android-ndk-r28c/shad
+[=============                          ] 33% Unzipping... android-ndk-r28c/ndk-
+[=============                          ] 33% Unzipping... android-ndk-r28c/wrap
+[=============                          ] 33% Unzipping... android-ndk-r28c/ndk-
+[=============                          ] 33% Unzipping... android-ndk-r28c/tool
+[=============                          ] 34% Unzipping... android-ndk-r28c/tool
+[=============                          ] 35% Unzipping... android-ndk-r28c/tool
+[==============                         ] 35% Unzipping... android-ndk-r28c/tool
+[==============                         ] 36% Unzipping... android-ndk-r28c/tool
+[==============                         ] 37% Unzipping... android-ndk-r28c/tool
+[==============                         ] 37% Unzipping... android-ndk-r28c/buil
+[==============                         ] 37% Unzipping... android-ndk-r28c/sour
+[==============                         ] 37% Unzipping... android-ndk-r28c/NOTI
+[==============                         ] 37% Unzipping... android-ndk-r28c/ndk-
+[==============                         ] 37% Unzipping... android-ndk-r28c/NOTI
+[==============                         ] 37% Unzipping... android-ndk-r28c/pyth
+[==============                         ] 37% Unzipping... android-ndk-r28c/preb
+[==============                         ] 37% Unzipping... android-ndk-r28c/ndk-
+[==============                         ] 37% Unzipping... android-ndk-r28c/sour
+[==============                         ] 37% Unzipping... android-ndk-r28c/simp
+[==============                         ] 37% Unzipping... android-ndk-r28c/CHAN
+[==================                     ] 46% Unzipping... android-ndk-r28c/CHAN
+[==================                     ] 46% Installing Android SDK Build-Tools
+[==================                     ] 46% Downloading build-tools_r36_linux.
+[==================                     ] 47% Downloading build-tools_r36_linux.
+[===================                    ] 48% Downloading build-tools_r36_linux.
+[===================                    ] 49% Downloading build-tools_r36_linux.
+[===================                    ] 50% Downloading build-tools_r36_linux.
+[====================                   ] 50% Downloading build-tools_r36_linux.
+[====================                   ] 51% Downloading build-tools_r36_linux.
+[====================                   ] 51% Unzipping... android-ndk-r28c/CHAN
+[====================                   ] 51% Unzipping... android-16/NOTICE.txt
+[====================                   ] 51% Unzipping... android-16/aapt
+[====================                   ] 51% Unzipping... android-16/aapt2
+[====================                   ] 51% Unzipping... android-16/aarch64-li
+[====================                   ] 51% Unzipping... android-16/aidl
+[====================                   ] 51% Unzipping... android-16/apksigner
+[====================                   ] 51% Unzipping... android-16/arm-linux-
+[====================                   ] 51% Unzipping... android-16/bcc_compat
+[====================                   ] 51% Unzipping... android-16/core-lambd
+[====================                   ] 51% Unzipping... android-16/d8
+[====================                   ] 51% Unzipping... android-16/dexdump
+[====================                   ] 51% Unzipping... android-16/i686-linux
+[====================                   ] 51% Unzipping... android-16/lld
+[====================                   ] 51% Unzipping... android-16/llvm-rs-cc
+[====================                   ] 51% Unzipping... android-16/mipsel-lin
+[====================                   ] 51% Unzipping... android-16/runtime.pr
+[====================                   ] 51% Unzipping... android-16/source.pro
+[====================                   ] 51% Unzipping... android-16/split-sele
+[====================                   ] 51% Unzipping... android-16/x86_64-lin
+[====================                   ] 51% Unzipping... android-16/zipalign
+[====================                   ] 51% Unzipping... android-16/lib/apksig
+[====================                   ] 51% Unzipping... android-16/lib/d8.jar
+[====================                   ] 52% Unzipping... android-16/lib/d8.jar
+[====================                   ] 52% Unzipping... android-16/lib64/libL
+[=====================                  ] 53% Unzipping... android-16/lib64/libL
+[=====================                  ] 53% Unzipping... android-16/lib64/libb
+[=====================                  ] 53% Unzipping... android-16/lib64/libc
+[=====================                  ] 54% Unzipping... android-16/lib64/libc
+[=====================                  ] 54% Unzipping... android-16/lld-bin/ll
+[=====================                  ] 54% Unzipping... android-16/renderscri
+[=====================                  ] 55% Unzipping... android-16/renderscri
+[=========================              ] 64% Unzipping... android-16/renderscri
+[=========================              ] 64% Installing Android SDK Platform 37
+[=========================              ] 64% Downloading platform-37.0_r02.zip.
+[=========================              ] 65% Downloading platform-37.0_r02.zip.
+[==========================             ] 65% Downloading platform-37.0_r02.zip.
+[==========================             ] 66% Downloading platform-37.0_r02.zip.
+[==========================             ] 67% Downloading platform-37.0_r02.zip.
+[===========================            ] 68% Downloading platform-37.0_r02.zip.
+[===========================            ] 69% Downloading platform-37.0_r02.zip.
+[===========================            ] 69% Unzipping... android-16/renderscri
+[===========================            ] 69% Unzipping... android-37.0/android-
+[===========================            ] 69% Unzipping... android-37.0/android.
+[===========================            ] 70% Unzipping... android-37.0/android.
+[============================           ] 70% Unzipping... android-37.0/android.
+[============================           ] 71% Unzipping... android-37.0/android.
+[============================           ] 71% Unzipping... android-37.0/build.pr
+[============================           ] 71% Unzipping... android-37.0/core-for
+[============================           ] 71% Unzipping... android-37.0/data/NOT
+[============================           ] 71% Unzipping... android-37.0/data/act
+[============================           ] 71% Unzipping... android-37.0/data/ann
+[============================           ] 71% Unzipping... android-37.0/data/api
+[============================           ] 71% Unzipping... android-37.0/data/bro
+[============================           ] 71% Unzipping... android-37.0/data/cat
+[============================           ] 71% Unzipping... android-37.0/data/fea
+[============================           ] 71% Unzipping... android-37.0/data/res
+[============================           ] 72% Unzipping... android-37.0/data/res
+[=============================          ] 73% Unzipping... android-37.0/data/res
+[=============================          ] 73% Unzipping... android-37.0/data/ser
+[=============================          ] 73% Unzipping... android-37.0/data/wid
+[=============================          ] 73% Unzipping... android-37.0/framewor
+[=============================          ] 73% Unzipping... android-37.0/optional
+[=============================          ] 73% Unzipping... android-37.0/sdk.prop
+[=============================          ] 73% Unzipping... android-37.0/skins/HV
+[=============================          ] 73% Unzipping... android-37.0/skins/NO
+[=============================          ] 73% Unzipping... android-37.0/skins/QV
+[=============================          ] 73% Unzipping... android-37.0/skins/WQ
+[=============================          ] 73% Unzipping... android-37.0/skins/WS
+[=============================          ] 73% Unzipping... android-37.0/skins/WV
+[=============================          ] 73% Unzipping... android-37.0/skins/WX
+[=============================          ] 73% Unzipping... android-37.0/source.p
+[=============================          ] 73% Unzipping... android-37.0/template
+[=============================          ] 73% Unzipping... android-37.0/uiautoma
+[================================       ] 82% Unzipping... android-37.0/uiautoma
+[================================       ] 82% Installing Android SDK Platform 36
+[================================       ] 82% Downloading platform-36_r02.zip...
+[=================================      ] 83% Downloading platform-36_r02.zip...
+[=================================      ] 84% Downloading platform-36_r02.zip...
+[=================================      ] 85% Downloading platform-36_r02.zip...
+[==================================     ] 85% Downloading platform-36_r02.zip...
+[==================================     ] 86% Downloading platform-36_r02.zip...
+[==================================     ] 87% Downloading platform-36_r02.zip...
+[==================================     ] 87% Unzipping... android-37.0/uiautoma
+[==================================     ] 87% Unzipping... android-36/android-st
+[==================================     ] 87% Unzipping... android-36/android.ja
+[===================================    ] 88% Unzipping... android-36/android.ja
+[===================================    ] 89% Unzipping... android-36/android.ja
+[===================================    ] 89% Unzipping... android-36/build.prop
+[===================================    ] 89% Unzipping... android-36/core-for-s
+[===================================    ] 89% Unzipping... android-36/data/NOTIC
+[===================================    ] 89% Unzipping... android-36/data/activ
+[===================================    ] 89% Unzipping... android-36/data/annot
+[===================================    ] 89% Unzipping... android-36/data/api-v
+[===================================    ] 89% Unzipping... android-36/data/broad
+[===================================    ] 89% Unzipping... android-36/data/categ
+[===================================    ] 89% Unzipping... android-36/data/featu
+[===================================    ] 89% Unzipping... android-36/data/res/a
+[===================================    ] 89% Unzipping... android-36/data/res/c
+[===================================    ] 89% Unzipping... android-36/data/res/d
+[===================================    ] 90% Unzipping... android-36/data/res/d
+[===================================    ] 90% Unzipping... android-36/data/res/i
+[===================================    ] 90% Unzipping... android-36/data/res/l
+[====================================   ] 90% Unzipping... android-36/data/res/l
+[====================================   ] 90% Unzipping... android-36/data/res/m
+[====================================   ] 90% Unzipping... android-36/data/res/r
+[====================================   ] 90% Unzipping... android-36/data/res/t
+[====================================   ] 90% Unzipping... android-36/data/res/v
+[====================================   ] 91% Unzipping... android-36/data/res/v
+[====================================   ] 91% Unzipping... android-36/data/res/x
+[====================================   ] 91% Unzipping... android-36/data/servi
+[====================================   ] 91% Unzipping... android-36/data/widge
+[====================================   ] 91% Unzipping... android-36/framework.
+[====================================   ] 91% Unzipping... android-36/optional/a
+[====================================   ] 91% Unzipping... android-36/optional/l
+[====================================   ] 91% Unzipping... android-36/optional/o
+[====================================   ] 91% Unzipping... android-36/optional/w
+[====================================   ] 91% Unzipping... android-36/sdk.proper
+[====================================   ] 91% Unzipping... android-36/skins/HVGA
+[====================================   ] 91% Unzipping... android-36/skins/NOTI
+[====================================   ] 91% Unzipping... android-36/skins/QVGA
+[====================================   ] 91% Unzipping... android-36/skins/WQVG
+[====================================   ] 91% Unzipping... android-36/skins/WSVG
+[====================================   ] 91% Unzipping... android-36/skins/WVGA
+[====================================   ] 91% Unzipping... android-36/skins/WXGA
+[====================================   ] 91% Unzipping... android-36/source.pro
+[====================================   ] 91% Unzipping... android-36/templates/
+[====================================   ] 91% Unzipping... android-36/uiautomato
+[=======================================] 100% Unzipping... android-36/uiautomat
 
  ---> Removed intermediate container f06c60478264
  ---> 13bfd4824197
@@ -4005,7 +4327,7 @@ It will be removed in version 10.0 of the Android Gradle plugin.
 Add android.sync.suppressAgpWarnings=UNSUPPORTED_PROJECT_OPTION_USE to the gradle.properties file to suppress this warning.
 WARNING: API 'applicationVariants' is obsolete and has been replaced with 'AndroidComponentsExtension'.
 It will be removed in version 10.0 of the Android Gradle plugin.
-The legacy variant API is disabled by default in AGP 9.0, but can be re-enabled by adding 
+The legacy variant API is disabled by default in AGP 9.0, but can be re-enabled by adding
     android.newDsl=false
 to this project's gradle.properties file.
 For more information, see http://developer.android.com/build/r/new-dsl.
@@ -4014,7 +4336,7 @@ To determine what is calling applicationVariants, use -Pandroid.debug.obsoleteAp
 Add android.sync.suppressAgpWarnings=DEPRECATED_DSL to the gradle.properties file to suppress this warning.
 WARNING: API 'testVariants' is obsolete and has been replaced with 'AndroidComponentsExtension'.
 It will be removed in version 10.0 of the Android Gradle plugin.
-The legacy variant API is disabled by default in AGP 9.0, but can be re-enabled by adding 
+The legacy variant API is disabled by default in AGP 9.0, but can be re-enabled by adding
     android.newDsl=false
 to this project's gradle.properties file.
 For more information, see http://developer.android.com/build/r/new-dsl.
@@ -4023,7 +4345,7 @@ To determine what is calling testVariants, use -Pandroid.debug.obsoleteApi=true 
 Add android.sync.suppressAgpWarnings=DEPRECATED_DSL to the gradle.properties file to suppress this warning.
 WARNING: API 'unitTestVariants' is obsolete and has been replaced with 'AndroidComponentsExtension'.
 It will be removed in version 10.0 of the Android Gradle plugin.
-The legacy variant API is disabled by default in AGP 9.0, but can be re-enabled by adding 
+The legacy variant API is disabled by default in AGP 9.0, but can be re-enabled by adding
     android.newDsl=false
 to this project's gradle.properties file.
 For more information, see http://developer.android.com/build/r/new-dsl.
@@ -4034,7 +4356,7 @@ w: file:///src/apps/native/src-tauri/gen/android/app/build.gradle.kts:17:1: 'fun
 This class is not used for the public extensions in AGP when android.newDsl=true, which is the default in AGP 9.0, and will be removed in AGP 10.0.
 WARNING: API 'libraryVariants' is obsolete and has been replaced with 'AndroidComponentsExtension'.
 It will be removed in version 10.0 of the Android Gradle plugin.
-The legacy variant API is disabled by default in AGP 9.0, but can be re-enabled by adding 
+The legacy variant API is disabled by default in AGP 9.0, but can be re-enabled by adding
     android.newDsl=false
 to this project's gradle.properties file.
 For more information, see http://developer.android.com/build/r/new-dsl.
