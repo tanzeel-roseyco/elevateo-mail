@@ -22,8 +22,20 @@ module Elevateo
       def replay_same?: (Input, Hash[String, untyped]) -> bool
       def suppress: (organization_id: String, email: String, reason: String) -> String
       def analytics: (organization_id: String, campaign_id: String) -> Hash[String, untyped]
-      def list: (kind: String, organization_id: String, ?campaign_id: String?) -> Array[Hash[String, untyped]]
       def rows: (String, Array[untyped]) -> Array[Hash[String, untyped]]
+    end
+  end
+end
+
+module Elevateo
+  module Campaigns
+    class Repository
+      def page: (kind: String, organization_id: String, ?campaign_id: String?, ?cursor: String?, ?limit: Integer) -> Hash[String, untyped]
+      def detail: (kind: String, organization_id: String, id: String) -> Hash[String, untyped]
+      def replace: (Input, organization_id: String, expected_version: Integer, ?actor_id: String?) -> Hash[String, untyped]
+      def selection_for: (String) -> String
+      def table_for: (String) -> String
+      def project: (String, Hash[String, untyped]) -> Hash[String, untyped]
     end
   end
 end

@@ -1,0 +1,37 @@
+module V2
+  module Outreach
+    class BaseController < V1::WriteController
+      def campaign_repository: (untyped) -> Elevateo::Campaigns::Repository
+      def path_uuid: (Symbol) -> String
+      def page_options: (Hash[String, String]) -> [String?, Integer]
+      def encoded: (Hash[String, untyped]) -> String
+      def write_result: (Hash[String, untyped], ?status: Integer) -> Elevateo::WriteResponse
+      def public_item: (String, Hash[String, untyped]) -> Hash[String, untyped]
+      def public_page: (String, Hash[String, untyped]) -> Hash[String, untyped]
+    end
+    class CampaignsController < BaseController
+      def index: () -> void
+      def show: () -> void
+      def create: () -> void
+      def update: () -> void
+    end
+    class LeadsController < BaseController
+      def index: () -> void
+      def show: () -> void
+      def create: () -> void
+      def update: () -> void
+      def record_consent: () -> void
+      def withdraw_consent: () -> void
+      def suppress: () -> void
+    end
+    class AccountsController < BaseController
+      def index: () -> void
+      def show: () -> void
+      def create: () -> void
+      def update: () -> void
+    end
+    class AnalyticsController < BaseController
+      def show: () -> void
+    end
+  end
+end
