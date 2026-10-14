@@ -8,6 +8,7 @@ module Be02Acceptance
     module_function
 
     def run(admin:, seed:, variant:, resources:, open_snapshot:)
+      reject_malformed_seeds(seed, variant, resources)
       Be02Acceptance.check(admin.transaction_status == PG::PQTRANS_IDLE, "variant_test_autocommit_required")
       observe = lambda do |candidate = resources, selected = variant|
         db = open_snapshot.call
@@ -78,6 +79,33 @@ module Be02Acceptance
       true
     end
 
+    def reject_malformed_seeds(seed, variant, resources)
+      # AIDEV-NOTE: Any DB access raises outside validation, proving rejection precedes even transaction inspection.
+      untouched_db = Object.new
+      candidates = [nil, seed.merge("actors" => nil), seed.merge("data" => [])]
+      %w[organizations mailboxes].each do |name|
+        map = seed.fetch(name)
+        candidates.concat([seed.merge(name => nil), seed.merge(name => []),
+          seed.merge(name => map.reject { |key, _| key == "primary" }),
+          seed.merge(name => map.reject { |key, _| key == "other" }),
+          seed.merge(name => map.merge("unexpected" => SecureRandom.uuid)),
+          seed.merge(name => { :primary => map.fetch("primary"), "other" => map.fetch("other") })])
+      end
+      actors = seed.fetch("actors")
+      candidates.concat([seed.merge("actors" => []),
+        seed.merge("actors" => actors.merge("composer" => nil)),
+        seed.merge("actors" => actors.merge("composer" => [])),
+        seed.merge("actors" => actors.merge("composer" => {})),
+        seed.merge("actors" => actors.reject { |key, _| key == "composer" }),
+        seed.merge("actors" => actors.merge("unexpected" => {}))])
+      candidates.each do |candidate|
+        reject("variant_input_invalid") { Variants.seed(db: untouched_db, seed: candidate, variant: variant) }
+        reject("variant_input_invalid") do
+          Variants.verify(db: untouched_db, seed: candidate, variant: variant, resources: resources)
+        end
+      end
+    end
+
     def reject(code)
       begin
         yield
@@ -87,6 +115,6 @@ module Be02Acceptance
       end
       raise Failure, "variant_test_expected_rejection"
     end
-    private_class_method :reject
+    private_class_method :reject, :reject_malformed_seeds
   end
 end
