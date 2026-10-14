@@ -184,6 +184,18 @@ Binding, source only:
 
 Known open item, not mine: Soren's exact `2184127` fleet typecheck FAILED in Mira's `ThreadPage.tsx:60` / `ThreadPage.test.tsx:39` (explicit `undefined` for an optional prop) and missing `MB2` in her test. Those blobs are unchanged in this intake; Mira owns that repair, and my `ThreadRoute` spread does not touch her file.
 
+## R10 — fleet 8eb840d repair of the seven FE-805 unit failures (2026-10-15)
+
+Soren's exact receipt `docs/completion/qa815-evidence/web-8eb840d51eaa.txt` (completion-soren-qa815): API/lint/typecheck PASS, 779 unit PASS / 10 FAIL, seven in FE-805 files. Intake `af8dc62` first makes `apps/web` equal the integrated `8eb840d` tree (Mira ff7fa0f ThreadPage typecheck repair); no server source taken.
+
+Diagnosis and repair, semantics unchanged:
+- **Shell.test.tsx, three session-policy cases.** Root cause is one line in the first case: `act(() => finishRefresh!())` passed a promise-returning callback without awaiting it. React keeps that act scope open and queues every later update into it, which is exactly the fleet evidence: case 1 froze at "Restoring access" after the refresh was released, and cases 2 and 3 rendered an empty root (`<div />`) because their renders were queued into the leaked scope ("The current testing environment is not configured to support act"). Repair: `finishRefresh` returns the promise and the release is `await act(async () => { await finishRefresh!() })`. Cases 2 and 3 are untouched; the production policy and `outreachSessionPolicy.ts` are untouched.
+- **Sidebar.test.tsx.** The Search entry used a text glyph `⌕` in an aria-hidden span, so link `textContent` read `⌕Search`. Repair in source: a first-party `SearchIcon` SVG in `ui/icons.tsx` (aria-hidden like the rest) replaces the glyph; the accessible name was already "Search" and is unchanged, the test is unchanged.
+- **collaborationNav.test.tsx.** Stale expectation of the pre-ADV033 footnote; now asserts the exact R5 text "Simulation mode: no mail is sent or received. Drafts and notes are saved on the server."
+- **features/index.test.tsx, two cases.** Celeste c49063e registers eleven Outreach routes (account detail added) and maps the adapter's pre-dispatch `temporarily_unavailable` rejection to her own `role="status"` "Outreach API unavailable for this account." The test now asserts eleven routes and that exact status while still asserting fetch is never called.
+
+Celeste owns the remaining three failures (OutreachPages pause/consent, contract consent). Tests remain authored and NOT executed here; focused fleet rerun requested from Soren. No visual claim.
+
 ## Limitations
 
 - No lint, typecheck, unit test, build or visual check has been executed by Fable; Soren owns execution and Tessa owns visual evidence.

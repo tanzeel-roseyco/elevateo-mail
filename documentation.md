@@ -240,3 +240,5 @@ The active V2 grant list shape is paginated `{context_id, authorization_version,
 The V2 unbound roster read uses the same protected request ownership and a three-page cap. The UI only labels it verified when the server projection contains the exact twelve configured unbound identities. The backend projection intentionally omits email, Auth UUID and provisional role; local proposed roles remain reference metadata. A denied/mismatched read never creates a grant target.
 
 The protected grants GET must expose the same required `actor:{user_id,role,revision}` in SQL, Rails and the canonical V2 browser DTO. Until that contract is synchronized, strict browser validation rejects successful responses. FE808 currently uses a conservative complete-list actor hint and will switch to the explicit actor projection after Cassian's exact schema commit.
+
+FE-805 (Fable) R10, 2026-10-15: fleet 8eb840d's seven FE-805 unit failures repaired at source without weakening semantics; apps/web intaken at the integrated 8eb840d tree; tests authored, not executed; see docs/completion/fable.md R10.

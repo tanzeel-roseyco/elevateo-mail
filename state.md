@@ -172,3 +172,5 @@ FE808 canonical DTO continuation: grant pages are fully traversed before display
 FE808 roster continuation: the People view reads paginated `/v2/organizations/{id}/roster`, checks session context/version and verifies all twelve unbound keys, names, titles and departments against the reference catalog. Denial or mismatch leaves a clearly labelled local reference list. This source has not run in Docker or a browser; no real enrollment or role assignment is inferred.
 
 FE808 current blocker: Sabine/Theo successful grant GET includes protected actor, but Cassian strict browser DTO has not yet added it. No successful admin read acceptance is claimed. Root was asked to re-dispatch the inactive Cassian owner; latest FE808 source is committed and awaits exact DTO integration plus Soren/Tessa checks.
+
+FE-805 (Fable) R10, 2026-10-15: fleet 8eb840d's seven FE-805 unit failures repaired at source without weakening semantics; apps/web intaken at the integrated 8eb840d tree; tests authored, not executed; see docs/completion/fable.md R10.

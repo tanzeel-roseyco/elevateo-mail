@@ -10,7 +10,7 @@ import { Link, useLocation } from 'react-router'
 import type { Mailbox } from '@/data/contract'
 import { cx } from '@/lib/format'
 import { BrandMark } from '@/ui/BrandMark'
-import { MailboxIcon } from '@/ui/icons'
+import { MailboxIcon, SearchIcon } from '@/ui/icons'
 import { FEATURE_SECTIONS, type FeatureNavEntry, type FeatureSection } from './featureRegistry'
 
 const ITEM = 'flex h-9 items-center gap-3 rounded-lg px-3 text-sm'
@@ -73,7 +73,7 @@ function SearchLink({ onNavigate }: { onNavigate?: (() => void) | undefined }) {
   return (
     <li>
       <Link to="/search" onClick={onNavigate} aria-current={active ? 'page' : undefined} className={cx(ITEM, active ? ACTIVE : IDLE)}>
-        <span aria-hidden className="inline-block size-[18px] shrink-0 text-center">⌕</span>
+        <SearchIcon className="size-[18px] shrink-0" />
         <span>Search</span>
       </Link>
     </li>
