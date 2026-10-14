@@ -89,3 +89,5 @@ Celeste c49063e label clarification and 27049a6 canonical consent observation ti
 Dorian 4da862d current-authority proof for consent replay/audit writes merged as 5b11285. It arrived after the ba615 structural PASS and the 45be full-suite fixture failure; SQL/HTTP authorization and replay checks remain NOT_RUN on this source. Account read routes remain gated on separate mailbox visibility policy.
 
 Latest owner-source merge `995bc86` includes Rowan 6cbd19e versioned internal Mailpit test receipt authority migration 00013, Dorian current-authority consent, and later native/QA safeguards. This receipt authority is internal test transport only; no V2 browser route, live SMTP or provider activation was added. Soren disposable migration through 00013 and targeted receipt DB tests are requested, NOT_RUN on this SHA.
+
+Fable ec85441 seven-failure repair merged as 0f37471 after exact 8eb web 779/10 receipt. Soren full web rerun requested; no repaired-source PASS claimed. Latest Celeste consent and Mira abort follow-ups are in the same integration candidate.
