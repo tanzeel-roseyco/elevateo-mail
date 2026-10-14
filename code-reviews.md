@@ -702,3 +702,5 @@ QA816 reply journey at 199c132 is authored and unreviewed by independent agents;
 QA816 thread transport candidate at 069257f remains authored but independently unreviewed, with 0 reviewed LOC and no computed density; fleet browser runtime NOT_RUN.
 
 QA816 list-only reporter probe is runtime setup evidence with zero browser assertions or independent source review. Independent reviewed LOC remains 0, defect density not computed, actual visual review pending.
+
+QA816 Felix functional packet A (matrix lines 1–152, 152 LOC) found 1 confirmed MEDIUM test oracle defect: empty search's zero-link assertion could pass during loading (6.58 defects/KLOC). Tessa repaired it by requiring `No matches` visible and `Searching` absent before screenshot; independent repair review and runtime remain pending. Packet B and C/design findings are not yet accepted.

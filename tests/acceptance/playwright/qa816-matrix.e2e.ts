@@ -75,6 +75,8 @@ scenario('SCN-QA-817-F2', 'unavailable-reader-path-and-search-empty', async (pag
   await search.getByLabel('Search scope', { exact: true }).selectOption(seed.mailboxes.primary);
   const [result] = await Promise.all([responseAt(page, '/v1/search'), search.getByLabel('Search mail', { exact: true }).press('Enter')]);
   expect(result.status()).toBe(200);
+  await expect(page.getByText('No matches', { exact: true })).toBeVisible();
+  await expect(page.getByRole('status', { name: 'Searching' })).toHaveCount(0);
   await expect(page.getByRole('region', { name: 'Search results' }).locator('a[data-thread]')).toHaveCount(0);
   record.artifacts.push(await screenshot(page, 'QA816-READ-F1-empty-search'));
   record.assertions.push('Foreign thread yields real 404 with prior plaintext cleared; unique search uses real API and settles empty');
