@@ -22,7 +22,21 @@ module V1
 
     def send_path(key)
       value = params[key]
+      Elevateo::WriteInput.invalid! unless value.is_a?(String)
       Elevateo::WriteInput.uuid(value)
+    end
+
+    def send_read_target(key)
+      query = api_query(allowed: %w[mailbox_id])
+      Elevateo::WriteInput.invalid! unless query.keys == ["mailbox_id"]
+      Elevateo::WriteInput.uuid(query["mailbox_id"])
+      send_path(key)
+    end
+
+    def send_approval_input(input:, query:)
+      Elevateo::WriteInput.invalid! unless query.empty?
+      Elevateo::SendAPI::Input.new(draft_id: send_path(:draft_id), input: input)
+      []
     end
 
     def send_epoch

@@ -3,7 +3,8 @@
 module V1
   class SendApprovalsController < SendController
     def create
-      protected_write(required: Elevateo::SendAPI::Input::FIELDS, max_bytes: 4096, budget: 16_384) do
+      protected_write(required: Elevateo::SendAPI::Input::FIELDS, max_bytes: 4096, budget: 16_384,
+        guard_users: ->(input:, query:) { send_approval_input(input: input, query: query) }) do
         |connection:, identity:, session:, input:, **|
         # @type var connection: Elevateo::WriteStatements
         # @type var identity: Elevateo::SessionIdentity

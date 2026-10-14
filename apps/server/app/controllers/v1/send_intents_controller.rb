@@ -3,6 +3,7 @@
 module V1
   class SendIntentsController < SendController
     def show
+      send_read_target(:send_id)
       protected_read(allowed_query: %w[mailbox_id], budget: 16_384) do |connection:, session:, query:, **|
         # @type var connection: ActiveRecord::ConnectionAdapters::AbstractAdapter
         # @type var session: Elevateo::auth_object
@@ -13,7 +14,12 @@ module V1
 
     # AIDEV-NOTE: S3 has no accepted SQL cancellation bridge yet; guarded writes cannot mutate or claim cancellation.
     def cancel
-      protected_write(required: %w[mailbox_id], max_bytes: 4096, budget: 16_384) do |input:, **|
+      protected_write(required: %w[mailbox_id], max_bytes: 4096, budget: 16_384,
+        guard_users: ->(input:, query:) {
+          Elevateo::WriteInput.uuid(input["mailbox_id"])
+          send_path(:send_id)
+          []
+        }) do |input:, **|
         # @type var input: Elevateo::WriteInput::object
         Elevateo::WriteInput.uuid(input["mailbox_id"])
         send_path(:send_id)

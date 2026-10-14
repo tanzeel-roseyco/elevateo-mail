@@ -41,7 +41,7 @@ module Elevateo
           reply_id: @reply, policy: @policy)
         issue("snapshot_too_large") if @snapshot.bytesize > Canonical::MAXIMUM
         @result = { "draft_id" => @draft, "mailbox_id" => @mailbox, "draft_version" => @version,
-          "sender" => { "display_name" => nil, "address" => @sender }, "to" => @recipients,
+          "sender" => { "display_name" => nil, "address" => @sender || sender }, "to" => @recipients,
           "subject" => @subject, "body_text" => @body, "reply_to_thread_id" => @reply,
           "purpose" => "correspondence", "consent_basis" => "human_attestation_required",
           "attachments" => [], "attachments_supported" => false, "policy_revision" => @policy,

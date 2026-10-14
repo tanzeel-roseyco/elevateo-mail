@@ -92,6 +92,8 @@ module V1
     protected
     def send_service: (Elevateo::_ThreadConnection, Elevateo::ReadResponse::item) -> Elevateo::SendAPI::Service
     def send_path: (Symbol) -> String
+    def send_read_target: (Symbol) -> String
+    def send_approval_input: (input: Elevateo::WriteInput::object, query: Hash[String, String]) -> Array[String]
     def send_epoch: () -> String?
     def api_error: (Elevateo::AuthError | Elevateo::CollaborationError | Elevateo::SendError) -> void
     def send_invalid_response: (Elevateo::ReadResponse::Overflow) -> void

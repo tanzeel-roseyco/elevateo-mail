@@ -16,9 +16,17 @@ class SendAPIControllerTest < Minitest::Test
     include CollaborationControllerHarness::Sessions
   end
 
+  class Connection < CollaborationControllerHarness::Connection
+    attr_reader :approval_arguments
+    def exec_query(query, label, binds)
+      @approval_arguments = binds.map(&:value_for_database) if query.include?("app.approve_draft_send")
+      super
+    end
+  end
+
   def setup
     @service, @store, @client, @cookie = harness
-    @connection = CollaborationControllerHarness::Connection.new(metadata)
+    @connection = Connection.new(metadata)
   end
 
   def teardown
@@ -69,6 +77,8 @@ class SendAPIControllerTest < Minitest::Test
     assert_equal AuthFixtures::CONTEXT, result[2]["context_id"]
     assert_equal @service.presentation.version(metadata), result[2]["authorization_version"]
     assert_equal THREAD, result[2]["send_id"]
+    assert_nil @connection.approval_arguments[6]
+    assert_nil @connection.approval_arguments[7]
     assert_equal :commit, @connection.events.last
     assert_equal 2, @connection.business.length
     assert @connection.sql.any? { |sql| sql.include?("app.approve_draft_send") }
@@ -81,11 +91,13 @@ class SendAPIControllerTest < Minitest::Test
     assert_empty @connection.business
     assert_equal :rollback, @connection.events.last
 
-    @connection = CollaborationControllerHarness::Connection.new(metadata)
+    @connection = Connection.new(metadata)
     @connection.rows = [row("code" => "not_available"), row("code" => "dispatch_held")]
     result = dispatch_send(path: "/nonexistent-be03-control-r24")
     assert_equal 503, result[0]
     assert_equal "dispatch_held", result[2]["code"]
+    assert_nil @connection.approval_arguments[6]
+    assert_nil @connection.approval_arguments[7]
     assert_empty @connection.business
     assert_equal :rollback, @connection.events.last
   end
@@ -105,11 +117,12 @@ class SendAPIControllerTest < Minitest::Test
 
   def test_invalid_attestation_and_unknown_fields_do_not_reach_approval
     [{ "correspondence_confirmed" => false }, { "snapshot_bytes" => "forged" }].each do |change|
-      @connection = CollaborationControllerHarness::Connection.new(metadata)
+      @connection = Connection.new(metadata)
       result = dispatch_send(input: payload.merge(change))
       assert_equal 400, result[0]
       assert_equal "request_invalid", result[2]["code"]
       assert_empty @connection.business
+      assert_empty @client.calls
     end
   end
 
@@ -118,7 +131,7 @@ class SendAPIControllerTest < Minitest::Test
     result = dispatch_send
     assert_equal 409, result[0]
     assert_equal :commit, @connection.events.last
-    @connection = CollaborationControllerHarness::Connection.new(metadata)
+    @connection = Connection.new(metadata)
     @connection.rows = [row("code" => "not_available"), row(approved.merge("snapshot_bytes" => "secret"))]
     result = dispatch_send
     assert_equal 500, result[0]

@@ -67,6 +67,16 @@ class SendAPIBoundaryTest < Minitest::Test
     assert_includes result["issues"].map { |issue| issue["code"] }, "purpose_unavailable"
   end
 
+  def test_invalid_sender_reply_and_display_controls_are_nonready_without_hiding_source
+    source = binding.merge("sender_address" => "invalid sender", "reply_available" => false)
+    source["recipients"][0]["display_name"] = "bad\tname"
+    result = Elevateo::SendAPI::Review.new(source).result
+    assert_equal false, result["ready"]
+    assert_nil result["review_digest"]
+    assert_equal "invalid sender", result["sender"]["address"]
+    assert_equal %w[header_invalid reply_unavailable sender_invalid], result["issues"].map { |issue| issue["code"] }.sort
+  end
+
   def test_address_grammar_limits_and_case_identity
     valid = "a" * 64 + "@" + "b" * 63 + ".invalid"
     assert_equal valid, Elevateo::SendAPI::Address.canonical(valid)
@@ -101,6 +111,29 @@ class SendAPIBoundaryTest < Minitest::Test
         Elevateo::SendAPI::Input.new(draft_id: ID, input: approval.merge(change))
       end
       assert_equal "request_invalid", error.code
+    end
+  end
+
+  def test_canonical_bytes_have_independent_escape_and_unicode_spelling
+    source = binding.merge("subject" => [34, 92, 47].pack("C*") + "雪", "body_text" => "\b\f\n\r\t\u0001/\u2028\u2029💌")
+    review = Elevateo::SendAPI::Review.new(source)
+    expected = '["elevateo.send.snapshot.v1","' + ID + '","' + ID + '","' + ID +
+      '",1,[null,"Sender@example.invalid"],[[null,"Local@example.invalid"]],"' +
+      [92, 34, 92, 92, 47].pack("C*") + '雪' + '","' + '\b\f\n\r\t\u0001/' + "\u2028\u2029💌" +
+      '",null,"correspondence","human_correspondence_attestation",[],"1"]'
+    assert_equal expected, review.snapshot
+    assert_equal Digest::SHA256.hexdigest(expected), review.result["review_digest"]
+    assert_equal true, review.result["ready"]
+  end
+
+  def test_subject_body_and_display_boundaries_preserve_maximum_unsent_content
+    source = binding.merge("subject" => "雪" * 998, "body_text" => "💌" * 65_536)
+    source["recipients"][0]["display_name"] = "雪" * 256
+    review = Elevateo::SendAPI::Review.new(source)
+    assert_equal true, review.result["ready"]
+    assert_equal source["body_text"], review.result["body_text"]
+    [{ "subject" => "a" * 999 }, { "body_text" => "a" * 65_537 }].each do |changes|
+      assert_raises(Elevateo::ReadResponse::Invalid) { Elevateo::SendAPI::Review.new(binding.merge(changes)) }
     end
   end
 
