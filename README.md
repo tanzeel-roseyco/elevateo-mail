@@ -363,3 +363,6 @@ QA816 inspected eight actual fleet browser PNGs on f210b5bf, labeled SEEDED-SIMU
 QA816 authored a focused visual-fixture repair after inspecting the eight simulated PNGs: thread detail routing is scoped, assignment/notes receive valid synthetic responses, and the ready-reader screenshot waits for settled nonerror panels with a consistent message count. Fleet rerun and replacement images are pending; original f210b5bf evidence is retained.
 
 Tessa QA816 exact `e567213` visual fixture repair is integrated over the newer Fable shell source: current visual spec hash differs from Tessa’s isolated hash only where existing Navigation/Personal labels were retained. The new fixture now mocks schema-valid assignment/notes, anchors thread detail, aligns message count and requires no reader alerts before a PNG; a fresh eight-case simulated fleet rerun is pending, and old f210 PNGs remain historical.
+
+
+The 00009 policy now separates ordinary content reads from inert writes: SELECT requires session and content-role proof, while INSERT and UPDATE require the protected draft-write marker and the existing tenant, mailbox and consent integrity checks. A disposable valid-digest/no-marker direct UPDATE regression is authored; migration and database runtime on this source are pending.
