@@ -722,3 +722,5 @@ QA-817 independent SEND-810 migration repair review: Nadia 08ee821 migration SHA
 QA-817 independent ADM-803 role audit review: Theo `organization_role_audit.rb` SHA `70e6534e` lines 1–48 plus `organization_role_audit_controller.rb` SHA `3f6355e9` lines 1–62, 110 unique LOC full rubric in one <=200 packet, 0 confirmed defects observed (0/KLOC static). Sabine SQL audit excerpts 112 LOC context in a second <=200 packet, 222 unique total. Actual API-role DB/HTTP, design and Docker NOT_RUN. See `docs/completion/felix-adm803-audit-review.md`.
 
 QA-817 role audit real-DB candidate `apps/server/test/qa817/role_audit_database_test.rb`: independent source review NOT_RUN (0 LOC, density unmeasured), request <=200 LOC full-rubric packet and dedicated design review. Docker/lint NOT_RUN.
+
+QA-817 native review routing correction: Felix's 201-LOC Orion OAuth review (two packets, zero observed static defects) covers historical source removed from the active online-only shell. Current native exact-origin/capability/popup source review and actual runtime remain NOT_RUN; no current native defect density is claimed from the historical packet.

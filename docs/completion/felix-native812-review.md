@@ -1,5 +1,7 @@
 # QA-817 bounded independent review: native OAuth seam
 
+Historical source review only: root's later online-only native decision removes this OAuth/IPC/callback path from the active shell. These observations are not current acceptance criteria; current exact-origin, capability, popup and native runtime checks remain pending Orion/Soren evidence.
+
 Peer source: `/home/tanzeel/orca/workspaces/integration/completion-orion-native812/apps/native/src-tauri/src/oauth.rs`, SHA-256 `ccafc770219615f5fcd4e29e14c8c1a54350cb1d696171096dcf77a734dcea4a`, commit `5859593`. Read packets lines 1–180 (180 LOC) and 181–201 (21 LOC), 201 unique physical LOC; both packets <=200, total <=400. Felix independently reviewed Orion's source. Rust, native UI and OS callback delivery were NOT_RUN.
 
 Purpose: native-only PKCE state/verifier/nonce generation, system-browser URL construction and one-time callback consumption. The source does not wire a token exchange or renderer IPC; comments explicitly block production invocation until server exchange and protected store exist. Successful callback burns pending state, requires code/state/issuer, checks issuer and state in constant time, returns exchange material only to native code, redacts Debug and zeroizes on Drop.

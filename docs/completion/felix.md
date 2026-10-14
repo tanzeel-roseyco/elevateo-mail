@@ -71,3 +71,9 @@ Independently reviewed Theo's role-audit projection/controller (110 LOC full rub
 ## Role audit real-database candidate
 
 Added `apps/server/test/qa817/role_audit_database_test.rb`: one exact role-only audit row and canonical UTC on real change; no new row on no-op/stale/denied request; owner/admin/auditor metadata read; forged tenant, foreign cursor and revoked auditor denial. Uses actual API login and disposable PostgreSQL. Soren command after Sabine/Theo audit integration from `/workspace/apps/server`: `bundle exec ruby test/qa817/role_audit_database_test.rb`, plus owner audit HTTP/pure suites. NOT_RUN; independent QA source review and dedicated design review pending. The prior integrated cancellation migration failure blocks this until Nadia repair reruns successfully.
+
+## Current integration gate and native scope
+
+Cassian candidate `93f7b14` contains nine of eleven QA-817 files from Felix head `ae67ad6`; `cancellation_privileges_database_test.rb` and `role_audit_database_test.rb` still need intake. Cassian's later outbox records Soren `ea92754` getting past Nadia's cancellation migration, then failing Corin `CreateIsolatedInbound#up` with SQL syntax error. QA-817 SQL/HTTP cases remain NOT_REACHED; no hot-path latency, RSS or query-count budget is measured. This is a read-only reconciliation of owner reports, not an executed QA result.
+
+Root's online-only native decision supersedes the earlier OAuth/IPC review target. Current Orion source is intended to load one exact HTTPS origin with no native IPC/callback capability; the bounded OAuth review remains historical only. Request Soren's fleet static boundary verifier and actual native compile/launch evidence on the accepted immutable shell, plus origin-denial and popup-denial checks. The `.invalid` origin is a compile-only fixture and gives no usable launch or release proof.

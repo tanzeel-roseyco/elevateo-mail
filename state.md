@@ -140,3 +140,5 @@ QA-817 role escalation DB candidate checks owner success/stale revision and fail
 QA-817 cancellation privilege DB candidate checks the facade exists under private send owner, API can execute, worker/public cannot execute, and runtime roles lack schema CREATE privilege. Integrated migration previously failed before any QA suite; owner fix and fleet proof pending.
 
 QA-817 role audit DB source checks one canonical UTC metadata row for a real role change, zero additional rows for no-op/stale/denied mutations, permitted owner/admin/auditor reads, and forged tenant/foreign cursor/revoked reader denial. Docker runtime remains NOT_RUN.
+
+Latest QA-817 read-only integration audit: Cassian `93f7b14` has nine of eleven fixtures; cancellation privilege and role audit fixtures need intake. Soren `ea92754` passed the earlier cancellation migration gate but failed Corin's inbound migration before QA-817 SQL/HTTP cases. Native scope is online-only and has no active IPC/callback; origin/capability checks await fleet and native runtime evidence. No performance budget is measured.
