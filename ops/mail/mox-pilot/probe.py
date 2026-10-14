@@ -1,11 +1,14 @@
 """Bounded synthetic SMTP/IMAP assertions for Mox localserve."""
 
 import imaplib
+import hashlib
+import json
 import os
 import smtplib
 import socket
 import time
 from email.message import EmailMessage
+from pathlib import Path
 
 
 HOST = "mox"
@@ -68,6 +71,28 @@ def assert_imap_subject(subject: str) -> None:
     raise AssertionError("accepted synthetic message absent from IMAP")
 
 
+def uid_evidence(subject: str) -> dict[str, object]:
+    with imaplib.IMAP4(HOST, IMAP_PORT, timeout=TIMEOUT) as imap:
+        imap.login("mox@localhost", "moxmoxmox")
+        result, _ = imap.select("INBOX", readonly=True)
+        assert result == "OK"
+        _, epoch_values = imap.response("UIDVALIDITY")
+        if not epoch_values or not epoch_values[0] or not epoch_values[0].isdigit():
+            raise AssertionError("IMAP UIDVALIDITY missing")
+        result, values = imap.uid("SEARCH", None, "HEADER", "Subject", subject)
+        if result != "OK" or not values or not values[0].split():
+            raise AssertionError("synthetic IMAP UID absent")
+        uid = values[0].split()[0]
+        result, parts = imap.uid("FETCH", uid, "(BODY.PEEK[])")
+        if result != "OK" or not parts or not isinstance(parts[0], tuple):
+            raise AssertionError("synthetic IMAP MIME absent")
+        raw = parts[0][1]
+        if not isinstance(raw, bytes) or not 1 <= len(raw) <= 1_048_576:
+            raise AssertionError("synthetic IMAP MIME invalid")
+        return {"uidvalidity": int(epoch_values[0]), "uid": int(uid),
+                "content_sha256": hashlib.sha256(raw).hexdigest()}
+
+
 def assert_wrong_password_denied() -> None:
     with imaplib.IMAP4(HOST, IMAP_PORT, timeout=TIMEOUT) as imap:
         try:
@@ -93,6 +118,26 @@ def assert_no_external_egress() -> None:
     raise AssertionError("external TCP egress unexpectedly available")
 
 
+def assert_data_timeout_is_uncertain(subject: str) -> None:
+    message = EmailMessage()
+    message["From"] = "sender@pilot.test"
+    message["To"] = "reject-timeout@pilot.test"
+    message["Subject"] = subject + "-uncertain"
+    message.set_content("Synthetic timeout; never resend automatically.")
+    smtp = smtplib.SMTP(HOST, SMTP_PORT, timeout=3)
+    try:
+        smtp.ehlo()
+        if smtp.mail("sender@pilot.test")[0] != 250 or smtp.rcpt("reject-timeout@pilot.test")[0] != 250:
+            raise AssertionError("timeout fixture failed before DATA")
+        try:
+            smtp.data(message.as_bytes())
+        except (TimeoutError, OSError, smtplib.SMTPServerDisconnected):
+            return
+        raise AssertionError("Mox timeout suffix unexpectedly accepted")
+    finally:
+        smtp.close()
+
+
 def main() -> None:
     assert_no_external_egress()
     wait_for_port(SMTP_PORT)
@@ -105,12 +150,19 @@ def main() -> None:
     if os.environ.get("PROBE_VERIFY_EXISTING") == "1":
         assert_imap_subject(subject)
         assert_imap_subject(subject + "-submission")
+        expected = json.loads(Path("/pilot-evidence/mox-uid-evidence.json").read_text())
+        if uid_evidence(subject) != expected:
+            raise AssertionError("IMAP UID cursor changed across same-volume restart")
     smtp_case("accepted@pilot.test", 2, subject)
     assert_imap_subject(subject)
     smtp_case("outbound@pilot.test", 2, subject + "-submission", submission=True)
     assert_imap_subject(subject + "-submission")
+    if os.environ.get("PROBE_VERIFY_EXISTING") != "1":
+        evidence = uid_evidence(subject)
+        Path("/pilot-evidence/mox-uid-evidence.json").write_text(json.dumps(evidence, sort_keys=True))
     smtp_case("reject-permerror@pilot.test", 5, subject + "-permanent")
     smtp_case("reject-temperror@pilot.test", 4, subject + "-temporary")
+    assert_data_timeout_is_uncertain(subject)
     print("PASS: local SMTP, submission loopback, IMAP, failures, egress denial")
 
 

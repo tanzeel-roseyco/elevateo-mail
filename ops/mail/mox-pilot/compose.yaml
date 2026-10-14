@@ -64,6 +64,7 @@ services:
       PROBE_VERIFY_EXISTING: ${PROBE_VERIFY_EXISTING:-0}
     volumes:
       - ./probe.py:/pilot/probe.py:ro
+      - ${MOX_PILOT_RECEIPT_DIR:?private pilot receipt directory required}:/pilot-evidence
     networks:
       - pilot
     cap_drop: [ALL]
@@ -73,6 +74,39 @@ services:
     pids_limit: 64
     restart: "no"
     depends_on: [mox]
+
+  mailpit:
+    image: axllent/mailpit:v1.31.5@sha256:94f6b70c1436defae6799d9ac7ff0eeff9540465b842026d5cdb018f1c0234ea
+    pull_policy: never
+    environment:
+      MP_SMTP_RELAY_ALL: "false"
+      MP_SMTP_DISABLE_RDNS: "true"
+    networks:
+      - pilot
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    mem_limit: 256m
+    cpus: 0.25
+    pids_limit: 64
+    restart: "no"
+
+  mailpit_probe:
+    image: ${PROBE_IMAGE:?immutable Python image digest required}
+    pull_policy: never
+    command: ["python", "/pilot/mailpit_probe.py"]
+    environment:
+      MOX_PILOT_SUBJECT: ${MOX_PILOT_SUBJECT:?synthetic subject required}
+    volumes:
+      - ./mailpit_probe.py:/pilot/mailpit_probe.py:ro
+    networks:
+      - pilot
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    mem_limit: 128m
+    cpus: 0.25
+    pids_limit: 32
+    restart: "no"
+    depends_on: [mailpit]
 
 networks:
   pilot:

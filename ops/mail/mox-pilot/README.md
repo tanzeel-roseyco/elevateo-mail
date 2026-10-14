@@ -29,6 +29,8 @@ with its documented localserve development password. Those credentials are
 fake and fixture-only. The default account's catchall behavior means an SMTP
 success alone cannot prove per-account routing or tenant isolation. A mail
 client receives with IMAP from the default account to confirm local loopback.
+The pilot also uses the application's pinned local Mailpit image sequentially;
+neither service has an external relay or published port.
 
 ## Test request to Soren
 
@@ -37,15 +39,19 @@ Supply `MOX_IMAGE` and `PROBE_IMAGE` as verified local immutable image reference
 pin above, then run `MOX_PILOT_LEASE_TOKEN=<lease-id> scripts/run-pilot.sh` on
 fleet-02 after application acceptance. The script is deliberately not run by
 this worker. It checks accepted local SMTP, authenticated submission loopback, IMAP receipt,
-wrong-password denial, a `permerror` recipient and a `temperror` recipient;
-then repeats the checks after a same-volume restart;
-checks DNS and external TCP egress denial; collects bounded logs and resource
+wrong-password denial, a `permerror` recipient, a `temperror` recipient and a
+bounded DATA timeout; then it checks the original IMAP UIDVALIDITY/UID and
+synthetic MIME digest after a same-volume restart. It stops Mox before starting
+Mailpit, sends one `.invalid` synthetic message and confirms its stored
+recipient via Mailpit's bounded HTTP API. Both probes check external TCP
+egress denial; Mox also checks external DNS denial. The runner collects logs and resource
 figures; and removes only its own containers/network/volume. Preserve the
 receipt directory outside the disposable runtime.
 
 The concurrent Mox/probe limits total 1.75 GiB and 2 CPU, within the
 2 GiB/2 CPU pilot ceiling. It preflights 5 GiB free space and budgets
-14 minutes for protocol work plus 1 minute for cleanup. A 5 GiB free-space check is an
+14 minutes for protocol work plus 1 minute for cleanup. The Mailpit phase runs
+after Mox stops and uses less memory/CPU. A 5 GiB free-space check is an
 admission guard, not a hard volume quota; Soren must verify actual disk use.
 Do not treat localserve's self-signed TLS, catchall delivery, or loopback
 submission as production security, Internet deliverability, or tenant proof.
@@ -55,7 +61,7 @@ submission as production security, Internet deliverability, or tenant proof.
 Mox is MIT licensed; bundled dependencies include BSD-3-Clause and MPL-2.0
 material, so an eventual distributable image needs its exact notices reviewed.
 No Mox source is copied into this repository. This fixture exercises SMTP and
-IMAP only. Mox may expose HTTP APIs, but no authenticated API or webhook
+IMAP plus Mailpit's local inspection API only. Mox may expose HTTP APIs, but no authenticated Mox API or webhook
 mapping is proven here. No JMAP, OAuth2, delegated mailbox ACL, inbound public
 MX, external outbound delivery, spam reputation, backup restore, restart, or
 capacity result is claimed. Mox's production Docker warning remains a separate
@@ -69,3 +75,6 @@ real account mapping and outbound failure modes; a later production evaluation
 needs native Linux deployment, explicit per-account routing, queue recovery,
 TLS/authentication, ingress, backup restore, and external egress policy evidence.
 Keep this fixture isolated even if those later gates pass.
+
+Elara/Corin/Cassian's proposed evidence and cursor seams are in
+[adapter-contract.md](adapter-contract.md). They are not activated here.

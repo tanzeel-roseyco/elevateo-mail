@@ -27,13 +27,20 @@ for name in MOX_IMAGE PROBE_IMAGE; do
   fi
 done
 docker image inspect "$MOX_IMAGE" "$PROBE_IMAGE" >/dev/null
+docker image inspect 'axllent/mailpit:v1.31.5@sha256:94f6b70c1436defae6799d9ac7ff0eeff9540465b842026d5cdb018f1c0234ea' >/dev/null
 if (( $(df -Pk "$pilot_dir" | awk 'NR==2 {print $4}') < 5242880 )); then
   echo 'less than 5 GiB free; pilot not admitted' >&2
   exit 2
 fi
 
-receipt_dir=${MOX_PILOT_RECEIPT_DIR:-"$pilot_dir/receipts/$(date -u +%Y%m%dT%H%M%SZ)"}
-mkdir -p -- "$receipt_dir"
+mkdir -p -- "$pilot_dir/receipts"
+receipt_dir=${MOX_PILOT_RECEIPT_DIR:-"$pilot_dir/receipts/$(date -u +%Y%m%dT%H%M%SZ)-$$"}
+if [[ $receipt_dir != /* || -e $receipt_dir || -L $receipt_dir ]]; then
+  echo 'receipt directory must be a new absolute path' >&2
+  exit 2
+fi
+mkdir -m 700 -- "$receipt_dir"
+export MOX_PILOT_RECEIPT_DIR="$receipt_dir"
 project="mail818-$(date -u +%s)-$$"
 export MOX_PILOT_SUBJECT="MAIL818-SYNTHETIC-$project"
 export PROBE_VERIFY_EXISTING=0
@@ -87,6 +94,14 @@ if (( status == 0 )); then
   export PROBE_VERIFY_EXISTING=1
   set +e
   run_bounded "${compose[@]}" run --rm probe >"$receipt_dir/probe-after-restart.log" 2>&1
+  status=$?
+  set -e
+fi
+if (( status == 0 )); then
+  run_bounded "${compose[@]}" stop mox >"$receipt_dir/mox-stop.log" 2>&1
+  run_bounded "${compose[@]}" up -d mailpit >"$receipt_dir/mailpit-start.log" 2>&1
+  set +e
+  run_bounded "${compose[@]}" run --rm mailpit_probe >"$receipt_dir/mailpit-probe.log" 2>&1
   status=$?
   set -e
 fi

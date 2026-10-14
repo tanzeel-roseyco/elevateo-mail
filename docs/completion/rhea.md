@@ -3,7 +3,7 @@
 The combined app transport/ingress source inventory and bounded next seam are
 in [the adapter inventory](rhea-adapter-inventory.md).
 
-Scope: isolated `ops/mail/mox-pilot/` synthetic SMTP/IMAP fixture only. Baseline
+Scope: isolated `ops/mail/mox-pilot/` synthetic Mox/Mailpit SMTP/IMAP fixture only. Baseline
 `bbf2353b254a05d48c2da7a508c143e6fba78691`; source candidate
 `d8c68aaa5970d65968bc1943f0eea6f4eb8bfe1d` (the outbox tracks any
 documentation-only successor). No production integration is
@@ -27,7 +27,8 @@ images and command receipt remain pending. Host tests, Docker builds, Docker
 runtime, SMTP/IMAP assertions, egress probe, resource measurement, and cleanup
 verification are **NOT_RUN** by this worker. Requested tests: accepted local
 SMTP and authenticated submission loopback with IMAP receipt, wrong-password denial, permanent recipient failure, temporary recipient
-failure, same-volume restart, external DNS/TCP denial, bounded resource
+failure, bounded DATA timeout, UIDVALIDITY/UID persistence after restart,
+Mailpit local stored-recipient proof, external DNS/TCP denial, bounded resource
 receipt, and exact cleanup.
 
 Limitations: `localserve` catchall and loopback behavior cannot prove account
