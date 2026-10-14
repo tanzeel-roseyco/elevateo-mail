@@ -1407,3 +1407,5 @@ Orion TEST929 manifest 28 changed shell lines imported source-only; independent 
 Nadia FIX933 controller/RBS/test 11 changed source lines imported source-only; no independent successor review or fleet Steep yet, reviewed LOC/defects/density unassessed. Earlier Soren feature7cae15a7 two Steep diagnostics remain historical until exact successor pass.
 
 ADV151 Ada independently reviewed Orion TEST929 53 source LOC/zero confirmed defects (0/KLOC), design only. It flags a bounded outer-lease risk for 130 sequential processes and requires a nine-file dedicated gate ledger plus skip counts; no runtime or suite-body coverage. Functional source review and fleet execution remain pending.
+
+ADV152 Mira independently reviewed exact Corin487ca33d fake inbound anonymous keyword repair over 102 unique versioned LOC, zero confirmed defects (0/KLOC), source-only. It covers controller and protected_write call boundary, excluding RBS/tests/ingress/runtime. Soren focused controller lint PASS is separate exact-feature evidence; full RuboCop/Steep on activated candidate pending.
