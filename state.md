@@ -523,3 +523,5 @@ ADV152 Corin487ca33d callback repair source review102LOC/0 defects; focused fake
 QA815 exact feature7cae15a7 acceptance type/build, 73/73 units and compiled reporter Playwright --list PASS; earlier offline npm ci EAI_AGAIN retained. Zero browser cases/screenshots and no actual mounted privacy/realAuth proof.
 
 ADV153 ATT902 activation bounded review171LOC/one P3 stale comment (5.85/KLOC), no functional/auth defect; comment/AIDEV intent corrected in successor. Independent re-review and fleet route/runtime pending.
+
+REV934 TEST929 functional91LOC/0, ADV154 Nadia type115LOC/0, REV935 producer first130LOC/0. REV936 producer/test later194LOC/one LOW missing negative test oracle (5.15/KLOC), FIX938 test-only repair imported source-only; REV928 QA816 H3/I4 194 test+43 context LOC/0 new defects, runtime pending.
