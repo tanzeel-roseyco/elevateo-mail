@@ -64,3 +64,24 @@ scenario('SCN-QA-820-F2', 'reader-cannot-create-campaign', async (page, record) 
   record.artifacts.push(await screenshot(page, 'QA816-OUTREACH-F2-reader-denied'));
   record.assertions.push('Reader POST is rejected by real V2 API and no campaign detail navigation occurs');
 });
+
+scenario('SCN-QA-821-P', 'logout-revokes-outreach-and-people-cache', async (page, record) => {
+  await signIn(page, 'manager_primary');
+  const [campaigns] = await Promise.all([responseAt(page, '/v2/outreach/campaigns'), page.goto('/#/outreach/campaigns')]);
+  expect(campaigns.status()).toBe(200);
+  await expect(page.getByRole('heading', { name: 'Campaigns', exact: true })).toBeVisible();
+  await page.goto('/#/people');
+  await expect(page.getByRole('heading', { name: 'People', exact: true })).toBeVisible();
+  await page.getByRole('button', { name: 'Account and sign-out' }).click();
+  const [logout] = await Promise.all([responseAt(page, '/v1/auth/logout', 'POST'),
+    page.getByRole('dialog', { name: 'Account', exact: true }).getByRole('button', { name: 'Sign out', exact: true }).click()]);
+  expect(logout.ok()).toBe(true);
+  for (const hash of ['/#/outreach/campaigns', '/#/people']) {
+    await page.goto(hash);
+    await expect(page.getByRole('heading', { name: 'Sign in', exact: true })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Campaigns', exact: true })).toHaveCount(0);
+    await expect(page.getByText('Current grants loaded', { exact: false })).toHaveCount(0);
+  }
+  expect((await page.request.get('/v1/session', { maxRedirects: 0 })).status()).toBe(401);
+  record.assertions.push('Logout after actual V2 campaign read clears protected Outreach and People routes and leaves real V1 session denied');
+});
