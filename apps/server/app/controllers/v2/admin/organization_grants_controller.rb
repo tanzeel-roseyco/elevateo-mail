@@ -14,7 +14,7 @@ module V2
         "sales_lead" => "sales_manager", "sales_member" => "sales",
         "security_auditor" => "auditor", "organization_member" => "associate" }.freeze
       CHANGE_SQL = "SELECT app.change_organization_role($1::text,$2::uuid,$3::integer,$4::text) AS result"
-      PAGE_SQL = "SELECT app.organization_grants_page($1::text,$2::integer,$3::uuid) AS result"
+      PAGE_SQL = "SELECT app.organization_grants_page($1::text,$2::uuid,$3::integer) AS result"
       DATABASE_ROLES = { "owner" => "organization_owner", "admin" => "organization_admin",
         "operator" => "technology_operator", "sales_manager" => "sales_lead",
         "sales" => "sales_member", "auditor" => "security_auditor",
@@ -31,7 +31,7 @@ module V2
           if position && (position.keys != ["user_id"] || !Elevateo::Cursors::UUID.match?(position["user_id"]))
             raise Elevateo::CollaborationError.new("cursor_invalid")
           end
-          binds = [identity.digest, limit, position && position["user_id"]].map do |value|
+          binds = [identity.digest, position && position["user_id"], limit].map do |value|
             ActiveRecord::Relation::QueryAttribute.new("organization_grants_page", value&.to_s, ActiveRecord::Type::String.new)
           end
           row = connection.exec_query(PAGE_SQL, "organization grants page", binds).first
@@ -41,7 +41,7 @@ module V2
           end
           Elevateo::SessionStore.check!(result)
           items = self.class.project_grants(result["items"], organization, limit)
-          after = result["next_after_user"]
+          after = result["next_user_id"]
           if after && (items.empty? || after != items.last["user_id"])
             raise Elevateo::CollaborationError.new("internal_error")
           end
@@ -92,7 +92,7 @@ module V2
         protected_read(allowed_query: %w[limit cursor], budget: 8192) do |connection:, identity:, session:, query:, **|
           raise Elevateo::CollaborationError.new("not_available") unless organization == identity.org_id
           limit = self.class.page_limit(query)
-          authorization_binds = [identity.digest, "1", nil].map do |value|
+          authorization_binds = [identity.digest, nil, "1"].map do |value|
             ActiveRecord::Relation::QueryAttribute.new("organization_roster_guard", value, ActiveRecord::Type::String.new)
           end
           result_row = connection.exec_query(PAGE_SQL, "organization roster authority", authorization_binds).first
