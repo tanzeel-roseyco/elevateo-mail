@@ -335,3 +335,8 @@ Nadia authored docs/research/instantly-gmail-rea.md with public primary-source i
 ## RES-406 continuation citation/source advisory (2026-10-14)
 
 Nadia reopened I1–I9, G1–G5, R1–R6 and request-verification primary sources; source-inspected gateway/contracts/routes/mailbox permission/readiness to map unsupported health/consent/send controls. Author/source consistency advisory only; no independent adversarial/design reviewer signoff. Historical missing-skill event resolved with supplied REA v37 instructions; partial root Orca evidence reported, full runtime verification pending. No app source edited, source review coverage counted for adversarial acceptance 0 LOC, defects unmeasured, defects/KLOC N/A. Full INT-401 rubric and dedicated design-tradeoff review required for future implementation. All proposed application scenarios NOT_RUN; root mirror pending.
+
+
+## OFF-406 attempt4 application acceptance/design review (2026-10-14)
+
+Frozen Rowan fb79811 source-only full-rubric independent review: Packet J120 distinct LOC,0 confirmed defects,0.00 defects/KLOC; Packet L119 distinct LOC,0 confirmed defects,0.00 defects/KLOC. Dedicated practical zero/null/runtime tradeoffs recorded in docs/completion/review-rowan-fb79811-j-l.md. Actual file lengths corrected estimates; no silent scope expansion. Immediate Rowan/root inbox delivery completed. No app source edits/tests; all runtime gates remain IN PROGRESS.

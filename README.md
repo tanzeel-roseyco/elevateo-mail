@@ -119,3 +119,8 @@ The corrected isolated grantor probe is frozen in docs/evidence/be-01-r1-grantor
 
 
 INT-401 preservation follow-up: original indexed executable modes restored for canonical scripts after Windows overlay staging; baseline remains UNTESTED. Source-only and history bundles remain ignored local deliverables.
+
+
+## OFF-406 attempt4 application acceptance/design review (2026-10-14)
+
+Frozen Rowan fb79811 source-only full-rubric independent review: Packet J120 distinct LOC,0 confirmed defects,0.00 defects/KLOC; Packet L119 distinct LOC,0 confirmed defects,0.00 defects/KLOC. Dedicated practical zero/null/runtime tradeoffs recorded in docs/completion/review-rowan-fb79811-j-l.md. Actual file lengths corrected estimates; no silent scope expansion. Immediate Rowan/root inbox delivery completed. No app source edits/tests; all runtime gates remain IN PROGRESS.
