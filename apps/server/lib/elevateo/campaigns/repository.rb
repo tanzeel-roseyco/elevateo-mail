@@ -146,9 +146,11 @@ module Elevateo
       end
 
       # AIDEV-NOTE: Operation advisory lock serializes same-key retries before row mutation; stored response is replayed.
-      def replace(input, organization_id:, expected_version:, actor_id: nil, intent: nil)
+      def replace(input, organization_id:, expected_version:, actor_id: nil, intent: nil, preserve_consent: false)
         WriteInput.invalid! unless input.is_a?(Input) && expected_version.is_a?(Integer) &&
           expected_version.between?(1, 2_147_483_646)
+        WriteInput.invalid! unless preserve_consent == true || preserve_consent == false
+        WriteInput.invalid! if preserve_consent && input.kind != "lead"
         org = WriteInput.uuid(organization_id)
         actor = actor_id.nil? ? nil : WriteInput.uuid(actor_id)
         WriteInput.invalid! if input.kind == "lead" && actor.nil?
@@ -169,7 +171,11 @@ module Elevateo
           ["UPDATE app.campaigns SET name=$4,status=$5,version=version+1,updated_at=now() WHERE organization_id=$1::uuid AND id=$2::uuid AND version=$3::integer RETURNING *",
             [org, input.id, expected_version, fields.fetch("name"), fields.fetch("status")]]
         when "lead"
-          [<<~SQL, [org, input.id, expected_version, fields.fetch("email"), fields.fetch("consent_status"), fields.fetch("consent_recorded_at"), fields.fetch("consent_source"), fields.fetch("suppressed"), fields.fetch("campaign_id"), actor]]
+          if preserve_consent
+            ["UPDATE app.campaign_leads SET version=version+1 WHERE organization_id=$1::uuid AND id=$2::uuid AND version=$3::integer AND email=$4 AND campaign_id=$5::uuid RETURNING *",
+              [org, input.id, expected_version, fields.fetch("email"), fields.fetch("campaign_id")]]
+          else
+            [<<~SQL, [org, input.id, expected_version, fields.fetch("email"), fields.fetch("consent_status"), fields.fetch("consent_recorded_at"), fields.fetch("consent_source"), fields.fetch("suppressed"), fields.fetch("campaign_id"), actor]]
             UPDATE app.campaign_leads SET email=$4,consent_status=$5,consent_recorded_at=$6::timestamptz,
               consent_source=$7,consent_recorded_by=$10::uuid,
               suppressed_at=CASE WHEN $8::boolean THEN COALESCE(suppressed_at,now()) ELSE suppressed_at END,
@@ -177,6 +183,7 @@ module Elevateo
             WHERE organization_id=$1::uuid AND id=$2::uuid AND version=$3::integer AND campaign_id=$9::uuid
             RETURNING *
           SQL
+          end
         when "account"
           ["UPDATE app.campaign_accounts SET label=$4,version=version+1 WHERE organization_id=$1::uuid AND id=$2::uuid AND version=$3::integer AND campaign_id=$5::uuid AND mailbox_id=$6::uuid RETURNING *",
             [org, input.id, expected_version, fields.fetch("label"), fields.fetch("campaign_id"), fields.fetch("mailbox_id")]]
@@ -187,7 +194,7 @@ module Elevateo
           visible = rows("SELECT id FROM app.#{table_for(input.kind)} WHERE organization_id=$1::uuid AND id=$2::uuid", [org, input.id]).first
           raise CollaborationError.new(visible ? "draft_conflict" : "not_available")
         end
-        if input.kind == "lead"
+        if input.kind == "lead" && !preserve_consent
           rows(<<~SQL, [org, fields.fetch("campaign_id"), input.id, input.operation_id, actor,
             fields.fetch("consent_status"), fields.fetch("consent_source"), fields.fetch("consent_recorded_at")])
             INSERT INTO app.campaign_consent_events(organization_id,campaign_id,lead_id,operation_id,
