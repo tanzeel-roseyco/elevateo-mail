@@ -5,6 +5,7 @@ import { GatewayError } from '@/data/errors'
 import {
   OutreachCampaignCreatePage, OutreachCampaignDetailPage, OutreachCampaignLeadsPage,
   OutreachCampaignsPage, OutreachLeadDetailPage, OutreachAccountDetailPage, OutreachCampaignAccountsPage,
+  OutreachCampaignAnalyticsPage,
 } from './OutreachPages'
 import type { OutreachGateway } from './contract'
 
@@ -39,6 +40,7 @@ function view(path: string, g?: OutreachGateway) {
     <Route path="/outreach/campaigns/:campaignId/leads/:leadId" element={<OutreachLeadDetailPage gateway={g} context={context} proof={proof} />} />
     <Route path="/outreach/campaigns/:campaignId/accounts/:accountId" element={<OutreachAccountDetailPage gateway={g} context={context} proof={proof} />} />
     <Route path="/outreach/campaigns/:campaignId/accounts" element={<OutreachCampaignAccountsPage gateway={g} context={context} proof={proof} />} />
+    <Route path="/outreach/campaigns/:campaignId/analytics" element={<OutreachCampaignAnalyticsPage gateway={g} context={context} proof={proof} />} />
   </Routes></MemoryRouter>)
 }
 
@@ -163,5 +165,10 @@ describe('Outreach routed pages', () => {
     expect(await screen.findByText(/Outreach API unavailable/)).toBeTruthy()
     expect(screen.queryByText('Pilot')).toBeNull()
     expect(screen.queryByRole('link', { name: 'Create draft campaign' })).toBeNull()
+  })
+  it('labels the server aggregate as consented and unsuppressed', async () => {
+    const g = gateway({ listAnalytics: vi.fn(async () => ({ campaign_id: campaignId, lead_count: 4, consented_count: 1 })) })
+    view(`/outreach/campaigns/${campaignId}/analytics`, g)
+    expect(await screen.findByText(/1 consented and unsuppressed of 4 leads/)).toBeTruthy()
   })
 })

@@ -696,3 +696,5 @@ FE807 role-policy follow-up: root supplied owner/admin/sales role matrix while s
 FE807 disabled account adapter presentation: author review found a known `temporarily_unavailable` gateway response would render generic error. Source now maps that and `not_available` reads to the unavailable state; component regression authored, not executed. Independent review pending.
 
 FE807 denied-read presentation: author self-review found create-draft navigation remained visible after an Outreach list denial. It now appears only after a validated ready list, with a denied-read component regression; backend denial remains the authority. No test execution claimed.
+
+FE807 analytics copy self-review: backend's candidate `consented_count` excludes suppressions, while UI said merely “consented.” Source now labels the aggregate “consented and unsuppressed” and adds a component case; no execution or independent review claim.
