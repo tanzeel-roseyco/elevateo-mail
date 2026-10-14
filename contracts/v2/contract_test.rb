@@ -22,6 +22,7 @@ class ContractV2Test < Minitest::Test
     assert_empty(@contract.fetch("paths").keys & JSON.parse(File.read(V1)).fetch("paths").keys)
     assert_equal %w[draft paused], @contract.dig("components", "schemas", "OutreachPlan", "properties", "status", "enum")
     refute @contract.fetch("paths").keys.any? { |path| path.include?("send") }
+    assert_equal "disabled", @contract.dig("paths", "/v2/outreach/campaigns/{campaign_id}/accounts", "get", "x-elevateo-status")
   end
 
   def test_failure_worker_does_not_inherit_browser_authority
