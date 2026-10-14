@@ -9,6 +9,7 @@ import { createContext, useContext, type ReactNode } from 'react'
 import type { OutreachGateway } from '@/features/outreach/contract'
 import type { DirectMessageRead } from '@/features/thread/ThreadPage'
 import type { AssigneeOptionsReadPort } from '@/data/v2AssigneeOptionsGateway'
+import type { AttachmentReadPort } from '@/features/thread/MessageAttachments'
 
 export interface FeatureGateways {
   readonly outreach?: OutreachGateway
@@ -21,6 +22,8 @@ export interface FeatureGateways {
   readonly readDirectMessage?: DirectMessageRead
   /** Inject only after mailbox-scoped SQL, route and current-session fleet proof. */
   readonly assigneeOptions?: AssigneeOptionsReadPort
+  /** Inject only after private byte, scan and scope gates pass on one exact source. */
+  readonly attachmentPort?: AttachmentReadPort
 }
 
 const NONE: FeatureGateways = {}

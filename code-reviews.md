@@ -1335,3 +1335,5 @@ ADV137 Ada reviewed Nadia ATT902 initial content candidate `3a454c8c` plus Cassi
 Nadia ATT902 final `95acc3b3` content source/test/RBS is integrated inactive. Ada ADV137 found one held-envelope defect on earlier `3a454c8c` (347 LOC, 2.88/KLOC); Nadia `a2337794` now raises the shared fixed CollaborationError in source, but independent successor review and fleet runtime are pending. The final owner packet is <=280 unique LOC in <=180-line reads; do not count it as independently reviewed yet. The old index lambda strict diagnostics persist.
 
 Cassian draft.8 route registry preparation adds only three inactive mappings plus a denial regression; independent review and fleet route tests pending, reviewed LOC/defects/KLOC unclaimed. Review must confirm active allowlist equality and that private byte route cannot be registered explicitly.
+
+ATT902 Cassian optional shell seam adds an AttachmentReadPort capability and conditional ThreadPage prop only; main injection and route activation remain off. Independent source review and runtime pending, reviewed LOC/defects/KLOC unclaimed.

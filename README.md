@@ -506,3 +506,5 @@ The top conversation Reply as draft candidate now seeds from a concrete availabl
 ATT902 candidate now contains Nadia's private inbound attachment content action and before/after authority service, but its V2 route and browser port are still inactive. Fixed held 423 semantics are source-only; fleet strict/security/HTTP/browser proof and old index typing repair remain pending.
 
 The three new V2 route mappings are prepared in the central registry but excluded from its active allowlist; explicit registration is rejected until the feature gates pass.
+
+The thread shell has an optional attachment read port seam, still absent from production until private byte and real-auth fleet gates pass.

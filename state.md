@@ -451,3 +451,5 @@ Mira REPLY901/906 frontend source and tests are imported as unexecuted candidate
 Nadia ATT902 final `95acc3b3` private content source/tests are imported as inactive candidate with pre/postfetch scope checks and fixed held 423. The old index lambda strict error remains, and no route, browser injection, scanner verdict or real-auth byte PASS is claimed.
 
 V2 registry knows the draft.8 assignee and attachment controller mappings but keeps all three inactive; a new unexecuted registry regression asserts explicit requests fail closed.
+
+ATT902 App/featureGateways now carry an optional attachment read port to ThreadPage, with production main injection still absent. No viewer activation or byte PASS follows.

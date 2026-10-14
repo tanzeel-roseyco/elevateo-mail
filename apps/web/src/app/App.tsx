@@ -19,8 +19,9 @@ import { Shell } from './Shell'
 // FE-805: Mira's reader takes the direct-message capability as an optional prop; absence keeps her
 // honest "unavailable" state. exactOptionalPropertyTypes forbids an explicit undefined, hence the spread.
 function ThreadRoute() {
-  const { readDirectMessage } = useFeatureGateways()
-  return <ThreadPage {...(readDirectMessage === undefined ? {} : { readDirectMessage })} />
+  const { readDirectMessage, attachmentPort } = useFeatureGateways()
+  return <ThreadPage {...(readDirectMessage === undefined ? {} : { readDirectMessage })}
+    {...(attachmentPort === undefined ? {} : { attachmentPort })} />
 }
 
 // AIDEV-NOTE: Hash routing keeps deep links working when Rails or the dev proxy serves one page;

@@ -511,3 +511,5 @@ The generic top reply control now delegates to the same concrete-message draft i
 The ATT902 inactive content source uses `Attachments::DownloadService` to recheck current scoped metadata before and after a bounded private gateway fetch; the Rails action sends only validated octet-stream bytes and fixed safe headers. `docs/completion/nadia-att902-inbound-content.md` records dependencies and test requests. Registry and main injection remain disabled pending independent review and Soren fleet security/HTTP gates.
 
 `V2RouteRegistry::ROUTES` now records the draft.8 assignee, attachment metadata and private content controller targets, while `ACTIVE_OPERATIONS` excludes them. `v2_route_registry_test.rb` checks explicit activation denial; this is source-only until Soren fleet execution.
+
+`FeatureGateways.attachmentPort` is optional and App passes it to ThreadPage only when injected. Main omits it until the private content route and scanner/authority/HTTP/browser gates pass.
