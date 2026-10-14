@@ -16,6 +16,7 @@ class ContractV2Test < Minitest::Test
     assert_equal %w[get post put], @contract.fetch("paths").values.flat_map(&:keys).uniq.sort
     assert @contract.dig("components", "schemas", "OrganizationGrant")
     assert_equal "active", @contract.dig("paths", "/v2/outreach/campaigns", "get", "x-elevateo-status")
+    assert_equal "active", @contract.dig("paths", "/v2/outreach/campaigns", "post", "x-elevateo-status")
   end
 
   def test_failure_no_live_dispatch_or_v1_collision

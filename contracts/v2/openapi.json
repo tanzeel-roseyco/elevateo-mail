@@ -142,7 +142,7 @@
       },
       "post": {
         "operationId": "createOutreachCampaign",
-        "x-elevateo-status": "disabled",
+        "x-elevateo-status": "active",
         "description": "Proposed idempotent inert plan creation; no dispatch.",
         "requestBody": {
           "required": true,
@@ -278,7 +278,7 @@
       },
       "put": {
         "operationId": "updateOutreachCampaign",
-        "x-elevateo-status": "disabled",
+        "x-elevateo-status": "active",
         "parameters": [
           {
             "name": "campaign_id",
@@ -367,7 +367,7 @@
       },
       "post": {
         "operationId": "addOutreachLead",
-        "x-elevateo-status": "disabled",
+        "x-elevateo-status": "active",
         "parameters": [
           {
             "name": "campaign_id",
@@ -445,7 +445,7 @@
       },
       "put": {
         "operationId": "updateOutreachLead",
-        "x-elevateo-status": "disabled",
+        "x-elevateo-status": "active",
         "parameters": [
           {
             "name": "campaign_id",

@@ -39,6 +39,6 @@ Rails.application.routes.draw do
   post "/v1/send-intents/:send_id/cancellation", to: "v1/send_intents#cancel"
   get "/v1/search", to: "v1/search#index"
 
-  # AIDEV-NOTE: V2 stays absent until owning controllers and authority gates pass integration review.
-  V2RouteRegistry.register!(self, enabled: true, controllers_ready: true, operations: %w[listOrganizationGrants getOrganizationRoster replaceOrganizationGrant listOutreachCampaigns getOutreachCampaign listOutreachLeads getOutreachLead getOutreachAnalytics])
+  # AIDEV-NOTE: Isolated V2 candidates require current role proof inside each guarded transaction.
+  V2RouteRegistry.register!(self, enabled: true, controllers_ready: true, operations: %w[listOrganizationGrants getOrganizationRoster replaceOrganizationGrant listOutreachCampaigns getOutreachCampaign createOutreachCampaign updateOutreachCampaign listOutreachLeads getOutreachLead addOutreachLead updateOutreachLead getOutreachAnalytics])
 end
