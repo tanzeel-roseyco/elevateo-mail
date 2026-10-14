@@ -831,6 +831,7 @@
         "required": [
           "context_id",
           "authorization_version",
+          "actor",
           "items",
           "next_cursor"
         ],
@@ -858,6 +859,9 @@
               "null"
             ],
             "maxLength": 2048
+          },
+          "actor": {
+            "$ref": "#/components/schemas/OrganizationGrant"
           }
         }
       },
