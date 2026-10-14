@@ -680,3 +680,10 @@ R25 lint repair: one tooling defect in the unmount cleanup (ref must be captured
 ### MAIL-818 isolated Mox pilot review request
 
 Executable review packets for the new candidate are `ops/mail/mox-pilot/probe.py` (170 LOC), `ops/mail/mox-pilot/compose.yaml` (116 LOC), `ops/mail/mox-pilot/scripts/run-pilot.sh` (115 LOC), and `ops/mail/mox-pilot/mailpit_probe.py` (74 LOC); each assignment is below 200 LOC. Overlap in dedicated design review must be reported separately. Independent adversarial and dedicated design reviews are requested from root, each capped at 200 unique LOC; neither has occurred. Confirmed review defects: **unknown**; defects/KLOC: **not calculable** until review. Author inspection identified cleanup-status and missing-failure-receipt gaps and repaired them before commit; that observation is not independent review evidence. Docker protocol and isolation runtime remain NOT_RUN. Review focus: exact source/image provenance, network egress proof, container lifecycle, timeout bounds, SMTP failure oracle, IMAP receipt, logs/data exposure and production separation.
+# MAIL-818 adapter negative fixture, 2026-10-14
+
+Rhea authored `ops/mail/mox-pilot/adapter-negative-cases.json` (five bounded
+synthetic cases, no application execution) and an eight-line contract note.
+Source was inspected for scope, reserved domains and non-secret references;
+independent adversarial review and runtime are pending. Defects found in this
+bounded self-check: 0; independent coverage and defect density are not claimed.

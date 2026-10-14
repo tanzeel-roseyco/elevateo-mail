@@ -67,6 +67,14 @@ Corin owns network client, SQL mapping and cursor behavior. Cassian owns any
 new versioned API contract; Rhea's protocol probe must not call fake ingress
 or create a second inbound authority.
 
+`adapter-negative-cases.json` supplies bounded owner test inputs for stale or
+revoked SMTP credentials, lost DATA response, changed UIDVALIDITY and stale
+IMAP credentials. These are **expected assertions**, not executed app tests.
+Elara has assented to the distinct Mailpit tuple and Corin to the inbound
+input shape; Cassian/SQL must still approve and implement the versioned
+persisted tuple. Credential rotation and reset cases require owner adapters
+and SQL fixtures; the Mox/Mailpit protocol probe alone cannot establish them.
+
 ## Soren's isolated Docker request
 
 Run `scripts/run-pilot.sh` only on fleet-02 under Soren's lease with the exact

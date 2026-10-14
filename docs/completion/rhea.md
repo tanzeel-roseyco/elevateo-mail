@@ -21,7 +21,12 @@ provenance independently.
 SEND-821/MAIL-819 owner seam proposal and protocol fixture boundaries are in
 [`adapter-contract.md`](../../ops/mail/mox-pilot/adapter-contract.md). Elara's
 SMTP adapter and Corin's held IMAP ingress are owner work, not imported here;
-their contract assent and fleet runtime remain pending.
+Elara assented to the distinct test SMTP tuple and Corin to the inbound input
+shape. Cassian/SQL assent and fleet runtime remain pending. The bounded
+[`adapter-negative-cases.json`](../../ops/mail/mox-pilot/adapter-negative-cases.json)
+provides owner test inputs for credential rotation/revocation, lost DATA reply
+without replay, UIDVALIDITY change and stale inbound credentials; these app
+assertions remain **NOT_RUN**.
 
 The Docker request is `MOX_IMAGE=<verified-ref@sha256:...>
 PROBE_IMAGE=<verified-python-ref@sha256:...>
