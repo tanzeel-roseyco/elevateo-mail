@@ -189,3 +189,5 @@ Cassian manifest reconciliation: contract-lock now seals actual generated client
 ### SEND-810 cancellation seam
 
 `app.cancel_send` locks the durable job and rechecks current session, author and approve-send scope. It returns the canonical `CancellationResult`; a possible call remains a stop request until worker observation reconciliation. The claimed-but-unattempted race and late-accepted observation are covered by requested database regressions. Worker execution follows Rowan's authority and Elara's store/executor integration; Nadia's duplicate bridge and startup switch were removed. See `docs/completion/nadia.md`.
+
+The matched simulated worker drain uses Rowan's worker-only `next_due_send(epoch, excluded_ids)` for advisory discovery and Elara's bounded exclude list for raced jobs; `claim_job` remains the lease authority. The paired source is unverified until fleet Docker migration and worker tests pass.
