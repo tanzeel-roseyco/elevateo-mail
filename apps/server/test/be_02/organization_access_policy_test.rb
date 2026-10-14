@@ -3,19 +3,8 @@
 require_relative "organization_access_database_test"
 
 class OrganizationAccessPolicyTest < MailboxMembershipDatabaseCase
-  def teardown
-    if @admin && @org
-      @admin.exec("ROLLBACK") if @admin.transaction_status != PG::PQTRANS_IDLE
-      @admin.exec("BEGIN")
-      @admin.exec("ALTER TABLE app.organization_access DISABLE TRIGGER guard_owner_loss")
-      @admin.exec_params("DELETE FROM app.organization_enrollment_receipts WHERE organization_id=$1", [@org])
-      @admin.exec_params("DELETE FROM app.organization_access WHERE organization_id=$1", [@org])
-      @admin.exec("ALTER TABLE app.organization_access ENABLE TRIGGER guard_owner_loss")
-      @admin.exec("COMMIT")
-    end
-    super
-  ensure
-    @admin.exec("ROLLBACK") if @admin && @admin.transaction_status != PG::PQTRANS_IDLE
+  def sec802_default_fixture?
+    false
   end
 
   def grant(actor, role)
@@ -134,7 +123,7 @@ class OrganizationAccessPolicyTest < MailboxMembershipDatabaseCase
     assert_equal "ok", page.fetch("status")
     assert_equal({ "user_id" => @user, "role" => "owner", "revision" => 0 }, page.fetch("actor"))
     assert_equal [@user, target.user_id].sort, page.fetch("items").map { |row| row.fetch("user_id") }.sort
-    assert page.fetch("items").all? { |row| row.keys.sort == %w[revision role user_id] }
+    assert(page.fetch("items").all? { |row| row.keys.sort == %w[revision role user_id] })
     assert_nil page.fetch("next_user_id")
   end
 
