@@ -1,5 +1,5 @@
 import { act, render, waitFor } from '@testing-library/react'
-import { describe, expect, it } from 'vitest'
+import { beforeEach, describe, expect, it } from 'vitest'
 import { CD_FIXTURE as CD } from '@/data/fixtures/collaborationState'
 import { createFixtureGateway } from '@/data/fixtures/fixtureGateway'
 import { draftIntentKey } from './draftIntent'
@@ -17,6 +17,7 @@ function setup() {
   return { ready: async () => { await waitFor(() => expect(current?.session.state.status).toBe('ready')); if (!current) throw new Error('Missing probe'); return current }, switchActor: () => { actor = b } }
 }
 describe('BE03 approval binding ownership', () => {
+  beforeEach(() => window.sessionStorage.clear())
   it('clears binding on logout and refuses late recreation', async () => {
     const h = setup(); const c = await h.ready()
     c.store.write(key, binding)

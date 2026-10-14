@@ -1,3 +1,4 @@
+import { approvalRecoveryMessage } from '@/app/approvalRecovery'
 import { useCallback, useEffect, useId, useRef, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router'
 import { draftIntentKey } from '@/app/draftIntent'
@@ -42,9 +43,13 @@ function Review({ mailboxId, draftId }: { mailboxId: string; draftId: string }) 
     if (outcome.kind === 'failed') { setState({ kind: 'error', message: 'This review is unavailable. Your draft text has not changed.' }); return }
     const review = outcome.value
     if (review.draft_id !== draftId || review.mailbox_id !== mailboxId) { setState({ kind: 'error', message: 'The review did not match this draft. Nothing was approved.' }); return }
-    const retained = owner === null ? null : store.read(owner)
+    let retained: SendAttempt | null
+    try { retained = owner === null ? null : store.read(owner) }
+    catch { setState({ kind: 'error', message: approvalRecoveryMessage }); return }
     const restored = retained?.phase === 'pending' ? { ...retained, phase: 'uncertain' as const } : retained
-    if (restored && owner !== null) store.update(owner, () => restored)
+    if (restored && owner !== null) {
+      try { store.update(owner, () => restored) } catch { setState({ kind: 'error', message: approvalRecoveryMessage }); return }
+    }
     setAttempt(restored)
     setState({ kind: 'ready', review })
     if (restored?.phase === 'approved' && restored.sendId) navigate(`/mailboxes/${mailboxId}/send-intents/${restored.sendId}`, { replace: true })
@@ -60,32 +65,39 @@ function Review({ mailboxId, draftId }: { mailboxId: string; draftId: string }) 
     // AIDEV-NOTE: Retry freezes the ORIGINAL operation/version/digest; newer reviews cannot rebind it.
     const binding: SendAttempt = original ?? { input: { mailbox_id: mailboxId, operation_id: newId(), expected_version: review.draft_version, review_digest: review.review_digest ?? '', correspondence_confirmed: true }, phase: 'pending', sendId: null }
     pending.current = true; setBusy(true); setMessage(null)
-    store.write(owner, { ...binding, phase: 'pending' }); setAttempt({ ...binding, phase: 'pending' })
-    const outcome = await request((ctx, signal) => gateway.approveDraftSend(ctx, proof, draftId, binding.input, signal))
-    if (outcome.kind === 'stale') { store.update(owner, (current) => current.phase === 'approved' ? current : { ...current, phase: 'uncertain' }); return }
-    pending.current = false; setBusy(false)
-    if (outcome.kind === 'failed') {
-      if ((outcome.error instanceof GatewayError && outcome.error.kind === 'transport') || isUncertainWriteOutcome(outcome.error)) {
-        const unresolved = { ...binding, phase: 'uncertain' as const }
-        store.update(owner, () => unresolved); setAttempt(unresolved)
-        setMessage('Approval may have been stored. Retry only this same approval; do not create a replacement draft to resend.')
-      } else {
-        store.clear(owner); setAttempt(null); setConfirmed(false)
-        const stale = outcome.error instanceof GatewayError && ['review_stale', 'draft_conflict', 'draft_consumed'].includes(outcome.error.code)
-        setMessage(stale ? 'The saved draft or review changed. Your draft text is retained. Load a fresh review before approving.' : 'Approval was refused. Nothing on this screen proves an intent was queued.')
-        setState({ kind: 'error', message: stale ? 'A fresh review is required.' : 'Approval is unavailable.' })
+    let submitted = false
+    try {
+      store.write(owner, { ...binding, phase: 'pending' }); setAttempt({ ...binding, phase: 'pending' })
+      submitted = true
+      const outcome = await request((ctx, signal) => gateway.approveDraftSend(ctx, proof, draftId, binding.input, signal))
+      if (outcome.kind === 'stale') { store.update(owner, (current) => current.input.operation_id !== binding.input.operation_id || current.phase === 'approved' ? current : { ...current, phase: 'uncertain' }); return }
+      pending.current = false; setBusy(false)
+      if (outcome.kind === 'failed') {
+        if ((outcome.error instanceof GatewayError && outcome.error.kind === 'transport') || isUncertainWriteOutcome(outcome.error)) {
+          const unresolved = { ...binding, phase: 'uncertain' as const }
+          store.update(owner, (current) => current.input.operation_id === binding.input.operation_id ? unresolved : current); setAttempt(unresolved)
+          setMessage('Approval may have been stored. Retry only this same approval; do not create a replacement draft to resend.')
+        } else {
+          store.clear(owner); setAttempt(null); setConfirmed(false)
+          const stale = outcome.error instanceof GatewayError && ['review_stale', 'draft_conflict', 'draft_consumed'].includes(outcome.error.code)
+          setMessage(stale ? 'The saved draft or review changed. Your draft text is retained. Load a fresh review before approving.' : 'Approval was refused. Nothing on this screen proves an intent was queued.')
+          setState({ kind: 'error', message: stale ? 'A fresh review is required.' : 'Approval is unavailable.' })
+        }
+        return
       }
-      return
-    }
-    const receipt = outcome.value
-    if (receipt.draft_id !== draftId || receipt.approved_version !== binding.input.expected_version || receipt.review_digest !== binding.input.review_digest) {
-      const unresolved = { ...binding, phase: 'uncertain' as const }
-      store.update(owner, () => unresolved); setAttempt(unresolved)
-      setMessage('The approval receipt did not match this attempt. The outcome remains uncertain; retry the original approval.')
-      return
-    }
-    store.update(owner, () => ({ ...binding, phase: 'approved', sendId: receipt.send_id }))
-    navigate(`/mailboxes/${mailboxId}/send-intents/${receipt.send_id}`)
+      const receipt = outcome.value
+      if (receipt.draft_id !== draftId || receipt.approved_version !== binding.input.expected_version || receipt.review_digest !== binding.input.review_digest) {
+        const unresolved = { ...binding, phase: 'uncertain' as const }
+        store.update(owner, (current) => current.input.operation_id === binding.input.operation_id ? unresolved : current); setAttempt(unresolved)
+        setMessage('The approval receipt did not match this attempt. The outcome remains uncertain; retry the original approval.')
+        return
+      }
+      store.update(owner, (current) => current.input.operation_id === binding.input.operation_id ? { ...binding, phase: 'approved', sendId: receipt.send_id } : current)
+      navigate(`/mailboxes/${mailboxId}/send-intents/${receipt.send_id}`)
+    } catch {
+      setAttempt(submitted ? { ...binding, phase: 'uncertain' } : original)
+      setMessage(submitted ? 'Approval may already be stored, but retry details could not be updated. Restore browser storage and retry only the original approval.' : approvalRecoveryMessage)
+    } finally { pending.current = false; setBusy(false) }
   }
   const back = `/mailboxes/${mailboxId}/drafts/${draftId}`
   if (state.kind === 'loading') return <div role="status" aria-label="Loading send review"><Skeleton rows={5} /></div>
@@ -105,7 +117,7 @@ function Review({ mailboxId, draftId }: { mailboxId: string; draftId: string }) 
     {review.reply_to_thread_id !== null && <Link to={`/mailboxes/${mailboxId}/threads/${review.reply_to_thread_id}`}>Reply context</Link>}
     {!review.ready && <div role="alert"><p>This draft is not ready for approval.</p><ul>{review.issues.map((issue, index) => <li key={index}>{issue.code.replaceAll('_', ' ')}{issue.recipient_index === null ? '' : ` — recipient ${issue.recipient_index + 1}`}</li>)}</ul></div>}
     {message && <p role="alert">{message}</p>}
-    {retry ? <p role="note">Keep this tab open. Retry details are kept only in memory and are lost on reload. The earlier approval may already be stored.</p> : <div className="my-3"><input id={checkbox} type="checkbox" checked={confirmed} onChange={(event) => setConfirmed(event.target.checked)} disabled={busy || !review.ready} /><label htmlFor={checkbox}>I confirm this is individual correspondence and approve the full content and recipients shown above.</label></div>}
+    {retry ? <p role="note">Original approval retry details survive reloads in this tab. Closing this tab clears them. The earlier approval may already be stored.</p> : <div className="my-3"><input id={checkbox} type="checkbox" checked={confirmed} onChange={(event) => setConfirmed(event.target.checked)} disabled={busy || !review.ready} /><label htmlFor={checkbox}>I confirm this is individual correspondence and approve the full content and recipients shown above.</label></div>}
     <Button variant="primary" disabled={busy || !proof || mailbox?.capabilities.approve_send === false || (!retry && (!confirmed || !review.ready || review.review_digest === null))} onClick={() => void approve()}>{busy ? 'Approving…' : retry ? 'Retry original approval' : 'Approve simulated send'}</Button>
   </article>
 }

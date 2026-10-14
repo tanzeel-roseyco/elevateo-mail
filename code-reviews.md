@@ -664,3 +664,8 @@ Mira sealed2d048e2 (tested8f6f5bf fixture successor, production e037cb9) has bou
 Nadia HTTP607fc2a imported with exact owner bytes: functional185initialLOC0, followup117LOC1LOW typed recipient boundary mismatch (8.55/KLOC); dedicated design185initialLOC1MEDIUM missing reviewed-binding oracle (5.41/KLOC), followup120LOC0 and ~16repairLOC0remaining. Overlap nonadditive. Manifest ops/tests/be03/review-manifest.json seals source; Docker3runs19assertions/type/lintPASS owner evidence only. ActualAuth/PostgreSQL HTTP remains NOT_RUN.
 
 Runner dc3796a: SPEC-C21 independent functional109uniqueLOC0defects0/KLOC, SPEC-C22 dedicated design108uniqueLOC0defects0/KLOC; overlapping scopes not summed. Each assignment<200lines. Full INT401 rubric; reports docs/completion/spec-cassian-runner-{functional,design}.md. Four prepared Python regression cases remain NOT_RUN. Existing480s aggregate budget requires observation, not a new source gate. No resources created by reviews.
+
+
+### R25 approval reload recovery ? awaiting independent review
+
+Candidate adds bounded tab recovery for unresolved approval metadata. Review checklist: strict nonsecret schema/limits; original binding before POST; current actor/org/mailbox/draft scope; pending->uncertain; explicit fresh-authorized retry; logout/principal/unmount late outcomes; visible storage errors; happy and failure regressions. Production coverage packet: approvalRecovery.ts41LOC, sendIntent.tsx82LOC, SendReviewPage changed approval/load portions (~90LOC; assign separately). Independent defects and density are pending, not reported as zero. Self-inspection found/repaired one unmount-late-write risk before commit; no independent review claim. No Docker resources created by Ada.
