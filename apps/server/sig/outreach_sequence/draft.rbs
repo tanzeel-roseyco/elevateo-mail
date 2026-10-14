@@ -1,0 +1,37 @@
+module Elevateo
+  module OutreachSequence
+    class DraftInput
+      STATUS: Array[String]
+      CLOCK: Regexp
+      attr_reader id: String
+      attr_reader campaign_id: String
+      attr_reader operation_id: String
+      attr_reader expected_version: Integer?
+      attr_reader status: String
+      attr_reader timezone: String
+      attr_reader steps: Array[Hash[String, untyped]]
+      attr_reader fingerprint: String
+      def initialize: (value: untyped) -> void
+      private
+      def uuid: (untyped) -> String
+      def step: (untyped, Integer) -> Hash[String, untyped]
+    end
+    class DraftError < StandardError
+      attr_reader code: String
+      def initialize: (String) -> void
+    end
+    class Repository
+      DIGEST: Regexp
+      @connection: untyped
+      def initialize: (connection: untyped) -> void
+      def save: (DraftInput, organization_id: untyped, session_digest: untyped) -> Hash[String, untyped]
+      private
+      def authorize!: (String) -> void
+      def replace_locked: (DraftInput, String) -> Hash[String, untyped]
+      def occurrence_history?: (String, String) -> bool
+      def decode: (untyped) -> Hash[String, untyped]
+      def uuid: (untyped) -> String
+      def rows: (String, Array[untyped]) -> Array[Hash[String, untyped]]
+    end
+  end
+end

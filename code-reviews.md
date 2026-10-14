@@ -66,6 +66,10 @@ See docs/completion/int401-frozen-app.md.
 
 # Code reviews
 
+## MAC-814 00016 candidate self-review (2026-10-14)
+
+Static self-review only, not independent acceptance: migration 00016 (approx. 130 LOC), draft input (approx. 75 LOC), repository (approx. 120 LOC), and schedule delta (44 LOC), about 369 unique source LOC. Two defects found and corrected before commit: invalid Ruby block form in `stop_decision` and incomplete claim-field check (2/369 = 5.42 defects/KLOC). One open integration defect: SEC802 denies `elevateo_app_read` EXECUTE on the helper used in sequence RLS; formal severity HIGH until a reviewed grant/role correction and cross-actor fixture exist (1/369 = 2.71 open defects/KLOC). Tests were authored but not executed; bounded independent review and fleet Docker runtime are requested in [candidate record](docs/completion/maeve-sequence-persistence.md).
+
 ## Initialization
 Scope: planning documents and repository configuration only. Application source lines: 0. Application review has not started; no application was built.
 Defects identified: 0. Defect density: N/A (0 application source lines; not an application quality assessment).
