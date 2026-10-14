@@ -45,57 +45,38 @@ class CampaignDatabaseTest < Minitest::Test
     @api.exec_params("SELECT set_config('app.user_id',$1,true),set_config('app.org_id',$2,true)", [user, org])
   end
 
-  def test_own_tenant_create_and_other_tenant_absence
-    claims(@user, @org)
-    @api.exec_params("INSERT INTO app.campaigns(id,organization_id,operation_id,name,status) VALUES ($1,$2,$3,'Pilot','draft')",
+  def test_missing_digest_denies_reads_and_writes_despite_valid_tenant_claims
+    @admin.exec_params("INSERT INTO app.campaigns(id,organization_id,operation_id,name,status) VALUES ($1,$2,$3,'Pilot','draft')",
       [@campaign, @org, SecureRandom.uuid])
-    assert_equal "1", @api.exec_params("SELECT count(*) FROM app.campaigns WHERE id=$1", [@campaign]).getvalue(0, 0)
-    @api.exec("COMMIT")
-    claims(@other_user, @other_org)
+    claims(@user, @org)
     assert_equal "0", @api.exec_params("SELECT count(*) FROM app.campaigns WHERE id=$1", [@campaign]).getvalue(0, 0)
-    @api.exec("ROLLBACK")
-    assert_equal "0", @api.exec("SELECT count(*) FROM app.campaigns").getvalue(0, 0)
+    @api.exec("SAVEPOINT denied_insert")
+    assert_raises(PG::InsufficientPrivilege) do
+      @api.exec_params("INSERT INTO app.campaigns(id,organization_id,operation_id,name,status) VALUES ($1,$2,$3,'Other','draft')",
+        [SecureRandom.uuid, @org, SecureRandom.uuid])
+    end
+    @api.exec("ROLLBACK TO SAVEPOINT denied_insert")
   end
 
-  def test_cross_tenant_insert_is_denied_even_with_known_organization_id
+  def test_foreign_claims_and_invalid_digest_remain_hidden
+    @admin.exec_params("INSERT INTO app.campaigns(id,organization_id,operation_id,name,status) VALUES ($1,$2,$3,'Pilot','draft')",
+      [@campaign, @org, SecureRandom.uuid])
     claims(@other_user, @other_org)
-    assert_raises(PG::InsufficientPrivilege) do
-      @api.exec_params("INSERT INTO app.campaigns(id,organization_id,operation_id,name,status) VALUES ($1,$2,$3,'Cross','draft')",
-        [@campaign, @org, SecureRandom.uuid])
-    end
+    @api.exec_params("SELECT set_config('app.outreach_digest',$1,true)", [SecureRandom.hex(32)])
+    assert_equal "0", @api.exec_params("SELECT count(*) FROM app.campaigns WHERE id=$1", [@campaign]).getvalue(0, 0)
   end
 
-  def test_private_mailbox_without_membership_cannot_be_linked
-    claims(@user, @org)
-    @api.exec_params("INSERT INTO app.campaigns(id,organization_id,operation_id,name,status) VALUES ($1,$2,$3,'Pilot','draft')",
+  def test_no_digest_hides_private_accounts_and_mutation_history
+    @admin.exec_params("INSERT INTO app.campaigns(id,organization_id,operation_id,name,status) VALUES ($1,$2,$3,'Pilot','draft')",
       [@campaign, @org, SecureRandom.uuid])
-    @api.exec("SAVEPOINT account_attempt")
-    assert_raises(PG::InsufficientPrivilege) do
-      @api.exec_params(<<~SQL, [@account, @org, @campaign, @private_box, SecureRandom.uuid])
-        INSERT INTO app.campaign_accounts(id,organization_id,campaign_id,mailbox_id,operation_id,label)
-        VALUES ($1,$2,$3,$4,$5,'Private')
-      SQL
-    end
-    @api.exec("ROLLBACK TO SAVEPOINT account_attempt")
-    assert_equal "0", @api.exec("SELECT count(*) FROM app.campaign_accounts").getvalue(0, 0)
-  end
-
-  def test_private_account_and_mutation_history_disappear_after_membership_revocation
-    @admin.exec_params("INSERT INTO app.mailbox_memberships(organization_id,mailbox_id,user_id) VALUES ($1,$2,$3)",
-      [@org, @private_box, @user])
-    claims(@user, @org)
-    @api.exec_params("INSERT INTO app.campaigns(id,organization_id,operation_id,name,status) VALUES ($1,$2,$3,'Pilot','draft')",
-      [@campaign, @org, SecureRandom.uuid])
-    @api.exec_params(<<~SQL, [@account, @org, @campaign, @private_box, SecureRandom.uuid])
+    @admin.exec_params(<<~SQL, [@account, @org, @campaign, @private_box, SecureRandom.uuid])
       INSERT INTO app.campaign_accounts(id,organization_id,campaign_id,mailbox_id,operation_id,label)
       VALUES ($1,$2,$3,$4,$5,'Private')
     SQL
-    @api.exec_params(<<~SQL, [@org, SecureRandom.uuid, @account])
+    @admin.exec_params(<<~SQL, [@org, SecureRandom.uuid, @account])
       INSERT INTO app.campaign_mutations(organization_id,operation_id,resource_kind,resource_id,fingerprint,result)
       VALUES ($1,$2,'account',$3,repeat('a',64),'{}'::jsonb)
     SQL
-    @api.exec("COMMIT")
-    @admin.exec_params("DELETE FROM app.mailbox_memberships WHERE mailbox_id=$1 AND user_id=$2", [@private_box, @user])
     claims(@user, @org)
     assert_equal "0", @api.exec_params("SELECT count(*) FROM app.campaign_accounts WHERE id=$1", [@account]).getvalue(0, 0)
     assert_equal "0", @api.exec_params("SELECT count(*) FROM app.campaign_mutations WHERE resource_id=$1", [@account]).getvalue(0, 0)

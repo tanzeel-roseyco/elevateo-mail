@@ -99,14 +99,20 @@ class CreateCampaignFoundation < ActiveRecord::Migration[8.1]
       else
         ""
       end
+      # AIDEV-NOTE: Missing digest denies table access; the API supplies it only after current-role proof.
+      role_guard = <<~SQL.squish
+        AND CASE WHEN NULLIF(current_setting('app.outreach_digest', true), '') IS NULL THEN false
+          ELSE (SELECT app.authorize_outreach_content_read(
+            NULLIF(current_setting('app.outreach_digest', true), ''))->>'status' = 'ok') END
+      SQL
       execute <<~SQL
         CREATE POLICY campaign_tenant ON app.#{table} FOR ALL TO elevateo_app_read
           USING (organization_id = app.context_uuid('app.org_id') AND EXISTS (
             SELECT 1 FROM app.organization_memberships m
-            WHERE m.organization_id = #{table}.organization_id AND m.user_id = app.context_uuid('app.user_id'))#{visible_mailbox})
+            WHERE m.organization_id = #{table}.organization_id AND m.user_id = app.context_uuid('app.user_id'))#{visible_mailbox}#{role_guard})
           WITH CHECK (organization_id = app.context_uuid('app.org_id') AND EXISTS (
             SELECT 1 FROM app.organization_memberships m
-            WHERE m.organization_id = #{table}.organization_id AND m.user_id = app.context_uuid('app.user_id'))#{visible_mailbox})
+            WHERE m.organization_id = #{table}.organization_id AND m.user_id = app.context_uuid('app.user_id'))#{visible_mailbox}#{role_guard})
       SQL
     end
     # AIDEV-NOTE: Membership RLS limits inert CRUD; no privilege reaches send intents or provider transport.
