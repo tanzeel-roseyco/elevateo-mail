@@ -679,4 +679,4 @@ R25 lint repair: one tooling defect in the unmount cleanup (ref must be captured
 
 ## INT-801 Cassian V2 candidate (2026-10-14)
 
-Independent adversarial functional and design-tradeoff reviews are requested from root; none were performed or claimed by this worker. Proposed bounded packets: `contracts/v2/openapi.json` (split schemas/operations at <=200 source lines), `apps/server/config/v2_route_registry.rb` plus its test, and `contracts/tooling/generate-v2.sh` plus contract test. Reviewed LOC 0; confirmed defects 0; defect density not computable pending review. Fleet execution pending.
+Independent adversarial functional and design-tradeoff reviews are requested from root; none were performed or claimed by this worker. Proposed bounded packets: `contracts/v2/openapi.json` (split schemas/operations at <=200 source lines), `apps/server/config/v2_route_registry.rb` plus its test, and `contracts/tooling/generate-v2.sh` plus contract test, and `apps/web/src/data/v2Contract.ts` plus its test. Reviewed LOC 0; confirmed defects 0; defect density not computable pending review. Fleet execution pending.
