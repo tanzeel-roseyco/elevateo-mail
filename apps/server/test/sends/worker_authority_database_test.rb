@@ -32,9 +32,11 @@ class SendWorkerAuthorityDatabaseTest < SendDatabaseTestCase
     assert_nil @worker.exec_params(due, [SecureRandom.uuid, "{}"]).getvalue(0, 0)
     assert_equal send, @worker.exec_params(due, [@epoch, "{}"]).getvalue(0, 0)
     assert_nil @worker.exec_params(due, [@epoch, "{#{send}}"]).getvalue(0, 0)
+    assert_raises(PG::InvalidParameterValue) { @worker.exec_params(due, [@epoch, nil]) }
     assert_raises(PG::InvalidParameterValue) do
       @worker.exec_params(due, [@epoch, "{#{([send] * 33).join(',')}}"])
     end
+    assert_raises(PG::InsufficientPrivilege) { @api.exec_params(due, [@epoch, "{}"]) }
     claim(send)
     assert_nil @worker.exec_params(due, [@epoch, "{}"]).getvalue(0, 0)
   end
