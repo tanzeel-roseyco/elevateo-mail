@@ -1,0 +1,7 @@
+# SEND809 Mailpit worker fixture approval repair
+
+Evidence: Soren exact integrated `7aa61be4649ca251c3faff368ba61dfa7e313708`, `completion-soren-qa815/docs/completion/qa815-evidence/backend-7aa61be4649c/028-ruby-suites.txt`, three `KeyError: key not found: "send_id"` at `approve.fetch` in `SendMailpitWorkerDatabaseTest`. The inherited send fixture saves a draft with canonical recipient `Recipient@example.invalid`, then builds exact reviewed snapshot bytes from that saved draft. The Mailpit subclass replaced those bytes with `recipient@example.invalid`, changing the local part, which the product address grammar deliberately preserves. Approval therefore returned a coded result rather than a send identity.
+
+Repair: remove the six-line subclass setup override. The tests now use the common exact saved draft snapshot and digest while retaining the same internal `.invalid` recipient, verified sender, explicit Mailpit profile, accepted/unknown observation assertions and revoked-session denial. No production canonicalization, approval, Mailpit transport or security check changes. Review coverage: the removed six source lines, the surrounding 90-line Mailpit worker test and the 80-line send fixture helper, under 200 LOC per read.
+
+Static source verdict: mismatched test snapshot, not evidence of a Mailpit worker send failure. No application tests or Docker run by Rowan; Soren must rerun `test/sends/mailpit_worker_database_test.rb` with real PostgreSQL and restricted worker/API roles.

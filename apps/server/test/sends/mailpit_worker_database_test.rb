@@ -8,12 +8,6 @@ require_relative "../../lib/elevateo/send_worker/smtp_transport"
 
 # AIDEV-NOTE: Disposable PostgreSQL proves the Ruby worker persists the versioned Mailpit tuple.
 class SendMailpitWorkerDatabaseTest < SendDatabaseTestCase
-  def setup
-    super
-    @bytes = snapshot(recipients: [[nil, "recipient@example.invalid"]])
-    @review_digest = Digest::SHA256.hexdigest(@bytes)
-  end
-
   def test_explicit_mailpit_profile_persists_acceptance_with_distinct_source
     send_id = approve.fetch("send_id")
     assert_equal [:accepted, 1], execute_mailpit(send_id, "accepted")
