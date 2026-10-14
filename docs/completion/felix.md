@@ -51,3 +51,5 @@ Critical integration audit: read-only hash of Cassian isolated integration at HE
 ## Protected actor projection candidate
 
 Added `apps/server/test/qa817/grant_actor_database_test.rb` for Sabine's current `app.organization_grants_page`: stable owner actor on first and second redacted pages, auditor denial, and forged tenant GUC denial. Uses actual API login and real PostgreSQL; pending integration and NOT_RUN. Soren command from `/workspace/apps/server` in disposable backend Docker: `bundle exec ruby test/qa817/grant_actor_database_test.rb`; record migration SHA, exact exits and cleanup. Separate authenticated Theo V2 HTTP and owner/admin role mutation races remain mandatory.
+
+Added `apps/server/test/qa817/role_owner_race_database_test.rb` for distinct-owner concurrent inserts, bounded worker joins and exact one-owner postcondition using a disposable real PostgreSQL database. Soren command after SEC-802 integration from `/workspace/apps/server`: `bundle exec ruby test/qa817/role_owner_race_database_test.rb`. Test/lint/independent review NOT_RUN; this supplements Sabine's sequential uniqueness and direct owner deletion checks.

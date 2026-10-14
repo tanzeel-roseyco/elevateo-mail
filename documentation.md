@@ -198,3 +198,5 @@ The QA-817 `private_sales_database_test.rb` is an integration candidate for SEC-
 The QA-817 legacy ceiling regression covers an alternate authorization path: a manager whose delegable manage ceiling was revoked must not delete another mailbox member via the frozen eight-argument mutation. It asserts denial with unchanged revision and membership. The prior SEC-802 hook lacked this check for deletes; owner correction and fleet verification are pending.
 
 `apps/server/test/qa817/grant_actor_database_test.rb` uses the actual API database login and protected page function. It verifies the current actor appears consistently independent of page contents while auditor and forged tenant contexts receive no actor/grant metadata. Soren must run it after the current SEC-802 migration is integrated.
+
+`apps/server/test/qa817/role_owner_race_database_test.rb` uses two actual disposable admin DB connections and a bounded start gate to challenge the one-owner unique index with distinct candidates. The expected outcomes are one insert and one unique violation, with one durable owner. It runs only in Soren's fleet Docker lane.

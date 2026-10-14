@@ -706,3 +706,5 @@ QA-817 independent SEC-802 repair review: Sabine commit `0df2b1f` `membership_pa
 QA-817 independent SEND-809 corrected authority head: Rowan commit daf5161 worker_authority.sql SHA-256 `8a6d25e33f04078b45c9e575598f6f561e3f0fb16c86042548e6ba3062d63e99`, lines 1–168 (168 LOC, <=200 packet), full rubric, 0 observed defects (0/KLOC static). With earlier same-SHA tail lines 169–325 (157 LOC), total 325 unique LOC across two bounded review tasks. Runtime/design NOT_RUN; see `docs/completion/felix-send809-head-review.md`.
 
 QA-817 protected actor DB candidate `apps/server/test/qa817/grant_actor_database_test.rb`: independent source review NOT_RUN (0 LOC reviewed, density unmeasured). Request <=200 LOC full-rubric packet plus design review; Docker/lint NOT_RUN.
+
+QA-817 distinct-owner race DB candidate `apps/server/test/qa817/role_owner_race_database_test.rb`: independent review NOT_RUN (0 LOC, density unmeasured); request <=200 LOC full-rubric packet and design tradeoff review. Docker/lint NOT_RUN.
