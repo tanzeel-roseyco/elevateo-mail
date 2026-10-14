@@ -52,7 +52,7 @@ class OutreachLeadsControllerTest < Minitest::Test
   end
 
   def test_new_lead_persists_unknown_without_consent_assertion
-    @connection.rows = [[campaign_row], [{ "id" => NOTE }], [lead_row]]
+    @connection.rows = [[{ "result" => { "status" => "ok" } }], [campaign_row], [{ "id" => NOTE }], [lead_row]]
     result = dispatch("create", { "id" => NOTE, "operation_id" => TARGET, "email" => "A@Example.invalid" })
     assert_equal 201, result[0]
     assert_equal ["a@example.invalid", "unknown", false],
@@ -72,7 +72,7 @@ class OutreachLeadsControllerTest < Minitest::Test
   def test_sourced_consent_records_actor_and_returns_granted_status
     granted = lead_row.merge("consent_status" => "granted", "consent_recorded_at" => Time.utc(2026, 10, 14, 10),
       "consent_source" => "confirmed opt-in", "consent_recorded_by" => AuthFixtures::USER, "version" => 2)
-    @connection.rows = [[lead_row], [], [], [granted], [], [granted], []]
+    @connection.rows = [[{ "result" => { "status" => "ok" } }], [lead_row], [], [], [granted], [], [granted], []]
     result = dispatch("record_consent", { "operation_id" => TARGET, "expected_version" => 1,
       "source" => "confirmed opt-in", "observed_at" => "2026-10-14T10:00:00Z", "attested" => true })
     assert_equal 200, result[0]
@@ -86,7 +86,8 @@ class OutreachLeadsControllerTest < Minitest::Test
   def test_same_address_edit_preserves_recorded_consent
     granted = lead_row.merge("consent_status" => "granted", "consent_recorded_at" => Time.utc(2026, 10, 14, 10),
       "consent_source" => "confirmed opt-in", "consent_recorded_by" => AuthFixtures::USER)
-    @connection.rows = [[granted], [], [], [granted.merge("version" => 2)], [granted.merge("version" => 2)], []]
+    @connection.rows = [[{ "result" => { "status" => "ok" } }], [granted], [], [],
+      [granted.merge("version" => 2)], [granted.merge("version" => 2)], []]
     result = dispatch("update", { "operation_id" => TARGET, "expected_version" => 1,
       "email" => "A@Example.invalid" })
     assert_equal 200, result[0]

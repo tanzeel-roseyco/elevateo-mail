@@ -43,13 +43,22 @@ class CampaignControllerTest < Minitest::Test
   end
 
   def test_create_persists_inert_draft_under_guarded_session
-    @connection.rows = [[{ "id" => THREAD }], [{ "id" => THREAD, "name" => "Pilot", "status" => "draft", "version" => 1 }]]
+    @connection.rows = [[{ "result" => { "status" => "ok" } }], [{ "id" => THREAD }],
+      [{ "id" => THREAD, "name" => "Pilot", "status" => "draft", "version" => 1 }]]
     result = dispatch(input)
     assert_equal 201, result[0]
     assert_equal "draft", result[2].fetch("status")
     assert_equal 1, result[2].fetch("version")
-    assert(@connection.sql.any? { |sql| sql.include?("INSERT INTO app.campaigns") })
+    assert_operator(@connection.sql.index { |sql| sql.include?("authorize_outreach_draft_write") }, :<,
+      @connection.sql.index { |sql| sql.include?("INSERT INTO app.campaigns") })
     refute(@connection.sql.any? { |sql| sql.match?(/send_intents|provider|smtp/i) })
+  end
+
+  def test_current_role_denial_precedes_campaign_insert
+    @connection.rows = [[{ "result" => { "status" => "not_found" } }]]
+    result = dispatch(input)
+    assert_equal [404, "not_available"], [result[0], result[2].fetch("code")]
+    refute(@connection.sql.any? { |sql| sql.include?("INSERT INTO app.campaigns") })
   end
 
   def test_extra_field_rejected_before_authenticated_write

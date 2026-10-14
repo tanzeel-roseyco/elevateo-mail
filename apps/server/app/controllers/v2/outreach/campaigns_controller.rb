@@ -8,7 +8,7 @@ module V2
       def index
         protected_read(allowed_query: %w[cursor limit], budget: 262_144) do |connection:, identity:, query:, **|
           cursor, limit = page_options(query)
-          encoded(public_page("campaign", campaign_repository(connection).page(kind: "campaign",
+          encoded(public_page("campaign", campaign_repository(connection, identity: identity, write: false).page(kind: "campaign",
             organization_id: identity.org_id, cursor: cursor, limit: limit)))
         end
       end
@@ -16,7 +16,7 @@ module V2
       def show
         id = path_uuid(:campaign_id)
         protected_read(allowed_query: [], budget: 4096) do |connection:, identity:, **|
-          encoded(public_item("campaign", campaign_repository(connection).detail(kind: "campaign",
+          encoded(public_item("campaign", campaign_repository(connection, identity: identity, write: false).detail(kind: "campaign",
             organization_id: identity.org_id, id: id)))
         end
       end
@@ -25,7 +25,7 @@ module V2
         protected_write(required: %w[id operation_id name status], budget: 4096) do
           |connection:, identity:, input:, **|
           payload = Elevateo::Campaigns::Input.new(kind: "campaign", value: input)
-          repository = campaign_repository(connection)
+          repository = campaign_repository(connection, identity: identity, write: true)
           repository.save(payload, organization_id: identity.org_id)
           write_result(public_item("campaign", repository.detail(kind: "campaign",
             organization_id: identity.org_id, id: payload.id)), status: 201)
@@ -40,7 +40,7 @@ module V2
             "id" => id, "operation_id" => input.fetch("operation_id"),
             "name" => input.fetch("name"), "status" => input.fetch("status")
           })
-          result = campaign_repository(connection).replace(payload, organization_id: identity.org_id,
+          result = campaign_repository(connection, identity: identity, write: true).replace(payload, organization_id: identity.org_id,
             expected_version: Elevateo::WriteInput.integer(input.fetch("expected_version"), minimum: 1, maximum: 2_147_483_646),
             intent: input)
           write_result(public_item("campaign", result))

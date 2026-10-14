@@ -8,7 +8,7 @@ module V2
       def index
         protected_read(allowed_query: %w[cursor limit], budget: 262_144) do |connection:, identity:, query:, **|
           cursor, limit = page_options(query)
-          encoded(public_page("account", campaign_repository(connection).page(kind: "account",
+          encoded(public_page("account", campaign_repository(connection, identity: identity, write: false).page(kind: "account",
             organization_id: identity.org_id, cursor: cursor, limit: limit)))
         end
       end
@@ -16,7 +16,7 @@ module V2
       def show
         id = path_uuid(:account_id)
         protected_read(allowed_query: [], budget: 4096) do |connection:, identity:, **|
-          encoded(public_item("account", campaign_repository(connection).detail(kind: "account",
+          encoded(public_item("account", campaign_repository(connection, identity: identity, write: false).detail(kind: "account",
             organization_id: identity.org_id, id: id)))
         end
       end
@@ -25,7 +25,7 @@ module V2
         protected_write(required: %w[id operation_id campaign_id mailbox_id label], budget: 4096) do
           |connection:, identity:, input:, **|
           payload = Elevateo::Campaigns::Input.new(kind: "account", value: input)
-          repository = campaign_repository(connection)
+          repository = campaign_repository(connection, identity: identity, write: true)
           repository.detail(kind: "campaign", organization_id: identity.org_id,
             id: payload.attributes.fetch("campaign_id"))
           repository.save(payload, organization_id: identity.org_id)
@@ -38,7 +38,7 @@ module V2
         id = path_uuid(:account_id)
         protected_write(required: %w[operation_id expected_version label], budget: 4096) do
           |connection:, identity:, input:, **|
-          repository = campaign_repository(connection)
+          repository = campaign_repository(connection, identity: identity, write: true)
           old = repository.detail(kind: "account", organization_id: identity.org_id, id: id)
           payload = Elevateo::Campaigns::Input.new(kind: "account", value: {
             "id" => id, "operation_id" => input.fetch("operation_id"),

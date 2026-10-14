@@ -9,8 +9,16 @@ module V2
     class BaseController < V1::WriteController
       protected
 
-      def campaign_repository(connection)
-        Elevateo::Campaigns::Repository.new(connection: connection)
+      def campaign_repository(connection, identity:, write:)
+        repository = Elevateo::Campaigns::Repository.new(connection: connection)
+        routine = write ? "app.authorize_outreach_draft_write" : "app.authorize_outreach_content_read"
+        row = repository.rows("SELECT #{routine}($1::text) AS result", [identity.digest]).first
+        result = row && row["result"]
+        result = JSON.parse(result) if result.is_a?(String)
+        raise Elevateo::CollaborationError.new("not_available") unless result.is_a?(Hash) && result["status"] == "ok"
+        repository
+      rescue JSON::ParserError
+        raise Elevateo::CollaborationError.new("internal_error")
       end
 
       def path_uuid(key)
