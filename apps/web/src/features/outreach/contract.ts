@@ -38,7 +38,7 @@ export const consentEvidenceInputSchema = z.strictObject({
   source: z.string().min(1).max(200).refine((value) => value.trim().length > 0 && !hasControl(value)),
   observed_at: z.string().regex(/^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\dZ$/).refine((value) => {
     const parsed = new Date(value)
-    return !Number.isNaN(parsed.getTime()) && parsed.toISOString() === value
+    return !Number.isNaN(parsed.getTime()) && parsed.toISOString().replace('.000Z', 'Z') === value
   }),
   attested: z.literal(true),
 })

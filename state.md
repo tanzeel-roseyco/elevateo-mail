@@ -126,3 +126,5 @@ FE807 controller-shaped follow-up: DTOs and forms are being aligned to Dorian's 
 FE807 correction: Cassian confirmed campaign-scoped account routes and lead detail; global-account assumptions are superseded. Soren's exact a460c5a web recipe stopped at two lint errors after API check; type/unit/build not reached. Current Celeste source repairs lint and earlier type findings; rerun pending.
 
 FE807 latest: the client keeps the frozen `granted` DTO while qualifying compact consent rows, manual-attestation detail, and analytics counts. This is presentation only; backend/RLS remains authoritative, and exact integrated fleet unit/build plus browser checks are pending.
+
+FE807 exact integrated `8eb840d` Docker unit run reached Vitest and exposed a consent evidence timestamp bug plus one markup-sensitive test assertion. Isolated source/test repairs are authored but unexecuted; frontend build and real browser acceptance remain pending.
