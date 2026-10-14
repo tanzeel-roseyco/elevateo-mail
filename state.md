@@ -343,3 +343,5 @@ Corin d4a34f4 direct-message serialization and reversible thread fixture repair 
 Soren exact 6c626e2 Docker web V1/V2 declaration checks passed but lint failed four Cassian sequence-test unused parameters and one Mira attachment regex; Cassian source repair is in this branch, Mira owner repair pending, type/unit/build not reached.
 
 ATT865 Nadia 5465488 malformed scan-claim/due-ID/socket repairs are imported after Mira REV871 static 153-LOC/zero-defect rereview; fleet scanner/Storage/DB proof remains pending.
+
+Evidence correction: Soren 882a471 migration00009 blob 7412dd6 differs from Dorian 2f255b9/current blob eece1c9; old migration PASS cannot verify the new separated protected-write policies. Current 00009 real PostgreSQL/Auth migration and role tests remain NOT_RUN.
