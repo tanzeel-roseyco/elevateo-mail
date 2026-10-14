@@ -1,0 +1,300 @@
+source=780f4ed45d0232a7153c0d66e1c8afae21d72a62
+mode=serial
+started=2026-10-14T18:48:44Z
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            BuildKit is currently disabled; enable it by removing the DOCKER_BUILDKIT=0
+            environment-variable.
+
+Sending build context to Docker daemon  90.66MB
+Step 1/9 : FROM node:24.21.0-bookworm-slim@sha256:d6aa754f16b3197301076f047b5def2f02ea1dbbc2ca920407d46d7ec7f87b20
+ ---> d6aa754f16b3
+Step 2/9 : WORKDIR /workspace
+ ---> Running in 8c6b1458b997
+ ---> Removed intermediate container 8c6b1458b997
+ ---> e1a66d21404e
+Step 3/9 : COPY contracts/v1 ./contracts/v1
+ ---> 4f21123271bd
+Step 4/9 : COPY contracts/v2 ./contracts/v2
+ ---> 7b60a120764c
+Step 5/9 : COPY apps/web ./apps/web
+ ---> 1fb24f3a5cb2
+Step 6/9 : WORKDIR /workspace/apps/web
+ ---> Running in d3ef2f2dcfd6
+ ---> Removed intermediate container d3ef2f2dcfd6
+ ---> aa8075a8deef
+Step 7/9 : RUN npm ci
+ ---> Running in f330ebab6791
+[91mnpm warn deprecated whatwg-encoding@3.1.1: Use @exodus/bytes instead for a more spec-conformant and faster implementation
+[0m
+added 324 packages, and audited 325 packages in 7s
+
+67 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+[91mnpm warn install-scripts 1 package has install scripts not yet covered by allowScripts:
+npm warn install-scripts   esbuild@0.28.2 (postinstall: node install.js)
+npm warn install-scripts
+npm warn install-scripts Run `npm install-scripts ls` to review, or `npm install-scripts approve <pkg>` to allow.
+[0m[91mnpm notice
+npm notice New major version of npm available! 11.19.0 -> 12.2.0
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0
+npm notice To update run: npm install -g npm@12.2.0
+npm notice
+[0m ---> Removed intermediate container f330ebab6791
+ ---> 56420612e45a
+Step 8/9 : CMD ["bash", "-ceu", "npm run check:api && npm run check:api:v2 && npm run lint && npm run typecheck && npm run test -- --coverage && npm run build && ! grep -rl 'dev-fixtures\\|Development fixtures\\|fixture_token_a' dist"]
+ ---> Running in 83b6aae766ce
+ ---> Removed intermediate container 83b6aae766ce
+ ---> 89a742628381
+Step 9/9 : LABEL qa815.owner=soren
+ ---> Running in b5fa557baf77
+ ---> Removed intermediate container b5fa557baf77
+ ---> e4872b008697
+Successfully built e4872b008697
+Successfully tagged qa815-web-780f4ed45d02:latest
+
+> @elevateo/web@0.1.0-read.1 check:api
+> openapi-typescript ../../contracts/v1/openapi.json --output src/data/generated/api.d.ts --check
+
+✨ openapi-typescript 7.13.0
+
+> @elevateo/web@0.1.0-read.1 generate:api:v2
+> openapi-typescript ../../contracts/v2/openapi.json --output src/data/generated/api-v2.d.ts
+
+✨ openapi-typescript 7.13.0
+🚀 ../../contracts/v2/openapi.json → src/data/generated/api-v2.d.ts [97.9ms]
+
+> @elevateo/web@0.1.0-read.1 check:api:v2
+> openapi-typescript ../../contracts/v2/openapi.json --output src/data/generated/api-v2.d.ts --check
+
+✨ openapi-typescript 7.13.0
+0c5f0969de378bb470bb3824bb7edb7f163d4a455d514e815885003443e62bb1  src/data/generated/api-v2.d.ts
+
+> @elevateo/web@0.1.0-read.1 lint
+> eslint . --max-warnings 0
+
+
+> @elevateo/web@0.1.0-read.1 typecheck
+> tsc -p tsconfig.json --noEmit
+
+
+> @elevateo/web@0.1.0-read.1 test
+> vitest run --coverage --maxWorkers=2
+
+
+[1m[30m[46m RUN [49m[39m[22m [36mv4.1.11 [39m[90m/workspace/apps/web[39m
+      [2mCoverage enabled with [22m[33mv8[39m
+
+ [32m✓[39m src/features/thread/ThreadPage.test.tsx [2m([22m[2m42 tests[22m[2m)[22m[33m 1635[2mms[22m[39m
+ [32m✓[39m src/features/drafts/DraftEditorPage.test.tsx [2m([22m[2m33 tests[22m[2m)[22m[33m 2221[2mms[22m[39m
+ [32m✓[39m src/domain/draftOperation.test.ts [2m([22m[2m39 tests[22m[2m)[22m[32m 54[2mms[22m[39m
+ [32m✓[39m src/app/Shell.test.tsx [2m([22m[2m27 tests[22m[2m)[22m[33m 2067[2mms[22m[39m
+ [32m✓[39m src/features/inbox/InboxPage.test.tsx [2m([22m[2m19 tests[22m[2m)[22m[33m 793[2mms[22m[39m
+ [32m✓[39m src/data/fixtures/collaborationState.test.ts [2m([22m[2m19 tests[22m[2m)[22m[32m 26[2mms[22m[39m
+ [32m✓[39m src/app/session-lifecycle.test.tsx [2m([22m[2m25 tests[22m[2m)[22m[32m 245[2mms[22m[39m
+ [32m✓[39m src/data/contract-collaboration.test.ts [2m([22m[2m59 tests[22m[2m)[22m[32m 36[2mms[22m[39m
+ [32m✓[39m src/app/session.test.tsx [2m([22m[2m16 tests[22m[2m)[22m[33m 318[2mms[22m[39m
+ [32m✓[39m src/data/cd-conformance.test.ts [2m([22m[2m44 tests[22m[2m)[22m[32m 66[2mms[22m[39m
+ [32m✓[39m src/features/outreach/OutreachPages.test.tsx [2m([22m[2m20 tests[22m[2m)[22m[33m 651[2mms[22m[39m
+ [32m✓[39m src/features/thread/CollaborationPanels.test.tsx [2m([22m[2m10 tests[22m[2m)[22m[33m 1102[2mms[22m[39m
+ [32m✓[39m src/data/contract.test.ts [2m([22m[2m40 tests[22m[2m)[22m[32m 19[2mms[22m[39m
+ [32m✓[39m src/data/http/transport.test.ts [2m([22m[2m27 tests[22m[2m)[22m[32m 63[2mms[22m[39m
+ [32m✓[39m src/features/thread/MessageAttachments.test.tsx [2m([22m[2m11 tests[22m[2m)[22m[33m 331[2mms[22m[39m
+ [32m✓[39m src/data/lifecycle-conformance.test.ts [2m([22m[2m24 tests[22m[2m)[22m[32m 51[2mms[22m[39m
+ [32m✓[39m src/features/send/SendReviewPage.test.tsx [2m([22m[2m12 tests[22m[2m)[22m[33m 903[2mms[22m[39m
+ [32m✓[39m src/app/membershipRecovery.test.tsx [2m([22m[2m2 tests[22m[2m)[22m[33m 582[2mms[22m[39m
+     [33m[2m✓[22m[39m removing my own explicit row from a PRIVATE mailbox invalidates the old generation before the bootstrap answers; the refreshed list drops the mailbox and a late old list success changes nothing [33m 367[2mms[22m[39m
+ [32m✓[39m src/app/outreachSessionPolicy.test.ts [2m([22m[2m10 tests[22m[2m)[22m[32m 10[2mms[22m[39m
+ [32m✓[39m src/data/conformance.test.ts [2m([22m[2m40 tests[22m[2m)[22m[32m 37[2mms[22m[39m
+ [32m✓[39m src/features/auth/SignInPage.test.tsx [2m([22m[2m8 tests[22m[2m)[22m[33m 455[2mms[22m[39m
+ [32m✓[39m src/features/members/MembersPage.test.tsx [2m([22m[2m8 tests[22m[2m)[22m[33m 466[2mms[22m[39m
+ [32m✓[39m src/features/members/AdministrationPage.test.tsx [2m([22m[2m10 tests[22m[2m)[22m[33m 341[2mms[22m[39m
+ [32m✓[39m src/features/members/PersonalSettingsPage.test.tsx [2m([22m[2m7 tests[22m[2m)[22m[32m 129[2mms[22m[39m
+ [32m✓[39m src/features/thread/AssigneePicker.test.tsx [2m([22m[2m5 tests[22m[2m)[22m[32m 177[2mms[22m[39m
+ [32m✓[39m src/data/signal-propagation.test.ts [2m([22m[2m100 tests[22m[2m)[22m[32m 79[2mms[22m[39m
+ [32m✓[39m src/data/fixtures/fixtureGateway.test.ts [2m([22m[2m31 tests[22m[2m)[22m[32m 19[2mms[22m[39m
+ [32m✓[39m src/data/v2OutreachGateway.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 31[2mms[22m[39m
+ [32m✓[39m src/data/send-conformance.test.ts [2m([22m[2m9 tests[22m[2m)[22m[32m 32[2mms[22m[39m
+ [32m✓[39m src/features/auth/AuthCompletePage.test.tsx [2m([22m[2m6 tests[22m[2m)[22m[33m 351[2mms[22m[39m
+ [32m✓[39m src/app/features/index.test.tsx [2m([22m[2m5 tests[22m[2m)[22m[32m 170[2mms[22m[39m
+ [32m✓[39m src/features/outreach/SequencePage.test.tsx [2m([22m[2m4 tests[22m[2m)[22m[32m 206[2mms[22m[39m
+ [32m✓[39m src/lib/readPage.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 6[2mms[22m[39m
+ [32m✓[39m src/app/App.test.tsx [2m([22m[2m3 tests[22m[2m)[22m[33m 404[2mms[22m[39m
+ [32m✓[39m src/data/contract-unicode.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 10[2mms[22m[39m
+ [32m✓[39m src/data/http/transport-cancellation.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 30[2mms[22m[39m
+ [32m✓[39m src/data/http/transport-boundaries.test.ts [2m([22m[2m14 tests[22m[2m)[22m[32m 18[2mms[22m[39m
+ [32m✓[39m src/features/search/SearchPage.test.tsx [2m([22m[2m5 tests[22m[2m)[22m[32m 237[2mms[22m[39m
+ [32m✓[39m src/app/collaborationNav.test.tsx [2m([22m[2m4 tests[22m[2m)[22m[33m 557[2mms[22m[39m
+ [32m✓[39m src/data/v2SequenceGateway.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 41[2mms[22m[39m
+ [32m✓[39m src/app/Sidebar.test.tsx [2m([22m[2m3 tests[22m[2m)[22m[32m 207[2mms[22m[39m
+ [32m✓[39m src/features/drafts/DraftsPage.test.tsx [2m([22m[2m2 tests[22m[2m)[22m[32m 254[2mms[22m[39m
+ [32m✓[39m src/data/v2PreferencesGateway.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 58[2mms[22m[39m
+ [32m✓[39m src/data/v2AttachmentGateway.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 53[2mms[22m[39m
+ [32m✓[39m src/features/send/SendStatusPage.test.tsx [2m([22m[2m5 tests[22m[2m)[22m[32m 207[2mms[22m[39m
+ [32m✓[39m src/app/approvalRecovery.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 12[2mms[22m[39m
+ [32m✓[39m src/data/contract-send.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 13[2mms[22m[39m
+ [32m✓[39m src/features/send/SavedDraftSendFlow.test.tsx [2m([22m[2m1 test[22m[2m)[22m[33m 486[2mms[22m[39m
+     [33m[2m✓[22m[39m offers review only after saving current edits and approves exactly the reviewed version [33m 485[2mms[22m[39m
+ [32m✓[39m src/features/members/adminModel.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 5[2mms[22m[39m
+ [32m✓[39m src/features/outreach/contract.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 8[2mms[22m[39m
+ [32m✓[39m src/dev/demoGateway.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 16[2mms[22m[39m
+ [32m✓[39m src/app/sendIntent.test.tsx [2m([22m[2m2 tests[22m[2m)[22m[32m 141[2mms[22m[39m
+ [32m✓[39m src/data/send-signal.test.ts [2m([22m[2m12 tests[22m[2m)[22m[32m 21[2mms[22m[39m
+ [32m✓[39m src/app/SearchBox.test.tsx [2m([22m[2m3 tests[22m[2m)[22m[32m 163[2mms[22m[39m
+ [32m✓[39m src/data/v2AssigneeOptionsGateway.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 15[2mms[22m[39m
+ [32m✓[39m src/app/featureRegistry.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 8[2mms[22m[39m
+ [32m✓[39m src/data/v2DirectMessageGateway.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 18[2mms[22m[39m
+ [32m✓[39m src/ui/ConnectivityBanner.test.tsx [2m([22m[2m3 tests[22m[2m)[22m[32m 132[2mms[22m[39m
+ [32m✓[39m src/data/v2Contract.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 6[2mms[22m[39m
+ [32m✓[39m src/features/outreach/featureModule.test.tsx [2m([22m[2m1 test[22m[2m)[22m[32m 5[2mms[22m[39m
+ [32m✓[39m src/app/entry.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 3[2mms[22m[39m
+ [32m✓[39m src/app/scope.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 53[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m62 passed[39m[22m[90m (62)[39m
+[2m      Tests [22m [1m[32m856 passed[39m[22m[90m (856)[39m
+[2m   Start at [22m 18:49:16
+[2m   Duration [22m 30.47s[2m (transform 1.77s, setup 5.49s, import 7.51s, tests 16.85s, environment 19.55s)[22m
+
+[34m % [39m[2mCoverage report from [22m[33mv8[39m
+-------------------|---------|----------|---------|---------|-------------------
+File               | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+-------------------|---------|----------|---------|---------|-------------------
+All files          |   89.64 |    82.54 |   90.44 |   94.15 |                   
+ app               |   89.96 |    80.65 |   94.47 |    94.9 |                   
+  AccountSheet.tsx |   77.21 |     64.7 |   76.47 |   83.33 | ...,88-91,131,168 
+  App.tsx          |     100 |       60 |     100 |     100 | 23-24             
+  ...Selection.tsx |     100 |      100 |     100 |     100 |                   
+  SearchBox.tsx    |      90 |    87.87 |      75 |    91.3 | 51-53             
+  Shell.tsx        |   93.39 |    87.17 |   94.44 |   95.55 | 117,126,227-228   
+  Sidebar.tsx      |     100 |      100 |     100 |     100 |                   
+  actionFailure.ts |   52.38 |       50 |     100 |    64.7 | 21-24,42-45       
+  ...alRecovery.ts |   97.29 |    93.75 |     100 |     100 | 33                
+  ...ionFailure.ts |      50 |    44.11 |     100 |   57.14 | 29-33,45-47,52,59 
+  draftIntent.tsx  |   98.36 |    94.73 |     100 |     100 | 48,67             
+  entry.ts         |     100 |      100 |     100 |     100 |                   
+  ...eGateways.tsx |     100 |      100 |     100 |     100 |                   
+  ...reRegistry.ts |     100 |      100 |     100 |     100 |                   
+  mailboxes.tsx    |     100 |      100 |     100 |     100 |                   
+  ...sionPolicy.ts |     100 |      100 |     100 |     100 |                   
+  ...tedRequest.ts |     100 |      100 |     100 |     100 |                   
+  scope.ts         |     100 |      100 |     100 |     100 |                   
+  sendIntent.tsx   |   85.55 |    76.74 |   88.88 |   94.44 | 78-80             
+  session.tsx      |   93.02 |    82.67 |     100 |     100 | ...12,422-427,435 
+ app/features      |      92 |    85.71 |     100 |   95.23 |                   
+  index.tsx        |      92 |    85.71 |     100 |   95.23 | 69                
+ data              |   85.71 |    71.69 |   73.52 |   87.98 |                   
+  contract.ts      |     100 |      100 |     100 |     100 |                   
+  errors.ts        |     100 |      100 |     100 |     100 |                   
+  sendContract.ts  |     100 |      100 |     100 |     100 |                   
+  ...onsGateway.ts |   83.33 |    72.72 |     100 |   83.33 | 28-31             
+  ...entGateway.ts |   74.62 |    70.49 |   69.23 |   83.33 | ...61,75-76,91-93 
+  v2Contract.ts    |   96.87 |      100 |      80 |   96.77 | 89                
+  v2Gateway.ts     |      36 |    14.28 |      40 |   33.33 | 23-33,53-71       
+  ...achGateway.ts |   78.04 |    82.35 |   61.11 |   76.66 | 49-62,69-74,93    
+  ...cesGateway.ts |     100 |      100 |     100 |     100 |                   
+ data/fixtures     |   96.35 |     87.9 |     100 |    99.2 |                   
+  ...ationState.ts |   96.66 |    89.43 |     100 |   98.33 | 292-293           
+  ...ureGateway.ts |   96.05 |    85.86 |     100 |     100 | ...33,259,362-369 
+ data/http         |   94.73 |    89.47 |   98.03 |   97.22 |                   
+  httpGateway.ts   |     100 |     90.9 |     100 |     100 | 79                
+  transport.ts     |   91.66 |    89.28 |   93.33 |   95.29 | 48-50,86          
+ dev               |   95.65 |       90 |     100 |     100 |                   
+  demoGateway.ts   |   95.65 |       90 |     100 |     100 | 67                
+ domain            |     100 |      100 |     100 |     100 |                   
+  ...tOperation.ts |     100 |      100 |     100 |     100 |                   
+ features/auth     |   94.89 |    87.85 |     100 |     100 |                   
+  ...pletePage.tsx |   95.23 |    88.88 |     100 |     100 | 35,49-54,69       
+  SignInPage.tsx   |   94.59 |    87.32 |     100 |     100 | ...9,74-76,97,173 
+ features/drafts   |    95.3 |    87.08 |   97.01 |   98.22 |                   
+  ...ditorPage.tsx |   94.95 |    90.33 |      98 |   97.74 | 88,253-254,387    
+  DraftsPage.tsx   |   96.61 |       75 |   94.11 |     100 | ...16-118,121,130 
+ features/inbox    |   85.33 |     81.9 |      95 |   88.13 |                   
+  InboxPage.tsx    |   85.33 |     81.9 |      95 |   88.13 | 119-125           
+ features/members  |   86.87 |    82.38 |   94.28 |   92.41 |                   
+  ...ationPage.tsx |   78.83 |     76.8 |   90.47 |   88.04 | ...12-113,140,155 
+  MembersPage.tsx  |   92.56 |    86.45 |     100 |   95.28 | 74-78             
+  ...tingsPage.tsx |    88.4 |    80.24 |   81.81 |   92.72 | 69-72,92          
+  adminModel.ts    |   96.66 |    96.96 |     100 |   95.65 | 55                
+  ...ureModule.tsx |     100 |      100 |     100 |     100 |                   
+ features/outreach |   82.47 |    77.47 |      75 |   91.26 |                   
+  ...denceForm.tsx |   84.78 |    78.37 |     100 |   93.33 | 28,38             
+  ...eachPages.tsx |   82.67 |    77.05 |   77.02 |   90.11 | ...81,306-307,318 
+  SequencePage.tsx |   71.87 |    74.11 |      50 |   87.09 | 58,91-92,97-102   
+  contract.ts      |     100 |      100 |     100 |     100 |                   
+  ...ureModule.tsx |     100 |      100 |     100 |     100 |                   
+  ...ceContract.ts |     100 |      100 |     100 |     100 |                   
+  writeFailure.ts  |     100 |     90.9 |     100 |     100 | 12                
+ features/search   |   87.87 |     75.6 |   77.77 |   92.59 |                   
+  SearchPage.tsx   |   87.87 |     75.6 |   77.77 |   92.59 | 70-72,145         
+ features/send     |    91.8 |     85.2 |    93.1 |   98.37 |                   
+  ...eviewPage.tsx |    91.8 |    83.87 |     100 |   98.76 | 48                
+  ...tatusPage.tsx |   91.07 |    88.88 |   81.81 |   97.29 | 68                
+  sendTestData.ts  |     100 |      100 |     100 |     100 |                   
+ features/thread   |   87.89 |    82.64 |   88.99 |   91.41 |                   
+  ...neePicker.tsx |   82.85 |    86.66 |   83.33 |    87.5 | ...,89-90,105-108 
+  ...mentPanel.tsx |   87.75 |    83.67 |   91.66 |   90.69 | 36-38,78          
+  ...tachments.tsx |   84.53 |    73.91 |      80 |   89.04 | ...28-133,143,153 
+  NotesPanel.tsx   |   83.13 |    75.34 |    87.5 |   84.21 | ...,98-99,139,187 
+  ...teControl.tsx |   90.47 |    88.88 |     100 |     100 | 25-30             
+  ThreadPage.tsx   |    94.7 |    87.39 |      95 |   98.36 | 44,316            
+ lib               |   85.71 |    69.23 |   88.88 |    92.3 |                   
+  format.ts        |   78.94 |    55.55 |     100 |   92.85 | 18                
+  ids.ts           |   81.25 |       50 |      75 |   84.61 | 9-10              
+  readPage.ts      |     100 |      100 |     100 |     100 |                   
+ ui                |   91.37 |    88.23 |   96.96 |   91.83 |                   
+  Async.tsx        |    37.5 |    55.55 |      75 |   42.85 | 37-44             
+  Badge.tsx        |     100 |      100 |     100 |     100 |                   
+  BrandMark.tsx    |     100 |      100 |     100 |     100 |                   
+  Button.tsx       |     100 |      100 |     100 |     100 |                   
+  ...ityBanner.tsx |     100 |      100 |     100 |     100 |                   
+  Drawer.tsx       |     100 |      100 |     100 |     100 |                   
+  Field.tsx        |     100 |      100 |     100 |     100 |                   
+  Sheet.tsx        |     100 |      100 |     100 |     100 |                   
+  icons.tsx        |     100 |      100 |     100 |     100 |                   
+-------------------|---------|----------|---------|---------|-------------------
+
+> @elevateo/web@0.1.0-read.1 build
+> tsc -p tsconfig.json --noEmit && vite build
+
+vite v7.3.6 building client environment for production...
+transforming...
+node_modules/zod/v4/core/regexes.js (74:0): A comment
+
+"/** Anchors a pattern source. The interpolation lives here rather than at the call site because
+ * esbuild will not drop a `@__PURE__` call whose own argument interpolates a variable, but it
+ * will drop `anchor(dateSource)`. Keeping it inline pinned `date` into every bundle. */"
+
+in "node_modules/zod/v4/core/regexes.js" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.
+node_modules/zod/v4/core/util.js (400:0): A comment
+
+"// Wrapped in a `@__PURE__` IIFE: esbuild never tree-shakes a top-level initializer that contains a member access on `Number`, so the bare object literal survived into every bundle."
+
+in "node_modules/zod/v4/core/util.js" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.
+✓ 257 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                 0.47 kB │ gzip:   0.29 kB
+dist/assets/app-DBbvZt1K.css   23.44 kB │ gzip:   5.59 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+dist/assets/app-AQdJM8TI.js   587.98 kB │ gzip: 175.46 kB
+✓ built in 1.84s
+checks_exit=0
+finished=2026-10-14T18:49:53Z
+Untagged: qa815-web-780f4ed45d02:latest
+Deleted: sha256:e4872b008697f726b1703f11859c416d0d02dabf76fb4f9cfedcc6007d677141
+Deleted: sha256:89a742628381d1d744c3774ec074a73687c2aeedf3ecf61e0b202c0c59541ba6
+Deleted: sha256:56420612e45ac0979065b591891ec3f7f890f12197ccd2ef40acafaaee319329
+Deleted: sha256:aa8075a8deefff1db62f317ed062c6bf8bbf554f6169e020294a1c3181d5a83b
+Deleted: sha256:1fb24f3a5cb2b4c887209979a69c4c51f32b817408b9353b67131d92658eafcf
+Deleted: sha256:7b60a120764cabae115486558a32814f4b18f73158ffd9e7e9b7eddc1be86ca4
+Deleted: sha256:4f21123271bd12a17f6b44775d13f1764f07b8af096c6def5609e7aa495e73ab
+Deleted: sha256:e1a66d21404e0ad93774d1f157ff53ceab9686734402f6d1d9200ecb142a83b0
+remaining_containers=0
+remaining_image=0
+runner_exit=0
+archive_absent=yes

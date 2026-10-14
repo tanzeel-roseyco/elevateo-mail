@@ -1,0 +1,17 @@
+source=780f4ed45d0232a7153c0d66e1c8afae21d72a62
+image=sha256:7dc61d4b7e12f94764f95f4f1bfe8e3940049247e6d409898ce9d3ed2810f348
+started=2026-10-14T18:48:09Z
+Syntax OK
+Run options: --seed 33711
+
+# Running:
+
+.....
+
+Finished in 0.001621s, 3084.9810 runs/s, 29615.8175 assertions/s.
+
+5 runs, 48 assertions, 0 failures, 0 errors, 0 skips
+run_exit=0
+archive_absent=yes
+remaining_task_containers=0
+finished=2026-10-14T18:48:11Z
