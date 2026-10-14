@@ -24,6 +24,8 @@ PREF-822 source now proposes per-user display-name persistence under the existin
 
 Theo's ADM-803 core static repair narrows roster and signed-cursor types after the exact QA815 fleet diagnostic; its Steep/RuboCop rerun is pending. See [repair packet](docs/completion/theo-core-static-repair.md).
 
+Theo's later scoped V2 write-guard typing repair addresses the exact `cb1ec5be` Steep callback mismatch for grants and display preferences; Soren's fleet rerun is pending.
+
 
 ### R25 approval reload recovery candidate
 

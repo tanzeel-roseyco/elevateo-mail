@@ -2,6 +2,8 @@ ADM-803 provisional administration roster and PREF-822 display-name preference c
 
 The scoped ADM-803 static repair for Soren `fa3082af` narrows roster and cursor values without changing role authority; see docs/completion/theo-core-static-repair.md. Current fleet Steep/RuboCop PASS is not claimed.
 
+The subsequent `cb1ec5be` Steep repair gives grants and preference write guards the existing `target_users` callback type and explicit input/query keywords; protected write/session authority is unchanged. Fleet verification remains pending.
+
 # Product requirements and decision record
 
 ### Mira BE03 UI isolated R24 implementation (2026-10-14)
