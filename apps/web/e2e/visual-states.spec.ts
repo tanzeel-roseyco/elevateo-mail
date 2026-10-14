@@ -318,15 +318,17 @@ const SCENARIOS: Scenario[] = [
     nav: 'none',
     revealSidebar: true,
     // The LOADED empty sidebar, proven directly: the empty copy inside the mailbox navigation,
-    // zero mailbox links (the navigation's only link is the global Search entry, BE-02 D), and the
+    // zero mailbox links while registered static Personal routes remain available, and the
     // loading/error presentations absent.
     expectVisible: { text: 'No mailboxes are visible to you.' },
     assert: async (page) => {
       const nav = page.getByRole('navigation', { name: 'Mailboxes' })
       await expect(nav).toBeVisible()
       await expect(nav.locator('a[href*="/mailboxes/"]')).toHaveCount(0)
-      await expect(nav.getByRole('link', { name: 'Search' })).toHaveCount(1)
-      await expect(nav.getByRole('link')).toHaveCount(1)
+      await expect(nav.getByRole('link', { name: 'Search' })).toHaveAttribute('href', '#/search')
+      await expect(nav.getByRole('link', { name: 'People' })).toHaveAttribute('href', '#/people')
+      await expect(nav.getByRole('link', { name: 'Personal settings' })).toHaveAttribute('href', '#/settings/personal')
+      await expect(nav.getByRole('link', { name: 'Organization settings' })).toHaveAttribute('href', '#/settings/organization')
       await expect(page.getByRole('status', { name: 'Loading mailboxes' })).toHaveCount(0)
       await expect(page.getByRole('alert')).toHaveCount(0)
     },
