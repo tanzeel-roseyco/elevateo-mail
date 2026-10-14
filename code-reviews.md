@@ -1363,3 +1363,5 @@ Mira COL910 36-line test rewrite imported source-only; no independent review or 
 QA815 b3aaa07e lint diagnostic is executed tool evidence, not a source review: 19 offenses across 308 linted files, including four fatal syntax offenses in authority_database_test.rb. Ruby/Steep PASS does not close lint or HTTP/worker. Reviewed LOC/defects/KLOC are unchanged by this receipt import; owner repair reviews pending.
 
 ADV143 Ada reviewed exact b3aaa07e Float guard and 732f2749 assignee activation over 270 unique versioned LOC, zero confirmed defects (0/KLOC); 200 target exceeded70 but hard300 met. Source only: repository SQL/protected_read internals, current-role runtime, browser and consumer race were excluded. Soren's b3aaa07e Ruby/Steep PASS is separate fleet evidence, and feature activation remains unexecuted.
+
+ADV141 Ada reviewed Nadia final 3f3562a6 typed index authorization controller/RBS/test over 224 unique versioned LOC, zero confirmed defects (0/KLOC), source only. Direct-message implementation and actual revocation/runtime were excluded; the final eight-line denial test does not change production behavior relative to prior 2418 source.
