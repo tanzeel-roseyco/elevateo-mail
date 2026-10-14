@@ -155,6 +155,7 @@ describe('Outreach routed pages', () => {
     view(`/outreach/campaigns/${campaignId}/leads/${leadId}`, g)
     expect(await screen.findByText(/Evidence source: Signed intake form/)).toBeTruthy()
     expect(screen.getByText(/Evidence kind: manual attestation/)).toBeTruthy()
+    expect(screen.getByText(/operator attestation; independent verification is not shown/)).toBeTruthy()
     expect(screen.getByText(/does not authorize sending/)).toBeTruthy()
     expect(g.getLead).toHaveBeenCalledWith(context, campaignId, leadId, expect.any(AbortSignal))
   })
@@ -176,9 +177,9 @@ describe('Outreach routed pages', () => {
     expect(screen.queryByText('Pilot')).toBeNull()
     expect(screen.queryByRole('link', { name: 'Create draft campaign' })).toBeNull()
   })
-  it('labels the server aggregate as consented and unsuppressed', async () => {
+  it('labels the server aggregate as recorded claims that may include manual attestations', async () => {
     const g = gateway({ listAnalytics: vi.fn(async () => ({ campaign_id: campaignId, lead_count: 4, consented_count: 1 })) })
     view(`/outreach/campaigns/${campaignId}/analytics`, g)
-    expect(await screen.findByText(/1 consented and unsuppressed of 4 leads/)).toBeTruthy()
+    expect(await screen.findByText(/1 lead with granted consent records and no suppression of 4 leads/)).toBeTruthy()
   })
 })
