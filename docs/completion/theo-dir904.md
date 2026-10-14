@@ -1,6 +1,6 @@
 # DIR-904 mailbox assignee options handoff
 
-Source candidate `77007498ebc9f5878f9548372909f36386c2ea75`. Actual author runtime: Theo, Orca `task_c01382c85653` / dispatch `ctx_edf2430ed819`, Codex `gpt-6-sol` in worker projection; billing tier unverified. User approved source implementation. No application test, Ruby syntax run, Docker, HTTP, SQL migration, external credential, live user enrollment or live mail was executed by Theo.
+Source candidate `77007498ebc9f5878f9548372909f36386c2ea75` with focused fake harness follow-up `8e5fa432d96478d0da2bf7ddfdfb05a3bccb1db8`. Actual author runtime: Theo, Orca `task_c01382c85653` / dispatch `ctx_edf2430ed819`, Codex `gpt-6-sol` in worker projection; billing tier unverified. User approved source implementation. No application test, Ruby syntax run, Docker, HTTP, SQL migration, external credential, live user enrollment or live mail was executed by Theo.
 
 ## Scope and ownership
 
