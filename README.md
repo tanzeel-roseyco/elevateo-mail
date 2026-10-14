@@ -14,6 +14,8 @@ Shared company mailroom with one Rails domain authority and a React/TypeScript c
 
 ## Current state
 
+**DIR903 mailbox assignee options source candidate:** Additive migration 00019 grants only a protected API function that pages current eligible Auth UUIDs for a mailbox, matching the existing assignment target rule. No staff roster binding, role/PII directory, controller route or UI is activated by this isolated source; Soren fleet PostgreSQL tests and independent review remain pending.
+
 **SMTP888 source candidate:** The pinned net-smtp 0.5.2 implements the local Mailpit TLS toggles, but its bundled RBS omits them. A narrow local declaration and preconnect factory regression are added; Soren fleet Steep/unit execution and independent review are pending. Remote SMTP remains held.
 
 **OPS820 bootstrap source intake:** Leonie `f8b07b2` now precreates the private gateway schema as an administrative step and checks its owner/ACL around migration; Sabine 00018 must consume that schema. Fleet database/role proof remains pending; no gateway byte route is enabled.
