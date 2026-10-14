@@ -184,3 +184,5 @@ QA815 feature `263047b4` V2 draft.8 codegen/check PASS, generated declaration SH
 QA815 feature `555acbff` V1/V2 check PASS; web lint eight unused test params FAIL, type/unit/build NOT_REACHED, task cleanup PASS.
 
 QA815 feature `fdecd0d5` full web PASS 62/62 files, 856/856 units, build/cleanup. Core `a2f58b34` targeted authority lint PASS, full lint one fake inbound unused argument FAIL; HTTP/worker/realAuth held.
+
+QA815 `58edb11c` targeted web strict type and CollaborationPanels 10/10 PASS, cleanup PASS; full web/build/Playwright on this SHA NOT_RUN.

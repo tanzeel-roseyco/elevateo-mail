@@ -252,3 +252,5 @@ QA815 V2 draft.8 exact-source generation receipt `docs/completion/qa815-evidence
 QA815 feature web receipt `docs/completion/qa815-evidence/web-555acbff98d3.log` records exact `555acbff` V1/V2 checks, eight assignee test lint errors and exact cleanup; see `docs/completion/soren.md`.
 
 QA815 feature full web receipt `docs/completion/qa815-evidence/web-fdecd0d56071.log` records exact `fdecd0d5` 856/856 PASS and cleanup. Core focused lint receipt `rubocop-a2f58b34dedf.txt` records one remaining fake inbound warning; see `docs/completion/soren.md`.
+
+QA815 targeted feature receipt `docs/completion/qa815-evidence/web-targeted-58edb11c6375.log` records exact `58edb11c` TypeScript and ten CollaborationPanels cases PASS with cleanup; see `docs/completion/soren.md`.

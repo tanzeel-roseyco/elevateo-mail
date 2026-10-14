@@ -10,6 +10,12 @@ lock=/home/tanzeel/elevateo-mail-wave-20261014/control/soren-docker.lock
 tag="qa815-web-${candidate:0:12}"
 context=$(mktemp -d /tmp/qa815-web-context.XXXXXXXX)
 log="$root/docs/completion/qa815-evidence/web-${candidate:0:12}.log"
+if [[ ${QA815_WEB_TARGETED:-0} == 1 ]]; then
+  log="$root/docs/completion/qa815-evidence/web-targeted-${candidate:0:12}.log"
+  web_command='npm run typecheck && npm run test -- src/features/thread/CollaborationPanels.test.tsx'
+else
+  web_command='npm run check:api && npm run generate:api:v2 && npm run check:api:v2 && sha256sum src/data/generated/api-v2.d.ts && npm run lint && npm run typecheck && npm run test -- --coverage && npm run build'
+fi
 mkdir -p "$(dirname "$log")"
 exec 9>"$lock"
 lease_guard_pid=
@@ -54,7 +60,7 @@ cleanup() {
   exit "$status"
 }
 trap cleanup EXIT
-printf 'source=%s\nstarted=%s\n' "$candidate" "$(date -u +%FT%TZ)" > "$log"
+printf 'source=%s\nmode=%s\nstarted=%s\n' "$candidate" "$([[ ${QA815_WEB_TARGETED:-0} == 1 ]] && echo targeted || echo full)" "$(date -u +%FT%TZ)" > "$log"
 if docker container inspect "$tag" >/dev/null 2>&1 || docker image inspect "$tag" >/dev/null 2>&1; then
   printf 'preflight_error=task name or image tag already exists\n' >> "$log"
   exit 92
@@ -67,6 +73,6 @@ if ! grep -Fq 'COPY contracts/v2 ./contracts/v2' "$context/apps/web/docker/test.
 fi
 DOCKER_BUILDKIT=0 docker build --memory 2g --cpu-quota 200000 --cpu-period 100000 --label qa815.owner=soren -f "$context/apps/web/docker/test.Dockerfile" -t "$tag" "$context" >> "$log" 2>&1
 docker run --rm --name "$tag" --label qa815.owner=soren --network none --memory 2g --cpus 2 --pids-limit 256 "$tag" bash -ceu \
-  'npm run check:api && npm run generate:api:v2 && npm run check:api:v2 && sha256sum src/data/generated/api-v2.d.ts && npm run lint && npm run typecheck && npm run test -- --coverage && npm run build' \
+  "$web_command" \
   >> "$log" 2>&1
 printf 'checks_exit=0\nfinished=%s\n' "$(date -u +%FT%TZ)" >> "$log"

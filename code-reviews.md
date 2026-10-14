@@ -748,3 +748,5 @@ QA815 `263047b4` V2 declaration generation/check PASS is tool execution, not ind
 QA815 `555acbff` eight frontend lint errors are tool findings, not independent bounded source review; no new independently reviewed LOC or defect-density claim. Cassian routes the assignee test repair.
 
 QA815 `fdecd0d5` full web PASS and `a2f58b34` one remaining lint warning are execution/tool findings, not independent source review. Additional independently reviewed LOC remains 0; source defect density unclaimed pending owner repair/review.
+
+QA815 `58edb11c` targeted TypeScript/ten-case PASS is execution evidence, not independent source review. No new reviewed LOC or source defect-density claim.

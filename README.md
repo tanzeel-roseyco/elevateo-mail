@@ -242,3 +242,5 @@ QA815 exact feature `263047b4` V2 draft.8 declaration generation/check PASS in c
 QA815 exact `555acbff` feature web V1/V2 checks PASS but lint FAIL eight unused callback params in assignee options test; type/unit/build not reached. Task container/image/archive cleanup passed.
 
 QA815 exact `fdecd0d5` feature web full gate PASS: V1/V2 checks, lint, TypeScript, 62 files/856 units, production build and cleanup. Core `a2f58b34` authority fixture lint PASS, but full RuboCop still has one fake inbound controller unused block argument; backend HTTP/worker held.
+
+QA815 feature `58edb11c` targeted TypeScript and CollaborationPanels 10/10 PASS in fleet Docker with exact cleanup; this is a successor to, not a rerun of, the earlier full web gate.
