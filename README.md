@@ -14,6 +14,8 @@ Shared company mailroom with one Rails domain authority and a React/TypeScript c
 
 ## Current state
 
+**SMTP888 source candidate:** The pinned net-smtp 0.5.2 implements the local Mailpit TLS toggles, but its bundled RBS omits them. A narrow local declaration and preconnect factory regression are added; Soren fleet Steep/unit execution and independent review are pending. Remote SMTP remains held.
+
 **OPS820 bootstrap source intake:** Leonie `f8b07b2` now precreates the private gateway schema as an administrative step and checks its owner/ACL around migration; Sabine 00018 must consume that schema. Fleet database/role proof remains pending; no gateway byte route is enabled.
 
 **INT-801 draft.7 source checkpoint (2026-10-14):** Maeve `b3204ce` split sequence read/write RLS and fetch is imported. Canonical V2 draft.7 now defines inert campaign sequence GET/PUT; Cassian has added a guarded Rails controller, active route registry entries and typed browser adapter with happy/denial/input tests. Fable session-policy binding, fleet-generated draft.7 DTO, exact PostgreSQL/Auth/HTTP/web Docker gates and review remain pending. No due claim, enrollment, live sending or production release follows from this source. The dated checkpoints below are historical.

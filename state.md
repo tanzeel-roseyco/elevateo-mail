@@ -397,3 +397,4 @@ Elara same-scope protected outreach read/write witness is integrated test-only s
 FE807 sequence editor fixture now rereads the created draft ID/DTO after the generic 404 create path. The earlier c5a8737 842/842 web PASS predates this strengthened test; current-source web unit/type evidence pending Soren.
 
 QA815 `a0a60b6` one-case same-scope outreach witness FAIL 1/5: read=not_found, write=not_found, DB current_user=elevateo_api, sales membership and live session; 21 migrations and exact cleanup PASS. Retained rejected `32d043f` APK `aapt` dump PASS under Docker, confirms generated dynamic-receiver permission; native acceptance remains OPEN.
+SMTP888 (source candidate, 2026-10-14): net-smtp 0.5.2 local Mailpit TLS toggle methods are declared for Steep and covered by a no-connection factory regression. Soren fleet strict/unit verification is NOT_RUN; remote SMTP remains held. See docs/completion/rhea-smtp888.md.
