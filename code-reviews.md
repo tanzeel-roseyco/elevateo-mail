@@ -696,3 +696,7 @@ Dispatched Vera finding against `2eca511` identifies one overlapping-download bu
 ## Mira independent Nadia attachment guard/RBS review
 
 Pinned Nadia `8d89a183c6d146e9d81543850b8c325e324e1b64`; report `docs/completion/mira-review-nadia-8d89a18.md`. Reviewed 346 unique current-version source LOC in reads <=126 LOC, covering all 182 newly added RBS/source/test lines in the assigned packet; remaining full files and SQL/Storage/controller are uncovered. Two actionable static defects: missing claim/due-ID keys escape via `KeyError` and can abort the scan batch (MEDIUM), and nil scanner socket factory escapes as `NoMethodError` rather than deliberate scanner error (LOW). Density 2/182 = 10.99 defects/KLOC. No application test, Docker, database, scanner or live network execution by Mira; Soren fleet proof remains pending.
+
+## Mira REV871 Nadia ATT865 repair re-review
+
+Pinned Nadia `54654885f33c0245314d75e25970b4152b603c1b`; report `docs/completion/mira-rev871-nadia-5465488.md`. Assigned repair packet 153 unique source LOC, 68 additional context LOC, 221 total viewed; reads <=82 LOC. Zero new actionable defects in assigned packet, 0/153 = 0 defects/KLOC. Static checks show absent claim fields held with continued next item, missing due ID deliberate error, nil socket deliberate error and predecessor-failing regression oracles. SQL/Storage/HTTP and real ClamAV/PostgreSQL are uncovered; Soren fleet runtime remains pending.
