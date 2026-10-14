@@ -209,3 +209,8 @@ FE807 continuation adds separate draft/paused campaign, lead, disabled account a
 ### FE-806 message permalink candidate
 
 Each loaded plaintext message now has a link that selects it by validated UUID in the thread URL and moves keyboard focus to it. Direct links select a message on the first page; a later page requires deliberate bounded continuation. Malformed IDs are rejected before a thread read, while absent and inaccessible states remain generic. Immediate lookup of an arbitrary later-page message needs an additive Cassian-owned gateway operation. Fleet Docker/browser evidence is pending.
+FE808 now follows Cassian's paginated V2 grant DTO and six subordinate role choices. The UI traverses bounded pages, checks context and authorization version plus cross-organization/duplicate grants, and uses each target's revision for edits. Protected backend read, explicit actor privilege projection, route activation and fleet verification remain pending.
+
+FE808 People now checks the authenticated V2 unbound roster projection against the twelve local configuration references. A denied or mismatched roster is explicitly labelled as local configuration only; it never becomes an Auth user directory. Cassian has registered isolated V2 admin routes for testing over Sabine authority, with runtime acceptance still pending fleet review.
+
+Successful V2 grant GET remains blocked by a strict DTO mismatch: the protected backend now includes actor role/revision, while the browser schema does not. The owner was escalated to root for reconciliation; no UI or runtime acceptance is claimed from the source candidate.

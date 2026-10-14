@@ -1,14 +1,16 @@
 import { useCallback, useEffect, useState } from 'react'
 import { useProtectedRequest } from '@/app/protectedRequest'
 import { useSession } from '@/app/session'
-import type { OrganizationGrant } from '@/data/v2Contract'
+import { RosterPersonSchema, type OrganizationGrant } from '@/data/v2Contract'
+import type { z } from 'zod'
 import { createV2Gateway } from '@/data/v2Gateway'
 import { GatewayError } from '@/data/errors'
 import { Button } from '@/ui/Button'
 import { EmptyState, Skeleton } from '@/ui/Async'
-import { CONFIG_PEOPLE, editableRoles, validGrantProjection, type EditableRole } from './adminModel'
+import { CONFIG_PEOPLE, editableRoles, validGrantProjection, validRosterProjection, type EditableRole } from './adminModel'
 
-type Grants = { revision: number; grants: OrganizationGrant[] }
+type Grants = { grants: OrganizationGrant[] }
+type Roster = { status: 'loading' } | { status: 'ready'; items: z.infer<typeof RosterPersonSchema>[] } | { status: 'unavailable' } | { status: 'error' }
 type View = { status: 'loading' } | { status: 'ready'; value: Grants } | { status: 'denied' } | { status: 'error' }
 const adminGateway = createV2Gateway()
 
@@ -24,6 +26,7 @@ export function AdministrationPage({ section }: { section: 'people' | 'organizat
   const organizationId = session?.organization.id ?? null
   const actorId = session?.actor.id ?? null
   const [view, setView] = useState<View>({ status: 'loading' })
+  const [roster, setRoster] = useState<Roster>({ status: 'loading' })
   const [notice, setNotice] = useState<string | null>(null)
   const [pending, setPending] = useState<string | null>(null)
   const [writeBlocked, setWriteBlocked] = useState(false)
@@ -35,20 +38,63 @@ export function AdministrationPage({ section }: { section: 'people' | 'organizat
     setNotice(null)
     setSelection({})
     setWriteBlocked(false)
-    const outcome = await request((ctx, signal) => adminGateway.listOrganizationGrants(organizationId, ctx, signal))
-    if (outcome.kind === 'stale') return
-    if (outcome.kind === 'failed') { setView({ status: isDenied(outcome.error) ? 'denied' : 'error' }); return }
-    if (!validGrantProjection(organizationId, outcome.value.grants)) { setView({ status: 'error' }); return }
-    setView({ status: 'ready', value: outcome.value })
-  }, [organizationId, request])
+    let cursor: string | undefined
+    const grants: OrganizationGrant[] = []
+    const seenCursors = new Set<string>()
+    let resetUsed = false
+    for (let page = 0; page < 20; page += 1) {
+      const outcome = await request((ctx, signal) => adminGateway.listOrganizationGrants(organizationId, ctx, signal, cursor === undefined ? {} : { cursor }))
+      if (outcome.kind === 'stale') return
+      if (outcome.kind === 'failed') {
+        if (outcome.error instanceof GatewayError && outcome.error.code === 'cursor_invalid' && cursor !== undefined && !resetUsed) {
+          resetUsed = true; cursor = undefined; grants.length = 0; seenCursors.clear(); continue
+        }
+        setView({ status: isDenied(outcome.error) ? 'denied' : 'error' }); return
+      }
+      if (outcome.value.context_id !== session?.context_id || outcome.value.authorization_version !== session?.authorization_version) {
+        setView({ status: 'error' }); return
+      }
+      grants.push(...outcome.value.items)
+      if (!validGrantProjection(organizationId, grants)) { setView({ status: 'error' }); return }
+      const next = outcome.value.next_cursor
+      if (next === null) { setView({ status: 'ready', value: { grants } }); return }
+      if (seenCursors.has(next)) { setView({ status: 'error' }); return }
+      seenCursors.add(next)
+      cursor = next
+    }
+    setView({ status: 'error' })
+  }, [organizationId, request, session?.context_id, session?.authorization_version])
+  const loadRoster = useCallback(async () => {
+    if (!organizationId) return
+    setRoster({ status: 'loading' })
+    let cursor: string | undefined
+    const items: z.infer<typeof RosterPersonSchema>[] = []
+    const cursors = new Set<string>()
+    for (let page = 0; page < 3; page += 1) {
+      const outcome = await request((ctx, signal) => adminGateway.getOrganizationRoster(organizationId, ctx, signal, cursor === undefined ? {} : { cursor }))
+      if (outcome.kind === 'stale') return
+      if (outcome.kind === 'failed') { setRoster({ status: isDenied(outcome.error) ? 'unavailable' : 'error' }); return }
+      if (outcome.value.context_id !== session?.context_id || outcome.value.authorization_version !== session?.authorization_version) {
+        setRoster({ status: 'error' }); return
+      }
+      items.push(...outcome.value.items)
+      const next = outcome.value.next_cursor
+      if (next === null) { setRoster(validRosterProjection(items) ? { status: 'ready', items } : { status: 'error' }); return }
+      if (cursors.has(next)) { setRoster({ status: 'error' }); return }
+      cursors.add(next)
+      cursor = next
+    }
+    setRoster({ status: 'error' })
+  }, [organizationId, request, session?.context_id, session?.authorization_version])
   useEffect(() => { void load() }, [load])
+  useEffect(() => { void loadRoster() }, [loadRoster])
 
   const change = async (target: OrganizationGrant) => {
     if (view.status !== 'ready' || !organizationId || !actorId || !proof || pending || writeBlocked) return
     const allowed = editableRoles(actorId, view.value.grants, target)
     const role = selection[target.user_id]
     if (!role || !allowed.includes(role)) return
-    const revision = view.value.revision
+    const revision = target.revision
     setPending(target.user_id)
     setNotice(null)
     const outcome = await request((ctx, signal) => adminGateway.replaceOrganizationGrant(organizationId, target.user_id, { role, expected_revision: revision }, ctx, proof, signal))
@@ -62,7 +108,8 @@ export function AdministrationPage({ section }: { section: 'people' | 'organizat
       else setNotice('The change was not confirmed. Reload current permissions before another change.')
       return
     }
-    // The server returns only the changed grant; reload the whole redacted projection and actor authority.
+    // The server returns only the changed grant; freeze controls until session and full projection reload.
+    setWriteBlocked(true)
     setNotice('Change recorded. Reloading current permissions and audit revision.')
     refresh()
   }
@@ -74,6 +121,10 @@ export function AdministrationPage({ section }: { section: 'people' | 'organizat
     {section === 'organization' && <div className="mt-4 rounded-lg border border-line p-4"><h2 className="font-semibold">Available settings</h2><p className="mt-1 text-sm text-muted">Current organization grants can be reviewed here. Provider, DNS, live delivery and credential settings are unavailable in this build.</p></div>}
     <h2 className="mt-5 font-semibold">Configuration identities</h2>
     <p className="mt-1 text-sm text-muted">These twelve references are unbound. Their proposed roles are planning metadata, not active permissions, accounts, invitations or logins.</p>
+    {roster.status === 'loading' && <p role="status" className="mt-1 text-xs text-muted">Checking organization roster…</p>}
+    {roster.status === 'ready' && <p className="mt-1 text-xs text-muted">Unbound roster verified with the organization gateway.</p>}
+    {roster.status === 'unavailable' && <p className="mt-1 text-xs text-muted">Organization roster unavailable; the reference list below is local configuration only.</p>}
+    {roster.status === 'error' && <p role="alert" className="mt-1 text-xs">Organization roster could not be verified; the reference list below is local configuration only.</p>}
     <ul className="mt-3 grid gap-2 sm:grid-cols-2">
       {CONFIG_PEOPLE.map((person) => <li key={person.key} className="rounded-lg border border-line p-3 text-sm"><p className="font-medium">{person.display_name}</p><p className="text-xs text-muted">{person.title}{person.department ? ` · ${person.department}` : ''}</p><p className="mt-1 text-xs">Unbound · no email or login</p><p className="text-xs text-muted">Proposed: {person.proposed_org_role.replaceAll('_', ' ')}</p></li>)}
     </ul>
@@ -84,15 +135,15 @@ export function AdministrationPage({ section }: { section: 'people' | 'organizat
     {view.status === 'error' && <EmptyState title="Current grants could not be loaded" body="No current permission state is shown." action={<Button onClick={() => void load()}>Try again</Button>} />}
     {notice && <p role="alert" className="mt-3 text-sm">{notice}</p>}
     {view.status === 'ready' && <>
-      <p className="mt-2 text-xs text-muted">Grant revision {view.value.revision} · audit event details unavailable in this build</p>
+      <p className="mt-2 text-xs text-muted">Current grants loaded · audit event details unavailable in this build</p>
       {view.value.grants.length === 0 && <p className="mt-3 text-sm text-muted">No current grants were returned.</p>}
       <ul className="mt-3 divide-y divide-line rounded-lg border border-line">
         {view.value.grants.map((grant) => {
           const roles = actorId ? editableRoles(actorId, view.value.grants, grant) : []
           const selected = selection[grant.user_id] ?? grant.role
           return <li key={grant.user_id} className="flex flex-wrap items-center gap-3 p-3 text-sm">
-            <div className="min-w-0 flex-1"><p className="break-all font-mono text-xs">{grant.user_id}</p><p className="text-xs text-muted">Current: {grant.role.replaceAll('_', ' ')}</p></div>
-            {roles.length > 0 && <><label className="text-xs">Role <select aria-label={`Role for ${grant.user_id}`} className="ml-1 rounded border border-line bg-surface p-1" disabled={pending !== null || writeBlocked} value={selected} onChange={(event) => setSelection((before) => ({ ...before, [grant.user_id]: event.target.value as EditableRole }))}>{[grant.role, ...roles.filter((role) => role !== grant.role)].map((role) => <option key={role} value={role}>{role.replaceAll('_', ' ')}</option>)}</select></label><Button disabled={pending !== null || writeBlocked || selected === grant.role} onClick={() => void change(grant)}>Save role</Button></>}
+            <div className="min-w-0 flex-1"><p className="break-all font-mono text-xs">{grant.user_id}</p><p className="text-xs text-muted">Current: {grant.role.replaceAll('_', ' ')} · revision {grant.revision}</p></div>
+            {roles.length > 0 && <><label className="text-xs">Role <select aria-label={`Role for ${grant.user_id}`} className="ml-1 rounded border border-line bg-surface p-1" disabled={pending !== null || writeBlocked} value={selected} onChange={(event) => { const role = roles.find((candidate) => candidate === event.target.value); if (role) setSelection((before) => ({ ...before, [grant.user_id]: role })) }}>{[grant.role, ...roles.filter((role) => role !== grant.role)].map((role) => <option key={role} value={role}>{role.replaceAll('_', ' ')}</option>)}</select></label><Button disabled={pending !== null || writeBlocked || selected === grant.role} onClick={() => void change(grant)}>Save role</Button></>}
           </li>
         })}
       </ul>
