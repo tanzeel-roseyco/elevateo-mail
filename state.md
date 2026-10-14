@@ -60,6 +60,9 @@ The `cb1ec5be` fleet Steep receipt found grants and preferences write-guard call
 # Project state
 
 **Newer integrated source checkpoint:** `7ec5925` imports Leonie OPS820 isolated gateway role/scanner fixture source, Corin held IMAP attachment ingest at migration 00017, and Sabine gateway helper at migration 00018 after Nadia 00015; no live ingestion or gateway public route is active. Exact fleet migration/role/scan and independent review remain pending for these imports.
+FIX948: expanded `e01c64ad` backend receipt has 13 `Rails.logger` `NoMethodError`s in the shared `ApplicationController` rescue path during standalone Rack controller tests. The proposed source fallback logs a fixed event to stderr only when Rails has no logger, plus focused tests for both logger paths. Fleet Docker verification and the masked underlying error diagnoses remain pending; no full backend PASS is claimed.
+
+LINT932 source candidate: coherent `a2f58b34` still reported `Lint/UnusedBlockArgument` in the V2 fake inbound callback after Corin's `_query` change. The callback now accepts the unused `query:` via keyword rest and keeps the typed `input:` actor guard. Targeted fleet lint, Steep and fake inbound tests are NOT_RUN on this successor; no live-mail claim.
 
 **Latest integrated candidate:** `3c781f27246eced3a8c218c2b333ab080cd35530` registers PREF-822 session-scoped GET/PUT in canonical V2 draft.6 and includes Theo/Lyra settings, Maeve/Celeste inert sequence, Nadia/Mira held attachment UI/backend, Rowan/Elara/Dorian source repairs, and Cassian OUT839 grants plus ATT838 pure signer. Sequence and attachment public routes remain inactive; the V2 generated declaration, current SQL/HTTP/web/browser fleet gates, seeded screenshots and independent review are pending. No live send, live credentials or release is enabled. Earlier dated paragraphs below record historical source/evidence states and do not supersede this checkpoint.
 

@@ -55,6 +55,14 @@ The subsequent `cb1ec5be` Steep repair gives grants and preference write guards 
 # Product requirements and decision record
 
 QA-815 owns serialized fleet Docker checks under the shared Soren lock. The exact Mira FE-806 candidate passed focused frontend checks; the immutable-source scheduler, receipt and cleanup limits are recorded in `docs/completion/soren.md`. This is not integrated or browser acceptance.
+FIX948 error logging boundary: a booted Rails application supplies `Rails.logger`; isolated Rack controller harnesses that require Rails without booting the application do not. The shared rescue handler must still emit its fixed event/class/request ID without recording the exception message or request body. A stderr logger is used only when the Rails logger method is absent, while the normal application logger remains authoritative. Soren's fleet regression is pending and may expose earlier masked controller faults.
+
+LINT932 fake inbound controller: protected-write invokes its guard with `input:` and `query:`. The guard uses only `input:` to validate the actor UUID; `**` accepts the unused keyword without binding it, preserving the RBS callback interface. This corrects the prior unsuccessful `_query` lint attempt, subject to fleet lint and Steep verification.
+
+Fake inbound V2 callback lint note: the protected write target-user callback retains the required `query:` keyword shape while marking its unused local as ignored. This source-only repair does not change request validation, actor/mailbox authorization, MIME handling or route availability. Soren must verify the successor in fleet Docker.
+
+STRICT907 boundary: presence of the three required fake-ingress JSON fields does not establish their scalar types. The protected controller rejects non-string provider account, event or raw MIME values with `request_invalid` before the typed fake MIME adapter; existing session, CSRF, actor and mailbox checks remain in order. This source is pending Soren's strict fleet check and does not enable live inbound mail.
+
 INB887 inbound boundary note: a syntactically supported IMAP attachment without configured private quarantine returns `attachment_storage_unavailable` before database insertion. An unsupported attachment type with storage configured returns `unsupported_mime` before staging or insertion. The isolated fake HTTP controller retains session, CSRF, actor and mailbox grant checks; only its existing Steep block annotations changed. Fleet validation is pending.
 
 ### Mira BE03 UI isolated R24 implementation (2026-10-14)
