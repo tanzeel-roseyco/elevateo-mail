@@ -507,3 +507,5 @@ QA815 feature58edb11c targeted fleet TypeScript and CollaborationPanels 10/10 PA
 Corin 487ca33d anonymous guard keyword repair imported feature/core; a2f58b34 one-offense lint failure remains source-specific. Coherent feature full new-suite/Steep/lint/HTTP/worker gate awaits Orion manifest inventory and Soren fleet run.
 
 Nadia QA816 attachment fixture producer 8acae6a0 imported source-only; ATT content route inactive, private Storage/clamd/Auth fixture and sidecar runtime NOT_RUN. Independent bounded review pending.
+
+QA815 feature7cae15a7 focused Corin lint PASS; Steep FAIL two Nadia ATT902 controller types (NoStorage keyword signature, download binding), cleanup PASS. Full feature backend/HTTP/worker not reached.

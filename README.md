@@ -562,3 +562,5 @@ QA815 exact later feature `58edb11c` targeted web check passed TypeScript and Co
 Corin's second `487ca33d` fake inbound guard repair accepts the unused query keyword anonymously while retaining actor UUID validation; it is staged in feature and core. The prior one-offense RuboCop failure is historical until Soren reruns on an exact successor. Root plans the next full backend/new-suite/HTTP/worker gate on the coherent feature source after Orion's suite inventory.
 
 Nadia's `8acae6a0` disposable QA816 private attachment fixture producer and focused auth tests are staged in the feature candidate. It requires real private Storage, clamd, worker scan claims, current reader Auth and an active isolated content route before producing a private sidecar; no fixture, byte proof or browser PASS exists yet.
+
+QA815 exact feature `7cae15a7` fleet focused fake inbound RuboCop passed, while Steep failed two Nadia ATT902 controller type diagnostics: NoStorage keyword signature and private download binding shape. The receipt is imported; full feature backend/HTTP/worker remain held pending owner repair and one coherent successor.
