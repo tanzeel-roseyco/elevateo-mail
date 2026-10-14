@@ -482,3 +482,5 @@ INT801 current attachment metadata controller strict candidate binds path UUIDs 
 QA815 exact `b3fec577` pinned-tool Android parser probe passed 17 Python methods plus manifest/permission/unsigned classification on a retained older rejected unsigned APK. Cleanup passed; no new APK or installed Android behavior is accepted from this probe.
 
 ATT898 Nadia repository/test import repair is integrated for the exact QA815 attachment strict and standalone test-load failures. Soren fleet Steep and focused attachment tests on the coherent source remain pending; no byte route or live sending was activated.
+
+Core strict successor stages Cassian gateway Numeric conversion and Corin fake inbound scalar validation over exact 215080a4; Nadia attachment index type repair is pending. Soren fleet Steep/full backend/HTTP/worker have not run on this successor.

@@ -33,7 +33,8 @@ module Elevateo
         if transport
           transport.call(signed.body, signed.signature, timeout)
         else
-          exchange(signed, timeout.to_f)
+          # Kernel.Float preserves Numeric conversion while Net::HTTP setters require Float.
+          exchange(signed, Float(timeout))
         end
       end
       raise Unavailable if Process.clock_gettime(Process::CLOCK_MONOTONIC) > deadline
@@ -47,7 +48,7 @@ module Elevateo
         length.is_a?(String) && /\A[1-9][0-9]*\z/.match?(length) && length.to_i == bytes.bytesize &&
         bytes.bytesize.between?(1, MAX_BYTES)
       bytes.b.freeze
-    rescue ArgumentError, IOError, SystemCallError, SocketError, Timeout::Error,
+    rescue ArgumentError, TypeError, IOError, SystemCallError, SocketError, Timeout::Error,
       Net::HTTPBadResponse, Net::ProtocolError
       raise Unavailable
     end
