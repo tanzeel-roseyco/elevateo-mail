@@ -90,13 +90,26 @@ class OrganizationAccessPolicyTest < MailboxMembershipDatabaseCase
     result
   end
 
+  def outreach_read_authorization(actor)
+    result = nil
+    scope(identity: actor, write: false) do |connection|
+      bind = ActiveRecord::Relation::QueryAttribute.new("fixture", actor.digest, ActiveRecord::Type::String.new)
+      raw = connection.exec_query("SELECT app.authorize_outreach_content_read($1) AS result",
+        "Outreach read authority fixture", [bind]).first.fetch("result")
+      result = raw.is_a?(String) ? JSON.parse(raw) : raw
+    end
+    result
+  end
+
   def test_outreach_draft_write_requires_current_business_role
     sales = add_actor
     grant(sales, "sales")
     auditor = add_actor
     grant(auditor, "auditor")
     assert_equal "ok", outreach_authorization(sales).fetch("status")
+    assert_equal "ok", outreach_read_authorization(sales).fetch("status")
     assert_equal "not_found", outreach_authorization(auditor).fetch("status")
+    assert_equal "not_found", outreach_read_authorization(auditor).fetch("status")
     assert_equal "ok", outreach_authorization(@identity).fetch("status")
   end
 
@@ -229,6 +242,10 @@ class OrganizationAccessPolicyTest < MailboxMembershipDatabaseCase
       raw = connection.exec_query(sql, "Forged context", [bind]).first.fetch("result")
       result = raw.is_a?(String) ? JSON.parse(raw) : raw
       assert_equal "not_found", result.fetch("status")
+      raw_read = connection.exec_query("SELECT app.authorize_outreach_content_read($1::text) AS result",
+        "Forged outreach context", [bind]).first.fetch("result")
+      read_result = raw_read.is_a?(String) ? JSON.parse(raw_read) : raw_read
+      assert_equal "not_found", read_result.fetch("status")
     end
   end
 

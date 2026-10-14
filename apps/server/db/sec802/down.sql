@@ -1,4 +1,5 @@
 SET LOCAL ROLE elevateo_session_owner;
+DROP FUNCTION app.authorize_outreach_content_read(text);
 DROP FUNCTION app.organization_grants_page(text,uuid,integer);
 SET LOCAL ROLE elevateo_owner;
 DROP FUNCTION app.enroll_verified_organization_grant(uuid,uuid,text,text);

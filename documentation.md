@@ -190,3 +190,5 @@ SEC-802 security seam: migration 00008 installs the legacy mailbox mutation guar
 The protected grants page also returns current actor role/revision independently of pagination; audit metadata remains unavailable until a separately reviewed authority endpoint exists.
 
 Personal mailbox owners cannot lose manager access through the legacy mutation, and non-owners cannot receive personal manager authority. Team last-manager checks count only managers whose current organization role and explicit ceiling permit administration. Outreach draft mutation has a separate protected current-role check for owner/admin/sales_manager/sales; sending remains separately gated.
+
+Outreach content reads have a separate digest-verified role check for owner/admin/sales_manager/sales. Dorian's domain RLS must enforce the same policy; these checks do not confer mailbox or send rights.
