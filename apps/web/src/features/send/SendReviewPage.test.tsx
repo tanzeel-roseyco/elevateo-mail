@@ -1,6 +1,6 @@
 import { act, fireEvent, render, screen } from '@testing-library/react'
 import { MemoryRouter, Route, Routes } from 'react-router'
-import { describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { DraftIntentProvider } from '@/app/draftIntent'
 import { SendIntentProvider } from '@/app/sendIntent'
 import { SessionProvider, useSession, type SessionController } from '@/app/session'
@@ -31,6 +31,7 @@ function setup(g: MailroomGateway, shell = false) {
 async function ready() { await screen.findByRole('heading', { name: /Review saved draft version/ }) }
 
 describe('BE03 saved review and approval', () => {
+  beforeEach(() => { window.sessionStorage.clear(); vi.restoreAllMocks() })
   it('renders all literal content, requires explicit attestation, then reads durable queued status', async () => {
     const g = gateway(); setup(g); await ready()
     expect((screen.getByRole('button', { name: 'Approve simulated send' }) as HTMLButtonElement).disabled).toBe(true)
@@ -103,6 +104,27 @@ describe('BE03 saved review and approval', () => {
     const items = screen.getAllByRole('listitem')
     expect(items.map((item) => item.textContent)).toEqual(recipients.map((recipient) => `${recipient.display_name} ${recipient.address}`))
     expect(document.querySelector('img, script')).toBeNull()
+  })
+  it('reloads a lost response and explicitly retries the exact original with a fresh proof', async () => {
+    const calls: SendApprovalInput[] = []; const proofs: string[] = []
+    const g = gateway({ approveDraftSend: vi.fn(async (_ctx, proof, _id, input) => { calls.push(input); proofs.push(proof.csrfToken); if (calls.length === 1) throw new GatewayError('transport', 'timeout', 'synthetic'); return APPROVAL }) })
+    const first = setup(g); await ready(); confirm(); approve()
+    await screen.findByRole('button', { name: 'Retry original approval' }); first.unmount()
+    const base = createFixtureGateway()
+    const second = { ...g, getSession: async (signal?: AbortSignal) => ({ ...await base.getSession(signal), csrf_token: 'reload_fresh_csrf_012345' }), getSendReview: async () => ({ ...REVIEW, draft_version: 2, review_digest: 'b'.repeat(64) }) }
+    setup(second); await ready()
+    expect(calls).toHaveLength(1)
+    fireEvent.click(screen.getByRole('button', { name: 'Retry original approval' }))
+    await screen.findByRole('heading', { name: 'Send intent: queued' })
+    expect(calls[1]).toEqual(calls[0]); expect(proofs[1]).toBe('reload_fresh_csrf_012345')
+  })
+  it('fails visibly before POST when retry metadata cannot be stored', async () => {
+    const g = gateway(); setup(g); await ready()
+    vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => { throw new Error('storage blocked') })
+    confirm(); approve()
+    await screen.findByText(/No new approval was submitted/)
+    expect(g.approveDraftSend).not.toHaveBeenCalled()
+    expect((screen.getByRole('button', { name: 'Approve simulated send' }) as HTMLButtonElement).disabled).toBe(false)
   })
   it('drops a late approval after logout and clears retry details', async () => {
     let resolve: ((value: ApprovalResult) => void) | undefined
