@@ -685,3 +685,6 @@ Independent adversarial functional and design-tradeoff reviews are requested fro
 ## SEC-802 candidate review status
 
 Migration 00008, `db/sec802/access.sql`, and organization access database tests await independent bounded adversarial and dedicated design-tradeoff review. No review coverage or defects/KLOC is claimed from author inspection. Runtime tests are not executed; see `docs/completion/sabine.md`.
+### OUT-804 Dorian source review request (2026-10-15)
+
+Independent functional and dedicated design-tradeoff review requested for migration 00009, campaigns/input.rb, campaigns/repository.rb, campaigns.rbs and campaign tests. Reviewed source lines: 0; found defects: unassessed; defect density: not applicable. No review PASS is claimed; root schedules bounded packets of at most 200 source lines and records the resulting denominator and findings.
