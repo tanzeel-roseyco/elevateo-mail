@@ -18,7 +18,7 @@ module Elevateo
     def logout: (String, String, deadline: RequestDeadline) -> bool
     private
     def request: (Symbol, String, auth_object?, deadline: RequestDeadline, ?access: String?, ?empty: bool,
-                  ?accepted_rejection: bool, ?password_update: bool) -> auth_object
+                  ?accepted_rejection: bool, ?password_update: bool, ?absent_local_session: bool) -> auth_object
     def exchange: (Symbol, String, auth_object?, String?, RequestDeadline) -> [Integer, String, String]
   end
 end

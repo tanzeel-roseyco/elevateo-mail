@@ -46,13 +46,15 @@ module Elevateo
 
     def logout(access, scope, deadline:)
       raise AuthError.invalid unless %w[local global].include?(scope)
-      request(:post, "/logout?scope=#{scope}", {}, access: access, deadline: deadline, empty: true)
+      request(:post, "/logout?scope=#{scope}", {}, access: access, deadline: deadline, empty: true,
+        absent_local_session: scope == "local")
       true
     end
 
     private
 
-    def request(method, path, payload, deadline:, access: nil, empty: false, accepted_rejection: false, password_update: false)
+    def request(method, path, payload, deadline:, access: nil, empty: false, accepted_rejection: false,
+      password_update: false, absent_local_session: false)
       # AIDEV-NOTE: Never hold a DB transaction while waiting for Auth; no retries or redirects may rotate tokens twice.
       raise AuthError.new if @transaction_open.call
       deadline.within(2.0) do
@@ -65,6 +67,12 @@ module Elevateo
         raise AuthError.new unless body.is_a?(String) && body.bytesize <= MAX_RESPONSE
         raise PasswordRejected if password_update && status == 422
         return {} if accepted_rejection && [400, 422].include?(status)
+        # AIDEV-NOTE: Missing authenticated session proves local absence only; it cannot attest global logout.
+        if absent_local_session && status == 403 &&
+          content_type.to_s.split(";").first.to_s.downcase == "application/json"
+          response_error = AuthInput.object(body, maximum: MAX_RESPONSE)
+          return {} if response_error["code"] == 403 && response_error["error_code"] == "session_not_found"
+        end
         raise AuthError.unauthorized if [400, 401, 403, 422].include?(status)
         raise AuthError.new unless status.between?(200, 299)
         return {} if empty || (accepted_rejection && body.empty?)

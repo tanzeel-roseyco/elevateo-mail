@@ -1,3 +1,5 @@
+BE-403 R7 / ADV781 (2026-10-14): IN PROGRESS. Frozen94d32db R8 fullbackend386runs5734assertionsPASS and authenticatedHTTPPASS; actual worker drainFAILED exit1/31.08s. Source repair confines new global Auth intent to authenticated caller, retains local disposal for other captured sessions and accepts only bounded valid JSON403/code403/error_code=session_not_found for local logout. Global absence and other denials remain failure. Strict RBS/regressions authored; runtime/Steep/lint NOT_RUN; root independent functional/design reviews PENDING. Soren sole Docker scheduler; root sole actual vault writer. See docs/completion/be403-r7-worker-drain.md.
+
 # Elevateo Mail - ongoing project record
 
 Status: IN PROGRESS. Updated 2026-10-14, Australia/Sydney. This record replaces superseded status claims below with current evidence; it is not a completion report.

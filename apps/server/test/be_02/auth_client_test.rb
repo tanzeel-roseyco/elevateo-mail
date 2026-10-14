@@ -80,6 +80,38 @@ class AuthClientTest < Minitest::Test
     assert_equal 0, http.max_retries
   end
 
+  def test_local_logout_accepts_only_typed_missing_session_and_keeps_fixed_scope
+    calls = []
+    reply = [403, "application/json; charset=utf-8", '{"code":403,"error_code":"session_not_found","msg":"omitted"}']
+    assert client(reply, calls: calls).logout("access", "local", deadline: deadline)
+    assert_equal [:post, "/logout?scope=local", {}, "access"], calls.first.first(4)
+    assert_equal 1, calls.length
+    assert client([204, "", ""]).logout("access", "global", deadline: deadline)
+    assert_auth(401) { client(reply).logout("access", "global", deadline: deadline) }
+    assert_auth(401) { client(reply).user("access", deadline: deadline) }
+  end
+
+  def test_local_logout_rejects_other_errors_and_untrusted_missing_session_bodies
+    [
+      [403, "application/json", '{"code":403,"error_code":"bad_jwt"}'],
+      [403, "application/json", '{"code":"session_not_found"}'],
+      [403, "application/json", '{"code":403,"error_code":null}'],
+      [403, "text/plain", '{"code":403,"error_code":"session_not_found"}'],
+      [401, "application/json", '{"code":403,"error_code":"session_not_found"}'],
+      [400, "application/json", '{"code":403,"error_code":"session_not_found"}']
+    ].each do |reply|
+      assert_auth(401) { client(reply).logout("access", "local", deadline: deadline) }
+    end
+    [
+      "{", "[]", '{"code":403,"error_code":"session_not_found","error_code":"session_not_found"}', "x" * 65_537
+    ].each do |body|
+      assert_auth(503) { client([403, "application/json", body]).logout("access", "local", deadline: deadline) }
+    end
+    assert_auth(503) do
+      client([503, "application/json", '{"code":403,"error_code":"session_not_found"}']).logout("access", "local", deadline: deadline)
+    end
+  end
+
   def test_non_http_or_hostless_uri_cannot_start_transport
     # AIDEV-NOTE: Config normally rejects these; the transport seam must also fail before opening a socket.
     ["/relative", "ftp://auth:9999", "http:/missing-host"].each do |url|
