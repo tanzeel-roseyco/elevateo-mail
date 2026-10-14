@@ -102,6 +102,18 @@ class OrganizationAccessPolicyTest < MailboxMembershipDatabaseCase
     result
   end
 
+  def outreach_same_scope_witness(actor)
+    results = {}
+    scope(identity: actor, targets: [actor.user_id]) do |connection|
+      bind = ActiveRecord::Relation::QueryAttribute.new("fixture", actor.digest, ActiveRecord::Type::String.new)
+      { "read" => "authorize_outreach_content_read", "write" => "authorize_outreach_draft_write" }.each do |key, routine|
+        raw = connection.exec_query("SELECT app.#{routine}($1) AS result", "Outreach same-scope witness", [bind]).first.fetch("result")
+        results[key] = (raw.is_a?(String) ? JSON.parse(raw) : raw).fetch("status")
+      end
+    end
+    results
+  end
+
   def test_outreach_draft_write_requires_current_business_role
     sales = add_actor
     grant(sales, "sales")
@@ -117,8 +129,11 @@ class OrganizationAccessPolicyTest < MailboxMembershipDatabaseCase
       SELECT pg_get_userbyid(p.proowner) FROM pg_proc p
         WHERE p.oid = 'app.authorize_outreach_draft_write(text)'::regprocedure
     SQL
-    guard_status = outreach_authorization(sales).fetch("status")
-    assert_equal "ok", guard_status, "member=#{member} role=#{role} function_owner=#{owner} protected_result=#{guard_status}"
+    statuses = outreach_same_scope_witness(sales)
+    assert_equal "ok", statuses.fetch("read"), "member=#{member} role=#{role} function_owner=#{owner} read_result=#{statuses.fetch('read')}"
+    guard_status = statuses.fetch("write")
+    assert_equal "ok", guard_status,
+      "member=#{member} role=#{role} function_owner=#{owner} read_result=#{statuses.fetch('read')} protected_result=#{guard_status}"
     assert_equal "ok", outreach_read_authorization(sales).fetch("status")
     assert_equal "not_found", outreach_authorization(auditor).fetch("status")
     assert_equal "not_found", outreach_read_authorization(auditor).fetch("status")
