@@ -6,6 +6,6 @@ This scoped harness runs the actual candidate React routes with a explicitly lab
 
 The Playwright config uses a separate bounded browser container and an explicitly supplied existing Chromium executable. One worker, zero retries; traces off; payloads are synthetic public example.test content. Runtime invocation, exact candidate/harness identities and immediate exact container cleanup must be recorded by Mira. Soren retains the heavy DB lease. Root alone owns visual acceptance.
 
-Cases: save-current-text -> full literal review -> attest -> queue; timeout -> original binding retry -> queue; nonready empty; unavailable review; stale review. Loading, plaintext, focus, approval gating and horizontal overflow are asserted. The fixture compares the entire retry input and returns a synthetic receipt; it is not a server idempotency oracle.
+Cases: save-current-text -> full literal review -> attest -> queue; timeout -> original binding retry -> queue; nonready empty; unavailable review; stale review; status loading/unavailable/unknown. Loading, plaintext, focus, approval gating and horizontal overflow are asserted. The fixture compares the entire retry input and returns a synthetic receipt; it is not a server idempotency oracle.
 
 Initial harness3d6cfb5 runtime10PASS/22PNGs on integrated1429f1df; corrected private recipient seed pending rerun. Root visual acceptance pending; source review receipt is published separately in incoming coordination. BE02 OPEN; no application completion or release claim. Effective Fast billing unverified.

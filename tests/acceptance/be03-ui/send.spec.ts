@@ -76,3 +76,20 @@ for (const mode of ['empty', 'error', 'stale']) {
     await capture(page, info, mode)
   })
 }
+
+for (const mode of ['status-error', 'status-unknown']) {
+  test(`${mode} preserves uncertain status semantics`, async ({ page }, info) => {
+    await page.goto(entry(mode, `/mailboxes/${mailbox}/send-intents/00000000-0000-4000-8000-000000000091`))
+    await expect(page.getByRole('status', { name: 'Loading send status' })).toBeVisible()
+    await capture(page, info, `${mode}-loading`)
+    if (mode === 'status-error') {
+      await expect(page.getByRole('alert')).toContainText('No outcome or safe resend is established')
+      await expect(page.getByRole('button', { name: 'Refresh status' })).toBeVisible()
+    } else {
+      await expect(page.getByRole('heading', { name: 'Send intent: unknown' })).toBeVisible()
+      await expect(page.getByText('The simulated submission outcome is unknown. Do not resend or create a replacement draft.')).toBeVisible()
+      await expect(page.getByRole('button', { name: 'Request stop' })).toBeVisible()
+    }
+    await capture(page, info, mode)
+  })
+}

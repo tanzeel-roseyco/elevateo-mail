@@ -42,7 +42,12 @@ const gateway: MailroomGateway = {
     if (mode === 'stale') throw new GatewayError('api', 'review_stale', 'Synthetic stale review', { status: 409 })
     return { ...APPROVAL, draft_id: draftId, approved_version: input.expected_version, review_digest: input.review_digest }
   },
-  getSendStatus: async () => ({ ...STATUS, approved_version: state.getDraft(CD.draftId, CD.mailboxId).version }),
+  getSendStatus: async () => {
+    await new Promise((resolve) => setTimeout(resolve, 350))
+    if (mode === 'status-error') throw new GatewayError('api', 'temporarily_unavailable', 'Synthetic status unavailable', { status: 503 })
+    return { ...STATUS, approved_version: state.getDraft(CD.draftId, CD.mailboxId).version,
+      ...(mode === 'status-unknown' ? { state: 'unknown' as const, attempts: 1, cancellable: false, first_possible_at: APPROVAL.approved_at } : {}) }
+  },
 }
 const root = document.getElementById('root')
 if (!root) throw new Error('Missing harness root')
