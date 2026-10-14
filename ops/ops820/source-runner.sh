@@ -16,6 +16,14 @@ docker run --rm --network "${project}_private" --read-only --cap-drop ALL \
   -v "$root/ops/db:/ops:ro" --entrypoint bash "$db_image" \
   -c 'export PGPASSWORD="$POSTGRES_PASSWORD"; exec psql -v ON_ERROR_STOP=1 -f /ops/bootstrap.sql' >/dev/null
 docker run --rm --network "${project}_private" --read-only --cap-drop ALL \
+  --env-file "$envfile" -e PGHOST=db -e PGUSER=supabase_admin -e PGDATABASE=postgres \
+  -v "$root/ops/db:/ops:ro" --entrypoint bash "$db_image" \
+  -c 'export PGPASSWORD="$POSTGRES_PASSWORD"; exec psql -v ON_ERROR_STOP=1 -f /ops/bootstrap-send.sql' >/dev/null
+docker run --rm --network "${project}_private" --read-only --cap-drop ALL \
+  --env-file "$envfile" -e PGHOST=db -e PGUSER=supabase_admin -e PGDATABASE=postgres \
+  -v "$root/ops/db:/ops:ro" --entrypoint bash "$db_image" \
+  -c 'export PGPASSWORD="$POSTGRES_PASSWORD"; exec psql -v ON_ERROR_STOP=1 -f /ops/bootstrap-auth-grants.sql' >/dev/null
+docker run --rm --network "${project}_private" --read-only --cap-drop ALL \
   --user 10001:10001 --memory 768m --pids-limit 256 \
   --env-file "$envfile" -e RAILS_ENV=test -e ELEVATEO_MODE=local \
   -e ELEVATEO_OUTBOUND_HOLD=true -e ELEVATEO_SEND_API_ENABLED=false \
