@@ -497,3 +497,4 @@ Five-owner core lint successor a2f58b34 is assembled after Orion435333b1 authori
 Mira 20e8c46e reply test and Tessa f46a958b strict denial envelope cases imported; neither executed on current integrated SHA. Fleet web rerun and real-browser gates pending.
 
 QA815 fleet exact fdecd0d5 web PASS: V1/V2 checks, lint, TypeScript, 62 files/856 cases, production build, cleanup. Later Mira/Tessa test and Orion Ruby fixture imports untested; backend lint/HTTP/worker and browser acceptance open.
+QA816 attachment fixture source is authored on an isolated branch over Cassian `290d30b2`. Real private Storage, elevateo_worker scan functions, clamd and an authenticated reader API byte response are mandatory before mode-0600 sidecar publication. Soren fleet execution is NOT_RUN; on any uncertainty discard the whole disposable task fixture. See `docs/completion/nadia-qa816-attachments-seed.md`.
