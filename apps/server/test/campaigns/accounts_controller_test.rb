@@ -53,11 +53,31 @@ class OutreachAccountsControllerTest < Minitest::Test
     assert_equal "disabled", response.fetch("items").first.fetch("status")
     sql = @connection.sql.find { |statement| statement.include?("FROM app.campaign_accounts WHERE") }
     assert_includes sql, "campaign_id=$2::uuid"
+    assert_includes sql, "EXISTS (SELECT 1 FROM app.mailboxes mb"
+  end
+
+  def test_mixed_visible_and_hidden_mailboxes_return_only_visible_account
+    @connection.rows = [[{ "result" => { "status" => "ok" } }],
+      [{ "id" => THREAD, "name" => "Pilot", "status" => "draft", "version" => 1 }], [account_row]]
+    status, response = dispatch("index")
+    assert_equal 200, status
+    assert_equal [NOTE], response.fetch("items").map { |item| item.fetch("id") }
+    assert(@connection.sql.any? { |sql| sql.include?("mb.id=campaign_accounts.mailbox_id") })
   end
 
   def test_detail_denies_account_from_another_campaign
     @connection.rows = [[{ "result" => { "status" => "ok" } }], [account_row(TARGET)]]
     status, response = dispatch("show")
     assert_equal [404, "not_available"], [status, response.fetch("code")]
+  end
+
+  def test_revoked_private_mailbox_membership_hides_prior_detail
+    @connection.rows = [[{ "result" => { "status" => "ok" } }], [account_row]]
+    assert_equal 200, dispatch("show")[0]
+    @connection.rows = [[{ "result" => { "status" => "ok" } }], []]
+    status, response = dispatch("show")
+    assert_equal [404, "not_available"], [status, response.fetch("code")]
+    detail_sql = @connection.sql.reverse.find { |sql| sql.include?("FROM app.campaign_accounts WHERE") }
+    assert_includes detail_sql, "EXISTS (SELECT 1 FROM app.mailboxes mb"
   end
 end

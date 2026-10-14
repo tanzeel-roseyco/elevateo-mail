@@ -117,6 +117,8 @@ module Elevateo
           values << WriteInput.uuid(campaign_id)
           filter += " AND campaign_id=$2::uuid"
         end
+        # AIDEV-NOTE: Account metadata is visible only while the actor can read its mailbox, including private membership.
+        filter += " AND #{account_mailbox_visible}" if kind == "account"
         values << after
         values << (limit + 1)
         cursor_index, cap_index = values.length - 1, values.length
@@ -128,7 +130,8 @@ module Elevateo
       def detail(kind:, organization_id:, id:)
         org = WriteInput.uuid(organization_id)
         resource = WriteInput.uuid(id)
-        row = rows("SELECT #{selection_for(kind)} FROM app.#{table_for(kind)} WHERE organization_id=$1::uuid AND id=$2::uuid", [org, resource]).first
+        visibility = kind == "account" ? " AND #{account_mailbox_visible}" : ""
+        row = rows("SELECT #{selection_for(kind)} FROM app.#{table_for(kind)} WHERE organization_id=$1::uuid AND id=$2::uuid#{visibility}", [org, resource]).first
         raise CollaborationError.new("not_available") unless row
         project(kind, row)
       end
@@ -203,6 +206,11 @@ module Elevateo
       def selection_for(kind)
         return "*" unless kind == "lead"
         "*, EXISTS (SELECT 1 FROM app.campaign_suppressions s WHERE s.organization_id=campaign_leads.organization_id AND s.email=campaign_leads.email) AS globally_suppressed"
+      end
+
+      def account_mailbox_visible
+        "EXISTS (SELECT 1 FROM app.mailboxes mb WHERE mb.organization_id=campaign_accounts.organization_id " \
+          "AND mb.id=campaign_accounts.mailbox_id)"
       end
 
       def table_for(kind)

@@ -148,3 +148,5 @@ Soren's exact b28b7d3 fleet Ruby receipt passed input 5/8 and reported repositor
 Exact 5bd1b28 fleet Ruby/lint passed input 5/8, repository 8/31 and affected lint 9 files/0 offenses. Steep failed six campaign types across repository and lead suppression; source/RBS repairs are authored and await exact fleet rerun.
 
 Exact 35273ba isolated fleet checks now pass input 5/8, repository 8/31, affected lint 9 files/0 offenses and full Steep. Controller cases, disposable DB/RLS and integrated HTTP have not been established by this receipt.
+
+OUT-804 source now filters account pages and detail through `app.mailboxes` visibility in addition to tenant/account RLS. This prevents a sales outreach role alone from exposing a private mailbox account after its mailbox membership is revoked; focused regressions are authored, exact fleet execution pending.

@@ -206,3 +206,5 @@ Fleet repository tests on b28b7d3 reached eight cases with one assertion failure
 Exact 5bd1b28 fleet rerun passed campaign input 5/8, repository 8/31 and affected lint 9 files/0 offenses. Steep reported six campaign type problems; the owned source/RBS now declares the connection seam, mixed SQL bind vector and string binds, and validates suppression reason before repository use. Exact repaired-source Steep rerun remains pending.
 
 Exact 35273ba fleet rerun passed campaign input 5/8, repository 8/31, affected RuboCop lint 9 files/0 offenses, and full Steep exit 0. Disposable PostgreSQL role/RLS and integrated HTTP remain pending.
+
+OUT-804 account page/detail now explicitly require the actor's RLS-visible mailbox before exposing its ID or label. Mixed visible/hidden and revoked private mailbox cases are authored as controller regressions; fleet verification and route activation remain pending.
