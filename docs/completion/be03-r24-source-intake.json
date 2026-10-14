@@ -58,7 +58,95 @@
       "candidate_integrated_runtime": "NOT_RUN"
     },
     "Rowan": {
-      "intake": "PENDING final review/test receipt"
+      "head": "d48bc9fccfc6ca03929dc99eae5f835e293d1cda",
+      "lightweight_tested_source": "ebf64cdbbea24d8e79af158c1424d0391fce6933",
+      "unchanged_owner_bytes": [
+        {
+          "path": "apps/server/db/be03_send/approve.sql",
+          "sha256": "16147a3ba1fd419bb41a3e9d071153fe51dfa7021b5359298eee84d25a7b9a5b"
+        },
+        {
+          "path": "apps/server/db/be03_send/canonical.sql",
+          "sha256": "ee5890bbb6b1ef97963d7859d91a0b74d42b4f83a69500713f96978026703a42"
+        },
+        {
+          "path": "apps/server/db/be03_send/constraints.sql",
+          "sha256": "8aa5914e2b894c4e1742ddd5d3714c7ab97dd306020c20092267cf69f12e9429"
+        },
+        {
+          "path": "apps/server/db/be03_send/down.sql",
+          "sha256": "c405716447520969f5c4164aa1f9c93225a88f7e8b1cc6484deab6013cc5de31"
+        },
+        {
+          "path": "apps/server/db/be03_send/draft_bridge.sql",
+          "sha256": "a4d105a14617e77d36a811ce85f027c8197309a957ff4021c0958a9d51fc5c09"
+        },
+        {
+          "path": "apps/server/db/be03_send/grants.sql",
+          "sha256": "19894909e5db918af2227f6230373f9dcda492aa16794077455b80e5e99d020b"
+        },
+        {
+          "path": "apps/server/db/be03_send/prerequisite.sql",
+          "sha256": "748e94d22a6ac4fabb3463f7c9f46df3acd996f0503e953e219f23f55443efb6"
+        },
+        {
+          "path": "apps/server/db/be03_send/scope.sql",
+          "sha256": "3d1500d1dd69c85c9507fd580bc09ae604efba239951e9b484b7fe63956b4cdf"
+        },
+        {
+          "path": "apps/server/db/be03_send/session_bridge.sql",
+          "sha256": "51c3ffb62e612c8e492af4e7b6038b60bab9f90b0386402d0ff6feea4388d52b"
+        },
+        {
+          "path": "apps/server/db/be03_send/status.sql",
+          "sha256": "83fa02d5370a45550d4d4939e2d0d7c6cd9419e14e60b2db4f0946ce22c81d0d"
+        },
+        {
+          "path": "apps/server/db/be03_send/tables.sql",
+          "sha256": "ffde20ed95e9fc120076a461b6d83fe86f192c539ed169655c811b848b47d528"
+        },
+        {
+          "path": "apps/server/db/migrate/20261013000007_create_send_intents.rb",
+          "sha256": "2357ac39ba21477821c0e98005201c717341a9fe1ecbf26581dbdf7e498ee207"
+        },
+        {
+          "path": "apps/server/test/be_02/draft_schema_contract_test.rb",
+          "sha256": "58821efe48652d1ad2dce8e041d3d1689db50b0746beff6a5c182538877da7ec"
+        },
+        {
+          "path": "apps/server/test/sends/approval_database_helper.rb",
+          "sha256": "9470d3837d09330b6d12cdc4fef75f76796a4723fb570f41f9090ef2822d03e5"
+        },
+        {
+          "path": "apps/server/test/sends/approval_database_test.rb",
+          "sha256": "71684fbe060c27c37df4f4a70029ba9edf3ea54c2ef8d0cdf29d2537081c096b"
+        },
+        {
+          "path": "apps/server/test/sends/approval_faults_database_test.rb",
+          "sha256": "6d08e1bb9899752804dff2c09a3d8da1a117bd84bb20fb86d30efb97dfd91407"
+        },
+        {
+          "path": "apps/server/test/sends/approval_races_database_test.rb",
+          "sha256": "ee90262b382360e13411ea8e28815094621e7d668091b6e46bf6e1209cd24dc5"
+        },
+        {
+          "path": "apps/server/test/sends/schema_database_test.rb",
+          "sha256": "d68fd45c86f4f5752c8bb35b4d48877f58a5d714085bda64a18c7442c9118bbb"
+        },
+        {
+          "path": "ops/db/bootstrap-send.sql",
+          "sha256": "8da892c5270cb45eb8f005ff03a0f24e8d1e41033e08ec075dee164cdbe9874d"
+        },
+        {
+          "path": "ops/db/bootstrap.sql",
+          "sha256": "05392c974d57630c176dea88c1bb8c7b10f13cf4b29e13efca20bdb2729e919f"
+        }
+      ],
+      "source_reviews": "All changed SQL/migration/tests/bootstrap independently reviewed; 2MEDIUM repaired/re-reviewed; source0remaining. Design nonadditive.",
+      "source_results": "Ruby syntax7filesOK; affectedlint7files0offenses exit0; exactcontainerabsencePASS",
+      "sql_api_runtime": "NOT_RUN",
+      "migration": "20261013000007_create_send_intents.rb",
+      "bootstrap": "explicit bootstrap-send.sql after baseline bootstrap, before00007"
     },
     "Nadia": {
       "intake": "PENDING final review/type/lint/test receipt"
