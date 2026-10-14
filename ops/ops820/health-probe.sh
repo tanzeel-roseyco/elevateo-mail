@@ -11,10 +11,19 @@ name="${project}-ops820-api"
 created_id=""
 owned=0
 cleanup() {
-  local job=$? clean=0
+  local job=$? clean=0 rm_output inspect_output rm_exit inspect_exit
   if (( owned )); then
-    docker rm -f "$created_id" >/dev/null 2>&1 || true
-    docker inspect "$created_id" >/dev/null 2>&1 && clean=1
+    rm_exit=0
+    rm_output=$(docker rm -f "$created_id" 2>&1) || rm_exit=$?
+    inspect_exit=0
+    inspect_output=$(docker inspect "$created_id" 2>&1) || inspect_exit=$?
+    if (( inspect_exit == 0 )) ||
+       [[ "$inspect_output" != *"No such object: $created_id"* &&
+          "$inspect_output" != *"No such container: $created_id"* ]] ||
+       { (( rm_exit != 0 )) && [[ "$rm_output" != *"No such object: $created_id"* &&
+                                      "$rm_output" != *"No such container: $created_id"* ]]; }; then
+      clean=1
+    fi
   elif [[ -n "$created_id" ]]; then clean=1; fi
   echo "health_job_exit=$job health_cleanup_exit=$clean"
   (( clean == 0 )) || job=1

@@ -20,7 +20,7 @@ BEGIN
     RAISE EXCEPTION 'schema privilege drift';
   END IF;
   IF EXISTS (SELECT 1 FROM pg_roles WHERE rolname IN ('elevateo_api', 'elevateo_worker')
-             AND (rolsuper OR rolcreatedb OR rolcreaterole OR rolbypassrls)) THEN
+             AND (rolsuper OR rolcreatedb OR rolcreaterole OR rolreplication OR rolbypassrls)) THEN
     RAISE EXCEPTION 'runtime role privilege drift';
   END IF;
   IF NOT pg_has_role('elevateo_api', 'elevateo_app_read', 'MEMBER') THEN

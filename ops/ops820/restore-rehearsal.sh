@@ -33,13 +33,18 @@ awk -v a="$available" 'BEGIN {exit !(a >= 8589934592)}' || exit 75
 project="ops402-restore-$(date +%s)-$$"
 envfile=$(mktemp "$base/.env.restore.XXXXXX")
 compose() { docker compose -p "$project" --env-file "$envfile" -f "$base/compose.yaml" "$@"; }
+absent() {
+  local containers volumes networks
+  containers=$(docker ps -aq --filter "label=com.docker.compose.project=$project") || return 1
+  volumes=$(docker volume ls -q --filter "label=com.docker.compose.project=$project") || return 1
+  networks=$(docker network ls -q --filter "label=com.docker.compose.project=$project") || return 1
+  [[ -z "$containers" && -z "$volumes" && -z "$networks" ]]
+}
 started=0
 cleanup() {
   local job=$? clean=0
   if (( started )); then compose down --volumes --remove-orphans >/dev/null 2>&1 || clean=$?; fi
-  if [[ -n $(docker ps -aq --filter "label=com.docker.compose.project=$project") ||
-        -n $(docker volume ls -q --filter "label=com.docker.compose.project=$project") ||
-        -n $(docker network ls -q --filter "label=com.docker.compose.project=$project") ]]; then clean=1; fi
+  absent || clean=1
   rm -f -- "$envfile"
   echo "restore_job_exit=$job restore_cleanup_exit=$clean"
   (( clean == 0 )) || job=1
@@ -81,7 +86,19 @@ fi
 absent=$(compose exec -T db psql -U supabase_admin -d postgres -X -At -v ON_ERROR_STOP=1 \
   -c "SELECT count(*) FROM pg_roles WHERE rolname='ops820_probe_bridge'")
 [[ "$absent" == 0 ]] || { echo 'role negative fixture did not roll back' >&2; exit 1; }
-echo "PASS catalog/RLS/role reachability; negative_fixture_exit=$negative_exit cleanup=0"
+set +e
+direct_output=$(cat "$packet/direct_role_negative_prefix.sql" "$packet/post_restore.sql" |
+  compose exec -T db psql -U supabase_admin -d postgres -X -q -v ON_ERROR_STOP=1 2>&1)
+direct_exit=$?
+set -e
+if (( direct_exit == 0 )) || [[ "$direct_output" != *'runtime role privilege drift'* ]]; then
+  echo "direct role negative fixture failed expected oracle; exit=$direct_exit" >&2
+  exit 1
+fi
+replication=$(compose exec -T db psql -U supabase_admin -d postgres -X -At -v ON_ERROR_STOP=1 \
+  -c "SELECT rolreplication FROM pg_roles WHERE rolname='elevateo_api'")
+[[ "$replication" == f ]] || { echo 'direct role negative fixture did not roll back' >&2; exit 1; }
+echo "PASS catalog/RLS/role reachability; negative_fixture_exit=$negative_exit direct_negative_exit=$direct_exit cleanup=0"
 docker run --rm --network "${project}_private" --read-only --cap-drop ALL --memory 128m \
   --env-file "$envfile" -v "$base/drill-object.py:/drill.py:ro" --entrypoint python3 \
   sha256:f040863673aea2570c3ff6a5c3fb4c673a016cbc5375005ad145915922b6b78a /drill.py verify
