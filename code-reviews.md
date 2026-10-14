@@ -679,3 +679,4 @@ R25 lint repair: one tooling defect in the unmount cleanup (ref must be captured
 
 SEND-809 self review: migration and SQL ~230 source LOC, zero confirmed defects after local corrections (0 confirmed/KLOC). Independent bounded functional and design reviews NOT_RUN; request to root. See docs/completion/rowan.md.
 SEND-809 continuation self review: claim/cancel, authorization, and reconciliation SQL plus affected DB fixtures reviewed source-only; found and repaired three material gaps (stop-requested reconciliation blocked, current suppression/capability absent, repeated unknown evidence constrained). Independent functional/design review and runtime NOT_RUN; no independent defect density claimed.
+SEND-809 due-discovery follow-up: source-only self review of one worker-only SQL UUID projection and one DB fixture; no confirmed defects, no independent review or runtime proof.
