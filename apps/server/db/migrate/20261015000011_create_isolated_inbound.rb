@@ -23,7 +23,7 @@ class CreateIsolatedInbound < ActiveRecord::Migration[8.1]
         created_at timestamptz NOT NULL DEFAULT clock_timestamp(),
         PRIMARY KEY (organization_id, mailbox_id, provider, provider_account_id, provider_event_id),
         FOREIGN KEY (organization_id, mailbox_id, provider_account_id)
-          REFERENCES app.inbound_fake_accounts(organization_id,mailbox_id,provider_account_id) ON DELETE CASCADE,
+          REFERENCES app.inbound_fake_accounts(organization_id,mailbox_id,provider_account_id) ON DELETE RESTRICT,
         FOREIGN KEY (organization_id, mailbox_id, thread_id) REFERENCES app.threads(organization_id,mailbox_id,id)
           DEFERRABLE INITIALLY DEFERRED,
         FOREIGN KEY (organization_id, mailbox_id, thread_id, message_id)

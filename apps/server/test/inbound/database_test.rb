@@ -15,6 +15,13 @@ class InboundDatabaseTest < DraftDatabaseTestCase
     end
   end
 
+  def teardown
+    @api.exec("ROLLBACK") if @api && @api.transaction_status != PG::PQTRANS_IDLE
+    @admin.exec("ROLLBACK") if @admin && @admin.transaction_status != PG::PQTRANS_IDLE
+    @admin.exec_params("DELETE FROM app.inbound_receipts WHERE organization_id=$1", [@org]) if @admin && @org
+    super
+  end
+
   def ingest(org: @org, account: "account-a", event: "event-1", body: "hello", digest: nil)
     digest ||= Digest::SHA256.hexdigest(body)
     values = [@digest, @user, org, @box, account, event, digest,
@@ -46,6 +53,12 @@ class InboundDatabaseTest < DraftDatabaseTestCase
     assert_equal first.slice("thread_id", "message_id"), second.slice("thread_id", "message_id")
     assert_equal "duplicate", second.fetch("result")
     assert_equal [1, 1, 1], counts
+    @admin.exec("BEGIN")
+    assert_raises(PG::ForeignKeyViolation) do
+      @admin.exec_params("DELETE FROM app.inbound_fake_accounts WHERE organization_id=$1 AND mailbox_id=$2 AND provider_account_id=$3",
+        [@org,@box,"account-a"])
+    end
+    @admin.exec("ROLLBACK")
   end
 
   def test_account_namespace_is_distinct_and_cross_tenant_is_rejected
