@@ -720,4 +720,4 @@ Source authored and proposed to root for an independent <=280 unique LOC review 
 
 ## STRICT909 ATT902 authorization carry (2026-10-14)
 
-The isolated `2418a72c` typed index authorization repair is carried into ATT902 without changing its content action. Incremental port packet <=169 unique versioned LOC, each read <=180; old immutable-parent repair packet <=216 LOC in `docs/completion/nadia-strict909-index.md`. No independent review or fleet run on this successor, so defects/density remain unassessed.
+The isolated `2418a72c` typed index authorization repair is carried into ATT902 without changing its content action. Incremental port packet <=177 unique versioned LOC, each read <=180; old immutable-parent repair packet <=216 LOC in `docs/completion/nadia-strict909-index.md`. No independent review or fleet run on this successor, so defects/density remain unassessed.
