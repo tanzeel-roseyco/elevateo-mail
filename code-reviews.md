@@ -733,4 +733,6 @@ QA-817 Tessa repair re-review: matrix SHA `6cdc4f41` at `e91eac6`, 2 added LOC, 
 
 QA-817 Tessa reply equality repair re-review: matrix SHA `f0b5c91f` at `4b946ea`, 3 changed physical LOC (2 added, 1 removed), zero new static defects (0/KLOC). Before save and after reload, `To` must equal the synthetic seeded `sender@acceptance.test`; prior Ada finding remains historical, fleet browser NOT_RUN. Packet B source coverage is repinned by this bounded diff. See `docs/completion/felix-qa816-review.md`.
 
+QA-817 current QA-816 packet B coverage receipt: matrix lines 155–263 (109 LOC), SHA `f0b5c91f`, plus screenshots lines 1–73 (73 LOC), SHA `75fb5b84`; 182 unique LOC <=200, zero confirmed defects (0/KLOC observed static). Prior 181-LOC B full review plus exact reply diff is nonadditive coverage; source report `docs/completion/felix-qa816-review.md`. Browser/design/runtime NOT_RUN.
+
 QA-817 Theo ADM-803 rollback regression review: commit `5ffb024`, exact test SHA `25ead651`, 14 changed physical LOC plus bounded transaction/controller context under 200 lines, 0 confirmed static defects (0/KLOC). Fake post-mutation role+audit state requires controller transaction rollback on non-ok; real SQL reachability and DB rollback remain unproven. See `docs/completion/felix-adm803-rollback-review.md`; Docker NOT_RUN.
