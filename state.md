@@ -9,6 +9,11 @@ BE-403 semantic guard reconciliation (2026-10-14): IN PROGRESS. Approved design 
 BE-403 (2026-10-14): IN PROGRESS. Rowan authored privileged draft-schema bootstrap and fail-closed migration prerequisite checks on c3ecd1f; rollback retains the schema and unrelated objects for least-privilege reapply. Source review found no blocking defect; new real-role/drift regressions await Soren container execution. No runtime acceptance or release. See docs/completion/be403-bootstrap.md.
 
 
+QA-404 attempt 3: IN PROGRESS. Added real-cookie CSRF/session-continuity checks and unforwarded login duplicate/retry stimulus; fixed private/missing denial comparison after bounded adversarial review. 13 of 26 scenarios source-authored; all fresh runtime/visual results NOT_RUN pending Soren immutable integration scheduling. See docs/completion/qa404-attempt3.md.
+
+
+QA-404 attempt 2: IN PROGRESS. Elara authored two additional real-backend Playwright cases (zero visible mailboxes and same-mailbox private drafts), preserving all 26 identities; 12 are source-authored and 14 remain explicitly unavailable. All new runtime checks and actual UI evidence are NOT_RUN pending Rowan schema repair and Soren immutable-SHA container scheduling. See docs/completion/qa404-acceptance.md.
+
 INT-401 handoff: source preservation/integration complete, application IN PROGRESS. Verified 45,507 archived source entries and 580 canonical overlay files with zero hash mismatches; original executable modes restored. Remote tests and independent review remain pending. See docs/completion/int401-handoff.md. An ignored partial runtime export copy remains after automatic cleanup approval rejection; no original data removed.
 
 2026-10-14 INT-401: IN PROGRESS. Canonical frontend/backend/acceptance/performance sources are integrated from Local Completion d2de43b in integrate/cassian-unified. This baseline is UNTESTED; historical results below do not validate it. Archive capture completed: 19 Git checkouts, 18 preserved HEAD refs, 12 source exports, 45,507 source-file entries; original histories and working layers are preserved under ignored .local-audit/INT-401 and refs/preserved/int401. Rowan owns the R3 app_drafts_private migration blocker; Soren schedules all fleet-02 container checks. See docs/issues.md, obsidian.md and docs/completion/int401-overlay-manifest.json.

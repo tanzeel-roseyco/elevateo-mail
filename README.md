@@ -3,6 +3,10 @@
 BE-403 runtime failure repairs (2026-10-14): IN PROGRESS. Source fixes target observed 42f6369 errors: Minitest fixture message collision/block binding/frozen strings/nil assertion, draft keyword and rotating-CSRF fixtures, obsolete JSON 3 create_additions option, invalid RBS protected declarations, and worker function namespace USAGE. Auth/session boundaries remain unchanged. Current changes are NOT runtime verified; pool/deadline/input/controller failures remain open.
 
 BE-403 semantic guard reconciliation (2026-10-14): IN PROGRESS. Approved design hash b08976256765ce546325418a403a23b958933cbbf97ec42a228c5412198d0acb verified. Bootstrap preserves ACL representation and unrelated objects; shared up/down prerequisite checks migration identity, independent ownership, separate owner CREATE/USAGE, foreign ACL and effective runtime denial. Source authored; current changes await independent review and Soren container verification. Earlier 42f6369 migration/guard passes do not validate this revision; its full suites failed (15 failures/55 errors).
+QA-404 attempt 3: IN PROGRESS. Added real-cookie CSRF/session-continuity checks and unforwarded login duplicate/retry stimulus; fixed private/missing denial comparison after bounded adversarial review. 13 of 26 scenarios source-authored; all fresh runtime/visual results NOT_RUN pending Soren immutable integration scheduling. See docs/completion/qa404-attempt3.md.
+
+
+QA-404 attempt 2: IN PROGRESS. Elara authored two additional real-backend Playwright cases (zero visible mailboxes and same-mailbox private drafts), preserving all 26 identities; 12 are source-authored and 14 remain explicitly unavailable. All new runtime checks and actual UI evidence are NOT_RUN pending Rowan schema repair and Soren immutable-SHA container scheduling. See docs/completion/qa404-acceptance.md.
 
 A planned shared company mailbox for approximately **10 people**, available on a web subdomain and as downloadable macOS and Windows clients.
 
