@@ -57,9 +57,10 @@ module V1
     protected
 
     def sessions = (@sessions ||= Elevateo::Sessions.new)
-    def config = Elevateo::Config.current
+    # AIDEV-NOTE: Rails owns config (including logger); domain settings must not override that framework seam.
+    def auth_config = Elevateo::Config.current
     def pending_cookie = request.cookies["elevateo_pending"]
-    def challenges = (@challenges ||= Elevateo::SessionChallenges.new(config: config, crypto: sessions.crypto))
+    def challenges = (@challenges ||= Elevateo::SessionChallenges.new(config: auth_config, crypto: sessions.crypto))
 
     def verify_challenge!
       challenges.verify!(cookie: request.cookies["elevateo_challenge"], proof: request_csrf,
@@ -86,11 +87,11 @@ module V1
 
     def set_auth_cookie(name, value, max_age:)
       response.set_cookie(name, value: value, path: "/", httponly: true, same_site: :strict,
-        secure: config.cookie_secure, max_age: max_age)
+        secure: auth_config.cookie_secure, max_age: max_age)
     end
 
     def clear_auth_cookie(name)
-      response.delete_cookie(name, path: "/", httponly: true, same_site: :strict, secure: config.cookie_secure)
+      response.delete_cookie(name, path: "/", httponly: true, same_site: :strict, secure: auth_config.cookie_secure)
     end
   end
 end
