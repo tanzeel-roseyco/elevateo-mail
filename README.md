@@ -178,3 +178,5 @@ Cassian manifest reconciliation: contract-lock now seals actual generated client
 Four read-only Outreach route pages and strict provisional DTO boundary are authored in `apps/web/src/features/outreach/`. Route registration, canonical V2 gateway reconciliation, Docker tests and browser acceptance are pending; send/enrollment remain unavailable. See `docs/completion/celeste.md`.
 
 FE807 continuation adds separate draft/paused campaign, lead, disabled account and analytics route pages with create/update forms in the isolated branch. Consent/suppression and sending authority remain server-owned; V2 adapter, route registration and fleet verification are pending. See `docs/completion/celeste.md`.
+
+FE807 consent presentation follow-up: compact lead rows call `granted` a backend consent record and direct operators to detail for evidence; manual attestation detail says independent verification is not shown. Analytics identifies a server count of granted, unsuppressed records that may include manual claims. Sending stays unavailable; fleet execution of this copy/test change is pending.

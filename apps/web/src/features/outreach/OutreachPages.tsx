@@ -262,7 +262,7 @@ function CampaignLeads({ campaignId, ...props }: OutreachPageProps & { campaignI
   }
   return <Page title="Campaign leads">{accessLost ? <p role="alert">Lead access changed. Reopen this campaign after your session is refreshed.</p> : <><Content state={state} empty={(page) => page.items.length === 0 && page.next_cursor === null}>{(page) => <>
     <ul className="space-y-2">{page.items.map((lead: Lead) =>
-      <li key={lead.id}><Link to={`/outreach/campaigns/${campaignId}/leads/${lead.id}`}>{lead.email}</Link> · consent {lead.consent_status} · {lead.suppressed ? 'suppressed' : 'not suppressed (server report)'}
+      <li key={lead.id}><Link to={`/outreach/campaigns/${campaignId}/leads/${lead.id}`}>{lead.email}</Link> · consent record {lead.consent_status} (evidence in detail) · {lead.suppressed ? 'suppressed' : 'not suppressed (server report)'}
         <Button onClick={() => { setEditId(lead.id); setEmail(lead.email) }}>Edit address</Button>
         {props.gateway?.recordConsent && lead.consent_status !== 'granted' &&
           <Button onClick={() => setConsentId((current) => current === lead.id ? null : lead.id)}>Record consent evidence</Button>}
@@ -289,11 +289,12 @@ function LeadDetail({ campaignId, leadId, ...props }: OutreachPageProps & { camp
   const state = useOutreachRead('lead', props, campaignId && leadId ? `${campaignId}:${leadId}` : undefined)
   return <Page title="Lead detail"><Content state={state}>{(lead) => <>
     <p><strong>{lead.email}</strong></p>
-    <p>Consent: {lead.consent_status}. Suppression: {lead.suppressed ? 'active' : 'not reported by server'}.</p>
+    <p>Consent record: {lead.consent_status}. Suppression: {lead.suppressed ? 'active' : 'not reported by server'}.</p>
     <p>Evidence source: {lead.consent_source ?? 'none recorded'}</p>
     <p>Evidence observed: {lead.consent_recorded_at ?? 'none recorded'}</p>
     <p>Evidence actor: {lead.consent_recorded_by ?? 'none recorded'}</p>
     <p>Evidence kind: {lead.consent_evidence_kind === 'manual_attestation' ? 'manual attestation' : 'none recorded'}</p>
+    {lead.consent_evidence_kind === 'manual_attestation' && <p>This consent record is an operator attestation; independent verification is not shown.</p>}
     <p>This record does not authorize sending.</p>
   </>}</Content></Page>
 }
@@ -333,5 +334,5 @@ export function OutreachCampaignAnalyticsPage(props: OutreachPageProps) {
 function CampaignAnalytics({ campaignId, ...props }: OutreachPageProps & { campaignId: string | undefined }) {
   const state = useOutreachRead('analytics', props, campaignId)
   return <Page title="Campaign analytics"><Content state={state}>{(row: Analytics) =>
-    <p>{row.consented_count} consented and unsuppressed of {row.lead_count} leads (server aggregate)</p>}</Content></Page>
+    <p>{row.consented_count} {row.consented_count === 1 ? 'lead' : 'leads'} with granted consent records and no suppression of {row.lead_count} leads (server aggregate; may include manual attestations)</p>}</Content></Page>
 }

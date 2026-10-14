@@ -124,3 +124,5 @@ FE807 continuation: separate Outreach route pages and draft/paused campaign/lead
 FE807 controller-shaped follow-up: DTOs and forms are being aligned to Dorian's in-progress versioned/cursor V2 controller source, with separate optional consent evidence recording and no send authority. Account URL scope and canonical Cassian adapter remain pending; no runtime result is claimed.
 
 FE807 correction: Cassian confirmed campaign-scoped account routes and lead detail; global-account assumptions are superseded. Soren's exact a460c5a web recipe stopped at two lint errors after API check; type/unit/build not reached. Current Celeste source repairs lint and earlier type findings; rerun pending.
+
+FE807 latest: the client keeps the frozen `granted` DTO while qualifying compact consent rows, manual-attestation detail, and analytics counts. This is presentation only; backend/RLS remains authoritative, and exact integrated fleet unit/build plus browser checks are pending.

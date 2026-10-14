@@ -704,3 +704,5 @@ FE807 QA815 `fe96194` fleet result: API check and lint PASS, typecheck FAILED wi
 FE807 Dorian DTO alignment: immutable `b8c3e39` adds nullable `consent_evidence_kind` to lead detail. FE807 strict boundary and component source now display `manual_attestation` as evidence metadata, never send eligibility. No runtime or independent review claim for this follow-up.
 
 FE807 auth-loss self-review: raw V2 gateway wiring may not invoke central SessionProvider 401/context handling. Owned detail/leads pages now hide previously loaded content after an access-loss write and lock further actions; the host still must rotate context centrally. Revoked-write case authored, no Docker or independent review receipt.
+
+FE807 consent-copy author review: one semantic ambiguity found in compact `granted` and analytics labels where manual attestation may be mistaken for verified permission. Presentation labels now distinguish server records from independent verification; the contract enum is unchanged and backend authority remains. Two component assertions updated; no independent bounded review or runtime PASS claimed, so defect density is not reported.
