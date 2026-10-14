@@ -10,7 +10,9 @@ const sessionSchema = z.object({ context_id: token, authorization_version: token
 const pageSchema = z.strictObject({ context_id: token, authorization_version: token,
   mailbox_id: z.uuid(), items: z.array(z.strictObject({ user_id: z.uuid() })).max(50),
   next_cursor: z.string().min(1).max(2048).nullable() });
-const errorSchema = z.object({ code: z.string().min(1).max(64) }).passthrough();
+// AIDEV-NOTE: A denial must keep the closed public error envelope, with no roster fields.
+const errorSchema = z.strictObject({ code: z.string().min(1).max(64),
+  message: z.string().min(1).max(256), request_id: z.string().min(1).max(128) });
 
 // AIDEV-NOTE: This reads the real browser session and uses same-origin fetch; it never creates options or Auth users.
 async function api(page: Page, path: string, headers: Record<string, string> = {}) {
@@ -58,7 +60,8 @@ scenario('SCN-QA-826-F1', 'foreign-mailbox-options-are-unavailable', async (page
   const session = await currentSession(page);
   const result = await api(page, `/v2/mailboxes/${seed.mailboxes.other}/assignee-options?limit=50`, headers(session));
   expect(result.status).toBe(404);
-  expect(errorSchema.parse(result.value).code).toBe('not_available');
+  expect(errorSchema.parse(result.value)).toMatchObject({ code: 'not_available',
+    message: 'This item is unavailable.' });
   record.assertions.push('Real V2 foreign mailbox option lookup is uniformly unavailable, without roster data');
 });
 
@@ -68,6 +71,7 @@ scenario('SCN-QA-826-F2', 'malformed-option-cursor-is-rejected', async (page, re
   const result = await api(page, `/v2/mailboxes/${seed.mailboxes.primary}/assignee-options?limit=50&cursor=not-a-signed-cursor`,
     headers(session));
   expect(result.status).toBe(400);
-  expect(errorSchema.parse(result.value).code).toBe('cursor_invalid');
+  expect(errorSchema.parse(result.value)).toMatchObject({ code: 'cursor_invalid',
+    message: 'Invalid cursor' });
   record.assertions.push('Real V2 malformed cursor is rejected before returning member UUIDs');
 });
