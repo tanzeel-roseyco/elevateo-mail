@@ -1,0 +1,49 @@
+source=3880e9dd20e59b97fc47c8b7bf71a582c12b0895
+image=sha256:7dc61d4b7e12f94764f95f4f1bfe8e3940049247e6d409898ce9d3ed2810f348
+started=2026-10-14T15:37:26Z
+=== test/inbound/imap_ingress_test.rb ===
+Run options: --seed 55602
+
+# Running:
+
+...
+
+Finished in 0.060242s, 49.7992 runs/s, 232.3963 assertions/s.
+
+3 runs, 14 assertions, 0 failures, 0 errors, 0 skips
+suite_exit=0
+=== test/inbound/imap_worker_store_test.rb ===
+Run options: --seed 31451
+
+# Running:
+
+..
+
+Finished in 0.129120s, 15.4894 runs/s, 69.7023 assertions/s.
+
+2 runs, 9 assertions, 0 failures, 0 errors, 0 skips
+suite_exit=0
+=== test/inbound/imap_sync_test.rb ===
+Run options: --seed 34734
+
+# Running:
+
+......
+
+Finished in 0.056190s, 106.7806 runs/s, 605.0899 assertions/s.
+
+6 runs, 34 assertions, 0 failures, 0 errors, 0 skips
+suite_exit=0
+=== test/inbound/tls_imap_transport_test.rb ===
+Run options: --seed 58172
+
+# Running:
+
+....
+
+Finished in 0.001817s, 2201.3845 runs/s, 8255.1921 assertions/s.
+
+4 runs, 15 assertions, 0 failures, 0 errors, 0 skips
+suite_exit=0
+exit=0
+archive_absent=yes

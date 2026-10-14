@@ -1,0 +1,73 @@
+source=f210b5bf53f8a94367352e8f2c7de85d17a76f8f
+contract_sha256=768df81caeb402d3186b7d8fe94e3515927ff76319c38e075a50aefe0e6c566b
+task_dockerfile_overlay=COPY contracts/v2 ./contracts/v2
+started=2026-10-14T15:33:39Z
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from test.Dockerfile
+#1 transferring dockerfile: 1.07kB done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:24.21.0-bookworm-slim@sha256:d6aa754f16b3197301076f047b5def2f02ea1dbbc2ca920407d46d7ec7f87b20
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 140B done
+#3 DONE 0.0s
+
+#4 [1/7] FROM docker.io/library/node:24.21.0-bookworm-slim@sha256:d6aa754f16b3197301076f047b5def2f02ea1dbbc2ca920407d46d7ec7f87b20
+#4 resolve docker.io/library/node:24.21.0-bookworm-slim@sha256:d6aa754f16b3197301076f047b5def2f02ea1dbbc2ca920407d46d7ec7f87b20 0.0s done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 5.96MB 0.0s done
+#5 DONE 0.0s
+
+#6 [2/7] WORKDIR /workspace
+#6 CACHED
+
+#7 [6/7] WORKDIR /workspace/apps/web
+#7 CACHED
+
+#8 [3/7] COPY contracts/v1 ./contracts/v1
+#8 CACHED
+
+#9 [4/7] COPY contracts/v2 ./contracts/v2
+#9 CACHED
+
+#10 [5/7] COPY apps/web ./apps/web
+#10 CACHED
+
+#11 [7/7] RUN npm ci
+#11 CACHED
+
+#12 exporting to image
+#12 exporting layers done
+#12 exporting manifest sha256:6df64246356b01acbb452507ae1eafc71d98dc8808c750a435f4840d0487e7b9 done
+#12 exporting config sha256:7334c3f775e21e03a9ee295f516cddce29d6a85b31dbeaefe6e32df9153bfeec done
+#12 exporting attestation manifest sha256:1d5a1b9be6ca4194f2ae65b7cdaa5cf9eec8b092c21128331a09b5dacaec295a 0.0s done
+#12 exporting manifest list sha256:b24e7386bf21f45692564e47ceac50c574f488634984dbfc391457ce0fcd6a4f 0.0s done
+#12 naming to docker.io/library/qa815-v2dto-f210b5bf53f8:latest done
+#12 unpacking to docker.io/library/qa815-v2dto-f210b5bf53f8:latest
+#12 unpacking to docker.io/library/qa815-v2dto-f210b5bf53f8:latest 2.0s done
+#12 DONE 2.0s
+
+> @elevateo/web@0.1.0-read.1 generate:api:v2
+> openapi-typescript ../../contracts/v2/openapi.json --output src/data/generated/api-v2.d.ts
+
+✨ openapi-typescript 7.13.0
+🚀 ../../contracts/v2/openapi.json → src/data/generated/api-v2.d.ts [60ms]
+
+> @elevateo/web@0.1.0-read.1 check:api:v2
+> openapi-typescript ../../contracts/v2/openapi.json --output src/data/generated/api-v2.d.ts --check
+
+✨ openapi-typescript 7.13.0
+55ab785f99a8686f8427bd641ef1be34c32cb95a88a86f7b14fec05c37e87faa  /evidence/api-v2.d.ts
+build_exit=0
+run_exit=0
+Error response from daemon: No such container: qa815-v2dto-f210b5bf53f8
+Untagged: qa815-v2dto-f210b5bf53f8:latest
+Deleted: sha256:b24e7386bf21f45692564e47ceac50c574f488634984dbfc391457ce0fcd6a4f
+archive_absent=yes
+container_absent=0
+image_absent=0

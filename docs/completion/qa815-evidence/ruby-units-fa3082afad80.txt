@@ -1,0 +1,93 @@
+source=fa3082afad8070e4533afc1eb699946f5f65d0fe
+image=sha256:7dc61d4b7e12f94764f95f4f1bfe8e3940049247e6d409898ce9d3ed2810f348
+started=2026-10-14T15:38:09Z
+=== /src/contracts/v2/contract_test.rb ===
+Run options: --seed 54987
+
+# Running:
+
+....
+
+Finished in 0.004878s, 819.9787 runs/s, 4304.8882 assertions/s.
+
+4 runs, 21 assertions, 0 failures, 0 errors, 0 skips
+suite_exit=0
+=== test/v2_route_registry_test.rb ===
+Run options: --seed 34370
+
+# Running:
+
+........
+
+Finished in 0.001096s, 7296.8335 runs/s, 20978.3964 assertions/s.
+
+8 runs, 23 assertions, 0 failures, 0 errors, 0 skips
+suite_exit=0
+=== test/campaigns/input_test.rb ===
+Run options: --seed 48459
+
+# Running:
+
+.....
+
+Finished in 0.001079s, 4635.4104 runs/s, 7416.6566 assertions/s.
+
+5 runs, 8 assertions, 0 failures, 0 errors, 0 skips
+suite_exit=0
+=== test/campaigns/repository_test.rb ===
+Run options: --seed 48184
+
+# Running:
+
+..........
+
+Finished in 0.136283s, 73.3768 runs/s, 322.8579 assertions/s.
+
+10 runs, 44 assertions, 0 failures, 0 errors, 0 skips
+suite_exit=0
+=== test/inbound/imap_ingress_test.rb ===
+Run options: --seed 39217
+
+# Running:
+
+...
+
+Finished in 0.050861s, 58.9839 runs/s, 275.2583 assertions/s.
+
+3 runs, 14 assertions, 0 failures, 0 errors, 0 skips
+suite_exit=0
+=== test/inbound/imap_worker_store_test.rb ===
+Run options: --seed 20763
+
+# Running:
+
+..
+
+Finished in 0.136563s, 14.6452 runs/s, 65.9036 assertions/s.
+
+2 runs, 9 assertions, 0 failures, 0 errors, 0 skips
+suite_exit=0
+=== test/inbound/imap_sync_test.rb ===
+Run options: --seed 19116
+
+# Running:
+
+......
+
+Finished in 0.060051s, 99.9155 runs/s, 566.1880 assertions/s.
+
+6 runs, 34 assertions, 0 failures, 0 errors, 0 skips
+suite_exit=0
+=== test/inbound/tls_imap_transport_test.rb ===
+Run options: --seed 7037
+
+# Running:
+
+....
+
+Finished in 0.001748s, 2288.3023 runs/s, 8581.1338 assertions/s.
+
+4 runs, 15 assertions, 0 failures, 0 errors, 0 skips
+suite_exit=0
+exit=0
+archive_absent=yes

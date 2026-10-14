@@ -1,0 +1,1539 @@
+source=fa3082afad8070e4533afc1eb699946f5f65d0fe
+image=sha256:7dc61d4b7e12f94764f95f4f1bfe8e3940049247e6d409898ce9d3ed2810f348
+started=2026-10-14T15:38:33Z
+# Type checking files:
+
+.....FF....FF...F.F.F......F.............F..........................F..............................F.................F..........................................
+
+lib/elevateo/administration_roster.rb:11:4: [error] Cannot assign a value of type `::Array[(::Array[(::String | nil)] | ::Array[::String])]` to a constant of type `::Array[[::String, ::String, (::String | nil), ::String]]`
+│   ::Array[(::Array[(::String | nil)] | ::Array[::String])] <: ::Array[[::String, ::String, (::String | nil), ::String]]
+│     (::Array[(::String | nil)] | ::Array[::String]) <: [::String, ::String, (::String | nil), ::String]
+│       ::Array[(::String | nil)] <: [::String, ::String, (::String | nil), ::String]
+│
+│ Diagnostic ID: Ruby::IncompatibleAssignment
+│
+└     IDENTITIES = [
+      ~~~~~~~~~~~~~~
+
+lib/elevateo/administration_roster.rb:29:85: [error] Cannot pass a value of type `(::String | nil)` as an argument of type `::path`
+│   (::String | nil) <: ::path
+│     (::String | nil) <: (::string | ::_ToPath)
+│       nil <: (::string | ::_ToPath)
+│         nil <: ::string
+│           nil <: (::String | ::_ToStr)
+│             nil <: ::String
+│
+│ Diagnostic ID: Ruby::ArgumentTypeMismatch
+│
+└     def self.load(path = File.expand_path("../../config/administration/roster.json", __dir__))
+                                                                                       ~~~~~~~
+
+lib/elevateo/administration_roster.rb:29:85: [error] Cannot pass a value of type `(::String | nil)` as an argument of type `::path`
+│   (::String | nil) <: ::path
+│     (::String | nil) <: (::string | ::_ToPath)
+│       nil <: (::string | ::_ToPath)
+│         nil <: ::string
+│           nil <: (::String | ::_ToStr)
+│             nil <: ::String
+│
+│ Diagnostic ID: Ruby::ArgumentTypeMismatch
+│
+└     def self.load(path = File.expand_path("../../config/administration/roster.json", __dir__))
+                                                                                       ~~~~~~~
+
+lib/elevateo/administration_roster.rb:38:52: [error] Empty array doesn't have type annotation
+│ Diagnostic ID: Ruby::UnannotatedEmptyCollection
+│
+└       invalid! unless document["mailbox_grants"] == [] && document["people"].is_a?(Array)
+                                                      ~~
+
+lib/elevateo/send_worker/database_store.rb:111:53: [error] Cannot pass a value of type `(::String | nil)` as an argument of type `::String`
+│   (::String | nil) <: ::String
+│     nil <: ::String
+│
+│ Diagnostic ID: Ruby::ArgumentTypeMismatch
+│
+└         record_observation(claim: claim, attempt_id: claim.attempt_id,
+                                                       ~~~~~~~~~~~~~~~~
+
+lib/elevateo/send_worker/drain.rb:10:130: [error] Type `::Numeric` does not have method `to_f`
+│ Diagnostic ID: Ruby::NoMethod
+│
+└         idle_delay: 1, clock: -> { Process.clock_gettime(Process::CLOCK_MONOTONIC) }, sleeper: ->(seconds) { Kernel.sleep(seconds.to_f) })
+                                                                                                                                    ~~~~
+
+lib/elevateo/inbound/imap_sync.rb:61:8: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└         session&.close
+          ~~~~~~~
+
+lib/elevateo/inbound/imap_worker_store.rb:28:28: [error] Cannot pass a value of type `::Elevateo::auth_value` as an argument of type `::string`
+│   ::Elevateo::auth_value <: ::string
+│     (nil | bool | ::String | ::Integer | ::Float | ::Array[::Elevateo::auth_value] | ::Hash[::String, ::Elevateo::auth_value]) <: ::string
+│       (nil | bool | ::String | ::Integer | ::Float | ::Array[::Elevateo::auth_value] | ::Hash[::String, ::Elevateo::auth_value]) <: (::String | ::_ToStr)
+│         nil <: (::String | ::_ToStr)
+│           nil <: ::String
+│
+│ Diagnostic ID: Ruby::ArgumentTypeMismatch
+│
+└         result = JSON.parse(row.fetch("result"))
+                              ~~~~~~~~~~~~~~~~~~~
+
+lib/elevateo/inbound/imap_worker_store.rb:35:10: [error] Cannot allow method body have type `(nil | <% Steep::AST::Types::Logic::ReceiverIsArg %> | bool)` because declared as type `bool`
+│   (nil | <% Steep::AST::Types::Logic::ReceiverIsArg %> | bool) <: bool
+│     (nil | <% Steep::AST::Types::Logic::ReceiverIsArg %> | bool) <: (true | false)
+│       nil <: (true | false)
+│         nil <: true
+│
+│ Diagnostic ID: Ruby::MethodBodyTypeMismatch
+│
+└       def reset_uidvalidity(account_id:, credential_version:, expected:, replacement:)
+            ~~~~~~~~~~~~~~~~~
+
+lib/elevateo/inbound/imap_worker_store.rb:45:28: [error] Cannot pass a value of type `::Elevateo::auth_value` as an argument of type `::string`
+│   ::Elevateo::auth_value <: ::string
+│     (nil | bool | ::String | ::Integer | ::Float | ::Array[::Elevateo::auth_value] | ::Hash[::String, ::Elevateo::auth_value]) <: ::string
+│       (nil | bool | ::String | ::Integer | ::Float | ::Array[::Elevateo::auth_value] | ::Hash[::String, ::Elevateo::auth_value]) <: (::String | ::_ToStr)
+│         nil <: (::String | ::_ToStr)
+│           nil <: ::String
+│
+│ Diagnostic ID: Ruby::ArgumentTypeMismatch
+│
+└         result = JSON.parse(row.fetch("result"))
+                              ~~~~~~~~~~~~~~~~~~~
+
+lib/elevateo/inbound/imap_worker_store.rb:41:10: [error] Cannot allow method body have type `::Hash[untyped, untyped]` because declared as type `::Elevateo::Inbound::imap_claim`
+│   ::Hash[untyped, untyped] <: { "credential_ref" => ::String, "last_uid" => ::Integer, "uidvalidity" => (::Integer | nil) }
+│
+│ Diagnostic ID: Ruby::MethodBodyTypeMismatch
+│
+└       def claim(account_id:, credential_version:)
+            ~~~~~
+
+lib/elevateo/inbound/imap_worker_store.rb:58:88: [error] Cannot pass a value of type `(::String | ::Integer | nil)` as an argument of type `(::String | nil)`
+│   (::String | ::Integer | nil) <: (::String | nil)
+│     ::Integer <: (::String | nil)
+│       ::Integer <: ::String
+│         ::Numeric <: ::String
+│           ::Object <: ::String
+│             ::BasicObject <: ::String
+│
+│ Diagnostic ID: Ruby::ArgumentTypeMismatch
+│
+└         values.map { |value| ActiveRecord::Relation::QueryAttribute.new("imap_receive", value, ActiveRecord::Type::String.new) }
+                                                                                          ~~~~~
+
+lib/elevateo/send_worker/smtp_snapshot.rb:24:22: [error] Type `(::Array[untyped] | nil)` does not have method `all?`
+│ Diagnostic ID: Ruby::NoMethod
+│
+└           value[1, 3].all? { |id| Control.valid_epoch?(id) } && value[4].is_a?(Integer) && value[4].positive? &&
+                        ~~~~
+
+lib/elevateo/send_worker/smtp_snapshot.rb:36:25: [error] Empty array doesn't have type annotation
+│ Diagnostic ID: Ruby::UnannotatedEmptyCollection
+│
+└             value[12] == [] && value[13].is_a?(String) && /\A[1-9][0-9]{0,18}\z/.match?(value[13])
+                           ~~
+
+lib/elevateo/send_worker/smtp_snapshot.rb:51:15: [error] Empty hash doesn't have type annotation
+│ Diagnostic ID: Ruby::UnannotatedEmptyCollection
+│
+└         seen = {}
+                 ~~
+
+lib/elevateo/send_worker/smtp_snapshot.rb:81:17: [error] Empty array doesn't have type annotation
+│ Diagnostic ID: Ruby::UnannotatedEmptyCollection
+│
+└         chunks = []
+                   ~~
+
+lib/elevateo/inbound/tls_imap_transport.rb:77:32: [error] Cannot pass a value of type `(::String | nil)` as an argument of type `(::Integer | bool)`
+│   (::String | nil) <: (::Integer | bool)
+│     ::String <: (::Integer | bool)
+│       ::String <: ::Integer
+│         ::Object <: ::Integer
+│           ::BasicObject <: ::Integer
+│
+│ Diagnostic ID: Ruby::ArgumentTypeMismatch
+│
+└         ssl_options[:ca_file] = @ca_file if @ca_file
+                                  ~~~~~~~~
+
+lib/elevateo/inbound/tls_imap_transport.rb:79:21: [error] Cannot pass a value of type `[::String, ::String]` as an argument of type `::Array[[::String, ::String]]`
+│   [::String, ::String] <: ::Array[[::String, ::String]]
+│     ::String <: [::String, ::String]
+│
+│ Diagnostic ID: Ruby::ArgumentTypeMismatch
+│
+└         client.login(*credentials)
+                       ~~~~~~~~~~~~
+
+lib/elevateo/send_worker/smtp_transport.rb:31:33: [error] Cannot find the declaration of constant: `PreflightFailed`
+│ Diagnostic ID: Ruby::UnknownConstant
+│
+└       rescue LocalMailpitClient::PreflightFailed, CallDeadline::Expired
+                                   ~~~~~~~~~~~~~~~
+
+lib/elevateo/send_worker/smtp_transport.rb:46:12: [error] Cannot find the declaration of class: `PreflightFailed`
+│ Diagnostic ID: Ruby::UnknownConstant
+│
+└       class PreflightFailed < StandardError; end
+              ~~~~~~~~~~~~~~~
+
+lib/elevateo/send_worker/smtp_transport.rb:48:67: [error] Cannot find the declaration of constant: `SMTP`
+│ Diagnostic ID: Ruby::UnknownConstant
+│
+└       def initialize(profile:, smtp_factory: ->(host, port) { Net::SMTP.new(host, port, tls: false, starttls: false) })
+                                                                     ~~~~
+
+lib/elevateo/send_worker/smtp_transport.rb:59:16: [error] Cannot find the declaration of constant: `PreflightFailed`
+│ Diagnostic ID: Ruby::UnknownConstant
+│
+└           raise PreflightFailed, "SMTP test client unavailable", cause: nil
+                  ~~~~~~~~~~~~~~~
+
+lib/elevateo/send_worker/smtp_transport.rb:65:16: [error] Cannot find the declaration of constant: `PreflightFailed`
+│ Diagnostic ID: Ruby::UnknownConstant
+│
+└           raise PreflightFailed, "SMTP test client configuration failed", cause: nil
+                  ~~~~~~~~~~~~~~~
+
+lib/elevateo/send_worker/smtp_transport.rb:78:16: [error] Cannot find the declaration of constant: `PreflightFailed`
+│ Diagnostic ID: Ruby::UnknownConstant
+│
+└           raise PreflightFailed, "SMTP test session unavailable", cause: nil unless submission_started
+                  ~~~~~~~~~~~~~~~
+
+lib/elevateo/send_worker/smtp_transport.rb:82:84: [error] Type `bot` does not have method `status`
+│ Diagnostic ID: Ruby::NoMethod
+│
+└         return SubmissionResult.new(kind: "unknown", code: "smtp_uncertain") unless response&.status&.start_with?("2")
+                                                                                      ~~~~~~~~~~~~~~~~
+
+lib/elevateo/send_worker/smtp_transport.rb:83:87: [error] Type `nil` does not have method `status`
+│ Diagnostic ID: Ruby::NoMethod
+│
+└         receipt = "mailpit-test-v1:#{Digest::SHA256.hexdigest([rendered.mime, response.status].join(':'))}"
+                                                                                         ~~~~~~
+
+app/controllers/v1/send_intents_controller.rb:27:21: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└         send_service(connection, session).cancel(send_id: send_path(:send_id), mailbox_id: input["mailbox_id"],
+                       ~~~~~~~~~~
+
+app/controllers/v1/send_intents_controller.rb:27:33: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└         send_service(connection, session).cancel(send_id: send_path(:send_id), mailbox_id: input["mailbox_id"],
+                                   ~~~~~~~
+
+app/controllers/v1/send_intents_controller.rb:28:26: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           session_digest: identity.digest, epoch: send_epoch)
+                            ~~~~~~~~
+
+app/controllers/v1/send_intents_controller.rb:27:91: [error] Cannot pass a value of type `::Elevateo::WriteInput::value` as an argument of type `::String`
+│   ::Elevateo::WriteInput::value <: ::String
+│     (nil | bool | ::String | ::Integer | ::Float | ::BigDecimal | ::Array[::Elevateo::WriteInput::value] | ::Hash[::String, ::Elevateo::WriteInput::value]) <: ::String
+│       nil <: ::String
+│
+│ Diagnostic ID: Ruby::ArgumentTypeMismatch
+│
+└         send_service(connection, session).cancel(send_id: send_path(:send_id), mailbox_id: input["mailbox_id"],
+                                                                                             ~~~~~~~~~~~~~~~~~~~
+
+app/controllers/v2/admin/organization_grants_controller.rb:26:89: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           raise Elevateo::CollaborationError.new("not_available") unless organization == identity.org_id
+                                                                                           ~~~~~~~~
+
+app/controllers/v2/admin/organization_grants_controller.rb:27:40: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           limit = self.class.page_limit(query)
+                                          ~~~~~
+
+app/controllers/v2/admin/organization_grants_controller.rb:29:29: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           scope = page_scope(identity, session, limit, organization)
+                               ~~~~~~~~
+
+app/controllers/v2/admin/organization_grants_controller.rb:29:39: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           scope = page_scope(identity, session, limit, organization)
+                                         ~~~~~~~
+
+app/controllers/v2/admin/organization_grants_controller.rb:30:21: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           position = query.key?("cursor") ? cursors.decode(query.fetch("cursor"), scope: scope) : nil
+                       ~~~~~
+
+app/controllers/v2/admin/organization_grants_controller.rb:30:59: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           position = query.key?("cursor") ? cursors.decode(query.fetch("cursor"), scope: scope) : nil
+                                                             ~~~~~
+
+app/controllers/v2/admin/organization_grants_controller.rb:31:59: [error] Cannot find compatible overloading of method `match?` of type `::Regexp`
+│ Method types:
+│   def match?: (::interned, ?::int) -> bool
+│             | (nil, ?::int) -> false
+│
+│ Diagnostic ID: Ruby::UnresolvedOverloading
+│
+└           if position && (position.keys != ["user_id"] || !Elevateo::Cursors::UUID.match?(position["user_id"]))
+                                                             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+app/controllers/v2/admin/organization_grants_controller.rb:34:19: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           binds = [identity.digest, position && position["user_id"], limit].map do |value|
+                     ~~~~~~~~
+
+app/controllers/v2/admin/organization_grants_controller.rb:37:16: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           row = connection.exec_query(PAGE_SQL, "organization grants page", binds).first
+                  ~~~~~~~~~~
+
+app/controllers/v2/admin/organization_grants_controller.rb:47:37: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           unless actor["user_id"] == identity.user_id && %w[organization_owner organization_admin].include?(actor["role"])
+                                       ~~~~~~~~
+
+app/controllers/v2/admin/organization_grants_controller.rb:55:53: [error] Cannot pass a value of type `::Hash[::String, (bool | ::Integer | ::Float | ::String | ::Array[::Elevateo::ReadResponse::json_value] | ::Hash[::String, ::Elevateo::ReadResponse::json_value])]` as an argument of type `::Elevateo::Cursors::position`
+│   ::Hash[::String, (bool | ::Integer | ::Float | ::String | ::Array[::Elevateo::ReadResponse::json_value] | ::Hash[::String, ::Elevateo::ReadResponse::json_value])] <: ::Elevateo::Cursors::position
+│     ::Hash[::String, (bool | ::Integer | ::Float | ::String | ::Array[::Elevateo::ReadResponse::json_value] | ::Hash[::String, ::Elevateo::ReadResponse::json_value])] <: ::Hash[::String, (::String | nil)]
+│       (bool | ::Integer | ::Float | ::String | ::Array[::Elevateo::ReadResponse::json_value] | ::Hash[::String, ::Elevateo::ReadResponse::json_value]) <: (::String | nil)
+│         bool <: (::String | nil)
+│           (true | false) <: (::String | nil)
+│             true <: (::String | nil)
+│               true <: ::String
+│                 ::TrueClass <: ::String
+│                   ::Object <: ::String
+│                     ::BasicObject <: ::String
+│
+│ Diagnostic ID: Ruby::ArgumentTypeMismatch
+│
+└           cursor = after && cursors.encode(position: { "user_id" => after }, scope: scope)
+                                                       ~~~~~~~~~~~~~~~~~~~~~~
+
+app/controllers/v2/admin/organization_grants_controller.rb:56:42: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           JSON.generate({ "context_id" => session.fetch("context_id"),
+                                            ~~~~~~~
+
+app/controllers/v2/admin/organization_grants_controller.rb:57:39: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└             "authorization_version" => session.fetch("authorization_version"),
+                                         ~~~~~~~
+
+app/controllers/v2/admin/organization_grants_controller.rb:84:43: [error] Type `nil` does not have method `<`
+│ Diagnostic ID: Ruby::NoMethod
+│
+└           unless previous.nil? || previous < user
+                                             ~
+
+app/controllers/v2/admin/organization_grants_controller.rb:87:10: [error] Cannot assign a value of type `::String` to a variable of type `nil`
+│   ::String <: nil
+│
+│ Diagnostic ID: Ruby::IncompatibleAssignment
+│
+└           previous = user
+            ~~~~~~~~~~~~~~~
+
+app/controllers/v2/admin/organization_grants_controller.rb:100:89: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           raise Elevateo::CollaborationError.new("not_available") unless organization == identity.org_id
+                                                                                           ~~~~~~~~
+
+app/controllers/v2/admin/organization_grants_controller.rb:101:40: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           limit = self.class.page_limit(query)
+                                          ~~~~~
+
+app/controllers/v2/admin/organization_grants_controller.rb:102:33: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           authorization_binds = [identity.digest, nil, "1"].map do |value|
+                                   ~~~~~~~~
+
+app/controllers/v2/admin/organization_grants_controller.rb:105:23: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           result_row = connection.exec_query(PAGE_SQL, "organization roster authority", authorization_binds).first
+                         ~~~~~~~~~~
+
+app/controllers/v2/admin/organization_grants_controller.rb:113:37: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           unless actor["user_id"] == identity.user_id && %w[organization_owner organization_admin].include?(actor["role"])
+                                       ~~~~~~~~
+
+app/controllers/v2/admin/organization_grants_controller.rb:117:29: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           scope = page_scope(identity, session, limit, organization).merge("resource" => "organization_roster", "order" => "key:asc")
+                               ~~~~~~~~
+
+app/controllers/v2/admin/organization_grants_controller.rb:117:39: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           scope = page_scope(identity, session, limit, organization).merge("resource" => "organization_roster", "order" => "key:asc")
+                                         ~~~~~~~
+
+app/controllers/v2/admin/organization_grants_controller.rb:118:21: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           position = query.key?("cursor") ? cursors.decode(query.fetch("cursor"), scope: scope) : nil
+                       ~~~~~
+
+app/controllers/v2/admin/organization_grants_controller.rb:118:59: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           position = query.key?("cursor") ? cursors.decode(query.fetch("cursor"), scope: scope) : nil
+                                                             ~~~~~
+
+app/controllers/v2/admin/organization_grants_controller.rb:132:42: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           JSON.generate({ "context_id" => session.fetch("context_id"),
+                                            ~~~~~~~
+
+app/controllers/v2/admin/organization_grants_controller.rb:133:39: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└             "authorization_version" => session.fetch("authorization_version"),
+                                         ~~~~~~~
+
+app/controllers/v2/admin/organization_grants_controller.rb:146:34: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           self.class.change_input(input)
+                                    ~~~~~
+
+app/controllers/v2/admin/organization_grants_controller.rb:150:89: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           raise Elevateo::CollaborationError.new("not_available") unless organization == identity.org_id
+                                                                                           ~~~~~~~~
+
+app/controllers/v2/admin/organization_grants_controller.rb:151:51: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           role, revision = self.class.change_input(input)
+                                                     ~~~~~
+
+app/controllers/v2/admin/organization_grants_controller.rb:152:16: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           row = connection.exec_query(CHANGE_SQL, "organization role change",
+                  ~~~~~~~~~~
+
+app/controllers/v2/admin/organization_grants_controller.rb:153:13: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└             [identity.digest, target, revision.to_s, ROLE_SQL.fetch(role)].map do |value|
+               ~~~~~~~~
+
+app/controllers/v2/admin/organization_grants_controller.rb:163:64: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           unless metadata.is_a?(Hash) && metadata["user_id"] == identity.user_id && metadata["organization_id"] == organization
+                                                                  ~~~~~~~~
+
+app/controllers/v2/admin/organization_grants_controller.rb:149:75: [error] Cannot pass a value of type `^() -> ::Array[::String]` as an argument of type `(::V1::WriteController::target_users | nil)`
+│   ^() -> ::Array[::String] <: (::V1::WriteController::target_users | nil)
+│     ^() -> ::Array[::String] <: ::V1::WriteController::target_users
+│       ^() -> ::Array[::String] <: ^(input: ::Elevateo::WriteInput::object, query: ::Hash[::String, ::String]) -> ::Array[::String]
+│         (Params are incompatible)
+│
+│ Diagnostic ID: Ruby::ArgumentTypeMismatch
+│
+└         protected_write(required: %w[role expected_revision], guard_users: guards) do |connection:, identity:, input:, **|
+                                                                             ~~~~~~
+
+app/controllers/v2/fake_inbound_controller.rb:16:65: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└         guard_users: ->(input:, **) { [Elevateo::WriteInput.uuid(input["actor_id"])] }) do
+                                                                   ~~~~~
+
+app/controllers/v2/fake_inbound_controller.rb:18:71: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└         raise Elevateo::CollaborationError.new("not_available") unless input["actor_id"] == identity.user_id
+                                                                         ~~~~~
+
+app/controllers/v2/fake_inbound_controller.rb:18:92: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└         raise Elevateo::CollaborationError.new("not_available") unless input["actor_id"] == identity.user_id
+                                                                                              ~~~~~~~~
+
+app/controllers/v2/fake_inbound_controller.rb:19:44: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└         mailbox = Elevateo::WriteInput.uuid(input["mailbox_id"])
+                                              ~~~~~
+
+app/controllers/v2/fake_inbound_controller.rb:20:65: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└         store = Elevateo::Inbound::PostgresStore.new(connection: connection,
+                                                                   ~~~~~~~~~~
+
+app/controllers/v2/fake_inbound_controller.rb:21:26: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           session_digest: identity.digest, actor_id: identity.user_id)
+                            ~~~~~~~~
+
+app/controllers/v2/fake_inbound_controller.rb:21:53: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           session_digest: identity.digest, actor_id: identity.user_id)
+                                                       ~~~~~~~~
+
+app/controllers/v2/fake_inbound_controller.rb:23:27: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           organization_id: identity.org_id, mailbox_id: mailbox)
+                             ~~~~~~~~
+
+app/controllers/v2/fake_inbound_controller.rb:26:27: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           organization_id: identity.org_id, mailbox_id: mailbox, authorized_mailbox_ids: [mailbox],
+                             ~~~~~~~~
+
+app/controllers/v2/fake_inbound_controller.rb:27:31: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           provider_account_id: input["provider_account_id"], provider_event_id: input["provider_event_id"],
+                                 ~~~~~
+
+app/controllers/v2/fake_inbound_controller.rb:27:80: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           provider_account_id: input["provider_account_id"], provider_event_id: input["provider_event_id"],
+                                                                                  ~~~~~
+
+app/controllers/v2/fake_inbound_controller.rb:28:20: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           raw_mime: input["raw_mime"])
+                      ~~~~~
+
+app/controllers/v2/admin/organization_role_audit_controller.rb:16:89: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           raise Elevateo::CollaborationError.new("not_available") unless organization == identity.org_id
+                                                                                           ~~~~~~~~
+
+app/controllers/v2/admin/organization_role_audit_controller.rb:17:56: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           limit = Elevateo::OrganizationRoleAudit.limit(query)
+                                                          ~~~~~
+
+app/controllers/v2/admin/organization_role_audit_controller.rb:19:34: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           scope = { "actor_id" => identity.user_id, "organization_id" => organization,
+                                    ~~~~~~~~
+
+app/controllers/v2/admin/organization_role_audit_controller.rb:20:28: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└             "context_id" => session.fetch("context_id"), "authorization_version" => session.fetch("authorization_version"),
+                              ~~~~~~~
+
+app/controllers/v2/admin/organization_role_audit_controller.rb:20:84: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└             "context_id" => session.fetch("context_id"), "authorization_version" => session.fetch("authorization_version"),
+                                                                                      ~~~~~~~
+
+app/controllers/v2/admin/organization_role_audit_controller.rb:21:66: [error] Empty hash doesn't have type annotation
+│ Diagnostic ID: Ruby::UnannotatedEmptyCollection
+│
+└             "resource" => "organization_role_audit", "filters" => {}, "order" => "event_sequence:desc", "limit" => limit }
+                                                                    ~~
+
+app/controllers/v2/admin/organization_role_audit_controller.rb:22:21: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           position = query.key?("cursor") ? cursors.decode(query.fetch("cursor"), scope: scope) : nil
+                       ~~~~~
+
+app/controllers/v2/admin/organization_role_audit_controller.rb:22:59: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           position = query.key?("cursor") ? cursors.decode(query.fetch("cursor"), scope: scope) : nil
+                                                             ~~~~~
+
+app/controllers/v2/admin/organization_role_audit_controller.rb:23:54: [error] Cannot find compatible overloading of method `match?` of type `::Regexp`
+│ Method types:
+│   def match?: (::interned, ?::int) -> bool
+│             | (nil, ?::int) -> false
+│
+│ Diagnostic ID: Ruby::UnresolvedOverloading
+│
+└           if position && (position.keys != ["id"] || !Elevateo::Cursors::UUID.match?(position["id"]))
+                                                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+app/controllers/v2/admin/organization_role_audit_controller.rb:26:19: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           binds = [identity.digest, position && position["id"], limit].map do |value|
+                     ~~~~~~~~
+
+app/controllers/v2/admin/organization_role_audit_controller.rb:29:16: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           row = connection.exec_query(PAGE_SQL, "organization role audit page", binds).first
+                  ~~~~~~~~~~
+
+app/controllers/v2/admin/organization_role_audit_controller.rb:42:53: [error] Cannot pass a value of type `::Hash[::String, (bool | ::Integer | ::Float | ::String | ::Array[::Elevateo::ReadResponse::json_value] | ::Hash[::String, ::Elevateo::ReadResponse::json_value])]` as an argument of type `::Elevateo::Cursors::position`
+│   ::Hash[::String, (bool | ::Integer | ::Float | ::String | ::Array[::Elevateo::ReadResponse::json_value] | ::Hash[::String, ::Elevateo::ReadResponse::json_value])] <: ::Elevateo::Cursors::position
+│     ::Hash[::String, (bool | ::Integer | ::Float | ::String | ::Array[::Elevateo::ReadResponse::json_value] | ::Hash[::String, ::Elevateo::ReadResponse::json_value])] <: ::Hash[::String, (::String | nil)]
+│       (bool | ::Integer | ::Float | ::String | ::Array[::Elevateo::ReadResponse::json_value] | ::Hash[::String, ::Elevateo::ReadResponse::json_value]) <: (::String | nil)
+│         bool <: (::String | nil)
+│           (true | false) <: (::String | nil)
+│             true <: (::String | nil)
+│               true <: ::String
+│                 ::TrueClass <: ::String
+│                   ::Object <: ::String
+│                     ::BasicObject <: ::String
+│
+│ Diagnostic ID: Ruby::ArgumentTypeMismatch
+│
+└           cursor = after && cursors.encode(position: { "id" => after }, scope: scope)
+                                                       ~~~~~~~~~~~~~~~~~
+
+app/controllers/v2/admin/organization_role_audit_controller.rb:43:42: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           JSON.generate({ "context_id" => session.fetch("context_id"),
+                                            ~~~~~~~
+
+app/controllers/v2/admin/organization_role_audit_controller.rb:44:39: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└             "authorization_version" => session.fetch("authorization_version"),
+                                         ~~~~~~~
+
+Detected 89 problems from 12 files
+steep_exit=1
+The following cops were added to RuboCop, but are not configured. Please set Enabled to either `true` or `false` in your `.rubocop.yml` file.
+
+Please also note that you can opt-in to new cops by default by adding this to your config:
+  AllCops:
+    NewCops: enable
+Gemspec/AddRuntimeDependency: # new in 1.65
+  Enabled: true
+Gemspec/AttributeAssignment: # new in 1.77
+  Enabled: true
+Gemspec/DeprecatedAttributeAssignment: # new in 1.30
+  Enabled: true
+Gemspec/DevelopmentDependencies: # new in 1.44
+  Enabled: true
+Gemspec/RequireMFA: # new in 1.23
+  Enabled: true
+Layout/EmptyLinesAfterModuleInclusion: # new in 1.79
+  Enabled: true
+Layout/LineContinuationLeadingSpace: # new in 1.31
+  Enabled: true
+Layout/LineContinuationSpacing: # new in 1.31
+  Enabled: true
+Layout/LineEndStringConcatenationIndentation: # new in 1.18
+  Enabled: true
+Layout/SpaceBeforeBrackets: # new in 1.7
+  Enabled: true
+Lint/AmbiguousAssignment: # new in 1.7
+  Enabled: true
+Lint/AmbiguousOperatorPrecedence: # new in 1.21
+  Enabled: true
+Lint/AmbiguousRange: # new in 1.19
+  Enabled: true
+Lint/ArgumentMismatch: # new in 1.90
+  Enabled: true
+Lint/ArrayLiteralInRegexp: # new in 1.71
+  Enabled: true
+Lint/ConstantOverwrittenInRescue: # new in 1.31
+  Enabled: true
+Lint/ConstantReassignment: # new in 1.70
+  Enabled: true
+Lint/DataDefineOverride: # new in 1.85
+  Enabled: true
+Lint/DeprecatedConstants: # new in 1.8
+  Enabled: true
+Lint/DeprecatedReference: # new in 1.89
+  Enabled: true
+Lint/DuplicateBranch: # new in 1.3
+  Enabled: true
+Lint/DuplicateMagicComment: # new in 1.37
+  Enabled: true
+Lint/DuplicateMatchPattern: # new in 1.50
+  Enabled: true
+Lint/DuplicateRegexpCharacterClassElement: # new in 1.1
+  Enabled: true
+Lint/DuplicateSetElement: # new in 1.67
+  Enabled: true
+Lint/EmptyBlock: # new in 1.1
+  Enabled: true
+Lint/EmptyClass: # new in 1.3
+  Enabled: true
+Lint/EmptyInPattern: # new in 1.16
+  Enabled: true
+Lint/HashNewWithKeywordArgumentsAsDefault: # new in 1.69
+  Enabled: true
+Lint/IncompatibleIoSelectWithFiberScheduler: # new in 1.21
+  Enabled: true
+Lint/ItWithoutArgumentsInBlock: # new in 1.59
+  Enabled: true
+Lint/LambdaWithoutLiteralBlock: # new in 1.8
+  Enabled: true
+Lint/LiteralAssignmentInCondition: # new in 1.58
+  Enabled: true
+Lint/MisplacedMagicComment: # new in 1.91
+  Enabled: true
+Lint/MixedCaseRange: # new in 1.53
+  Enabled: true
+Lint/NameTypo: # new in 1.89
+  Enabled: true
+Lint/NoReturnInBeginEndBlocks: # new in 1.2
+  Enabled: true
+Lint/NonAtomicFileOperation: # new in 1.31
+  Enabled: true
+Lint/NumberedParameterAssignment: # new in 1.9
+  Enabled: true
+Lint/NumericOperationWithConstantResult: # new in 1.69
+  Enabled: true
+Lint/OrAssignmentToConstant: # new in 1.9
+  Enabled: true
+Lint/RedundantDirGlobSort: # new in 1.8
+  Enabled: true
+Lint/RedundantRegexpQuantifiers: # new in 1.53
+  Enabled: true
+Lint/RedundantTypeConversion: # new in 1.72
+  Enabled: true
+Lint/RefinementImportMethods: # new in 1.27
+  Enabled: true
+Lint/RequireRangeParentheses: # new in 1.32
+  Enabled: true
+Lint/RequireRelativeSelfPath: # new in 1.22
+  Enabled: true
+Lint/SharedMutableDefault: # new in 1.70
+  Enabled: true
+Lint/SuperArgumentMismatch: # new in 1.90
+  Enabled: true
+Lint/SuppressedExceptionInNumberConversion: # new in 1.72
+  Enabled: true
+Lint/SymbolConversion: # new in 1.9
+  Enabled: true
+Lint/ToEnumArguments: # new in 1.1
+  Enabled: true
+Lint/TripleQuotes: # new in 1.9
+  Enabled: true
+Lint/UnescapedBracketInRegexp: # new in 1.68
+  Enabled: true
+Lint/UnexpectedBlockArity: # new in 1.5
+  Enabled: true
+Lint/UnmodifiedReduceAccumulator: # new in 1.1
+  Enabled: true
+Lint/UnreachablePatternBranch: # new in 1.85
+  Enabled: true
+Lint/UselessConstantScoping: # new in 1.72
+  Enabled: true
+Lint/UselessDefaultValueArgument: # new in 1.76
+  Enabled: true
+Lint/UselessDefined: # new in 1.69
+  Enabled: true
+Lint/UselessNumericOperation: # new in 1.66
+  Enabled: true
+Lint/UselessOr: # new in 1.76
+  Enabled: true
+Lint/UselessRescue: # new in 1.43
+  Enabled: true
+Lint/UselessRuby2Keywords: # new in 1.23
+  Enabled: true
+Metrics/CollectionLiteralLength: # new in 1.47
+  Enabled: true
+Naming/BlockForwarding: # new in 1.24
+  Enabled: true
+Naming/PredicateMethod: # new in 1.76
+  Enabled: true
+Security/CompoundHash: # new in 1.28
+  Enabled: true
+Security/IoMethods: # new in 1.22
+  Enabled: true
+Style/AmbiguousEndlessMethodDefinition: # new in 1.68
+  Enabled: true
+Style/ArgumentsForwarding: # new in 1.1
+  Enabled: true
+Style/ArrayIntersect: # new in 1.40
+  Enabled: true
+Style/ArrayIntersectWithSingleElement: # new in 1.81
+  Enabled: true
+Style/BitwisePredicate: # new in 1.68
+  Enabled: true
+Style/CollectionCompact: # new in 1.2
+  Enabled: true
+Style/CollectionQuerying: # new in 1.77
+  Enabled: true
+Style/CombinableDefined: # new in 1.68
+  Enabled: true
+Style/ComparableBetween: # new in 1.74
+  Enabled: true
+Style/ComparableClamp: # new in 1.44
+  Enabled: true
+Style/ConcatArrayLiterals: # new in 1.41
+  Enabled: true
+Style/DataInheritance: # new in 1.49
+  Enabled: true
+Style/DigChain: # new in 1.69
+  Enabled: true
+Style/DirEmpty: # new in 1.48
+  Enabled: true
+Style/DirectiveScope: # new in 1.90
+  Enabled: true
+Style/DocumentDynamicEvalDefinition: # new in 1.1
+  Enabled: true
+Style/EmptyClassDefinition: # new in 1.84
+  Enabled: true
+Style/EmptyHeredoc: # new in 1.32
+  Enabled: true
+Style/EmptyStringInsideInterpolation: # new in 1.76
+  Enabled: true
+Style/EndlessMethod: # new in 1.8
+  Enabled: true
+Style/EnvHome: # new in 1.29
+  Enabled: true
+Style/ExactRegexpMatch: # new in 1.51
+  Enabled: true
+Style/FetchEnvVar: # new in 1.28
+  Enabled: true
+Style/FileEmpty: # new in 1.48
+  Enabled: true
+Style/FileNull: # new in 1.69
+  Enabled: true
+Style/FileOpen: # new in 1.85
+  Enabled: true
+Style/FileRead: # new in 1.24
+  Enabled: true
+Style/FileTouch: # new in 1.69
+  Enabled: true
+Style/FileWrite: # new in 1.24
+  Enabled: true
+Style/HashConversion: # new in 1.10
+  Enabled: true
+Style/HashExcept: # new in 1.7
+  Enabled: true
+Style/HashFetchChain: # new in 1.75
+  Enabled: true
+Style/HashSlice: # new in 1.71
+  Enabled: true
+Style/IfWithBooleanLiteralBranches: # new in 1.9
+  Enabled: true
+Style/InPatternThen: # new in 1.16
+  Enabled: true
+Style/ItAssignment: # new in 1.70
+  Enabled: true
+Style/ItBlockParameter: # new in 1.75
+  Enabled: true
+Style/KeywordArgumentsMerging: # new in 1.68
+  Enabled: true
+Style/MagicCommentFormat: # new in 1.35
+  Enabled: true
+Style/MapCompactWithConditionalBlock: # new in 1.30
+  Enabled: true
+Style/MapIntoArray: # new in 1.63
+  Enabled: true
+Style/MapJoin: # new in 1.85
+  Enabled: true
+Style/MapToHash: # new in 1.24
+  Enabled: true
+Style/MapToSet: # new in 1.42
+  Enabled: true
+Style/MinMaxComparison: # new in 1.42
+  Enabled: true
+Style/ModuleMemberExistenceCheck: # new in 1.82
+  Enabled: true
+Style/MultilineInPatternThen: # new in 1.16
+  Enabled: true
+Style/NegatedIfElseCondition: # new in 1.2
+  Enabled: true
+Style/NegativeArrayIndex: # new in 1.84
+  Enabled: true
+Style/NestedFileDirname: # new in 1.26
+  Enabled: true
+Style/NilLambda: # new in 1.3
+  Enabled: true
+Style/NumberedParameters: # new in 1.22
+  Enabled: true
+Style/NumberedParametersLimit: # new in 1.22
+  Enabled: true
+Style/ObjectThen: # new in 1.28
+  Enabled: true
+Style/OneClassPerFile: # new in 1.85
+  Enabled: true
+Style/OpenStructUse: # new in 1.23
+  Enabled: true
+Style/OperatorMethodCall: # new in 1.37
+  Enabled: true
+Style/PartitionInsteadOfDoubleSelect: # new in 1.85
+  Enabled: true
+Style/PredicateWithKind: # new in 1.85
+  Enabled: true
+Style/QuotedSymbols: # new in 1.16
+  Enabled: true
+Style/ReduceToHash: # new in 1.85
+  Enabled: true
+Style/RedundantArgument: # new in 1.4
+  Enabled: true
+Style/RedundantArrayConstructor: # new in 1.52
+  Enabled: true
+Style/RedundantArrayFlatten: # new in 1.76
+  Enabled: true
+Style/RedundantConstantBase: # new in 1.40
+  Enabled: true
+Style/RedundantCurrentDirectoryInPath: # new in 1.53
+  Enabled: true
+Style/RedundantDoubleSplatHashBraces: # new in 1.41
+  Enabled: true
+Style/RedundantEach: # new in 1.38
+  Enabled: true
+Style/RedundantFilterChain: # new in 1.52
+  Enabled: true
+Style/RedundantFormat: # new in 1.72
+  Enabled: true
+Style/RedundantHeredocDelimiterQuotes: # new in 1.45
+  Enabled: true
+Style/RedundantInitialize: # new in 1.27
+  Enabled: true
+Style/RedundantInterpolationUnfreeze: # new in 1.66
+  Enabled: true
+Style/RedundantLineContinuation: # new in 1.49
+  Enabled: true
+Style/RedundantMinMaxBy: # new in 1.85
+  Enabled: true
+Style/RedundantRegexpArgument: # new in 1.53
+  Enabled: true
+Style/RedundantRegexpConstructor: # new in 1.52
+  Enabled: true
+Style/RedundantSelfAssignmentBranch: # new in 1.19
+  Enabled: true
+Style/RedundantStringEscape: # new in 1.37
+  Enabled: true
+Style/ReturnNilInPredicateMethodDefinition: # new in 1.53
+  Enabled: true
+Style/ReverseFind: # new in 1.84
+  Enabled: true
+Style/SafeNavigationChainLength: # new in 1.68
+  Enabled: true
+Style/SelectByKind: # new in 1.85
+  Enabled: true
+Style/SelectByRange: # new in 1.85
+  Enabled: true
+Style/SelectByRegexp: # new in 1.22
+  Enabled: true
+Style/SendWithLiteralMethodName: # new in 1.64
+  Enabled: true
+Style/SingleLineDoEndBlock: # new in 1.57
+  Enabled: true
+Style/StringChars: # new in 1.12
+  Enabled: true
+Style/SuperArguments: # new in 1.64
+  Enabled: true
+Style/SuperWithArgsParentheses: # new in 1.58
+  Enabled: true
+Style/SwapValues: # new in 1.1
+  Enabled: true
+Style/TallyMethod: # new in 1.85
+  Enabled: true
+Style/TimeNow: # new in 1.90
+  Enabled: true
+Style/YAMLFileRead: # new in 1.53
+  Enabled: true
+For more information: https://docs.rubocop.org/rubocop/versioning.html
+Inspecting 262 files
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Permission denied @ dir_s_mkdir - /app/.cache
+....................................................................................................................................W................................................................................W...W.......WWW...................W.............W
+
+Offenses:
+
+test/administration/roster_test.rb:15:5: W: [Correctable] Lint/AmbiguousBlockAssociation: Parenthesize the param roster.fetch("people").all? { |person| person["email"].nil? && person["auth_user_id"].nil? } to make sure that the block will be associated with the roster.fetch("people").all? method call.
+    assert roster.fetch("people").all? { |person| person["email"].nil? && person["auth_user_id"].nil? }
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+test/campaigns/accounts_controller_test.rb:65:5: W: [Correctable] Lint/AmbiguousBlockAssociation: Parenthesize the param response.fetch("items").map { |item| item.fetch("id") } to make sure that the block will be associated with the response.fetch("items").map method call.
+    assert_equal [NOTE], response.fetch("items").map { |item| item.fetch("id") }
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+test/campaigns/leads_controller_test.rb:86:5: W: [Correctable] Lint/AmbiguousBlockAssociation: Parenthesize the param @connection.sql.index { |sql| sql.include?("UPDATE app.campaign_leads") } to make sure that the block will be associated with the @connection.sql.index method call.
+    assert_operator @connection.sql.index { |sql| sql.include?("INSERT INTO app.campaign_consent_events") }, :<, ...
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+test/inbound/imap_worker_store_test.rb:26:5: W: [Correctable] Lint/AmbiguousBlockAssociation: Parenthesize the param connection.queries.first.last.any? { |value| value.to_s.include?("credential_ref") } to make sure that the block will be associated with the connection.queries.first.last.any? method call.
+    refute connection.queries.first.last.any? { |value| value.to_s.include?("credential_ref") }
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+test/inbound/permalink_http_test.rb:47:5: W: [Correctable] Lint/AmbiguousBlockAssociation: Parenthesize the param @connection.sql.count { |sql| sql.include?("FROM app.mailboxes AS mailbox") } to make sure that the block will be associated with the @connection.sql.count method call.
+    assert_equal 1, @connection.sql.count { |sql| sql.include?("FROM app.mailboxes AS mailbox") }
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+test/inbound/permalink_http_test.rb:60:5: W: [Correctable] Lint/AmbiguousBlockAssociation: Parenthesize the param @connection.sql.any? { |sql| sql.include?("FROM app.mailboxes AS mailbox") } to make sure that the block will be associated with the @connection.sql.any? method call.
+    refute @connection.sql.any? { |sql| sql.include?("FROM app.mailboxes AS mailbox") }
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+test/inbound/tls_imap_transport_test.rb:59:5: W: [Correctable] Lint/AmbiguousBlockAssociation: Parenthesize the param session.fetch_after(0, limit: 50).map { |event| event.fetch(:uid) } to make sure that the block will be associated with the session.fetch_after(0, limit: 50).map method call.
+    assert_equal (1..50).to_a, session.fetch_after(0, limit: 50).map { |event| event.fetch(:uid) }
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+test/inbound/tls_imap_transport_test.rb:60:5: W: [Correctable] Lint/AmbiguousBlockAssociation: Parenthesize the param session.fetch_after(50, limit: 50).map { |event| event.fetch(:uid) } to make sure that the block will be associated with the session.fetch_after(50, limit: 50).map method call.
+    assert_equal (51..75).to_a, session.fetch_after(50, limit: 50).map { |event| event.fetch(:uid) }
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+test/send_worker/smtp_transport_test.rb:69:56: W: Lint/UnusedBlockArgument: Unused block argument - deadline. You can omit all the arguments if you don't care about them.
+    client.define_singleton_method(:deliver) { |_mail, deadline:| calls += 1 }
+                                                       ^^^^^^^^
+test/v2_route_registry_test.rb:19:5: W: [Correctable] Lint/AmbiguousBlockAssociation: Parenthesize the param mapper.routes.all? { |_, path, _| path.start_with?("/v2/") } to make sure that the block will be associated with the mapper.routes.all? method call.
+    assert mapper.routes.all? { |_, path, _| path.start_with?("/v2/") }
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+test/v2_route_registry_test.rb:20:5: W: [Correctable] Lint/AmbiguousBlockAssociation: Parenthesize the param mapper.routes.any? { |_, path, _| path.start_with?("/v2/worker/") } to make sure that the block will be associated with the mapper.routes.any? method call.
+    refute mapper.routes.any? { |_, path, _| path.start_with?("/v2/worker/") }
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+262 files inspected, 11 offenses detected, 10 offenses autocorrectable
+rubocop_exit=1
+container_exit=0
+archive_absent=yes

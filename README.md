@@ -14,6 +14,8 @@ Shared company mailroom with one Rails domain authority and a React/TypeScript c
 
 ## Current state
 
+QA-815 latest fleet: integrated `f210b5b` V1/V2 API generation, lint, typecheck, 54 files/791 tests and web build passed. Generated V2 declaration SHA-256 is recorded in [Soren receipts](docs/completion/soren.md). Integrated `fa3082a` real PostgreSQL migration failed Dorian outreach policy SQL `ENDAND` before HTTP/browser; isolated Ruby units 42/168 passed while Steep and RuboCop lint failed. Android `b999f4f` reached Gradle but failed API 37.0 against an API 36 image; all disposable native resources were removed, no APK.
+
 QA-815 latest fleet: integrated `8eb840d` web API check, lint and strict typecheck passed; unit suite failed 10 of 789 cases, so build/browser remain pending. Integrated `ba6151b` V2 contract, route registry and fake ingress units passed 14 cases/63 assertions. Astrid `7b9f314` compile-only Android image failed because SDK manager could not find API 37; exact task image/container/context were removed. [Receipts and limits](docs/completion/soren.md).
 
 QA-815 latest fleet receipt: integrated `2184127` API check and lint passed, then Mira strict TypeScript failed before unit/build; the earlier `45be80b` database migrations passed but the full suite failed on fixture dependencies. Orion `4028d8d` locked Linux Rust tests passed seven cases, and `52f7dee` static native boundary passed; target-OS packaging, real browser and restore remain pending. [Exact Soren receipts](docs/completion/soren.md).

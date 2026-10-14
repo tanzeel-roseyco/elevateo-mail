@@ -1,0 +1,25 @@
+source=b999f4f4cd9d8fa3d804887fd5cff96e2da4941b
+context=/tmp/qa815-android-full-nonroot.EbTAOLDg
+output=/tmp/qa815-apk-output-full.5HyvgJDb
+target=/tmp/qa815-target-full.bhAYcNwf
+image=qa815-apk813-tool-b999f4f4cd9d
+user=1001:1001
+command=bash ops/build/android/build-unsigned.sh
+started=2026-10-14T15:25:42Z
+COMPILE_ONLY_ORIGIN=https://app.elevateo.invalid
+native static package boundary PASS
+...
+----------------------------------------------------------------------
+Ran 3 tests in 0.013s
+
+OK
+    Updating crates.io index
+warning: failed to write cache, path: /usr/local/cargo/registry/index/index.crates.io-1949cf8c6b5b557f/.cache/ta/ur/tauri, error: Permission denied (os error 13)
+ Downloading crates ...
+  Downloaded alloc-no-stdlib v3.0.0
+error: failed to open `/usr/local/cargo/registry/cache/index.crates.io-1949cf8c6b5b557f/alloc-no-stdlib-3.0.0.crate`
+
+Caused by:
+  Permission denied (os error 13)
+compile_exit=101
+finished=2026-10-14T15:25:45Z
