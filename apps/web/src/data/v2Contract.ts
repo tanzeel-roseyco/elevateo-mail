@@ -1,7 +1,8 @@
 import { z } from 'zod'
 
 // AIDEV-NOTE: V2 is disabled server-side; these strict boundaries prevent a future gateway from trusting draft wire data.
-const id = z.uuid()
+export const IdSchema = z.uuid()
+const id = IdSchema
 const revision = z.number().int().nonnegative()
 export const OrganizationGrantSchema = z.strictObject({
   organization_id: id,
