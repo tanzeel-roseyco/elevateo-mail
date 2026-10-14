@@ -53,3 +53,5 @@ Soren exact 93f7b14 fleet web run passed frozen V1 `check:api`, then lint FAILED
 Cassian aligned the inert account adapter signatures to Celeste's campaign-scoped port while preserving zero dispatch. Fable may remove the now-unneeded bridge or forward all four arguments exactly; Fable owns production binding. A focused no-dispatch test covers both account methods, requested for Soren fleet Docker.
 
 Corin e94631f repairs the PL/pgSQL attachment CASE parser issue from the ea92754 fleet failure; merged as 45be80b. Soren exact migration/SQL/HTTP rerun is requested, not yet executed or passed on this source.
+
+Fable 40fe941 removes the temporary bridge, binds `createV2OutreachGateway()` directly under the typed Celeste `OutreachGateway` port and removes the bridge tests that failed lint on 93f7b14. Merged in a0d308e; fleet web rerun requested, not yet observed.
