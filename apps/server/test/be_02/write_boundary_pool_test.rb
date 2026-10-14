@@ -403,6 +403,24 @@ class WriteBoundaryPoolTest < WriteBoundaryPoolTestCase
     original&.call
   end
 
+  def test_process_fatal_cleanup_signal_propagates_after_adapter_detachment
+    original = instrument(@adapter, :disconnect!) do |disconnect|
+      disconnect.call
+      raise SystemExit.new(77)
+    end
+    error = assert_raises(SystemExit) do
+      protected_call { raise Elevateo::CollaborationError.new("not_available") }
+    end
+    assert_equal 77, error.status
+    refute_includes @pool.connections, @adapter
+    refute @adapter.active?
+    assert_nil marker
+    @adapter.define_singleton_method(:disconnect!, original)
+    assert_next_tenant_request
+  ensure
+    @adapter.define_singleton_method(:disconnect!, original) if original
+  end
+
   private
 
   def assert_commit_fault(after:)
