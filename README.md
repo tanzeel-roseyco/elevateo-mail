@@ -14,6 +14,8 @@ Shared company mailroom with one Rails domain authority and a React/TypeScript c
 
 ## Current state
 
+INT952 typecheck caught missing explicit override modifiers on the new React error boundary state/render members. Both now declare override; runtime behavior is unchanged. Exact ae4e96b01037 stopped before Vitest/build, with cleanup passed. The corrected full web rerun is pending. Backend b0f883e45170 passed standard Ruby, Steep, lint, real Auth/API HTTP and worker integration with cleanup; dedicated profiles and browser/native gates remain separate.
+
 INT952 frontend performance candidate: route code is loaded on demand while the inbox, navigation and session gate remain eager. A bounded page fallback supports loading, redacted failure and navigation recovery; four new regressions cover delayed load, rejection, query-state retention and removal during loading. Actual bundle reduction and the full fleet web gate are pending; prior c87 evidence does not verify this change.
 
 INT949 backend checkpoint: exact 9dcb6fa87035 ran 137 standard suites, 812 tests and 8,693 assertions with zero failures, three errors and zero skips. All three errors came from the permalink fixture using a 29-byte key where the shared reader requires 32; the synthetic key is corrected without changing production validation. Steep and 320-file RuboCop passed, and task Docker cleanup passed. Ten dedicated profiles and authenticated HTTP/worker/browser gates remain separate; the successor rerun is pending.

@@ -4,13 +4,13 @@ import { Button } from '@/ui/Button'
 
 // AIDEV-NOTE: Keep navigation/session guards outside this boundary; failed chunks must not strand the user.
 class PageErrorBoundary extends Component<{ children: ReactNode }, { failed: boolean }> {
-  state = { failed: false }
+  override state = { failed: false }
 
   static getDerivedStateFromError(): { failed: boolean } {
     return { failed: true }
   }
 
-  render() {
+  override render() {
     if (this.state.failed) {
       return (
         <section className="space-y-3 p-6" role="alert">

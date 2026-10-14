@@ -37,3 +37,8 @@ INT949 backend checkpoint: exact 9dcb6fa87035 ran 137 standard suites, 812 tests
 INT952 frontend performance candidate: route code is loaded on demand while the inbox, navigation and session gate remain eager. A bounded page fallback supports loading, redacted failure and navigation recovery; four new regressions cover delayed load, rejection, query-state retention and removal during loading. Actual bundle reduction and the full fleet web gate are pending; prior c87 evidence does not verify this change.
 
 Design tradeoff: defer non-inbox page downloads instead of splitting vendor code only, which would still transfer the entire application on initial load. Shared Outreach pages remain one feature chunk to preserve their existing coupling. Loading/recovery boundaries remain below the session guard and above route content; draft/send intent remains outside route remounts. Navigation clears route errors; query changes preserve form state. Inline review checks null capability handling, failed dynamic import, session revocation, no secret diagnostics, stable lazy component identity and metadata-only route registration. No new dependency.
+
+
+## Strict override repair
+
+INT952 typecheck caught missing explicit override modifiers on the new React error boundary state/render members. Both now declare override; runtime behavior is unchanged. Exact ae4e96b01037 stopped before Vitest/build, with cleanup passed. The corrected full web rerun is pending. Backend b0f883e45170 passed standard Ruby, Steep, lint, real Auth/API HTTP and worker integration with cleanup; dedicated profiles and browser/native gates remain separate.

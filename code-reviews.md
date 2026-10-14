@@ -1442,3 +1442,6 @@ Self-review only, honoring the user's inline-only instruction. Confirmed product
 INT949 permalink self-review: 72 fixture LOC inspected; one defect (29-byte synthetic signing key) repaired, 13.89 defects/KLOC. Happy-path plaintext, missing/denied equivalence and malformed-path checks retain their assertions. Runtime rerun pending; no independent review is claimed under the inline-only instruction.
 
 INT952 inline review: PageBoundary 38 LOC + tests 72 LOC, App 70 LOC, Outreach registration 54 LOC and people registration 22 LOC inspected in separate packets below 200 LOC; Shell and feature-test integration inspected as 12 changed LOC. Total 268 unique LOC, zero confirmed defects (0/KLOC), self-review only. Dedicated inline design tradeoff analysis is recorded in docs/completion/inline949.md. Exact lint/type/Vitest/build and browser verification are pending.
+
+
+INT952 compiler review: 38 boundary LOC, 2 missing override declarations, 52.63 defects/KLOC. Both corrected; semantics unchanged. No independent-agent review is claimed. Full fleet regression pending.
