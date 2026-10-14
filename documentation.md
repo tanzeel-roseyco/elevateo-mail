@@ -383,3 +383,5 @@ INT801 draft.7 contract test now checks the current version and inert sequence o
 INT801 sequence PUT request cap is 16 KiB so a valid 20-step Unicode draft fits; the bounded regression is source-only pending fleet Docker.
 
 INT801 sequence controller now has a narrow RBS declaration; strict Steep remains pending fleet Docker.
+
+QA816 Tessa bc02fc1 task-private later-page seed and browser case are imported as source candidate; frozen BE02 seed unchanged, real-auth Docker/visual acceptance pending. Dorian b1088a3 documents only historical 882a471 migration application of revised 00009 before unrelated 00018 failure.
