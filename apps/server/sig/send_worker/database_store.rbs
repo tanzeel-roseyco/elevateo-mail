@@ -1,0 +1,38 @@
+module Elevateo
+  module SendWorker
+    class Claim
+      attr_reader send_id: String
+      attr_reader action: String
+      attr_reader lease_id: String
+      attr_reader generation: Integer
+      attr_reader attempt_id: String?
+      attr_reader snapshot_digest: String
+      def self.new: (send_id: String, action: String, lease_id: String, generation: Integer, attempt_id: String?, snapshot_digest: String) -> Claim
+    end
+    class Authorization
+      attr_reader attempt_id: String
+      attr_reader snapshot_bytes: String
+      def self.new: (attempt_id: String, snapshot_bytes: String) -> Authorization
+    end
+    class DatabaseStore
+      class InvalidResult < StandardError
+      end
+      class StaleLease < StandardError
+      end
+      @connection: untyped
+      @send_id: String
+      @lease_seconds: Integer
+      @deadline_seconds: Integer
+      def initialize: (connection: untyped, send_id: String, ?lease_seconds: Integer, ?deadline_seconds: Integer) -> void
+      def claim: (epoch: String) -> Claim?
+      def authorize_submission: (claim: Claim, epoch: String) -> Authorization?
+      def final_check: (claim: Claim, attempt_id: String, epoch: String) -> bool
+      def record_observation: (claim: Claim, attempt_id: String, snapshot_digest: String, result: SubmissionResult) -> Hash[String, untyped]
+      def mark_unknown: (claim: Claim, attempt_id: String, reason: String) -> Hash[String, untyped]
+      def reconcile: (claim: Claim, observation: SubmissionResult?) -> Hash[String, untyped]?
+      private
+      def call: (String, Array[untyped]) -> Hash[String, untyped]
+      def require_fields: (Hash[String, untyped], Array[String]) -> void
+    end
+  end
+end

@@ -14,8 +14,7 @@ module Elevateo
         @store = store
         @driver = driver
         @control = control
-        @budget_seconds = budget_seconds
-        @deadline_factory = deadline_factory || -> { CallDeadline.new(seconds: budget_seconds) }
+        @deadline_factory = deadline_factory || -> { CallDeadline.new(seconds: budget_seconds.to_f) }
       end
 
       # One invocation processes at most one claim. A nil claim means no eligible work.
@@ -32,9 +31,15 @@ module Elevateo
         return :held unless authorization
         validate_authorization!(authorization, claim)
         current = @control.read
-        return :held unless current.submission_allowed? && current.epoch == state.epoch
+        unless current.submission_allowed? && current.epoch == state.epoch
+          @store.mark_unknown(claim: claim, attempt_id: authorization.attempt_id, reason: "local_paused")
+          return :held
+        end
         # Final SQL fence repeats current authority and cancellation immediately before local I/O.
-        return :held unless @store.final_check(claim: claim, attempt_id: authorization.attempt_id, epoch: state.epoch)
+        unless @store.final_check(claim: claim, attempt_id: authorization.attempt_id, epoch: state.epoch)
+          @store.mark_unknown(claim: claim, attempt_id: authorization.attempt_id, reason: "local_paused")
+          return :held
+        end
 
         result = @driver.submit(authorization.snapshot_bytes, send_id: claim.send_id,
           attempt_id: authorization.attempt_id, deadline: @deadline_factory.call)
