@@ -1,5 +1,16 @@
 module V2
   class InboxAttachmentsController < V1::WriteController
+    class ReadAuthorization
+      @reader: Elevateo::ThreadReads
+      @organization_id: String
+      @mailbox_id: String
+      @thread_id: String
+      @message_id: String
+      def initialize: (reader: Elevateo::ThreadReads, organization_id: String, mailbox_id: String,
+        thread_id: String, message_id: String) -> void
+      def call: (organization_id: String, mailbox_id: String, thread_id: String,
+        message_id: String, capability: Symbol) -> void
+    end
     class NoStorage
       def put: (String, String, content_type: String) -> nil
       def get: (String) -> String

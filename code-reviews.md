@@ -1301,3 +1301,7 @@ ADV132 Vera independently reviewed Sabine `afdf997` preferences and role-audit c
 QA815 `c5a2224` Android pinned-tool receipt is executed fleet test evidence on exact Astrid `b3fec577`, not an additional independent review. Seventeen Python methods and retained older APK classifiers passed; reviewed LOC/defects/KLOC unchanged from ADV128. No new APK/native acceptance inferred.
 
 ATT898 Nadia `4557fd73` source repair responds to QA815 `211df76` repository type and attachment service test-load diagnostics. Its 198-LOC maximum independent packet is specified in `docs/completion/nadia-att898-focused-repair.md`; independent review not yet performed, reviewed LOC/defects/KLOC unclaimed. Successor fleet Steep and units remain pending.
+
+## STRICT909 old attachment index type repair (2026-10-14)
+
+Soren 215080a4 receipt shows five FallbackAny warnings plus one keyword lambda assignment error in the inactive index controller. Nadia authored an exact typed callable and denial regression on isolated immutable-parent branch; proposed packet is <=216 unique versioned LOC, each read <=180, detailed in `docs/completion/nadia-strict909-index.md`. Independent review and fleet Steep/unit NOT_RUN; successor defect count and density are unassessed, not 0/KLOC.
