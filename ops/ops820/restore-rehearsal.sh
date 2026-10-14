@@ -4,6 +4,7 @@ umask 077
 base=$(cd -- "$(dirname -- "$0")/../supabase" && pwd)
 packet=$(cd -- "$(dirname -- "$0")" && pwd)
 snapshot=${1:?paired backup directory required}
+[[ "$snapshot" = /* ]] || exit 66
 mode=${2:-base}
 case "$mode" in base|full) ;; *) echo 'usage: restore-rehearsal.sh SNAPSHOT base|full' >&2; exit 64;; esac
 if [[ "$mode" == full ]]; then
@@ -33,6 +34,9 @@ started=0
 cleanup() {
   local job=$? clean=0
   if (( started )); then compose down --volumes --remove-orphans >/dev/null 2>&1 || clean=$?; fi
+  if [[ -n $(docker ps -aq --filter "label=com.docker.compose.project=$project") ||
+        -n $(docker volume ls -q --filter "label=com.docker.compose.project=$project") ||
+        -n $(docker network ls -q --filter "label=com.docker.compose.project=$project") ]]; then clean=1; fi
   rm -f -- "$envfile"
   echo "restore_job_exit=$job restore_cleanup_exit=$clean"
   (( clean == 0 )) || job=1

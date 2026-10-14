@@ -5,6 +5,7 @@ umask 077
 base=$(cd -- "$(dirname -- "$0")/../supabase" && pwd)
 root=$(cd -- "$base/../.." && pwd)
 snapshot=${1:?private snapshot destination required}
+[[ "$snapshot" = /* ]] || exit 66
 env_source=${OPS820_PRIVATE_TEST_ENV:?private disposable test env required}
 runner=${OPS820_SOURCE_RUNNER:?reviewed source runner required}
 [[ "$env_source" = /* && -f "$env_source" && ! -L "$env_source" ]] || exit 66
@@ -25,6 +26,9 @@ compose() { docker compose -p "$project" --env-file "$envfile" -f "$base/compose
 cleanup() {
   local job=$? clean=0
   if (( started )); then compose down --volumes --remove-orphans >/dev/null 2>&1 || clean=$?; fi
+  if [[ -n $(docker ps -aq --filter "label=com.docker.compose.project=$project") ||
+        -n $(docker volume ls -q --filter "label=com.docker.compose.project=$project") ||
+        -n $(docker network ls -q --filter "label=com.docker.compose.project=$project") ]]; then clean=1; fi
   rm -f -- "$envfile"
   if (( job || clean )) && (( made_snapshot )); then
     rm -f -- "$snapshot/database.dump" "$snapshot/globals.sql" "$snapshot/objects.tar" \
