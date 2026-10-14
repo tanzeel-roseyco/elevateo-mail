@@ -789,3 +789,7 @@ Bounded packet: `apps/web/src/features/thread/ThreadPage.tsx` (about 23 changed 
 ### FE-805 R3 registration self-inspection (Fable, 2026-10-15)
 
 Coverage: rewritten `features/index.tsx` (62 LOC), `featureGateways.tsx` (25), changed hunks in `featureRegistry.ts`/`main.tsx` (~10). ~97 production LOC, one bounded pass; author self-inspection only, no independent review claimed. Self-found before commit: 0 confirmed. Provisional density 0/KLOC, author evidence only. Merged owner commits unmodified and not counted. Tests: 11 FE-805 cases authored, not executed.
+
+## INT-801 integrated V2 route candidate (2026-10-14)
+
+Cassian merged owner source and reconciled canonical V2 route/DTO seams. New source review assignments requested from root: registry and active routes (under 100 LOC), OpenAPI operations/schemas split into <=200-line packets, web runtime boundary and gateway (under 200 LOC each), Sabine SQL authorization in <=200-line packets, and Dorian controller/repository in <=200-line packets; a separate design-tradeoff reviewer is required. No independent review has been performed on this exact integration. Reviewed LOC: 0; confirmed defects on this exact candidate: not measured; defects/KLOC: N/A. Soren's intermediate 696549b V2 contract probe failed JSON parsing (3 runs, 0 assertions); source was repaired, successor fleet result pending.
