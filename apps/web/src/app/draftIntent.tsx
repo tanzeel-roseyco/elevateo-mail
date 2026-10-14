@@ -17,6 +17,17 @@ export interface DraftIntent {
   recipientsText: string
 }
 
+export function formatRecipients(to: DraftBuffer['savedContent']['to']): string {
+  return to
+    .map((a) => (a.display_name !== null && a.address !== null ? `${a.display_name} <${a.address}>` : (a.address ?? a.display_name ?? '')))
+    .join('\n')
+}
+
+/** Raw formatting is memory-only intent even when parsing yields unchanged recipients. */
+export function isDraftIntentDirty({ buffer, recipientsText }: DraftIntent): boolean {
+  return isDirty(buffer) || recipientsText !== formatRecipients(buffer.savedContent.to)
+}
+
 export interface DraftIntentStore {
   read(key: string): DraftIntent | null
   write(key: string, intent: DraftIntent): void
@@ -63,7 +74,7 @@ export function DraftIntentProvider({ children }: { children: ReactNode }) {
     }
   }
 
-  // AIDEV-NOTE: Guard the retained owner, including while recovery unmounts the editor; memory is not durable.
+  // AIDEV-NOTE: Guard retained normalized and raw edits through recovery unmounts; memory is not durable.
   useEffect(() => {
     let registered = false
     const warn = (event: BeforeUnloadEvent) => {
@@ -71,7 +82,7 @@ export function DraftIntentProvider({ children }: { children: ReactNode }) {
       event.returnValue = ''
     }
     const sync = () => {
-      const needed = [...entriesRef.current.values()].some(({ buffer }) => isDirty(buffer) || hasUnresolvedAttempt(buffer))
+      const needed = [...entriesRef.current.values()].some((intent) => isDraftIntentDirty(intent) || hasUnresolvedAttempt(intent.buffer))
       if (needed === registered) return
       if (needed) window.addEventListener('beforeunload', warn)
       else window.removeEventListener('beforeunload', warn)

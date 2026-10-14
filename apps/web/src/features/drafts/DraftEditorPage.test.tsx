@@ -782,11 +782,71 @@ describe('memory-only reload boundary', () => {
     }
   })
 
+  it.each(['padding', 'blank lines'])('guards raw-only %s edits until canonical normalization', async (kind) => {
+    const add = vi.spyOn(window, 'addEventListener')
+    const remove = vi.spyOn(window, 'removeEventListener')
+    const h = harness()
+    const view = renderEditor(h.gateway, path(CD.draftId))
+    try {
+      await screen.findByDisplayValue('Fixture draft')
+      const canonical = input('To').value
+      const raw = kind === 'padding' ? `  ${canonical}  ` : `\n${canonical}\n\n`
+      expect(parseRecipients(raw)).toEqual(parseRecipients(canonical))
+      expect(unload()).toBe(false)
+      fireEvent.change(input('To'), { target: { value: raw } })
+      await waitFor(() => expect(unload()).toBe(true))
+      expect(input('To').value).toBe(raw)
+      expect(h.saves).toHaveLength(0)
+      fireEvent.change(input('To'), { target: { value: canonical } })
+      await waitFor(() => expect(unload()).toBe(false))
+      const registrations = add.mock.calls.filter(([type]) => type === 'beforeunload')
+      expect(registrations).toHaveLength(1)
+      expect(remove.mock.calls).toContainEqual(registrations[0])
+      fireEvent.change(input('To'), { target: { value: raw } })
+      fireEvent.change(input('Subject'), { target: { value: 'Saved with raw formatting' } })
+      fireEvent.click(button('Save changes'))
+      await screen.findByText('Saved version 3')
+      // The server saved normalized content, but raw formatting is still held only in memory.
+      expect(unload()).toBe(true)
+      fireEvent.change(input('To'), { target: { value: canonical } })
+      await waitFor(() => expect(unload()).toBe(false))
+    } finally {
+      view.unmount()
+      add.mockRestore()
+      remove.mockRestore()
+    }
+  })
+
+  it('drops raw-only intent and its guard when the principal changes', async () => {
+    const h = harness()
+    const view = renderEditorInShell(h.gateway, path(CD.draftId))
+    try {
+      await screen.findByText('Saved version 2')
+      const canonical = input('To').value
+      fireEvent.change(input('To'), { target: { value: `  ${canonical}  ` } })
+      await waitFor(() => expect(unload()).toBe(true))
+      h.actor = 'b'
+      act(() => view.controller().refresh())
+      await waitFor(() => expect(h.sessionReads).toBe(2))
+      await screen.findByText('Saved version 2')
+      await waitFor(() => expect(unload()).toBe(false))
+      expect(input('To').value).toBe(canonical)
+      h.actor = 'a'
+      act(() => view.controller().refresh())
+      await waitFor(() => expect(h.sessionReads).toBe(3))
+      await screen.findByText('Saved version 2')
+      expect(input('To').value).toBe(canonical)
+      expect(unload()).toBe(false)
+    } finally {
+      view.unmount()
+    }
+  })
+
   it('removes the guard on owner clearing and provider unmount', async () => {
     const h = harness()
     const view = renderEditor(h.gateway, path(CD.draftId))
     await screen.findByDisplayValue('Fixture draft')
-    fireEvent.change(input('Subject'), { target: { value: 'Private local text' } })
+    fireEvent.change(input('To'), { target: { value: `  ${input('To').value}  ` } })
     await waitFor(() => expect(unload()).toBe(true))
     await act(async () => { await view.controller().signOut('local') })
     await waitFor(() => expect(unload()).toBe(false))
