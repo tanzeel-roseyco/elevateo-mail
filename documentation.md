@@ -1,5 +1,7 @@
 ### INT-801 integrated source candidate (2026-10-14)
 
+Dorian `ebfe780` repaired the SQL predicate concatenation that produced the exact fa3082a `ENDAND` migration failure and added a migration policy regression. It is merged in the current isolated candidate; the corrected disposable database run has been requested from Soren and has not yet returned.
+
 Soren exact fa3082a disposable PostgreSQL/Auth run failed during CreateCampaignFoundation migration at line 174 with `PG::SyntaxError` near `ENDAND`; backend Ruby, SQL/HTTP and worker gates did not run, and task resources were cleaned. Dorian owns the SQL interpolation repair. Fable `2ce4c54` stale consumed Outreach error policy/tests were cherry-picked as `d89b4cd`; this later frontend source has no full fleet pass. Root requested a maintained web Dockerfile V2 copy; Soren, its recipe owner, received the exact change request.
 
 Soren’s exact older f210b5b frontend fleet gate passed API generation/check, lint, typecheck, 791 units and build; draft.5 consent/UI source still requires its own rerun and generated declaration.
