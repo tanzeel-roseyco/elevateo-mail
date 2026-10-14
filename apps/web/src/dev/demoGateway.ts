@@ -8,13 +8,13 @@ export const DEMO_MAILBOX_ID = CD_FIXTURE.mailboxId
 
 // AIDEV-NOTE: Demo seeds are separate from canonical security fixtures; all writes remain in memory.
 const conversations = [
-  ['Maya Chen', 'maya@northstar.example', 'Northstar launch ? final copy approval', 'The revised launch copy is ready. Could you review the opening paragraph before Thursday?', true],
+  ['Maya Chen', 'maya@northstar.example', 'Northstar launch - final copy approval', 'The revised launch copy is ready. Could you review the opening paragraph before Thursday?', true],
   ['Oliver Brooks', 'oliver@studio.example', 'Your onboarding checklist is ready', 'Welcome aboard! I have put together the checklist for our first week working together.', true],
   ['Sofia Rivera', 'sofia@harbor.example', 'Re: Q4 partnership proposal', 'The team loved the proposal. Let us find a time to walk through the next steps.', true],
-  ['James Patel', 'james@studio.example', 'Design review notes ? October', 'A few thoughtful changes to the new customer experience. The updated notes are attached to our project.', false],
+  ['James Patel', 'james@studio.example', 'Design review notes - October', 'A few thoughtful changes to the new customer experience. The updated notes are attached to our project.', false],
   ['Emma Wilson', 'emma@oak.example', 'A quick thank you', 'Thank you for making the handover so smooth. We are excited to get started!', false],
-  ['Noah Kim', 'noah@studio.example', 'Friday team sync ? agenda', 'Three things for Friday: launch progress, customer feedback, and next week priorities.', false],
-  ['Ava Thompson', 'ava@atlas.example', 'Atlas renewal ? next steps', 'Our renewal window opens next month. Can we confirm the scope before the end of this week?', true],
+  ['Noah Kim', 'noah@studio.example', 'Friday team sync - agenda', 'Three things for Friday: launch progress, customer feedback, and next week priorities.', false],
+  ['Ava Thompson', 'ava@atlas.example', 'Atlas renewal - next steps', 'Our renewal window opens next month. Can we confirm the scope before the end of this week?', true],
   ['Liam Foster', 'liam@studio.example', 'October customer highlights', 'A few stories worth sharing from this month. The customer team has done brilliant work.', false],
 ] as const
 
@@ -31,7 +31,7 @@ function threadSeeds(): ThreadSeed[] {
       unread,
       message_count: 1,
     },
-    bodyText: `Hi Alex,\n\n${preview}\n\nEverything here is a fictitious example for the Elevateo Mail preview.\n\nBest,\n${name}`,
+    bodyText: ['Hi Alex,', '', preview, '', 'Everything here is a fictitious example for the Elevateo Mail preview.', '', 'Best,', name].join(String.fromCharCode(10)),
   }))
 }
 
@@ -45,7 +45,7 @@ export function createDemoGateway(): MailroomGateway {
     mailbox_id: DEMO_MAILBOX_ID,
     operation_id: '00000000-0000-4000-8000-000000000261',
     expected_version: 2,
-    subject: 'Re: Northstar launch ? final copy approval',
+    subject: 'Re: Northstar launch - final copy approval',
     to: [{ display_name: 'Maya Chen', address: 'maya@northstar.example' }],
     body_text: 'Hi Maya,\n\nThanks for sharing the updated copy. The opening paragraph reads well. I have a couple of small suggestions before we wrap up.\n\nBest,\nAlex',
     reply_to_thread_id: CD_FIXTURE.threadId,
