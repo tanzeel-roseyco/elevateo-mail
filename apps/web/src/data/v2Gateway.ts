@@ -41,7 +41,7 @@ export function createV2Gateway(fetchImpl?: FetchLike) {
   return {
     getDirectMessage(ctx: ReadContext, mailboxId: string, threadId: string, messageId: string, signal?: AbortSignal) {
       const query = new URLSearchParams({ mailbox_id: IdSchema.parse(mailboxId) })
-      return requestJson(`/v2/threads/${id(threadId)}/messages/${id(messageId)}?${query}`, DirectMessagePageSchema, 65_536, {
+      return requestJson(`/v2/threads/${id(threadId)}/messages/${id(messageId)}?${query}`, DirectMessagePageSchema, 2_097_152, {
         ...base, headers: headers(ctx), signal,
       })
     },
