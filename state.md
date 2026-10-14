@@ -116,3 +116,7 @@ RootSOURCEGO reviewed7a7860e captured-ref lint repair assembled without owner so
 Cassian manifest reconciliation: contract-lock now seals actual generated client bytes and pinned fleet generation/125f939S1S2DB+HTTP evidence; README reflects proven scope. Canonical openapi/fixtures/C-D structures unchanged; no regeneration, added routes or capabilityactivation. Recovery successor3a709691 checks stillMira-owned/pending; BE02OPEN/releasegated.
 
 SEC-802 candidate: migration 00008 and organization-role database fixtures authored. Owner enrollment, legacy mailbox mutation ceiling/consent patch, Soren Docker tests, bounded review and integration remain pending. See `docs/completion/sabine.md`.
+
+SEC-802 continuation: legacy membership mutation now requires current role, classified mailbox, explicit ceiling and personal-owner consent; grants read routine and migrator-only unbound bootstrap source are drafted. Existing BE02 fixture adaptation, V2 role enum alignment, Docker security/race tests and independent review remain pending.
+
+SEC-802 also includes migrator-only mailbox policy bootstrap source with no real UUID values; it remains uninvoked and unverified in Docker.

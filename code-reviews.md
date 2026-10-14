@@ -680,3 +680,5 @@ R25 lint repair: one tooling defect in the unmount cleanup (ref must be captured
 ## SEC-802 candidate review status
 
 Migration 00008, `db/sec802/access.sql`, and organization access database tests await independent bounded adversarial and dedicated design-tradeoff review. No review coverage or defects/KLOC is claimed from author inspection. Runtime tests are not executed; see `docs/completion/sabine.md`.
+
+SEC-802 continuation author inspection corrected migration dependency order and receipt cascade behavior before commit. This is not an independent adversarial review. `db/sec802/access.sql` and `membership_patch.sql` need separate <=200 LOC reviews, plus a dedicated design-tradeoff review; confirmed independent defect density remains unreported.
