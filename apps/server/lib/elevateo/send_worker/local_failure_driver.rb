@@ -64,7 +64,9 @@ module Elevateo
         outcome = @outcomes[@invocations]
         raise ArgumentError, "offline script exhausted" unless outcome
         @snapshots[send_id.dup.freeze] = digest.freeze
-        @attempts[attempt_id.dup.freeze] = [send_id.dup.freeze, digest].freeze
+        # @type var binding: [String, String]
+        binding = [send_id.dup.freeze, digest]
+        @attempts[attempt_id.dup.freeze] = binding.freeze
         @invocations += 1
         outcome
       end
