@@ -15,6 +15,7 @@ module Elevateo
       def self.new: (attempt_id: String, snapshot_bytes: String) -> Authorization
     end
     class DatabaseStore
+      PROFILES: Hash[String, String]
       class InvalidResult < StandardError
       end
       class StaleLease < StandardError
@@ -23,8 +24,9 @@ module Elevateo
       @send_id: String
       @lease_seconds: Integer
       @deadline_seconds: Integer
+      @profile: String
       def self.next_due_send: (connection: untyped, epoch: String, excluded: Array[String]) -> String?
-      def initialize: (connection: untyped, send_id: String, ?lease_seconds: Integer, ?deadline_seconds: Integer) -> void
+      def initialize: (connection: untyped, send_id: String, ?lease_seconds: Integer, ?deadline_seconds: Integer, ?profile: String) -> void
       def claim: (epoch: String) -> Claim?
       def authorize_submission: (claim: Claim, epoch: String) -> Authorization?
       def final_check: (claim: Claim, attempt_id: String, epoch: String) -> bool
