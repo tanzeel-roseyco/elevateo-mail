@@ -140,3 +140,5 @@ Inbox compose entry is gated by a successful read and explicit compose capabilit
 ### FE-806 message reply candidate
 
 Selected-message reply prefill now carries recipient, editable subject and thread binding into a new unsaved draft without putting addresses in the URL. The existing draft operation path performs the first write only on Save. Four regression cases are authored; Docker runtime and integrated visual/HTTP acceptance are pending.
+
+FE808 continuation candidate: the provisional person-key grant DTO has been removed. The feature imports Cassian's V2 Auth-UUID grant contract, exposes separate personal/organization settings and a People route for Fable registration, and renders generic denial, loading, stale-revision and revoked-session states. Its own checkout lacks Cassian/Fable source imports until integration; application tests and browser acceptance remain NOT_RUN. The V2 GET route is disabled while Theo/Sabine design a protected read.
