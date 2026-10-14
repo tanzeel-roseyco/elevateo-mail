@@ -88,6 +88,11 @@ class OrganizationGrantsHttpTest < Minitest::Test
     status, _headers, body = dispatch(action: "index", method: "GET")
     assert_equal 500, status
     assert_equal "internal_error", body.fetch("code")
+    @connection.page_result["items"] = []
+    @connection.page_result["actor"] = { "user_id" => TARGET, "role" => "owner", "revision" => 3 }
+    status, _headers, body = dispatch(action: "index", method: "GET")
+    assert_equal 500, status
+    assert_equal "internal_error", body.fetch("code")
   end
 
   def test_guarded_http_role_change
