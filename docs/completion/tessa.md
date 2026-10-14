@@ -19,3 +19,5 @@ Continuation candidate: `qa816-matrix.e2e.ts` adds authenticated inbox permalink
 Reporter identity repair: `quiet-reporter.ts` accepts `SCN-[A-Z]+-NNN-(P|F1|F2)` titles. The nine QA816 cases now use `SCN-QA-816/817/818` identities; prior `QA816-*` titles would have failed publication before an acceptance record existed. Historical evidence inventories remain unchanged; these are supplemental cases with their own records and cannot be counted toward the frozen BE02 set.
 
 Screenshot admission repair: the shared screenshot writer uses a closed ID list and would reject every new QA816 capture. Sixteen fixed supplemental IDs were appended to that list without changing the lock, size budget, path controls or historical IDs. The run must still use a task-owned artifact ledger with sufficient budget; no screenshots have been produced.
+
+`SCN-QA-819-P` adds a current V1 roster boundary: manager GET 200 and rendered revision, plus a separate real reader session with API denial and nonactionable UI. It does not mutate membership or claim Lyra V2 grant coverage. Two fixed admin screenshot IDs bring the supplemental screenshot set to eighteen.

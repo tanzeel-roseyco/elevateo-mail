@@ -163,3 +163,25 @@ scenario('SCN-QA-818-F2', 'chromium-visual-viewport-200-percent', async (page, r
     await cdp.detach();
   }
 });
+
+scenario('SCN-QA-819-P', 'manager-roster-reader-denial', async (page, record) => {
+  const path = `/v1/mailboxes/${seed.mailboxes.primary}/members`;
+  await signIn(page, 'manager_primary');
+  const [roster] = await Promise.all([responseAt(page, path), page.goto(`/#/mailboxes/${seed.mailboxes.primary}/members`)]);
+  expect(roster.status()).toBe(200);
+  await expect(page.getByRole('heading', { name: 'Members', exact: true })).toBeVisible();
+  await expect(page.getByText('Roster revision', { exact: false })).toBeVisible();
+  record.artifacts.push(await screenshot(page, 'QA816-ADMIN-P-manager-roster'));
+  const context = await page.context().browser()?.newContext({ baseURL: 'http://app.test' });
+  if (!context) throw new Error('Reader context unavailable');
+  try {
+    const reader = await context.newPage();
+    await signIn(reader, 'reader');
+    const [denied] = await Promise.all([responseAt(reader, path), reader.goto(`/#/mailboxes/${seed.mailboxes.primary}/members`)]);
+    expect([403, 404]).toContain(denied.status());
+    await expect(reader.getByText('You cannot manage members of this mailbox')).toBeVisible();
+    await expect(reader.getByRole('button', { name: 'Save changes' })).toHaveCount(0);
+    record.artifacts.push(await screenshot(reader, 'QA816-ADMIN-P-reader-denied'));
+  } finally { await context.close(); }
+  record.assertions.push('Manager roster renders from real API 200; separate reader session receives API denial and nonactionable UI');
+});
