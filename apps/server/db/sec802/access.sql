@@ -196,7 +196,7 @@ GRANT EXECUTE ON FUNCTION app.enroll_verified_organization_grant(uuid,uuid,text,
 -- AIDEV-NOTE: No owner is guessed from historical membership; enrollment must verify Allan's UUID separately.
 CREATE FUNCTION app.change_organization_role(p_digest text, p_target uuid, p_expected integer, p_role text)
 RETURNS jsonb LANGUAGE plpgsql VOLATILE SECURITY DEFINER SET search_path = pg_catalog AS $$
-DECLARE proof jsonb; org uuid; actor uuid; actor_role text; old_role text; current_revision integer;
+DECLARE proof jsonb; org uuid; actor uuid; actor_role text; old_role text; current_revision integer; box_id uuid;
 BEGIN
   IF p_target IS NULL OR p_expected IS NULL OR p_expected < 0
     OR p_role IS NULL OR p_role NOT IN ('admin', 'operator', 'sales_manager', 'sales', 'auditor', 'associate') THEN
@@ -221,6 +221,30 @@ BEGIN
     RETURN '{"status":"not_found"}'::jsonb;
   END IF;
   IF current_revision <> p_expected THEN RETURN '{"status":"role_conflict"}'::jsonb; END IF;
+  -- AIDEV-NOTE: Rank removal and membership removal serialize on every affected mailbox revision.
+  IF old_role IN ('owner', 'admin', 'sales_manager')
+    AND p_role NOT IN ('owner', 'admin', 'sales_manager') THEN
+    FOR box_id IN SELECT m.mailbox_id FROM app.mailbox_memberships m
+      WHERE m.organization_id = org AND m.user_id = p_target AND m.manage_members
+      ORDER BY m.mailbox_id LOOP
+      PERFORM 1 FROM app.mailbox_membership_revisions
+        WHERE organization_id = org AND mailbox_id = box_id FOR UPDATE;
+      IF EXISTS (SELECT 1 FROM app.mailbox_security
+          WHERE organization_id = org AND mailbox_id = box_id AND classification = 'team')
+        AND NOT EXISTS (
+          SELECT 1 FROM app.mailbox_memberships m
+          JOIN app.organization_memberships o ON (o.organization_id, o.user_id) =
+            (m.organization_id, m.user_id)
+          JOIN app.organization_access a ON (a.organization_id, a.user_id) =
+            (m.organization_id, m.user_id)
+          JOIN app.mailbox_grant_ceilings c ON (c.organization_id, c.mailbox_id, c.user_id) =
+            (m.organization_id, m.mailbox_id, m.user_id)
+          WHERE m.organization_id = org AND m.mailbox_id = box_id AND m.user_id <> p_target
+            AND m.manage_members AND c.manage_members
+            AND a.role IN ('owner', 'admin', 'sales_manager')
+        ) THEN RETURN '{"status":"role_conflict"}'::jsonb; END IF;
+    END LOOP;
+  END IF;
   IF old_role <> p_role THEN
     IF current_revision = 2147483647 THEN RETURN '{"status":"temporarily_unavailable"}'::jsonb; END IF;
     UPDATE app.organization_access SET role = p_role, revision = revision + 1

@@ -56,6 +56,29 @@ class OrganizationAccessPolicyTest < MailboxMembershipDatabaseCase
     result
   end
 
+  def role_change(actor, target, expected, role)
+    result = nil
+    scope(identity: actor, targets: [target.user_id]) do |connection|
+      values = [actor.digest, target.user_id, expected.to_s, role]
+      binds = values.map { |value| ActiveRecord::Relation::QueryAttribute.new("fixture", value, ActiveRecord::Type::String.new) }
+      raw = connection.exec_query("SELECT app.change_organization_role($1,$2,$3,$4) AS result",
+        "Role policy fixture", binds).first.fetch("result")
+      result = raw.is_a?(String) ? JSON.parse(raw) : raw
+      raise ActiveRecord::Rollback unless result.fetch("status") == "ok"
+    end
+    result
+  end
+
+  def test_role_demotion_cannot_strand_sole_effective_team_manager
+    manager = add_actor
+    grant(manager, "admin")
+    explicit_member(manager, manager: true)
+    ceiling(manager, compose: true, manage: true)
+    assert_equal "ok", raw_change(@user, revision, flags: nil).fetch("status")
+    assert_equal "role_conflict", role_change(@identity, manager, 0, "associate").fetch("status")
+    assert_equal "admin", @admin.exec_params("SELECT role FROM app.organization_access WHERE user_id=$1", [manager.user_id]).getvalue(0, 0)
+  end
+
   def outreach_authorization(actor)
     result = nil
     scope(identity: actor) do |connection|
