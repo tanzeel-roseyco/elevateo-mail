@@ -234,3 +234,5 @@ Cassian integrated the two narrow helper grants at 338a442. OUT-804 role proof n
 The 00009 policy now separates ordinary content reads from inert writes: SELECT requires session and content-role proof, while INSERT and UPDATE require the protected draft-write marker and the existing tenant, mailbox and consent integrity checks. A disposable valid-digest/no-marker direct UPDATE regression is authored; migration and database runtime on this source are pending.
 
 Soren's exact integrated 882a471 disposable fleet receipt confirms the new 15-policy 00009 migration applied. The runner stopped later at attachment migration 00018, so Outreach role/no-marker database tests and HTTP remain unexecuted.
+
+ADV111 reviewed exact 2f255b9 source with zero confirmed defects across 303 unique LOC, while identifying a missing positive restricted-role mutation test. The disposable fixture now covers protected `app_read` INSERT and UPDATE, valid digest without marker denial, and revoked-session read denial; these added cases remain unexecuted.
