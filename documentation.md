@@ -39,7 +39,7 @@ Design date: 2026-10-11; expanded planning revision: 2026-10-12. Current scoped 
 
 MAIL-818 adds an isolated synthetic Mox SMTP/IMAP protocol fixture as R&D.
 The app's mail provider and no-live-send boundary are unchanged. Pilot design,
-license and execution limits are in [the pilot README](mox-pilot/README.md).
+license and execution limits are in [the pilot README](ops/mail/mox-pilot/README.md).
 
 ## Confirmed by the user
 

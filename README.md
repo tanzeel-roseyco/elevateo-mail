@@ -14,7 +14,7 @@ Shared company mailroom with one Rails domain authority and a React/TypeScript c
 
 ## Current state
 
-MAIL-818 has an isolated synthetic Mox localserve pilot under `mox-pilot/`.
+MAIL-818 has an isolated synthetic Mox localserve pilot under `ops/mail/mox-pilot/`.
 Its Docker protocol and isolation checks are requested from Soren on fleet-02
 and remain NOT_RUN; no production provider change or activation follows from
 this fixture. See [Rhea's pilot record](docs/completion/rhea.md).

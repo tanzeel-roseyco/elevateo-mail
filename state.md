@@ -1,7 +1,7 @@
 # Project state
 
 MAIL-818 (2026-10-14): isolated Mox localserve pilot source is prepared under
-`mox-pilot/` on baseline `bbf2353`; Soren's fleet-only Docker execution,
+`ops/mail/mox-pilot/` on baseline `bbf2353`; Soren's fleet-only Docker execution,
 independent review and exact cleanup evidence remain pending. No production
 transport, contract, DNS, credential or release change. See
 [Rhea's pilot record](docs/completion/rhea.md).

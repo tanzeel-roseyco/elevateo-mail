@@ -15,6 +15,10 @@ disposable named data volume. Containers have no host socket, secrets, app
 database, or persistent application volumes. The runner refuses a non-fleet
 hostname and a missing lease token. The DNS and egress-denial probes in the
 runner must pass before any protocol result can be admitted.
+The named volume root exists when mounted. Mox localserve must initialize an
+absent child at `/pilot-data/localserve`; pointing `-dir` at the volume root
+fails at first start. `-ip 0.0.0.0` binds only inside the internal Docker
+network. No ports are published to the host.
 
 The fixture uses `.test` addresses and Mox's generated `mox@localhost` account
 with its documented localserve development password. Those credentials are

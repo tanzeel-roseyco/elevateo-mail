@@ -1,7 +1,8 @@
 services:
   mox:
     image: ${MOX_IMAGE:?immutable Mox image digest required}
-    command: ["localserve", "-dir", "/pilot-data"]
+    # AIDEV-NOTE: The volume root exists; localserve must create its absent child directory.
+    command: ["localserve", "-dir", "/pilot-data/localserve", "-ip", "0.0.0.0"]
     read_only: true
     tmpfs:
       - /tmp:size=64m
