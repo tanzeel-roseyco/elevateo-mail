@@ -6,7 +6,9 @@ BEGIN
   IF helper IS NULL OR to_regnamespace('app_attachment_gateway') IS NULL THEN
     RAISE EXCEPTION 'gateway private helper missing';
   END IF;
-  IF NOT has_schema_privilege('elevateo_attachment_gateway','app_attachment_gateway','USAGE') OR
+  IF NOT EXISTS (SELECT 1 FROM pg_namespace WHERE nspname='app_attachment_gateway'
+      AND nspowner='elevateo_owner'::regrole) OR
+    NOT has_schema_privilege('elevateo_attachment_gateway','app_attachment_gateway','USAGE') OR
     has_schema_privilege('elevateo_attachment_gateway','app_attachment_gateway','CREATE') OR
     EXISTS (SELECT 1 FROM pg_namespace n
       WHERE (n.nspname IN ('app','auth','storage') OR left(n.nspname,4)='app_')

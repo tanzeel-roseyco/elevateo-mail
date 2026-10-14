@@ -99,7 +99,8 @@ docker run --rm --network "${project}_private" --read-only --cap-drop ALL \
   --env-file "$gateway_env" \
   -v "$packet/gateway-runtime-smoke.sql:/gateway-runtime-smoke.sql:ro" --entrypoint bash "$image" \
   -c 'exec psql "$ELEVATEO_ATTACHMENT_GATEWAY_DATABASE_URL" -X -q -v ON_ERROR_STOP=1 -f /gateway-runtime-smoke.sql' >/dev/null
-for fixture in gateway_negative_createrole.sql gateway_negative_membership.sql; do
+for fixture in gateway_negative_createrole.sql gateway_negative_membership.sql \
+  gateway_negative_wrong_owner.sql; do
   set +e
   gateway_output=$(cat "$packet/$fixture" "$packet/gateway-bootstrap-smoke.sql" |
     compose exec -T db psql -U supabase_admin -d postgres -X -q -v ON_ERROR_STOP=1 2>&1)

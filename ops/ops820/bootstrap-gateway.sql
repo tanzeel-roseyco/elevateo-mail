@@ -31,6 +31,21 @@ DO $$ BEGIN
       has_table_privilege('elevateo_attachment_gateway','app.inbox_attachments','SELECT'))
   THEN RAISE EXCEPTION 'gateway role boundary drift; no credential rotation'; END IF;
 END $$;
+-- AIDEV-NOTE: schema creation is privileged bootstrap work; the NOCREATEROLE migrator cannot CREATE DATABASE objects.
+DO $$ BEGIN
+  IF NOT EXISTS (SELECT 1 FROM pg_namespace WHERE nspname='app_attachment_gateway') THEN
+    CREATE SCHEMA app_attachment_gateway AUTHORIZATION elevateo_owner;
+  END IF;
+  IF NOT EXISTS (SELECT 1 FROM pg_namespace WHERE nspname='app_attachment_gateway'
+      AND nspowner='elevateo_owner'::regrole) OR
+    EXISTS (SELECT 1 FROM pg_namespace n CROSS JOIN LATERAL
+      aclexplode(coalesce(n.nspacl,acldefault('n',n.nspowner))) a
+      WHERE n.nspname='app_attachment_gateway' AND NOT (
+        a.grantee=n.nspowner OR
+        (a.grantee='elevateo_attachment_gateway'::regrole AND
+          a.grantor='elevateo_owner'::regrole AND a.privilege_type='USAGE' AND NOT a.is_grantable)))
+  THEN RAISE EXCEPTION 'gateway bootstrap schema owner or ACL drift'; END IF;
+END $$;
 ALTER ROLE elevateo_attachment_gateway PASSWORD :'gateway_pw';
 ALTER ROLE elevateo_attachment_gateway SET search_path=pg_catalog;
 GRANT CONNECT ON DATABASE postgres TO elevateo_attachment_gateway;
