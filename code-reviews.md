@@ -1387,3 +1387,5 @@ Orion435333b1 authority fixture syntax repair changes five test lines source-onl
 Mira REPLY927 and Tessa QA816 denial-oracle test imports are source-only; root's split review packets may cover them later, but no independent review artifact imported here and no runtime. Reviewed LOC/defects/density unassessed for these deltas.
 
 QA815 fdecd0d5 full web 62 files/856 cases PASS is executed fleet test evidence, not independent source review; reviewed LOC/defects/KLOC unchanged. Later owner test imports and real-role/browser runtime remain outside this exact-source result.
+
+QA815 a2f58b34 targeted fixture lint PASS/full lint one offense FAIL is fleet tool evidence, not source review. Corin first unused-argument patch did not close the cop; no new defect-density claim from this diagnostic. Owner second patch and exact rerun pending.

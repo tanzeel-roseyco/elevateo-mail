@@ -552,3 +552,5 @@ Orion `435333b1` authority fixture syntax repair completes the five-owner lint s
 Mira's `20e8c46e` top-reply regression now checks no draft save before the click, the first draft read, and exact context/version zero-version V1 save. Tessa's `f46a958b` QA816 cases require closed public denial envelopes for assignee and attachment failures. Both owner test imports are source-only; exact integrated web/browser checks remain pending.
 
 QA815 exact feature `fdecd0d5` full web gate passed on fleet: V1/V2 declaration checks, ESLint, TypeScript, 62 files/856 unit cases and production Vite build, with task cleanup PASS. Its exact receipt is imported. Later owner test/QA files and Orion Ruby fixture were not in this tested source, and real-role HTTP/browser remain pending.
+
+QA815 exact core `a2f58b34` targeted authority fixture RuboCop passed; full RuboCop narrowed from 19 to one `fake_inbound_controller.rb:16` unused block argument and still failed. Corin owner repair is pending; the full backend/HTTP/worker successor remains unexecuted.

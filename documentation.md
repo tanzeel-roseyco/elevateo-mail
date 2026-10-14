@@ -557,3 +557,5 @@ Orion435333b1 changes only the attachment authority database fixture heredoc bin
 Mira's top-reply test pins no persistence before explicit save, initial draft read and version-bound V1 write. Tessa's assignee/attachment browser denials now parse strict `{code,message,request_id}` without extra keys and check fixed public messages, matching current V2 error contract. These are owner source imports, not acceptance PASS.
 
 QA815 full web gate on immutable feature fdecd0d56071dd6e5be7b53c0320b4ef1b200fc6 passed V1/V2 API checks, ESLint, TypeScript, 62 unit files/856 cases and Vite production build, with exact task cleanup. Receipt SHA256 d33fdb1f6f9593a690e4b7c1444b8fcc4f0714b03c4d889fc5e3aa7981f2ebf4 imported; this does not verify later owner test files or server route/real-browser runtime.
+
+QA815 fleet `a2f58b34` confirms Orion authority fixture targeted RuboCop zero offenses; full 308-file RuboCop --lint fails one remaining `app/controllers/v2/fake_inbound_controller.rb:16` Lint/UnusedBlockArgument despite Corin's first `_query` repair. Exact compact receipt imported; Corin narrow second repair and coherent rerun required before backend/HTTP/worker.
