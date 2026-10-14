@@ -93,8 +93,8 @@
     },
     {
       "path": "ops/tests/int401-command-surface.sh",
-      "expected": "23d582b077ecd0ecab80a4a9ec511e91a2e8c3eb70608b1af096bf8e92e01a11",
-      "actual": "23d582b077ecd0ecab80a4a9ec511e91a2e8c3eb70608b1af096bf8e92e01a11"
+      "expected": "f1a6a4cfceccc74337695069c7b8dd9b22bedd4d05aa024d1b2e7f9097ff876f",
+      "actual": "f1a6a4cfceccc74337695069c7b8dd9b22bedd4d05aa024d1b2e7f9097ff876f"
     },
     {
       "path": "ops/tests/int401-current-package.sh",
@@ -226,10 +226,10 @@
     "ops/tools/be01-services-tools-v2/run-container.sh": 24,
     "scripts/dev": 13,
     "scripts/dev.ps1": 12,
-    "ops/tests/int401-command-surface.sh": 38,
+    "ops/tests/int401-command-surface.sh": 46,
     "ops/tests/int401-current-package.sh": 19
   },
-  "runtime": "NOT RUN; fleet-02 Docker requested through Soren",
+  "runtime": "NOT RUN on frozen integrated revision; root schedules remote validation",
   "native_powershell": "NOT RUN",
   "artifact_scope": "Git blob bytes for Linux archive, not Windows newline conversions"
 }

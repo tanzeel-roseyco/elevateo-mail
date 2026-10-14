@@ -1,0 +1,13 @@
+{
+  "base": "59a8ce66dfa86dd3618712c129c66598234a31a0",
+  "pins": {
+    "Rowan": "e0c2d358894ba6b87d6275b5e8076cc09e53879a",
+    "Mira": "81293f7745490c4bab373bf9902840cb3ce58fce",
+    "Elara": "f28d858999eed72155351ae6bce4fd0640601b96",
+    "Nadia": "f5235cd3a45d829a4960b651d39a8b8096624703"
+  },
+  "contract_provenance": "int401-frozen-contract-provenance.json",
+  "source_conflicts": "central docs only; both records retained, current summary supersedes historical results",
+  "infra": "requested immutable Soren checkpoint; dirty tree excluded",
+  "tests": "no local app tests/builds; root owns frozen remote Docker request"
+}
