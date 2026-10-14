@@ -1,0 +1,28 @@
+Run options: --seed 24057
+
+# Running:
+
+F
+
+Failure:
+[opaque value redacted]#[opaque value redacted] [[opaque value redacted]:11]:
+--- expected
++++ actual
+@@ -1 +1 @@
+-["elevateo_migrator", "postgres"]
++["elevateo_api", "postgres"]
+
+
+bin/rails test [opaque value redacted]:9
+
+
+
+Finished in 0.154983s, 6.4523 runs/s, 6.4523 assertions/s.
+1 runs, 1 assertions, 1 failures, 0 errors, 0 skips
+ Container [opaque value redacted] Creating 
+ Container [opaque value redacted] Created 
+`/app` is not writable.
+Bundler will use `/tmp/bundler20261014-8-chisdf8' as your home directory temporarily.
+
+
+exit=1 seconds=1.83

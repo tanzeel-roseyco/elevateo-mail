@@ -1,0 +1,13 @@
+source=211df769cddda71ca2fe15dbeaf9b5ed55f69d86
+started=2026-10-14T17:31:02Z
+task_source_overlay=OPS820 restricted gateway login before migration; canonical commit unchanged
+task_source_overlay=gateway migration ACL single-case and stop; canonical commit unchanged
+BE02 project=be02-1477a77ebc2b448ab55ec360d9ad84d7 evidence=/tmp/qa815-backend.gTIrxJTp/ops/local/be02-1477a77ebc2b448ab55ec360d9ad84d7
+Building bounded task image
+Running isolated Minitest suites and Steep
+tests=FAILED cleanup=PASSED evidence=/tmp/qa815-backend.gTIrxJTp/ops/local/be02-1477a77ebc2b448ab55ec360d9ad84d7
+ops/tests/qa815/run-backend-candidate.sh: line 131: -expect-host: command not found
+runner_exit=127
+receipt_copy_failed=0
+archive_absent=yes
+finished=2026-10-14T17:32:49Z

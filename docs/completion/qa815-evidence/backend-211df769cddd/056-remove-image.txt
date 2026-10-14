@@ -1,0 +1,4 @@
+Untagged: [opaque value redacted]:server
+Deleted: sha256:[opaque value redacted]
+
+exit=0 seconds=0.45

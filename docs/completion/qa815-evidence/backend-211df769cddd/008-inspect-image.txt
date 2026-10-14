@@ -1,0 +1,106 @@
+[
+    {
+        "Id": "sha256:[opaque value redacted]",
+        "RepoTags": [
+            "supabase/postgres:17.6.1.136",
+            "supabase/postgres@sha256:[opaque value redacted]"
+        ],
+        "RepoDigests": [
+            "supabase/postgres@sha256:[opaque value redacted]"
+        ],
+        "Comment": "buildkit.dockerfile.v0",
+        "Created": "2026-06-15T12:49:48.094495425Z",
+        "Config": {
+            "ExposedPorts": {
+                "5432/tcp": {}
+            },
+            "Env": [
+                "[opaque value redacted]:/usr/lib/postgresql/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "PGDATA=/var/lib/postgresql/data",
+                "[opaque value redacted]",
+                "POSTGRES_USER=supabase_admin",
+                "POSTGRES_DB=postgres",
+                "[opaque value redacted] --locale-provider=icu --encoding=UTF-8 --icu-locale=en_US.UTF-8",
+                "LANG=en_US.UTF-8",
+                "LANGUAGE=en_US:en",
+                "LC_ALL=en_US.UTF-8",
+                "[opaque value redacted]",
+                "[opaque value redacted]"
+            ],
+            "Entrypoint": [
+                "docker-entrypoint.sh"
+            ],
+            "Cmd": [
+                "postgres",
+                "-D",
+                "/etc/postgresql"
+            ],
+            "WorkingDir": "/",
+            "StopSignal": "SIGINT",
+            "ArgsEscaped": true,
+            "Healthcheck": {
+                "Test": [
+                    "CMD-SHELL",
+                    "pg_isready -U postgres -h localhost"
+                ],
+                "Interval": 2000000000,
+                "Timeout": 2000000000,
+                "Retries": 10
+            }
+        },
+        "Architecture": "amd64",
+        "Os": "linux",
+        "Size": 367224458,
+        "RootFS": {
+            "Type": "layers",
+            "Layers": [
+                "sha256:[opaque value redacted]",
+                "sha256:[opaque value redacted]",
+                "sha256:[opaque value redacted]",
+                "sha256:[opaque value redacted]",
+                "sha256:[opaque value redacted]",
+                "sha256:[opaque value redacted]",
+                "sha256:[opaque value redacted]",
+                "sha256:[opaque value redacted]",
+                "sha256:[opaque value redacted]",
+                "sha256:[opaque value redacted]",
+                "sha256:[opaque value redacted]",
+                "sha256:[opaque value redacted]",
+                "sha256:[opaque value redacted]",
+                "sha256:[opaque value redacted]",
+                "sha256:[opaque value redacted]",
+                "sha256:[opaque value redacted]",
+                "sha256:[opaque value redacted]",
+                "sha256:[opaque value redacted]",
+                "sha256:[opaque value redacted]",
+                "sha256:[opaque value redacted]",
+                "sha256:[opaque value redacted]",
+                "sha256:[opaque value redacted]",
+                "sha256:[opaque value redacted]",
+                "sha256:[opaque value redacted]",
+                "sha256:[opaque value redacted]",
+                "sha256:[opaque value redacted]",
+                "sha256:[opaque value redacted]",
+                "sha256:[opaque value redacted]",
+                "sha256:[opaque value redacted]"
+            ]
+        },
+        "Metadata": {
+            "LastTagTime": "2026-10-13T23:43:22.171183286Z"
+        },
+        "Descriptor": {
+            "mediaType": "application/vnd.oci.image.index.v1+json",
+            "digest": "sha256:[opaque value redacted]",
+            "size": 1609
+        },
+        "Identity": {
+            "Pull": [
+                {
+                    "Repository": "docker.io/supabase/postgres"
+                }
+            ]
+        }
+    }
+]
+
+exit=0 seconds=0.04

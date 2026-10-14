@@ -1,0 +1,12 @@
+source=37b20c2556e826a226b9d2ebe8afd08d11b4f65a
+started=2026-10-14T17:36:10Z
+task_source_overlay=OPS820 restricted gateway login before migration; canonical commit unchanged
+task_source_overlay=Elara exact focused diagnostic, provenance print, stop after one case; canonical commit unchanged
+BE02 project=be02-68aa8c86c8eb459dae69014d37b892f6 evidence=/tmp/qa815-backend.VR9X7nCt/ops/local/be02-68aa8c86c8eb459dae69014d37b892f6
+Building bounded task image
+Running isolated Minitest suites and Steep
+tests=DIAGNOSTIC_COMPLETED cleanup=PASSED evidence=/tmp/qa815-backend.VR9X7nCt/ops/local/be02-68aa8c86c8eb459dae69014d37b892f6
+runner_exit=0
+receipt_copy_failed=0
+archive_absent=yes
+finished=2026-10-14T17:37:56Z

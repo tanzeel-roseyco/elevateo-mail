@@ -468,3 +468,8 @@ An isolated Drain unit harness error on the older focused strict run came from m
 Elara's V1 send-intent cancellation controller now annotates protected-block connection, identity and session types for the strict checker; endpoint semantics and no-live default are unchanged. Focused fleet Steep and cancellation units remain pending on this successor.
 
 Sabine's focused V2 admin controller strict candidate is integrated: local protected-block bindings are annotated in organization grants, role audit and display preferences without changing route/DTO/status behavior. Soren fleet Steep and affected units plus bounded independent review remain pending.
+QA815 prepared `ops/tests/qa815/run-focused-steep.sh` for a coherent immutable candidate; its executed `211df76` result follows.
+
+QA815 exact `211df76` focused Steep found 80 problems/8 files. Four of eight selected pure Ruby suites passed; gateway client, attachment service, IMAP ingress and Drain failed in the first run. A mock-import probe made Drain pass and narrowed attachment service to one missing Repository constant; the gateway fake constructor and IMAP ingress expected-code mismatch remain. Separate disposable gateway 00018 up/down/up ACL case passed 1 run/24 assertions under the migrator role with exact cleanup. See `docs/completion/soren.md` for source and runner limits.
+
+QA815 exact `37b20c2` reviewed `business_role` successor passed the single protected outreach same-scope case 1 run/14 assertions: both read and write returned `ok` with sales role and live session; 21 migrations and exact cleanup passed. Full backend, HTTP, worker and real-auth browser remain unrun on this source.

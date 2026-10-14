@@ -47,7 +47,9 @@ PY
 fi
 if [[ ${QA815_ELARA_FOCUS:-0} == 1 ]]; then
   [[ $candidate == 94bd1eea1ab6269b34817d4f05523d60d1fb6aa4 ||
-     $candidate == a0a60b66151a8a1172b2eeaf75f05bd9e05c6f90 ]] || {
+     $candidate == a0a60b66151a8a1172b2eeaf75f05bd9e05c6f90 ||
+     $candidate == 7273309bc84c3b499cf4850073002e5d589bd9b5 ||
+     $candidate == 37b20c2556e826a226b9d2ebe8afd08d11b4f65a ]] || {
     echo 'Elara focused diagnostic requires the exact authorized tip' >&2; exit 2;
   }
   cat > "$context/ops/tests/be02/test-suites.sh" <<'SH'
@@ -99,6 +101,51 @@ source = source.replace(needle, needle + addition)
 test.write_text(source)
 PY
   printf 'task_source_overlay=Elara exact focused diagnostic, provenance print, stop after one case; canonical commit unchanged\n' >> "$summary"
+fi
+if [[ ${QA815_GATEWAY_ACL_FOCUS:-0} == 1 ]]; then
+  [[ ${QA815_ELARA_FOCUS:-0} != 1 ]] || { echo 'Choose one focused backend mode' >&2; exit 2; }
+  python3 - "$context/ops/compose.be02-test.yaml" <<'PY'
+from pathlib import Path
+import sys
+
+path = Path(sys.argv[1])
+source = path.read_text()
+start = source.index('  test:\n')
+end = source.index('  fixture:\n', start)
+block = source[start:end]
+for old, new in (
+    ('      ELEVATEO_DB_ROLE: elevateo_api\n', '      ELEVATEO_DB_ROLE: elevateo_migrator\n'),
+    ('      ELEVATEO_PROCESS: api\n', '      ELEVATEO_PROCESS: migrate\n'),
+    ('      API_DB_PASSWORD: ${API_DB_PASSWORD:?}\n',
+     '      API_DB_PASSWORD: ${API_DB_PASSWORD:?}\n      MIGRATOR_DB_PASSWORD: ${MIGRATOR_DB_PASSWORD:?}\n'),
+):
+    if block.count(old) != 1:
+        raise SystemExit("QA815 gateway ACL migrator service anchor mismatch")
+    block = block.replace(old, new)
+path.write_text(source[:start] + block + source[end:])
+PY
+  cat > "$context/ops/tests/be02/test-suites.sh" <<'SH'
+#!/usr/bin/env bash
+set -euo pipefail
+cd /workspace/apps/server
+bin/rails test test/attachment_gateway/migration_acl_test.rb
+SH
+  python3 - "$context/ops/tests/be02/run.py" <<'PY'
+from pathlib import Path
+import sys
+
+path = Path(sys.argv[1])
+source = path.read_text()
+needle = '            task.compose("ruby-suites", ["run", "--rm", "--no-deps", "test"], 480)\n'
+failure = '    except Exception as error:\n        failure ='
+if source.count(needle) != 1 or source.count(failure) != 1:
+    raise SystemExit("QA815 gateway ACL focused runner anchor mismatch")
+source = source.replace(needle, needle + '            raise StopIteration("QA815 gateway ACL diagnostic complete")\n')
+source = source.replace(failure,
+                        '    except StopIteration:\n        status = "DIAGNOSTIC_COMPLETED"\n' + failure)
+path.write_text(source)
+PY
+  printf 'task_source_overlay=gateway migration ACL single-case, migrator test role and stop; canonical commit unchanged\n' >> "$summary"
 fi
 set +e
 python3 "$context/ops/tests/be02/run.py" --context default \

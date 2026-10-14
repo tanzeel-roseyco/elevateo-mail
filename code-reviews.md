@@ -1278,3 +1278,7 @@ INB887 focused successor self-review: inspected the 42-line fake inbound control
 Elara `6af7df4` V1 send-intent cancellation strict repair intake: three local type annotation lines inspected with unchanged route/cancel body; no independent source review or runtime/density claim. Soren focused Steep and affected cancellation unit remain pending; no no-live boundary change.
 
 Sabine ATT883/SEC895 exact `afdf997` V2 admin controller strict candidate: Cassian imported only three owner source blobs (organization grants, role audit, display preferences) after inspecting 23 added local type annotation lines; no independent review or defect density claimed. Owner provides split packets of 101,75,113,114 LOC; root schedules reviewers, Soren fleet Steep/affected units pending. Runtime/DTO/route semantics unchanged by the comments.
+
+QA815 `211df76` focused Steep/unit failures and gateway ACL PASS are executed test findings, not independent bounded review. The first API-role setup failure and mock-import harness corrections are preserved; additional independent reviewed source remains 0 LOC and defect density unclaimed.
+
+QA815 `37b20c2` focused protected role PASS is one executed real PostgreSQL case, not an independent source review or full backend gate. Additional independent reviewed source remains 0 LOC; defect density unclaimed.
