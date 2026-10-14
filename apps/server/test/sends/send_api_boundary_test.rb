@@ -43,9 +43,9 @@ class SendAPIBoundaryTest < Minitest::Test
       { "display_name" => nil, "address" => "bad..local@example.invalid" }],
       "suppressed_addresses" => ["local@example.invalid"])
     result = Elevateo::SendAPI::Review.new(source).result
-    assert_equal %w[ok duplicate suppressed invalid], result["recipient_checks"].map { |check| check["status"] }
+    assert_equal(%w[ok duplicate suppressed invalid], result["recipient_checks"].map { |check| check["status"] })
     assert_nil result["review_digest"]
-    assert_equal [1, 2, 3], result["issues"].map { |issue| issue["recipient_index"] }
+    assert_equal([1, 2, 3], result["issues"].map { |issue| issue["recipient_index"] })
     result["issues"].each { |issue| assert_equal %w[code recipient_index], issue.keys.sort }
   end
 

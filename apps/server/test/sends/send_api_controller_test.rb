@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require "tempfile"
 require_relative "../be_02/collaboration_controller_helper"
 require_relative "../../app/controllers/v1/send_controller"
 require_relative "../../app/controllers/v1/send_approvals_controller"
@@ -70,6 +71,32 @@ class SendAPIControllerTest < Minitest::Test
       "approved_at" => TIME, "simulated" => true }
   end
 
+  def review_binding
+    { "organization_id" => AuthFixtures::ORG, "mailbox_id" => BOX, "draft_id" => THREAD, "actor_id" => AuthFixtures::USER,
+      "version" => 1, "state" => "editable", "subject" => "Hello", "body_text" => "body",
+      "recipients" => [{ "display_name" => nil, "address" => "Local@EXAMPLE.invalid" }],
+      "reply_to_thread_id" => nil, "sender_address" => "Sender@EXAMPLE.invalid", "reply_available" => true,
+      "policy_revision" => "1", "mailbox_enabled" => true, "suppressed_addresses" => [] }
+  end
+
+  def test_first_approval_binds_exact_snapshot_and_readable_held_epoch
+    Tempfile.create("be03-api-control") do |control|
+      control.write(JSON.generate("epoch" => BOX, "outbound_held" => true))
+      control.flush
+      review = Elevateo::SendAPI::Review.new(review_binding)
+      input = payload.merge("review_digest" => review.result["review_digest"])
+      @connection.rows = [row(review_binding), row(approved.merge("review_digest" => input["review_digest"]))]
+      result = dispatch_send(input: input, path: control.path)
+      assert_equal 202, result[0]
+      assert_equal BOX, @connection.approval_arguments[7]
+      bytes = [@connection.approval_arguments[6].delete_prefix("\\x")].pack("H*")
+      assert_equal review.snapshot, bytes
+      assert_equal Digest::SHA256.hexdigest(bytes), input["review_digest"]
+      assert_equal :commit, @connection.events.last
+      assert_equal true, result[2]["simulated"]
+    end
+  end
+
   def test_authorized_lost_response_replay_reaches_sql_with_nil_snapshot_and_current_envelope
     @connection.rows = [row("code" => "not_available"), row(approved)]
     result = dispatch_send
@@ -81,7 +108,7 @@ class SendAPIControllerTest < Minitest::Test
     assert_nil @connection.approval_arguments[7]
     assert_equal :commit, @connection.events.last
     assert_equal 2, @connection.business.length
-    assert @connection.sql.any? { |sql| sql.include?("app.approve_draft_send") }
+    assert(@connection.sql.any? { |sql| sql.include?("app.approve_draft_send") })
   end
 
   def test_disabled_api_and_missing_control_fail_closed_without_approval_mutation

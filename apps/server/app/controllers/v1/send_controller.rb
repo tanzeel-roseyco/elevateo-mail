@@ -4,7 +4,7 @@ require_relative "write_controller"
 require_relative "../../../lib/elevateo/send_api/service"
 
 # AIDEV-NOTE: Isolated API can load before worker intake; no installed control reader means unavailable epoch.
-control_source = File.expand_path("../../../lib/elevateo/send_worker/control.rb", __dir__)
+control_source = File.expand_path("../../../lib/elevateo/send_worker/control.rb", __dir__.to_s)
 require control_source if File.file?(control_source)
 
 module V1

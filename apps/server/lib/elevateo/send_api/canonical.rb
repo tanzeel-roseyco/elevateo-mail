@@ -11,9 +11,10 @@ module Elevateo
       MAXIMUM = 1_048_576
 
       def self.bytes(organization_id:, mailbox_id:, draft_id:, version:, sender:, recipients:, subject:, body:, reply_id:, policy:)
+        attachments = [] # : Array[String]
         JSON.generate([FORMAT, organization_id, mailbox_id, draft_id, version, [nil, sender],
           recipients.map { |item| [item["display_name"], item["address"]] }, subject, body, reply_id,
-          "correspondence", "human_correspondence_attestation", [], policy], allow_nan: false)
+          "correspondence", "human_correspondence_attestation", attachments, policy], allow_nan: false)
       end
 
       def self.digest(bytes) = Digest::SHA256.hexdigest(bytes)

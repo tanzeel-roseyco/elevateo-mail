@@ -16,6 +16,9 @@ module V1
     def cancel
       protected_write(required: %w[mailbox_id], max_bytes: 4096, budget: 16_384,
         guard_users: ->(input:, query:) {
+          # @type var input: Elevateo::WriteInput::object
+          # @type var query: Hash[String, String]
+          Elevateo::WriteInput.invalid! unless query.empty?
           Elevateo::WriteInput.uuid(input["mailbox_id"])
           send_path(:send_id)
           []
