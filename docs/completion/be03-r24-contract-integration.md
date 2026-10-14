@@ -17,3 +17,7 @@ Root dispatches <=200-line review packets (<=400 per assignment) plus dedicated 
 ## Resources and remaining work
 
 No Docker resources created and no cleanup/deletion commands executed by Cassian. Preserve all persistent resources, Lyra preview port18140, source86036/51ca and previous evidence. Soren alone schedules shared heavy-test lease; exact task cleanup immediately follows each job. Required next evidence: reviewed exact worker receipts, integrated S1+S2 source, real PostgreSQL/Auth/API tests, generated client strict checks and actual UI validation. Actual vault remains root-owned and unsynchronized; no vault write here. Observer OFF. No live sends, production activation, paid paths, research or ultrareviews. Effective Fast unverified.
+
+## Initial independent review and source repairs
+
+SPEC-BE03-C01/C04 confirmed two MEDIUM schema interface defects: issues max120 rejected up to200 recipient issues plus globals; positive-only policy_revision rejected absent-policy sentinel0. Source now allows210 bounded issues and decimal0 on non-ready display. Runtime must still deny approval without positive enabled policy. SPEC-BE03-C03 confirmed one MEDIUM preservation defect: the authoring helper mistakenly loaded current additive source on re-run, resealing added keys. Manifest now derives only immutable03ae; a pinned independent keyset/seal fingerprint in the Docker-only regression test rejects additive resealing. New regression covers100 recipients with two issues each plus missing policy. No application tests run by this source repair.

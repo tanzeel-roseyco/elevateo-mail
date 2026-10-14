@@ -80,7 +80,7 @@
         "consent_basis": "human_attestation_required",
         "attachments": [],
         "attachments_supported": false,
-        "policy_revision": "1",
+        "policy_revision": "0",
         "recipient_checks": [
           {
             "index": 0,
@@ -92,6 +92,10 @@
           {
             "code": "recipient_invalid",
             "recipient_index": 0
+          },
+          {
+            "code": "purpose_unavailable",
+            "recipient_index": null
           }
         ],
         "review_digest": null,

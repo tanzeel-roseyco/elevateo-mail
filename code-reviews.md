@@ -1,3 +1,23 @@
+# R24 BE03-CONTRACT adversarial source review — 2026-10-14
+
+Actual native Codex subagents SPEC-BE03-C01..C07 independently reviewed immutable `3d01babe0fff976e9ea14045981ad7e7c77810fa` under the full INT-401 rubric. Requested model/tier is not audited billing. Each source read/assignment <=200 LOC; divided referenced context <=400. No host application tests. Initial unique changed-code coverage968 LOC, three unique MEDIUM defects,3.10/KLOC; overlapping context/design and repeated manifest finding are nonadditive. Repaired-source re-review and Docker evidence pending.
+
+| Identity | Exact reviewed source | LOC | Unique findings | Evidence limit |
+| --- | --- | ---: | --- | --- |
+| SPEC-BE03-C01 | OpenAPI6634-6833 | 200 | 2 MEDIUM,10/KLOC: issues120 too small; absent-policy0 excluded. Initial zero-defect finding corrected after interface inspection. | Source only; Nadia review.rb1-91 distinct context, not coverage |
+| SPEC-BE03-C02 | OpenAPI5,4803-4943,7294-7300 | 149 | 0,0/KLOC | Four routes/budgets/proofs; static old-component comparison unchanged |
+| SPEC-BE03-C03 | send_contract_test.rb1-128 | 128 | 1 MEDIUM,7.81/KLOC: trusted incorrectly resealed baseline manifest | Fixture walker is not full JSON Schema or HTTP proof |
+| SPEC-BE03-C04 | OpenAPI6834-6867,7170-7282 | 147 | 0,0/KLOC | Status/cancellation/error union; confirms C01 defects without adding them |
+| SPEC-BE03-C05 | send-fixtures.json1-160 | 160 | 0,0/KLOC | Synthetic placeholders only, no canonical digest/runtime proof |
+| SPEC-BE03-C06 | be03-preservation.json1-154,contract-lock.json2-31 | 184 | 0 newly unique; same reseal defect, observed1/184=5.43/KLOC | Baseline/fixture hashes and prior-generation receipt independently checked |
+| SPEC-BE03-C07 | Dedicated design, OpenAPI6634-6833 | 200 overlap | 0 additional design defects | Snapshot vs wire bytes, immutable replay and current auth remain runtime obligations |
+
+Original file hashes: OpenAPI9ba2546f8fd6e1fc157ffade12138d2ce4588ba03539ac77f6ec17cc54581ecb; test06d92097e409fa1ac1e418aff50648d6411b065ee85477b5abfdc93555f96b4e; fixturesfb01dd6c2a945449279f450216a16b0ca762ac20b5a1485f133e3de975a05ec6; preservatione7f9233b13b19ed39af42b036e3877f570442e7d501c2eb6d0b5061be61a48f1; lock665b19fca039bbb0e7a2d27a4c628b49ae5ce9130627fefd4a226385c5903a77. Initial review manifest is preserved in docs/completion/be03-r24-review-manifest-initial.json.
+
+Repairs:210 issue bound permits100 recipients with two issues each plus globals; policy0 remains display-only readiness failure; frozen keys/digests now load only immutable03ae. Independent baseline fingerprint and100-recipient/missing-policy regressions added. No live activation, resources or cleanup. Actual tests NOT_RUN at this checkpoint.
+
+---
+
 ## Current bounded integration review: INT401 R16
 
 Mira ADV834 functional / ADV835 dedicated design each accepted 356 unique source/context LOC in packets171/185, zero defects (0/KLOC); overlapping coverage is nonadditive. Three imported source hashes match the accepted manifest. Source acceptance only; runtime NOT_RUN.
