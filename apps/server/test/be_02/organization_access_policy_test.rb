@@ -102,12 +102,38 @@ class OrganizationAccessPolicyTest < MailboxMembershipDatabaseCase
     result
   end
 
+  def outreach_same_scope_witness(actor)
+    results = {}
+    scope(identity: actor, targets: [actor.user_id]) do |connection|
+      bind = ActiveRecord::Relation::QueryAttribute.new("fixture", actor.digest, ActiveRecord::Type::String.new)
+      { "read" => "authorize_outreach_content_read", "write" => "authorize_outreach_draft_write" }.each do |key, routine|
+        raw = connection.exec_query("SELECT app.#{routine}($1) AS result", "Outreach same-scope witness", [bind]).first.fetch("result")
+        results[key] = (raw.is_a?(String) ? JSON.parse(raw) : raw).fetch("status")
+      end
+    end
+    results
+  end
+
   def test_outreach_draft_write_requires_current_business_role
     sales = add_actor
     grant(sales, "sales")
     auditor = add_actor
     grant(auditor, "auditor")
-    assert_equal "ok", outreach_authorization(sales).fetch("status")
+    # A bounded fixture witness distinguishes missing enrollment/grant from a failing protected role check.
+    member = @admin.exec_params(<<~SQL, [@org, sales.user_id]).getvalue(0, 0)
+      SELECT EXISTS (SELECT 1 FROM app.organization_memberships WHERE organization_id=$1 AND user_id=$2)
+    SQL
+    role = @admin.exec_params("SELECT role FROM app.organization_access WHERE organization_id=$1 AND user_id=$2",
+      [@org, sales.user_id]).getvalue(0, 0)
+    owner = @admin.exec_params(<<~SQL).getvalue(0, 0)
+      SELECT pg_get_userbyid(p.proowner) FROM pg_proc p
+        WHERE p.oid = 'app.authorize_outreach_draft_write(text)'::regprocedure
+    SQL
+    statuses = outreach_same_scope_witness(sales)
+    assert_equal "ok", statuses.fetch("read"), "member=#{member} role=#{role} function_owner=#{owner} read_result=#{statuses.fetch('read')}"
+    guard_status = statuses.fetch("write")
+    assert_equal "ok", guard_status,
+      "member=#{member} role=#{role} function_owner=#{owner} read_result=#{statuses.fetch('read')} protected_result=#{guard_status}"
     assert_equal "ok", outreach_read_authorization(sales).fetch("status")
     assert_equal "not_found", outreach_authorization(auditor).fetch("status")
     assert_equal "not_found", outreach_read_authorization(auditor).fetch("status")
