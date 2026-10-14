@@ -118,11 +118,12 @@ module V2
             organization_id: identity.org_id, mailbox_id: mailbox, thread_id: thread, message_id: message, id: attachment)
           raise Elevateo::Attachments::NotAvailable unless row
           status = row.fetch("scan_status")
+          raise Elevateo::Attachments::NotAvailable unless status.is_a?(String)
           raise Elevateo::Attachments::Held unless status == "clean"
           size = row.fetch("byte_size")
           raise Elevateo::Attachments::NotAvailable unless size.is_a?(Integer) && size.between?(1, Elevateo::Attachments::MAX_BYTES)
           row_id, filename, content_type = row.values_at("id", "filename", "content_type")
-          raise Elevateo::Attachments::NotAvailable unless row_id == attachment && filename.is_a?(String) &&
+          raise Elevateo::Attachments::NotAvailable unless row_id.is_a?(String) && row_id == attachment && filename.is_a?(String) &&
             content_type.is_a?(String)
           generation = identity.metadata["authorization_generation"]
           context_id, auth_version = session.values_at("context_id", "authorization_version")
