@@ -194,3 +194,7 @@ SEC-802 continuation adds a migration-installed security replacement for the leg
 SEC-802 review repaired a personal-owner manager-stranding path in the legacy mutation guard and added a protected current-role check for outreach draft writes. The repaired SQL awaits fleet Docker execution and re-review.
 
 SEC-802 now records successful organization role changes in a metadata-only transactional audit and exposes a protected paged admin read. No live identities or audit API activation are present; fleet tests and V2 contract alignment remain pending.
+
+Fleet `45be80b` migrated successfully but its Ruby suite exposed missing SEC-802 test fixture authority and organization cleanup errors. SEC-802 now seeds explicit disposable fixture grants and removes fixture mailbox classifications before membership teardown; order-varied Docker regression remains pending.
+
+The draft concurrency fixture also declares its disposable organization role, private mailbox classification and grant ceiling so its legacy revocation call reaches the intended revision race. Fleet verification is pending.

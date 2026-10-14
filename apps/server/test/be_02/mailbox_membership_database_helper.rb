@@ -1,12 +1,14 @@
 # frozen_string_literal: true
 
 require_relative "collaboration_database_helper"
+require_relative "organization_access_fixture_cleanup"
 require_relative "../../lib/elevateo/mailbox_memberships"
 require_relative "../../lib/elevateo/mail_search"
 require_relative "../../lib/elevateo/session_crypto"
 
 # AIDEV-NOTE: Reuse the actual-login C harness; D adds only membership fixtures and scoped service entry points.
 class MailboxMembershipDatabaseCase < CollaborationDatabaseCase
+  include OrganizationAccessFixtureCleanup
   Key = Struct.new(:session_key)
   FLAGS = { "compose" => true, "approve_send" => false, "manage_members" => false }.freeze
 
@@ -14,7 +16,34 @@ class MailboxMembershipDatabaseCase < CollaborationDatabaseCase
     @owned_boxes = []
     super
     @presentation = Elevateo::SessionPresentation.new(crypto: Elevateo::SessionCrypto.new(config: Key.new("d" * 32)))
-    explicit_member(@identity, manager: true)
+    explicit_member(@identity, manager: true, approve: sec802_default_fixture?)
+    return unless sec802_default_fixture?
+
+    # AIDEV-NOTE: Legacy mutation fixtures now declare explicit SEC802 authority.
+    # This is disposable test setup, never production enrollment or implicit access.
+    @admin.exec_params("INSERT INTO app.organization_access(organization_id,user_id,role) VALUES ($1,$2,'owner')", [@org, @user])
+    @admin.exec_params("INSERT INTO app.mailbox_security(organization_id,mailbox_id,classification) VALUES ($1,$2,'team')", [@org, @box])
+    fixture_ceiling(@identity, @box)
+  end
+
+  def sec802_default_fixture?
+    true
+  end
+
+  def fixture_ceiling(actor, box)
+    @admin.exec_params(<<~SQL, [@org, box, actor.user_id])
+      INSERT INTO app.mailbox_grant_ceilings(organization_id,mailbox_id,user_id,compose,approve_send,manage_members)
+        VALUES ($1,$2,$3,true,true,true)
+        ON CONFLICT (mailbox_id,user_id) DO UPDATE SET compose=true,approve_send=true,manage_members=true
+    SQL
+  end
+
+  def add_actor
+    actor = super
+    if sec802_default_fixture?
+      @admin.exec_params("INSERT INTO app.organization_access(organization_id,user_id,role) VALUES ($1,$2,'associate')", [@org, actor.user_id])
+    end
+    actor
   end
 
   def teardown
@@ -32,13 +61,18 @@ class MailboxMembershipDatabaseCase < CollaborationDatabaseCase
     super(org: org, visibility: visibility).tap { |id| @owned_boxes << id }
   end
 
-  def explicit_member(actor, box: @box, manager: false)
+  def explicit_member(actor, box: @box, manager: false, approve: false)
     member_change(actor.user_id) do |connection|
-      connection.exec_params(<<~SQL, [@org, box, actor.user_id, manager])
-        INSERT INTO app.mailbox_memberships(organization_id, mailbox_id, user_id, compose, manage_members)
-          VALUES ($1,$2,$3,true,$4)
+      connection.exec_params(<<~SQL, [@org, box, actor.user_id, manager, approve])
+        INSERT INTO app.mailbox_memberships(organization_id, mailbox_id, user_id, compose, manage_members, approve_send)
+          VALUES ($1,$2,$3,true,$4,$5)
       SQL
     end
+    return unless sec802_default_fixture? && manager && actor.user_id != @user
+
+    @admin.exec_params("UPDATE app.organization_access SET role='sales_manager' WHERE organization_id=$1 AND user_id=$2",
+      [@org, actor.user_id])
+    fixture_ceiling(actor, box)
   end
 
   def revision(box = @box)
@@ -79,6 +113,9 @@ class MailboxMembershipDatabaseCase < CollaborationDatabaseCase
     result = invoke("create_session", actor.digest, user_id, actor.auth_session_id, "encrypted-access",
       "encrypted-refresh", (Time.now.utc + 3600).iso8601, SecureRandom.uuid, "c" * 48)
     assert_equal "ok", result.fetch("status")
+    if sec802_default_fixture?
+      @admin.exec_params("INSERT INTO app.organization_access(organization_id,user_id,role) VALUES ($1,$2,'associate')", [@org, user_id])
+    end
     actor
   end
 

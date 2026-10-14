@@ -3,20 +3,8 @@
 require_relative "mailbox_membership_database_helper"
 
 class OrganizationAccessDatabaseTest < MailboxMembershipDatabaseCase
-  def teardown
-    if @admin && @org
-      # AIDEV-NOTE: Disposable fixture cleanup alone may bypass the immutable-owner trigger as superuser.
-      @admin.exec("ROLLBACK") if @admin.transaction_status != PG::PQTRANS_IDLE
-      @admin.exec("BEGIN")
-      @admin.exec("ALTER TABLE app.organization_access DISABLE TRIGGER guard_owner_loss")
-      @admin.exec_params("DELETE FROM app.organization_enrollment_receipts WHERE organization_id=$1", [@org])
-      @admin.exec_params("DELETE FROM app.organization_access WHERE organization_id=$1", [@org])
-      @admin.exec("ALTER TABLE app.organization_access ENABLE TRIGGER guard_owner_loss")
-      @admin.exec("COMMIT")
-    end
-    super
-  ensure
-    @admin.exec("ROLLBACK") if @admin && @admin.transaction_status != PG::PQTRANS_IDLE
+  def sec802_default_fixture?
+    false
   end
 
   def grant(actor, role)
@@ -99,9 +87,9 @@ class OrganizationAccessDatabaseTest < MailboxMembershipDatabaseCase
     grant(peer, "admin")
     assert_equal "not_found", change(admin, peer, 0, "associate").fetch("status")
     assert_equal "not_found", change(admin, @identity, 0, "associate").fetch("status")
-    assert_equal %w[admin admin owner], [admin.user_id, peer.user_id, @user].map { |id|
+    assert_equal %w[admin admin owner], ([admin.user_id, peer.user_id, @user].map { |id|
       @admin.exec_params("SELECT role FROM app.organization_access WHERE user_id=$1", [id]).getvalue(0, 0)
-    }
+    })
   end
 
   def test_two_simultaneous_owner_removals_both_reject

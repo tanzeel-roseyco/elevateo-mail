@@ -140,3 +140,7 @@ SEC-802 role demotion now preserves the last effective team manager through mail
 SEC-802 adds an outreach content-read authority routine matching the protected draft-write role matrix; Dorian integration and fleet tests remain pending.
 
 SEC-802 atomic organization role audit source is added: changed-role events only, fixed operation label, owner/admin paged metadata read. Runtime evidence and Theo/Cassian integration remain pending.
+
+SEC-802 fleet `45be80b`: migration PASS; organization and legacy membership/draft Ruby cases failed. Fixture repair adds current organization role, mailbox classification, ceiling and capability rows for legacy mailbox tests, and scoped cleanup before memberships are removed. New source has not yet passed isolated or order-varied fleet Docker suites; production permission policy is unchanged.
+
+SEC-802 draft concurrency fixtures now state the same explicit disposable authority and use scoped organization cleanup; Theo retains ownership of separate draft schema dependency probes. New draft race runtime remains NOT_RUN on this source.
