@@ -45,3 +45,5 @@ The manual consent claim now stores `evidence_kind='manual_attestation'` in the 
 Current-row consent actor is cleared when a lead becomes unknown or withdrawn, while append-only event actor history remains. A focused withdrawal controller regression is authored but not executed locally; Soren must run it in fleet Docker on the exact SHA. Independent review and integrated authenticated HTTP remain pending.
 
 Cassian's campaign-scoped account URL is now matched in the owned controller and repository. Account index filters by campaign; detail/update check returned campaign ID; create derives campaign from the path. Source regression cases cover scoped list and cross-campaign detail denial; fleet Docker execution is requested, not claimed.
+
+Create replay now uses an immutable SHA-256 request fingerprint stored on each draft row. This addresses exact create retries after later edits, while changed-intent reuse of the operation UUID still errors. Repository regression is authored but unexecuted; migration apply/rollback and replay behavior require Soren's disposable fleet Docker database.

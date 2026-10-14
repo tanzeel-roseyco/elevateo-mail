@@ -198,3 +198,5 @@ OUT-804 lead detail now labels recorded human consent as `manual_attestation`; D
 OUT-804 current lead detail clears the prior attestation actor when consent becomes unknown or withdrawn; the append-only event retains the earlier actor and status change for audit. Fleet verification remains requested.
 
 OUT-804 account list/detail now require the campaign path ID, with account lists filtered to that campaign and cross-campaign detail denied. Accounts remain disabled records; route activation and Docker checks are pending Cassian/Soren.
+
+OUT-804 creates now persist an immutable request fingerprint, so an exact create retry is recognized even after the draft record has been edited. A changed request with the same operation ID remains a conflict; fleet verification is pending.

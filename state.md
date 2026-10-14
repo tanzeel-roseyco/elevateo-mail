@@ -140,3 +140,5 @@ OUT-804 manual consent events are explicitly labeled `manual_attestation` in per
 OUT-804 source correction clears current-row `consent_recorded_by` on unknown/withdrawn status while preserving append-only actor history. Exact fleet runtime and integrated HTTP remain pending.
 
 OUT-804 account source now matches Cassian's campaign-scoped V2 paths. Page queries require a campaign ID for accounts, and detail checks reject accounts under a different campaign; these routes and scoped tests remain pending integration/fleet execution.
+
+OUT-804 create idempotency now compares an immutable stored request fingerprint instead of mutable campaign/lead/account fields. Exact retry after a subsequent edit is retained; changed-intent replay fails closed. Fleet execution remains pending.

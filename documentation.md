@@ -208,3 +208,5 @@ The outreach consent event records `evidence_kind` as `manual_attestation` for a
 When consent leaves `granted`, the current lead projection clears its consent actor; the immutable event continues to record who made the state change. This keeps current evidence fields aligned with the displayed current status.
 
 The account route shape is `/v2/outreach/campaigns/{campaign_id}/accounts` and `.../{account_id}`. Index requires the campaign ID in its keyset query; detail/update reject account rows from another campaign, and create derives campaign ID from the path rather than body. Every account remains `disabled`.
+
+Migration 00009 stores `creation_fingerprint` for campaign, lead and account rows. A retry of the same create operation compares its normalized request fingerprint to this immutable field rather than the current mutable row, preserving idempotency after later edits; reusing an operation ID with different input returns `operation_mismatch`.
