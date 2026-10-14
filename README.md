@@ -14,6 +14,8 @@ Shared company mailroom with one Rails domain authority and a React/TypeScript c
 
 ## Current state
 
+**QA816 FIX940 source (2026-10-14):** Nadia's exact `be921687` producer repair precomputes the unchanged SQL bind arrays for two heredoc calls. Soren's prior `fc45037b` focused test failed to parse before any case; independent repair review and fleet syntax/unit rerun are pending.
+
 **INT-801 expanded suite checkpoint (2026-10-14):** Exact activated feature `fc45037b` reached the fleet backend suite selector, which stopped before any Ruby case because two new root-level tests are unclassified. Orion owns the manifest correction; Soren will rerun one immutable successor. Independent ADV155 reviewed Nadia FIX938 negative admission tests over 103 LOC with zero defects and statically closed REV936's LOW oracle gap; fixture unit and real private-byte/browser checks remain pending.
 
 **SMTP888 source candidate:** The pinned net-smtp 0.5.2 implements the local Mailpit TLS toggles, but its bundled RBS omits them. A narrow local declaration and preconnect factory regression are added; Soren fleet Steep/unit execution and independent review are pending. Remote SMTP remains held.

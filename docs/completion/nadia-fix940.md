@@ -1,0 +1,7 @@
+# QA816 FIX940 producer syntax repair
+
+Parent producer/test pin: `31b3a37c91bed87bd52cf995df320e6a1d9cc6c9`. Soren's exact integrated `fc45037b3d111e8325c859cf22b9a6ae01109c85` receipt `docs/completion/qa815-evidence/qa816-seed-unit-fc45037b3d11.txt` records `SyntaxError` at producer line 116, `run_exit=1`, and zero test cases because require failed. Earlier REV935/REV936 static review did not prove parsing; the prior FIX938 unit status must remain NOT_RUN/blocked by setup rather than PASS.
+
+The changed `insert_stored` call computes the same ordered nine bind values before passing them with the unchanged SQL heredoc to `admin.exec_params`. The adjacent `insert_rejected` uses the same `scope.values_at + [id]` pattern, so it likewise computes the same five values first. Nearby other heredoc calls have one-line argument expressions and were left unchanged. Storage, scanner, authorization, committed tuple and sidecar logic are untouched.
+
+Independent bounded review request: producer lines 105-127 (23 LOC), with context lines 59-64 and 129-146 (24 LOC) if needed; each read under 180 LOC. No independent repair review or new defect density is claimed. Soren-only fleet-02 Docker request after coherent integration: `ruby -c tests/acceptance/qa816-attachments-seed.rb`, then `ruby tests/acceptance/qa816-attachments-seed-test.rb`; capture exact source/image, exits, case/assertion counts and cleanup. No host/local test or Docker executed by Nadia. Actual authoring runtime gpt-6-sol low; billed tier unverified.
