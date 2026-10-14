@@ -1,0 +1,142 @@
+{
+  "openapi": "3.1.1",
+  "info": {
+    "title": "Elevateo personal preferences additive V2 proposal",
+    "version": "2.0.0-proposal.preferences.1",
+    "description": "Noncanonical proposal. No route registration or production activation; frozen V1 and canonical V2 draft.5 remain unchanged."
+  },
+  "servers": [
+    {
+      "url": "/"
+    }
+  ],
+  "security": [
+    {
+      "sessionCookie": []
+    }
+  ],
+  "paths": {
+    "/v2/me/preferences": {
+      "get": {
+        "operationId": "getMyPreferences",
+        "x-elevateo-status": "proposal",
+        "summary": "Read the authenticated actor's display name only",
+        "responses": {
+          "200": {
+            "description": "Current actor preference",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PersonalPreferences"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Current session, organization or preference unavailable without identity disclosure"
+          }
+        }
+      },
+      "put": {
+        "operationId": "replaceMyPreferences",
+        "x-elevateo-status": "proposal",
+        "summary": "Replace the authenticated actor's display name at an expected revision",
+        "parameters": [
+          {
+            "name": "X-CSRF-Token",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PersonalPreferenceChange"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated actor preference",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PersonalPreferences"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed or extra input"
+          },
+          "404": {
+            "description": "Current session, organization or preference unavailable without identity disclosure"
+          },
+          "409": {
+            "description": "Expected revision stale"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "sessionCookie": {
+        "type": "apiKey",
+        "in": "cookie",
+        "name": "elevateo_session"
+      }
+    },
+    "schemas": {
+      "PersonalPreferences": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "display_name",
+          "revision"
+        ],
+        "properties": {
+          "display_name": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 256
+          },
+          "revision": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      },
+      "PersonalPreferenceChange": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "display_name",
+          "expected_revision"
+        ],
+        "properties": {
+          "display_name": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 256
+          },
+          "expected_revision": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      }
+    }
+  }
+}

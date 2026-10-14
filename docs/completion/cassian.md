@@ -1,5 +1,7 @@
 # INT-801 Cassian implementation packet
 
+Parallel contract preparation: `contracts/v2/proposals/personal-preferences.openapi.json` is a noncanonical PREF-822 draft only. It defines session-derived display-name GET/PUT, strict body/revision/CSRF shape and generic missing/stale errors without adding canonical routes or touching the frozen core candidate. Theo source, security review and fleet runtime are pending; no generated declaration or active API is claimed.
+
 ## Latest integrated checkpoint — 2026-10-14 15:25 UTC
 
 Soren exact fa3082a pinned Ruby static gate failed: Steep 89 problems in 12 files and RuboCop lint 11 offenses in 262 files, with task archive/container absent. Two lint findings were Cassian-owned `v2_route_registry_test.rb` ambiguous block associations; source assertions were parenthesized without changing test meaning, pending fleet rerun. The remaining nine lint findings and Steep families were routed to source owners via root; no acceptance claim.
