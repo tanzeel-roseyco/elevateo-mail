@@ -7,3 +7,5 @@ Organization grant GET returns a bounded redacted page with seven effective role
 AIDEV-NOTE: No-live-send is a contract boundary, not a UI toggle. Reject unknown request fields and stale revisions. Authorization must be rechecked inside the transaction after waits.
 
 Runtime browser schemas live in `apps/web/src/data/v2Contract.ts`. Generate OpenAPI declaration types only inside Soren's fleet Docker lane with `npm run generate:api:v2` from `apps/web`; pin output to the exact canonical source and verify schema agreement before adoption. The V2 browser adapter is source-committed but production shell injection awaits fleet checks.
+
+The `contracts/tooling/generate-v2.sh` wrapper delegates to the web package generator. Run it only in Soren's fleet Docker lane, commit the generated declaration with its exact source hash, then run `npm --prefix apps/web run check:api:v2`.
