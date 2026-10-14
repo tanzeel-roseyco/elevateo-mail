@@ -113,6 +113,25 @@ describe('private inbox attachments (ATT830)', () => {
     expect(download).not.toHaveBeenCalled()
   })
 
+  it('fails closed on control, DEL, separator and bidi-override characters in a clean filename (FE873)', async () => {
+    const download = vi.fn<AttachmentReadPort['downloadCleanInboxAttachment']>()
+    renderAttachments({
+      listInboxAttachments: async () => ({ items: [
+        { ...clean, filename: 'tab\there.txt' },
+        { ...clean, id: '00000000-0000-4000-8000-000000000052', filename: 'nul\u0000.txt' },
+        { ...clean, id: '00000000-0000-4000-8000-000000000053', filename: 'del\u007f.txt' },
+        { ...clean, id: '00000000-0000-4000-8000-000000000054', filename: 'back\\slash.txt' },
+        { ...clean, id: '00000000-0000-4000-8000-000000000055', filename: 'rtl\u202etxt.exe' },
+        { ...clean, id: '00000000-0000-4000-8000-000000000056', filename: 'iso\u2066late.txt' },
+      ], next_cursor: null }),
+      downloadCleanInboxAttachment: download,
+    })
+    fireEvent.click(await screen.findByRole('button', { name: 'Show 1 attachment' }))
+    expect(await screen.findAllByText(/Attachment unavailable/)).toHaveLength(6)
+    expect(screen.queryByRole('button', { name: /Download/ })).toBeNull()
+    expect(download).not.toHaveBeenCalled()
+  })
+
   it('keeps a clean listing but denies bytes when the proxy reports a held verdict', async () => {
     const download = vi.fn<AttachmentReadPort['downloadCleanInboxAttachment']>(async () => { throw new GatewayError('api', 'not_available', 'held', { status: 423 }) })
     renderAttachments({ listInboxAttachments: async () => ({ items: [clean], next_cursor: null }), downloadCleanInboxAttachment: download })

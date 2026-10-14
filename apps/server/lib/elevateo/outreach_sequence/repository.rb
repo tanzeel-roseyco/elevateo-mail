@@ -120,8 +120,9 @@ module Elevateo
             [org, input.campaign_id, input.id])
         end
         input.steps.each do |step|
-          rows(<<~SQL, [step.fetch("id"), org, input.campaign_id, input.id,
-            step.fetch("position"), step.fetch("delay_seconds"), step.fetch("local_time"), step.fetch("label")])
+          values = [step.fetch("id"), org, input.campaign_id, input.id,
+            step.fetch("position"), step.fetch("delay_seconds"), step.fetch("local_time"), step.fetch("label")]
+          rows(<<~SQL, values)
             INSERT INTO app.campaign_sequence_steps
               (id,organization_id,campaign_id,sequence_id,position,delay_seconds,local_time,label)
             VALUES ($1::uuid,$2::uuid,$3::uuid,$4::uuid,$5::integer,$6::integer,$7::time,$8)
