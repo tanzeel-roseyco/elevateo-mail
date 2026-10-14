@@ -28,16 +28,18 @@ class OrganizationRoleAuditTest < Minitest::Test
     %w[0 01 51 -1].each do |limit|
       assert_equal "request_invalid", assert_raises(Elevateo::CollaborationError) { Audit.limit("limit" => limit) }.code
     end
-    assert_equal "internal_error", assert_raises(Elevateo::CollaborationError) do
+    error = assert_raises(Elevateo::CollaborationError) do
       Audit.items([row.merge("new_role" => "root")], organization: ORG, limit: 1)
-    end.code
+    end
+    assert_equal "internal_error", error.code
   end
 
   def test_content_or_noop_cannot_enter_audit_projection
     [row.merge("email" => "private@example.invalid"), row.merge("new_role" => "associate")].each do |value|
-      assert_equal "internal_error", assert_raises(Elevateo::CollaborationError) do
+      error = assert_raises(Elevateo::CollaborationError) do
         Audit.items([value], organization: ORG, limit: 1)
-      end.code
+      end
+      assert_equal "internal_error", error.code
     end
   end
 end
