@@ -19,6 +19,15 @@ class SendContractTest < Minitest::Test
     end
   end
 
+  # AIDEV-NOTE: Pin immutable03ae keysets+seals independently; a manifest resealed from additive source must fail.
+  def test_preservation_manifest_is_pinned_to_immutable_baseline
+    assert_equal "03ae770c56271cd8236726bfd8fe63248e81283d", PRESERVATION.fetch("baseline_commit")
+    assert_equal "65a5f926c661cb028e934e861892a995c2d9271853275546518b78588fa66597",
+                 PRESERVATION.fetch("baseline_openapi_sha256")
+    assert_equal "d3de289b10ed86f528a1b3b959d39ec00c5768a0d94296f4324146e85dabe01e",
+                 Digest::SHA256.hexdigest(JSON.generate(sorted(PRESERVATION.fetch("frozen_sections"))))
+  end
+
   def test_every_baseline_path_and_component_is_structurally_unchanged
     PRESERVATION.fetch("frozen_sections").each do |path, seal|
       section = path.split("/").reduce(DOCUMENT) { |part, key| part.fetch(key) }
@@ -115,6 +124,21 @@ class SendContractTest < Minitest::Test
     refute valid?(schema("SendReview"), review.merge("to" => review.fetch("to") * 101))
     refute valid?(schema("SendReview"), review.merge("attachments" => ["unsupported"]))
     refute valid?(schema("SendReview"), review.merge("simulated" => false))
+  end
+
+  def test_non_ready_review_keeps_absent_policy_and_multiple_issues_per_recipient
+    review = FIXTURES.fetch("examples").find { |item| item.fetch("name") == "not_ready" }.fetch("value")
+    recipients = Array.new(100) { { "display_name" => "\n", "address" => "invalid" } }
+    issues = (0...100).flat_map do |index|
+      [{ "code" => "recipient_invalid", "recipient_index" => index },
+       { "code" => "header_invalid", "recipient_index" => index }]
+    end
+    checks = (0...100).map { |index| { "index" => index, "status" => "invalid" } }
+    candidate = review.merge("policy_revision" => "0", "to" => recipients,
+      "recipient_checks" => checks, "issues" => issues + [{ "code" => "purpose_unavailable", "recipient_index" => nil }])
+    assert valid?(schema("SendReview"), candidate)
+    refute valid?(schema("SendReview"), candidate.merge("policy_revision" => "-1"))
+    refute valid?(schema("SendReview"), candidate.merge("issues" => issues * 2))
   end
 
   def test_status_cannot_claim_delivery_or_expose_snapshot

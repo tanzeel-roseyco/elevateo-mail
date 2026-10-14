@@ -1,0 +1,84 @@
+{
+  "owner": "Cassian BE03-CONTRACT",
+  "commit": "3d01babe0fff976e9ea14045981ad7e7c77810fa",
+  "baseline": "03ae770c56271cd8236726bfd8fe63248e81283d",
+  "packets": [
+    {
+      "path": "contracts/v1/openapi.json",
+      "start_line": 5,
+      "end_line": 5,
+      "lines": 1,
+      "sha256": "9ba2546f8fd6e1fc157ffade12138d2ce4588ba03539ac77f6ec17cc54581ecb"
+    },
+    {
+      "path": "contracts/v1/openapi.json",
+      "start_line": 4803,
+      "end_line": 4943,
+      "lines": 141,
+      "sha256": "9ba2546f8fd6e1fc157ffade12138d2ce4588ba03539ac77f6ec17cc54581ecb"
+    },
+    {
+      "path": "contracts/v1/openapi.json",
+      "start_line": 6634,
+      "end_line": 6833,
+      "lines": 200,
+      "sha256": "9ba2546f8fd6e1fc157ffade12138d2ce4588ba03539ac77f6ec17cc54581ecb"
+    },
+    {
+      "path": "contracts/v1/openapi.json",
+      "start_line": 6834,
+      "end_line": 6867,
+      "lines": 34,
+      "sha256": "9ba2546f8fd6e1fc157ffade12138d2ce4588ba03539ac77f6ec17cc54581ecb"
+    },
+    {
+      "path": "contracts/v1/openapi.json",
+      "start_line": 7170,
+      "end_line": 7282,
+      "lines": 113,
+      "sha256": "9ba2546f8fd6e1fc157ffade12138d2ce4588ba03539ac77f6ec17cc54581ecb"
+    },
+    {
+      "path": "contracts/v1/openapi.json",
+      "start_line": 7294,
+      "end_line": 7300,
+      "lines": 7,
+      "sha256": "9ba2546f8fd6e1fc157ffade12138d2ce4588ba03539ac77f6ec17cc54581ecb"
+    },
+    {
+      "path": "contracts/v1/tests/send_contract_test.rb",
+      "start_line": 1,
+      "end_line": 128,
+      "lines": 128,
+      "sha256": "06d92097e409fa1ac1e418aff50648d6411b065ee85477b5abfdc93555f96b4e"
+    },
+    {
+      "path": "contracts/v1/send-fixtures.json",
+      "start_line": 1,
+      "end_line": 160,
+      "lines": 160,
+      "sha256": "fb01dd6c2a945449279f450216a16b0ca762ac20b5a1485f133e3de975a05ec6"
+    },
+    {
+      "path": "contracts/v1/be03-preservation.json",
+      "start_line": 1,
+      "end_line": 154,
+      "lines": 154,
+      "sha256": "e7f9233b13b19ed39af42b036e3877f570442e7d501c2eb6d0b5061be61a48f1"
+    },
+    {
+      "path": "contracts/v1/contract-lock.json",
+      "start_line": 2,
+      "end_line": 31,
+      "lines": 30,
+      "sha256": "665b19fca039bbb0e7a2d27a4c628b49ae5ce9130627fefd4a226385c5903a77"
+    }
+  ],
+  "review_limit": "Each read <=200 lines; each assignment <=400 source lines divided into packets. Root dispatches source and dedicated design reviewers.",
+  "design_context": [
+    "docs/completion/be03-implementation-brief.md sections2-3",
+    "docs/completion/be03-r24-contract-integration.md"
+  ],
+  "rubric": ".planning/wave-20261014/INT-401.md",
+  "runtime": "NOT_RUN"
+}

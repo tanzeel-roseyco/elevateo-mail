@@ -6781,10 +6781,10 @@
           "consent_basis": {"const": "human_attestation_required"},
           "attachments": {"type": "array","maxItems": 0,"items": false},
           "attachments_supported": {"const": false},
-          "policy_revision": {"type": "string","pattern": "^[1-9][0-9]*$","maxLength": 19},
+          "policy_revision": {"type": "string","pattern": "^(0|[1-9][0-9]*)$","maxLength": 19},
           "recipient_checks": {"type": "array","maxItems": 100,"items": {"$ref": "#/components/schemas/SendRecipientCheck"}},
           "ready": {"type": "boolean"},
-          "issues": {"type": "array","maxItems": 120,"items": {"$ref": "#/components/schemas/SendReadinessIssue"}},
+          "issues": {"type": "array","maxItems": 210,"items": {"$ref": "#/components/schemas/SendReadinessIssue"}},
           "review_digest": {"anyOf": [{"type": "string","pattern": "^[0-9a-f]{64}$","minLength": 64,"maxLength": 64},{"type": "null"}]},
           "simulated": {"const": true}
         },

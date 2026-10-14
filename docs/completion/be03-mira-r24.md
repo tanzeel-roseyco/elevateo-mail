@@ -13,3 +13,5 @@ Current checks: source whitespace `git diff --check` exit0. Application lint/typ
 Coordination: `incoming/be03-r24-coordination/mira-signatures.md`, `mira-status.md`; Cassian contract, Nadia API, Rowan SQL, Soren lease/testing. Integration owner retains central review ledger and acceptance authority.
 
 Canonical receipt paired by merge `405056f` with exact Cassian `3d01babe0fff976e9ea14045981ad7e7c77810fa`, preserving both parents. State conflict preserved both owner notes. Validator aligned to sender320/policy_revision19/issues120 and ready/digest conditional. Self-inspection corrected unconfigured DOM matchers in new tests (no new dependency), added editor save->review->queued regression and guarded a stale completion from downgrading an already approved binding; runtime still pending.
+
+Corrected canonical receipt `aa35c3d` supersedes `3d01babe`: validator allows policy revision `0` for nonready display and up to210 readiness issues; no client policy authority added. Original generated artifact pending Soren-authorized lightweight Docker recipe, now available.

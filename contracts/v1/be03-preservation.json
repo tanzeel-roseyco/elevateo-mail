@@ -26,13 +26,9 @@
         "/v1/threads/{thread_id}/notes",
         "/v1/mailboxes/{mailbox_id}/members",
         "/v1/mailboxes/{mailbox_id}/members/{user_id}",
-        "/v1/search",
-        "/v1/drafts/{draft_id}/send-review",
-        "/v1/drafts/{draft_id}/send-approvals",
-        "/v1/send-intents/{send_id}",
-        "/v1/send-intents/{send_id}/cancellation"
+        "/v1/search"
       ],
-      "sha256": "92bf83c763f3cfa37007584a8926c5851d7f144a02a617199b52b8a223f379ef"
+      "sha256": "17bc8c14974b5f3ef41b2ff4c063f20ac6e75872031c339738f21626072e2976"
     },
     "components/securitySchemes": {
       "keys": [
@@ -96,24 +92,9 @@
         "MailboxMemberInput",
         "MailboxMemberPage",
         "MailboxMembershipResult",
-        "SearchPage",
-        "SendDraftVersion",
-        "SendState",
-        "SendReadinessCode",
-        "SendHoldReason",
-        "SendRecipient",
-        "SendSender",
-        "SendRecipientCheck",
-        "SendReadinessIssue",
-        "SendApprovalInput",
-        "SendCancellationInput",
-        "SendError",
-        "SendReview",
-        "ApprovalResult",
-        "SendStatus",
-        "CancellationResult"
+        "SearchPage"
       ],
-      "sha256": "5d54ad85a1351c2880e12aa1a021dd60407fe1dc233f1ed844374869ed501ec8"
+      "sha256": "d97cf79fcfa95ef897beaed6b6907ad1f2de082f410222aaa58b38df1d411ca8"
     },
     "components/parameters": {
       "keys": [
@@ -135,16 +116,9 @@
         "CdConflict",
         "CdRateLimited",
         "CdUnavailable",
-        "CdInternalError",
-        "Send400",
-        "Send401",
-        "Send404",
-        "Send409",
-        "Send429",
-        "Send503",
-        "Send500"
+        "CdInternalError"
       ],
-      "sha256": "fa0bd4aa657ed5aad07a2ff05249c577ee4604fba82539e19469cecc5512d920"
+      "sha256": "53497f011144dba5379a4948049edc5aaaba868a4b9ee3ad7258b5953c081a84"
     }
   },
   "baseline_fixtures_sha256": "bfa2f8832395fcd7c43e4a7671d3e83c687af44ad09488bc722a54a0fc2eb455",

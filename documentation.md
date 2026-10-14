@@ -2,10 +2,12 @@
 
 ### Mira BE03 UI isolated R24 implementation (2026-10-14)
 
-Root authorizes isolated BE03 implementation over `03ae770` while BE02 remains OPEN/unaccepted and integration/release gated. Mira owns the send gateway, generated web artifacts after canonical contract, and review/approval/status UI. The S1/S2 UI renders full saved plaintext content, explicit correspondence approval, original-binding uncertain retry, and server-owned simulated status. Paired exact canonical contract `3d01babe`; runtime, generated artifact, independent review and actual visual validation are pending; no completion or delivery claim. Canonical source is `contracts/v1/openapi.json`. See [Mira scoped evidence](docs/completion/be03-mira-r24.md).
+Root authorizes isolated BE03 implementation over `03ae770` while BE02 remains OPEN/unaccepted and integration/release gated. Mira owns the send gateway, generated web artifacts after canonical contract, and review/approval/status UI. The S1/S2 UI renders full saved plaintext content, explicit correspondence approval, original-binding uncertain retry, and server-owned simulated status. Paired corrected exact canonical contract `aa35c3d`; runtime, generated artifact, independent review and actual visual validation are pending; no completion or delivery claim. Canonical source is `contracts/v1/openapi.json`. See [Mira scoped evidence](docs/completion/be03-mira-r24.md).
 
 
 ## Current execution status
+
+R24 contract review correction: three unique MEDIUM defects repaired in source (two non-ready schema limits and preservation manifest reseal). Independent repaired-source re-review and fleet Docker regressions remain pending; no runtime PASS.
 
 Application IN PROGRESS — R24 isolated BE03 implementation (2026-10-14). Root explicitly authorizes implementation on baseline `03ae770c56271cd8236726bfd8fe63248e81283d` in parallel with BE02 acceptance; BE02 stays OPEN/unaccepted and integration/release remain gated. Priority is S1+S2: saved draft -> consistent review -> human approval -> durable queued intent. Canonical additive contract is `contracts/v1/openapi.json`, version `1.0.0-send.1`; existing C/D operations/components and fixtures are frozen. Contract source, preservation manifest and synthetic regression fixtures are prepared; Docker generation, conformance and integrated runtime are NOT_RUN. See [R24 record](docs/completion/be03-r24-contract-integration.md). Requested Fast billing is unverified. Historical R23 checkpoint follows; its BE03-closed sequencing is superseded only for this isolated authorized lane.
 

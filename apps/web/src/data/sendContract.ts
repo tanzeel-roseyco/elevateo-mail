@@ -30,9 +30,9 @@ export const SendReviewSchema = z.strictObject({
   sender: z.strictObject({ display_name: z.null(), address: text(320).nullable() }),
   to: z.array(AddressSchema).max(100), subject: text(998), body_text: text(65536), reply_to_thread_id: id.nullable(),
   purpose: z.literal('correspondence'), consent_basis: z.literal('human_attestation_required'),
-  attachments: z.array(z.never()).max(0), attachments_supported: z.literal(false), policy_revision: z.string().max(19).regex(/^[1-9][0-9]*$/),
+  attachments: z.array(z.never()).max(0), attachments_supported: z.literal(false), policy_revision: z.string().max(19).regex(/^(0|[1-9][0-9]*)$/),
   recipient_checks: z.array(z.strictObject({ index: z.number().int().min(0).max(99), status: z.enum(['ok', 'invalid', 'duplicate', 'suppressed']) })).max(100),
-  ready: z.boolean(), issues: z.array(z.strictObject({ code: ReadinessCodeSchema, recipient_index: z.number().int().min(0).max(99).nullable() })).max(120),
+  ready: z.boolean(), issues: z.array(z.strictObject({ code: ReadinessCodeSchema, recipient_index: z.number().int().min(0).max(99).nullable() })).max(210),
   review_digest: digest.nullable(), simulated: z.literal(true),
 }).refine((review) => review.ready === (review.review_digest !== null))
 export const SendApprovalInputSchema = z.strictObject({
