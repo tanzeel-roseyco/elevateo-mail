@@ -8,9 +8,10 @@ module Elevateo
     class ImapSync
       MAX_BATCH = 50
 
-      def initialize(store:, transport:)
+      def initialize(store:, transport:, attachment_storage: nil)
         @store = store
         @transport = transport
+        @attachment_storage = attachment_storage
       end
 
       def run(account_id:, credential_version:)
@@ -46,7 +47,7 @@ module Elevateo
           previous_uid = uid
         end
 
-        ingress = ImapIngress.new(store: @store)
+        ingress = ImapIngress.new(store: @store, attachment_storage: @attachment_storage)
         events.each do |event|
           uid = event.fetch(:uid)
           raw = event.fetch(:raw_mime)

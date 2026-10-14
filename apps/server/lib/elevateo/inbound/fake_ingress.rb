@@ -107,7 +107,8 @@ module Elevateo
 
       def attachment(part)
         type = part.mime_type
-        reject("unsupported_mime") unless type.is_a?(String) && %w[text/plain application/octet-stream].include?(type)
+        reject("unsupported_mime") unless type.is_a?(String) &&
+          %w[text/plain application/octet-stream application/pdf image/png image/jpeg].include?(type)
         data = part.decoded
         reject("oversized_attachment") unless data.bytesize <= MAX_TEXT
         { filename: clean_filename(part.filename), content_type: type, size: data.bytesize,

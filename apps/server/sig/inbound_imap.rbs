@@ -14,13 +14,22 @@ module Elevateo
   module Inbound
     type imap_event = { uid: Integer, raw_mime: String }
     type imap_claim = { "credential_ref" => String, "uidvalidity" => Integer?, "last_uid" => Integer }
+    type staged_attachment = { ordinal: Integer, filename: String, content_type: String,
+      byte_size: Integer, sha256: String, storage_key: String }
+    type parsed_attachment = { ordinal: Integer, filename: String, content_type: String,
+      byte_size: Integer, sha256: String, bytes: String }
+
+    interface _AttachmentStorage
+      def put_once: (String, String) -> void
+    end
 
     interface _ImapStore
       def claim: (account_id: String, credential_version: Integer) -> imap_claim
       def reset_uidvalidity: (account_id: String, credential_version: Integer,
         expected: Integer, replacement: Integer) -> bool
       def insert_once: (account_id: String, credential_version: Integer, uidvalidity: Integer, uid: Integer,
-        content_sha256: String, from: String, to: Array[String], subject: String, text: String) -> Hash[String, untyped]
+        content_sha256: String, from: String, to: Array[String], subject: String, text: String,
+        attachments: Array[staged_attachment]) -> Hash[String, untyped]
     end
 
     interface _ImapSession
@@ -37,7 +46,8 @@ module Elevateo
     class ImapIngress
       DUMMY_SCOPE: String
       @store: _ImapStore
-      def initialize: (store: _ImapStore) -> void
+      @attachment_storage: _AttachmentStorage?
+      def initialize: (store: _ImapStore, ?attachment_storage: _AttachmentStorage?) -> void
       def ingest: (account_id: String, credential_version: Integer, uidvalidity: Integer, uid: Integer,
         raw_mime: String) -> Hash[String, untyped]
       class Capture
@@ -47,14 +57,29 @@ module Elevateo
       end
     end
 
+    class ImapAttachmentParser
+      ALLOWED_TYPES: Array[String]
+      DUMMY_SCOPE: String
+      def parse: (raw_mime: String) -> { record: record, attachments: Array[parsed_attachment] }
+      private
+      def leaves: (Mail::Message) -> Array[Mail::Message]
+      class Capture
+        @record: record?
+        def record: () -> record?
+        def insert_once: (record) -> Hash[String, String]
+      end
+    end
+
     class ImapWorkerStore
       SQL: String
+      PLAIN_SQL: String
       RESET_SQL: String
       CLAIM_SQL: String
       @connection: Elevateo::WriteStatements
       def initialize: (connection: Elevateo::WriteStatements) -> void
       def insert_once: (account_id: String, credential_version: Integer, uidvalidity: Integer, uid: Integer,
-        content_sha256: String, from: String, to: Array[String], subject: String, text: String) -> Hash[String, untyped]
+        content_sha256: String, from: String, to: Array[String], subject: String, text: String,
+        ?attachments: Array[staged_attachment]) -> Hash[String, untyped]
       def reset_uidvalidity: (account_id: String, credential_version: Integer,
         expected: Integer?, replacement: Integer) -> bool
       def claim: (account_id: String, credential_version: Integer) -> imap_claim
@@ -66,7 +91,9 @@ module Elevateo
       MAX_BATCH: Integer
       @store: _ImapStore
       @transport: _ImapTransport
-      def initialize: (store: _ImapStore, transport: _ImapTransport) -> void
+      @attachment_storage: _AttachmentStorage?
+      def initialize: (store: _ImapStore, transport: _ImapTransport,
+        ?attachment_storage: _AttachmentStorage?) -> void
       def run: (account_id: String, credential_version: Integer) -> Integer
     end
 

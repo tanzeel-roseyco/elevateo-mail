@@ -8,6 +8,10 @@ module Elevateo
     # AIDEV-NOTE: This adapter requires the elevateo_worker DB login; account scope is resolved only inside SQL.
     class ImapWorkerStore
       SQL = <<~SQL.freeze
+        SELECT app.ingest_imap_mail_with_attachments($1::uuid,$2::integer,$3::bigint,$4::bigint,$5::text,
+          $6::jsonb,$7::jsonb,$8::text,$9::text,$10::jsonb)::text AS result
+      SQL
+      PLAIN_SQL = <<~SQL.freeze
         SELECT app.ingest_imap_mail($1::uuid,$2::integer,$3::bigint,$4::bigint,$5::text,
           $6::jsonb,$7::jsonb,$8::text,$9::text)::text AS result
       SQL
@@ -18,11 +22,15 @@ module Elevateo
         @connection = connection
       end
 
-      def insert_once(account_id:, credential_version:, uidvalidity:, uid:, content_sha256:, from:, to:, subject:, text:)
+      def insert_once(account_id:, credential_version:, uidvalidity:, uid:, content_sha256:, from:, to:, subject:, text:,
+        attachments: [])
         values = [account_id, credential_version, uidvalidity, uid, content_sha256,
                   { display_name: nil, address: from }.to_json,
-                  to.map { |address| { display_name: nil, address: address } }.to_json, subject, text]
-        row = @connection.exec_query(SQL, "IMAP receive", binds(values)).first
+                  to.map { |address| { display_name: nil, address: address } }.to_json, subject, text,
+                  attachments.to_json]
+        statement = attachments.empty? ? PLAIN_SQL : SQL
+        values.pop if attachments.empty?
+        row = @connection.exec_query(statement, "IMAP receive", binds(values)).first
         raise Rejected, "store_unavailable" unless row
 
         raw = row.fetch("result")

@@ -37,4 +37,16 @@ class ImapWorkerStoreTest < Minitest::Test
       account_id: "11111111-1111-4111-8111-111111111111", credential_version: 1, expected: 42, replacement: 43)
     assert_includes reset.queries.first.first, "app.reset_imap_uidvalidity"
   end
+
+  def test_attachment_path_uses_additive_worker_function
+    connection = Connection.new([{ "result" => '{"result":"created"}' }])
+    handle = { ordinal: 0, storage_key: "quarantine/imap/11111111-1111-4111-8111-111111111111/42/7/0",
+      filename: "report.pdf", content_type: "application/pdf", byte_size: 4, sha256: "a" * 64 }
+    Elevateo::Inbound::ImapWorkerStore.new(connection: connection).insert_once(
+      account_id: "11111111-1111-4111-8111-111111111111", credential_version: 1, uidvalidity: 42,
+      uid: 7, content_sha256: "b" * 64, from: "sender@example.invalid", to: ["inbox@example.invalid"],
+      subject: "hello", text: "body", attachments: [handle])
+    assert_includes connection.queries.first.first, "app.ingest_imap_mail_with_attachments"
+    assert_equal 10, connection.queries.first.last.length
+  end
 end
