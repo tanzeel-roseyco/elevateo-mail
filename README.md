@@ -346,3 +346,5 @@ INT801 added a narrow RBS/controller annotation for the unregistered attachment 
 Nadia confirmed ATT823 rejected metadata must remain visible with byte_size=0 and no private rejection reason. The noncanonical proposal and unbound browser port now match that source decision; Mira UI still needs an explicit held label and no download before any route can activate.
 
 Soren exact web `882a471` generated canonical V2 draft.6 declaration from OpenAPI SHA256 `7ee511a7…2e744`; the exported `api-v2.d.ts` SHA256 is `5c943ec1…0307e34` and is now adopted in source. V1/V2 generation/check, lint and TypeScript passed there; Vitest 58 files/827 cases reached 57 files/825 cases PASS with two Fable shell expectation failures, so build was NOT_REACHED. The maintained Docker CMD now checks both V1 and V2 generated declarations; this later source has no fleet PASS.
+
+Elara CORE854 exact `836efc6` integer idle-delay compatibility repair for send worker drain is imported, with a focused regression. It has not been fleet-executed on the integrated SHA; source review and current backend Steep/full-suite rerun remain pending.

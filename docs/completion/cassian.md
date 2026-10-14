@@ -207,3 +207,5 @@ Nadia confirmed the ATT823 rejected/size-zero visibility choice; proposal attach
 ## Canonical draft.6 generated declaration
 
 Soren exact `web-882a4710860f.log` used canonical V2 OpenAPI SHA256 `7ee511a76fb556bf198896fb5bb31173c3cdeb295977f647b9041c6d7b02e744`, generated `api-v2.d.ts` SHA256 `5c943ec1c13a10fbeec5aed8e7cddcb7bee459352f6a56afd8142e6650307e34`, and passed V1/V2 generation/check, lint and TypeScript. Cassian copied that exact Docker-generated artifact into source and added `check:api:v2` to the maintained web Docker CMD. Vitest on that older source was 57/58 files, 825/827 cases PASS; two Fable shell expectation failures blocked build. The present integrated SHA and new Docker CMD are NOT_RUN.
+
+Imported Elara exact 836efc6 CORE854 drain idle-delay typing/runtime compatibility candidate after Soren cb1ec5b diagnostics. Focused test authored by owner; current integrated Docker test NOT_RUN.
