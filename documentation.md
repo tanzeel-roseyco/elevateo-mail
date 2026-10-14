@@ -493,3 +493,5 @@ The ATT898 attachment repository bind/test-import repair is documented in `docs/
 `contracts/v2/openapi.json` draft.8 is the canonical disabled contract for `listMailboxAssigneeOptions`, `listInboxAttachments` and `downloadCleanInboxAttachment`; proposal files preserve the bounded design rationale. The generated V2 declaration needs exact fleet Docker regeneration and check before feature activation; Rails V2 active registry remains unchanged.
 
 The disabled V2 attachment content operation declares fixed `attachment_held` 423 only after current authorization; inaccessible scope maps to 404 and private gateway outage to 503. `apps/server/test/v2_attachment_error_test.rb` contains the focused unexecuted error-boundary regressions.
+
+QA815 focused receipt `focused-steep-215080a4ed74.txt` identifies one Cassian gateway Numeric conversion diagnostic, six Nadia-owned attachment controller lambda diagnostics and three Corin-owned fake inbound input diagnostics after all eight selected pure Ruby suites passed. The scoped gateway correction uses `Kernel.Float` after the bounded Numeric guard; Soren successor Steep remains pending.

@@ -431,3 +431,5 @@ APP901/DIR904 candidate adds only an inactive mailbox-scoped assignee UUID optio
 V2 draft.8 adds disabled assignee-options and inbound attachment read contracts. The generated V2 declaration still reflects prior draft until Soren fleet codegen, and owner SQL/controller/private byte gates are pending. No route activation or attachment UI injection follows this source-only contract change.
 
 ATT902 internal fixed error vocabulary now includes authorized `attachment_held` 423 for the disabled V2 private content contract, with three authored/unexecuted boundary cases. Frozen V1 OpenAPI error schemas are unchanged; Nadia byte implementation and fleet checks remain pending.
+
+Exact QA815 `215080a4` eight pure Ruby suites passed 51 runs/225 assertions with cleanup, while Steep failed ten diagnostics in three files; no full backend/HTTP/worker PASS follows. Cassian gateway Float conversion repair is source-only; Nadia/Corin own the remaining strict files.
