@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "productName": "Elevateo Mail",
+  "bundleIdentifier": "com.elevateo.mail",
+  "tauriMajor": 2,
+  "sharedWebRoot": "../../../web",
+  "frontendDist": "../../../web/dist",
+  "target": "universal-apple-darwin",
+  "bundleFormat": "dmg",
+  "minimumSystemVersion": "12.0",
+  "authCallbackScheme": "elevateomail",
+  "releaseState": "template-only"
+}
