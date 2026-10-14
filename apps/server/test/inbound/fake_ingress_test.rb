@@ -71,6 +71,9 @@ class FakeIngressTest < Minitest::Test
     assert_code "invalid_mime" do
       ingest(raw_mime: "Content-Type: text/plain\r\n\r\nmissing envelope")
     end
+    assert_code "invalid_mime" do
+      ingest(raw_mime: MIME.sub("sender@example.invalid", "not-an-address"))
+    end
     assert_empty @store.records
   end
 

@@ -30,7 +30,7 @@ module Elevateo
       # Store#insert_once keys on tenant, mailbox, provider, account and event in one transaction.
       def ingest(organization_id:, mailbox_id:, authorized_mailbox_ids:, provider_account_id:, provider_event_id:, raw_mime:)
         validate_scope!(organization_id, mailbox_id, authorized_mailbox_ids, provider_account_id, provider_event_id, raw_mime)
-        mail = Mail.read_from_string(raw_mime)
+        mail = parse_mail(raw_mime)
         selection = select_plaintext(mail)
         body = decoded_text(selection.first)
         scope = { organization_id: organization_id, mailbox_id: mailbox_id,
@@ -61,14 +61,27 @@ module Elevateo
         value.is_a?(String) && /\A[a-zA-Z0-9][a-zA-Z0-9_.:-]{0,127}\z/.match?(value)
       end
 
+      def parse_mail(raw)
+        Mail.read_from_string(raw)
+      rescue StandardError
+        reject("invalid_mime")
+      end
+
       def select_plaintext(mail)
-        reject("invalid_mime") unless mail.header && mail.from&.length == 1 && mail.to&.any?
+        senders, recipients = mail.from, mail.to
+        reject("invalid_mime") unless mail.header && senders.is_a?(Array) && senders.length == 1 &&
+                                      recipients.is_a?(Array) && recipients.length.between?(1, 100)
+        reject("invalid_mime") unless (senders + recipients).all? { |address| valid_address?(address) }
         parts = leaf_parts(mail)
         text_parts = parts.select { |part| part.mime_type == "text/plain" && !part.attachment? }
         reject("unsupported_mime") unless text_parts.length == 1 &&
                                           parts.all? { |part| part.equal?(text_parts.first) || part.attachment? }
         reject("unsupported_mime") if parts.any? { |part| part.mime_type == "text/html" }
         [text_parts.fetch(0), parts]
+      end
+
+      def valid_address?(value)
+        value.is_a?(String) && value.bytesize <= 255 && /\A[^@\s]+@[^@\s]+\z/.match?(value)
       end
 
       def decoded_text(part)

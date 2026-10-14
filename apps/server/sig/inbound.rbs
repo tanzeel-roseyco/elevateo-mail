@@ -45,7 +45,9 @@ module Elevateo
       private
       def validate_scope!: (String, String, Array[String], String, String, String) -> void
       def event_key?: (Object) -> bool
+      def parse_mail: (String) -> Mail::Message
       def select_plaintext: (Mail::Message) -> [Mail::Message, Array[Mail::Message]]
+      def valid_address?: (Object) -> bool
       def decoded_text: (Mail::Message) -> String
       def record_for: (Mail::Message, String, String, [Mail::Message, Array[Mail::Message]],
         Hash[Symbol, String]) -> record
