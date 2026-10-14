@@ -50,12 +50,24 @@ run_bounded() {
 cleanup() {
   previous_status=$?
   trap - EXIT
-  timeout 60s "${compose[@]}" down --volumes --remove-orphans >"$receipt_dir/cleanup.log" 2>&1 || true
+  set +e
+  printf '%s\n' "$previous_status" >"$receipt_dir/exit-status.txt"
+  timeout 10s "${compose[@]}" logs --no-color --tail=300 mox >"$receipt_dir/mox.log" 2>&1
+  log_status=$?
+  timeout 60s "${compose[@]}" down --volumes --remove-orphans >"$receipt_dir/cleanup.log" 2>&1
+  down_status=$?
   docker ps -a --filter "label=com.docker.compose.project=$project" --format '{{.ID}}' >"$receipt_dir/remaining-containers.txt"
+  container_query_status=$?
   docker network ls --filter "label=com.docker.compose.project=$project" --format '{{.ID}}' >"$receipt_dir/remaining-networks.txt"
+  network_query_status=$?
   docker volume ls --filter "label=com.docker.compose.project=$project" --format '{{.Name}}' >"$receipt_dir/remaining-volumes.txt"
-  if [[ -s $receipt_dir/remaining-containers.txt || -s $receipt_dir/remaining-networks.txt || -s $receipt_dir/remaining-volumes.txt ]]; then
-    printf 'cleanup failed: task-owned Docker resources remain\n' >&2
+  volume_query_status=$?
+  printf 'logs=%s down=%s containers=%s networks=%s volumes=%s\n' \
+    "$log_status" "$down_status" "$container_query_status" "$network_query_status" "$volume_query_status" \
+    >"$receipt_dir/cleanup-status.txt"
+  if (( down_status != 0 || container_query_status != 0 || network_query_status != 0 || volume_query_status != 0 )) ||
+     [[ -s $receipt_dir/remaining-containers.txt || -s $receipt_dir/remaining-networks.txt || -s $receipt_dir/remaining-volumes.txt ]]; then
+    printf 'cleanup or task-owned absence verification failed\n' >&2
     exit 1
   fi
   exit "$previous_status"
@@ -78,7 +90,6 @@ if (( status == 0 )); then
   status=$?
   set -e
 fi
-"${compose[@]}" logs --no-color --tail=300 mox >"$receipt_dir/mox.log" 2>&1
 mapfile -t owned_containers < <(docker ps --filter "label=com.docker.compose.project=$project" --format '{{.ID}}')
 if (( ${#owned_containers[@]} > 0 )); then
   timeout 10s docker stats --no-stream --format '{{.Name}} {{.CPUPerc}} {{.MemUsage}}' \
@@ -86,5 +97,4 @@ if (( ${#owned_containers[@]} > 0 )); then
 else
   printf 'no task-owned running containers for stats\n' >"$receipt_dir/resources.txt"
 fi
-printf '%s\n' "$status" >"$receipt_dir/exit-status.txt"
 exit "$status"
