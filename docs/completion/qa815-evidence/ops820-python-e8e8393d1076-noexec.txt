@@ -1,0 +1,178 @@
+source=e8e8393d10764e8d979877f57d7ac3b59a1ba8cf
+image=sha256:48a11b7ba705fd53bf15248d1f94d36c39549903c5d59edcfa2f3f84126e7b44
+started=2026-10-14T18:07:06Z
+Python 3.12.9
+RUN test_make_test_env.py
+...
+----------------------------------------------------------------------
+Ran 3 tests in 0.003s
+
+OK
+test_exit=0 file=test_make_test_env.py
+RUN test_verify_snapshot.py
+....
+----------------------------------------------------------------------
+Ran 4 tests in 0.002s
+
+OK
+test_exit=0 file=test_verify_snapshot.py
+RUN test_runtime_env.py
+.....
+----------------------------------------------------------------------
+Ran 5 tests in 0.002s
+
+OK
+test_exit=0 file=test_runtime_env.py
+RUN test_probe_cleanup.py
+EEFEEEFE
+======================================================================
+ERROR: test_collision_create_cleanup_and_daemon_failure (__main__.ProbeCleanupTest.test_collision_create_cleanup_and_daemon_failure) (script='health-probe.sh', mode='collision')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/ops/ops820/test_probe_cleanup.py", line 62, in test_collision_create_cleanup_and_daemon_failure
+    calls = log.read_text().splitlines()
+            ^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/pathlib.py", line 1027, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/pathlib.py", line 1013, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/tmp/tmpb4jaw8j8/calls.txt'
+
+======================================================================
+ERROR: test_collision_create_cleanup_and_daemon_failure (__main__.ProbeCleanupTest.test_collision_create_cleanup_and_daemon_failure) (script='health-probe.sh', mode='run-failure')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/ops/ops820/test_probe_cleanup.py", line 62, in test_collision_create_cleanup_and_daemon_failure
+    calls = log.read_text().splitlines()
+            ^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/pathlib.py", line 1027, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/pathlib.py", line 1013, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/tmp/tmpy3vraf7w/calls.txt'
+
+======================================================================
+ERROR: test_collision_create_cleanup_and_daemon_failure (__main__.ProbeCleanupTest.test_collision_create_cleanup_and_daemon_failure) (script='health-probe.sh', mode='daemon-failure')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/ops/ops820/test_probe_cleanup.py", line 62, in test_collision_create_cleanup_and_daemon_failure
+    calls = log.read_text().splitlines()
+            ^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/pathlib.py", line 1027, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/pathlib.py", line 1013, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/tmp/tmpt1rj_2_p/calls.txt'
+
+======================================================================
+ERROR: test_collision_create_cleanup_and_daemon_failure (__main__.ProbeCleanupTest.test_collision_create_cleanup_and_daemon_failure) (script='worker-probe.sh', mode='collision')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/ops/ops820/test_probe_cleanup.py", line 62, in test_collision_create_cleanup_and_daemon_failure
+    calls = log.read_text().splitlines()
+            ^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/pathlib.py", line 1027, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/pathlib.py", line 1013, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/tmp/tmpeyimuut3/calls.txt'
+
+======================================================================
+ERROR: test_collision_create_cleanup_and_daemon_failure (__main__.ProbeCleanupTest.test_collision_create_cleanup_and_daemon_failure) (script='worker-probe.sh', mode='run-failure')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/ops/ops820/test_probe_cleanup.py", line 62, in test_collision_create_cleanup_and_daemon_failure
+    calls = log.read_text().splitlines()
+            ^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/pathlib.py", line 1027, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/pathlib.py", line 1013, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/tmp/tmpg51x7c95/calls.txt'
+
+======================================================================
+ERROR: test_collision_create_cleanup_and_daemon_failure (__main__.ProbeCleanupTest.test_collision_create_cleanup_and_daemon_failure) (script='worker-probe.sh', mode='daemon-failure')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/ops/ops820/test_probe_cleanup.py", line 62, in test_collision_create_cleanup_and_daemon_failure
+    calls = log.read_text().splitlines()
+            ^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/pathlib.py", line 1027, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/pathlib.py", line 1013, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/tmp/tmpfqtxrt9n/calls.txt'
+
+======================================================================
+FAIL: test_collision_create_cleanup_and_daemon_failure (__main__.ProbeCleanupTest.test_collision_create_cleanup_and_daemon_failure) (script='health-probe.sh', mode='success')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/ops/ops820/test_probe_cleanup.py", line 61, in test_collision_create_cleanup_and_daemon_failure
+    self.assertEqual(result.returncode == 0, mode == "success", result.stderr)
+AssertionError: False != True : /workspace/ops/ops820/health-probe.sh: line 51: /tmp/tmpguu3njj6/docker: Permission denied
+
+
+======================================================================
+FAIL: test_collision_create_cleanup_and_daemon_failure (__main__.ProbeCleanupTest.test_collision_create_cleanup_and_daemon_failure) (script='worker-probe.sh', mode='success')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/ops/ops820/test_probe_cleanup.py", line 61, in test_collision_create_cleanup_and_daemon_failure
+    self.assertEqual(result.returncode == 0, mode == "success", result.stderr)
+AssertionError: False != True : /workspace/ops/ops820/worker-probe.sh: line 52: /tmp/tmpqkr5tkwc/docker: Permission denied
+
+
+----------------------------------------------------------------------
+Ran 1 test in 0.039s
+
+FAILED (failures=2, errors=6)
+test_exit=1 file=test_probe_cleanup.py
+RUN test_compose_absence.py
+F
+======================================================================
+FAIL: test_success_failure_and_remaining_resource (__main__.ComposeAbsenceTest.test_success_failure_and_remaining_resource) (mode='clean')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/ops/ops820/test_compose_absence.py", line 34, in test_success_failure_and_remaining_resource
+    self.assertEqual(result.returncode == 0, mode == "clean", result.stderr)
+AssertionError: False != True : /workspace/ops/ops820/compose_absence.sh: line 5: /tmp/tmp9h40940l/docker: Permission denied
+
+
+----------------------------------------------------------------------
+Ran 1 test in 0.018s
+
+FAILED (failures=1)
+test_exit=1 file=test_compose_absence.py
+RUN test_gateway_runtime_env.py
+...
+----------------------------------------------------------------------
+Ran 3 tests in 0.002s
+
+OK
+test_exit=0 file=test_gateway_runtime_env.py
+RUN test_clamav_probe.py
+......
+----------------------------------------------------------------------
+Ran 6 tests in 0.003s
+
+OK
+clean.txt sha256=f7077fb928b2535246d18af56bbd4f1bbd3db58e14467dbceb4c2784734bb2ed
+eicar.txt sha256=275a021bbfb6489e54d471899f7db9d1663fc695ec2fe2a2c4538aabf651fd0f
+clean.txt sha256=f7077fb928b2535246d18af56bbd4f1bbd3db58e14467dbceb4c2784734bb2ed
+eicar.txt sha256=275a021bbfb6489e54d471899f7db9d1663fc695ec2fe2a2c4538aabf651fd0f
+test_exit=0 file=test_clamav_probe.py
+run_exit=1
+archive_absent=yes
+remaining_task_containers=0
+finished=2026-10-14T18:07:09Z
