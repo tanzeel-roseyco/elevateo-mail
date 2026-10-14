@@ -291,6 +291,7 @@ function LeadDetail({ campaignId, leadId, ...props }: OutreachPageProps & { camp
     <p>Evidence source: {lead.consent_source ?? 'none recorded'}</p>
     <p>Evidence observed: {lead.consent_recorded_at ?? 'none recorded'}</p>
     <p>Evidence actor: {lead.consent_recorded_by ?? 'none recorded'}</p>
+    <p>Evidence kind: {lead.consent_evidence_kind === 'manual_attestation' ? 'manual attestation' : 'none recorded'}</p>
     <p>This record does not authorize sending.</p>
   </>}</Content></Page>
 }

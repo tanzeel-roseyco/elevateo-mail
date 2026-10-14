@@ -5,7 +5,7 @@ import { GatewayError } from '@/data/errors'
 import {
   OutreachCampaignCreatePage, OutreachCampaignDetailPage, OutreachCampaignLeadsPage,
   OutreachCampaignsPage, OutreachLeadDetailPage, OutreachAccountDetailPage, OutreachCampaignAccountsPage,
-  OutreachCampaignAnalyticsPage,
+  OutreachCampaignAnalyticsPage, type OutreachPageProps,
 } from './OutreachPages'
 import type { OutreachGateway } from './contract'
 
@@ -32,15 +32,16 @@ function gateway(overrides: Partial<OutreachGateway> = {}): OutreachGateway {
   }
 }
 function view(path: string, g?: OutreachGateway) {
+  const props: OutreachPageProps = g === undefined ? { context, proof } : { gateway: g, context, proof }
   return render(<MemoryRouter initialEntries={[path]}><Routes>
-    <Route path="/outreach/campaigns" element={<OutreachCampaignsPage gateway={g} context={context} proof={proof} />} />
-    <Route path="/outreach/campaigns/new" element={<OutreachCampaignCreatePage gateway={g} context={context} proof={proof} />} />
-    <Route path="/outreach/campaigns/:campaignId" element={<OutreachCampaignDetailPage gateway={g} context={context} proof={proof} />} />
-    <Route path="/outreach/campaigns/:campaignId/leads" element={<OutreachCampaignLeadsPage gateway={g} context={context} proof={proof} />} />
-    <Route path="/outreach/campaigns/:campaignId/leads/:leadId" element={<OutreachLeadDetailPage gateway={g} context={context} proof={proof} />} />
-    <Route path="/outreach/campaigns/:campaignId/accounts/:accountId" element={<OutreachAccountDetailPage gateway={g} context={context} proof={proof} />} />
-    <Route path="/outreach/campaigns/:campaignId/accounts" element={<OutreachCampaignAccountsPage gateway={g} context={context} proof={proof} />} />
-    <Route path="/outreach/campaigns/:campaignId/analytics" element={<OutreachCampaignAnalyticsPage gateway={g} context={context} proof={proof} />} />
+    <Route path="/outreach/campaigns" element={<OutreachCampaignsPage {...props} />} />
+    <Route path="/outreach/campaigns/new" element={<OutreachCampaignCreatePage {...props} />} />
+    <Route path="/outreach/campaigns/:campaignId" element={<OutreachCampaignDetailPage {...props} />} />
+    <Route path="/outreach/campaigns/:campaignId/leads" element={<OutreachCampaignLeadsPage {...props} />} />
+    <Route path="/outreach/campaigns/:campaignId/leads/:leadId" element={<OutreachLeadDetailPage {...props} />} />
+    <Route path="/outreach/campaigns/:campaignId/accounts/:accountId" element={<OutreachAccountDetailPage {...props} />} />
+    <Route path="/outreach/campaigns/:campaignId/accounts" element={<OutreachCampaignAccountsPage {...props} />} />
+    <Route path="/outreach/campaigns/:campaignId/analytics" element={<OutreachCampaignAnalyticsPage {...props} />} />
   </Routes></MemoryRouter>)
 }
 
@@ -142,9 +143,10 @@ describe('Outreach routed pages', () => {
     expect(g.listCampaigns).toHaveBeenCalledWith(context, { cursor: campaignId }, expect.any(AbortSignal))
   })
   it('shows server evidence on a distinct lead detail route without claiming send authority', async () => {
-    const g = gateway({ getLead: vi.fn(async () => ({ ...lead, consent_status: 'granted', consent_source: 'Signed intake form', consent_recorded_at: '2026-10-14T12:00:00Z', consent_recorded_by: campaignId })) })
+    const g = gateway({ getLead: vi.fn(async () => ({ ...lead, consent_status: 'granted', consent_source: 'Signed intake form', consent_recorded_at: '2026-10-14T12:00:00Z', consent_recorded_by: campaignId, consent_evidence_kind: 'manual_attestation' })) })
     view(`/outreach/campaigns/${campaignId}/leads/${leadId}`, g)
     expect(await screen.findByText(/Evidence source: Signed intake form/)).toBeTruthy()
+    expect(screen.getByText(/Evidence kind: manual attestation/)).toBeTruthy()
     expect(screen.getByText(/does not authorize sending/)).toBeTruthy()
     expect(g.getLead).toHaveBeenCalledWith(context, campaignId, leadId, expect.any(AbortSignal))
   })

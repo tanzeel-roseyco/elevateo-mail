@@ -910,3 +910,6 @@ OUT-804 author replay review found that an exact create retry after a later edit
 ### FE808 protected actor incremental source check
 
 Scope: `apps/web/src/features/members/{adminModel,AdministrationPage}.ts*` plus paired tests; only actor projection handling changed. Author check found the prior pagination-derived authority limitation and replaced it with Cassian's required protected actor DTO. This is not an independent adversarial or design review; independent defect density and runtime acceptance remain pending. No local application tests were executed.
+FE807 QA815 `fe96194` fleet result: API check and lint PASS, typecheck FAILED with eight instances of explicit `gateway={undefined}` in test helper under `exactOptionalPropertyTypes`; unit/build NOT_REACHED. Celeste repaired the test helper by omitting the optional prop when absent. Fresh Docker rerun and independent review pending; no PASS claim for the repair.
+
+FE807 Dorian DTO alignment: immutable `b8c3e39` adds nullable `consent_evidence_kind` to lead detail. FE807 strict boundary and component source now display `manual_attestation` as evidence metadata, never send eligibility. No runtime or independent review claim for this follow-up.
