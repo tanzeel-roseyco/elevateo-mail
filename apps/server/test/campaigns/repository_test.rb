@@ -121,7 +121,7 @@ class CampaignRepositoryReplayTest < Minitest::Test
   def test_exact_http_intent_replays_original_result_after_current_state_changes
     intent = { "operation_id" => OP, "expected_version" => 1, "name" => "Pilot", "status" => "paused" }
     original = { "id" => ID, "name" => "Pilot", "status" => "paused", "version" => 2 }
-    fingerprint = Digest::SHA256.hexdigest(JSON.generate(["campaign", ID, 1, intent.sort.to_h, nil]))
+    fingerprint = Digest::SHA256.hexdigest(JSON.generate(["campaign", ID, 1, intent.sort.to_h, nil, false]))
     connection = Connection.new([[], [{ "fingerprint" => fingerprint, "result" => JSON.generate(original) }]])
     changed = Elevateo::Campaigns::Input.new(kind: "campaign", value: {
       "id" => ID, "operation_id" => OP, "name" => "New current name", "status" => "draft"
@@ -129,5 +129,23 @@ class CampaignRepositoryReplayTest < Minitest::Test
     assert_equal original, Elevateo::Campaigns::Repository.new(connection: connection).replace(changed,
       organization_id: ORG, expected_version: 1, intent: intent)
     refute(connection.calls.any? { |call| call.first.start_with?("UPDATE app.campaigns") })
+  end
+
+  def test_same_operation_cannot_replay_with_opposite_consent_preservation
+    intent = { "operation_id" => OP, "expected_version" => 1, "email" => "a@example.invalid" }
+    lead = Elevateo::Campaigns::Input.new(kind: "lead", value: {
+      "id" => ID, "operation_id" => OP, "campaign_id" => ORG, "email" => "a@example.invalid",
+      "consent_status" => "unknown", "consent_recorded_at" => nil,
+      "consent_source" => nil, "suppressed" => false
+    })
+    opposite = Digest::SHA256.hexdigest(JSON.generate(["lead", ID, 1, intent.sort.to_h, ORG, false]))
+    connection = Connection.new([[], [{ "fingerprint" => opposite, "result" => "{}" }]])
+    error = assert_raises(Elevateo::CollaborationError) do
+      Elevateo::Campaigns::Repository.new(connection: connection).replace(lead,
+        organization_id: ORG, expected_version: 1, actor_id: ORG, intent: intent,
+        preserve_consent: true)
+    end
+    assert_equal "operation_mismatch", error.code
+    refute(connection.calls.any? { |call| call.first.start_with?("UPDATE app.campaign_leads") })
   end
 end

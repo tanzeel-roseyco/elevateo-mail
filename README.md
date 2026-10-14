@@ -208,3 +208,5 @@ Exact 5bd1b28 fleet rerun passed campaign input 5/8, repository 8/31 and affecte
 Exact 35273ba fleet rerun passed campaign input 5/8, repository 8/31, affected RuboCop lint 9 files/0 offenses, and full Steep exit 0. Disposable PostgreSQL role/RLS and integrated HTTP remain pending.
 
 OUT-804 account page/detail now explicitly require the actor's RLS-visible mailbox before exposing its ID or label. Mixed visible/hidden and revoked private mailbox cases are authored as controller regressions; fleet verification and route activation remain pending.
+
+OUT-804 review repair binds update replay to the consent-preservation flag, rejects caller-supplied consent actor, and adds SQL policy checks for event actor and mutation resource existence. Migration rollback refuses populated campaign data. Exact fleet verification and the canonical display label for human attestation remain pending.
