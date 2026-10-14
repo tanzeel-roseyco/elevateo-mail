@@ -42,7 +42,6 @@ function DraftList({ mailboxId }: { mailboxId: string }) {
       abortRef.current?.abort()
       const controller = new AbortController()
       abortRef.current = controller
-      if (!append) resetUsedRef.current = false
       if (append) setState((prev) => (prev.status === 'ready' ? { ...prev, loadingMore: true } : prev))
       else setState({ status: 'loading' })
       const outcome = await request((ctx, signal) => {
@@ -74,6 +73,7 @@ function DraftList({ mailboxId }: { mailboxId: string }) {
   )
 
   useEffect(() => {
+    resetUsedRef.current = false
     void load(undefined, false)
     return () => abortRef.current?.abort()
   }, [load])
@@ -98,7 +98,10 @@ function DraftList({ mailboxId }: { mailboxId: string }) {
       {state.status === 'unavailable' && <EmptyState title="Drafts are unavailable" body="This mailbox may not exist, or you may not currently be able to compose in it." />}
       {state.status === 'error' && (
         <div role="alert">
-          <EmptyState title="Drafts could not be loaded" body={state.failure.message} action={<Button variant="primary" onClick={() => void load(undefined, false)}>Try again</Button>} />
+          <EmptyState title="Drafts could not be loaded" body={state.failure.message} action={<Button variant="primary" onClick={() => {
+            resetUsedRef.current = false
+            void load(undefined, false)
+          }}>Try again</Button>} />
         </div>
       )}
       {state.status === 'ready' && (
