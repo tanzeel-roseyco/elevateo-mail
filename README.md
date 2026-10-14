@@ -560,3 +560,5 @@ Review correction: QA815 privacy proof's six passing unit cases comprise three t
 QA815 exact later feature `58edb11c` targeted web check passed TypeScript and CollaborationPanels 10/10 cases after Mira's reply oracle import, with fleet cleanup. This is a scoped successor check; full 856/build PASS remains tied to earlier `fdecd0d5` and real browser/HTTP gates remain open.
 
 Corin's second `487ca33d` fake inbound guard repair accepts the unused query keyword anonymously while retaining actor UUID validation; it is staged in feature and core. The prior one-offense RuboCop failure is historical until Soren reruns on an exact successor. Root plans the next full backend/new-suite/HTTP/worker gate on the coherent feature source after Orion's suite inventory.
+
+Nadia's `8acae6a0` disposable QA816 private attachment fixture producer and focused auth tests are staged in the feature candidate. It requires real private Storage, clamd, worker scan claims, current reader Auth and an active isolated content route before producing a private sidecar; no fixture, byte proof or browser PASS exists yet.
