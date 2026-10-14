@@ -122,3 +122,5 @@ Three Playwright scenarios were authored on baseline bbf2353 for a real API-back
 QA816 continuation: strict Playwright matrix covers candidate reader history, duplicate draft click, denial/empty search and Fable shell/drawer visuals. No execution, screenshots or independent review yet; outreach create/detail and real 200% zoom remain open.
 
 QA816 head d8abe4a: ten supplemental Playwright scenarios use accepted SCN-QA IDs and eighteen fixed screenshot IDs. Soren's earlier 302142c fleet compile/unit receipt passed 73/73, but this head and its real browser cases have not run. V2 admin/outreach write routes remain outside current QA coverage.
+
+QA816 head 52e11bd adds a V2 People manager/reader browser candidate; twenty screenshot IDs are now admitted. Cassian's activated GET and Lyra/Fable UI require integrated fleet execution before any permission or visual PASS is recorded.

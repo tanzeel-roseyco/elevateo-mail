@@ -190,3 +190,5 @@ Cassian manifest reconciliation: contract-lock now seals actual generated client
 QA816 continuation: `qa816-matrix.e2e.ts` requests a merged Fable shell and the seeded real-auth stack; Soren alone runs it. Campaigns read UI is paused by design, and no create/detail API or installed Android claim is made. See docs/completion/tessa.md.
 
 QA816 head d8abe4a adds a real V1 roster permission scenario and measured Chromium visual viewport zoom; the latter is not desktop browser text zoom. Reporter and screenshot IDs are statically reconciled, while full browser execution and screenshot inspection are pending Soren's fleet run.
+
+QA816 V2 People case observes the versioned grants GET and truthful unbound roster UI in separate manager/reader sessions. It requires the active integrated route and disposable seed; no grants are mutated and no browser runtime evidence exists yet.
