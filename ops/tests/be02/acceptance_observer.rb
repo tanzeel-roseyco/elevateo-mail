@@ -49,13 +49,21 @@ module Be02Acceptance
         (operation_id.nil? || UUID.match?(operation_id.to_s)) && nonce == @binding.fetch("nonce")
       db = PG.connect(**@parameters)
       db.set_notice_processor { |_notice| nil }
-      db.exec("BEGIN ISOLATION LEVEL REPEATABLE READ READ ONLY")
+      db.exec("BEGIN ISOLATION LEVEL READ COMMITTED READ ONLY")
       db.exec("SET LOCAL statement_timeout='3000'; SET LOCAL lock_timeout='1000'")
+      # AIDEV-NOTE: Column grants permit zero-row reads, not LOCK TABLE; hold both DDL-conflicting locks first.
+      db.exec("SELECT id FROM app.drafts WHERE false")
+      db.exec("SELECT operation_id FROM app_drafts_private.operations WHERE false")
       verify_principal(db)
-      # Positive visibility is required in each new snapshot before absence can be evidence.
-      raise "observer_visibility_error" unless draft(db, @binding.fetch("sentinel_draft_id")).length == 1
-      drafts = draft(db, draft_id)
-      operations = operation_id ? operation(db, draft_id, operation_id) : []
+      # AIDEV-NOTE: Fresh catalog checks follow lock waits; all visibility evidence uses one statement snapshot.
+      rows = snapshot(db, draft_id, operation_id)
+      raise "observer_visibility_error" unless rows.count { |row| row.fetch("kind") == "sentinel" } == 1
+      drafts = rows.select { |row| row.fetch("kind") == "draft" }.map do |row|
+        row.slice("id", "version", "state")
+      end
+      operations = rows.select { |row| row.fetch("kind") == "operation" }.map do |row|
+        { "operation_id" => row.fetch("id"), "outcome" => row.fetch("outcome"), "version" => row.fetch("version") }
+      end
       drafts.each { |row| row["version"] = version(row.fetch("version"), 1) }
       operations.each do |row|
         raise "observer_outcome_invalid" unless %w[applied conflict expired].include?(row.fetch("outcome"))
@@ -96,19 +104,18 @@ module Be02Acceptance
 
     def scope = @binding.values_at("organization_id", "mailbox_id", "actor_id")
 
-    def draft(db, id)
-      db.exec_params(<<~SQL, scope + [id]).to_a
-        SELECT id::text, version, state FROM app.drafts
+    def snapshot(db, draft_id, operation_id)
+      db.exec_params(<<~SQL, scope + [@binding.fetch("sentinel_draft_id"), draft_id, operation_id]).to_a
+        SELECT 'sentinel' AS kind, id::text, version::text, state, NULL::text AS outcome FROM app.drafts
         WHERE organization_id=$1 AND mailbox_id=$2 AND actor_id=$3 AND id=$4
-      SQL
-    end
-
-    def operation(db, draft_id, operation_id)
-      db.exec_params(<<~SQL, scope + [draft_id, operation_id]).to_a
-        SELECT operation_id::text, CASE WHEN detail IS NULL THEN 'expired' ELSE detail->>'outcome' END AS outcome,
-          COALESCE(detail->>'version',detail->>'current_version') AS version
+        UNION ALL
+        SELECT 'draft', id::text, version::text, state, NULL::text FROM app.drafts
+        WHERE organization_id=$1 AND mailbox_id=$2 AND actor_id=$3 AND id=$5
+        UNION ALL
+        SELECT 'operation', operation_id::text, COALESCE(detail->>'version',detail->>'current_version'),
+          NULL::text, CASE WHEN detail IS NULL THEN 'expired' ELSE detail->>'outcome' END
         FROM app_drafts_private.operations
-        WHERE organization_id=$1 AND mailbox_id=$2 AND actor_id=$3 AND draft_id=$4 AND operation_id=$5
+        WHERE organization_id=$1 AND mailbox_id=$2 AND actor_id=$3 AND draft_id=$5 AND operation_id=$6
       SQL
     end
   end

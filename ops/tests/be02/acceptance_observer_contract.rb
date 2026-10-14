@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative "acceptance_observer_role"
+require_relative "acceptance_observer_race_contract"
 
 module Be02Acceptance
   # AIDEV-NOTE: Real PostgreSQL self-test; no fabricated operation receipt or browser acceptance PASS is generated.
@@ -28,6 +29,7 @@ module Be02Acceptance
       raise "observer_positive_control_failed" unless visible == { "drafts" => [expected], "operations" => [] }
       receipt = observer.observe(draft_id: sentinel, operation_id: applied_operation_id, nonce: nonce)
       raise "observer_operation_visibility_failure" unless receipt == { "drafts" => [expected], "operations" => [applied] }
+      ObserverRaceContract.verify(admin: admin, observer: observer, binding: binding)
       hidden = observer.observe(draft_id: foreign_draft_id, operation_id: nil, nonce: nonce)
       raise "observer_scope_failure" unless hidden == { "drafts" => [], "operations" => [] }
       expect_rejection(ArgumentError) { observer.observe(draft_id: sentinel, operation_id: nil, nonce: (nonce.start_with?("0") ? "1" : "0") + nonce[1..]) }
@@ -80,7 +82,7 @@ module Be02Acceptance
       ObserverRole.drop(admin, binding)
       raise "observer_role_cleanup_failed" unless admin.exec_params("SELECT 1 FROM pg_roles WHERE rolname=$1", [binding.fetch("role")]).ntuples.zero?
       binding = nil
-      { "status" => "observed", "scope" => "observer_role_and_draft_visibility_only", "assertions" => 16 }
+      { "status" => "observed", "scope" => "observer_role_and_draft_visibility_only", "assertions" => 16, "catalog_race_cases" => 8 }
     ensure
       restricted&.close
       admin.exec("DROP POLICY IF EXISTS #{PG::Connection.quote_ident(hidden_policy)} ON app.drafts") if hidden_policy
