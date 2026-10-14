@@ -43,7 +43,9 @@ scenario('SCN-READ-001-F1', 'real-member-zero-visible-mailboxes', async (page, r
       page.on('request', unexpected);
     });
     expect(mailboxRequests).toBe(1);
+    const denied = responseAt(page, `/v1/mailboxes/${seed.mailboxes.primary}/threads`);
     await page.goto(`/#/mailboxes/${seed.mailboxes.primary}`);
+    expect((await denied).status()).toBe(404);
     await expect(page.getByRole('heading', { name: 'This mailbox is unavailable', exact: true })).toBeVisible();
     await expect(page.locator('a[data-thread], pre')).toHaveCount(0);
     record.artifacts.push(await screenshot(page, 'SCN-READ-001-F1-empty-denied'));

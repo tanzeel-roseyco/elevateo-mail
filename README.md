@@ -14,6 +14,9 @@ A planned shared company mailbox for approximately **10 people**, available on a
 
 ## Current state
 
+QA-404 attempt4: exact app integration 7b0678c merged preserving owned QA changes. Restricted CI observer and real transport barriers source drafted; 13 scenario controls remain unavailable, integrated runtime NOT_RUN. See docs/completion/qa404-attempt4.md.
+
+
 INT-401 FROZEN APP REVISION (2026-10-14), IN PROGRESS: merged exact Rowan e0c2d358, Mira 81293f77, Elara f28d8589 and Nadia f5235cd3 over Cassian 59a8ce66 with lineage preserved. Restored later canonical contracts/v1 source (identical BE02 Codex/Fable FE01 R1/Local Completion), without regenerating or hand-editing client types. Fixed the Docker mock regression to use an interpreter-backed function while preserving noexec and checking NUL-delimited argv boundaries. New integrated source is UNTESTED; root schedules one frozen fleet acceptance request. Research remains secondary and does not gate app progress.
 
 Reported fleet infrastructure: 24 assertions plus restore/restart/fault injection PASS; eight independently found infra defects repaired/rechecking, immutable Soren source pending and dirty source not adopted. Historical Rowan 42f6369: migrations 6, DB guards 116, Auth concurrency 3 PASS, but Ruby 368 runs/4379 assertions/15 failures/55 errors and Steep three syntax failures; not accepted. Mira 81293f77 diagnostics: check:api exit1, generated check exit0, lint exit0, typecheck exit2, unit exit1 (438 PASS/74 FAIL of512), build exit2; restored source contract needs container generation validation. Elara authored 13/26 acceptance identities, 13 unavailable, actual browser NOT RUN. Native PowerShell, lifecycle and visual validation remain pending. No release/live-mail claim.
