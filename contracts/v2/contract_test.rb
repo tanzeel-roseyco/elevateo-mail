@@ -13,7 +13,7 @@ class ContractV2Test < Minitest::Test
 
   def test_happy_path_has_additive_interfaces
     assert_equal "2.0.0-draft.1", @contract.dig("info", "version")
-    assert_equal %w[get put post], @contract.fetch("paths").values.flat_map(&:keys).uniq.sort
+    assert_equal %w[get post put], @contract.fetch("paths").values.flat_map(&:keys).uniq.sort
     assert @contract.dig("components", "schemas", "OrganizationGrant")
   end
 
