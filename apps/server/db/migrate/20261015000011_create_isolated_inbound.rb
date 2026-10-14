@@ -70,7 +70,7 @@ class CreateIsolatedInbound < ActiveRecord::Migration[8.1]
            NOT app.thread_address_valid(p_sender) OR NOT app.thread_recipients_valid(p_recipients) OR
            p_subject IS NULL OR char_length(p_subject) > 255 OR
            p_body IS NULL OR octet_length(p_body) > 262144 OR
-           CASE WHEN jsonb_typeof(p_attachments) = 'array' THEN
+           (CASE WHEN jsonb_typeof(p_attachments) = 'array' THEN
              jsonb_array_length(p_attachments) > 12 OR EXISTS (
                SELECT 1 FROM jsonb_array_elements(p_attachments) AS a(item)
                WHERE jsonb_typeof(a.item) <> 'object' OR
@@ -84,11 +84,11 @@ class CreateIsolatedInbound < ActiveRecord::Migration[8.1]
                  jsonb_typeof(a.item->'content_type') <> 'string' OR
                  a.item->>'content_type' NOT IN ('text/plain','application/octet-stream') OR
                  jsonb_typeof(a.item->'size') <> 'number' OR
-                 CASE WHEN (a.item->>'size') ~ '^[0-9]{1,6}$'
-                   THEN (a.item->>'size')::integer > 262144 ELSE TRUE END OR
+                 (CASE WHEN (a.item->>'size') ~ '^[0-9]{1,6}$'
+                   THEN (a.item->>'size')::integer > 262144 ELSE TRUE END) OR
                  jsonb_typeof(a.item->'sha256') <> 'string' OR
                  (a.item->>'sha256') !~ '^[0-9a-f]{64}$')
-           ELSE TRUE END THEN
+           ELSE TRUE END) THEN
           RAISE EXCEPTION 'invalid inbound input' USING ERRCODE = '22023';
         END IF;
         INSERT INTO app.inbound_receipts(organization_id,mailbox_id,provider,provider_account_id,
