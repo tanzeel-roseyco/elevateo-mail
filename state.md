@@ -114,3 +114,7 @@ R25 approval recovery verification follow-up: fleet strict typecheck, corrected 
 RootSOURCEGO reviewed7a7860e captured-ref lint repair assembled without owner source edits; functional83LOC0/design8changed62context0. Mira owns exactsuccessor lint/type/fullunit/build and reloadbrowser. Backend SQL/API identical tested125f939; recovery runtime stillpending. F2 unsaved-draft/content recovery remainsOPEN; this only restores nonsecretoriginalapprovalmetadata.
 
 Cassian manifest reconciliation: contract-lock now seals actual generated client bytes and pinned fleet generation/125f939S1S2DB+HTTP evidence; README reflects proven scope. Canonical openapi/fixtures/C-D structures unchanged; no regeneration, added routes or capabilityactivation. Recovery successor3a709691 checks stillMira-owned/pending; BE02OPEN/releasegated.
+
+### OUT-804 isolated outreach foundation
+
+Dorian prepared migration 00009 and inert campaign repository/DTO validation on baseline bbf2353. Campaign status is draft/paused, accounts disabled, consent and suppression are explicit, and replay conflicts fail closed. Routes and fleet execution are pending; no live send capability follows from this candidate. See docs/completion/dorian.md.

@@ -1,0 +1,79 @@
+# frozen_string_literal: true
+
+# AIDEV-NOTE: OUT-804 stores inert campaign plans; no table or grant can initiate transport.
+class CreateCampaignFoundation < ActiveRecord::Migration[8.1]
+  def up
+    execute <<~SQL
+      CREATE TABLE app.campaigns (
+        id uuid PRIMARY KEY,
+        organization_id uuid NOT NULL REFERENCES app.organizations(id) ON DELETE CASCADE,
+        name text NOT NULL CHECK (length(name) BETWEEN 1 AND 160),
+        status text NOT NULL DEFAULT 'draft' CHECK (status IN ('draft', 'paused')),
+        operation_id uuid NOT NULL,
+        created_at timestamptz NOT NULL DEFAULT now(),
+        updated_at timestamptz NOT NULL DEFAULT now(),
+        UNIQUE (organization_id, id),
+        UNIQUE (organization_id, operation_id)
+      );
+      CREATE TABLE app.campaign_leads (
+        id uuid PRIMARY KEY,
+        organization_id uuid NOT NULL,
+        campaign_id uuid NOT NULL,
+        email text NOT NULL CHECK (octet_length(email) BETWEEN 3 AND 254 AND email ~ '^[^@[:space:]]+@[^@[:space:]]+$'),
+        consent_status text NOT NULL DEFAULT 'unknown' CHECK (consent_status IN ('unknown', 'granted', 'withdrawn')),
+        consent_recorded_at timestamptz,
+        suppressed_at timestamptz,
+        operation_id uuid NOT NULL,
+        created_at timestamptz NOT NULL DEFAULT now(),
+        UNIQUE (organization_id, campaign_id, id),
+        UNIQUE (organization_id, campaign_id, operation_id),
+        UNIQUE (organization_id, campaign_id, email),
+        FOREIGN KEY (organization_id, campaign_id) REFERENCES app.campaigns(organization_id, id) ON DELETE CASCADE,
+        CHECK (consent_status <> 'granted' OR consent_recorded_at IS NOT NULL)
+      );
+      CREATE TABLE app.campaign_accounts (
+        id uuid PRIMARY KEY,
+        organization_id uuid NOT NULL,
+        campaign_id uuid NOT NULL,
+        mailbox_id uuid NOT NULL,
+        label text NOT NULL CHECK (length(label) BETWEEN 1 AND 120),
+        status text NOT NULL DEFAULT 'disabled' CHECK (status = 'disabled'),
+        operation_id uuid NOT NULL,
+        created_at timestamptz NOT NULL DEFAULT now(),
+        UNIQUE (organization_id, campaign_id, id),
+        UNIQUE (organization_id, campaign_id, mailbox_id),
+        UNIQUE (organization_id, campaign_id, operation_id),
+        FOREIGN KEY (organization_id, campaign_id) REFERENCES app.campaigns(organization_id, id) ON DELETE CASCADE,
+        FOREIGN KEY (organization_id, mailbox_id) REFERENCES app.mailboxes(organization_id, id)
+      );
+      CREATE TABLE app.campaign_suppressions (
+        organization_id uuid NOT NULL REFERENCES app.organizations(id) ON DELETE CASCADE,
+        email text NOT NULL CHECK (octet_length(email) BETWEEN 3 AND 254),
+        reason text NOT NULL CHECK (reason IN ('unsubscribe', 'bounce', 'manual')),
+        recorded_at timestamptz NOT NULL DEFAULT now(),
+        PRIMARY KEY (organization_id, email)
+      );
+      CREATE INDEX campaign_leads_analytics_idx ON app.campaign_leads(organization_id, campaign_id, consent_status);
+    SQL
+    %w[campaigns campaign_leads campaign_accounts campaign_suppressions].each do |table|
+      execute "ALTER TABLE app.#{table} ENABLE ROW LEVEL SECURITY"
+      execute "ALTER TABLE app.#{table} FORCE ROW LEVEL SECURITY"
+      execute "REVOKE ALL ON app.#{table} FROM PUBLIC"
+      execute <<~SQL
+        CREATE POLICY campaign_tenant ON app.#{table} FOR ALL TO elevateo_app_read
+          USING (organization_id = app.context_uuid('app.org_id') AND EXISTS (
+            SELECT 1 FROM app.organization_memberships m
+            WHERE m.organization_id = #{table}.organization_id AND m.user_id = app.context_uuid('app.user_id')))
+          WITH CHECK (organization_id = app.context_uuid('app.org_id') AND EXISTS (
+            SELECT 1 FROM app.organization_memberships m
+            WHERE m.organization_id = #{table}.organization_id AND m.user_id = app.context_uuid('app.user_id')))
+      SQL
+    end
+    # AIDEV-NOTE: Membership RLS limits inert CRUD; no privilege reaches send intents or provider transport.
+    execute "GRANT SELECT, INSERT, UPDATE ON app.campaigns, app.campaign_leads, app.campaign_accounts, app.campaign_suppressions TO elevateo_app_read"
+  end
+
+  def down
+    execute "DROP TABLE app.campaign_suppressions, app.campaign_accounts, app.campaign_leads, app.campaigns"
+  end
+end

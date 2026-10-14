@@ -1,0 +1,29 @@
+module Elevateo
+  module Campaigns
+    class Input
+      attr_reader kind: String
+      attr_reader id: String
+      attr_reader operation_id: String
+      attr_reader attributes: Hash[String, untyped]
+      FIELDS: Hash[String, Array[String]]
+      def initialize: (kind: String, value: Hash[String, untyped]) -> void
+      def label: (untyped, Integer) -> String
+      def enum: (untyped, Array[String]) -> String
+      def self.email: (untyped) -> String
+    end
+  end
+end
+
+module Elevateo
+  module Campaigns
+    class Repository
+      def initialize: (connection: untyped) -> void
+      def save: (Input, organization_id: String) -> String
+      def replay_same?: (Input, Hash[String, untyped]) -> bool
+      def suppress: (organization_id: String, email: String, reason: String) -> String
+      def analytics: (organization_id: String, campaign_id: String) -> Hash[String, untyped]
+      def list: (kind: String, organization_id: String, ?campaign_id: String?) -> Array[Hash[String, untyped]]
+      def rows: (String, Array[untyped]) -> Array[Hash[String, untyped]]
+    end
+  end
+end

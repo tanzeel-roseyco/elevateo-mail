@@ -182,3 +182,7 @@ R25 approval recovery verification follow-up: fleet strict typecheck, corrected 
 RootSOURCEGO reviewed7a7860e captured-ref lint repair assembled without owner source edits; functional83LOC0/design8changed62context0. Mira owns exactsuccessor lint/type/fullunit/build and reloadbrowser. Backend SQL/API identical tested125f939; recovery runtime stillpending. F2 unsaved-draft/content recovery remainsOPEN; this only restores nonsecretoriginalapprovalmetadata.
 
 Cassian manifest reconciliation: contract-lock now seals actual generated client bytes and pinned fleet generation/125f939S1S2DB+HTTP evidence; README reflects proven scope. Canonical openapi/fixtures/C-D structures unchanged; no regeneration, added routes or capabilityactivation. Recovery successor3a709691 checks stillMira-owned/pending; BE02OPEN/releasegated.
+
+### OUT-804 campaign foundation candidate
+
+`apps/server/db/migrate/20261013000009_create_campaign_foundation.rb` adds tenant-owned campaign, lead, account and suppression storage. `Elevateo::Campaigns::Input` closes shapes and bounds fields; `Repository` uses tenant/operation bindings, read caps and suppression-aware consent counts. Cassian owns v2 route/contract integration. This branch has requested fleet checks, not executed runtime evidence. See docs/completion/dorian.md.

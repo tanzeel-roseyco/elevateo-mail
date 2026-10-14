@@ -1,0 +1,15 @@
+# OUT-804 Dorian outreach foundation
+
+Baseline: bbf2353. Branch: completion-dorian-out804. Candidate SHA: recorded in the shared Dorian outbox after commit.
+
+Scope: additive migration 00009 for organization-scoped campaigns, leads, disabled account links and global suppression. Campaign states are only draft or paused. Lead consent status is separate from email validity; granted rows require a timestamp, and suppression-aware analytics counts exclude withdrawn, suppressed and unproved rows. No provider, warmup, AI, SMTP, live credential or send entrypoint is added. A bounded repository saves operation-keyed records, rejects mismatched replay, lists at most 100 rows and counts leads. Tenant checks use the established `app.org_id`/`app.user_id` claims and membership RLS. Caller must enter the established SessionWrites/Tenancy transaction before using the repository.
+
+Source references: `apps/server/db/migrate/20261013000009_create_campaign_foundation.rb`, `apps/server/lib/elevateo/campaigns/{input,repository}.rb`, `apps/server/sig/campaigns.rbs`, and `apps/server/test/campaigns/*_test.rb`. Existing BE02/BE03 contracts and SQL remain unchanged. No upstream code was copied; only the general campaign/lead concepts were considered, so no upstream license-bearing adaptation is present.
+
+Interface request to Cassian: publish additive v2 DTO and route binding for draft/paused campaign CRUD, lead/account CRUD, suppression and analytics. Celeste can render draft/paused plans and counts but must keep send unavailable until Delivery authority. The domain DTO here is a proposed internal shape, not a canonical HTTP contract. The service expects the caller's guarded write/read tenant frame, with organization ID from session, never body input.
+
+Fleet-02 Soren test request: under the shared Docker lock, run migration apply/rollback/reapply against disposable PostgreSQL with `elevateo_api` and `elevateo_worker` RLS role checks (tenant isolation, missing claims, replay races, no send privileges); run `bundle exec ruby -Itest test/campaigns/input_test.rb`, `bundle exec ruby -Itest test/campaigns/repository_test.rb`, `bundle exec steep check`, and affected RuboCop in the pinned server image. No host tests, builds or installs were run by Dorian. Requested only; execution and PASS are pending. A full HTTP journey waits on Cassian's agreed contract/routes.
+
+Limitations: consent timestamps supplied by a caller do not alone establish audited consent evidence, so Delivery must independently validate consent provenance and suppression at submission. Migration/RBS/runtime behavior is unverified until Soren's fleet run. No release, integrated acceptance or real send claim.
+
+Design-tradeoff simulation for root, not an executed test: if a customer marks a lead `granted` while a suppression row exists, the aggregate excludes it; any later send authority must recheck current suppression in its own transaction. Keeping a tenant-scoped table and one SQL aggregate avoids a separate analytics service but caps list responses at 100 until Cassian defines pagination.
