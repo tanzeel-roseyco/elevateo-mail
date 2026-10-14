@@ -4,7 +4,6 @@ module Elevateo
       @store: untyped
       @driver: untyped
       @control: Control
-      @budget_seconds: Integer
       @deadline_factory: ^() -> CallDeadline
       def initialize: (store: untyped, driver: untyped, control: Control, ?budget_seconds: Integer, ?deadline_factory: ^() -> CallDeadline) -> void
       def run_once: () -> Symbol

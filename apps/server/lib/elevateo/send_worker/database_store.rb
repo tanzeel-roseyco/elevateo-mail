@@ -53,7 +53,7 @@ module Elevateo
         result = call("SELECT app_send_private.authorize_attempt($1::uuid,$2::uuid,$3::bigint,$4::uuid,$5::uuid," \
           "decode($6::text,'hex'),$7::text,$8::integer)",
           [claim.send_id, claim.lease_id, claim.generation, attempt_id, epoch,
-            Digest::SHA256.hexdigest("local:none"), "none", @deadline_seconds])
+            Digest::SHA256.hexdigest("local:synthetic-v1"), "synthetic-v1", @deadline_seconds])
         return nil if result["code"] == "dispatch_held"
         require_fields(result, %w[attempt_id attempt_no call_deadline_at simulated])
         raise InvalidResult unless result["attempt_id"] == attempt_id && result["simulated"] == true

@@ -14,8 +14,7 @@ module Elevateo
         @store = store
         @driver = driver
         @control = control
-        @budget_seconds = budget_seconds
-        @deadline_factory = deadline_factory || -> { CallDeadline.new(seconds: budget_seconds) }
+        @deadline_factory = deadline_factory || -> { CallDeadline.new(seconds: budget_seconds.to_f) }
       end
 
       # One invocation processes at most one claim. A nil claim means no eligible work.
