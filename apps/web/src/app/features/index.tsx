@@ -1,21 +1,35 @@
-// Feature module registration (FE-805). This is the single place where Mira/Celeste/Lyra feature
-// exports are bound to shell routes and sidebar sections. Each owner adds one FeatureModule here
-// (request the edit from Fable via the control outbox); the pure registry validates the result.
+// Feature module registration (FE-805). This is the single place where owner exports are bound to
+// shell routes and sidebar sections. Owners export pages from their own paths; Fable wires them
+// here with the session context and the optional feature gateways (./featureGateways).
 //
-// AIDEV-NOTE: Until a module is integrated, its routes render FeaturePlaceholderPage so the shell
-// stays truthful: the link exists, the page says the module is not in this build. No fake data.
+// AIDEV-NOTE: Route elements are thin wrappers: they read URL/session/capability state and pass
+// explicit props to the owner page, so owner components stay testable without the shell.
 import type { ReactElement } from 'react'
+import { useSession } from '../session'
+import { useFeatureGateways } from '../featureGateways'
 import { buildFeatureRegistry, type FeatureRegistration } from '../featureRegistry'
-import { FeaturePlaceholderPage } from './FeaturePlaceholderPage'
+import { FeatureNotConnectedPage } from './FeatureNotConnectedPage'
+import { OutreachAccountsPage, OutreachAnalyticsPage, OutreachCampaignsPage, OutreachLeadsPage, type OutreachPageProps } from '@/features/outreach/OutreachPages'
+import { AdministrationPage } from '@/features/members/AdministrationPage'
 
 export interface FeatureModule extends FeatureRegistration {
   /** One element per registered route path; keys must equal `routes` exactly. */
   readonly elements: Readonly<Record<string, ReactElement>>
 }
 
-const outreachPlaceholder = (title: string) => <FeaturePlaceholderPage title={title} owner="Outreach (Celeste FE-807)" />
+// --- Outreach (Celeste FE-807) -------------------------------------------------------------
+// Celeste's pages accept optional reads/context and render their own unavailable/error states.
+// exactOptionalPropertyTypes forbids passing `undefined` explicitly, hence the conditional spread.
+function useOutreachProps(): OutreachPageProps {
+  const { context } = useSession()
+  const { outreach } = useFeatureGateways()
+  return { ...(outreach === undefined ? {} : { reads: outreach }), ...(context === null ? {} : { context }) }
+}
+function CampaignsRoute() { return <OutreachCampaignsPage {...useOutreachProps()} /> }
+function LeadsRoute() { return <OutreachLeadsPage {...useOutreachProps()} /> }
+function AccountsRoute() { return <OutreachAccountsPage {...useOutreachProps()} /> }
+function AnalyticsRoute() { return <OutreachAnalyticsPage {...useOutreachProps()} /> }
 
-/** Outreach seam for Celeste FE-807: paths agreed in TEAM-PLAN (campaigns/leads/accounts/analytics). */
 const outreach: FeatureModule = {
   id: 'celeste-outreach',
   routes: ['/outreach/campaigns', '/outreach/leads', '/outreach/accounts', '/outreach/analytics'],
@@ -26,16 +40,35 @@ const outreach: FeatureModule = {
     { path: '/outreach/analytics', label: 'Analytics', section: 'outreach', order: 40 },
   ],
   elements: {
-    '/outreach/campaigns': outreachPlaceholder('Campaigns'),
-    '/outreach/leads': outreachPlaceholder('Leads'),
-    '/outreach/accounts': outreachPlaceholder('Accounts'),
-    '/outreach/analytics': outreachPlaceholder('Analytics'),
+    '/outreach/campaigns': <CampaignsRoute />,
+    '/outreach/leads': <LeadsRoute />,
+    '/outreach/accounts': <AccountsRoute />,
+    '/outreach/analytics': <AnalyticsRoute />,
   },
 }
 
-// Mira (inbox) and Lyra (members) keep their existing mailbox-scoped routes in App.tsx; they
-// register here only when they export new top-level areas.
-export const FEATURE_MODULES: readonly FeatureModule[] = [outreach]
+// --- Organization administration (Lyra FE-808) -------------------------------------------
+// Lyra's page requires a gateway; without the V2 admin capability the route states that plainly.
+function AdministrationRoute({ section }: { section: 'people' | 'settings' }) {
+  const { admin } = useFeatureGateways()
+  if (admin === undefined) {
+    return <FeatureNotConnectedPage title={section === 'people' ? 'People' : 'Settings'} dependency="the organization administration gateway (V2 grants)" />
+  }
+  return <AdministrationPage gateway={admin} section={section} />
+}
+
+const organization: FeatureModule = {
+  id: 'lyra-organization',
+  routes: ['/people', '/settings'],
+  nav: [
+    { path: '/people', label: 'People', section: 'organization', order: 10 },
+    { path: '/settings', label: 'Settings', section: 'organization', order: 20 },
+  ],
+  elements: { '/people': <AdministrationRoute section="people" />, '/settings': <AdministrationRoute section="settings" /> },
+}
+
+// Mira (FE-806) keeps her mailbox-scoped inbox/thread/draft routes in App.tsx; nothing to add here.
+export const FEATURE_MODULES: readonly FeatureModule[] = [outreach, organization]
 
 /** Validated at module load: a bad registration fails the build/test run rather than the user. */
 export const featureRegistry = buildFeatureRegistry(FEATURE_MODULES)

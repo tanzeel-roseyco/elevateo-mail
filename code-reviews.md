@@ -696,3 +696,7 @@ Bounded source packet: `apps/web/src/features/thread/ThreadPage.tsx` (about 28 c
 ## INT-801 Cassian V2 candidate (2026-10-14)
 
 Independent adversarial functional and design-tradeoff reviews are requested from root; none were performed or claimed by this worker. Proposed bounded packets: `contracts/v2/openapi.json` (split schemas/operations at <=200 source lines), `apps/server/config/v2_route_registry.rb` plus its test, and `contracts/tooling/generate-v2.sh` plus contract test, and `apps/web/src/data/v2Contract.ts` plus its test, `apps/web/src/data/v2Gateway.ts`, and the one-line transport path admission. Reviewed LOC 0; confirmed defects 0; defect density not computable pending review. Fleet execution pending.
+
+### FE-805 R2 wiring self-inspection (Fable, 2026-10-15)
+
+Coverage: `featureGateways.tsx` (27 LOC), rewritten `features/index.tsx` (86), `FeatureNotConnectedPage.tsx` (18), changed hunks in `featureRegistry.ts`/`Sidebar.tsx`/`App.tsx`/`main.tsx`/`index.css` (~60). Total ~191 production LOC in one bounded pass. Author self-inspection only; no independent review claimed. Self-found before commit: 1 (explicit `undefined` props would violate exactOptionalPropertyTypes against Celeste's optional props; replaced with conditional spreads). Provisional density 5.24/KLOC, author evidence. Owner commits merged unmodified are not counted. Tests: 10 FE-805 cases authored across four files, not executed.

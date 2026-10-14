@@ -228,8 +228,7 @@ function ProtectedShell({ session, replacedIdentity }: { session: Session; repla
     ) : (
       <Sidebar
         mailboxes={mailboxState.mailboxes}
-        personal={featureRegistry.navBySection.personal}
-        outreach={featureRegistry.navBySection.outreach}
+        sections={featureRegistry.navBySection}
         onNavigate={closeDrawer}
         footnote={FOOTNOTE}
       />

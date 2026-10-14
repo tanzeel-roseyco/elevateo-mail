@@ -16,6 +16,10 @@ Private synthetic frontend preview is running; Docker lint/typecheck/build and 6
 
 ## Current execution status
 
+### Fable FE-805 R2 integrated wiring (2026-10-15)
+
+Branch `completion/fable-fe805` now merges exact Celeste `152f95a`, Lyra `6f55a01`, Mira `e31da54` and Cassian `79476c3` (owner source untouched; shared docs unioned) and wires their real exports: Outreach routes render Celeste's pages with session context, `/people` and `/settings` render Lyra's page when a V2 admin gateway is supplied, Mira's compose/reply entries ride the existing routes, and the rail gains an independent Organization section. Placeholders are removed; production feature gateways stay empty because V2 lacks Outreach reads and the grant DTOs are unreconciled, so each page shows its own honest not-connected state. Ten FE-805 cases authored, none executed. See [Fable record](docs/completion/fable.md).
+
 ### Fable FE-805 shell/sidebar/brand candidate (2026-10-15)
 
 Isolated on fleet baseline `bbf2353`, branch `completion/fable-fe805`; not integrated. Adds the authentic Elevateo mark under `apps/web/public/brand` (hashes match root's provenance), a `BrandMark` primitive on a fixed dark tile, a pure validated feature registry with an Outreach seam for Celeste, and a rail split into independent Personal and Outreach landmarks with no global switcher. Existing routes, session gate, drawer names and frozen contracts are unchanged. Registry, sidebar and shell tests are added but **not executed**; Docker lint/type/unit/build and visual evidence are requested from Soren/Tessa. See [Fable record](docs/completion/fable.md).
