@@ -142,3 +142,24 @@ scenario('QA816-SEARCH-F2', 'real-search-loading-transport-error-retry', async (
   record.assertions.push('Genuine held 200 search exposes loading; transport loss exposes error; real retry 200 settles empty');
   record.evidence.push('Held actual upstream response and aborted an unforwarded request; no fabricated business response');
 });
+
+scenario('QA816-ZOOM-P', 'chromium-visual-viewport-200-percent', async (page, record) => {
+  await signIn(page, 'reader');
+  await page.setViewportSize({ width: 375, height: 812 });
+  await mailbox(page);
+  const cdp = await page.context().newCDPSession(page);
+  try {
+    // AIDEV-NOTE: CDP scale is genuine Chromium visual viewport zoom; browser text zoom needs separate evidence.
+    await cdp.send('Emulation.setPageScaleFactor', { pageScaleFactor: 2 });
+    const scale = await page.evaluate(() => window.visualViewport?.scale ?? 0);
+    expect(scale).toBeGreaterThanOrEqual(1.99);
+    expect(scale).toBeLessThanOrEqual(2.01);
+    await expect(page.getByRole('region', { name: 'Conversations', exact: true })).toBeVisible();
+    await expect(page.locator('a[data-thread]').first()).toBeVisible();
+    record.artifacts.push(await screenshot(page, 'QA816-ZOOM-P-200-percent-visual-viewport'));
+    record.assertions.push('Chromium visual viewport reports 200% scale with genuine seeded inbox controls visible');
+  } finally {
+    await cdp.send('Emulation.setPageScaleFactor', { pageScaleFactor: 1 });
+    await cdp.detach();
+  }
+});
