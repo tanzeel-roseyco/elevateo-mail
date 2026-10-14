@@ -98,12 +98,20 @@ class CreateCampaignFoundation < ActiveRecord::Migration[8.1]
         IF NEW.version <> OLD.version + 1 THEN
           RAISE EXCEPTION 'campaign lead version must advance' USING ERRCODE='23514';
         END IF;
-        IF (NEW.email IS DISTINCT FROM OLD.email OR NEW.consent_status IS DISTINCT FROM OLD.consent_status
+        IF OLD.consent_operation_id IS NOT NULL AND NEW.consent_operation_id IS NULL THEN
+          RAISE EXCEPTION 'campaign lead consent link cannot be cleared' USING ERRCODE='23514';
+        END IF;
+        IF (NEW.consent_operation_id IS DISTINCT FROM OLD.consent_operation_id
+          OR NEW.email IS DISTINCT FROM OLD.email OR NEW.consent_status IS DISTINCT FROM OLD.consent_status
           OR NEW.consent_source IS DISTINCT FROM OLD.consent_source
           OR NEW.consent_recorded_at IS DISTINCT FROM OLD.consent_recorded_at
           OR NEW.consent_recorded_by IS DISTINCT FROM OLD.consent_recorded_by)
-          AND NEW.consent_operation_id IS NULL THEN
-          RAISE EXCEPTION 'campaign lead consent change requires event' USING ERRCODE='23514';
+          AND (NEW.consent_operation_id IS NULL OR NOT EXISTS (
+            SELECT 1 FROM app.campaign_consent_events e
+            WHERE e.organization_id=NEW.organization_id AND e.campaign_id=NEW.campaign_id
+              AND e.lead_id=NEW.id AND e.operation_id=NEW.consent_operation_id
+              AND e.lead_version=NEW.version)) THEN
+          RAISE EXCEPTION 'campaign lead change requires fresh consent event' USING ERRCODE='23514';
         END IF;
         RETURN NEW;
       END;
@@ -140,7 +148,7 @@ class CreateCampaignFoundation < ActiveRecord::Migration[8.1]
             WHERE e.organization_id=campaign_leads.organization_id
               AND e.campaign_id=campaign_leads.campaign_id AND e.lead_id=campaign_leads.id
               AND e.operation_id=campaign_leads.consent_operation_id AND e.email=campaign_leads.email
-              AND e.lead_version=campaign_leads.version
+              AND e.lead_version<=campaign_leads.version
               AND e.status=campaign_leads.consent_status
               AND e.source IS NOT DISTINCT FROM campaign_leads.consent_source
               AND e.observed_at IS NOT DISTINCT FROM campaign_leads.consent_recorded_at
