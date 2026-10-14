@@ -40,5 +40,5 @@ Rails.application.routes.draw do
   get "/v1/search", to: "v1/search#index"
 
   # AIDEV-NOTE: V2 stays absent until owning controllers and authority gates pass integration review.
-  V2RouteRegistry.register!(self, enabled: true, controllers_ready: true, operations: %w[listOrganizationGrants getOrganizationRoster replaceOrganizationGrant listOutreachCampaigns getOutreachCampaign createOutreachCampaign updateOutreachCampaign listOutreachLeads getOutreachLead addOutreachLead updateOutreachLead getOutreachAnalytics])
+  V2RouteRegistry.register!(self, enabled: true, controllers_ready: true, operations: %w[listOrganizationGrants getOrganizationRoster replaceOrganizationGrant listOutreachCampaigns getOutreachCampaign listOutreachLeads getOutreachLead getOutreachAnalytics])
 end
