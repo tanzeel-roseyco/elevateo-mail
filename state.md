@@ -117,4 +117,4 @@ Cassian manifest reconciliation: contract-lock now seals actual generated client
 
 ### APK-813 Android lane (2026-10-14)
 
-Android now has a Tauri-specific configuration and pinned fleet build request using Orion’s shared shell and the existing React UI; the Java placeholder was removed. Unsigned APK compile and target runtime checks are NOT_RUN. Root selected an online-only exact HTTPS web session through Orion’s shared shell; that config is pending integration and native behavior remains untested. No live authorization or send path exists.
+Android now has a Tauri-specific configuration and pinned fleet build request using Orion’s shared shell and the existing React UI; the Java placeholder was removed. Unsigned APK compile and target runtime checks are NOT_RUN; root authorized only a `.invalid` compile fixture, which cannot pass runtime launch. Root selected an online-only exact HTTPS web session through Orion’s shared shell; that config is pending integration and native behavior remains untested. No live authorization or send path exists.

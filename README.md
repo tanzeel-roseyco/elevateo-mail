@@ -175,4 +175,4 @@ Cassian manifest reconciliation: contract-lock now seals actual generated client
 
 ### APK-813 Android development lane
 
-The Android lane now targets Orion’s shared Tauri shell and bundled React UI through an Android-only configuration and fleet build script; the earlier Java placeholder has been removed. Root selected an online-only exact HTTPS app origin using the existing web session; Orion’s shared config is pending. No APK compile, native login, emulator/device validation or release signing is claimed. See `docs/completion/astrid.md`.
+The Android lane now targets Orion’s shared Tauri shell and online React web app through an Android-only configuration and fleet build script; the earlier Java placeholder has been removed. Root selected an online-only exact HTTPS app origin using the existing web session; Orion’s online-only source is merged in the isolated APK candidate, with mobile build wiring still pending. Root authorized `https://app.elevateo.invalid` only as a compile fixture; Orion rejects it at runtime. No APK compile, native login, emulator/device validation or release signing is claimed. See `docs/completion/astrid.md`.

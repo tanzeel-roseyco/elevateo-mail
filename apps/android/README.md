@@ -1,10 +1,10 @@
 # APK-813 Android lane: shared Tauri/React candidate
 
-`apps/android/tauri.android.conf.json` extends Orion's `apps/native` Tauri 2 shell for Android. It does not ship a second Java UI. The old Java offline activity was removed. Root selected an online-only exact HTTPS app origin and existing same-origin web session for the initial native client; Orion is implementing that shared shell, so this APK lane requires his exact integrated source before a meaningful build.
+`apps/android/tauri.android.conf.json` extends Orion's `apps/native` Tauri 2 shell for Android. It does not ship a second Java UI. The old Java offline activity was removed. Root selected an online-only exact HTTPS app origin and existing same-origin web session for the initial native client; Orion source `625bef13fd1328beb407c208f70a171fea9fd12d` is merged in the isolated APK branch; Android packaging still needs its mobile library target and Cargo.lock before fleet compile.
 
 ## Architecture and route boundary
 
-The shared React app uses hash routes for mailbox selection, thread, drafts, send review/status, members and search. The selected online-only design loads the exact authorized HTTPS web app origin in Orion's Tauri WebView, so relative Rails requests retain the web origin and its existing cookie/CSRF session. Orion must enforce exact-origin navigation, zero remote IPC/capabilities and no fixture fallback. The Android override changes only min API/version and neutralizes the Windows bundle target. The currently committed Orion shell still bundles local assets; do not claim remote-origin login until his replacement source is integrated and tested.
+The shared React app uses hash routes for mailbox selection, thread, drafts, send review/status, members and search. The selected online-only design loads the exact authorized HTTPS web app origin in Orion's Tauri WebView, so relative Rails requests retain the web origin and its existing cookie/CSRF session. Orion must enforce exact-origin navigation, zero remote IPC/capabilities and no fixture fallback. The Android override changes only min API/version and neutralizes the Windows bundle target. The merged Orion source chooses the exact remote origin at build time; do not claim remote-origin login until the APK is installed and tested.
 
 The generated Android manifest is a build artifact. It must request only network access needed for an approved HTTPS API; inspection is part of Soren's build receipt. No Android callback intent filter or App Link is needed for the selected initial web-session design. System links must stay in the system browser unless an exact reviewed HTTPS origin/path policy is added. Never move tokens into query fragments, logs or WebView storage.
 
@@ -12,17 +12,18 @@ No native token store or Keystore bridge is part of the selected initial web-ses
 
 ## Fleet-only unsigned APK request
 
-Soren alone runs this under `/home/tanzeel/elevateo-mail-wave-20261014/control/soren-docker.lock` on fleet-02 from an integrated checkout containing Orion's `apps/native` plus `apps/web` and this APK lane. A reviewed `apps/native/src-tauri/Cargo.lock` is required. The container requires an immutable Rust 1.90.0 image digest. Node 22.15.0 and official Android command-line tools archive SHA-256 values are pinned in the Dockerfile from the [Node release checksums](https://nodejs.org/dist/v22.15.0/SHASUMS256.txt) and [Android Studio downloads](https://developer.android.com/studio). `Dockerfile` installs JDK 17, API 37/Build Tools 36.0.0, NDK 28.2.13676358, Rust aarch64 target and exact Tauri CLI 2.12.0. Its Debian packages and SDK repository metadata remain mutable inputs to record in the build receipt; successful compile alone is not a bit-for-bit reproducibility claim.
+Soren alone runs this under `/home/tanzeel/elevateo-mail-wave-20261014/control/soren-docker.lock` on fleet-02 from an integrated checkout containing Orion's `apps/native` and this APK lane. A reviewed `apps/native/src-tauri/Cargo.lock` is required. The container requires an immutable Rust 1.90.0 image digest. The official Android command-line tools archive SHA-256 is pinned in the Dockerfile from [Android Studio downloads](https://developer.android.com/studio). `Dockerfile` installs JDK 17, API 37/Build Tools 36.0.0, NDK 28.2.13676358, Rust aarch64 target and exact Tauri CLI 2.12.2. Its Debian packages and SDK repository metadata remain mutable inputs to record in the build receipt; successful compile alone is not a bit-for-bit reproducibility claim.
 
 ```sh
 docker build -f ops/build/android/Dockerfile \
   --build-arg RUST_IMAGE="$RUST_IMAGE" \
   -t elevateo-apk813-build .
 docker run --rm -v "$PWD:/src" -v "$APK813_BUILD_ROOT:/artifacts" \
-  -e APK813_BUILD_ROOT=/artifacts -w /src elevateo-apk813-build \
+  -e APK813_BUILD_ROOT=/artifacts \
+  -w /src elevateo-apk813-build \
   bash ops/build/android/build-unsigned.sh
 ```
 
-The script runs three Gradle wrapper pinning cases, `npm ci` and web build, Tauri Android init/build, then rejects unexpected permissions, an active VIEW callback filter, a signed or ambiguous APK, and prints the artifact SHA-256. The [Gradle 9.6.1 binary checksum](https://gradle.org/release-checksums/) is pinned into Tauri's generated wrapper. Soren must retain exact source, image/archive hashes, command logs, generated manifest permission inspection, artifact path/hash and cleanup. An unsigned APK has **not yet been compiled** for this candidate.
+The script embeds the root-authorized **compile-only** `https://app.elevateo.invalid` fixture, which Orion deliberately rejects at runtime. It runs three Gradle wrapper pinning cases, Orion Rust unit tests, Tauri Android init/build, then rejects unexpected permissions, an active VIEW callback filter, a signed or ambiguous APK, and prints the artifact SHA-256. The [Gradle 9.6.1 binary checksum](https://gradle.org/release-checksums/) is pinned into Tauri's generated wrapper. Soren must retain exact source, image/archive hashes, command logs, generated manifest permission inspection, artifact path/hash and cleanup. An unsigned APK has **not yet been compiled** for this candidate. A fixture-origin APK can prove packaging only; it cannot launch into the app or prove login. A real approved origin and installed-runtime checks remain separate release gates.
 
 Emulator/device installation, same-origin session/login/logout, system links, lifecycle/resume, offline/back/keyboard/insets, release signature and upgrade tests are **NOT_RUN** and remain acceptance gates. Web Playwright does not establish Android shell behavior. The case-by-case installed-runtime oracles are in [acceptance.md](acceptance.md). No live OAuth registration, release key, DNS, SMTP or paid infrastructure is authorized.

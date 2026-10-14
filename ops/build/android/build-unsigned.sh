@@ -3,19 +3,20 @@ set -euo pipefail
 # AIDEV-NOTE: Soren executes only inside a fleet Docker lease against a reviewed integrated source SHA.
 project_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../.." && pwd)"
 native_dir="$project_root/apps/native/src-tauri"
-web_dir="$project_root/apps/web"
 android_dir="$project_root/apps/android"
 : "${ANDROID_HOME:?Android SDK required}"
 : "${NDK_HOME:?Pinned Android NDK required}"
 : "${JAVA_HOME:?JDK 17 required}"
 : "${APK813_BUILD_ROOT:?Task-owned output directory required}"
+export ELEVATEO_WEB_ORIGIN=https://app.elevateo.invalid
+# Compile-only fixture: Orion rejects .invalid at runtime; this APK cannot prove login or launch.
+printf "%s\n" "COMPILE_ONLY_ORIGIN=$ELEVATEO_WEB_ORIGIN"
 [[ -f "$native_dir/Cargo.lock" ]] || { echo 'Reviewed apps/native Cargo.lock required' >&2; exit 2; }
 [[ -f "$native_dir/tauri.conf.json" ]] || { echo 'Orion Tauri shell required' >&2; exit 2; }
 [[ -f "$android_dir/tauri.android.conf.json" ]] || exit 2
 [[ "$APK813_BUILD_ROOT" != "$project_root"* ]] || { echo 'Output must be outside source' >&2; exit 2; }
 [[ "$(rustc --version)" == 'rustc 1.90.0 '* ]] || { echo 'Rust 1.90.0 required' >&2; exit 2; }
-[[ "$(cargo tauri --version)" == 'tauri-cli 2.12.0' ]] || { echo 'Tauri CLI 2.12.0 required' >&2; exit 2; }
-[[ "$(node --version)" == 'v22.15.0' ]] || { echo 'Node 22.15.0 required' >&2; exit 2; }
+[[ "$(cargo tauri --version)" == 'tauri-cli 2.12.2' ]] || { echo 'Tauri CLI 2.12.2 required' >&2; exit 2; }
 [[ "$(javac -version 2>&1)" == 'javac 17.'* ]] || { echo 'JDK 17 required' >&2; exit 2; }
 [[ -d "$ANDROID_HOME/platforms/android-37" ]] || { echo 'Android API 37 required' >&2; exit 2; }
 [[ -d "$ANDROID_HOME/build-tools/36.0.0" ]] || { echo 'Build Tools 36.0.0 required' >&2; exit 2; }
@@ -24,10 +25,8 @@ rustup target list --installed | grep -Fx 'aarch64-linux-android' >/dev/null || 
 mkdir -p "$APK813_BUILD_ROOT"
 cd "$android_dir"
 python3 -m unittest discover -s . -p "test_*.py"
-cd "$web_dir"
-npm ci --ignore-scripts
-npm run build
 cd "$native_dir"
+cargo test --locked
 cargo_lock_before="$(sha256sum Cargo.lock | cut -d " " -f 1)"
 cargo tauri android init --ci --config "$android_dir/tauri.android.conf.json"
 wrapper="$native_dir/gen/android/gradle/wrapper/gradle-wrapper.properties"
@@ -46,5 +45,5 @@ fi
 if "$ANDROID_HOME/build-tools/36.0.0/apksigner" verify "${apk_files[0]}" >/dev/null 2>&1; then
   echo 'APK unexpectedly signed' >&2; exit 2
 fi
-cp -- "${apk_files[0]}" "$APK813_BUILD_ROOT/elevateo-android-aarch64-unsigned.apk"
-sha256sum "$APK813_BUILD_ROOT/elevateo-android-aarch64-unsigned.apk"
+cp -- "${apk_files[0]}" "$APK813_BUILD_ROOT/elevateo-android-aarch64-compile-only-unsigned.apk"
+sha256sum "$APK813_BUILD_ROOT/elevateo-android-aarch64-compile-only-unsigned.apk"
