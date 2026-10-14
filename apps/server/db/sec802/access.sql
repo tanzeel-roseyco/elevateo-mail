@@ -12,16 +12,25 @@ CREATE UNIQUE INDEX organization_single_owner ON app.organization_access (organi
 ALTER TABLE app.organization_access ENABLE ROW LEVEL SECURITY;
 ALTER TABLE app.organization_access FORCE ROW LEVEL SECURITY;
 CREATE POLICY access_owner_routine ON app.organization_access TO elevateo_owner USING (true) WITH CHECK (true);
+CREATE POLICY access_session_read ON app.organization_access FOR SELECT TO elevateo_session_owner
+  USING (organization_id = NULLIF(current_setting('app.org_id', true), '')::uuid);
 REVOKE ALL ON app.organization_access FROM PUBLIC, elevateo_api, elevateo_app_read, elevateo_worker;
+GRANT SELECT (organization_id, user_id, role, revision) ON app.organization_access TO elevateo_session_owner;
 -- AIDEV-NOTE: A sole owner cannot disappear through membership cascade or direct owner-role mutation.
 CREATE FUNCTION app.prevent_owner_loss() RETURNS trigger
 LANGUAGE plpgsql VOLATILE SECURITY DEFINER SET search_path = pg_catalog AS $$
 BEGIN
-  IF OLD.role = 'owner' AND (TG_OP = 'DELETE' OR NEW.role <> 'owner'
-    OR NEW.organization_id <> OLD.organization_id OR NEW.user_id <> OLD.user_id) THEN
-    RAISE EXCEPTION 'owner transfer required' USING ERRCODE = '23514';
+  IF OLD.role = 'owner' THEN
+    IF TG_OP = 'DELETE' THEN
+      RAISE EXCEPTION 'owner transfer required' USING ERRCODE = '23514';
+    END IF;
+    IF NEW.role <> 'owner' OR NEW.organization_id <> OLD.organization_id
+      OR NEW.user_id <> OLD.user_id THEN
+      RAISE EXCEPTION 'owner transfer required' USING ERRCODE = '23514';
+    END IF;
   END IF;
-  RETURN CASE WHEN TG_OP = 'DELETE' THEN OLD ELSE NEW END;
+  IF TG_OP = 'DELETE' THEN RETURN OLD; END IF;
+  RETURN NEW;
 END $$;
 CREATE TRIGGER guard_owner_loss BEFORE UPDATE OR DELETE ON app.organization_access
   FOR EACH ROW EXECUTE FUNCTION app.prevent_owner_loss();
@@ -128,7 +137,10 @@ BEGIN
     WHERE organization_id = box.organization_id AND user_id = p_manager;
   IF box.id IS NULL OR manager.user_id IS NULL OR NOT manager.manage_members
     OR manager_role NOT IN ('owner', 'admin', 'sales_manager') OR manager_role IS NULL
-    OR (p_class = 'personal' AND (box.visibility <> 'private' OR p_owner <> p_manager))
+    OR (p_class = 'personal' AND (box.visibility <> 'private' OR p_owner <> p_manager
+      OR NOT p_manage OR EXISTS (SELECT 1 FROM app.mailbox_memberships extra
+        WHERE extra.organization_id = box.organization_id AND extra.mailbox_id = p_box
+          AND extra.user_id <> p_owner AND extra.manage_members)))
     OR (p_compose AND NOT manager.compose) OR (p_approve AND NOT manager.approve_send)
     OR (p_manage AND NOT manager.manage_members) THEN
     RAISE EXCEPTION 'verified mailbox policy authority required' USING ERRCODE = '23514';
@@ -193,7 +205,7 @@ GRANT EXECUTE ON FUNCTION app.enroll_verified_organization_grant(uuid,uuid,text,
 -- AIDEV-NOTE: No owner is guessed from historical membership; enrollment must verify Allan's UUID separately.
 CREATE FUNCTION app.change_organization_role(p_digest text, p_target uuid, p_expected integer, p_role text)
 RETURNS jsonb LANGUAGE plpgsql VOLATILE SECURITY DEFINER SET search_path = pg_catalog AS $$
-DECLARE proof jsonb; org uuid; actor uuid; actor_role text; old_role text; current_revision integer;
+DECLARE proof jsonb; org uuid; actor uuid; actor_role text; old_role text; current_revision integer; box_id uuid;
 BEGIN
   IF p_target IS NULL OR p_expected IS NULL OR p_expected < 0
     OR p_role IS NULL OR p_role NOT IN ('admin', 'operator', 'sales_manager', 'sales', 'auditor', 'associate') THEN
@@ -218,6 +230,30 @@ BEGIN
     RETURN '{"status":"not_found"}'::jsonb;
   END IF;
   IF current_revision <> p_expected THEN RETURN '{"status":"role_conflict"}'::jsonb; END IF;
+  -- AIDEV-NOTE: Rank removal and membership removal serialize on every affected mailbox revision.
+  IF old_role IN ('owner', 'admin', 'sales_manager')
+    AND p_role NOT IN ('owner', 'admin', 'sales_manager') THEN
+    FOR box_id IN SELECT m.mailbox_id FROM app.mailbox_memberships m
+      WHERE m.organization_id = org AND m.user_id = p_target AND m.manage_members
+      ORDER BY m.mailbox_id LOOP
+      PERFORM 1 FROM app.mailbox_membership_revisions
+        WHERE organization_id = org AND mailbox_id = box_id FOR UPDATE;
+      IF EXISTS (SELECT 1 FROM app.mailbox_security
+          WHERE organization_id = org AND mailbox_id = box_id AND classification = 'team')
+        AND NOT EXISTS (
+          SELECT 1 FROM app.mailbox_memberships m
+          JOIN app.organization_memberships o ON (o.organization_id, o.user_id) =
+            (m.organization_id, m.user_id)
+          JOIN app.organization_access a ON (a.organization_id, a.user_id) =
+            (m.organization_id, m.user_id)
+          JOIN app.mailbox_grant_ceilings c ON (c.organization_id, c.mailbox_id, c.user_id) =
+            (m.organization_id, m.mailbox_id, m.user_id)
+          WHERE m.organization_id = org AND m.mailbox_id = box_id AND m.user_id <> p_target
+            AND m.manage_members AND c.manage_members
+            AND a.role IN ('owner', 'admin', 'sales_manager')
+        ) THEN RETURN '{"status":"role_conflict"}'::jsonb; END IF;
+    END LOOP;
+  END IF;
   IF old_role <> p_role THEN
     IF current_revision = 2147483647 THEN RETURN '{"status":"temporarily_unavailable"}'::jsonb; END IF;
     UPDATE app.organization_access SET role = p_role, revision = revision + 1
@@ -232,13 +268,32 @@ REVOKE ALL ON FUNCTION app.change_organization_role(text,uuid,integer,text)
   FROM PUBLIC, elevateo_api, elevateo_app_read, elevateo_worker;
 GRANT EXECUTE ON FUNCTION app.change_organization_role(text,uuid,integer,text) TO elevateo_api;
 
+-- AIDEV-NOTE: Outreach draft authority is rechecked inside the caller's protected write transaction.
+CREATE FUNCTION app.authorize_outreach_draft_write(p_digest text)
+RETURNS jsonb LANGUAGE plpgsql VOLATILE SECURITY DEFINER SET search_path = pg_catalog AS $$
+DECLARE proof jsonb; org uuid; actor uuid; current_role text; current_revision integer;
+BEGIN
+  proof := app_auth.assert_protected_write(p_digest, app.context_uuid('app.user_id'));
+  IF proof->>'status' <> 'ok' THEN RETURN proof; END IF;
+  org := (proof->>'organization_id')::uuid;
+  actor := (proof->>'user_id')::uuid;
+  SELECT role, revision INTO current_role, current_revision FROM app.organization_access
+    WHERE organization_id = org AND user_id = actor;
+  IF current_role NOT IN ('owner', 'admin', 'sales_manager', 'sales') OR current_role IS NULL THEN
+    RETURN '{"status":"not_found"}'::jsonb;
+  END IF;
+  RETURN jsonb_build_object('status', 'ok', 'role', current_role, 'revision', current_revision);
+END $$;
+REVOKE ALL ON FUNCTION app.authorize_outreach_draft_write(text)
+  FROM PUBLIC, elevateo_api, elevateo_app_read, elevateo_worker;
+GRANT EXECUTE ON FUNCTION app.authorize_outreach_draft_write(text) TO elevateo_api;
+
 -- AIDEV-NOTE: A digest-backed session proof is required; caller-controlled tenant GUCs alone cannot list grants.
+GRANT CREATE ON SCHEMA app TO elevateo_session_owner;
 SET LOCAL ROLE elevateo_session_owner;
-GRANT EXECUTE ON FUNCTION app_auth.resolve_session(text) TO elevateo_owner;
-SET LOCAL ROLE elevateo_owner;
 CREATE FUNCTION app.organization_grants_page(p_digest text, p_after uuid, p_limit integer)
 RETURNS jsonb LANGUAGE plpgsql STABLE SECURITY DEFINER SET search_path = pg_catalog AS $$
-DECLARE proof jsonb; org uuid; actor uuid; actor_role text; rows jsonb; extra uuid; cursor_id uuid;
+DECLARE proof jsonb; org uuid; actor uuid; actor_role text; actor_revision integer; rows jsonb; extra uuid; cursor_id uuid;
 BEGIN
   IF p_limit IS NULL OR p_limit NOT BETWEEN 1 AND 50 THEN
     RAISE EXCEPTION 'invalid grant page limit' USING ERRCODE = '22023';
@@ -251,7 +306,7 @@ BEGIN
     OR NULLIF(current_setting('app.user_id', true), '') IS DISTINCT FROM actor::text THEN
     RETURN '{"status":"not_found"}'::jsonb;
   END IF;
-  SELECT role INTO actor_role FROM app.organization_access
+  SELECT role, revision INTO actor_role, actor_revision FROM app.organization_access
     WHERE organization_id = org AND user_id = actor;
   IF actor_role NOT IN ('owner', 'admin') OR actor_role IS NULL THEN
     RETURN '{"status":"not_found"}'::jsonb;
@@ -260,7 +315,6 @@ BEGIN
       'role', page.role, 'revision', page.revision) ORDER BY page.user_id), '[]'::jsonb)
     INTO rows FROM (
       SELECT a.user_id, a.role, a.revision FROM app.organization_access a
-      JOIN app.organization_memberships m ON (m.organization_id, m.user_id) = (a.organization_id, a.user_id)
       WHERE a.organization_id = org AND (p_after IS NULL OR a.user_id > p_after)
       ORDER BY a.user_id LIMIT p_limit
     ) page;
@@ -269,12 +323,14 @@ BEGIN
     ORDER BY (item.value->>'user_id')::uuid DESC LIMIT 1;
   IF cursor_id IS NOT NULL THEN
     SELECT a.user_id INTO extra FROM app.organization_access a
-      JOIN app.organization_memberships m ON (m.organization_id, m.user_id) = (a.organization_id, a.user_id)
       WHERE a.organization_id = org AND a.user_id > cursor_id ORDER BY a.user_id LIMIT 1;
   END IF;
-  RETURN jsonb_build_object('status', 'ok', 'items', rows,
+  RETURN jsonb_build_object('status', 'ok', 'actor',
+    jsonb_build_object('user_id', actor, 'role', actor_role, 'revision', actor_revision), 'items', rows,
     'next_user_id', CASE WHEN extra IS NULL THEN NULL ELSE cursor_id END);
 END $$;
 REVOKE ALL ON FUNCTION app.organization_grants_page(text,uuid,integer)
   FROM PUBLIC, elevateo_api, elevateo_app_read, elevateo_worker;
 GRANT EXECUTE ON FUNCTION app.organization_grants_page(text,uuid,integer) TO elevateo_api;
+SET LOCAL ROLE elevateo_owner;
+REVOKE CREATE ON SCHEMA app FROM elevateo_session_owner;

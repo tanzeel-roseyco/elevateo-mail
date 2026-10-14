@@ -56,6 +56,50 @@ class OrganizationAccessPolicyTest < MailboxMembershipDatabaseCase
     result
   end
 
+  def role_change(actor, target, expected, role)
+    result = nil
+    scope(identity: actor, targets: [target.user_id]) do |connection|
+      values = [actor.digest, target.user_id, expected.to_s, role]
+      binds = values.map { |value| ActiveRecord::Relation::QueryAttribute.new("fixture", value, ActiveRecord::Type::String.new) }
+      raw = connection.exec_query("SELECT app.change_organization_role($1,$2,$3,$4) AS result",
+        "Role policy fixture", binds).first.fetch("result")
+      result = raw.is_a?(String) ? JSON.parse(raw) : raw
+      raise ActiveRecord::Rollback unless result.fetch("status") == "ok"
+    end
+    result
+  end
+
+  def test_role_demotion_cannot_strand_sole_effective_team_manager
+    manager = add_actor
+    grant(manager, "admin")
+    explicit_member(manager, manager: true)
+    ceiling(manager, compose: true, manage: true)
+    assert_equal "ok", raw_change(@user, revision, flags: nil).fetch("status")
+    assert_equal "role_conflict", role_change(@identity, manager, 0, "associate").fetch("status")
+    assert_equal "admin", @admin.exec_params("SELECT role FROM app.organization_access WHERE user_id=$1", [manager.user_id]).getvalue(0, 0)
+  end
+
+  def outreach_authorization(actor)
+    result = nil
+    scope(identity: actor) do |connection|
+      bind = ActiveRecord::Relation::QueryAttribute.new("fixture", actor.digest, ActiveRecord::Type::String.new)
+      raw = connection.exec_query("SELECT app.authorize_outreach_draft_write($1) AS result",
+        "Outreach authority fixture", [bind]).first.fetch("result")
+      result = raw.is_a?(String) ? JSON.parse(raw) : raw
+    end
+    result
+  end
+
+  def test_outreach_draft_write_requires_current_business_role
+    sales = add_actor
+    grant(sales, "sales")
+    auditor = add_actor
+    grant(auditor, "auditor")
+    assert_equal "ok", outreach_authorization(sales).fetch("status")
+    assert_equal "not_found", outreach_authorization(auditor).fetch("status")
+    assert_equal "ok", outreach_authorization(@identity).fetch("status")
+  end
+
   def test_owner_can_delegate_with_explicit_ceiling_and_read_redacted_grants
     target = add_actor
     grant(target, "associate")
@@ -63,6 +107,7 @@ class OrganizationAccessPolicyTest < MailboxMembershipDatabaseCase
     assert_equal "ok", response.fetch("status")
     page = grants_page
     assert_equal "ok", page.fetch("status")
+    assert_equal({ "user_id" => @user, "role" => "owner", "revision" => 0 }, page.fetch("actor"))
     assert_equal [@user, target.user_id].sort, page.fetch("items").map { |row| row.fetch("user_id") }.sort
     assert page.fetch("items").all? { |row| row.keys.sort == %w[revision role user_id] }
     assert_nil page.fetch("next_user_id")
@@ -106,7 +151,23 @@ class OrganizationAccessPolicyTest < MailboxMembershipDatabaseCase
     target = add_actor
     grant(target, "associate")
     assert_equal "not_found", raw_change(target.user_id, revision, identity: other).fetch("status")
+    assert_equal "membership_conflict", raw_change(@user, revision, flags: nil).fetch("status")
+    assert_equal "not_found", raw_change(target.user_id, revision,
+      flags: FLAGS.merge("manage_members" => true)).fetch("status")
     assert_equal "ok", raw_change(target.user_id, revision).fetch("status")
+  end
+
+  def test_personal_owner_can_consent_without_organization_admin_role
+    personal = add_actor
+    grant(personal, "associate")
+    @box = mailbox(visibility: "private")
+    explicit_member(personal, manager: true)
+    ceiling(personal, compose: true, manage: true)
+    classify(@box, "personal", owner: personal.user_id)
+    target = add_actor
+    grant(target, "associate")
+    assert_equal "ok", raw_change(target.user_id, revision, identity: personal).fetch("status")
+    assert_equal "not_found", raw_change(target.user_id, revision, identity: @identity).fetch("status")
   end
 
   def test_two_manager_departures_preserve_one_current_manager

@@ -39,13 +39,14 @@ BEGIN
   SELECT * INTO actor_member FROM app.mailbox_memberships
     WHERE organization_id = org AND mailbox_id = p_mailbox AND user_id = actor;
   IF security_row.mailbox_id IS NULL OR actor_role IS NULL OR target_role IS NULL
-    OR ceiling.user_id IS NULL OR actor_member.user_id IS NULL
-    OR actor_role NOT IN ('owner', 'admin', 'sales_manager')
+    OR ceiling.user_id IS NULL OR actor_member.user_id IS NULL OR NOT ceiling.manage_members
+    OR (security_row.classification = 'team' AND actor_role NOT IN ('owner', 'admin', 'sales_manager'))
     OR (actor_role = 'admin' AND target_role IN ('owner', 'admin')
       AND NOT (p_delete AND actor = p_target))
     OR (actor_role = 'sales_manager' AND target_role NOT IN ('sales', 'associate')
       AND NOT (p_delete AND actor = p_target))
     OR (security_row.classification = 'personal' AND actor <> security_row.personal_owner_id)
+    OR (security_row.classification = 'personal' AND p_manage AND p_target <> security_row.personal_owner_id)
     OR (NOT p_delete AND ((p_compose AND (NOT ceiling.compose OR NOT actor_member.compose))
       OR (p_approve AND (NOT ceiling.approve_send OR NOT actor_member.approve_send))
       OR (p_manage AND (NOT ceiling.manage_members OR NOT actor_member.manage_members))))
@@ -60,11 +61,21 @@ BEGIN
   END IF;
   changed := CASE WHEN p_delete THEN member.user_id IS NOT NULL ELSE member.user_id IS NULL OR
     (member.compose, member.approve_send, member.manage_members) IS DISTINCT FROM (p_compose, p_approve, p_manage) END;
-  IF changed AND member.manage_members AND (p_delete OR NOT p_manage) AND NOT EXISTS (
-    SELECT 1 FROM app.mailbox_memberships m JOIN app.organization_memberships o
-      ON o.organization_id = m.organization_id AND o.user_id = m.user_id
-    WHERE m.organization_id = org AND m.mailbox_id = p_mailbox AND m.manage_members AND m.user_id <> p_target
-  ) THEN RETURN '{"status":"membership_conflict"}'::jsonb; END IF;
+  IF changed AND member.manage_members AND (p_delete OR NOT p_manage) THEN
+    -- AIDEV-NOTE: Only the personal owner can administer that mailbox; no alternate flag preserves authority.
+    IF security_row.classification = 'personal' AND p_target = security_row.personal_owner_id THEN
+      RETURN '{"status":"membership_conflict"}'::jsonb;
+    END IF;
+    IF security_row.classification = 'team' AND NOT EXISTS (
+      SELECT 1 FROM app.mailbox_memberships m JOIN app.organization_memberships o
+        ON o.organization_id = m.organization_id AND o.user_id = m.user_id
+      JOIN app.organization_access a ON (a.organization_id, a.user_id) = (m.organization_id, m.user_id)
+      JOIN app.mailbox_grant_ceilings c ON (c.organization_id, c.mailbox_id, c.user_id) =
+        (m.organization_id, m.mailbox_id, m.user_id)
+      WHERE m.organization_id = org AND m.mailbox_id = p_mailbox AND m.manage_members AND c.manage_members
+        AND a.role IN ('owner', 'admin', 'sales_manager') AND m.user_id <> p_target
+    ) THEN RETURN '{"status":"membership_conflict"}'::jsonb; END IF;
+  END IF;
   IF changed AND revision = 2147483647 THEN RETURN '{"status":"temporarily_unavailable"}'::jsonb; END IF;
   IF changed THEN
     IF p_delete THEN
