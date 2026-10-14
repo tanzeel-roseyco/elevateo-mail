@@ -6,7 +6,9 @@ module Elevateo
       MAX_VERSION: Integer
 
       def self.due_utc: (local_at: untyped, timezone: untyped) -> Time?
+      def self.due_after: (anchor_utc: untyped, delay_seconds: untyped, local_time: untyped, timezone: untyped) -> Time?
       def self.occurrence_key: (campaign_id: untyped, lead_id: untyped, step_id: untyped, draft_version: untyped) -> String
+      def self.stop_decision: (campaign_id: untyped, lead_id: untyped, events: untyped) -> Symbol
       def self.stop_required?: (reply_at: untyped, unsubscribe_at: untyped) -> bool
     end
   end

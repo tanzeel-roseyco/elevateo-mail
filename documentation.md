@@ -269,3 +269,6 @@ FE807 sequence route seam: `createOutreachFeatureModule` exports `/outreach/camp
 MAC-814 native integration: the actual `apps/native` Tauri shell now has a macOS-specific DMG override, empty entitlements and a preflight-only release entrypoint. The shared shell CSP and empty capability remain fail closed; no native callback is registered. See `docs/completion/maeve.md` for Docker static test request and target-Mac acceptance blockers.
 
 MAC-814 sequence planning: `apps/server/lib/elevateo/outreach_sequence/schedule.rb` provides pure candidate scheduling helpers only. Migration 00016 and versioned sequence DTOs are not created; the existing BE03 send-intent/worker remains sole delivery authority. See `docs/completion/maeve-sequence-draft.md` for proposed persistence, DST, idempotency and final consent gates.
+# Sequence draft candidate (MAC-814)
+
+One campaign owns one draft/held sequence with 1–20 steps. Replacement requires an expected version and stable operation ID; prior occurrence history remains frozen, and timezone change with history requires explicit reschedule. Occurrences have no API write/claim grant, so this source cannot send. SEC802 authorization grant review and integrated fleet Docker checks remain pending. See [implementation and limits](docs/completion/maeve-sequence-persistence.md).

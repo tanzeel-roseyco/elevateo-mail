@@ -204,3 +204,6 @@ FE807 sequence source candidate adds `/outreach/campaigns/:campaignId/sequence` 
 MAC-814 continuation: Orion shell d13c985 imported with lineage; macOS DMG overlay and preflight release script authored. No Mac runner, credential or native execution evidence; installed-app authentication remains fail closed.
 
 MAC-814 sequence draft primitive is source-only and untested: timezone/DST resolution, occurrence identity and stop signals. Persistence, API contract, final consent/suppression checks and worker integration remain pending root/Cassian/Dorian agreement. No sending path was added.
+# MAC-814 isolated sequence draft persistence
+
+Migration 00016, DTO validation, transactional replay/version repository and inert occurrence schema are candidate source only. The SEC802 helper EXECUTE role seam and fleet Docker tests remain open; no sequence delivery path is enabled. See [candidate record](docs/completion/maeve-sequence-persistence.md).

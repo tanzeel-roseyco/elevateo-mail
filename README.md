@@ -71,6 +71,7 @@ ADV052 split the integrated send-dependency check from the default-privilege ass
 PREF-822 source now proposes per-user display-name persistence under the existing authenticated context in additive V2; Cassian owns the separate route/DTO draft, and Soren owns fleet Docker verification. The frozen core candidate is unaffected.
 
 Theo's ADM-803 core static repair narrows roster and signed-cursor types after the exact QA815 fleet diagnostic; its Steep/RuboCop rerun is pending. See [repair packet](docs/completion/theo-core-static-repair.md).
+MAC-814 isolated sequence draft persistence candidate: migration 00016 and strict draft/held authoring source are prepared with atomic versioned replacement and inert occurrence history. No due send consumer, runtime PASS, or live mail authorization is claimed. SEC802 role grant review and fleet Docker checks are pending; see [Maeve candidate](docs/completion/maeve-sequence-persistence.md).
 
 
 ### R25 approval reload recovery candidate
