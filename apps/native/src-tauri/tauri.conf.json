@@ -16,6 +16,7 @@
     "active": true,
     "targets": ["nsis"],
     "windows": {
+      "allowDowngrades": false,
       "nsis": { "displayLanguageSelector": false, "languages": ["English"] },
       "webviewInstallMode": { "type": "embedBootstrapper" }
     }
