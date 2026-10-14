@@ -17,6 +17,8 @@ Source candidate: `c151ecd` (ADV046/047 oracle repairs; source hashes below). Re
 | H (DIR904 API precursor; source only) | `playwright/qa816-assignee-options.e2e.ts` 1–69 | 69 | `7919456a0791abb178a17e1a3433e219351a154475f9aab2b200ce70d9c1fa82` |
 | I (ATT902 API precursor; source only) | `playwright/qa816-attachment-api.e2e.ts` 1–106 | 106 | `acdff7a7e0d9c002a42bc3ea631fe3a6f395e0149b2eac6b149b86d93a874d78` |
 | J (reporter preflight repair; source only) | `playwright/playwright.config.ts` 1–28 | 28 context; 9 changed/new | `24fb7343e0a41762b1a776de6d6d0674dfcd7e6499b3c229d5e4d991756e6c39` |
+| H2 (REV917 repair; source only) | `playwright/qa816-assignee-options.e2e.ts` 1–73 | 73 current context; 4 changed/new | `4a7cf036ef2286625870fe1dbe8c1974ad28b8d7f5aeab9231ed1ae5abd0d088` |
+| I2 (REV917 repair; source only) | `playwright/qa816-attachment-api.e2e.ts` 1–112 | 112 current context; 10 changed/new | `83cad3e94f0cbbb27d2a646bbf63870148474ecc3f49b492c90834bab025ab49` |
 
 Dedicated design reviewer: examine A+B as two divided packets totaling 340 LOC, then C+D+E as separate divided packets totaling 280 LOC. Focus on genuine API/Auth observations, task-owned data and cleanup, transport barriers, response race assertions, role/tenant assumptions, screenshot admission/privacy and difference between visual viewport and text zoom. The same lines are overlapping design context, not extra unique coverage. Each functional packet stays below 200 LOC; each design assignment stays below 400 LOC.
 
@@ -42,9 +44,13 @@ After Mira's exact `fcfaf0f` top reply prefill source, Cassian's coherent import
 
 Theo exact `77007498` controller and Cassian draft.8 are not active. After Sabine SQL authority, Cassian route/injection and Soren's exact disposable Auth/HTTP gate, run `node node_modules/@playwright/test/cli.js test --config=playwright/playwright.config.ts qa816-assignee-options.e2e.ts --workers=1` from `tests/acceptance`. Three source-only cases use a real browser session and same-origin fetch: UUID-only scoped GET200 containing the seeded eligible composer, other-org mailbox 404 `not_available`, and malformed cursor 400 `cursor_invalid`. They export no screenshot and do **not** prove keyboard picker, assignment write, target revocation or cached-option clearing; those require Lyra's actual UI and manager mutation seam before adding the separate UI cases. No Docker/browser/API test has run for this packet.
 
+REV917 repair requires the complete expected primary-mailbox eligible UUID set from the private runtime seed and a terminal first page at limit50, so a page that leaks the other-org or revoked actor cannot pass merely by containing composer. The suite still awaits the real route.
+
 ### ATT902 real-browser API precursor, not attachment UI acceptance
 
 After Nadia's committed private byte hook, Cassian's active V2 attachment routes/injection, and Soren's disposable Auth/HTTP gate, a trusted fleet fixture script must populate clean, held and rejected attachments against a readable synthetic message and publish mode-0600 `/acceptance/qa816-attachments.json` matching the strict `qa816-attachment-api.e2e.ts` loader. Set `QA816_ATTACHMENT_PATH` to that exact path, then run `node node_modules/@playwright/test/cli.js test --config=playwright/playwright.config.ts qa816-attachment-api.e2e.ts --workers=1` from `tests/acceptance`. The three source-only cases check real clean list/content bytes against private SHA-256/length and safe headers, held content 423 plus rejected zero-byte metadata, and cross-mailbox content 404. They export no screenshot and do **not** prove Mira's download UI, revocation, gateway outage or installed Android. No fixture script/sidecar is implemented or generated yet; no Docker/browser/API result is claimed, and Soren must discard any uncertain disposable fixture.
+
+REV917 repair requires an actual existing foreign mailbox/thread/message/attachment tuple in the private sidecar; the 404 request uses that complete tuple so a mismatched primary ancestry cannot masquerade as authorization denial. The rejected attachment case now requests content and requires HTTP423 `attachment_held` JSON plus rejected metadata byte_size0, matching Cassian's current ATT902 source seam. These are still source-only until a trusted fixture producer and active route exist.
 
 ### Permanent Playwright reporter path preflight
 

@@ -9,7 +9,8 @@ import { responseAt, seed, signIn } from './support.js';
 const token = z.string().min(16).max(256).regex(/^[A-Za-z0-9_-]+$/);
 const uuid = z.uuid();
 const sidecarSchema = z.strictObject({ schema_version: z.literal(1), kind: z.literal('qa816_attachment_bytes'),
-  mailbox_id: uuid, thread_id: uuid, message_id: uuid, foreign_mailbox_id: uuid,
+  mailbox_id: uuid, thread_id: uuid, message_id: uuid,
+  foreign: z.strictObject({ mailbox_id: uuid, thread_id: uuid, message_id: uuid, attachment_id: uuid }),
   clean: z.strictObject({ id: uuid, filename: z.string().regex(/^[A-Za-z0-9._-]{1,120}$/), byte_size: z.number().int().min(1).max(10_485_760),
     sha256: z.string().regex(/^[0-9a-f]{64}$/) }), held_id: uuid, rejected_id: uuid });
 const sessionSchema = z.object({ context_id: token, authorization_version: token,
@@ -28,7 +29,9 @@ function fixture() {
     throw new Error('QA816 attachment sidecar invalid');
   const value = sidecarSchema.parse(JSON.parse(readFileSync(path, 'utf8')) as unknown);
   if (value.mailbox_id !== seed.mailboxes.primary || value.thread_id !== seed.data.thread_primary ||
-      value.foreign_mailbox_id !== seed.mailboxes.other) throw new Error('QA816 attachment sidecar scope mismatch');
+      value.foreign.mailbox_id !== seed.mailboxes.other || value.foreign.thread_id !== seed.data.thread_other ||
+      value.foreign.message_id === value.message_id || value.foreign.attachment_id === value.clean.id)
+    throw new Error('QA816 attachment sidecar scope mismatch');
   return value;
 }
 
@@ -92,13 +95,16 @@ scenario('SCN-QA-827-F1', 'held-and-rejected-attachments-never-yield-bytes', asy
   const held = await jsonApi(page, `${listPath(value)}/${value.held_id}/content`, headers);
   expect(held.status).toBe(423);
   expect(errorSchema.parse(held.value).code).toBe('attachment_held');
-  record.assertions.push('Real held content is 423; rejected metadata has zero bytes and strict page exposes no private key or URL');
+  const rejected = await jsonApi(page, `${listPath(value)}/${value.rejected_id}/content`, headers);
+  expect(rejected.status).toBe(423);
+  expect(errorSchema.parse(rejected.value).code).toBe('attachment_held');
+  record.assertions.push('Real held and rejected content are 423 JSON errors; rejected metadata has zero bytes and no private key or URL');
 });
 
 scenario('SCN-QA-827-F2', 'foreign-mailbox-attachment-bytes-are-unavailable', async (page, record) => {
   const value = fixture();
   const headers = await authorized(page);
-  const path = `/v2/mailboxes/${value.foreign_mailbox_id}/threads/${value.thread_id}/messages/${value.message_id}/attachments/${value.clean.id}/content`;
+  const path = `/v2/mailboxes/${value.foreign.mailbox_id}/threads/${value.foreign.thread_id}/messages/${value.foreign.message_id}/attachments/${value.foreign.attachment_id}/content`;
   const denied = await jsonApi(page, path, headers);
   expect(denied.status).toBe(404);
   expect(errorSchema.parse(denied.value).code).toBe('not_available');

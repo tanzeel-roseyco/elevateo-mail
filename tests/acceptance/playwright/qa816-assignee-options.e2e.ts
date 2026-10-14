@@ -44,9 +44,13 @@ scenario('SCN-QA-826-P', 'current-mailbox-assignee-options-uuid-only', async (pa
   const options = pageSchema.parse(result.value);
   expect(options).toMatchObject({ context_id: session.context_id,
     authorization_version: session.authorization_version, mailbox_id: seed.mailboxes.primary });
-  expect(options.items.map(item => item.user_id)).toContain(seed.actors.composer.user_id);
-  expect(new Set(options.items.map(item => item.user_id)).size).toBe(options.items.length);
-  record.assertions.push('Real V2 current-mailbox options page is scoped, UUID-only and contains a seeded eligible member');
+  const expected = Object.entries(seed.expected_mailbox_memberships)
+    .filter(([, memberships]) => memberships.some(member => member.mailbox_id === seed.mailboxes.primary))
+    .map(([alias]) => seed.actors[alias as keyof typeof seed.actors].user_id).sort();
+  expect(expected).toContain(seed.actors.composer.user_id);
+  expect(options.next_cursor).toBeNull();
+  expect(options.items.map(item => item.user_id).sort()).toEqual(expected);
+  record.assertions.push('Real V2 options exactly match the private runtime seed eligible UUIDs, excluding other-org and revoked actors');
 });
 
 scenario('SCN-QA-826-F1', 'foreign-mailbox-options-are-unavailable', async (page, record) => {
