@@ -43,8 +43,9 @@ checks DNS and external TCP egress denial; collects bounded logs and resource
 figures; and removes only its own containers/network/volume. Preserve the
 receipt directory outside the disposable runtime.
 
-The script uses a 2 GiB/2 CPU container cap, 5 GiB preflight free-space
-minimum and a 15-minute process deadline. A 5 GiB free-space check is an
+The concurrent Mox/probe limits total 1.75 GiB and 2 CPU, within the
+2 GiB/2 CPU pilot ceiling. It preflights 5 GiB free space and budgets
+14 minutes for protocol work plus 1 minute for cleanup. A 5 GiB free-space check is an
 admission guard, not a hard volume quota; Soren must verify actual disk use.
 Do not treat localserve's self-signed TLS, catchall delivery, or loopback
 submission as production security, Internet deliverability, or tenant proof.
