@@ -73,3 +73,9 @@ export const LeadCreateSchema = z.strictObject({ id, operation_id: id, email: z.
 export const LeadUpdateSchema = z.strictObject({
   operation_id: id, expected_version: z.number().int().min(1), email: z.email().max(254),
 })
+
+export const AccountSummarySchema = z.strictObject({
+  id, campaign_id: id, mailbox_id: id, label: z.string().min(1).max(120),
+  status: z.literal('disabled'), version: z.number().int().min(1),
+})
+export const AccountPageSchema = z.strictObject({ items: z.array(AccountSummarySchema).max(100), next_cursor: id.nullable() })
