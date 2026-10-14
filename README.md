@@ -14,6 +14,8 @@ Shared company mailroom with one Rails domain authority and a React/TypeScript c
 
 ## Current state
 
+**Dedicated backend profiles:** On exact `e01c64ad`, separate disposable fleet runs passed gateway ACL migrator 1/24 and restricted gateway authority 5/21 with cleanup; two of nine dedicated profiles are scoped PASS. Assignment-options DDL test under the required migrator role then failed its `t/f` versus `true/false` oracle (1 run/2 assertions), so that suite remains open. These results do not establish private Storage/clamd bytes, HTTP, worker or real Auth.
+
 **Expanded backend failure map:** Soren's exact `e01c64ad` ledger groups 27 failed suites into four Rails logger rescue failures, one migrator-role mismatch, one `resolve_session` grant, two `SET ROLE` grants and 19 shared dirty-fixture suites. Two representative dirty-fixture suites passed unchanged on separate fresh fleet databases (QA817 2/6; send approval 15/202), with cleanup. The remaining suites and dedicated/HTTP/worker/real Auth gates are open.
 
 **Expanded backend fleet result:** Exact reviewed `e01c64ad` migrated through 00019 and executed all 137 standard Ruby suites: 110 suite exits passed, 27 failed; 807 runs/7,715 assertions, one failure/106 errors. Steep and 319-file RuboCop lint passed, cleanup passed. Nine dedicated suites remain separately deferred; authenticated HTTP/worker/real Auth did not run. The failures include shared database fixture contamination, closed connections, Rails logger masking and role/privilege mismatches; root and Soren are classifying bounded repairs.
