@@ -1,6 +1,6 @@
-# Native auth contract proposal — disabled, pending Cassian/Sabine
+# Historical native auth proposal — superseded for first release
 
-This is a versioned design proposal, not an active endpoint or granted OAuth client. Native enrollment remains disabled until server implementation, registered redirect, device binding, target-OS secure-store behavior and fleet/native tests are accepted.
+Root selected an online-only exact HTTPS WebView with existing HttpOnly cookie auth for first release. This earlier versioned native-token design is retained only as a historical proposal; it is not active, implemented, or required for this release. Native enrollment remains disabled until server implementation, registered redirect, device binding, target-OS secure-store behavior and fleet/native tests are accepted.
 
 ## Requested server decisions
 

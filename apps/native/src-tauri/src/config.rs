@@ -1,4 +1,4 @@
-use url::Url;
+use url::{Host, Url};
 
 #[derive(Debug, PartialEq, Eq)]
 pub enum ConfigError {
@@ -8,8 +8,8 @@ pub enum ConfigError {
     UnsupportedUrlParts,
 }
 
-/// Public API origin only. A valid value does not establish native authentication.
-pub fn validate_api_origin(raw: &str) -> Result<String, ConfigError> {
+/// Public first-party web origin for an online-only WebView; never a token or arbitrary route.
+pub fn validate_web_origin(raw: &str) -> Result<Url, ConfigError> {
     if raw.is_empty() {
         return Err(ConfigError::Missing);
     }
@@ -20,10 +20,12 @@ pub fn validate_api_origin(raw: &str) -> Result<String, ConfigError> {
     if parsed.scheme() != "https" {
         return Err(ConfigError::InsecureOrigin);
     }
-    let host = parsed.host_str().ok_or(ConfigError::InvalidUrl)?;
+    let host = match parsed.host() {
+        Some(Host::Domain(domain)) => domain,
+        _ => return Err(ConfigError::InsecureOrigin),
+    };
     if host.eq_ignore_ascii_case("localhost") || host.ends_with(".localhost") ||
         host.eq_ignore_ascii_case("example.com") || host.ends_with(".example.com") ||
-        host == "127.0.0.1" || host == "::1" ||
         host.ends_with(".invalid") || host.ends_with(".test") {
         return Err(ConfigError::InsecureOrigin);
     }
@@ -31,7 +33,7 @@ pub fn validate_api_origin(raw: &str) -> Result<String, ConfigError> {
         parsed.path() != "/" || parsed.query().is_some() || parsed.fragment().is_some() {
         return Err(ConfigError::UnsupportedUrlParts);
     }
-    Ok(parsed.origin().ascii_serialization())
+    Ok(parsed)
 }
 
 #[cfg(test)]
@@ -39,19 +41,20 @@ mod tests {
     use super::*;
 
     #[test]
-    fn accepts_public_https_origin() {
-        assert_eq!(validate_api_origin("https://api.mail.company.org:443"), Ok("https://api.mail.company.org".into()));
+    fn accepts_exact_public_https_origin() {
+        assert_eq!(validate_web_origin("https://mail.company.org").unwrap().as_str(), "https://mail.company.org/");
     }
 
     #[test]
-    fn rejects_cleartext_and_loopback() {
-        assert_eq!(validate_api_origin("http://mail.test"), Err(ConfigError::InsecureOrigin));
-        assert_eq!(validate_api_origin("https://localhost"), Err(ConfigError::InsecureOrigin));
+    fn rejects_cleartext_local_and_placeholder() {
+        assert_eq!(validate_web_origin("http://mail.company.org"), Err(ConfigError::InsecureOrigin));
+        assert_eq!(validate_web_origin("https://localhost"), Err(ConfigError::InsecureOrigin));
+        assert_eq!(validate_web_origin("https://example.com"), Err(ConfigError::InsecureOrigin));
     }
 
     #[test]
     fn rejects_credentials_path_and_query() {
-        assert_eq!(validate_api_origin("https://user:pw@mail.test"), Err(ConfigError::UnsupportedUrlParts));
-        assert_eq!(validate_api_origin("https://mail.test/v1?token=x"), Err(ConfigError::UnsupportedUrlParts));
+        assert_eq!(validate_web_origin("https://user:pw@mail.company.org"), Err(ConfigError::UnsupportedUrlParts));
+        assert_eq!(validate_web_origin("https://mail.company.org/v1?token=x"), Err(ConfigError::UnsupportedUrlParts));
     }
 }
