@@ -4,7 +4,7 @@
 // retried under the SAME note id; the top reply opens a sender-filled, thread-bound draft.
 import { fireEvent, render, screen, waitFor, within } from '@testing-library/react'
 import { MemoryRouter, Route, Routes } from 'react-router'
-import { describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { SessionProvider } from '@/app/session'
 import { DraftIntentProvider } from '@/app/draftIntent'
 import { MailboxesProvider } from '@/app/mailboxes'
@@ -19,6 +19,17 @@ import { ThreadPage } from './ThreadPage'
 const api = (code: GatewayError['code'], status: number) => new GatewayError('api', code, 'synthetic', { status, requestId: 'r1' })
 const button = (name: string) => screen.getByRole('button', { name }) as HTMLButtonElement
 const HOSTILE_NOTE = '<img src="https://example.invalid/pixel">\n[unsafe](javascript:alert(1))\nPlaintext note \u{1F4E8}'
+const { listAssigneeOptions } = vi.hoisted(() => ({ listAssigneeOptions: vi.fn() }))
+vi.mock('@/app/featureGateways', () => ({
+  useFeatureGateways: () => ({ assigneeOptions: { listMailboxAssigneeOptions: listAssigneeOptions } }),
+}))
+
+beforeEach(() => listAssigneeOptions.mockReset())
+
+const assigneePage = (userId: string) => ({
+  context_id: CD.contextId, authorization_version: CD.authorizationVersion, mailbox_id: CD.mailboxId,
+  items: [{ user_id: userId }], next_cursor: null,
+})
 /** A note is on screen only when its exact text sits in a <pre>; the textarea never counts. */
 const noteShown = (text: string) => screen.findByText((_content, element) => element?.tagName === 'PRE' && element.textContent === text)
 
@@ -108,8 +119,9 @@ describe('read state', () => {
 })
 
 describe('assignment', () => {
-  it('assigns to me, clears, and assigns a typed member id, each advancing the revision', async () => {
+  it('assigns to me, clears, and chooses a mailbox-scoped user, each advancing the revision', async () => {
     const h = harness()
+    listAssigneeOptions.mockResolvedValue(assigneePage(CD.readerId))
     renderReader(h.gateway)
     await readerReady()
     expect(screen.getByText(/revision 0/)).toBeTruthy()
@@ -121,14 +133,16 @@ describe('assignment', () => {
     expect(await screen.findByText('Unassigned')).toBeTruthy()
     expect(screen.getByText(/revision 2/)).toBeTruthy()
 
-    fireEvent.change(screen.getByLabelText('Assign to user id'), { target: { value: 'nope' } })
-    fireEvent.click(button('Assign'))
-    expect(screen.getByText('Enter a user id in UUID form.')).toBeTruthy()
-    fireEvent.change(screen.getByLabelText('Assign to user id'), { target: { value: CD.readerId.toUpperCase() } })
-    fireEvent.click(button('Assign'))
+    expect(listAssigneeOptions).not.toHaveBeenCalled()
+    fireEvent.click(button('Choose assignee'))
+    const option = await screen.findByRole('button', { name: `Assign to user ${CD.readerId}` })
+    expect(listAssigneeOptions).toHaveBeenCalledWith(
+      expect.objectContaining({ contextId: CD.contextId, authorizationVersion: CD.authorizationVersion }),
+      CD.mailboxId, { limit: 50 }, expect.any(AbortSignal),
+    )
+    fireEvent.click(option)
     expect(await screen.findByText(`Assigned to user ${CD.readerId}`)).toBeTruthy()
     expect(h.state.getAssignment(CD.threadId, CD.mailboxId)).toMatchObject({ assignee_id: CD.readerId, assignment_version: 3 })
-    expect(screen.getByText('UUID of a current organization member. No user directory exists in this build.')).toBeTruthy()
   })
 
   it('a stale revision is refused and the reload shows what the server holds', async () => {
@@ -149,10 +163,12 @@ describe('assignment', () => {
 
   it('an ineligible target is unavailable, not silently dropped', async () => {
     const h = harness()
+    const formerlyEligible = '00000000-0000-4000-8000-000000000002'
+    listAssigneeOptions.mockResolvedValue(assigneePage(formerlyEligible))
     renderReader(h.gateway)
     await readerReady()
-    fireEvent.change(screen.getByLabelText('Assign to user id'), { target: { value: '00000000-0000-4000-8000-000000000002' } })
-    fireEvent.click(button('Assign'))
+    fireEvent.click(button('Choose assignee'))
+    fireEvent.click(await screen.findByRole('button', { name: `Assign to user ${formerlyEligible}` }))
     const alert = await screen.findByRole('alert')
     expect(alert.textContent).toContain('This item is unavailable to you now.')
     expect(screen.getByText('Unassigned')).toBeTruthy()
