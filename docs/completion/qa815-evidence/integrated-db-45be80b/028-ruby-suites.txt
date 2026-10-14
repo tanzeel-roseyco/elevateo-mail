@@ -1,0 +1,3909 @@
+RUN [opaque value redacted]
+Run options: --seed 8747
+
+# Running:
+
+...
+
+Finished in 2.602541s, 1.1527 runs/s, 25.3598 assertions/s.
+
+3 runs, 66 assertions, 0 failures, 0 errors, 0 skips
+RUN test/be_02/auth_client_test.rb
+Run options: --seed 23050
+
+# Running:
+
+..........
+
+Finished in 0.007714s, 1296.3334 runs/s, 9592.8673 assertions/s.
+
+10 runs, 74 assertions, 0 failures, 0 errors, 0 skips
+RUN test/be_02/auth_config_test.rb
+Run options: --seed 64999
+
+# Running:
+
+.....
+
+Finished in 0.001783s, 2804.9960 runs/s, 19073.9731 assertions/s.
+
+5 runs, 34 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 44423
+
+# Running:
+
+...
+
+Finished in 0.107737s, 27.8455 runs/s, 575.4744 assertions/s.
+
+3 runs, 62 assertions, 0 failures, 0 errors, 0 skips
+RUN test/be_02/auth_entry_test.rb
+Run options: --seed 21804
+
+# Running:
+
+......
+
+Finished in 0.004653s, 1289.4299 runs/s, 8381.2945 assertions/s.
+
+6 runs, 39 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 51120
+
+# Running:
+
+...
+
+Finished in 0.006796s, 441.4239 runs/s, 2059.9781 assertions/s.
+
+3 runs, 14 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 35891
+
+# Running:
+
+.......
+
+Finished in 0.362810s, 19.2939 runs/s, 60.6378 assertions/s.
+
+7 runs, 22 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 46667
+
+# Running:
+
+...
+
+Finished in 0.399386s, 7.5115 runs/s, 75.1154 assertions/s.
+
+3 runs, 30 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 6655
+
+# Running:
+
+.......
+
+Finished in 0.290625s, 24.0860 runs/s, 626.2364 assertions/s.
+
+7 runs, 182 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 33520
+
+# Running:
+
+........
+
+Finished in 0.992820s, 8.0579 runs/s, 173.2438 assertions/s.
+
+8 runs, 172 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 28035
+
+# Running:
+
+..
+
+Finished in 0.258699s, 7.7310 runs/s, 127.5612 assertions/s.
+
+2 runs, 33 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 43620
+
+# Running:
+
+.......
+
+Finished in 0.131099s, 53.3947 runs/s, 655.9923 assertions/s.
+
+7 runs, 86 assertions, 0 failures, 0 errors, 0 skips
+RUN test/be_02/cursors_test.rb
+Run options: --seed 49716
+
+# Running:
+
+.......
+
+Finished in 0.002030s, 3447.5592 runs/s, 19700.3384 assertions/s.
+
+7 runs, 40 assertions, 0 failures, 0 errors, 0 skips
+RUN test/be_02/database_helper_test.rb
+Run options: --seed 48603
+
+# Running:
+
+........
+
+Finished in 0.468973s, 17.0586 runs/s, 63.9696 assertions/s.
+
+8 runs, 30 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 31986
+
+# Running:
+
+......
+
+Finished in 0.536474s, 11.1841 runs/s, 109.9774 assertions/s.
+
+6 runs, 59 assertions, 0 failures, 0 errors, 0 skips
+RUN test/be_02/draft_bootstrap_test.rb
+Run options: --seed 54137
+
+# Running:
+
+..E.E
+
+Finished in 0.262842s, 19.0229 runs/s, 83.7006 assertions/s.
+
+  1) Error:
+DraftBootstrapTest#[opaque value redacted]:
+PG::DependentObjectsStillExist: ERROR:  cannot drop table app.drafts because other objects depend on it
+DETAIL:  constraint [opaque value redacted] on table app_send_private.intents depends on table app.drafts
+HINT:  Use DROP ... CASCADE to drop the dependent objects too.
+
+    test/be_02/draft_bootstrap_test.rb:59:in 'PG::Connection#exec'
+    test/be_02/draft_bootstrap_test.rb:59:in 'block (2 levels) in DraftBootstrapTest#[opaque value redacted]'
+    test/be_02/draft_bootstrap_test.rb:104:in 'DraftBootstrapTest#transaction'
+    test/be_02/draft_bootstrap_test.rb:56:in 'block in DraftBootstrapTest#[opaque value redacted]'
+    test/be_02/draft_bootstrap_test.rb:55:in 'Array#each'
+    test/be_02/draft_bootstrap_test.rb:55:in 'DraftBootstrapTest#[opaque value redacted]'
+
+  2) Error:
+DraftBootstrapTest#[opaque value redacted]:
+PG::DependentObjectsStillExist: ERROR:  cannot drop table app.drafts because other objects depend on it
+DETAIL:  constraint [opaque value redacted] on table app_send_private.intents depends on table app.drafts
+HINT:  Use DROP ... CASCADE to drop the dependent objects too.
+
+    test/be_02/draft_bootstrap_test.rb:31:in 'PG::Connection#exec'
+    test/be_02/draft_bootstrap_test.rb:31:in 'DraftBootstrapTest#[opaque value redacted]'
+
+5 runs, 22 assertions, 0 failures, 2 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 47894
+
+# Running:
+
+FF..
+
+Finished in 0.354596s, 11.2805 runs/s, 73.3229 assertions/s.
+
+  1) Failure:
+DraftConcurrencyTest#[opaque value redacted] [[opaque value redacted]:103]:
+Expected: "ok"
+  Actual: "not_found"
+
+  2) Failure:
+DraftConcurrencyTest#[opaque value redacted] [[opaque value redacted]:103]:
+Expected: "ok"
+  Actual: "not_found"
+
+4 runs, 26 assertions, 2 failures, 0 errors, 0 skips
+RUN test/be_02/draft_database_test.rb
+Run options: --seed 2888
+
+# Running:
+
+........
+
+Finished in 0.570334s, 14.0269 runs/s, 149.0356 assertions/s.
+
+8 runs, 85 assertions, 0 failures, 0 errors, 0 skips
+RUN test/be_02/draft_payload_test.rb
+Run options: --seed 51294
+
+# Running:
+
+......
+
+Finished in 0.017609s, 340.7317 runs/s, 2612.2767 assertions/s.
+
+6 runs, 46 assertions, 0 failures, 0 errors, 0 skips
+RUN test/be_02/draft_reads_test.rb
+Run options: --seed 23042
+
+# Running:
+
+.......
+
+Finished in 0.142572s, 49.0979 runs/s, 231.4616 assertions/s.
+
+7 runs, 33 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 42174
+
+# Running:
+
+E....
+
+Finished in 0.274163s, 18.2373 runs/s, 167.7833 assertions/s.
+
+  1) Error:
+DraftSchemaContractTest#[opaque value redacted]:
+PG::DependentObjectsStillExist: ERROR:  cannot drop desired object(s) because other objects depend on them
+DETAIL:  function app_send_private.current_capability(app_send_private.intents) depends on type app_send_private.intents
+constraint [opaque value redacted] on table app_send_private.reconciliation_checks depends on table app_send_private.intents
+constraint [opaque value redacted] on table app_send_private.reconciliation_checks depends on table app_send_private.attempts
+HINT:  Use DROP ... CASCADE to drop the dependent objects too.
+
+    [opaque value redacted]:31:in 'PG::Connection#exec'
+    [opaque value redacted]:31:in 'block in DraftSchemaContractTest#[opaque value redacted]'
+    [opaque value redacted]:102:in 'DraftSchemaContractTest#transaction'
+    [opaque value redacted]:27:in 'DraftSchemaContractTest#[opaque value redacted]'
+
+5 runs, 46 assertions, 0 failures, 1 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 56154
+
+# Running:
+
+....
+
+Finished in 0.001490s, 2684.9184 runs/s, 32890.2503 assertions/s.
+
+4 runs, 49 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 7332
+
+# Running:
+
+.....
+
+Finished in 0.730251s, 6.8470 runs/s, 53.4063 assertions/s.
+
+5 runs, 39 assertions, 0 failures, 0 errors, 0 skips
+RUN test/be_02/mail_search_test.rb
+Run options: --seed 55372
+
+# Running:
+
+......
+
+Finished in 0.125646s, 47.7532 runs/s, 652.6276 assertions/s.
+
+6 runs, 82 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 37544
+
+# Running:
+
+FFF.FF
+
+Finished in 0.659584s, 9.0966 runs/s, 59.1282 assertions/s.
+
+  1) Failure:
+[opaque value redacted]#[opaque value redacted] [[opaque value redacted]:92]:
+Expected: ["membership_conflict", "ok"]
+  Actual: ["not_found", "not_found"]
+
+  2) Failure:
+[opaque value redacted]#[opaque value redacted] [[opaque value redacted]:76]:
+Expected: ["ok", "ok"]
+  Actual: ["not_found", "not_found"]
+
+  3) Failure:
+[opaque value redacted]#[opaque value redacted] [[opaque value redacted]:107]:
+Expected: ["membership_conflict", "ok"]
+  Actual: ["not_found", "not_found"]
+
+  4) Failure:
+[opaque value redacted]#[opaque value redacted] [[opaque value redacted]:16]:
+Expected: "ok"
+  Actual: "not_found"
+
+  5) Failure:
+[opaque value redacted]#[opaque value redacted] [[opaque value redacted]:126]:
+Expected: "ok"
+  Actual: "not_found"
+
+6 runs, 39 assertions, 5 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 17002
+
+# Running:
+
+..FF..FF
+
+Finished in 1.390179s, 5.7547 runs/s, 36.6859 assertions/s.
+
+  1) Failure:
+MailboxMembershipDatabaseTest#[opaque value redacted] [[opaque value redacted]:63]:
+Expected: "membership_conflict"
+  Actual: "not_found"
+
+  2) Failure:
+MailboxMembershipDatabaseTest#[opaque value redacted] [[opaque value redacted]:45]:
+Expected: "ok"
+  Actual: "not_found"
+
+  3) Failure:
+MailboxMembershipDatabaseTest#[opaque value redacted] [[opaque value redacted]:105]:
+Expected: "ok"
+  Actual: "not_found"
+
+  4) Failure:
+MailboxMembershipDatabaseTest#[opaque value redacted] [[opaque value redacted]:116]:
+Expected: "ok"
+  Actual: "not_found"
+
+8 runs, 51 assertions, 4 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 51441
+
+# Running:
+
+......
+
+Finished in 0.163684s, 36.6561 runs/s, 445.9826 assertions/s.
+
+6 runs, 73 assertions, 0 failures, 0 errors, 0 skips
+RUN test/be_02/mailbox_reads_test.rb
+Run options: --seed 4490
+
+# Running:
+
+............
+
+Finished in 0.416266s, 28.8278 runs/s, 228.2197 assertions/s.
+
+12 runs, 95 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 56242
+
+# Running:
+
+EEEEEEE
+
+Finished in 0.700737s, 9.9895 runs/s, 72.7805 assertions/s.
+
+  1) Error:
+OrganizationAccessDatabaseTest#[opaque value redacted]:
+PG::ConnectionBad: connection is closed
+    [opaque value redacted]:19:in 'PG::Connection#transaction_status'
+    [opaque value redacted]:19:in 'OrganizationAccessDatabaseTest#teardown'
+
+  2) Error:
+OrganizationAccessDatabaseTest#[opaque value redacted]:
+PG::ConnectionBad: connection is closed
+    [opaque value redacted]:19:in 'PG::Connection#transaction_status'
+    [opaque value redacted]:19:in 'OrganizationAccessDatabaseTest#teardown'
+
+  3) Error:
+OrganizationAccessDatabaseTest#[opaque value redacted]:
+PG::ConnectionBad: connection is closed
+    [opaque value redacted]:19:in 'PG::Connection#transaction_status'
+    [opaque value redacted]:19:in 'OrganizationAccessDatabaseTest#teardown'
+
+  4) Error:
+OrganizationAccessDatabaseTest#[opaque value redacted]:
+PG::ConnectionBad: connection is closed
+    [opaque value redacted]:19:in 'PG::Connection#transaction_status'
+    [opaque value redacted]:19:in 'OrganizationAccessDatabaseTest#teardown'
+
+  5) Error:
+OrganizationAccessDatabaseTest#[opaque value redacted]:
+PG::ConnectionBad: connection is closed
+    [opaque value redacted]:19:in 'PG::Connection#transaction_status'
+    [opaque value redacted]:19:in 'OrganizationAccessDatabaseTest#teardown'
+
+  6) Error:
+OrganizationAccessDatabaseTest#[opaque value redacted]:
+PG::ConnectionBad: connection is closed
+    [opaque value redacted]:19:in 'PG::Connection#transaction_status'
+    [opaque value redacted]:19:in 'OrganizationAccessDatabaseTest#teardown'
+
+  7) Error:
+OrganizationAccessDatabaseTest#[opaque value redacted]:
+PG::ConnectionBad: connection is closed
+    [opaque value redacted]:19:in 'PG::Connection#transaction_status'
+    [opaque value redacted]:19:in 'OrganizationAccessDatabaseTest#teardown'
+
+7 runs, 51 assertions, 0 failures, 7 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 34797
+
+# Running:
+
+EEEEEEEEEFEEEEEEEEEE
+
+Finished in 2.290004s, 8.7336 runs/s, 36.2445 assertions/s.
+
+  1) Error:
+OrganizationAccessPolicyTest#[opaque value redacted]:
+PG::ConnectionBad: connection is closed
+    [opaque value redacted]:18:in 'PG::Connection#transaction_status'
+    [opaque value redacted]:18:in 'OrganizationAccessPolicyTest#teardown'
+
+  2) Error:
+OrganizationAccessPolicyTest#[opaque value redacted]:
+PG::ConnectionBad: connection is closed
+    [opaque value redacted]:18:in 'PG::Connection#transaction_status'
+    [opaque value redacted]:18:in 'OrganizationAccessPolicyTest#teardown'
+
+  3) Error:
+OrganizationAccessPolicyTest#[opaque value redacted]:
+PG::ConnectionBad: connection is closed
+    [opaque value redacted]:18:in 'PG::Connection#transaction_status'
+    [opaque value redacted]:18:in 'OrganizationAccessPolicyTest#teardown'
+
+  4) Error:
+OrganizationAccessPolicyTest#[opaque value redacted]:
+PG::ConnectionBad: connection is closed
+    [opaque value redacted]:18:in 'PG::Connection#transaction_status'
+    [opaque value redacted]:18:in 'OrganizationAccessPolicyTest#teardown'
+
+  5) Error:
+OrganizationAccessPolicyTest#[opaque value redacted]:
+PG::ConnectionBad: connection is closed
+    [opaque value redacted]:18:in 'PG::Connection#transaction_status'
+    [opaque value redacted]:18:in 'OrganizationAccessPolicyTest#teardown'
+
+  6) Error:
+OrganizationAccessPolicyTest#[opaque value redacted]:
+PG::ConnectionBad: connection is closed
+    [opaque value redacted]:18:in 'PG::Connection#transaction_status'
+    [opaque value redacted]:18:in 'OrganizationAccessPolicyTest#teardown'
+
+  7) Error:
+OrganizationAccessPolicyTest#[opaque value redacted]:
+PG::ConnectionBad: connection is closed
+    [opaque value redacted]:18:in 'PG::Connection#transaction_status'
+    [opaque value redacted]:18:in 'OrganizationAccessPolicyTest#teardown'
+
+  8) Error:
+OrganizationAccessPolicyTest#[opaque value redacted]:
+PG::ConnectionBad: connection is closed
+    [opaque value redacted]:18:in 'PG::Connection#transaction_status'
+    [opaque value redacted]:18:in 'OrganizationAccessPolicyTest#teardown'
+
+  9) Error:
+OrganizationAccessPolicyTest#[opaque value redacted]:
+PG::ConnectionBad: connection is closed
+    [opaque value redacted]:18:in 'PG::Connection#transaction_status'
+    [opaque value redacted]:18:in 'OrganizationAccessPolicyTest#teardown'
+
+ 10) Failure:
+OrganizationAccessPolicyTest#[opaque value redacted]:
+Expected: "ok"
+  Actual: "not_found"
+
+Error:
+OrganizationAccessPolicyTest#[opaque value redacted]:
+PG::ConnectionBad: connection is closed
+    [opaque value redacted]:18:in 'PG::Connection#transaction_status'
+    [opaque value redacted]:18:in 'OrganizationAccessPolicyTest#teardown'
+
+ 11) Error:
+OrganizationAccessPolicyTest#[opaque value redacted]:
+PG::ConnectionBad: connection is closed
+    [opaque value redacted]:18:in 'PG::Connection#transaction_status'
+    [opaque value redacted]:18:in 'OrganizationAccessPolicyTest#teardown'
+
+ 12) Error:
+OrganizationAccessPolicyTest#[opaque value redacted]:
+PG::ForeignKeyViolation: ERROR:  update or delete on table "organization_memberships" violates foreign key constraint "[opaque value redacted]" on table "mailbox_security"
+DETAIL:  Key (organization_id, user_id)=([opaque value redacted], [opaque value redacted]) is still referenced from table "mailbox_security".
+
+    [opaque value redacted]:38:in 'PG::Connection#exec_params'
+    [opaque value redacted]:38:in 'block (2 levels) in CollaborationDatabaseCase#teardown'
+    [opaque value redacted]:96:in 'CollaborationDatabaseCase#member_change'
+    [opaque value redacted]:37:in 'block in CollaborationDatabaseCase#teardown'
+    [opaque value redacted]:35:in 'Array#each'
+    [opaque value redacted]:35:in 'CollaborationDatabaseCase#teardown'
+    [opaque value redacted]:28:in 'MailboxMembershipDatabaseCase#teardown'
+    [opaque value redacted]:16:in 'OrganizationAccessPolicyTest#teardown'
+
+ 13) Error:
+OrganizationAccessPolicyTest#[opaque value redacted]:
+RuntimeError: database fixture already owned
+    test/be_02/database_test_helper.rb:20:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:20:in 'CollaborationDatabaseCase#setup'
+    [opaque value redacted]:15:in 'MailboxMembershipDatabaseCase#setup'
+    [opaque value redacted]:27:in 'OrganizationAccessPolicyTest#setup'
+
+Error:
+OrganizationAccessPolicyTest#[opaque value redacted]:
+PG::ConnectionBad: connection is closed
+    [opaque value redacted]:18:in 'PG::Connection#transaction_status'
+    [opaque value redacted]:18:in 'OrganizationAccessPolicyTest#teardown'
+
+ 14) Error:
+OrganizationAccessDatabaseTest#[opaque value redacted]:
+RuntimeError: database fixture already owned
+    test/be_02/database_test_helper.rb:20:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:20:in 'CollaborationDatabaseCase#setup'
+    [opaque value redacted]:15:in 'MailboxMembershipDatabaseCase#setup'
+
+Error:
+OrganizationAccessDatabaseTest#[opaque value redacted]:
+PG::ConnectionBad: connection is closed
+    [opaque value redacted]:19:in 'PG::Connection#transaction_status'
+    [opaque value redacted]:19:in 'OrganizationAccessDatabaseTest#teardown'
+
+ 15) Error:
+OrganizationAccessDatabaseTest#[opaque value redacted]:
+RuntimeError: database fixture already owned
+    test/be_02/database_test_helper.rb:20:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:20:in 'CollaborationDatabaseCase#setup'
+    [opaque value redacted]:15:in 'MailboxMembershipDatabaseCase#setup'
+
+Error:
+OrganizationAccessDatabaseTest#[opaque value redacted]:
+PG::ConnectionBad: connection is closed
+    [opaque value redacted]:19:in 'PG::Connection#transaction_status'
+    [opaque value redacted]:19:in 'OrganizationAccessDatabaseTest#teardown'
+
+ 16) Error:
+OrganizationAccessDatabaseTest#[opaque value redacted]:
+RuntimeError: database fixture already owned
+    test/be_02/database_test_helper.rb:20:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:20:in 'CollaborationDatabaseCase#setup'
+    [opaque value redacted]:15:in 'MailboxMembershipDatabaseCase#setup'
+
+Error:
+OrganizationAccessDatabaseTest#[opaque value redacted]:
+PG::ConnectionBad: connection is closed
+    [opaque value redacted]:19:in 'PG::Connection#transaction_status'
+    [opaque value redacted]:19:in 'OrganizationAccessDatabaseTest#teardown'
+
+ 17) Error:
+OrganizationAccessDatabaseTest#[opaque value redacted]:
+RuntimeError: database fixture already owned
+    test/be_02/database_test_helper.rb:20:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:20:in 'CollaborationDatabaseCase#setup'
+    [opaque value redacted]:15:in 'MailboxMembershipDatabaseCase#setup'
+
+Error:
+OrganizationAccessDatabaseTest#[opaque value redacted]:
+PG::ConnectionBad: connection is closed
+    [opaque value redacted]:19:in 'PG::Connection#transaction_status'
+    [opaque value redacted]:19:in 'OrganizationAccessDatabaseTest#teardown'
+
+ 18) Error:
+OrganizationAccessDatabaseTest#[opaque value redacted]:
+RuntimeError: database fixture already owned
+    test/be_02/database_test_helper.rb:20:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:20:in 'CollaborationDatabaseCase#setup'
+    [opaque value redacted]:15:in 'MailboxMembershipDatabaseCase#setup'
+
+Error:
+OrganizationAccessDatabaseTest#[opaque value redacted]:
+PG::ConnectionBad: connection is closed
+    [opaque value redacted]:19:in 'PG::Connection#transaction_status'
+    [opaque value redacted]:19:in 'OrganizationAccessDatabaseTest#teardown'
+
+ 19) Error:
+OrganizationAccessDatabaseTest#[opaque value redacted]:
+RuntimeError: database fixture already owned
+    test/be_02/database_test_helper.rb:20:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:20:in 'CollaborationDatabaseCase#setup'
+    [opaque value redacted]:15:in 'MailboxMembershipDatabaseCase#setup'
+
+Error:
+OrganizationAccessDatabaseTest#[opaque value redacted]:
+PG::ConnectionBad: connection is closed
+    [opaque value redacted]:19:in 'PG::Connection#transaction_status'
+    [opaque value redacted]:19:in 'OrganizationAccessDatabaseTest#teardown'
+
+ 20) Error:
+OrganizationAccessDatabaseTest#[opaque value redacted]:
+RuntimeError: database fixture already owned
+    test/be_02/database_test_helper.rb:20:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:20:in 'CollaborationDatabaseCase#setup'
+    [opaque value redacted]:15:in 'MailboxMembershipDatabaseCase#setup'
+
+Error:
+OrganizationAccessDatabaseTest#[opaque value redacted]:
+PG::ConnectionBad: connection is closed
+    [opaque value redacted]:19:in 'PG::Connection#transaction_status'
+    [opaque value redacted]:19:in 'OrganizationAccessDatabaseTest#teardown'
+
+20 runs, 83 assertions, 1 failures, 19 errors, 0 skips
+RUN test/be_02/rate_limits_test.rb
+Run options: --seed 61748
+
+# Running:
+
+EE
+
+Finished in 0.025221s, 79.2983 runs/s, 0.0000 assertions/s.
+
+  1) Error:
+EntryRateLimitsTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+
+  2) Error:
+EntryRateLimitsTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+
+2 runs, 0 assertions, 0 failures, 2 errors, 0 skips
+RUN test/be_02/read_controller_test.rb
+Run options: --seed 58085
+
+# Running:
+
+...............
+
+Finished in 0.231138s, 64.8963 runs/s, 1566.1638 assertions/s.
+
+15 runs, 362 assertions, 0 failures, 0 errors, 0 skips
+RUN test/be_02/read_response_test.rb
+Run options: --seed 28568
+
+# Running:
+
+.........
+
+Finished in 0.006610s, 1361.6632 runs/s, 8926.4591 assertions/s.
+
+9 runs, 59 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 38121
+
+# Running:
+
+EEEEEE
+
+Finished in 0.065331s, 91.8404 runs/s, 0.0000 assertions/s.
+
+  1) Error:
+RefreshPublicationTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:8:in 'RefreshPublicationTest#setup'
+
+  2) Error:
+RefreshPublicationTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:8:in 'RefreshPublicationTest#setup'
+
+  3) Error:
+RefreshPublicationTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:8:in 'RefreshPublicationTest#setup'
+
+  4) Error:
+RefreshPublicationTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:8:in 'RefreshPublicationTest#setup'
+
+  5) Error:
+RefreshPublicationTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:8:in 'RefreshPublicationTest#setup'
+
+  6) Error:
+RefreshPublicationTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:8:in 'RefreshPublicationTest#setup'
+
+6 runs, 0 assertions, 0 failures, 6 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 62260
+
+# Running:
+
+EEEE
+
+Finished in 0.042058s, 95.1076 runs/s, 0.0000 assertions/s.
+
+  1) Error:
+RevocationWorkerTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:8:in 'RevocationWorkerTest#setup'
+
+  2) Error:
+RevocationWorkerTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:8:in 'RevocationWorkerTest#setup'
+
+  3) Error:
+RevocationWorkerTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:8:in 'RevocationWorkerTest#setup'
+
+  4) Error:
+RevocationWorkerTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:8:in 'RevocationWorkerTest#setup'
+
+4 runs, 0 assertions, 0 failures, 4 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 46723
+
+# Running:
+
+EEEEEEEEEEEEE
+
+Finished in 0.164666s, 78.9477 runs/s, 0.0000 assertions/s.
+
+  1) Error:
+SessionDatabaseTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+
+  2) Error:
+SessionDatabaseTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+
+  3) Error:
+SessionDatabaseTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+
+  4) Error:
+SessionDatabaseTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+
+  5) Error:
+SessionDatabaseTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+
+  6) Error:
+SessionDatabaseTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+
+  7) Error:
+SessionDatabaseTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+
+  8) Error:
+SessionDatabaseTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+
+  9) Error:
+[credential-bearing line redacted]
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+
+ 10) Error:
+SessionDatabaseTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+
+ 11) Error:
+SessionDatabaseTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+
+ 12) Error:
+SessionDatabaseTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+
+ 13) Error:
+SessionDatabaseTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+
+13 runs, 0 assertions, 0 failures, 13 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 14084
+
+# Running:
+
+EEEEEEEEEEEE
+
+Finished in 0.149046s, 80.5123 runs/s, 0.0000 assertions/s.
+
+  1) Error:
+SessionExpiryRaceTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:11:in 'SessionExpiryRaceTest#setup'
+
+  2) Error:
+SessionExpiryRaceTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:11:in 'SessionExpiryRaceTest#setup'
+
+  3) Error:
+SessionExpiryRaceTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:11:in 'SessionExpiryRaceTest#setup'
+
+  4) Error:
+SessionExpiryRaceTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:11:in 'SessionExpiryRaceTest#setup'
+
+  5) Error:
+SessionExpiryRaceTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:11:in 'SessionExpiryRaceTest#setup'
+
+  6) Error:
+SessionExpiryRaceTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:11:in 'SessionExpiryRaceTest#setup'
+
+  7) Error:
+SessionExpiryRaceTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:11:in 'SessionExpiryRaceTest#setup'
+
+  8) Error:
+SessionExpiryRaceTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:11:in 'SessionExpiryRaceTest#setup'
+
+  9) Error:
+SessionExpiryRaceTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:11:in 'SessionExpiryRaceTest#setup'
+
+ 10) Error:
+SessionExpiryRaceTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:11:in 'SessionExpiryRaceTest#setup'
+
+ 11) Error:
+SessionExpiryRaceTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:11:in 'SessionExpiryRaceTest#setup'
+
+ 12) Error:
+SessionExpiryRaceTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:11:in 'SessionExpiryRaceTest#setup'
+
+12 runs, 0 assertions, 0 failures, 12 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 35393
+
+# Running:
+
+.............
+
+Finished in 0.011406s, 1139.7201 runs/s, 5698.6007 assertions/s.
+
+13 runs, 65 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 10651
+
+# Running:
+
+EEEE
+
+Finished in 0.044243s, 90.4104 runs/s, 0.0000 assertions/s.
+
+  1) Error:
+SessionLogoutCutTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+
+  2) Error:
+SessionLogoutCutTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+
+  3) Error:
+SessionLogoutCutTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+
+  4) Error:
+SessionLogoutCutTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+
+4 runs, 0 assertions, 0 failures, 4 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 39664
+
+# Running:
+
+...
+
+Finished in 0.004762s, 629.9887 runs/s, 4409.9209 assertions/s.
+
+3 runs, 21 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 47975
+
+# Running:
+
+.......
+
+Finished in 0.007202s, 971.9849 runs/s, 9164.4287 assertions/s.
+
+7 runs, 66 assertions, 0 failures, 0 errors, 0 skips
+RUN test/be_02/session_store_test.rb
+Run options: --seed 15919
+
+# Running:
+
+...
+
+Finished in 0.142781s, 21.0112 runs/s, 77.0411 assertions/s.
+
+3 runs, 11 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 629
+
+# Running:
+
+...
+
+Finished in 0.003080s, 974.1396 runs/s, 8767.2566 assertions/s.
+
+3 runs, 27 assertions, 0 failures, 0 errors, 0 skips
+RUN test/be_02/thread_database_test.rb
+Run options: --seed 56095
+
+# Running:
+
+EEEEEEEEE
+
+Finished in 0.098654s, 91.2284 runs/s, 0.0000 assertions/s.
+
+  1) Error:
+ThreadDatabaseTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    test/be_02/thread_database_test.rb:19:in 'ThreadDatabaseTest#setup'
+
+  2) Error:
+ThreadDatabaseTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    test/be_02/thread_database_test.rb:19:in 'ThreadDatabaseTest#setup'
+
+  3) Error:
+ThreadDatabaseTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    test/be_02/thread_database_test.rb:19:in 'ThreadDatabaseTest#setup'
+
+  4) Error:
+ThreadDatabaseTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    test/be_02/thread_database_test.rb:19:in 'ThreadDatabaseTest#setup'
+
+  5) Error:
+ThreadDatabaseTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    test/be_02/thread_database_test.rb:19:in 'ThreadDatabaseTest#setup'
+
+  6) Error:
+ThreadDatabaseTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    test/be_02/thread_database_test.rb:19:in 'ThreadDatabaseTest#setup'
+
+  7) Error:
+ThreadDatabaseTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    test/be_02/thread_database_test.rb:19:in 'ThreadDatabaseTest#setup'
+
+  8) Error:
+ThreadDatabaseTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    test/be_02/thread_database_test.rb:19:in 'ThreadDatabaseTest#setup'
+
+  9) Error:
+ThreadDatabaseTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    test/be_02/thread_database_test.rb:19:in 'ThreadDatabaseTest#setup'
+
+9 runs, 0 assertions, 0 failures, 9 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 17507
+
+# Running:
+
+.....
+
+Finished in 0.232399s, 21.5148 runs/s, 636.8372 assertions/s.
+
+5 runs, 148 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 39631
+
+# Running:
+
+EEE
+
+Finished in 0.041450s, 72.3771 runs/s, 0.0000 assertions/s.
+
+  1) Error:
+ThreadNotesDatabaseTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:20:in 'CollaborationDatabaseCase#setup'
+
+  2) Error:
+ThreadNotesDatabaseTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:20:in 'CollaborationDatabaseCase#setup'
+
+  3) Error:
+ThreadNotesDatabaseTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:20:in 'CollaborationDatabaseCase#setup'
+
+3 runs, 0 assertions, 0 failures, 3 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 41041
+
+# Running:
+
+.......
+
+Finished in 0.005057s, 1384.1226 runs/s, 16016.2761 assertions/s.
+
+7 runs, 81 assertions, 0 failures, 0 errors, 0 skips
+RUN test/be_02/thread_reads_test.rb
+Run options: --seed 42931
+
+# Running:
+
+.......
+
+Finished in 0.169489s, 41.3006 runs/s, 501.5075 assertions/s.
+
+7 runs, 85 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 16902
+
+# Running:
+
+EEEEEEE
+
+Finished in 0.077993s, 89.7520 runs/s, 0.0000 assertions/s.
+
+  1) Error:
+WriteBoundaryConcurrencyTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+
+  2) Error:
+WriteBoundaryConcurrencyTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+
+  3) Error:
+WriteBoundaryConcurrencyTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+
+  4) Error:
+WriteBoundaryConcurrencyTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+
+  5) Error:
+WriteBoundaryConcurrencyTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+
+  6) Error:
+WriteBoundaryConcurrencyTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+
+  7) Error:
+WriteBoundaryConcurrencyTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+
+7 runs, 0 assertions, 0 failures, 7 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 7930
+
+# Running:
+
+................
+
+Finished in 0.251346s, 63.6573 runs/s, 1432.2884 assertions/s.
+
+16 runs, 360 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 64310
+
+# Running:
+
+EEEEE
+
+Finished in 0.059557s, 83.9535 runs/s, 0.0000 assertions/s.
+
+  1) Error:
+[opaque value redacted]#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+
+  2) Error:
+[opaque value redacted]#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+
+  3) Error:
+[opaque value redacted]#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+
+  4) Error:
+[opaque value redacted]#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+
+  5) Error:
+[opaque value redacted]#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+
+5 runs, 0 assertions, 0 failures, 5 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 9554
+
+# Running:
+
+EEEEEEEEEEE
+
+Finished in 0.132593s, 82.9607 runs/s, 0.0000 assertions/s.
+
+  1) Error:
+WriteBoundaryDatabaseTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+
+  2) Error:
+WriteBoundaryDatabaseTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+
+  3) Error:
+WriteBoundaryDatabaseTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+
+  4) Error:
+WriteBoundaryDatabaseTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+
+  5) Error:
+WriteBoundaryDatabaseTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+
+  6) Error:
+WriteBoundaryDatabaseTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+
+  7) Error:
+WriteBoundaryDatabaseTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+
+  8) Error:
+WriteBoundaryDatabaseTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+
+  9) Error:
+WriteBoundaryDatabaseTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+
+ 10) Error:
+WriteBoundaryDatabaseTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+
+ 11) Error:
+WriteBoundaryDatabaseTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+
+11 runs, 0 assertions, 0 failures, 11 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 35881
+
+# Running:
+
+........
+
+Finished in 0.717285s, 11.1532 runs/s, 110.1375 assertions/s.
+
+8 runs, 79 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 30280
+
+# Running:
+
+...........
+
+Finished in 0.004866s, 2260.5454 runs/s, 37607.2560 assertions/s.
+
+11 runs, 183 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 34659
+
+# Running:
+
+EEEEEE
+
+Finished in 0.079682s, 75.2991 runs/s, 0.0000 assertions/s.
+
+  1) Error:
+[opaque value redacted]#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+    [opaque value redacted]:17:in 'WriteBoundaryPoolTestCase#setup'
+
+  2) Error:
+[opaque value redacted]#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+    [opaque value redacted]:17:in 'WriteBoundaryPoolTestCase#setup'
+
+  3) Error:
+[opaque value redacted]#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+    [opaque value redacted]:17:in 'WriteBoundaryPoolTestCase#setup'
+
+  4) Error:
+[opaque value redacted]#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+    [opaque value redacted]:17:in 'WriteBoundaryPoolTestCase#setup'
+
+  5) Error:
+[opaque value redacted]#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+    [opaque value redacted]:17:in 'WriteBoundaryPoolTestCase#setup'
+
+  6) Error:
+[opaque value redacted]#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+    [opaque value redacted]:17:in 'WriteBoundaryPoolTestCase#setup'
+
+6 runs, 0 assertions, 0 failures, 6 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 36980
+
+# Running:
+
+EEE
+
+Finished in 0.036968s, 81.1516 runs/s, 0.0000 assertions/s.
+
+  1) Error:
+WriteBoundaryPoolFatalTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+    [opaque value redacted]:17:in 'WriteBoundaryPoolTestCase#setup'
+
+  2) Error:
+WriteBoundaryPoolFatalTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+    [opaque value redacted]:17:in 'WriteBoundaryPoolTestCase#setup'
+
+  3) Error:
+WriteBoundaryPoolFatalTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+    [opaque value redacted]:17:in 'WriteBoundaryPoolTestCase#setup'
+
+3 runs, 0 assertions, 0 failures, 3 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 24560
+
+# Running:
+
+EEEEEEEEEEEEEEEEEEEEE
+
+Finished in 0.226142s, 92.8620 runs/s, 0.0000 assertions/s.
+
+  1) Error:
+WriteBoundaryPoolTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+    [opaque value redacted]:17:in 'WriteBoundaryPoolTestCase#setup'
+
+  2) Error:
+WriteBoundaryPoolTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+    [opaque value redacted]:17:in 'WriteBoundaryPoolTestCase#setup'
+
+  3) Error:
+WriteBoundaryPoolTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+    [opaque value redacted]:17:in 'WriteBoundaryPoolTestCase#setup'
+
+  4) Error:
+WriteBoundaryPoolTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+    [opaque value redacted]:17:in 'WriteBoundaryPoolTestCase#setup'
+
+  5) Error:
+WriteBoundaryPoolTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+    [opaque value redacted]:17:in 'WriteBoundaryPoolTestCase#setup'
+
+  6) Error:
+WriteBoundaryPoolTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+    [opaque value redacted]:17:in 'WriteBoundaryPoolTestCase#setup'
+
+  7) Error:
+WriteBoundaryPoolTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+    [opaque value redacted]:17:in 'WriteBoundaryPoolTestCase#setup'
+
+  8) Error:
+WriteBoundaryPoolTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+    [opaque value redacted]:17:in 'WriteBoundaryPoolTestCase#setup'
+
+  9) Error:
+WriteBoundaryPoolTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+    [opaque value redacted]:17:in 'WriteBoundaryPoolTestCase#setup'
+
+ 10) Error:
+WriteBoundaryPoolTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+    [opaque value redacted]:17:in 'WriteBoundaryPoolTestCase#setup'
+
+ 11) Error:
+WriteBoundaryPoolTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+    [opaque value redacted]:17:in 'WriteBoundaryPoolTestCase#setup'
+
+ 12) Error:
+WriteBoundaryPoolTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+    [opaque value redacted]:17:in 'WriteBoundaryPoolTestCase#setup'
+
+ 13) Error:
+WriteBoundaryPoolTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+    [opaque value redacted]:17:in 'WriteBoundaryPoolTestCase#setup'
+
+ 14) Error:
+WriteBoundaryPoolTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+    [opaque value redacted]:17:in 'WriteBoundaryPoolTestCase#setup'
+
+ 15) Error:
+WriteBoundaryPoolTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+    [opaque value redacted]:17:in 'WriteBoundaryPoolTestCase#setup'
+
+ 16) Error:
+WriteBoundaryPoolTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+    [opaque value redacted]:17:in 'WriteBoundaryPoolTestCase#setup'
+
+ 17) Error:
+WriteBoundaryPoolTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+    [opaque value redacted]:17:in 'WriteBoundaryPoolTestCase#setup'
+
+ 18) Error:
+WriteBoundaryPoolTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+    [opaque value redacted]:17:in 'WriteBoundaryPoolTestCase#setup'
+
+ 19) Error:
+WriteBoundaryPoolTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+    [opaque value redacted]:17:in 'WriteBoundaryPoolTestCase#setup'
+
+ 20) Error:
+WriteBoundaryPoolTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+    [opaque value redacted]:17:in 'WriteBoundaryPoolTestCase#setup'
+
+ 21) Error:
+WriteBoundaryPoolTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+    [opaque value redacted]:17:in 'WriteBoundaryPoolTestCase#setup'
+
+21 runs, 0 assertions, 0 failures, 21 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 9458
+
+# Running:
+
+EE
+
+Finished in 0.026937s, 74.2462 runs/s, 0.0000 assertions/s.
+
+  1) Error:
+WriteBoundaryPoolUnwindTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+    [opaque value redacted]:17:in 'WriteBoundaryPoolTestCase#setup'
+
+  2) Error:
+WriteBoundaryPoolUnwindTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+    [opaque value redacted]:17:in 'WriteBoundaryPoolTestCase#setup'
+
+2 runs, 0 assertions, 0 failures, 2 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 30608
+
+# Running:
+
+.....
+
+Finished in 0.002170s, 2304.3490 runs/s, 7373.9167 assertions/s.
+
+5 runs, 16 assertions, 0 failures, 0 errors, 0 skips
+RUN test/requests/drafts_test.rb
+Run options: --seed 16856
+
+# Running:
+
+......
+
+Finished in 0.269134s, 22.2937 runs/s, 156.0562 assertions/s.
+
+6 runs, 42 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 65393
+
+# Running:
+
+EEEEEEEEEEEEEEE
+
+Finished in 0.167168s, 89.7303 runs/s, 0.0000 assertions/s.
+
+  1) Error:
+SendApprovalDatabaseTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+    [opaque value redacted]:9:in 'DraftDatabaseTestCase#setup'
+    [opaque value redacted]:9:in 'SendDatabaseTestCase#setup'
+
+  2) Error:
+SendApprovalDatabaseTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+    [opaque value redacted]:9:in 'DraftDatabaseTestCase#setup'
+    [opaque value redacted]:9:in 'SendDatabaseTestCase#setup'
+
+  3) Error:
+SendApprovalDatabaseTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+    [opaque value redacted]:9:in 'DraftDatabaseTestCase#setup'
+    [opaque value redacted]:9:in 'SendDatabaseTestCase#setup'
+
+  4) Error:
+SendApprovalDatabaseTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+    [opaque value redacted]:9:in 'DraftDatabaseTestCase#setup'
+    [opaque value redacted]:9:in 'SendDatabaseTestCase#setup'
+
+  5) Error:
+SendApprovalDatabaseTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+    [opaque value redacted]:9:in 'DraftDatabaseTestCase#setup'
+    [opaque value redacted]:9:in 'SendDatabaseTestCase#setup'
+
+  6) Error:
+SendApprovalDatabaseTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+    [opaque value redacted]:9:in 'DraftDatabaseTestCase#setup'
+    [opaque value redacted]:9:in 'SendDatabaseTestCase#setup'
+
+  7) Error:
+SendApprovalDatabaseTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+    [opaque value redacted]:9:in 'DraftDatabaseTestCase#setup'
+    [opaque value redacted]:9:in 'SendDatabaseTestCase#setup'
+
+  8) Error:
+SendApprovalDatabaseTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+    [opaque value redacted]:9:in 'DraftDatabaseTestCase#setup'
+    [opaque value redacted]:9:in 'SendDatabaseTestCase#setup'
+
+  9) Error:
+SendApprovalDatabaseTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+    [opaque value redacted]:9:in 'DraftDatabaseTestCase#setup'
+    [opaque value redacted]:9:in 'SendDatabaseTestCase#setup'
+
+ 10) Error:
+SendApprovalDatabaseTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+    [opaque value redacted]:9:in 'DraftDatabaseTestCase#setup'
+    [opaque value redacted]:9:in 'SendDatabaseTestCase#setup'
+
+ 11) Error:
+SendApprovalDatabaseTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+    [opaque value redacted]:9:in 'DraftDatabaseTestCase#setup'
+    [opaque value redacted]:9:in 'SendDatabaseTestCase#setup'
+
+ 12) Error:
+SendApprovalDatabaseTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+    [opaque value redacted]:9:in 'DraftDatabaseTestCase#setup'
+    [opaque value redacted]:9:in 'SendDatabaseTestCase#setup'
+
+ 13) Error:
+SendApprovalDatabaseTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+    [opaque value redacted]:9:in 'DraftDatabaseTestCase#setup'
+    [opaque value redacted]:9:in 'SendDatabaseTestCase#setup'
+
+ 14) Error:
+SendApprovalDatabaseTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+    [opaque value redacted]:9:in 'DraftDatabaseTestCase#setup'
+    [opaque value redacted]:9:in 'SendDatabaseTestCase#setup'
+
+ 15) Error:
+SendApprovalDatabaseTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+    [opaque value redacted]:9:in 'DraftDatabaseTestCase#setup'
+    [opaque value redacted]:9:in 'SendDatabaseTestCase#setup'
+
+15 runs, 0 assertions, 0 failures, 15 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 24983
+
+# Running:
+
+E
+
+Finished in 0.013785s, 72.5445 runs/s, 0.0000 assertions/s.
+
+  1) Error:
+SendApprovalFaultsDatabaseTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+    [opaque value redacted]:9:in 'DraftDatabaseTestCase#setup'
+    [opaque value redacted]:9:in 'SendDatabaseTestCase#setup'
+
+1 runs, 0 assertions, 0 failures, 1 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 813
+
+# Running:
+
+EE
+
+Finished in 0.024634s, 81.1878 runs/s, 0.0000 assertions/s.
+
+  1) Error:
+SendApprovalRacesDatabaseTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+    [opaque value redacted]:9:in 'DraftDatabaseTestCase#setup'
+    [opaque value redacted]:9:in 'SendDatabaseTestCase#setup'
+
+  2) Error:
+SendApprovalRacesDatabaseTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+    [opaque value redacted]:9:in 'DraftDatabaseTestCase#setup'
+    [opaque value redacted]:9:in 'SendDatabaseTestCase#setup'
+
+2 runs, 0 assertions, 0 failures, 2 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 48036
+
+# Running:
+
+EEEEE
+
+Finished in 0.053845s, 92.8590 runs/s, 0.0000 assertions/s.
+
+  1) Error:
+SendCancellationDatabaseTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+    [opaque value redacted]:9:in 'DraftDatabaseTestCase#setup'
+    [opaque value redacted]:9:in 'SendDatabaseTestCase#setup'
+
+  2) Error:
+SendCancellationDatabaseTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+    [opaque value redacted]:9:in 'DraftDatabaseTestCase#setup'
+    [opaque value redacted]:9:in 'SendDatabaseTestCase#setup'
+
+  3) Error:
+SendCancellationDatabaseTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+    [opaque value redacted]:9:in 'DraftDatabaseTestCase#setup'
+    [opaque value redacted]:9:in 'SendDatabaseTestCase#setup'
+
+  4) Error:
+SendCancellationDatabaseTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+    [opaque value redacted]:9:in 'DraftDatabaseTestCase#setup'
+    [opaque value redacted]:9:in 'SendDatabaseTestCase#setup'
+
+  5) Error:
+SendCancellationDatabaseTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+    [opaque value redacted]:9:in 'DraftDatabaseTestCase#setup'
+    [opaque value redacted]:9:in 'SendDatabaseTestCase#setup'
+
+5 runs, 0 assertions, 0 failures, 5 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 44249
+
+# Running:
+
+EEEE
+
+Finished in 0.058497s, 68.3797 runs/s, 0.0000 assertions/s.
+
+  1) Error:
+[opaque value redacted]#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+    [opaque value redacted]:9:in 'DraftDatabaseTestCase#setup'
+    [opaque value redacted]:9:in 'SendDatabaseTestCase#setup'
+
+  2) Error:
+[opaque value redacted]#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+    [opaque value redacted]:9:in 'DraftDatabaseTestCase#setup'
+    [opaque value redacted]:9:in 'SendDatabaseTestCase#setup'
+
+  3) Error:
+[opaque value redacted]#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+    [opaque value redacted]:9:in 'DraftDatabaseTestCase#setup'
+    [opaque value redacted]:9:in 'SendDatabaseTestCase#setup'
+
+  4) Error:
+[opaque value redacted]#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+    [opaque value redacted]:9:in 'DraftDatabaseTestCase#setup'
+    [opaque value redacted]:9:in 'SendDatabaseTestCase#setup'
+
+4 runs, 0 assertions, 0 failures, 4 errors, 0 skips
+RUN test/sends/schema_database_test.rb
+Run options: --seed 43588
+
+# Running:
+
+EEEEEE
+
+Finished in 0.077981s, 76.9416 runs/s, 0.0000 assertions/s.
+
+  1) Error:
+SendSchemaDatabaseTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+    [opaque value redacted]:9:in 'DraftDatabaseTestCase#setup'
+    [opaque value redacted]:9:in 'SendDatabaseTestCase#setup'
+
+  2) Error:
+SendSchemaDatabaseTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+    [opaque value redacted]:9:in 'DraftDatabaseTestCase#setup'
+    [opaque value redacted]:9:in 'SendDatabaseTestCase#setup'
+
+  3) Error:
+SendSchemaDatabaseTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+    [opaque value redacted]:9:in 'DraftDatabaseTestCase#setup'
+    [opaque value redacted]:9:in 'SendDatabaseTestCase#setup'
+
+  4) Error:
+SendSchemaDatabaseTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+    [opaque value redacted]:9:in 'DraftDatabaseTestCase#setup'
+    [opaque value redacted]:9:in 'SendDatabaseTestCase#setup'
+
+  5) Error:
+SendSchemaDatabaseTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+    [opaque value redacted]:9:in 'DraftDatabaseTestCase#setup'
+    [opaque value redacted]:9:in 'SendDatabaseTestCase#setup'
+
+  6) Error:
+SendSchemaDatabaseTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+    [opaque value redacted]:9:in 'DraftDatabaseTestCase#setup'
+    [opaque value redacted]:9:in 'SendDatabaseTestCase#setup'
+
+6 runs, 0 assertions, 0 failures, 6 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 49864
+
+# Running:
+
+...........
+
+Finished in 0.009257s, 1188.2931 runs/s, 7885.9448 assertions/s.
+
+11 runs, 73 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 55437
+
+# Running:
+
+........
+
+Finished in 0.244112s, 32.7718 runs/s, 372.7794 assertions/s.
+
+8 runs, 91 assertions, 0 failures, 0 errors, 0 skips
+RUN test/sends/send_api_reads_test.rb
+Run options: --seed 4722
+
+# Running:
+
+............
+
+Finished in 0.255014s, 47.0562 runs/s, 490.1691 assertions/s.
+
+12 runs, 125 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 18708
+
+# Running:
+
+EEEEE
+
+Finished in 0.054205s, 92.2421 runs/s, 0.0000 assertions/s.
+
+  1) Error:
+SendWorkerDatabaseTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+    [opaque value redacted]:9:in 'DraftDatabaseTestCase#setup'
+    [opaque value redacted]:9:in 'SendDatabaseTestCase#setup'
+
+  2) Error:
+SendWorkerDatabaseTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+    [opaque value redacted]:9:in 'DraftDatabaseTestCase#setup'
+    [opaque value redacted]:9:in 'SendDatabaseTestCase#setup'
+
+  3) Error:
+SendWorkerDatabaseTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+    [opaque value redacted]:9:in 'DraftDatabaseTestCase#setup'
+    [opaque value redacted]:9:in 'SendDatabaseTestCase#setup'
+
+  4) Error:
+SendWorkerDatabaseTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+    [opaque value redacted]:9:in 'DraftDatabaseTestCase#setup'
+    [opaque value redacted]:9:in 'SendDatabaseTestCase#setup'
+
+  5) Error:
+SendWorkerDatabaseTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+    [opaque value redacted]:9:in 'DraftDatabaseTestCase#setup'
+    [opaque value redacted]:9:in 'SendDatabaseTestCase#setup'
+
+5 runs, 0 assertions, 0 failures, 5 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 7791
+
+# Running:
+
+EEEEEEEE
+
+Finished in 0.089134s, 89.7525 runs/s, 0.0000 assertions/s.
+
+  1) Error:
+SendWorkerAuthorityDatabaseTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+    [opaque value redacted]:9:in 'DraftDatabaseTestCase#setup'
+    [opaque value redacted]:9:in 'SendDatabaseTestCase#setup'
+
+  2) Error:
+SendWorkerAuthorityDatabaseTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+    [opaque value redacted]:9:in 'DraftDatabaseTestCase#setup'
+    [opaque value redacted]:9:in 'SendDatabaseTestCase#setup'
+
+  3) Error:
+SendWorkerAuthorityDatabaseTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+    [opaque value redacted]:9:in 'DraftDatabaseTestCase#setup'
+    [opaque value redacted]:9:in 'SendDatabaseTestCase#setup'
+
+  4) Error:
+SendWorkerAuthorityDatabaseTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+    [opaque value redacted]:9:in 'DraftDatabaseTestCase#setup'
+    [opaque value redacted]:9:in 'SendDatabaseTestCase#setup'
+
+  5) Error:
+SendWorkerAuthorityDatabaseTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+    [opaque value redacted]:9:in 'DraftDatabaseTestCase#setup'
+    [opaque value redacted]:9:in 'SendDatabaseTestCase#setup'
+
+  6) Error:
+SendWorkerAuthorityDatabaseTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+    [opaque value redacted]:9:in 'DraftDatabaseTestCase#setup'
+    [opaque value redacted]:9:in 'SendDatabaseTestCase#setup'
+
+  7) Error:
+SendWorkerAuthorityDatabaseTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+    [opaque value redacted]:9:in 'DraftDatabaseTestCase#setup'
+    [opaque value redacted]:9:in 'SendDatabaseTestCase#setup'
+
+  8) Error:
+SendWorkerAuthorityDatabaseTest#[opaque value redacted]:
+RuntimeError: database fixture is not empty
+    test/be_02/database_test_helper.rb:22:in 'block in SessionDatabaseTestCase#setup'
+    test/be_02/database_test_helper.rb:21:in 'Array#each'
+    test/be_02/database_test_helper.rb:21:in 'SessionDatabaseTestCase#setup'
+    [opaque value redacted]:7:in 'WriteBoundaryDatabaseTestCase#setup'
+    [opaque value redacted]:9:in 'DraftDatabaseTestCase#setup'
+    [opaque value redacted]:9:in 'SendDatabaseTestCase#setup'
+
+8 runs, 0 assertions, 0 failures, 8 errors, 0 skips
+RUN Steep
+# Type checking files:
+
+.F......F.F...........F.......F..............F.........F....F..........F.............F..................F.....................F........F.............
+
+[opaque value redacted]:11:4: [error] Cannot assign a value of type `::Array[(::Array[(::String | nil)] | ::Array[::String])]` to a constant of type `::Array[[::String, ::String, (::String | nil), ::String]]`
+│   ::Array[(::Array[(::String | nil)] | ::Array[::String])] <: ::Array[[::String, ::String, (::String | nil), ::String]]
+│     (::Array[(::String | nil)] | ::Array[::String]) <: [::String, ::String, (::String | nil), ::String]
+│       ::Array[(::String | nil)] <: [::String, ::String, (::String | nil), ::String]
+│
+│ Diagnostic ID: Ruby::IncompatibleAssignment
+│
+└     IDENTITIES = [
+      ~~~~~~~~~~~~~~
+
+[opaque value redacted]:29:85: [error] Cannot pass a value of type `(::String | nil)` as an argument of type `::path`
+│   (::String | nil) <: ::path
+│     (::String | nil) <: (::string | ::_ToPath)
+│       nil <: (::string | ::_ToPath)
+│         nil <: ::string
+│           nil <: (::String | ::_ToStr)
+│             nil <: ::String
+│
+│ Diagnostic ID: Ruby::ArgumentTypeMismatch
+│
+└     def self.load(path = File.expand_path("../../config/administration/roster.json", __dir__))
+                                                                                       ~~~~~~~
+
+[opaque value redacted]:29:85: [error] Cannot pass a value of type `(::String | nil)` as an argument of type `::path`
+│   (::String | nil) <: ::path
+│     (::String | nil) <: (::string | ::_ToPath)
+│       nil <: (::string | ::_ToPath)
+│         nil <: ::string
+│           nil <: (::String | ::_ToStr)
+│             nil <: ::String
+│
+│ Diagnostic ID: Ruby::ArgumentTypeMismatch
+│
+└     def self.load(path = File.expand_path("../../config/administration/roster.json", __dir__))
+                                                                                       ~~~~~~~
+
+[opaque value redacted]:38:52: [error] Empty array doesn't have type annotation
+│ Diagnostic ID: Ruby::UnannotatedEmptyCollection
+│
+└       invalid! unless document["mailbox_grants"] == [] && document["people"].is_a?(Array)
+                                                      ~~
+
+[opaque value redacted]:12:68: [error] Cannot assign a value of type `nil` to an expression of type `^() -> ::Elevateo::SendWorker::CallDeadline`
+│   nil <: ^() -> ::Elevateo::SendWorker::CallDeadline
+│
+│ Diagnostic ID: Ruby::IncompatibleAssignment
+│
+└       def initialize(store:, driver:, control:, budget_seconds: 10, deadline_factory: nil)
+                                                                      ~~~~~~~~~~~~~~~~~~~~~
+
+[opaque value redacted]:13:8: [error] Cannot find the declaration of instance variable: `@connection`
+│ Diagnostic ID: Ruby::UnknownInstanceVariable
+│
+└         @connection = connection
+          ~~~~~~~~~~~
+
+[opaque value redacted]:133:18: [error] Cannot pass a value of type `(nil | ::String)` as an argument of type `::String`
+│   (nil | ::String) <: ::String
+│     nil <: ::String
+│
+│ Diagnostic ID: Ruby::ArgumentTypeMismatch
+│
+└         values << after
+                    ~~~~~
+
+[opaque value redacted]:134:18: [error] Cannot pass a value of type `::Integer` as an argument of type `::String`
+│   ::Integer <: ::String
+│     ::Numeric <: ::String
+│       ::Object <: ::String
+│         ::BasicObject <: ::String
+│
+│ Diagnostic ID: Ruby::ArgumentTypeMismatch
+│
+└         values << (limit + 1)
+                    ~~~~~~~~~~~
+
+[opaque value redacted]:256:92: [error] Cannot find the declaration of constant: `Value`
+│ Diagnostic ID: Ruby::UnknownConstant
+│
+└           ActiveRecord::Relation::QueryAttribute.new("campaign", value, ActiveRecord::Type::Value.new)
+                                                                                              ~~~~~
+
+[opaque value redacted]:258:8: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└         @connection.exec_query(sql, "Campaign foundation", binds).to_a
+          ~~~~~~~~~~~
+
+[opaque value redacted]:27:76: [error] Type `::ActiveRecord::Result` does not have method `empty?`
+│ Diagnostic ID: Ruby::NoMethod
+│
+└         !@connection.exec_query(SCOPE_SQL, "Inbound mailbox scope", values).empty?
+                                                                              ~~~~~~
+
+[opaque value redacted]:43:28: [error] Cannot pass a value of type `::Elevateo::auth_value` as an argument of type `::string`
+│   ::Elevateo::auth_value <: ::string
+│     (nil | bool | ::String | ::Integer | ::Float | ::Array[::Elevateo::auth_value] | ::Hash[::String, ::Elevateo::auth_value]) <: ::string
+│       (nil | bool | ::String | ::Integer | ::Float | ::Array[::Elevateo::auth_value] | ::Hash[::String, ::Elevateo::auth_value]) <: (::String | ::_ToStr)
+│         nil <: (::String | ::_ToStr)
+│           nil <: ::String
+│
+│ Diagnostic ID: Ruby::ArgumentTypeMismatch
+│
+└         result = JSON.parse(row.fetch("result"))
+                              ~~~~~~~~~~~~~~~~~~~
+
+[opaque value redacted]:50:27: [error] Cannot find the declaration of constant: `StatementInvalid`
+│ Diagnostic ID: Ruby::UnknownConstant
+│
+└       rescue ActiveRecord::StatementInvalid => error
+                             ~~~~~~~~~~~~~~~~
+
+[opaque value redacted]:52:13: [error] Cannot find the declaration of constant: `PG`
+│ Diagnostic ID: Ruby::UnknownConstant
+│
+└         when PG::CheckViolation then raise Rejected, "replay_mismatch"
+               ~~
+
+[opaque value redacted]:53:13: [error] Cannot find the declaration of constant: `PG`
+│ Diagnostic ID: Ruby::UnknownConstant
+│
+└         when PG::InvalidParameterValue then raise Rejected, "request_invalid"
+               ~~
+
+lib/elevateo/send_worker/drain.rb:10:109: [error] Cannot find compatible overloading of method `sleep` of type `::Elevateo::SendWorker::Drain`
+│ Method types:
+│   def sleep: (?nil) -> bot
+│            | (::Time::_Timeout) -> ::Integer
+│
+│ Diagnostic ID: Ruby::UnresolvedOverloading
+│
+└         idle_delay: 1, clock: -> { Process.clock_gettime(Process::CLOCK_MONOTONIC) }, sleeper: ->(seconds) { sleep seconds })
+                                                                                                               ~~~~~~~~~~~~~
+
+lib/elevateo/send_worker/drain.rb:26:19: [error] Empty array doesn't have type annotation
+│ Diagnostic ID: Ruby::UnannotatedEmptyCollection
+│
+└         excluded = []
+                     ~~
+
+[opaque value redacted]:95:10: [error] Cannot allow method body have type `::Hash[::Symbol, (::String | ::Array[::String] | ::Array[{ :content_type => ::String, :filename => ::String, :sha256 => ::String, :size => ::Integer }])]` because declared as type `::Elevateo::Inbound::record`
+│   ::Hash[::Symbol, (::String | ::Array[::String] | ::Array[{ :content_type => ::String, :filename => ::String, :sha256 => ::String, :size => ::Integer }])] <: { :attachments => ::Array[::Elevateo::Inbound::attachment], :content_sha256 => ::String, :from => ::String, :mailbox_id => ::String, :organization_id => ::String, :provider => ::String, :provider_account_id => ::String, :provider_event_id => ::String, :subject => ::String, :text => ::String, :to => ::Array[::String] }
+│
+│ Diagnostic ID: Ruby::MethodBodyTypeMismatch
+│
+└       def record_for(mail, raw, body, selection, scope)
+            ~~~~~~~~~~
+
+[opaque value redacted]:123:17: [error] Empty array doesn't have type annotation
+│ Diagnostic ID: Ruby::UnannotatedEmptyCollection
+│
+└         leaves = []
+                   ~~
+
+[opaque value redacted]:128:66: [error] Type `(::Mail::Message | ::Integer | nil)` does not have method `>`
+│ Diagnostic ID: Ruby::NoMethod
+│
+└           reject("invalid_mime") if seen > MAX_PARTS * 2 || depth > 8
+                                                                    ~
+
+[opaque value redacted]:129:15: [error] Type `(::Mail::Message | ::Integer | nil)` does not have method `multipart?`
+│ Diagnostic ID: Ruby::NoMethod
+│
+└           part.multipart? ? add_children(stack, part, depth) : leaves << part
+                 ~~~~~~~~~~
+
+[opaque value redacted]:129:41: [error] Cannot pass a value of type `::Array[::Array[(::Mail::Message | ::Integer)]]` as an argument of type `::Array[[::Mail::Message, ::Integer]]`
+│   ::Array[::Array[(::Mail::Message | ::Integer)]] <: ::Array[[::Mail::Message, ::Integer]]
+│     ::Array[(::Mail::Message | ::Integer)] <: [::Mail::Message, ::Integer]
+│
+│ Diagnostic ID: Ruby::ArgumentTypeMismatch
+│
+└           part.multipart? ? add_children(stack, part, depth) : leaves << part
+                                           ~~~~~
+
+[opaque value redacted]:129:48: [error] Cannot pass a value of type `(::Mail::Message | ::Integer | nil)` as an argument of type `::Mail::Message`
+│   (::Mail::Message | ::Integer | nil) <: ::Mail::Message
+│     ::Integer <: ::Mail::Message
+│       ::Numeric <: ::Mail::Message
+│         ::Object <: ::Mail::Message
+│           ::BasicObject <: ::Mail::Message
+│
+│ Diagnostic ID: Ruby::ArgumentTypeMismatch
+│
+└           part.multipart? ? add_children(stack, part, depth) : leaves << part
+                                                  ~~~~
+
+[opaque value redacted]:129:54: [error] Cannot pass a value of type `(::Mail::Message | ::Integer | nil)` as an argument of type `::Integer`
+│   (::Mail::Message | ::Integer | nil) <: ::Integer
+│     ::Mail::Message <: ::Integer
+│       ::Object <: ::Integer
+│         ::BasicObject <: ::Integer
+│
+│ Diagnostic ID: Ruby::ArgumentTypeMismatch
+│
+└           part.multipart? ? add_children(stack, part, depth) : leaves << part
+                                                        ~~~~~
+
+[opaque value redacted]:111:53: [error] Cannot pass a value of type `(::String | nil)` as an argument of type `::String`
+│   (::String | nil) <: ::String
+│     nil <: ::String
+│
+│ Diagnostic ID: Ruby::ArgumentTypeMismatch
+│
+└         record_observation(claim: claim, attempt_id: claim.attempt_id,
+                                                       ~~~~~~~~~~~~~~~~
+
+[opaque value redacted]:16:89: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           raise Elevateo::CollaborationError.new("not_available") unless organization == identity.org_id
+                                                                                           ~~~~~~~~
+
+[opaque value redacted]:17:56: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           limit = Elevateo::OrganizationRoleAudit.limit(query)
+                                                          ~~~~~
+
+[opaque value redacted]:19:34: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           scope = { "actor_id" => identity.user_id, "organization_id" => organization,
+                                    ~~~~~~~~
+
+[opaque value redacted]:20:28: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└             "context_id" => session.fetch("context_id"), "authorization_version" => session.fetch("authorization_version"),
+                              ~~~~~~~
+
+[opaque value redacted]:20:84: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└             "context_id" => session.fetch("context_id"), "authorization_version" => session.fetch("authorization_version"),
+                                                                                      ~~~~~~~
+
+[opaque value redacted]:21:66: [error] Empty hash doesn't have type annotation
+│ Diagnostic ID: Ruby::UnannotatedEmptyCollection
+│
+└             "resource" => "organization_role_audit", "filters" => {}, "order" => "event_sequence:desc", "limit" => limit }
+                                                                    ~~
+
+[opaque value redacted]:22:21: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           position = query.key?("cursor") ? cursors.decode(query.fetch("cursor"), scope: scope) : nil
+                       ~~~~~
+
+[opaque value redacted]:22:59: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           position = query.key?("cursor") ? cursors.decode(query.fetch("cursor"), scope: scope) : nil
+                                                             ~~~~~
+
+[opaque value redacted]:23:54: [error] Cannot find compatible overloading of method `match?` of type `::Regexp`
+│ Method types:
+│   def match?: (::interned, ?::int) -> bool
+│             | (nil, ?::int) -> false
+│
+│ Diagnostic ID: Ruby::UnresolvedOverloading
+│
+└           if position && (position.keys != ["id"] || !Elevateo::Cursors::UUID.match?(position["id"]))
+                                                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+[opaque value redacted]:26:19: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           binds = [identity.digest, position && position["id"], limit].map do |value|
+                     ~~~~~~~~
+
+[opaque value redacted]:29:16: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           row = connection.exec_query(PAGE_SQL, "organization role audit page", binds).first
+                  ~~~~~~~~~~
+
+[opaque value redacted]:42:53: [error] Cannot pass a value of type `::Hash[::String, (bool | ::Integer | ::Float | ::String | ::Array[::Elevateo::ReadResponse::json_value] | ::Hash[::String, ::Elevateo::ReadResponse::json_value])]` as an argument of type `::Elevateo::Cursors::position`
+│   ::Hash[::String, (bool | ::Integer | ::Float | ::String | ::Array[::Elevateo::ReadResponse::json_value] | ::Hash[::String, ::Elevateo::ReadResponse::json_value])] <: ::Elevateo::Cursors::position
+│     ::Hash[::String, (bool | ::Integer | ::Float | ::String | ::Array[::Elevateo::ReadResponse::json_value] | ::Hash[::String, ::Elevateo::ReadResponse::json_value])] <: ::Hash[::String, (::String | nil)]
+│       (bool | ::Integer | ::Float | ::String | ::Array[::Elevateo::ReadResponse::json_value] | ::Hash[::String, ::Elevateo::ReadResponse::json_value]) <: (::String | nil)
+│         bool <: (::String | nil)
+│           (true | false) <: (::String | nil)
+│             true <: (::String | nil)
+│               true <: ::String
+│                 ::TrueClass <: ::String
+│                   ::Object <: ::String
+│                     ::BasicObject <: ::String
+│
+│ Diagnostic ID: Ruby::ArgumentTypeMismatch
+│
+└           cursor = after && cursors.encode(position: { "id" => after }, scope: scope)
+                                                       ~~~~~~~~~~~~~~~~~
+
+[opaque value redacted]:43:42: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           JSON.generate({ "context_id" => session.fetch("context_id"),
+                                            ~~~~~~~
+
+[opaque value redacted]:44:39: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└             "authorization_version" => session.fetch("authorization_version"),
+                                         ~~~~~~~
+
+[opaque value redacted]:97:62: [error] Type `::Dir` does not have method `fsync`
+│ Diagnostic ID: Ruby::NoMethod
+│
+└         Dir.open(File.dirname(@path)) { |directory| directory.fsync }
+                                                                ~~~~~
+
+[opaque value redacted]:27:21: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└         send_service(connection, session).cancel(send_id: send_path(:send_id), mailbox_id: input["mailbox_id"],
+                       ~~~~~~~~~~
+
+[opaque value redacted]:27:33: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└         send_service(connection, session).cancel(send_id: send_path(:send_id), mailbox_id: input["mailbox_id"],
+                                   ~~~~~~~
+
+[opaque value redacted]:28:26: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           session_digest: identity.digest, epoch: send_epoch)
+                            ~~~~~~~~
+
+[opaque value redacted]:27:91: [error] Cannot pass a value of type `::Elevateo::WriteInput::value` as an argument of type `::String`
+│   ::Elevateo::WriteInput::value <: ::String
+│     (nil | bool | ::String | ::Integer | ::Float | ::BigDecimal | ::Array[::Elevateo::WriteInput::value] | ::Hash[::String, ::Elevateo::WriteInput::value]) <: ::String
+│       nil <: ::String
+│
+│ Diagnostic ID: Ruby::ArgumentTypeMismatch
+│
+└         send_service(connection, session).cancel(send_id: send_path(:send_id), mailbox_id: input["mailbox_id"],
+                                                                                             ~~~~~~~~~~~~~~~~~~~
+
+[opaque value redacted]:135:99: [error] Cannot pass a value of type `::Elevateo::WriteInput::value` as an argument of type `::String`
+│   ::Elevateo::WriteInput::value <: ::String
+│     (nil | bool | ::String | ::Integer | ::Float | ::BigDecimal | ::Array[::Elevateo::WriteInput::value] | ::Hash[::String, ::Elevateo::WriteInput::value]) <: ::String
+│       nil <: ::String
+│
+│ Diagnostic ID: Ruby::ArgumentTypeMismatch
+│
+└           repository.suppress(organization_id: identity.org_id, email: old.fetch("email"), reason: input.fetch("reason"))
+                                                                                                     ~~~~~~~~~~~~~~~~~~~~~
+
+[opaque value redacted]:16:65: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└         guard_users: ->(input:, **) { [Elevateo::WriteInput.uuid(input["actor_id"])] }) do
+                                                                   ~~~~~
+
+[opaque value redacted]:18:71: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└         raise Elevateo::CollaborationError.new("not_available") unless input["actor_id"] == identity.user_id
+                                                                         ~~~~~
+
+[opaque value redacted]:18:92: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└         raise Elevateo::CollaborationError.new("not_available") unless input["actor_id"] == identity.user_id
+                                                                                              ~~~~~~~~
+
+[opaque value redacted]:19:44: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└         mailbox = Elevateo::WriteInput.uuid(input["mailbox_id"])
+                                              ~~~~~
+
+[opaque value redacted]:20:65: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└         store = Elevateo::Inbound::PostgresStore.new(connection: connection,
+                                                                   ~~~~~~~~~~
+
+[opaque value redacted]:21:26: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           session_digest: identity.digest, actor_id: identity.user_id)
+                            ~~~~~~~~
+
+[opaque value redacted]:21:53: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           session_digest: identity.digest, actor_id: identity.user_id)
+                                                       ~~~~~~~~
+
+[opaque value redacted]:23:27: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           organization_id: identity.org_id, mailbox_id: mailbox)
+                             ~~~~~~~~
+
+[opaque value redacted]:26:27: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           organization_id: identity.org_id, mailbox_id: mailbox, authorized_mailbox_ids: [mailbox],
+                             ~~~~~~~~
+
+[opaque value redacted]:27:31: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           provider_account_id: input["provider_account_id"], provider_event_id: input["provider_event_id"],
+                                 ~~~~~
+
+[opaque value redacted]:27:80: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           provider_account_id: input["provider_account_id"], provider_event_id: input["provider_event_id"],
+                                                                                  ~~~~~
+
+[opaque value redacted]:28:20: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           raw_mime: input["raw_mime"])
+                      ~~~~~
+
+[opaque value redacted]:26:89: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           raise Elevateo::CollaborationError.new("not_available") unless organization == identity.org_id
+                                                                                           ~~~~~~~~
+
+[opaque value redacted]:27:40: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           limit = self.class.page_limit(query)
+                                          ~~~~~
+
+[opaque value redacted]:29:29: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           scope = page_scope(identity, session, limit, organization)
+                               ~~~~~~~~
+
+[opaque value redacted]:29:39: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           scope = page_scope(identity, session, limit, organization)
+                                         ~~~~~~~
+
+[opaque value redacted]:30:21: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           position = query.key?("cursor") ? cursors.decode(query.fetch("cursor"), scope: scope) : nil
+                       ~~~~~
+
+[opaque value redacted]:30:59: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           position = query.key?("cursor") ? cursors.decode(query.fetch("cursor"), scope: scope) : nil
+                                                             ~~~~~
+
+[opaque value redacted]:31:59: [error] Cannot find compatible overloading of method `match?` of type `::Regexp`
+│ Method types:
+│   def match?: (::interned, ?::int) -> bool
+│             | (nil, ?::int) -> false
+│
+│ Diagnostic ID: Ruby::UnresolvedOverloading
+│
+└           if position && (position.keys != ["user_id"] || !Elevateo::Cursors::UUID.match?(position["user_id"]))
+                                                             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+[opaque value redacted]:34:19: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           binds = [identity.digest, position && position["user_id"], limit].map do |value|
+                     ~~~~~~~~
+
+[opaque value redacted]:37:16: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           row = connection.exec_query(PAGE_SQL, "organization grants page", binds).first
+                  ~~~~~~~~~~
+
+[opaque value redacted]:47:37: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           unless actor["user_id"] == identity.user_id && %w[organization_owner organization_admin].include?(actor["role"])
+                                       ~~~~~~~~
+
+[opaque value redacted]:55:53: [error] Cannot pass a value of type `::Hash[::String, (bool | ::Integer | ::Float | ::String | ::Array[::Elevateo::ReadResponse::json_value] | ::Hash[::String, ::Elevateo::ReadResponse::json_value])]` as an argument of type `::Elevateo::Cursors::position`
+│   ::Hash[::String, (bool | ::Integer | ::Float | ::String | ::Array[::Elevateo::ReadResponse::json_value] | ::Hash[::String, ::Elevateo::ReadResponse::json_value])] <: ::Elevateo::Cursors::position
+│     ::Hash[::String, (bool | ::Integer | ::Float | ::String | ::Array[::Elevateo::ReadResponse::json_value] | ::Hash[::String, ::Elevateo::ReadResponse::json_value])] <: ::Hash[::String, (::String | nil)]
+│       (bool | ::Integer | ::Float | ::String | ::Array[::Elevateo::ReadResponse::json_value] | ::Hash[::String, ::Elevateo::ReadResponse::json_value]) <: (::String | nil)
+│         bool <: (::String | nil)
+│           (true | false) <: (::String | nil)
+│             true <: (::String | nil)
+│               true <: ::String
+│                 ::TrueClass <: ::String
+│                   ::Object <: ::String
+│                     ::BasicObject <: ::String
+│
+│ Diagnostic ID: Ruby::ArgumentTypeMismatch
+│
+└           cursor = after && cursors.encode(position: { "user_id" => after }, scope: scope)
+                                                       ~~~~~~~~~~~~~~~~~~~~~~
+
+[opaque value redacted]:56:42: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           JSON.generate({ "context_id" => session.fetch("context_id"),
+                                            ~~~~~~~
+
+[opaque value redacted]:57:39: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└             "authorization_version" => session.fetch("authorization_version"),
+                                         ~~~~~~~
+
+[opaque value redacted]:84:43: [error] Type `nil` does not have method `<`
+│ Diagnostic ID: Ruby::NoMethod
+│
+└           unless previous.nil? || previous < user
+                                             ~
+
+[opaque value redacted]:87:10: [error] Cannot assign a value of type `::String` to a variable of type `nil`
+│   ::String <: nil
+│
+│ Diagnostic ID: Ruby::IncompatibleAssignment
+│
+└           previous = user
+            ~~~~~~~~~~~~~~~
+
+[opaque value redacted]:100:89: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           raise Elevateo::CollaborationError.new("not_available") unless organization == identity.org_id
+                                                                                           ~~~~~~~~
+
+[opaque value redacted]:101:40: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           limit = self.class.page_limit(query)
+                                          ~~~~~
+
+[opaque value redacted]:102:33: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           authorization_binds = [identity.digest, nil, "1"].map do |value|
+                                   ~~~~~~~~
+
+[opaque value redacted]:105:23: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           result_row = connection.exec_query(PAGE_SQL, "organization roster authority", authorization_binds).first
+                         ~~~~~~~~~~
+
+[opaque value redacted]:113:37: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           unless actor["user_id"] == identity.user_id && %w[organization_owner organization_admin].include?(actor["role"])
+                                       ~~~~~~~~
+
+[opaque value redacted]:117:29: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           scope = page_scope(identity, session, limit, organization).merge("resource" => "organization_roster", "order" => "key:asc")
+                               ~~~~~~~~
+
+[opaque value redacted]:117:39: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           scope = page_scope(identity, session, limit, organization).merge("resource" => "organization_roster", "order" => "key:asc")
+                                         ~~~~~~~
+
+[opaque value redacted]:118:21: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           position = query.key?("cursor") ? cursors.decode(query.fetch("cursor"), scope: scope) : nil
+                       ~~~~~
+
+[opaque value redacted]:118:59: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           position = query.key?("cursor") ? cursors.decode(query.fetch("cursor"), scope: scope) : nil
+                                                             ~~~~~
+
+[opaque value redacted]:123:103: [error] Type `(::Integer | nil)` does not have method `+`
+│ Diagnostic ID: Ruby::NoMethod
+│
+└           offset = position ? Elevateo::AdministrationRoster::KEYS.index(position.fetch("config_key")) + 1 : 0
+                                                                                                         ~
+
+[opaque value redacted]:127:42: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           JSON.generate({ "context_id" => session.fetch("context_id"),
+                                            ~~~~~~~
+
+[opaque value redacted]:128:39: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└             "authorization_version" => session.fetch("authorization_version"),
+                                         ~~~~~~~
+
+[opaque value redacted]:141:34: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           self.class.change_input(input)
+                                    ~~~~~
+
+[opaque value redacted]:145:89: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           raise Elevateo::CollaborationError.new("not_available") unless organization == identity.org_id
+                                                                                           ~~~~~~~~
+
+[opaque value redacted]:146:51: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           role, revision = self.class.change_input(input)
+                                                     ~~~~~
+
+[opaque value redacted]:147:16: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           row = connection.exec_query(CHANGE_SQL, "organization role change",
+                  ~~~~~~~~~~
+
+[opaque value redacted]:148:13: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└             [identity.digest, target, revision.to_s, ROLE_SQL.fetch(role)].map do |value|
+               ~~~~~~~~
+
+[opaque value redacted]:158:64: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           unless metadata.is_a?(Hash) && metadata["user_id"] == identity.user_id && metadata["organization_id"] == organization
+                                                                  ~~~~~~~~
+
+[opaque value redacted]:144:75: [error] Cannot pass a value of type `^() -> ::Array[::String]` as an argument of type `(::V1::WriteController::target_users | nil)`
+│   ^() -> ::Array[::String] <: (::V1::WriteController::target_users | nil)
+│     ^() -> ::Array[::String] <: ::V1::WriteController::target_users
+│       ^() -> ::Array[::String] <: ^(input: ::Elevateo::WriteInput::object, query: ::Hash[::String, ::String]) -> ::Array[::String]
+│         (Params are incompatible)
+│
+│ Diagnostic ID: Ruby::ArgumentTypeMismatch
+│
+└         protected_write(required: %w[role expected_revision], guard_users: guards) do |connection:, identity:, input:, **|
+                                                                             ~~~~~~
+
+Detected 91 problems from 13 files
+RUN RuboCop lint
+== test/administration/roster_test.rb ==
+W: 15:  5: [Correctable] Lint/AmbiguousBlockAssociation: Parenthesize the param roster.fetch("people").all? { |person| person["email"].nil? && person["auth_user_id"].nil? } to make sure that the block will be associated with the roster.fetch("people").all? method call.
+== [opaque value redacted] ==
+W:100:  5: [Correctable] Lint/AmbiguousBlockAssociation: Parenthesize the param [admin.user_id, peer.user_id, @user].map { |id|
+      @admin.exec_params("SELECT role FROM app.organization_access WHERE user_id=$1", [id]).getvalue(0, 0)
+    } to make sure that the block will be associated with the [admin.user_id, peer.user_id, @user].map method call.
+== [opaque value redacted] ==
+W:137:  5: [Correctable] Lint/AmbiguousBlockAssociation: Parenthesize the param page.fetch("items").all? { |row| row.keys.sort == %w[revision role user_id] } to make sure that the block will be associated with the page.fetch("items").all? method call.
+== test/inbound/http_test.rb ==
+W: 81:  5: [Correctable] Lint/AmbiguousBlockAssociation: Parenthesize the param dispatch.then { |code, data| [code, data.fetch("result")] } to make sure that the block will be associated with the dispatch.then method call.
+W: 86:  5: [Correctable] Lint/AmbiguousBlockAssociation: Parenthesize the param dispatch.then { |code, data| [code, data.fetch("code")] } to make sure that the block will be associated with the dispatch.then method call.
+== test/send_worker/executor_test.rb ==
+W: 27: 15: Lint/UnusedMethodArgument: Unused method argument - epoch. You can also write as claim(*) if you want the method to accept any arguments but don't care about them.
+W: 29: 30: Lint/UnusedMethodArgument: Unused method argument - claim. You can also write as authorize_submission(*) if you want the method to accept any arguments but don't care about them.
+W: 29: 38: Lint/UnusedMethodArgument: Unused method argument - epoch. You can also write as authorize_submission(*) if you want the method to accept any arguments but don't care about them.
+W: 34: 28: Lint/UnusedMethodArgument: Unused method argument - claim.
+W: 34: 36: Lint/UnusedMethodArgument: Unused method argument - attempt_id.
+W: 34: 49: Lint/UnusedMethodArgument: Unused method argument - snapshot_digest.
+W: 38: 21: Lint/UnusedMethodArgument: Unused method argument - claim. You can also write as final_check(*) if you want the method to accept any arguments but don't care about them.
+W: 38: 29: Lint/UnusedMethodArgument: Unused method argument - attempt_id. You can also write as final_check(*) if you want the method to accept any arguments but don't care about them.
+W: 38: 42: Lint/UnusedMethodArgument: Unused method argument - epoch. You can also write as final_check(*) if you want the method to accept any arguments but don't care about them.
+W: 40: 19: Lint/UnusedMethodArgument: Unused method argument - claim.
+W: 42: 22: Lint/UnusedMethodArgument: Unused method argument - claim. You can also write as mark_unknown(*) if you want the method to accept any arguments but don't care about them.
+W: 42: 30: Lint/UnusedMethodArgument: Unused method argument - attempt_id. You can also write as mark_unknown(*) if you want the method to accept any arguments but don't care about them.
+W: 42: 43: Lint/UnusedMethodArgument: Unused method argument - reason. You can also write as mark_unknown(*) if you want the method to accept any arguments but don't care about them.
+== test/v2_route_registry_test.rb ==
+W: 19:  5: [Correctable] Lint/AmbiguousBlockAssociation: Parenthesize the param mapper.routes.all? { |_, path, _| path.start_with?("/v2/") } to make sure that the block will be associated with the mapper.routes.all? method call.
+
+237 files inspected, 19 offenses detected, 6 offenses autocorrectable
+Failed checks: 32
+ Container [opaque value redacted] Creating 
+ Container [opaque value redacted] Created 
+[opaque value redacted]:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+[opaque value redacted]:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+[opaque value redacted]:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+[opaque value redacted]:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+[opaque value redacted]:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+[opaque value redacted]:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+[opaque value redacted]:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+[opaque value redacted]:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+[opaque value redacted]:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+[opaque value redacted]:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+[opaque value redacted]:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+[opaque value redacted]:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+[opaque value redacted]:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+[opaque value redacted]:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+[opaque value redacted]:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+[opaque value redacted]:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+[opaque value redacted]:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+[opaque value redacted]:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+[opaque value redacted]:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+[opaque value redacted]:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+[opaque value redacted]:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+[opaque value redacted]:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+The following cops were added to RuboCop, but are not configured. Please set Enabled to either `true` or `false` in your `.rubocop.yml` file.
+
+Please also note that you can opt-in to new cops by default by adding this to your config:
+  AllCops:
+    NewCops: enable
+Gemspec/AddRuntimeDependency: # new in 1.65
+  Enabled: true
+Gemspec/AttributeAssignment: # new in 1.77
+  Enabled: true
+[opaque value redacted]: # new in 1.30
+  Enabled: true
+Gemspec/DevelopmentDependencies: # new in 1.44
+  Enabled: true
+Gemspec/RequireMFA: # new in 1.23
+  Enabled: true
+[opaque value redacted]: # new in 1.79
+  Enabled: true
+[opaque value redacted]: # new in 1.31
+  Enabled: true
+Layout/LineContinuationSpacing: # new in 1.31
+  Enabled: true
+[opaque value redacted]: # new in 1.18
+  Enabled: true
+Layout/SpaceBeforeBrackets: # new in 1.7
+  Enabled: true
+Lint/AmbiguousAssignment: # new in 1.7
+  Enabled: true
+[opaque value redacted]: # new in 1.21
+  Enabled: true
+Lint/AmbiguousRange: # new in 1.19
+  Enabled: true
+Lint/ArgumentMismatch: # new in 1.90
+  Enabled: true
+Lint/ArrayLiteralInRegexp: # new in 1.71
+  Enabled: true
+[opaque value redacted]: # new in 1.31
+  Enabled: true
+Lint/ConstantReassignment: # new in 1.70
+  Enabled: true
+Lint/DataDefineOverride: # new in 1.85
+  Enabled: true
+Lint/DeprecatedConstants: # new in 1.8
+  Enabled: true
+Lint/DeprecatedReference: # new in 1.89
+  Enabled: true
+Lint/DuplicateBranch: # new in 1.3
+  Enabled: true
+Lint/DuplicateMagicComment: # new in 1.37
+  Enabled: true
+Lint/DuplicateMatchPattern: # new in 1.50
+  Enabled: true
+[opaque value redacted]: # new in 1.1
+  Enabled: true
+Lint/DuplicateSetElement: # new in 1.67
+  Enabled: true
+Lint/EmptyBlock: # new in 1.1
+  Enabled: true
+Lint/EmptyClass: # new in 1.3
+  Enabled: true
+Lint/EmptyInPattern: # new in 1.16
+  Enabled: true
+[opaque value redacted]: # new in 1.69
+  Enabled: true
+[opaque value redacted]: # new in 1.21
+  Enabled: true
+Lint/ItWithoutArgumentsInBlock: # new in 1.59
+  Enabled: true
+Lint/LambdaWithoutLiteralBlock: # new in 1.8
+  Enabled: true
+[opaque value redacted]: # new in 1.58
+  Enabled: true
+Lint/MisplacedMagicComment: # new in 1.91
+  Enabled: true
+Lint/MixedCaseRange: # new in 1.53
+  Enabled: true
+Lint/NameTypo: # new in 1.89
+  Enabled: true
+Lint/NoReturnInBeginEndBlocks: # new in 1.2
+  Enabled: true
+Lint/NonAtomicFileOperation: # new in 1.31
+  Enabled: true
+[opaque value redacted]: # new in 1.9
+  Enabled: true
+[opaque value redacted]: # new in 1.69
+  Enabled: true
+Lint/OrAssignmentToConstant: # new in 1.9
+  Enabled: true
+Lint/RedundantDirGlobSort: # new in 1.8
+  Enabled: true
+Lint/RedundantRegexpQuantifiers: # new in 1.53
+  Enabled: true
+Lint/RedundantTypeConversion: # new in 1.72
+  Enabled: true
+Lint/RefinementImportMethods: # new in 1.27
+  Enabled: true
+Lint/RequireRangeParentheses: # new in 1.32
+  Enabled: true
+Lint/RequireRelativeSelfPath: # new in 1.22
+  Enabled: true
+Lint/SharedMutableDefault: # new in 1.70
+  Enabled: true
+Lint/SuperArgumentMismatch: # new in 1.90
+  Enabled: true
+[opaque value redacted]: # new in 1.72
+  Enabled: true
+Lint/SymbolConversion: # new in 1.9
+  Enabled: true
+Lint/ToEnumArguments: # new in 1.1
+  Enabled: true
+Lint/TripleQuotes: # new in 1.9
+  Enabled: true
+Lint/UnescapedBracketInRegexp: # new in 1.68
+  Enabled: true
+Lint/UnexpectedBlockArity: # new in 1.5
+  Enabled: true
+[opaque value redacted]: # new in 1.1
+  Enabled: true
+Lint/UnreachablePatternBranch: # new in 1.85
+  Enabled: true
+Lint/UselessConstantScoping: # new in 1.72
+  Enabled: true
+[opaque value redacted]: # new in 1.76
+  Enabled: true
+Lint/UselessDefined: # new in 1.69
+  Enabled: true
+Lint/UselessNumericOperation: # new in 1.66
+  Enabled: true
+Lint/UselessOr: # new in 1.76
+  Enabled: true
+Lint/UselessRescue: # new in 1.43
+  Enabled: true
+Lint/UselessRuby2Keywords: # new in 1.23
+  Enabled: true
+Metrics/CollectionLiteralLength: # new in 1.47
+  Enabled: true
+Naming/BlockForwarding: # new in 1.24
+  Enabled: true
+Naming/PredicateMethod: # new in 1.76
+  Enabled: true
+Security/CompoundHash: # new in 1.28
+  Enabled: true
+Security/IoMethods: # new in 1.22
+  Enabled: true
+[opaque value redacted]: # new in 1.68
+  Enabled: true
+Style/ArgumentsForwarding: # new in 1.1
+  Enabled: true
+Style/ArrayIntersect: # new in 1.40
+  Enabled: true
+[opaque value redacted]: # new in 1.81
+  Enabled: true
+Style/BitwisePredicate: # new in 1.68
+  Enabled: true
+Style/CollectionCompact: # new in 1.2
+  Enabled: true
+Style/CollectionQuerying: # new in 1.77
+  Enabled: true
+Style/CombinableDefined: # new in 1.68
+  Enabled: true
+Style/ComparableBetween: # new in 1.74
+  Enabled: true
+Style/ComparableClamp: # new in 1.44
+  Enabled: true
+Style/ConcatArrayLiterals: # new in 1.41
+  Enabled: true
+Style/DataInheritance: # new in 1.49
+  Enabled: true
+Style/DigChain: # new in 1.69
+  Enabled: true
+Style/DirEmpty: # new in 1.48
+  Enabled: true
+Style/DirectiveScope: # new in 1.90
+  Enabled: true
+[opaque value redacted]: # new in 1.1
+  Enabled: true
+Style/EmptyClassDefinition: # new in 1.84
+  Enabled: true
+Style/EmptyHeredoc: # new in 1.32
+  Enabled: true
+[opaque value redacted]: # new in 1.76
+  Enabled: true
+Style/EndlessMethod: # new in 1.8
+  Enabled: true
+Style/EnvHome: # new in 1.29
+  Enabled: true
+Style/ExactRegexpMatch: # new in 1.51
+  Enabled: true
+Style/FetchEnvVar: # new in 1.28
+  Enabled: true
+Style/FileEmpty: # new in 1.48
+  Enabled: true
+Style/FileNull: # new in 1.69
+  Enabled: true
+Style/FileOpen: # new in 1.85
+  Enabled: true
+Style/FileRead: # new in 1.24
+  Enabled: true
+Style/FileTouch: # new in 1.69
+  Enabled: true
+Style/FileWrite: # new in 1.24
+  Enabled: true
+Style/HashConversion: # new in 1.10
+  Enabled: true
+Style/HashExcept: # new in 1.7
+  Enabled: true
+Style/HashFetchChain: # new in 1.75
+  Enabled: true
+Style/HashSlice: # new in 1.71
+  Enabled: true
+[opaque value redacted]: # new in 1.9
+  Enabled: true
+Style/InPatternThen: # new in 1.16
+  Enabled: true
+Style/ItAssignment: # new in 1.70
+  Enabled: true
+Style/ItBlockParameter: # new in 1.75
+  Enabled: true
+Style/KeywordArgumentsMerging: # new in 1.68
+  Enabled: true
+Style/MagicCommentFormat: # new in 1.35
+  Enabled: true
+[opaque value redacted]: # new in 1.30
+  Enabled: true
+Style/MapIntoArray: # new in 1.63
+  Enabled: true
+Style/MapJoin: # new in 1.85
+  Enabled: true
+Style/MapToHash: # new in 1.24
+  Enabled: true
+Style/MapToSet: # new in 1.42
+  Enabled: true
+Style/MinMaxComparison: # new in 1.42
+  Enabled: true
+[opaque value redacted]: # new in 1.82
+  Enabled: true
+Style/MultilineInPatternThen: # new in 1.16
+  Enabled: true
+Style/NegatedIfElseCondition: # new in 1.2
+  Enabled: true
+Style/NegativeArrayIndex: # new in 1.84
+  Enabled: true
+Style/NestedFileDirname: # new in 1.26
+  Enabled: true
+Style/NilLambda: # new in 1.3
+  Enabled: true
+Style/NumberedParameters: # new in 1.22
+  Enabled: true
+Style/NumberedParametersLimit: # new in 1.22
+  Enabled: true
+Style/ObjectThen: # new in 1.28
+  Enabled: true
+Style/OneClassPerFile: # new in 1.85
+  Enabled: true
+Style/OpenStructUse: # new in 1.23
+  Enabled: true
+Style/OperatorMethodCall: # new in 1.37
+  Enabled: true
+[opaque value redacted]: # new in 1.85
+  Enabled: true
+Style/PredicateWithKind: # new in 1.85
+  Enabled: true
+Style/QuotedSymbols: # new in 1.16
+  Enabled: true
+Style/ReduceToHash: # new in 1.85
+  Enabled: true
+Style/RedundantArgument: # new in 1.4
+  Enabled: true
+Style/RedundantArrayConstructor: # new in 1.52
+  Enabled: true
+Style/RedundantArrayFlatten: # new in 1.76
+  Enabled: true
+Style/RedundantConstantBase: # new in 1.40
+  Enabled: true
+[opaque value redacted]: # new in 1.53
+  Enabled: true
+[opaque value redacted]: # new in 1.41
+  Enabled: true
+Style/RedundantEach: # new in 1.38
+  Enabled: true
+Style/RedundantFilterChain: # new in 1.52
+  Enabled: true
+Style/RedundantFormat: # new in 1.72
+  Enabled: true
+[opaque value redacted]: # new in 1.45
+  Enabled: true
+Style/RedundantInitialize: # new in 1.27
+  Enabled: true
+[opaque value redacted]: # new in 1.66
+  Enabled: true
+Style/RedundantLineContinuation: # new in 1.49
+  Enabled: true
+Style/RedundantMinMaxBy: # new in 1.85
+  Enabled: true
+Style/RedundantRegexpArgument: # new in 1.53
+  Enabled: true
+[opaque value redacted]: # new in 1.52
+  Enabled: true
+[opaque value redacted]: # new in 1.19
+  Enabled: true
+Style/RedundantStringEscape: # new in 1.37
+  Enabled: true
+[opaque value redacted]: # new in 1.53
+  Enabled: true
+Style/ReverseFind: # new in 1.84
+  Enabled: true
+Style/SafeNavigationChainLength: # new in 1.68
+  Enabled: true
+Style/SelectByKind: # new in 1.85
+  Enabled: true
+Style/SelectByRange: # new in 1.85
+  Enabled: true
+Style/SelectByRegexp: # new in 1.22
+  Enabled: true
+Style/SendWithLiteralMethodName: # new in 1.64
+  Enabled: true
+Style/SingleLineDoEndBlock: # new in 1.57
+  Enabled: true
+Style/StringChars: # new in 1.12
+  Enabled: true
+Style/SuperArguments: # new in 1.64
+  Enabled: true
+Style/SuperWithArgsParentheses: # new in 1.58
+  Enabled: true
+Style/SwapValues: # new in 1.1
+  Enabled: true
+Style/TallyMethod: # new in 1.85
+  Enabled: true
+Style/TimeNow: # new in 1.90
+  Enabled: true
+Style/YAMLFileRead: # new in 1.53
+  Enabled: true
+For more information: https://docs.rubocop.org/rubocop/versioning.html
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+
+
+exit=1 seconds=73.33

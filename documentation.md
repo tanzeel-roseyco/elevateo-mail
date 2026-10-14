@@ -1,5 +1,7 @@
 # Product requirements and decision record
 
+QA-815 continuation receipts in `docs/completion/soren.md` distinguish isolated PASS from integrated FAIL: all `45be80b` migrations passed, then the backend suite failed; `c4fa27c` web typecheck failed. The list-only quiet-reporter probe passed with a synthetic valid seed; it ran no browser case. Native and restore gates remain unaccepted.
+
 QA-815 fleet evidence update: exact isolated frontend and bounded Ruby/Python results, integrated `f787bbc` web lint and SEND-810 migration failure, and resource cleanup receipts are in `docs/completion/soren.md`. Backend gates after migration, real browser, Android/Tauri compile, Mox and restore have not passed.
 
 QA-815 owns serialized fleet Docker checks under the shared Soren lock. The exact Mira FE-806 candidate passed focused frontend checks; the immutable-source scheduler, receipt and cleanup limits are recorded in `docs/completion/soren.md`. This is not integrated or browser acceptance.

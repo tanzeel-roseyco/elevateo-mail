@@ -1,0 +1,402 @@
+source=5108625b961bc3b89c01298041e2ff021b6e3e61
+image=rust@sha256:3914072ca0c3b8aad871db9169a651ccfce30cf58303e5d6f2db16d1d8a7e58f
+started=2026-10-14T14:40:24Z
+    Updating crates.io index
+     Locking 406 packages to latest compatible versions
+      Adding brotli-decompressor v6.0.1 (available: v6.1.0)
+      Adding generic-array v0.14.7 (available: v0.14.9)
+      Adding toml v0.8.2 (available: v0.8.23)
+      Adding toml_datetime v0.6.3 (available: v0.6.11)
+      Adding toml_edit v0.20.2 (available: v0.20.7)
+ Downloading crates ...
+  Downloaded adler2 v2.0.1
+  Downloaded hex v0.4.3
+  Downloaded heck v0.4.1
+  Downloaded markup5ever v0.39.0
+  Downloaded ico v0.5.0
+  Downloaded serde v1.0.229
+  Downloaded icu_properties_data v2.3.0
+  Downloaded parking_lot v0.12.5
+  Downloaded byteorder v1.5.0
+  Downloaded semver v1.0.28
+  Downloaded phf_codegen v0.13.1
+  Downloaded siphasher v1.0.4
+  Downloaded ref-cast v1.0.27
+  Downloaded ident_case v1.0.1
+  Downloaded raw-window-handle v0.6.2
+  Downloaded pin-project-lite v0.2.17
+  Downloaded miniz_oxide v0.9.1
+  Downloaded cfg-if v1.0.5
+  Downloaded serde_repr v0.1.21
+  Downloaded indexmap v1.9.3
+  Downloaded gdkx11-sys v0.18.2
+  Downloaded serde_spanned v1.1.2
+  Downloaded futures-task v0.3.34
+  Downloaded scopeguard v1.2.0
+  Downloaded gtk3-macros v0.18.2
+  Downloaded stable_deref_trait v1.2.1
+  Downloaded generic-array v0.14.7
+  Downloaded gobject-sys v0.18.0
+  Downloaded thiserror-impl v2.0.21
+  Downloaded soup3-sys v0.5.0
+  Downloaded serde_spanned v0.6.9
+  Downloaded phf_shared v0.13.1
+  Downloaded num-conv v0.2.2
+  Downloaded glib-sys v0.18.1
+  Downloaded glib-macros v0.18.5
+  Downloaded fdeflate v0.3.7
+  Downloaded ref-cast-impl v1.0.27
+  Downloaded serialize-to-javascript-impl v0.1.2
+  Downloaded idna_adapter v1.2.2
+  Downloaded proc-macro-crate v2.0.2
+  Downloaded powerfmt v0.2.1
+  Downloaded javascriptcore-rs-sys v1.1.1
+  Downloaded itoa v1.0.18
+  Downloaded getrandom v0.3.4
+  Downloaded darling v0.24.1
+  Downloaded toml_datetime v0.6.3
+  Downloaded servo_arc v0.4.3
+  Downloaded serde-untagged v0.1.9
+  Downloaded tinystr v0.8.4
+  Downloaded typeid v1.0.3
+  Downloaded zerofrom v0.1.8
+  Downloaded zmij v1.0.23
+  Downloaded web-time v1.1.0
+  Downloaded yoke-derive v0.8.4
+  Downloaded web_atoms v0.2.6
+  Downloaded version_check v0.9.5
+  Downloaded version-compare v0.2.1
+  Downloaded zerovec-derive v0.11.6
+  Downloaded writeable v0.6.4
+  Downloaded jiff-core v0.1.1
+  Downloaded zerofrom-derive v0.1.8
+  Downloaded serde_json v1.0.154
+  Downloaded tauri-utils v2.10.1
+  Downloaded regex v1.13.1
+  Downloaded brotli v9.0.0
+  Downloaded x11-dl v2.21.0
+  Downloaded url v2.5.8
+  Downloaded zerovec v0.11.8
+  Downloaded typenum v1.20.1
+  Downloaded time v0.3.55
+  Downloaded winnow v0.5.40
+  Downloaded winnow v1.0.4
+  Downloaded tauri v2.12.3
+  Downloaded tao v0.37.1
+  Downloaded zlib-rs v0.6.8
+  Downloaded wry v0.57.0
+  Downloaded regex-syntax v0.8.11
+  Downloaded syn v3.0.9
+  Downloaded tauri-runtime-wry v2.12.1
+  Downloaded x11 v2.21.0
+  Downloaded icu_normalizer v2.3.0
+  Downloaded webkit2gtk v2.0.2
+  Downloaded regex-automata v0.4.18
+  Downloaded uuid v1.28.0
+  Downloaded tokio v1.53.3
+  Downloaded serde_with v3.24.0
+  Downloaded quick-xml v0.42.0
+  Downloaded muda v0.20.0
+  Downloaded jiff v0.2.38
+  Downloaded idna v1.1.0
+  Downloaded libc v0.2.190
+  Downloaded gtk v0.18.2
+  Downloaded syn v2.0.119
+  Downloaded glib v0.18.5
+  Downloaded brotli-decompressor v6.0.1
+  Downloaded syn v1.0.109
+  Downloaded mio v1.2.4
+  Downloaded zerotrie v0.2.5
+  Downloaded libdbus-sys v0.2.7
+  Downloaded icu_properties v2.3.0
+  Downloaded chrono v0.4.45
+  Downloaded yoke v0.8.3
+  Downloaded webkit2gtk-sys v2.0.2
+  Downloaded walkdir v2.5.0
+  Downloaded unicode-ident v1.0.27
+  Downloaded tray-icon v0.25.1
+  Downloaded toml_edit v0.20.2
+  Downloaded tauri-build v2.7.2
+  Downloaded target-lexicon v0.12.16
+  Downloaded toml_edit v0.19.15
+  Downloaded memchr v2.8.3
+  Downloaded icu_locale_core v2.3.0
+  Downloaded icu_collections v2.3.0
+  Downloaded gio v0.18.4
+  Downloaded aho-corasick v1.1.5
+  Downloaded utf8_iter v1.0.4
+  Downloaded urlpattern v0.6.0
+  Downloaded toml_writer v1.1.3+spec-1.1.0
+  Downloaded toml_parser v1.1.5+spec-1.1.0
+  Downloaded toml_datetime v1.1.2+spec-1.1.0
+  Downloaded selectors v0.38.0
+  Downloaded schemars v1.2.3
+  Downloaded schemars v0.9.0
+  Downloaded png v0.17.16
+  Downloaded log v0.4.34
+  Downloaded keyboard-types v0.8.3
+  Downloaded gtk-sys v0.18.2
+  Downloaded futures-util v0.3.34
+  Downloaded cc v1.8.0
+  Downloaded toml v1.1.8+spec-1.1.0
+  Downloaded toml v0.8.2
+  Downloaded tinyvec v1.13.3
+  Downloaded time-macros v0.2.32
+  Downloaded thiserror v2.0.21
+  Downloaded tauri-runtime v2.12.1
+  Downloaded soup3 v0.5.0
+  Downloaded socket2 v0.6.5
+  Downloaded slab v0.4.12
+  Downloaded sha2 v0.10.9
+  Downloaded serde_with_macros v3.24.0
+  Downloaded serde_derive v1.0.229
+  Downloaded proc-macro2 v1.0.107
+  Downloaded pango v0.18.3
+  Downloaded num-traits v0.2.19
+  Downloaded json-patch v4.2.0
+  Downloaded infer v0.22.0
+  Downloaded gdk-sys v0.18.2
+  Downloaded gdk v0.18.2
+  Downloaded flate2 v1.1.10
+  Downloaded dom_query v0.28.0
+  Downloaded derive_more-impl v2.1.1
+  Downloaded derive_more v2.1.1
+  Downloaded dbus v0.9.12
+  Downloaded darling_core v0.24.1
+  Downloaded crossbeam-channel v0.5.17
+  Downloaded cfb v0.14.0
+  Downloaded base64 v0.23.1
+  Downloaded thiserror-impl v1.0.69
+  Downloaded thiserror v1.0.69
+  Downloaded tendril v0.5.1
+  Downloaded tauri-winres v0.3.6
+  Downloaded tauri-macros v2.7.2
+  Downloaded tauri-codegen v2.7.2
+  Downloaded system-deps v6.2.2
+  Downloaded synstructure v0.14.0
+  Downloaded smallvec v1.16.3
+  Downloaded simd-adler32 v0.3.10
+  Downloaded schemars_derive v0.8.22
+  Downloaded schemars v0.8.22
+  Downloaded parking_lot_core v0.9.12
+  Downloaded miniz_oxide v0.8.9
+  Downloaded gio-sys v0.18.1
+  Downloaded cssparser v0.37.0
+  Downloaded quote v1.0.47
+  Downloaded proc-macro-error-attr v1.0.4
+  Downloaded proc-macro-error v1.0.4
+  Downloaded plist v1.10.1
+  Downloaded pkg-config v0.3.34
+  Downloaded phf_macros v0.13.1
+  Downloaded jsonptr v0.7.1
+  Downloaded javascriptcore-rs v1.1.2
+  Downloaded indexmap v2.14.2
+  Downloaded icu_provider v2.3.1
+  Downloaded time-core v0.1.9
+  Downloaded strsim v0.11.1
+  Downloaded string_cache_codegen v0.6.1
+  Downloaded string_cache v0.9.0
+  Downloaded shlex v2.0.1
+  Downloaded serialize-to-javascript v0.1.2
+  Downloaded serde_derive_internals v0.29.1
+  Downloaded serde_core v1.0.229
+  Downloaded precomputed-hash v0.1.1
+  Downloaded potential_utf v0.1.6
+  Downloaded percent-encoding v2.3.2
+  Downloaded camino v1.2.6
+  Downloaded bytes v1.12.1
+  Downloaded bitflags v2.13.2
+  Downloaded libappindicator v0.9.0
+  Downloaded defmt v1.1.1
+  Downloaded cookie v0.18.2
+  Downloaded cfg-expr v0.15.8
+  Downloaded cargo_toml v1.0.1
+  Downloaded anyhow v1.0.104
+  Downloaded gdk-pixbuf v0.18.5
+  Downloaded futures-executor v0.3.34
+  Downloaded futures-channel v0.3.34
+  Downloaded find-msvc-tools v0.1.14
+  Downloaded fastrand v2.5.0
+  Downloaded erased-serde v0.4.10
+  Downloaded embed-resource v3.0.12
+  Downloaded dtoa v1.0.11
+  Downloaded defmt-macros v1.1.1
+  Downloaded ctor v1.0.13
+  Downloaded crossbeam-utils v0.8.23
+  Downloaded crc32fast v1.5.2
+  Downloaded atk-sys v0.18.2
+  Downloaded glob v0.3.4
+  Downloaded getrandom v0.4.3
+  Downloaded digest v0.10.7
+  Downloaded deranged v0.5.9
+  Downloaded atk v0.18.2
+  Downloaded gdkx11 v0.18.2
+  Downloaded foldhash v0.2.0
+  Downloaded dlopen2 v0.8.2
+  Downloaded displaydoc v0.2.7
+  Downloaded defmt-parser v1.0.0
+  Downloaded cargo_metadata v0.19.2
+  Downloaded bs58 v0.5.1
+  Downloaded bitflags v1.3.2
+  Downloaded autocfg v1.5.1
+  Downloaded pango-sys v0.18.0
+  Downloaded gdkwayland-sys v0.18.2
+  Downloaded form_urlencoded v1.2.2
+  Downloaded dyn-clone v1.0.20
+  Downloaded dunce v1.0.5
+  Downloaded darling_macro v0.24.1
+  Downloaded cssparser-macros v0.7.1
+  Downloaded cargo-platform v0.1.9
+  Downloaded futures-sink v0.3.34
+  Downloaded futures-macro v0.3.34
+  Downloaded dlopen2_derive v0.4.3
+  Downloaded cairo-sys-rs v0.18.2
+  Downloaded bit-vec v0.8.0
+  Downloaded dtoa-short v0.3.5
+  Downloaded dirs v7.0.0
+  Downloaded block-buffer v0.10.4
+  Downloaded alloc-no-stdlib v3.0.0
+  Downloaded fnv v1.0.7
+  Downloaded futures-core v0.3.34
+  Downloaded field-offset v0.3.6
+  Downloaded equivalent v1.0.3
+  Downloaded crypto-common v0.1.7
+  Downloaded alloc-stdlib v0.3.0
+  Downloaded futures-io v0.3.34
+  Downloaded bit-set v0.8.0
+  Downloaded gdk-pixbuf-sys v0.18.0
+  Downloaded dpi v0.1.2
+  Downloaded dirs-sys v0.5.0
+  Downloaded rustc_version v0.4.1
+  Downloaded proc-macro-crate v1.3.1
+  Downloaded mime v0.3.17
+  Downloaded litemap v0.8.3
+  Downloaded phf_generator v0.13.1
+  Downloaded rustc-hash v2.1.3
+  Downloaded png v0.18.1
+  Downloaded option-ext v0.2.0
+  Downloaded memoffset v0.9.1
+  Downloaded libloading v0.7.4
+  Downloaded libappindicator-sys v0.9.0
+  Downloaded new_debug_unreachable v1.0.6
+  Downloaded lock_api v0.4.14
+  Downloaded cpufeatures v0.2.17
+  Downloaded heck v0.5.0
+  Downloaded hashbrown v0.17.1
+  Downloaded hashbrown v0.12.3
+  Downloaded cairo-rs v0.18.5
+  Downloaded icu_normalizer_data v2.3.0
+  Downloaded http v1.5.0
+  Downloaded html5ever v0.39.0
+  Downloaded same-file v1.0.6
+  Downloaded phf v0.13.1
+  Downloaded once_cell v1.21.4
+  Downloaded iana-time-zone v0.1.65
+   Compiling proc-macro2 v1.0.107
+   Compiling unicode-ident v1.0.27
+   Compiling quote v1.0.47
+   Compiling serde_core v1.0.229
+   Compiling syn v3.0.9
+   Compiling serde v1.0.229
+   Compiling smallvec v1.16.3
+   Compiling equivalent v1.0.3
+   Compiling hashbrown v0.17.1
+   Compiling indexmap v2.14.2
+   Compiling pkg-config v0.3.34
+   Compiling winnow v0.5.40
+   Compiling serde_derive v1.0.229
+   Compiling heck v0.5.0
+   Compiling target-lexicon v0.12.16
+   Compiling libc v0.2.190
+   Compiling cfg-expr v0.15.8
+   Compiling version-compare v0.2.1
+   Compiling syn v2.0.119
+   Compiling toml_datetime v0.6.3
+   Compiling serde_spanned v0.6.9
+   Compiling toml_edit v0.20.2
+   Compiling toml v0.8.2
+   Compiling system-deps v6.2.2
+   Compiling memchr v2.8.3
+   Compiling synstructure v0.14.0
+   Compiling zerofrom-derive v0.1.8
+   Compiling yoke-derive v0.8.4
+   Compiling zerofrom v0.1.8
+   Compiling zerovec-derive v0.11.6
+   Compiling version_check v0.9.5
+   Compiling displaydoc v0.2.7
+   Compiling glib-sys v0.18.1
+   Compiling cfg-if v1.0.5
+   Compiling gobject-sys v0.18.0
+   Compiling siphasher v1.0.4
+   Compiling litemap v0.8.3
+   Compiling writeable v0.6.4
+   Compiling phf_shared v0.13.1
+   Compiling fastrand v2.5.0
+   Compiling utf8_iter v1.0.4
+   Compiling phf_generator v0.13.1
+   Compiling gio-sys v0.18.1
+   Compiling stable_deref_trait v1.2.1
+   Compiling itoa v1.0.18
+   Compiling icu_normalizer_data v2.3.0
+   Compiling icu_properties_data v2.3.0
+   Compiling semver v1.0.28
+   Compiling autocfg v1.5.1
+   Compiling yoke v0.8.3
+   Compiling proc-macro-error-attr v1.0.4
+   Compiling syn v1.0.109
+   Compiling zmij v1.0.23
+   Compiling proc-macro-error v1.0.4
+   Compiling once_cell v1.21.4
+   Compiling zerovec v0.11.8
+   Compiling gdk-sys v0.18.2
+   Compiling parking_lot_core v0.9.12
+   Compiling futures-core v0.3.34
+   Compiling pin-project-lite v0.2.17
+error: failed to run custom build command for `gdk-sys v0.18.2`
+
+Caused by:
+  process didn't exit successfully: `/work/apps/native/src-tauri/target/debug/build/gdk-sys-c57b27970d49f865/build-script-build` (exit status: 1)
+  --- stdout
+  cargo:rerun-if-env-changed=GDK_3.0_NO_PKG_CONFIG
+  cargo:rerun-if-env-changed=PKG_CONFIG_x86_64-unknown-linux-gnu
+  cargo:rerun-if-env-changed=PKG_CONFIG_x86_64_unknown_linux_gnu
+  cargo:rerun-if-env-changed=HOST_PKG_CONFIG
+  cargo:rerun-if-env-changed=PKG_CONFIG
+  cargo:rerun-if-env-changed=PKG_CONFIG_PATH_x86_64-unknown-linux-gnu
+  cargo:rerun-if-env-changed=PKG_CONFIG_PATH_x86_64_unknown_linux_gnu
+  cargo:rerun-if-env-changed=HOST_PKG_CONFIG_PATH
+  cargo:rerun-if-env-changed=PKG_CONFIG_PATH
+  cargo:rerun-if-env-changed=PKG_CONFIG_LIBDIR_x86_64-unknown-linux-gnu
+  cargo:rerun-if-env-changed=PKG_CONFIG_LIBDIR_x86_64_unknown_linux_gnu
+  cargo:rerun-if-env-changed=HOST_PKG_CONFIG_LIBDIR
+  cargo:rerun-if-env-changed=PKG_CONFIG_LIBDIR
+  cargo:rerun-if-env-changed=PKG_CONFIG_SYSROOT_DIR_x86_64-unknown-linux-gnu
+  cargo:rerun-if-env-changed=PKG_CONFIG_SYSROOT_DIR_x86_64_unknown_linux_gnu
+  cargo:rerun-if-env-changed=HOST_PKG_CONFIG_SYSROOT_DIR
+  cargo:rerun-if-env-changed=PKG_CONFIG_SYSROOT_DIR
+
+  --- stderr
+
+  pkg-config exited with status code 1
+  > PKG_CONFIG_ALLOW_SYSTEM_CFLAGS=1 pkg-config --libs --cflags gdk-3.0 'gdk-3.0 >= 3.22'
+
+  pkg-config output:
+    Package gdk-3.0 was not found in the pkg-config search path.
+    Perhaps you should add the directory containing `gdk-3.0.pc'
+    to the PKG_CONFIG_PATH environment variable
+    Package 'gdk-3.0', required by 'virtual:world', not found
+    Package 'gdk-3.0', required by 'virtual:world', not found
+
+  The system library `gdk-3.0` required by crate `gdk-sys` was not found.
+  The file `gdk-3.0.pc` needs to be installed and the PKG_CONFIG_PATH environment variable must contain its parent directory.
+  The PKG_CONFIG_PATH environment variable is not set.
+
+  HINT: if you have installed the library, try setting PKG_CONFIG_PATH to the directory containing `gdk-3.0.pc`.
+
+warning: build failed, waiting for other jobs to finish...
+test_exit=101
+0515d1a73797511503bf6c236d20d7a70a5ee808a9c9af423107567ee1b2be0d  /home/tanzeel/orca/workspaces/integration/completion-soren-qa815/docs/completion/qa815-evidence/native-orion-5108625b961b-Cargo.lock
+Error response from daemon: No such container: qa815-native-5108625
+remaining=0
+temp_retained=/tmp/qa815-native.yX1JycSp
+finished=2026-10-14T14:40:40Z

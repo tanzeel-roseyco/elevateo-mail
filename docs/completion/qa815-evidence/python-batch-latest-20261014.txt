@@ -1,0 +1,31 @@
+started=2026-10-14T14:53:10Z
+3.12.9-slim-bookworm: Pulling from library/python
+Digest: sha256:48a11b7ba705fd53bf15248d1f94d36c39549903c5d59edcfa2f3f84126e7b44
+Status: Image is up to date for python:3.12.9-slim-bookworm
+docker.io/library/python:3.12.9-slim-bookworm
+pull_exit=0
+image=sha256:48a11b7ba705fd53bf15248d1f94d36c39549903c5d59edcfa2f3f84126e7b44 repo_digest=python@sha256:48a11b7ba705fd53bf15248d1f94d36c39549903c5d59edcfa2f3f84126e7b44
+
+=== leonie c977cf3f30ad27d5282af468dc835946749d80ad ===
+command=python3 ops/ops820/test_verify_snapshot.py
+....
+----------------------------------------------------------------------
+Ran 4 tests in 0.003s
+
+OK
+exit=0
+Error response from daemon: No such container: qa815-leonie-c977cf3
+remaining=0
+
+=== maeve a3cc15303e91ca8388e93171d3d85c54aab68983 ===
+command=python3 apps/native/validate_macos_config.py apps/native/src-tauri && python3 -m unittest discover -s apps/native -p test_validate_macos_config.py
+MAC-814 static configuration PASS; macOS build and native auth NOT RUN
+....
+----------------------------------------------------------------------
+Ran 4 tests in 0.003s
+
+OK
+exit=0
+Error response from daemon: No such container: qa815-maeve-a3cc153
+remaining=0
+finished=2026-10-14T14:53:15Z

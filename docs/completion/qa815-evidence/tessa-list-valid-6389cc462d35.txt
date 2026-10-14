@@ -1,0 +1,14 @@
+source=6389cc462d35756519b0346fc29d2b6722a90680
+fixture=example seed converted to runtime for list-only diagnostic; no server/browser execution
+started=2026-10-14T14:37:56Z
+npm notice
+npm notice New major version of npm available! 11.19.0 -> 12.2.0
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0
+npm notice To update run: npm install -g npm@12.2.0
+npm notice
+Acceptance framework status: passed
+list_exit=0
+Error response from daemon: No such container: qa815-tessa-listvalid
+remaining=0
+temp_absent=yes
+finished=2026-10-14T14:38:02Z

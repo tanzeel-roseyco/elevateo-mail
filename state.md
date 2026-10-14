@@ -1,5 +1,7 @@
 # Project state
 
+QA-815 continuation: real integrated `45be80b` database migrations passed through inbound 00011; backend suite FAILED and cleanup PASSED. Integrated `c4fa27c` web typecheck failed after lint; latest isolated Dorian Ruby gates passed. Real browser, APK, target native compile, Mox pilot and restore remain pending; `docs/completion/soren.md` holds exact receipts.
+
 QA-815 continuation: exact Mira `e31da54` and Fable `dc1db82` isolated fleet web checks passed; integrated `f787bbc` web lint and SEND-810 SQL migration failed, with disposable cleanup passed. Real integrated suites, browser and native acceptance remain pending; details in `docs/completion/soren.md`.
 
 QA-815: exact Mira FE-806 `140218de` isolated fleet Docker typecheck, lint, 17 focused tests and build passed; task resources removed. Other candidate tests and integrated acceptance remain pending; see `docs/completion/soren.md`.

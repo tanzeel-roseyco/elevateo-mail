@@ -1,0 +1,10 @@
+source=ea92754
+started=2026-10-14T14:34:51Z
+BE02 project=be02-f0ffe1e42f024f40a86a1fe69b47e5e5 evidence=/tmp/qa815-integrated.IRnQVgc3/ops/local/be02-f0ffe1e42f024f40a86a1fe69b47e5e5
+Building bounded task image
+tests=FAILED cleanup=PASSED evidence=/tmp/qa815-integrated.IRnQVgc3/ops/local/be02-f0ffe1e42f024f40a86a1fe69b47e5e5
+runner_exit=1
+/tmp/qa815-integrated.IRnQVgc3/ops/local/be02-f0ffe1e42f024f40a86a1fe69b47e5e5/result.json
+receipt_copy_failed=0 temp_retained=/tmp/qa815-integrated.IRnQVgc3
+finished=2026-10-14T14:36:36Z
+resolved_source=ea92754c06c5f1c3e0bd09b3913374e03bfe4482

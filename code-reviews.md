@@ -684,3 +684,7 @@ Soren authored `ops/tests/qa815/run-web-candidate.sh` and `docs/completion/soren
 ## QA-815 continuation source and evidence review limit
 
 The one-line QA scheduler resource cap change received `bash -n` and `git diff --check`, but no independent bounded functional or dedicated design-tradeoff review. Coverage by independent reviewers: 0 LOC; defects and density are unclaimed. Fleet results in `docs/completion/soren.md` are runtime receipts, not adversarial review. Root schedules the separate rubric review after candidate freeze.
+
+## QA-815 backend receipt wrapper continuation
+
+`ops/tests/qa815/run-backend-candidate.sh` is a QA-owned source addition. `bash -n` and `git diff --check` passed; the wrapper has not yet been Docker exercised or independently reviewed. Bounded adversarial and dedicated design-tradeoff review: NOT_RUN, 0 independent LOC, defects/KLOC unclaimed. Its task archive creates empty Docker mountpoints and copies only runner-sanitized logs/JSON; secret environment files are excluded. Existing `45be80b` backend runtime evidence came from the preceding task-local wrapper and remains a failed suite receipt, not wrapper validation.

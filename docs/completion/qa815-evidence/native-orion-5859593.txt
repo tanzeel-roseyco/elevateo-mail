@@ -1,0 +1,26 @@
+source=58595935ffe1ea7020ff054d29b80ffe128c746b
+started=2026-10-14T14:32:43Z
+1.90.0-bookworm: Pulling from library/rust
+42cabf358425: Pulling fs layer
+f279d33abc52: Pulling fs layer
+cd01849e3cbd: Pulling fs layer
+5daa5a418829: Pulling fs layer
+da3556d62e9b: Pulling fs layer
+f279d33abc52: Download complete
+447779a4f4a3: Download complete
+4abe2dd3e5b0: Download complete
+5daa5a418829: Download complete
+cd01849e3cbd: Download complete
+cd01849e3cbd: Pull complete
+f279d33abc52: Pull complete
+42cabf358425: Download complete
+da3556d62e9b: Download complete
+5daa5a418829: Pull complete
+da3556d62e9b: Pull complete
+42cabf358425: Pull complete
+Digest: sha256:3914072ca0c3b8aad871db9169a651ccfce30cf58303e5d6f2db16d1d8a7e58f
+Status: Downloaded newer image for rust:1.90.0-bookworm
+docker.io/library/rust:1.90.0-bookworm
+pull_exit=0
+image=sha256:3914072ca0c3b8aad871db9169a651ccfce30cf58303e5d6f2db16d1d8a7e58f repo_digest=rust@sha256:3914072ca0c3b8aad871db9169a651ccfce30cf58303e5d6f2db16d1d8a7e58f
+finished=2026-10-14T14:32:55Z

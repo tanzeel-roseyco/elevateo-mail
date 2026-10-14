@@ -1,0 +1,12 @@
+source=45be80b
+started=2026-10-14T14:45:08Z
+BE02 project=be02-08c79d37cb324c2dbfe725e4e79ca3a9 evidence=/tmp/qa815-integrated.csL9SyO2/ops/local/be02-08c79d37cb324c2dbfe725e4e79ca3a9
+Building bounded task image
+Running isolated Minitest suites and Steep
+tests=FAILED cleanup=PASSED evidence=/tmp/qa815-integrated.csL9SyO2/ops/local/be02-08c79d37cb324c2dbfe725e4e79ca3a9
+/tmp/qa815-integrated-db-safe.sh: line 15: t-amd64-base: command not found
+runner_exit=127
+/tmp/qa815-integrated.csL9SyO2/ops/local/be02-08c79d37cb324c2dbfe725e4e79ca3a9/result.json
+receipt_copy_failed=0 temp_retained=/tmp/qa815-integrated.csL9SyO2
+finished=2026-10-14T14:48:05Z
+resolved_source=45be80b05d183fe31790085039ce315a8a21482e

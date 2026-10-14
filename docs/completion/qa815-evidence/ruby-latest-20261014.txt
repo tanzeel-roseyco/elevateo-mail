@@ -1,0 +1,83 @@
+image=be03-r24-dependencies:ruby sha256:7dc61d4b7e12f94764f95f4f1bfe8e3940049247e6d409898ce9d3ed2810f348
+started=2026-10-14T14:44:32Z
+
+=== integrated 3382710b6ac6b441da6eaefdd90b66e831962ded ===
+command=bundle exec ruby /src/contracts/v2/contract_test.rb; echo contract_exit=$?; bundle exec ruby test/v2_route_registry_test.rb; echo routes_exit=$?; bundle exec ruby -Itest test/campaigns/input_test.rb; echo campaign_input_exit=$?; bundle exec ruby -Itest test/campaigns/repository_test.rb; echo campaign_repository_exit=$?
+Run options: --seed 55246
+
+# Running:
+
+...
+
+Finished in 0.004309s, 696.2653 runs/s, 3713.4150 assertions/s.
+
+3 runs, 16 assertions, 0 failures, 0 errors, 0 skips
+contract_exit=0
+Run options: --seed 41182
+
+# Running:
+
+....
+
+Finished in 0.000972s, 4116.8122 runs/s, 11321.2337 assertions/s.
+
+4 runs, 11 assertions, 0 failures, 0 errors, 0 skips
+routes_exit=0
+Run options: --seed 35403
+
+# Running:
+
+.....
+
+Finished in 0.001168s, 4279.7622 runs/s, 6847.6195 assertions/s.
+
+5 runs, 8 assertions, 0 failures, 0 errors, 0 skips
+campaign_input_exit=0
+Run options: --seed 35336
+
+# Running:
+
+...F...
+
+Finished in 0.132215s, 52.9440 runs/s, 181.5222 assertions/s.
+
+  1) Failure:
+CampaignRepositoryTest#test_insert_returns_durable_identity_without_transport [test/campaigns/repository_test.rb:37]:
+Expected /ON CONFLICT .* DO NOTHING/m to match "INSERT INTO app.campaigns(id, organization_id, operation_id, name, status)\nVALUES ($1::uuid,$2::uuid,$3::uuid,$4,$5)\nON CONFLICT DO NOTHING\nRETURNING id\n".
+
+7 runs, 24 assertions, 1 failures, 0 errors, 0 skips
+campaign_repository_exit=1
+exit=0
+Error response from daemon: No such container: qa815-integrated-3382710
+remaining=0
+
+=== dorian b28b7d3ae0d371ca809235442b51aff45087ec7c ===
+command=bundle exec ruby -Itest test/campaigns/input_test.rb; echo input_exit=$?; bundle exec ruby -Itest test/campaigns/repository_test.rb; echo repository_exit=$?
+Run options: --seed 26446
+
+# Running:
+
+.....
+
+Finished in 0.002675s, 1868.8696 runs/s, 2990.1913 assertions/s.
+
+5 runs, 8 assertions, 0 failures, 0 errors, 0 skips
+input_exit=0
+Run options: --seed 15061
+
+# Running:
+
+F.......
+
+Finished in 0.154962s, 51.6256 runs/s, 187.1427 assertions/s.
+
+  1) Failure:
+CampaignRepositoryTest#test_insert_returns_durable_identity_without_transport [test/campaigns/repository_test.rb:37]:
+Expected /ON CONFLICT .* DO NOTHING/m to match "INSERT INTO app.campaigns(id, organization_id, operation_id, name, status, creation_fingerprint)\nVALUES ($1::uuid,$2::uuid,$3::uuid,$4,$5,$6)\nON CONFLICT DO NOTHING\nRETURNING id\n".
+
+8 runs, 29 assertions, 1 failures, 0 errors, 0 skips
+repository_exit=1
+exit=0
+Error response from daemon: No such container: qa815-dorian-b28b7d3
+remaining=0
+finished=2026-10-14T14:44:37Z

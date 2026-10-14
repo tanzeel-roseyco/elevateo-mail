@@ -1,0 +1,10 @@
+source=4f88cc5d209b59c91713bc817230a1b7b57af016
+image=python@sha256:48a11b7ba705fd53bf15248d1f94d36c39549903c5d59edcfa2f3f84126e7b44
+...
+----------------------------------------------------------------------
+Ran 3 tests in 0.013s
+
+OK
+exit=0
+Error response from daemon: No such container: qa815-android-static
+remaining=0

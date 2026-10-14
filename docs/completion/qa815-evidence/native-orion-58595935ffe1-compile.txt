@@ -1,0 +1,22 @@
+source=58595935ffe1ea7020ff054d29b80ffe128c746b
+image=rust@sha256:3914072ca0c3b8aad871db9169a651ccfce30cf58303e5d6f2db16d1d8a7e58f
+started=2026-10-14T14:33:21Z
+    Updating crates.io index
+error: failed to select a version for `url`.
+    ... required by package `urlpattern v0.6.0`
+    ... which satisfies dependency `urlpattern = "^0.6"` of package `tauri-utils v2.10.1`
+    ... which satisfies dependency `tauri-utils = "~2.10.1"` of package `tauri v2.12.3`
+    ... which satisfies dependency `tauri = "=2.12.3"` of package `elevateo-native v0.1.0 (/work/apps/native/src-tauri)`
+versions that meet the requirements `^2.5.6` are: 2.5.8, 2.5.7, 2.5.6
+
+all possible versions conflict with previously selected packages.
+
+  previously selected package `url v2.5.2`
+    ... which satisfies dependency `url = "=2.5.2"` of package `elevateo-native v0.1.0 (/work/apps/native/src-tauri)`
+
+failed to select a version for `url` which could resolve this conflict
+test_exit=101
+Error response from daemon: No such container: qa815-native-5859593
+remaining=0
+temp_retained=/tmp/qa815-native.bFkFh4kx
+finished=2026-10-14T14:33:23Z

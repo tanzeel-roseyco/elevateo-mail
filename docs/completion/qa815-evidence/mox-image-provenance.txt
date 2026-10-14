@@ -1,0 +1,21 @@
+image_request=r.xmox.nl/mox@sha256:831c6f11b3c2ee1633077052e6d4b7ae53f73972adf4bf08be0a740121d24cc7
+started=2026-10-14T14:39:23Z
+r.xmox.nl/mox@sha256:831c6f11b3c2ee1633077052e6d4b7ae53f73972adf4bf08be0a740121d24cc7: Pulling from mox
+5432c20445e7: Pulling fs layer
+5432c20445e7: Download complete
+5432c20445e7: Pull complete
+Digest: sha256:831c6f11b3c2ee1633077052e6d4b7ae53f73972adf4bf08be0a740121d24cc7
+Status: Downloaded newer image for r.xmox.nl/mox@sha256:831c6f11b3c2ee1633077052e6d4b7ae53f73972adf4bf08be0a740121d24cc7
+r.xmox.nl/mox@sha256:831c6f11b3c2ee1633077052e6d4b7ae53f73972adf4bf08be0a740121d24cc7
+pull_exit=0
+image=sha256:831c6f11b3c2ee1633077052e6d4b7ae53f73972adf4bf08be0a740121d24cc7 repo_digests=r.xmox.nl/mox@sha256:831c6f11b3c2ee1633077052e6d4b7ae53f73972adf4bf08be0a740121d24cc7 labels={"io.buildah.version":"1.43.1"}
+finished=2026-10-14T14:39:23Z
+version_probe=network_none
+v0.0.17-go1.27.0
+linux/amd64
+version_exit=0
+remaining=0
+source_tag=refs/tags/v0.0.17 e1a82ffb2667fc78ee07a46f1dda424025c63468
+source_peeled_commit=1c9587665b321199312e11b6a47a0480a9e2750f
+source_probe=git ls-remote https://github.com/mjl-/mox refs/tags/v0.0.17*
+pilot_runtime=NOT_RUN pending Rhea app-acceptance and reviewed source gate
