@@ -4,6 +4,7 @@ import { render, screen } from '@testing-library/react'
 import { MemoryRouter, Route, Routes } from 'react-router'
 import { describe, expect, it, vi } from 'vitest'
 import { createFixtureGateway } from '@/data/fixtures/fixtureGateway'
+import { CD_FIXTURE } from '@/data/fixtures/collaborationState'
 import { createV2OutreachGateway } from '@/data/v2OutreachGateway'
 import type { OutreachGateway } from '@/features/outreach/contract'
 import { FeatureGatewaysProvider, type FeatureGateways } from '../featureGateways'
@@ -66,9 +67,11 @@ describe('feature route wiring', () => {
     const preferenceFetch = vi.fn(async (path: RequestInfo | URL, init?: RequestInit) => {
       expect(path).toBe('/v2/me/preferences')
       const headers = new Headers(init?.headers)
+      expect(headers.get('X-Session-Context')).toBe(CD_FIXTURE.contextId)
+      expect(headers.get('X-Authorization-Version')).toBe(CD_FIXTURE.authorizationVersion)
       return new Response(JSON.stringify({
-        context_id: headers.get('X-Session-Context'),
-        authorization_version: headers.get('X-Authorization-Version'),
+        context_id: CD_FIXTURE.contextId,
+        authorization_version: CD_FIXTURE.authorizationVersion,
         display_name: 'Fixture user A', revision: 1,
       }), { headers: { 'Content-Type': 'application/json' } })
     })

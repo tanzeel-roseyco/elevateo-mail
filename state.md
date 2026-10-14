@@ -140,3 +140,5 @@ FE807 sequence create test was tightened to re-read the same returned id and str
 FE807 sequence source repair follows Soren's exact integrated lint parse failure at `SequencePage.tsx:100`; focused fleet lint/type/unit rerun pending.
 
 FE807 root-assigned feature registry test bridge addresses two integrated web failures: Outreach route count now verifies the sequence path, and the personal settings route receives a scoped synthetic preference response so its real current UI can render. No production UI change or local test execution.
+
+FE807 integration test oracle tightened after Felix review: preferences request headers must equal the current fixture context/version, so an echoed stale or missing context cannot pass. Test source unexecuted on the repair SHA.

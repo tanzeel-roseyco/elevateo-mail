@@ -194,3 +194,5 @@ FE807 sequence test fixture now returns the exact created id and only server dra
 FE807 sequence candidate has a fleet lint parse failure at the Remove step handler on the integrated web SHA; a one-parenthesis source repair is committed separately for exact rerun. No sequence unit/build PASS is claimed.
 
 FE807 integration test bridge for the 12th Outreach route and Lyra's live preference-backed personal settings is authored from Cassian's current test snapshot. The settings case supplies a bounded synthetic V2 preference response and checks the current actor value and controls; fleet rerun is pending.
+
+FE807 bridge test now asserts the exact fixture context and authorization version on Lyra's V2 preference GET, then returns an independently fixed response envelope. This addresses an adversarial review finding; fleet rerun remains pending.
