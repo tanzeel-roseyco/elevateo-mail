@@ -1,16 +1,18 @@
 import { useEffect, useRef, useState, type FormEvent, type ReactNode, type SyntheticEvent } from 'react'
-import { Link, useNavigate, useParams } from 'react-router'
+import { Link, useNavigate, useParams, useSearchParams } from 'react-router'
 import { z } from 'zod'
 import type { CsrfProof, ReadContext } from '@/data/gateway'
-import { GatewayError, isApiError, isUncertainWriteOutcome } from '@/data/errors'
 import { Button } from '@/ui/Button'
 import { Field, TextInput } from '@/ui/Field'
+import { newId } from '@/lib/ids'
 import {
-  accountPageSchema, accountSchema, addLeadInputSchema, analyticsPageSchema,
+  accountPageSchema, accountSchema, addLeadInputSchema, analyticsSchema,
   campaignPageSchema, campaignSchema, createCampaignInputSchema, leadPageSchema,
   leadSchema, updateCampaignInputSchema, updateLeadInputSchema, type Account, type Analytics,
   type Campaign, type Lead, type OutreachGateway,
 } from './contract'
+import { writeFailure } from './writeFailure'
+import { ConsentEvidenceForm } from './ConsentEvidenceForm'
 
 export interface OutreachPageProps {
   gateway?: OutreachGateway
@@ -22,45 +24,45 @@ type Load<T> = { status: 'loading' } | { status: 'unavailable' } | { status: 'er
 type Resource = 'campaigns' | 'campaign' | 'leads' | 'accounts' | 'account' | 'analytics'
 const schemas = {
   campaigns: campaignPageSchema, campaign: campaignSchema, leads: leadPageSchema,
-  accounts: accountPageSchema, account: accountSchema, analytics: analyticsPageSchema,
+  accounts: accountPageSchema, account: accountSchema, analytics: analyticsSchema,
 }
 
 // AIDEV-NOTE: Context key resets protected data immediately; abort drops late read outcomes.
 // Cassian's gateway retains transport validation and central 401/context-change policy.
-function useOutreachRead<K extends Resource>(kind: K, props: OutreachPageProps, id?: string, revision = 0): Load<z.infer<(typeof schemas)[K]>> {
+function useOutreachRead<K extends Resource>(kind: K, props: OutreachPageProps, id?: string, revision = 0, cursor?: string): Load<z.infer<(typeof schemas)[K]>> {
   const { gateway, context } = props
   const [state, setState] = useState<Load<z.infer<(typeof schemas)[K]>>>({ status: 'loading' })
   useEffect(() => {
-    if (!gateway || !context || (['campaign', 'leads', 'accounts', 'account', 'analytics'].includes(kind) && !id)) {
+    if (!gateway || !context || (['campaign', 'leads', 'account', 'analytics'].includes(kind) && !id)) {
       setState({ status: 'unavailable' }); return
     }
+    if (id && !z.uuid().safeParse(id).success) { setState({ status: 'error' }); return }
+    if (cursor && !z.uuid().safeParse(cursor).success) { setState({ status: 'error' }); return }
     const controller = new AbortController()
     setState({ status: 'loading' })
-    const request = (() => {
+    const request = async () => {
       switch (kind) {
-        case 'campaigns': return gateway.listCampaigns(context, controller.signal)
+        case 'campaigns': return gateway.listCampaigns(context, cursor ? { cursor } : {}, controller.signal)
         case 'campaign': return gateway.getCampaign(context, id!, controller.signal)
-        case 'leads': return gateway.listLeads(context, id!, controller.signal)
-        case 'accounts': return gateway.listAccounts(context, id!, controller.signal)
-        case 'account': {
-          const [campaignId, accountId] = id!.split(':')
-          if (!campaignId || !accountId) throw new Error('Missing account scope')
-          return gateway.getAccount(context, campaignId, accountId, controller.signal)
-        }
+        case 'leads': return gateway.listLeads(context, id!, cursor ? { cursor } : {}, controller.signal)
+        case 'accounts': return gateway.listAccounts(context, cursor ? { cursor } : {}, controller.signal)
+        case 'account': return gateway.getAccount(context, id!, controller.signal)
         case 'analytics': return gateway.listAnalytics(context, id!, controller.signal)
       }
       throw new Error('Unsupported Outreach resource')
-    })()
-    void request.then((wire) => {
+    }
+    void request().then((wire) => {
       const parsed = schemas[kind].safeParse(wire)
       const bound = parsed.success && (
         (kind === 'campaign' && parsed.data && 'id' in parsed.data) ? parsed.data.id === id :
-        (kind === 'account' && parsed.data && 'id' in parsed.data) ? parsed.data.id === id?.split(':')[1] : true
+        (kind === 'account' && parsed.data && 'id' in parsed.data) ? parsed.data.id === id :
+        (kind === 'analytics' && parsed.data && 'campaign_id' in parsed.data) ? parsed.data.campaign_id === id :
+        (kind === 'leads' && parsed.data && 'items' in parsed.data) ? parsed.data.items.every((item) => 'campaign_id' in item && item.campaign_id === id) : true
       )
       if (!controller.signal.aborted) setState(parsed.success && bound ? { status: 'ready', value: parsed.data as z.infer<(typeof schemas)[K]> } : { status: 'error' })
     }).catch(() => { if (!controller.signal.aborted) setState({ status: 'error' }) })
     return () => controller.abort()
-  }, [gateway, context, kind, id, revision])
+  }, [gateway, context, kind, id, revision, cursor])
   return state
 }
 
@@ -78,26 +80,23 @@ function Page({ title, children }: { title: string; children: ReactNode }) {
   </section>
 }
 function ActionError({ message }: { message: string | null }) { return message && <p role="alert">{message}</p> }
-function writeFailure(error: unknown): { message: string; lock: boolean } {
-  if (isApiError(error, 'unauthenticated') || isApiError(error, 'context_changed') || isApiError(error, 'not_available')) {
-    return { message: 'Access changed or this resource is unavailable. Leave this page and sign in or reopen the campaign.', lock: true }
-  }
-  if (isUncertainWriteOutcome(error) || (error instanceof GatewayError && error.kind === 'transport' && error.code === 'malformed')) {
-    return { message: 'Change was not confirmed. Check the saved resource before trying again.', lock: true }
-  }
-  return { message: 'The server rejected this change. Review the fields and try again.', lock: false }
-}
 const scopeKey = ({ context }: OutreachPageProps) => `${context?.contextId ?? ''}:${context?.authorizationVersion ?? ''}`
 
 export function OutreachCampaignsPage(props: OutreachPageProps) {
-  return <CampaignList key={scopeKey(props)} {...props} />
+  const [search] = useSearchParams()
+  return <CampaignList key={`${scopeKey(props)}:${search.get('cursor') ?? ''}`} {...props} />
 }
 function CampaignList(props: OutreachPageProps) {
-  const state = useOutreachRead('campaigns', props)
+  const [search] = useSearchParams()
+  const cursor = search.get('cursor') ?? undefined
+  const state = useOutreachRead('campaigns', props, undefined, 0, cursor)
   return <Page title="Campaigns">
     <Link to="/outreach/campaigns/new">Create draft campaign</Link>
-    <Content state={state} empty={(page) => page.items.length === 0}>{(page) => <ul className="space-y-2">{page.items.map((campaign) =>
-      <li key={campaign.id}><Link to={`/outreach/campaigns/${campaign.id}`}>{campaign.name}</Link> · {campaign.status}</li>)}</ul>}</Content>
+    <Content state={state} empty={(page) => page.items.length === 0 && page.next_cursor === null}>{(page) => <>
+      <ul className="space-y-2">{page.items.map((campaign) =>
+        <li key={campaign.id}><Link to={`/outreach/campaigns/${campaign.id}`}>{campaign.name}</Link> · {campaign.status}</li>)}</ul>
+      {page.next_cursor && <Link to={`?cursor=${encodeURIComponent(page.next_cursor)}`}>Next campaign page</Link>}
+    </>}</Content>
   </Page>
 }
 
@@ -115,12 +114,13 @@ function CampaignCreate({ gateway, context, proof }: OutreachPageProps) {
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
     if (!gateway || !context || !proof || busy || uncertain) return
-    const input = createCampaignInputSchema.safeParse({ name: name.trim(), status: 'draft' })
+    const input = createCampaignInputSchema.safeParse({ id: newId(), operation_id: newId(), name: name.trim(), status: 'draft' })
     if (!input.success) { setError('Enter a campaign name of 1 to 200 characters.'); return }
     const controller = new AbortController(); pending.current = controller
     setBusy(true); setError(null)
     try {
       const result = campaignSchema.parse(await gateway.createCampaign(context, proof, input.data, controller.signal))
+      if (result.id !== input.data.id) throw new Error('Campaign receipt mismatch')
       if (!controller.signal.aborted) navigate(`/outreach/campaigns/${result.id}`)
     } catch (failure) {
       if (!controller.signal.aborted) { const outcome = writeFailure(failure); setError(outcome.message); setUncertain(outcome.lock) }
@@ -151,7 +151,7 @@ function CampaignDetail({ campaignId, ...props }: OutreachPageProps & { campaign
   async function update(event: SyntheticEvent, campaign: Campaign, status: 'draft' | 'paused') {
     event.preventDefault()
     if (!props.gateway || !props.context || !props.proof || !campaignId || busy || uncertain) return
-    const input = updateCampaignInputSchema.safeParse({ name: name.trim() || campaign.name, status })
+    const input = updateCampaignInputSchema.safeParse({ operation_id: newId(), expected_version: campaign.version, name: name.trim() || campaign.name, status })
     if (!input.success) { setError('Enter a valid campaign name.'); return }
     const controller = new AbortController(); pending.current = controller
     setBusy(true); setError(null)
@@ -166,7 +166,7 @@ function CampaignDetail({ campaignId, ...props }: OutreachPageProps & { campaign
     <p><strong>{campaign.name}</strong> · {campaign.status}</p>
     <nav aria-label="Campaign sections" className="flex gap-4">
       <Link to={`/outreach/campaigns/${campaign.id}/leads`}>Leads</Link>
-      <Link to={`/outreach/campaigns/${campaign.id}/accounts`}>Accounts</Link>
+      <Link to="/outreach/accounts">Accounts</Link>
       <Link to={`/outreach/campaigns/${campaign.id}/analytics`}>Analytics</Link>
     </nav>
     <form onSubmit={(event) => { void update(event, campaign, campaign.status) }} className="space-y-3">
@@ -179,26 +179,39 @@ function CampaignDetail({ campaignId, ...props }: OutreachPageProps & { campaign
   </>}</Content></Page>
 }
 
-export function OutreachLeadsPage(props: OutreachPageProps) { return <CampaignChooser key={scopeKey(props)} {...props} section="leads" /> }
-export function OutreachAnalyticsPage(props: OutreachPageProps) { return <CampaignChooser key={scopeKey(props)} {...props} section="analytics" /> }
-function CampaignChooser({ section, ...props }: OutreachPageProps & { section: 'leads' | 'accounts' | 'analytics' }) {
-  const state = useOutreachRead('campaigns', props)
-  return <Page title={section === 'leads' ? 'Leads' : section === 'accounts' ? 'Accounts' : 'Analytics'}><p>Select a campaign.</p>
-    <Content state={state} empty={(page) => page.items.length === 0}>{(page) => <ul>{page.items.map((campaign) =>
-      <li key={campaign.id}><Link to={`/outreach/campaigns/${campaign.id}/${section}`}>{campaign.name}</Link></li>)}</ul>}</Content>
+export function OutreachLeadsPage(props: OutreachPageProps) {
+  const [search] = useSearchParams()
+  return <CampaignChooser key={`${scopeKey(props)}:${search.get('cursor') ?? ''}`} {...props} section="leads" />
+}
+export function OutreachAnalyticsPage(props: OutreachPageProps) {
+  const [search] = useSearchParams()
+  return <CampaignChooser key={`${scopeKey(props)}:${search.get('cursor') ?? ''}`} {...props} section="analytics" />
+}
+function CampaignChooser({ section, ...props }: OutreachPageProps & { section: 'leads' | 'analytics' }) {
+  const [search] = useSearchParams()
+  const state = useOutreachRead('campaigns', props, undefined, 0, search.get('cursor') ?? undefined)
+  return <Page title={section === 'leads' ? 'Leads' : 'Analytics'}><p>Select a campaign.</p>
+    <Content state={state} empty={(page) => page.items.length === 0 && page.next_cursor === null}>{(page) => <>
+      <ul>{page.items.map((campaign) => <li key={campaign.id}><Link to={`/outreach/campaigns/${campaign.id}/${section}`}>{campaign.name}</Link></li>)}</ul>
+      {page.next_cursor && <Link to={`?cursor=${encodeURIComponent(page.next_cursor)}`}>Next campaign page</Link>}
+    </>}</Content>
   </Page>
 }
 
 export function OutreachCampaignLeadsPage(props: OutreachPageProps) {
   const { campaignId } = useParams<{ campaignId: string }>()
-  return <CampaignLeads key={`${scopeKey(props)}:${campaignId}`} {...props} campaignId={campaignId} />
+  const [search] = useSearchParams()
+  return <CampaignLeads key={`${scopeKey(props)}:${campaignId}:${search.get('cursor') ?? ''}`} {...props} campaignId={campaignId} />
 }
 function CampaignLeads({ campaignId, ...props }: OutreachPageProps & { campaignId?: string }) {
+  const [search] = useSearchParams()
+  const cursor = search.get('cursor') ?? undefined
   const [revision, setRevision] = useState(0)
-  const state = useOutreachRead('leads', props, campaignId, revision)
+  const state = useOutreachRead('leads', props, campaignId, revision, cursor)
   const pending = useRef<AbortController | null>(null)
   const [email, setEmail] = useState('')
   const [editId, setEditId] = useState<string | null>(null)
+  const [consentId, setConsentId] = useState<string | null>(null)
   const [busy, setBusy] = useState(false)
   const [uncertain, setUncertain] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -206,24 +219,36 @@ function CampaignLeads({ campaignId, ...props }: OutreachPageProps & { campaignI
   async function save(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
     if (!props.gateway || !props.context || !props.proof || !campaignId || busy || uncertain) return
-    const input = editId ? updateLeadInputSchema.safeParse({ email: email.trim() }) : addLeadInputSchema.safeParse({ campaign_id: campaignId, email: email.trim() })
+    const selected = state.status === 'ready' ? state.value.items.find((lead) => lead.id === editId) : undefined
+    const input = editId
+      ? updateLeadInputSchema.safeParse({ operation_id: newId(), expected_version: selected?.version, email: email.trim().toLowerCase() })
+      : addLeadInputSchema.safeParse({ id: newId(), operation_id: newId(), email: email.trim().toLowerCase() })
     if (!input.success) { setError('Enter a valid email address.'); return }
     const controller = new AbortController(); pending.current = controller
     setBusy(true); setError(null)
     try {
       const result = editId
-        ? await props.gateway.updateLead(props.context, props.proof, editId, updateLeadInputSchema.parse(input.data), controller.signal)
-        : await props.gateway.addLead(props.context, props.proof, addLeadInputSchema.parse(input.data), controller.signal)
+        ? await props.gateway.updateLead(props.context, props.proof, campaignId, editId, updateLeadInputSchema.parse(input.data), controller.signal)
+        : await props.gateway.addLead(props.context, props.proof, campaignId, addLeadInputSchema.parse(input.data), controller.signal)
       const saved = leadSchema.parse(result)
       if (editId && saved.id !== editId) throw new Error('Lead identity mismatch')
+      if (!editId && saved.id !== addLeadInputSchema.parse(input.data).id) throw new Error('Lead identity mismatch')
+      if (saved.campaign_id !== campaignId) throw new Error('Lead campaign mismatch')
       if (saved.email !== input.data.email) throw new Error('Lead receipt mismatch')
       if (!controller.signal.aborted) { setEmail(''); setEditId(null); setRevision((value) => value + 1) }
     } catch (failure) { if (!controller.signal.aborted) { const outcome = writeFailure(failure); setError(outcome.message); setUncertain(outcome.lock) } }
     finally { if (!controller.signal.aborted) setBusy(false) }
   }
-  return <Page title="Campaign leads"><Content state={state} empty={(page) => page.items.length === 0}>{(page) => <ul className="space-y-2">{page.items.map((lead: Lead) =>
-    <li key={lead.id}>{lead.email} · consent {lead.consent_status} · {lead.suppressed ? 'suppressed' : 'not suppressed (server report)'}
-      <Button onClick={() => { setEditId(lead.id); setEmail(lead.email) }}>Edit address</Button></li>)}</ul>}</Content>
+  return <Page title="Campaign leads"><Content state={state} empty={(page) => page.items.length === 0 && page.next_cursor === null}>{(page) => <>
+    <ul className="space-y-2">{page.items.map((lead: Lead) =>
+      <li key={lead.id}>{lead.email} · consent {lead.consent_status} · {lead.suppressed ? 'suppressed' : 'not suppressed (server report)'}
+        <Button onClick={() => { setEditId(lead.id); setEmail(lead.email) }}>Edit address</Button>
+        {props.gateway?.recordConsent && lead.consent_status !== 'granted' &&
+          <Button onClick={() => setConsentId((current) => current === lead.id ? null : lead.id)}>Record consent evidence</Button>}
+        {consentId === lead.id && campaignId && <ConsentEvidenceForm key={`${lead.id}:${lead.version}`} lead={lead} campaignId={campaignId} {...props} onSaved={() => { setConsentId(null); setRevision((value) => value + 1) }} />}
+      </li>)}</ul>
+    {page.next_cursor && <Link to={`?cursor=${encodeURIComponent(page.next_cursor)}`}>Next leads page</Link>}
+  </>}</Content>
     <form onSubmit={(event) => { void save(event) }} className="space-y-3">
       <Field id="lead-email" label={editId ? 'Edit lead email' : 'Add lead email'}><TextInput id="lead-email" type="email" value={email} onChange={(event) => setEmail(event.target.value)} required /></Field>
       <p>Adding or editing an address does not grant consent or enroll it for sending.</p>
@@ -235,22 +260,24 @@ function CampaignLeads({ campaignId, ...props }: OutreachPageProps & { campaignI
   </Page>
 }
 
-export function OutreachAccountsPage(props: OutreachPageProps) { return <CampaignChooser key={scopeKey(props)} {...props} section="accounts" /> }
-export function OutreachCampaignAccountsPage(props: OutreachPageProps) {
-  const { campaignId } = useParams<{ campaignId: string }>()
-  return <AccountList key={`${scopeKey(props)}:${campaignId}`} {...props} campaignId={campaignId} />
+export function OutreachAccountsPage(props: OutreachPageProps) {
+  const [search] = useSearchParams()
+  return <AccountList key={`${scopeKey(props)}:${search.get('cursor') ?? ''}`} {...props} />
 }
-function AccountList({ campaignId, ...props }: OutreachPageProps & { campaignId?: string }) {
-  const state = useOutreachRead('accounts', props, campaignId)
-  return <Page title="Outreach accounts"><Content state={state} empty={(page) => page.items.length === 0}>{(page) => <ul>{page.items.map((account: Account) =>
-    <li key={account.id}><Link to={`/outreach/campaigns/${campaignId}/accounts/${account.id}`}>{account.label}</Link> · disabled</li>)}</ul>}</Content></Page>
+function AccountList(props: OutreachPageProps) {
+  const [search] = useSearchParams()
+  const state = useOutreachRead('accounts', props, undefined, 0, search.get('cursor') ?? undefined)
+  return <Page title="Outreach accounts"><Content state={state} empty={(page) => page.items.length === 0 && page.next_cursor === null}>{(page) => <>
+    <ul>{page.items.map((account: Account) => <li key={account.id}><Link to={`/outreach/accounts/${account.id}`}>{account.label}</Link> · disabled</li>)}</ul>
+    {page.next_cursor && <Link to={`?cursor=${encodeURIComponent(page.next_cursor)}`}>Next accounts page</Link>}
+  </>}</Content></Page>
 }
 export function OutreachAccountDetailPage(props: OutreachPageProps) {
-  const { campaignId, accountId } = useParams<{ campaignId: string; accountId: string }>()
-  return <AccountDetail key={`${scopeKey(props)}:${campaignId}:${accountId}`} {...props} campaignId={campaignId} accountId={accountId} />
+  const { accountId } = useParams<{ accountId: string }>()
+  return <AccountDetail key={`${scopeKey(props)}:${accountId}`} {...props} accountId={accountId} />
 }
-function AccountDetail({ campaignId, accountId, ...props }: OutreachPageProps & { campaignId?: string; accountId?: string }) {
-  const state = useOutreachRead('account', props, campaignId && accountId ? `${campaignId}:${accountId}` : undefined)
+function AccountDetail({ accountId, ...props }: OutreachPageProps & { accountId?: string }) {
+  const state = useOutreachRead('account', props, accountId)
   return <Page title="Outreach account"><Content state={state}>{(account) => <>
     <p><strong>{account.label}</strong> · {account.status}</p><p>Mailbox {account.mailbox_id}</p>
     <p>This account cannot be activated here.</p>
@@ -262,6 +289,6 @@ export function OutreachCampaignAnalyticsPage(props: OutreachPageProps) {
 }
 function CampaignAnalytics({ campaignId, ...props }: OutreachPageProps & { campaignId?: string }) {
   const state = useOutreachRead('analytics', props, campaignId)
-  return <Page title="Campaign analytics"><Content state={state} empty={(page) => page.items.length === 0}>{(page) => <ul>{page.items.map((row: Analytics) =>
-    <li key={row.campaign_id}>{row.consented_count} consented of {row.lead_count} leads (server aggregate)</li>)}</ul>}</Content></Page>
+  return <Page title="Campaign analytics"><Content state={state}>{(row: Analytics) =>
+    <p>{row.consented_count} consented of {row.lead_count} leads (server aggregate)</p>}</Content></Page>
 }

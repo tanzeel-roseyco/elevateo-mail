@@ -1,6 +1,6 @@
 import type { ReactElement } from 'react'
 import {
-  OutreachAccountDetailPage, OutreachAccountsPage, OutreachAnalyticsPage, OutreachCampaignAccountsPage,
+  OutreachAccountDetailPage, OutreachAccountsPage, OutreachAnalyticsPage,
   OutreachCampaignAnalyticsPage, OutreachCampaignCreatePage, OutreachCampaignDetailPage,
   OutreachCampaignLeadsPage, OutreachCampaignsPage, OutreachLeadsPage,
   type OutreachPageProps,
@@ -23,8 +23,7 @@ export function createOutreachFeatureModule(props: OutreachPageProps): OutreachF
     '/outreach/campaigns/:campaignId/analytics': <OutreachCampaignAnalyticsPage {...props} />,
     '/outreach/leads': <OutreachLeadsPage {...props} />,
     '/outreach/accounts': <OutreachAccountsPage {...props} />,
-    '/outreach/campaigns/:campaignId/accounts': <OutreachCampaignAccountsPage {...props} />,
-    '/outreach/campaigns/:campaignId/accounts/:accountId': <OutreachAccountDetailPage {...props} />,
+    '/outreach/accounts/:accountId': <OutreachAccountDetailPage {...props} />,
     '/outreach/analytics': <OutreachAnalyticsPage {...props} />,
   }
   return {

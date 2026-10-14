@@ -12,20 +12,20 @@ const campaignId = '1a40d184-987d-4b50-98d2-f674e41842f9'
 const leadId = '7206b079-7c79-4d06-a025-d80649b39573'
 const context = { contextId: 'ctx', authorizationVersion: '1' }
 const proof = { csrfToken: 'test-proof' }
-const campaign = { id: campaignId, name: 'Pilot', status: 'draft' }
-const lead = { id: leadId, email: 'test@example.invalid', consent_status: 'unknown', suppressed: false }
+const campaign = { id: campaignId, name: 'Pilot', status: 'draft', version: 1 }
+const lead = { id: leadId, campaign_id: campaignId, email: 'test@example.invalid', consent_status: 'unknown', suppressed: false, version: 1 }
 function gateway(overrides: Partial<OutreachGateway> = {}): OutreachGateway {
   return {
-    listCampaigns: vi.fn(async () => ({ items: [campaign] })),
-    getCampaign: vi.fn(async () => campaign),
-    createCampaign: vi.fn(async () => campaign),
+    listCampaigns: vi.fn(async () => ({ items: [campaign], next_cursor: null })),
+    getCampaign: vi.fn(async (_ctx, id) => ({ ...campaign, id })),
+    createCampaign: vi.fn(async (_ctx, _proof, input) => ({ ...campaign, id: input.id, name: input.name })),
     updateCampaign: vi.fn(async () => ({ ...campaign, status: 'paused' })),
-    listLeads: vi.fn(async () => ({ items: [lead] })),
-    addLead: vi.fn(async () => lead),
-    updateLead: vi.fn(async () => lead),
-    listAccounts: vi.fn(async () => ({ items: [] })),
-    getAccount: vi.fn(async () => ({ id: leadId, mailbox_id: campaignId, label: 'Account', status: 'disabled' })),
-    listAnalytics: vi.fn(async () => ({ items: [] })),
+    listLeads: vi.fn(async () => ({ items: [lead], next_cursor: null })),
+    addLead: vi.fn(async (_ctx, _proof, _campaignId, input) => ({ ...lead, id: input.id, email: input.email })),
+    updateLead: vi.fn(async (_ctx, _proof, _campaignId, _leadId, input) => ({ ...lead, email: input.email })),
+    listAccounts: vi.fn(async () => ({ items: [], next_cursor: null })),
+    getAccount: vi.fn(async () => ({ id: leadId, campaign_id: campaignId, mailbox_id: campaignId, label: 'Account', status: 'disabled', version: 1 })),
+    listAnalytics: vi.fn(async () => ({ campaign_id: campaignId, lead_count: 0, consented_count: 0 })),
     ...overrides,
   }
 }
@@ -44,7 +44,7 @@ describe('Outreach routed pages', () => {
     fireEvent.change(screen.getByLabelText('Campaign name'), { target: { value: 'Pilot' } })
     fireEvent.click(screen.getByRole('button', { name: 'Save draft' }))
     expect(await screen.findByRole('heading', { name: 'Campaign detail' })).toBeTruthy()
-    expect(g.createCampaign).toHaveBeenCalledWith(context, proof, { name: 'Pilot', status: 'draft' }, expect.any(AbortSignal))
+    expect(g.createCampaign).toHaveBeenCalledWith(context, proof, expect.objectContaining({ id: expect.any(String), operation_id: expect.any(String), name: 'Pilot', status: 'draft' }), expect.any(AbortSignal))
     expect(screen.queryByRole('button', { name: /send|enroll/i })).toBeNull()
   })
   it('reports an uncertain create failure without automatic duplicate submission', async () => {
@@ -60,10 +60,10 @@ describe('Outreach routed pages', () => {
     await screen.findByText(/test@example.invalid/)
     fireEvent.change(screen.getByLabelText('Add lead email'), { target: { value: 'new@example.invalid' } })
     fireEvent.click(screen.getByRole('button', { name: 'Add lead' }))
-    expect(g.addLead).toHaveBeenCalledWith(context, proof, { campaign_id: campaignId, email: 'new@example.invalid' }, expect.any(AbortSignal))
+    expect(g.addLead).toHaveBeenCalledWith(context, proof, campaignId, expect.objectContaining({ id: expect.any(String), operation_id: expect.any(String), email: 'new@example.invalid' }), expect.any(AbortSignal))
   })
   it('shows a read failure and rejects incompatible active campaign data', async () => {
-    const g = gateway({ listCampaigns: vi.fn(async () => ({ items: [{ ...campaign, status: 'active' }] })) })
+    const g = gateway({ listCampaigns: vi.fn(async () => ({ items: [{ ...campaign, status: 'active' }], next_cursor: null })) })
     view('/outreach/campaigns', g)
     expect(await screen.findByRole('alert')).toBeTruthy()
     expect(g.createCampaign).not.toHaveBeenCalled()
@@ -75,6 +75,15 @@ describe('Outreach routed pages', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Pause campaign' }))
     expect(await screen.findByRole('alert')).toHaveProperty('textContent', expect.stringMatching(/not confirmed/))
     expect(screen.getByText(/Pilot · draft/)).toBeTruthy()
+  })
+  it('sends a versioned pause intent and reloads server-owned status', async () => {
+    const g = gateway({ updateCampaign: vi.fn(async (_ctx, _proof, _id, input) => ({ ...campaign, name: input.name, status: input.status, version: 2 })) })
+    view(`/outreach/campaigns/${campaignId}`, g)
+    await screen.findByText(/Pilot/)
+    fireEvent.click(screen.getByRole('button', { name: 'Pause campaign' }))
+    expect(g.updateCampaign).toHaveBeenCalledWith(context, proof, campaignId, expect.objectContaining({
+      operation_id: expect.any(String), expected_version: 1, name: 'Pilot', status: 'paused',
+    }), expect.any(AbortSignal))
   })
   it('keeps a failed lead mutation uncertain and blocks a second submission', async () => {
     const g = gateway({ addLead: vi.fn(async () => { throw new Error('503 from backend') }) })
@@ -97,5 +106,33 @@ describe('Outreach routed pages', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Save draft' }))
     expect(await screen.findByRole('alert')).toHaveProperty('textContent', expect.stringMatching(/rejected/))
     expect((screen.getByRole('button', { name: 'Save draft' }) as HTMLButtonElement).disabled).toBe(false)
+  })
+  it('records separate attested consent evidence without a send action', async () => {
+    const g = gateway({ recordConsent: vi.fn(async () => ({ ...lead, consent_status: 'granted', version: 2 })) })
+    view(`/outreach/campaigns/${campaignId}/leads`, g)
+    await screen.findByText(/test@example.invalid/)
+    fireEvent.click(screen.getByRole('button', { name: 'Record consent evidence' }))
+    fireEvent.change(screen.getByLabelText('Evidence source'), { target: { value: 'Signed intake form' } })
+    fireEvent.change(screen.getByLabelText('Observed date and time'), { target: { value: '2026-10-14T12:00' } })
+    fireEvent.click(screen.getByRole('checkbox', { name: /I attest/ }))
+    fireEvent.click(screen.getByRole('button', { name: 'Record evidence' }))
+    expect(g.recordConsent).toHaveBeenCalledWith(context, proof, campaignId, leadId, expect.objectContaining({
+      operation_id: expect.any(String), expected_version: 1, source: 'Signed intake form', observed_at: expect.stringMatching(/Z$/), attested: true,
+    }), expect.any(AbortSignal))
+    expect(screen.queryByRole('button', { name: /send/i })).toBeNull()
+  })
+  it('rejects a malformed campaign route before any gateway request', async () => {
+    const g = gateway(); view('/outreach/campaigns/not-a-uuid/leads', g)
+    expect(await screen.findByRole('alert')).toBeTruthy()
+    expect(g.listLeads).not.toHaveBeenCalled()
+  })
+  it('navigates a bounded cursor page without silently hiding more campaigns', async () => {
+    const g = gateway({ listCampaigns: vi.fn(async (_ctx, query) => query.cursor
+      ? { items: [{ ...campaign, id: leadId, name: 'Second' }], next_cursor: null }
+      : { items: [campaign], next_cursor: campaignId }) })
+    view('/outreach/campaigns', g)
+    fireEvent.click(await screen.findByRole('link', { name: 'Next campaign page' }))
+    expect(await screen.findByRole('link', { name: 'Second' })).toBeTruthy()
+    expect(g.listCampaigns).toHaveBeenCalledWith(context, { cursor: campaignId }, expect.any(AbortSignal))
   })
 })
