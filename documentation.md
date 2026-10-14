@@ -208,3 +208,5 @@ QA815 isolated Elara diagnostic receipt `docs/completion/qa815-evidence/backend-
 QA815 `845d422` web receipt `docs/completion/qa815-evidence/web-845d422e0ed8.log` and generated V2 declaration `generated-v2-845d422e0ed8/api-v2.d.ts` are exact-source evidence. One attachment gateway Blob test blocks full unit/build and the repaired seeded visual rerun; see `docs/completion/soren.md`.
 
 QA815 unit receipts `docs/completion/qa815-evidence/sequence-unit-845d422e0ed8.txt` and `attachment-unit-58ab588249d1.txt` are exact-source, network-disabled fleet runs with task cleanup. They cover fake repository/controller, fake scanner and IMAP parser behavior only; see `docs/completion/soren.md` for counts and limits.
+
+QA815 `f70b654` full web receipt `docs/completion/qa815-evidence/web-f70b6543db43.log` and repaired seeded eight-image receipt `visual-f70b6543db43-8png.txt` are exact-source fleet evidence. Private PNGs are in the shared `control/qa816-private/f70b6543db43770ba17da785676ba20df11b0b2b/qa815-8png/` path; root/Tessa own manual visual acceptance. See `docs/completion/soren.md` for the synthetic/real-backend boundary.

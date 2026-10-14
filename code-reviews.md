@@ -708,3 +708,5 @@ QA815 Elara 94bd1ee focused role failure is a bounded executed diagnostic (one c
 QA815 `845d422` Blob.text unit failure is an executed test finding, not an independent code review or proof of a browser defect. Additional independent source coverage remains 0 LOC; density unclaimed.
 
 QA815 sequence and attachment unit PASS receipts are execution evidence, not independent bounded source reviews. Additional independent reviewed source remains 0 LOC; density unclaimed.
+
+QA815 `f70b654` full web and eight seeded PNG passes are execution and sampled visual evidence, not independent source review. Additional independently reviewed source remains 0 LOC; defect density unclaimed. Root owns visual acceptance and review schedule.

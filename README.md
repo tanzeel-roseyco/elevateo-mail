@@ -198,3 +198,5 @@ QA815 Elara focused diagnostic on isolated `94bd1ee` (not current integration): 
 QA815 `845d422` web successor passed V1/V2/lint/type and 841/842 units; the remaining attachment gateway test calls unavailable jsdom `Blob.text()`. Build and repaired eight-PNG visual rerun await owner fix and a full gate. Current V2 declaration receipt is in `docs/completion/soren.md`.
 
 QA815 independent units: exact `845d422` sequence repository/controller 10 runs/45 assertions PASS; exact `58ab588` ClamAV fake transport/IMAP attachment parser 9/30 PASS. Real gateway/clamd/Mox, database and HTTP gates remain separate. Receipts in `docs/completion/soren.md`.
+
+QA815 exact `f70b654` full fleet web gate PASSED V1/V2, lint, strict type, 842/842 units and production build; same-source repaired SEEDED-SIMULATED eight-PNG visual capture passed with cleanup. Private images await root/Tessa manual inspection. Real-backend QA816, protected migration/worker and native installation remain OPEN. See `docs/completion/soren.md`.
