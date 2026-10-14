@@ -6,7 +6,7 @@ The app remains online-only: it does not bundle `apps/web/dist` or a local Rails
 
 `ELEVATEO_WEB_ORIGIN` is a **public build-time value**, not a secret. Release packaging must pass its exact approved `https://host[:port]` origin. Validation rejects cleartext, IP literals, localhost, placeholder domains, credentials, paths, queries and fragments. An absent/invalid value makes launch fail closed. A second embedded `ELEVATEO_NATIVE_ARTIFACT=unsigned-candidate` marker is required for launch; unmarked or compile-only fixture artifacts refuse to open a WebView. The app identifier `com.elevateo.mail` remains a candidate pending distribution registration/collision checks.
 
-Tauri core/build are pinned to 2.12.3/2.7.2, including the October 2026 NSIS downgrade fix. `bundle.windows.allowDowngrades` is false. The NSIS setup embeds the WebView2 bootstrapper but still needs network if WebView2 is missing. The `ci/windows-unsigned.ps1` candidate runs on a real Windows runner with a reviewed Cargo.lock, pinned tooling and exact public origin; it does not sign or test an installed app.
+Tauri core/build are pinned to 2.12.3/2.7.2, including the October 2026 NSIS downgrade fix. `bundle.windows.allowDowngrades` is false. The NSIS setup embeds the WebView2 bootstrapper but still needs network if WebView2 is missing. The `ci/windows-unsigned.ps1` candidate runs on a real Windows runner with a reviewed Cargo.lock, reviewed ICO, pinned tooling and exact public origin; it does not sign or test an installed app.
 
 ## Soren fleet-only request
 
