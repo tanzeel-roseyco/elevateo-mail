@@ -391,6 +391,12 @@ function DraftEditor({ mailboxId, draftId }: { mailboxId: string; draftId: strin
             <Button size="sm" onClick={() => setBuffer(dismissRejection)}>Edit and try again</Button>
           </div>
         )}
+        {(status.kind === 'saving' || status.kind === 'uncertain') && (
+          <p role="note" className="text-[13px] text-warn">
+            Keep this tab open. Reloading or closing it loses your unsaved text and this save’s retry details.
+            The save may still reach the server; recovery after a full reload is unavailable.
+          </p>
+        )}
         {status.kind === 'uncertain' && (
           <div role="alert" className="flex flex-col gap-2 rounded-lg border border-warn/40 bg-warn/10 p-2 text-[13px]">
             <span>{status.message}{hold !== null && ` The server asked to wait ${hold} s before retrying.`}</span>
