@@ -1,8 +1,9 @@
 # MAIL-818 Mox pilot checkpoint
 
 Scope: isolated `ops/mail/mox-pilot/` synthetic SMTP/IMAP fixture only. Baseline
-`bbf2353b254a05d48c2da7a508c143e6fba78691`; candidate commit SHA is
-recorded in the Rhea outbox after commit. No production integration is
+`bbf2353b254a05d48c2da7a508c143e6fba78691`; source candidate
+`c160c756371fbbdda8399aae296c1070fb858b6b` (the outbox tracks any
+documentation-only successor). No production integration is
 dependent on this pilot. Existing BE02/BE03 contracts and application runtime
 are untouched.
 
