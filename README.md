@@ -73,3 +73,6 @@ Integrated application source is present. Use the maintained `scripts/dev` comma
 Application lint, typecheck, unit/integration tests must run in Docker; browser validation and platform-specific packaging checks follow before release. Documentation checks for this update are recorded in `code-reviews.md`. No live email, domain change, infrastructure purchase or deployment occurred.
 
 Verify source intake with `python3 scripts/verify_upstream.py`; run isolated provenance-tool tests with `python3 -B scripts/test_snapshot_tools.py -v`. These are repository tooling checks, not application acceptance tests.
+
+
+FE-PREVIEW-01 final checkpoint: corrected synthetic demo remains private on 18141/demo.html (image 4ce7aefe738e); original fixture 18140 retained. Root actual reader paragraphs and mobile 375px draft-save v4 visually passed. Bounded Docker Playwright inbox-to-reader click passed both with and without ?qa=345d0f9; no router defect reproduced and no source change made. Disposable readonly browser container removed via --rm; no build, database lease, mounts or unrelated cleanup. Ada independent copy review: 0 defects / 9 changed LOC (0 per 1000); dedicated design review: 0 defects / 195 reviewed LOC (0 per 1000). All mail and actions remain synthetic and memory-only.
