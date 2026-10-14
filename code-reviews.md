@@ -718,3 +718,5 @@ FE807 sequence author source review (nonindependent): inspected proposed `03a4f7
 FE807 sequence fixture self-review found an inconsistent created id and write-only fields in a mock GET. The happy-path test now binds GET to the actual PUT receipt and projects only read DTO fields; one fixture defect corrected, fleet run pending, no independent density claimed.
 
 FE807 exact `cb1ec5b` fleet lint diagnostic: one syntax defect in Remove step callback caused parser failure before type/unit/build. Author repaired one missing call-closing parenthesis; new source has not run in Docker. This is an actual FE807 defect, not a Maeve backend failure; independent review density not claimed.
+
+FE807 root-assigned cross-owner bridge self-review: two failing integration expectations in feature index test had drifted after sequence route and Lyra V2 preferences changes. Updated the route assertion to require the new path and supplied a scoped synthetic preference GET before checking current personal settings controls. Existing session/protected-request and Lyra page source were inspected; no production UI edits, independent review density or runtime PASS claimed.

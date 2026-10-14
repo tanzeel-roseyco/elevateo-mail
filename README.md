@@ -192,3 +192,5 @@ FE807 sequence candidate: a distinct campaign-scoped sequence editor route is au
 FE807 sequence test fixture now returns the exact created id and only server draft fields on the follow-up GET; fleet execution is still pending.
 
 FE807 sequence candidate has a fleet lint parse failure at the Remove step handler on the integrated web SHA; a one-parenthesis source repair is committed separately for exact rerun. No sequence unit/build PASS is claimed.
+
+FE807 integration test bridge for the 12th Outreach route and Lyra's live preference-backed personal settings is authored from Cassian's current test snapshot. The settings case supplies a bounded synthetic V2 preference response and checks the current actor value and controls; fleet rerun is pending.

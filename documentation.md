@@ -206,3 +206,5 @@ FE807 sequence route seam: `createOutreachFeatureModule` exports `/outreach/camp
 FE807 sequence create regression checks one id across PUT receipt and subsequent GET, with the strict read DTO excluding write-only operation/version precondition fields.
 
 FE807 sequence editor lint diagnostic: Remove step's `setSteps` callback was missing its final call-closing parenthesis. The source now closes the callback and call before the JSX tag; Soren must rerun fleet checks on the repair SHA.
+
+The feature-registry integration test expects 12 Outreach routes including campaign sequence. Its personal-settings route case exercises Lyra's current V2 preference GET with current session context, then asserts the actor label, preference value and Save control; missing preference data is no longer treated as a successful loaded settings page.
