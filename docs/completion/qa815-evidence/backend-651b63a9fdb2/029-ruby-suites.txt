@@ -1,0 +1,2488 @@
+RUN [opaque value redacted]
+Run options: --seed 60689
+
+# Running:
+
+...
+
+Finished in 2.563135s, 1.1704 runs/s, 25.7497 assertions/s.
+
+3 runs, 66 assertions, 0 failures, 0 errors, 0 skips
+RUN test/be_02/auth_client_test.rb
+Run options: --seed 10312
+
+# Running:
+
+..........
+
+Finished in 0.009538s, 1048.4105 runs/s, 7758.2381 assertions/s.
+
+10 runs, 74 assertions, 0 failures, 0 errors, 0 skips
+RUN test/be_02/auth_config_test.rb
+Run options: --seed 57278
+
+# Running:
+
+.......
+
+Finished in 0.002299s, 3045.1221 runs/s, 19575.7852 assertions/s.
+
+7 runs, 45 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 60112
+
+# Running:
+
+...
+
+Finished in 0.097475s, 30.7772 runs/s, 636.0626 assertions/s.
+
+3 runs, 62 assertions, 0 failures, 0 errors, 0 skips
+RUN test/be_02/auth_entry_test.rb
+Run options: --seed 49825
+
+# Running:
+
+......
+
+Finished in 0.005570s, 1077.1850 runs/s, 7001.7028 assertions/s.
+
+6 runs, 39 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 42371
+
+# Running:
+
+...
+
+Finished in 0.005198s, 577.1876 runs/s, 2693.5419 assertions/s.
+
+3 runs, 14 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 42481
+
+# Running:
+
+.......
+
+Finished in 0.358194s, 19.5425 runs/s, 61.4192 assertions/s.
+
+7 runs, 22 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 50234
+
+# Running:
+
+...
+
+Finished in 0.413656s, 7.2524 runs/s, 72.5241 assertions/s.
+
+3 runs, 30 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 40563
+
+# Running:
+
+.......
+
+Finished in 0.260637s, 26.8573 runs/s, 698.2900 assertions/s.
+
+7 runs, 182 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 58762
+
+# Running:
+
+........
+
+Finished in 0.941959s, 8.4929 runs/s, 182.5983 assertions/s.
+
+8 runs, 172 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 13867
+
+# Running:
+
+..
+
+Finished in 0.276944s, 7.2217 runs/s, 119.1577 assertions/s.
+
+2 runs, 33 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 39479
+
+# Running:
+
+.......
+
+Finished in 0.129700s, 53.9706 runs/s, 663.0671 assertions/s.
+
+7 runs, 86 assertions, 0 failures, 0 errors, 0 skips
+RUN test/be_02/cursors_test.rb
+Run options: --seed 42946
+
+# Running:
+
+.......
+
+Finished in 0.001961s, 3569.6526 runs/s, 20398.0151 assertions/s.
+
+7 runs, 40 assertions, 0 failures, 0 errors, 0 skips
+RUN test/be_02/database_helper_test.rb
+Run options: --seed 56792
+
+# Running:
+
+........
+
+Finished in 0.496057s, 16.1272 runs/s, 60.4769 assertions/s.
+
+8 runs, 30 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 18835
+
+# Running:
+
+......
+
+Finished in 0.534595s, 11.2235 runs/s, 110.3640 assertions/s.
+
+6 runs, 59 assertions, 0 failures, 0 errors, 0 skips
+RUN test/be_02/draft_bootstrap_test.rb
+Run options: --seed 48422
+
+# Running:
+
+.....
+
+Finished in 0.290633s, 17.2038 runs/s, 192.6828 assertions/s.
+
+5 runs, 56 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 23567
+
+# Running:
+
+....
+
+Finished in 0.374058s, 10.6935 runs/s, 104.2619 assertions/s.
+
+4 runs, 39 assertions, 0 failures, 0 errors, 0 skips
+RUN test/be_02/draft_database_test.rb
+Run options: --seed 20289
+
+# Running:
+
+........
+
+Finished in 0.657707s, 12.1635 runs/s, 129.2369 assertions/s.
+
+8 runs, 85 assertions, 0 failures, 0 errors, 0 skips
+RUN test/be_02/draft_payload_test.rb
+Run options: --seed 6984
+
+# Running:
+
+......
+
+Finished in 0.019084s, 314.3998 runs/s, 2410.3986 assertions/s.
+
+6 runs, 46 assertions, 0 failures, 0 errors, 0 skips
+RUN test/be_02/draft_reads_test.rb
+Run options: --seed 12919
+
+# Running:
+
+.......
+
+Finished in 0.124934s, 56.0296 runs/s, 264.1395 assertions/s.
+
+7 runs, 33 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 16979
+
+# Running:
+
+......
+
+Finished in 0.307532s, 19.5101 runs/s, 185.3463 assertions/s.
+
+6 runs, 57 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 30131
+
+# Running:
+
+....
+
+Finished in 0.001778s, 2250.2173 runs/s, 27565.1622 assertions/s.
+
+4 runs, 49 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 2373
+
+# Running:
+
+.....
+
+Finished in 0.762096s, 6.5609 runs/s, 52.4868 assertions/s.
+
+5 runs, 40 assertions, 0 failures, 0 errors, 0 skips
+RUN test/be_02/mail_search_test.rb
+Run options: --seed 2299
+
+# Running:
+
+......
+
+Finished in 0.130271s, 46.0580 runs/s, 629.4593 assertions/s.
+
+6 runs, 82 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 2681
+
+# Running:
+
+......
+
+Finished in 0.844986s, 7.1007 runs/s, 71.0071 assertions/s.
+
+6 runs, 60 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 618
+
+# Running:
+
+........
+
+Finished in 1.399109s, 5.7179 runs/s, 60.7529 assertions/s.
+
+8 runs, 85 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 48
+
+# Running:
+
+......
+
+Finished in 0.160245s, 37.4427 runs/s, 455.5527 assertions/s.
+
+6 runs, 73 assertions, 0 failures, 0 errors, 0 skips
+RUN test/be_02/mailbox_reads_test.rb
+Run options: --seed 29297
+
+# Running:
+
+............
+
+Finished in 0.408808s, 29.3536 runs/s, 232.3829 assertions/s.
+
+12 runs, 95 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 9905
+
+# Running:
+
+.......
+
+Finished in 0.722660s, 9.6864 runs/s, 73.3401 assertions/s.
+
+7 runs, 53 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 57015
+
+# Running:
+
+......
+
+Finished in 0.489460s, 12.2584 runs/s, 67.4213 assertions/s.
+
+6 runs, 33 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 7875
+
+# Running:
+
+.................F..
+
+Finished in 3.336134s, 5.9950 runs/s, 42.8640 assertions/s.
+
+  1) Failure:
+OrganizationAccessPolicyTest#[opaque value redacted] [[opaque value redacted]:110]:
+Expected: "ok"
+  Actual: "not_found"
+
+20 runs, 143 assertions, 1 failures, 0 errors, 0 skips
+RUN test/be_02/rate_limits_test.rb
+Run options: --seed 53317
+
+# Running:
+
+..
+
+Finished in 0.449980s, 4.4446 runs/s, 44.4464 assertions/s.
+
+2 runs, 20 assertions, 0 failures, 0 errors, 0 skips
+RUN test/be_02/read_controller_test.rb
+Run options: --seed 61012
+
+# Running:
+
+...............
+
+Finished in 0.289194s, 51.8683 runs/s, 1251.7552 assertions/s.
+
+15 runs, 362 assertions, 0 failures, 0 errors, 0 skips
+RUN test/be_02/read_response_test.rb
+Run options: --seed 25796
+
+# Running:
+
+..........
+
+Finished in 0.010862s, 920.6149 runs/s, 5983.9970 assertions/s.
+
+10 runs, 65 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 60248
+
+# Running:
+
+......
+
+Finished in 0.480472s, 12.4877 runs/s, 318.4366 assertions/s.
+
+6 runs, 153 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 39680
+
+# Running:
+
+....
+
+Finished in 0.284737s, 14.0481 runs/s, 572.4582 assertions/s.
+
+4 runs, 163 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 46989
+
+# Running:
+
+.............
+
+Finished in 0.838930s, 15.4959 runs/s, 114.4315 assertions/s.
+
+13 runs, 96 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 60445
+
+# Running:
+
+............
+
+Finished in 9.152177s, 1.3112 runs/s, 9.3967 assertions/s.
+
+12 runs, 86 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 51294
+
+# Running:
+
+.............
+
+Finished in 0.014105s, 921.6329 runs/s, 4608.1645 assertions/s.
+
+13 runs, 65 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 7450
+
+# Running:
+
+....
+
+Finished in 0.332697s, 12.0230 runs/s, 147.2812 assertions/s.
+
+4 runs, 49 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 52873
+
+# Running:
+
+...
+
+Finished in 0.004321s, 694.2956 runs/s, 4860.0693 assertions/s.
+
+3 runs, 21 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 65089
+
+# Running:
+
+.......
+
+Finished in 0.004654s, 1504.1696 runs/s, 14182.1708 assertions/s.
+
+7 runs, 66 assertions, 0 failures, 0 errors, 0 skips
+RUN test/be_02/session_store_test.rb
+Run options: --seed 40550
+
+# Running:
+
+...
+
+Finished in 0.121055s, 24.7821 runs/s, 90.8677 assertions/s.
+
+3 runs, 11 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 33696
+
+# Running:
+
+...
+
+Finished in 0.001158s, 2590.5174 runs/s, 23314.6565 assertions/s.
+
+3 runs, 27 assertions, 0 failures, 0 errors, 0 skips
+RUN test/be_02/thread_database_test.rb
+Run options: --seed 30066
+
+# Running:
+
+.E........
+
+Finished in 0.998318s, 10.0168 runs/s, 174.2931 assertions/s.
+
+  1) Error:
+ThreadDatabaseTest#[opaque value redacted]:
+PG::InsufficientPrivilege: ERROR:  must be owner of table intents
+
+    test/be_02/thread_database_test.rb:246:in 'PG::Connection#exec'
+    test/be_02/thread_database_test.rb:246:in 'block in ThreadDatabaseTest#[opaque value redacted]'
+    test/be_02/thread_database_test.rb:246:in 'Array#each'
+    test/be_02/thread_database_test.rb:246:in 'ThreadDatabaseTest#[opaque value redacted]'
+    test/be_02/thread_database_test.rb:221:in 'ThreadDatabaseTest#[opaque value redacted]'
+
+10 runs, 174 assertions, 0 failures, 1 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 30999
+
+# Running:
+
+.....
+
+Finished in 0.235107s, 21.2669 runs/s, 629.5001 assertions/s.
+
+5 runs, 148 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 46324
+
+# Running:
+
+...
+
+Finished in 0.412876s, 7.2661 runs/s, 331.8186 assertions/s.
+
+3 runs, 137 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 38962
+
+# Running:
+
+.......
+
+Finished in 0.004515s, 1550.5508 runs/s, 17942.0881 assertions/s.
+
+7 runs, 81 assertions, 0 failures, 0 errors, 0 skips
+RUN test/be_02/thread_reads_test.rb
+Run options: --seed 2977
+
+# Running:
+
+........
+
+Finished in 0.185758s, 43.0667 runs/s, 484.5001 assertions/s.
+
+8 runs, 90 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 20725
+
+# Running:
+
+.......
+
+Finished in 3.646172s, 1.9198 runs/s, 6.3080 assertions/s.
+
+7 runs, 23 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 64716
+
+# Running:
+
+................
+
+Finished in 0.243218s, 65.7845 runs/s, 1480.1523 assertions/s.
+
+16 runs, 360 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 17605
+
+# Running:
+
+.{"native_timeout_diagnostic":{"backend":1553,"error_class":"PG::ConnectionBad","result_sqlstate":null,"error_has_25p04":false,"connection_has_25p04":false,"connection_bad":true,"structured_fatal":[{"sqlstate":"25P04","severity":"FATAL"}]}}
+...{"native_timeout_diagnostic":{"backend":1563,"error_class":"PG::TransactionTimeout","result_sqlstate":"25P04","error_has_25p04":true,"connection_has_25p04":true,"connection_bad":false,"structured_fatal":[{"sqlstate":"25P04","severity":"FATAL"}]}}
+.
+
+Finished in 1.729801s, 2.8905 runs/s, 15.0306 assertions/s.
+
+5 runs, 26 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 4705
+
+# Running:
+
+...........
+
+Finished in 0.641197s, 17.1554 runs/s, 98.2537 assertions/s.
+
+11 runs, 63 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 7292
+
+# Running:
+
+........
+
+Finished in 0.723220s, 11.0616 runs/s, 109.2337 assertions/s.
+
+8 runs, 79 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 18239
+
+# Running:
+
+...........
+
+Finished in 0.004294s, 2561.7281 runs/s, 42617.8407 assertions/s.
+
+11 runs, 183 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 47270
+
+# Running:
+
+......
+
+Finished in 1.222301s, 4.9088 runs/s, 554.6915 assertions/s.
+
+6 runs, 678 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 32257
+
+# Running:
+
+...
+
+Finished in 0.363446s, 8.2543 runs/s, 244.8781 assertions/s.
+
+3 runs, 89 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 10509
+
+# Running:
+
+.....................
+
+Finished in 5.305145s, 3.9584 runs/s, 132.3244 assertions/s.
+
+21 runs, 702 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 18721
+
+# Running:
+
+..
+
+Finished in 0.303902s, 6.5811 runs/s, 263.2427 assertions/s.
+
+2 runs, 80 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 26442
+
+# Running:
+
+.....
+
+Finished in 0.002272s, 2200.6658 runs/s, 7042.1306 assertions/s.
+
+5 runs, 16 assertions, 0 failures, 0 errors, 0 skips
+RUN test/requests/drafts_test.rb
+Run options: --seed 57158
+
+# Running:
+
+......
+
+Finished in 0.294917s, 20.3447 runs/s, 142.4130 assertions/s.
+
+6 runs, 42 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 7508
+
+# Running:
+
+...............
+
+Finished in 2.762484s, 5.4299 runs/s, 73.1226 assertions/s.
+
+15 runs, 202 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 21709
+
+# Running:
+
+.
+
+Finished in 0.114152s, 8.7603 runs/s, 271.5678 assertions/s.
+
+1 runs, 31 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 28028
+
+# Running:
+
+..
+
+Finished in 0.237225s, 8.4308 runs/s, 96.9545 assertions/s.
+
+2 runs, 23 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 546
+
+# Running:
+
+.....
+
+Finished in 0.440917s, 11.3400 runs/s, 83.9160 assertions/s.
+
+5 runs, 37 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 30953
+
+# Running:
+
+....
+
+Finished in 0.464502s, 8.6114 runs/s, 86.1138 assertions/s.
+
+4 runs, 40 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 21111
+
+# Running:
+
+........
+
+Finished in 1.039848s, 7.6934 runs/s, 69.2409 assertions/s.
+
+8 runs, 72 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 18009
+
+# Running:
+
+...
+
+Finished in 0.355246s, 8.4448 runs/s, 67.5587 assertions/s.
+
+3 runs, 24 assertions, 0 failures, 0 errors, 0 skips
+RUN test/sends/schema_database_test.rb
+Run options: --seed 23127
+
+# Running:
+
+......
+
+Finished in 0.529512s, 11.3312 runs/s, 154.8596 assertions/s.
+
+6 runs, 82 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 53914
+
+# Running:
+
+...........
+
+Finished in 0.006648s, 1654.5863 runs/s, 10980.4364 assertions/s.
+
+11 runs, 73 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 29676
+
+# Running:
+
+........
+
+Finished in 0.245486s, 32.5884 runs/s, 370.6932 assertions/s.
+
+8 runs, 91 assertions, 0 failures, 0 errors, 0 skips
+RUN test/sends/send_api_reads_test.rb
+Run options: --seed 50535
+
+# Running:
+
+............
+
+Finished in 0.264157s, 45.4275 runs/s, 473.2027 assertions/s.
+
+12 runs, 125 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 8282
+
+# Running:
+
+.....
+
+Finished in 0.612407s, 8.1645 runs/s, 62.0503 assertions/s.
+
+5 runs, 38 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 28670
+
+# Running:
+
+.........
+
+Finished in 0.945222s, 9.5216 runs/s, 94.1577 assertions/s.
+
+9 runs, 89 assertions, 0 failures, 0 errors, 0 skips
+RUN Steep
+# Type checking files:
+
+.FF.F.....F......F..........F.........F..................F....F..........................F.............F.........F..........................................F..........F..............
+
+[opaque value redacted]:60:67: [error] Cannot pass a value of type `(::String | ::Integer | nil)` as an argument of type `(::String | nil)`
+│   (::String | ::Integer | nil) <: (::String | nil)
+│     ::Integer <: (::String | nil)
+│       ::Integer <: ::String
+│         ::Numeric <: ::String
+│           ::Object <: ::String
+│             ::BasicObject <: ::String
+│
+│ Diagnostic ID: Ruby::ArgumentTypeMismatch
+│
+└           ActiveRecord::Relation::QueryAttribute.new("attachment", value, ActiveRecord::Type::String.new)
+                                                                     ~~~~~
+
+[opaque value redacted]:15:6: [error] Cannot find the declaration of instance variable: `@config`
+│ Diagnostic ID: Ruby::UnknownInstanceVariable
+│
+└       @config, @transport = config, transport
+        ~~~~~~~
+
+[opaque value redacted]:15:15: [error] Cannot find the declaration of instance variable: `@transport`
+│ Diagnostic ID: Ruby::UnknownInstanceVariable
+│
+└       @config, @transport = config, transport
+                 ~~~~~~~~~~
+
+[opaque value redacted]:16:6: [error] Cannot find the declaration of instance variable: `@http_factory`
+│ Diagnostic ID: Ruby::UnknownInstanceVariable
+│
+└       @http_factory = http_factory || ->(host, port, proxy) { Net::HTTP.new(host, port, proxy) }
+        ~~~~~~~~~~~~~
+
+[opaque value redacted]:17:6: [error] Cannot find the declaration of instance variable: `@transaction_open`
+│ Diagnostic ID: Ruby::UnknownInstanceVariable
+│
+└       @transaction_open = transaction_open || -> {
+        ~~~~~~~~~~~~~~~~~
+
+[opaque value redacted]:24:27: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└       raise Unavailable if @transaction_open.call
+                             ~~~~~~~~~~~~~~~~~
+
+[opaque value redacted]:25:17: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└       url, key = @config.attachment_gateway_url, @config.attachment_gateway_hmac_key
+                   ~~~~~~~
+
+[opaque value redacted]:25:49: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└       url, key = @config.attachment_gateway_url, @config.attachment_gateway_hmac_key
+                                                   ~~~~~~~
+
+[opaque value redacted]:32:11: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└         if @transport
+             ~~~~~~~~~~
+
+[opaque value redacted]:33:10: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           @transport.call(signed.body, signed.signature, timeout)
+            ~~~~~~~~~~
+
+[opaque value redacted]:57:13: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└       http = @http_factory.call("attachment-gateway", 4708, nil)
+               ~~~~~~~~~~~~~
+
+lib/elevateo/attachments_scan.rb:32:26: [error] Type `::Elevateo::Attachments::_Socket` does not have method `respond_to?`
+│ Diagnostic ID: Ruby::NoMethod
+│
+└             active_socket.respond_to?(:write) && active_socket.respond_to?(:read) && active_socket.respond_to?(:close)
+                            ~~~~~~~~~~~
+
+lib/elevateo/attachments_scan.rb:32:63: [error] Type `::Elevateo::Attachments::_Socket` does not have method `respond_to?`
+│ Diagnostic ID: Ruby::NoMethod
+│
+└             active_socket.respond_to?(:write) && active_socket.respond_to?(:read) && active_socket.respond_to?(:close)
+                                                                 ~~~~~~~~~~~
+
+lib/elevateo/attachments_scan.rb:32:99: [error] Type `::Elevateo::Attachments::_Socket` does not have method `respond_to?`
+│ Diagnostic ID: Ruby::NoMethod
+│
+└             active_socket.respond_to?(:write) && active_socket.respond_to?(:read) && active_socket.respond_to?(:close)
+                                                                                                     ~~~~~~~~~~~
+
+lib/elevateo/attachments_scan.rb:68:33: [error] Cannot pass a value of type `(::String | nil)` as an argument of type `::String`
+│   (::String | nil) <: ::String
+│     nil <: ::String
+│
+│ Diagnostic ID: Ruby::ArgumentTypeMismatch
+│
+└           written = socket.write(bytes.byteslice(offset, bytes.bytesize - offset))
+                                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+lib/elevateo/attachments.rb:26:19: [error] More keyword arguments are required: organization_id, mailbox_id, thread_id, message_id
+│ Diagnostic ID: Ruby::InsufficientKeywordArguments
+│
+└         @authorize.call(**scope, capability: :write)
+                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+lib/elevateo/attachments.rb:32:19: [error] More keyword arguments are required: organization_id, mailbox_id, thread_id, message_id
+│ Diagnostic ID: Ruby::InsufficientKeywordArguments
+│
+└         @authorize.call(**scope, capability: :write)
+                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+lib/elevateo/attachments.rb:33:20: [error] More keyword arguments are required: organization_id, mailbox_id, thread_id, message_id
+│ Diagnostic ID: Ruby::InsufficientKeywordArguments
+│
+└         @repository.create(**scope, id: id, storage_key: key, filename: filename,
+                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+lib/elevateo/attachments.rb:43:19: [error] More keyword arguments are required: organization_id, mailbox_id, thread_id, message_id
+│ Diagnostic ID: Ruby::InsufficientKeywordArguments
+│
+└         @authorize.call(**scope, capability: :read)
+                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+lib/elevateo/attachments.rb:44:27: [error] More keyword arguments are required: organization_id, mailbox_id, thread_id, message_id
+│ Diagnostic ID: Ruby::InsufficientKeywordArguments
+│
+└         rows = @repository.page(**scope, cursor: cursor, limit: limit + 1)
+                             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+lib/elevateo/attachments.rb:49:97: [error] Type `(nil | bool | ::Integer | ::Float | ::String | ::Array[::Elevateo::ReadResponse::json_value] | ::Hash[::String, ::Elevateo::ReadResponse::json_value])` does not have method `to_i`
+│ Diagnostic ID: Ruby::NoMethod
+│
+└               "content_type" => row.fetch("content_type"), "byte_size" => row.fetch("byte_size").to_i,
+                                                                                                   ~~~~
+
+lib/elevateo/attachments.rb:58:19: [error] More keyword arguments are required: organization_id, mailbox_id, thread_id, message_id
+│ Diagnostic ID: Ruby::InsufficientKeywordArguments
+│
+└         @authorize.call(**scope, capability: :read)
+                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+lib/elevateo/attachments.rb:59:26: [error] More keyword arguments are required: organization_id, mailbox_id, thread_id, message_id
+│ Diagnostic ID: Ruby::InsufficientKeywordArguments
+│
+└         row = @repository.find(**scope, id: id)
+                            ~~~~~~~~~~~~~~~~~~~~~
+
+lib/elevateo/attachments.rb:64:93: [error] Type `(nil | bool | ::Integer | ::Float | ::String | ::Array[::Elevateo::ReadResponse::json_value] | ::Hash[::String, ::Elevateo::ReadResponse::json_value])` does not have method `to_i`
+│ Diagnostic ID: Ruby::NoMethod
+│
+└           "content_type" => row.fetch("content_type"), "byte_size" => row.fetch("byte_size").to_i }
+                                                                                               ~~~~
+
+lib/elevateo/attachments.rb:69:10: [error] Cannot allow method body have type `::Hash[::Symbol, ::String]` because declared as type `::Elevateo::Attachments::scope`
+│   ::Hash[::Symbol, ::String] <: { :mailbox_id => ::String, :message_id => ::String, :organization_id => ::String, :thread_id => ::String }
+│
+│ Diagnostic ID: Ruby::MethodBodyTypeMismatch
+│
+└       def scope!(organization_id, mailbox_id, thread_id, message_id)
+            ~~~~~~
+
+[opaque value redacted]:40:18: [error] Empty array doesn't have type annotation
+│ Diagnostic ID: Ruby::UnannotatedEmptyCollection
+│
+└         handles = []
+                    ~~
+
+lib/elevateo/inbound/imap_sync.rb:22:56: [error] Type `(::Elevateo::Inbound::_ImapSession | nil)` does not have method `verified_tls?`
+│ Diagnostic ID: Ruby::NoMethod
+│
+└         raise Rejected, "tls_unverified" unless session.verified_tls?
+                                                          ~~~~~~~~~~~~~
+
+lib/elevateo/inbound/imap_sync.rb:24:27: [error] Type `(::Elevateo::Inbound::_ImapSession | nil)` does not have method `uidvalidity`
+│ Diagnostic ID: Ruby::NoMethod
+│
+└         validity = session.uidvalidity
+                             ~~~~~~~~~~~
+
+lib/elevateo/inbound/imap_sync.rb:36:25: [error] Type `(::Elevateo::Inbound::_ImapSession | nil)` does not have method `fetch_after`
+│ Diagnostic ID: Ruby::NoMethod
+│
+└         events = session.fetch_after(cursor, limit: MAX_BATCH)
+                           ~~~~~~~~~~~
+
+[opaque value redacted]:23:10: [error] Cannot allow method body have type `{ :attachments => ::Array[::Hash[::Symbol, (::Integer | ::String)]], :record => { :attachments => ::Array[::Elevateo::Inbound::attachment], :content_sha256 => ::String, :from => ::String, :mailbox_id => ::String, :organization_id => ::String, :provider => ::String, :provider_account_id => ::String, :provider_event_id => ::String, :subject => ::String, :text => ::String, :to => ::Array[::String] } }` because declared as type `{ :attachments => ::Array[::Elevateo::Inbound::parsed_attachment], :record => ::Elevateo::Inbound::record }`
+│   { :attachments => ::Array[::Hash[::Symbol, (::Integer | ::String)]], :record => { :attachments => ::Array[::Elevateo::Inbound::attachment], :content_sha256 => ::String, :from => ::String, :mailbox_id => ::String, :organization_id => ::String, :provider => ::String, :provider_account_id => ::String, :provider_event_id => ::String, :subject => ::String, :text => ::String, :to => ::Array[::String] } } <: { :attachments => ::Array[::Elevateo::Inbound::parsed_attachment], :record => ::Elevateo::Inbound::record }
+│     ::Array[::Hash[::Symbol, (::Integer | ::String)]] <: ::Array[::Elevateo::Inbound::parsed_attachment]
+│       ::Hash[::Symbol, (::Integer | ::String)] <: ::Elevateo::Inbound::parsed_attachment
+│         ::Hash[::Symbol, (::Integer | ::String)] <: { :byte_size => ::Integer, :bytes => ::String, :content_type => ::String, :filename => ::String, :ordinal => ::Integer, :sha256 => ::String }
+│
+│ Diagnostic ID: Ruby::MethodBodyTypeMismatch
+│
+└       def parse(raw_mime:)
+            ~~~~~
+
+[opaque value redacted]:59:17: [error] Empty array doesn't have type annotation
+│ Diagnostic ID: Ruby::UnannotatedEmptyCollection
+│
+└         leaves = []
+                   ~~
+
+[opaque value redacted]:67:87: [error] Type `(::Mail::Message | ::Integer | nil)` does not have method `>`
+│ Diagnostic ID: Ruby::NoMethod
+│
+└           raise Rejected, "invalid_mime" if seen > FakeIngress::MAX_PARTS * 2 || depth > 8
+                                                                                         ~
+
+[opaque value redacted]:68:18: [error] Type `(::Mail::Message | ::Integer | nil)` does not have method `multipart?`
+│ Diagnostic ID: Ruby::NoMethod
+│
+└           if part.multipart?
+                    ~~~~~~~~~~
+
+[opaque value redacted]:69:28: [error] Type `(::Mail::Message | ::Integer | nil)` does not have method `parts`
+│ Diagnostic ID: Ruby::NoMethod
+│
+└             children = part.parts
+                              ~~~~~
+
+[opaque value redacted]:72:67: [error] Type `(::Mail::Message | ::Integer | nil)` does not have method `+`
+│ Diagnostic ID: Ruby::NoMethod
+│
+└             children.reverse_each { |child| stack << [child, depth + 1] }
+                                                                     ~
+
+[opaque value redacted]:16:30: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           result = sql_result(connection, READ_SQL, "read display preference", [identity.digest])
+                                ~~~~~~~~~~
+
+[opaque value redacted]:16:80: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           result = sql_result(connection, READ_SQL, "read display preference", [identity.digest])
+                                                                                  ~~~~~~~~
+
+[opaque value redacted]:19:40: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           JSON.generate("context_id" => session.fetch("context_id"),
+                                          ~~~~~~~
+
+[opaque value redacted]:20:39: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└             "authorization_version" => session.fetch("authorization_version"),
+                                         ~~~~~~~
+
+[opaque value redacted]:31:75: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           raise Elevateo::CollaborationError.new("request_invalid") unless query.empty?
+                                                                             ~~~~~
+
+[opaque value redacted]:36:44: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           name, expected = self.class.input(input)
+                                              ~~~~~
+
+[opaque value redacted]:37:30: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           result = sql_result(connection, WRITE_SQL, "write display preference", [identity.digest, expected, name])
+                                ~~~~~~~~~~
+
+[opaque value redacted]:37:82: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           result = sql_result(connection, WRITE_SQL, "write display preference", [identity.digest, expected, name])
+                                                                                    ~~~~~~~~
+
+[opaque value redacted]:43:64: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           unless metadata.is_a?(Hash) && metadata["user_id"] == identity.user_id &&
+                                                                  ~~~~~~~~
+
+[opaque value redacted]:44:45: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└               metadata["organization_id"] == identity.org_id
+                                               ~~~~~~~~
+
+[opaque value redacted]:49:52: [error] Type `::Net::SMTP` does not have method `disable_tls`
+│ Diagnostic ID: Ruby::NoMethod
+│
+└         Net::SMTP.new(host, port).tap { |smtp| smtp.disable_tls; smtp.disable_starttls }
+                                                      ~~~~~~~~~~~
+
+[opaque value redacted]:49:70: [error] Type `::Net::SMTP` does not have method `disable_starttls`
+│ Diagnostic ID: Ruby::NoMethod
+│
+└         Net::SMTP.new(host, port).tap { |smtp| smtp.disable_tls; smtp.disable_starttls }
+                                                                        ~~~~~~~~~~~~~~~~
+
+[opaque value redacted]:16:89: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           raise Elevateo::CollaborationError.new("not_available") unless organization == identity.org_id
+                                                                                           ~~~~~~~~
+
+[opaque value redacted]:17:56: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           limit = Elevateo::OrganizationRoleAudit.limit(query)
+                                                          ~~~~~
+
+[opaque value redacted]:22:34: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           scope = { "actor_id" => identity.user_id, "organization_id" => organization,
+                                    ~~~~~~~~
+
+[opaque value redacted]:23:28: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└             "context_id" => session.fetch("context_id"), "authorization_version" => session.fetch("authorization_version"),
+                              ~~~~~~~
+
+[opaque value redacted]:23:84: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└             "context_id" => session.fetch("context_id"), "authorization_version" => session.fetch("authorization_version"),
+                                                                                      ~~~~~~~
+
+[opaque value redacted]:25:21: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           position = query.key?("cursor") ? cursors.decode(query.fetch("cursor"), scope: scope) : nil
+                       ~~~~~
+
+[opaque value redacted]:25:59: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           position = query.key?("cursor") ? cursors.decode(query.fetch("cursor"), scope: scope) : nil
+                                                             ~~~~~
+
+[opaque value redacted]:33:19: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           binds = [identity.digest, position && position["id"], limit].map do |value|
+                     ~~~~~~~~
+
+[opaque value redacted]:36:16: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           row = connection.exec_query(PAGE_SQL, "organization role audit page", binds).first
+                  ~~~~~~~~~~
+
+[opaque value redacted]:52:42: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           JSON.generate({ "context_id" => session.fetch("context_id"),
+                                            ~~~~~~~
+
+[opaque value redacted]:53:39: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└             "authorization_version" => session.fetch("authorization_version"),
+                                         ~~~~~~~
+
+[opaque value redacted]:36:73: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           raise Elevateo::CollaborationError.new("not_available") unless capability == :read &&
+                                                                           ~~~~~~~~~~
+
+[opaque value redacted]:37:12: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└             organization_id == identity.org_id && mailbox_id == mailbox && thread_id == thread && message_id == message
+              ~~~~~~~~~~~~~~~
+
+[opaque value redacted]:37:50: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└             organization_id == identity.org_id && mailbox_id == mailbox && thread_id == thread && message_id == message
+                                                    ~~~~~~~~~~
+
+[opaque value redacted]:37:75: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└             organization_id == identity.org_id && mailbox_id == mailbox && thread_id == thread && message_id == message
+                                                                             ~~~~~~~~~
+
+[opaque value redacted]:37:98: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└             organization_id == identity.org_id && mailbox_id == mailbox && thread_id == thread && message_id == message
+                                                                                                    ~~~~~~~~~~
+
+[opaque value redacted]:38:79: [error] Cannot pass a value of type `::Hash[::String, (::String | nil)]` as an argument of type `::Hash[::String, ::String]`
+│   ::Hash[::String, (::String | nil)] <: ::Hash[::String, ::String]
+│     (::String | nil) <: ::String
+│       nil <: ::String
+│
+│ Diagnostic ID: Ruby::ArgumentTypeMismatch
+│
+└           reader.direct_message(thread_id: thread, message_id: message, query: { "mailbox_id" => mailbox })
+                                                                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+[opaque value redacted]:42:45: [error] Cannot pass a value of type `^() -> nil` as an argument of type `::Elevateo::Attachments::_Authorization`
+│   ^() -> nil <: ::Elevateo::Attachments::_Authorization
+│     () -> nil <: (organization_id: ::String, mailbox_id: ::String, thread_id: ::String, message_id: ::String, capability: ::Symbol) -> void
+│       (Params are incompatible)
+│
+│ Diagnostic ID: Ruby::ArgumentTypeMismatch
+│
+└           storage: NoStorage.new, authorize: authorize)
+                                               ~~~~~~~~~
+
+[opaque value redacted]:43:81: [error] Cannot pass a value of type `(::String | nil)` as an argument of type `::String`
+│   (::String | nil) <: ::String
+│     nil <: ::String
+│
+│ Diagnostic ID: Ruby::ArgumentTypeMismatch
+│
+└         JSON.generate(service.list(organization_id: identity.org_id, mailbox_id: mailbox,
+                                                                                   ~~~~~~~
+
+[opaque value redacted]:44:21: [error] Cannot pass a value of type `(::String | nil)` as an argument of type `::String`
+│   (::String | nil) <: ::String
+│     nil <: ::String
+│
+│ Diagnostic ID: Ruby::ArgumentTypeMismatch
+│
+└           thread_id: thread, message_id: message, cursor: cursor, limit: limit.to_i))
+                       ~~~~~~
+
+[opaque value redacted]:44:41: [error] Cannot pass a value of type `(::String | nil)` as an argument of type `::String`
+│   (::String | nil) <: ::String
+│     nil <: ::String
+│
+│ Diagnostic ID: Ruby::ArgumentTypeMismatch
+│
+└           thread_id: thread, message_id: message, cursor: cursor, limit: limit.to_i))
+                                           ~~~~~~~
+
+[opaque value redacted]:28:21: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└         send_service(connection, session).cancel(send_id: send_path(:send_id), mailbox_id: mailbox_id,
+                       ~~~~~~~~~~
+
+[opaque value redacted]:28:33: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└         send_service(connection, session).cancel(send_id: send_path(:send_id), mailbox_id: mailbox_id,
+                                   ~~~~~~~
+
+[opaque value redacted]:29:26: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           session_digest: identity.digest, epoch: send_epoch)
+                            ~~~~~~~~
+
+[opaque value redacted]:16:65: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└         guard_users: ->(input:, **) { [Elevateo::WriteInput.uuid(input["actor_id"])] }) do
+                                                                   ~~~~~
+
+[opaque value redacted]:18:71: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└         raise Elevateo::CollaborationError.new("not_available") unless input["actor_id"] == identity.user_id
+                                                                         ~~~~~
+
+[opaque value redacted]:18:92: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└         raise Elevateo::CollaborationError.new("not_available") unless input["actor_id"] == identity.user_id
+                                                                                              ~~~~~~~~
+
+[opaque value redacted]:19:44: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└         mailbox = Elevateo::WriteInput.uuid(input["mailbox_id"])
+                                              ~~~~~
+
+[opaque value redacted]:20:65: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└         store = Elevateo::Inbound::PostgresStore.new(connection: connection,
+                                                                   ~~~~~~~~~~
+
+[opaque value redacted]:21:26: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           session_digest: identity.digest, actor_id: identity.user_id)
+                            ~~~~~~~~
+
+[opaque value redacted]:21:53: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           session_digest: identity.digest, actor_id: identity.user_id)
+                                                       ~~~~~~~~
+
+[opaque value redacted]:23:27: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           organization_id: identity.org_id, mailbox_id: mailbox)
+                             ~~~~~~~~
+
+[opaque value redacted]:26:27: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           organization_id: identity.org_id, mailbox_id: mailbox, authorized_mailbox_ids: [mailbox],
+                             ~~~~~~~~
+
+[opaque value redacted]:27:31: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           provider_account_id: input["provider_account_id"], provider_event_id: input["provider_event_id"],
+                                 ~~~~~
+
+[opaque value redacted]:27:80: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           provider_account_id: input["provider_account_id"], provider_event_id: input["provider_event_id"],
+                                                                                  ~~~~~
+
+[opaque value redacted]:28:20: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           raw_mime: input["raw_mime"])
+                      ~~~~~
+
+[opaque value redacted]:26:89: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           raise Elevateo::CollaborationError.new("not_available") unless organization == identity.org_id
+                                                                                           ~~~~~~~~
+
+[opaque value redacted]:27:40: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           limit = self.class.page_limit(query)
+                                          ~~~~~
+
+[opaque value redacted]:29:29: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           scope = page_scope(identity, session, limit, organization)
+                               ~~~~~~~~
+
+[opaque value redacted]:29:39: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           scope = page_scope(identity, session, limit, organization)
+                                         ~~~~~~~
+
+[opaque value redacted]:30:21: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           position = query.key?("cursor") ? cursors.decode(query.fetch("cursor"), scope: scope) : nil
+                       ~~~~~
+
+[opaque value redacted]:30:59: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           position = query.key?("cursor") ? cursors.decode(query.fetch("cursor"), scope: scope) : nil
+                                                             ~~~~~
+
+[opaque value redacted]:38:19: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           binds = [identity.digest, position && position["user_id"], limit].map do |value|
+                     ~~~~~~~~
+
+[opaque value redacted]:41:16: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           row = connection.exec_query(PAGE_SQL, "organization grants page", binds).first
+                  ~~~~~~~~~~
+
+[opaque value redacted]:51:37: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           unless actor["user_id"] == identity.user_id && %w[organization_owner organization_admin].include?(actor["role"])
+                                       ~~~~~~~~
+
+[opaque value redacted]:62:42: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           JSON.generate({ "context_id" => session.fetch("context_id"),
+                                            ~~~~~~~
+
+[opaque value redacted]:63:39: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└             "authorization_version" => session.fetch("authorization_version"),
+                                         ~~~~~~~
+
+[opaque value redacted]:107:89: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           raise Elevateo::CollaborationError.new("not_available") unless organization == identity.org_id
+                                                                                           ~~~~~~~~
+
+[opaque value redacted]:108:40: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           limit = self.class.page_limit(query)
+                                          ~~~~~
+
+[opaque value redacted]:109:33: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           authorization_binds = [identity.digest, nil, "1"].map do |value|
+                                   ~~~~~~~~
+
+[opaque value redacted]:112:23: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           result_row = connection.exec_query(PAGE_SQL, "organization roster authority", authorization_binds).first
+                         ~~~~~~~~~~
+
+[opaque value redacted]:120:37: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           unless actor["user_id"] == identity.user_id && %w[organization_owner organization_admin].include?(actor["role"])
+                                       ~~~~~~~~
+
+[opaque value redacted]:124:29: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           scope = page_scope(identity, session, limit, organization).merge("resource" => "organization_roster", "order" => "key:asc")
+                               ~~~~~~~~
+
+[opaque value redacted]:124:39: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           scope = page_scope(identity, session, limit, organization).merge("resource" => "organization_roster", "order" => "key:asc")
+                                         ~~~~~~~
+
+[opaque value redacted]:125:21: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           position = query.key?("cursor") ? cursors.decode(query.fetch("cursor"), scope: scope) : nil
+                       ~~~~~
+
+[opaque value redacted]:125:59: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           position = query.key?("cursor") ? cursors.decode(query.fetch("cursor"), scope: scope) : nil
+                                                             ~~~~~
+
+[opaque value redacted]:139:42: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           JSON.generate({ "context_id" => session.fetch("context_id"),
+                                            ~~~~~~~
+
+[opaque value redacted]:140:39: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└             "authorization_version" => session.fetch("authorization_version"),
+                                         ~~~~~~~
+
+[opaque value redacted]:155:75: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           raise Elevateo::CollaborationError.new("request_invalid") unless query.empty?
+                                                                             ~~~~~
+
+[opaque value redacted]:160:89: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           raise Elevateo::CollaborationError.new("not_available") unless organization == identity.org_id
+                                                                                           ~~~~~~~~
+
+[opaque value redacted]:161:51: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           role, revision = self.class.change_input(input)
+                                                     ~~~~~
+
+[opaque value redacted]:162:16: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           row = connection.exec_query(CHANGE_SQL, "organization role change",
+                  ~~~~~~~~~~
+
+[opaque value redacted]:163:13: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└             [identity.digest, target, revision.to_s, ROLE_SQL.fetch(role)].map do |value|
+               ~~~~~~~~
+
+[opaque value redacted]:173:64: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           unless metadata.is_a?(Hash) && metadata["user_id"] == identity.user_id && metadata["organization_id"] == organization
+                                                                  ~~~~~~~~
+
+Detected 111 problems from 14 files
+RUN RuboCop lint
+== [opaque value redacted] ==
+W: 11: 29: Lint/UnusedMethodArgument: Unused method argument - content_type. You can also write as put(*) if you want the method to accept any arguments but don't care about them.
+== [opaque value redacted] ==
+F: 23:  1: Lint/Syntax: unexpected instance variable; expected a , separator for the array elements
+(Using Ruby 3.4 parser; configure using TargetRubyVersion parameter, under AllCops)
+F: 32:  1: Lint/Syntax: unexpected instance variable; expected a , separator for the array elements
+(Using Ruby 3.4 parser; configure using TargetRubyVersion parameter, under AllCops)
+F: 35:  1: Lint/Syntax: unexpected 'end'; expected a , separator for the array elements
+(Using Ruby 3.4 parser; configure using TargetRubyVersion parameter, under AllCops)
+F: 35:  3: Lint/Syntax: unexpected 'end', assuming it is closing the parent method definition
+(Using Ruby 3.4 parser; configure using TargetRubyVersion parameter, under AllCops)
+== test/attachments/service_test.rb ==
+W:109:  5: [Correctable] Lint/AmbiguousBlockAssociation: Parenthesize the param @checks.map { |item| item.fetch(:capability) } to make sure that the block will be associated with the @checks.map method call.
+== [opaque value redacted] ==
+W: 17: 25: Lint/StructNewOverride: :to_a member overrides Struct#to_a and it may be unexpected.
+W: 71:  5: [Correctable] Lint/AmbiguousBlockAssociation: Parenthesize the param connection.sql.any? { |sql| sql.include?("pg_advisory_xact_lock") } to make sure that the block will be associated with the connection.sql.any? method call.
+W: 72:  5: [Correctable] Lint/AmbiguousBlockAssociation: Parenthesize the param connection.sql.any? { |sql| sql.include?("INSERT INTO app.campaign_sequence_steps") } to make sure that the block will be associated with the connection.sql.any? method call.
+W: 76:  5: [Correctable] Lint/AmbiguousBlockAssociation: Parenthesize the param connection.sql.any? { |sql| sql.include?("INSERT INTO app.campaign_sequence_mutations") } to make sure that the block will be associated with the connection.sql.any? method call.
+W: 84:  5: [Correctable] Lint/AmbiguousBlockAssociation: Parenthesize the param connection.sql.any? { |sql| sql.include?("INSERT INTO") } to make sure that the block will be associated with the connection.sql.any? method call.
+W:105:  5: [Correctable] Lint/AmbiguousBlockAssociation: Parenthesize the param connection.sql.any? { |sql| sql.include?("DELETE FROM app.campaign_sequence_steps") } to make sure that the block will be associated with the connection.sql.any? method call.
+W:115:  5: [Correctable] Lint/AmbiguousBlockAssociation: Parenthesize the param connection.sql.any? { |sql| sql.include?("INSERT INTO app.campaign_sequences") } to make sure that the block will be associated with the connection.sql.any? method call.
+W:128:  5: [Correctable] Lint/AmbiguousBlockAssociation: Parenthesize the param connection.sql.any? { |sql| sql.include?("authorize_outreach_content_read") } to make sure that the block will be associated with the connection.sql.any? method call.
+W:129:  5: [Correctable] Lint/AmbiguousBlockAssociation: Parenthesize the param connection.sql.any? { |sql| sql.include?("authorize_outreach_draft_write") } to make sure that the block will be associated with the connection.sql.any? method call.
+W:140:  5: [Correctable] Lint/AmbiguousBlockAssociation: Parenthesize the param connection.sql.count { |sql| sql.include?("SELECT id,campaign_id,status,timezone,version") } to make sure that the block will be associated with the connection.sql.count method call.
+
+306 files inspected, 16 offenses detected, 10 offenses autocorrectable
+Failed checks: 4
+ Container [opaque value redacted] Creating 
+ Container [opaque value redacted] Created 
+[opaque value redacted]:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+[opaque value redacted]:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+[opaque value redacted]:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+[opaque value redacted]:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+[opaque value redacted]:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+[opaque value redacted]:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+fixture rollback also failed (PG::ConnectionBad)
+[opaque value redacted]:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+[opaque value redacted]:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+[opaque value redacted]:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+[opaque value redacted]:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+[opaque value redacted]:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+[opaque value redacted]:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+[opaque value redacted]:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+[opaque value redacted]:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+[opaque value redacted]:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+[opaque value redacted]:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+[opaque value redacted]:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+WARNING:  there is no transaction in progress
+[opaque value redacted]:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+[opaque value redacted]:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+[opaque value redacted]:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+NOTICE:  trigger "fixture_skip_job" for relation "app_send_private.jobs" does not exist, skipping
+NOTICE:  function app_send_private.fixture_skip_job() does not exist, skipping
+[opaque value redacted]:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+[opaque value redacted]:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+The following cops were added to RuboCop, but are not configured. Please set Enabled to either `true` or `false` in your `.rubocop.yml` file.
+
+Please also note that you can opt-in to new cops by default by adding this to your config:
+  AllCops:
+    NewCops: enable
+Gemspec/AddRuntimeDependency: # new in 1.65
+  Enabled: true
+Gemspec/AttributeAssignment: # new in 1.77
+  Enabled: true
+[opaque value redacted]: # new in 1.30
+  Enabled: true
+Gemspec/DevelopmentDependencies: # new in 1.44
+  Enabled: true
+Gemspec/RequireMFA: # new in 1.23
+  Enabled: true
+[opaque value redacted]: # new in 1.79
+  Enabled: true
+[opaque value redacted]: # new in 1.31
+  Enabled: true
+Layout/LineContinuationSpacing: # new in 1.31
+  Enabled: true
+[opaque value redacted]: # new in 1.18
+  Enabled: true
+Layout/SpaceBeforeBrackets: # new in 1.7
+  Enabled: true
+Lint/AmbiguousAssignment: # new in 1.7
+  Enabled: true
+[opaque value redacted]: # new in 1.21
+  Enabled: true
+Lint/AmbiguousRange: # new in 1.19
+  Enabled: true
+Lint/ArgumentMismatch: # new in 1.90
+  Enabled: true
+Lint/ArrayLiteralInRegexp: # new in 1.71
+  Enabled: true
+[opaque value redacted]: # new in 1.31
+  Enabled: true
+Lint/ConstantReassignment: # new in 1.70
+  Enabled: true
+Lint/DataDefineOverride: # new in 1.85
+  Enabled: true
+Lint/DeprecatedConstants: # new in 1.8
+  Enabled: true
+Lint/DeprecatedReference: # new in 1.89
+  Enabled: true
+Lint/DuplicateBranch: # new in 1.3
+  Enabled: true
+Lint/DuplicateMagicComment: # new in 1.37
+  Enabled: true
+Lint/DuplicateMatchPattern: # new in 1.50
+  Enabled: true
+[opaque value redacted]: # new in 1.1
+  Enabled: true
+Lint/DuplicateSetElement: # new in 1.67
+  Enabled: true
+Lint/EmptyBlock: # new in 1.1
+  Enabled: true
+Lint/EmptyClass: # new in 1.3
+  Enabled: true
+Lint/EmptyInPattern: # new in 1.16
+  Enabled: true
+[opaque value redacted]: # new in 1.69
+  Enabled: true
+[opaque value redacted]: # new in 1.21
+  Enabled: true
+Lint/ItWithoutArgumentsInBlock: # new in 1.59
+  Enabled: true
+Lint/LambdaWithoutLiteralBlock: # new in 1.8
+  Enabled: true
+[opaque value redacted]: # new in 1.58
+  Enabled: true
+Lint/MisplacedMagicComment: # new in 1.91
+  Enabled: true
+Lint/MixedCaseRange: # new in 1.53
+  Enabled: true
+Lint/NameTypo: # new in 1.89
+  Enabled: true
+Lint/NoReturnInBeginEndBlocks: # new in 1.2
+  Enabled: true
+Lint/NonAtomicFileOperation: # new in 1.31
+  Enabled: true
+[opaque value redacted]: # new in 1.9
+  Enabled: true
+[opaque value redacted]: # new in 1.69
+  Enabled: true
+Lint/OrAssignmentToConstant: # new in 1.9
+  Enabled: true
+Lint/RedundantDirGlobSort: # new in 1.8
+  Enabled: true
+Lint/RedundantRegexpQuantifiers: # new in 1.53
+  Enabled: true
+Lint/RedundantTypeConversion: # new in 1.72
+  Enabled: true
+Lint/RefinementImportMethods: # new in 1.27
+  Enabled: true
+Lint/RequireRangeParentheses: # new in 1.32
+  Enabled: true
+Lint/RequireRelativeSelfPath: # new in 1.22
+  Enabled: true
+Lint/SharedMutableDefault: # new in 1.70
+  Enabled: true
+Lint/SuperArgumentMismatch: # new in 1.90
+  Enabled: true
+[opaque value redacted]: # new in 1.72
+  Enabled: true
+Lint/SymbolConversion: # new in 1.9
+  Enabled: true
+Lint/ToEnumArguments: # new in 1.1
+  Enabled: true
+Lint/TripleQuotes: # new in 1.9
+  Enabled: true
+Lint/UnescapedBracketInRegexp: # new in 1.68
+  Enabled: true
+Lint/UnexpectedBlockArity: # new in 1.5
+  Enabled: true
+[opaque value redacted]: # new in 1.1
+  Enabled: true
+Lint/UnreachablePatternBranch: # new in 1.85
+  Enabled: true
+Lint/UselessConstantScoping: # new in 1.72
+  Enabled: true
+[opaque value redacted]: # new in 1.76
+  Enabled: true
+Lint/UselessDefined: # new in 1.69
+  Enabled: true
+Lint/UselessNumericOperation: # new in 1.66
+  Enabled: true
+Lint/UselessOr: # new in 1.76
+  Enabled: true
+Lint/UselessRescue: # new in 1.43
+  Enabled: true
+Lint/UselessRuby2Keywords: # new in 1.23
+  Enabled: true
+Metrics/CollectionLiteralLength: # new in 1.47
+  Enabled: true
+Naming/BlockForwarding: # new in 1.24
+  Enabled: true
+Naming/PredicateMethod: # new in 1.76
+  Enabled: true
+Security/CompoundHash: # new in 1.28
+  Enabled: true
+Security/IoMethods: # new in 1.22
+  Enabled: true
+[opaque value redacted]: # new in 1.68
+  Enabled: true
+Style/ArgumentsForwarding: # new in 1.1
+  Enabled: true
+Style/ArrayIntersect: # new in 1.40
+  Enabled: true
+[opaque value redacted]: # new in 1.81
+  Enabled: true
+Style/BitwisePredicate: # new in 1.68
+  Enabled: true
+Style/CollectionCompact: # new in 1.2
+  Enabled: true
+Style/CollectionQuerying: # new in 1.77
+  Enabled: true
+Style/CombinableDefined: # new in 1.68
+  Enabled: true
+Style/ComparableBetween: # new in 1.74
+  Enabled: true
+Style/ComparableClamp: # new in 1.44
+  Enabled: true
+Style/ConcatArrayLiterals: # new in 1.41
+  Enabled: true
+Style/DataInheritance: # new in 1.49
+  Enabled: true
+Style/DigChain: # new in 1.69
+  Enabled: true
+Style/DirEmpty: # new in 1.48
+  Enabled: true
+Style/DirectiveScope: # new in 1.90
+  Enabled: true
+[opaque value redacted]: # new in 1.1
+  Enabled: true
+Style/EmptyClassDefinition: # new in 1.84
+  Enabled: true
+Style/EmptyHeredoc: # new in 1.32
+  Enabled: true
+[opaque value redacted]: # new in 1.76
+  Enabled: true
+Style/EndlessMethod: # new in 1.8
+  Enabled: true
+Style/EnvHome: # new in 1.29
+  Enabled: true
+Style/ExactRegexpMatch: # new in 1.51
+  Enabled: true
+Style/FetchEnvVar: # new in 1.28
+  Enabled: true
+Style/FileEmpty: # new in 1.48
+  Enabled: true
+Style/FileNull: # new in 1.69
+  Enabled: true
+Style/FileOpen: # new in 1.85
+  Enabled: true
+Style/FileRead: # new in 1.24
+  Enabled: true
+Style/FileTouch: # new in 1.69
+  Enabled: true
+Style/FileWrite: # new in 1.24
+  Enabled: true
+Style/HashConversion: # new in 1.10
+  Enabled: true
+Style/HashExcept: # new in 1.7
+  Enabled: true
+Style/HashFetchChain: # new in 1.75
+  Enabled: true
+Style/HashSlice: # new in 1.71
+  Enabled: true
+[opaque value redacted]: # new in 1.9
+  Enabled: true
+Style/InPatternThen: # new in 1.16
+  Enabled: true
+Style/ItAssignment: # new in 1.70
+  Enabled: true
+Style/ItBlockParameter: # new in 1.75
+  Enabled: true
+Style/KeywordArgumentsMerging: # new in 1.68
+  Enabled: true
+Style/MagicCommentFormat: # new in 1.35
+  Enabled: true
+[opaque value redacted]: # new in 1.30
+  Enabled: true
+Style/MapIntoArray: # new in 1.63
+  Enabled: true
+Style/MapJoin: # new in 1.85
+  Enabled: true
+Style/MapToHash: # new in 1.24
+  Enabled: true
+Style/MapToSet: # new in 1.42
+  Enabled: true
+Style/MinMaxComparison: # new in 1.42
+  Enabled: true
+[opaque value redacted]: # new in 1.82
+  Enabled: true
+Style/MultilineInPatternThen: # new in 1.16
+  Enabled: true
+Style/NegatedIfElseCondition: # new in 1.2
+  Enabled: true
+Style/NegativeArrayIndex: # new in 1.84
+  Enabled: true
+Style/NestedFileDirname: # new in 1.26
+  Enabled: true
+Style/NilLambda: # new in 1.3
+  Enabled: true
+Style/NumberedParameters: # new in 1.22
+  Enabled: true
+Style/NumberedParametersLimit: # new in 1.22
+  Enabled: true
+Style/ObjectThen: # new in 1.28
+  Enabled: true
+Style/OneClassPerFile: # new in 1.85
+  Enabled: true
+Style/OpenStructUse: # new in 1.23
+  Enabled: true
+Style/OperatorMethodCall: # new in 1.37
+  Enabled: true
+[opaque value redacted]: # new in 1.85
+  Enabled: true
+Style/PredicateWithKind: # new in 1.85
+  Enabled: true
+Style/QuotedSymbols: # new in 1.16
+  Enabled: true
+Style/ReduceToHash: # new in 1.85
+  Enabled: true
+Style/RedundantArgument: # new in 1.4
+  Enabled: true
+Style/RedundantArrayConstructor: # new in 1.52
+  Enabled: true
+Style/RedundantArrayFlatten: # new in 1.76
+  Enabled: true
+Style/RedundantConstantBase: # new in 1.40
+  Enabled: true
+[opaque value redacted]: # new in 1.53
+  Enabled: true
+[opaque value redacted]: # new in 1.41
+  Enabled: true
+Style/RedundantEach: # new in 1.38
+  Enabled: true
+Style/RedundantFilterChain: # new in 1.52
+  Enabled: true
+Style/RedundantFormat: # new in 1.72
+  Enabled: true
+[opaque value redacted]: # new in 1.45
+  Enabled: true
+Style/RedundantInitialize: # new in 1.27
+  Enabled: true
+[opaque value redacted]: # new in 1.66
+  Enabled: true
+Style/RedundantLineContinuation: # new in 1.49
+  Enabled: true
+Style/RedundantMinMaxBy: # new in 1.85
+  Enabled: true
+Style/RedundantRegexpArgument: # new in 1.53
+  Enabled: true
+[opaque value redacted]: # new in 1.52
+  Enabled: true
+[opaque value redacted]: # new in 1.19
+  Enabled: true
+Style/RedundantStringEscape: # new in 1.37
+  Enabled: true
+[opaque value redacted]: # new in 1.53
+  Enabled: true
+Style/ReverseFind: # new in 1.84
+  Enabled: true
+Style/SafeNavigationChainLength: # new in 1.68
+  Enabled: true
+Style/SelectByKind: # new in 1.85
+  Enabled: true
+Style/SelectByRange: # new in 1.85
+  Enabled: true
+Style/SelectByRegexp: # new in 1.22
+  Enabled: true
+Style/SendWithLiteralMethodName: # new in 1.64
+  Enabled: true
+Style/SingleLineDoEndBlock: # new in 1.57
+  Enabled: true
+Style/StringChars: # new in 1.12
+  Enabled: true
+Style/SuperArguments: # new in 1.64
+  Enabled: true
+Style/SuperWithArgsParentheses: # new in 1.58
+  Enabled: true
+Style/SwapValues: # new in 1.1
+  Enabled: true
+Style/TallyMethod: # new in 1.85
+  Enabled: true
+Style/TimeNow: # new in 1.90
+  Enabled: true
+Style/YAMLFileRead: # new in 1.53
+  Enabled: true
+For more information: https://docs.rubocop.org/rubocop/versioning.html
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+Couldn't create cache directory. Continuing without cache.
+  Read-only file system @ dir_s_mkdir - /app/.cache
+
+
+exit=1 seconds=112.64

@@ -421,3 +421,5 @@ ATT877 Sabine af518d5 migration00018 now consumes/asserts Leonie precreated priv
 QA815 independent units: exact `845d422` sequence repository/controller 10 runs/45 assertions PASS; exact `58ab588` ClamAV fake transport/IMAP attachment parser 9/30 PASS. Real gateway/clamd/Mox, database and HTTP gates remain separate. Receipts in `docs/completion/soren.md`.
 
 QA815 exact `f70b654` full fleet web gate PASSED V1/V2, lint, strict type, 842/842 units and production build; same-source repaired SEEDED-SIMULATED eight-PNG visual capture passed with cleanup. Private images await root/Tessa manual inspection. Real-backend QA816, protected migration/worker and native installation remain OPEN. See `docs/completion/soren.md`.
+
+QA815 exact `651b63a` disposable backend now passes 21 migrations including attachment gateway 00018 with task-only restricted login bootstrap. Full Ruby remains failed: 521 runs/7065 assertions/1 failure/1 error; Steep 111 problems. Protected organization role and thread fixture table ownership need owner fixes before HTTP/worker/browser. Cleanup passed. See `docs/completion/soren.md`.
