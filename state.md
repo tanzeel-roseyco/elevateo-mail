@@ -1,3 +1,5 @@
+ATT883 source candidate (2026-10-14): V2 admin grant, role-audit and personal-preference controller block bindings now carry existing narrow RBS types. No authorization, DTO or status behavior changed; focused fleet Steep/controller regressions and independent review are pending.
+
 OPS820 source intake (2026-10-14): Leonie f8b07b2 administrative private-gateway schema bootstrap and pre/post role checks are imported. Sabine 00018 consumer repair and Soren fleet SQL/process separation remain pending; public bytes inactive.
 
 

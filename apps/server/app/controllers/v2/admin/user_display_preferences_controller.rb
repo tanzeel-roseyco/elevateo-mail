@@ -13,6 +13,9 @@ module V2
 
       def show
         protected_read(allowed_query: [], budget: 4096) do |connection:, identity:, session:, **|
+          # @type var connection: ActiveRecord::ConnectionAdapters::AbstractAdapter
+          # @type var identity: Elevateo::SessionIdentity
+          # @type var session: Elevateo::ReadResponse::item
           result = sql_result(connection, READ_SQL, "read display preference", [identity.digest])
           Elevateo::SessionStore.check!(result)
           display_name, revision = self.class.projection(result)
@@ -28,11 +31,15 @@ module V2
         # @type var guards: V1::WriteController::target_users
         guards = ->(input:, query:) do
           # @type var input: Elevateo::WriteInput::object
+          # @type var query: Hash[String, String]
           raise Elevateo::CollaborationError.new("request_invalid") unless query.empty?
           self.class.input(input)
           []
         end
         protected_write(required: %w[display_name expected_revision], guard_users: guards) do |connection:, identity:, input:, **|
+          # @type var connection: Elevateo::WriteStatements
+          # @type var identity: Elevateo::SessionIdentity
+          # @type var input: Elevateo::WriteInput::object
           name, expected = self.class.input(input)
           result = sql_result(connection, WRITE_SQL, "write display preference", [identity.digest, expected, name])
           if result["status"] == "preference_conflict"
