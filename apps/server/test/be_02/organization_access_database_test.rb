@@ -74,6 +74,8 @@ class OrganizationAccessDatabaseTest < MailboxMembershipDatabaseCase
     assert_equal second.user_id, page1.fetch("items").first.fetch("target_user_id")
     assert_equal %w[actor_user_id id new_role occurred_at old_role operation revision target_user_id],
       page1.fetch("items").first.keys.sort
+    assert_match(/\A\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{6}Z\z/,
+      page1.fetch("items").first.fetch("occurred_at"))
     page2 = audit_page(after: page1.fetch("next_id"), limit: 1)
     assert_equal first.user_id, page2.fetch("items").first.fetch("target_user_id")
     assert_nil page2.fetch("next_id")

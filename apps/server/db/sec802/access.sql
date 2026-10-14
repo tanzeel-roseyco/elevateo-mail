@@ -404,7 +404,7 @@ BEGIN
   END IF;
   SELECT role INTO actor_role FROM app.organization_access
     WHERE organization_id = org AND user_id = actor;
-  IF actor_role NOT IN ('owner', 'admin') OR actor_role IS NULL THEN
+  IF actor_role NOT IN ('owner', 'admin', 'auditor') OR actor_role IS NULL THEN
     RETURN '{"status":"not_found"}'::jsonb;
   END IF;
   IF p_after_id IS NOT NULL THEN
@@ -415,7 +415,8 @@ BEGIN
   SELECT COALESCE(jsonb_agg(jsonb_build_object('id', page.id,
       'actor_user_id', page.actor_user_id, 'target_user_id', page.target_user_id,
       'old_role', page.old_role, 'new_role', page.new_role, 'revision', page.revision,
-      'operation', page.operation, 'occurred_at', page.occurred_at)
+      'operation', page.operation, 'occurred_at',
+      to_char(page.occurred_at AT TIME ZONE 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS.US"Z"'))
       ORDER BY page.event_sequence DESC), '[]'::jsonb)
     INTO rows FROM (
       SELECT a.* FROM app.organization_role_audit a WHERE a.organization_id = org
