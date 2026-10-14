@@ -709,3 +709,7 @@ ADV115 independently reviewed exact Nadia `8192bbc` PrivateStorage repair: 212 u
 ## ATT886 attachment strict types (2026-10-14)
 
 Source repair is authored against Soren's `651b63a9fdb2` Steep receipt; no independent review or fleet test has run on this candidate. Proposed bounded packet: service 78 LOC, scanner 56 LOC, RBS 75 LOC, regression context 56 LOC (265 unique LOC maximum, each read <=180); see `docs/completion/nadia-att886-steep-repair.md`. Defects and density for this successor are not assessed; do not infer 0/KLOC or runtime PASS.
+
+## ATT898 focused attachment typing and import (2026-10-14)
+
+Soren 211df receipt exposed one repository type error and two standalone service test load errors; see `docs/completion/nadia-att898-focused-repair.md`. Nadia authored a source repair and proposed a 198 unique LOC independent review packet, each read <=180. No independent review or new fleet run has occurred on this candidate; defect count and density remain unassessed rather than 0/KLOC.

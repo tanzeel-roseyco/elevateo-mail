@@ -72,6 +72,8 @@ ATT870 declares the restricted PrivateStorage adapter for strict type checking a
 
 ATT886 replaces inferred keyword splats at attachment authorization/repository calls with explicit scoped arguments, validates stored byte size as an integer within the attachment bound, and declares the scanner socket capability check. Source is authored, with fleet Steep and focused unit results pending; see `docs/completion/nadia-att886-steep-repair.md`.
 
+ATT898 aligns repository query binds with the declared ActiveRecord String attribute and makes standalone test imports explicit. The integrated inbox attachment controller already narrows path UUID values before the protected read and annotates its authorization block; Soren must validate the combined source. See `docs/completion/nadia-att898-focused-repair.md`.
+
 
 The first release is a company mailroom: named addresses, shared conversations, assignment, team status, per-user read state, composer, drafts, search, attachments and audit history. Individual mailbox permissions allow private addresses where required. Ten users do not imply ten paid email accounts or ten servers; people, addresses, mailboxes and provider identities are separate concepts.
 

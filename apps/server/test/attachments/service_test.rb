@@ -1,8 +1,10 @@
 # frozen_string_literal: true
 
 require "minitest/autorun"
+require "minitest/mock"
 require_relative "../../lib/elevateo/attachments"
 require_relative "../../lib/elevateo/attachments_scan"
+require_relative "../../lib/elevateo/attachments_repository"
 require_relative "../../lib/elevateo/attachments_storage"
 
 class AttachmentServiceTest < Minitest::Test
