@@ -130,3 +130,5 @@ Cassian manifest reconciliation: contract-lock now seals actual generated client
 QA815 fleet 16:28 UTC: `f210b5bf` full web 791/791 PASS and separate SEEDED-SIMULATED eight-PNG browser capture PASS, task cleanup complete. Exact `cb1ec5b` integrated backend migrations PASS, Ruby 520 runs/7025 assertions/2 failures/4 errors, Steep 270 problems; web lint four errors stops type/unit/build. Root/Tessa have artifact and failure paths in `docs/completion/soren.md`; real-auth acceptance remains OPEN.
 
 QA815 `882a471`: web 825/827 units after V1/V2/lint/type PASS; two feature-route failures. OPS820 Python 20/20 PASS. Backend attachment migration 00018 fails database CREATE after restricted gateway bootstrap succeeds; source owner repair pending. Exact task cleanup PASS. Real gateway SQL/HTTP/browser acceptance remains OPEN.
+
+QA815 follow-up: `6c626e2` web stopped at five lint errors after V1/V2 check; `8625387` Android unsigned APK failed manifest-tree policy. Both task resource cleanups passed. Owner source repairs and exact-source retests pending; native install and real-backend acceptance remain OPEN.

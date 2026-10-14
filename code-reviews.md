@@ -698,3 +698,5 @@ The `f210b5b` frontend PASS, `fa3082a` backend migration/static FAIL and `b999f4
 QA815 16:28 fleet execution addendum: `cb1ec5b` web lint, Ruby/Steep and `32d043f` Android permission policy failures are runtime findings sent to root and source owners. The `f210b5bf` seeded eight-PNG capture is browser execution plus two-image visual inspection, not an independent bounded source review. Additional independently reviewed source: 0 LOC; defect density unclaimed. Root owns independent functional/design review and visual acceptance.
 
 QA815 `882a471` addendum: web feature-route test failures and 00018 database CREATE privilege failure are executed test findings, reported to root/source owners; OPS820 20/20 units are not independent code review. Additional independently reviewed source remains 0 LOC; no density claim. The task-only gateway bootstrap does not authorize a production privilege change.
+
+QA815 later `6c626e2` lint and `8625387` aapt policy failures are executed gate findings, not independent code review. Additional independently reviewed source remains 0 LOC; density is unclaimed. Source repair and review remain with named owners/root.

@@ -1,0 +1,99 @@
+source=6c626e231574e7ea2aa595be2eba5eed2f344892
+started=2026-10-14T16:52:56Z
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            BuildKit is currently disabled; enable it by removing the DOCKER_BUILDKIT=0
+            environment-variable.
+
+Sending build context to Docker daemon  86.42MB
+Step 1/9 : FROM node:24.21.0-bookworm-slim@sha256:d6aa754f16b3197301076f047b5def2f02ea1dbbc2ca920407d46d7ec7f87b20
+ ---> d6aa754f16b3
+Step 2/9 : WORKDIR /workspace
+ ---> Running in b0517153087c
+ ---> Removed intermediate container b0517153087c
+ ---> f1ff014931a2
+Step 3/9 : COPY contracts/v1 ./contracts/v1
+ ---> 9eba32d5bb55
+Step 4/9 : COPY contracts/v2 ./contracts/v2
+ ---> 680b59aa71a7
+Step 5/9 : COPY apps/web ./apps/web
+ ---> 78f6647cd1ba
+Step 6/9 : WORKDIR /workspace/apps/web
+ ---> Running in 8c5882c8d95c
+ ---> Removed intermediate container 8c5882c8d95c
+ ---> 39c84636d259
+Step 7/9 : RUN npm ci
+ ---> Running in 41e65d46556b
+[91mnpm warn deprecated whatwg-encoding@3.1.1: Use @exodus/bytes instead for a more spec-conformant and faster implementation
+[0m
+added 324 packages, and audited 325 packages in 38s
+
+67 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+[91mnpm warn install-scripts 1 package has install scripts not yet covered by allowScripts:
+npm warn install-scripts   esbuild@0.28.2 (postinstall: node install.js)
+npm warn install-scripts
+npm warn install-scripts Run `npm install-scripts ls` to review, or `npm install-scripts approve <pkg>` to allow.
+[0m[91mnpm notice
+npm notice New major version of npm available! 11.19.0 -> 12.2.0
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0
+npm notice To update run: npm install -g npm@12.2.0
+npm notice
+[0m ---> Removed intermediate container 41e65d46556b
+ ---> d5e4f2ed3ce9
+Step 8/9 : CMD ["bash", "-ceu", "npm run check:api && npm run check:api:v2 && npm run lint && npm run typecheck && npm run test -- --coverage && npm run build && ! grep -rl 'dev-fixtures\\|Development fixtures\\|fixture_token_a' dist"]
+ ---> Running in ca51f26b125d
+ ---> Removed intermediate container ca51f26b125d
+ ---> bb0bf77ab15b
+Step 9/9 : LABEL qa815.owner=soren
+ ---> Running in 6e9684ce1a72
+ ---> Removed intermediate container 6e9684ce1a72
+ ---> 10bff26eb667
+Successfully built 10bff26eb667
+Successfully tagged qa815-web-6c626e231574:latest
+
+> @elevateo/web@0.1.0-read.1 check:api
+> openapi-typescript ../../contracts/v1/openapi.json --output src/data/generated/api.d.ts --check
+
+✨ openapi-typescript 7.13.0
+
+> @elevateo/web@0.1.0-read.1 generate:api:v2
+> openapi-typescript ../../contracts/v2/openapi.json --output src/data/generated/api-v2.d.ts
+
+✨ openapi-typescript 7.13.0
+🚀 ../../contracts/v2/openapi.json → src/data/generated/api-v2.d.ts [86.9ms]
+
+> @elevateo/web@0.1.0-read.1 check:api:v2
+> openapi-typescript ../../contracts/v2/openapi.json --output src/data/generated/api-v2.d.ts --check
+
+✨ openapi-typescript 7.13.0
+c22bde38524d4847da11ec51c08d1d6522ba45f55cf8fe613bb95d6988e69610  src/data/generated/api-v2.d.ts
+
+> @elevateo/web@0.1.0-read.1 lint
+> eslint . --max-warnings 0
+
+
+/workspace/apps/web/src/data/v2SequenceGateway.test.ts
+  16:36  error  '_path' is defined but never used  @typescript-eslint/no-unused-vars
+  16:51  error  '_init' is defined but never used  @typescript-eslint/no-unused-vars
+  50:36  error  '_path' is defined but never used  @typescript-eslint/no-unused-vars
+  50:51  error  '_init' is defined but never used  @typescript-eslint/no-unused-vars
+
+/workspace/apps/web/src/features/thread/MessageAttachments.tsx
+  28:7  error  Unexpected control character(s) in regular expression: \x00, \x1f  no-control-regex
+
+✖ 5 problems (5 errors, 0 warnings)
+
+Error response from daemon: No such container: qa815-web-6c626e231574
+Untagged: qa815-web-6c626e231574:latest
+Deleted: sha256:10bff26eb6670546b02be475783d97c8ea2a1dbac2732a8a3c5786c40557cbb2
+Deleted: sha256:bb0bf77ab15ba70625d469935574df12218d9462f2da5e067c1084ffc2bca17d
+Deleted: sha256:d5e4f2ed3ce93a866c46f604e44eb92824a77c0c04bb2d67121c4b6fdb5089bb
+Deleted: sha256:39c84636d2590383a6b9c2202b60af8bc7a9be2d820cfde940abc3102cbf70ab
+Deleted: sha256:78f6647cd1ba3f2ea5a583b1878279cf5da40fda69a4cfdeb30d64fffc980f98
+Deleted: sha256:680b59aa71a77030f208175364a09a717dec43fefe26719094da5ca2ea45201d
+Deleted: sha256:9eba32d5bb5518b6ca80af4dc3937de381deb00c1a2eb8abc196d46d740823f2
+Deleted: sha256:f1ff014931a2cdc8569417239cc2bc0f0702cc56947b67c131bd57642238569e
+remaining_containers=0
+remaining_image=0
