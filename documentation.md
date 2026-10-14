@@ -186,3 +186,5 @@ Cassian manifest reconciliation: contract-lock now seals actual generated client
 ### QA816 browser acceptance seam
 
 `tests/acceptance/playwright/qa816-send.e2e.ts` uses the existing real-auth internal_http Playwright harness. It requires a disposable seeded BE03-enabled stack under Soren's fleet Docker lease; no host execution or screenshots were made. It observes endpoint statuses only and stores sanitized case assertions. See docs/completion/tessa.md for execution request and limits.
+
+QA816 continuation: `qa816-matrix.e2e.ts` requests a merged Fable shell and the seeded real-auth stack; Soren alone runs it. Campaigns read UI is paused by design, and no create/detail API or installed Android claim is made. See docs/completion/tessa.md.

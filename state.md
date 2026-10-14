@@ -118,3 +118,5 @@ Cassian manifest reconciliation: contract-lock now seals actual generated client
 ### QA816 candidate
 
 Three Playwright scenarios were authored on baseline bbf2353 for a real API-backed simulated send, reader permissions and mobile-browser logout. Soren fleet execution, screenshots, review and root visual acceptance remain pending; installed Android and outreach are not covered. See docs/completion/tessa.md.
+
+QA816 continuation: strict Playwright matrix covers candidate reader history, duplicate draft click, denial/empty search and Fable shell/drawer visuals. No execution, screenshots or independent review yet; outreach create/detail and real 200% zoom remain open.
