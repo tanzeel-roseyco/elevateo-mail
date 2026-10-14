@@ -3,8 +3,10 @@ DO $$
 DECLARE helper oid; candidate record;
 BEGIN
   helper := to_regprocedure('app_attachment_gateway.private_binding(text,uuid,uuid,uuid,bigint,uuid,text,uuid,uuid,uuid,uuid,uuid)');
-  IF helper IS NULL OR to_regnamespace('app_attachment_gateway') IS NULL OR
-    NOT has_schema_privilege('elevateo_attachment_gateway','app_attachment_gateway','USAGE') OR
+  IF helper IS NULL OR to_regnamespace('app_attachment_gateway') IS NULL THEN
+    RAISE EXCEPTION 'gateway private helper missing';
+  END IF;
+  IF NOT has_schema_privilege('elevateo_attachment_gateway','app_attachment_gateway','USAGE') OR
     has_schema_privilege('elevateo_attachment_gateway','app_attachment_gateway','CREATE') OR
     has_schema_privilege('elevateo_attachment_gateway','app','USAGE,CREATE') OR
     has_schema_privilege('elevateo_attachment_gateway','app_auth','USAGE,CREATE') OR
