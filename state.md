@@ -130,3 +130,5 @@ Latest QA816 head eb0f394 partitions V1, shell, simulated send and V2 grants so 
 QA816 Outreach candidate a737fd9 adds three real V2 campaign Playwright cases and four fixed screenshot IDs (25 total). The integrated web gateway is currently unbound, so these cases are NOT_RUN pending Cassian's adapter/routes and Soren's disposable fleet stack.
 
 QA816 head b76af04 adds V2 Outreach/People logout-cache regression, bringing the supplemental browser matrix to fifteen cases. Runtime and screenshots remain NOT_RUN on this head.
+
+QA816 source correction 6e164ef replaces unsupported same-org reader POST denial with separate other-org GET 404 on a case-owned draft campaign. Prior prose about reader create denial is historical and superseded; runtime remains NOT_RUN.

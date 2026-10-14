@@ -692,3 +692,5 @@ QA816 head eb0f394: no new independent adversarial review receipt; source covera
 QA816 V2 campaign browser source a737fd9 is authored, not independently reviewed: reviewed unique LOC 0, defects not established, density not computed. Its three cases and images remain NOT_RUN until integrated adapter/route/seed admission.
 
 QA816 b76af04 adds a source-only V2 logout case; independent review coverage remains 0 LOC, defects/density not established, and runtime NOT_RUN.
+
+QA816 self-inspection found one unsupported test policy assumption (same-org reader campaign POST denial) in authored source; repaired at 6e164ef as case-owned cross-org GET 404. This is an author finding, not independent reviewed defect density; independent reviewed LOC remains 0, runtime NOT_RUN.
