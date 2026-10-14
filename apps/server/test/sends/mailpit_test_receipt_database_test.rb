@@ -30,6 +30,56 @@ class SendMailpitTestReceiptDatabaseTest < SendDatabaseTestCase
     SQL
   end
 
+  def assert_expired_waiting_observation_is_rejected(mode:, hash_basis:)
+    send_id = approve.fetch("send_id")
+    lease = SecureRandom.uuid
+    claim(send_id, lease)
+    attempt = authorize(send_id, lease, mode: mode, hash_basis: hash_basis).fetch("attempt_id")
+    @admin.exec("BEGIN")
+    @admin.exec_params(<<~SQL, [send_id])
+      UPDATE app_send_private.jobs SET lease_expires_at=clock_timestamp()+interval '2 seconds'
+        WHERE send_id=$1
+    SQL
+    thread = Thread.new do
+      if mode == MODE
+        observe(send_id, lease, attempt, kind: "accepted", receipt: RECEIPT)
+      else
+        worker_result(<<~SQL, [send_id, lease, SecureRandom.uuid, attempt])
+          SELECT app_send_private.record_observation($1::uuid,$2::uuid,1,$3::uuid,$4::uuid,
+            'accepted','local:#{'b' * 64}',sha256(convert_to('fixture','UTF8')))
+        SQL
+      end
+    end
+    thread.report_on_exception = false
+    wait_for_lock(@worker, blocker: @admin.backend_pid, lock_kind: "transactionid", seconds: 2)
+    assert_equal "t", @admin.exec_params(<<~SQL, [send_id]).getvalue(0, 0)
+      SELECT clock_timestamp() < lease_expires_at FROM app_send_private.jobs WHERE send_id=$1
+    SQL
+    @admin.exec("SELECT pg_sleep(2.1)")
+    @admin.exec("COMMIT")
+    assert_equal "stale_lease", thread.value.fetch("code")
+    row = @admin.exec_params(<<~SQL, [send_id]).first
+      SELECT state,accepted_receipt_ref,lease_id::text FROM app_send_private.jobs WHERE send_id=$1
+    SQL
+    assert_equal "dispatching", row.fetch("state")
+    assert_nil row.fetch("accepted_receipt_ref")
+    assert_equal lease, row.fetch("lease_id")
+    assert_equal "0", @admin.exec_params(<<~SQL, [attempt]).getvalue(0, 0)
+      SELECT count(*) FROM app_send_private.observations WHERE attempt_id=$1
+    SQL
+  ensure
+    @admin.exec("ROLLBACK") if @admin && @admin.transaction_status != PG::PQTRANS_IDLE
+    thread&.join(3)
+  end
+
+  def test_mailpit_observation_waiting_past_lease_expiry_is_rejected
+    assert_expired_waiting_observation_is_rejected(mode: MODE, hash_basis: "local:mailpit-smtp-test-v1")
+  end
+
+  def test_legacy_observation_waiting_past_lease_expiry_is_rejected
+    assert_expired_waiting_observation_is_rejected(mode: "synthetic-v1", hash_basis: "local:synthetic-v1")
+  end
+
   def test_mailpit_test_receipt_is_persisted_only_after_fresh_authority
     send_id = approve.fetch("send_id")
     lease = SecureRandom.uuid
