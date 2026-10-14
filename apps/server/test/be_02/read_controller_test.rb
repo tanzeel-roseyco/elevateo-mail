@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "rails"
+require "logger"
 require "active_record"
 require "action_controller"
 require "action_controller/api"
@@ -92,6 +94,8 @@ class ReadControllerTest < Minitest::Test
 
   def setup
     @service, @store, @client, @cookie = harness
+    @logs = StringIO.new
+    @logger = Logger.new(@logs)
     @events = []
     @connection = Connection.new(@events)
     @sessions = ObservedSessions.new(@service, @events)
@@ -122,6 +126,7 @@ class ReadControllerTest < Minitest::Test
     status, headers, body = dispatch(query: "limit=2")
     assert_equal 200, status
     assert_equal @wire, body
+    assert_empty @logs.string
     assert_security_headers(headers)
     assert_equal({ isolation: :repeatable_read }, @connection.options)
     assert_equal "SET TRANSACTION READ ONLY", @connection.statements.first
@@ -182,6 +187,7 @@ class ReadControllerTest < Minitest::Test
     assert_equal [:authenticate], @events
     assert_empty @connection.statements
     refute @store.state[:revoked]
+    assert_unavailable_log
   end
 
   def test_post_auth_organization_switch_fails_bootstrap_before_any_business_read
@@ -217,16 +223,18 @@ class ReadControllerTest < Minitest::Test
   def test_database_failure_rolls_back_without_touching_or_releasing_rows
     @projection = lambda do |**_inputs|
       @events << :business_read
-      raise ActiveRecord::StatementInvalid, "synthetic SQL failure"
+      raise ActiveRecord::StatementInvalid, "sensitive SQL fixture@example.invalid #{@cookie}"
     end
     assert_response_error(503, "temporarily_unavailable", dispatch)
     assert_rolled_back_snapshot(business_read: true)
+    assert_unavailable_log
   end
 
   def test_authorizer_rollback_discards_the_result_before_business_read_or_touch
     @sessions.before_authorize = -> { raise ActiveRecord::Rollback }
     assert_response_error(500, "internal_error", dispatch)
     assert_rolled_back_snapshot
+    assert_empty @logs.string
   end
 
   def test_renderer_rollback_discards_the_result_before_touch
@@ -256,14 +264,26 @@ class ReadControllerTest < Minitest::Test
       "action_dispatch.request_id" => "be02-read-test", "be02.sessions" => @sessions,
       "be02.options" => { allowed_query: %w[limit cursor], context_required: context_required, budget: 16_384 },
       "be02.projection" => @projection)
-    status, headers, rack_body = ActiveRecord::Base.stub(:connection_pool, Pool.new(@connection)) do
-      ProbeController.action("show").call(env)
+    # AIDEV-NOTE: Isolated Rack tests supply the boot logger; production Rails initializes it from config.logger.
+    status, headers, rack_body = Rails.stub(:logger, @logger) do
+      ActiveRecord::Base.stub(:connection_pool, Pool.new(@connection)) do
+        ProbeController.action("show").call(env)
+      end
     end
     serialized = +""
     rack_body.each { |part| serialized << part }
     [status, headers.transform_keys(&:downcase), serialized]
   ensure
     rack_body.close if rack_body.respond_to?(:close)
+  end
+
+  def assert_unavailable_log
+    assert_equal 1, @logs.string.lines.length
+    event = JSON.parse(@logs.string.lines.first.split(" -- : ", 2).last)
+    assert_equal({ "event" => "auth.boundary_unavailable", "request_id" => "be02-read-test" }, event)
+    ["sensitive SQL", "fixture@example.invalid", @cookie, @wire].each do |private_value|
+      refute_includes @logs.string, private_value
+    end
   end
 
   def assert_security_headers(headers)

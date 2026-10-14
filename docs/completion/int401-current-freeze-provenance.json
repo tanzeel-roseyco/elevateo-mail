@@ -37,9 +37,16 @@
       "owner": "3c030f122d196253b4be9e04af06aefc2c17be5a",
       "blob": "5f0363510ae3314412093028581355cf491ebcdd",
       "sha256": "fefdf5af29ab13aa7a0bbefe795e02273568b749909115bea1eca876a3fadd0d"
+    },
+    {
+      "file": "apps/server/test/be_02/read_controller_test.rb",
+      "owner": "b813210173acea67e7333fffa05e146f237193ea",
+      "blob": "7c5999c9d8cd160fd2c3f29f4b986529ea24201d",
+      "sha256": "0d93b017ba0275110c1ef94deefc59d9942850a70f66b9257661caa2a66a2df2"
     }
   ],
   "runtime": "NOT_RUN",
   "observer": "OFF",
-  "vault_bytes": 61711
+  "vault_bytes": 61711,
+  "rowan_repair": "b813210173acea67e7333fffa05e146f237193ea"
 }
