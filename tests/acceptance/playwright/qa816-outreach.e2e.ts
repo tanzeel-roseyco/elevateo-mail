@@ -1,7 +1,8 @@
 import { randomUUID } from 'node:crypto';
 import { expect } from '@playwright/test';
+import { z } from 'zod';
 import { scenario } from './cases.js';
-import { responseAt, screenshot, signIn } from './support.js';
+import { responseAt, screenshot, seed, signIn } from './support.js';
 
 // AIDEV-NOTE: The case owns one disposable draft campaign; no send or enrollment route is invoked.
 scenario('SCN-QA-820-P', 'real-auth-outreach-draft-create-list-detail', async (page, record) => {
@@ -84,8 +85,15 @@ scenario('SCN-QA-821-P', 'logout-revokes-outreach-and-people-cache', async (page
   const [campaigns] = await Promise.all([responseAt(page, '/v2/outreach/campaigns'), page.goto('/#/outreach/campaigns')]);
   expect(campaigns.status()).toBe(200);
   await expect(page.getByRole('heading', { name: 'Campaigns', exact: true })).toBeVisible();
-  await page.goto('/#/people');
+  const grantsPath = `/v2/organizations/${seed.organizations.primary}/grants`;
+  const [grantsResponse] = await Promise.all([responseAt(page, grantsPath), page.goto('/#/people')]);
+  expect(grantsResponse.status()).toBe(200);
+  const grants = z.object({ items: z.array(z.object({ user_id: z.uuid() })).min(1) })
+    .parse(await grantsResponse.json() as unknown);
+  const grantMarker = grants.items[0]?.user_id;
+  if (!grantMarker) throw new Error('Populated grant seed unavailable');
   await expect(page.getByRole('heading', { name: 'People', exact: true })).toBeVisible();
+  await expect(page.getByText(grantMarker, { exact: true })).toBeVisible();
   await page.getByRole('button', { name: 'Account and sign-out' }).click();
   const [logout] = await Promise.all([responseAt(page, '/v1/auth/logout', 'POST'),
     page.getByRole('dialog', { name: 'Account', exact: true }).getByRole('button', { name: 'Sign out', exact: true }).click()]);
@@ -95,7 +103,8 @@ scenario('SCN-QA-821-P', 'logout-revokes-outreach-and-people-cache', async (page
     await expect(page.getByRole('heading', { name: 'Sign in', exact: true })).toBeVisible();
     await expect(page.getByRole('heading', { name: 'Campaigns', exact: true })).toHaveCount(0);
     await expect(page.getByText('Current grants loaded', { exact: false })).toHaveCount(0);
+    await expect(page.getByText(grantMarker, { exact: true })).toHaveCount(0);
   }
   expect((await page.request.get('/v1/session', { maxRedirects: 0 })).status()).toBe(401);
-  record.assertions.push('Logout after actual V2 campaign read clears protected Outreach and People routes and leaves real V1 session denied');
+  record.assertions.push('Logout after real V2 campaign and populated grants GETs clears the rendered grant marker and protected deep links; V1 session denies');
 });
