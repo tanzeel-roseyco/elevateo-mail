@@ -182,3 +182,5 @@ QA816 continuation adds a candidate inbox/history/keyboard/empty-search and bran
 QA816 now includes supplemental reporter-compatible Chromium visual zoom and real V1 manager/reader roster scenarios. Fleet browser execution and screenshots remain pending; visual viewport zoom does not establish browser text zoom or installed Android.
 
 QA816 V2 People candidate now requests real manager/reader grants GET and `/people` screenshots on an integrated Cassian/Lyra/Fable source. It remains unrun and does not change grants or bind planned identities.
+
+Latest QA816 source is `eb0f394`; run partitions and exact dependencies are recorded in `docs/completion/tessa.md`. Only earlier `302142c` acceptance compile/unit source has fleet evidence; no current browser or screenshot result is established.

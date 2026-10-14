@@ -192,3 +192,5 @@ QA816 continuation: `qa816-matrix.e2e.ts` requests a merged Fable shell and the 
 QA816 head d8abe4a adds a real V1 roster permission scenario and measured Chromium visual viewport zoom; the latter is not desktop browser text zoom. Reporter and screenshot IDs are statically reconciled, while full browser execution and screenshot inspection are pending Soren's fleet run.
 
 QA816 V2 People case observes the versioned grants GET and truthful unbound roster UI in separate manager/reader sessions. It requires the active integrated route and disposable seed; no grants are mutated and no browser runtime evidence exists yet.
+
+Latest QA816 head eb0f394 provides partitioned `--grep` commands in docs/completion/tessa.md. Current integrated Outreach gateway defaults absent, so shell route/copy evidence must remain distinct from campaign API create/list/detail evidence. Browser and screenshot evidence remain NOT_RUN.
