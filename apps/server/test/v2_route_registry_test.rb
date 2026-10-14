@@ -16,8 +16,8 @@ class V2RouteRegistryTest < Minitest::Test
     mapper = Mapper.new
     assert V2RouteRegistry.register!(mapper, enabled: true, controllers_ready: true)
     assert_equal 14, mapper.routes.size
-    assert mapper.routes.all? { |_, path, _| path.start_with?("/v2/") }
-    refute mapper.routes.any? { |_, path, _| path.start_with?("/v2/worker/") }
+    assert(mapper.routes.all? { |_, path, _| path.start_with?("/v2/") })
+    refute(mapper.routes.any? { |_, path, _| path.start_with?("/v2/worker/") })
   end
 
   def test_manual_consent_route_uses_guarded_lead_controller
