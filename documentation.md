@@ -190,3 +190,6 @@ Cassian manifest reconciliation: contract-lock now seals actual generated client
 ### FE807 Outreach client seam
 
 `apps/web/src/features/outreach/OutreachPages.tsx` exports four read-only pages. `contract.ts` defines the provisional `OutreachReads` interface and strict DTOs; Cassian must reconcile fields against V2 before connecting HTTP, while Fable registers routes and passes a current `ReadContext`. Sending and enrollment stay unavailable. Evidence and limits: `docs/completion/celeste.md`.
+### FE808 administration UI seam
+
+`AdministrationPage` exports a `people` or `settings` section and accepts an `AdminGateway` port. The port expects redacted roster/current-grant reads and revision-guarded grant writes; Cassian owns the final V2 adapter and route contract. The view uses `useProtectedRequest` for session generation, abort and revoked-session handling. Organization grants do not imply mailbox content access. The twelve configuration rows remain unbound until verified enrollment.

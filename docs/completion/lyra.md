@@ -1,0 +1,9 @@
+# FE808 Lyra isolated candidate
+
+Baseline `bbf2353`; branch `completion-lyra-fe808`. Owned implementation: `apps/web/src/features/members/adminModel.ts` and `AdministrationPage.tsx`, with paired tests. Reference: Vera SPEC-803 access advisory and Jules TEAM-PLAN; no new runtime dependency was added.
+
+The twelve configuration people have stable keys and no email or Auth subject. The view separates proposed configuration roles from current server grants, gives generic unavailable responses, and labels organization administration as separate from mailbox content. Only implemented settings are shown. `useProtectedRequest` supplies current context, abort and session recovery for a future V2 adapter. `AdminGateway` is a draft integration port: Cassian must reconcile DTOs and V2 operations with Theo/Sabine before Fable registers routes. Grant writes are unavailable for the current unbound entries; no UI binds them to real accounts.
+
+Tests requested to Soren in fleet Docker: `cd apps/web && npm run typecheck && npm run lint && npm run test -- --run src/features/members/adminModel.test.ts src/features/members/AdministrationPage.test.tsx`; then visual checks for people, settings, denied admin access and revoked session using the integrated app. All are NOT_RUN in this worker branch. No Docker, host app execution, live credentials, DNS or mail sending occurred.
+
+Design tradeoffs for root: displaying the twelve configuration identities locally gives honest unbound visibility before an admin API is available, but it is not an active user directory. Current grants are accepted only from a validated gateway response; a role label never implies content access. Revision-guarded writes require a verified enrollment and server authorization. A stale revision must reload rather than retry the old mutation; a revoked session must discard the late result. The final V2 DTO/error codes and user enrollment path remain dependencies, not accepted runtime behavior.

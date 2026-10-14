@@ -180,3 +180,6 @@ Cassian manifest reconciliation: contract-lock now seals actual generated client
 ### FE807 Outreach candidate
 
 Four read-only Outreach route pages and strict provisional DTO boundary are authored in `apps/web/src/features/outreach/`. Route registration, canonical V2 gateway reconciliation, Docker tests and browser acceptance are pending; send/enrollment remain unavailable. See `docs/completion/celeste.md`.
+### FE808 people and settings candidate
+
+An isolated people/settings feature now displays the twelve named configuration identities as unbound and separates proposed roles from current server grants. It requires the additive V2 administration gateway and route registration before it can appear in the integrated app. No mailbox-content authority follows from organization administration; frontend tests are requested for fleet Docker and have not run on this candidate.

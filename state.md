@@ -122,3 +122,6 @@ Cassian manifest reconciliation: contract-lock now seals actual generated client
 ### FE807 Outreach candidate
 
 Read-only campaigns, leads, accounts and analytics pages are authored on the isolated Celeste branch. Their optional capability shows unavailable until Cassian/Fable wire the versioned gateway and routes. Consent/suppression authority stays server-side; Docker/browser checks remain requested, not executed. See `docs/completion/celeste.md`.
+### FE808 isolated candidate (2026-10-14)
+
+People/settings view and strict DTO draft exist in `apps/web/src/features/members/`. The exact twelve configuration identities have null email and Auth ID, unbound enrollment and no invented login. Cassian V2 gateway, Theo/Sabine authority and Fable route registration remain integration dependencies. Tests are authored, NOT_RUN; no live sending or credentials are enabled.

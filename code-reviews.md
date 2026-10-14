@@ -683,3 +683,6 @@ Coverage: new `featureRegistry.ts` (69 LOC), `features/index.tsx` (54), `Feature
 ## FE807 Outreach candidate review request
 
 Celeste authored the read-only feature and three boundary tests. Independent bounded functional review and dedicated design-tradeoff review are pending; reviewed source LOC: 0, confirmed defects: not established, defect density: not applicable. Docker/type/browser verification is requested only; see `docs/completion/celeste.md`.
+## FE808 isolated author receipt (2026-10-14)
+
+Scope: `apps/web/src/features/members/adminModel.ts`, `AdministrationPage.tsx` and paired tests. Author self-check covered the configuration roster, DTO validation, generic denial, stale-revision and revoked-session handling by source inspection; zero confirmed defects in this check. This is not an independent bounded adversarial or design-tradeoff review, so no independent defect density is claimed. Root must assign <=200-LOC review packets and a dedicated design reviewer after integration. Docker tests and visual acceptance are NOT_RUN.
