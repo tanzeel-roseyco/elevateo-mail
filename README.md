@@ -190,3 +190,5 @@ QA816 also has a gated V2 draft campaign browser candidate for create/list/detai
 QA816 V2 logout candidate checks that Outreach and People deep links clear after revocation; it is source-only until the integrated adapter and Soren browser run exist.
 
 QA816 Outreach failure coverage now uses case-owned cross-organization detail denial; the earlier same-organization reader write-denial assumption is withdrawn pending policy definition.
+
+QA816 drawer selectors now target the agreed accessible names `Open navigation` and `Navigation`; the shell case requires Fable's coordinated follow-up source. Existing web e2e selector updates are requested from their owner.

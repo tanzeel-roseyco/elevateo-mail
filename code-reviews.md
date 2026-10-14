@@ -694,3 +694,5 @@ QA816 V2 campaign browser source a737fd9 is authored, not independently reviewed
 QA816 b76af04 adds a source-only V2 logout case; independent review coverage remains 0 LOC, defects/density not established, and runtime NOT_RUN.
 
 QA816 self-inspection found one unsupported test policy assumption (same-org reader campaign POST denial) in authored source; repaired at 6e164ef as case-owned cross-org GET 404. This is an author finding, not independent reviewed defect density; independent reviewed LOC remains 0, runtime NOT_RUN.
+
+QA816 ce73f55 changes two selector literals from a root/Fable design decision. Independent review and fleet runtime remain pending; no reviewed LOC or density claim is added.
