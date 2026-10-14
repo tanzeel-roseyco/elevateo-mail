@@ -1,7 +1,7 @@
 // @ts-check
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { expectedScenarios, validateEvidence, validateDiagnosticEvidence } from './acceptance_evidence.mjs';
+import { expectedScenarios, validateEvidence, validateDiagnosticEvidence, validateFocusedEvidence } from './acceptance_evidence.mjs';
 
 // AIDEV-NOTE: Same-count substitutions reproduce the prior false pass independently of schema validation.
 for (const [lane, scenarios] of Object.entries(expectedScenarios)) {
@@ -51,4 +51,32 @@ test('diagnostic has a separate closed inventory and cannot satisfy full accepta
   assert.throws(() => validateDiagnosticEvidence([...rows, rows[0]], selected));
   assert.throws(() => validateDiagnosticEvidence([{ ...rows[0], status: 'not_run' }, ...rows.slice(1)], selected));
   assert.throws(() => validateDiagnosticEvidence(rows, { ...selected, dispatchId: 'different' }));
+});
+
+test('focused real case remains scoped and rejects incomplete or substituted evidence', () => {
+  const selection = { lane: 'playwright_real', browser: 'chromium', profile: 'internal_http',
+    runId: 'focused-run', dispatchId: 'focused-dispatch', caseId: 'SCN-DRAFT-003-P' };
+  const record = { scenario_path_id: selection.caseId, status: 'passed', run_id: selection.runId,
+    dispatch_id: selection.dispatchId, lane: selection.lane, transport_profile: selection.profile,
+    implementation_mode: 'real', attempt: 0 };
+  for (const browser of ['chromium', 'firefox', 'webkit']) {
+    assert.doesNotThrow(() => validateFocusedEvidence([record], { ...selection, browser }));
+  }
+  assert.throws(() => validateEvidence([record], selection));
+  assert.throws(() => validateDiagnosticEvidence([record], selection));
+  assert.throws(() => validateFocusedEvidence([], selection));
+  assert.throws(() => validateFocusedEvidence([record, record], selection));
+  for (const change of [{ scenario_path_id: 'SCN-DRAFT-003-F1' }, { status: 'failed' }, { status: 'not_run' },
+    { run_id: 'foreign-run' }, { dispatch_id: 'foreign-dispatch' }, { lane: 'unit' }, { transport_profile: 'tls' },
+    { implementation_mode: 'simulated' }, { attempt: 1 }]) {
+    assert.throws(() => validateFocusedEvidence([{ ...record, ...change }], selection));
+  }
+  for (const change of [{ browser: 'unknown' }, { lane: 'puppeteer_cdp' }, { profile: 'tls' },
+    { caseId: '.*' }, { caseId: '' }, { caseId: 'SCN-DRAFT-003-P\n' }, { runId: '' }, { dispatchId: '' }]) {
+    assert.throws(() => validateFocusedEvidence([record], { ...selection, ...change }));
+  }
+  for (const suffix of ['\n', '\r', '\r\n']) {
+    const caseId = selection.caseId + suffix;
+    assert.throws(() => validateFocusedEvidence([{ ...record, scenario_path_id: caseId }], { ...selection, caseId }));
+  }
 });

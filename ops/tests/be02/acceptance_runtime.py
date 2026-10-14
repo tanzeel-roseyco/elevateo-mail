@@ -30,13 +30,15 @@ VERSIONS = {"chromium": "156.0.8078.4", "firefox": "157.0", "webkit": "27.2"}
 # AIDEV-NOTE: Keep repair unit entrypoints explicit; ui.browser-probe requires a real browser lane.
 UNITS = ["contracts/report-validation.spec", "proxy/proxy.spec", "playwright/boundaries.unit.spec",
          "playwright/credential-origin.unit.spec", "playwright/credential-fill.unit.spec",
-         "playwright/screenshots.unit.spec",
+         "playwright/screenshots.unit.spec", "playwright/invitation.unit.spec",
+         "playwright/diagnostics.unit.spec",
          "puppeteer/boundaries.unit.spec", "selenium/boundaries.unit.spec"]
 
 
 def add_arguments(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("--acceptance", action="store_true")
     parser.add_argument("--acceptance-diagnostic", action="store_true", help="Labeled Chromium smoke subset; never full acceptance PASS")
+    parser.add_argument("--acceptance-case", help="One real Playwright case on a fresh diagnostic dataset; never full acceptance PASS")
     parser.add_argument("--acceptance-lanes", default="playwright,puppeteer,selenium")
     parser.add_argument("--acceptance-browsers", default="chromium,firefox,webkit")
     parser.add_argument("--acceptance-dispatch-id")
@@ -53,8 +55,14 @@ class Acceptance:
     def __init__(self, task: Task, args: argparse.Namespace) -> None:
         self.task = task
         self.diagnostic = args.acceptance_diagnostic
+        self.case_id = args.acceptance_case
         self.observer_enabled = args.acceptance_observer
-        if self.diagnostic and (args.acceptance_lanes != "playwright" or args.acceptance_browsers != "chromium"):
+        if self.case_id is not None and (not self.diagnostic or
+                not re.fullmatch(r"SCN-[A-Z]+-\d{3}-(?:P|F1|F2)", self.case_id) or
+                args.acceptance_lanes != "playwright" or args.acceptance_browsers not in VERSIONS):
+            raise RuntimeError("focused case requires diagnostic mode and one real Playwright engine")
+        if self.diagnostic and self.case_id is None and (
+                args.acceptance_lanes != "playwright" or args.acceptance_browsers != "chromium"):
             raise RuntimeError("diagnostic requires exactly Playwright Chromium")
         self.lanes = args.acceptance_lanes.split(",")
         self.browsers = args.acceptance_browsers.split(",")
@@ -139,6 +147,9 @@ class Acceptance:
                     "BE02_ACCEPTANCE_DISPATCH_ID": args.acceptance_dispatch_id,
                     "BE02_ACCEPTANCE_VARIANT": args.acceptance_variant,
                     "BE02_ACCEPTANCE_NONCE": secrets.token_hex(32)}
+        # AIDEV-NOTE: Fresh-case identity is bound before seeding; the existing smoke dataset stays explicitly shared.
+        if self.case_id:
+            self.env["BE02_ACCEPTANCE_CASE_ID"] = self.case_id
         self.base_env = task.env_file.read_text()
         task.deadline = time.monotonic() + 7200
 
@@ -170,10 +181,9 @@ class Acceptance:
 
     def private_output_preflight(self, identity: str) -> None:
         # AIDEV-NOTE: Exclusive no-follow creation rejects dangling symlinks before any target write.
-        modes = self.execute(identity, ["node", "--input-type=module", "-e",
-                                        self.private_output_program(), "--", "/output"]).strip()
-        if modes != "0077 700 700 600":
-            raise RuntimeError("browser private output mode mismatch")
+        # AIDEV-NOTE: Quiet Docker execution discards stdout; the probe enforces modes through its exit status.
+        self.execute(identity, ["node", "--input-type=module", "-e",
+                                self.private_output_program(), "--", "/output"])
         self.task.write("acceptance-private-output-proof.json",
                         {"browser_umask": "0077", "output_mode": "0700", "created_file_mode": "0600"})
 
@@ -192,6 +202,8 @@ class Acceptance:
             fd=openSync(proof,constants.O_WRONLY|constants.O_CREAT|constants.O_EXCL|constants.O_NOFOLLOW,0o600);
             created=true;
             const createdMode=(fstatSync(fd).mode & 0o777).toString(8);
+            if ([current,mode(root),mode(privateDir),createdMode].join(' ') !== '0077 700 700 600')
+              throw new Error('Browser private output mode mismatch');
             process.stdout.write([current,mode(root),mode(privateDir),createdMode].join(' ')+'\\n');
           } finally {
             if (fd!==undefined) closeSync(fd);
@@ -358,7 +370,9 @@ class Acceptance:
                     command = ["node", "node_modules/@playwright/test/cli.js", "test",
                                "--config=playwright/playwright.config.ts", "--output=/tmp/playwright-native"]
                     if self.diagnostic:
-                        command.extend(["--grep", r"(^|\s)(SCN-AUTH-001-P|SCN-READ-002-P|SCN-DRAFT-001-P|SCN-GUI-006-P)(\s|$)"])
+                        pattern = (re.escape(self.case_id) if self.case_id else
+                                   "SCN-AUTH-001-P|SCN-READ-002-P|SCN-DRAFT-001-P|SCN-GUI-006-P")
+                        command.extend(["--grep", r"(^|\s)(" + pattern + r")(\s|$)"])
                 else:
                     engine = "puppeteer" if lane == "puppeteer_cdp" else "selenium"
                     # AIDEV-NOTE: Prove browser predicates with synthetic DOM fixtures before trusting app case results.
@@ -367,7 +381,8 @@ class Acceptance:
                 if self.diagnostic:
                     listed = task.docker("diagnostic-case-list", ["container", "exec", identity, *command, "--list"], 90)
                     selected = re.findall(r"\bSCN-[A-Z]+-\d{3}-(?:P|F1|F2)\b", listed)
-                    expected = ["SCN-AUTH-001-P", "SCN-READ-002-P", "SCN-DRAFT-001-P", "SCN-GUI-006-P"]
+                    expected = ([self.case_id] if self.case_id else
+                                ["SCN-AUTH-001-P", "SCN-READ-002-P", "SCN-DRAFT-001-P", "SCN-GUI-006-P"])
                     if sorted(selected) != sorted(expected):
                         raise RuntimeError("diagnostic case inventory mismatch")
                     task.write("diagnostic-selected-cases.json", {"source": "actual container Playwright --list", "cases": selected})
@@ -386,7 +401,11 @@ class Acceptance:
                   VALIDATOR(records, SELECTION);""")
                 selection = {"lane": lane, "browser": browser, "runId": task.project + "-" + str(index),
                              "dispatchId": self.env["BE02_ACCEPTANCE_DISPATCH_ID"], "profile": "internal_http"}
-                self.execute(identity, ["node", "--input-type=module", "-e", check.replace("SELECTION", json.dumps(selection)).replace("VALIDATOR", "validateDiagnosticEvidence" if self.diagnostic else "validateEvidence")])
+                if self.case_id:
+                    selection["caseId"] = self.case_id
+                validator = ("validateFocusedEvidence" if self.case_id else
+                             "validateDiagnosticEvidence" if self.diagnostic else "validateEvidence")
+                self.execute(identity, ["node", "--input-type=module", "-e", check.replace("SELECTION", json.dumps(selection)).replace("VALIDATOR", validator)])
                 results.append({"lane": lane, "browser": browser, "status": "DIAGNOSTIC_COMPLETED" if self.diagnostic else "PASSED"})
             except Exception as error:
                 results.append({"lane": lane, "browser": browser, "status": "FAILED_OR_INCOMPLETE", "error": str(error)})
@@ -395,6 +414,9 @@ class Acceptance:
                     if container:
                         validate_container(task, task.inspect("container", [container])[0])
                         task.docker("acceptance-lane-remove", ["container", "rm", "-f", container], 30)
-                task.write("acceptance-results.json", {"scope": "DIAGNOSTIC smoke subset; advanced scenarios and full gates unverified" if self.diagnostic else "selected internal HTTP lanes only", "runs": results})
+                scope = ("DIAGNOSTIC fresh case " + self.case_id + "; full gates unverified" if self.case_id else
+                         "DIAGNOSTIC smoke subset; advanced scenarios and full gates unverified" if self.diagnostic else
+                         "selected internal HTTP lanes only")
+                task.write("acceptance-results.json", {"scope": scope, "runs": results})
         if any(result["status"] != ("DIAGNOSTIC_COMPLETED" if self.diagnostic else "PASSED") for result in results):
             raise RuntimeError("acceptance failed or incomplete; inspect sanitized cases and acceptance-results.json")

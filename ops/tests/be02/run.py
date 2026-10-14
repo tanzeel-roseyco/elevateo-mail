@@ -119,6 +119,8 @@ def main() -> int:
         parser.error("ADV808 is a separate job; preserve the GUI acceptance queue")
     if args.acceptance_diagnostic and not args.acceptance:
         parser.error("diagnostic requires acceptance mode")
+    if args.acceptance_case is not None and not (args.acceptance and args.acceptance_diagnostic):
+        parser.error("focused case requires diagnostic acceptance mode")
     if sys.platform != "linux" or socket.gethostname().split(".")[0] != args.expect_host:
         raise RuntimeError("run only on the explicitly selected Linux fleet host")
     if any(os.environ.get(key) for key in ("DOCKER_HOST", "DOCKER_TLS_VERIFY", "DOCKER_CERT_PATH")):

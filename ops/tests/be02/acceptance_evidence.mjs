@@ -56,3 +56,21 @@ export function validateDiagnosticEvidence(records, selection) {
   }
   if (required.size !== 0) throw new Error('Missing diagnostic smoke case');
 }
+
+// AIDEV-NOTE: One fresh-dataset case earns only scoped diagnostic evidence; it cannot satisfy the frozen full inventory.
+/**
+ * @param {Parameters<typeof validateEvidence>[0]} records
+ * @param {Parameters<typeof validateEvidence>[1] & {caseId: string}} selection
+ */
+export function validateFocusedEvidence(records, selection) {
+  if (selection.lane !== 'playwright_real' || !['chromium', 'firefox', 'webkit'].includes(selection.browser)
+    || selection.profile !== 'internal_http' || !selection.runId || !selection.dispatchId
+    || !/^SCN-[A-Z]+-\d{3}-(P|F1|F2)$/.test(selection.caseId)
+    || selection.caseId !== selection.caseId.trim() || records.length !== 1)
+    throw new Error('Focused evidence requires one real Playwright case');
+  const record = records[0];
+  if (!record || record.scenario_path_id !== selection.caseId || record.status !== 'passed' || record.attempt !== 0
+    || record.implementation_mode !== 'real' || record.run_id !== selection.runId || record.dispatch_id !== selection.dispatchId
+    || record.lane !== selection.lane || record.transport_profile !== selection.profile)
+    throw new Error('Incomplete or mismatched focused evidence');
+}
