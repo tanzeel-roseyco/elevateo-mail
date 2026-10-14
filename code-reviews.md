@@ -719,3 +719,6 @@ The new Playwright file is an authored candidate, not an independent adversarial
 ### QA-817 Felix candidate (2026-10-14)
 
 Independent adversarial and design reviews are requested, NOT_RUN. Candidate source is `apps/server/test/qa817/adversarial_boundaries_test.rb` (bounded assignment, under 200 physical lines); observed review coverage 0 LOC, confirmed defects and defects/KLOC unmeasured. Review rubric: purpose; null/empty/max; state and cross-module effects; complexity/duplication/names/comments; happy and failure tests; docs; authorization/input safety; hot-path queries and loops. Linters and Docker runtime remain requested through Soren. No zero-defect claim.
+## QA-815 scheduler and receipt
+
+Soren authored `ops/tests/qa815/run-web-candidate.sh` and `docs/completion/soren.md`. No independent bounded adversarial or dedicated design-tradeoff reviewer has examined this candidate. Independently reviewed source lines: 0; defects and defects/KLOC are unclaimed. Root review scheduling remains pending. Analytical tradeoff: immutable `git archive` prevents owner edits during Docker build, while each candidate still needs integrated browser/backend checks after merge.

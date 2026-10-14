@@ -4,6 +4,8 @@ Cassian prepared disabled organization grant, simulation-only outreach and inter
 
 # Product requirements and decision record
 
+QA-815 owns serialized fleet Docker checks under the shared Soren lock. The exact Mira FE-806 candidate passed focused frontend checks; the immutable-source scheduler, receipt and cleanup limits are recorded in `docs/completion/soren.md`. This is not integrated or browser acceptance.
+
 ### Mira BE03 UI isolated R24 implementation (2026-10-14)
 
 Root authorizes isolated BE03 implementation over `03ae770` while BE02 remains OPEN/unaccepted and integration/release gated. Mira owns the send gateway, generated web artifacts after canonical contract, and review/approval/status UI. The S1/S2 UI renders full saved plaintext content, explicit correspondence approval, original-binding uncertain retry, and server-owned simulated status. Paired corrected exact canonical contract `aa35c3d`; source607fcb2c passed Docker generator/check/lint/type and8files/260affectedtests; independent functional/data/design reviews found0confirmeddefects. Exact generated artifact and strengthened tests are present, follow-up sourcee037cb9b passed Docker APIcheck/lint/type/full37files660tests/build/fixture-isolation checks; bounded follow-up reviews found0confirmeddefects. Final fixture-only pre-abort repair8f6f5bf8 passed lint/type/9files174affectedtests and independent40LOC repair review0newdefects; seven exact owned containers independently absent, shared image/Lyra18140 preserved; actual visual/integrated validation remains pending; no completion or delivery claim. Canonical source is `contracts/v1/openapi.json`. See [Mira scoped evidence](docs/completion/be03-mira-r24.md).
