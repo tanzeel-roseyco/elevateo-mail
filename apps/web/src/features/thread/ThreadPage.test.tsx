@@ -21,6 +21,7 @@ import type { MailroomGateway } from '@/data/gateway'
 import { ThreadPage, type DirectMessageRead } from './ThreadPage'
 
 const MB = '00000000-0000-4000-8000-000000000021'
+const MB2 = '00000000-0000-4000-8000-000000000022'
 const THREAD = '00000000-0000-4000-8000-000000000031'
 const THREAD2 = '00000000-0000-4000-8000-000000000032'
 const MESSAGE_A = '00000000-0000-4000-8000-000000000041'
@@ -36,7 +37,7 @@ function renderReaderWith(gateway: MailroomGateway, initialEntry = `/mailboxes/$
       <DraftIntentProvider>
       <MemoryRouter initialEntries={[initialEntry]}>
         <Routes>
-          <Route path="/mailboxes/:mailboxId/threads/:threadId" element={<ThreadPage readDirectMessage={readDirectMessage} />} />
+          <Route path="/mailboxes/:mailboxId/threads/:threadId" element={<ThreadPage {...(readDirectMessage === undefined ? {} : { readDirectMessage })} />} />
           <Route path="/mailboxes/:mailboxId/drafts/:draftId" element={<DraftEditorPage />} />
         </Routes>
       </MemoryRouter>
