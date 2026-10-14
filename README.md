@@ -16,6 +16,8 @@ Shared company mailroom with one Rails domain authority and a React/TypeScript c
 
 ### MAIL-819 isolated inbound boundary
 
+LINT932 correction: the fake inbound authorization callback now accepts unused keywords through `**` while retaining the typed `input:` and protected-write contract. Soren's coherent `a2f58b34` lint gate showed the prior `_query` repair still failed; targeted fleet lint and Steep on this successor are pending.
+
 The b3aaa07e focused lint followup uses an explicitly ignored `query:` callback value in the test-only fake inbound controller. The frozen controller source matched this branch before the edit; Soren's fleet Docker lint rerun on the successor remains pending.
 
 STRICT907 isolated followup: the test-only fake inbound controller now checks that provider account, event and raw MIME fields are strings before passing them to the typed adapter. This addresses three exact Steep diagnostics from the frozen `215080a4` fleet receipt; the successor source still needs Soren's strict Docker rerun.

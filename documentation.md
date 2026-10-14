@@ -1,5 +1,7 @@
 # Product requirements and decision record
 
+LINT932 fake inbound controller: protected-write invokes its guard with `input:` and `query:`. The guard uses only `input:` to validate the actor UUID; `**` accepts the unused keyword without binding it, preserving the RBS callback interface. This corrects the prior unsuccessful `_query` lint attempt, subject to fleet lint and Steep verification.
+
 Fake inbound V2 callback lint note: the protected write target-user callback retains the required `query:` keyword shape while marking its unused local as ignored. This source-only repair does not change request validation, actor/mailbox authorization, MIME handling or route availability. Soren must verify the successor in fleet Docker.
 
 STRICT907 boundary: presence of the three required fake-ingress JSON fields does not establish their scalar types. The protected controller rejects non-string provider account, event or raw MIME values with `request_invalid` before the typed fake MIME adapter; existing session, CSRF, actor and mailbox checks remain in order. This source is pending Soren's strict fleet check and does not enable live inbound mail.

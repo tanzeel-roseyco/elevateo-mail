@@ -1,5 +1,7 @@
 # Project state
 
+LINT932 source candidate: coherent `a2f58b34` still reported `Lint/UnusedBlockArgument` in the V2 fake inbound callback after Corin's `_query` change. The callback now accepts the unused `query:` via keyword rest and keeps the typed `input:` actor guard. Targeted fleet lint, Steep and fake inbound tests are NOT_RUN on this successor; no live-mail claim.
+
 Focused lint followup to exact integrated `b3aaa07e`: Corin fixed only `Lint/UnusedBlockArgument` in the V2 fake inbound controller's `guard_users` callback. The callback still accepts the required `query:` keyword, and the strict scalar guards remain unchanged. Fleet lint on this successor is NOT_RUN; the other 18 reported offenses remain with their owners.
 
 STRICT907: isolated fake inbound JSON scalar narrowing and malformed-field HTTP regression are authored against frozen `215080a4` equivalent controller source. The prior focused gate passed eight unit files (51 runs/225 assertions) but strict Steep failed with ten errors overall, three in this controller. This successor has not been run by Corin; Cassian/Nadia own the other errors, and Soren owns fleet Docker.
