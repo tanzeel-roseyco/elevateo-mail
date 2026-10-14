@@ -198,3 +198,5 @@ QA816 includes a source-only real reply-as-draft browser journey over Mira's thr
 QA816 has a source-only Mira thread transport-loss/retry browser case that requires a real API recovery and no stale plaintext.
 
 Fable `f295b35` now implements the agreed navigation labels; Soren's QA816 list-only container probe passed on an earlier source, with zero browser cases/screenshots. Real visual acceptance still awaits integrated web and database gates.
+
+Felix found and Tessa repaired one MEDIUM QA816 empty-search evidence oracle; the candidate now waits for settled “No matches” before screenshot. Independent repair review and real fleet browser execution remain pending.
