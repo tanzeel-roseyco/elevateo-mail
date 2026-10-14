@@ -48,12 +48,49 @@ module Elevateo
         end
       end
 
+      # Missing and unauthorized campaign drafts share one outward result.
+      def fetch(campaign_id:, organization_id:, session_digest:)
+        campaign = uuid(campaign_id)
+        org = uuid(organization_id)
+        raise ArgumentError, "invalid session digest" unless session_digest.is_a?(String) && DIGEST.match?(session_digest)
+        @connection.transaction do
+          if authorize_read?(session_digest)
+            rows("SELECT set_config('app.outreach_digest',$1,true)", [session_digest])
+            draft = rows(<<~SQL, [org, campaign]).first
+              SELECT id,campaign_id,status,timezone,version FROM app.campaign_sequences
+              WHERE organization_id=$1::uuid AND campaign_id=$2::uuid
+            SQL
+            if draft
+              step_rows = rows(<<~SQL, [org, campaign, draft.fetch("id")])
+                SELECT id,position,delay_seconds,to_char(local_time,'HH24:MI:SS') AS local_time,label
+                FROM app.campaign_sequence_steps
+                WHERE organization_id=$1::uuid AND campaign_id=$2::uuid AND sequence_id=$3::uuid
+                ORDER BY position
+              SQL
+              steps = step_rows.map do |step|
+                { "id" => step.fetch("id"), "position" => step.fetch("position").to_i,
+                  "delay_seconds" => step.fetch("delay_seconds").to_i,
+                  "local_time" => step.fetch("local_time"), "label" => step.fetch("label") }
+              end
+              { "id" => draft.fetch("id"), "campaign_id" => draft.fetch("campaign_id"),
+                "status" => draft.fetch("status"), "timezone" => draft.fetch("timezone"),
+                "version" => draft.fetch("version").to_i, "steps" => steps }
+            end
+          end
+        end
+      end
+
       private
 
       def authorize!(digest)
         result = rows("SELECT app.authorize_outreach_draft_write($1::text) AS result", [digest]).first
         raise DraftError, "not_available" unless result && decode(result.fetch("result"))["status"] == "ok"
         rows("SELECT set_config('app.outreach_digest',$1,true)", [digest])
+      end
+
+      def authorize_read?(digest)
+        result = rows("SELECT app.authorize_outreach_content_read($1::text) AS result", [digest]).first
+        !!(result && decode(result.fetch("result"))["status"] == "ok")
       end
 
       def replace_locked(input, org)

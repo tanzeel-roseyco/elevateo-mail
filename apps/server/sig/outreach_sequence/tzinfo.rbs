@@ -1,0 +1,17 @@
+# TZInfo 2.0.6 methods used by the isolated sequence planner.
+module TZInfo
+  class InvalidTimezoneIdentifier < StandardError
+  end
+
+  class PeriodNotFound < StandardError
+  end
+
+  class AmbiguousTime < StandardError
+  end
+
+  class Timezone
+    def self.get: (String) -> Timezone
+    def local_to_utc: (Time, bool?) -> Time
+    def utc_to_local: (Time) -> Time
+  end
+end

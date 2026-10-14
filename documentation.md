@@ -365,3 +365,6 @@ QA816 seeded visual evidence on exact f210b5bf consists of eight fleet PNGs (des
 QA816's visual-fixture correction restricts the synthetic thread route to detail GETs, serves schema-valid assignment/notes GETs, aligns displayed message count with page/cursor and makes the ready-reader capture assert settled panels without alerts. It changes only the visual test fixture, not app or frozen API behavior. Soren's fleet browser rerun must produce new private images; old f210b5bf images are preserved as the pre-repair record.
 
 Tessa QA816 exact `e567213` visual fixture repair is integrated over the newer Fable shell source: current visual spec hash differs from Tessa’s isolated hash only where existing Navigation/Personal labels were retained. The new fixture now mocks schema-valid assignment/notes, anchors thread detail, aligns message count and requires no reader alerts before a PNG; a fresh eight-case simulated fleet rerun is pending, and old f210 PNGs remain historical.
+
+
+GET reads a tenant-scoped draft under current outreach content-read proof and returns only draft metadata and ordered steps; absent and unauthorized drafts share a nil repository result. Write operations use separate protected draft-write policies. Integrated SEC802 helper grant `338a442` is a prerequisite; runtime checks remain pending.

@@ -76,6 +76,8 @@ No independent adversarial or design-tradeoff review was performed. Reviewed sou
 
 ## MAC-814 00016 candidate self-review (2026-10-14)
 
+Follow-up static self-review: GET/policy/type repair covered repository and test delta, migration policy delta and schedule/RBS delta (about 125 unique changed source LOC); zero new defects confirmed in the repair (0/KLOC). This is not independent review or runtime validation. Historical SEC802 grant seam is resolved in integrated source `338a442`, and exact cb1 Steep errors drove the narrow TZInfo/nil corrections; Soren's next fleet run is required to verify the candidate.
+
 Static self-review only, not independent acceptance: migration 00016 (approx. 130 LOC), draft input (approx. 75 LOC), repository (approx. 120 LOC), and schedule delta (44 LOC), about 369 unique source LOC. Two defects found and corrected before commit: invalid Ruby block form in `stop_decision` and incomplete claim-field check (2/369 = 5.42 defects/KLOC). One open integration defect: SEC802 denies `elevateo_app_read` EXECUTE on the helper used in sequence RLS; formal severity HIGH until a reviewed grant/role correction and cross-actor fixture exist (1/369 = 2.71 open defects/KLOC). Tests were authored but not executed; bounded independent review and fleet Docker runtime are requested in [candidate record](docs/completion/maeve-sequence-persistence.md).
 
 ## Initialization

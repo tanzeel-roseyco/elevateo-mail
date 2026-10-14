@@ -96,6 +96,8 @@ An additive inbound attachment candidate now parses bounded PDF/PNG/JPEG/plainte
 
 Theo's later scoped V2 write-guard typing repair addresses the exact `cb1ec5be` Steep callback mismatch for grants and display preferences; Soren's fleet rerun is pending.
 
+MAC-814 follow-up source splits content reads from protected writes and adds a minimal draft GET repository method; integrated SEC802 grant commit `338a442` supplies restricted helper execution. Fleet SQL, GET and Steep checks remain pending.
+
 
 ### R25 approval reload recovery candidate
 

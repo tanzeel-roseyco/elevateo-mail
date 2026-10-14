@@ -25,8 +25,10 @@ module Elevateo
       @connection: untyped
       def initialize: (connection: untyped) -> void
       def save: (DraftInput, organization_id: untyped, session_digest: untyped) -> Hash[String, untyped]
+      def fetch: (campaign_id: untyped, organization_id: untyped, session_digest: untyped) -> Hash[String, untyped]?
       private
       def authorize!: (String) -> void
+      def authorize_read?: (String) -> bool
       def replace_locked: (DraftInput, String) -> Hash[String, untyped]
       def occurrence_history?: (String, String) -> bool
       def decode: (untyped) -> Hash[String, untyped]
