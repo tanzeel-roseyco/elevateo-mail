@@ -4,6 +4,7 @@ import { render, screen } from '@testing-library/react'
 import { MemoryRouter, Route, Routes } from 'react-router'
 import { describe, expect, it, vi } from 'vitest'
 import { createFixtureGateway } from '@/data/fixtures/fixtureGateway'
+import { createV2OutreachGateway } from '@/data/v2OutreachGateway'
 import type { OutreachGateway } from '@/features/outreach/contract'
 import { FeatureGatewaysProvider, type FeatureGateways } from '../featureGateways'
 import { SessionProvider } from '../session'
@@ -62,6 +63,14 @@ describe('feature route wiring', () => {
   it('renders Lyra\'s personal settings from the live session without any gateway', async () => {
     renderRoute('/settings/personal', {})
     expect(await screen.findByText(/Signed in as Fixture user A/)).toBeTruthy()
+    expect(screen.queryByRole('button')).toBeNull()
+  })
+
+  it("routes a campaign-scoped account read through the real V2 adapter, which fails explicitly without any dispatch", async () => {
+    const fetchImpl = vi.fn(async () => new Response('{}', { headers: { 'Content-Type': 'application/json' } }))
+    renderRoute('/outreach/campaigns/1a40d184-987d-4b50-98d2-f674e41842f9/accounts', { outreach: createV2OutreachGateway(fetchImpl) })
+    expect(await screen.findByRole('alert')).toBeTruthy()
+    expect(fetchImpl).not.toHaveBeenCalled()
     expect(screen.queryByRole('button')).toBeNull()
   })
 })
