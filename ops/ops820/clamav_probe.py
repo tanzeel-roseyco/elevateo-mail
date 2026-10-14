@@ -58,7 +58,7 @@ def verify(directory: pathlib.Path) -> None:
         raise ValueError("absolute fixture directory required")
     for name, expected in (("clean.txt", "clean"), ("eicar.txt", "malware")):
         path = directory / name
-        fd = os.open(path, os.O_RDONLY | os.O_NOFOLLOW)
+        fd = os.open(path, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)
         with os.fdopen(fd, "rb") as fixture:
             details = os.fstat(fixture.fileno())
             if (not stat.S_ISREG(details.st_mode) or details.st_size != len(FIXTURES[name])

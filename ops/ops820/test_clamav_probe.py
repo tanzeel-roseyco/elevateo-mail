@@ -1,5 +1,6 @@
 """Protocol fault cases for a disposable Python Docker job; no local runner."""
 import struct
+import os
 import pathlib
 import tempfile
 import unittest
@@ -58,6 +59,17 @@ class ClamdProtocolTest(unittest.TestCase):
             prepare(directory)
             with (directory / "clean.txt").open("ab") as target:
                 target.write(b"extra")
+            with patch("clamav_probe.socket.create_connection") as connect:
+                with self.assertRaisesRegex(ValueError, "fixture bytes changed"):
+                    verify(directory)
+                connect.assert_not_called()
+
+    def test_fifo_fixture_rejected_without_blocking(self):
+        with tempfile.TemporaryDirectory() as parent:
+            directory = pathlib.Path(parent) / "fixtures"
+            prepare(directory)
+            (directory / "clean.txt").unlink()
+            os.mkfifo(directory / "clean.txt")
             with patch("clamav_probe.socket.create_connection") as connect:
                 with self.assertRaisesRegex(ValueError, "fixture bytes changed"):
                     verify(directory)
