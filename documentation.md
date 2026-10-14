@@ -196,3 +196,6 @@ GET reads a tenant-scoped draft under current outreach content-read proof and re
 # SEQ-863 sequence authorization fixture
 
 The sequence repository's read/write policy split has a disposable database fixture that uses the actual API login and protected-write guard. Four cases are authored, not run; integrated SQL/role acceptance remains pending. See [test record](docs/completion/maeve-seq863-real-role-review.md).
+# SEQ-876 repository load correction
+
+The sequence repository's step insert SQL and bind order are preserved while its multiline heredoc call is made parseable. Soren's exact `e9ead714` controller run failed before cases could execute; follow-up fleet tests remain pending. See [repair record](docs/completion/maeve-seq876-syntax-repair.md).

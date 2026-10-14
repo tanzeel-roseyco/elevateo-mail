@@ -128,3 +128,6 @@ Follow-up candidate: `Repository#fetch` uses content-read proof and returns nil 
 # SEQ-863 candidate evidence
 
 Four real-role sequence database tests now cover content-read GET, hidden/absent cases, unguarded direct write denial and protected versioned update. They have not been executed; Soren owns the fleet Docker run. See [test record](docs/completion/maeve-seq863-real-role-review.md).
+# SEQ-876 parse repair
+
+The sequence step insert heredoc now receives a prebuilt ordered bind array, repairing the `e9ead714` controller load SyntaxError. Existing repository/controller Docker retest is pending through Soren; see [repair record](docs/completion/maeve-seq876-syntax-repair.md).

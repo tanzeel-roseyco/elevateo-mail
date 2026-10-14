@@ -66,6 +66,10 @@ See docs/completion/int401-frozen-app.md.
 
 # Code reviews
 
+## SEQ-876 fleet-derived syntax repair
+
+Soren's isolated `e9ead714` Docker receipt confirmed one HIGH load-blocking Ruby SyntaxError at sequence repository line 123; controller cases never ran. Maeve changed two effective source lines in a 12-line local packet, moving eight ordered bind values before the heredoc call (1 defect/12 reviewed LOC = 83.33/KLOC, a narrow repair denominator rather than whole-file density). Source review found no other issue in that packet; this is not a runtime PASS. Repository/controller retest is requested; see [repair record](docs/completion/maeve-seq876-syntax-repair.md).
+
 ## SEQ-863 database fixture static self-review
 
 Nadia REV-858 `ec9e7a6` found one MEDIUM evidence defect in the prior fake repository tests. This candidate adds 153 unique test LOC across four real PostgreSQL role cases; self-review found zero confirmed new source defects (0/KLOC), while independent review and fleet execution remain NOT_RUN. The MEDIUM evidence gap is not closed by source alone; see [SEQ-863 record](docs/completion/maeve-seq863-real-role-review.md).
