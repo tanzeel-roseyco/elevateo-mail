@@ -378,3 +378,5 @@ INT801 sequence PUT request cap is 16 KiB so a valid 20-step Unicode draft fits;
 INT801 sequence controller now has a narrow RBS declaration; strict Steep remains pending fleet Docker.
 
 QA816 Tessa bc02fc1 task-private later-page seed and browser case are imported as source candidate; frozen BE02 seed unchanged, real-auth Docker/visual acceptance pending. Dorian b1088a3 documents only historical 882a471 migration application of revised 00009 before unrelated 00018 failure.
+
+SEQ863 Maeve 2d2f95a real-role sequence database fixture is imported as source; Soren fleet PostgreSQL/Auth role proof remains pending.
