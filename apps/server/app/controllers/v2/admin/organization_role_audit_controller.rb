@@ -13,6 +13,10 @@ module V2
       def index
         organization = path_uuid(:organization_id)
         protected_read(allowed_query: %w[limit cursor], budget: 32_768) do |connection:, identity:, session:, query:, **|
+          # @type var connection: ActiveRecord::ConnectionAdapters::AbstractAdapter
+          # @type var identity: Elevateo::SessionIdentity
+          # @type var session: Elevateo::ReadResponse::item
+          # @type var query: Hash[String, String]
           raise Elevateo::CollaborationError.new("not_available") unless organization == identity.org_id
           limit = Elevateo::OrganizationRoleAudit.limit(query)
           cursors = Elevateo::Cursors.new(secret: read_config.cursor_signing_key)

@@ -409,3 +409,5 @@ Exact 211df76 focused fleet Steep/unit found six attachment gateway client typin
 Elara's test-only Drain `minitest/mock` require addresses an isolated unit setup error; corrected fleet runtime pending, simulated send behavior unchanged.
 
 V1 send-intent cancellation protected-block local type annotations are integrated testable source only; no send semantics or live transport changed. Fleet strict/unit verification pending.
+
+Three V2 admin controllers carry Sabine's typed protected-block local annotations; runtime authorization and endpoint behavior unchanged. Strict Steep/affected fleet tests and independent review pending.

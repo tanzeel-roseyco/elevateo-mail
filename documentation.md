@@ -471,3 +471,5 @@ The private attachment client strict candidate retains the existing Numeric 0–
 The Drain unit test explicitly loads Minitest's mock extension before using `.stub`, removing a focused setup error without changing send worker implementation. Soren's successor unit result is pending.
 
 The frozen V1 send-intent cancellation controller adds only local protected-block type declarations for connection, identity and session, following focused Steep fallbacks. It does not change the route, cancellation state machine or no-live transport gate; current-source Steep remains pending.
+
+The V2 organization grants, role audit and user display preference controllers now declare protected read/write block keyword types locally, matching the existing checked helper interfaces. These are type-checker boundary declarations only; no route, DTO, SQL or authorization policy changes are claimed. Fleet Steep/units remain pending.

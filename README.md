@@ -466,3 +466,5 @@ Focused fleet strict/unit checks on 211df76 found Cassian attachment client typi
 An isolated Drain unit harness error on the older focused strict run came from missing `minitest/mock`; Elara's test-only require is now integrated. It does not change send behavior, and the corrected unit awaits Soren's fleet rerun.
 
 Elara's V1 send-intent cancellation controller now annotates protected-block connection, identity and session types for the strict checker; endpoint semantics and no-live default are unchanged. Focused fleet Steep and cancellation units remain pending on this successor.
+
+Sabine's focused V2 admin controller strict candidate is integrated: local protected-block bindings are annotated in organization grants, role audit and display preferences without changing route/DTO/status behavior. Soren fleet Steep and affected units plus bounded independent review remain pending.

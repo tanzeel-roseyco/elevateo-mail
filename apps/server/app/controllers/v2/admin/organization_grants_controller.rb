@@ -23,6 +23,10 @@ module V2
       def index
         organization = path_uuid(:organization_id)
         protected_read(allowed_query: %w[limit cursor], budget: 16_384) do |connection:, identity:, session:, query:, **|
+          # @type var connection: ActiveRecord::ConnectionAdapters::AbstractAdapter
+          # @type var identity: Elevateo::SessionIdentity
+          # @type var session: Elevateo::ReadResponse::item
+          # @type var query: Hash[String, String]
           raise Elevateo::CollaborationError.new("not_available") unless organization == identity.org_id
           limit = self.class.page_limit(query)
           cursors = Elevateo::Cursors.new(secret: read_config.cursor_signing_key)
@@ -104,6 +108,10 @@ module V2
       def roster
         organization = path_uuid(:organization_id)
         protected_read(allowed_query: %w[limit cursor], budget: 8192) do |connection:, identity:, session:, query:, **|
+          # @type var connection: ActiveRecord::ConnectionAdapters::AbstractAdapter
+          # @type var identity: Elevateo::SessionIdentity
+          # @type var session: Elevateo::ReadResponse::item
+          # @type var query: Hash[String, String]
           raise Elevateo::CollaborationError.new("not_available") unless organization == identity.org_id
           limit = self.class.page_limit(query)
           authorization_binds = [identity.digest, nil, "1"].map do |value|
@@ -152,11 +160,15 @@ module V2
         # @type var guards: V1::WriteController::target_users
         guards = ->(input:, query:) do
           # @type var input: Elevateo::WriteInput::object
+          # @type var query: Hash[String, String]
           raise Elevateo::CollaborationError.new("request_invalid") unless query.empty?
           self.class.change_input(input)
           [target]
         end
         protected_write(required: %w[role expected_revision], guard_users: guards) do |connection:, identity:, input:, **|
+          # @type var connection: Elevateo::WriteStatements
+          # @type var identity: Elevateo::SessionIdentity
+          # @type var input: Elevateo::WriteInput::object
           raise Elevateo::CollaborationError.new("not_available") unless organization == identity.org_id
           role, revision = self.class.change_input(input)
           row = connection.exec_query(CHANGE_SQL, "organization role change",
