@@ -1,0 +1,7 @@
+{
+  "tests": "FAILED",
+  "failure": "RuntimeError: ruby-suites failed; see 029-ruby-suites.log",
+  "cleanup_passed": true,
+  "finished_at": 1792004048.9666471,
+  "source_snapshot": "source.sha256.json"
+}

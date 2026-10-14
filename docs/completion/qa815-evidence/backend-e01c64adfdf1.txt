@@ -1,0 +1,12 @@
+source=e01c64adfdf1ef05107239e947ed7351b771580f
+started=2026-10-14T18:50:10Z
+task_source_overlay=TEST929 per-file exit/elapsed ledger and 1800s outer lease; canonical commit unchanged
+task_source_overlay=OPS820 restricted gateway login before migration; canonical commit unchanged
+BE02 project=be02-f06d364a29c0457e9fef359cae849247 evidence=/tmp/qa815-backend.i9idi5hI/ops/local/be02-f06d364a29c0457e9fef359cae849247
+Building bounded task image
+Running isolated Minitest suites and Steep
+tests=FAILED cleanup=PASSED evidence=/tmp/qa815-backend.i9idi5hI/ops/local/be02-f06d364a29c0457e9fef359cae849247
+runner_exit=1
+receipt_copy_failed=0
+archive_absent=yes
+finished=2026-10-14T18:54:10Z

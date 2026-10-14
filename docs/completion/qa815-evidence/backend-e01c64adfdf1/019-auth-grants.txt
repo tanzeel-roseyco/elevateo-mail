@@ -1,0 +1,9 @@
+          status           
+---------------------------
+ bootstrap-auth-grants: ok
+(1 row)
+
+ Container [opaque value redacted] Creating 
+ Container [opaque value redacted] Created 
+
+exit=0 seconds=0.61
