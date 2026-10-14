@@ -186,6 +186,7 @@ Cassian manifest reconciliation: contract-lock now seals actual generated client
 ### QA-817 adversarial coverage
 
 Current gate: Felix `ae67ad6` has eleven source fixtures; Cassian `93f7b14` has nine. The later fleet migration reached Corin's inbound SQL syntax error after Nadia's cancellation repair, so QA-817 database/HTTP results remain NOT_REACHED. Orion's active native direction is online-only with no IPC/callback; the earlier OAuth review is historical. Soren owns the native boundary verifier and Docker/actual runtime evidence. No measured latency or memory budget exists.
+Felix's current native source review covers Orion `5108625` four Rust files (137 LOC, 0 confirmed static defects); a trailing-dot placeholder hostname alias is an unconfirmed probe for Soren's fleet Rust suite. See `docs/completion/felix-native812-online-review.md`.
 
 The `apps/server/test/qa817` candidate checks that hostile plaintext remains data at the input boundary, oversized byte streams and forged origins fail closed, worker control corruption holds dispatch, and simulated receipt evidence changes with its binding. This is a boundary regression subset, not end-to-end tenant or worker race acceptance. Run only in Soren's fleet Docker lane.
 

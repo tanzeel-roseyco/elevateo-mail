@@ -15,6 +15,7 @@ Shared company mailroom with one Rails domain authority and a React/TypeScript c
 ## Current state
 
 QA-817 adversarial source candidates and bounded peer reviews are committed; integrated real-DB/HTTP and worker evidence remains pending Soren fleet Docker. Nadia's cancellation migration was passed in a later fleet run, but Corin's inbound migration then failed before QA cases. Cassian still needs two latest QA fixtures. Native scope is now online-only with no IPC/callback path. See `docs/completion/felix.md`.
+Felix's bounded review of the current native shell has an unconfirmed trailing-dot placeholder hostname probe; fleet Rust regression and native runtime remain pending.
 
 
 ### R25 approval reload recovery candidate
