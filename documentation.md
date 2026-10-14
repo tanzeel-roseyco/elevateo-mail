@@ -393,3 +393,5 @@ OUT804 Dorian 92a8a3e positive restricted-role/stale-digest fixture and QA816 Te
 FE864 Fable 8eb133c now passes optional inert sequence read/write through the central session policy; current integrated web Docker and real browser proof remain pending.
 
 INT801 sequence parent lookup uses existing Campaigns::Repository#detail 404 raise; a focused no-save denial regression is authored after Theo REV867, fleet Docker pending.
+
+INT801 REV868 sequence gateway test now asserts exact current context/version headers on GET and PUT as well as CSRF; fleet Docker rerun pending.

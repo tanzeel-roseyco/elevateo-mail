@@ -23,6 +23,11 @@ describe('V2 inert sequence draft gateway', () => {
     expect(fetchImpl.mock.calls.map(([path]) => path)).toEqual([
       `/v2/outreach/campaigns/${campaign}/sequence`, `/v2/outreach/campaigns/${campaign}/sequence`,
     ])
+    for (const [, init] of fetchImpl.mock.calls) {
+      const sent = new Headers(init.headers)
+      expect(sent.get('X-Session-Context')).toBe(context.contextId)
+      expect(sent.get('X-Authorization-Version')).toBe(context.authorizationVersion)
+    }
     expect(new Headers(fetchImpl.mock.calls[1]?.[1].headers).get('X-CSRF-Token')).toBe('proof')
   })
 
