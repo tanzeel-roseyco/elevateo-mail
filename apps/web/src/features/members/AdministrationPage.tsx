@@ -7,9 +7,9 @@ import { createV2Gateway } from '@/data/v2Gateway'
 import { GatewayError } from '@/data/errors'
 import { Button } from '@/ui/Button'
 import { EmptyState, Skeleton } from '@/ui/Async'
-import { CONFIG_PEOPLE, editableRoles, validGrantProjection, validRosterProjection, type EditableRole } from './adminModel'
+import { CONFIG_PEOPLE, editableRoles, validActorProjection, validGrantProjection, validRosterProjection, type EditableRole } from './adminModel'
 
-type Grants = { grants: OrganizationGrant[] }
+type Grants = { actor: OrganizationGrant; grants: OrganizationGrant[] }
 type Roster = { status: 'loading' } | { status: 'ready'; items: z.infer<typeof RosterPersonSchema>[] } | { status: 'unavailable' } | { status: 'error' }
 type View = { status: 'loading' } | { status: 'ready'; value: Grants } | { status: 'denied' } | { status: 'error' }
 const adminGateway = createV2Gateway()
@@ -40,6 +40,7 @@ export function AdministrationPage({ section }: { section: 'people' | 'organizat
     setWriteBlocked(false)
     let cursor: string | undefined
     const grants: OrganizationGrant[] = []
+    let actor: OrganizationGrant | undefined
     const seenCursors = new Set<string>()
     let resetUsed = false
     for (let page = 0; page < 20; page += 1) {
@@ -47,23 +48,27 @@ export function AdministrationPage({ section }: { section: 'people' | 'organizat
       if (outcome.kind === 'stale') return
       if (outcome.kind === 'failed') {
         if (outcome.error instanceof GatewayError && outcome.error.code === 'cursor_invalid' && cursor !== undefined && !resetUsed) {
-          resetUsed = true; cursor = undefined; grants.length = 0; seenCursors.clear(); continue
+          resetUsed = true; cursor = undefined; grants.length = 0; actor = undefined; seenCursors.clear(); continue
         }
         setView({ status: isDenied(outcome.error) ? 'denied' : 'error' }); return
       }
       if (outcome.value.context_id !== session?.context_id || outcome.value.authorization_version !== session?.authorization_version) {
         setView({ status: 'error' }); return
       }
+      const pageActor = outcome.value.actor
+      if (!actorId || !validActorProjection(organizationId, actorId, pageActor, actor)) { setView({ status: 'error' }); return }
+      actor = pageActor
       grants.push(...outcome.value.items)
-      if (!validGrantProjection(organizationId, grants)) { setView({ status: 'error' }); return }
+      if (!validGrantProjection(organizationId, grants) || grants.some((grant) => grant.user_id === actorId &&
+        (grant.role !== pageActor.role || grant.revision !== pageActor.revision))) { setView({ status: 'error' }); return }
       const next = outcome.value.next_cursor
-      if (next === null) { setView({ status: 'ready', value: { grants } }); return }
+      if (next === null) { setView({ status: 'ready', value: { actor, grants } }); return }
       if (seenCursors.has(next)) { setView({ status: 'error' }); return }
       seenCursors.add(next)
       cursor = next
     }
     setView({ status: 'error' })
-  }, [organizationId, request, session?.context_id, session?.authorization_version])
+  }, [organizationId, actorId, request, session?.context_id, session?.authorization_version])
   const loadRoster = useCallback(async () => {
     if (!organizationId) return
     setRoster({ status: 'loading' })
@@ -90,8 +95,8 @@ export function AdministrationPage({ section }: { section: 'people' | 'organizat
   useEffect(() => { void loadRoster() }, [loadRoster])
 
   const change = async (target: OrganizationGrant) => {
-    if (view.status !== 'ready' || !organizationId || !actorId || !proof || pending || writeBlocked) return
-    const allowed = editableRoles(actorId, view.value.grants, target)
+    if (view.status !== 'ready' || !organizationId || !proof || pending || writeBlocked) return
+    const allowed = editableRoles(view.value.actor, target)
     const role = selection[target.user_id]
     if (!role || !allowed.includes(role)) return
     const revision = target.revision
@@ -139,7 +144,7 @@ export function AdministrationPage({ section }: { section: 'people' | 'organizat
       {view.value.grants.length === 0 && <p className="mt-3 text-sm text-muted">No current grants were returned.</p>}
       <ul className="mt-3 divide-y divide-line rounded-lg border border-line">
         {view.value.grants.map((grant) => {
-          const roles = actorId ? editableRoles(actorId, view.value.grants, grant) : []
+          const roles = editableRoles(view.value.actor, grant)
           const selected = selection[grant.user_id] ?? grant.role
           return <li key={grant.user_id} className="flex flex-wrap items-center gap-3 p-3 text-sm">
             <div className="min-w-0 flex-1"><p className="break-all font-mono text-xs">{grant.user_id}</p><p className="text-xs text-muted">Current: {grant.role.replaceAll('_', ' ')} · revision {grant.revision}</p></div>

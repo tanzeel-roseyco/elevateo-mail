@@ -5,6 +5,7 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router'
 import type { Message, ThreadDetailPage } from '@/data/contract'
+import type { ReadContext } from '@/data/gateway'
 import { GatewayError, isApiError } from '@/data/errors'
 import { useMailbox } from '@/app/mailboxes'
 import { useGateway, useSession } from '@/app/session'
@@ -23,16 +24,25 @@ import { ReadStateControl } from './ReadStateControl'
 
 type ReaderState =
   | { status: 'loading' }
-  | { status: 'ready'; thread: ThreadDetailPage['thread']; messages: Message[]; nextCursor: string | null; loadingMore: boolean }
+  | { status: 'ready'; thread: ThreadDetailPage['thread']; messages: Message[]; nextCursor: string | null; loadingMore: boolean; pageError: string | null }
   | { status: 'unavailable' }
   | { status: 'error'; message: string }
+
+export type DirectMessageRead = (ctx: ReadContext, mailboxId: string, threadId: string, messageId: string, signal?: AbortSignal) => Promise<{
+  context_id: string; authorization_version: string; mailbox_id: string; thread_id: string; message: Message
+}>
+
+type DirectState =
+  | { status: 'loading' | 'unavailable' | 'error'; messageId: string }
+  | { status: 'ready'; messageId: string; message: Message }
+  | null
 
 function sameAddressLine(message: Message): string {
   if (message.to.length === 0) return 'No recipients recorded'
   return `To: ${message.to.map((a) => a.display_name ?? a.address ?? 'Unknown recipient').join(', ')}`
 }
 
-export function ThreadPage() {
+export function ThreadPage({ readDirectMessage }: { readDirectMessage?: DirectMessageRead } = {}) {
   const { mailboxId, threadId } = useParams<{ mailboxId: string; threadId: string }>()
   const [searchParams] = useSearchParams()
   if (mailboxId === undefined || threadId === undefined) return null
@@ -47,10 +57,10 @@ export function ThreadPage() {
   // A->B would see A's subject/messages under B's URL for a frame, and an A completion landing
   // before cleanup could pass isCurrent. The filter is presentational (back link only), so it
   // stays outside the key and must not remount the reader.
-  return <ConversationReader key={`${mailboxId}\n${threadId}`} mailboxId={mailboxId} threadId={threadId} />
+  return <ConversationReader key={`${mailboxId}\n${threadId}`} mailboxId={mailboxId} threadId={threadId} readDirectMessage={readDirectMessage} />
 }
 
-function ConversationReader({ mailboxId, threadId }: { mailboxId: string; threadId: string }) {
+function ConversationReader({ mailboxId, threadId, readDirectMessage }: { mailboxId: string; threadId: string; readDirectMessage?: DirectMessageRead }) {
   const navigate = useNavigate()
   const draftIntent = useDraftIntent()
   const [searchParams] = useSearchParams()
@@ -61,6 +71,8 @@ function ConversationReader({ mailboxId, threadId }: { mailboxId: string; thread
   const { scope, context, handleError, state: sessionState } = useSession()
   const mailbox = useMailbox(mailboxId)
   const [state, setState] = useState<ReaderState>({ status: 'loading' })
+  const [directState, setDirectState] = useState<DirectState>(null)
+  const [directRetry, setDirectRetry] = useState(0)
   // AIDEV-NOTE: One traversal budget for the whole conversation read; continuations share it and
   // a second invalid cursor surfaces manual retry instead of another automatic reset (D4, FE-R10).
   const budgetRef = useRef(newTraversalBudget())
@@ -100,7 +112,7 @@ function ConversationReader({ mailboxId, threadId }: { mailboxId: string; thread
       abortRef.current = controller
       const isCurrent = () => scope.isCurrent(generation) && !controller.signal.aborted
       if (!append) budgetRef.current = newTraversalBudget()
-      if (append) setState((prev) => (prev.status === 'ready' ? { ...prev, loadingMore: true } : prev))
+      if (append) setState((prev) => (prev.status === 'ready' ? { ...prev, loadingMore: true, pageError: null } : prev))
       else setState({ status: 'loading' })
 
       void readPage<ThreadDetailPage>({
@@ -125,6 +137,11 @@ function ConversationReader({ mailboxId, threadId }: { mailboxId: string; thread
             setState({ status: 'unavailable' })
             return
           }
+          if (append && !isApiError(outcome.error, 'cursor_invalid')) {
+            // A transient continuation failure does not invalidate already authorized plaintext.
+            setState((prev) => prev.status === 'ready' ? { ...prev, loadingMore: false, pageError: 'More messages could not be loaded. Check your connection and try again.' } : prev)
+            return
+          }
           setState({
             status: 'error',
             message: outcome.error instanceof GatewayError ? outcome.error.message : 'The conversation could not be loaded.',
@@ -141,6 +158,7 @@ function ConversationReader({ mailboxId, threadId }: { mailboxId: string; thread
             messages: [...existing, ...outcome.page.messages.filter((m) => !seen.has(m.id))],
             nextCursor: outcome.page.next_cursor,
             loadingMore: false,
+            pageError: null,
           }
         })
       })
@@ -158,7 +176,38 @@ function ConversationReader({ mailboxId, threadId }: { mailboxId: string; thread
   // and reach handleError. Abort supplements ownership checks (D3).
   useLayoutEffect(() => () => abortRef.current?.abort(), [])
 
-  const selectedMessagePresent = state.status === 'ready' && selectedMessageId !== null && state.messages.some((message) => message.id === selectedMessageId)
+  const loadedMessages = state.status === 'ready' ? state.messages : null
+  const selectedOnPage = selectedMessageId !== null && loadedMessages?.some((message) => canonicalId(message.id) === selectedMessageId) === true
+  const directResult = directState?.messageId === selectedMessageId ? directState : null
+
+  useEffect(() => {
+    if (selectedMessageId === null || state.status !== 'ready' || selectedOnPage || !readDirectMessage || !context) {
+      setDirectState(null)
+      return
+    }
+    const messageId = selectedMessageId
+    const generation = scope.current()
+    const controller = new AbortController()
+    const isCurrent = () => scope.isCurrent(generation) && !controller.signal.aborted
+    setDirectState({ status: 'loading', messageId })
+    void readDirectMessage(context, mailboxId, threadId, messageId, controller.signal).then((page) => {
+      if (!isCurrent()) return
+      // AIDEV-NOTE: A schema-valid response for another owner/resource never becomes selected content.
+      if (page.context_id !== context.contextId || page.authorization_version !== context.authorizationVersion ||
+          canonicalId(page.mailbox_id) !== canonicalId(mailboxId) || canonicalId(page.thread_id) !== canonicalId(threadId) ||
+          canonicalId(page.message.id) !== messageId) {
+        setDirectState({ status: 'unavailable', messageId })
+        return
+      }
+      setDirectState({ status: 'ready', messageId, message: page.message })
+    }).catch((error: unknown) => {
+      if (!isCurrent() || handleError(error, generation)) return
+      setDirectState({ status: isApiError(error, 'not_available') ? 'unavailable' : 'error', messageId })
+    })
+    return () => controller.abort()
+  }, [selectedMessageId, state.status, selectedOnPage, readDirectMessage, context, mailboxId, threadId, scope, handleError, directRetry])
+
+  const selectedMessagePresent = selectedOnPage || directResult?.status === 'ready'
 
   // AIDEV-NOTE: Page loadingMore changes reader state; focus moves only when a new target first appears.
   useEffect(() => {
@@ -201,7 +250,10 @@ function ConversationReader({ mailboxId, threadId }: { mailboxId: string; thread
             {state.thread.message_count} message{state.thread.message_count === 1 ? '' : 's'} in this conversation
           </p>
           {selectedMessageId !== null && !selectedMessagePresent && (
-            <p role="status" className="mb-2 rounded-lg border border-line bg-surface-2 p-2 text-[13px]">
+            readDirectMessage ? (
+              directResult?.status === 'error' ? <div role="alert" className="mb-2 rounded-lg border border-line p-2 text-[13px]">The message could not be loaded. <Button size="sm" onClick={() => setDirectRetry((count) => count + 1)}>Retry message</Button></div>
+                : <p role="status" className="mb-2 rounded-lg border border-line bg-surface-2 p-2 text-[13px]">{directResult?.status === 'unavailable' ? 'This message is unavailable in this conversation.' : 'Loading selected message…'}</p>
+            ) : <p role="status" className="mb-2 rounded-lg border border-line bg-surface-2 p-2 text-[13px]">
               {state.nextCursor === null ? 'This message is unavailable in this conversation.' : 'This message is on a later page. Show more messages to find it.'}
             </p>
           )}
@@ -229,9 +281,28 @@ function ConversationReader({ mailboxId, threadId }: { mailboxId: string; thread
           {state.messages.length === 0 && state.nextCursor !== null && (
             <EmptyState title="Nothing on this page" body="This page of the conversation was empty, but more messages may be available below." />
           )}
+          {!selectedOnPage && directResult?.status === 'ready' && (
+            <ol className="mb-3">
+              <li ref={selectedMessageRef} tabIndex={-1} aria-label="Selected message" className="rounded-lg border border-accent-text bg-surface p-3">
+                <header className="mb-2 flex flex-wrap items-baseline gap-2">
+                  <span className="text-sm font-semibold">{directResult.message.sender?.display_name ?? directResult.message.sender?.address ?? 'Unknown sender'}</span>
+                  <span className="text-[12px] text-muted">{sameAddressLine(directResult.message)}</span>
+                  <span className="ml-auto text-[12px] text-muted">{directResult.message.sent_at === null ? 'No date recorded' : formatDateTime(directResult.message.sent_at)}</span>
+                </header>
+                <pre className="whitespace-pre-wrap break-words font-sans text-sm">{directResult.message.body_text}</pre>
+                <footer className="mt-2 flex flex-wrap gap-2">
+                  {mailbox?.capabilities.compose === true && directResult.message.sender?.address?.trim() && !/[\r\n<>]/.test(directResult.message.sender.address) && (
+                    <Button size="sm" onClick={() => replyToMessage(directResult.message)}>Reply to this sender as draft</Button>
+                  )}
+                  {directResult.message.body_truncated && <Badge tone="warn">Message shortened by the server</Badge>}
+                  {directResult.message.attachment_count > 0 && <Badge tone="neutral">{directResult.message.attachment_count} attachment(s) (viewing not yet available)</Badge>}
+                </footer>
+              </li>
+            </ol>
+          )}
           <ol className="flex flex-col gap-3">
             {state.messages.map((message) => (
-              <li key={message.id} ref={message.id === selectedMessageId ? selectedMessageRef : undefined} tabIndex={message.id === selectedMessageId ? -1 : undefined} aria-label={message.id === selectedMessageId ? 'Selected message' : undefined} className={`rounded-lg border bg-surface p-3 ${message.id === selectedMessageId ? 'border-accent-text' : 'border-line'}`}>
+              <li key={message.id} ref={canonicalId(message.id) === selectedMessageId ? selectedMessageRef : undefined} tabIndex={canonicalId(message.id) === selectedMessageId ? -1 : undefined} aria-label={canonicalId(message.id) === selectedMessageId ? 'Selected message' : undefined} className={`rounded-lg border bg-surface p-3 ${canonicalId(message.id) === selectedMessageId ? 'border-accent-text' : 'border-line'}`}>
                 <header className="mb-2 flex flex-wrap items-baseline gap-x-2 gap-y-1">
                   <span className="text-sm font-semibold">
                     {message.sender?.display_name ?? message.sender?.address ?? 'Unknown sender'}
@@ -245,7 +316,7 @@ function ConversationReader({ mailboxId, threadId }: { mailboxId: string; thread
                 <pre className="whitespace-pre-wrap break-words font-sans text-sm">{message.body_text}</pre>
                 {/* flex-wrap: both badges together overflow a 390px viewport otherwise (r10 visual QA). */}
                 <footer className="mt-2 flex flex-wrap gap-2">
-                  <Link to={`?${filter === 'unread' ? 'filter=unread&' : ''}message=${encodeURIComponent(message.id)}`} aria-current={message.id === selectedMessageId ? 'location' : undefined} className="rounded px-2 py-1 text-[13px] underline">Open this message</Link>
+                  <Link to={`?${filter === 'unread' ? 'filter=unread&' : ''}message=${encodeURIComponent(message.id)}`} aria-current={canonicalId(message.id) === selectedMessageId ? 'location' : undefined} className="rounded px-2 py-1 text-[13px] underline">Open this message</Link>
                   {mailbox?.capabilities.compose === true && message.sender?.address?.trim() && !/[\r\n<>]/.test(message.sender.address) && (
                     <Button size="sm" onClick={() => replyToMessage(message)}>Reply to this sender as draft</Button>
                   )}
@@ -261,9 +332,12 @@ function ConversationReader({ mailboxId, threadId }: { mailboxId: string; thread
           </ol>
           {state.nextCursor !== null && (
             <div className="mt-3 flex justify-center">
-              <Button size="sm" disabled={state.loadingMore} onClick={() => load(state.nextCursor ?? undefined, true)}>
-                {state.loadingMore ? 'Loading…' : 'Show more messages'}
-              </Button>
+              <div className="flex flex-col items-center gap-2">
+                {state.pageError !== null && <p role="alert" className="text-[13px] text-danger">{state.pageError}</p>}
+                <Button size="sm" disabled={state.loadingMore} onClick={() => load(state.nextCursor ?? undefined, true)}>
+                  {state.loadingMore ? 'Loading…' : state.pageError !== null ? 'Retry more messages' : 'Show more messages'}
+                </Button>
+              </div>
             </div>
           )}
           <div className="mt-4 flex flex-col gap-3">

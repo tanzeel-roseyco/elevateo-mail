@@ -1,6 +1,7 @@
 import { z } from 'zod'
+import { MessageSchema } from './contract'
 
-// AIDEV-NOTE: V2 is disabled server-side; these strict boundaries prevent a future gateway from trusting draft wire data.
+// AIDEV-NOTE: V2 remains an isolated source candidate; strict boundaries reject malformed wire data.
 export const IdSchema = z.uuid()
 const id = IdSchema
 const revision = z.number().int().nonnegative()
@@ -80,3 +81,11 @@ export const AccountSummarySchema = z.strictObject({
   status: z.literal('disabled'), version: z.number().int().min(1),
 })
 export const AccountPageSchema = z.strictObject({ items: z.array(AccountSummarySchema).max(100), next_cursor: id.nullable() })
+
+export const DirectMessagePageSchema = z.strictObject({
+  context_id: z.string().min(16).max(256).regex(/^[A-Za-z0-9_-]+$/),
+  authorization_version: z.string().min(16).max(256).regex(/^[A-Za-z0-9_-]+$/),
+  mailbox_id: id,
+  thread_id: id,
+  message: MessageSchema,
+})

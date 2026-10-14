@@ -18,7 +18,7 @@ import { createFixtureGateway, type FixtureScript } from '@/data/fixtures/fixtur
 import { GatewayError } from '@/data/errors'
 import type { ThreadDetailPage } from '@/data/contract'
 import type { MailroomGateway } from '@/data/gateway'
-import { ThreadPage } from './ThreadPage'
+import { ThreadPage, type DirectMessageRead } from './ThreadPage'
 
 const MB = '00000000-0000-4000-8000-000000000021'
 const THREAD = '00000000-0000-4000-8000-000000000031'
@@ -30,13 +30,13 @@ function renderReader(script: FixtureScript = {}) {
   return renderReaderWith(createFixtureGateway(script))
 }
 
-function renderReaderWith(gateway: MailroomGateway, initialEntry = `/mailboxes/${MB}/threads/${THREAD}`) {
+function renderReaderWith(gateway: MailroomGateway, initialEntry = `/mailboxes/${MB}/threads/${THREAD}`, readDirectMessage?: DirectMessageRead) {
   return render(
     <SessionProvider gateway={gateway}>
       <DraftIntentProvider>
       <MemoryRouter initialEntries={[initialEntry]}>
         <Routes>
-          <Route path="/mailboxes/:mailboxId/threads/:threadId" element={<ThreadPage />} />
+          <Route path="/mailboxes/:mailboxId/threads/:threadId" element={<ThreadPage readDirectMessage={readDirectMessage} />} />
           <Route path="/mailboxes/:mailboxId/drafts/:draftId" element={<DraftEditorPage />} />
         </Routes>
       </MemoryRouter>
@@ -63,6 +63,14 @@ function detailPage(bodies: string[], nextCursor: string | null): ThreadDetailPa
       body_truncated: false,
       attachment_count: 0,
     })),
+  }
+}
+
+function directPage(messageId: string, mailboxId = MB) {
+  return {
+    context_id: 'context_A_0123456789', authorization_version: 'authz_A_0123456789', mailbox_id: mailboxId,
+    thread_id: THREAD,
+    message: { id: messageId, sender: null, to: [], sent_at: null, body_text: 'Direct plaintext', body_truncated: false, attachment_count: 0 },
   }
 }
 
@@ -187,6 +195,65 @@ describe('plaintext reader', () => {
 })
 
 describe('individual message permalink', () => {
+  it('resolves a later-page message directly without walking cursors', async () => {
+    const { gateway, readCalls } = pagedGateway([detailPage([MESSAGE_A], 'next')])
+    const direct = vi.fn<DirectMessageRead>(async () => directPage(MESSAGE_B))
+    renderReaderWith(gateway, `/mailboxes/${MB}/threads/${THREAD}?message=${MESSAGE_B}`, direct)
+    const selected = await screen.findByLabelText('Selected message')
+    expect(selected.textContent).toContain('Direct plaintext')
+    await waitFor(() => expect(document.activeElement).toBe(selected))
+    expect(direct).toHaveBeenCalledWith(expect.anything(), MB, THREAD, MESSAGE_B, expect.any(AbortSignal))
+    expect(readCalls()).toBe(1)
+  })
+
+  it('refuses a direct response bound to another mailbox', async () => {
+    const direct: DirectMessageRead = async () => directPage(MESSAGE_B, MB2)
+    renderReaderWith(pagedGateway([detailPage([MESSAGE_A], 'next')]).gateway, `/mailboxes/${MB}/threads/${THREAD}?message=${MESSAGE_B}`, direct)
+    await screen.findByText('This message is unavailable in this conversation.')
+    expect(screen.queryByText('Direct plaintext')).toBeNull()
+  })
+
+  it('uses one generic unavailable answer for a missing or inaccessible direct message', async () => {
+    const direct: DirectMessageRead = async () => { throw new GatewayError('api', 'not_available', 'Unavailable', { status: 404, requestId: 'r1' }) }
+    renderReaderWith(pagedGateway([detailPage([MESSAGE_A], 'next')]).gateway, `/mailboxes/${MB}/threads/${THREAD}?message=${MESSAGE_B}`, direct)
+    await screen.findByText('This message is unavailable in this conversation.')
+    expect(screen.queryByLabelText('Selected message')).toBeNull()
+  })
+
+  it('never renders a message after direct lookup reports a revoked session', async () => {
+    const direct = vi.fn<DirectMessageRead>(async () => { throw new GatewayError('api', 'unauthenticated', 'Session ended', { status: 401, requestId: 'r1' }) })
+    renderReaderWith(pagedGateway([detailPage([MESSAGE_A], 'next')]).gateway, `/mailboxes/${MB}/threads/${THREAD}?message=${MESSAGE_B}`, direct)
+    await waitFor(() => expect(direct).toHaveBeenCalledTimes(1))
+    expect(screen.queryByText('Direct plaintext')).toBeNull()
+    expect(screen.queryByLabelText('Selected message')).toBeNull()
+  })
+
+  it('offers explicit retry after a direct lookup network failure', async () => {
+    const direct = vi.fn<DirectMessageRead>()
+      .mockRejectedValueOnce(new GatewayError('transport', 'network', 'offline'))
+      .mockResolvedValueOnce(directPage(MESSAGE_B))
+    renderReaderWith(pagedGateway([detailPage([MESSAGE_A], 'next')]).gateway, `/mailboxes/${MB}/threads/${THREAD}?message=${MESSAGE_B}`, direct)
+    await screen.findByRole('button', { name: 'Retry message' })
+    expect(screen.queryByText('Direct plaintext')).toBeNull()
+    fireEvent.click(screen.getByRole('button', { name: 'Retry message' }))
+    await screen.findByText('Direct plaintext')
+    expect(direct).toHaveBeenCalledTimes(2)
+  })
+
+  it('drops an abort-ignoring direct answer after URL selection changes', async () => {
+    let resolveOld!: (value: ReturnType<typeof directPage>) => void
+    const direct: DirectMessageRead = async (_ctx, _mb, _thread, messageId) => messageId === MESSAGE_B
+      ? new Promise((resolve) => { resolveOld = resolve })
+      : directPage(messageId)
+    renderReaderWith(pagedGateway([detailPage([MESSAGE_A], 'next')]).gateway, `/mailboxes/${MB}/threads/${THREAD}?message=${MESSAGE_B}`, direct)
+    await screen.findByText('Loading selected message…')
+    fireEvent.click(screen.getByRole('link', { name: 'Open this message' }))
+    const selected = await screen.findByLabelText('Selected message')
+    expect(selected.textContent).toContain(MESSAGE_A)
+    await act(async () => resolveOld(directPage(MESSAGE_B)))
+    expect(screen.queryByText('Direct plaintext')).toBeNull()
+  })
+
   it('opens a message link without losing the inbox filter', async () => {
     renderReaderWith(pagedGateway([detailPage([MESSAGE_A], null)]).gateway, `/mailboxes/${MB}/threads/${THREAD}?filter=unread`)
     fireEvent.click(await screen.findByRole('link', { name: 'Open this message' }))
@@ -287,6 +354,48 @@ describe('return filter (FE-R11)', () => {
 })
 
 describe('message pagination reset (FE-R10)', () => {
+  it('keeps loaded plaintext on a network continuation failure and retries that page', async () => {
+    const { gateway, readCalls } = pagedGateway([
+      detailPage(['First message'], 'next'),
+      new GatewayError('transport', 'network', 'synthetic offline'),
+      detailPage(['Second message'], null),
+    ])
+    renderReaderWith(gateway)
+    await screen.findByText('First message')
+    fireEvent.click(screen.getByRole('button', { name: 'Show more messages' }))
+    await screen.findByRole('alert')
+    expect(screen.getByText('First message')).toBeTruthy()
+    fireEvent.click(screen.getByRole('button', { name: 'Retry more messages' }))
+    await screen.findByText('Second message')
+    expect(screen.getByText('First message')).toBeTruthy()
+    expect(readCalls()).toBe(3)
+  })
+
+  it('keeps a later-page permalink pending after a network failure', async () => {
+    const { gateway } = pagedGateway([
+      detailPage([MESSAGE_A], 'next'),
+      new GatewayError('transport', 'network', 'synthetic offline'),
+    ])
+    renderReaderWith(gateway, `/mailboxes/${MB}/threads/${THREAD}?message=${MESSAGE_B}`)
+    await screen.findByText('This message is on a later page. Show more messages to find it.')
+    fireEvent.click(screen.getByRole('button', { name: 'Show more messages' }))
+    await screen.findByRole('alert')
+    expect(screen.getByText('This message is on a later page. Show more messages to find it.')).toBeTruthy()
+    expect(screen.queryByLabelText('Selected message')).toBeNull()
+  })
+
+  it('removes loaded content when a continuation reports revoked access', async () => {
+    const { gateway } = pagedGateway([
+      detailPage(['Previously visible'], 'next'),
+      new GatewayError('api', 'not_available', 'Unavailable', { status: 404, requestId: 'r1' }),
+    ])
+    renderReaderWith(gateway)
+    await screen.findByText('Previously visible')
+    fireEvent.click(screen.getByRole('button', { name: 'Show more messages' }))
+    await screen.findByText('This conversation is unavailable')
+    expect(screen.queryByText('Previously visible')).toBeNull()
+  })
+
   it('a reset replaces accumulated messages with the fresh first page', async () => {
     const { gateway, readCalls } = pagedGateway([
       detailPage(['Stale message'], 'c1'),

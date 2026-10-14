@@ -9,6 +9,7 @@ import {
   OrganizationGrantsSchema,
   OutreachCampaignSchema,
   CampaignPageSchema,
+  DirectMessagePageSchema,
   OutreachPlanSchema,
   type GrantChange,
   type OutreachPlan,
@@ -38,6 +39,12 @@ const headers = (ctx: ReadContext, proof?: CsrfProof): Record<string, string> =>
 export function createV2Gateway(fetchImpl?: FetchLike) {
   const base = fetchImpl === undefined ? {} : { fetchImpl }
   return {
+    getDirectMessage(ctx: ReadContext, mailboxId: string, threadId: string, messageId: string, signal?: AbortSignal) {
+      const query = new URLSearchParams({ mailbox_id: IdSchema.parse(mailboxId) })
+      return requestJson(`/v2/threads/${id(threadId)}/messages/${id(messageId)}?${query}`, DirectMessagePageSchema, 2_097_152, {
+        ...base, headers: headers(ctx), signal,
+      })
+    },
     listCampaigns(ctx: ReadContext, signal?: AbortSignal) {
       return requestJson('/v2/outreach/campaigns', CampaignPageSchema, 20_480, { ...base, headers: headers(ctx), signal })
     },
