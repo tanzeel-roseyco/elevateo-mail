@@ -92,6 +92,7 @@ module V2
     def download_snapshot(mailbox, thread, message, attachment, context, version, request_id, expiry)
       identity = read_sessions.authenticate(cookie: session_cookie, deadline: api_deadline)
       principal = Elevateo::Tenancy::Principal.new(user_id: identity.user_id, org_id: identity.org_id)
+      # @type var result: Elevateo::Attachments::download_snapshot?
       result = ActiveRecord::Base.connection_pool.with_connection do |connection|
         Elevateo::Tenancy.with_context(principal, connection: connection, read_only: true) do
           session = read_sessions.authorize(identity, context: context, version: version,
@@ -113,6 +114,7 @@ module V2
           context_id, auth_version = session.values_at("context_id", "authorization_version")
           raise Elevateo::AuthError.new unless generation.is_a?(Integer) && generation >= 0 &&
             context_id.is_a?(String) && auth_version.is_a?(String)
+          # @type var fields: Elevateo::Attachments::download_fields
           fields = { "operation" => "attachment.read", "audience" => "attachment_gateway.v1",
             "attachment_id" => attachment, "organization_id" => identity.org_id,
             "mailbox_id" => mailbox, "thread_id" => thread, "message_id" => message,
@@ -120,6 +122,7 @@ module V2
             "expected_auth_session_id" => identity.auth_session_id, "context_id" => context_id,
             "authorization_version" => auth_version, "context_uuid" => context_id,
             "authorization_generation" => generation, "expires_at" => expiry, "request_id" => request_id }
+          # @type var binding: Elevateo::Attachments::download_fields
           binding = { "id" => row_id, "filename" => filename,
             "content_type" => content_type, "byte_size" => size, "scan_status" => status }
           { fields: fields, binding: binding, byte_size: size }
