@@ -530,3 +530,17 @@ New runner ordering/restoration, baseline Auth configuration, opt-in policy wiri
 ### INT401 R12 repair review closure
 
 ADV821 dedicated design: 0 defects/344 LOC on prior actual source and 0/123 LOC on added actual phase regression/context; overlapping coverage is nonadditive. ADV822 functional initially found 2 LOW defects/332 LOC (6.02/KLOC): missing main-phase regression and stale coupled overlay comment. Actual phase regression now covers GUI-before-HTTP and failure barriers; overlay comment and committed-LF digest pin corrected together. Final two-line correction accepted with zero new defects; all new runtime NOT_RUN. Imported accepted proof bytes unchanged. R12 supervisor core four flows/16 screenshots do not establish whole GUI acceptance: isolated conflict/revocation failed with exceptions not retained, investigation pending.
+
+
+## OFF404 QA404 R14 safe diagnostic source review
+
+Source-only, full INT401 rubric applied within bounded assignments; runtime NOT_RUN. Reviewers independently inspected source, with no tests/builds/install/Docker. Initial findings were repaired before the final packet; no whole-app approval.
+
+| Reviewer | Initial scope LOC | Initial defects | Initial defects/KLOC | Final exact scope | Final LOC | Remaining defects/KLOC |
+| --- | ---: | ---: | ---: | --- | ---: | ---: |
+| SPEC-404R14A functional |113|1 MEDIUM getter/proxy parser escape|8.85|diagnostics.ts1..92, cases.ts1..22, draft-conflict.e2e.ts140..145|120|0/0 |
+| SPEC-404R14B reporting A |162|1 HIGH annotation-reason bypass|6.17|quiet-reporter.ts1..65, diagnostics.ts1..92|157|0/0 |
+| SPEC-404R14B reporting B |68|0|0|diagnostics.unit.spec.ts1..102, shared/schema.ts9|103|0/0 |
+| SPEC-404R14D design |161|1 MEDIUM multiline-message frame injection|6.21|diagnostics.ts1..92, cases.ts1..22, quiet-reporter.ts1..65|179|0/0 |
+
+Final union281 changed-file sourceLOC +7 contextLOC=288, 0 remaining defects (0/KLOC). Reporting initial aggregate230LOC,1 defect,4.35/KLOC; its scope is divided into packets, not one oversized assignment. Initial unique union236LOC with3 distinct defects=12.71/KLOC. Full rubric covers purpose/null/empty/max/state/simplicity/duplication/naming/why-comments/tests/docs/boundaries/auth/hot-path cost. Dedicated design accepts fixed bounds maintenance and conservative unknown-format fallback. Known cleanup attribution covers only conflict finally; earlier body errors masked by finally remain unrecoverable. No oracle or acceptance relaxation. See docs/completion/elara-r14-safe-diagnostics.md and external exact-blob delivery receipt.

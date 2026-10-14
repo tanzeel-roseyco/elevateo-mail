@@ -1,5 +1,6 @@
 import type { Reporter, FullResult, TestCase, TestResult } from '@playwright/test/reporter';
 import { basename } from 'node:path';
+import { diagnosticSchema, diagnosticReason, frameworkDiagnostic } from './diagnostics.js';
 import { z } from 'zod';
 import { loadAcceptanceConfig } from '../shared/config.js';
 import { recordCase } from '../shared/report.js';
@@ -7,7 +8,22 @@ import { artifactPathSchema, safeText } from '../shared/schema.js';
 
 const metadataSchema = z.strictObject({ partition: safeText, reason: safeText.optional(),
   assertions: z.array(safeText).max(100), evidence: z.array(safeText).max(100),
-  artifacts: z.array(artifactPathSchema).max(100) });
+  artifacts: z.array(artifactPathSchema).max(100), diagnostic: diagnosticSchema.nullable().optional() });
+
+export function caseOutcome(result: Pick<TestResult, 'status' | 'errors'>, input: unknown) {
+  let metadata: z.infer<typeof metadataSchema> | undefined;
+  try {
+    const parsed = metadataSchema.safeParse(input);
+    if (parsed.success) metadata = parsed.data;
+  } catch { /* Malformed annotations cannot escape fixed reporting. */ }
+  // AIDEV-NOTE: Final framework status includes teardown; annotation reason text is never published.
+  const passed = result.status === 'passed' && (metadata?.assertions.length ?? 0) > 0;
+  const error = result.errors[0];
+  const diagnostic = metadata?.diagnostic ?? frameworkDiagnostic(error?.stack, error?.message);
+  const reason = passed ? null : result.status === 'skipped'
+    ? 'Acceptance case unavailable; see source scenario inventory' : diagnosticReason(diagnostic);
+  return { metadata, passed, reason };
+}
 
 // AIDEV-NOTE: Framework errors can contain filled inputs; native error objects never reach a report or stdout.
 export default class QuietReporter implements Reporter {
@@ -30,10 +46,7 @@ export default class QuietReporter implements Reporter {
     let input: unknown;
     try { input = JSON.parse(result.annotations.find(annotation => annotation.type === 'acceptance')?.description ?? 'null'); }
     catch { input = null; }
-    const parsed = metadataSchema.safeParse(input);
-    const metadata = parsed.success ? parsed.data : undefined;
-    // AIDEV-NOTE: Final framework status includes teardown; a successful body cannot hide fixture failure.
-    const passed = result.status === 'passed' && (metadata?.assertions.length ?? 0) > 0;
+    const { metadata, passed, reason } = caseOutcome(result, input);
     const start = result.startTime.getTime();
     const elapsed = Math.max(0, Math.round(result.duration));
     await recordCase({ schema_version: 1, run_id: config.runId, dispatch_id: config.dispatchId,
@@ -43,7 +56,7 @@ export default class QuietReporter implements Reporter {
       implementation_mode: 'real', attempt: 0, attempt_id: attempt, retry_of: null,
       started_at: new Date(start).toISOString(), ended_at: new Date(start + elapsed).toISOString(),
       duration_ms: elapsed, status: passed ? 'passed' : result.status === 'skipped' ? 'not_run' : 'failed',
-      reason: passed ? null : metadata?.reason ?? 'Required browser case did not complete; sensitive diagnostics suppressed',
+      reason,
       authority_variant: 'real-cookie-session-supported-auth-admin-seed', assertions: metadata?.assertions ?? [],
       evidence: metadata?.evidence ?? [], artifacts: metadata?.artifacts ?? [] });
   }
