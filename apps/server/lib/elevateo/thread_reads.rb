@@ -74,6 +74,21 @@ module Elevateo
        ORDER BY message.sent_at ASC NULLS FIRST, message.id ASC LIMIT $6::integer
     SQL
 
+    # AIDEV-NOTE: A permalink resolves one scoped row; a cursor walk would make late messages unreachable.
+    DIRECT_MESSAGE_SQL = <<~SQL.freeze
+      SELECT message.id, message.sender::text AS sender, message.recipients::text AS recipients,
+             left(message.body_text, 16385) AS body_text, message.attachment_count,
+             to_char(message.sent_at AT TIME ZONE 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS.US"Z"') AS sent_at
+        FROM app.mailboxes AS mailbox
+        JOIN app.threads AS thread ON thread.organization_id = mailbox.organization_id
+          AND thread.mailbox_id = mailbox.id AND thread.id = $3::uuid
+        JOIN app.messages AS message ON message.organization_id = thread.organization_id
+          AND message.mailbox_id = thread.mailbox_id AND message.thread_id = thread.id
+          AND message.id = $4::uuid
+       WHERE mailbox.organization_id = $1::uuid AND mailbox.id = $2::uuid
+       LIMIT 1
+    SQL
+
     def initialize(connection:, identity:, session:, cursors:)
       @connection = connection
       @identity = identity
@@ -114,6 +129,19 @@ module Elevateo
       items = rows(MESSAGES_SQL, values).map { |message| ThreadProjection.message(message) }
       ReadResponse.page(items: items, limit: limit, envelope: envelope, budget: ReadResponse::MESSAGE_BYTES,
                         items_key: "messages", cursor_for: ->(item) { encode_position(item, "sent_at", scope) })
+    end
+
+    def direct_message(thread_id:, message_id:, query:)
+      raise InvalidQuery, "invalid request" unless query.keys == ["mailbox_id"]
+
+      mailbox = request_uuid(query["mailbox_id"])
+      thread = request_uuid(thread_id)
+      message = request_uuid(message_id)
+      row = rows(DIRECT_MESSAGE_SQL, [@identity.org_id, mailbox, thread, message]).first
+      raise NotAvailable, "not available" unless row
+
+      ReadResponse.dump(session_envelope.merge("mailbox_id" => mailbox, "thread_id" => thread,
+                                               "message" => ThreadProjection.message(row)))
     end
 
     private

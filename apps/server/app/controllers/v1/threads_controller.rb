@@ -33,6 +33,22 @@ module V1
       raise Elevateo::AuthError.invalid
     end
 
+    def message
+      protected_read(allowed_query: %w[mailbox_id], budget: Elevateo::ReadResponse::MESSAGE_BYTES) do
+        |connection:, identity:, session:, query:, **|
+        # @type var connection: ActiveRecord::ConnectionAdapters::AbstractAdapter
+        # @type var identity: Elevateo::SessionIdentity
+        # @type var session: Elevateo::auth_object
+        # @type var query: Hash[String, String]
+        reader(connection, identity, session).direct_message(
+          thread_id: path_id(:thread_id), message_id: path_id(:message_id), query: query)
+      end
+    rescue Elevateo::ThreadReads::NotAvailable
+      raise Elevateo::AuthError.new("not_available", status: 404)
+    rescue Elevateo::ThreadReads::InvalidQuery
+      raise Elevateo::AuthError.invalid
+    end
+
     private
 
     def path_id(key)

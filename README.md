@@ -24,6 +24,8 @@ Cassian merged the Foundation, Frontend, Delivery, Native, QA and Mail owner can
 Cassian prepared disabled organization grant, simulation-only outreach and internal worker-status V2 interfaces over `bbf2353`. Frozen V1 contracts and Rails routes remain unchanged. The V2 route registry fails closed until owning controllers and authorization gates are ready. Source and tests are committed for fleet Docker validation; runtime acceptance and generated web DTO adoption remain pending. See `docs/completion/cassian.md`.
 
 
+The first integrated fleet migration failed parsing the attachment CASE in `00011`; Corin's `e94631f` parenthesizes that expression for a rerun. A bounded protected direct-message permalink reader is now a candidate, with its V2 route and fleet checks pending. Fake ingress does not connect to a receive provider and cannot establish live inbound readiness.
+
 
 ### R25 approval reload recovery candidate
 
