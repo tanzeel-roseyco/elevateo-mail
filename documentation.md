@@ -165,3 +165,6 @@ BE-403 numeric underflow repair: ExactDecimal rejects nonzero JSON mantissas con
 2026-10-14 FE-405 / GitHub #14: IN PROGRESS. Authored mobile search query/scope controls, focus-owned search edits with URL/history synchronization, and exact sidebar aria-current while preserving mailbox group styling. Independent bounded source and design reviews repaired one duplicated history defect; runtime gates and actual visual evidence remain pending through Soren/Elara. Baseline generated API check failed; regeneration is queued in Docker. See docs/completion/fe405-search-navigation.md.
 
 FE-405 follow-up: navigation regressions now cover Drafts and reader ancestor semantics. CLI metadata confirms gpt-6.1-sol / low, Fast tier remains unverified (service_tier null). Runtime/visual acceptance still pending.
+
+
+OFF-406 attempt5: IN PROGRESS. Implemented isolated genuine base/multi_mailbox/literal_read fixture helper and real-PG happy/failure contract after explicit Elara ownership agreement. Exact Cassian 7b0678c ancestry preserved; canonical contracts/v1 untouched by this implementation. Source authored; independent review, linter, Soren Docker contract gates and actual invitation/login/inbox browser journey NOT_RUN. Shared publication/invocation remains Elara; root owns Obsidian mirroring. See docs/completion/res406-variants.md.
