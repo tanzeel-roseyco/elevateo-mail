@@ -73,7 +73,7 @@ class OutreachLeadsControllerTest < Minitest::Test
   def test_sourced_consent_records_actor_and_returns_granted_status
     granted = lead_row.merge("consent_status" => "granted", "consent_recorded_at" => Time.utc(2026, 10, 14, 10),
       "consent_source" => "confirmed opt-in", "consent_recorded_by" => AuthFixtures::USER, "version" => 2)
-    @connection.rows = [[{ "result" => { "status" => "ok" } }], [lead_row], [], [], [granted], [], [granted], []]
+    @connection.rows = [[{ "result" => { "status" => "ok" } }], [lead_row], [], [], [], [granted], [granted], []]
     result = dispatch("record_consent", { "operation_id" => TARGET, "expected_version" => 1,
       "source" => "confirmed opt-in", "observed_at" => "2026-10-14T10:00:00Z", "attested" => true })
     assert_equal 200, result[0]
@@ -83,6 +83,8 @@ class OutreachLeadsControllerTest < Minitest::Test
     assert(@connection.sql.any? { |sql| sql.include?("evidence_kind") })
     assert(@connection.sql.any? { |sql| sql.include?("INSERT INTO app.campaign_consent_events") })
     assert(@connection.sql.any? { |sql| sql.include?("INSERT INTO app.campaign_mutations") })
+    assert_operator @connection.sql.index { |sql| sql.include?("INSERT INTO app.campaign_consent_events") }, :<,
+      @connection.sql.index { |sql| sql.include?("UPDATE app.campaign_leads") }
   end
 
   def test_same_address_edit_preserves_recorded_consent
@@ -112,7 +114,7 @@ class OutreachLeadsControllerTest < Minitest::Test
     granted = lead_row.merge("consent_status" => "granted", "consent_recorded_at" => Time.utc(2026, 10, 14, 10),
       "consent_source" => "confirmed opt-in", "consent_recorded_by" => AuthFixtures::USER)
     withdrawn = lead_row.merge("consent_status" => "withdrawn", "version" => 2)
-    @connection.rows = [[{ "result" => { "status" => "ok" } }], [granted], [], [], [withdrawn], [], [withdrawn], []]
+    @connection.rows = [[{ "result" => { "status" => "ok" } }], [granted], [], [], [], [withdrawn], [withdrawn], []]
     result = dispatch("withdraw_consent", { "operation_id" => TARGET, "expected_version" => 1 })
     assert_equal [200, "withdrawn"], [result[0], result[2].fetch("consent_status")]
     update = @connection.sql.find { |sql| sql.include?("UPDATE app.campaign_leads") }

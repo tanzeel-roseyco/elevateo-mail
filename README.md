@@ -210,3 +210,5 @@ Exact 35273ba fleet rerun passed campaign input 5/8, repository 8/31, affected R
 OUT-804 account page/detail now explicitly require the actor's RLS-visible mailbox before exposing its ID or label. Mixed visible/hidden and revoked private mailbox cases are authored as controller regressions; fleet verification and route activation remain pending.
 
 OUT-804 review repair binds update replay to the consent-preservation flag, rejects caller-supplied consent actor, and adds SQL policy checks for event actor and mutation resource existence. Migration rollback refuses populated campaign data. Exact fleet verification and the canonical display label for human attestation remain pending.
+
+OUT-804 lead consent projections now carry their event operation ID. A changed status or email is written only after an append-only event for that exact lead, email and status exists in the same protected transaction; SQL policy checks the match. Initial unknown leads have no event. This source invariant awaits real fleet PostgreSQL and concurrency checks.

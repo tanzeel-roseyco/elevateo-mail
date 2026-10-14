@@ -26,6 +26,7 @@ class CreateCampaignFoundation < ActiveRecord::Migration[8.1]
         consent_recorded_at timestamptz,
         consent_recorded_by uuid,
         consent_source text CHECK (consent_source IS NULL OR length(consent_source) BETWEEN 1 AND 200),
+        consent_operation_id uuid,
         suppressed_at timestamptz,
         operation_id uuid NOT NULL,
         creation_fingerprint text NOT NULL CHECK (creation_fingerprint ~ '^[0-9a-f]{64}$'),
@@ -35,7 +36,9 @@ class CreateCampaignFoundation < ActiveRecord::Migration[8.1]
         UNIQUE (organization_id, campaign_id, operation_id),
         UNIQUE (organization_id, campaign_id, email),
         FOREIGN KEY (organization_id, campaign_id) REFERENCES app.campaigns(organization_id, id) ON DELETE CASCADE,
-        CHECK (consent_status <> 'granted' OR (consent_recorded_at IS NOT NULL AND consent_source IS NOT NULL AND consent_recorded_by IS NOT NULL))
+        CHECK (consent_status <> 'granted' OR (consent_recorded_at IS NOT NULL AND consent_source IS NOT NULL AND consent_recorded_by IS NOT NULL)),
+        CHECK (consent_operation_id IS NOT NULL OR (consent_status='unknown' AND consent_recorded_at IS NULL
+          AND consent_source IS NULL AND consent_recorded_by IS NULL))
       );
       CREATE TABLE app.campaign_consent_events (
         organization_id uuid NOT NULL,
@@ -43,6 +46,7 @@ class CreateCampaignFoundation < ActiveRecord::Migration[8.1]
         lead_id uuid NOT NULL,
         operation_id uuid NOT NULL,
         actor_id uuid NOT NULL,
+        email text NOT NULL CHECK (octet_length(email) BETWEEN 3 AND 254),
         status text NOT NULL CHECK (status IN ('unknown', 'granted', 'withdrawn')),
         evidence_kind text NOT NULL CHECK (evidence_kind IN ('manual_attestation', 'status_change')),
         source text CHECK (source IS NULL OR length(source) BETWEEN 1 AND 200),
@@ -110,6 +114,19 @@ class CreateCampaignFoundation < ActiveRecord::Migration[8.1]
             NULLIF(current_setting('app.outreach_digest', true), ''))->>'status' = 'ok') END
       SQL
       write_integrity = case table
+      when "campaign_leads"
+        <<~SQL.squish
+          AND ((consent_operation_id IS NULL AND consent_status='unknown' AND consent_recorded_at IS NULL
+            AND consent_source IS NULL AND consent_recorded_by IS NULL)
+          OR EXISTS (SELECT 1 FROM app.campaign_consent_events e
+            WHERE e.organization_id=campaign_leads.organization_id
+              AND e.campaign_id=campaign_leads.campaign_id AND e.lead_id=campaign_leads.id
+              AND e.operation_id=campaign_leads.consent_operation_id AND e.email=campaign_leads.email
+              AND e.status=campaign_leads.consent_status
+              AND e.source IS NOT DISTINCT FROM campaign_leads.consent_source
+              AND e.observed_at IS NOT DISTINCT FROM campaign_leads.consent_recorded_at
+              AND (campaign_leads.consent_status <> 'granted' OR e.actor_id=campaign_leads.consent_recorded_by)))
+        SQL
       when "campaign_consent_events"
         " AND campaign_consent_events.actor_id = app.context_uuid('app.user_id')"
       when "campaign_mutations"
