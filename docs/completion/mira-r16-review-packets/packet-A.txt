@@ -1,0 +1,182 @@
+apps/web/src/app/App.tsx:1-39
+1: import { HashRouter, Navigate, Route, Routes } from 'react-router'
+2: import type { MailroomGateway } from '@/data/gateway'
+3: import { DraftEditorPage } from '@/features/drafts/DraftEditorPage'
+4: import { DraftsPage } from '@/features/drafts/DraftsPage'
+5: import { InboxPage } from '@/features/inbox/InboxPage'
+6: import { MembersPage } from '@/features/members/MembersPage'
+7: import { SearchPage } from '@/features/search/SearchPage'
+8: import { ThreadPage } from '@/features/thread/ThreadPage'
+9: import { MailboxSelection } from './MailboxSelection'
+10: import { DraftIntentProvider } from './draftIntent'
+11: import { SessionProvider } from './session'
+12: import { Shell } from './Shell'
+13:
+14: // AIDEV-NOTE: Hash routing keeps deep links working when Rails or the dev proxy serves one page;
+15: // swap to BrowserRouter once the host serves the SPA for every route.
+16: export function App({ gateway }: { gateway: MailroomGateway }) {
+17:   return (
+18:     <SessionProvider gateway={gateway}>
+19:       {/* Unsaved draft intent lives above the router and the recoverable protected subtree. */}
+20:       <DraftIntentProvider>
+21:       <HashRouter>
+22:         <Routes>
+23:           <Route element={<Shell />}>
+24:             <Route index element={<MailboxSelection />} />
+25:             <Route path="/mailboxes/:mailboxId" element={<InboxPage />} />
+26:             <Route path="/mailboxes/:mailboxId/threads/:threadId" element={<ThreadPage />} />
+27:             {/* BE-02 C/D: drafts, membership and search are URL-addressed like every other view. */}
+28:             <Route path="/mailboxes/:mailboxId/drafts" element={<DraftsPage />} />
+29:             <Route path="/mailboxes/:mailboxId/drafts/:draftId" element={<DraftEditorPage />} />
+30:             <Route path="/mailboxes/:mailboxId/members" element={<MembersPage />} />
+31:             <Route path="/search" element={<SearchPage />} />
+32:             <Route path="*" element={<Navigate to="/" replace />} />
+33:           </Route>
+34:         </Routes>
+35:       </HashRouter>
+36:       </DraftIntentProvider>
+37:     </SessionProvider>
+38:   )
+39: }
+
+apps/web/src/app/MailboxSelection.tsx:1-22
+1: import { EmptyState, Skeleton } from '@/ui/Async'
+2: import { useMailboxes } from './mailboxes'
+3:
+4: export function MailboxSelection() {
+5:   const snapshot = useMailboxes()
+6:   // AIDEV-NOTE: Only a completed mailbox traversal establishes zero visible mailboxes.
+7:   if (snapshot.status === 'loading') {
+8:     return <div role="status" aria-label="Loading mailbox selection"><Skeleton rows={4} /></div>
+9:   }
+10:   if (snapshot.status === 'error') {
+11:     return <EmptyState title="Mailboxes could not be loaded" body="Try again in the mailbox menu." />
+12:   }
+13:   if (snapshot.mailboxes.length === 0) {
+14:     return (
+15:       <EmptyState
+16:         title="No visible mailboxes"
+17:         body="If you expected a mailbox here, ask your organization administrator to check your access."
+18:       />
+19:     )
+20:   }
+21:   return <EmptyState title="Select a mailbox" body="Choose a mailbox from the list to read its conversations." />
+22: }
+
+apps/web/src/app/mailboxes.tsx:1-26
+1: // Shares the already-loaded mailbox list (the sole capability source, GET /v1/mailboxes) with the
+2: // routed pages so they can show or hide compose/member controls. Capabilities here are display
+3: // hints only: the server re-checks authority on every request and a 404/409/401 wins over them.
+4: // AIDEV-NOTE: Lives inside the keyed ProtectedShell, so a replaced identity starts with no list.
+5: import { createContext, useContext, type ReactNode } from 'react'
+6: import type { Mailbox } from '@/data/contract'
+7:
+8: export type MailboxesSnapshot = { status: 'loading' } | { status: 'ready'; mailboxes: readonly Mailbox[] } | { status: 'error' }
+9:
+10: // AIDEV-NOTE: No provider (isolated route, component test) reads as 'loading': controls stay
+11: // visible and the server's answer decides. A throw here would make every page depend on Shell.
+12: const MailboxesContext = createContext<MailboxesSnapshot>({ status: 'loading' })
+13:
+14: export function MailboxesProvider({ value, children }: { value: MailboxesSnapshot; children: ReactNode }) {
+15:   return <MailboxesContext.Provider value={value}>{children}</MailboxesContext.Provider>
+16: }
+17:
+18: export function useMailboxes(): MailboxesSnapshot {
+19:   return useContext(MailboxesContext)
+20: }
+21:
+22: /** The selected mailbox when known; `undefined` while loading or when it is not visible to the actor. */
+23: export function useMailbox(mailboxId: string): Mailbox | undefined {
+24:   const snapshot = useMailboxes()
+25:   return snapshot.status === 'ready' ? snapshot.mailboxes.find((m) => m.id === mailboxId) : undefined
+26: }
+
+apps/web/src/app/Shell.tsx:130-185
+130:   const { scope, context, handleError } = useSession()
+131:   const [mailboxState, setMailboxState] = useState<MailboxState>({ status: 'loading' })
+132:   // Explicit "Try again" bumps this nonce: a fresh traversal with a fresh one-reset budget (D4).
+133:   const [attempt, setAttempt] = useState(0)
+134:   const [drawerOpen, setDrawerOpen] = useState(false)
+135:   const closeDrawer = useCallback(() => setDrawerOpen(false), [])
+136:
+137:   useEffect(() => {
+138:     if (!context) return
+139:     const generation = scope.current()
+140:     const controller = new AbortController()
+141:     const isCurrent = () => scope.isCurrent(generation) && !controller.signal.aborted
+142:     setMailboxState({ status: 'loading' })
+143:     const loadAll = async () => {
+144:       // getMailboxes is the sole capability list; follow continuation cursors to completion.
+145:       // AIDEV-NOTE: One reset budget covers the entire loop, including pages after a reset; the
+146:       // per-page helper cannot secretly grant a fresh budget (D4, FE-R07).
+147:       const budget = newTraversalBudget()
+148:       let mailboxes: Mailbox[] = []
+149:       const seen = new Set<string>()
+150:       let cursor: string | undefined
+151:       do {
+152:         const outcome = await readPage<MailboxPage>({
+153:           read: (c) => gateway.listMailboxes(context, c === undefined ? {} : { cursor: c }, controller.signal),
+154:           cursor,
+155:           budget,
+156:           isCurrent,
+157:         })
+158:         if (outcome.kind === 'stale') return
+159:         if (outcome.kind === 'failed') {
+160:           if (!isCurrent() || handleError(outcome.error, generation)) return
+161:           setMailboxState({
+162:             status: 'error',
+163:             message: outcome.error instanceof GatewayError ? outcome.error.message : 'Mailboxes could not be loaded.',
+164:           })
+165:           return
+166:         }
+167:         if (outcome.replace) {
+168:           // A reset restarted from page one: discard everything accumulated before it (D4).
+169:           mailboxes = []
+170:           seen.clear()
+171:         }
+172:         for (const mailbox of outcome.page.items) {
+173:           if (!seen.has(mailbox.id)) {
+174:             seen.add(mailbox.id)
+175:             mailboxes.push(mailbox)
+176:           }
+177:         }
+178:         cursor = outcome.page.next_cursor ?? undefined
+179:       } while (cursor !== undefined)
+180:       if (!isCurrent()) return
+181:       setMailboxState({ status: 'ready', mailboxes })
+182:     }
+183:     void loadAll()
+184:     return () => controller.abort()
+185:   }, [gateway, context, scope, handleError, attempt])
+
+apps/web/src/app/Shell.tsx:212-228
+212:   const mailboxesSnapshot: MailboxesSnapshot =
+213:     mailboxState.status === 'ready' ? { status: 'ready', mailboxes: mailboxState.mailboxes } : mailboxState.status === 'loading' ? { status: 'loading' } : { status: 'error' }
+214:
+215:   const sidebar =
+216:     mailboxState.status === 'loading' ? (
+217:       <div role="status" aria-label="Loading mailboxes"><Skeleton rows={4} /></div>
+218:     ) : mailboxState.status === 'error' ? (
+219:       <div role="alert" className="p-3">
+220:         <p className="text-[13px] text-muted">{mailboxState.message}</p>
+221:         <Button size="sm" className="mt-2" onClick={() => setAttempt((n) => n + 1)}>Try again</Button>
+222:       </div>
+223:     ) : (
+224:       <Sidebar mailboxes={mailboxState.mailboxes} onNavigate={closeDrawer} footnote={FOOTNOTE} />
+225:     )
+226:
+227:   return (
+228:     <MailboxesProvider value={mailboxesSnapshot}>
+
+apps/web/src/ui/Async.tsx:24-34
+24:   return (
+25:     <div className="flex flex-col items-center gap-2 px-6 py-12 text-center">
+26:       <AlertIcon className="size-5 text-muted" />
+27:       <h2 className="text-sm font-semibold">{title}</h2>
+28:       {body && <p className="max-w-sm text-[13px] text-muted">{body}</p>}
+29:       {action && <div className="mt-2">{action}</div>}
+30:     </div>
+31:   )
+32: }
+33:
+34: export type LoadState = { status: 'loading' } | { status: 'ready' } | { status: 'error'; message: string }

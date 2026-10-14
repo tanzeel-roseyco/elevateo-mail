@@ -117,8 +117,8 @@ describe('continuation and reset (FE-R08/R09)', () => {
     renderInbox(createFixtureGateway({ listThreads: 'threads_empty' }))
     await screen.findByText('No conversations')
     expect(screen.queryByRole('button', { name: 'Show more conversations' })).toBeNull()
-    expect(screen.getByRole('link', { name: 'All', exact: true }).getAttribute('href')).toBe(`/mailboxes/${MB}`)
-    expect(screen.getByRole('link', { name: 'Unread', exact: true }).getAttribute('href')).toBe(`/mailboxes/${MB}?filter=unread`)
+    expect(screen.getByRole('link', { name: 'All' }).getAttribute('href')).toBe(`/mailboxes/${MB}`)
+    expect(screen.getByRole('link', { name: 'Unread' }).getAttribute('href')).toBe(`/mailboxes/${MB}?filter=unread`)
   })
 
   it('a reset replaces accumulated rows with the fresh first page', async () => {

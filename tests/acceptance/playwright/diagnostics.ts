@@ -1,5 +1,6 @@
 import { dirname, basename, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { types } from 'node:util';
 import { z, ZodError } from 'zod';
 
 // AIDEV-NOTE: Frozen source bounds must be reviewed when these files change; never publish stack text.
@@ -25,6 +26,8 @@ const sourceLines = {
   'transport-barrier.ts': 63,
 } as const;
 const files = ['auth-stale.e2e.ts', 'auth-transport.e2e.ts', 'auth.e2e.ts', 'boundaries.ts', 'cases.ts', 'credential-origin.ts', 'draft-conflict.e2e.ts', 'draft-privacy.e2e.ts', 'draft-recovery-support.ts', 'draft-recovery.e2e.ts', 'draft-uncertain-reload.e2e.ts', 'draft.e2e.ts', 'read-empty.e2e.ts', 'read-literal.e2e.ts', 'read-revocation.e2e.ts', 'read.e2e.ts', 'screenshots.ts', 'support.ts', 'transport-barrier.ts'] as const;
+// AIDEV-NOTE: Node 24 uses a native stack accessor; only this intrinsic getter may be invoked.
+const nativeStackGetter = Object.getOwnPropertyDescriptor(new Error(), 'stack')?.get;
 const moduleDirectory = dirname(fileURLToPath(import.meta.url));
 const parent = dirname(moduleDirectory);
 const sourceDirectory = resolve(basename(parent) === 'dist' ? dirname(parent) : parent, 'playwright');
@@ -55,17 +58,41 @@ function sourceLocation(stack: unknown, message: unknown): Diagnostic['source'] 
   }
   return null;
 }
+// AIDEV-NOTE: Lazy native formatting reads effective name/message and the global prepareStackTrace hook.
+function safeDataProperty(object: object, key: string): PropertyDescriptor | null | undefined {
+  let current: object | null = object;
+  for (let depth = 0; current !== null && depth < 8; depth++) {
+    if (types.isProxy(current)) return null;
+    const descriptor = Object.getOwnPropertyDescriptor(current, key);
+    if (descriptor) return 'value' in descriptor ? descriptor : null;
+    current = Object.getPrototypeOf(current);
+  }
+  return current === null ? undefined : null;
+}
+function safeNativeFormatting(error: Error): boolean {
+  for (const key of ['name', 'message']) {
+    const descriptor = safeDataProperty(error, key);
+    if (descriptor === null || (descriptor && typeof descriptor.value !== 'string'
+      && descriptor.value !== undefined)) return false;
+  }
+  const hook = safeDataProperty(Error, 'prepareStackTrace');
+  return hook !== null && hook?.value === undefined;
+}
 export function captureDiagnostic(error: unknown): Diagnostic {
   let category: Diagnostic['category'] = 'unknown';
   let source: Diagnostic['source'] = null;
   // AIDEV-NOTE: Arbitrary thrown objects/getters are not trusted Error or serialized framework diagnostics.
   try {
-    if (error instanceof Error) {
+    if (!types.isProxy(error) && error instanceof Error) {
       const prototype: unknown = Object.getPrototypeOf(error);
       if (prototype === TypeError.prototype) category = 'type';
       else if (error instanceof ZodError) category = 'validation';
       else if (prototype === Error.prototype) category = 'error';
-      source = sourceLocation(Object.getOwnPropertyDescriptor(error, 'stack')?.value,
+      const stack = Object.getOwnPropertyDescriptor(error, 'stack');
+      let stackValue: unknown = stack?.value;
+      if (stack?.get && stack.get === nativeStackGetter && safeNativeFormatting(error))
+        stackValue = stack.get.call(error);
+      source = sourceLocation(stackValue,
         Object.getOwnPropertyDescriptor(error, 'message')?.value);
     }
   } catch { /* Hostile proxies remain unknown without reading their message. */ }

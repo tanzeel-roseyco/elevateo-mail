@@ -1,3 +1,13 @@
+## Current bounded integration review: INT401 R16
+
+Mira ADV834 functional / ADV835 dedicated design each accepted 356 unique source/context LOC in packets171/185, zero defects (0/KLOC); overlapping coverage is nonadditive. Three imported source hashes match the accepted manifest. Source acceptance only; runtime NOT_RUN.
+
+Root requested three changed-line repairs after actual R13 failures: two unsupported role-query options and a missing synthetic expiry flag. Combined bounded packet: docs/completion/int401-r16-regression-repair-packet.txt. Root accepted ADV836 functional / ADV837 dedicated design closure for these three changed lines, zero defects (0/KLOC); existing oracles intact. No tests executed by Cassian.
+
+Elara R18 22761af3c1db5996504ade98f7b66e506056f587 retains R17 ancestry. ADV838 functional / ADV839 dedicated design closure each accepted 281 unique LOC in packets119/162, zero remaining/new defects (0/KLOC), overlapping coverage nonadditive. Original R17 one MED / 211 LOC (4.74/KLOC) and Vale acceptance erratum remain historical evidence; closure is source-only, runtime NOT_RUN.
+
+## Historical review records
+
 Application IN PROGRESS: frozen candidate integrates exact Mira 9a0f75ce and Soren f59c35f infrastructure over 837e668, preserving all three parents. Three omitted canonical acceptance recipes are restored byte-for-byte from Local Completion, including the existing pinned seccomp profile. Four canonical contracts/v1 remain unchanged. Rowan 3c058 and Elara f22d7 are excluded following root ADV-740: bounded-wait and two fence defects remain under repair; newer source requires exact receipts. Nadia R5 is not accepted without its frozen review receipt.
 
 Mira re-review75 LOC found0 new defects (0/KLOC); prior51 LOC review missed1 medium test defect (19.61/KLOC), and its historical615-test run had614 PASS/1 FAIL. Corrected source needs fresh execution. Soren localized independent infrastructure/design reviews and reported25 functional checks, restoration and12 grouped Rails/psql proofs are retained in code-reviews.md and docs/operations/supabase.md; none establishes this integrated app PASS. Browser Dockerfile historical bounded review93 LOC found0 defects; web recipe/profile approval provenance is the existing runner handoff and pinned runtime digest, not a new independent review. Whole-app review, Docker gates, browser visual/lifecycle acceptance remain pending with Soren.

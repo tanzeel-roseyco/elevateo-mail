@@ -1,0 +1,192 @@
+apps/web/src/app/Shell.test.tsx:1-83
+1: // FE-R05/R06/R07 and V3/V4: the keyed protected subtree starts a replaced identity with no old
+2: // content in its first committed render (layout-effect evidence, not eventual DOM); the mailbox
+3: // loop holds one reset for the entire traversal; the drawer is a real dialog that closes on route
+4: // selection, Escape and growth past the md breakpoint. Playwright covers real key traversal.
+5: import { act, fireEvent, render, screen, waitFor, within } from '@testing-library/react'
+6: import { useLayoutEffect } from 'react'
+7: import { MemoryRouter, Route, Routes } from 'react-router'
+8: import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+9: import { createFixtureGateway } from '@/data/fixtures/fixtureGateway'
+10: import { GatewayError } from '@/data/errors'
+11: import type { MailboxPage } from '@/data/contract'
+12: import type { MailroomGateway } from '@/data/gateway'
+13: import { SESSION_FRESHNESS_INTERVAL_MS, SessionProvider } from './session'
+14: import { Shell } from './Shell'
+15: import { MailboxSelection } from './MailboxSelection'
+16:
+17: const contextChanged = () => new GatewayError('api', 'context_changed', 'synthetic', { status: 409, requestId: 'r1' })
+18: const cursorInvalid = () => new GatewayError('api', 'cursor_invalid', 'synthetic', { status: 400, requestId: 'r1' })
+19:
+20: // A stable id per distinct name: equal names model the same mailbox across pages, while distinct
+21: // names never collide across pages (a per-page index would alias them and dedup would drop rows).
+22: const mailboxIdByName = new Map<string, string>()
+23: function mailboxIdFor(name: string): string {
+24:   let id = mailboxIdByName.get(name)
+25:   if (id === undefined) {
+26:     id = `00000000-0000-4000-8000-${String(mailboxIdByName.size + 61).padStart(12, '0')}`
+27:     mailboxIdByName.set(name, id)
+28:   }
+29:   return id
+30: }
+31:
+32: function mailboxPage(names: string[], nextCursor: string | null): MailboxPage {
+33:   return {
+34:     context_id: 'context_A_0123456789',
+35:     authorization_version: 'authz_A_0123456789',
+36:     next_cursor: nextCursor,
+37:     items: names.map((name) => ({
+38:       id: mailboxIdFor(name),
+39:       display_name: name,
+40:       display_address: `${name.toLowerCase().replaceAll(' ', '-')}@example.test`,
+41:       capabilities: { read: true, compose: false, approve_send: false, manage_members: false },
+42:     })),
+43:   }
+44: }
+45:
+46: /** Fixture gateway with a scripted listMailboxes sequence; the last entry repeats. */
+47: function pagedGateway(pages: Array<MailboxPage | GatewayError>) {
+48:   const queue = [...pages]
+49:   let readCalls = 0
+50:   const base = createFixtureGateway()
+51:   const gateway: MailroomGateway = {
+52:     ...base,
+53:     listMailboxes: async () => {
+54:       readCalls += 1
+55:       const entry = queue.length > 1 ? queue.shift()! : queue[0]!
+56:       if (entry instanceof GatewayError) throw entry
+57:       return entry
+58:     },
+59:   }
+60:   return { gateway, readCalls: () => readCalls }
+61: }
+62:
+63: function renderShell(gateway: MailroomGateway, outlet = <p>outlet-content</p>) {
+64:   return render(
+65:     <SessionProvider gateway={gateway}>
+66:       <MemoryRouter>
+67:         <Routes>
+68:           <Route element={<Shell />}>
+69:             <Route index element={outlet} />
+70:             {/* Sidebar/drawer links target mailbox routes; without this route a drawer selection
+71:                 would leave the Shell's route tree and unmount the whole shell under test. */}
+72:             <Route path="mailboxes/:mailboxId" element={outlet} />
+73:           </Route>
+74:         </Routes>
+75:       </MemoryRouter>
+76:     </SessionProvider>,
+77:   )
+78: }
+79:
+80: // jsdom has no matchMedia; the stub below drives the drawer's breakpoint close (FE-R06).
+81: let mediaMatches = false
+82: let mediaListeners: Array<(event: { matches: boolean }) => void> = []
+83: beforeEach(() => {
+
+apps/web/src/app/Shell.test.tsx:376-426
+376: describe('initial mailbox selection guidance (Mira R16)', () => {
+377:   it('offers access guidance for a completed zero-visible-mailbox list', async () => {
+378:     const { gateway, readCalls } = pagedGateway([mailboxPage([], null)])
+379:     renderShell(gateway, <MailboxSelection />)
+380:     await screen.findByRole('heading', { name: 'No visible mailboxes', level: 2 })
+381:     expect(screen.getByText('If you expected a mailbox here, ask your organization administrator to check your access.')).toBeTruthy()
+382:     expect(screen.getByText('No mailboxes are visible to you.')).toBeTruthy()
+383:     expect(screen.queryByText('Select a mailbox')).toBeNull()
+384:     expect(screen.queryByText('Choose a mailbox from the list to read its conversations.')).toBeNull()
+385:     expect(readCalls()).toBe(1)
+386:   })
+387:
+388:   it('retains selection guidance when a visible mailbox exists', async () => {
+389:     const { gateway } = pagedGateway([mailboxPage(['Team inbox'], null)])
+390:     renderShell(gateway, <MailboxSelection />)
+391:     await screen.findByRole('heading', { name: 'Select a mailbox', level: 2 })
+392:     expect(screen.getByText('Choose a mailbox from the list to read its conversations.')).toBeTruthy()
+393:     expect(screen.getByRole('link', { name: 'Team inbox' }).getAttribute('href')).toBe(`/mailboxes/${mailboxIdFor('Team inbox')}`)
+394:     expect(screen.queryByText('No visible mailboxes')).toBeNull()
+395:   })
+396:
+397:   it('does not infer an empty list while an empty first page has a pending continuation', async () => {
+398:     let resolvePage!: (page: MailboxPage) => void
+399:     const continuation = new Promise<MailboxPage>((resolve) => { resolvePage = resolve })
+400:     const base = createFixtureGateway()
+401:     const listMailboxes = vi.fn<MailroomGateway['listMailboxes']>().mockResolvedValueOnce(mailboxPage([], 'next')).mockReturnValueOnce(continuation)
+402:     renderShell({ ...base, listMailboxes }, <MailboxSelection />)
+403:     await waitFor(() => expect(listMailboxes).toHaveBeenCalledTimes(2))
+404:     expect(screen.getByRole('status', { name: 'Loading mailbox selection' })).toBeTruthy()
+405:     expect(screen.queryByText('No visible mailboxes')).toBeNull()
+406:     expect(screen.queryByText('Select a mailbox')).toBeNull()
+407:     await act(async () => resolvePage(mailboxPage(['Later inbox'], null)))
+408:     await screen.findByRole('heading', { name: 'Select a mailbox', level: 2 })
+409:     expect(screen.getByRole('link', { name: 'Later inbox' })).toBeTruthy()
+410:   })
+411:
+412:   it('shows a load failure without claiming an empty or accessible mailbox list, then allows retry', async () => {
+413:     const { gateway, readCalls } = pagedGateway([
+414:       new GatewayError('transport', 'network', 'Mailboxes unavailable'),
+415:       mailboxPage([], null),
+416:     ])
+417:     renderShell(gateway, <MailboxSelection />)
+418:     await screen.findByRole('heading', { name: 'Mailboxes could not be loaded', level: 2 })
+419:     expect(screen.getByText('Try again in the mailbox menu.')).toBeTruthy()
+420:     expect(screen.queryByText('No visible mailboxes')).toBeNull()
+421:     expect(screen.queryByText('Select a mailbox')).toBeNull()
+422:     fireEvent.click(screen.getByRole('button', { name: 'Try again' }))
+423:     await screen.findByRole('heading', { name: 'No visible mailboxes', level: 2 })
+424:     expect(readCalls()).toBe(2)
+425:   })
+426: })
+
+apps/web/src/features/inbox/InboxPage.tsx:120-153
+120:   }
+121:
+122:   // The active filter travels into the reader so its back link can restore this view (FE-R11).
+123:   const filterSuffix = filter === 'unread' ? '?filter=unread' : ''
+124:   return (
+125:     <section aria-label="Conversations" className="mx-auto max-w-3xl p-3">
+126:       <div className="mb-2 flex items-center gap-2 px-1">
+127:         <h1 className="text-sm font-semibold">Conversations</h1>
+128:         {/* AIDEV-NOTE: A denied mailbox has no usable filter destinations; retain its unavailable explanation. */}
+129:         {state.status !== 'unavailable' && <nav aria-label="Filter" className="ml-auto flex gap-1">
+130:           {(['all', 'unread'] as const).map((value) => (
+131:             <Link
+132:               key={value}
+133:               to={value === 'all' ? `/mailboxes/${mailboxId}` : `/mailboxes/${mailboxId}?filter=unread`}
+134:               aria-current={filter === value ? 'page' : undefined}
+135:               className={cx('rounded-lg px-2.5 py-1 text-[13px]', filter === value ? 'bg-accent-soft font-semibold text-accent-text' : 'text-fg hover:bg-surface-2')}
+136:             >
+137:               {value === 'all' ? 'All' : 'Unread'}
+138:             </Link>
+139:           ))}
+140:         </nav>}
+141:       </div>
+142:       {state.status === 'loading' && <div role="status" aria-label="Loading conversations"><Skeleton rows={6} /></div>}
+143:       {state.status === 'unavailable' && (
+144:         <EmptyState title="This mailbox is unavailable" body="It may not exist or you may not currently have access to it." />
+145:       )}
+146:       {state.status === 'error' && (
+147:         <div role="alert">
+148:           <EmptyState title="Conversations could not be loaded" body={state.message} action={<Button variant="primary" onClick={() => load(undefined, false)}>Try again</Button>} />
+149:         </div>
+150:       )}
+151:       {state.status === 'ready' && (
+152:         <>
+153:           {/* An empty page with a continuation cursor is not a terminal empty mailbox (FE-R09). */}
+
+apps/web/src/features/inbox/InboxPage.test.tsx:89-105
+89:
+90: describe('denied mailbox navigation', () => {
+91:   it('removes mailbox filter destinations after a gateway denial without another read', async () => {
+92:     const { gateway, readCalls } = pagedGateway([
+93:       new GatewayError('api', 'not_available', 'Mailbox unavailable', { status: 404, requestId: 'r1' }),
+94:     ])
+95:     renderInbox(gateway)
+96:     await screen.findByRole('heading', { name: 'This mailbox is unavailable', level: 2 })
+97:     expect(screen.queryByRole('navigation', { name: 'Filter' })).toBeNull()
+98:     expect(screen.queryAllByRole('link')).toHaveLength(0)
+99:     expect(readCalls()).toBe(1)
+100:   })
+101: })
+102:
+103: describe('continuation and reset (FE-R08/R09)', () => {
+104:   it('an empty page with a cursor stays usable and is distinct from a terminal empty mailbox', async () => {
+105:     const { gateway } = pagedGateway([threadPage([], 'c1'), threadPage(['Late arrival'], null)])

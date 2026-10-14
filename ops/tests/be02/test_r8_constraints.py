@@ -44,7 +44,7 @@ class R8ConstraintsTest(unittest.TestCase):
         task, output = Mock(), Mock()
         module = ast.Module(body=body[start:end], type_ignores=[])
         exec(compile(module, "run.py-phase", "exec"), {
-            "args": SimpleNamespace(acceptance_diagnostic=diagnostic, acceptance_dispatch_id="synthetic", adv808_auth_policy=False),
+            "args": SimpleNamespace(acceptance_diagnostic=diagnostic, acceptance_dispatch_id="synthetic", adv808_auth_policy=False, adv815_expiry=False),
             "task": task, "print": output, "acceptance": acceptance,
             "acceptance_before_http": acceptance_gate,
         })

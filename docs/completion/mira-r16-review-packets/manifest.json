@@ -1,0 +1,91 @@
+{
+  "base": "b7f2aad0b33a8b339210b35e76ff9e0bdf707339",
+  "packets": [
+    {
+      "packet": "A",
+      "LOC": 171,
+      "ranges": [
+        {
+          "path": "apps/web/src/app/App.tsx",
+          "start": 1,
+          "end": 39,
+          "LOC": 39,
+          "file_sha256": "4d62fe3bac9c29ac048900a6bff0d6bfab8cf4daf2b25ae50ed918034a78e11b"
+        },
+        {
+          "path": "apps/web/src/app/MailboxSelection.tsx",
+          "start": 1,
+          "end": 22,
+          "LOC": 22,
+          "file_sha256": "b5009bcd1e1a2db3f34ff36261b06646b58ae2f6972dcbbeb98e5653c94b1e78"
+        },
+        {
+          "path": "apps/web/src/app/mailboxes.tsx",
+          "start": 1,
+          "end": 26,
+          "LOC": 26,
+          "file_sha256": "d89065522efd37a552b2daeb1a6cbf1225343c1b6e7fe7423be3b3770d01a573"
+        },
+        {
+          "path": "apps/web/src/app/Shell.tsx",
+          "start": 130,
+          "end": 185,
+          "LOC": 56,
+          "file_sha256": "139569c869b74ae212f3cc6a006639ca5692c7f04c7ec3e7ff70cdc90d53b72a"
+        },
+        {
+          "path": "apps/web/src/app/Shell.tsx",
+          "start": 212,
+          "end": 228,
+          "LOC": 17,
+          "file_sha256": "139569c869b74ae212f3cc6a006639ca5692c7f04c7ec3e7ff70cdc90d53b72a"
+        },
+        {
+          "path": "apps/web/src/ui/Async.tsx",
+          "start": 24,
+          "end": 34,
+          "LOC": 11,
+          "file_sha256": "de3c466585acf9ad5f81202239daa28de30dbdf97600598235d5fce25a98b8fd"
+        }
+      ]
+    },
+    {
+      "packet": "B",
+      "LOC": 185,
+      "ranges": [
+        {
+          "path": "apps/web/src/app/Shell.test.tsx",
+          "start": 1,
+          "end": 83,
+          "LOC": 83,
+          "file_sha256": "7ac7655b7bfdf7425891c5d2a641c3ba3820c476c6d053611a7108707834d2e3"
+        },
+        {
+          "path": "apps/web/src/app/Shell.test.tsx",
+          "start": 376,
+          "end": 426,
+          "LOC": 51,
+          "file_sha256": "7ac7655b7bfdf7425891c5d2a641c3ba3820c476c6d053611a7108707834d2e3"
+        },
+        {
+          "path": "apps/web/src/features/inbox/InboxPage.tsx",
+          "start": 120,
+          "end": 153,
+          "LOC": 34,
+          "file_sha256": "145b6f2ff22541856fec74c8c3ffc76d8615f7420b962c0065b89ad019ca1307"
+        },
+        {
+          "path": "apps/web/src/features/inbox/InboxPage.test.tsx",
+          "start": 89,
+          "end": 105,
+          "LOC": 17,
+          "file_sha256": "be15bfaeaaaa9b7729f4aaa54fa010f87bbbdb3ea8f27f574b237601852fb2b1"
+        }
+      ]
+    }
+  ],
+  "aggregate_LOC": 356,
+  "independent_source_review": "PENDING root",
+  "dedicated_design_review": "PENDING root",
+  "runtime": "NOT_RUN"
+}

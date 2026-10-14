@@ -1,0 +1,28 @@
+diff --git a/apps/web/src/features/inbox/InboxPage.test.tsx b/apps/web/src/features/inbox/InboxPage.test.tsx
+index 074d802..dc64c71 100644
+--- a/apps/web/src/features/inbox/InboxPage.test.tsx
++++ b/apps/web/src/features/inbox/InboxPage.test.tsx
+@@ -117,8 +117,8 @@ describe('continuation and reset (FE-R08/R09)', () => {
+     renderInbox(createFixtureGateway({ listThreads: 'threads_empty' }))
+     await screen.findByText('No conversations')
+     expect(screen.queryByRole('button', { name: 'Show more conversations' })).toBeNull()
+-    expect(screen.getByRole('link', { name: 'All', exact: true }).getAttribute('href')).toBe(`/mailboxes/${MB}`)
+-    expect(screen.getByRole('link', { name: 'Unread', exact: true }).getAttribute('href')).toBe(`/mailboxes/${MB}?filter=unread`)
++    expect(screen.getByRole('link', { name: 'All' }).getAttribute('href')).toBe(`/mailboxes/${MB}`)
++    expect(screen.getByRole('link', { name: 'Unread' }).getAttribute('href')).toBe(`/mailboxes/${MB}?filter=unread`)
+   })
+
+   it('a reset replaces accumulated rows with the fresh first page', async () => {
+diff --git a/ops/tests/be02/test_r8_constraints.py b/ops/tests/be02/test_r8_constraints.py
+index 8135e61..8a8c899 100644
+--- a/ops/tests/be02/test_r8_constraints.py
++++ b/ops/tests/be02/test_r8_constraints.py
+@@ -44,7 +44,7 @@ class R8ConstraintsTest(unittest.TestCase):
+         task, output = Mock(), Mock()
+         module = ast.Module(body=body[start:end], type_ignores=[])
+         exec(compile(module, "run.py-phase", "exec"), {
+-            "args": SimpleNamespace(acceptance_diagnostic=diagnostic, acceptance_dispatch_id="synthetic", adv808_auth_policy=False),
++            "args": SimpleNamespace(acceptance_diagnostic=diagnostic, acceptance_dispatch_id="synthetic", adv808_auth_policy=False, adv815_expiry=False),
+             "task": task, "print": output, "acceptance": acceptance,
+             "acceptance_before_http": acceptance_gate,
+         })
