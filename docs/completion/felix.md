@@ -21,3 +21,5 @@ SEC-802, SEND-809 and native IPC are absent from this baseline. Pending integrat
 Review request: independently review the new 44-line database test against full rubric in a <=200 LOC packet, plus dedicated design tradeoff review. Own source inspection is not independent coverage. No confirmed defect density claim. Tests executed: none.
 
 Independent peer review completed for Sabine's 152-line SEC-802 `access.sql`; exact hash, rubric, 0 observed defects and the unresolved legacy bypass are recorded in `docs/completion/felix-sec802-review.md`. This does not review QA-817's own source or replace the required separate design review.
+
+Independently reviewed Rowan's SEND-809 worker SQL in two <=200-line packets (223 unique LOC); SHA, full rubric, zero observed static defects and untested adapter/race gaps are in `docs/completion/felix-send809-review.md`. No application execution or separate design review is implied.
