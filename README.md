@@ -180,3 +180,5 @@ Felix added isolated regression cases for exact request origin/media, closed pla
 QA-817 continuation adds candidate real-PostgreSQL tenant/private mailbox regressions using the actual API role and protected write guard. Fleet Docker execution and integrated SEC-802/SEND-809/native seams remain pending; see `docs/completion/felix.md`.
 
 QA-817 also adds a real-controller (canned SQL) origin/CSRF and forbidden-field regression candidate; Soren Docker execution remains pending.
+
+QA-817 private sales/personal mailbox real-database regression source now targets Sabine's committed SEC-802 policy seam. It remains unexecuted until integrated into a frozen fleet test image.

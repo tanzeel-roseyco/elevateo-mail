@@ -122,3 +122,5 @@ The isolated Felix branch adds source-only adversarial boundary regressions. Run
 QA-817 now includes a real-database regression candidate for foreign tenant and private mailbox read/write denial plus unchanged witness data. It is source-only pending Soren Docker execution; no measured latency or memory budget exists for this integrated path yet.
 
 QA-817 origin/CSRF controller candidate checks same-origin success, cross-origin/missing-origin rejection, malformed CSRF rejection and forbidden token-field non-disclosure before Auth/SQL. It is unexecuted source pending fleet Docker.
+
+QA-817 added source-only private sales database cases: explicit private team membership permits read, a sales role alone does not, and organization admin role alone cannot read a personal mailbox. SEC-802 integration and Docker runtime evidence remain pending.
