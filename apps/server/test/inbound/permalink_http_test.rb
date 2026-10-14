@@ -18,7 +18,7 @@ class InboundPermalinkHTTPTest < Minitest::Test
 
   def dispatch(thread: THREAD, message: NOTE, mailbox: BOX, rows: [])
     @connection.rows = rows
-    env = Rack::MockRequest.env_for("https://app.test/v2/threads/#{thread}/messages/#{message}", method: "GET")
+    env = Rack::MockRequest.env_for("https://app.test/v2/threads/#{thread}/messages/#{message}", method: "GET", input: "")
     configuration = config
     configuration.cursor_signing_key = "disposable-permalink-key-00001"
     env.merge!("QUERY_STRING" => "mailbox_id=#{mailbox}", "HTTP_ORIGIN" => "https://app.test",

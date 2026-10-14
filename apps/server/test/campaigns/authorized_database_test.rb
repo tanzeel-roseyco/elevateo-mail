@@ -71,11 +71,12 @@ class CampaignAuthorizedDatabaseTest < MailboxMembershipDatabaseCase
     assert_equal "3", @admin.exec_params("SELECT version FROM app.campaign_leads WHERE id=$1", [lead]).getvalue(0, 0)
   end
 
-  def test_protected_app_read_role_can_apply_campaign_policy
+  def test_protected_api_role_can_apply_inherited_campaign_policy
     campaign = SecureRandom.uuid
     outreach_scope(write: true) do |connection|
-      connection.execute("SET LOCAL ROLE elevateo_app_read")
-      assert_equal "elevateo_app_read", connection.select_value("SELECT current_user")
+      # AIDEV-NOTE: Exercise inherited privileges without enabling forbidden runtime SET ROLE.
+      assert_equal "elevateo_api", connection.select_value("SELECT current_user")
+      assert_equal false, connection.select_value("SELECT pg_has_role(current_user,'elevateo_app_read','SET')")
       assert_equal "elevateo_api", connection.select_value("SELECT session_user")
       assert_equal true, connection.select_value("SELECT has_function_privilege(current_user, " \
         "'app.authorize_outreach_content_read(text)', 'EXECUTE')")
@@ -97,15 +98,14 @@ class CampaignAuthorizedDatabaseTest < MailboxMembershipDatabaseCase
     assert_equal "2", @admin.exec_params("SELECT version FROM app.campaigns WHERE id=$1", [campaign]).getvalue(0, 0)
   end
 
-  def test_app_read_role_with_copied_digest_and_no_write_marker_is_denied
+  def test_api_role_with_copied_digest_and_no_write_marker_is_denied
     error = assert_raises(ActiveRecord::StatementInvalid) do
       scope(write: false) do |connection|
-        connection.execute("SET LOCAL ROLE elevateo_app_read")
         connection.exec_query("SELECT app.authorize_outreach_draft_write($1::text)", "OUT804 copied digest",
           [bind(@identity.digest)])
       end
     end
-    assert_match(/protected write guard required|permission denied/i, error.message)
+    assert_match(/protected write guard required/i, error.message)
   end
 
   def test_valid_digest_without_protected_marker_cannot_update_campaign_table

@@ -13,7 +13,7 @@ class AssignmentMemberOptionsMigrationTest < Minitest::Test
     assert_equal ["elevateo_migrator", ENV.fetch("BE02_TASK_DATABASE_NAME")],
       connection.select_rows("SELECT session_user,current_database()").first
     applied = snapshot(connection)
-    assert_equal ["elevateo_owner", "t", "f", "f", "f"], applied
+    assert_equal ["elevateo_owner", "true", "false", "false", "false"], applied
     connection.transaction do
       migration = CreateAssignmentMemberOptions.new
       migration.down

@@ -14,6 +14,8 @@ Shared company mailroom with one Rails domain authority and a React/TypeScript c
 
 ## Current state
 
+**Inline completion / INT949:** Expanded-backend repairs are under validation: standalone HTTP bodies and logger handling, actual API-role tests, fixture cleanup, and session-owned preference reads. The preference migration is corrected before any live deployment and requires a fresh disposable database. Fleet validation covers standard Ruby suites, dedicated role profiles, Steep, RuboCop, real Auth/HTTP/worker integration, plus frontend contract checks, ESLint, TypeScript, Vitest coverage and production build. Previous PASS evidence does not establish this candidate. Credentials and production activation remain deferred. See [inline evidence ledger](docs/completion/inline949.md).
+
 **Dedicated profile continuation:** Exact `e01c64ad` isolated internal Mailpit protocol passed 1 run/6 assertions with cleanup; four of nine dedicated suites now scoped PASS. OUT804 campaign DB executed 7 runs/17 assertions and failed one teardown FK error while deleting a mailbox referenced by `campaign_accounts`; cleanup passed. Four historical R1 profiles remain unattempted, and no live delivery or full backend acceptance follows.
 
 **ATT823 dedicated database profile:** Soren's exact `e01c64ad` fresh disposable admin/migrator/API/worker role fixture passed 6 runs/40 assertions with cleanup. Three of nine dedicated profiles now have scoped PASS; six remain. This verifies actual-role SQL assertions, not real scanner, private Storage bytes, HTTP or browser.

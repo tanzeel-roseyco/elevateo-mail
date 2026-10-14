@@ -1,3 +1,5 @@
+INT949 inline completion: preserving the original Windows checkout; repairing expanded-backend failures on fix/inline949-completion, then running all fleet Docker checks including Vitest coverage, lint and strict typechecks. No new agents, live spend or credentials. Current repairs and pending evidence are tracked in docs/completion/inline949.md.
+
 OPS820 source intake (2026-10-14): Leonie f8b07b2 administrative private-gateway schema bootstrap and pre/post role checks are imported. Sabine 00018 consumer repair and Soren fleet SQL/process separation remain pending; public bytes inactive.
 
 

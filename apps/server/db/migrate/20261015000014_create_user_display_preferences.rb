@@ -22,8 +22,15 @@ class CreateUserDisplayPreferences < ActiveRecord::Migration[8.1]
       CREATE POLICY preference_owner_routine ON app.user_display_preferences TO elevateo_owner
         USING (true) WITH CHECK (true);
       REVOKE ALL ON app.user_display_preferences FROM PUBLIC, elevateo_api, elevateo_worker, elevateo_app_read;
+      CREATE POLICY preference_session_read ON app.user_display_preferences FOR SELECT TO elevateo_session_owner
+        USING (organization_id::text = NULLIF(current_setting('app.org_id', true), '')
+          AND user_id::text = NULLIF(current_setting('app.user_id', true), ''));
+      GRANT SELECT ON app.user_display_preferences TO elevateo_session_owner;
 
       -- AIDEV-NOTE: A digest proof and matching transaction-local claims are both required for every read.
+      -- AIDEV-NOTE: Keep resolve_session private to its owner; never grant token-bearing proofs to the table owner.
+      GRANT CREATE ON SCHEMA app TO elevateo_session_owner;
+      SET LOCAL ROLE elevateo_session_owner;
       CREATE FUNCTION app.read_user_display_preference(p_digest text)
       RETURNS jsonb LANGUAGE plpgsql STABLE SECURITY DEFINER SET search_path = pg_catalog AS $$
       DECLARE proof jsonb; org uuid; actor uuid; name text; rev integer;
@@ -33,10 +40,8 @@ class CreateUserDisplayPreferences < ActiveRecord::Migration[8.1]
         org := (proof->>'organization_id')::uuid;
         actor := (proof->>'user_id')::uuid;
         IF org IS NULL OR actor IS NULL
-          OR app.context_uuid('app.org_id') IS DISTINCT FROM org
-          OR app.context_uuid('app.user_id') IS DISTINCT FROM actor
-          OR NOT EXISTS (SELECT 1 FROM app.organization_memberships
-            WHERE organization_id = org AND user_id = actor) THEN
+          OR NULLIF(current_setting('app.org_id', true), '') IS DISTINCT FROM org::text
+          OR NULLIF(current_setting('app.user_id', true), '') IS DISTINCT FROM actor::text THEN
           RETURN '{"status":"not_found"}'::jsonb;
         END IF;
         SELECT display_name, revision INTO name, rev FROM app.user_display_preferences
@@ -46,6 +51,8 @@ class CreateUserDisplayPreferences < ActiveRecord::Migration[8.1]
       REVOKE ALL ON FUNCTION app.read_user_display_preference(text)
         FROM PUBLIC, elevateo_api, elevateo_worker, elevateo_app_read;
       GRANT EXECUTE ON FUNCTION app.read_user_display_preference(text) TO elevateo_api;
+      SET LOCAL ROLE elevateo_owner;
+      REVOKE CREATE ON SCHEMA app FROM elevateo_session_owner;
 
       -- AIDEV-NOTE: The organization row serializes first writes without trusting a caller-supplied user ID.
       CREATE FUNCTION app.write_user_display_preference(p_digest text, p_expected integer, p_name text)
@@ -95,7 +102,9 @@ class CreateUserDisplayPreferences < ActiveRecord::Migration[8.1]
     execute <<~SQL
       SET LOCAL ROLE elevateo_owner;
       DROP FUNCTION app.write_user_display_preference(text,integer,text);
+      SET LOCAL ROLE elevateo_session_owner;
       DROP FUNCTION app.read_user_display_preference(text);
+      SET LOCAL ROLE elevateo_owner;
       DROP TABLE app.user_display_preferences;
     SQL
   end

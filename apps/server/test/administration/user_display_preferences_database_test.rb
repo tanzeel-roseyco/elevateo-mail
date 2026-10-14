@@ -66,4 +66,38 @@ class UserDisplayPreferencesDatabaseTest < WriteBoundaryDatabaseTestCase
     assert_equal 0, preference_read.fetch("revision")
     @api.exec("ROLLBACK")
   end
+
+  def test_missing_expired_and_deleted_auth_sessions_cannot_read
+    begin_write
+    assert_equal "unauthorized", preference_read(digest: SecureRandom.hex(32)).fetch("status")
+    @api.exec("ROLLBACK")
+    @admin.exec_params("UPDATE app_auth.sessions SET idle_expires_at=clock_timestamp()-interval '1 second' " \
+      "WHERE cookie_digest=$1", [@digest])
+    begin_write
+    assert_equal({ "status" => "unauthorized" }, preference_read)
+    @api.exec("ROLLBACK")
+    @admin.exec_params("UPDATE app_auth.sessions SET idle_expires_at=clock_timestamp()+interval '1 hour' " \
+      "WHERE cookie_digest=$1", [@digest])
+    @admin.exec_params("DELETE FROM auth.sessions WHERE id=$1 AND user_id=$2", [@auth, @user])
+    begin_write
+    assert_equal({ "status" => "unauthorized" }, preference_read)
+    @api.exec("ROLLBACK")
+  end
+
+  def test_withdrawn_membership_cannot_read_and_runtime_grants_stay_narrow
+    # AIDEV-NOTE: Fixing the reader must not expose token-bearing session proofs to the application table owner.
+    grants = @admin.exec(<<~SQL).first
+      SELECT has_function_privilege('elevateo_owner','app_auth.resolve_session(text)','EXECUTE') AS owner_proof,
+        has_function_privilege('elevateo_worker','app.read_user_display_preference(text)','EXECUTE') AS worker_read,
+        has_table_privilege('elevateo_api','app.user_display_preferences','SELECT') AS api_table,
+        pg_get_userbyid(proowner) AS reader_owner
+      FROM pg_proc WHERE oid='app.read_user_display_preference(text)'::regprocedure
+    SQL
+    assert_equal({ "owner_proof" => "f", "worker_read" => "f", "api_table" => "f",
+      "reader_owner" => "elevateo_session_owner" }, grants)
+    membership(present: false)
+    begin_write
+    assert_equal({ "status" => "not_found" }, preference_read)
+    @api.exec("ROLLBACK")
+  end
 end

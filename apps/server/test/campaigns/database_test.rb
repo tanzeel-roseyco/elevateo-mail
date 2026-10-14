@@ -22,7 +22,11 @@ class CampaignDatabaseTest < Minitest::Test
     @api&.exec("ROLLBACK") if @api && @api.transaction_status != PG::PQTRANS_IDLE
     if @admin && @org
       @admin.exec("ROLLBACK") if @admin.transaction_status != PG::PQTRANS_IDLE
-      [@org, @other_org].each { |org| @admin.exec_params("DELETE FROM app.organizations WHERE id=$1", [org]) }
+      [@org, @other_org].each do |org|
+        # AIDEV-NOTE: Remove account references before organization cascades delete their mailbox targets.
+        @admin.exec_params("DELETE FROM app.campaign_accounts WHERE organization_id=$1", [org])
+        @admin.exec_params("DELETE FROM app.organizations WHERE id=$1", [org])
+      end
     end
   ensure
     @api&.close unless @api&.finished?

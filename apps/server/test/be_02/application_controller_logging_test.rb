@@ -15,8 +15,8 @@ class ApplicationControllerLoggingTest < Minitest::Test
   end
 
   def test_standalone_rack_dispatch_logs_fixed_error_without_rails_logger
-    refute Rails.respond_to?(:logger)
-    _stdout, stderr = capture_io { assert_internal_error }
+    # AIDEV-NOTE: Reproduce pre-boot Rails, which exposes logger but has not configured it.
+    _stdout, stderr = capture_io { Rails.stub(:logger, nil) { assert_internal_error } }
     assert_includes stderr, '"event":"request.error"'
     assert_includes stderr, '"class":"RuntimeError"'
     assert_includes stderr, '"request_id":"logging-test"'

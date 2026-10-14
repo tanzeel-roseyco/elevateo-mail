@@ -82,7 +82,7 @@ class OrganizationRoleAuditHttpTest < Minitest::Test
   private
 
   def dispatch(organization: ORG, query: "")
-    env = Rack::MockRequest.env_for("https://app.test/v2/organizations/#{organization}/role-audit", method: "GET")
+    env = Rack::MockRequest.env_for("https://app.test/v2/organizations/#{organization}/role-audit", method: "GET", input: "")
     configuration = config
     configuration.cursor_signing_key = "disposable-admin-audit-cursor-key-001"
     env.merge!("QUERY_STRING" => query, "HTTP_COOKIE" => "elevateo_session=#{@cookie}",

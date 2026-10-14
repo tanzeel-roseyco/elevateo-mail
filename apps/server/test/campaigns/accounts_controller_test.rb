@@ -24,7 +24,7 @@ class OutreachAccountsControllerTest < Minitest::Test
   def dispatch(action, campaign_id: THREAD, account_id: NOTE)
     path = "https://app.test/v2/outreach/campaigns/#{campaign_id}/accounts"
     path += "/#{account_id}" if action == "show"
-    env = Rack::MockRequest.env_for(path, method: "GET")
+    env = Rack::MockRequest.env_for(path, method: "GET", input: "")
     env.merge!("CONTENT_TYPE" => "application/json", "HTTP_ORIGIN" => "https://app.test",
       "HTTP_COOKIE" => "elevateo_session=#{@cookie}", "HTTP_X_SESSION_CONTEXT" => AuthFixtures::CONTEXT,
       "HTTP_X_AUTHORIZATION_VERSION" => @service.presentation.version(metadata),

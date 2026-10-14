@@ -124,7 +124,7 @@ class AssigneeOptionsHttpTest < Minitest::Test
   end
 
   def dispatch(mailbox: MAILBOX, query: "")
-    env = Rack::MockRequest.env_for("https://app.test/v2/mailboxes/#{mailbox}/assignee-options", method: "GET")
+    env = Rack::MockRequest.env_for("https://app.test/v2/mailboxes/#{mailbox}/assignee-options", method: "GET", input: "")
     configuration = config
     configuration.cursor_signing_key = KEY
     env.merge!("QUERY_STRING" => query, "HTTP_COOKIE" => "elevateo_session=#{@cookie}",

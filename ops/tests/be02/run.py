@@ -215,7 +215,8 @@ def main() -> int:
                 "authority": args.acceptance_dispatch_id, "full_acceptance": "NOT_RUN"})
         else:
             print("Running isolated Minitest suites and Steep", flush=True)
-            task.compose("ruby-suites", ["run", "--rm", "--no-deps", "test"], 480)
+            # AIDEV-NOTE: The expanded inventory needs a bounded 30-minute aggregate; each suite still has its own timeout.
+            task.compose("ruby-suites", ["run", "--rm", "--no-deps", "test"], 1800)
         if acceptance:
             print("Running selected real-app acceptance lanes before HTTP fixtures", flush=True)
             acceptance_before_http(task, acceptance)

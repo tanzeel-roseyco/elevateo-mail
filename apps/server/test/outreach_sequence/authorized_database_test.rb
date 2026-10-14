@@ -15,7 +15,6 @@ class OutreachSequenceAuthorizedDatabaseTest < MailboxMembershipDatabaseCase
 
   def setup
     super
-    @extra_access_users = []
     @admin.exec_params("INSERT INTO app.organization_access(organization_id,user_id,role) VALUES ($1,$2,'owner')",
       [@org, @user])
     @campaign_id, @sequence_id, @step_id = Array.new(3) { SecureRandom.uuid }
@@ -25,20 +24,7 @@ class OutreachSequenceAuthorizedDatabaseTest < MailboxMembershipDatabaseCase
     SQL
   end
 
-  def teardown
-    if @admin && @campaign_id
-      @admin.exec("ROLLBACK") if @admin.transaction_status != PG::PQTRANS_IDLE
-      @admin.exec_params("DELETE FROM app.campaign_sequence_mutations WHERE organization_id=$1 AND campaign_id=$2", [@org, @campaign_id])
-      @admin.exec_params("DELETE FROM app.campaign_sequence_steps WHERE organization_id=$1 AND campaign_id=$2", [@org, @campaign_id])
-      @admin.exec_params("DELETE FROM app.campaign_sequences WHERE organization_id=$1 AND campaign_id=$2", [@org, @campaign_id])
-      @admin.exec_params("DELETE FROM app.campaigns WHERE organization_id=$1 AND id=$2", [@org, @campaign_id])
-      (@extra_access_users || []).each do |user|
-        @admin.exec_params("DELETE FROM app.organization_access WHERE organization_id=$1 AND user_id=$2", [@org, user])
-      end
-      @admin.exec_params("DELETE FROM app.organization_access WHERE organization_id=$1 AND user_id=$2", [@org, @user])
-    end
-    super
-  end
+  # AIDEV-NOTE: Inherited cleanup owns final-owner removal and the organization cascade, including sequences.
 
   def bind(value)
     ActiveRecord::Relation::QueryAttribute.new("seq863", value, ActiveRecord::Type::String.new)
@@ -70,8 +56,9 @@ class OutreachSequenceAuthorizedDatabaseTest < MailboxMembershipDatabaseCase
   def test_get_uses_content_read_for_current_actor_and_hides_absent_or_foreign_org
     seed_draft
     scope(write: false) do |connection|
-      connection.execute("SET LOCAL ROLE elevateo_app_read")
-      assert_equal "elevateo_app_read", connection.select_value("SELECT current_user")
+      # AIDEV-NOTE: Runtime grants are inherited; the API login must never impersonate the read role.
+      assert_equal "elevateo_api", connection.select_value("SELECT current_user")
+      assert_equal false, connection.select_value("SELECT pg_has_role(current_user,'elevateo_app_read','SET')")
       result = repository(connection).fetch(campaign_id: @campaign_id, organization_id: @org,
         session_digest: @identity.digest)
       assert_equal @sequence_id, result.fetch("id")
@@ -87,17 +74,22 @@ class OutreachSequenceAuthorizedDatabaseTest < MailboxMembershipDatabaseCase
   def test_get_hides_cross_actor_digest_and_revoked_current_role
     seed_draft
     actor = add_actor
-    @extra_access_users << actor.user_id
     @admin.exec_params("INSERT INTO app.organization_access(organization_id,user_id,role) VALUES ($1,$2,'sales')",
       [@org, actor.user_id])
     scope(write: false) do |connection|
       assert_nil repository(connection).fetch(campaign_id: @campaign_id, organization_id: @org,
         session_digest: actor.digest)
     end
-    @admin.exec_params("DELETE FROM app.organization_access WHERE organization_id=$1 AND user_id=$2", [@org, @user])
-    scope(write: false) do |connection|
+    scope(identity: actor, write: false) do |connection|
+      refute_nil repository(connection).fetch(campaign_id: @campaign_id, organization_id: @org,
+        session_digest: actor.digest)
+    end
+    # AIDEV-NOTE: Revoke the sales actor while preserving the sole owner and its production guard.
+    @admin.exec_params("DELETE FROM app.organization_access WHERE organization_id=$1 AND user_id=$2",
+      [@org, actor.user_id])
+    scope(identity: actor, write: false) do |connection|
       assert_nil repository(connection).fetch(campaign_id: @campaign_id, organization_id: @org,
-        session_digest: @identity.digest)
+        session_digest: actor.digest)
     end
   end
 
@@ -116,7 +108,6 @@ class OutreachSequenceAuthorizedDatabaseTest < MailboxMembershipDatabaseCase
         CollaborationApiRecord.connection_pool.with_connection do |connection|
           principal = Elevateo::Tenancy::Principal.new(user_id: @user, org_id: @org)
           Elevateo::Tenancy.with_context(principal, connection: connection, read_only: false) do
-            connection.execute("SET LOCAL ROLE elevateo_app_read")
             connection.exec_query("SELECT set_config('app.outreach_digest',$1,true)", "SEQ863 digest", [bind(@identity.digest)])
             connection.exec_query(sql, "SEQ863 unguarded write", values.map { |value| bind(value) })
           end
@@ -130,19 +121,16 @@ class OutreachSequenceAuthorizedDatabaseTest < MailboxMembershipDatabaseCase
   def test_protected_create_update_for_update_and_stale_version
     first = nil
     scope(write: true) do |connection|
-      connection.execute("SET LOCAL ROLE elevateo_app_read")
       first = repository(connection).save(input, organization_id: @org, session_digest: @identity.digest)
     end
     assert_equal 1, first.fetch("version")
     scope(write: true) do |connection|
-      connection.execute("SET LOCAL ROLE elevateo_app_read")
       result = repository(connection).save(input(version: 1, label: "Revised"),
         organization_id: @org, session_digest: @identity.digest)
       assert_equal 2, result.fetch("version")
     end
     error = assert_raises(DraftError) do
       scope(write: true) do |connection|
-        connection.execute("SET LOCAL ROLE elevateo_app_read")
         repository(connection).save(input(version: 1), organization_id: @org,
           session_digest: @identity.digest)
       end

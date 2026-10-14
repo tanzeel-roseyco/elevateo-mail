@@ -3,7 +3,7 @@ module Rails
   interface _Logger
     def error: (String) -> void
   end
-  def self.logger: () -> _Logger
+  def self.logger: () -> _Logger?
 end
 
 module Rack

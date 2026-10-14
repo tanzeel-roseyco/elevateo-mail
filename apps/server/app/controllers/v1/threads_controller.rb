@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative "../../../lib/elevateo/thread_reads"
+
 module V1
   # AIDEV-NOTE: Render the reader's bytes unchanged; the shared wrapper owns authorization, deadlines and touch.
   class ThreadsController < ReadController
