@@ -14,6 +14,9 @@ Shared company mailroom with one Rails domain authority and a React/TypeScript c
 
 ## Current state
 
+SEND-809 candidate: migration 00010 adds fenced simulated worker claim, attempt, cancellation and observation persistence over BE03; Docker runtime and independent review are pending. See [Rowan evidence](docs/completion/rowan.md).
+
+
 
 ### R25 approval reload recovery candidate
 

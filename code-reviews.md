@@ -678,3 +678,5 @@ R25 runtimeC1readiness defect localized through same7e safe13scalar diagnostic: 
 R25 lint repair: one tooling defect in the unmount cleanup (ref must be captured at effect setup), repaired in a six-line effect excerpt with its corresponding anchor updated. Defects: 1 in 82 provider LOC, density 12.20/KLOC; this is tooling evidence, not adversarial acceptance. Independent design review of original candidate: 0 defects/246 production LOC, density 0/KLOC. Scoped Docker typecheck/22 tests/build passed author evidence; successor lint verification and functional review remain pending.
 
 SEND-810 Nadia candidate: bounded independent functional and design review requested from root; none performed yet, so reviewed LOC, defects and density are unreported. Author static inspection only; Docker and integrated runtime NOT_RUN. See docs/completion/nadia.md.
+
+SEND-809 self review: migration and SQL ~230 source LOC, zero confirmed defects after local corrections (0 confirmed/KLOC). Independent bounded functional and design reviews NOT_RUN; request to root. See docs/completion/rowan.md.

@@ -1,3 +1,6 @@
+
+SEND-809 candidate: migration 00010 adds fenced simulated worker claim, attempt, cancellation and observation persistence over BE03; Docker runtime and independent review are pending. See [Rowan evidence](docs/completion/rowan.md).
+
 # Product requirements and decision record
 
 ### Mira BE03 UI isolated R24 implementation (2026-10-14)
