@@ -713,3 +713,6 @@ Candidate source: `apps/android/`, `ops/build/android/`; bounded adversarial and
 ## MAC-814 macOS template (pending independent review)
 
 Author self-review only; independent coverage 0 LOC, defects and defects/KLOC not established. Bounded review requested for `apps/orion/macos` template, validator and tests, with a separate design tradeoff review of universal versus architecture-specific DMGs. Runtime evidence pending Soren QA815 static Docker check and eventual Mac runner.
+### QA816 review status
+
+The new Playwright file is an authored candidate, not an independent adversarial review. Independent functional and dedicated design assignments remain requested; reviewed LOC 0, confirmed defects 0, defect density not computed. Runtime and visual evidence remain NOT_RUN.
