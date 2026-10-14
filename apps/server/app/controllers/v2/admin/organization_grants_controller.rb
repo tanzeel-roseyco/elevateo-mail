@@ -52,6 +52,8 @@ module V2
         end
       rescue Elevateo::Cursors::Invalid
         raise Elevateo::CollaborationError.new("cursor_invalid")
+      rescue Elevateo::ReadResponse::Invalid
+        raise Elevateo::CollaborationError.new("internal_error")
       end
 
       def self.page_limit(query)
@@ -114,7 +116,7 @@ module V2
         end
       rescue Elevateo::Cursors::Invalid
         raise Elevateo::CollaborationError.new("cursor_invalid")
-      rescue Elevateo::AdministrationRoster::Invalid
+      rescue Elevateo::AdministrationRoster::Invalid, Elevateo::ReadResponse::Invalid
         raise Elevateo::CollaborationError.new("internal_error")
       end
 
@@ -150,6 +152,8 @@ module V2
             "role" => role, "revision" => returned_revision }
           Elevateo::WriteResponse.new(json: JSON.generate(payload), status: 200).verify!(budget: 4096)
         end
+      rescue Elevateo::ReadResponse::Invalid
+        raise Elevateo::CollaborationError.new("internal_error")
       end
 
       def self.change_input(input)
