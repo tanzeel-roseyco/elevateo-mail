@@ -33,7 +33,7 @@ module V2RouteRegistry
     listOutreachCampaigns getOutreachCampaign createOutreachCampaign updateOutreachCampaign
     listOutreachLeads getOutreachLead addOutreachLead updateOutreachLead recordOutreachLeadConsent getOutreachAnalytics
     getOutreachSequenceDraft saveOutreachSequenceDraft
-    getDirectMessage getMyPreferences replaceMyPreferences
+    getDirectMessage getMyPreferences replaceMyPreferences listMailboxAssigneeOptions
   ].freeze
 
   def self.register!(mapper, enabled:, controllers_ready:, operations: ACTIVE_OPERATIONS)

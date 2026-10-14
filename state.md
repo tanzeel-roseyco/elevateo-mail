@@ -459,3 +459,5 @@ Soren fleet OPS820 offline Python suite passed seven scripts/23 cases on exact e
 Nadia STRICT909 typed index authorization is carried into the inactive ATT902 feature source at exact owner 1c87999e. Neither the core strict successor nor the expanded content candidate has a fleet PASS yet.
 
 Tessa QA816 reporter config repair is integrated as an unexecuted harness candidate; historical R21 zero-case MODULE_NOT_FOUND attempts are not retroactively passing. Soren fleet browser build/list/runtime still pending.
+
+INT801 assignee-options integration candidate registers only Theo's guarded mailbox-scoped V2 route and injects the strict browser adapter into Lyra's picker; canonical draft.8 marks this operation active while both attachment routes remain inactive. The exact integrated source has not passed Soren's fleet Docker generation/static/runtime, current-role/revocation HTTP, or browser checks. Core strict-only b3aaa07e separately narrows the sole prior Float|nil Steep diagnostic; no new PASS is claimed.

@@ -11,7 +11,7 @@ export interface AssigneeOptionsReadPort {
     query: { cursor?: string; limit?: number }, signal: AbortSignal): Promise<MailboxAssigneeOptionPage>
 }
 
-/** Prepared V2 read adapter. The route is inactive until its SQL authority and controller pass fleet gates. */
+/** Candidate V2 read adapter over protected mailbox-scoped SQL; exact fleet proof is pending. */
 export function createV2AssigneeOptionsGateway(fetchImpl?: FetchLike): AssigneeOptionsReadPort {
   return {
     async listMailboxAssigneeOptions(ctx: ReadContext, mailboxId: string,

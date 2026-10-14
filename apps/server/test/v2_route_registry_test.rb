@@ -12,10 +12,10 @@ class V2RouteRegistryTest < Minitest::Test
     end
   end
 
-  def test_ready_registry_exposes_only_eighteen_active_versioned_routes
+  def test_ready_registry_exposes_only_nineteen_active_versioned_routes
     mapper = Mapper.new
     assert V2RouteRegistry.register!(mapper, enabled: true, controllers_ready: true)
-    assert_equal 18, mapper.routes.size
+    assert_equal 19, mapper.routes.size
     assert(mapper.routes.all? { |_, path, _| path.start_with?("/v2/") })
     refute(mapper.routes.any? { |_, path, _| path.start_with?("/v2/worker/") })
   end
@@ -62,8 +62,16 @@ class V2RouteRegistryTest < Minitest::Test
     assert_empty mapper.routes
   end
 
-  def test_prepared_assignee_and_attachment_routes_remain_inactive
-    %w[listMailboxAssigneeOptions listInboxAttachments downloadCleanInboxAttachment].each do |operation|
+  def test_assignee_options_registers_only_its_guarded_controller
+    mapper = Mapper.new
+    assert V2RouteRegistry.register!(mapper, enabled: true, controllers_ready: true,
+      operations: ["listMailboxAssigneeOptions"])
+    assert_equal [[:get, "/v2/mailboxes/:mailbox_id/assignee-options",
+      "v2/admin/mailbox_assignee_options#index"]], mapper.routes
+  end
+
+  def test_prepared_attachment_routes_remain_inactive
+    %w[listInboxAttachments downloadCleanInboxAttachment].each do |operation|
       mapper = Mapper.new
       assert_raises(ArgumentError) do
         V2RouteRegistry.register!(mapper, enabled: true, controllers_ready: true, operations: [operation])

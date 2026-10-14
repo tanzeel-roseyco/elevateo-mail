@@ -514,3 +514,5 @@ QA815 exact `e8e8393d` offline OPS820 Python checks passed seven scripts/23 case
 The inactive ATT902 content candidate now includes Nadia's typed metadata authorization repair; core strict-only and later feature gates remain separate.
 
 The real-browser acceptance config now resolves the compiled JS quiet reporter with an explicit missing-artifact failure; fleet build/list/cases remain pending and earlier setup failures stand.
+
+INT801 candidate assignee directory activation: the additive V2 `GET /v2/mailboxes/:mailbox_id/assignee-options` route is registered to Theo's guarded controller, canonical draft.8 marks only this operation active, and production shell injects Cassian's strict assignee-options adapter into Lyra's picker. Sabine's protected SQL supplies current eligible Auth UUIDs; the attachment metadata/content routes remain inactive. This is an isolated source candidate: generated V2 declarations, exact fleet Docker Steep/API/type/unit/build, real-role HTTP and browser checks remain pending, so it is not release acceptance.

@@ -19,7 +19,7 @@
     "/v2/mailboxes/{mailbox_id}/assignee-options": {
       "get": {
         "operationId": "listMailboxAssigneeOptions",
-        "x-elevateo-status": "disabled",
+        "x-elevateo-status": "active",
         "summary": "List current eligible assignee Auth UUIDs for one assignable mailbox",
         "description": "Requires current mailbox assignment authority inside the protected read transaction. Eligible subjects are sorted by UUID. The opaque cursor is signed and bound to actor, organization, mailbox, session authorization version and ordering. The V1 assignment write remains final authority.",
         "parameters": [

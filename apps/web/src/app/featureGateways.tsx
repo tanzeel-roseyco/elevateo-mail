@@ -20,7 +20,7 @@ export interface FeatureGateways {
    * would spend the single bounded refresh twice, so this seam carries the raw reader.
    */
   readonly readDirectMessage?: DirectMessageRead
-  /** Inject only after mailbox-scoped SQL, route and current-session fleet proof. */
+  /** Protected mailbox-scoped SQL backs the candidate route; exact fleet proof remains pending. */
   readonly assigneeOptions?: AssigneeOptionsReadPort
   /** Inject only after private byte, scan and scope gates pass on one exact source. */
   readonly attachmentPort?: AttachmentReadPort
