@@ -39,10 +39,11 @@ def verify_receiver_declaration(manifest: str) -> None:
         raise ValueError("Receiver permission must be fixture scoped and signature protected")
     uses = [
         item.get(f"{ANDROID_NS}name")
-        for item in root.findall("uses-permission")
+        for item in root
+        if item.tag.startswith("uses-permission")
     ]
-    if uses.count(RECEIVER_PERMISSION) != 1:
-        raise ValueError("Receiver permission use must match its declaration")
+    if len(uses) != len(EXPECTED) or set(uses) != EXPECTED:
+        raise ValueError("Merged manifest requests unexpected permissions")
 
 
 if __name__ == "__main__":

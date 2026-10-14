@@ -10,6 +10,7 @@ def merged_manifest(protection: str = "signature", package: str = "com.elevateo.
     return (
         '<manifest xmlns:android="http://schemas.android.com/apk/res/android">'
         f'<permission android:name="{permission}" android:protectionLevel="{protection}" />'
+        '<uses-permission android:name="android.permission.INTERNET" />'
         f'<uses-permission android:name="{permission}" />'
         '</manifest>'
     )
@@ -45,6 +46,15 @@ class VerifyPermissionsTest(unittest.TestCase):
     def test_rejects_receiver_namespace_substitution(self) -> None:
         with self.assertRaises(ValueError):
             verify_receiver_declaration(merged_manifest(package="com.elevateo.mail"))
+
+    def test_rejects_sdk_specific_extra_manifest_permission(self) -> None:
+        manifest = merged_manifest().replace(
+            '</manifest>',
+            '<uses-permission-sdk-23 android:name="android.permission.CAMERA" />'
+            '</manifest>',
+        )
+        with self.assertRaises(ValueError):
+            verify_receiver_declaration(manifest)
 
 
 if __name__ == "__main__":
