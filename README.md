@@ -14,6 +14,8 @@ Shared company mailroom with one Rails domain authority and a React/TypeScript c
 
 ## Current state
 
+**Expanded backend failure map:** Soren's exact `e01c64ad` ledger groups 27 failed suites into four Rails logger rescue failures, one migrator-role mismatch, one `resolve_session` grant, two `SET ROLE` grants and 19 shared dirty-fixture suites. Two representative dirty-fixture suites passed unchanged on separate fresh fleet databases (QA817 2/6; send approval 15/202), with cleanup. The remaining suites and dedicated/HTTP/worker/real Auth gates are open.
+
 **Expanded backend fleet result:** Exact reviewed `e01c64ad` migrated through 00019 and executed all 137 standard Ruby suites: 110 suite exits passed, 27 failed; 807 runs/7,715 assertions, one failure/106 errors. Steep and 319-file RuboCop lint passed, cleanup passed. Nine dedicated suites remain separately deferred; authenticated HTTP/worker/real Auth did not run. The failures include shared database fixture contamination, closed connections, Rails logger masking and role/privilege mismatches; root and Soren are classifying bounded repairs.
 
 **QA815 reviewed repair fleet checkpoint:** Exact `780f4ed4` producer `ruby -c` and Bundler unit 5 runs/48 assertions PASS; first unbundled setup lacked pg and ran zero cases. On the same source, capped full web V1/V2 checks, lint, strict TypeScript, 62 files/856 units and Vite build PASS with cleanup. Earlier exact `bca9d38f` full web had 855/856 and build not reached; its focused MembersPage 8/8 PASS is separate. The expanded backend, HTTP/worker, real Auth/private bytes and browser remain pending.
