@@ -13,6 +13,7 @@ module Elevateo
 
         def insert_once(record)
           @record = record
+          {}
         end
       end
 
@@ -33,6 +34,7 @@ module Elevateo
           authorized_mailbox_ids: [DUMMY_SCOPE], provider_account_id: "imap", provider_event_id: "u#{uid}",
           raw_mime: raw_mime)
         parsed = capture.record
+        raise Rejected, "invalid_mime" unless parsed
         # Attachments need quarantine/storage before IMAP import; never silently discard their bytes.
         raise Rejected, "unsupported_mime" unless parsed.fetch(:attachments).empty?
 
