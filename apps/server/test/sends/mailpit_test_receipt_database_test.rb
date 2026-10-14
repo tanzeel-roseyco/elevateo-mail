@@ -80,6 +80,16 @@ class SendMailpitTestReceiptDatabaseTest < SendDatabaseTestCase
     assert_expired_waiting_observation_is_rejected(mode: "synthetic-v1", hash_basis: "local:synthetic-v1")
   end
 
+  def test_synthetic_profile_still_authorizes_with_its_exact_capability_hash
+    send_id = approve.fetch("send_id")
+    lease = SecureRandom.uuid
+    assert_equal "submit", claim(send_id, lease).fetch("action")
+    attempt = authorize(send_id, lease, mode: "synthetic-v1", hash_basis: "local:synthetic-v1").fetch("attempt_id")
+    assert_equal true, worker_result(<<~SQL, [send_id, lease, attempt, @epoch]).fetch("allowed")
+      SELECT app_send_private.final_attempt_check($1::uuid,$2::uuid,1,$3::uuid,$4::uuid)
+    SQL
+  end
+
   def test_mailpit_test_receipt_is_persisted_only_after_fresh_authority
     send_id = approve.fetch("send_id")
     lease = SecureRandom.uuid

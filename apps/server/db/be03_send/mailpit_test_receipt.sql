@@ -62,9 +62,10 @@ BEGIN
     OR pol IS DISTINCT FROM i.approval_policy_revision OR mailbox_on IS DISTINCT FROM true
     OR snap->>10 <> 'correspondence' OR snap->>11 <> 'human_correspondence_attestation'
     OR suppressed OR NOT app_send_private.current_capability(i)
-    OR p_capability_hash <> CASE p_profile
-      WHEN 'synthetic-v1' THEN sha256(convert_to('local:synthetic-v1','UTF8'))
-      WHEN 'mailpit-smtp-test-v1' THEN sha256(convert_to('local:mailpit-smtp-test-v1','UTF8')) END THEN
+    OR NOT ((p_profile='synthetic-v1'
+      AND p_capability_hash=sha256(convert_to('local:synthetic-v1','UTF8')))
+      OR (p_profile='mailpit-smtp-test-v1'
+        AND p_capability_hash=sha256(convert_to('local:mailpit-smtp-test-v1','UTF8')))) THEN
     UPDATE app_send_private.jobs SET state='needs_review',next_action='none',next_check_at=NULL,
       lease_id=NULL,lease_expires_at=NULL,hold_reason='authorization_changed',updated_at=n WHERE send_id=p_send;
     RETURN '{"code":"dispatch_held"}'::jsonb;

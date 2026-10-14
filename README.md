@@ -14,7 +14,7 @@ Shared company mailroom with one Rails domain authority and a React/TypeScript c
 
 ## Current state
 
-SEND-809 candidate: migration 00010 adds fenced simulated worker claim, attempt, cancellation and observation persistence over BE03, with current capability/suppression checks, epoch-scoped bounded-exclusion due discovery, exact 14-field canonical snapshot guards and reconciliation after stop request; Docker runtime and independent review are pending. See [Rowan evidence](docs/completion/rowan.md).
+SEND-809 candidate: migration 00010 adds fenced simulated worker claim, attempt, cancellation and observation persistence over BE03, with current capability/suppression checks, epoch-scoped bounded-exclusion due discovery, exact 14-field canonical snapshot guards and reconciliation after stop request; Docker runtime and independent review are pending. See [Rowan evidence](docs/completion/rowan.md). Additive 00013 internal Mailpit test receipt migration failed the first real fleet PostgreSQL migrate with a CASE expression syntax error; Rowan prepared the explicit mode/hash predicate repair and a synthetic profile regression. A fresh fleet migration and affected tests are pending; no live sending is enabled.
 
 
 
