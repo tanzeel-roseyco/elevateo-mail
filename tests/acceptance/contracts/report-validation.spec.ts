@@ -156,3 +156,14 @@ test('concurrent duplicate publication preserves one complete record and rejects
   assert.deepEqual(outcomes.map(outcome => outcome.status), ['fulfilled', 'rejected']);
   assert.equal((await readdir(join(dir, 'cases'))).length, 1);
 }));
+
+test('seed v2 rejects old version, mismatched variant and complete membership omissions', () => {
+  const seed = seedSchema.parse(example);
+  assert.equal(seedSchema.safeParse({ ...seed, schema_version: 1 }).success, false);
+  assert.equal(seedSchema.safeParse({ ...seed, fixture_variant: 'multi_mailbox' }).success, false);
+  assert.equal(seedSchema.safeParse({ ...seed, extra_mailboxes: { unexpected: seed.mailboxes.primary } }).success, false);
+  assert.equal(seedSchema.safeParse({ ...seed, expected_mailbox_memberships: {
+    ...seed.expected_mailbox_memberships, composer: [],
+  } }).success, false);
+  assert.equal(seedSchema.safeParse({ ...seed, fixture_identity: { ...seed.fixture_identity, nonce: 'invalid' } }).success, false);
+});

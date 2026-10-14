@@ -4,6 +4,9 @@ A shared team mailroom using Rails, PostgreSQL, Supabase Auth/Storage and a Reac
 
 ## Current state
 
+QA-404 exact root ef7b2f9/context ctx_429ce5814d79 integrated preserving owned source. Soren queued ONE real Chromium diagnostic on exactef (observer OFF); runtime pending. Multi-mailbox scenario source now uses genuine seed variant/API grants and deny controls;15authored/11unimplemented, variant-mismatched datasets still report NOT_RUN.
+
+
 QA-404 actual first diagnostic0431 failed source admission on missing root .dockerignore: no Docker resources, cleanup PASS, browser NOT_RUN. Canonical restoration requested. Uninvoked observer ADV739 provisioning attestation moved inside transaction; extra applicable restrictive policy now rejected. DDL-race/regression closure remains open; observer OFF for diagnostic.
 
 
