@@ -14,6 +14,8 @@ Shared company mailroom with one Rails domain authority and a React/TypeScript c
 
 ## Current state
 
+**TEST929 FIX939 source (2026-10-14):** Orion's exact `07411a15` adds the two pure root-level V2 suites to the standard backend selector, preserving its unknown-path failure and nine dedicated gates. The activated feature inventory is 146 tracked Ruby test files: 137 standard candidates and nine dedicated. Independent review and Soren fleet selector/full backend rerun remain pending.
+
 **QA816 FIX940 source (2026-10-14):** Nadia's exact `be921687` producer repair precomputes the unchanged SQL bind arrays for two heredoc calls. Soren's prior `fc45037b` focused test failed to parse before any case; independent repair review and fleet syntax/unit rerun are pending.
 
 **INT-801 expanded suite checkpoint (2026-10-14):** Exact activated feature `fc45037b` reached the fleet backend suite selector, which stopped before any Ruby case because two new root-level tests are unclassified. Orion owns the manifest correction; Soren will rerun one immutable successor. Independent ADV155 reviewed Nadia FIX938 negative admission tests over 103 LOC with zero defects and statically closed REV936's LOW oracle gap; fixture unit and real private-byte/browser checks remain pending.
