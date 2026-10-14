@@ -1,5 +1,6 @@
 import { z } from 'zod'
 import type { ReadContext } from '@/data/gateway'
+import type { SequencePut } from './sequenceContract'
 
 // AIDEV-NOTE: Provisional FE-807 read boundary. Cassian must reconcile exact V2 wire names
 // before connecting HTTP. Eligibility and suppression are server-owned decisions.
@@ -50,6 +51,8 @@ export type Analytics = z.infer<typeof analyticsSchema>
 export interface OutreachPageQuery { cursor?: string; limit?: number }
 
 export interface OutreachGateway {
+  getOutreachSequenceDraft?(ctx: ReadContext, campaignId: string, signal: AbortSignal): Promise<unknown>
+  saveOutreachSequenceDraft?(ctx: ReadContext, proof: { csrfToken: string }, campaignId: string, input: SequencePut, signal: AbortSignal): Promise<unknown>
   listCampaigns(ctx: ReadContext, query: OutreachPageQuery, signal: AbortSignal): Promise<unknown>
   getCampaign(ctx: ReadContext, campaignId: string, signal: AbortSignal): Promise<unknown>
   createCampaign(ctx: ReadContext, proof: { csrfToken: string }, input: z.infer<typeof createCampaignInputSchema>, signal: AbortSignal): Promise<unknown>

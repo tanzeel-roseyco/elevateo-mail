@@ -185,6 +185,7 @@ function CampaignDetail({ campaignId, ...props }: OutreachPageProps & { campaign
   return <Page title="Campaign detail">{accessLost ? <p role="alert">Campaign access changed. Reopen it after your session is refreshed.</p> : <Content state={state}>{(campaign) => <>
     <p><strong>{campaign.name}</strong> · {campaign.status}</p>
     <nav aria-label="Campaign sections" className="flex gap-4">
+      <Link to={`/outreach/campaigns/${campaign.id}/sequence`}>Sequence</Link>
       <Link to={`/outreach/campaigns/${campaign.id}/leads`}>Leads</Link>
       <Link to={`/outreach/campaigns/${campaign.id}/accounts`}>Accounts</Link>
       <Link to={`/outreach/campaigns/${campaign.id}/analytics`}>Analytics</Link>
