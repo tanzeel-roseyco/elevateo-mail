@@ -40,7 +40,9 @@ class SendWorkerAuthorityDatabaseTest < SendDatabaseTestCase
     assert_equal "submit", claim(send, lease).fetch("action")
     binding = worker_json("SELECT app_send_private.worker_binding($1::uuid,$2::uuid,1,$3::uuid)",
       [send, lease, @epoch])
-    assert_equal bytes, [binding.fetch("snapshot_hex")].pack("H*")
+    decoded = [binding.fetch("snapshot_hex")].pack("H*").force_encoding(Encoding::UTF_8)
+    assert decoded.valid_encoding?
+    assert_equal bytes, decoded
     authorized = authorize(send, lease)
     attempt = authorized.fetch("attempt_id")
     assert_equal 1, authorized.fetch("attempt_no")
