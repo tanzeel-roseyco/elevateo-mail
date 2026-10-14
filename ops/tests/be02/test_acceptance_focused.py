@@ -6,12 +6,53 @@ from pathlib import Path
 import shutil
 import tempfile
 import unittest
+from unittest.mock import Mock
 
 from acceptance_runtime import Acceptance, UNITS, add_arguments
 from docker_task import Task
 
 
 class FocusedAcceptanceTests(unittest.TestCase):
+    def inventory(self, case_id: str | None, listed: str) -> tuple[Acceptance, Mock]:
+        acceptance = Acceptance.__new__(Acceptance)
+        acceptance.case_id = case_id
+        task = Mock(spec=Task)
+        task.docker.return_value = listed
+        acceptance.task = task
+        return acceptance, task
+
+    def test_discovery_reporter_only_applies_to_listing(self) -> None:
+        case_id = "SCN-DRAFT-003-P"
+        acceptance, task = self.inventory(case_id,
+            f"Listing tests:\n  draft-recovery.e2e.ts:14:1 › {case_id}\nTotal: 1 test in 1 file\n")
+        command = ["node", "cli.js", "test", "--grep", case_id]
+        acceptance.diagnostic_inventory("owned-browser", command)
+        task.docker.assert_called_once_with("diagnostic-case-list", ["container", "exec", "owned-browser",
+            *command, "--list", "--reporter=list"], 90)
+        self.assertNotIn("--reporter=list", command)
+        self.assertEqual(task.write.call_args.args[1]["cases"], [case_id])
+
+    def test_discovery_rejects_suppressed_missing_extra_and_duplicate_cases(self) -> None:
+        case_id = "SCN-DRAFT-003-P"
+        for listed in ("Acceptance framework status: passed", "SCN-DRAFT-008-P",
+                       f"{case_id}\n{case_id}", f"{case_id}\nSCN-AUTH-001-P"):
+            with self.subTest(listed=listed):
+                acceptance, task = self.inventory(case_id, listed)
+                with self.assertRaisesRegex(RuntimeError, "diagnostic case inventory mismatch"):
+                    acceptance.diagnostic_inventory("owned-browser", ["node", "cli.js", "test"])
+                task.write.assert_not_called()
+
+    def test_smoke_discovery_requires_all_four_unique_cases(self) -> None:
+        cases = ["SCN-AUTH-001-P", "SCN-DRAFT-001-P", "SCN-GUI-006-P", "SCN-READ-002-P"]
+        acceptance, task = self.inventory(None, "\n".join(cases))
+        acceptance.diagnostic_inventory("owned-browser", ["node", "cli.js", "test"])
+        self.assertEqual(task.write.call_args.args[1]["cases"], cases)
+        task.write.reset_mock()
+        task.docker.return_value = "\n".join(cases[:-1])
+        with self.assertRaisesRegex(RuntimeError, "diagnostic case inventory mismatch"):
+            acceptance.diagnostic_inventory("owned-browser", ["node", "cli.js", "test"])
+        task.write.assert_not_called()
+
     def arguments(self, *extra: str) -> argparse.Namespace:
         parser = argparse.ArgumentParser()
         add_arguments(parser)

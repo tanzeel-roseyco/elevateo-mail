@@ -179,6 +179,18 @@ class Acceptance:
         return self.task.docker("acceptance-exec", ["container", "exec", identity, "sh", "-c",
             'umask 077; exec "$@"', "acceptance-private", *command], seconds, quiet=True)
 
+    def diagnostic_inventory(self, identity: str, command: list[str]) -> None:
+        # AIDEV-NOTE: Discovery lists static case IDs; execution retains the private reporter for filled inputs.
+        listed = self.task.docker("diagnostic-case-list", ["container", "exec", identity,
+            *command, "--list", "--reporter=list"], 90)
+        selected = re.findall(r"\bSCN-[A-Z]+-\d{3}-(?:P|F1|F2)\b", listed)
+        expected = ([self.case_id] if self.case_id else
+                    ["SCN-AUTH-001-P", "SCN-READ-002-P", "SCN-DRAFT-001-P", "SCN-GUI-006-P"])
+        if sorted(selected) != sorted(expected):
+            raise RuntimeError("diagnostic case inventory mismatch")
+        self.task.write("diagnostic-selected-cases.json", {
+            "source": "actual container Playwright --list", "cases": selected})
+
     def private_output_preflight(self, identity: str) -> None:
         # AIDEV-NOTE: Exclusive no-follow creation rejects dangling symlinks before any target write.
         # AIDEV-NOTE: Quiet Docker execution discards stdout; the probe enforces modes through its exit status.
@@ -379,13 +391,7 @@ class Acceptance:
                     self.execute(identity, ["node", "--test", f"dist/{engine}/ui.browser-probe.js"], 90)
                     command = ["node", f"dist/{engine}/run.js"]
                 if self.diagnostic:
-                    listed = task.docker("diagnostic-case-list", ["container", "exec", identity, *command, "--list"], 90)
-                    selected = re.findall(r"\bSCN-[A-Z]+-\d{3}-(?:P|F1|F2)\b", listed)
-                    expected = ([self.case_id] if self.case_id else
-                                ["SCN-AUTH-001-P", "SCN-READ-002-P", "SCN-DRAFT-001-P", "SCN-GUI-006-P"])
-                    if sorted(selected) != sorted(expected):
-                        raise RuntimeError("diagnostic case inventory mismatch")
-                    task.write("diagnostic-selected-cases.json", {"source": "actual container Playwright --list", "cases": selected})
+                    self.diagnostic_inventory(identity, command)
                 if self.observer_enabled:
                     bridge = ObserverBridge(self.observer_control, self.invoke_observer, uid,
                                             self.env["BE02_ACCEPTANCE_NONCE"])
