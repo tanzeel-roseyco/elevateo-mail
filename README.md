@@ -530,3 +530,5 @@ Mira COL910 `a7b55af` collaboration test now drives the scoped picker and server
 QA815 core-only exact `b3aaa07e` fleet gate passed 21 migrations, 74 Ruby suites (522 runs/7,089 assertions), and Steep with zero problems. Full job remained FAILED at RuboCop --lint: 19 offenses across five owner areas, including four fatal syntax findings in attachment gateway authority test; authenticated HTTP/worker were not reached. Exact compact receipts are imported from Soren `27f9b172`; source fixes and fleet rerun are pending.
 
 ADV143 independently reviewed the gateway guard and candidate assignee activation, 270 source LOC/zero confirmed defects; it did not cover protected SQL internals or real-role/browser execution. The exact core backend still fails lint, and the feature route remains a candidate pending fleet evidence.
+
+Maeve's test-only sequence repository lint repair is staged in both feature and core candidates; the broader 19-offense QA815 lint gate remains failed until all owner patches pass on one exact fleet source.
