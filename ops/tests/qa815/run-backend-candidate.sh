@@ -46,7 +46,8 @@ PY
   printf 'task_source_overlay=OPS820 restricted gateway login before migration; canonical commit unchanged\n' >> "$summary"
 fi
 if [[ ${QA815_ELARA_FOCUS:-0} == 1 ]]; then
-  [[ $candidate == 94bd1eea1ab6269b34817d4f05523d60d1fb6aa4 ]] || {
+  [[ $candidate == 94bd1eea1ab6269b34817d4f05523d60d1fb6aa4 ||
+     $candidate == a0a60b66151a8a1172b2eeaf75f05bd9e05c6f90 ]] || {
     echo 'Elara focused diagnostic requires the exact authorized tip' >&2; exit 2;
   }
   cat > "$context/ops/tests/be02/test-suites.sh" <<'SH'
@@ -72,10 +73,29 @@ runner.write_text(source)
 
 test = Path(sys.argv[2])
 source = test.read_text()
-needle = '    guard_status = outreach_authorization(sales).fetch("status")\n'
-if source.count(needle) != 1:
+if '    statuses = outreach_same_scope_witness(sales)\n' in source:
+    scope_needle = ('  def outreach_same_scope_witness(actor)\n'
+                    '    results = {}\n'
+                    '    scope(identity: actor, targets: [actor.user_id]) do |connection|\n')
+    if source.count(scope_needle) != 1:
+        raise SystemExit("QA815 same-scope anchor mismatch")
+    source = source.replace(scope_needle,
+                            scope_needle + '      puts "QA815 db_current_user=#{connection.select_value(\'SELECT current_user\')}"\n')
+    needle = '    statuses = outreach_same_scope_witness(sales)\n'
+    addition = '''    qa_session_count = @admin.exec_params(
+      "SELECT count(*) FROM app_auth.sessions WHERE user_id=$1 AND auth_session_id=$2",
+      [sales.user_id, sales.auth_session_id]).getvalue(0, 0)
+    qa_generation = generation(sales.user_id)
+    puts "QA815 provenance member=#{member} role=#{role} function_owner=#{owner} read_result=#{statuses.fetch('read')} write_result=#{statuses.fetch('write')} session_count=#{qa_session_count} generation=#{qa_generation}"
+'''
+elif '    guard_status = outreach_authorization(sales).fetch("status")\n' in source:
+    needle = '    guard_status = outreach_authorization(sales).fetch("status")\n'
+    addition = '    puts "QA815 provenance member=#{member} role=#{role} function_owner=#{owner} protected_result=#{guard_status}"\n'
+else:
     raise SystemExit("QA815 provenance anchor mismatch")
-source = source.replace(needle, needle + '    puts "QA815 provenance member=#{member} role=#{role} function_owner=#{owner} protected_result=#{guard_status}"\n')
+if source.count(needle) != 1:
+    raise SystemExit("QA815 provenance anchor ambiguous")
+source = source.replace(needle, needle + addition)
 test.write_text(source)
 PY
   printf 'task_source_overlay=Elara exact focused diagnostic, provenance print, stop after one case; canonical commit unchanged\n' >> "$summary"

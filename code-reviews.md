@@ -716,3 +716,5 @@ QA815 `651b63a` protected role and thread fixture failures are runtime test find
 QA815 `065ec91` role failure and thread fixture improvement are executed test findings, not an independent source review. Additional independently reviewed LOC remains 0; defect density unclaimed.
 
 QA815 `c5a8737` full web PASS is runtime evidence, not independent bounded source review. Additional independent reviewed LOC remains 0; density unclaimed.
+
+QA815 `a0a60b6` same-scope authorization failure and retained-APK `aapt` output are executed diagnostics, not independent source review. Additional independently reviewed source remains 0 LOC; actionable source defects and density are unclaimed pending owner/root review.
