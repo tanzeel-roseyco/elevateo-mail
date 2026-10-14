@@ -24,3 +24,5 @@ Target OS gates remain: real Windows NSIS install/run/upgrade/downgrade/uninstal
 ## macOS overlay (MAC-814)
 
 `src-tauri/tauri.macos.conf.json` selects DMG and macOS 12.0 for this shared online-only shell; `macos/Entitlements.plist` requests no extra rights. `apps/native/macos-release.sh` requires a configured exact HTTPS origin at build time and Mac signing/notarization prerequisites before building. This source is not a tested DMG or release approval. Soren owns Docker static/source checks; a real Mac runner and installed-app tests remain necessary. No Mac callback scheme is registered.
+
+Orion fleet compile fixture: after the reviewed Cargo.lock is present, run `apps/native/ci/compile-fixture.sh` and the boundary verifier in Soren's fleet Docker lane. It uses only `https://app.elevateo.invalid`, `ELEVATEO_NATIVE_ARTIFACT=compile-only-fixture` and `tauri.fixture.conf.json` as an optional package override. It cannot launch and is not a release artifact; Windows unsigned-candidate packaging rejects the fixture domain. No approved production origin is recorded.

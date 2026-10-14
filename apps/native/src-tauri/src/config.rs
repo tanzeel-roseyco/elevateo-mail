@@ -2,10 +2,19 @@ use url::{Host, Url};
 
 #[derive(Debug, PartialEq, Eq)]
 pub enum ConfigError {
+    NonReleaseArtifact,
     Missing,
     InvalidUrl,
     InsecureOrigin,
     UnsupportedUrlParts,
+}
+
+/// A compile-only fixture cannot launch even if a future validator accidentally accepts its host.
+pub fn launch_origin(raw: &str, artifact_kind: &str) -> Result<Url, ConfigError> {
+    if artifact_kind != "unsigned-candidate" {
+        return Err(ConfigError::NonReleaseArtifact);
+    }
+    validate_web_origin(raw)
 }
 
 /// Public first-party web origin for an online-only WebView; never a token or arbitrary route.
@@ -41,8 +50,14 @@ mod tests {
     use super::*;
 
     #[test]
+    fn fixture_and_unmarked_artifacts_cannot_launch() {
+        assert_eq!(launch_origin("https://mail.company.org", "compile-only-fixture"), Err(ConfigError::NonReleaseArtifact));
+        assert_eq!(launch_origin("https://mail.company.org", ""), Err(ConfigError::NonReleaseArtifact));
+    }
+
+    #[test]
     fn accepts_exact_public_https_origin() {
-        assert_eq!(validate_web_origin("https://mail.company.org").unwrap().as_str(), "https://mail.company.org/");
+        assert_eq!(launch_origin("https://mail.company.org", "unsigned-candidate").unwrap().as_str(), "https://mail.company.org/");
     }
 
     #[test]
