@@ -12,7 +12,7 @@ import {
   leadSchema, updateCampaignInputSchema, updateLeadInputSchema, type Account, type Analytics,
   type Campaign, type Lead, type OutreachGateway,
 } from './contract'
-import { writeFailure } from './writeFailure'
+import { isAccessLoss, writeFailure } from './writeFailure'
 import { ConsentEvidenceForm } from './ConsentEvidenceForm'
 
 export interface OutreachPageProps {
@@ -165,6 +165,7 @@ function CampaignDetail({ campaignId, ...props }: OutreachPageProps & { campaign
   const [name, setName] = useState('')
   const [busy, setBusy] = useState(false)
   const [uncertain, setUncertain] = useState(false)
+  const [accessLost, setAccessLost] = useState(false)
   const [error, setError] = useState<string | null>(null)
   useEffect(() => () => pending.current?.abort(), [])
   async function update(event: SyntheticEvent, campaign: Campaign, status: 'draft' | 'paused') {
@@ -178,10 +179,10 @@ function CampaignDetail({ campaignId, ...props }: OutreachPageProps & { campaign
       const result = campaignSchema.parse(await props.gateway.updateCampaign(props.context, props.proof, campaignId, input.data, controller.signal))
       if (result.id !== campaignId || result.status !== status || result.name !== input.data.name) throw new Error('Campaign receipt mismatch')
       if (!controller.signal.aborted) setRevision((value) => value + 1)
-    } catch (failure) { if (!controller.signal.aborted) { const outcome = writeFailure(failure); setError(outcome.message); setUncertain(outcome.lock) } }
+    } catch (failure) { if (!controller.signal.aborted) { const outcome = writeFailure(failure); setError(outcome.message); setUncertain(outcome.lock); if (isAccessLoss(failure)) setAccessLost(true) } }
     finally { if (!controller.signal.aborted) setBusy(false) }
   }
-  return <Page title="Campaign detail"><Content state={state}>{(campaign) => <>
+  return <Page title="Campaign detail">{accessLost ? <p role="alert">Campaign access changed. Reopen it after your session is refreshed.</p> : <Content state={state}>{(campaign) => <>
     <p><strong>{campaign.name}</strong> · {campaign.status}</p>
     <nav aria-label="Campaign sections" className="flex gap-4">
       <Link to={`/outreach/campaigns/${campaign.id}/leads`}>Leads</Link>
@@ -189,13 +190,13 @@ function CampaignDetail({ campaignId, ...props }: OutreachPageProps & { campaign
       <Link to={`/outreach/campaigns/${campaign.id}/analytics`}>Analytics</Link>
     </nav>
     <form onSubmit={(event) => { void update(event, campaign, campaign.status) }} className="space-y-3">
-      <Field id="edit-campaign-name" label="Campaign name"><TextInput id="edit-campaign-name" value={name} placeholder={campaign.name} onChange={(event) => setName(event.target.value)} maxLength={200} /></Field>
+      <Field id="edit-campaign-name" label="Campaign name"><TextInput id="edit-campaign-name" value={name} placeholder={campaign.name} onChange={(event) => setName(event.target.value)} maxLength={160} /></Field>
       <ActionError message={error} />
       <Button type="submit" disabled={!props.gateway || !props.proof || busy || uncertain}>Save changes</Button>
       {campaign.status === 'draft' && <Button disabled={!props.gateway || !props.proof || busy || uncertain} onClick={(event) => { void update(event, campaign, 'paused') }}>Pause campaign</Button>}
       {uncertain && <Link to="/outreach/campaigns">Check campaign list</Link>}
     </form>
-  </>}</Content></Page>
+  </>}</Content>}</Page>
 }
 
 export function OutreachLeadsPage(props: OutreachPageProps) {
@@ -233,6 +234,7 @@ function CampaignLeads({ campaignId, ...props }: OutreachPageProps & { campaignI
   const [consentId, setConsentId] = useState<string | null>(null)
   const [busy, setBusy] = useState(false)
   const [uncertain, setUncertain] = useState(false)
+  const [accessLost, setAccessLost] = useState(false)
   const [error, setError] = useState<string | null>(null)
   useEffect(() => () => pending.current?.abort(), [])
   async function save(event: FormEvent<HTMLFormElement>) {
@@ -255,16 +257,16 @@ function CampaignLeads({ campaignId, ...props }: OutreachPageProps & { campaignI
       if (saved.campaign_id !== campaignId) throw new Error('Lead campaign mismatch')
       if (saved.email !== input.data.email) throw new Error('Lead receipt mismatch')
       if (!controller.signal.aborted) { setEmail(''); setEditId(null); setRevision((value) => value + 1) }
-    } catch (failure) { if (!controller.signal.aborted) { const outcome = writeFailure(failure); setError(outcome.message); setUncertain(outcome.lock) } }
+    } catch (failure) { if (!controller.signal.aborted) { const outcome = writeFailure(failure); setError(outcome.message); setUncertain(outcome.lock); if (isAccessLoss(failure)) setAccessLost(true) } }
     finally { if (!controller.signal.aborted) setBusy(false) }
   }
-  return <Page title="Campaign leads"><Content state={state} empty={(page) => page.items.length === 0 && page.next_cursor === null}>{(page) => <>
+  return <Page title="Campaign leads">{accessLost ? <p role="alert">Lead access changed. Reopen this campaign after your session is refreshed.</p> : <><Content state={state} empty={(page) => page.items.length === 0 && page.next_cursor === null}>{(page) => <>
     <ul className="space-y-2">{page.items.map((lead: Lead) =>
       <li key={lead.id}><Link to={`/outreach/campaigns/${campaignId}/leads/${lead.id}`}>{lead.email}</Link> · consent {lead.consent_status} · {lead.suppressed ? 'suppressed' : 'not suppressed (server report)'}
         <Button onClick={() => { setEditId(lead.id); setEmail(lead.email) }}>Edit address</Button>
         {props.gateway?.recordConsent && lead.consent_status !== 'granted' &&
           <Button onClick={() => setConsentId((current) => current === lead.id ? null : lead.id)}>Record consent evidence</Button>}
-        {consentId === lead.id && campaignId && <ConsentEvidenceForm key={`${lead.id}:${lead.version}`} lead={lead} campaignId={campaignId} {...props} onSaved={() => { setConsentId(null); setRevision((value) => value + 1) }} />}
+        {consentId === lead.id && campaignId && <ConsentEvidenceForm key={`${lead.id}:${lead.version}`} lead={lead} campaignId={campaignId} {...props} onSaved={() => { setConsentId(null); setRevision((value) => value + 1) }} onAccessLost={() => setAccessLost(true)} />}
       </li>)}</ul>
     {page.next_cursor && <Link to={`?cursor=${encodeURIComponent(page.next_cursor)}`}>Next leads page</Link>}
   </>}</Content>
@@ -276,7 +278,7 @@ function CampaignLeads({ campaignId, ...props }: OutreachPageProps & { campaignI
       {editId && <Button onClick={() => { setEditId(null); setEmail('') }}>Cancel edit</Button>}
       {uncertain && <Link to={`/outreach/campaigns/${campaignId}`}>Check campaign</Link>}
     </form>
-  </Page>
+  </>}</Page>
 }
 
 export function OutreachLeadDetailPage(props: OutreachPageProps) {

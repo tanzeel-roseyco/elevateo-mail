@@ -702,3 +702,5 @@ FE807 analytics copy self-review: backend's candidate `consented_count` excludes
 FE807 QA815 `fe96194` fleet result: API check and lint PASS, typecheck FAILED with eight instances of explicit `gateway={undefined}` in test helper under `exactOptionalPropertyTypes`; unit/build NOT_REACHED. Celeste repaired the test helper by omitting the optional prop when absent. Fresh Docker rerun and independent review pending; no PASS claim for the repair.
 
 FE807 Dorian DTO alignment: immutable `b8c3e39` adds nullable `consent_evidence_kind` to lead detail. FE807 strict boundary and component source now display `manual_attestation` as evidence metadata, never send eligibility. No runtime or independent review claim for this follow-up.
+
+FE807 auth-loss self-review: raw V2 gateway wiring may not invoke central SessionProvider 401/context handling. Owned detail/leads pages now hide previously loaded content after an access-loss write and lock further actions; the host still must rotate context centrally. Revoked-write case authored, no Docker or independent review receipt.

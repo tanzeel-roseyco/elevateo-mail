@@ -1,8 +1,12 @@
 import { GatewayError, isApiError, isUncertainWriteOutcome } from '@/data/errors'
 
+export function isAccessLoss(error: unknown): boolean {
+  return isApiError(error, 'unauthenticated') || isApiError(error, 'context_changed') || isApiError(error, 'not_available')
+}
+
 /** Treat a lost or malformed receipt as uncertain; only a definitive 4xx can be corrected in place. */
 export function writeFailure(error: unknown): { message: string; lock: boolean } {
-  if (isApiError(error, 'unauthenticated') || isApiError(error, 'context_changed') || isApiError(error, 'not_available')) {
+  if (isAccessLoss(error)) {
     return { message: 'Access changed or this resource is unavailable. Leave this page and sign in or reopen the campaign.', lock: true }
   }
   if (isUncertainWriteOutcome(error) || (error instanceof GatewayError && error.kind === 'transport' && error.code === 'malformed')) {
