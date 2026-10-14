@@ -243,3 +243,5 @@ Coordinator OUT839 role audit found the campaign RLS policy applies to member ro
 ADV093 narrow repair dependency: when execution switches to `elevateo_app_read`, 00009 RLS needs EXECUTE on `authorize_outreach_content_read` and 00016 sequence needs EXECUTE on `authorize_outreach_draft_write`. The isolated OUT-804 checkout lacks SEC802 access.sql, so Sabine/Cassian must integrate these two protected-helper grants. Authored role tests now require genuine marker success and copied-digest/no-marker rejection; no runtime PASS is claimed.
 
 OUT839 integrated SEC802 grants allow only elevateo_api and restricted elevateo_app_read to execute two existing protected outreach helpers used by campaign/sequence RLS; PUBLIC and worker revokes remain. Dorian actual-role positive and copied-digest negative tests are source-only pending fleet PostgreSQL proof.
+
+ATT838 Rails now has a pure fixed-field HMAC request builder for the private read gateway: exact ordered JSON, UUID/digest/hint checks and a 0–30 second expiry. It is unbound from any public route until Sabine gateway source and Soren fleet evidence are ready; no Storage token or live bytes were used.

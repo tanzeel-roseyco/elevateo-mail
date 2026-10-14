@@ -153,3 +153,7 @@ Exact integrated Theo 81cb542 and Lyra a54be31/748e53b/7550afb source is wired t
 ## OUT839 restricted-role helper seam
 
 Dorian b487019 supplies actual-role tests. SEC802 access.sql grants app_read EXECUTE on the existing draft-write and content-read helper functions because RLS evaluates under that role. The helper bodies retain protected marker/session digest, tenant and current-role gates, and PUBLIC/worker are still revoked. This candidate needs disposable PostgreSQL positive and copied-digest negative execution on the exact integrated SHA; NOT_RUN here.
+
+## ATT838 signed request candidate
+
+`apps/server/lib/elevateo/attachment_gateway_request.rb` constructs only the fixed internal POST body and HMAC header value from the ADV085/Sabine frozen wire. It rejects extra keys, invalid IDs/digest/hints, expiry outside now..now+30 and oversized body. Tests cover exact ordering/signature, extra/wrong operation and expired/long-lived/malformed authority. Source-only, NOT_RUN; transport, repeated authorization and binary response are pending gateway and controller integration.

@@ -1103,3 +1103,5 @@ ATT823 REV878 independent source review of the preceding attachment candidate fo
 ## ATT843 ADV092 focused repair packet
 
 Dispatched Vera finding against `2eca511` identifies one overlapping-download busy-state defect in `MessageAttachments.tsx` around the single `{id,status}` state. The named full review file was unavailable during this repair, so unique reviewed LOC and review density are not asserted here. Owner repair uses per-ID pending ownership and per-ID visible status; the deferred A/B regression is authored but not executed. Request bounded independent re-review of the changed download function/control and Soren fleet Docker proof on the exact repair SHA; runtime and browser evidence remain pending.
+
+ATT838 Cassian author review: inspected 57 new pure signer LOC, 15 RBS LOC and 46 test LOC in a bounded 118-LOC packet. One pre-commit source risk was an unrestricted body length; added a 2048-byte cap (1/118=8.47/KLOC self-review only). No independent review or Docker execution; HMAC test mirrors implementation and requires gateway interop proof.

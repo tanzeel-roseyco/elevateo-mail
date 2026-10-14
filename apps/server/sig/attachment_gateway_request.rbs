@@ -1,0 +1,13 @@
+module Elevateo
+  class AttachmentGatewayRequest
+    PATH: String
+    UUID: Regexp
+    DIGEST: Regexp
+    HINT: Regexp
+    IDS: Array[String]
+    ORDER: Array[String]
+    attr_reader body: String
+    attr_reader signature: String
+    def initialize: (fields: Hash[String, untyped], key: String, ?now: Integer) -> void
+  end
+end
