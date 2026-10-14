@@ -10,7 +10,7 @@ Requested Soren command (fleet-02, under `/home/tanzeel/elevateo-mail-wave-20261
 
 Design tradeoff simulation for root (analytical, not executed): a pure input test catches malformed bytes quickly but cannot prove that SQL claims use the same tenant and generation as the request. A locked race fixture costs more setup yet is required to distinguish stale-generation rejection from an incidental 404. For performance, request count and query count are more stable initial oracles than a fabricated latency target; record latency only with fleet environment details.
 
-Candidate SHA: pending commit. Review coverage: pending independent bounded review. Tests requested: above; tests executed: none. Limitations: no integrated acceptance or benchmark evidence.
+Initial candidate commit: `6729ef8cc6693f5b79e849174567fd09b15835b6`; later exact commits are recorded in the continuation sections and the Felix outbox. Review coverage: pending independent bounded review. Tests requested: above; tests executed: none. Limitations: no integrated acceptance or benchmark evidence.
 
 ## Continuation: actual database candidate
 
