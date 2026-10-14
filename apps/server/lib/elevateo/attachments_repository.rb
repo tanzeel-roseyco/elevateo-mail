@@ -20,7 +20,7 @@ module Elevateo
 
       def find(organization_id:, mailbox_id:, thread_id:, message_id:, id:)
         rows(<<~SQL, [organization_id, mailbox_id, thread_id, message_id, id]).first
-          SELECT storage_key,filename,content_type,scan_status FROM app.inbox_attachments
+          SELECT id,filename,content_type,byte_size,scan_status FROM app.inbox_attachments
           WHERE organization_id=$1::uuid AND mailbox_id=$2::uuid AND thread_id=$3::uuid
             AND message_id=$4::uuid AND id=$5::uuid LIMIT 1
         SQL
@@ -35,13 +35,17 @@ module Elevateo
         SQL
       end
 
-      def pending_scan(id:)
-        rows("SELECT * FROM app.pending_inbox_attachment($1::uuid)", [id]).first
+      def due_scan_ids(limit:)
+        rows("SELECT id FROM app.due_inbox_attachment_scans($1::integer)", [limit]).map { |row| row.fetch("id") }
       end
 
-      def record_scan(id:, sha256:, verdict:)
-        row = rows("SELECT app.record_inbox_attachment_verdict($1::uuid,$2,$3) AS recorded",
-          [id, sha256, verdict]).first
+      def claim_scan(id:, token:)
+        rows("SELECT * FROM app.claim_inbox_attachment_scan($1::uuid,$2::uuid)", [id, token]).first
+      end
+
+      def record_scan(id:, sha256:, token:, attempt:, verdict:)
+        row = rows("SELECT app.record_inbox_attachment_scan($1::uuid,$2,$3::uuid,$4::integer,$5) AS recorded",
+          [id, sha256, token, attempt, verdict]).first
         raise NotAvailable unless row && row["recorded"] == true
       end
 
