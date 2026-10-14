@@ -1,6 +1,6 @@
 # QA816 bounded independent review request
 
-Source candidate: `4b946ea` (ADV046/047 oracle repairs; source hashes below). Review the exact blobs below, not moving branch HEADs. Apply the full INT-401 rubric, report confirmed defects by severity and unique changed LOC/KLOC, and distinguish overlap and design context. No independent review has run yet.
+Source candidate: `4b946ea` (ADV046/047 oracle repairs; source hashes below). Review the exact blobs below, not moving branch HEADs. Apply the full INT-401 rubric, report confirmed defects by severity and unique changed LOC/KLOC, and distinguish overlap and design context. Initial Felix, Vera and Ada findings are recorded in code-reviews.md; the repaired source below awaits exact re-review and fleet runtime.
 
 | Functional packet | Exact source and inclusive lines | LOC | SHA-256 |
 | --- | --- | ---: | --- |
