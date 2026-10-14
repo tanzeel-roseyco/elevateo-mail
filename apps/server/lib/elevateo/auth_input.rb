@@ -33,7 +33,7 @@ module Elevateo
 
     def self.query(raw, allowed: [])
       raise AuthError.invalid if raw.bytesize > 8192 || /%(?![0-9a-f]{2})/i.match?(raw)
-      result = {}
+      result = {} # : Hash[String, String]
       URI.decode_www_form(raw, Encoding::UTF_8).each do |key, value|
         raise AuthError.invalid if !allowed.include?(key) || result.key?(key) || !value.valid_encoding?
         result[key] = value

@@ -5,9 +5,7 @@ require_relative "database_test_helper"
 # AIDEV-NOTE: Exercise bootstrap's exact private-schema SQL block; full psql bootstrap remains a Soren runner gate.
 class DraftSchemaContractTest < SessionDatabaseTestCase
   PARTS = File.expand_path("../../db/be02_drafts", __dir__)
-  BOOTSTRAP = File.read(File.expand_path("../../../../ops/db/bootstrap.sql", __dir__)).match(
-    /-- AIDEV-NOTE: Private schema[^\n]*\n(DO \$\$ BEGIN.*?END \$\$;)/m
-  )[1].freeze
+  BOOTSTRAP_PATH = File.expand_path("../../../../ops/db/bootstrap.sql", __dir__)
 
   def test_bootstrap_rerun_preserves_nonempty_schema_and_acl_representation
     [false, true].each do |explicit|
@@ -16,7 +14,7 @@ class DraftSchemaContractTest < SessionDatabaseTestCase
         @admin.exec("CREATE TABLE app_drafts_private.be403_bootstrap_sentinel (id integer)")
         @admin.exec("INSERT INTO app_drafts_private.be403_bootstrap_sentinel VALUES (11)")
         before = namespace
-        @admin.exec(BOOTSTRAP)
+        @admin.exec(bootstrap_sql)
         assert_equal before, namespace
         assert_equal "11", @admin.exec("SELECT id FROM app_drafts_private.be403_bootstrap_sentinel").getvalue(0, 0)
       end
@@ -76,13 +74,17 @@ class DraftSchemaContractTest < SessionDatabaseTestCase
 
   private
 
+  def bootstrap_sql
+    File.read(BOOTSTRAP_PATH).match(/-- AIDEV-NOTE: Private schema[^\n]*\n(DO \$\$ BEGIN.*?END \$\$;)/m)[1]
+  end
+
   def namespace
     @admin.exec("SELECT oid::text, nspowner::text, nspacl::text FROM pg_namespace WHERE nspname='app_drafts_private'").first
   end
 
   def rejects_bootstrap
     @admin.exec("SAVEPOINT bootstrap_probe")
-    error = assert_raises(PG::RaiseException) { @admin.exec(BOOTSTRAP) }
+    error = assert_raises(PG::RaiseException) { @admin.exec(bootstrap_sql) }
     assert_includes error.message, "bootstrap prerequisite failed"
   ensure
     @admin.exec("ROLLBACK TO SAVEPOINT bootstrap_probe")

@@ -56,8 +56,9 @@ module Elevateo
       # AIDEV-NOTE: Never hold a DB transaction while waiting for Auth; no retries or redirects may rotate tokens twice.
       raise AuthError.new if @transaction_open.call
       deadline.within(2.0) do
-        status, content_type, body = if @transport
-          @transport.call(method, path, payload, access, deadline.timeout)
+        transport = @transport
+        status, content_type, body = if transport
+          transport.call(method, path, payload, access, deadline.timeout)
         else
           exchange(method, path, payload, access, deadline)
         end

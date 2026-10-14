@@ -14,7 +14,8 @@ module Elevateo
       raise AuthError.new unless access.is_a?(String) && access.bytesize <= 8192
       segments = access.split(".", -1)
       raise AuthError.new unless segments.length == 3 && segments.all? { |part| /\A[A-Za-z0-9_-]+\z/.match?(part) }
-      header, payload = segments.first(2).map { |part| AuthInput.object(Base64.urlsafe_decode64(part), maximum: 8192) }
+      header = AuthInput.object(Base64.urlsafe_decode64(segments.fetch(0)), maximum: 8192)
+      payload = AuthInput.object(Base64.urlsafe_decode64(segments.fetch(1)), maximum: 8192)
       raise AuthError.unauthorized unless header["alg"] == @config.auth_jwt_algorithm &&
         payload["iss"] == @config.auth_jwt_issuer && payload["aud"] == @config.auth_jwt_audience
       raise AuthError.new unless Base64.urlsafe_decode64(segments.fetch(2)).bytesize == 32
@@ -32,8 +33,10 @@ module Elevateo
 
     def identity(access, user, expected_user: nil, expected_session: nil)
       parsed = claims(access)
-      raise AuthError.new unless user.is_a?(Hash) && user["id"].is_a?(String) && AuthInput::UUID.match?(user["id"])
-      raise AuthError.unauthorized unless user.fetch("id").downcase == parsed.user_id &&
+      raise AuthError.new unless user.is_a?(Hash)
+      user_id = user["id"]
+      raise AuthError.new unless user_id.is_a?(String) && AuthInput::UUID.match?(user_id)
+      raise AuthError.unauthorized unless user_id.downcase == parsed.user_id &&
         (expected_user.nil? || expected_user == parsed.user_id) &&
         (expected_session.nil? || expected_session == parsed.auth_session_id)
       parsed
