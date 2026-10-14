@@ -264,6 +264,7 @@ describe('notes', () => {
 describe('reply as draft', () => {
   it('opens a sender-filled thread reply and saves only after explicit action', async () => {
     const h = harness()
+    const readDraft = vi.spyOn(h.gateway, 'getDraft')
     const save = vi.spyOn(h.gateway, 'saveDraft')
     render(
       <SessionProvider gateway={h.gateway}>
@@ -282,8 +283,16 @@ describe('reply as draft', () => {
     await readerReady()
     fireEvent.click(button('Mark as read'))
     await screen.findByRole('button', { name: 'Mark as unread' })
+    expect(readDraft).not.toHaveBeenCalled()
+    expect(save).not.toHaveBeenCalled()
     fireEvent.click(button('Reply as draft'))
     await screen.findByRole('heading', { name: 'New draft' })
+    expect(readDraft).toHaveBeenCalledTimes(1)
+    const draftId = readDraft.mock.calls[0]?.[1]
+    if (draftId === undefined) throw new Error('Missing draft read id')
+    expect(draftId).toMatch(/^[0-9a-f-]{36}$/)
+    expect(readDraft.mock.calls[0]?.[2]).toBe(CD.mailboxId)
+    expect(() => h.state.getDraft(draftId, CD.mailboxId)).toThrow('This item is unavailable.')
     expect((screen.getByLabelText('To') as HTMLTextAreaElement).value).toBe('sender@example.test')
     expect((screen.getByLabelText('Subject') as HTMLInputElement).value).toBe('Re: Synthetic thread')
     expect(screen.getByRole('link', { name: 'Replying to a conversation' }).getAttribute('href')).toBe(`/mailboxes/${CD.mailboxId}/threads/${CD.threadId}`)
@@ -291,6 +300,10 @@ describe('reply as draft', () => {
     fireEvent.click(button('Save draft'))
     await screen.findByText('Saved version 1')
     expect(save).toHaveBeenCalledTimes(1)
-    expect(save.mock.calls[0]?.[3]).toMatchObject({ reply_to_thread_id: CD.threadId, to: [{ address: 'sender@example.test' }] })
+    expect(save.mock.calls[0]?.[0]).toMatchObject({ contextId: CD.contextId, authorizationVersion: CD.authorizationVersion })
+    expect(save.mock.calls[0]?.[2]).toBe(draftId)
+    expect(save.mock.calls[0]?.[3]).toMatchObject({ mailbox_id: CD.mailboxId, expected_version: 0,
+      subject: 'Re: Synthetic thread', to: [{ display_name: null, address: 'sender@example.test' }],
+      body_text: '', reply_to_thread_id: CD.threadId })
   })
 })

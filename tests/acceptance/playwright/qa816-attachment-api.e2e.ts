@@ -18,7 +18,9 @@ const sessionSchema = z.object({ context_id: token, authorization_version: token
 const itemSchema = z.strictObject({ id: uuid, filename: z.string(), content_type: z.string(),
   byte_size: z.number().int().min(0), scan_status: z.enum(['pending_scan', 'clean', 'malware', 'scan_failed', 'rejected']) });
 const listSchema = z.strictObject({ items: z.array(itemSchema).max(50), next_cursor: z.string().nullable() });
-const errorSchema = z.object({ code: z.string().min(1).max(64) }).passthrough();
+// AIDEV-NOTE: Error bodies must match the closed public renderer, with no private storage fields.
+const errorSchema = z.strictObject({ code: z.string().min(1).max(64),
+  message: z.string().min(1).max(256), request_id: z.string().min(1).max(128) });
 
 // AIDEV-NOTE: A missing private receipt is setup failure, not a skipped or fixture-passing API case.
 function fixture() {
@@ -94,10 +96,12 @@ scenario('SCN-QA-827-F1', 'held-and-rejected-attachments-never-yield-bytes', asy
   expect(list.items.find(item => item.id === value.rejected_id)).toMatchObject({ scan_status: 'rejected', byte_size: 0 });
   const held = await jsonApi(page, `${listPath(value)}/${value.held_id}/content`, headers);
   expect(held.status).toBe(423);
-  expect(errorSchema.parse(held.value).code).toBe('attachment_held');
+  expect(errorSchema.parse(held.value)).toMatchObject({ code: 'attachment_held',
+    message: 'Attachment is not available yet' });
   const rejected = await jsonApi(page, `${listPath(value)}/${value.rejected_id}/content`, headers);
   expect(rejected.status).toBe(423);
-  expect(errorSchema.parse(rejected.value).code).toBe('attachment_held');
+  expect(errorSchema.parse(rejected.value)).toMatchObject({ code: 'attachment_held',
+    message: 'Attachment is not available yet' });
   record.assertions.push('Real held and rejected content are 423 JSON errors; rejected metadata has zero bytes and no private key or URL');
 });
 
@@ -107,6 +111,7 @@ scenario('SCN-QA-827-F2', 'foreign-mailbox-attachment-bytes-are-unavailable', as
   const path = `/v2/mailboxes/${value.foreign.mailbox_id}/threads/${value.foreign.thread_id}/messages/${value.foreign.message_id}/attachments/${value.foreign.attachment_id}/content`;
   const denied = await jsonApi(page, path, headers);
   expect(denied.status).toBe(404);
-  expect(errorSchema.parse(denied.value).code).toBe('not_available');
+  expect(errorSchema.parse(denied.value)).toMatchObject({ code: 'not_available',
+    message: 'This item is unavailable.' });
   record.assertions.push('Real cross-mailbox content request returns uniform 404 without private bytes');
 });
