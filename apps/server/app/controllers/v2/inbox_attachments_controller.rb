@@ -10,6 +10,27 @@ require "securerandom"
 module V2
   # Candidate read adapter; central registry keeps it inactive until private byte proxy and fleet proof exist.
   class InboxAttachmentsController < V1::WriteController
+    # AIDEV-NOTE: Each metadata read must recheck the exact message through a typed authorization callable.
+    class ReadAuthorization
+      def initialize(reader:, organization_id:, mailbox_id:, thread_id:, message_id:)
+        @reader = reader
+        @organization_id = organization_id
+        @mailbox_id = mailbox_id
+        @thread_id = thread_id
+        @message_id = message_id
+      end
+
+      def call(organization_id:, mailbox_id:, thread_id:, message_id:, capability:)
+        unless capability == :read && organization_id == @organization_id && mailbox_id == @mailbox_id &&
+            thread_id == @thread_id && message_id == @message_id
+          raise Elevateo::CollaborationError.new("not_available")
+        end
+        @reader.direct_message(thread_id: @thread_id, message_id: @message_id,
+          query: { "mailbox_id" => @mailbox_id })
+        nil
+      end
+    end
+
     class NoStorage
       def put(_key, _bytes, content_type:)
         raise Elevateo::Attachments::Invalid
@@ -37,13 +58,8 @@ module V2
         cursor = Elevateo::WriteInput.uuid(cursor) if cursor
         reader = Elevateo::ThreadReads.new(connection: connection, identity: identity, session: session,
           cursors: Elevateo::Cursors.new(secret: read_config.cursor_signing_key))
-        # @type var authorize: Elevateo::Attachments::_Authorization
-        authorize = ->(organization_id:, mailbox_id:, thread_id:, message_id:, capability:) {
-          raise Elevateo::CollaborationError.new("not_available") unless capability == :read &&
-            organization_id == identity.org_id && mailbox_id == mailbox && thread_id == thread && message_id == message
-          reader.direct_message(thread_id: thread, message_id: message, query: { "mailbox_id" => mailbox })
-          nil
-        }
+        authorize = ReadAuthorization.new(reader: reader, organization_id: identity.org_id,
+          mailbox_id: mailbox, thread_id: thread, message_id: message)
         service = Elevateo::Attachments::Service.new(repository: Elevateo::Attachments::Repository.new(connection: connection),
           storage: NoStorage.new, authorize: authorize)
         JSON.generate(service.list(organization_id: identity.org_id, mailbox_id: mailbox,

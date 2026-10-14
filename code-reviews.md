@@ -1339,3 +1339,5 @@ Cassian draft.8 route registry preparation adds only three inactive mappings plu
 ATT902 Cassian optional shell seam adds an AttachmentReadPort capability and conditional ThreadPage prop only; main injection and route activation remain off. Independent source review and runtime pending, reviewed LOC/defects/KLOC unclaimed.
 
 QA815 OPS820 exact `e8e8393d` offline suite seven scripts/23 cases PASS after an earlier noexec task-harness failure is executed test evidence, not independent source review. Source/base/full restore, real ClamAV and browser runtime are outside coverage; reviewed LOC/defects/KLOC unchanged.
+
+Nadia STRICT909 ATT902 carry `1c87999e` adds the same typed index authorization/RBS/test to the inactive content candidate. Owner packet <=216 LOC, independent review and fleet runtime pending; no new reviewed LOC/defects/KLOC claim. Core strict-only b6c0ac00 remains a distinct test source.

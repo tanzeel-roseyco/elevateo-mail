@@ -515,3 +515,5 @@ The ATT902 inactive content source uses `Attachments::DownloadService` to rechec
 `FeatureGateways.attachmentPort` is optional and App passes it to ThreadPage only when injected. Main omits it until the private content route and scanner/authority/HTTP/browser gates pass.
 
 OPS820 offline fleet Python runner/receipts are `ops/tests/qa815/run-ops820-python.sh` and `docs/completion/qa815-evidence/ops820-python-e8e8393d1076*.txt`. The passing rerun covers seven scripts/23 cases with cleanup only; no application restore or real ClamAV. A separate real-auth browser reporter path correction is pending.
+
+The ATT902 feature controller now uses typed ReadAuthorization for metadata index checks while retaining the separate private content path; source report `docs/completion/nadia-strict909-att902-carry.md`. Exact feature Steep/HTTP proof remains pending.
