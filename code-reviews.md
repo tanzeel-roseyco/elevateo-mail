@@ -707,3 +707,6 @@ Coverage: new `featureRegistry.ts` (69 LOC), `features/index.tsx` (54), `Feature
 SEND-810 Nadia candidate: bounded independent functional and design review requested from root; none performed yet, so reviewed LOC, defects and density are unreported. Author static inspection only; Docker and integrated runtime NOT_RUN. See docs/completion/nadia.md.
 
 SEND-809 self review: migration and SQL ~230 source LOC, zero confirmed defects after local corrections (0 confirmed/KLOC). Independent bounded functional and design reviews NOT_RUN; request to root. See docs/completion/rowan.md.
+## APK-813 Android scaffold — pending review
+
+Candidate source: `apps/android/`, `ops/build/android/`; bounded adversarial and dedicated design reviews are NOT_PERFORMED. Reviewed LOC, confirmed defects and defects/KLOC are unreported pending independent assignments. Astrid self inspection does not count as independent review. See `docs/completion/astrid.md`.
