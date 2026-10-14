@@ -1,6 +1,6 @@
 # Version 1 additive send contract
 
-`openapi.json` is canonical. R24 adds accepted `1.0.0-send.1` Send schemas and four routes under root-authorized isolated implementation; BE02 remains OPEN and integration/release gated. Existing C/D paths, schemas, parameters, responses and `fixtures.json` are preserved. `be03-preservation.json` seals their structural values against baseline03ae770; `send-fixtures.json` contains synthetic examples only. `tests/send_contract_test.rb` is a Docker-only structural/fixture regression suite, not API or database acceptance. Generator/client conformance and actual runtime are pending.
+`openapi.json` is canonical. R24 adds accepted `1.0.0-send.1` Send schemas and four routes under root-authorized isolated implementation; BE02 remains OPEN and integration/release gated. Existing C/D paths, schemas, parameters, responses and `fixtures.json` are preserved. `be03-preservation.json` seals their structural values against baseline03ae770; `send-fixtures.json` contains synthetic examples only. `tests/send_contract_test.rb` is a Docker-only structural/fixture regression suite, not API or database acceptance. Mira sealed deterministic fleet generation/check/strict-client evidence on paired canonical source. Exact125f939 passed S1/S2 real PostgreSQL/Auth HTTP; cancellation/dispatch/recovery provider lifecycle remains separate and incomplete. See [sealed delivery evidence](../../docs/completion/be03-r25-delivery-report.md).
 
 <!-- AIDEV-NOTE: Add Send schemas without widening CollaborationError or changing frozen C/D semantics. -->
 

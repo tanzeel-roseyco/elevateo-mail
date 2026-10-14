@@ -61,3 +61,5 @@ R25 runner regressions exact37861fc: four cases PASS exit0 in pinned fleet Docke
 R25 checkpoint: grants repair resolved actual migration/second-version replay on7e253492; firstapprovalDB14cases133assertions1FAIL Unicode/control vector, laterSQL/HTTPNOT_REACHED. Exactcleanup/sourceunchangedPASS. Earlier draft_bridge attribution corrected to grants.sql from orderedlog. See docs/completion/be03-r25-delivery-report.md; no acceptance claim.
 
 Settled125f939 S1/S2 SQL+HTTP receipt PASS:47cases569assertions across8SQLsuites +42genuineHTTPassertions, all exits0; cleanup/all7absence/source3914unchanged/leaseFREE. RecoveryUI successor8d2ca1b sourceGO but lintfinding pending; no acceptance beyond pinned evidence. Report docs/completion/be03-r25-delivery-report.md.
+
+Cassian manifest reconciliation: contract-lock now seals actual generated client bytes and pinned fleet generation/125f939S1S2DB+HTTP evidence; README reflects proven scope. Canonical openapi/fixtures/C-D structures unchanged; no regeneration, added routes or capabilityactivation. Recovery successor3a709691 checks stillMira-owned/pending; BE02OPEN/releasegated.
