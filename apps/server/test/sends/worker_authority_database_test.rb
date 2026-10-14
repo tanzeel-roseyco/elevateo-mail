@@ -33,6 +33,9 @@ class SendWorkerAuthorityDatabaseTest < SendDatabaseTestCase
     assert_equal send, @worker.exec_params(due, [@epoch, "{}"]).getvalue(0, 0)
     assert_nil @worker.exec_params(due, [@epoch, "{#{send}}"]).getvalue(0, 0)
     assert_raises(PG::InvalidParameterValue) { @worker.exec_params(due, [@epoch, nil]) }
+    assert_raises(PG::InvalidParameterValue) { @worker.exec_params(due, [@epoch, "{NULL}"]) }
+    bounded = (Array.new(31) { SecureRandom.uuid } + [send]).join(",")
+    assert_nil @worker.exec_params(due, [@epoch, "{#{bounded}}"]).getvalue(0, 0)
     assert_raises(PG::InvalidParameterValue) do
       @worker.exec_params(due, [@epoch, "{#{([send] * 33).join(',')}}"])
     end
