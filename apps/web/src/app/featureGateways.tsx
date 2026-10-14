@@ -3,8 +3,8 @@
 // their own honest "unavailable" state when it is absent. Lyra's administration pages bind
 // Cassian's V2 gateway directly and need nothing here.
 //
-// AIDEV-NOTE: Absence is the production default until Cassian publishes an OutreachGateway adapter
-// over V2 (see docs/completion/fable.md "Gateway reconciliation"). Never fabricate a capability here.
+// AIDEV-NOTE: The production entry injects implemented V2 ports; isolated hosts may omit them.
+// An omitted capability must stay unavailable rather than switch to fixture data.
 import { createContext, useContext, type ReactNode } from 'react'
 import type { OutreachGateway } from '@/features/outreach/contract'
 import type { DirectMessageRead } from '@/features/thread/ThreadPage'
@@ -33,7 +33,7 @@ export function FeatureGatewaysProvider({ value, children }: { value: FeatureGat
   return <FeatureGatewaysContext.Provider value={value}>{children}</FeatureGatewaysContext.Provider>
 }
 
-/** No provider (isolated route test) reads as "nothing connected", the same as production today. */
+/** No provider (isolated route test) reads as "nothing connected". */
 export function useFeatureGateways(): FeatureGateways {
   return useContext(FeatureGatewaysContext)
 }

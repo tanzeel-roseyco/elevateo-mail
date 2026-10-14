@@ -443,3 +443,5 @@ ADV151 exact Orion1aebd99b suite manifest design review imported: 53LOC/0 defect
 ADV152 exact Corin487ca33d anonymous keyword repair reviewed by Mira:102 unique LOC/0 defects, source-only, call boundary semantics retained. RBS/tests/ingress and full runtime excluded; Soren feature7cae15a7 targeted fake inbound lint PASS is separate evidence, full activated candidate Steep/lint pending.
 
 Soren exact feature7cae15a7 compiled acceptance setup: typecheck/build and 73/73 units PASS, quiet-reporter.js exists and Playwright --list exit0. First all-offline npm ci EAI_AGAIN failure preserved; corrected pinned public dependency install allowed list-only check. Receipts/runner imported at 56a8afd6. Browser cases/screenshots=0; actual mounted output and realAuth NOT_RUN.
+
+ADV153 Mira exact activation10b7b3b2 review imported:171 unique versioned LOC/one P3 stale featureGateways comment (5.85 defects/KLOC), zero confirmed functional/auth defects. This successor corrects the flagged no-provider statement and adjacent AIDEV note; request narrow comment rereview or root acceptance, with no behavioral test repeat implied. Candidate runtime/codegen remains pending.
