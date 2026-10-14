@@ -433,3 +433,5 @@ V2 draft.8 adds disabled assignee-options and inbound attachment read contracts.
 ATT902 internal fixed error vocabulary now includes authorized `attachment_held` 423 for the disabled V2 private content contract, with three authored/unexecuted boundary cases. Frozen V1 OpenAPI error schemas are unchanged; Nadia byte implementation and fleet checks remain pending.
 
 Exact QA815 `215080a4` eight pure Ruby suites passed 51 runs/225 assertions with cleanup, while Steep failed ten diagnostics in three files; no full backend/HTTP/worker PASS follows. Cassian gateway Float conversion repair is source-only; Nadia/Corin own the remaining strict files.
+
+Android integration adopted six previously missing exact Astrid `d93c331` classifier/test/build blobs. Soren's exact `d93c331` compile-only Docker run passed 20 Python methods, seven Rust units, Gradle packaging and policy on a retained unsigned fixture APK; current integrated-SHA build and installed runtime remain NOT_RUN.

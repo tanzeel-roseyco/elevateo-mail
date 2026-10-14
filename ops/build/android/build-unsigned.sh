@@ -17,14 +17,19 @@ printf "%s\n" "COMPILE_ONLY_ORIGIN=$ELEVATEO_WEB_ORIGIN"
 [[ -f "$native_dir/tauri.fixture.conf.json" ]] || { echo 'Orion fixture config required' >&2; exit 2; }
 [[ -f "$android_dir/tauri.android.conf.json" ]] || exit 2
 [[ "$APK813_BUILD_ROOT" != "$project_root"* ]] || { echo 'Output must be outside source' >&2; exit 2; }
+[[ "$(id -u)" -ne 0 ]] || { echo 'Run APK build as an unprivileged user' >&2; exit 2; }
+export CARGO_HOME="$APK813_BUILD_ROOT/cargo-home"
+export CARGO_TARGET_DIR="$APK813_BUILD_ROOT/cargo-target"
+export HOME="$APK813_BUILD_ROOT/home"
+mkdir -p "$CARGO_HOME" "$CARGO_TARGET_DIR" "$HOME"
 [[ "$(rustc --version)" == 'rustc 1.90.0 '* ]] || { echo 'Rust 1.90.0 required' >&2; exit 2; }
 [[ "$(cargo tauri --version)" == 'tauri-cli 2.12.2' ]] || { echo 'Tauri CLI 2.12.2 required' >&2; exit 2; }
 [[ "$(javac -version 2>&1)" == 'javac 17.'* ]] || { echo 'JDK 17 required' >&2; exit 2; }
-[[ -d "$ANDROID_HOME/platforms/android-36" ]] || { echo 'Android API 36 required' >&2; exit 2; }
+[[ -d "$ANDROID_HOME/platforms/android-37.0" ]] || { echo 'Android API 37.0 required' >&2; exit 2; }
+[[ -d "$ANDROID_HOME/platforms/android-36" ]] || { echo 'Android API 36 required for Tauri library' >&2; exit 2; }
 [[ -d "$ANDROID_HOME/build-tools/36.0.0" ]] || { echo 'Build Tools 36.0.0 required' >&2; exit 2; }
 [[ "$(basename "$NDK_HOME")" == '28.2.13676358' ]] || { echo 'NDK 28.2.13676358 required' >&2; exit 2; }
 rustup target list --installed | grep -Fx 'aarch64-linux-android' >/dev/null || { echo 'Android Rust target required' >&2; exit 2; }
-mkdir -p "$APK813_BUILD_ROOT"
 python3 "$project_root/apps/native/ci/verify_boundary.py"
 cd "$android_dir"
 python3 -m unittest discover -s . -p "test_*.py"
@@ -39,14 +44,13 @@ cargo tauri android build --apk --target aarch64 --config "$android_dir/tauri.an
 [[ "$(sha256sum Cargo.lock | cut -d " " -f 1)" == "$cargo_lock_before" ]] || { echo "Cargo.lock changed during build" >&2; exit 2; }
 mapfile -d '' apk_files < <(find "$native_dir/gen/android/app/build/outputs/apk" -type f -name '*unsigned.apk' -print0)
 [[ "${#apk_files[@]}" -eq 1 ]] || { echo "Expected exactly one unsigned APK, found ${#apk_files[@]}" >&2; exit 2; }
-manifest_permissions="$("$ANDROID_HOME/build-tools/36.0.0/aapt" dump permissions "${apk_files[0]}" | sed -n "s/.*uses-permission: name='\([^']*\)'.*/\1/p" | sort -u)"
-[[ "$manifest_permissions" == "android.permission.INTERNET" ]] || { echo "Unexpected APK permissions: $manifest_permissions" >&2; exit 2; }
+merged_manifest="$native_dir/gen/android/app/build/intermediates/merged_manifest/universalRelease/processUniversalReleaseMainManifest/AndroidManifest.xml"
+[[ -f "$merged_manifest" ]] || { echo 'Generated merged manifest missing' >&2; exit 2; }
+"$ANDROID_HOME/build-tools/36.0.0/aapt" dump permissions "${apk_files[0]}" \
+  | sed -n "s/.*uses-permission: name='\([^']*\)'.*/\1/p" \
+  | python3 "$android_dir/verify_permissions.py" "$merged_manifest"
 "$ANDROID_HOME/build-tools/36.0.0/aapt" dump badging "${apk_files[0]}" | grep -F "package: name='com.elevateo.mail.fixture'" >/dev/null || { echo "Unexpected Android package identifier" >&2; exit 2; }
-if "$ANDROID_HOME/build-tools/36.0.0/aapt" dump xmltree "${apk_files[0]}" AndroidManifest.xml | grep -F "android.intent.action.VIEW" >/dev/null; then
-  echo "Unreviewed Android VIEW callback filter" >&2; exit 2
-fi
-if "$ANDROID_HOME/build-tools/36.0.0/apksigner" verify "${apk_files[0]}" >/dev/null 2>&1; then
-  echo 'APK unexpectedly signed' >&2; exit 2
-fi
+python3 "$android_dir/verify_manifest_tree.py" "$ANDROID_HOME/build-tools/36.0.0/aapt" "${apk_files[0]}"
+python3 "$android_dir/verify_unsigned.py" "$ANDROID_HOME/build-tools/36.0.0/apksigner" "${apk_files[0]}"
 cp -- "${apk_files[0]}" "$APK813_BUILD_ROOT/elevateo-android-aarch64-compile-only-unsigned.apk"
 sha256sum "$APK813_BUILD_ROOT/elevateo-android-aarch64-compile-only-unsigned.apk"
