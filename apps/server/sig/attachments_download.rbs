@@ -1,0 +1,23 @@
+module Elevateo
+  module Attachments
+    type download_fields = Hash[String, String | Integer]
+    type download_snapshot = { fields: download_fields, binding: download_fields, byte_size: Integer }
+
+    interface _DownloadSnapshot
+      def call: () -> download_snapshot
+    end
+    interface _DownloadGateway
+      def download: (fields: download_fields, timeout: Integer) -> String
+    end
+
+    class DownloadService
+      class Unavailable < StandardError
+      end
+      @snapshot: _DownloadSnapshot
+      @gateway: _DownloadGateway
+      @clock: ^() -> Integer
+      def initialize: (snapshot: _DownloadSnapshot, gateway: _DownloadGateway, ?clock: ^() -> Integer) -> void
+      def fetch: () -> String
+    end
+  end
+end

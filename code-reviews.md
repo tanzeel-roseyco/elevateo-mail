@@ -713,3 +713,7 @@ Source repair is authored against Soren's `651b63a9fdb2` Steep receipt; no indep
 ## ATT898 focused attachment typing and import (2026-10-14)
 
 Soren 211df receipt exposed one repository type error and two standalone service test load errors; see `docs/completion/nadia-att898-focused-repair.md`. Nadia authored a source repair and proposed a 198 unique LOC independent review packet, each read <=180. No independent review or new fleet run has occurred on this candidate; defect count and density remain unassessed rather than 0/KLOC.
+
+## ATT902 inbound private content candidate (2026-10-14)
+
+Source authored and proposed to root for an independent <=278 unique LOC review packet, each read <=180; see `docs/completion/nadia-att902-inbound-content.md`. No independent review or fleet execution on this candidate; defect count and density are unassessed, not zero. Existing gateway source review and tests do not establish this controller's real-auth behavior.

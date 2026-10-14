@@ -22,6 +22,8 @@ ATT886 makes attachment scope keywords explicit for strict Steep, validates stor
 
 ATT898 narrows integer repository binds to text for the declared ActiveRecord String attribute and loads the attachment test's repository and Minitest mock dependencies explicitly. Cassian's current controller source already contains the separate nullable path and authorization annotation repair; coherent fleet Steep/unit confirmation remains pending.
 
+ATT902 authors an inbound attachment content action with two current authenticated read snapshots around the existing private gateway client, a bounded byte release service and denial regressions. Cassian still owns route/DTO and UI injection; source review and Soren fleet proof are required before activation. See `docs/completion/nadia-att902-inbound-content.md`.
+
 ADV115 response adds fake HTTP regressions for nil private-bucket body and rejected object status before body buffering; Soren fleet execution is pending. See `docs/completion/nadia-adv115-storage-regressions.md`.
 
 

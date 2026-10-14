@@ -1,0 +1,13 @@
+module V2
+  class InboxAttachmentsController < V1::WriteController
+    class NoStorage
+      def put: (String, String, content_type: String) -> nil
+      def get: (String) -> String
+    end
+    def index: () -> void
+    def content: () -> void
+    private
+    def download_snapshot: (String, String, String, String, String?, String?, String, Integer) -> Elevateo::Attachments::download_snapshot
+    def path_uuid: (Symbol) -> String
+  end
+end
