@@ -1,0 +1,96 @@
+[
+    {
+        "Id": "sha256:[opaque value redacted]",
+        "RepoTags": [
+            "moby/buildkit:buildx-stable-1",
+            "moby/buildkit@sha256:[opaque value redacted]"
+        ],
+        "RepoDigests": [
+            "moby/buildkit@sha256:[opaque value redacted]"
+        ],
+        "Comment": "buildkit.dockerfile.v0",
+        "Created": "2026-09-30T15:14:08.420413207Z",
+        "Config": {
+            "Env": [
+                "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "BUILDKIT_SETUP_CGROUPV2_ROOT=1"
+            ],
+            "Entrypoint": [
+                "/usr/bin/buildkitd-entrypoint"
+            ],
+            "Volumes": {
+                "/var/lib/buildkit": {}
+            },
+            "WorkingDir": "/"
+        },
+        "Architecture": "amd64",
+        "Os": "linux",
+        "Size": 112494106,
+        "RootFS": {
+            "Type": "layers",
+            "Layers": [
+                "sha256:[opaque value redacted]",
+                "sha256:[opaque value redacted]",
+                "sha256:[opaque value redacted]",
+                "sha256:[opaque value redacted]",
+                "sha256:[opaque value redacted]",
+                "sha256:[opaque value redacted]",
+                "sha256:[opaque value redacted]"
+            ]
+        },
+        "Metadata": {
+            "LastTagTime": "2026-10-14T16:31:05.185506797Z"
+        },
+        "Descriptor": {
+            "mediaType": "application/vnd.oci.image.index.v1+json",
+            "digest": "sha256:[opaque value redacted]",
+            "size": 5296
+        },
+        "Identity": {
+            "Signature": [
+                {
+                    "Name": "Docker GitHub Builder (moby/buildkit@v0.33.1)",
+                    "Timestamps": [
+                        {
+                            "Type": "Tlog",
+                            "URI": "https://rekor.sigstore.dev",
+                            "Timestamp": "2026-09-30T17:16:28+02:00"
+                        },
+                        {
+                            "Type": "TimestampAuthority",
+                            "URI": "https://timestamp.sigstore.dev/api/v1/timestamp",
+                            "Timestamp": "2026-09-30T15:16:28Z"
+                        }
+                    ],
+                    "Signer": {
+                        "CertificateIssuer": "CN=sigstore-intermediate,O=sigstore.dev",
+                        "SubjectAlternativeName": "https://github.com/docker/github-builder/.github/workflows/bake.yml@[opaque value redacted]",
+                        "Issuer": "https://token.actions.githubusercontent.com",
+                        "BuildSignerURI": "https://github.com/docker/github-builder/.github/workflows/bake.yml@[opaque value redacted]",
+                        "BuildSignerDigest": "[opaque value redacted]",
+                        "RunnerEnvironment": "github-hosted",
+                        "SourceRepositoryURI": "https://github.com/moby/buildkit",
+                        "SourceRepositoryDigest": "[opaque value redacted]",
+                        "SourceRepositoryRef": "refs/tags/v0.33.1",
+                        "SourceRepositoryIdentifier": "92969352",
+                        "SourceRepositoryOwnerURI": "https://github.com/moby",
+                        "SourceRepositoryOwnerIdentifier": "27259197",
+                        "BuildConfigURI": "https://github.com/moby/buildkit/.github/workflows/buildkit.yml@refs/tags/v0.33.1",
+                        "BuildConfigDigest": "[opaque value redacted]",
+                        "BuildTrigger": "push",
+                        "RunInvocationURI": "https://github.[opaque value redacted]",
+                        "[opaque value redacted]": "public"
+                    },
+                    "SignatureType": "bundle-v0.3"
+                }
+            ],
+            "Pull": [
+                {
+                    "Repository": "docker.io/moby/buildkit"
+                }
+            ]
+        }
+    }
+]
+
+exit=0 seconds=0.04

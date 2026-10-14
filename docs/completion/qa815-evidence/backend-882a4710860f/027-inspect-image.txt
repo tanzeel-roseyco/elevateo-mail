@@ -1,0 +1,75 @@
+[
+    {
+        "Id": "sha256:[opaque value redacted]",
+        "RepoTags": [
+            "[opaque value redacted]:server"
+        ],
+        "RepoDigests": [
+            "[opaque value redacted]@sha256:[opaque value redacted]"
+        ],
+        "Comment": "buildkit.dockerfile.v0",
+        "Created": "2026-10-14T16:36:32.808603303Z",
+        "Config": {
+            "User": "10001",
+            "Env": [
+                "PATH=/usr/local/bundle/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "LANG=C.UTF-8",
+                "RUBY_VERSION=3.4.11",
+                "RUBY_DOWNLOAD_URL=https://cache.ruby-lang.org/pub/ruby/3.4/ruby-3.4.11.tar.xz",
+                "[opaque value redacted]",
+                "GEM_HOME=/usr/local/bundle",
+                "BUNDLE_SILENCE_ROOT_WARNING=1",
+                "[opaque value redacted]",
+                "BUNDLE_DEPLOYMENT=0",
+                "BUNDLE_PATH=/usr/local/bundle"
+            ],
+            "Cmd": [
+                "bundle",
+                "exec",
+                "rails",
+                "server",
+                "-b",
+                "0.0.0.0"
+            ],
+            "WorkingDir": "/app",
+            "Labels": {
+                "elevateo.be02.project": "[opaque value redacted]"
+            },
+            "ArgsEscaped": true
+        },
+        "Architecture": "amd64",
+        "Os": "linux",
+        "Size": 233119217,
+        "RootFS": {
+            "Type": "layers",
+            "Layers": [
+                "sha256:[opaque value redacted]",
+                "sha256:[opaque value redacted]",
+                "sha256:[opaque value redacted]",
+                "sha256:[opaque value redacted]",
+                "sha256:[opaque value redacted]",
+                "sha256:[opaque value redacted]",
+                "sha256:[opaque value redacted]",
+                "sha256:[opaque value redacted]",
+                "sha256:[opaque value redacted]",
+                "sha256:[opaque value redacted]",
+                "sha256:[opaque value redacted]"
+            ]
+        },
+        "Metadata": {
+            "LastTagTime": "2026-10-14T16:36:42.674704399Z"
+        },
+        "Descriptor": {
+            "mediaType": "application/vnd.oci.image.manifest.v1+json",
+            "digest": "sha256:[opaque value redacted]",
+            "size": 2386,
+            "annotations": {
+                "io.containerd.image.name": "docker.[opaque value redacted]:server",
+                "org.opencontainers.image.created": "2026-10-14T16:36:40Z",
+                "org.opencontainers.image.ref.name": "server"
+            }
+        }
+    }
+]
+
+exit=0 seconds=0.02

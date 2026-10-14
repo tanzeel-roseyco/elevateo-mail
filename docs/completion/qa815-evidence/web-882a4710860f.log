@@ -1,0 +1,309 @@
+source=882a4710860f8a42becadb41a6acc68d1b86a451
+started=2026-10-14T16:28:55Z
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            BuildKit is currently disabled; enable it by removing the DOCKER_BUILDKIT=0
+            environment-variable.
+
+Sending build context to Docker daemon  86.23MB
+Step 1/9 : FROM node:24.21.0-bookworm-slim@sha256:d6aa754f16b3197301076f047b5def2f02ea1dbbc2ca920407d46d7ec7f87b20
+ ---> d6aa754f16b3
+Step 2/9 : WORKDIR /workspace
+ ---> Running in fd5ea27823a2
+ ---> Removed intermediate container fd5ea27823a2
+ ---> d2b9fc83d9e0
+Step 3/9 : COPY contracts/v1 ./contracts/v1
+ ---> edd316fb9493
+Step 4/9 : COPY contracts/v2 ./contracts/v2
+ ---> b2dc5ab14ece
+Step 5/9 : COPY apps/web ./apps/web
+ ---> 704f5cff5861
+Step 6/9 : WORKDIR /workspace/apps/web
+ ---> Running in 303f94e39ff8
+ ---> Removed intermediate container 303f94e39ff8
+ ---> 5ded2485137a
+Step 7/9 : RUN npm ci
+ ---> Running in d5aa7b4248fa
+[91mnpm warn deprecated whatwg-encoding@3.1.1: Use @exodus/bytes instead for a more spec-conformant and faster implementation
+[0m
+added 324 packages, and audited 325 packages in 4s
+
+67 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+[91mnpm warn install-scripts 1 package has install scripts not yet covered by allowScripts:
+npm warn install-scripts   esbuild@0.28.2 (postinstall: node install.js)
+npm warn install-scripts
+npm warn install-scripts Run `npm install-scripts ls` to review, or `npm install-scripts approve <pkg>` to allow.
+[0m[91mnpm notice
+npm notice New major version of npm available! 11.19.0 -> 12.2.0
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0
+npm notice To update run: npm install -g npm@12.2.0
+npm notice
+[0m ---> Removed intermediate container d5aa7b4248fa
+ ---> e9a3084e0de3
+Step 8/9 : CMD ["bash", "-ceu", "npm run check:api && npm run lint && npm run typecheck && npm run test -- --coverage && npm run build && ! grep -rl 'dev-fixtures\\|Development fixtures\\|fixture_token_a' dist"]
+ ---> Running in 094d2676318c
+ ---> Removed intermediate container 094d2676318c
+ ---> 732f9915adc4
+Step 9/9 : LABEL qa815.owner=soren
+ ---> Running in 6b3c6b04285c
+ ---> Removed intermediate container 6b3c6b04285c
+ ---> df4257ff8e5e
+Successfully built df4257ff8e5e
+Successfully tagged qa815-web-882a4710860f:latest
+
+> @elevateo/web@0.1.0-read.1 check:api
+> openapi-typescript ../../contracts/v1/openapi.json --output src/data/generated/api.d.ts --check
+
+✨ openapi-typescript 7.13.0
+
+> @elevateo/web@0.1.0-read.1 generate:api:v2
+> openapi-typescript ../../contracts/v2/openapi.json --output src/data/generated/api-v2.d.ts
+
+✨ openapi-typescript 7.13.0
+🚀 ../../contracts/v2/openapi.json → src/data/generated/api-v2.d.ts [77.7ms]
+
+> @elevateo/web@0.1.0-read.1 check:api:v2
+> openapi-typescript ../../contracts/v2/openapi.json --output src/data/generated/api-v2.d.ts --check
+
+✨ openapi-typescript 7.13.0
+5c943ec1c13a10fbeec5aed8e7cddcb7bee459352f6a56afd8142e6650307e34  src/data/generated/api-v2.d.ts
+
+> @elevateo/web@0.1.0-read.1 lint
+> eslint . --max-warnings 0
+
+
+> @elevateo/web@0.1.0-read.1 typecheck
+> tsc -p tsconfig.json --noEmit
+
+
+> @elevateo/web@0.1.0-read.1 test
+> vitest run --coverage
+
+
+[1m[30m[46m RUN [49m[39m[22m [36mv4.1.11 [39m[90m/workspace/apps/web[39m
+      [2mCoverage enabled with [22m[33mv8[39m
+
+ [32m✓[39m src/features/drafts/DraftEditorPage.test.tsx [2m([22m[2m33 tests[22m[2m)[22m[33m 1652[2mms[22m[39m
+ [32m✓[39m src/features/thread/ThreadPage.test.tsx [2m([22m[2m36 tests[22m[2m)[22m[33m 945[2mms[22m[39m
+ [32m✓[39m src/app/Shell.test.tsx [2m([22m[2m27 tests[22m[2m)[22m[33m 1440[2mms[22m[39m
+ [32m✓[39m src/domain/draftOperation.test.ts [2m([22m[2m39 tests[22m[2m)[22m[32m 11[2mms[22m[39m
+ [32m✓[39m src/features/inbox/InboxPage.test.tsx [2m([22m[2m19 tests[22m[2m)[22m[33m 703[2mms[22m[39m
+ [32m✓[39m src/app/session-lifecycle.test.tsx [2m([22m[2m25 tests[22m[2m)[22m[32m 209[2mms[22m[39m
+ [32m✓[39m src/data/fixtures/collaborationState.test.ts [2m([22m[2m19 tests[22m[2m)[22m[32m 26[2mms[22m[39m
+ [32m✓[39m src/data/contract-collaboration.test.ts [2m([22m[2m59 tests[22m[2m)[22m[32m 32[2mms[22m[39m
+ [32m✓[39m src/app/session.test.tsx [2m([22m[2m16 tests[22m[2m)[22m[32m 276[2mms[22m[39m
+ [32m✓[39m src/data/cd-conformance.test.ts [2m([22m[2m44 tests[22m[2m)[22m[32m 53[2mms[22m[39m
+ [32m✓[39m src/features/outreach/OutreachPages.test.tsx [2m([22m[2m20 tests[22m[2m)[22m[33m 437[2mms[22m[39m
+ [32m✓[39m src/features/thread/CollaborationPanels.test.tsx [2m([22m[2m10 tests[22m[2m)[22m[33m 737[2mms[22m[39m
+ [32m✓[39m src/data/contract.test.ts [2m([22m[2m40 tests[22m[2m)[22m[32m 19[2mms[22m[39m
+ [32m✓[39m src/data/http/transport.test.ts [2m([22m[2m27 tests[22m[2m)[22m[32m 37[2mms[22m[39m
+ [32m✓[39m src/features/send/SendReviewPage.test.tsx [2m([22m[2m12 tests[22m[2m)[22m[33m 573[2mms[22m[39m
+ [32m✓[39m src/data/lifecycle-conformance.test.ts [2m([22m[2m24 tests[22m[2m)[22m[32m 29[2mms[22m[39m
+ [32m✓[39m src/app/membershipRecovery.test.tsx [2m([22m[2m2 tests[22m[2m)[22m[33m 331[2mms[22m[39m
+ [32m✓[39m src/features/thread/MessageAttachments.test.tsx [2m([22m[2m8 tests[22m[2m)[22m[32m 242[2mms[22m[39m
+ [32m✓[39m src/data/conformance.test.ts [2m([22m[2m40 tests[22m[2m)[22m[32m 31[2mms[22m[39m
+ [32m✓[39m src/features/auth/SignInPage.test.tsx [2m([22m[2m8 tests[22m[2m)[22m[32m 256[2mms[22m[39m
+ [32m✓[39m src/features/members/MembersPage.test.tsx [2m([22m[2m8 tests[22m[2m)[22m[33m 348[2mms[22m[39m
+ [32m✓[39m src/features/members/AdministrationPage.test.tsx [2m([22m[2m10 tests[22m[2m)[22m[32m 217[2mms[22m[39m
+ [32m✓[39m src/features/members/PersonalSettingsPage.test.tsx [2m([22m[2m7 tests[22m[2m)[22m[32m 128[2mms[22m[39m
+ [32m✓[39m src/data/signal-propagation.test.ts [2m([22m[2m100 tests[22m[2m)[22m[32m 60[2mms[22m[39m
+ [32m✓[39m src/data/fixtures/fixtureGateway.test.ts [2m([22m[2m31 tests[22m[2m)[22m[32m 19[2mms[22m[39m
+ [32m✓[39m src/app/outreachSessionPolicy.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 9[2mms[22m[39m
+ [32m✓[39m src/data/v2OutreachGateway.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 21[2mms[22m[39m
+ [32m✓[39m src/features/auth/AuthCompletePage.test.tsx [2m([22m[2m6 tests[22m[2m)[22m[32m 217[2mms[22m[39m
+ [32m✓[39m src/data/send-conformance.test.ts [2m([22m[2m9 tests[22m[2m)[22m[32m 28[2mms[22m[39m
+ [32m✓[39m src/app/App.test.tsx [2m([22m[2m3 tests[22m[2m)[22m[32m 262[2mms[22m[39m
+ [32m✓[39m src/lib/readPage.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 6[2mms[22m[39m
+ [32m✓[39m src/data/contract-unicode.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 17[2mms[22m[39m
+ [32m✓[39m src/data/http/transport-cancellation.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 18[2mms[22m[39m
+ [32m✓[39m src/features/outreach/SequencePage.test.tsx [2m([22m[2m4 tests[22m[2m)[22m[32m 143[2mms[22m[39m
+ [32m✓[39m src/data/http/transport-boundaries.test.ts [2m([22m[2m14 tests[22m[2m)[22m[32m 21[2mms[22m[39m
+ [32m✓[39m src/app/collaborationNav.test.tsx [2m([22m[2m4 tests[22m[2m)[22m[33m 329[2mms[22m[39m
+ [32m✓[39m src/features/search/SearchPage.test.tsx [2m([22m[2m5 tests[22m[2m)[22m[32m 194[2mms[22m[39m
+ [31m❯[39m src/app/features/index.test.tsx [2m([22m[2m5 tests[22m[2m | [22m[31m2 failed[39m[2m)[22m[33m 1116[2mms[22m[39m
+[31m     [31m×[31m registers Celeste's eleven Outreach routes and Lyra's three personal routes with top-level nav only[39m[32m 7[2mms[22m[39m
+     [32m✓[39m passes the session context and Outreach gateway to Celeste's campaigns page (happy path)[32m 77[2mms[22m[39m
+     [32m✓[39m shows Celeste's own unavailable state when no Outreach gateway is connected[32m 13[2mms[22m[39m
+[31m     [31m×[31m renders Lyra's personal settings from the live session without any gateway[39m[33m 1006[2mms[22m[39m
+     [32m✓[39m routes a campaign-scoped account read through the real V2 adapter, which fails explicitly without any dispatch[32m 12[2mms[22m[39m
+ [32m✓[39m src/app/Sidebar.test.tsx [2m([22m[2m3 tests[22m[2m)[22m[32m 114[2mms[22m[39m
+ [32m✓[39m src/features/drafts/DraftsPage.test.tsx [2m([22m[2m2 tests[22m[2m)[22m[32m 168[2mms[22m[39m
+ [32m✓[39m src/data/v2PreferencesGateway.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 24[2mms[22m[39m
+ [32m✓[39m src/features/send/SendStatusPage.test.tsx [2m([22m[2m5 tests[22m[2m)[22m[32m 147[2mms[22m[39m
+ [32m✓[39m src/app/approvalRecovery.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 12[2mms[22m[39m
+ [32m✓[39m src/features/send/SavedDraftSendFlow.test.tsx [2m([22m[2m1 test[22m[2m)[22m[33m 353[2mms[22m[39m
+     [33m[2m✓[22m[39m offers review only after saving current edits and approves exactly the reviewed version [33m 352[2mms[22m[39m
+ [32m✓[39m src/data/contract-send.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 12[2mms[22m[39m
+ [32m✓[39m src/features/members/adminModel.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 8[2mms[22m[39m
+ [32m✓[39m src/features/outreach/contract.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 10[2mms[22m[39m
+ [32m✓[39m src/app/sendIntent.test.tsx [2m([22m[2m2 tests[22m[2m)[22m[32m 131[2mms[22m[39m
+ [32m✓[39m src/dev/demoGateway.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 20[2mms[22m[39m
+ [32m✓[39m src/data/send-signal.test.ts [2m([22m[2m12 tests[22m[2m)[22m[32m 14[2mms[22m[39m
+ [32m✓[39m src/app/SearchBox.test.tsx [2m([22m[2m3 tests[22m[2m)[22m[32m 120[2mms[22m[39m
+ [32m✓[39m src/app/featureRegistry.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 9[2mms[22m[39m
+ [32m✓[39m src/ui/ConnectivityBanner.test.tsx [2m([22m[2m3 tests[22m[2m)[22m[32m 82[2mms[22m[39m
+ [32m✓[39m src/data/v2DirectMessageGateway.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 15[2mms[22m[39m
+ [32m✓[39m src/data/v2Contract.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 12[2mms[22m[39m
+ [32m✓[39m src/features/outreach/featureModule.test.tsx [2m([22m[2m1 test[22m[2m)[22m[32m 5[2mms[22m[39m
+ [32m✓[39m src/app/entry.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 4[2mms[22m[39m
+ [32m✓[39m src/app/scope.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 4[2mms[22m[39m
+
+[31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 2 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m src/app/features/index.test.tsx[2m > [22mfeature route wiring[2m > [22mregisters Celeste's eleven Outreach routes and Lyra's three personal routes with top-level nav only
+[31m[1mAssertionError[22m: expected [ '/outreach/campaigns', …(11) ] to have a length of 11 but got 12[39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 11[39m
+[31m+ 12[39m
+
+[36m [2m❯[22m src/app/features/index.test.tsx:[2m45:88[22m[39m
+    [90m 43|[39m [34mdescribe[39m([32m'feature route wiring'[39m[33m,[39m () [33m=>[39m {
+    [90m 44|[39m   it('registers Celeste\'s eleven Outreach routes and Lyra\'s three pe…
+    [90m 45|[39m     expect(featureRoutes.map((r) => r.path).filter((p) => p.startsWith…
+    [90m   |[39m                                                                                        [31m^[39m
+    [90m 46|[39m     expect(featureRegistry.navBySection.outreach.map((e) => e.label)).…
+    [90m 47|[39m     expect(featureRegistry.navBySection.personal.map((e) => e.path)).t…
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/app/features/index.test.tsx[2m > [22mfeature route wiring[2m > [22mrenders Lyra's personal settings from the live session without any gateway
+[31m[1mTestingLibraryElementError[22m: Unable to find an element with the text: /Signed in as Fixture user A/. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[31m
+  [36m<div>[31m
+    [36m<div[31m
+      [33mclass[31m=[32m"flex flex-col items-center gap-2 px-6 py-12 text-center"[31m
+    [36m>[31m
+      [36m<svg[31m
+        [33maria-hidden[31m=[32m"true"[31m
+        [33mclass[31m=[32m"size-5 text-muted"[31m
+        [33mfill[31m=[32m"none"[31m
+        [33mheight[31m=[32m"16"[31m
+        [33mstroke[31m=[32m"currentColor"[31m
+        [33mstroke-linecap[31m=[32m"round"[31m
+        [33mstroke-linejoin[31m=[32m"round"[31m
+        [33mstroke-width[31m=[32m"2"[31m
+        [33mviewBox[31m=[32m"0 0 24 24"[31m
+        [33mwidth[31m=[32m"16"[31m
+      [36m>[31m
+        [36m<path[31m
+          [33md[31m=[32m"M12 3 2.5 20h19L12 3Z"[31m
+        [36m/>[31m
+        [36m<path[31m
+          [33md[31m=[32m"M12 9.5v5"[31m
+        [36m/>[31m
+        [36m<path[31m
+          [33md[31m=[32m"M12 17.2v.1"[31m
+        [36m/>[31m
+      [36m</svg>[31m
+      [36m<h2[31m
+        [33mclass[31m=[32m"text-sm font-semibold"[31m
+      [36m>[31m
+        [0mPersonal settings could not be loaded[0m
+      [36m</h2>[31m
+      [36m<p[31m
+        [33mclass[31m=[32m"max-w-sm text-[13px] text-muted"[31m
+      [36m>[31m
+        [0mTry again after checking your connection.[0m
+      [36m</p>[31m
+      [36m<div[31m
+        [33mclass[31m=[32m"mt-2"[31m
+      [36m>[31m
+        [36m<button[31m
+          [33mclass[31m=[32m"inline-flex shrink-0 items-center justify-center rounded-lg font-medium transition disabled:cursor-not-allowed disabled:opacity-55 border border-line bg-surface text-fg hover:bg-surface-2 h-9 gap-2 px-3.5 text-sm"[31m
+          [33mtype[31m=[32m"button"[31m
+        [36m>[31m
+          [0mRetry[0m
+        [36m</button>[31m
+      [36m</div>[31m
+    [36m</div>[31m
+  [36m</div>[31m
+[36m</body>[31m
+
+Ignored nodes: comments, script, style
+[36m<body>[31m
+  [36m<div>[31m
+    [36m<div[31m
+      [33mclass[31m=[32m"flex flex-col items-center gap-2 px-6 py-12 text-center"[31m
+    [36m>[31m
+      [36m<svg[31m
+        [33maria-hidden[31m=[32m"true"[31m
+        [33mclass[31m=[32m"size-5 text-muted"[31m
+        [33mfill[31m=[32m"none"[31m
+        [33mheight[31m=[32m"16"[31m
+        [33mstroke[31m=[32m"currentColor"[31m
+        [33mstroke-linecap[31m=[32m"round"[31m
+        [33mstroke-linejoin[31m=[32m"round"[31m
+        [33mstroke-width[31m=[32m"2"[31m
+        [33mviewBox[31m=[32m"0 0 24 24"[31m
+        [33mwidth[31m=[32m"16"[31m
+      [36m>[31m
+        [36m<path[31m
+          [33md[31m=[32m"M12 3 2.5 20h19L12 3Z"[31m
+        [36m/>[31m
+        [36m<path[31m
+          [33md[31m=[32m"M12 9.5v5"[31m
+        [36m/>[31m
+        [36m<path[31m
+          [33md[31m=[32m"M12 17.2v.1"[31m
+        [36m/>[31m
+      [36m</svg>[31m
+      [36m<h2[31m
+        [33mclass[31m=[32m"text-sm font-semibold"[31m
+      [36m>[31m
+        [0mPersonal settings could not be loaded[0m
+      [36m</h2>[31m
+      [36m<p[31m
+        [33mclass[31m=[32m"max-w-sm text-[13px] text-muted"[31m
+      [36m>[31m
+        [0mTry again after checking your connection.[0m
+      [36m</p>[31m
+      [36m<div[31m
+        [33mclass[31m=[32m"mt-2"[31m
+      [36m>[31m
+        [36m<button[31m
+          [33mclass[31m=[32m"inline-flex shrink-0 items-center justify-center rounded-lg font-medium transition disabled:cursor-not-allowed disabled:opacity-55 border border-line bg-surface text-fg hover:bg-surface-2 h-9 gap-2 px-3.5 text-sm"[31m
+          [33mtype[31m=[32m"button"[31m
+        [36m>[31m
+          [0mRetry[0m
+        [36m</button>[31m
+      [36m</div>[31m
+    [36m</div>[31m
+  [36m</div>[31m
+[36m</body>[31m[39m
+[90m [2m❯[22m waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:[2m163:27[22m[39m
+[90m [2m❯[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m86:33[22m[39m
+[36m [2m❯[22m src/app/features/index.test.tsx:[2m65:25[22m[39m
+    [90m 63|[39m   it('renders Lyra\'s personal settings from the live session without …
+    [90m 64|[39m     [34mrenderRoute[39m([32m'/settings/personal'[39m[33m,[39m {})
+    [90m 65|[39m     expect(await screen.findByText(/Signed in as Fixture user A/)).toB…
+    [90m   |[39m                         [31m^[39m
+    [90m 66|[39m     [34mexpect[39m(screen[33m.[39m[34mqueryByRole[39m([32m'button'[39m))[33m.[39m[34mtoBeNull[39m()
+    [90m 67|[39m   })
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯[22m[39m
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[2m | [22m[1m[32m57 passed[39m[22m[90m (58)[39m
+[2m      Tests [22m [1m[31m2 failed[39m[22m[2m | [22m[1m[32m825 passed[39m[22m[90m (827)[39m
+[2m   Start at [22m 16:29:26
+[2m   Duration [22m 43.42s[2m (transform 976ms, setup 4.01s, import 4.69s, tests 12.46s, environment 13.80s)[22m
+
+Error response from daemon: No such container: qa815-web-882a4710860f
+Untagged: qa815-web-882a4710860f:latest
+Deleted: sha256:df4257ff8e5ef7dbb8134b6548f11d217da964845692491054f4ae7bc81db2d4
+Deleted: sha256:732f9915adc435593c2792e90bfe1165d3a36028995263baa16dc218f0cd28f5
+Deleted: sha256:e9a3084e0de3faf9349098f7e810ad5119f010cdcbad9cc2b7be4fb2012964bb
+Deleted: sha256:5ded2485137aa7629ab8b2075a6966c74754c4c12755d00bde70bfe3f82b10be
+Deleted: sha256:704f5cff5861f253197ebfa2bddb5a6ddcfee48569da2494774096a69362448d
+Deleted: sha256:b2dc5ab14eced192826d688929ea68efebb2e1202daec4725e06d8c1655e92ac
+Deleted: sha256:edd316fb9493a853a6fa121addc8d8731fdf5a2b4bb0b8dd5c4fa6def5f5ba66
+Deleted: sha256:d2b9fc83d9e07348455408849531bafb01aa43f37047479c600939c732c6c67d
+remaining_containers=0
+remaining_image=0

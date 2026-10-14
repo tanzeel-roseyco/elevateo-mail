@@ -1,0 +1,234 @@
+auth-1  | {"level":"info","msg":"Go runtime metrics collection started","time":"2026-10-14T16:35:23Z"}
+auth-1  | {"args":["init_auth_schema"],"component":"pop","level":"info","msg":"\u003e %s","time":"2026-10-14T16:35:23Z"}
+auth-1  | {"args":["alter_users"],"component":"pop","level":"info","msg":"\u003e %s","time":"2026-10-14T16:35:23Z"}
+auth-1  | {"args":["adds_confirmed_at"],"component":"pop","level":"info","msg":"\u003e %s","time":"2026-10-14T16:35:23Z"}
+auth-1  | {"args":["add_email_change_confirmed"],"component":"pop","level":"info","msg":"\u003e %s","time":"2026-10-14T16:35:23Z"}
+auth-1  | {"args":["create_identities_table"],"component":"pop","level":"info","msg":"\u003e %s","time":"2026-10-14T16:35:23Z"}
+[credential-bearing line redacted]
+auth-1  | {"args":["create_user_id_idx"],"component":"pop","level":"info","msg":"\u003e %s","time":"2026-10-14T16:35:23Z"}
+auth-1  | {"args":["update_auth_functions"],"component":"pop","level":"info","msg":"\u003e %s","time":"2026-10-14T16:35:23Z"}
+auth-1  | {"args":["update_auth_uid"],"component":"pop","level":"info","msg":"\u003e %s","time":"2026-10-14T16:35:23Z"}
+auth-1  | {"args":["update_user_idx"],"component":"pop","level":"info","msg":"\u003e %s","time":"2026-10-14T16:35:23Z"}
+auth-1  | {"args":["add_banned_until"],"component":"pop","level":"info","msg":"\u003e %s","time":"2026-10-14T16:35:23Z"}
+auth-1  | {"args":["update_auth_functions"],"component":"pop","level":"info","msg":"\u003e %s","time":"2026-10-14T16:35:23Z"}
+auth-1  | {"args":["add_user_reauthentication"],"component":"pop","level":"info","msg":"\u003e %s","time":"2026-10-14T16:35:23Z"}
+auth-1  | {"args":["add_unique_idx"],"component":"pop","level":"info","msg":"\u003e %s","time":"2026-10-14T16:35:23Z"}
+auth-1  | {"args":["add_auth_jwt_function"],"component":"pop","level":"info","msg":"\u003e %s","time":"2026-10-14T16:35:23Z"}
+auth-1  | {"args":["add_ip_address_to_audit_log"],"component":"pop","level":"info","msg":"\u003e %s","time":"2026-10-14T16:35:23Z"}
+auth-1  | {"args":["add_sessions_table"],"component":"pop","level":"info","msg":"\u003e %s","time":"2026-10-14T16:35:23Z"}
+auth-1  | {"args":["add_mfa_schema"],"component":"pop","level":"info","msg":"\u003e %s","time":"2026-10-14T16:35:23Z"}
+auth-1  | {"args":["[opaque value redacted]"],"component":"pop","level":"info","msg":"\u003e %s","time":"2026-10-14T16:35:23Z"}
+auth-1  | {"args":["add_mfa_indexes"],"component":"pop","level":"info","msg":"\u003e %s","time":"2026-10-14T16:35:23Z"}
+auth-1  | {"args":["add_sessions_user_id_index"],"component":"pop","level":"info","msg":"\u003e %s","time":"2026-10-14T16:35:23Z"}
+[credential-bearing line redacted]
+auth-1  | {"args":["add_saml"],"component":"pop","level":"info","msg":"\u003e %s","time":"2026-10-14T16:35:23Z"}
+auth-1  | {"args":["add_identities_user_id_idx"],"component":"pop","level":"info","msg":"\u003e %s","time":"2026-10-14T16:35:23Z"}
+db-1    | CREATE FUNCTION
+db-1    | DROP EVENT TRIGGER
+db-1    | CREATE EVENT TRIGGER
+db-1    | DROP EVENT TRIGGER
+db-1    | CREATE EVENT TRIGGER
+db-1    | /docker-entrypoint-initdb.d/migrate.sh: running /docker-entrypoint-initdb.[opaque value redacted]
+db-1    | ALTER ROLE
+db-1    | /docker-entrypoint-initdb.d/migrate.sh: running /docker-entrypoint-initdb.[opaque value redacted]
+db-1    | CREATE FUNCTION
+db-1    | CREATE FUNCTION
+db-1    | CREATE FUNCTION
+db-1    | psql:/docker-entrypoint-initdb.[opaque value redacted]:142: NOTICE:  extension "pg_graphql" does not exist, skipping
+db-1    | DROP EXTENSION
+auth-1  | {"args":["add_session_not_after_column"],"component":"pop","level":"info","msg":"\u003e %s","time":"2026-10-14T16:35:23Z"}
+[credential-bearing line redacted]
+auth-1  | {"args":["backfill_email_identity"],"component":"pop","level":"info","msg":"\u003e %s","time":"2026-10-14T16:35:23Z"}
+auth-1  | {"args":["backfill_email_last_sign_in_at"],"component":"pop","level":"info","msg":"\u003e %s","time":"2026-10-14T16:35:23Z"}
+auth-1  | {"args":["modify_users_email_unique_index"],"component":"pop","level":"info","msg":"\u003e %s","time":"2026-10-14T16:35:23Z"}
+auth-1  | {"args":["add_identities_email_column"],"component":"pop","level":"info","msg":"\u003e %s","time":"2026-10-14T16:35:23Z"}
+auth-1  | {"args":["remove_sso_sessions"],"component":"pop","level":"info","msg":"\u003e %s","time":"2026-10-14T16:35:23Z"}
+auth-1  | {"args":["alter_phone_type"],"component":"pop","level":"info","msg":"\u003e %s","time":"2026-10-14T16:35:23Z"}
+auth-1  | {"args":["add_deleted_at"],"component":"pop","level":"info","msg":"\u003e %s","time":"2026-10-14T16:35:23Z"}
+auth-1  | {"args":["backfill_invite_identities"],"component":"pop","level":"info","msg":"\u003e %s","time":"2026-10-14T16:35:23Z"}
+auth-1  | {"args":["add_flow_state_table"],"component":"pop","level":"info","msg":"\u003e %s","time":"2026-10-14T16:35:23Z"}
+auth-1  | {"args":["[opaque value redacted]"],"component":"pop","level":"info","msg":"\u003e %s","time":"2026-10-14T16:35:23Z"}
+auth-1  | {"args":["remove_duplicate_idx"],"component":"pop","level":"info","msg":"\u003e %s","time":"2026-10-14T16:35:23Z"}
+auth-1  | {"args":["add_cleanup_indexes"],"component":"pop","level":"info","msg":"\u003e %s","time":"2026-10-14T16:35:23Z"}
+auth-1  | {"args":["add_mfa_challenge_cleanup_index"],"component":"pop","level":"info","msg":"\u003e %s","time":"2026-10-14T16:35:23Z"}
+auth-1  | {"args":["add_flow_state_to_relay_state"],"component":"pop","level":"info","msg":"\u003e %s","time":"2026-10-14T16:35:23Z"}
+auth-1  | {"args":["add_mfa_factors_user_id_idx"],"component":"pop","level":"info","msg":"\u003e %s","time":"2026-10-14T16:35:23Z"}
+auth-1  | {"args":["add_session_refresh_columns"],"component":"pop","level":"info","msg":"\u003e %s","time":"2026-10-14T16:35:23Z"}
+auth-1  | {"args":["add_sessions_tag"],"component":"pop","level":"info","msg":"\u003e %s","time":"2026-10-14T16:35:23Z"}
+auth-1  | {"args":["add_id_pkey_identities"],"component":"pop","level":"info","msg":"\u003e %s","time":"2026-10-14T16:35:23Z"}
+auth-1  | {"args":["[opaque value redacted]"],"component":"pop","level":"info","msg":"\u003e %s","time":"2026-10-14T16:35:23Z"}
+auth-1  | {"args":["add_is_anonymous_column"],"component":"pop","level":"info","msg":"\u003e %s","time":"2026-10-14T16:35:23Z"}
+auth-1  | {"args":["add_issued_at_to_flow_state"],"component":"pop","level":"info","msg":"\u003e %s","time":"2026-10-14T16:35:23Z"}
+auth-1  | {"args":["add_saml_name_id_format"],"component":"pop","level":"info","msg":"\u003e %s","time":"2026-10-14T16:35:23Z"}
+auth-1  | {"args":["add_one_time_tokens_table"],"component":"pop","level":"info","msg":"\u003e %s","time":"2026-10-14T16:35:23Z"}
+db-1    | DO
+db-1    | /docker-entrypoint-initdb.d/migrate.sh: running /docker-entrypoint-initdb.[opaque value redacted]
+db-1    | GRANT ROLE
+db-1    | /docker-entrypoint-initdb.d/migrate.sh: running /docker-entrypoint-initdb.[opaque value redacted]
+db-1    | CREATE FUNCTION
+db-1    | DROP EXTENSION
+db-1    | DO
+db-1    | /docker-entrypoint-initdb.d/migrate.sh: running /docker-entrypoint-initdb.[opaque value redacted]
+db-1    | DO
+db-1    | DO
+db-1    | /docker-entrypoint-initdb.d/migrate.sh: running /docker-entrypoint-initdb.[opaque value redacted]
+db-1    | ALTER ROLE
+db-1    | /docker-entrypoint-initdb.d/migrate.sh: running /docker-entrypoint-initdb.[opaque value redacted]
+db-1    | REVOKE ROLE
+db-1    | /docker-entrypoint-initdb.d/migrate.sh: running /docker-entrypoint-initdb.[opaque value redacted]
+db-1    | DO
+db-1    | /docker-entrypoint-initdb.d/migrate.sh: running /docker-entrypoint-initdb.[opaque value redacted]
+db-1    | GRANT ROLE
+db-1    | /docker-entrypoint-initdb.d/migrate.sh: running /docker-entrypoint-initdb.[opaque value redacted]
+db-1    | GRANT
+db-1    | GRANT
+db-1    | GRANT
+db-1    | ALTER DEFAULT PRIVILEGES
+db-1    | ALTER DEFAULT PRIVILEGES
+db-1    | ALTER DEFAULT PRIVILEGES
+db-1    | /docker-entrypoint-initdb.d/migrate.sh: running /docker-entrypoint-initdb.[opaque value redacted]
+db-1    | GRANT ROLE
+db-1    | /docker-entrypoint-initdb.d/migrate.sh: running /docker-entrypoint-initdb.[opaque value redacted]
+db-1    | GRANT ROLE
+db-1    | /docker-entrypoint-initdb.d/migrate.sh: running /docker-entrypoint-initdb.[opaque value redacted]
+db-1    | ALTER ROLE
+db-1    | ALTER ROLE
+db-1    | ALTER ROLE
+db-1    | DO
+db-1    | /docker-entrypoint-initdb.d/migrate.sh: running /docker-entrypoint-initdb.[opaque value redacted]
+db-1    | GRANT ROLE
+db-1    | REVOKE ROLE
+db-1    | /docker-entrypoint-initdb.d/migrate.sh: running /docker-entrypoint-initdb.[opaque value redacted]
+db-1    | CREATE FUNCTION
+db-1    | DROP EXTENSION
+db-1    | DO
+db-1    | /docker-entrypoint-initdb.d/migrate.sh: running /docker-entrypoint-initdb.[opaque value redacted]
+db-1    | DO
+db-1    | CREATE FUNCTION
+db-1    | DROP EVENT TRIGGER
+db-1    | ALTER FUNCTION
+db-1    | CREATE EVENT TRIGGER
+db-1    | /docker-entrypoint-initdb.d/migrate.sh: running /docker-entrypoint-initdb.[opaque value redacted]
+db-1    | ALTER ROLE
+db-1    | /docker-entrypoint-initdb.d/migrate.sh: running /docker-entrypoint-initdb.[opaque value redacted]
+db-1    | ALTER FUNCTION
+db-1    | ALTER FUNCTION
+db-1    | ALTER FUNCTION
+db-1    | /docker-entrypoint-initdb.d/migrate.sh: running /docker-entrypoint-initdb.[opaque value redacted]
+auth-1  | {"args":["enable_rls_update_grants"],"component":"pop","level":"info","msg":"\u003e %s","time":"2026-10-14T16:35:23Z"}
+auth-1  | {"args":["add_mfa_phone_config"],"component":"pop","level":"info","msg":"\u003e %s","time":"2026-10-14T16:35:23Z"}
+db-1    | GRANT ROLE
+db-1    | /docker-entrypoint-initdb.d/migrate.sh: running /docker-entrypoint-initdb.[opaque value redacted]
+db-1    | DO
+db-1    | /docker-entrypoint-initdb.d/migrate.sh: running /docker-entrypoint-initdb.[opaque value redacted]
+db-1    | DO
+db-1    | DO
+db-1    | /docker-entrypoint-initdb.d/migrate.sh: running /docker-entrypoint-initdb.[opaque value redacted]
+db-1    | ALTER ROLE
+db-1    | ALTER ROLE
+db-1    | ALTER ROLE
+db-1    | /docker-entrypoint-initdb.d/migrate.sh: running /docker-entrypoint-initdb.[opaque value redacted]
+db-1    | DO
+db-1    | /docker-entrypoint-initdb.d/migrate.sh: running /docker-entrypoint-initdb.[opaque value redacted]
+db-1    | DO
+db-1    | /docker-entrypoint-initdb.d/migrate.sh: running /docker-entrypoint-initdb.[opaque value redacted]
+auth-1  | {"args":["[opaque value redacted]"],"component":"pop","level":"info","msg":"\u003e %s","time":"2026-10-14T16:35:23Z"}
+auth-1  | {"args":["[opaque value redacted]"],"component":"pop","level":"info","msg":"\u003e %s","time":"2026-10-14T16:35:23Z"}
+auth-1  | {"args":["add_web_authn"],"component":"pop","level":"info","msg":"\u003e %s","time":"2026-10-14T16:35:23Z"}
+auth-1  | {"args":["add_disabled_to_sso_providers"],"component":"pop","level":"info","msg":"\u003e %s","time":"2026-10-14T16:35:23Z"}
+auth-1  | {"args":["add_oauth_clients_table"],"component":"pop","level":"info","msg":"\u003e %s","time":"2026-10-14T16:35:23Z"}
+auth-1  | {"args":["[opaque value redacted]"],"component":"pop","level":"info","msg":"\u003e %s","time":"2026-10-14T16:35:23Z"}
+auth-1  | {"args":["add_oauth_client_type"],"component":"pop","level":"info","msg":"\u003e %s","time":"2026-10-14T16:35:23Z"}
+auth-1  | {"args":["remove_oauth_client_id_column"],"component":"pop","level":"info","msg":"\u003e %s","time":"2026-10-14T16:35:23Z"}
+auth-1  | {"args":["add_oauth_client_id_to_session"],"component":"pop","level":"info","msg":"\u003e %s","time":"2026-10-14T16:35:23Z"}
+auth-1  | {"args":["[opaque value redacted]"],"component":"pop","level":"info","msg":"\u003e %s","time":"2026-10-14T16:35:23Z"}
+[credential-bearing line redacted]
+auth-1  | {"args":["[opaque value redacted]"],"component":"pop","level":"info","msg":"\u003e %s","time":"2026-10-14T16:35:23Z"}
+auth-1  | {"args":["add_scopes_to_sessions"],"component":"pop","level":"info","msg":"\u003e %s","time":"2026-10-14T16:35:23Z"}
+auth-1  | {"args":["add_oauth_client_states_table"],"component":"pop","level":"info","msg":"\u003e %s","time":"2026-10-14T16:35:23Z"}
+auth-1  | {"args":["add_flow_state_oauth_context"],"component":"pop","level":"info","msg":"\u003e %s","time":"2026-10-14T16:35:23Z"}
+auth-1  | {"args":["add_token_endpoint_auth_method"],"component":"pop","level":"info","msg":"\u003e %s","time":"2026-10-14T16:35:23Z"}
+auth-1  | {"args":["add_custom_oauth_providers"],"component":"pop","level":"info","msg":"\u003e %s","time":"2026-10-14T16:35:23Z"}
+auth-1  | {"args":["add_passkeys"],"component":"pop","level":"info","msg":"\u003e %s","time":"2026-10-14T16:35:23Z"}
+auth-1  | {"args":["add_custom_claims_allowlist"],"component":"pop","level":"info","msg":"\u003e %s","time":"2026-10-14T16:35:23Z"}
+auth-1  | {"args":[70],"component":"pop","level":"info","msg":"Successfully applied %d migrations.","time":"2026-10-14T16:35:23Z"}
+auth-1  | {"args":[0.47157544],"component":"pop","level":"info","msg":"%.4f seconds","time":"2026-10-14T16:35:23Z"}
+auth-1  | {"count":70,"level":"info","msg":"GoTrue migrations applied successfully","time":"2026-10-14T16:35:23Z"}
+db-1    | CREATE FUNCTION
+auth-1  | {"component":"api","level":"warning","msg":"DEPRECATION NOTICE: GOTRUE_JWT_ADMIN_GROUP_NAME not supported by Supabase's GoTrue, will be removed soon","time":"2026-10-14T16:35:23Z"}
+auth-1  | {"component":"api","level":"warning","msg":"DEPRECATION NOTICE: GOTRUE_JWT_DEFAULT_GROUP_NAME not supported by Supabase's GoTrue, will be removed soon","time":"2026-10-14T16:35:23Z"}
+auth-1  | {"level":"info","msg":"GoTrue API started on: 0.0.0.0:9999","time":"2026-10-14T16:35:23Z","version":"v2.196.0"}
+auth-1  | {"component":"apiworker","level":"info","msg":"apiworker: index worker started","time":"2026-10-14T16:35:23Z","worker_type":"apiworker_index_worker"}
+auth-1  | {"component":"apiworker","level":"info","msg":"apiworker: config notifier started","time":"2026-10-14T16:35:23Z","worker_type":"apiworker_config_notifier"}
+auth-1  | {"component":"apiworker","level":"info","msg":"apiworker: template cache worker started","time":"2026-10-14T16:35:23Z","worker_type":"apiworker_template_cache"}
+auth-1  | {"component":"apiworker","level":"info","msg":"apiworker: db worker started","time":"2026-10-14T16:35:23Z","worker_type":"apiworker_db_worker"}
+auth-1  | {"component":"apiworker","config_conn_max_idle_time":"0s","config_conn_max_lifetime":"0s","config_conn_percentage":0,"config_max_idle_pool_size":0,"config_max_pool_size":0,"level":"info","limit_conn_max_idle_time":"0s","limit_conn_max_lifetime":"0s","limit_max_idle_conns":0,"limit_max_open_conns":0,"limit_strategy":"fixed","msg":"applying connection limits to db using the \"fixed\" strategy","server_max_conns":100,"time":"2026-10-14T16:35:23Z","worker_type":"apiworker_db_worker"}
+db-1    | DO
+db-1    | /docker-entrypoint-initdb.d/migrate.sh: running /docker-entrypoint-initdb.[opaque value redacted]
+db-1    | ALTER FUNCTION
+db-1    | GRANT
+db-1    | /docker-entrypoint-initdb.d/migrate.sh: running /docker-entrypoint-initdb.[opaque value redacted]
+db-1    | DROP EVENT TRIGGER
+db-1    | ALTER FUNCTION
+db-1    | CREATE EVENT TRIGGER
+db-1    | /docker-entrypoint-initdb.d/migrate.sh: running /docker-entrypoint-initdb.[opaque value redacted]
+db-1    | DO
+db-1    | /docker-entrypoint-initdb.d/migrate.sh: running /docker-entrypoint-initdb.[opaque value redacted]
+db-1    | CREATE FUNCTION
+db-1    | GRANT
+db-1    | /docker-entrypoint-initdb.d/migrate.sh: running /docker-entrypoint-initdb.[opaque value redacted]
+db-1    | REVOKE ROLE
+db-1    | DO
+db-1    | DO
+db-1    | REVOKE ROLE
+db-1    | REVOKE
+db-1    | DO
+db-1    | /docker-entrypoint-initdb.d/migrate.sh: running /docker-entrypoint-initdb.[opaque value redacted]
+db-1    | DO
+db-1    | /docker-entrypoint-initdb.d/migrate.sh: running /docker-entrypoint-initdb.[opaque value redacted]
+db-1    | DO
+db-1    | /docker-entrypoint-initdb.d/migrate.sh: running /docker-entrypoint-initdb.[opaque value redacted]
+db-1    | DO
+db-1    | /docker-entrypoint-initdb.d/migrate.sh: running /docker-entrypoint-initdb.[opaque value redacted]
+db-1    | ALTER ROLE
+db-1    | /docker-entrypoint-initdb.d/migrate.sh: running /docker-entrypoint-initdb.[opaque value redacted]
+db-1    | GRANT ROLE
+db-1    | DO
+db-1    | /docker-entrypoint-initdb.d/migrate.sh: running /docker-entrypoint-initdb.[opaque value redacted]
+db-1    | GRANT
+db-1    | /docker-entrypoint-initdb.d/migrate.sh: running /docker-entrypoint-initdb.[opaque value redacted]
+db-1    | CREATE FUNCTION
+db-1    | REVOKE
+db-1    | REVOKE
+db-1    | GRANT
+db-1    | /docker-entrypoint-initdb.d/migrate.sh: running /docker-entrypoint-initdb.[opaque value redacted]
+db-1    | DO
+db-1    | /docker-entrypoint-initdb.d/migrate.sh: running /docker-entrypoint-initdb.[opaque value redacted]
+db-1    | ALTER ROLE
+db-1    | /docker-entrypoint-initdb.d/migrate.sh: running /docker-entrypoint-initdb.[opaque value redacted]
+db-1    | DROP EXTENSION
+db-1    | /docker-entrypoint-initdb.d/migrate.sh: running /docker-entrypoint-initdb.[opaque value redacted]
+db-1    | CREATE FUNCTION
+db-1    | DROP EVENT TRIGGER
+db-1    | CREATE EVENT TRIGGER
+db-1    |    pg_stat_statements_reset    
+db-1    | -------------------------------
+db-1    |  2026-10-14 16:35:15.720989+00
+db-1    | (1 row)
+db-1    | 
+db-1    |  pg_stat_reset 
+db-1    | ---------------
+db-1    |  
+db-1    | (1 row)
+db-1    | 
+db-1    | 
+db-1    | [opaque value redacted]: ignoring /docker-entrypoint-initdb.d/migrations
+db-1    | 
+db-1    | waiting for server to shut down.... 2026-10-14 16:35:15.724 UTC [61] LOG:  pg_cron scheduler shutting down
+db-1    |  done
+db-1    | server stopped
+db-1    | 
+db-1    | PostgreSQL init process complete; ready for start up.
+db-1    | 
+
+exit=0 seconds=0.11
