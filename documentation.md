@@ -131,3 +131,5 @@ BE-01-R1 source checkpoint `5785eba47f3709debb2815c8d86608f7e62d02f3` is pushed 
 INT-401 preservation follow-up: original indexed executable modes restored for canonical scripts after Windows overlay staging; baseline remains UNTESTED. Source-only and history bundles remain ignored local deliverables.
 
 2026-10-14 FE-405 / GitHub #14: IN PROGRESS. Authored mobile search query/scope controls, focus-owned search edits with URL/history synchronization, and exact sidebar aria-current while preserving mailbox group styling. Independent bounded source and design reviews repaired one duplicated history defect; runtime gates and actual visual evidence remain pending through Soren/Elara. Baseline generated API check failed; regeneration is queued in Docker. See docs/completion/fe405-search-navigation.md.
+
+FE-405 follow-up: navigation regressions now cover Drafts and reader ancestor semantics. CLI metadata confirms gpt-6.1-sol / low, Fast tier remains unverified (service_tier null). Runtime/visual acceptance still pending.

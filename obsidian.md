@@ -89,3 +89,5 @@ Ada ADV-714 design advice: contract/hash identity proves provenance, not lifecyc
 Five fleet jobs failed model startup with HTTP400 for gpt-6.1-sol in the old CLI/account. Root is repairing compatibility before relaunch. Named fleet SSH terminals use report/control files and manual supervision; they are not remote Orca dispatches. Vault content was copied verbatim above and prior Cassian record retained; vault original untouched.
 
 2026-10-14 FE-405 / GitHub #14: IN PROGRESS. Authored mobile search query/scope controls, focus-owned search edits with URL/history synchronization, and exact sidebar aria-current while preserving mailbox group styling. Independent bounded source and design reviews repaired one duplicated history defect; runtime gates and actual visual evidence remain pending through Soren/Elara. Baseline generated API check failed; regeneration is queued in Docker. See docs/completion/fe405-search-navigation.md.
+
+FE-405 follow-up: navigation regressions now cover Drafts and reader ancestor semantics. CLI metadata confirms gpt-6.1-sol / low, Fast tier remains unverified (service_tier null). Runtime/visual acceptance still pending.

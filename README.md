@@ -119,3 +119,5 @@ The corrected isolated grantor probe is frozen in docs/evidence/be-01-r1-grantor
 
 
 INT-401 preservation follow-up: original indexed executable modes restored for canonical scripts after Windows overlay staging; baseline remains UNTESTED. Source-only and history bundles remain ignored local deliverables.
+
+FE-405 follow-up: navigation regressions now cover Drafts and reader ancestor semantics. CLI metadata confirms gpt-6.1-sol / low, Fast tier remains unverified (service_tier null). Runtime/visual acceptance still pending.

@@ -19,45 +19,57 @@
 19:           <Route element={<Shell />}>
 20:             <Route index element={<p>outlet-content</p>} />
 21:             <Route path="mailboxes/:mailboxId" element={<p>outlet-content</p>} />
-22:             <Route path="mailboxes/:mailboxId/drafts" element={<p>outlet-content</p>} />
-23:             <Route path="mailboxes/:mailboxId/members" element={<p>outlet-content</p>} />
-24:             <Route path="search" element={<p>outlet-content</p>} />
-25:           </Route>
-26:         </Routes>
-27:       </MemoryRouter>
-28:     </SessionProvider>,
-29:   )
-30: }
-31: 
-32: describe('collaboration navigation', () => {
-33:   it('shows Drafts and Members under the active C/D mailbox, plus the search entries', async () => {
-34:     renderShellAt(`/mailboxes/${CD.mailboxId}`)
-35:     const mailbox = await screen.findByRole('link', { name: 'C/D fixture mailbox' })
-36:     expect(mailbox.getAttribute('aria-current')).toBe('page')
-37:     expect(screen.getByRole('link', { name: 'Drafts' }).getAttribute('href')).toBe(`/mailboxes/${CD.mailboxId}/drafts`)
-38:     expect(screen.getByRole('link', { name: 'Members' }).getAttribute('href')).toBe(`/mailboxes/${CD.mailboxId}/members`)
-39:     expect(screen.getByRole('link', { name: 'Search' }).getAttribute('href')).toBe('/search')
-40:     expect(screen.getByRole('search')).toBeTruthy()
-41:     expect(screen.getByText('Simulated local mail')).toBeTruthy()
-42:     expect(screen.getByText(/drafts and notes stay on this installation/)).toBeTruthy()
-43:   })
-44: 
-45:   it('hides the sub-links for a read-only mailbox and for inactive mailboxes', async () => {
-46:     renderShellAt(`/mailboxes/${INBOX}`)
-47:     const inbox = await screen.findByRole('link', { name: 'Fixture inbox' })
-48:     expect(inbox.getAttribute('aria-current')).toBe('page')
-49:     expect(screen.getByRole('link', { name: 'C/D fixture mailbox' })).toBeTruthy()
-50:     expect(screen.queryByRole('link', { name: 'Drafts' })).toBeNull()
-51:     expect(screen.queryByRole('link', { name: 'Members' })).toBeNull()
-52:   })
-53: 
-54:   it('marks only the exact Members destination current and retains mailbox group styling', async () => {
-55:     renderShellAt(`/mailboxes/${CD.mailboxId}/members`)
-56:     const members = await screen.findByRole('link', { name: 'Members' })
-57:     expect(members.getAttribute('aria-current')).toBe('page')
-58:     expect(screen.getByRole('link', { name: 'Drafts' }).getAttribute('aria-current')).toBeNull()
-59:     expect(screen.getByRole('link', { name: 'C/D fixture mailbox' }).getAttribute('aria-current')).toBeNull()
-60:     expect(screen.getByRole('link', { name: 'C/D fixture mailbox' }).className).toContain('bg-accent-soft')
-61:     expect(document.querySelectorAll('nav [aria-current="page"]')).toHaveLength(1)
-62:   })
-63: })
+22:             <Route path="mailboxes/:mailboxId/threads/:threadId" element={<p>outlet-content</p>} />
+23:             <Route path="mailboxes/:mailboxId/drafts" element={<p>outlet-content</p>} />
+24:             <Route path="mailboxes/:mailboxId/members" element={<p>outlet-content</p>} />
+25:             <Route path="search" element={<p>outlet-content</p>} />
+26:           </Route>
+27:         </Routes>
+28:       </MemoryRouter>
+29:     </SessionProvider>,
+30:   )
+31: }
+32: 
+33: describe('collaboration navigation', () => {
+34:   it('shows Drafts and Members under the active C/D mailbox, plus the search entries', async () => {
+35:     renderShellAt(`/mailboxes/${CD.mailboxId}`)
+36:     const mailbox = await screen.findByRole('link', { name: 'C/D fixture mailbox' })
+37:     expect(mailbox.getAttribute('aria-current')).toBe('page')
+38:     expect(screen.getByRole('link', { name: 'Drafts' }).getAttribute('href')).toBe(`/mailboxes/${CD.mailboxId}/drafts`)
+39:     expect(screen.getByRole('link', { name: 'Members' }).getAttribute('href')).toBe(`/mailboxes/${CD.mailboxId}/members`)
+40:     expect(screen.getByRole('link', { name: 'Search' }).getAttribute('href')).toBe('/search')
+41:     expect(screen.getByRole('search')).toBeTruthy()
+42:     expect(screen.getByText('Simulated local mail')).toBeTruthy()
+43:     expect(screen.getByText(/drafts and notes stay on this installation/)).toBeTruthy()
+44:   })
+45: 
+46:   it('hides the sub-links for a read-only mailbox and for inactive mailboxes', async () => {
+47:     renderShellAt(`/mailboxes/${INBOX}`)
+48:     const inbox = await screen.findByRole('link', { name: 'Fixture inbox' })
+49:     expect(inbox.getAttribute('aria-current')).toBe('page')
+50:     expect(screen.getByRole('link', { name: 'C/D fixture mailbox' })).toBeTruthy()
+51:     expect(screen.queryByRole('link', { name: 'Drafts' })).toBeNull()
+52:     expect(screen.queryByRole('link', { name: 'Members' })).toBeNull()
+53:   })
+54: 
+55:   it('marks only Drafts current and keeps reader navigation ancestors unannounced', async () => {
+56:     const drafts = renderShellAt(`/mailboxes/${CD.mailboxId}/drafts`)
+57:     expect((await screen.findByRole('link', { name: 'Drafts' })).getAttribute('aria-current')).toBe('page')
+58:     expect(document.querySelectorAll('nav [aria-current="page"]')).toHaveLength(1)
+59:     drafts.unmount()
+60:     renderShellAt(`/mailboxes/${CD.mailboxId}/threads/${CD.threadId}`)
+61:     const mailbox = await screen.findByRole('link', { name: 'C/D fixture mailbox' })
+62:     expect(mailbox.className).toContain('bg-accent-soft')
+63:     expect(document.querySelectorAll('nav [aria-current="page"]')).toHaveLength(0)
+64:   })
+65: 
+66:   it('marks only the exact Members destination current and retains mailbox group styling', async () => {
+67:     renderShellAt(`/mailboxes/${CD.mailboxId}/members`)
+68:     const members = await screen.findByRole('link', { name: 'Members' })
+69:     expect(members.getAttribute('aria-current')).toBe('page')
+70:     expect(screen.getByRole('link', { name: 'Drafts' }).getAttribute('aria-current')).toBeNull()
+71:     expect(screen.getByRole('link', { name: 'C/D fixture mailbox' }).getAttribute('aria-current')).toBeNull()
+72:     expect(screen.getByRole('link', { name: 'C/D fixture mailbox' }).className).toContain('bg-accent-soft')
+73:     expect(document.querySelectorAll('nav [aria-current="page"]')).toHaveLength(1)
+74:   })
+75: })
