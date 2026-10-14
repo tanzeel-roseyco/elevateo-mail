@@ -6,8 +6,10 @@ import os
 import pathlib
 import re
 import socket
+import stat
 import struct
 import sys
+import time
 
 CLEAN = b"OPS820 isolated harmless attachment fixture\n"
 EICAR = b"X5O!P%@AP[4\\PZX54(P^)7CC)7}$EICAR-STANDARD-ANTIVIRUS-TEST-FILE!$H+H*"
@@ -30,7 +32,12 @@ def scan(payload: bytes, connection: socket.socket) -> str:
         raise ValueError("invalid isolated scan payload")
     connection.sendall(b"zINSTREAM\0" + struct.pack("!I", len(payload)) + payload + b"\0\0\0\0")
     reply = bytearray()
+    deadline = time.monotonic() + 20
     while len(reply) <= 256:
+        remaining = deadline - time.monotonic()
+        if remaining <= 0:
+            raise ValueError("clamd whole reply timeout")
+        connection.settimeout(remaining)
         item = connection.recv(1)
         if not item:
             raise ValueError("clamd reply incomplete")
@@ -51,8 +58,12 @@ def verify(directory: pathlib.Path) -> None:
         raise ValueError("absolute fixture directory required")
     for name, expected in (("clean.txt", "clean"), ("eicar.txt", "malware")):
         path = directory / name
-        if path.is_symlink() or path.read_bytes() != FIXTURES[name]:
-            raise ValueError("fixture bytes changed")
+        fd = os.open(path, os.O_RDONLY | os.O_NOFOLLOW)
+        with os.fdopen(fd, "rb") as fixture:
+            details = os.fstat(fixture.fileno())
+            if (not stat.S_ISREG(details.st_mode) or details.st_size != len(FIXTURES[name])
+                    or fixture.read(len(FIXTURES[name]) + 1) != FIXTURES[name]):
+                raise ValueError("fixture bytes changed")
         with socket.create_connection(("clamav", 3310), timeout=3) as connection:
             connection.settimeout(20)
             verdict = scan(FIXTURES[name], connection)
