@@ -26,7 +26,7 @@ module Elevateo
 
     class Invalid < StandardError; end
 
-    def self.load(path = File.expand_path("../../config/administration/roster.json", __dir__))
+    def self.load(path = File.expand_path("../../config/administration/roster.json", File.dirname(__FILE__)))
       validate(JSON.parse(File.read(path)))
     rescue JSON::ParserError, Errno::ENOENT
       raise Invalid, "invalid administration roster"
@@ -35,7 +35,7 @@ module Elevateo
     def self.validate(document)
       invalid! unless document.is_a?(Hash) && document.keys.sort == %w[live_activation mailbox_grants people schema_version]
       invalid! unless document["schema_version"] == 1 && document["live_activation"] == false
-      invalid! unless document["mailbox_grants"] == [] && document["people"].is_a?(Array)
+      invalid! unless document["mailbox_grants"].is_a?(Array) && document["mailbox_grants"].empty? && document["people"].is_a?(Array)
       people = document["people"]
       invalid! unless people.length == 12 && people.map { |person| person.is_a?(Hash) && person["key"] } == KEYS
       people.each_with_index do |person, index|

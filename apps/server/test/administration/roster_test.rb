@@ -12,7 +12,7 @@ class AdministrationRosterTest < Minitest::Test
     assert_equal 12, roster.fetch("people").size
     assert_equal "Matthew", roster.fetch("people")[10].fetch("display_name")
     assert_equal "Associate; surname unresolved", roster.fetch("people")[10].fetch("title")
-    assert roster.fetch("people").all? { |person| person["email"].nil? && person["auth_user_id"].nil? }
+    assert(roster.fetch("people").all? { |person| person["email"].nil? && person["auth_user_id"].nil? })
     assert_equal({ "key" => "elev-person-001", "auth_user_id" => USER_ID },
       Roster.binding(config_key: "elev-person-001", auth_user_id: USER_ID, existing_bindings: {}, verified_subject: USER_ID))
   end

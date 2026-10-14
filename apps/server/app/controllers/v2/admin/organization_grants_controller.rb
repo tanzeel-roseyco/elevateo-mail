@@ -28,8 +28,12 @@ module V2
           cursors = Elevateo::Cursors.new(secret: read_config.cursor_signing_key)
           scope = page_scope(identity, session, limit, organization)
           position = query.key?("cursor") ? cursors.decode(query.fetch("cursor"), scope: scope) : nil
-          if position && (position.keys != ["user_id"] || !Elevateo::Cursors::UUID.match?(position["user_id"]))
-            raise Elevateo::CollaborationError.new("cursor_invalid")
+          if position
+            cursor_user = position["user_id"]
+            unless position.keys == ["user_id"] && cursor_user.is_a?(String) &&
+                Elevateo::Cursors::UUID.match?(cursor_user)
+              raise Elevateo::CollaborationError.new("cursor_invalid")
+            end
           end
           binds = [identity.digest, position && position["user_id"], limit].map do |value|
             ActiveRecord::Relation::QueryAttribute.new("organization_grants_page", value&.to_s, ActiveRecord::Type::String.new)
@@ -49,10 +53,12 @@ module V2
           end
           items = self.class.project_grants(result["items"], organization, limit)
           after = result["next_user_id"]
-          if after && (items.empty? || after != items.last["user_id"])
+          if !after.nil? && (!after.is_a?(String) || items.empty? || after != items.last["user_id"])
             raise Elevateo::CollaborationError.new("internal_error")
           end
-          cursor = after && cursors.encode(position: { "user_id" => after }, scope: scope)
+          # @type var after_id: String?
+          after_id = after.is_a?(String) ? after : nil
+          cursor = after_id && cursors.encode(position: { "user_id" => after_id }, scope: scope)
           JSON.generate({ "context_id" => session.fetch("context_id"),
             "authorization_version" => session.fetch("authorization_version"),
             "actor" => actor, "items" => items, "next_cursor" => cursor })
@@ -75,6 +81,7 @@ module V2
         unless rows.is_a?(Array) && rows.length <= limit
           raise Elevateo::CollaborationError.new("internal_error")
         end
+        # @type var previous: String?
         previous = nil
         rows.map do |row|
           unless row.is_a?(Hash) && row.keys.sort == %w[revision role user_id]
@@ -142,7 +149,8 @@ module V2
       def update
         organization = path_uuid(:organization_id)
         target = path_uuid(:user_id)
-        guards = ->(input:, **) do
+        guards = ->(input:, query:) do
+          raise Elevateo::CollaborationError.new("request_invalid") unless query.empty?
           self.class.change_input(input)
           [target]
         end
