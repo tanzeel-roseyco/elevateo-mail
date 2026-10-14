@@ -725,3 +725,7 @@ FE807 QA815 runtime diagnostic: exact `a460c5a` fleet Docker API check passed, l
 ### FE-805 R4 online-only shell self-inspection (Fable, 2026-10-15)
 
 Coverage: `ui/ConnectivityBanner.tsx` (52 LOC), Shell route-hygiene hunk and banner wiring (~20), CSS mobile frame (~18). ~90 production LOC, one bounded pass; author self-inspection only, no independent review claimed. Self-found before commit: 1 (route-change focus rescue initially stole focus from the drawer trigger and from page-owned focus, contradicting e2e/read.spec.ts; narrowed to body-stranded focus only). Provisional density 11.1/KLOC, author evidence. Tests: 5 new cases (3 banner, 2 shell), not executed.
+
+### FE-805 R5 ADV033 repair and gateway bridge (Fable, 2026-10-15)
+
+Root-assigned reviews received: ADV031 registration 180 LOC 0 defects; ADV032 Sidebar 150 LOC 0 defects; ADV033 Shell 270 LOC 1 confirmed defect (unconditional simulated/local-only claims at the footnote, badge and sidebar lines). ADV033 repaired in this commit: label derived from session `simulation_mode`, copy corrected, regression case added. Repair packet: Shell/Sidebar hunks ~14 LOC plus `outreachGatewayBridge.ts` 27 LOC and `main.tsx` 4 LOC; author self-inspection only on the repair, independent re-review pending. Tests: 4 new cases (3 bridge, 1 labelling), not executed.

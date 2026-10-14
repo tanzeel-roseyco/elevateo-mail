@@ -18,6 +18,10 @@ Shared company mailroom with one Rails domain authority and a React/TypeScript c
 
 ## Current state
 
+### Fable FE-805 R5 real Outreach injection and ADV033 repair (2026-10-15)
+
+`main.tsx` now injects Cassian's isolated V2 Outreach adapter (exact chain cherry-picked with provenance: 12e7388, bbed59c, c281768, cb771ca, 77ace94) through a typed bridge to Celeste's port; account operations stay inert in the adapter. ADV033 is repaired: the simulation badge and rail footnote derive from the session's authoritative `simulation_mode` flag and no longer claim local-only storage. The drawer is renamed to "Navigation" / "Open navigation menu" as agreed; Tessa aligns e2e selectors. Twenty FE-805 cases authored, none executed; no screenshots received, no visual claim. See [Fable record](docs/completion/fable.md).
+
 ### Fable FE-805 R4 online-only shell UX (2026-10-15)
 
 Branch `completion/fable-fe805` merges exact Celeste `7a26ce3`, Lyra `849f63d` and Mira `0f3ae5c` heads and adds the online-only mobile/WebView shell behaviour: a connectivity notice (offline is announced honestly, a return offers an explicit session reload, nothing is cached or auto-refetched), route-change scroll/focus hygiene that never overrides page- or Radix-owned focus, dynamic-viewport and safe-area framing, and 44 px touch targets on coarse pointers. No native IPC, token storage or PKCE. Production `featureGateways` stays empty pending Cassian's adapter over his inert V2 routes. Sixteen FE-805 cases authored, none executed; no screenshots received yet, so no visual claim. See [Fable record](docs/completion/fable.md).

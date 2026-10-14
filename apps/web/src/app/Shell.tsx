@@ -1,7 +1,7 @@
 // Responsive shell: skip link, sidebar as a drawer below the md breakpoint, labelled main region.
 // FE-805: the rail carries independent Personal/Outreach sections fed by the validated feature
-// registry (./features); the drawer keeps its "Mailboxes" name and trigger label because the
-// existing e2e/read.spec.ts (QA-owned) and the R12/R19 visual evidence depend on them.
+// registry (./features); the drawer is named "Navigation" / "Open navigation menu" as agreed with
+// QA, and Tessa updates the e2e selectors in step (older R12/R19 evidence used the previous names).
 // Layout ideas adapted from first-party Ledger frontend 4322cfbb, src/features/live/LiveShell.tsx
 // (blob 2633baf7…); session/capability wiring replaced with the FE-01 session controller.
 //
@@ -29,7 +29,10 @@ import { SearchBox } from './SearchBox'
 import { Sidebar } from './Sidebar'
 import { sessionIdentityKey, useGateway, useSession } from './session'
 
-const FOOTNOTE = 'Simulated local data; drafts and notes stay on this installation. No mail is sent or received.'
+// AIDEV-NOTE: ADV033: the simulation label is derived from the server's authoritative session flag,
+// never asserted unconditionally, and it must not promise local-only storage (drafts and notes are
+// saved on the server; only mail transport is simulated).
+const SIMULATION_FOOTNOTE = 'Simulation mode: no mail is sent or received. Drafts and notes are saved on the server.'
 
 type MailboxState = { status: 'loading' } | { status: 'ready'; mailboxes: Mailbox[] } | { status: 'error'; message: string }
 
@@ -248,7 +251,7 @@ function ProtectedShell({ session, replacedIdentity }: { session: Session; repla
         mailboxes={mailboxState.mailboxes}
         sections={featureRegistry.navBySection}
         onNavigate={closeDrawer}
-        footnote={FOOTNOTE}
+        footnote={session.simulation_mode ? SIMULATION_FOOTNOTE : null}
       />
     )
 
@@ -262,7 +265,8 @@ function ProtectedShell({ session, replacedIdentity }: { session: Session; repla
       <div className="flex min-w-0 flex-1 flex-col">
         <header className="flex items-center gap-2 border-b border-line bg-surface px-3 py-2">
           <span className="md:hidden">
-            <Drawer open={drawerOpen} onOpenChange={setDrawerOpen} title="Mailboxes" trigger={<IconButton label="Open mailbox menu"><MenuIcon /></IconButton>}>
+            {/* Names agreed with QA (ADV/Tessa): the drawer holds every section, not only mailboxes. */}
+            <Drawer open={drawerOpen} onOpenChange={setDrawerOpen} title="Navigation" trigger={<IconButton label="Open navigation menu"><MenuIcon /></IconButton>}>
               {sidebar}
             </Drawer>
           </span>
@@ -274,8 +278,8 @@ function ProtectedShell({ session, replacedIdentity }: { session: Session; repla
           </p>
           {/* Below sm the header has no room for the form; the sidebar's Search link covers it. */}
           <span className="ml-auto hidden sm:block"><SearchBox /></span>
-          {/* Local-mode indicator: simulated transport must be unmistakable. */}
-          <Badge tone="warn" className="ml-auto sm:ml-0">Simulated local mail</Badge>
+          {/* Simulated transport must be unmistakable, but only when the server says it is simulated. */}
+          {session.simulation_mode && <Badge tone="warn" className="ml-auto sm:ml-0">Simulated local mail</Badge>}
           <AccountSheet session={session} />
         </header>
         {/* Online-only: no cache, no queue; a drop is announced and a return offers an explicit reload. */}
