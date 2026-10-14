@@ -2,6 +2,7 @@ module V1
   class ApiController < ApplicationController
     @api_deadline: Elevateo::RequestDeadline
 
+    def process_action: (*untyped) -> untyped
     def api_boundary: () { () -> void } -> void
     def api_deadline: () -> Elevateo::RequestDeadline
     def api_query: (?allowed: Array[String]) -> Hash[String, String]
