@@ -6,6 +6,8 @@ class WriteBoundaryDatabaseDeadlineTest < WriteBoundaryDatabaseTestCase
   def test_native_deadline_bounds_multiple_statements_and_releases_guard_locks
     with_api_connections(1) do |connections|
       connection = connections.fetch(0)
+      connection.set_error_verbosity(PG::PQERRORS_VERBOSE)
+      backend = connection.backend_pid
       begin_write(connection: connection)
       assert_operator connection.server_version, :>=, 170_000
       connection.exec("SET LOCAL statement_timeout = '2s'; SET LOCAL lock_timeout = '1s'")
@@ -13,7 +15,7 @@ class WriteBoundaryDatabaseDeadlineTest < WriteBoundaryDatabaseTestCase
       assert_equal "ok", write_guard(connection: connection).fetch("status")
       connection.exec("SELECT pg_sleep(0.15)")
       # AIDEV-NOTE: Each statement fits its own timeout; only the cumulative PG17 deadline aborts this write.
-      assert_transaction_timeout { connection.exec("SELECT pg_sleep(0.15)") }
+      assert_transaction_timeout(connection, backend) { connection.exec("SELECT pg_sleep(0.15)") }
       assert_rolled_back_and_unlocked
     end
   end
@@ -21,11 +23,13 @@ class WriteBoundaryDatabaseDeadlineTest < WriteBoundaryDatabaseTestCase
   def test_native_deadline_includes_idle_serialization_time_before_commit
     with_api_connections(1) do |connections|
       connection = connections.fetch(0)
+      connection.set_error_verbosity(PG::PQERRORS_VERBOSE)
+      backend = connection.backend_pid
       begin_write(connection: connection)
       connection.exec("SELECT set_config('transaction_timeout', '150ms', true)")
       assert_equal "ok", write_guard(connection: connection).fetch("status")
       sleep 0.25
-      assert_transaction_timeout { connection.exec("COMMIT") }
+      assert_transaction_timeout(connection, backend) { connection.exec("COMMIT") }
       assert_rolled_back_and_unlocked
     end
   end
@@ -71,8 +75,16 @@ class WriteBoundaryDatabaseDeadlineTest < WriteBoundaryDatabaseTestCase
 
   private
 
-  def assert_transaction_timeout
+  def assert_transaction_timeout(connection, backend)
     error = assert_raises(PG::Error) { yield }
+    # AIDEV-NOTE: Export only diagnostic code/booleans, never raw errors or SQL; keep the structured-result oracle.
+    puts JSON.generate(native_timeout_diagnostic: {
+      backend: backend, error_class: error.class.name,
+      result_sqlstate: error.result&.error_field(PG::Result::PG_DIAG_SQLSTATE),
+      error_has_25p04: /\b25P04\b/.match?(error.message),
+      connection_has_25p04: /\b25P04\b/.match?(connection.error_message),
+      connection_bad: connection.status == PG::CONNECTION_BAD
+    })
     refute_nil error.result, "transport-only failure cannot attest the native timeout mechanism"
     assert_equal "25P04", error.result.error_field(PG::Result::PG_DIAG_SQLSTATE)
   end
