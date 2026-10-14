@@ -23,6 +23,6 @@ docker run --rm -v "$PWD:/src" -v "$APK813_BUILD_ROOT:/artifacts" \
   bash ops/build/android/build-unsigned.sh
 ```
 
-The script runs three Gradle wrapper pinning cases, `npm ci` and web build, Tauri Android init/build, then rejects a signed or ambiguous APK and prints the artifact SHA-256. The [Gradle 9.6.1 binary checksum](https://gradle.org/release-checksums/) is pinned into Tauri's generated wrapper. Soren must retain exact source, image/archive hashes, command logs, generated manifest permission inspection, artifact path/hash and cleanup. An unsigned APK has **not yet been compiled** for this candidate.
+The script runs three Gradle wrapper pinning cases, `npm ci` and web build, Tauri Android init/build, then rejects unexpected permissions, an active VIEW callback filter, a signed or ambiguous APK, and prints the artifact SHA-256. The [Gradle 9.6.1 binary checksum](https://gradle.org/release-checksums/) is pinned into Tauri's generated wrapper. Soren must retain exact source, image/archive hashes, command logs, generated manifest permission inspection, artifact path/hash and cleanup. An unsigned APK has **not yet been compiled** for this candidate.
 
 Emulator/device installation, session/login/logout, App Link, lifecycle/resume, offline/back/keyboard/insets, release signature and upgrade tests are **NOT_RUN** and remain acceptance gates. Web Playwright does not establish Android shell behavior. No live OAuth registration, release key, DNS, SMTP or paid infrastructure is authorized.
