@@ -13,7 +13,7 @@ db_image=$(docker compose -p "$project" --env-file "$envfile" \
 [[ -n "$db_image" ]] || exit 66
 scratch=$(mktemp -d)
 trap 'rm -f -- "$scratch/runtime.env"; rmdir -- "$scratch"' EXIT
-python3 "$root/ops/ops820/runtime_env.py" "$envfile" "$scratch/runtime.env" >/dev/null
+python3 "$root/ops/ops820/runtime_env.py" "$envfile" "$scratch/runtime.env" migrator >/dev/null
 docker run --rm --network "${project}_private" --read-only --cap-drop ALL \
   --env-file "$envfile" -e PGHOST=db -e PGUSER=supabase_admin -e PGDATABASE=postgres \
   -v "$root/ops/db:/ops:ro" --entrypoint bash "$db_image" \

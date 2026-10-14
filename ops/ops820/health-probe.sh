@@ -8,16 +8,22 @@ root=${3:?source root required}
 image=${OPS820_SERVER_IMAGE:?pinned server image required}
 [[ "$image" == sha256:* || "$image" == *@sha256:* ]] || exit 66
 name="${project}-ops820-api"
+created_id=""
+owned=0
 cleanup() {
   local job=$? clean=0
-  docker rm -f "$name" >/dev/null 2>&1 || true
-  docker inspect "$name" >/dev/null 2>&1 && clean=1
+  if (( owned )); then
+    docker rm -f "$created_id" >/dev/null 2>&1 || true
+    docker inspect "$created_id" >/dev/null 2>&1 && clean=1
+  elif [[ -n "$created_id" ]]; then clean=1; fi
   echo "health_job_exit=$job health_cleanup_exit=$clean"
   (( clean == 0 )) || job=1
   exit "$job"
 }
 trap cleanup EXIT
-docker run -d --rm --name "$name" --network "${project}_private" --network-alias api \
+if docker inspect "$name" >/dev/null 2>&1; then echo 'task API name collision' >&2; exit 73; fi
+created_id=$(docker run -d --rm --name "$name" --network "${project}_private" --network-alias api \
+  --label "ops820.owner=$project" --label ops820.kind=api \
   --read-only --cap-drop ALL --user 10001:10001 --memory 768m --pids-limit 256 \
   --env-file "$envfile" -e RAILS_ENV=test -e ELEVATEO_MODE=local \
   -e ELEVATEO_OUTBOUND_HOLD=true -e ELEVATEO_SEND_API_ENABLED=false \
@@ -33,7 +39,13 @@ docker run -d --rm --name "$name" --network "${project}_private" --network-alias
   --tmpfs /workspace/apps/server/tmp:uid=10001,gid=10001,mode=1770 \
   --tmpfs /workspace/apps/server/log:uid=10001,gid=10001,mode=1770 \
   --tmpfs /tmp --workdir /workspace/apps/server --entrypoint bundle \
-  "$image" exec rails server -b 0.0.0.0 -p 3000 >/dev/null
+  "$image" exec rails server -b 0.0.0.0 -p 3000)
+meta=$(docker inspect --format '{{.Id}}|{{index .Config.Labels "ops820.owner"}}|{{index .Config.Labels "ops820.kind"}}|{{range .Mounts}}{{.Source}}:{{.Destination}}:{{.RW}};{{end}}' "$created_id")
+[[ "$meta" == "$created_id|$project|api|"* &&
+   "$meta" == *"$root/apps/server:/workspace/apps/server:false;"* ]] || {
+  echo 'task API identity or mount mismatch' >&2; exit 1;
+}
+owned=1
 docker run --rm --network "${project}_private" --read-only --cap-drop ALL \
   --memory 128m --entrypoint ruby "$image" -rjson -rnet/http -e '
 deadline = Process.clock_gettime(Process::CLOCK_MONOTONIC) + 60
