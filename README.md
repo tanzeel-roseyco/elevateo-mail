@@ -182,3 +182,5 @@ FE808 continuation exports a Fable `FeatureModule` for `/people`, `/settings/per
 FE808 now follows Cassian's paginated V2 grant DTO and six subordinate role choices. The UI traverses bounded pages, checks context and authorization version plus cross-organization/duplicate grants, and uses each target's revision for edits. Protected backend read, explicit actor privilege projection, route activation and fleet verification remain pending.
 
 FE808 People now checks the authenticated V2 unbound roster projection against the twelve local configuration references. A denied or mismatched roster is explicitly labelled as local configuration only; it never becomes an Auth user directory. Cassian has registered isolated V2 admin routes for testing over Sabine authority, with runtime acceptance still pending fleet review.
+
+Successful V2 grant GET remains blocked by a strict DTO mismatch: the protected backend now includes actor role/revision, while the browser schema does not. The owner was escalated to root for reconciliation; no UI or runtime acceptance is claimed from the source candidate.
