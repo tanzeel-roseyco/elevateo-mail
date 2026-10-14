@@ -169,3 +169,7 @@ Sabine ADV095 corrected the wire after cb1ec5b: context_id is UUID and exactly e
 Root reported no-control-regex offenses at v2Contract.ts 68/87 and v2PreferencesGateway.ts 11. Replaced those patterns with code-point predicates for C0/DEL/C1, added C1 source/display-name regressions, and corrected two old preference gateway tests to the current input-first method order. Exact Docker lint/type/unit/build NOT_RUN on this repair; no broader PASS claimed.
 
 ATT838 follow-up: Sabine specified the signed authorization_version shape as exact 43-character SessionCrypto URL-safe token. The signer and client test fixtures now enforce that size; earlier 16..256 wording is superseded. Root reserved migration 00018 for the helper after Maeve00016/Corin00017. Fleet tests/interoperability pending.
+
+## ATT823 inert metadata controller
+
+`V2::InboxAttachmentsController#index` is an unregistered adapter. It validates UUID path/query input, uses the current authenticated read-only snapshot and `ThreadReads#direct_message` for exact mailbox/thread/message access, then calls Nadia’s bounded metadata service/repository without returning storage keys. It has no active route or browser production port. Source-only, NOT_RUN; Ruby Steep/HTTP/RLS, private byte proxy and post-fetch recheck are pending.

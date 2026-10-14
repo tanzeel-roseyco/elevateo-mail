@@ -325,3 +325,5 @@ FE807 sequence editor lint diagnostic: Remove step's `setSteps` callback was mis
 
 ATT838 wire now validates the signed authorization_version as an exact 43-character URL-safe SessionCrypto token, alongside equal context UUIDs. Sabine gateway helper uses migration 00018 because 00016/00017 are occupied; interop remains untested.
 Integration 338a442 supplies both narrow SEC802 grants. The role fixture additionally asserts the actual login role via `session_user`, effective role via `current_user` before/after `SET LOCAL ROLE`, and lack of worker EXECUTE on draft-write. This explicit restricted-role switch is a probe; production V2/Tenancy source does not switch role, so fleet runtime must confirm its actual API pool identity.
+
+ATT823 now has an unregistered Rails metadata read adapter that binds one mailbox/thread/message to a current direct-message authorization snapshot and projects only Nadia’s bounded metadata page. The binary download route and production UI port stay inactive pending Sabine gateway proof and fresh post-fetch reauthorization.
