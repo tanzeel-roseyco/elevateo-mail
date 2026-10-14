@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "rails"
+require "logger"
 require_relative "send_api_controller_test"
 require_relative "../../app/controllers/v1/send_reviews_controller"
 
@@ -14,6 +16,7 @@ class SendAPIReadsTest < Minitest::Test
   def setup
     @service, @store, @client, @cookie = harness
     @connection = CollaborationControllerHarness::Connection.new(metadata)
+    @logger = Logger.new(StringIO.new)
   end
 
   def teardown
@@ -42,7 +45,7 @@ class SendAPIReadsTest < Minitest::Test
     configuration = config
     configuration.send_api_enabled = true
     configuration.send_control_path = ""
-    env = Rack::MockRequest.env_for("https://app.test/v1/send-review", method: "GET")
+    env = Rack::MockRequest.env_for("https://app.test/v1/send-review", method: "GET", input: "")
     env.merge!("QUERY_STRING" => query, "HTTP_COOKIE" => "elevateo_session=#{@cookie}",
       "HTTP_X_SESSION_CONTEXT" => AuthFixtures::CONTEXT,
       "HTTP_X_AUTHORIZATION_VERSION" => @service.presentation.version(metadata),
@@ -51,8 +54,10 @@ class SendAPIReadsTest < Minitest::Test
       "be02.sessions" => @service, "be02.config" => configuration)
     env.merge!(headers)
     pool = CollaborationControllerHarness::Pool.new(@connection)
-    code, response_headers, body = ActiveRecord::Base.stub(:connection_pool, pool) do
-      controller.action("show").call(env)
+    code, response_headers, body = Rails.stub(:logger, @logger) do
+      ActiveRecord::Base.stub(:connection_pool, pool) do
+        controller.action("show").call(env)
+      end
     end
     serialized = +""
     body.each { |part| serialized << part }
