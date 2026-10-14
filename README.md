@@ -202,3 +202,5 @@ OUT-804 account list/detail now require the campaign path ID, with account lists
 OUT-804 creates now persist an immutable request fingerprint, so an exact create retry is recognized even after the draft record has been edited. A changed request with the same operation ID remains a conflict; fleet verification is pending.
 
 Fleet repository tests on b28b7d3 reached eight cases with one assertion failure: the test regex expected an optional conflict target in valid `ON CONFLICT DO NOTHING` SQL. The assertion is corrected in source; exact rerun is pending.
+
+Exact 5bd1b28 fleet rerun passed campaign input 5/8, repository 8/31 and affected lint 9 files/0 offenses. Steep reported six campaign type problems; the owned source/RBS now declares the connection seam, mixed SQL bind vector and string binds, and validates suppression reason before repository use. Exact repaired-source Steep rerun remains pending.

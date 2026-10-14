@@ -110,7 +110,7 @@ module Elevateo
         org = WriteInput.uuid(organization_id)
         after = cursor.nil? ? nil : WriteInput.uuid(cursor)
         table = table_for(kind)
-        values = [org]
+        values = [org] # : Array[untyped]
         filter = "organization_id=$1::uuid"
         WriteInput.invalid! if %w[lead account].include?(kind) && campaign_id.nil?
         if campaign_id
@@ -242,7 +242,8 @@ module Elevateo
 
       def rows(sql, values)
         binds = values.map do |value|
-          ActiveRecord::Relation::QueryAttribute.new("campaign", value, ActiveRecord::Type::Value.new)
+          ActiveRecord::Relation::QueryAttribute.new("campaign", value.nil? ? nil : value.to_s,
+            ActiveRecord::Type::String.new)
         end
         @connection.exec_query(sql, "Campaign foundation", binds).to_a
       end

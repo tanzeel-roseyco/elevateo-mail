@@ -132,7 +132,8 @@ module V2
           repository = campaign_repository(connection, identity: identity, write: true)
           old = repository.detail(kind: "lead", organization_id: identity.org_id, id: id)
           raise Elevateo::CollaborationError.new("not_available") unless old.fetch("campaign_id") == campaign
-          repository.suppress(organization_id: identity.org_id, email: old.fetch("email"), reason: input.fetch("reason"))
+          reason = Elevateo::WriteInput.text(input.fetch("reason"), maximum: 32)
+          repository.suppress(organization_id: identity.org_id, email: old.fetch("email"), reason: reason)
           write_result(public_item("lead", repository.detail(kind: "lead",
             organization_id: identity.org_id, id: id)))
         end
