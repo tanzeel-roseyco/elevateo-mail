@@ -534,3 +534,7 @@ ADV821 dedicated design: 0 defects/344 LOC on prior actual source and 0/123 LOC 
 Elara b7f2aad revocation navigation is source accepted: ADV831 zero/313 unique LOC; ADV832 zero/226, overlapping coverage nonadditive. Exact InboxPage and test blobs retained; runtime NOT_RUN.
 
 ADV829 functional runner review accepted zero defects/191 primary LOC, 0/KLOC. ADV830 erratum: the reviewer withdrew the request-body HIGH finding because challenge travels in headers; original count is one valid JSON-boundary defect/400 LOC (2.5/KLOC), now closed. The retained broader body union is not a runtime defect. Closure accepted zero remaining defects/221 LOC; ADV833 functional review accepted zero defects/104 LOC (0/KLOC), with overlapping coverage nonadditive. Validated object decoding and boundary regressions are source accepted. No accepted Nadia proof source rewritten; no executed-test claim.
+
+
+## QA404 R17 proposed independent packets — PENDING
+Functional A: diagnostics.ts entire file (97 LOC); B: diagnostics.unit.spec.ts entire file (114 LOC), including context:211 aggregate. Dedicated design review same divided scope, nonadditive overlap. Review full INT401 rubric, native getter identity, hostile Error properties/proxies, bounded path/coordinate parsing, body versus cleanup, original oracles/privacy and Node24 transport compatibility. Author source inspection only; confirmed independent defects/density not measured. Runtime NOT_RUN. Root dispatch required before Soren reviewed freeze.

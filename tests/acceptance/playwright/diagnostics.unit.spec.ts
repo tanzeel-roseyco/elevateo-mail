@@ -100,3 +100,15 @@ test('reporter rejects malicious metadata and never publishes annotation reasons
   assert.equal(caseOutcome({ status: 'skipped', errors: [] }, metadata).reason,
     'Acceptance case unavailable; see source scenario inventory');
 });
+
+test('native and data-property stacks work while custom Error stack getters remain unread', () => {
+  const native = failure();
+  assert.equal(captureDiagnostic(native).source?.line, 120);
+  const data = new Error('synthetic-private');
+  Object.defineProperty(data, 'stack', { value: stackAt(source), configurable: true });
+  assert.equal(captureDiagnostic(data).source?.line, 120);
+  let reads = 0;
+  Object.defineProperty(native, 'stack', { get() { reads++; return stackAt(source, 143); }, configurable: true });
+  assert.deepEqual(captureDiagnostic(native), { category: 'error', phase: 'body', source: null });
+  assert.equal(reads, 0);
+});
