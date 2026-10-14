@@ -17,17 +17,19 @@ def validate(root: Path) -> list[str]:
         return [f"config read failed: {error}"]
     if base.get("identifier") != "com.elevateo.mail":
         errors.append("bundle identifier changed")
-    if base.get("build", {}).get("frontendDist") != "../../web/dist":
-        errors.append("Orion no longer shares apps/web/dist")
-    if base.get("app", {}).get("security", {}).get("csp", "").find("connect-src 'self'") < 0:
-        errors.append("remote connections are not fail closed")
-    if not capabilities:
-        errors.append("no reviewed Tauri capability file")
-    for capability in capabilities:
-        if capability.get("remote") is not None or capability.get("permissions") != []:
-            errors.append("remote or privileged capability granted")
-    if base.get("app", {}).get("security", {}).get("dangerousRemoteDomainIpcAccess"):
+    if base.get("build", {}).get("frontendDist") is not None:
+        errors.append("online-only shell must not bundle web assets")
+    security = base.get("app", {}).get("security", {})
+    if security.get("capabilities") != [] or security.get("assetProtocol", {}).get("enable") is not False:
+        errors.append("native capability or asset protocol enabled")
+    if base.get("app", {}).get("withGlobalTauri") is not False:
+        errors.append("global Tauri bridge enabled")
+    if capabilities:
+        errors.append("Tauri capability files must be absent")
+    if security.get("dangerousRemoteDomainIpcAccess"):
         errors.append("remote IPC access enabled")
+    if base.get("app", {}).get("windows", [{}])[0].get("create") is not False:
+        errors.append("manual guarded window creation is required")
     if mac.get("bundle", {}).get("targets") != ["dmg"]:
         errors.append("macOS target must be DMG")
     options = mac.get("bundle", {}).get("macOS", {})

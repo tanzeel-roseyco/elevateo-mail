@@ -33,3 +33,9 @@ Read-only target-lane inventory: this workspace and fleet shell report Linux, wi
 Static validator continuation: the Mac candidate now rejects a remote Tauri capability, nonempty privileged permissions, and `dangerousRemoteDomainIpcAccess`, regardless of the exact website origin. This is a configuration guard, not proof that runtime navigation or cookie handling is safe. Soren should compile/run these static tests after Orion's online-only source lands.
 
 Release-script correction: Tauri CLI receives the Cargo lock flag after its argument separator, matching Orion's shared Windows runner (`cargo tauri build ... -- --locked`). This command remains unexecuted until a Mac runner with reviewed toolchain and lockfile exists.
+
+## Online-only merged source
+
+Merged exact Orion `625bef1` with lineage in Mac commit `a7852bd`. The common shell now takes `ELEVATEO_WEB_ORIGIN` at build time, validates a bare public HTTPS origin, creates one remote WebView, denies cross-origin top-level navigation and new windows, and configures `capabilities: []` with no capability files. PKCE/keyring source and local asset bundle configuration were removed by Orion. The Mac release script now requires that origin before build and skips the obsolete local React bundle step; the Rust origin validator is the final boundary. Mac static tests were adapted to this online-only base and remain unexecuted pending Soren.
+
+Cookie-session acceptance on clean Macs must include login, refresh/restart, logout, expired/revoked session, in-origin redirects, cross-origin/lookalike/downgrade blocked navigation, new-window denial and upgrade preserving safe state. The external website's login flow and cookie policy must be tested in WKWebView; same-origin policy in source alone is insufficient. No custom callback or native keychain path is in this initial phase.
