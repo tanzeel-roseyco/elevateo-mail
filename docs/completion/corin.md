@@ -1,0 +1,13 @@
+# MAIL-819 isolated inbound boundary
+
+Source baseline: `bbf2353b254a05d48c2da7a508c143e6fba78691`. Candidate SHA: recorded in the Corin outbox after commit.
+
+`apps/server/lib/elevateo/inbound/fake_ingress.rb` is a pure fake-provider ingress boundary. It accepts an already authorized organization/mailbox scope, bounded raw MIME and an isolated event ID. It parses a single plain-text leaf with optional bounded plain/octet attachments, drops all attachment bytes from its DTO, sanitizes displayed headers and filenames, rejects HTML and oversized or malformed input, and calls an injected atomic `insert_once` store. Duplicate identity is `(organization_id, mailbox_id, provider, provider_event_id)`. The caller must establish mailbox authorization from a trusted session; caller-supplied grants are not suitable for an HTTP route. No provider token, network call or live mail is present.
+
+The store interface is intentionally unresolved pending Cassian's route/schema ownership. Production wiring must durably persist inbound event and message in one transaction, enforce the compound unique key in PostgreSQL, and acknowledge only after commit. An in-memory store is used in unit tests only. Attachment metadata is informational; quarantine/storage and authorized download are not implemented. This slice is not a pilot or production inbound capability. Unsupported providers return `unsupported_provider` from the capability query.
+
+Test request to Soren: on fleet-02 under the QA815 Docker lease, run `bundle exec ruby -Itest test/inbound/fake_ingress_test.rb` from `apps/server`, followed by affected RuboCop and Steep after integration typing is added. Tests cover plain-text success and duplicate replay, denied scope and invalid event ID, oversized MIME and HTML rejection. Tests requested, not executed by Corin. No host application tests or Docker execution occurred.
+
+Interface coordination: Cassian owns the versioned HTTP route, trusted authorization lookup, SQL store and canonical contracts. Elara's existing `SendWorker::SubmissionResult` is outbound only; inbound must not reuse an accepted send receipt. The desired inbound result is `:created` or `:duplicate` from the atomic store, with `Inbound::Rejected#code` for deliberate invalid/unsupported input. Simulated design tradeoff: reject an entire multipart event containing HTML rather than silently dropping it; this avoids unexpectedly hiding content while plain-text-only UI behavior is established.
+
+Review: self-inspection only; no independent adversarial or design-tradeoff reviewer has been assigned or claimed. Runtime, PostgreSQL concurrency, actual HTTP authorization, real provider and UI evidence remain NOT_RUN.

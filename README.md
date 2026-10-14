@@ -14,6 +14,10 @@ Shared company mailroom with one Rails domain authority and a React/TypeScript c
 
 ## Current state
 
+### MAIL-819 isolated inbound boundary
+
+Corin added a fake-provider-only plaintext MIME validation module and unit fixtures on baseline `bbf2353`. It is not routed or persisted; Docker tests, integration review and actual inbound acceptance remain pending. See [Corin's record](docs/completion/corin.md).
+
 
 ### R25 approval reload recovery candidate
 
