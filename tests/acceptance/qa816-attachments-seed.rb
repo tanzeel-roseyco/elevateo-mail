@@ -106,8 +106,9 @@ module Qa816AttachmentsSeed
     id = SecureRandom.uuid
     key = "quarantine/#{scope.fetch(:organization_id)}/#{id}"
     storage.put(key, BYTES, content_type: "application/octet-stream")
-    admin.exec_params(<<~SQL, scope.values_at(:organization_id, :mailbox_id, :thread_id, :message_id) +
-      [id, key, filename, BYTES.bytesize, SHA])
+    values = scope.values_at(:organization_id, :mailbox_id, :thread_id, :message_id) +
+      [id, key, filename, BYTES.bytesize, SHA]
+    admin.exec_params(<<~SQL, values)
       INSERT INTO app.inbox_attachments(organization_id,mailbox_id,thread_id,message_id,id,storage_key,
         filename,content_type,byte_size,sha256,scan_status)
       VALUES ($1::uuid,$2::uuid,$3::uuid,$4::uuid,$5::uuid,$6,$7,'text/plain',$8::integer,$9,'pending_scan')
@@ -117,7 +118,8 @@ module Qa816AttachmentsSeed
 
   def self.insert_rejected(admin, scope)
     id = SecureRandom.uuid
-    admin.exec_params(<<~SQL, scope.values_at(:organization_id, :mailbox_id, :thread_id, :message_id) + [id])
+    values = scope.values_at(:organization_id, :mailbox_id, :thread_id, :message_id) + [id]
+    admin.exec_params(<<~SQL, values)
       INSERT INTO app.inbox_attachments(organization_id,mailbox_id,thread_id,message_id,id,
         filename,content_type,byte_size,scan_status,rejection_reason)
       VALUES ($1::uuid,$2::uuid,$3::uuid,$4::uuid,$5::uuid,'qa816-rejected.txt',
