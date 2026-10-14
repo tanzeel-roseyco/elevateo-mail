@@ -429,3 +429,5 @@ Nadia ATT898 exact `4557fd73` narrows attachment repository integer values to de
 Core strict-only branch adds Cassian gateway and Corin fake inbound type repairs over exact 215080a4, excluding later APP901 feature source; Nadia old controller lambda repair remains pending. No successor PASS is claimed.
 
 Nadia STRICT909 old-controller repair is integrated on the isolated core branch without ATT902 content changes. All ten known 215080 Steep diagnostics have source candidates; exact successor fleet proof is NOT_RUN.
+
+STRICT909 final test-only successor adds current-reader denial propagation oracle; core production source unchanged, fleet final-pin proof pending.
