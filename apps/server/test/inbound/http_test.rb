@@ -38,11 +38,14 @@ class FakeInboundHTTPTest < Minitest::Test
   def setup
     @service, @store, @client, @cookie = harness
     @connection = Connection.new(metadata)
+    @old_rails_env = ENV["RAILS_ENV"]
     @old_enable = ENV["ELEVATEO_FAKE_INBOUND_ENABLED"]
+    ENV["RAILS_ENV"] = "test"
     ENV["ELEVATEO_FAKE_INBOUND_ENABLED"] = "1"
   end
 
   def teardown
+    ENV["RAILS_ENV"] = @old_rails_env
     ENV["ELEVATEO_FAKE_INBOUND_ENABLED"] = @old_enable
   end
 
