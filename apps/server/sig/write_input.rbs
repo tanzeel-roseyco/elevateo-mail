@@ -12,17 +12,17 @@ module Elevateo
       def []=: (String, value) -> value
     end
     def self.invalid!: () -> bot
-    def self.transport!: (origin: Object, expected_origin: String, content_type: Object,
-                         content_encoding: Object, body: bool) -> void
+    def self.transport!: (origin: Object?, expected_origin: String, content_type: Object?,
+                         content_encoding: Object?, body: bool) -> void
     def self.read: (Rack::_Input, maximum: Integer) -> String
-    def self.object: (Object) -> object
-    def self.body: (Object, required: Array[String]) -> object
+    def self.object: (Object?) -> object
+    def self.body: (Object?, required: Array[String]) -> object
     def self.query: (String, allowed: Array[String]) -> Hash[String, String]
     def self.decode: (String) -> String
-    def self.validate!: (Object) -> void
-    def self.uuid: (Object) -> String
-    def self.text: (Object, maximum: Integer, ?empty: bool) -> String
-    def self.integer: (Object, minimum: Integer, maximum: Integer) -> Integer
-    def self.boolean: (Object) -> bool
+    def self.validate!: (Object?) -> void
+    def self.uuid: (Object?) -> String
+    def self.text: (Object?, maximum: Integer, ?empty: bool) -> String
+    def self.integer: (Object?, minimum: Integer, maximum: Integer) -> Integer
+    def self.boolean: (Object?) -> bool
   end
 end

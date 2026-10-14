@@ -81,6 +81,22 @@ class DraftBootstrapTest < SessionDatabaseTestCase
     end
   end
 
+  def test_down_dependency_failure_restores_all_prior_object_drops
+    transaction do
+      @admin.exec("SET LOCAL ROLE elevateo_owner")
+      @admin.exec("CREATE VIEW app_drafts_private.be403_dependency AS SELECT id FROM app.drafts")
+      @admin.exec("SAVEPOINT down_probe")
+      error = assert_raises(PG::Error) do
+        @admin.exec(File.read(File.join(PARTS, "prerequisite.sql")) + File.read(File.join(PARTS, "down.sql")))
+      end
+      assert_equal "2BP01", error.result.error_field(PG::Result::PG_DIAG_SQLSTATE)
+      @admin.exec("ROLLBACK TO SAVEPOINT down_probe")
+      %w[app.drafts app_drafts_private.operations app_drafts_private.be403_dependency].each do |object|
+        refute_nil @admin.exec_params("SELECT to_regclass($1)", [object]).getvalue(0, 0)
+      end
+    end
+  end
+
   private
 
   def transaction

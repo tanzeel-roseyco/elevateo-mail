@@ -71,6 +71,7 @@ module Elevateo
     end
 
     def refresh(cookie:, deadline:)
+      raise AuthError.unauthorized unless cookie.is_a?(String)
       digest, claim = @crypto.digest(cookie), SecureRandom.uuid
       owned = checked("claim_refresh", [digest, claim], deadline)
       generation = owned["refresh_generation"]

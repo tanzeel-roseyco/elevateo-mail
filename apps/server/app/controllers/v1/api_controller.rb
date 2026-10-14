@@ -12,8 +12,9 @@ module V1
 
     # AIDEV-NOTE: Rails instrumentation otherwise parses/truncates raw input before our bounded boundary runs.
     def process_action(*arguments)
-      request.request_parameters = {}
-      request.set_header("action_dispatch.request.query_parameters", {})
+      empty_parameters = {} # : Hash[String, Object?]
+      request.request_parameters = empty_parameters
+      request.set_header("action_dispatch.request.query_parameters", empty_parameters)
       super
     end
 

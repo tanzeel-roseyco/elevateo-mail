@@ -113,7 +113,9 @@ class WriteBoundaryDatabaseTest < WriteBoundaryDatabaseTestCase
     assert_operator lower, :<, @user
     second_digest = SecureRandom.hex(32)
     assert_equal "ok", create(digest: second_digest).fetch("status")
-    @admin.exec_params("SELECT app_auth.lock_authorization_generations($1, $2)", [@org, lower])
+    # AIDEV-NOTE: A committed tuple is required; NOWAIT cannot observe T2's still-uncommitted first insertion.
+    @admin.exec_params("INSERT INTO app_auth.authorization_generations(organization_id,user_id) VALUES ($1,$2)", [@org, lower])
+    assert_equal "1", @admin.exec_params("SELECT count(*) FROM app_auth.authorization_generations WHERE organization_id=$1 AND user_id=$2", [@org, lower]).getvalue(0, 0)
     with_api_connections(1) do |connections|
       second = connections.first
       begin_write

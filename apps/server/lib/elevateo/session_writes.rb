@@ -66,6 +66,7 @@ module Elevateo
     def with_write_connection(deadline)
       pool = ActiveRecord::Base.connection_pool
       raise Tenancy::ContextError, "write cannot join an ambient transaction" if pool.active_connection?&.transaction_open?
+      # @type var connection: ActiveRecord::ConnectionAdapters::AbstractAdapter?
       connection = nil
       handed_off = false
       # @type var disposition: disposition

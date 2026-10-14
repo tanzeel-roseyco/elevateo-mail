@@ -37,7 +37,7 @@ module V1
     def logout
       input = api_body(required: [], optional: %w[scope])
       scope = input.fetch("scope", "local")
-      raise Elevateo::AuthError.invalid unless %w[local global].include?(scope)
+      raise Elevateo::AuthError.invalid unless scope.is_a?(String) && %w[local global].include?(scope)
       verify_logout!
       result = sessions.logout(cookie: session_cookie, scope: scope, deadline: api_deadline)
       clear_auth_cookie("elevateo_session")

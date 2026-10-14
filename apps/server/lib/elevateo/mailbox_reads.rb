@@ -33,8 +33,9 @@ module Elevateo
       envelope = { "context_id" => session_token(session, "context_id"),
                    "authorization_version" => session_token(session, "authorization_version") }
       # @type var scope: Cursors::scope
+      filters = {} # : Hash[String, String]
       scope = envelope.merge("actor_id" => identity.user_id, "organization_id" => identity.org_id,
-                             "resource" => "mailboxes", "filters" => {}, "order" => "id:asc", "limit" => limit)
+                             "resource" => "mailboxes", "filters" => filters, "order" => "id:asc", "limit" => limit)
       after = cursor_position(query["cursor"], scope)
       # AIDEV-NOTE: Fetch one authorized lookahead row, never a hidden count or privileged existence probe.
       binds = [identity.user_id, identity.org_id, after, (limit + 1).to_s].map do |value|

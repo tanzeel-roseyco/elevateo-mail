@@ -3,6 +3,7 @@
 module Elevateo
   # AIDEV-NOTE: C/D have their own fixed error vocabulary; A/B lifecycle responses keep their existing contract.
   class CollaborationError < StandardError
+    # @type const ERRORS: Hash[String, [Integer, String]]
     ERRORS = {
       "request_invalid" => [400, "Invalid request"], "cursor_invalid" => [400, "Invalid cursor"],
       "unauthenticated" => [401, "Authentication required"],

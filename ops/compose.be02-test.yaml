@@ -189,6 +189,12 @@ services:
   test:
     <<: *rails
     profiles: [tools]
+    # AIDEV-NOTE: This exact read-only source file lets disposable tests exercise the real administrative guard.
+    volumes:
+      - ${BE02_SOURCE:?source required}/apps/server:/workspace/apps/server:ro
+      - ${BE02_SOURCE:?source required}/contracts:/workspace/contracts:ro
+      - ${BE02_SOURCE:?source required}/ops/tests/be02:/workspace/ops/tests/be02:ro
+      - ${BE02_SOURCE:?source required}/ops/db/bootstrap.sql:/workspace/ops/db/bootstrap.sql:ro
     environment:
       <<: *runtime
       ELEVATEO_DB_ROLE: elevateo_api
