@@ -17,6 +17,9 @@ class ContractV2Test < Minitest::Test
     assert @contract.dig("components", "schemas", "OrganizationGrant")
     assert_equal "active", @contract.dig("paths", "/v2/outreach/campaigns", "get", "x-elevateo-status")
     assert_equal "active", @contract.dig("paths", "/v2/outreach/campaigns", "post", "x-elevateo-status")
+    assert_equal "active", @contract.dig("paths", "/v2/outreach/campaigns/{campaign_id}", "put", "x-elevateo-status")
+    assert_equal "active", @contract.dig("paths", "/v2/outreach/campaigns/{campaign_id}/leads", "post", "x-elevateo-status")
+    assert_equal "active", @contract.dig("paths", "/v2/outreach/campaigns/{campaign_id}/leads/{lead_id}", "put", "x-elevateo-status")
   end
 
   def test_failure_no_live_dispatch_or_v1_collision
@@ -24,6 +27,7 @@ class ContractV2Test < Minitest::Test
     assert_equal %w[draft paused], @contract.dig("components", "schemas", "OutreachPlan", "properties", "status", "enum")
     refute @contract.fetch("paths").keys.any? { |path| path.include?("send") }
     assert_equal "disabled", @contract.dig("paths", "/v2/outreach/campaigns/{campaign_id}/accounts", "get", "x-elevateo-status")
+    assert_equal "disabled", @contract.dig("paths", "/v2/worker/jobs/{job_id}", "get", "x-elevateo-status")
   end
 
   def test_failure_worker_does_not_inherit_browser_authority
