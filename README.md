@@ -14,6 +14,9 @@ A planned shared company mailbox for approximately **10 people**, available on a
 
 ## Current state
 
+QA-404 observer adversarial review: Ada ADV-734 found one P1 policy-confinement defect in146LOC (6.849/KLOC). Source repair adds a restrictive literal fence, owner/forced-RLS prerequisites and per-snapshot policy hash; real-PG broad-PUBLIC/disabled-RLS regressions authored. Runtime NOT_RUN.
+
+
 QA-404 attempt4 update: 14 scenario sources authored /12 unavailable after real delayed-response logout stimulus. Runtime/visual NOT_RUN. Empty-member screenshot allowlist defect fixed with durable-budget regression. See docs/completion/qa404-attempt4.md.
 
 

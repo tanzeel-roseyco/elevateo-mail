@@ -14,6 +14,11 @@ module Be02Acceptance
       # The scheduler issues this marker only for its exact isolated CI database, never either persistent stack.
       marker = db.exec("SELECT current_setting('qa404.disposable_nonce',true)").getvalue(0, 0)
       raise "disposable_ci_required" unless marker == disposable_nonce
+      %w[app.drafts app_drafts_private.operations].each do |table|
+        row = db.exec_params("SELECT relrowsecurity,relforcerowsecurity,pg_get_userbyid(relowner) AS owner FROM pg_class WHERE oid=$1::regclass", [table]).first
+        raise "observer_rls_prerequisite_invalid" unless row && row.fetch("relrowsecurity") == "t" &&
+          row.fetch("relforcerowsecurity") == "t" && row.fetch("owner") == "elevateo_owner"
+      end
       role = "qa404_#{SecureRandom.hex(16)}"
       quoted_role = PG::Connection.quote_ident(role)
       predicate = "organization_id=#{db.escape_literal(organization_id)}::uuid AND " \
@@ -29,10 +34,12 @@ module Be02Acceptance
           "ON app_drafts_private.operations TO #{quoted_role}")
         %w[app.drafts app_drafts_private.operations].each do |table|
           db.exec("CREATE POLICY #{quoted_role} ON #{table} FOR SELECT TO #{quoted_role} USING (#{predicate})")
+          fence = PG::Connection.quote_ident("#{role}_fence")
+          db.exec("CREATE POLICY #{fence} ON #{table} AS RESTRICTIVE FOR SELECT TO #{quoted_role} USING (#{predicate})")
         end
       end
       { "database_oid" => Integer(db.exec("SELECT oid FROM pg_database WHERE datname=current_database()").getvalue(0, 0)),
-        "role" => role, "nonce" => disposable_nonce, "organization_id" => organization_id,
+        "policy_hash" => Observer.policy_hash(db, role), "role" => role, "nonce" => disposable_nonce, "organization_id" => organization_id,
         "mailbox_id" => mailbox_id, "actor_id" => actor_id, "sentinel_draft_id" => sentinel_draft_id }
     end
 
@@ -45,6 +52,7 @@ module Be02Acceptance
       quoted_role = PG::Connection.quote_ident(role)
       db.transaction do
         %w[app.drafts app_drafts_private.operations].each do |table|
+          db.exec("DROP POLICY #{PG::Connection.quote_ident("#{role}_fence")} ON #{table}")
           db.exec("DROP POLICY #{quoted_role} ON #{table}")
           db.exec("REVOKE ALL ON #{table} FROM #{quoted_role}")
         end

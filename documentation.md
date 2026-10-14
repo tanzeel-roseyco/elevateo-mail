@@ -1,3 +1,5 @@
+QA-404 observer adversarial review: Ada ADV-734 found one P1 policy-confinement defect in146LOC (6.849/KLOC). Source repair adds a restrictive literal fence, owner/forced-RLS prerequisites and per-snapshot policy hash; real-PG broad-PUBLIC/disabled-RLS regressions authored. Runtime NOT_RUN.
+
 QA-404 attempt4 update: 14 scenario sources authored /12 unavailable after real delayed-response logout stimulus. Runtime/visual NOT_RUN. Empty-member screenshot allowlist defect fixed with durable-budget regression. See docs/completion/qa404-attempt4.md.
 
 QA-404 attempt4: exact app integration 7b0678c merged preserving owned QA changes. Restricted CI observer and real transport barriers source drafted; 13 scenario controls remain unavailable, integrated runtime NOT_RUN. See docs/completion/qa404-attempt4.md.

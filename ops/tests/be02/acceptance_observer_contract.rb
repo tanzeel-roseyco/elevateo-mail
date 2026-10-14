@@ -32,6 +32,11 @@ module Be02Acceptance
       raise "observer_scope_failure" unless hidden == { "drafts" => [], "operations" => [] }
       expect_rejection(ArgumentError) { observer.observe(draft_id: sentinel, operation_id: nil, nonce: (nonce.start_with?("0") ? "1" : "0") + nonce[1..]) }
       expect_rejection(ArgumentError) { observer.observe(draft_id: "invalid", operation_id: nil, nonce: nonce) }
+      # A permissive PUBLIC policy must not OR-widen the role-specific restrictive fence.
+      public_policy = "#{binding.fetch('role')}_public_test"
+      %w[app.drafts app_drafts_private.operations].each do |table|
+        admin.exec("CREATE POLICY #{PG::Connection.quote_ident(public_policy)} ON #{table} FOR SELECT TO PUBLIC USING (true)")
+      end
       restricted = PG.connect(**parameters)
       restricted.set_notice_processor { |_notice| nil }
       # Independent column and RLS checks catch accidentally broad grants even when helper SQL stays narrow.
@@ -52,19 +57,38 @@ module Be02Acceptance
       restricted.exec("ROLLBACK")
       restricted.close
       restricted = nil
+      admin.exec("ALTER TABLE app.drafts DISABLE ROW LEVEL SECURITY")
+      rls_disabled = true
+      expect_rejection(RuntimeError, message: "observer_fence_invalid") do
+        observer.observe(draft_id: sentinel, operation_id: nil, nonce: nonce)
+      end
+      admin.exec("ALTER TABLE app.drafts ENABLE ROW LEVEL SECURITY")
+      rls_disabled = false
+      raise "observer_restoration_failed" unless observer.observe(draft_id: sentinel, operation_id: nil, nonce: nonce).fetch("drafts") == [expected]
+      %w[app.drafts app_drafts_private.operations].each do |table|
+        admin.exec("DROP POLICY #{PG::Connection.quote_ident(public_policy)} ON #{table}")
+      end
+      public_policy = nil
       ObserverRole.drop(admin, binding)
       raise "observer_role_cleanup_failed" unless admin.exec_params("SELECT 1 FROM pg_roles WHERE rolname=$1", [binding.fetch("role")]).ntuples.zero?
       binding = nil
-      { "status" => "observed", "scope" => "observer_role_and_draft_visibility_only", "assertions" => 13 }
+      { "status" => "observed", "scope" => "observer_role_and_draft_visibility_only", "assertions" => 15 }
     ensure
       restricted&.close
+      admin.exec("ALTER TABLE app.drafts ENABLE ROW LEVEL SECURITY") if rls_disabled
+      if public_policy
+        %w[app.drafts app_drafts_private.operations].each do |table|
+          admin.exec("DROP POLICY IF EXISTS #{PG::Connection.quote_ident(public_policy)} ON #{table}")
+        end
+      end
       ObserverRole.drop(admin, binding) if binding
     end
 
-    def self.expect_rejection(error_class)
+    def self.expect_rejection(error_class, message: nil)
       begin
         yield
-      rescue error_class
+      rescue error_class => error
+        raise "observer_wrong_rejection" if message && error.message != message
         return
       end
       raise "observer_rejection_missing"
