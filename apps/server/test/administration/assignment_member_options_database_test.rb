@@ -9,6 +9,7 @@ class AssignmentMemberOptionsDatabaseTest < SessionDatabaseTestCase
     assert_equal "ok", create.fetch("status")
     @targets = []
     @boxes = []
+    @foreign_orgs = []
     @box = add_box
     add_thread(@box)
   end
@@ -17,6 +18,7 @@ class AssignmentMemberOptionsDatabaseTest < SessionDatabaseTestCase
     @api&.exec("ROLLBACK") if @api && @api.transaction_status != PG::PQTRANS_IDLE
     @admin&.exec("ROLLBACK") if @admin && @admin.transaction_status != PG::PQTRANS_IDLE
     (@boxes || []).each { |box| @admin.exec_params("DELETE FROM app.mailboxes WHERE id = $1", [box]) }
+    (@foreign_orgs || []).each { |org| @admin.exec_params("DELETE FROM app.organizations WHERE id = $1", [org]) }
     (@targets || []).each do |target|
       @admin.exec_params("DELETE FROM app.organization_memberships WHERE organization_id = $1 AND user_id = $2", [@org, target])
       @admin.exec_params("DELETE FROM app_auth.authorization_generations WHERE organization_id = $1 AND user_id = $2", [@org, target])
@@ -104,8 +106,17 @@ class AssignmentMemberOptionsDatabaseTest < SessionDatabaseTestCase
 
   def test_foreign_absent_empty_and_revoked_authority_denies_without_enumeration
     foreign = SecureRandom.uuid
+    @foreign_orgs << foreign
+    @admin.exec_params("INSERT INTO app.organizations(id,name) VALUES ($1,'foreign witness')", [foreign])
+    foreign_box = SecureRandom.uuid
+    @boxes << foreign_box
+    @admin.exec_params("INSERT INTO app.mailboxes(id,organization_id,address,visibility) VALUES ($1,$2,$3,'shared')",
+      [foreign_box, foreign, "#{foreign_box}@example.invalid"])
+    @admin.exec_params("INSERT INTO app.threads(id,organization_id,mailbox_id) VALUES ($1,$2,$3)",
+      [SecureRandom.uuid, foreign, foreign_box])
     assert_equal "not_found", page(box: foreign).fetch("status")
-    assert_equal "not_found", page(organization: foreign).fetch("status")
+    assert_equal "not_found", page(box: foreign_box).fetch("status")
+    assert_equal "not_found", page(box: foreign_box, organization: foreign).fetch("status")
     empty_box = add_box
     assert_equal "not_found", page(box: empty_box).fetch("status"), "no thread means no assignment write"
     @admin.exec_params("DELETE FROM app.organization_memberships WHERE organization_id=$1 AND user_id=$2", [@org, @user])
