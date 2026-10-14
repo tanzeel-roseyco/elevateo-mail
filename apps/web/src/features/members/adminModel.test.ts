@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest'
+import { RosterPersonSchema } from '@/data/v2Contract'
 import { CONFIG_PEOPLE, editableRoles, validActorProjection, validGrantProjection, validRosterProjection } from './adminModel'
 
 const owner = { organization_id: '00000000-0000-4000-8000-000000000001', user_id: '00000000-0000-4000-8000-000000000002', role: 'organization_owner' as const, revision: 1 }
@@ -11,7 +12,8 @@ describe('people and grant model', () => {
     expect(CONFIG_PEOPLE.every((person) => person.email === null && person.auth_user_id === null && person.enrollment_state === 'unbound')).toBe(true)
   })
   it('requires the server roster to match exactly the unbound reference keys and names', () => {
-    const rows = CONFIG_PEOPLE.map(({ key, display_name, title, department, enrollment_state }) => ({ key, display_name, title, department, enrollment_state }))
+    const rows = CONFIG_PEOPLE.map(({ key, display_name, title, department, enrollment_state }) =>
+      RosterPersonSchema.parse({ key, display_name, title, department, enrollment_state }))
     expect(validRosterProjection(rows)).toBe(true)
     expect(validRosterProjection(rows.slice(1))).toBe(false)
     expect(validRosterProjection([{ ...rows[0]!, display_name: 'Changed' }, ...rows.slice(1)])).toBe(false)
