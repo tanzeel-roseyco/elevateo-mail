@@ -68,6 +68,7 @@ module Elevateo
       REVIEW_SQL: String
       APPROVE_SQL: String
       STATUS_SQL: String
+      CANCEL_SQL: String
       APPROVED: Array[String]
       SEMANTIC: Array[String]
       @database: Database
@@ -75,6 +76,7 @@ module Elevateo
       def review: (draft_id: String, query: Hash[String, String]) -> String
       def approve: (Input, session_digest: String, epoch: String?, request_id: String?) -> WriteResponse
       def status: (send_id: String, query: Hash[String, String], epoch: String?) -> String
+      def cancel: (send_id: String, mailbox_id: String, session_digest: String, epoch: String?) -> WriteResponse
       private
       def target: (Hash[String, String], String) -> [String, String]
       def validate_approval: (ReadResponse::item, Input) -> void

@@ -12,7 +12,7 @@ module V1
       end
     end
 
-    # AIDEV-NOTE: S3 has no accepted SQL cancellation bridge yet; guarded writes cannot mutate or claim cancellation.
+    # AIDEV-NOTE: Cancellation uses the same protected transaction as approval; SQL owns the job lock and race outcome.
     def cancel
       protected_write(required: %w[mailbox_id], max_bytes: 4096, budget: 16_384,
         guard_users: ->(input:, query:) {
@@ -22,11 +22,10 @@ module V1
           Elevateo::WriteInput.uuid(input["mailbox_id"])
           send_path(:send_id)
           []
-        }) do |input:, **|
+        }) do |connection:, identity:, session:, input:, **|
         # @type var input: Elevateo::WriteInput::object
-        Elevateo::WriteInput.uuid(input["mailbox_id"])
-        send_path(:send_id)
-        raise Elevateo::SendError.new("temporarily_unavailable")
+        send_service(connection, session).cancel(send_id: send_path(:send_id), mailbox_id: input["mailbox_id"],
+          session_digest: identity.digest, epoch: send_epoch)
       end
     end
   end
