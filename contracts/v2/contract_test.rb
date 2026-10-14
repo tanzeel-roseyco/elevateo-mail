@@ -12,14 +12,15 @@ class ContractV2Test < Minitest::Test
   end
 
   def test_happy_path_has_additive_interfaces
-    assert_equal "2.0.0-draft.1", @contract.dig("info", "version")
+    assert_equal "2.0.0-draft.2", @contract.dig("info", "version")
     assert_equal %w[get post put], @contract.fetch("paths").values.flat_map(&:keys).uniq.sort
     assert @contract.dig("components", "schemas", "OrganizationGrant")
+    assert_equal "active", @contract.dig("paths", "/v2/outreach/campaigns", "get", "x-elevateo-status")
   end
 
   def test_failure_no_live_dispatch_or_v1_collision
     assert_empty(@contract.fetch("paths").keys & JSON.parse(File.read(V1)).fetch("paths").keys)
-    assert_equal "simulation", @contract.dig("components", "schemas", "OutreachPlan", "properties", "mode", "const")
+    assert_equal %w[draft paused], @contract.dig("components", "schemas", "OutreachPlan", "properties", "status", "enum")
     refute @contract.fetch("paths").keys.any? { |path| path.include?("send") }
   end
 

@@ -1,37 +1,505 @@
 {
   "openapi": "3.1.1",
   "info": {
-    "title": "Elevateo additive administration and offline workflow API",
-    "version": "2.0.0-draft.1",
-    "description": "Proposed additive interfaces. No endpoint is active until its owning authorization and persistence implementation passes fleet verification. V1 session, read, collaboration and send shapes are unchanged."
+    "title": "Elevateo additive administration and inert outreach API",
+    "version": "2.0.0-draft.2",
+    "description": "V1 schemas unchanged. Only GET outreach campaigns is active; other operations are draft pending owner authorization and runtime gates."
   },
-  "servers": [{"url": "/"}],
-  "security": [{"sessionCookie": []}],
+  "servers": [
+    {
+      "url": "/"
+    }
+  ],
+  "security": [
+    {
+      "sessionCookie": []
+    }
+  ],
   "paths": {
     "/v2/organizations/{organization_id}/grants": {
-      "get": {"operationId": "listOrganizationGrants", "parameters": [{"$ref": "#/components/parameters/OrganizationId"}], "responses": {"200": {"description": "Redacted grants only; no mailbox content", "content": {"application/json": {"schema": {"type": "object", "additionalProperties": false, "required": ["revision", "grants"], "properties": {"revision": {"type": "integer", "minimum": 0}, "grants": {"type": "array", "items": {"$ref": "#/components/schemas/OrganizationGrant"}}}}}}, "403": {"$ref": "#/components/responses/Forbidden"}}}
+      "get": {
+        "operationId": "listOrganizationGrants",
+        "x-elevateo-status": "disabled",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/OrganizationId"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "maxLength": 2048
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Redacted grants",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrganizationGrantPage"
+                }
+              }
+            }
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          }
+        }
+      }
     },
     "/v2/organizations/{organization_id}/grants/{user_id}": {
-      "put": {"operationId": "replaceOrganizationGrant", "parameters": [{"$ref": "#/components/parameters/OrganizationId"}, {"$ref": "#/components/parameters/UserId"}], "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/GrantChange"}}}, "responses": {"200": {"description": "Committed role and new revision", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/OrganizationGrant"}}}, "403": {"$ref": "#/components/responses/Forbidden"}, "409": {"$ref": "#/components/responses/Conflict"}}}
+      "put": {
+        "operationId": "replaceOrganizationGrant",
+        "x-elevateo-status": "disabled",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/OrganizationId"
+          },
+          {
+            "$ref": "#/components/parameters/UserId"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GrantChange"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated subordinate grant",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrganizationGrant"
+                }
+              }
+            }
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          }
+        }
+      }
     },
     "/v2/outreach/campaigns": {
-      "post": {"operationId": "createOutreachCampaign", "description": "Create a simulation-only campaign plan; never dispatches mail.", "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/OutreachPlan"}}}, "responses": {"201": {"description": "Simulation plan saved", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/OutreachCampaign"}}}, "403": {"$ref": "#/components/responses/Forbidden"}}}
+      "get": {
+        "operationId": "listOutreachCampaigns",
+        "x-elevateo-status": "active",
+        "description": "Authenticated tenant-scoped inert campaign summaries; no send capability.",
+        "responses": {
+          "200": {
+            "description": "Current inert campaign summaries",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CampaignPage"
+                }
+              }
+            }
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          }
+        }
+      },
+      "post": {
+        "operationId": "createOutreachCampaign",
+        "x-elevateo-status": "disabled",
+        "description": "Proposed idempotent inert plan creation; no dispatch.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OutreachPlan"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Inert campaign created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CampaignSummary"
+                }
+              }
+            }
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          }
+        }
+      }
     },
     "/v2/worker/jobs/{job_id}": {
-      "get": {"operationId": "getWorkerJob", "description": "Internal worker status; requires worker principal, not browser session.", "security": [{"workerPrincipal": []}], "parameters": [{"$ref": "#/components/parameters/JobId"}], "responses": {"200": {"description": "Redacted status", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/WorkerJob"}}}, "403": {"$ref": "#/components/responses/Forbidden"}}}
+      "get": {
+        "operationId": "getWorkerJob",
+        "x-elevateo-status": "disabled",
+        "description": "Internal worker principal only; never a browser session.",
+        "security": [
+          {
+            "workerPrincipal": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/JobId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Redacted job state",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkerJob"
+                }
+              }
+            }
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          }
+        }
+      }
+    },
+    "/v2/organizations/{organization_id}/roster": {
+      "get": {
+        "operationId": "getOrganizationRoster",
+        "x-elevateo-status": "disabled",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/OrganizationId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Unbound display configuration only",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RosterPage"
+                }
+              }
+            }
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          }
+        }
+      }
     }
   },
   "components": {
-    "securitySchemes": {"sessionCookie": {"type": "apiKey", "in": "cookie", "name": "elevateo_session"}, "workerPrincipal": {"type": "mutualTLS"}},
-    "parameters": {"OrganizationId": {"name": "organization_id", "in": "path", "required": true, "schema": {"$ref": "#/components/schemas/Id"}}, "UserId": {"name": "user_id", "in": "path", "required": true, "schema": {"$ref": "#/components/schemas/Id"}}, "JobId": {"name": "job_id", "in": "path", "required": true, "schema": {"$ref": "#/components/schemas/Id"}}},
-    "responses": {"Forbidden": {"description": "Current authority denied"}, "Conflict": {"description": "Expected revision stale or authority changed"}},
+    "securitySchemes": {
+      "sessionCookie": {
+        "type": "apiKey",
+        "in": "cookie",
+        "name": "elevateo_session"
+      },
+      "workerPrincipal": {
+        "type": "mutualTLS"
+      }
+    },
+    "parameters": {
+      "OrganizationId": {
+        "name": "organization_id",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "$ref": "#/components/schemas/Id"
+        }
+      },
+      "UserId": {
+        "name": "user_id",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "$ref": "#/components/schemas/Id"
+        }
+      },
+      "JobId": {
+        "name": "job_id",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "$ref": "#/components/schemas/Id"
+        }
+      }
+    },
+    "responses": {
+      "Forbidden": {
+        "description": "Current authority denied"
+      },
+      "Conflict": {
+        "description": "Expected revision stale or authority changed"
+      }
+    },
     "schemas": {
-      "Id": {"type": "string", "format": "uuid"},
-      "OrganizationGrant": {"type": "object", "additionalProperties": false, "required": ["organization_id", "user_id", "role", "revision"], "properties": {"organization_id": {"$ref": "#/components/schemas/Id"}, "user_id": {"$ref": "#/components/schemas/Id"}, "role": {"enum": ["organization_owner", "organization_admin", "organization_member"]}, "revision": {"type": "integer", "minimum": 0}}},
-      "GrantChange": {"type": "object", "additionalProperties": false, "required": ["role", "expected_revision"], "properties": {"role": {"enum": ["organization_admin", "organization_member"]}, "expected_revision": {"type": "integer", "minimum": 0}}},
-      "OutreachPlan": {"type": "object", "additionalProperties": false, "required": ["name", "mode"], "properties": {"name": {"type": "string", "minLength": 1, "maxLength": 120}, "mode": {"const": "simulation"}}},
-      "OutreachCampaign": {"type": "object", "additionalProperties": false, "required": ["id", "name", "mode", "status"], "properties": {"id": {"$ref": "#/components/schemas/Id"}, "name": {"type": "string"}, "mode": {"const": "simulation"}, "status": {"const": "draft"}}},
-      "WorkerJob": {"type": "object", "additionalProperties": false, "required": ["id", "status"], "properties": {"id": {"$ref": "#/components/schemas/Id"}, "status": {"enum": ["queued", "leased", "completed", "failed"]}}}
+      "Id": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "OrganizationGrant": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "organization_id",
+          "user_id",
+          "role",
+          "revision"
+        ],
+        "properties": {
+          "organization_id": {
+            "$ref": "#/components/schemas/Id"
+          },
+          "user_id": {
+            "$ref": "#/components/schemas/Id"
+          },
+          "role": {
+            "enum": [
+              "organization_owner",
+              "organization_admin",
+              "technology_operator",
+              "sales_lead",
+              "sales_member",
+              "security_auditor",
+              "organization_member"
+            ]
+          },
+          "revision": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      },
+      "GrantChange": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "role",
+          "expected_revision"
+        ],
+        "properties": {
+          "role": {
+            "enum": [
+              "organization_admin",
+              "organization_member"
+            ]
+          },
+          "expected_revision": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      },
+      "CampaignSummary": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "name",
+          "status"
+        ],
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/Id"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 160
+          },
+          "status": {
+            "enum": [
+              "draft",
+              "paused"
+            ]
+          }
+        }
+      },
+      "CampaignPage": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "items"
+        ],
+        "properties": {
+          "items": {
+            "type": "array",
+            "maxItems": 100,
+            "items": {
+              "$ref": "#/components/schemas/CampaignSummary"
+            }
+          }
+        }
+      },
+      "OutreachPlan": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "operation_id",
+          "name",
+          "status"
+        ],
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/Id"
+          },
+          "operation_id": {
+            "$ref": "#/components/schemas/Id"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 160
+          },
+          "status": {
+            "enum": [
+              "draft",
+              "paused"
+            ]
+          }
+        }
+      },
+      "WorkerJob": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "status"
+        ],
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/Id"
+          },
+          "status": {
+            "enum": [
+              "queued",
+              "leased",
+              "completed",
+              "failed"
+            ]
+          }
+        }
+      },
+      "OrganizationGrantPage": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "context_id",
+          "authorization_version",
+          "items",
+          "next_cursor"
+        ],
+        "properties": {
+          "context_id": {
+            "type": "string",
+            "minLength": 16,
+            "maxLength": 256
+          },
+          "authorization_version": {
+            "type": "string",
+            "minLength": 16,
+            "maxLength": 256
+          },
+          "items": {
+            "type": "array",
+            "maxItems": 50,
+            "items": {
+              "$ref": "#/components/schemas/OrganizationGrant"
+            }
+          },
+          "next_cursor": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 2048
+          }
+        }
+      },
+      "RosterPerson": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "key",
+          "display_name",
+          "title",
+          "department",
+          "enrollment_state"
+        ],
+        "properties": {
+          "key": {
+            "type": "string",
+            "pattern": "^elev-person-0(0[1-9]|1[0-2])$"
+          },
+          "display_name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 96
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 96
+          },
+          "department": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "enum": [
+              "technology",
+              "sales",
+              "cybersecurity",
+              null
+            ]
+          },
+          "enrollment_state": {
+            "const": "unbound"
+          }
+        }
+      },
+      "RosterPage": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "people"
+        ],
+        "properties": {
+          "people": {
+            "type": "array",
+            "maxItems": 12,
+            "items": {
+              "$ref": "#/components/schemas/RosterPerson"
+            }
+          }
+        }
+      }
     }
   }
 }

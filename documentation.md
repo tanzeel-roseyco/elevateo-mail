@@ -1,3 +1,7 @@
+### INT-801 integrated source candidate (2026-10-14)
+
+Cassian merged the Foundation, Frontend, Delivery, Native, QA and Mail owner candidates in the isolated `completion-cassian-int801` worktree. One authenticated V2 read route lists inert campaign summaries under the current tenant snapshot; it cannot dispatch mail. Organization grants, roster, campaign writes/details, worker status and inbound ingestion stay disabled until their owner authorization and persistence seams are reconciled. The first fleet contract probe of intermediate `696549b` failed JSON parsing before assertions; the V2 source was repaired in the current candidate, and retesting is pending. No integrated acceptance, live sending or production release is claimed. See `docs/completion/cassian.md` and owner records.
+
 ### INT-801 additive V2 interface candidate (2026-10-14)
 
 Cassian prepared disabled organization grant, simulation-only outreach and internal worker-status V2 interfaces over `bbf2353`. Frozen V1 contracts and Rails routes remain unchanged. The V2 route registry fails closed until owning controllers and authorization gates are ready. Source and tests are committed for fleet Docker validation; runtime acceptance and generated web DTO adoption remain pending. See `docs/completion/cassian.md`.

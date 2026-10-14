@@ -1,3 +1,7 @@
+### INT-801 integrated source candidate (2026-10-14)
+
+Cassian merged the Foundation, Frontend, Delivery, Native, QA and Mail owner candidates in the isolated `completion-cassian-int801` worktree. One authenticated V2 read route lists inert campaign summaries under the current tenant snapshot; it cannot dispatch mail. Organization grants, roster, campaign writes/details, worker status and inbound ingestion stay disabled until their owner authorization and persistence seams are reconciled. The first fleet contract probe of intermediate `696549b` failed JSON parsing before assertions; the V2 source was repaired in the current candidate, and retesting is pending. No integrated acceptance, live sending or production release is claimed. See `docs/completion/cassian.md` and owner records.
+
 # Elevateo Mail
 
 ### Mira BE03 UI isolated R24 implementation (2026-10-14)

@@ -6,7 +6,7 @@ const revision = z.number().int().nonnegative()
 export const OrganizationGrantSchema = z.strictObject({
   organization_id: id,
   user_id: id,
-  role: z.enum(['organization_owner', 'organization_admin', 'organization_member']),
+  role: z.enum(['organization_owner', 'organization_admin', 'technology_operator', 'sales_lead', 'sales_member', 'security_auditor', 'organization_member']),
   revision,
 })
 export const GrantChangeSchema = z.strictObject({
@@ -14,18 +14,19 @@ export const GrantChangeSchema = z.strictObject({
   expected_revision: revision,
 })
 export const OrganizationGrantsSchema = z.strictObject({
-  revision,
-  grants: z.array(OrganizationGrantSchema).max(100),
+  context_id: z.string().min(16).max(256),
+  authorization_version: z.string().min(16).max(256),
+  items: z.array(OrganizationGrantSchema).max(50),
+  next_cursor: z.string().max(2048).nullable(),
 })
 export const OutreachPlanSchema = z.strictObject({
-  name: z.string().trim().min(1).max(120),
-  mode: z.literal('simulation'),
+  id, operation_id: id, name: z.string().min(1).max(160),
+  status: z.enum(['draft', 'paused']),
 })
 export const OutreachCampaignSchema = z.strictObject({
   id,
-  name: z.string().min(1).max(120),
-  mode: z.literal('simulation'),
-  status: z.literal('draft'),
+  name: z.string().min(1).max(160),
+  status: z.enum(['draft', 'paused']),
 })
 export const WorkerJobSchema = z.strictObject({
   id,
@@ -35,3 +36,5 @@ export type OrganizationGrant = z.infer<typeof OrganizationGrantSchema>
 export type GrantChange = z.infer<typeof GrantChangeSchema>
 export type OutreachPlan = z.infer<typeof OutreachPlanSchema>
 export type OutreachCampaign = z.infer<typeof OutreachCampaignSchema>
+
+export const CampaignPageSchema = z.strictObject({ items: z.array(OutreachCampaignSchema).max(100) })
