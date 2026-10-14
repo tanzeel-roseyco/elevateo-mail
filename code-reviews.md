@@ -687,3 +687,7 @@ synthetic cases, no application execution) and an eight-line contract note.
 Source was inspected for scope, reserved domains and non-secret references;
 independent adversarial review and runtime are pending. Defects found in this
 bounded self-check: 0; independent coverage and defect density are not claimed.
+
+## MAIL-818 read-only SEND-821 source check — 2026-10-14
+
+Rhea inspected Elara `smtp_transport.rb` (66 LOC), `smtp_profile.rb` (50 LOC) and `submission_result.rb` (38 LOC), approximately 154 unique LOC. One classification concern (6.49/KLOC): `LocalMailpitClient#deliver` rescues every `StandardError` into `smtp_uncertain`, including pre-I/O deadline/config/factory failures that could be distinguished from a lost DATA response. Sent to root for owner triage; Rhea changed no owner source. This is a bounded read-only check, not an independent adversarial review of Rhea's fixture, and runtime remains NOT_RUN.
