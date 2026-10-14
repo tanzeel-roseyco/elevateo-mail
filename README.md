@@ -264,3 +264,5 @@ QA815 one dedicated gateway ACL migration profile on exact `e01c64ad` passed 1 r
 QA815 second dedicated gateway authority profile on exact `e01c64ad` passed 5 runs/21 assertions with a task-private restricted login and cleanup; seven of nine dedicated profiles remain. A preflight Compose password timing failure was preserved before the corrected task-only rerun. This synthetic authority fixture does not prove scanner verdict, Storage promotion, HTTP/worker or real-auth browser.
 
 QA815 additional exact `e01c64ad` dedicated profiles: ATT823 database 6/40 PASS, internal Mailpit synthetic protocol 1/6 PASS, OUT804 campaign database 7/17 with one teardown FK error; all disposable task cleanup PASS. Dedicated inventory is four scoped PASS, one FAIL, four historical R1 profiles unexecuted. No live sending, authenticated application HTTP/worker or real browser acceptance is implied.
+
+QA815 historical 74-suite core diagnostic runner is prepared with a distinct `DIAGNOSTIC_COMPLETED` result and remains UNEXECUTED pending coordinator choice; the exact 137-suite expanded failure remains authoritative. No new HTTP/worker/browser result is claimed.

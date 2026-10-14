@@ -206,3 +206,5 @@ QA815 exact `e01c64ad` dedicated gateway ACL migrator profile 1/24 PASS with cle
 QA815 second dedicated exact `e01c64ad` restricted gateway authority suite 5/21 PASS in a fresh task DB, cleanup PASS; earlier Compose preflight-only failure retained and task-only correction documented. Two of nine dedicated profiles scoped PASS, seven unexecuted. Scanner/Storage, authenticated HTTP/worker and real browser remain unproven.
 
 QA815 exact `e01c64ad` ATT823 database 6/40 PASS; internal Mailpit `.invalid` simulated protocol 1/6 PASS; OUT804 campaign DB 7/17 with one teardown FK error. All task cleanup PASS. Four of nine dedicated profiles scoped PASS, one FAIL, four historical R1 unexecuted. Main 137-suite backend remains FAILED; HTTP/worker/real Auth browser NOT_REACHED.
+
+QA815 prepared a distinct task-only 74-suite diagnostic path with guarded count and `DIAGNOSTIC_COMPLETED` status; it has NOT_RUN and cannot replace the failed 137-suite result. Coordinator choice is pending before allocation; no HTTP/worker/real Auth inference.
