@@ -1,0 +1,25 @@
+module Elevateo
+  module SendWorker
+    class SmtpProfile
+      HOST: Regexp
+      SECRET_REF: Regexp
+      @mode: String
+      @host: String
+      @port: Integer
+      @verified_sender: String
+      @tls_mode: String
+      @credential_ref: String?
+      attr_reader mode: String
+      attr_reader host: String
+      attr_reader port: Integer
+      attr_reader verified_sender: String
+      attr_reader tls_mode: String
+      attr_reader credential_ref: String?
+      def self.local_mailpit: (verified_sender: String) -> SmtpProfile
+      def self.remote_held: (host: String, port: Integer, verified_sender: String, tls_mode: String, credential_ref: String) -> SmtpProfile
+      def initialize: (mode: String, host: String, port: Integer, verified_sender: String, tls_mode: String, credential_ref: String?) -> void
+      def local_test?: () -> bool
+      def held?: () -> bool
+    end
+  end
+end

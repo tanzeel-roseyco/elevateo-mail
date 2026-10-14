@@ -7,8 +7,8 @@ module Elevateo
   module SendWorker
     class SubmissionResult
       KINDS = %w[accepted rejected unknown].freeze
-      REJECTION_CODES = %w[local_rejected].freeze
-      UNKNOWN_CODES = %w[local_timeout local_paused deadline_expired].freeze
+      REJECTION_CODES = %w[local_rejected smtp_invalid_snapshot].freeze
+      UNKNOWN_CODES = %w[local_timeout local_paused deadline_expired smtp_uncertain].freeze
       attr_reader :kind, :receipt_ref, :code
 
       # AIDEV-NOTE: Only normalized simulated evidence crosses this seam; acceptance never means delivery.
