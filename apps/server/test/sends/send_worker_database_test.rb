@@ -5,6 +5,7 @@ require_relative "approval_database_helper"
 require_relative "../../lib/elevateo/send_worker/database_store"
 require_relative "../../lib/elevateo/send_worker/durable_local_driver"
 require_relative "../../lib/elevateo/send_worker/executor"
+require_relative "../../lib/elevateo/send_worker/drain"
 
 # AIDEV-NOTE: Fleet Docker supplies a disposable PostgreSQL database and actual elevateo_worker login.
 class SendWorkerDatabaseTest < SendDatabaseTestCase
@@ -15,6 +16,36 @@ class SendWorkerDatabaseTest < SendDatabaseTestCase
     end
     assert_equal "accepted", status(send_id).fetch("state")
     assert_equal 1, status(send_id).fetch("attempts")
+  end
+
+  def test_bounded_drain_discovers_queued_intent_without_private_table_read
+    send_id = approve.fetch("send_id")
+    Dir.mktmpdir("send-drain-") do |dir|
+      control_path = File.join(dir, "control.json")
+      File.write(control_path, JSON.generate(epoch: @epoch, outbound_held: false))
+      control = Elevateo::SendWorker::Control.new(path: control_path)
+      driver = Elevateo::SendWorker::DurableLocalDriver.new(path: File.join(dir, "acceptance.jsonl"), outcome: "accept")
+      drain = Elevateo::SendWorker::Drain.new(connection: @worker, control: control, driver: driver,
+        max_steps: 3, max_seconds: 5, idle_delay: 0.05)
+      assert_equal 1, drain.run
+      assert_equal "accepted", status(send_id).fetch("state")
+    end
+  end
+
+  def test_due_exclusion_advances_past_oldest_queued_send
+    first = approve.fetch("send_id")
+    @draft = SecureRandom.uuid
+    @operation = SecureRandom.uuid
+    @saved = payload(subject: "second", body_text: "second",
+      to: [{ "display_name" => nil, "address" => "second@example.invalid" }])
+    assert_equal 1, save(@saved).fetch("version")
+    @bytes = snapshot(subject: "second", recipients: [[nil, "second@example.invalid"]])
+    @review_digest = Digest::SHA256.hexdigest(@bytes)
+    second = approve.fetch("send_id")
+    assert_equal first, Elevateo::SendWorker::DatabaseStore.next_due_send(connection: @worker,
+      epoch: @epoch, excluded: [])
+    assert_equal second, Elevateo::SendWorker::DatabaseStore.next_due_send(connection: @worker,
+      epoch: @epoch, excluded: [first])
   end
 
   def test_lost_response_reconciles_after_restart_without_second_attempt
