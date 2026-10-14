@@ -40,6 +40,9 @@ module V2
             raise Elevateo::CollaborationError.new("internal_error")
           end
           Elevateo::SessionStore.check!(result)
+          unless result.keys.sort == %w[items next_user_id status]
+            raise Elevateo::CollaborationError.new("internal_error")
+          end
           items = self.class.project_grants(result["items"], organization, limit)
           after = result["next_user_id"]
           if after && (items.empty? || after != items.last["user_id"])
