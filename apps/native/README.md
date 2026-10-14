@@ -15,3 +15,5 @@ Under Soren's fleet Docker lease: build the existing `apps/web` source in its ca
 Target OS gates remain: real Windows NSIS install/run/upgrade/downgrade/uninstall with WebView2 present and absent, Android emulator/device cold start and cookie/session lifecycle, and macOS install/run with signing/notarization later. No signing keys, live credentials, live mail, DNS or deployment are handled here.
 
 The compile fixture uses only `https://app.elevateo.invalid`, `ELEVATEO_NATIVE_ARTIFACT=compile-only-fixture` and `tauri.fixture.conf.json` as an optional package override. It is explicitly nonrelease and intentionally cannot launch. The Windows unsigned-candidate script rejects the fixture domain and needs the actual approved origin. No production origin is yet recorded.
+
+The compile icon `src-tauri/icons/icon.png` is an exact byte copy of the first-party shared brand packet `brand/logo-icon.png` (SHA-256 `325d418f557e692314ee5c6cc56c2aa2baabb934527513b7080fabfa234922f4`). Platform `.ico`/`.icns` packaging assets and visual acceptance remain pending.
