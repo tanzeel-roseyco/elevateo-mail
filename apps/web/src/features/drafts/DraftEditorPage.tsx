@@ -364,7 +364,7 @@ function DraftEditor({ mailboxId, draftId }: { mailboxId: string; draftId: strin
         noValidate
       >
         <Field id={ids.subject} label="Subject" error={errors.subject ?? null}>
-          <TextInput id={ids.subject} value={buffer.content.subject} onChange={(e) => updateContent({ subject: e.target.value })} disabled={locked} aria-invalid={errors.subject ? true : undefined} autoComplete="off" />
+          <TextInput id={ids.subject} value={buffer.content.subject} onChange={(e) => updateContent({ subject: e.target.value })} disabled={locked} aria-invalid={errors.subject ? true : undefined} aria-describedby={errors.subject ? `${ids.subject}-error` : undefined} autoComplete="off" />
         </Field>
         <Field id={ids.to} label="To" hint="One recipient per line: Name <address> or just an address. Incomplete recipients are kept as typed." error={errors.to ?? null}>
           <TextArea
@@ -376,13 +376,13 @@ function DraftEditor({ mailboxId, draftId }: { mailboxId: string; draftId: strin
             }}
             disabled={locked}
             rows={3}
-            aria-describedby={`${ids.to}-hint`}
+            aria-describedby={`${ids.to}-hint${errors.to ? ` ${ids.to}-error` : ''}`}
             aria-invalid={errors.to ? true : undefined}
             spellCheck={false}
           />
         </Field>
         <Field id={ids.body} label="Message" hint={`${codePoints(buffer.content.body_text)} / ${LIMITS.body} characters`} error={errors.body ?? null}>
-          <TextArea id={ids.body} value={buffer.content.body_text} onChange={(e) => updateContent({ body_text: e.target.value })} disabled={locked} rows={12} aria-describedby={`${ids.body}-hint`} aria-invalid={errors.body ? true : undefined} />
+          <TextArea id={ids.body} value={buffer.content.body_text} onChange={(e) => updateContent({ body_text: e.target.value })} disabled={locked} rows={12} aria-describedby={`${ids.body}-hint${errors.body ? ` ${ids.body}-error` : ''}`} aria-invalid={errors.body ? true : undefined} />
         </Field>
 
         {status.kind === 'rejected' && (

@@ -276,6 +276,32 @@ describe('new and existing drafts', () => {
     expect(h.saves).toHaveLength(0)
   })
 
+  it('associates validation errors with each field and removes stale descriptions after correction', async () => {
+    const h = harness()
+    renderEditor(h.gateway, path(CD.draftId))
+    await screen.findByText('Saved version 2')
+    for (const [label, invalid] of [
+      ['Subject', 'x'.repeat(999)],
+      ['To', Array.from({ length: 101 }, () => 'a@example.test').join('\n')],
+      ['Message', 'x'.repeat(65537)],
+    ] as const) {
+      const field = input(label)
+      fireEvent.change(field, { target: { value: invalid } })
+      expect(field.getAttribute('aria-invalid')).toBe('true')
+      const descriptionIds = field.getAttribute('aria-describedby')?.split(' ') ?? []
+      expect(descriptionIds).toContain(`${field.id}-error`)
+      expect(document.getElementById(`${field.id}-error`)?.getAttribute('role')).toBe('alert')
+      expect(button('Save changes').disabled).toBe(true)
+      fireEvent.change(field, { target: { value: '' } })
+      expect(field.getAttribute('aria-invalid')).toBeNull()
+      expect(field.getAttribute('aria-describedby') ?? '').not.toContain(`${field.id}-error`)
+      expect(document.getElementById(`${field.id}-error`)).toBeNull()
+      if (label !== 'Subject') expect(field.getAttribute('aria-describedby')).toBe(`${field.id}-hint`)
+    }
+    expect(button('Save changes').disabled).toBe(false)
+    expect(h.saves).toHaveLength(0)
+  })
+
   it('a consumed draft is read-only', async () => {
     const h = harness()
     h.state.markConsumed(CD.draftId)
