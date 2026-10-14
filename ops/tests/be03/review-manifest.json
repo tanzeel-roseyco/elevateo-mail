@@ -1,0 +1,41 @@
+{
+  "owner": "Nadia BE03-API",
+  "runtime": "NOT_RUN real HTTP/Auth/PostgreSQL; Soren lease required",
+  "packets": [
+    {
+      "path": "ops/tests/be03/http_fixture.rb",
+      "lines": 118,
+      "sha256": "0c2e25ad8af163e34c2807e69ab9da95857f636e7f5e20dd7854a1477dd255a9"
+    },
+    {
+      "path": "ops/tests/be03/http_s1s2.rb",
+      "lines": 78,
+      "sha256": "a9878b9d6a03cb2925192a8bd470cc197a1d06967238238d892955f923bf00e6"
+    },
+    {
+      "path": "ops/tests/be03/boundary_test.rb",
+      "lines": 45,
+      "sha256": "ccd7942bf3d2580e17ff5436f834133bdc4ca911d4e3cc7c63df9ab97fcc9891"
+    },
+    {
+      "path": "ops/tests/be03/http_fixture.rbs",
+      "lines": 60,
+      "sha256": "c4ad1a59518d4468e74944782be094d09006aed5adc89bc8fb195a46a7286913"
+    },
+    {
+      "path": "ops/tests/be03/Steepfile",
+      "lines": 10,
+      "sha256": "61207115d9f1b15059d4a6da504cf26e0acb7d45c8933cb8b115741df13e5f0e"
+    }
+  ],
+  "reviews": {
+    "functional": "185 initial LOC 0; 117 followup LOC 1 LOW typed recipient mismatch; ~16 repair LOC 0 remaining",
+    "design": "185 initial LOC 1 MEDIUM missing reviewed-binding oracle; 120 followup LOC0; ~16 repair LOC0 remaining"
+  },
+  "docker": {
+    "unit": "3 runs 19 assertions exit0",
+    "strict": "relative target ... exit0 (two Ruby files plus signature); first absolute zero-case invocation excluded",
+    "lint": "4 files no offenses exit0",
+    "cleanup": "all exact own be03-r24-nadia-http names independently absent; no volumes/networks/images created or removed"
+  }
+}

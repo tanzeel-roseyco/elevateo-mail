@@ -1,0 +1,10 @@
+# frozen_string_literal: true
+
+# AIDEV-NOTE: Strict standalone fixture target; reused real HTTP helper retains its separate application evidence.
+target :be03_http do
+  signature "http_fixture.rbs"
+  check "http_fixture.rb"
+  check "http_s1s2.rb"
+  library "uri", "net-http", "json", "securerandom"
+  configure_code_diagnostics(Steep::Diagnostic::Ruby.strict)
+end
