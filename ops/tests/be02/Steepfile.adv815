@@ -1,0 +1,9 @@
+# AIDEV-NOTE: Independent strict target checks the accepted expiry proof, not a replacement for app typing.
+target :adv815 do
+  signature "/workspace/ops/tests/be02/adv815_expiry.rbs"
+  signature "/workspace/ops/tests/be02/adv815_dependencies.rbs"
+  check "/workspace/ops/tests/be02/adv815_expiry_fixture.rb"
+  check "/workspace/ops/tests/be02/adv815_expiry_test.rb"
+  library "uri", "net-http", "json", "openssl", "base64", "digest", "securerandom", "time"
+  configure_code_diagnostics(Steep::Diagnostic::Ruby.strict)
+end

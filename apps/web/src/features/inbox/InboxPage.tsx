@@ -125,7 +125,8 @@ function MailboxThreadList({ mailboxId, filter }: { mailboxId: string; filter: '
     <section aria-label="Conversations" className="mx-auto max-w-3xl p-3">
       <div className="mb-2 flex items-center gap-2 px-1">
         <h1 className="text-sm font-semibold">Conversations</h1>
-        <nav aria-label="Filter" className="ml-auto flex gap-1">
+        {/* AIDEV-NOTE: A denied mailbox has no usable filter destinations; retain its unavailable explanation. */}
+        {state.status !== 'unavailable' && <nav aria-label="Filter" className="ml-auto flex gap-1">
           {(['all', 'unread'] as const).map((value) => (
             <Link
               key={value}
@@ -136,7 +137,7 @@ function MailboxThreadList({ mailboxId, filter }: { mailboxId: string; filter: '
               {value === 'all' ? 'All' : 'Unread'}
             </Link>
           ))}
-        </nav>
+        </nav>}
       </div>
       {state.status === 'loading' && <div role="status" aria-label="Loading conversations"><Skeleton rows={6} /></div>}
       {state.status === 'unavailable' && (

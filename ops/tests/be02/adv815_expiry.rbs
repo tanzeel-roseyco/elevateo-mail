@@ -1,0 +1,39 @@
+interface _Adv815Actor
+  def user: () -> String
+  def email: () -> String
+end
+
+class Adv815ExpiryFixture
+  class Failure < StandardError
+  end
+  @ttl: Integer
+  def initialize: () -> void
+  def check: (bool, String) -> void
+  def database: [A] () { (PG::Connection) -> A } -> A
+  def schema: (PG::Connection, String, String, Hash[String, String]) -> void
+  def age_auth: (_Adv815Actor, String, String) -> void
+  def digest: (Be02Http) -> String
+  def age_pending: (Be02Http) -> void
+  def pending_state: (String, String) -> void
+  def session_count: (_Adv815Actor) -> Integer
+end
+
+class Adv815ExpiryTest < Minitest::Test
+  @aging: Adv815ExpiryFixture
+  @clients: Array[Be02Http]
+  def setup: () -> void
+  def teardown: () -> void
+  def client: (?String) -> Be02Http
+  def status: (Net::HTTPResponse, Integer) -> Net::HTTPResponse
+  def stage: (Be02Http, String) -> String
+  def accept: (Be02Http, String, ?Integer) -> Net::HTTPResponse
+  def identity: (Be02Http, Be02Fixture) -> void
+  def denied: (Be02Http, Net::HTTPResponse) -> void
+  def issued: (String) -> [Be02Fixture, String]
+  def healthy: (String) -> void
+  def upstream_negative: (String) -> void
+  def expired_entry: (String) -> void
+  def test_real_expired_invite: () -> void
+  def test_real_expired_recovery: () -> void
+  def test_real_expired_pending_cookie_stops_before_upstream_verification: () -> void
+end

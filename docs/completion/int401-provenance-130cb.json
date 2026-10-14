@@ -1,0 +1,116 @@
+{
+  "base": "3bf323ce59ccf762104c1a8e4d496afab53659f1",
+  "task_id": "task_1b0410b27785",
+  "dispatch_id": "ctx_746eda601ef7",
+  "imported_heads": [
+    "f7a3950cc89336a6fb65aaeb4183d3c2cf4b7299",
+    "22c1d5113f1037fbacba6b7226bf56e60ccbe9aa",
+    "fd7f2c90c6e0ff5d59d6d4afccc5653f14385390"
+  ],
+  "source_manifest": [
+    {
+      "path": "apps/server/test/be_02/adv807_refresh_process_child.rb",
+      "mode": "100644",
+      "blob": "87a666d827b6f08f118eb709b6acadc87720b5c3",
+      "committed_lf_sha256": "248fe6d155cb990fda3866a25f5e30824b14800d77ad16f94df04333dec6c1b0",
+      "bytes": 2145
+    },
+    {
+      "path": "apps/server/test/be_02/adv807_refresh_process_test.rb",
+      "mode": "100644",
+      "blob": "311368f4d4198e7a0c3559ca798f179ede212411",
+      "committed_lf_sha256": "d6bc551a3e496455e13acd162002851b2946dc126cc4821c08f93dea69f0d76c",
+      "bytes": 7588
+    },
+    {
+      "path": "ops/compose.acceptance-test.yaml",
+      "mode": "100644",
+      "blob": "48b978d19c11ab2a8dafa87a152e2b80d3d1b68f",
+      "committed_lf_sha256": "8429ed3679c6efa28341ce90727ce9b8fd752245ef2a220f2b27e53475c9f5d9",
+      "bytes": 7255
+    },
+    {
+      "path": "ops/compose.be02-test.yaml",
+      "mode": "100644",
+      "blob": "d6eca942ec116e22a2c80dab9b43098853fa784f",
+      "committed_lf_sha256": "1af3ec9d749e253f1d9eb8e986ff7860805c370dd89b42624c8fcc96effe6c01",
+      "bytes": 8594
+    },
+    {
+      "path": "ops/supabase/compose.yaml",
+      "mode": "100644",
+      "blob": "8b1147a816e348ed6d1315504f377243e2a3e72b",
+      "committed_lf_sha256": "6e26f63dd51cc47fe90954048cf7f593add4d3642f425f39e25a1bfc0c63dd56",
+      "bytes": 5889
+    },
+    {
+      "path": "ops/tests/be02/adv806_mailpit_entry_test.rb",
+      "mode": "100644",
+      "blob": "30b85f46699489e0ed3d3c41f9725a11611710da",
+      "committed_lf_sha256": "3467bf14e98d571a4ba0de9f9713e9b9cc29d706c42ff58b69f18c1a13f3fa43",
+      "bytes": 6060
+    },
+    {
+      "path": "ops/tests/be02/adv808_auth_attestation.py",
+      "mode": "100644",
+      "blob": "53a643ff621071d1cbbb5598273eb79c398e8ab8",
+      "committed_lf_sha256": "3f410ae3ca886df6434710648e5e9324e74d19bc9ca8b12e9807adfea2240102",
+      "bytes": 2724
+    },
+    {
+      "path": "ops/tests/be02/adv808_auth_policy.rb",
+      "mode": "100644",
+      "blob": "03275981600a0ff6c2e315105ff11aa6cea70828",
+      "committed_lf_sha256": "d5be6aa62267f4526b9f7c2b0d11990967a5d5648c1fc6069d650b7aed0ba9e8",
+      "bytes": 8845
+    },
+    {
+      "path": "ops/tests/be02/adv808_auth_profile.yaml",
+      "mode": "100644",
+      "blob": "eee1bca9f3185cd7653e63ceccab993bb3f4820a",
+      "committed_lf_sha256": "565ba58db2ee16e52778efaaae6c477ab609dbad8e167f5bb987063d1ab73639",
+      "bytes": 389
+    },
+    {
+      "path": "ops/tests/be02/adv808_root_runner_proposal.patch",
+      "mode": "100644",
+      "blob": "3c5baea0a36d0a6bcb5043fb0c8c8d7d86f8dafa",
+      "committed_lf_sha256": "8cc92881e3062731753f9c69251a827ebf28b8f38a868e138f999ab02adce508",
+      "bytes": 1289
+    },
+    {
+      "path": "ops/tests/be02/run.py",
+      "mode": "100644",
+      "blob": "6a703a79c756ee82d49431d214018efef6aa5ed0",
+      "committed_lf_sha256": "f00228ff0b6bd2ffc0419770230096e3f105f1eb59bb1a9c51436029b3c4aec2",
+      "bytes": 14735
+    },
+    {
+      "path": "ops/tests/be02/test-suites.sh",
+      "mode": "100644",
+      "blob": "91dba74f5ea988594610c871465f94d548714af2",
+      "committed_lf_sha256": "c2b5747032083139de1d389294223e1c40c5820710656d370c080d558d685b4d",
+      "bytes": 1043
+    },
+    {
+      "path": "ops/tests/be02/test_gui_order.py",
+      "mode": "100644",
+      "blob": "8c77947a0739e2b28687a707f327de351cb8f90d",
+      "committed_lf_sha256": "496d68d1c32335525b269264b5cbcbbd824e5d50068af8be5772595dcae8643f",
+      "bytes": 4388
+    },
+    {
+      "path": "ops/tests/be02/test_r8_constraints.py",
+      "mode": "100644",
+      "blob": "8135e6137e12f0a607612026a83c82c8a6fc819e",
+      "committed_lf_sha256": "6197b4442e4e436f1d33edc988809c589f9f972e592328b3436072bd084909b4",
+      "bytes": 5031
+    }
+  ],
+  "runtime": "NOT_RUN",
+  "new_repair_review": "ADV821 accepted; ADV822 original two LOW CLOSED; final two-line correction zero new defects",
+  "observer": "OFF",
+  "vault_sha256": "bac89f7039757d7223ac77700f0b2186821d42640ccfbe67822ae8928c004289",
+  "vault_bytes": 94016,
+  "unchanged": "Production applications, canonical contracts, migrations, observer and build recipes unchanged; acceptance overlay comment only changed alongside coupled hash pin"
+}

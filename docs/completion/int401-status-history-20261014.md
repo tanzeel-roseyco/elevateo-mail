@@ -662,3 +662,14 @@ Exact source provenance is in [current provenance](docs/completion/int401-curren
 R10 c3 browser compile/image and authenticated HTTP1/33 passed; both logout intents completed at attempt1, but seed failed before GUI (zero screenshots). Receipt SHA25699c3dfdbd43f18685df6a62d9818df53c3f55e3ce4fd6e9f79144af0d8fd134f. R11 reported fresh_auth_fixture_required with Auth user count1 before seed; both diagnostics cleanup/independent absence passed, 3731 source files/modes unchanged. Receipt SHAd9f5a31ed9d567160681da8129ed0e37083c4ce71a145c720605885c922ea467. These failures remain preserved.
 
 Immutable3bf R12 fresh GUI lifecycle is untouched. Root reports four core flows and16 screenshots from the supervisor, pending immutable final receipt and Mira manual review; this is not proof for the next repaired candidate. R9 c8 backend390/5792 and frontend624/all eight gates passed with their original provenance. BE02 remains unaccepted, BE03 closed and F2 durable recovery open.
+
+
+## Preserved R12 current-status record before R13 consolidation
+
+Imported accepted Rowan ADV807, Nadia ADV806 and Elara ADV808 proof sources after immutable **3bf323c**. Permanent GUI-before-HTTP restoration, baseline Auth lifetime and opt-in policy wiring are source accepted by ADV821/822; candidate runtime NOT_RUN. Soren's separate immutable 3bf R12 is untouched: supervisor reports four actual core GUI cases and 16 screenshots, final immutable receipt/manual Mira review pending. Observer OFF; BE02 unaccepted; BE03 closed.
+
+R9 c8 backend390/5792 and frontend624/all eight gates PASS retain original provenance. R10 c3 browser compilation/image and authenticated HTTP1/33/worker drain passed, but seed failed before GUI. R11 confirmed `fresh_auth_fixture_required` with pre-seed Auth count1; both diagnostics cleanup/independent absence passed. These failures remain historical evidence, not new-source test results.
+
+F2 durable recovery remains OPEN: accepted reload loses newer memory-only buffer/operation while the committed server version survives. No durable local recovery, warning or ledger proof is inferred.
+
+See [provenance](docs/completion/int401-current-freeze-provenance.json), [R12 handoff](docs/completion/int401-r12-setup-handoff.md), [history](docs/completion/int401-status-history-20261014.md) and [milestones](docs/completion/int401-remaining-milestones.md). Root owns acceptance and the actual vault; Cassian mirrors it; Soren alone schedules fleet Docker. Authority `task_1b0410b27785 / ctx_746eda601ef7`.

@@ -18,6 +18,7 @@ import uuid
 from cleanup import cleanup
 from docker_task import Task
 from acceptance_runtime import Acceptance, add_arguments
+from adv815_runtime import run_expiry
 from adv808_auth_attestation import AUTH_PIN, attest_with_controls
 
 
@@ -103,8 +104,11 @@ def main() -> int:
     parser.add_argument("--expect-host", required=True, help="Exact hostname -s of reviewed fleet host")
     parser.add_argument("--server-image", help="Optional previously reviewed immutable sha256 image ID")
     parser.add_argument("--adv808-auth-policy", action="store_true", help="Separate disposable Auth policy proof")
+    parser.add_argument("--adv815-expiry", action="store_true", help="Separate disposable real Auth expiry proof")
     add_arguments(parser)
     args = parser.parse_args()
+    if args.adv815_expiry and (args.acceptance or args.adv808_auth_policy):
+        parser.error("ADV815 requires its own disposable job; preserve GUI/policy queues")
     if args.adv808_auth_policy and args.acceptance:
         parser.error("ADV808 is a separate job; preserve the GUI acceptance queue")
     if args.acceptance_diagnostic and not args.acceptance:
@@ -226,6 +230,8 @@ def main() -> int:
         if not args.acceptance_diagnostic:
             task.compose("adv806-mailpit-entry", ["run", "--rm", "--no-deps", "fixture", "bundle", "exec", "ruby",
                          "/workspace/ops/tests/be02/adv806_mailpit_entry_test.rb"], 180)
+        if args.adv815_expiry:
+            run_expiry(task)
         if source_hashes(root, args.acceptance) != original:
             raise RuntimeError("source changed during execution; evidence cannot attest one snapshot")
         status = "DIAGNOSTIC_COMPLETED" if args.acceptance_diagnostic else "PASSED"

@@ -1,0 +1,40 @@
+# AIDEV-NOTE: Concrete dependency boundaries; shared HTTP implementation remains a separate mandatory gate.
+module PG
+  class Error < StandardError
+  end
+  class Result
+    def values: () -> Array[Array[String]]
+    def getvalue: (Integer, Integer) -> String
+    def ntuples: () -> Integer
+  end
+  class Connection
+    def exec: (String) -> Result
+    def exec_params: (String, Array[String | Integer]) -> Result
+    def transaction: [A] () { () -> A } -> A
+  end
+  def self.connect: [A] (String) { (Connection) -> A } -> A
+end
+module Minitest
+  class Test
+    def assert: (bool, ?String) -> bool
+    def assert_equal: (Object, Object, ?String) -> bool
+  end
+end
+type adv815_json = nil | bool | Integer | Float | String | Array[adv815_json] | Hash[String, adv815_json]
+
+class Be02Http
+  attr_reader cookies: Hash[String, String]
+  def initialize: (?String) -> void
+  def request: (String, String, ?body: Hash[Symbol, String | Hash[String, String]], ?headers: Hash[String, String]) -> Net::HTTPResponse
+  def json: (Net::HTTPResponse) -> Hash[String, adv815_json]
+  def challenge: () -> Hash[String, String]
+end
+class Be02Fixture
+  attr_reader user: String
+  attr_reader email: String
+  attr_reader password: String
+  attr_reader organization: String
+  def initialize: () -> void
+  def invite: () -> String
+  def mail_link: (String) -> String
+end

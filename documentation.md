@@ -2,13 +2,13 @@
 
 ## Current execution status
 
-Imported accepted Rowan ADV807, Nadia ADV806 and Elara ADV808 proof sources after immutable **3bf323c**. Permanent GUI-before-HTTP restoration, baseline Auth lifetime and opt-in policy wiring are source accepted by ADV821/822; candidate runtime NOT_RUN. Soren's separate immutable 3bf R12 is untouched: supervisor reports four actual core GUI cases and 16 screenshots, final immutable receipt/manual Mira review pending. Observer OFF; BE02 unaccepted; BE03 closed.
+R13 integrates accepted Nadia ADV815 expiry proof, Elara safe diagnostics and the bounded revocation-navigation fix after immutable **130cb5c**. The new opt-in expiry runner/strict typing integration is source accepted; all new-source runtime is NOT_RUN. Soren's existing snapshot is unchanged. Observer OFF; BE02 unaccepted; BE03 closed.
 
-R9 c8 backend390/5792 and frontend624/all eight gates PASS retain original provenance. R10 c3 browser compilation/image and authenticated HTTP1/33/worker drain passed, but seed failed before GUI. R11 confirmed `fresh_auth_fixture_required` with pre-seed Auth count1; both diagnostics cleanup/independent absence passed. These failures remain historical evidence, not new-source test results.
+Sealed original R12 3bf records 12 cases: nine PASS and three FAIL (conflict, revocation and delayed logout), with 3,735 source files unchanged and cleanup/independent absence PASS. Receipt SHA256 b913e4700d88cd23b20f9fe25574391de462fdb3cd80963f51778ea3b5377b8e preserves that failed result. Four core flows passed and 16 screenshots were captured. Mira viewed all 16 images: search shows loading only and one LOW glyph-visibility finding remains. This is bounded visual evidence, not whole-application acceptance. R9 c8 backend390/5792 and frontend624/all eight gates PASS retain their original provenance; later failures remain in linked history.
 
-F2 durable recovery remains OPEN: accepted reload loses newer memory-only buffer/operation while the committed server version survives. No durable local recovery, warning or ledger proof is inferred.
+F2 durable recovery remains OPEN: newer memory-only buffer/operation is lost on accepted reload while the committed server version survives. No durable local recovery, warning or ledger proof is inferred.
 
-See [provenance](docs/completion/int401-current-freeze-provenance.json), [R12 handoff](docs/completion/int401-r12-setup-handoff.md), [history](docs/completion/int401-status-history-20261014.md) and [milestones](docs/completion/int401-remaining-milestones.md). Root owns acceptance and the actual vault; Cassian mirrors it; Soren alone schedules fleet Docker. Authority `task_1b0410b27785 / ctx_746eda601ef7`.
+See [R13 handoff](docs/completion/int401-r13-expiry-handoff.md), [history](docs/completion/int401-status-history-20261014.md) and [milestones](docs/completion/int401-remaining-milestones.md). Root owns acceptance and the actual vault; Cassian mirrors it; Soren alone schedules fleet Docker. Authority `task_9832f910c826 / ctx_7030db288587`.
 
 Design date: 2026-10-11; expanded planning revision: 2026-10-12. Current scoped decisions override older planning assumptions; consent-based sending remains required.
 
@@ -74,5 +74,3 @@ Before deployment, resolve the actual addresses and existing MX provider, new-ad
 ## Design artifacts
 
 The architecture contains C4-style context/container views and trust boundaries. The database tutorial contains the conceptual ER model and constraints. Contracts document route shapes, transaction boundaries and state transitions. [The local agent prompt](LOCAL_BUILD_PROMPT.md) and [completion plan](docs/local-completion-plan.md) now define the bounded execution path before credentials; the release plan describes later live gates. These documents are not evidence of implemented features. The [expanded planning index](.planning/README.md) now governs research, exact agent routing, language ownership, later mobile targets and no-live-send activation. Application credentials stay last; implementation-agent authentication is a separate prerequisite.
-
-R12 evidence clarification: supervisor reported four core flows and16 screenshots; isolated conflict/revocation failed with causes not preserved by reporter. Whole GUI remains unaccepted; next candidate runtime NOT_RUN.

@@ -36,7 +36,10 @@ class Be02Http
   end
 
   def json(response)
-    JSON.parse(response.body)
+    # AIDEV-NOTE: Callers inspect object fields; reject scalar/array JSON without exposing response secrets.
+    parsed = JSON.parse(response.body)
+    raise "fixture expected JSON object" unless parsed.is_a?(Hash)
+    parsed
   rescue JSON::ParserError
     raise "fixture received invalid JSON" # Do not echo token-bearing response bodies.
   end

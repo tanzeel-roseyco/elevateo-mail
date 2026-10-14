@@ -1,0 +1,163 @@
+{
+  "source": "3bf323ce59ccf762104c1a8e4d496afab53659f1",
+  "screenshots": [
+    {
+      "path": "/home/tanzeel/elevateo-mail-wave-20261014/soren/.local-jobs/app-3bf323c-r12/ops/local/be02-c7317292368a4167a6604d8fcbfe9ddd/playwright_real-chromium/native-private/SCN-DRAFT-001-P-1440-dark.png",
+      "width": 1440,
+      "height": 900,
+      "theme": "dark",
+      "case": "SCN-DRAFT-001-P",
+      "sha256": "a8f1404e4d07841bd0e96aa0f7df4c1af5665bae74b8412d13730e30ec7f69bb"
+    },
+    {
+      "path": "/home/tanzeel/elevateo-mail-wave-20261014/soren/.local-jobs/app-3bf323c-r12/ops/local/be02-c7317292368a4167a6604d8fcbfe9ddd/playwright_real-chromium/native-private/SCN-DRAFT-001-P-1440-light.png",
+      "width": 1440,
+      "height": 900,
+      "theme": "light",
+      "case": "SCN-DRAFT-001-P",
+      "sha256": "ce75f288cd44707c1997e0710d2fbe88e78c55359e0713d1e20ca8a929994783"
+    },
+    {
+      "path": "/home/tanzeel/elevateo-mail-wave-20261014/soren/.local-jobs/app-3bf323c-r12/ops/local/be02-c7317292368a4167a6604d8fcbfe9ddd/playwright_real-chromium/native-private/SCN-DRAFT-001-P-375-dark.png",
+      "width": 375,
+      "height": 812,
+      "theme": "dark",
+      "case": "SCN-DRAFT-001-P",
+      "sha256": "df9a7f7d566c4aebb65848f5a70fd9d218980a6be854d04f3de2ed4db438203d"
+    },
+    {
+      "path": "/home/tanzeel/elevateo-mail-wave-20261014/soren/.local-jobs/app-3bf323c-r12/ops/local/be02-c7317292368a4167a6604d8fcbfe9ddd/playwright_real-chromium/native-private/SCN-DRAFT-001-P-375-light.png",
+      "width": 375,
+      "height": 812,
+      "theme": "light",
+      "case": "SCN-DRAFT-001-P",
+      "sha256": "439e5beae0a67ad717623cebd727330e202380e58ca2b9c7edbad159b7bb9d6f"
+    },
+    {
+      "path": "/home/tanzeel/elevateo-mail-wave-20261014/soren/.local-jobs/app-3bf323c-r12/ops/local/be02-c7317292368a4167a6604d8fcbfe9ddd/playwright_real-chromium/native-private/SCN-GUI-006-P-1440-dark.png",
+      "width": 1440,
+      "height": 900,
+      "theme": "dark",
+      "case": "SCN-GUI-006-P",
+      "sha256": "471d83a8bb6c353710bbfcf00ab4965e7fa0d4320f4e22f299c43002fbdb6125"
+    },
+    {
+      "path": "/home/tanzeel/elevateo-mail-wave-20261014/soren/.local-jobs/app-3bf323c-r12/ops/local/be02-c7317292368a4167a6604d8fcbfe9ddd/playwright_real-chromium/native-private/SCN-GUI-006-P-1440-light.png",
+      "width": 1440,
+      "height": 900,
+      "theme": "light",
+      "case": "SCN-GUI-006-P",
+      "sha256": "252e83dc746a3c7354ba29cdbbb47224f4c9fe029983113f80744a0aae449e75"
+    },
+    {
+      "path": "/home/tanzeel/elevateo-mail-wave-20261014/soren/.local-jobs/app-3bf323c-r12/ops/local/be02-c7317292368a4167a6604d8fcbfe9ddd/playwright_real-chromium/native-private/SCN-GUI-006-P-375-dark.png",
+      "width": 375,
+      "height": 812,
+      "theme": "dark",
+      "case": "SCN-GUI-006-P",
+      "sha256": "5e7217091776330cc234977889bd25675377d5bf6adcd6b64f306bf44da66393"
+    },
+    {
+      "path": "/home/tanzeel/elevateo-mail-wave-20261014/soren/.local-jobs/app-3bf323c-r12/ops/local/be02-c7317292368a4167a6604d8fcbfe9ddd/playwright_real-chromium/native-private/SCN-GUI-006-P-375-light.png",
+      "width": 375,
+      "height": 812,
+      "theme": "light",
+      "case": "SCN-GUI-006-P",
+      "sha256": "18eaabcd13b9e844f33fcd445dbb820c6bbdefd5aa931e0c9de06a14466b5ae9"
+    },
+    {
+      "path": "/home/tanzeel/elevateo-mail-wave-20261014/soren/.local-jobs/app-3bf323c-r12/ops/local/be02-c7317292368a4167a6604d8fcbfe9ddd/playwright_real-chromium/native-private/SCN-GUI-006-P-inbox-1440-dark.png",
+      "width": 1440,
+      "height": 900,
+      "theme": "dark",
+      "case": "SCN-GUI-006-P",
+      "sha256": "e945c08b87da3f3fec63a2eb32efaf7f4ab5ed8e5f926488b122a00bdb1a4ba0"
+    },
+    {
+      "path": "/home/tanzeel/elevateo-mail-wave-20261014/soren/.local-jobs/app-3bf323c-r12/ops/local/be02-c7317292368a4167a6604d8fcbfe9ddd/playwright_real-chromium/native-private/SCN-GUI-006-P-inbox-1440-light.png",
+      "width": 1440,
+      "height": 900,
+      "theme": "light",
+      "case": "SCN-GUI-006-P",
+      "sha256": "1edc59e102c45c6899f0a4d7a69b37f0bd5cbc7c660dd1fa95caa89a33a1896d"
+    },
+    {
+      "path": "/home/tanzeel/elevateo-mail-wave-20261014/soren/.local-jobs/app-3bf323c-r12/ops/local/be02-c7317292368a4167a6604d8fcbfe9ddd/playwright_real-chromium/native-private/SCN-GUI-006-P-inbox-375-dark.png",
+      "width": 375,
+      "height": 812,
+      "theme": "dark",
+      "case": "SCN-GUI-006-P",
+      "sha256": "739bc4a1e454928b55c0100398c40bcf9577e1f8117da8180d152549c01ee57b"
+    },
+    {
+      "path": "/home/tanzeel/elevateo-mail-wave-20261014/soren/.local-jobs/app-3bf323c-r12/ops/local/be02-c7317292368a4167a6604d8fcbfe9ddd/playwright_real-chromium/native-private/SCN-GUI-006-P-inbox-375-light.png",
+      "width": 375,
+      "height": 812,
+      "theme": "light",
+      "case": "SCN-GUI-006-P",
+      "sha256": "1978e259f5c3288436a71110c43000af9c1e663d650118a7157cb3074e5a486d"
+    },
+    {
+      "path": "/home/tanzeel/elevateo-mail-wave-20261014/soren/.local-jobs/app-3bf323c-r12/ops/local/be02-c7317292368a4167a6604d8fcbfe9ddd/playwright_real-chromium/native-private/SCN-GUI-006-P-search-1440-dark.png",
+      "width": 1440,
+      "height": 900,
+      "theme": "dark",
+      "case": "SCN-GUI-006-P",
+      "sha256": "a4fe39b140758a38717f86bd32db407a95a11d63c3533e29b40d7bb8edd02ed8"
+    },
+    {
+      "path": "/home/tanzeel/elevateo-mail-wave-20261014/soren/.local-jobs/app-3bf323c-r12/ops/local/be02-c7317292368a4167a6604d8fcbfe9ddd/playwright_real-chromium/native-private/SCN-GUI-006-P-search-1440-light.png",
+      "width": 1440,
+      "height": 900,
+      "theme": "light",
+      "case": "SCN-GUI-006-P",
+      "sha256": "6f1c4bff886ae3cd522d5818022389e5f4faefc57daaf0e22dcfdfcb00a7bfc9"
+    },
+    {
+      "path": "/home/tanzeel/elevateo-mail-wave-20261014/soren/.local-jobs/app-3bf323c-r12/ops/local/be02-c7317292368a4167a6604d8fcbfe9ddd/playwright_real-chromium/native-private/SCN-GUI-006-P-search-375-dark.png",
+      "width": 375,
+      "height": 812,
+      "theme": "dark",
+      "case": "SCN-GUI-006-P",
+      "sha256": "9c0b3b2deeb97554c4a071ebf56029a5de461dab1103d86cb5644e1492a4e1e7"
+    },
+    {
+      "path": "/home/tanzeel/elevateo-mail-wave-20261014/soren/.local-jobs/app-3bf323c-r12/ops/local/be02-c7317292368a4167a6604d8fcbfe9ddd/playwright_real-chromium/native-private/SCN-GUI-006-P-search-375-light.png",
+      "width": 375,
+      "height": 812,
+      "theme": "light",
+      "case": "SCN-GUI-006-P",
+      "sha256": "b152c474a4ce4c698423630bf209a7fc824683f062307153531e1248e55155e1"
+    }
+  ],
+  "prerequisites": [
+    {
+      "path": "/home/tanzeel/elevateo-mail-wave-20261014/soren/.local-jobs/app-3bf323c-r12/ops/local/be02-c7317292368a4167a6604d8fcbfe9ddd/result.json",
+      "sha256": "ad60c5cac2dcc447d6f306109948594abecf25eea0f4bd040041dded6dd59418"
+    },
+    {
+      "path": "/home/tanzeel/elevateo-mail-wave-20261014/soren/.local-jobs/app-3bf323c-r12/ops/local/be02-c7317292368a4167a6604d8fcbfe9ddd/phases.json",
+      "sha256": "dd610be19903fd7a95c7683464f3d7bae597bca0f7a12762aab403c2ebaa7f1d"
+    },
+    {
+      "path": "/home/tanzeel/elevateo-mail-wave-20261014/soren/.local-jobs/app-3bf323c-r12/ops/local/be02-c7317292368a4167a6604d8fcbfe9ddd/playwright_real-chromium/cases/SCN-AUTH-001-P.playwright_real.0.json",
+      "sha256": "29da4bd5da9309db8e11ded96d03e5ca053ed8a3b0f56669134c6762f70f4f7a"
+    },
+    {
+      "path": "/home/tanzeel/elevateo-mail-wave-20261014/soren/.local-jobs/app-3bf323c-r12/ops/local/be02-c7317292368a4167a6604d8fcbfe9ddd/playwright_real-chromium/cases/SCN-DRAFT-001-P.playwright_real.0.json",
+      "sha256": "9f6242e961c634336bca0d0f955e76d8e79c1f83d6d5d995e35f6b05c1125aaf"
+    },
+    {
+      "path": "/home/tanzeel/elevateo-mail-wave-20261014/soren/.local-jobs/app-3bf323c-r12/ops/local/be02-c7317292368a4167a6604d8fcbfe9ddd/playwright_real-chromium/cases/SCN-GUI-006-P.playwright_real.0.json",
+      "sha256": "a3b7c65cc57200265a328fefb3b324a641207cfb1d60e6b5513d6519720cbcaa"
+    },
+    {
+      "path": "/home/tanzeel/elevateo-mail-wave-20261014/soren/.local-jobs/app-3bf323c-r12/ops/local/be02-c7317292368a4167a6604d8fcbfe9ddd/playwright_real-chromium/cases/SCN-READ-002-P.playwright_real.0.json",
+      "sha256": "54f4db5454452762ce1e7e8462af649ebfc4dccfef8fdaa4301994e93d83fddd"
+    },
+    {
+      "path": "/home/tanzeel/elevateo-mail-wave-20261014/reports/soren-r12-source-verification.json",
+      "sha256": "6d7c5003e6c8e0d6a907d6777e3ad7f47fdd68cb32863649beaa02547ba98d4f"
+    }
+  ]
+}
