@@ -330,3 +330,8 @@ Ada ADV-714 design advice: contract/hash identity proves provenance, not lifecyc
 ## RES-406 documentation checkpoint (2026-10-14)
 
 Nadia authored docs/research/instantly-gmail-rea.md with public primary-source index, claim ledger, tradeoffs and proposed acceptance cases. Author consistency check only; no independent adversarial/design review completed. No application source changed: reviewed source LOC 0, code defect count unmeasured, defects/KLOC N/A. Full current INT-401 rubric applies to future implementation; <=200 source lines per assignment and dedicated tradeoff review remain required. All proposed application tests NOT_RUN; actual visual evidence and REA skill pending root.
+
+
+## RES-406 continuation citation/source advisory (2026-10-14)
+
+Nadia reopened I1–I9, G1–G5, R1–R6 and request-verification primary sources; source-inspected gateway/contracts/routes/mailbox permission/readiness to map unsupported health/consent/send controls. Author/source consistency advisory only; no independent adversarial/design reviewer signoff. Historical missing-skill event resolved with supplied REA v37 instructions; partial root Orca evidence reported, full runtime verification pending. No app source edited, source review coverage counted for adversarial acceptance 0 LOC, defects unmeasured, defects/KLOC N/A. Full INT-401 rubric and dedicated design-tradeoff review required for future implementation. All proposed application scenarios NOT_RUN; root mirror pending.

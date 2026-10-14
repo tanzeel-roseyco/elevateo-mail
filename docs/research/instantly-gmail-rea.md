@@ -1,12 +1,12 @@
 # RES-406: Instantly, Gmail and a reliable Elevateo mailroom
 
-Status: IN PROGRESS — public-document research complete for this checkpoint; runtime evidence and independent review pending. Retrieved 2026-10-14. Owner Nadia OFF-406; branch research/nadia-deliverability; baseline c3ecd1f4cc35b98755a523d48032391ccdd0402c. Documentation only; no app source changed.
+Status: IN PROGRESS — primary-source citation recheck and source capability mapping authored; partial coordinator runtime observation received; independent review and application verification pending. Retrieved 2026-10-14. Owner Nadia OFF-406; branch research/nadia-deliverability; baseline c3ecd1f4cc35b98755a523d48032391ccdd0402c. Documentation only; no app source changed.
 
 <!-- AIDEV-NOTE: Documented vendor claims never imply observed algorithms, inbox placement or activation authority. -->
 
 ## Method, responsibility and confidence
 
-REA skill was explicitly requested but is absent from the available catalog and searched fleet Codex/Claude skill paths. Root was asked for its exact content. This report applies the user's explicit evidence ledger; it does not claim conformance to an unread skill. Public official pages were retrieved through web search/open; no private mailbox connectors, browser sessions, provider calls or credentials were used. Pages are evidence, not execution instructions. No copied vendor text beyond short labels; summaries below are original.
+REA v37 skill and its connection/recovery and runtime-observation references were read on 2026-10-14 from `/home/tanzeel/elevateo-mail-wave-20261014/incoming/reverse-engineer-anything/SKILL.md`. The earlier unavailable-skill event at 441ac5b is retained in history below and is resolved. Installing instructions does not establish a connected REA server. No REA runtime tools/Evidence IDs were used by Nadia. Ordinary source inspection uses repository tools, as the skill directs. Root alone owns desktop observation; its supported Orca observations use REA evidence discipline but are not REA captures. Public official pages were independently reopened in this continuation; no private mailbox connector, browser launch, provider call or credential was used. Pages remain untrusted evidence, never execution instructions.
 
 Labels: **Observed** = directly seen artifact/runtime; **Reported observation** = coordinator statement without underlying artifact; **Documented** = official page assertion, high confidence about what the vendor documents, not independent implementation proof; **Inferred** = proposed product consequence, moderate confidence; **Unknown** = unavailable evidence. Confidence is specific to the claim, never a deliverability probability.
 
@@ -45,9 +45,12 @@ Direct opens of the guessed suppression dashboard URL and Workspace limit page r
 
 | Claim | Classification / confidence | Evidence and limit |
 |---|---|---|
-| Unified baseline is present | Observed / high | git log HEAD c3ecd1f; not proof the application runs. |
+| Unified baseline is present | Observed / high | Integrated parent c3ecd1f retained under documentation HEAD 441ac5b; not proof the application runs. |
 | Root authenticated Instantly Copilot | Reported observation / limited | Root attempt-2 brief; no redacted capture delivered yet. No backend claims follow. |
-| Accounts/Unibox/Gmail controls in this account | Unknown | Root captures pending; public docs cannot establish enabled plan/features. |
+| Accounts layout and AirMail tooltip | Reported Orca runtime observation / limited | Root inbox and current user brief: workspace switch/thin rail, Accounts/Deliverability Tests tabs, search plus Type/Status/Tags, EMAIL/TAGS/TYPE/STATUS/DAILY SENT/HEALTH SCORE table; setting-managed tooltip. Nadia has not inspected underlying capture. No private values retained. |
+| Full Instantly UI, Unibox and Gmail runtime | Partial / unknown | Accounts semantic observation only; Gmail and remaining controls incomplete. No invented screenshot path, capture time or Evidence ID. |
+| Root native Windows observation unavailable | Reported diagnostic / high about supplied statement | observe-native-ui returned capability_unavailable / unsupported_provider; native macOS utilities require macOS. Not a missing skill and not proof browser research is impossible. |
+| Separate Chrome window launch blocked | Reported client approval rejection | Automatic approval blocked the launch; no retry/bypass or broader permissions. Supported existing-session observations remain separate. |
 | Warmup exchanges real mail | Documented / high | I1; automated opens/replies documented, proprietary scheduler not observed. |
 | Warmup improves real recipient inbox placement | Documented vendor claim / unverified outcome | I1 marketing explanation; no causal evidence collected. |
 | DNS authentication and suppression should have first-class operational UI | Inferred / moderate | G1/R1/R3 + current shared-mailroom requirements; proposed tickets below. |
@@ -82,7 +85,7 @@ R2 currently documents default 10 requests/second/team across API keys, dynamic 
 
 R3 automatically suppresses hard bounces and complaints, allows manual entries, and applies suppressions across the entire provider team/domains. Suppression-added/removed and email-suppressed events are documented. Removal does not ensure delivery; a fresh adverse result suppresses again. Local opt-out remains authoritative even when a provider entry is removed; never automatically clear a complaint.
 
-R4/R5 support verified webhooks, replay and recipient-specific delivery outcomes. Proposed handlers persist authenticated events before ACK, deduplicate, retain original chronology and reconcile without overwriting terminal adverse recipient outcomes. A multi-recipient message must not become “delivered to all” from one recipient success. Provider acceptance, recipient-server delivery, inbox placement and human reading are separate facts. R6 documents inbound listing/attachments; route by trusted envelope data and copy required history into Elevateo under approved retention. Supabase is private application data/storage, not SMTP/IMAP; beta provider inbox features are not needed to replace the accepted backend.
+R4/R5 and [request verification](https://resend.com/docs/webhooks/verify-webhooks-requests) support signed raw-body webhook verification, replay and recipient-specific delivery outcomes. Proposed handlers persist authenticated events before ACK, deduplicate, retain original chronology and reconcile without overwriting terminal adverse recipient outcomes. A multi-recipient message must not become “delivered to all” from one recipient success. Provider acceptance, recipient-server delivery, inbox placement and human reading are separate facts. R6 documents inbound listing/attachments; route by trusted envelope data and copy required history into Elevateo under approved retention. Supabase is private application data/storage, not SMTP/IMAP; beta provider inbox features are not needed to replace the accepted backend.
 
 ## Original mailroom proposal and sequenced tickets
 
@@ -90,10 +93,10 @@ These are proposed child tickets for root to approve/schedule, not created GitHu
 
 | Sequence / proposed ticket | Owner | Implementation-ready behavior / acceptance |
 |---|---|---|
-| 1 RES-406-E1 evidence closure | Root/Nadia | Supply REA skill and sanitized Accounts/Unibox/Gmail captures with UTC time, visible fields, action boundary and evidence path. Label each as reported/observed; no bodies, addresses or secrets in Git. |
+| 1 RES-406-E1 evidence closure | Root/Nadia | REA skill supplied/read; finish sanitized Accounts/Unibox/Gmail captures with UTC time, visible fields, action boundary and evidence path. Label each as reported/observed; no bodies, addresses or secrets in Git. |
 | 2 BE-403-H1 account health contract | Rowan/Soren | Tenant-scoped account/domain evidence: signal, status unknown/pending/verified/failed/stale, observed_at, source, expiry, reason_code. Separate record presence, provider verification and actual authenticated-message result; MX receiving distinct from send auth. No client secrets. |
 | 3 FE-405-H1 health drawer | Mira | Compact “Needs attention” panel with concrete failed/stale checks and last-check/source details. Display no-data as unknown; simulated values visibly simulated. Show external sending held. Accessible text/icons and keyboard focus; no reputation percentage. |
-| 4 BE-403-D1 dispatch eligibility | Rowan | Persist permission evidence reference, purpose, opt-out/suppression cause and scope. Recheck authorization/consent/suppressions at dispatch, not only draft creation. Hold unsupported or unknown purpose. Existing frozen send snapshot/lease remains authoritative; cancel safely before claim, retain ambiguous attempts as unknown. |
+| 4 BE-403-D1 dispatch eligibility | Rowan | Persist permission evidence reference, purpose, opt-out/suppression cause and scope. Recheck authorization/consent/suppressions at dispatch, not only draft creation. Hold unsupported or unknown purpose. Future dispatch must use an immutable send snapshot/lease; cancel safely before claim and retain ambiguous attempts as unknown. No send gateway currently exists. |
 | 5 BE-403-D2 event reconciliation | Rowan | Unique provider/team/event identity, authenticated recipient routing, recipient-specific outcomes, monotonic adverse state, replay-safe suppression, received/occurred times. Queue age/import lag/unknown attempt counters; no bodies in operational logs. |
 | 6 FE-405-M1 mailroom workflow | Mira | Sidebar mailbox/assignment/status, conversation list and plain-text reader, draft saved/conflict/offline feedback. Delivery drawer distinguishes queued/submitted/delivered/bounced/complained/unknown and per-recipient differences. Pending controls have honest labels; unsupported mutations disabled. |
 | 7 BE-403-V1 genuine gradual volume | Rowan/Root | Configurable team/domain/account budgets under actual provider limits, explicit operator-reviewed increases based on genuine consented traffic and observed outcomes. No universal daily ramp or automatic reputation repair. Any complaint/hard bounce suppresses recipient immediately; configurable incident hold can precede provider ceilings. |
@@ -122,4 +125,68 @@ QA-404-D1 fixtures: (1) valid consented draft with all evidence and deterministi
 
 Visual acceptance: keyboard/screen-reader navigation, focus return, no-data/error/stale states, draft conflict/lost ACK, mobile widths, per-recipient delivery explanation, no invented active connection, and no enabled live/warmup controls. Root captures exact baseline/hash, environment and timestamps. Review future source in <=200-line assignments under full INT-401 rubric with a dedicated design-tradeoff reviewer; current documentation is not source coverage and defects/KLOC is N/A.
 
-Open blockers: REA skill not supplied; root redacted runtime evidence absent; actual mailbox inventory/plan/provider quotas/consent history unknown; integration tests and independent review pending. No dependency on app baseline remains for this documentation checkpoint: root's attempt-2 baseline was verified at HEAD. Root can merge this bounded research while those gates stay explicit.
+Open blockers: full root redacted runtime evidence and independent capture inspection incomplete; actual mailbox inventory/plan/provider quotas/consent history unknown; integration tests and independent review pending. No dependency on app baseline remains for this documentation checkpoint: root's attempt-2 baseline was verified at HEAD. Root can merge this bounded research while those gates stay explicit.
+
+
+## Continuation history and permission boundaries
+
+- 441ac5b (attempt2, exit0 coordinator-confirmed): authored public-source synthesis; unavailable-skill report was accurate for that event. This receipt is historical, not application verification.
+- Attempt3, 2026-10-14: read supplied REA skill/references and latest `../control/nadia-inbox.md`; resolved skill blocker, incorporated reported Orca Accounts observation, reopened primary citations, source-reviewed current gateway/routes/readiness. Manual SSH worker only; no invented Orca dispatch/lifecycle ID. Requested gpt-6.1-sol / low / Fast; actual model, effort, tier and session remain runner-receipt facts, not independently attested by this document.
+- Root native Windows provider failure and separate Chrome launch approval rejection are distinct. No provider installation, new browser, private account connection, live message, warmup toggle or policy bypass attempted. Full UI research remains partial; root owns further supported capture and Obsidian mirroring.
+
+## Source capability map for Mira and Elara
+
+Source-reviewed at parent 441ac5b; NOT runtime-tested. Evidence: `apps/web/src/data/gateway.ts`, `apps/web/src/data/contract.ts`, `apps/server/config/routes.rb`, `apps/server/lib/elevateo/mailbox_reads.rb`, `apps/server/app/controllers/health_controller.rb`. These first-party files establish interfaces and intended checks, not successful execution.
+
+| User-visible state / requirement | Existing evidence | Honest current presentation / bounded next work |
+|---|---|---|
+| Signed in, mailbox access | Session, organizations, mailbox permissions and protected reads | Use existing session/access states; never equate login with connected email provider. |
+| Draft saved / conflict / outcome uncertain | saveDraft, getDraftOperation, version/conflict/replay semantics | Preserve current ledger lookup; timeout cannot become saved or sent. |
+| Assigned / unread / internal note / search | Existing gateway collaboration operations | Build polished ownership and navigation here; unread is actor state, not recipient engagement. |
+| External sending held / simulator | `/ready` includes outbound_hold and mail_catcher dependency | Operational source evidence only; not exposed by MailroomGateway and not a per-mailbox provider check. Do not fetch public readiness to grant send authority. |
+| Provider not connected / connection unknown / connection failed | No provider-health gateway operation or route | Show “Provider status unavailable” until scoped backend evidence exists. Missing data does not prove disconnected or failed. |
+| DNS not checked / pending / verified / failed / stale | No DNS-health operation in inspected gateway/routes | Unknown now; add separate SPF, DKIM, DMARC and MX evidence later. Provider verification and message alignment are different checks. |
+| Consent unknown / allowed for purpose / revoked | approve_send permission exists; no consent operation | Permission is actor authority only. No inferred consent from membership, existing address, reply, open or read-state. |
+| Suppressed / complaint / hard bounce | No suppression/event operations in inspected gateway/routes | Unknown now; later show scoped recipient reasons without another tenant's history. |
+| Rate limited / quota exhausted / paused | No provider-team budget gateway operation | Unavailable now; planned provider fixtures must model team scope, reset timestamp and Retry-After. |
+| Submitted / recipient server delivered / partial delivery / unknown outcome | No send/delivery gateway operation | Unsupported now. Never derive delivered from draft save or absence of errors. |
+| Reputation / inbox placement / human read / warmup active | No suitable evidence | No score, green “healthy” aggregate, placement promise or warmup activation. Reference vendor UI is not Elevateo capability. |
+
+## Proposed consent-based provider-health contract — design only
+
+Root/Rowan must approve and version any extension before Mira consumes it. Proposed single mailbox-scoped read `getMailboxHealth(ctx, mailboxId, signal)` follows existing membership checks, ReadContext, abort behavior, strict validation and generic foreign/absent 404. No API implementation or schema migration is included here. Prefer one bounded response over one DNS/provider request per rendered row; render cached evidence, with collection performed by Soren/Rowan-approved jobs rather than page viewing. No automatic probes that send mail.
+
+Proposed response: `schema_version`, `mailbox_id`, `environment` (test/live), `transport_mode` (simulated/disabled/provider), `as_of`, and at most 16 typed checks. Each check has closed `signal` (connection, spf, dkim, dmarc, mx, provider_verification, quota, event_ingestion, outbound_hold), `status` (unknown/pending/verified/failed/stale/not_applicable), `source_kind` (configuration/dns/provider/simulator), nullable `observed_at` and `expires_at`, bounded `reason_code` and opaque evidence reference. Require UTC timestamps, no future observation, expiry after observation, and reject unsupported versions/fields. “Verified” requires a signal-specific retained observation; missing/expired evidence cannot verify. `not_applicable` needs a reason, not a fallback. No credentials, private email content or raw provider errors in this response. Simulator results always carry simulated provenance and cannot verify live DNS/provider checks.
+
+Keep recipient eligibility out of this mailbox summary: recipient consent and suppression require a separate authorized draft/dispatch evaluation with purpose, permission-evidence reference, current actor authorization, local opt-out, provider-team suppression, freshness and policy revision. Unknown consent holds submission. A positive health response does not grant sending rights; `outbound_hold` wins even when every infrastructure check verifies. Marketing features, automated volume ramps and live provider calls remain outside current approval. A future consent record needs who/when/how/purpose, revocation and auditable source, not a boolean inferred from engagement. Health collection must never connect an account, remove suppression or enable warmup.
+
+UI proposal: show each check's plain-language status, source and last check; keep “External sending held” visible independently. Use “Needs attention” only for evidenced failures, “Check outdated” for stale signals, and “Not checked” for unknown. Avoid one reputation score; a mixed verified/unknown set stays visibly incomplete. Clear cache on organization/session changes and protect async results with current identity/context. Provider-wide incidents may affect several mailboxes; expose authorized impact, not private team recipients. Root decides TTLs and incident thresholds; none is silently invented here.
+
+## Acceptance/design advisory gaps (handoff, not peer edits)
+
+Mira owns UI edits and Elara owns scenarios. The original proposal must not imply current support for archive, labels, snooze, templates, scheduling, delivery or health. Existing all/unread filter and assignment/search/draft operations are the bounded immediate product surface. Premium design should prioritize stable draft recovery, readable threads and ownership before adding unsupported controls.
+
+Elara should add these explicit scenarios to the owned plan, all NOT_RUN: no mailbox rows; nullable sender; health route absent; unknown versus evidenced disconnected; null observation versus malformed/future timestamp; verified check expiring while drawer is open; 16-check maximum/oversized payload rejection; org switch while request is in flight; manage_members or approve_send without consent; all infrastructure verified with outbound_hold true; simulator/live evidence mismatch; provider-team suppression without cross-tenant history disclosure; partial delivery without message-wide success; complaint after delivery remaining adverse; zero-denominator/no Postmaster sample showing unavailable; 429 at team scope with an alias/key change not bypassing pause. Assertions must include visible labels, accessible focus/error recovery and lack of real sending. Container execution belongs to Soren; root actual visual QA remains required.
+
+Design tradeoff advice: separate operational readiness, permission and recipient eligibility because each changes independently. One scoped cached summary is simpler than a new health backend or per-row live probes, but needs explicit freshness and collector failure states. Do not broaden correspondence into marketing to justify the contract. Nadia's advice is author/source review, not an independent adversarial or dedicated design-review signoff; those assignments remain root-owned under the full INT-401 rubric.
+
+## Independent primary-source citation recheck (2026-10-14)
+
+“Independent” here means Nadia fetched official public pages without relying on root's private UI capture; this is not a second-person review. All I1–I9, G1–G5 and R1–R6 URLs above reopened successfully as HTML in this continuation. Exact retrieval calls/results remain in the worker transcript; no private runtime evidence retained. Links support vendor-documented behavior only. Section locators below narrow support; update labels are mutable (I3 now says Updated today rather than historical in-last-hour).
+
+| Sources | Precise support location / audit limit |
+|---|---|
+| I1, I2 | Warmup mechanics overview; Basic/Advanced Warmup Settings and AirMail notice: enabled-user exchanges, defaults 1/10/30, emulated reading/opens/spam moves. No independent effectiveness or pool safety evidence. |
+| I3 | Account Analytics, Filter Accounts, Deliverability Test, Test Domain Setup, Warmup Analytics: distinct metrics and checks. Score inputs are documented, formula remains unknown; no tests executed. |
+| I4, I5, I6 | Schedule & Limits (30 recommendation/20 AirMail campaign cap); tracking calculation/text overrides; advanced matching/rotation/speed options. Not Google/Resend limits. |
+| I7, I8, I9 | Unibox management actions/plan scope; Schedule Replies timezone/cancel workflow; Reply Macros configuration. Documented workflows only, runtime/plan entitlement unknown. |
+| G1, G2 | Requirements for all/bulk senders, authentication and Increase sending volume slowly; FAQ bulk definition, spam-rate guidance, one-click unsubscribe timing. Personal-Gmail scope, not a universal mailbox quota or guarantee. |
+| G3, G4, G5 | Organize/archive action sections; screen-reader navigation/action sections; Outlook/Gmail feature comparison. Reference workflow only; no native/client runtime check. |
+| R1 | Appropriate Sending Statistics; Prohibited Sending Purposes; Appropriate Mailing Lists; Prohibited Account Usage. Explicit opt-in, <0.08% complaints, <4% bounces, seven-day opt-out and no quota circumvention. Provider policy, not legal advice or activation approval. |
+| R2 | Rate Limit and Email Quotas: default 10 requests/second/team; UTC Free daily reset; sent and received accounting. Actual account limits unknown. |
+| R3 | How suppression works; team-wide statement; Removing suppressed emails; event sections. Automatic hard-bounce/complaint plus manual entries; removal not proof of permission/delivery. |
+| R4, R5 | Webhook features (replay/verify), Single email event visibility (`to` array with one recipient). Durable ACK ordering/monotonic adverse reconciliation are our design choices, not asserted vendor guarantees. |
+| R6 | Inbound receiving/retrieval features. Not evidence Gmail is connected or synchronization implemented. |
+| R7 | [Verify Webhooks Requests](https://resend.com/docs/webhooks/verify-webhooks-requests), How to verify webhook requests: signing secret and raw body required. Proposed Rails integration remains unimplemented. |
+
+Audit correction: guessed `/docs/dashboard/webhooks/replay-webhooks` failed retrieval; no claim relies on that URL. R4 explicitly documents replay and verification, and R7 supplies raw-body support. Earlier failed guessed dashboard/Workspace URLs remain failures, not negative product evidence. Vendor docs, runtime observation and source interfaces do not prove Google's proprietary ranking, warmup causality, immunity to spam filters, inbox placement, safe cold outreach on Resend, or provider approval of synthetic engagement. These warmup claims are explicitly unsupported.
