@@ -1,0 +1,39 @@
+module Elevateo
+  module AdministrationRoster
+    KEYS: Array[String]
+    FIELDS: Array[String]
+    ROLES: Array[String]
+    IDENTITIES: Array[[String, String, String?, String]]
+    UUID: Regexp
+
+    class Invalid < StandardError
+    end
+
+    def self.load: (?String) -> Hash[String, untyped]
+    def self.validate: (Hash[String, untyped]) -> Hash[String, untyped]
+    def self.binding: (config_key: String, auth_user_id: String,
+      existing_bindings: Hash[String, String], verified_subject: String?) -> Hash[String, String]
+    def self.public_people: (Hash[String, untyped]) -> Array[Hash[String, untyped]]
+    def self.invalid!: () -> bot
+  end
+end
+
+module V2
+  module Admin
+    class OrganizationGrantsController < V1::WriteController
+      ROLE_SQL: Hash[String, String]
+      DATABASE_ROLES: Hash[String, String]
+      CHANGE_SQL: String
+      PAGE_SQL: String
+      def index: () -> void
+      def roster: () -> void
+      def update: () -> void
+      def self.page_limit: (Hash[String, String]) -> Integer
+      def self.project_grants: (untyped, String, Integer) -> Array[Hash[String, untyped]]
+      def self.change_input: (Hash[String, untyped]) -> [String, Integer]
+      private
+      def page_scope: (Elevateo::SessionIdentity, Elevateo::ReadResponse::item, Integer, String) -> Elevateo::Cursors::scope
+      def path_uuid: (Symbol) -> String
+    end
+  end
+end
