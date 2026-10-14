@@ -37,6 +37,7 @@ async function retained(page: Page, text: { subject: string; to: string; body: s
   await expect(page.getByLabel('Message', { exact: true })).toHaveValue(text.body);
 }
 async function load(page: Page, draftId: string) {
+  await page.goto('about:blank'); // AIDEV-NOTE: Fresh document forces a genuine GET; context auth cookies persist.
   const [response] = await Promise.all([responseAt(page, `/v1/drafts/${draftId}`),
     page.goto(`/#/mailboxes/${seed.mailboxes.primary}/drafts/${draftId}`)]);
   expect(response.status()).toBe(200);
@@ -45,7 +46,6 @@ async function load(page: Page, draftId: string) {
   await expect(page.getByText(`Saved version ${detail.draft.version}`, { exact: true })).toBeVisible();
   return { detail, response };
 }
-
 // AIDEV-NOTE: Require a case-owned disposable dataset; no delete route exists and no shared seed may be mutated.
 scenario(id, 'same-composer-distinct-session-stale-version-save', async (winner, record) => {
   const config = loadAcceptanceConfig();

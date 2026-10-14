@@ -1,0 +1,145 @@
+   1  import { randomUUID } from 'node:crypto';
+   2  import { expect, test } from '@playwright/test';
+   3  import type { Page, Request, Response } from '@playwright/test';
+   4  import { z } from 'zod';
+   5  import { draftReceipt } from './boundaries.js';
+   6  import { scenario } from './cases.js';
+   7  import { responseAt, seed, signIn } from './support.js';
+   8  import { loadAcceptanceConfig } from '../shared/config.js';
+   9
+  10  const id = 'SCN-DRAFT-001-F1';
+  11  const address = z.strictObject({ display_name: z.string().max(256).nullable(), address: z.string().max(256).nullable() });
+  12  const version = z.number().int().min(0).max(2147483647);
+  13  const content = { subject: z.string().max(998), to: z.array(address).max(100),
+  14    body_text: z.string().max(65536), reply_to_thread_id: z.null() };
+  15  const saveInput = z.strictObject({ ...content, mailbox_id: z.uuid(), operation_id: z.uuid(), expected_version: version });
+  16  const detailSchema = z.strictObject({ context_id: z.string().min(1).max(256),
+  17    authorization_version: z.string().min(1).max(256), draft: z.strictObject({ ...content,
+  18      id: z.uuid(), mailbox_id: z.uuid(), version, state: z.literal('editable'),
+  19      created_at: z.iso.datetime(), updated_at: z.iso.datetime() }) });
+  20  const conflictSchema = z.strictObject({ code: z.literal('draft_conflict'),
+  21    message: z.string().max(256), request_id: z.string().min(1).max(128) });
+  22
+  23  async function json(response: Response, limit = 262144): Promise<unknown> {
+  24    expect(response.headers()['content-type']?.includes('application/json')).toBe(true);
+  25    const bytes = await response.body();
+  26    expect(bytes.length).toBeLessThanOrEqual(limit);
+  27    return JSON.parse(bytes.toString('utf8')) as unknown;
+  28  }
+  29  async function fill(page: Page, text: { subject: string; to: string; body: string }): Promise<void> {
+  30    await page.getByLabel('To', { exact: true }).fill(text.to);
+  31    await page.getByLabel('Subject', { exact: true }).fill(text.subject);
+  32    await page.getByLabel('Message', { exact: true }).fill(text.body);
+  33  }
+  34  async function retained(page: Page, text: { subject: string; to: string; body: string }): Promise<void> {
+  35    await expect(page.getByLabel('To', { exact: true })).toHaveValue(text.to);
+  36    await expect(page.getByLabel('Subject', { exact: true })).toHaveValue(text.subject);
+  37    await expect(page.getByLabel('Message', { exact: true })).toHaveValue(text.body);
+  38  }
+  39  async function load(page: Page, draftId: string) {
+  40    await page.goto('about:blank'); // AIDEV-NOTE: Fresh document forces a genuine GET; context auth cookies persist.
+  41    const [response] = await Promise.all([responseAt(page, `/v1/drafts/${draftId}`),
+  42      page.goto(`/#/mailboxes/${seed.mailboxes.primary}/drafts/${draftId}`)]);
+  43    expect(response.status()).toBe(200);
+  44    const detail = detailSchema.parse(await json(response));
+  45    expect(detail.draft).toMatchObject({ id: draftId, mailbox_id: seed.mailboxes.primary });
+  46    await expect(page.getByText(`Saved version ${detail.draft.version}`, { exact: true })).toBeVisible();
+  47    return { detail, response };
+  48  }
+  49  // AIDEV-NOTE: Require a case-owned disposable dataset; no delete route exists and no shared seed may be mutated.
+  50  scenario(id, 'same-composer-distinct-session-stale-version-save', async (winner, record) => {
+  51    const config = loadAcceptanceConfig();
+  52    expect(seed.kind).toBe('runtime');
+  53    expect(seed.fixture_identity).toMatchObject({ case_id: id, engine: winner.context().browser()?.browserType().name(),
+  54      attempt: test.info().retry, run_id: config.runId, dispatch_id: config.dispatchId });
+  55    const browser = winner.context().browser();
+  56    if (!browser) throw new Error('Browser unavailable');
+  57    const staleContext = await browser.newContext({ baseURL: 'http://app.test' });
+  58    const writes: Request[] = [];
+  59    let path = '';
+  60    const countWrite = (request: Request): void => {
+  61      const url = new URL(request.url());
+  62      if (url.origin === 'http://app.test' && url.pathname === path && request.method() === 'PUT') writes.push(request);
+  63    };
+  64    try {
+  65      const stale = await staleContext.newPage();
+  66      await signIn(winner, 'composer');
+  67      await signIn(stale, 'composer');
+  68      const cookieA = (await winner.context().cookies('http://app.test')).find(cookie => cookie.name === 'elevateo_session');
+  69      const cookieB = (await staleContext.cookies('http://app.test')).find(cookie => cookie.name === 'elevateo_session');
+  70      expect(cookieA?.value).toBeTruthy();
+  71      expect(cookieB?.value).toBeTruthy();
+  72      expect(cookieA?.value === cookieB?.value).toBe(false); // Never export cookie values into evidence.
+  73      const marker = `${id} ${randomUUID()}`;
+  74      const initial = { subject: `${marker} initial`, to: 'initial@acceptance.test', body: `${marker}\nversion one\n` };
+  75      await winner.goto(`/#/mailboxes/${seed.mailboxes.primary}/drafts`);
+  76      await winner.getByRole('button', { name: 'New draft', exact: true }).click();
+  77      await fill(winner, initial);
+  78      const draftId = /\/drafts\/([0-9a-f-]{36})(?:\?|$)/.exec(new URL(winner.url()).hash)?.[1];
+  79      if (!draftId) throw new Error('Draft route missing');
+  80      path = `/v1/drafts/${draftId}`;
+  81      const [created] = await Promise.all([responseAt(winner, path, 'PUT'),
+  82        winner.getByRole('button', { name: 'Save draft', exact: true }).click()]);
+  83      expect(created.status()).toBe(200);
+  84      expect(saveInput.parse(created.request().postDataJSON() as unknown).expected_version).toBe(0);
+  85      expect(draftReceipt(await json(created))).toEqual({ draft_id: draftId, version: 1 });
+  86      await expect(winner.getByText('Saved version 1', { exact: true })).toBeVisible();
+  87      // AIDEV-NOTE: Both GET acknowledgements precede the winning PUT; timing sleeps cannot establish this order.
+  88      const first = await load(winner, draftId);
+  89      const second = await load(stale, draftId);
+  90      expect(first.detail.draft).toEqual(second.detail.draft);
+  91      expect(first.detail.draft.version).toBe(1);
+  92      await retained(winner, initial);
+  93      await retained(stale, initial);
+  94      const winning = { subject: `${marker} winner`, to: 'winner@acceptance.test', body: `${marker}\nwinning <b>literal</b> & text\n` };
+  95      const losing = { subject: `  ${marker} stale  `, to: '  Stale Name <stale@acceptance.test>  \n\n  unfinished recipient  \n',
+  96        body: `  ${marker}\nunsaved <i>literal</i> & text\n\n` };
+  97      await fill(stale, losing);
+  98      await fill(winner, winning);
+  99      const [saved] = await Promise.all([responseAt(winner, path, 'PUT'),
+ 100        winner.getByRole('button', { name: 'Save changes', exact: true }).click()]);
+ 101      expect(saved.status()).toBe(200);
+ 102      const winningInput = saveInput.parse(saved.request().postDataJSON() as unknown);
+ 103      expect(winningInput.expected_version).toBe(1);
+ 104      expect(draftReceipt(await json(saved))).toEqual({ draft_id: draftId, version: 2 });
+ 105      await expect(winner.getByText('Saved version 2', { exact: true })).toBeVisible();
+ 106      await retained(stale, losing);
+ 107      staleContext.on('request', countWrite);
+ 108      winner.context().on('request', countWrite);
+ 109      const [rejected] = await Promise.all([responseAt(stale, path, 'PUT'),
+ 110        stale.getByRole('button', { name: 'Save changes', exact: true }).click()]);
+ 111      expect(rejected.status()).toBe(409);
+ 112      const staleInput = saveInput.parse(rejected.request().postDataJSON() as unknown);
+ 113      expect(staleInput).toMatchObject({ mailbox_id: seed.mailboxes.primary, expected_version: 1,
+ 114        subject: losing.subject, body_text: losing.body, reply_to_thread_id: null,
+ 115        to: [{ display_name: 'Stale Name', address: 'stale@acceptance.test' },
+ 116          { display_name: 'unfinished recipient', address: null }] });
+ 117      expect(staleInput.operation_id).not.toBe(winningInput.operation_id);
+ 118      conflictSchema.parse(await json(rejected, 4096));
+ 119      const alert = stale.getByRole('alert');
+ 120      await expect(alert.locator('span').first()).toHaveText(
+ 121        'This draft changed elsewhere. Your text was not saved and nothing was overwritten.');
+ 122      await expect(alert.getByRole('button', { name: 'Keep my text and continue from the server version', exact: true })).toBeEnabled();
+ 123      await expect(alert.getByRole('button', { name: 'Discard my text and load the server copy', exact: true })).toBeEnabled();
+ 124      await expect(stale.getByRole('button', { name: 'Save changes', exact: true })).toBeDisabled();
+ 125      for (const label of ['To', 'Subject', 'Message']) await expect(stale.getByLabel(label, { exact: true })).toBeDisabled();
+ 126      await retained(stale, losing);
+ 127      const after = await load(winner, draftId);
+ 128      expect(after.detail.draft).toMatchObject({ version: 2, subject: winning.subject, body_text: winning.body,
+ 129        to: [{ display_name: null, address: winning.to }], reply_to_thread_id: null });
+ 130      // AIDEV-NOTE: Close the stale context after stable conflict assertions, ending its possible trailing-write lifetime.
+ 131      await retained(stale, losing);
+ 132      await staleContext.close();
+ 133      expect(writes.length).toBe(1);
+ 134      const final = await load(winner, draftId);
+ 135      expect(final.detail.draft).toEqual(after.detail.draft);
+ 136      expect(writes.length).toBe(1);
+ 137      record.assertions.push('Distinct sessions of one composer loaded v1; acknowledged v2 precedes real stale-v1 409; raw edits retained');
+ 138      record.assertions.push('Conflict disables save/edit; authenticated GETs retain exact winner v2; one losing PUT through context close');
+ 139      record.evidence.push('Case-owned draft and disposable dataset; HTTP bodies/cookies remain private; observer OFF; no sleeps or mocks');
+ 140    } finally {
+ 141      staleContext.off('request', countWrite);
+ 142      winner.context().off('request', countWrite);
+ 143      await staleContext.close();
+ 144    }
+ 145  });
