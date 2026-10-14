@@ -63,6 +63,7 @@ class OrganizationAccessPolicyTest < MailboxMembershipDatabaseCase
     assert_equal "ok", response.fetch("status")
     page = grants_page
     assert_equal "ok", page.fetch("status")
+    assert_equal({ "user_id" => @user, "role" => "owner", "revision" => 0 }, page.fetch("actor"))
     assert_equal [@user, target.user_id].sort, page.fetch("items").map { |row| row.fetch("user_id") }.sort
     assert page.fetch("items").all? { |row| row.keys.sort == %w[revision role user_id] }
     assert_nil page.fetch("next_user_id")

@@ -186,3 +186,5 @@ Cassian manifest reconciliation: contract-lock now seals actual generated client
 SEC-802 access design: organization roles have revisioned protected mutation and no implicit mailbox-content access. Legacy mailboxes remain unclassified until verified owner enrollment. Private visibility is required for a scoped sales inbox; frozen shared visibility admits all organization members. See `docs/completion/sabine.md`.
 
 SEC-802 security seam: migration 00008 installs the legacy mailbox mutation guard after policy tables, with no wire DTO change. Personal delegation requires the owner to act; all delegation requires current mailbox capabilities and an explicit grant ceiling. The redacted grants page derives tenant from the authenticated session, and historical mailboxes fail closed until classified by a verified operator workflow.
+
+The protected grants page also returns current actor role/revision independently of pagination; audit metadata remains unavailable until a separately reviewed authority endpoint exists.

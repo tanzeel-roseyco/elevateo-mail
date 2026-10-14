@@ -238,7 +238,7 @@ GRANT EXECUTE ON FUNCTION app_auth.resolve_session(text) TO elevateo_owner;
 SET LOCAL ROLE elevateo_owner;
 CREATE FUNCTION app.organization_grants_page(p_digest text, p_after uuid, p_limit integer)
 RETURNS jsonb LANGUAGE plpgsql STABLE SECURITY DEFINER SET search_path = pg_catalog AS $$
-DECLARE proof jsonb; org uuid; actor uuid; actor_role text; rows jsonb; extra uuid; cursor_id uuid;
+DECLARE proof jsonb; org uuid; actor uuid; actor_role text; actor_revision integer; rows jsonb; extra uuid; cursor_id uuid;
 BEGIN
   IF p_limit IS NULL OR p_limit NOT BETWEEN 1 AND 50 THEN
     RAISE EXCEPTION 'invalid grant page limit' USING ERRCODE = '22023';
@@ -251,7 +251,7 @@ BEGIN
     OR NULLIF(current_setting('app.user_id', true), '') IS DISTINCT FROM actor::text THEN
     RETURN '{"status":"not_found"}'::jsonb;
   END IF;
-  SELECT role INTO actor_role FROM app.organization_access
+  SELECT role, revision INTO actor_role, actor_revision FROM app.organization_access
     WHERE organization_id = org AND user_id = actor;
   IF actor_role NOT IN ('owner', 'admin') OR actor_role IS NULL THEN
     RETURN '{"status":"not_found"}'::jsonb;
@@ -272,7 +272,8 @@ BEGIN
       JOIN app.organization_memberships m ON (m.organization_id, m.user_id) = (a.organization_id, a.user_id)
       WHERE a.organization_id = org AND a.user_id > cursor_id ORDER BY a.user_id LIMIT 1;
   END IF;
-  RETURN jsonb_build_object('status', 'ok', 'items', rows,
+  RETURN jsonb_build_object('status', 'ok', 'actor',
+    jsonb_build_object('user_id', actor, 'role', actor_role, 'revision', actor_revision), 'items', rows,
     'next_user_id', CASE WHEN extra IS NULL THEN NULL ELSE cursor_id END);
 END $$;
 REVOKE ALL ON FUNCTION app.organization_grants_page(text,uuid,integer)
