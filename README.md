@@ -402,3 +402,5 @@ ATT865 Nadia 5465488 malformed scan-claim/due-ID/socket repairs are imported aft
 Evidence correction: Soren 882a471 migration00009 blob 7412dd6 differs from Dorian 2f255b9/current blob eece1c9; old migration PASS cannot verify the new separated protected-write policies. Current 00009 real PostgreSQL/Auth migration and role tests remain NOT_RUN.
 
 ADV112/113/114 independent source reviews reported zero defects over separate 349/348/287-LOC packets; they do not verify current Docker runtime. Dorian f1fb04a retracts incorrect 882a471 migration PASS transfer to revised 00009.
+
+Soren exact e9ead714 isolated Ruby Docker passed direct-read 8/90, attachment-service 13/55, V2 contract 4/27, sequence input 4/13, schedule 8/25 and preference input 3/9; gateway app test helper has two keyword errors and sequence controller load stops at Maeve repository SyntaxError line123. DB/HTTP not reached.
