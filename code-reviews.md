@@ -68,6 +68,8 @@ See docs/completion/int401-frozen-app.md.
 
 # Code reviews
 
+INT-801 integration evidence (2026-10-14 15:25 UTC): Cassian read Rowan's independent ADV044 Dorian review (352 unique LOC, four findings, 11.36/KLOC) and Nadia's bounded OUT804 controller review (229 assigned LOC, two coverage findings, 8.73/KLOC). These are owner review records, not Cassian-performed reviews; exact scope and limitations are in `docs/completion/adv044-dorian-out804-review.md` and `docs/completion/review-nadia-dorian-out804.md`. The account policy finding keeps all V2 account routes disabled. Dorian's later monotonic consent-history patch was merged without an independent Cassian review or fleet runtime result; no defect-density claim is made for that patch.
+
 ## MAIL-819 Corin continuation candidate
 
 No independent adversarial or design-tradeoff review was performed. Reviewed source coverage and defect density are therefore unclaimed; root should assign bounded packets of at most 200 lines across the inbound parser, migration, adapter, controller and tests. Corin self-inspected authorization, MIME bounds, transaction rollback, receipt scope and no-live behavior; this is not review acceptance.
