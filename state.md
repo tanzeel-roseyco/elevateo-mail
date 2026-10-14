@@ -353,3 +353,5 @@ Soren exact e9ead714 isolated Ruby Docker passed direct-read 8/90, attachment-se
 SEQ876 Maeve 025f305 repository heredoc parse repair and FE873 Fable df858c0 attachment filename code-point/lint repair are imported; exact integrated Ruby/web Docker reruns remain pending.
 
 SEQ876 Maeve 89febd2 exact eight-value sequence step bind-order regression is imported after syntax repair; fleet repository/controller tests remain pending.
+
+ATT870 Nadia 8192bbc typed PrivateStorage repair is imported after ADV115 Vera static 212-LOC/zero-defect review; changed nil/status failure regressions and fleet Steep/Storage checks remain pending.

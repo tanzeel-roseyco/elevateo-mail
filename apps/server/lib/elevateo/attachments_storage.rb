@@ -21,7 +21,8 @@ module Elevateo
           uri.port == 5000 && uri.path.to_s.empty? && uri.query.nil? && uri.fragment.nil? && uri.userinfo.nil?
         raise ArgumentError, "invalid bucket" unless bucket.is_a?(String) && BUCKET.match?(bucket)
         raise ArgumentError, "missing private token" unless service_token.is_a?(String) && service_token.bytesize.between?(32, 4096)
-        @base, @bucket, @token = uri, bucket, service_token
+        # AIDEV-NOTE: The validated private endpoint has nonnullable transport fields for strict network typing.
+        @host, @port, @bucket, @token = "storage", 5000, bucket, service_token
       rescue URI::InvalidURIError
         raise ArgumentError, "private Storage URL required"
       end
@@ -62,22 +63,23 @@ module Elevateo
       private
 
       def private_bucket?
-        http = Net::HTTP.new(@base.host, @base.port, nil)
+        http = Net::HTTP.new(@host, @port, nil)
         http.open_timeout = 3
         http.read_timeout = 5
         http.max_retries = 0
         req = Net::HTTP::Get.new("/bucket/#{@bucket}")
         req["Authorization"] = "Bearer #{@token}"
         response = http.request(req)
-        response.code.to_i == 200 && response.body.to_s.bytesize <= 4096 &&
-          JSON.parse(response.body).fetch("public") == false
+        body = response.body
+        response.code.to_i == 200 && body.is_a?(String) && body.bytesize <= 4096 &&
+          JSON.parse(body).fetch("public") == false
       rescue IOError, SystemCallError, Timeout::Error, JSON::ParserError, KeyError, NoMethodError
         false
       end
 
       def request(method, key, bytes: nil, expected:)
         path = "/object/#{@bucket}/#{key}"
-        http = Net::HTTP.new(@base.host, @base.port, nil)
+        http = Net::HTTP.new(@host, @port, nil)
         http.open_timeout = 3
         http.read_timeout = 15
         http.write_timeout = 15
@@ -87,17 +89,15 @@ module Elevateo
         req["Content-Type"] = "application/octet-stream"
         req.body = bytes if bytes
         body = +"".b
-        code = nil
         http.start do |session|
           session.request(req) do |response|
-            code = response.code.to_i
+            raise Unavailable, "private object unavailable" unless expected.include?(response.code.to_i)
             response.read_body do |chunk|
               body << chunk
               raise Unavailable, "private object response too large" if body.bytesize > MAX_BYTES
             end
           end
         end
-        raise Unavailable, "private object unavailable" unless expected.include?(code)
         body
       rescue IOError, SystemCallError, Timeout::Error
         raise Unavailable, "private object unavailable"
