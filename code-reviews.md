@@ -708,3 +708,6 @@ Jules ADV089 independently reviewed 185 LOC at `a3e14f9` and reported one P2 tes
 ### REV852 Leonie OPS820 ClamAV packet C — Lyra
 
 Exact source `3fd0dcb835b591e4979541316da1e6a4addb55e0`: 271 credited unique LOC in `clamav_probe.py`, its unit test, and bounded restore/source-runner prefixes. Two P2 static defects (whole-reply timeout and unbounded changed-fixture read), **7.38 defects/KLOC**. No real clamd, Docker, restore or application test execution; partial full-runner context is excluded from credited coverage. See [REV852 report](docs/completion/lyra-rev852.md) for exact ranges, evidence and uncovered scope.
+### REV853 Elara concurrency and Theo callback typing — Lyra
+
+Exact Elara `cc2ac33cb9eab3c847b2b4e6633887d464b6a4d6` and Theo `f12d25c335763a33a1a384ad8a8023e28fdac824`: **298 unique LOC**, zero confirmed static defects (**0/KLOC**). The reviewed actor ordering, winner/loser rollback oracle and required-keyword callback types preserve the intended guards; real PostgreSQL races, Rails tests and typecheck remain Soren fleet work. Exact ranges and limits: [REV853 report](docs/completion/lyra-rev853.md).
