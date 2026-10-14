@@ -45,6 +45,7 @@ module Elevateo
         when "account"
           { "campaign_id" => WriteInput.uuid(value.fetch("campaign_id")),
             "mailbox_id" => WriteInput.uuid(value.fetch("mailbox_id")), "label" => label(value.fetch("label"), 120) }
+        else WriteInput.invalid!
         end.freeze
       end
 

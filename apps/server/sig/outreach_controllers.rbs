@@ -7,6 +7,7 @@ module V2
       def encoded: (Hash[String, untyped]) -> String
       def write_result: (Hash[String, untyped], ?status: Integer) -> Elevateo::WriteResponse
       def public_item: (String, Hash[String, untyped]) -> Hash[String, untyped]
+      def public_detail: (String, Hash[String, untyped]) -> Hash[String, untyped]
       def public_page: (String, Hash[String, untyped]) -> Hash[String, untyped]
     end
     class CampaignsController < BaseController
