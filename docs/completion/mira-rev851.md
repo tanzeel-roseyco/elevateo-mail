@@ -1,0 +1,25 @@
+# REV851 — Leonie OPS820 gateway runtime/config packet B
+
+**Pinned source:** `3fd0dcb835b591e4979541316da1e6a4addb55e0` in `completion-leonie-ops820`. **Reviewer/runtime:** Mira FE806, Codex GPT-6 in Orca; no subagent, Docker, application test, database connection or live network was used. This is static source review only, not runtime acceptance.
+
+## Coverage and method
+
+Assigned changed packet B: `gateway_runtime_env.py` 59 lines, `gateway-config.example.env` 11, `test_gateway_runtime_env.py` 42, `make_test_env.py` 2 added, `source-runner.sh` 17 added, `full-runner.sh` 2 added, and `test_make_test_env.py` 1 added: **134 changed LOC**. Complete surrounding source inspected: those three new files plus `make_test_env.py` (63), `source-runner.sh` (59), `bootstrap-gateway.sql` (36), `gateway-bootstrap-smoke.sql` (17), `test_make_test_env.py` (36), and a six-line full-runner diff excerpt: **329 unique versioned source LOC total**, including 195 context LOC; each read stayed under 180 LOC. Bootstrap SQL is context for wiring, not a packet A review. I did not inspect ClamAV, restore scripts, helper migration or app gateway implementation. Formatting was delegated to lint. The full user rubric was applied to this bounded packet: behavior, null/empty/limits, state effects, scope, complexity, naming/comments, test coverage, documentation, authorization, input validation and hot paths.
+
+**Findings:** 2 actionable (one credential-scope defect, one integration-proof gap) / 134 assigned changed LOC = **14.93 findings/KLOC**. No other issue is claimed in the bounded coverage. A full source review of the service/Storage role grants and runtime gateway remains necessary before activation.
+
+## 1. MEDIUM — shared service-role JWT enters the gateway process
+
+`gateway_runtime_env.py:11-12,34,44` requires `SERVICE_ROLE_KEY` and writes it as `ELEVATEO_ATTACHMENT_STORAGE_SERVICE_TOKEN`; `make_test_env.py:45-46` creates that same Supabase `service_role` JWT. The generated DB URL correctly names the dedicated `elevateo_attachment_gateway` login, but the Storage credential is still the broad shared service-role JWT. The example comment calls the token “gateway-only,” which is not what this derivation establishes. A compromised gateway could potentially use that token outside the intended attachment bucket; exact accessible services depend on the Supabase configuration and were not exercised here.
+
+**Fix:** give the gateway a separately scoped private Storage capability bound to the attachment bucket/actions, or keep the byte route disabled until a reviewed server-side adapter can confine the service-role credential and demonstrate that boundary. Add a test that the gateway environment does not reuse the general `SERVICE_ROLE_KEY` value once a scoped token is provisioned. Never print token bytes in diagnostics.
+
+## 2. MEDIUM test/integration gap — dedicated login is never exercised
+
+`source-runner.sh:19-20` creates `gateway.env`, but the runner never uses it to launch a gateway or connect as `elevateo_attachment_gateway`; later Docker invocations use the admin infrastructure env or migrator env. `test_gateway_runtime_env.py:18-25` checks string presence/absence and file mode, while `gateway-bootstrap-smoke.sql:1-17` checks role attributes through an admin session. Thus the packet proves a derived URL string and SQL role shape statically, but not a successful dedicated-login connection or that application runtime receives only this env. This is a missing proof, not evidence that the login fails.
+
+**Fix:** in Soren's disposable fleet container, connect using the generated gateway env as the dedicated login, show current/session user and only the intended helper permission, deny API/migrator role use, and run a gateway process env allowlist probe without printing values. Keep the role/Storage checks separate from normal Rails migrator execution. A denied, empty, malformed or non-disposable input should fail before creating output; current unit tests cover duplicate password and non-disposable marker, but not empty/malformed token and destination failures.
+
+## Other bounded observations and limits
+
+The generator requires absolute paths and a nonsymlink source, validates the 64-hex DB password and 32-byte base64 HMAC key, uses exclusive `O_NOFOLLOW` mode-0600 destination creation, and emits generic error text rather than secret values. The synthetic maker generates independent password/HMAC material using `secrets`. The bootstrap SQL refuses privilege drift before rotating the login password; the inspected smoke checks many prohibited grants. These are static observations, not a connection or permission test. The current `SERVICE_ROLE_KEY` check is length-only, so a syntactically invalid JWT can pass derivation and fail later; the synthetic maker supplies a valid-looking token, and this remains a minor validation limitation rather than a separate counted finding. No test/build was run by Mira; Soren owns Docker execution and exact cleanup evidence.
