@@ -1,5 +1,8 @@
 # MAIL-818 Mox pilot checkpoint
 
+The combined app transport/ingress source inventory and bounded next seam are
+in [the adapter inventory](rhea-adapter-inventory.md).
+
 Scope: isolated `ops/mail/mox-pilot/` synthetic SMTP/IMAP fixture only. Baseline
 `bbf2353b254a05d48c2da7a508c143e6fba78691`; source candidate
 `d8c68aaa5970d65968bc1943f0eea6f4eb8bfe1d` (the outbox tracks any
