@@ -47,3 +47,7 @@ Sabine's committed repair `0df2b1f` was independently re-reviewed at exact hook 
 Corrected Rowan SEND-809 SQL now has full bounded static coverage at SHA `8a6d25e`: head lines 1–168 and earlier tail lines 169–325, 325 unique LOC in two <=200-line packets, zero observed static defects in either. See `docs/completion/felix-send809-head-review.md`; fleet SQL/race and separate design evidence still pending.
 
 Critical integration audit: read-only hash of Cassian isolated integration at HEAD `34ee753` showed `membership_patch.sql` SHA `aa1efedb`, the exact confirmed HIGH old-hook bypass. Root/Cassian were escalated to import Sabine immutable repair `0df2b1f` and run the QA-817 real-DB regression before accepting authority. This is an observed source hash, not a runtime test or claim about later integration commits.
+
+## Protected actor projection candidate
+
+Added `apps/server/test/qa817/grant_actor_database_test.rb` for Sabine's current `app.organization_grants_page`: stable owner actor on first and second redacted pages, auditor denial, and forged tenant GUC denial. Uses actual API login and real PostgreSQL; pending integration and NOT_RUN. Soren command from `/workspace/apps/server` in disposable backend Docker: `bundle exec ruby test/qa817/grant_actor_database_test.rb`; record migration SHA, exact exits and cleanup. Separate authenticated Theo V2 HTTP and owner/admin role mutation races remain mandatory.

@@ -186,3 +186,5 @@ QA-817 private sales/personal mailbox real-database regression source now target
 QA-817 now has a SEND-809 integrated worker observation database candidate for valid local receipt, forged receipt/wrong attempt, and stale generation. It is unexecuted pending immutable fleet integration.
 
 QA-817 found a HIGH legacy delete ceiling bypass in Sabine's earlier committed policy hook and added a failing-before-fix database regression candidate. The owner has an uncommitted correction; immutable review and Soren fleet execution are pending.
+
+QA-817 adds a protected-grants actual-role database candidate for actor identity across pages, auditor denial and forged tenant denial; fleet execution remains pending.
