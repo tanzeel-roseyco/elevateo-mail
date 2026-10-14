@@ -129,3 +129,6 @@ Devin remains independently verified suspended; last visible credit$5.17 and on-
 BE-01-R1 source checkpoint `5785eba47f3709debb2815c8d86608f7e62d02f3` is pushed on `fix/astra-low/be-01-r1`. Final authority review 165 LOC, catalog 29 LOC, protocol 131 LOC and dependency 60 LOC report zero new defects; overlapping coverage is not additive. At 18:24:36 UTC Devin resumed for ops-only pinned Ruby Docker tests with a five-minute execution checkpoint and verified cleanup. Last visible prepaid balance $5.17; no purchases. Test results remain pending. Dispatch is preserved under docs/evidence/be-01-r1-ops-dispatch.txt.
 
 INT-401 preservation follow-up: original indexed executable modes restored for canonical scripts after Windows overlay staging; baseline remains UNTESTED. Source-only and history bundles remain ignored local deliverables.
+
+
+OPS-402 (2026-10-14): IN PROGRESS. Separate private persistent live/test Supabase stacks provisioned on fleet-02; real Auth/private user Storage checks, restart DB/object persistence and paired DB/globals/object disposable restore passed. Scoped review repairs and fresh backend/frontend scheduling continue; application tenant/cookie/UI acceptance and off-host encrypted backups remain pending. No public ingress or actual mail. See docs/operations/supabase.md.

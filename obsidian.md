@@ -1,3 +1,5 @@
+OPS-402 (2026-10-14): IN PROGRESS. Separate private persistent live/test Supabase stacks provisioned on fleet-02; real Auth/private user Storage checks, restart DB/object persistence and paired DB/globals/object disposable restore passed. Scoped review repairs and fresh backend/frontend scheduling continue; application tenant/cookie/UI acceptance and off-host encrypted backups remain pending. No public ingress or actual mail. See docs/operations/supabase.md.
+
 # Elevateo Mail — ongoing project record
 
 Status: IN PROGRESS. Updated 2026-10-14, Australia/Sydney.

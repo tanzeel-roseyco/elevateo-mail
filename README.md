@@ -4,6 +4,8 @@ A planned shared company mailbox for approximately **10 people**, available on a
 
 ## Current state
 
+OPS-402 (2026-10-14): IN PROGRESS. Separate private persistent live/test Supabase stacks provisioned on fleet-02; real Auth/private user Storage checks, restart DB/object persistence and paired DB/globals/object disposable restore passed. Scoped review repairs and fresh backend/frontend scheduling continue; application tenant/cookie/UI acceptance and off-host encrypted backups remain pending. No public ingress or actual mail. See docs/operations/supabase.md.
+
 INT-401 bounded repair (2026-10-14): restored canonical BE02 compose.yaml, 37 nested BE01 tooling files, three evidence-script dependencies and eight Backend Performance docs. 629 overlay hashes match; 63 static dependency checks leave one inherited frozen-manifest hash conflict, plus scripts/dev seed/check name absent Compose services. Linus ADV-729 reviewed 172 source lines, confirmed two integration defects (11.63/KLOC); repairs are statically observed, independent re-review and all runtime/visual checks remain pending. Application IN PROGRESS; root owns testing and GitHub issues. See docs/completion/int401-repair.md.
 
 INT-401 handoff: source preservation/integration complete, application IN PROGRESS. Verified 45,507 archived source entries and 580 canonical overlay files with zero hash mismatches; original executable modes restored. Remote tests and independent review remain pending. See docs/completion/int401-handoff.md. An ignored partial runtime export copy remains after automatic cleanup approval rejection; no original data removed.
