@@ -87,6 +87,8 @@ class CreateAttachmentGatewayBinding < ActiveRecord::Migration[8.1]
   def down
     execute "SET LOCAL ROLE elevateo_owner"
     execute "DROP FUNCTION app_attachment_gateway.private_binding(#{SIGNATURE})"
+    # AIDEV-NOTE: The schema belongs to bootstrap; remove only the gateway USAGE granted by this migration.
+    execute "REVOKE USAGE ON SCHEMA app_attachment_gateway FROM elevateo_attachment_gateway"
     execute "SET LOCAL ROLE elevateo_session_owner"
     execute "REVOKE EXECUTE ON FUNCTION app_auth.authorize_session(text,uuid,uuid,uuid,bigint) FROM elevateo_owner"
   end

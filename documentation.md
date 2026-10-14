@@ -199,6 +199,8 @@ ADV085/ADV095 attachment byte boundary: Rails signs an exact minified body for p
 
 ATT877 migration ownership: privileged OPS820 bootstrap creates `app_attachment_gateway` owned by `elevateo_owner`, with only owner and limited gateway USAGE ACL entries. Migration 00018 rejects missing/wrong-owner/drifted schemas, creates only its helper and grants, and drops only that helper on down; it never grants database CREATE or drops the bootstrap-owned namespace.
 
+ATT882 rollback detail: migration 00018 owns the gateway's private-schema USAGE grant as well as its helper and narrow owner Auth EXECUTE grant. Down revokes those grants and drops only the helper; the schema and dedicated LOGIN continue to belong to OPS820 bootstrap. Disposable up/down/up ACL evidence is requested from Soren and is not yet a runtime PASS.
+
 The protected grants page also returns current actor role/revision independently of pagination; audit metadata remains unavailable until a separately reviewed authority endpoint exists.
 
 Personal mailbox owners cannot lose manager access through the legacy mutation, and non-owners cannot receive personal manager authority. Team last-manager checks count only managers whose current organization role and explicit ceiling permit administration. Outreach draft mutation has a separate protected current-role check for owner/admin/sales_manager/sales; sending remains separately gated.

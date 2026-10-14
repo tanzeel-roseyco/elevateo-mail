@@ -194,3 +194,5 @@ Felix's follow-up review found a secondary rollback failure could still mask the
 ATT-823 private attachment gateway candidate: a new internal signed byte endpoint and additive migration 00018 bind live session, mailbox READ and clean private object metadata inside one restricted-login helper before and after Storage I/O. It requires Nadia's 00015, Leonie's gateway-role bootstrap, Soren's private container, Cassian's Rails signed route, scanner evidence and fleet Docker tests before activation; no download route or live Storage credential is enabled here.
 
 ATT877 repair candidate: migration 00018 now requires Leonie's precreated private schema and preserves it on rollback; the gateway test helper accepts explicit claim overrides, and corruption coverage uses equal-length bytes. Fleet Docker rerun and review remain pending.
+
+ATT882 rollback grant repair: migration 00018 down now removes its gateway schema USAGE grant while retaining Leonie's bootstrap-owned namespace. A disposable database regression asserts the owner and exact grant state before up, after up, after down and after repeat up; Soren fleet execution is pending.
