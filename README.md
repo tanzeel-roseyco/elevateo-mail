@@ -27,6 +27,7 @@ Corin's next focused repair addresses exact fleet Steep/RuboCop failures in the 
 An additive inbound attachment candidate now parses bounded PDF/PNG/JPEG/plaintext parts, stages bytes in private quarantine, and binds pending-scan metadata with the IMAP receipt before cursor advance. It depends on Nadia's ATT823 migration `00015` and a restricted worker Storage adapter; fleet migration, strict checks and storage behavior remain unverified.
 ATT866 followup source repairs the direct-message serializer and the rollback-only BE02 thread schema fixture after the integrated `cb1ec5b` backend receipt. Soren's targeted fleet rerun is pending; Nadia owns separate attachment Storage declarations.
 REV874 source review found that fixture could detach an unreviewed future FK. The followup pins the expected later-table FK names and definitions and fails before detachment on catalog drift; Soren's fleet rerun remains pending.
+INB887 followup narrows verified IMAP session access and annotates bounded MIME attachment tuples to match strict RBS. This is a source candidate pending Soren's fleet Steep, RuboCop and inbound unit checks; no receive protocol pilot or live account was activated.
 
 
 ### R25 approval reload recovery candidate

@@ -37,6 +37,7 @@ module Elevateo
           raw_mime: raw_mime)
         parsed = capture.record
         raise Rejected, "invalid_mime" unless parsed
+        # @type var handles: Array[staged_attachment]
         handles = []
         unless parsed.fetch(:attachments).empty?
           storage = @attachment_storage
