@@ -3,6 +3,10 @@
 require_relative "approval_database_helper"
 
 class SendCancellationDatabaseTest < SendDatabaseTestCase
+  def test_additive_migration_revokes_temporary_app_create
+    assert_equal "f", @admin.exec("SELECT has_schema_privilege('elevateo_send_owner','app','CREATE')").getvalue(0, 0)
+  end
+
   def cancel(send_id, mailbox: @box, digest: @digest)
     begin_write
     result = JSON.parse(@api.exec_params(
