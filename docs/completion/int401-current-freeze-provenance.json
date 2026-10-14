@@ -1,73 +1,88 @@
 {
-  "base": "f37d09c83d6c6e46d88a5ce25cc4dd8806b888a3",
-  "rowan": "951a48e2228b04e22bd50b0ec1e94f4b1e03038c",
-  "elara_cherry_pick_only": "e1ee2f9746227a616beff6ddc5e4daeb61c2d144",
-  "task": "task_5b897c0542a9",
-  "dispatch": "ctx_556bdf3c7c43",
+  "base": "2c31b41eed1346a2945a82f209a2e8d10e8aeabe",
+  "rowan": "d7969301584402110a3f1bc262a181d5c32107d6",
+  "elara_cherry_pick_only": "d47a252504597d390704aca70b2e907ab540c0d4",
+  "task": "task_0c39d9b10966",
+  "dispatch": "ctx_dace007fc53f",
   "runtime": "UNTESTED",
   "observer": false,
   "manifest": [
     {
-      "file": "apps/server/lib/elevateo/tenancy.rb",
-      "source": "951a48e2228b04e22bd50b0ec1e94f4b1e03038c",
-      "blob": "e6f39b3cbc52baffd0d90ec59683845e5305f43c",
+      "file": "apps/server/app/controllers/v1/api_controller.rb",
+      "source": "d7969301584402110a3f1bc262a181d5c32107d6",
+      "blob": "e909db3c5a5d22739ff6bb600939ca14ca6ee1c2",
       "mode": "100644",
-      "sha256": "435f3c185b839e11ffa106445761974d1c8888b0eb6b569290bda4a06d17738f"
+      "sha256": "8c9e5ccd39ad65038979bc1f5d25c725ff01dd49dfdac38193686bf8fc9c0276"
     },
     {
-      "file": "apps/server/sig/tenancy.rbs",
-      "source": "951a48e2228b04e22bd50b0ec1e94f4b1e03038c",
-      "blob": "a099ea091c1791fa566a6228967880241c6aefdc",
+      "file": "apps/server/app/controllers/v1/auth_controller.rb",
+      "source": "d7969301584402110a3f1bc262a181d5c32107d6",
+      "blob": "18459bc18881f4b78ea505ad68f0901ca09798b9",
       "mode": "100644",
-      "sha256": "cb396c52ada5376ce1a3f9109d7a2c86c0b751488c9f8dd8ec31b77aae373819"
+      "sha256": "e1e4a63ac654f46803dfc384ea575795cc9cc2fea193d6c5a87e8528339ea7b1"
     },
     {
-      "file": "apps/server/test/be_02/tenancy_principal_test.rb",
-      "source": "951a48e2228b04e22bd50b0ec1e94f4b1e03038c",
-      "blob": "a5a3f763da292cb921a6d3ba78642b18f41b8f16",
+      "file": "apps/server/sig/auth_controllers.rbs",
+      "source": "d7969301584402110a3f1bc262a181d5c32107d6",
+      "blob": "d96689bb032e684296afc300bdded28e20c9c74c",
       "mode": "100644",
-      "sha256": "7a6506f40b4ea02de8ebd5932ad494acd1b2a7ff4abe667da9545f4e731813af"
+      "sha256": "a4c395690fe14068ac85cf07744b145c0eb9449f9c3b54806c5dd08a4952bee5"
     },
     {
-      "file": "docs/completion/be403-r4-principal.md",
-      "source": "951a48e2228b04e22bd50b0ec1e94f4b1e03038c",
-      "blob": "79eb6739314a93c8dccde737299ffdfe82a64b98",
+      "file": "apps/server/test/be_02/auth_controller_request_test.rb",
+      "source": "d7969301584402110a3f1bc262a181d5c32107d6",
+      "blob": "a529c408d4fb2ea62afa170cc393f979a1c8cdf8",
       "mode": "100644",
-      "sha256": "fdc1141fb3fa25fd05c75759f8a6d5f981e9449a3449b97cd852a8321ce240b1"
+      "sha256": "ee2290df3c9dc6f3b2d6adeaeec9224f0268e3729cdfcd6915a43453105b39b7"
     },
     {
-      "file": "docs/completion/qa404-r7-launch-diagnostics.md",
-      "source": "e1ee2f9746227a616beff6ddc5e4daeb61c2d144",
-      "blob": "c06b08bcbcd3e6d2f11f8494c44b2d36eb6e417e",
+      "file": "docs/completion/be403-r5-http.md",
+      "source": "d7969301584402110a3f1bc262a181d5c32107d6",
+      "blob": "c9e560755b9d0f0058e468c9f6febcc01dbe54dc",
       "mode": "100644",
-      "sha256": "3ccc033cb623775c234c77f0a79bc177fa5e6d7f49ff8c7a2818ad29ed97a66b"
+      "sha256": "90dff365cd585053a5184d380f04e24644da11079956717d85cb87ca23052861"
     },
     {
-      "file": "ops/tests/be02/acceptance_runtime.py",
-      "source": "e1ee2f9746227a616beff6ddc5e4daeb61c2d144",
-      "blob": "c0d91c581ace518dcd589cc54392f0f285da22ed",
+      "file": "docs/completion/qa404-r8-browser-repair.md",
+      "source": "d47a252504597d390704aca70b2e907ab540c0d4",
+      "blob": "2b2f16db049cd556416f6a298d74d731ce746e75",
       "mode": "100644",
-      "sha256": "b432b7c6df16bb372cc814e39aaf1ac8d5d6cf2cfb80eea4b078f5e5b95071c6"
+      "sha256": "1f9b6c16a42613c52d424ff6ea524fb95cad9be417e7f919661cc74066c02b7f"
     },
     {
-      "file": "ops/tests/be02/docker_task.py",
-      "source": "e1ee2f9746227a616beff6ddc5e4daeb61c2d144",
-      "blob": "02c1a66f0c4cf1faf660e27f06df2739f3f3b72f",
+      "file": "ops/acceptance/seccomp.json",
+      "source": "d47a252504597d390704aca70b2e907ab540c0d4",
+      "blob": "d1d0d0ee6db1fcc28855e9714af3c288f3dd1760",
       "mode": "100644",
-      "sha256": "c1aa117f39c131566118ffee8c5d64c97e0bf0f2723e88bbb75391934cedf2cc"
+      "sha256": "f922c7c9bfc1ece0b72b244e56dc85756ded002c837fb46054cfd8b275c74b6b"
+    },
+    {
+      "file": "ops/tests/be02/run.py",
+      "source": "d47a252504597d390704aca70b2e907ab540c0d4",
+      "blob": "43ec5bac128861c030987f0f1607510c5061784b",
+      "mode": "100644",
+      "sha256": "b07b90dabe7fa70a73e2347f25d831b97517d7d2e86064d03f6b4af778b6641c"
     },
     {
       "file": "ops/tests/be02/test_launch_diagnostics.py",
-      "source": "e1ee2f9746227a616beff6ddc5e4daeb61c2d144",
-      "blob": "e5f731ecee4ac9ec0eeb796e08f087c65e3484ec",
+      "source": "d47a252504597d390704aca70b2e907ab540c0d4",
+      "blob": "d992c893cc8ee70a7d1b6af7bb0a9ba772b4f878",
       "mode": "100644",
-      "sha256": "bd8e8c62fa5493df9b2716812e00cd1198e803d0d3c2c8be01d3e25b36c21814"
+      "sha256": "cc467936d75730199912cc7ba111b405874a161f1cfbb1808f14677ba491644c"
+    },
+    {
+      "file": "ops/tests/be02/test_r8_constraints.py",
+      "source": "d47a252504597d390704aca70b2e907ab540c0d4",
+      "blob": "d6608580784382b9839d66c7555a43ccc7b98ac0",
+      "mode": "100644",
+      "sha256": "9f8edd9b5150337b462ddbf85e95420bcdda3d32a746e019edba9b72dccfeade"
     }
   ],
-  "vault_sha256": "e121b3680b4d4f409d8923020189022be8f88a936993d232cf27aa1576417842",
-  "vault_bytes": 51264,
+  "vault_sha256": "b4d55aa1698a284270866900cbda3c53173eaeaca672c24e378d8f7eb1a6ce54",
+  "vault_bytes": 56154,
   "intake_bundle_sha256": {
-    "rowan": "73bdfdc6aca603ded025d07ddd5f1585a7ac381c1d7d6b4908055cd57cfd2ef7",
-    "elara": "688fe22bb93bc068600a1fd5159806b499d59e426daa57891789161d98b941fc"
-  }
+    "rowan": "ad4d9e58fb7eb7c6794276a53e02919043c6a8db73903e63041e5d203c7eb563",
+    "elara": "53e9cf5518a472cc2947b34a150e29e18a40ba54150950956f2fffacd2295843"
+  },
+  "review_functional": "ADV764 accepted171LOC packets85/86, 0 actionable defects, 0/KLOC; root msg_971ad80eb1d6"
 }

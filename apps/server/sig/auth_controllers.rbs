@@ -27,7 +27,7 @@ module V1
     def accept: () -> void
 
     def sessions: () -> Elevateo::Sessions
-    def config: () -> Elevateo::Config
+    def auth_config: () -> Elevateo::Config
     def pending_cookie: () -> String?
     def challenges: () -> Elevateo::SessionChallenges
     def verify_challenge!: () -> bool

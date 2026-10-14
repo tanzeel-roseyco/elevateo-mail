@@ -18,11 +18,15 @@ class LaunchDiagnosticsTest(unittest.TestCase):
                     run.side_effect = result
                 else:
                     run.return_value = result
-                try:
+                # AIDEV-NOTE: Logging alone must not hide a swallowed subprocess failure.
+                failed = isinstance(result, Exception) or result.returncode != 0
+                if failed:
+                    with self.assertRaises(RuntimeError):
+                        task.docker("preflight", ["version"], 90, quiet=True,
+                                    diagnostic_stderr=diagnostic)
+                else:
                     task.docker("preflight", ["version"], 90, quiet=True,
                                 diagnostic_stderr=diagnostic)
-                except RuntimeError:
-                    pass
                 return (evidence / "001-preflight.log").read_text(), run.call_args.kwargs
 
     def test_failure_keeps_redacted_stderr_and_discards_stdout(self):

@@ -172,8 +172,9 @@ def main() -> int:
             raise RuntimeError("Rails image must not create anonymous volumes")
         task.write("server-image.json", {"id": image["Id"], "built_for_task": not bool(args.server_image)})
         task.compose("migrate", ["run", "--rm", "--no-deps", "migrate"], 90)
+        # AIDEV-NOTE: Readiness is not authenticated HTTP acceptance; report every diagnostic skip.
         if args.acceptance_diagnostic:
-            task.write("diagnostic-scope.json", {"mode": "DIAGNOSTIC", "unexecuted_gates": ["Minitest", "Steep", "RuboCop"],
+            task.write("diagnostic-scope.json", {"mode": "DIAGNOSTIC", "unexecuted_gates": ["Minitest", "Steep", "RuboCop", "http-acceptance", "worker-drain"],
                 "authority": args.acceptance_dispatch_id, "full_acceptance": "NOT_RUN"})
         else:
             print("Running isolated Minitest suites and Steep", flush=True)
@@ -181,8 +182,8 @@ def main() -> int:
         task.compose("api-start", ["up", "-d", "api"], 30)
         task.runtime_credentials()
         task.wait_http()
-        print("Running real Auth/Mailpit/API HTTP acceptance", flush=True)
         if not args.acceptance_diagnostic:
+            print("Running real Auth/Mailpit/API HTTP acceptance", flush=True)
             task.compose("http-acceptance", ["run", "--rm", "--no-deps", "fixture"], 180)
         task.compose("worker-start", ["up", "-d", "worker"], 30)
         task.runtime_credentials()
