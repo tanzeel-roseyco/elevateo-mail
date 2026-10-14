@@ -1,0 +1,29 @@
+source=845d422e0ed8373eee9ebc388019462bbdc3b3a4
+image=sha256:7dc61d4b7e12f94764f95f4f1bfe8e3940049247e6d409898ce9d3ed2810f348
+started=2026-10-14T17:03:57Z
+RUN test/outreach_sequence/repository_test.rb
+Run options: --seed 49215
+
+# Running:
+
+......
+
+Finished in 0.088640s, 67.6898 runs/s, 282.0409 assertions/s.
+
+6 runs, 25 assertions, 0 failures, 0 errors, 0 skips
+RUN test/outreach_sequence/controller_test.rb
+/workspace/apps/server/test/be_02/auth_test_helper.rb:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+Run options: --seed 25949
+
+# Running:
+
+....
+
+Finished in 0.488613s, 8.1864 runs/s, 40.9322 assertions/s.
+
+4 runs, 20 assertions, 0 failures, 0 errors, 0 skips
+unit_exit=0
+finished=2026-10-14T17:04:00Z
+archive_absent=yes
+remaining_containers=0

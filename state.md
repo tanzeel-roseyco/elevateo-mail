@@ -138,3 +138,5 @@ QA815 `e9ead71` isolated Ruby: direct-read and attachment-service units PASS; ga
 QA815 isolated Elara `94bd1ee` role diagnostic FAILED 1/5: member=t, role=sales, function owner=elevateo_owner, protected result=not_found. Disposable migrations and cleanup passed; current integrated role proof remains OPEN.
 
 QA815 `845d422` web V1/V2/lint/type PASS, Vitest 841/842 PASS with one jsdom Blob.text test error; build and repaired visual rerun NOT_REACHED. Exact task cleanup PASS.
+
+QA815 latest isolated units: `845d422` sequence repository/controller 10/45 PASS; `58ab588` ClamAV fake scanner/IMAP parser 9/30 PASS. Task cleanup PASS; real protocol and DB gates still OPEN.

@@ -206,3 +206,5 @@ QA815 exact `e9ead71` isolated Ruby receipts: `ruby-isolated-e9ead714ee9b-bundle
 QA815 isolated Elara diagnostic receipt `docs/completion/qa815-evidence/backend-94bd1eea1ab6/028-ruby-suites.txt` records the nonsecret role/function provenance for one failed protected outreach draft authorization case. Its test-only runner overlay and exact cleanup are documented in `docs/completion/soren.md`; it does not establish current integrated acceptance.
 
 QA815 `845d422` web receipt `docs/completion/qa815-evidence/web-845d422e0ed8.log` and generated V2 declaration `generated-v2-845d422e0ed8/api-v2.d.ts` are exact-source evidence. One attachment gateway Blob test blocks full unit/build and the repaired seeded visual rerun; see `docs/completion/soren.md`.
+
+QA815 unit receipts `docs/completion/qa815-evidence/sequence-unit-845d422e0ed8.txt` and `attachment-unit-58ab588249d1.txt` are exact-source, network-disabled fleet runs with task cleanup. They cover fake repository/controller, fake scanner and IMAP parser behavior only; see `docs/completion/soren.md` for counts and limits.

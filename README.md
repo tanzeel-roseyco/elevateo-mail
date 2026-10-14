@@ -196,3 +196,5 @@ QA815 latest `e9ead71` isolated Ruby: direct read 8/90 and attachment service 13
 QA815 Elara focused diagnostic on isolated `94bd1ee` (not current integration): PostgreSQL migrations passed, one protected outreach draft authorization case failed 1/5 despite membership=true, role=sales and correct function owner; protected result remained `not_found`. Exact task cleanup passed. See `docs/completion/soren.md`.
 
 QA815 `845d422` web successor passed V1/V2/lint/type and 841/842 units; the remaining attachment gateway test calls unavailable jsdom `Blob.text()`. Build and repaired eight-PNG visual rerun await owner fix and a full gate. Current V2 declaration receipt is in `docs/completion/soren.md`.
+
+QA815 independent units: exact `845d422` sequence repository/controller 10 runs/45 assertions PASS; exact `58ab588` ClamAV fake transport/IMAP attachment parser 9/30 PASS. Real gateway/clamd/Mox, database and HTTP gates remain separate. Receipts in `docs/completion/soren.md`.
