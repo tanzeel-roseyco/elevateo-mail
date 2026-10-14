@@ -1,0 +1,15 @@
+[package]
+name = "elevateo-native"
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+[build-dependencies]
+tauri-build = "=2.7.2"
+
+[dependencies]
+tauri = "=2.12.3"
+url = "=2.5.2"
+
+[profile.release]
+panic = "abort"
