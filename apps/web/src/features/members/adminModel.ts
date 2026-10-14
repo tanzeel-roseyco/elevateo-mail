@@ -34,17 +34,20 @@ export const CONFIG_PEOPLE: readonly ConfigPerson[] = [
   email: null, auth_user_id: null, enrollment_state: 'unbound',
 }))
 
-export type EditableRole = 'organization_admin' | 'organization_member'
-/** UI hint only. The server checks current authority after every write lock. */
+export type EditableRole = Exclude<OrganizationGrant['role'], 'organization_owner'>
+const SUBORDINATE_ROLES: readonly EditableRole[] = [
+  'organization_admin', 'technology_operator', 'sales_lead', 'sales_member', 'security_auditor', 'organization_member',
+]
+/** Conservative UI hint. The server checks current authority after the lock and may deny any choice. */
 export function editableRoles(actorId: string, grants: readonly OrganizationGrant[], target: OrganizationGrant): readonly EditableRole[] {
   const actor = grants.find((grant) => grant.user_id === actorId)
   if (!actor || target.role === 'organization_owner' || actor.user_id === target.user_id) return []
-  if (actor.role === 'organization_owner') return ['organization_admin', 'organization_member']
-  if (actor.role === 'organization_admin' && target.role === 'organization_member') return ['organization_member']
+  if (actor.role === 'organization_owner') return SUBORDINATE_ROLES
+  if (actor.role === 'organization_admin' && target.role !== 'organization_admin') return SUBORDINATE_ROLES.filter((role) => role !== 'organization_admin')
   return []
 }
 
-/** Additional page invariant beyond the shared wire schema: no cross-organization grant can be rendered. */
+/** Additional page invariant beyond the shared wire schema: no cross-organization or duplicate grants. */
 export function validGrantProjection(organizationId: string, grants: readonly OrganizationGrant[]): boolean {
   const seen = new Set<string>()
   for (const grant of grants) {
