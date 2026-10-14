@@ -158,3 +158,5 @@ SEC-802 fleet `45be80b`: migration PASS; organization and legacy membership/draf
 SEC-802 draft concurrency fixtures now state the same explicit disposable authority and use scoped organization cleanup; Theo retains ownership of separate draft schema dependency probes. New draft race runtime remains NOT_RUN on this source.
 
 SEC-802 follow-up to Rhea's 2 MEDIUM helper cleanup findings: membership and draft local cleanup now runs inside failure-safe inherited teardown after closed fixture logins are reopened and the advisory lease is reacquired. New tests check closed API/admin cleanup and preservation of an injected draft save error; no fleet result is yet claimed.
+
+SEC-802 Felix REV874 found one further MEDIUM source defect: a failed rollback could replace the original cleanup failure. The fixture-only rescue now preserves the first exception and has a deterministic double-fault regression; Soren Docker and repair re-review remain pending.

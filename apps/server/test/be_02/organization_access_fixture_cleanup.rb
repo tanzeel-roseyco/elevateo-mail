@@ -61,8 +61,13 @@ module OrganizationAccessFixtureCleanup
     @admin.exec_params("DELETE FROM app.organization_access WHERE organization_id = $1", [@org])
     @admin.exec("ALTER TABLE app.organization_access ENABLE TRIGGER guard_owner_loss")
     @admin.exec("COMMIT")
-  rescue StandardError
-    @admin.exec("ROLLBACK") if !@admin.finished? && @admin.transaction_status != PG::PQTRANS_IDLE
-    raise
+  rescue StandardError => original_error
+    begin
+      rollback_fixture_connection(@admin)
+    rescue StandardError => rollback_error
+      # AIDEV-NOTE: A disconnected cleanup login can fail again during rollback; keep the first SQL failure.
+      warn "fixture rollback also failed (#{rollback_error.class})"
+    end
+    raise original_error
   end
 end

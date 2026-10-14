@@ -212,3 +212,5 @@ Fleet `45be80b` migrated successfully but its Ruby suite exposed missing SEC-802
 The draft concurrency fixture also declares its disposable organization role, private mailbox classification and grant ceiling so its legacy revocation call reaches the intended revision race. Fleet verification is pending.
 
 Rhea's bounded review found closed-connection teardown paths in the membership and draft test helpers. The repair reconnects disposable fixture logins, reacquires the fixture lease, and always reaches inherited teardown; closed-connection and original-error regressions await Soren's fleet Docker run.
+
+Felix's follow-up review found a secondary rollback failure could still mask the first SQL cleanup error. The test helper now retains the first error and records only the secondary error class; a fake-connection regression awaits fleet execution.
