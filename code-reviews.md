@@ -1349,3 +1349,5 @@ ADV138 Ada reviewed Cassian a853b7fe gateway and Corin0526 fake inbound strict r
 INT801 current assignee route/openapi/main activation patch: source review pending; 0 LOC independently reviewed for this delta, defects and density unassessed. Prior ADV140 covers only Sabine SQL 272 unique LOC/0 defects (0/KLOC), and Theo REV908 was reported by root as a 354-LOC source packet that exceeded its 350 target with fresh HTTP context omitted; its defect count is not imported here. Neither covers the activation patch or runtime.
 
 Canonical draft.8 description/401/rejected-423 correction follows direct controller/contract inspection and Tessa QA816 oracle request. No independent review or runtime of this correction has been performed; defects and density unassessed for this delta.
+
+Soren private browser output preflight import `4d0192ca`: no independent source review by Cassian, zero additional reviewed LOC; defects/density unassessed. Three fleet Python unit cases are source-specific test evidence only and do not count as source review or browser runtime.

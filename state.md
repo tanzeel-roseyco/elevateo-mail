@@ -461,3 +461,5 @@ Nadia STRICT909 typed index authorization is carried into the inactive ATT902 fe
 Tessa QA816 reporter config repair is integrated as an unexecuted harness candidate; historical R21 zero-case MODULE_NOT_FOUND attempts are not retroactively passing. Soren fleet browser build/list/runtime still pending.
 
 INT801 assignee-options integration candidate registers only Theo's guarded mailbox-scoped V2 route and injects the strict browser adapter into Lyra's picker; canonical draft.8 marks this operation active while both attachment routes remain inactive. The exact integrated source has not passed Soren's fleet Docker generation/static/runtime, current-role/revocation HTTP, or browser checks. Core strict-only b3aaa07e separately narrows the sole prior Float|nil Steep diagnostic; no new PASS is claimed.
+
+QA815 private browser output preflight and Soren's three-case source-specific fleet receipt are imported. This does not establish browser case execution or screenshot acceptance on the current integrated feature SHA; Soren retains sole fleet Docker scheduling.
