@@ -3,7 +3,7 @@
   "info": {
     "title": "Elevateo inbox attachment read proposal",
     "version": "2.0.0-proposal.attachments.2",
-    "description": "Noncanonical read proposal. Rejected pre-storage metadata is visible only as status and zero size; no rejection reason or bytes. Owner decision and fleet proof pending."
+    "description": "Noncanonical read proposal. Nadia confirmed rejected pre-storage metadata is visible only as status and zero size; no rejection reason or bytes. UI owner repair and fleet proof pending."
   },
   "servers": [
     {

@@ -201,3 +201,5 @@ Bounded source inspection of Nadia 00015 status/size constraints, Attachments::S
 ## ATT metadata controller static seam
 
 Added only the V2 adapter class/method RBS and block types for the unregistered InboxAttachmentsController. Soren cb1ec5b Steep preceded this controller but showed missing Attachments domain declarations; Nadia/Corin own those RBS additions. No suppression or runtime claim; exact-source static gate pending.
+
+Nadia confirmed the ATT823 rejected/size-zero visibility choice; proposal attachments.2 and unbound browser port now reflect the agreed wire. Mira owns the UI status/type repair; route remains inactive and Docker acceptance pending.

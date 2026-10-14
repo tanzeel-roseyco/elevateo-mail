@@ -342,3 +342,5 @@ ATT823 source review found one open metadata contract/UI mismatch before route a
 ATT823 browser data port is authored but unbound: strict metadata page validation, explicit provisional rejected/size-zero proposal, same-origin private byte GET with no redirects, ten-second abort, binary/header/length and 10-MiB bounds. It is not injected into the shell or registered in Rails; Nadia/Mira rejected-status decision, binary controller, fleet type/unit/HTTP and visual checks remain pending.
 
 INT801 added a narrow RBS/controller annotation for the unregistered attachment metadata adapter; Nadia/Corin still own the missing attachment domain signatures found by fleet Steep. Exact integrated static rerun is pending; no ignore or route activation was added.
+
+Nadia confirmed ATT823 rejected metadata must remain visible with byte_size=0 and no private rejection reason. The noncanonical proposal and unbound browser port now match that source decision; Mira UI still needs an explicit held label and no download before any route can activate.
