@@ -94,7 +94,7 @@ module Elevateo
         file.write(line)
         file.flush
         file.fsync
-        Dir.open(File.dirname(@path)) { |directory| directory.fsync }
+        File.open(File.dirname(@path), File::RDONLY) { |directory| directory.fsync }
       end
     end
   end
