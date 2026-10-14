@@ -67,3 +67,5 @@ Cassian exported a browser `getDirectMessage(ctx, mailboxId, threadId, messageId
 Soren exact c4fa27c fleet web run passed frozen V1 `check:api` and lint, then typecheck FAILED: Cassian v2OutreachGateway.test.ts annotated the gateway as Celeste's intentionally `unknown` return port before reading `page.items`; Lyra adminModel.test.ts fixture widened department to `string|null`. Cassian removed the own overly broad annotation so the tested implementation result remains inferred; Lyra owner repair requested. Unit/build NOT_REACHED; cleanup reported zero task container/image.
 
 The direct-message browser response bound now matches `ReadResponse::MESSAGE_BYTES` at 2 MiB; the first 64 KiB browser draft could reject contract-legal messages with up to 100 bounded recipient addresses and a 16,384 code-point body. The JSON schema still validates each field and the transport enforces the byte ceiling before parse. This is source reasoning, not an executed boundary test.
+
+The canonical OpenAPI version was advanced to `2.0.0-draft.4` for the direct-message addition; Soren must regenerate/check V2 declarations from this exact source. No generated artifact is committed yet.

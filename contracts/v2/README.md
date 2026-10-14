@@ -15,3 +15,5 @@ The browser account port reserves `listAccounts(ctx, campaignId, query, signal)`
 The additive `getDirectMessage` operation uses `GET /v2/threads/{thread_id}/messages/{message_id}?mailbox_id={uuid}` and returns the frozen V1 plaintext Message shape inside a current session envelope. Corin's reader binds organization, mailbox, thread and message in one protected query and maps absent or denied rows to the same 404. The V1 read schema is unchanged; Mira deep-link adoption and fleet HTTP verification remain pending.
 
 `createV2Gateway().getDirectMessage(ctx, mailboxId, threadId, messageId, signal)` validates all UUIDs, sends only a relative same-origin V2 GET and checks the scoped envelope plus reused V1 Message runtime schema. It does not fetch another mailbox or walk cursors.
+
+Canonical draft version `2.0.0-draft.4` adds the direct-message read to the earlier draft.3 organization and inert Outreach surface. Generated declarations must be regenerated from this exact draft.4 source in fleet Docker before adoption.
