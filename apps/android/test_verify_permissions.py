@@ -31,6 +31,10 @@ class VerifyPermissionsTest(unittest.TestCase):
                 "com.elevateo.mail.fixture.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION\n"
             )
 
+    def test_rejects_empty_aapt_permission_output(self) -> None:
+        with self.assertRaises(ValueError):
+            verify_permissions("")
+
     def test_rejects_lookalike_receiver_permission(self) -> None:
         with self.assertRaises(ValueError):
             verify_permissions(
@@ -46,6 +50,18 @@ class VerifyPermissionsTest(unittest.TestCase):
     def test_rejects_receiver_namespace_substitution(self) -> None:
         with self.assertRaises(ValueError):
             verify_receiver_declaration(merged_manifest(package="com.elevateo.mail"))
+
+    def test_rejects_missing_and_duplicate_receiver_declarations(self) -> None:
+        manifest = merged_manifest()
+        declaration = (
+            '<permission '
+            'android:name="com.elevateo.mail.fixture.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" '
+            'android:protectionLevel="signature" />'
+        )
+        with self.assertRaises(ValueError):
+            verify_receiver_declaration(manifest.replace(declaration, ""))
+        with self.assertRaises(ValueError):
+            verify_receiver_declaration(manifest.replace(declaration, declaration * 2))
 
     def test_rejects_sdk_specific_extra_manifest_permission(self) -> None:
         manifest = merged_manifest().replace(
