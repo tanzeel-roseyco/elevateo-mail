@@ -54,7 +54,7 @@
             "in": "query",
             "schema": {
               "type": "string",
-              "maxLength": 2048
+              "format": "uuid"
             }
           },
           {
@@ -84,7 +84,8 @@
           "404": {
             "description": "Missing or inaccessible mailbox, message or attachment"
           }
-        }
+        },
+        "description": "Use id-sorted UUID cursor pagination scoped to the current message; clean status alone never guarantees byte access."
       }
     },
     "/v2/mailboxes/{mailbox_id}/threads/{thread_id}/messages/{message_id}/attachments/{attachment_id}/content": {
@@ -189,12 +190,10 @@
         "additionalProperties": false,
         "required": [
           "id",
-          "message_id",
           "filename",
           "content_type",
           "byte_size",
-          "scan_status",
-          "downloadable"
+          "scan_status"
         ],
         "properties": {
           "id": {
@@ -229,14 +228,6 @@
               "malware",
               "scan_failed"
             ]
-          },
-          "message_id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "downloadable": {
-            "type": "boolean",
-            "description": "Server-derived true only for clean scan status; current read authorization is still required for bytes."
           }
         }
       },
@@ -260,7 +251,7 @@
               "string",
               "null"
             ],
-            "maxLength": 2048
+            "format": "uuid"
           }
         }
       }

@@ -2,7 +2,7 @@
 
 Elara `f060f18` strict worker/SMTP type repair and Dorian `82d438e` controller-test lint repair are merged into the isolated core source. Cassian added pinned `net-smtp` to shared Steep libraries for the declared SMTP transport; these repairs have no exact integrated fleet static PASS yet.
 
-Separate proposal alignment: Theo `81cb542` GET projects `{context_id,authorization_version,display_name,revision}` while PUT returns `{display_name,revision}`; the noncanonical PREF-822 schema now distinguishes those responses. Nadia ATT-823 list adds `message_id` and server-derived `downloadable` to the proposal item. Neither proposal changes canonical V2 or registers a route.
+Separate proposal alignment: Theo `81cb542` GET projects `{context_id,authorization_version,display_name,revision}` while PUT returns `{display_name,revision}`; the noncanonical PREF-822 schema now distinguishes those responses. Nadia ATT-823 review removed the provisional `message_id` and `downloadable` fields: the path already binds message ID, and clean status cannot guarantee byte access without a reviewed private gateway. The proposal now uses five metadata fields and UUID cursor pagination (limit 1..50). Neither proposal changes canonical V2 or registers a route.
 
 Attachment contract preparation: `contracts/v2/proposals/inbox-attachments.openapi.json` is a noncanonical ATT-823 read draft with message-bound metadata list and clean-only bytes, no upload/send path, explicit 400/404/423 mapping and no storage key/public URL. Nadia’s isolated service lacks list/streaming adapter, scanner and private Storage integration; Corin’s inbound staging handoff, review and fleet RLS/HTTP proof are pending. Canonical V2 source and active Rails registry remain unchanged.
 
