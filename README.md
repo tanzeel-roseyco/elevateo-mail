@@ -14,6 +14,8 @@ Shared company mailroom with one Rails domain authority and a React/TypeScript c
 
 ## Current state
 
+**ATT823 dedicated database profile:** Soren's exact `e01c64ad` fresh disposable admin/migrator/API/worker role fixture passed 6 runs/40 assertions with cleanup. Three of nine dedicated profiles now have scoped PASS; six remain. This verifies actual-role SQL assertions, not real scanner, private Storage bytes, HTTP or browser.
+
 **Dedicated backend profiles:** On exact `e01c64ad`, separate disposable fleet runs passed gateway ACL migrator 1/24 and restricted gateway authority 5/21 with cleanup; two of nine dedicated profiles are scoped PASS. Assignment-options DDL test under the required migrator role then failed its `t/f` versus `true/false` oracle (1 run/2 assertions), so that suite remains open. These results do not establish private Storage/clamd bytes, HTTP, worker or real Auth.
 
 **Expanded backend failure map:** Soren's exact `e01c64ad` ledger groups 27 failed suites into four Rails logger rescue failures, one migrator-role mismatch, one `resolve_session` grant, two `SET ROLE` grants and 19 shared dirty-fixture suites. Two representative dirty-fixture suites passed unchanged on separate fresh fleet databases (QA817 2/6; send approval 15/202), with cleanup. The remaining suites and dedicated/HTTP/worker/real Auth gates are open.
