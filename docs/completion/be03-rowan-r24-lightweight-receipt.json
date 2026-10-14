@@ -1,0 +1,17 @@
+{
+  "source_commit": "ebf64cdbbea24d8e79af158c1424d0391fce6933",
+  "source_archive_sha256": "c400b14b00362eb1dd1755a5189fb77c13fea4b60abd8b5411a96c41f1e197c2",
+  "image": "sha256:7dc61d4b7e12f94764f95f4f1bfe8e3940049247e6d409898ce9d3ed2810f348",
+  "started_at": "2026-10-14T10:56:21.568721+00:00",
+  "finished_at": "2026-10-14T10:56:24.136230+00:00",
+  "exit": 0,
+  "container_name": "be03-r24-rowan-light-ebf64cd",
+  "independent_absence": true,
+  "resources_created": [
+    "task-owned --rm container only"
+  ],
+  "shared_image_retained": true,
+  "scope": "Ruby syntax and affected lint only; SQL/database/API runtime NOT_RUN",
+  "source_review": "all changed SQL/migration/tests/bootstrap independently reviewed; two MEDIUM findings source-repaired and re-reviewed, no remaining actionable findings",
+  "log_sha256": "454a9cdae6efd51c6236265d2368dc16591e302650eb85249f64b65074d9565c"
+}
