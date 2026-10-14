@@ -237,9 +237,13 @@ function MemberRoster({ mailboxId }: { mailboxId: string }) {
 
 function MemberRow({ member, isSelf, busy, disabled, onApply, onRemove }: { member: MailboxMember; isSelf: boolean; busy: boolean; disabled: boolean; onApply(capabilities: MembershipCapabilities): void; onRemove(): void }) {
   const [flags, setFlags] = useState<MembershipCapabilities>(member.capabilities)
+  const [serverFlags, setServerFlags] = useState(member.capabilities)
   const rowId = useId()
-  // Reset the row's draft flags when the server copy changes (another write or a reload).
-  useEffect(() => setFlags(member.capabilities), [member.capabilities])
+  // AIDEV-NOTE: Reset only for a new server copy, before commit; a mount effect can overwrite an early edit.
+  if (serverFlags !== member.capabilities) {
+    setServerFlags(member.capabilities)
+    setFlags(member.capabilities)
+  }
   const changed = FLAGS.some((f) => flags[f.key] !== member.capabilities[f.key])
   return (
     <li className="flex flex-col gap-2 px-3 py-2">

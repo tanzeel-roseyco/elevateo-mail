@@ -94,6 +94,9 @@ describe('roster', () => {
     renderMembers(h.gateway)
     await screen.findByText('Roster revision 1')
     fireEvent.click(row(CD.actorId).getByLabelText('Manage members'))
+    // AIDEV-NOTE: A reset must not silently erase the edit before the guarded write is attempted.
+    expect(row(CD.actorId).getByLabelText('Manage members')).toHaveProperty('checked', false)
+    expect(row(CD.actorId).getByRole('button', { name: 'Apply' })).toHaveProperty('disabled', false)
     fireEvent.click(row(CD.actorId).getByRole('button', { name: 'Apply' }))
     let alert = await screen.findByRole('alert')
     expect(alert.textContent).toContain('without a manager')
@@ -104,6 +107,22 @@ describe('roster', () => {
     expect(screen.getByText(CD.actorId)).toBeTruthy()
     expect(h.state.listMembers(CD.mailboxId)).toMatchObject({ version: 1 })
     expect(h.sessionReads).toBe(1)
+  })
+
+  it('keeps another row draft while a successful member write replaces its own server copy', async () => {
+    const h = harness()
+    h.state.putMember(CD.mailboxId, CD.readerId, 1, MANAGER)
+    renderMembers(h.gateway)
+    await screen.findByText('Roster revision 2')
+    fireEvent.click(row(CD.actorId).getByLabelText('Approve send'))
+    fireEvent.click(row(CD.readerId).getByLabelText('Compose'))
+    fireEvent.click(row(CD.readerId).getByRole('button', { name: 'Apply' }))
+    await screen.findByText('Roster revision 3')
+    expect(row(CD.readerId).getByLabelText('Compose')).toHaveProperty('checked', false)
+    expect(row(CD.readerId).getByRole('button', { name: 'Apply' })).toHaveProperty('disabled', true)
+    expect(row(CD.actorId).getByLabelText('Approve send')).toHaveProperty('checked', true)
+    expect(row(CD.actorId).getByRole('button', { name: 'Apply' })).toHaveProperty('disabled', false)
+    expect(h.state.listMembers(CD.mailboxId).items.find((member) => member.user_id === CD.actorId)?.capabilities.approve_send).toBe(false)
   })
 
   it('a self-affecting change with a rotated authorization version re-bootstraps the session', async () => {

@@ -447,7 +447,8 @@ describe('registered feature routes (FE-805)', () => {
     )
     await screen.findByText('Synthetic organization A')
     expect(await screen.findByRole('heading', { name: 'Campaigns' })).toBeTruthy()
-    expect(screen.getByRole('status').textContent).toBe('Outreach API unavailable for this account.')
+    // AIDEV-NOTE: The lazy page heading mounts before its separate API request settles.
+    await waitFor(() => expect(screen.getByRole('status').textContent).toBe('Outreach API unavailable for this account.'))
     expect(screen.getByRole('navigation', { name: 'Outreach' })).toBeTruthy()
     expect(screen.getByRole('link', { name: 'Campaigns' }).getAttribute('aria-current')).toBe('page')
     expect(within(screen.getByRole('navigation', { name: 'Personal' })).getByRole('link', { name: 'People' })).toBeTruthy()
