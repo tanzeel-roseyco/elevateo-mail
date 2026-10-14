@@ -69,8 +69,9 @@ class AcceptanceInvitationTransportTest < Minitest::Test
     @invitation.instance_variable_set(:@email, "recipient@example.test")
     link = "http://app.test/auth/accept?token=#{'a' * 56}&type=invite&redirect_to=http%3A%2F%2Fapp.test%2Fauth%2Fcomplete"
     recipient = { "Address" => "recipient@example.test" }
+    # AIDEV-NOTE: Mailpit returns both body fields; keep the fixture complete to reach the deadline assertion.
     replies = [{ "messages" => [{ "ID" => "owned", "To" => [recipient] }] },
-      { "To" => [recipient], "Text" => link }]
+      { "To" => [recipient], "HTML" => "", "Text" => link }]
     Process.stub(:clock_gettime, ->(_clock) { @now }) do
       @invitation.stub(:request, ->(*_args) { replies.shift }) do
         Be02Acceptance::Invitation.stub(:validate_link, ->(_link) { @now = 25.0; "a" * 56 }) do
