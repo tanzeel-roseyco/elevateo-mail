@@ -473,3 +473,5 @@ ADV142 V2 canonical error-envelope finding is addressed in source by a closed sh
 Mira COL910 exact scoped-picker assignment regression is imported; integrated web unit/type checks remain pending Soren fleet Docker.
 
 QA815 exact core-only b3aaa07e: 21 migrations, Ruby 522/7089 and Steep zero problems PASS; RuboCop --lint 19 offenses FAIL, overall backend gate FAILED. Authenticated HTTP/worker/realAuth not reached. Soren 27f9b172 compact receipts imported; owner lint repair and coherent rerun pending.
+
+ADV143 source review of b3aaa07e guard plus 732f2749 directory activation: 270 unique LOC/0 defects, source-only, with SQL/RLS and real-role/browser proof excluded. Core backend lint remains failed; feature runtime not run.
