@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "minitest/autorun"
+require "minitest/mock"
 require_relative "../../lib/elevateo/send_worker/drain"
 
 class SendWorkerDrainTest < Minitest::Test
