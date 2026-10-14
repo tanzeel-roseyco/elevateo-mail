@@ -373,3 +373,5 @@ Nadia reopened I1–I9, G1–G5, R1–R6 and request-verification primary source
 QA-404 attempt4 source-only review queue: acceptance_observer.rb78 LOC + acceptance_observer_role.rb56 LOC, transport-barrier.ts60 LOC separately. Full user rubric and dedicated tradeoff requested from Rowan/root Ada; no independent verdict or runtime proof yet. Defects/KLOC pending review. read-empty deep-link now requires actual listThreads404, still NOT_RUN.
 
 QA-404 self-inspection found role comment lookup used ordinary object catalog instead of shared role catalog; changed to shobj_description before independent review. Not counted as independent defects/KLOC. Typed version/outcome boundary checks added.
+
+QA-404 observer contract regression packet C: full acceptance_observer_contract.rb (<100 LOC), real-PG only; independent review and Soren execution NOT_RUN. Mandatory actual applied operation prerequisite prevents an empty-ledger self-test PASS.

@@ -154,3 +154,5 @@ BE-403 numeric underflow repair: ExactDecimal rejects nonzero JSON mantissas con
 FE-405 follow-up: navigation regressions now cover Drafts and reader ancestor semantics. CLI metadata confirms gpt-6.1-sol / low, Fast tier remains unverified (service_tier null). Runtime/visual acceptance still pending.
 
 QA-404 observer draft correction: PostgreSQL role comments use shared-object lookup; typed bounded versions and ledger outcome validation added. Source-only, review/runtime remain pending.
+
+QA-404 real-PG observer contract test authored: positive actual applied ledger receipt required; direct foreign-scope read, content/digest grants, writable-transaction UPDATE/DELETE denials and exact role cleanup checked. NOT_RUN pending Soren and boundary review.
