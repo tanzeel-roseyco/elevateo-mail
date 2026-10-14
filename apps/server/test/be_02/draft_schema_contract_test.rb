@@ -64,6 +64,16 @@ class DraftSchemaContractTest < SessionDatabaseTestCase
     end
   end
 
+  def test_effective_inherited_runtime_access_fails_with_owner_only_acl
+    transaction do
+      before = namespace
+      @admin.exec("GRANT elevateo_owner TO elevateo_api WITH INHERIT TRUE, SET FALSE")
+      assert_equal "t", @admin.exec("SELECT has_schema_privilege('elevateo_api', 'app_drafts_private', 'USAGE')").getvalue(0, 0)
+      rejects_bootstrap
+      assert_equal before, namespace
+    end
+  end
+
   private
 
   def namespace

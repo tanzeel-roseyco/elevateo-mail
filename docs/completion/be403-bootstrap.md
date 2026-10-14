@@ -31,3 +31,5 @@ BE-403 bootstrap guard regressions authored: exact private-schema DO block exerc
 Observed execution identity: CLI 0.160.0, gpt-6.1-sol, effort low; service_tier=null, so Fast requested but unconfirmed. Actual manual session 01a137d0-2594-75a2-9b34-725c77f0c632; receipt ~/.codex/sessions/2026/10/14/rollout-2026-10-14T02-29-10-01a137d0-2594-75a2-9b34-725c77f0c632.jsonl.
 
 BE-403 numeric underflow repair: ExactDecimal rejects nonzero JSON mantissas converted to zero by extreme BigDecimal exponents, while preserving exact decimals and true zero. Existing precise-version and exception-mode regression failures provide target coverage; current runtime NOT_RUN. Semantic guard order now follows supplied owner/ACL/owner-privileges/runtime sequence.
+
+BE-403 effective-access regression authored: transaction-local inherited owner membership grants runtime schema access without altering owner-only namespace ACL; bootstrap predicate must still reject. Current source and tests remain pending Soren execution and root independent review.
