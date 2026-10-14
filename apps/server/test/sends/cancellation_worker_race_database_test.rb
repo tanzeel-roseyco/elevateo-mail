@@ -12,7 +12,7 @@ class SendCancellationWorkerRaceDatabaseTest < SendDatabaseTestCase
   def authorize(send, lease, generation, attempt)
     JSON.parse(@worker.exec_params(<<~SQL, [send, lease, generation, attempt, @epoch]).getvalue(0, 0))
       SELECT app_send_private.authorize_attempt($1::uuid,$2::uuid,$3::bigint,$4::uuid,$5::uuid,
-        decode(repeat('00',32),'hex'),'none',10)
+        sha256(convert_to('local:synthetic-v1','UTF8')),'synthetic-v1',10)
     SQL
   end
 
@@ -52,5 +52,25 @@ class SendCancellationWorkerRaceDatabaseTest < SendDatabaseTestCase
     assert_equal "accepted", accepted.fetch("state")
     assert_equal "accepted", status(send).fetch("state")
     assert_equal({ "code" => "send_terminal" }, cancel(send))
+  end
+
+  def test_stop_requested_unknown_still_claims_reconciliation_without_resubmit
+    send = approve.fetch("send_id")
+    lease = SecureRandom.uuid
+    generation = claim(send, lease).fetch("generation")
+    attempt = SecureRandom.uuid
+    assert_equal attempt, authorize(send, lease, generation, attempt).fetch("attempt_id")
+    unknown = JSON.parse(@worker.exec_params(<<~SQL, [send, lease, generation, SecureRandom.uuid, attempt]).getvalue(0, 0))
+      SELECT app_send_private.record_observation($1::uuid,$2::uuid,$3::bigint,$4::uuid,$5::uuid,
+        'unknown',NULL,decode(repeat('22',32),'hex'))
+    SQL
+    assert_equal "unknown", unknown.fetch("state")
+    assert_equal "unknown", cancel(send).fetch("state")
+    fixture_change do
+      @admin.exec_params("UPDATE app_send_private.jobs SET next_check_at=clock_timestamp()-interval '1 second' WHERE send_id=$1", [send])
+    end
+    renewed = claim(send, SecureRandom.uuid)
+    assert_equal "reconcile", renewed.fetch("action")
+    assert_equal 1, status(send).fetch("attempts")
   end
 end

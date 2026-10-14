@@ -120,4 +120,4 @@ Cassian manifest reconciliation: contract-lock now seals actual generated client
 
 ### SEND-810 cancellation candidate
 
-The isolated branch has cancellation SQL/API source, database and controller regressions, and exact Rowan/Elara merge lineage. Nadia's duplicate worker bridge and process activation were removed on root direction; Rowan and Elara own the direct worker store integration. Docker execution and Rowan's reconciliation guard repair remain pending. See `docs/completion/nadia.md`.
+The isolated branch has cancellation SQL/API source, database and controller regressions, and exact Rowan/Elara merge lineage. Nadia's duplicate worker bridge and process activation were removed on root direction; Rowan and Elara own the direct worker store integration. Docker execution and proof of Rowan's reconciliation guard repair remain pending. See `docs/completion/nadia.md`.

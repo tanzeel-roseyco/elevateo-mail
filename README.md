@@ -178,4 +178,4 @@ Cassian manifest reconciliation: contract-lock now seals actual generated client
 
 ### SEND-810 cancellation candidate (2026-10-14)
 
-Nadia's isolated branch adds a simulated send cancellation API and a locked SQL transition against the exact Rowan worker authority source. Unattempted claimed jobs can be cancelled; possible calls become stop requests and retain reconciliation. Elara's executor remains an isolated seam. Fleet Docker, independent review and Rowan's cancellation-reconciliation guard repair remain pending; no live transport or release claim. See `docs/completion/nadia.md`.
+Nadia's isolated branch adds a simulated send cancellation API and a locked SQL transition against the exact Rowan worker authority source. Unattempted claimed jobs can be cancelled; possible calls become stop requests and retain reconciliation. Elara's executor remains an isolated seam. Fleet Docker proof and independent review remain pending; no live transport or release claim. See `docs/completion/nadia.md`.
