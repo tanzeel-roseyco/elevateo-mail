@@ -1,0 +1,94 @@
+{
+  "observed_at": "2026-10-14T11:30:57.524945+00:00",
+  "candidate": "1429f1df2d39d98b1742a2fc677768e69c7762dd",
+  "web_tree": "93c71deabea60bb52350b2f1e05d3977745ad62a",
+  "harness": "3bc68cb3ee3bcbdb0233c16aa5a06c434a9e153d",
+  "harness_hashes": {
+    "fixtureMain.tsx": "e522782ca49d2c67c39452e772ef2b6a7f6fd258c48ef1f19ff44150c146e1dc",
+    "send.spec.ts": "cf4b7e3e4f12fe8cad99d0170c13c75ee58c7ead44c8f7b213a899e98087bf56",
+    "playwright.config.ts": "61b3d241e269a31f46e4b0ade08b1bda98a288780bb6850b9275d060f751e89a",
+    "runtime.sh": "a7a2d9b7933e9b4bd2b0e6986354e6028aef76afcb7b4431269bc338988350d8"
+  },
+  "candidate_export_files": 122,
+  "candidate_bytes_modes_unchanged": true,
+  "checks": {
+    "typecheck": 0,
+    "lint": 0,
+    "browser_exit": 0,
+    "browser_stats": {
+      "startTime": "2026-10-14T11:29:09.047Z",
+      "duration": 23865.444,
+      "expected": 14,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "png_count": 30
+  },
+  "png_manifest": {
+    "path": "/home/tanzeel/elevateo-mail-wave-20261014/reports/mira-r24-browser/png-manifest-final.json",
+    "sha256": "347a1ef407b9bd9748e834982b78a62476392e5c325fea054c007471fbac45a7"
+  },
+  "node_image": "sha256:27bde67943dfe9c1ddf5c862e305957474f56457c786f641768b10aad13c9f53",
+  "browser_image": "sha256:06a9939e57531807f8d5fd76ce44b53165ffb7d7501d87ab10e285c20b1e971f",
+  "playwright": "1.64.0",
+  "chromium": "headless-shell1248",
+  "viewports": [
+    [
+      1280,
+      900
+    ],
+    [
+      375,
+      812
+    ]
+  ],
+  "browser_caps": {
+    "memory_mib": 512,
+    "cpus": 0.75,
+    "cpu_affinity": "0",
+    "pids": 128,
+    "rootfs": "read-only",
+    "capabilities": "ALL dropped"
+  },
+  "cleanup": {
+    "independent_exact_absence": {
+      "mira-be03-browser-probe": true,
+      "mira-be03-browser-path-probe": true,
+      "mira-be03-browser-preflight-3d6cfb5": true,
+      "mira-be03-ui-preview-1429f1d": true,
+      "mira-be03-ui-preview-1429f1d-retry2": true,
+      "mira-be03-browser-base-probe": true,
+      "mira-be03-ui-browser-1429f1d": true,
+      "mira-be03-ui-browser-1429f1d-retry2": true,
+      "mira-be03-ui-browser-1429f1d-retry3": true,
+      "mira-be03-ui-browser-1429f1d-retry4": true,
+      "mira-be03-ui-browser-1429f1d-retry5": true,
+      "mira-be03-ui-browser-1429f1d-retry6": true,
+      "mira-be03-ui-preview-1429f1d-h5680": true,
+      "mira-be03-ui-browser-1429f1d-h3bc68": true
+    },
+    "preview_retained_at_root_explicit_request": "mira-be03-ui-preview-1429f1d-h3bc68",
+    "preview_url": "http://127.0.0.1:18142/be03-browser.html?case=happy#/mailboxes/00000000-0000-4000-8000-000000000023/drafts/00000000-0000-4000-8000-000000000051/send-review",
+    "preview_caps": {
+      "memory_mib": 256,
+      "cpus": 0.25,
+      "pids": 128
+    },
+    "images_volumes_networks_created_removed": 0,
+    "persistent_mutation": false
+  },
+  "source_review": {
+    "unique_current_source_loc": 177,
+    "remaining_defects": 0,
+    "historical_repaired_low": 2,
+    "coverage_nonadditive": true
+  },
+  "scope": "Actual SIMULATED client browser only; no SQL/HTTP approval/provider/worker proof; stop action not exercised",
+  "be02": "OPEN",
+  "root_visual_acceptance": "PENDING",
+  "effective_fast": "unverified",
+  "mode_verification": "Python data-filter export mask0755; all tracked executable bits and exported source modes match expected immutable archive",
+  "candidate_byte_mismatches": 0,
+  "candidate_mode_mismatches": 0
+}
