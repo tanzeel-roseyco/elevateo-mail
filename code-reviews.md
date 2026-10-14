@@ -1445,3 +1445,6 @@ INT952 inline review: PageBoundary 38 LOC + tests 72 LOC, App 70 LOC, Outreach r
 
 
 INT952 compiler review: 38 boundary LOC, 2 missing override declarations, 52.63 defects/KLOC. Both corrected; semantics unchanged. No independent-agent review is claimed. Full fleet regression pending.
+
+
+INT953 inline sandbox review: 27 regression-test LOC plus 21 runtime/default/argument LOC inspected; one stale-digest defect (20.83 defects/KLOC), corrected without modifying seccomp.json. Existing inverse-policy R8 regression authenticates the historical single syscall delta. New regression checks shipped policy bytes and three altered-byte failure cases. Self-review only under inline-only instruction; fleet execution pending.

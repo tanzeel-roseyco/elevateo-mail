@@ -17,7 +17,8 @@ from docker_task import Task
 NODE = "node:24.21.0-bookworm-slim@sha256:d6aa754f16b3197301076f047b5def2f02ea1dbbc2ca920407d46d7ec7f87b20"
 PLAYWRIGHT = "mcr.microsoft.com/playwright:v1.64.0-noble@sha256:06a9939e57531807f8d5fd76ce44b53165ffb7d7501d87ab10e285c20b1e971f"
 GRID = "selenium/standalone-chrome:4.49.0-20260909@sha256:88dacdd42d93ab738bed045129376b2f965117c5f2e4710693e54695d531380d"
-SECCOMP_SHA256 = "cc3e61cabda6bbc1e53e54d27ba4d55a9d3be829b6dd1a596f4a7b31b1cc7849"
+# AIDEV-NOTE: Match the integrated R8 chroot repair; test_r8_constraints authenticates its only policy delta.
+SECCOMP_SHA256 = "f922c7c9bfc1ece0b72b244e56dc85756ded002c837fb46054cfd8b275c74b6b"
 # AIDEV-NOTE: This fixed archive record must match browsers.Dockerfile; CfT is not a Docker image input.
 CFT_ARCHIVE = {
     "version": "155.0.8059.39",
