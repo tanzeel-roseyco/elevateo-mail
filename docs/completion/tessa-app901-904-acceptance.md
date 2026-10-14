@@ -2,6 +2,8 @@
 
 Status: **scenario design only for DIR903/904 and ATT902; no route, browser or fixture run is claimed.** Root keeps frozen `215080a4` backend acceptance first. Soren alone schedules fleet-02 Docker after a coherent later integrated SHA passes migrations, full backend/Steep, authenticated HTTP, web build and a disposable Auth seed. All candidate artifacts stay private and no live mail, enrollment or public storage URL is involved.
 
+DIR904 now also has a separate 69-LOC source-only real-browser **API precursor** (`qa816-assignee-options.e2e.ts`): scoped UUID-only 200, foreign 404 and bad cursor 400. It is not the picker UI, selection, assignment write or revocation acceptance in the table below, and has no runtime receipt.
+
 ## Exact known seams
 
 - APP901 Mira `fcfaf0f` changes the top thread `Reply as draft` to a button. With a readable sender it prepopulates To and a `Re:` subject while preserving `reply_to_thread_id`; missing/denied/senderless selected messages disable it. QA816 source `cb35a3f` has happy/F1 browser cases, two fixed screenshot IDs, and remains NOT_RUN.
