@@ -3,10 +3,25 @@
 require_relative "../config/environment"
 require_relative "../lib/elevateo/heartbeat"
 require_relative "../lib/elevateo/auth_revocations"
+require_relative "../lib/elevateo/send_worker/store"
+require_relative "../lib/elevateo/send_worker/executor"
+require_relative "../lib/elevateo/send_worker/local_failure_driver"
 cfg = Elevateo::Config.current
 raise Elevateo::ConfigError, "worker requires outbound hold" unless cfg.outbound_hold
+simulated = ENV.fetch("ELEVATEO_SIMULATED_SEND_WORKER", "false")
+raise Elevateo::ConfigError, "invalid simulated worker switch" unless %w[true false].include?(simulated)
+if simulated == "true" && (!cfg.send_api_enabled || cfg.send_control_path.empty? || cfg.db_role != "elevateo_worker")
+  raise Elevateo::ConfigError, "simulated worker requires worker role, send API and control"
+end
+send_executor = if simulated == "true"
+  # AIDEV-NOTE: Explicit local profile never opens SMTP; the external control still gates each dispatch.
+  control = Elevateo::SendWorker::Control.new(path: cfg.send_control_path)
+  store = Elevateo::SendWorker::Store.new(connection: ActiveRecord::Base.connection.raw_connection)
+  driver = Elevateo::SendWorker::LocalFailureDriver.new(profile: "local", outcomes: Array.new(100, "accept"))
+  Elevateo::SendWorker::Executor.new(store: store, driver: driver, control: control)
+end
 $stdout.sync = true
-puts({ event: "worker.started", outbound_hold: cfg.outbound_hold, dispatch: "disabled" }.to_json)
+puts({ event: "worker.started", outbound_hold: cfg.outbound_hold, dispatch: send_executor ? "simulated" : "disabled" }.to_json)
 revocations = Elevateo::AuthRevocations.new(config: cfg)
 stop = false
 %w[TERM INT].each { |s| Signal.trap(s) { stop = true } }
@@ -16,6 +31,10 @@ until stop
     # AIDEV-NOTE: Durable logout retries use their own deadline and never enable the outbound-mail dispatcher.
     deadline = Elevateo::RequestDeadline.new
     deadline.within { revocations.run_once(deadline: deadline) }
+    if send_executor
+      outcome = send_executor.run_once
+      puts({ event: "worker.simulated_send", outcome: outcome }.to_json) unless outcome == :idle || outcome == :held
+    end
   rescue Elevateo::AuthError => error
     puts({ event: "worker.auth_revocation_retry", code: error.code }.to_json)
   end

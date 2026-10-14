@@ -61,4 +61,19 @@ class SendWorkerBridgeDatabaseTest < SendDatabaseTestCase
   ensure
     @api.exec("ROLLBACK") if @api.transaction_status != PG::PQTRANS_IDLE
   end
+
+  def test_cancellation_after_claim_fences_unattempted_lease
+    send = approve.fetch("send_id")
+    lease = SecureRandom.uuid
+    generation = claim(send, lease).fetch("generation")
+    begin_write
+    result = JSON.parse(@api.exec_params("SELECT app.cancel_send($1::text,$2::uuid,$3::uuid,$4::uuid)",
+      [@digest, @box, send, @epoch]).getvalue(0, 0))
+    @api.exec("COMMIT")
+    assert_equal "cancelled", result.fetch("state")
+    assert_equal "dispatch_held", authorize(send, lease, generation, SecureRandom.uuid).fetch("code")
+    assert_equal 0, status(send).fetch("attempts")
+  ensure
+    @api.exec("ROLLBACK") if @api.transaction_status != PG::PQTRANS_IDLE
+  end
 end

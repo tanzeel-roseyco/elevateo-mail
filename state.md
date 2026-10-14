@@ -123,3 +123,5 @@ Cassian manifest reconciliation: contract-lock now seals actual generated client
 Isolated cancellation SQL/API source and three database scenarios plus controller response checks are prepared on Nadia's branch. Worker dispatch/persistence integration and fleet Docker execution remain pending; no send outcome is accepted by this source checkpoint. See `docs/completion/nadia.md`.
 
 SEND-810 worker bridge source is merged over exact Rowan/Elara lineage with additive migration00012 and worker role store; runtime NOT_RUN. Rowan's claim guard must permit reconciliation after a cancellation request while forbidding a new submit. See docs/completion/nadia.md.
+
+SEND-810 process wiring is opt-in and simulated only. No live transport is loaded; startup/control/runtime checks remain NOT_RUN pending Soren Docker proof.
