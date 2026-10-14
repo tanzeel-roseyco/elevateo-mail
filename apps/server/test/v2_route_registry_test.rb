@@ -12,11 +12,17 @@ class V2RouteRegistryTest < Minitest::Test
     end
   end
 
-  def test_ready_registry_exposes_only_four_versioned_routes
+  def test_ready_registry_exposes_only_five_versioned_routes
     mapper = Mapper.new
     assert V2RouteRegistry.register!(mapper, enabled: true, controllers_ready: true)
-    assert_equal 4, mapper.routes.size
+    assert_equal 5, mapper.routes.size
     assert mapper.routes.all? { |_, path, _| path.start_with?("/v2/") }
+  end
+
+  def test_selected_operation_exposes_only_implemented_route
+    mapper = Mapper.new
+    assert V2RouteRegistry.register!(mapper, enabled: true, controllers_ready: true, operations: ["listOutreachCampaigns"])
+    assert_equal [[:get, "/v2/outreach/campaigns", "v2/outreach_campaigns#index"]], mapper.routes
   end
 
   def test_disabled_registry_exposes_nothing
