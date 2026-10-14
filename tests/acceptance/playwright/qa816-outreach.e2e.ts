@@ -19,8 +19,7 @@ scenario('SCN-QA-820-P', 'real-auth-outreach-draft-create-list-detail', async (p
   const campaignId = /\/outreach\/campaigns\/([0-9a-f-]{36})/.exec(new URL(page.url()).hash)?.[1];
   if (!campaignId) throw new Error('Campaign detail route missing');
   await expect(page.getByRole('heading', { name: 'Campaign detail' })).toBeVisible();
-  await expect(page.getByText(name, { exact: false })).toBeVisible();
-  await expect(page.getByText('draft', { exact: false })).toBeVisible();
+  await expect(page.getByText(`${name} · draft`, { exact: true })).toBeVisible();
   record.artifacts.push(await screenshot(page, 'QA816-OUTREACH-P-detail'));
   const [detail] = await Promise.all([responseAt(page, `/v2/outreach/campaigns/${campaignId}`), page.reload()]);
   expect(detail.status()).toBe(200);
