@@ -97,7 +97,7 @@ function SequenceEditor({ campaignId, gateway, context, proof }: OutreachPagePro
             <Field id={'sequence-label-' + step.id} label={'Step ' + (index + 1) + ' label'}><TextInput id={'sequence-label-' + step.id} value={step.label} maxLength={120} onChange={(event) => changeStep(index, { label: event.target.value })} required /></Field>
             <Field id={'sequence-delay-' + step.id} label={'Step ' + (index + 1) + ' delay seconds'}><TextInput id={'sequence-delay-' + step.id} type="number" min={0} max={2_592_000} value={step.delay_seconds} onChange={(event) => changeStep(index, { delay_seconds: Number(event.target.value) })} required /></Field>
             <Field id={'sequence-time-' + step.id} label={'Step ' + (index + 1) + ' local time'}><TextInput id={'sequence-time-' + step.id} type="time" step={1} value={step.local_time} onChange={(event) => changeStep(index, { local_time: event.target.value.length === 5 ? event.target.value + ':00' : event.target.value })} required /></Field>
-            {steps.length > 1 && <Button onClick={() => setSteps((current) => current.filter((item) => item.id !== step.id).map((item, position) => ({ ...item, position: position + 1 }))}>Remove step {index + 1}</Button>}
+            {steps.length > 1 && <Button onClick={() => setSteps((current) => current.filter((item) => item.id !== step.id).map((item, position) => ({ ...item, position: position + 1 })))}>Remove step {index + 1}</Button>}
           </li>)}</ol>
           {steps.length < 20 && <Button onClick={() => setSteps((current) => [...current, freshStep(current.length + 1)])}>Add step</Button>}
           <p>Delays and local times are metadata. The backend decides any due time, consent or suppression outcome.</p>

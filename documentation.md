@@ -204,3 +204,5 @@ FE807 consent failure behavior: an access-denied evidence write hides loaded lea
 FE807 sequence route seam: `createOutreachFeatureModule` exports `/outreach/campaigns/:campaignId/sequence` and campaign detail links to it. `sequenceContract.ts` validates the proposed V2 sequence/step shape and PUT body, including campaign id, operation id and nullable expected version. `SequencePage.tsx` uses optional `getOutreachSequenceDraft` and `saveOutreachSequenceDraft`, a single atomic Save, explicit draft/held labels, a locked conflict/uncertain state and no send control. Cassian must publish and bind the canonical gateway; Fable registers the route.
 
 FE807 sequence create regression checks one id across PUT receipt and subsequent GET, with the strict read DTO excluding write-only operation/version precondition fields.
+
+FE807 sequence editor lint diagnostic: Remove step's `setSteps` callback was missing its final call-closing parenthesis. The source now closes the callback and call before the JSX tag; Soren must rerun fleet checks on the repair SHA.

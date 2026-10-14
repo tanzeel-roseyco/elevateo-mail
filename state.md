@@ -136,3 +136,5 @@ FE807 `fa3082a` seam reviewed statically: manual consent adapter and detail GET 
 FE807 sequence source candidate adds `/outreach/campaigns/:campaignId/sequence` with inert draft/held editing under optional gateway methods. GET 404 is treated as no accessible draft, without asserting existence; a tentative create still requires authoritative backend access. Soren fleet type/unit/build and real V2 HTTP/browser checks are pending.
 
 FE807 sequence create test was tightened to re-read the same returned id and strict server-only draft DTO; no runtime result yet.
+
+FE807 sequence source repair follows Soren's exact integrated lint parse failure at `SequencePage.tsx:100`; focused fleet lint/type/unit rerun pending.

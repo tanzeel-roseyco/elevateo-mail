@@ -190,3 +190,5 @@ FE807 gateway seam: Cassian `fa3082a` now exports lead detail and manual consent
 FE807 sequence candidate: a distinct campaign-scoped sequence editor route is authored against Cassian's additive V2 proposal. It supports 1–20 ordered steps, local time, bounded delays, draft/held state and atomic versioned Save; all due-time, consent, suppression and delivery authority remains backend-owned. Exact contract review and fleet tests are pending; no sending path exists.
 
 FE807 sequence test fixture now returns the exact created id and only server draft fields on the follow-up GET; fleet execution is still pending.
+
+FE807 sequence candidate has a fleet lint parse failure at the Remove step handler on the integrated web SHA; a one-parenthesis source repair is committed separately for exact rerun. No sequence unit/build PASS is claimed.
