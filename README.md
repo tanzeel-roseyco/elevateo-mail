@@ -208,3 +208,5 @@ QA815 `065ec91` backend retest: 21 migrations PASS, Ruby 522/7080 with one prote
 QA815 current `c5a8737` web successor passes V1/V2, lint, strict type, 842/842 units and production build with exact cleanup. Its attachment-only source changes do not transfer the older f70 screenshots; real-backend browser remains blocked by the backend role failure. See `docs/completion/soren.md`.
 
 QA815 focused `a0a60b6` disposable PostgreSQL witness: 21 migrations passed, but the single protected outreach case failed 1/5; both same-scope read and write returned `not_found` despite a live session, sales role and correct function owner. Exact Docker cleanup passed. A bounded container `aapt` dump of the retained rejected `32d043f` unsigned APK confirmed its INTERNET and generated AndroidX dynamic-receiver permissions; this is parser input evidence, not APK acceptance. See `docs/completion/soren.md`.
+
+QA815 prepared `ops/tests/qa815/run-focused-steep.sh` for the next reviewed coherent candidate; no result is claimed before an exact source SHA and fleet execution.

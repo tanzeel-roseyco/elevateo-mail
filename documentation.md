@@ -218,3 +218,5 @@ QA815 backend successor receipt `docs/completion/qa815-evidence/backend-065ec91b
 QA815 current full web receipt `docs/completion/qa815-evidence/web-c5a873765a0c.log` records exact `c5a8737` V1/V2/lint/type/unit/build PASS and cleanup. The f70 visual artifact is separate exact-source evidence; see `docs/completion/soren.md`.
 
 QA815 focused Elara receipt `docs/completion/qa815-evidence/backend-a0a60b66151a/` records 21 migrations, a one-case same-scope read/write `not_found` failure and exact cleanup. The retained rejected Android APK has an actual container `aapt` manifest/permission dump at `docs/completion/qa815-evidence/android-32d043fbce8e-aapt-dump.txt`; it does not establish policy acceptance of any unsigned APK. See `docs/completion/soren.md`.
+
+QA815 next focused Steep/selected pure Ruby runner is at `ops/tests/qa815/run-focused-steep.sh`; it awaits the coherent immutable candidate SHA and has not run.

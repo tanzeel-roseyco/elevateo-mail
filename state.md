@@ -150,3 +150,5 @@ QA815 `065ec91` migrations 21 PASS; Ruby 522/7080, 1 role failure, 0 errors; thr
 QA815 `c5a8737` current web full PASS 842/842/build with task cleanup; V2 declaration/spec hashes unchanged. Current-source real-browser acceptance NOT_RUN; protected backend role remains OPEN.
 
 QA815 `a0a60b6` one-case same-scope outreach witness FAIL 1/5: read=not_found, write=not_found, DB current_user=elevateo_api, sales membership and live session; 21 migrations and exact cleanup PASS. Retained rejected `32d043f` APK `aapt` dump PASS under Docker, confirms generated dynamic-receiver permission; native acceptance remains OPEN.
+
+QA815 focused Steep/selected pure Ruby runner is prepared, NOT_RUN pending coherent integrated SHA from Cassian.
