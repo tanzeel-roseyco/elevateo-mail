@@ -712,3 +712,5 @@ QA816 root-reported independent ADV046 Vera review found 2 acceptance oracle def
 QA816 Felix re-review of Ada reply recipient repair: exact 4b946ea matrix diff, 3 changed physical LOC, 0 new static defects (0/KLOC on repair). Seed authority `ops/tests/be02/acceptance_seed.rb:96` confirms `sender@acceptance.test`. This overlaps prior matrix review; no new unique coverage or browser PASS.
 
 QA816 author static check at b327238 tightened one broad Outreach detail `draft` locator to exact case-owned name/status before screenshot. This is not an independent finding or runtime proof; ADV046/047 initial defects and pending repair re-reviews remain recorded above.
+
+QA816 Felix durable functional packet B receipt `787167a` (docs/completion/felix-qa816-review.md): current matrix lines155–263 (109 LOC, SHA f0b5c91f) plus screenshot writer lines1–73 (73 LOC, SHA75fb5b84), 182 unique LOC, zero confirmed static defects (0/KLOC). Initial full B review and exact reply repair diff overlap; no extra LOC counted. Dynamic roster/grant row binding, image pixels, text zoom, V2 writes and browser runtime are outside this source-only result.
