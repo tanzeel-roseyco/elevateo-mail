@@ -4,6 +4,8 @@ A shared team mailroom using Rails, PostgreSQL, Supabase Auth/Storage and a Reac
 
 ## Current state
 
+QA-404 R5 minimal Compose compatibility source fix: removed unsupported --no-deps ONLY from both create invocations; create-inspect-start and exact project/resource validation unchanged. Screenshot initializer d0da207 retained; observer OFF. Soren reported ef7 diagnostic stopped at seed create before browser cases/screenshots, with exact cleanup PASS. New source runtime NOT_RUN; application IN PROGRESS. Cassian task_8763f4f578dc / ctx_1e413440b965 owns next minimal diagnostic intake; Soren alone executes Docker. Requested gpt-6.1-sol low/Fast; actual billed tier unverified.
+
 QA-404 diagnostic artifact source fix: explicitly create task-owned0700 output/native-private before browsers; CLI native output override previously left screenshot directory missing. Exactef runtime remains separate, no observed browser result yet.
 
 

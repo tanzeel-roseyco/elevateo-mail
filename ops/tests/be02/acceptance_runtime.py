@@ -150,7 +150,7 @@ class Acceptance:
         if any(item["Config"]["Labels"].get("com.docker.compose.service") == service
                for item in self.task.project_containers()):
             raise RuntimeError("acceptance service already exists; retain it for inspected final cleanup")
-        self.task.compose("acceptance-create", ["create", "--no-deps", service], 45, quiet=True)
+        self.task.compose("acceptance-create", ["create", service], 45, quiet=True)
         items = [item for item in self.task.project_containers()
                  if item["Config"]["Labels"].get("com.docker.compose.service") == service]
         if len(items) != 1:
@@ -174,7 +174,7 @@ class Acceptance:
             return seconds
 
         try:
-            self.task.compose("observer-create", ["create", "--no-deps", "acceptance-observer"], remaining(), quiet=True)
+            self.task.compose("observer-create", ["create", "acceptance-observer"], remaining(), quiet=True)
             ids = self.task.docker("observer-identity", ["container", "ls", "-aq", "--filter",
                 "label=com.docker.compose.project=" + self.task.project, "--filter",
                 "label=com.docker.compose.service=acceptance-observer"], remaining()).split()
