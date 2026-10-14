@@ -28,7 +28,7 @@ function renderRoute(path: string, gateways: FeatureGateways) {
 
 const unused = vi.fn(async () => { throw new Error('not expected in this test') })
 const outreach: OutreachGateway = {
-  listCampaigns: async () => ({ items: [{ id: '1a40d184-987d-4b50-98d2-f674e41842f9', name: 'Pilot', status: 'paused' }] }),
+  listCampaigns: async () => ({ items: [{ id: '1a40d184-987d-4b50-98d2-f674e41842f9', name: 'Pilot', status: 'paused', version: 1 }], next_cursor: null }),
   getCampaign: unused,
   createCampaign: unused,
   updateCampaign: unused,

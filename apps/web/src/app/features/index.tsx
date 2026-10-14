@@ -5,8 +5,10 @@
 // AIDEV-NOTE: Owner modules carry static elements. Celeste's pages take gateway/context/proof as
 // props, so each Outreach route is a thin wrapper that reads session state and builds her element;
 // Lyra's module reads the session itself and is registered verbatim.
-import type { ReactElement } from 'react'
+import { useMemo, type ReactElement } from 'react'
 import { useProtectedRequest } from '../protectedRequest'
+import { policeOutreachGateway } from '../outreachSessionPolicy'
+import { useSession } from '../session'
 import { useFeatureGateways } from '../featureGateways'
 import { buildFeatureRegistry, type FeatureRegistration } from '../featureRegistry'
 import { createOutreachFeatureModule } from '@/features/outreach/featureModule'
@@ -22,7 +24,16 @@ export interface FeatureModule extends FeatureRegistration {
 // exactOptionalPropertyTypes forbids passing `undefined` explicitly, hence the conditional spreads.
 function useOutreachProps(): OutreachPageProps {
   const { context, proof } = useProtectedRequest()
-  const { outreach } = useFeatureGateways()
+  const { scope, handleError } = useSession()
+  const { outreach: raw } = useFeatureGateways()
+  // AIDEV-NOTE: FE-805 central session policy. Celeste's pages call the gateway directly, so every
+  // operation is policed through SessionProvider.handleError (401 -> restoring access, 409 -> recovery).
+  // Memoised on the injected port and the stable session callbacks: the binding does not change per
+  // render, and the generation is read at call time, so no rebinding is needed on an epoch change.
+  const outreach = useMemo(
+    () => (raw === undefined ? undefined : policeOutreachGateway(raw, { current: () => scope.current(), handleError })),
+    [raw, scope, handleError],
+  )
   return {
     ...(outreach === undefined ? {} : { gateway: outreach }),
     ...(context === null ? {} : { context }),

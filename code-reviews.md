@@ -746,3 +746,8 @@ FE807 QA815 `fe96194` fleet result: API check and lint PASS, typecheck FAILED wi
 FE807 Dorian DTO alignment: immutable `b8c3e39` adds nullable `consent_evidence_kind` to lead detail. FE807 strict boundary and component source now display `manual_attestation` as evidence metadata, never send eligibility. No runtime or independent review claim for this follow-up.
 
 FE807 auth-loss self-review: raw V2 gateway wiring may not invoke central SessionProvider 401/context handling. Owned detail/leads pages now hide previously loaded content after an access-loss write and lock further actions; the host still must rotate context centrally. Revoked-write case authored, no Docker or independent review receipt.
+
+### FE-805 R8 Outreach session policy self-inspection (Fable, 2026-10-15)
+
+Author self-inspection only; no independent review was performed or is claimed. Scope: `apps/web/src/app/outreachSessionPolicy.ts` (58 LOC), `features/index.tsx` delta (12 LOC), tests (`outreachSessionPolicy.test.ts` 60 LOC, `Shell.test.tsx` +95 LOC). Checked: generation captured per call, not at bind time; sync throws and rejections both reach `handleError` and are rethrown unchanged; optional capabilities not fabricated; memo deps are the injected port plus stable session callbacks (`scope` is a ref-stable instance, `handleError` a memoised callback). Defects found: 0 across 225 LOC (0/KLOC). Tests are authored and not executed; fleet run requested from Soren.
+

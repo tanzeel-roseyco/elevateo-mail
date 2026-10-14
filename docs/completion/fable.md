@@ -162,6 +162,15 @@ Narrow repair on `77dbd86`: trigger `button "Open navigation"` (no "menu"), `dia
 
 Fleet lint on the previous candidate reported six unused `_input`/`_init` parameters in `outreachGatewayBridge.test.ts`. Rather than silence lint, the bridge and its test are deleted: Cassian's adapter now exposes campaign-scoped account signatures (exact chain cherry-picked with `-x`: `9076a73`, `31c3396`, `2fc1b18`, `be12a48`, `ba5b8a5`), so `main.tsx` passes `createV2OutreachGateway()` straight through, typed as Celeste's `OutreachGateway` so any future drift fails typecheck instead of being masked. Account reads are still rejected by the adapter with `temporarily_unavailable` and no dispatch until the account route is registered; that is the adapter owner's explicit behaviour, not a Fable workaround. New wiring case: the campaign-scoped accounts route through the real adapter renders Celeste's error state with zero network calls. Conflicting `docs/completion/cassian.md` and `contracts/v2/README.md` were taken at Cassian's version. FE-805 authored cases: 18. Nothing executed locally.
 
+## R8 — central session policy for Outreach operations (2026-10-15)
+
+Confirmed Celeste seam: the raw `createV2OutreachGateway()` injected in R7 meant a 401 or `context_changed` from an Outreach write only locked the local form; `SessionProvider.handleError` never ran, so no refresh, no recovery and no cleared protected subtree. Repair, source only:
+
+- `apps/web/src/app/outreachSessionPolicy.ts` — `policeOutreachGateway(gateway, policy)` wraps every `OutreachGateway` operation (optional `getLead`/`recordConsent` only when present). It reads the request generation at call time and hands every synchronous throw or rejection to `handleError(error, generation)` before rethrowing. No second session state; the one controller in `session.tsx` stays the policy.
+- `apps/web/src/app/features/index.tsx` — `useOutreachProps` now takes `scope`/`handleError` from `useSession()` and memoises the policed gateway on the injected port and those stable callbacks. The `OutreachGateway` type is unchanged for Celeste; her `scopeKey(context)` remount still rebinds pages on an epoch change, and Celeste 84982b6 (local `isAccessLoss` guard) is merged exactly as `f849913`.
+- Tests authored, NOT executed: `outreachSessionPolicy.test.ts` (3 cases: 401 write reaches the policy with the call-time generation and rethrows; ordinary rejection passes through; sync throw and optional capabilities) and `Shell.test.tsx` (3 cases: 401 from `createCampaign` shows "Restoring access" with form and Outreach rail gone, then access returns; one `context_changed` from `listCampaigns` recovers and the remounted list re-reads; `request_invalid` stays on Celeste's page as her alert with no session transition). FE-805 authored cases now 24, none executed.
+- Unchanged: URL grammar, sidebar landmarks, brand, manual simulation label, `main.tsx` production binding. No server files; Cassian intakes the frontend paths listed in the outbox receipt.
+
 ## Limitations
 
 - No lint, typecheck, unit test, build or visual check has been executed by Fable; Soren owns execution and Tessa owns visual evidence.
