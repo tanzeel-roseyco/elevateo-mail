@@ -42,6 +42,8 @@ Cassian merged the Foundation, Frontend, Delivery, Native, QA and Mail owner can
 
 Cassian prepared disabled organization grant, simulation-only outreach and internal worker-status V2 interfaces over `bbf2353`. Frozen V1 contracts and Rails routes remain unchanged. The V2 route registry fails closed until owning controllers and authorization gates are ready. Source and tests are committed for fleet Docker validation; runtime acceptance and generated web DTO adoption remain pending. See `docs/completion/cassian.md`.
 
+The scoped ADM-803 static repair for Soren `fa3082af` narrows roster and cursor values without changing role authority; see docs/completion/theo-core-static-repair.md. Current fleet Steep/RuboCop PASS is not claimed.
+
 # Product requirements and decision record
 
 QA-815 owns serialized fleet Docker checks under the shared Soren lock. The exact Mira FE-806 candidate passed focused frontend checks; the immutable-source scheduler, receipt and cleanup limits are recorded in `docs/completion/soren.md`. This is not integrated or browser acceptance.

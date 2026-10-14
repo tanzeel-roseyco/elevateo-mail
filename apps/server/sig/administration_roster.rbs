@@ -3,7 +3,7 @@ module Elevateo
     KEYS: Array[String]
     FIELDS: Array[String]
     ROLES: Array[String]
-    IDENTITIES: Array[[String, String, String?, String]]
+    IDENTITIES: Array[Array[String?]]
     UUID: Regexp
 
     class Invalid < StandardError

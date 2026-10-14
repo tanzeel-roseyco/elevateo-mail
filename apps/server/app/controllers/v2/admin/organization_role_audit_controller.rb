@@ -16,12 +16,19 @@ module V2
           raise Elevateo::CollaborationError.new("not_available") unless organization == identity.org_id
           limit = Elevateo::OrganizationRoleAudit.limit(query)
           cursors = Elevateo::Cursors.new(secret: read_config.cursor_signing_key)
+          # @type var filters: Hash[String, String?]
+          filters = {}
+          # @type var scope: Elevateo::Cursors::scope
           scope = { "actor_id" => identity.user_id, "organization_id" => organization,
             "context_id" => session.fetch("context_id"), "authorization_version" => session.fetch("authorization_version"),
-            "resource" => "organization_role_audit", "filters" => {}, "order" => "event_sequence:desc", "limit" => limit }
+            "resource" => "organization_role_audit", "filters" => filters, "order" => "event_sequence:desc", "limit" => limit }
           position = query.key?("cursor") ? cursors.decode(query.fetch("cursor"), scope: scope) : nil
-          if position && (position.keys != ["id"] || !Elevateo::Cursors::UUID.match?(position["id"]))
-            raise Elevateo::CollaborationError.new("cursor_invalid")
+          if position
+            cursor_id = position["id"]
+            unless position.keys == ["id"] && cursor_id.is_a?(String) &&
+                Elevateo::Cursors::UUID.match?(cursor_id)
+              raise Elevateo::CollaborationError.new("cursor_invalid")
+            end
           end
           binds = [identity.digest, position && position["id"], limit].map do |value|
             ActiveRecord::Relation::QueryAttribute.new("organization_role_audit", value&.to_s, ActiveRecord::Type::String.new)
@@ -36,10 +43,12 @@ module V2
           end
           items = Elevateo::OrganizationRoleAudit.items(result["items"], organization: organization, limit: limit)
           after = result["next_id"]
-          if after && (items.empty? || after != items.last["id"])
+          if !after.nil? && (!after.is_a?(String) || items.empty? || after != items.last["id"])
             raise Elevateo::CollaborationError.new("internal_error")
           end
-          cursor = after && cursors.encode(position: { "id" => after }, scope: scope)
+          # @type var after_id: String?
+          after_id = after.is_a?(String) ? after : nil
+          cursor = after_id && cursors.encode(position: { "id" => after_id }, scope: scope)
           JSON.generate({ "context_id" => session.fetch("context_id"),
             "authorization_version" => session.fetch("authorization_version"),
             "items" => items, "next_cursor" => cursor })

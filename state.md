@@ -46,6 +46,10 @@ Integrated database evidence at Cassian 45be80b exposed a legacy draft down/reap
 
 ADV052 repair removes a false PASS path in the default-privilege probe; integrated runtime and separate BE02-only down/reapply remain unverified.
 
+PREF-822 source candidate adds display-name-only per-user preferences with optimistic revision, current session/organization authority and no credential fields. Cassian V2 route/DTO, Lyra UI adaptation and Soren fleet database/HTTP evidence are pending; frozen core candidate unchanged.
+
+ADM-803 roster/grants/audit source was corrected against Soren's exact `fa3082af` Steep/RuboCop errors; fleet rerun and independent bounded review remain pending. See docs/completion/theo-core-static-repair.md.
+
 # Project state
 
 SEND809 exact integrated `7aa61be4649ca251c3faff368ba61dfa7e313708` passed real PostgreSQL migrations but the affected send database suites had eight cancellation guard setup errors, two fixture lock timeouts, three mismatched Mailpit snapshot approval errors, and one binary/UTF-8 oracle failure. Rowan committed bounded test fixture repairs `49aaad8`, `f9f13a0`, `3fe86b7`, `bf2748f`; Soren fleet rerun is pending. Production write guard, lease, approval and Mailpit authority were not loosened.
