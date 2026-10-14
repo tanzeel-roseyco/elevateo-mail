@@ -190,3 +190,5 @@ Migration 00008 adds guarded organization roles and mailbox classification metad
 SEC-802 continuation adds a migration-installed security replacement for the legacy mailbox membership routine and a digest-verified redacted grants page. Existing mailbox mutation fixtures and V2 role DTOs require reconciliation before route activation; Docker tests are pending.
 
 SEC-802 review repaired a personal-owner manager-stranding path in the legacy mutation guard and added a protected current-role check for outreach draft writes. The repaired SQL awaits fleet Docker execution and re-review.
+
+SEC-802 now records successful organization role changes in a metadata-only transactional audit and exposes a protected paged admin read. No live identities or audit API activation are present; fleet tests and V2 contract alignment remain pending.

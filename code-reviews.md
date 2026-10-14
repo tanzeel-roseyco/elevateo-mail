@@ -862,3 +862,5 @@ QA-817 distinct-owner race DB candidate `apps/server/test/qa817/role_owner_race_
 QA-817 role escalation DB candidate `apps/server/test/qa817/role_escalation_database_test.rb`: independent review NOT_RUN (0 LOC, density unmeasured); request <=200 LOC full-rubric packet and separate design review. Docker/lint NOT_RUN.
 
 QA-817 independent ADM-803 controller review: Theo `organization_grants_controller.rb` SHA-256 `584fcee91ff8f12a7f309917ff16f9f5ec901d2e49a480aa7683578a7e274198`, lines 1–200 full rubric (exact <=200 packet), 0 confirmed defects observed (0/KLOC static). HTTP test lines 1–150 and input test lines 1–29 were separate coverage-context packets, 379 unique physical LOC total in assignment; test defects/density not reviewed. Soren HTTP/DB and design NOT_RUN. See `docs/completion/felix-adm803-review.md`.
+
+SEC-802 audit SQL/table/read and companion database tests are new source and have not received bounded independent or design-tradeoff review. No defects/KLOC or runtime outcome is claimed for this audit addition; root schedules review and Soren fleet Docker execution on exact candidate.
