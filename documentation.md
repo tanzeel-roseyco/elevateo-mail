@@ -76,6 +76,8 @@ ATT898 aligns repository query binds with the declared ActiveRecord String attri
 
 ATT902 proposes a GET attachment byte action using the existing isolated private gateway, with no Storage service credential in Rails. Two short authenticated read snapshots bracket the network fetch and must agree on session claim and public attachment binding; the gateway independently checks current generation, clean tuple, size and SHA. The action remains inactive pending Cassian route/DTO integration, independent review and fleet proof. See `docs/completion/nadia-att902-inbound-content.md`.
 
+STRICT909 adds the same explicit `ReadAuthorization` keyword callable to ATT902 as the immutable old-controller repair, preserving its exact message recheck and content candidate. This removes the inferred zero-argument lambda in source; only Soren fleet Steep can confirm strict acceptance. See `docs/completion/nadia-strict909-att902-carry.md`.
+
 
 The first release is a company mailroom: named addresses, shared conversations, assignment, team status, per-user read state, composer, drafts, search, attachments and audit history. Individual mailbox permissions allow private addresses where required. Ten users do not imply ten paid email accounts or ten servers; people, addresses, mailboxes and provider identities are separate concepts.
 

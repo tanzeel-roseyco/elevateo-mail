@@ -717,3 +717,7 @@ Soren 211df receipt exposed one repository type error and two standalone service
 ## ATT902 inbound private content candidate (2026-10-14)
 
 Source authored and proposed to root for an independent <=280 unique LOC review packet, each read <=180; see `docs/completion/nadia-att902-inbound-content.md`. No independent review or fleet execution on this candidate; defect count and density are unassessed, not zero. Existing gateway source review and tests do not establish this controller's real-auth behavior.
+
+## STRICT909 ATT902 authorization carry (2026-10-14)
+
+The isolated `2418a72c` typed index authorization repair is carried into ATT902 without changing its content action. Incremental port packet <=169 unique versioned LOC, each read <=180; old immutable-parent repair packet <=216 LOC in `docs/completion/nadia-strict909-index.md`. No independent review or fleet run on this successor, so defects/density remain unassessed.

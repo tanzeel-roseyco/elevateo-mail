@@ -24,6 +24,8 @@ ATT898 narrows integer repository binds to text for the declared ActiveRecord St
 
 ATT902 authors an inbound attachment content action with two current authenticated read snapshots around the existing private gateway client, a bounded byte release service and denial regressions. Cassian still owns route/DTO and UI injection; source review and Soren fleet proof are required before activation. See `docs/completion/nadia-att902-inbound-content.md`.
 
+STRICT909 carries the isolated old-index typed authorization repair into the separate ATT902 candidate, preserving the private content action and inactive route. The same exact message is rechecked for each metadata read; fleet strict/unit proof is pending. See `docs/completion/nadia-strict909-att902-carry.md`.
+
 ADV115 response adds fake HTTP regressions for nil private-bucket body and rejected object status before body buffering; Soren fleet execution is pending. See `docs/completion/nadia-adv115-storage-regressions.md`.
 
 
