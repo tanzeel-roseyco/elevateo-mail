@@ -10,17 +10,21 @@ image=${OPS820_SERVER_IMAGE:?pinned server image required}
 [[ "$image" == sha256:* || "$image" == *@sha256:* ]] || exit 66
 [[ -f "$envfile" && -d "$root/apps/server/db/migrate" ]] || exit 66
 versions=()
-for suffix in 08 09 10 11; do
+for suffix in 08 09 10; do
   files=("$root"/apps/server/db/migrate/202610130000"$suffix"*.rb)
   [[ ${#files[@]} -eq 1 && -f ${files[0]} ]] || exit 66
   versions+=("202610130000$suffix")
 done
+files=("$root"/apps/server/db/migrate/20261015000011*.rb)
+[[ ${#files[@]} -eq 1 && -f ${files[0]} ]] || exit 66
+versions+=(20261015000011)
 for suffix in 12 13; do
   files=("$root"/apps/server/db/migrate/202610130000"$suffix"*.rb)
   if [[ -f ${files[0]} ]]; then versions+=("202610130000$suffix"); fi
 done
 files=("$root"/apps/server/db/migrate/20261015000008*.rb)
 if [[ -f ${files[0]} ]]; then versions+=(20261015000008); fi
+mapfile -t versions < <(printf '%s\n' "${versions[@]}" | sort -n)
 rails() {
   docker run --rm --network "${project}_private" --read-only --cap-drop ALL \
     --user 10001:10001 --memory 768m --pids-limit 256 --env-file "$scratch/runtime.env" \

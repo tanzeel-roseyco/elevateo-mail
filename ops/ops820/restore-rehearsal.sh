@@ -10,11 +10,14 @@ case "$mode" in base|full) ;; *) echo 'usage: restore-rehearsal.sh SNAPSHOT base
 if [[ "$mode" == full ]]; then
   # AIDEV-NOTE: no partial full gate when owner migrations and identity fixtures are absent.
   source_root=$(cd -- "$packet/../.." && pwd)
-  for suffix in 08 09 10 11; do
+  for suffix in 08 09 10; do
     compgen -G "$source_root/apps/server/db/migrate/202610130000$suffix*.rb" >/dev/null || {
       echo "full gate blocked: migration $suffix absent" >&2; exit 66;
     }
   done
+  compgen -G "$source_root/apps/server/db/migrate/20261015000011*.rb" >/dev/null || {
+    echo 'full gate blocked: inbound migration 20261015000011 absent' >&2; exit 66;
+  }
   runner=${OPS820_FULL_RUNNER:-}
   [[ -n "$runner" && "$runner" == "$source_root"/* && -f "$runner" && -x "$runner" ]] || {
     echo 'full gate blocked: reviewed application runner absent' >&2; exit 66;
