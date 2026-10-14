@@ -125,6 +125,25 @@ class ThreadDatabaseTest < SessionDatabaseTestCase
     assert_equal 0, detail.fetch("thread").fetch("message_count")
   end
 
+  def test_direct_message_permalink_is_scoped_and_does_not_walk_pages
+    target = fixture_message(body: "<script>plaintext only</script>")
+    other_thread = thread
+    assert_equal "<script>plaintext only</script>", direct_message(target).fetch("message").fetch("body_text")
+    [other_thread, SecureRandom.uuid].each do |wrong_thread|
+      assert_equal "not available", assert_raises(NotAvailable) {
+        direct_message(target, thread_id: wrong_thread)
+      }.message
+    end
+    private_box = mailbox(visibility: "private")
+    private_thread = thread(box: private_box)
+    private_message = fixture_message(box: private_box, thread_id: private_thread)
+    assert_equal "not available", assert_raises(NotAvailable) {
+      direct_message(private_message, thread_id: private_thread, box: private_box)
+    }.message
+    membership(present: false)
+    assert_equal "not available", assert_raises(NotAvailable) { direct_message(target) }.message
+  end
+
   def test_private_membership_revocation_and_snapshot_cut
     box = mailbox(visibility: "private")
     id = thread(box: box)
@@ -267,6 +286,11 @@ class ThreadDatabaseTest < SessionDatabaseTestCase
 
   def detail(thread_id: @thread, box: @box, query: {})
     snapshot { |reader| JSON.parse(reader.detail(thread_id: thread_id, query: query.merge("mailbox_id" => box))) }
+  end
+
+  def direct_message(message_id, thread_id: @thread, box: @box)
+    snapshot { |reader| JSON.parse(reader.direct_message(thread_id: thread_id, message_id: message_id,
+      query: { "mailbox_id" => box })) }
   end
 
   def walk

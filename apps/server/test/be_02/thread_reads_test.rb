@@ -60,6 +60,25 @@ class ThreadReadsTest < Minitest::Test
     end
   end
 
+  def test_direct_message_uses_one_scoped_lookup_and_plaintext_projection
+    expected = @examples.fetch("thread_hostile_plaintext").fetch("body")
+    message = expected.fetch("messages").first
+    row = message.merge("recipients" => message.fetch("to"))
+    connection = Connection.new([row])
+    result = JSON.parse(reader(connection).direct_message(thread_id: @thread, message_id: message.fetch("id"),
+      query: { "mailbox_id" => @mailbox }))
+    assert_equal message, result.fetch("message")
+    assert_equal [@identity.org_id, @mailbox, @thread, message.fetch("id")], connection.calls.first.last
+    assert_equal 1, connection.calls.length
+    assert_raises(Elevateo::ThreadReads::NotAvailable) do
+      reader(Connection.new([])).direct_message(thread_id: @thread, message_id: message.fetch("id"),
+        query: { "mailbox_id" => @mailbox })
+    end
+    assert_raises(Invalid) do
+      reader(Connection.new).direct_message(thread_id: @thread, message_id: "bad", query: { "mailbox_id" => @mailbox })
+    end
+  end
+
   def test_cursor_uses_last_included_timestamp_and_id
     row = summary_row.merge("last_message_at" => "2026-10-12T00:00:00.123456Z")
     first = JSON.parse(reader(Connection.new([{}], [row, row])).list(mailbox_id: @mailbox, query: { "limit" => "1" }))

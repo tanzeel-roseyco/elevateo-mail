@@ -18,6 +18,7 @@ module Elevateo
     LIST_SQL: String
     THREAD_SQL: String
     MESSAGES_SQL: String
+    DIRECT_MESSAGE_SQL: String
     @connection: _ThreadConnection
     @identity: _ThreadIdentity
     @session: ReadResponse::item
@@ -26,6 +27,7 @@ module Elevateo
                      session: ReadResponse::item, cursors: Cursors) -> void
     def list: (mailbox_id: String?, query: Hash[String, String]) -> String
     def detail: (thread_id: String?, query: Hash[String, String]) -> String
+    def direct_message: (thread_id: String?, message_id: String?, query: Hash[String, String]) -> String
     private
     def rows: (String, Array[String?]) -> Array[ReadResponse::item]
     def query_limit: (Hash[String, String], maximum: Integer, allowed: Array[String]) -> Integer

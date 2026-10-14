@@ -2,6 +2,7 @@ module V1
   class ThreadsController < ReadController
     def index: () -> void
     def show: () -> void
+    def message: () -> void
     private
     def path_id: (Symbol) -> String
     def reader: (Elevateo::_ThreadConnection, Elevateo::_ThreadIdentity,
