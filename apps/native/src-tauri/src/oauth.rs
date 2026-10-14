@@ -166,7 +166,9 @@ mod tests {
         let callback = format!("{CALLBACK}?code=one-time-code&state={state}&iss=https%3A%2F%2Fauth.mail.company.org");
         let material = login.consume_callback(&callback).unwrap();
         assert_eq!(material.code, "one-time-code");
-        assert!(!material.verifier.is_empty());
+        let expected = URL_SAFE_NO_PAD.encode(Sha256::digest(material.verifier.as_bytes()));
+        assert_eq!(authorization.query_pairs().find(|(key, _)| key == "code_challenge").unwrap().1, expected);
+        assert!(!material.nonce.is_empty());
         assert_eq!(login.consume_callback(&callback).unwrap_err(), OAuthError::NoPendingLogin);
     }
 
@@ -176,6 +178,15 @@ mod tests {
         login.begin("https://auth.mail.company.org/authorize", "https://auth.mail.company.org", "public-client").unwrap();
         assert_eq!(login.consume_callback(&format!("{CALLBACK}?code=x&state=wrong&iss=https%3A%2F%2Fauth.mail.company.org")).unwrap_err(), OAuthError::StateMismatch);
         assert_eq!(login.consume_callback(&format!("{CALLBACK}?code=x&state=wrong&iss=https%3A%2F%2Fauth.mail.company.org")).unwrap_err(), OAuthError::NoPendingLogin);
+    }
+
+    #[test]
+    fn wrong_issuer_burns_pending_login() {
+        let mut login = NativeOAuth::new();
+        let url = login.begin("https://auth.mail.company.org/authorize", "https://auth.mail.company.org", "public-client").unwrap();
+        let state = url.query_pairs().find(|(key, _)| key == "state").unwrap().1.into_owned();
+        assert_eq!(login.consume_callback(&format!("{CALLBACK}?code=x&state={state}&iss=https%3A%2F%2Fevil.org")).unwrap_err(), OAuthError::IssuerMismatch);
+        assert_eq!(login.consume_callback(&format!("{CALLBACK}?code=x&state={state}&iss=https%3A%2F%2Fauth.mail.company.org")).unwrap_err(), OAuthError::NoPendingLogin);
     }
 
     #[test]
