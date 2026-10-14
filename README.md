@@ -16,6 +16,8 @@ Shared company mailroom with one Rails domain authority and a React/TypeScript c
 
 ### INT-801 integrated source candidate (2026-10-14)
 
+Rowan `d9d428e` replaced the IF-embedded Mailpit profile CASE that blocked exact 4a0ba0b migration with explicit permitted profile/hash pairs and added a real-DB regression. It is merged; Soren has been asked for a fresh disposable migration and targeted worker/schema/HTTP gates. No corrected-source runtime PASS is claimed yet.
+
 Orion `8d98b42` source repair rejects bare reserved native origins as well as trailing-dot forms and is merged; focused fleet Rust/PowerShell checks and icon hashes are pending. This is source candidate only, not a native package or installed-app proof.
 
 PREF-822 browser preparation now adds an unbound typed gateway for current-actor GET/PUT display name with strict input, revision ceiling, CSRF proof and response context/version binding. The route remains absent from canonical V2/Rails; Theo isolated backend, fleet type/unit/SQL/HTTP and independent review are pending. The integration also narrows the existing V1 simulated-send cancel mailbox ID through its current UUID validator for strict Steep typing, without changing the frozen request schema.
