@@ -208,7 +208,8 @@ class Acceptance:
     def run(self) -> None:
         task = self.task
         uid, gid = acceptance_owner(task)
-        for path in [self.private, self.observer_config, self.observer_control, *self.outputs, *(path / "cases" for path in self.outputs)]:
+        for path in [self.private, self.observer_config, self.observer_control, *self.outputs,
+                     *(path / "cases" for path in self.outputs), *(path / "native-private" for path in self.outputs)]:
             path.mkdir(mode=0o700)
             info = path.lstat()
             if (path.resolve() != path or not stat.S_ISDIR(info.st_mode) or info.st_uid != uid
