@@ -2,6 +2,7 @@
 
 require "json"
 require "minitest/autorun"
+require_relative "../../apps/server/config/v2_route_registry"
 
 class ContractV2Test < Minitest::Test
   SOURCE = File.expand_path("openapi.json", __dir__)
@@ -37,5 +38,12 @@ class ContractV2Test < Minitest::Test
     operation = @contract.dig("paths", "/v2/worker/jobs/{job_id}", "get")
     assert_equal [{"workerPrincipal" => []}], operation.fetch("security")
     refute operation.fetch("security").any? { |scheme| scheme.key?("sessionCookie") }
+  end
+
+  def test_source_active_operations_match_the_registry_allowlist
+    active = @contract.fetch("paths").values.flat_map(&:values)
+      .select { |operation| operation.fetch("x-elevateo-status") == "active" }
+      .map { |operation| operation.fetch("operationId") }
+    assert_equal V2RouteRegistry::ACTIVE_OPERATIONS.sort, active.sort
   end
 end

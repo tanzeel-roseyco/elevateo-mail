@@ -70,7 +70,7 @@
     "/v2/organizations/{organization_id}/grants": {
       "get": {
         "operationId": "listOrganizationGrants",
-        "x-elevateo-status": "candidate",
+        "x-elevateo-status": "active",
         "parameters": [
           {
             "$ref": "#/components/parameters/OrganizationId"
@@ -113,7 +113,7 @@
     "/v2/organizations/{organization_id}/grants/{user_id}": {
       "put": {
         "operationId": "replaceOrganizationGrant",
-        "x-elevateo-status": "candidate",
+        "x-elevateo-status": "active",
         "parameters": [
           {
             "$ref": "#/components/parameters/OrganizationId"
@@ -257,7 +257,7 @@
     "/v2/organizations/{organization_id}/roster": {
       "get": {
         "operationId": "getOrganizationRoster",
-        "x-elevateo-status": "candidate",
+        "x-elevateo-status": "active",
         "parameters": [
           {
             "$ref": "#/components/parameters/OrganizationId"

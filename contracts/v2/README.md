@@ -19,3 +19,5 @@ The additive `getDirectMessage` operation uses `GET /v2/threads/{thread_id}/mess
 Canonical draft version `2.0.0-draft.4` adds the direct-message read to the earlier draft.3 organization and inert Outreach surface. Generated declarations must be regenerated from this exact draft.4 source in fleet Docker before adoption.
 
 The Rails registry owns the single frozen active-operation allowlist; `routes.rb` supplies only literal boolean readiness flags. The registry rejects non-boolean flags and any explicit attempt to register the disabled worker proposal. Adding a worker route later requires an intentional allowlist change with a reviewed distinct principal.
+
+`x-elevateo-status: active` means the isolated Rails source registers the operation; it does not mean fleet runtime acceptance or release approval. The canonical contract test requires its active operation IDs to equal the registry allowlist, so a future route/spec drift fails before deployment.
