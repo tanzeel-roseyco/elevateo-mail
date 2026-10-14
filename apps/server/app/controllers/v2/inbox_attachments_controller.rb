@@ -75,9 +75,7 @@ module V2
       response.headers["Content-Disposition"] = 'attachment; filename="attachment"'
       response.headers["Content-Length"] = bytes.bytesize.to_s
     rescue Elevateo::Attachments::Held
-      api_json({ "code" => "attachment_held", "message" => "Attachment is not ready",
-        "request_id" => request_id },
-        status: 423, limit: 4096)
+      raise Elevateo::CollaborationError.new("attachment_held")
     rescue Elevateo::Attachments::Invalid, Elevateo::ThreadReads::InvalidQuery
       raise Elevateo::CollaborationError.new("request_invalid")
     rescue Elevateo::Attachments::NotAvailable, Elevateo::ThreadReads::NotAvailable,

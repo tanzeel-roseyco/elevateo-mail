@@ -716,4 +716,4 @@ Soren 211df receipt exposed one repository type error and two standalone service
 
 ## ATT902 inbound private content candidate (2026-10-14)
 
-Source authored and proposed to root for an independent <=281 unique LOC review packet, each read <=180; see `docs/completion/nadia-att902-inbound-content.md`. No independent review or fleet execution on this candidate; defect count and density are unassessed, not zero. Existing gateway source review and tests do not establish this controller's real-auth behavior.
+Source authored and proposed to root for an independent <=279 unique LOC review packet, each read <=180; see `docs/completion/nadia-att902-inbound-content.md`. No independent review or fleet execution on this candidate; defect count and density are unassessed, not zero. Existing gateway source review and tests do not establish this controller's real-auth behavior.
