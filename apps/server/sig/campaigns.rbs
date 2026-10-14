@@ -33,7 +33,7 @@ module Elevateo
     class Repository
       def page: (kind: String, organization_id: String, ?campaign_id: String?, ?cursor: String?, ?limit: Integer) -> Hash[String, untyped]
       def detail: (kind: String, organization_id: String, id: String) -> Hash[String, untyped]
-      def replace: (Input, organization_id: String, expected_version: Integer, ?actor_id: String?, ?intent: Hash[String, untyped]?) -> Hash[String, untyped]
+      def replace: (Input, organization_id: String, expected_version: Integer, ?actor_id: String?, ?intent: Hash[String, untyped]?, ?preserve_consent: bool) -> Hash[String, untyped]
       def selection_for: (String) -> String
       def table_for: (String) -> String
       def project: (String, Hash[String, untyped]) -> Hash[String, untyped]

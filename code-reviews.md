@@ -686,3 +686,5 @@ OUT-804 continuation review request: assign bounded packets at most 200 LOC cove
 OUT-804 author inspection after `d0b7a9a`: fixed one replay-binding defect where changed suppression/current row state could make an exact retry appear mismatched, and one valid 100-row Unicode page budget defect. These are author-discovered repairs, not independent review. Independent reviewed LOC remains 0; independent defect density remains unmeasured pending root review packets.
 
 OUT-804 author design check found that overwriting current lead consent on address edit or withdrawal would erase earlier evidence. Migration 00009 now stores append-only consent events in the same transaction; this is an author repair, not an independent review. Independent defect density remains unmeasured until root's bounded reviewers inspect this exact source.
+
+OUT-804 author inspection corrected same-address lead edits: they had revoked consent even when the address was unchanged, and the first no-op repair would have bypassed operation replay. The current code preserves consent and records the no-op operation result; independent reviewer coverage and defect density remain pending.

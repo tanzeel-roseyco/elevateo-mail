@@ -124,3 +124,5 @@ OUT-804 continuation source includes V2 outreach controllers over the inherited 
 OUT-804 follow-up candidate `8c9bd82` is source-only: stable request-intent retry fingerprint, 100-row Unicode response budget, private-mailbox RLS probe, and lead consent detail fields are present. Cassian integrated prior `d0b7a9a` into his isolated candidate; this follow-up still awaits integration and Soren Docker results.
 
 OUT-804 pending candidate adds append-only consent history in migration 00009, bound to the same idempotent tenant update transaction. Runtime roles cannot update/delete the history; real role/SQL evidence and Delivery policy review remain pending.
+
+OUT-804 author correction: same-address lead update preserves consent and consumes the operation key, while a changed address resets consent and appends history. Fleet execution remains pending.

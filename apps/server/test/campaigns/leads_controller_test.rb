@@ -24,7 +24,8 @@ class OutreachLeadsControllerTest < Minitest::Test
   def dispatch(action, input)
     path = "https://app.test/v2/outreach/campaigns/#{THREAD}/leads"
     path += "/#{NOTE}/consent" if action == "record_consent"
-    env = Rack::MockRequest.env_for(path, method: "POST", input: JSON.generate(input))
+    path += "/#{NOTE}" if action == "update"
+    env = Rack::MockRequest.env_for(path, method: action == "update" ? "PUT" : "POST", input: JSON.generate(input))
     env.merge!("CONTENT_TYPE" => "application/json", "HTTP_ORIGIN" => "https://app.test",
       "HTTP_COOKIE" => "elevateo_session=#{@cookie}", "HTTP_X_SESSION_CONTEXT" => AuthFixtures::CONTEXT,
       "HTTP_X_AUTHORIZATION_VERSION" => @service.presentation.version(metadata),
@@ -82,10 +83,23 @@ class OutreachLeadsControllerTest < Minitest::Test
     assert(@connection.sql.any? { |sql| sql.include?("INSERT INTO app.campaign_mutations") })
   end
 
+  def test_same_address_edit_preserves_recorded_consent
+    granted = lead_row.merge("consent_status" => "granted", "consent_recorded_at" => Time.utc(2026, 10, 14, 10),
+      "consent_source" => "confirmed opt-in", "consent_recorded_by" => AuthFixtures::USER)
+    @connection.rows = [[granted], [], [], [granted.merge("version" => 2)], [granted.merge("version" => 2)], []]
+    result = dispatch("update", { "operation_id" => TARGET, "expected_version" => 1,
+      "email" => "A@Example.invalid" })
+    assert_equal 200, result[0]
+    assert_equal "granted", result[2].fetch("consent_status")
+    assert(@connection.sql.any? { |sql| sql.include?("SET version=version+1") })
+    refute(@connection.sql.any? { |sql| sql.include?("INSERT INTO app.campaign_consent_events") })
+  end
+
   def test_consent_attestation_requires_explicit_true_before_sql
     result = dispatch("record_consent", { "operation_id" => TARGET, "expected_version" => 1,
       "source" => "confirmed opt-in", "observed_at" => "2026-10-14T10:00:00Z", "attested" => false })
     assert_equal [400, "request_invalid"], [result[0], result[2].fetch("code")]
-    refute(@connection.sql.any? { |sql| sql.include?("UPDATE app.campaign_leads") })
+    assert(@connection.sql.any? { |sql| sql.include?("SET version=version+1") })
+    refute(@connection.sql.any? { |sql| sql.include?("INSERT INTO app.campaign_consent_events") })
   end
 end

@@ -50,15 +50,19 @@ module V2
           repository = campaign_repository(connection)
           old = repository.detail(kind: "lead", organization_id: identity.org_id, id: id)
           raise Elevateo::CollaborationError.new("not_available") unless old.fetch("campaign_id") == campaign
-          # AIDEV-NOTE: An address edit invalidates prior consent; local suppression is never cleared by replace.
+          Elevateo::WriteInput.uuid(input.fetch("operation_id"))
+          expected = Elevateo::WriteInput.integer(input.fetch("expected_version"), minimum: 1, maximum: 2_147_483_646)
+          normalized_email = Elevateo::Campaigns::Input.email(input.fetch("email"))
+          unchanged = normalized_email == old.fetch("email")
+          # AIDEV-NOTE: Same-address edits retain consent; both paths consume the operation key for exact replay.
           payload = Elevateo::Campaigns::Input.new(kind: "lead", value: {
             "id" => id, "operation_id" => input.fetch("operation_id"), "campaign_id" => campaign,
-            "email" => input.fetch("email"), "consent_status" => "unknown", "consent_recorded_at" => nil,
-            "consent_source" => nil, "suppressed" => false
+            "email" => normalized_email, "consent_status" => unchanged ? old.fetch("consent_status") : "unknown",
+            "consent_recorded_at" => unchanged ? old.fetch("consent_recorded_at") : nil,
+            "consent_source" => unchanged ? old.fetch("consent_source") : nil, "suppressed" => false
           })
-          result = repository.replace(payload, organization_id: identity.org_id,
-            expected_version: Elevateo::WriteInput.integer(input.fetch("expected_version"), minimum: 1, maximum: 2_147_483_646),
-            actor_id: identity.user_id, intent: input.merge("campaign_id" => campaign))
+          result = repository.replace(payload, organization_id: identity.org_id, expected_version: expected,
+            actor_id: identity.user_id, intent: input.merge("campaign_id" => campaign), preserve_consent: unchanged)
           write_result(public_item("lead", result))
         end
       end
