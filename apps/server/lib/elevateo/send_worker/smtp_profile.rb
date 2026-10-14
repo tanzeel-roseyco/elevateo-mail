@@ -28,7 +28,7 @@ module Elevateo
           host == "mailpit" && port == 1025 && tls_mode == "none" && credential_ref.nil? &&
             verified_sender.end_with?(".invalid")
         else
-          mode == "remote_held" && host.is_a?(String) && HOST.match?(host) &&
+          mode == "remote_held" && host.is_a?(String) && HOST.match?(host) && /[A-Za-z]/.match?(host) &&
             host.split(".", -1).length >= 2 && host.split(".", -1).all? { |label| SendAPI::Address::LABEL.match?(label) } &&
             [465, 587].include?(port) &&
             ((port == 465 && tls_mode == "implicit") || (port == 587 && tls_mode == "starttls_required")) &&

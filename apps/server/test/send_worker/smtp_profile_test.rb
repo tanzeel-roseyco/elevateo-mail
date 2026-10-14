@@ -29,5 +29,9 @@ class SendWorkerSmtpProfileTest < Minitest::Test
     assert_raises(ArgumentError) do
       Elevateo::SendWorker::SmtpProfile.local_mailpit(verified_sender: "sender@example.com")
     end
+    assert_raises(ArgumentError) do
+      Elevateo::SendWorker::SmtpProfile.remote_held(host: "127.0.0.1", port: 465,
+        verified_sender: "sender@example.com", tls_mode: "implicit", credential_ref: "secret://mailbox_1")
+    end
   end
 end
