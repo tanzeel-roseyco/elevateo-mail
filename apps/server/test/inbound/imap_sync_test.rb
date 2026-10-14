@@ -61,7 +61,7 @@ class ImapSyncTest < Minitest::Test
   end
 
   def setup = (@store = Store.new)
-  def run(session)
+  def sync_session(session)
     Elevateo::Inbound::ImapSync.new(store: @store, transport: Transport.new(session)).run(
       account_id: ACCOUNT, credential_version: 1)
   end
@@ -69,29 +69,29 @@ class ImapSyncTest < Minitest::Test
   def test_crash_before_commit_retries_without_losing_message
     event = { uid: 1, raw_mime: MIME }
     @store.fail_once = true
-    assert_raises(RuntimeError) { run(Session.new(validity: 42, events: [event])) }
+    assert_raises(RuntimeError) { sync_session(Session.new(validity: 42, events: [event])) }
     assert_empty @store.records
-    assert_equal 1, run(Session.new(validity: 42, events: [event]))
+    assert_equal 1, sync_session(Session.new(validity: 42, events: [event]))
     assert_equal 1, @store.records.length
-    assert_equal 1, run(Session.new(validity: 42, events: [event]))
+    assert_equal 1, sync_session(Session.new(validity: 42, events: [event]))
     assert_equal 1, @store.records.length
   end
 
   def test_uidvalidity_reset_and_unverified_tls
-    assert_equal 1, run(Session.new(validity: 43, events: [{ uid: 1, raw_mime: MIME }]))
+    assert_equal 1, sync_session(Session.new(validity: 43, events: [{ uid: 1, raw_mime: MIME }]))
     assert_equal 43, @store.validity
     denied = Session.new(validity: 43, events: [], verified: false)
-    assert_equal "tls_unverified", assert_raises(Elevateo::Inbound::Rejected) { run(denied) }.code
+    assert_equal "tls_unverified", assert_raises(Elevateo::Inbound::Rejected) { sync_session(denied) }.code
     assert denied.closed
   end
 
   def test_out_of_order_or_oversized_event_cannot_advance_cursor
     assert_equal "invalid_imap_batch", assert_raises(Elevateo::Inbound::Rejected) {
-      run(Session.new(validity: 42, events: [{ uid: 2, raw_mime: MIME }, { uid: 1, raw_mime: MIME }]))
+      sync_session(Session.new(validity: 42, events: [{ uid: 2, raw_mime: MIME }, { uid: 1, raw_mime: MIME }]))
     }.code
     assert_equal 2, @store.last_uid
     assert_equal "invalid_imap_batch", assert_raises(Elevateo::Inbound::Rejected) {
-      run(Session.new(validity: 42, events: [{ uid: 3, raw_mime: "x" * (1_048_577) }]))
+      sync_session(Session.new(validity: 42, events: [{ uid: 3, raw_mime: "x" * (1_048_577) }]))
     }.code
     assert_equal 2, @store.last_uid
   end
