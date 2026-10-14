@@ -46,8 +46,8 @@ export async function openThread(page: Page): Promise<void> {
   await expect(page.locator('pre').filter({ hasText: seed.data.marker }).first()).toBeVisible();
 }
 export async function screenshot(page: Page, id: string): Promise<string> {
-  // AIDEV-NOTE: Callers prove content readiness first; authentication forms are never captured.
+  // AIDEV-NOTE: Callers prove data readiness; finish CSS transitions so captures show settled theme colors.
   const config = loadAcceptanceConfig();
-  const bytes = await page.screenshot({ fullPage: false });
+  const bytes = await page.screenshot({ fullPage: false, animations: 'disabled' });
   return persistScreenshot(config.outputDir, id, bytes, config.limits.artifactBytes);
 }

@@ -197,3 +197,9 @@ test('invitation source registration publishes coordinates only and rejects beyo
   assert.equal(frameworkDiagnostic(stackAt(invitation, 1), 'synthetic-private').source?.file, 'auth-invite.e2e.ts');
   assert.equal(frameworkDiagnostic(stackAt(invitation, 1000), 'synthetic-private').source, null);
 });
+
+test('settled reader source accepts its final line and rejects coordinates past the file', () => {
+  const reader = fileURLToPath(new URL('../../playwright/read.e2e.ts', import.meta.url));
+  assert.equal(frameworkDiagnostic(stackAt(reader, 86), 'synthetic-private').source?.line, 86);
+  assert.equal(frameworkDiagnostic(stackAt(reader, 87), 'synthetic-private').source, null);
+});

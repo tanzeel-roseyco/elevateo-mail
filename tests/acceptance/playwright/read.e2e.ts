@@ -48,6 +48,9 @@ scenario('SCN-GUI-006-P', 'real-reader-search-history-four-visual-partitions', a
         await expect(page.locator('pre').filter({ hasText: seed.data.marker }).first()).toBeVisible();
         await page.reload();
         await expect(page.locator('pre').filter({ hasText: seed.data.marker }).first()).toBeVisible();
+        // AIDEV-NOTE: Reader text can arrive before its independent collaboration requests settle.
+        await expect(page.getByRole('region', { name: 'Assignment', exact: true }).getByText('Unassigned', { exact: true })).toBeVisible();
+        await expect(page.getByRole('region', { name: 'Internal notes', exact: true }).getByText(`${seed.data.marker} known note primary`, { exact: true })).toBeVisible();
         record.artifacts.push(await screenshot(page, `SCN-GUI-006-P-${viewport.width}-${colorScheme}`));
         await page.goto('/#/search');
         const search = page.getByRole('search', { name: 'Search conversations', exact: true });
@@ -64,6 +67,9 @@ scenario('SCN-GUI-006-P', 'real-reader-search-history-four-visual-partitions', a
         await page.goForward();
         await expect(search.getByLabel('Search mail', { exact: true })).toHaveValue(seed.data.marker);
         await expect(search.getByLabel('Search scope', { exact: true })).toHaveValue(seed.mailboxes.primary);
+        // AIDEV-NOTE: Restored URL controls precede the new search response; require the actual result again.
+        await expect(page.getByRole('region', { name: 'Search results' }).locator(`a[data-thread][href$="/threads/${seed.data.thread_primary}"]`)).toBeVisible();
+        await expect(page.getByRole('status', { name: 'Searching', exact: true })).toHaveCount(0);
         record.artifacts.push(await screenshot(page, `SCN-GUI-006-P-search-${viewport.width}-${colorScheme}`));
         record.evidence.push(`Observed ${viewport.width}x${viewport.height} ${colorScheme}: reader/search/history ${Date.now() - started}ms, ${requests - before} browser requests; no latency threshold claim`);
       }
