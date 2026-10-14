@@ -457,3 +457,5 @@ QA815 focused `a0a60b6` disposable PostgreSQL witness: 21 migrations passed, but
 ADV124 found a retained P2 in the attachment client's nominal HTTP fake. The successor uses a Net::HTTPResponse subclass and optional request/start forms while keeping the slow-stream path in process; production transport remains unchanged. Bounded rereview and fleet unit/Steep are pending.
 
 Elara's SEC802 candidate renames a PL/pgSQL local variable in both outreach read/write helpers from `current_role` (a PostgreSQL special value) to `business_role`, preserving eligible-role policy and adding explicit sales/owner role and auditor-denial assertions. This source addresses the shared `not_found` witness but needs Soren's focused fleet migration/test proof and independent bounded review; no production acceptance yet.
+
+Focused fleet strict/unit checks on 211df76 found Cassian attachment client typing errors and a slow-fake constructor error before its timeout assertion. A scoped client/RBS/test candidate addresses those exact diagnostics without weakening private byte/authorization bounds; Soren's successor fleet rerun and independent review are pending.

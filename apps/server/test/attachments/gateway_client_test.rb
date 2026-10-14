@@ -9,8 +9,8 @@ class AttachmentGatewayClientTest < Minitest::Test
 
   class SlowHttp < Net::HTTP
     attr_reader :chunks, :closed
-    def initialize
-      super("attachment-gateway", 4708)
+    def initialize(host, port)
+      super(host, port)
       @chunks = 0
       @closed = false
     end
@@ -107,7 +107,7 @@ class AttachmentGatewayClientTest < Minitest::Test
   end
 
   def test_slow_trickled_http_body_expires_and_closes_without_bytes
-    http = SlowHttp.new
+    http = SlowHttp.new('attachment-gateway', 4708)
     assert_kind_of Net::HTTP, http
     assert_kind_of Net::HTTPResponse, http.request(Net::HTTP::Post.new('/internal/attachments/read'))
     started = Process.clock_gettime(Process::CLOCK_MONOTONIC)

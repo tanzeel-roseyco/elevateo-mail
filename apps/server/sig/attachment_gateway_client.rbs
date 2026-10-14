@@ -14,6 +14,6 @@ module Elevateo
     def initialize: (config: Config, ?transport: transport?, ?transaction_open: (^() -> bool)?, ?http_factory: http_factory?) -> void
     def download: (fields: Hash[String, untyped], timeout: Numeric, ?now: Integer) -> String
     private
-    def exchange: (AttachmentGatewayRequest, Numeric) -> [Integer, Hash[String, String], String]
+    def exchange: (AttachmentGatewayRequest, Float) -> [Integer, Hash[String, String], String]
   end
 end

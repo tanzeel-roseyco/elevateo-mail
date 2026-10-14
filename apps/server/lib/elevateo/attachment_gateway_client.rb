@@ -29,10 +29,11 @@ module Elevateo
       # AIDEV-NOTE: Net::HTTP read_timeout resets per chunk; one outer deadline covers the entire private exchange.
       deadline = Process.clock_gettime(Process::CLOCK_MONOTONIC) + timeout
       status, headers, bytes = Timeout.timeout(timeout) do
-        if @transport
-          @transport.call(signed.body, signed.signature, timeout)
+        transport = @transport
+        if transport
+          transport.call(signed.body, signed.signature, timeout)
         else
-          exchange(signed, timeout)
+          exchange(signed, timeout.to_f)
         end
       end
       raise Unavailable if Process.clock_gettime(Process::CLOCK_MONOTONIC) > deadline
@@ -63,6 +64,8 @@ module Elevateo
       request["Accept"] = "application/octet-stream"
       request["X-Elevateo-Attachment-Signature"] = signed.signature
       request.body = signed.body
+      # @type var result: [Integer, Hash[String, String], String]?
+      result = nil
       http.start do |connection|
         connection.request(request) do |response|
           body = +"".b
@@ -70,9 +73,11 @@ module Elevateo
             raise Unavailable if body.bytesize + chunk.bytesize > MAX_BYTES
             body << chunk
           end
-          return [response.code.to_i, response.each_header.to_h, body]
+          result = [response.code.to_i, response.each_header.to_h, body]
         end
       end
+      raise Unavailable unless result
+      result
     end
   end
 end
