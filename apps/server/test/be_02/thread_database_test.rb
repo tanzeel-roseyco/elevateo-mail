@@ -13,7 +13,32 @@ end
 class ThreadDatabaseTest < SessionDatabaseTestCase
   Identity = Struct.new(:user_id, :org_id, keyword_init: true)
   NotAvailable = Elevateo::ThreadReads::NotAvailable
+  UnexpectedLaterDependency = Class.new(StandardError)
   PARTS = File.expand_path("../../db/be02_threads", __dir__)
+  # AIDEV-NOTE: These later-owned FKs are the only dependency exceptions to the B/C/D rollback probe.
+  # Names and definitions are pinned so a future schema addition requires an explicit fixture review.
+  LATER_THREAD_FOREIGN_KEYS = {
+    "app_send_private.intents" => {
+      "intents_organization_id_mailbox_id_draft_id_fkey" =>
+        "FOREIGN KEY (organization_id, mailbox_id, draft_id) REFERENCES app.drafts(organization_id, mailbox_id, id) ON DELETE RESTRICT"
+    },
+    "app.inbound_receipts" => {
+      "inbound_receipts_organization_id_mailbox_id_thread_id_fkey" =>
+        "FOREIGN KEY (organization_id, mailbox_id, thread_id) REFERENCES app.threads(organization_id, mailbox_id, id) DEFERRABLE INITIALLY DEFERRED",
+      "inbound_receipts_organization_id_mailbox_id_thread_id_mess_fkey" =>
+        "FOREIGN KEY (organization_id, mailbox_id, thread_id, message_id) REFERENCES app.messages(organization_id, mailbox_id, thread_id, id) DEFERRABLE INITIALLY DEFERRED"
+    },
+    "app.inbound_imap_receipts" => {
+      "inbound_imap_receipts_organization_id_mailbox_id_thread_id_fkey" =>
+        "FOREIGN KEY (organization_id, mailbox_id, thread_id) REFERENCES app.threads(organization_id, mailbox_id, id) DEFERRABLE INITIALLY DEFERRED",
+      "inbound_imap_receipts_organization_id_mailbox_id_thread_i_fkey1" =>
+        "FOREIGN KEY (organization_id, mailbox_id, thread_id, message_id) REFERENCES app.messages(organization_id, mailbox_id, thread_id, id) DEFERRABLE INITIALLY DEFERRED"
+    },
+    "app.inbox_attachments" => {
+      "inbox_attachments_organization_id_mailbox_id_thread_id_mes_fkey" =>
+        "FOREIGN KEY (organization_id, mailbox_id, thread_id, message_id) REFERENCES app.messages(organization_id, mailbox_id, thread_id, id) ON DELETE CASCADE"
+    }
+  }.freeze
 
   def setup
     super
@@ -215,10 +240,10 @@ class ThreadDatabaseTest < SessionDatabaseTestCase
     before_foreign_keys = later_thread_foreign_keys
     before_policies = later_thread_policies
     @admin.exec("BEGIN")
-    @admin.exec("SET LOCAL ROLE elevateo_owner")
     # AIDEV-NOTE: Detach only known later-feature FKs and read policy inside this rollback-only transaction.
     # Their definitions, tables and rows return with rollback; the original B/C/D scripts stay unchanged.
     detach_later_thread_foreign_keys
+    @admin.exec("SET LOCAL ROLE elevateo_owner")
     detach_later_thread_policies
     drafts = File.expand_path("../be02_drafts", PARTS)
     collaboration = File.expand_path("../be02_collaboration", PARTS)
@@ -242,13 +267,55 @@ class ThreadDatabaseTest < SessionDatabaseTestCase
     @admin.exec("ROLLBACK") if @admin.transaction_status != PG::PQTRANS_IDLE
   end
 
+  def test_later_foreign_key_guard_rejects_unknown_missing_and_redefined_constraints
+    name, definition = LATER_THREAD_FOREIGN_KEYS.fetch("app_send_private.intents").first
+    expected = [{ "child" => "app_send_private.intents", "constraint_name" => name, "definition" => definition }]
+    unknown = expected.first.merge("constraint_name" => "future_unreviewed_fkey")
+    assert_raises(UnexpectedLaterDependency) do
+      verify_later_thread_foreign_keys!(expected + [unknown], expected)
+    end
+    assert_raises(UnexpectedLaterDependency) do
+      verify_later_thread_foreign_keys!(expected.drop(1), expected)
+    end
+    redefined = expected.first.merge("definition" => "FOREIGN KEY (draft_id) REFERENCES app.drafts(id)")
+    assert_raises(UnexpectedLaterDependency) do
+      verify_later_thread_foreign_keys!([redefined] + expected.drop(1), expected)
+    end
+  end
+
   def detach_later_thread_foreign_keys
-    later_thread_foreign_keys.each { |row| @admin.exec(row.fetch("drop_sql")) }
+    actual = later_thread_foreign_keys
+    verify_later_thread_foreign_keys!(actual, expected_later_thread_foreign_keys)
+    actual.each do |row|
+      role = row.fetch("child") == "app_send_private.intents" ? "elevateo_send_owner" : "elevateo_owner"
+      @admin.exec("SET LOCAL ROLE #{role}")
+      @admin.exec(row.fetch("drop_sql"))
+    end
+  end
+
+  def verify_later_thread_foreign_keys!(actual, expected)
+    identity = ->(row) { row.values_at("child", "constraint_name", "definition") }
+    actual_rows = actual.map(&identity).sort
+    expected_rows = expected.map(&identity).sort
+    return if actual_rows == expected_rows
+
+    raise UnexpectedLaterDependency, "later thread foreign key catalog changed"
+  end
+
+  def expected_later_thread_foreign_keys
+    LATER_THREAD_FOREIGN_KEYS.flat_map do |table, constraints|
+      next [] unless @admin.exec_params("SELECT to_regclass($1::text)", [table]).getvalue(0, 0)
+
+      constraints.map do |name, definition|
+        { "child" => table, "constraint_name" => name, "definition" => definition }
+      end
+    end
   end
 
   def later_thread_foreign_keys
     @admin.exec(<<~SQL).to_a
-      SELECT format('ALTER TABLE %s DROP CONSTRAINT %I', c.conrelid::regclass, c.conname) AS drop_sql,
+      SELECT c.conrelid::regclass::text AS child, c.conname AS constraint_name,
+             format('ALTER TABLE %s DROP CONSTRAINT %I', c.conrelid::regclass, c.conname) AS drop_sql,
              pg_get_constraintdef(c.oid) AS definition
         FROM pg_constraint AS c
        WHERE c.contype = 'f'
