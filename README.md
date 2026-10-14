@@ -228,3 +228,5 @@ QA815 browser runner now requires actual umask077 and private output mode proof 
 QA815 exact `5bdf2ee6` browser private-output runner units passed 3/3 under fleet Docker with task cleanup. Actual browser mount and reporter `--list` smoke remain pending integrated source.
 
 QA815 final core-only `7f687d81` focused fleet result: ten pure Ruby suites 58/266 PASS, Steep one Cassian gateway Float type error. Full backend/HTTP/worker/real-auth remain held pending reviewed strict repair; exact cleanup passed.
+
+QA815 exact `b3aaa07e` focused Steep plus ten units PASS 58/266. Its full disposable backend passed 21 migrations, 74 Ruby suites 522/7089, and Steep; RuboCop lint failed 19 offenses including four fatal syntax errors in the gateway authority fixture. Exact cleanup passed; HTTP/worker/browser were not reached. See `docs/completion/soren.md`.

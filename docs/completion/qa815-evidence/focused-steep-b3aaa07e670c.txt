@@ -1,0 +1,127 @@
+source=b3aaa07e670c503df676b7b761cd9d3a008b0fbc
+image=sha256:7dc61d4b7e12f94764f95f4f1bfe8e3940049247e6d409898ce9d3ed2810f348
+started=2026-10-14T18:13:30Z
+# Type checking files:
+
+.......................................................................................................................................................................................
+
+No type error detected. 🧉
+steep_exit=0
+RUN test/attachments/gateway_client_test.rb
+Run options: --seed 53923
+
+# Running:
+
+....
+
+Finished in 0.052276s, 76.5164 runs/s, 344.3236 assertions/s.
+
+4 runs, 18 assertions, 0 failures, 0 errors, 0 skips
+test_exit=0 file=test/attachments/gateway_client_test.rb
+RUN test/attachments/service_test.rb
+Run options: --seed 64342
+
+# Running:
+
+...................
+
+Finished in 0.014369s, 1322.2870 runs/s, 5845.9006 assertions/s.
+
+19 runs, 84 assertions, 0 failures, 0 errors, 0 skips
+test_exit=0 file=test/attachments/service_test.rb
+RUN test/attachments/clamd_scanner_test.rb
+Run options: --seed 42383
+
+# Running:
+
+......
+
+Finished in 0.007332s, 818.3339 runs/s, 2318.6128 assertions/s.
+
+6 runs, 17 assertions, 0 failures, 0 errors, 0 skips
+test_exit=0 file=test/attachments/clamd_scanner_test.rb
+RUN test/inbound/imap_attachment_parser_test.rb
+Run options: --seed 11082
+
+# Running:
+
+...
+
+Finished in 0.048866s, 61.3927 runs/s, 266.0349 assertions/s.
+
+3 runs, 13 assertions, 0 failures, 0 errors, 0 skips
+test_exit=0 file=test/inbound/imap_attachment_parser_test.rb
+RUN test/inbound/imap_ingress_test.rb
+Run options: --seed 44941
+
+# Running:
+
+.....
+
+Finished in 0.048986s, 102.0701 runs/s, 469.5226 assertions/s.
+
+5 runs, 23 assertions, 0 failures, 0 errors, 0 skips
+test_exit=0 file=test/inbound/imap_ingress_test.rb
+RUN test/inbound/imap_sync_test.rb
+Run options: --seed 4642
+
+# Running:
+
+......
+
+Finished in 0.054901s, 109.2882 runs/s, 619.2996 assertions/s.
+
+6 runs, 34 assertions, 0 failures, 0 errors, 0 skips
+test_exit=0 file=test/inbound/imap_sync_test.rb
+RUN test/send_worker/drain_test.rb
+Run options: --seed 44888
+
+# Running:
+
+..
+
+Finished in 0.001095s, 1827.2631 runs/s, 11877.2101 assertions/s.
+
+2 runs, 13 assertions, 0 failures, 0 errors, 0 skips
+test_exit=0 file=test/send_worker/drain_test.rb
+RUN test/send_worker/smtp_transport_test.rb
+Run options: --seed 18814
+
+# Running:
+
+......
+
+Finished in 0.013850s, 433.2235 runs/s, 1660.6901 assertions/s.
+
+6 runs, 23 assertions, 0 failures, 0 errors, 0 skips
+test_exit=0 file=test/send_worker/smtp_transport_test.rb
+RUN test/attachments/controller_authorization_test.rb
+/workspace/apps/server/test/be_02/auth_test_helper.rb:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+Run options: --seed 55641
+
+# Running:
+
+...
+
+Finished in 0.001307s, 2294.6372 runs/s, 13767.8232 assertions/s.
+
+3 runs, 18 assertions, 0 failures, 0 errors, 0 skips
+test_exit=0 file=test/attachments/controller_authorization_test.rb
+RUN test/inbound/http_test.rb
+/workspace/apps/server/test/be_02/auth_test_helper.rb:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+Run options: --seed 50457
+
+# Running:
+
+....
+
+Finished in 0.291913s, 13.7027 runs/s, 78.7907 assertions/s.
+
+4 runs, 23 assertions, 0 failures, 0 errors, 0 skips
+test_exit=0 file=test/inbound/http_test.rb
+run_exit=0
+archive_absent=yes
+remaining_task_containers=0
+finished=2026-10-14T18:13:47Z

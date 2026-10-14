@@ -734,3 +734,5 @@ QA815 acceptance umask patch and three authored cases have been self-inspected f
 QA815 `5bdf2ee6` three-case fleet unit PASS is runtime test evidence, not independent review of acceptance runner source. Independent reviewed LOC stays 0 and source defect density remains unclaimed.
 
 QA815 `7f687d81` one Steep failure and 58/266 focused Ruby passes are execution findings, not independent bounded source review. Cassian owns the gateway type repair; additional QA815 reviewed LOC remains 0 and source defect density unclaimed.
+
+QA815 `b3aaa07e` exact full backend lint found four fatal syntax offenses in one gateway fixture and 15 warnings across named files; these are executed tool findings, not QA815 independent source review. Additional independently reviewed LOC remains 0, and defect density is unclaimed pending owner review. The initially unscoped diagnostic is excluded from the 19-offense gate count.
