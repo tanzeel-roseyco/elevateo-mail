@@ -62,7 +62,7 @@ function Review({ mailboxId, draftId }: { mailboxId: string; draftId: string }) 
     pending.current = true; setBusy(true); setMessage(null)
     store.write(owner, { ...binding, phase: 'pending' }); setAttempt({ ...binding, phase: 'pending' })
     const outcome = await request((ctx, signal) => gateway.approveDraftSend(ctx, proof, draftId, binding.input, signal))
-    if (outcome.kind === 'stale') { store.update(owner, (current) => ({ ...current, phase: 'uncertain' })); return }
+    if (outcome.kind === 'stale') { store.update(owner, (current) => current.phase === 'approved' ? current : { ...current, phase: 'uncertain' }); return }
     pending.current = false; setBusy(false)
     if (outcome.kind === 'failed') {
       if ((outcome.error instanceof GatewayError && outcome.error.kind === 'transport') || isUncertainWriteOutcome(outcome.error)) {
