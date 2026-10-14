@@ -1,3 +1,5 @@
+ATT gateway ACL lint source repair (2026-10-14): only the two ambiguous-block migration test assertions were parenthesized; ACL role predicates and up/down/up checks are unchanged. Soren fleet focused RuboCop remains NOT_RUN for this candidate; other b3aaa07e lint offenses are separately owned.
+
 OPS820 source intake (2026-10-14): Leonie f8b07b2 administrative private-gateway schema bootstrap and pre/post role checks are imported. Sabine 00018 consumer repair and Soren fleet SQL/process separation remain pending; public bytes inactive.
 
 

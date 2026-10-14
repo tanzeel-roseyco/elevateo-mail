@@ -14,6 +14,8 @@ Shared company mailroom with one Rails domain authority and a React/TypeScript c
 
 ## Current state
 
+**ATT gateway ACL lint repair:** Two migration-test assertions now parenthesize their existing filtered ACL values, addressing Soren’s exact ambiguous-block lint diagnostics without changing the up/down/up role proof. Fleet focused lint and independent review are pending.
+
 **SMTP888 source candidate:** The pinned net-smtp 0.5.2 implements the local Mailpit TLS toggles, but its bundled RBS omits them. A narrow local declaration and preconnect factory regression are added; Soren fleet Steep/unit execution and independent review are pending. Remote SMTP remains held.
 
 **OPS820 bootstrap source intake:** Leonie `f8b07b2` now precreates the private gateway schema as an administrative step and checks its owner/ACL around migration; Sabine 00018 must consume that schema. Fleet database/role proof remains pending; no gateway byte route is enabled.
