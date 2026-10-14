@@ -178,3 +178,5 @@ Cassian manifest reconciliation: contract-lock now seals actual generated client
 Felix added isolated regression cases for exact request origin/media, closed plaintext JSON and byte caps, worker control file fail-closed behavior, and simulated receipt evidence binding. These source cases have not run in Docker; tenant/database races and hot-path budgets require Soren's fleet execution. See `docs/completion/felix.md`.
 
 QA-817 continuation adds candidate real-PostgreSQL tenant/private mailbox regressions using the actual API role and protected write guard. Fleet Docker execution and integrated SEC-802/SEND-809/native seams remain pending; see `docs/completion/felix.md`.
+
+QA-817 also adds a real-controller (canned SQL) origin/CSRF and forbidden-field regression candidate; Soren Docker execution remains pending.
