@@ -1,6 +1,6 @@
 module Net
   class IMAP
-    def initialize: (String, port: Integer, ssl: Hash[Symbol, Integer]) -> void
+    def initialize: (String, port: Integer, ssl: Hash[Symbol, Integer | String | bool]) -> void
     def login: (String, String) -> untyped
     def select: (String) -> untyped
     def responses: () -> Hash[String, Array[untyped]]
@@ -71,13 +71,15 @@ module Elevateo
     end
 
     class TlsImapTransport
+      MAX_DISCOVERED_UIDS: Integer
       @host: String
       @port: Integer
       @mailbox: String
+      @ca_file: String?
       @resolver: _ImapCredentialResolver
       @factory: _ImapClientFactory
       def initialize: (host: String, credential_resolver: _ImapCredentialResolver,
-        ?port: Integer, ?mailbox: String, ?client_factory: _ImapClientFactory) -> void
+        ?port: Integer, ?mailbox: String, ?ca_file: String?, ?client_factory: _ImapClientFactory) -> void
       def open: (credential_ref: String) -> Session
       class Session
         @client: Net::IMAP
@@ -93,7 +95,7 @@ module Elevateo
       def call: (String) -> [String, String]
     end
     interface _ImapClientFactory
-      def new: (String, port: Integer, ssl: Hash[Symbol, Integer]) -> Net::IMAP
+      def new: (String, port: Integer, ssl: Hash[Symbol, Integer | String | bool]) -> Net::IMAP
     end
   end
 end

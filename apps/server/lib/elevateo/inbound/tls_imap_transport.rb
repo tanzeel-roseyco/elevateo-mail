@@ -8,6 +8,8 @@ module Elevateo
   module Inbound
     # AIDEV-NOTE: Only a server-side resolver sees synthetic credentials; every connection requires verified TLS.
     class TlsImapTransport
+      MAX_DISCOVERED_UIDS = 10_000
+
       class Session
         def initialize(client)
           @client = client
@@ -28,10 +30,14 @@ module Elevateo
             limit.is_a?(Integer) && limit.between?(1, 50)
 
           ids = @client.uid_search(["UID", "#{cursor + 1}:*"])
-          raise Rejected, "invalid_imap_batch" unless ids.is_a?(Array) && ids.length <= limit &&
+          raise Rejected, "invalid_imap_batch" unless ids.is_a?(Array) && ids.length <= MAX_DISCOVERED_UIDS &&
             ids.all? { |id| id.is_a?(Integer) && id.positive? }
 
-          ids.select { |id| id > cursor }.sort.map do |uid|
+          remaining = ids.select { |id| id > cursor }.sort
+          raise Rejected, "invalid_imap_batch" unless remaining.uniq.length == remaining.length
+
+          # AIDEV-NOTE: Fetch the smallest pending UIDs first; committing only that prefix preserves the next scan.
+          remaining.first(limit).map do |uid|
             rows = @client.uid_fetch(uid, ["BODY.PEEK[]<0.#{FakeIngress::MAX_RAW + 1}>"])
             raise Rejected, "invalid_imap_batch" unless rows.is_a?(Array) && rows.length == 1
 
@@ -49,12 +55,13 @@ module Elevateo
         end
       end
 
-      def initialize(host:, credential_resolver:, port: 993, mailbox: "INBOX", client_factory: Net::IMAP)
+      def initialize(host:, credential_resolver:, port: 993, mailbox: "INBOX", ca_file: nil, client_factory: Net::IMAP)
         raise Rejected, "invalid_imap_host" unless host.is_a?(String) &&
           /\A[a-z0-9][a-z0-9.-]{0,252}\z/i.match?(host) &&
-          port.is_a?(Integer) && port.between?(1, 65_535) && mailbox == "INBOX"
+          port.is_a?(Integer) && port.between?(1, 65_535) && mailbox == "INBOX" &&
+          (ca_file.nil? || (ca_file.is_a?(String) && ca_file.start_with?("/") && !ca_file.include?("\0")))
 
-        @host, @port, @mailbox = host, port, mailbox
+        @host, @port, @mailbox, @ca_file = host, port, mailbox, ca_file
         @resolver, @factory = credential_resolver, client_factory
       end
 
@@ -66,7 +73,9 @@ module Elevateo
         raise Rejected, "account_unavailable" unless credentials.is_a?(Array) && credentials.length == 2 &&
           credentials.all? { |value| value.is_a?(String) && !value.empty? }
 
-        client = @factory.new(@host, port: @port, ssl: { verify_mode: OpenSSL::SSL::VERIFY_PEER })
+        ssl_options = { verify_mode: OpenSSL::SSL::VERIFY_PEER, verify_hostname: true }
+        ssl_options[:ca_file] = @ca_file if @ca_file
+        client = @factory.new(@host, port: @port, ssl: ssl_options)
         client.login(*credentials)
         client.select(@mailbox)
         Session.new(client)
