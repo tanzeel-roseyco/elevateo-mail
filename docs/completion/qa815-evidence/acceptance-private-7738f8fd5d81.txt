@@ -1,0 +1,25 @@
+source=7738f8fd5d81b3da0a4c8eaed2c7e9bf6a5971d4
+image=sha256:06a9939e57531807f8d5fd76ce44b53165ffb7d7501d87ab10e285c20b1e971f
+started=2026-10-14T18:21:47Z
+..F...
+======================================================================
+FAIL: test_real_exclusive_private_file_creation (__main__.PrivateOutputTest.test_real_exclusive_private_file_creation)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/ops/tests/be02/test_acceptance_private_output.py", line 66, in test_real_exclusive_private_file_creation
+    self.assertEqual(result.stdout.strip(), "0077 700 700 600")
+AssertionError: '0077 755 700 600' != '0077 700 700 600'
+- 0077 755 700 600
+?      ----
++ 0077 700 700 600
+?         ++++
+
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.199s
+
+FAILED (failures=1)
+run_exit=1
+archive_absent=yes
+remaining_task_containers=0
+finished=2026-10-14T18:21:48Z

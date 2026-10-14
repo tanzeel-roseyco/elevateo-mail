@@ -242,3 +242,5 @@ QA815 final core-only strict receipt `docs/completion/qa815-evidence/focused-ste
 QA815 `b3aaa07e` focused PASS receipt `docs/completion/qa815-evidence/focused-steep-b3aaa07e670c.txt`; full backend migrations/Ruby/Steep PASS but lint FAIL receipt `backend-b3aaa07e670c/` and compact path/line diagnostic `rubocop-b3aaa07e670c.txt`. The first unscoped lint diagnostic is retained compressed separately; see `docs/completion/soren.md`.
 
 QA815 ADV144 browser private-output proof P2 repair and six-case regression source are in `ops/tests/be02/acceptance_runtime.py` and `test_acceptance_private_output.py`; new fleet execution pending. Prior three-case receipt is predecessor only.
+
+QA815 first `7738f8fd` browser proof test receipt `docs/completion/qa815-evidence/acceptance-private-7738f8fd5d81.txt` records one 0755 test-fixture failure and cleanup; corrected fixture rerun pending.

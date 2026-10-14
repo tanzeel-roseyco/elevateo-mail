@@ -60,7 +60,8 @@ class PrivateOutputTest(unittest.TestCase):
     def test_real_exclusive_private_file_creation(self) -> None:
         with tempfile.TemporaryDirectory() as parent:
             root = Path(parent) / "output"
-            (root / "native-private").mkdir(parents=True, mode=0o700)
+            root.mkdir(mode=0o700)
+            (root / "native-private").mkdir(mode=0o700)
             result = self.run_real_probe(root)
             self.assertEqual(result.returncode, 0, result.stderr)
             self.assertEqual(result.stdout.strip(), "0077 700 700 600")
@@ -70,7 +71,8 @@ class PrivateOutputTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as parent:
             root = Path(parent) / "output"
             private = root / "native-private"
-            private.mkdir(parents=True, mode=0o700)
+            root.mkdir(mode=0o700)
+            private.mkdir(mode=0o700)
             target = Path(parent) / "existing-target"
             target.write_text("preserve")
             proof = private / ".qa815-umask-proof"
@@ -84,7 +86,8 @@ class PrivateOutputTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as parent:
             root = Path(parent) / "output"
             private = root / "native-private"
-            private.mkdir(parents=True, mode=0o700)
+            root.mkdir(mode=0o700)
+            private.mkdir(mode=0o700)
             target = Path(parent) / "not-created"
             proof = private / ".qa815-umask-proof"
             proof.symlink_to(target)
