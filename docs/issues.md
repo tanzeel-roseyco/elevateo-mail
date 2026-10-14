@@ -4,12 +4,12 @@ Status: IN PROGRESS; unified source checkpoint is untested.
 
 | Owner | Responsibility | State |
 | --- | --- | --- |
-| Cassian OFF-401 / INT-401 | Preserve histories and staged/unstaged layers; integrate canonical source; provenance and policy | Overlay authored; archive capture in progress |
-| Soren | fleet-02 mutation lease, container checks, isolated live/test Supabase | Root coordinates remote CLI transfer |
-| Rowan | Backend correctness and migration repair | R3 cannot create app_drafts_private; unresolved |
-| Mira | Frontend integration and actual visual QA | Requires unified baseline |
-| Elara | Acceptance tests and truthful evidence | Requires fleet scheduling |
-| Nadia | REA runtime/deliverability research | Independent preparation |
+| Cassian OFF-401 / [INT-401](../.planning/wave-20261014/INT-401.md) | Preserve histories and staged/unstaged layers; integrate canonical source; provenance and policy | Baseline b0d73327 committed; archives captured |
+| Soren / [OPS-402](../.planning/wave-20261014/OPS-402.md) | fleet-02 mutation lease, container checks, isolated live/test Supabase | Root coordinates remote CLI transfer |
+| Rowan / [BE-403](../.planning/wave-20261014/BE-403.md) | Backend correctness and migration repair | R3 cannot create app_drafts_private; unresolved |
+| Mira / [FE-405](../.planning/wave-20261014/FE-405.md) | Frontend integration and actual visual QA | Requires unified baseline |
+| Elara / [QA-404](../.planning/wave-20261014/QA-404.md) | Acceptance tests and truthful evidence | Requires fleet scheduling |
+| Nadia / [RES-406](../.planning/wave-20261014/RES-406.md) | REA runtime/deliverability research | Independent preparation |
 
 No application tests, builds or lint checks have run for INT-401. Root approves integration; Ada ADV-714 reviews design/infrastructure and Linus ADV-729 reviews provenance. Detailed assignments live under .planning/wave-20261014.
 
@@ -26,3 +26,5 @@ No application tests, builds or lint checks have run for INT-401. Root approves 
 - Older prototypes remain in preserved histories and ignored source snapshots rather than blanket overlays.
 
 Evidence: docs/completion/int401-overlay-manifest.json; ignored .local-audit/INT-401 manifests, binary patches and source snapshots; refs/preserved/int401/*. Snapshot capture and archive verification are separate from runtime acceptance.
+
+Archive capture completed for 19 Git checkouts (18 available HEADs) and 12 source exports without Git metadata. See int401-preservation-manifest.json for original revisions and separate patch hashes. Broken BE01 Repair contains only .git and no working source; preserve its error, do not repair. Original sources/runtime data remain untouched. Export results-* directories are omitted as runtime evidence, retained in originals. Archive helpers encountered Windows long-path limits on runtime exports; excluded runtime directories and used extended paths for source capture, then completed successfully.

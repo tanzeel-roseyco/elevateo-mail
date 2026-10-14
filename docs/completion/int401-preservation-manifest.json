@@ -1,0 +1,426 @@
+{
+  "status": "IN PROGRESS; source preserved, runtime acceptance unverified",
+  "baseline_commit": "b0d73327ed8f9c6dc033d65102f8107d1ecc9e33",
+  "checkouts": [
+    {
+      "path": "C:\\Users\\Tanzeel\\Code and projects\\Elevateo Mail",
+      "slug": "elevateo-mail",
+      "head": "e4833a63d7ae83d94c35bfe35b6c4e0edb44cc31",
+      "errors": [],
+      "source_files": 106,
+      "untracked_files": 0,
+      "patches": {
+        "staged": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "unstaged": {
+          "bytes": 37580,
+          "sha256": "2c96396480504ea3692d24ec2592bcd0ca5a90366199f6de1c75ec4dfa117943"
+        }
+      }
+    },
+    {
+      "path": "C:\\Users\\Tanzeel\\Code and projects\\Elevateo Mail - Backend",
+      "slug": "elevateo-mail-backend",
+      "head": "2305895322873187cec6520ed1a5f103531c4f19",
+      "errors": [],
+      "source_files": 168,
+      "untracked_files": 0,
+      "patches": {
+        "staged": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "unstaged": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    },
+    {
+      "path": "C:\\Users\\Tanzeel\\Code and projects\\Elevateo Mail - Backend Performance",
+      "slug": "elevateo-mail-backend-performance",
+      "head": "5785eba47f3709debb2815c8d86608f7e62d02f3",
+      "errors": [],
+      "source_files": 2978,
+      "untracked_files": 20,
+      "patches": {
+        "staged": {
+          "bytes": 244761,
+          "sha256": "38baa6d084da2173c69b60b29c4749bd323a9a2cf6a5d9c390f9eaa9e53b482f"
+        },
+        "unstaged": {
+          "bytes": 335515,
+          "sha256": "4274ef4a24c0bf9067973eb7c713b659b2ea2fb2e2e43de79d42df113ac4c85a"
+        }
+      }
+    },
+    {
+      "path": "C:\\Users\\Tanzeel\\Code and projects\\Elevateo Mail - BE01 R1",
+      "slug": "elevateo-mail-be01-r1",
+      "head": "5785eba47f3709debb2815c8d86608f7e62d02f3",
+      "errors": [],
+      "source_files": 3206,
+      "untracked_files": 265,
+      "patches": {
+        "staged": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "unstaged": {
+          "bytes": 314524,
+          "sha256": "17fa24f045fb0214d23f31075fcf1273dc1370dacbc6297f4f5c91a7bbd96dae"
+        }
+      }
+    },
+    {
+      "path": "C:\\Users\\Tanzeel\\Code and projects\\Elevateo Mail - BE01 Repair",
+      "slug": "elevateo-mail-be01-repair",
+      "head": null,
+      "errors": [
+        "HEAD unavailable: fatal: Needed a single revision\n"
+      ],
+      "source_files": 0,
+      "untracked_files": 0,
+      "patches": {
+        "staged": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "unstaged": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    },
+    {
+      "path": "C:\\Users\\Tanzeel\\Code and projects\\Elevateo Mail - BE02 Auth",
+      "slug": "elevateo-mail-be02-auth",
+      "head": "5785eba47f3709debb2815c8d86608f7e62d02f3",
+      "errors": [],
+      "source_files": 3037,
+      "untracked_files": 96,
+      "patches": {
+        "staged": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "unstaged": {
+          "bytes": 360799,
+          "sha256": "2db056ff03b1e10b273d36a3a904365fe10439c17a8484cd68ae3f5eec9e0857"
+        }
+      }
+    },
+    {
+      "path": "C:\\Users\\Tanzeel\\Code and projects\\Elevateo Mail - BE02 Codex",
+      "slug": "elevateo-mail-be02-codex",
+      "head": "5785eba47f3709debb2815c8d86608f7e62d02f3",
+      "errors": [],
+      "source_files": 3280,
+      "untracked_files": 339,
+      "patches": {
+        "staged": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "unstaged": {
+          "bytes": 606684,
+          "sha256": "fd7231184567acfc705c5f7d40962c7353f348e8feb8107d9620435b44542688"
+        }
+      }
+    },
+    {
+      "path": "C:\\Users\\Tanzeel\\Code and projects\\Elevateo Mail - Cassian 20261014",
+      "slug": "elevateo-mail-cassian-20261014",
+      "head": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "errors": [],
+      "source_files": 3540,
+      "untracked_files": 578,
+      "patches": {
+        "staged": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "unstaged": {
+          "bytes": 132021,
+          "sha256": "01bf795f6eb0011dbc4a7e46bc7ca06ec0638abdc61aad36faee4338bef2f732"
+        }
+      }
+    },
+    {
+      "path": "C:\\Users\\Tanzeel\\Code and projects\\Elevateo Mail - Elara 20261014",
+      "slug": "elevateo-mail-elara-20261014",
+      "head": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "errors": [],
+      "source_files": 2963,
+      "untracked_files": 1,
+      "patches": {
+        "staged": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "unstaged": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    },
+    {
+      "path": "C:\\Users\\Tanzeel\\Code and projects\\Elevateo Mail - Fable FE01",
+      "slug": "elevateo-mail-fable-fe01",
+      "head": "d7eac0791fd6483e47677fe8faa26c70a6522485",
+      "errors": [],
+      "source_files": 2955,
+      "untracked_files": 0,
+      "patches": {
+        "staged": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "unstaged": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    },
+    {
+      "path": "C:\\Users\\Tanzeel\\Code and projects\\Elevateo Mail - Fable FE01 R1",
+      "slug": "elevateo-mail-fable-fe01-r1",
+      "head": "284aa71d20015b2b9b6a2f00beec9fa3087efe91",
+      "errors": [],
+      "source_files": 3058,
+      "untracked_files": 68,
+      "patches": {
+        "staged": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "unstaged": {
+          "bytes": 787546,
+          "sha256": "0b9ff7548b1b43c173734ddf40b560907a18ccd6c00087e6bc611c6ffd94784b"
+        }
+      }
+    },
+    {
+      "path": "C:\\Users\\Tanzeel\\Code and projects\\Elevateo Mail - Fable Frontend",
+      "slug": "elevateo-mail-fable-frontend",
+      "head": "d7a1f52318d0fc9105a379455dd29f70c02d7811",
+      "errors": [],
+      "source_files": 269,
+      "untracked_files": 0,
+      "patches": {
+        "staged": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "unstaged": {
+          "bytes": 19980,
+          "sha256": "1712c2c0aeadf21f1dea4dfd399880e4b3baccca54ddd3563052c2bdc92eecb3"
+        }
+      }
+    },
+    {
+      "path": "C:\\Users\\Tanzeel\\Code and projects\\Elevateo Mail - FE01 R1 Data",
+      "slug": "elevateo-mail-fe01-r1-data",
+      "head": "79387b1bab0f5958b1a80028c0b35152fc10ecbc",
+      "errors": [],
+      "source_files": 2984,
+      "untracked_files": 0,
+      "patches": {
+        "staged": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "unstaged": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    },
+    {
+      "path": "C:\\Users\\Tanzeel\\Code and projects\\Elevateo Mail - Integration",
+      "slug": "elevateo-mail-integration",
+      "head": "4322cfbb639a383c4e8d940f2dbb019a9832e977",
+      "errors": [],
+      "source_files": 580,
+      "untracked_files": 0,
+      "patches": {
+        "staged": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "unstaged": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    },
+    {
+      "path": "C:\\Users\\Tanzeel\\Code and projects\\Elevateo Mail - Local Completion",
+      "slug": "elevateo-mail-local-completion",
+      "head": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "errors": [],
+      "source_files": 3159,
+      "untracked_files": 197,
+      "patches": {
+        "staged": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "unstaged": {
+          "bytes": 918157,
+          "sha256": "6e5b1026cedf0e6c1f14fc526b687fd61068ffd6889156daa572c0867484eb04"
+        }
+      }
+    },
+    {
+      "path": "C:\\Users\\Tanzeel\\Code and projects\\Elevateo Mail - Mira 20261014",
+      "slug": "elevateo-mail-mira-20261014",
+      "head": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "errors": [],
+      "source_files": 2963,
+      "untracked_files": 1,
+      "patches": {
+        "staged": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "unstaged": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    },
+    {
+      "path": "C:\\Users\\Tanzeel\\Code and projects\\Elevateo Mail - Nadia 20261014",
+      "slug": "elevateo-mail-nadia-20261014",
+      "head": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "errors": [],
+      "source_files": 2963,
+      "untracked_files": 1,
+      "patches": {
+        "staged": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "unstaged": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    },
+    {
+      "path": "C:\\Users\\Tanzeel\\Code and projects\\Elevateo Mail - Rowan 20261014",
+      "slug": "elevateo-mail-rowan-20261014",
+      "head": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "errors": [],
+      "source_files": 2963,
+      "untracked_files": 1,
+      "patches": {
+        "staged": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "unstaged": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    },
+    {
+      "path": "C:\\Users\\Tanzeel\\Code and projects\\Elevateo Mail - Soren 20261014",
+      "slug": "elevateo-mail-soren-20261014",
+      "head": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "errors": [],
+      "source_files": 2963,
+      "untracked_files": 1,
+      "patches": {
+        "staged": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "unstaged": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    }
+  ],
+  "source_exports": [
+    {
+      "path": "C:\\Users\\Tanzeel\\Code and projects\\Elevateo Mail - Acceptance Verification 20261014",
+      "source_files": 420,
+      "head": null
+    },
+    {
+      "path": "C:\\Users\\Tanzeel\\Code and projects\\Elevateo Mail - Acceptance Verification R2 20261014",
+      "source_files": 420,
+      "head": null
+    },
+    {
+      "path": "C:\\Users\\Tanzeel\\Code and projects\\Elevateo Mail - Acceptance Verification R3 20261014",
+      "source_files": 420,
+      "head": null
+    },
+    {
+      "path": "C:\\Users\\Tanzeel\\Code and projects\\Elevateo Mail - FE Validation 20261012-r10",
+      "source_files": 6,
+      "head": null
+    },
+    {
+      "path": "C:\\Users\\Tanzeel\\Code and projects\\Elevateo Mail - FE Validation 20261012-r11",
+      "source_files": 4,
+      "head": null
+    },
+    {
+      "path": "C:\\Users\\Tanzeel\\Code and projects\\Elevateo Mail - FE Validation 20261012-r4",
+      "source_files": 8,
+      "head": null
+    },
+    {
+      "path": "C:\\Users\\Tanzeel\\Code and projects\\Elevateo Mail - FE Validation 20261012-r5",
+      "source_files": 7,
+      "head": null
+    },
+    {
+      "path": "C:\\Users\\Tanzeel\\Code and projects\\Elevateo Mail - FE Validation 20261012-r6",
+      "source_files": 7,
+      "head": null
+    },
+    {
+      "path": "C:\\Users\\Tanzeel\\Code and projects\\Elevateo Mail - FE Validation 20261012-r7",
+      "source_files": 11,
+      "head": null
+    },
+    {
+      "path": "C:\\Users\\Tanzeel\\Code and projects\\Elevateo Mail - FE Validation 20261012-r8",
+      "source_files": 3,
+      "head": null
+    },
+    {
+      "path": "C:\\Users\\Tanzeel\\Code and projects\\Elevateo Mail - FE Validation 20261012-r9",
+      "source_files": 3,
+      "head": null
+    },
+    {
+      "path": "C:\\Users\\Tanzeel\\Code and projects\\Elevateo Mail - Lane C Validation 20261012",
+      "source_files": 63,
+      "head": null
+    }
+  ],
+  "exclusions": [
+    ".env*",
+    "ops/local",
+    "node_modules",
+    ".claude/settings.local.json",
+    "output",
+    "archives",
+    "tmp",
+    "log",
+    "coverage/dist and results-* runtime exports"
+  ],
+  "private_archive": "C:\\Users\\Tanzeel\\Code and projects\\Elevateo Mail - Cassian 20261014\\.local-audit\\INT-401",
+  "preserved_refs": "refs/preserved/int401/*",
+  "api_declaration_sha256": "bb43a39e6fb514268ab9b89e1b443edb752f6e6eb3a7b0c87468cae5a75b077a"
+}

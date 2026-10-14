@@ -10,4 +10,6 @@ Cassian OFF-401 owns INT-401 on integrate/cassian-unified from Local Completion 
 
 ## Process, timeline and evidence
 
+Concrete baseline b0d73327ed8f9c6dc033d65102f8107d1ecc9e33 is committed and bundled for fleet transfer. Archive capture completed across 19 Git checkouts and 12 source-only exports; 18 valid HEADs are preserved in named refs, and the broken empty BE01 Repair checkout is reported. docs/completion/int401-preservation-manifest.json records patch hashes/counts and exclusions. All three canonical generated api.d.ts files have matching SHA-256 bb43a39e6fb514268ab9b89e1b443edb752f6e6eb3a7b0c87468cae5a75b077a.
+
 2026-10-14: read current wave policy, project state and accepted Rails/React architecture; capture original checkout HEADs and separate binary index/worktree patches without changing original indexes. Hash source-only snapshots in ignored .local-audit/INT-401 and fetch histories into refs/preserved/int401. Overlay manifests are committed in docs/completion/int401-overlay-manifest.json. Every application check is UNRUN for this baseline; Soren schedules fleet-02 container jobs. R3 app_drafts_private creation is blocked and owned by Rowan. Root transferred implementation CLI execution toward fleet due to laptop memory pressure.

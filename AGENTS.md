@@ -27,3 +27,16 @@ The latest user brief requires Codex research first; Astra MAX system/backend de
 Inspect and reuse existing first-party frontend work first, then the concrete local source candidates in LOCAL_BUILD_PROMPT.md. Build an integrated application using real local database/auth/storage and simulated mail transport. Generate disposable local development secrets in ignored files as needed; keep actual provider, host, DNS, AI and signing credentials until final activation. Do not ask for them to start or silently enable live sending. Treat native-platform and actual-client checks as separate evidence requirements when their runtimes are unavailable. Finish independent work and report exact blockers.
 
 No live sends include Instantly warmup, provider test sends, forwarding and campaigns. Follow .planning/MAIL_ACCOUNTS_AND_ACTIVATION.md for the nine-address/one-to-two-domain inventory and deferred account connection. Product mailbox MCP and in-app CLI adapters are separate deliverables. Reconcile every language/client with .planning/POLYGLOT_ARCHITECTURE.md and .planning/CLIENTS_AND_CLI_CONNECTORS.md; do not add independent domain backends or duplicate native shells merely to use all frameworks.
+
+## Wave branches and tickets
+
+| Owner | Ticket | Assigned branch |
+| --- | --- | --- |
+| Cassian OFF-401 | [INT-401](.planning/wave-20261014/INT-401.md) | integrate/cassian-unified |
+| Soren OFF-402 | [OPS-402](.planning/wave-20261014/OPS-402.md) | ops/soren-supabase |
+| Rowan OFF-403 | [BE-403](.planning/wave-20261014/BE-403.md) | fix/rowan-schema-auth |
+| Elara OFF-404 | [QA-404](.planning/wave-20261014/QA-404.md) | test/elara-acceptance |
+| Mira OFF-405 | [FE-405](.planning/wave-20261014/FE-405.md) | feat/mira-mailroom-experience |
+| Nadia OFF-406 | [RES-406](.planning/wave-20261014/RES-406.md) | research/nadia-deliverability |
+
+Escalation correction: laptop memory pressure moved implementation CLI routing to fleet-02 under root; no local heavy jobs. Source selection and review gaps are recorded in docs/issues.md; do not silently repair broken original histories.
