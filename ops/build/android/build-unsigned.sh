@@ -44,8 +44,9 @@ cargo tauri android build --apk --target aarch64 --config "$android_dir/tauri.an
 [[ "$(sha256sum Cargo.lock | cut -d " " -f 1)" == "$cargo_lock_before" ]] || { echo "Cargo.lock changed during build" >&2; exit 2; }
 mapfile -d '' apk_files < <(find "$native_dir/gen/android/app/build/outputs/apk" -type f -name '*unsigned.apk' -print0)
 [[ "${#apk_files[@]}" -eq 1 ]] || { echo "Expected exactly one unsigned APK, found ${#apk_files[@]}" >&2; exit 2; }
-manifest_permissions="$("$ANDROID_HOME/build-tools/36.0.0/aapt" dump permissions "${apk_files[0]}" | sed -n "s/.*uses-permission: name='\([^']*\)'.*/\1/p" | sort -u)"
-[[ "$manifest_permissions" == "android.permission.INTERNET" ]] || { echo "Unexpected APK permissions: $manifest_permissions" >&2; exit 2; }
+"$ANDROID_HOME/build-tools/36.0.0/aapt" dump permissions "${apk_files[0]}" \
+  | sed -n "s/.*uses-permission: name='\([^']*\)'.*/\1/p" \
+  | python3 "$android_dir/verify_permissions.py"
 "$ANDROID_HOME/build-tools/36.0.0/aapt" dump badging "${apk_files[0]}" | grep -F "package: name='com.elevateo.mail.fixture'" >/dev/null || { echo "Unexpected Android package identifier" >&2; exit 2; }
 if "$ANDROID_HOME/build-tools/36.0.0/aapt" dump xmltree "${apk_files[0]}" AndroidManifest.xml | grep -F "android.intent.action.VIEW" >/dev/null; then
   echo "Unreviewed Android VIEW callback filter" >&2; exit 2

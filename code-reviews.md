@@ -684,3 +684,5 @@ Candidate source: `apps/android/`, `ops/build/android/`; bounded adversarial and
 ### APK-813 Tauri Android continuation
 
 The original Java scaffold review request is superseded. New Android-specific config, wrapper pinning helper, unit fixtures and fleet recipe await independent <=200 LOC adversarial and separate design reviews. No reviewer has reported coverage or defects; defects/KLOC remains N/A. See `docs/completion/astrid.md`.
+
+Astrid inspected the exact fleet manifest-merger blame for `32d043f`: AndroidX Core 1.13.1 contributes one fixture package-scoped `signature` receiver permission in addition to INTERNET. The first strict oracle rejected the generated APK before copy/hash/signature checks; the narrowed oracle and three cases are source candidates awaiting fleet execution. This is owner diagnostic work, not an independent adversarial or design review; reviewed LOC, confirmed review defects and defect density remain N/A.
