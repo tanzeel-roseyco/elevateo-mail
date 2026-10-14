@@ -6,6 +6,7 @@ import {
   OrganizationGrantSchema,
   OrganizationGrantsSchema,
   OutreachCampaignSchema,
+  CampaignPageSchema,
   OutreachPlanSchema,
   type GrantChange,
   type OutreachPlan,
@@ -22,6 +23,9 @@ const headers = (ctx: ReadContext, proof?: CsrfProof): Record<string, string> =>
 export function createV2Gateway(fetchImpl?: FetchLike) {
   const base = fetchImpl === undefined ? {} : { fetchImpl }
   return {
+    listCampaigns(ctx: ReadContext, signal?: AbortSignal) {
+      return requestJson('/v2/outreach/campaigns', CampaignPageSchema, 20_480, { ...base, headers: headers(ctx), signal })
+    },
     listOrganizationGrants(organizationId: string, ctx: ReadContext, signal?: AbortSignal) {
       return requestJson(`/v2/organizations/${id(organizationId)}/grants`, OrganizationGrantsSchema, 32_768, {
         ...base, headers: headers(ctx), signal,
