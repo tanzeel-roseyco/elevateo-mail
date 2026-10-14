@@ -156,3 +156,5 @@ QA815 focused Steep/selected pure Ruby runner was prepared pending a coherent in
 QA815 exact `211df76` Steep 80 problems/8 files, focused pure Ruby partial PASS; mock-import probe isolates three harness errors. Gateway 00018 transaction-scoped up/down/up ACL 1/24 PASS under QA-only migrator test role after an API-role setup failure, with exact disposable cleanup. Full backend/HTTP/worker/browser remain OPEN.
 
 QA815 exact `37b20c2` protected role one-case 1/14 PASS after 21 migrations; same-scope read/write both `ok`, live sales session, cleanup PASS. This closes only the focused role diagnostic; broader backend/HTTP/worker/browser remain OPEN.
+
+QA815 future focused pure Ruby runner adds `minitest/mock`; new coherent source is NOT_RUN pending owner pins.

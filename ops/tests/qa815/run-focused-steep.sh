@@ -62,7 +62,7 @@ timeout 1200s docker run --rm --name "$name" --network none --memory 2g --memory
       test/send_worker/drain_test.rb \
       test/send_worker/smtp_transport_test.rb; do
       printf "RUN %s\n" "$file"
-      bundle exec ruby -Itest "$file"
+      bundle exec ruby -rminitest/mock -Itest "$file"
       status=$?; printf "test_exit=%s file=%s\n" "$status" "$file"
       if [ "$status" -ne 0 ]; then overall=1; fi
     done
