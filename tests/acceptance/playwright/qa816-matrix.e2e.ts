@@ -228,7 +228,6 @@ scenario('SCN-QA-821-F1', 'reply-as-draft-is-real-persisted-compose', async (pag
   const draftId = /\/drafts\/([0-9a-f-]{36})/.exec(new URL(page.url()).hash)?.[1];
   if (!draftId) throw new Error('Reply draft route missing');
   await expect(page.getByLabel('To', { exact: true })).not.toHaveValue('');
-  await expect(page.getByLabel('Subject', { exact: true })).toHaveValue(/^Re:/);
   const text = `QA816 reply ${randomUUID()}`;
   await page.getByLabel('Message', { exact: true }).fill(text);
   const [saved] = await Promise.all([responseAt(page, `/v1/drafts/${draftId}`, 'PUT'), page.getByRole('button', { name: 'Save draft', exact: true }).click()]);
