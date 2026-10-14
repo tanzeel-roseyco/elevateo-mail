@@ -1,5 +1,7 @@
 # INT-801 Cassian implementation packet
 
+OUT-824/SEQ-831 parallel phase: a noncanonical V2 proposal defines one inert campaign sequence draft at GET/PUT `/v2/outreach/campaigns/{campaign_id}/sequence`, with strict path/body equality, optimistic revision and replay, bounded steps/timezone, and deliberate 400/404/409 errors. No due claim, send eligibility, active route or canonical generated DTO is added. Maeve persistence and Celeste editor remain isolated pending authority review and fleet SQL/HTTP proof.
+
 ADV090 found that two browser tests expected promise rejection from synchronous Zod input parsing; the assertions now check synchronous throws before dispatch. V2 browser gateways also parse the closed CollaborationError envelope, preserving real HTTP 409 `membership_conflict` and `operation_mismatch` results without replay; focused source regressions were added. Fleet execution remains pending.
 
 ATT-823 config preparation now rejects `ELEVATEO_ATTACHMENT_STORAGE_SERVICE_TOKEN` in every Rails process, including migrator, and optionally validates a dedicated 32-byte decoded `ELEVATEO_ATTACHMENT_GATEWAY_HMAC_KEY_BASE64` for API-to-gateway signing. This adds no Storage request, key value or active route. Source tests cover absent/valid/short/malformed HMAC keys and privileged-token rejection; Soren fleet verification and the gateway process remain pending.
