@@ -1,0 +1,121 @@
+ok bootstrap-fresh
+ok bootstrap-idempotent
+ok [opaque value redacted]
+ok [opaque value redacted]
+ok [opaque value redacted]
+ok elevateo_api-transitive-owner
+ok elevateo_api-inherited-owner
+ok [opaque value redacted]
+ok [opaque value redacted]
+ok [opaque value redacted]
+ok [opaque value redacted]
+ok elevateo_worker-inherited-owner
+ok private-owner-parent
+ok runtime-role-outgoing-edge
+ok owner-issued-api-set-option
+ok migrator-inherit-option
+ok runtime-superuser-drift
+ok [opaque value redacted]
+ok approved-migrator-owner-path
+ok [opaque value redacted]
+ok [opaque value redacted]
+ok unrelated-membership-preserved
+ok private-parameter-PUBLIC-SET
+ok private-parameter-PUBLIC-ALTER SYSTEM
+ok [opaque value redacted]
+ok [opaque value redacted] SYSTEM
+ok [opaque value redacted]
+ok [opaque value redacted] SYSTEM
+ok [opaque value redacted]
+ok [opaque value redacted] SYSTEM
+ok [opaque value redacted]
+ok [opaque value redacted] SYSTEM
+ok [opaque value redacted]
+ok [opaque value redacted] SYSTEM
+ok [opaque value redacted]
+ok [opaque value redacted]
+ok [opaque value redacted]
+ok [opaque value redacted]
+ok disposable-auth-fixture
+ok disposable-auth-rls-fixture
+ok auth-grants-fresh
+ok auth-grants-idempotent
+ok auth-mixed-relation-catalog
+ok auth-private-table-SELECT
+ok auth-private-table-INSERT
+ok auth-private-table-UPDATE
+ok auth-private-table-DELETE
+ok auth-private-table-TRUNCATE
+ok auth-private-table-REFERENCES
+ok auth-private-table-TRIGGER
+ok auth-private-table-MAINTAIN
+ok auth-private-column-INSERT
+ok auth-private-column-UPDATE
+ok auth-private-column-REFERENCES
+ok auth-elevateo_api-table-read
+ok auth-elevateo_api-column-write
+ok auth-elevateo_worker-table-read
+ok [opaque value redacted]
+ok [opaque value redacted]
+ok [opaque value redacted]
+ok auth-elevateo_owner-table-read
+ok [opaque value redacted]
+ok [opaque value redacted]
+ok [opaque value redacted]
+ok auth-extra-column
+ok auth-column-delegation
+ok auth-public-dml
+ok auth-other-table
+ok auth-schema-create
+ok auth-schema-delegation
+ok auth-sequence-drift
+ok auth-disabled-rls
+ok auth-column-type
+ok auth-exact-four-column-read
+ok auth-missing-policy
+ok auth-FORCE-rls
+ok auth-NO-FORCE-rls
+ok [opaque value redacted]
+ok [opaque value redacted]
+ok auth-own-policy-AS RESTRICTIVE FOR SELECT TO elevateo_session_owner USING (true)
+ok auth-own-policy-FOR SELECT TO PUBLIC USING (true)
+ok auth-own-policy-FOR SELECT TO elevateo_api USING (true)
+ok auth-own-policy-FOR SELECT TO elevateo_session_owner, elevateo_api USING (true)
+ok auth-own-policy-FOR SELECT TO elevateo_session_owner USING (false)
+ok auth-own-policy-FOR SELECT TO elevateo_session_owner
+ok auth-own-policy-FOR SELECT TO elevateo_session_owner USING (user_id::text = current_setting('app_auth.verified_user_id', true))
+ok auth-own-policy-FOR ALL TO elevateo_session_owner USING (true) WITH CHECK (true)
+ok auth-own-policy-FOR UPDATE TO elevateo_session_owner USING (true) WITH CHECK (true)
+ok [opaque value redacted]
+ok [opaque value redacted]
+ok [opaque value redacted]
+ok [opaque value redacted]
+ok [opaque value redacted]
+ok [opaque value redacted]
+ok [opaque value redacted]
+ok [opaque value redacted]
+ok auth-private-dml-policy
+ok auth-private-LOGIN
+ok auth-private-INHERIT
+ok auth-private-SUPERUSER
+ok auth-private-BYPASSRLS
+ok auth-private-CREATEDB
+ok auth-private-CREATEROLE
+ok auth-private-REPLICATION
+ok auth-private-table-owner
+ok auth-parent-policy-inherit-TRUE
+ok [opaque value redacted]
+ok [opaque value redacted]
+ok [opaque value redacted]
+ok [opaque value redacted]
+ok [opaque value redacted]
+ok [opaque value redacted]
+ok [opaque value redacted]
+ok auth-post-grant-failure
+ok auth-rls-real-session-semantics
+ok named-default-acl-boundary
+PASS 116 BE02 guard cases; database=be02_guards_1153659754
+ Container [opaque value redacted] Creating 
+ Container [opaque value redacted] Created 
+
+exit=0 seconds=3.11

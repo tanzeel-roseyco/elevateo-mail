@@ -1,0 +1,12 @@
+    status     
+---------------
+ bootstrap: ok
+(1 row)
+
+ Container [opaque value redacted] Creating 
+ Container [opaque value redacted] Created 
+psql:/ops/bootstrap.sql:80: NOTICE:  role "elevateo_owner" has already been granted membership in role "elevateo_session_owner" by role "supabase_admin"
+psql:/ops/bootstrap.sql:99: NOTICE:  role "elevateo_migrator" has already been granted membership in role "elevateo_owner" by role "supabase_admin"
+psql:/ops/bootstrap.sql:124: NOTICE:  role "elevateo_owner" has already been granted membership in role "elevateo_app_read" by role "supabase_admin"
+
+exit=0 seconds=0.74

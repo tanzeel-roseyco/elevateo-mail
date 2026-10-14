@@ -1,0 +1,24 @@
+Run options: --seed 1303
+
+# Running:
+
+....E..
+
+Finished in 0.401801s, 17.4215 runs/s, 42.3095 assertions/s.
+
+  1) Error:
+CampaignDatabaseTest#[opaque value redacted]:
+PG::ForeignKeyViolation: ERROR:  update or delete on table "mailboxes" violates foreign key constraint "[opaque value redacted]" on table "campaign_accounts"
+DETAIL:  Key (organization_id, id)=([opaque value redacted], [opaque value redacted]) is still referenced from table "campaign_accounts".
+
+    test/campaigns/database_test.rb:25:in 'PG::Connection#exec_params'
+    test/campaigns/database_test.rb:25:in 'block in CampaignDatabaseTest#teardown'
+    test/campaigns/database_test.rb:25:in 'Array#each'
+    test/campaigns/database_test.rb:25:in 'CampaignDatabaseTest#teardown'
+
+7 runs, 17 assertions, 0 failures, 1 errors, 0 skips
+ Container [opaque value redacted] Creating 
+ Container [opaque value redacted] Created 
+
+
+exit=1 seconds=1.83

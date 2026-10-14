@@ -8,8 +8,9 @@ lock=/home/tanzeel/elevateo-mail-wave-20261014/control/soren-docker.lock
 receipt_dir="$root/docs/completion/qa815-evidence/backend-${candidate:0:12}"
 summary="$root/docs/completion/qa815-evidence/backend-${candidate:0:12}.txt"
 if [[ -n ${QA815_FRESH_GROUP:-} ]]; then
-  [[ $QA815_FRESH_GROUP == qa817 || $QA815_FRESH_GROUP == sends ]] || {
-    echo 'QA815_FRESH_GROUP must be qa817 or sends' >&2; exit 2;
+  [[ $QA815_FRESH_GROUP == qa817 || $QA815_FRESH_GROUP == sends ||
+     $QA815_FRESH_GROUP == attachments || $QA815_FRESH_GROUP == campaigns ]] || {
+    echo 'QA815_FRESH_GROUP must be qa817, sends, attachments or campaigns' >&2; exit 2;
   }
   receipt_dir="${receipt_dir}-fresh-${QA815_FRESH_GROUP}"
   summary="${summary%.txt}-fresh-${QA815_FRESH_GROUP}.txt"
@@ -21,6 +22,9 @@ elif [[ ${QA815_GATEWAY_ACL_FOCUS:-0} == 1 ]]; then
 elif [[ ${QA815_GATEWAY_AUTHORITY_FOCUS:-0} == 1 ]]; then
   receipt_dir="${receipt_dir}-gateway-authority"
   summary="${summary%.txt}-gateway-authority.txt"
+elif [[ ${QA815_MAILPIT_FOCUS:-0} == 1 ]]; then
+  receipt_dir="${receipt_dir}-mailpit-protocol"
+  summary="${summary%.txt}-mailpit-protocol.txt"
 fi
 context=$(mktemp -d /tmp/qa815-backend.XXXXXXXX)
 mkdir -p "$receipt_dir"
@@ -103,7 +107,36 @@ if [[ -n ${QA815_FRESH_GROUP:-} ]]; then
   case "$QA815_FRESH_GROUP" in
     qa817) suite=test/qa817/cancellation_privileges_database_test.rb ;;
     sends) suite=test/sends/approval_database_test.rb ;;
+    attachments) suite=test/attachments/database_test.rb ;;
+    campaigns) suite=test/campaigns/database_test.rb ;;
   esac
+  if [[ $QA815_FRESH_GROUP == attachments || $QA815_FRESH_GROUP == campaigns ]]; then
+    python3 - "$context/ops/compose.be02-test.yaml" "$QA815_FRESH_GROUP" <<'PY'
+from pathlib import Path
+import sys
+
+path = Path(sys.argv[1])
+group = sys.argv[2]
+source = path.read_text()
+start = source.index('  test:\n')
+end = source.index('  fixture:\n', start)
+block = source[start:end]
+needle = '      BE02_TASK_DATABASE_NAME: postgres\n'
+if block.count(needle) != 1:
+    raise SystemExit('QA815 dedicated DB aliases anchor mismatch')
+prefix = 'ATT823' if group == 'attachments' else 'OUT804'
+aliases = [f'      {prefix}_TASK_DATABASE_NAME: postgres']
+roles = ['ADMIN', 'MIGRATOR', 'API', 'WORKER'] if group == 'attachments' else ['ADMIN', 'API']
+for role in roles:
+    user = {'ADMIN': 'supabase_admin', 'MIGRATOR': 'elevateo_migrator',
+            'API': 'elevateo_api', 'WORKER': 'elevateo_worker'}[role]
+    password = {'ADMIN': 'POSTGRES_PASSWORD', 'MIGRATOR': 'MIGRATOR_DB_PASSWORD',
+                'API': 'API_DB_PASSWORD', 'WORKER': 'WORKER_DB_PASSWORD'}[role]
+    aliases.append(f'      {prefix}_{role}_DATABASE_URL: postgres://{user}:${{{password}:?}}@db:5432/postgres')
+block = block.replace(needle, needle + '\n'.join(aliases) + '\n')
+path.write_text(source[:start] + block + source[end:])
+PY
+  fi
   cat > "$context/ops/tests/be02/test-suites.sh" <<SH
 #!/usr/bin/env bash
 set -euo pipefail
@@ -271,6 +304,44 @@ cd /workspace/apps/server
 bundle exec ruby test/attachment_gateway/authority_database_test.rb
 SH
   printf 'task_source_overlay=private gateway URL and authority suite only; stop before HTTP/worker, canonical commit unchanged\n' >> "$summary"
+fi
+if [[ ${QA815_MAILPIT_FOCUS:-0} == 1 ]]; then
+  [[ ${QA815_FRESH_GROUP:-} == '' && ${QA815_ELARA_FOCUS:-0} != 1 &&
+     ${QA815_GATEWAY_ACL_FOCUS:-0} != 1 && ${QA815_GATEWAY_AUTHORITY_FOCUS:-0} != 1 ]] || {
+    echo 'Choose one focused backend mode' >&2; exit 2;
+  }
+  python3 - "$context/ops/compose.be02-test.yaml" "$context/ops/tests/be02/run.py" <<'PY'
+from pathlib import Path
+import sys
+
+compose = Path(sys.argv[1])
+source = compose.read_text()
+start = source.index('  test:\n')
+end = source.index('  fixture:\n', start)
+block = source[start:end]
+needle = '      BE02_TASK_DATABASE_NAME: postgres\n'
+if block.count(needle) != 1:
+    raise SystemExit('QA815 Mailpit test-service anchor mismatch')
+block = block.replace(needle, needle + '      SEND811_MAILPIT_PROTOCOL: "true"\n')
+compose.write_text(source[:start] + block + source[end:])
+
+runner = Path(sys.argv[2])
+source = runner.read_text()
+needle = '            task.compose("ruby-suites", ["run", "--rm", "--no-deps", "test"], 480)\n'
+failure = '    except Exception as error:\n        failure ='
+if source.count(needle) != 1 or source.count(failure) != 1:
+    raise SystemExit('QA815 Mailpit runner anchors mismatch')
+source = source.replace(needle, needle + '            raise StopIteration("QA815 Mailpit protocol diagnostic complete")\n')
+source = source.replace(failure, '    except StopIteration:\n        status = "DIAGNOSTIC_COMPLETED"\n' + failure)
+runner.write_text(source)
+PY
+  cat > "$context/ops/tests/be02/test-suites.sh" <<'SH'
+#!/usr/bin/env bash
+set -euo pipefail
+cd /workspace/apps/server
+bundle exec ruby test/send_worker/mailpit_protocol_test.rb
+SH
+  printf 'task_source_overlay=isolated internal Mailpit protocol suite only; stop before HTTP/worker, canonical commit unchanged\n' >> "$summary"
 fi
 set +e
 python3 "$context/ops/tests/be02/run.py" --context default \

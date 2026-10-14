@@ -204,3 +204,5 @@ QA815 27-suite path map is `docs/completion/qa815-evidence/backend-e01c64adfdf1/
 QA815 exact `e01c64ad` dedicated gateway ACL migrator profile 1/24 PASS with cleanup; eight other dedicated profiles remain. Separate assignment-options migration suite under migrator role fails 1/2 at boolean text oracle (`t/f` versus `true/false`), cleanup PASS; no source migration acceptance from it. Backend HTTP/worker/real-auth remain NOT_REACHED.
 
 QA815 second dedicated exact `e01c64ad` restricted gateway authority suite 5/21 PASS in a fresh task DB, cleanup PASS; earlier Compose preflight-only failure retained and task-only correction documented. Two of nine dedicated profiles scoped PASS, seven unexecuted. Scanner/Storage, authenticated HTTP/worker and real browser remain unproven.
+
+QA815 exact `e01c64ad` ATT823 database 6/40 PASS; internal Mailpit `.invalid` simulated protocol 1/6 PASS; OUT804 campaign DB 7/17 with one teardown FK error. All task cleanup PASS. Four of nine dedicated profiles scoped PASS, one FAIL, four historical R1 unexecuted. Main 137-suite backend remains FAILED; HTTP/worker/real Auth browser NOT_REACHED.
