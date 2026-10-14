@@ -115,6 +115,6 @@ RootSOURCEGO reviewed7a7860e captured-ref lint repair assembled without owner so
 
 Cassian manifest reconciliation: contract-lock now seals actual generated client bytes and pinned fleet generation/125f939S1S2DB+HTTP evidence; README reflects proven scope. Canonical openapi/fixtures/C-D structures unchanged; no regeneration, added routes or capabilityactivation. Recovery successor3a709691 checks stillMira-owned/pending; BE02OPEN/releasegated.
 
-MAC-814: universal Intel/Apple Silicon macOS DMG release template and static validator authored for a future Orion shell. No DMG or installed-app evidence exists; Mac runner, signing, notarization and auth/upgrade checks remain pending. See `docs/completion/maeve.md`.
+MAC-814: the standalone template was superseded by the Orion native shell overlay. No DMG or installed-app evidence exists; Mac runner, signing, notarization and auth/upgrade checks remain pending. See `docs/completion/maeve.md`.
 
 MAC-814 continuation: Orion shell d13c985 imported with lineage; macOS DMG overlay and preflight release script authored. No Mac runner, credential or native execution evidence; installed-app authentication remains fail closed.
