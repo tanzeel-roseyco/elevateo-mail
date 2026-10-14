@@ -2,8 +2,8 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Elevateo inbox attachment read proposal",
-    "version": "2.0.0-proposal.attachments.1",
-    "description": "Noncanonical read proposal. No active route, scanner, clean verdict writer, storage adapter, upload, draft-send attachment or generated DTO exists."
+    "version": "2.0.0-proposal.attachments.2",
+    "description": "Noncanonical read proposal. Rejected pre-storage metadata is visible only as status and zero size; no rejection reason or bytes. Owner decision and fleet proof pending."
   },
   "servers": [
     {
@@ -217,8 +217,9 @@
           },
           "byte_size": {
             "type": "integer",
-            "minimum": 1,
-            "maximum": 10485760
+            "minimum": 0,
+            "maximum": 10485760,
+            "description": "Zero only for a rejected attachment that never entered private Storage."
           },
           "scan_status": {
             "type": "string",
@@ -226,10 +227,39 @@
               "pending_scan",
               "clean",
               "malware",
-              "scan_failed"
+              "scan_failed",
+              "rejected"
             ]
           }
-        }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "scan_status": {
+                  "const": "rejected"
+                }
+              },
+              "required": [
+                "scan_status"
+              ]
+            },
+            "then": {
+              "properties": {
+                "byte_size": {
+                  "const": 0
+                }
+              }
+            },
+            "else": {
+              "properties": {
+                "byte_size": {
+                  "minimum": 1
+                }
+              }
+            }
+          }
+        ]
       },
       "InboxAttachmentPage": {
         "type": "object",

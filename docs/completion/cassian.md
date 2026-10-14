@@ -193,3 +193,7 @@ The fake HTTP test fixture uses explicit initialization for its chunk/close stat
 ## ATT823 rejected metadata seam finding
 
 Bounded source inspection of Nadia 00015 status/size constraints, Attachments::Service#list, Cassian noncanonical attachment proposal and Mira MessageAttachments found one confirmed interface mismatch: `rejected` rows have byte_size 0 and are returned by list, but DTO excludes rejected/minimum size 1 and UI fallback says Scan complete. This is open pending Nadia visibility choice and Mira UI repair; no route is active and no runtime data exposure is claimed. Recommended wire: explicit rejected status/zero size without private rejection_reason.
+
+## ATT823 unbound browser port
+
+`v2AttachmentGateway.ts` validates scoped metadata, including a provisional rejected/size-zero row without private reason, and one bounded same-origin binary GET with no redirect, abort deadline, Content-Type/no-store/nosniff/disposition/length checks and a 10-MiB stream cap. Tests cover metadata/bytes happy path, 404, invalid length/scope and unsafe filename. Proposal attachments.2 records the rejected shape, pending Nadia/Mira confirmation. No production shell injection, Rails public route, generated canonical DTO or Docker execution; NOT_RUN.
