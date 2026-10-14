@@ -471,3 +471,5 @@ QA816 corrected ATT902 browser case source `012df586` is staged but unexecuted; 
 ADV142 V2 canonical error-envelope finding is addressed in source by a closed shared scoped read error schema for new 400/401/404/503 responses; fixed 423 remains explicit. Independent successor review and fleet V2 generation/check are pending.
 
 Mira COL910 exact scoped-picker assignment regression is imported; integrated web unit/type checks remain pending Soren fleet Docker.
+
+QA815 exact core-only b3aaa07e: 21 migrations, Ruby 522/7089 and Steep zero problems PASS; RuboCop --lint 19 offenses FAIL, overall backend gate FAILED. Authenticated HTTP/worker/realAuth not reached. Soren 27f9b172 compact receipts imported; owner lint repair and coherent rerun pending.

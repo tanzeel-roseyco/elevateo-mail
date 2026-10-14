@@ -1359,3 +1359,5 @@ QA816 earlier Content-Disposition oracle finding is fixed in Tessa `012df586` so
 ADV142 Vera reviewed canonical draft.8 old e411f58f scoped core: 322 unique LOC/one P2 defect, 3.11 defects/KLOC; 300 target exceeded22, hard400 met, source-only. Current shared-envelope repair addresses the reported description-only failure DTOs and earlier 401 omission statically, but is not yet independently rereviewed or fleet generated; zero reviewed LOC and unassessed defect density for the repair itself.
 
 Mira COL910 36-line test rewrite imported source-only; no independent review or integrated runtime claimed, reviewed LOC/density unassessed for this packet.
+
+QA815 b3aaa07e lint diagnostic is executed tool evidence, not a source review: 19 offenses across 308 linted files, including four fatal syntax offenses in authority_database_test.rb. Ruby/Steep PASS does not close lint or HTTP/worker. Reviewed LOC/defects/KLOC are unchanged by this receipt import; owner repair reviews pending.

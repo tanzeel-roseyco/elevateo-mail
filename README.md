@@ -526,3 +526,5 @@ QA816 attachment real-browser source now uses Tessa's corrected `012df586` oracl
 ADV142 found that the new V2 scoped read failures had description-only responses. INT801 added a closed shared `ScopedReadError` envelope to assignee and attachment 400/401/404 plus content 503 while retaining the fixed 423 `attachment_held` schema. This is contract source only; Soren's exact fleet codegen/check remains pending.
 
 Mira COL910 `a7b55af` collaboration test now drives the scoped picker and server-authoritative assignment rather than the removed manual UUID field. The imported test is authored on this integrated source, pending Soren fleet web unit/type checks.
+
+QA815 core-only exact `b3aaa07e` fleet gate passed 21 migrations, 74 Ruby suites (522 runs/7,089 assertions), and Steep with zero problems. Full job remained FAILED at RuboCop --lint: 19 offenses across five owner areas, including four fatal syntax findings in attachment gateway authority test; authenticated HTTP/worker were not reached. Exact compact receipts are imported from Soren `27f9b172`; source fixes and fleet rerun are pending.
