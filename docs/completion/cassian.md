@@ -441,3 +441,5 @@ Nadia FIX933 exact b3899a06 controller/RBS/focused test imported at a17c8db1 on 
 ADV151 exact Orion1aebd99b suite manifest design review imported: 53LOC/0 defects, source-only. It requires actual elapsed/skip/incomplete ledger because a 480s outer budget may not fit 130 sequential processes; nine dedicated role/state/Mailpit files need separate exact-source results. Functional review and Soren runtime still pending.
 
 ADV152 exact Corin487ca33d anonymous keyword repair reviewed by Mira:102 unique LOC/0 defects, source-only, call boundary semantics retained. RBS/tests/ingress and full runtime excluded; Soren feature7cae15a7 targeted fake inbound lint PASS is separate evidence, full activated candidate Steep/lint pending.
+
+Soren exact feature7cae15a7 compiled acceptance setup: typecheck/build and 73/73 units PASS, quiet-reporter.js exists and Playwright --list exit0. First all-offline npm ci EAI_AGAIN failure preserved; corrected pinned public dependency install allowed list-only check. Receipts/runner imported at 56a8afd6. Browser cases/screenshots=0; actual mounted output and realAuth NOT_RUN.

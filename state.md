@@ -519,3 +519,5 @@ Nadia b3899a06 typed ATT902 controller/RBS/test repair imported feature source-o
 ADV151 TEST929 manifest design review 53LOC/0 defects source-only; 480s outer budget may truncate 130 sequential suites, so Soren must report incomplete files/skip counts and nine dedicated results. Functional review/runtime pending.
 
 ADV152 Corin487ca33d callback repair source review102LOC/0 defects; focused fake inbound lint PASS on earlier feature7cae15a7, full activated candidate gates pending.
+
+QA815 exact feature7cae15a7 acceptance type/build, 73/73 units and compiled reporter Playwright --list PASS; earlier offline npm ci EAI_AGAIN retained. Zero browser cases/screenshots and no actual mounted privacy/realAuth proof.
