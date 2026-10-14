@@ -1082,3 +1082,6 @@ FE807 sequence author source review (nonindependent): inspected proposed `03a4f7
 
 PREF-822 candidate review request: migration00014 102 source LOC, controller 88 LOC, three separate test files under 110 LOC each and RBS 14 LOC; divide migration and controller into distinct <=200 LOC functional packets, with dedicated design tradeoff reviewer. Reviewed LOC 0, confirmed defects unassessed and density unclaimed. Required adversarial cases are digest/GUC mismatch, membership removal during write, concurrent first write, stale revision and null display name; only source tests are authored, no Docker/DB execution.
 MAC-814 sequence primitive: independent bounded functional and design reviews NOT_RUN. Reviewed LOC 0, defects/KLOC N/A; authored tests and Soren fleet verification pending. No runtime or send evidence.
+### FE808 PREF822 author source check
+
+The authored personal-settings page and five-case fixture received an author-only source check for current-session scoping, deliberate errors, optimistic revision handling and unsupported-field exclusion. This is not an independent adversarial review; independent coverage, defects/KLOC and runtime verification remain pending. No application tests were run locally.

@@ -272,3 +272,7 @@ MAC-814 sequence planning: `apps/server/lib/elevateo/outreach_sequence/schedule.
 # Sequence draft candidate (MAC-814)
 
 One campaign owns one draft/held sequence with 1–20 steps. Replacement requires an expected version and stable operation ID; prior occurrence history remains frozen, and timezone change with history requires explicit reschedule. Occurrences have no API write/claim grant, so this source cannot send. SEC802 authorization grant review and integrated fleet Docker checks remain pending. See [implementation and limits](docs/completion/maeve-sequence-persistence.md).
+FE808 roster test data is parsed with `RosterPersonSchema` so fixture typing matches the versioned DTO's closed department enum. This does not alter the production roster reference or gateway boundary.
+# FE808 Personal Settings candidate
+
+The personal settings route `/settings/personal` reads the signed-in actor's display name and revision under the current session context. Saving sends the expected revision once with the session CSRF proof; a conflict requires an explicit reload. Denied or revoked access hides the editor, and an actor/context change does not show the previous actor's value. Theo's PREF822 endpoint and Cassian's typed V2 gateway adapter are pending integration, so this is source-only candidate behavior. Timezone, credentials and notification settings have no persisted contract here.
