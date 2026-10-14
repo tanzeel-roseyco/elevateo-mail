@@ -1,0 +1,12 @@
+source=e01c64adfdf1ef05107239e947ed7351b771580f
+started=2026-10-14T19:05:03Z
+task_source_overlay=OPS820 restricted gateway login before migration; canonical commit unchanged
+task_source_overlay=test/administration/assignment_member_options_migration_test.rb single-suite migrator test role and stop; canonical commit unchanged
+BE02 project=be02-c9b3558f94144ad49ee3c95f933780ea evidence=/tmp/qa815-backend.RW14tgoa/ops/local/be02-c9b3558f94144ad49ee3c95f933780ea
+Building bounded task image
+Running isolated Minitest suites and Steep
+tests=FAILED cleanup=PASSED evidence=/tmp/qa815-backend.RW14tgoa/ops/local/be02-c9b3558f94144ad49ee3c95f933780ea
+runner_exit=1
+receipt_copy_failed=0
+archive_absent=yes
+finished=2026-10-14T19:06:47Z

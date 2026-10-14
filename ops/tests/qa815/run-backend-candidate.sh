@@ -13,6 +13,11 @@ if [[ -n ${QA815_FRESH_GROUP:-} ]]; then
   }
   receipt_dir="${receipt_dir}-fresh-${QA815_FRESH_GROUP}"
   summary="${summary%.txt}-fresh-${QA815_FRESH_GROUP}.txt"
+elif [[ ${QA815_GATEWAY_ACL_FOCUS:-0} == 1 ]]; then
+  focus_label=gateway-acl
+  [[ ${QA815_MIGRATOR_SUITE:-} == assignment-options ]] && focus_label=assignment-options-migrator
+  receipt_dir="${receipt_dir}-${focus_label}"
+  summary="${summary%.txt}-${focus_label}.txt"
 fi
 context=$(mktemp -d /tmp/qa815-backend.XXXXXXXX)
 mkdir -p "$receipt_dir"
@@ -177,6 +182,11 @@ PY
 fi
 if [[ ${QA815_GATEWAY_ACL_FOCUS:-0} == 1 ]]; then
   [[ ${QA815_ELARA_FOCUS:-0} != 1 ]] || { echo 'Choose one focused backend mode' >&2; exit 2; }
+  suite=test/attachment_gateway/migration_acl_test.rb
+  if [[ -n ${QA815_MIGRATOR_SUITE:-} ]]; then
+    [[ $QA815_MIGRATOR_SUITE == assignment-options ]] || { echo 'Unknown migrator suite' >&2; exit 2; }
+    suite=test/administration/assignment_member_options_migration_test.rb
+  fi
   python3 - "$context/ops/compose.be02-test.yaml" <<'PY'
 from pathlib import Path
 import sys
@@ -197,11 +207,11 @@ for old, new in (
     block = block.replace(old, new)
 path.write_text(source[:start] + block + source[end:])
 PY
-  cat > "$context/ops/tests/be02/test-suites.sh" <<'SH'
+  cat > "$context/ops/tests/be02/test-suites.sh" <<SH
 #!/usr/bin/env bash
 set -euo pipefail
 cd /workspace/apps/server
-bin/rails test test/attachment_gateway/migration_acl_test.rb
+bin/rails test "$suite"
 SH
   python3 - "$context/ops/tests/be02/run.py" <<'PY'
 from pathlib import Path
@@ -218,7 +228,7 @@ source = source.replace(failure,
                         '    except StopIteration:\n        status = "DIAGNOSTIC_COMPLETED"\n' + failure)
 path.write_text(source)
 PY
-  printf 'task_source_overlay=gateway migration ACL single-case, migrator test role and stop; canonical commit unchanged\n' >> "$summary"
+  printf 'task_source_overlay=%s single-suite migrator test role and stop; canonical commit unchanged\n' "$suite" >> "$summary"
 fi
 set +e
 python3 "$context/ops/tests/be02/run.py" --context default \
