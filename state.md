@@ -154,3 +154,5 @@ QA816 head 487f422 repairs Ada ADV050's People heading-only logout oracle: real 
 QA816 FE806 message candidate adds three unrun supplemental browser cases and three screenshot IDs (21 cases/37 IDs total). The existing one-message seed cannot prove a later-page direct GET; Cassian was asked for a multi-message seed. No fleet browser or pixel PASS is claimed.
 
 QA816 e3ac16b fleet Node acceptance source check PASS: npm ci/typecheck/build/unit exit0, 73/73 cases and task cleanup confirmed by Soren's tessa-compile-e3ac16b9ebc9 receipt. Current real-auth browser scenarios and all 37 candidate screenshots remain NOT_RUN; an eight-image f210b5bf synthetic visual slice is requested separately.
+
+QA816 exact f210b5bf seeded-simulated visual slice: Soren's fleet Playwright 8/8 PASS and eight exported PNGs were manually opened by Tessa. Four inbox images show readable desktop/390 light/dark layout with no visible clipping; all four reader images contain assignment/notes mock validation errors and a 3-versus-1 message count fixture mismatch. Owner repair requested; real-auth QA816 21-case/37-ID run remains NOT_RUN. Details in docs/completion/tessa-visual-f210.md.

@@ -212,3 +212,5 @@ QA816 logout acceptance now waits for a real populated V2 grants response and re
 QA816 FE806 browser candidate adds keyboard permalink/reload, missing-message V2 404, and transport-loss/retry checks. Later-page direct-message success needs a new disposable multi-message acceptance seed; fleet browser tests and actual screenshots remain pending.
 
 QA816 exact e3ac16b fleet acceptance typecheck/build and 73/73 harness unit cases passed under Soren; browser/API cases and candidate screenshots remain pending. The separate seeded-simulated visual run is requested and must not be counted as real-auth acceptance.
+
+QA816 inspected eight actual fleet browser PNGs on f210b5bf, labeled SEEDED-SIMULATED: desktop/390 light/dark inbox layout is readable without visible clipping, but reader captures expose two visual-fixture defects in assignment/notes mocking and message count. See docs/completion/tessa-visual-f210.md. Real-auth/API QA816 browser and screenshots remain pending.
