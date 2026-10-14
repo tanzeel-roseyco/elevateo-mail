@@ -1,0 +1,14 @@
+BEGIN
+DO
+DO
+ALTER ROLE
+ALTER ROLE
+GRANT
+COMMIT
+                 status                 
+[opaque value redacted]
+ gateway bootstrap: restricted login ok
+(1 row)
+
+
+exit=0 seconds=0.52

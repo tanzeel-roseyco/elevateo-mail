@@ -1,0 +1,12 @@
+source=e01c64adfdf1ef05107239e947ed7351b771580f
+started=2026-10-14T18:59:10Z
+task_source_overlay=OPS820 restricted gateway login before migration; canonical commit unchanged
+task_source_overlay=fresh task DB representative test/sends/approval_database_test.rb; stop before HTTP/worker, canonical commit unchanged
+BE02 project=be02-df9a802bec9a417ca71bdcbac6b22e68 evidence=/tmp/qa815-backend.ucciqFmx/ops/local/be02-df9a802bec9a417ca71bdcbac6b22e68
+Building bounded task image
+Running isolated Minitest suites and Steep
+tests=DIAGNOSTIC_COMPLETED cleanup=PASSED evidence=/tmp/qa815-backend.ucciqFmx/ops/local/be02-df9a802bec9a417ca71bdcbac6b22e68
+runner_exit=0
+receipt_copy_failed=0
+archive_absent=yes
+finished=2026-10-14T19:01:27Z

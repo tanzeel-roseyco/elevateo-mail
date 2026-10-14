@@ -1,0 +1,688 @@
+#0 building with "[opaque value redacted]" instance using docker-container driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 753B done
+#1 DONE 0.0s
+
+#2 resolve image config for docker-image://docker.io/docker/dockerfile:1
+#2 DONE 1.2s
+
+#3 docker-image://docker.io/docker/dockerfile:1@sha256:[opaque value redacted]
+#3 resolve docker.io/docker/dockerfile:1@sha256:[opaque value redacted] 0.0s done
+#3 sha256:[opaque value redacted] 2.10MB / 14.28MB 0.2s
+#3 sha256:[opaque value redacted] 14.28MB / 14.28MB 0.3s done
+#3 extracting sha256:[opaque value redacted] 0.1s done
+#3 DONE 0.4s
+
+#4 [internal] load metadata for docker.io/library/ruby:3.4.11-slim-bookworm@sha256:[opaque value redacted]
+#4 DONE 0.9s
+
+#5 [internal] load .dockerignore
+#5 transferring context: 63B done
+#5 DONE 0.0s
+
+#6 [1/7] FROM docker.io/library/ruby:3.4.11-slim-bookworm@sha256:[opaque value redacted]
+#6 resolve docker.io/library/ruby:3.4.11-slim-bookworm@sha256:[opaque value redacted] done
+#6 ...
+
+#7 [internal] load build context
+#7 transferring context: 1.72MB 0.0s done
+#7 DONE 0.1s
+
+#6 [1/7] FROM docker.io/library/ruby:3.4.11-slim-bookworm@sha256:[opaque value redacted]
+#6 sha256:[opaque value redacted] 143B / 143B 0.1s done
+#6 sha256:[opaque value redacted] 0B / 43.80MB 0.2s
+#6 sha256:[opaque value redacted] 0B / 190B 0.2s
+#6 sha256:[opaque value redacted] 0B / 3.33MB 0.2s
+#6 sha256:[opaque value redacted] 0B / 28.25MB 0.2s
+#6 sha256:[opaque value redacted] 7.34MB / 43.80MB 0.3s
+#6 sha256:[opaque value redacted] 190B / 190B 0.3s done
+#6 sha256:[opaque value redacted] 3.33MB / 3.33MB 0.4s done
+#6 sha256:[opaque value redacted] 13.63MB / 43.80MB 0.5s
+#6 sha256:[opaque value redacted] 11.53MB / 28.25MB 0.5s
+#6 sha256:[opaque value redacted] 22.02MB / 43.80MB 0.6s
+#6 sha256:[opaque value redacted] 20.97MB / 28.25MB 0.6s
+#6 sha256:[opaque value redacted] 31.46MB / 43.80MB 0.8s
+#6 sha256:[opaque value redacted] 28.25MB / 28.25MB 0.7s done
+#6 sha256:[opaque value redacted] 43.80MB / 43.80MB 1.0s done
+#6 extracting sha256:[opaque value redacted]
+#6 extracting sha256:[opaque value redacted] 0.6s done
+#6 DONE 1.5s
+
+#6 [1/7] FROM docker.io/library/ruby:3.4.11-slim-bookworm@sha256:[opaque value redacted]
+#6 extracting sha256:[opaque value redacted] 0.1s done
+#6 DONE 1.6s
+
+#6 [1/7] FROM docker.io/library/ruby:3.4.11-slim-bookworm@sha256:[opaque value redacted]
+#6 extracting sha256:[opaque value redacted] 0.1s done
+#6 extracting sha256:[opaque value redacted]
+#6 extracting sha256:[opaque value redacted] 0.6s done
+#6 DONE 2.3s
+
+#6 [1/7] FROM docker.io/library/ruby:3.4.11-slim-bookworm@sha256:[opaque value redacted]
+#6 extracting sha256:[opaque value redacted] 0.1s done
+#6 DONE 2.4s
+
+#8 [2/7] RUN apt-get update -qq  && apt-get install -y --no-install-recommends build-essential libpq-dev libyaml-dev pkg-config  && rm -rf /var/lib/apt/lists/*
+#8 1.288 Reading package lists...
+#8 1.697 Building dependency tree...
+#8 1.788 Reading state information...
+#8 1.893 The following additional packages will be installed:
+#8 1.893   binutils binutils-common binutils-x86-64-linux-gnu bzip2 cpp cpp-12 dpkg-dev
+#8 1.893   g++ g++-12 gcc gcc-12 libasan8 libatomic1 libbinutils libc-dev-bin libc6-dev
+#8 1.894   libcc1-0 libcrypt-dev libctf-nobfd0 libctf0 libdpkg-perl libgcc-12-dev
+#8 1.894   libgdbm-compat4 libgdbm6 libgomp1 libgprofng0 libgssapi-krb5-2 libisl23
+#8 1.894   libitm1 libjansson4 libk5crypto3 libkeyutils1 libkrb5-3 libkrb5support0
+#8 1.894   libldap-2.5-0 liblsan0 libmpc3 libmpfr6 libnsl-dev libnsl2 libperl5.36
+#8 1.894   libpkgconf3 libpq5 libquadmath0 libsasl2-2 libsasl2-modules-db libssl-dev
+#8 1.894   libstdc++-12-dev libtirpc-common libtirpc-dev libtirpc3 libtsan2 libubsan1
+#8 1.894   linux-libc-dev make patch perl perl-modules-5.36 pkgconf pkgconf-bin
+#8 1.894   rpcsvc-proto xz-utils
+#8 1.895 Suggested packages:
+#8 1.895   binutils-doc bzip2-doc cpp-doc gcc-12-locales cpp-12-doc debian-keyring
+#8 1.895   g++-multilib g++-12-multilib gcc-12-doc gcc-multilib manpages-dev autoconf
+#8 1.895   automake libtool flex bison gdb gcc-doc gcc-12-multilib glibc-doc gnupg | sq
+#8 1.895   | sqop | pgpainless-cli sensible-utils git bzr gdbm-l10n krb5-doc krb5-user
+#8 1.895   postgresql-doc-15 libssl-doc libstdc++-12-doc libyaml-doc make-doc ed
+#8 1.895   diffutils-doc perl-doc libterm-readline-gnu-perl
+#8 1.895   | libterm-readline-perl-perl libtap-harness-archive-perl
+#8 1.895 Recommended packages:
+#8 1.895   fakeroot gnupg | sq | sqop | pgpainless-cli libalgorithm-merge-perl manpages
+#8 1.895   manpages-dev libc-devtools libfile-fcntllock-perl liblocale-gettext-perl
+#8 1.895   krb5-locales libldap-common libsasl2-modules netbase
+#8 2.065 The following NEW packages will be installed:
+#8 2.065   binutils binutils-common binutils-x86-64-linux-gnu build-essential bzip2 cpp
+#8 2.065   cpp-12 dpkg-dev g++ g++-12 gcc gcc-12 libasan8 libatomic1 libbinutils
+#8 2.065   libc-dev-bin libc6-dev libcc1-0 libcrypt-dev libctf-nobfd0 libctf0
+#8 2.065   libdpkg-perl libgcc-12-dev libgdbm-compat4 libgdbm6 libgomp1 libgprofng0
+#8 2.065   libgssapi-krb5-2 libisl23 libitm1 libjansson4 libk5crypto3 libkeyutils1
+#8 2.065   libkrb5-3 libkrb5support0 libldap-2.5-0 liblsan0 libmpc3 libmpfr6 libnsl-dev
+#8 2.065   libnsl2 libperl5.36 libpkgconf3 libpq-dev libpq5 libquadmath0 libsasl2-2
+#8 2.065   libsasl2-modules-db libssl-dev libstdc++-12-dev libtirpc-common libtirpc-dev
+#8 2.065   libtirpc3 libtsan2 libubsan1 libyaml-dev linux-libc-dev make patch perl
+#8 2.066   perl-modules-5.36 pkg-config pkgconf pkgconf-bin rpcsvc-proto xz-utils
+#8 2.102 0 upgraded, 66 newly installed, 0 to remove and 0 not upgraded.
+#8 2.102 Need to get 77.8 MB of archives.
+#8 2.102 After this operation, 332 MB of additional disk space will be used.
+#8 2.102 Get:1 http://deb.debian.org/debian-security bookworm-security/main amd64 perl-modules-5.36 all 5.36.0-7+deb12u4 [2817 kB]
+#8 2.164 Get:2 http://deb.debian.org/debian bookworm/main amd64 libgdbm6 amd64 1.23-3 [72.2 kB]
+#8 2.165 Get:3 http://deb.debian.org/debian bookworm/main amd64 libgdbm-compat4 amd64 1.23-3 [48.2 kB]
+#8 2.166 Get:4 http://deb.debian.org/debian-security bookworm-security/main amd64 libperl5.36 amd64 5.36.0-7+deb12u4 [4208 kB]
+#8 2.204 Get:5 http://deb.debian.org/debian-security bookworm-security/main amd64 perl amd64 5.36.0-7+deb12u4 [239 kB]
+#8 2.205 Get:6 http://deb.debian.org/debian bookworm/main amd64 bzip2 amd64 1.0.8-5+b1 [49.8 kB]
+#8 32.25 Get:7 http://deb.debian.org/debian-security bookworm-security/main amd64 xz-utils amd64 5.4.1-1+deb12u2 [471 kB]
+#8 32.27 Get:8 http://deb.debian.org/debian bookworm/main amd64 binutils-common amd64 2.40-2 [2487 kB]
+#8 32.31 Get:9 http://deb.debian.org/debian bookworm/main amd64 libbinutils amd64 2.40-2 [572 kB]
+#8 32.32 Get:10 http://deb.debian.org/debian bookworm/main amd64 libctf-nobfd0 amd64 2.40-2 [153 kB]
+#8 32.33 Get:11 http://deb.debian.org/debian bookworm/main amd64 libctf0 amd64 2.40-2 [89.8 kB]
+#8 32.34 Get:12 http://deb.debian.org/debian bookworm/main amd64 libgprofng0 amd64 2.40-2 [812 kB]
+#8 32.38 Get:13 http://deb.debian.org/debian bookworm/main amd64 libjansson4 amd64 2.14-2 [40.8 kB]
+#8 32.39 Get:14 http://deb.debian.org/debian bookworm/main amd64 binutils-x86-64-linux-gnu amd64 2.40-2 [2246 kB]
+#8 32.42 Get:15 http://deb.debian.org/debian bookworm/main amd64 binutils amd64 2.40-2 [65.0 kB]
+#8 32.42 Get:16 http://deb.debian.org/debian bookworm/main amd64 libc-dev-bin amd64 2.36-9+deb12u14 [48.1 kB]
+#8 32.43 Get:17 http://deb.debian.org/debian-security bookworm-security/main amd64 linux-libc-dev amd64 6.1.187-1 [2357 kB]
+#8 32.46 Get:18 http://deb.debian.org/debian bookworm/main amd64 libcrypt-dev amd64 1:4.4.33-2 [118 kB]
+#8 32.46 Get:19 http://deb.debian.org/debian bookworm/main amd64 libkrb5support0 amd64 1.20.1-2+deb12u5 [33.2 kB]
+#8 32.47 Get:20 http://deb.debian.org/debian bookworm/main amd64 libk5crypto3 amd64 1.20.1-2+deb12u5 [79.7 kB]
+#8 32.48 Get:21 http://deb.debian.org/debian bookworm/main amd64 libkeyutils1 amd64 1.6.3-2 [8808 B]
+#8 32.49 Get:22 http://deb.debian.org/debian bookworm/main amd64 libkrb5-3 amd64 1.20.1-2+deb12u5 [332 kB]
+#8 32.50 Get:23 http://deb.debian.org/debian bookworm/main amd64 libgssapi-krb5-2 amd64 1.20.1-2+deb12u5 [135 kB]
+#8 32.51 Get:24 http://deb.debian.org/debian bookworm/main amd64 libtirpc-common all 1.3.3+ds-1 [14.0 kB]
+#8 32.51 Get:25 http://deb.debian.org/debian bookworm/main amd64 libtirpc3 amd64 1.3.3+ds-1 [85.2 kB]
+#8 32.52 Get:26 http://deb.debian.org/debian bookworm/main amd64 libnsl2 amd64 1.3.0-2 [39.5 kB]
+#8 32.53 Get:27 http://deb.debian.org/debian bookworm/main amd64 libtirpc-dev amd64 1.3.3+ds-1 [191 kB]
+#8 32.54 Get:28 http://deb.debian.org/debian bookworm/main amd64 libnsl-dev amd64 1.3.0-2 [66.4 kB]
+#8 32.55 Get:29 http://deb.debian.org/debian bookworm/main amd64 rpcsvc-proto amd64 1.4.3-1 [63.3 kB]
+#8 32.55 Get:30 http://deb.debian.org/debian bookworm/main amd64 libc6-dev amd64 2.36-9+deb12u14 [1904 kB]
+#8 32.58 Get:31 http://deb.debian.org/debian bookworm/main amd64 libisl23 amd64 0.25-1.1 [683 kB]
+#8 32.60 Get:32 http://deb.debian.org/debian bookworm/main amd64 libmpfr6 amd64 4.2.0-1 [701 kB]
+#8 32.61 Get:33 http://deb.debian.org/debian bookworm/main amd64 libmpc3 amd64 1.3.1-1 [51.5 kB]
+#8 32.62 Get:34 http://deb.debian.org/debian bookworm/main amd64 cpp-12 amd64 12.2.0-14+deb12u1 [9768 kB]
+#8 32.72 Get:35 http://deb.debian.org/debian bookworm/main amd64 cpp amd64 4:12.2.0-3 [6836 B]
+#8 32.72 Get:36 http://deb.debian.org/debian bookworm/main amd64 libcc1-0 amd64 12.2.0-14+deb12u1 [41.7 kB]
+#8 32.73 Get:37 http://deb.debian.org/debian bookworm/main amd64 libgomp1 amd64 12.2.0-14+deb12u1 [116 kB]
+#8 32.74 Get:38 http://deb.debian.org/debian bookworm/main amd64 libitm1 amd64 12.2.0-14+deb12u1 [26.1 kB]
+#8 32.75 Get:39 http://deb.debian.org/debian bookworm/main amd64 libatomic1 amd64 12.2.0-14+deb12u1 [9376 B]
+#8 32.75 Get:40 http://deb.debian.org/debian bookworm/main amd64 libasan8 amd64 12.2.0-14+deb12u1 [2193 kB]
+#8 32.78 Get:41 http://deb.debian.org/debian bookworm/main amd64 liblsan0 amd64 12.2.0-14+deb12u1 [969 kB]
+#8 32.80 Get:42 http://deb.debian.org/debian bookworm/main amd64 libtsan2 amd64 12.2.0-14+deb12u1 [2197 kB]
+#8 32.83 Get:43 http://deb.debian.org/debian bookworm/main amd64 libubsan1 amd64 12.2.0-14+deb12u1 [883 kB]
+#8 32.84 Get:44 http://deb.debian.org/debian bookworm/main amd64 libquadmath0 amd64 12.2.0-14+deb12u1 [145 kB]
+#8 32.85 Get:45 http://deb.debian.org/debian bookworm/main amd64 libgcc-12-dev amd64 12.2.0-14+deb12u1 [2437 kB]
+#8 32.88 Get:46 http://deb.debian.org/debian bookworm/main amd64 gcc-12 amd64 12.2.0-14+deb12u1 [19.3 MB]
+#8 33.13 Get:47 http://deb.debian.org/debian bookworm/main amd64 gcc amd64 4:12.2.0-3 [5216 B]
+#8 33.14 Get:48 http://deb.debian.org/debian bookworm/main amd64 libstdc++-12-dev amd64 12.2.0-14+deb12u1 [2047 kB]
+#8 33.17 Get:49 http://deb.debian.org/debian bookworm/main amd64 g++-12 amd64 12.2.0-14+deb12u1 [10.7 MB]
+#8 33.27 Get:50 http://deb.debian.org/debian bookworm/main amd64 g++ amd64 4:12.2.0-3 [1356 B]
+#8 33.27 Get:51 http://deb.debian.org/debian bookworm/main amd64 make amd64 4.3-4.1 [396 kB]
+#8 33.28 Get:52 http://deb.debian.org/debian bookworm/main amd64 libdpkg-perl all 1.21.23 [604 kB]
+#8 33.29 Get:53 http://deb.debian.org/debian bookworm/main amd64 patch amd64 2.7.6-7 [128 kB]
+#8 33.30 Get:54 http://deb.debian.org/debian bookworm/main amd64 dpkg-dev all 1.21.23 [1354 kB]
+#8 33.32 Get:55 http://deb.debian.org/debian bookworm/main amd64 build-essential amd64 12.9 [7704 B]
+#8 33.33 Get:56 http://deb.debian.org/debian bookworm/main amd64 libsasl2-modules-db amd64 2.1.28+dfsg-10 [20.3 kB]
+#8 33.34 Get:57 http://deb.debian.org/debian bookworm/main amd64 libsasl2-2 amd64 2.1.28+dfsg-10 [59.7 kB]
+#8 33.34 Get:58 http://deb.debian.org/debian bookworm/main amd64 libldap-2.5-0 amd64 2.5.13+dfsg-5 [183 kB]
+#8 33.35 Get:59 http://deb.debian.org/debian bookworm/main amd64 libpkgconf3 amd64 1.8.1-1 [36.1 kB]
+#8 33.36 Get:60 http://deb.debian.org/debian-security bookworm-security/main amd64 libpq5 amd64 15.19-0+deb12u1 [203 kB]
+#8 33.38 Get:61 http://deb.debian.org/debian-security bookworm-security/main amd64 libssl-dev amd64 3.0.22-1~deb12u1 [2450 kB]
+#8 33.42 Get:62 http://deb.debian.org/debian-security bookworm-security/main amd64 libpq-dev amd64 15.19-0+deb12u1 [156 kB]
+#8 33.43 Get:63 http://deb.debian.org/debian bookworm/main amd64 libyaml-dev amd64 0.2.5-1 [64.5 kB]
+#8 33.44 Get:64 http://deb.debian.org/debian bookworm/main amd64 pkgconf-bin amd64 1.8.1-1 [29.5 kB]
+#8 33.45 Get:65 http://deb.debian.org/debian bookworm/main amd64 pkgconf amd64 1.8.1-1 [25.9 kB]
+#8 33.46 Get:66 http://deb.debian.org/debian bookworm/main amd64 pkg-config amd64 1.8.1-1 [13.7 kB]
+#8 33.54 debconf: delaying package configuration, since apt-utils is not installed
+#8 33.56 Fetched 77.8 MB in 31s (2480 kB/s)
+#8 33.58 Selecting previously unselected package perl-modules-5.36.
+#8 33.58 (Reading database ... 
+(Reading database ... 5%
+(Reading database ... 10%
+(Reading database ... 15%
+(Reading database ... 20%
+(Reading database ... 25%
+(Reading database ... 30%
+(Reading database ... 35%
+(Reading database ... 40%
+(Reading database ... 45%
+(Reading database ... 50%
+(Reading database ... 55%
+(Reading database ... 60%
+(Reading database ... 65%
+(Reading database ... 70%
+(Reading database ... 75%
+(Reading database ... 80%
+(Reading database ... 85%
+(Reading database ... 90%
+(Reading database ... 95%
+(Reading database ... 100%
+(Reading database ... 6599 files and directories currently installed.)
+#8 33.59 Preparing to unpack .../00-perl-modules-5.36_5.36.0-7+deb12u4_all.deb ...
+#8 33.59 Unpacking perl-modules-5.36 (5.36.0-7+deb12u4) ...
+#8 33.80 Selecting previously unselected package libgdbm6:amd64.
+#8 33.80 Preparing to unpack .../01-libgdbm6_1.23-3_amd64.deb ...
+#8 33.81 Unpacking libgdbm6:amd64 (1.23-3) ...
+#8 33.83 Selecting previously unselected package libgdbm-compat4:amd64.
+#8 33.83 Preparing to unpack .../02-libgdbm-compat4_1.23-3_amd64.deb ...
+#8 33.84 Unpacking libgdbm-compat4:amd64 (1.23-3) ...
+#8 33.86 Selecting previously unselected package libperl5.36:amd64.
+#8 33.86 Preparing to unpack .../03-libperl5.36_5.36.0-7+deb12u4_amd64.deb ...
+#8 33.87 Unpacking libperl5.36:amd64 (5.36.0-7+deb12u4) ...
+#8 34.11 Selecting previously unselected package perl.
+#8 34.11 Preparing to unpack .../04-perl_5.36.0-7+deb12u4_amd64.deb ...
+#8 34.12 Unpacking perl (5.36.0-7+deb12u4) ...
+#8 34.16 Selecting previously unselected package bzip2.
+#8 34.16 Preparing to unpack .../05-bzip2_1.0.8-5+b1_amd64.deb ...
+#8 34.17 Unpacking bzip2 (1.0.8-5+b1) ...
+#8 34.20 Selecting previously unselected package xz-utils.
+#8 34.20 Preparing to unpack .../06-xz-utils_5.4.1-1+deb12u2_amd64.deb ...
+#8 34.21 Unpacking xz-utils (5.4.1-1+deb12u2) ...
+#8 34.27 Selecting previously unselected package binutils-common:amd64.
+#8 34.27 Preparing to unpack .../07-binutils-common_2.40-2_amd64.deb ...
+#8 34.27 Unpacking binutils-common:amd64 (2.40-2) ...
+#8 34.44 Selecting previously unselected package libbinutils:amd64.
+#8 34.44 Preparing to unpack .../08-libbinutils_2.40-2_amd64.deb ...
+#8 34.44 Unpacking libbinutils:amd64 (2.40-2) ...
+#8 34.50 Selecting previously unselected package libctf-nobfd0:amd64.
+#8 34.50 Preparing to unpack .../09-libctf-nobfd0_2.40-2_amd64.deb ...
+#8 34.51 Unpacking libctf-nobfd0:amd64 (2.40-2) ...
+#8 34.54 Selecting previously unselected package libctf0:amd64.
+#8 34.54 Preparing to unpack .../10-libctf0_2.40-2_amd64.deb ...
+#8 34.55 Unpacking libctf0:amd64 (2.40-2) ...
+#8 34.58 Selecting previously unselected package libgprofng0:amd64.
+#8 34.58 Preparing to unpack .../11-libgprofng0_2.40-2_amd64.deb ...
+#8 34.59 Unpacking libgprofng0:amd64 (2.40-2) ...
+#8 34.73 Selecting previously unselected package libjansson4:amd64.
+#8 34.73 Preparing to unpack .../12-libjansson4_2.14-2_amd64.deb ...
+#8 34.74 Unpacking libjansson4:amd64 (2.14-2) ...
+#8 34.77 Selecting previously unselected package binutils-x86-64-linux-gnu.
+#8 34.78 Preparing to unpack .../13-binutils-x86-64-linux-gnu_2.40-2_amd64.deb ...
+#8 34.78 Unpacking binutils-x86-64-linux-gnu (2.40-2) ...
+#8 35.00 Selecting previously unselected package binutils.
+#8 35.00 Preparing to unpack .../14-binutils_2.40-2_amd64.deb ...
+#8 35.02 Unpacking binutils (2.40-2) ...
+#8 35.13 Selecting previously unselected package libc-dev-bin.
+#8 35.13 Preparing to unpack .../15-libc-dev-bin_2.36-9+deb12u14_amd64.deb ...
+#8 35.15 Unpacking libc-dev-bin (2.36-9+deb12u14) ...
+#8 35.27 Selecting previously unselected package linux-libc-dev:amd64.
+#8 35.27 Preparing to unpack .../16-linux-libc-dev_6.1.187-1_amd64.deb ...
+#8 35.29 Unpacking linux-libc-dev:amd64 (6.1.187-1) ...
+#8 35.56 Selecting previously unselected package libcrypt-dev:amd64.
+#8 35.56 Preparing to unpack .../17-libcrypt-dev_1%3a4.4.33-2_amd64.deb ...
+#8 35.58 Unpacking libcrypt-dev:amd64 (1:4.4.33-2) ...
+#8 35.71 Selecting previously unselected package libkrb5support0:amd64.
+#8 35.71 Preparing to unpack .../18-libkrb5support0_1.20.1-2+deb12u5_amd64.deb ...
+#8 35.73 Unpacking libkrb5support0:amd64 (1.20.1-2+deb12u5) ...
+#8 35.87 Selecting previously unselected package libk5crypto3:amd64.
+#8 35.87 Preparing to unpack .../19-libk5crypto3_1.20.1-2+deb12u5_amd64.deb ...
+#8 35.88 Unpacking libk5crypto3:amd64 (1.20.1-2+deb12u5) ...
+#8 36.07 Selecting previously unselected package libkeyutils1:amd64.
+#8 36.07 Preparing to unpack .../20-libkeyutils1_1.6.3-2_amd64.deb ...
+#8 36.09 Unpacking libkeyutils1:amd64 (1.6.3-2) ...
+#8 36.23 Selecting previously unselected package libkrb5-3:amd64.
+#8 36.23 Preparing to unpack .../21-libkrb5-3_1.20.1-2+deb12u5_amd64.deb ...
+#8 36.25 Unpacking libkrb5-3:amd64 (1.20.1-2+deb12u5) ...
+#8 36.43 Selecting previously unselected package libgssapi-krb5-2:amd64.
+#8 36.43 Preparing to unpack .../22-libgssapi-krb5-2_1.20.1-2+deb12u5_amd64.deb ...
+#8 36.45 Unpacking libgssapi-krb5-2:amd64 (1.20.1-2+deb12u5) ...
+#8 36.56 Selecting previously unselected package libtirpc-common.
+#8 36.56 Preparing to unpack .../23-libtirpc-common_1.3.3+ds-1_all.deb ...
+#8 36.58 Unpacking libtirpc-common (1.3.3+ds-1) ...
+#8 36.73 Selecting previously unselected package libtirpc3:amd64.
+#8 36.73 Preparing to unpack .../24-libtirpc3_1.3.3+ds-1_amd64.deb ...
+#8 36.75 Unpacking libtirpc3:amd64 (1.3.3+ds-1) ...
+#8 36.90 Selecting previously unselected package libnsl2:amd64.
+#8 36.90 Preparing to unpack .../25-libnsl2_1.3.0-2_amd64.deb ...
+#8 36.92 Unpacking libnsl2:amd64 (1.3.0-2) ...
+#8 37.05 Selecting previously unselected package libtirpc-dev:amd64.
+#8 37.05 Preparing to unpack .../26-libtirpc-dev_1.3.3+ds-1_amd64.deb ...
+#8 37.07 Unpacking libtirpc-dev:amd64 (1.3.3+ds-1) ...
+#8 37.10 Selecting previously unselected package libnsl-dev:amd64.
+#8 37.10 Preparing to unpack .../27-libnsl-dev_1.3.0-2_amd64.deb ...
+#8 37.10 Unpacking libnsl-dev:amd64 (1.3.0-2) ...
+#8 37.13 Selecting previously unselected package rpcsvc-proto.
+#8 37.14 Preparing to unpack .../28-rpcsvc-proto_1.4.3-1_amd64.deb ...
+#8 37.14 Unpacking rpcsvc-proto (1.4.3-1) ...
+#8 37.18 Selecting previously unselected package libc6-dev:amd64.
+#8 37.18 Preparing to unpack .../29-libc6-dev_2.36-9+deb12u14_amd64.deb ...
+#8 37.18 Unpacking libc6-dev:amd64 (2.36-9+deb12u14) ...
+#8 37.32 Selecting previously unselected package libisl23:amd64.
+#8 37.32 Preparing to unpack .../30-libisl23_0.25-1.1_amd64.deb ...
+#8 37.33 Unpacking libisl23:amd64 (0.25-1.1) ...
+#8 37.38 Selecting previously unselected package libmpfr6:amd64.
+#8 37.38 Preparing to unpack .../31-libmpfr6_4.2.0-1_amd64.deb ...
+#8 37.38 Unpacking libmpfr6:amd64 (4.2.0-1) ...
+#8 37.42 Selecting previously unselected package libmpc3:amd64.
+#8 37.43 Preparing to unpack .../32-libmpc3_1.3.1-1_amd64.deb ...
+#8 37.43 Unpacking libmpc3:amd64 (1.3.1-1) ...
+#8 37.45 Selecting previously unselected package cpp-12.
+#8 37.45 Preparing to unpack .../33-cpp-12_12.2.0-14+deb12u1_amd64.deb ...
+#8 37.46 Unpacking cpp-12 (12.2.0-14+deb12u1) ...
+#8 37.90 Selecting previously unselected package cpp.
+#8 37.90 Preparing to unpack .../34-cpp_4%3a12.2.0-3_amd64.deb ...
+#8 37.90 Unpacking cpp (4:12.2.0-3) ...
+#8 37.94 Selecting previously unselected package libcc1-0:amd64.
+#8 37.94 Preparing to unpack .../35-libcc1-0_12.2.0-14+deb12u1_amd64.deb ...
+#8 37.94 Unpacking libcc1-0:amd64 (12.2.0-14+deb12u1) ...
+#8 37.98 Selecting previously unselected package libgomp1:amd64.
+#8 37.98 Preparing to unpack .../36-libgomp1_12.2.0-14+deb12u1_amd64.deb ...
+#8 37.98 Unpacking libgomp1:amd64 (12.2.0-14+deb12u1) ...
+#8 38.01 Selecting previously unselected package libitm1:amd64.
+#8 38.01 Preparing to unpack .../37-libitm1_12.2.0-14+deb12u1_amd64.deb ...
+#8 38.02 Unpacking libitm1:amd64 (12.2.0-14+deb12u1) ...
+#8 38.04 Selecting previously unselected package libatomic1:amd64.
+#8 38.04 Preparing to unpack .../38-libatomic1_12.2.0-14+deb12u1_amd64.deb ...
+#8 38.05 Unpacking libatomic1:amd64 (12.2.0-14+deb12u1) ...
+#8 38.07 Selecting previously unselected package libasan8:amd64.
+#8 38.07 Preparing to unpack .../39-libasan8_12.2.0-14+deb12u1_amd64.deb ...
+#8 38.07 Unpacking libasan8:amd64 (12.2.0-14+deb12u1) ...
+#8 38.20 Selecting previously unselected package liblsan0:amd64.
+#8 38.20 Preparing to unpack .../40-liblsan0_12.2.0-14+deb12u1_amd64.deb ...
+#8 38.20 Unpacking liblsan0:amd64 (12.2.0-14+deb12u1) ...
+#8 38.27 Selecting previously unselected package libtsan2:amd64.
+#8 38.27 Preparing to unpack .../41-libtsan2_12.2.0-14+deb12u1_amd64.deb ...
+#8 38.27 Unpacking libtsan2:amd64 (12.2.0-14+deb12u1) ...
+#8 38.39 Selecting previously unselected package libubsan1:amd64.
+#8 38.40 Preparing to unpack .../42-libubsan1_12.2.0-14+deb12u1_amd64.deb ...
+#8 38.40 Unpacking libubsan1:amd64 (12.2.0-14+deb12u1) ...
+#8 38.46 Selecting previously unselected package libquadmath0:amd64.
+#8 38.46 Preparing to unpack .../43-libquadmath0_12.2.0-14+deb12u1_amd64.deb ...
+#8 38.46 Unpacking libquadmath0:amd64 (12.2.0-14+deb12u1) ...
+#8 38.49 Selecting previously unselected package libgcc-12-dev:amd64.
+#8 38.49 Preparing to unpack .../44-libgcc-12-dev_12.2.0-14+deb12u1_amd64.deb ...
+#8 38.49 Unpacking libgcc-12-dev:amd64 (12.2.0-14+deb12u1) ...
+#8 38.62 Selecting previously unselected package gcc-12.
+#8 38.62 Preparing to unpack .../45-gcc-12_12.2.0-14+deb12u1_amd64.deb ...
+#8 38.62 Unpacking gcc-12 (12.2.0-14+deb12u1) ...
+#8 39.28 Selecting previously unselected package gcc.
+#8 39.28 Preparing to unpack .../46-gcc_4%3a12.2.0-3_amd64.deb ...
+#8 39.29 Unpacking gcc (4:12.2.0-3) ...
+#8 39.31 Selecting previously unselected package libstdc++-12-dev:amd64.
+#8 39.31 Preparing to unpack .../47-libstdc++-12-dev_12.2.0-14+deb12u1_amd64.deb ...
+#8 39.31 Unpacking libstdc++-12-dev:amd64 (12.2.0-14+deb12u1) ...
+#8 39.51 Selecting previously unselected package g++-12.
+#8 39.52 Preparing to unpack .../48-g++-12_12.2.0-14+deb12u1_amd64.deb ...
+#8 39.52 Unpacking g++-12 (12.2.0-14+deb12u1) ...
+#8 39.98 Selecting previously unselected package g++.
+#8 39.98 Preparing to unpack .../49-g++_4%3a12.2.0-3_amd64.deb ...
+#8 39.98 Unpacking g++ (4:12.2.0-3) ...
+#8 40.00 Selecting previously unselected package make.
+#8 40.01 Preparing to unpack .../50-make_4.3-4.1_amd64.deb ...
+#8 40.01 Unpacking make (4.3-4.1) ...
+#8 40.05 Selecting previously unselected package libdpkg-perl.
+#8 40.05 Preparing to unpack .../51-libdpkg-perl_1.21.23_all.deb ...
+#8 40.05 Unpacking libdpkg-perl (1.21.23) ...
+#8 40.10 Selecting previously unselected package patch.
+#8 40.10 Preparing to unpack .../52-patch_2.7.6-7_amd64.deb ...
+#8 40.10 Unpacking patch (2.7.6-7) ...
+#8 40.13 Selecting previously unselected package dpkg-dev.
+#8 40.13 Preparing to unpack .../53-dpkg-dev_1.21.23_all.deb ...
+#8 40.13 Unpacking dpkg-dev (1.21.23) ...
+#8 40.20 Selecting previously unselected package build-essential.
+#8 40.20 Preparing to unpack .../54-build-essential_12.9_amd64.deb ...
+#8 40.20 Unpacking build-essential (12.9) ...
+#8 40.22 Selecting previously unselected package libsasl2-modules-db:amd64.
+#8 40.23 Preparing to unpack .../55-libsasl2-modules-db_2.1.28+dfsg-10_amd64.deb ...
+#8 40.23 Unpacking libsasl2-modules-db:amd64 (2.1.28+dfsg-10) ...
+#8 40.25 Selecting previously unselected package libsasl2-2:amd64.
+#8 40.26 Preparing to unpack .../56-libsasl2-2_2.1.28+dfsg-10_amd64.deb ...
+#8 40.26 Unpacking libsasl2-2:amd64 (2.1.28+dfsg-10) ...
+#8 40.29 Selecting previously unselected package libldap-2.5-0:amd64.
+#8 40.29 Preparing to unpack .../57-libldap-2.5-0_2.5.13+dfsg-5_amd64.deb ...
+#8 40.29 Unpacking libldap-2.5-0:amd64 (2.5.13+dfsg-5) ...
+#8 40.32 Selecting previously unselected package libpkgconf3:amd64.
+#8 40.33 Preparing to unpack .../58-libpkgconf3_1.8.1-1_amd64.deb ...
+#8 40.33 Unpacking libpkgconf3:amd64 (1.8.1-1) ...
+#8 40.35 Selecting previously unselected package libpq5:amd64.
+#8 40.35 Preparing to unpack .../59-libpq5_15.19-0+deb12u1_amd64.deb ...
+#8 40.36 Unpacking libpq5:amd64 (15.19-0+deb12u1) ...
+#8 40.39 Selecting previously unselected package libssl-dev:amd64.
+#8 40.39 Preparing to unpack .../60-libssl-dev_3.0.22-1~deb12u1_amd64.deb ...
+#8 40.39 Unpacking libssl-dev:amd64 (3.0.22-1~deb12u1) ...
+#8 40.50 Selecting previously unselected package libpq-dev.
+#8 40.51 Preparing to unpack .../61-libpq-dev_15.19-0+deb12u1_amd64.deb ...
+#8 40.51 Unpacking libpq-dev (15.19-0+deb12u1) ...
+#8 40.54 Selecting previously unselected package libyaml-dev:amd64.
+#8 40.54 Preparing to unpack .../62-libyaml-dev_0.2.5-1_amd64.deb ...
+#8 40.54 Unpacking libyaml-dev:amd64 (0.2.5-1) ...
+#8 40.56 Selecting previously unselected package pkgconf-bin.
+#8 40.56 Preparing to unpack .../63-pkgconf-bin_1.8.1-1_amd64.deb ...
+#8 40.57 Unpacking pkgconf-bin (1.8.1-1) ...
+#8 40.59 Selecting previously unselected package pkgconf:amd64.
+#8 40.59 Preparing to unpack .../64-pkgconf_1.8.1-1_amd64.deb ...
+#8 40.60 Unpacking pkgconf:amd64 (1.8.1-1) ...
+#8 40.63 Selecting previously unselected package pkg-config:amd64.
+#8 40.63 Preparing to unpack .../65-pkg-config_1.8.1-1_amd64.deb ...
+#8 40.63 Unpacking pkg-config:amd64 (1.8.1-1) ...
+#8 40.67 Setting up libkeyutils1:amd64 (1.6.3-2) ...
+#8 40.67 Setting up libyaml-dev:amd64 (0.2.5-1) ...
+#8 40.69 Setting up libtirpc-common (1.3.3+ds-1) ...
+#8 40.70 Setting up binutils-common:amd64 (2.40-2) ...
+#8 40.71 Setting up linux-libc-dev:amd64 (6.1.187-1) ...
+#8 40.72 Setting up libctf-nobfd0:amd64 (2.40-2) ...
+#8 40.73 Setting up libgomp1:amd64 (12.2.0-14+deb12u1) ...
+#8 40.73 Setting up bzip2 (1.0.8-5+b1) ...
+#8 40.74 Setting up libjansson4:amd64 (2.14-2) ...
+#8 40.75 Setting up libkrb5support0:amd64 (1.20.1-2+deb12u5) ...
+#8 40.76 Setting up libsasl2-modules-db:amd64 (2.1.28+dfsg-10) ...
+#8 40.76 Setting up perl-modules-5.36 (5.36.0-7+deb12u4) ...
+#8 40.77 Setting up libpkgconf3:amd64 (1.8.1-1) ...
+#8 40.78 Setting up rpcsvc-proto (1.4.3-1) ...
+#8 40.78 Setting up make (4.3-4.1) ...
+#8 40.79 Setting up libmpfr6:amd64 (4.2.0-1) ...
+#8 40.80 Setting up xz-utils (5.4.1-1+deb12u2) ...
+#8 40.81 update-alternatives: using /usr/bin/xz to provide /usr/bin/lzma (lzma) in auto mode
+#8 40.81 update-alternatives: warning: skip creation of /usr/share/man/man1/lzma.1.gz because associated file /usr/share/man/man1/xz.1.gz (of link group lzma) doesn't exist
+#8 40.81 update-alternatives: warning: skip creation of /usr/share/man/man1/unlzma.1.gz because associated file /usr/share/man/man1/unxz.1.gz (of link group lzma) doesn't exist
+#8 40.81 update-alternatives: warning: skip creation of /usr/share/man/man1/lzcat.1.gz because associated file /usr/share/man/man1/xzcat.1.gz (of link group lzma) doesn't exist
+#8 40.81 update-alternatives: warning: skip creation of /usr/share/man/man1/lzmore.1.gz because associated file /usr/share/man/man1/xzmore.1.gz (of link group lzma) doesn't exist
+#8 40.81 update-alternatives: warning: skip creation of /usr/share/man/man1/lzless.1.gz because associated file /usr/share/man/man1/xzless.1.gz (of link group lzma) doesn't exist
+#8 40.81 update-alternatives: warning: skip creation of /usr/share/man/man1/lzdiff.1.gz because associated file /usr/share/man/man1/xzdiff.1.gz (of link group lzma) doesn't exist
+#8 40.81 update-alternatives: warning: skip creation of /usr/share/man/man1/lzcmp.1.gz because associated file /usr/share/man/man1/xzcmp.1.gz (of link group lzma) doesn't exist
+#8 40.81 update-alternatives: warning: skip creation of /usr/share/man/man1/lzgrep.1.gz because associated file /usr/share/man/man1/xzgrep.1.gz (of link group lzma) doesn't exist
+#8 40.81 update-alternatives: warning: skip creation of /usr/share/man/man1/lzegrep.1.gz because associated file /usr/share/man/man1/xzegrep.1.gz (of link group lzma) doesn't exist
+#8 40.81 update-alternatives: warning: skip creation of /usr/share/man/man1/lzfgrep.1.gz because associated file /usr/share/man/man1/xzfgrep.1.gz (of link group lzma) doesn't exist
+#8 40.82 Setting up libquadmath0:amd64 (12.2.0-14+deb12u1) ...
+#8 40.83 Setting up libssl-dev:amd64 (3.0.22-1~deb12u1) ...
+#8 40.83 Setting up libmpc3:amd64 (1.3.1-1) ...
+#8 40.84 Setting up libatomic1:amd64 (12.2.0-14+deb12u1) ...
+#8 40.85 Setting up patch (2.7.6-7) ...
+#8 40.85 Setting up pkgconf-bin (1.8.1-1) ...
+#8 40.86 Setting up libk5crypto3:amd64 (1.20.1-2+deb12u5) ...
+#8 40.87 Setting up libsasl2-2:amd64 (2.1.28+dfsg-10) ...
+#8 40.87 Setting up libubsan1:amd64 (12.2.0-14+deb12u1) ...
+#8 40.88 Setting up libcrypt-dev:amd64 (1:4.4.33-2) ...
+#8 40.89 Setting up libasan8:amd64 (12.2.0-14+deb12u1) ...
+#8 40.90 Setting up libkrb5-3:amd64 (1.20.1-2+deb12u5) ...
+#8 40.90 Setting up libtsan2:amd64 (12.2.0-14+deb12u1) ...
+#8 40.91 Setting up libbinutils:amd64 (2.40-2) ...
+#8 40.92 Setting up libisl23:amd64 (0.25-1.1) ...
+#8 40.93 Setting up libc-dev-bin (2.36-9+deb12u14) ...
+#8 40.93 Setting up libcc1-0:amd64 (12.2.0-14+deb12u1) ...
+#8 40.94 Setting up liblsan0:amd64 (12.2.0-14+deb12u1) ...
+#8 40.95 Setting up libitm1:amd64 (12.2.0-14+deb12u1) ...
+#8 40.95 Setting up libgdbm6:amd64 (1.23-3) ...
+#8 40.96 Setting up libctf0:amd64 (2.40-2) ...
+#8 40.97 Setting up cpp-12 (12.2.0-14+deb12u1) ...
+#8 40.97 Setting up libldap-2.5-0:amd64 (2.5.13+dfsg-5) ...
+#8 40.98 Setting up pkgconf:amd64 (1.8.1-1) ...
+#8 40.99 Setting up libgprofng0:amd64 (2.40-2) ...
+#8 40.99 Setting up libgcc-12-dev:amd64 (12.2.0-14+deb12u1) ...
+#8 41.00 Setting up libgssapi-krb5-2:amd64 (1.20.1-2+deb12u5) ...
+#8 41.01 Setting up pkg-config:amd64 (1.8.1-1) ...
+#8 41.02 Setting up libgdbm-compat4:amd64 (1.23-3) ...
+#8 41.03 Setting up cpp (4:12.2.0-3) ...
+#8 41.04 Setting up libperl5.36:amd64 (5.36.0-7+deb12u4) ...
+#8 41.04 Setting up binutils-x86-64-linux-gnu (2.40-2) ...
+#8 41.05 Setting up libtirpc3:amd64 (1.3.3+ds-1) ...
+#8 41.06 Setting up libpq5:amd64 (15.19-0+deb12u1) ...
+#8 41.07 Setting up libpq-dev (15.19-0+deb12u1) ...
+#8 41.07 Setting up binutils (2.40-2) ...
+#8 41.08 Setting up perl (5.36.0-7+deb12u4) ...
+#8 41.09 Setting up libtirpc-dev:amd64 (1.3.3+ds-1) ...
+#8 41.10 Setting up gcc-12 (12.2.0-14+deb12u1) ...
+#8 41.11 Setting up libdpkg-perl (1.21.23) ...
+#8 41.11 Setting up libnsl2:amd64 (1.3.0-2) ...
+#8 41.12 Setting up gcc (4:12.2.0-3) ...
+#8 41.14 Setting up dpkg-dev (1.21.23) ...
+#8 41.15 Setting up libnsl-dev:amd64 (1.3.0-2) ...
+#8 41.16 Setting up libc6-dev:amd64 (2.36-9+deb12u14) ...
+#8 41.17 Setting up libstdc++-12-dev:amd64 (12.2.0-14+deb12u1) ...
+#8 41.17 Setting up g++-12 (12.2.0-14+deb12u1) ...
+#8 41.18 Setting up g++ (4:12.2.0-3) ...
+#8 41.19 update-alternatives: using /usr/bin/g++ to provide /usr/bin/c++ (c++) in auto mode
+#8 41.19 Setting up build-essential (12.9) ...
+#8 41.20 Processing triggers for libc-bin (2.36-9+deb12u14) ...
+#8 DONE 41.7s
+
+#9 [3/7] WORKDIR /app
+#9 DONE 0.1s
+
+#10 [4/7] COPY Gemfile Gemfile.lock* ./
+#10 DONE 0.2s
+
+#11 [5/7] RUN bundle install --jobs 4
+#11 1.155 Fetching gem metadata from https://rubygems.org/........
+#11 2.446 Fetching rake 13.4.2
+#11 2.532 Installing rake 13.4.2
+#11 2.545 Fetching base64 0.3.0
+#11 2.546 Fetching bigdecimal 4.1.3
+#11 2.546 Fetching concurrent-ruby 1.3.8
+#11 2.546 Fetching connection_pool 3.0.2
+#11 2.555 Installing base64 0.3.0
+#11 2.557 Fetching drb 2.2.3
+#11 2.565 Installing bigdecimal 4.1.3 with native extensions
+#11 2.600 Installing drb 2.2.3
+#11 2.601 Installing connection_pool 3.0.2
+#11 2.613 Fetching json 3.0.2
+#11 2.615 Fetching logger 1.7.0
+#11 2.619 Installing concurrent-ruby 1.3.8
+#11 2.635 Installing json 3.0.2 with native extensions
+#11 2.641 Installing logger 1.7.0
+#11 2.651 Fetching prism 1.9.0
+#11 2.785 Fetching securerandom 0.4.1
+#11 2.794 Installing prism 1.9.0 with native extensions
+#11 2.798 Installing securerandom 0.4.1
+#11 2.801 Fetching uri 1.1.2
+#11 2.816 Installing uri 1.1.2
+#11 2.823 Fetching builder 3.3.0
+#11 2.835 Installing builder 3.3.0
+#11 2.882 Fetching erubi 1.13.1
+#11 2.913 Installing erubi 1.13.1
+#11 2.918 Fetching racc 1.8.1
+#11 2.974 Installing racc 1.8.1 with native extensions
+#11 3.778 Fetching crass 1.0.7
+#11 3.791 Installing crass 1.0.7
+#11 3.796 Fetching rack 3.2.7
+#11 3.810 Installing rack 3.2.7
+#11 3.821 Fetching useragent 0.16.11
+#11 3.875 Installing useragent 0.16.11
+#11 3.881 Fetching prettyprint 0.2.1
+#11 3.894 Installing prettyprint 0.2.1
+#11 3.899 Fetching erb 6.0.7
+#11 3.908 Installing erb 6.0.7 with native extensions
+#11 4.921 Fetching tsort 0.2.0
+#11 4.975 Installing tsort 0.2.0
+#11 4.982 Fetching io-console 0.9.4
+#11 4.993 Installing io-console 0.9.4 with native extensions
+#11 10.38 Fetching thor 1.5.0
+#11 10.41 Installing thor 1.5.0
+#11 10.42 Fetching zeitwerk 2.8.3
+#11 10.48 Installing zeitwerk 2.8.3
+#11 10.49 Fetching nio4r 2.7.5
+#11 10.51 Installing nio4r 2.7.5 with native extensions
+#11 15.58 Fetching websocket-extensions 0.1.5
+#11 15.61 Installing websocket-extensions 0.1.5
+#11 15.61 Fetching timeout 0.6.1
+#11 15.63 Installing timeout 0.6.1
+#11 15.63 Fetching marcel 1.2.1
+#11 15.68 Installing marcel 1.2.1
+#11 15.68 Fetching mini_mime 1.1.5
+#11 15.69 Installing mini_mime 1.1.5
+#11 15.70 Fetching date 3.6.0
+#11 15.71 Installing date 3.6.0 with native extensions
+#11 16.21 Fetching ast 2.4.3
+#11 16.28 Installing ast 2.4.3
+#11 16.28 Fetching csv 3.3.6
+#11 16.29 Installing csv 3.3.6
+#11 16.30 Fetching ffi 1.17.4 (x86_64-linux-gnu)
+#11 16.38 Installing ffi 1.17.4 (x86_64-linux-gnu)
+#11 16.47 Fetching fileutils 1.8.1
+#11 16.48 Fetching language_server-protocol 3.17.0.6
+#11 16.49 Installing fileutils 1.8.1
+#11 16.49 Fetching lint_roller 1.1.0
+#11 16.50 Installing language_server-protocol 3.17.0.6
+#11 16.51 Installing lint_roller 1.1.0
+#11 16.51 Fetching rb-fsevent 0.11.2
+#11 16.57 Installing rb-fsevent 0.11.2
+#11 16.58 Fetching minitest-mock 5.27.0
+#11 16.60 Installing minitest-mock 5.27.0
+#11 16.61 Fetching parallel 2.3.0
+#11 16.62 Installing parallel 2.3.0
+#11 16.62 Fetching pg 1.7.0 (x86_64-linux)
+#11 16.80 Fetching rainbow 3.1.1
+#11 16.81 Installing rainbow 3.1.1
+#11 16.82 Fetching regexp_parser 2.13.1
+#11 16.88 Installing regexp_parser 2.13.1
+#11 16.91 Fetching ruby-progressbar 1.13.0
+#11 16.93 Installing ruby-progressbar 1.13.0
+#11 16.99 Installing pg 1.7.0 (x86_64-linux)
+#11 17.00 Fetching unicode-emoji 4.3.0
+#11 17.02 Installing unicode-emoji 4.3.0
+#11 17.10 Fetching strscan 3.1.8
+#11 17.12 Installing strscan 3.1.8 with native extensions
+#11 17.30 Fetching i18n 1.15.2
+#11 17.31 Installing i18n 1.15.2
+#11 17.38 Fetching tzinfo 2.0.6
+#11 17.39 Installing tzinfo 2.0.6
+#11 17.41 Fetching nokogiri 1.19.4 (x86_64-linux-gnu)
+#11 17.72 Installing nokogiri 1.19.4 (x86_64-linux-gnu)
+#11 17.90 Fetching rack-session 2.1.2
+#11 17.91 Installing rack-session 2.1.2
+#11 17.91 Fetching rack-test 2.2.0
+#11 17.92 Installing rack-test 2.2.0
+#11 17.92 Fetching rackup 2.3.1
+#11 17.98 Installing rackup 2.3.1
+#11 17.98 Fetching pp 0.6.4
+#11 17.99 Installing pp 0.6.4
+#11 17.99 Fetching reline 0.7.0
+#11 18.00 Installing reline 0.7.0
+#11 18.01 Fetching websocket-driver 0.8.2
+#11 18.02 Installing websocket-driver 0.8.2 with native extensions
+#11 18.59 Fetching net-protocol 0.4.0
+#11 18.60 Installing net-protocol 0.4.0
+#11 18.60 Fetching puma 7.2.1
+#11 18.62 Installing puma 7.2.1 with native extensions
+#11 20.01 Fetching parser 3.3.12.0
+#11 20.10 Installing parser 3.3.12.0
+#11 20.19 Fetching rb-inotify 0.11.1
+#11 20.20 Installing rb-inotify 0.11.1
+#11 20.21 Fetching unicode-display_width 3.3.0
+#11 20.22 Installing unicode-display_width 3.3.0
+#11 20.22 Fetching loofah 2.25.2
+#11 20.28 Installing loofah 2.25.2
+#11 20.28 Fetching net-pop 0.1.2
+#11 20.29 Installing net-pop 0.1.2
+#11 20.29 Fetching net-smtp 0.5.2
+#11 20.31 Installing net-smtp 0.5.2
+#11 20.31 Fetching listen 3.10.1
+#11 20.32 Installing listen 3.10.1
+#11 20.33 Fetching terminal-table 4.0.0
+#11 20.37 Installing terminal-table 4.0.0
+#11 20.38 Fetching rails-html-sanitizer 1.7.1
+#11 20.39 Installing rails-html-sanitizer 1.7.1
+#11 24.88 Fetching net-imap 0.6.7
+#11 24.92 Installing net-imap 0.6.7
+#11 24.94 Fetching mail 2.9.1
+#11 24.96 Installing mail 2.9.1
+#11 30.21 Fetching minitest 6.0.6
+#11 30.21 Fetching rbs 4.2.0
+#11 30.21 Fetching rubocop-ast 1.50.0
+#11 30.26 Installing minitest 6.0.6
+#11 30.29 Installing rubocop-ast 1.50.0
+#11 30.29 Fetching activesupport 8.1.4
+#11 30.32 Installing activesupport 8.1.4
+#11 30.33 Fetching rubocop 1.92.0
+#11 30.34 Installing rbs 4.2.0 with native extensions
+#11 30.42 Fetching rails-dom-testing 2.3.0
+#11 30.42 Fetching globalid 1.4.0
+#11 30.43 Installing rails-dom-testing 2.3.0
+#11 30.45 Installing globalid 1.4.0
+#11 30.47 Fetching activemodel 8.1.4
+#11 30.48 Installing rubocop 1.92.0
+#11 30.48 Fetching actionview 8.1.4
+#11 30.49 Installing activemodel 8.1.4
+#11 30.52 Installing actionview 8.1.4
+#11 30.55 Fetching activejob 8.1.4
+#11 30.57 Installing activejob 8.1.4
+#11 30.61 Fetching activerecord 8.1.4
+#11 30.61 Fetching actionpack 8.1.4
+#11 30.68 Installing actionpack 8.1.4
+#11 30.69 Installing activerecord 8.1.4
+#11 30.81 Fetching actioncable 8.1.4
+#11 30.82 Installing actioncable 8.1.4
+#11 30.85 Fetching actionmailer 8.1.4
+#11 30.88 Installing actionmailer 8.1.4
+#11 30.94 Fetching activestorage 8.1.4
+#11 30.96 Installing activestorage 8.1.4
+#11 31.00 Fetching actionmailbox 8.1.4
+#11 31.01 Installing actionmailbox 8.1.4
+#11 36.07 Fetching rdoc 8.1.0
+#11 36.07 Fetching steep 2.1.0
+#11 36.15 Installing rdoc 8.1.0
+#11 36.15 Installing steep 2.1.0
+#11 36.25 Fetching irb 1.18.0
+#11 36.27 Installing irb 1.18.0
+#11 36.29 Fetching railties 8.1.4
+#11 36.31 Installing railties 8.1.4
+#11 36.38 Fetching action_text-trix 2.1.19
+#11 36.41 Installing action_text-trix 2.1.19
+#11 36.42 Fetching actiontext 8.1.4
+#11 36.43 Installing actiontext 8.1.4
+#11 36.44 Fetching rails 8.1.4
+#11 36.47 Installing rails 8.1.4
+#11 36.48 Bundle complete! 8 Gemfile dependencies, 90 gems now installed.
+#11 36.48 Bundled gems are installed into `/usr/local/bundle`
+#11 DONE 36.6s
+
+#12 [6/7] COPY . .
+#12 DONE 0.1s
+
+#13 [7/7] RUN useradd --system --uid 10001 --home /app elevateo  && install -d -o elevateo -g elevateo /app/tmp /app/log
+#13 0.071 useradd warning: elevateo's uid 10001 is greater than SYS_UID_MAX 999
+#13 DONE 0.2s
+
+#14 exporting to oci image format
+#14 exporting layers
+#14 exporting layers 8.7s done
+#14 exporting manifest sha256:[opaque value redacted] done
+#14 exporting config sha256:[opaque value redacted] 0.0s done
+#14 sending tarball
+#14 ...
+
+#15 importing to docker
+#15 DONE 0.0s
+
+#14 exporting to oci image format
+#14 sending tarball 4.9s done
+#14 DONE 13.6s
+
+exit=0 seconds=97.85

@@ -762,3 +762,5 @@ QA815 `bdb8da6d` focused Steep/lint/ATT unit PASS, `5b699c6d` V2 codegen PASS, `
 QA815 `780f4ed4` FIX940 producer 5/48 PASS and full web 856/856 PASS are fleet execution, not independent source review. The prior bca9 full 1/856 failure and isolated 8/8 rerun remain recorded as timing/suite-interaction evidence, with no new independently reviewed QA815 LOC or defect-density claim. ADV157/ADV159 belong to root's named reviewers.
 
 QA815 exact `e01c64ad` 137-suite expanded gate found 27 failed suite exits, including fixture contamination and controller/privilege failures. These are runtime findings rather than a bounded independent source review; QA815 adds zero reviewed LOC and makes no defect-density claim for owner source. Root owns routing and review of repairs; 029-ruby-suites.txt records all executed/deferred suites and exact limits.
+
+QA815 27-suite failure map and two fresh-DB representative PASS probes are diagnostic execution/classification, not independent source reviews. No additional QA815 reviewed LOC or defect density is claimed; broader isolation and source repair require owner review and fleet rerun.

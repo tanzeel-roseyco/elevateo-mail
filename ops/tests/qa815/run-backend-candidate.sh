@@ -7,6 +7,13 @@ root=$(git rev-parse --show-toplevel)
 lock=/home/tanzeel/elevateo-mail-wave-20261014/control/soren-docker.lock
 receipt_dir="$root/docs/completion/qa815-evidence/backend-${candidate:0:12}"
 summary="$root/docs/completion/qa815-evidence/backend-${candidate:0:12}.txt"
+if [[ -n ${QA815_FRESH_GROUP:-} ]]; then
+  [[ $QA815_FRESH_GROUP == qa817 || $QA815_FRESH_GROUP == sends ]] || {
+    echo 'QA815_FRESH_GROUP must be qa817 or sends' >&2; exit 2;
+  }
+  receipt_dir="${receipt_dir}-fresh-${QA815_FRESH_GROUP}"
+  summary="${summary%.txt}-fresh-${QA815_FRESH_GROUP}.txt"
+fi
 context=$(mktemp -d /tmp/qa815-backend.XXXXXXXX)
 mkdir -p "$receipt_dir"
 exec 9>"$lock"
@@ -80,6 +87,36 @@ if source.count(needle) != 1:
 path.write_text(source.replace(needle, needle + addition))
 PY
   printf 'task_source_overlay=OPS820 restricted gateway login before migration; canonical commit unchanged\n' >> "$summary"
+fi
+if [[ -n ${QA815_FRESH_GROUP:-} ]]; then
+  [[ ${QA815_ELARA_FOCUS:-0} != 1 && ${QA815_GATEWAY_ACL_FOCUS:-0} != 1 ]] || {
+    echo 'Choose one focused backend mode' >&2; exit 2;
+  }
+  case "$QA815_FRESH_GROUP" in
+    qa817) suite=test/qa817/cancellation_privileges_database_test.rb ;;
+    sends) suite=test/sends/approval_database_test.rb ;;
+  esac
+  cat > "$context/ops/tests/be02/test-suites.sh" <<SH
+#!/usr/bin/env bash
+set -euo pipefail
+cd /workspace/apps/server
+bundle exec ruby "$suite"
+SH
+  python3 - "$context/ops/tests/be02/run.py" <<'PY'
+from pathlib import Path
+import sys
+
+path = Path(sys.argv[1])
+source = path.read_text()
+needle = '            task.compose("ruby-suites", ["run", "--rm", "--no-deps", "test"], 480)\n'
+failure = '    except Exception as error:\n        failure ='
+if source.count(needle) != 1 or source.count(failure) != 1:
+    raise SystemExit("QA815 fresh-group diagnostic anchors mismatch")
+source = source.replace(needle, needle + '            raise StopIteration("QA815 fresh DB representative suite complete")\n')
+source = source.replace(failure, '    except StopIteration:\n        status = "DIAGNOSTIC_COMPLETED"\n' + failure)
+path.write_text(source)
+PY
+  printf 'task_source_overlay=fresh task DB representative %s; stop before HTTP/worker, canonical commit unchanged\n' "$suite" >> "$summary"
 fi
 if [[ ${QA815_ELARA_FOCUS:-0} == 1 ]]; then
   [[ $candidate == 94bd1eea1ab6269b34817d4f05523d60d1fb6aa4 ||
