@@ -16,7 +16,7 @@ import { EmptyState, Skeleton } from '@/ui/Async'
 
 type ListState =
   | { status: 'loading' }
-  | { status: 'ready'; items: ThreadSummary[]; nextCursor: string | null; loadingMore: boolean }
+  | { status: 'ready'; items: ThreadSummary[]; nextCursor: string | null; loadingMore: boolean; pageError: string | null }
   | { status: 'unavailable' }
   | { status: 'error'; message: string }
 
@@ -57,7 +57,7 @@ function MailboxThreadList({ mailboxId, filter }: { mailboxId: string; filter: '
       abortRef.current = controller
       const isCurrent = () => scope.isCurrent(generation) && !controller.signal.aborted
       if (!append) budgetRef.current = newTraversalBudget()
-      if (append) setState((prev) => (prev.status === 'ready' ? { ...prev, loadingMore: true } : prev))
+      if (append) setState((prev) => (prev.status === 'ready' ? { ...prev, loadingMore: true, pageError: null } : prev))
       else setState({ status: 'loading' })
 
       void readPage<ThreadPage>({
@@ -81,6 +81,10 @@ function MailboxThreadList({ mailboxId, filter }: { mailboxId: string; filter: '
             setState({ status: 'unavailable' })
             return
           }
+          if (append && !isApiError(outcome.error, 'cursor_invalid')) {
+            setState((prev) => prev.status === 'ready' ? { ...prev, loadingMore: false, pageError: 'More conversations could not be loaded. Check your connection and try again.' } : prev)
+            return
+          }
           setState({
             status: 'error',
             message: outcome.error instanceof GatewayError ? outcome.error.message : 'Conversations could not be loaded.',
@@ -93,7 +97,7 @@ function MailboxThreadList({ mailboxId, filter }: { mailboxId: string; filter: '
           const existing = append && !outcome.replace && prev.status === 'ready' ? prev.items : []
           const seen = new Set(existing.map((t) => t.id))
           const merged = [...existing, ...outcome.page.items.filter((t) => !seen.has(t.id))]
-          return { status: 'ready', items: merged, nextCursor: outcome.page.next_cursor, loadingMore: false }
+          return { status: 'ready', items: merged, nextCursor: outcome.page.next_cursor, loadingMore: false, pageError: null }
         })
       })
     },
@@ -191,9 +195,12 @@ function MailboxThreadList({ mailboxId, filter }: { mailboxId: string; filter: '
           {/* Continuation depends on next_cursor, never on the row count (D4, FE-R09). */}
           {state.nextCursor !== null && (
             <div className="mt-2 flex justify-center">
-              <Button size="sm" disabled={state.loadingMore} onClick={() => load(state.nextCursor ?? undefined, true)}>
-                {state.loadingMore ? 'Loading…' : 'Show more conversations'}
-              </Button>
+              <div className="flex flex-col items-center gap-2">
+                {state.pageError !== null && <p role="alert" className="text-[13px] text-danger">{state.pageError}</p>}
+                <Button size="sm" disabled={state.loadingMore} onClick={() => load(state.nextCursor ?? undefined, true)}>
+                  {state.loadingMore ? 'Loading…' : state.pageError !== null ? 'Retry more conversations' : 'Show more conversations'}
+                </Button>
+              </div>
             </div>
           )}
         </>

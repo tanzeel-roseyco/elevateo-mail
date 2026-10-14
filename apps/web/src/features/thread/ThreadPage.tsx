@@ -23,7 +23,7 @@ import { ReadStateControl } from './ReadStateControl'
 
 type ReaderState =
   | { status: 'loading' }
-  | { status: 'ready'; thread: ThreadDetailPage['thread']; messages: Message[]; nextCursor: string | null; loadingMore: boolean }
+  | { status: 'ready'; thread: ThreadDetailPage['thread']; messages: Message[]; nextCursor: string | null; loadingMore: boolean; pageError: string | null }
   | { status: 'unavailable' }
   | { status: 'error'; message: string }
 
@@ -100,7 +100,7 @@ function ConversationReader({ mailboxId, threadId }: { mailboxId: string; thread
       abortRef.current = controller
       const isCurrent = () => scope.isCurrent(generation) && !controller.signal.aborted
       if (!append) budgetRef.current = newTraversalBudget()
-      if (append) setState((prev) => (prev.status === 'ready' ? { ...prev, loadingMore: true } : prev))
+      if (append) setState((prev) => (prev.status === 'ready' ? { ...prev, loadingMore: true, pageError: null } : prev))
       else setState({ status: 'loading' })
 
       void readPage<ThreadDetailPage>({
@@ -125,6 +125,11 @@ function ConversationReader({ mailboxId, threadId }: { mailboxId: string; thread
             setState({ status: 'unavailable' })
             return
           }
+          if (append && !isApiError(outcome.error, 'cursor_invalid')) {
+            // A transient continuation failure does not invalidate already authorized plaintext.
+            setState((prev) => prev.status === 'ready' ? { ...prev, loadingMore: false, pageError: 'More messages could not be loaded. Check your connection and try again.' } : prev)
+            return
+          }
           setState({
             status: 'error',
             message: outcome.error instanceof GatewayError ? outcome.error.message : 'The conversation could not be loaded.',
@@ -141,6 +146,7 @@ function ConversationReader({ mailboxId, threadId }: { mailboxId: string; thread
             messages: [...existing, ...outcome.page.messages.filter((m) => !seen.has(m.id))],
             nextCursor: outcome.page.next_cursor,
             loadingMore: false,
+            pageError: null,
           }
         })
       })
@@ -261,9 +267,12 @@ function ConversationReader({ mailboxId, threadId }: { mailboxId: string; thread
           </ol>
           {state.nextCursor !== null && (
             <div className="mt-3 flex justify-center">
-              <Button size="sm" disabled={state.loadingMore} onClick={() => load(state.nextCursor ?? undefined, true)}>
-                {state.loadingMore ? 'Loading…' : 'Show more messages'}
-              </Button>
+              <div className="flex flex-col items-center gap-2">
+                {state.pageError !== null && <p role="alert" className="text-[13px] text-danger">{state.pageError}</p>}
+                <Button size="sm" disabled={state.loadingMore} onClick={() => load(state.nextCursor ?? undefined, true)}>
+                  {state.loadingMore ? 'Loading…' : state.pageError !== null ? 'Retry more messages' : 'Show more messages'}
+                </Button>
+              </div>
             </div>
           )}
           <div className="mt-4 flex flex-col gap-3">
