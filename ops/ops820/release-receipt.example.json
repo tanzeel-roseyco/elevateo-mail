@@ -26,7 +26,10 @@
     "migration_down_up": "NOT_RUN",
     "twelve_person_unbound_config": "NOT_RUN",
     "rls_identity_checks": "NOT_RUN",
-    "health_readiness_worker": "NOT_RUN"
+    "health_readiness_worker": "NOT_RUN",
+    "gateway_login_and_helper_grants": "NOT_RUN",
+    "gateway_session_and_mailbox_revocation": "NOT_RUN",
+    "real_clamav_clean_eicar": "NOT_RUN"
   },
   "blockers": ["REPLACE_WITH_OPEN_GATES"],
   "approval": "NOT_GRANTED"

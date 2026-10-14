@@ -9,6 +9,8 @@ This is an operator template, not approval or execution evidence. Root owns acti
 - [ ] Disposable restore verifies DB/object markers, 00008–00011 plus worker migration down/up, app schema/data fingerprints, role privileges/FORCE RLS and exact resource cleanup.
 - [ ] Authenticated authorized, denied cross-tenant, anonymous and revoked-principal HTTP/RLS probes pass against restored application services.
 - [ ] API `/health` and `/ready`, held worker heartbeat, queue drain, and no-live-send control are observed.
+- [ ] Restricted attachment gateway login has no membership or direct table/Auth privilege; its dedicated schema exposes only the complete session and mailbox-authorized helper, with revocation probes passing.
+- [ ] Real private ClamAV reports clean for the harmless fixture and malware for exact EICAR bytes; pending, failed and malware objects remain unavailable to download.
 - [ ] Synthetic twelve-person roster stays unbound: null email/Auth IDs, no mailbox grants or account enrollment, `live_activation=false`.
 - [ ] Encrypted off-host backup, retention, recovery objectives, capacity, monitoring and incident ownership are measured and approved.
 - [ ] Native macOS/Windows signed install and actual-client checks pass; public TLS, DNS and any provider activation receive separate explicit approval.

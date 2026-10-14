@@ -24,6 +24,8 @@ for suffix in 12 13; do
 done
 files=("$root"/apps/server/db/migrate/20261015000008*.rb)
 if [[ -f ${files[0]} ]]; then versions+=(20261015000008); fi
+files=("$root"/apps/server/db/migrate/20261015000018*.rb)
+if [[ -f ${files[0]} ]]; then versions+=(20261015000018); fi
 mapfile -t versions < <(printf '%s\n' "${versions[@]}" | sort -n)
 rails() {
   docker run --rm --network "${project}_private" --read-only --cap-drop ALL \

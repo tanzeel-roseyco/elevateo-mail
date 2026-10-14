@@ -37,6 +37,8 @@ def make(path: pathlib.Path) -> None:
         "MIGRATOR_DB_PASSWORD": secrets.token_hex(32),
         "API_DB_PASSWORD": secrets.token_hex(32),
         "WORKER_DB_PASSWORD": secrets.token_hex(32),
+        "ATTACHMENT_GATEWAY_DB_PASSWORD": secrets.token_hex(32),
+        "ATTACHMENT_GATEWAY_HMAC_KEY_BASE64": base64.b64encode(secrets.token_bytes(32)).decode(),
         "SECRET_KEY_BASE": secrets.token_hex(64),
         "ELEVATEO_SESSION_KEY_BASE64": base64.b64encode(secrets.token_bytes(32)).decode(),
         "JWT_SECRET": key,

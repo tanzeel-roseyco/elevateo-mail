@@ -16,6 +16,7 @@ class PrivateEnvironmentTest(unittest.TestCase):
         first = self.path.read_text()
         self.assertIn("OPS820_TASK_OWNED=1\n", first)
         self.assertIn("STACK_ID=elevateo-mail-test\n", first)
+        self.assertRegex(first, r"(?m)^ATTACHMENT_GATEWAY_DB_PASSWORD=[a-f0-9]{64}$")
         self.assertEqual(self.path.stat().st_mode & 0o777, 0o600)
         make(self.path.with_name("second.env"))
         self.assertNotEqual(first, self.path.with_name("second.env").read_text())

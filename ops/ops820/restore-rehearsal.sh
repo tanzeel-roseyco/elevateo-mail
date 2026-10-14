@@ -18,6 +18,9 @@ if [[ "$mode" == full ]]; then
   compgen -G "$source_root/apps/server/db/migrate/20261015000011*.rb" >/dev/null || {
     echo 'full gate blocked: inbound migration 20261015000011 absent' >&2; exit 66;
   }
+  compgen -G "$source_root/apps/server/db/migrate/20261015000018*.rb" >/dev/null || {
+    echo 'full gate blocked: gateway migration 20261015000018 absent' >&2; exit 66;
+  }
   runner=${OPS820_FULL_RUNNER:-}
   [[ -n "$runner" && "$runner" == "$source_root"/* && -f "$runner" && -x "$runner" ]] || {
     echo 'full gate blocked: reviewed application runner absent' >&2; exit 66;
@@ -66,6 +69,23 @@ compose exec -T db psql -U supabase_admin -d postgres -At -v ON_ERROR_STOP=1 \
   -c "DO \$\$ BEGIN IF (SELECT count(*) FROM public.ops402_backup_marker WHERE value='paired-backup-marker') <> 1 OR (SELECT count(*) FROM public.ops402_backup_marker) <> 1 OR NOT pg_has_role('ops402_backup_member','ops402_backup_role','MEMBER') THEN RAISE EXCEPTION 'restore marker mismatch'; END IF; END \$\$;"
 echo 'PASS database restore marker'
 compose exec -T db psql -U supabase_admin -d postgres -v ON_ERROR_STOP=1 < "$packet/post_restore.sql"
+compose exec -T db psql -U supabase_admin -d postgres -X -q -v ON_ERROR_STOP=1 \
+  < "$packet/gateway-bootstrap-smoke.sql" >/dev/null
+compose exec -T db psql -U supabase_admin -d postgres -X -q -v ON_ERROR_STOP=1 \
+  < "$packet/gateway-helper-smoke.sql" >/dev/null
+for fixture in gateway_negative_createrole.sql gateway_negative_membership.sql; do
+  set +e
+  gateway_output=$(cat "$packet/$fixture" "$packet/gateway-bootstrap-smoke.sql" |
+    compose exec -T db psql -U supabase_admin -d postgres -X -q -v ON_ERROR_STOP=1 2>&1)
+  gateway_exit=$?
+  set -e
+  if (( gateway_exit == 0 )) || [[ "$gateway_output" != *'gateway restricted login bootstrap smoke failed'* ]]; then
+    echo "gateway negative fixture failed expected oracle: $fixture exit=$gateway_exit" >&2
+    exit 1
+  fi
+done
+compose exec -T db psql -U supabase_admin -d postgres -X -q -v ON_ERROR_STOP=1 \
+  < "$packet/gateway-bootstrap-smoke.sql" >/dev/null
 compose exec -T db psql -U supabase_admin -d postgres -X -q -v ON_ERROR_STOP=1 \
   < "$packet/role_reachability.sql" >/dev/null
 set +e
