@@ -7,7 +7,6 @@ class SendSchemaDatabaseTest < SendDatabaseTestCase
     grants = File.read(File.expand_path("../../db/be03_send/grants.sql", __dir__))
     @admin.exec("BEGIN; SET LOCAL ROLE elevateo_send_owner")
     @admin.exec(grants)
-    @admin.exec("COMMIT")
     assert_equal "elevateo_owner", @admin.exec(<<~SQL).getvalue(0, 0)
       SELECT proowner::regrole::text FROM pg_proc
         WHERE oid = 'app_send_private.preserve_consumed_draft()'::regprocedure
@@ -28,6 +27,8 @@ class SendSchemaDatabaseTest < SendDatabaseTestCase
       SELECT has_function_privilege('elevateo_send_owner',
         'app_send_private.consume_draft(text,uuid,uuid,integer)','EXECUTE')
     SQL
+    # Roll back the historical grant replay; migration 00010 grants worker-only functions.
+    @admin.exec("ROLLBACK")
     refute approve.key?("code")
     assert_equal [1, 1, 1, 1], counts
   ensure
