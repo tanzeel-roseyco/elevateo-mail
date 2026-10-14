@@ -489,3 +489,5 @@ The bounded QA815 Android parser probe script and exact retained-APK receipt are
 The ATT898 attachment repository bind/test-import repair is documented in `docs/completion/nadia-att898-focused-repair.md`. It retains SQL casts and transaction authority; Soren's coherent strict and focused service/scanner/database checks are still required.
 
 `contracts/v2/proposals/mailbox-assignee-options.openapi.json` specifies the future UUID-only assignment picker read boundary. `apps/web/src/data/v2AssigneeOptionsGateway.ts` validates its bounded response and current mailbox/session scope but is not injected into production; current V1 assignment validation remains authoritative.
+
+`contracts/v2/openapi.json` draft.8 is the canonical disabled contract for `listMailboxAssigneeOptions`, `listInboxAttachments` and `downloadCleanInboxAttachment`; proposal files preserve the bounded design rationale. The generated V2 declaration needs exact fleet Docker regeneration and check before feature activation; Rails V2 active registry remains unchanged.

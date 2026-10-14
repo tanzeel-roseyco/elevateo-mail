@@ -2,8 +2,8 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Elevateo additive administration, outreach and scoped read API",
-    "version": "2.0.0-draft.7",
-    "description": "V1 schemas unchanged. Inert sequence draft metadata joins the isolated V2 integration candidate; delivery and enrollment remain disabled pending fleet security validation. Worker status remains disabled."
+    "version": "2.0.0-draft.8",
+    "description": "V1 schemas unchanged. Disabled mailbox-scoped assignee options and private inbound attachment read additions are specified while SQL, controller and fleet gates remain pending. Delivery, enrollment and worker status remain disabled."
   },
   "servers": [
     {
@@ -16,6 +16,226 @@
     }
   ],
   "paths": {
+    "/v2/mailboxes/{mailbox_id}/assignee-options": {
+      "get": {
+        "operationId": "listMailboxAssigneeOptions",
+        "x-elevateo-status": "disabled",
+        "summary": "List current eligible assignee Auth UUIDs for one assignable mailbox",
+        "description": "Requires current mailbox assignment authority inside the protected read transaction. Eligible subjects are sorted by UUID. The opaque cursor is signed and bound to actor, organization, mailbox, session authorization version and ordering. The V1 assignment write remains final authority.",
+        "parameters": [
+          {
+            "name": "mailbox_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2048
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Bounded eligible Auth UUID page, without profile or grant data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MailboxAssigneeOptionPage"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed path, limit, or invalid or expired cursor"
+          },
+          "401": {
+            "description": "Unauthenticated session"
+          },
+          "404": {
+            "description": "Mailbox missing or inaccessible; foreign organization is indistinguishable"
+          }
+        }
+      }
+    },
+    "/v2/mailboxes/{mailbox_id}/threads/{thread_id}/messages/{message_id}/attachments": {
+      "get": {
+        "operationId": "listInboxAttachments",
+        "x-elevateo-status": "disabled",
+        "summary": "List bounded attachment metadata for one currently readable message",
+        "parameters": [
+          {
+            "name": "mailbox_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "thread_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "message_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Metadata only; never private object keys",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InboxAttachmentPage"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed scope or page query"
+          },
+          "404": {
+            "description": "Missing or inaccessible mailbox, message or attachment"
+          }
+        },
+        "description": "Use id-sorted UUID cursor pagination scoped to the current message; clean status alone never guarantees byte access."
+      }
+    },
+    "/v2/mailboxes/{mailbox_id}/threads/{thread_id}/messages/{message_id}/attachments/{attachment_id}/content": {
+      "get": {
+        "operationId": "downloadCleanInboxAttachment",
+        "x-elevateo-status": "disabled",
+        "summary": "Stream bytes only after current read authorization and clean scan verdict",
+        "parameters": [
+          {
+            "name": "mailbox_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "thread_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "message_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "attachment_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Private bytes; no signed or public URL",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              },
+              "X-Content-Type-Options": {
+                "schema": {
+                  "type": "string",
+                  "const": "nosniff"
+                }
+              },
+              "Content-Disposition": {
+                "description": "Attachment disposition with sanitized filename",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed scope or page query"
+          },
+          "404": {
+            "description": "Missing or inaccessible mailbox, message or attachment"
+          },
+          "423": {
+            "description": "Current authorized attachment is held pending a clean verdict"
+          },
+          "503": {
+            "description": "Private gateway or storage unavailable; no bytes released"
+          }
+        }
+      }
+    },
     "/v2/threads/{thread_id}/messages/{message_id}": {
       "get": {
         "operationId": "getDirectMessage",
@@ -964,6 +1184,161 @@
       }
     },
     "schemas": {
+      "MailboxAssigneeOption": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "user_id"
+        ],
+        "properties": {
+          "user_id": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
+      "MailboxAssigneeOptionPage": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "context_id",
+          "authorization_version",
+          "mailbox_id",
+          "items",
+          "next_cursor"
+        ],
+        "properties": {
+          "context_id": {
+            "type": "string",
+            "minLength": 16,
+            "maxLength": 256
+          },
+          "authorization_version": {
+            "type": "string",
+            "minLength": 16,
+            "maxLength": 256
+          },
+          "mailbox_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "items": {
+            "type": "array",
+            "maxItems": 50,
+            "items": {
+              "$ref": "#/components/schemas/MailboxAssigneeOption"
+            }
+          },
+          "next_cursor": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "minLength": 1,
+            "maxLength": 2048
+          }
+        }
+      },
+      "InboxAttachmentSummary": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "filename",
+          "content_type",
+          "byte_size",
+          "scan_status"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "filename": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255,
+            "x-elevateo-maxUtf8Bytes": 255
+          },
+          "content_type": {
+            "type": "string",
+            "enum": [
+              "application/pdf",
+              "image/png",
+              "image/jpeg",
+              "text/plain"
+            ]
+          },
+          "byte_size": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 10485760,
+            "description": "Zero only for a rejected attachment that never entered private Storage."
+          },
+          "scan_status": {
+            "type": "string",
+            "enum": [
+              "pending_scan",
+              "clean",
+              "malware",
+              "scan_failed",
+              "rejected"
+            ]
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "scan_status": {
+                  "const": "rejected"
+                }
+              },
+              "required": [
+                "scan_status"
+              ]
+            },
+            "then": {
+              "properties": {
+                "byte_size": {
+                  "const": 0
+                }
+              }
+            },
+            "else": {
+              "properties": {
+                "byte_size": {
+                  "minimum": 1
+                }
+              }
+            }
+          }
+        ]
+      },
+      "InboxAttachmentPage": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "items",
+          "next_cursor"
+        ],
+        "properties": {
+          "items": {
+            "type": "array",
+            "maxItems": 50,
+            "items": {
+              "$ref": "#/components/schemas/InboxAttachmentSummary"
+            }
+          },
+          "next_cursor": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uuid"
+          }
+        }
+      },
       "UtcTimestamp": {
         "type": "string",
         "format": "date-time",
