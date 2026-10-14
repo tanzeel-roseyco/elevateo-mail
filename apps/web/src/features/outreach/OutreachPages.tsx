@@ -36,7 +36,13 @@ function useOutreachRead<K extends Resource>(kind: K, props: OutreachPageProps, 
     if (!gateway || !context || (['campaign', 'leads', 'lead', 'accounts', 'account', 'analytics'].includes(kind) && !id) || (kind === 'lead' && !gateway.getLead)) {
       setState({ status: 'unavailable' }); return
     }
-    if (id && !id.split(':').every((part) => z.uuid().safeParse(part).success)) { setState({ status: 'error' }); return }
+    if (id) {
+      const parts = id.split(':')
+      const expectedParts = kind === 'lead' || kind === 'account' ? 2 : 1
+      if (parts.length !== expectedParts || !parts.every((part) => z.uuid().safeParse(part).success)) {
+        setState({ status: 'error' }); return
+      }
+    }
     if (cursor && !z.uuid().safeParse(cursor).success) { setState({ status: 'error' }); return }
     const controller = new AbortController()
     setState({ status: 'loading' })
@@ -124,7 +130,7 @@ function CampaignCreate({ gateway, context, proof }: OutreachPageProps) {
     event.preventDefault()
     if (!gateway || !context || !proof || busy || uncertain) return
     const input = createCampaignInputSchema.safeParse({ id: newId(), operation_id: newId(), name: name.trim(), status: 'draft' })
-    if (!input.success) { setError('Enter a campaign name of 1 to 200 characters.'); return }
+    if (!input.success) { setError('Enter a campaign name of 1 to 160 characters.'); return }
     const controller = new AbortController(); pending.current = controller
     setBusy(true); setError(null)
     try {
@@ -136,7 +142,7 @@ function CampaignCreate({ gateway, context, proof }: OutreachPageProps) {
     } finally { if (!controller.signal.aborted) setBusy(false) }
   }
   return <Page title="Create campaign"><form onSubmit={(event) => { void submit(event) }} className="space-y-3">
-    <Field id="campaign-name" label="Campaign name"><TextInput id="campaign-name" value={name} onChange={(event) => setName(event.target.value)} maxLength={200} required /></Field>
+    <Field id="campaign-name" label="Campaign name"><TextInput id="campaign-name" value={name} onChange={(event) => setName(event.target.value)} maxLength={160} required /></Field>
     <p>New campaigns remain drafts. This form cannot start sending.</p>
     <ActionError message={error} />
     <Button type="submit" disabled={!gateway || !context || !proof || busy || uncertain}>{busy ? 'Saving…' : 'Save draft'}</Button>
