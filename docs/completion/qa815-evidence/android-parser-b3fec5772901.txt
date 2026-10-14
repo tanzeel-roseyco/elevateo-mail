@@ -1,0 +1,151 @@
+source=b3fec57729019ad0fe3942be912dbabcc794bd14
+image=sha256:48a11b7ba705fd53bf15248d1f94d36c39549903c5d59edcfa2f3f84126e7b44
+apk_sha256=743046f42bb8fd6d3eb662cc7708ed06612839b1582a5323dc896a6913458c83
+started=2026-10-14T17:42:53Z
+SETUP apt OpenJDK17 curl unzip
+SETUP pinned Android command-line tools
+/tmp/android-tools.zip: OK
+SETUP pinned Build Tools 36.0.0
+aapt_version=Android Asset Packaging Tool, v0.2-13193326
+aapt_sha256=c076aeeee8bd3ce58395a093747202265ab80c6c12e59358f598a30a81fde13b
+apksigner_sha256=b47549e373b895ce6ca620d0c7887e674d9615ffa837a86ac601dcfd04adb0f0
+apk_sha256=743046f42bb8fd6d3eb662cc7708ed06612839b1582a5323dc896a6913458c83
+=== manifest_units exit=0 stdout ===
+=== manifest_units stderr ===
+test_accepts_successful_nonempty_tree_without_view (test_verify_manifest_tree.VerifyManifestTreeTest.test_accepts_successful_nonempty_tree_without_view) ... ok
+test_rejects_flat_or_unrelated_tree (test_verify_manifest_tree.VerifyManifestTreeTest.test_rejects_flat_or_unrelated_tree) ... ok
+test_rejects_tool_failure_and_empty_output (test_verify_manifest_tree.VerifyManifestTreeTest.test_rejects_tool_failure_and_empty_output) ... ok
+test_rejects_view_callback (test_verify_manifest_tree.VerifyManifestTreeTest.test_rejects_view_callback) ... ok
+test_rejects_zero_exit_usage_and_diagnostic_output (test_verify_manifest_tree.VerifyManifestTreeTest.test_rejects_zero_exit_usage_and_diagnostic_output) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.001s
+
+OK
+=== unsigned_units exit=0 stdout ===
+=== unsigned_units stderr ===
+test_accepts_only_known_missing_signature_diagnostic (test_verify_unsigned.VerifyUnsignedTest.test_accepts_only_known_missing_signature_diagnostic) ... ok
+test_rejects_corrupt_apk (test_verify_unsigned.VerifyUnsignedTest.test_rejects_corrupt_apk) ... ok
+test_rejects_signed_apk (test_verify_unsigned.VerifyUnsignedTest.test_rejects_signed_apk) ... ok
+test_rejects_tool_failure (test_verify_unsigned.VerifyUnsignedTest.test_rejects_tool_failure) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.001s
+
+OK
+=== permissions_units exit=0 stdout ===
+=== permissions_units stderr ===
+test_allows_internet_and_androidx_signature_receiver (test_verify_permissions.VerifyPermissionsTest.test_allows_internet_and_androidx_signature_receiver) ... ok
+test_rejects_empty_aapt_permission_output (test_verify_permissions.VerifyPermissionsTest.test_rejects_empty_aapt_permission_output) ... ok
+test_rejects_extra_platform_permission (test_verify_permissions.VerifyPermissionsTest.test_rejects_extra_platform_permission) ... ok
+test_rejects_lookalike_receiver_permission (test_verify_permissions.VerifyPermissionsTest.test_rejects_lookalike_receiver_permission) ... ok
+test_rejects_missing_and_duplicate_receiver_declarations (test_verify_permissions.VerifyPermissionsTest.test_rejects_missing_and_duplicate_receiver_declarations) ... ok
+test_rejects_receiver_namespace_substitution (test_verify_permissions.VerifyPermissionsTest.test_rejects_receiver_namespace_substitution) ... ok
+test_rejects_sdk_specific_extra_manifest_permission (test_verify_permissions.VerifyPermissionsTest.test_rejects_sdk_specific_extra_manifest_permission) ... ok
+test_requires_signature_receiver_declaration (test_verify_permissions.VerifyPermissionsTest.test_requires_signature_receiver_declaration) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.000s
+
+OK
+=== manifest_classifier exit=0 stdout ===
+=== manifest_classifier stderr ===
+=== aapt_xmltree exit=0 stdout ===
+N: android=http://schemas.android.com/apk/res/android
+  E: manifest (line=2)
+    A: android:versionCode(0x0101021b)=(type 0x10)0x1
+    A: android:versionName(0x0101021c)="0.1.0" (Raw: "0.1.0")
+    A: android:compileSdkVersion(0x01010572)=(type 0x10)0x25
+    A: android:compileSdkVersionCodename(0x01010573)="17" (Raw: "17")
+    A: package="com.elevateo.mail.fixture" (Raw: "com.elevateo.mail.fixture")
+    A: platformBuildVersionCode=(type 0x10)0x25
+    A: platformBuildVersionName=(type 0x10)0x11
+    E: uses-sdk (line=7)
+      A: android:minSdkVersion(0x0101020c)=(type 0x10)0x1a
+      A: android:targetSdkVersion(0x01010270)=(type 0x10)0x25
+    E: uses-permission (line=11)
+      A: android:name(0x01010003)="android.permission.INTERNET" (Raw: "android.permission.INTERNET")
+    E: uses-feature (line=14)
+      A: android:name(0x01010003)="android.software.leanback" (Raw: "android.software.leanback")
+      A: android:required(0x0101028e)=(type 0x12)0x0
+    E: permission (line=18)
+      A: android:name(0x01010003)="com.elevateo.mail.fixture.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" (Raw: "com.elevateo.mail.fixture.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION")
+      A: android:protectionLevel(0x01010009)=(type 0x11)0x2
+    E: uses-permission (line=22)
+      A: android:name(0x01010003)="com.elevateo.mail.fixture.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" (Raw: "com.elevateo.mail.fixture.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION")
+    E: application (line=24)
+      A: android:theme(0x01010000)=@0x7f100274
+      A: android:label(0x01010001)=@0x7f0f001c
+      A: android:icon(0x01010002)=@0x7f0d0000
+      A: android:extractNativeLibs(0x010104ea)=(type 0x12)0x0
+      A: android:usesCleartextTraffic(0x010104ec)=(type 0x12)0x0
+      A: android:appComponentFactory(0x0101057a)="androidx.core.app.CoreComponentFactory" (Raw: "androidx.core.app.CoreComponentFactory")
+      E: activity (line=31)
+        A: android:label(0x01010001)=@0x7f0f0047
+        A: android:name(0x01010003)="com.elevateo.mail.fixture.MainActivity" (Raw: "com.elevateo.mail.fixture.MainActivity")
+        A: android:exported(0x01010010)=(type 0x12)0xffffffff
+        A: android:launchMode(0x0101001d)=(type 0x10)0x2
+        A: android:configChanges(0x0101001f)=(type 0x11)0xfb4
+        E: intent-filter (line=37)
+          E: action (line=38)
+            A: android:name(0x01010003)="android.intent.action.MAIN" (Raw: "android.intent.action.MAIN")
+          E: category (line=40)
+            A: android:name(0x01010003)="android.intent.category.LAUNCHER" (Raw: "android.intent.category.LAUNCHER")
+          E: category (line=42)
+            A: android:name(0x01010003)="android.intent.category.LEANBACK_LAUNCHER" (Raw: "android.intent.category.LEANBACK_LAUNCHER")
+      E: provider (line=46)
+        A: android:name(0x01010003)="androidx.core.content.FileProvider" (Raw: "androidx.core.content.FileProvider")
+        A: android:exported(0x01010010)=(type 0x12)0x0
+        A: android:authorities(0x01010018)="com.elevateo.mail.fixture.fileprovider" (Raw: "com.elevateo.mail.fixture.fileprovider")
+        A: android:grantUriPermissions(0x0101001b)=(type 0x12)0xffffffff
+        E: meta-data (line=51)
+          A: android:name(0x01010003)="android.support.FILE_PROVIDER_PATHS" (Raw: "android.support.FILE_PROVIDER_PATHS")
+          A: android:resource(0x01010025)=@0x7f120000
+      E: provider (line=55)
+        A: android:name(0x01010003)="androidx.startup.InitializationProvider" (Raw: "androidx.startup.InitializationProvider")
+        A: android:exported(0x01010010)=(type 0x12)0x0
+        A: android:authorities(0x01010018)="com.elevateo.mail.fixture.androidx-startup" (Raw: "com.elevateo.mail.fixture.androidx-startup")
+        E: meta-data (line=59)
+          A: android:name(0x01010003)="androidx.emoji2.text.EmojiCompatInitializer" (Raw: "androidx.emoji2.text.EmojiCompatInitializer")
+          A: android:value(0x01010024)="androidx.startup" (Raw: "androidx.startup")
+        E: meta-data (line=62)
+          A: android:name(0x01010003)="androidx.lifecycle.ProcessLifecycleInitializer" (Raw: "androidx.lifecycle.ProcessLifecycleInitializer")
+          A: android:value(0x01010024)="androidx.startup" (Raw: "androidx.startup")
+        E: meta-data (line=65)
+          A: android:name(0x01010003)="androidx.profileinstaller.ProfileInstallerInitializer" (Raw: "androidx.profileinstaller.ProfileInstallerInitializer")
+          A: android:value(0x01010024)="androidx.startup" (Raw: "androidx.startup")
+      E: receiver (line=70)
+        A: android:name(0x01010003)="androidx.profileinstaller.ProfileInstallReceiver" (Raw: "androidx.profileinstaller.ProfileInstallReceiver")
+        A: android:permission(0x01010006)="android.permission.DUMP" (Raw: "android.permission.DUMP")
+        A: android:enabled(0x0101000e)=(type 0x12)0xffffffff
+        A: android:exported(0x01010010)=(type 0x12)0xffffffff
+        A: android:directBootAware(0x01010505)=(type 0x12)0x0
+        E: intent-filter (line=76)
+          E: action (line=77)
+            A: android:name(0x01010003)="androidx.profileinstaller.action.INSTALL_PROFILE" (Raw: "androidx.profileinstaller.action.INSTALL_PROFILE")
+        E: intent-filter (line=79)
+          E: action (line=80)
+            A: android:name(0x01010003)="androidx.profileinstaller.action.SKIP_FILE" (Raw: "androidx.profileinstaller.action.SKIP_FILE")
+        E: intent-filter (line=82)
+          E: action (line=83)
+            A: android:name(0x01010003)="androidx.profileinstaller.action.SAVE_PROFILE" (Raw: "androidx.profileinstaller.action.SAVE_PROFILE")
+        E: intent-filter (line=85)
+          E: action (line=86)
+            A: android:name(0x01010003)="androidx.profileinstaller.action.BENCHMARK_OPERATION" (Raw: "androidx.profileinstaller.action.BENCHMARK_OPERATION")
+=== aapt_xmltree stderr ===
+=== aapt_permissions exit=0 stdout ===
+package: com.elevateo.mail.fixture
+uses-permission: name='android.permission.INTERNET'
+permission: com.elevateo.mail.fixture.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
+uses-permission: name='com.elevateo.mail.fixture.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION'
+=== aapt_permissions stderr ===
+=== apksigner_verify exit=1 stdout ===
+=== apksigner_verify stderr ===
+DOES NOT VERIFY
+ERROR: Missing META-INF/MANIFEST.MF
+=== unsigned_classifier exit=0 stdout ===
+=== unsigned_classifier stderr ===
+runner_exit=0
+archive_absent=yes
+remaining_task_containers=0
+finished=2026-10-14T17:43:19Z
