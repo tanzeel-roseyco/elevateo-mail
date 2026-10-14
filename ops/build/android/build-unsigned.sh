@@ -50,11 +50,7 @@ merged_manifest="$native_dir/gen/android/app/build/intermediates/merged_manifest
   | sed -n "s/.*uses-permission: name='\([^']*\)'.*/\1/p" \
   | python3 "$android_dir/verify_permissions.py" "$merged_manifest"
 "$ANDROID_HOME/build-tools/36.0.0/aapt" dump badging "${apk_files[0]}" | grep -F "package: name='com.elevateo.mail.fixture'" >/dev/null || { echo "Unexpected Android package identifier" >&2; exit 2; }
-if "$ANDROID_HOME/build-tools/36.0.0/aapt" dump xmltree "${apk_files[0]}" AndroidManifest.xml | grep -F "android.intent.action.VIEW" >/dev/null; then
-  echo "Unreviewed Android VIEW callback filter" >&2; exit 2
-fi
-if "$ANDROID_HOME/build-tools/36.0.0/apksigner" verify "${apk_files[0]}" >/dev/null 2>&1; then
-  echo 'APK unexpectedly signed' >&2; exit 2
-fi
+python3 "$android_dir/verify_manifest_tree.py" "$ANDROID_HOME/build-tools/36.0.0/aapt" "${apk_files[0]}"
+python3 "$android_dir/verify_unsigned.py" "$ANDROID_HOME/build-tools/36.0.0/apksigner" "${apk_files[0]}"
 cp -- "${apk_files[0]}" "$APK813_BUILD_ROOT/elevateo-android-aarch64-compile-only-unsigned.apk"
 sha256sum "$APK813_BUILD_ROOT/elevateo-android-aarch64-compile-only-unsigned.apk"
