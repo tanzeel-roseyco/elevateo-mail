@@ -5,6 +5,11 @@ require_relative "../../lib/elevateo/mailbox_reads"
 
 # AIDEV-NOTE: Org role is metadata; private mailbox RLS needs an explicit current membership.
 class QA817PrivateSalesDatabaseTest < MailboxMembershipDatabaseCase
+  # AIDEV-NOTE: These role-specific cases seed their own grants; inherited cleanup owns final-owner removal.
+  def sec802_default_fixture?
+    false
+  end
+
   def setup
     super
     @sales_box = mailbox(visibility: "private")
@@ -21,14 +26,6 @@ class QA817PrivateSalesDatabaseTest < MailboxMembershipDatabaseCase
     @admin.exec_params("INSERT INTO app.mailbox_security(organization_id,mailbox_id,classification,personal_owner_id) VALUES ($1,$2,'personal',$3)",
       [@org, @personal_box, @user])
     explicit_member(@sales, box: @sales_box)
-  end
-
-  def teardown
-    if @admin && @org
-      @admin.exec("ROLLBACK") if @admin.transaction_status != PG::PQTRANS_IDLE
-      @admin.exec_params("DELETE FROM app.organization_access WHERE organization_id=$1 AND role<>'owner'", [@org])
-    end
-    super
   end
 
   def test_assigned_sales_reads_private_team_mailbox

@@ -1,3 +1,5 @@
+INT949 verified checkpoint: exact c87a0912a0c0 fleet web gate passed V1/V2 contracts, lint, TypeScript, 62 Vitest files/856 tests, coverage (89.59% statements, 82.48% branches, 90.44% functions, 94.15% lines) and production build. The 587.98 kB main JavaScript chunk needs splitting. Backend c87 failed; follow-up repairs address absent/nil Rails logging, preference write RLS lock misuse, explicit role fixtures and FK cleanup. Authenticated browser, private bytes, Android runtime and platform packages remain open. No credentials or production activation.
+
 INT949 inline completion: preserving the original Windows checkout; repairing expanded-backend failures on fix/inline949-completion, then running all fleet Docker checks including Vitest coverage, lint and strict typechecks. No new agents, live spend or credentials. Current repairs and pending evidence are tracked in docs/completion/inline949.md.
 
 OPS820 source intake (2026-10-14): Leonie f8b07b2 administrative private-gateway schema bootstrap and pre/post role checks are imported. Sabine 00018 consumer repair and Soren fleet SQL/process separation remain pending; public bytes inactive.

@@ -24,6 +24,11 @@ class CampaignAuthorizedDatabaseTest < MailboxMembershipDatabaseCase
     ActiveRecord::Relation::QueryAttribute.new("out804", value, ActiveRecord::Type::String.new)
   end
 
+  # AIDEV-NOTE: Account references must be removed before the inherited mailbox fixture teardown.
+  def prepare_organization_fixture_cleanup
+    @admin.exec_params("DELETE FROM app.campaign_accounts WHERE organization_id=$1", [@org])
+  end
+
   def outreach_scope(identity: @identity, write: false)
     scope(identity: identity, write: write) do |connection|
       function = write ? "app.authorize_outreach_draft_write" : "app.authorize_outreach_content_read"

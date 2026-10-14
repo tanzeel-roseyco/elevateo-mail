@@ -69,7 +69,8 @@ module V1
       request_id = request.request_id.to_s.byteslice(0, 128)
       # AIDEV-NOTE: Fixed boundary metadata only; never log upstream bodies, exception messages or credentials.
       if error.code == "temporarily_unavailable"
-        Rails.logger.error({ event: "auth.boundary_unavailable", request_id: request_id }.to_json)
+        error_logger = (Rails.respond_to?(:logger) ? Rails.logger : nil) || Logger.new($stderr)
+        error_logger.error({ event: "auth.boundary_unavailable", request_id: request_id }.to_json)
       end
       api_json({ "code" => error.code, "message" => error.message, "request_id" => request_id },
         status: error.status, limit: 4096)

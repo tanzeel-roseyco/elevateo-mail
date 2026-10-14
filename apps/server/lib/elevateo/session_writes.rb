@@ -6,6 +6,7 @@ require_relative "write_response"
 require_relative "read_response"
 require_relative "write_statements"
 require "securerandom"
+require "logger"
 
 module Elevateo
   class SessionWrites
@@ -142,7 +143,9 @@ module Elevateo
       end
       failures.each do |phase, error|
         begin
-          Rails.logger.error("protected_write_cleanup phase=#{phase} class=#{error.class.name} correlation=#{correlation}")
+          # AIDEV-NOTE: Cleanup also runs in standalone harnesses and before Rails configures its logger.
+          error_logger = (Rails.respond_to?(:logger) ? Rails.logger : nil) || Logger.new($stderr)
+          error_logger.error("protected_write_cleanup phase=#{phase} class=#{error.class.name} correlation=#{correlation}")
         rescue StandardError
           # AIDEV-NOTE: A failed logging sink must not replace the request's primary exception or expose SQL details.
           raise primary if primary

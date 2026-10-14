@@ -4,6 +4,11 @@ require_relative "../be_02/mailbox_membership_database_helper"
 
 # AIDEV-NOTE: The protected actor projection is independent of which redacted grant page is visible.
 class QA817GrantActorDatabaseTest < MailboxMembershipDatabaseCase
+  # AIDEV-NOTE: These role-specific cases seed their own grants; inherited cleanup owns final-owner removal.
+  def sec802_default_fixture?
+    false
+  end
+
   def setup
     super
     @sales = add_actor
@@ -12,20 +17,6 @@ class QA817GrantActorDatabaseTest < MailboxMembershipDatabaseCase
       @admin.exec_params("INSERT INTO app.organization_access(organization_id,user_id,role) VALUES ($1,$2,$3)",
         [@org, actor.user_id, role])
     end
-  end
-
-  def teardown
-    if @admin && @org
-      @admin.exec("ROLLBACK") if @admin.transaction_status != PG::PQTRANS_IDLE
-      @admin.exec("BEGIN")
-      @admin.exec("ALTER TABLE app.organization_access DISABLE TRIGGER guard_owner_loss")
-      @admin.exec_params("DELETE FROM app.organization_access WHERE organization_id=$1", [@org])
-      @admin.exec("ALTER TABLE app.organization_access ENABLE TRIGGER guard_owner_loss")
-      @admin.exec("COMMIT")
-    end
-    super
-  ensure
-    @admin.exec("ROLLBACK") if @admin && @admin.transaction_status != PG::PQTRANS_IDLE
   end
 
   def test_actor_remains_bound_across_redacted_pages

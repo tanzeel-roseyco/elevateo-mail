@@ -54,7 +54,7 @@ class CreateUserDisplayPreferences < ActiveRecord::Migration[8.1]
       SET LOCAL ROLE elevateo_owner;
       REVOKE CREATE ON SCHEMA app FROM elevateo_session_owner;
 
-      -- AIDEV-NOTE: The organization row serializes first writes without trusting a caller-supplied user ID.
+      -- AIDEV-NOTE: The protected guard locks actor generations through commit, serializing all their sessions.
       CREATE FUNCTION app.write_user_display_preference(p_digest text, p_expected integer, p_name text)
       RETURNS jsonb LANGUAGE plpgsql VOLATILE SECURITY DEFINER SET search_path = pg_catalog AS $$
       DECLARE proof jsonb; org uuid; actor uuid; current_revision integer; new_revision integer;
@@ -73,9 +73,9 @@ class CreateUserDisplayPreferences < ActiveRecord::Migration[8.1]
           OR app.context_uuid('app.user_id') IS DISTINCT FROM actor THEN
           RETURN '{"status":"not_found"}'::jsonb;
         END IF;
-        PERFORM 1 FROM app.organizations WHERE id = org FOR UPDATE;
+        -- AIDEV-NOTE: Membership revocation takes the same generation lock; no broad table UPDATE grant is needed.
         PERFORM 1 FROM app.organization_memberships
-          WHERE organization_id = org AND user_id = actor FOR KEY SHARE;
+          WHERE organization_id = org AND user_id = actor;
         IF NOT FOUND THEN RETURN '{"status":"not_found"}'::jsonb; END IF;
         SELECT revision INTO current_revision FROM app.user_display_preferences
           WHERE organization_id = org AND user_id = actor FOR UPDATE;

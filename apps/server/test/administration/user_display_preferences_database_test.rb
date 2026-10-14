@@ -8,8 +8,8 @@ class UserDisplayPreferencesDatabaseTest < WriteBoundaryDatabaseTestCase
     JSON.parse(connection.exec_params("SELECT app.read_user_display_preference($1::text)", [digest]).getvalue(0, 0))
   end
 
-  def preference_write(name:, expected:, connection: @api)
-    JSON.parse(connection.exec_params(<<~SQL, [@digest, expected, name]).getvalue(0, 0))
+  def preference_write(name:, expected:, connection: @api, digest: @digest)
+    JSON.parse(connection.exec_params(<<~SQL, [digest, expected, name]).getvalue(0, 0))
       SELECT app.write_user_display_preference($1::text,$2::integer,$3::text)
     SQL
   end
@@ -54,6 +54,33 @@ class UserDisplayPreferencesDatabaseTest < WriteBoundaryDatabaseTestCase
     assert_equal "42501", error.result.error_field(PG::Result::PG_DIAG_SQLSTATE)
     @api.exec("ROLLBACK")
     assert_raises(PG::InsufficientPrivilege) { @api.exec("SELECT * FROM app.user_display_preferences") }
+  end
+
+  def test_different_sessions_serialize_first_write_and_reject_stale_revision
+    second_digest = SecureRandom.hex(32)
+    assert_equal "ok", create(digest: second_digest).fetch("status")
+    with_api_connections(1) do |connections|
+      second = connections.first
+      begin_write
+      assert_equal "ok", write_guard.fetch("status")
+      assert_equal "ok", preference_write(name: "First", expected: 0).fetch("status")
+      begin_write(connection: second)
+      child = Thread.new { write_guard(connection: second, digest: second_digest) }
+      child.report_on_exception = false
+      # AIDEV-NOTE: Observe an actual cross-session lock before releasing the first writer; sleep is not proof.
+      wait_for_lock(second, blocker: @api.backend_pid)
+      @api.exec("COMMIT")
+      assert_equal "ok", guard_result(child).fetch("status")
+      assert_equal "preference_conflict",
+        preference_write(name: "Stale", expected: 0, connection: second, digest: second_digest).fetch("status")
+      second.exec("ROLLBACK")
+      begin_write
+      assert_equal ["First", 1], preference_read.values_at("display_name", "revision")
+    ensure
+      @api.exec("ROLLBACK") if @api.transaction_status != PG::PQTRANS_IDLE
+      child&.join(4)
+      second.exec("ROLLBACK") if second && second.transaction_status != PG::PQTRANS_IDLE
+    end
   end
 
   def test_invalid_database_input_cannot_mutate

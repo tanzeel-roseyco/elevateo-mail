@@ -31,6 +31,16 @@ class ApplicationControllerLoggingTest < Minitest::Test
     refute_includes output.string, "private-message-body"
   end
 
+  def test_standalone_rails_without_logger_method_keeps_fixed_error
+    original_logger = Rails.method(:logger)
+    Rails.singleton_class.remove_method(:logger)
+    _stdout, stderr = capture_io { assert_internal_error }
+    assert_includes stderr, '"event":"request.error"'
+    refute_includes stderr, "private-message-body"
+  ensure
+    Rails.define_singleton_method(:logger, original_logger) if original_logger
+  end
+
   private
 
   def assert_internal_error

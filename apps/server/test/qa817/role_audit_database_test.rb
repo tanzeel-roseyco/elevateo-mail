@@ -5,6 +5,11 @@ require_relative "../be_02/mailbox_membership_database_helper"
 
 # AIDEV-NOTE: Audit history commits with a real role change, never with denied or no-op requests.
 class QA817RoleAuditDatabaseTest < MailboxMembershipDatabaseCase
+  # AIDEV-NOTE: These role-specific cases seed their own grants; inherited cleanup owns final-owner removal.
+  def sec802_default_fixture?
+    false
+  end
+
   def setup
     super
     @admin_actor, @auditor, @target = Array.new(3) { add_actor }
@@ -12,20 +17,6 @@ class QA817RoleAuditDatabaseTest < MailboxMembershipDatabaseCase
       @admin.exec_params("INSERT INTO app.organization_access(organization_id,user_id,role) VALUES ($1,$2,$3)",
         [@org, actor.user_id, role])
     end
-  end
-
-  def teardown
-    if @admin && @org
-      @admin.exec("ROLLBACK") if @admin.transaction_status != PG::PQTRANS_IDLE
-      @admin.exec("BEGIN")
-      @admin.exec("ALTER TABLE app.organization_access DISABLE TRIGGER guard_owner_loss")
-      @admin.exec_params("DELETE FROM app.organization_access WHERE organization_id=$1", [@org])
-      @admin.exec("ALTER TABLE app.organization_access ENABLE TRIGGER guard_owner_loss")
-      @admin.exec("COMMIT")
-    end
-    super
-  ensure
-    @admin.exec("ROLLBACK") if @admin && @admin.transaction_status != PG::PQTRANS_IDLE
   end
 
   def test_one_changed_role_writes_one_canonical_metadata_event

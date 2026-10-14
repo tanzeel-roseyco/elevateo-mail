@@ -24,7 +24,12 @@ class OutreachSequenceAuthorizedDatabaseTest < MailboxMembershipDatabaseCase
     SQL
   end
 
-  # AIDEV-NOTE: Inherited cleanup owns final-owner removal and the organization cascade, including sequences.
+  # AIDEV-NOTE: Remove explicit sequence dependencies before inherited campaign and final-owner fixture cleanup.
+  def prepare_organization_fixture_cleanup
+    %w[campaign_sequence_mutations campaign_sequence_occurrences campaign_sequence_steps campaign_sequences].each do |table|
+      @admin.exec_params("DELETE FROM app.#{table} WHERE organization_id=$1", [@org])
+    end
+  end
 
   def bind(value)
     ActiveRecord::Relation::QueryAttribute.new("seq863", value, ActiveRecord::Type::String.new)

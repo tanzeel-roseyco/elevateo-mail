@@ -9,6 +9,12 @@ class InboundPermalinkHTTPTest < Minitest::Test
 
   class Controller < V1::ThreadsController
     include CollaborationControllerHarness::Sessions
+
+    # AIDEV-NOTE: Keep expected API errors, but expose unexpected exceptions instead of masking them as a 500.
+    rescue_from StandardError do |error|
+      raise error
+    end
+    rescue_from Elevateo::AuthError, with: :api_error
   end
 
   def setup

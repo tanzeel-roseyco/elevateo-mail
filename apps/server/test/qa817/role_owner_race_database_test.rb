@@ -4,18 +4,9 @@ require_relative "../be_02/mailbox_membership_database_helper"
 
 # AIDEV-NOTE: A unique owner is a database invariant, including two distinct simultaneous enrollment candidates.
 class QA817RoleOwnerRaceDatabaseTest < MailboxMembershipDatabaseCase
-  def teardown
-    if @admin && @org
-      @admin.exec("ROLLBACK") if @admin.transaction_status != PG::PQTRANS_IDLE
-      @admin.exec("BEGIN")
-      @admin.exec("ALTER TABLE app.organization_access DISABLE TRIGGER guard_owner_loss")
-      @admin.exec_params("DELETE FROM app.organization_access WHERE organization_id=$1", [@org])
-      @admin.exec("ALTER TABLE app.organization_access ENABLE TRIGGER guard_owner_loss")
-      @admin.exec("COMMIT")
-    end
-    super
-  ensure
-    @admin.exec("ROLLBACK") if @admin && @admin.transaction_status != PG::PQTRANS_IDLE
+  # AIDEV-NOTE: These role-specific cases seed their own grants; inherited cleanup owns final-owner removal.
+  def sec802_default_fixture?
+    false
   end
 
   def test_distinct_owner_insert_race_leaves_exactly_one_owner
