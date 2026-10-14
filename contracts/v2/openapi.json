@@ -63,13 +63,28 @@
             }
           },
           "400": {
-            "description": "Malformed path, limit, or invalid or expired cursor"
+            "description": "Malformed path, limit, or invalid or expired cursor",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ScopedReadError" }
+              }
+            }
           },
           "401": {
-            "description": "Unauthenticated session"
+            "description": "Unauthenticated session",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ScopedReadError" }
+              }
+            }
           },
           "404": {
-            "description": "Mailbox missing or inaccessible; foreign organization is indistinguishable"
+            "description": "Mailbox missing or inaccessible; foreign organization is indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ScopedReadError" }
+              }
+            }
           }
         }
       }
@@ -137,13 +152,28 @@
             }
           },
           "400": {
-            "description": "Malformed scope or page query"
+            "description": "Malformed scope or page query",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ScopedReadError" }
+              }
+            }
           },
           "401": {
-            "description": "Unauthenticated or revoked session"
+            "description": "Unauthenticated or revoked session",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ScopedReadError" }
+              }
+            }
           },
           "404": {
-            "description": "Missing or inaccessible mailbox, message or attachment"
+            "description": "Missing or inaccessible mailbox, message or attachment",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ScopedReadError" }
+              }
+            }
           }
         },
         "description": "Use id-sorted UUID cursor pagination scoped to the current message; clean status alone never guarantees byte access."
@@ -225,13 +255,28 @@
             }
           },
           "400": {
-            "description": "Malformed scope or page query"
+            "description": "Malformed scope or page query",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ScopedReadError" }
+              }
+            }
           },
           "401": {
-            "description": "Unauthenticated or revoked session"
+            "description": "Unauthenticated or revoked session",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ScopedReadError" }
+              }
+            }
           },
           "404": {
-            "description": "Missing or inaccessible mailbox, message or attachment"
+            "description": "Missing or inaccessible mailbox, message or attachment",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ScopedReadError" }
+              }
+            }
           },
           "423": {
             "description": "Current authorized attachment is held or rejected without a clean verdict; no bytes are released",
@@ -251,7 +296,12 @@
             }
           },
           "503": {
-            "description": "Private gateway or storage unavailable; no bytes released"
+            "description": "Private gateway or storage unavailable; no bytes released",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ScopedReadError" }
+              }
+            }
           }
         }
       }
@@ -1204,6 +1254,16 @@
       }
     },
     "schemas": {
+      "ScopedReadError": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["code", "message", "request_id"],
+        "properties": {
+          "code": { "type": "string", "minLength": 1, "maxLength": 64 },
+          "message": { "type": "string", "minLength": 1, "maxLength": 256 },
+          "request_id": { "type": "string", "minLength": 1, "maxLength": 128 }
+        }
+      },
       "MailboxAssigneeOption": {
         "type": "object",
         "additionalProperties": false,
