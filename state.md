@@ -201,3 +201,6 @@ ATT838 Rails configuration now accepts only the internal http://attachment-gatew
 FE807 `fa3082a` seam reviewed statically: manual consent adapter and detail GET match owner method signatures. Denied/409 replay UI assertions are authored, not fleet verified.
 
 FE807 sequence source candidate adds `/outreach/campaigns/:campaignId/sequence` with inert draft/held editing under optional gateway methods. GET 404 is treated as no accessible draft, without asserting existence; a tentative create still requires authoritative backend access. Soren fleet type/unit/build and real V2 HTTP/browser checks are pending.
+MAC-814 continuation: Orion shell d13c985 imported with lineage; macOS DMG overlay and preflight release script authored. No Mac runner, credential or native execution evidence; installed-app authentication remains fail closed.
+
+MAC-814 sequence draft primitive is source-only and untested: timezone/DST resolution, occurrence identity and stop signals. Persistence, API contract, final consent/suppression checks and worker integration remain pending root/Cassian/Dorian agreement. No sending path was added.

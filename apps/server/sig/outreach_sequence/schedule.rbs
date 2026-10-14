@@ -1,0 +1,13 @@
+module Elevateo
+  module OutreachSequence
+    module Schedule
+      UUID: Regexp
+      LOCAL_AT: Regexp
+      MAX_VERSION: Integer
+
+      def self.due_utc: (local_at: untyped, timezone: untyped) -> Time?
+      def self.occurrence_key: (campaign_id: untyped, lead_id: untyped, step_id: untyped, draft_version: untyped) -> String
+      def self.stop_required?: (reply_at: untyped, unsubscribe_at: untyped) -> bool
+    end
+  end
+end
