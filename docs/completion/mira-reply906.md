@@ -1,0 +1,7 @@
+# REPLY906 — top reply integration regression
+
+Owner: Mira FE806. Parent source: `fcfaf0fc8d4d116b0d66dc9f4597ee90bf5c793c` (REPLY901). Actual author identity: Codex GPT-6 in Orca; service tier and billed mode are not independently verified.
+
+The old `CollaborationPanels.test.tsx` top reply case asserted a stable link to an empty unsaved draft. REPLY901 correctly replaced that link with a button that seeds from a current readable message. The updated case gives the reader a compose-capable mailbox and a routed draft editor, then checks public behavior: after a read-state change, the top button opens a new draft with the fixture sender in To, `Re:` subject, and a conversation link; no draft save occurs until explicit Save draft, after which one versioned save is observed. Read-state, assignment and note cases are unchanged. No `ThreadPage` implementation, gateway, contract, attachment or other owner file changed.
+
+Soren sole fleet-02 Docker request on exact REPLY906 commit: `cd apps/web && npm run typecheck && npm run lint && npm run test -- src/features/thread/ThreadPage.test.tsx src/features/thread/CollaborationPanels.test.tsx`. Request exact SHA, exits, logs and cleanup; broader integrated suite/browser checks follow Cassian integration and QA816 real-auth gate. These tests are authored but **NOT_RUN** by Mira. Independent bounded adversarial review remains pending; no runtime or browser PASS is claimed.

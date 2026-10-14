@@ -1,12 +1,14 @@
 // BE-02 D inside the reader: the explicit read-state control reports the server's answer and
 // never flips optimistically; assignment carries the revision it was decided against and a stale
 // revision reloads before choosing again; notes are inert plaintext whose uncertain attempt is
-// retried under the SAME note id; the reply-as-draft entry mints one stable draft id per visit.
+// retried under the SAME note id; the top reply opens a sender-filled, thread-bound draft.
 import { fireEvent, render, screen, waitFor, within } from '@testing-library/react'
 import { MemoryRouter, Route, Routes } from 'react-router'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { SessionProvider } from '@/app/session'
 import { DraftIntentProvider } from '@/app/draftIntent'
+import { MailboxesProvider } from '@/app/mailboxes'
+import { DraftEditorPage } from '@/features/drafts/DraftEditorPage'
 import type { ThreadNoteInput } from '@/data/contract'
 import { GatewayError } from '@/data/errors'
 import { CD_FIXTURE as CD } from '@/data/fixtures/collaborationState'
@@ -244,16 +246,35 @@ describe('notes', () => {
 })
 
 describe('reply as draft', () => {
-  it('links to a new draft bound to this conversation with one stable id per visit', async () => {
+  it('opens a sender-filled thread reply and saves only after explicit action', async () => {
     const h = harness()
-    renderReader(h.gateway)
+    const save = vi.spyOn(h.gateway, 'saveDraft')
+    render(
+      <SessionProvider gateway={h.gateway}>
+        <DraftIntentProvider>
+          <MailboxesProvider value={{ status: 'ready', mailboxes: [{ id: CD.mailboxId, display_name: 'Team', display_address: null, capabilities: { read: true, compose: true, approve_send: false, manage_members: false } }] }}>
+            <MemoryRouter initialEntries={[`/mailboxes/${CD.mailboxId}/threads/${CD.threadId}`]}>
+              <Routes>
+                <Route path="/mailboxes/:mailboxId/threads/:threadId" element={<ThreadPage />} />
+                <Route path="/mailboxes/:mailboxId/drafts/:draftId" element={<DraftEditorPage />} />
+              </Routes>
+            </MemoryRouter>
+          </MailboxesProvider>
+        </DraftIntentProvider>
+      </SessionProvider>,
+    )
     await readerReady()
-    const link = screen.getByRole('link', { name: 'Reply as draft' })
-    const href = link.getAttribute('href') ?? ''
-    expect(href).toMatch(new RegExp(`^/mailboxes/${CD.mailboxId}/drafts/[0-9a-f-]{36}\\?new=1&reply_to=${CD.threadId}$`))
     fireEvent.click(button('Mark as read'))
     await screen.findByRole('button', { name: 'Mark as unread' })
-    expect(screen.getByRole('link', { name: 'Reply as draft' }).getAttribute('href')).toBe(href)
-    expect(() => h.state.getDraft(href.split('/')[4]!.split('?')[0]!, CD.mailboxId)).toThrow('This item is unavailable.')
+    fireEvent.click(button('Reply as draft'))
+    await screen.findByRole('heading', { name: 'New draft' })
+    expect((screen.getByLabelText('To') as HTMLTextAreaElement).value).toBe('sender@example.test')
+    expect((screen.getByLabelText('Subject') as HTMLInputElement).value).toBe('Re: Synthetic thread')
+    expect(screen.getByRole('link', { name: 'Replying to a conversation' }).getAttribute('href')).toBe(`/mailboxes/${CD.mailboxId}/threads/${CD.threadId}`)
+    expect(save).not.toHaveBeenCalled()
+    fireEvent.click(button('Save draft'))
+    await screen.findByText('Saved version 1')
+    expect(save).toHaveBeenCalledTimes(1)
+    expect(save.mock.calls[0]?.[3]).toMatchObject({ reply_to_thread_id: CD.threadId, to: [{ address: 'sender@example.test' }] })
   })
 })

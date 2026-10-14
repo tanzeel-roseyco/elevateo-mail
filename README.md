@@ -18,6 +18,8 @@ Shared company mailroom with one Rails domain authority and a React/TypeScript c
 
 The conversation's top Reply as draft now chooses a current readable message with a usable sender and uses the existing per-message reply seed, including bounded Re: subject and thread association. A selected message URL is authoritative: its reply stays disabled while unresolved or unavailable, and a missing sender gives a visible explanation. Focused regressions are authored; Soren fleet Docker, independent review, integrated real-auth and browser acceptance remain pending. See [Mira's REPLY901 record](docs/completion/mira-reply901.md).
 
+REPLY906 replaces the older collaboration test's empty-draft link expectation with a public UI check of the top button, filled recipient/subject/thread link, and explicit save. The updated test is authored but has not run; see [REPLY906](docs/completion/mira-reply906.md).
+
 ### FE806 inbound attachment reader candidate
 
 The isolated thread reader can show bounded private attachment metadata on explicit request and offer an authorized byte-proxy download only for `clean` rows. Pending, blocked and failed scans remain held; a fresh proxy denial remains unavailable. This frontend port follows the noncanonical V2 proposal and is not connected to an active route or scanner. Outbound attachment upload/send remains disabled; fleet tests and browser acceptance are pending. See [Mira's owner record](docs/completion/mira.md).
