@@ -65,6 +65,18 @@ class AuthConfigTest < Minitest::Test
     end
   end
 
+  def test_attachment_gateway_url_is_exact_internal_service_and_requires_key
+    valid = environment.merge("ELEVATEO_ATTACHMENT_GATEWAY_HMAC_KEY_BASE64" => Base64.strict_encode64("g" * 32))
+    assert_equal "http://attachment-gateway:4708", Elevateo::Config.load!(valid.merge(
+      "ELEVATEO_ATTACHMENT_GATEWAY_URL" => "http://attachment-gateway:4708")).attachment_gateway_url
+    ["https://attachment-gateway:4708", "http://attachment-gateway:4708/other", "http://evil.test:4708"].each do |url|
+      assert_raises(Elevateo::ConfigError) { Elevateo::Config.load!(valid.merge("ELEVATEO_ATTACHMENT_GATEWAY_URL" => url)) }
+    end
+    assert_raises(Elevateo::ConfigError) do
+      Elevateo::Config.load!(environment.merge("ELEVATEO_ATTACHMENT_GATEWAY_URL" => "http://attachment-gateway:4708"))
+    end
+  end
+
   def test_exact_jwt_policy_and_password_minimum
     { "ELEVATEO_AUTH_JWT_ALGORITHM" => "none", "ELEVATEO_AUTH_JWT_AUDIENCE" => "anon",
       "ELEVATEO_AUTH_PASSWORD_MINIMUM" => "6" }.each do |key, value|

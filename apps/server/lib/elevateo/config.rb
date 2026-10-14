@@ -23,7 +23,7 @@ module Elevateo
     attr_reader :db_host, :db_name, :db_role, :db_password, :auth_url, :storage_url, :mailpit_url,
                 :send_api_enabled, :send_control_path, :outbound_hold, :process, :session_key, :browser_origin, :auth_jwt_issuer,
                 :auth_jwt_audience, :auth_jwt_algorithm, :cookie_secure, :auth_password_minimum, :cursor_signing_key,
-                :attachment_gateway_hmac_key
+                :attachment_gateway_hmac_key, :attachment_gateway_url
 
     def self.current = (@current ||= load!)
 
@@ -68,6 +68,13 @@ module Elevateo
         key = Base64.strict_decode64(fetch.("ELEVATEO_ATTACHMENT_GATEWAY_HMAC_KEY_BASE64"))
         raise ConfigError, "attachment gateway key must contain 32 bytes" unless key.bytesize == 32
         key.freeze
+      end
+      @attachment_gateway_url = env["ELEVATEO_ATTACHMENT_GATEWAY_URL"]
+      if @attachment_gateway_url && @attachment_gateway_url != "http://attachment-gateway:4708"
+        raise ConfigError, "attachment gateway URL must target the internal service"
+      end
+      if @attachment_gateway_url && !@attachment_gateway_hmac_key
+        raise ConfigError, "attachment gateway URL requires its dedicated signing key"
       end
       @session_key = Base64.strict_decode64(fetch.("ELEVATEO_SESSION_KEY_BASE64"))
       raise ConfigError, "session key must contain 32 bytes" unless @session_key.bytesize == 32

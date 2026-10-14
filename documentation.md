@@ -260,3 +260,5 @@ Organization role changes append a redacted audit event in the same database tra
 Security auditors may read metadata-only organization role audit pages; they cannot list effective grants or mutate roles. Audit timestamps use six-digit UTC wire formatting.
 
 OUT-804 actual-role policy assertions now cover API positive, denied app-read proof and cross-actor digest negative on the existing disposable database fixture; authored source is not fleet-executed.
+
+ATT838 Rails configuration now accepts only the internal http://attachment-gateway:4708 endpoint paired with the dedicated 32-byte HMAC key; the gateway client/route and fleet checks remain pending.

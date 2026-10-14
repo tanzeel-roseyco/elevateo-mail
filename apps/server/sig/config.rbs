@@ -25,6 +25,8 @@ module Elevateo
     attr_reader process: String
     attr_reader session_key: String
     attr_reader cursor_signing_key: String
+    attr_reader attachment_gateway_hmac_key: String?
+    attr_reader attachment_gateway_url: String?
     attr_reader browser_origin: String
     attr_reader auth_jwt_issuer: String
     attr_reader auth_jwt_audience: String

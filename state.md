@@ -196,3 +196,5 @@ SEC-802 follow-up to Rhea's 2 MEDIUM helper cleanup findings: membership and dra
 SEC-802 Felix REV874 found one further MEDIUM source defect: a failed rollback could replace the original cleanup failure. The fixture-only rescue now preserves the first exception and has a deterministic double-fault regression; Soren Docker and repair re-review remain pending.
 
 OUT-804 actual-role policy assertions now cover API positive, denied app-read proof and cross-actor digest negative on the existing disposable database fixture; authored source is not fleet-executed.
+
+ATT838 Rails configuration now accepts only the internal http://attachment-gateway:4708 endpoint paired with the dedicated 32-byte HMAC key; the gateway client/route and fleet checks remain pending.

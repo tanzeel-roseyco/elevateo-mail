@@ -250,3 +250,5 @@ Rhea's bounded review found closed-connection teardown paths in the membership a
 Felix's follow-up review found a secondary rollback failure could still mask the first SQL cleanup error. The test helper now retains the first error and records only the secondary error class; a fake-connection regression awaits fleet execution.
 
 OUT-804 actual-role policy assertions now cover API positive, denied app-read proof and cross-actor digest negative on the existing disposable database fixture; authored source is not fleet-executed.
+
+ATT838 Rails configuration now accepts only the internal http://attachment-gateway:4708 endpoint paired with the dedicated 32-byte HMAC key; the gateway client/route and fleet checks remain pending.

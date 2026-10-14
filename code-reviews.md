@@ -1072,3 +1072,5 @@ PREF-822 candidate review request: migration00014 102 source LOC, controller 88 
 ADM-803 QA815 static repair proposal: 270 unique source LOC in three bounded packets (roster127, grants95, audit48) listed in docs/completion/theo-core-static-repair.md. No independent reviewer has inspected this repair and no defect density is claimed; Soren's earlier static FAIL remains until exact fleet rerun. The current repair addresses the named Theo errors only, not unrelated worker/inbound diagnostics in the same receipt.
 
 OUT839 bounded role seam inspection covered migration 00009 policy template, SEC802 outreach routine grants and BE02 API fixture connection source; no production defect is established by static inspection. Three actual-role SQL assertions were authored for API positive, direct app-read fail-closed and cross-actor digest negative. They are NOT_RUN and do not count as independent review or runtime evidence.
+
+ATT838 Cassian author review: inspected 10 changed Config/RBS source LOC and 11 test LOC for exact internal URL and key coupling. No finding in this bounded static packet (0/21 LOC, 0/KLOC); independent review and Docker execution pending.

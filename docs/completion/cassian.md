@@ -141,3 +141,7 @@ Dorian 4d1d384 append-only lead consent audit link and Mira 17482af direct looku
 Registry hardening: the active V2 operation allowlist now lives only in `V2RouteRegistry::ACTIVE_OPERATIONS`; `routes.rb` no longer duplicates names. Non-boolean `enabled`/`controllers_ready` values and an explicit `getWorkerJob` proposal override fail before any route registration. Source tests added; Soren exact fleet Ruby route test requested, NOT_RUN on this hardening SHA.
 
 The three protected organization/roster operations were aligned from `candidate` to `active` in OpenAPI because their isolated source routes were already registered. A structural test now requires all OpenAPI active operation IDs to match the Rails active allowlist exactly; `active` is source registration only, not acceptance. Soren structural rerun requested; no PASS on this status-alignment SHA.
+
+## ATT838 internal URL boundary
+
+Config and RBS accept only the exact internal gateway URL paired with the dedicated HMAC key. Test cases cover valid, missing-key and three alternate-host/scheme/path failures. This is source-only, NOT_RUN; no network call, public route, storage token or release claim.
