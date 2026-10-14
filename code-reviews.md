@@ -773,3 +773,19 @@ Independent adversarial functional and design-tradeoff reviews are requested fro
 Coverage: `featureGateways.tsx` (27 LOC), rewritten `features/index.tsx` (86), `FeatureNotConnectedPage.tsx` (18), changed hunks in `featureRegistry.ts`/`Sidebar.tsx`/`App.tsx`/`main.tsx`/`index.css` (~60). Total ~191 production LOC in one bounded pass. Author self-inspection only; no independent review claimed. Self-found before commit: 1 (explicit `undefined` props would violate exactOptionalPropertyTypes against Celeste's optional props; replaced with conditional spreads). Provisional density 5.24/KLOC, author evidence. Owner commits merged unmodified are not counted. Tests: 10 FE-805 cases authored across four files, not executed.
 
 SEC-802 continuation author inspection corrected migration dependency order and receipt cascade behavior before commit. This is not an independent adversarial review. `db/sec802/access.sql` and `membership_patch.sql` need separate <=200 LOC reviews, plus a dedicated design-tradeoff review; confirmed independent defect density remains unreported.
+
+### FE808 continuation author inspection
+
+Scope: `apps/web/src/features/members/{adminModel,AdministrationPage,PersonalSettingsPage,peopleFeatureModule}*`. Author inspection found and fixed one stale-write replay risk by blocking further edits after any failed write until reload. Independent adversarial packets and design reviewer remain pending; no independent defect count or density is claimed. Fleet Docker tests, TypeScript/lint and actual browser checks are NOT_RUN on this candidate.
+
+FE807 continuation: author self-inspection of uncommitted Outreach route/forms candidate found the unconfirmed-write duplicate-submission risk; form locks now require navigation after an ambiguous error. Independent bounded source/data review and dedicated design review remain pending; independently reviewed LOC 0, independently confirmed defect density not applicable. Docker/browser/runtime tests not executed by Celeste. Exact source and Soren request: `docs/completion/celeste.md`.
+
+FE807 author follow-up: self-review found that treating every write error as uncertain would block correction after a definitive 400, while a malformed success could have committed. The page now distinguishes definitive validation rejection from uncertain/malformed outcomes and includes a targeted 400 regression. Independent source/design review and fleet execution remain pending; no independent defect-density claim.
+
+## FE-806 message permalink review request
+
+Bounded packet: `apps/web/src/features/thread/ThreadPage.tsx` (about 23 changed lines) and `ThreadPage.test.tsx` (about 53 added lines). Request independent adversarial source review plus dedicated design tradeoff review: URL parsing, stale scope, page termination, accessibility/focus and cross-mailbox disclosure. No review was performed in this worker turn; defects and density are pending. Tests and browser evidence are authored/requested, not executed.
+
+### FE-805 R3 registration self-inspection (Fable, 2026-10-15)
+
+Coverage: rewritten `features/index.tsx` (62 LOC), `featureGateways.tsx` (25), changed hunks in `featureRegistry.ts`/`main.tsx` (~10). ~97 production LOC, one bounded pass; author self-inspection only, no independent review claimed. Self-found before commit: 0 confirmed. Provisional density 0/KLOC, author evidence only. Merged owner commits unmodified and not counted. Tests: 11 FE-805 cases authored, not executed.

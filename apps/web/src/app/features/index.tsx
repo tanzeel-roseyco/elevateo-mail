@@ -1,16 +1,17 @@
 // Feature module registration (FE-805). This is the single place where owner exports are bound to
-// shell routes and sidebar sections. Owners export pages from their own paths; Fable wires them
-// here with the session context and the optional feature gateways (./featureGateways).
+// shell routes and sidebar sections. Owners export modules/pages from their own paths; Fable wires
+// them here with the session context, CSRF proof and the optional feature gateways.
 //
-// AIDEV-NOTE: Route elements are thin wrappers: they read URL/session/capability state and pass
-// explicit props to the owner page, so owner components stay testable without the shell.
+// AIDEV-NOTE: Owner modules carry static elements. Celeste's pages take gateway/context/proof as
+// props, so each Outreach route is a thin wrapper that reads session state and builds her element;
+// Lyra's module reads the session itself and is registered verbatim.
 import type { ReactElement } from 'react'
-import { useSession } from '../session'
+import { useProtectedRequest } from '../protectedRequest'
 import { useFeatureGateways } from '../featureGateways'
 import { buildFeatureRegistry, type FeatureRegistration } from '../featureRegistry'
-import { FeatureNotConnectedPage } from './FeatureNotConnectedPage'
-import { OutreachAccountsPage, OutreachAnalyticsPage, OutreachCampaignsPage, OutreachLeadsPage, type OutreachPageProps } from '@/features/outreach/OutreachPages'
-import { AdministrationPage } from '@/features/members/AdministrationPage'
+import { createOutreachFeatureModule } from '@/features/outreach/featureModule'
+import type { OutreachPageProps } from '@/features/outreach/OutreachPages'
+import { peopleFeatureModule } from '@/features/members/peopleFeatureModule'
 
 export interface FeatureModule extends FeatureRegistration {
   /** One element per registered route path; keys must equal `routes` exactly. */
@@ -18,57 +19,34 @@ export interface FeatureModule extends FeatureRegistration {
 }
 
 // --- Outreach (Celeste FE-807) -------------------------------------------------------------
-// Celeste's pages accept optional reads/context and render their own unavailable/error states.
-// exactOptionalPropertyTypes forbids passing `undefined` explicitly, hence the conditional spread.
+// exactOptionalPropertyTypes forbids passing `undefined` explicitly, hence the conditional spreads.
 function useOutreachProps(): OutreachPageProps {
-  const { context } = useSession()
+  const { context, proof } = useProtectedRequest()
   const { outreach } = useFeatureGateways()
-  return { ...(outreach === undefined ? {} : { reads: outreach }), ...(context === null ? {} : { context }) }
-}
-function CampaignsRoute() { return <OutreachCampaignsPage {...useOutreachProps()} /> }
-function LeadsRoute() { return <OutreachLeadsPage {...useOutreachProps()} /> }
-function AccountsRoute() { return <OutreachAccountsPage {...useOutreachProps()} /> }
-function AnalyticsRoute() { return <OutreachAnalyticsPage {...useOutreachProps()} /> }
-
-const outreach: FeatureModule = {
-  id: 'celeste-outreach',
-  routes: ['/outreach/campaigns', '/outreach/leads', '/outreach/accounts', '/outreach/analytics'],
-  nav: [
-    { path: '/outreach/campaigns', label: 'Campaigns', section: 'outreach', order: 10 },
-    { path: '/outreach/leads', label: 'Leads', section: 'outreach', order: 20 },
-    { path: '/outreach/accounts', label: 'Accounts', section: 'outreach', order: 30 },
-    { path: '/outreach/analytics', label: 'Analytics', section: 'outreach', order: 40 },
-  ],
-  elements: {
-    '/outreach/campaigns': <CampaignsRoute />,
-    '/outreach/leads': <LeadsRoute />,
-    '/outreach/accounts': <AccountsRoute />,
-    '/outreach/analytics': <AnalyticsRoute />,
-  },
-}
-
-// --- Organization administration (Lyra FE-808) -------------------------------------------
-// Lyra's page requires a gateway; without the V2 admin capability the route states that plainly.
-function AdministrationRoute({ section }: { section: 'people' | 'settings' }) {
-  const { admin } = useFeatureGateways()
-  if (admin === undefined) {
-    return <FeatureNotConnectedPage title={section === 'people' ? 'People' : 'Settings'} dependency="the organization administration gateway (V2 grants)" />
+  return {
+    ...(outreach === undefined ? {} : { gateway: outreach }),
+    ...(context === null ? {} : { context }),
+    ...(proof === null ? {} : { proof }),
   }
-  return <AdministrationPage gateway={admin} section={section} />
 }
 
-const organization: FeatureModule = {
-  id: 'lyra-organization',
-  routes: ['/people', '/settings'],
-  nav: [
-    { path: '/people', label: 'People', section: 'organization', order: 10 },
-    { path: '/settings', label: 'Settings', section: 'organization', order: 20 },
-  ],
-  elements: { '/people': <AdministrationRoute section="people" />, '/settings': <AdministrationRoute section="settings" /> },
+/** Renders Celeste's element for one path with live session props; her page owns the rest. */
+function OutreachRoute({ path }: { path: string }) {
+  const element = createOutreachFeatureModule(useOutreachProps()).elements[path]
+  if (element === undefined) throw new Error(`Outreach module has no element for "${path}"`)
+  return element
 }
 
-// Mira (FE-806) keeps her mailbox-scoped inbox/thread/draft routes in App.tsx; nothing to add here.
-export const FEATURE_MODULES: readonly FeatureModule[] = [outreach, organization]
+const outreachShape = createOutreachFeatureModule({})
+const outreach: FeatureModule = {
+  id: outreachShape.id,
+  routes: outreachShape.routes,
+  nav: outreachShape.nav,
+  elements: Object.fromEntries(outreachShape.routes.map((path) => [path, <OutreachRoute key={path} path={path} />])),
+}
+
+// --- People and settings (Lyra FE-808): personal section, session-bound pages ---------------
+export const FEATURE_MODULES: readonly FeatureModule[] = [outreach, peopleFeatureModule]
 
 /** Validated at module load: a bad registration fails the build/test run rather than the user. */
 export const featureRegistry = buildFeatureRegistry(FEATURE_MODULES)

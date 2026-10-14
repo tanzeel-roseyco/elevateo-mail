@@ -17,9 +17,9 @@ const outreach: FeatureNavEntry[] = [
   { path: '/outreach/campaigns', label: 'Campaigns', section: 'outreach', order: 10 },
   { path: '/outreach/leads', label: 'Leads', section: 'outreach', order: 20 },
 ]
-const organization: FeatureNavEntry[] = [{ path: '/people', label: 'People', section: 'organization', order: 10 }]
+const personal: FeatureNavEntry[] = [{ path: '/people', label: 'People', section: 'personal', order: 70 }]
 
-function renderAt(path: string, sections: Parameters<typeof Sidebar>[0]['sections'] = { outreach, organization }) {
+function renderAt(path: string, sections: Parameters<typeof Sidebar>[0]['sections'] = { outreach, personal }) {
   return render(
     <MemoryRouter initialEntries={[path]}>
       <Sidebar mailboxes={[inbox]} sections={sections} footnote="footnote" />
@@ -28,12 +28,13 @@ function renderAt(path: string, sections: Parameters<typeof Sidebar>[0]['section
 }
 
 describe('sidebar sections', () => {
-  it('renders Personal, Outreach and Organization as independent landmarks with the authentic mark', () => {
+  it('renders Personal and Outreach as independent landmarks with the authentic mark', () => {
     renderAt('/outreach/campaigns/123')
     const personal = screen.getByRole('navigation', { name: 'Personal' })
     const outreachNav = screen.getByRole('navigation', { name: 'Outreach' })
-    expect(within(screen.getByRole('navigation', { name: 'Organization' })).getByRole('link', { name: 'People' })).toBeTruthy()
-    expect(screen.getAllByRole('navigation').map((n) => n.getAttribute('aria-labelledby'))).toEqual(['sidebar-personal', 'sidebar-outreach', 'sidebar-organization'])
+    // Registered personal links (Lyra's People/settings) follow the mailboxes inside Personal.
+    expect(within(personal).getAllByRole('link').map((l) => l.textContent)).toEqual(['Search', 'Fixture inbox', 'People'])
+    expect(screen.getAllByRole('navigation').map((n) => n.getAttribute('aria-labelledby'))).toEqual(['sidebar-personal', 'sidebar-outreach'])
     expect(within(personal).getByRole('link', { name: 'Fixture inbox' })).toBeTruthy()
     expect(within(personal).getByRole('link', { name: 'Search' })).toBeTruthy()
     expect(within(outreachNav).getAllByRole('link').map((l) => l.textContent)).toEqual(['Campaigns', 'Leads'])
@@ -60,7 +61,6 @@ describe('sidebar sections', () => {
   it('hides every empty feature section and keeps Personal intact', () => {
     renderAt('/mailboxes/00000000-0000-4000-8000-000000000061/drafts', {})
     expect(screen.queryByRole('navigation', { name: 'Outreach' })).toBeNull()
-    expect(screen.queryByRole('navigation', { name: 'Organization' })).toBeNull()
     expect(screen.getByRole('link', { name: 'Drafts' }).getAttribute('aria-current')).toBe('page')
     expect(screen.getByRole('link', { name: 'Fixture inbox' }).getAttribute('aria-current')).toBeNull()
   })

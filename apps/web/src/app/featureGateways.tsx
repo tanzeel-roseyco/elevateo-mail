@@ -1,16 +1,15 @@
 // Optional feature capabilities handed to registered modules (FE-805). The V1 MailroomGateway
-// stays frozen; Outreach reads (Celeste) and organization administration (Lyra) arrive through
-// this separate seam so each feature renders its own honest "not connected" state when absent.
+// stays frozen; Celeste's OutreachGateway arrives through this separate seam so her pages render
+// their own honest "unavailable" state when it is absent. Lyra's administration pages bind
+// Cassian's V2 gateway directly and need nothing here.
 //
-// AIDEV-NOTE: Absence is the production default until Cassian's V2 gateway and the owners' DTOs
-// agree (see docs/completion/fable.md "Gateway reconciliation"). Never fabricate a capability here.
+// AIDEV-NOTE: Absence is the production default until Cassian publishes an OutreachGateway adapter
+// over V2 (see docs/completion/fable.md "Gateway reconciliation"). Never fabricate a capability here.
 import { createContext, useContext, type ReactNode } from 'react'
-import type { AdminGateway } from '@/features/members/adminModel'
-import type { OutreachReads } from '@/features/outreach/contract'
+import type { OutreachGateway } from '@/features/outreach/contract'
 
 export interface FeatureGateways {
-  readonly outreach?: OutreachReads
-  readonly admin?: AdminGateway
+  readonly outreach?: OutreachGateway
 }
 
 const NONE: FeatureGateways = {}

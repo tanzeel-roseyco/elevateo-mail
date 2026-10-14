@@ -12,9 +12,9 @@ const root = document.getElementById('root')
 if (!root) throw new Error('Missing #root element')
 const gateway = createHttpGateway()
 // AIDEV-NOTE: FE-805 feature gateways are intentionally empty in production: V2 routes are disabled
-// server-side, V2 has no Outreach read endpoints, and Cassian's grant DTO (user_id, three roles)
-// does not yet match Lyra's AdminGateway snapshot (person_key, people, seven roles). Each page
-// shows its own "not connected" state until the owners reconcile; nothing is simulated here.
+// server-side and V2 has no Outreach read/write endpoints yet, so no OutreachGateway adapter exists.
+// Celeste's pages show their own "unavailable" state; Lyra's pages bind Cassian's V2 gateway
+// directly. Nothing is simulated here.
 const featureGateways = {}
 createRoot(root).render(
   <StrictMode>
