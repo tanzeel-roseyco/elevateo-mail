@@ -407,3 +407,5 @@ Sabine 28ef4d56 exact two-predicate ACL lint repair imported feature c13c730b an
 Corin f8d54cd7 fake inbound guard callback lint patch imported feature f4f47fef/core 932a3809; source semantics unchanged and no host tests. Orion authority fixture fatal syntax remains pending.
 
 Soren fleet-only V2 codegen/check on canonical `263047b4` PASS, exact generated declaration SHA256 0c5f0969de378bb470bb3824bb7edb7f163d4a455d514e815885003443e62bb1 adopted at `9dc00727`; contract hash 2f36ac345f839cafd05edd20434955e4587d60d54f74c2c434a23b159a5f64dc matches. Bounded receipt imported. Requested next: Soren feature exact-source web lint/type/unit/build, then guarded assignee real-role HTTP/browser; executed next: none. Generated types do not establish controller/security behavior.
+
+ADV146 Vera exact 263047b4 error-envelope successor: 134 unique versioned source LOC/zero defects (0/KLOC), static closure of ADV145 P2. The report excludes HTTP/runtime and request-ID middleware; Soren's separate codegen/check PASS covers parser generation only. Actual scoped response assertions remain for fleet.

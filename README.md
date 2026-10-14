@@ -542,3 +542,5 @@ Sabine's `28ef4d56` gateway ACL test-only lint repair is staged in both candidat
 Corin's `f8d54cd7` fake inbound unused guard callback lint fix is staged in both candidates; the protected actor guard and test-only route behavior remain the same. Orion authority fixture syntax is the remaining fatal lint owner patch.
 
 QA815 fleet-only V2 declaration generation/check passed on exact canonical source `263047b4`; INT801 adopted the generated `api-v2.d.ts` byte hash `0c5f0969…62bb1` against unchanged contract hash `2f36ac34…64dc`. This proves code generation/check only; integrated web lint/type/unit/build, guarded route HTTP and browser remain pending.
+
+ADV146 independently reviewed the current V2 error-envelope repair, 134 source LOC/zero defects, closing ADV145's earlier finding statically. Fleet codegen/check passed separately; scoped HTTP responses remain unverified.

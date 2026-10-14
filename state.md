@@ -487,3 +487,5 @@ Sabine 28ef4d56 two gateway ACL test lint repairs imported source-only feature/c
 Corin f8d54cd7 unused callback lint repair imported feature/core source-only; Orion fatal authority fixture patch remains before coherent fleet lint rerun.
 
 QA815 exact 263047b4 fleet V2 codegen/check PASS; generated declaration SHA256 0c5f0969de378bb470bb3824bb7edb7f163d4a455d514e815885003443e62bb1 is adopted into feature candidate. Contract hash 2f36ac345f839cafd05edd20434955e4587d60d54f74c2c434a23b159a5f64dc matches. Integrated web static/runtime not yet run.
+
+ADV146 exact 263047b4 closed V2 error-envelope repair reviewed 134 LOC/0 defects, source-only; prior ADV145 finding statically closed, HTTP/runtime still pending.
