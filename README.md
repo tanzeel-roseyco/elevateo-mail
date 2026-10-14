@@ -62,6 +62,8 @@ R24 Nadia BE03 API isolated work is explicitly authorized by root while BE02 rem
 
 FE-805 (Fable) R12 FE864, 2026-10-15: `outreachSessionPolicy.ts` now binds Cassian 578baa6e's optional `getOutreachSequenceDraft`/`saveOutreachSequenceDraft` with the same call-time session policy (intake 6b18fb99 is the exact 578baa6e `apps/web` tree); absence stays absent and no fixture fallback exists. Four regressions added, 35 FE-805 cases authored, none executed; no runtime or visual claim. See [Fable record](docs/completion/fable.md).
 
+FE-805 (Fable) R13 FE873, 2026-10-15: the fleet `no-control-regex` lint failure in `MessageAttachments.tsx` is repaired with an explicit code-point check equivalent to the removed character class; Cassian e9ead714 carries the identical file, so no further intake. One fail-closed regression added, 36 FE-805 cases authored, none executed; no runtime or visual claim. See [Fable record](docs/completion/fable.md).
+
 ## Historical R23 checkpoint — sequencing superseded only for isolated R24
 
 Application IN PROGRESS — R23 documentation checkpoint (2026-10-14). BE02 OPEN/unaccepted; BE03 CLOSED until root accepts BE02. Application completion has priority; R&D remains separate. Invitation source is exact 51ca5d2eadd74b7ac4c1a2f5f82cd49323b15dc5; core/empty/revoked/logout evidence belongs to exact 86036e276df9c3294206e6bfa14d478c223c54dd. Observer remains OFF. Production, contracts, observer boundary and four Docker recipes are unchanged.

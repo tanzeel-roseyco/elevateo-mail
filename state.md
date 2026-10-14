@@ -176,3 +176,5 @@ FE808 current blocker: Sabine/Theo successful grant GET includes protected actor
 FE-805 (Fable) R10, 2026-10-15: fleet 8eb840d's seven FE-805 unit failures repaired at source without weakening semantics; apps/web intaken at the integrated 8eb840d tree; tests authored, not executed; see docs/completion/fable.md R10.
 
 FE-805 (Fable) R12 FE864, 2026-10-15: sequence-draft optional methods bound in the Outreach session policy over exact Cassian 578baa6e apps/web intake; four regressions authored, none executed. See docs/completion/fable.md R12.
+
+FE-805 (Fable) R13 FE873, 2026-10-15: MessageAttachments.tsx no-control-regex repaired with an equivalent explicit code-point check plus one regression; authored, not executed. See docs/completion/fable.md R13.

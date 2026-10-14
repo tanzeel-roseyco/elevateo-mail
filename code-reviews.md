@@ -767,3 +767,7 @@ Author self-inspection only; Maeve's MAC-814 static review is the independent in
 
 Author self-inspection only; no independent review performed or claimed. Scope changed: `apps/web/src/app/outreachSessionPolicy.ts` +4 LOC (two conditional spreads, one AIDEV-NOTE), `outreachSessionPolicy.test.ts` +49 LOC. Root cause: the wrapper enumerates methods explicitly, so Cassian 578baa6e's two new optional port methods were dropped (1 omission defect in the pre-existing wrapper, now closed). Checked: call-time generation via the shared `policed` helper, absence preserved without a fixture fallback, no central contract edits, intake 6b18fb99 is the exact 578baa6e apps/web tree. Defects introduced: 0 across 53 changed LOC (0/KLOC). Tests authored, not executed; Soren runs them on fleet-02.
 
+### FE-805 R13 FE873 attachment filename lint repair self-inspection (Fable, 2026-10-15)
+
+Author self-inspection only; ADV114 and Cassian receive the bounded packet (31 changed LOC, well under 180). Scope: `apps/web/src/features/thread/MessageAttachments.tsx` +12/-1 (explicit code-point helper replaces the `no-control-regex` character class), `MessageAttachments.test.tsx` +19 (six forbidden-character rows fail closed). Equivalence checked range by range against the removed class; behaviour unchanged for every previously accepted or rejected filename. Defects introduced: 0 across 31 LOC (0/KLOC). Tests authored, not executed.
+

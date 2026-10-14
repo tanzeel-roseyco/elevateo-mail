@@ -23,9 +23,20 @@ type ListState =
   | { status: 'closed' | 'loading' | 'unavailable' | 'error' }
   | { status: 'ready'; items: AttachmentSummary[]; nextCursor: string | null; loadingMore: boolean; error: string | null }
 
+// AIDEV-NOTE: FE873 explicit code-point scan instead of a control-char regex (eslint no-control-regex):
+// C0 controls, DEL, path separators and the Unicode bidi override/isolate range are all rejected.
+function hasForbiddenCodePoint(filename: string): boolean {
+  for (const char of filename) {
+    const code = char.codePointAt(0) ?? 0
+    if (code <= 0x1f || code === 0x7f || char === '\\' || char === '/' ||
+        (code >= 0x202a && code <= 0x202e) || (code >= 0x2066 && code <= 0x2069)) return true
+  }
+  return false
+}
+
 function safeFilename(filename: string): string | null {
   if (filename.length === 0 || filename === '.' || filename === '..' || filename.trim() !== filename ||
-      /[\x00-\x1f\x7f\\/\u202a-\u202e\u2066-\u2069]/.test(filename) || new TextEncoder().encode(filename).length > 255) return null
+      hasForbiddenCodePoint(filename) || new TextEncoder().encode(filename).length > 255) return null
   return filename
 }
 
