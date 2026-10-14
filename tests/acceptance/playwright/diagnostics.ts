@@ -1,5 +1,6 @@
 import { dirname, basename, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { types } from 'node:util';
 import { z, ZodError } from 'zod';
 
 // AIDEV-NOTE: Frozen source bounds must be reviewed when these files change; never publish stack text.
@@ -57,19 +58,40 @@ function sourceLocation(stack: unknown, message: unknown): Diagnostic['source'] 
   }
   return null;
 }
+// AIDEV-NOTE: Lazy native formatting reads effective name/message and the global prepareStackTrace hook.
+function safeDataProperty(object: object, key: string): PropertyDescriptor | null | undefined {
+  let current: object | null = object;
+  for (let depth = 0; current !== null && depth < 8; depth++) {
+    if (types.isProxy(current)) return null;
+    const descriptor = Object.getOwnPropertyDescriptor(current, key);
+    if (descriptor) return 'value' in descriptor ? descriptor : null;
+    current = Object.getPrototypeOf(current);
+  }
+  return current === null ? undefined : null;
+}
+function safeNativeFormatting(error: Error): boolean {
+  for (const key of ['name', 'message']) {
+    const descriptor = safeDataProperty(error, key);
+    if (descriptor === null || (descriptor && typeof descriptor.value !== 'string'
+      && descriptor.value !== undefined)) return false;
+  }
+  const hook = safeDataProperty(Error, 'prepareStackTrace');
+  return hook !== null && hook?.value === undefined;
+}
 export function captureDiagnostic(error: unknown): Diagnostic {
   let category: Diagnostic['category'] = 'unknown';
   let source: Diagnostic['source'] = null;
   // AIDEV-NOTE: Arbitrary thrown objects/getters are not trusted Error or serialized framework diagnostics.
   try {
-    if (error instanceof Error) {
+    if (!types.isProxy(error) && error instanceof Error) {
       const prototype: unknown = Object.getPrototypeOf(error);
       if (prototype === TypeError.prototype) category = 'type';
       else if (error instanceof ZodError) category = 'validation';
       else if (prototype === Error.prototype) category = 'error';
       const stack = Object.getOwnPropertyDescriptor(error, 'stack');
-      const stackValue: unknown = stack?.get && stack.get === nativeStackGetter
-        ? stack.get.call(error) : stack?.value;
+      let stackValue: unknown = stack?.value;
+      if (stack?.get && stack.get === nativeStackGetter && safeNativeFormatting(error))
+        stackValue = stack.get.call(error);
       source = sourceLocation(stackValue,
         Object.getOwnPropertyDescriptor(error, 'message')?.value);
     }

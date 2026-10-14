@@ -1,5 +1,7 @@
 # Product requirements and decision record
 
+QA-404 R18 source-only followup: R17 9d904 remains HOLD after ADV838 found1 MED/211LOC (4.74/KLOC). Native stack extraction now rejects unsafe effective name/message descriptors, coercible values and custom prepareStackTrace hooks/accessors; zero-read regressions added. Original scenario oracles/security/body-vs-cleanup distinction preserved. Independent functional/design review and ADV839 verdict PENDING; all new runtime NOT_RUN, Soren sole lane. ObserverOFF; BE02unaccepted; BE03closed. See docs/completion/qa404-r18-diagnostic-guard.md.
+
 ## Current execution status
 
 R13 integrates accepted Nadia ADV815 expiry proof, Elara safe diagnostics and the bounded revocation-navigation fix after immutable **130cb5c**. The new opt-in expiry runner/strict typing integration is source accepted; all new-source runtime is NOT_RUN. Soren's existing snapshot is unchanged. Observer OFF; BE02 unaccepted; BE03 closed.

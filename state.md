@@ -1,5 +1,7 @@
 # Project state
 
+QA-404 R18 source-only followup: R17 9d904 remains HOLD after ADV838 found1 MED/211LOC (4.74/KLOC). Native stack extraction now rejects unsafe effective name/message descriptors, coercible values and custom prepareStackTrace hooks/accessors; zero-read regressions added. Original scenario oracles/security/body-vs-cleanup distinction preserved. Independent functional/design review and ADV839 verdict PENDING; all new runtime NOT_RUN, Soren sole lane. ObserverOFF; BE02unaccepted; BE03closed. See docs/completion/qa404-r18-diagnostic-guard.md.
+
 R13 integrates accepted Nadia ADV815 expiry proof, Elara safe diagnostics and the bounded revocation-navigation fix after immutable **130cb5c**. The new opt-in expiry runner/strict typing integration is source accepted; all new-source runtime is NOT_RUN. Soren's existing snapshot is unchanged. Observer OFF; BE02 unaccepted; BE03 closed.
 
 Sealed original R12 3bf records 12 cases: nine PASS and three FAIL (conflict, revocation and delayed logout), with 3,735 source files unchanged and cleanup/independent absence PASS. Receipt SHA256 b913e4700d88cd23b20f9fe25574391de462fdb3cd80963f51778ea3b5377b8e preserves that failed result. Four core flows passed and 16 screenshots were captured. Mira viewed all 16 images: search shows loading only and one LOW glyph-visibility finding remains. This is bounded visual evidence, not whole-application acceptance. R9 c8 backend390/5792 and frontend624/all eight gates PASS retain their original provenance; later failures remain in linked history.

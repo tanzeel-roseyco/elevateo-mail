@@ -112,3 +112,51 @@ test('native and data-property stacks work while custom Error stack getters rema
   assert.deepEqual(captureDiagnostic(native), { category: 'error', phase: 'body', source: null });
   assert.equal(reads, 0);
 });
+
+
+test('unformatted native errors never read unsafe name or message properties or coerce values', () => {
+  for (const key of ['name', 'message']) {
+    for (const inherited of [false, true]) {
+      const error = new Error('synthetic-private');
+      let reads = 0;
+      const target: object = inherited ? Object.create(Error.prototype) : error;
+      Object.defineProperty(target, key, { get() { reads++; return 'synthetic-private'; } });
+      if (inherited) {
+        if (key === 'message') Reflect.deleteProperty(error, 'message');
+        Object.setPrototypeOf(error, target);
+      }
+      const diagnostic = captureDiagnostic(error);
+      assert.equal(diagnostic.source, null);
+      assert.equal(reads, 0);
+      assert.equal(JSON.stringify(diagnostic).includes('synthetic-private'), false);
+    }
+    const error = new Error('synthetic-private');
+    let coercions = 0;
+    Object.defineProperty(error, key, { value: { toString() { coercions++; return 'synthetic-private'; } } });
+    assert.equal(captureDiagnostic(error).source, null);
+    assert.equal(coercions, 0);
+  }
+});
+test('native extraction never invokes a custom prepareStackTrace hook or getter', () => {
+  const original = Object.getOwnPropertyDescriptor(Error, 'prepareStackTrace');
+  let reads = 0;
+  try {
+    const error = new Error('synthetic-private');
+    Object.defineProperty(Error, 'prepareStackTrace', { configurable: true,
+      value: () => { reads++; return stackAt(source, 143); } });
+    const diagnostic = captureDiagnostic(error);
+    assert.equal(diagnostic.source, null);
+    assert.equal(reads, 0);
+    assert.equal(JSON.stringify(diagnostic).includes('synthetic-private'), false);
+    const next = new Error('synthetic-private');
+    Object.defineProperty(Error, 'prepareStackTrace', { configurable: true,
+      get() { reads++; return () => stackAt(source, 143); } });
+    const nextDiagnostic = captureDiagnostic(next);
+    assert.equal(nextDiagnostic.source, null);
+    assert.equal(reads, 0);
+    assert.equal(JSON.stringify(nextDiagnostic).includes('synthetic-private'), false);
+  } finally {
+    if (original) Object.defineProperty(Error, 'prepareStackTrace', original);
+    else Reflect.deleteProperty(Error, 'prepareStackTrace');
+  }
+});
