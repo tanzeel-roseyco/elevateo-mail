@@ -50,3 +50,5 @@ Coordinated drawer rename: root/Fable selected `Open navigation` for the mobile 
 Mira compose seam candidate: `SCN-QA-821-F1` opens a seeded thread as a composer, uses “Reply to this sender as draft”, saves case-owned reply text through real V1 PUT, reloads and checks reply-to thread binding. It requires Mira's integrated reply UI and an eligible seeded sender; no send/approval occurs. One fixed screenshot ID brings the set to twenty-six. Source NOT_RUN.
 
 Reply candidate correction: the server may mark a seeded thread subject truncated, in which case Mira intentionally leaves the reply subject empty. QA816 checks the recipient and reply-to binding without assuming a `Re:` prefix for that fixture.
+
+Mira transport recovery candidate: `SCN-QA-821-F2` aborts an unforwarded real browser thread GET, asserts the error removes plaintext, then clicks Try again and requires a real GET 200 and seeded message. It uses the existing acceptance transport barrier, not a fabricated response. Two fixed screenshots bring the set to twenty-eight; runtime remains NOT_RUN.

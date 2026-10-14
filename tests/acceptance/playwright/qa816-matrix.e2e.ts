@@ -238,3 +238,23 @@ scenario('SCN-QA-821-F1', 'reply-as-draft-is-real-persisted-compose', async (pag
   record.artifacts.push(await screenshot(page, 'QA816-REPLY-F1-persisted'));
   record.assertions.push('Seeded thread reply entry retains recipient/context; case-owned reply draft saves via real PUT and reloads from API');
 });
+
+scenario('SCN-QA-821-F2', 'thread-transport-loss-and-real-retry', async (page, record) => {
+  await signIn(page, 'reader');
+  const path = `/v1/threads/${seed.data.thread_primary}`;
+  const loss = await transportBarrier(page, path, 'GET', 'no-forward');
+  try {
+    await page.goto(`/#/mailboxes/${seed.mailboxes.primary}/threads/${seed.data.thread_primary}`);
+    expect(await loss.reached).toBeNull();
+    loss.release();
+    await loss.close();
+    await expect(page.getByRole('alert').getByText('The conversation could not be loaded')).toBeVisible();
+    await expect(page.locator('pre')).toHaveCount(0);
+    record.artifacts.push(await screenshot(page, 'QA816-THREAD-F2-error'));
+  } finally { await loss.close(); }
+  const [retry] = await Promise.all([responseAt(page, path), page.getByRole('button', { name: 'Try again' }).click()]);
+  expect(retry.status()).toBe(200);
+  await expect(page.locator('pre').filter({ hasText: seed.data.marker }).first()).toBeVisible();
+  record.artifacts.push(await screenshot(page, 'QA816-THREAD-F2-recovered'));
+  record.assertions.push('Browser transport loss hides conversation plaintext; explicit retry performs real API GET 200 and restores seeded content');
+});
