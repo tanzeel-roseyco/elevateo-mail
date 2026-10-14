@@ -340,3 +340,5 @@ The held sync's next source revision sorts discovered UIDs and processes the sma
 An exact fleet static receipt on `fa3082a` exposed strict type and lint failures in the held IMAP store/TLS candidate. Corin's repair validates SQL JSON before parsing, returns a typed claim, binds integers as strings for SQL casts, and clarifies TLS/test expression types; Soren's successor check is pending. The ATT823 API compose attachment stage remains separate from the IMAP worker cursor contract.
 
 ADV101 independent review found a P2 private-client aggregate timeout defect: per-chunk Net::HTTP timeouts could be extended by a trickled body. The candidate repair bounds the entire network exchange by one five-second maximum and checks a monotonic deadline; a slow-transport regression is authored, not fleet-executed. Public attachment route remains inactive.
+
+ADV101 follow-up strengthens the timeout regression through the actual private HTTP exchange path with a trickled fake response, checking aggregate elapsed bound and connection cleanup. This replaces the earlier injected-transport-only assertion; exact Docker execution and independent repair re-review remain pending.

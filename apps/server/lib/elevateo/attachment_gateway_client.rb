@@ -11,8 +11,9 @@ module Elevateo
     class Unavailable < StandardError; end
     MAX_BYTES = 10 * 1024 * 1024
 
-    def initialize(config:, transport: nil, transaction_open: nil)
+    def initialize(config:, transport: nil, transaction_open: nil, http_factory: nil)
       @config, @transport = config, transport
+      @http_factory = http_factory || ->(host, port, proxy) { Net::HTTP.new(host, port, proxy) }
       @transaction_open = transaction_open || -> {
         connection = defined?(ActiveRecord::Base) && ActiveRecord::Base.connection_pool.active_connection?
         connection ? connection.transaction_open? : false
@@ -53,7 +54,7 @@ module Elevateo
     private
 
     def exchange(signed, timeout)
-      http = Net::HTTP.new("attachment-gateway", 4708, nil)
+      http = @http_factory.call("attachment-gateway", 4708, nil)
       http.max_retries = 0
       http.open_timeout = [timeout, 0.5].min
       http.read_timeout = http.write_timeout = timeout

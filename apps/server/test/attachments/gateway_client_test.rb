@@ -7,6 +7,32 @@ class AttachmentGatewayClientTest < Minitest::Test
   Config = Struct.new(:attachment_gateway_url, :attachment_gateway_hmac_key)
   ID = "00000000-0000-4000-8000-000000000001"
 
+  class SlowHttp
+    attr_accessor :max_retries, :open_timeout, :read_timeout, :write_timeout
+    attr_reader :chunks, :closed
+    def initialize = (@chunks, @closed = 0, false)
+    def start
+      yield self
+    ensure
+      @closed = true
+    end
+    def request(_request)
+      yield Response.new(self)
+    end
+    def next_chunk = (@chunks += 1)
+
+    class Response
+      def initialize(http) = (@http = http)
+      def read_body
+        20.times do
+          @http.next_chunk
+          yield "a"
+          sleep 0.02
+        end
+      end
+    end
+  end
+
   def fields
     Elevateo::AttachmentGatewayRequest::ORDER.to_h do |name|
       value = case name
@@ -22,9 +48,9 @@ class AttachmentGatewayClientTest < Minitest::Test
     end
   end
 
-  def client(transport, transaction_open: -> { false })
+  def client(transport, transaction_open: -> { false }, http_factory: nil)
     Elevateo::AttachmentGatewayClient.new(config: Config.new("http://attachment-gateway:4708", "k" * 32),
-      transport: transport, transaction_open: transaction_open)
+      transport: transport, transaction_open: transaction_open, http_factory: http_factory)
   end
 
   def test_returns_only_bounded_binary_from_exact_private_response
@@ -63,19 +89,16 @@ class AttachmentGatewayClientTest < Minitest::Test
     end
   end
 
-  def test_slow_trickled_transport_cannot_extend_the_aggregate_deadline
-    chunks = 0
-    transport = ->(*) {
-      20.times do
-        chunks += 1
-        sleep 0.02
-      end
-      [200, {}, "body"]
-    }
+  def test_slow_trickled_http_body_expires_and_closes_without_bytes
+    http = SlowHttp.new
+    started = Process.clock_gettime(Process::CLOCK_MONOTONIC)
     assert_raises(Elevateo::AttachmentGatewayClient::Unavailable) do
-      client(transport).download(fields: fields, timeout: 0.05, now: 1_700_000_000)
+      client(nil, http_factory: ->(_host, _port, _proxy) { http })
+        .download(fields: fields, timeout: 0.05, now: 1_700_000_000)
     end
-    assert_operator chunks, :>=, 1
-    assert_operator chunks, :<, 20
+    assert http.closed
+    assert_operator http.chunks, :>=, 1
+    assert_operator http.chunks, :<, 20
+    assert_operator Process.clock_gettime(Process::CLOCK_MONOTONIC) - started, :<, 0.3
   end
 end
