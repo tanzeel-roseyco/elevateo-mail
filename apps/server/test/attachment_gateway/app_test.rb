@@ -59,8 +59,8 @@ class AttachmentGatewayAppTest < Minitest::Test
     Elevateo::AttachmentGateway::Protocol::KEYS.to_h { |key| [key, values.fetch(key)] }
   end
 
-  def request(fields = {}, sign: true)
-    body = JSON.generate(claim.merge(fields))
+  def request(fields = {}, sign: true, **overrides)
+    body = JSON.generate(claim.merge(fields).merge(overrides.transform_keys(&:to_s)))
     signature = OpenSSL::HMAC.hexdigest("SHA256", KEY,
       Elevateo::AttachmentGateway::Protocol::PREFIX + body)
     { "REQUEST_METHOD" => "POST", "PATH_INFO" => "/internal/attachments/read",
@@ -85,7 +85,7 @@ class AttachmentGatewayAppTest < Minitest::Test
   end
 
   def test_expired_or_range_request_denies_without_database_or_storage
-    assert_equal 404, @app.call(request("expires_at" => 999)).first
+    assert_equal 404, @app.call(request(expires_at: 999)).first
     ranged = request
     ranged["HTTP_RANGE"] = "bytes=0-3"
     assert_equal 404, @app.call(ranged).first
@@ -94,7 +94,7 @@ class AttachmentGatewayAppTest < Minitest::Test
   end
 
   def test_signed_wrong_mailbox_scope_denies_before_storage
-    assert_equal 404, @app.call(request("mailbox_id" => "22222222-2222-2222-2222-222222222222")).first
+    assert_equal 404, @app.call(request(mailbox_id: "22222222-2222-2222-2222-222222222222")).first
     assert_equal 1, @authority.checks
     assert_equal 0, @storage.reads
   end
@@ -109,7 +109,10 @@ class AttachmentGatewayAppTest < Minitest::Test
   end
 
   def test_checksum_mismatch_and_held_state_release_nothing
-    @storage = Storage.new(bytes: "tampered")
+    corrupt = "corrupt fixture bytes".b
+    assert_equal BYTES.bytesize, corrupt.bytesize
+    refute_equal Digest::SHA256.hexdigest(BYTES), Digest::SHA256.hexdigest(corrupt)
+    @storage = Storage.new(bytes: corrupt)
     @app = Elevateo::AttachmentGateway::App.new(key: KEY, authority: @authority, storage: @storage,
       clock: -> { 1000 })
     assert_equal [503, []], @app.call(request).values_at(0, 2)

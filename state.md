@@ -357,3 +357,5 @@ SEQ876 Maeve 89febd2 exact eight-value sequence step bind-order regression is im
 ATT870 Nadia 8192bbc typed PrivateStorage repair is imported after ADV115 Vera static 212-LOC/zero-defect review; changed nil/status failure regressions and fleet Steep/Storage checks remain pending.
 
 Soren exact 845d422 web Docker V1/V2 declaration checks, lint and strict TypeScript passed; 841/842 Vitest cases passed, one jsdom Blob.text test fixture error blocked build/8PNG. Cassian adopted fleet-generated V2 draft.7 declaration (SHA256 c22bde3...69610) from matching OpenAPI (45b8214...e4dc67) and repaired the fixture with FileReader; current-source rerun pending.
+
+ATT877 Sabine af518d5 migration00018 now consumes/asserts Leonie precreated private schema and preserves it on down, with gateway test keyword/checksum fixture repair; exact fleet SQL/gateway proof pending, public byte route inactive.
