@@ -727,3 +727,7 @@ Independent adversarial and design reviews are requested, NOT_RUN. Candidate sou
 ## QA-815 scheduler and receipt
 
 Soren authored `ops/tests/qa815/run-web-candidate.sh` and `docs/completion/soren.md`. No independent bounded adversarial or dedicated design-tradeoff reviewer has examined this candidate. Independently reviewed source lines: 0; defects and defects/KLOC are unclaimed. Root review scheduling remains pending. Analytical tradeoff: immutable `git archive` prevents owner edits during Docker build, while each candidate still needs integrated browser/backend checks after merge.
+
+### FE808 continuation author inspection
+
+Scope: `apps/web/src/features/members/{adminModel,AdministrationPage,PersonalSettingsPage,peopleFeatureModule}*`. Author inspection found and fixed one stale-write replay risk by blocking further edits after any failed write until reload. Independent adversarial packets and design reviewer remain pending; no independent defect count or density is claimed. Fleet Docker tests, TypeScript/lint and actual browser checks are NOT_RUN on this candidate.
