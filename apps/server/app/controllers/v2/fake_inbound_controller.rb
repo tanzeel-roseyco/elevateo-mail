@@ -13,9 +13,8 @@ module V2
         ENV["ELEVATEO_FAKE_INBOUND_ENABLED"] == "1"
 
       protected_write(required: REQUIRED, max_bytes: 1_500_000, budget: 4096,
-        guard_users: ->(input:, query:) {
+        guard_users: ->(input:, query: _query) {
           # @type var input: Elevateo::WriteInput::object
-          # @type var query: Hash[String, String]
           [Elevateo::WriteInput.uuid(input["actor_id"])]
         }) do
         |connection:, identity:, input:, **|
