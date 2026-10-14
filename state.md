@@ -208,3 +208,5 @@ QA815 second dedicated exact `e01c64ad` restricted gateway authority suite 5/21 
 QA815 exact `e01c64ad` ATT823 database 6/40 PASS; internal Mailpit `.invalid` simulated protocol 1/6 PASS; OUT804 campaign DB 7/17 with one teardown FK error. All task cleanup PASS. Four of nine dedicated profiles scoped PASS, one FAIL, four historical R1 unexecuted. Main 137-suite backend remains FAILED; HTTP/worker/real Auth browser NOT_REACHED.
 
 QA815 prepared a distinct task-only 74-suite diagnostic path with guarded count and `DIAGNOSTIC_COMPLETED` status; it has NOT_RUN and cannot replace the failed 137-suite result. Coordinator choice is pending before allocation; no HTTP/worker/real Auth inference.
+
+QA815 exact FIX948 `df11a0c1` focused logging/controller test gate FAILED: new unit 2/9 with one failure; four standalone controller suites all fail expected statuses as 500; Steep one unknown Logger constant, targeted lint PASS. Task-only sanitized diagnostics pinpoint ReadController line20 `NoMethodError#read` and ThreadsController line46 `NameError#ThreadReads`. Cleanup PASS, no full backend/HTTP worker/real Auth claim.

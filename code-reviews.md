@@ -772,3 +772,5 @@ QA815 gateway authority 5/21 PASS and its preserved Compose setup failure are fl
 QA815 ATT823 DB 6/40 PASS, OUT804 teardown FK error and internal Mailpit 1/6 PASS are bounded runtime findings, not independent source review. Additional QA815 independently reviewed LOC remains zero; no defect-density claim for owner code or tests.
 
 QA815 task-only historical 74-suite diagnostic runner is prepared but unexecuted; it has no runtime or independent source-review claim. The 137-suite expanded gate failure remains recorded.
+
+QA815 FIX948 logging/controller/Steep failures and sanitized task-only exception localization are executed diagnostics, not independent bounded source review. QA815 adds zero independently reviewed LOC and no defect-density claim for Corin/backend owners; root routes repair and review.
