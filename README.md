@@ -194,3 +194,5 @@ QA-817 adds a disposable real-database distinct-owner insert race candidate to c
 QA-817 adds actual-role SQL regression source for authorized subordinate role change, stale revision, direct admin-to-owner self escalation and owner demotion denial. Fleet execution remains pending.
 
 QA-817 adds a disposable database privilege regression for the cancellation facade after the observed integrated migration permission failure. It is unexecuted pending Nadia's owner repair and Soren's rerun.
+
+QA-817 adds an actual API-role audit database candidate for atomic role-change metadata, no-op/stale/denied silence, owner/admin/auditor reads and tenant/cursor/revocation denial. It awaits the integrated audit migration and Soren's fleet execution.

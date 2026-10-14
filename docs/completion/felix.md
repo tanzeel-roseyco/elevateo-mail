@@ -67,3 +67,7 @@ Soren's integrated f787bbc backend migration failed before QA817 cases with `per
 Independently reviewed Nadia SEND-810 temporary schema CREATE repair commit 08ee821, 19 migration LOC plus 57 test context LOC in two bounded packets. Zero observed repair defects (0/KLOC), previous permission failure statically addressed; fleet apply/rollback/reapply pending. Exact hashes and limits: `docs/completion/felix-send810-migration-review.md`.
 
 Independently reviewed Theo's role-audit projection/controller (110 LOC full rubric, 112 Sabine SQL context LOC in separate bounded packets), zero observed static defects; exact hashes and untested real-role gates are in `docs/completion/felix-adm803-audit-review.md`.
+
+## Role audit real-database candidate
+
+Added `apps/server/test/qa817/role_audit_database_test.rb`: one exact role-only audit row and canonical UTC on real change; no new row on no-op/stale/denied request; owner/admin/auditor metadata read; forged tenant, foreign cursor and revoked auditor denial. Uses actual API login and disposable PostgreSQL. Soren command after Sabine/Theo audit integration from `/workspace/apps/server`: `bundle exec ruby test/qa817/role_audit_database_test.rb`, plus owner audit HTTP/pure suites. NOT_RUN; independent QA source review and dedicated design review pending. The prior integrated cancellation migration failure blocks this until Nadia repair reruns successfully.
