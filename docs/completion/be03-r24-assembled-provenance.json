@@ -1,0 +1,27 @@
+{
+  "source": "37861fc4f89f5b05a81dbe89e1024051aabf0e73",
+  "baseline": "03ae770c56271cd8236726bfd8fe63248e81283d",
+  "observed_at": "2026-10-14T11:22:12.290177+00:00",
+  "kind": "source provenance comparison, NOT application runtime",
+  "frozen_paths": 22,
+  "frozen_components": 70,
+  "status": "UNCHANGED",
+  "recipes": [
+    {
+      "path": "ops/compose.be02-test.yaml",
+      "sha256": "1af3ec9d749e253f1d9eb8e986ff7860805c370dd89b42624c8fcc96effe6c01"
+    },
+    {
+      "path": "ops/compose.acceptance-test.yaml",
+      "sha256": "00992a043f228047636f2d99d61a0600a215fe4ad64c99bb414135aee0aa0b7f"
+    },
+    {
+      "path": "ops/compose.r1-test.yaml",
+      "sha256": "47e9352ef23d06f525e2b43022f50540f38ca59a4fa1f5973292637b7d7615a3"
+    },
+    {
+      "path": "ops/compose.fleet02-egress.yaml",
+      "sha256": "ee26c30bcb80900dbe989083180a967527cbae934f7887c5f0e245867ec2087f"
+    }
+  ]
+}

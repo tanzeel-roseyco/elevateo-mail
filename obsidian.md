@@ -565,3 +565,7 @@ Priority tradeoff: finish and test the durable review?approval?queued vertical s
 
 ## Synthetic demo gateway tradeoffs
 (1) mark Northstar read, then list/search/reader should agree within shared state; a fresh gateway restores unread by design. (2) repeated draft saves retain version/ledger behavior inside one gateway, then reload deliberately resets; do not imply durable persistence. (3) alternate organization/mailbox URLs can inherit canonical synthetic lifecycle/read behavior; this narrow single-inbox preview does not validate real lifecycle or authorization. Prefer documenting that limitation over adding a second domain authority.
+
+## R24 assembled delivery checkpoint (project mirror only)
+
+Saved-draft review, explicit approval and durable queued-intent code is assembled with reviewed SQL/API/UI and a separate simulated demo. Actual integrated database/Auth proof is still pending; no mail is sent and BE02 remains OPEN. Root received complete-history37861fc bundle for a fresh clone. Canonical contracts and existing Docker recipes are preserved. Runner admits send bootstrap/tests; bounded reviews found zero actionable defects. Actual vault untouched; root alone writes it; requestedFast unverified.

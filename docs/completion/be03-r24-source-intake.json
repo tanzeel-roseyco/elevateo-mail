@@ -348,6 +348,40 @@
         }
       ],
       "runtime": "owner-only evidence; integrated NOT_RUN"
+    },
+    "Nadia_HTTP": {
+      "head": "607fc2ac7fd8700684b8f6e06f3fe139f48d290f",
+      "unchanged_owner_bytes": [
+        {
+          "path": "ops/tests/be03/README.md",
+          "sha256": "38dcaadc98484daeb897cab9b659d6855b2fb1fe174218bc79d53ed5facef408"
+        },
+        {
+          "path": "ops/tests/be03/Steepfile",
+          "sha256": "61207115d9f1b15059d4a6da504cf26e0acb7d45c8933cb8b115741df13e5f0e"
+        },
+        {
+          "path": "ops/tests/be03/boundary_test.rb",
+          "sha256": "ccd7942bf3d2580e17ff5436f834133bdc4ca911d4e3cc7c63df9ab97fcc9891"
+        },
+        {
+          "path": "ops/tests/be03/http_fixture.rb",
+          "sha256": "0c2e25ad8af163e34c2807e69ab9da95857f636e7f5e20dd7854a1477dd255a9"
+        },
+        {
+          "path": "ops/tests/be03/http_fixture.rbs",
+          "sha256": "c4ad1a59518d4468e74944782be094d09006aed5adc89bc8fb195a46a7286913"
+        },
+        {
+          "path": "ops/tests/be03/http_s1s2.rb",
+          "sha256": "a9878b9d6a03cb2925192a8bd470cc197a1d06967238238d892955f923bf00e6"
+        },
+        {
+          "path": "ops/tests/be03/review-manifest.json",
+          "sha256": "e1a778a98d2c4487de0ea7ac5c3524ff67dd01a9008b3e30eb449c9bf802d04c"
+        }
+      ],
+      "runtime": "owner boundary3/19/type/lintPASS; realHTTP NOT_RUN"
     }
   },
   "root_documentation": {
@@ -356,5 +390,5 @@
     "actual_vault": "NOT_WRITTEN"
   },
   "execution": "Soren lease only for real DB/API; lightweight source checks delegated. No live activation.",
-  "candidate": "1429f1df2d39d98b1742a2fc677768e69c7762dd"
+  "candidate": "37861fc4f89f5b05a81dbe89e1024051aabf0e73"
 }
