@@ -6,7 +6,8 @@ class MailboxMembershipConcurrencyTest < MailboxMembershipDatabaseCase
   def test_next_revision_departure_rechecks_last_manager_after_business_lock
     other = add_actor
     explicit_member(other, manager: true)
-    first, second = [@identity, other].sort_by(&:user_id)
+    # Keep the owner as the revision holder: a sales manager cannot self-edit peer-rank authority.
+    first, second = @identity, other
     expected = revision
     membership_race do |workers, deadline|
       waiter = nil
@@ -60,7 +61,7 @@ class MailboxMembershipConcurrencyTest < MailboxMembershipDatabaseCase
               raw_change(target.user_id, expected, identity: @identity,
                 flags: FLAGS.merge("manage_members" => true, "approve_send" => missing))
             end
-            tasks << task
+            tasks << [target.user_id, task]
             pid = membership_pid(task, ready, deadline)
             # PostgreSQL may queue the second waiter behind the first tuple waiter rather than the holder directly.
             membership_lock_wait(task, pid, blockers, "begin_protected_write", deadline)
@@ -76,12 +77,21 @@ class MailboxMembershipConcurrencyTest < MailboxMembershipDatabaseCase
         ensure
           @admin.exec("ROLLBACK") unless @admin.transaction_status == PG::PQTRANS_IDLE
         end
-        statuses = tasks.map { |task| membership_result(task, deadline).fetch("status") }.sort
+        outcomes = tasks.to_h { |user_id, task| [user_id, membership_result(task, deadline).fetch("status")] }
+        statuses = outcomes.values.sort
         assert_equal(missing ? %w[membership_conflict ok] : %w[ok ok], statuses)
+        if missing
+          winner = outcomes.find { |_user_id, status| status == "ok" }.first
+          loser = outcomes.find { |_user_id, status| status == "membership_conflict" }.first
+          assert_equal 2, generation(winner)
+          assert_empty @admin.exec_params("SELECT generation FROM app_auth.authorization_generations WHERE organization_id = $1 AND user_id = $2", [@org, loser]).to_a
+        end
       end
       assert_equal expected + (missing ? 1 : 0), revision
-      after = [generation(low.user_id), generation(high.user_id)]
-      assert_equal(missing ? [0, 1] : [0, 0], after.zip(before).map { |a, b| a - b }.sort)
+      unless missing
+        after = [generation(low.user_id), generation(high.user_id)]
+        assert_equal [0, 0], after.zip(before).map { |a, b| a - b }.sort
+      end
     end
   end
 
