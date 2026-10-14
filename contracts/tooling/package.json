@@ -3,7 +3,8 @@
   "private": true,
   "version": "0.0.0",
   "scripts": {
-    "generate:web": "openapi-typescript ../v1/openapi.json --output ../../apps/web/src/data/generated/api.d.ts"
+    "generate:web": "openapi-typescript ../v1/openapi.json --output ../../apps/web/src/data/generated/api.d.ts",
+    "generate:api:v2": "openapi-typescript ../v2/openapi.json --output ../../apps/web/src/data/generated/api-v2.d.ts"
   },
   "devDependencies": {
     "openapi-typescript": "7.13.0",

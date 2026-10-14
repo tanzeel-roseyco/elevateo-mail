@@ -15,7 +15,8 @@
     "test:coverage": "vitest run --coverage",
     "test:e2e": "playwright test",
     "generate:api": "openapi-typescript ../../contracts/v1/openapi.json --output src/data/generated/api.d.ts",
-    "check:api": "openapi-typescript ../../contracts/v1/openapi.json --output src/data/generated/api.d.ts --check"
+    "check:api": "openapi-typescript ../../contracts/v1/openapi.json --output src/data/generated/api.d.ts --check",
+    "generate:api:v2": "openapi-typescript ../../contracts/v2/openapi.json --output src/data/generated/api-v2.d.ts"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "1.2.0",
