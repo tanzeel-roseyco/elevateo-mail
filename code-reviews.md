@@ -331,3 +331,5 @@ Ada ADV-714 design advice: contract/hash identity proves provenance, not lifecyc
 SPEC-40301 adversarial source and SPEC-40302 dedicated design tradeoff review: bootstrap.sql and be02_drafts tables/down diff, 32 changed lines each, overlapping scope counted once. Full user rubric supplied. Zero confirmed code defects, 0 defects/KLOC on 32 changed lines. Runtime correctness unverified; Soren proof required. Tests reviewed separately before handoff. No ultrareview or paid Devin.
 
 SPEC-40301 test review: 68 Ruby + 1 Compose line, one connection-cleanup defect (14.49 defects/KLOC), fixed by protecting all post-connect operations and closing even if rollback raises. Missing direct bootstrap drift proof explicitly remains in Soren packet. No runtime checks executed.
+
+BE-403 semantic correction: independent current review requested; no defect density asserted before review. Prior 42f6369 review did not cover now-supplied semantic design; owner privilege omission and ACL normalization corrected. Dedicated design-tradeoff review remains root/Ada-owned.

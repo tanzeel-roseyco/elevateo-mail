@@ -25,10 +25,14 @@ class DraftBootstrapTest < SessionDatabaseTestCase
     begin
       assert_equal "elevateo_owner", @migrator.exec("SELECT current_user").getvalue(0, 0)
       @migrator.exec("BEGIN")
+      @migrator.exec("CREATE TABLE app_drafts_private.be403_sentinel (id integer)")
+      @migrator.exec("INSERT INTO app_drafts_private.be403_sentinel VALUES (7)")
+      @migrator.exec(File.read(File.join(PARTS, "prerequisite.sql")))
       @migrator.exec(File.read(File.join(PARTS, "down.sql")))
+      assert_equal "7", @migrator.exec("SELECT id FROM app_drafts_private.be403_sentinel").getvalue(0, 0)
       assert_equal "app_drafts_private", @migrator.exec("SELECT 'app_drafts_private'::regnamespace::text").getvalue(0, 0)
       assert_nil @migrator.exec("SELECT to_regclass('app.drafts')").getvalue(0, 0)
-      %w[tables policies scope save operations grants].each do |part|
+      %w[prerequisite tables policies scope save operations grants].each do |part|
         @migrator.exec(File.read(File.join(PARTS, "#{part}.sql")))
       end
       refute_nil @migrator.exec("SELECT to_regclass('app_drafts_private.operations')").getvalue(0, 0)
@@ -45,19 +49,35 @@ class DraftBootstrapTest < SessionDatabaseTestCase
   def test_missing_schema_owner_drift_and_acl_drift_fail_before_mutation
     ["DROP SCHEMA app_drafts_private", "ALTER SCHEMA app_drafts_private OWNER TO supabase_admin",
      "GRANT USAGE ON SCHEMA app_drafts_private TO elevateo_api",
-     "GRANT CREATE ON SCHEMA app_drafts_private TO PUBLIC"].each do |drift|
+     "GRANT CREATE ON SCHEMA app_drafts_private TO PUBLIC",
+     "REVOKE CREATE ON SCHEMA app_drafts_private FROM elevateo_owner",
+     "REVOKE USAGE ON SCHEMA app_drafts_private FROM elevateo_owner",
+     "REVOKE ALL ON SCHEMA app_drafts_private FROM elevateo_owner"].each do |drift|
       transaction do
         @admin.exec("SET LOCAL ROLE elevateo_owner")
+        @admin.exec(File.read(File.join(PARTS, "prerequisite.sql")))
         @admin.exec(File.read(File.join(PARTS, "down.sql")))
         @admin.exec("RESET ROLE")
         @admin.exec(drift)
         @admin.exec("SET LOCAL ROLE elevateo_owner")
         @admin.exec("SAVEPOINT prerequisite")
-        error = assert_raises(PG::RaiseException) { @admin.exec(File.read(File.join(PARTS, "tables.sql"))) }
+        error = assert_raises(PG::RaiseException) { @admin.exec(File.read(File.join(PARTS, "prerequisite.sql"))) }
         assert_includes error.message, "bootstrap prerequisite failed"
         @admin.exec("ROLLBACK TO SAVEPOINT prerequisite")
         assert_nil @admin.exec("SELECT to_regclass('app.drafts')").getvalue(0, 0)
       end
+    end
+  end
+
+  def test_admin_current_user_rejected_without_mutation
+    transaction do
+      @admin.exec("SAVEPOINT prerequisite")
+      error = assert_raises(PG::RaiseException) do
+        @admin.exec(File.read(File.join(PARTS, "prerequisite.sql")))
+      end
+      assert_includes error.message, "migration requires owner"
+      @admin.exec("ROLLBACK TO SAVEPOINT prerequisite")
+      refute_nil @admin.exec("SELECT to_regclass('app.drafts')").getvalue(0, 0)
     end
   end
 

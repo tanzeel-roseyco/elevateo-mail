@@ -1,16 +1,4 @@
 -- AIDEV-NOTE: API reads own drafts through RLS; only bounded definer functions may mutate or inspect the ledger.
--- AIDEV-NOTE: Bootstrap owns this schema; reject drift before any draft migration objects are changed.
-DO $$ BEGIN
-  IF current_user <> 'elevateo_owner' OR NOT EXISTS (
-      SELECT 1 FROM pg_namespace WHERE nspname = 'app_drafts_private'
-        AND nspowner = 'elevateo_owner'::regrole)
-    OR EXISTS (SELECT 1 FROM pg_namespace n
-      CROSS JOIN LATERAL aclexplode(coalesce(n.nspacl, acldefault('n', n.nspowner))) a
-      WHERE n.nspname = 'app_drafts_private' AND
-        (a.grantee <> n.nspowner OR a.grantor <> n.nspowner))
-  THEN RAISE EXCEPTION 'draft private schema bootstrap prerequisite failed'; END IF;
-END $$;
-
 CREATE TABLE app.drafts (
   id uuid PRIMARY KEY,
   organization_id uuid NOT NULL,

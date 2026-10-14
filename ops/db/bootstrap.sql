@@ -140,21 +140,32 @@ DO $$ BEGIN
 END $$;
 
 -- AIDEV-NOTE: Private schema lifecycle is privileged bootstrap work; migrations never receive database CREATE.
-CREATE SCHEMA IF NOT EXISTS app_drafts_private AUTHORIZATION elevateo_owner;
 DO $$ BEGIN
+  IF NOT EXISTS (SELECT 1 FROM pg_namespace WHERE nspname = 'app_drafts_private') THEN
+    CREATE SCHEMA app_drafts_private AUTHORIZATION elevateo_owner;
+  END IF;
+  IF NOT EXISTS (SELECT 1 FROM pg_namespace WHERE nspname = 'app_drafts_private')
+  THEN RAISE EXCEPTION 'draft private schema bootstrap prerequisite failed: missing schema'; END IF;
   IF NOT EXISTS (SELECT 1 FROM pg_namespace WHERE nspname = 'app_drafts_private'
       AND nspowner = 'elevateo_owner'::regrole)
-    OR EXISTS (SELECT 1 FROM pg_namespace n
+  THEN RAISE EXCEPTION 'draft private schema bootstrap prerequisite failed: wrong owner'; END IF;
+  IF NOT (has_schema_privilege('elevateo_owner', 'app_drafts_private', 'CREATE')
+      AND has_schema_privilege('elevateo_owner', 'app_drafts_private', 'USAGE'))
+  THEN RAISE EXCEPTION 'draft private schema bootstrap prerequisite failed: owner privilege loss'; END IF;
+  IF EXISTS (SELECT 1 FROM pg_namespace n
       CROSS JOIN LATERAL aclexplode(coalesce(n.nspacl, acldefault('n', n.nspowner))) a
-      WHERE n.nspname = 'app_drafts_private' AND
-        (a.grantee <> n.nspowner OR a.grantor <> n.nspowner))
-  THEN RAISE EXCEPTION 'unexpected draft private schema owner or ACL; no changes accepted'; END IF;
+      WHERE n.nspname = 'app_drafts_private'
+        AND (a.grantee <> n.nspowner OR a.grantor <> n.nspowner))
+  THEN RAISE EXCEPTION 'draft private schema bootstrap prerequisite failed: foreign ACL'; END IF;
+  IF EXISTS (SELECT 1 FROM unnest(ARRAY['elevateo_api', 'elevateo_worker', 'elevateo_app_read']) role_name
+      WHERE has_schema_privilege(role_name, 'app_drafts_private', 'CREATE')
+        OR has_schema_privilege(role_name, 'app_drafts_private', 'USAGE'))
+  THEN RAISE EXCEPTION 'draft private schema bootstrap prerequisite failed: runtime access'; END IF;
   IF EXISTS (SELECT 1 FROM unnest(ARRAY['elevateo_owner', 'elevateo_migrator',
       'elevateo_api', 'elevateo_worker', 'elevateo_app_read']) role_name
       WHERE has_database_privilege(role_name, current_database(), 'CREATE'))
   THEN RAISE EXCEPTION 'unexpected application database CREATE privilege'; END IF;
 END $$;
-REVOKE ALL ON SCHEMA app_drafts_private FROM PUBLIC, elevateo_app_read, elevateo_api, elevateo_worker;
 
 CREATE SCHEMA IF NOT EXISTS app AUTHORIZATION elevateo_owner;
 CREATE SCHEMA IF NOT EXISTS app_meta AUTHORIZATION elevateo_owner;
