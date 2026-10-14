@@ -52,6 +52,8 @@ ADM-803 roster/grants/audit source was corrected against Soren's exact `fa3082af
 
 # Project state
 
+**Newer integrated source checkpoint:** `36e1969` imports Leonie OPS820 isolated gateway role/scanner fixture source, Corin held IMAP attachment ingest at migration 00017, and Sabine gateway helper at migration 00018 after Nadia 00015; no live ingestion or gateway public route is active. Exact fleet migration/role/scan and independent review remain pending for these imports.
+
 **Latest integrated candidate:** `3c781f27246eced3a8c218c2b333ab080cd35530` registers PREF-822 session-scoped GET/PUT in canonical V2 draft.6 and includes Theo/Lyra settings, Maeve/Celeste inert sequence, Nadia/Mira held attachment UI/backend, Rowan/Elara/Dorian source repairs, and Cassian OUT839 grants plus ATT838 pure signer. Sequence and attachment public routes remain inactive; the V2 generated declaration, current SQL/HTTP/web/browser fleet gates, seeded screenshots and independent review are pending. No live send, live credentials or release is enabled. Earlier dated paragraphs below record historical source/evidence states and do not supersede this checkpoint.
 
 SEND809 exact integrated `7aa61be4649ca251c3faff368ba61dfa7e313708` passed real PostgreSQL migrations but the affected send database suites had eight cancellation guard setup errors, two fixture lock timeouts, three mismatched Mailpit snapshot approval errors, and one binary/UTF-8 oracle failure. Rowan committed bounded test fixture repairs `49aaad8`, `f9f13a0`, `3fe86b7`, `bf2748f`; Soren fleet rerun is pending. Production write guard, lease, approval and Mailpit authority were not loosened.

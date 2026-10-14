@@ -177,3 +177,7 @@ ATT838 follow-up: Sabine specified the signed authorization_version shape as exa
 ## Fleet SEND809 affected-suite receipt
 
 Rowan relayed Soren exact `backend-cb1ec5be4546/028-ruby-suites.txt`: six named send DB suites (5/37, 4/40, 8/72, 3/24, 6/82, 9/89) show zero failures/errors on cb1ec5be. Overall Ruby still FAILED from other suites and Steep; cleanup PASS. No HTTP, worker drain, browser or later integrated-SHA PASS follows from this bounded receipt.
+
+## Gateway bootstrap and ingest import
+
+Imported Leonie OPS820 3fd0dcb bootstrap/scanner scripts and Corin MAIL819 5dc075d/cfe1b72/664b4a9 held IMAP attachment ingest. Migration order is Nadia 00015, Corin 00017, Sabine 00018; Maeve sequence has earlier-dated 00016. These are source candidates only, Docker/role/scan runtime NOT_RUN on current Cassian SHA. No public gateway route or live source activation.
