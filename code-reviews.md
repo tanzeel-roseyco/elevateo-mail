@@ -710,3 +710,5 @@ QA815 `845d422` Blob.text unit failure is an executed test finding, not an indep
 QA815 sequence and attachment unit PASS receipts are execution evidence, not independent bounded source reviews. Additional independent reviewed source remains 0 LOC; density unclaimed.
 
 QA815 `f70b654` full web and eight seeded PNG passes are execution and sampled visual evidence, not independent source review. Additional independently reviewed source remains 0 LOC; defect density unclaimed. Root owns visual acceptance and review schedule.
+
+QA815 `651b63a` protected role and thread fixture failures are runtime test findings, not independent source review. Additional independently reviewed source remains 0 LOC; density unclaimed. Root/source owners handle repair and review.

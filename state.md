@@ -142,3 +142,5 @@ QA815 `845d422` web V1/V2/lint/type PASS, Vitest 841/842 PASS with one jsdom Blo
 QA815 latest isolated units: `845d422` sequence repository/controller 10/45 PASS; `58ab588` ClamAV fake scanner/IMAP parser 9/30 PASS. Task cleanup PASS; real protocol and DB gates still OPEN.
 
 QA815 `f70b654` full web PASS 842/842 and build; same-source seeded eight-PNG visual PASS with exact task cleanup. Synthetic route screenshots are awaiting root/Tessa inspection, not real-auth acceptance. Backend 00018 privilege and other owner repairs remain OPEN.
+
+QA815 `651b63a` PostgreSQL migrations 21 PASS through gateway 00018; Ruby 521/7065 with 1 failure/1 error, Steep 111 problems; HTTP/worker/browser NOT_REACHED. Exact cleanup PASS. Protected role and thread fixture owner defects routed to owners.
