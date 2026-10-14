@@ -12,6 +12,7 @@ def validate(root: Path) -> list[str]:
         base = json.loads((root / "tauri.conf.json").read_text())
         mac = json.loads((root / "tauri.macos.conf.json").read_text())
         entitlements = plistlib.loads((root / "macos/Entitlements.plist").read_bytes())
+        capabilities = [json.loads(path.read_text()) for path in (root / "capabilities").glob("*.json")]
     except (OSError, ValueError, TypeError) as error:
         return [f"config read failed: {error}"]
     if base.get("identifier") != "com.elevateo.mail":
@@ -20,6 +21,13 @@ def validate(root: Path) -> list[str]:
         errors.append("Orion no longer shares apps/web/dist")
     if base.get("app", {}).get("security", {}).get("csp", "").find("connect-src 'self'") < 0:
         errors.append("remote connections are not fail closed")
+    if not capabilities:
+        errors.append("no reviewed Tauri capability file")
+    for capability in capabilities:
+        if capability.get("remote") is not None or capability.get("permissions") != []:
+            errors.append("remote or privileged capability granted")
+    if base.get("app", {}).get("security", {}).get("dangerousRemoteDomainIpcAccess"):
+        errors.append("remote IPC access enabled")
     if mac.get("bundle", {}).get("targets") != ["dmg"]:
         errors.append("macOS target must be DMG")
     options = mac.get("bundle", {}).get("macOS", {})
