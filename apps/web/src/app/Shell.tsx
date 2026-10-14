@@ -9,7 +9,7 @@
 // by sessionIdentityKey, so a replaced identity's first committed render starts from fresh mailbox,
 // drawer and routed state — clearing state in a passive effect would be too late (D3, FE-R05).
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { Outlet } from 'react-router'
+import { Outlet, useLocation } from 'react-router'
 import type { Mailbox, MailboxPage, Session } from '@/data/contract'
 import { GatewayError } from '@/data/errors'
 import { newTraversalBudget, readPage } from '@/lib/readPage'
@@ -17,6 +17,7 @@ import { SignInPage } from '@/features/auth/SignInPage'
 import { Badge } from '@/ui/Badge'
 import { BrandMark } from '@/ui/BrandMark'
 import { Button } from '@/ui/Button'
+import { ConnectivityBanner } from '@/ui/ConnectivityBanner'
 import { Drawer } from '@/ui/Drawer'
 import { EmptyState, Skeleton } from '@/ui/Async'
 import { IconButton } from '@/ui/Button'
@@ -132,7 +133,8 @@ export function Shell() {
 
 function ProtectedShell({ session, replacedIdentity }: { session: Session; replacedIdentity: boolean }) {
   const gateway = useGateway()
-  const { scope, context, handleError } = useSession()
+  const { scope, context, handleError, refresh } = useSession()
+  const { pathname } = useLocation()
   const [mailboxState, setMailboxState] = useState<MailboxState>({ status: 'loading' })
   // Explicit "Try again" bumps this nonce: a fresh traversal with a fresh one-reset budget (D4).
   const [attempt, setAttempt] = useState(0)
@@ -197,6 +199,22 @@ function ProtectedShell({ session, replacedIdentity }: { session: Session; repla
     if (replacedIdentity) document.getElementById('main')?.focus()
   }, [replacedIdentity])
 
+  // Route change hygiene for small screens and WebViews (FE-805): scroll the main region back to
+  // the top and, only when focus is stranded on <body> (a removed element or a dismissed soft
+  // keyboard), move it to the new page. Focus kept by a page (reader heading, editor field) or by
+  // Radix on the drawer trigger is respected; e2e/read.spec.ts asserts the trigger case.
+  // AIDEV-NOTE: Must not fire on mount: the identity-replacement effect above owns initial focus.
+  const firstPathRef = useRef(pathname)
+  useEffect(() => {
+    if (firstPathRef.current === pathname) return
+    firstPathRef.current = pathname
+    const main = document.getElementById('main')
+    if (!main) return
+    main.scrollTop = 0
+    const active = document.activeElement
+    if (active === null || active === document.body) main.focus({ preventScroll: true })
+  }, [pathname])
+
   // Growing past the md breakpoint removes the drawer presentation; close the dialog so no
   // invisible modal keeps trapping desktop interaction (D6, FE-R06).
   useEffect(() => {
@@ -260,6 +278,8 @@ function ProtectedShell({ session, replacedIdentity }: { session: Session; repla
           <Badge tone="warn" className="ml-auto sm:ml-0">Simulated local mail</Badge>
           <AccountSheet session={session} />
         </header>
+        {/* Online-only: no cache, no queue; a drop is announced and a return offers an explicit reload. */}
+        <ConnectivityBanner onReload={refresh} />
         <main id="main" tabIndex={-1} className="min-h-0 flex-1 overflow-y-auto">
           <Outlet />
         </main>

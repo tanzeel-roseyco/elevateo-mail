@@ -14,6 +14,10 @@ Shared company mailroom with one Rails domain authority and a React/TypeScript c
 
 ## Current state
 
+### Fable FE-805 R4 online-only shell UX (2026-10-15)
+
+Branch `completion/fable-fe805` merges exact Celeste `7a26ce3`, Lyra `849f63d` and Mira `0f3ae5c` heads and adds the online-only mobile/WebView shell behaviour: a connectivity notice (offline is announced honestly, a return offers an explicit session reload, nothing is cached or auto-refetched), route-change scroll/focus hygiene that never overrides page- or Radix-owned focus, dynamic-viewport and safe-area framing, and 44 px touch targets on coarse pointers. No native IPC, token storage or PKCE. Production `featureGateways` stays empty pending Cassian's adapter over his inert V2 routes. Sixteen FE-805 cases authored, none executed; no screenshots received yet, so no visual claim. See [Fable record](docs/completion/fable.md).
+
 ### Fable FE-805 R3 owner modules registered (2026-10-15)
 
 Branch `completion/fable-fe805` merges exact Lyra `77a86fe`, Celeste `efc609b` and Mira `e120b30` on top of R2 and registers their real modules: Celeste's ten Outreach routes are wrapped with live session context/proof and the optional `OutreachGateway` seam; Lyra's `/people`, `/settings/personal` and `/settings/organization` sit in the Personal section and bind Cassian's V2 gateway directly. No placeholders remain. Production `OutreachGateway` is absent until Cassian/Dorian publish the V2 adapter, and V2 grant routes stay disabled server-side; each owner page shows its own honest state. Eleven FE-805 cases authored, none executed. See [Fable record](docs/completion/fable.md).

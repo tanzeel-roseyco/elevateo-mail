@@ -721,3 +721,7 @@ FE807 contract reconciliation is based on read-only inspection of Dorian's in-pr
 FE807 owner self-review (nonindependent): identified one receipt mismatch for uppercase email after Dorian's canonical lowercasing and one malformed route/cursor dispatch gap. Source normalizes email and validates UUIDs before gateway calls; test execution and independent re-review pending. No bounded independent LOC or defect density is claimed.
 
 FE807 QA815 runtime diagnostic: exact `a460c5a` fleet Docker API check passed, lint failed with two `no-control-regex` findings; type/unit/build were not reached. Celeste replaced the patterns with code-point checks, updated exact-optional route-param typing and guarded possibly undefined test indexes after prior type failures on `152f95a` and `c23cd22`. New source review and Docker rerun pending; do not attribute earlier failures to this new SHA or claim a PASS.
+
+### FE-805 R4 online-only shell self-inspection (Fable, 2026-10-15)
+
+Coverage: `ui/ConnectivityBanner.tsx` (52 LOC), Shell route-hygiene hunk and banner wiring (~20), CSS mobile frame (~18). ~90 production LOC, one bounded pass; author self-inspection only, no independent review claimed. Self-found before commit: 1 (route-change focus rescue initially stole focus from the drawer trigger and from page-owned focus, contradicting e2e/read.spec.ts; narrowed to body-stranded focus only). Provisional density 11.1/KLOC, author evidence. Tests: 5 new cases (3 banner, 2 shell), not executed.

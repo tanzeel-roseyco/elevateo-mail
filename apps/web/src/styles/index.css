@@ -151,6 +151,25 @@ body {
   color: var(--muted);
 }
 
+/* AIDEV-NOTE: FE-805 mobile/WebView frame. The app is online-only and served as one HTTPS page in
+   the native WebView, so the frame must fit the dynamic viewport (soft keyboard, browser chrome)
+   and respect device safe areas; index.html's viewport-fit=cover is a requested host change. */
+#root {
+  min-height: 100dvh;
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* Touch devices get 44px targets on rail, drawer and header controls without changing desktop density. */
+@media (pointer: coarse) {
+  aside a,
+  [role="dialog"] a,
+  header button,
+  header a {
+    min-height: 44px;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
