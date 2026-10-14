@@ -37,3 +37,5 @@ When Cassian's account adapter remains explicitly disabled, its `temporarily_una
 A denied campaign-list read now hides the create-draft navigation link as well as campaign content; direct-route mutations remain backend-authorized and must deny independently. A component case covers this presentation state, without claiming role-policy enforcement.
 
 The analytics label says “consented and unsuppressed” because Dorian's current aggregate excludes local/global suppressions from `consented_count`; a component case pins the label. Backend analytics semantics remain subject to exact contract review.
+
+Soren's exact `fe96194` fleet web recipe passed API check and lint, then failed strict typecheck exit 2 on eight test-helper JSX calls that passed an explicit `gateway={undefined}` under `exactOptionalPropertyTypes`. Unit/build were not reached. The helper now constructs an absent-property object when no adapter is provided; exact task resources were reported absent by Soren. Fresh exact-SHA Docker verification is pending.

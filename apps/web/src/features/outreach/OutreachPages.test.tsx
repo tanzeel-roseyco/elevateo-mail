@@ -5,7 +5,7 @@ import { GatewayError } from '@/data/errors'
 import {
   OutreachCampaignCreatePage, OutreachCampaignDetailPage, OutreachCampaignLeadsPage,
   OutreachCampaignsPage, OutreachLeadDetailPage, OutreachAccountDetailPage, OutreachCampaignAccountsPage,
-  OutreachCampaignAnalyticsPage,
+  OutreachCampaignAnalyticsPage, type OutreachPageProps,
 } from './OutreachPages'
 import type { OutreachGateway } from './contract'
 
@@ -32,15 +32,16 @@ function gateway(overrides: Partial<OutreachGateway> = {}): OutreachGateway {
   }
 }
 function view(path: string, g?: OutreachGateway) {
+  const props: OutreachPageProps = g === undefined ? { context, proof } : { gateway: g, context, proof }
   return render(<MemoryRouter initialEntries={[path]}><Routes>
-    <Route path="/outreach/campaigns" element={<OutreachCampaignsPage gateway={g} context={context} proof={proof} />} />
-    <Route path="/outreach/campaigns/new" element={<OutreachCampaignCreatePage gateway={g} context={context} proof={proof} />} />
-    <Route path="/outreach/campaigns/:campaignId" element={<OutreachCampaignDetailPage gateway={g} context={context} proof={proof} />} />
-    <Route path="/outreach/campaigns/:campaignId/leads" element={<OutreachCampaignLeadsPage gateway={g} context={context} proof={proof} />} />
-    <Route path="/outreach/campaigns/:campaignId/leads/:leadId" element={<OutreachLeadDetailPage gateway={g} context={context} proof={proof} />} />
-    <Route path="/outreach/campaigns/:campaignId/accounts/:accountId" element={<OutreachAccountDetailPage gateway={g} context={context} proof={proof} />} />
-    <Route path="/outreach/campaigns/:campaignId/accounts" element={<OutreachCampaignAccountsPage gateway={g} context={context} proof={proof} />} />
-    <Route path="/outreach/campaigns/:campaignId/analytics" element={<OutreachCampaignAnalyticsPage gateway={g} context={context} proof={proof} />} />
+    <Route path="/outreach/campaigns" element={<OutreachCampaignsPage {...props} />} />
+    <Route path="/outreach/campaigns/new" element={<OutreachCampaignCreatePage {...props} />} />
+    <Route path="/outreach/campaigns/:campaignId" element={<OutreachCampaignDetailPage {...props} />} />
+    <Route path="/outreach/campaigns/:campaignId/leads" element={<OutreachCampaignLeadsPage {...props} />} />
+    <Route path="/outreach/campaigns/:campaignId/leads/:leadId" element={<OutreachLeadDetailPage {...props} />} />
+    <Route path="/outreach/campaigns/:campaignId/accounts/:accountId" element={<OutreachAccountDetailPage {...props} />} />
+    <Route path="/outreach/campaigns/:campaignId/accounts" element={<OutreachCampaignAccountsPage {...props} />} />
+    <Route path="/outreach/campaigns/:campaignId/analytics" element={<OutreachCampaignAnalyticsPage {...props} />} />
   </Routes></MemoryRouter>)
 }
 

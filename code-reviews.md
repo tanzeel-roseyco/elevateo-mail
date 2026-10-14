@@ -698,3 +698,5 @@ FE807 disabled account adapter presentation: author review found a known `tempor
 FE807 denied-read presentation: author self-review found create-draft navigation remained visible after an Outreach list denial. It now appears only after a validated ready list, with a denied-read component regression; backend denial remains the authority. No test execution claimed.
 
 FE807 analytics copy self-review: backend's candidate `consented_count` excludes suppressions, while UI said merely “consented.” Source now labels the aggregate “consented and unsuppressed” and adds a component case; no execution or independent review claim.
+
+FE807 QA815 `fe96194` fleet result: API check and lint PASS, typecheck FAILED with eight instances of explicit `gateway={undefined}` in test helper under `exactOptionalPropertyTypes`; unit/build NOT_REACHED. Celeste repaired the test helper by omitting the optional prop when absent. Fresh Docker rerun and independent review pending; no PASS claim for the repair.
