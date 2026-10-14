@@ -84,6 +84,35 @@ describe('private inbox attachments (ATT830)', () => {
     expect(download).not.toHaveBeenCalled()
   })
 
+  it('shows rejected zero-byte metadata as blocked without attempting a download', async () => {
+    const download = vi.fn<AttachmentReadPort['downloadCleanInboxAttachment']>()
+    renderAttachments({
+      listInboxAttachments: async () => ({ items: [{ ...clean, byte_size: 0, scan_status: 'rejected' }], next_cursor: null }),
+      downloadCleanInboxAttachment: download,
+    })
+    fireEvent.click(await screen.findByRole('button', { name: 'Show 1 attachment' }))
+    await screen.findByText(/Rejected before storage; download unavailable/)
+    expect(screen.queryByText(/Scan complete/)).toBeNull()
+    expect(screen.queryByRole('button', { name: /Download/ })).toBeNull()
+    expect(download).not.toHaveBeenCalled()
+  })
+
+  it('does not offer a download for an invalid filename or zero-byte clean row', async () => {
+    const download = vi.fn<AttachmentReadPort['downloadCleanInboxAttachment']>()
+    renderAttachments({
+      listInboxAttachments: async () => ({ items: [
+        { ...clean, filename: '../private.txt' },
+        { ...clean, id: '00000000-0000-4000-8000-000000000052', filename: 'a'.repeat(256) },
+        { ...clean, id: '00000000-0000-4000-8000-000000000053', filename: 'empty.txt', byte_size: 0 },
+      ], next_cursor: null }),
+      downloadCleanInboxAttachment: download,
+    })
+    fireEvent.click(await screen.findByRole('button', { name: 'Show 1 attachment' }))
+    await screen.findAllByText(/Attachment unavailable/)
+    expect(screen.queryByRole('button', { name: /Download/ })).toBeNull()
+    expect(download).not.toHaveBeenCalled()
+  })
+
   it('keeps a clean listing but denies bytes when the proxy reports a held verdict', async () => {
     const download = vi.fn<AttachmentReadPort['downloadCleanInboxAttachment']>(async () => { throw new GatewayError('api', 'not_available', 'held', { status: 423 }) })
     renderAttachments({ listInboxAttachments: async () => ({ items: [clean], next_cursor: null }), downloadCleanInboxAttachment: download })
