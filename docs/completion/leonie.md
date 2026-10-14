@@ -50,6 +50,8 @@ Independent ADV048 statically re-reviewed 176 unique versioned cleanup LOC at `f
 
 The same cleanup principle now applies to source and restore projects: their exact container/volume/network absence queries each have checked exit status. A Docker daemon error cannot turn an empty command substitution into a false cleanup PASS. This follow-up is source-authored and awaits Soren fault-path execution.
 
+`compose_absence.sh` now centralizes that inventory oracle for both scripts. `test_compose_absence.py` supplies seven fake-Docker cases: clean absence, each query failing, and each resource type remaining. This regression is authored but NOT_RUN; request it in Soren's bounded Python container batch. Source and restore Docker outcomes remain NOT_RUN.
+
 Soren's isolated Python batch ran the four `test_verify_snapshot.py` cases on exact historical commit `d445156009e961a91c00453392219826089ba8fa`: four dots, `OK`, exit 0, exact container absent. Evidence: `completion-soren-qa815/docs/completion/qa815-evidence/python-batch-20261014.txt`, SHA256 `4b6d9432990d402e30778efc2d0ae01f453f4f00d90d8ad058b5167b7e7e9c1f`. Later task-owned marker, runtime-env, source/restore and migration changes are **not** covered by that run. Full current units and Docker rehearsal remain NOT_RUN.
 
 Fleet integration prerequisite remains open: Soren's exact `ea92754` app migration stopped at Corin `CreateIsolatedInbound#up` line 45 with `PG::SyntaxError` near the attachment CASE, and cleanup passed. This is an upstream owner defect, not an OPS-820 restore observation; Corin owns the repair. No app-schema snapshot can be certified from that failed integrated migration. Re-run source snapshot only after a coherent corrected immutable commit is supplied; preserve this failed history.
