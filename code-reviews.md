@@ -369,3 +369,15 @@ Nadia authored docs/research/instantly-gmail-rea.md with public primary-source i
 ## RES-406 continuation citation/source advisory (2026-10-14)
 
 Nadia reopened I1–I9, G1–G5, R1–R6 and request-verification primary sources; source-inspected gateway/contracts/routes/mailbox permission/readiness to map unsupported health/consent/send controls. Author/source consistency advisory only; no independent adversarial/design reviewer signoff. Historical missing-skill event resolved with supplied REA v37 instructions; partial root Orca evidence reported, full runtime verification pending. No app source edited, source review coverage counted for adversarial acceptance 0 LOC, defects unmeasured, defects/KLOC N/A. Full INT-401 rubric and dedicated design-tradeoff review required for future implementation. All proposed application scenarios NOT_RUN; root mirror pending.
+
+## FE-405 attempt4 EmptyState semantics — source reviewed, runtime NOT_RUN
+
+Full current user rubric applied (purpose, null/empty/max, cross-system state, overengineering/single purpose/duplication/names/why comments/conditionals, meaningful happy/failure tests/docs, boundaries/authorization, hot paths). Specialists needed for mandatory independent adversarial and dedicated design review; inherited execution identities, no invented tier/model attribution. Mira actual session metadata separately recorded in completion doc.
+
+| Reviewer | Exact reviewed scope | Unique source LOC | Confirmed existing defects | Introduced defects | Density |
+| --- | --- | ---: | ---: | ---: | --- |
+| SPEC-40503 source | Async.tsx1–45, InboxPage.tsx127–171, read-empty.e2e.ts1–55 |145|1 medium heading/acceptance mismatch|0|6.90 existing/KLOC;0 introduced/KLOC |
+| SPEC-40503 final re-review | Async.tsx1–45, InboxPage.test.tsx156–161 |51|0 unresolved|0|0/KLOC |
+| SPEC-40504 dedicated design | Async.tsx1–45, SearchPage.tsx95–157, InboxPage.tsx128–171 |152|0 additional|0|0 introduced/KLOC |
+
+Overlap not additive. Title paragraph lacked semantic heading required by existing strict browser check. Shared h2 repair preserves classes/optional body/actions and React text escaping, changes no state/auth/network/hot paths. Existing unavailable regression strengthened to heading level2; no-links assertion added (review response called it retained, corrected here). Design recommendation prefers shared accessible headings to test-only selector edits; inherited reader error states without preceding h1 remain contextual visual qualification. Scope bounded <=200 each; no reviewer ran app tests/Docker. Actual visual/fresh container gates still pending Soren/Elara/root.

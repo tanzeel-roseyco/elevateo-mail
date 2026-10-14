@@ -147,3 +147,9 @@ BE-403 bootstrap guard regressions authored: exact private-schema DO block exerc
 
 BE-403 numeric underflow repair: ExactDecimal rejects nonzero JSON mantissas converted to zero by extreme BigDecimal exponents, while preserving exact decimals and true zero. Existing precise-version and exception-mode regression failures provide target coverage; current runtime NOT_RUN. Semantic guard order now follows supplied owner/ACL/owner-privileges/runtime sequence.
 FE-405 follow-up: navigation regressions now cover Drafts and reader ancestor semantics. CLI metadata confirms gpt-6.1-sol / low, Fast tier remains unverified (service_tier null). Runtime/visual acceptance still pending.
+
+## FE-405 attempt4 — IN PROGRESS (2026-10-14)
+
+Mira incorporated exact Cassian integration `7b0678c20d1b58e02e70c23b7844f9538b157eb0` by verified bundle fetch and fast-forward on the owned branch; earlier frontend changes are preserved. Bundle `reports/cassian-frozen-app-7b0678c.bundle` SHA256 `b3b04dc43a70dd851a0b538fd47d8fc54a4110b8ac18045deadf81da70ef8985` matches the receipt. Restored four-file canonical contract replaces the old mismatch; generated client types are untouched. Fresh frontend gates requested from Soren, actual visual acceptance coordinated with Elara/root. No new automated or visual PASS yet.
+
+Source repair: shared empty/unavailable/error titles now expose heading semantics with unchanged visual classes; inbox unavailable regression requires a level-two heading and absence of links. This resolves the source-confirmed mismatch with existing denied deep-link browser acceptance, preserving its strict selector. Independent source and dedicated design reviews found zero introduced defects; runtime/visual verification remains pending. No live mail or release. Requested GPT-6.1-Sol low/Fast; observed session `01a137e4-4b5e-7842-a3a4-5a80002c13f6` model `gpt-6.1-sol`, effort `low`, service_tier null, so Fast billing tier unverified.
