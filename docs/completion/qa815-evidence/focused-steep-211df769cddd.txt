@@ -1,0 +1,660 @@
+source=211df769cddda71ca2fe15dbeaf9b5ed55f69d86
+image=sha256:7dc61d4b7e12f94764f95f4f1bfe8e3940049247e6d409898ce9d3ed2810f348
+started=2026-10-14T17:29:05Z
+# Type checking files:
+
+..FF.......................................................F............................F.............F...............F..................................F..............F..............
+
+lib/elevateo/attachments_repository.rb:60:67: [error] Cannot pass a value of type `(::String | ::Integer | nil)` as an argument of type `(::String | nil)`
+│   (::String | ::Integer | nil) <: (::String | nil)
+│     ::Integer <: (::String | nil)
+│       ::Integer <: ::String
+│         ::Numeric <: ::String
+│           ::Object <: ::String
+│             ::BasicObject <: ::String
+│
+│ Diagnostic ID: Ruby::ArgumentTypeMismatch
+│
+└           ActiveRecord::Relation::QueryAttribute.new("attachment", value, ActiveRecord::Type::String.new)
+                                                                     ~~~~~
+
+lib/elevateo/attachment_gateway_client.rb:33:21: [error] Type `(^(::String, ::String, ::Numeric) -> [::Integer, ::Hash[::String, ::String], ::String] | nil)` does not have method `call`
+│ Diagnostic ID: Ruby::NoMethod
+│
+└           @transport.call(signed.body, signed.signature, timeout)
+                       ~~~~
+
+lib/elevateo/attachment_gateway_client.rb:59:26: [error] Cannot pass a value of type `(::Numeric | ::Float)` as an argument of type `(::Float | ::Integer)`
+│   (::Numeric | ::Float) <: (::Float | ::Integer)
+│     ::Numeric <: (::Float | ::Integer)
+│       ::Numeric <: ::Float
+│         ::Object <: ::Float
+│           ::BasicObject <: ::Float
+│
+│ Diagnostic ID: Ruby::ArgumentTypeMismatch
+│
+└       http.open_timeout = [timeout, 0.5].min
+                            ~~~~~~~~~~~~~~~~~~
+
+lib/elevateo/attachment_gateway_client.rb:60:47: [error] Cannot pass a value of type `::Numeric` as an argument of type `(::Float | ::Integer)`
+│   ::Numeric <: (::Float | ::Integer)
+│     ::Numeric <: ::Float
+│       ::Object <: ::Float
+│         ::BasicObject <: ::Float
+│
+│ Diagnostic ID: Ruby::ArgumentTypeMismatch
+│
+└       http.read_timeout = http.write_timeout = timeout
+                                                 ~~~~~~~
+
+lib/elevateo/attachment_gateway_client.rb:60:26: [error] Cannot pass a value of type `::Numeric` as an argument of type `(::Float | ::Integer)`
+│   ::Numeric <: (::Float | ::Integer)
+│     ::Numeric <: ::Float
+│       ::Object <: ::Float
+│         ::BasicObject <: ::Float
+│
+│ Diagnostic ID: Ruby::ArgumentTypeMismatch
+│
+└       http.read_timeout = http.write_timeout = timeout
+                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+lib/elevateo/attachment_gateway_client.rb:66:17: [error] Cannot allow block body have type `::Net::HTTPResponse` because declared as type `[::Integer, ::Hash[::String, ::String], ::String]`
+│   ::Net::HTTPResponse <: [::Integer, ::Hash[::String, ::String], ::String]
+│
+│ Diagnostic ID: Ruby::BlockBodyTypeMismatch
+│
+└       http.start do |connection|
+                   ~~~~~~~~~~~~~~~
+
+app/controllers/v2/admin/user_display_preferences_controller.rb:16:30: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           result = sql_result(connection, READ_SQL, "read display preference", [identity.digest])
+                                ~~~~~~~~~~
+
+app/controllers/v2/admin/user_display_preferences_controller.rb:16:80: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           result = sql_result(connection, READ_SQL, "read display preference", [identity.digest])
+                                                                                  ~~~~~~~~
+
+app/controllers/v2/admin/user_display_preferences_controller.rb:19:40: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           JSON.generate("context_id" => session.fetch("context_id"),
+                                          ~~~~~~~
+
+app/controllers/v2/admin/user_display_preferences_controller.rb:20:39: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└             "authorization_version" => session.fetch("authorization_version"),
+                                         ~~~~~~~
+
+app/controllers/v2/admin/user_display_preferences_controller.rb:31:75: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           raise Elevateo::CollaborationError.new("request_invalid") unless query.empty?
+                                                                             ~~~~~
+
+app/controllers/v2/admin/user_display_preferences_controller.rb:36:44: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           name, expected = self.class.input(input)
+                                              ~~~~~
+
+app/controllers/v2/admin/user_display_preferences_controller.rb:37:30: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           result = sql_result(connection, WRITE_SQL, "write display preference", [identity.digest, expected, name])
+                                ~~~~~~~~~~
+
+app/controllers/v2/admin/user_display_preferences_controller.rb:37:82: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           result = sql_result(connection, WRITE_SQL, "write display preference", [identity.digest, expected, name])
+                                                                                    ~~~~~~~~
+
+app/controllers/v2/admin/user_display_preferences_controller.rb:43:64: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           unless metadata.is_a?(Hash) && metadata["user_id"] == identity.user_id &&
+                                                                  ~~~~~~~~
+
+app/controllers/v2/admin/user_display_preferences_controller.rb:44:45: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└               metadata["organization_id"] == identity.org_id
+                                               ~~~~~~~~
+
+app/controllers/v1/send_intents_controller.rb:28:21: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└         send_service(connection, session).cancel(send_id: send_path(:send_id), mailbox_id: mailbox_id,
+                       ~~~~~~~~~~
+
+app/controllers/v1/send_intents_controller.rb:28:33: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└         send_service(connection, session).cancel(send_id: send_path(:send_id), mailbox_id: mailbox_id,
+                                   ~~~~~~~
+
+app/controllers/v1/send_intents_controller.rb:29:26: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           session_digest: identity.digest, epoch: send_epoch)
+                            ~~~~~~~~
+
+app/controllers/v2/admin/organization_role_audit_controller.rb:16:89: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           raise Elevateo::CollaborationError.new("not_available") unless organization == identity.org_id
+                                                                                           ~~~~~~~~
+
+app/controllers/v2/admin/organization_role_audit_controller.rb:17:56: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           limit = Elevateo::OrganizationRoleAudit.limit(query)
+                                                          ~~~~~
+
+app/controllers/v2/admin/organization_role_audit_controller.rb:22:34: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           scope = { "actor_id" => identity.user_id, "organization_id" => organization,
+                                    ~~~~~~~~
+
+app/controllers/v2/admin/organization_role_audit_controller.rb:23:28: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└             "context_id" => session.fetch("context_id"), "authorization_version" => session.fetch("authorization_version"),
+                              ~~~~~~~
+
+app/controllers/v2/admin/organization_role_audit_controller.rb:23:84: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└             "context_id" => session.fetch("context_id"), "authorization_version" => session.fetch("authorization_version"),
+                                                                                      ~~~~~~~
+
+app/controllers/v2/admin/organization_role_audit_controller.rb:25:21: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           position = query.key?("cursor") ? cursors.decode(query.fetch("cursor"), scope: scope) : nil
+                       ~~~~~
+
+app/controllers/v2/admin/organization_role_audit_controller.rb:25:59: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           position = query.key?("cursor") ? cursors.decode(query.fetch("cursor"), scope: scope) : nil
+                                                             ~~~~~
+
+app/controllers/v2/admin/organization_role_audit_controller.rb:33:19: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           binds = [identity.digest, position && position["id"], limit].map do |value|
+                     ~~~~~~~~
+
+app/controllers/v2/admin/organization_role_audit_controller.rb:36:16: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           row = connection.exec_query(PAGE_SQL, "organization role audit page", binds).first
+                  ~~~~~~~~~~
+
+app/controllers/v2/admin/organization_role_audit_controller.rb:52:42: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           JSON.generate({ "context_id" => session.fetch("context_id"),
+                                            ~~~~~~~
+
+app/controllers/v2/admin/organization_role_audit_controller.rb:53:39: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└             "authorization_version" => session.fetch("authorization_version"),
+                                         ~~~~~~~
+
+app/controllers/v2/inbox_attachments_controller.rb:36:73: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           raise Elevateo::CollaborationError.new("not_available") unless capability == :read &&
+                                                                           ~~~~~~~~~~
+
+app/controllers/v2/inbox_attachments_controller.rb:37:12: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└             organization_id == identity.org_id && mailbox_id == mailbox && thread_id == thread && message_id == message
+              ~~~~~~~~~~~~~~~
+
+app/controllers/v2/inbox_attachments_controller.rb:37:50: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└             organization_id == identity.org_id && mailbox_id == mailbox && thread_id == thread && message_id == message
+                                                    ~~~~~~~~~~
+
+app/controllers/v2/inbox_attachments_controller.rb:37:75: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└             organization_id == identity.org_id && mailbox_id == mailbox && thread_id == thread && message_id == message
+                                                                             ~~~~~~~~~
+
+app/controllers/v2/inbox_attachments_controller.rb:37:98: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└             organization_id == identity.org_id && mailbox_id == mailbox && thread_id == thread && message_id == message
+                                                                                                    ~~~~~~~~~~
+
+app/controllers/v2/inbox_attachments_controller.rb:38:79: [error] Cannot pass a value of type `::Hash[::String, (::String | nil)]` as an argument of type `::Hash[::String, ::String]`
+│   ::Hash[::String, (::String | nil)] <: ::Hash[::String, ::String]
+│     (::String | nil) <: ::String
+│       nil <: ::String
+│
+│ Diagnostic ID: Ruby::ArgumentTypeMismatch
+│
+└           reader.direct_message(thread_id: thread, message_id: message, query: { "mailbox_id" => mailbox })
+                                                                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+app/controllers/v2/inbox_attachments_controller.rb:42:45: [error] Cannot pass a value of type `^() -> nil` as an argument of type `::Elevateo::Attachments::_Authorization`
+│   ^() -> nil <: ::Elevateo::Attachments::_Authorization
+│     () -> nil <: (organization_id: ::String, mailbox_id: ::String, thread_id: ::String, message_id: ::String, capability: ::Symbol) -> void
+│       (Params are incompatible)
+│
+│ Diagnostic ID: Ruby::ArgumentTypeMismatch
+│
+└           storage: NoStorage.new, authorize: authorize)
+                                               ~~~~~~~~~
+
+app/controllers/v2/inbox_attachments_controller.rb:43:81: [error] Cannot pass a value of type `(::String | nil)` as an argument of type `::String`
+│   (::String | nil) <: ::String
+│     nil <: ::String
+│
+│ Diagnostic ID: Ruby::ArgumentTypeMismatch
+│
+└         JSON.generate(service.list(organization_id: identity.org_id, mailbox_id: mailbox,
+                                                                                   ~~~~~~~
+
+app/controllers/v2/inbox_attachments_controller.rb:44:21: [error] Cannot pass a value of type `(::String | nil)` as an argument of type `::String`
+│   (::String | nil) <: ::String
+│     nil <: ::String
+│
+│ Diagnostic ID: Ruby::ArgumentTypeMismatch
+│
+└           thread_id: thread, message_id: message, cursor: cursor, limit: limit.to_i))
+                       ~~~~~~
+
+app/controllers/v2/inbox_attachments_controller.rb:44:41: [error] Cannot pass a value of type `(::String | nil)` as an argument of type `::String`
+│   (::String | nil) <: ::String
+│     nil <: ::String
+│
+│ Diagnostic ID: Ruby::ArgumentTypeMismatch
+│
+└           thread_id: thread, message_id: message, cursor: cursor, limit: limit.to_i))
+                                           ~~~~~~~
+
+app/controllers/v2/fake_inbound_controller.rb:16:65: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└         guard_users: ->(input:, **) { [Elevateo::WriteInput.uuid(input["actor_id"])] }) do
+                                                                   ~~~~~
+
+app/controllers/v2/fake_inbound_controller.rb:18:71: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└         raise Elevateo::CollaborationError.new("not_available") unless input["actor_id"] == identity.user_id
+                                                                         ~~~~~
+
+app/controllers/v2/fake_inbound_controller.rb:18:92: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└         raise Elevateo::CollaborationError.new("not_available") unless input["actor_id"] == identity.user_id
+                                                                                              ~~~~~~~~
+
+app/controllers/v2/fake_inbound_controller.rb:19:44: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└         mailbox = Elevateo::WriteInput.uuid(input["mailbox_id"])
+                                              ~~~~~
+
+app/controllers/v2/fake_inbound_controller.rb:20:65: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└         store = Elevateo::Inbound::PostgresStore.new(connection: connection,
+                                                                   ~~~~~~~~~~
+
+app/controllers/v2/fake_inbound_controller.rb:21:26: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           session_digest: identity.digest, actor_id: identity.user_id)
+                            ~~~~~~~~
+
+app/controllers/v2/fake_inbound_controller.rb:21:53: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           session_digest: identity.digest, actor_id: identity.user_id)
+                                                       ~~~~~~~~
+
+app/controllers/v2/fake_inbound_controller.rb:23:27: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           organization_id: identity.org_id, mailbox_id: mailbox)
+                             ~~~~~~~~
+
+app/controllers/v2/fake_inbound_controller.rb:26:27: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           organization_id: identity.org_id, mailbox_id: mailbox, authorized_mailbox_ids: [mailbox],
+                             ~~~~~~~~
+
+app/controllers/v2/fake_inbound_controller.rb:27:31: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           provider_account_id: input["provider_account_id"], provider_event_id: input["provider_event_id"],
+                                 ~~~~~
+
+app/controllers/v2/fake_inbound_controller.rb:27:80: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           provider_account_id: input["provider_account_id"], provider_event_id: input["provider_event_id"],
+                                                                                  ~~~~~
+
+app/controllers/v2/fake_inbound_controller.rb:28:20: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           raw_mime: input["raw_mime"])
+                      ~~~~~
+
+app/controllers/v2/admin/organization_grants_controller.rb:26:89: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           raise Elevateo::CollaborationError.new("not_available") unless organization == identity.org_id
+                                                                                           ~~~~~~~~
+
+app/controllers/v2/admin/organization_grants_controller.rb:27:40: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           limit = self.class.page_limit(query)
+                                          ~~~~~
+
+app/controllers/v2/admin/organization_grants_controller.rb:29:29: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           scope = page_scope(identity, session, limit, organization)
+                               ~~~~~~~~
+
+app/controllers/v2/admin/organization_grants_controller.rb:29:39: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           scope = page_scope(identity, session, limit, organization)
+                                         ~~~~~~~
+
+app/controllers/v2/admin/organization_grants_controller.rb:30:21: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           position = query.key?("cursor") ? cursors.decode(query.fetch("cursor"), scope: scope) : nil
+                       ~~~~~
+
+app/controllers/v2/admin/organization_grants_controller.rb:30:59: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           position = query.key?("cursor") ? cursors.decode(query.fetch("cursor"), scope: scope) : nil
+                                                             ~~~~~
+
+app/controllers/v2/admin/organization_grants_controller.rb:38:19: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           binds = [identity.digest, position && position["user_id"], limit].map do |value|
+                     ~~~~~~~~
+
+app/controllers/v2/admin/organization_grants_controller.rb:41:16: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           row = connection.exec_query(PAGE_SQL, "organization grants page", binds).first
+                  ~~~~~~~~~~
+
+app/controllers/v2/admin/organization_grants_controller.rb:51:37: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           unless actor["user_id"] == identity.user_id && %w[organization_owner organization_admin].include?(actor["role"])
+                                       ~~~~~~~~
+
+app/controllers/v2/admin/organization_grants_controller.rb:62:42: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           JSON.generate({ "context_id" => session.fetch("context_id"),
+                                            ~~~~~~~
+
+app/controllers/v2/admin/organization_grants_controller.rb:63:39: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└             "authorization_version" => session.fetch("authorization_version"),
+                                         ~~~~~~~
+
+app/controllers/v2/admin/organization_grants_controller.rb:107:89: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           raise Elevateo::CollaborationError.new("not_available") unless organization == identity.org_id
+                                                                                           ~~~~~~~~
+
+app/controllers/v2/admin/organization_grants_controller.rb:108:40: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           limit = self.class.page_limit(query)
+                                          ~~~~~
+
+app/controllers/v2/admin/organization_grants_controller.rb:109:33: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           authorization_binds = [identity.digest, nil, "1"].map do |value|
+                                   ~~~~~~~~
+
+app/controllers/v2/admin/organization_grants_controller.rb:112:23: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           result_row = connection.exec_query(PAGE_SQL, "organization roster authority", authorization_binds).first
+                         ~~~~~~~~~~
+
+app/controllers/v2/admin/organization_grants_controller.rb:120:37: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           unless actor["user_id"] == identity.user_id && %w[organization_owner organization_admin].include?(actor["role"])
+                                       ~~~~~~~~
+
+app/controllers/v2/admin/organization_grants_controller.rb:124:29: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           scope = page_scope(identity, session, limit, organization).merge("resource" => "organization_roster", "order" => "key:asc")
+                               ~~~~~~~~
+
+app/controllers/v2/admin/organization_grants_controller.rb:124:39: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           scope = page_scope(identity, session, limit, organization).merge("resource" => "organization_roster", "order" => "key:asc")
+                                         ~~~~~~~
+
+app/controllers/v2/admin/organization_grants_controller.rb:125:21: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           position = query.key?("cursor") ? cursors.decode(query.fetch("cursor"), scope: scope) : nil
+                       ~~~~~
+
+app/controllers/v2/admin/organization_grants_controller.rb:125:59: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           position = query.key?("cursor") ? cursors.decode(query.fetch("cursor"), scope: scope) : nil
+                                                             ~~~~~
+
+app/controllers/v2/admin/organization_grants_controller.rb:139:42: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           JSON.generate({ "context_id" => session.fetch("context_id"),
+                                            ~~~~~~~
+
+app/controllers/v2/admin/organization_grants_controller.rb:140:39: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└             "authorization_version" => session.fetch("authorization_version"),
+                                         ~~~~~~~
+
+app/controllers/v2/admin/organization_grants_controller.rb:155:75: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           raise Elevateo::CollaborationError.new("request_invalid") unless query.empty?
+                                                                             ~~~~~
+
+app/controllers/v2/admin/organization_grants_controller.rb:160:89: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           raise Elevateo::CollaborationError.new("not_available") unless organization == identity.org_id
+                                                                                           ~~~~~~~~
+
+app/controllers/v2/admin/organization_grants_controller.rb:161:51: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           role, revision = self.class.change_input(input)
+                                                     ~~~~~
+
+app/controllers/v2/admin/organization_grants_controller.rb:162:16: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           row = connection.exec_query(CHANGE_SQL, "organization role change",
+                  ~~~~~~~~~~
+
+app/controllers/v2/admin/organization_grants_controller.rb:163:13: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└             [identity.digest, target, revision.to_s, ROLE_SQL.fetch(role)].map do |value|
+               ~~~~~~~~
+
+app/controllers/v2/admin/organization_grants_controller.rb:173:64: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           unless metadata.is_a?(Hash) && metadata["user_id"] == identity.user_id && metadata["organization_id"] == organization
+                                                                  ~~~~~~~~
+
+Detected 80 problems from 8 files
+steep_exit=1
+RUN test/attachments/gateway_client_test.rb
+Run options: --seed 40356
+
+# Running:
+
+...E
+
+Finished in 0.001614s, 2478.0792 runs/s, 4956.1585 assertions/s.
+
+  1) Error:
+AttachmentGatewayClientTest#test_slow_trickled_http_body_expires_and_closes_without_bytes:
+ArgumentError: wrong number of arguments (given 0, expected 1..8)
+    /usr/local/lib/ruby/3.4.0/net/http.rb:1100:in 'new'
+    test/attachments/gateway_client_test.rb:96:in 'AttachmentGatewayClientTest#test_slow_trickled_http_body_expires_and_closes_without_bytes'
+
+4 runs, 8 assertions, 0 failures, 1 errors, 0 skips
+test_exit=1 file=test/attachments/gateway_client_test.rb
+RUN test/attachments/service_test.rb
+Run options: --seed 18245
+
+# Running:
+
+EE.........E.......
+
+Finished in 0.011730s, 1619.7564 runs/s, 6393.7754 assertions/s.
+
+  1) Error:
+AttachmentServiceTest#test_private_storage_rejects_status_before_read_body:
+NoMethodError: undefined method 'stub' for class Net::HTTP
+    test/attachments/service_test.rb:328:in 'AttachmentServiceTest#test_private_storage_rejects_status_before_read_body'
+
+  2) Error:
+AttachmentServiceTest#test_private_storage_denies_missing_bucket_body_before_object_request:
+NoMethodError: undefined method 'stub' for class Net::HTTP
+    test/attachments/service_test.rb:311:in 'AttachmentServiceTest#test_private_storage_denies_missing_bucket_body_before_object_request'
+
+  3) Error:
+AttachmentServiceTest#test_due_scan_row_without_id_has_deliberate_error:
+NameError: uninitialized constant Elevateo::Attachments::Repository
+    test/attachments/service_test.rb:219:in 'AttachmentServiceTest#test_due_scan_row_without_id_has_deliberate_error'
+
+19 runs, 75 assertions, 0 failures, 3 errors, 0 skips
+test_exit=1 file=test/attachments/service_test.rb
+RUN test/attachments/clamd_scanner_test.rb
+Run options: --seed 3200
+
+# Running:
+
+......
+
+Finished in 0.007663s, 782.9799 runs/s, 2218.4430 assertions/s.
+
+6 runs, 17 assertions, 0 failures, 0 errors, 0 skips
+test_exit=0 file=test/attachments/clamd_scanner_test.rb
+RUN test/inbound/imap_attachment_parser_test.rb
+Run options: --seed 8007
+
+# Running:
+
+...
+
+Finished in 0.047594s, 63.0327 runs/s, 273.1416 assertions/s.
+
+3 runs, 13 assertions, 0 failures, 0 errors, 0 skips
+test_exit=0 file=test/inbound/imap_attachment_parser_test.rb
+RUN test/inbound/imap_ingress_test.rb
+Run options: --seed 25433
+
+# Running:
+
+.F..
+
+Finished in 0.056880s, 70.3241 runs/s, 263.7154 assertions/s.
+
+  1) Failure:
+ImapIngressTest#test_attachment_is_rejected_until_quarantine_exists [test/inbound/imap_ingress_test.rb:49]:
+--- expected
++++ actual
+@@ -1 +1 @@
+-"unsupported_mime"
++"attachment_storage_unavailable"
+
+
+4 runs, 15 assertions, 1 failures, 0 errors, 0 skips
+test_exit=1 file=test/inbound/imap_ingress_test.rb
+RUN test/inbound/imap_sync_test.rb
+Run options: --seed 3967
+
+# Running:
+
+......
+
+Finished in 0.058364s, 102.8034 runs/s, 582.5525 assertions/s.
+
+6 runs, 34 assertions, 0 failures, 0 errors, 0 skips
+test_exit=0 file=test/inbound/imap_sync_test.rb
+RUN test/send_worker/drain_test.rb
+Run options: --seed 21368
+
+# Running:
+
+E.
+
+Finished in 0.001077s, 1856.3536 runs/s, 8353.5911 assertions/s.
+
+  1) Error:
+SendWorkerDrainTest#test_integer_and_float_idle_delays_reach_sleeper_as_floats:
+NoMethodError: undefined method 'stub' for class Elevateo::SendWorker::DatabaseStore
+    test/send_worker/drain_test.rb:13:in 'block in SendWorkerDrainTest#test_integer_and_float_idle_delays_reach_sleeper_as_floats'
+    test/send_worker/drain_test.rb:10:in 'Array#each'
+    test/send_worker/drain_test.rb:10:in 'SendWorkerDrainTest#test_integer_and_float_idle_delays_reach_sleeper_as_floats'
+
+2 runs, 9 assertions, 0 failures, 1 errors, 0 skips
+test_exit=1 file=test/send_worker/drain_test.rb
+RUN test/send_worker/smtp_transport_test.rb
+Run options: --seed 28050
+
+# Running:
+
+......
+
+Finished in 0.014071s, 426.4127 runs/s, 1634.5821 assertions/s.
+
+6 runs, 23 assertions, 0 failures, 0 errors, 0 skips
+test_exit=0 file=test/send_worker/smtp_transport_test.rb
+run_exit=1
+archive_absent=yes
+remaining_task_containers=0
+finished=2026-10-14T17:29:21Z

@@ -151,4 +151,8 @@ QA815 `c5a8737` current web full PASS 842/842/build with task cleanup; V2 declar
 
 QA815 `a0a60b6` one-case same-scope outreach witness FAIL 1/5: read=not_found, write=not_found, DB current_user=elevateo_api, sales membership and live session; 21 migrations and exact cleanup PASS. Retained rejected `32d043f` APK `aapt` dump PASS under Docker, confirms generated dynamic-receiver permission; native acceptance remains OPEN.
 
-QA815 focused Steep/selected pure Ruby runner is prepared, NOT_RUN pending coherent integrated SHA from Cassian.
+QA815 focused Steep/selected pure Ruby runner was prepared pending a coherent integrated SHA; its executed `211df76` result follows.
+
+QA815 exact `211df76` Steep 80 problems/8 files, focused pure Ruby partial PASS; mock-import probe isolates three harness errors. Gateway 00018 transaction-scoped up/down/up ACL 1/24 PASS under QA-only migrator test role after an API-role setup failure, with exact disposable cleanup. Full backend/HTTP/worker/browser remain OPEN.
+
+QA815 exact `37b20c2` protected role one-case 1/14 PASS after 21 migrations; same-scope read/write both `ok`, live sales session, cleanup PASS. This closes only the focused role diagnostic; broader backend/HTTP/worker/browser remain OPEN.

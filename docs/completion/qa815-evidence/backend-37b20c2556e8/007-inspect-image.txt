@@ -1,0 +1,57 @@
+[
+    {
+        "Id": "sha256:[opaque value redacted]",
+        "RepoTags": [
+            "supabase/gotrue:v2.196.0",
+            "supabase/gotrue@sha256:[opaque value redacted]"
+        ],
+        "RepoDigests": [
+            "supabase/gotrue@sha256:[opaque value redacted]"
+        ],
+        "Comment": "buildkit.dockerfile.v0",
+        "Created": "2026-08-18T16:10:04.882468465Z",
+        "Config": {
+            "User": "supabase",
+            "Env": [
+                "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "[opaque value redacted]"
+            ],
+            "Cmd": [
+                "auth"
+            ],
+            "WorkingDir": "/",
+            "ArgsEscaped": true
+        },
+        "Architecture": "amd64",
+        "Os": "linux",
+        "Size": 29424147,
+        "RootFS": {
+            "Type": "layers",
+            "Layers": [
+                "sha256:[opaque value redacted]",
+                "sha256:[opaque value redacted]",
+                "sha256:[opaque value redacted]",
+                "sha256:[opaque value redacted]",
+                "sha256:[opaque value redacted]",
+                "sha256:[opaque value redacted]"
+            ]
+        },
+        "Metadata": {
+            "LastTagTime": "2026-10-13T23:43:21.945887699Z"
+        },
+        "Descriptor": {
+            "mediaType": "application/vnd.oci.image.index.v1+json",
+            "digest": "sha256:[opaque value redacted]",
+            "size": 1609
+        },
+        "Identity": {
+            "Pull": [
+                {
+                    "Repository": "docker.io/supabase/gotrue"
+                }
+            ]
+        }
+    }
+]
+
+exit=0 seconds=0.03

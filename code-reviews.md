@@ -718,3 +718,7 @@ QA815 `065ec91` role failure and thread fixture improvement are executed test fi
 QA815 `c5a8737` full web PASS is runtime evidence, not independent bounded source review. Additional independent reviewed LOC remains 0; density unclaimed.
 
 QA815 `a0a60b6` same-scope authorization failure and retained-APK `aapt` output are executed diagnostics, not independent source review. Additional independently reviewed source remains 0 LOC; actionable source defects and density are unclaimed pending owner/root review.
+
+QA815 `211df76` focused Steep/unit failures and gateway ACL PASS are executed test findings, not independent bounded review. The first API-role setup failure and mock-import harness corrections are preserved; additional independent reviewed source remains 0 LOC and defect density unclaimed.
+
+QA815 `37b20c2` focused protected role PASS is one executed real PostgreSQL case, not an independent source review or full backend gate. Additional independent reviewed source remains 0 LOC; defect density unclaimed.

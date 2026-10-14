@@ -1,0 +1,15 @@
+Run options: -n [opaque value redacted] --seed 38503
+
+# Running:
+
+QA815 db_current_user=elevateo_api
+QA815 provenance member=t role=sales function_owner=elevateo_owner read_result=ok write_result=ok session_count=1 generation=3
+.
+
+Finished in 0.183309s, 5.4553 runs/s, 76.3739 assertions/s.
+1 runs, 14 assertions, 0 failures, 0 errors, 0 skips
+ Container [opaque value redacted] Creating 
+ Container [opaque value redacted] Created 
+Please switch from -n/--name to -i/--include
+
+exit=0 seconds=1.72

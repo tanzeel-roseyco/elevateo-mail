@@ -219,4 +219,8 @@ QA815 current full web receipt `docs/completion/qa815-evidence/web-c5a873765a0c.
 
 QA815 focused Elara receipt `docs/completion/qa815-evidence/backend-a0a60b66151a/` records 21 migrations, a one-case same-scope read/write `not_found` failure and exact cleanup. The retained rejected Android APK has an actual container `aapt` manifest/permission dump at `docs/completion/qa815-evidence/android-32d043fbce8e-aapt-dump.txt`; it does not establish policy acceptance of any unsigned APK. See `docs/completion/soren.md`.
 
-QA815 next focused Steep/selected pure Ruby runner is at `ops/tests/qa815/run-focused-steep.sh`; it awaits the coherent immutable candidate SHA and has not run.
+QA815 focused Steep/selected pure Ruby runner is at `ops/tests/qa815/run-focused-steep.sh`; its executed `211df76` result follows.
+
+QA815 exact `211df76` focused Steep/unit and gateway ACL receipts are `docs/completion/qa815-evidence/focused-steep-211df769cddd.txt`, `mock-probe-211df769cddd.txt`, and `backend-211df769cddd/`. Steep/unit gate remains failed; gateway 00018 up/down/up migrator-role case passed 1/24 with task cleanup. See `docs/completion/soren.md` for exact failures and test scope.
+
+QA815 exact `37b20c2` focused protected outreach role receipt `docs/completion/qa815-evidence/backend-37b20c2556e8/` records 21 migrations and the single same-scope read/write case 1/14 PASS with cleanup; broad runtime remains pending. See `docs/completion/soren.md`.

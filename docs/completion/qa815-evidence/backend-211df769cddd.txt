@@ -1,0 +1,12 @@
+source=211df769cddda71ca2fe15dbeaf9b5ed55f69d86
+started=2026-10-14T17:33:59Z
+task_source_overlay=OPS820 restricted gateway login before migration; canonical commit unchanged
+task_source_overlay=gateway migration ACL single-case, migrator test role and stop; canonical commit unchanged
+BE02 project=be02-2f0dfdc271a140b8ab5ba30914a23615 evidence=/tmp/qa815-backend.WZKJCKS4/ops/local/be02-2f0dfdc271a140b8ab5ba30914a23615
+Building bounded task image
+Running isolated Minitest suites and Steep
+tests=DIAGNOSTIC_COMPLETED cleanup=PASSED evidence=/tmp/qa815-backend.WZKJCKS4/ops/local/be02-2f0dfdc271a140b8ab5ba30914a23615
+runner_exit=0
+receipt_copy_failed=0
+archive_absent=yes
+finished=2026-10-14T17:35:46Z
