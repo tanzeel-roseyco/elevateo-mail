@@ -208,3 +208,5 @@ QA816 campaign detail evidence now waits for the exact case-owned name and draft
 QA816 now requests six additional real API-backed branded shell screenshots at 390, 768 and 1440 pixels in light and dark themes. Fleet capture, pixel inspection and independent review remain pending.
 
 QA816 logout acceptance now waits for a real populated V2 grants response and rendered grant marker before verifying post-logout cache clearing. Independent repair review and fleet browser evidence remain pending.
+
+QA816 FE806 browser candidate adds keyboard permalink/reload, missing-message V2 404, and transport-loss/retry checks. Later-page direct-message success needs a new disposable multi-message acceptance seed; fleet browser tests and actual screenshots remain pending.

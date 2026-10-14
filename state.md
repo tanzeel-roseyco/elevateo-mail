@@ -150,3 +150,5 @@ QA816 head 0c21185 repins Outreach packet C after exact campaign name/status ora
 QA816 head fa34ea3 adds SCN-QA-822-P (390/768/1440 light/dark) and expands fixed screenshot admission to 34 IDs. Felix's prior B182 review excludes the three new allowlist lines; D36 and B delta reviews plus actual browser images remain pending.
 
 QA816 head 487f422 repairs Ada ADV050's People heading-only logout oracle: real nonempty V2 grants GET and exact rendered marker are required before logout, then marker disappearance on protected deep links. Source-only; current browser/screenshots remain NOT_RUN.
+
+QA816 FE806 message candidate adds three unrun supplemental browser cases and three screenshot IDs (21 cases/37 IDs total). The existing one-message seed cannot prove a later-page direct GET; Cassian was asked for a multi-message seed. No fleet browser or pixel PASS is claimed.
