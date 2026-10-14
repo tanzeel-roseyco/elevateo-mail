@@ -21,3 +21,5 @@ Merged Dorian `d0b7a9a` and Celeste/Fable feature candidates. V2 route registry 
 ### Sabine authority merge
 
 Merged Sabine `fc0b542`: protected redacted grant page, verified enrollment/provisioning hooks that do not seed real people, and a legacy mailbox-membership ceiling/consent patch. Theo GET grants, GET unbound roster and PUT subordinate role controller paths are now source-registered as isolated candidates. Effective roles are seven closed values; owner transfer is excluded. No real identities were enrolled and no SQL/HTTP fleet pass is claimed. Sabine's branch requires migration/protected-function and bypass-path adversarial tests before root acceptance.
+
+Native broker and synthetic inbound interface proposals are documented in `contracts/v2/proposals.md`; neither is a released or active route.
