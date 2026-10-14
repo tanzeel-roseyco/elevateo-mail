@@ -136,10 +136,15 @@ class CreateCampaignFoundation < ActiveRecord::Migration[8.1]
       else
         ""
       end
-      # AIDEV-NOTE: Missing digest denies table access; the API supplies it only after current-role proof.
-      role_guard = <<~SQL.squish
+      # AIDEV-NOTE: Reads use a current session/role proof; every inert write also needs the DB-private protected-write marker.
+      read_guard = <<~SQL.squish
         AND CASE WHEN NULLIF(current_setting('app.outreach_digest', true), '') IS NULL THEN false
           ELSE (SELECT app.authorize_outreach_content_read(
+            NULLIF(current_setting('app.outreach_digest', true), ''))->>'status' = 'ok') END
+      SQL
+      write_guard = <<~SQL.squish
+        AND CASE WHEN NULLIF(current_setting('app.outreach_digest', true), '') IS NULL THEN false
+          ELSE (SELECT app.authorize_outreach_draft_write(
             NULLIF(current_setting('app.outreach_digest', true), ''))->>'status' = 'ok') END
       SQL
       write_integrity = case table
@@ -171,14 +176,25 @@ class CreateCampaignFoundation < ActiveRecord::Migration[8.1]
       else
         ""
       end
+      scope = <<~SQL.squish
+        organization_id = app.context_uuid('app.org_id') AND EXISTS (
+          SELECT 1 FROM app.organization_memberships m
+          WHERE m.organization_id = #{table}.organization_id AND m.user_id = app.context_uuid('app.user_id'))#{visible_mailbox}
+      SQL
       execute <<~SQL
-        CREATE POLICY campaign_tenant ON app.#{table} FOR ALL TO elevateo_app_read
-          USING (organization_id = app.context_uuid('app.org_id') AND EXISTS (
-            SELECT 1 FROM app.organization_memberships m
-            WHERE m.organization_id = #{table}.organization_id AND m.user_id = app.context_uuid('app.user_id'))#{visible_mailbox} #{role_guard})
-          WITH CHECK (organization_id = app.context_uuid('app.org_id') AND EXISTS (
-            SELECT 1 FROM app.organization_memberships m
-            WHERE m.organization_id = #{table}.organization_id AND m.user_id = app.context_uuid('app.user_id'))#{visible_mailbox} #{role_guard} #{write_integrity})
+        CREATE POLICY campaign_select ON app.#{table} FOR SELECT TO elevateo_app_read
+          USING (#{scope} #{read_guard});
+      SQL
+      execute <<~SQL
+        CREATE POLICY campaign_insert ON app.#{table} FOR INSERT TO elevateo_app_read
+          WITH CHECK (#{scope} #{write_guard} #{write_integrity});
+      SQL
+      next unless %w[campaigns campaign_leads campaign_accounts].include?(table)
+
+      execute <<~SQL
+        CREATE POLICY campaign_update ON app.#{table} FOR UPDATE TO elevateo_app_read
+          USING (#{scope} #{write_guard})
+          WITH CHECK (#{scope} #{write_guard} #{write_integrity});
       SQL
     end
     # AIDEV-NOTE: Membership RLS limits inert CRUD; no privilege reaches send intents or provider transport.

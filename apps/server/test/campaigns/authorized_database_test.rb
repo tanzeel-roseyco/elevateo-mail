@@ -101,6 +101,22 @@ class CampaignAuthorizedDatabaseTest < MailboxMembershipDatabaseCase
     assert_match(/protected write guard required|permission denied/i, error.message)
   end
 
+  def test_valid_digest_without_protected_marker_cannot_update_campaign_table
+    error = assert_raises(ActiveRecord::StatementInvalid) do
+      CollaborationApiRecord.connection_pool.with_connection do |connection|
+        principal = Elevateo::Tenancy::Principal.new(user_id: @user, org_id: @org)
+        Elevateo::Tenancy.with_context(principal, connection: connection, read_only: false) do
+          connection.exec_query("SELECT set_config('app.outreach_digest',$1,true)", "OUT804 digest",
+            [bind(@identity.digest)])
+          connection.exec_query("UPDATE app.campaigns SET version=version+1 WHERE id=$1::uuid",
+            "OUT804 unguarded write", [bind(@campaign_id)])
+        end
+      end
+    end
+    assert_match(/protected write guard required/i, error.message)
+    assert_equal "1", @admin.exec_params("SELECT version FROM app.campaigns WHERE id=$1", [@campaign_id]).getvalue(0, 0)
+  end
+
   def test_cross_actor_digest_cannot_reuse_current_session_context
     actor = add_actor
     @admin.exec_params("INSERT INTO app.organization_access(organization_id,user_id,role) VALUES ($1,$2,'sales')",
