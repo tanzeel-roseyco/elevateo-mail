@@ -28,6 +28,8 @@ module Elevateo
         raise Error, "invalid scan input" unless bytes.is_a?(String) && bytes.bytesize.between?(1, MAX_BYTES)
         Timeout.timeout(20) do
           active_socket = @socket_factory.call
+          raise Error, "clamd socket unavailable" unless active_socket &&
+            active_socket.respond_to?(:write) && active_socket.respond_to?(:read) && active_socket.respond_to?(:close)
           begin
             write_all(active_socket, "zINSTREAM\0")
             offset = 0
@@ -96,10 +98,11 @@ module Elevateo
         token = SecureRandom.uuid
         row = @repository.claim_scan(id: id, token: token)
         raise Unavailable, "scan not due" unless row
-        attempt = row.fetch("scan_attempt")
-        digest = row.fetch("sha256")
-        key = row.fetch("storage_key")
-        expected_size = row.fetch("byte_size")
+        # AIDEV-NOTE: A partial claim remains held and must not abort the rest of a due batch.
+        attempt = row["scan_attempt"]
+        digest = row["sha256"]
+        key = row["storage_key"]
+        expected_size = row["byte_size"]
         raise Unavailable, "invalid scan claim" unless attempt.is_a?(Integer) && attempt.between?(1, 3) &&
           digest.is_a?(String) && /\A[0-9a-f]{64}\z/.match?(digest) && key.is_a?(String) &&
           expected_size.is_a?(Integer) && expected_size.between?(1, MAX_BYTES)

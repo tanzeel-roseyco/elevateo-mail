@@ -37,7 +37,7 @@ module Elevateo
 
       def due_scan_ids(limit:)
         rows("SELECT id FROM app.due_inbox_attachment_scans($1::integer)", [limit]).map do |row|
-          id = row.fetch("id")
+          id = row["id"]
           raise NotAvailable unless id.is_a?(String)
           id
         end

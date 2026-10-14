@@ -403,3 +403,5 @@ REV868 Felix bounded browser review found one context-header test-oracle defect 
 Corin d4a34f4 direct-message serialization and reversible thread fixture repair is imported as source; current integrated real DB/HTTP/worker Docker proof pending.
 
 Soren exact 6c626e2 Docker web V1/V2 declaration checks passed but lint failed four Cassian sequence-test unused parameters and one Mira attachment regex; Cassian source repair is in this branch, Mira owner repair pending, type/unit/build not reached.
+
+ATT865 Nadia 5465488 malformed scan-claim/due-ID/socket repairs are imported after Mira REV871 static 153-LOC/zero-defect rereview; fleet scanner/Storage/DB proof remains pending.

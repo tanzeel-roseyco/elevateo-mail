@@ -59,6 +59,12 @@ class ClamdScannerTest < Minitest::Test
     assert socket.closed
   end
 
+  def test_nil_socket_factory_has_deliberate_error
+    clamd = Elevateo::Attachments::ClamdScanner.new(socket_factory: -> { nil })
+    error = assert_raises(Elevateo::Attachments::ClamdScanner::Error) { clamd.scan("hello") }
+    assert_equal "clamd socket unavailable", error.message
+  end
+
   def test_rejects_empty_and_oversized_before_socket
     clamd, socket = scanner("stream: OK\0")
     assert_raises(Elevateo::Attachments::ClamdScanner::Error) { clamd.scan("") }
