@@ -1,5 +1,10 @@
 # Project state
 
+### Mira BE03 UI isolated R24 implementation (2026-10-14)
+
+Root authorizes isolated BE03 implementation over `03ae770` while BE02 remains OPEN/unaccepted and integration/release gated. Mira owns the send gateway, generated web artifacts after canonical contract, and review/approval/status UI. The S1/S2 UI renders full saved plaintext content, explicit correspondence approval, original-binding uncertain retry, and server-owned simulated status. Runtime, independent review and actual visual validation are pending; no completion or delivery claim. Canonical source is `contracts/v1/openapi.json`. See [Mira scoped evidence](docs/completion/be03-mira-r24.md).
+
+
 Application IN PROGRESS — R23 documentation checkpoint (2026-10-14). BE02 OPEN/unaccepted; BE03 CLOSED until root accepts BE02. Application completion has priority; R&D remains separate. Invitation source is exact 51ca5d2eadd74b7ac4c1a2f5f82cd49323b15dc5; core/empty/revoked/logout evidence belongs to exact 86036e276df9c3294206e6bfa14d478c223c54dd. Observer remains OFF. Production, contracts, observer boundary and four Docker recipes are unchanged.
 
 R19 core login/read/persisted-draft/search PASS stands with restoration, authenticated HTTP, worker drain and cleanup. Its sixteen screenshots do not establish complete visual acceptance: search was loading; settled-search evidence remains in R12. R12's 21 PNGs and R18 conflict/revocation PASS stand. R18 logout FAILED, cause UNKNOWN; F2 memory-only recovery limitation remains OPEN.

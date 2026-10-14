@@ -1,0 +1,54 @@
+import { fireEvent, render, screen } from '@testing-library/react'
+import { MemoryRouter, Route, Routes } from 'react-router'
+import { describe, expect, it, vi } from 'vitest'
+import { SessionProvider } from '@/app/session'
+import { GatewayError } from '@/data/errors'
+import { CD_FIXTURE as CD } from '@/data/fixtures/collaborationState'
+import { createFixtureGateway } from '@/data/fixtures/fixtureGateway'
+import type { SendStatus } from '@/data/sendContract'
+import { SendStatusPage } from './SendStatusPage'
+import { STATUS } from './sendTestData'
+
+function setup(status: SendStatus, result: 'cancelled' | 'stop_requested' = 'stop_requested', fail = false) {
+  const g = {
+    ...createFixtureGateway(), getSendStatus: vi.fn(async () => status),
+    cancelSend: vi.fn(async () => {
+      if (fail) throw new GatewayError('transport', 'timeout', 'synthetic')
+      return { context_id: CD.contextId, authorization_version: CD.authorizationVersion, send_id: status.send_id, result, state: status.state, cancel_requested: true as const, simulated: true as const }
+    }),
+  }
+  render(<SessionProvider gateway={g}><MemoryRouter initialEntries={[`/mailboxes/${CD.mailboxId}/send-intents/${status.send_id}`]}><Routes><Route path="/mailboxes/:mailboxId/send-intents/:sendId" element={<SendStatusPage />} /></Routes></MemoryRouter></SessionProvider>)
+  return g
+}
+describe('BE03 simulated status', () => {
+  it('shows known pre-dispatch cancellation and refreshes authoritative status', async () => {
+    const g = setup(STATUS, 'cancelled')
+    fireEvent.click(await screen.findByRole('button', { name: 'Cancel before dispatch' }))
+    await screen.findByText('Cancellation confirmed before dispatch authorization.')
+    expect(g.cancelSend).toHaveBeenCalledWith(expect.anything(), expect.anything(), STATUS.send_id, { mailbox_id: CD.mailboxId }, expect.any(AbortSignal))
+    expect(g.getSendStatus).toHaveBeenCalledTimes(2)
+  })
+  it('describes a late stop as uncertain, never as safely cancelled', async () => {
+    setup({ ...STATUS, state: 'unknown', cancellable: false, attempts: 1, first_possible_at: STATUS.approved_at })
+    fireEvent.click(await screen.findByRole('button', { name: 'Request stop' }))
+    await screen.findByText(/this does not prove cancellation/)
+    expect(screen.getByText(/Do not resend/)).toBeInTheDocument()
+  })
+  it('offers idempotent stop retry after lost response without enabling resend', async () => {
+    setup(STATUS, 'stop_requested', true)
+    fireEvent.click(await screen.findByRole('button', { name: 'Cancel before dispatch' }))
+    await screen.findByText(/stop request was not confirmed/)
+    expect(screen.getByRole('button', { name: 'Cancel before dispatch' })).toBeEnabled()
+  })
+  it('never labels simulated acceptance as delivery or offers cancellation', async () => {
+    setup({ ...STATUS, state: 'accepted', cancellable: false, attempts: 1 })
+    await screen.findByRole('heading', { name: 'Send intent: accepted' })
+    expect(screen.getByText(/Acceptance does not establish delivery/)).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: /Cancel|Request stop/ })).not.toBeInTheDocument()
+  })
+  it('does not present a foreign mailbox status as this intent', async () => {
+    setup({ ...STATUS, mailbox_id: STATUS.send_id })
+    await screen.findByText(/This send status is unavailable/)
+    expect(screen.queryByText(/durably queued/)).not.toBeInTheDocument()
+  })
+})

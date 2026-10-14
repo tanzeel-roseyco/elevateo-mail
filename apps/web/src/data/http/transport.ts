@@ -8,11 +8,11 @@
 // request budgets (1 MiB draft, 64 KiB note) and the wider CollaborationError envelope.
 import type { z } from 'zod'
 import { GatewayError } from '../errors'
-import type { CollaborationErrorCode } from '../errors'
+import type { GatewayApiErrorCode } from '../errors'
 import { ErrorSchema, MAX_BYTES, MAX_REQUEST_BYTES } from '../contract'
 
 /** Error envelope accepted for a route: the closed A/B Error or the C/D CollaborationError. */
-export type ErrorEnvelopeSchema = z.ZodType<{ code: CollaborationErrorCode; message: string; request_id: string }>
+export type ErrorEnvelopeSchema = z.ZodType<{ code: GatewayApiErrorCode; message: string; request_id: string }>
 
 export const REQUEST_TIMEOUT_MS = 10_000
 

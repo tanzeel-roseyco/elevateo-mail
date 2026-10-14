@@ -1,3 +1,4 @@
+import { SendReviewSchema, SendApprovalInputSchema, ApprovalResultSchema, SendStatusSchema, SendCancellationInputSchema, CancellationResultSchema, SendErrorSchema } from '../sendContract'
 // HTTP adapter for the MailroomGateway port. Routes, headers and byte budgets follow
 // contracts/v1/openapi.json 1.0.0-collaboration.1; every response and error is validated by the
 // transport before the UI sees it. Fixture code is never imported from this module graph.
@@ -164,6 +165,21 @@ export function createHttpGateway(fetchImpl?: FetchLike): MailroomGateway {
         CD_MAX_BYTES.operation,
         cd(ctx, { signal }),
       )
+    },
+
+    getSendReview(ctx, draftId, mailboxId, signal) {
+      return requestJson(`/v1/drafts/${seg(draftId)}/send-review${query({ mailbox_id: mailboxId })}`, SendReviewSchema, 2_097_152, cd(ctx, { errorSchema: SendErrorSchema, signal }))
+    },
+    async approveDraftSend(ctx, proof, draftId, input, signal) {
+      const body = validated(SendApprovalInputSchema, input)
+      return requestJson(`/v1/drafts/${seg(draftId)}/send-approvals`, ApprovalResultSchema, 16_384, cd(ctx, { errorSchema: SendErrorSchema, headers: proofHeaders(proof), body, method: 'POST', maxRequestBytes: 4096, signal }))
+    },
+    getSendStatus(ctx, sendId, mailboxId, signal) {
+      return requestJson(`/v1/send-intents/${seg(sendId)}${query({ mailbox_id: mailboxId })}`, SendStatusSchema, 16_384, cd(ctx, { errorSchema: SendErrorSchema, signal }))
+    },
+    async cancelSend(ctx, proof, sendId, input, signal) {
+      const body = validated(SendCancellationInputSchema, input)
+      return requestJson(`/v1/send-intents/${seg(sendId)}/cancellation`, CancellationResultSchema, 16_384, cd(ctx, { errorSchema: SendErrorSchema, headers: proofHeaders(proof), body, method: 'POST', maxRequestBytes: 4096, signal }))
     },
 
     // --- BE-02 D: read state, assignment, notes, membership, search ------------------------

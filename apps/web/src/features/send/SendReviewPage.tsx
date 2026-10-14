@@ -1,0 +1,111 @@
+import { useCallback, useEffect, useId, useRef, useState } from 'react'
+import { Link, useNavigate, useParams } from 'react-router'
+import { draftIntentKey } from '@/app/draftIntent'
+import { useMailbox } from '@/app/mailboxes'
+import { useProtectedRequest } from '@/app/protectedRequest'
+import { useSendIntent, type SendAttempt } from '@/app/sendIntent'
+import { useGateway, useSession } from '@/app/session'
+import { GatewayError, isUncertainWriteOutcome } from '@/data/errors'
+import type { SendReview } from '@/data/sendContract'
+import { canonicalId, newId } from '@/lib/ids'
+import { Badge } from '@/ui/Badge'
+import { Button } from '@/ui/Button'
+import { EmptyState, Skeleton } from '@/ui/Async'
+
+type State = { kind: 'loading' } | { kind: 'error'; message: string } | { kind: 'ready'; review: SendReview }
+export function SendReviewPage() {
+  const { mailboxId, draftId } = useParams()
+  if (!mailboxId || !draftId || !canonicalId(mailboxId) || !canonicalId(draftId)) return <EmptyState title="Invalid review link" body="Open a saved draft to review it." />
+  return <Review key={`${mailboxId}\n${draftId}`} mailboxId={mailboxId} draftId={draftId} />
+}
+function Review({ mailboxId, draftId }: { mailboxId: string; draftId: string }) {
+  const gateway = useGateway()
+  const navigate = useNavigate()
+  const { state: session } = useSession()
+  const { proof, request } = useProtectedRequest()
+  const mailbox = useMailbox(mailboxId)
+  const store = useSendIntent()
+  const [state, setState] = useState<State>({ kind: 'loading' })
+  const [confirmed, setConfirmed] = useState(false)
+  const [attempt, setAttempt] = useState<SendAttempt | null>(null)
+  const [busy, setBusy] = useState(false)
+  const [message, setMessage] = useState<string | null>(null)
+  const pending = useRef(false)
+  const heading = useRef<HTMLHeadingElement>(null)
+  const checkbox = useId()
+  const owner = session.status === 'ready' ? draftIntentKey({ actorId: session.session.actor.id, organizationId: session.session.organization.id, mailboxId, draftId }) : null
+  const load = useCallback(async () => {
+    setState({ kind: 'loading' }); setConfirmed(false); setMessage(null); setBusy(false)
+    pending.current = false
+    const outcome = await request((ctx, signal) => gateway.getSendReview(ctx, draftId, mailboxId, signal))
+    if (outcome.kind === 'stale') return
+    if (outcome.kind === 'failed') { setState({ kind: 'error', message: 'This review is unavailable. Your draft text has not changed.' }); return }
+    const review = outcome.value
+    if (review.draft_id !== draftId || review.mailbox_id !== mailboxId) { setState({ kind: 'error', message: 'The review did not match this draft. Nothing was approved.' }); return }
+    const retained = owner === null ? null : store.read(owner)
+    const restored = retained?.phase === 'pending' ? { ...retained, phase: 'uncertain' as const } : retained
+    if (restored && owner !== null) store.update(owner, () => restored)
+    setAttempt(restored)
+    setState({ kind: 'ready', review })
+    if (restored?.phase === 'approved' && restored.sendId) navigate(`/mailboxes/${mailboxId}/send-intents/${restored.sendId}`, { replace: true })
+  }, [request, gateway, draftId, mailboxId, owner, store, navigate])
+  useEffect(() => { void load() }, [load])
+  useEffect(() => { if (state.kind === 'ready') heading.current?.focus() }, [state.kind])
+
+  const approve = async () => {
+    if (state.kind !== 'ready' || !proof || !owner || pending.current || mailbox?.capabilities.approve_send === false) return
+    const review = state.review
+    const original = attempt?.phase === 'uncertain' ? attempt : null
+    if (!original && (!confirmed || !review.ready || review.review_digest === null)) return
+    // AIDEV-NOTE: Retry freezes the ORIGINAL operation/version/digest; newer reviews cannot rebind it.
+    const binding: SendAttempt = original ?? { input: { mailbox_id: mailboxId, operation_id: newId(), expected_version: review.draft_version, review_digest: review.review_digest ?? '', correspondence_confirmed: true }, phase: 'pending', sendId: null }
+    pending.current = true; setBusy(true); setMessage(null)
+    store.write(owner, { ...binding, phase: 'pending' }); setAttempt({ ...binding, phase: 'pending' })
+    const outcome = await request((ctx, signal) => gateway.approveDraftSend(ctx, proof, draftId, binding.input, signal))
+    if (outcome.kind === 'stale') { store.update(owner, (current) => ({ ...current, phase: 'uncertain' })); return }
+    pending.current = false; setBusy(false)
+    if (outcome.kind === 'failed') {
+      if ((outcome.error instanceof GatewayError && outcome.error.kind === 'transport') || isUncertainWriteOutcome(outcome.error)) {
+        const unresolved = { ...binding, phase: 'uncertain' as const }
+        store.update(owner, () => unresolved); setAttempt(unresolved)
+        setMessage('Approval may have been stored. Retry only this same approval; do not create a replacement draft to resend.')
+      } else {
+        store.clear(owner); setAttempt(null); setConfirmed(false)
+        const stale = outcome.error instanceof GatewayError && ['review_stale', 'draft_conflict', 'draft_consumed'].includes(outcome.error.code)
+        setMessage(stale ? 'The saved draft or review changed. Your draft text is retained. Load a fresh review before approving.' : 'Approval was refused. Nothing on this screen proves an intent was queued.')
+        setState({ kind: 'error', message: stale ? 'A fresh review is required.' : 'Approval is unavailable.' })
+      }
+      return
+    }
+    const receipt = outcome.value
+    if (receipt.draft_id !== draftId || receipt.approved_version !== binding.input.expected_version || receipt.review_digest !== binding.input.review_digest) {
+      const unresolved = { ...binding, phase: 'uncertain' as const }
+      store.update(owner, () => unresolved); setAttempt(unresolved)
+      setMessage('The approval receipt did not match this attempt. The outcome remains uncertain; retry the original approval.')
+      return
+    }
+    store.update(owner, () => ({ ...binding, phase: 'approved', sendId: receipt.send_id }))
+    navigate(`/mailboxes/${mailboxId}/send-intents/${receipt.send_id}`)
+  }
+  const back = `/mailboxes/${mailboxId}/drafts/${draftId}`
+  if (state.kind === 'loading') return <div role="status" aria-label="Loading send review"><Skeleton rows={5} /></div>
+  if (state.kind === 'error') return <main className="mx-auto max-w-3xl p-3"><p role="alert">{message ?? state.message}</p><Button onClick={() => void load()}>Load fresh review</Button><Link to={back}>Back to draft</Link></main>
+  const review = state.review
+  const retry = attempt?.phase === 'uncertain'
+  return <article className="mx-auto max-w-3xl p-3" aria-busy={busy}>
+    <Link to={back}>Back to draft</Link> <Badge tone="warn">Simulated — no live mail</Badge>
+    <h1 ref={heading} tabIndex={-1} className="my-3 text-base font-semibold">Review saved draft version {review.draft_version}</h1>
+    <p>You are approving your own saved draft for individual correspondence.</p>
+    <dl className="my-3 space-y-2"><dt>From</dt><dd className="whitespace-pre-wrap">{review.sender.address ?? '(sender not configured)'}</dd>
+      <dt>To — all {review.to.length} recipients</dt><dd>{review.to.length === 0 ? '(no recipients)' : <ol>{review.to.map((recipient, index) => <li key={index} className="whitespace-pre-wrap">{recipient.display_name === null ? '' : `${recipient.display_name} `}{recipient.address ?? '(address missing)'}</li>)}</ol>}</dd>
+      <dt>Subject</dt><dd className="whitespace-pre-wrap">{review.subject === '' ? '(no subject)' : review.subject}</dd>
+      <dt>Message</dt><dd className="whitespace-pre-wrap break-words">{review.body_text === '' ? '(empty message)' : review.body_text}</dd>
+      <dt>Purpose</dt><dd>Individual correspondence</dd><dt>Attachments</dt><dd>None. Attachments are unsupported.</dd>
+    </dl>
+    {review.reply_to_thread_id !== null && <Link to={`/mailboxes/${mailboxId}/threads/${review.reply_to_thread_id}`}>Reply context</Link>}
+    {!review.ready && <div role="alert"><p>This draft is not ready for approval.</p><ul>{review.issues.map((issue, index) => <li key={index}>{issue.code.replaceAll('_', ' ')}{issue.recipient_index === null ? '' : ` — recipient ${issue.recipient_index + 1}`}</li>)}</ul></div>}
+    {message && <p role="alert">{message}</p>}
+    {retry ? <p role="note">Keep this tab open. Retry details are kept only in memory and are lost on reload. The earlier approval may already be stored.</p> : <div className="my-3"><input id={checkbox} type="checkbox" checked={confirmed} onChange={(event) => setConfirmed(event.target.checked)} disabled={busy || !review.ready} /><label htmlFor={checkbox}>I confirm this is individual correspondence and approve the full content and recipients shown above.</label></div>}
+    <Button variant="primary" disabled={busy || !proof || mailbox?.capabilities.approve_send === false || (!retry && (!confirmed || !review.ready || review.review_digest === null))} onClick={() => void approve()}>{busy ? 'Approving…' : retry ? 'Retry original approval' : 'Approve simulated send'}</Button>
+  </article>
+}
