@@ -46,12 +46,26 @@ class OrganizationAccessDatabaseTest < MailboxMembershipDatabaseCase
     assert_equal "sales_manager", @admin.exec_params("SELECT role FROM app.organization_access WHERE user_id=$1", [other.user_id]).getvalue(0, 0)
   end
 
-  def test_admin_cannot_promote_self_or_change_owner
-    admin = add_actor
+  def test_subordinate_cannot_promote_self_or_change_owner
+    subordinate = add_actor
+    grant(@identity, "owner")
+    grant(subordinate, "associate")
+    assert_equal "not_found", change(subordinate, subordinate, 0, "admin").fetch("status")
+    assert_equal "not_found", change(subordinate, @identity, 0, "associate").fetch("status")
+    assert_equal "associate", @admin.exec_params("SELECT role FROM app.organization_access WHERE user_id=$1", [subordinate.user_id]).getvalue(0, 0)
+    assert_equal "owner", @admin.exec_params("SELECT role FROM app.organization_access WHERE user_id=$1", [@user]).getvalue(0, 0)
+  end
+
+  def test_admin_cannot_change_peer_or_owner
+    admin, peer = add_actor, add_actor
     grant(@identity, "owner")
     grant(admin, "admin")
-    assert_equal "not_found", change(admin, admin, 0, "admin").fetch("status")
+    grant(peer, "admin")
+    assert_equal "not_found", change(admin, peer, 0, "associate").fetch("status")
     assert_equal "not_found", change(admin, @identity, 0, "associate").fetch("status")
+    assert_equal %w[admin admin owner], [admin.user_id, peer.user_id, @user].map { |id|
+      @admin.exec_params("SELECT role FROM app.organization_access WHERE user_id=$1", [id]).getvalue(0, 0)
+    }
   end
 
   def test_two_simultaneous_owner_removals_both_reject
@@ -82,6 +96,16 @@ class OrganizationAccessDatabaseTest < MailboxMembershipDatabaseCase
     assert_raises(PG::CheckViolation) do
       @admin.exec_params("DELETE FROM app.organization_access WHERE organization_id=$1 AND user_id=$2", [@org, @user])
     end
+    assert_raises(PG::CheckViolation) do
+      @admin.exec_params("UPDATE app.organization_access SET role='admin' WHERE organization_id=$1 AND user_id=$2", [@org, @user])
+    end
     assert_equal "owner", @admin.exec_params("SELECT role FROM app.organization_access WHERE user_id=$1", [@user]).getvalue(0, 0)
+  end
+
+  def test_second_owner_in_same_organization_is_rejected
+    other = add_actor
+    grant(@identity, "owner")
+    assert_raises(PG::UniqueViolation) { grant(other, "owner") }
+    assert_equal "1", @admin.exec_params("SELECT count(*) FROM app.organization_access WHERE organization_id=$1 AND role='owner'", [@org]).getvalue(0, 0)
   end
 end
