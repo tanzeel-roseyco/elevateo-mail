@@ -1,0 +1,17 @@
+module Elevateo
+  module SendWorker
+    class Executor
+      @store: untyped
+      @driver: untyped
+      @control: Control
+      @budget_seconds: Integer
+      @deadline_factory: ^() -> CallDeadline
+      def initialize: (store: untyped, driver: untyped, control: Control, ?budget_seconds: Integer, ?deadline_factory: ^() -> CallDeadline) -> void
+      def run_once: () -> Symbol
+      private
+      def reconcile: (untyped) -> Symbol
+      def validate_claim!: (untyped) -> void
+      def validate_authorization!: (untyped, untyped) -> void
+    end
+  end
+end
