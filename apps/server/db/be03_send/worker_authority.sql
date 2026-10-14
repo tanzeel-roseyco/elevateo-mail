@@ -75,17 +75,24 @@ REVOKE ALL ON FUNCTION app_send_private.current_capability(app_send_private.inte
   FROM PUBLIC,elevateo_api,elevateo_worker,elevateo_app_read;
 -- Discovery reveals only a due UUID in the currently readable control epoch.
 -- It takes no row lock; claim_job is the serialized authority decision.
-CREATE FUNCTION app_send_private.next_due_send(p_epoch uuid) RETURNS uuid
-LANGUAGE sql VOLATILE SECURITY DEFINER SET search_path = pg_catalog AS $$
-  SELECT j.send_id FROM app_send_private.jobs j
+CREATE FUNCTION app_send_private.next_due_send(p_epoch uuid,p_excluded uuid[]) RETURNS uuid
+LANGUAGE plpgsql VOLATILE SECURITY DEFINER SET search_path = pg_catalog AS $$
+DECLARE result uuid;
+BEGIN
+  IF p_excluded IS NULL OR cardinality(p_excluded) > 32 OR array_position(p_excluded,NULL) IS NOT NULL THEN
+    RAISE EXCEPTION 'invalid due lookup exclusions' USING ERRCODE='22023';
+  END IF;
+  IF p_epoch IS NULL THEN RETURN NULL; END IF;
+  SELECT j.send_id INTO result FROM app_send_private.jobs j
     JOIN app_send_private.intents i ON i.send_id=j.send_id
-    WHERE p_epoch IS NOT NULL AND i.approval_epoch=p_epoch AND i.simulated
+    WHERE i.approval_epoch=p_epoch AND i.simulated AND j.send_id <> ALL(p_excluded)
       AND j.next_check_at <= clock_timestamp() AND j.next_action IN ('submit','reconcile')
       AND j.state NOT IN ('accepted','rejected','cancelled','needs_review')
       AND (j.cancel_requested_at IS NULL OR j.next_action='reconcile')
       AND (j.lease_id IS NULL OR j.lease_expires_at <= clock_timestamp())
-    ORDER BY j.next_check_at,j.send_id LIMIT 1
-$$;
+    ORDER BY j.next_check_at,j.send_id LIMIT 1;
+  RETURN result;
+END $$;
 CREATE FUNCTION app_send_private.claim_job(p_send uuid,p_lease uuid,p_epoch uuid,p_seconds integer)
 RETURNS jsonb LANGUAGE plpgsql VOLATILE SECURITY DEFINER SET search_path = pg_catalog AS $$
 DECLARE j app_send_private.jobs; i app_send_private.intents; n timestamptz := clock_timestamp();
@@ -319,7 +326,7 @@ BEGIN
     'unknown',NULL,sha256(convert_to('local:no-evidence:'||check_id::text,'UTF8')));
 END $$;
 
-REVOKE ALL ON FUNCTION app_send_private.next_due_send(uuid),
+REVOKE ALL ON FUNCTION app_send_private.next_due_send(uuid,uuid[]),
   app_send_private.claim_job(uuid,uuid,uuid,integer),
   app_send_private.authorize_attempt(uuid,uuid,bigint,uuid,uuid,bytea,text,integer),
   app_send_private.cancel_job(uuid,uuid,uuid),
@@ -329,7 +336,7 @@ REVOKE ALL ON FUNCTION app_send_private.next_due_send(uuid),
   app_send_private.record_observation(uuid,uuid,bigint,uuid,uuid,text,text,bytea) FROM PUBLIC,elevateo_api,elevateo_worker,elevateo_app_read;
 REVOKE ALL ON app_send_private.reconciliation_checks FROM PUBLIC,elevateo_api,elevateo_worker,elevateo_app_read;
 GRANT USAGE ON SCHEMA app_send_private TO elevateo_worker;
-GRANT EXECUTE ON FUNCTION app_send_private.next_due_send(uuid),
+GRANT EXECUTE ON FUNCTION app_send_private.next_due_send(uuid,uuid[]),
   app_send_private.claim_job(uuid,uuid,uuid,integer),
   app_send_private.authorize_attempt(uuid,uuid,bigint,uuid,uuid,bytea,text,integer),
   app_send_private.worker_binding(uuid,uuid,bigint,uuid),

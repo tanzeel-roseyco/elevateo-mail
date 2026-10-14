@@ -19,3 +19,7 @@ Additional requested fleet Docker checks: `bin/rails test test/sends/worker_auth
 ## Due discovery seam
 
 At root direction the worker-only `next_due_send(uuid)` function now returns one due simulated send ID for the readable control epoch, excluding terminal states, canceled submit work and unexpired active leases. It takes no job lock and discloses no content; `claim_job` remains the serialization point. A stop-requested reconcile remains discoverable, while a stop-requested submit is omitted. The database fixture checks epoch mismatch and active-lease filtering. Nadia's duplicate worker bridge has been removed from her current candidate; cancellation remains her owned facade. Docker runtime remains pending Soren.
+
+## Bounded excluded-ID discovery repair
+
+Elara's drain now passes the IDs seen during its bounded invocation so one leased/held item cannot starve other due work. The worker-only signature is `app_send_private.next_due_send(uuid,uuid[]) RETURNS uuid`; the SQL validates a non-null array of at most 32 IDs, skips each excluded ID, and still takes no job row lock. The caller passes an empty UUID array for its first lookup. The database fixture checks epoch mismatch, exclusion, active lease and an oversized list. This source remains pending Soren's fleet execution and independent bounded review; the production worker remains local simulated only.

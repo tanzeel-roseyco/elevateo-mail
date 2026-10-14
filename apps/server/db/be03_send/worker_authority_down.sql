@@ -11,7 +11,7 @@ DROP FUNCTION app_send_private.record_observation(uuid,uuid,bigint,uuid,uuid,tex
   app_send_private.cancel_job(uuid,uuid,uuid),
   app_send_private.authorize_attempt(uuid,uuid,bigint,uuid,uuid,bytea,text,integer),
   app_send_private.claim_job(uuid,uuid,uuid,integer),
-  app_send_private.next_due_send(uuid);
+  app_send_private.next_due_send(uuid,uuid[]);
 DROP TRIGGER suppression_policy_revision ON app_send_private.recipient_suppressions;
 DROP TRIGGER mailbox_policy_revision ON app_send_private.mailbox_policy;
 DROP FUNCTION app_send_private.bump_send_policy(),app_send_private.current_capability(app_send_private.intents);
