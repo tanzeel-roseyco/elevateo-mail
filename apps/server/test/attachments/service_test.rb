@@ -108,7 +108,7 @@ class AttachmentServiceTest < Minitest::Test
     assert_equal id, @service.assert_downloadable(**scope, id: id).fetch("id")
     @allowed = false
     assert_raises(Elevateo::Attachments::NotAvailable) { @service.assert_downloadable(**scope, id: id) }
-    assert_equal [:write, :write, :read, :read, :read], @checks.map { |item| item.fetch(:capability) }
+    assert_equal [:write, :write, :read, :read, :read], (@checks.map { |item| item.fetch(:capability) })
   end
 
   def test_list_exposes_only_safe_fields_and_fresh_authorization

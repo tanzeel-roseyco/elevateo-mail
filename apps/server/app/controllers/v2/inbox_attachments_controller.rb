@@ -32,7 +32,7 @@ module V2
     end
 
     class NoStorage
-      def put(_key, _bytes, content_type:)
+      def put(_key, _bytes, **_options)
         raise Elevateo::Attachments::Invalid
       end
 
