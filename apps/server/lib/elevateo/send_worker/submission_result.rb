@@ -15,7 +15,7 @@ module Elevateo
       def initialize(kind:, receipt_ref: nil, code: nil)
         valid = case kind
                 when "accepted"
-                  receipt_ref.is_a?(String) && /\Alocal:[0-9a-f]{64}\z/.match?(receipt_ref) && code.nil?
+                  receipt_ref.is_a?(String) && /\A(?:local:|mailpit-test-v1:)[0-9a-f]{64}\z/.match?(receipt_ref) && code.nil?
                 when "rejected" then receipt_ref.nil? && REJECTION_CODES.include?(code)
                 when "unknown" then receipt_ref.nil? && UNKNOWN_CODES.include?(code)
                 else false

@@ -8,6 +8,7 @@ class SendWorkerSmtpProfileTest < Minitest::Test
     profile = Elevateo::SendWorker::SmtpProfile.local_mailpit(verified_sender: "sender@example.invalid")
     assert profile.local_test?
     refute profile.held?
+    assert_equal "mailpit-smtp-test-v1", profile.mode
     assert_equal "mailpit", profile.host
     assert_nil profile.credential_ref
   end

@@ -10,7 +10,7 @@ module Elevateo
       attr_reader :mode, :host, :port, :verified_sender, :tls_mode, :credential_ref
 
       def self.local_mailpit(verified_sender:)
-        new(mode: "local_mailpit", host: "mailpit", port: 1025, verified_sender: verified_sender,
+        new(mode: "mailpit-smtp-test-v1", host: "mailpit", port: 1025, verified_sender: verified_sender,
           tls_mode: "none", credential_ref: nil)
       end
 
@@ -24,7 +24,7 @@ module Elevateo
         unless verified_sender.is_a?(String) && verified_sender == SendAPI::Address.canonical(verified_sender)
           raise ArgumentError, "invalid verified sender"
         end
-        valid = if mode == "local_mailpit"
+        valid = if mode == "mailpit-smtp-test-v1"
           host == "mailpit" && port == 1025 && tls_mode == "none" && credential_ref.nil? &&
             verified_sender.end_with?(".invalid")
         else
@@ -41,7 +41,7 @@ module Elevateo
         freeze
       end
 
-      def local_test? = @mode == "local_mailpit"
+      def local_test? = @mode == "mailpit-smtp-test-v1"
       def held? = !local_test?
     end
   end

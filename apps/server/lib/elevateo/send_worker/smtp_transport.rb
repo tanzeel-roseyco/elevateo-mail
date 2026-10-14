@@ -55,7 +55,7 @@ module Elevateo
         end
         deadline.check!
         return SubmissionResult.new(kind: "unknown", code: "smtp_uncertain") unless response&.status&.start_with?("2")
-        receipt = "local:#{Digest::SHA256.hexdigest([rendered.mime, response.status].join(':'))}"
+        receipt = "mailpit-test-v1:#{Digest::SHA256.hexdigest([rendered.mime, response.status].join(':'))}"
         SubmissionResult.new(kind: "accepted", receipt_ref: receipt)
       rescue StandardError
         # A lost DATA acceptance cannot be classified from an exception or retried safely.

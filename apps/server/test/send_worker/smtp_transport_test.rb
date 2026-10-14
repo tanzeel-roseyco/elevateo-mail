@@ -45,7 +45,7 @@ class SendWorkerSmtpTransportTest < Minitest::Test
     transport = Elevateo::SendWorker::SmtpTransport.new(profile: profile, client: client)
     result = transport.submit(snapshot, send_id: SEND, attempt_id: ATTEMPT, deadline: deadline)
     assert_equal "accepted", result.kind
-    assert_match(/\Alocal:[0-9a-f]{64}\z/, result.receipt_ref)
+    assert_match(/\Amailpit-test-v1:[0-9a-f]{64}\z/, result.receipt_ref)
     assert result.simulated?
     assert_equal SENDER, smtp.messages.first[1]
     assert_equal ["recipient@example.invalid"], smtp.messages.first[2]
