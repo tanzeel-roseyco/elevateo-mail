@@ -1,0 +1,10 @@
+{
+  "source": "7934218d46fd9f3c719b659300aed479e644df4e",
+  "at": "2026-10-14T11:27:43.337254+00:00",
+  "exit": 0,
+  "container": "be03-r25-rowan-lint-7934218",
+  "independent_absence": true,
+  "scope": "canonical --lint plus syntax1; DB NOT_RUN",
+  "log_sha256": "c9e8a0e6ca81925bd11416fb5b9cc4527cd07c6b8ebc88a225b0f42b956fbe81",
+  "initial_all_cops_exit": 1
+}
