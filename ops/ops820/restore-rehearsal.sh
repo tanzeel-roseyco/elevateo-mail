@@ -10,7 +10,7 @@ if [[ "$mode" == full ]]; then
   # AIDEV-NOTE: no partial full gate when owner migrations and identity fixtures are absent.
   source_root=$(cd -- "$packet/../.." && pwd)
   for suffix in 08 09 10 11; do
-    compgen -G "$source_root/apps/server/db/migrate/*0000$suffix*.rb" >/dev/null || {
+    compgen -G "$source_root/apps/server/db/migrate/202610130000$suffix*.rb" >/dev/null || {
       echo "full gate blocked: migration $suffix absent" >&2; exit 66;
     }
   done
