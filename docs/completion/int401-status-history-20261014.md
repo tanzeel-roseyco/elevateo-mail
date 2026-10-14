@@ -673,3 +673,13 @@ R9 c8 backend390/5792 and frontend624/all eight gates PASS retain original prove
 F2 durable recovery remains OPEN: accepted reload loses newer memory-only buffer/operation while the committed server version survives. No durable local recovery, warning or ledger proof is inferred.
 
 See [provenance](docs/completion/int401-current-freeze-provenance.json), [R12 handoff](docs/completion/int401-r12-setup-handoff.md), [history](docs/completion/int401-status-history-20261014.md) and [milestones](docs/completion/int401-remaining-milestones.md). Root owns acceptance and the actual vault; Cassian mirrors it; Soren alone schedules fleet Docker. Authority `task_1b0410b27785 / ctx_746eda601ef7`.
+
+## Superseded R17 status before R18 invitation integration
+
+Application IN PROGRESS: R17 selectively integrates accepted Mira conflict-navigation and Elara native-diagnostic harness repairs over immutable 5c5cc397. Only three test source paths change; production, contracts, observer boundary and Docker recipes remain identical. New candidate runtime NOT_RUN; observer OFF, BE02 unaccepted, BE03 closed.
+
+Sealed R14 on 5c5: Python25/25 PASS; frontend lint/typecheck and 31files/629tests PASS; diagnostics12 =8PASS/4FAIL/0skip, compile PASS; GUI NOT_RUN, zero screenshots. Both wrapper-failure attempts remain preserved. Jules independently audited174 referenced artifacts,3790 source entries and307 backend-reuse dependencies with zero mismatch; all six cleanup/independent-absence checks PASS. R15 Node24.21 plain/node--test probes establish controlled stack-hook suppression feasibility only (hostile counters all zero); authored repairs remain unexecuted. Delayed-logout cancellation and the original R12 1093ms failure cause remain unknown.
+
+R12 retains12cases/9PASS/3FAIL and21 sanitized PNG; R13 backend13runs/346assertions/0fail/error/skip did not rerun full backend suites. R9 c8 backend390/5792 and frontend624/all eight gates PASS retain original provenance. F2 durable recovery remains OPEN: accepted reload loses newer memory-only buffer/operation; committed server version survives.
+
+See [R17 handoff](docs/completion/int401-r17-handoff.md), [history](docs/completion/int401-status-history-20261014.md) and [milestones](docs/completion/int401-remaining-milestones.md). Root owns acceptance and vault writes; Cassian integrates/mirrors; Soren alone schedules Docker. Authority task_e3a9f4f3a9f2 / ctx_8112d6909aa2.

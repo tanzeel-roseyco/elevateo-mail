@@ -550,3 +550,9 @@ ADV829 functional runner review accepted zero defects/191 primary LOC, 0/KLOC. A
 ADV840 Tessa functional / ADV841 Vale design each accepted Mira145 unique source LOC, zero defects (0/KLOC). Historical finding: one MED/240 unique source/context LOC (4.17/KLOC), overlap nonadditive. Fresh about:blank navigation forces a new GET while preserving conflict/version/winner assertions.
 
 ADV842 Tessa functional / ADV843 Vale design each accepted Elara330 unique LOC (137 implementation +193 regression), zero defects (0/KLOC). Historical coordinate finding: one MED/281 LOC (3.56/KLOC). Exact descriptor suppression/restoration avoids unsafe formatter/getter/coercion invocation. Author pending-review labels are historical and superseded by root acceptance; authored records are preserved. Coverage overlaps are nonadditive. Source accepted; runtime NOT_RUN, no whole-app acceptance.
+
+## INT401 R18 invitation integration (source acceptance only)
+
+Mira ADV846 MED missing baseURL was repaired; ADV848 functional/ADV849 design accepted zero new defects over 101 unique LOC each. Nadia ADV850 recorded one LOW/354 unique LOC; ADV851/852/853/854 recorded zero new defects over 380/348/376/362 LOC. ADV855 functional/ADV856 design accepted the deadline repair with zero new defects/270 unique LOC each (0/KLOC). Overlaps are nonadditive; the historical LOW is one issue. Equality, late chunks, parsing and final validation reject late results; this is not a hard 25-second interruption and the 90-second outer watchdog remains unchanged.
+
+Integration preserves exact accepted source blobs and protected trees; no new logic or runtime execution. Author receipt pending-review labels are superseded by these root acceptances, not rewritten. Invitation unit/typing/lint/Python/browser/manual visual checks remain NOT_RUN. BE02 remains unaccepted.

@@ -1,0 +1,67 @@
+type invitation_json = nil | bool | Integer | Float | String | Array[invitation_json] | Hash[String, invitation_json]
+
+module Be02Acceptance
+  class Failure < StandardError
+  end
+  ACTORS: Array[String]
+  UUID: Regexp
+  def self.check: (bool, String) -> void
+
+  class InvitationOutput
+    NAME: String
+    TEMP: String
+    @directory: String
+    def initialize: (?String) -> void
+    def read: (String) -> Hash[String, invitation_json]
+    def reset: () -> void
+    def publish: (Hash[Symbol, invitation_json]) -> void
+    private
+    def validate: (File::Stat) -> void
+  end
+
+  class Invitation
+    ORIGIN: String
+    REDIRECT: String
+    @output: InvitationOutput
+    @seed: Hash[String, invitation_json]
+    @organization: String
+    @mailbox: String
+    @actors: Array[String]
+    @actor: String
+    @email: String
+    @password: String
+    @delivery_deadline: Float?
+    def initialize: (?String) -> void
+    def object: (invitation_json) -> Hash[String, invitation_json]
+    def text: (invitation_json) -> String
+    def array: (invitation_json) -> Array[invitation_json]
+    def check_delivery_deadline: () -> void
+    def request: (String, Integer, String, String, ?payload: Hash[Symbol, invitation_json]?, ?authorization: String?) -> Hash[String, invitation_json]
+    def issue: () -> void
+    def self.validate_link: (invitation_json) -> String
+    def delivered_link: () -> String
+    def database: () -> PG::Connection
+    def retire_previous: (PG::Connection) -> void
+    def run: () -> void
+  end
+end
+
+module PG
+  class Connection
+    def exec: (String) -> Result
+    def exec_params: (String, Array[String]) -> Result
+    def transaction: [A] () { () -> A } -> A
+    def set_notice_processor: () { (String) -> nil } -> void
+    def close: () -> void
+  end
+  class Result
+    def getvalue: (Integer, Integer) -> String
+    def column_values: (Integer) -> Array[String]
+    def ntuples: () -> Integer
+  end
+  def self.connect: (host: String, port: Integer, dbname: String, user: String, password: String, connect_timeout: Integer, options: String) -> Connection
+end
+
+class CGI
+  def self.unescapeHTML: (String) -> String
+end

@@ -4,11 +4,11 @@ This checklist consolidates existing plans; it adds no implementation scope. Cur
 
 ## Local application acceptance
 
-- [ ] Preserve original R9 c8 backend390/5792 and frontend624/all eight gates PASS. R10 authenticated HTTP/worker PASS and seed FAIL remain recorded; R11 proves the fresh-Auth ordering defect. Validate the new reviewed runner restoration and affected proof jobs under Soren's sole disposable lease.
-- [ ] Preserve sealed original R12 3bf receipt: nine PASS/three FAIL across 12 cases; cleanup/independent absence PASS. Mira reviewed 16 screenshots; search is loading-only and one LOW glyph issue remains. Execute newly imported proof sources only after root review/GO; none inherits runtime PASS. F2 memory-only loss remains OPEN.
-- [ ] Complete BE02 race/failure identities, tenant/session invalidation, version conflict/lost ACK, required identity/race/draft/collaboration/search evidence under the [BE02 gate disposition](be02-gate-disposition.md) and [test expansion plan](test-expansion-plan.md). Keep unavailable identities explicit; observer stays OFF in the current GUI candidate.
-- [ ] Demonstrate F2 behavior under accepted decisions 85-91: server durability and in-page retention are required; unsaved reload persistence is not required. Record the memory-only limitation explicitly.
-- [ ] Root accepts BE02 before opening [BE03](be03-implementation-brief.md): reviewed human approval, immutable send intent, bounded worker/lease/cancellation behavior and deterministic simulated failures. BE03 remains closed; simulation is not real delivery.
+- [ ] Resolve actual logout failure (cause UNKNOWN); retain the accepted conflict/revocation chains and historical failures.
+- [ ] Receive scheduled R19 core-four and changed empty/revoked visual results; interim login/read chains are not final acceptance.
+- [ ] Execute the reviewed genuine invitation producer/browser and manual keyboard/visual QA for new password, confirmation, completion and denial.
+- [ ] Run appropriate affected final-candidate Docker checks under Soren; preserve existing R12 loading/error/focus evidence and 21 PNGs, without repeating unchanged gates by default.
+- [ ] Root accepts BE02 before BE03 opens. F2 memory-only reload limitation remains explicit and OPEN.
 
 ## Later completion and production prerequisites
 
@@ -24,7 +24,7 @@ Use [current STANDARDS](../../.planning/STANDARDS.md) for engineering policy; [d
 
 ## Required bounded proof jobs
 
-- Nadia ADV815: real expired-link probe with engine-attested disposable Auth, dedicated strict typing and 240-second outer timeout; new wiring review/runtime pending.
+- Nadia ADV815: accepted actual six runs/107 assertions/zero failures on unchanged backend inputs; retain attested disposable Auth and original receipt provenance.
 - Nadia ADV806: real Mailpit recovery/link negatives.
 - Rowan ADV807: distinct-process refresh/logout crash/restart.
 - Elara ADV808: effective Auth settings and missing-policy negatives.

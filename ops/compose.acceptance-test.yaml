@@ -56,6 +56,10 @@ services:
       - ${BE02_ACCEPTANCE_PRIVATE:?}:/acceptance
     command: [bundle, exec, ruby, /workspace/ops/tests/be02/acceptance_seed.rb]
     logging: {driver: none}
+  acceptance-invitation:
+    extends: {service: acceptance-seed}
+    # AIDEV-NOTE: Runner creates this only after seed exit zero and before the next browser consumes its private link.
+    command: [bundle, exec, ruby, /workspace/ops/tests/be02/acceptance_invitation.rb]
   acceptance-observer-setup:
     extends: {file: compose.be02-test.yaml, service: fixture}
     user: "${BE02_ACCEPTANCE_UID:?}:${BE02_ACCEPTANCE_GID:?}"
@@ -142,6 +146,7 @@ services:
     volumes:
       - ${BE02_ACCEPTANCE_PRIVATE:?}/seed.json:/acceptance/seed.json:ro
       - ${BE02_ACCEPTANCE_PRIVATE:?}/acceptance-credentials.json:/run/secrets/acceptance-credentials.json:ro
+      - ${BE02_ACCEPTANCE_PRIVATE:?}/acceptance-invitation.json:/run/secrets/acceptance-invitation.json:ro
       - ${BE02_ACCEPTANCE_OUTPUT:?}:/output
       - ${BE02_OBSERVER_CONTROL:?}:/observer-control
   selenium:

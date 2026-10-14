@@ -191,3 +191,9 @@ test('native extraction never invokes a custom prepareStackTrace hook or getter'
     else Reflect.deleteProperty(Error, 'prepareStackTrace');
   }
 });
+
+test('invitation source registration publishes coordinates only and rejects beyond frozen bounds', () => {
+  const invitation = fileURLToPath(new URL('../../playwright/auth-invite.e2e.ts', import.meta.url));
+  assert.equal(frameworkDiagnostic(stackAt(invitation, 1), 'synthetic-private').source?.file, 'auth-invite.e2e.ts');
+  assert.equal(frameworkDiagnostic(stackAt(invitation, 1000), 'synthetic-private').source, null);
+});
