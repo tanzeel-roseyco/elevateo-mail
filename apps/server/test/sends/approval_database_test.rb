@@ -92,4 +92,48 @@ class SendApprovalDatabaseTest < SendDatabaseTestCase
     assert_equal results.first, results.last
     assert_equal [1, 1, 1, 3], counts
   end
+  def test_distinct_keys_compete_on_fresh_draft_under_real_lock_barrier
+    second_digest = SecureRandom.hex(32)
+    assert_equal "ok", create(digest: second_digest).fetch("status")
+    with_api_connections(2) do |connections|
+      first, second = connections
+      begin_write(connection: first)
+      assert_equal "ok", write_guard(connection: first).fetch("status")
+      initial = approve_sql(connection: first, operation: SecureRandom.uuid)
+      thread = Thread.new { approve(connection: second, digest: second_digest, operation: SecureRandom.uuid) }
+      thread.report_on_exception = false
+      begin
+        wait_for_lock(second, blocker: first.backend_pid)
+        first.exec("COMMIT")
+        assert_equal initial, guard_result(thread)
+        assert_equal [1, 1, 1, 2], counts
+      ensure
+        first.exec("ROLLBACK") if first.transaction_status != PG::PQTRANS_IDLE
+        thread.join(12) || raise("concurrent approval did not drain")
+      end
+    end
+  end
+
+  def test_expiry_during_draft_lock_wait_denies_existing_and_distinct_key_replay
+    result = approve
+    [@operation, SecureRandom.uuid].each do |operation|
+      @admin.exec_params("UPDATE app_auth.sessions SET access_expires_at = clock_timestamp() + interval '500 milliseconds' WHERE cookie_digest = $1", [@digest])
+      @admin.exec("BEGIN")
+      @admin.exec_params("SELECT id FROM app.drafts WHERE id = $1 FOR UPDATE", [@draft])
+      thread = Thread.new { approve(operation: operation, bytes: nil) }
+      thread.report_on_exception = false
+      begin
+        wait_for_lock(@api)
+        sleep 0.55
+        @admin.exec("COMMIT")
+        assert_equal "unauthenticated", guard_result(thread).fetch("code")
+        assert_equal [1, 1, 1, 1], counts
+        assert_equal "queued", status(result.fetch("send_id")).fetch("state")
+      ensure
+        @admin.exec("ROLLBACK") if @admin.transaction_status != PG::PQTRANS_IDLE
+        thread.join(12) || raise("expiry replay did not drain")
+      end
+    end
+  end
+
 end

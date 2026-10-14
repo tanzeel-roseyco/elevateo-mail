@@ -23,6 +23,11 @@ BEGIN
   PERFORM pg_advisory_xact_lock(hashtextextended('send-approval:' || org || ':' || actor || ':' || p_operation,0));
   binding := app_send_private.lock_draft_binding(p_session_digest,p_mailbox,p_draft);
   IF binding ? 'code' THEN RETURN binding; END IF;
+  -- AIDEV-NOTE: Replay is a current authorization decision too; access/session expiry can occur during business waits.
+  guard := app_auth.send_approval_guard(p_session_digest);
+  IF guard->>'status' <> 'ok' THEN RETURN jsonb_build_object('code',CASE guard->>'status'
+    WHEN 'unauthorized' THEN 'unauthenticated' WHEN 'not_found' THEN 'not_available'
+    WHEN 'context_changed' THEN 'context_changed' ELSE 'temporarily_unavailable' END); END IF;
   request_digest := encode(sha256(convert_to(app_send_private.compact_json(jsonb_build_array(
     'elevateo.approval.v1',p_mailbox,p_draft,p_expected,p_review_digest,true)),'UTF8')),'hex');
   SELECT * INTO operation FROM app_send_private.approval_operations

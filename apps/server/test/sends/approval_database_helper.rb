@@ -42,17 +42,17 @@ class SendDatabaseTestCase < DraftDatabaseTestCase
                    "correspondence", "human_correspondence_attestation", [], policy])
   end
 
-  def approve_sql(connection: @api, operation: @operation, version: 1, review_digest: @review_digest, bytes: @bytes, epoch: @epoch)
+  def approve_sql(connection: @api, operation: @operation, version: 1, review_digest: @review_digest, bytes: @bytes, epoch: @epoch, digest: @digest)
     encoded = bytes.nil? ? nil : bytes.unpack1("H*")
-    JSON.parse(connection.exec_params(<<~SQL, [@digest, @box, @draft, operation, version, review_digest, encoded, epoch]).getvalue(0, 0))
+    JSON.parse(connection.exec_params(<<~SQL, [digest, @box, @draft, operation, version, review_digest, encoded, epoch]).getvalue(0, 0))
       SELECT app.approve_draft_send($1::text,$2::uuid,$3::uuid,$4::uuid,$5::integer,$6::text,decode($7::text,'hex'),$8::uuid)
     SQL
   end
 
-  def approve(connection: @api, **options)
+  def approve(connection: @api, digest: @digest, **options)
     begin_write(connection: connection)
-    assert_equal "ok", write_guard(connection: connection).fetch("status")
-    result = approve_sql(connection: connection, **options)
+    assert_equal "ok", write_guard(connection: connection, digest: digest).fetch("status")
+    result = approve_sql(connection: connection, digest: digest, **options)
     connection.exec("COMMIT")
     result
   ensure
