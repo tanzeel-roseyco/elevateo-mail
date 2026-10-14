@@ -1,0 +1,25 @@
+Run options: -n [opaque value redacted] --seed 5108
+
+# Running:
+
+QA815 provenance member=t role=sales function_owner=elevateo_owner protected_result=not_found
+F
+
+Failure:
+OrganizationAccessPolicyTest#[opaque value redacted] [[opaque value redacted]:122]:
+member=t role=sales function_owner=elevateo_owner protected_result=not_found.
+Expected: "ok"
+  Actual: "not_found"
+
+bin/rails test [opaque value redacted]:105
+
+
+
+Finished in 0.185235s, 5.3985 runs/s, 26.9927 assertions/s.
+1 runs, 5 assertions, 1 failures, 0 errors, 0 skips
+ Container [opaque value redacted] Creating 
+ Container [opaque value redacted] Created 
+Please switch from -n/--name to -i/--include
+
+
+exit=1 seconds=1.68

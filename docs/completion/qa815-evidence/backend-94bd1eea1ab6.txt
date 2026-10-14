@@ -1,0 +1,11 @@
+source=94bd1eea1ab6269b34817d4f05523d60d1fb6aa4
+started=2026-10-14T16:59:11Z
+task_source_overlay=Elara exact focused diagnostic, provenance print, stop after one case; canonical commit unchanged
+BE02 project=be02-43b66f0eca764f04bbd1879ca3dade94 evidence=/tmp/qa815-backend.MncAY9Ut/ops/local/be02-43b66f0eca764f04bbd1879ca3dade94
+Building bounded task image
+Running isolated Minitest suites and Steep
+tests=FAILED cleanup=PASSED evidence=/tmp/qa815-backend.MncAY9Ut/ops/local/be02-43b66f0eca764f04bbd1879ca3dade94
+runner_exit=1
+receipt_copy_failed=0
+archive_absent=yes
+finished=2026-10-14T17:00:56Z

@@ -702,3 +702,5 @@ QA815 `882a471` addendum: web feature-route test failures and 00018 database CRE
 QA815 later `6c626e2` lint and `8625387` aapt policy failures are executed gate findings, not independent code review. Additional independently reviewed source remains 0 LOC; density is unclaimed. Source repair and review remain with named owners/root.
 
 QA815 `e9ead71` isolated Ruby failures were executed tests, not independent bounded review. The gateway helper keyword errors and sequence repository syntax were routed to root/source owners. Additional independent review coverage remains 0 LOC and density unclaimed.
+
+QA815 Elara 94bd1ee focused role failure is a bounded executed diagnostic (one case/five assertions), not an independent source review. The member/role/owner witness was sent to root for owner analysis. Additional independent review remains 0 LOC; defect density unclaimed.

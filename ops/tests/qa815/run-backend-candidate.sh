@@ -45,6 +45,41 @@ path.write_text(source.replace(needle, needle + addition))
 PY
   printf 'task_source_overlay=OPS820 restricted gateway login before migration; canonical commit unchanged\n' >> "$summary"
 fi
+if [[ ${QA815_ELARA_FOCUS:-0} == 1 ]]; then
+  [[ $candidate == 94bd1eea1ab6269b34817d4f05523d60d1fb6aa4 ]] || {
+    echo 'Elara focused diagnostic requires the exact authorized tip' >&2; exit 2;
+  }
+  cat > "$context/ops/tests/be02/test-suites.sh" <<'SH'
+#!/usr/bin/env bash
+set -euo pipefail
+cd /workspace/apps/server
+bin/rails test test/be_02/organization_access_policy_test.rb -n /test_outreach_draft_write_requires_current_business_role/
+SH
+  python3 - "$context/ops/tests/be02/run.py" "$context/apps/server/test/be_02/organization_access_policy_test.rb" <<'PY'
+from pathlib import Path
+import sys
+
+runner = Path(sys.argv[1])
+source = runner.read_text()
+needle = '            task.compose("ruby-suites", ["run", "--rm", "--no-deps", "test"], 480)\n'
+if source.count(needle) != 1 or source.count('    except Exception as error:\n        failure =') != 1:
+    raise SystemExit("QA815 focused runner anchor mismatch")
+source = source.replace(needle, needle + '            raise StopIteration("QA815 focused diagnostic complete")\n')
+source = source.replace('    except Exception as error:\n        failure =',
+                        '    except StopIteration:\n        status = "DIAGNOSTIC_COMPLETED"\n'
+                        '    except Exception as error:\n        failure =')
+runner.write_text(source)
+
+test = Path(sys.argv[2])
+source = test.read_text()
+needle = '    guard_status = outreach_authorization(sales).fetch("status")\n'
+if source.count(needle) != 1:
+    raise SystemExit("QA815 provenance anchor mismatch")
+source = source.replace(needle, needle + '    puts "QA815 provenance member=#{member} role=#{role} function_owner=#{owner} protected_result=#{guard_status}"\n')
+test.write_text(source)
+PY
+  printf 'task_source_overlay=Elara exact focused diagnostic, provenance print, stop after one case; canonical commit unchanged\n' >> "$summary"
+fi
 set +e
 python3 "$context/ops/tests/be02/run.py" --context default \
   --expect-host Ubuntu-noble-latest-amd64-base >> "$summary" 2>&1

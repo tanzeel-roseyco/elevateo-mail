@@ -134,3 +134,5 @@ QA815 `882a471`: web 825/827 units after V1/V2/lint/type PASS; two feature-route
 QA815 follow-up: `6c626e2` web stopped at five lint errors after V1/V2 check; `8625387` Android unsigned APK failed manifest-tree policy. Both task resource cleanups passed. Owner source repairs and exact-source retests pending; native install and real-backend acceptance remain OPEN.
 
 QA815 `e9ead71` isolated Ruby: direct-read and attachment-service units PASS; gateway app 2 helper errors, sequence controller SyntaxError before cases. V2 contract, input, schedule and preferences units PASS. No database/HTTP transfer, owner repairs pending.
+
+QA815 isolated Elara `94bd1ee` role diagnostic FAILED 1/5: member=t, role=sales, function owner=elevateo_owner, protected result=not_found. Disposable migrations and cleanup passed; current integrated role proof remains OPEN.
