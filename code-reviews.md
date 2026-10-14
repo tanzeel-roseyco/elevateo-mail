@@ -498,3 +498,7 @@ Source reviews: Mira R7 ADV765271 physical0 defects; ADV766282 unique1 LOW(3.55/
 
 ## Rowan R6 source acceptance integrated
 Root accepted exact Rowan R6 b813210173acea67e7333fffa05e146f237193ea: isolated read-controller fixture loads Rails and scopes/restores dispatch logger; production/config/RBS unchanged. ADV774 functional297 physical +13doc context0 defects; ADV775 design252 unique0 defects(0/KLOC), overlap nonadditive. Exact source runtime NOT_RUN. This replaces pending source status only; actual8a full-suite failure remains historical evidence. Soren runs targeted fixture/Auth/Steep/lint, frontend eight gates, mandatory fullbackend HTTP/worker, then four-flow GUI/screenshots; observer OFF.
+
+
+Nadia OFF406 R10 ADV788: source-authored dedicated SCN-READ-002-F2 on exact94d32db. Reuses committed literal_read seed; no fixture delta. Two fresh Chromium actor contexts cover hostile/null/empty real rendering and reload, blocked external HTTP with zero-attempt assertion, no read-state browser writes and eight real GET unread observations. Runtime/typecheck/lint/GUI NOT_RUN; full adversarial and dedicated design review pending root assignment. Original R9 and untracked files preserved; branch may await next batch without blocking repair freeze. Actual vault root-only; requested Low/Fast billing unverified.
+Independent defect count/density PENDING, not zero. Full user rubric and theoretical/practical design review required; see docs/completion/res406-literal-read-r10.md.
