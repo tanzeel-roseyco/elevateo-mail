@@ -12,10 +12,10 @@ class V2RouteRegistryTest < Minitest::Test
     end
   end
 
-  def test_ready_registry_exposes_only_fourteen_active_versioned_routes
+  def test_ready_registry_exposes_only_sixteen_active_versioned_routes
     mapper = Mapper.new
     assert V2RouteRegistry.register!(mapper, enabled: true, controllers_ready: true)
-    assert_equal 14, mapper.routes.size
+    assert_equal 16, mapper.routes.size
     assert(mapper.routes.all? { |_, path, _| path.start_with?("/v2/") })
     refute(mapper.routes.any? { |_, path, _| path.start_with?("/v2/worker/") })
   end
@@ -26,6 +26,14 @@ class V2RouteRegistryTest < Minitest::Test
       operations: ["recordOutreachLeadConsent"])
     assert_equal [[:post, "/v2/outreach/campaigns/:campaign_id/leads/:lead_id/consent",
       "v2/outreach/leads#record_consent"]], mapper.routes
+  end
+
+  def test_preferences_route_has_current_session_controller_only
+    mapper = Mapper.new
+    assert V2RouteRegistry.register!(mapper, enabled: true, controllers_ready: true,
+      operations: %w[getMyPreferences replaceMyPreferences])
+    assert_equal [[:get, "/v2/me/preferences", "v2/admin/user_display_preferences#show"],
+      [:put, "/v2/me/preferences", "v2/admin/user_display_preferences#update"]], mapper.routes
   end
 
   def test_selected_operation_exposes_only_implemented_route

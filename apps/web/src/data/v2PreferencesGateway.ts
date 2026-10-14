@@ -5,7 +5,7 @@ import { GatewayError } from './errors'
 import { CollaborationErrorSchema } from './contract'
 import type { CsrfProof, ReadContext } from './gateway'
 
-// AIDEV-NOTE: PREF822 is a noncanonical proposal. This port is not injected into the production shell.
+// AIDEV-NOTE: Server derives the preference owner from the current session; no target user ID enters this port.
 const displayName = z.string().refine((value) => {
   return Array.from(value).length >= 1 && Array.from(value).length <= 256 &&
     value.trim().length > 0 && !/[\x00-\x1f\x7f-\x9f]/.test(value)
@@ -37,7 +37,7 @@ export function createV2PreferencesGateway(fetchImpl?: FetchLike) {
       }
       return page
     },
-    updateUserDisplayPreference(ctx: ReadContext, proof: CsrfProof, input: unknown, signal: AbortSignal) {
+    updateUserDisplayPreference(input: unknown, ctx: ReadContext, proof: CsrfProof, signal: AbortSignal) {
       return requestJson('/v2/me/preferences', UserDisplayPreferenceSchema, 4_096, {
         ...base, method: 'PUT', body: UserDisplayPreferenceChangeSchema.parse(input),
         maxRequestBytes: 2_048, headers: headers(ctx, proof), signal,

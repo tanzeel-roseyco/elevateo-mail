@@ -17,7 +17,9 @@ module V2RouteRegistry
     "getOrganizationRoster" => ["GET", "/v2/organizations/:organization_id/roster", "v2/admin/organization_grants#roster"],
     "replaceOrganizationGrant" => ["PUT", "/v2/organizations/:organization_id/grants/:user_id", "v2/admin/organization_grants#update"],
     "getWorkerJob" => ["GET", "/v2/worker/jobs/:job_id", "v2/worker_jobs#show"],
-    "getDirectMessage" => ["GET", "/v2/threads/:thread_id/messages/:message_id", "v1/threads#message"]
+    "getDirectMessage" => ["GET", "/v2/threads/:thread_id/messages/:message_id", "v1/threads#message"],
+    "getMyPreferences" => ["GET", "/v2/me/preferences", "v2/admin/user_display_preferences#show"],
+    "replaceMyPreferences" => ["PUT", "/v2/me/preferences", "v2/admin/user_display_preferences#update"]
   }.transform_values(&:freeze).freeze
 
   # AIDEV-NOTE: The worker operation is a proposal until its separate principal is implemented.
@@ -25,7 +27,7 @@ module V2RouteRegistry
     listOrganizationGrants getOrganizationRoster replaceOrganizationGrant
     listOutreachCampaigns getOutreachCampaign createOutreachCampaign updateOutreachCampaign
     listOutreachLeads getOutreachLead addOutreachLead updateOutreachLead recordOutreachLeadConsent getOutreachAnalytics
-    getDirectMessage
+    getDirectMessage getMyPreferences replaceMyPreferences
   ].freeze
 
   def self.register!(mapper, enabled:, controllers_ready:, operations: ACTIVE_OPERATIONS)

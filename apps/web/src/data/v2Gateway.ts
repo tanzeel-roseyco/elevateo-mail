@@ -41,7 +41,7 @@ const headers = (ctx: ReadContext, proof?: CsrfProof): Record<string, string> =>
 export function createV2Gateway(fetchImpl?: FetchLike) {
   const base = fetchImpl === undefined ? { errorSchema: CollaborationErrorSchema } : { fetchImpl, errorSchema: CollaborationErrorSchema }
   return {
-    // PREF822 remains a separate proposal until its Rails route and SQL evidence are admitted.
+    // PREF822 remains pending exact fleet SQL and browser proof on this integrated source.
     ...createV2PreferencesGateway(fetchImpl),
     getDirectMessage(ctx: ReadContext, mailboxId: string, threadId: string, messageId: string, signal?: AbortSignal) {
       const query = new URLSearchParams({ mailbox_id: IdSchema.parse(mailboxId) })

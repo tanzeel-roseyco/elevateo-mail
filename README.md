@@ -261,3 +261,5 @@ FE807 sequence candidate: a distinct campaign-scoped sequence editor route is au
 MAC-814 continuation: Orion NATIVE-812 shell lineage is present in the Mac branch; `apps/native/src-tauri/tauri.macos.conf.json` and `apps/native/macos-release.sh` now provide a real macOS DMG configuration and gated release command. Native auth, Mac build, signing and installation remain unverified.
 
 MAC-814 sequence gap: an isolated pure Ruby draft scheduling primitive now resolves unambiguous local times to UTC, derives stable occurrence keys, and blocks candidates with reply/unsubscribe signals. No sequence schema, API, send intent, worker integration or live delivery is present; see `docs/completion/maeve-sequence-draft.md`.
+
+PREF-822 candidate integration now registers session-derived GET/PUT `/v2/me/preferences` in canonical V2 draft.6 and connects the personal settings UI to the typed gateway. This is source-only: generated draft.6 DTO, bounded independent review, real PostgreSQL/API-role checks, HTTP and browser evidence remain pending Soren/root.

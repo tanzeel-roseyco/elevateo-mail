@@ -210,3 +210,5 @@ MAC-814 sequence draft primitive is source-only and untested: timezone/DST resol
 # MAC-814 isolated sequence draft persistence
 
 Migration 00016, DTO validation, transactional replay/version repository and inert occurrence schema are candidate source only. The SEC802 helper EXECUTE role seam and fleet Docker tests remain open; no sequence delivery path is enabled. See [candidate record](docs/completion/maeve-sequence-persistence.md).
+
+PREF-822 candidate integration now registers session-derived GET/PUT `/v2/me/preferences` in canonical V2 draft.6 and connects the personal settings UI to the typed gateway. This is source-only: generated draft.6 DTO, bounded independent review, real PostgreSQL/API-role checks, HTTP and browser evidence remain pending Soren/root.

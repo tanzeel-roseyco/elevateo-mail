@@ -44,8 +44,8 @@ describe('isolated personal preference gateway proposal', () => {
     const fetchImpl = vi.fn(async () => new Response(JSON.stringify({ code: 'membership_conflict',
       message: 'The preference changed.', request_id: 'request-1' }),
     { status: 409, headers: { 'Content-Type': 'application/json' } }))
-    await expect(createV2PreferencesGateway(fetchImpl).updateUserDisplayPreference(context, { csrfToken: 'proof' },
-      { display_name: 'Avery', expected_revision: 1 }, new AbortController().signal))
+    await expect(createV2PreferencesGateway(fetchImpl).updateUserDisplayPreference(
+      { display_name: 'Avery', expected_revision: 1 }, context, { csrfToken: 'proof' }, new AbortController().signal))
       .rejects.toMatchObject({ kind: 'api', status: 409, code: 'membership_conflict' })
     expect(fetchImpl).toHaveBeenCalledTimes(1)
   })

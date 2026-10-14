@@ -145,3 +145,7 @@ The three protected organization/roster operations were aligned from `candidate`
 ## ATT838 internal URL boundary
 
 Config and RBS accept only the exact internal gateway URL paired with the dedicated HMAC key. Test cases cover valid, missing-key and three alternate-host/scheme/path failures. This is source-only, NOT_RUN; no network call, public route, storage token or release claim.
+
+## PREF822 candidate activation
+
+Exact integrated Theo 81cb542 and Lyra a54be31/748e53b/7550afb source is wired through canonical V2 draft.6, registry and the existing production personal settings route. The browser gateway argument order is reconciled with Lyra’s port. OpenAPI V1 remains unchanged by source diff; generated V2 declaration and fleet database/HTTP/browser tests are requested, NOT_RUN here. No credential fields or actor identifier enter the preference write.
