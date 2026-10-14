@@ -16,8 +16,7 @@ describe('V2 draft boundary', () => {
     const actor = { organization_id: jobId, user_id: jobId, role: 'organization_admin', revision: 2 }
     const page = { context_id: 'a'.repeat(16), authorization_version: 'b'.repeat(16), actor, items: [], next_cursor: null }
     expect(OrganizationGrantsSchema.parse(page).actor).toEqual(actor)
-    const { actor: _discarded, ...withoutActor } = page
-    expect(OrganizationGrantsSchema.safeParse(withoutActor).success).toBe(false)
+    expect(OrganizationGrantsSchema.safeParse({ ...page, actor: undefined }).success).toBe(false)
   })
   it('rejects owner assignment and stale invalid revisions', () => {
     expect(GrantChangeSchema.safeParse({ role: 'organization_owner', expected_revision: 1 }).success).toBe(false)
