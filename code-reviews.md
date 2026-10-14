@@ -1304,4 +1304,4 @@ ATT898 Nadia `4557fd73` source repair responds to QA815 `211df76` repository typ
 
 ## STRICT909 old attachment index type repair (2026-10-14)
 
-Soren 215080a4 receipt shows five FallbackAny warnings plus one keyword lambda assignment error in the inactive index controller. Nadia authored an exact typed callable and denial regression on isolated immutable-parent branch; proposed packet is <=216 unique versioned LOC, each read <=180, detailed in `docs/completion/nadia-strict909-index.md`. Independent review and fleet Steep/unit NOT_RUN; successor defect count and density are unassessed, not 0/KLOC.
+Soren 215080a4 receipt shows five FallbackAny warnings plus one keyword lambda assignment error in the inactive index controller. Nadia authored an exact typed callable and denial regression on isolated immutable-parent branch; proposed packet is <=224 unique versioned LOC, each read <=180, detailed in `docs/completion/nadia-strict909-index.md`. Independent review and fleet Steep/unit NOT_RUN; successor defect count and density are unassessed, not 0/KLOC.
