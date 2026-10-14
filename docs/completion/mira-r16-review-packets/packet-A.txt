@@ -11,7 +11,7 @@ apps/web/src/app/App.tsx:1-39
 10: import { DraftIntentProvider } from './draftIntent'
 11: import { SessionProvider } from './session'
 12: import { Shell } from './Shell'
-13: 
+13:
 14: // AIDEV-NOTE: Hash routing keeps deep links working when Rails or the dev proxy serves one page;
 15: // swap to BrowserRouter once the host serves the SPA for every route.
 16: export function App({ gateway }: { gateway: MailroomGateway }) {
@@ -42,7 +42,7 @@ apps/web/src/app/App.tsx:1-39
 apps/web/src/app/MailboxSelection.tsx:1-22
 1: import { EmptyState, Skeleton } from '@/ui/Async'
 2: import { useMailboxes } from './mailboxes'
-3: 
+3:
 4: export function MailboxSelection() {
 5:   const snapshot = useMailboxes()
 6:   // AIDEV-NOTE: Only a completed mailbox traversal establishes zero visible mailboxes.
@@ -70,21 +70,21 @@ apps/web/src/app/mailboxes.tsx:1-26
 4: // AIDEV-NOTE: Lives inside the keyed ProtectedShell, so a replaced identity starts with no list.
 5: import { createContext, useContext, type ReactNode } from 'react'
 6: import type { Mailbox } from '@/data/contract'
-7: 
+7:
 8: export type MailboxesSnapshot = { status: 'loading' } | { status: 'ready'; mailboxes: readonly Mailbox[] } | { status: 'error' }
-9: 
+9:
 10: // AIDEV-NOTE: No provider (isolated route, component test) reads as 'loading': controls stay
 11: // visible and the server's answer decides. A throw here would make every page depend on Shell.
 12: const MailboxesContext = createContext<MailboxesSnapshot>({ status: 'loading' })
-13: 
+13:
 14: export function MailboxesProvider({ value, children }: { value: MailboxesSnapshot; children: ReactNode }) {
 15:   return <MailboxesContext.Provider value={value}>{children}</MailboxesContext.Provider>
 16: }
-17: 
+17:
 18: export function useMailboxes(): MailboxesSnapshot {
 19:   return useContext(MailboxesContext)
 20: }
-21: 
+21:
 22: /** The selected mailbox when known; `undefined` while loading or when it is not visible to the actor. */
 23: export function useMailbox(mailboxId: string): Mailbox | undefined {
 24:   const snapshot = useMailboxes()
@@ -98,7 +98,7 @@ apps/web/src/app/Shell.tsx:130-185
 133:   const [attempt, setAttempt] = useState(0)
 134:   const [drawerOpen, setDrawerOpen] = useState(false)
 135:   const closeDrawer = useCallback(() => setDrawerOpen(false), [])
-136: 
+136:
 137:   useEffect(() => {
 138:     if (!context) return
 139:     const generation = scope.current()
@@ -152,7 +152,7 @@ apps/web/src/app/Shell.tsx:130-185
 apps/web/src/app/Shell.tsx:212-228
 212:   const mailboxesSnapshot: MailboxesSnapshot =
 213:     mailboxState.status === 'ready' ? { status: 'ready', mailboxes: mailboxState.mailboxes } : mailboxState.status === 'loading' ? { status: 'loading' } : { status: 'error' }
-214: 
+214:
 215:   const sidebar =
 216:     mailboxState.status === 'loading' ? (
 217:       <div role="status" aria-label="Loading mailboxes"><Skeleton rows={4} /></div>
@@ -164,7 +164,7 @@ apps/web/src/app/Shell.tsx:212-228
 223:     ) : (
 224:       <Sidebar mailboxes={mailboxState.mailboxes} onNavigate={closeDrawer} footnote={FOOTNOTE} />
 225:     )
-226: 
+226:
 227:   return (
 228:     <MailboxesProvider value={mailboxesSnapshot}>
 
@@ -178,5 +178,5 @@ apps/web/src/ui/Async.tsx:24-34
 30:     </div>
 31:   )
 32: }
-33: 
+33:
 34: export type LoadState = { status: 'loading' } | { status: 'ready' } | { status: 'error'; message: string }
