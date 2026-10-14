@@ -23,18 +23,20 @@ async function denied(page: Page): Promise<void> {
 }
 scenario('SCN-AUTH-006-P', 'genuine-invitation-scanner-victim-replay', async (page, record) => {
   const invitation = loadInvitation();
+  // AIDEV-NOTE: Fresh contexts need the validated invitation origin for their relative session requests.
+  const baseURL = new URL(invitation.link).origin;
   const browser = page.context().browser();
   if (!browser) throw new Error('Invitation browser unavailable');
   const contexts: BrowserContext[] = [];
   try {
-    const scanner = await browser.newContext();
+    const scanner = await browser.newContext({ baseURL });
     contexts.push(scanner);
     const scanned = await scanner.newPage();
     await follow(scanned, invitation.link);
     // AIDEV-NOTE: Scanner stages GET only; the later successful victim proves scanner nonconsumption.
     await denied(scanned);
     await scanner.close();
-    const victim = await browser.newContext();
+    const victim = await browser.newContext({ baseURL });
     contexts.push(victim);
     const accepted = await victim.newPage();
     await follow(accepted, invitation.link);
@@ -58,7 +60,7 @@ scenario('SCN-AUTH-006-P', 'genuine-invitation-scanner-victim-replay', async (pa
     await expect(accepted.getByRole('region', { name: 'Conversations', exact: true })).toBeVisible();
     record.assertions.push('Scanner GET did not consume invitation; genuine UI acceptance bound actor and organization and rendered mailbox');
     record.evidence.push('Observed POST /v1/auth/accept 200 and GET /v1/session 401 before acceptance, 200 afterward');
-    const replay = await browser.newContext();
+    const replay = await browser.newContext({ baseURL });
     contexts.push(replay);
     const rejected = await replay.newPage();
     await follow(rejected, invitation.link);
