@@ -2,7 +2,17 @@
 
 import unittest
 
-from verify_permissions import verify_permissions
+from verify_permissions import verify_permissions, verify_receiver_declaration
+
+
+def merged_manifest(protection: str = "signature", package: str = "com.elevateo.mail.fixture") -> str:
+    permission = f"{package}.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+    return (
+        '<manifest xmlns:android="http://schemas.android.com/apk/res/android">'
+        f'<permission android:name="{permission}" android:protectionLevel="{protection}" />'
+        f'<uses-permission android:name="{permission}" />'
+        '</manifest>'
+    )
 
 
 class VerifyPermissionsTest(unittest.TestCase):
@@ -26,6 +36,15 @@ class VerifyPermissionsTest(unittest.TestCase):
                 "android.permission.INTERNET\n"
                 "com.elevateo.mail.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION\n"
             )
+
+    def test_requires_signature_receiver_declaration(self) -> None:
+        verify_receiver_declaration(merged_manifest())
+        with self.assertRaises(ValueError):
+            verify_receiver_declaration(merged_manifest(protection="normal"))
+
+    def test_rejects_receiver_namespace_substitution(self) -> None:
+        with self.assertRaises(ValueError):
+            verify_receiver_declaration(merged_manifest(package="com.elevateo.mail"))
 
 
 if __name__ == "__main__":
