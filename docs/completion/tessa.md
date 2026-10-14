@@ -25,3 +25,14 @@ Screenshot admission repair: the shared screenshot writer uses a closed ID list 
 `SCN-QA-819-F1` is a pending integrated V2 People candidate: real manager grants GET 200 versus separate reader 403/404, with truthful unbound planning identities and no reader save control. It requires Cassian's active V2 grants GET, Lyra/Fable integrated `/people`, and a seed with a reader denied administration. No grant is changed; no V2 runtime outcome is claimed. Two more fixed screenshot IDs bring the supplemental set to twenty.
 
 Cassian's integrated Celeste page currently says “Outreach is draft or paused. Sending and enrollment are unavailable.” The shell assertion follows that exact source copy; it still requires a bound Outreach gateway for actual list data. This static alignment does not establish the active V2 browser path.
+
+Execution partitions for Soren (all inside fleet Docker, each exact merged source SHA):
+
+| Partition | Playwright grep | Admission |
+| --- | --- | --- |
+| V1 baseline | `SCN-QA-817|SCN-QA-819-P` | Real Auth/BE02 V1 seed and API; includes reader, draft, search, V1 roster. |
+| Shell/visual | `SCN-QA-818` | Fable+Celeste integrated shell, Chromium for visual viewport scale; Outreach list gateway is not required for copy/route check. |
+| BE03 send | `SCN-QA-816` | Enabled simulated send routes, seeded configured sender, case-owned disposable draft. |
+| V2 grants | `SCN-QA-819-F1` | Cassian active grants GET, Lyra/Fable `/people`, real role-scoped seed. |
+
+The shell case validates route and paused copy only. It does not claim campaign list data until the V2 adapter is bound. Each partition must produce its own sanitized case records and task-owned screenshots; a blocked partition remains NOT_RUN, and no passed partition stands in for another.
