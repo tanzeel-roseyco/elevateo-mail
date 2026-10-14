@@ -13,7 +13,7 @@ class MacConfigTest(unittest.TestCase):
         self.addCleanup(self.tmp.cleanup)
         self.root = Path(self.tmp.name)
         (self.root / "macos").mkdir()
-        self.base = {"identifier": "com.elevateo.mail", "build": {"frontendDist": "../../web/dist"}, "app": {"security": {"csp": "connect-src 'self'"}}}
+        self.base = {"identifier": "com.elevateo.mail", "app": {"windows": [{"create": False}], "security": {"capabilities": [], "assetProtocol": {"enable": False}}, "withGlobalTauri": False}}
         self.mac = {"bundle": {"targets": ["dmg"], "macOS": {"minimumSystemVersion": "12.0", "entitlements": "./macos/Entitlements.plist"}}}
         self.entitlements = {}
         self.write()
@@ -26,10 +26,16 @@ class MacConfigTest(unittest.TestCase):
     def test_valid_overlay(self):
         self.assertEqual([], validate(self.root))
 
-    def test_remote_connection_regression(self):
-        self.base["app"]["security"]["csp"] = "connect-src https:"
+    def test_rejects_global_bridge(self):
+        self.base["app"]["withGlobalTauri"] = True
         self.write()
-        self.assertIn("remote connections are not fail closed", validate(self.root))
+        self.assertIn("global Tauri bridge enabled", validate(self.root))
+
+    def test_rejects_remote_ipc_capability(self):
+        self.write()
+        (self.root / "capabilities").mkdir()
+        (self.root / "capabilities/local.json").write_text(json.dumps({"permissions": [], "remote": {"urls": ["https://mail.company.org"]}}))
+        self.assertIn("Tauri capability files must be absent", validate(self.root))
 
     def test_unapproved_callback_registration(self):
         self.mac["plugins"] = {"deep-link": {"desktop": {"schemes": ["elevateomail"]}}}

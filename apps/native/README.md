@@ -20,3 +20,7 @@ The release script is not a release approval. An owner must verify Mac tool vers
 Under Soren's fleet Docker lease: build the existing `apps/web` source in its canonical container; generate and review `apps/native/src-tauri/Cargo.lock` from this exact commit in a task-owned Rust container with Tauri Linux system packages; run `cargo test --locked` and `cargo check --locked` from `apps/native/src-tauri`; run `python3 apps/native/ci/verify_boundary.py` from repository root and validate the Tauri JSON schema; record image digests, source SHA, exits and cleanup. No host app build/test is authorized. Linux compile does not prove Windows, Android or macOS WebView behavior.
 
 Target OS gates remain: real Windows NSIS install/run/upgrade/downgrade/uninstall with WebView2 present and absent, Android emulator/device cold start and cookie/session lifecycle, and macOS install/run with signing/notarization later. No signing keys, live credentials, live mail, DNS or deployment are handled here.
+
+## macOS overlay (MAC-814)
+
+`src-tauri/tauri.macos.conf.json` selects DMG and macOS 12.0 for this shared online-only shell; `macos/Entitlements.plist` requests no extra rights. `apps/native/macos-release.sh` requires a configured exact HTTPS origin at build time and Mac signing/notarization prerequisites before building. This source is not a tested DMG or release approval. Soren owns Docker static/source checks; a real Mac runner and installed-app tests remain necessary. No Mac callback scheme is registered.

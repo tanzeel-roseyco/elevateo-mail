@@ -5,8 +5,9 @@ if [ "$(uname -s)" != Darwin ]; then
   echo 'MAC-814 requires a macOS runner; no DMG was built' >&2
   exit 2
 fi
-for name in APPLE_SIGNING_IDENTITY APPLE_ID APPLE_PASSWORD APPLE_TEAM_ID; do
+for name in ELEVATEO_WEB_ORIGIN APPLE_SIGNING_IDENTITY APPLE_ID APPLE_PASSWORD APPLE_TEAM_ID; do
   case "$name" in
+    ELEVATEO_WEB_ORIGIN) present=${ELEVATEO_WEB_ORIGIN-} ;;
     APPLE_SIGNING_IDENTITY) present=${APPLE_SIGNING_IDENTITY-} ;;
     APPLE_ID) present=${APPLE_ID-} ;;
     APPLE_PASSWORD) present=${APPLE_PASSWORD-} ;;
@@ -17,11 +18,16 @@ for name in APPLE_SIGNING_IDENTITY APPLE_ID APPLE_PASSWORD APPLE_TEAM_ID; do
     exit 2
   fi
 done
+case "$ELEVATEO_WEB_ORIGIN" in
+  https://*/*|https://*@*|https://*\?*|https://*\#*|*" "*) echo 'MAC-814 requires a bare exact HTTPS origin' >&2; exit 2 ;;
+  https://*.*) ;;
+  *) echo 'MAC-814 requires a public exact HTTPS origin' >&2; exit 2 ;;
+esac
 case "$APPLE_SIGNING_IDENTITY" in
   'Developer ID Application:'*) ;;
   *) echo 'MAC-814 requires a Developer ID Application identity' >&2; exit 2 ;;
 esac
-for command in xcodebuild xcrun security cargo rustup npm shasum; do
+for command in xcodebuild xcrun security cargo rustup shasum lipo codesign spctl; do
   command -v "$command" >/dev/null 2>&1 || { echo "MAC-814 missing tool: $command" >&2; exit 2; }
 done
 security find-identity -v -p codesigning | grep -F "$APPLE_SIGNING_IDENTITY" >/dev/null || {
@@ -36,12 +42,19 @@ repo_root=$(CDPATH= cd -- "$(dirname "$0")/../.." && pwd)
 [ -f "$repo_root/apps/native/src-tauri/Cargo.lock" ] || {
   echo 'MAC-814 requires reviewed Cargo.lock' >&2; exit 2;
 }
-[ -f "$repo_root/apps/web/package-lock.json" ] || exit 2
-cd "$repo_root/apps/web"
-npm ci
-npm run build
 cd "$repo_root/apps/native/src-tauri"
-cargo tauri build --locked --target universal-apple-darwin --bundles dmg
+cargo tauri build --target universal-apple-darwin --bundles dmg -- --locked
+set -- target/universal-apple-darwin/release/bundle/macos/*.app
+[ "$#" -eq 1 ] && [ -d "$1" ] || { echo 'MAC-814 expected exactly one app bundle' >&2; exit 1; }
+app_bundle=$1
+app_name=$(/usr/libexec/PlistBuddy -c 'Print :CFBundleExecutable' "$app_bundle/Contents/Info.plist")
+case "$app_name" in ''|*/*) echo 'MAC-814 invalid app executable name' >&2; exit 1;; esac
+app_executable="$app_bundle/Contents/MacOS/$app_name"
+[ -f "$app_executable" ] || { echo 'MAC-814 app executable missing' >&2; exit 1; }
+architectures=$(lipo -archs "$app_executable")
+case " $architectures " in *" x86_64 "*) ;; *) echo 'MAC-814 Intel slice missing' >&2; exit 1;; esac
+case " $architectures " in *" arm64 "*) ;; *) echo 'MAC-814 Apple Silicon slice missing' >&2; exit 1;; esac
+codesign --verify --deep --strict --verbose "$app_bundle"
 set -- target/universal-apple-darwin/release/bundle/dmg/*.dmg
 [ "$#" -eq 1 ] && [ -f "$1" ] || { echo 'MAC-814 expected exactly one DMG' >&2; exit 1; }
 xcrun stapler validate "$1"
