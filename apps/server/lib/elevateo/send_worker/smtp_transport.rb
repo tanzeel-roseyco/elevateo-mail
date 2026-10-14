@@ -2,6 +2,7 @@
 
 require "digest"
 require "net/smtp"
+require "timeout"
 require_relative "call_deadline"
 require_relative "smtp_snapshot"
 require_relative "smtp_profile"
@@ -27,6 +28,8 @@ module Elevateo
         end
         client = @client || LocalMailpitClient.new(profile: @profile)
         client.deliver(rendered, deadline: deadline)
+      rescue LocalMailpitClient::PreflightFailed, CallDeadline::Expired
+        raise Held, "local SMTP test unavailable before submission"
       rescue SmtpSnapshot::Invalid
         SubmissionResult.new(kind: "rejected", code: "smtp_invalid_snapshot")
       end
@@ -40,6 +43,8 @@ module Elevateo
     end
 
     class LocalMailpitClient
+      class PreflightFailed < StandardError; end
+
       def initialize(profile:, smtp_factory: ->(host, port) { Net::SMTP.new(host, port, tls: false, starttls: false) })
         raise ArgumentError, "Mailpit test profile required" unless profile.is_a?(SmtpProfile) && profile.local_test?
         @profile, @smtp_factory = profile, smtp_factory
@@ -48,21 +53,35 @@ module Elevateo
       def deliver(rendered, deadline:)
         raise ArgumentError, "invalid rendered mail" unless rendered.is_a?(RenderedMail)
         deadline.check!
-        smtp = @smtp_factory.call(@profile.host, @profile.port)
-        smtp.open_timeout = 3
-        smtp.read_timeout = 3
-        response = nil
-        smtp.start("localhost") do |session|
-          deadline.check!
-          response = session.send_message(rendered.mime, rendered.sender, *rendered.recipients)
+        smtp = begin
+          @smtp_factory.call(@profile.host, @profile.port)
+        rescue StandardError
+          raise PreflightFailed, "SMTP test client unavailable", cause: nil
         end
-        deadline.check!
+        begin
+          smtp.open_timeout = [3.0, deadline.remaining].min
+          smtp.read_timeout = [3.0, deadline.remaining].min
+        rescue StandardError
+          raise PreflightFailed, "SMTP test client configuration failed", cause: nil
+        end
+        response = nil
+        submission_started = false
+        begin
+          Timeout.timeout(deadline.remaining, CallDeadline::Expired) do
+            smtp.start("localhost") do |session|
+              deadline.check!
+              submission_started = true
+              response = session.send_message(rendered.mime, rendered.sender, *rendered.recipients)
+            end
+          end
+        rescue StandardError
+          raise PreflightFailed, "SMTP test session unavailable", cause: nil unless submission_started
+          return SubmissionResult.new(kind: "unknown", code: "smtp_uncertain")
+        end
+        return SubmissionResult.new(kind: "unknown", code: "smtp_uncertain") if deadline.remaining <= 0
         return SubmissionResult.new(kind: "unknown", code: "smtp_uncertain") unless response&.status&.start_with?("2")
         receipt = "mailpit-test-v1:#{Digest::SHA256.hexdigest([rendered.mime, response.status].join(':'))}"
         SubmissionResult.new(kind: "accepted", receipt_ref: receipt)
-      rescue StandardError
-        # A lost DATA acceptance cannot be classified from an exception or retried safely.
-        SubmissionResult.new(kind: "unknown", code: "smtp_uncertain")
       end
     end
   end

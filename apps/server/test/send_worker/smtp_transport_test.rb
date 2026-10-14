@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "minitest/autorun"
+require "json"
 require_relative "../../lib/elevateo/send_worker/smtp_transport"
 require_relative "../../lib/elevateo/send_api/canonical"
 
@@ -67,7 +68,9 @@ class SendWorkerSmtpTransportTest < Minitest::Test
     client = Object.new
     client.define_singleton_method(:deliver) { |_mail, deadline:| calls += 1 }
     transport = Elevateo::SendWorker::SmtpTransport.new(profile: profile, client: client)
-    malformed = snapshot.sub("Subject", "Injected\\r\\nBcc: bad@example.invalid")
+    fields = JSON.parse(snapshot)
+    fields[7] = "Injected\r\nBcc: bad@example.invalid"
+    malformed = JSON.generate(fields)
     result = transport.submit(malformed, send_id: SEND, attempt_id: ATTEMPT, deadline: deadline)
     assert_equal "rejected", result.kind
     assert_equal "smtp_invalid_snapshot", result.code
@@ -85,5 +88,29 @@ class SendWorkerSmtpTransportTest < Minitest::Test
       held_transport.submit(snapshot, send_id: SEND, attempt_id: ATTEMPT, deadline: deadline)
     end
     assert_equal 0, calls
+  end
+
+  def test_factory_failure_is_held_before_any_submission
+    client = Elevateo::SendWorker::LocalMailpitClient.new(profile: profile,
+      smtp_factory: ->(_host, _port) { raise IOError, "client unavailable" })
+    transport = Elevateo::SendWorker::SmtpTransport.new(profile: profile, client: client)
+    assert_raises(Elevateo::SendWorker::SmtpTransport::Held) do
+      transport.submit(snapshot, send_id: SEND, attempt_id: ATTEMPT, deadline: deadline)
+    end
+  end
+
+  def test_total_deadline_after_submission_begins_is_unknown
+    smtp = FakeSmtp.new
+    smtp.define_singleton_method(:send_message) do |mime, sender, *recipients|
+      @messages << [mime, sender, recipients]
+      sleep 0.05
+      Struct.new(:status).new("250")
+    end
+    client = Elevateo::SendWorker::LocalMailpitClient.new(profile: profile, smtp_factory: ->(_host, _port) { smtp })
+    transport = Elevateo::SendWorker::SmtpTransport.new(profile: profile, client: client)
+    short_deadline = Elevateo::SendWorker::CallDeadline.new(seconds: 0.01)
+    result = transport.submit(snapshot, send_id: SEND, attempt_id: ATTEMPT, deadline: short_deadline)
+    assert_equal "unknown", result.kind
+    assert_equal 1, smtp.messages.length
   end
 end

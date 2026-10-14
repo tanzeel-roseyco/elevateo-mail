@@ -15,9 +15,11 @@ module Elevateo
       end
 
       def check!
-        raise Expired, "local call deadline expired" if @clock.call >= @expires
+        raise Expired, "local call deadline expired" if remaining <= 0
         nil
       end
+
+      def remaining = [@expires - @clock.call, 0.0].max
     end
   end
 end
