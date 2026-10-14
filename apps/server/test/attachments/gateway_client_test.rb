@@ -10,7 +10,10 @@ class AttachmentGatewayClientTest < Minitest::Test
   class SlowHttp
     attr_accessor :max_retries, :open_timeout, :read_timeout, :write_timeout
     attr_reader :chunks, :closed
-    def initialize = (@chunks, @closed = 0, false)
+    def initialize
+      @chunks = 0
+      @closed = false
+    end
     def start
       yield self
     ensure

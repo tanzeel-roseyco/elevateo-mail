@@ -187,3 +187,5 @@ Imported Leonie OPS820 3fd0dcb bootstrap/scanner scripts and Corin MAIL819 5dc07
 Vera independently reviewed exact 7b41521 plus signer, 238 LOC, one P2 aggregate timeout defect (4.20/KLOC): per-read/write Net::HTTP timeouts reset for a trickled body. Cassian now wraps only the private HTTP exchange (or injected transport), outside DB work, with one <=5s Timeout and an explicit monotonic deadline check; slow-trickle test authored. Independent repair re-review and Soren Docker execution are pending; this does not activate the route.
 
 ADV101 review report required an actual exchange-path trickle regression; the initial injected-transport test did not exercise Net::HTTP. Current test injects a fake HTTP connection beneath `exchange`, trickles 20 chunks, asserts the aggregate deadline, no returned bytes and connection close. It remains NOT_RUN and requires re-review.
+
+The fake HTTP test fixture uses explicit initialization for its chunk/close state; this is a source readability correction, with Docker execution still pending.
