@@ -13,6 +13,8 @@ module V2RouteRegistry
     "updateOutreachLead" => ["PUT", "/v2/outreach/campaigns/:campaign_id/leads/:lead_id", "v2/outreach/leads#update"],
     "recordOutreachLeadConsent" => ["POST", "/v2/outreach/campaigns/:campaign_id/leads/:lead_id/consent", "v2/outreach/leads#record_consent"],
     "getOutreachAnalytics" => ["GET", "/v2/outreach/campaigns/:campaign_id/analytics", "v2/outreach/analytics#show"],
+    "getOutreachSequenceDraft" => ["GET", "/v2/outreach/campaigns/:campaign_id/sequence", "v2/outreach/sequences#show"],
+    "saveOutreachSequenceDraft" => ["PUT", "/v2/outreach/campaigns/:campaign_id/sequence", "v2/outreach/sequences#update"],
     "listOrganizationGrants" => ["GET", "/v2/organizations/:organization_id/grants", "v2/admin/organization_grants#index"],
     "getOrganizationRoster" => ["GET", "/v2/organizations/:organization_id/roster", "v2/admin/organization_grants#roster"],
     "replaceOrganizationGrant" => ["PUT", "/v2/organizations/:organization_id/grants/:user_id", "v2/admin/organization_grants#update"],
@@ -27,6 +29,7 @@ module V2RouteRegistry
     listOrganizationGrants getOrganizationRoster replaceOrganizationGrant
     listOutreachCampaigns getOutreachCampaign createOutreachCampaign updateOutreachCampaign
     listOutreachLeads getOutreachLead addOutreachLead updateOutreachLead recordOutreachLeadConsent getOutreachAnalytics
+    getOutreachSequenceDraft saveOutreachSequenceDraft
     getDirectMessage getMyPreferences replaceMyPreferences
   ].freeze
 

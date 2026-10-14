@@ -3,6 +3,7 @@ import { requestJson } from './http/transport'
 import { GatewayError } from './errors'
 import { CollaborationErrorSchema } from './contract'
 import type { CsrfProof, ReadContext } from './gateway'
+import { sequencePutSchema, sequenceSchema, type SequencePut } from '@/features/outreach/sequenceContract'
 import {
   CampaignAnalyticsSchema, CampaignPageSchema, CampaignUpdateSchema, IdSchema,
   LeadConsentAttestationSchema, LeadCreateSchema, LeadDetailSchema, LeadPageSchema, LeadSummarySchema, LeadUpdateSchema,
@@ -31,6 +32,16 @@ const page = (query: { cursor?: string; limit?: number }): string => {
 export function createV2OutreachGateway(fetchImpl?: FetchLike) {
   const base = fetchImpl === undefined ? { errorSchema: CollaborationErrorSchema } : { fetchImpl, errorSchema: CollaborationErrorSchema }
   return {
+    getOutreachSequenceDraft(ctx: ReadContext, campaignId: string, signal: AbortSignal) {
+      return requestJson(`/v2/outreach/campaigns/${seg(campaignId)}/sequence`, sequenceSchema, 16_384,
+        { ...base, headers: headers(ctx), signal })
+    },
+    saveOutreachSequenceDraft(ctx: ReadContext, proof: CsrfProof, campaignId: string, input: SequencePut, signal: AbortSignal) {
+      const parsed = sequencePutSchema.parse(input)
+      if (parsed.campaign_id !== IdSchema.parse(campaignId)) throw new GatewayError('transport', 'malformed', 'Campaign does not match sequence draft.')
+      return requestJson(`/v2/outreach/campaigns/${seg(campaignId)}/sequence`, sequenceSchema, 16_384,
+        { ...base, method: 'PUT', body: parsed, maxRequestBytes: 8192, headers: headers(ctx, proof), signal })
+    },
     listCampaigns(ctx: ReadContext, query: { cursor?: string; limit?: number }, signal: AbortSignal) {
       return requestJson(`/v2/outreach/campaigns${page(query)}`, CampaignPageSchema, 65_536, { ...base, headers: headers(ctx), signal })
     },

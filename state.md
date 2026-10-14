@@ -1,3 +1,6 @@
+
+INT-801 draft.7 source checkpoint (2026-10-14): Maeve b3204ce read/write RLS and fetch is imported; canonical inert sequence GET/PUT, guarded Rails controller/routes and typed browser adapter are authored. Fable optional-operation session-policy binding, fleet-generated draft.7 declaration, exact PostgreSQL/Auth/HTTP/web Docker checks and independent review are pending. This source does not grant due claims, enrollment, live sending or release. Earlier dated source checkpoints below are historical.
+
 ### INT-801 integrated source candidate (2026-10-14)
 
 The maintained web test Dockerfile now copies canonical `contracts/v2` beside V1 so Soren can generate and check draft.5 declarations without a task-only COPY overlay. The generated draft.5 declaration is still absent; no Docker build or web gate ran in this worktree. The recipe change followed root’s explicit integration instruction and remains pending Soren fleet validation.

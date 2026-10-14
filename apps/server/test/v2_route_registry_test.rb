@@ -12,12 +12,20 @@ class V2RouteRegistryTest < Minitest::Test
     end
   end
 
-  def test_ready_registry_exposes_only_sixteen_active_versioned_routes
+  def test_ready_registry_exposes_only_eighteen_active_versioned_routes
     mapper = Mapper.new
     assert V2RouteRegistry.register!(mapper, enabled: true, controllers_ready: true)
-    assert_equal 16, mapper.routes.size
+    assert_equal 18, mapper.routes.size
     assert(mapper.routes.all? { |_, path, _| path.start_with?("/v2/") })
     refute(mapper.routes.any? { |_, path, _| path.start_with?("/v2/worker/") })
+  end
+
+  def test_sequence_draft_routes_use_guarded_controller_only
+    mapper = Mapper.new
+    assert V2RouteRegistry.register!(mapper, enabled: true, controllers_ready: true,
+      operations: %w[getOutreachSequenceDraft saveOutreachSequenceDraft])
+    assert_equal [[:get, "/v2/outreach/campaigns/:campaign_id/sequence", "v2/outreach/sequences#show"],
+      [:put, "/v2/outreach/campaigns/:campaign_id/sequence", "v2/outreach/sequences#update"]], mapper.routes
   end
 
   def test_manual_consent_route_uses_guarded_lead_controller

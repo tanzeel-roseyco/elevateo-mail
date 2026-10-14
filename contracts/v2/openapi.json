@@ -2,8 +2,8 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Elevateo additive administration, outreach and scoped read API",
-    "version": "2.0.0-draft.6",
-    "description": "V1 schemas unchanged. Admin, inert outreach and scoped direct-message operations are isolated integration candidates pending fleet security validation; worker status remains disabled."
+    "version": "2.0.0-draft.7",
+    "description": "V1 schemas unchanged. Inert sequence draft metadata joins the isolated V2 integration candidate; delivery and enrollment remain disabled pending fleet security validation. Worker status remains disabled."
   },
   "servers": [
     {
@@ -788,6 +788,133 @@
             "description": "Expected revision stale"
           }
         }
+      }
+    },
+    "/v2/outreach/campaigns/{campaign_id}/sequence": {
+      "get": {
+        "operationId": "getOutreachSequenceDraft",
+        "x-elevateo-status": "active",
+        "parameters": [
+          {
+            "name": "campaign_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Current campaign draft metadata",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OutreachSequenceDraft"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Absent or inaccessible campaign/draft",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OutreachSequenceError"
+                }
+              }
+            }
+          }
+        },
+        "description": "Inert campaign sequence draft metadata; no send, due claim or enrollment authority."
+      },
+      "put": {
+        "operationId": "saveOutreachSequenceDraft",
+        "x-elevateo-status": "active",
+        "parameters": [
+          {
+            "name": "campaign_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "X-CSRF-Token",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OutreachSequenceChange"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Replaced or exact replayed draft",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OutreachSequenceDraft"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Created draft",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OutreachSequenceDraft"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed or extra input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OutreachSequenceError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Absent or inaccessible campaign/draft",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OutreachSequenceError"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Revision, operation or reschedule conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OutreachSequenceError"
+                }
+              }
+            }
+          }
+        },
+        "description": "Inert campaign sequence draft metadata; no send, due claim or enrollment authority."
       }
     }
   },
@@ -1660,6 +1787,179 @@
             "type": "integer",
             "minimum": 0,
             "maximum": 2147483647
+          }
+        }
+      },
+      "OutreachSequenceStep": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "position",
+          "delay_seconds",
+          "local_time",
+          "label"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "position": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 20
+          },
+          "delay_seconds": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2592000
+          },
+          "local_time": {
+            "type": "string",
+            "pattern": "^(?:[01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]$"
+          },
+          "label": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120,
+            "x-elevateo-maxUtf8Bytes": 480
+          }
+        }
+      },
+      "OutreachSequenceDraft": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "campaign_id",
+          "version",
+          "status",
+          "timezone",
+          "steps"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "campaign_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "draft",
+              "held"
+            ]
+          },
+          "timezone": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "description": "Server validates an IANA timezone identifier."
+          },
+          "steps": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 20,
+            "items": {
+              "$ref": "#/components/schemas/OutreachSequenceStep"
+            },
+            "description": "Positions must be unique and exactly 1..N in array order."
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 2147483647
+          }
+        }
+      },
+      "OutreachSequenceChange": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "campaign_id",
+          "operation_id",
+          "expected_version",
+          "status",
+          "timezone",
+          "steps"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "campaign_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "draft",
+              "held"
+            ]
+          },
+          "timezone": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "description": "Server validates an IANA timezone identifier."
+          },
+          "steps": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 20,
+            "items": {
+              "$ref": "#/components/schemas/OutreachSequenceStep"
+            },
+            "description": "Positions must be unique and exactly 1..N in array order."
+          },
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "expected_version": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 1,
+            "maximum": 2147483646,
+            "description": "Null creates the one campaign draft; an integer replaces its exact version."
+          }
+        }
+      },
+      "OutreachSequenceError": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "message",
+          "request_id"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "enum": [
+              "request_invalid",
+              "not_available",
+              "draft_conflict",
+              "operation_mismatch"
+            ]
+          },
+          "message": {
+            "type": "string",
+            "maxLength": 256
+          },
+          "request_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
           }
         }
       }
