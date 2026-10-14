@@ -24,7 +24,8 @@ describe('isolated V2 outreach gateway', () => {
 
   it('keeps accounts unavailable without dispatch', async () => {
     const fetchImpl = vi.fn(async (_input: string, _init: RequestInit) => response({ items: [], next_cursor: null }))
-    await expect(createV2OutreachGateway(fetchImpl).listAccounts(context, id, {}, new AbortController().signal))
+    const gateway: OutreachGateway = createV2OutreachGateway(fetchImpl)
+    await expect(gateway.listAccounts(context, id, {}, new AbortController().signal))
       .rejects.toMatchObject({ kind: 'api', code: 'temporarily_unavailable' })
     expect(fetchImpl).not.toHaveBeenCalled()
   })
