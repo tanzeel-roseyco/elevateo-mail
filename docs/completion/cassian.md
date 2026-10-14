@@ -73,3 +73,5 @@ The canonical OpenAPI version was advanced to `2.0.0-draft.4` for the direct-mes
 Lyra 3039bcd fleet type-fixture repair and Mira 1923c16 later-page direct-message UI were merged. Mira's ThreadPage accepts Cassian's exact gateway method signature, but Fable App.tsx still renders the page without that optional prop; root/Fable were asked to bind it. Thus the direct message UI remains inactive in production source until that owner seam lands.
 
 Fable 10a64a1 central Outreach session-loss policy merged into 09cd4ef. It is source-only pending Soren fleet web checks; direct-message ThreadPage prop is still unbound in Fable App.tsx. The latest integrated web candidate includes both fixes for the c4fa typecheck failures, but no full web rerun result has been observed.
+
+Soren exact 2184127 fleet web run passed frozen V1 `check:api` and lint, then typecheck FAILED only in Mira direct-message ThreadPage: two `exactOptionalPropertyTypes` optional-prop `undefined` assignments (source line 60, test line 39) and missing `MB2` constant (test line 210). Unit/build NOT_REACHED; task cleanup zero. Mira owner repair requested.
