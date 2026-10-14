@@ -87,3 +87,10 @@ Root supplied Linus results: 172 source lines, two confirmed integration defects
 Ada ADV-714 design advice: contract/hash identity proves provenance, not lifecycle correctness. Root must reconcile R3 with the actual log and test real login/mailbox/thread/draft/reload, tenant/session invalidation, draft version conflicts/lost ACK, Storage isolation and restore. No additional defect count or reviewed LOC was supplied for Ada; density N/A. Analytical advice is recorded here and mirrored Obsidian records, not claimed as an executed connected simulation. All application tests and visual gates NOT_RUN in Cassian checkout. Static source dependency audit finds one inherited frozen package hash conflict and absent seed/check services; root owns disposition and test strategy.
 
 Five fleet jobs failed model startup with HTTP400 for gpt-6.1-sol in the old CLI/account. Root is repairing compatibility before relaunch. Named fleet SSH terminals use report/control files and manual supervision; they are not remote Orca dispatches. Vault content was copied verbatim above and prior Cassian record retained; vault original untouched.
+
+
+## RES-406 research checkpoint — IN PROGRESS
+
+Nontechnical: recommend a calm shared mailroom with clear ownership, honest account checks and reliable drafts; no invented reputation promise or synthetic engagement.
+
+Technical/strategic: official public sources retrieved 2026-10-14 support timestamped DNS/provider evidence, consent and suppression dispatch rechecks, team quota control and recipient-level event reconciliation within existing Rails/Postgres/React architecture. Current Resend policy is dated October 13, 2026. Research proposals and planned tests are in docs/research/instantly-gmail-rea.md. REA skill and root runtime captures remain unavailable; independent review and all proposed tests are pending. No app source, provider accounts, DNS or live mail changed. Root owns vault mirroring.
