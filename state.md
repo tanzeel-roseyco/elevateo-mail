@@ -1,3 +1,5 @@
+ADM-803: Exact unbound roster and binding boundary source added on Theo branch; tests requested, not executed. Protected administration routes await Sabine authority and Cassian DTO agreement. See docs/completion/theo.md.
+
 # Project state
 
 Application IN PROGRESS — R24 isolated BE03 candidate (2026-10-14). Root authorizes implementation on baseline `03ae770c56271cd8236726bfd8fe63248e81283d` in parallel with BE02 acceptance. BE02 remains OPEN/unaccepted; integration/release gated. S1+S2 priority: saved draft -> consistent review -> human approval -> durable queued intent. Canonical additive `contracts/v1/openapi.json` version `1.0.0-send.1` is prepared; every baseline C/D operation/component and original fixture is preserved.

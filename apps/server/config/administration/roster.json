@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "live_activation": false,
+  "people": [
+    {"key":"elev-person-001","display_name":"Allan Chan","title":"CEO","department":null,"email":null,"auth_user_id":null,"enrollment_state":"unbound","proposed_org_role":"organization_owner"},
+    {"key":"elev-person-002","display_name":"Callum McFarlane","title":"Senior Partner","department":null,"email":null,"auth_user_id":null,"enrollment_state":"unbound","proposed_org_role":"organization_admin"},
+    {"key":"elev-person-003","display_name":"Tanzeel Ahmad","title":"Junior Partner","department":"technology","email":null,"auth_user_id":null,"enrollment_state":"unbound","proposed_org_role":"technology_operator"},
+    {"key":"elev-person-004","display_name":"Hazem Dwek","title":"Senior Partner","department":"technology","email":null,"auth_user_id":null,"enrollment_state":"unbound","proposed_org_role":"technology_operator"},
+    {"key":"elev-person-005","display_name":"Jeison Mulder","title":"Senior Partner","department":"technology","email":null,"auth_user_id":null,"enrollment_state":"unbound","proposed_org_role":"technology_operator"},
+    {"key":"elev-person-006","display_name":"Lachlan MacDonald","title":"Senior Partner","department":"sales","email":null,"auth_user_id":null,"enrollment_state":"unbound","proposed_org_role":"sales_lead"},
+    {"key":"elev-person-007","display_name":"Thomas Charrier","title":"Junior Partner","department":"sales","email":null,"auth_user_id":null,"enrollment_state":"unbound","proposed_org_role":"sales_member"},
+    {"key":"elev-person-008","display_name":"Emil Larsen","title":"Junior Partner","department":"cybersecurity","email":null,"auth_user_id":null,"enrollment_state":"unbound","proposed_org_role":"security_auditor"},
+    {"key":"elev-person-009","display_name":"Roy Neven","title":"Junior Partner","department":"sales","email":null,"auth_user_id":null,"enrollment_state":"unbound","proposed_org_role":"sales_member"},
+    {"key":"elev-person-010","display_name":"Ben Pantis","title":"Associate","department":null,"email":null,"auth_user_id":null,"enrollment_state":"unbound","proposed_org_role":"organization_member"},
+    {"key":"elev-person-011","display_name":"Matthew","title":"Associate","department":null,"email":null,"auth_user_id":null,"enrollment_state":"unbound","proposed_org_role":"organization_member"},
+    {"key":"elev-person-012","display_name":"Adria Pros","title":"Sales representative","department":"sales","email":null,"auth_user_id":null,"enrollment_state":"unbound","proposed_org_role":"sales_member"}
+  ],
+  "mailbox_grants": []
+}

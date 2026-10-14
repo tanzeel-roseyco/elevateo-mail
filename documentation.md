@@ -1,3 +1,5 @@
+ADM-803 provisional administration roster: docs/completion/theo.md. Configuration identities are unbound and grant no effective access; API wiring and runtime evidence remain pending.
+
 # Product requirements and decision record
 
 ### Mira BE03 UI isolated R24 implementation (2026-10-14)
