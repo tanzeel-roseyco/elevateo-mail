@@ -33,6 +33,10 @@ def verify(directory: pathlib.Path) -> dict[str, str]:
                 digest.update(block)
         if digest.hexdigest() != expected:
             raise ValueError(f"checksum mismatch: {name}")
+    credentials = (directory / "credentials.env").read_text(encoding="ascii").splitlines()
+    stack_ids = [line for line in credentials if line.startswith("STACK_ID=")]
+    if stack_ids != ["STACK_ID=elevateo-mail-test"]:
+        raise ValueError("snapshot is not from the isolated test stack")
     return entries
 
 
