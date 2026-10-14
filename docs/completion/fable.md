@@ -171,6 +171,19 @@ Confirmed Celeste seam: the raw `createV2OutreachGateway()` injected in R7 meant
 - Tests authored, NOT executed: `outreachSessionPolicy.test.ts` (3 cases: 401 write reaches the policy with the call-time generation and rethrows; ordinary rejection passes through; sync throw and optional capabilities) and `Shell.test.tsx` (3 cases: 401 from `createCampaign` shows "Restoring access" with form and Outreach rail gone, then access returns; one `context_changed` from `listCampaigns` recovers and the remounted list re-reads; `request_invalid` stays on Celeste's page as her alert with no session transition). FE-805 authored cases now 24, none executed.
 - Unchanged: URL grammar, sidebar landmarks, brand, manual simulation label, `main.tsx` production binding. No server files; Cassian intakes the frontend paths listed in the outbox receipt.
 
+## R9 — bind Cassian's exact V2 direct-message reader into App (2026-10-15)
+
+Intake `cdaef1f`: `apps/web` now equals the apps/web tree of Cassian `9ed7218` (which already contains this branch through `09cd4ef`), bringing Mira `1923c16` (`ThreadPage({ readDirectMessage?: DirectMessageRead })`) and Cassian's `createV2Gateway().getDirectMessage(ctx, mailboxId, threadId, messageId, signal)`. No server source taken or changed.
+
+Binding, source only:
+- `apps/web/src/app/featureGateways.tsx` — `FeatureGateways.readDirectMessage?: DirectMessageRead` beside `outreach`. Absence keeps Mira's honest unavailable state.
+- `apps/web/src/app/App.tsx` — `ThreadRoute` reads the capability and renders `ThreadPage` with a conditional spread (exactOptionalPropertyTypes).
+- `apps/web/src/main.tsx` — production `featureGateways.readDirectMessage` delegates to the exact V2 reader; no second adapter and no cursor walk.
+- Shared session policy: Mira's page already captures the generation at call time and routes every direct-read failure through `SessionProvider.handleError`. Deliberately NOT wrapped a second time: a double 401 would call `attemptRefresh` twice and spend the single bounded refresh, ending at sign-in. Mailbox/thread mismatch on the response is refused by her page.
+- Tests authored, NOT executed: `apps/web/src/app/App.test.tsx` (3 cases on the real App composition and hash deep link: later-page message URL resolves through one direct read with exact arguments and exactly one thread read; a response bound to another mailbox shows the generic unavailable state; a 401 from the direct read clears thread content and lands on sign-in). FE-805 authored cases now 27, none executed.
+
+Known open item, not mine: Soren's exact `2184127` fleet typecheck FAILED in Mira's `ThreadPage.tsx:60` / `ThreadPage.test.tsx:39` (explicit `undefined` for an optional prop) and missing `MB2` in her test. Those blobs are unchanged in this intake; Mira owns that repair, and my `ThreadRoute` spread does not touch her file.
+
 ## Limitations
 
 - No lint, typecheck, unit test, build or visual check has been executed by Fable; Soren owns execution and Tessa owns visual evidence.

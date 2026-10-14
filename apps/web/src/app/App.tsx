@@ -11,10 +11,17 @@ import { SearchPage } from '@/features/search/SearchPage'
 import { ThreadPage } from '@/features/thread/ThreadPage'
 import { MailboxSelection } from './MailboxSelection'
 import { DraftIntentProvider } from './draftIntent'
-import { FeatureGatewaysProvider, type FeatureGateways } from './featureGateways'
+import { FeatureGatewaysProvider, useFeatureGateways, type FeatureGateways } from './featureGateways'
 import { featureRoutes } from './features'
 import { SessionProvider } from './session'
 import { Shell } from './Shell'
+
+// FE-805: Mira's reader takes the direct-message capability as an optional prop; absence keeps her
+// honest "unavailable" state. exactOptionalPropertyTypes forbids an explicit undefined, hence the spread.
+function ThreadRoute() {
+  const { readDirectMessage } = useFeatureGateways()
+  return <ThreadPage {...(readDirectMessage === undefined ? {} : { readDirectMessage })} />
+}
 
 // AIDEV-NOTE: Hash routing keeps deep links working when Rails or the dev proxy serves one page;
 // swap to BrowserRouter once the host serves the SPA for every route.
@@ -31,7 +38,7 @@ export function App({ gateway, featureGateways = {} }: { gateway: MailroomGatewa
           <Route element={<Shell />}>
             <Route index element={<MailboxSelection />} />
             <Route path="/mailboxes/:mailboxId" element={<InboxPage />} />
-            <Route path="/mailboxes/:mailboxId/threads/:threadId" element={<ThreadPage />} />
+            <Route path="/mailboxes/:mailboxId/threads/:threadId" element={<ThreadRoute />} />
             {/* BE-02 C/D: drafts, membership and search are URL-addressed like every other view. */}
             <Route path="/mailboxes/:mailboxId/drafts" element={<DraftsPage />} />
             <Route path="/mailboxes/:mailboxId/drafts/:draftId" element={<DraftEditorPage />} />

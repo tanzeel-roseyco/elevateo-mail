@@ -7,9 +7,17 @@
 // over V2 (see docs/completion/fable.md "Gateway reconciliation"). Never fabricate a capability here.
 import { createContext, useContext, type ReactNode } from 'react'
 import type { OutreachGateway } from '@/features/outreach/contract'
+import type { DirectMessageRead } from '@/features/thread/ThreadPage'
 
 export interface FeatureGateways {
   readonly outreach?: OutreachGateway
+  /**
+   * Cassian's exact V2 `getDirectMessage(ctx, mailboxId, threadId, messageId, signal)` reader for
+   * a message URL beyond the loaded thread page. Mira's ThreadPage applies the shared session
+   * policy itself (generation at call time, handleError on failure); binding it a second time here
+   * would spend the single bounded refresh twice, so this seam carries the raw reader.
+   */
+  readonly readDirectMessage?: DirectMessageRead
 }
 
 const NONE: FeatureGateways = {}

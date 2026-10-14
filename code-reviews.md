@@ -974,3 +974,7 @@ Author self-inspection only; no independent review was performed or is claimed. 
 
 
 INT-801 account-read gate review: inspected Dorian `AccountsController#index/#show` and `campaign_repository` (~41 LOC) against tenant and mailbox visibility requirements. Campaign binding and role proof are present, but no per-account referenced-mailbox visibility filter is apparent before returning mailbox_id/label to an Outreach reader; one unconfirmed metadata disclosure risk, not counted as a confirmed defect pending policy/SQL proof (confirmed defect density 0/KLOC for this packet). Account GET routes and browser adapter remain disabled; root/Dorian/Sabine were asked for an owner policy and denied regression. No runtime review claimed.
+### FE-805 R9 direct-message binding self-inspection (Fable, 2026-10-15)
+
+Author self-inspection only; no independent review performed or claimed. Scope: `App.tsx` delta (9 LOC), `featureGateways.tsx` delta (8 LOC), `main.tsx` delta (8 LOC), `App.test.tsx` (88 LOC). Checked: optional prop never passed as explicit `undefined`; production reader delegates to the exact V2 method without a second adapter; session policy applied once (Mira's page), not twice; tests assert exact direct-read arguments and a single thread read. Defects found: 0 across 113 LOC (0/KLOC). Tests authored, not executed; fleet run requested from Soren. Mira's `2184127` typecheck failure in her ThreadPage is inherited unchanged and remains her owned repair.
+
