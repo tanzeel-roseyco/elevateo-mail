@@ -62,6 +62,9 @@ exit 99
                     calls = log.read_text().splitlines()
                     self.assertEqual(any(call.startswith("rm ") for call in calls),
                                      mode in ("success", "daemon-failure"), calls)
+                    if mode in ("success", "daemon-failure"):
+                        self.assertEqual([call for call in calls if call.startswith("rm ")],
+                                         ["rm -f " + "b" * 64])
                     self.assertEqual(any(call.startswith("run ") for call in calls), mode != "collision")
                     if mode == "daemon-failure":
                         self.assertIn("cleanup_exit=1", result.stdout)
