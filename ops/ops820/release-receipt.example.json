@@ -1,0 +1,33 @@
+{
+  "status": "BLOCKED_UNEXECUTED",
+  "source": {
+    "commit": "REPLACE_WITH_IMMUTABLE_SHA",
+    "review_receipt": "REPLACE_WITH_PRIVATE_REFERENCE"
+  },
+  "artifacts": [
+    {
+      "name": "REPLACE_WITH_ARTIFACT_NAME",
+      "sha256": "REPLACE_WITH_SHA256",
+      "provenance": "REPLACE_WITH_BUILDER_AND_SOURCE_REFERENCE",
+      "sbom_sha256": "REPLACE_WITH_SHA256",
+      "signature_verification": "NOT_RUN"
+    }
+  ],
+  "configuration": {
+    "redacted_diff_sha256": "REPLACE_WITH_SHA256",
+    "outbound_hold": true,
+    "send_api_enabled": false,
+    "live_provider_credentials_present": false
+  },
+  "test": {
+    "snapshot_manifest_sha256": "REPLACE_WITH_SHA256",
+    "restore_job_exit": null,
+    "restore_cleanup_exit": null,
+    "migration_down_up": "NOT_RUN",
+    "twelve_person_unbound_seed": "NOT_RUN",
+    "rls_identity_checks": "NOT_RUN",
+    "health_readiness_worker": "NOT_RUN"
+  },
+  "blockers": ["REPLACE_WITH_OPEN_GATES"],
+  "approval": "NOT_GRANTED"
+}
