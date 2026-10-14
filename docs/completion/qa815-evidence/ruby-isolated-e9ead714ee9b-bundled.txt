@@ -1,0 +1,47 @@
+source=e9ead714ee9baf68f9b884f4b967b2094ef1ee15
+image=sha256:7dc61d4b7e12f94764f95f4f1bfe8e3940049247e6d409898ce9d3ed2810f348
+started=2026-10-14T16:55:11Z
+setup_correction=bundle exec
+Run options: --seed 56049
+
+# Running:
+
+........
+
+Finished in 0.165971s, 48.2013 runs/s, 542.2644 assertions/s.
+
+8 runs, 90 assertions, 0 failures, 0 errors, 0 skips
+Run options: --seed 2688
+
+# Running:
+
+.............
+
+Finished in 0.011642s, 1116.6325 runs/s, 4724.2146 assertions/s.
+
+13 runs, 55 assertions, 0 failures, 0 errors, 0 skips
+Run options: --seed 61067
+
+# Running:
+
+.E.E...
+
+Finished in 0.003881s, 1803.5831 runs/s, 4380.1304 assertions/s.
+
+  1) Error:
+AttachmentGatewayAppTest#test_expired_or_range_request_denies_without_database_or_storage:
+ArgumentError: unknown keyword: "expires_at"
+    test/attachment_gateway/app_test.rb:62:in 'request'
+    test/attachment_gateway/app_test.rb:88:in 'AttachmentGatewayAppTest#test_expired_or_range_request_denies_without_database_or_storage'
+
+  2) Error:
+AttachmentGatewayAppTest#test_signed_wrong_mailbox_scope_denies_before_storage:
+ArgumentError: unknown keyword: "mailbox_id"
+    test/attachment_gateway/app_test.rb:62:in 'request'
+    test/attachment_gateway/app_test.rb:97:in 'AttachmentGatewayAppTest#test_signed_wrong_mailbox_scope_denies_before_storage'
+
+7 runs, 17 assertions, 0 failures, 2 errors, 0 skips
+unit_exit=1
+finished=2026-10-14T16:55:13Z
+archive_absent=yes
+remaining_containers=0
