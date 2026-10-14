@@ -72,7 +72,7 @@ class CampaignAuthorizedDatabaseTest < MailboxMembershipDatabaseCase
   end
 
   def test_protected_app_read_role_can_apply_campaign_policy
-    count = nil
+    campaign = SecureRandom.uuid
     outreach_scope(write: true) do |connection|
       connection.execute("SET LOCAL ROLE elevateo_app_read")
       assert_equal "elevateo_app_read", connection.select_value("SELECT current_user")
@@ -85,9 +85,16 @@ class CampaignAuthorizedDatabaseTest < MailboxMembershipDatabaseCase
         "OUT804 restricted role proof", [bind(@identity.digest)]).first.fetch("result")
       result = raw.is_a?(String) ? JSON.parse(raw) : raw
       assert_equal "ok", result.fetch("status")
-      count = connection.select_value("SELECT count(*) FROM app.campaigns")
+      inserted = connection.exec_query(<<~SQL, "OUT804 restricted insert", [bind(campaign), bind(@org), bind(SecureRandom.uuid)]).first
+        INSERT INTO app.campaigns(id,organization_id,operation_id,name,creation_fingerprint)
+        VALUES ($1::uuid,$2::uuid,$3::uuid,'Restricted draft',repeat('a',64)) RETURNING id
+      SQL
+      assert_equal campaign, inserted.fetch("id")
+      updated = connection.exec_query("UPDATE app.campaigns SET name='Revised draft',version=version+1 " \
+        "WHERE id=$1::uuid RETURNING version", "OUT804 restricted update", [bind(campaign)]).first
+      assert_equal 2, updated.fetch("version")
     end
-    assert_operator count.to_i, :>=, 1
+    assert_equal "2", @admin.exec_params("SELECT version FROM app.campaigns WHERE id=$1", [campaign]).getvalue(0, 0)
   end
 
   def test_app_read_role_with_copied_digest_and_no_write_marker_is_denied
@@ -127,6 +134,17 @@ class CampaignAuthorizedDatabaseTest < MailboxMembershipDatabaseCase
       result = raw.is_a?(String) ? JSON.parse(raw) : raw
       assert_equal "not_found", result.fetch("status")
     end
+  end
+
+  def test_revoked_session_cannot_read_campaign_with_stale_digest
+    assert_equal "ok", invoke("revoke_session", @digest, "local").fetch("status")
+    count = nil
+    scope(write: false) do |connection|
+      connection.exec_query("SELECT set_config('app.outreach_digest',$1,true)", "OUT804 revoked digest",
+        [bind(@identity.digest)])
+      count = connection.select_value("SELECT count(*) FROM app.campaigns")
+    end
+    assert_equal 0, count.to_i
   end
 
   def test_sales_actor_without_shared_mailbox_membership_cannot_read_campaign_account
