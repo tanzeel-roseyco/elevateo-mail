@@ -27,3 +27,42 @@ BEGIN
     RAISE EXCEPTION 'API read grant missing';
   END IF;
 END $$;
+
+-- Synthetic row remains inside this transaction. With no identity context the API role must see none.
+BEGIN;
+INSERT INTO app.organizations (id, name)
+VALUES ('82000000-0000-4000-8000-000000000001', 'OPS820 isolated probe');
+INSERT INTO app.organization_memberships (organization_id, user_id)
+VALUES ('82000000-0000-4000-8000-000000000001', '82000000-0000-4000-8000-000000000002');
+SET LOCAL ROLE elevateo_api;
+DO $$
+BEGIN
+  IF EXISTS (SELECT 1 FROM app.organizations
+             WHERE id = '82000000-0000-4000-8000-000000000001') THEN
+    RAISE EXCEPTION 'API role saw organization without identity context';
+  END IF;
+END $$;
+ROLLBACK;
+
+-- Synthetic GUC policy probe: this does not authenticate a user or prove HTTP session binding.
+BEGIN;
+INSERT INTO app.organizations (id, name) VALUES
+  ('82000000-0000-4000-8000-000000000011', 'OPS820 org A'),
+  ('82000000-0000-4000-8000-000000000012', 'OPS820 org B');
+INSERT INTO app.organization_memberships (organization_id, user_id) VALUES
+  ('82000000-0000-4000-8000-000000000011', '82000000-0000-4000-8000-000000000021'),
+  ('82000000-0000-4000-8000-000000000012', '82000000-0000-4000-8000-000000000022');
+INSERT INTO app.mailboxes (id, organization_id, address, visibility) VALUES
+  ('82000000-0000-4000-8000-000000000031', '82000000-0000-4000-8000-000000000011', 'a@ops820.invalid', 'shared'),
+  ('82000000-0000-4000-8000-000000000032', '82000000-0000-4000-8000-000000000012', 'b@ops820.invalid', 'shared');
+SET LOCAL ROLE elevateo_api;
+SET LOCAL app.user_id = '82000000-0000-4000-8000-000000000021';
+SET LOCAL app.org_id = '82000000-0000-4000-8000-000000000011';
+DO $$
+BEGIN
+  IF (SELECT count(*) FROM app.mailboxes WHERE id = '82000000-0000-4000-8000-000000000031') <> 1 OR
+     EXISTS (SELECT 1 FROM app.mailboxes WHERE id = '82000000-0000-4000-8000-000000000032') THEN
+    RAISE EXCEPTION 'synthetic policy scope mismatch';
+  END IF;
+END $$;
+ROLLBACK;

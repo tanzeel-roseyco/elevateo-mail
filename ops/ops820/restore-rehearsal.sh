@@ -4,13 +4,14 @@ umask 077
 base=$(cd -- "$(dirname -- "$0")/../supabase" && pwd)
 packet=$(cd -- "$(dirname -- "$0")" && pwd)
 snapshot=${1:?paired backup directory required}
+[[ "$snapshot" = /* ]] || exit 66
 mode=${2:-base}
 case "$mode" in base|full) ;; *) echo 'usage: restore-rehearsal.sh SNAPSHOT base|full' >&2; exit 64;; esac
 if [[ "$mode" == full ]]; then
   # AIDEV-NOTE: no partial full gate when owner migrations and identity fixtures are absent.
   source_root=$(cd -- "$packet/../.." && pwd)
   for suffix in 08 09 10 11; do
-    compgen -G "$source_root/apps/server/db/migrate/*0000$suffix*.rb" >/dev/null || {
+    compgen -G "$source_root/apps/server/db/migrate/202610130000$suffix*.rb" >/dev/null || {
       echo "full gate blocked: migration $suffix absent" >&2; exit 66;
     }
   done
@@ -28,20 +29,25 @@ available=$(awk '/MemAvailable:/ {printf "%.0f\n", $2*1024}' /proc/meminfo)
 awk -v a="$available" 'BEGIN {exit !(a >= 8589934592)}' || exit 75
 project="ops402-restore-$(date +%s)-$$"
 envfile=$(mktemp "$base/.env.restore.XXXXXX")
-cp "$snapshot/credentials.env" "$envfile"
-# Fresh names and ports: restored credentials never connect this drill to a live network.
-sed -i -e 's/^AUTH_PORT=.*/AUTH_PORT=18310/' \
-  -e 's/^REST_PORT=.*/REST_PORT=18311/' -e 's/^STORAGE_PORT=.*/STORAGE_PORT=18312/' "$envfile"
 compose() { docker compose -p "$project" --env-file "$envfile" -f "$base/compose.yaml" "$@"; }
+started=0
 cleanup() {
   local job=$? clean=0
-  compose down --volumes --remove-orphans >/dev/null 2>&1 || clean=$?
+  if (( started )); then compose down --volumes --remove-orphans >/dev/null 2>&1 || clean=$?; fi
+  if [[ -n $(docker ps -aq --filter "label=com.docker.compose.project=$project") ||
+        -n $(docker volume ls -q --filter "label=com.docker.compose.project=$project") ||
+        -n $(docker network ls -q --filter "label=com.docker.compose.project=$project") ]]; then clean=1; fi
   rm -f -- "$envfile"
   echo "restore_job_exit=$job restore_cleanup_exit=$clean"
   (( clean == 0 )) || job=1
   exit "$job"
 }
 trap cleanup EXIT
+cp "$snapshot/credentials.env" "$envfile"
+# Fresh names and ports: restored credentials never connect this drill to a live network.
+sed -i -e 's/^AUTH_PORT=.*/AUTH_PORT=18310/' \
+  -e 's/^REST_PORT=.*/REST_PORT=18311/' -e 's/^STORAGE_PORT=.*/STORAGE_PORT=18312/' "$envfile"
+started=1
 compose up -d --wait --wait-timeout 180 db mailpit
 # Globals contain credentials: transform privately and pipe directly, never log SQL.
 python3 "$base/restore-globals.py" "$snapshot/globals.sql" | compose exec -T db psql -U supabase_admin -d postgres -v ON_ERROR_STOP=1 >/dev/null

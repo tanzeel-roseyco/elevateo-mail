@@ -35,8 +35,9 @@ def verify(directory: pathlib.Path) -> dict[str, str]:
             raise ValueError(f"checksum mismatch: {name}")
     credentials = (directory / "credentials.env").read_text(encoding="ascii").splitlines()
     stack_ids = [line for line in credentials if line.startswith("STACK_ID=")]
-    if stack_ids != ["STACK_ID=elevateo-mail-test"]:
-        raise ValueError("snapshot is not from the isolated test stack")
+    task_markers = [line for line in credentials if line.startswith("OPS820_TASK_OWNED=")]
+    if stack_ids != ["STACK_ID=elevateo-mail-test"] or task_markers != ["OPS820_TASK_OWNED=1"]:
+        raise ValueError("snapshot is not from the task-owned test stack")
     return entries
 
 
