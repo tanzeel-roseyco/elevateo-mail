@@ -52,3 +52,5 @@ Mira compose seam candidate: `SCN-QA-821-F1` opens a seeded thread as a composer
 Reply candidate correction: the server may mark a seeded thread subject truncated, in which case Mira intentionally leaves the reply subject empty. QA816 checks the recipient and reply-to binding without assuming a `Re:` prefix for that fixture.
 
 Mira transport recovery candidate: `SCN-QA-821-F2` aborts an unforwarded real browser thread GET, asserts the error removes plaintext, then clicks Try again and requires a real GET 200 and seeded message. It uses the existing acceptance transport barrier, not a fabricated response. Two fixed screenshots bring the set to twenty-eight; runtime remains NOT_RUN.
+
+Review packet suggestion for root: divide `qa816-matrix.e2e.ts` by scenario groups into bounded <=200 LOC packets rather than treating the whole file as one review assignment; review `qa816-send.e2e.ts` and `qa816-outreach.e2e.ts` separately. A dedicated design tradeoff reviewer should inspect fixture ownership, API response observation, barrier semantics and screenshot admission. No independent review has occurred.
