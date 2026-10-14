@@ -48,9 +48,11 @@ module Elevateo
         end
         result
       rescue ActiveRecord::StatementInvalid => error
-        raise unless error.cause.is_a?(PG::CheckViolation)
-
-        raise Rejected, "replay_mismatch"
+        case error.cause
+        when PG::CheckViolation then raise Rejected, "replay_mismatch"
+        when PG::InvalidParameterValue then raise Rejected, "request_invalid"
+        else raise
+        end
       end
 
       private

@@ -7,6 +7,14 @@ class InboundDatabaseTest < DraftDatabaseTestCase
   ADDRESS = { "display_name" => nil, "address" => "sender@example.invalid" }.freeze
   RECIPIENTS = [{ "display_name" => nil, "address" => "inbox@example.invalid" }].freeze
 
+  def setup
+    super
+    %w[account-a account-b].each do |account|
+      @admin.exec_params("INSERT INTO app.inbound_fake_accounts(organization_id,mailbox_id,provider_account_id) VALUES($1,$2,$3)",
+        [@org,@box,account])
+    end
+  end
+
   def ingest(org: @org, account: "account-a", event: "event-1", body: "hello", digest: nil)
     digest ||= Digest::SHA256.hexdigest(body)
     values = [@digest, @user, org, @box, account, event, digest,
@@ -45,7 +53,32 @@ class InboundDatabaseTest < DraftDatabaseTestCase
     assert_equal "created", ingest(account: "account-b").fetch("result")
     assert_equal [2, 2, 2], counts
     assert_raises(PG::Error) { ingest(org: SecureRandom.uuid) }
+    assert_raises(PG::InvalidParameterValue) { ingest(account: "unbound") }
     assert_equal [2, 2, 2], counts
+  end
+
+  def test_identical_account_event_in_another_tenant_has_independent_receipt
+    other_org, other_box, other_thread, other_message = Array.new(4) { SecureRandom.uuid }
+    @admin.exec("BEGIN")
+    @admin.exec_params("INSERT INTO app.organizations(id,name) VALUES($1,'other inbound tenant')", [other_org])
+    @admin.exec_params("INSERT INTO app.mailboxes(id,organization_id,address,visibility) VALUES($1,$2,$3,'shared')",
+      [other_box,other_org,"#{other_box}@example.invalid"])
+    @admin.exec_params("INSERT INTO app.inbound_fake_accounts(organization_id,mailbox_id,provider_account_id) VALUES($1,$2,'account-a')",
+      [other_org,other_box])
+    @admin.exec_params("INSERT INTO app.threads(id,organization_id,mailbox_id,subject) VALUES($1,$2,$3,'other')",
+      [other_thread,other_org,other_box])
+    @admin.exec_params("INSERT INTO app.messages(id,organization_id,mailbox_id,thread_id,recipients) VALUES($1,$2,$3,$4,'[]')",
+      [other_message,other_org,other_box,other_thread])
+    @admin.exec_params(<<~SQL, [other_org,other_box,"event-1",Digest::SHA256.hexdigest("other"),other_thread,other_message])
+      INSERT INTO app.inbound_receipts(organization_id,mailbox_id,provider,provider_account_id,
+        provider_event_id,content_sha256,thread_id,message_id)
+      VALUES($1,$2,'fake','account-a',$3,$4,$5,$6)
+    SQL
+    assert_equal "created", ingest.fetch("result")
+    assert_equal 2, @admin.exec_params("SELECT count(*) FROM app.inbound_receipts WHERE provider_account_id=$1 AND provider_event_id=$2",
+      ["account-a","event-1"]).getvalue(0, 0).to_i
+  ensure
+    @admin.exec("ROLLBACK") if @admin.transaction_status != PG::PQTRANS_IDLE
   end
 
   def test_replay_mismatch_and_rollback_retry_do_not_lose_message

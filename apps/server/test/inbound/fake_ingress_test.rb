@@ -68,6 +68,9 @@ class FakeIngressTest < Minitest::Test
     assert_code "unsupported_mime" do
       ingest(raw_mime: MIME.sub("text/plain", "text/html"))
     end
+    assert_code "invalid_mime" do
+      ingest(raw_mime: "Content-Type: text/plain\r\n\r\nmissing envelope")
+    end
     assert_empty @store.records
   end
 

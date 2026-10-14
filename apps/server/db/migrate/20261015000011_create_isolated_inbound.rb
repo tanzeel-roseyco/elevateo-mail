@@ -3,6 +3,13 @@
 class CreateIsolatedInbound < ActiveRecord::Migration[8.1]
   def up
     execute <<~SQL
+      CREATE TABLE app.inbound_fake_accounts (
+        organization_id uuid NOT NULL,
+        mailbox_id uuid NOT NULL,
+        provider_account_id text NOT NULL CHECK (provider_account_id ~ '^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$'),
+        PRIMARY KEY (organization_id, mailbox_id, provider_account_id),
+        FOREIGN KEY (organization_id, mailbox_id) REFERENCES app.mailboxes(organization_id,id) ON DELETE CASCADE
+      );
       CREATE TABLE app.inbound_receipts (
         organization_id uuid NOT NULL,
         mailbox_id uuid NOT NULL,
@@ -15,15 +22,22 @@ class CreateIsolatedInbound < ActiveRecord::Migration[8.1]
         message_id uuid NOT NULL,
         created_at timestamptz NOT NULL DEFAULT clock_timestamp(),
         PRIMARY KEY (organization_id, mailbox_id, provider, provider_account_id, provider_event_id),
-        FOREIGN KEY (organization_id, mailbox_id) REFERENCES app.mailboxes(organization_id,id) ON DELETE CASCADE,
+        FOREIGN KEY (organization_id, mailbox_id, provider_account_id)
+          REFERENCES app.inbound_fake_accounts(organization_id,mailbox_id,provider_account_id) ON DELETE CASCADE,
         FOREIGN KEY (organization_id, mailbox_id, thread_id) REFERENCES app.threads(organization_id,mailbox_id,id)
           DEFERRABLE INITIALLY DEFERRED,
         FOREIGN KEY (organization_id, mailbox_id, thread_id, message_id)
           REFERENCES app.messages(organization_id,mailbox_id,thread_id,id) DEFERRABLE INITIALLY DEFERRED
       );
+      ALTER TABLE app.inbound_fake_accounts ENABLE ROW LEVEL SECURITY;
+      ALTER TABLE app.inbound_fake_accounts FORCE ROW LEVEL SECURITY;
       ALTER TABLE app.inbound_receipts ENABLE ROW LEVEL SECURITY;
       ALTER TABLE app.inbound_receipts FORCE ROW LEVEL SECURITY;
-      REVOKE ALL ON app.inbound_receipts FROM PUBLIC, elevateo_api, elevateo_app_read, elevateo_worker;
+      REVOKE ALL ON app.inbound_fake_accounts, app.inbound_receipts
+        FROM PUBLIC, elevateo_api, elevateo_app_read, elevateo_worker;
+      CREATE POLICY inbound_account_owner ON app.inbound_fake_accounts FOR ALL TO elevateo_owner
+        USING (organization_id = app.context_uuid('app.org_id'))
+        WITH CHECK (organization_id = app.context_uuid('app.org_id'));
       CREATE POLICY inbound_owner ON app.inbound_receipts FOR ALL TO elevateo_owner
         USING (organization_id = app.context_uuid('app.org_id'))
         WITH CHECK (organization_id = app.context_uuid('app.org_id'));
@@ -47,6 +61,8 @@ class CreateIsolatedInbound < ActiveRecord::Migration[8.1]
         IF p_mailbox IS NULL OR p_org IS DISTINCT FROM (proof->>'organization_id')::uuid OR
            p_actor IS DISTINCT FROM (proof->>'user_id')::uuid OR
            NOT EXISTS (SELECT 1 FROM app.mailboxes b WHERE b.organization_id = p_org AND b.id = p_mailbox) OR
+           NOT EXISTS (SELECT 1 FROM app.inbound_fake_accounts a WHERE a.organization_id = p_org
+             AND a.mailbox_id = p_mailbox AND a.provider_account_id = p_account) OR
            p_account IS NULL OR p_account !~ '^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$' OR
            p_event IS NULL OR p_event !~ '^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$' OR
            p_digest IS NULL OR p_digest !~ '^[0-9a-f]{64}$' OR
@@ -68,7 +84,8 @@ class CreateIsolatedInbound < ActiveRecord::Migration[8.1]
                  jsonb_typeof(a.item->'content_type') <> 'string' OR
                  a.item->>'content_type' NOT IN ('text/plain','application/octet-stream') OR
                  jsonb_typeof(a.item->'size') <> 'number' OR
-                 (a.item->>'size') !~ '^[0-9]{1,6}$' OR (a.item->>'size')::integer > 262144 OR
+                 CASE WHEN (a.item->>'size') ~ '^[0-9]{1,6}$'
+                   THEN (a.item->>'size')::integer > 262144 ELSE TRUE END OR
                  jsonb_typeof(a.item->'sha256') <> 'string' OR
                  (a.item->>'sha256') !~ '^[0-9a-f]{64}$')
            ELSE TRUE END THEN
@@ -110,5 +127,6 @@ class CreateIsolatedInbound < ActiveRecord::Migration[8.1]
   def down
     execute "DROP FUNCTION app.ingest_fake_mail(text,uuid,uuid,uuid,text,text,text,jsonb,jsonb,text,text,jsonb)"
     execute "DROP TABLE app.inbound_receipts"
+    execute "DROP TABLE app.inbound_fake_accounts"
   end
 end
