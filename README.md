@@ -14,6 +14,8 @@ Shared company mailroom with one Rails domain authority and a React/TypeScript c
 
 ## Current state
 
+**Outbound attachment contract proposal:** A separate INT-801 decision packet inventories frozen V1 draft/send shapes, message-bound private attachment staging and text-only SMTP limits, then proposes draft-owned V2 staging, idempotent binding and a versioned approved snapshot. It is design only; owners and root must agree before implementation and no send path is activated. ADV157 reviewed Nadia FIX940 over 50 LOC with zero source defects; Soren fleet syntax/unit remains pending.
+
 **TEST929 FIX939 source (2026-10-14):** Orion's exact `07411a15` adds the two pure root-level V2 suites to the standard backend selector, preserving its unknown-path failure and nine dedicated gates. The activated feature inventory is 146 tracked Ruby test files: 137 standard candidates and nine dedicated. Independent review and Soren fleet selector/full backend rerun remain pending.
 
 **QA816 FIX940 source (2026-10-14):** Nadia's exact `be921687` producer repair precomputes the unchanged SQL bind arrays for two heredoc calls. Soren's prior `fc45037b` focused test failed to parse before any case; independent repair review and fleet syntax/unit rerun are pending.
