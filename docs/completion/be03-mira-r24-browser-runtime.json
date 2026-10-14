@@ -1,5 +1,5 @@
 {
-  "observed_at": "2026-10-14T11:30:57.524945+00:00",
+  "observed_at": "2026-10-14T11:34:21.578606+00:00",
   "candidate": "1429f1df2d39d98b1742a2fc677768e69c7762dd",
   "web_tree": "93c71deabea60bb52350b2f1e05d3977745ad62a",
   "harness": "3bc68cb3ee3bcbdb0233c16aa5a06c434a9e153d",
@@ -76,7 +76,9 @@
       "pids": 128
     },
     "images_volumes_networks_created_removed": 0,
-    "persistent_mutation": false
+    "persistent_mutation": false,
+    "task_exported_dependency_helper_removed": true,
+    "preview_retention_instruction": "Root11:33: keep18142 until final delivery unless root says clean; Ada reload-specific case may follow by12:05"
   },
   "source_review": {
     "unique_current_source_loc": 177,
@@ -86,9 +88,76 @@
   },
   "scope": "Actual SIMULATED client browser only; no SQL/HTTP approval/provider/worker proof; stop action not exercised",
   "be02": "OPEN",
-  "root_visual_acceptance": "PENDING",
+  "root_visual_acceptance": {
+    "reported_at": "2026-10-14 11:33 UTC",
+    "scope": "Root actual plaintext review, disabled-until-attestation, approval->queued desktop and375mobile; no visible overflow; SIMULATED/no delivery explicit",
+    "source_record": "incoming/be03-r24-coordination/root-to-mira.md",
+    "root_png_names": [
+      "approval-review-desktop",
+      "approval-queued-desktop",
+      "approval-queued-mobile"
+    ],
+    "root_png_hashes": "not supplied; root-owned evidence separate from Mira30PNG"
+  },
   "effective_fast": "unverified",
   "mode_verification": "Python data-filter export mask0755; all tracked executable bits and exported source modes match expected immutable archive",
   "candidate_byte_mismatches": 0,
-  "candidate_mode_mismatches": 0
+  "candidate_mode_mismatches": 0,
+  "exported_dependency_versions": {
+    "@playwright/test": "1.64.0",
+    "playwright": "1.64.0",
+    "playwright-core": "1.64.0"
+  },
+  "failed_setup_history": [
+    {
+      "name": "preflight-3d6cfb5",
+      "exit": 1,
+      "successful_case_bodies": 0,
+      "reason": "shell filtering expanded variable; unintended Vite launch then EROFS cache",
+      "typecheck": 0,
+      "lint": 0
+    },
+    {
+      "name": "candidate-bind-path",
+      "exit": 125,
+      "successful_case_bodies": 0,
+      "reason": "manually mistyped source prefix; no container started"
+    },
+    {
+      "name": "preview-1429f1d",
+      "exit": 137,
+      "successful_case_bodies": 0,
+      "reason": "512MiB Node typecheck heap exhausted; owned container stopped, not success"
+    },
+    {
+      "name": "browser-1429f1d",
+      "exit": 125,
+      "successful_case_bodies": 0,
+      "reason": "verified image removed externally before start"
+    },
+    {
+      "name": "browser-retry2",
+      "exit": 1,
+      "successful_case_bodies": 0,
+      "reason": "exported dependency realpath directory not named node_modules"
+    },
+    {
+      "name": "browser-retry3",
+      "exit": 137,
+      "successful_case_bodies": 0,
+      "reason": "Chromium crashpad setup failed; owned container stopped"
+    },
+    {
+      "name": "browser-retry4",
+      "exit": 1,
+      "successful_case_bodies": 0,
+      "reason": "capdrop root cannot traverse owner0700 evidence bind"
+    },
+    {
+      "name": "browser-retry5",
+      "exit": 137,
+      "successful_case_bodies": 0,
+      "reason": "two page-fixture setup timeouts and procReady error; PID-cap cause not proven; owned container stopped"
+    }
+  ]
 }
