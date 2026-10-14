@@ -1,0 +1,11 @@
+# QA816 API-backed browser acceptance candidate
+
+Scope: `tests/acceptance/playwright/qa816-send.e2e.ts` adds three real-browser scenarios for a case-owned saved draft and simulated send, reader authorization, and mobile logout/deep-link revocation. It reuses the existing authenticated Playwright seed, real response observer, sanitized case record and bounded screenshot writer; no production source or frozen contract changed. The candidate begins at baseline `bbf2353`; final commit is recorded in the shared outbox.
+
+Dependencies: Soren must supply a disposable seeded Auth/PostgreSQL/API/web stack with the BE03 send routes explicitly enabled and a manager whose mailbox has compose and approve_send. The case never fabricates auth or business responses. Approval is simulated and must have no live transport. A disabled route, unavailable real-auth seed, or no configured sender is a setup blocker, not acceptance evidence. Mobile coverage means a 375px browser viewport, not an installed Android app.
+
+Requested execution only: under Soren's Docker lease on fleet-02, run acceptance TypeScript compile and `playwright test --config playwright/playwright.config.ts qa816-send.e2e.ts --workers=1` in the existing internal_http real-browser container; retain sanitized case records, four candidate PNGs, endpoint/status evidence, source SHA, and exact cleanup/independent resource absence. Run the existing real-auth setup and production-bundle checks first. No tests or screenshots were executed by Tessa, and no browser/visual PASS is claimed.
+
+Limitations: suite does not establish production deliverability, installed Android, outreach dispatch, zoom at 200%, or all loading/error states. Existing acceptance cases cover inbox/search, drafts, logout, unavailable and loading views on older source; those results do not verify this candidate. Root must visually inspect actual screenshots and schedule a separate outreach/admin state pass when corresponding APIs and seeded roles are integrated.
+
+Design tradeoff simulation: one manager-owned draft avoids mutating a shared seed and gives an immutable API chain, but it needs reliable disposable cleanup. The reader test verifies UI nonactionability; direct unauthorized API assertions should be added after the agreed versioned BE03 error contract and seed are available.
