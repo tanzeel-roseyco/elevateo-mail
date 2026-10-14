@@ -1,5 +1,23 @@
 # Mira BE03 UI R24 — isolated implementation
 
+## Final owned source checkpoint
+
+Implementation source `8f6f5bf8758582ec58d40eefe69d9fd1208cf2ff` is reviewed and frontend-tested. **BE02 stays OPEN/unaccepted; integrated SQL/HTTP, actual browser/visual acceptance and release remain gated/pending.** No BE03 application-completion claim.
+
+| Exact source | Actual Docker evidence | Exits |
+| --- | --- | --- |
+|607fcb2c|Pinned generation/APIcheck/lint/type;8files260affectedtests|all0 after retained setup failures|
+|e037cb9b|APIcheck/lint/type;full37files660tests; production npm build; fixture-marker isolation|all0|
+|8f6f5bf8|Final fixture-only abort repair; lint/type;9files174affectedtests|all0|
+
+One LOW self-found fixture abort parity defect is repaired; independent40LOC repair review found0new defects. Functional/data/design and generated/test follow-up reviews found0confirmed defects, with overlapping coverage explicitly nonadditive. Seven exact task-owned containers are independently absent after--rm. Shared image, Lyra18140 and all persistent resources are preserved; no image/volume/network build/removal, install, provider/live/paid path or database lease. Failed setup histories remain retained. See [sanitized runtime and cleanup receipt](be03-mira-r24-runtime.json).
+
+Owned changed paths: `apps/web/src/data/{gateway,errors,sendContract,generated/api.d,http/httpGateway,http/transport,fixtures/fixtureGateway}.ts` (generated artifact isapi.d.ts); app routing and memory store; draft editor review link; `features/send/` screens/synthetic test data/regressions; send contract/conformance/signal/store tests. README/state/documentation and this scoped record are synchronized. Cassian canonical contract commits3d01babe/aa35c3d are imported dependencies, not Mira-authored contract changes; schema blob is byte-identical to currentb38/099. Dispatch canonical-path correction is outside the checkout in the incoming coordination packet. Central review integration remains Cassian-owned; exact independent reports/coverage sent for its ledger.
+
+Full refresh loses memory-only approval retry details; no cross-tab/durable browser recovery claim. Queued intent is a server response; frontend fixture tests do not prove PostgreSQL atomicity. Cancellation UI is present, backend S3 cancellation may still fail closed; no worker/provider execution is claimed. Effective Fast billing remains unverified.
+
+## Earlier checkpoints and retained evidence
+
 Root authorizes isolated implementation over baseline `03ae770c56271cd8236726bfd8fe63248e81283d` on `delivery/mira-r24`. BE02 remains OPEN/unaccepted; integration/release stay gated. Deadline 2026-10-14 12:17 UTC. Requested Fast is not verified effective billing.
 
 Ownership: MailroomGateway, generated web client after Cassian canonical contract receipt, send review/approval/status/cancellation UI and tests. No canonical contracts, backend, SQL, worker or production configuration edited. Incoming dispatch wrong YAML reference corrected to `contracts/v1/openapi.json`; root sequencing supersedes historical dispatch blocking prose.
@@ -8,7 +26,7 @@ S1/S2 source: saved clean draft review link; full literal sender/ordered recipie
 
 Regression source covers happy review/approval/queued flow, stale review/version, lost response exact retry, mismatched review/receipt, empty/nonready and literal hostile text, scope recovery, logout late results, cancellation ambiguity, independent send error envelope, input closure/Unicode/byte bounds and cancellation signals. These are source tests, NOT runtime evidence yet.
 
-Current checks: source whitespace `git diff --check` exit0. Application lint/type/unit/build/generation NOT_RUN (fleet Docker/Soren only). Canonical generated artifact pending immutable contract receipt. Actual browser/visual validation NOT_RUN. Independent adversarial functional/data and dedicated design reviews pending root dispatch. No defects/KLOC acceptance claim before reviews. No Docker resources created; no cleanup required yet. Persistent resources, prior evidence and Lyra preview18140 untouched.
+Initial source checkpoint checks: source whitespace `git diff --check` exit0. Application lint/type/unit/build/generation NOT_RUN (fleet Docker/Soren only). Canonical generated artifact pending immutable contract receipt. Actual browser/visual validation NOT_RUN. Independent adversarial functional/data and dedicated design reviews pending root dispatch. No defects/KLOC acceptance claim before reviews. No Docker resources created; no cleanup required yet. Persistent resources, prior evidence and Lyra preview18140 untouched.
 
 Coordination: `incoming/be03-r24-coordination/mira-signatures.md`, `mira-status.md`; Cassian contract, Nadia API, Rowan SQL, Soren lease/testing. Integration owner retains central review ledger and acceptance authority.
 
@@ -33,4 +51,6 @@ Follow-up: exact Docker-generated artifact applied unchanged; runtime validators
 
 Successor `e037cb9b2db46b76e3988a8e9db34cb5dc2f3a8e`: API artifact check/lint/typecheck/full unit **37files/660tests PASS**, all exits0. Capped production `npm run build` and fixture-marker isolation PASS, exits0; no image build/install/network. Bundle gzip156.96kB, ordinary Vite>500kB chunk warning retained (no runtime failure). Follow-up reviews: data333LOC0defects; UI323LOC0defects; dedicated design100changedLOC0defects, overlapping/nonadditive. Exact containers check5/build6 removed by--rm and independent absence verification follows.
 
-Self-inspection found one LOW adapter parity defect: the four default-unavailable send fixture methods ignored an already-aborted caller. Production HTTP methods were unaffected. Corrected fixture methods check abort before503, with12preabort/live-unavailable/midflightHTTP regression cases. Affected checks/review pending; no completed-BE03 claim.
+Self-inspection found one LOW adapter parity defect: the four default-unavailable send fixture methods ignored an already-aborted caller. Production HTTP methods were unaffected. Corrected fixture methods check abort before503, with12preabort/live-unavailable/midflightHTTP regression cases. Affected lint/type/9files174tests passed exit0 and independent40LOC review found0new defects; no completed-BE03 claim.
+
+Final evidence: check7 lint0/type0/unit0,9files174tests; exact name absent immediately after job. Seven total owned containers independently absent, shared dependency image and Lyra18140 independently observed retained. Sanitized runtime receipt includes exact source/tree/schema/generated identities and log hashes, without raw payloads or credentials.
