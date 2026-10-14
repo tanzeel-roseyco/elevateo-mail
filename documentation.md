@@ -198,3 +198,6 @@ The protected grants GET must expose the same required `actor:{user_id,role,revi
 For V2 grants, each page's required protected `actor` must match the ready session's user and organization, carry owner/admin role, and keep the same role/revision across all pages. The UI uses that actor for role choices and checks any duplicate actor item for consistency. It never infers current authority from page membership. PUT still uses the target grant's own revision, and the server remains final authority.
 
 FE808 roster test data is parsed with `RosterPersonSchema` so fixture typing matches the versioned DTO's closed department enum. This does not alter the production roster reference or gateway boundary.
+# FE808 Personal Settings candidate
+
+The personal settings route `/settings/personal` reads the signed-in actor's display name and revision under the current session context. Saving sends the expected revision once with the session CSRF proof; a conflict requires an explicit reload. Denied or revoked access hides the editor, and an actor/context change does not show the previous actor's value. Theo's PREF822 endpoint and Cassian's typed V2 gateway adapter are pending integration, so this is source-only candidate behavior. Timezone, credentials and notification settings have no persisted contract here.

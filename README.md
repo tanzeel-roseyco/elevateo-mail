@@ -14,6 +14,7 @@ Shared company mailroom with one Rails domain authority and a React/TypeScript c
 
 ## Current state
 
+FE808 Personal Settings source now loads and saves the current actor's versioned display name through a proposed V2 gateway seam. Theo's preference controller and Cassian's typed adapter are still in progress; this isolated UI is not integrated or fleet-tested. Timezone and other unsupported preferences remain unavailable. See [Lyra's checkpoint](docs/completion/lyra.md).
 
 ### R25 approval reload recovery candidate
 
