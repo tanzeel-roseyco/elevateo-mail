@@ -139,6 +139,23 @@ DO $$ BEGIN
   THEN RAISE EXCEPTION 'application membership effective privilege postcondition failed'; END IF;
 END $$;
 
+-- AIDEV-NOTE: Private schema lifecycle is privileged bootstrap work; migrations never receive database CREATE.
+CREATE SCHEMA IF NOT EXISTS app_drafts_private AUTHORIZATION elevateo_owner;
+DO $$ BEGIN
+  IF NOT EXISTS (SELECT 1 FROM pg_namespace WHERE nspname = 'app_drafts_private'
+      AND nspowner = 'elevateo_owner'::regrole)
+    OR EXISTS (SELECT 1 FROM pg_namespace n
+      CROSS JOIN LATERAL aclexplode(coalesce(n.nspacl, acldefault('n', n.nspowner))) a
+      WHERE n.nspname = 'app_drafts_private' AND
+        (a.grantee <> n.nspowner OR a.grantor <> n.nspowner))
+  THEN RAISE EXCEPTION 'unexpected draft private schema owner or ACL; no changes accepted'; END IF;
+  IF EXISTS (SELECT 1 FROM unnest(ARRAY['elevateo_owner', 'elevateo_migrator',
+      'elevateo_api', 'elevateo_worker', 'elevateo_app_read']) role_name
+      WHERE has_database_privilege(role_name, current_database(), 'CREATE'))
+  THEN RAISE EXCEPTION 'unexpected application database CREATE privilege'; END IF;
+END $$;
+REVOKE ALL ON SCHEMA app_drafts_private FROM PUBLIC, elevateo_app_read, elevateo_api, elevateo_worker;
+
 CREATE SCHEMA IF NOT EXISTS app AUTHORIZATION elevateo_owner;
 CREATE SCHEMA IF NOT EXISTS app_meta AUTHORIZATION elevateo_owner;
 REVOKE ALL ON SCHEMA app, app_meta FROM PUBLIC;

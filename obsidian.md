@@ -1,5 +1,8 @@
 # Elevateo Mail — ongoing project record
 
+BE-403 (2026-10-14): IN PROGRESS. Rowan authored privileged draft-schema bootstrap and fail-closed migration prerequisite checks on c3ecd1f; rollback retains the empty schema for least-privilege reapply. Source review found no blocking defect; new real-role/drift regressions await Soren container execution. No runtime acceptance or release. See docs/completion/be403-bootstrap.md.
+
+
 Status: IN PROGRESS. Updated 2026-10-14, Australia/Sydney.
 
 ## Nontechnical brief

@@ -195,6 +195,7 @@ services:
       ELEVATEO_PROCESS: api
       API_DB_PASSWORD: ${API_DB_PASSWORD:?}
       BE02_ADMIN_DATABASE_URL: postgres://supabase_admin:${POSTGRES_PASSWORD:?}@db:5432/postgres
+      BE02_MIGRATOR_DATABASE_URL: postgres://elevateo_migrator:${MIGRATOR_DB_PASSWORD:?}@db:5432/postgres
       BE02_API_DATABASE_URL: postgres://elevateo_api:${API_DB_PASSWORD:?}@db:5432/postgres
       BE02_WORKER_DATABASE_URL: postgres://elevateo_worker:${WORKER_DB_PASSWORD:?}@db:5432/postgres
       BE02_TASK_DATABASE_NAME: postgres
