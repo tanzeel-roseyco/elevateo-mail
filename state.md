@@ -136,3 +136,5 @@ QA816 source correction 6e164ef replaces unsupported same-org reader POST denial
 QA816 head ce73f55 stages the root/Fable navigation drawer accessible-name change in acceptance source. Old Fable shell remains incompatible until its owner follow-up and web e2e selectors are integrated; no browser run or visual PASS.
 
 QA816 head 199c132 adds a Mira reply-as-draft PUT/reload case and one fixed screenshot ID (26 total). This source remains unrun; an eligible seeded sender and integrated Mira UI are required.
+
+QA816 head 069257f adds a genuine thread GET transport abort/retry case and two screenshots (28 fixed IDs total). Seventeen supplemental cases are authored; current integrated browser runtime remains NOT_RUN.

@@ -204,3 +204,5 @@ QA816 Outreach F2 now asserts tenant isolation through an other-org authenticate
 QA816 mobile shell acceptance uses `Open navigation` trigger and `Navigation` dialog. The selector is gated on the coordinated Fable Shell rename; older shell source must not be used to classify this candidate as a UI failure.
 
 QA816 reply-as-draft browser acceptance follows a seeded thread into a case-owned editor, checks recipient and reply context, saves through V1 PUT, then reloads. It does not assume an untruncated source subject and does not send mail. Fleet browser evidence remains pending.
+
+QA816 transient thread recovery uses an unforwarded browser GET to expose error, then an explicit retry that must observe real GET 200 and restored seeded plaintext. No business response is synthesized; Soren fleet execution remains pending.

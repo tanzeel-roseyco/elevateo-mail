@@ -194,3 +194,5 @@ QA816 Outreach failure coverage now uses case-owned cross-organization detail de
 QA816 drawer selectors now target the agreed accessible names `Open navigation` and `Navigation`; the shell case requires Fable's coordinated follow-up source. Existing web e2e selector updates are requested from their owner.
 
 QA816 includes a source-only real reply-as-draft browser journey over Mira's thread UI, saving and reopening a case-owned draft without sending.
+
+QA816 has a source-only Mira thread transport-loss/retry browser case that requires a real API recovery and no stale plaintext.
