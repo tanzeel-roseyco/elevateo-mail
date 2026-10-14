@@ -29,14 +29,26 @@ class AttachmentServiceTest < Minitest::Test
           (cursor.nil? || row.fetch("id") > cursor)
       end.sort_by { |row| row.fetch("id") }.first(limit)
     end
-    def pending_scan(id:)
-      row = @rows[id]
-      row if row && row.fetch("scan_status") == "pending_scan"
+    def due_scan_ids(limit:)
+      @rows.values.select { |row| %w[pending_scan scan_failed].include?(row.fetch("scan_status")) &&
+        row.fetch("scan_attempt", 0) < 3 }.first(limit).map { |row| row.fetch("id") }
     end
-    def record_scan(id:, sha256:, verdict:)
-      row = pending_scan(id: id)
-      raise Elevateo::Attachments::NotAvailable unless row && row.fetch("sha256") == sha256
+    def claim_scan(id:, token:)
+      row = @rows[id]
+      return nil unless row && %w[pending_scan scan_failed].include?(row.fetch("scan_status")) &&
+        row.fetch("scan_attempt", 0) < 3 && row["scan_token"].nil?
+      row["scan_status"] = "pending_scan"
+      row["scan_attempt"] = row.fetch("scan_attempt", 0) + 1
+      row["scan_token"] = token
+      row
+    end
+    def record_scan(id:, sha256:, token:, attempt:, verdict:)
+      row = @rows[id]
+      raise Elevateo::Attachments::NotAvailable unless row && row.fetch("sha256") == sha256 &&
+        row.fetch("scan_token") == token && row.fetch("scan_attempt") == attempt &&
+        row.fetch("scan_status") == "pending_scan"
       row["scan_status"] = verdict
+      row["scan_token"] = nil
     end
     def find(**scope)
       row = @rows[scope.fetch(:id)]
@@ -62,11 +74,11 @@ class AttachmentServiceTest < Minitest::Test
   def test_stage_is_held_until_independent_clean_verdict_and_authorization_is_rechecked
     id = stage.fetch("id")
     assert_equal "pending_scan", @repository.rows.fetch(id).fetch("scan_status")
-    assert_raises(Elevateo::Attachments::Held) { @service.download(**scope, id: id) }
+    assert_raises(Elevateo::Attachments::Held) { @service.assert_downloadable(**scope, id: id) }
     @repository.rows.fetch(id)["scan_status"] = "clean" # Simulated scanner verdict; service has no scan transition.
-    assert_equal "safe text", @service.download(**scope, id: id).first
+    assert_equal id, @service.assert_downloadable(**scope, id: id).fetch("id")
     @allowed = false
-    assert_raises(Elevateo::Attachments::NotAvailable) { @service.download(**scope, id: id) }
+    assert_raises(Elevateo::Attachments::NotAvailable) { @service.assert_downloadable(**scope, id: id) }
     assert_equal [:write, :write, :read, :read, :read], @checks.map { |item| item.fetch(:capability) }
   end
 
@@ -74,7 +86,7 @@ class AttachmentServiceTest < Minitest::Test
     id = stage.fetch("id")
     item = @service.list(**scope).fetch("items").fetch(0)
     assert_equal id, item.fetch("id")
-    assert_equal false, item.fetch("downloadable")
+    assert_equal "pending_scan", item.fetch("scan_status")
     refute item.key?("storage_key")
     refute item.key?("sha256")
     assert_nil @service.list(**scope).fetch("next_cursor")
@@ -98,16 +110,25 @@ class AttachmentServiceTest < Minitest::Test
     assert_raises(Elevateo::Attachments::Invalid) { @service.list(**scope, cursor: "bad") }
   end
 
-  def test_default_scanner_holds_and_simulated_scanner_records_verified_clean
+  def test_default_scanner_marks_failure_held_then_simulated_clean_retry
     id = stage.fetch("id")
     unavailable = Elevateo::Attachments::ScanService.new(repository: @repository, storage: @storage)
     assert_raises(Elevateo::Attachments::ScanService::Unavailable) { unavailable.inspect(id: id) }
-    assert_equal "pending_scan", @repository.rows.fetch(id).fetch("scan_status")
+    assert_equal "scan_failed", @repository.rows.fetch(id).fetch("scan_status")
     scanner = Object.new
     def scanner.scan(_bytes) = "clean" # Fixture-only verdict; no installed scanner is implied.
     service = Elevateo::Attachments::ScanService.new(repository: @repository, storage: @storage, scanner: scanner)
     assert_equal "clean", service.inspect(id: id)
     assert_equal "clean", @service.list(**scope).fetch("items").fetch(0).fetch("scan_status")
+  end
+
+  def test_worker_batch_is_bounded_and_reports_held_without_clean
+    stage
+    stage(bytes: "second")
+    service = Elevateo::Attachments::ScanService.new(repository: @repository, storage: @storage)
+    assert_equal({ "clean" => 0, "malware" => 0, "held" => 1 }, service.run_batch(limit: 1))
+    assert_raises(ArgumentError) { service.run_batch(limit: 26) }
+    assert(@repository.rows.values.any? { |row| row.fetch("scan_status") == "scan_failed" })
   end
 
   def test_scanner_rejects_modified_bytes_and_invalid_verdict
@@ -118,18 +139,39 @@ class AttachmentServiceTest < Minitest::Test
     def scanner.scan(_bytes) = "clean"
     service = Elevateo::Attachments::ScanService.new(repository: @repository, storage: @storage, scanner: scanner)
     assert_raises(Elevateo::Attachments::ScanService::Unavailable) { service.inspect(id: id) }
-    assert_equal "pending_scan", @repository.rows.fetch(id).fetch("scan_status")
+    assert_equal "scan_failed", @repository.rows.fetch(id).fetch("scan_status")
     @storage.objects[key][0] = "safe text"
     def scanner.scan(_bytes) = "unknown"
     assert_raises(Elevateo::Attachments::ScanService::Unavailable) { service.inspect(id: id) }
-    assert_equal "pending_scan", @repository.rows.fetch(id).fetch("scan_status")
+    assert_equal "scan_failed", @repository.rows.fetch(id).fetch("scan_status")
+  end
+
+  def test_late_clean_attempt_cannot_overwrite_newer_malware
+    id = stage.fetch("id")
+    first = @repository.claim_scan(id: id, token: ORG)
+    @repository.rows.fetch(id)["scan_token"] = nil # Simulate expired lease claimed by another worker.
+    second = @repository.claim_scan(id: id, token: BOX)
+    @repository.record_scan(id: id, sha256: second.fetch("sha256"), token: BOX,
+      attempt: second.fetch("scan_attempt"), verdict: "malware")
+    assert_raises(Elevateo::Attachments::NotAvailable) do
+      @repository.record_scan(id: id, sha256: first.fetch("sha256"), token: ORG,
+        attempt: 1, verdict: "clean")
+    end
+    assert_equal "malware", @repository.rows.fetch(id).fetch("scan_status")
+  end
+
+  def test_ambiguous_metadata_commit_keeps_staged_bytes_private
+    def @repository.create(**_attributes) = raise IOError, "ambiguous commit"
+    assert_raises(IOError) { stage }
+    assert_equal 1, @storage.objects.length
+    assert(@storage.objects.keys.first.start_with?("quarantine/#{ORG}/"))
   end
 
   def test_malware_and_scan_failure_never_download
     id = stage.fetch("id")
     %w[malware scan_failed pending_scan].each do |status|
       @repository.rows.fetch(id)["scan_status"] = status
-      assert_raises(Elevateo::Attachments::Held) { @service.download(**scope, id: id) }
+      assert_raises(Elevateo::Attachments::Held) { @service.assert_downloadable(**scope, id: id) }
     end
   end
 
@@ -173,7 +215,7 @@ class AttachmentServiceTest < Minitest::Test
   def test_cross_tenant_and_cross_mailbox_ids_are_not_downloadable
     id = stage.fetch("id")
     @repository.rows.fetch(id)["scan_status"] = "clean"
-    assert_raises(Elevateo::Attachments::NotAvailable) { @service.download(**scope.merge(organization_id: BOX), id: id) }
-    assert_raises(Elevateo::Attachments::NotAvailable) { @service.download(**scope.merge(mailbox_id: ORG), id: id) }
+    assert_raises(Elevateo::Attachments::NotAvailable) { @service.assert_downloadable(**scope.merge(organization_id: BOX), id: id) }
+    assert_raises(Elevateo::Attachments::NotAvailable) { @service.assert_downloadable(**scope.merge(mailbox_id: ORG), id: id) }
   end
 end

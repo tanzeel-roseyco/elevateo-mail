@@ -28,15 +28,11 @@ module Elevateo
         id = SecureRandom.uuid
         key = "quarantine/#{scope.fetch(:organization_id)}/#{id}"
         @storage.put(key, bytes, content_type: "application/octet-stream")
-        begin
-          @authorize.call(**scope, capability: :write)
-          @repository.create(**scope, id: id, storage_key: key, filename: filename,
-            content_type: content_type, byte_size: bytes.bytesize, sha256: Digest::SHA256.hexdigest(bytes),
-            scan_status: "pending_scan")
-        rescue StandardError
-          @storage.delete(key)
-          raise
-        end
+        # AIDEV-NOTE: An ambiguous DB commit may reference the object; leave it quarantined for reconciliation.
+        @authorize.call(**scope, capability: :write)
+        @repository.create(**scope, id: id, storage_key: key, filename: filename,
+          content_type: content_type, byte_size: bytes.bytesize, sha256: Digest::SHA256.hexdigest(bytes),
+          scan_status: "pending_scan")
         { "id" => id, "scan_status" => "pending_scan" }
       end
 
@@ -56,15 +52,16 @@ module Elevateo
           "next_cursor" => rows.length > limit ? visible.last.fetch("id") : nil }
       end
 
-      def download(organization_id:, mailbox_id:, thread_id:, message_id:, id:)
+      def assert_downloadable(organization_id:, mailbox_id:, thread_id:, message_id:, id:)
         scope = scope!(organization_id, mailbox_id, thread_id, message_id)
         raise Invalid unless UUID.match?(id.to_s)
         @authorize.call(**scope, capability: :read)
         row = @repository.find(**scope, id: id)
         raise NotAvailable unless row
         raise Held unless row.fetch("scan_status") == "clean"
-        # AIDEV-NOTE: The caller must repeat current authorization per request; never expose the private object key.
-        [@storage.get(row.fetch("storage_key")), row.fetch("content_type"), row.fetch("filename")]
+        # AIDEV-NOTE: Sabine's gateway separately rechecks authority and resolves private key; API gets safe metadata only.
+        { "id" => row.fetch("id"), "filename" => row.fetch("filename"),
+          "content_type" => row.fetch("content_type"), "byte_size" => row.fetch("byte_size").to_i }
       end
 
       private

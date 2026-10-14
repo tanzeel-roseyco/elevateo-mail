@@ -15,6 +15,10 @@ class CreateInboxAttachments < ActiveRecord::Migration[8.1]
         byte_size integer NOT NULL CHECK (byte_size BETWEEN 0 AND 10485760),
         sha256 text CHECK (sha256 IS NULL OR sha256 ~ '^[0-9a-f]{64}$'),
         scan_status text NOT NULL DEFAULT 'pending_scan' CHECK (scan_status IN ('pending_scan','clean','malware','scan_failed','rejected')),
+        scan_attempt integer NOT NULL DEFAULT 0 CHECK (scan_attempt BETWEEN 0 AND 3),
+        scan_token uuid,
+        scan_started_at timestamptz,
+        scan_next_at timestamptz,
         rejection_reason text CHECK (rejection_reason IN ('oversize','unsupported_type','invalid_name','invalid_signature')),
         source_account_id uuid,
         source_uidvalidity bigint,
@@ -42,10 +46,18 @@ class CreateInboxAttachments < ActiveRecord::Migration[8.1]
           SELECT 1 FROM app.messages m WHERE m.organization_id = inbox_attachments.organization_id
             AND m.mailbox_id = inbox_attachments.mailbox_id AND m.thread_id = inbox_attachments.thread_id
             AND m.id = inbox_attachments.message_id));
+      -- AIDEV-NOTE: FORCE RLS also applies to definer owner; only its narrow bind/scan routines write.
+      CREATE POLICY inbox_attachment_owner_read ON app.inbox_attachments FOR SELECT TO elevateo_owner
+        USING (true);
+      CREATE POLICY inbox_attachment_owner_insert ON app.inbox_attachments FOR INSERT TO elevateo_owner
+        WITH CHECK (scan_status IN ('pending_scan','rejected'));
+      CREATE POLICY inbox_attachment_owner_scan ON app.inbox_attachments FOR UPDATE TO elevateo_owner
+        USING (scan_status IN ('pending_scan','scan_failed'))
+        WITH CHECK (scan_status IN ('pending_scan','clean','malware','scan_failed'));
       -- AIDEV-NOTE: API cannot INSERT directly; the definer checks current compose rights and fixed pending state.
       REVOKE ALL ON app.inbox_attachments FROM elevateo_app_read, elevateo_api;
-      GRANT SELECT (id, organization_id, mailbox_id, thread_id, message_id, storage_key, filename,
-        content_type, byte_size, sha256, scan_status, rejection_reason) ON app.inbox_attachments TO elevateo_app_read;
+      GRANT SELECT (id, organization_id, mailbox_id, thread_id, message_id, filename,
+        content_type, byte_size, scan_status, rejection_reason) ON app.inbox_attachments TO elevateo_app_read;
       CREATE FUNCTION app.stage_inbox_attachment(p_id uuid, p_org uuid, p_box uuid, p_thread uuid,
         p_message uuid, p_key text, p_filename text, p_type text, p_bytes integer, p_sha text) RETURNS void
       LANGUAGE plpgsql SECURITY DEFINER SET search_path = pg_catalog, app AS $$
@@ -85,52 +97,80 @@ class CreateInboxAttachments < ActiveRecord::Migration[8.1]
         IF p_reason IS NOT NULL AND (p_key IS NOT NULL OR p_sha IS NOT NULL OR p_bytes<>0) THEN
           RAISE EXCEPTION 'invalid rejected attachment' USING ERRCODE='22023';
         END IF;
-        SELECT * INTO existing FROM app.inbox_attachments a WHERE a.source_account_id=p_account
-          AND a.source_uidvalidity=p_epoch AND a.source_uid=p_uid AND a.source_ordinal=p_ordinal FOR UPDATE;
-        IF FOUND THEN
-          IF existing.organization_id IS DISTINCT FROM p_org OR existing.mailbox_id IS DISTINCT FROM p_box OR
-            existing.thread_id IS DISTINCT FROM p_thread OR existing.message_id IS DISTINCT FROM p_message OR
-            existing.storage_key IS DISTINCT FROM p_key OR existing.sha256 IS DISTINCT FROM p_sha OR
-            existing.filename IS DISTINCT FROM p_filename OR existing.content_type IS DISTINCT FROM p_type OR
-            existing.byte_size IS DISTINCT FROM p_bytes OR existing.rejection_reason IS DISTINCT FROM p_reason THEN
-            RAISE EXCEPTION 'attachment import conflict' USING ERRCODE='23505';
-          END IF;
-          RETURN existing.id;
-        END IF;
         INSERT INTO app.inbox_attachments(id,organization_id,mailbox_id,thread_id,message_id,storage_key,
           filename,content_type,byte_size,sha256,scan_status,rejection_reason,source_account_id,
           source_uidvalidity,source_uid,source_ordinal)
         VALUES (p_id,p_org,p_box,p_thread,p_message,p_key,p_filename,p_type,p_bytes,p_sha,
           CASE WHEN p_reason IS NULL THEN 'pending_scan' ELSE 'rejected' END,p_reason,
-          p_account,p_epoch,p_uid,p_ordinal);
-        RETURN p_id;
+          p_account,p_epoch,p_uid,p_ordinal)
+        ON CONFLICT (source_account_id,source_uidvalidity,source_uid,source_ordinal)
+          WHERE source_account_id IS NOT NULL DO NOTHING;
+        IF FOUND THEN RETURN p_id; END IF;
+        SELECT * INTO existing FROM app.inbox_attachments a WHERE a.source_account_id=p_account
+          AND a.source_uidvalidity=p_epoch AND a.source_uid=p_uid AND a.source_ordinal=p_ordinal FOR UPDATE;
+        IF NOT FOUND OR existing.organization_id IS DISTINCT FROM p_org OR existing.mailbox_id IS DISTINCT FROM p_box OR
+          existing.thread_id IS DISTINCT FROM p_thread OR existing.message_id IS DISTINCT FROM p_message OR
+          existing.storage_key IS DISTINCT FROM p_key OR existing.sha256 IS DISTINCT FROM p_sha OR
+          existing.filename IS DISTINCT FROM p_filename OR existing.content_type IS DISTINCT FROM p_type OR
+          existing.byte_size IS DISTINCT FROM p_bytes OR existing.rejection_reason IS DISTINCT FROM p_reason THEN
+          RAISE EXCEPTION 'attachment import conflict' USING ERRCODE='23505';
+        END IF;
+        RETURN existing.id;
       END
       $$;
       REVOKE ALL ON FUNCTION app.bind_imported_inbox_attachment(uuid,uuid,uuid,uuid,uuid,uuid,bigint,bigint,
         integer,text,text,text,integer,text,text) FROM PUBLIC, elevateo_app_read, elevateo_api, elevateo_worker;
-      -- AIDEV-NOTE: Only the scanner worker can read held object metadata or record a verdict.
-      CREATE FUNCTION app.pending_inbox_attachment(p_id uuid) RETURNS TABLE (
-        storage_key text, byte_size integer, sha256 text, scan_status text)
-      LANGUAGE sql SECURITY DEFINER SET search_path = pg_catalog, app AS $$
-        SELECT a.storage_key,a.byte_size,a.sha256,a.scan_status FROM app.inbox_attachments a
-        WHERE a.id=p_id AND a.scan_status='pending_scan'
-      $$;
-      CREATE FUNCTION app.record_inbox_attachment_verdict(p_id uuid, p_sha text, p_verdict text)
-        RETURNS boolean LANGUAGE plpgsql SECURITY DEFINER SET search_path = pg_catalog, app AS $$
+      -- AIDEV-NOTE: Claim token and attempt fence late clean results; failures remain held with bounded retry.
+      CREATE FUNCTION app.due_inbox_attachment_scans(p_limit integer) RETURNS TABLE(id uuid)
+      LANGUAGE plpgsql SECURITY DEFINER SET search_path = pg_catalog, app AS $$
       BEGIN
-        IF p_verdict NOT IN ('clean','malware') THEN
-          RAISE EXCEPTION 'invalid scan verdict' USING ERRCODE = '22023';
+        IF session_user <> 'elevateo_worker' OR p_limit NOT BETWEEN 1 AND 25 THEN
+          RAISE EXCEPTION 'scan unavailable' USING ERRCODE='42501';
         END IF;
-        UPDATE app.inbox_attachments SET scan_status=p_verdict
-          WHERE id=p_id AND sha256=p_sha AND scan_status='pending_scan';
+        RETURN QUERY SELECT a.id FROM app.inbox_attachments a
+        WHERE a.scan_status IN ('pending_scan','scan_failed') AND a.scan_attempt<3
+          AND (a.scan_next_at IS NULL OR a.scan_next_at<=now())
+          AND (a.scan_token IS NULL OR a.scan_started_at<now()-interval '2 minutes')
+        ORDER BY a.created_at,a.id LIMIT p_limit;
+      END
+      $$;
+      CREATE FUNCTION app.claim_inbox_attachment_scan(p_id uuid, p_token uuid)
+        RETURNS TABLE(storage_key text, byte_size integer, sha256 text, scan_attempt integer)
+      LANGUAGE plpgsql SECURITY DEFINER SET search_path = pg_catalog, app AS $$
+      BEGIN
+        IF session_user <> 'elevateo_worker' OR p_token IS NULL THEN
+          RAISE EXCEPTION 'scan unavailable' USING ERRCODE='42501';
+        END IF;
+        RETURN QUERY UPDATE app.inbox_attachments a SET scan_status='pending_scan',
+          scan_attempt=a.scan_attempt+1, scan_token=p_token, scan_started_at=now(), scan_next_at=NULL
+        WHERE a.id=p_id AND a.scan_status IN ('pending_scan','scan_failed') AND a.scan_attempt<3
+          AND (a.scan_next_at IS NULL OR a.scan_next_at<=now())
+          AND (a.scan_token IS NULL OR a.scan_started_at<now()-interval '2 minutes')
+        RETURNING a.storage_key,a.byte_size,a.sha256,a.scan_attempt;
+      END
+      $$;
+      CREATE FUNCTION app.record_inbox_attachment_scan(p_id uuid, p_sha text, p_token uuid,
+        p_attempt integer, p_verdict text) RETURNS boolean
+      LANGUAGE plpgsql SECURITY DEFINER SET search_path = pg_catalog, app AS $$
+      BEGIN
+        IF session_user <> 'elevateo_worker' OR p_verdict NOT IN ('clean','malware','scan_failed') THEN
+          RAISE EXCEPTION 'scan unavailable' USING ERRCODE='42501';
+        END IF;
+        UPDATE app.inbox_attachments a SET scan_status=p_verdict,scan_token=NULL,
+          scan_started_at=NULL,scan_next_at=CASE WHEN p_verdict='scan_failed' AND p_attempt<3
+            THEN now()+make_interval(secs => 30 * (1 << p_attempt)) ELSE NULL END
+        WHERE a.id=p_id AND a.sha256=p_sha AND a.scan_status='pending_scan'
+          AND a.scan_token=p_token AND a.scan_attempt=p_attempt;
         RETURN FOUND;
       END
       $$;
-      REVOKE ALL ON FUNCTION app.pending_inbox_attachment(uuid),
-        app.record_inbox_attachment_verdict(uuid,text,text)
+      REVOKE ALL ON FUNCTION app.due_inbox_attachment_scans(integer),
+        app.claim_inbox_attachment_scan(uuid,uuid),
+        app.record_inbox_attachment_scan(uuid,text,uuid,integer,text)
         FROM PUBLIC, elevateo_app_read, elevateo_api, elevateo_worker;
-      GRANT EXECUTE ON FUNCTION app.pending_inbox_attachment(uuid),
-        app.record_inbox_attachment_verdict(uuid,text,text) TO elevateo_worker;
+      GRANT EXECUTE ON FUNCTION app.due_inbox_attachment_scans(integer),
+        app.claim_inbox_attachment_scan(uuid,uuid),
+        app.record_inbox_attachment_scan(uuid,text,uuid,integer,text) TO elevateo_worker;
     SQL
   end
 
