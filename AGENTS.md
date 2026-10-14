@@ -40,3 +40,10 @@ No live sends include Instantly warmup, provider test sends, forwarding and camp
 | Nadia OFF-406 | [RES-406](.planning/wave-20261014/RES-406.md) | research/nadia-deliverability |
 
 Escalation correction: laptop memory pressure moved implementation CLI routing to fleet-02 under root; no local heavy jobs. Source selection and review gaps are recorded in docs/issues.md; do not silently repair broken original histories.
+
+
+## INT-401 versioned tool followup
+
+INT-401 current-tools followup: new versioned BE01 runner authenticates 43 current dependencies, preserving all frozen records unchanged. POSIX/PowerShell dev commands are bootstrap/up/migrate/stop; unsupported seed/check removed. ADV-729 preceding independent review: 68 unique LOC, 0 new repair defects (0/KLOC), 2 inherited blockers (29.41/KLOC). Followup independent review and fleet Docker tests pending; application IN PROGRESS.
+
+Created issue roster: #10 INT-401 Cassian OFF-401; #11 OPS-402 Soren OFF-402; #12 BE-403 Rowan OFF-403; #13 QA-404 Elara OFF-404; #14 FE-405 Mira OFF-405; #15 RES-406 Nadia OFF-406 (https://github.com/tanzeel-roseyco/elevateo-mail/issues). Root owns issues and testing. Five workers execute in named SSH-backed Orca terminals on fleet-02, supervised through append-only report/control files. Task-local Codex 0.160.0 model probe succeeded READY exit0 after 0.156.1 rejected gpt-6.1-sol; LOW/service_tier fast requested, billed tier not audited. Base c3ecd1f integrates all five lanes. Windows REA failed unsupported_provider (macOS utilities required); root uses supported Orca Computer Use with distinct evidence claims. No further ultrareviews/paid Devin. Root-owned Obsidian vault untouched. See docs/completion/int401-current-package.md.
