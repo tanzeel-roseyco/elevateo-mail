@@ -126,3 +126,5 @@ QA-817 origin/CSRF controller candidate checks same-origin success, cross-origin
 QA-817 added source-only private sales database cases: explicit private team membership permits read, a sales role alone does not, and organization admin role alone cannot read a personal mailbox. SEC-802 integration and Docker runtime evidence remain pending.
 
 QA-817 worker observation DB source targets Rowan's corrected SEND-809 seam. The three cases check accepted local receipt, rejected foreign receipt/wrong attempt, and denied stale-generation acceptance using the actual worker login. Soren Docker execution is pending.
+
+QA-817 corrected its SEC-802 source review: prior committed hook SHA aa1efedb has one HIGH delete-ceiling bypass (11.76/KLOC), with new regression source. A later owner working-tree fix is unaccepted until commit, bounded re-review and fleet Docker evidence.

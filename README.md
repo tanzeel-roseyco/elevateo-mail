@@ -184,3 +184,5 @@ QA-817 also adds a real-controller (canned SQL) origin/CSRF and forbidden-field 
 QA-817 private sales/personal mailbox real-database regression source now targets Sabine's committed SEC-802 policy seam. It remains unexecuted until integrated into a frozen fleet test image.
 
 QA-817 now has a SEND-809 integrated worker observation database candidate for valid local receipt, forged receipt/wrong attempt, and stale generation. It is unexecuted pending immutable fleet integration.
+
+QA-817 found a HIGH legacy delete ceiling bypass in Sabine's earlier committed policy hook and added a failing-before-fix database regression candidate. The owner has an uncommitted correction; immutable review and Soren fleet execution are pending.
