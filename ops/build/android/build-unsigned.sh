@@ -33,7 +33,7 @@ cargo tauri android init --config "$android_dir/tauri.android.conf.json"
 wrapper="$native_dir/gen/android/gradle/wrapper/gradle-wrapper.properties"
 [[ -f "$wrapper" ]] || { echo 'Generated Gradle wrapper missing' >&2; exit 2; }
 python3 "$android_dir/pin_gradle.py" "$wrapper"
-cargo tauri android build --apk --target aarch64 --config "$android_dir/tauri.android.conf.json"
+cargo tauri android build --apk --target aarch64 --config "$android_dir/tauri.android.conf.json" -- --locked
 [[ "$(sha256sum Cargo.lock | cut -d " " -f 1)" == "$cargo_lock_before" ]] || { echo "Cargo.lock changed during build" >&2; exit 2; }
 mapfile -d '' apk_files < <(find "$native_dir/gen/android/app/build/outputs/apk" -type f -name '*unsigned.apk' -print0)
 [[ "${#apk_files[@]}" -eq 1 ]] || { echo "Expected exactly one unsigned APK, found ${#apk_files[@]}" >&2; exit 2; }
