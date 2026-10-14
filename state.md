@@ -253,3 +253,6 @@ ATT838 wire correction: signed context_id must be the same lowercase UUID as con
 ATT838 Rails private transport candidate now sends one signed internal POST without redirects or retries, rejects transactions and missing signing config, caps bytes at 10 MiB, and requires exact binary/no-store/nosniff/disposition/length headers. It is not called by a public route; gateway interop and fresh post-fetch authorization remain pending.
 
 INT801 repaired the fleet web lint failure by replacing three no-control-regex patterns with explicit Unicode code point validation and added C1-control regressions. The same pass corrected two remaining preference tests to the UI-aligned gateway argument order. Exact repaired-source Docker lint/type/unit/build is pending Soren.
+FE807 sequence create test was tightened to re-read the same returned id and strict server-only draft DTO; no runtime result yet.
+
+FE807 sequence source repair follows Soren's exact integrated lint parse failure at `SequencePage.tsx:100`; focused fleet lint/type/unit rerun pending.
