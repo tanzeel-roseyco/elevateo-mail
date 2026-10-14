@@ -1,5 +1,7 @@
 ### INT-801 integrated source candidate (2026-10-14)
 
+ATT-823 parallel phase: a noncanonical V2 proposal defines message-scoped attachment metadata pagination and clean-only authenticated byte streaming, with explicit 400/404/423 error mapping. No scanner, private Storage adapter, list repository, active route or generated DTO exists; browser upload and draft-send attachment remain unsupported. The frozen core candidate is unchanged.
+
 PREF-822 parallel phase: a separate noncanonical OpenAPI proposal defines session-derived GET/PUT `/v2/me/preferences` for display name only. It is absent from the active Rails registry and canonical V2 draft.5, pending Theo source SHA, review and fleet proof; current core candidate remains frozen.
 
 Dorian `ebfe780` repaired the SQL predicate concatenation that produced the exact fa3082a `ENDAND` migration failure and added a migration policy regression. It is merged in the current isolated candidate; the corrected disposable database run has been requested from Soren and has not yet returned.

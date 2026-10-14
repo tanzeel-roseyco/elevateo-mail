@@ -1,5 +1,7 @@
 # INT-801 Cassian implementation packet
 
+Attachment contract preparation: `contracts/v2/proposals/inbox-attachments.openapi.json` is a noncanonical ATT-823 read draft with message-bound metadata list and clean-only bytes, no upload/send path, explicit 400/404/423 mapping and no storage key/public URL. Nadia’s isolated service lacks list/streaming adapter, scanner and private Storage integration; Corin’s inbound staging handoff, review and fleet RLS/HTTP proof are pending. Canonical V2 source and active Rails registry remain unchanged.
+
 Parallel contract preparation: `contracts/v2/proposals/personal-preferences.openapi.json` is a noncanonical PREF-822 draft only. It defines session-derived display-name GET/PUT, strict body/revision/CSRF shape and generic missing/stale errors without adding canonical routes or touching the frozen core candidate. Theo source, security review and fleet runtime are pending; no generated declaration or active API is claimed.
 
 ## Latest integrated checkpoint — 2026-10-14 15:25 UTC

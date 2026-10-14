@@ -1,0 +1,259 @@
+{
+  "openapi": "3.1.1",
+  "info": {
+    "title": "Elevateo inbox attachment read proposal",
+    "version": "2.0.0-proposal.attachments.1",
+    "description": "Noncanonical read proposal. No active route, scanner, clean verdict writer, storage adapter, upload, draft-send attachment or generated DTO exists."
+  },
+  "servers": [
+    {
+      "url": "/"
+    }
+  ],
+  "security": [
+    {
+      "sessionCookie": []
+    }
+  ],
+  "paths": {
+    "/v2/mailboxes/{mailbox_id}/threads/{thread_id}/messages/{message_id}/attachments": {
+      "get": {
+        "operationId": "listInboxAttachments",
+        "x-elevateo-status": "proposal",
+        "summary": "List bounded attachment metadata for one currently readable message",
+        "parameters": [
+          {
+            "name": "mailbox_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "thread_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "message_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "maxLength": 2048
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Metadata only; never private object keys",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InboxAttachmentPage"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed scope or page query"
+          },
+          "404": {
+            "description": "Missing or inaccessible mailbox, message or attachment"
+          }
+        }
+      }
+    },
+    "/v2/mailboxes/{mailbox_id}/threads/{thread_id}/messages/{message_id}/attachments/{attachment_id}/content": {
+      "get": {
+        "operationId": "downloadCleanInboxAttachment",
+        "x-elevateo-status": "proposal",
+        "summary": "Stream bytes only after current read authorization and clean scan verdict",
+        "parameters": [
+          {
+            "name": "mailbox_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "thread_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "message_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "attachment_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Private bytes; no signed or public URL",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              },
+              "X-Content-Type-Options": {
+                "schema": {
+                  "type": "string",
+                  "const": "nosniff"
+                }
+              },
+              "Content-Disposition": {
+                "description": "Attachment disposition with sanitized filename",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed scope or page query"
+          },
+          "404": {
+            "description": "Missing or inaccessible mailbox, message or attachment"
+          },
+          "423": {
+            "description": "Current authorized attachment is held pending a clean verdict"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "sessionCookie": {
+        "type": "apiKey",
+        "in": "cookie",
+        "name": "elevateo_session"
+      }
+    },
+    "schemas": {
+      "InboxAttachmentSummary": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "filename",
+          "content_type",
+          "byte_size",
+          "scan_status"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "filename": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255,
+            "x-elevateo-maxUtf8Bytes": 255
+          },
+          "content_type": {
+            "type": "string",
+            "enum": [
+              "application/pdf",
+              "image/png",
+              "image/jpeg",
+              "text/plain"
+            ]
+          },
+          "byte_size": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 10485760
+          },
+          "scan_status": {
+            "type": "string",
+            "enum": [
+              "pending_scan",
+              "clean",
+              "malware",
+              "scan_failed"
+            ]
+          }
+        }
+      },
+      "InboxAttachmentPage": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "items",
+          "next_cursor"
+        ],
+        "properties": {
+          "items": {
+            "type": "array",
+            "maxItems": 50,
+            "items": {
+              "$ref": "#/components/schemas/InboxAttachmentSummary"
+            }
+          },
+          "next_cursor": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 2048
+          }
+        }
+      }
+    }
+  }
+}
