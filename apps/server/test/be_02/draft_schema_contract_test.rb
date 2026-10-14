@@ -25,30 +25,30 @@ class DraftSchemaContractTest < SessionDatabaseTestCase
 
   def test_creation_default_privilege_leakage_fails_atomically
     transaction do
-      # AIDEV-NOTE: A newer empty send schema intentionally restricts draft deletion; downgrade it within this rollback-only probe.
-      if @admin.exec("SELECT to_regclass('app_send_private.intents')").getvalue(0, 0)
-        @admin.exec("SET LOCAL ROLE elevateo_send_owner")
-        @admin.exec("SAVEPOINT send_dependency_probe")
-        begin
-          @admin.exec(File.read(File.expand_path("../../db/be03_send/down.sql", __dir__)))
-        rescue PG::DependentObjectsStillExist => error
-          # AIDEV-NOTE: Later send reconciliation objects legitimately block an older destructive downgrade.
-          assert_equal "2BP01", error.result.error_field(PG::Result::PG_DIAG_SQLSTATE)
-          @admin.exec("ROLLBACK TO SAVEPOINT send_dependency_probe")
-          refute_nil @admin.exec("SELECT to_regclass('app_send_private.intents')").getvalue(0, 0)
-          refute_nil @admin.exec("SELECT to_regclass('app.drafts')").getvalue(0, 0)
-          return
-        end
-      end
-      @admin.exec("SET LOCAL ROLE elevateo_owner")
-      @admin.exec(File.read(File.join(PARTS, "prerequisite.sql")))
-      @admin.exec(File.read(File.join(PARTS, "down.sql")))
-      @admin.exec("RESET ROLE")
-      @admin.exec("DROP SCHEMA app_drafts_private")
+      # AIDEV-NOTE: Rename is transaction-local and preserves all BE03 FKs while making bootstrap create a new schema.
+      @admin.exec("ALTER SCHEMA app_drafts_private RENAME TO be403_default_privilege_probe")
+      assert_nil namespace
       @admin.exec("ALTER DEFAULT PRIVILEGES FOR ROLE elevateo_owner GRANT USAGE ON SCHEMAS TO elevateo_api")
       rejects_bootstrap
       assert_nil namespace
-      assert_nil @admin.exec("SELECT to_regclass('app.drafts')").getvalue(0, 0)
+      refute_nil @admin.exec("SELECT to_regnamespace('be403_default_privilege_probe')").getvalue(0, 0)
+      refute_nil @admin.exec("SELECT to_regclass('app.drafts')").getvalue(0, 0)
+    end
+  end
+
+  def test_newer_send_dependencies_block_legacy_downgrade_atomically
+    skip "BE03 send schema is absent" unless @admin.exec("SELECT to_regclass('app_send_private.intents')").getvalue(0, 0)
+
+    transaction do
+      @admin.exec("SET LOCAL ROLE elevateo_send_owner")
+      @admin.exec("SAVEPOINT send_dependency_probe")
+      error = assert_raises(PG::DependentObjectsStillExist) do
+        @admin.exec(File.read(File.expand_path("../../db/be03_send/down.sql", __dir__)))
+      end
+      assert_equal "2BP01", error.result.error_field(PG::Result::PG_DIAG_SQLSTATE)
+      @admin.exec("ROLLBACK TO SAVEPOINT send_dependency_probe")
+      refute_nil @admin.exec("SELECT to_regclass('app_send_private.intents')").getvalue(0, 0)
+      refute_nil @admin.exec("SELECT to_regclass('app.drafts')").getvalue(0, 0)
     end
   end
 

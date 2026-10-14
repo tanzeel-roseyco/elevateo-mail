@@ -18,6 +18,8 @@ ADM-803 has candidate guarded V2 grants and unbound roster APIs; an atomic redac
 
 The integrated legacy draft bootstrap probe now checks BE03's protective send-intent FK transactionally; full BE02 down/reapply remains a separate disposable BE02-only database check. The current fleet rerun is pending.
 
+ADV052 split the integrated send-dependency check from the default-privilege assertion, which now runs against a transactionally renamed schema. Fleet verification remains pending.
+
 
 ### R25 approval reload recovery candidate
 
