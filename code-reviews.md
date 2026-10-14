@@ -1327,3 +1327,7 @@ Sabine DIR903 final `bd1969ae` adds a real foreign organization/mailbox fixture;
 DIR905 Lyra exact `7380436b` AssignmentPanel/AssigneePicker/tests are imported as source candidate only. Owner packet and independent source/design review plus fleet TypeScript/unit/browser evidence remain pending; reviewed LOC/defects/KLOC unclaimed. The route and main injection remain inactive.
 
 Mira REPLY901 `fcfaf0f` ThreadPage/test and REPLY906 `3ceafd15` CollaborationPanels test are integrated, source-only. Independent bounded review and fleet frontend unit/type/browser runtime are pending; reviewed LOC/defects/KLOC unclaimed. This is not evidence of saved draft persistence on the current feature SHA.
+
+ADV136 Vera independently reviewed exact dd8a3eaf inactive assignee proposal/Zod/adapter/tests plus transport context: 212 unique versioned LOC, zero confirmed defects (0/KLOC), source only. It excludes backend authority, generated contract, consumer and runtime; request context/cursor edge cases remain verification gaps. Report `docs/completion/vera-adv136-assignee-port.md`.
+
+ADV137 Ada reviewed Nadia ATT902 initial content candidate `3a454c8c` plus Cassian fixed 423 context: 347 unique versioned LOC in <=180-line reads, one confirmed held-envelope defect (2.88/KLOC). Owner successor `a2337794` raises shared `CollaborationError.new("attachment_held")` in source, but this review did not inspect/test that successor; independent rereview and fleet execution remain pending. Report `docs/completion/ada-adv137-attachment-content.md`.
