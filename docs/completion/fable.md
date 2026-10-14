@@ -143,6 +143,17 @@ Tests added (not executed): `ui/ConnectivityBanner.test.tsx` (online no-op, offl
 
 Screenshot requirements for Tessa, R4: widths **390, 768 and 1440**, light and dark, each with (a) populated fixture inbox, (b) empty mailbox list, (c) load error in the rail with Try again, (d) denied mailbox page; plus offline notice (DevTools offline) and the restored-connection bar at 390; the drawer at 390 showing Personal and Outreach. No visual PASS will be claimed without these images.
 
+## R5 — real Outreach gateway injection, ADV033 fix, drawer rename (2026-10-15)
+
+Source intake: Cassian's exact V2 web chain was cherry-picked with `-x` provenance because his integration head carries every lane and must stay the single integration branch: `12e7388`, `bbed59c`, `c281768`, `cb771ca`, `77ace94` (adds `data/v2OutreachGateway.ts`). Three server files and `docs/completion/cassian.md` conflicted and were taken at Cassian's version; the server tree on this branch is therefore **not** an integration candidate, only Cassian's branch is. Celeste `4372e28` was already contained.
+
+- **Production injection.** `main.tsx` now passes `bridgeOutreachGateway(createV2OutreachGateway())` as the Outreach feature gateway. `app/outreachGatewayBridge.ts` types the wiring against Celeste's `OutreachGateway` port: campaign, lead and analytics operations pass straight through; the two account operations drop the campaign id because the adapter is still unscoped and rejects them inertly with `temporarily_unavailable`. Delete the bridge once Cassian's adapter takes campaign-scoped account signatures. Tests: `outreachGatewayBridge.test.ts` (campaign read through the adapter; inert account calls with no dispatch; malformed lead write rejected before network).
+- **ADV033 (Shell 270 LOC, confirmed).** The "Simulated local mail" badge and the rail footnote are now rendered only when the authoritative session flag `simulation_mode` is true, and the footnote no longer claims local-only storage: "Simulation mode: no mail is sent or received. Drafts and notes are saved on the server." `Sidebar` accepts `footnote: string | null`. Regression: Shell case asserting the new copy and the absence of the old claim. The V1 schema pins `simulation_mode` to `true`, so the false branch cannot be exercised by fixture until the contract admits it.
+- **Drawer rename (agreed).** `dialog "Navigation"`, `button "Open navigation menu"` in `Shell.tsx`; Shell tests updated. Tessa updates `e2e/read.spec.ts` and QA818 selectors to the same names.
+- ADV031 (registration, 0 defects) and ADV032 (Sidebar, 0 defects) acknowledged; actual visual and session-replacement runtime evidence remain Soren/Tessa gates.
+
+FE-805 authored cases: 20. None executed by Fable.
+
 ## Limitations
 
 - No lint, typecheck, unit test, build or visual check has been executed by Fable; Soren owns execution and Tessa owns visual evidence.
@@ -151,3 +162,4 @@ Screenshot requirements for Tessa, R4: widths **390, 768 and 1440**, light and d
 - `elevateo-logo.png` is shipped but unused in the shell; sign-in/auth brand placement belongs to a later scoped request.
 - No independent review has been performed on this candidate; see `code-reviews.md` for the self-inspection record only. Root's bounded review is underway; concrete defects will be fixed in this branch as they arrive.
 - No fleet screenshots have been supplied yet, so no visual correction has been possible and no visual state is claimed.
+- Server files cherry-picked from Cassian's chain (routes, V2 registry, its test) are present only to carry his web adapter; they are not integration-ready on this branch.

@@ -99,8 +99,8 @@ interface SidebarProps {
   /** Registered feature links per section; an empty section is not rendered at all. */
   sections?: Partial<Readonly<Record<FeatureSection, readonly FeatureNavEntry[]>>>
   onNavigate?: () => void
-  /** One honest line about what this build does and does not do. */
-  footnote: string
+  /** One honest line about the transport mode, or null when the server reports no simulation. */
+  footnote: string | null
 }
 
 export function Sidebar({ mailboxes, sections = {}, onNavigate, footnote }: SidebarProps) {
@@ -143,8 +143,8 @@ export function Sidebar({ mailboxes, sections = {}, onNavigate, footnote }: Side
           )
         })}
       </div>
-      {/* Honest framing wherever the user is. */}
-      <p className="px-3 pt-1 text-[11px] leading-snug text-fg">{footnote}</p>
+      {/* Honest framing wherever the user is; absent when the server reports no simulation. */}
+      {footnote !== null && <p className="px-3 pt-1 text-[11px] leading-snug text-fg">{footnote}</p>}
     </div>
   )
 }

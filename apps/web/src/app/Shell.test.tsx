@@ -291,10 +291,10 @@ describe('mobile drawer', () => {
   it('opens as a named dialog, closes on route selection, Escape restores trigger focus', async () => {
     renderShell(createFixtureGateway())
     await screen.findByText('Synthetic organization A')
-    const trigger = screen.getByRole('button', { name: 'Open mailbox menu' })
+    const trigger = screen.getByRole('button', { name: 'Open navigation menu' })
 
     fireEvent.click(trigger)
-    const dialog = await screen.findByRole('dialog', { name: 'Mailboxes' })
+    const dialog = await screen.findByRole('dialog', { name: 'Navigation' })
     // While the modal is open only the drawer copy is accessible; the desktop rail copy sits in
     // the aria-hidden background and must not surface in accessible queries.
     const drawerLink = within(dialog).getByRole('link', { name: 'Fixture inbox' })
@@ -306,12 +306,12 @@ describe('mobile drawer', () => {
 
     // Route selection inside the drawer closes it (D6).
     fireEvent.click(drawerLink)
-    await waitFor(() => expect(screen.queryByRole('dialog', { name: 'Mailboxes' })).toBeNull())
+    await waitFor(() => expect(screen.queryByRole('dialog', { name: 'Navigation' })).toBeNull())
 
     fireEvent.click(trigger)
-    await screen.findByRole('dialog', { name: 'Mailboxes' })
+    await screen.findByRole('dialog', { name: 'Navigation' })
     fireEvent.keyDown(document.activeElement ?? document.body, { key: 'Escape' })
-    await waitFor(() => expect(screen.queryByRole('dialog', { name: 'Mailboxes' })).toBeNull())
+    await waitFor(() => expect(screen.queryByRole('dialog', { name: 'Navigation' })).toBeNull())
     // Dismissal restores focus to the trigger (D6); real-browser proof lives in e2e/read.spec.ts.
     await waitFor(() => expect(document.activeElement).toBe(trigger))
   })
@@ -319,13 +319,13 @@ describe('mobile drawer', () => {
   it('growing past the md breakpoint closes an open drawer', async () => {
     renderShell(createFixtureGateway())
     await screen.findByText('Synthetic organization A')
-    fireEvent.click(screen.getByRole('button', { name: 'Open mailbox menu' }))
-    await screen.findByRole('dialog', { name: 'Mailboxes' })
+    fireEvent.click(screen.getByRole('button', { name: 'Open navigation menu' }))
+    await screen.findByRole('dialog', { name: 'Navigation' })
     act(() => {
       mediaMatches = true
       mediaListeners.forEach((listener) => listener({ matches: true }))
     })
-    await waitFor(() => expect(screen.queryByRole('dialog', { name: 'Mailboxes' })).toBeNull())
+    await waitFor(() => expect(screen.queryByRole('dialog', { name: 'Navigation' })).toBeNull())
   })
 })
 
@@ -479,5 +479,15 @@ describe('online-only shell hygiene (FE-805)', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Reload' }))
     await waitFor(() => expect(screen.queryByText(/Connection is back/)).toBeNull())
     await screen.findByText('Synthetic organization A')
+  })
+})
+
+describe('simulation labelling derives from the session (ADV033)', () => {
+  it('shows the transport-only simulation footnote and badge for a simulated session, without any local-only storage claim', async () => {
+    renderShell(createFixtureGateway())
+    await screen.findByText('Synthetic organization A')
+    expect(screen.getByText('Simulated local mail')).toBeTruthy()
+    expect(screen.getByText('Simulation mode: no mail is sent or received. Drafts and notes are saved on the server.')).toBeTruthy()
+    expect(screen.queryByText(/stay on this installation/)).toBeNull()
   })
 })
