@@ -182,3 +182,7 @@ R25 approval recovery verification follow-up: fleet strict typecheck, corrected 
 RootSOURCEGO reviewed7a7860e captured-ref lint repair assembled without owner source edits; functional83LOC0/design8changed62context0. Mira owns exactsuccessor lint/type/fullunit/build and reloadbrowser. Backend SQL/API identical tested125f939; recovery runtime stillpending. F2 unsaved-draft/content recovery remainsOPEN; this only restores nonsecretoriginalapprovalmetadata.
 
 Cassian manifest reconciliation: contract-lock now seals actual generated client bytes and pinned fleet generation/125f939S1S2DB+HTTP evidence; README reflects proven scope. Canonical openapi/fixtures/C-D structures unchanged; no regeneration, added routes or capabilityactivation. Recovery successor3a709691 checks stillMira-owned/pending; BE02OPEN/releasegated.
+
+### FE-806 inbox journey
+
+The inbox offers an explicit route to drafts only when its current read succeeded and the mailbox capability snapshot permits compose. That navigation performs no write. Unknown or denied capability and denied mailbox reads do not expose the entry; server authorization remains authoritative for every subsequent draft/send operation. Fleet tests and integrated visual review remain pending.

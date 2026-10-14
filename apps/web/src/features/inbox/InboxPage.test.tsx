@@ -10,6 +10,7 @@ import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { Link, MemoryRouter, Route, Routes, useParams, useSearchParams } from 'react-router'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { SessionProvider } from '@/app/session'
+import { MailboxesProvider } from '@/app/mailboxes'
 import { createFixtureGateway } from '@/data/fixtures/fixtureGateway'
 import { GatewayError } from '@/data/errors'
 import type { ThreadPage } from '@/data/contract'
@@ -59,14 +60,16 @@ function pagedGateway(pages: Array<ThreadPage | GatewayError>) {
   return { gateway, readCalls: () => readCalls }
 }
 
-function renderInbox(gateway: MailroomGateway, initialEntry = `/mailboxes/${MB}`) {
+function renderInbox(gateway: MailroomGateway, initialEntry = `/mailboxes/${MB}`, compose = false) {
   return render(
     <SessionProvider gateway={gateway}>
+      <MailboxesProvider value={{ status: 'ready', mailboxes: [{ id: MB, display_name: 'Inbox', display_address: null, capabilities: { read: true, compose, approve_send: false, manage_members: false } }] }}>
       <MemoryRouter initialEntries={[initialEntry]}>
         <Routes>
           <Route path="/mailboxes/:mailboxId" element={<InboxPage />} />
         </Routes>
       </MemoryRouter>
+      </MailboxesProvider>
     </SessionProvider>,
   )
 }
@@ -97,6 +100,30 @@ describe('denied mailbox navigation', () => {
     expect(screen.queryByRole('navigation', { name: 'Filter' })).toBeNull()
     expect(screen.queryAllByRole('link')).toHaveLength(0)
     expect(readCalls()).toBe(1)
+  })
+})
+
+describe('compose entry', () => {
+  it('opens drafts for an authorized readable mailbox without creating a draft', async () => {
+    const gateway = createFixtureGateway()
+    const save = vi.spyOn(gateway, 'saveDraft')
+    renderInbox(gateway, `/mailboxes/${MB}`, true)
+    const link = await screen.findByRole('link', { name: 'Compose draft' })
+    expect(link.getAttribute('href')).toBe(`/mailboxes/${MB}/drafts`)
+    expect(save).not.toHaveBeenCalled()
+  })
+
+  it('hides compose when capability is denied', async () => {
+    renderInbox(createFixtureGateway())
+    await screen.findByRole('heading', { name: 'Conversations', level: 1 })
+    expect(screen.queryByRole('link', { name: 'Compose draft' })).toBeNull()
+  })
+
+  it('hides compose after a mailbox read denial even with a stale capability hint', async () => {
+    const { gateway } = pagedGateway([new GatewayError('api', 'not_available', 'Unavailable', { status: 404, requestId: 'r1' })])
+    renderInbox(gateway, `/mailboxes/${MB}`, true)
+    await screen.findByRole('heading', { name: 'This mailbox is unavailable', level: 2 })
+    expect(screen.queryByRole('link', { name: 'Compose draft' })).toBeNull()
   })
 })
 

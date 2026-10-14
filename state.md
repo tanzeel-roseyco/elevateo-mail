@@ -114,3 +114,7 @@ R25 approval recovery verification follow-up: fleet strict typecheck, corrected 
 RootSOURCEGO reviewed7a7860e captured-ref lint repair assembled without owner source edits; functional83LOC0/design8changed62context0. Mira owns exactsuccessor lint/type/fullunit/build and reloadbrowser. Backend SQL/API identical tested125f939; recovery runtime stillpending. F2 unsaved-draft/content recovery remainsOPEN; this only restores nonsecretoriginalapprovalmetadata.
 
 Cassian manifest reconciliation: contract-lock now seals actual generated client bytes and pinned fleet generation/125f939S1S2DB+HTTP evidence; README reflects proven scope. Canonical openapi/fixtures/C-D structures unchanged; no regeneration, added routes or capabilityactivation. Recovery successor3a709691 checks stillMira-owned/pending; BE02OPEN/releasegated.
+
+### FE-806 candidate
+
+Inbox compose entry is gated by a successful read and explicit compose capability. The existing plaintext reader, draft/reply and simulated send flow remain the implementation seams. Three bounded component cases are authored; fleet execution and integrated visual acceptance are pending. See `docs/completion/mira.md`.
