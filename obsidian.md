@@ -1,5 +1,7 @@
 # Elevateo Mail — ongoing project record
 
+QA-404 attempt 2: IN PROGRESS. Elara authored two additional real-backend Playwright cases (zero visible mailboxes and same-mailbox private drafts), preserving all 26 identities; 12 are source-authored and 14 remain explicitly unavailable. All new runtime checks and actual UI evidence are NOT_RUN pending Rowan schema repair and Soren immutable-SHA container scheduling. See docs/completion/qa404-acceptance.md.
+
 Status: IN PROGRESS. Updated 2026-10-14, Australia/Sydney.
 
 ## Nontechnical brief
