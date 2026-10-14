@@ -7,6 +7,7 @@ module V2
     def index: () -> void
     def content: () -> void
     private
+    def send_data: (String, type: String, disposition: String, filename: String) -> void
     def download_snapshot: (String, String, String, String, String?, String?, String, Integer) -> Elevateo::Attachments::download_snapshot
     def path_uuid: (Symbol) -> String
   end
