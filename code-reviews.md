@@ -679,4 +679,6 @@ R25 lint repair: one tooling defect in the unmount cleanup (ref must be captured
 
 SEND-809 self review: migration and SQL ~230 source LOC, zero confirmed defects after local corrections (0 confirmed/KLOC). Independent bounded functional and design reviews NOT_RUN; request to root. See docs/completion/rowan.md.
 
-SEND-810 Nadia cancellation API/SQL and Rowan direct-function race tests: independent bounded functional and design reviews requested; none performed, so reviewed LOC, defects and density remain unreported. Author inspection found the Rowan `claim_job` reconciliation guard defect, routed to Rowan/root. Duplicate bridge/process source was removed before runtime; Docker NOT_RUN. See docs/completion/nadia.md.
+SEND-810 Nadia cancellation API/SQL and Rowan direct-function race tests: independent bounded functional and design reviews requested; none performed, so reviewed LOC, defects and density remain unreported. Author inspection found the Rowan `claim_job` reconciliation guard defect, repaired in Rowan's exact continuation; integrated runtime NOT_RUN. Duplicate bridge/process source was removed before runtime. See docs/completion/nadia.md.
+
+SEND-809 continuation self review: claim/cancel, authorization, and reconciliation SQL plus affected DB fixtures reviewed source-only; found and repaired three material gaps (stop-requested reconciliation blocked, current suppression/capability absent, repeated unknown evidence constrained). Independent functional/design review and runtime NOT_RUN; no independent defect density claimed.

@@ -7,7 +7,6 @@ class SendSchemaDatabaseTest < SendDatabaseTestCase
     grants = File.read(File.expand_path("../../db/be03_send/grants.sql", __dir__))
     @admin.exec("BEGIN; SET LOCAL ROLE elevateo_send_owner")
     @admin.exec(grants)
-    @admin.exec("COMMIT")
     assert_equal "elevateo_owner", @admin.exec(<<~SQL).getvalue(0, 0)
       SELECT proowner::regrole::text FROM pg_proc
         WHERE oid = 'app_send_private.preserve_consumed_draft()'::regprocedure
@@ -18,13 +17,18 @@ class SendSchemaDatabaseTest < SendDatabaseTestCase
           AND has_function_privilege($1,oid,'EXECUTE')
           AND oid NOT IN ('app_send_private.claim_job(uuid,uuid,uuid,integer)'::regprocedure,
             'app_send_private.authorize_attempt(uuid,uuid,bigint,uuid,uuid,bytea,text,integer)'::regprocedure,
-            'app_send_private.record_observation(uuid,uuid,bigint,uuid,uuid,text,text,bytea)'::regprocedure)
+            'app_send_private.record_observation(uuid,uuid,bigint,uuid,uuid,text,text,bytea)'::regprocedure,
+            'app_send_private.worker_binding(uuid,uuid,bigint,uuid)'::regprocedure,
+            'app_send_private.final_attempt_check(uuid,uuid,bigint,uuid,uuid)'::regprocedure,
+            'app_send_private.reconcile_no_evidence(uuid,uuid,bigint,uuid)'::regprocedure)
       SQL
     end
     assert_equal "t", @admin.exec(<<~SQL).getvalue(0, 0)
       SELECT has_function_privilege('elevateo_send_owner',
         'app_send_private.consume_draft(text,uuid,uuid,integer)','EXECUTE')
     SQL
+    # Roll back the historical grant replay; migration 00010 grants worker-only functions.
+    @admin.exec("ROLLBACK")
     refute approve.key?("code")
     assert_equal [1, 1, 1, 1], counts
   ensure
@@ -34,12 +38,14 @@ class SendSchemaDatabaseTest < SendDatabaseTestCase
   def test_runtime_roles_cannot_read_tables_or_execute_private_bridges
     %w[elevateo_api elevateo_worker elevateo_app_read].each do |role|
       row = @admin.exec_params(<<~SQL, [role]).first
-        SELECT has_schema_privilege($1,'app_send_private','USAGE,CREATE') AS schema_access,
+        SELECT has_schema_privilege($1,'app_send_private','USAGE') AS schema_usage,
+          has_schema_privilege($1,'app_send_private','CREATE') AS schema_create,
           pg_has_role($1,'elevateo_send_owner','SET,USAGE,MEMBER') AS owner_access,
           has_function_privilege($1,'app_send_private.read_draft_binding(uuid,uuid)','EXECUTE') AS bridge_access,
           has_table_privilege($1,'app_send_private.intents','SELECT,INSERT,UPDATE,DELETE,TRUNCATE') AS table_access
       SQL
-      assert_equal({ "schema_access" => "f", "owner_access" => "f", "bridge_access" => "f", "table_access" => "f" }, row)
+      assert_equal({ "schema_usage" => role == "elevateo_worker" ? "t" : "f", "schema_create" => "f",
+        "owner_access" => "f", "bridge_access" => "f", "table_access" => "f" }, row)
     end
     assert_raises(PG::InsufficientPrivilege) { @api.exec("SELECT * FROM app_send_private.intents") }
     assert_raises(PG::InsufficientPrivilege) { @worker.exec_params("SELECT app.approve_draft_send($1,$2,$3,$4,1,$5,NULL,$6)", [@digest,@box,@draft,@operation,@review_digest,@epoch]) }
@@ -52,7 +58,7 @@ class SendSchemaDatabaseTest < SendDatabaseTestCase
         FROM pg_class c JOIN pg_roles r ON r.oid=c.relowner
         WHERE c.relnamespace='app_send_private'::regnamespace AND c.relkind='r'
     SQL
-    assert_equal 9, rows.length
+    assert_equal 10, rows.length
     rows.each do |row|
       assert_equal "t", row.fetch("relrowsecurity")
       assert_equal "t", row.fetch("relforcerowsecurity")
@@ -98,6 +104,8 @@ class SendSchemaDatabaseTest < SendDatabaseTestCase
   end
   def test_empty_down_removes_only_send_objects_and_transaction_rollback_restores_them
     @admin.exec("BEGIN")
+    worker_down = File.read(File.expand_path("../../db/be03_send/worker_authority_down.sql", __dir__))
+    @admin.exec(worker_down)
     @admin.exec("SET LOCAL ROLE elevateo_send_owner")
     down = File.read(File.expand_path("../../db/be03_send/down.sql", __dir__))
     @admin.exec(down)
