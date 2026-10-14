@@ -1438,3 +1438,5 @@ FIX948 scoped self-review: inspected the 9-line `ApplicationController`, 44-line
 ## INT949 follow-up inline review
 
 Self-review only, honoring the user's inline-only instruction. Confirmed production defects repaired: 2 (nil/absent logger handling; preference write lock/RLS mismatch). Additional fixture defects repaired: 3 classes (duplicate role seeds, FK teardown order, closed-connection teardown). Changed-line coverage and defect density will be recorded after fleet diff review. Runtime regression results remain pending on this successor; c87 web PASS is not a backend PASS.
+
+INT949 permalink self-review: 72 fixture LOC inspected; one defect (29-byte synthetic signing key) repaired, 13.89 defects/KLOC. Happy-path plaintext, missing/denied equivalence and malformed-path checks retain their assertions. Runtime rerun pending; no independent review is claimed under the inline-only instruction.

@@ -26,7 +26,8 @@ class InboundPermalinkHTTPTest < Minitest::Test
     @connection.rows = rows
     env = Rack::MockRequest.env_for("https://app.test/v2/threads/#{thread}/messages/#{message}", method: "GET", input: "")
     configuration = config
-    configuration.cursor_signing_key = "disposable-permalink-key-00001"
+    # AIDEV-NOTE: Even direct-message reads construct the shared reader, whose cursor key requires 32 bytes.
+    configuration.cursor_signing_key = "disposable-permalink-key-00000001"
     env.merge!("QUERY_STRING" => "mailbox_id=#{mailbox}", "HTTP_ORIGIN" => "https://app.test",
       "HTTP_COOKIE" => "elevateo_session=#{@cookie}", "HTTP_X_SESSION_CONTEXT" => AuthFixtures::CONTEXT,
       "HTTP_X_AUTHORIZATION_VERSION" => @service.presentation.version(metadata),
