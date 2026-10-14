@@ -87,3 +87,5 @@ Soren exact 8eb840d fleet web run completed: frozen V1 `check:api`, lint and Typ
 Celeste c49063e label clarification and 27049a6 canonical consent observation timestamp correction are merged as 7d921cd after exact 8eb web unit failures. Soren targeted OutreachPages/contract rerun was requested; these commits have no PASS claim yet. Fable seven exact older-source failures remain pending owner repair.
 
 Dorian 4da862d current-authority proof for consent replay/audit writes merged as 5b11285. It arrived after the ba615 structural PASS and the 45be full-suite fixture failure; SQL/HTTP authorization and replay checks remain NOT_RUN on this source. Account read routes remain gated on separate mailbox visibility policy.
+
+Latest owner-source merge `995bc86` includes Rowan 6cbd19e versioned internal Mailpit test receipt authority migration 00013, Dorian current-authority consent, and later native/QA safeguards. This receipt authority is internal test transport only; no V2 browser route, live SMTP or provider activation was added. Soren disposable migration through 00013 and targeted receipt DB tests are requested, NOT_RUN on this SHA.
