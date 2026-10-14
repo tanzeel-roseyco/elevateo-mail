@@ -5,8 +5,8 @@ require "tmpdir"
 require_relative "acceptance_invitation"
 
 class AcceptanceInvitationTest < Minitest::Test
-  def link
-    "http://app.test/auth/accept?token=#{'a' * 64}&type=invite&redirect_to=http%3A%2F%2Fapp.test%2Fauth%2Fcomplete"
+  def link(token = "a" * 56)
+    "http://app.test/auth/accept?token=#{token}&type=invite&redirect_to=http%3A%2F%2Fapp.test%2Fauth%2Fcomplete"
   end
 
   def private_directory
@@ -17,7 +17,7 @@ class AcceptanceInvitationTest < Minitest::Test
   end
 
   def test_real_link_shape_and_private_contract_publication
-    assert_equal "a" * 64, Be02Acceptance::Invitation.validate_link(link)
+    assert_equal "a" * 56, Be02Acceptance::Invitation.validate_link(link)
     private_directory do |directory, output|
       value = { version: 1, link: link, password: "Synthetic!only", actor_id: SecureRandom.uuid,
         organization_id: SecureRandom.uuid, mailbox_id: SecureRandom.uuid }
@@ -35,11 +35,21 @@ class AcceptanceInvitationTest < Minitest::Test
   def test_bad_provenance_fails_without_disclosing_link
     [link.sub("app.test/auth/accept", "evil.test/auth/accept"), link.sub("http://app.test/", "http://user@app.test/"),
       link.sub("type=invite", "type=recovery"), link + "&type=invite", link + "#secret",
-      link.sub("app.test%2Fauth", "evil.test%2Fauth"), link.sub("token=#{'a' * 64}", "token=secret")].each do |bad|
+      link.sub("app.test%2Fauth", "evil.test%2Fauth"), link("secret")].each do |bad|
       error = assert_raises(Be02Acceptance::Failure) { Be02Acceptance::Invitation.validate_link(bad) }
       assert_match(/\Ainvitation_[a-z_]+\z/, error.message)
       refute_includes error.message, bad
     end
+  end
+
+  def test_auth_sha224_token_format_rejects_wrong_lengths_and_non_hex_without_disclosure
+    # AIDEV-NOTE: SHA-256-shaped fixtures previously hid a mismatch with the real pinned Auth provider.
+    ["", "a" * 55, "a" * 57, "a" * 64, "A" * 56, "g" * 56].each do |token|
+      error = assert_raises(Be02Acceptance::Failure) { Be02Acceptance::Invitation.validate_link(link(token)) }
+      assert_equal "invitation_provenance_invalid", error.message
+    end
+    assert_equal "0123456789abcdef" * 3 + "01234567",
+      Be02Acceptance::Invitation.validate_link(link("0123456789abcdef" * 3 + "01234567"))
   end
 
   def test_existing_output_is_not_replaced_and_temporary_is_cleaned

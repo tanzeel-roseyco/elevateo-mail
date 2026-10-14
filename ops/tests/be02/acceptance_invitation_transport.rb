@@ -76,8 +76,9 @@ module Be02Acceptance
       pairs = URI.decode_www_form(uri.query.to_s)
       Be02Acceptance.check(pairs.map(&:first).sort == %w[redirect_to token type], "invitation_query_invalid")
       query = pairs.to_h
+      # AIDEV-NOTE: Pinned Auth v2.196.0 hashes invitation OTPs with SHA-224: exactly 56 lowercase hex characters.
       Be02Acceptance.check(query["type"] == "invite" && query["redirect_to"] == REDIRECT &&
-        /\A[0-9a-f]{64}\z/.match?(query.fetch("token")), "invitation_provenance_invalid")
+        /\A[0-9a-f]{56}\z/.match?(query.fetch("token")), "invitation_provenance_invalid")
       query.fetch("token")
     rescue URI::InvalidURIError, ArgumentError
       raise Failure, "invitation_link_invalid", cause: nil

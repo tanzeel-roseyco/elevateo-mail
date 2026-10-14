@@ -42,7 +42,7 @@ class InvitationFixtureTest < Minitest::Test
       @actor = SecureRandom.uuid
     end
     def delivered_link
-      "http://app.test/auth/accept?token=#{'a' * 64}&type=invite&redirect_to=http%3A%2F%2Fapp.test%2Fauth%2Fcomplete"
+      "http://app.test/auth/accept?token=#{'a' * 56}&type=invite&redirect_to=http%3A%2F%2Fapp.test%2Fauth%2Fcomplete"
     end
   end
 

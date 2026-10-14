@@ -65,13 +65,13 @@ class AcceptanceInvitationTransportTest < Minitest::Test
 
   def test_final_link_validation_cannot_return_a_late_capability
     @invitation.instance_variable_set(:@email, "recipient@example.test")
-    link = "http://app.test/auth/accept?token=#{'a' * 64}&type=invite&redirect_to=http%3A%2F%2Fapp.test%2Fauth%2Fcomplete"
+    link = "http://app.test/auth/accept?token=#{'a' * 56}&type=invite&redirect_to=http%3A%2F%2Fapp.test%2Fauth%2Fcomplete"
     recipient = { "Address" => "recipient@example.test" }
     replies = [{ "messages" => [{ "ID" => "owned", "To" => [recipient] }] },
       { "To" => [recipient], "Text" => link }]
     Process.stub(:clock_gettime, ->(_clock) { @now }) do
       @invitation.stub(:request, ->(*_args) { replies.shift }) do
-        Be02Acceptance::Invitation.stub(:validate_link, ->(_link) { @now = 25.0; "a" * 64 }) do
+        Be02Acceptance::Invitation.stub(:validate_link, ->(_link) { @now = 25.0; "a" * 56 }) do
           assert_timeout { @invitation.delivered_link }
         end
       end
