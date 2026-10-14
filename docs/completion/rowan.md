@@ -39,3 +39,7 @@ Fleet-only requested commands under Soren's Docker lease, from `apps/server` in 
 ### ADV064 lease-expiry repair
 
 Vera's static review of `6cbd19e` found that `record_observation_v2` and the recreated legacy `record_observation` captured time before blocking on the job row. Both now refresh `clock_timestamp()` after acquiring that lock; the additive migration's down SQL keeps the same legacy repair so rollback does not reopen the race. Two database regressions lock the job before expiry, verify the worker is blocked, hold the lock past expiry, then require `stale_lease`, unchanged dispatching state and zero accepted observations. Soren must run these in fleet Docker; Rowan has not run application tests locally.
+
+### 00013 PostgreSQL parser repair after fleet failure
+
+Soren's real fleet migration receipt `docs/completion/qa815-evidence/backend-4a0ba0b34a1f/027-migrate.txt` failed on `mailpit_test_receipt.sql` at the `CASE p_profile ... END THEN` expression in `authorize_attempt`, before affected tests. The source repair expresses the exact allowed `(profile, capability_hash)` pairs as a parenthesized boolean predicate; null and remote profiles still fail the earlier request validation. A new database regression authorizes `synthetic-v1` with its exact hash and runs `final_attempt_check`, alongside the existing Mailpit success and stale capability cases. This candidate is NOT_RUN; Soren alone must run a fresh disposable fleet migration and affected tests.
