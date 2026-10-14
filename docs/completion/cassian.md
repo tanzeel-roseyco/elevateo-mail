@@ -1,5 +1,7 @@
 # INT-801 Cassian implementation packet
 
+The isolated preference gateway is now re-exported through `createV2Gateway()` to match Lyra’s proposed PersonalSettingsPage call names. The Lyra UI and Theo route remain unmerged/unregistered pending bounded review and fleet checks, so this adapter seam does not expose a production preferences page yet.
+
 Rowan `d9d428e` replaced the IF-embedded Mailpit profile CASE that blocked exact 4a0ba0b migration with explicit permitted profile/hash pairs and added a real-DB regression. It is merged; Soren has been asked for a fresh disposable migration and targeted worker/schema/HTTP gates. No corrected-source runtime PASS is claimed yet.
 
 Orion `8d98b42` source repair rejects bare reserved native origins as well as trailing-dot forms and is merged; focused fleet Rust/PowerShell checks and icon hashes are pending. This is source candidate only, not a native package or installed-app proof.
