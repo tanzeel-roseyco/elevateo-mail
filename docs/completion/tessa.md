@@ -13,3 +13,36 @@ Design tradeoff simulation: one manager-owned draft avoids mutating a shared see
 Continuation candidate: `qa816-matrix.e2e.ts` adds authenticated inbox permalink/keyboard/history at 1440/375/320px, duplicate draft submit and reload, foreign-thread denial plus settled unique empty search, and Fable branded shell desktop light/dark plus mobile drawer screenshots. Strict Fable assertions require his committed shell to be merged before running. `QA816-SHELL-P` accepts Celeste's truthful paused/unavailable campaign list; create/detail requires a separate authoritative versioned API and Fable route, so it is not marked covered. Browser pinch/text zoom at 200% still needs a reliable container execution mechanism; changing CSS zoom would be a simulation, not genuine browser zoom.
 
 `QA816-SEARCH-F2` adds genuine held-response loading, transport-abort error, and server-backed retry to a settled empty result. It uses the existing transport barrier and does not synthesize a business response. The shell scenario requires both Fable FE805 and Celeste FE807 to be integrated with the protected read context; a placeholder-only merge is deliberately insufficient.
+
+`QA816-ZOOM-P` uses Chromium CDP visual viewport scale 2 and verifies `window.visualViewport.scale`, seeded inbox visibility and a screenshot. It is genuine pinch/visual viewport zoom, not desktop browser text zoom, and requires Chromium; that distinction remains in the acceptance ledger.
+
+Reporter identity repair: `quiet-reporter.ts` accepts `SCN-[A-Z]+-NNN-(P|F1|F2)` titles. The nine QA816 cases now use `SCN-QA-816/817/818` identities; prior `QA816-*` titles would have failed publication before an acceptance record existed. Historical evidence inventories remain unchanged; these are supplemental cases with their own records and cannot be counted toward the frozen BE02 set.
+
+Screenshot admission repair: the shared screenshot writer uses a closed ID list and would reject every new QA816 capture. Sixteen fixed supplemental IDs were appended to that list without changing the lock, size budget, path controls or historical IDs. The run must still use a task-owned artifact ledger with sufficient budget; no screenshots have been produced.
+
+`SCN-QA-819-P` adds a current V1 roster boundary: manager GET 200 and rendered revision, plus a separate real reader session with API denial and nonactionable UI. It does not mutate membership or claim Lyra V2 grant coverage. Two fixed admin screenshot IDs bring the supplemental screenshot set to eighteen.
+
+`SCN-QA-819-F1` is a pending integrated V2 People candidate: real manager grants GET 200 versus separate reader 403/404, with truthful unbound planning identities and no reader save control. It requires Cassian's active V2 grants GET, Lyra/Fable integrated `/people`, and a seed with a reader denied administration. No grant is changed; no V2 runtime outcome is claimed. Two more fixed screenshot IDs bring the supplemental set to twenty.
+
+Cassian's integrated Celeste page currently says “Outreach is draft or paused. Sending and enrollment are unavailable.” The shell assertion follows that exact source copy; it still requires a bound Outreach gateway for actual list data. This static alignment does not establish the active V2 browser path.
+
+Execution partitions for Soren (all inside fleet Docker, each exact merged source SHA):
+
+| Partition | Playwright grep | Admission |
+| --- | --- | --- |
+| V1 baseline | `SCN-QA-817|SCN-QA-819-P` | Real Auth/BE02 V1 seed and API; includes reader, draft, search, V1 roster. |
+| Shell/visual | `SCN-QA-818` | Fable+Celeste integrated shell, Chromium for visual viewport scale; Outreach list gateway is not required for copy/route check. |
+| BE03 send | `SCN-QA-816` | Enabled simulated send routes, seeded configured sender, case-owned disposable draft. |
+| V2 grants | `SCN-QA-819-F1` | Cassian active grants GET, Lyra/Fable `/people`, real role-scoped seed. |
+
+The shell case validates route and paused copy only. It does not claim campaign list data until the V2 adapter is bound. Each partition must produce its own sanitized case records and task-owned screenshots; a blocked partition remains NOT_RUN, and no passed partition stands in for another.
+
+Fable R3 visual follow-up: `SCN-QA-818-P` now checks People and Personal settings links in the desktop Personal rail, captures the real session-backed `/settings/personal` page, and checks People in the mobile drawer. It retains Fable's current accessible drawer names until the owner supplies exact replacement names. One fixed screenshot ID brings the supplemental set to twenty-one.
+
+Outreach candidate: `qa816-outreach.e2e.ts` adds `SCN-QA-820-P/F1/F2` for real V2 draft campaign create/list/detail/reload, empty-name no-POST, and reader POST denial. This is gated on Cassian's bound OutreachGateway adapter, active V2 campaign routes, manager/reader seed policy and disposable campaign cleanup. No live sending/enrollment is attempted. Four more fixed screenshot IDs bring the set to twenty-five. Source is NOT_RUN; a current `featureGateways = {}` build is an expected setup blocker, not a failure of the product flow.
+
+`SCN-QA-821-P` adds a logout/cache candidate after a real V2 campaign read and People navigation. Post-logout deep links to both routes show only sign-in, and `/v1/session` returns 401. It requires the same bound V2 adapter and active grants route; it does not export or screenshot the sign-in form.
+
+Static policy correction: the former reader POST denial assumption in `SCN-QA-820-F2` was unsupported by current Dorian/Rails source. F2 now creates one case-owned draft with a manager, signs in a separate `other_org` browser context, and requires a real V2 detail 404 with no campaign name rendered. The fixed screenshot ID was renamed accordingly. This is source correction only; no runtime claim.
+
+Coordinated drawer rename: root/Fable selected `Open navigation` for the mobile trigger and `Navigation` for the drawer accessible title. QA816's shell selector now requires those names and must run only on Fable's follow-up source or an integrated descendant. Older Fable `6e9d32f` still uses `Open mailbox menu`/`Mailboxes` and is not admitted for this updated case. Existing `apps/web/e2e` references are in another owner's path and were requested for a coordinated update.

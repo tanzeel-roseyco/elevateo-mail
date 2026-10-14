@@ -5,7 +5,7 @@ import { mailbox, openThread, responseAt, screenshot, seed, signIn } from './sup
 import { transportBarrier } from './transport-barrier.js';
 
 // AIDEV-NOTE: Evidence is from real browser/API; screenshots follow settled content and omit credentials.
-scenario('QA816-READ-P', 'inbox-permalink-history-keyboard-responsive', async (page, record) => {
+scenario('SCN-QA-817-P', 'inbox-permalink-history-keyboard-responsive', async (page, record) => {
   await signIn(page, 'reader');
   for (const width of [1440, 375, 320]) {
     await page.setViewportSize({ width, height: 812 });
@@ -30,7 +30,7 @@ scenario('QA816-READ-P', 'inbox-permalink-history-keyboard-responsive', async (p
   record.evidence.push('Observed authenticated GET mailbox threads 200 at each viewport; browser content marker stayed in rendered plaintext');
 });
 
-scenario('QA816-DRAFT-F1', 'duplicate-save-click-is-one-version', async (page, record) => {
+scenario('SCN-QA-817-F1', 'duplicate-save-click-is-one-version', async (page, record) => {
   await signIn(page, 'composer');
   await page.goto(`/#/mailboxes/${seed.mailboxes.primary}/drafts`);
   await page.getByRole('button', { name: 'New draft', exact: true }).click();
@@ -59,7 +59,7 @@ scenario('QA816-DRAFT-F1', 'duplicate-save-click-is-one-version', async (page, r
   record.assertions.push('Rapid duplicate save gesture sends one PUT and leaves one persisted draft version after reload');
 });
 
-scenario('QA816-READ-F1', 'unavailable-reader-path-and-search-empty', async (page, record) => {
+scenario('SCN-QA-817-F2', 'unavailable-reader-path-and-search-empty', async (page, record) => {
   await signIn(page, 'reader');
   await mailbox(page);
   await openThread(page);
@@ -80,7 +80,7 @@ scenario('QA816-READ-F1', 'unavailable-reader-path-and-search-empty', async (pag
   record.assertions.push('Foreign thread yields real 404 with prior plaintext cleared; unique search uses real API and settles empty');
 });
 
-scenario('QA816-SHELL-P', 'branded-shell-keyboard-mobile-and-outreach-read', async (page, record) => {
+scenario('SCN-QA-818-P', 'branded-shell-keyboard-mobile-and-outreach-read', async (page, record) => {
   await signIn(page, 'manager_primary');
   for (const colorScheme of ['light', 'dark'] as const) {
     await page.emulateMedia({ colorScheme });
@@ -91,26 +91,33 @@ scenario('QA816-SHELL-P', 'branded-shell-keyboard-mobile-and-outreach-read', asy
     await expect(outreach).toBeVisible();
     await expect(page.getByText('Elevateo Mail', { exact: true })).toBeVisible();
     await expect(outreach.getByRole('link', { name: 'Campaigns' })).toBeVisible();
+    await expect(page.getByRole('navigation', { name: 'Personal' }).getByRole('link', { name: 'People' })).toBeVisible();
+    await expect(page.getByRole('navigation', { name: 'Personal' }).getByRole('link', { name: 'Personal settings' })).toBeVisible();
     record.artifacts.push(await screenshot(page, `QA816-SHELL-P-desktop-${colorScheme}`));
     await outreach.getByRole('link', { name: 'Campaigns' }).focus();
     await expect(outreach.getByRole('link', { name: 'Campaigns' })).toBeFocused();
     await outreach.getByRole('link', { name: 'Campaigns' }).press('Enter');
     await expect(page.getByRole('heading', { name: 'Campaigns' })).toBeVisible();
     await expect(outreach.getByRole('link', { name: 'Campaigns' })).toHaveAttribute('aria-current', 'page');
-    await expect(page.getByText('Outreach is paused. Sending and enrollment are unavailable.')).toBeVisible();
+    await expect(page.getByText('Outreach is draft or paused. Sending and enrollment are unavailable.')).toBeVisible();
     record.artifacts.push(await screenshot(page, `QA816-SHELL-P-campaigns-${colorScheme}`));
   }
+  await page.goto('/#/settings/personal');
+  await expect(page.getByRole('heading', { name: 'Personal settings' })).toBeVisible();
+  await expect(page.getByText('Signed in as', { exact: false })).toBeVisible();
+  record.artifacts.push(await screenshot(page, 'QA816-SHELL-P-personal-settings'));
   await page.setViewportSize({ width: 375, height: 812 });
-  await page.getByRole('button', { name: 'Open mailbox menu' }).click();
-  const drawer = page.getByRole('dialog', { name: 'Mailboxes' });
+  await page.getByRole('button', { name: 'Open navigation' }).click();
+  const drawer = page.getByRole('dialog', { name: 'Navigation' });
   await expect(drawer.getByRole('navigation', { name: 'Personal' })).toBeVisible();
   await expect(drawer.getByRole('navigation', { name: 'Outreach' })).toBeVisible();
+  await expect(drawer.getByRole('link', { name: 'People' })).toBeVisible();
   record.artifacts.push(await screenshot(page, 'QA816-SHELL-P-mobile-drawer'));
   record.assertions.push('Branded shell, two rail sections, keyboard Campaigns route and mobile drawer render at light/dark desktop and mobile browser width');
 });
 
 
-scenario('QA816-SEARCH-F2', 'real-search-loading-transport-error-retry', async (page, record) => {
+scenario('SCN-QA-818-F1', 'real-search-loading-transport-error-retry', async (page, record) => {
   await signIn(page, 'reader');
   await page.goto('/#/search');
   const search = page.getByRole('search', { name: 'Search conversations', exact: true });
@@ -141,4 +148,71 @@ scenario('QA816-SEARCH-F2', 'real-search-loading-transport-error-retry', async (
   } finally { await failure.close(); }
   record.assertions.push('Genuine held 200 search exposes loading; transport loss exposes error; real retry 200 settles empty');
   record.evidence.push('Held actual upstream response and aborted an unforwarded request; no fabricated business response');
+});
+
+scenario('SCN-QA-818-F2', 'chromium-visual-viewport-200-percent', async (page, record) => {
+  await signIn(page, 'reader');
+  await page.setViewportSize({ width: 375, height: 812 });
+  await mailbox(page);
+  const cdp = await page.context().newCDPSession(page);
+  try {
+    // AIDEV-NOTE: CDP scale is genuine Chromium visual viewport zoom; browser text zoom needs separate evidence.
+    await cdp.send('Emulation.setPageScaleFactor', { pageScaleFactor: 2 });
+    const scale = await page.evaluate(() => window.visualViewport?.scale ?? 0);
+    expect(scale).toBeGreaterThanOrEqual(1.99);
+    expect(scale).toBeLessThanOrEqual(2.01);
+    await expect(page.getByRole('region', { name: 'Conversations', exact: true })).toBeVisible();
+    await expect(page.locator('a[data-thread]').first()).toBeVisible();
+    record.artifacts.push(await screenshot(page, 'QA816-ZOOM-P-200-percent-visual-viewport'));
+    record.assertions.push('Chromium visual viewport reports 200% scale with genuine seeded inbox controls visible');
+  } finally {
+    await cdp.send('Emulation.setPageScaleFactor', { pageScaleFactor: 1 });
+    await cdp.detach();
+  }
+});
+
+scenario('SCN-QA-819-P', 'manager-roster-reader-denial', async (page, record) => {
+  const path = `/v1/mailboxes/${seed.mailboxes.primary}/members`;
+  await signIn(page, 'manager_primary');
+  const [roster] = await Promise.all([responseAt(page, path), page.goto(`/#/mailboxes/${seed.mailboxes.primary}/members`)]);
+  expect(roster.status()).toBe(200);
+  await expect(page.getByRole('heading', { name: 'Members', exact: true })).toBeVisible();
+  await expect(page.getByText('Roster revision', { exact: false })).toBeVisible();
+  record.artifacts.push(await screenshot(page, 'QA816-ADMIN-P-manager-roster'));
+  const context = await page.context().browser()?.newContext({ baseURL: 'http://app.test' });
+  if (!context) throw new Error('Reader context unavailable');
+  try {
+    const reader = await context.newPage();
+    await signIn(reader, 'reader');
+    const [denied] = await Promise.all([responseAt(reader, path), reader.goto(`/#/mailboxes/${seed.mailboxes.primary}/members`)]);
+    expect([403, 404]).toContain(denied.status());
+    await expect(reader.getByText('You cannot manage members of this mailbox')).toBeVisible();
+    await expect(reader.getByRole('button', { name: 'Save changes' })).toHaveCount(0);
+    record.artifacts.push(await screenshot(reader, 'QA816-ADMIN-P-reader-denied'));
+  } finally { await context.close(); }
+  record.assertions.push('Manager roster renders from real API 200; separate reader session receives API denial and nonactionable UI');
+});
+
+scenario('SCN-QA-819-F1', 'v2-organization-grants-reader-denial', async (page, record) => {
+  const path = `/v2/organizations/${seed.organizations.primary}/grants`;
+  await signIn(page, 'manager_primary');
+  const [grants] = await Promise.all([responseAt(page, path), page.goto('/#/people')]);
+  expect(grants.status()).toBe(200);
+  await expect(page.getByRole('heading', { name: 'People', exact: true })).toBeVisible();
+  await expect(page.getByText('Current grants loaded', { exact: false })).toBeVisible();
+  await expect(page.getByText('These twelve references are unbound.', { exact: false })).toBeVisible();
+  record.artifacts.push(await screenshot(page, 'QA816-ADMIN-F1-manager-people'));
+  const context = await page.context().browser()?.newContext({ baseURL: 'http://app.test' });
+  if (!context) throw new Error('Reader context unavailable');
+  try {
+    const reader = await context.newPage();
+    await signIn(reader, 'reader');
+    const [denied] = await Promise.all([responseAt(reader, path), reader.goto('/#/people')]);
+    expect([403, 404]).toContain(denied.status());
+    await expect(reader.getByText('Administration unavailable')).toBeVisible();
+    await expect(reader.getByText('Current grants loaded', { exact: false })).toHaveCount(0);
+    await expect(reader.getByRole('button', { name: 'Save role' })).toHaveCount(0);
+    record.artifacts.push(await screenshot(reader, 'QA816-ADMIN-F1-reader-people'));
+  } finally { await context.close(); }
+  record.assertions.push('Versioned organization grants GET is real and role scoped; unbound planning identities never become reader grant controls');
 });
