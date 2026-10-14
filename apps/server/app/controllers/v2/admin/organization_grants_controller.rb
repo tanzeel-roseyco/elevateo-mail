@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative "../../../v1/write_controller"
+require_relative "../../v1/write_controller"
 require_relative "../../../../lib/elevateo/thread_projection"
 require_relative "../../../../lib/elevateo/write_response"
 
@@ -22,7 +22,9 @@ module V2
           raise Elevateo::CollaborationError.new("not_available") unless organization == identity.org_id
           role, revision = self.class.change_input(input)
           row = connection.exec_query(CHANGE_SQL, "organization role change",
-            [identity.digest, target, revision, ROLE_SQL.fetch(role)]).first
+            [identity.digest, target, revision.to_s, ROLE_SQL.fetch(role)].map do |value|
+              ActiveRecord::Relation::QueryAttribute.new("organization_grant", value, ActiveRecord::Type::String.new)
+            end).first
           result = Elevateo::ThreadProjection.source_json(row && row["result"], 4096)
           unless result.is_a?(Hash)
             raise Elevateo::CollaborationError.new("internal_error")

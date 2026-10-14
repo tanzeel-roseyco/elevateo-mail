@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "minitest/autorun"
+require_relative "../be_02/write_boundary_test_helper"
 require_relative "../../app/controllers/v2/admin/organization_grants_controller"
 
 class OrganizationGrantsInputTest < Minitest::Test
