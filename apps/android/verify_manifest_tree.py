@@ -2,11 +2,16 @@
 
 import subprocess
 import sys
+import re
 
 
-def require_no_view_filter(returncode: int, output: str) -> None:
-    if returncode != 0 or not output.strip():
+def require_no_view_filter(returncode: int, output: str, stderr: str = "") -> None:
+    if returncode != 0 or stderr.strip():
         raise ValueError("APK manifest xmltree inspection failed")
+    if not re.search(r"(?m)^E: manifest(?: \(|$)", output) or not re.search(
+        r"(?m)^[ \t]+E: application(?: \(|$)", output
+    ):
+        raise ValueError("aapt output did not contain an Android manifest tree")
     if "android.intent.action.VIEW" in output:
         raise ValueError("Unreviewed Android VIEW callback filter")
 
@@ -21,7 +26,7 @@ def verify_manifest_tree(aapt: str, apk: str) -> None:
         )
     except OSError as error:
         raise ValueError("aapt xmltree could not run") from error
-    require_no_view_filter(result.returncode, result.stdout)
+    require_no_view_filter(result.returncode, result.stdout, result.stderr)
 
 
 if __name__ == "__main__":

@@ -12,4 +12,4 @@ Design simulation for root: Tauri reuses the existing React routes and Rust shel
 
 No live keys, OAuth registration, SMTP, DNS, paid infrastructure or release signing are included. Candidate SHA and exact Soren build request are recorded in the shared `astrid-outbox.md` after commit.
 
-The bounded AndroidX receiver-permission source diagnostic and limits are in `docs/completion/astrid-androidx-permission-review.md`. ADV102 independently reviewed `cd744ba` (179 LOC, one defect, 5.59/KLOC) and identified fail-open `aapt xmltree`/`apksigner` conditionals. Owner successor adds fail-closed tool classifiers with three manifest-tree and four signer cases; their Docker execution and exact signer diagnostic remain pending.
+The bounded AndroidX receiver-permission source diagnostic and limits are in `docs/completion/astrid-androidx-permission-review.md`. ADV102 independently reviewed `cd744ba` (179 LOC, one defect, 5.59/KLOC) and identified fail-open `aapt xmltree`/`apksigner` conditionals. Owner successor adds fail-closed tool classifiers with four manifest-tree and four signer cases; their Docker execution and exact signer diagnostic remain pending.
