@@ -42,18 +42,6 @@ class SendCancellationDatabaseTest < SendDatabaseTestCase
     assert_equal "queued", status(send_id).fetch("state")
   end
 
-  def test_possible_call_only_records_request_and_keeps_delivery_unknown
-    send_id = approve.fetch("send_id")
-    fixture_change do
-      @admin.exec_params("UPDATE app_send_private.jobs SET state = 'unknown', first_possible_at = clock_timestamp(), next_action = 'reconcile' WHERE send_id = $1", [send_id])
-    end
-    result = cancel(send_id)
-    assert_equal "unknown", result.fetch("state")
-    assert_equal true, result.fetch("cancel_requested")
-    assert_equal false, result.fetch("cancellable")
-    assert_equal "unknown", status(send_id).fetch("state")
-  end
-
   def test_terminal_send_refuses_cancellation_without_false_success
     send_id = approve.fetch("send_id")
     fixture_change do

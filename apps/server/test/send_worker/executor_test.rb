@@ -67,6 +67,7 @@ class SendWorkerExecutorTest < Minitest::Test
     @store.authorization = nil
     assert_equal :held, executor.run_once
     assert_equal 0, @driver.invocations
+    assert_equal 0, @store.unknown_calls
     assert_equal 1, @store.authorization_calls
   end
 
@@ -74,6 +75,7 @@ class SendWorkerExecutorTest < Minitest::Test
     @store.final_allowed = false
     assert_equal :held, executor.run_once
     assert_equal 0, @driver.invocations
+    assert_equal 1, @store.unknown_calls
   end
 
   def test_duplicate_claim_never_creates_second_attempt

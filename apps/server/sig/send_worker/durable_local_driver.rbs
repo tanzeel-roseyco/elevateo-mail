@@ -1,0 +1,17 @@
+module Elevateo
+  module SendWorker
+    class DurableLocalDriver
+      OUTCOMES: Array[String]
+      MAX_LEDGER_BYTES: Integer
+      @path: String
+      @outcome: String
+      def initialize: (path: String, outcome: String) -> void
+      def submit: (String, send_id: String, attempt_id: String, deadline: CallDeadline) -> SubmissionResult
+      def observation: (send_id: String, attempt_id: String, snapshot_digest: String) -> SubmissionResult?
+      private
+      def validate!: (String, String, String) -> void
+      def with_ledger: [T] () { (Array[Hash[String, untyped]], File) -> T } -> T
+      def append: (File, Hash[String, untyped]) -> void
+    end
+  end
+end
