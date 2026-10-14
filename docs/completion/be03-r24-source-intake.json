@@ -238,7 +238,116 @@
       "S3_cancellation": "guarded503; no SQL bridge"
     },
     "Mira": {
-      "intake": "PENDING final generated/review/test receipt"
+      "head": "2d048e24ee384c65d22942d7b5638f9fbf89d9c4",
+      "unchanged_owner_bytes": [
+        {
+          "path": "apps/web/src/app/App.tsx",
+          "sha256": "cbeb679a88d902626aa9a341e8718fe3d52c3dc88e82679e3ea051ddcea94158"
+        },
+        {
+          "path": "apps/web/src/app/sendIntent.test.tsx",
+          "sha256": "db714f8242cecbc203bf33925970195cb20395058e5ed46e3af6679770cc14e5"
+        },
+        {
+          "path": "apps/web/src/app/sendIntent.tsx",
+          "sha256": "7060da83646a8ef2e07c714fde92d764fa3ed6d63a7cb4256d3422bd91effd9d"
+        },
+        {
+          "path": "apps/web/src/data/contract-send.test.ts",
+          "sha256": "1474baa245d862f159fad3f02c254a7ea2f766fbe682e8e4d8f2fea39ba0f849"
+        },
+        {
+          "path": "apps/web/src/data/errors.ts",
+          "sha256": "8f050e4a10e67980e9471336655dfd21cd337af2bdab09bb55c63214f48ec6b1"
+        },
+        {
+          "path": "apps/web/src/data/fixtures/fixtureGateway.ts",
+          "sha256": "5f4b3d04d19b529733529bf724309c2247165a046d05c75151039158b382f7c1"
+        },
+        {
+          "path": "apps/web/src/data/gateway.ts",
+          "sha256": "925753bc24a79dc3c75ad28632bf35b400e43bae0805701f8f3a36fc2bd55922"
+        },
+        {
+          "path": "apps/web/src/data/generated/api.d.ts",
+          "sha256": "c529718a9ec9ebac9ec70b878c0504b63a659186e150fbbdfd5c924927e9ffee"
+        },
+        {
+          "path": "apps/web/src/data/http/httpGateway.ts",
+          "sha256": "100af335c6642324906b7466be0ee66674e551508d7c41c6dcfc9a9744be4f36"
+        },
+        {
+          "path": "apps/web/src/data/http/transport.ts",
+          "sha256": "aec5c2c7209fda4a3aa88cd2113b2aa8f0b51695f03d19657c40ec5fe8a3c456"
+        },
+        {
+          "path": "apps/web/src/data/send-conformance.test.ts",
+          "sha256": "5f925d6afcc63f0761afe090a55e7952941619ba090382c7525b0d49228b8379"
+        },
+        {
+          "path": "apps/web/src/data/send-signal.test.ts",
+          "sha256": "4f1f5ff8ad39e25c06dcb4910f39f4a386d873b0d4358bf78cd5bffaf0ba9b0d"
+        },
+        {
+          "path": "apps/web/src/data/sendContract.ts",
+          "sha256": "484a77feb120b9f86fd87c71b1bca3587a8c7eb032bb6279b5a3699645f67079"
+        },
+        {
+          "path": "apps/web/src/features/drafts/DraftEditorPage.tsx",
+          "sha256": "01ba155d4f830c34d94701088da736a35240d6b1124625c11bb0c7fcacc7fb1e"
+        },
+        {
+          "path": "apps/web/src/features/send/SavedDraftSendFlow.test.tsx",
+          "sha256": "f931e5f91898a2368c1b4076022bcb6dc8dbee2cfd14b68971d9329342e1d0ad"
+        },
+        {
+          "path": "apps/web/src/features/send/SendReviewPage.test.tsx",
+          "sha256": "bcbb4fadf695285f79685eb1693206ed1d4f665c9618a75e63fba3beeab7cf1f"
+        },
+        {
+          "path": "apps/web/src/features/send/SendReviewPage.tsx",
+          "sha256": "a869cf2c98c9f3a93fbbd2e8c4434a224a1ac35832936652f643831b56df748f"
+        },
+        {
+          "path": "apps/web/src/features/send/SendStatusPage.test.tsx",
+          "sha256": "2afc16fa0442b1bc0e0c78695e591d9799eec322c6ac60bc1aa625fde3de3212"
+        },
+        {
+          "path": "apps/web/src/features/send/SendStatusPage.tsx",
+          "sha256": "a8c93d0977538848e74fbc6b26b2295883c05a587d3179471c77184fadf1e992"
+        },
+        {
+          "path": "apps/web/src/features/send/sendTestData.ts",
+          "sha256": "9784dae251ff21b499be541d3e1c6b7addf4f12bd13ffbd9778dee73f4d74d98"
+        }
+      ],
+      "runtime": "owner-only evidence; integrated NOT_RUN"
+    },
+    "Lyra": {
+      "head": "93803de7f9434af61fe9caec5eced3b5e7bf36ef",
+      "unchanged_owner_bytes": [
+        {
+          "path": "apps/web/demo.html",
+          "sha256": "52b303a9598ad18602f6a0b4c500a474785919aec5409b163c98940a4a1c5675"
+        },
+        {
+          "path": "apps/web/src/dev/demoGateway.test.ts",
+          "sha256": "7b18e83e893069f4fa98e2fb633721dbbb18db85caa447b4bd6c683e0f7285c7"
+        },
+        {
+          "path": "apps/web/src/dev/demoGateway.ts",
+          "sha256": "0bfd4da62af7390c91fbeec991e226de33948d64ec1a62cb666398363e8a1013"
+        },
+        {
+          "path": "apps/web/src/dev/demoMain.tsx",
+          "sha256": "777c211bd4cdfcb92f7ab76cf408e64e5648d2aae4b4b31eb55d98cf80d8a2cf"
+        },
+        {
+          "path": "apps/web/vite.config.ts",
+          "sha256": "4cd54aebc103a4fb122c5f7938560534512090816e57eb36a7995ca46937dbaa"
+        }
+      ],
+      "runtime": "owner-only evidence; integrated NOT_RUN"
     }
   },
   "root_documentation": {
@@ -246,5 +355,6 @@
     "closure": "a1b27ac63b16d296f29ef5ed7da4825875e5c0e2",
     "actual_vault": "NOT_WRITTEN"
   },
-  "execution": "Soren lease only for real DB/API; lightweight source checks delegated. No live activation."
+  "execution": "Soren lease only for real DB/API; lightweight source checks delegated. No live activation.",
+  "candidate": "1429f1df2d39d98b1742a2fc677768e69c7762dd"
 }

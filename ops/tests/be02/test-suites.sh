@@ -6,7 +6,10 @@ for required in session_database auth_entry auth_client auth_revocations session
   [[ -f "test/be_02/${required}_test.rb" ]] || { echo "Missing required suite: ${required}"; exit 1; }
 done
 [[ -f test/requests/drafts_test.rb ]] || { echo 'Missing required draft request suite'; exit 1; }
-tests=(test/be_02/*_test.rb test/requests/*_test.rb)
+for required in approval_database schema_database approval_faults_database approval_races_database; do
+  [[ -f "test/sends/${required}_test.rb" ]] || { echo "Missing required send suite: ${required}"; exit 1; }
+done
+tests=(test/be_02/*_test.rb test/requests/*_test.rb test/sends/*_test.rb)
 failed=0
 for test_file in "${tests[@]}"; do
   printf 'RUN %s\n' "$test_file"

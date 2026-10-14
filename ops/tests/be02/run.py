@@ -98,6 +98,12 @@ def acceptance_before_http(task: Task, acceptance: Acceptance) -> None:
     task.wait_http()
 
 
+def bootstrap_database_roles(task: Task) -> None:
+    # AIDEV-NOTE: Send owner/schema must exist before migration00007; failure aborts admission.
+    for name, filename in (("bootstrap", "bootstrap.sql"), ("bootstrap-send", "bootstrap-send.sql")):
+        task.compose(name, ["run", "--rm", "--no-deps", "bootstrap", "-f", "/ops/" + filename], 45)
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--context", required=True, help="Explicit local Docker context")
@@ -180,7 +186,7 @@ def main() -> int:
         task.compose("database-start", ["up", "-d", "--wait", "--wait-timeout", "120", "db", "mailpit"], 140)
         # AIDEV-NOTE: Run database-only guards before building Rails; rejected grants need no application image.
         task.compose("privilege-guards", ["run", "--rm", "--no-deps", "guards"], 120)
-        task.compose("bootstrap", ["run", "--rm", "--no-deps", "bootstrap", "-f", "/ops/bootstrap.sql"], 45)
+        bootstrap_database_roles(task)
         task.compose("auth-start", ["up", "-d", "--wait", "--wait-timeout", "120", "auth"], 140)
         if args.adv808_auth_policy:
             owned = [item for item in task.project_containers()
