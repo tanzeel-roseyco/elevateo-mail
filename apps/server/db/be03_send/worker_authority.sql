@@ -234,7 +234,7 @@ BEGIN
   END IF;
   SELECT * INTO j FROM app_send_private.jobs WHERE send_id=p_send FOR UPDATE;
   SELECT * INTO a FROM app_send_private.attempts WHERE send_id=p_send AND attempt_id=p_attempt;
-  RETURN jsonb_build_object('allowed',j.send_id IS NOT NULL AND a.attempt_id IS NOT NULL
+  RETURN jsonb_build_object('allowed',COALESCE(j.send_id IS NOT NULL AND a.attempt_id IS NOT NULL
     AND j.lease_id=p_lease AND j.lease_generation=p_generation AND j.lease_expires_at>clock_timestamp()
     AND j.state='dispatching' AND j.cancel_requested_at IS NULL AND i.approval_epoch=p_epoch
     AND a.lease_generation=p_generation AND a.call_deadline_at>clock_timestamp()
@@ -245,7 +245,7 @@ BEGIN
     AND (g->>'authorization_generation')::bigint=i.approval_generation
     AND pol=i.approval_policy_revision AND mailbox_on=true
     AND snap->>10='correspondence' AND snap->>11='human_correspondence_attestation'
-    AND NOT suppressed AND app_send_private.current_capability(i));
+    AND NOT suppressed AND app_send_private.current_capability(i),false));
 END $$;
 
 CREATE FUNCTION app_send_private.cancel_job(p_send uuid,p_epoch uuid,p_actor uuid)
