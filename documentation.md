@@ -309,3 +309,5 @@ ADV093 distinguishes policy membership from function invocation rights: a query 
 OUT839 integrated SEC802 grants allow only elevateo_api and restricted elevateo_app_read to execute two existing protected outreach helpers used by campaign/sequence RLS; PUBLIC and worker revokes remain. Dorian actual-role positive and copied-digest negative tests are source-only pending fleet PostgreSQL proof.
 
 ATT838 Rails now has a pure fixed-field HMAC request builder for the private read gateway: exact ordered JSON, UUID/digest/hint checks and a 0–30 second expiry. It is unbound from any public route until Sabine gateway source and Soren fleet evidence are ready; no Storage token or live bytes were used.
+
+ATT838 wire correction: signed context_id must be the same lowercase UUID as context_uuid; authorization_version remains an opaque signed hint. Sequence migration already occupies 00016, so attachment gateway helper must use 00017 or later.

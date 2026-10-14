@@ -11,7 +11,7 @@ module Elevateo
     DIGEST = /\A[0-9a-f]{64}\z/
     HINT = /\A[A-Za-z0-9_-]{16,256}\z/
     IDS = %w[attachment_id organization_id mailbox_id thread_id message_id expected_user_id
-      expected_auth_session_id context_uuid request_id].freeze
+      expected_auth_session_id context_id context_uuid request_id].freeze
     ORDER = %w[operation audience attachment_id organization_id mailbox_id thread_id message_id
       session_digest expected_user_id expected_auth_session_id context_id authorization_version
       context_uuid authorization_generation expires_at request_id].freeze
@@ -29,10 +29,9 @@ module Elevateo
       }
       raise ArgumentError, "invalid gateway digest" unless fields["session_digest"].is_a?(String) &&
         DIGEST.match?(fields["session_digest"])
-      raise ArgumentError, "invalid gateway hints" unless %w[context_id authorization_version].all? { |name|
-        value = fields[name]
-        value.is_a?(String) && HINT.match?(value)
-      }
+      raise ArgumentError, "invalid gateway context" unless fields["context_id"] == fields["context_uuid"]
+      version = fields["authorization_version"]
+      raise ArgumentError, "invalid gateway version hint" unless version.is_a?(String) && HINT.match?(version)
       generation, expiry = fields.values_at("authorization_generation", "expires_at")
       raise ArgumentError, "invalid gateway generation" unless generation.is_a?(Integer) && generation >= 0
       raise ArgumentError, "invalid gateway expiry" unless now.is_a?(Integer) && expiry.is_a?(Integer) &&
