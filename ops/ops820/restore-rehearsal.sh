@@ -28,20 +28,22 @@ available=$(awk '/MemAvailable:/ {printf "%.0f\n", $2*1024}' /proc/meminfo)
 awk -v a="$available" 'BEGIN {exit !(a >= 8589934592)}' || exit 75
 project="ops402-restore-$(date +%s)-$$"
 envfile=$(mktemp "$base/.env.restore.XXXXXX")
-cp "$snapshot/credentials.env" "$envfile"
-# Fresh names and ports: restored credentials never connect this drill to a live network.
-sed -i -e 's/^AUTH_PORT=.*/AUTH_PORT=18310/' \
-  -e 's/^REST_PORT=.*/REST_PORT=18311/' -e 's/^STORAGE_PORT=.*/STORAGE_PORT=18312/' "$envfile"
 compose() { docker compose -p "$project" --env-file "$envfile" -f "$base/compose.yaml" "$@"; }
+started=0
 cleanup() {
   local job=$? clean=0
-  compose down --volumes --remove-orphans >/dev/null 2>&1 || clean=$?
+  if (( started )); then compose down --volumes --remove-orphans >/dev/null 2>&1 || clean=$?; fi
   rm -f -- "$envfile"
   echo "restore_job_exit=$job restore_cleanup_exit=$clean"
   (( clean == 0 )) || job=1
   exit "$job"
 }
 trap cleanup EXIT
+cp "$snapshot/credentials.env" "$envfile"
+# Fresh names and ports: restored credentials never connect this drill to a live network.
+sed -i -e 's/^AUTH_PORT=.*/AUTH_PORT=18310/' \
+  -e 's/^REST_PORT=.*/REST_PORT=18311/' -e 's/^STORAGE_PORT=.*/STORAGE_PORT=18312/' "$envfile"
+started=1
 compose up -d --wait --wait-timeout 180 db mailpit
 # Globals contain credentials: transform privately and pipe directly, never log SQL.
 python3 "$base/restore-globals.py" "$snapshot/globals.sql" | compose exec -T db psql -U supabase_admin -d postgres -v ON_ERROR_STOP=1 >/dev/null
