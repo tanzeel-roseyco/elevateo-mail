@@ -3,7 +3,7 @@ import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
 
-// AIDEV-NOTE: dev-fixtures.html is only an input outside production builds; R5 requires fixtures out of prod output.
+// AIDEV-NOTE: Synthetic entries stay outside production output; demo mode preserves canonical fixture oracles.
 export default defineConfig(({ mode }) => ({
   plugins: [react(), tailwindcss()],
   resolve: { alias: { '@': fileURLToPath(new URL('./src', import.meta.url)) } },
@@ -20,6 +20,7 @@ export default defineConfig(({ mode }) => ({
           : {
               app: fileURLToPath(new URL('./index.html', import.meta.url)),
               fixtures: fileURLToPath(new URL('./dev-fixtures.html', import.meta.url)),
+              ...(mode === 'demo' ? { demo: fileURLToPath(new URL('./demo.html', import.meta.url)) } : {}),
             },
     },
   },

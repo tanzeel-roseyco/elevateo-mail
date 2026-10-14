@@ -1,5 +1,7 @@
 # Project state
 
+Synthetic demo checkpoint: separate `demo.html` on private fleet port 18141 now supplies a populated fictitious team inbox and drafts. Docker typecheck/build, lint and 632 tests pass; coordinator visual/adversarial gates pending. See `docs/completion/fe-preview-01.md`. Original 18140 fixture preview remains available.
+
 Private synthetic frontend preview is running; Docker lint/typecheck/build and 629 tests passed. Root visually inspected it. Isolated BE03 work is authorized in parallel; integration/release still require BE02 acceptance. See [preview checkpoint](docs/completion/fe-preview-01.md).
 
 Application IN PROGRESS — R23 documentation checkpoint (2026-10-14). BE02 OPEN/unaccepted; BE03 CLOSED until root accepts BE02. Application completion has priority; R&D remains separate. Invitation source is exact 51ca5d2eadd74b7ac4c1a2f5f82cd49323b15dc5; core/empty/revoked/logout evidence belongs to exact 86036e276df9c3294206e6bfa14d478c223c54dd. Observer remains OFF. Production, contracts, observer boundary and four Docker recipes are unchanged.

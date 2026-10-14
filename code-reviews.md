@@ -569,3 +569,8 @@ Vale BE03 read-cap exception is a process note, not code acceptance; see docs/co
 ## FE-PREVIEW-01 dedicated design checkpoint
 
 Coverage: 202 source lines, individual files/read sections <=200 lines; zero confirmed defects, density **0 per 1,000 reviewed lines**. See [exact ranges, limitations and Docker evidence](docs/completion/fe-preview-01.md). This is design review, not complete adversarial code coverage or BE03 acceptance. Root delegates independent preview-recipe review.
+
+
+### FE-PREVIEW-01 synthetic demo verification
+
+Coverage: separate demo gateway/entry/test, demo HTML, Vite demo-only input and demo Docker recipe. Canonical fixture implementation remains unchanged. One defect found by the new failure-path test: unknown demo reader IDs fell through to canonical security fixture data. Fixed with an explicit demo-only unavailable-item guard, covered by regression. Implementation/test/demo config scope: 174 new lines plus two Vite changed lines (independent reviewer to confirm exact denominator). Observed defects: 1; provisional density 5.68 defects/1000 changed lines. Docker typecheck/build, lint and 632 tests/32 files pass. Full adversarial review and actual visual validation are pending coordinator assignment; formatting delegated to ESLint.
