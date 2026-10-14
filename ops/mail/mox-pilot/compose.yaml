@@ -31,6 +31,22 @@ services:
     pids_limit: 256
     restart: "no"
 
+  cert_export:
+    image: ${PROBE_IMAGE:?immutable Python image digest required}
+    pull_policy: never
+    user: "0:0"
+    command: ["python", "-c", "from pathlib import Path; import shutil; source=Path('/pilot-data/localserve/localhost.crt'); target=Path('/pilot-evidence/mox-localserve-trust.crt'); assert source.is_file() and not target.exists(); shutil.copyfile(source, target); target.chmod(0o600)"]
+    volumes:
+      - pilot-data:/pilot-data:ro
+      - ${MOX_PILOT_RECEIPT_DIR:?private pilot receipt directory required}:/pilot-evidence
+    network_mode: "none"
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    mem_limit: 128m
+    cpus: 0.25
+    pids_limit: 32
+    restart: "no"
+
   mox:
     image: ${MOX_IMAGE:?immutable Mox image digest required}
     pull_policy: never
@@ -72,6 +88,27 @@ services:
     mem_limit: 256m
     cpus: 0.5
     pids_limit: 64
+    restart: "no"
+    depends_on: [mox]
+
+  tls_probe:
+    image: ${PROBE_IMAGE:?immutable Python image digest required}
+    pull_policy: never
+    user: "0:0"
+    command: ["python", "/pilot/tls_probe.py"]
+    environment:
+      MOX_PILOT_SUBJECT: ${MOX_PILOT_SUBJECT:?synthetic subject required}
+      PROBE_VERIFY_EXISTING: ${PROBE_VERIFY_EXISTING:-0}
+    volumes:
+      - ./tls_probe.py:/pilot/tls_probe.py:ro
+      - ${MOX_PILOT_RECEIPT_DIR:?private pilot receipt directory required}:/pilot-evidence:ro
+    # AIDEV-NOTE: Mox localserve cert has SAN localhost; this shares only its private network namespace.
+    network_mode: "service:mox"
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    mem_limit: 128m
+    cpus: 0.25
+    pids_limit: 32
     restart: "no"
     depends_on: [mox]
 

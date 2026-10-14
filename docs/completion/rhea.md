@@ -28,6 +28,16 @@ provides owner test inputs for credential rotation/revocation, lost DATA reply
 without replay, UIDVALIDITY change and stale inbound credentials; these app
 assertions remain **NOT_RUN**.
 
+TLS interop successor: the pilot now exports Mox's generated `localhost.crt`
+only, checks default-trust rejection and pinned-trust IMAPS on the upstream
+localserve port 1993, and can run Corin's held TLS transport/sync/ingress code
+with a synthetic in-memory store from an exact clean owner checkout and
+Soren-provided immutable app image. The test container shares Mox's internal
+network namespace so `localhost` matches the certificate SAN; peer and
+hostname verification remain required. This does not exercise the SQL store
+or establish durable cursor or tenant mapping. All TLS/app probes are
+**NOT_RUN** until Soren returns exact fleet receipts.
+
 The Docker request is `MOX_IMAGE=<verified-ref@sha256:...>
 PROBE_IMAGE=<verified-python-ref@sha256:...>
 MOX_SOURCE_SHA=1c9587665b321199312e11b6a47a0480a9e2750f

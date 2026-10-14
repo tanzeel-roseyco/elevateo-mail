@@ -28,6 +28,22 @@ for name in MOX_IMAGE PROBE_IMAGE; do
 done
 docker image inspect "$MOX_IMAGE" "$PROBE_IMAGE" >/dev/null
 docker image inspect 'axllent/mailpit:v1.31.5@sha256:94f6b70c1436defae6799d9ac7ff0eeff9540465b842026d5cdb018f1c0234ea' >/dev/null
+if [[ -n ${APP_TEST_IMAGE:-}${APP_SOURCE_DIR:-}${CORIN_SOURCE_SHA:-} ]] &&
+   [[ -z ${APP_TEST_IMAGE:-} || -z ${APP_SOURCE_DIR:-} || -z ${CORIN_SOURCE_SHA:-} ]]; then
+  echo 'interop inputs must be supplied together' >&2
+  exit 2
+fi
+if [[ -n ${APP_TEST_IMAGE:-} ]]; then
+  if [[ ! $APP_TEST_IMAGE =~ ^([^[:space:]]+@)?sha256:[a-f0-9]{64}$ ]] ||
+     [[ ${APP_SOURCE_DIR:-} != /* ]] ||
+     [[ ! ${CORIN_SOURCE_SHA:-} =~ ^[a-f0-9]{40}$ ]] ||
+     [[ $(git -C "$APP_SOURCE_DIR" rev-parse HEAD) != "$CORIN_SOURCE_SHA" ]] ||
+     [[ -n $(git -C "$APP_SOURCE_DIR" status --porcelain) ]]; then
+    echo 'interop requires immutable app image and clean exact Corin source checkout' >&2
+    exit 2
+  fi
+  docker image inspect "$APP_TEST_IMAGE" >/dev/null
+fi
 if (( $(df -Pk "$pilot_dir" | awk 'NR==2 {print $4}') < 5242880 )); then
   echo 'less than 5 GiB free; pilot not admitted' >&2
   exit 2
@@ -45,6 +61,7 @@ project="mail818-$(date -u +%s)-$$"
 export MOX_PILOT_SUBJECT="MAIL818-SYNTHETIC-$project"
 export PROBE_VERIFY_EXISTING=0
 compose=(docker compose -p "$project" -f "$pilot_dir/compose.yaml")
+interop_compose=(docker compose -p "$project" -f "$pilot_dir/compose.yaml" -f "$pilot_dir/compose-interop.yaml")
 deadline=$((SECONDS + 840))
 run_bounded() {
   remaining=$((deadline - SECONDS))
@@ -84,16 +101,41 @@ printf 'project=%s\nsource=%s\nmox_image=%s\nprobe_image=%s\n' \
   "$project" "$MOX_SOURCE_SHA" "$MOX_IMAGE" "$PROBE_IMAGE" >"$receipt_dir/inputs.txt"
 run_bounded "${compose[@]}" run --rm guard >"$receipt_dir/guard.log" 2>&1
 run_bounded "${compose[@]}" run --rm init >"$receipt_dir/init.log" 2>&1
+run_bounded "${compose[@]}" run --rm cert_export >"$receipt_dir/cert-export.log" 2>&1
 run_bounded "${compose[@]}" up -d mox
 set +e
 run_bounded "${compose[@]}" run --rm probe >"$receipt_dir/probe.log" 2>&1
 status=$?
 set -e
 if (( status == 0 )); then
+  set +e
+  run_bounded "${compose[@]}" run --rm tls_probe >"$receipt_dir/tls-probe.log" 2>&1
+  status=$?
+  set -e
+fi
+if (( status == 0 )) && [[ -n ${APP_TEST_IMAGE:-} ]]; then
+  set +e
+  run_bounded "${interop_compose[@]}" run --rm corin_interop >"$receipt_dir/corin-interop.log" 2>&1
+  status=$?
+  set -e
+fi
+if (( status == 0 )); then
   run_bounded "${compose[@]}" restart mox >"$receipt_dir/restart.log" 2>&1
   export PROBE_VERIFY_EXISTING=1
   set +e
   run_bounded "${compose[@]}" run --rm probe >"$receipt_dir/probe-after-restart.log" 2>&1
+  status=$?
+  set -e
+fi
+if (( status == 0 )); then
+  set +e
+  run_bounded "${compose[@]}" run --rm tls_probe >"$receipt_dir/tls-probe-after-restart.log" 2>&1
+  status=$?
+  set -e
+fi
+if (( status == 0 )) && [[ -n ${APP_TEST_IMAGE:-} ]]; then
+  set +e
+  run_bounded "${interop_compose[@]}" run --rm corin_interop >"$receipt_dir/corin-interop-after-restart.log" 2>&1
   status=$?
   set -e
 fi
