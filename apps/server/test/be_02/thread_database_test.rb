@@ -140,6 +140,15 @@ class ThreadDatabaseTest < SessionDatabaseTestCase
     assert_equal "not available", assert_raises(NotAvailable) {
       direct_message(private_message, thread_id: private_thread, box: private_box)
     }.message
+    foreign_org = SecureRandom.uuid
+    @foreign_orgs << foreign_org
+    @admin.exec_params("INSERT INTO app.organizations(id, name) VALUES ($1, 'foreign permalink')", [foreign_org])
+    foreign_box = mailbox(org: foreign_org)
+    foreign_thread = thread(org: foreign_org, box: foreign_box)
+    foreign_message = fixture_message(org: foreign_org, box: foreign_box, thread_id: foreign_thread)
+    assert_equal "not available", assert_raises(NotAvailable) {
+      direct_message(foreign_message, thread_id: foreign_thread, box: foreign_box)
+    }.message
     membership(present: false)
     assert_equal "not available", assert_raises(NotAvailable) { direct_message(target) }.message
   end
