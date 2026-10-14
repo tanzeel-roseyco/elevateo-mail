@@ -36,4 +36,14 @@ BEGIN
     RAISE EXCEPTION 'gateway direct Auth function unexpectedly succeeded';
   EXCEPTION WHEN insufficient_privilege THEN NULL;
   END;
+  BEGIN
+    EXECUTE 'SELECT 1 FROM app_drafts_private.operations LIMIT 1';
+    RAISE EXCEPTION 'gateway direct draft private SELECT unexpectedly succeeded';
+  EXCEPTION WHEN insufficient_privilege THEN NULL;
+  END;
+  BEGIN
+    EXECUTE 'SELECT app_send_private.utc_timestamp(now())';
+    RAISE EXCEPTION 'gateway direct send private function unexpectedly succeeded';
+  EXCEPTION WHEN insufficient_privilege THEN NULL;
+  END;
 END $$;
