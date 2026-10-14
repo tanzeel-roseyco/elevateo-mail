@@ -1,0 +1,71 @@
+PASSED error fixture exact-drift-no-newline
+PASSED error fixture timeout-metadata
+PASSED error fixture policy-suffix
+PASSED error fixture timeout-suffix
+PASSED error fixture trailing-space
+PASSED error fixture prepended-message
+PASSED error fixture wrong-state
+PASSED error fixture wrong-severity
+PASSED error fixture duplicate
+PASSED error fixture second-error
+PASSED error fixture notice-embedded
+PASSED error fixture context-embedded
+PASSED error fixture foreign-path
+PASSED error fixture no-prefix
+PASSED error fixture invalid-line
+PASSED error fixture empty
+PASSED error fixture success-only
+PASSED error fixture foreign-after-valid
+PASSED cleanup fixture late
+PASSED cleanup fixture never
+PASSED cleanup fixture mixed
+PASSED cleanup fixture between
+PASSED cleanup fixture changed-pid
+PASSED cleanup fixture changed-start
+PASSED cleanup fixture duplicate
+PASSED cleanup fixture malformed
+PASSED cleanup fixture foreign
+PASSED cleanup fixture discovery-failure
+PASSED cleanup fixture absence-failure
+PASSED cleanup fixture reap-failure
+PASSED cleanup fixture residual
+PASSED cleanup fixture escalation
+PASSED cleanup fixture invalid-registry
+PASSED cleanup fixture duplicate-registry
+PASSED concurrency harness regressions: 3 real timeout fixtures; 18 diagnostic fixtures; 16 cleanup fixtures
+EVIDENCE [opaque value redacted] server=170006 database=postgres [opaque value redacted]
+EVIDENCE captured serial_holder [opaque value redacted] pid_start=383|1792003282.732164
+EVIDENCE serial_holder holds [{"app": "[opaque value redacted]", "pid": 383, "mode": "AccessExclusiveLock", "wait": "ClientRead", "state": "idle in transaction", "granted": true, "blockers": [], "wait_started": null}]
+EVIDENCE captured first app=be02_rlsc_XXKDfnHK_first pid_start=387|1792003282.764005
+EVIDENCE first waits [{"app": "be02_rlsc_XXKDfnHK_first", "pid": 387, "mode": "AccessExclusiveLock", "wait": "relation", "state": "active", "granted": false, "blockers": [383], "wait_started": "2026-10-14T18:41:22.77134+00:00"}]
+EVIDENCE captured second app=be02_rlsc_XXKDfnHK_second pid_start=390|1792003282.792555
+EVIDENCE two simultaneous bootstrap waiters [{"app": "be02_rlsc_XXKDfnHK_first", "pid": 387, "mode": "AccessExclusiveLock", "wait": "relation", "state": "active", "granted": false, "blockers": [383], "wait_started": "2026-10-14T18:41:22.77134+00:00"}, {"app": "be02_rlsc_XXKDfnHK_second", "pid": 390, "mode": "AccessExclusiveLock", "wait": "relation", "state": "active", "granted": false, "blockers": [383, 387], "wait_started": "2026-10-14T18:41:22.799112+00:00"}]
+EVIDENCE serial_holder exit=0 disconnected; no locks
+EVIDENCE first exit=0 disconnected; no locks
+EVIDENCE second exit=0 disconnected; no locks
+EVIDENCE serialized actual bootstrap reruns exact policy OIDs/tuples, owners, RLS/FORCE, schema/table/column/default ACLs unchanged
+EVIDENCE captured timeout_holder [opaque value redacted] pid_start=397|1792003282.932577
+EVIDENCE timeout_holder holds [{"app": "[opaque value redacted]", "pid": 397, "mode": "AccessExclusiveLock", "wait": "ClientRead", "state": "idle in transaction", "granted": true, "blockers": [], "wait_started": null}]
+EVIDENCE captured timed app=be02_rlsc_XXKDfnHK_timed pid_start=399|1792003282.959658
+EVIDENCE timeout candidate waits [{"app": "be02_rlsc_XXKDfnHK_timed", "pid": 399, "mode": "AccessExclusiveLock", "wait": "relation", "state": "active", "granted": false, "blockers": [397], "wait_started": "2026-10-14T18:41:22.969949+00:00"}]
+EVIDENCE timed exit=3 disconnected; no locks
+EVIDENCE timed SQLSTATE=55P03 reason=canceling statement due to lock timeout
+EVIDENCE holder still locked after production timeout [{"app": "[opaque value redacted]", "pid": 397, "mode": "AccessExclusiveLock", "wait": "ClientRead", "state": "idle in transaction", "granted": true, "blockers": [], "wait_started": null}]
+EVIDENCE production lock_timeout elapsed_seconds=6 envelope=5..12
+EVIDENCE lock timeout rollback while holder remains exact policy OIDs/tuples, owners, RLS/FORCE, schema/table/column/default ACLs unchanged
+EVIDENCE timeout_holder exit=0 disconnected; no locks
+EVIDENCE lock timeout holder rollback exact policy OIDs/tuples, owners, RLS/FORCE, schema/table/column/default ACLs unchanged
+EVIDENCE captured ddl_holder [opaque value redacted] pid_start=421|1792003288.132865
+EVIDENCE ddl_holder holds [{"app": "be02_rlsc_XXKDfnHK_ddl_holder", "pid": 421, "mode": "AccessExclusiveLock", "wait": "ClientRead", "state": "idle in transaction", "granted": true, "blockers": [], "wait_started": null}]
+EVIDENCE captured drift app=be02_rlsc_XXKDfnHK_drift pid_start=426|1792003288.178422
+EVIDENCE bootstrap waits behind uncommitted policy DDL [{"app": "be02_rlsc_XXKDfnHK_drift", "pid": 426, "mode": "AccessExclusiveLock", "wait": "relation", "state": "active", "granted": false, "blockers": [421], "wait_started": "2026-10-14T18:41:28.186683+00:00"}]
+EVIDENCE ddl_holder exit=0 disconnected; no locks
+EVIDENCE drift exit=3 disconnected; no locks
+EVIDENCE drift SQLSTATE=P0001 reason=Auth additional session policy drift: be02_rlsc_xxkdfnhk
+EVIDENCE post-wait policy drift rejection exact policy OIDs/tuples, owners, RLS/FORCE, schema/table/column/default ACLs unchanged
+EVIDENCE post-wait DDL cleanup exact policy OIDs/tuples, owners, RLS/FORCE, schema/table/column/default ACLs unchanged
+PASSED Auth RLS concurrency: all three schedules, exact catalog restoration, no owned sessions remain
+ Container [opaque value redacted] Creating 
+ Container [opaque value redacted] Created 
+
+exit=0 seconds=7.85

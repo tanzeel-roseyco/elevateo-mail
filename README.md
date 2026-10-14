@@ -250,3 +250,5 @@ QA815 exact `e8e8393d` isolated real ClamAV1.5.4 pinned private-network protocol
 QA815 feature `7cae15a7` fake inbound targeted lint PASS, but Steep has two attachment controller type errors; full feature backend/HTTP/worker held. Exact task cleanup passed.
 
 QA815 exact `7cae15a7` acceptance compile/type/unit 73/73 and active compiled Playwright reporter `--list` PASS in fleet Docker. The synthetic list-only seed produced zero browser cases or PNGs; actual mounted browser and real-auth acceptance remain pending.
+
+QA815 latest feature checks: focused `bdb8da6d` Steep/lint/attachment unit PASS (4 runs/20 assertions); integrated `5b699c6d` V2 declaration generate/check PASS. Expanded backend `fc45037b` stopped before Ruby cases because TEST929 omits two new root-level suites; cleanup PASS. QA816 attachment producer focused test on the same source stopped before cases with Ruby SyntaxError at `qa816-attachments-seed.rb:116`; cleanup PASS. Full HTTP/worker/real-auth remain NOT_REACHED. See `docs/completion/soren.md` and QA815 evidence receipts.

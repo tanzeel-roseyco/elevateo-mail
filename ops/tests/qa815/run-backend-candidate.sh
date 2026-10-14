@@ -16,6 +16,42 @@ git archive "$candidate" | tar -x -C "$context"
 # Git omits empty mountpoints; Compose's read-only source bind needs these paths in the disposable archive.
 install -d -m 755 "$context/apps/server/tmp" "$context/apps/server/log"
 chmod -R a+rX "$context"
+if [[ ${QA815_EXPANDED_SUITES:-0} == 1 ]]; then
+  # AIDEV-NOTE: TEST929 enumerates 130 independent processes; preserve each result and a bounded outer lease.
+  python3 - "$context/ops/tests/be02/run.py" "$context/ops/tests/be02/test-suites.sh" <<'PY'
+from pathlib import Path
+import sys
+
+runner = Path(sys.argv[1])
+source = runner.read_text()
+needle = '            task.compose("ruby-suites", ["run", "--rm", "--no-deps", "test"], 480)\n'
+if source.count(needle) != 1:
+    raise SystemExit("QA815 expanded suite timeout anchor mismatch")
+runner.write_text(source.replace(needle, needle.replace(', 480)', ', 1800)')))
+
+suites = Path(sys.argv[2])
+source = suites.read_text()
+needle = '''  printf 'RUN %s\\n' "$test_file"
+  if ! timeout -k 3s 90s bundle exec ruby "$test_file"; then
+    failed=$((failed + 1))
+  fi
+'''
+replacement = '''  printf 'RUN %s\\n' "$test_file"
+  started=$SECONDS
+  if timeout -k 3s 90s bundle exec ruby "$test_file"; then
+    status=0
+  else
+    status=$?
+    failed=$((failed + 1))
+  fi
+  printf 'SUITE_RESULT path=%s exit=%s elapsed_seconds=%s\\n' "$test_file" "$status" "$((SECONDS - started))"
+'''
+if source.count(needle) != 1:
+    raise SystemExit("QA815 expanded suite ledger anchor mismatch")
+suites.write_text(source.replace(needle, replacement))
+PY
+  printf 'task_source_overlay=TEST929 per-file exit/elapsed ledger and 1800s outer lease; canonical commit unchanged\n' >> "$summary"
+fi
 if [[ ${QA815_GATEWAY_BOOTSTRAP:-0} == 1 ]]; then
   # AIDEV-NOTE: Test-only OPS820 bootstrap overlay; the candidate commit stays byte-for-byte intact.
   python3 - "$context/ops/tests/be02/run.py" <<'PY'

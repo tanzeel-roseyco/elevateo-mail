@@ -756,3 +756,5 @@ QA815 `e8e8393d` real ClamAV clean/EICAR PASS is executed protocol evidence, not
 QA815 `7cae15a7` focused lint PASS and two attachment controller Steep diagnostics are execution findings, not independent source review. Additional QA815 reviewed LOC remains 0 and source defect density unclaimed pending owner repair.
 
 QA815 `7cae15a7` acceptance compiled reporter `--list` and 73 unit cases are execution evidence, not independent source review or real browser acceptance. No additional reviewed LOC or source defect-density claim.
+
+QA815 `bdb8da6d` focused Steep/lint/ATT unit PASS, `5b699c6d` V2 codegen PASS, `fc45037b` suite admission failure and QA816 producer SyntaxError are tool findings, not independent source reviews. QA815 independently reviewed 0 additional LOC; defect density is unclaimed. Orion/Cassian/Nadia own the two exact repairs and independent re-review before rerun.

@@ -260,3 +260,5 @@ QA815 real clamd protocol receipt `docs/completion/qa815-evidence/real-clamd-e8e
 QA815 focused feature strict receipt `docs/completion/qa815-evidence/focused-inbound-7cae15a7fe92.txt` records Corin lint PASS, two ATT902 controller Steep errors and cleanup; see `docs/completion/soren.md`.
 
 QA815 acceptance reporter receipts `docs/completion/qa815-evidence/acceptance-list-7cae15a7fe92-offline-install.txt` and `acceptance-list-7cae15a7fe92.txt` distinguish failed offline dependency setup from corrected compiled module/73-unit/Playwright `--list` PASS. No browser case was executed; see `docs/completion/soren.md`.
+
+QA815 fleet checkpoint: `docs/completion/qa815-evidence/focused-feature-bdb8da6d6c10.txt` records targeted Steep/lint/ATT unit PASS; `v2-codegen-5b699c6d169b.txt` records V2 generated declaration/check PASS. Exact `fc45037b` expanded backend failed suite admission on two new root-level TEST929 omissions before Ruby cases; `backend-fc45037b3d11/` records cleanup PASS. Separate `qa816-seed-unit-fc45037b3d11.txt` records a Ruby SyntaxError before cases and cleanup PASS. Authenticated HTTP, worker and real browser remain unexecuted on this candidate.

@@ -192,3 +192,5 @@ QA815 `e8e8393d` real pinned ClamAV private clean/EICAR verdicts PASS with exact
 QA815 `7cae15a7` fake inbound lint one file/zero offenses PASS; Steep two inbox attachment controller errors FAIL, cleanup PASS. Full feature runtime held.
 
 QA815 `7cae15a7` acceptance type/build/unit 73/73 and compiled reporter `--list` PASS; first offline npm setup failure preserved. Browser cases/PNGs/realAuth zero; actual mounted umask proof pending.
+
+QA815 focused `bdb8da6d` Steep/lint/attachment authorization 4/20 PASS; integrated `5b699c6d` V2 generation/check PASS. Full feature `fc45037b` reached Ruby suite admission then FAILED before cases on TEST929 unclassified `test/v2_attachment_error_test.rb`; another root suite `test/v2_route_registry_test.rb` is also absent. Separate QA816 producer unit failed before cases on SyntaxError at seed source line 116. Both task cleanups PASS; no HTTP/worker/real-auth acceptance on this source. Exact receipts and limits in `docs/completion/soren.md`.

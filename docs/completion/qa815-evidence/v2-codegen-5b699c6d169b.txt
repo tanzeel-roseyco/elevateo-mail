@@ -1,0 +1,85 @@
+source=5b699c6d169b6edb4d9e3f0feda98097fb83e787
+started=2026-10-14T18:40:16Z
+artifact=/home/tanzeel/orca/workspaces/integration/completion-soren-qa815/docs/completion/qa815-evidence/generated-v2-5b699c6d169b
+contract_sha256=e97ca2f8df49471c83056ae9c6a13e31efadfee2a5511d3dbd7d953409fb5ac9
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            BuildKit is currently disabled; enable it by removing the DOCKER_BUILDKIT=0
+            environment-variable.
+
+Sending build context to Docker daemon  90.61MB
+Step 1/9 : FROM node:24.21.0-bookworm-slim@sha256:d6aa754f16b3197301076f047b5def2f02ea1dbbc2ca920407d46d7ec7f87b20
+ ---> d6aa754f16b3
+Step 2/9 : WORKDIR /workspace
+ ---> Running in ea529cba540d
+ ---> Removed intermediate container ea529cba540d
+ ---> f84180bda350
+Step 3/9 : COPY contracts/v1 ./contracts/v1
+ ---> eb0dd4370206
+Step 4/9 : COPY contracts/v2 ./contracts/v2
+ ---> a486b12b42c0
+Step 5/9 : COPY apps/web ./apps/web
+ ---> d50e1115f8ee
+Step 6/9 : WORKDIR /workspace/apps/web
+ ---> Running in e598fc19ea91
+ ---> Removed intermediate container e598fc19ea91
+ ---> 091e87ffb8c1
+Step 7/9 : RUN npm ci
+ ---> Running in 0e55b6958d4d
+[91mnpm warn deprecated whatwg-encoding@3.1.1: Use @exodus/bytes instead for a more spec-conformant and faster implementation
+[0m
+added 324 packages, and audited 325 packages in 3s
+
+67 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+[91mnpm warn install-scripts 1 package has install scripts not yet covered by allowScripts:
+npm warn install-scripts   esbuild@0.28.2 (postinstall: node install.js)
+npm warn install-scripts
+npm warn install-scripts Run `npm install-scripts ls` to review, or `npm install-scripts approve <pkg>` to allow.
+[0m[91mnpm notice
+npm notice New major version of npm available! 11.19.0 -> 12.2.0
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0
+npm notice To update run: npm install -g npm@12.2.0
+npm notice
+[0m ---> Removed intermediate container 0e55b6958d4d
+ ---> 7fe16df3a909
+Step 8/9 : CMD ["bash", "-ceu", "npm run check:api && npm run check:api:v2 && npm run lint && npm run typecheck && npm run test -- --coverage && npm run build && ! grep -rl 'dev-fixtures\\|Development fixtures\\|fixture_token_a' dist"]
+ ---> Running in 9c6621a42292
+ ---> Removed intermediate container 9c6621a42292
+ ---> 4b942848ba47
+Step 9/9 : LABEL qa815.owner=soren-v2-codegen
+ ---> Running in e40f49e0bf84
+ ---> Removed intermediate container e40f49e0bf84
+ ---> 4ad95285fea5
+Successfully built 4ad95285fea5
+Successfully tagged qa815-v2-codegen-5b699c6d169b:latest
+derived_image=sha256:4ad95285fea5408d7f2bb3729945752373f8010fde899393be1c5e14a7362581
+image_bytes=165465076
+
+> @elevateo/web@0.1.0-read.1 generate:api:v2
+> openapi-typescript ../../contracts/v2/openapi.json --output src/data/generated/api-v2.d.ts
+
+✨ openapi-typescript 7.13.0
+🚀 ../../contracts/v2/openapi.json → src/data/generated/api-v2.d.ts [125.9ms]
+
+> @elevateo/web@0.1.0-read.1 check:api:v2
+> openapi-typescript ../../contracts/v2/openapi.json --output src/data/generated/api-v2.d.ts --check
+
+✨ openapi-typescript 7.13.0
+0c5f0969de378bb470bb3824bb7edb7f163d4a455d514e815885003443e62bb1  /output/api-v2.d.ts
+generated_sha256=0c5f0969de378bb470bb3824bb7edb7f163d4a455d514e815885003443e62bb1
+Untagged: qa815-v2-codegen-5b699c6d169b:latest
+Deleted: sha256:4ad95285fea5408d7f2bb3729945752373f8010fde899393be1c5e14a7362581
+Deleted: sha256:4b942848ba47a5b197b618df1a957bee786603cdc46eb287c22520730215ac2b
+Deleted: sha256:7fe16df3a9091499c34ef28b79375864d14767993ebd410943f058966d380dd2
+Deleted: sha256:091e87ffb8c1013c969b5d9a0ad73185b198166b8389921c08757e78a818fdc1
+Deleted: sha256:d50e1115f8ee847b647c56d8765dbd30d3a897c3630a3e3e6d531003a5b81599
+Deleted: sha256:a486b12b42c048447f11ef560d898740bb3d56d5a10e54b0c4825bac9a34a6ae
+Deleted: sha256:eb0dd437020600ee3125876011b5e725089fb60faf68369ff3c4223466a85ac9
+Deleted: sha256:f84180bda350c85f6fcab36e824ced2b3d87f5e62ac45d091fcda50ebc99f3be
+run_exit=0
+archive_absent=yes
+remaining_task_containers=0
+remaining_task_images=0
+finished=2026-10-14T18:40:39Z
