@@ -5,7 +5,10 @@ mod navigation;
 
 fn main() {
     // AIDEV-NOTE: The public origin is embedded by the release build; absent or invalid config fails before any WebView.
-    let approved = config::validate_web_origin(option_env!("ELEVATEO_WEB_ORIGIN").unwrap_or(""))
+    let approved = config::launch_origin(
+        option_env!("ELEVATEO_WEB_ORIGIN").unwrap_or(""),
+        option_env!("ELEVATEO_NATIVE_ARTIFACT").unwrap_or(""),
+    )
         .expect("ELEVATEO_WEB_ORIGIN must be one approved HTTPS web origin");
     tauri::Builder::default()
         .setup(move |app| {
