@@ -200,6 +200,6 @@ test('invitation source registration publishes coordinates only and rejects beyo
 
 test('settled reader source accepts its final line and rejects coordinates past the file', () => {
   const reader = fileURLToPath(new URL('../../playwright/read.e2e.ts', import.meta.url));
-  assert.equal(frameworkDiagnostic(stackAt(reader, 86), 'synthetic-private').source?.line, 86);
-  assert.equal(frameworkDiagnostic(stackAt(reader, 87), 'synthetic-private').source, null);
+  assert.equal(frameworkDiagnostic(stackAt(reader, 97), 'synthetic-private').source?.line, 97);
+  assert.equal(frameworkDiagnostic(stackAt(reader, 98), 'synthetic-private').source, null);
 });

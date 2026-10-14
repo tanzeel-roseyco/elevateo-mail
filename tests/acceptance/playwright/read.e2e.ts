@@ -55,6 +55,17 @@ scenario('SCN-GUI-006-P', 'real-reader-search-history-four-visual-partitions', a
         await page.goto('/#/search');
         const search = page.getByRole('search', { name: 'Search conversations', exact: true });
         await expect(search).toBeVisible();
+        // AIDEV-NOTE: A control and its label must remain adjacent when the form wraps at mobile widths.
+        for (const name of ['Search mail', 'Search scope']) {
+          const [label, control] = await Promise.all([search.getByText(name, { exact: true }).boundingBox(),
+            search.getByLabel(name, { exact: true }).boundingBox()]);
+          if (!label || !control) throw new Error('Visible search field geometry unavailable');
+          expect(Math.abs(label.x - control.x)).toBeLessThanOrEqual(1);
+          expect(control.y - label.y - label.height).toBeGreaterThanOrEqual(0);
+          expect(control.y - label.y - label.height).toBeLessThanOrEqual(8);
+          expect(control.x).toBeGreaterThanOrEqual(0);
+          expect(control.x + control.width).toBeLessThanOrEqual(viewport.width + 1);
+        }
         await search.getByLabel('Search mail', { exact: true }).fill(seed.data.marker);
         await search.getByLabel('Search scope', { exact: true }).selectOption(seed.mailboxes.primary);
         const [response] = await Promise.all([responseAt(page, '/v1/search'),

@@ -22,7 +22,7 @@ const sourceLines = {
   'read-empty.e2e.ts': 57,
   'read-literal.e2e.ts': 100,
   'read-revocation.e2e.ts': 188,
-  'read.e2e.ts': 86,
+  'read.e2e.ts': 97,
   'screenshots.ts': 58,
   'support.ts': 53,
   'transport-barrier.ts': 63,
