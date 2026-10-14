@@ -8,6 +8,8 @@ A planned shared company mailbox for approximately **10 people**, available on a
 
 ## Current state
 
+BE-403 R4 principal seam correction (2026-10-14): IN PROGRESS. Frozen integrated f37d09c failed only strict Steep at tenancy.rb super: one observed inheritance root defect, two keyword diagnostics. Its 55 suite summaries total 380 runs/5621 assertions/0 failures/0 errors/0 skips; 150 Ruby files lint clean; fatal regression 3 tests/89 assertions passed. HTTP NOT_REACHED. Named generated Data parent now has an exact RBS constructor; validated/downcased/frozen Principal and value equality retained. New seam regression authored, NOT_RUN. Prior ADV755 0/245 is source-only. Soren owns targeted container Steep/regression then mandatory full suites; root/Cassian own integration docs/vault. See docs/completion/be403-r4-principal.md.
+
 BE-403 (2026-10-14): IN PROGRESS. Approved semantic schema guards are source-reviewed and Soren verified real Rails rollback/reapply, atomic rejection, default-privilege leakage and nonempty sentinel preservation on 786f2f9. Full 28390d7 run:375 runs/5487 assertions,2 native-observation failures,0 errors; later HTTP stages NOT_RUN. Rowan is repairing structured native observation, strict type warnings and lint; current edits are unverified. No public/live mail. See docs/completion/be403-bootstrap.md and reports/rowan-progress.md.
 
 

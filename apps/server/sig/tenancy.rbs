@@ -4,9 +4,12 @@ module Elevateo
     end
     UUID: Regexp
     STACK_KEY: Symbol
-    class Principal < Data
+    class PrincipalData < Data
       attr_reader user_id: String
       attr_reader org_id: String
+      def initialize: (user_id: String, org_id: String) -> void
+    end
+    class Principal < PrincipalData
       def self.new: (user_id: String, org_id: String) -> Principal
       def initialize: (user_id: String, org_id: String) -> void
     end
