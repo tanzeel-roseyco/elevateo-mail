@@ -680,3 +680,6 @@ R25 lint repair: one tooling defect in the unmount cleanup (ref must be captured
 ## INT-801 Cassian V2 candidate (2026-10-14)
 
 Independent adversarial functional and design-tradeoff reviews are requested from root; none were performed or claimed by this worker. Proposed bounded packets: `contracts/v2/openapi.json` (split schemas/operations at <=200 source lines), `apps/server/config/v2_route_registry.rb` plus its test, and `contracts/tooling/generate-v2.sh` plus contract test, and `apps/web/src/data/v2Contract.ts` plus its test, `apps/web/src/data/v2Gateway.ts`, and the one-line transport path admission. Reviewed LOC 0; confirmed defects 0; defect density not computable pending review. Fleet execution pending.
+## SEC-802 candidate review status
+
+Migration 00008, `db/sec802/access.sql`, and organization access database tests await independent bounded adversarial and dedicated design-tradeoff review. No review coverage or defects/KLOC is claimed from author inspection. Runtime tests are not executed; see `docs/completion/sabine.md`.
