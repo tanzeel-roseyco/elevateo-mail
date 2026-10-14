@@ -822,3 +822,7 @@ SEND-809 continuation self review: claim/cancel, authorization, and reconciliati
 SEND-809 due-discovery follow-up: source-only self review of one worker-only SQL UUID projection and one DB fixture; no confirmed defects, no independent review or runtime proof.
 SEND-809 bounded continuation self-review accounting (not independent): 210 added SQL lines across worker_authority.sql/down.sql relative to ffde6db; 3 material defects identified and repaired before runtime (cancel-requested reconciliation, missing final capability/suppression gate, repeated unknown observation uniqueness), 14.29 defects/KLOC. The 120 added test lines and documentation are excluded from this source density. This does not satisfy independent functional or design review; Docker results remain NOT_RUN.
 SEND-809 continuation self review: claim/cancel, authorization, and reconciliation SQL plus affected DB fixtures reviewed source-only; found and repaired three material gaps (stop-requested reconciliation blocked, current suppression/capability absent, repeated unknown evidence constrained). Independent functional/design review and runtime NOT_RUN; no independent defect density claimed.
+
+### APK-813 Tauri Android continuation
+
+The original Java scaffold review request is superseded. New Android-specific config, wrapper pinning helper, unit fixtures and fleet recipe await independent <=200 LOC adversarial and separate design reviews. No reviewer has reported coverage or defects; defects/KLOC remains N/A. See `docs/completion/astrid.md`.

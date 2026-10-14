@@ -1,32 +1,29 @@
-# Android APK lane (APK-813)
+# APK-813 Android lane: shared Tauri/React candidate
 
-This is an **offline, unsigned development scaffold**. It does not authenticate, load mailbox data, or send mail. The launch activity intentionally declares no callback intent filter until Cassian supplies an accepted versioned mobile session contract and registered HTTPS App Link.
+`apps/android/tauri.android.conf.json` extends Orion's `apps/native` Tauri 2 shell for Android. It does not ship a second Java UI. The old Java offline activity was removed. Root selected an online-only exact HTTPS app origin and existing same-origin web session for the initial native client; Orion source `625bef13fd1328beb407c208f70a171fea9fd12d` is merged in the isolated APK branch; Android packaging still needs its mobile library target and Cargo.lock before fleet compile.
 
-## Pinned build inputs
+## Architecture and route boundary
 
-AGP 8.9.2, Gradle 8.11.1, JDK 17, Android API 35 and Build Tools 35.0.0 are fixed in source. Android's [AGP 8.9 compatibility table](https://developer.android.com/build/releases/agp-8-9-0-release-notes) pairs AGP 8.9 with Gradle 8.11.1, JDK 17 and API 35. Soren supplies an immutable JDK image digest plus verified official Android command-line-tools and Gradle archive SHA-256 values in the fleet Docker lease. No checksum has been invented here; missing inputs fail the image build.
+The shared React app uses hash routes for mailbox selection, thread, drafts, send review/status, members and search. The selected online-only design loads the exact authorized HTTPS web app origin in Orion's Tauri WebView, so relative Rails requests retain the web origin and its existing cookie/CSRF session. Orion must enforce exact-origin navigation, zero remote IPC/capabilities and no fixture fallback. The Android override changes only min API/version and neutralizes the Windows bundle target. The merged Orion source chooses the exact remote origin at build time; do not claim remote-origin login until the APK is installed and tested.
 
-Proposed exact fleet commands, under Soren's lease in the verified checkout:
+The generated Android manifest is a build artifact. It must request only network access needed for an approved HTTPS API; inspection is part of Soren's build receipt. No Android callback intent filter or App Link is needed for the selected initial web-session design. System links must stay in the system browser unless an exact reviewed HTTPS origin/path policy is added. Never move tokens into query fragments, logs or WebView storage.
+
+No native token store or Keystore bridge is part of the selected initial web-session design; the web server owns session validity and the WebView owns its existing secure cookie policy. Resume must revalidate session and mailbox scope. Offline and network errors must be visible with bounded retry and no automatic write replay. Back navigation must not bypass logout or protected view fencing; keyboard/system bar insets and safe areas require target device checks. The shared React route behavior is a source candidate, not proof of those Android behaviors.
+
+## Fleet-only unsigned APK request
+
+Soren alone runs this under `/home/tanzeel/elevateo-mail-wave-20261014/control/soren-docker.lock` on fleet-02 from an integrated checkout containing Orion's `apps/native` and this APK lane. A reviewed `apps/native/src-tauri/Cargo.lock` is required. The container requires an immutable Rust 1.90.0 image digest. The official Android command-line tools archive SHA-256 is pinned in the Dockerfile from [Android Studio downloads](https://developer.android.com/studio). `Dockerfile` installs JDK 17, API 37/Build Tools 36.0.0, NDK 28.2.13676358, Rust aarch64 target and exact Tauri CLI 2.12.2. Its Debian packages and SDK repository metadata remain mutable inputs to record in the build receipt; successful compile alone is not a bit-for-bit reproducibility claim.
 
 ```sh
 docker build -f ops/build/android/Dockerfile \
-  --build-arg JDK17_IMAGE="$JDK17_IMAGE" \
-  --build-arg SDK_TOOLS_URL="$SDK_TOOLS_URL" \
-  --build-arg SDK_TOOLS_SHA256="$SDK_TOOLS_SHA256" \
-  --build-arg GRADLE_SHA256="$GRADLE_SHA256" \
+  --build-arg RUST_IMAGE="$RUST_IMAGE" \
   -t elevateo-apk813-build .
-docker run --rm -v "$PWD:/src" -w /src elevateo-apk813-build \
+docker run --rm -v "$PWD:/src" -v "$APK813_BUILD_ROOT:/artifacts" \
+  -e APK813_BUILD_ROOT=/artifacts \
+  -w /src elevateo-apk813-build \
   bash ops/build/android/build-unsigned.sh
 ```
 
-The script runs three callback unit cases and `assembleDebug`, then prints the APK SHA-256. This request is **NOT_RUN**; an unsigned APK has **not** been shown to compile. Soren must record the exact image digest, archive hashes, command output and disposable cleanup. Debug APK signing by the SDK's generated debug key does not count as release signing.
+The script embeds the root-authorized **compile-only** `https://app.elevateo.invalid` fixture, which Orion deliberately rejects at runtime. It runs three Gradle wrapper pinning cases, Orion Rust unit tests, Tauri Android init/build, then rejects unexpected permissions, an active VIEW callback filter, a signed or ambiguous APK, and prints the artifact SHA-256. The [Gradle 9.6.1 binary checksum](https://gradle.org/release-checksums/) is pinned into Tauri's generated wrapper. Soren must retain exact source, image/archive hashes, command logs, generated manifest permission inspection, artifact path/hash and cleanup. An unsigned APK has **not yet been compiled** for this candidate. A fixture-origin APK can prove packaging only; it cannot launch into the app or prove login. A real approved origin and installed-runtime checks remain separate release gates.
 
-## Platform boundaries
-
-Only `INTERNET` is declared. Backups and cleartext traffic are disabled. No contacts, storage, camera, notification or background location permissions are requested. The UI is an offline placeholder; no web Playwright result proves this Android shell.
-
-Before a real session, register an HTTPS App Link with verified domain association and make callback validation check exact scheme, host, path, single state, state expiry and single use, PKCE verifier binding, and expected issuer/audience. `AuthCallback` currently checks only the static URI/state shape and is not wired to an exported activity. It never extracts a token. Reject unsolicited callbacks, duplicate parameters, fragments and userinfo. No live OAuth registration is authorized.
-
-Session secrets, if later approved, require Android Keystore-backed encryption with non-exportable keys, authenticated encryption, key invalidation recovery and explicit logout deletion. Keep plaintext and bearer tokens out of logs, bundles, WebView, backups and clipboard. On resume, revalidate session and mailbox scope; on network loss, show bounded retry without replaying writes. Keyboard and system-bar insets, safe areas, rotation, process death and accessibility remain device acceptance items. Emulator/device installation, callback association, lifecycle/resume, network interruption, IME/insets, signature and upgrade tests are **BLOCKED/NOT_RUN** until target runtime and accepted contracts exist.
-
-Orion owns the separate shared Tauri shell. The integration seam is the versioned Rails API and session contract; no Tauri source is modified by this APK lane.
+Emulator/device installation, same-origin session/login/logout, system links, lifecycle/resume, offline/back/keyboard/insets, release signature and upgrade tests are **NOT_RUN** and remain acceptance gates. Web Playwright does not establish Android shell behavior. The case-by-case installed-runtime oracles are in [acceptance.md](acceptance.md). No live OAuth registration, release key, DNS, SMTP or paid infrastructure is authorized.
