@@ -5,7 +5,7 @@ import json
 from pathlib import Path
 from typing import Callable
 from docker_task import SERVICES, Task
-from acceptance_cleanup import private_files, validate_container
+from acceptance_cleanup import private_files, observer_files, validate_container
 
 
 def cleanup(task: Task) -> bool:
@@ -102,7 +102,7 @@ def cleanup(task: Task) -> bool:
             removed.append("image:" + item["Id"])
 
     for name, action in [("containers", containers), ("builder", builder), ("volumes", volumes),
-                         ("networks", networks), ("image", image), ("private-files", lambda: private_files(task, removed))]:
+                         ("networks", networks), ("image", image), ("private-files", lambda: private_files(task, removed)), ("observer-files", lambda: observer_files(task, removed))]:
         attempt(name, action)
     task.write("cleanup.json", {"removed": removed, "errors": errors, "shared_bases_retained": True})
     return not errors

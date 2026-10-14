@@ -1,3 +1,5 @@
+QA-404 diagnostic correction: ADV745 found anchored bare-ID grep selects no full Playwright titles. Token-compatible selection and actual container --list exact-four inventory assertion added. Observer is opt-in/OFF for diagnostic; advanced ADV739 findings remain open. Runtime NOT_RUN pending Soren exact merged SHA.
+
 QA-404 current: authorized root837e668 merged at05c6dc3 preserving repairs. Nadia97d6403 variants incorporated with seedv2 strict consumer and new readonly post-commit verification. Labeled real Chromium DIAGNOSTIC entrypoint/4-case smoke+visual matrix authored; no full-gate bypass/PASS claim. Observer private bridge remains under wiring/review; all runtime NOT_RUN.
 
 QA-404 observer adversarial review: Ada ADV-734 found one P1 policy-confinement defect in146LOC (6.849/KLOC). Source repair adds a restrictive literal fence, owner/forced-RLS prerequisites and per-snapshot policy hash; real-PG broad-PUBLIC/disabled-RLS regressions authored. Runtime NOT_RUN.

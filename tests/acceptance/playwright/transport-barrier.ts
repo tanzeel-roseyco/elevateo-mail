@@ -14,6 +14,7 @@ export async function transportBarrier(page: Page, path: string, method: string,
   let claimed = false;
   let expired = false;
   let handlerFailed = false;
+  const deadline = Date.now() + 10000;
   const timer = setTimeout(() => {
     expired = true;
     fail(new Error('Real transport barrier deadline exceeded'));
@@ -27,7 +28,7 @@ export async function transportBarrier(page: Page, path: string, method: string,
     claimed = true;
     let upstream: APIResponse | undefined;
     try {
-      if (mode !== 'no-forward') upstream = await route.fetch({ timeout: 8000, maxRedirects: 0, maxRetries: 0 });
+      if (mode !== 'no-forward') upstream = await route.fetch({ timeout: Math.max(1, Math.min(8000, deadline - Date.now())), maxRedirects: 0, maxRetries: 0 });
       acknowledge(upstream?.status() ?? null);
       await gate;
       if (expired || mode !== 'hold-response') await route.abort('failed');

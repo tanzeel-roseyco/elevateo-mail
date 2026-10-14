@@ -24,7 +24,7 @@ async function readPrivate(path: string): Promise<string> {
 }
 
 // AIDEV-NOTE: Node test control contains no SQL credential; Soren's trusted runner invokes the isolated Ruby observer.
-export async function observeDraft(draftId: string, operationId: string | null,
+async function performObservation(draftId: string, operationId: string | null,
   phase: 'before' | 'after'): Promise<z.infer<typeof factsSchema>> {
   z.uuid().parse(draftId);
   z.uuid().nullable().parse(operationId);
@@ -66,4 +66,13 @@ export async function observeDraft(draftId: string, operationId: string | null,
     await new Promise(resolve => setTimeout(resolve, 20));
   }
   throw new Error('Observer proof deadline exceeded');
+}
+
+let inFlight = false;
+export async function observeDraft(draftId: string, operationId: string | null,
+  phase: 'before' | 'after'): Promise<z.infer<typeof factsSchema>> {
+  if (inFlight) throw new Error('Concurrent observer request rejected');
+  inFlight = true;
+  try { return await performObservation(draftId, operationId, phase); }
+  finally { inFlight = false; }
 }
