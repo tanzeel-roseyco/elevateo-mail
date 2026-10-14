@@ -14,7 +14,6 @@ class OutreachSequenceRepositoryTest < Minitest::Test
   DIGEST = "a" * 64
 
   class Connection
-    Result = Struct.new(:to_a)
     attr_accessor :existing, :replay, :authorized, :read_authorized, :history, :steps
     attr_reader :sql, :bind_values, :transactions
 
@@ -52,7 +51,7 @@ class OutreachSequenceRepositoryTest < Minitest::Test
       else
         []
       end
-      Result.new(rows)
+      rows
     end
   end
 
@@ -68,12 +67,12 @@ class OutreachSequenceRepositoryTest < Minitest::Test
     result = Repository.new(connection: connection).save(input, organization_id: ORGANIZATION, session_digest: DIGEST)
     assert_equal 1, result.fetch("version")
     assert_equal 1, connection.transactions
-    assert connection.sql.any? { |sql| sql.include?("pg_advisory_xact_lock") }
-    assert connection.sql.any? { |sql| sql.include?("INSERT INTO app.campaign_sequence_steps") }
+    assert(connection.sql.any? { |sql| sql.include?("pg_advisory_xact_lock") })
+    assert(connection.sql.any? { |sql| sql.include?("INSERT INTO app.campaign_sequence_steps") })
     step_insert = connection.sql.index { |sql| sql.include?("INSERT INTO app.campaign_sequence_steps") }
     assert_equal [STEP, ORGANIZATION, CAMPAIGN, ID, "1", "0", "09:00:00", "First"],
       connection.bind_values.fetch(step_insert)
-    assert connection.sql.any? { |sql| sql.include?("INSERT INTO app.campaign_sequence_mutations") }
+    assert(connection.sql.any? { |sql| sql.include?("INSERT INTO app.campaign_sequence_mutations") })
   end
 
   def test_exact_replay_does_not_mutate_and_mismatch_fails
@@ -81,7 +80,7 @@ class OutreachSequenceRepositoryTest < Minitest::Test
     draft = input
     connection.replay = { "fingerprint" => draft.fingerprint, "result" => { "id" => ID, "version" => 1 } }
     assert_equal 1, Repository.new(connection: connection).save(draft, organization_id: CAMPAIGN, session_digest: DIGEST).fetch("version")
-    refute connection.sql.any? { |sql| sql.include?("INSERT INTO") }
+    refute(connection.sql.any? { |sql| sql.include?("INSERT INTO") })
     connection.replay["fingerprint"] = "0" * 64
     error = assert_raises(Elevateo::OutreachSequence::DraftError) do
       Repository.new(connection: connection).save(draft, organization_id: CAMPAIGN, session_digest: DIGEST)
@@ -102,7 +101,7 @@ class OutreachSequenceRepositoryTest < Minitest::Test
       repository.save(input(version: 2, timezone: "Europe/London"), organization_id: CAMPAIGN, session_digest: DIGEST)
     end
     assert_equal "reschedule_required", changed.code
-    refute connection.sql.any? { |sql| sql.include?("DELETE FROM app.campaign_sequence_steps") }
+    refute(connection.sql.any? { |sql| sql.include?("DELETE FROM app.campaign_sequence_steps") })
   end
 
   def test_denied_role_never_creates_sequence
@@ -112,7 +111,7 @@ class OutreachSequenceRepositoryTest < Minitest::Test
       Repository.new(connection: connection).save(input, organization_id: CAMPAIGN, session_digest: DIGEST)
     end
     assert_equal "not_available", error.code
-    refute connection.sql.any? { |sql| sql.include?("INSERT INTO app.campaign_sequences") }
+    refute(connection.sql.any? { |sql| sql.include?("INSERT INTO app.campaign_sequences") })
   end
 
   def test_fetch_uses_read_authority_and_returns_ordered_draft
@@ -125,8 +124,8 @@ class OutreachSequenceRepositoryTest < Minitest::Test
       organization_id: CAMPAIGN, session_digest: DIGEST)
     assert_equal 2, result.fetch("version")
     assert_equal "09:00:00", result.fetch("steps").first.fetch("local_time")
-    assert connection.sql.any? { |sql| sql.include?("authorize_outreach_content_read") }
-    refute connection.sql.any? { |sql| sql.include?("authorize_outreach_draft_write") }
+    assert(connection.sql.any? { |sql| sql.include?("authorize_outreach_content_read") })
+    refute(connection.sql.any? { |sql| sql.include?("authorize_outreach_draft_write") })
   end
 
   def test_fetch_hides_absent_and_forbidden_draft
@@ -137,6 +136,7 @@ class OutreachSequenceRepositoryTest < Minitest::Test
     connection.existing = { "id" => ID, "campaign_id" => CAMPAIGN }
     connection.read_authorized = false
     assert_nil repository.fetch(campaign_id: CAMPAIGN, organization_id: CAMPAIGN, session_digest: DIGEST)
-    assert_equal reads, connection.sql.count { |sql| sql.include?("SELECT id,campaign_id,status,timezone,version") }
+    final_reads = connection.sql.count { |sql| sql.include?("SELECT id,campaign_id,status,timezone,version") }
+    assert_equal reads, final_reads
   end
 end
