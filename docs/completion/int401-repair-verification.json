@@ -1,0 +1,337 @@
+{
+  "kind": "static source audit, no application execution",
+  "overlay_files": 629,
+  "overlay_mismatches": [],
+  "dependency_checks": [
+    {
+      "manifest": "ops/tools/be01-services/dependencies.sha256",
+      "path": "ops/tests/fleet02-egress-resources.sh",
+      "status": "matched"
+    },
+    {
+      "manifest": "ops/tools/be01-services/dependencies.sha256",
+      "path": "ops/tests/fleet02-egress-compose.sh",
+      "status": "matched"
+    },
+    {
+      "manifest": "ops/tools/be01-services/dependencies.sha256",
+      "path": "ops/tests/fleet02-egress-baked.rb",
+      "status": "matched"
+    },
+    {
+      "manifest": "ops/tools/be01-services/dependencies.sha256",
+      "path": "ops/compose.fleet02-egress.yaml",
+      "status": "matched"
+    },
+    {
+      "manifest": "ops/tools/be01-services/dependencies.sha256",
+      "path": "ops/tests/fleet02-egress-source.sha256",
+      "status": "matched"
+    },
+    {
+      "manifest": "ops/tools/be01-services/dependencies.sha256",
+      "path": "ops/tests/be01-services/package.sha256",
+      "status": "matched"
+    },
+    {
+      "manifest": "ops/tools/be01-services/package.sha256",
+      "path": "ops/tools/be01-services/config.jq",
+      "status": "matched"
+    },
+    {
+      "manifest": "ops/tools/be01-services/package.sha256",
+      "path": "ops/tools/be01-services/dependencies.sha256",
+      "status": "matched"
+    },
+    {
+      "manifest": "ops/tools/be01-services/package.sha256",
+      "path": "ops/tools/be01-services/fixture.sh",
+      "status": "matched"
+    },
+    {
+      "manifest": "ops/tools/be01-services/package.sha256",
+      "path": "ops/tools/be01-services/fixture-regression.sh",
+      "status": "matched"
+    },
+    {
+      "manifest": "ops/tools/be01-services/package.sha256",
+      "path": "ops/tools/be01-services/phases.sh",
+      "status": "matched"
+    },
+    {
+      "manifest": "ops/tools/be01-services/package.sha256",
+      "path": "ops/tools/be01-services/profile.jq",
+      "status": "matched"
+    },
+    {
+      "manifest": "ops/tools/be01-services/package.sha256",
+      "path": "ops/tools/be01-services/profile-regression.sh",
+      "status": "matched"
+    },
+    {
+      "manifest": "ops/tools/be01-services/package.sha256",
+      "path": "ops/tools/be01-services/readiness.rb",
+      "status": "matched"
+    },
+    {
+      "manifest": "ops/tools/be01-services/package.sha256",
+      "path": "ops/tools/be01-services/regression.sh",
+      "status": "matched"
+    },
+    {
+      "manifest": "ops/tools/be01-services/package.sha256",
+      "path": "ops/tools/be01-services/run.sh",
+      "status": "matched"
+    },
+    {
+      "manifest": "ops/tools/be01-services/package.sha256",
+      "path": "ops/tools/be01-services/stack.sh",
+      "status": "matched"
+    },
+    {
+      "manifest": "ops/tools/be01-services/package.sha256",
+      "path": "ops/tools/be01-services/volume.rb",
+      "status": "matched"
+    },
+    {
+      "manifest": "ops/tools/be01-services/package.sha256",
+      "path": "ops/tools/be01-services/volumes.sh",
+      "status": "matched"
+    },
+    {
+      "manifest": "ops/tools/be01-services/package.sha256",
+      "path": "ops/tools/be01-services/stack-regression.sh",
+      "status": "matched"
+    },
+    {
+      "manifest": "ops/tools/be01-services-app/package.sha256",
+      "path": "ops/tools/be01-services-app/dispatch.sh",
+      "status": "matched"
+    },
+    {
+      "manifest": "ops/tools/be01-services-app/package.sha256",
+      "path": "ops/tools/be01-services-app/parent-run.sh",
+      "status": "matched"
+    },
+    {
+      "manifest": "ops/tools/be01-services-app/package.sha256",
+      "path": "ops/tools/be01-services-app/regression.sh",
+      "status": "matched"
+    },
+    {
+      "manifest": "ops/tools/be01-services-app-check/package.sha256",
+      "path": "ops/tools/be01-services-app-check/parent-run.sh",
+      "status": "matched"
+    },
+    {
+      "manifest": "ops/tools/be01-services-app-check/package.sha256",
+      "path": "ops/tools/be01-services-app-check/checks.sh",
+      "status": "matched"
+    },
+    {
+      "manifest": "ops/tools/be01-services-app-check/package.sha256",
+      "path": "ops/tools/be01-services-app-check/regression.sh",
+      "status": "matched"
+    },
+    {
+      "manifest": "ops/tools/be01-services-tools/package.sha256",
+      "path": "ops/tools/be01-services-tools/Dockerfile",
+      "status": "matched"
+    },
+    {
+      "manifest": "ops/tools/be01-services-tools/package.sha256",
+      "path": "ops/tools/be01-services-tools/checks.sh",
+      "status": "matched"
+    },
+    {
+      "manifest": "ops/tools/be01-services-tools/package.sha256",
+      "path": "ops/tools/be01-services-tools/parent-run.sh",
+      "status": "matched"
+    },
+    {
+      "manifest": "ops/tools/be01-services-tools/package.sha256",
+      "path": "ops/tools/be01-services-tools/preflight.sh",
+      "status": "matched"
+    },
+    {
+      "manifest": "ops/tools/be01-services-tools/package.sha256",
+      "path": "ops/tools/be01-services-tools/run-container.sh",
+      "status": "matched"
+    },
+    {
+      "manifest": "ops/tools/be01-services-tools/package.sha256",
+      "path": "ops/tools/lane-c-synthetic/cleanup.sh",
+      "status": "matched"
+    },
+    {
+      "manifest": "ops/tools/be01-services-tools/package.sha256",
+      "path": "docs/evidence/scripts/be-01-r1-fleet02-resources.sh",
+      "status": "matched"
+    },
+    {
+      "manifest": "ops/tools/be01-services-tools/package.sha256",
+      "path": "ops/tools/be01-services/package.sha256",
+      "status": "hash-divergence",
+      "expected_sha256": "3044a0e2df4daa6cf5372e1edd90c609f5ed9d91a2b874842e97710d09694787",
+      "observed_sha256": "ad4773807748c99d23c763f2a6203a4cde276c68cca09ea6f9f030380252235d"
+    },
+    {
+      "manifest": "ops/tools/be01-services-tools/package.sha256",
+      "path": "ops/tests/be01-services/package.sha256",
+      "status": "matched"
+    },
+    {
+      "manifest": "ops/tools/be01-services-volume-check/package.sha256",
+      "path": "ops/tools/be01-services-volume-check/parent-run.sh",
+      "status": "matched"
+    },
+    {
+      "manifest": "ops/tools/be01-services-volume-check/package.sha256",
+      "path": "ops/tools/be01-services-volume-check/checks.sh",
+      "status": "matched"
+    },
+    {
+      "manifest": "ops/tools/be01-services-volume-check/package.sha256",
+      "path": "ops/tools/be01-services-tools/Dockerfile",
+      "status": "matched"
+    },
+    {
+      "manifest": "ops/tools/be01-services-volume-check/package.sha256",
+      "path": "ops/tools/be01-services-tools/checks.sh",
+      "status": "matched"
+    },
+    {
+      "manifest": "ops/tools/be01-services-volume-check/package.sha256",
+      "path": "ops/tools/be01-services-tools/run-container.sh",
+      "status": "matched"
+    },
+    {
+      "manifest": "ops/tools/be01-services-volume-check/package.sha256",
+      "path": "ops/tools/lane-c-synthetic/cleanup.sh",
+      "status": "matched"
+    },
+    {
+      "manifest": "ops/tools/be01-services-volume-check/package.sha256",
+      "path": "docs/evidence/scripts/be-01-r1-fleet02-resources.sh",
+      "status": "matched"
+    },
+    {
+      "manifest": "ops/tools/be01-services-volume-check/package.sha256",
+      "path": "ops/tools/be01-services/package.sha256",
+      "status": "matched"
+    },
+    {
+      "manifest": "ops/tools/be01-services-volume-check/package.sha256",
+      "path": "ops/tools/be01-services/dependencies.sha256",
+      "status": "matched"
+    },
+    {
+      "manifest": "ops/tools/be01-services-volume-check/package.sha256",
+      "path": "ops/tests/be01-services/package.sha256",
+      "status": "matched"
+    },
+    {
+      "manifest": "ops/tools/be01-services-volume-check/package.sha256",
+      "path": "ops/tests/fleet02-egress-source.sha256",
+      "status": "matched"
+    },
+    {
+      "manifest": "ops/tools/be01-services-volume-check/package.sha256",
+      "path": "ops/tools/be01-services-app/package.sha256",
+      "status": "matched"
+    },
+    {
+      "manifest": "ops/tools/be01-services-volume-check/package.sha256",
+      "path": "ops/tools/lane-c-app/app.sha256",
+      "status": "matched"
+    },
+    {
+      "manifest": "ops/tools/be01-transport-check/package.sha256",
+      "path": "ops/tools/be01-services-tools/Dockerfile",
+      "status": "matched"
+    },
+    {
+      "manifest": "ops/tools/be01-transport-check/package.sha256",
+      "path": "ops/tools/be01-services-tools/checks.sh",
+      "status": "matched"
+    },
+    {
+      "manifest": "ops/tools/be01-transport-check/package.sha256",
+      "path": "ops/tools/lane-c-synthetic/cleanup.sh",
+      "status": "matched"
+    },
+    {
+      "manifest": "ops/tools/be01-transport-check/package.sha256",
+      "path": "docs/evidence/scripts/be-01-r1-fleet02-resources.sh",
+      "status": "matched"
+    },
+    {
+      "manifest": "ops/tools/be01-transport-check/package.sha256",
+      "path": "ops/tests/fleet02-egress-source.sha256",
+      "status": "matched"
+    },
+    {
+      "manifest": "ops/tools/be01-transport-check/package.sha256",
+      "path": "ops/tools/be01-transport-check/parent-run.sh",
+      "status": "matched"
+    },
+    {
+      "manifest": "ops/tools/be01-transport-check/package.sha256",
+      "path": "ops/tools/be01-transport-check/checks.sh",
+      "status": "matched"
+    },
+    {
+      "manifest": "ops/tools/be01-transport-check/package.sha256",
+      "path": "ops/tools/be01-transport-check/run-container.sh",
+      "status": "matched"
+    },
+    {
+      "manifest": "ops/tools/be01-transport-check/package.sha256",
+      "path": "docs/evidence/scripts/be01-capability-volume-transport.sh",
+      "status": "matched"
+    },
+    {
+      "manifest": "ops/tools/be01-transport-check/package.sha256",
+      "path": "docs/evidence/scripts/be01-capability-volume-transport-regression.sh",
+      "status": "matched"
+    },
+    {
+      "manifest": "ops/tools/be01-transport-check/package.sha256",
+      "path": "ops/tools/be01-transport-check/dependency-regression.sh",
+      "status": "matched"
+    },
+    {
+      "consumer": "compose.yaml",
+      "path": "ops/supabase/db/99-roles.sql",
+      "status": "exists"
+    },
+    {
+      "consumer": "compose.yaml",
+      "path": "ops/supabase/db/99-jwt.sql",
+      "status": "exists"
+    },
+    {
+      "consumer": "compose.yaml",
+      "path": "ops/db/bootstrap.sql",
+      "status": "exists"
+    },
+    {
+      "consumer": "compose.yaml",
+      "path": "apps/server",
+      "status": "exists"
+    }
+  ],
+  "unresolved": [
+    {
+      "manifest": "ops/tools/be01-services-tools/package.sha256",
+      "path": "ops/tools/be01-services/package.sha256",
+      "status": "hash-divergence",
+      "expected_sha256": "3044a0e2df4daa6cf5372e1edd90c609f5ed9d91a2b874842e97710d09694787",
+      "observed_sha256": "ad4773807748c99d23c763f2a6203a4cde276c68cca09ea6f9f030380252235d"
+    }
+  ],
+  "lifecycle_limits": [
+    "scripts/dev seed and check name services absent from canonical compose.yaml; inherited source limitation, root schedules repair",
+    "Frozen be01-services-tools/package.sha256 expects older be01-services/package.sha256; exact original mismatch, no hash rewritten"
+  ]
+}

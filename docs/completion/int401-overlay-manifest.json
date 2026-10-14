@@ -2899,6 +2899,251 @@
       "path": "ops/tests/be01-services/storage.rb",
       "source": "Elevateo Mail - BE01 R1",
       "sha256": "e574fe0783062e318241b3dedb25128f498cc968d4e1f65a5f4a131c9c9a47fd"
+    },
+    {
+      "path": "compose.yaml",
+      "source": "Elevateo Mail - BE02 Codex",
+      "sha256": "3481affe11ee70aaefae2f65c7bc54aa250250f03207ae9dacf6517324d97d2a"
+    },
+    {
+      "path": "ops/tools/be01-services/config.jq",
+      "source": "Elevateo Mail - BE01 R1",
+      "sha256": "356289830fbc3bf2f6ed42f879b7bb797acbb8f10e0c0e82d29373009ed149d6"
+    },
+    {
+      "path": "ops/tools/be01-services/dependencies.sha256",
+      "source": "Elevateo Mail - BE01 R1",
+      "sha256": "b1a60a9948b4fc24288ce469a5852fb11eb321c008c6a4d821789d93622b4263"
+    },
+    {
+      "path": "ops/tools/be01-services/fixture-regression.sh",
+      "source": "Elevateo Mail - BE01 R1",
+      "sha256": "9b9ea89de332ed49a7779dc8dacdbca96ae93772cfa7fff1e01c6c6b0701811e"
+    },
+    {
+      "path": "ops/tools/be01-services/fixture.sh",
+      "source": "Elevateo Mail - BE01 R1",
+      "sha256": "f31145e5624935516c701e555ebc617feafe0f25918a2fd984f86fed684903fe"
+    },
+    {
+      "path": "ops/tools/be01-services/package.sha256",
+      "source": "Elevateo Mail - BE01 R1",
+      "sha256": "ad4773807748c99d23c763f2a6203a4cde276c68cca09ea6f9f030380252235d"
+    },
+    {
+      "path": "ops/tools/be01-services/phases.sh",
+      "source": "Elevateo Mail - BE01 R1",
+      "sha256": "8546a9ecbdc18cbf1718114b5d270a622bff1eb9d86643d80921b645c0f40a49"
+    },
+    {
+      "path": "ops/tools/be01-services/profile-regression.sh",
+      "source": "Elevateo Mail - BE01 R1",
+      "sha256": "a80ebee722656cdf1311a28ce4d6621c5332358bd336b63c2668caab8ba93889"
+    },
+    {
+      "path": "ops/tools/be01-services/profile.jq",
+      "source": "Elevateo Mail - BE01 R1",
+      "sha256": "d7e8a7d982b4e9bac6bbca3daf8f13494a8181a40d4d704dcd7a28fc93b9b633"
+    },
+    {
+      "path": "ops/tools/be01-services/readiness.rb",
+      "source": "Elevateo Mail - BE01 R1",
+      "sha256": "1f0f018774675e1f1b149fc80b30df0fdd3220807d231eb95638ef259f4d91d6"
+    },
+    {
+      "path": "ops/tools/be01-services/regression.sh",
+      "source": "Elevateo Mail - BE01 R1",
+      "sha256": "343056a493d31046ebc2111f4d5fde5ee63a46ffcc7ab0b71ad8fafee8b2fc47"
+    },
+    {
+      "path": "ops/tools/be01-services/run.sh",
+      "source": "Elevateo Mail - BE01 R1",
+      "sha256": "2bcb852f2e05abdbc29a3935ec2b9bff392968614ad3acf28f9665edd575389c"
+    },
+    {
+      "path": "ops/tools/be01-services/stack-regression.sh",
+      "source": "Elevateo Mail - BE01 R1",
+      "sha256": "e950575321eceb0e8effbfe80e14e6aa04917d016aaa5d01fa40b1305d6c6e4f"
+    },
+    {
+      "path": "ops/tools/be01-services/stack.sh",
+      "source": "Elevateo Mail - BE01 R1",
+      "sha256": "0c588a647154660bc230178ded87b0fa7c8c89e34284a09398ac97b32cf79733"
+    },
+    {
+      "path": "ops/tools/be01-services/volume.rb",
+      "source": "Elevateo Mail - BE01 R1",
+      "sha256": "1c9e6f6a7aeb8cedace643d9c3798bd36d6fb623bff58e2ce6876becee8d54fa"
+    },
+    {
+      "path": "ops/tools/be01-services/volumes.sh",
+      "source": "Elevateo Mail - BE01 R1",
+      "sha256": "e4672baae00205f056f5b866c7fc022df7549bef622c98eff4d02ec97be68cc9"
+    },
+    {
+      "path": "ops/tools/be01-services-app/dispatch.sh",
+      "source": "Elevateo Mail - BE01 R1",
+      "sha256": "5d159340df518eaf4dcaf7c67d76728befb18b6e34f5761dee1bc124f777541c"
+    },
+    {
+      "path": "ops/tools/be01-services-app/package.sha256",
+      "source": "Elevateo Mail - BE01 R1",
+      "sha256": "e00f1937002e6efef78b3a7dd1e733f351955377e95fe43fdbddc1036c3245ef"
+    },
+    {
+      "path": "ops/tools/be01-services-app/parent-run.sh",
+      "source": "Elevateo Mail - BE01 R1",
+      "sha256": "643bfe925f232263dc1619352f5fc5326bb86d01544856325fad493221199434"
+    },
+    {
+      "path": "ops/tools/be01-services-app/regression.sh",
+      "source": "Elevateo Mail - BE01 R1",
+      "sha256": "bdab4ccb62c24b4433d4d05c2f1b901155f4e8f4c6dcd47d88d6b42aca55518f"
+    },
+    {
+      "path": "ops/tools/be01-services-app-check/checks.sh",
+      "source": "Elevateo Mail - BE01 R1",
+      "sha256": "170a6d29ff559958baa8ced9cdd0ae878a8331744bc49ce1464fe461c1e60467"
+    },
+    {
+      "path": "ops/tools/be01-services-app-check/package.sha256",
+      "source": "Elevateo Mail - BE01 R1",
+      "sha256": "cbc1fe83f8611d66a2c85fb7857550a0527498d48aba26c2706f75c320ab4b63"
+    },
+    {
+      "path": "ops/tools/be01-services-app-check/parent-run.sh",
+      "source": "Elevateo Mail - BE01 R1",
+      "sha256": "1a12dd0feb2271b937cd0c2af305603a5a41603d59c8a5de51fa968dc444bae8"
+    },
+    {
+      "path": "ops/tools/be01-services-app-check/regression.sh",
+      "source": "Elevateo Mail - BE01 R1",
+      "sha256": "42aac7690a105cef719f7b0d9a30edf0b5003889d635bb918db27c8927778f44"
+    },
+    {
+      "path": "ops/tools/be01-services-tools/checks.sh",
+      "source": "Elevateo Mail - BE01 R1",
+      "sha256": "a59e5155bc9e54f171d331b3e995094ab5de216dd595b0da650572016531b77d"
+    },
+    {
+      "path": "ops/tools/be01-services-tools/Dockerfile",
+      "source": "Elevateo Mail - BE01 R1",
+      "sha256": "cfb5ebe7a254355d7e6b15b4ba99fde488cca43b72f9dc75a4e9c6617e919917"
+    },
+    {
+      "path": "ops/tools/be01-services-tools/package.sha256",
+      "source": "Elevateo Mail - BE01 R1",
+      "sha256": "844af34c43800bb45fe65fb23299e1c7a36083b923c60d735d1cc2883ec07e0f"
+    },
+    {
+      "path": "ops/tools/be01-services-tools/parent-run.sh",
+      "source": "Elevateo Mail - BE01 R1",
+      "sha256": "81fb601ba983b49b1c8f7dfbca4dcf18bec088ad84e4ad7ba7fcb307b3ab1962"
+    },
+    {
+      "path": "ops/tools/be01-services-tools/preflight.sh",
+      "source": "Elevateo Mail - BE01 R1",
+      "sha256": "5648c30b8793a4eb6704eb10a34ce047c205126f0b6ffa1939c4c8ca3ebb99fd"
+    },
+    {
+      "path": "ops/tools/be01-services-tools/run-container.sh",
+      "source": "Elevateo Mail - BE01 R1",
+      "sha256": "34c6ecf015a80c5fd5928d0d676439b820ed8b017e4fd7cc2da5ed04010667e9"
+    },
+    {
+      "path": "ops/tools/be01-services-volume-check/checks.sh",
+      "source": "Elevateo Mail - BE01 R1",
+      "sha256": "d51f8fbe765c077f804dfe1334d33df3316571d14ab1d098325719707d72f050"
+    },
+    {
+      "path": "ops/tools/be01-services-volume-check/package.sha256",
+      "source": "Elevateo Mail - BE01 R1",
+      "sha256": "af243965b395e7defd021b9f249958ab77b01e881bc2bae30811b63928ca99ad"
+    },
+    {
+      "path": "ops/tools/be01-services-volume-check/parent-run.sh",
+      "source": "Elevateo Mail - BE01 R1",
+      "sha256": "f2499630b41ddbbfcabe018bc6e00740cbcef20e36cdc3aad4d2cc40a10076c2"
+    },
+    {
+      "path": "ops/tools/be01-transport-check/checks.sh",
+      "source": "Elevateo Mail - BE01 R1",
+      "sha256": "00c811dfa412def32f2fbbc197bffdb51fdc4fabee4c5fa5ee21b6c27c24f960"
+    },
+    {
+      "path": "ops/tools/be01-transport-check/dependency-regression.sh",
+      "source": "Elevateo Mail - BE01 R1",
+      "sha256": "9d99e7a1b5baa8687ce26454427d2661cefd6b85fc5ed4c64afc78e2de8bf994"
+    },
+    {
+      "path": "ops/tools/be01-transport-check/package.sha256",
+      "source": "Elevateo Mail - BE01 R1",
+      "sha256": "8a9613df9d49c86a4f05748a75365a51b0cac7d60e406d30efb2598103fb40a7"
+    },
+    {
+      "path": "ops/tools/be01-transport-check/parent-run.sh",
+      "source": "Elevateo Mail - BE01 R1",
+      "sha256": "1161916e152384f06276a6518a4bc73afda15c7e72072dcc692cea3282481ae4"
+    },
+    {
+      "path": "ops/tools/be01-transport-check/run-container.sh",
+      "source": "Elevateo Mail - BE01 R1",
+      "sha256": "5baa05479c1f2a60e7a94ac33aab333ade38d832a78dda086e0cc97d3ffff6d1"
+    },
+    {
+      "path": "docs/perf-01/backend-contracts.md",
+      "source": "Elevateo Mail - Backend Performance",
+      "sha256": "501df9f9e4b6f9756208c30d1bcee16e0c88d822d5d470eb5de7191d9923f7fc"
+    },
+    {
+      "path": "docs/perf-01/benchmark-runner.md",
+      "source": "Elevateo Mail - Backend Performance",
+      "sha256": "48d52a636599015a9ede46105be488c5ad3b53b9a3b72cf90213bccd74493014"
+    },
+    {
+      "path": "docs/perf-01/cleanup-repair-packet.md",
+      "source": "Elevateo Mail - Backend Performance",
+      "sha256": "80d4e74c203d3ef9eb40774dbdbca16c3a47d3f3b2f493d04a011370f65eadff"
+    },
+    {
+      "path": "docs/perf-01/database-path.md",
+      "source": "Elevateo Mail - Backend Performance",
+      "sha256": "5248f4fa634c3b07101d58816073aae1d089b271975da3487d1812721dc711fd"
+    },
+    {
+      "path": "docs/perf-01/design-adversary.md",
+      "source": "Elevateo Mail - Backend Performance",
+      "sha256": "e94c3e8b0198c9abc68c2f577a71122c2e8219bd9c09b257577e6df2d1283292"
+    },
+    {
+      "path": "docs/perf-01/README.md",
+      "source": "Elevateo Mail - Backend Performance",
+      "sha256": "be428c71e089dccd18578dd92ee9eb4344a8ed33626377d6c4d9f228e0c36189"
+    },
+    {
+      "path": "docs/perf-01/request-path.md",
+      "source": "Elevateo Mail - Backend Performance",
+      "sha256": "3ebb6bbc1c83bd114e0fda42ce3813920fed994bb1e7d1f71d9dd25ef6d4fd34"
+    },
+    {
+      "path": "docs/perf-01/worker-path.md",
+      "source": "Elevateo Mail - Backend Performance",
+      "sha256": "ce44cfad81aa00350aab6e650b02c4037d37f9a2ad7aa7a262675d361f3aa8af"
+    },
+    {
+      "path": "docs/evidence/scripts/be-01-r1-fleet02-resources.sh",
+      "source": "Elevateo Mail - BE01 R1",
+      "sha256": "86681089c789e3b636f518508e8c6cf496d332f69bd69e5696bbc1dd4302aa4d"
+    },
+    {
+      "path": "docs/evidence/scripts/be01-capability-volume-transport.sh",
+      "source": "Elevateo Mail - BE01 R1",
+      "sha256": "44bbb5de36b813a5f68b68d894fc50e2ec400fe1271e9143aad5ceccec93b1a7"
+    },
+    {
+      "path": "docs/evidence/scripts/be01-capability-volume-transport-regression.sh",
+      "source": "Elevateo Mail - BE01 R1",
+      "sha256": "bab36a6ae50b7c9ce9665c051e88141206e302cf9205ef968667e224e6f962fc"
     }
   ],
   "contracts": {
