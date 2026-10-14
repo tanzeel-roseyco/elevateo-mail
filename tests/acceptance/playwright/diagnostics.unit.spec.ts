@@ -203,3 +203,16 @@ test('settled reader source accepts its final line and rejects coordinates past 
   assert.equal(frameworkDiagnostic(stackAt(reader, 97), 'synthetic-private').source?.line, 97);
   assert.equal(frameworkDiagnostic(stackAt(reader, 98), 'synthetic-private').source, null);
 });
+
+test('supplemental feature and screenshot failures expose only reviewed bounded coordinates', () => {
+  for (const [name, lastLine] of [
+    ['qa816-assignee-ui.e2e.ts', 79], ['qa816-attachment-ui.e2e.ts', 97],
+    ['qa816-feature-wave.e2e.ts', 46], ['screenshots.ts', 83],
+  ] as const) {
+    const file = fileURLToPath(new URL(`../../playwright/${name}`, import.meta.url));
+    const accepted = frameworkDiagnostic(stackAt(file, lastLine), 'synthetic-private');
+    assert.deepEqual(accepted.source, { file: name, line: lastLine, column: 7 });
+    assert.equal(JSON.stringify(accepted).includes('synthetic-private'), false);
+    assert.equal(frameworkDiagnostic(stackAt(file, lastLine + 1), 'synthetic-private').source, null);
+  }
+});

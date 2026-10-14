@@ -107,3 +107,20 @@ test('empty member screenshot is permitted and included in later writer budget',
     await assert.rejects(access(join(privateDir, `${first}.png`)));
   });
 });
+
+// AIDEV-NOTE: New feature evidence must share the old budget and exclusive-write/privacy rules.
+test('reply, directory and attachment evidence shares one durable byte ledger', async () => {
+  await fixture(async (directory, privateDir) => {
+    for (const id of ['QA816-REPLY-P-top-persisted', 'QA816-REPLY-F1-missing-selected',
+      'QA816-DIR-P-picker-390', 'QA816-DIR-P-assigned-390',
+      'QA816-DIR-F1-loading-390', 'QA816-DIR-F1-error-390',
+      'QA816-ATT-P-list-390', 'QA816-ATT-P-downloaded-390',
+      'QA816-ATT-F1-loading-390', 'QA816-ATT-F1-error-390']) {
+      await persistScreenshot(directory, id, Buffer.alloc(1), 10);
+      assert.equal((await stat(join(privateDir, `${id}.png`))).mode & 0o777, 0o600);
+    }
+    await assert.rejects(persistScreenshot(directory, first, Buffer.alloc(1), 10), /Screenshot budget exceeded/);
+    await assert.rejects(access(join(privateDir, `${first}.png`)));
+    await assert.rejects(access(join(privateDir, '.screenshots.lock')));
+  });
+});
