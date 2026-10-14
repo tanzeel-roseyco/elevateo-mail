@@ -1323,3 +1323,5 @@ DIR903 Sabine exact `9644bba5` and DIR904 Theo exact `77007498` source/test cand
 DIR905 Cassian optional feature port adds only the exact V2 assignee read signature and shared capability field; source reviewed LOC/defects/KLOC unclaimed pending independent inspection. No UI or runtime activation follows the declaration.
 
 Sabine DIR903 final `bd1969ae` adds a real foreign organization/mailbox fixture; Theo DIR904 final `1edd3b3c` updates fake HTTP connection yield and scope documentation. These are source/test candidates, not independent review or runtime PASS. Sabine owner packet totals 272 unique LOC in bounded reads; actual independently reviewed LOC/defects/KLOC pending.
+
+DIR905 Lyra exact `7380436b` AssignmentPanel/AssigneePicker/tests are imported as source candidate only. Owner packet and independent source/design review plus fleet TypeScript/unit/browser evidence remain pending; reviewed LOC/defects/KLOC unclaimed. The route and main injection remain inactive.

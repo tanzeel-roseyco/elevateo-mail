@@ -503,3 +503,5 @@ The additive mailbox assignee options source is `apps/server/db/directory/assign
 `AssigneeOptionsReadPort` is exported by the V2 client adapter and available as an optional `FeatureGateways.assigneeOptions` capability for the AssignmentPanel child. The app entry does not inject it until server activation and fleet verification.
 
 Final DIR903/904 owner follow-ups strengthen the cross-organization DB witness and fake HTTP harness without changing the protected SQL or controller source. Soren fleet role/migration/HTTP checks remain required.
+
+`AssigneePicker.tsx` is the opt-in child of AssignmentPanel, consuming `FeatureGateways.assigneeOptions` when present. It displays eligible Auth UUIDs only, invalidates late session/mailbox results, and leaves the V1 revisioned assignment write authoritative. Port injection and fleet UI proof remain pending.

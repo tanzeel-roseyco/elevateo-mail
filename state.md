@@ -441,3 +441,5 @@ Sabine DIR903 migration 00019 and Theo DIR904 mailbox assignee-options controlle
 DIR905 shared feature gateway declares an optional assignee-options read port with production injection still absent. Lyra's picker and runtime proof remain pending.
 
 Sabine DIR903 and Theo DIR904 test-only follow-ups are imported after their source candidates; protected SQL and controller runtime remain unverified on this integrated feature SHA.
+
+Lyra DIR905 picker source/tests are imported behind the optional V2 assignee port. It is not injected in production and has no latest-SHA browser/type/test PASS; manual UUID entry is removed per the current feature directive.
