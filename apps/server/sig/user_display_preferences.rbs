@@ -1,0 +1,14 @@
+module V2
+  module Admin
+    class UserDisplayPreferencesController < V1::WriteController
+      READ_SQL: String
+      WRITE_SQL: String
+      def show: () -> void
+      def update: () -> void
+      def self.input: (Hash[String, untyped]) -> [String?, Integer]
+      def self.projection: (Hash[String, untyped]) -> [String?, Integer]
+      private
+      def sql_result: (untyped, String, String, Array[untyped]) -> Hash[String, untyped]
+    end
+  end
+end

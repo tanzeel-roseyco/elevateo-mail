@@ -4,6 +4,8 @@ Integrated database evidence at Cassian 45be80b exposed a legacy draft down/reap
 
 ADV052 repair removes a false PASS path in the default-privilege probe; integrated runtime and separate BE02-only down/reapply remain unverified.
 
+PREF-822 source candidate adds display-name-only per-user preferences with optimistic revision, current session/organization authority and no credential fields. Cassian V2 route/DTO, Lyra UI adaptation and Soren fleet database/HTTP evidence are pending; frozen core candidate unchanged.
+
 # Project state
 
 Application IN PROGRESS — R24 isolated BE03 candidate (2026-10-14). Root authorizes implementation on baseline `03ae770c56271cd8236726bfd8fe63248e81283d` in parallel with BE02 acceptance. BE02 remains OPEN/unaccepted; integration/release gated. S1+S2 priority: saved draft -> consistent review -> human approval -> durable queued intent. Canonical additive `contracts/v1/openapi.json` version `1.0.0-send.1` is prepared; every baseline C/D operation/component and original fixture is preserved.

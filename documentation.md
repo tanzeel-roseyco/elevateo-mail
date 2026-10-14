@@ -1,4 +1,4 @@
-ADM-803 provisional administration roster: docs/completion/theo.md. Configuration identities are unbound and grant no effective access; candidate guarded V2 grants/roster and redacted role-audit controllers need Sabine/Cassian integration and fleet runtime evidence. Integrated legacy draft migration probes assert protected FK dependency failures separately from the default-privilege assertion; full reapply must run on a disposable BE02-only database.
+ADM-803 provisional administration roster and PREF-822 display-name preference candidate: docs/completion/theo.md. Configuration identities are unbound and grant no effective access; candidate guarded V2 grants/roster, role audit and per-user preference controllers need Cassian route/DTO integration and fleet runtime evidence. Integrated legacy draft migration probes assert protected FK dependency failures separately from the default-privilege assertion; full reapply must run on a disposable BE02-only database.
 
 # Product requirements and decision record
 

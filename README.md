@@ -20,6 +20,8 @@ The integrated legacy draft bootstrap probe now checks BE03's protective send-in
 
 ADV052 split the integrated send-dependency check from the default-privilege assertion, which now runs against a transactionally renamed schema. Fleet verification remains pending.
 
+PREF-822 source now proposes per-user display-name persistence under the existing authenticated context in additive V2; Cassian owns the separate route/DTO draft, and Soren owns fleet Docker verification. The frozen core candidate is unaffected.
+
 
 ### R25 approval reload recovery candidate
 
