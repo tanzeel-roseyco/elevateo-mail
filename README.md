@@ -210,3 +210,5 @@ QA816 now requests six additional real API-backed branded shell screenshots at 3
 QA816 logout acceptance now waits for a real populated V2 grants response and rendered grant marker before verifying post-logout cache clearing. Independent repair review and fleet browser evidence remain pending.
 
 QA816 FE806 browser candidate adds keyboard permalink/reload, missing-message V2 404, and transport-loss/retry checks. Later-page direct-message success needs a new disposable multi-message acceptance seed; fleet browser tests and actual screenshots remain pending.
+
+QA816 exact e3ac16b fleet acceptance typecheck/build and 73/73 harness unit cases passed under Soren; browser/API cases and candidate screenshots remain pending. The separate seeded-simulated visual run is requested and must not be counted as real-auth acceptance.

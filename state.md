@@ -152,3 +152,5 @@ QA816 head fa34ea3 adds SCN-QA-822-P (390/768/1440 light/dark) and expands fixed
 QA816 head 487f422 repairs Ada ADV050's People heading-only logout oracle: real nonempty V2 grants GET and exact rendered marker are required before logout, then marker disappearance on protected deep links. Source-only; current browser/screenshots remain NOT_RUN.
 
 QA816 FE806 message candidate adds three unrun supplemental browser cases and three screenshot IDs (21 cases/37 IDs total). The existing one-message seed cannot prove a later-page direct GET; Cassian was asked for a multi-message seed. No fleet browser or pixel PASS is claimed.
+
+QA816 e3ac16b fleet Node acceptance source check PASS: npm ci/typecheck/build/unit exit0, 73/73 cases and task cleanup confirmed by Soren's tessa-compile-e3ac16b9ebc9 receipt. Current real-auth browser scenarios and all 37 candidate screenshots remain NOT_RUN; an eight-image f210b5bf synthetic visual slice is requested separately.

@@ -220,3 +220,5 @@ QA816 six-partition visual case waits for real mailbox GET200 and seeded thread 
 QA816 V2 logout cache case now binds its prelogout claim to a real grants GET 200 and one concrete rendered UUID grant item, then checks that item is absent after logout. The marker stays in test memory and is not exported as evidence. Runtime and review closure remain pending.
 
 QA816 FE806 permalink checks use Mira's `?message=<uuid>` route and Cassian's protected V2 direct GET. The same-page keyboard/reload, absent 404 and transport-retry cases are source candidates only; a later-page success scenario requires a new disposable multi-message seed and actual Soren fleet execution.
+
+QA816 exact e3ac16b acceptance compilation and 73/73 unit cases passed in Soren's fleet Node Docker with task cleanup. The result does not verify browser execution, authenticated API, logout or pixels. A separate eight-image f210b5bf desktop/390 inbox/thread light/dark capture is queued as SEEDED-SIMULATED visual evidence only.
