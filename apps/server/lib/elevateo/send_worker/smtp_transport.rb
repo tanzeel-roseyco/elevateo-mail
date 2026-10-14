@@ -64,14 +64,14 @@ module Elevateo
         rescue StandardError
           raise PreflightFailed, "SMTP test client configuration failed", cause: nil
         end
-        response = nil
+        response_status = ""
         submission_started = false
         begin
           Timeout.timeout(deadline.remaining, CallDeadline::Expired) do
             smtp.start("localhost") do |session|
               deadline.check!
               submission_started = true
-              response = session.send_message(rendered.mime, rendered.sender, *rendered.recipients)
+              response_status = session.send_message(rendered.mime, rendered.sender, *rendered.recipients).status
             end
           end
         rescue StandardError
@@ -79,8 +79,8 @@ module Elevateo
           return SubmissionResult.new(kind: "unknown", code: "smtp_uncertain")
         end
         return SubmissionResult.new(kind: "unknown", code: "smtp_uncertain") if deadline.remaining <= 0
-        return SubmissionResult.new(kind: "unknown", code: "smtp_uncertain") unless response&.status&.start_with?("2")
-        receipt = "mailpit-test-v1:#{Digest::SHA256.hexdigest([rendered.mime, response.status].join(':'))}"
+        return SubmissionResult.new(kind: "unknown", code: "smtp_uncertain") unless response_status.start_with?("2")
+        receipt = "mailpit-test-v1:#{Digest::SHA256.hexdigest([rendered.mime, response_status].join(':'))}"
         SubmissionResult.new(kind: "accepted", receipt_ref: receipt)
       end
     end

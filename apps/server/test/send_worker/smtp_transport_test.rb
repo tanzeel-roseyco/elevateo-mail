@@ -66,7 +66,7 @@ class SendWorkerSmtpTransportTest < Minitest::Test
   def test_invalid_snapshot_rejects_before_client_and_remote_profile_stays_held
     calls = 0
     client = Object.new
-    client.define_singleton_method(:deliver) { |_mail, deadline:| calls += 1 }
+    client.define_singleton_method(:deliver) { |_mail, deadline:| deadline.check!; calls += 1 }
     transport = Elevateo::SendWorker::SmtpTransport.new(profile: profile, client: client)
     fields = JSON.parse(snapshot)
     fields[7] = "Injected\r\nBcc: bad@example.invalid"

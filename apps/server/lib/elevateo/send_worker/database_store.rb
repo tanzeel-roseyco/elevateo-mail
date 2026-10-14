@@ -116,14 +116,17 @@ module Elevateo
       end
 
       def reconcile(claim:, observation:)
+        attempt_id = claim.attempt_id
+        raise InvalidResult, "reconciliation attempt missing" unless attempt_id.is_a?(String) &&
+          Control.valid_epoch?(attempt_id)
         unless observation
           value = call("SELECT app_send_private.reconcile_no_evidence($1::uuid,$2::uuid,$3::bigint,$4::uuid)",
-            [claim.send_id, claim.lease_id, claim.generation, claim.attempt_id])
+            [claim.send_id, claim.lease_id, claim.generation, attempt_id])
           require_fields(value, %w[state simulated])
           raise InvalidResult unless value["simulated"] == true
           return value
         end
-        record_observation(claim: claim, attempt_id: claim.attempt_id,
+        record_observation(claim: claim, attempt_id: attempt_id,
           snapshot_digest: claim.snapshot_digest, result: observation)
       end
 
