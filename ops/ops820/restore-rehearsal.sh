@@ -67,7 +67,21 @@ compose exec -T db psql -U supabase_admin -d postgres -At -v ON_ERROR_STOP=1 \
   -c "DO \$\$ BEGIN IF (SELECT count(*) FROM public.ops402_backup_marker WHERE value='paired-backup-marker') <> 1 OR (SELECT count(*) FROM public.ops402_backup_marker) <> 1 OR NOT pg_has_role('ops402_backup_member','ops402_backup_role','MEMBER') THEN RAISE EXCEPTION 'restore marker mismatch'; END IF; END \$\$;"
 echo 'PASS database restore marker'
 compose exec -T db psql -U supabase_admin -d postgres -v ON_ERROR_STOP=1 < "$packet/post_restore.sql"
-echo 'PASS catalog privilege and FORCE RLS smoke'
+compose exec -T db psql -U supabase_admin -d postgres -X -q -v ON_ERROR_STOP=1 \
+  < "$packet/role_reachability.sql" >/dev/null
+set +e
+negative_output=$(cat "$packet/role_negative_prefix.sql" "$packet/role_reachability.sql" |
+  compose exec -T db psql -U supabase_admin -d postgres -X -q -v ON_ERROR_STOP=1 2>&1)
+negative_exit=$?
+set -e
+if (( negative_exit == 0 )) || [[ "$negative_output" != *'role reachability drift: unexpected SET path'* ]]; then
+  echo "role negative fixture failed expected oracle; exit=$negative_exit" >&2
+  exit 1
+fi
+absent=$(compose exec -T db psql -U supabase_admin -d postgres -X -At -v ON_ERROR_STOP=1 \
+  -c "SELECT count(*) FROM pg_roles WHERE rolname='ops820_probe_bridge'")
+[[ "$absent" == 0 ]] || { echo 'role negative fixture did not roll back' >&2; exit 1; }
+echo "PASS catalog/RLS/role reachability; negative_fixture_exit=$negative_exit cleanup=0"
 docker run --rm --network "${project}_private" --read-only --cap-drop ALL --memory 128m \
   --env-file "$envfile" -v "$base/drill-object.py:/drill.py:ro" --entrypoint python3 \
   sha256:f040863673aea2570c3ff6a5c3fb4c673a016cbc5375005ad145915922b6b78a /drill.py verify
