@@ -228,7 +228,21 @@
             "description": "Missing or inaccessible mailbox, message or attachment"
           },
           "423": {
-            "description": "Current authorized attachment is held pending a clean verdict"
+            "description": "Current authorized attachment is held pending a clean verdict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": ["code", "message", "request_id"],
+                  "properties": {
+                    "code": { "type": "string", "const": "attachment_held" },
+                    "message": { "type": "string", "maxLength": 256 },
+                    "request_id": { "type": "string", "minLength": 1, "maxLength": 128 }
+                  }
+                }
+              }
+            }
           },
           "503": {
             "description": "Private gateway or storage unavailable; no bytes released"

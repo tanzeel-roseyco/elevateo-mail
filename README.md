@@ -486,3 +486,5 @@ ATT898 Nadia repository/test import repair is integrated for the exact QA815 att
 APP901 directory work has an inactive V2 mailbox assignee-options proposal and strict browser read adapter for real eligible Auth UUIDs only. No staff-reference email/UUID mapping or enrollment exists; backend authority, controller, canonical route and fleet checks are pending.
 
 Canonical V2 draft.8 specifies disabled mailbox assignee options and private inbound attachment list/content endpoints. Theo/Sabine/Nadia owner code, generated declarations and Soren fleet security/HTTP checks are pending; production route registration and attachment UI injection remain off.
+
+ATT902 candidate adds a fixed V2 `attachment_held` 423 error for an authorized unclean attachment, while inaccessible/foreign content remains 404. The byte route is still inactive; no download or live mail is enabled.

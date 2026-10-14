@@ -429,3 +429,5 @@ Nadia ATT898 exact `4557fd73` narrows attachment repository integer values to de
 APP901/DIR904 candidate adds only an inactive mailbox-scoped assignee UUID options proposal and typed browser adapter with three authored, unexecuted cases. Exact twelve roster references remain null/unbound; Sabine protected authority and Theo controller are prerequisites to activation.
 
 V2 draft.8 adds disabled assignee-options and inbound attachment read contracts. The generated V2 declaration still reflects prior draft until Soren fleet codegen, and owner SQL/controller/private byte gates are pending. No route activation or attachment UI injection follows this source-only contract change.
+
+ATT902 internal fixed error vocabulary now includes authorized `attachment_held` 423 for the disabled V2 private content contract, with three authored/unexecuted boundary cases. Frozen V1 OpenAPI error schemas are unchanged; Nadia byte implementation and fleet checks remain pending.

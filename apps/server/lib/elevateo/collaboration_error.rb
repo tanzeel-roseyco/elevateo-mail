@@ -14,6 +14,7 @@ module Elevateo
       "draft_consumed" => [409, "Draft has already been consumed"],
       "assignment_conflict" => [409, "Assignment has changed"],
       "membership_conflict" => [409, "Membership has changed"],
+      "attachment_held" => [423, "Attachment is not available yet"],
       "rate_limited" => [429, "Too many requests"],
       "temporarily_unavailable" => [503, "Temporarily unavailable"], "internal_error" => [500, "Internal error"]
       }
