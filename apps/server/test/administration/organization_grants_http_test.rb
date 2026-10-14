@@ -39,8 +39,9 @@ class OrganizationGrantsHttpTest < Minitest::Test
   def setup
     @service, @store, @client, @cookie = harness
     @connection = Connection.new(metadata)
-    @connection.page_result = { "status" => "ok", "items" => [
-      { "user_id" => TARGET, "role" => "admin", "revision" => 2 }], "next_after_user" => nil }
+    @connection.page_result = { "status" => "ok", "actor" =>
+      { "user_id" => USER, "role" => "owner", "revision" => 3 }, "items" => [
+      { "user_id" => TARGET, "role" => "admin", "revision" => 2 }], "next_user_id" => nil }
     @connection.role_result = { "status" => "ok", "metadata" => metadata,
       "revision" => 1, "role" => "admin" }
   end
@@ -49,6 +50,8 @@ class OrganizationGrantsHttpTest < Minitest::Test
     status, headers, body = dispatch(action: "index", method: "GET", query: "limit=1")
     assert_equal 200, status
     assert_equal "no-store", headers.fetch("cache-control")
+    assert_equal({ "organization_id" => ORG, "user_id" => USER,
+      "role" => "organization_owner", "revision" => 3 }, body.fetch("actor"))
     assert_equal [{ "organization_id" => ORG, "user_id" => TARGET,
       "role" => "organization_admin", "revision" => 2 }], body.fetch("items")
     refute body.key?("email")
@@ -70,16 +73,18 @@ class OrganizationGrantsHttpTest < Minitest::Test
   end
 
   def test_get_cursor_pages_and_rejects_malformed_authority_rows
-    @connection.page_result["next_after_user"] = TARGET
+    @connection.page_result["next_user_id"] = TARGET
     status, _headers, first = dispatch(action: "index", method: "GET", query: "limit=1")
     assert_equal 200, status
-    @connection.page_result = { "status" => "ok", "items" => [], "next_after_user" => nil }
+    @connection.page_result = { "status" => "ok", "actor" =>
+      { "user_id" => USER, "role" => "owner", "revision" => 3 }, "items" => [], "next_user_id" => nil }
     status, _headers, second = dispatch(action: "index", method: "GET",
       query: "limit=1&cursor=#{first.fetch("next_cursor")}")
     assert_equal 200, status
     assert_equal [], second.fetch("items")
-    @connection.page_result = { "status" => "ok", "items" => [
-      { "user_id" => TARGET, "role" => "unexpected", "revision" => 2 }], "next_after_user" => nil }
+    @connection.page_result = { "status" => "ok", "actor" =>
+      { "user_id" => USER, "role" => "owner", "revision" => 3 }, "items" => [
+      { "user_id" => TARGET, "role" => "unexpected", "revision" => 2 }], "next_user_id" => nil }
     status, _headers, body = dispatch(action: "index", method: "GET")
     assert_equal 500, status
     assert_equal "internal_error", body.fetch("code")
