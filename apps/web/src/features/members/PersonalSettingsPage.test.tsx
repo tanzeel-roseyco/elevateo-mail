@@ -1,28 +1,41 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { GatewayError } from '@/data/errors'
+import { RequestScope } from '@/app/scope'
 import { PersonalSettingsPage } from './PersonalSettingsPage'
 
-const { read, update, request, sessionState } = vi.hoisted(() => ({
-  read: vi.fn(), update: vi.fn(),
+const { read, update, sessionState, readContext } = vi.hoisted(() => ({
+  read: vi.fn<(...args: [unknown, AbortSignal]) => Promise<unknown>>(),
+  update: vi.fn<(...args: [unknown, unknown, unknown, AbortSignal]) => Promise<unknown>>(),
+  readContext: { current: { contextId: 'ctx-1', authorizationVersion: 'v1' } },
   sessionState: { current: { status: 'ready', session: {
     actor: { id: 'user-1', display_name: 'Original' },
-    organization: { id: 'org-1' }, context_id: 'ctx-1', authorization_version: 'v1',
+    organization: { id: 'org-1' }, context_id: 'ctx-1', authorization_version: 'v1', csrf_token: 'csrf',
   } } },
-  request: vi.fn(async (work: (ctx: { contextId: string; authorizationVersion: string }, signal: AbortSignal) => Promise<unknown>) => {
-    try { return { kind: 'ok' as const, value: await work({ contextId: 'ctx-1', authorizationVersion: 'v1' }, new AbortController().signal) } }
-    catch (error) { return { kind: 'failed' as const, error } }
-  }),
 }))
+const scope = new RequestScope()
+const handleError = () => false
 vi.mock('@/data/v2Gateway', () => ({ createV2Gateway: () => ({ getUserDisplayPreference: read, updateUserDisplayPreference: update }) }))
-vi.mock('@/app/protectedRequest', () => ({ useProtectedRequest: () => ({ request, proof: { csrfToken: 'csrf' } }) }))
-vi.mock('@/app/session', () => ({ useSession: () => ({ state: sessionState.current }) }))
+vi.mock('@/app/session', () => ({ useSession: () => ({
+  state: sessionState.current,
+  scope,
+  context: readContext.current,
+  handleError,
+}) }))
+
+function deferred<T>() {
+  let resolve!: (value: T) => void
+  const promise = new Promise<T>((done) => { resolve = done })
+  return { promise, resolve }
+}
 
 beforeEach(() => {
   vi.clearAllMocks()
+  scope.invalidate()
+  readContext.current = { contextId: 'ctx-1', authorizationVersion: 'v1' }
   sessionState.current = { status: 'ready', session: {
     actor: { id: 'user-1', display_name: 'Original' },
-    organization: { id: 'org-1' }, context_id: 'ctx-1', authorization_version: 'v1',
+    organization: { id: 'org-1' }, context_id: 'ctx-1', authorization_version: 'v1', csrf_token: 'csrf',
   } }
   read.mockResolvedValue({ context_id: 'ctx-1', authorization_version: 'v1', display_name: 'Ada', revision: 2 })
   update.mockResolvedValue({ display_name: 'Grace', revision: 3 })
@@ -74,16 +87,59 @@ describe('personal settings', () => {
     expect(update).toHaveBeenCalledTimes(1)
   })
 
-  it('does not replay a prior actor value after context changes', async () => {
-    const page = render(<PersonalSettingsPage />)
-    await screen.findByDisplayValue('Ada')
+  it('aborts a pending old read and ignores its late reply after the new actor loads', async () => {
+    const oldRead = deferred<{ context_id: string; authorization_version: string; display_name: string; revision: number }>()
+    read.mockReset()
+      .mockImplementationOnce(() => oldRead.promise)
+      .mockResolvedValueOnce({ context_id: 'ctx-2', authorization_version: 'v2', display_name: 'Second', revision: 9 })
+    const page = render(<PersonalSettingsPage key="user-1" />)
+    expect(read).toHaveBeenCalledTimes(1)
+    const oldSignal = read.mock.calls[0]?.[1]
+    if (!oldSignal) throw new Error('Old read did not receive an abort signal')
+    expect(oldSignal.aborted).toBe(false)
+
+    scope.invalidate()
     sessionState.current = { status: 'ready', session: {
       actor: { id: 'user-2', display_name: 'Second' },
-      organization: { id: 'org-1' }, context_id: 'ctx-2', authorization_version: 'v2',
+      organization: { id: 'org-1' }, context_id: 'ctx-2', authorization_version: 'v2', csrf_token: 'csrf',
     } }
-    read.mockImplementation(() => new Promise(() => {}))
-    page.rerender(<PersonalSettingsPage />)
-    expect(screen.queryByDisplayValue('Ada')).toBeNull()
-    expect(update).not.toHaveBeenCalled()
+    readContext.current = { contextId: 'ctx-2', authorizationVersion: 'v2' }
+    page.rerender(<PersonalSettingsPage key="user-2" />)
+    expect(oldSignal.aborted).toBe(true)
+    expect(await screen.findByDisplayValue('Second')).toBeTruthy()
+    await act(async () => { oldRead.resolve({ context_id: 'ctx-1', authorization_version: 'v1', display_name: 'Late old value', revision: 3 }); await oldRead.promise })
+    expect(screen.queryByDisplayValue('Late old value')).toBeNull()
+    expect(screen.getByDisplayValue('Second')).toBeTruthy()
+  })
+
+  it('aborts a pending old write and keeps the new actor revision after its late reply', async () => {
+    const oldWrite = deferred<{ display_name: string; revision: number }>()
+    update.mockReset().mockImplementationOnce(() => oldWrite.promise)
+      .mockResolvedValueOnce({ display_name: 'New save', revision: 10 })
+    const page = render(<PersonalSettingsPage key="user-1" />)
+    await screen.findByDisplayValue('Ada')
+    fireEvent.click(screen.getByText('Save display name'))
+    await waitFor(() => expect(update).toHaveBeenCalledTimes(1))
+    const oldSignal = update.mock.calls[0]?.[3]
+    if (!oldSignal) throw new Error('Old write did not receive an abort signal')
+    expect(oldSignal.aborted).toBe(false)
+
+    scope.invalidate()
+    sessionState.current = { status: 'ready', session: {
+      actor: { id: 'user-2', display_name: 'Second' },
+      organization: { id: 'org-1' }, context_id: 'ctx-2', authorization_version: 'v2', csrf_token: 'csrf',
+    } }
+    readContext.current = { contextId: 'ctx-2', authorizationVersion: 'v2' }
+    read.mockResolvedValue({ context_id: 'ctx-2', authorization_version: 'v2', display_name: 'Second', revision: 9 })
+    page.rerender(<PersonalSettingsPage key="user-2" />)
+    expect(oldSignal.aborted).toBe(true)
+    expect(await screen.findByDisplayValue('Second')).toBeTruthy()
+    await act(async () => { oldWrite.resolve({ display_name: 'Late old save', revision: 3 }); await oldWrite.promise })
+    expect(screen.queryByText('Display name saved.')).toBeNull()
+    expect(screen.queryByDisplayValue('Late old save')).toBeNull()
+    fireEvent.change(screen.getByLabelText('Display name'), { target: { value: 'New save' } })
+    fireEvent.click(screen.getByText('Save display name'))
+    await waitFor(() => expect(update).toHaveBeenCalledTimes(2))
+    expect(update.mock.calls[1]?.[0]).toEqual({ display_name: 'New save', expected_revision: 9 })
   })
 })

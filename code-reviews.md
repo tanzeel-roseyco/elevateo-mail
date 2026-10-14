@@ -1085,3 +1085,5 @@ MAC-814 sequence primitive: independent bounded functional and design reviews NO
 ### FE808 PREF822 author source check
 
 The authored personal-settings page and five-case fixture received an author-only source check for current-session scoping, deliberate errors, optimistic revision handling and unsupported-field exclusion. This is not an independent adversarial review; independent coverage, defects/KLOC and runtime verification remain pending. No application tests were run locally.
+
+Jules ADV089 independently reviewed 185 LOC at `a3e14f9` and reported one P2 test-proof defect (5.41/KLOC): a fresh, never-aborted signal and already-settled old read could not prove cancellation. Lyra replaced that fixture with the real protected-request hook and two pending-request regressions; repair source is unexecuted and awaits fleet Docker. Production UI had zero confirmed defects in this packet; no post-repair independent review is claimed.

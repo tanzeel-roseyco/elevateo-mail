@@ -74,6 +74,7 @@ Theo's ADM-803 core static repair narrows roster and signed-cursor types after t
 MAC-814 isolated sequence draft persistence candidate: migration 00016 and strict draft/held authoring source are prepared with atomic versioned replacement and inert occurrence history. No due send consumer, runtime PASS, or live mail authorization is claimed. SEC802 role grant review and fleet Docker checks are pending; see [Maeve candidate](docs/completion/maeve-sequence-persistence.md).
 
 FE808 Personal Settings source now loads and saves the current actor's versioned display name through a proposed V2 gateway seam. Theo's preference controller and Cassian's typed adapter are still in progress; this isolated UI is not integrated or fleet-tested. Timezone and other unsupported preferences remain unavailable. See [Lyra's checkpoint](docs/completion/lyra.md).
+The ADV089 cancellation test gap has an isolated source repair using the real protected-request hook with delayed old read/write replies; fleet execution remains pending.
 
 ### R25 approval reload recovery candidate
 
