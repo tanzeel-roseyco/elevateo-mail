@@ -19,7 +19,7 @@ module Elevateo
       ["Emil Larsen", "Junior Partner", "cybersecurity", "security_auditor"],
       ["Roy Neven", "Junior Partner", "sales", "sales_member"],
       ["Ben Pantis", "Associate", nil, "organization_member"],
-      ["Matthew", "Associate", nil, "organization_member"],
+      ["Matthew", "Associate; surname unresolved", nil, "organization_member"],
       ["Adria Pros", "Sales representative", "sales", "sales_member"]
     ].freeze
     UUID = /\A[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}\z/i
@@ -55,7 +55,9 @@ module Elevateo
       invalid! unless auth_user_id.is_a?(String) && UUID.match?(auth_user_id)
       invalid! unless existing_bindings.is_a?(Hash) && existing_bindings.keys.all? { |key| KEYS.include?(key) }
       invalid! unless existing_bindings.values.all? { |value| value.is_a?(String) && UUID.match?(value) }
-      invalid! if existing_bindings.values.map(&:downcase).include?(auth_user_id.downcase) || existing_bindings.key?(config_key)
+      bound_ids = existing_bindings.values.map(&:downcase)
+      invalid! unless bound_ids.uniq.length == bound_ids.length
+      invalid! if bound_ids.include?(auth_user_id.downcase) || existing_bindings.key?(config_key)
       { "key" => config_key, "auth_user_id" => auth_user_id.downcase }
     end
 

@@ -40,6 +40,13 @@ module V2
             raise Elevateo::CollaborationError.new("internal_error")
           end
           Elevateo::SessionStore.check!(result)
+          unless result.keys.sort == %w[actor items next_user_id status]
+            raise Elevateo::CollaborationError.new("internal_error")
+          end
+          actor = self.class.project_grants([result["actor"]], organization, 1).first
+          unless actor["user_id"] == identity.user_id && %w[organization_owner organization_admin].include?(actor["role"])
+            raise Elevateo::CollaborationError.new("internal_error")
+          end
           items = self.class.project_grants(result["items"], organization, limit)
           after = result["next_user_id"]
           if after && (items.empty? || after != items.last["user_id"])
@@ -48,7 +55,7 @@ module V2
           cursor = after && cursors.encode(position: { "user_id" => after }, scope: scope)
           JSON.generate({ "context_id" => session.fetch("context_id"),
             "authorization_version" => session.fetch("authorization_version"),
-            "items" => items, "next_cursor" => cursor })
+            "actor" => actor, "items" => items, "next_cursor" => cursor })
         end
       rescue Elevateo::Cursors::Invalid
         raise Elevateo::CollaborationError.new("cursor_invalid")
@@ -99,6 +106,13 @@ module V2
           result = Elevateo::ThreadProjection.source_json(result_row && result_row["result"], 4096)
           raise Elevateo::CollaborationError.new("internal_error") unless result.is_a?(Hash)
           Elevateo::SessionStore.check!(result)
+          unless result.keys.sort == %w[actor items next_user_id status]
+            raise Elevateo::CollaborationError.new("internal_error")
+          end
+          actor = self.class.project_grants([result["actor"]], organization, 1).first
+          unless actor["user_id"] == identity.user_id && %w[organization_owner organization_admin].include?(actor["role"])
+            raise Elevateo::CollaborationError.new("internal_error")
+          end
           cursors = Elevateo::Cursors.new(secret: read_config.cursor_signing_key)
           scope = page_scope(identity, session, limit, organization).merge("resource" => "organization_roster", "order" => "key:asc")
           position = query.key?("cursor") ? cursors.decode(query.fetch("cursor"), scope: scope) : nil

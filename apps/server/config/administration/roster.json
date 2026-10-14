@@ -12,7 +12,7 @@
     {"key":"elev-person-008","display_name":"Emil Larsen","title":"Junior Partner","department":"cybersecurity","email":null,"auth_user_id":null,"enrollment_state":"unbound","proposed_org_role":"security_auditor"},
     {"key":"elev-person-009","display_name":"Roy Neven","title":"Junior Partner","department":"sales","email":null,"auth_user_id":null,"enrollment_state":"unbound","proposed_org_role":"sales_member"},
     {"key":"elev-person-010","display_name":"Ben Pantis","title":"Associate","department":null,"email":null,"auth_user_id":null,"enrollment_state":"unbound","proposed_org_role":"organization_member"},
-    {"key":"elev-person-011","display_name":"Matthew","title":"Associate","department":null,"email":null,"auth_user_id":null,"enrollment_state":"unbound","proposed_org_role":"organization_member"},
+    {"key":"elev-person-011","display_name":"Matthew","title":"Associate; surname unresolved","department":null,"email":null,"auth_user_id":null,"enrollment_state":"unbound","proposed_org_role":"organization_member"},
     {"key":"elev-person-012","display_name":"Adria Pros","title":"Sales representative","department":"sales","email":null,"auth_user_id":null,"enrollment_state":"unbound","proposed_org_role":"sales_member"}
   ],
   "mailbox_grants": []

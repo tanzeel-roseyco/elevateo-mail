@@ -11,6 +11,7 @@ class AdministrationRosterTest < Minitest::Test
     roster = Roster.load
     assert_equal 12, roster.fetch("people").size
     assert_equal "Matthew", roster.fetch("people")[10].fetch("display_name")
+    assert_equal "Associate; surname unresolved", roster.fetch("people")[10].fetch("title")
     assert roster.fetch("people").all? { |person| person["email"].nil? && person["auth_user_id"].nil? }
     assert_equal({ "key" => "elev-person-001", "auth_user_id" => USER_ID },
       Roster.binding(config_key: "elev-person-001", auth_user_id: USER_ID, existing_bindings: {}, verified_subject: USER_ID))
@@ -29,6 +30,15 @@ class AdministrationRosterTest < Minitest::Test
     assert_raises(Roster::Invalid) do
       Roster.binding(config_key: "elev-person-002", auth_user_id: USER_ID,
         existing_bindings: { "elev-person-001" => USER_ID }, verified_subject: USER_ID)
+    end
+  end
+
+  def test_rejects_preexisting_duplicate_mapping
+    existing = { "elev-person-001" => USER_ID, "elev-person-002" => USER_ID.upcase }
+    another = "00000000-0000-4000-8000-000000000002"
+    assert_raises(Roster::Invalid) do
+      Roster.binding(config_key: "elev-person-003", auth_user_id: another,
+        existing_bindings: existing, verified_subject: another)
     end
   end
 
