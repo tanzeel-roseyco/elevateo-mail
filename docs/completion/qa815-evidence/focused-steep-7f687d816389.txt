@@ -1,0 +1,136 @@
+source=7f687d816389742306305696dc9c757ef3d676a9
+image=sha256:7dc61d4b7e12f94764f95f4f1bfe8e3940049247e6d409898ce9d3ed2810f348
+started=2026-10-14T18:12:20Z
+# Type checking files:
+
+...F...................................................................................................................................................................................
+
+lib/elevateo/attachment_gateway_client.rb:37:27: [error] Cannot pass a value of type `(::Float | nil)` as an argument of type `::Float`
+│   (::Float | nil) <: ::Float
+│     nil <: ::Float
+│
+│ Diagnostic ID: Ruby::ArgumentTypeMismatch
+│
+└           exchange(signed, Float(timeout))
+                             ~~~~~~~~~~~~~~
+
+Detected 1 problem from 1 file
+steep_exit=1
+RUN test/attachments/gateway_client_test.rb
+Run options: --seed 63288
+
+# Running:
+
+....
+
+Finished in 0.051561s, 77.5780 runs/s, 349.1011 assertions/s.
+
+4 runs, 18 assertions, 0 failures, 0 errors, 0 skips
+test_exit=0 file=test/attachments/gateway_client_test.rb
+RUN test/attachments/service_test.rb
+Run options: --seed 30309
+
+# Running:
+
+...................
+
+Finished in 0.012399s, 1532.4010 runs/s, 6774.8253 assertions/s.
+
+19 runs, 84 assertions, 0 failures, 0 errors, 0 skips
+test_exit=0 file=test/attachments/service_test.rb
+RUN test/attachments/clamd_scanner_test.rb
+Run options: --seed 3356
+
+# Running:
+
+......
+
+Finished in 0.008023s, 747.8530 runs/s, 2118.9169 assertions/s.
+
+6 runs, 17 assertions, 0 failures, 0 errors, 0 skips
+test_exit=0 file=test/attachments/clamd_scanner_test.rb
+RUN test/inbound/imap_attachment_parser_test.rb
+Run options: --seed 36342
+
+# Running:
+
+...
+
+Finished in 0.048671s, 61.6388 runs/s, 267.1016 assertions/s.
+
+3 runs, 13 assertions, 0 failures, 0 errors, 0 skips
+test_exit=0 file=test/inbound/imap_attachment_parser_test.rb
+RUN test/inbound/imap_ingress_test.rb
+Run options: --seed 37379
+
+# Running:
+
+.....
+
+Finished in 0.055833s, 89.5530 runs/s, 411.9439 assertions/s.
+
+5 runs, 23 assertions, 0 failures, 0 errors, 0 skips
+test_exit=0 file=test/inbound/imap_ingress_test.rb
+RUN test/inbound/imap_sync_test.rb
+Run options: --seed 13657
+
+# Running:
+
+......
+
+Finished in 0.060168s, 99.7210 runs/s, 565.0857 assertions/s.
+
+6 runs, 34 assertions, 0 failures, 0 errors, 0 skips
+test_exit=0 file=test/inbound/imap_sync_test.rb
+RUN test/send_worker/drain_test.rb
+Run options: --seed 43187
+
+# Running:
+
+..
+
+Finished in 0.001463s, 1367.0690 runs/s, 8885.9488 assertions/s.
+
+2 runs, 13 assertions, 0 failures, 0 errors, 0 skips
+test_exit=0 file=test/send_worker/drain_test.rb
+RUN test/send_worker/smtp_transport_test.rb
+Run options: --seed 4468
+
+# Running:
+
+......
+
+Finished in 0.014472s, 414.5993 runs/s, 1589.2974 assertions/s.
+
+6 runs, 23 assertions, 0 failures, 0 errors, 0 skips
+test_exit=0 file=test/send_worker/smtp_transport_test.rb
+RUN test/attachments/controller_authorization_test.rb
+/workspace/apps/server/test/be_02/auth_test_helper.rb:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+Run options: --seed 47027
+
+# Running:
+
+...
+
+Finished in 0.001101s, 2725.8511 runs/s, 16355.1066 assertions/s.
+
+3 runs, 18 assertions, 0 failures, 0 errors, 0 skips
+test_exit=0 file=test/attachments/controller_authorization_test.rb
+RUN test/inbound/http_test.rb
+/workspace/apps/server/test/be_02/auth_test_helper.rb:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+Run options: --seed 40916
+
+# Running:
+
+....
+
+Finished in 0.318196s, 12.5709 runs/s, 72.2824 assertions/s.
+
+4 runs, 23 assertions, 0 failures, 0 errors, 0 skips
+test_exit=0 file=test/inbound/http_test.rb
+run_exit=1
+archive_absent=yes
+remaining_task_containers=0
+finished=2026-10-14T18:12:37Z

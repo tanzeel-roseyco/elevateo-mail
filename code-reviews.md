@@ -732,3 +732,5 @@ QA815 `e8e8393d` OPS820 offline Python seven-script PASS and initial noexec task
 QA815 acceptance umask patch and three authored cases have been self-inspected for exact command wrapping, output modes and failure paths; independent review and fleet runtime remain pending. No independent reviewed LOC or defect density is claimed.
 
 QA815 `5bdf2ee6` three-case fleet unit PASS is runtime test evidence, not independent review of acceptance runner source. Independent reviewed LOC stays 0 and source defect density remains unclaimed.
+
+QA815 `7f687d81` one Steep failure and 58/266 focused Ruby passes are execution findings, not independent bounded source review. Cassian owns the gateway type repair; additional QA815 reviewed LOC remains 0 and source defect density unclaimed.

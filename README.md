@@ -226,3 +226,5 @@ QA815 exact `e8e8393d` OPS820 offline Python batch passed seven scripts/23 top-l
 QA815 browser runner now requires actual umask077 and private output mode proof before acceptance cases; Tessa owns the permanent compiled reporter config path. Three scoped runner unit cases are authored and fleet execution is pending. See `docs/completion/soren.md`.
 
 QA815 exact `5bdf2ee6` browser private-output runner units passed 3/3 under fleet Docker with task cleanup. Actual browser mount and reporter `--list` smoke remain pending integrated source.
+
+QA815 final core-only `7f687d81` focused fleet result: ten pure Ruby suites 58/266 PASS, Steep one Cassian gateway Float type error. Full backend/HTTP/worker/real-auth remain held pending reviewed strict repair; exact cleanup passed.

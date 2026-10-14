@@ -168,3 +168,5 @@ QA815 exact `e8e8393d` OPS820 seven offline Python scripts/23 top-level tests PA
 QA815 acceptance runner umask/private-output preflight is implemented with three authored regression cases, NOT_RUN on fleet yet. Reporter config fix belongs to Tessa; browser and real-auth acceptance remain pending.
 
 QA815 exact `5bdf2ee6` umask/private-output unit 3/3 PASS in fleet Docker; real browser mode proof and reporter smoke NOT_RUN.
+
+QA815 exact `7f687d81` focused ten-suite Ruby 58/266 PASS; Steep one gateway Float|nil argument mismatch FAIL, task cleanup PASS. Broader backend/HTTP/worker/browser gate held.

@@ -42,6 +42,8 @@ files=(
   test/inbound/imap_sync_test.rb
   test/send_worker/drain_test.rb
   test/send_worker/smtp_transport_test.rb
+  test/attachments/controller_authorization_test.rb
+  test/inbound/http_test.rb
 )
 for file in "${files[@]}"; do test -f "$context/apps/server/$file"; done
 set +e
@@ -60,7 +62,9 @@ timeout 1200s docker run --rm --name "$name" --network none --memory 2g --memory
       test/inbound/imap_ingress_test.rb \
       test/inbound/imap_sync_test.rb \
       test/send_worker/drain_test.rb \
-      test/send_worker/smtp_transport_test.rb; do
+      test/send_worker/smtp_transport_test.rb \
+      test/attachments/controller_authorization_test.rb \
+      test/inbound/http_test.rb; do
       printf "RUN %s\n" "$file"
       bundle exec ruby -rminitest/mock -Itest "$file"
       status=$?; printf "test_exit=%s file=%s\n" "$status" "$file"

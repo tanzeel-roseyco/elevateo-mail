@@ -236,3 +236,5 @@ QA815 exact `e8e8393d` OPS820 offline Python receipts are `docs/completion/qa815
 QA815 browser privacy preflight source is `ops/tests/be02/acceptance_runtime.py`, with three scoped regression cases in `ops/tests/be02/test_acceptance_private_output.py`; fleet execution and Tessa's reporter repair are pending. See `docs/completion/soren.md`.
 
 QA815 fleet unit receipt `docs/completion/qa815-evidence/acceptance-private-5bdf2ee6bc9e.txt` records exact `5bdf2ee6` three-case umask/private-output PASS and cleanup. Actual browser proof remains pending.
+
+QA815 final core-only strict receipt `docs/completion/qa815-evidence/focused-steep-7f687d816389.txt`: 58/266 focused Ruby PASS, one gateway Float type Steep failure, exact task absence. See `docs/completion/soren.md`.
