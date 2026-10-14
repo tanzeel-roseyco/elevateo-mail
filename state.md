@@ -138,3 +138,5 @@ OUT-804 b3438e4 fleet diagnostic: input 5 runs/8 assertions PASS; repository Syn
 OUT-804 manual consent events are explicitly labeled `manual_attestation` in persisted history and lead detail; changes/withdrawals are `status_change`. Strict V2 LeadDetail DTO, UI wiring and exact fleet verification are pending.
 
 OUT-804 source correction clears current-row `consent_recorded_by` on unknown/withdrawn status while preserving append-only actor history. Exact fleet runtime and integrated HTTP remain pending.
+
+OUT-804 account source now matches Cassian's campaign-scoped V2 paths. Page queries require a campaign ID for accounts, and detail checks reject accounts under a different campaign; these routes and scoped tests remain pending integration/fleet execution.

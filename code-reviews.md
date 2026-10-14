@@ -700,3 +700,5 @@ OUT-804 exact b3438e4 fleet diagnostics (not an independent code review): input 
 OUT-804 author policy follow-up: persisted consent source/actor/time did not explicitly label a self-reported claim. Append-only events now store manual_attestation versus status_change, and detail projects the label. No independent review or runtime PASS is claimed for this addition.
 
 OUT-804 author inspection found that a withdrawn or reset lead could still expose the former current-row consent actor. The projection now clears that actor while append-only events retain the state-change actor; a focused regression is authored. Independent review remains 0 LOC with unmeasured defect density, and current runtime remains NOT_RUN.
+
+OUT-804 author contract review identified an organization-wide account page that conflicted with Cassian's campaign-scoped API. Index/detail/create/update now use the path campaign ID; two scoped controller regressions are authored. This is an author correction, with independent reviewed LOC 0, defects unassessed, density not applicable and fleet runtime NOT_RUN.

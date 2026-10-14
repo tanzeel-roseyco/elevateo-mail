@@ -196,3 +196,5 @@ Soren's exact b3438e4 fleet diagnostic exposed an OUT-804 repository syntax erro
 OUT-804 lead detail now labels recorded human consent as `manual_attestation`; Delivery must separately verify send eligibility.
 
 OUT-804 current lead detail clears the prior attestation actor when consent becomes unknown or withdrawn; the append-only event retains the earlier actor and status change for audit. Fleet verification remains requested.
+
+OUT-804 account list/detail now require the campaign path ID, with account lists filtered to that campaign and cross-campaign detail denied. Accounts remain disabled records; route activation and Docker checks are pending Cassian/Soren.

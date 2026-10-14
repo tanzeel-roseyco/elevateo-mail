@@ -206,3 +206,5 @@ OUT-804 runtime repair note: pinned fleet Ruby on b3438e4 found a SyntaxError in
 The outreach consent event records `evidence_kind` as `manual_attestation` for a granted human claim and `status_change` for reset/withdrawal. GET lead detail includes nullable `consent_evidence_kind`, `consent_source`, `consent_recorded_at`, and `consent_recorded_by`; the client should label this as manual attestation, not verified permission to send.
 
 When consent leaves `granted`, the current lead projection clears its consent actor; the immutable event continues to record who made the state change. This keeps current evidence fields aligned with the displayed current status.
+
+The account route shape is `/v2/outreach/campaigns/{campaign_id}/accounts` and `.../{account_id}`. Index requires the campaign ID in its keyset query; detail/update reject account rows from another campaign, and create derives campaign ID from the path rather than body. Every account remains `disabled`.

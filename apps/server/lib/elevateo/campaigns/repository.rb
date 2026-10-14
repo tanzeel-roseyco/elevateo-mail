@@ -125,7 +125,7 @@ module Elevateo
         table = table_for(kind)
         values = [org]
         filter = "organization_id=$1::uuid"
-        WriteInput.invalid! if kind == "lead" && campaign_id.nil?
+        WriteInput.invalid! if %w[lead account].include?(kind) && campaign_id.nil?
         if campaign_id
           values << WriteInput.uuid(campaign_id)
           filter += " AND campaign_id=$2::uuid"
