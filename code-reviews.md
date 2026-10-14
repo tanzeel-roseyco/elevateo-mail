@@ -809,3 +809,5 @@ Jules's bounded test review found a self-promotion oracle gap in the SEC-802 dat
 OUT-804 author inspection corrected same-address lead edits: they had revoked consent even when the address was unchanged, and the first no-op repair would have bypassed operation replay. The current code preserves consent and records the no-op operation result; independent reviewer coverage and defect density remain pending.
 
 FE807 role-policy follow-up: root supplied owner/admin/sales role matrix while source remained read-only to authorization; one client foreign-campaign account receipt test was added. Enforcement and real DB/HTTP denial review belongs to Sabine/Cassian/Dorian/Felix; no UI-only authorization claim or test PASS.
+
+FE807 disabled account adapter presentation: author review found a known `temporarily_unavailable` gateway response would render generic error. Source now maps that and `not_available` reads to the unavailable state; component regression authored, not executed. Independent review pending.

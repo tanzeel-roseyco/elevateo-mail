@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, type FormEvent, type ReactNode, type Synth
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router'
 import { z } from 'zod'
 import type { CsrfProof, ReadContext } from '@/data/gateway'
+import { isApiError } from '@/data/errors'
 import { Button } from '@/ui/Button'
 import { Field, TextInput } from '@/ui/Field'
 import { newId } from '@/lib/ids'
@@ -75,7 +76,10 @@ function useOutreachRead<K extends Resource>(kind: K, props: OutreachPageProps, 
           ? parsed.data.items.every((item) => 'campaign_id' in item && item.campaign_id === id) : true
       )
       if (!controller.signal.aborted) setState(parsed.success && bound ? { status: 'ready', value: parsed.data as z.infer<(typeof schemas)[K]> } : { status: 'error' })
-    }).catch(() => { if (!controller.signal.aborted) setState({ status: 'error' }) })
+    }).catch((error: unknown) => {
+      if (!controller.signal.aborted) setState(isApiError(error, 'not_available') || isApiError(error, 'temporarily_unavailable')
+        ? { status: 'unavailable' } : { status: 'error' })
+    })
     return () => controller.abort()
   }, [gateway, context, kind, id, revision, cursor])
   return state
