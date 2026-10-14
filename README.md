@@ -14,6 +14,8 @@ Shared company mailroom with one Rails domain authority and a React/TypeScript c
 
 ## Current state
 
+DIR-904 source candidate adds a bounded V2 mailbox assignee-options controller and UUID-only projection against Sabine's proposed protected SQL; Cassian owns its route/DTO and has not activated it. Fake HTTP and pure regression tests are authored but NOT_RUN; Soren fleet Docker, independent review and exact SQL integration remain pending. The twelve named roster references remain unbound.
+
 ADM-803 has candidate guarded V2 grants and unbound roster APIs; an atomic redacted role audit API is being integrated with Sabine SQL and Cassian contracts. Fleet Docker verification remains pending. See [Theo handoff](docs/completion/theo.md).
 
 The integrated legacy draft bootstrap probe now checks BE03's protective send-intent FK transactionally; full BE02 down/reapply remains a separate disposable BE02-only database check. The current fleet rerun is pending.

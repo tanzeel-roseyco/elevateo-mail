@@ -1,0 +1,28 @@
+module Elevateo
+  module AssigneeOptions
+    MAX_PAGE: Integer
+    MAX_RESULT_BYTES: Integer
+    def self.limit: (Hash[String, String]) -> Integer
+    def self.position: (Cursors::position) -> String
+    def self.project: (ReadResponse::item, after: String?, limit: Integer) -> [Array[Hash[String, String]], String?]
+  end
+
+  class AssigneeOptionsRepository
+    PAGE_SQL: String
+    @connection: ActiveRecord::ConnectionAdapters::AbstractAdapter
+    def initialize: (connection: ActiveRecord::ConnectionAdapters::AbstractAdapter) -> void
+    def page: (digest: String, user_id: String, auth_session_id: String, context_id: String,
+               generation: Integer, organization_id: String, mailbox_id: String,
+               after_user_id: String?, limit: Integer) -> ReadResponse::item
+  end
+end
+
+module V2
+  module Admin
+    class MailboxAssigneeOptionsController < V1::WriteController
+      def index: () -> void
+      private
+      def assignee_options_repository: (ActiveRecord::ConnectionAdapters::AbstractAdapter) -> Elevateo::AssigneeOptionsRepository
+    end
+  end
+end
