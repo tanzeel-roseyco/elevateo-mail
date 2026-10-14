@@ -751,3 +751,7 @@ FE807 auth-loss self-review: raw V2 gateway wiring may not invoke central Sessio
 
 Author self-inspection only; no independent review was performed or is claimed. Scope: `apps/web/src/app/outreachSessionPolicy.ts` (58 LOC), `features/index.tsx` delta (12 LOC), tests (`outreachSessionPolicy.test.ts` 60 LOC, `Shell.test.tsx` +95 LOC). Checked: generation captured per call, not at bind time; sync throws and rejections both reach `handleError` and are rethrown unchanged; optional capabilities not fabricated; memo deps are the injected port plus stable session callbacks (`scope` is a ref-stable instance, `handleError` a memoised callback). Defects found: 0 across 225 LOC (0/KLOC). Tests are authored and not executed; fleet run requested from Soren.
 
+### FE-805 R9 direct-message binding self-inspection (Fable, 2026-10-15)
+
+Author self-inspection only; no independent review performed or claimed. Scope: `App.tsx` delta (9 LOC), `featureGateways.tsx` delta (8 LOC), `main.tsx` delta (8 LOC), `App.test.tsx` (88 LOC). Checked: optional prop never passed as explicit `undefined`; production reader delegates to the exact V2 method without a second adapter; session policy applied once (Mira's page), not twice; tests assert exact direct-read arguments and a single thread read. Defects found: 0 across 113 LOC (0/KLOC). Tests authored, not executed; fleet run requested from Soren. Mira's `2184127` typecheck failure in her ThreadPage is inherited unchanged and remains her owned repair.
+
