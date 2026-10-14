@@ -14,7 +14,7 @@ type View =
   | { status: 'denied' | 'error'; key: string }
 
 function validName(value: string): boolean {
-  return value.length <= 256 && (value.length === 0 || (value.trim().length > 0 && !/[\x00-\x1f\x7f]/u.test(value)))
+  return value.length <= 256 && (value.length === 0 || (value.trim().length > 0 && !/[\p{Cc}]/u.test(value)))
 }
 
 /** Session-owned preferences are loaded fresh for every actor and authorization context. */
