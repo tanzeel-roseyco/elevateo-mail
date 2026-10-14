@@ -76,4 +76,5 @@ docker run --rm --network none --read-only --cap-drop ALL --user 10001:10001 \
   --entrypoint ruby "$image" -I/workspace/apps/server/lib \
   -relevateo/administration_roster -e 'roster = Elevateo::AdministrationRoster.load; abort "roster not unbound" unless roster.fetch("people").length == 12 && roster.fetch("people").all? { |p| p["auth_user_id"].nil? && p["email"].nil? } && roster.fetch("mailbox_grants") == [] && roster.fetch("live_activation") == false'
 "$root/ops/ops820/health-probe.sh" "$project" "$envfile" "$root"
+"$root/ops/ops820/worker-probe.sh" "$project" "$envfile" "$root"
 echo 'PASS disposable migrations down/up and app schema/data fingerprint'
