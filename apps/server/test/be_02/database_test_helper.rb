@@ -189,6 +189,14 @@ class SessionDatabaseTestCase < Minitest::Test
     if present
       @admin.exec_params("INSERT INTO app.organization_memberships(organization_id, user_id) VALUES ($1, $2)", [@org, @user])
     else
+      # AIDEV-NOTE: Only a disposable fixture may withdraw its explicit SEC802 owner grant.
+      # This DDL is transaction-local under the exclusive fixture lock; production owner loss remains guarded.
+      owner = @admin.exec_params("SELECT role FROM app.organization_access WHERE organization_id=$1 AND user_id=$2", [@org, @user]).first&.fetch("role")
+      if owner == "owner"
+        @admin.exec("ALTER TABLE app.organization_access DISABLE TRIGGER guard_owner_loss")
+        @admin.exec_params("DELETE FROM app.organization_access WHERE organization_id=$1 AND user_id=$2", [@org, @user])
+        @admin.exec("ALTER TABLE app.organization_access ENABLE TRIGGER guard_owner_loss")
+      end
       @admin.exec_params("DELETE FROM app.organization_memberships WHERE organization_id = $1 AND user_id = $2", [@org, @user])
     end
     @admin.exec("COMMIT")
