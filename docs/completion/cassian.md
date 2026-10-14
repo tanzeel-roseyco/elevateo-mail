@@ -215,3 +215,7 @@ Imported Elara exact cc2ac33 CORE854 concurrency fixture actor/rollback correcti
 ## Nadia attachment RBS integration
 
 Imported Nadia exact 8d89a18 typed Service/Repository/Scanner RBS and source; Cassian inert metadata adapter now supplies a NoStorage object whose put/get always fail, and its direct-message authorization callback explicitly returns nil. This matches the read-only service interface without putting private Storage authority in Rails. Current integrated Steep/Docker NOT_RUN; Corin owns PrivateStorage/IMAP declarations.
+
+## QA816 visual fixture integration
+
+Imported Tessa e567213 onto the integrated Fable shell; the resulting `apps/web/e2e/visual-states.spec.ts` SHA256 is `e5506d1458d11d94f0b2a7a2d225630a85221ae4986cae0458adc1cac1683204`, not Tessa isolated `1530ece0…6036e462`. The only difference against the owner file is the preexisting integrated Fable Navigation/Personal labels at four locator sites; Tessa’s 23-line fixture repair is intact. Requires Soren exact eight-case seeded simulated rerun, fresh private artifact path and root pixel review; old f210 PNGs cannot verify this SHA.
