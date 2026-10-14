@@ -1,16 +1,26 @@
 # frozen_string_literal: true
 
 require_relative "write_boundary_database_test_helper"
+require_relative "organization_access_fixture_cleanup"
 require_relative "../../lib/elevateo/drafts/payload"
 
 # AIDEV-NOTE: Production SQL is exercised with actual API/worker logins; only fixture setup has admin authority.
 class DraftDatabaseTestCase < WriteBoundaryDatabaseTestCase
+  include OrganizationAccessFixtureCleanup
+
   def setup
     super
     @box, @draft, @operation = Array.new(3) { SecureRandom.uuid }
     fixture_change do
       @admin.exec_params("INSERT INTO app.mailboxes(id, organization_id, address, visibility) VALUES ($1, $2, $3, 'private')", [@box, @org, "#{@box}@example.invalid"])
       @admin.exec_params("INSERT INTO app.mailbox_memberships(organization_id, mailbox_id, user_id, compose) VALUES ($1, $2, $3, true)", [@org, @box, @user])
+      # AIDEV-NOTE: The legacy draft revocation fixture now states its SEC802 authority explicitly.
+      @admin.exec_params("INSERT INTO app.organization_access(organization_id,user_id,role) VALUES ($1,$2,'owner')", [@org, @user])
+      @admin.exec_params("INSERT INTO app.mailbox_security(organization_id,mailbox_id,classification) VALUES ($1,$2,'team')", [@org, @box])
+      @admin.exec_params(<<~SQL, [@org, @box, @user])
+        INSERT INTO app.mailbox_grant_ceilings(organization_id,mailbox_id,user_id,compose,manage_members)
+          VALUES ($1,$2,$3,true,true)
+      SQL
     end
   end
 
