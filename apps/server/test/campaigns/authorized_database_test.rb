@@ -54,6 +54,7 @@ class CampaignAuthorizedDatabaseTest < MailboxMembershipDatabaseCase
     lead = seed_linked_unknown
     result = nil
     outreach_scope(write: true) do |connection|
+      assert_equal "elevateo_api", connection.select_value("SELECT current_user")
       result = connection.exec_query("UPDATE app.campaign_leads SET suppressed_at=now(),version=version+1 " \
         "WHERE organization_id=$1::uuid AND id=$2::uuid RETURNING version,consent_operation_id",
         "OUT804 metadata", [bind(@org), bind(lead)]).first
@@ -67,6 +68,28 @@ class CampaignAuthorizedDatabaseTest < MailboxMembershipDatabaseCase
       end
     end
     assert_equal "3", @admin.exec_params("SELECT version FROM app.campaign_leads WHERE id=$1", [lead]).getvalue(0, 0)
+  end
+
+  def test_app_read_role_cannot_call_outreach_proof_from_rls
+    assert_raises(ActiveRecord::StatementInvalid) do
+      outreach_scope do |connection|
+        connection.execute("SET LOCAL ROLE elevateo_app_read")
+        assert_equal "elevateo_app_read", connection.select_value("SELECT current_user")
+        connection.select_value("SELECT count(*) FROM app.campaigns")
+      end
+    end
+  end
+
+  def test_cross_actor_digest_cannot_reuse_current_session_context
+    actor = add_actor
+    @admin.exec_params("INSERT INTO app.organization_access(organization_id,user_id,role) VALUES ($1,$2,'sales')",
+      [@org, actor.user_id])
+    scope(write: false) do |connection|
+      raw = connection.exec_query("SELECT app.authorize_outreach_content_read($1::text) AS result",
+        "OUT804 cross actor", [bind(actor.digest)]).first.fetch("result")
+      result = raw.is_a?(String) ? JSON.parse(raw) : raw
+      assert_equal "not_found", result.fetch("status")
+    end
   end
 
   def test_sales_actor_without_shared_mailbox_membership_cannot_read_campaign_account

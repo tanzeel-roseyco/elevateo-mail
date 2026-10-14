@@ -258,3 +258,5 @@ Outreach content reads have a separate digest-verified role check for owner/admi
 Organization role changes append a redacted audit event in the same database transaction only on a real change. The owner/admin audit page is digest-verified, tenant-scoped and newest-first; its UUID cursor resolves to an immutable sequence within the tenant. No message content, addresses or secrets enter this audit.
 
 Security auditors may read metadata-only organization role audit pages; they cannot list effective grants or mutate roles. Audit timestamps use six-digit UTC wire formatting.
+
+OUT-804 actual-role policy assertions now cover API positive, denied app-read proof and cross-actor digest negative on the existing disposable database fixture; authored source is not fleet-executed.

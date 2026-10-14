@@ -194,3 +194,5 @@ SEC-802 draft concurrency fixtures now state the same explicit disposable author
 SEC-802 follow-up to Rhea's 2 MEDIUM helper cleanup findings: membership and draft local cleanup now runs inside failure-safe inherited teardown after closed fixture logins are reopened and the advisory lease is reacquired. New tests check closed API/admin cleanup and preservation of an injected draft save error; no fleet result is yet claimed.
 
 SEC-802 Felix REV874 found one further MEDIUM source defect: a failed rollback could replace the original cleanup failure. The fixture-only rescue now preserves the first exception and has a deterministic double-fault regression; Soren Docker and repair re-review remain pending.
+
+OUT-804 actual-role policy assertions now cover API positive, denied app-read proof and cross-actor digest negative on the existing disposable database fixture; authored source is not fleet-executed.
