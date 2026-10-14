@@ -9,7 +9,8 @@ from email.message import EmailMessage
 
 
 HOST = "mox"
-SMTP_PORT = 1587
+SMTP_PORT = 1025
+SUBMISSION_PORT = 1587
 IMAP_PORT = 1143
 TIMEOUT = 8
 
@@ -25,14 +26,20 @@ def wait_for_port(port: int) -> None:
     raise AssertionError(f"fixture port {port} did not become ready")
 
 
-def smtp_case(recipient: str, expected_class: int, subject: str) -> None:
+def smtp_case(recipient: str, expected_class: int, subject: str,
+              submission: bool = False) -> None:
+    if not recipient.endswith("@pilot.test"):
+        raise ValueError("recipient outside synthetic pilot.test domain")
     message = EmailMessage()
     message["From"] = "sender@pilot.test"
     message["To"] = recipient
     message["Subject"] = subject
     message.set_content("Synthetic MAIL-818 local-only fixture.")
     try:
-        with smtplib.SMTP(HOST, SMTP_PORT, timeout=TIMEOUT) as smtp:
+        with smtplib.SMTP(HOST, SUBMISSION_PORT if submission else SMTP_PORT,
+                          timeout=TIMEOUT) as smtp:
+            if submission:
+                smtp.login("mox@localhost", "moxmoxmox")
             smtp.send_message(message)
         status = 2
     except (smtplib.SMTPRecipientsRefused, smtplib.SMTPSenderRefused,
@@ -61,6 +68,15 @@ def assert_imap_subject(subject: str) -> None:
     raise AssertionError("accepted synthetic message absent from IMAP")
 
 
+def assert_wrong_password_denied() -> None:
+    with imaplib.IMAP4(HOST, IMAP_PORT, timeout=TIMEOUT) as imap:
+        try:
+            imap.login("mox@localhost", "wrong-synthetic-password")
+        except imaplib.IMAP4.error:
+            return
+    raise AssertionError("IMAP accepted wrong password")
+
+
 def assert_no_external_egress() -> None:
     # AIDEV-NOTE: Internal DNS should not resolve external names on an internal-only network.
     try:
@@ -80,13 +96,22 @@ def assert_no_external_egress() -> None:
 def main() -> None:
     assert_no_external_egress()
     wait_for_port(SMTP_PORT)
+    wait_for_port(SUBMISSION_PORT)
     wait_for_port(IMAP_PORT)
-    subject = "MAIL818-SYNTHETIC-" + os.environ.get("HOSTNAME", "probe")
+    assert_wrong_password_denied()
+    subject = os.environ["MOX_PILOT_SUBJECT"]
+    if not subject.startswith("MAIL818-SYNTHETIC-") or len(subject) > 100:
+        raise ValueError("invalid synthetic subject")
+    if os.environ.get("PROBE_VERIFY_EXISTING") == "1":
+        assert_imap_subject(subject)
+        assert_imap_subject(subject + "-submission")
     smtp_case("accepted@pilot.test", 2, subject)
     assert_imap_subject(subject)
+    smtp_case("outbound@pilot.test", 2, subject + "-submission", submission=True)
+    assert_imap_subject(subject + "-submission")
     smtp_case("reject-permerror@pilot.test", 5, subject + "-permanent")
     smtp_case("reject-temperror@pilot.test", 4, subject + "-temporary")
-    print("PASS: local SMTP, IMAP, permanent/temporary failures, egress denial")
+    print("PASS: local SMTP, submission loopback, IMAP, failures, egress denial")
 
 
 if __name__ == "__main__":

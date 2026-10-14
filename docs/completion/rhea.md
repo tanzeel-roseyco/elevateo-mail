@@ -22,8 +22,9 @@ Soren on fleet-02 under the Docker lease after application acceptance. Exact
 images and command receipt remain pending. Host tests, Docker builds, Docker
 runtime, SMTP/IMAP assertions, egress probe, resource measurement, and cleanup
 verification are **NOT_RUN** by this worker. Requested tests: accepted local
-SMTP and IMAP receipt, permanent recipient failure, temporary recipient
-failure, external DNS/TCP denial, bounded resource receipt, and exact cleanup.
+SMTP and authenticated submission loopback with IMAP receipt, wrong-password denial, permanent recipient failure, temporary recipient
+failure, same-volume restart, external DNS/TCP denial, bounded resource
+receipt, and exact cleanup.
 
 Limitations: `localserve` catchall and loopback behavior cannot prove account
 mapping, Internet inbound/outbound mail, tenant separation, TLS trust, queue

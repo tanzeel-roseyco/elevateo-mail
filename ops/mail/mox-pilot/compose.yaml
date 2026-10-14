@@ -1,8 +1,42 @@
 services:
+  guard:
+    image: ${PROBE_IMAGE:?immutable Python image digest required}
+    pull_policy: never
+    command: ["python", "-c", "from pathlib import Path; assert not Path('/pilot-data/localserve').exists(), 'refusing existing config'"]
+    volumes:
+      - pilot-data:/pilot-data:ro
+    networks:
+      - pilot
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    mem_limit: 128m
+    cpus: 0.25
+    pids_limit: 32
+    restart: "no"
+
+  init:
+    image: ${MOX_IMAGE:?immutable Mox image digest required}
+    pull_policy: never
+    entrypoint: ["/mox"]
+    command: ["localserve", "-dir", "/pilot-data/localserve", "-ip", "0.0.0.0", "-initonly"]
+    read_only: true
+    volumes:
+      - pilot-data:/pilot-data
+    networks:
+      - pilot
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    mem_limit: 1536m
+    cpus: 1.5
+    pids_limit: 256
+    restart: "no"
+
   mox:
     image: ${MOX_IMAGE:?immutable Mox image digest required}
-    # AIDEV-NOTE: The volume root exists; localserve must create its absent child directory.
-    command: ["localserve", "-dir", "/pilot-data/localserve", "-ip", "0.0.0.0"]
+    pull_policy: never
+    entrypoint: ["/mox"]
+    # AIDEV-NOTE: Init writes the listener IP once; repeated -ip rejects existing config.
+    command: ["localserve", "-dir", "/pilot-data/localserve"]
     read_only: true
     tmpfs:
       - /tmp:size=64m
@@ -12,15 +46,22 @@ services:
       - pilot
     cap_drop: [ALL]
     security_opt: ["no-new-privileges:true"]
-    mem_limit: 2g
-    cpus: 2
+    mem_limit: 1536m
+    cpus: 1.5
     pids_limit: 256
     restart: "no"
+    logging:
+      driver: json-file
+      options: {max-size: 5m, max-file: "1"}
 
   probe:
     image: ${PROBE_IMAGE:?immutable Python image digest required}
+    pull_policy: never
     command: ["python", "/pilot/probe.py"]
     working_dir: /pilot
+    environment:
+      MOX_PILOT_SUBJECT: ${MOX_PILOT_SUBJECT:?synthetic subject required}
+      PROBE_VERIFY_EXISTING: ${PROBE_VERIFY_EXISTING:-0}
     volumes:
       - ./probe.py:/pilot/probe.py:ro
     networks:

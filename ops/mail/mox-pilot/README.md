@@ -7,7 +7,9 @@ source commit `1c9587665b321199312e11b6a47a0480a9e2750f`.
 
 ## Inputs and isolation
 
-Soren supplies a locally available Mox image by immutable digest as `MOX_IMAGE`.
+Soren supplies the locally available pinned Mox image
+`r.xmox.nl/mox@sha256:831c6f11b3c2ee1633077052e6d4b7ae53f73972adf4bf08be0a740121d24cc7`
+as `MOX_IMAGE` and independently records its release/source provenance.
 The image provenance must resolve to the source commit above; a floating tag is
 rejected. Run `scripts/run-pilot.sh` only on fleet-02 under Soren's Docker lease.
 It creates one internal-only Docker network with no published ports and a
@@ -15,10 +17,12 @@ disposable named data volume. Containers have no host socket, secrets, app
 database, or persistent application volumes. The runner refuses a non-fleet
 hostname and a missing lease token. The DNS and egress-denial probes in the
 runner must pass before any protocol result can be admitted.
-The named volume root exists when mounted. Mox localserve must initialize an
-absent child at `/pilot-data/localserve`; pointing `-dir` at the volume root
-fails at first start. `-ip 0.0.0.0` binds only inside the internal Docker
-network. No ports are published to the host.
+The named volume root exists when mounted. A read-only guard refuses an
+existing child, then the one-time `init` service creates
+an absent child at `/pilot-data/localserve`; pointing `-dir` at the volume root
+fails at first start. Only init passes `-ip 0.0.0.0` to write the internal
+listener address. A normal startup and same-volume restart omit `-ip`, because
+Mox rejects that flag with existing config. No ports are published to the host.
 
 The fixture uses `.test` addresses and Mox's generated `mox@localhost` account
 with its documented localserve development password. Those credentials are
@@ -28,11 +32,13 @@ client receives with IMAP from the default account to confirm local loopback.
 
 ## Test request to Soren
 
-Supply `MOX_IMAGE` as a verified immutable digest and `MOX_SOURCE_SHA` as the
+Supply `MOX_IMAGE` and `PROBE_IMAGE` as verified local immutable image references
+(`sha256:...` image IDs or `name@sha256:...` digests) and `MOX_SOURCE_SHA` as the
 pin above, then run `MOX_PILOT_LEASE_TOKEN=<lease-id> scripts/run-pilot.sh` on
 fleet-02 after application acceptance. The script is deliberately not run by
-this worker. It checks one accepted local message, a `permerror` recipient,
-and a `temperror` recipient; verifies IMAP receipt for the accepted message;
+this worker. It checks accepted local SMTP, authenticated submission loopback, IMAP receipt,
+wrong-password denial, a `permerror` recipient and a `temperror` recipient;
+then repeats the checks after a same-volume restart;
 checks DNS and external TCP egress denial; collects bounded logs and resource
 figures; and removes only its own containers/network/volume. Preserve the
 receipt directory outside the disposable runtime.
