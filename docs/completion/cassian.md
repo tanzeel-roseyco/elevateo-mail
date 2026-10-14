@@ -229,3 +229,5 @@ Imported Maeve exact `b3204ce2ed862f415a774a5c8eb34344808caba9` read/write RLS s
 ## OPS820 administrative bootstrap intake
 
 Integrated exact `ops/ops820/` file tree from Leonie `f8b07b2afe99549b66a454b37abc58c6d1e46597`, against earlier 3fd0dcb import. It precreates the private attachment gateway schema under privileged bootstrap, checks owner and restricted gateway ACL pre/post migration, probes an actual restricted gateway login with private schema/function denials, and adds bounded ClamAV response/file checks. The file tree is source candidate only; Sabine migration 00018 still must assert/consume the precreated schema and preserve it on down. Soren fleet SQL, process-env separation and scanner checks are NOT_RUN on this integrated source; no byte route is activated.
+
+Static self-check of the draft.7 browser test found its success input accidentally spread the response-only `version` field into a strict PUT object; the fixture now constructs only required request keys. This repairs authored test setup only, with no production gateway or contract change. Fleet execution remains NOT_RUN.

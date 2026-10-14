@@ -17,7 +17,8 @@ describe('V2 inert sequence draft gateway', () => {
     const gateway = createV2OutreachGateway(fetchImpl)
     const signal = new AbortController().signal
     expect((await gateway.getOutreachSequenceDraft(context, campaign, signal)).steps).toHaveLength(1)
-    const input: SequencePut = { ...draft, operation_id: step, expected_version: 1 }
+    const input: SequencePut = { id: draft.id, campaign_id: draft.campaign_id, status: draft.status,
+      timezone: draft.timezone, steps: draft.steps, operation_id: step, expected_version: 1 }
     expect((await gateway.saveOutreachSequenceDraft(context, { csrfToken: 'proof' }, campaign, input, signal)).version).toBe(1)
     expect(fetchImpl.mock.calls.map(([path]) => path)).toEqual([
       `/v2/outreach/campaigns/${campaign}/sequence`, `/v2/outreach/campaigns/${campaign}/sequence`,
@@ -27,7 +28,8 @@ describe('V2 inert sequence draft gateway', () => {
 
   it('rejects another campaign before dispatch', () => {
     const fetchImpl = vi.fn(async () => json(draft))
-    const input: SequencePut = { ...draft, operation_id: step, expected_version: 1 }
+    const input: SequencePut = { id: draft.id, campaign_id: draft.campaign_id, status: draft.status,
+      timezone: draft.timezone, steps: draft.steps, operation_id: step, expected_version: 1 }
     expect(() => createV2OutreachGateway(fetchImpl).saveOutreachSequenceDraft(context, { csrfToken: 'proof' }, step, input,
       new AbortController().signal)).toThrow()
     expect(fetchImpl).not.toHaveBeenCalled()
