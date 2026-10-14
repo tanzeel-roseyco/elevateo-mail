@@ -2,6 +2,7 @@
 
 require "digest"
 require "json"
+require "active_record"
 require_relative "input"
 
 module Elevateo
