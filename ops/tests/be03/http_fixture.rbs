@@ -1,0 +1,60 @@
+type be03_json = nil | bool | Integer | Float | String | Array[be03_json] | Hash[String, be03_json]
+type be03_body = Hash[Symbol, be03_json]
+
+class Be02Http
+  def initialize: (?String) -> void
+  def request: (String, String, ?body: be03_body?, ?headers: Hash[String, String]) -> Net::HTTPResponse
+  def json: (Net::HTTPResponse) -> Hash[String, be03_json]
+  def challenge: () -> Hash[String, String]
+end
+class Be02Fixture
+  attr_reader email: String
+  attr_reader password: String
+  attr_reader user: String
+  attr_reader organization: String
+  attr_reader mailbox: String
+  def initialize: () -> void
+  def invite: () -> String
+end
+module PG
+  class Result
+    def getvalue: (Integer, Integer) -> String
+    def first: () -> Hash[String, String]?
+  end
+  class Connection
+    def exec: (String) -> Result
+    def exec_params: (String, Array[String]) -> Result
+    def transaction: [A] () { () -> A } -> A
+    def set_notice_processor: () { (String) -> void } -> void
+  end
+  def self.connect: [A] (String) { (Connection) -> A } -> A
+end
+module Be03HTTP
+  class Failure < StandardError
+  end
+  class Fixture
+    @headers: Hash[String, String]
+    attr_reader client: Be02Http
+    attr_reader seed: Be02Fixture
+    attr_reader assertions: Integer
+    def initialize: () -> void
+    def check: (bool, String) -> void
+    def expect: (Net::HTTPResponse, Integer) -> Hash[String, be03_json]
+    def authenticate: () -> Hash[String, String]
+    def request: (String, String, ?body: be03_body?, ?headers: Hash[String, String]) -> Net::HTTPResponse
+    def save: (String, ?version: Integer) -> Hash[String, be03_json]
+    def review: (String) -> Hash[String, be03_json]
+    def approval: (String, be03_body, ?headers: Hash[String, String]) -> Net::HTTPResponse
+    def binding: (Hash[String, be03_json]) -> be03_body
+    def counts: () -> Array[Integer]
+    def text: (be03_json) -> String
+    def draft_state: (String) -> Hash[String, String]?
+    def database: [A] () { (PG::Connection) -> A } -> A
+  end
+  class Scenario
+    @fixture: Fixture
+    def initialize: (Fixture) -> void
+    def run: () -> Integer
+    def stale_conflict: () -> void
+  end
+end
