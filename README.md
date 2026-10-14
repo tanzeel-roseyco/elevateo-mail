@@ -14,6 +14,8 @@ Shared company mailroom with one Rails domain authority and a React/TypeScript c
 
 ## Current state
 
+NATIVE-812 candidate: Rust launch validation and Windows unsigned-package preflight now reject reserved fixture origins even with terminal DNS dots (for example `https://app.elevateo.invalid.`). Focused Rust and PowerShell regressions are authored; Soren fleet Docker execution and pinned Tauri ICO/ICNS generation are requested, not yet proven. No Windows/macOS package or release origin is available. See [native checkpoint](docs/completion/orion.md).
+
 
 ### R25 approval reload recovery candidate
 

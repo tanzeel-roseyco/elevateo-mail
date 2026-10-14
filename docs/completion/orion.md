@@ -1,5 +1,10 @@
 # NATIVE-812 Orion checkpoint
 
+## Terminal DNS dot release preflight candidate
+
+Source inspection found that `https://app.elevateo.invalid.` bypassed both the Rust placeholder suffix check and the Windows unsigned-package preflight regex. The candidate trims terminal DNS dots for reserved-host checks in both places. Rust regressions cover one, uppercase one, and two terminal dots; a PowerShell preflight regression requires the same three inputs to stop with `Placeholder origin rejected` before Cargo. The original reviewed `icon.png` is unchanged. These tests are authored but NOT_RUN by Orion under the fleet-only rule; Soren was asked to execute them in pinned fleet Docker and generate `.ico`/`.icns` using pinned Tauri CLI 2.12.2, returning exact hashes and cleanup evidence. No Windows/macOS package or installed runtime exists from this change.
+
+
 Candidate source baseline: `bbf2353b254a05d48c2da7a508c143e6fba78691`. Implementation commit is recorded in the shared control outbox.
 
 Scope: independent Tauri 2 shell files under `apps/native`, local-only empty capability, restrictive CSP, NSIS configuration, and public HTTPS-origin DTO draft with one happy-path and two failure-class unit checks. Existing React production assets are referenced by `frontendDist`; no frontend source, Rails API, canonical contract or observer code changed. The platform recommendation and release limits come from `/home/tanzeel/elevateo-mail-completion-20261015/advisors/nolan-platform.md`. A single shared UI avoids duplicate mail domain state; local-only privileges and no remote network keep unsupported authentication closed.
