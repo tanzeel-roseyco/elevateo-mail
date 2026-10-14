@@ -33,3 +33,7 @@ Sabine committed the legacy hook at `1a0ecfa` while integration is pending. Adde
 Independently reviewed Sabine's 85-line committed legacy mailbox hook with full rubric; 172-line companion test was read only as coverage context, 257 unique LOC across two <=200-line packets. Zero observed SQL defects in bounded static pass, 0/KLOC; runtime/design still pending. See `docs/completion/felix-sec802-legacy-review.md`.
 
 Reviewed Rowan's corrected SEND-809 tail at commit daf5161, exact SHA and 157-line packet in `docs/completion/felix-send809-followup-review.md`: zero observed static defects, 0/KLOC; worker-memory snapshot boundary and integrated race/runtime gates remain open.
+
+## SEND-809 integrated worker observation candidate
+
+Added `apps/server/test/qa817/worker_observation_database_test.rb` targeting Rowan's corrected single-path SQL. It uses actual worker login and real PostgreSQL: valid `local:` receipt accepts, foreign receipt and wrong attempt leave job dispatching, and stale lease generation cannot mark accepted. Soren command after immutable integration from `/workspace/apps/server`: `bundle exec ruby test/qa817/worker_observation_database_test.rb` with disposable BE02/BE03 fixture environment, then affected lint/Steep. Source is NOT_RUN; independent review requested. The existing Rowan suite covers broader cancellation/revocation/unknown races and remains required.

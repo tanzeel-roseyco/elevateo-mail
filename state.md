@@ -124,3 +124,5 @@ QA-817 now includes a real-database regression candidate for foreign tenant and 
 QA-817 origin/CSRF controller candidate checks same-origin success, cross-origin/missing-origin rejection, malformed CSRF rejection and forbidden token-field non-disclosure before Auth/SQL. It is unexecuted source pending fleet Docker.
 
 QA-817 added source-only private sales database cases: explicit private team membership permits read, a sales role alone does not, and organization admin role alone cannot read a personal mailbox. SEC-802 integration and Docker runtime evidence remain pending.
+
+QA-817 worker observation DB source targets Rowan's corrected SEND-809 seam. The three cases check accepted local receipt, rejected foreign receipt/wrong attempt, and denied stale-generation acceptance using the actual worker login. Soren Docker execution is pending.

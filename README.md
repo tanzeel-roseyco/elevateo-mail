@@ -182,3 +182,5 @@ QA-817 continuation adds candidate real-PostgreSQL tenant/private mailbox regres
 QA-817 also adds a real-controller (canned SQL) origin/CSRF and forbidden-field regression candidate; Soren Docker execution remains pending.
 
 QA-817 private sales/personal mailbox real-database regression source now targets Sabine's committed SEC-802 policy seam. It remains unexecuted until integrated into a frozen fleet test image.
+
+QA-817 now has a SEND-809 integrated worker observation database candidate for valid local receipt, forged receipt/wrong attempt, and stale generation. It is unexecuted pending immutable fleet integration.
