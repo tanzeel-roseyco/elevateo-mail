@@ -57,7 +57,7 @@ class DraftBootstrapTest < SessionDatabaseTestCase
   end
 
   def test_missing_schema_owner_drift_and_acl_drift_fail_before_mutation
-    ["DROP SCHEMA app_drafts_private", "ALTER SCHEMA app_drafts_private OWNER TO supabase_admin",
+    ["ALTER SCHEMA app_drafts_private RENAME TO be403_missing_schema_probe", "ALTER SCHEMA app_drafts_private OWNER TO supabase_admin",
      "GRANT USAGE ON SCHEMA app_drafts_private TO elevateo_api",
      "GRANT CREATE ON SCHEMA app_drafts_private TO PUBLIC",
      "REVOKE CREATE ON SCHEMA app_drafts_private FROM elevateo_owner",
