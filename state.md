@@ -6,6 +6,10 @@ Cassian merged the Foundation, Frontend, Delivery, Native, QA and Mail owner can
 
 Cassian prepared disabled organization grant, simulation-only outreach and internal worker-status V2 interfaces over `bbf2353`. Frozen V1 contracts and Rails routes remain unchanged. The V2 route registry fails closed until owning controllers and authorization gates are ready. Source and tests are committed for fleet Docker validation; runtime acceptance and generated web DTO adoption remain pending. See `docs/completion/cassian.md`.
 
+Integrated database evidence at Cassian 45be80b exposed a legacy draft down/reapply probe blocked by BE03's real FK. Theo's transaction-local dependency assertion and roster cursor typing correction are source candidates; Soren fleet rerun and isolated destructive-suite proof remain pending.
+
+ADV052 repair removes a false PASS path in the default-privilege probe; integrated runtime and separate BE02-only down/reapply remain unverified.
+
 # Project state
 
 ### Fable FE-805 shell/sidebar/brand candidate (2026-10-15)

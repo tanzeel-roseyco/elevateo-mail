@@ -73,6 +73,17 @@ class OrganizationGrantsHttpTest < Minitest::Test
     assert_equal "cursor_invalid", body.fetch("code")
   end
 
+  def test_roster_cursor_rejects_signed_unknown_key_without_offset_error
+    scope = { "actor_id" => USER, "organization_id" => ORG, "context_id" => CONTEXT,
+      "authorization_version" => @service.presentation.version(metadata),
+      "resource" => "organization_roster", "filters" => {}, "order" => "key:asc", "limit" => 2 }
+    cursor = Elevateo::Cursors.new(secret: "disposable-admin-cursor-signing-key-001")
+      .encode(position: { "config_key" => "elev-person-999" }, scope: scope)
+    status, _headers, body = dispatch(action: "roster", method: "GET", query: "limit=2&cursor=#{cursor}")
+    assert_equal 400, status
+    assert_equal "cursor_invalid", body.fetch("code")
+  end
+
   def test_get_cursor_pages_and_rejects_malformed_authority_rows
     @connection.page_result["next_user_id"] = TARGET
     status, _headers, first = dispatch(action: "index", method: "GET", query: "limit=1")

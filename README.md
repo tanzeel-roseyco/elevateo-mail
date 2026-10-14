@@ -26,6 +26,10 @@ Cassian prepared disabled organization grant, simulation-only outreach and inter
 
 The first integrated fleet migration failed parsing the attachment CASE in `00011`; Corin's `e94631f` parenthesizes that expression for a rerun. A bounded protected direct-message permalink reader is now a candidate, with its V2 route and fleet checks pending. Fake ingress does not connect to a receive provider and cannot establish live inbound readiness.
 
+The integrated legacy draft bootstrap probe now checks BE03's protective send-intent FK transactionally; full BE02 down/reapply remains a separate disposable BE02-only database check. The current fleet rerun is pending.
+
+ADV052 split the integrated send-dependency check from the default-privilege assertion, which now runs against a transactionally renamed schema. Fleet verification remains pending.
+
 
 ### R25 approval reload recovery candidate
 
