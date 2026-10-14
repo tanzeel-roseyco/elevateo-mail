@@ -479,3 +479,5 @@ ADV143 source review of b3aaa07e guard plus 732f2749 directory activation: 270 u
 Maeve ba4323f sequence test lint repair is imported source-only into feature/core. RuboCop/targeted Ruby rerun and four other owner areas remain pending; no lint PASS claim.
 
 QA815 no-follow browser privacy source and six-case fleet unit receipt are imported. Source-specific unit PASS does not prove real browser private mounts/compiled reporter; backend lint still gates realAuth.
+
+Nadia 200fc016 attachment controller/service lint repair is imported source-only into feature/core; remaining owner lint fixes and exact fleet rerun pending.

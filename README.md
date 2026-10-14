@@ -534,3 +534,5 @@ ADV143 independently reviewed the gateway guard and candidate assignee activatio
 Maeve's test-only sequence repository lint repair is staged in both feature and core candidates; the broader 19-offense QA815 lint gate remains failed until all owner patches pass on one exact fleet source.
 
 QA815 ADV144 private browser proof successor is staged from Soren `7738f8fd`/`1fcb462f`: no-follow path checks plus corrected fixture. His exact six-case fleet unit receipt `3546f570` passed; actual browser --list, mount proof and screenshots remain unexecuted.
+
+Nadia's `200fc016` two-line attachment lint repair is staged in feature and core: NoStorage still rejects every put, and the service regression keeps its assertion count. The exact coherent RuboCop and focused test rerun remain pending Soren.

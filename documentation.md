@@ -539,3 +539,5 @@ ADV143 bounded independent source review verified gateway Float nil guard and as
 Maeve ba4323f adjusts only the outreach sequence repository test to address its reported StructNewOverride/AmbiguousBlockAssociation lint findings. The patch is staged in both candidates; Soren fleet targeted lint/unit and coherent full RuboCop gate remain pending.
 
 QA815 ADV144 no-follow browser proof now rejects symlink redirection while checking private output modes. The corrected fixture passed six scoped Python cases in Soren fleet Docker on `1fcb462f`; integrated browser --list/mount proof and real cases remain pending.
+
+Nadia 200fc016 changes NoStorage#put to accept unused keyword options while still raising Invalid, and parenthesizes one service test map for lint clarity. It is integrated in both candidate branches without host execution; Soren will verify on a coherent source.
