@@ -13,6 +13,7 @@ Source candidate: `c151ecd` (ADV046/047 oracle repairs; source hashes below). Re
 | F2 (delta after REV875; source only) | `playwright/qa816-later-page.e2e.ts` 1–51 | 51 context; 8 added | `5dd7743844fa318d23d9f847438d8e0dfd56024342a71c9a5231f4e6141d287b` |
 | G (APP901 candidate; source only) | `playwright/qa816-feature-wave.e2e.ts` 1–30; `playwright/screenshots.ts` 78 | 31 | `ac49e2cef115e364d73818c609383d524b621758878e02d6580625db5e428834`, `561a07bc7cc1c9f535f729f270230120fbbc3d7653a6f0108a2a598fa9213be4` |
 | G2 (Mira fcfaf0f seam; source only) | `playwright/qa816-feature-wave.e2e.ts` 1–44; `playwright/screenshots.ts` 78–79 | 46 current context; 15 changed/new | `d97d55797d8e7c44e706cd72bac9704eb06424412c066cee83ceac3fa251cf68`, `04eb95b1a0c35f0784491d88d2d70d9fa88bc72ff98bb9a2dddae8ff1760f3b7` |
+| G3 (subject delta; source only) | `playwright/qa816-feature-wave.e2e.ts` 1–46 | 46 current context; 3 changed/new | `341ba19e71d8d1e55a198ba9efaf8b4ce8763c16ec2992659c8c67470c4d7e3d` |
 
 Dedicated design reviewer: examine A+B as two divided packets totaling 340 LOC, then C+D+E as separate divided packets totaling 280 LOC. Focus on genuine API/Auth observations, task-owned data and cleanup, transport barriers, response race assertions, role/tenant assumptions, screenshot admission/privacy and difference between visual viewport and text zoom. The same lines are overlapping design context, not extra unique coverage. Each functional packet stays below 200 LOC; each design assignment stays below 400 LOC.
 
