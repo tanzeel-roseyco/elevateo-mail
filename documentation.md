@@ -491,3 +491,5 @@ The ATT898 attachment repository bind/test-import repair is documented in `docs/
 The isolated core strict successor binds Numeric timeout through Kernel.Float and validates fake inbound provider fields as Strings before MIME ingest. It remains behind Soren Steep and focused HTTP checks plus Nadia old attachment index repair.
 
 The core strict-only attachment metadata adapter now uses Nadia's typed ReadAuthorization callable to recheck current message scope; exact Soren Steep and focused tests remain required before full backend/HTTP/worker gates.
+
+INT801 core gate lineage: b3aaa07e had 21 migrations, Ruby 522/7089 and Steep0 PASS but RuboCop19 FAIL. Exact strict-only a2f58b34 stages owner test/controller lint fixes from Maeve ba4323f, Nadia200fc016, Sabine28ef4d56, Corin f8d54cd7 and Orion435333b1 without V2 feature activation. Soren sole fleet Docker runs targeted authority fixture lint/unit, full lint/backend and authenticated HTTP/worker only after passing prerequisites.

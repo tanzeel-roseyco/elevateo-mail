@@ -335,3 +335,5 @@ Nadia STRICT909 exact `2418a72c` owner repair replaces only the old metadata ind
 Nadia STRICT909 final old-index `3f3562a6` adds one focused test proving current `ThreadReads::NotAvailable` denial propagates through the typed authorization callable after exactly one read. Production source is identical to interim `2418a72c`; independent review and Soren exact final-pin test remain pending.
 
 Ada ADV138 bounded independent source review of the core strict candidate covers Cassian gateway 51 LOC plus Corin fake inbound/test 161 LOC, total 212 unique versioned LOC/zero confirmed defects (0/KLOC), source only. Its limitations and no-runtime claim are recorded in `docs/completion/ada-adv138-core-strict.md`; Nadia STRICT909 remains separately reviewed/pending.
+
+Strict-only core source a2f58b34 is the coherent five-owner lint successor to Soren b3aaa07e; branch documentation successor follows source pin. Owner repairs remain source-only until Soren exact fleet targeted/full lint, missing authority fixture and HTTP/worker. No host app execution or feature V2 route activation in this branch.

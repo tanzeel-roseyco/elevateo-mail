@@ -431,3 +431,5 @@ Core strict-only branch adds Cassian gateway and Corin fake inbound type repairs
 Nadia STRICT909 old-controller repair is integrated on the isolated core branch without ATT902 content changes. All ten known 215080 Steep diagnostics have source candidates; exact successor fleet proof is NOT_RUN.
 
 STRICT909 final test-only successor adds current-reader denial propagation oracle; core production source unchanged, fleet final-pin proof pending.
+
+Strict-only core a2f58b34 has five owner lint repair source hunks. No test/lint/HTTP/worker result on this successor; Soren exact fleet gate pending. Earlier b3aaa07e Ruby/Steep PASS and lint19 FAIL remain source-specific.

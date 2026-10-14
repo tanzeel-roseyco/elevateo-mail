@@ -1307,3 +1307,5 @@ Core strict-only candidate imports Corin 0526a508 fake inbound controller/non-sc
 Nadia STRICT909 `2418a72c` old-index authorization callable/RBS/test is imported on the isolated core branch with <=216 unique LOC owner review packet. Independent source/design review and fleet strict/unit execution remain pending; reviewed LOC/defects/KLOC unclaimed. No ATT902 byte action is included in this gate candidate.
 
 ADV138 Ada independently reviewed Cassian a853b7fe gateway Float and Corin0526 fake inbound scalar/test repairs: 212 unique versioned LOC in <=108-line reads, zero confirmed defects (0/KLOC), source only. It excludes full ingress/gateway transport, actual HTTP/DB and successor Steep. Report `docs/completion/ada-adv138-core-strict.md`.
+
+Strict-only five-owner lint successor a2f58b34 is unreviewed as an aggregate and unexecuted; each owner patch is source-specific and prior b3aaa07e lint19 findings remain historical until fleet rerun. Aggregate reviewed LOC/defects/KLOC unassessed.

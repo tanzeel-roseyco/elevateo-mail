@@ -486,3 +486,5 @@ ATT898 Nadia repository/test import repair is integrated for the exact QA815 att
 Core strict successor stages Cassian gateway Numeric conversion and Corin fake inbound scalar validation over exact 215080a4; Nadia attachment index type repair is pending. Soren fleet Steep/full backend/HTTP/worker have not run on this successor.
 
 Core strict-only candidate now includes Nadia's typed attachment metadata authorization callable atop exact 215080a4, alongside gateway and fake inbound fixes; Soren successor Steep/focused units remain pending.
+
+INT801 strict-only core source `a2f58b34` assembles five owner lint repairs over fleet b3aaa07e: Maeve sequence test, Nadia attachment controller/service test, Sabine gateway ACL test, Corin fake inbound guard, Orion authority fixture syntax. Earlier b3aaa07e migrated 21, passed Ruby522/7089 and Steep0 but failed RuboCop19; a2f58b34 exact fleet lint, authority fixture and HTTP/worker remain pending. This branch excludes the broader V2 activation candidate.
