@@ -1,0 +1,10 @@
+{
+  "source": "f7fc830815606ed382ada6c0badde1b39eb21785",
+  "at": "2026-10-14T11:36:07.657139+00:00",
+  "exit": 0,
+  "container": "be03-r25-rowan-light-f7fc830",
+  "independent_absence": true,
+  "scope": "canonical --lint plus syntax1; DB NOT_RUN",
+  "log_sha256": "c9e8a0e6ca81925bd11416fb5b9cc4527cd07c6b8ebc88a225b0f42b956fbe81",
+  "shared_image_retained": true
+}
