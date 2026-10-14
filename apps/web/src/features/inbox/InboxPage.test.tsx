@@ -155,7 +155,8 @@ describe('continuation and reset (FE-R08/R09)', () => {
 
   it('shows the unavailable state for an absent or inaccessible mailbox', async () => {
     renderInbox(createFixtureGateway({ listThreads: 'not_available' }))
-    await screen.findByText('This mailbox is unavailable')
+    await screen.findByRole('heading', { name: 'This mailbox is unavailable', level: 2 })
+    expect(screen.queryByRole('link')).toBeNull()
   })
 })
 

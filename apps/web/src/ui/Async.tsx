@@ -24,7 +24,7 @@ export function EmptyState({ title, body, action }: { title: string; body?: stri
   return (
     <div className="flex flex-col items-center gap-2 px-6 py-12 text-center">
       <AlertIcon className="size-5 text-muted" />
-      <p className="text-sm font-semibold">{title}</p>
+      <h2 className="text-sm font-semibold">{title}</h2>
       {body && <p className="max-w-sm text-[13px] text-muted">{body}</p>}
       {action && <div className="mt-2">{action}</div>}
     </div>
