@@ -14,6 +14,8 @@ Shared company mailroom with one Rails domain authority and a React/TypeScript c
 
 ## Current state
 
+SEND809 exact integrated `7aa61be4649ca251c3faff368ba61dfa7e313708` passed real PostgreSQL migrations but the affected send database suites had eight cancellation guard setup errors, two fixture lock timeouts, three mismatched Mailpit snapshot approval errors, and one binary/UTF-8 oracle failure. Rowan committed bounded test fixture repairs `49aaad8`, `f9f13a0`, `3fe86b7`, `bf2748f`; Soren fleet rerun is pending. Production write guard, lease, approval and Mailpit authority were not loosened.
+
 ### INT-801 integrated source candidate (2026-10-14)
 
 Rowan `d9d428e` replaced the IF-embedded Mailpit profile CASE that blocked exact 4a0ba0b migration with explicit permitted profile/hash pairs and added a real-DB regression. It is merged; Soren has been asked for a fresh disposable migration and targeted worker/schema/HTTP gates. No corrected-source runtime PASS is claimed yet.
