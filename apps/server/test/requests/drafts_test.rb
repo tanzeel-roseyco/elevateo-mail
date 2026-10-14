@@ -128,7 +128,9 @@ class DraftsRequestTest < Minitest::Test
     @connection.outcome["version"] = 0
     response = dispatch
     assert_equal 500, response[0]
-    assert_equal :rollback, @connection.events.last
+    assert_includes @connection.events, :rollback
+    assert_includes @connection.events, :disconnect
+    assert_operator @connection.events.index(:rollback), :<, @connection.events.index(:disconnect)
     assert_empty @connection.business
   end
 

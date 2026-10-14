@@ -124,16 +124,19 @@ class WriteBoundaryPoolTestCase < WriteBoundaryDatabaseTestCase
   end
 
   # AIDEV-NOTE: Waiters expose actual pool wait/lease events; queue gates select schedules without timing sleeps.
-  def pool_waiter(acquired, release)
+  def pool_waiter(acquired, release, expected_backend: nil)
     Thread.new do
       connection = @pool.checkout(3)
       begin
         assert_includes @pool.connections, connection
         assert_same ActiveSupport::IsolatedExecutionState.context, connection.owner
+        # AIDEV-NOTE: Rails checkout is lazy; establish one real session before publishing the waiter barrier.
+        backend = connection.select_value("SELECT pg_backend_pid()")
+        assert_equal expected_backend, backend if expected_backend
         acquired << connection
         raise "waiter release barrier timed out" unless release.pop(timeout: 3)
         assert connection.active?, "a previous request disconnected this owner's adapter"
-        assert_equal 1, connection.select_value("SELECT 1")
+        assert_equal backend, connection.select_value("SELECT pg_backend_pid()"), "waiter backend must not reconnect"
       ensure
         @pool.checkin(connection)
       end
