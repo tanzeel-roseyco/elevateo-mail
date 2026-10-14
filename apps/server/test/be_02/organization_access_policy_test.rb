@@ -271,10 +271,14 @@ class OrganizationAccessPolicyTest < MailboxMembershipDatabaseCase
     refute_includes grants_page.fetch("items").map { |item| item.fetch("user_id") }, foreign_actor.user_id
   end
 
-  def test_non_admin_cannot_read_grants_or_stale_role_mutate
+  def test_auditor_reads_only_audit_and_associate_reads_neither
     other = add_actor
     grant(other, "auditor")
     assert_equal "not_found", grants_page(actor: other).fetch("status")
-    assert_equal "not_found", audit_status(other)
+    assert_equal "ok", audit_status(other)
+    associate = add_actor
+    grant(associate, "associate")
+    assert_equal "not_found", grants_page(actor: associate).fetch("status")
+    assert_equal "not_found", audit_status(associate)
   end
 end

@@ -208,3 +208,5 @@ Personal mailbox owners cannot lose manager access through the legacy mutation, 
 Outreach content reads have a separate digest-verified role check for owner/admin/sales_manager/sales. Dorian's domain RLS must enforce the same policy; these checks do not confer mailbox or send rights.
 
 Organization role changes append a redacted audit event in the same database transaction only on a real change. The owner/admin audit page is digest-verified, tenant-scoped and newest-first; its UUID cursor resolves to an immutable sequence within the tenant. No message content, addresses or secrets enter this audit.
+
+Security auditors may read metadata-only organization role audit pages; they cannot list effective grants or mutate roles. Audit timestamps use six-digit UTC wire formatting.
