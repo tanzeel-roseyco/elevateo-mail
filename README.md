@@ -196,3 +196,5 @@ QA816 drawer selectors now target the agreed accessible names `Open navigation` 
 QA816 includes a source-only real reply-as-draft browser journey over Mira's thread UI, saving and reopening a case-owned draft without sending.
 
 QA816 has a source-only Mira thread transport-loss/retry browser case that requires a real API recovery and no stale plaintext.
+
+Fable `f295b35` now implements the agreed navigation labels; Soren's QA816 list-only container probe passed on an earlier source, with zero browser cases/screenshots. Real visual acceptance still awaits integrated web and database gates.

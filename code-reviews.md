@@ -700,3 +700,5 @@ QA816 ce73f55 changes two selector literals from a root/Fable design decision. I
 QA816 reply journey at 199c132 is authored and unreviewed by independent agents; reviewed LOC 0, defect density not computed, runtime NOT_RUN.
 
 QA816 thread transport candidate at 069257f remains authored but independently unreviewed, with 0 reviewed LOC and no computed density; fleet browser runtime NOT_RUN.
+
+QA816 list-only reporter probe is runtime setup evidence with zero browser assertions or independent source review. Independent reviewed LOC remains 0, defect density not computed, actual visual review pending.

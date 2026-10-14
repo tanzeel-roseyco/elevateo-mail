@@ -138,3 +138,5 @@ QA816 head ce73f55 stages the root/Fable navigation drawer accessible-name chang
 QA816 head 199c132 adds a Mira reply-as-draft PUT/reload case and one fixed screenshot ID (26 total). This source remains unrun; an eligible seeded sender and integrated Mira UI are required.
 
 QA816 head 069257f adds a genuine thread GET transport abort/retry case and two screenshots (28 fixed IDs total). Seventeen supplemental cases are authored; current integrated browser runtime remains NOT_RUN.
+
+QA816 head 503099d records Fable f295b35 drawer-label resolution and Soren's earlier 6389cc4 Playwright --list exit0. The probe used task-local valid seed configuration and ran zero browser cases; current integrated web lint and Corin migration block actual screenshots.
