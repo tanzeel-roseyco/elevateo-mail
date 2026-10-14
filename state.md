@@ -404,3 +404,5 @@ ADV124 reported one retained P2 on the nominal attachment HTTP fake. Its respons
 SEC802 source candidate removes PostgreSQL `CURRENT_ROLE` name collision in outreach read/write business grant checks; eligibility and actor proof are otherwise unchanged. Focused sales/owner/auditor fleet assertions and independent review pending; earlier shared `not_found` failure remains historical until rerun.
 
 Exact 211df76 focused fleet Steep/unit found six attachment gateway client typing diagnostics and one test fake constructor error. The candidate narrows the optional callback, passes Float to Net::HTTP timeout setters, collects a bounded response tuple after the block, and fixes the fake constructor; successor runtime/review pending.
+
+Elara's test-only Drain `minitest/mock` require addresses an isolated unit setup error; corrected fleet runtime pending, simulated send behavior unchanged.

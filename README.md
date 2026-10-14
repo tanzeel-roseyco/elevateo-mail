@@ -459,3 +459,5 @@ ADV124 found a retained P2 in the attachment client's nominal HTTP fake. The suc
 Elara's SEC802 candidate renames a PL/pgSQL local variable in both outreach read/write helpers from `current_role` (a PostgreSQL special value) to `business_role`, preserving eligible-role policy and adding explicit sales/owner role and auditor-denial assertions. This source addresses the shared `not_found` witness but needs Soren's focused fleet migration/test proof and independent bounded review; no production acceptance yet.
 
 Focused fleet strict/unit checks on 211df76 found Cassian attachment client typing errors and a slow-fake constructor error before its timeout assertion. A scoped client/RBS/test candidate addresses those exact diagnostics without weakening private byte/authorization bounds; Soren's successor fleet rerun and independent review are pending.
+
+An isolated Drain unit harness error on the older focused strict run came from missing `minitest/mock`; Elara's test-only require is now integrated. It does not change send behavior, and the corrected unit awaits Soren's fleet rerun.

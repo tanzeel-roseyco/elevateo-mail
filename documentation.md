@@ -466,3 +466,5 @@ The private attachment client slow-stream fake now returns a Net::HTTPResponse s
 The two outreach access helpers now store the organization's granted business role in `business_role` rather than a PL/pgSQL variable named `current_role`, which collides with PostgreSQL's effective SQL role special value. The same scope and eligible-role list remain, and the test asserts sales/owner role values plus auditor denial. The changed SQL is a source candidate pending disposable migration and focused fleet regression.
 
 The private attachment client strict candidate retains the existing Numeric 0–5 second external deadline, converts only the Net::HTTP setter value to Float, and returns the bounded response tuple after the HTTP block closes. Its in-process slow fake is constructed with Net::HTTP's required internal host/port. These changes follow exact 211df76 fleet errors and need successor Steep/unit verification.
+
+The Drain unit test explicitly loads Minitest's mock extension before using `.stub`, removing a focused setup error without changing send worker implementation. Soren's successor unit result is pending.
