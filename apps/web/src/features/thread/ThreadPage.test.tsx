@@ -9,7 +9,7 @@ import { useLayoutEffect } from 'react'
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { Link, MemoryRouter, Route, Routes, useParams } from 'react-router'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { SessionProvider } from '@/app/session'
+import { SessionProvider, useSession } from '@/app/session'
 import { DraftIntentProvider } from '@/app/draftIntent'
 import { MailboxesProvider } from '@/app/mailboxes'
 import { DraftEditorPage } from '@/features/drafts/DraftEditorPage'
@@ -222,12 +222,31 @@ describe('individual message permalink', () => {
   })
 
   it('never renders a message after direct lookup reports a revoked session', async () => {
-    const direct = vi.fn<DirectMessageRead>(async () => { throw new GatewayError('api', 'unauthenticated', 'Session ended', { status: 401, requestId: 'r1' }) })
+    let rejectDirect!: (reason: unknown) => void
+    const direct = vi.fn<DirectMessageRead>(async () => new Promise((_resolve, reject) => { rejectDirect = reject }))
     const gateway = pagedGateway([detailPage([MESSAGE_A], 'next')]).gateway
     const challenge = vi.spyOn(gateway, 'getLoginChallenge')
-    renderReaderWith(gateway, `/mailboxes/${MB}/threads/${THREAD}?message=${MESSAGE_B}`, direct)
+    const refresh = vi.spyOn(gateway, 'refreshSession')
+    function ProtectedReader() {
+      const { state } = useSession()
+      return state.status === 'ready' ? <ThreadPage readDirectMessage={direct} /> : <p>Session: {state.status}</p>
+    }
+    render(
+      <SessionProvider gateway={gateway}>
+        <DraftIntentProvider>
+          <MemoryRouter initialEntries={[`/mailboxes/${MB}/threads/${THREAD}?message=${MESSAGE_B}`]}>
+            <Routes><Route path="/mailboxes/:mailboxId/threads/:threadId" element={<ProtectedReader />} /></Routes>
+          </MemoryRouter>
+        </DraftIntentProvider>
+      </SessionProvider>,
+    )
+    await screen.findByText(MESSAGE_A)
+    await waitFor(() => expect(direct).toHaveBeenCalledTimes(1))
+    await act(async () => rejectDirect(new GatewayError('api', 'unauthenticated', 'Session ended', { status: 401, requestId: 'r1' })))
+    await screen.findByText('Session: unauthenticated')
     await waitFor(() => expect(challenge).toHaveBeenCalledTimes(1))
-    expect(direct).toHaveBeenCalledTimes(1)
+    expect(refresh).toHaveBeenCalledTimes(1)
+    expect(screen.queryByText(MESSAGE_A)).toBeNull()
     expect(screen.queryByText('Direct plaintext')).toBeNull()
     expect(screen.queryByLabelText('Selected message')).toBeNull()
   })
@@ -235,7 +254,9 @@ describe('individual message permalink', () => {
   it.each(['resolve', 'reject'] as const)('drops a direct %s at the keyed thread commit boundary', async (outcome) => {
     let resolveOld!: (value: ReturnType<typeof directPage>) => void
     let rejectOld!: (reason: unknown) => void
-    const direct = vi.fn<DirectMessageRead>(async () => new Promise<ReturnType<typeof directPage>>((resolve, reject) => {
+    let oldSignal: AbortSignal | undefined
+    const direct = vi.fn<DirectMessageRead>(async (_context, _mailboxId, _threadId, _messageId, signal) => new Promise<ReturnType<typeof directPage>>((resolve, reject) => {
+      oldSignal = signal
       resolveOld = resolve
       rejectOld = reject
     }))
@@ -251,6 +272,9 @@ describe('individual message permalink', () => {
       const { threadId } = useParams<{ threadId: string }>()
       useLayoutEffect(() => {
         if (threadId !== THREAD2) return
+        // This runs before passive cleanup: the old request must already be owned and aborted.
+        expect(oldSignal).toBeDefined()
+        expect(oldSignal?.aborted).toBe(true)
         if (outcome === 'resolve') resolveOld(directPage(MESSAGE_B))
         else rejectOld(new GatewayError('api', 'unauthenticated', 'old thread revoked', { status: 401, requestId: 'r1' }))
       }, [threadId])
