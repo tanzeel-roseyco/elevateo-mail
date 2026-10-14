@@ -1,6 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
 import { createV2OutreachGateway } from './v2OutreachGateway'
-import type { OutreachGateway } from '@/features/outreach/contract'
 
 const id = '00000000-0000-4000-8000-000000000001'
 const context = { contextId: 'a'.repeat(16), authorizationVersion: 'b'.repeat(16) }
@@ -13,7 +12,7 @@ describe('isolated V2 outreach gateway', () => {
       void init
       return response({ items: [{ id, name: 'Pilot', status: 'draft', version: 1 }], next_cursor: null })
     })
-    const gateway: OutreachGateway = createV2OutreachGateway(fetchImpl)
+    const gateway = createV2OutreachGateway(fetchImpl)
     const page = await gateway.listCampaigns(context, { limit: 10 }, new AbortController().signal)
     expect(page.items[0]?.id).toBe(id)
     expect(fetchImpl).toHaveBeenCalledTimes(1)
@@ -36,7 +35,7 @@ describe('isolated V2 outreach gateway', () => {
       void init
       return response({ items: [], next_cursor: null })
     })
-    const gateway: OutreachGateway = createV2OutreachGateway(fetchImpl)
+    const gateway = createV2OutreachGateway(fetchImpl)
     await expect(gateway.listAccounts(context, id, {}, new AbortController().signal))
       .rejects.toMatchObject({ kind: 'api', code: 'temporarily_unavailable' })
     await expect(gateway.getAccount(context, id, id, new AbortController().signal))
