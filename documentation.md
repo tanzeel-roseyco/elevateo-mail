@@ -188,8 +188,4 @@ Cassian manifest reconciliation: contract-lock now seals actual generated client
 
 ### SEND-810 cancellation seam
 
-The additive `app.cancel_send` function locks the job and rechecks current session and draft scope before changing state. It validates the redacted status projection and returns the canonical `CancellationResult` shape. Cancellation of a leased or attempted job records a request; the worker must honor that flag at protected admission and reconcile any possible delivery. Canonical contract registration and integrated validation are pending in `docs/completion/nadia.md`.
-
-SEND-810 worker bridge: `next_due_send` gives only an identity; `claim_job` fences a lease; `authorize_and_read` checks current member capability and suppression before Rowan's durable attempt write and returns the immutable snapshot only to the worker role; `final_submission_check` rechecks authority/cancellation before local simulated I/O. The process entrypoint is still disabled pending integrated fleet proof. See docs/completion/nadia.md.
-
-The simulated worker process requires explicit `ELEVATEO_SIMULATED_SEND_WORKER=true` plus the worker DB role, send API opt-in, external control path and global outbound hold. It uses only the local failure driver; default startup reports dispatch disabled. This source path is unverified until Soren's fleet run.
+`app.cancel_send` locks the durable job and rechecks current session, author and approve-send scope. It returns the canonical `CancellationResult`; a possible call remains a stop request until worker observation reconciliation. The claimed-but-unattempted race and late-accepted observation are covered by requested database regressions. Worker execution follows Rowan's authority and Elara's store/executor integration; Nadia's duplicate bridge and startup switch were removed. See `docs/completion/nadia.md`.

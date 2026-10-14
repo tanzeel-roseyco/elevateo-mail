@@ -677,10 +677,6 @@ R25 runtimeC1readiness defect localized through same7e safe13scalar diagnostic: 
 
 R25 lint repair: one tooling defect in the unmount cleanup (ref must be captured at effect setup), repaired in a six-line effect excerpt with its corresponding anchor updated. Defects: 1 in 82 provider LOC, density 12.20/KLOC; this is tooling evidence, not adversarial acceptance. Independent design review of original candidate: 0 defects/246 production LOC, density 0/KLOC. Scoped Docker typecheck/22 tests/build passed author evidence; successor lint verification and functional review remain pending.
 
-SEND-810 Nadia candidate: bounded independent functional and design review requested from root; none performed yet, so reviewed LOC, defects and density are unreported. Author static inspection only; Docker and integrated runtime NOT_RUN. See docs/completion/nadia.md.
-
 SEND-809 self review: migration and SQL ~230 source LOC, zero confirmed defects after local corrections (0 confirmed/KLOC). Independent bounded functional and design reviews NOT_RUN; request to root. See docs/completion/rowan.md.
 
-SEND-810 integrated worker bridge/store: independent bounded functional/design review requested; no review performed and no defect density reported. Author inspection found one Rowan integration defect: `claim_job` blocks reconciliation when `cancel_requested_at` is set; root/Rowan fix pending. Worker bridge Docker runtime NOT_RUN. See docs/completion/nadia.md.
-
-SEND-810 process wiring and unattempted-lease race change: independent review pending, defects/density unreported. Author source inspection only; Docker startup and migration checks NOT_RUN.
+SEND-810 Nadia cancellation API/SQL and Rowan direct-function race tests: independent bounded functional and design reviews requested; none performed, so reviewed LOC, defects and density remain unreported. Author inspection found the Rowan `claim_job` reconciliation guard defect, routed to Rowan/root. Duplicate bridge/process source was removed before runtime; Docker NOT_RUN. See docs/completion/nadia.md.

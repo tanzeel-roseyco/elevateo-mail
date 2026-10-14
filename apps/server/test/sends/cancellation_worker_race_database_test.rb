@@ -1,0 +1,56 @@
+# frozen_string_literal: true
+
+require_relative "approval_database_helper"
+
+# AIDEV-NOTE: These races use Rowan's durable worker functions and the public cancellation API facade.
+class SendCancellationWorkerRaceDatabaseTest < SendDatabaseTestCase
+  def claim(send, lease)
+    JSON.parse(@worker.exec_params("SELECT app_send_private.claim_job($1::uuid,$2::uuid,$3::uuid,30)",
+      [send, lease, @epoch]).getvalue(0, 0))
+  end
+
+  def authorize(send, lease, generation, attempt)
+    JSON.parse(@worker.exec_params(<<~SQL, [send, lease, generation, attempt, @epoch]).getvalue(0, 0))
+      SELECT app_send_private.authorize_attempt($1::uuid,$2::uuid,$3::bigint,$4::uuid,$5::uuid,
+        decode(repeat('00',32),'hex'),'none',10)
+    SQL
+  end
+
+  def cancel(send)
+    begin_write
+    result = JSON.parse(@api.exec_params("SELECT app.cancel_send($1::text,$2::uuid,$3::uuid,$4::uuid)",
+      [@digest, @box, send, @epoch]).getvalue(0, 0))
+    @api.exec("COMMIT")
+    result
+  ensure
+    @api.exec("ROLLBACK") if @api.transaction_status != PG::PQTRANS_IDLE
+  end
+
+  def test_cancel_after_claim_before_attempt_revokes_lease_without_possible_call
+    send = approve.fetch("send_id")
+    lease = SecureRandom.uuid
+    generation = claim(send, lease).fetch("generation")
+    result = cancel(send)
+    assert_equal "cancelled", result.fetch("state")
+    assert_equal 0, result.fetch("attempts")
+    assert_equal "dispatch_held", authorize(send, lease, generation, SecureRandom.uuid).fetch("code")
+  end
+
+  def test_cancel_after_attempt_does_not_erase_late_accepted_evidence
+    send = approve.fetch("send_id")
+    lease = SecureRandom.uuid
+    generation = claim(send, lease).fetch("generation")
+    attempt = SecureRandom.uuid
+    assert_equal attempt, authorize(send, lease, generation, attempt).fetch("attempt_id")
+    result = cancel(send)
+    assert_equal "dispatching", result.fetch("state")
+    assert_equal true, result.fetch("cancel_requested")
+    accepted = JSON.parse(@worker.exec_params(<<~SQL, [send, lease, generation, SecureRandom.uuid, attempt]).getvalue(0, 0))
+      SELECT app_send_private.record_observation($1::uuid,$2::uuid,$3::bigint,$4::uuid,$5::uuid,
+        'accepted','local:#{'a' * 64}',decode(repeat('11',32),'hex'))
+    SQL
+    assert_equal "accepted", accepted.fetch("state")
+    assert_equal "accepted", status(send).fetch("state")
+    assert_equal({ "code" => "send_terminal" }, cancel(send))
+  end
+end
