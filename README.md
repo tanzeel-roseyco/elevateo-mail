@@ -138,3 +138,6 @@ Root actual visual receipt: desktop reader paragraphs PASS; Drafts navigation, e
 R24 assembled SQL/API/UI plus isolated synthetic demo candidate `1429f1d` preserves exact owner ancestry. Narrow tracked runner repair adds privileged bootstrap-send before migration00007 and admits required test/sends suites. Runner regressions and independent functional/design review pending; integrated DB/Auth/HTTP/UI NOT_RUN. Four Docker recipes unchanged; BE02 OPEN and release gated. See docs/completion/be03-r24-contract-integration.md.
 
 R24 source verification on37861fc: all baseline C/D operations/components and four existing Docker recipes structurally/byte unchanged; owner UI/demo/HTTP source seals preserved. Runner functional/design0defects; application runtime remains pending. Complete-history clone bundle published to root; BE02OPEN/releasegated.
+
+
+R25 approval recovery verification follow-up: fleet strict typecheck, corrected scoped runner (22 tests across three files), and production build passed. Fleet lint identified one effect-cleanup ref-capture defect; cleanup now captures this provider's original map, preserving its synchronous unmount/late-outcome guard. Mira owns Docker re-verification; no host tests or duplicate Docker execution. Independent functional and actual UI gates remain pending.

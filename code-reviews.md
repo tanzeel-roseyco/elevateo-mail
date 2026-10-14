@@ -669,3 +669,6 @@ Runner dc3796a: SPEC-C21 independent functional109uniqueLOC0defects0/KLOC, SPEC-
 ### R25 approval reload recovery ? awaiting independent review
 
 Candidate adds bounded tab recovery for unresolved approval metadata. Review checklist: strict nonsecret schema/limits; original binding before POST; current actor/org/mailbox/draft scope; pending->uncertain; explicit fresh-authorized retry; logout/principal/unmount late outcomes; visible storage errors; happy and failure regressions. Production coverage packet: approvalRecovery.ts41LOC, sendIntent.tsx82LOC, SendReviewPage changed approval/load portions (~90LOC; assign separately). Independent defects and density are pending, not reported as zero. Self-inspection found/repaired one unmount-late-write risk before commit; no independent review claim. No Docker resources created by Ada.
+
+
+R25 lint repair: one tooling defect in the unmount cleanup (ref must be captured at effect setup), repaired in a six-line effect excerpt with its corresponding anchor updated. Defects: 1 in 82 provider LOC, density 12.20/KLOC; this is tooling evidence, not adversarial acceptance. Independent design review of original candidate: 0 defects/246 production LOC, density 0/KLOC. Scoped Docker typecheck/22 tests/build passed author evidence; successor lint verification and functional review remain pending.

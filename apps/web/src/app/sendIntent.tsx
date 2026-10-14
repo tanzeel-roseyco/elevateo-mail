@@ -58,8 +58,12 @@ export function SendIntentProvider({ children }: { children: ReactNode }) {
       clear: (key) => { if (!scoped(key)) return; const next = new Map(map); next.delete(key); commit(next) },
     }
   }
-  // AIDEV-NOTE: An old provider's late HTTP outcome must not overwrite a reloaded tab's retry metadata.
-  useEffect(() => { alive.current = true; return () => { alive.current = false; entries.current.clear() } }, [])
+  // AIDEV-NOTE: Capture this provider's map; unmount blocks late writes to a reloaded tab's metadata.
+  useEffect(() => {
+    const map = entries.current
+    alive.current = true
+    return () => { alive.current = false; map.clear() }
+  }, [])
   const previous = useRef<string | null>(null)
   const drop = ['unauthenticated', 'signing_out', 'no_organization'].includes(state.status)
   useEffect(() => {
