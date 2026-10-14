@@ -89,7 +89,8 @@ class SendAPIControllerTest < Minitest::Test
     assert_equal 503, result[0]
     assert_equal "temporarily_unavailable", result[2]["code"]
     assert_empty @connection.business
-    assert_equal :rollback, @connection.events.last
+    assert_includes @connection.events, :rollback
+    refute_includes @connection.events, :commit
 
     @connection = Connection.new(metadata)
     @connection.rows = [row("code" => "not_available"), row("code" => "dispatch_held")]
@@ -99,7 +100,8 @@ class SendAPIControllerTest < Minitest::Test
     assert_nil @connection.approval_arguments[6]
     assert_nil @connection.approval_arguments[7]
     assert_empty @connection.business
-    assert_equal :rollback, @connection.events.last
+    assert_includes @connection.events, :rollback
+    refute_includes @connection.events, :commit
   end
 
   def test_revoked_auth_and_stale_context_never_query_approval
@@ -136,7 +138,8 @@ class SendAPIControllerTest < Minitest::Test
     result = dispatch_send
     assert_equal 500, result[0]
     assert_equal "internal_error", result[2]["code"]
-    assert_equal :rollback, @connection.events.last
+    assert_includes @connection.events, :rollback
+    refute_includes @connection.events, :commit
     assert_empty @connection.business
     refute result[2].key?("snapshot_bytes")
   end
@@ -146,6 +149,7 @@ class SendAPIControllerTest < Minitest::Test
     assert_equal 503, result[0]
     assert_equal "temporarily_unavailable", result[2]["code"]
     assert_empty @connection.business
-    assert_equal :rollback, @connection.events.last
+    assert_includes @connection.events, :rollback
+    refute_includes @connection.events, :commit
   end
 end

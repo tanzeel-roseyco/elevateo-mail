@@ -89,7 +89,6 @@ module Elevateo
 end
 module V1
   class SendController < WriteController
-    protected
     def send_service: (Elevateo::_ThreadConnection, Elevateo::ReadResponse::item) -> Elevateo::SendAPI::Service
     def send_path: (Symbol) -> String
     def send_read_target: (Symbol) -> String
