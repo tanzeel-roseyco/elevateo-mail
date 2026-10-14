@@ -210,3 +210,5 @@ QA816 transient thread recovery uses an unforwarded browser GET to expose error,
 QA816 list-only reporter probe passed in fleet Docker on earlier 6389cc4 with exact task cleanup, confirming test admission rather than browser behavior. Fable's accepted navigation labels are implemented in f295b35; real UI screenshots remain pending coherent integrated web and database execution.
 
 QA816 empty search now requires the settled “No matches” state and absence of “Searching” before zero-link assertion and screenshot. Felix's initial MEDIUM source finding is preserved; corrected source is not yet independently re-reviewed or run in fleet browser.
+
+QA816 ADV046/047 repairs require a real send-review denial response and alert, a native invalid campaign-name witness plus bounded no-POST observation, and exact seeded reply recipient before and after reload. These changes are source-only until independent re-review and Soren fleet browser execution.

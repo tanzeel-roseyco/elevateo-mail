@@ -142,3 +142,5 @@ QA816 head 069257f adds a genuine thread GET transport abort/retry case and two 
 QA816 head 503099d records Fable f295b35 drawer-label resolution and Soren's earlier 6389cc4 Playwright --list exit0. The probe used task-local valid seed configuration and ran zero browser cases; current integrated web lint and Corin migration block actual screenshots.
 
 QA816 head 6819af1 repairs Felix's MEDIUM empty-search loading race in QA817-F2 (initial packet A 1/152 LOC, 6.58/KLOC); re-review and runtime remain pending. Earlier QA816 source/check receipts do not establish settled-search visual PASS.
+
+QA816 head 1c41d40 repins ADV046/047 repairs in send/outreach/reply browser oracles. Vera identified two gaps and Ada one; exact reviewer coverage/density and repaired-source re-review remain pending. Integrated application/browser/screenshots still NOT_RUN.

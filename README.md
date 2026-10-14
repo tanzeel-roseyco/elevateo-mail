@@ -200,3 +200,5 @@ QA816 has a source-only Mira thread transport-loss/retry browser case that requi
 Fable `f295b35` now implements the agreed navigation labels; Soren's QA816 list-only container probe passed on an earlier source, with zero browser cases/screenshots. Real visual acceptance still awaits integrated web and database gates.
 
 Felix found and Tessa repaired one MEDIUM QA816 empty-search evidence oracle; the candidate now waits for settled “No matches” before screenshot. Independent repair review and real fleet browser execution remain pending.
+
+QA816 source now repairs three additional independent review findings: delayed send-review denial, empty campaign form no-POST observation, and exact seeded reply recipient equality. Re-review and fleet browser results remain pending.
