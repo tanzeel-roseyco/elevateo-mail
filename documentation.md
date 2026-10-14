@@ -207,6 +207,8 @@ SEC-802 database fixture note: the legacy membership test harness must create di
 
 The draft concurrency test harness also supplies an explicit task-owned team classification for its private draft mailbox, an owner role and a bounded ceiling before its protected self-revocation scenario. Schema dependency drift fixtures remain a separate Theo-owned change.
 
+Fixture teardown recovery is limited to the disposable test database: when its admin login was closed, it reconnects with database/login verification and must reacquire the advisory fixture lock before changing rows. Failed local cleanup does not skip inherited teardown, and draft save/read ensure blocks preserve the initiating exception if rollback cannot run. This is test harness behavior, not runtime recovery behavior.
+
 The protected grants page also returns current actor role/revision independently of pagination; audit metadata remains unavailable until a separately reviewed authority endpoint exists.
 
 Personal mailbox owners cannot lose manager access through the legacy mutation, and non-owners cannot receive personal manager authority. Team last-manager checks count only managers whose current organization role and explicit ceiling permit administration. Outreach draft mutation has a separate protected current-role check for owner/admin/sales_manager/sales; sending remains separately gated.

@@ -6,9 +6,24 @@ module OrganizationAccessFixtureCleanup
   def teardown
     cleanup_error = nil
     begin
-      cleanup_organization_access_fixture if @admin && @org && !@admin.finished?
+      restore_fixture_connections
+      rollback_fixture_connection(@api)
+      rollback_fixture_connection(@admin)
     rescue StandardError => error
       cleanup_error = error
+    end
+    unless cleanup_error
+      begin
+        prepare_organization_fixture_cleanup if respond_to?(:prepare_organization_fixture_cleanup, true)
+      rescue StandardError => error
+        cleanup_error = error
+      end
+      begin
+        rollback_fixture_connection(@admin)
+        cleanup_organization_access_fixture if @admin && @org
+      rescue StandardError => error
+        cleanup_error ||= error
+      end
     end
     begin
       super
@@ -20,8 +35,25 @@ module OrganizationAccessFixtureCleanup
 
   private
 
+  def restore_fixture_connections
+    if @admin&.finished?
+      replacement = connect("BE02_ADMIN_DATABASE_URL", "supabase_admin")
+      unless replacement.exec_params("SELECT pg_try_advisory_lock($1::bigint)", [SessionDatabaseTestCase::FIXTURE_LOCK]).getvalue(0, 0) == "t"
+        replacement.finish
+        raise "database fixture ownership lost during cleanup"
+      end
+      @admin = replacement
+    end
+    @api = connect("BE02_API_DATABASE_URL", "elevateo_api") if @api&.finished?
+  end
+
+  def rollback_fixture_connection(connection)
+    return unless connection && !connection.finished?
+
+    connection.exec("ROLLBACK") unless connection.transaction_status == PG::PQTRANS_IDLE
+  end
+
   def cleanup_organization_access_fixture
-    @admin.exec("ROLLBACK") unless @admin.transaction_status == PG::PQTRANS_IDLE
     @admin.exec("BEGIN")
     @admin.exec_params("DELETE FROM app.mailbox_security WHERE organization_id = $1", [@org])
     @admin.exec_params("DELETE FROM app.organization_enrollment_receipts WHERE organization_id = $1", [@org])

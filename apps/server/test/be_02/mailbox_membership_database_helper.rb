@@ -46,15 +46,13 @@ class MailboxMembershipDatabaseCase < CollaborationDatabaseCase
     actor
   end
 
-  def teardown
-    if @admin
-      @admin.exec("ROLLBACK") if @admin.transaction_status != PG::PQTRANS_IDLE
-      # Revision exhaustion is test data, and must not prevent fixture-owned cascades during teardown.
-      (@owned_boxes || []).each do |box|
-        @admin.exec_params("UPDATE app.mailbox_membership_revisions SET membership_version = 0 WHERE mailbox_id = $1", [box])
-      end
+  def prepare_organization_fixture_cleanup
+    return unless @admin
+
+    # Revision exhaustion is test data, and must not prevent fixture-owned cascades during teardown.
+    (@owned_boxes || []).each do |box|
+      @admin.exec_params("UPDATE app.mailbox_membership_revisions SET membership_version = 0 WHERE mailbox_id = $1", [box])
     end
-    super
   end
 
   def mailbox(org: @org, visibility: "shared")

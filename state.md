@@ -150,3 +150,5 @@ SEC-802 atomic organization role audit source is added: changed-role events only
 SEC-802 fleet `45be80b`: migration PASS; organization and legacy membership/draft Ruby cases failed. Fixture repair adds current organization role, mailbox classification, ceiling and capability rows for legacy mailbox tests, and scoped cleanup before memberships are removed. New source has not yet passed isolated or order-varied fleet Docker suites; production permission policy is unchanged.
 
 SEC-802 draft concurrency fixtures now state the same explicit disposable authority and use scoped organization cleanup; Theo retains ownership of separate draft schema dependency probes. New draft race runtime remains NOT_RUN on this source.
+
+SEC-802 follow-up to Rhea's 2 MEDIUM helper cleanup findings: membership and draft local cleanup now runs inside failure-safe inherited teardown after closed fixture logins are reopened and the advisory lease is reacquired. New tests check closed API/admin cleanup and preservation of an injected draft save error; no fleet result is yet claimed.

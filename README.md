@@ -204,3 +204,5 @@ SEC-802 now records successful organization role changes in a metadata-only tran
 Fleet `45be80b` migrated successfully but its Ruby suite exposed missing SEC-802 test fixture authority and organization cleanup errors. SEC-802 now seeds explicit disposable fixture grants and removes fixture mailbox classifications before membership teardown; order-varied Docker regression remains pending.
 
 The draft concurrency fixture also declares its disposable organization role, private mailbox classification and grant ceiling so its legacy revocation call reaches the intended revision race. Fleet verification is pending.
+
+Rhea's bounded review found closed-connection teardown paths in the membership and draft test helpers. The repair reconnects disposable fixture logins, reacquires the fixture lease, and always reaches inherited teardown; closed-connection and original-error regressions await Soren's fleet Docker run.
