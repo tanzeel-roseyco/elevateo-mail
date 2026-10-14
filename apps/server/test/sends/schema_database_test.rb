@@ -18,7 +18,10 @@ class SendSchemaDatabaseTest < SendDatabaseTestCase
           AND has_function_privilege($1,oid,'EXECUTE')
           AND oid NOT IN ('app_send_private.claim_job(uuid,uuid,uuid,integer)'::regprocedure,
             'app_send_private.authorize_attempt(uuid,uuid,bigint,uuid,uuid,bytea,text,integer)'::regprocedure,
-            'app_send_private.record_observation(uuid,uuid,bigint,uuid,uuid,text,text,bytea)'::regprocedure)
+            'app_send_private.record_observation(uuid,uuid,bigint,uuid,uuid,text,text,bytea)'::regprocedure,
+            'app_send_private.worker_binding(uuid,uuid,bigint,uuid)'::regprocedure,
+            'app_send_private.final_attempt_check(uuid,uuid,bigint,uuid,uuid)'::regprocedure,
+            'app_send_private.reconcile_no_evidence(uuid,uuid,bigint,uuid)'::regprocedure)
       SQL
     end
     assert_equal "t", @admin.exec(<<~SQL).getvalue(0, 0)
@@ -52,7 +55,7 @@ class SendSchemaDatabaseTest < SendDatabaseTestCase
         FROM pg_class c JOIN pg_roles r ON r.oid=c.relowner
         WHERE c.relnamespace='app_send_private'::regnamespace AND c.relkind='r'
     SQL
-    assert_equal 9, rows.length
+    assert_equal 10, rows.length
     rows.each do |row|
       assert_equal "t", row.fetch("relrowsecurity")
       assert_equal "t", row.fetch("relforcerowsecurity")
@@ -98,6 +101,8 @@ class SendSchemaDatabaseTest < SendDatabaseTestCase
   end
   def test_empty_down_removes_only_send_objects_and_transaction_rollback_restores_them
     @admin.exec("BEGIN")
+    worker_down = File.read(File.expand_path("../../db/be03_send/worker_authority_down.sql", __dir__))
+    @admin.exec(worker_down)
     @admin.exec("SET LOCAL ROLE elevateo_send_owner")
     down = File.read(File.expand_path("../../db/be03_send/down.sql", __dir__))
     @admin.exec(down)
