@@ -67,6 +67,23 @@ class AttachmentServiceTest < Minitest::Test
     end
   end
 
+  class StorageHttpExchange
+    attr_accessor :max_retries, :open_timeout, :read_timeout, :write_timeout
+    attr_reader :paths
+
+    def initialize(bucket_response:, object_response: nil)
+      @bucket_response, @object_response, @paths = bucket_response, object_response, []
+    end
+
+    def start = yield self
+
+    def request(request)
+      @paths << request.path
+      return yield @object_response if block_given?
+      @bucket_response
+    end
+  end
+
   def setup
     @storage = Storage.new
     @repository = Repository.new
@@ -272,6 +289,38 @@ class AttachmentServiceTest < Minitest::Test
     end
     adapter = Elevateo::Attachments::PrivateStorage.new(**constructor, base_url: "http://storage:5000")
     assert_instance_of Elevateo::Attachments::PrivateStorage, adapter
+  end
+
+  def test_private_storage_denies_missing_bucket_body_before_object_request
+    response = Net::HTTPOK.new("1.1", "200", "OK")
+    response.define_singleton_method(:body) { nil }
+    exchange = StorageHttpExchange.new(bucket_response: response)
+    adapter = Elevateo::Attachments::PrivateStorage.new(base_url: "http://storage:5000",
+      bucket: "inbox-private", service_token: "x" * 32, process: "worker")
+    key = "quarantine/imap/#{ORG}/1/2/0"
+    Net::HTTP.stub(:new, ->(*_args) { exchange }) do
+      error = assert_raises(Elevateo::Attachments::PrivateStorage::Unavailable) { adapter.get(key) }
+      assert_equal "private bucket unavailable", error.message
+    end
+    assert_equal ["/bucket/inbox-private"], exchange.paths
+  end
+
+  def test_private_storage_rejects_status_before_read_body
+    bucket = Net::HTTPOK.new("1.1", "200", "OK")
+    bucket.define_singleton_method(:body) { '{"public":false}' }
+    object = Net::HTTPForbidden.new("1.1", "403", "Forbidden")
+    reads = []
+    object.define_singleton_method(:read_body) { |&_block| reads << :read_body }
+    exchange = StorageHttpExchange.new(bucket_response: bucket, object_response: object)
+    adapter = Elevateo::Attachments::PrivateStorage.new(base_url: "http://storage:5000",
+      bucket: "inbox-private", service_token: "x" * 32, process: "worker")
+    key = "quarantine/imap/#{ORG}/1/2/0"
+    Net::HTTP.stub(:new, ->(*_args) { exchange }) do
+      error = assert_raises(Elevateo::Attachments::PrivateStorage::Unavailable) { adapter.get(key) }
+      assert_equal "private object unavailable", error.message
+    end
+    assert_empty reads
+    assert_equal ["/bucket/inbox-private", "/object/inbox-private/#{key}"], exchange.paths
   end
 
   def test_cross_tenant_and_cross_mailbox_ids_are_not_downloadable

@@ -7,6 +7,8 @@ Nadia attachment backend candidate adds held-by-default quarantine metadata, a b
 
 ATT870 PrivateStorage declaration and nullable HTTP response handling are authored; strict Steep and unit verification remain Soren fleet-only and NOT_RUN on this SHA. See `docs/completion/nadia-att870-private-storage-types.md`.
 
+ADV115 response tests the nil-body denial and early rejected-status branch with in-process fake HTTP; these tests are authored, NOT_RUN by Nadia. See `docs/completion/nadia-adv115-storage-regressions.md`.
+
 Application IN PROGRESS — R24 isolated BE03 candidate (2026-10-14). Root authorizes implementation on baseline `03ae770c56271cd8236726bfd8fe63248e81283d` in parallel with BE02 acceptance. BE02 remains OPEN/unaccepted; integration/release gated. S1+S2 priority: saved draft -> consistent review -> human approval -> durable queued intent. Canonical additive `contracts/v1/openapi.json` version `1.0.0-send.1` is prepared; every baseline C/D operation/component and original fixture is preserved.
 ### Mira BE03 UI isolated R24 implementation (2026-10-14)
 
