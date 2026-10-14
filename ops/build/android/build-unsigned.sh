@@ -23,6 +23,7 @@ printf "%s\n" "COMPILE_ONLY_ORIGIN=$ELEVATEO_WEB_ORIGIN"
 [[ "$(basename "$NDK_HOME")" == '28.2.13676358' ]] || { echo 'NDK 28.2.13676358 required' >&2; exit 2; }
 rustup target list --installed | grep -Fx 'aarch64-linux-android' >/dev/null || { echo 'Android Rust target required' >&2; exit 2; }
 mkdir -p "$APK813_BUILD_ROOT"
+python3 "$project_root/apps/native/ci/verify_boundary.py"
 cd "$android_dir"
 python3 -m unittest discover -s . -p "test_*.py"
 cd "$native_dir"
