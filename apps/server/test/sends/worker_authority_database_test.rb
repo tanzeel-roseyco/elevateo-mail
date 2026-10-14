@@ -70,6 +70,24 @@ class SendWorkerAuthorityDatabaseTest < SendDatabaseTestCase
     assert_equal 1, status(send).fetch("attempts")
   end
 
+  def test_no_evidence_reconciliation_is_bounded_and_preserves_unknown
+    send = approve.fetch("send_id")
+    lease = SecureRandom.uuid
+    claim(send, lease)
+    attempt = authorize(send, lease).fetch("attempt_id")
+    assert_equal "unknown", observe(send, lease, 1, attempt, kind: "unknown").fetch("state")
+    (2..5).each do |generation|
+      @admin.exec_params("UPDATE app_send_private.jobs SET next_check_at=clock_timestamp() WHERE send_id=$1", [send])
+      next_lease = SecureRandom.uuid
+      assert_equal "reconcile", claim(send, next_lease).fetch("action")
+      outcome = worker_json("SELECT app_send_private.reconcile_no_evidence($1::uuid,$2::uuid,$3::bigint,$4::uuid)",
+        [send, next_lease, generation, attempt])
+      assert_equal generation == 5 ? "needs_review" : "unknown", outcome.fetch("state")
+    end
+    assert_equal "dispatch_held", claim(send).fetch("code")
+    assert_equal 1, status(send).fetch("attempts")
+  end
+
   def test_suppression_change_invalidates_approved_policy_before_attempt
     send = approve.fetch("send_id")
     lease = SecureRandom.uuid
