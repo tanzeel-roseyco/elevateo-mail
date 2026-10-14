@@ -54,8 +54,9 @@ class SendWorkerDatabaseTest < SendDatabaseTestCase
       ledger = File.join(dir, "acceptance.jsonl")
       assert_equal :unknown, execute(send_id, ledger, "accept_then_timeout")
       assert_equal "unknown", status(send_id).fetch("state")
-      # Fixture time advance only: production uses the scheduled due timestamp.
-      @admin.exec_params("UPDATE app_send_private.jobs SET next_check_at=clock_timestamp() WHERE send_id=$1", [send_id])
+      # Fixture latches cancellation after possible acceptance and advances due time.
+      @admin.exec_params("UPDATE app_send_private.jobs SET cancel_requested_at=clock_timestamp()," \
+        "next_check_at=clock_timestamp() WHERE send_id=$1", [send_id])
       assert_equal :accepted, execute(send_id, ledger, "reject")
       assert_equal "accepted", status(send_id).fetch("state")
       assert_equal 1, status(send_id).fetch("attempts")
