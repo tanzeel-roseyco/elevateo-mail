@@ -711,3 +711,6 @@ Exact source `3fd0dcb835b591e4979541316da1e6a4addb55e0`: 271 credited unique LOC
 ### REV853 Elara concurrency and Theo callback typing — Lyra
 
 Exact Elara `cc2ac33cb9eab3c847b2b4e6633887d464b6a4d6` and Theo `f12d25c335763a33a1a384ad8a8023e28fdac824`: **298 unique LOC**, zero confirmed static defects (**0/KLOC**). The reviewed actor ordering, winner/loser rollback oracle and required-keyword callback types preserve the intended guards; real PostgreSQL races, Rails tests and typecheck remain Soren fleet work. Exact ranges and limits: [REV853 report](docs/completion/lyra-rev853.md).
+### REV869 Cassian canonical V2 sequence contract — Lyra
+
+Exact `251546499f6f3d72dcdcefeb08584f7607b6a97b` OpenAPI blob `9811af7048fa03e8d5910e2c8fcde98c2da29aa0`: 340 unique versioned LOC across three bounded reads, zero confirmed static defects (**0/KLOC**). Root session security, PUT CSRF, closed read/write shapes, limits and inert status were inspected; server/gateway validation and runtime remain outside cap. Full ranges and exclusions: [REV869 report](docs/completion/lyra-rev869.md).
