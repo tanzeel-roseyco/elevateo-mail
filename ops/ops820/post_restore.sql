@@ -27,3 +27,19 @@ BEGIN
     RAISE EXCEPTION 'API read grant missing';
   END IF;
 END $$;
+
+-- Synthetic row remains inside this transaction. With no identity context the API role must see none.
+BEGIN;
+INSERT INTO app.organizations (id, name)
+VALUES ('82000000-0000-4000-8000-000000000001', 'OPS820 isolated probe');
+INSERT INTO app.organization_memberships (organization_id, user_id)
+VALUES ('82000000-0000-4000-8000-000000000001', '82000000-0000-4000-8000-000000000002');
+SET LOCAL ROLE elevateo_api;
+DO $$
+BEGIN
+  IF EXISTS (SELECT 1 FROM app.organizations
+             WHERE id = '82000000-0000-4000-8000-000000000001') THEN
+    RAISE EXCEPTION 'API role saw organization without identity context';
+  END IF;
+END $$;
+ROLLBACK;
