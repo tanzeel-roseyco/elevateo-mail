@@ -23,10 +23,14 @@ Soren recipe/root authorization: immutable retained fixture image `sha256:27bde6
 - Check1 exit126: private output permission setup, zero checks/cases; retained.
 - Check2: generate-api0/check-api0/lint0/typecheck0; unit1 startup EROFS Vite cache, zero cases; retained.
 - Check3: generate-api0/check-api0/lint0/typecheck0; unit1 startup EACCES private tmpfs mode, zero cases; retained.
-- Check4: corrected disposable cache mode, affected suite **8files/260tests PASS, exit0** (new send20 + existing affected240). Original source identity remains607fcb2c; follow-up generated/type-parity/tests require their own checks.
+- Check4: corrected disposable cache mode, affected suite **8files/260tests PASS, exit0** (new send24 + existing affected236). Original source identity remains607fcb2c; follow-up generated/type-parity/tests require their own checks.
 
 All four exact `--rm` containers independently absent immediately after jobs. No image/volume/network created or removed. Retained shared image/Lyra preview18140 and all persistent resources preserved. Evidence: `reports/mira-r24-ui/source-receipt.json`, `check-607fcb2c/`, `check-607fcb2c-unit/`, `check-607fcb2c-unit4/`, `cleanup-607fcb2c.json` (private task evidence outside Git).
 
 Independent reviewed source607fcb2c: SPEC-BE03M01 data/gateway/status271unique changedLOC/0confirmeddefects/0KLOC; SPEC-BE03M02 review/store/tests367unique changedLOC/0confirmeddefects/0KLOC; SPEC-BE03M03 dedicated design~358productionLOC/0confirmeddefects/0KLOC (overlaps functional coverage, nonadditive). Full INT401 rubric, each read<=200LOC and divided assignment<=400. Reports in incoming coordination `spec-mira-{data,ui,design}-review.md`; source review does not establish runtime/visual acceptance. Root/Cassian own central review integration.
 
 Follow-up: exact Docker-generated artifact applied unchanged; runtime validators alias generated send component types, bidirectional compile-time parity and canonical fixture tests added. Reviewer-suggested maximum100recipient rendering, original-binding retry against newer review with fresh CSRF, and owner/logout store-isolation tests added. New runtime checks and bounded follow-up review pending.
+
+Successor `e037cb9b2db46b76e3988a8e9db34cb5dc2f3a8e`: API artifact check/lint/typecheck/full unit **37files/660tests PASS**, all exits0. Capped production `npm run build` and fixture-marker isolation PASS, exits0; no image build/install/network. Bundle gzip156.96kB, ordinary Vite>500kB chunk warning retained (no runtime failure). Follow-up reviews: data333LOC0defects; UI323LOC0defects; dedicated design100changedLOC0defects, overlapping/nonadditive. Exact containers check5/build6 removed by--rm and independent absence verification follows.
+
+Self-inspection found one LOW adapter parity defect: the four default-unavailable send fixture methods ignored an already-aborted caller. Production HTTP methods were unaffected. Corrected fixture methods check abort before503, with12preabort/live-unavailable/midflightHTTP regression cases. Affected checks/review pending; no completed-BE03 claim.

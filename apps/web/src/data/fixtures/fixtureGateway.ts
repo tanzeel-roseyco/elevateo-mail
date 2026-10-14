@@ -236,10 +236,10 @@ export function createFixtureGateway(script: FixtureScript = {}, options: Fixtur
 
   return {
     // BE03 has no implicit synthetic success: tests explicitly supply send methods.
-    getSendReview: async () => { throw new GatewayError('api', 'temporarily_unavailable', 'Send review is unavailable in this fixture.', { status: 503 }) },
-    approveDraftSend: async () => { throw new GatewayError('api', 'temporarily_unavailable', 'Send approval is unavailable in this fixture.', { status: 503 }) },
-    getSendStatus: async () => { throw new GatewayError('api', 'temporarily_unavailable', 'Send status is unavailable in this fixture.', { status: 503 }) },
-    cancelSend: async () => { throw new GatewayError('api', 'temporarily_unavailable', 'Send cancellation is unavailable in this fixture.', { status: 503 }) },
+    getSendReview: async (_ctx, _draftId, _mailboxId, signal) => { throwIfAborted(signal); throw new GatewayError('api', 'temporarily_unavailable', 'Send review is unavailable in this fixture.', { status: 503 }) },
+    approveDraftSend: async (_ctx, _proof, _draftId, _input, signal) => { throwIfAborted(signal); throw new GatewayError('api', 'temporarily_unavailable', 'Send approval is unavailable in this fixture.', { status: 503 }) },
+    getSendStatus: async (_ctx, _sendId, _mailboxId, signal) => { throwIfAborted(signal); throw new GatewayError('api', 'temporarily_unavailable', 'Send status is unavailable in this fixture.', { status: 503 }) },
+    cancelSend: async (_ctx, _proof, _sendId, _input, signal) => { throwIfAborted(signal); throw new GatewayError('api', 'temporarily_unavailable', 'Send cancellation is unavailable in this fixture.', { status: 503 }) },
     getSession: async (signal) => {
       throwIfAborted(signal)
       return resolve('getSession', script, SessionSchema)
