@@ -17,3 +17,5 @@ The additive `getDirectMessage` operation uses `GET /v2/threads/{thread_id}/mess
 `createV2Gateway().getDirectMessage(ctx, mailboxId, threadId, messageId, signal)` validates all UUIDs, sends only a relative same-origin V2 GET and checks the scoped envelope plus reused V1 Message runtime schema. It does not fetch another mailbox or walk cursors.
 
 Canonical draft version `2.0.0-draft.4` adds the direct-message read to the earlier draft.3 organization and inert Outreach surface. Generated declarations must be regenerated from this exact draft.4 source in fleet Docker before adoption.
+
+The Rails registry owns the single frozen active-operation allowlist; `routes.rb` supplies only literal boolean readiness flags. The registry rejects non-boolean flags and any explicit attempt to register the disabled worker proposal. Adding a worker route later requires an intentional allowlist change with a reviewed distinct principal.

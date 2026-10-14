@@ -19,12 +19,23 @@ module V2RouteRegistry
     "getDirectMessage" => ["GET", "/v2/threads/:thread_id/messages/:message_id", "v1/threads#message"]
   }.transform_values(&:freeze).freeze
 
-  def self.register!(mapper, enabled:, controllers_ready:, operations: ROUTES.keys)
+  # AIDEV-NOTE: The worker operation is a proposal until its separate principal is implemented.
+  ACTIVE_OPERATIONS = %w[
+    listOrganizationGrants getOrganizationRoster replaceOrganizationGrant
+    listOutreachCampaigns getOutreachCampaign createOutreachCampaign updateOutreachCampaign
+    listOutreachLeads getOutreachLead addOutreachLead updateOutreachLead getOutreachAnalytics
+    getDirectMessage
+  ].freeze
+
+  def self.register!(mapper, enabled:, controllers_ready:, operations: ACTIVE_OPERATIONS)
+    unless [true, false].include?(enabled) && [true, false].include?(controllers_ready)
+      raise ArgumentError, "V2 route flags must be booleans"
+    end
     return false unless enabled
     raise ArgumentError, "V2 controllers and authority gates are not ready" unless controllers_ready
 
-    unless operations.is_a?(Array) && operations.uniq == operations && operations.all? { |name| ROUTES.key?(name) }
-      raise ArgumentError, "unknown or repeated V2 operation"
+    unless operations.is_a?(Array) && operations.uniq == operations && operations.all? { |name| ACTIVE_OPERATIONS.include?(name) }
+      raise ArgumentError, "inactive, unknown or repeated V2 operation"
     end
     operations.each do |name|
       verb, path, controller = ROUTES.fetch(name)

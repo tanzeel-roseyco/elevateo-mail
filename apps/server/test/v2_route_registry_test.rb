@@ -12,11 +12,12 @@ class V2RouteRegistryTest < Minitest::Test
     end
   end
 
-  def test_ready_registry_exposes_only_fourteen_versioned_routes
+  def test_ready_registry_exposes_only_thirteen_active_versioned_routes
     mapper = Mapper.new
     assert V2RouteRegistry.register!(mapper, enabled: true, controllers_ready: true)
-    assert_equal 14, mapper.routes.size
+    assert_equal 13, mapper.routes.size
     assert mapper.routes.all? { |_, path, _| path.start_with?("/v2/") }
+    refute mapper.routes.any? { |_, path, _| path.start_with?("/v2/worker/") }
   end
 
   def test_selected_operation_exposes_only_implemented_route
@@ -40,6 +41,21 @@ class V2RouteRegistryTest < Minitest::Test
   def test_unready_registry_fails_before_any_route_is_added
     mapper = Mapper.new
     assert_raises(ArgumentError) { V2RouteRegistry.register!(mapper, enabled: true, controllers_ready: false) }
+    assert_empty mapper.routes
+  end
+
+  def test_string_flags_cannot_activate_routes
+    mapper = Mapper.new
+    assert_raises(ArgumentError) { V2RouteRegistry.register!(mapper, enabled: "false", controllers_ready: true) }
+    assert_raises(ArgumentError) { V2RouteRegistry.register!(mapper, enabled: true, controllers_ready: "true") }
+    assert_empty mapper.routes
+  end
+
+  def test_worker_proposal_cannot_be_registered_explicitly
+    mapper = Mapper.new
+    assert_raises(ArgumentError) do
+      V2RouteRegistry.register!(mapper, enabled: true, controllers_ready: true, operations: ["getWorkerJob"])
+    end
     assert_empty mapper.routes
   end
 end

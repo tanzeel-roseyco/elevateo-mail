@@ -93,3 +93,5 @@ Latest owner-source merge `995bc86` includes Rowan 6cbd19e versioned internal Ma
 Fable ec85441 seven-failure repair merged as 0f37471 after exact 8eb web 779/10 receipt. Soren full web rerun requested; no repaired-source PASS claimed. Latest Celeste consent and Mira abort follow-ups are in the same integration candidate.
 
 Dorian 4d1d384 append-only lead consent audit link and Mira 17482af direct lookup commit-abort/settled-revocation regressions merged in c5baec1. These additions postdate Soren 8eb web failure and ba615 V2 structural pass; targeted SQL/HTTP and web checks are requested, not yet observed on c5baec1. Frozen V1 OpenAPI remains byte-unchanged versus bbf2353 by read-only `git diff --quiet` exit0.
+
+Registry hardening: the active V2 operation allowlist now lives only in `V2RouteRegistry::ACTIVE_OPERATIONS`; `routes.rb` no longer duplicates names. Non-boolean `enabled`/`controllers_ready` values and an explicit `getWorkerJob` proposal override fail before any route registration. Source tests added; Soren exact fleet Ruby route test requested, NOT_RUN on this hardening SHA.
