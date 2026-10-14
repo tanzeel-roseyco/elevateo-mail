@@ -682,3 +682,5 @@ R25 lint repair: one tooling defect in the unmount cleanup (ref must be captured
 Author self-review only; independent coverage 0 LOC, defects and defects/KLOC not established. Bounded review requested for `apps/orion/macos` template, validator and tests, with a separate design tradeoff review of universal versus architecture-specific DMGs. Runtime evidence pending Soren QA815 static Docker check and eventual Mac runner.
 
 MAC-814 continuation: new `apps/native` macOS overlay/script/validator/tests await independent bounded source and design tradeoff review. Coverage 0 independently reviewed LOC; defects/KLOC N/A. No runtime test claim.
+
+MAC-814 sequence primitive: independent bounded functional and design reviews NOT_RUN. Reviewed LOC 0, defects/KLOC N/A; authored tests and Soren fleet verification pending. No runtime or send evidence.

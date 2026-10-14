@@ -186,3 +186,5 @@ Cassian manifest reconciliation: contract-lock now seals actual generated client
 MAC-814 macOS packaging: the standalone `apps/orion` template was superseded by `apps/native/src-tauri/tauri.macos.conf.json`. The shared `apps/web` distribution is used by the Orion shell. A Mac runner remains required for native build, Developer ID signing, notarization, stapling, Gatekeeper and installed-app auth/upgrade evidence.
 
 MAC-814 native integration: the actual `apps/native` Tauri shell now has a macOS-specific DMG override, empty entitlements and a preflight-only release entrypoint. The shared shell CSP and empty capability remain fail closed; no native callback is registered. See `docs/completion/maeve.md` for Docker static test request and target-Mac acceptance blockers.
+
+MAC-814 sequence planning: `apps/server/lib/elevateo/outreach_sequence/schedule.rb` provides pure candidate scheduling helpers only. Migration 00016 and versioned sequence DTOs are not created; the existing BE03 send-intent/worker remains sole delivery authority. See `docs/completion/maeve-sequence-draft.md` for proposed persistence, DST, idempotency and final consent gates.

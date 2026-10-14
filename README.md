@@ -178,3 +178,5 @@ Cassian manifest reconciliation: contract-lock now seals actual generated client
 The earlier standalone Mac template has been superseded by the Orion shell overlay in `apps/native`. Mac build, signing, notarization and installed-app validation remain pending. See `docs/completion/maeve.md`.
 
 MAC-814 continuation: Orion NATIVE-812 shell lineage is present in the Mac branch; `apps/native/src-tauri/tauri.macos.conf.json` and `apps/native/macos-release.sh` now provide a real macOS DMG configuration and gated release command. Native auth, Mac build, signing and installation remain unverified.
+
+MAC-814 sequence gap: an isolated pure Ruby draft scheduling primitive now resolves unambiguous local times to UTC, derives stable occurrence keys, and blocks candidates with reply/unsubscribe signals. No sequence schema, API, send intent, worker integration or live delivery is present; see `docs/completion/maeve-sequence-draft.md`.
