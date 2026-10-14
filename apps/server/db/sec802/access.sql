@@ -314,7 +314,8 @@ BEGIN
 END $$;
 REVOKE ALL ON FUNCTION app.authorize_outreach_draft_write(text)
   FROM PUBLIC, elevateo_api, elevateo_app_read, elevateo_worker;
-GRANT EXECUTE ON FUNCTION app.authorize_outreach_draft_write(text) TO elevateo_api;
+-- AIDEV-NOTE: RLS evaluates this under the restricted app_read role, but the function still requires the current protected-write marker.
+GRANT EXECUTE ON FUNCTION app.authorize_outreach_draft_write(text) TO elevateo_api, elevateo_app_read;
 
 -- AIDEV-NOTE: A digest-backed session proof is required; caller-controlled tenant GUCs alone cannot list grants.
 GRANT CREATE ON SCHEMA app TO elevateo_session_owner;
@@ -383,7 +384,8 @@ BEGIN
 END $$;
 REVOKE ALL ON FUNCTION app.authorize_outreach_content_read(text)
   FROM PUBLIC, elevateo_api, elevateo_app_read, elevateo_worker;
-GRANT EXECUTE ON FUNCTION app.authorize_outreach_content_read(text) TO elevateo_api;
+-- AIDEV-NOTE: Outreach RLS evaluates this under app_read; digest, tenant GUC and current role are checked inside.
+GRANT EXECUTE ON FUNCTION app.authorize_outreach_content_read(text) TO elevateo_api, elevateo_app_read;
 
 -- AIDEV-NOTE: UUID cursor resolves to one tenant-local sequence; page order is immutable newest-first.
 CREATE FUNCTION app.organization_role_audit_page(p_digest text, p_after_id uuid, p_limit integer)

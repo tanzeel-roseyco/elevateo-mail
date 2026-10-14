@@ -149,3 +149,7 @@ Config and RBS accept only the exact internal gateway URL paired with the dedica
 ## PREF822 candidate activation
 
 Exact integrated Theo 81cb542 and Lyra a54be31/748e53b/7550afb source is wired through canonical V2 draft.6, registry and the existing production personal settings route. The browser gateway argument order is reconciled with Lyra’s port. OpenAPI V1 remains unchanged by source diff; generated V2 declaration and fleet database/HTTP/browser tests are requested, NOT_RUN here. No credential fields or actor identifier enter the preference write.
+
+## OUT839 restricted-role helper seam
+
+Dorian b487019 supplies actual-role tests. SEC802 access.sql grants app_read EXECUTE on the existing draft-write and content-read helper functions because RLS evaluates under that role. The helper bodies retain protected marker/session digest, tenant and current-role gates, and PUBLIC/worker are still revoked. This candidate needs disposable PostgreSQL positive and copied-digest negative execution on the exact integrated SHA; NOT_RUN here.
