@@ -4,6 +4,9 @@ A planned shared company mailbox for approximately **10 people**, available on a
 
 ## Current state
 
+INT-401 handoff: source preservation/integration complete, application IN PROGRESS. Verified 45,507 archived source entries and 580 canonical overlay files with zero hash mismatches; original executable modes restored. Remote tests and independent review remain pending. See docs/completion/int401-handoff.md. An ignored partial runtime export copy remains after automatic cleanup approval rejection; no original data removed.
+
+
 2026-10-14 INT-401: IN PROGRESS. Canonical frontend/backend/acceptance/performance sources are integrated from Local Completion d2de43b in integrate/cassian-unified. This baseline is UNTESTED; historical results below do not validate it. Archive capture completed: 19 Git checkouts, 18 preserved HEAD refs, 12 source exports, 45,507 source-file entries; original histories and working layers are preserved under ignored .local-audit/INT-401 and refs/preserved/int401. Rowan owns the R3 app_drafts_private migration blocker; Soren schedules all fleet-02 container checks. See docs/issues.md, obsidian.md and docs/completion/int401-overlay-manifest.json.
 
 

@@ -1,3 +1,5 @@
+INT-401 handoff: source preservation/integration complete, application IN PROGRESS. Verified 45,507 archived source entries and 580 canonical overlay files with zero hash mismatches; original executable modes restored. Remote tests and independent review remain pending. See docs/completion/int401-handoff.md. An ignored partial runtime export copy remains after automatic cleanup approval rejection; no original data removed.
+
 # Current execution state
 
 Current checkpoint: Devin is suspended with $4.20 of the approved existing credit remaining and $0.00 on-demand. Backend source 5785eba is not accepted: the partial ops batch passed heartbeat and egress (one PowerShell skip), but secrets failed to load. The full-bundle Docker runner passed static re-review after cleanup-control repair; execution is pending. Fable completed its source/test draft and review-repair session f85838f4-99dd-42dc-93bc-7dad6b950aab is running. Static review found stale-success ownership defects in inbox and reader, delayed freshness scheduling, misleading empty-continuation text, and a drawer comment defect; repairs and visual validation remain pending.
