@@ -24,22 +24,38 @@ class SendWorkerExecutorTest < Minitest::Test
       @final_allowed = true
     end
 
-    def claim(epoch:) = @claim_value
+    def claim(epoch:)
+      raise "wrong epoch" unless epoch == EPOCH
+      @claim_value
+    end
 
     def authorize_submission(claim:, epoch:)
+      raise "wrong authorization binding" unless claim.send_id == SEND_ID && epoch == EPOCH
       @authorization_calls += 1
       @authorization
     end
 
     def record_observation(claim:, attempt_id:, snapshot_digest:, result:)
+      raise "wrong observation binding" unless claim.send_id == SEND_ID && attempt_id == ATTEMPT_ID &&
+        snapshot_digest == Digest::SHA256.hexdigest(BYTES)
       @observation = result
     end
 
-    def final_check(claim:, attempt_id:, epoch:) = @final_allowed
+    def final_check(claim:, attempt_id:, epoch:)
+      raise "wrong final binding" unless claim.send_id == SEND_ID && attempt_id == ATTEMPT_ID && epoch == EPOCH
+      @final_allowed
+    end
 
-    def reconcile(claim:, observation:) = (@reconciled = observation)
+    def reconcile(claim:, observation:)
+      raise "wrong reconciliation binding" unless claim.action == "reconcile"
+      @reconciled = observation
+    end
 
-    def mark_unknown(claim:, attempt_id:, reason:) = (@unknown_calls += 1)
+    def mark_unknown(claim:, attempt_id:, reason:)
+      raise "wrong unknown binding" unless claim.send_id == SEND_ID && attempt_id == ATTEMPT_ID &&
+        %w[local_paused deadline_expired].include?(reason)
+      @unknown_calls += 1
+    end
   end
 
   def setup

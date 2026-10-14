@@ -7,15 +7,15 @@ module Elevateo
   module SendWorker
     class SubmissionResult
       KINDS = %w[accepted rejected unknown].freeze
-      REJECTION_CODES = %w[local_rejected].freeze
-      UNKNOWN_CODES = %w[local_timeout local_paused deadline_expired].freeze
+      REJECTION_CODES = %w[local_rejected smtp_invalid_snapshot].freeze
+      UNKNOWN_CODES = %w[local_timeout local_paused deadline_expired smtp_uncertain].freeze
       attr_reader :kind, :receipt_ref, :code
 
       # AIDEV-NOTE: Only normalized simulated evidence crosses this seam; acceptance never means delivery.
       def initialize(kind:, receipt_ref: nil, code: nil)
         valid = case kind
                 when "accepted"
-                  receipt_ref.is_a?(String) && /\Alocal:[0-9a-f]{64}\z/.match?(receipt_ref) && code.nil?
+                  receipt_ref.is_a?(String) && /\A(?:local:|mailpit-test-v1:)[0-9a-f]{64}\z/.match?(receipt_ref) && code.nil?
                 when "rejected" then receipt_ref.nil? && REJECTION_CODES.include?(code)
                 when "unknown" then receipt_ref.nil? && UNKNOWN_CODES.include?(code)
                 else false

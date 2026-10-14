@@ -1,0 +1,19 @@
+module Elevateo
+  module SendWorker
+    class SmtpTransport
+      class Held < StandardError
+      end
+      @profile: SmtpProfile
+      @client: untyped
+      def initialize: (profile: SmtpProfile, ?client: untyped) -> void
+      def submit: (String, send_id: String, attempt_id: String, deadline: CallDeadline) -> SubmissionResult
+      def observation: (send_id: String, attempt_id: String, snapshot_digest: String) -> nil
+    end
+    class LocalMailpitClient
+      @profile: SmtpProfile
+      @smtp_factory: untyped
+      def initialize: (profile: SmtpProfile, ?smtp_factory: untyped) -> void
+      def deliver: (RenderedMail, deadline: CallDeadline) -> SubmissionResult
+    end
+  end
+end
