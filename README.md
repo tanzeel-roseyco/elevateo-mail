@@ -188,3 +188,5 @@ OUT-804 lead edits retain consent when the address is unchanged; changing it res
 An early fleet Ruby receipt found a missing standalone Active Record import in OUT-804, now repaired in source. The integrated disposable DB migration failed before tests on an earlier candidate; its detailed log and rerun remain pending.
 
 OUT-804 V2 reads and writes now call the digest-backed Sabine role checks within the tenant transaction for the root-approved outreach roles. RLS still needs the matching owner-provided role predicate before role-policy acceptance.
+
+OUT-804 RLS now also checks a current digest-backed outreach role in each tenant transaction, using Sabine's existing read authority function. The integrated migration and authenticated role probes are untested.

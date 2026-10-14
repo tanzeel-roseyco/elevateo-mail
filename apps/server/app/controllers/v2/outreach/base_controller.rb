@@ -16,6 +16,8 @@ module V2
         result = row && row["result"]
         result = JSON.parse(result) if result.is_a?(String)
         raise Elevateo::CollaborationError.new("not_available") unless result.is_a?(Hash) && result["status"] == "ok"
+        # AIDEV-NOTE: RLS rechecks the digest-backed role in this transaction; the setting vanishes at commit.
+        repository.rows("SELECT set_config('app.outreach_digest',$1,true)", [identity.digest])
         repository
       rescue JSON::ParserError
         raise Elevateo::CollaborationError.new("internal_error")

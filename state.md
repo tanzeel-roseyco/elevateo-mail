@@ -130,3 +130,5 @@ OUT-804 author correction: same-address lead update preserves consent and consum
 OUT-804 fleet diagnostic on older 21536e5 found a standalone repository NameError; the source now requires Active Record. A combined Ruby command executed only the input test, so repository PASS is unproven. Earlier integrated b071c93 migration failed before tests; detailed cause pending from Soren.
 
 Root specified OUT-804 draft access roles owner/admin/sales lead/sales member, mapped to SQL owner/admin/sales_manager/sales. Controller actions now call Sabine's current-session role routines; matching RLS role predicate, fleet execution and review remain pending. Manual consent is recorded as an attestation, never automatic send eligibility.
+
+OUT-804 role RLS source follow-up: every new campaign table policy denies missing session digest and rechecks Sabine's current-role read authorization through a transaction-local setting. The existing tenant/private mailbox checks remain. This exact migration and HTTP journey are NOT_RUN in fleet Docker.
