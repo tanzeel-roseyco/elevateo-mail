@@ -14,6 +14,8 @@ Shared company mailroom with one Rails domain authority and a React/TypeScript c
 
 ## Current state
 
+**Outbound V2 decision follow-up:** Root chose a draft-owned one-file 1 MiB raw cap and separate proposed 2 MiB complete MIME cap, with current V1 limits unchanged. Cassian's design packet reserves migration 00020 for Nadia staging/selection and 00021 for Rowan snapshot/worker, pending their confirmation; raw binary control headers and operation names remain proposals. No outbound source or route is active.
+
 **Activated V2 generation and focused backend:** Soren fleet `5b699c6d` generated/checked the active V2 declaration; contract SHA-256 `e97ca2f8…`, generated declaration `0c5f0969…`, matching this candidate's committed bytes. Separate exact `bdb8da6d` focused Steep, three-file lint and attachment authorization 4 tests/20 assertions passed. These are bounded earlier pins; current expanded backend/HTTP/worker/browser remain pending.
 
 **TEST929 ADV159 review:** Orion FIX939 exact `07411a15` was independently reviewed across 55 manifest LOC with zero defects. Its static count is 137 standard and nine separately gated suites; Soren fleet execution remains pending.
