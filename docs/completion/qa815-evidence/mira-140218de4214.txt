@@ -1,0 +1,127 @@
+source=140218de421453e662b938e5afb3ef7a0b73eb6a
+started=2026-10-14T13:56:40Z
+image=qa815-mira-140218de4214
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from test.Dockerfile
+#1 transferring dockerfile: 1.04kB done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:24.21.0-bookworm-slim@sha256:d6aa754f16b3197301076f047b5def2f02ea1dbbc2ca920407d46d7ec7f87b20
+#2 DONE 0.6s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 140B done
+#3 DONE 0.0s
+
+#4 [1/6] FROM docker.io/library/node:24.21.0-bookworm-slim@sha256:d6aa754f16b3197301076f047b5def2f02ea1dbbc2ca920407d46d7ec7f87b20
+#4 resolve docker.io/library/node:24.21.0-bookworm-slim@sha256:d6aa754f16b3197301076f047b5def2f02ea1dbbc2ca920407d46d7ec7f87b20 0.0s done
+#4 DONE 0.1s
+
+#5 [internal] load build context
+#5 transferring context: 1.51MB 0.0s done
+#5 DONE 0.1s
+
+#6 [2/6] WORKDIR /workspace
+#6 DONE 0.5s
+
+#7 [3/6] COPY contracts/v1 ./contracts/v1
+#7 DONE 0.1s
+
+#8 [4/6] COPY apps/web ./apps/web
+#8 DONE 0.3s
+
+#9 [5/6] WORKDIR /workspace/apps/web
+#9 DONE 0.1s
+
+#10 [6/6] RUN npm ci
+#10 0.974 npm warn deprecated whatwg-encoding@3.1.1: Use @exodus/bytes instead for a more spec-conformant and faster implementation
+#10 5.659 
+#10 5.659 added 324 packages, and audited 325 packages in 5s
+#10 5.659 
+#10 5.659 67 packages are looking for funding
+#10 5.659   run `npm fund` for details
+#10 5.660 
+#10 5.660 found 0 vulnerabilities
+#10 5.661 npm warn install-scripts 1 package has install scripts not yet covered by allowScripts:
+#10 5.661 npm warn install-scripts   esbuild@0.28.2 (postinstall: node install.js)
+#10 5.661 npm warn install-scripts
+#10 5.661 npm warn install-scripts Run `npm install-scripts ls` to review, or `npm install-scripts approve <pkg>` to allow.
+#10 5.662 npm notice
+#10 5.662 npm notice New major version of npm available! 11.19.0 -> 12.2.0
+#10 5.662 npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0
+#10 5.662 npm notice To update run: npm install -g npm@12.2.0
+#10 5.662 npm notice
+#10 DONE 6.0s
+
+#11 exporting to image
+#11 exporting layers
+#11 exporting layers 6.0s done
+#11 exporting manifest sha256:a83aa4a04c45ad87601e2b6d0c5fcfb587688a966f000e693c72a155f4084087 done
+#11 exporting config sha256:e09f530f7f705155fe19f7affcf043f7d636a4681d7032de57ce5a49e805885d done
+#11 exporting attestation manifest sha256:43fdfcbed8126cd4b279db17d948151d19ae222562db2a769abc6293ef9a4ad5 0.0s done
+#11 exporting manifest list sha256:09e7cd0dbbbd6e52263c05a6f533c0e2018f3738eecdc0cf1f8f895691221c99 done
+#11 naming to docker.io/library/qa815-mira-140218de4214:latest done
+#11 unpacking to docker.io/library/qa815-mira-140218de4214:latest
+#11 unpacking to docker.io/library/qa815-mira-140218de4214:latest 2.0s done
+#11 DONE 8.1s
+build_exit=0
+
+> @elevateo/web@0.1.0-read.1 typecheck
+> tsc -p tsconfig.json --noEmit
+
+
+> @elevateo/web@0.1.0-read.1 lint
+> eslint . --max-warnings 0
+
+
+> @elevateo/web@0.1.0-read.1 test
+> vitest run src/features/inbox/InboxPage.test.tsx
+
+
+[1m[30m[46m RUN [49m[39m[22m [36mv4.1.11 [39m[90m/workspace/apps/web[39m
+
+ [32m✓[39m src/features/inbox/InboxPage.test.tsx [2m([22m[2m17 tests[22m[2m)[22m[33m 414[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m17 passed[39m[22m[90m (17)[39m
+[2m   Start at [22m 13:57:04
+[2m   Duration [22m 1.00s[2m (transform 128ms, setup 84ms, import 193ms, tests 414ms, environment 222ms)[22m
+
+
+> @elevateo/web@0.1.0-read.1 build
+> tsc -p tsconfig.json --noEmit && vite build
+
+vite v7.3.6 building client environment for production...
+transforming...
+node_modules/zod/v4/core/regexes.js (74:0): A comment
+
+"/** Anchors a pattern source. The interpolation lives here rather than at the call site because
+ * esbuild will not drop a `@__PURE__` call whose own argument interpolates a variable, but it
+ * will drop `anchor(dateSource)`. Keeping it inline pinned `date` into every bundle. */"
+
+in "node_modules/zod/v4/core/regexes.js" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.
+node_modules/zod/v4/core/util.js (400:0): A comment
+
+"// Wrapped in a `@__PURE__` IIFE: esbuild never tree-shakes a top-level initializer that contains a member access on `Number`, so the bare object literal survived into every bundle."
+
+in "node_modules/zod/v4/core/util.js" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.
+✓ 232 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                 0.45 kB │ gzip:   0.28 kB
+dist/assets/app-OFPKbGX6.css   22.05 kB │ gzip:   5.30 kB
+dist/assets/app-CL-g4-Xh.js   517.47 kB │ gzip: 156.15 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 1.43s
+test_exit=0
+Error response from daemon: No such container: qa815-mira-140218de4214
+Untagged: qa815-mira-140218de4214:latest
+Deleted: sha256:09e7cd0dbbbd6e52263c05a6f533c0e2018f3738eecdc0cf1f8f895691221c99
+remaining_containers=0
+remaining_image=0
+finished=2026-10-14T13:57:11Z

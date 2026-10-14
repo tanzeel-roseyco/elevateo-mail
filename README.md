@@ -14,6 +14,8 @@ Shared company mailroom with one Rails domain authority and a React/TypeScript c
 
 ## Current state
 
+QA-815 fleet scheduler: Mira FE-806 exact `140218de` passed isolated Docker typecheck, lint, 17 focused inbox tests and build; task container/image cleanup passed. Integrated browser/backend acceptance and other owner requests remain pending. See [Soren receipt](docs/completion/soren.md).
+
 
 ### R25 approval reload recovery candidate
 
