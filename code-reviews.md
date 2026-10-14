@@ -692,3 +692,7 @@ Bounded packet: `apps/web/src/features/thread/ThreadPage.tsx` (about 23 changed 
 ## ATT843 ADV092 focused repair packet
 
 Dispatched Vera finding against `2eca511` identifies one overlapping-download busy-state defect in `MessageAttachments.tsx` around the single `{id,status}` state. The named full review file was unavailable during this repair, so unique reviewed LOC and review density are not asserted here. Owner repair uses per-ID pending ownership and per-ID visible status; the deferred A/B regression is authored but not executed. Request bounded independent re-review of the changed download function/control and Soren fleet Docker proof on the exact repair SHA; runtime and browser evidence remain pending.
+
+## Mira independent Nadia attachment guard/RBS review
+
+Pinned Nadia `8d89a183c6d146e9d81543850b8c325e324e1b64`; report `docs/completion/mira-review-nadia-8d89a18.md`. Reviewed 346 unique current-version source LOC in reads <=126 LOC, covering all 182 newly added RBS/source/test lines in the assigned packet; remaining full files and SQL/Storage/controller are uncovered. Two actionable static defects: missing claim/due-ID keys escape via `KeyError` and can abort the scan batch (MEDIUM), and nil scanner socket factory escapes as `NoMethodError` rather than deliberate scanner error (LOW). Density 2/182 = 10.99 defects/KLOC. No application test, Docker, database, scanner or live network execution by Mira; Soren fleet proof remains pending.
