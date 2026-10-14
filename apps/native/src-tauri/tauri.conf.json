@@ -3,22 +3,41 @@
   "productName": "Elevateo Mail",
   "version": "0.1.0",
   "identifier": "com.elevateo.mail",
-  "build": {
-    "frontendDist": "../../web/dist"
-  },
   "app": {
-    "windows": [{ "label": "main", "create": false, "title": "Elevateo Mail", "width": 1120, "height": 760 }],
+    "windows": [
+      {
+        "label": "main",
+        "create": false,
+        "title": "Elevateo Mail",
+        "width": 1120,
+        "height": 760
+      }
+    ],
     "security": {
-      "csp": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; object-src 'none'; frame-src 'none'; base-uri 'none'"
-    }
+      "assetProtocol": {
+        "enable": false,
+        "scope": []
+      },
+      "capabilities": []
+    },
+    "withGlobalTauri": false
   },
   "bundle": {
     "active": true,
-    "targets": ["nsis"],
+    "targets": [
+      "nsis"
+    ],
     "windows": {
       "allowDowngrades": false,
-      "nsis": { "displayLanguageSelector": false, "languages": ["English"] },
-      "webviewInstallMode": { "type": "embedBootstrapper" }
+      "nsis": {
+        "displayLanguageSelector": false,
+        "languages": [
+          "English"
+        ]
+      },
+      "webviewInstallMode": {
+        "type": "embedBootstrapper"
+      }
     }
   }
 }

@@ -1,8 +1,0 @@
-{
-  "$schema": "https://schema.tauri.app/config/2/capability",
-  "identifier": "bundled-local-ui",
-  "description": "Bundled local UI only; no privileged commands or remote capability grant.",
-  "windows": ["main"],
-  "local": true,
-  "permissions": []
-}
