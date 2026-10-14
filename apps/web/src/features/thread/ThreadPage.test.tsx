@@ -287,6 +287,48 @@ describe('return filter (FE-R11)', () => {
 })
 
 describe('message pagination reset (FE-R10)', () => {
+  it('keeps loaded plaintext on a network continuation failure and retries that page', async () => {
+    const { gateway, readCalls } = pagedGateway([
+      detailPage(['First message'], 'next'),
+      new GatewayError('transport', 'network', 'synthetic offline'),
+      detailPage(['Second message'], null),
+    ])
+    renderReaderWith(gateway)
+    await screen.findByText('First message')
+    fireEvent.click(screen.getByRole('button', { name: 'Show more messages' }))
+    await screen.findByRole('alert')
+    expect(screen.getByText('First message')).toBeTruthy()
+    fireEvent.click(screen.getByRole('button', { name: 'Retry more messages' }))
+    await screen.findByText('Second message')
+    expect(screen.getByText('First message')).toBeTruthy()
+    expect(readCalls()).toBe(3)
+  })
+
+  it('keeps a later-page permalink pending after a network failure', async () => {
+    const { gateway } = pagedGateway([
+      detailPage([MESSAGE_A], 'next'),
+      new GatewayError('transport', 'network', 'synthetic offline'),
+    ])
+    renderReaderWith(gateway, `/mailboxes/${MB}/threads/${THREAD}?message=${MESSAGE_B}`)
+    await screen.findByText('This message is on a later page. Show more messages to find it.')
+    fireEvent.click(screen.getByRole('button', { name: 'Show more messages' }))
+    await screen.findByRole('alert')
+    expect(screen.getByText('This message is on a later page. Show more messages to find it.')).toBeTruthy()
+    expect(screen.queryByLabelText('Selected message')).toBeNull()
+  })
+
+  it('removes loaded content when a continuation reports revoked access', async () => {
+    const { gateway } = pagedGateway([
+      detailPage(['Previously visible'], 'next'),
+      new GatewayError('api', 'not_available', 'Unavailable', { status: 404, requestId: 'r1' }),
+    ])
+    renderReaderWith(gateway)
+    await screen.findByText('Previously visible')
+    fireEvent.click(screen.getByRole('button', { name: 'Show more messages' }))
+    await screen.findByText('This conversation is unavailable')
+    expect(screen.queryByText('Previously visible')).toBeNull()
+  })
+
   it('a reset replaces accumulated messages with the fresh first page', async () => {
     const { gateway, readCalls } = pagedGateway([
       detailPage(['Stale message'], 'c1'),
