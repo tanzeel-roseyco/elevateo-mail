@@ -1,0 +1,51 @@
+{
+  "openapi": "3.1.1",
+  "info": {
+    "title": "Elevateo mailbox assignment options proposal",
+    "version": "2.0.0-proposal.assignee-options.1",
+    "description": "Noncanonical read-only proposal. Active Auth subjects only; no roster identity mapping or enrollment."
+  },
+  "servers": [{ "url": "/" }],
+  "security": [{ "sessionCookie": [] }],
+  "paths": {
+    "/v2/mailboxes/{mailbox_id}/assignee-options": {
+      "get": {
+        "operationId": "listMailboxAssigneeOptions",
+        "x-elevateo-status": "proposal",
+        "summary": "List current eligible assignee Auth UUIDs for one assignable mailbox",
+        "description": "Requires current mailbox assignment authority inside the protected read transaction. Eligible subjects are sorted by UUID. The opaque cursor is signed and bound to actor, organization, mailbox, session authorization version and ordering. The V1 assignment write remains final authority.",
+        "parameters": [
+          { "name": "mailbox_id", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } },
+          { "name": "cursor", "in": "query", "schema": { "type": "string", "minLength": 1, "maxLength": 2048 } },
+          { "name": "limit", "in": "query", "schema": { "type": "integer", "minimum": 1, "maximum": 50 } }
+        ],
+        "responses": {
+          "200": { "description": "Bounded eligible Auth UUID page, without profile or grant data", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/MailboxAssigneeOptionPage" } } } },
+          "400": { "description": "Malformed path, limit, or invalid or expired cursor" },
+          "401": { "description": "Unauthenticated session" },
+          "404": { "description": "Mailbox missing or inaccessible; foreign organization is indistinguishable" }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": { "sessionCookie": { "type": "apiKey", "in": "cookie", "name": "elevateo_session" } },
+    "schemas": {
+      "MailboxAssigneeOption": {
+        "type": "object", "additionalProperties": false, "required": ["user_id"],
+        "properties": { "user_id": { "type": "string", "format": "uuid" } }
+      },
+      "MailboxAssigneeOptionPage": {
+        "type": "object", "additionalProperties": false,
+        "required": ["context_id", "authorization_version", "mailbox_id", "items", "next_cursor"],
+        "properties": {
+          "context_id": { "type": "string", "minLength": 16, "maxLength": 256 },
+          "authorization_version": { "type": "string", "minLength": 16, "maxLength": 256 },
+          "mailbox_id": { "type": "string", "format": "uuid" },
+          "items": { "type": "array", "maxItems": 50, "items": { "$ref": "#/components/schemas/MailboxAssigneeOption" } },
+          "next_cursor": { "type": ["string", "null"], "minLength": 1, "maxLength": 2048 }
+        }
+      }
+    }
+  }
+}

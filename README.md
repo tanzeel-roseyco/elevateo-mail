@@ -482,3 +482,5 @@ INT801 current attachment metadata controller strict candidate binds path UUIDs 
 QA815 exact `b3fec577` pinned-tool Android parser probe passed 17 Python methods plus manifest/permission/unsigned classification on a retained older rejected unsigned APK. Cleanup passed; no new APK or installed Android behavior is accepted from this probe.
 
 ATT898 Nadia repository/test import repair is integrated for the exact QA815 attachment strict and standalone test-load failures. Soren fleet Steep and focused attachment tests on the coherent source remain pending; no byte route or live sending was activated.
+
+APP901 directory work has an inactive V2 mailbox assignee-options proposal and strict browser read adapter for real eligible Auth UUIDs only. No staff-reference email/UUID mapping or enrollment exists; backend authority, controller, canonical route and fleet checks are pending.

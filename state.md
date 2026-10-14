@@ -425,3 +425,5 @@ INT801 attachment metadata controller strict candidate resolves the five Cassian
 QA815 imported exact `b3fec577` Android pinned Build Tools 36 focused probe: 17 Python methods and retained unsigned APK manifest/permission/signature classifiers PASS with task-only cleanup. The artifact was generated previously under a failed permission gate; no new APK, signing or installed runtime PASS follows.
 
 Nadia ATT898 exact `4557fd73` narrows attachment repository integer values to decimal string binds and imports Minitest mock/Repository in standalone service tests, preserving Cassian's V2 metadata controller source. It is an unexecuted owner repair pending coherent fleet Steep and focused units.
+
+APP901/DIR904 candidate adds only an inactive mailbox-scoped assignee UUID options proposal and typed browser adapter with three authored, unexecuted cases. Exact twelve roster references remain null/unbound; Sabine protected authority and Theo controller are prerequisites to activation.

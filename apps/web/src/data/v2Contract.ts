@@ -61,6 +61,16 @@ export const RosterPageSchema = z.strictObject({
   next_cursor: z.string().max(2048).nullable(),
 })
 
+// AIDEV-NOTE: Assignment options are active Auth UUIDs only. Never infer them from the unbound roster.
+export const MailboxAssigneeOptionPageSchema = z.strictObject({
+  context_id: z.string().min(16).max(256),
+  authorization_version: z.string().min(16).max(256),
+  mailbox_id: id,
+  items: z.array(z.strictObject({ user_id: id })).max(50),
+  next_cursor: z.string().min(1).max(2048).nullable(),
+})
+export type MailboxAssigneeOptionPage = z.infer<typeof MailboxAssigneeOptionPageSchema>
+
 export const LeadSummarySchema = z.strictObject({
   id, campaign_id: id, email: z.email().max(254),
   consent_status: z.enum(['unknown', 'granted', 'withdrawn']),
