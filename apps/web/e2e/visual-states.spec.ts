@@ -174,7 +174,7 @@ const SCENARIOS: Scenario[] = [
     // assert instead (r9 failure: scoping the behind-content row to the dialog found nothing).
     expectVisible: { text: 'Visual mailbox' },
     assert: async (page) => {
-      await expect(page.getByRole('dialog', { name: 'Mailboxes' }).getByRole('link', { name: 'Visual mailbox' })).toBeVisible()
+      await expect(page.getByRole('dialog', { name: 'Navigation' }).getByRole('link', { name: 'Visual mailbox' })).toBeVisible()
       // Radix marks background content aria-hidden while modal, so role queries cannot see the
       // row; the rendered text itself proves the populated inbox is painted behind the overlay.
       await expect(page.getByText('Visual conversation 1').first()).toBeVisible()
@@ -311,7 +311,7 @@ const SCENARIOS: Scenario[] = [
     // loading/error presentations absent.
     expectVisible: { text: 'No mailboxes are visible to you.' },
     assert: async (page) => {
-      const nav = page.getByRole('navigation', { name: 'Mailboxes' })
+      const nav = page.getByRole('navigation', { name: 'Personal' })
       await expect(nav).toBeVisible()
       await expect(nav.locator('a[href*="/mailboxes/"]')).toHaveCount(0)
       await expect(nav.getByRole('link', { name: 'Search' })).toHaveCount(1)
@@ -441,8 +441,8 @@ test.describe('read-checkpoint visual states (capture for human inspection)', ()
           // dialog actually opened.
           await expect(page.getByText('Simulated local mail')).toBeVisible()
           if ((page.viewportSize()?.width ?? 1280) < 768) {
-            await page.getByRole('button', { name: 'Open mailbox menu' }).click()
-            await expect(page.getByRole('dialog', { name: 'Mailboxes' })).toBeVisible()
+            await page.getByRole('button', { name: 'Open navigation' }).click()
+            await expect(page.getByRole('dialog', { name: 'Navigation' })).toBeVisible()
           }
         }
         if (scenario.act) await scenario.act(page)
@@ -453,7 +453,7 @@ test.describe('read-checkpoint visual states (capture for human inspection)', ()
         // rendered). Scope sidebar-state text expectations to the open Mailboxes dialog on narrow
         // viewports; role-based locators are unaffected (display:none drops the aside from the
         // accessibility tree). toBeVisible stays strict.
-        const textScope = scenario.revealSidebar && (page.viewportSize()?.width ?? 1280) < 768 ? page.getByRole('dialog', { name: 'Mailboxes' }) : page
+        const textScope = scenario.revealSidebar && (page.viewportSize()?.width ?? 1280) < 768 ? page.getByRole('dialog', { name: 'Navigation' }) : page
         if (scenario.expectVisible.status !== undefined) await expect(page.getByRole('status', { name: scenario.expectVisible.status })).toBeVisible()
         if (scenario.expectVisible.text !== undefined) await expect(textScope.getByText(scenario.expectVisible.text).first()).toBeVisible()
         if (scenario.assert) await scenario.assert(page)

@@ -1,6 +1,6 @@
 // Responsive shell: skip link, sidebar as a drawer below the md breakpoint, labelled main region.
 // FE-805: the rail carries independent Personal/Outreach sections fed by the validated feature
-// registry (./features); the drawer is named "Navigation" / "Open navigation menu" as agreed with
+// registry (./features); the drawer is named "Navigation" / "Open navigation" as agreed with
 // QA, and Tessa updates the e2e selectors in step (older R12/R19 evidence used the previous names).
 // Layout ideas adapted from first-party Ledger frontend 4322cfbb, src/features/live/LiveShell.tsx
 // (blob 2633baf7…); session/capability wiring replaced with the FE-01 session controller.
@@ -266,7 +266,7 @@ function ProtectedShell({ session, replacedIdentity }: { session: Session; repla
         <header className="flex items-center gap-2 border-b border-line bg-surface px-3 py-2">
           <span className="md:hidden">
             {/* Names agreed with QA (ADV/Tessa): the drawer holds every section, not only mailboxes. */}
-            <Drawer open={drawerOpen} onOpenChange={setDrawerOpen} title="Navigation" trigger={<IconButton label="Open navigation menu"><MenuIcon /></IconButton>}>
+            <Drawer open={drawerOpen} onOpenChange={setDrawerOpen} title="Navigation" trigger={<IconButton label="Open navigation"><MenuIcon /></IconButton>}>
               {sidebar}
             </Drawer>
           </span>

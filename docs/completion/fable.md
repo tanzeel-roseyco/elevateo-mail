@@ -154,6 +154,10 @@ Source intake: Cassian's exact V2 web chain was cherry-picked with `-x` provenan
 
 FE-805 authored cases: 20. None executed by Fable.
 
+## R6 — exact drawer labels, e2e alignment, viewport-fit (2026-10-15)
+
+Narrow repair on `77dbd86`: trigger `button "Open navigation"` (no "menu"), `dialog "Navigation"`; the rail landmark is `navigation "Personal"`. `Shell.tsx`, `Shell.test.tsx` and the affected `e2e/read.spec.ts`, `e2e/support.ts`, `e2e/visual-states.spec.ts` selectors changed in the same commit so Tessa's exact labels and the repository specs agree. Fixed the `Shell.test.tsx` test-title apostrophe (now a double-quoted title) that would have failed to parse. Added `viewport-fit=cover` to `index.html` and `dev-fixtures.html` so the safe-area insets in `styles/index.css` apply in notched WebViews. Account-gateway note for Cassian: the bridge's two inert account signatures should be replaced by his canonical campaign-scoped signatures when the real account route is registered; no inert workaround is intended once that route exists. Nothing executed locally.
+
 ## Limitations
 
 - No lint, typecheck, unit test, build or visual check has been executed by Fable; Soren owns execution and Tessa owns visual evidence.

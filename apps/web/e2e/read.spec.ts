@@ -67,9 +67,9 @@ test.describe('mobile drawer at 390px (V8/D6)', () => {
 
   test('contains Tab and Shift+Tab, excludes the background, Escape restores the trigger', async ({ page }) => {
     await page.goto(ENTRY)
-    const trigger = page.getByRole('button', { name: 'Open mailbox menu' })
+    const trigger = page.getByRole('button', { name: 'Open navigation' })
     await trigger.click()
-    const dialog = page.getByRole('dialog', { name: 'Mailboxes' })
+    const dialog = page.getByRole('dialog', { name: 'Navigation' })
     await expect(dialog).toBeVisible()
     // Background exclusion: the main region is inside an aria-hidden subtree while the modal is open.
     const hiddenMain = await page.evaluate(() => {
@@ -96,9 +96,9 @@ test.describe('mobile drawer at 390px (V8/D6)', () => {
 
   test('selecting a mailbox in the drawer closes it and shows that mailbox', async ({ page }) => {
     await page.goto(ENTRY)
-    const trigger = page.getByRole('button', { name: 'Open mailbox menu' })
+    const trigger = page.getByRole('button', { name: 'Open navigation' })
     await trigger.click()
-    const dialog = page.getByRole('dialog', { name: 'Mailboxes' })
+    const dialog = page.getByRole('dialog', { name: 'Navigation' })
     await dialog.getByRole('link', { name: 'Fixture inbox' }).click()
     await expect(dialog).not.toBeVisible()
     await expect(page.getByRole('heading', { name: 'Conversations' })).toBeVisible()
@@ -110,8 +110,8 @@ test.describe('mobile drawer at 390px (V8/D6)', () => {
 
   test('populated inbox at 390px has no horizontal overflow', async ({ page }) => {
     await page.goto(ENTRY)
-    await page.getByRole('button', { name: 'Open mailbox menu' }).click()
-    await page.getByRole('dialog', { name: 'Mailboxes' }).getByRole('link', { name: 'Fixture inbox' }).click()
+    await page.getByRole('button', { name: 'Open navigation' }).click()
+    await page.getByRole('dialog', { name: 'Navigation' }).getByRole('link', { name: 'Fixture inbox' }).click()
     await expect(page.locator('a[data-thread]').first()).toBeVisible()
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)
     expect(overflow).toBeLessThanOrEqual(0)
@@ -133,11 +133,11 @@ for (const theme of ['light', 'dark'] as const) {
     // Below md the rail copy of the sidebar is display:none, so the active-link measurement must
     // come from the reopened drawer's visible copy — measuring the hidden rail is not evidence of
     // what the viewer sees. The filter pill stays rendered beneath the modal and measures as-is.
-    const trigger = page.getByRole('button', { name: 'Open mailbox menu' })
+    const trigger = page.getByRole('button', { name: 'Open navigation' })
     const drawerPresentation = await trigger.isVisible()
     if (drawerPresentation) {
       await trigger.click()
-      await expect(page.getByRole('dialog', { name: 'Mailboxes' })).toBeVisible()
+      await expect(page.getByRole('dialog', { name: 'Navigation' })).toBeVisible()
     }
     // Transition settling: a background-color mid-transition reports its interpolated value
     // (serialized as oklab in Chromium), so every FINITE animation/transition is deliberately
@@ -271,7 +271,7 @@ for (const theme of ['light', 'dark'] as const) {
     })
     if (drawerPresentation) {
       await page.keyboard.press('Escape')
-      await expect(page.getByRole('dialog', { name: 'Mailboxes' })).not.toBeVisible()
+      await expect(page.getByRole('dialog', { name: 'Navigation' })).not.toBeVisible()
     }
     const { ratios, raws, parser } = measured
     // Parser regressions: both serializations agree, color(srgb …) creams read as light, unknown

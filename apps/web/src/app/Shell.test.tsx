@@ -291,7 +291,7 @@ describe('mobile drawer', () => {
   it('opens as a named dialog, closes on route selection, Escape restores trigger focus', async () => {
     renderShell(createFixtureGateway())
     await screen.findByText('Synthetic organization A')
-    const trigger = screen.getByRole('button', { name: 'Open navigation menu' })
+    const trigger = screen.getByRole('button', { name: 'Open navigation' })
 
     fireEvent.click(trigger)
     const dialog = await screen.findByRole('dialog', { name: 'Navigation' })
@@ -319,7 +319,7 @@ describe('mobile drawer', () => {
   it('growing past the md breakpoint closes an open drawer', async () => {
     renderShell(createFixtureGateway())
     await screen.findByText('Synthetic organization A')
-    fireEvent.click(screen.getByRole('button', { name: 'Open navigation menu' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Open navigation' }))
     await screen.findByRole('dialog', { name: 'Navigation' })
     act(() => {
       mediaMatches = true
@@ -428,7 +428,7 @@ describe('initial mailbox selection guidance (Mira R16)', () => {
 })
 
 describe('registered feature routes (FE-805)', () => {
-  it('an Outreach link in the rail reaches Celeste's real page, which reports the missing Outreach API', async () => {
+  it("an Outreach link in the rail reaches Celeste's real page, which reports the missing Outreach API", async () => {
     render(
       <SessionProvider gateway={createFixtureGateway()}>
         <MemoryRouter initialEntries={['/outreach/campaigns']}>
