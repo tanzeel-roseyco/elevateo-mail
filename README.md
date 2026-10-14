@@ -83,3 +83,5 @@ Rowan repair re-review found zero remaining actionable issues in scope. Added ex
 Rowan canonical SQL header controls are explicitly C-locale C0/DEL, preserving allowed C1 Unicode scalars; exact byte/control-escape and maximum-version regressions added. SQL runtime pending.
 
 Rowan final SQL source ebf64cd: all bounded functional/design reviews complete, zero remaining actionable source findings; fleet Docker syntax7/lint7 PASS exit0 and exact taskcontainer absence PASS. Real SQL/API vertical-slice tests remain NOT_RUN pending Soren lease on one integrated immutable source.
+
+Rowan integrated migration1429f1d failed exit1 in grants.sql: send-owner blanket private-function revoke touches existing-owner bridges. Restrict revoke to current owner functions; bridges retain explicit original-owner revoke/grants. Added actual-role grant rerun/all-private-runtime-denial/bridge-owner/atomic-queue regression. Repair awaits bounded functional/design review and fleet runtime; original failure retained, no acceptance claim.
