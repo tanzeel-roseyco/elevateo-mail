@@ -782,10 +782,14 @@ describe('memory-only reload boundary', () => {
     }
   })
 
-  it.each(['padding', 'blank lines'])('guards raw-only %s edits until canonical normalization', async (kind) => {
+  it.each(['padding', 'blank lines'])('guards raw-only %s edits until explicit canonical reversion', async (kind) => {
     const add = vi.spyOn(window, 'addEventListener')
     const remove = vi.spyOn(window, 'removeEventListener')
     const h = harness()
+    // AIDEV-NOTE: Raw-only reversion needs a round-trippable baseline; the shared seed has a null/null entry.
+    const seeded = h.state.getDraft(CD.draftId, CD.mailboxId)
+    seeded.to = seeded.to.filter((recipient) => recipient.display_name !== null || recipient.address !== null)
+    expect(parseRecipients(formatRecipients(seeded.to))).toEqual(seeded.to)
     const view = renderEditor(h.gateway, path(CD.draftId))
     try {
       await screen.findByDisplayValue('Fixture draft')
@@ -814,6 +818,38 @@ describe('memory-only reload boundary', () => {
       view.unmount()
       add.mockRestore()
       remove.mockRestore()
+    }
+  })
+
+  it('keeps the guard when displayed-text reversion still removes a saved empty recipient', async () => {
+    const h = harness()
+    const savedTo = h.state.getDraft(CD.draftId, CD.mailboxId).to.map((recipient) => ({ ...recipient }))
+    expect(savedTo[0]).toEqual({ display_name: null, address: null })
+    const view = renderEditor(h.gateway, path(CD.draftId))
+    try {
+      await screen.findByDisplayValue('Fixture draft')
+      const displayed = input('To').value
+      expect(parseRecipients(displayed)).not.toEqual(savedTo)
+      expect(unload()).toBe(false)
+      fireEvent.change(input('To'), { target: { value: `  ${displayed}  ` } })
+      await waitFor(() => expect(unload()).toBe(true))
+      fireEvent.change(input('To'), { target: { value: displayed } })
+      await flush()
+      expect(input('To').value).toBe(displayed)
+      expect(screen.getByText('Unsaved changes')).toBeTruthy()
+      expect(unload()).toBe(true)
+      expect(h.saves).toHaveLength(0)
+      expect(h.state.getDraft(CD.draftId, CD.mailboxId).to).toEqual(savedTo)
+      // Only a confirmed save establishes the parsed array as the new baseline.
+      fireEvent.click(button('Save changes'))
+      await screen.findByText('Saved version 3')
+      expect(unload()).toBe(true) // The old displayed blank line is still raw memory-only intent.
+      fireEvent.change(input('To'), { target: { value: formatRecipients(parseRecipients(displayed)) } })
+      await waitFor(() => expect(unload()).toBe(false))
+      expect(h.saves).toHaveLength(1)
+      expect(h.saves[0]!.to).toEqual(parseRecipients(displayed))
+    } finally {
+      view.unmount()
     }
   })
 

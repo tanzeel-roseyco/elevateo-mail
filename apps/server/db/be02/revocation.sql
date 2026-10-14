@@ -24,9 +24,12 @@ BEGIN
   END IF;
   FOR s IN SELECT * FROM app_auth.sessions WHERE cookie_digest = ANY(captured) ORDER BY cookie_digest LOOP
     UPDATE app_auth.sessions SET state = 'revoked', revoked_at = COALESCE(revoked_at, clock_timestamp()),
-      revocation_scope = CASE WHEN revocation_scope = 'global' THEN 'global' ELSE p_scope END
+      revocation_scope = CASE WHEN revocation_scope = 'global' OR
+        (p_scope = 'global' AND cookie_digest = p_digest) THEN 'global' ELSE 'local' END
       WHERE cookie_digest = s.cookie_digest RETURNING * INTO s;
-    PERFORM app_auth.queue_revocation(s, s.access_token_ciphertext, s.refresh_generation, s.revocation_scope);
+    -- AIDEV-NOTE: Only the authenticated caller authorizes global Auth logout; old sessions need local disposal.
+    PERFORM app_auth.queue_revocation(s, s.access_token_ciphertext, s.refresh_generation,
+      s.revocation_scope);
   END LOOP;
   RETURN '{"status":"ok","upstream_revocation_pending":true}'::jsonb;
 END $$;

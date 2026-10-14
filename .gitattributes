@@ -1,2 +1,5 @@
 third_party/upstream/** -text linguist-vendored
 third_party/manifests/*.json linguist-generated
+
+# AIDEV-NOTE: Preserve root-owned vault mirror bytes exactly across platforms.
+obsidian.md -text

@@ -16,6 +16,32 @@ class SessionLogoutCutTest < SessionDatabaseTestCase
     assert_logout_cut(login_commit: :after_logout_commit)
   end
 
+  def test_global_logout_uses_caller_credential_and_preserves_old_local_intent
+    old = SecureRandom.hex(32)
+    assert_equal "ok", create(digest: old).fetch("status")
+    assert_equal "ok", invoke("revoke_session", old, "local").fetch("status")
+    assert_equal "ok", create.fetch("status")
+    assert_equal "ok", invoke("revoke_session", @digest, "global").fetch("status")
+    rows = @admin.exec_params(<<~SQL, [@user]).values
+      SELECT i.cookie_digest, i.scope FROM app_auth.revocation_intents i
+        JOIN app_auth.sessions s USING(cookie_digest) WHERE s.user_id = $1 ORDER BY i.id
+    SQL
+    assert_equal [[old, "local"], [@digest, "global"]], rows
+    assert_equal "local", @admin.exec_params(
+      "SELECT revocation_scope FROM app_auth.sessions WHERE cookie_digest = $1", [old]).getvalue(0, 0)
+    assert_equal "global", @admin.exec_params(
+      "SELECT revocation_scope FROM app_auth.sessions WHERE cookie_digest = $1", [@digest]).getvalue(0, 0)
+    assert_equal "revoked", session_state(old)
+    assert_equal "revoked", session_state(@digest)
+    assert_equal "unauthorized", invoke("resolve_session", old).fetch("status")
+    assert_equal "unauthorized", invoke("resolve_session", @digest).fetch("status")
+    assert_equal "unauthorized", invoke("revoke_session", old, "global").fetch("status")
+    assert_equal rows, @admin.exec_params(<<~SQL, [@user]).values
+      SELECT i.cookie_digest, i.scope FROM app_auth.revocation_intents i
+        JOIN app_auth.sessions s USING(cookie_digest) WHERE s.user_id = $1 ORDER BY i.id
+    SQL
+  end
+
   private
 
   def assert_logout_cut(login_commit:)
@@ -44,6 +70,10 @@ class SessionLogoutCutTest < SessionDatabaseTestCase
     assert_equal expected, session_state(concurrent)
     expected_status = login_commit == :before_cut ? "unauthorized" : "ok"
     assert_equal expected_status, invoke("resolve_session", concurrent).fetch("status")
+    assert_equal ["global"], @admin.exec_params(
+      "SELECT scope FROM app_auth.revocation_intents WHERE cookie_digest = $1", [@digest]).column_values(0)
+    assert_equal(login_commit == :before_cut ? ["local"] : [], @admin.exec_params(
+      "SELECT scope FROM app_auth.revocation_intents WHERE cookie_digest = $1", [concurrent]).column_values(0))
     expected_intents = login_commit == :before_cut ? 2 : 1
     assert_equal expected_intents, @admin.exec_params("SELECT count(*) FROM app_auth.revocation_intents WHERE cookie_digest IN ($1, $2)", [@digest, concurrent]).getvalue(0, 0).to_i
   end

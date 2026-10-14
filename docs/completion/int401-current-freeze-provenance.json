@@ -1,52 +1,88 @@
 {
-  "base": "8a18f399c6d16d90a177b9e4572f4026e1588f47",
+  "base": "94d32db7fa6d626be371361ec01d055a5f497dbb",
+  "documentation_parent": "e37603f1db1a8ae752ec60f3500a516d460e719a",
   "parents": [
-    "8a18f399c6d16d90a177b9e4572f4026e1588f47",
-    "1fae7b185a64d2aa600388426607abea92d20070",
-    "3c030f122d196253b4be9e04af06aefc2c17be5a"
+    "e37603f1db1a8ae752ec60f3500a516d460e719a",
+    "6c9a4acbf34b8bef2e2daec388fb1a0455598190",
+    "e88273b6a838413acc18aa22545cf8638bb3e326",
+    "3919d2a7a4cf33fb6672ce01f303e48bd0c4f851"
   ],
-  "task": "task_ece05977a76b",
-  "dispatch": "ctx_23639613cb62",
-  "manifest": [
-    {
-      "file": "apps/web/src/app/draftIntent.tsx",
-      "owner": "1fae7b185a64d2aa600388426607abea92d20070",
-      "blob": "e4bf4020fa92dc2e9bf1ba5ee72a8470f644d3ff",
-      "sha256": "be8164f46bcbb2681b7e9846c6864d7200176d45389c7fdf9e75e3676c02a162"
-    },
-    {
-      "file": "apps/web/src/features/drafts/DraftEditorPage.tsx",
-      "owner": "1fae7b185a64d2aa600388426607abea92d20070",
-      "blob": "a5644bccbd3eaa0d36a8d366c80e7325df996047",
-      "sha256": "1e2d6093fcef1da7dc21d556e8291d47efd9e4681e8910898c902ee34dffbfb2"
-    },
-    {
-      "file": "apps/web/src/features/drafts/DraftEditorPage.test.tsx",
-      "owner": "1fae7b185a64d2aa600388426607abea92d20070",
-      "blob": "6437b78d342e4a7d5eb4652ab9279f9ccdf15228",
-      "sha256": "59caa0ea4b302bd9c135ac54f2984dc97a2eaae59e5c2659eb543a440a1345a7"
-    },
-    {
-      "file": "tests/acceptance/playwright/read-revocation.e2e.ts",
-      "owner": "3c030f122d196253b4be9e04af06aefc2c17be5a",
-      "blob": "a30a0f19949f2bf0f1237be54743152e6259e18c",
-      "sha256": "9351a58cdc8109903eedcdc8f8b9dcc58c503487a4a3fcafc28fc399aa7435a1"
-    },
-    {
-      "file": "tests/acceptance/playwright/unavailable.e2e.ts",
-      "owner": "3c030f122d196253b4be9e04af06aefc2c17be5a",
-      "blob": "5f0363510ae3314412093028581355cf491ebcdd",
-      "sha256": "fefdf5af29ab13aa7a0bbefe795e02273568b749909115bea1eca876a3fadd0d"
-    },
-    {
-      "file": "apps/server/test/be_02/read_controller_test.rb",
-      "owner": "b813210173acea67e7333fffa05e146f237193ea",
-      "blob": "7c5999c9d8cd160fd2c3f29f4b986529ea24201d",
-      "sha256": "0d93b017ba0275110c1ef94deefc59d9942850a70f66b9257661caa2a66a2df2"
-    }
-  ],
+  "task": "task_5886a83067b8",
+  "dispatch": "ctx_0a526cc2d333",
   "runtime": "NOT_RUN",
   "observer": "OFF",
-  "vault_bytes": 61711,
-  "rowan_repair": "b813210173acea67e7333fffa05e146f237193ea"
+  "source_manifest": {
+    "apps/server/db/be02/revocation.sql": {
+      "owner": "6c9a4acbf34b8bef2e2daec388fb1a0455598190",
+      "mode": "100644",
+      "blob": "f592826e488ba15464c77a0ae46bb533587cd1b5",
+      "sha256": "a53944984aa6b62ff7ce724947f935959d1c9334c08bc8dd451551f8102b8065"
+    },
+    "apps/server/lib/elevateo/auth_client.rb": {
+      "owner": "6c9a4acbf34b8bef2e2daec388fb1a0455598190",
+      "mode": "100644",
+      "blob": "bf1ca051c9f235270dbcf69ca1c360b540b60ecb",
+      "sha256": "02d560c359f8f5c20e9fb8dd1e9b339b1b754139b3cc46411e85540f8a79850a"
+    },
+    "apps/server/sig/auth_client.rbs": {
+      "owner": "6c9a4acbf34b8bef2e2daec388fb1a0455598190",
+      "mode": "100644",
+      "blob": "3d6b8a3076df09cc63d8fe37423a9ea5385ecd14",
+      "sha256": "07f2acc872d1a513bd152f7f01414a81bca631b7333e4442a023b4472ee5c3a0"
+    },
+    "apps/server/test/be_02/auth_client_test.rb": {
+      "owner": "6c9a4acbf34b8bef2e2daec388fb1a0455598190",
+      "mode": "100644",
+      "blob": "dee4742d25e2a2fb6a7f786e07b092ffce5b23d8",
+      "sha256": "581b289caa238c7aa2489cc6fecae7a105831ec45e9a8bf83491320054950002"
+    },
+    "apps/server/test/be_02/auth_revocations_test.rb": {
+      "owner": "6c9a4acbf34b8bef2e2daec388fb1a0455598190",
+      "mode": "100644",
+      "blob": "b59a488d7d1929bbcae2f720c3fb60e9852811b6",
+      "sha256": "ec44e6652115a2b9737cb54aef88ea75a223d511c8dc79eac9f73cbbedf50ec3"
+    },
+    "apps/server/test/be_02/session_logout_cut_test.rb": {
+      "owner": "6c9a4acbf34b8bef2e2daec388fb1a0455598190",
+      "mode": "100644",
+      "blob": "7a67302f2b9236f1e9747895cd7ef01a2a85617f",
+      "sha256": "afb9f57e1f0868799c62b810d5589edc9d9f8a9501361363097e7a47e8fe3bb4"
+    },
+    "tests/acceptance/playwright/draft-conflict.e2e.ts": {
+      "owner": "e88273b6a838413acc18aa22545cf8638bb3e326",
+      "mode": "100644",
+      "blob": "9540d10e4cd4a9f6c89e9923b2ee9aeb4ea9902a",
+      "sha256": "095cce77f2e94402db38b39e4634f88feb0d54bf0d26f73558cabbfe38037605"
+    },
+    "tests/acceptance/playwright/unavailable.e2e.ts": {
+      "owner": "e88273b6a838413acc18aa22545cf8638bb3e326",
+      "mode": "100644",
+      "blob": "d68dd5fe4c24c60d352eec0306e101e5780ec90b",
+      "sha256": "7c823cfc831050e7a862e569eb9892bd9a3c91a75e50a7d92931e90b35099d4a"
+    },
+    "apps/web/src/features/drafts/DraftEditorPage.test.tsx": {
+      "owner": "3919d2a7a4cf33fb6672ce01f303e48bd0c4f851",
+      "mode": "100644",
+      "blob": "a345ba3f25aef7bfea30ff10870a2b0ed73a40ec",
+      "sha256": "5b94b9871b04a02291b4402ae972b17e023a613e31d72c41217a502b9aa10c37"
+    }
+  },
+  "vault_bytes": 70807,
+  "vault_sha256": "4d35e2a7c4a1754cfea36c36ae5683f10711e675e12d76d7e408c9e68469e059",
+  "unchanged_boundaries": [
+    "contracts/v1",
+    "migrations",
+    "production frontend",
+    "observer",
+    "build recipes"
+  ],
+  "reviews": [
+    "ADV779",
+    "ADV780",
+    "ADV783",
+    "ADV784",
+    "ADV785",
+    "ADV786",
+    "ADV789"
+  ]
 }

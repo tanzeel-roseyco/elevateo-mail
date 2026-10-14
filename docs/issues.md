@@ -82,3 +82,6 @@ INT-401 task_ece05977a76b / ctx_23639613cb62: Mira raw-intent LOW resolved in ac
 ## INT401 documentation consolidation
 
 Docs-only task `task_37f01123edfe / ctx_e26df76f1830`, parent application freeze `94d32db7fa6d626be371361ec01d055a5f497dbb`. Current status is consolidated; historical evidence is preserved in [the history](completion/int401-status-history-20261014.md). Zero application/test/build source lines changed; no application tests required or run for this edit. Source defects and density: not applicable (zero reviewed source LOC), not a new whole-app review. BE02 acceptance pending, BE03 closed, observer OFF; runtime results remain root/Soren-owned.
+
+## INT401 reviewed repair intake
+Issue #10 remains Cassian OFF401-owned; current task task_5886a83067b8 / ctx_0a526cc2d333. Rowan R7 and Mira R9/R10 source accepted; exact candidate runtime NOT_RUN. Worker drain, frontend unit failures, real GUI and F2 durable recovery remain acceptance work; BE02 unaccepted, BE03 closed.
