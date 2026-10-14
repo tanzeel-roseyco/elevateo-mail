@@ -1351,3 +1351,5 @@ INT801 current assignee route/openapi/main activation patch: source review pendi
 Canonical draft.8 description/401/rejected-423 correction follows direct controller/contract inspection and Tessa QA816 oracle request. No independent review or runtime of this correction has been performed; defects and density unassessed for this delta.
 
 Soren private browser output preflight import `4d0192ca`: no independent source review by Cassian, zero additional reviewed LOC; defects/density unassessed. Three fleet Python unit cases are source-specific test evidence only and do not count as source review or browser runtime.
+
+INT801 integration inspection found one QA816 attachment test-oracle defect before import: Tessa `d3f2528` expects original filename in Content-Disposition but current ATT902 controller returns fixed `attachment`. Held the file and requested owner repair; this is a bounded finding, not an independent full review or runtime proof. Top-reply/assignee owner cases imported source-only; reviewed LOC/density for those files unassessed here.
