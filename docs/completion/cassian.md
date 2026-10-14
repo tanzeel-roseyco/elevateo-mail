@@ -167,3 +167,5 @@ Sabine ADV095 corrected the wire after cb1ec5b: context_id is UUID and exactly e
 ## Web lint repair after cb1ec5b fleet receipt
 
 Root reported no-control-regex offenses at v2Contract.ts 68/87 and v2PreferencesGateway.ts 11. Replaced those patterns with code-point predicates for C0/DEL/C1, added C1 source/display-name regressions, and corrected two old preference gateway tests to the current input-first method order. Exact Docker lint/type/unit/build NOT_RUN on this repair; no broader PASS claimed.
+
+ATT838 follow-up: Sabine specified the signed authorization_version shape as exact 43-character SessionCrypto URL-safe token. The signer and client test fixtures now enforce that size; earlier 16..256 wording is superseded. Root reserved migration 00018 for the helper after Maeve00016/Corin00017. Fleet tests/interoperability pending.

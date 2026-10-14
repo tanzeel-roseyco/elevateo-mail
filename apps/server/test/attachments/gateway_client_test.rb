@@ -13,7 +13,7 @@ class AttachmentGatewayClientTest < Minitest::Test
       when "operation" then "attachment.read"
       when "audience" then "attachment_gateway.v1"
       when "session_digest" then "a" * 64
-      when "authorization_version" then "version_hint_1234"
+      when "authorization_version" then "v" * 43
       when "authorization_generation" then 7
       when "expires_at" then 1_700_000_020
       else ID

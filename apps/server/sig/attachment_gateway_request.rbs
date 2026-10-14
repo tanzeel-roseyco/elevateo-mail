@@ -3,7 +3,7 @@ module Elevateo
     PATH: String
     UUID: Regexp
     DIGEST: Regexp
-    HINT: Regexp
+    VERSION: Regexp
     IDS: Array[String]
     ORDER: Array[String]
     attr_reader body: String

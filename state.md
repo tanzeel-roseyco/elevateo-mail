@@ -256,3 +256,5 @@ INT801 repaired the fleet web lint failure by replacing three no-control-regex p
 FE807 sequence create test was tightened to re-read the same returned id and strict server-only draft DTO; no runtime result yet.
 
 FE807 sequence source repair follows Soren's exact integrated lint parse failure at `SequencePage.tsx:100`; focused fleet lint/type/unit rerun pending.
+
+ATT838 wire now validates the signed authorization_version as an exact 43-character URL-safe SessionCrypto token, alongside equal context UUIDs. Sabine gateway helper uses migration 00018 because 00016/00017 are occupied; interop remains untested.

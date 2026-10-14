@@ -1114,3 +1114,5 @@ INT801 web boundary repair source review: root fleet lint identified three no-co
 FE807 sequence fixture self-review found an inconsistent created id and write-only fields in a mock GET. The happy-path test now binds GET to the actual PUT receipt and projects only read DTO fields; one fixture defect corrected, fleet run pending, no independent density claimed.
 
 FE807 exact `cb1ec5b` fleet lint diagnostic: one syntax defect in Remove step callback caused parser failure before type/unit/build. Author repaired one missing call-closing parenthesis; new source has not run in Docker. This is an actual FE807 defect, not a Maeve backend failure; independent review density not claimed.
+
+ATT838 wire follow-up: one source interface narrowing (authorization_version 16..256 to exact 43 URL-safe characters) after Sabine clarification; one malformed-token regression added. No independent review or runtime proof for the new bytes, so no accepted density claimed.

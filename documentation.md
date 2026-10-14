@@ -320,3 +320,5 @@ INT801 repaired the fleet web lint failure by replacing three no-control-regex p
 FE807 sequence create regression checks one id across PUT receipt and subsequent GET, with the strict read DTO excluding write-only operation/version precondition fields.
 
 FE807 sequence editor lint diagnostic: Remove step's `setSteps` callback was missing its final call-closing parenthesis. The source now closes the callback and call before the JSX tag; Soren must rerun fleet checks on the repair SHA.
+
+ATT838 wire now validates the signed authorization_version as an exact 43-character URL-safe SessionCrypto token, alongside equal context UUIDs. Sabine gateway helper uses migration 00018 because 00016/00017 are occupied; interop remains untested.

@@ -12,7 +12,7 @@ class AttachmentGatewayRequestTest < Minitest::Test
       when "operation" then "attachment.read"
       when "audience" then "attachment_gateway.v1"
       when "session_digest" then "a" * 64
-      when "authorization_version" then "context_hint_1234"
+      when "authorization_version" then "v" * 43
       when "authorization_generation" then 7
       when "expires_at" then 1_700_000_020
       else ID
@@ -51,6 +51,10 @@ class AttachmentGatewayRequestTest < Minitest::Test
     assert_raises(ArgumentError) do
       Elevateo::AttachmentGatewayRequest.new(fields: fields.merge("context_id" =>
         "00000000-0000-4000-8000-000000000002"), key: "k" * 32, now: 1_700_000_000)
+    end
+    assert_raises(ArgumentError) do
+      Elevateo::AttachmentGatewayRequest.new(fields: fields.merge("authorization_version" => "short"),
+        key: "k" * 32, now: 1_700_000_000)
     end
   end
 end

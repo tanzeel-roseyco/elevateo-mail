@@ -316,3 +316,5 @@ INT801 repaired the fleet web lint failure by replacing three no-control-regex p
 FE807 sequence test fixture now returns the exact created id and only server draft fields on the follow-up GET; fleet execution is still pending.
 
 FE807 sequence candidate has a fleet lint parse failure at the Remove step handler on the integrated web SHA; a one-parenthesis source repair is committed separately for exact rerun. No sequence unit/build PASS is claimed.
+
+ATT838 wire now validates the signed authorization_version as an exact 43-character URL-safe SessionCrypto token, alongside equal context UUIDs. Sabine gateway helper uses migration 00018 because 00016/00017 are occupied; interop remains untested.
