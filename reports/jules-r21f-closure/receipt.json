@@ -1,0 +1,112 @@
+{
+  "created_at": "2026-10-14T10:24:02.020180+00:00",
+  "launcher_exit": 101,
+  "runtime_terminal": true,
+  "partitions": [
+    {
+      "project": "be02-r21f-fresh1-00361d7b7b384ae19808b56c0a3870a1",
+      "evidence": "/home/tanzeel/elevateo-mail-wave-20261014/soren/.local-jobs/app-86036e27-r21f-fresh1/ops/local/be02-r21f-fresh1-00361d7b7b384ae19808b56c0a3870a1",
+      "status": "PASSED",
+      "failure": "",
+      "cleanup": true
+    },
+    {
+      "project": "be02-r21f-fresh1-fdab910e96cc45dfbf19241ae49dca0c",
+      "evidence": "/home/tanzeel/elevateo-mail-wave-20261014/soren/.local-jobs/app-86036e27-r21f-fresh1/ops/local/be02-r21f-fresh1-fdab910e96cc45dfbf19241ae49dca0c",
+      "status": "PASSED",
+      "failure": "",
+      "cleanup": true
+    },
+    {
+      "project": "be02-r21f-fresh1-7307866d48bd46bca2a20e1a2fe8f612",
+      "evidence": "/home/tanzeel/elevateo-mail-wave-20261014/soren/.local-jobs/app-86036e27-r21f-fresh1/ops/local/be02-r21f-fresh1-7307866d48bd46bca2a20e1a2fe8f612",
+      "status": "FAILED",
+      "failure": "RuntimeError",
+      "cleanup": true
+    },
+    {
+      "project": "be02-r21f-fresh1-fa683d29b9534f91bd9144717b1bd7c8",
+      "evidence": "/home/tanzeel/elevateo-mail-wave-20261014/soren/.local-jobs/app-86036e27-r21f-fresh1/ops/local/be02-r21f-fresh1-fa683d29b9534f91bd9144717b1bd7c8",
+      "status": "FAILED",
+      "failure": "RuntimeError",
+      "cleanup": true
+    },
+    {
+      "project": "be02-r21f-fresh1-2ca3f700b23848a499f4b2ff2b29f92d",
+      "evidence": "/home/tanzeel/elevateo-mail-wave-20261014/soren/.local-jobs/app-86036e27-r21f-fresh1/ops/local/be02-r21f-fresh1-2ca3f700b23848a499f4b2ff2b29f92d",
+      "status": "PASSED",
+      "failure": "",
+      "cleanup": true
+    },
+    {
+      "project": "be02-r21f-fresh1-4b3fa129b76f44ca85b87caece08e3fd",
+      "evidence": "/home/tanzeel/elevateo-mail-wave-20261014/soren/.local-jobs/app-86036e27-r21f-fresh1/ops/local/be02-r21f-fresh1-4b3fa129b76f44ca85b87caece08e3fd",
+      "status": "PASSED",
+      "failure": "",
+      "cleanup": true
+    },
+    {
+      "project": "be02-r21f-fresh1-a035608df21e4f12810f0fe2b33ce896",
+      "evidence": "/home/tanzeel/elevateo-mail-wave-20261014/soren/.local-jobs/app-86036e27-r21f-fresh1/ops/local/be02-r21f-fresh1-a035608df21e4f12810f0fe2b33ce896",
+      "status": "FAILED",
+      "failure": "RuntimeError",
+      "cleanup": true
+    },
+    {
+      "project": "be02-r21f-fresh1-97d01b3cdbea4beda1d40dd5eb083e43",
+      "evidence": "/home/tanzeel/elevateo-mail-wave-20261014/soren/.local-jobs/app-86036e27-r21f-fresh1/ops/local/be02-r21f-fresh1-97d01b3cdbea4beda1d40dd5eb083e43",
+      "status": "FAILED",
+      "failure": "RuntimeError",
+      "cleanup": true
+    }
+  ],
+  "independent_absence": {
+    "be02-r21f-fresh1-00361d7b7b384ae19808b56c0a3870a1": {
+      "all_removed_resources_absent": true,
+      "checked_count": 19,
+      "cleanup_errors": []
+    },
+    "be02-r21f-fresh1-fdab910e96cc45dfbf19241ae49dca0c": {
+      "all_removed_resources_absent": true,
+      "checked_count": 19,
+      "cleanup_errors": []
+    },
+    "be02-r21f-fresh1-7307866d48bd46bca2a20e1a2fe8f612": {
+      "all_removed_resources_absent": true,
+      "checked_count": 19,
+      "cleanup_errors": []
+    },
+    "be02-r21f-fresh1-fa683d29b9534f91bd9144717b1bd7c8": {
+      "all_removed_resources_absent": true,
+      "checked_count": 19,
+      "cleanup_errors": []
+    },
+    "be02-r21f-fresh1-2ca3f700b23848a499f4b2ff2b29f92d": {
+      "all_removed_resources_absent": true,
+      "checked_count": 19,
+      "cleanup_errors": []
+    },
+    "be02-r21f-fresh1-4b3fa129b76f44ca85b87caece08e3fd": {
+      "all_removed_resources_absent": true,
+      "checked_count": 19,
+      "cleanup_errors": []
+    },
+    "be02-r21f-fresh1-a035608df21e4f12810f0fe2b33ce896": {
+      "all_removed_resources_absent": true,
+      "checked_count": 19,
+      "cleanup_errors": []
+    },
+    "be02-r21f-fresh1-97d01b3cdbea4beda1d40dd5eb083e43": {
+      "all_removed_resources_absent": true,
+      "checked_count": 19,
+      "cleanup_errors": []
+    }
+  },
+  "compile_image_removed": "sha256:c233d091b8ea06257b1623d557e0c20d02ae5359a64b8d16ba3bcc4c52a26d96",
+  "compile_image_logical_size_bytes": 1243484340,
+  "host_free_bytes_before": 258587729920,
+  "host_free_bytes_after": 259461898240,
+  "evidence_preserved": true,
+  "effective_fast": "UNVERIFIED",
+  "batch_ledger_original_entries": 7
+}

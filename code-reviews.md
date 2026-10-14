@@ -1,3 +1,7 @@
+## R21f recovery documentation verification
+
+Docs-only closure: eight case/location receipts and eight cleanup receipts reconciled against exact Docker/resource absence. Four mobile failures and missing final original queue entry remain explicit. No application code changed or built; no new adversarial source review required. Documentation stale-status defects corrected: 5 current records; application runtime defects retained: 4 failed mobile partitions, root cause UNKNOWN. Documentation defect density: 5 stale records / 5 reviewed current records = 1 per record before repair, 0 after repair; LOC density is not meaningful for receipt reconciliation. Existing source review coverage is unchanged. Diff whitespace check passed; no application tests rerun.
+
 ## Current bounded integration review: INT401 R16
 
 Mira ADV834 functional / ADV835 dedicated design each accepted 356 unique source/context LOC in packets171/185, zero defects (0/KLOC); overlapping coverage is nonadditive. Three imported source hashes match the accepted manifest. Source acceptance only; runtime NOT_RUN.
