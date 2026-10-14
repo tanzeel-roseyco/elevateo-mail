@@ -17,6 +17,7 @@ export const GrantChangeSchema = z.strictObject({
 export const OrganizationGrantsSchema = z.strictObject({
   context_id: z.string().min(16).max(256),
   authorization_version: z.string().min(16).max(256),
+  actor: OrganizationGrantSchema,
   items: z.array(OrganizationGrantSchema).max(50),
   next_cursor: z.string().max(2048).nullable(),
 })
