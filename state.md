@@ -1,6 +1,6 @@
 # Project state
 
-Synthetic demo checkpoint: separate `demo.html` on private fleet port 18141 now supplies a populated fictitious team inbox and drafts. Docker typecheck/build, lint and 632 tests pass; coordinator visual/adversarial gates pending. See `docs/completion/fe-preview-01.md`. Original 18140 fixture preview remains available.
+Synthetic demo checkpoint: separate `demo.html` on private fleet port 18141 now supplies a populated fictitious team inbox and drafts. Docker typecheck/build, lint and 632 tests pass; coordinator visual/adversarial gates pending. Superseded task-owned demo image/cache ancestry cleaned; both private previews retained. See `docs/completion/fe-preview-01.md`. Original 18140 fixture preview remains available.
 
 Private synthetic frontend preview is running; Docker lint/typecheck/build and 629 tests passed. Root visually inspected it. Isolated BE03 work is authorized in parallel; integration/release still require BE02 acceptance. See [preview checkpoint](docs/completion/fe-preview-01.md).
 
