@@ -10,7 +10,6 @@ const missing: Record<string, string> = {
   'SCN-DRAFT-003-P': 'No controlled uncertain-commit operation recovery barrier supplied',
   'SCN-DRAFT-003-F1': 'No controlled unapplied operation recovery barrier supplied',
   'SCN-DRAFT-003-F2': 'No controlled recorded-conflict or unrelated-operation lookup response with independent outcome/recovery evidence supplied',
-  'SCN-DRAFT-008-F2': 'No uncertain-save reload barrier supplied; editable persisted reload is separately sampled',
   'SCN-GUI-006-F1': 'No independently controlled invalid API routing response supplied',
 };
 for (const [id, reason] of Object.entries(missing)) unavailable(id, reason);
