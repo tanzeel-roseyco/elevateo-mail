@@ -505,3 +505,5 @@ The additive mailbox assignee options source is `apps/server/db/directory/assign
 Final DIR903/904 owner follow-ups strengthen the cross-organization DB witness and fake HTTP harness without changing the protected SQL or controller source. Soren fleet role/migration/HTTP checks remain required.
 
 `AssigneePicker.tsx` is the opt-in child of AssignmentPanel, consuming `FeatureGateways.assigneeOptions` when present. It displays eligible Auth UUIDs only, invalidates late session/mailbox results, and leaves the V1 revisioned assignment write authoritative. Port injection and fleet UI proof remain pending.
+
+The generic top reply control now delegates to the same concrete-message draft intent used by per-message reply and disables itself when the selected message/sender is unavailable. This remains a draft creation flow under frozen V1 save semantics, with no new send API; exact feature-wave browser proof is pending.

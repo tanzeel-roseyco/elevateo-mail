@@ -1325,3 +1325,5 @@ DIR905 Cassian optional feature port adds only the exact V2 assignee read signat
 Sabine DIR903 final `bd1969ae` adds a real foreign organization/mailbox fixture; Theo DIR904 final `1edd3b3c` updates fake HTTP connection yield and scope documentation. These are source/test candidates, not independent review or runtime PASS. Sabine owner packet totals 272 unique LOC in bounded reads; actual independently reviewed LOC/defects/KLOC pending.
 
 DIR905 Lyra exact `7380436b` AssignmentPanel/AssigneePicker/tests are imported as source candidate only. Owner packet and independent source/design review plus fleet TypeScript/unit/browser evidence remain pending; reviewed LOC/defects/KLOC unclaimed. The route and main injection remain inactive.
+
+Mira REPLY901 `fcfaf0f` ThreadPage/test and REPLY906 `3ceafd15` CollaborationPanels test are integrated, source-only. Independent bounded review and fleet frontend unit/type/browser runtime are pending; reviewed LOC/defects/KLOC unclaimed. This is not evidence of saved draft persistence on the current feature SHA.

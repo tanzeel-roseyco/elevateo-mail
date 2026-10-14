@@ -445,3 +445,5 @@ Sabine DIR903 and Theo DIR904 test-only follow-ups are imported after their sour
 Lyra DIR905 picker source/tests are imported behind the optional V2 assignee port. It is not injected in production and has no latest-SHA browser/type/test PASS; manual UUID entry is removed per the current feature directive.
 
 DIR905 final picker candidate aborts in-flight options if the optional port disappears; fleet/UI proof remains pending.
+
+Mira REPLY901/906 frontend source and tests are imported as unexecuted candidates; top reply now uses an authorized loaded sender and existing V1 draft association rather than an empty thread link. Soren frontend/Tessa browser evidence remains pending.

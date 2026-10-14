@@ -44,6 +44,11 @@ function sameAddressLine(message: Message): string {
   return `To: ${message.to.map((a) => a.display_name ?? a.address ?? 'Unknown recipient').join(', ')}`
 }
 
+function replyAddress(message: Message): string | null {
+  const address = message.sender?.address?.trim()
+  return address && !/[\r\n<>]/.test(address) ? address : null
+}
+
 export function ThreadPage({ readDirectMessage, attachmentPort }: { readDirectMessage?: DirectMessageRead; attachmentPort?: AttachmentReadPort } = {}) {
   const { mailboxId, threadId } = useParams<{ mailboxId: string; threadId: string }>()
   const [searchParams] = useSearchParams()
@@ -83,14 +88,10 @@ function ConversationReader({ mailboxId, threadId, readDirectMessage, attachment
   const headingRef = useRef<HTMLHeadingElement | null>(null)
   const selectedMessageRef = useRef<HTMLLIElement | null>(null)
   const focusedTargetRef = useRef<string | null>(null)
-  // One reply-draft id per opened conversation: the link is stable across renders, and nothing
-  // exists on the server until the editor's first explicit save (BE-02 C).
-  const replyDraftIdRef = useRef(newId())
-
   const replyToMessage = (message: Message) => {
     if (stateRef.current.status !== 'ready' || sessionState.status !== 'ready' || mailbox?.capabilities.compose !== true) return
-    const address = message.sender?.address?.trim()
-    if (!address || /[\r\n<>]/.test(address)) return
+    const address = replyAddress(message)
+    if (address === null) return
     const draftId = newId()
     const subject = stateRef.current.thread.subject_truncated ? '' : (stateRef.current.thread.subject ?? '')
     const replySubject = subject === '' ? '' : /^re:\s*/i.test(subject) ? subject : `Re: ${subject}`
@@ -219,6 +220,12 @@ function ConversationReader({ mailboxId, threadId, readDirectMessage, attachment
   }, [selectedMessageId, state.status, selectedOnPage, readDirectMessage, context, mailboxId, threadId, scope, handleError, directRetry])
 
   const selectedMessagePresent = selectedOnPage || directResult?.status === 'ready'
+  // A selected URL must never fall back to another sender while its own message is unresolved.
+  // Without a selection, use the latest loaded message with a usable sender.
+  const replyMessage = state.status !== 'ready' ? null : selectedMessageId !== null
+    ? state.messages.find((message) => canonicalId(message.id) === selectedMessageId) ??
+      (directResult?.status === 'ready' ? directResult.message : null)
+    : [...state.messages].reverse().find((message) => replyAddress(message) !== null) ?? null
 
   // AIDEV-NOTE: Page loadingMore changes reader state; focus moves only when a new target first appears.
   useEffect(() => {
@@ -276,15 +283,18 @@ function ConversationReader({ mailboxId, threadId, readDirectMessage, attachment
               onConfirmed={(read) => setState((prev) => (prev.status === 'ready' ? { ...prev, thread: { ...prev.thread, unread: !read } } : prev))}
             />
             {state.thread.unread && <Badge tone="accent">Unread</Badge>}
-            {(mailbox === undefined || mailbox.capabilities.compose) && (
-              <Link
-                to={`/mailboxes/${mailboxId}/drafts/${replyDraftIdRef.current}?new=1&reply_to=${threadId}`}
-                className="inline-flex h-8 items-center rounded-lg border border-line bg-surface px-2.5 text-[13px] font-medium hover:bg-surface-2"
-              >
+            {mailbox?.capabilities.compose === true && (
+              <Button size="sm" disabled={replyMessage === null || replyAddress(replyMessage) === null || sessionState.status !== 'ready'}
+                onClick={() => { if (replyMessage !== null) replyToMessage(replyMessage) }}>
                 Reply as draft
-              </Link>
+              </Button>
             )}
           </div>
+          {mailbox?.capabilities.compose === true && (replyMessage === null || replyAddress(replyMessage) === null) && (
+            <p className="mb-3 text-[12px] text-muted">
+              {selectedMessageId === null ? 'A message with a sender is needed to reply.' : 'This selected message cannot be replied to yet.'}
+            </p>
+          )}
           {/* An empty page with a continuation cursor is not a terminal empty conversation (D4). */}
           {state.messages.length === 0 && state.nextCursor === null && (
             <EmptyState title="No messages" body="This conversation exists but has no readable messages yet." />
@@ -302,7 +312,7 @@ function ConversationReader({ mailboxId, threadId, readDirectMessage, attachment
                 </header>
                 <pre className="whitespace-pre-wrap break-words font-sans text-sm">{directResult.message.body_text}</pre>
                 <footer className="mt-2 flex flex-wrap gap-2">
-                  {mailbox?.capabilities.compose === true && directResult.message.sender?.address?.trim() && !/[\r\n<>]/.test(directResult.message.sender.address) && (
+                  {mailbox?.capabilities.compose === true && replyAddress(directResult.message) !== null && (
                     <Button size="sm" onClick={() => replyToMessage(directResult.message)}>Reply to this sender as draft</Button>
                   )}
                   {directResult.message.body_truncated && <Badge tone="warn">Message shortened by the server</Badge>}
@@ -328,7 +338,7 @@ function ConversationReader({ mailboxId, threadId, readDirectMessage, attachment
                 {/* flex-wrap: both badges together overflow a 390px viewport otherwise (r10 visual QA). */}
                 <footer className="mt-2 flex flex-wrap gap-2">
                   <Link to={`?${filter === 'unread' ? 'filter=unread&' : ''}message=${encodeURIComponent(message.id)}`} aria-current={canonicalId(message.id) === selectedMessageId ? 'location' : undefined} className="rounded px-2 py-1 text-[13px] underline">Open this message</Link>
-                  {mailbox?.capabilities.compose === true && message.sender?.address?.trim() && !/[\r\n<>]/.test(message.sender.address) && (
+                  {mailbox?.capabilities.compose === true && replyAddress(message) !== null && (
                     <Button size="sm" onClick={() => replyToMessage(message)}>Reply to this sender as draft</Button>
                   )}
                   {message.body_truncated && <Badge tone="warn">Message shortened by the server</Badge>}

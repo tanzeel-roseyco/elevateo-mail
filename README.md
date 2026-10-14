@@ -500,3 +500,5 @@ The mailbox assignee picker now has an optional typed feature port for Lyra's UI
 DIR903/904 source tests now include a real foreign mailbox denial fixture and corrected fake HTTP connection yield; fleet execution remains pending.
 
 DIR905 assignment UI now has an opt-in mailbox-scoped eligible UUID picker candidate; production shows unavailable until the verified V2 port is injected. Self/clear and authoritative V1 assignment writes remain; no real staff binding is inferred.
+
+The top conversation Reply as draft candidate now seeds from a concrete available sender and blocks missing selected messages, using the existing V1 draft save path. Fleet browser/type/unit proof remains pending; no send is enabled.
