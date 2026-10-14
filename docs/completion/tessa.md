@@ -36,3 +36,5 @@ Execution partitions for Soren (all inside fleet Docker, each exact merged sourc
 | V2 grants | `SCN-QA-819-F1` | Cassian active grants GET, Lyra/Fable `/people`, real role-scoped seed. |
 
 The shell case validates route and paused copy only. It does not claim campaign list data until the V2 adapter is bound. Each partition must produce its own sanitized case records and task-owned screenshots; a blocked partition remains NOT_RUN, and no passed partition stands in for another.
+
+Fable R3 visual follow-up: `SCN-QA-818-P` now checks People and Personal settings links in the desktop Personal rail, captures the real session-backed `/settings/personal` page, and checks People in the mobile drawer. It retains Fable's current accessible drawer names until the owner supplies exact replacement names. One fixed screenshot ID brings the supplemental set to twenty-one.

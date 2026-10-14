@@ -91,6 +91,8 @@ scenario('SCN-QA-818-P', 'branded-shell-keyboard-mobile-and-outreach-read', asyn
     await expect(outreach).toBeVisible();
     await expect(page.getByText('Elevateo Mail', { exact: true })).toBeVisible();
     await expect(outreach.getByRole('link', { name: 'Campaigns' })).toBeVisible();
+    await expect(page.getByRole('navigation', { name: 'Personal' }).getByRole('link', { name: 'People' })).toBeVisible();
+    await expect(page.getByRole('navigation', { name: 'Personal' }).getByRole('link', { name: 'Personal settings' })).toBeVisible();
     record.artifacts.push(await screenshot(page, `QA816-SHELL-P-desktop-${colorScheme}`));
     await outreach.getByRole('link', { name: 'Campaigns' }).focus();
     await expect(outreach.getByRole('link', { name: 'Campaigns' })).toBeFocused();
@@ -100,11 +102,16 @@ scenario('SCN-QA-818-P', 'branded-shell-keyboard-mobile-and-outreach-read', asyn
     await expect(page.getByText('Outreach is draft or paused. Sending and enrollment are unavailable.')).toBeVisible();
     record.artifacts.push(await screenshot(page, `QA816-SHELL-P-campaigns-${colorScheme}`));
   }
+  await page.goto('/#/settings/personal');
+  await expect(page.getByRole('heading', { name: 'Personal settings' })).toBeVisible();
+  await expect(page.getByText('Signed in as', { exact: false })).toBeVisible();
+  record.artifacts.push(await screenshot(page, 'QA816-SHELL-P-personal-settings'));
   await page.setViewportSize({ width: 375, height: 812 });
   await page.getByRole('button', { name: 'Open mailbox menu' }).click();
   const drawer = page.getByRole('dialog', { name: 'Mailboxes' });
   await expect(drawer.getByRole('navigation', { name: 'Personal' })).toBeVisible();
   await expect(drawer.getByRole('navigation', { name: 'Outreach' })).toBeVisible();
+  await expect(drawer.getByRole('link', { name: 'People' })).toBeVisible();
   record.artifacts.push(await screenshot(page, 'QA816-SHELL-P-mobile-drawer'));
   record.assertions.push('Branded shell, two rail sections, keyboard Campaigns route and mobile drawer render at light/dark desktop and mobile browser width');
 });
