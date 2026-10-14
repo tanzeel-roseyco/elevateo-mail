@@ -172,3 +172,7 @@ R25 approval recovery verification follow-up: fleet strict typecheck, corrected 
 RootSOURCEGO reviewed7a7860e captured-ref lint repair assembled without owner source edits; functional83LOC0/design8changed62context0. Mira owns exactsuccessor lint/type/fullunit/build and reloadbrowser. Backend SQL/API identical tested125f939; recovery runtime stillpending. F2 unsaved-draft/content recovery remainsOPEN; this only restores nonsecretoriginalapprovalmetadata.
 
 Cassian manifest reconciliation: contract-lock now seals actual generated client bytes and pinned fleet generation/125f939S1S2DB+HTTP evidence; README reflects proven scope. Canonical openapi/fixtures/C-D structures unchanged; no regeneration, added routes or capabilityactivation. Recovery successor3a709691 checks stillMira-owned/pending; BE02OPEN/releasegated.
+
+### APK-813 Android development lane
+
+An isolated Java Android offline shell, callback-shape validator, and fleet-only pinned build recipe are prepared in `apps/android`. No APK compile, emulator/device validation, release signing, or shared session integration is claimed. See `docs/completion/astrid.md`.
