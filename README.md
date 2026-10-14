@@ -202,3 +202,5 @@ Fable `f295b35` now implements the agreed navigation labels; Soren's QA816 list-
 Felix found and Tessa repaired one MEDIUM QA816 empty-search evidence oracle; the candidate now waits for settled “No matches” before screenshot. Independent repair review and real fleet browser execution remain pending.
 
 QA816 source now repairs three additional independent review findings: delayed send-review denial, empty campaign form no-POST observation, and exact seeded reply recipient equality. Re-review and fleet browser results remain pending.
+
+QA816 campaign detail evidence now waits for the exact case-owned name and draft status; source and screenshot checks remain pending fleet browser execution.

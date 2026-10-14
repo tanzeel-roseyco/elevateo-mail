@@ -212,3 +212,5 @@ QA816 list-only reporter probe passed in fleet Docker on earlier 6389cc4 with ex
 QA816 empty search now requires the settled “No matches” state and absence of “Searching” before zero-link assertion and screenshot. Felix's initial MEDIUM source finding is preserved; corrected source is not yet independently re-reviewed or run in fleet browser.
 
 QA816 ADV046/047 repairs require a real send-review denial response and alert, a native invalid campaign-name witness plus bounded no-POST observation, and exact seeded reply recipient before and after reload. These changes are source-only until independent re-review and Soren fleet browser execution.
+
+QA816 Outreach detail screenshot is gated by exact case-owned campaign name plus draft state. This avoids selecting unrelated paused-mode text; runtime and independent repair review remain pending.

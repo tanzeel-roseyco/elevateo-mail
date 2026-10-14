@@ -144,3 +144,5 @@ QA816 head 503099d records Fable f295b35 drawer-label resolution and Soren's ear
 QA816 head 6819af1 repairs Felix's MEDIUM empty-search loading race in QA817-F2 (initial packet A 1/152 LOC, 6.58/KLOC); re-review and runtime remain pending. Earlier QA816 source/check receipts do not establish settled-search visual PASS.
 
 QA816 head 1c41d40 repins ADV046/047 repairs in send/outreach/reply browser oracles. Vera identified two gaps and Ada one; exact reviewer coverage/density and repaired-source re-review remain pending. Integrated application/browser/screenshots still NOT_RUN.
+
+QA816 head 0c21185 repins Outreach packet C after exact campaign name/status oracle tightening. Current source has not been compiled or run in fleet browser; earlier 6f91c53 compile/unit receipt remains nontransferable.
