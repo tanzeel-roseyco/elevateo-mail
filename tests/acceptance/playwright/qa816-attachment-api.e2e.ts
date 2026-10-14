@@ -77,7 +77,7 @@ scenario('SCN-QA-827-P', 'clean-private-attachment-bytes-match-disposable-seed',
   expect(download.headers()['content-type']).toBe('application/octet-stream');
   expect(download.headers()['cache-control']).toContain('no-store');
   expect(download.headers()['x-content-type-options']).toBe('nosniff');
-  expect(download.headers()['content-disposition']).toContain(value.clean.filename);
+  expect(download.headers()['content-disposition']).toBe('attachment; filename="attachment"');
   const bytes = await download.body();
   expect(bytes.length).toBe(value.clean.byte_size);
   expect(createHash('sha256').update(bytes).digest('hex')).toBe(value.clean.sha256);
