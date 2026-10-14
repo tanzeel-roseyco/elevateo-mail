@@ -12,7 +12,7 @@ module V2
         message_id: String, capability: Symbol) -> void
     end
     class NoStorage
-      def put: (String, String, content_type: String) -> nil
+      def put: (String, String, **String) -> nil
       def get: (String) -> String
     end
     def index: () -> void

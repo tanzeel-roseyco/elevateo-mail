@@ -14,6 +14,8 @@ Shared company mailroom with one Rails domain authority and a React/TypeScript c
 
 ## Current state
 
+**ATT902 strict source repair:** The inactive attachment controller now checks stored binding types before private download and its RBS models the always-denying storage stub's keyword shape. Soren focused fleet Steep/lint/unit verification is pending; see `docs/completion/nadia-fix933.md`.
+
 **SMTP888 source candidate:** The pinned net-smtp 0.5.2 implements the local Mailpit TLS toggles, but its bundled RBS omits them. A narrow local declaration and preconnect factory regression are added; Soren fleet Steep/unit execution and independent review are pending. Remote SMTP remains held.
 
 **OPS820 bootstrap source intake:** Leonie `f8b07b2` now precreates the private gateway schema as an administrative step and checks its owner/ACL around migration; Sabine 00018 must consume that schema. Fleet database/role proof remains pending; no gateway byte route is enabled.

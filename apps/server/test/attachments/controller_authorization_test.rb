@@ -50,4 +50,12 @@ class AttachmentControllerAuthorizationTest < Minitest::Test
     assert_raises(Elevateo::ThreadReads::NotAvailable) { @authorize.call(**scope) }
     assert_equal 1, @reader.calls.length
   end
+
+  def test_no_storage_rejects_required_and_extra_keywords
+    storage = V2::InboxAttachmentsController::NoStorage.new
+    assert_raises(Elevateo::Attachments::Invalid) do
+      storage.put("private-key", "bytes", content_type: "application/octet-stream")
+    end
+    assert_raises(Elevateo::Attachments::Invalid) { storage.put("private-key", "bytes", unexpected: "value") }
+  end
 end

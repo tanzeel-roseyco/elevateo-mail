@@ -505,3 +505,4 @@ ADV147 no-follow privacy repair: 152 LOC/0 defects; six fleet units were three a
 QA815 feature58edb11c targeted fleet TypeScript and CollaborationPanels 10/10 PASS/cleanup; prior fdecd0d5 full856/build source-specific, no real browser or HTTP inference.
 
 Corin 487ca33d anonymous guard keyword repair imported feature/core; a2f58b34 one-offense lint failure remains source-specific. Coherent feature full new-suite/Steep/lint/HTTP/worker gate awaits Orion manifest inventory and Soren fleet run.
+ATT902 FIX933 source candidate from feature `7cae15a7`: two exact Steep diagnostics are repaired in the attachment controller and RBS without enabling a route or weakening the private byte checks. Focused test is authored, Soren fleet Steep/lint/unit NOT_RUN for this pin; see `docs/completion/nadia-fix933.md`.
