@@ -9,10 +9,12 @@ android_dir="$project_root/apps/android"
 : "${JAVA_HOME:?JDK 17 required}"
 : "${APK813_BUILD_ROOT:?Task-owned output directory required}"
 export ELEVATEO_WEB_ORIGIN=https://app.elevateo.invalid
+export ELEVATEO_NATIVE_ARTIFACT=compile-only-fixture
 # Compile-only fixture: Orion rejects .invalid at runtime; this APK cannot prove login or launch.
 printf "%s\n" "COMPILE_ONLY_ORIGIN=$ELEVATEO_WEB_ORIGIN"
 [[ -f "$native_dir/Cargo.lock" ]] || { echo 'Reviewed apps/native Cargo.lock required' >&2; exit 2; }
 [[ -f "$native_dir/tauri.conf.json" ]] || { echo 'Orion Tauri shell required' >&2; exit 2; }
+[[ -f "$native_dir/tauri.fixture.conf.json" ]] || { echo 'Orion fixture config required' >&2; exit 2; }
 [[ -f "$android_dir/tauri.android.conf.json" ]] || exit 2
 [[ "$APK813_BUILD_ROOT" != "$project_root"* ]] || { echo 'Output must be outside source' >&2; exit 2; }
 [[ "$(rustc --version)" == 'rustc 1.90.0 '* ]] || { echo 'Rust 1.90.0 required' >&2; exit 2; }
@@ -29,17 +31,17 @@ python3 -m unittest discover -s . -p "test_*.py"
 cd "$native_dir"
 cargo test --locked
 cargo_lock_before="$(sha256sum Cargo.lock | cut -d " " -f 1)"
-cargo tauri android init --ci --config "$android_dir/tauri.android.conf.json"
+cargo tauri android init --ci --config "$android_dir/tauri.android.conf.json" --config "$native_dir/tauri.fixture.conf.json"
 wrapper="$native_dir/gen/android/gradle/wrapper/gradle-wrapper.properties"
 [[ -f "$wrapper" ]] || { echo 'Generated Gradle wrapper missing' >&2; exit 2; }
 python3 "$android_dir/pin_gradle.py" "$wrapper"
-cargo tauri android build --apk --target aarch64 --config "$android_dir/tauri.android.conf.json" -- --locked
+cargo tauri android build --apk --target aarch64 --config "$android_dir/tauri.android.conf.json" --config "$native_dir/tauri.fixture.conf.json" -- --locked
 [[ "$(sha256sum Cargo.lock | cut -d " " -f 1)" == "$cargo_lock_before" ]] || { echo "Cargo.lock changed during build" >&2; exit 2; }
 mapfile -d '' apk_files < <(find "$native_dir/gen/android/app/build/outputs/apk" -type f -name '*unsigned.apk' -print0)
 [[ "${#apk_files[@]}" -eq 1 ]] || { echo "Expected exactly one unsigned APK, found ${#apk_files[@]}" >&2; exit 2; }
 manifest_permissions="$("$ANDROID_HOME/build-tools/36.0.0/aapt" dump permissions "${apk_files[0]}" | sed -n "s/.*uses-permission: name='\([^']*\)'.*/\1/p" | sort -u)"
 [[ "$manifest_permissions" == "android.permission.INTERNET" ]] || { echo "Unexpected APK permissions: $manifest_permissions" >&2; exit 2; }
-"$ANDROID_HOME/build-tools/36.0.0/aapt" dump badging "${apk_files[0]}" | grep -F "package: name='com.elevateo.mail'" >/dev/null || { echo "Unexpected Android package identifier" >&2; exit 2; }
+"$ANDROID_HOME/build-tools/36.0.0/aapt" dump badging "${apk_files[0]}" | grep -F "package: name='com.elevateo.mail.fixture'" >/dev/null || { echo "Unexpected Android package identifier" >&2; exit 2; }
 if "$ANDROID_HOME/build-tools/36.0.0/aapt" dump xmltree "${apk_files[0]}" AndroidManifest.xml | grep -F "android.intent.action.VIEW" >/dev/null; then
   echo "Unreviewed Android VIEW callback filter" >&2; exit 2
 fi
