@@ -489,3 +489,4 @@ The V2 inbox attachment metadata adapter now binds path UUIDs separately and dec
 The bounded QA815 Android parser probe script and exact retained-APK receipt are at `ops/tests/qa815/run-android-parser-probe.sh` and `docs/completion/qa815-evidence/android-parser-b3fec5772901.txt`. It validates parser/classifier behavior under pinned tools only; build, signing and installed runtime require separate evidence.
 
 The ATT898 attachment repository bind/test-import repair is documented in `docs/completion/nadia-att898-focused-repair.md`. It retains SQL casts and transaction authority; Soren's coherent strict and focused service/scanner/database checks are still required.
+ATT lint repair: the inactive `NoStorage#put` still raises for every call, including `content_type:` calls; the service test's capability list remains evaluated inside `assert_equal`. Only Soren may execute the focused Docker lint gate. See `docs/completion/nadia-attachment-lint909.md`.

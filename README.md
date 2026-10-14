@@ -14,6 +14,8 @@ Shared company mailroom with one Rails domain authority and a React/TypeScript c
 
 ## Current state
 
+**ATT lint repair:** The inactive attachment storage stub still rejects writes while accepting the interface's keyword form; the authorization assertion keeps its map evaluation explicit. Soren's fleet lint rerun is pending. See `docs/completion/nadia-attachment-lint909.md`.
+
 **STRICT909 isolated index repair:** The attachment list controller now uses a typed callable that rechecks the exact readable message for each metadata query, preserving denial semantics. This branch is pinned to integrated `215080a4`; ATT902 content remains separate, and Soren fleet Steep/unit proof is pending. See `docs/completion/nadia-strict909-index.md`.
 
 **SMTP888 source candidate:** The pinned net-smtp 0.5.2 implements the local Mailpit TLS toggles, but its bundled RBS omits them. A narrow local declaration and preconnect factory regression are added; Soren fleet Steep/unit execution and independent review are pending. Remote SMTP remains held.
