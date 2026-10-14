@@ -56,7 +56,11 @@ export function policeOutreachGateway(gateway: OutreachGateway, policy: SessionP
     getAccount: bound(gateway.getAccount),
     listAnalytics: bound(gateway.listAnalytics),
     // Optional capabilities stay absent when the adapter lacks them: Celeste's pages hide the control.
+    // AIDEV-NOTE: FE864 every optional method on OutreachGateway must be listed here. A missing entry
+    // silently drops the capability (SequencePage stayed inert when the draft pair was omitted).
     ...(gateway.getLead ? { getLead: bound(gateway.getLead) } : {}),
     ...(gateway.recordConsent ? { recordConsent: bound(gateway.recordConsent) } : {}),
+    ...(gateway.getOutreachSequenceDraft ? { getOutreachSequenceDraft: bound(gateway.getOutreachSequenceDraft) } : {}),
+    ...(gateway.saveOutreachSequenceDraft ? { saveOutreachSequenceDraft: bound(gateway.saveOutreachSequenceDraft) } : {}),
   }
 }

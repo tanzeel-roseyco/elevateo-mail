@@ -84,4 +84,54 @@ describe('outreach session policy', () => {
     const withConsent = policeOutreachGateway(rawGateway({ recordConsent: vi.fn(async () => ({})) }), sessionPolicy)
     expect(typeof withConsent.recordConsent).toBe('function')
   })
+
+  describe('sequence draft capability (FE864)', () => {
+    const draftInput = { id, campaign_id: id, operation_id: id, expected_version: null, status: 'draft' as const, timezone: 'UTC', steps: [{ id, position: 1, delay_seconds: 0, local_time: '09:00:00', label: 'Step 1' }] }
+
+    it('keeps both draft methods absent when the adapter lacks them, so SequencePage renders unavailable instead of calling a fallback', () => {
+      const gateway = policeOutreachGateway(rawGateway(), policy(1))
+      expect(gateway.getOutreachSequenceDraft).toBeUndefined()
+      expect(gateway.saveOutreachSequenceDraft).toBeUndefined()
+      expect('getOutreachSequenceDraft' in gateway).toBe(false)
+    })
+
+    it('forwards a draft read and write verbatim to the adapter and resolves with the adapter result untouched', async () => {
+      const draft = { id, campaign_id: id, version: 1 }
+      const getOutreachSequenceDraft = vi.fn(async () => draft)
+      const saveOutreachSequenceDraft = vi.fn(async () => ({ ...draft, version: 2 }))
+      const sessionPolicy = policy(3)
+      const gateway = policeOutreachGateway(rawGateway({ getOutreachSequenceDraft, saveOutreachSequenceDraft }), sessionPolicy)
+      await expect(gateway.getOutreachSequenceDraft!(context, id, signal)).resolves.toBe(draft)
+      expect(getOutreachSequenceDraft).toHaveBeenCalledWith(context, id, signal)
+      await expect(gateway.saveOutreachSequenceDraft!(context, proof, id, draftInput, signal)).resolves.toMatchObject({ version: 2 })
+      expect(saveOutreachSequenceDraft).toHaveBeenCalledWith(context, proof, id, draftInput, signal)
+      expect(sessionPolicy.handleError).not.toHaveBeenCalled()
+    })
+
+    it('reads the session generation on every draft invocation, not once at bind time', async () => {
+      let generation = 1
+      const sessionPolicy: SessionPolicy = { current: () => generation, handleError: vi.fn(() => true) }
+      const gateway = policeOutreachGateway(rawGateway({
+        getOutreachSequenceDraft: vi.fn(async () => { throw unauthenticated() }),
+        saveOutreachSequenceDraft: vi.fn(async () => { throw unauthenticated() }),
+      }), sessionPolicy)
+      generation = 5
+      await expect(gateway.getOutreachSequenceDraft!(context, id, signal)).rejects.toMatchObject({ code: 'unauthenticated' })
+      expect(sessionPolicy.handleError).toHaveBeenLastCalledWith(expect.any(GatewayError), 5)
+      generation = 8
+      await expect(gateway.saveOutreachSequenceDraft!(context, proof, id, draftInput, signal)).rejects.toMatchObject({ code: 'unauthenticated' })
+      expect(sessionPolicy.handleError).toHaveBeenLastCalledWith(expect.any(GatewayError), 8)
+      expect(sessionPolicy.handleError).toHaveBeenCalledTimes(2)
+    })
+
+    it('fails safe on an unauthorized draft write: the consumed 401 still rejects, so the page never commits a fake receipt', async () => {
+      const denied = unauthenticated()
+      const saveOutreachSequenceDraft = vi.fn(async () => { throw denied })
+      const sessionPolicy = policy(6, true)
+      const gateway = policeOutreachGateway(rawGateway({ saveOutreachSequenceDraft }), sessionPolicy)
+      await expect(gateway.saveOutreachSequenceDraft!(context, proof, id, draftInput, signal)).rejects.toBe(denied)
+      expect(sessionPolicy.handleError).toHaveBeenCalledWith(denied, 6)
+      expect(saveOutreachSequenceDraft).toHaveBeenCalledTimes(1)
+    })
+  })
 })
