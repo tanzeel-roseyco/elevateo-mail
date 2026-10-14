@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "securerandom"
+require "digest"
 
 module Elevateo
   module Attachments
@@ -30,12 +31,29 @@ module Elevateo
         begin
           @authorize.call(**scope, capability: :write)
           @repository.create(**scope, id: id, storage_key: key, filename: filename,
-            content_type: content_type, byte_size: bytes.bytesize, scan_status: "pending_scan")
+            content_type: content_type, byte_size: bytes.bytesize, sha256: Digest::SHA256.hexdigest(bytes),
+            scan_status: "pending_scan")
         rescue StandardError
           @storage.delete(key)
           raise
         end
         { "id" => id, "scan_status" => "pending_scan" }
+      end
+
+      def list(organization_id:, mailbox_id:, thread_id:, message_id:, cursor: nil, limit: 50)
+        scope = scope!(organization_id, mailbox_id, thread_id, message_id)
+        raise Invalid unless limit.is_a?(Integer) && limit.between?(1, 50)
+        raise Invalid if cursor && (!cursor.is_a?(String) || !UUID.match?(cursor))
+        @authorize.call(**scope, capability: :read)
+        rows = @repository.page(**scope, cursor: cursor, limit: limit + 1)
+        raise Invalid unless rows.is_a?(Array) && rows.length <= limit + 1
+        visible = rows.first(limit)
+        { "items" => visible.map do |row|
+            { "id" => row.fetch("id"), "filename" => row.fetch("filename"),
+              "content_type" => row.fetch("content_type"), "byte_size" => row.fetch("byte_size").to_i,
+              "scan_status" => row.fetch("scan_status") }
+          end,
+          "next_cursor" => rows.length > limit ? visible.last.fetch("id") : nil }
       end
 
       def download(organization_id:, mailbox_id:, thread_id:, message_id:, id:)

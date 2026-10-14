@@ -118,7 +118,7 @@ The current source-intake request explicitly authorizes collecting all six codeb
 
 ## Product boundary
 
-Inbox attachment backend candidate stores scoped private metadata and holds objects in quarantine. It does not provide downloads until an independent scanner records a clean verdict; Cassian route/contract integration and Soren fleet validation remain pending. See `docs/completion/nadia-attachments.md`.
+Inbox attachment backend candidate stores scoped private metadata and holds objects in quarantine. A restricted worker/gateway Storage adapter and scanner verdict port exist, but no scanner is installed; Cassian route/private byte gateway integration and Soren fleet validation remain pending. See `docs/completion/nadia-attachments.md`.
 
 
 The first release is a company mailroom: named addresses, shared conversations, assignment, team status, per-user read state, composer, drafts, search, attachments and audit history. Individual mailbox permissions allow private addresses where required. Ten users do not imply ten paid email accounts or ten servers; people, addresses, mailboxes and provider identities are separate concepts.
