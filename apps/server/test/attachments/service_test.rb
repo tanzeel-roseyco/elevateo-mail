@@ -57,6 +57,16 @@ class AttachmentServiceTest < Minitest::Test
     end
   end
 
+  class IncompleteClaimRepository < Repository
+    attr_accessor :missing_id, :missing_key
+
+    def claim_scan(id:, token:)
+      row = super
+      return row unless row && id == missing_id
+      row.reject { |key, _value| key == missing_key }
+    end
+  end
+
   def setup
     @storage = Storage.new
     @repository = Repository.new
@@ -158,6 +168,32 @@ class AttachmentServiceTest < Minitest::Test
     service = Elevateo::Attachments::ScanService.new(repository: repository, storage: @storage, scanner: scanner)
     assert_raises(Elevateo::Attachments::ScanService::Unavailable) { service.inspect(id: id) }
     assert_equal "pending_scan", @repository.rows.fetch(id).fetch("scan_status")
+  end
+
+  def test_missing_each_claim_field_is_held_and_batch_continues
+    %w[scan_attempt sha256 storage_key byte_size].each do |key|
+      storage = Storage.new
+      repository = IncompleteClaimRepository.new
+      authorizer = ->(**_scope) { nil }
+      staging = Elevateo::Attachments::Service.new(repository: repository, storage: storage, authorize: authorizer)
+      malformed_id = staging.stage(**scope, filename: "first.txt", content_type: "text/plain", bytes: "first").fetch("id")
+      valid_id = staging.stage(**scope, filename: "second.txt", content_type: "text/plain", bytes: "second").fetch("id")
+      repository.missing_id, repository.missing_key = malformed_id, key
+      scanner = Object.new
+      def scanner.scan(_bytes) = "clean" # Fixture-only verdict.
+      worker = Elevateo::Attachments::ScanService.new(repository: repository, storage: storage, scanner: scanner)
+      assert_equal({ "clean" => 1, "malware" => 0, "held" => 1 }, worker.run_batch(limit: 2), key)
+      assert_equal "pending_scan", repository.rows.fetch(malformed_id).fetch("scan_status"), key
+      assert_equal "clean", repository.rows.fetch(valid_id).fetch("scan_status"), key
+    end
+  end
+
+  def test_due_scan_row_without_id_has_deliberate_error
+    repository = Class.new(Elevateo::Attachments::Repository) do
+      private
+      def rows(_sql, _values) = [{}]
+    end.new(connection: nil)
+    assert_raises(Elevateo::Attachments::NotAvailable) { repository.due_scan_ids(limit: 1) }
   end
 
   def test_late_clean_attempt_cannot_overwrite_newer_malware
