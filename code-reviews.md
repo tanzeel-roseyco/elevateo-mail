@@ -1242,3 +1242,7 @@ REV884 Theo independent bounded re-review of Corin `1ab4c12e370c05233af639833909
 INT801 `9b41975` client RBS independent review request is a 151 unique-LOC packet (RBS 19, production client 78, test 54; max read 78), pinned by blobs in `docs/completion/cassian-client-rbs-review.md`. Independent review and design tradeoff result pending; confirmed successor defects/density unclaimed. Soren focused Steep/unit runtime pending.
 
 QA815 `c5a8737` full web PASS is runtime evidence, not independent bounded source review. Additional independent reviewed LOC remains 0; density unclaimed.
+
+## ATT886 attachment strict types (2026-10-14)
+
+Source repair is authored against Soren's `651b63a9fdb2` Steep receipt; no independent review or fleet test has run on this candidate. Proposed bounded packet: service 78 LOC, scanner 56 LOC, RBS 75 LOC, regression context 56 LOC (265 unique LOC maximum, each read <=180); see `docs/completion/nadia-att886-steep-repair.md`. Defects and density for this successor are not assessed; do not infer 0/KLOC or runtime PASS.

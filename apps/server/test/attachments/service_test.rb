@@ -121,6 +121,16 @@ class AttachmentServiceTest < Minitest::Test
     assert_raises(Elevateo::Attachments::NotAvailable) { @service.list(**scope) }
   end
 
+  def test_invalid_stored_size_is_rejected_after_authorization
+    id = stage.fetch("id")
+    @repository.rows.fetch(id)["byte_size"] = "7"
+    assert_raises(Elevateo::Attachments::Invalid) { @service.list(**scope) }
+    @repository.rows.fetch(id)["scan_status"] = "clean"
+    assert_raises(Elevateo::Attachments::Invalid) { @service.assert_downloadable(**scope, id: id) }
+    @allowed = false
+    assert_raises(Elevateo::Attachments::NotAvailable) { @service.assert_downloadable(**scope, id: id) }
+  end
+
   def test_list_paginates_and_rejects_invalid_cursor_and_limit
     first = stage.fetch("id")
     second = stage(bytes: "second").fetch("id")

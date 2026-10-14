@@ -23,14 +23,15 @@ module Elevateo
 
       def stage(organization_id:, mailbox_id:, thread_id:, message_id:, filename:, content_type:, bytes:)
         scope = scope!(organization_id, mailbox_id, thread_id, message_id)
-        @authorize.call(**scope, capability: :write)
+        authorize!(scope, :write)
         validate!(filename, content_type, bytes)
         id = SecureRandom.uuid
         key = "quarantine/#{scope.fetch(:organization_id)}/#{id}"
         @storage.put(key, bytes, content_type: "application/octet-stream")
         # AIDEV-NOTE: An ambiguous DB commit may reference the object; leave it quarantined for reconciliation.
-        @authorize.call(**scope, capability: :write)
-        @repository.create(**scope, id: id, storage_key: key, filename: filename,
+        authorize!(scope, :write)
+        @repository.create(organization_id: scope.fetch(:organization_id), mailbox_id: scope.fetch(:mailbox_id),
+          thread_id: scope.fetch(:thread_id), message_id: scope.fetch(:message_id), id: id, storage_key: key, filename: filename,
           content_type: content_type, byte_size: bytes.bytesize, sha256: Digest::SHA256.hexdigest(bytes),
           scan_status: "pending_scan")
         { "id" => id, "scan_status" => "pending_scan" }
@@ -40,13 +41,14 @@ module Elevateo
         scope = scope!(organization_id, mailbox_id, thread_id, message_id)
         raise Invalid unless limit.is_a?(Integer) && limit.between?(1, 50)
         raise Invalid if cursor && (!cursor.is_a?(String) || !UUID.match?(cursor))
-        @authorize.call(**scope, capability: :read)
-        rows = @repository.page(**scope, cursor: cursor, limit: limit + 1)
+        authorize!(scope, :read)
+        rows = @repository.page(organization_id: scope.fetch(:organization_id), mailbox_id: scope.fetch(:mailbox_id),
+          thread_id: scope.fetch(:thread_id), message_id: scope.fetch(:message_id), cursor: cursor, limit: limit + 1)
         raise Invalid unless rows.is_a?(Array) && rows.length <= limit + 1
         visible = rows.first(limit)
         { "items" => visible.map do |row|
             { "id" => row.fetch("id"), "filename" => row.fetch("filename"),
-              "content_type" => row.fetch("content_type"), "byte_size" => row.fetch("byte_size").to_i,
+              "content_type" => row.fetch("content_type"), "byte_size" => byte_size!(row),
               "scan_status" => row.fetch("scan_status") }
           end,
           "next_cursor" => rows.length > limit ? visible.fetch(-1).fetch("id") : nil }
@@ -55,22 +57,32 @@ module Elevateo
       def assert_downloadable(organization_id:, mailbox_id:, thread_id:, message_id:, id:)
         scope = scope!(organization_id, mailbox_id, thread_id, message_id)
         raise Invalid unless UUID.match?(id.to_s)
-        @authorize.call(**scope, capability: :read)
-        row = @repository.find(**scope, id: id)
+        authorize!(scope, :read)
+        row = @repository.find(organization_id: scope.fetch(:organization_id), mailbox_id: scope.fetch(:mailbox_id),
+          thread_id: scope.fetch(:thread_id), message_id: scope.fetch(:message_id), id: id)
         raise NotAvailable unless row
         raise Held unless row.fetch("scan_status") == "clean"
         # AIDEV-NOTE: Sabine's gateway separately rechecks authority and resolves private key; API gets safe metadata only.
         { "id" => row.fetch("id"), "filename" => row.fetch("filename"),
-          "content_type" => row.fetch("content_type"), "byte_size" => row.fetch("byte_size").to_i }
+          "content_type" => row.fetch("content_type"), "byte_size" => byte_size!(row) }
       end
 
       private
 
       def scope!(organization_id, mailbox_id, thread_id, message_id)
-        values = { organization_id: organization_id, mailbox_id: mailbox_id,
-          thread_id: thread_id, message_id: message_id }
-        raise Invalid unless values.values.all? { |value| value.is_a?(String) && UUID.match?(value) }
-        values
+        raise Invalid unless [organization_id, mailbox_id, thread_id, message_id].all? { |value| value.is_a?(String) && UUID.match?(value) }
+        { organization_id: organization_id, mailbox_id: mailbox_id, thread_id: thread_id, message_id: message_id }
+      end
+
+      def authorize!(scope, capability)
+        @authorize.call(organization_id: scope.fetch(:organization_id), mailbox_id: scope.fetch(:mailbox_id),
+          thread_id: scope.fetch(:thread_id), message_id: scope.fetch(:message_id), capability: capability)
+      end
+
+      def byte_size!(row)
+        size = row.fetch("byte_size")
+        raise Invalid unless size.is_a?(Integer) && size.between?(1, MAX_BYTES)
+        size
       end
 
       def validate!(filename, content_type, bytes)

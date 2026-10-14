@@ -131,6 +131,10 @@ The current source-intake request explicitly authorizes collecting all six codeb
 
 Inbox attachment backend candidate stores scoped private metadata and holds objects in quarantine. A restricted Storage adapter and bounded ClamAV scan worker exist; terminal-state import replay and private-column permission regressions are authored. No scanner container is configured or proven; Sabine private gateway, Cassian route, Corin import wiring and Soren fleet validation remain pending. See `docs/completion/nadia-attachments.md`.
 
+ATT870 declares the restricted PrivateStorage adapter for strict type checking and keeps a missing private-bucket body unavailable; source-only verification is pending. See `docs/completion/nadia-att870-private-storage-types.md`.
+
+ATT886 replaces inferred keyword splats at attachment authorization/repository calls with explicit scoped arguments, validates stored byte size as an integer within the attachment bound, and declares the scanner socket capability check. Source is authored, with fleet Steep and focused unit results pending; see `docs/completion/nadia-att886-steep-repair.md`.
+
 
 The first release is a company mailroom: named addresses, shared conversations, assignment, team status, per-user read state, composer, drafts, search, attachments and audit history. Individual mailbox permissions allow private addresses where required. Ten users do not imply ten paid email accounts or ten servers; people, addresses, mailboxes and provider identities are separate concepts.
 

@@ -19,6 +19,7 @@ module Elevateo
       def exec_query: (String, String, Array[ActiveRecord::Relation::QueryAttribute]) -> _QueryResult
     end
     interface _Socket
+      def respond_to?: (Symbol) -> bool
       def write: (String) -> Integer
       def read: (Integer) -> String?
       def close: () -> void
@@ -64,6 +65,8 @@ module Elevateo
         message_id: String, id: String) -> ReadResponse::item
       private
       def scope!: (String, String, String, String) -> scope
+      def authorize!: (scope, Symbol) -> void
+      def byte_size!: (row) -> Integer
       def validate!: (String, String, String) -> void
     end
 
