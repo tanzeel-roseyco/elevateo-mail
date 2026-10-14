@@ -37,3 +37,5 @@ Reviewed Rowan's corrected SEND-809 tail at commit daf5161, exact SHA and 157-li
 ## SEND-809 integrated worker observation candidate
 
 Added `apps/server/test/qa817/worker_observation_database_test.rb` targeting Rowan's corrected single-path SQL. It uses actual worker login and real PostgreSQL: valid `local:` receipt accepts, foreign receipt and wrong attempt leave job dispatching, and stale lease generation cannot mark accepted. Soren command after immutable integration from `/workspace/apps/server`: `bundle exec ruby test/qa817/worker_observation_database_test.rb` with disposable BE02/BE03 fixture environment, then affected lint/Steep. Source is NOT_RUN; independent review requested. The existing Rowan suite covers broader cancellation/revocation/unknown races and remains required.
+
+Independently reviewed Orion's immutable native OAuth seam at commit 5859593 in two <=200-line packets (201 unique LOC), exact SHA and full rubric in `docs/completion/felix-native812-review.md`. Zero confirmed static defects observed; raw callback alias/issuer userinfo policy probes, native IPC wiring, Rust runtime and Windows callback acceptance remain open.
