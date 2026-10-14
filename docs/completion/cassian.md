@@ -219,3 +219,5 @@ Imported Nadia exact 8d89a18 typed Service/Repository/Scanner RBS and source; Ca
 ## QA816 visual fixture integration
 
 Imported Tessa e567213 onto the integrated Fable shell; the resulting `apps/web/e2e/visual-states.spec.ts` SHA256 is `e5506d1458d11d94f0b2a7a2d225630a85221ae4986cae0458adc1cac1683204`, not Tessa isolated `1530ece0…6036e462`. The only difference against the owner file is the preexisting integrated Fable Navigation/Personal labels at four locator sites; Tessa’s 23-line fixture repair is intact. Requires Soren exact eight-case seeded simulated rerun, fresh private artifact path and root pixel review; old f210 PNGs cannot verify this SHA.
+
+Root reported bounded static review closures: ADV104 Nadia b2389ec 324 LOC/0 defects, ADV106 Sabine f4bd412 helper 309 LOC/0, and ADV105 Vera a9d903d client deadline 195 LOC/0. ADV105 packet was read at shared `integration/advisors/vera-adv105-private-client-deadline.md`; it explicitly excludes real Net::HTTP/Gateway runtime and later exact bytes. No Docker or app acceptance follows from these reviews.
