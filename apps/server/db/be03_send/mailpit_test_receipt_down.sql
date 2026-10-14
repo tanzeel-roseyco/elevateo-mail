@@ -134,6 +134,8 @@ BEGIN
   END IF;
   SELECT * INTO j FROM app_send_private.jobs WHERE send_id=p_send FOR UPDATE;
   IF NOT FOUND THEN RETURN '{"code":"not_available"}'::jsonb; END IF;
+  -- The job row may have been locked past lease expiry; use time after the wait.
+  n := clock_timestamp();
   SELECT * INTO a FROM app_send_private.attempts WHERE send_id=p_send AND attempt_id=p_attempt;
   IF NOT FOUND OR a.attempt_no <> j.attempt_count
     OR j.lease_id IS DISTINCT FROM p_lease OR j.lease_generation <> p_generation
