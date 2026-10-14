@@ -40,4 +40,20 @@ describe('V2 inert sequence draft gateway', () => {
     await expect(createV2OutreachGateway(fetchImpl).getOutreachSequenceDraft(context, campaign, new AbortController().signal))
       .rejects.toMatchObject({ kind: 'api', code: 'not_available' })
   })
+
+  it('permits the contract maximum of twenty bounded Unicode steps', async () => {
+    const fetchImpl = vi.fn(async (_path: string, _init: RequestInit) => json(draft))
+    const steps = Array.from({ length: 20 }, (_, index) => ({
+      id: `00000000-0000-4000-8000-${String(index + 1).padStart(12, '0')}`,
+      position: index + 1, delay_seconds: 2_592_000, local_time: '23:59:59', label: '界'.repeat(120),
+    }))
+    const input: SequencePut = { id: draft.id, campaign_id: campaign, operation_id: step, expected_version: 1,
+      status: 'held', timezone: 'UTC', steps }
+    await createV2OutreachGateway(fetchImpl).saveOutreachSequenceDraft(context, { csrfToken: 'proof' }, campaign,
+      input, new AbortController().signal)
+    const sent = fetchImpl.mock.calls[0]?.[1].body
+    expect(typeof sent).toBe('string')
+    expect(new TextEncoder().encode(String(sent)).length).toBeGreaterThan(8192)
+    expect(new TextEncoder().encode(String(sent)).length).toBeLessThanOrEqual(16_384)
+  })
 })

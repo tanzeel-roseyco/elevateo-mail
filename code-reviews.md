@@ -1157,3 +1157,5 @@ OPS820 f8b07b2 tree intake: integrated Leonie's exact ops/ops820 files after the
 INT801 draft.7 test-fixture author follow-up: inspected 13 changed browser test LOC and found one strict request-shape error (`version` copied from response into PUT input), corrected before fleet execution. This is author self-inspection, not independent review or runtime verification; no independent density is claimed.
 
 INT801 canonical contract follow-up: static search found stale draft.6 assertion in the existing V2 contract test after draft.7 activation. Updated that one version oracle and added active sequence/inert-path assertions; author inspection only, Docker test NOT_RUN, independent density unclaimed.
+
+INT801 sequence size author inspection: valid maximum 20-step Unicode input can exceed 8 KiB, one confirmed author defect in the initial sequence bridge. Narrow 16 KiB Rails/browser cap and a maximum-shape browser regression repair it statically; this author check is not an independent review, so no independent defect density is claimed. Fleet transport/controller execution and exact reviewer recheck are pending.

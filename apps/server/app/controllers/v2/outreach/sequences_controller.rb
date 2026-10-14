@@ -22,7 +22,7 @@ module V2
       def update
         campaign = path_uuid(:campaign_id)
         protected_write(required: %w[id campaign_id operation_id expected_version status timezone steps],
-          max_bytes: 8192, budget: 16_384) do |connection:, identity:, input:, **|
+          max_bytes: 16_384, budget: 16_384) do |connection:, identity:, input:, **|
           # @type var connection: Elevateo::WriteStatements
           # @type var identity: Elevateo::SessionIdentity
           # @type var input: Elevateo::WriteInput::object

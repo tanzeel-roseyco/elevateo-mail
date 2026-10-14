@@ -40,7 +40,7 @@ export function createV2OutreachGateway(fetchImpl?: FetchLike) {
       const parsed = sequencePutSchema.parse(input)
       if (parsed.campaign_id !== IdSchema.parse(campaignId)) throw new GatewayError('transport', 'malformed', 'Campaign does not match sequence draft.')
       return requestJson(`/v2/outreach/campaigns/${seg(campaignId)}/sequence`, sequenceSchema, 16_384,
-        { ...base, method: 'PUT', body: parsed, maxRequestBytes: 8192, headers: headers(ctx, proof), signal })
+        { ...base, method: 'PUT', body: parsed, maxRequestBytes: 16_384, headers: headers(ctx, proof), signal })
     },
     listCampaigns(ctx: ReadContext, query: { cursor?: string; limit?: number }, signal: AbortSignal) {
       return requestJson(`/v2/outreach/campaigns${page(query)}`, CampaignPageSchema, 65_536, { ...base, headers: headers(ctx), signal })

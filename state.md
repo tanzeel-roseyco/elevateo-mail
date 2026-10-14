@@ -317,3 +317,5 @@ OUT-804 source audit found a direct-table write gap in 00009: the previous FOR A
 INT801 draft.7 browser fixture correction: the focused PUT test now sends request-only keys; fleet Docker web check is pending.
 
 INT801 draft.7 contract test now checks the current version and inert sequence operations; Soren fleet execution remains pending.
+
+INT801 sequence PUT request cap is 16 KiB so a valid 20-step Unicode draft fits; the bounded regression is source-only pending fleet Docker.
