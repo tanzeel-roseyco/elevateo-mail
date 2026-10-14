@@ -1,0 +1,70 @@
+import type { FetchLike } from './http/transport'
+import { requestJson } from './http/transport'
+import { GatewayError } from './errors'
+import type { CsrfProof, ReadContext } from './gateway'
+import {
+  CampaignAnalyticsSchema, CampaignPageSchema, CampaignUpdateSchema, IdSchema,
+  LeadCreateSchema, LeadPageSchema, LeadSummarySchema, LeadUpdateSchema,
+  OutreachCampaignSchema, OutreachPlanSchema,
+  type OutreachPlan,
+} from './v2Contract'
+
+const seg = (value: string): string => encodeURIComponent(IdSchema.parse(value))
+const headers = (ctx: ReadContext, proof?: CsrfProof): Record<string, string> => ({
+  'X-Session-Context': ctx.contextId,
+  'X-Authorization-Version': ctx.authorizationVersion,
+  ...(proof ? { 'X-CSRF-Token': proof.csrfToken } : {}),
+})
+const page = (query: { cursor?: string; limit?: number }): string => {
+  const params = new URLSearchParams()
+  if (query.cursor !== undefined) params.set('cursor', IdSchema.parse(query.cursor))
+  if (query.limit !== undefined) {
+    if (!Number.isInteger(query.limit) || query.limit < 1 || query.limit > 100) throw new GatewayError('transport', 'malformed', 'Invalid page limit.')
+    params.set('limit', String(query.limit))
+  }
+  const encoded = params.toString()
+  return encoded ? `?${encoded}` : ''
+}
+
+/** Isolated V2 adapter. No send, provider, account activation or fixture fallback is reachable here. */
+export function createV2OutreachGateway(fetchImpl?: FetchLike) {
+  const base = fetchImpl === undefined ? {} : { fetchImpl }
+  return {
+    listCampaigns(ctx: ReadContext, query: { cursor?: string; limit?: number }, signal: AbortSignal) {
+      return requestJson(`/v2/outreach/campaigns${page(query)}`, CampaignPageSchema, 65_536, { ...base, headers: headers(ctx), signal })
+    },
+    getCampaign(ctx: ReadContext, campaignId: string, signal: AbortSignal) {
+      return requestJson(`/v2/outreach/campaigns/${seg(campaignId)}`, OutreachCampaignSchema, 4_096, { ...base, headers: headers(ctx), signal })
+    },
+    createCampaign(ctx: ReadContext, proof: CsrfProof, input: OutreachPlan, signal: AbortSignal) {
+      return requestJson('/v2/outreach/campaigns', OutreachCampaignSchema, 4_096, {
+        ...base, method: 'POST', body: OutreachPlanSchema.parse(input), maxRequestBytes: 2_048, headers: headers(ctx, proof), signal,
+      })
+    },
+    updateCampaign(ctx: ReadContext, proof: CsrfProof, campaignId: string, input: unknown, signal: AbortSignal) {
+      return requestJson(`/v2/outreach/campaigns/${seg(campaignId)}`, OutreachCampaignSchema, 4_096, {
+        ...base, method: 'PUT', body: CampaignUpdateSchema.parse(input), maxRequestBytes: 2_048, headers: headers(ctx, proof), signal,
+      })
+    },
+    listLeads(ctx: ReadContext, campaignId: string, query: { cursor?: string; limit?: number }, signal: AbortSignal) {
+      return requestJson(`/v2/outreach/campaigns/${seg(campaignId)}/leads${page(query)}`, LeadPageSchema, 65_536, { ...base, headers: headers(ctx), signal })
+    },
+    addLead(ctx: ReadContext, proof: CsrfProof, campaignId: string, input: unknown, signal: AbortSignal) {
+      return requestJson(`/v2/outreach/campaigns/${seg(campaignId)}/leads`, LeadSummarySchema, 4_096, {
+        ...base, method: 'POST', body: LeadCreateSchema.parse(input), maxRequestBytes: 2_048, headers: headers(ctx, proof), signal,
+      })
+    },
+    updateLead(ctx: ReadContext, proof: CsrfProof, campaignId: string, leadId: string, input: unknown, signal: AbortSignal) {
+      return requestJson(`/v2/outreach/campaigns/${seg(campaignId)}/leads/${seg(leadId)}`, LeadSummarySchema, 4_096, {
+        ...base, method: 'PUT', body: LeadUpdateSchema.parse(input), maxRequestBytes: 2_048, headers: headers(ctx, proof), signal,
+      })
+    },
+    listAccounts(_ctx: ReadContext, _query: { cursor?: string; limit?: number }, _signal: AbortSignal): Promise<never> { return Promise.reject(new GatewayError('api', 'temporarily_unavailable', 'Account scope is not yet available.')) },
+    getAccount(_ctx: ReadContext, _accountId: string, _signal: AbortSignal): Promise<never> { return Promise.reject(new GatewayError('api', 'temporarily_unavailable', 'Account scope is not yet available.')) },
+    listAnalytics(ctx: ReadContext, campaignId: string, signal: AbortSignal) {
+      return requestJson(`/v2/outreach/campaigns/${seg(campaignId)}/analytics`, CampaignAnalyticsSchema, 4_096, {
+        ...base, headers: headers(ctx), signal,
+      })
+    },
+  }
+}
