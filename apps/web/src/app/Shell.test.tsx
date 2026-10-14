@@ -530,7 +530,7 @@ describe('Outreach operations under the central session policy (FE-805)', () => 
   }
 
   it('a 401 from a campaign write clears the protected shell and restores access centrally (happy path)', async () => {
-    let finishRefresh: (() => void) | undefined
+    let finishRefresh: (() => Promise<void>) | undefined
     const base = createFixtureGateway({ refreshSession: 'lifecycle_a' })
     const gateway: MailroomGateway = {
       ...base,
@@ -549,7 +549,9 @@ describe('Outreach operations under the central session policy (FE-805)', () => 
     expect(screen.queryByRole('navigation', { name: 'Outreach' })).toBeNull()
     expect(createCampaign).toHaveBeenCalledTimes(1)
     await waitFor(() => expect(finishRefresh).toBeDefined())
-    act(() => finishRefresh!())
+    // AIDEV-NOTE: the refresh settles inside an awaited act; an un-awaited act leaves its scope open
+    // and React queues every later update into it (fleet 8eb840d: stuck "Restoring access", empty roots).
+    await act(async () => { await finishRefresh!() })
     await screen.findByText('Synthetic organization A')
     expect(await screen.findByLabelText('Campaign name')).toBeTruthy()
   })

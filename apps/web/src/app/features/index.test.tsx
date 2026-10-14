@@ -41,8 +41,8 @@ const outreach: OutreachGateway = {
 }
 
 describe('feature route wiring', () => {
-  it('registers Celeste\'s ten Outreach routes and Lyra\'s three personal routes with top-level nav only', () => {
-    expect(featureRoutes.map((r) => r.path).filter((p) => p.startsWith('/outreach/'))).toHaveLength(10)
+  it('registers Celeste\'s eleven Outreach routes and Lyra\'s three personal routes with top-level nav only', () => {
+    expect(featureRoutes.map((r) => r.path).filter((p) => p.startsWith('/outreach/'))).toHaveLength(11)
     expect(featureRegistry.navBySection.outreach.map((e) => e.label)).toEqual(['Campaigns', 'Leads', 'Accounts', 'Analytics'])
     expect(featureRegistry.navBySection.personal.map((e) => e.path)).toEqual(['/people', '/settings/personal', '/settings/organization'])
   })
@@ -69,7 +69,9 @@ describe('feature route wiring', () => {
   it("routes a campaign-scoped account read through the real V2 adapter, which fails explicitly without any dispatch", async () => {
     const fetchImpl = vi.fn(async () => new Response('{}', { headers: { 'Content-Type': 'application/json' } }))
     renderRoute('/outreach/campaigns/1a40d184-987d-4b50-98d2-f674e41842f9/accounts', { outreach: createV2OutreachGateway(fetchImpl) })
-    expect(await screen.findByRole('alert')).toBeTruthy()
+    // The adapter rejects with temporarily_unavailable before any dispatch; Celeste's page renders
+    // that as her own unavailable status rather than an error alert.
+    expect((await screen.findByRole('status')).textContent).toBe('Outreach API unavailable for this account.')
     expect(fetchImpl).not.toHaveBeenCalled()
     expect(screen.queryByRole('button')).toBeNull()
   })

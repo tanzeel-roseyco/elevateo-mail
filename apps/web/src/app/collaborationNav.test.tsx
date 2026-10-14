@@ -40,7 +40,7 @@ describe('collaboration navigation', () => {
     expect(screen.getByRole('link', { name: 'Search' }).getAttribute('href')).toBe('/search')
     expect(screen.getByRole('search')).toBeTruthy()
     expect(screen.getByText('Simulated local mail')).toBeTruthy()
-    expect(screen.getByText(/drafts and notes stay on this installation/)).toBeTruthy()
+    expect(screen.getByText('Simulation mode: no mail is sent or received. Drafts and notes are saved on the server.')).toBeTruthy()
   })
 
   it('hides the sub-links for a read-only mailbox and for inactive mailboxes', async () => {

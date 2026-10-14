@@ -29,6 +29,15 @@ export function MailboxIcon(props: IconProps) {
   )
 }
 
+export function SearchIcon(props: IconProps) {
+  return (
+    <svg {...base(props)}>
+      <circle cx="11" cy="11" r="7" />
+      <path d="m20 20-3.5-3.5" />
+    </svg>
+  )
+}
+
 export function AlertIcon(props: IconProps) {
   return (
     <svg {...base(props)}>
