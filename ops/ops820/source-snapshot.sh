@@ -23,12 +23,17 @@ envfile=$(mktemp "$base/.env.ops820-source.XXXXXX")
 started=0
 made_snapshot=0
 compose() { docker compose -p "$project" --env-file "$envfile" -f "$base/compose.yaml" "$@"; }
+absent() {
+  local containers volumes networks
+  containers=$(docker ps -aq --filter "label=com.docker.compose.project=$project") || return 1
+  volumes=$(docker volume ls -q --filter "label=com.docker.compose.project=$project") || return 1
+  networks=$(docker network ls -q --filter "label=com.docker.compose.project=$project") || return 1
+  [[ -z "$containers" && -z "$volumes" && -z "$networks" ]]
+}
 cleanup() {
   local job=$? clean=0
   if (( started )); then compose down --volumes --remove-orphans >/dev/null 2>&1 || clean=$?; fi
-  if [[ -n $(docker ps -aq --filter "label=com.docker.compose.project=$project") ||
-        -n $(docker volume ls -q --filter "label=com.docker.compose.project=$project") ||
-        -n $(docker network ls -q --filter "label=com.docker.compose.project=$project") ]]; then clean=1; fi
+  absent || clean=1
   rm -f -- "$envfile"
   if (( job || clean )) && (( made_snapshot )); then
     rm -f -- "$snapshot/database.dump" "$snapshot/globals.sql" "$snapshot/objects.tar" \

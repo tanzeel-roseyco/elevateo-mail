@@ -33,13 +33,18 @@ awk -v a="$available" 'BEGIN {exit !(a >= 8589934592)}' || exit 75
 project="ops402-restore-$(date +%s)-$$"
 envfile=$(mktemp "$base/.env.restore.XXXXXX")
 compose() { docker compose -p "$project" --env-file "$envfile" -f "$base/compose.yaml" "$@"; }
+absent() {
+  local containers volumes networks
+  containers=$(docker ps -aq --filter "label=com.docker.compose.project=$project") || return 1
+  volumes=$(docker volume ls -q --filter "label=com.docker.compose.project=$project") || return 1
+  networks=$(docker network ls -q --filter "label=com.docker.compose.project=$project") || return 1
+  [[ -z "$containers" && -z "$volumes" && -z "$networks" ]]
+}
 started=0
 cleanup() {
   local job=$? clean=0
   if (( started )); then compose down --volumes --remove-orphans >/dev/null 2>&1 || clean=$?; fi
-  if [[ -n $(docker ps -aq --filter "label=com.docker.compose.project=$project") ||
-        -n $(docker volume ls -q --filter "label=com.docker.compose.project=$project") ||
-        -n $(docker network ls -q --filter "label=com.docker.compose.project=$project") ]]; then clean=1; fi
+  absent || clean=1
   rm -f -- "$envfile"
   echo "restore_job_exit=$job restore_cleanup_exit=$clean"
   (( clean == 0 )) || job=1
