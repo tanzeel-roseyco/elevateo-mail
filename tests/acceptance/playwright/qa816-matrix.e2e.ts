@@ -107,8 +107,8 @@ scenario('SCN-QA-818-P', 'branded-shell-keyboard-mobile-and-outreach-read', asyn
   await expect(page.getByText('Signed in as', { exact: false })).toBeVisible();
   record.artifacts.push(await screenshot(page, 'QA816-SHELL-P-personal-settings'));
   await page.setViewportSize({ width: 375, height: 812 });
-  await page.getByRole('button', { name: 'Open mailbox menu' }).click();
-  const drawer = page.getByRole('dialog', { name: 'Mailboxes' });
+  await page.getByRole('button', { name: 'Open navigation' }).click();
+  const drawer = page.getByRole('dialog', { name: 'Navigation' });
   await expect(drawer.getByRole('navigation', { name: 'Personal' })).toBeVisible();
   await expect(drawer.getByRole('navigation', { name: 'Outreach' })).toBeVisible();
   await expect(drawer.getByRole('link', { name: 'People' })).toBeVisible();
