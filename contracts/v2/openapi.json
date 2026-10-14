@@ -3,7 +3,7 @@
   "info": {
     "title": "Elevateo additive administration and inert outreach API",
     "version": "2.0.0-draft.3",
-    "description": "V1 schemas unchanged. Organization and worker routes remain disabled; inert outreach campaign and lead metadata routes are integration candidates requiring fleet validation."
+    "description": "V1 schemas unchanged. Admin and inert outreach operations are isolated integration candidates pending fleet security validation; worker status remains disabled."
   },
   "servers": [
     {
@@ -19,7 +19,7 @@
     "/v2/organizations/{organization_id}/grants": {
       "get": {
         "operationId": "listOrganizationGrants",
-        "x-elevateo-status": "disabled",
+        "x-elevateo-status": "candidate",
         "parameters": [
           {
             "$ref": "#/components/parameters/OrganizationId"
@@ -62,7 +62,7 @@
     "/v2/organizations/{organization_id}/grants/{user_id}": {
       "put": {
         "operationId": "replaceOrganizationGrant",
-        "x-elevateo-status": "disabled",
+        "x-elevateo-status": "candidate",
         "parameters": [
           {
             "$ref": "#/components/parameters/OrganizationId"
@@ -206,7 +206,7 @@
     "/v2/organizations/{organization_id}/roster": {
       "get": {
         "operationId": "getOrganizationRoster",
-        "x-elevateo-status": "disabled",
+        "x-elevateo-status": "candidate",
         "parameters": [
           {
             "$ref": "#/components/parameters/OrganizationId"

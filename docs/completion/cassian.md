@@ -17,3 +17,7 @@ The next independent review packets are the V2 spec, Rails outreach controller/r
 ### Dorian controller merge and route candidate
 
 Merged Dorian `d0b7a9a` and Celeste/Fable feature candidates. V2 route registry now points campaign list/detail/create/update, lead list/detail/add/email-update and per-campaign analytics to Dorian's guarded controllers. Account routes remain excluded while campaign-scoped path checks are resolved. The original interim campaign list controller was removed. These are active routes in an isolated source candidate, not tested or accepted behavior; no send operation exists in the V2 spec. The V2 schema includes server-owned status, per-row optimistic versions and bounded cursor pages. Grant and worker routes remain disabled pending Sabine authority and worker identity.
+
+### Sabine authority merge
+
+Merged Sabine `fc0b542`: protected redacted grant page, verified enrollment/provisioning hooks that do not seed real people, and a legacy mailbox-membership ceiling/consent patch. Theo GET grants, GET unbound roster and PUT subordinate role controller paths are now source-registered as isolated candidates. Effective roles are seven closed values; owner transfer is excluded. No real identities were enrolled and no SQL/HTTP fleet pass is claimed. Sabine's branch requires migration/protected-function and bypass-path adversarial tests before root acceptance.
