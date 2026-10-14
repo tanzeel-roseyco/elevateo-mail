@@ -77,6 +77,7 @@ function ConversationReader({ mailboxId, threadId, readDirectMessage }: { mailbo
   // a second invalid cursor surfaces manual retry instead of another automatic reset (D4, FE-R10).
   const budgetRef = useRef(newTraversalBudget())
   const abortRef = useRef<AbortController | null>(null)
+  const directAbortRef = useRef<AbortController | null>(null)
   const headingRef = useRef<HTMLHeadingElement | null>(null)
   const selectedMessageRef = useRef<HTMLLIElement | null>(null)
   const focusedTargetRef = useRef<string | null>(null)
@@ -180,6 +181,9 @@ function ConversationReader({ mailboxId, threadId, readDirectMessage }: { mailbo
   const selectedOnPage = selectedMessageId !== null && loadedMessages?.some((message) => canonicalId(message.id) === selectedMessageId) === true
   const directResult = directState?.messageId === selectedMessageId ? directState : null
 
+  // AIDEV-NOTE: Abort direct reads in the unmounting commit before a late 401 can recover a new thread.
+  useLayoutEffect(() => () => directAbortRef.current?.abort(), [selectedMessageId, state.status, selectedOnPage, readDirectMessage, context, directRetry])
+
   useEffect(() => {
     if (selectedMessageId === null || state.status !== 'ready' || selectedOnPage || !readDirectMessage || !context) {
       setDirectState(null)
@@ -188,6 +192,8 @@ function ConversationReader({ mailboxId, threadId, readDirectMessage }: { mailbo
     const messageId = selectedMessageId
     const generation = scope.current()
     const controller = new AbortController()
+    directAbortRef.current?.abort()
+    directAbortRef.current = controller
     const isCurrent = () => scope.isCurrent(generation) && !controller.signal.aborted
     setDirectState({ status: 'loading', messageId })
     void readDirectMessage(context, mailboxId, threadId, messageId, controller.signal).then((page) => {
@@ -204,7 +210,10 @@ function ConversationReader({ mailboxId, threadId, readDirectMessage }: { mailbo
       if (!isCurrent() || handleError(error, generation)) return
       setDirectState({ status: isApiError(error, 'not_available') ? 'unavailable' : 'error', messageId })
     })
-    return () => controller.abort()
+    return () => {
+      controller.abort()
+      if (directAbortRef.current === controller) directAbortRef.current = null
+    }
   }, [selectedMessageId, state.status, selectedOnPage, readDirectMessage, context, mailboxId, threadId, scope, handleError, directRetry])
 
   const selectedMessagePresent = selectedOnPage || directResult?.status === 'ready'
