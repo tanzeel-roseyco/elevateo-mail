@@ -10,7 +10,7 @@ export const OrganizationGrantSchema = z.strictObject({
   revision,
 })
 export const GrantChangeSchema = z.strictObject({
-  role: z.enum(['organization_admin', 'organization_member']),
+  role: z.enum(['organization_admin', 'technology_operator', 'sales_lead', 'sales_member', 'security_auditor', 'organization_member']),
   expected_revision: revision,
 })
 export const OrganizationGrantsSchema = z.strictObject({
@@ -38,3 +38,17 @@ export type OutreachPlan = z.infer<typeof OutreachPlanSchema>
 export type OutreachCampaign = z.infer<typeof OutreachCampaignSchema>
 
 export const CampaignPageSchema = z.strictObject({ items: z.array(OutreachCampaignSchema).max(100) })
+
+export const RosterPersonSchema = z.strictObject({
+  key: z.string().regex(/^elev-person-0(0[1-9]|1[0-2])$/),
+  display_name: z.string().min(1).max(96),
+  title: z.string().min(1).max(96),
+  department: z.enum(['technology', 'sales', 'cybersecurity']).nullable(),
+  enrollment_state: z.literal('unbound'),
+})
+export const RosterPageSchema = z.strictObject({
+  context_id: z.string().min(16).max(256),
+  authorization_version: z.string().min(16).max(256),
+  items: z.array(RosterPersonSchema).max(50),
+  next_cursor: z.string().max(2048).nullable(),
+})
