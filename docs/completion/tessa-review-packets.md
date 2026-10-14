@@ -1,15 +1,15 @@
 # QA816 bounded independent review request
 
-Source candidate: `ac97a7a` (ADV046/047 oracle repairs; source hashes below). Review the exact blobs below, not moving branch HEADs. Apply the full INT-401 rubric, report confirmed defects by severity and unique changed LOC/KLOC, and distinguish overlap and design context. Initial Felix, Vera and Ada findings are recorded in code-reviews.md; the repaired source below awaits exact re-review and fleet runtime.
+Source candidate: `c151ecd` (ADV046/047 oracle repairs; source hashes below). Review the exact blobs below, not moving branch HEADs. Apply the full INT-401 rubric, report confirmed defects by severity and unique changed LOC/KLOC, and distinguish overlap and design context. Initial Felix, Vera and Ada findings are recorded in code-reviews.md; the repaired source below awaits exact re-review and fleet runtime.
 
 | Functional packet | Exact source and inclusive lines | LOC | SHA-256 |
 | --- | --- | ---: | --- |
 | A | `tests/acceptance/playwright/qa816-matrix.e2e.ts` 1–154 | 154 | `f0b5c91f8c3a5ed96a96448ce658ff2586d1410034de1cf487e97edbc385338f` |
 | B | `qa816-matrix.e2e.ts` 155–263; `screenshots.ts` 1–76 | 185 | matrix hash above; screenshots `382fbb1d5859764a7ffb224d9688cf67a1ed2697e41de566da81eeee2614e45e` |
-| C | `qa816-send.e2e.ts` 1–75; `qa816-outreach.e2e.ts` 1–101 | 176 | send `0f88b09552f18374d147ed0b35e1fed6bf61c429cfb08bf95d5cda84fac22a2a`; outreach `ebd1619bfbe3f0344a827e7784d7d235bec2e9fb4b5370978535e6edb31e900b` |
+| C | `qa816-send.e2e.ts` 1–75; `qa816-outreach.e2e.ts` 1–110 | 185 | send `0f88b09552f18374d147ed0b35e1fed6bf61c429cfb08bf95d5cda84fac22a2a`; outreach `61db23ef8f720b564791eaf7295f40edb93fa64f4b613475b3a59dffa9bf784a` |
 | D | `qa816-visual.e2e.ts` 1–36 | 36 | `0c3fb47a54e1f578b74a7bab1d1578694d725bd1d5b9cf51c412d2351f1b7e22` |
 
-Dedicated design reviewer: examine A+B as two divided packets totaling 339 LOC, then C+D as separate divided packets totaling 212 LOC. Focus on genuine API/Auth observations, task-owned data and cleanup, transport barriers, response race assertions, role/tenant assumptions, screenshot admission/privacy and difference between visual viewport and text zoom. The same lines are overlapping design context, not extra unique coverage. Each functional packet stays below 200 LOC; each design assignment stays below 400 LOC.
+Dedicated design reviewer: examine A+B as two divided packets totaling 339 LOC, then C+D as separate divided packets totaling 221 LOC. Focus on genuine API/Auth observations, task-owned data and cleanup, transport barriers, response race assertions, role/tenant assumptions, screenshot admission/privacy and difference between visual viewport and text zoom. The same lines are overlapping design context, not extra unique coverage. Each functional packet stays below 200 LOC; each design assignment stays below 400 LOC.
 
 ## Exact fleet execution request to Soren
 
