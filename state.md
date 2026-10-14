@@ -515,3 +515,5 @@ ATT902 dual metadata/content V2 routes and browser port are active only in the i
 Orion TEST929 expanded backend manifest imported source-only. Core inventory 130 standard/nine dedicated; feature suite count may differ. Independent functional/design review and fleet standard/dedicated execution pending.
 
 Nadia b3899a06 typed ATT902 controller/RBS/test repair imported feature source-only after earlier two-Steep-error fleet result. Exact successor Steep/lint/controller and real byte gates pending.
+
+ADV151 TEST929 manifest design review 53LOC/0 defects source-only; 480s outer budget may truncate 130 sequential suites, so Soren must report incomplete files/skip counts and nine dedicated results. Functional review/runtime pending.
