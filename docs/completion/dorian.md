@@ -51,3 +51,5 @@ Create replay now uses an immutable SHA-256 request fingerprint stored on each d
 The disposable database fixture now supplies creation fingerprints on its admin seed rows, matching migration 00009's required column. This fixture correction is source-only and needs Soren's exact database run.
 
 The RBS repository surface was pruned to remove the deleted mutable-row replay helper, keeping the declaration aligned with the immutable fingerprint implementation. Strict Steep remains requested from Soren in fleet Docker.
+
+Soren exact b28b7d3 fleet Ruby receipt: input 5 runs/8 assertions PASS; repository 8 runs/29 assertions with one test-oracle failure. The SQL is valid `ON CONFLICT DO NOTHING`; the assertion incorrectly required a conflict target. The regex now admits PostgreSQL's empty target while retaining the `DO NOTHING` check. This repair is source-only until Soren's exact rerun; the integrated 3382710 repository run had the same oracle failure.

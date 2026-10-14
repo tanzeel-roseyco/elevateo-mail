@@ -142,3 +142,5 @@ OUT-804 source correction clears current-row `consent_recorded_by` on unknown/wi
 OUT-804 account source now matches Cassian's campaign-scoped V2 paths. Page queries require a campaign ID for accounts, and detail checks reject accounts under a different campaign; these routes and scoped tests remain pending integration/fleet execution.
 
 OUT-804 create idempotency now compares an immutable stored request fingerprint instead of mutable campaign/lead/account fields. Exact retry after a subsequent edit is retained; changed-intent replay fails closed. Fleet execution remains pending.
+
+Soren's exact b28b7d3 fleet Ruby receipt passed input 5/8 and reported repository 8 runs/29 assertions with one failing SQL-shape oracle. The valid targetless `ON CONFLICT DO NOTHING` is now accepted by the test; this repair and integrated runtime remain unverified.

@@ -34,7 +34,7 @@ class CampaignRepositoryTest < Minitest::Test
   def test_insert_returns_durable_identity_without_transport
     connection = Connection.new([[{ "id" => ID }]])
     assert_equal ID, Elevateo::Campaigns::Repository.new(connection: connection).save(draft, organization_id: ORG)
-    assert_match(/ON CONFLICT .* DO NOTHING/m, connection.calls.first.first)
+    assert_match(/ON CONFLICT(?: \([^)]*\))? DO NOTHING/, connection.calls.first.first)
     refute_match(/send_intents|provider|smtp/i, connection.calls.first.first)
   end
 

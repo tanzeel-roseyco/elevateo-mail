@@ -200,3 +200,5 @@ OUT-804 current lead detail clears the prior attestation actor when consent beco
 OUT-804 account list/detail now require the campaign path ID, with account lists filtered to that campaign and cross-campaign detail denied. Accounts remain disabled records; route activation and Docker checks are pending Cassian/Soren.
 
 OUT-804 creates now persist an immutable request fingerprint, so an exact create retry is recognized even after the draft record has been edited. A changed request with the same operation ID remains a conflict; fleet verification is pending.
+
+Fleet repository tests on b28b7d3 reached eight cases with one assertion failure: the test regex expected an optional conflict target in valid `ON CONFLICT DO NOTHING` SQL. The assertion is corrected in source; exact rerun is pending.
