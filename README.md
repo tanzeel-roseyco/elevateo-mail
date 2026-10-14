@@ -192,3 +192,5 @@ OUT-804 V2 reads and writes now call the digest-backed Sabine role checks within
 OUT-804 RLS now also checks a current digest-backed outreach role in each tenant transaction, using Sabine's existing read authority function. The integrated migration and authenticated role probes are untested.
 
 Soren's exact b3438e4 fleet diagnostic exposed an OUT-804 repository syntax error and controller typing/lint issues; source repairs are prepared for a new exact Docker run. The later integrated migration failure was in Nadia's send cancellation migration.
+
+OUT-804 lead detail now labels recorded human consent as `manual_attestation`; Delivery must separately verify send eligibility.

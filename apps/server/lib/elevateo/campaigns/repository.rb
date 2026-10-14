@@ -197,11 +197,12 @@ module Elevateo
         end
         if input.kind == "lead" && !preserve_consent
           event_values = [org, fields.fetch("campaign_id"), input.id, input.operation_id, actor,
-            fields.fetch("consent_status"), fields.fetch("consent_source"), fields.fetch("consent_recorded_at")]
+            fields.fetch("consent_status"), fields.fetch("consent_status") == "granted" ? "manual_attestation" : "status_change",
+            fields.fetch("consent_source"), fields.fetch("consent_recorded_at")]
           rows(<<~SQL, event_values)
             INSERT INTO app.campaign_consent_events(organization_id,campaign_id,lead_id,operation_id,
-              actor_id,status,source,observed_at)
-            VALUES ($1::uuid,$2::uuid,$3::uuid,$4::uuid,$5::uuid,$6,$7,$8::timestamptz)
+              actor_id,status,evidence_kind,source,observed_at)
+            VALUES ($1::uuid,$2::uuid,$3::uuid,$4::uuid,$5::uuid,$6,$7,$8,$9::timestamptz)
           SQL
         end
         result = detail(kind: input.kind, organization_id: org, id: input.id)
@@ -235,6 +236,7 @@ module Elevateo
             "consent_status" => row.fetch("consent_status"), "suppressed" => !row["suppressed_at"].nil? || row["globally_suppressed"] == true,
             "consent_recorded_at" => timestamp(row["consent_recorded_at"]),
             "consent_source" => row["consent_source"], "consent_recorded_by" => row["consent_recorded_by"],
+            "consent_evidence_kind" => row.fetch("consent_status") == "granted" ? "manual_attestation" : nil,
             "version" => row.fetch("version").to_i }
         when "account"
           { "id" => row.fetch("id"), "campaign_id" => row.fetch("campaign_id"), "mailbox_id" => row.fetch("mailbox_id"),

@@ -42,13 +42,14 @@ class CreateCampaignFoundation < ActiveRecord::Migration[8.1]
         operation_id uuid NOT NULL,
         actor_id uuid NOT NULL,
         status text NOT NULL CHECK (status IN ('unknown', 'granted', 'withdrawn')),
+        evidence_kind text NOT NULL CHECK (evidence_kind IN ('manual_attestation', 'status_change')),
         source text CHECK (source IS NULL OR length(source) BETWEEN 1 AND 200),
         observed_at timestamptz,
         recorded_at timestamptz NOT NULL DEFAULT now(),
         PRIMARY KEY (organization_id, operation_id),
         FOREIGN KEY (organization_id, campaign_id, lead_id)
           REFERENCES app.campaign_leads(organization_id, campaign_id, id) ON DELETE CASCADE,
-        CHECK (status <> 'granted' OR (source IS NOT NULL AND observed_at IS NOT NULL))
+        CHECK (status <> 'granted' OR (evidence_kind = 'manual_attestation' AND source IS NOT NULL AND observed_at IS NOT NULL))
       );
       CREATE TABLE app.campaign_accounts (
         id uuid PRIMARY KEY,
