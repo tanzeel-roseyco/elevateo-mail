@@ -22,6 +22,7 @@ module V1
       thread = Elevateo::WriteInput.uuid(request.path_parameters[:thread_id])
       # @type var guards: V1::WriteController::target_users
       guards = ->(input:, **) do
+        # @type var input: Elevateo::WriteInput::object
         Elevateo::ThreadAssignment.validate!(input)
         target = input["assignee_id"]
         target.nil? ? [] : [Elevateo::WriteInput.uuid(target)]

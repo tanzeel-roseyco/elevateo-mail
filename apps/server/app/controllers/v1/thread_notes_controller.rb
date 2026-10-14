@@ -21,7 +21,11 @@ module V1
       # AIDEV-NOTE: Read only route parameters until protected_write validates the raw JSON body.
       thread = Elevateo::WriteInput.uuid(request.path_parameters[:thread_id])
       # @type var validate: V1::WriteController::target_users
-      validate = ->(input:, **) { Elevateo::ThreadNotes.validate!(input); [] }
+      validate = ->(input:, **) do
+        # @type var input: Elevateo::WriteInput::object
+        Elevateo::ThreadNotes.validate!(input)
+        []
+      end
       protected_write(required: Elevateo::ThreadNotes::REQUIRED, max_bytes: 65_536, budget: 65_536,
         guard_users: validate) do |connection:, identity:, session:, input:, **|
         # @type var connection: Elevateo::WriteStatements

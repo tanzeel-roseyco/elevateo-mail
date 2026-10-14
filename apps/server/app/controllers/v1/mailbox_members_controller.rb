@@ -17,8 +17,13 @@ module V1
 
     def update
       mailbox, user = path_id(:mailbox_id), path_id(:user_id)
-      protected_write(required: %w[expected_membership_version capabilities],
-                      guard_users: ->(input:, **) { Elevateo::MailboxMembershipInput.put(input); [user] }) do
+      # @type var guards: V1::WriteController::target_users
+      guards = ->(input:, **) do
+        # @type var input: Elevateo::WriteInput::object
+        Elevateo::MailboxMembershipInput.put(input)
+        [user]
+      end
+      protected_write(required: %w[expected_membership_version capabilities], guard_users: guards) do
         |connection:, identity:, session:, input:, **|
         # @type var connection: Elevateo::WriteStatements
         # @type var identity: Elevateo::SessionIdentity
@@ -31,8 +36,13 @@ module V1
 
     def destroy
       mailbox, user = path_id(:mailbox_id), path_id(:user_id)
-      protected_write(allowed_query: %w[expected_membership_version], body: false,
-                      guard_users: ->(query:, **) { Elevateo::MailboxMembershipInput.delete(query); [user] }) do
+      # @type var guards: V1::WriteController::target_users
+      guards = ->(query:, **) do
+        # @type var query: Hash[String, String]
+        Elevateo::MailboxMembershipInput.delete(query)
+        [user]
+      end
+      protected_write(allowed_query: %w[expected_membership_version], body: false, guard_users: guards) do
         |connection:, identity:, session:, query:, **|
         # @type var connection: Elevateo::WriteStatements
         # @type var identity: Elevateo::SessionIdentity

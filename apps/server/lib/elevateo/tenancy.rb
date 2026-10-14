@@ -7,7 +7,9 @@ module Elevateo
 
     UUID = /\A\h{8}-\h{4}-\h{4}-\h{4}-\h{12}\z/
 
-    Principal = Data.define(:user_id, :org_id) do
+    Principal = Data.define(:user_id, :org_id)
+    # AIDEV-NOTE: Reopen the named Data class so strict checking sees its constructor without changing value semantics.
+    class Principal
       def initialize(user_id:, org_id:)
         [user_id, org_id].each { |v| raise ContextError, "principal requires UUID values" unless v.is_a?(String) && UUID.match?(v) }
         # AIDEV-NOTE: Data is shallowly frozen; UUID strings must not mutate after claims establish frame identity.
