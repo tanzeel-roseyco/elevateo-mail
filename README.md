@@ -550,3 +550,5 @@ QA815 first integrated web gate on exact `555acbff` passed V1/V2 API declaration
 Orion `435333b1` authority fixture syntax repair completes the five-owner lint source assembly in strict-only core `a2f58b34`. It moves the same seven SQL bind values ahead of the heredoc and preserves private authorization assertions. Soren's exact targeted/full lint and subsequent backend/HTTP/worker gates are requested, not yet passed.
 
 Mira's `20e8c46e` top-reply regression now checks no draft save before the click, the first draft read, and exact context/version zero-version V1 save. Tessa's `f46a958b` QA816 cases require closed public denial envelopes for assignee and attachment failures. Both owner test imports are source-only; exact integrated web/browser checks remain pending.
+
+QA815 exact feature `fdecd0d5` full web gate passed on fleet: V1/V2 declaration checks, ESLint, TypeScript, 62 files/856 unit cases and production Vite build, with task cleanup PASS. Its exact receipt is imported. Later owner test/QA files and Orion Ruby fixture were not in this tested source, and real-role HTTP/browser remain pending.
