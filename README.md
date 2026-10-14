@@ -14,6 +14,8 @@ Shared company mailroom with one Rails domain authority and a React/TypeScript c
 
 ## Current state
 
+QA-815 latest fleet receipt: integrated `2184127` API check and lint passed, then Mira strict TypeScript failed before unit/build; the earlier `45be80b` database migrations passed but the full suite failed on fixture dependencies. Orion `4028d8d` locked Linux Rust tests passed seven cases, and `52f7dee` static native boundary passed; target-OS packaging, real browser and restore remain pending. [Exact Soren receipts](docs/completion/soren.md).
+
 QA-815 fleet continuation: integrated `45be80b` real PostgreSQL migrations through inbound 00011 passed, but the full backend suite failed from a destructive draft fixture/FK dependency and later errors; cleanup passed. Integrated `c4fa27c` web lint passed but typecheck failed in V2 outreach and admin test types. Dorian `35273ba` isolated Ruby unit/lint/Steep checks passed; native Linux compile stopped at a missing Tauri icon, and browser/APK/Mox/restore gates remain open. See [Soren evidence](docs/completion/soren.md).
 
 QA-815 continuation (2026-10-14): isolated fleet Docker web suites passed on exact Mira `e31da54` (40 files/693 tests) and Fable `dc1db82` (42 files/692 tests). Integrated `f787bbc` remains blocked: web lint failed and disposable PostgreSQL/Auth migration stopped in SEND-810 with `permission denied for schema app`; cleanup passed. Later SQL/HTTP/browser/native/restore checks remain pending. See [Soren queue receipt](docs/completion/soren.md).

@@ -1,0 +1,6 @@
+source=52f7dee1f8b7caecdecf20a9f121a0429c29c675
+image=python@sha256:48a11b7ba705fd53bf15248d1f94d36c39549903c5d59edcfa2f3f84126e7b44
+command=python3 apps/native/ci/verify_boundary.py
+native static package boundary PASS
+exit=0
+archive_absent=yes

@@ -688,3 +688,5 @@ The one-line QA scheduler resource cap change received `bash -n` and `git diff -
 ## QA-815 backend receipt wrapper continuation
 
 `ops/tests/qa815/run-backend-candidate.sh` is a QA-owned source addition. `bash -n` and `git diff --check` passed; the wrapper has not yet been Docker exercised or independently reviewed. Bounded adversarial and dedicated design-tradeoff review: NOT_RUN, 0 independent LOC, defects/KLOC unclaimed. Its task archive creates empty Docker mountpoints and copies only runner-sanitized logs/JSON; secret environment files are excluded. Existing `45be80b` backend runtime evidence came from the preceding task-local wrapper and remains a failed suite receipt, not wrapper validation.
+
+The `2184127` web and Orion `4028d8d`/`52f7dee` receipts are execution checks, not independent code reviews. This QA continuation performed 0 independent reviewed source LOC; confirmed review defects and density remain unclaimed. Mira's compiler findings were sent to the source owner as runtime gate failures, not counted as an adversarial review packet.
