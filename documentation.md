@@ -189,3 +189,5 @@ Cassian manifest reconciliation: contract-lock now seals actual generated client
 ### SEND-810 cancellation seam
 
 The additive `app.cancel_send` function locks the job and rechecks current session and draft scope before changing state. It validates the redacted status projection and returns the canonical `CancellationResult` shape. Cancellation of a leased or attempted job records a request; the worker must honor that flag at protected admission and reconcile any possible delivery. Canonical contract registration and integrated validation are pending in `docs/completion/nadia.md`.
+
+SEND-810 worker bridge: `next_due_send` gives only an identity; `claim_job` fences a lease; `authorize_and_read` checks current member capability and suppression before Rowan's durable attempt write and returns the immutable snapshot only to the worker role; `final_submission_check` rechecks authority/cancellation before local simulated I/O. The process entrypoint is still disabled pending integrated fleet proof. See docs/completion/nadia.md.
