@@ -873,3 +873,7 @@ FE807 analytics copy self-review: backend's candidate `consented_count` excludes
 ### FE-805 R4 online-only shell self-inspection (Fable, 2026-10-15)
 
 Coverage: `ui/ConnectivityBanner.tsx` (52 LOC), Shell route-hygiene hunk and banner wiring (~20), CSS mobile frame (~18). ~90 production LOC, one bounded pass; author self-inspection only, no independent review claimed. Self-found before commit: 1 (route-change focus rescue initially stole focus from the drawer trigger and from page-owned focus, contradicting e2e/read.spec.ts; narrowed to body-stranded focus only). Provisional density 11.1/KLOC, author evidence. Tests: 5 new cases (3 banner, 2 shell), not executed.
+
+QA816 ce73f55 changes two selector literals from a root/Fable design decision. Independent review and fleet runtime remain pending; no reviewed LOC or density claim is added.
+
+QA816 reply journey at 199c132 is authored and unreviewed by independent agents; reviewed LOC 0, defect density not computed, runtime NOT_RUN.
