@@ -1,5 +1,7 @@
 # BE-02: Current sessions, mailbox reads and durable drafts
 
+Current acceptance: OPEN. R21f desktop F1/F2 PASS, four mobile F1/F2 FAIL; six PNGs retained. All eight resource closures independently verified; task lease FREE. Invitation runtime and corrected logout remain pending. See [reconciled closure](jules-r21f-closure.md).
+
 The current Rails service exposes health/readiness and tenant isolation foundations, while the React reader uses a frozen HTTP contract. Real browser sign-in, the four read endpoints and durable draft storage are missing. Implement the accepted BE-02 scope through bounded checkpoints on `feature/codex-be02-integration`.
 
 ## Execution and design

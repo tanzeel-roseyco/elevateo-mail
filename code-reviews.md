@@ -25,6 +25,9 @@ Original file hashes: OpenAPI9ba2546f8fd6e1fc157ffade12138d2ce4588ba03539ac77f6e
 Repairs:210 issue bound permits100 recipients with two issues each plus globals; policy0 remains display-only readiness failure; frozen keys/digests now load only immutable03ae. Independent baseline fingerprint and100-recipient/missing-policy regressions added. No live activation, resources or cleanup. Actual tests NOT_RUN at this checkpoint.
 
 ---
+## R21f recovery documentation verification
+
+Docs-only closure: eight case/location receipts and eight cleanup receipts reconciled against exact Docker/resource absence. Four mobile failures and missing final original queue entry remain explicit. No application code changed or built; no new adversarial source review required. Documentation stale-status defects corrected: 5 current records; application runtime defects retained: 4 failed mobile partitions, root cause UNKNOWN. Documentation defect density: 5 stale records / 5 reviewed current records = 1 per record before repair, 0 after repair; LOC density is not meaningful for receipt reconciliation. Existing source review coverage is unchanged. Diff whitespace check passed; no application tests rerun.
 
 ## Current bounded integration review: INT401 R16
 
@@ -593,3 +596,7 @@ ADV868 Tessa R21e source review: 165 source LOC (31 old +39 new wrapper +26 help
 
 
 Vale BE03 read-cap exception is a process note, not code acceptance; see docs/completion/int403-r23-application-state.md.
+
+## R24 deployment documentation verification
+
+Documentation-only deployment registry checked against six live fleet launcher processes and native thread.started events. Application code reviewed: 0 lines; new code defects: 0; defect density: N/A. No build or test performed by deployment coordinator. Integration/release acceptance remains open.
