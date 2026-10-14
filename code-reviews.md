@@ -680,3 +680,6 @@ R25 lint repair: one tooling defect in the unmount cleanup (ref must be captured
 ### FE-805 shell/sidebar/brand self-inspection (Fable, 2026-10-15)
 
 Coverage: new `featureRegistry.ts` (69 LOC), `features/index.tsx` (54), `FeaturePlaceholderPage.tsx` (18), `BrandMark.tsx` (34), rewritten `Sidebar.tsx` (146) and changed `Shell.tsx`/`App.tsx`/`index.css` hunks (24). Total 345 production LOC, read in two bounded passes under 200 lines each. Author self-inspection only; no independent adversarial or design review has been performed and none is claimed. Self-found defects before commit: 1 (placeholder element map could drift from the route list; added a load-time exact-match check). Provisional density 2.90/KLOC, author evidence only. Tests added: 7 cases across three files, not executed. Formatting delegated to ESLint.
+## FE807 Outreach candidate review request
+
+Celeste authored the read-only feature and three boundary tests. Independent bounded functional review and dedicated design-tradeoff review are pending; reviewed source LOC: 0, confirmed defects: not established, defect density: not applicable. Docker/type/browser verification is requested only; see `docs/completion/celeste.md`.
