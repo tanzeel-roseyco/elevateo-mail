@@ -8,7 +8,7 @@ scenario('SCN-QA-825-P', 'top-reply-persists-sender-and-thread', async (page, re
   await signIn(page, 'composer');
   await mailbox(page);
   await openThread(page);
-  await page.getByRole('link', { name: 'Reply as draft' }).click();
+  await page.getByRole('button', { name: 'Reply as draft' }).click();
   const draftId = /\/drafts\/([0-9a-f-]{36})/.exec(new URL(page.url()).hash)?.[1];
   if (!draftId) throw new Error('Top reply draft route missing');
   await expect(page.getByLabel('To', { exact: true })).toHaveValue('sender@acceptance.test');
@@ -27,4 +27,18 @@ scenario('SCN-QA-825-P', 'top-reply-persists-sender-and-thread', async (page, re
     .toHaveAttribute('href', `#/mailboxes/${seed.mailboxes.primary}/threads/${seed.data.thread_primary}`);
   record.artifacts.push(await screenshot(page, 'QA816-REPLY-P-top-persisted'));
   record.assertions.push('Top reply prefilled seeded sender and thread; case-owned V1 PUT and reload GET persisted both');
+});
+
+scenario('SCN-QA-825-F1', 'missing-selected-message-disables-top-reply', async (page, record) => {
+  await signIn(page, 'composer');
+  const absentId = randomUUID();
+  const path = `/v2/threads/${seed.data.thread_primary}/messages/${absentId}`;
+  const [missing] = await Promise.all([responseAt(page, path),
+    page.goto(`/#/mailboxes/${seed.mailboxes.primary}/threads/${seed.data.thread_primary}?message=${absentId}`)]);
+  expect(missing.status()).toBe(404);
+  await expect(page.getByText('This message is unavailable in this conversation.')).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Reply as draft' })).toBeDisabled();
+  await expect(page.getByLabel('To', { exact: true })).toHaveCount(0);
+  record.artifacts.push(await screenshot(page, 'QA816-REPLY-F1-missing-selected'));
+  record.assertions.push('Real V2 missing selected message 404 disables top reply before any draft editor opens');
 });

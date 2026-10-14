@@ -31,7 +31,8 @@ const screenshotIds = ['SCN-READ-001-F1-empty-denied', 'SCN-READ-002-F1-unavaila
   'QA816-VISUAL-P-768-light', 'QA816-VISUAL-P-768-dark',
   'QA816-VISUAL-P-1440-light', 'QA816-VISUAL-P-1440-dark',
   'QA816-MESSAGE-P-mobile', 'QA816-MESSAGE-F1-unavailable', 'QA816-MESSAGE-F2-error',
-  'QA816-MESSAGE-P2-later-page-mobile', 'QA816-REPLY-P-top-persisted'];
+  'QA816-MESSAGE-P2-later-page-mobile', 'QA816-REPLY-P-top-persisted',
+  'QA816-REPLY-F1-missing-selected'];
 // AIDEV-NOTE: Only target opening is injectable so regressions exercise real lock, ledger and cleanup paths.
 type OpenTarget = (path: string, flags: number, mode: number) =>
   Promise<Pick<FileHandle, 'writeFile' | 'sync' | 'close'>>;
