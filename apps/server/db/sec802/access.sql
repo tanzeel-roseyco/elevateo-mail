@@ -299,18 +299,19 @@ GRANT EXECUTE ON FUNCTION app.change_organization_role(text,uuid,integer,text) T
 -- AIDEV-NOTE: Outreach draft authority is rechecked inside the caller's protected write transaction.
 CREATE FUNCTION app.authorize_outreach_draft_write(p_digest text)
 RETURNS jsonb LANGUAGE plpgsql VOLATILE SECURITY DEFINER SET search_path = pg_catalog AS $$
-DECLARE proof jsonb; org uuid; actor uuid; current_role text; current_revision integer;
+DECLARE proof jsonb; org uuid; actor uuid; business_role text; current_revision integer;
 BEGIN
   proof := app_auth.assert_protected_write(p_digest, app.context_uuid('app.user_id'));
   IF proof->>'status' <> 'ok' THEN RETURN proof; END IF;
   org := (proof->>'organization_id')::uuid;
   actor := (proof->>'user_id')::uuid;
-  SELECT role, revision INTO current_role, current_revision FROM app.organization_access
+  SELECT role, revision INTO business_role, current_revision FROM app.organization_access
     WHERE organization_id = org AND user_id = actor;
-  IF current_role NOT IN ('owner', 'admin', 'sales_manager', 'sales') OR current_role IS NULL THEN
+  -- CURRENT_ROLE is a PostgreSQL special value for the effective SQL role, not this actor's business grant.
+  IF business_role NOT IN ('owner', 'admin', 'sales_manager', 'sales') OR business_role IS NULL THEN
     RETURN '{"status":"not_found"}'::jsonb;
   END IF;
-  RETURN jsonb_build_object('status', 'ok', 'role', current_role, 'revision', current_revision);
+  RETURN jsonb_build_object('status', 'ok', 'role', business_role, 'revision', current_revision);
 END $$;
 REVOKE ALL ON FUNCTION app.authorize_outreach_draft_write(text)
   FROM PUBLIC, elevateo_api, elevateo_app_read, elevateo_worker;
@@ -365,7 +366,7 @@ GRANT EXECUTE ON FUNCTION app.organization_grants_page(text,uuid,integer) TO ele
 -- AIDEV-NOTE: Outreach content reads need current business role inside the authenticated snapshot.
 CREATE FUNCTION app.authorize_outreach_content_read(p_digest text)
 RETURNS jsonb LANGUAGE plpgsql STABLE SECURITY DEFINER SET search_path = pg_catalog AS $$
-DECLARE proof jsonb; org uuid; actor uuid; current_role text; current_revision integer;
+DECLARE proof jsonb; org uuid; actor uuid; business_role text; current_revision integer;
 BEGIN
   proof := app_auth.resolve_session(p_digest);
   IF proof->>'status' <> 'ok' THEN RETURN jsonb_build_object('status', proof->>'status'); END IF;
@@ -375,12 +376,13 @@ BEGIN
     OR NULLIF(current_setting('app.user_id', true), '') IS DISTINCT FROM actor::text THEN
     RETURN '{"status":"not_found"}'::jsonb;
   END IF;
-  SELECT role, revision INTO current_role, current_revision FROM app.organization_access
+  SELECT role, revision INTO business_role, current_revision FROM app.organization_access
     WHERE organization_id = org AND user_id = actor;
-  IF current_role NOT IN ('owner', 'admin', 'sales_manager', 'sales') OR current_role IS NULL THEN
+  -- CURRENT_ROLE resolves to the security definer's SQL role, not the organization grant.
+  IF business_role NOT IN ('owner', 'admin', 'sales_manager', 'sales') OR business_role IS NULL THEN
     RETURN '{"status":"not_found"}'::jsonb;
   END IF;
-  RETURN jsonb_build_object('status', 'ok', 'role', current_role, 'revision', current_revision);
+  RETURN jsonb_build_object('status', 'ok', 'role', business_role, 'revision', current_revision);
 END $$;
 REVOKE ALL ON FUNCTION app.authorize_outreach_content_read(text)
   FROM PUBLIC, elevateo_api, elevateo_app_read, elevateo_worker;

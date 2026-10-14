@@ -134,10 +134,11 @@ class OrganizationAccessPolicyTest < MailboxMembershipDatabaseCase
     guard_status = statuses.fetch("write")
     assert_equal "ok", guard_status,
       "member=#{member} role=#{role} function_owner=#{owner} read_result=#{statuses.fetch('read')} protected_result=#{guard_status}"
-    assert_equal "ok", outreach_read_authorization(sales).fetch("status")
+    assert_equal "sales", outreach_authorization(sales).fetch("role")
+    assert_equal "sales", outreach_read_authorization(sales).fetch("role")
     assert_equal "not_found", outreach_authorization(auditor).fetch("status")
     assert_equal "not_found", outreach_read_authorization(auditor).fetch("status")
-    assert_equal "ok", outreach_authorization(@identity).fetch("status")
+    assert_equal "owner", outreach_authorization(@identity).fetch("role")
   end
 
   def test_owner_can_delegate_with_explicit_ceiling_and_read_redacted_grants
