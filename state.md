@@ -166,3 +166,5 @@ OUT-804 Ada ADV071 test proof follow-up adds an authenticated API-role disposabl
 Soren exact integrated fa3082a migration 00009 failed with `PG::SyntaxError` at generated `ENDAND` between role and integrity predicates, before SQL/HTTP tests; cleanup passed. The template now inserts explicit whitespace and a generated policy test guards the token boundary. This source repair is NOT_RUN until Soren's exact rerun.
 
 Exact fa3082a full RuboCop reported two OUT-804 controller test `Lint/AmbiguousBlockAssociation` offenses; source now parenthesizes the assertions. No owned Steep diagnostics were present in that lint receipt, and the new source still needs Soren's affected lint/full Steep rerun.
+
+Coordinator OUT839 role audit found the campaign RLS policy applies to member role `elevateo_app_read` while SEC802 grants outreach proof execution to `elevateo_api`. The application fixture connects as `elevateo_api`; new disposable tests assert that current role on a positive write, fail-closed direct `elevateo_app_read` evaluation, and cross-actor digest denial. Actual role behavior awaits Soren fleet execution; no broad grant is introduced.

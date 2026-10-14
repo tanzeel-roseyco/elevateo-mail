@@ -224,3 +224,5 @@ OUT-804 now includes disposable authenticated database tests using the existing 
 The first integrated attempt with the new consent policy failed during migration 00009 because generated SQL joined `END` and `AND` into `ENDAND`. The policy template now inserts an explicit separator, with a generated SQL regression authored; exact fleet migration rerun is pending.
 
 Soren's exact fa3082a full RuboCop receipt found two ambiguous block associations in OUT-804 controller tests. Those assertion calls are parenthesized in source; affected lint and full Steep on the repaired SHA remain requested.
+
+OUT-804 migration 00009 policy role seam now has disposable SQL regressions for an authorized `elevateo_api` write, denied direct `elevateo_app_read` RLS proof execution, and cross-actor session digest rejection. SEC802 grants proof execution only to the API role; these new cases are authored, not fleet-executed.

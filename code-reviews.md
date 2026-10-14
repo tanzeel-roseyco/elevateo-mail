@@ -730,3 +730,5 @@ OUT-804 Ada ADV071 bounded design review of exact df75e47 covered 236 LOC and fo
 OUT-804 Soren exact integrated fa3082a migration failed before tests on generated `ENDAND` between `role_guard` and `write_integrity` (one author source defect, not an independent review). Author separated SQL fragments and added a policy-generation regression; this has no exact fleet PASS yet. Earlier isolated source PASS does not transfer to the new migration.
 
 OUT-804 fa3082a full RuboCop diagnostic (not independent review) found two owned test-only ambiguous block associations, repaired with explicit parentheses. No density or review PASS is inferred; exact repaired-source lint/full Steep pending.
+
+OUT839 bounded role seam inspection covered migration 00009 policy template, SEC802 outreach routine grants and BE02 API fixture connection source; no production defect is established by static inspection. Three actual-role SQL assertions were authored for API positive, direct app-read fail-closed and cross-actor digest negative. They are NOT_RUN and do not count as independent review or runtime evidence.
