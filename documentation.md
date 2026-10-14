@@ -198,3 +198,5 @@ FE807 consent status semantics: `granted` is the versioned backend wire value, n
 FE807 evidence input boundary: client `observed_at` is canonical UTC to whole seconds (`YYYY-MM-DDTHH:mm:ssZ`). Validation compares its parsed ISO instant after dropping only the zero millisecond suffix, rejecting impossible calendar dates; explicit attestation/source/version remain required. Soren's integrated `8eb840d` run found the prior direct ISO string comparison blocked valid form submission; repair requires fleet retest.
 
 FE807 confirmed consent evidence response: after strict lead receipt validation, the list refreshes and shows a live status that the record is a manual attestation with no independent verification or sending authority. Errors do not show success; uncertain write handling still locks retry.
+
+FE807 consent failure behavior: an access-denied evidence write hides loaded lead content and never shows the manual-attestation success message. A definitive operation mismatch returns an error without automatic replay; only a validated successful receipt can show success.

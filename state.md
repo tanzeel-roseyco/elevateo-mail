@@ -130,3 +130,5 @@ FE807 latest: the client keeps the frozen `granted` DTO while qualifying compact
 FE807 exact integrated `8eb840d` Docker unit run reached Vitest and exposed a consent evidence timestamp bug plus one markup-sensitive test assertion. Isolated source/test repairs are authored but unexecuted; frontend build and real browser acceptance remain pending.
 
 FE807 post-consent presentation: a confirmed evidence write shows an accessible manual-attestation status and refreshes the lead list. Cassian V2 adapter and fleet journey verification are pending.
+
+FE807 `fa3082a` seam reviewed statically: manual consent adapter and detail GET match owner method signatures. Denied/409 replay UI assertions are authored, not fleet verified.

@@ -44,6 +44,13 @@ function view(path: string, g?: OutreachGateway) {
     <Route path="/outreach/campaigns/:campaignId/analytics" element={<OutreachCampaignAnalyticsPage {...props} />} />
   </Routes></MemoryRouter>)
 }
+function submitManualEvidence() {
+  fireEvent.click(screen.getByRole('button', { name: 'Record consent evidence' }))
+  fireEvent.change(screen.getByLabelText('Evidence source'), { target: { value: 'Signed intake form' } })
+  fireEvent.change(screen.getByLabelText('Observed date and time (local)'), { target: { value: '2026-10-14T12:00' } })
+  fireEvent.click(screen.getByRole('checkbox', { name: /I attest/ }))
+  fireEvent.click(screen.getByRole('button', { name: 'Record evidence' }))
+}
 
 describe('Outreach routed pages', () => {
   it('creates a draft and navigates to its detail without any send control', async () => {
@@ -126,16 +133,31 @@ describe('Outreach routed pages', () => {
     const g = gateway({ recordConsent: vi.fn(async () => ({ ...lead, consent_status: 'granted', version: 2 })) })
     view(`/outreach/campaigns/${campaignId}/leads`, g)
     await screen.findByText(/test@example.invalid/)
-    fireEvent.click(screen.getByRole('button', { name: 'Record consent evidence' }))
-    fireEvent.change(screen.getByLabelText('Evidence source'), { target: { value: 'Signed intake form' } })
-    fireEvent.change(screen.getByLabelText('Observed date and time (local)'), { target: { value: '2026-10-14T12:00' } })
-    fireEvent.click(screen.getByRole('checkbox', { name: /I attest/ }))
-    fireEvent.click(screen.getByRole('button', { name: 'Record evidence' }))
+    submitManualEvidence()
     expect(g.recordConsent).toHaveBeenCalledWith(context, proof, campaignId, leadId, expect.objectContaining({
       operation_id: expect.any(String), expected_version: 1, source: 'Signed intake form', observed_at: expect.stringMatching(/Z$/), attested: true,
     }), expect.any(AbortSignal))
     expect(await screen.findByText(/Manual attestation recorded for this lead/)).toBeTruthy()
     expect(screen.queryByRole('button', { name: /send/i })).toBeNull()
+  })
+  it('hides loaded lead content after denied consent evidence and shows no success', async () => {
+    const g = gateway({ recordConsent: vi.fn(async () => { throw new GatewayError('api', 'not_available', 'denied', { status: 403 }) }) })
+    view(`/outreach/campaigns/${campaignId}/leads`, g)
+    await screen.findByText(/test@example.invalid/)
+    submitManualEvidence()
+    expect(await screen.findByText(/Lead access changed/)).toBeTruthy()
+    expect(screen.queryByText(/test@example.invalid/)).toBeNull()
+    expect(screen.queryByText(/Manual attestation recorded/)).toBeNull()
+    expect(g.recordConsent).toHaveBeenCalledTimes(1)
+  })
+  it('does not automatically replay a rejected consent evidence operation', async () => {
+    const g = gateway({ recordConsent: vi.fn(async () => { throw new GatewayError('api', 'operation_mismatch', 'conflict', { status: 409 }) }) })
+    view(`/outreach/campaigns/${campaignId}/leads`, g)
+    await screen.findByText(/test@example.invalid/)
+    submitManualEvidence()
+    expect(await screen.findByRole('alert')).toHaveProperty('textContent', expect.stringMatching(/rejected/))
+    expect(screen.queryByText(/Manual attestation recorded/)).toBeNull()
+    expect(g.recordConsent).toHaveBeenCalledTimes(1)
   })
   it('rejects a malformed campaign route before any gateway request', async () => {
     const g = gateway(); view('/outreach/campaigns/not-a-uuid/leads', g)

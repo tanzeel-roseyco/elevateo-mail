@@ -184,3 +184,5 @@ FE807 consent presentation follow-up: compact lead rows call `granted` a backend
 FE807 fleet finding on integrated `8eb840d`: API/lint/typecheck passed, but three FE807 unit failures included a whole-second UTC consent evidence validator defect. The isolated repair accepts canonical `...:00Z` timestamps while rejecting invalid calendar dates; fleet retest is pending. Seven additional shell/route/nav tests belong to integration owners, and build was not reached.
 
 FE807 consent journey now shows an accessible success status after the backend confirms manual evidence: operator attestation recorded, independent verification not shown, sending unavailable. It does not infer eligibility from `granted`.
+
+FE807 gateway seam: Cassian `fa3082a` now exports lead detail and manual consent POST; the form binding is ready. New denied and replay-conflict component cases are authored for fleet execution.
