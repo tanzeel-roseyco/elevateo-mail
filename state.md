@@ -382,3 +382,5 @@ INT801 client RBS candidate addresses only Cassian-owned missing attachment gate
 New exact integrated 651b63a PostgreSQL/Auth receipt carries the revised 00009 blob `eece1c9` and records CreateCampaignFoundation migration PASS (0.0220s). Its full Ruby run failed one protected-role expectation and one thread-fixture ownership issue; OUT-804 named role/no-marker DB cases and HTTP remain NOT_RUN.
 
 Ada ADV111 independent review of exact 2f255b9 covered 303 unique LOC, found zero confirmed source defects (0/KLOC) and requested a stronger positive mutation oracle. OUT-804 authored actual restricted-role protected campaign INSERT/UPDATE plus revoked-session stale-digest read denial in the named disposable fixture; no fleet assertion PASS yet.
+
+SMTP888 (source candidate, 2026-10-14): net-smtp 0.5.2 local Mailpit TLS toggle methods are declared for Steep and covered by a no-connection factory regression. Soren fleet strict/unit verification is NOT_RUN; remote SMTP remains held. See docs/completion/rhea-smtp888.md.

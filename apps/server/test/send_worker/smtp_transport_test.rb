@@ -40,6 +40,14 @@ class SendWorkerSmtpTransportTest < Minitest::Test
       subject: "Subject", body: "plain text", reply_id: nil, policy: "1")
   end
 
+  def test_default_local_factory_disables_tls_modes_before_connecting
+    client = Elevateo::SendWorker::LocalMailpitClient.new(profile: profile)
+    smtp = client.instance_variable_get(:@smtp_factory).call(profile.host, profile.port)
+    assert_instance_of Net::SMTP, smtp
+    assert_equal false, smtp.tls?
+    assert_equal false, smtp.starttls?
+  end
+
   def test_local_mailpit_acceptance_is_simulated_and_envelope_is_exact
     smtp = FakeSmtp.new
     client = Elevateo::SendWorker::LocalMailpitClient.new(profile: profile, smtp_factory: ->(_host, _port) { smtp })

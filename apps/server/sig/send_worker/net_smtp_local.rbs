@@ -1,0 +1,8 @@
+module Net
+  class SMTP
+    # AIDEV-NOTE: net-smtp 0.5.2 implements these before connect; bundled RBS 4.2 omits them.
+    # The caller uses them only for the isolated Mailpit profile.
+    def disable_tls: () -> void
+    def disable_starttls: () -> void
+  end
+end
