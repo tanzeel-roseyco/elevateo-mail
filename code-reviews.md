@@ -68,6 +68,8 @@ See docs/completion/int401-frozen-app.md.
 
 ## SEQ-876 fleet-derived syntax repair
 
+ADV-117 identified one MEDIUM test oracle defect in `89febd2`: identical organization and campaign UUIDs could not detect swapped binds 2/3. The focused three-line follow-up uses a distinct organization UUID and expected value; production repair `025f305` is unchanged. This is a static repair only, pending Ada's exact-delta re-review and Soren Docker execution. Test-only defect density on the seven-line original assertion/setup packet is 1/7 = 142.86/KLOC; it is not a production defect density.
+
 Soren's isolated `e9ead714` Docker receipt confirmed one HIGH load-blocking Ruby SyntaxError at sequence repository line 123; controller cases never ran. Maeve changed two effective source lines in a 12-line local packet, moving eight ordered bind values before the heredoc call (1 defect/12 reviewed LOC = 83.33/KLOC, a narrow repair denominator rather than whole-file density). Source review found no other issue in that packet; this is not a runtime PASS. Repository/controller retest is requested; see [repair record](docs/completion/maeve-seq876-syntax-repair.md).
 
 ## SEQ-863 database fixture static self-review
