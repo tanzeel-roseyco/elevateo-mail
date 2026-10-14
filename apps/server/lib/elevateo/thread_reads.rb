@@ -140,8 +140,8 @@ module Elevateo
       row = rows(DIRECT_MESSAGE_SQL, [@identity.org_id, mailbox, thread, message]).first
       raise NotAvailable, "not available" unless row
 
-      ReadResponse.dump(session_envelope.merge("mailbox_id" => mailbox, "thread_id" => thread,
-                                               "message" => ThreadProjection.message(row)))
+      ReadResponse.single(item: session_envelope.merge("mailbox_id" => mailbox, "thread_id" => thread,
+                                                        "message" => ThreadProjection.message(row)))
     end
 
     private

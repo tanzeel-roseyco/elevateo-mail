@@ -25,6 +25,7 @@ Soren's first network-none fleet unit pass covered isolated MIME normalization, 
 The next source candidate orders discovered IMAP UIDs and imports at most the oldest 50 per pass, validating a whole page before any cursor advance. Rhea's isolated localhost:1993 Mox certificate fixture is pending actual peer-and-hostname-verified handshake proof.
 Corin's next focused repair addresses exact fleet Steep/RuboCop failures in the held IMAP store, TLS option types and owned HTTP/unit assertions; the successor strict gate is pending Soren.
 An additive inbound attachment candidate now parses bounded PDF/PNG/JPEG/plaintext parts, stages bytes in private quarantine, and binds pending-scan metadata with the IMAP receipt before cursor advance. It depends on Nadia's ATT823 migration `00015` and a restricted worker Storage adapter; fleet migration, strict checks and storage behavior remain unverified.
+ATT866 followup source repairs the direct-message serializer and the rollback-only BE02 thread schema fixture after the integrated `cb1ec5b` backend receipt. Soren's targeted fleet rerun is pending; Nadia owns separate attachment Storage declarations.
 
 
 ### R25 approval reload recovery candidate

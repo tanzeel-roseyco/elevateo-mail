@@ -62,6 +62,18 @@ class ReadResponseTest < Minitest::Test
     assert_raises(RESPONSE::Overflow) { page([], budget: 1) }
   end
 
+  def test_single_message_uses_validated_json_and_byte_budget
+    item = @envelope.merge("message" => { "body_text" => "<script>plain</script>\u0001" })
+    body = RESPONSE.single(item: item, budget: 200)
+    assert_equal item, JSON.parse(body)
+    assert_operator body.bytesize, :<=, 200
+    assert_raises(RESPONSE::Overflow) { RESPONSE.single(item: item, budget: body.bytesize - 1) }
+    assert_raises(RESPONSE::Invalid) { RESPONSE.single(item: item, budget: RESPONSE::MESSAGE_BYTES + 1) }
+    assert_raises(RESPONSE::Invalid) do
+      RESPONSE.single(item: item.merge("message" => { "body_text" => "\xFF".b }))
+    end
+  end
+
   def test_array_keys_and_limits_are_bounded_without_mutating_inputs
     items = [{ "id" => "1", "nullable" => nil }]
     before = JSON.generate([items, @envelope])
