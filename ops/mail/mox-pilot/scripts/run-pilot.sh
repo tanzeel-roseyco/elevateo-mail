@@ -38,7 +38,7 @@ project="mail818-$(date -u +%s)-$$"
 export MOX_PILOT_SUBJECT="MAIL818-SYNTHETIC-$project"
 export PROBE_VERIFY_EXISTING=0
 compose=(docker compose -p "$project" -f "$pilot_dir/compose.yaml")
-deadline=$((SECONDS + 900))
+deadline=$((SECONDS + 840))
 run_bounded() {
   remaining=$((deadline - SECONDS))
   if (( remaining <= 0 )); then
@@ -50,7 +50,7 @@ run_bounded() {
 cleanup() {
   previous_status=$?
   trap - EXIT
-  "${compose[@]}" down --volumes --remove-orphans >"$receipt_dir/cleanup.log" 2>&1 || true
+  timeout 60s "${compose[@]}" down --volumes --remove-orphans >"$receipt_dir/cleanup.log" 2>&1 || true
   docker ps -a --filter "label=com.docker.compose.project=$project" --format '{{.ID}}' >"$receipt_dir/remaining-containers.txt"
   docker network ls --filter "label=com.docker.compose.project=$project" --format '{{.ID}}' >"$receipt_dir/remaining-networks.txt"
   docker volume ls --filter "label=com.docker.compose.project=$project" --format '{{.Name}}' >"$receipt_dir/remaining-volumes.txt"
@@ -79,8 +79,12 @@ if (( status == 0 )); then
   set -e
 fi
 "${compose[@]}" logs --no-color --tail=300 mox >"$receipt_dir/mox.log" 2>&1
-docker stats --no-stream --format '{{.Name}} {{.CPUPerc}} {{.MemUsage}}' \
-  $(docker ps --filter "label=com.docker.compose.project=$project" --format '{{.ID}}') \
-  >"$receipt_dir/resources.txt" 2>&1 || true
+mapfile -t owned_containers < <(docker ps --filter "label=com.docker.compose.project=$project" --format '{{.ID}}')
+if (( ${#owned_containers[@]} > 0 )); then
+  timeout 10s docker stats --no-stream --format '{{.Name}} {{.CPUPerc}} {{.MemUsage}}' \
+    "${owned_containers[@]}" >"$receipt_dir/resources.txt" 2>&1 || true
+else
+  printf 'no task-owned running containers for stats\n' >"$receipt_dir/resources.txt"
+fi
 printf '%s\n' "$status" >"$receipt_dir/exit-status.txt"
 exit "$status"
