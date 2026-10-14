@@ -230,3 +230,5 @@ QA815 exact `5bdf2ee6` browser private-output runner units passed 3/3 under flee
 QA815 final core-only `7f687d81` focused fleet result: ten pure Ruby suites 58/266 PASS, Steep one Cassian gateway Float type error. Full backend/HTTP/worker/real-auth remain held pending reviewed strict repair; exact cleanup passed.
 
 QA815 exact `b3aaa07e` focused Steep plus ten units PASS 58/266. Its full disposable backend passed 21 migrations, 74 Ruby suites 522/7089, and Steep; RuboCop lint failed 19 offenses including four fatal syntax errors in the gateway authority fixture. Exact cleanup passed; HTTP/worker/browser were not reached. See `docs/completion/soren.md`.
+
+QA815 browser proof P2 symlink repair uses exclusive no-follow file creation; six scoped cases are authored, with fleet execution pending. The earlier three-case PASS applies only to the predecessor.

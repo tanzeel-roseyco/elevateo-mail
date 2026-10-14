@@ -736,3 +736,5 @@ QA815 `5bdf2ee6` three-case fleet unit PASS is runtime test evidence, not indepe
 QA815 `7f687d81` one Steep failure and 58/266 focused Ruby passes are execution findings, not independent bounded source review. Cassian owns the gateway type repair; additional QA815 reviewed LOC remains 0 and source defect density unclaimed.
 
 QA815 `b3aaa07e` exact full backend lint found four fatal syntax offenses in one gateway fixture and 15 warnings across named files; these are executed tool findings, not QA815 independent source review. Additional independently reviewed LOC remains 0, and defect density is unclaimed pending owner review. The initially unscoped diagnostic is excluded from the 19-offense gate count.
+
+QA815 ADV144 independent review found one P2 in a 233-LOC browser runner packet (4.29 defects/KLOC): dangling symlink could redirect original proof creation. Exclusive no-follow repair and six cases are authored but not yet fleet-tested; the reviewer packet and density belong to Jules, not a QA815 self-review claim.

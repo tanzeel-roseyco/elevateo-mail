@@ -172,3 +172,5 @@ QA815 exact `5bdf2ee6` umask/private-output unit 3/3 PASS in fleet Docker; real 
 QA815 exact `7f687d81` focused ten-suite Ruby 58/266 PASS; Steep one gateway Float|nil argument mismatch FAIL, task cleanup PASS. Broader backend/HTTP/worker/browser gate held.
 
 QA815 `b3aaa07e` focused strict and ten units PASS 58/266. Full backend 21 migrations, 74 Ruby suites 522/7089, Steep PASS; lint 19 offenses FAIL, with four fatal gateway fixture syntax diagnostics. Task cleanup PASS; HTTP/worker/realAuth NOT_REACHED.
+
+QA815 ADV144 browser proof symlink P2 repaired in source with exclusive no-follow creation and target-preservation tests; new fleet result pending.
