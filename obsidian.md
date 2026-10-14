@@ -1,5 +1,12 @@
 # Elevateo Mail — ongoing project record
 
+BE-403 runtime failure repairs (2026-10-14): IN PROGRESS. Source fixes target observed 42f6369 errors: Minitest fixture message collision/block binding/frozen strings/nil assertion, draft keyword and rotating-CSRF fixtures, obsolete JSON 3 create_additions option, invalid RBS protected declarations, and worker function namespace USAGE. Auth/session boundaries remain unchanged. Current changes are NOT runtime verified; pool/deadline/input/controller failures remain open.
+
+BE-403 semantic guard reconciliation (2026-10-14): IN PROGRESS. Approved design hash b08976256765ce546325418a403a23b958933cbbf97ec42a228c5412198d0acb verified. Bootstrap preserves ACL representation and unrelated objects; shared up/down prerequisite checks migration identity, independent ownership, separate owner CREATE/USAGE, foreign ACL and effective runtime denial. Source authored; current changes await independent review and Soren container verification. Earlier 42f6369 migration/guard passes do not validate this revision; its full suites failed (15 failures/55 errors).
+
+BE-403 (2026-10-14): IN PROGRESS. Rowan authored privileged draft-schema bootstrap and fail-closed migration prerequisite checks on c3ecd1f; rollback retains the schema and unrelated objects for least-privilege reapply. Source review found no blocking defect; new real-role/drift regressions await Soren container execution. No runtime acceptance or release. See docs/completion/be403-bootstrap.md.
+
+
 Status: IN PROGRESS. Updated 2026-10-14, Australia/Sydney.
 
 ## Nontechnical brief
@@ -94,3 +101,8 @@ Five fleet jobs failed model startup with HTTP400 for gpt-6.1-sol in the old CLI
 INT-401 current-tools followup: new versioned BE01 runner authenticates 43 current dependencies, preserving all frozen records unchanged. POSIX/PowerShell dev commands are bootstrap/up/migrate/stop; unsupported seed/check removed. ADV-729 preceding independent review: 68 unique LOC, 0 new repair defects (0/KLOC), 2 inherited blockers (29.41/KLOC). Followup independent review and fleet Docker tests pending; application IN PROGRESS.
 
 Created issue roster: #10 INT-401 Cassian OFF-401; #11 OPS-402 Soren OFF-402; #12 BE-403 Rowan OFF-403; #13 QA-404 Elara OFF-404; #14 FE-405 Mira OFF-405; #15 RES-406 Nadia OFF-406 (https://github.com/tanzeel-roseyco/elevateo-mail/issues). Root owns issues and testing. Five workers execute in named SSH-backed Orca terminals on fleet-02, supervised through append-only report/control files. Task-local Codex 0.160.0 model probe succeeded READY exit0 after 0.156.1 rejected gpt-6.1-sol; LOW/service_tier fast requested, billed tier not audited. Base c3ecd1f integrates all five lanes. Windows REA failed unsupported_provider (macOS utilities required); root uses supported Orca Computer Use with distinct evidence claims. No further ultrareviews/paid Devin. Root-owned Obsidian vault untouched. See docs/completion/int401-current-package.md.
+BE-403 raw API boundary correction: IN PROGRESS. Rails instrumentation reads filtered params before actions and can parse malformed query/JSON or truncate raw JSON by forged Content-Length. ApiController now suppresses eager body/query parameter parsing before instrumentation; route parameters remain available and existing bounded raw validators still own body/query decoding. Existing duplicate-key, malformed-query and actual-byte-cap regressions must run on fleet-02.
+
+BE-403 bootstrap guard regressions authored: exact private-schema DO block exercised in rollback-only disposable fixture transactions, including nonempty sentinel/OID/ACL representation, default-privilege creation leakage, owner CREATE/USAGE/ALL loss, foreign grants, wrong owner+empty ACL and atomic rejection. Full psql bootstrap and actual Rails migration bookkeeping remain distinct Soren gates; NOT_RUN for current revision.
+
+BE-403 numeric underflow repair: ExactDecimal rejects nonzero JSON mantissas converted to zero by extreme BigDecimal exponents, while preserving exact decimals and true zero. Existing precise-version and exception-mode regression failures provide target coverage; current runtime NOT_RUN. Semantic guard order now follows supplied owner/ACL/owner-privileges/runtime sequence.

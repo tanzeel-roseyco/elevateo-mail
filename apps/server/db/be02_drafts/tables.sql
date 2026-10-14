@@ -1,7 +1,4 @@
 -- AIDEV-NOTE: API reads own drafts through RLS; only bounded definer functions may mutate or inspect the ledger.
-CREATE SCHEMA app_drafts_private AUTHORIZATION elevateo_owner;
-REVOKE ALL ON SCHEMA app_drafts_private FROM PUBLIC, elevateo_app_read, elevateo_api, elevateo_worker;
-
 CREATE TABLE app.drafts (
   id uuid PRIMARY KEY,
   organization_id uuid NOT NULL,

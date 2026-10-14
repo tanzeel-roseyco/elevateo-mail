@@ -1,7 +1,8 @@
 module V1
   class ApiController < ApplicationController
     @api_deadline: Elevateo::RequestDeadline
-    protected
+
+    def process_action: (*untyped) -> untyped
     def api_boundary: () { () -> void } -> void
     def api_deadline: () -> Elevateo::RequestDeadline
     def api_query: (?allowed: Array[String]) -> Hash[String, String]
@@ -24,7 +25,7 @@ module V1
     def refresh: () -> void
     def logout: () -> void
     def accept: () -> void
-    protected
+
     def sessions: () -> Elevateo::Sessions
     def config: () -> Elevateo::Config
     def pending_cookie: () -> String?

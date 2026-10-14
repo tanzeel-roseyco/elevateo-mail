@@ -1,10 +1,16 @@
 # Elevateo Mail
 
+BE-403 runtime failure repairs (2026-10-14): IN PROGRESS. Source fixes target observed 42f6369 errors: Minitest fixture message collision/block binding/frozen strings/nil assertion, draft keyword and rotating-CSRF fixtures, obsolete JSON 3 create_additions option, invalid RBS protected declarations, and worker function namespace USAGE. Auth/session boundaries remain unchanged. Current changes are NOT runtime verified; pool/deadline/input/controller failures remain open.
+
+BE-403 semantic guard reconciliation (2026-10-14): IN PROGRESS. Approved design hash b08976256765ce546325418a403a23b958933cbbf97ec42a228c5412198d0acb verified. Bootstrap preserves ACL representation and unrelated objects; shared up/down prerequisite checks migration identity, independent ownership, separate owner CREATE/USAGE, foreign ACL and effective runtime denial. Source authored; current changes await independent review and Soren container verification. Earlier 42f6369 migration/guard passes do not validate this revision; its full suites failed (15 failures/55 errors).
+
 A planned shared company mailbox for approximately **10 people**, available on a web subdomain and as downloadable macOS and Windows clients.
 
 ## Current state
 
 INT-401 current-tools followup: new versioned BE01 runner authenticates 43 current dependencies, preserving all frozen records unchanged. POSIX/PowerShell dev commands are bootstrap/up/migrate/stop; unsupported seed/check removed. ADV-729 preceding independent review: 68 unique LOC, 0 new repair defects (0/KLOC), 2 inherited blockers (29.41/KLOC). Followup independent review and fleet Docker tests pending; application IN PROGRESS.
+BE-403 (2026-10-14): IN PROGRESS. Rowan authored privileged draft-schema bootstrap and fail-closed migration prerequisite checks on c3ecd1f; rollback retains the schema and unrelated objects for least-privilege reapply. Source review found no blocking defect; new real-role/drift regressions await Soren container execution. No runtime acceptance or release. See docs/completion/be403-bootstrap.md.
+
 
 INT-401 bounded repair (2026-10-14): restored canonical BE02 compose.yaml, 37 nested BE01 tooling files, three evidence-script dependencies and eight Backend Performance docs. 629 overlay hashes match; 63 static dependency checks leave one inherited frozen-manifest hash conflict, plus scripts/dev seed/check name absent Compose services. Linus ADV-729 reviewed 172 source lines, confirmed two integration defects (11.63/KLOC); repairs are statically observed, independent re-review and all runtime/visual checks remain pending. Application IN PROGRESS; root owns testing and GitHub issues. See docs/completion/int401-repair.md.
 
@@ -119,3 +125,9 @@ The corrected isolated grantor probe is frozen in docs/evidence/be-01-r1-grantor
 
 
 INT-401 preservation follow-up: original indexed executable modes restored for canonical scripts after Windows overlay staging; baseline remains UNTESTED. Source-only and history bundles remain ignored local deliverables.
+
+BE-403 raw API boundary correction: IN PROGRESS. Rails instrumentation reads filtered params before actions and can parse malformed query/JSON or truncate raw JSON by forged Content-Length. ApiController now suppresses eager body/query parameter parsing before instrumentation; route parameters remain available and existing bounded raw validators still own body/query decoding. Existing duplicate-key, malformed-query and actual-byte-cap regressions must run on fleet-02.
+
+BE-403 bootstrap guard regressions authored: exact private-schema DO block exercised in rollback-only disposable fixture transactions, including nonempty sentinel/OID/ACL representation, default-privilege creation leakage, owner CREATE/USAGE/ALL loss, foreign grants, wrong owner+empty ACL and atomic rejection. Full psql bootstrap and actual Rails migration bookkeeping remain distinct Soren gates; NOT_RUN for current revision.
+
+BE-403 numeric underflow repair: ExactDecimal rejects nonzero JSON mantissas converted to zero by extreme BigDecimal exponents, while preserving exact decimals and true zero. Existing precise-version and exception-mode regression failures provide target coverage; current runtime NOT_RUN. Semantic guard order now follows supplied owner/ACL/owner-privileges/runtime sequence.

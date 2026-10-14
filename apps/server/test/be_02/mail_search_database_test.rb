@@ -5,9 +5,9 @@ require_relative "mailbox_membership_database_helper"
 class MailSearchDatabaseTest < MailboxMembershipDatabaseCase
   def test_literal_wildcards_case_insensitivity_and_all_message_address_fields
     literal = "100%_\\Done"
-    message(body: literal)
+    fixture_message(body: literal)
     decoy = conversation
-    message(thread: decoy, body: "100anythingXDone")
+    fixture_message(thread: decoy, body: "100anythingXDone")
     assert_equal [@thread], search("q" => "100%_\\done").fetch("items").map { |item| item.fetch("id") }
     assert_equal [@thread], search("q" => "%").fetch("items").map { |item| item.fetch("id") }
     assert_equal [@thread], search("q" => "_").fetch("items").map { |item| item.fetch("id") }
@@ -20,15 +20,15 @@ class MailSearchDatabaseTest < MailboxMembershipDatabaseCase
     ]
     cases.zip(%w[SenderName sender@example.invalid RecipientName recipient@example.invalid]).each do |attributes, query|
       id = conversation
-      message(thread: id, **attributes)
+      fixture_message(thread: id, **attributes)
       assert_equal [id], search("q" => query).fetch("items").map { |item| item.fetch("id") }
     end
   end
 
   def test_older_message_hits_return_one_thread_and_canonical_latest_preview
-    message(body: "needle older", sent: "2026-10-12T00:00:00Z")
-    message(body: "needle second", sent: "2026-10-12T00:00:01Z")
-    message(body: "canonical latest preview", sent: "2026-10-12T00:00:02Z")
+    fixture_message(body: "needle older", sent: "2026-10-12T00:00:00Z")
+    fixture_message(body: "needle second", sent: "2026-10-12T00:00:01Z")
+    fixture_message(body: "canonical latest preview", sent: "2026-10-12T00:00:02Z")
     page = search
     assert_equal 1, page.fetch("items").length
     item = page.fetch("items").first
@@ -38,7 +38,7 @@ class MailSearchDatabaseTest < MailboxMembershipDatabaseCase
   end
 
   def test_nullable_sources_empty_threads_and_search_excludes_notes_and_drafts
-    message
+    fixture_message
     assert_empty search.fetch("items")
     @admin.exec_params("UPDATE app.threads SET subject = 'needle subject' WHERE id = $1", [@thread])
     assert_equal [@thread], search.fetch("items").map { |item| item.fetch("id") }
@@ -52,16 +52,16 @@ class MailSearchDatabaseTest < MailboxMembershipDatabaseCase
   end
 
   def test_foreign_private_explicit_filter_and_revocation_follow_current_scope
-    message(body: "needle visible")
+    fixture_message(body: "needle visible")
     private_box = mailbox(visibility: "private")
     private_thread = conversation(box: private_box)
-    message(thread: private_thread, box: private_box, body: "needle private")
+    fixture_message(thread: private_thread, box: private_box, body: "needle private")
     foreign_org = SecureRandom.uuid
     @foreign_orgs << foreign_org
     @admin.exec_params("INSERT INTO app.organizations(id,name) VALUES ($1,'foreign search fixture')", [foreign_org])
     foreign_box = mailbox(org: foreign_org)
     foreign_thread = conversation(box: foreign_box, org: foreign_org)
-    message(thread: foreign_thread, box: foreign_box, org: foreign_org, body: "needle foreign")
+    fixture_message(thread: foreign_thread, box: foreign_box, org: foreign_org, body: "needle foreign")
     assert_equal [@thread], search.fetch("items").map { |item| item.fetch("id") }
     [private_box, foreign_box, SecureRandom.uuid].each do |box|
       error = assert_raises(Elevateo::CollaborationError) { search("mailbox_id" => box) }
@@ -85,9 +85,9 @@ class MailSearchDatabaseTest < MailboxMembershipDatabaseCase
     nulls = [@thread, conversation].sort.reverse
     dated = Array.new(2) { conversation }.sort.reverse
     (nulls + dated).each { |id| @admin.exec_params("UPDATE app.threads SET subject = 'needle' WHERE id = $1", [id]) }
-    dated.each { |id| message(thread: id, sent: "2026-10-12T00:00:00Z") }
+    dated.each { |id| fixture_message(thread: id, sent: "2026-10-12T00:00:00Z") }
     newest = conversation
-    message(thread: newest, body: "needle", sent: "2026-10-12T00:00:01Z")
+    fixture_message(thread: newest, body: "needle", sent: "2026-10-12T00:00:01Z")
     ids, cursor = [], nil
     5.times do
       query = { "limit" => "1" }

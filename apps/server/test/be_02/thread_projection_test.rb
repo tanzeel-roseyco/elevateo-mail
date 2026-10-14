@@ -100,7 +100,7 @@ class ThreadProjectionTest < Minitest::Test
     end
     [{ "recipients" => nil }, { "recipients" => [nil] }, { "recipients" => Array.new(101) { {} } },
      { "body_text" => nil }, { "body_text" => "x" * 16_386 }, { "attachment_count" => 1001 },
-     { "body_text" => "\xFF".force_encoding("UTF-8") }].each do |change|
+     { "body_text" => "\xFF".dup.force_encoding("UTF-8") }].each do |change|
       assert_raises(Invalid) { Projection.message(message_row.merge(change)) }
     end
     [[], {}, { "display_name" => "x", "address" => nil, "html" => "hidden" },

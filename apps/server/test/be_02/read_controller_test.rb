@@ -235,7 +235,7 @@ class ReadControllerTest < Minitest::Test
   end
 
   def test_invalid_serialization_rolls_back_before_touch
-    [nil, "x" * 16_385, "\xFF".force_encoding("UTF-8")].each do |invalid|
+    [nil, "x" * 16_385, "\xFF".dup.force_encoding("UTF-8")].each do |invalid|
       @projection = ->(**_inputs) { @events << :business_read; invalid }
       assert_response_error(500, "internal_error", dispatch)
       assert_rolled_back_snapshot(business_read: true)

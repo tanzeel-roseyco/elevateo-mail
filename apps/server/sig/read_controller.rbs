@@ -3,7 +3,7 @@ module V1
     CONTEXT_TOKEN: Regexp
     @read_config: Elevateo::Config?
     @read_sessions: Elevateo::Sessions?
-    protected
+
     def read_config: () -> Elevateo::Config
     def read_sessions: () -> Elevateo::Sessions
     # AIDEV-NOTE: The checked-out Rails adapter supplies the session, tenancy and reader interfaces in one snapshot.
