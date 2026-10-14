@@ -17,8 +17,11 @@ class FakeIngressTest < Minitest::Test
     end
 
     def insert_once(record)
-      key = record.values_at(:organization_id, :mailbox_id, :provider, :provider_event_id)
-      return :duplicate if @records.key?(key)
+      key = record.values_at(:organization_id, :mailbox_id, :provider, :provider_account_id, :provider_event_id)
+      if @records.key?(key)
+        raise Elevateo::Inbound::Rejected, "replay_mismatch" unless @records.fetch(key) == record
+        return :duplicate
+      end
 
       @records[key] = record
       :created
@@ -36,7 +39,16 @@ class FakeIngressTest < Minitest::Test
     assert_equal "hello there", @store.records.values.first.fetch(:text)
     assert_equal ORG, @store.records.values.first.fetch(:organization_id)
     assert_equal :created, ingest(mailbox_id: OTHER, authorized_mailbox_ids: [OTHER])
-    assert_equal 2, @store.records.length
+    assert_equal :created, ingest(provider_account_id: "other-account")
+    assert_equal 3, @store.records.length
+  end
+
+  def test_replay_mismatch_rejected_without_changing_original
+    ingest
+    assert_code "replay_mismatch" do
+      ingest(raw_mime: MIME.sub("hello there", "different"))
+    end
+    assert_equal 1, @store.records.length
   end
 
   def test_unauthorized_and_invalid_event_are_rejected_before_store
@@ -68,7 +80,8 @@ class FakeIngressTest < Minitest::Test
 
   def ingest(**changes)
     @ingress.ingest(**{ organization_id: ORG, mailbox_id: MAILBOX,
-                       authorized_mailbox_ids: [MAILBOX], provider_event_id: "event-1", raw_mime: MIME }.merge(changes))
+                       authorized_mailbox_ids: [MAILBOX], provider_account_id: "test-account",
+                       provider_event_id: "event-1", raw_mime: MIME }.merge(changes))
   end
 
   def assert_code(code)

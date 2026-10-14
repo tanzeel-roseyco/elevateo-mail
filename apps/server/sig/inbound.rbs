@@ -1,0 +1,73 @@
+module Mail
+  def self.read_from_string: (String) -> Message
+  class Message
+    def header: () -> Object?
+    def from: () -> Array[String]?
+    def to: () -> Array[String]?
+    def subject: () -> String?
+    def multipart?: () -> bool
+    def parts: () -> Array[Message]
+    def mime_type: () -> String?
+    def attachment?: () -> bool
+    def decoded: () -> String
+    def filename: () -> String?
+    def charset: () -> String?
+  end
+end
+
+module Elevateo
+  module Inbound
+    class Rejected < StandardError
+      attr_reader code: String
+      def initialize: (String) -> void
+    end
+
+    type attachment = { filename: String, content_type: String, size: Integer, sha256: String }
+    type record = { organization_id: String, mailbox_id: String, provider: String,
+      provider_account_id: String, provider_event_id: String, content_sha256: String,
+      from: String, to: Array[String], subject: String, text: String, attachments: Array[attachment] }
+
+    interface _Store
+      def insert_once: (record) -> Object
+    end
+
+    class FakeIngress
+      MAX_RAW: Integer
+      MAX_TEXT: Integer
+      MAX_PARTS: Integer
+      MAX_FILENAME: Integer
+      UUID: Regexp
+      @store: _Store
+      def initialize: (store: _Store) -> void
+      def ingest: (organization_id: String, mailbox_id: String, authorized_mailbox_ids: Array[String],
+        provider_account_id: String, provider_event_id: String, raw_mime: String) -> Object
+      def capability: (String) -> String
+      private
+      def uuid?: (Object) -> bool
+      def reject: (String) -> bot
+      def leaf_parts: (Mail::Message) -> Array[Mail::Message]
+      def clean_header: (Object?) -> String
+      def clean_filename: (Object?) -> String
+    end
+
+    class PostgresStore
+      SQL: String
+      SCOPE_SQL: String
+      @connection: Elevateo::WriteStatements
+      @session_digest: String
+      @actor_id: String
+      def initialize: (connection: Elevateo::WriteStatements, session_digest: String, actor_id: String) -> void
+      def authorized?: (organization_id: String, mailbox_id: String) -> bool
+      def insert_once: (record) -> Hash[String, String]
+      private
+      def address: (String) -> Hash[String, String?]
+    end
+  end
+end
+
+module V2
+  class FakeInboundController < V1::WriteController
+    REQUIRED: Array[String]
+    def create: () -> void
+  end
+end

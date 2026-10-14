@@ -27,11 +27,13 @@ module Elevateo
       end
 
       # Store#insert_once must atomically key on [organization_id, mailbox_id, provider, provider_event_id].
-      def ingest(organization_id:, mailbox_id:, authorized_mailbox_ids:, provider_event_id:, raw_mime:)
+      def ingest(organization_id:, mailbox_id:, authorized_mailbox_ids:, provider_account_id:, provider_event_id:, raw_mime:)
         reject("invalid_scope") unless uuid?(organization_id) && uuid?(mailbox_id)
         reject("forbidden") unless authorized_mailbox_ids.is_a?(Array) && authorized_mailbox_ids.include?(mailbox_id)
         reject("invalid_event_id") unless provider_event_id.is_a?(String) &&
                                           /\A[a-zA-Z0-9][a-zA-Z0-9_.:-]{0,127}\z/.match?(provider_event_id)
+        reject("invalid_account_id") unless provider_account_id.is_a?(String) &&
+                                            /\A[a-zA-Z0-9][a-zA-Z0-9_.:-]{0,127}\z/.match?(provider_account_id)
         reject("invalid_mime") unless raw_mime.is_a?(String) && raw_mime.valid_encoding? &&
                                       raw_mime.bytesize.between?(1, MAX_RAW) && !raw_mime.include?("\0")
 
@@ -55,7 +57,8 @@ module Elevateo
             sha256: Digest::SHA256.hexdigest(data) }
         end
         record = { organization_id: organization_id, mailbox_id: mailbox_id, provider: "fake",
-                   provider_event_id: provider_event_id, from: clean_header(mail.from.first),
+                   provider_account_id: provider_account_id, provider_event_id: provider_event_id,
+                   content_sha256: Digest::SHA256.hexdigest(raw_mime.b), from: clean_header(mail.from.first),
                    to: mail.to.map { |address| clean_header(address) }, subject: clean_header(mail.subject.to_s),
                    text: body, attachments: attachments }
         # AIDEV-NOTE: The store owns durable atomic dedup; an in-memory set cannot establish replay safety.

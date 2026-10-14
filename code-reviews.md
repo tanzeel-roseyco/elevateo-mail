@@ -66,9 +66,9 @@ See docs/completion/int401-frozen-app.md.
 
 # Code reviews
 
-## MAIL-819 Corin candidate
+## MAIL-819 Corin continuation candidate
 
-No independent adversarial or design-tradeoff review was performed. Reviewed source coverage and defect density are therefore unclaimed; root should assign bounded packets of at most 200 lines for `apps/server/lib/elevateo/inbound/fake_ingress.rb` and its test. Corin self-inspected authorization, MIME bounds, dedup interface and no-live behavior; this is not review acceptance.
+No independent adversarial or design-tradeoff review was performed. Reviewed source coverage and defect density are therefore unclaimed; root should assign bounded packets of at most 200 lines across the inbound parser, migration, adapter, controller and tests. Corin self-inspected authorization, MIME bounds, transaction rollback, receipt scope and no-live behavior; this is not review acceptance.
 
 
 ## Initialization

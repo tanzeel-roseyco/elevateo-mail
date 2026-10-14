@@ -16,7 +16,7 @@ Shared company mailroom with one Rails domain authority and a React/TypeScript c
 
 ### MAIL-819 isolated inbound boundary
 
-Corin added a fake-provider-only plaintext MIME validation module and unit fixtures on baseline `bbf2353`. It is not routed or persisted; Docker tests, integration review and actual inbound acceptance remain pending. See [Corin's record](docs/completion/corin.md).
+Corin's continuation adds migration `00011`, an atomic receipt/thread/message SQL path, a test-only authenticated V2 controller candidate and DB/HTTP fixtures over baseline `bbf2353`. Cassian reserves the additive route and contract; fleet Docker tests, integration review and actual inbound acceptance remain pending. See [Corin's record](docs/completion/corin.md).
 
 
 ### R25 approval reload recovery candidate
