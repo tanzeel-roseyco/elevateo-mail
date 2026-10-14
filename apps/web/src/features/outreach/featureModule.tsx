@@ -1,8 +1,9 @@
 import type { ReactElement } from 'react'
 import {
-  OutreachAccountDetailPage, OutreachAccountsPage, OutreachAnalyticsPage,
+  OutreachAccountDetailPage, OutreachAccountsPage, OutreachAnalyticsPage, OutreachCampaignAccountsPage,
   OutreachCampaignAnalyticsPage, OutreachCampaignCreatePage, OutreachCampaignDetailPage,
   OutreachCampaignLeadsPage, OutreachCampaignsPage, OutreachLeadsPage,
+  OutreachLeadDetailPage,
   type OutreachPageProps,
 } from './OutreachPages'
 
@@ -20,10 +21,12 @@ export function createOutreachFeatureModule(props: OutreachPageProps): OutreachF
     '/outreach/campaigns/new': <OutreachCampaignCreatePage {...props} />,
     '/outreach/campaigns/:campaignId': <OutreachCampaignDetailPage {...props} />,
     '/outreach/campaigns/:campaignId/leads': <OutreachCampaignLeadsPage {...props} />,
+    '/outreach/campaigns/:campaignId/leads/:leadId': <OutreachLeadDetailPage {...props} />,
     '/outreach/campaigns/:campaignId/analytics': <OutreachCampaignAnalyticsPage {...props} />,
     '/outreach/leads': <OutreachLeadsPage {...props} />,
     '/outreach/accounts': <OutreachAccountsPage {...props} />,
-    '/outreach/accounts/:accountId': <OutreachAccountDetailPage {...props} />,
+    '/outreach/campaigns/:campaignId/accounts': <OutreachCampaignAccountsPage {...props} />,
+    '/outreach/campaigns/:campaignId/accounts/:accountId': <OutreachAccountDetailPage {...props} />,
     '/outreach/analytics': <OutreachAnalyticsPage {...props} />,
   }
   return {

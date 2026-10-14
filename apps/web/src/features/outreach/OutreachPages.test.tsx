@@ -4,7 +4,7 @@ import { describe, expect, it, vi } from 'vitest'
 import { GatewayError } from '@/data/errors'
 import {
   OutreachCampaignCreatePage, OutreachCampaignDetailPage, OutreachCampaignLeadsPage,
-  OutreachCampaignsPage,
+  OutreachCampaignsPage, OutreachLeadDetailPage,
 } from './OutreachPages'
 import type { OutreachGateway } from './contract'
 
@@ -21,6 +21,7 @@ function gateway(overrides: Partial<OutreachGateway> = {}): OutreachGateway {
     createCampaign: vi.fn(async (_ctx, _proof, input) => ({ ...campaign, id: input.id, name: input.name })),
     updateCampaign: vi.fn(async () => ({ ...campaign, status: 'paused' })),
     listLeads: vi.fn(async () => ({ items: [lead], next_cursor: null })),
+    getLead: vi.fn(async () => lead),
     addLead: vi.fn(async (_ctx, _proof, _campaignId, input) => ({ ...lead, id: input.id, email: input.email })),
     updateLead: vi.fn(async (_ctx, _proof, _campaignId, _leadId, input) => ({ ...lead, email: input.email })),
     listAccounts: vi.fn(async () => ({ items: [], next_cursor: null })),
@@ -35,6 +36,7 @@ function view(path: string, g?: OutreachGateway) {
     <Route path="/outreach/campaigns/new" element={<OutreachCampaignCreatePage gateway={g} context={context} proof={proof} />} />
     <Route path="/outreach/campaigns/:campaignId" element={<OutreachCampaignDetailPage gateway={g} context={context} proof={proof} />} />
     <Route path="/outreach/campaigns/:campaignId/leads" element={<OutreachCampaignLeadsPage gateway={g} context={context} proof={proof} />} />
+    <Route path="/outreach/campaigns/:campaignId/leads/:leadId" element={<OutreachLeadDetailPage gateway={g} context={context} proof={proof} />} />
   </Routes></MemoryRouter>)
 }
 
@@ -134,5 +136,12 @@ describe('Outreach routed pages', () => {
     fireEvent.click(await screen.findByRole('link', { name: 'Next campaign page' }))
     expect(await screen.findByRole('link', { name: 'Second' })).toBeTruthy()
     expect(g.listCampaigns).toHaveBeenCalledWith(context, { cursor: campaignId }, expect.any(AbortSignal))
+  })
+  it('shows server evidence on a distinct lead detail route without claiming send authority', async () => {
+    const g = gateway({ getLead: vi.fn(async () => ({ ...lead, consent_status: 'granted', consent_source: 'Signed intake form', consent_recorded_at: '2026-10-14T12:00:00Z', consent_recorded_by: campaignId })) })
+    view(`/outreach/campaigns/${campaignId}/leads/${leadId}`, g)
+    expect(await screen.findByText(/Evidence source: Signed intake form/)).toBeTruthy()
+    expect(screen.getByText(/does not authorize sending/)).toBeTruthy()
+    expect(g.getLead).toHaveBeenCalledWith(context, campaignId, leadId, expect.any(AbortSignal))
   })
 })
