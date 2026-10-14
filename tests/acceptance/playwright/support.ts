@@ -46,6 +46,13 @@ export async function openThread(page: Page): Promise<void> {
   await expect(page.locator('pre').filter({ hasText: seed.data.marker }).first()).toBeVisible();
 }
 export async function screenshot(page: Page, id: string): Promise<string> {
+  // AIDEV-NOTE: Visible logo decode is separate from data readiness; a broken brand image must fail visual QA.
+  for (const mark of await page.getByTestId('brand-mark').locator('img').all()) {
+    if (await mark.isVisible()) {
+      await expect.poll(() => mark.evaluate(image => image instanceof HTMLImageElement
+        && image.complete && image.naturalWidth > 0)).toBe(true);
+    }
+  }
   // AIDEV-NOTE: Callers prove data readiness; finish CSS transitions so captures show settled theme colors.
   const config = loadAcceptanceConfig();
   const bytes = await page.screenshot({ fullPage: false, animations: 'disabled' });

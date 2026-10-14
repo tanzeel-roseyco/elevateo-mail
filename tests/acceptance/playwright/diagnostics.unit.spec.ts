@@ -207,7 +207,7 @@ test('settled reader source accepts its final line and rejects coordinates past 
 test('supplemental feature and screenshot failures expose only reviewed bounded coordinates', () => {
   for (const [name, lastLine] of [
     ['qa816-assignee-ui.e2e.ts', 79], ['qa816-attachment-ui.e2e.ts', 97],
-    ['qa816-feature-wave.e2e.ts', 46], ['screenshots.ts', 83],
+    ['qa816-feature-wave.e2e.ts', 46], ['screenshots.ts', 83], ['support.ts', 60],
   ] as const) {
     const file = fileURLToPath(new URL(`../../playwright/${name}`, import.meta.url));
     const accepted = frameworkDiagnostic(stackAt(file, lastLine), 'synthetic-private');

@@ -215,3 +215,14 @@ Conclusion: no production bug; the rethrow is required so a consumed failure nev
 - No independent review has been performed on this candidate; see `code-reviews.md` for the self-inspection record only. Root's bounded review is underway; concrete defects will be fixed in this branch as they arrive.
 - No fleet screenshots have been supplied yet, so no visual correction has been possible and no visual state is claimed.
 - Server files cherry-picked from Cassian's chain (routes, V2 registry, its test) are present only to carry his web adapter; they are not integration-ready on this branch.
+
+## INT973 official compact header artwork
+
+The header uses byte-identical files downloaded from the official site's icon links on 2026-10-15. No redrawing, resizing, recoloring or image generation was used. The original master and lockup remain preserved for provenance and native packaging.
+
+| Repository asset | Official source | Bytes | Dimensions | SHA-256 |
+| --- | --- | ---: | --- | --- |
+| apps/web/public/brand/logo-mark-64.png | https://elevateoco.com/favicon.png | 7684 | 64x64 | 69e64beb0e9414bb8f0ade0a703c15f3cd9c6801b6b95e4bc236ae9a48ec14b9 |
+| apps/web/public/brand/logo-mark-180.png | https://elevateoco.com/apple-touch-icon.png | 41107 | 180x180 | 0afd2777ac35b3c0af53d62e9a7dbb4fb95c7b74bc85df6c968d8691d2d7d9a5 |
+
+The responsive width descriptors and fixed square CSS slots preserve the official square variants' geometry. Vitest verifies authenticity, size budgets and accessible/decorative behavior. Browser screenshots now require visible brand images to decode. Runtime/visual verification of this candidate is pending; transfer-byte reduction alone does not establish a latency budget or whole-app performance.

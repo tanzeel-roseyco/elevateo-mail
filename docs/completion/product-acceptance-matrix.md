@@ -1,12 +1,12 @@
 # Product journey acceptance matrix — 2026-10-15
 
-Latest verified Chromium source: `d697096a3945`; corrected Puppeteer source: `07ec9d073d9b`, on `fix/inline949-completion`. INT967 mobile search layout candidate awaits its full web and browser gates. This replaces the obsolete 2026-10-14 failure snapshot. PASS is restricted to the source and scope below. Diagnostic completion is not full acceptance. Credentials, live mail, DNS and production activation remain deferred.
+Full web source `aad7a0a81fb9` passes 861 tests and the production gate; Chromium/Firefox responsive geometry passes at `b70136099770`. All 12 corrected Chromium captures were manually inspected; one initial blank logo tile is addressed by INT973 compact official assets and decode readiness, pending fresh verification. Reply save/reload passes at `aad7a0a81fb9`; duplicate save passes at `07ec9d073d9b`. Corrected Puppeteer source: `07ec9d073d9b`, on `fix/inline949-completion`. This replaces the obsolete 2026-10-14 failure snapshot. PASS is restricted to the source and scope below. Diagnostic completion is not full acceptance. Credentials, live mail, DNS and production activation remain deferred.
 
 ## Verified automated foundations
 
 | Gate | Evidence and source | Result |
 | --- | --- | --- |
-| Web contracts, lint, typecheck, Vitest, coverage, build, fixture exclusion | [Web log](qa815-evidence/web-d57c78db6970.log), `d57c78db6970` | 63 files / 860 tests PASS; statements 88.94%, branches 82.43%, functions 87.42%, lines 94.18%. Initial JS 489.50 kB / 151.13 kB gzip. INT967 changes app layout; its fresh full web gate is pending. |
+| Web contracts, lint, typecheck, Vitest, coverage, build, fixture exclusion | [Web log](qa815-evidence/web-aad7a0a81fb9.log), `aad7a0a81fb9` | 63 files / 861 tests PASS; statements 88.95%, branches 82.46%, functions 87.40%, lines 94.18%. Initial JS 489.68 kB / 151.16 kB gzip. INT971/973 follow-up edits require fresh web checks. |
 | Standard backend, strict Ruby typing and lint | [Backend receipt](qa815-evidence/backend-b0f883e45170.txt), `b0f883e45170` | 137 suites / 812 tests / 8701 assertions PASS; Steep and 320-file RuboCop PASS; real Auth/API HTTP and worker revocation PASS. |
 | Current dedicated database/protocol profiles | [Six profiles](qa815-evidence/dedicated-six-r2-382d6c606abd.txt), `382d6c606abd` | 21 tests / 115 assertions PASS: gateway ACL/authority, assignment migration, attachments DB, campaigns DB and internal Mailpit protocol. |
 | Historical migration/authority/tenancy/worker profiles | [R1 profiles](qa815-evidence/historical-r1-290de037b227.txt), `290de037b227` | 26 tests / 875 assertions PASS. |
@@ -24,7 +24,7 @@ All listed runs used fleet-02 Docker and passed scoped cleanup. Earlier failed a
 | --- | --- | --- |
 | Sign-in, sessions and permissions | Actual Auth HTTP/worker revocation plus Chromium password login; missing/wrong CSRF and foreign-origin logout rejected while the valid session remains usable. | Current invitation/recovery, logout/stale-session and organization-switch browser cases; full authority/denial matrix. |
 | Personal inbox and reader | Real authorized list/read, literal plaintext, direct thread URL, reload, back/forward and keyboard focus pass. Desktop/mobile light/dark screenshots were inspected. | Multi-page/multi-mailbox, empty/error/revoked states; message permalink beyond first page; full current visual suite. |
-| Search | Genuine API 200, expected thread result, keyboard submit and URL query/scope history pass. | All settled screenshots inspected; one mobile label/dropdown wrapping defect found and repaired in INT967. Fresh visual/regression proof pending. |
+| Search | Genuine API 200, expected thread result, keyboard submit and URL query/scope history pass. | INT967 geometry passes Chromium/Firefox at 375/1440 in both themes. Chromium 12/12 PNGs inspected; other engines and final compact-logo captures remain pending. |
 | Draft composition and persistence | Real PUT receipt/version, list, exact subject/recipient/body and reload persistence pass. Four draft screenshots inspected. | Conflict, boundary rejection, privacy/revocation, reload recovery and complete frozen cases. |
 | Uncertain save recovery | Real committed PUT with a lost browser response; original operation GET reconciles version while newer raw fields remain unsaved, with one PUT and one original-ID lookup. | Unapplied operation, conflict, unrelated lookup and navigation/reload paths remain distinct cases. |
 | Assignment, notes and read state | Source and standard backend/web suites pass; reader displays seeded assignment/note. | Two-user persistence/conflict/revocation browser proof. INT963 rerun passes both settled collaboration assertions; all screenshots inspected. |
