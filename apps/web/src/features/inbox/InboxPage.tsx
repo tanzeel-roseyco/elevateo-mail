@@ -7,6 +7,7 @@ import { Link, useParams, useSearchParams } from 'react-router'
 import type { ThreadPage, ThreadSummary } from '@/data/contract'
 import { GatewayError, isApiError } from '@/data/errors'
 import { useGateway, useSession } from '@/app/session'
+import { useMailbox } from '@/app/mailboxes'
 import { newTraversalBudget, readPage } from '@/lib/readPage'
 import { cx, formatWhen } from '@/lib/format'
 import { Badge } from '@/ui/Badge'
@@ -35,6 +36,7 @@ export function InboxPage() {
 
 function MailboxThreadList({ mailboxId, filter }: { mailboxId: string; filter: 'all' | 'unread' }) {
   const gateway = useGateway()
+  const mailbox = useMailbox(mailboxId)
   const { scope, context, handleError } = useSession()
   const [state, setState] = useState<ListState>({ status: 'loading' })
   // AIDEV-NOTE: One traversal budget shared by the initial load and every continuation; only a
@@ -125,6 +127,10 @@ function MailboxThreadList({ mailboxId, filter }: { mailboxId: string; filter: '
     <section aria-label="Conversations" className="mx-auto max-w-3xl p-3">
       <div className="mb-2 flex items-center gap-2 px-1">
         <h1 className="text-sm font-semibold">Conversations</h1>
+        {/* AIDEV-NOTE: An unknown mailbox capability is never treated as compose authority. */}
+        {state.status === 'ready' && mailbox?.capabilities.compose === true && (
+          <Link to={`/mailboxes/${mailboxId}/drafts`} className="rounded-lg px-2.5 py-1 text-[13px] font-semibold text-accent-text hover:bg-accent-soft">Compose draft</Link>
+        )}
         {/* AIDEV-NOTE: A denied mailbox has no usable filter destinations; retain its unavailable explanation. */}
         {state.status !== 'unavailable' && <nav aria-label="Filter" className="ml-auto flex gap-1">
           {(['all', 'unread'] as const).map((value) => (
