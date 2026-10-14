@@ -190,3 +190,5 @@ The draft concurrency fixture also declares its disposable organization role, pr
 Rhea's bounded review found closed-connection teardown paths in the membership and draft test helpers. The repair reconnects disposable fixture logins, reacquires the fixture lease, and always reaches inherited teardown; closed-connection and original-error regressions await Soren's fleet Docker run.
 
 Felix's follow-up review found a secondary rollback failure could still mask the first SQL cleanup error. The test helper now retains the first error and records only the secondary error class; a fake-connection regression awaits fleet execution.
+
+ATT-823 private attachment gateway candidate: a new internal signed byte endpoint and additive migration 00018 bind live session, mailbox READ and clean private object metadata inside one restricted-login helper before and after Storage I/O. It requires Nadia's 00015, Leonie's gateway-role bootstrap, Soren's private container, Cassian's Rails signed route, scanner evidence and fleet Docker tests before activation; no download route or live Storage credential is enabled here.
