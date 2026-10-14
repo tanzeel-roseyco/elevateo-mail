@@ -9,3 +9,6 @@ Exact source provenance is in [current provenance](docs/completion/int401-curren
 ## Next required milestones
 
 Follow the linked checklist; Soren validates the exact frozen SHA, root decides acceptance. No tests run on this device.
+
+
+QA-404 R11 ADV801 docs-only: [mandatory BE02 evidence map](docs/completion/qa404-r11-be02-evidence-map.md) on exact c8ffa46; R9 backend390/5792/0/0/0, real HTTP+worker twice and frontend31files624/all8 PASS are existing evidence. Mandatory GUI compile FAILED read-revocation.e2e.ts34; zero browser/screenshots. Real recovery/policy/process-restart proofs remain gaps; R10 SOURCE ONLY/unintegrated, memory-only reload gap OPEN. No new scenarios or runtime; R11 NOT_RUN. Independent bounded evidence/design review pending, defects/KLOC not asserted. Root sole vault writer.
