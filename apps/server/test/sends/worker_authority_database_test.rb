@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative "approval_database_helper"
+require_relative "../../lib/elevateo/send_api/canonical"
 
 # AIDEV-NOTE: Fleet Docker exercises real worker-role SQL and exact row-lock races.
 class SendWorkerAuthorityDatabaseTest < SendDatabaseTestCase
@@ -23,6 +24,28 @@ class SendWorkerAuthorityDatabaseTest < SendDatabaseTestCase
     worker_json(<<~SQL, [send, lease, generation, SecureRandom.uuid, attempt, kind, receipt])
       SELECT app_send_private.record_observation($1::uuid,$2::uuid,$3::bigint,$4::uuid,$5::uuid,$6::text,$7::text,
         sha256(convert_to('fixture:' || $4::text,'UTF8')))
+    SQL
+  end
+
+  def test_canonical_producer_bytes_pass_both_worker_authority_gates
+    # Exact production producer and SQL approval/worker path, including Unicode body/header bytes.
+    bytes = Elevateo::SendAPI::Canonical.bytes(organization_id: @org, mailbox_id: @box,
+      draft_id: @draft, version: 1, sender: "#{@box}@example.invalid",
+      recipients: [{ "display_name" => nil, "address" => "Recipient@example.invalid" }],
+      subject: @saved.subject, body: @saved.body_text, reply_id: nil, policy: "1")
+    assert_equal 14, JSON.parse(bytes).length
+    assert_equal @bytes, bytes
+    send = approve(bytes: bytes, review_digest: Elevateo::SendAPI::Canonical.digest(bytes)).fetch("send_id")
+    lease = SecureRandom.uuid
+    assert_equal "submit", claim(send, lease).fetch("action")
+    binding = worker_json("SELECT app_send_private.worker_binding($1::uuid,$2::uuid,1,$3::uuid)",
+      [send, lease, @epoch])
+    assert_equal bytes, [binding.fetch("snapshot_hex")].pack("H*")
+    authorized = authorize(send, lease)
+    attempt = authorized.fetch("attempt_id")
+    assert_equal 1, authorized.fetch("attempt_no")
+    assert_equal true, worker_json(<<~SQL, [send, lease, attempt, @epoch]).fetch("allowed")
+      SELECT app_send_private.final_attempt_check($1::uuid,$2::uuid,1,$3::uuid,$4::uuid)
     SQL
   end
 

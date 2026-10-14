@@ -140,7 +140,7 @@ BEGIN
   SELECT enabled INTO mailbox_on FROM app_send_private.mailbox_policy
     WHERE organization_id=i.organization_id AND mailbox_id=i.mailbox_id FOR SHARE;
   snap := convert_from(i.snapshot_bytes,'UTF8')::jsonb;
-  IF jsonb_typeof(snap)='array' AND jsonb_array_length(snap)=13
+  IF jsonb_typeof(snap)='array' AND jsonb_array_length(snap)=14
       AND jsonb_typeof(snap->6)='array' THEN
     FOR recipient IN SELECT value FROM jsonb_array_elements(snap->6) LOOP
       address := app_send_private.canonical_address(recipient->>1);
@@ -230,7 +230,7 @@ BEGIN
   SELECT enabled INTO mailbox_on FROM app_send_private.mailbox_policy
     WHERE organization_id=i.organization_id AND mailbox_id=i.mailbox_id FOR SHARE;
   snap := convert_from(i.snapshot_bytes,'UTF8')::jsonb;
-  IF jsonb_typeof(snap)='array' AND jsonb_array_length(snap)=13
+  IF jsonb_typeof(snap)='array' AND jsonb_array_length(snap)=14
     AND jsonb_typeof(snap->6)='array' THEN
     FOR recipient IN SELECT value FROM jsonb_array_elements(snap->6) LOOP
       address := app_send_private.canonical_address(recipient->>1);
