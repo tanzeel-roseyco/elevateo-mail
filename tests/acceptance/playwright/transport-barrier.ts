@@ -13,6 +13,7 @@ export async function transportBarrier(page: Page, path: string, method: string,
   const pending = new Set<Promise<void>>();
   let claimed = false;
   let expired = false;
+  let handlerFailed = false;
   const timer = setTimeout(() => {
     expired = true;
     fail(new Error('Real transport barrier deadline exceeded'));
@@ -33,6 +34,7 @@ export async function transportBarrier(page: Page, path: string, method: string,
       else if (upstream) await route.fulfill({ response: upstream });
       else throw new Error('Real upstream response missing');
     } catch {
+      handlerFailed = true;
       fail(new Error('Real transport barrier failed'));
       // A canceled document can legitimately destroy a held route; do not expose request/response diagnostics.
       await route.abort('failed').catch(() => undefined);
@@ -54,7 +56,7 @@ export async function transportBarrier(page: Page, path: string, method: string,
       await page.unroute(matcher, handler);
       await Promise.all([...pending]);
       clearTimeout(timer);
-      if (expired) throw new Error('Real transport barrier expired');
+      if (expired || handlerFailed) throw new Error('Real transport barrier failed or expired');
     },
   };
 }

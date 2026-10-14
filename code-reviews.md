@@ -375,3 +375,5 @@ QA-404 attempt4 source-only review queue: acceptance_observer.rb78 LOC + accepta
 QA-404 self-inspection found role comment lookup used ordinary object catalog instead of shared role catalog; changed to shobj_description before independent review. Not counted as independent defects/KLOC. Typed version/outcome boundary checks added.
 
 QA-404 observer contract regression packet C: full acceptance_observer_contract.rb (<100 LOC), real-PG only; independent review and Soren execution NOT_RUN. Mandatory actual applied operation prerequisite prevents an empty-ledger self-test PASS.
+
+QA-404 additional bounded review queue: auth-stale.e2e.ts entire (<50LOC), transport-barrier.ts entire (<70LOC), unavailable delta1LOC (<120 combined). Screenshot allowlist delta1LOC +new unit regression12LOC independently reviewable. Self-observed missing allowlist id fixed, not an independent review finding. All actual runtime NOT_RUN.
