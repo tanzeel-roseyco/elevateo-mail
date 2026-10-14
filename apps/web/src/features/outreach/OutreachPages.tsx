@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, type FormEvent, type ReactNode, type Synth
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router'
 import { z } from 'zod'
 import type { CsrfProof, ReadContext } from '@/data/gateway'
+import { isApiError } from '@/data/errors'
 import { Button } from '@/ui/Button'
 import { Field, TextInput } from '@/ui/Field'
 import { newId } from '@/lib/ids'
@@ -11,7 +12,7 @@ import {
   leadSchema, updateCampaignInputSchema, updateLeadInputSchema, type Account, type Analytics,
   type Campaign, type Lead, type OutreachGateway,
 } from './contract'
-import { writeFailure } from './writeFailure'
+import { isAccessLoss, writeFailure } from './writeFailure'
 import { ConsentEvidenceForm } from './ConsentEvidenceForm'
 
 export interface OutreachPageProps {
@@ -75,7 +76,10 @@ function useOutreachRead<K extends Resource>(kind: K, props: OutreachPageProps, 
           ? parsed.data.items.every((item) => 'campaign_id' in item && item.campaign_id === id) : true
       )
       if (!controller.signal.aborted) setState(parsed.success && bound ? { status: 'ready', value: parsed.data as z.infer<(typeof schemas)[K]> } : { status: 'error' })
-    }).catch(() => { if (!controller.signal.aborted) setState({ status: 'error' }) })
+    }).catch((error: unknown) => {
+      if (!controller.signal.aborted) setState(isApiError(error, 'not_available') || isApiError(error, 'temporarily_unavailable')
+        ? { status: 'unavailable' } : { status: 'error' })
+    })
     return () => controller.abort()
   }, [gateway, context, kind, id, revision, cursor])
   return state
@@ -106,7 +110,7 @@ function CampaignList(props: OutreachPageProps) {
   const cursor = search.get('cursor') ?? undefined
   const state = useOutreachRead('campaigns', props, undefined, 0, cursor)
   return <Page title="Campaigns">
-    <Link to="/outreach/campaigns/new">Create draft campaign</Link>
+    {state.status === 'ready' && <Link to="/outreach/campaigns/new">Create draft campaign</Link>}
     <Content state={state} empty={(page) => page.items.length === 0 && page.next_cursor === null}>{(page) => <>
       <ul className="space-y-2">{page.items.map((campaign) =>
         <li key={campaign.id}><Link to={`/outreach/campaigns/${campaign.id}`}>{campaign.name}</Link> · {campaign.status}</li>)}</ul>
@@ -161,6 +165,7 @@ function CampaignDetail({ campaignId, ...props }: OutreachPageProps & { campaign
   const [name, setName] = useState('')
   const [busy, setBusy] = useState(false)
   const [uncertain, setUncertain] = useState(false)
+  const [accessLost, setAccessLost] = useState(false)
   const [error, setError] = useState<string | null>(null)
   useEffect(() => () => pending.current?.abort(), [])
   async function update(event: SyntheticEvent, campaign: Campaign, status: 'draft' | 'paused') {
@@ -174,10 +179,10 @@ function CampaignDetail({ campaignId, ...props }: OutreachPageProps & { campaign
       const result = campaignSchema.parse(await props.gateway.updateCampaign(props.context, props.proof, campaignId, input.data, controller.signal))
       if (result.id !== campaignId || result.status !== status || result.name !== input.data.name) throw new Error('Campaign receipt mismatch')
       if (!controller.signal.aborted) setRevision((value) => value + 1)
-    } catch (failure) { if (!controller.signal.aborted) { const outcome = writeFailure(failure); setError(outcome.message); setUncertain(outcome.lock) } }
+    } catch (failure) { if (!controller.signal.aborted) { const outcome = writeFailure(failure); setError(outcome.message); setUncertain(outcome.lock); if (isAccessLoss(failure)) setAccessLost(true) } }
     finally { if (!controller.signal.aborted) setBusy(false) }
   }
-  return <Page title="Campaign detail"><Content state={state}>{(campaign) => <>
+  return <Page title="Campaign detail">{accessLost ? <p role="alert">Campaign access changed. Reopen it after your session is refreshed.</p> : <Content state={state}>{(campaign) => <>
     <p><strong>{campaign.name}</strong> · {campaign.status}</p>
     <nav aria-label="Campaign sections" className="flex gap-4">
       <Link to={`/outreach/campaigns/${campaign.id}/leads`}>Leads</Link>
@@ -185,13 +190,13 @@ function CampaignDetail({ campaignId, ...props }: OutreachPageProps & { campaign
       <Link to={`/outreach/campaigns/${campaign.id}/analytics`}>Analytics</Link>
     </nav>
     <form onSubmit={(event) => { void update(event, campaign, campaign.status) }} className="space-y-3">
-      <Field id="edit-campaign-name" label="Campaign name"><TextInput id="edit-campaign-name" value={name} placeholder={campaign.name} onChange={(event) => setName(event.target.value)} maxLength={200} /></Field>
+      <Field id="edit-campaign-name" label="Campaign name"><TextInput id="edit-campaign-name" value={name} placeholder={campaign.name} onChange={(event) => setName(event.target.value)} maxLength={160} /></Field>
       <ActionError message={error} />
       <Button type="submit" disabled={!props.gateway || !props.proof || busy || uncertain}>Save changes</Button>
       {campaign.status === 'draft' && <Button disabled={!props.gateway || !props.proof || busy || uncertain} onClick={(event) => { void update(event, campaign, 'paused') }}>Pause campaign</Button>}
       {uncertain && <Link to="/outreach/campaigns">Check campaign list</Link>}
     </form>
-  </>}</Content></Page>
+  </>}</Content>}</Page>
 }
 
 export function OutreachLeadsPage(props: OutreachPageProps) {
@@ -229,6 +234,7 @@ function CampaignLeads({ campaignId, ...props }: OutreachPageProps & { campaignI
   const [consentId, setConsentId] = useState<string | null>(null)
   const [busy, setBusy] = useState(false)
   const [uncertain, setUncertain] = useState(false)
+  const [accessLost, setAccessLost] = useState(false)
   const [error, setError] = useState<string | null>(null)
   useEffect(() => () => pending.current?.abort(), [])
   async function save(event: FormEvent<HTMLFormElement>) {
@@ -251,16 +257,16 @@ function CampaignLeads({ campaignId, ...props }: OutreachPageProps & { campaignI
       if (saved.campaign_id !== campaignId) throw new Error('Lead campaign mismatch')
       if (saved.email !== input.data.email) throw new Error('Lead receipt mismatch')
       if (!controller.signal.aborted) { setEmail(''); setEditId(null); setRevision((value) => value + 1) }
-    } catch (failure) { if (!controller.signal.aborted) { const outcome = writeFailure(failure); setError(outcome.message); setUncertain(outcome.lock) } }
+    } catch (failure) { if (!controller.signal.aborted) { const outcome = writeFailure(failure); setError(outcome.message); setUncertain(outcome.lock); if (isAccessLoss(failure)) setAccessLost(true) } }
     finally { if (!controller.signal.aborted) setBusy(false) }
   }
-  return <Page title="Campaign leads"><Content state={state} empty={(page) => page.items.length === 0 && page.next_cursor === null}>{(page) => <>
+  return <Page title="Campaign leads">{accessLost ? <p role="alert">Lead access changed. Reopen this campaign after your session is refreshed.</p> : <><Content state={state} empty={(page) => page.items.length === 0 && page.next_cursor === null}>{(page) => <>
     <ul className="space-y-2">{page.items.map((lead: Lead) =>
       <li key={lead.id}><Link to={`/outreach/campaigns/${campaignId}/leads/${lead.id}`}>{lead.email}</Link> · consent {lead.consent_status} · {lead.suppressed ? 'suppressed' : 'not suppressed (server report)'}
         <Button onClick={() => { setEditId(lead.id); setEmail(lead.email) }}>Edit address</Button>
         {props.gateway?.recordConsent && lead.consent_status !== 'granted' &&
           <Button onClick={() => setConsentId((current) => current === lead.id ? null : lead.id)}>Record consent evidence</Button>}
-        {consentId === lead.id && campaignId && <ConsentEvidenceForm key={`${lead.id}:${lead.version}`} lead={lead} campaignId={campaignId} {...props} onSaved={() => { setConsentId(null); setRevision((value) => value + 1) }} />}
+        {consentId === lead.id && campaignId && <ConsentEvidenceForm key={`${lead.id}:${lead.version}`} lead={lead} campaignId={campaignId} {...props} onSaved={() => { setConsentId(null); setRevision((value) => value + 1) }} onAccessLost={() => setAccessLost(true)} />}
       </li>)}</ul>
     {page.next_cursor && <Link to={`?cursor=${encodeURIComponent(page.next_cursor)}`}>Next leads page</Link>}
   </>}</Content>
@@ -272,7 +278,7 @@ function CampaignLeads({ campaignId, ...props }: OutreachPageProps & { campaignI
       {editId && <Button onClick={() => { setEditId(null); setEmail('') }}>Cancel edit</Button>}
       {uncertain && <Link to={`/outreach/campaigns/${campaignId}`}>Check campaign</Link>}
     </form>
-  </Page>
+  </>}</Page>
 }
 
 export function OutreachLeadDetailPage(props: OutreachPageProps) {
@@ -287,6 +293,7 @@ function LeadDetail({ campaignId, leadId, ...props }: OutreachPageProps & { camp
     <p>Evidence source: {lead.consent_source ?? 'none recorded'}</p>
     <p>Evidence observed: {lead.consent_recorded_at ?? 'none recorded'}</p>
     <p>Evidence actor: {lead.consent_recorded_by ?? 'none recorded'}</p>
+    <p>Evidence kind: {lead.consent_evidence_kind === 'manual_attestation' ? 'manual attestation' : 'none recorded'}</p>
     <p>This record does not authorize sending.</p>
   </>}</Content></Page>
 }
@@ -326,5 +333,5 @@ export function OutreachCampaignAnalyticsPage(props: OutreachPageProps) {
 function CampaignAnalytics({ campaignId, ...props }: OutreachPageProps & { campaignId: string | undefined }) {
   const state = useOutreachRead('analytics', props, campaignId)
   return <Page title="Campaign analytics"><Content state={state}>{(row: Analytics) =>
-    <p>{row.consented_count} consented of {row.lead_count} leads (server aggregate)</p>}</Content></Page>
+    <p>{row.consented_count} consented and unsuppressed of {row.lead_count} leads (server aggregate)</p>}</Content></Page>
 }

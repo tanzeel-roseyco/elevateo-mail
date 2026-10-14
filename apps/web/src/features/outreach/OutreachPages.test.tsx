@@ -4,7 +4,8 @@ import { describe, expect, it, vi } from 'vitest'
 import { GatewayError } from '@/data/errors'
 import {
   OutreachCampaignCreatePage, OutreachCampaignDetailPage, OutreachCampaignLeadsPage,
-  OutreachCampaignsPage, OutreachLeadDetailPage,
+  OutreachCampaignsPage, OutreachLeadDetailPage, OutreachAccountDetailPage, OutreachCampaignAccountsPage,
+  OutreachCampaignAnalyticsPage, type OutreachPageProps,
 } from './OutreachPages'
 import type { OutreachGateway } from './contract'
 
@@ -31,12 +32,16 @@ function gateway(overrides: Partial<OutreachGateway> = {}): OutreachGateway {
   }
 }
 function view(path: string, g?: OutreachGateway) {
+  const props: OutreachPageProps = g === undefined ? { context, proof } : { gateway: g, context, proof }
   return render(<MemoryRouter initialEntries={[path]}><Routes>
-    <Route path="/outreach/campaigns" element={<OutreachCampaignsPage gateway={g} context={context} proof={proof} />} />
-    <Route path="/outreach/campaigns/new" element={<OutreachCampaignCreatePage gateway={g} context={context} proof={proof} />} />
-    <Route path="/outreach/campaigns/:campaignId" element={<OutreachCampaignDetailPage gateway={g} context={context} proof={proof} />} />
-    <Route path="/outreach/campaigns/:campaignId/leads" element={<OutreachCampaignLeadsPage gateway={g} context={context} proof={proof} />} />
-    <Route path="/outreach/campaigns/:campaignId/leads/:leadId" element={<OutreachLeadDetailPage gateway={g} context={context} proof={proof} />} />
+    <Route path="/outreach/campaigns" element={<OutreachCampaignsPage {...props} />} />
+    <Route path="/outreach/campaigns/new" element={<OutreachCampaignCreatePage {...props} />} />
+    <Route path="/outreach/campaigns/:campaignId" element={<OutreachCampaignDetailPage {...props} />} />
+    <Route path="/outreach/campaigns/:campaignId/leads" element={<OutreachCampaignLeadsPage {...props} />} />
+    <Route path="/outreach/campaigns/:campaignId/leads/:leadId" element={<OutreachLeadDetailPage {...props} />} />
+    <Route path="/outreach/campaigns/:campaignId/accounts/:accountId" element={<OutreachAccountDetailPage {...props} />} />
+    <Route path="/outreach/campaigns/:campaignId/accounts" element={<OutreachCampaignAccountsPage {...props} />} />
+    <Route path="/outreach/campaigns/:campaignId/analytics" element={<OutreachCampaignAnalyticsPage {...props} />} />
   </Routes></MemoryRouter>)
 }
 
@@ -77,6 +82,14 @@ describe('Outreach routed pages', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Pause campaign' }))
     expect(await screen.findByRole('alert')).toHaveProperty('textContent', expect.stringMatching(/not confirmed/))
     expect(screen.getByText(/Pilot · draft/)).toBeTruthy()
+  })
+  it('hides loaded campaign content after a revoked write', async () => {
+    const g = gateway({ updateCampaign: vi.fn(async () => { throw new GatewayError('api', 'unauthenticated', 'revoked', { status: 401 }) }) })
+    view(`/outreach/campaigns/${campaignId}`, g)
+    await screen.findByText(/Pilot/)
+    fireEvent.click(screen.getByRole('button', { name: 'Pause campaign' }))
+    expect(await screen.findByRole('alert')).toHaveProperty('textContent', expect.stringMatching(/access changed/))
+    expect(screen.queryByText(/Pilot · draft/)).toBeNull()
   })
   it('sends a versioned pause intent and reloads server-owned status', async () => {
     const g = gateway({ updateCampaign: vi.fn(async (_ctx, _proof, _id, input) => ({ ...campaign, name: input.name, status: input.status, version: 2 })) })
@@ -138,10 +151,34 @@ describe('Outreach routed pages', () => {
     expect(g.listCampaigns).toHaveBeenCalledWith(context, { cursor: campaignId }, expect.any(AbortSignal))
   })
   it('shows server evidence on a distinct lead detail route without claiming send authority', async () => {
-    const g = gateway({ getLead: vi.fn(async () => ({ ...lead, consent_status: 'granted', consent_source: 'Signed intake form', consent_recorded_at: '2026-10-14T12:00:00Z', consent_recorded_by: campaignId })) })
+    const g = gateway({ getLead: vi.fn(async () => ({ ...lead, consent_status: 'granted', consent_source: 'Signed intake form', consent_recorded_at: '2026-10-14T12:00:00Z', consent_recorded_by: campaignId, consent_evidence_kind: 'manual_attestation' })) })
     view(`/outreach/campaigns/${campaignId}/leads/${leadId}`, g)
     expect(await screen.findByText(/Evidence source: Signed intake form/)).toBeTruthy()
+    expect(screen.getByText(/Evidence kind: manual attestation/)).toBeTruthy()
     expect(screen.getByText(/does not authorize sending/)).toBeTruthy()
     expect(g.getLead).toHaveBeenCalledWith(context, campaignId, leadId, expect.any(AbortSignal))
+  })
+  it('rejects an account detail returned for another campaign', async () => {
+    const g = gateway({ getAccount: vi.fn(async () => ({ id: leadId, campaign_id: leadId, mailbox_id: campaignId, label: 'Foreign', status: 'disabled', version: 1 })) })
+    view(`/outreach/campaigns/${campaignId}/accounts/${leadId}`, g)
+    expect(await screen.findByRole('alert')).toBeTruthy()
+    expect(screen.queryByText('Foreign')).toBeNull()
+  })
+  it('shows a disabled account endpoint as unavailable', async () => {
+    const g = gateway({ listAccounts: vi.fn(async () => { throw new GatewayError('api', 'temporarily_unavailable', 'disabled', { status: 503 }) }) })
+    view(`/outreach/campaigns/${campaignId}/accounts`, g)
+    expect(await screen.findByText(/Outreach API unavailable/)).toBeTruthy()
+  })
+  it('shows no campaign contents or create link after a denied read', async () => {
+    const g = gateway({ listCampaigns: vi.fn(async () => { throw new GatewayError('api', 'not_available', 'denied', { status: 404 }) }) })
+    view('/outreach/campaigns', g)
+    expect(await screen.findByText(/Outreach API unavailable/)).toBeTruthy()
+    expect(screen.queryByText('Pilot')).toBeNull()
+    expect(screen.queryByRole('link', { name: 'Create draft campaign' })).toBeNull()
+  })
+  it('labels the server aggregate as consented and unsuppressed', async () => {
+    const g = gateway({ listAnalytics: vi.fn(async () => ({ campaign_id: campaignId, lead_count: 4, consented_count: 1 })) })
+    view(`/outreach/campaigns/${campaignId}/analytics`, g)
+    expect(await screen.findByText(/1 consented and unsuppressed of 4 leads/)).toBeTruthy()
   })
 })

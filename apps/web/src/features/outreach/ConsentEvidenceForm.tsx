@@ -4,11 +4,11 @@ import { Button } from '@/ui/Button'
 import { CheckboxField, Field, TextInput } from '@/ui/Field'
 import { consentEvidenceInputSchema, leadSchema, type Lead, type OutreachGateway } from './contract'
 import type { OutreachPageProps } from './OutreachPages'
-import { writeFailure } from './writeFailure'
+import { isAccessLoss, writeFailure } from './writeFailure'
 
 /** Records a human assertion for backend review. It never grants send or enrollment capability. */
-export function ConsentEvidenceForm({ lead, campaignId, gateway, context, proof, onSaved }: OutreachPageProps & {
-  lead: Lead; campaignId: string; gateway?: OutreachGateway; onSaved(): void
+export function ConsentEvidenceForm({ lead, campaignId, gateway, context, proof, onSaved, onAccessLost }: OutreachPageProps & {
+  lead: Lead; campaignId: string; gateway?: OutreachGateway; onSaved(): void; onAccessLost(): void
 }) {
   const [source, setSource] = useState('')
   const [localTime, setLocalTime] = useState('')
@@ -39,7 +39,10 @@ export function ConsentEvidenceForm({ lead, campaignId, gateway, context, proof,
       }
       if (!controller.signal.aborted) onSaved()
     } catch (failure) {
-      if (!controller.signal.aborted) { const outcome = writeFailure(failure); setError(outcome.message); setLocked(outcome.lock) }
+      if (!controller.signal.aborted) {
+        const outcome = writeFailure(failure); setError(outcome.message); setLocked(outcome.lock)
+        if (isAccessLoss(failure)) onAccessLost()
+      }
     } finally { if (!controller.signal.aborted) setBusy(false) }
   }
   return <form onSubmit={(event) => { void submit(event) }} className="space-y-2 rounded border p-3" aria-label={`Consent evidence for ${lead.email}`}>

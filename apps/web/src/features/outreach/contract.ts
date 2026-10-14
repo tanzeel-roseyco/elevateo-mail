@@ -17,6 +17,7 @@ export const leadSchema = z.strictObject({
   consent_recorded_at: z.string().max(40).nullable().optional(),
   consent_source: z.string().max(200).nullable().optional(),
   consent_recorded_by: id.nullable().optional(),
+  consent_evidence_kind: z.literal('manual_attestation').nullable().optional(),
 })
 export const accountSchema = z.strictObject({ id, campaign_id: id, mailbox_id: id, label: safeLabel(120), status: z.literal('disabled'), version })
 export const analyticsSchema = z.strictObject({ campaign_id: id, lead_count: z.number().int().nonnegative(), consented_count: z.number().int().nonnegative() }).refine(

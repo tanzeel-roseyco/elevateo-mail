@@ -733,3 +733,16 @@ Root-assigned reviews received: ADV031 registration 180 LOC 0 defects; ADV032 Si
 ### FE-805 R7 fleet lint repair (Fable, 2026-10-15)
 
 Fleet lint failure web93f7: six unused parameters in `outreachGatewayBridge.test.ts` (tooling evidence, 1 defect in 36 test LOC). Repaired by removing the bridge and its test now that Cassian's adapter matches Celeste's port; `main.tsx` wires the adapter under the explicit port type. No lint rule disabled. One wiring case added, not executed.
+FE807 role-policy follow-up: root supplied owner/admin/sales role matrix while source remained read-only to authorization; one client foreign-campaign account receipt test was added. Enforcement and real DB/HTTP denial review belongs to Sabine/Cassian/Dorian/Felix; no UI-only authorization claim or test PASS.
+
+FE807 disabled account adapter presentation: author review found a known `temporarily_unavailable` gateway response would render generic error. Source now maps that and `not_available` reads to the unavailable state; component regression authored, not executed. Independent review pending.
+
+FE807 denied-read presentation: author self-review found create-draft navigation remained visible after an Outreach list denial. It now appears only after a validated ready list, with a denied-read component regression; backend denial remains the authority. No test execution claimed.
+
+FE807 analytics copy self-review: backend's candidate `consented_count` excludes suppressions, while UI said merely “consented.” Source now labels the aggregate “consented and unsuppressed” and adds a component case; no execution or independent review claim.
+
+FE807 QA815 `fe96194` fleet result: API check and lint PASS, typecheck FAILED with eight instances of explicit `gateway={undefined}` in test helper under `exactOptionalPropertyTypes`; unit/build NOT_REACHED. Celeste repaired the test helper by omitting the optional prop when absent. Fresh Docker rerun and independent review pending; no PASS claim for the repair.
+
+FE807 Dorian DTO alignment: immutable `b8c3e39` adds nullable `consent_evidence_kind` to lead detail. FE807 strict boundary and component source now display `manual_attestation` as evidence metadata, never send eligibility. No runtime or independent review claim for this follow-up.
+
+FE807 auth-loss self-review: raw V2 gateway wiring may not invoke central SessionProvider 401/context handling. Owned detail/leads pages now hide previously loaded content after an access-loss write and lock further actions; the host still must rotate context centrally. Revoked-write case authored, no Docker or independent review receipt.
