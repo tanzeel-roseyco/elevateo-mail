@@ -45,7 +45,9 @@ module Elevateo
     class LocalMailpitClient
       class PreflightFailed < StandardError; end
 
-      def initialize(profile:, smtp_factory: ->(host, port) { Net::SMTP.new(host, port, tls: false, starttls: false) })
+      def initialize(profile:, smtp_factory: ->(host, port) {
+        Net::SMTP.new(host, port).tap { |smtp| smtp.disable_tls; smtp.disable_starttls }
+      })
         raise ArgumentError, "Mailpit test profile required" unless profile.is_a?(SmtpProfile) && profile.local_test?
         @profile, @smtp_factory = profile, smtp_factory
       end

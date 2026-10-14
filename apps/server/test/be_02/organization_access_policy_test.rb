@@ -82,7 +82,7 @@ class OrganizationAccessPolicyTest < MailboxMembershipDatabaseCase
 
   def outreach_authorization(actor)
     result = nil
-    scope(identity: actor) do |connection|
+    scope(identity: actor, targets: [actor.user_id]) do |connection|
       bind = ActiveRecord::Relation::QueryAttribute.new("fixture", actor.digest, ActiveRecord::Type::String.new)
       raw = connection.exec_query("SELECT app.authorize_outreach_draft_write($1) AS result",
         "Outreach authority fixture", [bind]).first.fetch("result")

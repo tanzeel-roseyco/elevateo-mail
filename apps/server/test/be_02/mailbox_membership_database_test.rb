@@ -114,7 +114,8 @@ class MailboxMembershipDatabaseTest < MailboxMembershipDatabaseCase
     @admin.exec_params("UPDATE app.mailbox_membership_revisions SET membership_version = 2147483647 WHERE mailbox_id = $1", [@box])
     before = generation(other.user_id)
     assert_equal "ok", raw_change(other.user_id, 2_147_483_647, flags: nil).fetch("status")
-    assert_equal "ok", raw_change(@user, 2_147_483_647, flags: FLAGS.merge("manage_members" => true)).fetch("status")
+    assert_equal "ok", raw_change(@user, 2_147_483_647,
+      flags: FLAGS.merge("manage_members" => true, "approve_send" => true)).fetch("status")
     assert_equal "temporarily_unavailable", raw_change(other.user_id, 2_147_483_647).fetch("status")
     assert_equal [2_147_483_647, before], [revision, generation(other.user_id)]
     assert_equal([@user], roster.fetch("items").map { |row| row.fetch("user_id") })

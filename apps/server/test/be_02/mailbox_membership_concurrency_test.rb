@@ -12,7 +12,8 @@ class MailboxMembershipConcurrencyTest < MailboxMembershipDatabaseCase
       waiter = nil
       hold_revision = lambda do |connection|
         # AIDEV-NOTE: An authorized no-op holds the revision without deleting either manager or bypassing API grants.
-        no_op = membership_query(connection, first, @box, first.user_id, expected, FLAGS.merge("manage_members" => true))
+        no_op = membership_query(connection, first, @box, first.user_id, expected,
+          FLAGS.merge("manage_members" => true, "approve_send" => first.user_id == @user))
         assert_equal "ok", no_op.fetch("status")
         blocker = connection.select_value("SELECT pg_backend_pid()")
         waiter, ready = membership_worker(workers) { raw_change(second.user_id, expected + 1, flags: nil, identity: second) }
@@ -30,11 +31,13 @@ class MailboxMembershipConcurrencyTest < MailboxMembershipDatabaseCase
     SQL
   end
 
-  def test_reversed_actor_target_waits_create_guards_in_uuid_order
-    # Fixed UUIDs order both the existing-row and missing-row schedules independently of fixture randomness.
+  def test_two_owner_authorized_targets_wait_create_guards_in_uuid_order
+    # SEC802 denies reciprocal peer-manager edits; the owner may edit both fixed target UUIDs.
     low = membership_fixed_actor("10000000-0000-4000-8000-000000000001")
     high = membership_fixed_actor("f0000000-0000-4000-8000-000000000002")
     [low, high].each { |actor| explicit_member(actor, manager: true) }
+    assert_equal "not_found", raw_change(low.user_id, revision, identity: high).fetch("status")
+    assert_equal "not_found", raw_change(high.user_id, revision, identity: low).fetch("status")
     [false, true].each do |missing|
       if missing
         [low, high].each do |actor|
@@ -52,9 +55,10 @@ class MailboxMembershipConcurrencyTest < MailboxMembershipDatabaseCase
           @admin.exec("BEGIN")
           @admin.exec_params("INSERT INTO app_auth.authorization_generations(organization_id,user_id) VALUES ($1,$2) ON CONFLICT DO NOTHING", [@org, low.user_id])
           @admin.exec_params("SELECT 1 FROM app_auth.authorization_generations WHERE organization_id = $1 AND user_id = $2 FOR UPDATE", [@org, low.user_id])
-          [[high, low], [low, high]].each do |actor, target|
+          [low, high].each do |target|
             task, ready = membership_worker(workers) do
-              raw_change(target.user_id, expected, identity: actor, flags: FLAGS.merge("manage_members" => true, "approve_send" => missing))
+              raw_change(target.user_id, expected, identity: @identity,
+                flags: FLAGS.merge("manage_members" => true, "approve_send" => missing))
             end
             tasks << task
             pid = membership_pid(task, ready, deadline)
@@ -119,6 +123,9 @@ class MailboxMembershipConcurrencyTest < MailboxMembershipDatabaseCase
     removed_generation = generation(other.user_id)
     member_change(other.user_id) do |connection|
       connection.exec_params("INSERT INTO app.organization_memberships(organization_id,user_id) VALUES ($1,$2)", [@org, other.user_id])
+      # SEC802 access is deliberately cascaded on departure; fixture re-enrollment restores the same low rank.
+      connection.exec_params("INSERT INTO app.organization_access(organization_id,user_id,role) VALUES ($1,$2,'associate')",
+        [@org, other.user_id])
     end
     assert_operator generation(other.user_id), :>, removed_generation
     assert_equal previous + 1, revision
@@ -135,6 +142,8 @@ class MailboxMembershipConcurrencyTest < MailboxMembershipDatabaseCase
       member_change(other.user_id) do |connection|
         connection.exec_params("DELETE FROM app.organization_memberships WHERE organization_id = $1 AND user_id = $2", [@org, other.user_id])
         connection.exec_params("INSERT INTO app.organization_memberships(organization_id,user_id) VALUES ($1,$2)", [@org, other.user_id])
+        connection.exec_params("INSERT INTO app.organization_access(organization_id,user_id,role) VALUES ($1,$2,'associate')",
+          [@org, other.user_id])
         # AIDEV-NOTE: Observe the guard wait; holder commit/rollback precedes bounded worker cleanup on every path.
         task, ready = membership_worker(workers) { raw_change(other.user_id, previous) }
         pid = membership_pid(task, ready, deadline)

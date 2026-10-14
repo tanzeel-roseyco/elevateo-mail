@@ -7,10 +7,10 @@ module Elevateo
   module SendWorker
     class Drain
       def initialize(connection:, control:, driver:, max_steps: 32, max_seconds: 30,
-        idle_delay: 1, clock: -> { Process.clock_gettime(Process::CLOCK_MONOTONIC) }, sleeper: ->(seconds) { Kernel.sleep(seconds) })
+        idle_delay: 1.0, clock: -> { Process.clock_gettime(Process::CLOCK_MONOTONIC) }, sleeper: ->(seconds) { Kernel.sleep(seconds) })
         unless max_steps.is_a?(Integer) && max_steps.between?(1, 32) &&
             max_seconds.is_a?(Numeric) && max_seconds.positive? && max_seconds <= 60 &&
-            idle_delay.is_a?(Numeric) && idle_delay.between?(0.05, 30)
+            idle_delay.is_a?(Float) && idle_delay.between?(0.05, 30)
           raise ArgumentError, "invalid drain limits"
         end
         @connection, @control, @driver = connection, control, driver

@@ -78,6 +78,10 @@ class MailSearchDatabaseTest < MailboxMembershipDatabaseCase
     assert_equal "not_available", assert_raises(Elevateo::CollaborationError) { search("mailbox_id" => private_box) }.code
     assert_equal([@thread], search.fetch("items").map { |item| item.fetch("id") })
     membership(present: false)
+    assert_equal "O", @admin.exec_params(<<~SQL).getvalue(0, 0)
+      SELECT tgenabled FROM pg_trigger WHERE tgrelid='app.organization_access'::regclass
+        AND tgname='guard_owner_loss'
+    SQL
     assert_empty search.fetch("items")
   end
 
