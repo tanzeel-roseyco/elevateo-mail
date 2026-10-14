@@ -342,3 +342,5 @@ An exact fleet static receipt on `fa3082a` exposed strict type and lint failures
 ADV101 independent review found a P2 private-client aggregate timeout defect: per-chunk Net::HTTP timeouts could be extended by a trickled body. The candidate repair bounds the entire network exchange by one five-second maximum and checks a monotonic deadline; a slow-transport regression is authored, not fleet-executed. Public attachment route remains inactive.
 
 ADV101 follow-up strengthens the timeout regression through the actual private HTTP exchange path with a trickled fake response, checking aggregate elapsed bound and connection cleanup. This replaces the earlier injected-transport-only assertion; exact Docker execution and independent repair re-review remain pending.
+
+ATT823 source review found one open metadata contract/UI mismatch before route activation: Nadia 00015 can produce `rejected` with size 0 and list projects it; proposal/MessageAttachments currently accept only four scan statuses and positive sizes, so rejected would fail DTO validation or be mislabeled. Owner decision/repair and fleet proof are pending; public route remains inactive.

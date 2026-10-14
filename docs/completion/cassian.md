@@ -189,3 +189,7 @@ Vera independently reviewed exact 7b41521 plus signer, 238 LOC, one P2 aggregate
 ADV101 review report required an actual exchange-path trickle regression; the initial injected-transport test did not exercise Net::HTTP. Current test injects a fake HTTP connection beneath `exchange`, trickles 20 chunks, asserts the aggregate deadline, no returned bytes and connection close. It remains NOT_RUN and requires re-review.
 
 The fake HTTP test fixture uses explicit initialization for its chunk/close state; this is a source readability correction, with Docker execution still pending.
+
+## ATT823 rejected metadata seam finding
+
+Bounded source inspection of Nadia 00015 status/size constraints, Attachments::Service#list, Cassian noncanonical attachment proposal and Mira MessageAttachments found one confirmed interface mismatch: `rejected` rows have byte_size 0 and are returned by list, but DTO excludes rejected/minimum size 1 and UI fallback says Scan complete. This is open pending Nadia visibility choice and Mira UI repair; no route is active and no runtime data exposure is claimed. Recommended wire: explicit rejected status/zero size without private rejection_reason.
