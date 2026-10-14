@@ -23,7 +23,7 @@ module Elevateo
       @send_id: String
       @lease_seconds: Integer
       @deadline_seconds: Integer
-      def self.next_due_send: (connection: untyped, epoch: String) -> String?
+      def self.next_due_send: (connection: untyped, epoch: String, excluded: Array[String]) -> String?
       def initialize: (connection: untyped, send_id: String, ?lease_seconds: Integer, ?deadline_seconds: Integer) -> void
       def claim: (epoch: String) -> Claim?
       def authorize_submission: (claim: Claim, epoch: String) -> Authorization?

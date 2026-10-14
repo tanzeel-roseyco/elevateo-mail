@@ -32,6 +32,22 @@ class SendWorkerDatabaseTest < SendDatabaseTestCase
     end
   end
 
+  def test_due_exclusion_advances_past_oldest_queued_send
+    first = approve.fetch("send_id")
+    @draft = SecureRandom.uuid
+    @operation = SecureRandom.uuid
+    @saved = payload(subject: "second", body_text: "second",
+      to: [{ "display_name" => nil, "address" => "second@example.invalid" }])
+    assert_equal 1, save(@saved).fetch("version")
+    @bytes = snapshot(subject: "second", recipients: [[nil, "second@example.invalid"]])
+    @review_digest = Digest::SHA256.hexdigest(@bytes)
+    second = approve.fetch("send_id")
+    assert_equal first, Elevateo::SendWorker::DatabaseStore.next_due_send(connection: @worker,
+      epoch: @epoch, excluded: [])
+    assert_equal second, Elevateo::SendWorker::DatabaseStore.next_due_send(connection: @worker,
+      epoch: @epoch, excluded: [first])
+  end
+
   def test_lost_response_reconciles_after_restart_without_second_attempt
     send_id = approve.fetch("send_id")
     Dir.mktmpdir("send-ledger-") do |dir|

@@ -14,9 +14,13 @@ module Elevateo
       class InvalidResult < StandardError; end
       class StaleLease < StandardError; end
 
-      def self.next_due_send(connection:, epoch:)
+      def self.next_due_send(connection:, epoch:, excluded:)
         raise ArgumentError, "invalid dispatch epoch" unless Control.valid_epoch?(epoch)
-        value = connection.exec_params("SELECT app_send_private.next_due_send($1::uuid)", [epoch]).getvalue(0, 0)
+        unless excluded.is_a?(Array) && excluded.length <= 32 && excluded.all? { |id| Control.valid_epoch?(id) }
+          raise ArgumentError, "invalid due exclusions"
+        end
+        value = connection.exec_params("SELECT app_send_private.next_due_send($1::uuid,$2::uuid[])",
+          [epoch, "{#{excluded.join(',')}}"]).getvalue(0, 0)
         return nil if value.nil?
         raise InvalidResult unless Control.valid_epoch?(value)
         value
