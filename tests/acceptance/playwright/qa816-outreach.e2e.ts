@@ -52,17 +52,28 @@ scenario('SCN-QA-820-F1', 'invalid-campaign-name-does-not-post', async (page, re
   record.assertions.push('Empty campaign name is rejected by the real browser form before any V2 POST');
 });
 
-scenario('SCN-QA-820-F2', 'reader-cannot-create-campaign', async (page, record) => {
-  await signIn(page, 'reader');
+scenario('SCN-QA-820-F2', 'foreign-organization-cannot-read-campaign', async (page, record) => {
+  await signIn(page, 'manager_primary');
   await page.goto('/#/outreach/campaigns/new');
-  await expect(page.getByRole('heading', { name: 'Create campaign' })).toBeVisible();
-  await page.getByLabel('Campaign name').fill(`QA816 denied ${randomUUID()}`);
-  const [denied] = await Promise.all([responseAt(page, '/v2/outreach/campaigns', 'POST'), page.getByRole('button', { name: 'Save draft' }).click()]);
-  expect([403, 404]).toContain(denied.status());
-  await expect(page.getByRole('alert')).toBeVisible();
-  await expect(page.getByRole('heading', { name: 'Create campaign' })).toBeVisible();
-  record.artifacts.push(await screenshot(page, 'QA816-OUTREACH-F2-reader-denied'));
-  record.assertions.push('Reader POST is rejected by real V2 API and no campaign detail navigation occurs');
+  const name = `QA816 foreign ${randomUUID()}`;
+  await page.getByLabel('Campaign name').fill(name);
+  const [created] = await Promise.all([responseAt(page, '/v2/outreach/campaigns', 'POST'), page.getByRole('button', { name: 'Save draft' }).click()]);
+  expect(created.status()).toBe(201);
+  const campaignId = /\/outreach\/campaigns\/([0-9a-f-]{36})/.exec(new URL(page.url()).hash)?.[1];
+  if (!campaignId) throw new Error('Campaign detail route missing');
+  const context = await page.context().browser()?.newContext({ baseURL: 'http://app.test' });
+  if (!context) throw new Error('Foreign context unavailable');
+  try {
+    const foreign = await context.newPage();
+    await signIn(foreign, 'other_org');
+    const [denied] = await Promise.all([responseAt(foreign, `/v2/outreach/campaigns/${campaignId}`),
+      foreign.goto(`/#/outreach/campaigns/${campaignId}`)]);
+    expect(denied.status()).toBe(404);
+    await expect(foreign.getByRole('alert').getByText('Unable to load this Outreach resource. Please try again later.')).toBeVisible();
+    await expect(foreign.getByText(name, { exact: true })).toHaveCount(0);
+    record.artifacts.push(await screenshot(foreign, 'QA816-OUTREACH-F2-foreign-denied'));
+  } finally { await context.close(); }
+  record.assertions.push('Separate other-organization browser session receives real V2 404 and no case-owned campaign detail');
 });
 
 scenario('SCN-QA-821-P', 'logout-revokes-outreach-and-people-cache', async (page, record) => {
