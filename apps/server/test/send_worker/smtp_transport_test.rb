@@ -73,6 +73,11 @@ class SendWorkerSmtpTransportTest < Minitest::Test
     assert_equal "smtp_invalid_snapshot", result.code
     assert_equal 0, calls
 
+    real_recipient = snapshot.sub("recipient@example.invalid", "recipient@example.com")
+    real_result = transport.submit(real_recipient, send_id: SEND, attempt_id: ATTEMPT, deadline: deadline)
+    assert_equal "rejected", real_result.kind
+    assert_equal 0, calls
+
     remote = Elevateo::SendWorker::SmtpProfile.remote_held(host: "smtp.example.com", port: 587,
       verified_sender: "sender@example.com", tls_mode: "starttls_required", credential_ref: "secret://mailbox_1")
     held_transport = Elevateo::SendWorker::SmtpTransport.new(profile: remote, client: client)

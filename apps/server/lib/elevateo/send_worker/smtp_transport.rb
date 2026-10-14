@@ -22,6 +22,9 @@ module Elevateo
         raise Held, "remote SMTP remains held" if @profile.held?
         raise ArgumentError, "invalid SMTP attempt" unless Control.valid_epoch?(attempt_id)
         rendered = SmtpSnapshot.render(bytes, send_id: send_id, verified_sender: @profile.verified_sender)
+        unless rendered.recipients.all? { |address| address.split("@", 2).last.end_with?(".invalid") }
+          return SubmissionResult.new(kind: "rejected", code: "smtp_invalid_snapshot")
+        end
         client = @client || LocalMailpitClient.new(profile: @profile)
         client.deliver(rendered, deadline: deadline)
       rescue SmtpSnapshot::Invalid
