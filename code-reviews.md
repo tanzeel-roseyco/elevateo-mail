@@ -550,3 +550,10 @@ ADV829 functional runner review accepted zero defects/191 primary LOC, 0/KLOC. A
 ADV840 Tessa functional / ADV841 Vale design each accepted Mira145 unique source LOC, zero defects (0/KLOC). Historical finding: one MED/240 unique source/context LOC (4.17/KLOC), overlap nonadditive. Fresh about:blank navigation forces a new GET while preserving conflict/version/winner assertions.
 
 ADV842 Tessa functional / ADV843 Vale design each accepted Elara330 unique LOC (137 implementation +193 regression), zero defects (0/KLOC). Historical coordinate finding: one MED/281 LOC (3.56/KLOC). Exact descriptor suppression/restoration avoids unsafe formatter/getter/coercion invocation. Author pending-review labels are historical and superseded by root acceptance; authored records are preserved. Coverage overlaps are nonadditive. Source accepted; runtime NOT_RUN, no whole-app acceptance.
+
+
+## Mira OFF405 INV405 R18 source handoff
+
+R18 INV405 source-only invitation browser candidate over exact 86036e276df9c3294206e6bfa14d478c223c54dd: genuine scanner GET, fresh victim password UI acceptance, identity/mailbox checks and isolated replay rejection authored. Private invitation contract unchanged; production, fixture/runner/plumbing, canonical contracts and diagnostic corefour unchanged. All authored tests, compilation and browser execution NOT_RUN; independent source/design review pending. Root owns integration/acceptance; Soren sole fleet Docker lease; observer OFF, BE03 closed. Requested LOW/Fast identity and billing unverified.
+
+Independent review NOT_RUN; defects/KLOC unassessed. Review packets in shared reports/mira-r18-invitation-browser: A invitation loader + boundary regressions; B browser case + existing session/UI context; C diagnostic allowlist delta + regression + unavailable delta. Each source packet <=200 lines, total assignment context <=400. Dedicated design review pending. Static git diff --check only; no runtime claim.

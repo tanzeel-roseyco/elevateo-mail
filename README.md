@@ -4,6 +4,8 @@ Shared company mailroom with one Rails domain authority and a React/TypeScript c
 
 ## Current state
 
+R18 INV405 source-only invitation browser candidate over exact 86036e276df9c3294206e6bfa14d478c223c54dd: genuine scanner GET, fresh victim password UI acceptance, identity/mailbox checks and isolated replay rejection authored. Private invitation contract unchanged; production, fixture/runner/plumbing, canonical contracts and diagnostic corefour unchanged. All authored tests, compilation and browser execution NOT_RUN; independent source/design review pending. Root owns integration/acceptance; Soren sole fleet Docker lease; observer OFF, BE03 closed. Requested LOW/Fast identity and billing unverified.
+
 Application IN PROGRESS: R17 selectively integrates accepted Mira conflict-navigation and Elara native-diagnostic harness repairs over immutable 5c5cc397. Only three test source paths change; production, contracts, observer boundary and Docker recipes remain identical. New candidate runtime NOT_RUN; observer OFF, BE02 unaccepted, BE03 closed.
 
 Sealed R14 on 5c5: Python25/25 PASS; frontend lint/typecheck and 31files/629tests PASS; diagnostics12 =8PASS/4FAIL/0skip, compile PASS; GUI NOT_RUN, zero screenshots. Both wrapper-failure attempts remain preserved. Jules independently audited174 referenced artifacts,3790 source entries and307 backend-reuse dependencies with zero mismatch; all six cleanup/independent-absence checks PASS. R15 Node24.21 plain/node--test probes establish controlled stack-hook suppression feasibility only (hostile counters all zero); authored repairs remain unexecuted. Delayed-logout cancellation and the original R12 1093ms failure cause remain unknown.

@@ -5,6 +5,8 @@ import { z, ZodError } from 'zod';
 
 // AIDEV-NOTE: Frozen source bounds must be reviewed when these files change; never publish stack text.
 const sourceLines = {
+  'auth-invite.e2e.ts': 79,
+  'invitation.ts': 73,
   'auth-stale.e2e.ts': 32,
   'auth-transport.e2e.ts': 54,
   'auth.e2e.ts': 72,
@@ -25,7 +27,7 @@ const sourceLines = {
   'support.ts': 53,
   'transport-barrier.ts': 63,
 } as const;
-const files = ['auth-stale.e2e.ts', 'auth-transport.e2e.ts', 'auth.e2e.ts', 'boundaries.ts', 'cases.ts', 'credential-origin.ts', 'draft-conflict.e2e.ts', 'draft-privacy.e2e.ts', 'draft-recovery-support.ts', 'draft-recovery.e2e.ts', 'draft-uncertain-reload.e2e.ts', 'draft.e2e.ts', 'read-empty.e2e.ts', 'read-literal.e2e.ts', 'read-revocation.e2e.ts', 'read.e2e.ts', 'screenshots.ts', 'support.ts', 'transport-barrier.ts'] as const;
+const files = ['auth-invite.e2e.ts', 'invitation.ts', 'auth-stale.e2e.ts', 'auth-transport.e2e.ts', 'auth.e2e.ts', 'boundaries.ts', 'cases.ts', 'credential-origin.ts', 'draft-conflict.e2e.ts', 'draft-privacy.e2e.ts', 'draft-recovery-support.ts', 'draft-recovery.e2e.ts', 'draft-uncertain-reload.e2e.ts', 'draft.e2e.ts', 'read-empty.e2e.ts', 'read-literal.e2e.ts', 'read-revocation.e2e.ts', 'read.e2e.ts', 'screenshots.ts', 'support.ts', 'transport-barrier.ts'] as const;
 // AIDEV-NOTE: Node 24 uses a native stack accessor; only this intrinsic getter may be invoked.
 const nativeStackGetter = Object.getOwnPropertyDescriptor(new Error(), 'stack')?.get;
 // AIDEV-NOTE: Snapshot bootstrap formatter identity; never invoke it, and reject later replacement hooks.
