@@ -184,3 +184,5 @@ FE808 now follows Cassian's paginated V2 grant DTO and six subordinate role choi
 FE808 People now checks the authenticated V2 unbound roster projection against the twelve local configuration references. A denied or mismatched roster is explicitly labelled as local configuration only; it never becomes an Auth user directory. Cassian has registered isolated V2 admin routes for testing over Sabine authority, with runtime acceptance still pending fleet review.
 
 Successful V2 grant GET remains blocked by a strict DTO mismatch: the protected backend now includes actor role/revision, while the browser schema does not. The owner was escalated to root for reconciliation; no UI or runtime acceptance is claimed from the source candidate.
+
+FE808 now consumes Cassian's required protected actor projection on every V2 grant page. It checks actor UUID, organization, owner/admin role and unchanged role/revision across the traversal before showing any role controls; target revision still guards each PUT. Fleet tests and actual browser acceptance remain pending.

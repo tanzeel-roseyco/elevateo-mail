@@ -126,3 +126,5 @@ FE808 canonical DTO continuation: grant pages are fully traversed before display
 FE808 roster continuation: the People view reads paginated `/v2/organizations/{id}/roster`, checks session context/version and verifies all twelve unbound keys, names, titles and departments against the reference catalog. Denial or mismatch leaves a clearly labelled local reference list. This source has not run in Docker or a browser; no real enrollment or role assignment is inferred.
 
 FE808 current blocker: Sabine/Theo successful grant GET includes protected actor, but Cassian strict browser DTO has not yet added it. No successful admin read acceptance is claimed. Root was asked to re-dispatch the inactive Cassian owner; latest FE808 source is committed and awaits exact DTO integration plus Soren/Tessa checks.
+
+FE808 actor DTO follow-up: source now uses the required `OrganizationGrantPage.actor` from Cassian `be12a48`, including cases where the actor is outside paginated `items`. A mismatched/stale actor projection fails closed before showing grants or controls. Authenticated fleet/browser verification is NOT_RUN on this incremental candidate.

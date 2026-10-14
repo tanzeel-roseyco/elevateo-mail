@@ -684,3 +684,7 @@ Scope: `apps/web/src/features/members/adminModel.ts`, `AdministrationPage.tsx` a
 ### FE808 continuation author inspection
 
 Scope: `apps/web/src/features/members/{adminModel,AdministrationPage,PersonalSettingsPage,peopleFeatureModule}*`. Author inspection found and fixed one stale-write replay risk by blocking further edits after any failed write until reload. Independent adversarial packets and design reviewer remain pending; no independent defect count or density is claimed. Fleet Docker tests, TypeScript/lint and actual browser checks are NOT_RUN on this candidate.
+
+### FE808 protected actor incremental source check
+
+Scope: `apps/web/src/features/members/{adminModel,AdministrationPage}.ts*` plus paired tests; only actor projection handling changed. Author check found the prior pagination-derived authority limitation and replaced it with Cassian's required protected actor DTO. This is not an independent adversarial or design review; independent defect density and runtime acceptance remain pending. No local application tests were executed.

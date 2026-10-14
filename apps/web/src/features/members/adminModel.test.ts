@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { CONFIG_PEOPLE, editableRoles, validGrantProjection, validRosterProjection } from './adminModel'
+import { CONFIG_PEOPLE, editableRoles, validActorProjection, validGrantProjection, validRosterProjection } from './adminModel'
 
 const owner = { organization_id: '00000000-0000-4000-8000-000000000001', user_id: '00000000-0000-4000-8000-000000000002', role: 'organization_owner' as const, revision: 1 }
 const member = { ...owner, user_id: '00000000-0000-4000-8000-000000000003', role: 'organization_member' as const }
@@ -17,8 +17,8 @@ describe('people and grant model', () => {
     expect(validRosterProjection([{ ...rows[0]!, display_name: 'Changed' }, ...rows.slice(1)])).toBe(false)
   })
   it('offers owner edits only for another active grant and never owner transfer', () => {
-    expect(editableRoles(owner.user_id, [owner, member], member)).toEqual(['organization_admin', 'technology_operator', 'sales_lead', 'sales_member', 'security_auditor', 'organization_member'])
-    expect(editableRoles(owner.user_id, [owner, member], owner)).toEqual([])
+    expect(editableRoles(owner, member)).toEqual(['organization_admin', 'technology_operator', 'sales_lead', 'sales_member', 'security_auditor', 'organization_member'])
+    expect(editableRoles(owner, owner)).toEqual([])
   })
   it('rejects a cross-organization or duplicate grant projection', () => {
     expect(validGrantProjection(owner.organization_id, [owner, member])).toBe(true)
@@ -27,11 +27,14 @@ describe('people and grant model', () => {
   })
   it('limits an admin to subordinate roles and no peer edit', () => {
     const admin = { ...owner, role: 'organization_admin' as const }
-    expect(editableRoles(admin.user_id, [admin, member], member)).toEqual(['technology_operator', 'sales_lead', 'sales_member', 'security_auditor', 'organization_member'])
-    expect(editableRoles(admin.user_id, [admin, owner], owner)).toEqual([])
+    expect(editableRoles(admin, member)).toEqual(['technology_operator', 'sales_lead', 'sales_member', 'security_auditor', 'organization_member'])
+    expect(editableRoles(admin, owner)).toEqual([])
   })
-  it('denies a missing actor and subordinate promotion', () => {
-    expect(editableRoles('missing', [owner, member], member)).toEqual([])
-    expect(editableRoles(member.user_id, [owner, member], owner)).toEqual([])
+  it('rejects stale or mismatched protected actor projections', () => {
+    expect(validActorProjection(owner.organization_id, owner.user_id, owner)).toBe(true)
+    expect(validActorProjection(owner.organization_id, owner.user_id, { ...owner, user_id: member.user_id })).toBe(false)
+    expect(validActorProjection(owner.organization_id, owner.user_id, { ...owner, revision: 2 }, owner)).toBe(false)
+    expect(validActorProjection(owner.organization_id, owner.user_id, { ...owner, role: 'organization_member' })).toBe(false)
+    expect(editableRoles(member, owner)).toEqual([])
   })
 })
