@@ -20,6 +20,7 @@ class ContractV2Test < Minitest::Test
     assert_equal "active", @contract.dig("paths", "/v2/outreach/campaigns/{campaign_id}", "put", "x-elevateo-status")
     assert_equal "active", @contract.dig("paths", "/v2/outreach/campaigns/{campaign_id}/leads", "post", "x-elevateo-status")
     assert_equal "active", @contract.dig("paths", "/v2/outreach/campaigns/{campaign_id}/leads/{lead_id}", "put", "x-elevateo-status")
+    assert_equal "active", @contract.dig("paths", "/v2/threads/{thread_id}/messages/{message_id}", "get", "x-elevateo-status")
   end
 
   def test_failure_no_live_dispatch_or_v1_collision
@@ -28,6 +29,8 @@ class ContractV2Test < Minitest::Test
     refute @contract.fetch("paths").keys.any? { |path| path.include?("send") }
     assert_equal "disabled", @contract.dig("paths", "/v2/outreach/campaigns/{campaign_id}/accounts", "get", "x-elevateo-status")
     assert_equal "disabled", @contract.dig("paths", "/v2/worker/jobs/{job_id}", "get", "x-elevateo-status")
+    assert_equal %w[context_id authorization_version mailbox_id thread_id message],
+      @contract.dig("components", "schemas", "DirectMessagePage", "required")
   end
 
   def test_failure_worker_does_not_inherit_browser_authority

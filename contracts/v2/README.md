@@ -11,3 +11,5 @@ Runtime browser schemas live in `apps/web/src/data/v2Contract.ts`. Generate Open
 The `contracts/tooling/generate-v2.sh` wrapper delegates to the web package generator. Run it only in Soren's fleet Docker lane, commit the generated declaration with its exact source hash, then run `npm --prefix apps/web run check:api:v2`.
 
 The browser account port reserves `listAccounts(ctx, campaignId, query, signal)` and `getAccount(ctx, campaignId, accountId, signal)`. Both methods reject with `temporarily_unavailable` before network dispatch until campaign-scoped backend authorization is implemented and tested.
+
+The additive `getDirectMessage` operation uses `GET /v2/threads/{thread_id}/messages/{message_id}?mailbox_id={uuid}` and returns the frozen V1 plaintext Message shape inside a current session envelope. Corin's reader binds organization, mailbox, thread and message in one protected query and maps absent or denied rows to the same 404. The V1 read schema is unchanged; Mira deep-link adoption and fleet HTTP verification remain pending.

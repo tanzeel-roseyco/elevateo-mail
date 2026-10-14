@@ -15,7 +15,8 @@ module V2RouteRegistry
     "listOrganizationGrants" => ["GET", "/v2/organizations/:organization_id/grants", "v2/admin/organization_grants#index"],
     "getOrganizationRoster" => ["GET", "/v2/organizations/:organization_id/roster", "v2/admin/organization_grants#roster"],
     "replaceOrganizationGrant" => ["PUT", "/v2/organizations/:organization_id/grants/:user_id", "v2/admin/organization_grants#update"],
-    "getWorkerJob" => ["GET", "/v2/worker/jobs/:job_id", "v2/worker_jobs#show"]
+    "getWorkerJob" => ["GET", "/v2/worker/jobs/:job_id", "v2/worker_jobs#show"],
+    "getDirectMessage" => ["GET", "/v2/threads/:thread_id/messages/:message_id", "v1/threads#message"]
   }.transform_values(&:freeze).freeze
 
   def self.register!(mapper, enabled:, controllers_ready:, operations: ROUTES.keys)

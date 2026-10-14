@@ -16,6 +16,57 @@
     }
   ],
   "paths": {
+    "/v2/threads/{thread_id}/messages/{message_id}": {
+      "get": {
+        "operationId": "getDirectMessage",
+        "x-elevateo-status": "active",
+        "description": "One authorized plaintext message in the requested mailbox and thread; absent and inaccessible are indistinguishable.",
+        "parameters": [
+          {
+            "name": "thread_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Id"
+            }
+          },
+          {
+            "name": "message_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Id"
+            }
+          },
+          {
+            "name": "mailbox_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Current scoped plaintext message",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DirectMessagePage"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed path or query"
+          },
+          "404": {
+            "description": "Message absent or inaccessible"
+          }
+        }
+      }
+    },
     "/v2/organizations/{organization_id}/grants": {
       "get": {
         "operationId": "listOrganizationGrants",
@@ -659,6 +710,132 @@
       }
     },
     "schemas": {
+      "UtcTimestamp": {
+        "type": "string",
+        "format": "date-time",
+        "pattern": "Z$"
+      },
+      "Address": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "display_name",
+          "address"
+        ],
+        "properties": {
+          "display_name": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 256
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "address": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 256
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        }
+      },
+      "Message": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "sender",
+          "to",
+          "sent_at",
+          "body_text",
+          "body_truncated",
+          "attachment_count"
+        ],
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/Id"
+          },
+          "sender": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Address"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "to": {
+            "type": "array",
+            "maxItems": 100,
+            "items": {
+              "$ref": "#/components/schemas/Address"
+            }
+          },
+          "sent_at": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/UtcTimestamp"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "body_text": {
+            "type": "string",
+            "maxLength": 16384
+          },
+          "body_truncated": {
+            "type": "boolean"
+          },
+          "attachment_count": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 1000
+          }
+        }
+      },
+      "DirectMessagePage": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "context_id",
+          "authorization_version",
+          "mailbox_id",
+          "thread_id",
+          "message"
+        ],
+        "properties": {
+          "context_id": {
+            "type": "string",
+            "minLength": 16,
+            "maxLength": 256
+          },
+          "authorization_version": {
+            "type": "string",
+            "minLength": 16,
+            "maxLength": 256
+          },
+          "mailbox_id": {
+            "$ref": "#/components/schemas/Id"
+          },
+          "thread_id": {
+            "$ref": "#/components/schemas/Id"
+          },
+          "message": {
+            "$ref": "#/components/schemas/Message"
+          }
+        }
+      },
       "Id": {
         "type": "string",
         "format": "uuid"
