@@ -708,3 +708,5 @@ OUT-804 author replay review found that an exact create retry after a later edit
 OUT-804 fleet repository diagnostic on exact b28b7d3 reached 8 runs/29 assertions with one failed SQL-shape oracle; the test regex wrongly required an optional conflict target before `DO NOTHING`. Source assertion repaired to accept valid targetless SQL. This is not an independent review; reviewed LOC remain 0, density unmeasured, exact rerun pending.
 
 OUT-804 exact 5bd1b28 fleet diagnostic passed input 5/8, repository 8/31 and affected lint 9 files/0 offenses, but Steep found six source typing diagnostics (five repository, one lead controller). Author repaired declaration/bind/reason types; strict rerun pending. This diagnostic is not an independent source review; independent coverage 0 LOC, density unmeasured.
+
+OUT-804 exact 35273ba fleet rerun passed input 5/8, repository 8/31, affected lint 9 files/0 offenses and full Steep. These are isolated tool results, not independent source review: independent coverage remains 0 LOC and defect density unmeasured. Integrated DB/RLS/HTTP and design review remain pending.

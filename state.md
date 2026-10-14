@@ -146,3 +146,5 @@ OUT-804 create idempotency now compares an immutable stored request fingerprint 
 Soren's exact b28b7d3 fleet Ruby receipt passed input 5/8 and reported repository 8 runs/29 assertions with one failing SQL-shape oracle. The valid targetless `ON CONFLICT DO NOTHING` is now accepted by the test; this repair and integrated runtime remain unverified.
 
 Exact 5bd1b28 fleet Ruby/lint passed input 5/8, repository 8/31 and affected lint 9 files/0 offenses. Steep failed six campaign types across repository and lead suppression; source/RBS repairs are authored and await exact fleet rerun.
+
+Exact 35273ba isolated fleet checks now pass input 5/8, repository 8/31, affected lint 9 files/0 offenses and full Steep. Controller cases, disposable DB/RLS and integrated HTTP have not been established by this receipt.

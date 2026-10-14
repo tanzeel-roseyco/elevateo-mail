@@ -214,3 +214,5 @@ Migration 00009 stores `creation_fingerprint` for campaign, lead and account row
 The repository unit accepts `ON CONFLICT DO NOTHING` with or without an explicit target, matching PostgreSQL syntax while still checking that create collisions never overwrite rows. This corrects the b28b7d3 fleet test oracle; an exact rerun is required.
 
 Repository SQL binds now use the declared Active Record string binder, converting validated scalar values to text before database casts; the connection is declared through the existing structural read/write interface. The lead suppression controller validates the reason string before the repository enum check. These source changes answer six exact 5bd1b28 Steep diagnostics; the strict type rerun is pending.
+
+Soren's exact 35273ba pinned fleet image receipt reports input 5/8, repository 8/31, affected --lint 9 files/0 offenses and full Steep exit 0. This verifies isolated source checks only; integrated migration, tenant/private-mailbox RLS and authenticated V2 HTTP still need exact fleet evidence.
