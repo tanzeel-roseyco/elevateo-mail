@@ -69,3 +69,26 @@ class ClosedDraftFixtureCleanupTest < DraftDatabaseTestCase
     assert_closed_connection_cleanup
   end
 end
+
+class OrganizationAccessRollbackFaultTest < Minitest::Test
+  def test_failed_rollback_does_not_mask_original_delete_failure
+    original = RuntimeError.new("injected security-row delete failure")
+    rollbacks = []
+    fake = Object.new
+    fake.define_singleton_method(:finished?) { false }
+    fake.define_singleton_method(:transaction_status) { PG::PQTRANS_INERROR }
+    fake.define_singleton_method(:exec) do |sql|
+      if sql == "ROLLBACK"
+        rollbacks << sql
+        raise PG::ConnectionBad, "injected connection loss during rollback"
+      end
+    end
+    fake.define_singleton_method(:exec_params) { |*_args| raise original }
+    fixture = Object.new.extend(OrganizationAccessFixtureCleanup)
+    fixture.instance_variable_set(:@admin, fake)
+    fixture.instance_variable_set(:@org, SecureRandom.uuid)
+
+    assert_same original, assert_raises(RuntimeError) { fixture.send(:cleanup_organization_access_fixture) }
+    assert_equal ["ROLLBACK"], rollbacks
+  end
+end
