@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 require "minitest/autorun"
+# AIDEV-NOTE: Deadline tests run independently, so load stub support without relying on another suite.
+require "minitest/mock"
 require_relative "acceptance_invitation"
 
 class AcceptanceInvitationTransportTest < Minitest::Test
