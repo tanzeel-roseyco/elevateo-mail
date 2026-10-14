@@ -121,3 +121,5 @@ Cassian manifest reconciliation: contract-lock now seals actual generated client
 ### SEND-810 cancellation candidate
 
 The isolated branch has cancellation SQL/API source, database and controller regressions, and exact Rowan/Elara merge lineage. Nadia's duplicate worker bridge and process activation were removed on root direction; Rowan's worker authority and Elara's direct store/driver source are merged with lineage. Docker execution and proof of Rowan's reconciliation guard repair remain pending. See `docs/completion/nadia.md`.
+
+Soren's first integrated real database migration failed at SEND-810 `app.cancel_send` creation for missing send-owner CREATE on schema `app`; dependent suites were not reached. Nadia has a transaction-scoped grant/revoke repair with a privilege absence assertion; repaired-source Docker rerun is pending.
