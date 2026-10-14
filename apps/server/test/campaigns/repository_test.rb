@@ -8,7 +8,10 @@ class CampaignRepositoryTest < Minitest::Test
   OP = "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb"
   ORG = "cccccccc-cccc-4ccc-8ccc-cccccccccccc"
 
-  Result = Struct.new(:to_a)
+  class Result
+    def initialize(rows) = (@rows = rows)
+    def to_a = @rows
+  end
   class Connection
     attr_reader :calls
     def initialize(responses)

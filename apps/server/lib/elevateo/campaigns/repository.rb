@@ -196,8 +196,9 @@ module Elevateo
           raise CollaborationError.new(visible ? "draft_conflict" : "not_available")
         end
         if input.kind == "lead" && !preserve_consent
-          rows(<<~SQL, [org, fields.fetch("campaign_id"), input.id, input.operation_id, actor,
-            fields.fetch("consent_status"), fields.fetch("consent_source"), fields.fetch("consent_recorded_at")])
+          event_values = [org, fields.fetch("campaign_id"), input.id, input.operation_id, actor,
+            fields.fetch("consent_status"), fields.fetch("consent_source"), fields.fetch("consent_recorded_at")]
+          rows(<<~SQL, event_values)
             INSERT INTO app.campaign_consent_events(organization_id,campaign_id,lead_id,operation_id,
               actor_id,status,source,observed_at)
             VALUES ($1::uuid,$2::uuid,$3::uuid,$4::uuid,$5::uuid,$6,$7,$8::timestamptz)

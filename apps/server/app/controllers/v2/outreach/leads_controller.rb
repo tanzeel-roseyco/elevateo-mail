@@ -8,6 +8,9 @@ module V2
       def index
         campaign = path_uuid(:campaign_id)
         protected_read(allowed_query: %w[cursor limit], budget: 262_144) do |connection:, identity:, query:, **|
+          # @type var connection: ActiveRecord::ConnectionAdapters::AbstractAdapter
+          # @type var identity: Elevateo::SessionIdentity
+          # @type var query: Hash[String, String]
           repository = campaign_repository(connection, identity: identity, write: false)
           repository.detail(kind: "campaign", organization_id: identity.org_id, id: campaign)
           cursor, limit = page_options(query)
@@ -19,6 +22,8 @@ module V2
       def show
         id, campaign = path_uuid(:lead_id), path_uuid(:campaign_id)
         protected_read(allowed_query: [], budget: 4096) do |connection:, identity:, **|
+          # @type var connection: ActiveRecord::ConnectionAdapters::AbstractAdapter
+          # @type var identity: Elevateo::SessionIdentity
           repository = campaign_repository(connection, identity: identity, write: false)
           item = repository.detail(kind: "lead", organization_id: identity.org_id, id: id)
           raise Elevateo::CollaborationError.new("not_available") unless item.fetch("campaign_id") == campaign
@@ -30,6 +35,9 @@ module V2
         campaign = path_uuid(:campaign_id)
         protected_write(required: %w[id operation_id email], budget: 4096) do
           |connection:, identity:, input:, **|
+          # @type var connection: Elevateo::WriteStatements
+          # @type var identity: Elevateo::SessionIdentity
+          # @type var input: Elevateo::WriteInput::object
           repository = campaign_repository(connection, identity: identity, write: true)
           repository.detail(kind: "campaign", organization_id: identity.org_id, id: campaign)
           payload = Elevateo::Campaigns::Input.new(kind: "lead", value: {
@@ -47,6 +55,9 @@ module V2
         campaign, id = path_uuid(:campaign_id), path_uuid(:lead_id)
         protected_write(required: %w[operation_id expected_version email], budget: 4096) do
           |connection:, identity:, input:, **|
+          # @type var connection: Elevateo::WriteStatements
+          # @type var identity: Elevateo::SessionIdentity
+          # @type var input: Elevateo::WriteInput::object
           repository = campaign_repository(connection, identity: identity, write: true)
           old = repository.detail(kind: "lead", organization_id: identity.org_id, id: id)
           raise Elevateo::CollaborationError.new("not_available") unless old.fetch("campaign_id") == campaign
@@ -70,6 +81,9 @@ module V2
         campaign, id = path_uuid(:campaign_id), path_uuid(:lead_id)
         protected_write(required: %w[operation_id expected_version source observed_at attested], budget: 4096) do
           |connection:, identity:, input:, **|
+          # @type var connection: Elevateo::WriteStatements
+          # @type var identity: Elevateo::SessionIdentity
+          # @type var input: Elevateo::WriteInput::object
           Elevateo::WriteInput.invalid! unless input.fetch("attested") == true
           repository = campaign_repository(connection, identity: identity, write: true)
           old = repository.detail(kind: "lead", organization_id: identity.org_id, id: id)
@@ -91,6 +105,9 @@ module V2
         campaign, id = path_uuid(:campaign_id), path_uuid(:lead_id)
         protected_write(required: %w[operation_id expected_version], budget: 4096) do
           |connection:, identity:, input:, **|
+          # @type var connection: Elevateo::WriteStatements
+          # @type var identity: Elevateo::SessionIdentity
+          # @type var input: Elevateo::WriteInput::object
           repository = campaign_repository(connection, identity: identity, write: true)
           old = repository.detail(kind: "lead", organization_id: identity.org_id, id: id)
           raise Elevateo::CollaborationError.new("not_available") unless old.fetch("campaign_id") == campaign
@@ -109,6 +126,9 @@ module V2
       def suppress
         campaign, id = path_uuid(:campaign_id), path_uuid(:lead_id)
         protected_write(required: %w[reason], budget: 4096) do |connection:, identity:, input:, **|
+          # @type var connection: Elevateo::WriteStatements
+          # @type var identity: Elevateo::SessionIdentity
+          # @type var input: Elevateo::WriteInput::object
           repository = campaign_repository(connection, identity: identity, write: true)
           old = repository.detail(kind: "lead", organization_id: identity.org_id, id: id)
           raise Elevateo::CollaborationError.new("not_available") unless old.fetch("campaign_id") == campaign
