@@ -212,9 +212,14 @@ class ThreadDatabaseTest < SessionDatabaseTestCase
 
   def test_scoped_down_and_reapply_are_transactionally_reversible
     before = business_snapshot
+    before_foreign_keys = later_thread_foreign_keys
+    before_policies = later_thread_policies
     @admin.exec("BEGIN")
     @admin.exec("SET LOCAL ROLE elevateo_owner")
-    # AIDEV-NOTE: C/D reference B threads; membership revisions reference only mailboxes and remain installed.
+    # AIDEV-NOTE: Detach only known later-feature FKs and read policy inside this rollback-only transaction.
+    # Their definitions, tables and rows return with rollback; the original B/C/D scripts stay unchanged.
+    detach_later_thread_foreign_keys
+    detach_later_thread_policies
     drafts = File.expand_path("../be02_drafts", PARTS)
     collaboration = File.expand_path("../be02_collaboration", PARTS)
     @admin.exec(File.read(File.join(collaboration, "down.sql")))
@@ -230,9 +235,45 @@ class ThreadDatabaseTest < SessionDatabaseTestCase
     refute_nil @admin.exec("SELECT to_regclass('app.messages')").getvalue(0, 0)
     @admin.exec("ROLLBACK")
     assert_equal before, business_snapshot
+    assert_equal before_foreign_keys, later_thread_foreign_keys
+    assert_equal before_policies, later_thread_policies
     assert_equal @thread, detail.fetch("thread").fetch("id")
   ensure
     @admin.exec("ROLLBACK") if @admin.transaction_status != PG::PQTRANS_IDLE
+  end
+
+  def detach_later_thread_foreign_keys
+    later_thread_foreign_keys.each { |row| @admin.exec(row.fetch("drop_sql")) }
+  end
+
+  def later_thread_foreign_keys
+    @admin.exec(<<~SQL).to_a
+      SELECT format('ALTER TABLE %s DROP CONSTRAINT %I', c.conrelid::regclass, c.conname) AS drop_sql,
+             pg_get_constraintdef(c.oid) AS definition
+        FROM pg_constraint AS c
+       WHERE c.contype = 'f'
+         AND c.conrelid IN (
+           to_regclass('app_send_private.intents'), to_regclass('app.inbound_receipts'),
+           to_regclass('app.inbound_imap_receipts'), to_regclass('app.inbox_attachments'))
+         AND c.confrelid IN (
+           to_regclass('app.drafts'), to_regclass('app.threads'), to_regclass('app.messages'))
+       ORDER BY c.conrelid::regclass::text, c.conname
+    SQL
+  end
+
+  def detach_later_thread_policies
+    return if later_thread_policies.empty?
+
+    @admin.exec("DROP POLICY inbox_attachment_read ON app.inbox_attachments")
+  end
+
+  def later_thread_policies
+    @admin.exec(<<~SQL).to_a
+      SELECT polname, pg_get_expr(polqual, polrelid) AS expression
+        FROM pg_policy
+       WHERE polrelid = to_regclass('app.inbox_attachments')
+         AND polname = 'inbox_attachment_read'
+    SQL
   end
 
   private

@@ -45,6 +45,17 @@ module Elevateo
       end
     end
 
+    # AIDEV-NOTE: One-message permalink responses use the same validated JSON and a fixed byte ceiling as pages.
+    def self.single(item:, budget: MESSAGE_BYTES)
+      raise Invalid, "invalid read response" unless item.is_a?(Hash) && budget.is_a?(Integer) &&
+        budget.between?(1, MESSAGE_BYTES)
+
+      body = dump(item)
+      raise Overflow, "read response exceeds byte budget" if body.bytesize > budget
+
+      body
+    end
+
     def self.dump(value)
       validate_json(value, 0)
       JSON.generate(value, allow_nan: false, max_nesting: 32)

@@ -337,3 +337,5 @@ INT801 REV868 sequence gateway test now asserts exact current context/version he
 REV867 Theo and REV869 Lyra bounded static reviews found zero confirmed defects over their pinned 350/340-LOC packets; current fleet/generated-client runtime remains pending.
 
 REV868 Felix bounded browser review found one context-header test-oracle defect in 343 LOC (2.92/KLOC); exact five-line repair was rereviewed with zero new defects, fleet runtime pending.
+
+Corin d4a34f4 direct-message serialization and reversible thread fixture repair is imported as source; current integrated real DB/HTTP/worker Docker proof pending.

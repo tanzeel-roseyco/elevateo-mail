@@ -15,6 +15,8 @@ module Elevateo
       end
 
       def run(account_id:, credential_version:)
+        # @type var session: _ImapSession?
+        session = nil
         claim = @store.claim(account_id: account_id, credential_version: credential_version)
         session = @transport.open(credential_ref: claim.fetch("credential_ref"))
         raise Rejected, "tls_unverified" unless session.verified_tls?
