@@ -188,3 +188,5 @@ FE807 consent journey now shows an accessible success status after the backend c
 FE807 gateway seam: Cassian `fa3082a` now exports lead detail and manual consent POST; the form binding is ready. New denied and replay-conflict component cases are authored for fleet execution.
 
 FE807 sequence candidate: a distinct campaign-scoped sequence editor route is authored against Cassian's additive V2 proposal. It supports 1–20 ordered steps, local time, bounded delays, draft/held state and atomic versioned Save; all due-time, consent, suppression and delivery authority remains backend-owned. Exact contract review and fleet tests are pending; no sending path exists.
+
+FE807 sequence test fixture now returns the exact created id and only server draft fields on the follow-up GET; fleet execution is still pending.

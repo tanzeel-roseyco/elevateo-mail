@@ -202,3 +202,5 @@ FE807 confirmed consent evidence response: after strict lead receipt validation,
 FE807 consent failure behavior: an access-denied evidence write hides loaded lead content and never shows the manual-attestation success message. A definitive operation mismatch returns an error without automatic replay; only a validated successful receipt can show success.
 
 FE807 sequence route seam: `createOutreachFeatureModule` exports `/outreach/campaigns/:campaignId/sequence` and campaign detail links to it. `sequenceContract.ts` validates the proposed V2 sequence/step shape and PUT body, including campaign id, operation id and nullable expected version. `SequencePage.tsx` uses optional `getOutreachSequenceDraft` and `saveOutreachSequenceDraft`, a single atomic Save, explicit draft/held labels, a locked conflict/uncertain state and no send control. Cassian must publish and bind the canonical gateway; Fable registers the route.
+
+FE807 sequence create regression checks one id across PUT receipt and subsequent GET, with the strict read DTO excluding write-only operation/version precondition fields.

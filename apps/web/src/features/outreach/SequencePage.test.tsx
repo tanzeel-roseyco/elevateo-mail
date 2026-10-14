@@ -31,10 +31,18 @@ describe('campaign sequence editor candidate', () => {
     expect(sequencePutSchema.safeParse({ ...input, operation_id: sequenceId, expected_version: null, steps: [{ ...saved.steps[0], delay_seconds: 2_592_001 }] }).success).toBe(false)
   })
   it('creates an inert draft after a generic 404 and reloads the saved version', async () => {
-    const getOutreachSequenceDraft = vi.fn().mockRejectedValueOnce(new GatewayError('api', 'not_available', 'absent', { status: 404 })).mockResolvedValue(saved)
-    const saveOutreachSequenceDraft = vi.fn(async (_ctx: unknown, _proof: unknown, _campaignId: unknown, input: SequencePut) => ({
-      ...saved, id: input.id, version: 1, steps: input.steps,
-    }))
+    let created: { id: string; campaign_id: string; version: number; status: 'draft' | 'held'; timezone: string; steps: SequencePut['steps'] } | null = null
+    const getOutreachSequenceDraft = vi.fn(async () => {
+      if (!created) throw new GatewayError('api', 'not_available', 'absent', { status: 404 })
+      return created
+    })
+    const saveOutreachSequenceDraft = vi.fn(async (_ctx: unknown, _proof: unknown, _campaignId: unknown, input: SequencePut) => {
+      created = {
+        id: input.id, campaign_id: input.campaign_id, version: 1,
+        status: input.status, timezone: input.timezone, steps: input.steps,
+      }
+      return created
+    })
     view({ getOutreachSequenceDraft, saveOutreachSequenceDraft })
     expect(await screen.findByText(/No accessible sequence draft was returned/)).toBeTruthy()
     fireEvent.click(screen.getByRole('button', { name: 'Create draft sequence' }))

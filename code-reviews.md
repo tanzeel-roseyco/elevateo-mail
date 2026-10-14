@@ -714,3 +714,5 @@ FE807 manual-evidence presentation self-review: the successful record path refre
 FE807 Cassian seam author review: inspected `fa3082a` getLead/recordConsent signatures and strict input/summary validation; no mismatch identified. Added bounded UI assertions for denied access and definitive operation mismatch with no success/replay; no independent review density or fleet PASS claimed.
 
 FE807 sequence author source review (nonindependent): inspected proposed `03a4f77` shape and identified 404 absence/denial ambiguity; UI makes no existence claim and leaves create authorization to backend PUT. One atomic Save avoids partial per-step updates; 409 and uncertain outcomes lock replay and preserve server version in view. Candidate source and four focused cases authored; no independent bounded coverage/density or runtime PASS claimed.
+
+FE807 sequence fixture self-review found an inconsistent created id and write-only fields in a mock GET. The happy-path test now binds GET to the actual PUT receipt and projects only read DTO fields; one fixture defect corrected, fleet run pending, no independent density claimed.
