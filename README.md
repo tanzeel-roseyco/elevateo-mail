@@ -14,6 +14,8 @@ Shared company mailroom with one Rails domain authority and a React/TypeScript c
 
 ## Current state
 
+**Activated V2 generation and focused backend:** Soren fleet `5b699c6d` generated/checked the active V2 declaration; contract SHA-256 `e97ca2f8…`, generated declaration `0c5f0969…`, matching this candidate's committed bytes. Separate exact `bdb8da6d` focused Steep, three-file lint and attachment authorization 4 tests/20 assertions passed. These are bounded earlier pins; current expanded backend/HTTP/worker/browser remain pending.
+
 **TEST929 ADV159 review:** Orion FIX939 exact `07411a15` was independently reviewed across 55 manifest LOC with zero defects. Its static count is 137 standard and nine separately gated suites; Soren fleet execution remains pending.
 
 **Outbound attachment contract proposal:** A separate INT-801 decision packet inventories frozen V1 draft/send shapes, message-bound private attachment staging and text-only SMTP limits, then proposes draft-owned V2 staging, idempotent binding and a versioned approved snapshot. It is design only; owners and root must agree before implementation and no send path is activated. ADV157 reviewed Nadia FIX940 over 50 LOC with zero source defects; Soren fleet syntax/unit remains pending.
