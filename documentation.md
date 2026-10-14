@@ -525,3 +525,5 @@ INT801 additive assignee-options route: `GET /v2/mailboxes/:mailbox_id/assignee-
 QA815 acceptance harness now requires private browser output permissions before case publication, exact Soren source `5bdf2ee6` plus his `b939be40` three-case fleet receipt. The integrated candidate has not run the compiled reporter/Playwright --list or real browser cases; route/controller acceptance remains pending.
 
 QA816 staged Playwright cases cover top reply V1 persistence and missing selected-message denial, plus protected V2 assignee exact seeded UUID set, foreign mailbox 404 and malformed cursor 400. These cases are unexecuted on integrated source; attachment byte case is held for owner oracle correction.
+
+QA816 ATT902 browser case now checks the controller's fixed safe `Content-Disposition: attachment; filename="attachment"`, separate metadata filename, clean byte hash, held/rejected 423 and fully foreign tuple 404. This is gated source only: private fixture producer and fleet real-browser execution remain pending.

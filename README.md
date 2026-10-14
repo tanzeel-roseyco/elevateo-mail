@@ -520,3 +520,5 @@ INT801 candidate assignee directory activation: the additive V2 `GET /v2/mailbox
 QA815 private browser output preflight is imported from exact Soren `5bdf2ee6` with its `b939be40` fleet receipt: three Python unit cases PASS on that source, enforcing private output directory permissions before browser runs. The source is present in this feature candidate alongside Tessa's compiled reporter fix; no actual browser cases/screenshots or fleet test on this integrated SHA are claimed.
 
 QA816 owner top-reply and assignee real-browser cases are staged from Tessa `d3f2528` with exact seed membership oracle and two assignee denial paths. They are authored, not executed on this integration; attachment browser case awaits a corrected fixed-disposition oracle.
+
+QA816 attachment real-browser source now uses Tessa's corrected `012df586` oracle: clean private bytes/headers and SHA-256, held/rejected 423 without bytes, and foreign tuple 404. The route is still inactive and the private fixture producer, fleet browser cases and screenshots have not run.

@@ -1353,3 +1353,5 @@ Canonical draft.8 description/401/rejected-423 correction follows direct control
 Soren private browser output preflight import `4d0192ca`: no independent source review by Cassian, zero additional reviewed LOC; defects/density unassessed. Three fleet Python unit cases are source-specific test evidence only and do not count as source review or browser runtime.
 
 INT801 integration inspection found one QA816 attachment test-oracle defect before import: Tessa `d3f2528` expects original filename in Content-Disposition but current ATT902 controller returns fixed `attachment`. Held the file and requested owner repair; this is a bounded finding, not an independent full review or runtime proof. Top-reply/assignee owner cases imported source-only; reviewed LOC/density for those files unassessed here.
+
+QA816 earlier Content-Disposition oracle finding is fixed in Tessa `012df586` source and imported at `998c7710`; narrow integration inspection confirms the fixed expected header matches Nadia controller. No independent complete review or browser runtime, so reviewed LOC/density remain unassessed for this import.

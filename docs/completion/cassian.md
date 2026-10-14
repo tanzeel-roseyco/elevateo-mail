@@ -383,3 +383,5 @@ Canonical draft.8 correction after Tessa QA816 review: top-level info now reflec
 QA-only source import `4d0192ca` restores Soren `5bdf2ee6` private browser output preflight/test and `b939be40` runner/receipt without modifying its behavior. Receipt reports three unit cases PASS on Soren's exact source only; integrated feature browser runtime is NOT_RUN.
 
 Tessa `d3f2528` top-reply and assignee Playwright files imported at `0af7d2f4`, authored only. The attachment file was held because its clean Content-Disposition expectation names the original filename while Nadia's current controller deliberately returns the fixed safe `attachment; filename="attachment"`; Tessa was asked for corrected exact oracle. No browser PASS or screenshots are claimed.
+
+Tessa owner correction `012df586` imported at `998c7710`: the attachment browser oracle now expects the actual fixed safe disposition and checks rejected content 423 plus complete foreign tuple. Tests requested from Soren after private fixture and route gates; tests executed on integrated source: none.

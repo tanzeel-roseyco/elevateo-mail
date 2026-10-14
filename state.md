@@ -465,3 +465,5 @@ INT801 assignee-options integration candidate registers only Theo's guarded mail
 QA815 private browser output preflight and Soren's three-case source-specific fleet receipt are imported. This does not establish browser case execution or screenshot acceptance on the current integrated feature SHA; Soren retains sole fleet Docker scheduling.
 
 QA816 gated top-reply and assignee real-browser cases are imported from Tessa `d3f2528`; no integrated browser result or screenshots. The attachment case awaits correction of its Content-Disposition expectation to current fixed safe filename.
+
+QA816 corrected ATT902 browser case source `012df586` is staged but unexecuted; the byte route remains inactive and private fixture/runtime proof pending.
