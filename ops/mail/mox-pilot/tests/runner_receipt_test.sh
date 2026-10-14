@@ -53,6 +53,15 @@ grep -Fqx 'corin_restart=skipped_missing_inputs' "$MOX_PILOT_RECEIPT_DIR/compone
 grep -Fqx 'base_result=pass' "$MOX_PILOT_RECEIPT_DIR/component-status.txt"
 grep -Fqx 'interop_requested=0' "$MOX_PILOT_RECEIPT_DIR/inputs.txt"
 
+export APP_TEST_IMAGE=sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+export MOX_PILOT_RECEIPT_DIR="$test_dir/partial-input-receipt"
+if "$test_dir/pilot/scripts/run-pilot.sh"; then
+  echo 'partial interop inputs were admitted' >&2
+  exit 1
+fi
+[[ ! -e $MOX_PILOT_RECEIPT_DIR ]]
+unset APP_TEST_IMAGE
+
 export FAULT_INVENTORY=1
 export MOX_PILOT_RECEIPT_DIR="$test_dir/hung-inventory-receipt"
 if "$test_dir/pilot/scripts/run-pilot.sh"; then
@@ -62,4 +71,4 @@ fi
 grep -Fqx 'cleanup_verification=unverifiable' "$MOX_PILOT_RECEIPT_DIR/component-status.txt"
 grep -Fqx 'base_result=incomplete' "$MOX_PILOT_RECEIPT_DIR/component-status.txt"
 grep -Eq 'containers=124([[:space:]]|$)' "$MOX_PILOT_RECEIPT_DIR/cleanup-status.txt"
-printf 'PASS: missing interop inputs are explicit; timed-out inventory is unverifiable\n'
+printf 'PASS: omitted inputs explicit, partial inputs rejected, timed-out inventory unverifiable\n'
