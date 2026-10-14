@@ -85,6 +85,39 @@ module V2
         end
       end
 
+      def roster
+        organization = path_uuid(:organization_id)
+        protected_read(allowed_query: %w[limit cursor], budget: 8192) do |connection:, identity:, session:, query:, **|
+          raise Elevateo::CollaborationError.new("not_available") unless organization == identity.org_id
+          limit = self.class.page_limit(query)
+          authorization_binds = [identity.digest, "1", nil].map do |value|
+            ActiveRecord::Relation::QueryAttribute.new("organization_roster_guard", value, ActiveRecord::Type::String.new)
+          end
+          result_row = connection.exec_query(PAGE_SQL, "organization roster authority", authorization_binds).first
+          result = Elevateo::ThreadProjection.source_json(result_row && result_row["result"], 4096)
+          raise Elevateo::CollaborationError.new("internal_error") unless result.is_a?(Hash)
+          Elevateo::SessionStore.check!(result)
+          cursors = Elevateo::Cursors.new(secret: read_config.cursor_signing_key)
+          scope = page_scope(identity, session, limit, organization).merge("resource" => "organization_roster", "order" => "key:asc")
+          position = query.key?("cursor") ? cursors.decode(query.fetch("cursor"), scope: scope) : nil
+          if position && (position.keys != ["config_key"] || !Elevateo::AdministrationRoster::KEYS.include?(position["config_key"]))
+            raise Elevateo::CollaborationError.new("cursor_invalid")
+          end
+          people = Elevateo::AdministrationRoster.public_people(Elevateo::AdministrationRoster.load)
+          offset = position ? Elevateo::AdministrationRoster::KEYS.index(position.fetch("config_key")) + 1 : 0
+          items = people.slice(offset, limit) || []
+          next_key = offset + limit < people.length ? items.last.fetch("key") : nil
+          cursor = next_key && cursors.encode(position: { "config_key" => next_key }, scope: scope)
+          JSON.generate({ "context_id" => session.fetch("context_id"),
+            "authorization_version" => session.fetch("authorization_version"),
+            "items" => items, "next_cursor" => cursor })
+        end
+      rescue Elevateo::Cursors::Invalid
+        raise Elevateo::CollaborationError.new("cursor_invalid")
+      rescue Elevateo::AdministrationRoster::Invalid
+        raise Elevateo::CollaborationError.new("internal_error")
+      end
+
       def update
         organization = path_uuid(:organization_id)
         target = path_uuid(:user_id)
