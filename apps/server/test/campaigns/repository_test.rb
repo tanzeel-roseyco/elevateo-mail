@@ -131,21 +131,38 @@ class CampaignRepositoryReplayTest < Minitest::Test
     refute(connection.calls.any? { |call| call.first.start_with?("UPDATE app.campaigns") })
   end
 
-  def test_same_operation_cannot_replay_with_opposite_consent_preservation
+  def test_same_operation_replays_same_consent_path_and_rejects_opposite_path_both_ways
     intent = { "operation_id" => OP, "expected_version" => 1, "email" => "a@example.invalid" }
     lead = Elevateo::Campaigns::Input.new(kind: "lead", value: {
       "id" => ID, "operation_id" => OP, "campaign_id" => ORG, "email" => "a@example.invalid",
       "consent_status" => "unknown", "consent_recorded_at" => nil,
       "consent_source" => nil, "suppressed" => false
     })
-    opposite = Digest::SHA256.hexdigest(JSON.generate(["lead", ID, 1, intent.sort.to_h, ORG, false]))
-    connection = Connection.new([[], [{ "fingerprint" => opposite, "result" => "{}" }]])
-    error = assert_raises(Elevateo::CollaborationError) do
-      Elevateo::Campaigns::Repository.new(connection: connection).replace(lead,
+    [true, false].each do |preserve|
+      row = { "id" => ID, "campaign_id" => ORG, "email" => "a@example.invalid",
+        "consent_status" => "unknown", "consent_recorded_at" => nil,
+        "consent_source" => nil, "consent_recorded_by" => nil, "suppressed_at" => nil,
+        "version" => preserve ? 1 : 2 }
+      first_responses = preserve ? [[], [], [row], [row], []] : [[], [], [], [row], [row], []]
+      first = Connection.new(first_responses)
+      original = Elevateo::Campaigns::Repository.new(connection: first).replace(lead,
         organization_id: ORG, expected_version: 1, actor_id: ORG, intent: intent,
-        preserve_consent: true)
+        preserve_consent: preserve)
+      ledger = first.calls.find { |call| call.first.include?("INSERT INTO app.campaign_mutations") }
+      fingerprint = ledger.last.fetch(4)
+      replay_row = { "fingerprint" => fingerprint, "result" => JSON.generate(original) }
+      exact = Connection.new([[], [replay_row]])
+      assert_equal original, Elevateo::Campaigns::Repository.new(connection: exact).replace(lead,
+        organization_id: ORG, expected_version: 1, actor_id: ORG, intent: intent,
+        preserve_consent: preserve)
+      opposite = Connection.new([[], [replay_row]])
+      error = assert_raises(Elevateo::CollaborationError) do
+        Elevateo::Campaigns::Repository.new(connection: opposite).replace(lead,
+          organization_id: ORG, expected_version: 1, actor_id: ORG, intent: intent,
+          preserve_consent: !preserve)
+      end
+      assert_equal "operation_mismatch", error.code
+      refute(opposite.calls.any? { |call| call.first.include?("UPDATE app.campaign_leads") })
     end
-    assert_equal "operation_mismatch", error.code
-    refute(connection.calls.any? { |call| call.first.start_with?("UPDATE app.campaign_leads") })
   end
 end
