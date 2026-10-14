@@ -1230,3 +1230,5 @@ INT801 attachment client strict-type candidate: Cassian inspected `attachment_ga
 Soren 651b63a exact integrated revised 00009 blob `eece1c9` migrated successfully in disposable PostgreSQL (0.0220s). This is SQL execution evidence, not a review or authorization behavioral PASS; the named protected-marker positive/negative fixture and HTTP remain pending.
 
 Ada ADV111 independent review of exact OUT-804 2f255b9 covered 303 unique LOC and found zero confirmed source defects (0/KLOC). It identified a proof gap: restricted-role positive test reached SELECT only after helper status, without an actual RLS INSERT/UPDATE. Author added direct protected `app_read` INSERT/UPDATE and revoked-session stale-digest read denial in the fixture; the follow-up is unreviewed and NOT_RUN. Prior RLS bypass was an author finding, not counted in ADV111 defects.
+
+QA815 `065ec91` role failure and thread fixture improvement are executed test findings, not an independent source review. Additional independently reviewed LOC remains 0; defect density unclaimed.

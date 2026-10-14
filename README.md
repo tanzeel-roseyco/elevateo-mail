@@ -437,3 +437,5 @@ INT801 attachment client strict typing candidate declares the Rails-side gateway
 The later exact integrated 651b63a fleet receipt carries revised 00009 blob `eece1c9` and confirms its PostgreSQL migration PASS. The runner failed on separate protected-role and thread-fixture tests before Outreach named role/no-marker and HTTP checks, which remain pending.
 
 ADV111 reviewed exact 2f255b9 source with zero confirmed defects across 303 unique LOC, while identifying a missing positive restricted-role mutation test. The disposable fixture now covers protected `app_read` INSERT and UPDATE, valid digest without marker denial, and revoked-session read denial; these added cases remain unexecuted.
+
+QA815 `065ec91` backend retest: 21 migrations PASS, Ruby 522/7080 with one protected organization role failure and zero errors; Rowan's prior thread fixture ownership error is absent. Steep 111 problems; HTTP/worker/browser still pending. Cleanup passed. See `docs/completion/soren.md`.
