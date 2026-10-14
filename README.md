@@ -218,3 +218,5 @@ OUT-804 event snapshots now also bind the lead version, and a database trigger r
 OUT-804 lead update guard now rejects clearing an existing evidence link and requires a fresh versioned event whenever email or consent fields change. Metadata-only version changes may keep their matching historical evidence link. Real API-role negative and metadata cases remain requested.
 
 OUT-804 campaign account reads and mutations now require the current actor's mailbox membership as well as mailbox visibility and outreach role. Shared mailbox browsing remains governed by its existing rule; account association is stricter. Cross-actor fleet proof and account route review remain pending.
+
+OUT-804 now includes disposable authenticated database tests using the existing real-session API-role fixture: metadata-only lead update with retained evidence, a denied link clear, same-org sales actor account denial without mailbox membership, and actual Repository stale-update event rollback. Only Soren may run these tests in fleet Docker; no PASS is claimed.
