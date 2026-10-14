@@ -49,3 +49,5 @@ Fable 77dbd86 production Outreach binding merged as c966427. Static review still
 Soren exact ea92754 integrated DB receipt failed at Corin CreateIsolatedInbound#up line 45: PostgreSQL syntax error at end of SQL input after `CASE WHEN jsonb_typeof(p_attachments) = 'array' THEN`. Earlier Nadia migration was passed on that run, but overall migration/SQL/HTTP remain FAILED/NOT_REACHED. Soren cleanup passed; Corin owner repair requested with receipt path in the shared outbox.
 
 Soren exact 93f7b14 fleet web run passed frozen V1 `check:api`, then lint FAILED with six Fable `outreachGatewayBridge.test.ts` unused mock parameters (lines 16/23/31); type/unit/build NOT_REACHED. Cleanup reported zero remaining task containers/image. Fable owner repair requested; no web PASS.
+
+Cassian aligned the inert account adapter signatures to Celeste's campaign-scoped port while preserving zero dispatch. Fable may remove the now-unneeded bridge or forward all four arguments exactly; Fable owns production binding. A focused no-dispatch test covers both account methods, requested for Soren fleet Docker.

@@ -39,6 +39,8 @@ describe('isolated V2 outreach gateway', () => {
     const gateway: OutreachGateway = createV2OutreachGateway(fetchImpl)
     await expect(gateway.listAccounts(context, id, {}, new AbortController().signal))
       .rejects.toMatchObject({ kind: 'api', code: 'temporarily_unavailable' })
+    await expect(gateway.getAccount(context, id, id, new AbortController().signal))
+      .rejects.toMatchObject({ kind: 'api', code: 'temporarily_unavailable' })
     expect(fetchImpl).not.toHaveBeenCalled()
   })
 })
