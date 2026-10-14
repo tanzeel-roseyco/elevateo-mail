@@ -2,6 +2,9 @@
 from __future__ import annotations
 
 import unittest
+from pathlib import Path
+import subprocess
+import tempfile
 
 from acceptance_runtime import Acceptance
 
@@ -48,6 +51,50 @@ class PrivateOutputTest(unittest.TestCase):
         with self.assertRaisesRegex(RuntimeError, "private output mode mismatch"):
             acceptance.private_output_preflight("owned-browser")
         self.assertEqual(task.receipts, [])
+
+    def run_real_probe(self, root: Path) -> subprocess.CompletedProcess[str]:
+        return subprocess.run(["sh", "-c", 'umask 077; exec "$@"', "private-proof", "node",
+            "--input-type=module", "-e", Acceptance.private_output_program(), "--", str(root)],
+            text=True, capture_output=True, check=False)
+
+    def test_real_exclusive_private_file_creation(self) -> None:
+        with tempfile.TemporaryDirectory() as parent:
+            root = Path(parent) / "output"
+            root.mkdir(mode=0o700)
+            (root / "native-private").mkdir(mode=0o700)
+            result = self.run_real_probe(root)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertEqual(result.stdout.strip(), "0077 700 700 600")
+            self.assertFalse((root / "native-private" / ".qa815-umask-proof").exists())
+
+    def test_real_existing_symlink_does_not_change_target(self) -> None:
+        with tempfile.TemporaryDirectory() as parent:
+            root = Path(parent) / "output"
+            private = root / "native-private"
+            root.mkdir(mode=0o700)
+            private.mkdir(mode=0o700)
+            target = Path(parent) / "existing-target"
+            target.write_text("preserve")
+            proof = private / ".qa815-umask-proof"
+            proof.symlink_to(target)
+            result = self.run_real_probe(root)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertEqual(target.read_text(), "preserve")
+            self.assertTrue(proof.is_symlink())
+
+    def test_real_dangling_symlink_does_not_create_target(self) -> None:
+        with tempfile.TemporaryDirectory() as parent:
+            root = Path(parent) / "output"
+            private = root / "native-private"
+            root.mkdir(mode=0o700)
+            private.mkdir(mode=0o700)
+            target = Path(parent) / "not-created"
+            proof = private / ".qa815-umask-proof"
+            proof.symlink_to(target)
+            result = self.run_real_probe(root)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertFalse(target.exists())
+            self.assertTrue(proof.is_symlink())
 
 
 if __name__ == "__main__":

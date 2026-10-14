@@ -1,0 +1,12 @@
+source=1fcb462f985eb713a129cdd93b9c8b3d832b97e5
+image=sha256:06a9939e57531807f8d5fd76ce44b53165ffb7d7501d87ab10e285c20b1e971f
+started=2026-10-14T18:22:08Z
+......
+----------------------------------------------------------------------
+Ran 6 tests in 0.121s
+
+OK
+run_exit=0
+archive_absent=yes
+remaining_task_containers=0
+finished=2026-10-14T18:22:09Z

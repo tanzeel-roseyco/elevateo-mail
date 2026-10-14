@@ -5,7 +5,7 @@ candidate=$(git rev-parse "${1:?usage: run-acceptance-private-unit.sh COMMIT}^{c
 short=${candidate:0:12}
 root=$(git rev-parse --show-toplevel)
 lock=/home/tanzeel/elevateo-mail-wave-20261014/control/soren-docker.lock
-image=sha256:48a11b7ba705fd53bf15248d1f94d36c39549903c5d59edcfa2f3f84126e7b44
+image=sha256:06a9939e57531807f8d5fd76ce44b53165ffb7d7501d87ab10e285c20b1e971f
 name=qa815-acceptance-private-$short
 log="$root/docs/completion/qa815-evidence/acceptance-private-$short.txt"
 context=$(mktemp -d /tmp/qa815-acceptance-private.XXXXXXXX)
@@ -35,7 +35,7 @@ git archive "$candidate" | tar -x -C "$context"
 test "$(docker image inspect --format '{{.Id}}' "$image")" = "$image"
 set +e
 timeout 180s docker run --rm --name "$name" --pull never --network none \
-  --read-only --memory 512m --memory-swap 512m --cpus 1 --pids-limit 64 \
+  --read-only --memory 1g --memory-swap 1g --cpus 1 --pids-limit 96 \
   --user "$(id -u):$(id -g)" -e HOME=/tmp -e PYTHONDONTWRITEBYTECODE=1 \
   --tmpfs /tmp:rw,size=32m,mode=1777 -v "$context":/workspace:ro \
   -w /workspace/ops/tests/be02 "$image" python3 test_acceptance_private_output.py >> "$log" 2>&1

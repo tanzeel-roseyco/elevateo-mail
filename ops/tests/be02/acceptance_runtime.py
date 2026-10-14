@@ -168,17 +168,35 @@ class Acceptance:
             'umask 077; exec "$@"', "acceptance-private", *command], seconds, quiet=True)
 
     def private_output_preflight(self, identity: str) -> None:
-        # AIDEV-NOTE: Probe actual browser mount/process before any case; no fixture or credential bytes are read.
-        script = ('proof=/output/native-private/.qa815-umask-proof; '
-                  'test ! -e "$proof"; : > "$proof"; '
-                  'printf "%s %s %s %s\\n" "$(umask)" "$(stat -c %a /output)" '
-                  '"$(stat -c %a /output/native-private)" "$(stat -c %a "$proof")"; '
-                  'rm -- "$proof"')
-        modes = self.execute(identity, ["sh", "-ceu", script]).strip()
+        # AIDEV-NOTE: Exclusive no-follow creation rejects dangling symlinks before any target write.
+        modes = self.execute(identity, ["node", "--input-type=module", "-e",
+                                        self.private_output_program(), "--", "/output"]).strip()
         if modes != "0077 700 700 600":
             raise RuntimeError("browser private output mode mismatch")
         self.task.write("acceptance-private-output-proof.json",
                         {"browser_umask": "0077", "output_mode": "0700", "created_file_mode": "0600"})
+
+    @staticmethod
+    def private_output_program() -> str:
+        # AIDEV-NOTE: The same Node program is exercised with disposable directories in regression tests.
+        return """import {constants,openSync,fstatSync,closeSync,unlinkSync,statSync} from 'node:fs';
+          const root=process.argv[1];
+          if (!root?.startsWith('/') || root.includes('..')) throw new Error('Invalid output root');
+          const privateDir=root+'/native-private';
+          const proof=privateDir+'/.qa815-umask-proof';
+          const mode=p => (statSync(p).mode & 0o777).toString(8);
+          const current=process.umask().toString(8).padStart(4,'0');
+          let fd; let created=false;
+          try {
+            fd=openSync(proof,constants.O_WRONLY|constants.O_CREAT|constants.O_EXCL|constants.O_NOFOLLOW,0o600);
+            created=true;
+            const createdMode=(fstatSync(fd).mode & 0o777).toString(8);
+            process.stdout.write([current,mode(root),mode(privateDir),createdMode].join(' ')+'\\n');
+          } finally {
+            if (fd!==undefined) closeSync(fd);
+            if (created) unlinkSync(proof);
+          }
+        """
 
     def invitation(self) -> None:
         # AIDEV-NOTE: A completed seed is mandatory; regenerate before each lane and never emit private bytes/hashes.
