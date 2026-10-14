@@ -190,3 +190,5 @@ QA-817 found a HIGH legacy delete ceiling bypass in Sabine's earlier committed p
 QA-817 adds a protected-grants actual-role database candidate for actor identity across pages, auditor denial and forged tenant denial; fleet execution remains pending.
 
 QA-817 adds a disposable real-database distinct-owner insert race candidate to check the single-owner index under concurrent actors. Soren execution is pending.
+
+QA-817 adds actual-role SQL regression source for authorized subordinate role change, stale revision, direct admin-to-owner self escalation and owner demotion denial. Fleet execution remains pending.

@@ -708,3 +708,5 @@ QA-817 independent SEND-809 corrected authority head: Rowan commit daf5161 worke
 QA-817 protected actor DB candidate `apps/server/test/qa817/grant_actor_database_test.rb`: independent source review NOT_RUN (0 LOC reviewed, density unmeasured). Request <=200 LOC full-rubric packet plus design review; Docker/lint NOT_RUN.
 
 QA-817 distinct-owner race DB candidate `apps/server/test/qa817/role_owner_race_database_test.rb`: independent review NOT_RUN (0 LOC, density unmeasured); request <=200 LOC full-rubric packet and design tradeoff review. Docker/lint NOT_RUN.
+
+QA-817 role escalation DB candidate `apps/server/test/qa817/role_escalation_database_test.rb`: independent review NOT_RUN (0 LOC, density unmeasured); request <=200 LOC full-rubric packet and separate design review. Docker/lint NOT_RUN.

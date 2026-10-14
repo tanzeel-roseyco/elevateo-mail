@@ -134,3 +134,5 @@ Sabine committed SEC-802 repair 0df2b1f; QA-817 bounded source review finds the 
 QA-817 protected-grants DB test source checks stable current actor projection across pages, nonadmin denial, and forged-tenant GUC denial on Sabine's current read routine. It has not run in Docker.
 
 QA-817 owner race DB candidate checks two distinct concurrent owner insertions leave exactly one owner; it is source-only until integrated SEC-802 migration and fleet execution.
+
+QA-817 role escalation DB candidate checks owner success/stale revision and failure of admin self-promotion to owner plus direct owner demotion. It uses actual API-role guarded SQL and is unexecuted until SEC-802 integration reaches Soren.
