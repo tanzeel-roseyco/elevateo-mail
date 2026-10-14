@@ -38,7 +38,10 @@ module Elevateo
                                       raw_mime.bytesize.between?(1, MAX_RAW) && !raw_mime.include?("\0")
 
         mail = Mail.read_from_string(raw_mime)
-        reject("invalid_mime") unless mail.header && mail.from&.length == 1 && mail.to&.any?
+        senders = mail.from
+        recipients = mail.to
+        reject("invalid_mime") unless mail.header && senders.is_a?(Array) && senders.length == 1 &&
+                                      recipients.is_a?(Array) && recipients.any?
         parts = leaf_parts(mail)
         reject("invalid_mime") if parts.empty? || parts.length > MAX_PARTS
         text_parts = parts.select { |part| part.mime_type == "text/plain" && !part.attachment? }
@@ -58,8 +61,8 @@ module Elevateo
         end
         record = { organization_id: organization_id, mailbox_id: mailbox_id, provider: "fake",
                    provider_account_id: provider_account_id, provider_event_id: provider_event_id,
-                   content_sha256: Digest::SHA256.hexdigest(raw_mime.b), from: clean_header(mail.from.first),
-                   to: mail.to.map { |address| clean_header(address) }, subject: clean_header(mail.subject.to_s),
+                   content_sha256: Digest::SHA256.hexdigest(raw_mime.b), from: clean_header(senders.first),
+                   to: recipients.map { |address| clean_header(address) }, subject: clean_header(mail.subject.to_s),
                    text: body, attachments: attachments }
         # AIDEV-NOTE: The store owns durable atomic dedup; an in-memory set cannot establish replay safety.
         @store.insert_once(record)

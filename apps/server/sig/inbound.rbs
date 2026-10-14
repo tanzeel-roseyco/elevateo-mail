@@ -28,7 +28,7 @@ module Elevateo
       from: String, to: Array[String], subject: String, text: String, attachments: Array[attachment] }
 
     interface _Store
-      def insert_once: (record) -> Object
+      def insert_once: (record) -> Hash[String, String]
     end
 
     class FakeIngress
@@ -40,7 +40,7 @@ module Elevateo
       @store: _Store
       def initialize: (store: _Store) -> void
       def ingest: (organization_id: String, mailbox_id: String, authorized_mailbox_ids: Array[String],
-        provider_account_id: String, provider_event_id: String, raw_mime: String) -> Object
+        provider_account_id: String, provider_event_id: String, raw_mime: String) -> Hash[String, String]
       def capability: (String) -> String
       private
       def uuid?: (Object) -> bool
