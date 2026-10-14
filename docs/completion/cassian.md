@@ -411,3 +411,5 @@ Soren fleet-only V2 codegen/check on canonical `263047b4` PASS, exact generated 
 ADV146 Vera exact 263047b4 error-envelope successor: 134 unique versioned source LOC/zero defects (0/KLOC), static closure of ADV145 P2. The report excludes HTTP/runtime and request-ID middleware; Soren's separate codegen/check PASS covers parser generation only. Actual scoped response assertions remain for fleet.
 
 QA815 exact feature `555acbff` fleet web: V1/V2 codegen/check PASS; ESLint eight unused parameters in Cassian assignee adapter test FAIL, type/unit/build NOT_REACHED, cleanup PASS. Narrow test-only repair removes unused callback arguments and keeps the successful fetch argument/header oracle; fleet successor requested, no host tests.
+
+Orion435333b1 exact authority fixture source imported feature d696f7fb/core a2f58b34, completing five-owner lint assembly. The prior 522/7089 Ruby set omitted this authority fixture; request Soren targeted fixture lint/unit and coherent full RuboCop/backend/HTTP/worker on a2f58b34. No host tests or runtime PASS on successor.

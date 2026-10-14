@@ -546,3 +546,5 @@ QA815 fleet-only V2 declaration generation/check passed on exact canonical sourc
 ADV146 independently reviewed the current V2 error-envelope repair, 134 source LOC/zero defects, closing ADV145's earlier finding statically. Fleet codegen/check passed separately; scoped HTTP responses remain unverified.
 
 QA815 first integrated web gate on exact `555acbff` passed V1/V2 API declaration checks, then ESLint failed eight unused callback parameters in Cassian's assignee gateway tests; type/unit/build were not reached. The test-only callback repair is staged for a new exact fleet rerun.
+
+Orion `435333b1` authority fixture syntax repair completes the five-owner lint source assembly in strict-only core `a2f58b34`. It moves the same seven SQL bind values ahead of the heredoc and preserves private authorization assertions. Soren's exact targeted/full lint and subsequent backend/HTTP/worker gates are requested, not yet passed.

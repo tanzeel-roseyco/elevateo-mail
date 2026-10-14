@@ -551,3 +551,5 @@ V2 generated TypeScript declarations now come from Soren's fleet Docker on exact
 ADV146 bounded source review of exact 263047b4 V2 scoped error envelopes found zero defects across 134 unique versioned LOC and statically closed ADV145's description-only response finding. It did not inspect request-ID middleware or execute HTTP; Soren's separate fleet codegen/check passed.
 
 QA815 web source `555acbff` reached V1/V2 declaration checks PASS but lint failed eight no-unused-vars findings in v2AssigneeOptionsGateway.test.ts. INT801 removes unused callback parameters while retaining typed successful-call arguments and assertion; Soren fleet lint/type/unit/build rerun is pending.
+
+Orion435333b1 changes only the attachment authority database fixture heredoc bind placement to address four fatal RuboCop parser diagnostics, preserving seven bind values and SQL assertions. It completes exact five-owner lint successor a2f58b34 for Soren's fleet targeted/full gate; earlier Ruby522/7089 PASS did not include this fixture suite.
