@@ -3,6 +3,31 @@
 require_relative "approval_database_helper"
 
 class SendSchemaDatabaseTest < SendDatabaseTestCase
+  def test_send_owner_grants_preserve_existing_owner_bridge_boundaries
+    grants = File.read(File.expand_path("../../db/be03_send/grants.sql", __dir__))
+    @admin.exec("BEGIN; SET LOCAL ROLE elevateo_send_owner")
+    @admin.exec(grants)
+    @admin.exec("COMMIT")
+    assert_equal "elevateo_owner", @admin.exec(<<~SQL).getvalue(0, 0)
+      SELECT proowner::regrole::text FROM pg_proc
+        WHERE oid = 'app_send_private.preserve_consumed_draft()'::regprocedure
+    SQL
+    %w[elevateo_api elevateo_worker elevateo_app_read].each do |role|
+      assert_equal "0", @admin.exec_params(<<~SQL, [role]).getvalue(0, 0)
+        SELECT count(*) FROM pg_proc WHERE pronamespace = 'app_send_private'::regnamespace
+          AND has_function_privilege($1,oid,'EXECUTE')
+      SQL
+    end
+    assert_equal "t", @admin.exec(<<~SQL).getvalue(0, 0)
+      SELECT has_function_privilege('elevateo_send_owner',
+        'app_send_private.consume_draft(text,uuid,uuid,integer)','EXECUTE')
+    SQL
+    refute approve.key?("code")
+    assert_equal [1, 1, 1, 1], counts
+  ensure
+    @admin.exec("ROLLBACK") if @admin && @admin.transaction_status != PG::PQTRANS_IDLE
+  end
+
   def test_runtime_roles_cannot_read_tables_or_execute_private_bridges
     %w[elevateo_api elevateo_worker elevateo_app_read].each do |role|
       row = @admin.exec_params(<<~SQL, [role]).first
