@@ -758,3 +758,5 @@ QA815 `7cae15a7` focused lint PASS and two attachment controller Steep diagnosti
 QA815 `7cae15a7` acceptance compiled reporter `--list` and 73 unit cases are execution evidence, not independent source review or real browser acceptance. No additional reviewed LOC or source defect-density claim.
 
 QA815 `bdb8da6d` focused Steep/lint/ATT unit PASS, `5b699c6d` V2 codegen PASS, `fc45037b` suite admission failure and QA816 producer SyntaxError are tool findings, not independent source reviews. QA815 independently reviewed 0 additional LOC; defect density is unclaimed. Orion/Cassian/Nadia own the two exact repairs and independent re-review before rerun.
+
+QA815 `780f4ed4` FIX940 producer 5/48 PASS and full web 856/856 PASS are fleet execution, not independent source review. The prior bca9 full 1/856 failure and isolated 8/8 rerun remain recorded as timing/suite-interaction evidence, with no new independently reviewed QA815 LOC or defect-density claim. ADV157/ADV159 belong to root's named reviewers.

@@ -13,6 +13,12 @@ log="$root/docs/completion/qa815-evidence/web-${candidate:0:12}.log"
 if [[ ${QA815_WEB_TARGETED:-0} == 1 ]]; then
   log="$root/docs/completion/qa815-evidence/web-targeted-${candidate:0:12}.log"
   web_command='npm run typecheck && npm run test -- src/features/thread/CollaborationPanels.test.tsx'
+elif [[ ${QA815_WEB_MEMBERS_ONLY:-0} == 1 ]]; then
+  log="$root/docs/completion/qa815-evidence/web-members-${candidate:0:12}.log"
+  web_command='npm run test -- src/features/members/MembersPage.test.tsx'
+elif [[ ${QA815_WEB_SERIAL:-0} == 1 ]]; then
+  log="$root/docs/completion/qa815-evidence/web-serial-${candidate:0:12}.log"
+  web_command='npm run check:api && npm run generate:api:v2 && npm run check:api:v2 && sha256sum src/data/generated/api-v2.d.ts && npm run lint && npm run typecheck && npm run test -- --coverage --maxWorkers=2 && npm run build'
 else
   web_command='npm run check:api && npm run generate:api:v2 && npm run check:api:v2 && sha256sum src/data/generated/api-v2.d.ts && npm run lint && npm run typecheck && npm run test -- --coverage && npm run build'
 fi
@@ -60,7 +66,11 @@ cleanup() {
   exit "$status"
 }
 trap cleanup EXIT
-printf 'source=%s\nmode=%s\nstarted=%s\n' "$candidate" "$([[ ${QA815_WEB_TARGETED:-0} == 1 ]] && echo targeted || echo full)" "$(date -u +%FT%TZ)" > "$log"
+mode=full
+[[ ${QA815_WEB_TARGETED:-0} == 1 ]] && mode=targeted
+[[ ${QA815_WEB_MEMBERS_ONLY:-0} == 1 ]] && mode=members
+[[ ${QA815_WEB_SERIAL:-0} == 1 ]] && mode=serial
+printf 'source=%s\nmode=%s\nstarted=%s\n' "$candidate" "$mode" "$(date -u +%FT%TZ)" > "$log"
 if docker container inspect "$tag" >/dev/null 2>&1 || docker image inspect "$tag" >/dev/null 2>&1; then
   printf 'preflight_error=task name or image tag already exists\n' >> "$log"
   exit 92

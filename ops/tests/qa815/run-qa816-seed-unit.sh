@@ -35,6 +35,9 @@ git archive "$candidate" | tar -x -C "$context"
 test "$(docker image inspect --format '{{.Id}}' "$image")" = "$image"
 timeout 120s docker run --rm --name "$name" --pull never --network none \
   --read-only --memory 1g --memory-swap 1g --cpus 1 --pids-limit 128 \
-  --user "$(id -u):$(id -g)" -e HOME=/tmp --tmpfs /tmp:rw,size=64m \
-  -v "$context":/workspace:ro -w /workspace "$image" \
-  ruby tests/acceptance/qa816-attachments-seed-test.rb >> "$log" 2>&1
+  --user "$(id -u):$(id -g)" -e HOME=/tmp -e BUNDLE_APP_CONFIG=/tmp/bundle \
+  -e BUNDLE_GEMFILE=/workspace/apps/server/Gemfile --tmpfs /tmp:rw,size=64m \
+  -v "$context":/workspace:ro -w /workspace "$image" bash -ceu '
+    ruby -c tests/acceptance/qa816-attachments-seed.rb
+    bundle exec ruby tests/acceptance/qa816-attachments-seed-test.rb
+  ' >> "$log" 2>&1
