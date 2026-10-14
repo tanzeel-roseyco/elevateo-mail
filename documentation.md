@@ -202,3 +202,5 @@ The QA816 V2 logout case requires a real campaign GET, then tests protected Outr
 QA816 Outreach F2 now asserts tenant isolation through an other-org authenticated browser session and real V2 detail 404. A same-org reader campaign write policy is not inferred from current source. No browser run has verified either path yet.
 
 QA816 mobile shell acceptance uses `Open navigation` trigger and `Navigation` dialog. The selector is gated on the coordinated Fable Shell rename; older shell source must not be used to classify this candidate as a UI failure.
+
+QA816 reply-as-draft browser acceptance follows a seeded thread into a case-owned editor, checks recipient and reply context, saves through V1 PUT, then reloads. It does not assume an untruncated source subject and does not send mail. Fleet browser evidence remains pending.

@@ -134,3 +134,5 @@ QA816 head b76af04 adds V2 Outreach/People logout-cache regression, bringing the
 QA816 source correction 6e164ef replaces unsupported same-org reader POST denial with separate other-org GET 404 on a case-owned draft campaign. Prior prose about reader create denial is historical and superseded; runtime remains NOT_RUN.
 
 QA816 head ce73f55 stages the root/Fable navigation drawer accessible-name change in acceptance source. Old Fable shell remains incompatible until its owner follow-up and web e2e selectors are integrated; no browser run or visual PASS.
+
+QA816 head 199c132 adds a Mira reply-as-draft PUT/reload case and one fixed screenshot ID (26 total). This source remains unrun; an eligible seeded sender and integrated Mira UI are required.

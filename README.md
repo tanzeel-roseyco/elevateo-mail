@@ -192,3 +192,5 @@ QA816 V2 logout candidate checks that Outreach and People deep links clear after
 QA816 Outreach failure coverage now uses case-owned cross-organization detail denial; the earlier same-organization reader write-denial assumption is withdrawn pending policy definition.
 
 QA816 drawer selectors now target the agreed accessible names `Open navigation` and `Navigation`; the shell case requires Fable's coordinated follow-up source. Existing web e2e selector updates are requested from their owner.
+
+QA816 includes a source-only real reply-as-draft browser journey over Mira's thread UI, saving and reopening a case-owned draft without sending.
