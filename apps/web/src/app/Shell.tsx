@@ -25,6 +25,7 @@ import { MenuIcon } from '@/ui/icons'
 import { AccountSheet } from './AccountSheet'
 import { featureRegistry } from './features'
 import { MailboxesProvider, type MailboxesSnapshot } from './mailboxes'
+import { PageBoundary } from './PageBoundary'
 import { SearchBox } from './SearchBox'
 import { Sidebar } from './Sidebar'
 import { sessionIdentityKey, useGateway, useSession } from './session'
@@ -285,7 +286,7 @@ function ProtectedShell({ session, replacedIdentity }: { session: Session; repla
         {/* Online-only: no cache, no queue; a drop is announced and a return offers an explicit reload. */}
         <ConnectivityBanner onReload={refresh} />
         <main id="main" tabIndex={-1} className="min-h-0 flex-1 overflow-y-auto">
-          <Outlet />
+          <PageBoundary><Outlet /></PageBoundary>
         </main>
       </div>
     </div>

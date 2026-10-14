@@ -9,6 +9,7 @@ import { createV2OutreachGateway } from '@/data/v2OutreachGateway'
 import type { OutreachGateway } from '@/features/outreach/contract'
 import { FeatureGatewaysProvider, type FeatureGateways } from '../featureGateways'
 import { SessionProvider } from '../session'
+import { PageBoundary } from '../PageBoundary'
 import { featureRegistry, featureRoutes } from './index'
 
 function renderRoute(path: string, gateways: FeatureGateways) {
@@ -16,11 +17,11 @@ function renderRoute(path: string, gateways: FeatureGateways) {
     <SessionProvider gateway={createFixtureGateway()}>
       <FeatureGatewaysProvider value={gateways}>
         <MemoryRouter initialEntries={[path]}>
-          <Routes>
+          <PageBoundary><Routes>
             {featureRoutes.map((route) => (
               <Route key={route.path} path={route.path} element={route.element} />
             ))}
-          </Routes>
+          </Routes></PageBoundary>
         </MemoryRouter>
       </FeatureGatewaysProvider>
     </SessionProvider>,
@@ -60,7 +61,7 @@ describe('feature route wiring', () => {
   it('shows Celeste\'s own unavailable state when no Outreach gateway is connected', async () => {
     renderRoute('/outreach/campaigns', {})
     expect(await screen.findByRole('heading', { name: 'Campaigns' })).toBeTruthy()
-    expect((await screen.findByRole('status')).textContent).toBe('Outreach API unavailable for this account.')
+    expect((await screen.findByText('Outreach API unavailable for this account.')).getAttribute('role')).toBe('status')
   })
 
   it('renders Lyra\'s personal settings with the current actor preference', async () => {
@@ -92,7 +93,7 @@ describe('feature route wiring', () => {
     renderRoute('/outreach/campaigns/1a40d184-987d-4b50-98d2-f674e41842f9/accounts', { outreach: createV2OutreachGateway(fetchImpl) })
     // The adapter rejects with temporarily_unavailable before any dispatch; Celeste's page renders
     // that as her own unavailable status rather than an error alert.
-    expect((await screen.findByRole('status')).textContent).toBe('Outreach API unavailable for this account.')
+    expect((await screen.findByText('Outreach API unavailable for this account.')).getAttribute('role')).toBe('status')
     expect(fetchImpl).not.toHaveBeenCalled()
     expect(screen.queryByRole('button')).toBeNull()
   })

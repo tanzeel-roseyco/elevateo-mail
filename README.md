@@ -14,6 +14,8 @@ Shared company mailroom with one Rails domain authority and a React/TypeScript c
 
 ## Current state
 
+INT952 frontend performance candidate: route code is loaded on demand while the inbox, navigation and session gate remain eager. A bounded page fallback supports loading, redacted failure and navigation recovery; four new regressions cover delayed load, rejection, query-state retention and removal during loading. Actual bundle reduction and the full fleet web gate are pending; prior c87 evidence does not verify this change.
+
 INT949 backend checkpoint: exact 9dcb6fa87035 ran 137 standard suites, 812 tests and 8,693 assertions with zero failures, three errors and zero skips. All three errors came from the permalink fixture using a 29-byte key where the shared reader requires 32; the synthetic key is corrected without changing production validation. Steep and 320-file RuboCop passed, and task Docker cleanup passed. Ten dedicated profiles and authenticated HTTP/worker/browser gates remain separate; the successor rerun is pending.
 
 INT949 verified checkpoint: exact c87a0912a0c0 fleet web gate passed V1/V2 contracts, lint, TypeScript, 62 Vitest files/856 tests, coverage (89.59% statements, 82.48% branches, 90.44% functions, 94.15% lines) and production build. The 587.98 kB main JavaScript chunk needs splitting. Backend c87 failed; follow-up repairs address absent/nil Rails logging, preference write RLS lock misuse, explicit role fixtures and FK cleanup. Authenticated browser, private bytes, Android runtime and platform packages remain open. No credentials or production activation.

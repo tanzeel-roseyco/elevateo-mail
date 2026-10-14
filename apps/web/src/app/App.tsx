@@ -1,20 +1,23 @@
-import { SendReviewPage } from '@/features/send/SendReviewPage'
-import { SendStatusPage } from '@/features/send/SendStatusPage'
+import { lazy } from 'react'
 import { SendIntentProvider } from './sendIntent'
 import { HashRouter, Navigate, Route, Routes } from 'react-router'
 import type { MailroomGateway } from '@/data/gateway'
-import { DraftEditorPage } from '@/features/drafts/DraftEditorPage'
-import { DraftsPage } from '@/features/drafts/DraftsPage'
 import { InboxPage } from '@/features/inbox/InboxPage'
-import { MembersPage } from '@/features/members/MembersPage'
-import { SearchPage } from '@/features/search/SearchPage'
-import { ThreadPage } from '@/features/thread/ThreadPage'
 import { MailboxSelection } from './MailboxSelection'
 import { DraftIntentProvider } from './draftIntent'
 import { FeatureGatewaysProvider, useFeatureGateways, type FeatureGateways } from './featureGateways'
 import { featureRoutes } from './features'
 import { SessionProvider } from './session'
 import { Shell } from './Shell'
+
+// AIDEV-NOTE: Keep the initial inbox eager; other pages share Shell's loading/error boundary and session guard.
+const DraftEditorPage = lazy(() => import('@/features/drafts/DraftEditorPage').then((page) => ({ default: page.DraftEditorPage })))
+const DraftsPage = lazy(() => import('@/features/drafts/DraftsPage').then((page) => ({ default: page.DraftsPage })))
+const MembersPage = lazy(() => import('@/features/members/MembersPage').then((page) => ({ default: page.MembersPage })))
+const SearchPage = lazy(() => import('@/features/search/SearchPage').then((page) => ({ default: page.SearchPage })))
+const ThreadPage = lazy(() => import('@/features/thread/ThreadPage').then((page) => ({ default: page.ThreadPage })))
+const SendReviewPage = lazy(() => import('@/features/send/SendReviewPage').then((page) => ({ default: page.SendReviewPage })))
+const SendStatusPage = lazy(() => import('@/features/send/SendStatusPage').then((page) => ({ default: page.SendStatusPage })))
 
 // FE-805: Mira's reader takes the direct-message capability as an optional prop; absence keeps her
 // honest "unavailable" state. exactOptionalPropertyTypes forbids an explicit undefined, hence the spread.

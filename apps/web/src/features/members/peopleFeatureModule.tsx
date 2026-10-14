@@ -1,6 +1,9 @@
+import { lazy } from 'react'
 import type { FeatureModule } from '@/app/features'
-import { AdministrationPage } from './AdministrationPage'
-import { PersonalSettingsPage } from './PersonalSettingsPage'
+
+// AIDEV-NOTE: Sidebar registration stays synchronous; settings code downloads only when its page opens.
+const AdministrationPage = lazy(() => import('./AdministrationPage').then((page) => ({ default: page.AdministrationPage })))
+const PersonalSettingsPage = lazy(() => import('./PersonalSettingsPage').then((page) => ({ default: page.PersonalSettingsPage })))
 
 /** Fable registers this single module; all three routes live in the personal navigation section. */
 export const peopleFeatureModule: FeatureModule = {

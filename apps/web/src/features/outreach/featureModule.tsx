@@ -1,12 +1,19 @@
-import type { ReactElement } from 'react'
-import { OutreachSequencePage } from './SequencePage'
-import {
-  OutreachAccountDetailPage, OutreachAccountsPage, OutreachAnalyticsPage, OutreachCampaignAccountsPage,
-  OutreachCampaignAnalyticsPage, OutreachCampaignCreatePage, OutreachCampaignDetailPage,
-  OutreachCampaignLeadsPage, OutreachCampaignsPage, OutreachLeadsPage,
-  OutreachLeadDetailPage,
-  type OutreachPageProps,
-} from './OutreachPages'
+import { lazy, type ReactElement } from 'react'
+import type { OutreachPageProps } from './OutreachPages'
+
+// AIDEV-NOTE: Outreach and sequence chunks are deferred; module-scope lazy components preserve page state.
+const OutreachSequencePage = lazy(() => import('./SequencePage').then((page) => ({ default: page.OutreachSequencePage })))
+const OutreachAccountDetailPage = lazy(() => import('./OutreachPages').then((page) => ({ default: page.OutreachAccountDetailPage })))
+const OutreachAccountsPage = lazy(() => import('./OutreachPages').then((page) => ({ default: page.OutreachAccountsPage })))
+const OutreachAnalyticsPage = lazy(() => import('./OutreachPages').then((page) => ({ default: page.OutreachAnalyticsPage })))
+const OutreachCampaignAccountsPage = lazy(() => import('./OutreachPages').then((page) => ({ default: page.OutreachCampaignAccountsPage })))
+const OutreachCampaignAnalyticsPage = lazy(() => import('./OutreachPages').then((page) => ({ default: page.OutreachCampaignAnalyticsPage })))
+const OutreachCampaignCreatePage = lazy(() => import('./OutreachPages').then((page) => ({ default: page.OutreachCampaignCreatePage })))
+const OutreachCampaignDetailPage = lazy(() => import('./OutreachPages').then((page) => ({ default: page.OutreachCampaignDetailPage })))
+const OutreachCampaignLeadsPage = lazy(() => import('./OutreachPages').then((page) => ({ default: page.OutreachCampaignLeadsPage })))
+const OutreachCampaignsPage = lazy(() => import('./OutreachPages').then((page) => ({ default: page.OutreachCampaignsPage })))
+const OutreachLeadsPage = lazy(() => import('./OutreachPages').then((page) => ({ default: page.OutreachLeadsPage })))
+const OutreachLeadDetailPage = lazy(() => import('./OutreachPages').then((page) => ({ default: page.OutreachLeadDetailPage })))
 
 // Structural match for Fable's FeatureModule; Fable owns registration and navigation styling.
 export interface OutreachFeatureModule {

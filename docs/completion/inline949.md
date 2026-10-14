@@ -30,3 +30,10 @@ The protected-write generation lock serializes preference writes across sessions
 ## Backend key-fixture correction
 
 INT949 backend checkpoint: exact 9dcb6fa87035 ran 137 standard suites, 812 tests and 8,693 assertions with zero failures, three errors and zero skips. All three errors came from the permalink fixture using a 29-byte key where the shared reader requires 32; the synthetic key is corrected without changing production validation. Steep and 320-file RuboCop passed, and task Docker cleanup passed. Ten dedicated profiles and authenticated HTTP/worker/browser gates remain separate; the successor rerun is pending.
+
+
+## Route loading performance candidate
+
+INT952 frontend performance candidate: route code is loaded on demand while the inbox, navigation and session gate remain eager. A bounded page fallback supports loading, redacted failure and navigation recovery; four new regressions cover delayed load, rejection, query-state retention and removal during loading. Actual bundle reduction and the full fleet web gate are pending; prior c87 evidence does not verify this change.
+
+Design tradeoff: defer non-inbox page downloads instead of splitting vendor code only, which would still transfer the entire application on initial load. Shared Outreach pages remain one feature chunk to preserve their existing coupling. Loading/recovery boundaries remain below the session guard and above route content; draft/send intent remains outside route remounts. Navigation clears route errors; query changes preserve form state. Inline review checks null capability handling, failed dynamic import, session revocation, no secret diagnostics, stable lazy component identity and metadata-only route registration. No new dependency.
