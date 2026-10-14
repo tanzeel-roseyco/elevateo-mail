@@ -1,4 +1,4 @@
-ADM-803: Exact unbound roster and binding boundary source added on Theo branch; tests requested, not executed. Protected administration routes await Sabine authority and Cassian DTO agreement. See docs/completion/theo.md.
+ADM-803: Candidate guarded V2 grants GET/PUT and unbound roster GET with HTTP source regressions are committed on Theo branch; tests requested, not executed. Sabine SQL authority and Cassian V2 routes/contracts are being reconciled. See docs/completion/theo.md.
 
 # Project state
 
