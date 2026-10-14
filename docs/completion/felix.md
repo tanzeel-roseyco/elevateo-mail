@@ -11,3 +11,11 @@ Requested Soren command (fleet-02, under `/home/tanzeel/elevateo-mail-wave-20261
 Design tradeoff simulation for root (analytical, not executed): a pure input test catches malformed bytes quickly but cannot prove that SQL claims use the same tenant and generation as the request. A locked race fixture costs more setup yet is required to distinguish stale-generation rejection from an incidental 404. For performance, request count and query count are more stable initial oracles than a fabricated latency target; record latency only with fleet environment details.
 
 Candidate SHA: pending commit. Review coverage: pending independent bounded review. Tests requested: above; tests executed: none. Limitations: no integrated acceptance or benchmark evidence.
+
+## Continuation: actual database candidate
+
+Added `apps/server/test/qa817/tenant_authority_database_test.rb` using `CollaborationDatabaseCase`: happy literal plaintext note under a real API role, foreign tenant read/write denial with exact admin witness unchanged, and private mailbox denial without explicit membership. This is not a simulation of a completed Docker run. Soren command from `/workspace/apps/server` in the maintained disposable backend test image: `bundle exec ruby test/qa817/tenant_authority_database_test.rb`; require `BE02_API_DATABASE_URL` and the existing disposable database fixture environment. Also run the boundary candidate and affected RuboCop/Steep. Exact image/project/cleanup belong to Soren.
+
+SEC-802, SEND-809 and native IPC are absent from this baseline. Pending integrated tests: protected role ceiling and personal consent plus frozen legacy mutation bypass; revoked worker claim/authorize/record/cancel/unknown races; native IPC and callback denial. Coordinator was asked to relay exact owner seams. Performance evidence scan found PERF-01 design records explicitly unmeasured; a latency/memory budget cannot be defined from that source. Request Soren capture warm/cold latency, query count, peak RSS and environment on a frozen integrated build before setting thresholds.
+
+Review request: independently review the new 44-line database test against full rubric in a <=200 LOC packet, plus dedicated design tradeoff review. Own source inspection is not independent coverage. No confirmed defect density claim. Tests executed: none.

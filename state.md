@@ -118,3 +118,5 @@ Cassian manifest reconciliation: contract-lock now seals actual generated client
 ### QA-817 boundary coverage candidate
 
 The isolated Felix branch adds source-only adversarial boundary regressions. Runtime and budget evidence remain NOT_RUN; database tenant isolation and worker races remain requested fleet checks. See `docs/completion/felix.md`.
+
+QA-817 now includes a real-database regression candidate for foreign tenant and private mailbox read/write denial plus unchanged witness data. It is source-only pending Soren Docker execution; no measured latency or memory budget exists for this integrated path yet.

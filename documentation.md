@@ -186,3 +186,5 @@ Cassian manifest reconciliation: contract-lock now seals actual generated client
 ### QA-817 adversarial coverage
 
 The `apps/server/test/qa817` candidate checks that hostile plaintext remains data at the input boundary, oversized byte streams and forged origins fail closed, worker control corruption holds dispatch, and simulated receipt evidence changes with its binding. This is a boundary regression subset, not end-to-end tenant or worker race acceptance. Run only in Soren's fleet Docker lane.
+
+QA-817 real-database fixture `apps/server/test/qa817/tenant_authority_database_test.rb` uses the existing actual API login and guarded transaction harness. It checks a successful literal plaintext note, cross-tenant read/write denial with foreign rows unchanged, and private mailbox read/write denial without explicit membership. SEC-802 role ceiling/consent and SEND-809 worker authority need post-integration fixtures against their accepted seams.
