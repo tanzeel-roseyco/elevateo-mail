@@ -54,6 +54,9 @@ The subsequent `cb1ec5be` Steep repair gives grants and preference write guards 
 
 # Product requirements and decision record
 
+TEST929 backend coverage correction: the BE02 script's three globs covered only 74 of 139 tracked coherent-core server test files. The candidate discovers all `test/**/*_test.rb`, runs 130 in the existing disposable API-role fixture, explicitly names nine requiring separate credentials, migration state or Mailpit protocol, and fails unknown paths. Existing suite assertions and privileges are unchanged; Soren fleet Docker gates and independent review remain pending. See [bounded manifest record](docs/completion/orion-test929.md).
+
+
 Attachment gateway QA815 syntax repair: the database authority fixture's multiline bind array crossed a heredoc opener, producing four RuboCop parser diagnostics on exact core `b3aaa07`. The proposed source repair precomputes the same seven binds; SQL, privilege expectations and denied-claim assertions are unchanged. The full Ruby manifest omits attachment gateway suites, explaining why its 522 passing cases did not exercise this fixture. Fleet focused lint and later actual database execution remain pending; see [bounded record](docs/completion/orion-authority-syntax.md).
 
 

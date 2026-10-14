@@ -59,6 +59,9 @@ The `cb1ec5be` fleet Steep receipt found grants and preferences write-guard call
 
 # Project state
 
+TEST929 source-only manifest candidate on coherent core `b3aaa07` plus syntax child `435333b`: 139 tracked server test files comprise 74 previously selected, 56 newly selected under the current disposable fixture and nine explicitly deferred for separate role/state/protocol gates. The prior 522/7089 Ruby PASS covers only the original 74 suites; newer manifest review and Soren fleet execution are pending. See [audit](docs/completion/orion-test929.md).
+
+
 QA815 `b3aaa07` attachment database fixture repair: the seven SQL bind values move into a local before the heredoc call, leaving authorization assertions intact. Its parser fix is source-only until Soren's fleet `rubocop --lint` gate. The 522-case Ruby gate omitted `test/attachment_gateway/*` by explicit manifest glob; HTTP/worker remain NOT_REACHED. See [repair evidence](docs/completion/orion-authority-syntax.md).
 
 

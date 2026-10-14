@@ -14,6 +14,9 @@ Shared company mailroom with one Rails domain authority and a React/TypeScript c
 
 ## Current state
 
+**TEST929 backend manifest candidate:** Exact coherent core `b3aaa07` tracked 139 server test files, while the prior BE02 runner selected 74; its 522-case PASS is not full application coverage. The runner now discovers all tracked test paths in the immutable source tree, selects 130 suites supported by the current disposable API-role fixture, and reports nine dedicated role/state/protocol suites separately; unknown directories fail admission. Soren's targeted dedicated gates and one coherent backend gate await separate review and fleet Docker execution. See [manifest audit](docs/completion/orion-test929.md).
+
+
 **QA815 attachment fixture parser candidate:** The `b3aaa07` fleet gate passed 21 migrations, 522 Ruby cases/7089 assertions and Steep, then RuboCop `--lint` found four fatal syntax diagnostics in `test/attachment_gateway/authority_database_test.rb`. A narrow fixture argument repair preserves its SQL binds and assertions; Soren's focused fleet lint is pending. The Ruby suite manifest selects only `test/be_02`, `test/requests` and `test/sends`, so this attachment database fixture was never among the 522 cases. See [bounded repair note](docs/completion/orion-authority-syntax.md).
 
 
