@@ -62,7 +62,7 @@ class OutreachAccountsControllerTest < Minitest::Test
       [{ "id" => THREAD, "name" => "Pilot", "status" => "draft", "version" => 1 }], [account_row]]
     status, response = dispatch("index")
     assert_equal 200, status
-    assert_equal [NOTE], response.fetch("items").map { |item| item.fetch("id") }
+    assert_equal [NOTE], (response.fetch("items").map { |item| item.fetch("id") })
     assert(@connection.sql.any? { |sql| sql.include?("mb.id=campaign_accounts.mailbox_id") })
     assert(@connection.sql.any? { |sql| sql.include?("mm.user_id=app.context_uuid('app.user_id')") })
   end

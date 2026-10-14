@@ -83,8 +83,8 @@ class OutreachLeadsControllerTest < Minitest::Test
     assert(@connection.sql.any? { |sql| sql.include?("evidence_kind") })
     assert(@connection.sql.any? { |sql| sql.include?("INSERT INTO app.campaign_consent_events") })
     assert(@connection.sql.any? { |sql| sql.include?("INSERT INTO app.campaign_mutations") })
-    assert_operator @connection.sql.index { |sql| sql.include?("INSERT INTO app.campaign_consent_events") }, :<,
-      @connection.sql.index { |sql| sql.include?("UPDATE app.campaign_leads") }
+    assert_operator(@connection.sql.index { |sql| sql.include?("INSERT INTO app.campaign_consent_events") }, :<,
+      @connection.sql.index { |sql| sql.include?("UPDATE app.campaign_leads") })
   end
 
   def test_same_address_edit_preserves_recorded_consent

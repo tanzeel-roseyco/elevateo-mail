@@ -164,3 +164,5 @@ OUT-804 Rowan ADV044 account review found same-org shared mailbox visibility did
 OUT-804 Ada ADV071 test proof follow-up adds an authenticated API-role disposable DB fixture. It uses the existing session/tenant/protected-write harness to test metadata-only lead update and link-clear denial, cross-actor account denial with owner-member visibility, and a stale `Repository#replace` that must roll back its preinserted event. The earlier supabase_admin trigger checks remain supplemental. Exact fleet execution and integrated HTTP remain pending.
 
 Soren exact integrated fa3082a migration 00009 failed with `PG::SyntaxError` at generated `ENDAND` between role and integrity predicates, before SQL/HTTP tests; cleanup passed. The template now inserts explicit whitespace and a generated policy test guards the token boundary. This source repair is NOT_RUN until Soren's exact rerun.
+
+Exact fa3082a full RuboCop reported two OUT-804 controller test `Lint/AmbiguousBlockAssociation` offenses; source now parenthesizes the assertions. No owned Steep diagnostics were present in that lint receipt, and the new source still needs Soren's affected lint/full Steep rerun.

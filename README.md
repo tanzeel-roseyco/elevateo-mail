@@ -222,3 +222,5 @@ OUT-804 campaign account reads and mutations now require the current actor's mai
 OUT-804 now includes disposable authenticated database tests using the existing real-session API-role fixture: metadata-only lead update with retained evidence, a denied link clear, same-org sales actor account denial without mailbox membership, and actual Repository stale-update event rollback. Only Soren may run these tests in fleet Docker; no PASS is claimed.
 
 The first integrated attempt with the new consent policy failed during migration 00009 because generated SQL joined `END` and `AND` into `ENDAND`. The policy template now inserts an explicit separator, with a generated SQL regression authored; exact fleet migration rerun is pending.
+
+Soren's exact fa3082a full RuboCop receipt found two ambiguous block associations in OUT-804 controller tests. Those assertion calls are parenthesized in source; affected lint and full Steep on the repaired SHA remain requested.
