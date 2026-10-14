@@ -24,7 +24,7 @@
     "restore_job_exit": null,
     "restore_cleanup_exit": null,
     "migration_down_up": "NOT_RUN",
-    "twelve_person_unbound_seed": "NOT_RUN",
+    "twelve_person_unbound_config": "NOT_RUN",
     "rls_identity_checks": "NOT_RUN",
     "health_readiness_worker": "NOT_RUN"
   },

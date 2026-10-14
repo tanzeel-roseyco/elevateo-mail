@@ -40,7 +40,7 @@ class SnapshotAdmissionTest(unittest.TestCase):
         manifest.write_text(manifest.read_text().replace(
             hashlib.sha256(b"STACK_ID=elevateo-mail-test\nOPS820_TASK_OWNED=1\n").hexdigest(),
             hashlib.sha256(payload).hexdigest()))
-        with self.assertRaisesRegex(ValueError, "isolated test stack"):
+        with self.assertRaisesRegex(ValueError, "task-owned test stack"):
             verify(self.path)
 
 
