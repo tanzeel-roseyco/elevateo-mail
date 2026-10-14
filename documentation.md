@@ -549,3 +549,5 @@ Corin f8d54cd7 marks the unused fake inbound protected-write query callback as u
 V2 generated TypeScript declarations now come from Soren's fleet Docker on exact canonical `263047b4` (`npm run generate:api:v2` and `npm run check:api:v2` both exited zero); imported artifact SHA256 0c5f0969de378bb470bb3824bb7edb7f163d4a455d514e815885003443e62bb1 matches receipt, contract SHA256 2f36ac345f839cafd05edd20434955e4587d60d54f74c2c434a23b159a5f64dc. Web lint/type/unit/build and application runtime need a new exact integrated source gate.
 
 ADV146 bounded source review of exact 263047b4 V2 scoped error envelopes found zero defects across 134 unique versioned LOC and statically closed ADV145's description-only response finding. It did not inspect request-ID middleware or execute HTTP; Soren's separate fleet codegen/check passed.
+
+QA815 web source `555acbff` reached V1/V2 declaration checks PASS but lint failed eight no-unused-vars findings in v2AssigneeOptionsGateway.test.ts. INT801 removes unused callback parameters while retaining typed successful-call arguments and assertion; Soren fleet lint/type/unit/build rerun is pending.

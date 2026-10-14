@@ -1379,3 +1379,5 @@ Corin f8d54cd7 narrow lint repair imported source-only; no independent review or
 Fleet V2 declaration generation/check PASS is tool evidence on exact 263047b4, not an independent source review. Generated file adopted byte-for-byte; reviewed LOC/defects/density unchanged. Current 263047b4 scoped error repair still awaits ADV146 successor source review and integrated web/type runtime.
 
 ADV146 Vera independently reviewed exact 263047b4 closed V2 error-envelope successor over 134 unique versioned LOC, zero confirmed defects (0/KLOC), source-only. It statically closes ADV145's prior description-only finding, excluding runtime, generated declarations and request-ID middleware. Soren separately generated/checks the exact declaration on fleet; actual HTTP error responses remain pending.
+
+QA815 555acbff web lint eight no-unused-vars findings are executed tool diagnostics, not source review. Cassian test-only repair is unreviewed/unexecuted successor; reviewed LOC/defects/density remain unassessed for this patch until bounded review.
