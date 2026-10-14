@@ -1,0 +1,85 @@
+source=263047b4e7df97b557872479c1210f063681d704
+started=2026-10-14T18:23:35Z
+artifact=/home/tanzeel/orca/workspaces/integration/completion-soren-qa815/docs/completion/qa815-evidence/generated-v2-263047b4e7df
+contract_sha256=2f36ac345f839cafd05edd20434955e4587d60d54f74c2c434a23b159a5f64dc
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            BuildKit is currently disabled; enable it by removing the DOCKER_BUILDKIT=0
+            environment-variable.
+
+Sending build context to Docker daemon  90.36MB
+Step 1/9 : FROM node:24.21.0-bookworm-slim@sha256:d6aa754f16b3197301076f047b5def2f02ea1dbbc2ca920407d46d7ec7f87b20
+ ---> d6aa754f16b3
+Step 2/9 : WORKDIR /workspace
+ ---> Running in 0e5335d80c94
+ ---> Removed intermediate container 0e5335d80c94
+ ---> 2456af1085c1
+Step 3/9 : COPY contracts/v1 ./contracts/v1
+ ---> b39fbede2dc9
+Step 4/9 : COPY contracts/v2 ./contracts/v2
+ ---> 14fdf15aa2ca
+Step 5/9 : COPY apps/web ./apps/web
+ ---> a1026a343a6d
+Step 6/9 : WORKDIR /workspace/apps/web
+ ---> Running in 83e13482f05f
+ ---> Removed intermediate container 83e13482f05f
+ ---> c2d65508c8b9
+Step 7/9 : RUN npm ci
+ ---> Running in 1f223feaf577
+[91mnpm warn deprecated whatwg-encoding@3.1.1: Use @exodus/bytes instead for a more spec-conformant and faster implementation
+[0m
+added 324 packages, and audited 325 packages in 8s
+
+67 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+[91mnpm warn install-scripts 1 package has install scripts not yet covered by allowScripts:
+npm warn install-scripts   esbuild@0.28.2 (postinstall: node install.js)
+npm warn install-scripts
+npm warn install-scripts Run `npm install-scripts ls` to review, or `npm install-scripts approve <pkg>` to allow.
+[0m[91mnpm notice
+npm notice New major version of npm available! 11.19.0 -> 12.2.0
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0
+npm notice To update run: npm install -g npm@12.2.0
+npm notice
+[0m ---> Removed intermediate container 1f223feaf577
+ ---> b051a16ec570
+Step 8/9 : CMD ["bash", "-ceu", "npm run check:api && npm run check:api:v2 && npm run lint && npm run typecheck && npm run test -- --coverage && npm run build && ! grep -rl 'dev-fixtures\\|Development fixtures\\|fixture_token_a' dist"]
+ ---> Running in afae5871c305
+ ---> Removed intermediate container afae5871c305
+ ---> 08e0c2bbc920
+Step 9/9 : LABEL qa815.owner=soren-v2-codegen
+ ---> Running in 71fb2aa53c7e
+ ---> Removed intermediate container 71fb2aa53c7e
+ ---> 59f7c2cd9ea8
+Successfully built 59f7c2cd9ea8
+Successfully tagged qa815-v2-codegen-263047b4e7df:latest
+derived_image=sha256:59f7c2cd9ea8cb002a6ce3860cadc25ecffee7835e0ca1dd5207770e7d738b2d
+image_bytes=165463813
+
+> @elevateo/web@0.1.0-read.1 generate:api:v2
+> openapi-typescript ../../contracts/v2/openapi.json --output src/data/generated/api-v2.d.ts
+
+✨ openapi-typescript 7.13.0
+🚀 ../../contracts/v2/openapi.json → src/data/generated/api-v2.d.ts [94.2ms]
+
+> @elevateo/web@0.1.0-read.1 check:api:v2
+> openapi-typescript ../../contracts/v2/openapi.json --output src/data/generated/api-v2.d.ts --check
+
+✨ openapi-typescript 7.13.0
+0c5f0969de378bb470bb3824bb7edb7f163d4a455d514e815885003443e62bb1  /output/api-v2.d.ts
+generated_sha256=0c5f0969de378bb470bb3824bb7edb7f163d4a455d514e815885003443e62bb1
+Untagged: qa815-v2-codegen-263047b4e7df:latest
+Deleted: sha256:59f7c2cd9ea8cb002a6ce3860cadc25ecffee7835e0ca1dd5207770e7d738b2d
+Deleted: sha256:08e0c2bbc920697533d6083874f174620da85f0ea5bab7fb573605135da0ef8f
+Deleted: sha256:b051a16ec570e18c50960cf01323564315a421818fff753daccc2763eef0a499
+Deleted: sha256:c2d65508c8b97b75ac1187aa7a138ec9340976a202f664eac8770684eef7451a
+Deleted: sha256:a1026a343a6dd827679a7fd5c2cf121fd994211875684d24153fdb19d3e09c0c
+Deleted: sha256:14fdf15aa2ca6e09b13891dd953c73fe54858a2ed823bccb5b1c6aa949797c03
+Deleted: sha256:b39fbede2dc90f89e4c4c9142b416b468bd1f161d1a22bc203f445cbd53a5b69
+Deleted: sha256:2456af1085c1a9045aa372ed2b72c0352b9d9a624a468a67642b1c73b7005ca1
+run_exit=0
+archive_absent=yes
+remaining_task_containers=0
+remaining_task_images=0
+finished=2026-10-14T18:24:03Z

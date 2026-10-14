@@ -236,3 +236,5 @@ QA815 browser proof P2 symlink repair uses exclusive no-follow file creation; si
 QA815 first six-case symlink repair unit run failed one test fixture setup (intermediate output dir 0755); five passed, cleanup passed. Corrected private directory fixture awaits fleet rerun.
 
 QA815 corrected `1fcb462f` browser privacy probe regressions passed 6/6 in fleet Playwright base, including symlink target preservation; task cleanup passed. Actual mounted browser preflight and reporter smoke remain pending.
+
+QA815 exact feature `263047b4` V2 draft.8 declaration generation/check PASS in capped fleet Docker; artifact SHA256 `0c5f0969…`, exact task cleanup. Cassian import and later feature gates pending; core backend lint remains failed.
