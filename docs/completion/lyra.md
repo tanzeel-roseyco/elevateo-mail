@@ -29,3 +29,7 @@ Cassian `11ee31b` registered isolated V2 admin routes over Sabine `fc0b542` auth
 These are source-level scenarios, not executed acceptance evidence. Actual vault updates remain root-owned.
 
 At the latest source inspection, Sabine `70bcfd9` and Theo's V2 controller include a required protected actor projection, while Cassian's strict `OrganizationGrantsSchema` still omits it. A successful GET would fail browser validation on that mismatch. Cassian's follow-up dispatch was unavailable/failed when FE808 attempted direct coordination; root received the exact escalation. This is an integration blocker, not a reason to loosen validation or claim the UI accepted. Fleet typecheck on older isolated FE808 `e73c0f2` failed due missing Cassian/Fable modules; its `unknown` outcome errors follow unresolved imports. Retest exact merged candidate under Soren after contract alignment.
+
+## Protected actor DTO follow-up
+
+Cassian `be12a48` made `OrganizationGrantPage.actor` required. FE808 now verifies actor user/organization against the ready session, owner/admin role, stable role/revision across all pages and consistency with an actor item if present. `editableRoles` takes this protected actor directly, including when the actor lies outside the paginated items. The target's revision remains the PUT precondition. Tests cover actor outside page, changed revision, wrong actor and existing stale writes; all are authored and NOT_RUN pending Soren fleet Docker. No other feature was changed.

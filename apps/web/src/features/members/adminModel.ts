@@ -39,10 +39,17 @@ export type EditableRole = Exclude<OrganizationGrant['role'], 'organization_owne
 const SUBORDINATE_ROLES: readonly EditableRole[] = [
   'organization_admin', 'technology_operator', 'sales_lead', 'sales_member', 'security_auditor', 'organization_member',
 ]
+/** Protected actor projection is required even when the actor is outside the current page. */
+export function validActorProjection(organizationId: string, actorId: string, actor: OrganizationGrant, previous?: OrganizationGrant): boolean {
+  return actor.organization_id === organizationId && actor.user_id === actorId &&
+    (actor.role === 'organization_owner' || actor.role === 'organization_admin') &&
+    (previous === undefined || (previous.organization_id === actor.organization_id && previous.user_id === actor.user_id &&
+      previous.role === actor.role && previous.revision === actor.revision))
+}
+
 /** Conservative UI hint. The server checks current authority after the lock and may deny any choice. */
-export function editableRoles(actorId: string, grants: readonly OrganizationGrant[], target: OrganizationGrant): readonly EditableRole[] {
-  const actor = grants.find((grant) => grant.user_id === actorId)
-  if (!actor || target.role === 'organization_owner' || actor.user_id === target.user_id) return []
+export function editableRoles(actor: OrganizationGrant, target: OrganizationGrant): readonly EditableRole[] {
+  if (target.role === 'organization_owner' || actor.user_id === target.user_id) return []
   if (actor.role === 'organization_owner') return SUBORDINATE_ROLES
   if (actor.role === 'organization_admin' && target.role !== 'organization_admin') return SUBORDINATE_ROLES.filter((role) => role !== 'organization_admin')
   return []

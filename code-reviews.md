@@ -907,3 +907,6 @@ OUT-804 author inspection found that a withdrawn or reset lead could still expos
 OUT-804 author contract review identified an organization-wide account page that conflicted with Cassian's campaign-scoped API. Index/detail/create/update now use the path campaign ID; two scoped controller regressions are authored. This is an author correction, with independent reviewed LOC 0, defects unassessed, density not applicable and fleet runtime NOT_RUN.
 
 OUT-804 author replay review found that an exact create retry after a later edit compared against changed row fields and could return operation_mismatch. Migration 00009 now persists the normalized create-request fingerprint and replays against it; focused repository coverage is authored. This is an author repair, independent coverage 0 LOC and defect density unmeasured; runtime NOT_RUN.
+### FE808 protected actor incremental source check
+
+Scope: `apps/web/src/features/members/{adminModel,AdministrationPage}.ts*` plus paired tests; only actor projection handling changed. Author check found the prior pagination-derived authority limitation and replaced it with Cassian's required protected actor DTO. This is not an independent adversarial or design review; independent defect density and runtime acceptance remain pending. No local application tests were executed.
