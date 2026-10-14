@@ -30,7 +30,7 @@ BEGIN
   IF job.state IN ('accepted','rejected') THEN RETURN '{"code":"send_terminal"}'::jsonb; END IF;
   IF job.state <> 'cancelled' AND job.cancel_requested_at IS NULL THEN
     now_at := clock_timestamp();
-    IF job.first_possible_at IS NULL AND job.attempt_count = 0 AND job.lease_id IS NULL THEN
+    IF job.first_possible_at IS NULL AND job.attempt_count = 0 THEN
       UPDATE app_send_private.jobs SET state = 'cancelled',next_action = 'none',next_check_at = NULL,
         lease_id = NULL,lease_expires_at = NULL,cancel_requested_at = now_at,updated_at = now_at WHERE send_id = p_send;
       INSERT INTO app_send_private.audit_events(send_id,event_key,kind,actor_id,from_state,to_state,recorded_at)

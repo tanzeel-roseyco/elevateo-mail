@@ -735,3 +735,7 @@ Scope: `apps/web/src/features/members/{adminModel,AdministrationPage,PersonalSet
 ## FE-806 message permalink review request
 
 Bounded packet: `apps/web/src/features/thread/ThreadPage.tsx` (about 23 changed lines) and `ThreadPage.test.tsx` (about 53 added lines). Request independent adversarial source review plus dedicated design tradeoff review: URL parsing, stale scope, page termination, accessibility/focus and cross-mailbox disclosure. No review was performed in this worker turn; defects and density are pending. Tests and browser evidence are authored/requested, not executed.
+
+SEND-810 integrated worker bridge/store: independent bounded functional/design review requested; no review performed and no defect density reported. Author inspection found one Rowan integration defect: `claim_job` blocks reconciliation when `cancel_requested_at` is set; root/Rowan fix pending. Worker bridge Docker runtime NOT_RUN. See docs/completion/nadia.md.
+
+SEND-810 process wiring and unattempted-lease race change: independent review pending, defects/density unreported. Author source inspection only; Docker startup and migration checks NOT_RUN.
