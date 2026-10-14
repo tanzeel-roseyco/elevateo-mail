@@ -42,7 +42,8 @@ trap 'rm -f -- "$scratch/before" "$scratch/after" "$scratch/runtime.env"; rmdir 
 python3 "$root/ops/ops820/runtime_env.py" "$envfile" "$scratch/runtime.env" >/dev/null
 schema_dump() {
   compose exec -T db pg_dump -U supabase_admin -d postgres --schema-only -n 'app*'
-  compose exec -T db pg_dump -U supabase_admin -d postgres --data-only --column-inserts -n 'app*'
+  compose exec -T db psql -U supabase_admin -d postgres -X -q -v ON_ERROR_STOP=1 \
+    < "$root/ops/ops820/data_fingerprint.sql"
 }
 schema_dump > "$scratch/before"
 for ((index=${#versions[@]}-1; index>=0; index--)); do
