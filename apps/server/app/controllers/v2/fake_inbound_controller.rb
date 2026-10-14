@@ -13,8 +13,15 @@ module V2
         ENV["ELEVATEO_FAKE_INBOUND_ENABLED"] == "1"
 
       protected_write(required: REQUIRED, max_bytes: 1_500_000, budget: 4096,
-        guard_users: ->(input:, **) { [Elevateo::WriteInput.uuid(input["actor_id"])] }) do
+        guard_users: ->(input:, query:) {
+          # @type var input: Elevateo::WriteInput::object
+          # @type var query: Hash[String, String]
+          [Elevateo::WriteInput.uuid(input["actor_id"])]
+        }) do
         |connection:, identity:, input:, **|
+        # @type var connection: Elevateo::WriteStatements
+        # @type var identity: Elevateo::SessionIdentity
+        # @type var input: Elevateo::WriteInput::object
         raise Elevateo::CollaborationError.new("not_available") unless input["actor_id"] == identity.user_id
         mailbox = Elevateo::WriteInput.uuid(input["mailbox_id"])
         store = Elevateo::Inbound::PostgresStore.new(connection: connection,
