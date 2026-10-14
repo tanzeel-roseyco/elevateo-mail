@@ -43,6 +43,7 @@ Cassian merged the Foundation, Frontend, Delivery, Native, QA and Mail owner can
 Cassian prepared disabled organization grant, simulation-only outreach and internal worker-status V2 interfaces over `bbf2353`. Frozen V1 contracts and Rails routes remain unchanged. The V2 route registry fails closed until owning controllers and authorization gates are ready. Source and tests are committed for fleet Docker validation; runtime acceptance and generated web DTO adoption remain pending. See `docs/completion/cassian.md`.
 
 The scoped ADM-803 static repair for Soren `fa3082af` narrows roster and cursor values without changing role authority; see docs/completion/theo-core-static-repair.md. Current fleet Steep/RuboCop PASS is not claimed.
+ADM-803 provisional administration roster and PREF-822 display-name preference candidate: docs/completion/theo.md. Configuration identities are unbound and grant no effective access; candidate guarded V2 grants/roster, role audit and per-user preference controllers need Cassian route/DTO integration and fleet runtime evidence. Integrated legacy draft migration probes assert protected FK dependency failures separately from the default-privilege assertion; full reapply must run on a disposable BE02-only database.
 
 # Product requirements and decision record
 
