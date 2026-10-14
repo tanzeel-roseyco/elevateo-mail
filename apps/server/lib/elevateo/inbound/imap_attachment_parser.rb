@@ -34,7 +34,9 @@ module Elevateo
         expected = record.fetch(:attachments)
         raise Rejected, "invalid_mime" unless attachments.length == expected.length
 
-        values = attachments.each_with_index.map do |part, ordinal|
+        # @type var values: Array[parsed_attachment]
+        values = []
+        attachments.each_with_index do |part, ordinal|
           metadata = expected.fetch(ordinal)
           type = metadata.fetch(:content_type)
           raise Rejected, "unsupported_mime" unless ALLOWED_TYPES.include?(type)
@@ -44,8 +46,10 @@ module Elevateo
           raise Rejected, "invalid_mime" unless bytes.bytesize == metadata.fetch(:size) &&
             Digest::SHA256.hexdigest(bytes) == metadata.fetch(:sha256)
 
-          { ordinal: ordinal, filename: metadata.fetch(:filename), content_type: type,
+          # @type var value: parsed_attachment
+          value = { ordinal: ordinal, filename: metadata.fetch(:filename), content_type: type,
             byte_size: bytes.bytesize, sha256: metadata.fetch(:sha256), bytes: bytes }
+          values << value
         end
         { record: record, attachments: values }
       rescue ArgumentError, EncodingError
@@ -55,7 +59,9 @@ module Elevateo
       private
 
       def leaves(message)
+        # @type var stack: Array[[Mail::Message, Integer]]
         stack = [[message, 0]]
+        # @type var leaves: Array[Mail::Message]
         leaves = []
         seen = 0
         until stack.empty?

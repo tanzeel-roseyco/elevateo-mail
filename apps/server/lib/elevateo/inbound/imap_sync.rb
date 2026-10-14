@@ -18,10 +18,11 @@ module Elevateo
         # @type var session: _ImapSession?
         session = nil
         claim = @store.claim(account_id: account_id, credential_version: credential_version)
-        session = @transport.open(credential_ref: claim.fetch("credential_ref"))
-        raise Rejected, "tls_unverified" unless session.verified_tls?
+        opened = @transport.open(credential_ref: claim.fetch("credential_ref"))
+        session = opened
+        raise Rejected, "tls_unverified" unless opened.verified_tls?
 
-        validity = session.uidvalidity
+        validity = opened.uidvalidity
         raise Rejected, "invalid_imap_identity" unless validity.is_a?(Integer) && validity.positive?
 
         previous = claim["uidvalidity"]
@@ -33,7 +34,7 @@ module Elevateo
 
           cursor = 0
         end
-        events = session.fetch_after(cursor, limit: MAX_BATCH)
+        events = opened.fetch_after(cursor, limit: MAX_BATCH)
         raise Rejected, "invalid_imap_batch" unless events.is_a?(Array) && events.length <= MAX_BATCH
 
         # AIDEV-NOTE: Validate the whole ordered page before the first commit; a reordered tail must not skip a lower UID.

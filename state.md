@@ -388,3 +388,4 @@ Ada ADV111 independent review of exact 2f255b9 covered 303 unique LOC, found zer
 QA815 `065ec91` migrations 21 PASS; Ruby 522/7080, 1 role failure, 0 errors; thread fixture repair passes its formerly failing path. Steep111, HTTP/worker/browser NOT_REACHED, cleanup PASS.
 
 QA815 `c5a8737` current web full PASS 842/842/build with task cleanup; V2 declaration/spec hashes unchanged. Current-source real-browser acceptance NOT_RUN; protected backend role remains OPEN.
+INB887 strict followup: fleet `065ec91` showed nullable IMAP session accesses and inbound parser/ingress collection typing errors; the prior `1ab4c12` rollback fixture passed that fleet Ruby run. Corin's scoped source changes keep a nonnullable opened session for verified TLS, UID validity and bounded fetch, and type only the existing MIME tuple and attachment collections. Soren's fleet Steep/RuboCop and inbound unit rerun is pending; no protocol runtime or live provider claim.

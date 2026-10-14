@@ -107,6 +107,7 @@ Theo's later scoped V2 write-guard typing repair addresses the exact `cb1ec5be` 
 MAC-814 follow-up source splits content reads from protected writes and adds a minimal draft GET repository method; integrated SEC802 grant commit `338a442` supplies restricted helper execution. Fleet SQL, GET and Steep checks remain pending.
 ATT866 followup source repairs the direct-message serializer and the rollback-only BE02 thread schema fixture after the integrated `cb1ec5b` backend receipt. Soren's targeted fleet rerun is pending; Nadia owns separate attachment Storage declarations.
 REV874 source review found that fixture could detach an unreviewed future FK. The followup pins the expected later-table FK names and definitions and fails before detachment on catalog drift; Soren's fleet rerun remains pending.
+INB887 followup narrows verified IMAP session access and annotates bounded MIME attachment tuples to match strict RBS. This is a source candidate pending Soren's fleet Steep, RuboCop and inbound unit checks; no receive protocol pilot or live account was activated.
 
 
 ### R25 approval reload recovery candidate
