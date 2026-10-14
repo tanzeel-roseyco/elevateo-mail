@@ -115,7 +115,7 @@ class InvitationFixtureTest < Minitest::Test
     fixture(valid: false) do |instance, directory, _org, _box|
       error = assert_raises(Be02Acceptance::Failure) { instance.run }
       assert_equal "invitation_auth_provenance_invalid", error.message
-      refute instance.connection.events.any? { |sql, _| sql.include?("INSERT INTO app.") }
+      refute(instance.connection.events.any? { |sql, _| sql.include?("INSERT INTO app.") })
       refute File.exist?(File.join(directory, Be02Acceptance::InvitationOutput::NAME))
       assert_equal "close", instance.connection.events.last.first
     end

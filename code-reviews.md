@@ -1,3 +1,5 @@
+INT958 lint repair: RuboCop identified one ambiguous assertion block across six invitation Ruby files. One-line parentheses correction; no behavioral defect claimed, no new tests needed for this syntax clarification. Prior 13 tests/94 assertions and Steep passed; lint rerun pending. Inline review only.
+
 INT957 inline self-review: 20-line late-capability fixture and consumer examined; one incomplete test response found (50 defects/KLOC reviewed). The fix adds the required empty HTML body and preserves the timeout assertion; no production behavior changed. No independent review claimed. Fleet rerun pending.
 
 INT956 inline self-review: reviewed the 87-line invitation deadline test module. One pre-existing defect: standalone execution lacked minitest/mock and all four deadline cases errored before assertions (11.49 defects/KLOC reviewed). Explicit import restores the existing slow-response, late-parse, late-link and byte-limit regressions without changing runtime behavior. No independent review claimed; user requests inline work. Container rerun pending.
