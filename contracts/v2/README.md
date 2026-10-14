@@ -1,5 +1,7 @@
 # V2 isolated integration contract
 
+Draft.5 source-registers manual lead consent attestation through the existing guarded controller. The POST requires operation ID, expected version, source, UTC observation time and `attested: true`; GET detail projects redacted actor/time/source evidence. This is an unverified manual claim and cannot dispatch mail. Generated declarations and fleet SQL/HTTP/browser checks remain pending.
+
 V2 adds organization administration and inert Outreach interfaces without changing frozen V1 session, read, collaboration or send schemas. `openapi.json` marks each operation as an isolated candidate or disabled proposal. Source-registered candidates use the existing authenticated session, current context/CSRF and tenant transaction boundaries; fleet SQL/HTTP/browser acceptance remains pending. No V2 operation can dispatch mail or connect a provider.
 
 Organization grant GET returns a bounded redacted page with seven effective roles and per-row revisions. PUT cannot assign owner; verified enrollment and owner transfer are separate workflows. The roster GET projects unbound display configuration only, with no email, Auth UUID or mailbox content. Outreach campaign/lead operations remain draft or paused; guarded draft writes are source-registered for isolated fleet verification. Account, consent/suppression, worker and native interfaces are withheld pending owner review.
@@ -16,7 +18,7 @@ The additive `getDirectMessage` operation uses `GET /v2/threads/{thread_id}/mess
 
 `createV2Gateway().getDirectMessage(ctx, mailboxId, threadId, messageId, signal)` validates all UUIDs, sends only a relative same-origin V2 GET and checks the scoped envelope plus reused V1 Message runtime schema. It does not fetch another mailbox or walk cursors.
 
-Canonical draft version `2.0.0-draft.4` adds the direct-message read to the earlier draft.3 organization and inert Outreach surface. Generated declarations must be regenerated from this exact draft.4 source in fleet Docker before adoption.
+Canonical draft version `2.0.0-draft.5` adds manual consent evidence to draft.4. Generated declarations must be regenerated from this exact draft.5 source in fleet Docker before adoption.
 
 The Rails registry owns the single frozen active-operation allowlist; `routes.rb` supplies only literal boolean readiness flags. The registry rejects non-boolean flags and any explicit attempt to register the disabled worker proposal. Adding a worker route later requires an intentional allowlist change with a reviewed distinct principal.
 

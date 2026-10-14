@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Elevateo additive administration, outreach and scoped read API",
-    "version": "2.0.0-draft.4",
+    "version": "2.0.0-draft.5",
     "description": "V1 schemas unchanged. Admin, inert outreach and scoped direct-message operations are isolated integration candidates pending fleet security validation; worker status remains disabled."
   },
   "servers": [
@@ -484,7 +484,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/LeadSummary"
+                  "$ref": "#/components/schemas/LeadDetail"
                 }
               }
             }
@@ -661,6 +661,64 @@
             "$ref": "#/components/responses/Forbidden"
           }
         }
+      }
+    },
+    "/v2/outreach/campaigns/{campaign_id}/leads/{lead_id}/consent": {
+      "post": {
+        "operationId": "recordOutreachLeadConsent",
+        "x-elevateo-status": "active",
+        "summary": "Record a manual, unverified consent attestation without sending",
+        "parameters": [
+          {
+            "name": "campaign_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Id"
+            }
+          },
+          {
+            "name": "lead_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LeadConsentAttestation"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Inert lead metadata; read detail for evidence",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LeadSummary"
+                }
+              }
+            }
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          }
+        },
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ]
       }
     }
   },
@@ -1338,6 +1396,116 @@
               "null"
             ],
             "format": "uuid"
+          }
+        }
+      },
+      "LeadConsentAttestation": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "operation_id",
+          "expected_version",
+          "source",
+          "observed_at",
+          "attested"
+        ],
+        "properties": {
+          "operation_id": {
+            "$ref": "#/components/schemas/Id"
+          },
+          "expected_version": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "source": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200,
+            "pattern": "^[^\\u0000-\\u001f\\u007f]+$"
+          },
+          "observed_at": {
+            "type": "string",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$"
+          },
+          "attested": {
+            "const": true
+          }
+        }
+      },
+      "LeadDetail": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "campaign_id",
+          "email",
+          "consent_status",
+          "suppressed",
+          "version",
+          "consent_recorded_at",
+          "consent_source",
+          "consent_recorded_by",
+          "consent_evidence_kind"
+        ],
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/Id"
+          },
+          "campaign_id": {
+            "$ref": "#/components/schemas/Id"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "maxLength": 254
+          },
+          "consent_status": {
+            "enum": [
+              "unknown",
+              "granted",
+              "withdrawn"
+            ]
+          },
+          "suppressed": {
+            "type": "boolean"
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "consent_recorded_at": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          },
+          "consent_source": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 200
+          },
+          "consent_recorded_by": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Id"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "consent_evidence_kind": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "enum": [
+              "manual_attestation",
+              null
+            ]
           }
         }
       }

@@ -42,4 +42,38 @@ describe('isolated V2 outreach gateway', () => {
       .rejects.toMatchObject({ kind: 'api', code: 'temporarily_unavailable' })
     expect(fetchImpl).not.toHaveBeenCalled()
   })
+
+  it('records manual consent and reads back redacted evidence without a send request', async () => {
+    const fetchImpl = vi.fn(async (input: string, init: RequestInit) => {
+      void input
+      if (init.method === 'POST') return response({ id, campaign_id: id, email: 'lead@example.test', consent_status: 'granted', suppressed: false, version: 2 })
+      return response({ id, campaign_id: id, email: 'lead@example.test', consent_status: 'granted', suppressed: false, version: 2,
+        consent_recorded_at: '2026-10-14T12:00:00Z', consent_source: 'Signed intake form', consent_recorded_by: id,
+        consent_evidence_kind: 'manual_attestation' })
+    })
+    const gateway = createV2OutreachGateway(fetchImpl)
+    const input = { operation_id: id, expected_version: 1, source: 'Signed intake form', observed_at: '2026-10-14T12:00:00Z', attested: true }
+    const recorded = await gateway.recordConsent(context, { csrfToken: 'proof' }, id, id, input, new AbortController().signal)
+    const detail = await gateway.getLead(context, id, id, new AbortController().signal)
+    expect(recorded.consent_status).toBe('granted')
+    expect(detail.consent_evidence_kind).toBe('manual_attestation')
+    expect(fetchImpl.mock.calls.map(([path]) => path)).toEqual([
+      `/v2/outreach/campaigns/${id}/leads/${id}/consent`, `/v2/outreach/campaigns/${id}/leads/${id}`,
+    ])
+  })
+
+  it('rejects false consent attestation before dispatch', async () => {
+    const fetchImpl = vi.fn(async () => response({}))
+    await expect(createV2OutreachGateway(fetchImpl).recordConsent(context, { csrfToken: 'proof' }, id, id,
+      { operation_id: id, expected_version: 1, source: 'Signed intake form', observed_at: '2026-10-14T12:00:00Z', attested: false },
+      new AbortController().signal)).rejects.toBeDefined()
+    expect(fetchImpl).not.toHaveBeenCalled()
+  })
+
+  it('rejects incomplete consent detail from the server', async () => {
+    const fetchImpl = vi.fn(async () => response({ id, campaign_id: id, email: 'lead@example.test',
+      consent_status: 'granted', suppressed: false, version: 2 }))
+    await expect(createV2OutreachGateway(fetchImpl).getLead(context, id, id, new AbortController().signal))
+      .rejects.toMatchObject({ kind: 'transport', code: 'malformed' })
+  })
 })

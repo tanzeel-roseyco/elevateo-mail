@@ -13,7 +13,7 @@ class ContractV2Test < Minitest::Test
   end
 
   def test_happy_path_has_additive_interfaces
-    assert_equal "2.0.0-draft.4", @contract.dig("info", "version")
+    assert_equal "2.0.0-draft.5", @contract.dig("info", "version")
     assert_equal %w[get post put], @contract.fetch("paths").values.flat_map(&:keys).uniq.sort
     assert @contract.dig("components", "schemas", "OrganizationGrant")
     assert_equal "active", @contract.dig("paths", "/v2/outreach/campaigns", "get", "x-elevateo-status")
@@ -21,6 +21,8 @@ class ContractV2Test < Minitest::Test
     assert_equal "active", @contract.dig("paths", "/v2/outreach/campaigns/{campaign_id}", "put", "x-elevateo-status")
     assert_equal "active", @contract.dig("paths", "/v2/outreach/campaigns/{campaign_id}/leads", "post", "x-elevateo-status")
     assert_equal "active", @contract.dig("paths", "/v2/outreach/campaigns/{campaign_id}/leads/{lead_id}", "put", "x-elevateo-status")
+    assert_equal "active", @contract.dig("paths", "/v2/outreach/campaigns/{campaign_id}/leads/{lead_id}/consent", "post", "x-elevateo-status")
+    assert_equal "#/components/schemas/LeadDetail", @contract.dig("paths", "/v2/outreach/campaigns/{campaign_id}/leads/{lead_id}", "get", "responses", "200", "content", "application/json", "schema", "$ref")
     assert_equal "active", @contract.dig("paths", "/v2/threads/{thread_id}/messages/{message_id}", "get", "x-elevateo-status")
   end
 

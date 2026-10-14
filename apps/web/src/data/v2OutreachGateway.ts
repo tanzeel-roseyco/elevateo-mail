@@ -4,7 +4,7 @@ import { GatewayError } from './errors'
 import type { CsrfProof, ReadContext } from './gateway'
 import {
   CampaignAnalyticsSchema, CampaignPageSchema, CampaignUpdateSchema, IdSchema,
-  LeadCreateSchema, LeadPageSchema, LeadSummarySchema, LeadUpdateSchema,
+  LeadConsentAttestationSchema, LeadCreateSchema, LeadDetailSchema, LeadPageSchema, LeadSummarySchema, LeadUpdateSchema,
   OutreachCampaignSchema, OutreachPlanSchema,
   type OutreachPlan,
 } from './v2Contract'
@@ -49,6 +49,10 @@ export function createV2OutreachGateway(fetchImpl?: FetchLike) {
     listLeads(ctx: ReadContext, campaignId: string, query: { cursor?: string; limit?: number }, signal: AbortSignal) {
       return requestJson(`/v2/outreach/campaigns/${seg(campaignId)}/leads${page(query)}`, LeadPageSchema, 65_536, { ...base, headers: headers(ctx), signal })
     },
+    getLead(ctx: ReadContext, campaignId: string, leadId: string, signal: AbortSignal) {
+      return requestJson(`/v2/outreach/campaigns/${seg(campaignId)}/leads/${seg(leadId)}`, LeadDetailSchema, 4_096,
+        { ...base, headers: headers(ctx), signal })
+    },
     addLead(ctx: ReadContext, proof: CsrfProof, campaignId: string, input: unknown, signal: AbortSignal) {
       return requestJson(`/v2/outreach/campaigns/${seg(campaignId)}/leads`, LeadSummarySchema, 4_096, {
         ...base, method: 'POST', body: LeadCreateSchema.parse(input), maxRequestBytes: 2_048, headers: headers(ctx, proof), signal,
@@ -57,6 +61,12 @@ export function createV2OutreachGateway(fetchImpl?: FetchLike) {
     updateLead(ctx: ReadContext, proof: CsrfProof, campaignId: string, leadId: string, input: unknown, signal: AbortSignal) {
       return requestJson(`/v2/outreach/campaigns/${seg(campaignId)}/leads/${seg(leadId)}`, LeadSummarySchema, 4_096, {
         ...base, method: 'PUT', body: LeadUpdateSchema.parse(input), maxRequestBytes: 2_048, headers: headers(ctx, proof), signal,
+      })
+    },
+    recordConsent(ctx: ReadContext, proof: CsrfProof, campaignId: string, leadId: string, input: unknown, signal: AbortSignal) {
+      return requestJson(`/v2/outreach/campaigns/${seg(campaignId)}/leads/${seg(leadId)}/consent`, LeadSummarySchema, 4_096, {
+        ...base, method: 'POST', body: LeadConsentAttestationSchema.parse(input), maxRequestBytes: 2_048,
+        headers: headers(ctx, proof), signal,
       })
     },
     listAccounts(ctx: ReadContext, campaignId: string, query: { cursor?: string; limit?: number }, signal: AbortSignal): Promise<never> {

@@ -11,6 +11,7 @@ module V2RouteRegistry
     "getOutreachLead" => ["GET", "/v2/outreach/campaigns/:campaign_id/leads/:lead_id", "v2/outreach/leads#show"],
     "addOutreachLead" => ["POST", "/v2/outreach/campaigns/:campaign_id/leads", "v2/outreach/leads#create"],
     "updateOutreachLead" => ["PUT", "/v2/outreach/campaigns/:campaign_id/leads/:lead_id", "v2/outreach/leads#update"],
+    "recordOutreachLeadConsent" => ["POST", "/v2/outreach/campaigns/:campaign_id/leads/:lead_id/consent", "v2/outreach/leads#record_consent"],
     "getOutreachAnalytics" => ["GET", "/v2/outreach/campaigns/:campaign_id/analytics", "v2/outreach/analytics#show"],
     "listOrganizationGrants" => ["GET", "/v2/organizations/:organization_id/grants", "v2/admin/organization_grants#index"],
     "getOrganizationRoster" => ["GET", "/v2/organizations/:organization_id/roster", "v2/admin/organization_grants#roster"],
@@ -23,7 +24,7 @@ module V2RouteRegistry
   ACTIVE_OPERATIONS = %w[
     listOrganizationGrants getOrganizationRoster replaceOrganizationGrant
     listOutreachCampaigns getOutreachCampaign createOutreachCampaign updateOutreachCampaign
-    listOutreachLeads getOutreachLead addOutreachLead updateOutreachLead getOutreachAnalytics
+    listOutreachLeads getOutreachLead addOutreachLead updateOutreachLead recordOutreachLeadConsent getOutreachAnalytics
     getDirectMessage
   ].freeze
 
