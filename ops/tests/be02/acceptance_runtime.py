@@ -115,9 +115,11 @@ class Acceptance:
                 ("tests/acceptance/shared/seed-contract.json", "/acceptance-contract/seed-contract.json"))},
             "acceptance-browser": {(self.private / "seed.json", "/acceptance/seed.json", False),
                 (self.private / "acceptance-credentials.json", "/run/secrets/acceptance-credentials.json", False),
+                (self.private / "acceptance-invitation.json", "/run/secrets/acceptance-invitation.json", False),
                 (self.observer_control, "/observer-control", True),
                 *((path, "/output", True) for path in self.outputs)}}
         task.acceptance_mounts["acceptance-seed"].add((self.private, "/acceptance", True))
+        task.acceptance_mounts["acceptance-invitation"] = set(task.acceptance_mounts["acceptance-seed"])
         base_mounts = {(task.root / path, destination, False) for path, destination in (
             ("apps/server", "/workspace/apps/server"), ("contracts", "/workspace/contracts"),
             ("ops/tests/be02", "/workspace/ops/tests/be02"))}
@@ -162,6 +164,28 @@ class Acceptance:
 
     def execute(self, identity: str, command: list[str], seconds: int = 90) -> None:
         self.task.docker("acceptance-exec", ["container", "exec", identity, *command], seconds, quiet=True)
+
+    def invitation(self) -> None:
+        # AIDEV-NOTE: A completed seed is mandatory; regenerate before each lane and never emit private bytes/hashes.
+        uid, gid = acceptance_owner(self.task)
+        for name in ("seed.json", "acceptance-credentials.json"):
+            self.private_file(name, uid, gid)
+        identity = self.start("acceptance-invitation")
+        try:
+            code = self.task.docker("acceptance-invitation-wait", ["container", "wait", identity], 90).strip()
+            if code != "0":
+                raise RuntimeError("invitation fixture did not complete")
+            self.private_file("acceptance-invitation.json", uid, gid)
+        finally:
+            validate_container(self.task, self.task.inspect("container", [identity])[0])
+            self.task.docker("acceptance-invitation-remove", ["container", "rm", "-f", identity], 30)
+
+    def private_file(self, name: str, uid: int, gid: int) -> None:
+        info = (self.private / name).lstat()
+        if (not stat.S_ISREG(info.st_mode) or info.st_uid != uid or info.st_gid != gid
+                or stat.S_IMODE(info.st_mode) != 0o600
+                or info.st_nlink != 1 or not 0 < info.st_size <= 65536):
+            raise RuntimeError("acceptance private-file contract mismatch")
 
     def invoke_observer(self) -> None:
         end = time.monotonic() + 8
@@ -229,7 +253,7 @@ class Acceptance:
                         "--tag", tag,
                         "-f", str(task.root / f"ops/acceptance/{recipe}.Dockerfile"), str(task.root)], 900)
         images = {"acceptance-web": self.web, "acceptance-browser": self.image, "acceptance-seed": task.image,
-                  "acceptance-observer-setup": task.image, "acceptance-observer": task.image}
+                  "acceptance-invitation": task.image, "acceptance-observer-setup": task.image, "acceptance-observer": task.image}
         if "selenium" in self.lanes:
             images["selenium"] = self.grid
         task.acceptance_images = {service: task.inspect("image", [pin])[0]["Id"] for service, pin in images.items()}
@@ -276,6 +300,7 @@ class Acceptance:
             self.environment(index)
             identity, grid = "", ""
             try:
+                self.invitation()
                 identity = self.start("acceptance-browser")
                 self.readiness(identity)
                 if index == 0:

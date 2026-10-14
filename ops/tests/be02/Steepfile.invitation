@@ -1,0 +1,9 @@
+# AIDEV-NOTE: Dedicated strict target adds fixture typing without relaxing the canonical application checker.
+target :invitation do
+  signature "/workspace/ops/tests/be02/acceptance_invitation.rbs"
+  check "/workspace/ops/tests/be02/acceptance_invitation.rb"
+  check "/workspace/ops/tests/be02/acceptance_invitation_io.rb"
+  check "/workspace/ops/tests/be02/acceptance_invitation_transport.rb"
+  library "uri", "net-http", "json", "openssl", "base64", "digest", "securerandom", "time"
+  configure_code_diagnostics(Steep::Diagnostic::Ruby.strict)
+end

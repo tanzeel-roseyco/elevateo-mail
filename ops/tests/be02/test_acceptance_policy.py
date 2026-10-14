@@ -59,7 +59,7 @@ class PolicyTests(unittest.TestCase):
         seed = {**web, "Memory": 768 * 1024**2, "PidsLimit": 256,
                 "Tmpfs": {**self.host["Tmpfs"], "/workspace/apps/server/tmp": "uid=1001,gid=1001,mode=1770",
                           "/workspace/apps/server/log": "uid=1001,gid=1001,mode=1770"}}
-        for service, host in (("acceptance-web", web), ("acceptance-seed", seed)):
+        for service, host in (("acceptance-web", web), ("acceptance-seed", seed), ("acceptance-invitation", seed)):
             validate_policy(self.task, service, host)
             for field in ("Memory", "NanoCpus", "PidsLimit"):
                 with self.subTest(service=service, field=field), self.assertRaises(RuntimeError):

@@ -14,6 +14,7 @@ def validate_policy(task: Task, service: str, host: dict[str, Any]) -> None:
     memory, cpus, pids = {"acceptance-observer": (128 * 1024**2, 1_000_000_000, 64),
                           "acceptance-observer-setup": (768 * 1024**2, 1_000_000_000, 256),
                           "acceptance-web": (128 * 1024**2, 1_000_000_000, 64),
+                          "acceptance-invitation": (768 * 1024**2, 1_000_000_000, 256),
                           "acceptance-seed": (768 * 1024**2, 1_000_000_000, 256),
                           "acceptance-browser": (3 * 1024**3, 2_000_000_000, 512),
                           "selenium": (3 * 1024**3, 2_000_000_000, 512)}[service]
@@ -23,7 +24,7 @@ def validate_policy(task: Task, service: str, host: dict[str, Any]) -> None:
             raise RuntimeError("acceptance service resource ceiling mismatch")
     uid, gid = acceptance_owner(task)
     tmpfs = {} if service == "acceptance-web" else {"/tmp": "rw,nosuid,nodev,size=512m,mode=1777"}
-    if service in {"acceptance-seed", "acceptance-observer-setup"}:
+    if service in {"acceptance-seed", "acceptance-invitation", "acceptance-observer-setup"}:
         tmpfs.update({f"/workspace/apps/server/{name}": f"uid={uid},gid={gid},mode=1770"
                       for name in ("tmp", "log")})
     if (host.get("Tmpfs") or {}) != tmpfs:
@@ -71,12 +72,12 @@ def validate_container(task: Task, item: dict[str, Any]) -> None:
              for mount in item["Mounts"] if mount["Type"] == "bind"}
     expected = task.acceptance_mounts[service]
     if (not binds <= expected or (service != "acceptance-browser" and binds != expected)
-            or (service == "acceptance-browser" and (len(binds) != 4
+            or (service == "acceptance-browser" and (len(binds) != 5
                 or len([entry for entry in binds if entry[1] == "/output" and entry[2]]) != 1))):
         raise RuntimeError("unregistered acceptance bind mount")
     if any(mount["Type"] not in {"bind", "tmpfs"} for mount in item["Mounts"]):
         raise RuntimeError("acceptance containers cannot own volumes")
-    if service not in {"acceptance-seed", "acceptance-observer-setup"}:
+    if service not in {"acceptance-seed", "acceptance-invitation", "acceptance-observer-setup"}:
         environment = dict(entry.split("=", 1) for entry in config.get("Env", []))
         # AIDEV-NOTE: Pinned Grid embeds public Supervisor/TLS defaults; our direct Java bypasses those scripts.
         if service == "selenium":
@@ -112,10 +113,17 @@ def private_files(task: Task, removed: list[str]) -> None:
     for path in [directory, *entries]:
         if task.docker("private-file-users", ["container", "ls", "-aq", "--filter", "volume=" + str(path)]).strip():
             raise RuntimeError("private seed has another container consumer")
+    # AIDEV-NOTE: A killed atomic publisher can leave only this exact final/tmp hardlink pair, never outside links.
+    final, temporary = directory / "acceptance-invitation.json", directory / "acceptance-invitation.tmp"
+    paired: set[Path] = set()
+    if final in entries and temporary in entries:
+        left, right = final.lstat(), temporary.lstat()
+        if (left.st_dev, left.st_ino, left.st_nlink) == (right.st_dev, right.st_ino, 2):
+            paired = {final, temporary}
     for path in entries:
         info = path.lstat()
-        if (path.name not in {"seed.json", "acceptance-credentials.json"} or not stat.S_ISREG(info.st_mode)
-                or info.st_nlink != 1 or info.st_uid != uid or info.st_gid != gid
+        if (path.name not in {"seed.json", "acceptance-credentials.json", "acceptance-invitation.json", "acceptance-invitation.tmp"} or not stat.S_ISREG(info.st_mode)
+                or info.st_nlink != (2 if path in paired else 1) or info.st_uid != uid or info.st_gid != gid
                 or stat.S_IMODE(info.st_mode) != 0o600):
             raise RuntimeError("unexpected private seed entry")
     for path in entries:
