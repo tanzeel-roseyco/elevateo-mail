@@ -1,0 +1,12 @@
+source=e01c64adfdf1ef05107239e947ed7351b771580f
+started=2026-10-14T19:08:47Z
+task_source_overlay=OPS820 restricted gateway login before migration; canonical commit unchanged
+task_source_overlay=private gateway URL and authority suite only; stop before HTTP/worker, canonical commit unchanged
+BE02 project=be02-307945fb8e3a4e8fbbd110bd81ff50fa evidence=/tmp/qa815-backend.ltE5szqT/ops/local/be02-307945fb8e3a4e8fbbd110bd81ff50fa
+Building bounded task image
+Running isolated Minitest suites and Steep
+tests=DIAGNOSTIC_COMPLETED cleanup=PASSED evidence=/tmp/qa815-backend.ltE5szqT/ops/local/be02-307945fb8e3a4e8fbbd110bd81ff50fa
+runner_exit=0
+receipt_copy_failed=0
+archive_absent=yes
+finished=2026-10-14T19:10:31Z

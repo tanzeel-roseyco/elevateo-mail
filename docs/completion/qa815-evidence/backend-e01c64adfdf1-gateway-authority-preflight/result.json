@@ -1,0 +1,7 @@
+{
+  "tests": "FAILED",
+  "failure": "RuntimeError: compose-validate failed; see 012-compose-validate.log",
+  "cleanup_passed": true,
+  "finished_at": 1792004894.4643915,
+  "source_snapshot": "source.sha256.json"
+}

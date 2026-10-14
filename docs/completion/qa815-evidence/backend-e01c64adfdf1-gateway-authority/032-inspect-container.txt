@@ -1,0 +1,908 @@
+[
+    {
+        "Id": "[opaque value redacted]",
+        "Created": "2026-10-14T19:09:02.526695216Z",
+        "Path": "auth",
+        "Args": [],
+        "State": {
+            "Status": "running",
+            "Running": true,
+            "Paused": false,
+            "Restarting": false,
+            "OOMKilled": false,
+            "Dead": false,
+            "Pid": 4009662,
+            "ExitCode": 0,
+            "Error": "",
+            "StartedAt": "2026-10-14T19:09:02.642854944Z",
+            "FinishedAt": "0001-01-01T00:00:00Z",
+            "Health": {
+                "Status": "healthy",
+                "FailingStreak": 0,
+                "Log": [
+                    {
+                        "Start": "2026-10-14T21:10:16.451703615+02:00",
+                        "End": "2026-10-14T21:10:16.49935677+02:00",
+                        "ExitCode": 0,
+                        "Output": "Connecting to 127.0.0.1:9999 (127.0.0.1:9999)\nremote file exists\n"
+                    },
+                    {
+                        "Start": "2026-10-14T21:10:18.499751736+02:00",
+                        "End": "2026-10-14T21:10:18.5442385+02:00",
+                        "ExitCode": 0,
+                        "Output": "Connecting to 127.0.0.1:9999 (127.0.0.1:9999)\nremote file exists\n"
+                    },
+                    {
+                        "Start": "2026-10-14T21:10:20.545380215+02:00",
+                        "End": "2026-10-14T21:10:20.583333844+02:00",
+                        "ExitCode": 0,
+                        "Output": "Connecting to 127.0.0.1:9999 (127.0.0.1:9999)\nremote file exists\n"
+                    },
+                    {
+                        "Start": "2026-10-14T21:10:22.584169726+02:00",
+                        "End": "2026-10-14T21:10:22.627159392+02:00",
+                        "ExitCode": 0,
+                        "Output": "Connecting to 127.0.0.1:9999 (127.0.0.1:9999)\nremote file exists\n"
+                    },
+                    {
+                        "Start": "2026-10-14T21:10:24.627465013+02:00",
+                        "End": "2026-10-14T21:10:24.685294675+02:00",
+                        "ExitCode": 0,
+                        "Output": "Connecting to 127.0.0.1:9999 (127.0.0.1:9999)\nremote file exists\n"
+                    }
+                ]
+            }
+        },
+        "Image": "sha256:[opaque value redacted]",
+        "ResolvConfPath": "[opaque value redacted]",
+        "HostnamePath": "[opaque value redacted]",
+        "HostsPath": "[opaque value redacted]",
+        "LogPath": "[opaque value redacted]",
+        "Name": "[opaque value redacted]",
+        "RestartCount": 0,
+        "Driver": "overlayfs",
+        "Platform": "linux",
+        "MountLabel": "",
+        "ProcessLabel": "",
+        "AppArmorProfile": "docker-default",
+        "ExecIDs": null,
+        "HostConfig": {
+            "Binds": null,
+            "ContainerIDFile": "",
+            "LogConfig": {
+                "Type": "json-file",
+                "Config": {
+                    "max-file": "3",
+                    "max-size": "10m"
+                }
+            },
+            "NetworkMode": "[opaque value redacted]",
+            "PortBindings": {},
+            "RestartPolicy": {
+                "Name": "no",
+                "MaximumRetryCount": 0
+            },
+            "AutoRemove": false,
+            "VolumeDriver": "",
+            "VolumesFrom": null,
+            "ConsoleSize": [
+                0,
+                0
+            ],
+            "CapAdd": null,
+            "CapDrop": null,
+            "CgroupnsMode": "private",
+            "Dns": null,
+            "DnsOptions": null,
+            "DnsSearch": null,
+            "ExtraHosts": [],
+            "GroupAdd": null,
+            "IpcMode": "private",
+            "Cgroup": "",
+            "Links": null,
+            "OomScoreAdj": 0,
+            "PidMode": "",
+            "Privileged": false,
+            "PublishAllPorts": false,
+            "ReadonlyRootfs": false,
+            "SecurityOpt": null,
+            "UTSMode": "",
+            "UsernsMode": "",
+            "ShmSize": 67108864,
+            "Runtime": "runc",
+            "Isolation": "",
+            "CpuShares": 0,
+            "Memory": 268435456,
+            "NanoCpus": 1000000000,
+            "CgroupParent": "",
+            "BlkioWeight": 0,
+            "BlkioWeightDevice": null,
+            "BlkioDeviceReadBps": null,
+            "BlkioDeviceWriteBps": null,
+            "BlkioDeviceReadIOps": null,
+            "BlkioDeviceWriteIOps": null,
+            "CpuPeriod": 0,
+            "CpuQuota": 0,
+            "CpuRealtimePeriod": 0,
+            "CpuRealtimeRuntime": 0,
+            "CpusetCpus": "",
+            "CpusetMems": "",
+            "Devices": null,
+            "DeviceCgroupRules": null,
+            "DeviceRequests": null,
+            "MemoryReservation": 0,
+            "MemorySwap": 536870912,
+            "MemorySwappiness": null,
+            "OomKillDisable": null,
+            "PidsLimit": null,
+            "Ulimits": null,
+            "CpuCount": 0,
+            "CpuPercent": 0,
+            "IOMaximumIOps": 0,
+            "IOMaximumBandwidth": 0,
+            "MaskedPaths": [
+                "/proc/acpi",
+                "/proc/asound",
+                "/proc/interrupts",
+                "/proc/kcore",
+                "/proc/keys",
+                "/proc/latency_stats",
+                "/proc/sched_debug",
+                "/proc/scsi",
+                "/proc/timer_list",
+                "/proc/timer_stats",
+                "/sys/devices/virtual/powercap",
+                "/sys/firmware"
+            ],
+            "ReadonlyPaths": [
+                "/proc/bus",
+                "/proc/fs",
+                "/proc/irq",
+                "/proc/sys",
+                "/proc/sysrq-trigger"
+            ]
+        },
+        "Storage": {
+            "RootFS": {
+                "Snapshot": {
+                    "Name": "overlayfs"
+                }
+            }
+        },
+        "Mounts": [],
+        "Config": {
+            "Hostname": "dfb68a50af4b",
+            "Domainname": "",
+            "User": "supabase",
+            "AttachStdin": false,
+            "AttachStdout": true,
+            "AttachStderr": true,
+            "Tty": false,
+            "OpenStdin": false,
+            "StdinOnce": false,
+            "Env": [
+                "[opaque value redacted] BE02 Isolated Auth",
+                "[opaque value redacted]",
+                "GOTRUE_SMTP_PASS=",
+                "GOTRUE_JWT_ISSUER=http://auth:9999",
+                "[opaque value redacted]",
+                "GOTRUE_MAILER_AUTOCONFIRM=false",
+                "GOTRUE_DISABLE_SIGNUP=true",
+                "GOTRUE_SESSIONS_TIMEBOX=12h",
+                "GOTRUE_URI_ALLOW_LIST=http://api:3000/auth/complete",
+                "GOTRUE_SMTP_HOST=mailpit",
+                "GOTRUE_SMTP_ADMIN_EMAIL=auth@elevateo.invalid",
+                "GOTRUE_SMTP_USER=",
+                "API_EXTERNAL_URL=http://api:3000",
+                "[opaque value redacted]",
+                "[opaque value redacted]",
+                "GOTRUE_API_HOST=0.0.0.0",
+                "[opaque value redacted]",
+                "GOTRUE_SMTP_PORT=1025",
+                "GOTRUE_JWT_SECRET=[REDACTED]",
+                "[opaque value redacted]",
+                "[opaque value redacted]",
+                "GOTRUE_DB_DATABASE_URL=postgres://supabase_auth_admin:[REDACTED]@db:5432/postgres",
+                "[opaque value redacted]",
+                "GOTRUE_JWT_EXP=3600",
+                "[opaque value redacted]",
+                "[opaque value redacted]",
+                "GOTRUE_DB_DRIVER=postgres",
+                "GOTRUE_JWT_AUD=authenticated",
+                "GOTRUE_API_PORT=9999",
+                "GOTRUE_SITE_URL=http://api:3000",
+                "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "[opaque value redacted]"
+            ],
+            "Cmd": [
+                "auth"
+            ],
+            "Healthcheck": {
+                "Test": [
+                    "CMD",
+                    "wget",
+                    "--no-verbose",
+                    "--tries=1",
+                    "--spider",
+                    "http://127.0.0.1:9999/health"
+                ],
+                "Interval": 2000000000,
+                "Timeout": 3000000000,
+                "Retries": 50
+            },
+            "Image": "supabase/gotrue:v2.196.0@sha256:[opaque value redacted]",
+            "Volumes": null,
+            "WorkingDir": "/",
+            "Entrypoint": null,
+            "Labels": {
+                "com.docker.compose.config-hash": "[opaque value redacted]",
+                "com.docker.compose.container-number": "1",
+                "com.docker.compose.depends_on": "",
+                "com.docker.compose.image": "sha256:[opaque value redacted]",
+                "com.docker.compose.oneoff": "False",
+                "com.docker.compose.project": "[opaque value redacted]",
+                "com.docker.compose.project.config_files": "/tmp/qa815-backend.ltE5szqT/ops/compose.be02-test.yaml",
+                "com.docker.compose.project.environment_file": "/tmp/qa815-backend.[opaque value redacted]",
+                "com.docker.compose.project.working_dir": "/tmp/qa815-backend.ltE5szqT/ops",
+                "com.docker.compose.service": "auth",
+                "com.docker.compose.version": "5.3.1"
+            }
+        },
+        "NetworkSettings": {
+            "SandboxID": "[opaque value redacted]",
+            "SandboxKey": "[opaque value redacted]",
+            "Ports": {},
+            "Networks": {
+                "[opaque value redacted]": {
+                    "IPAMConfig": null,
+                    "Links": null,
+                    "Aliases": [
+                        "[opaque value redacted]",
+                        "auth"
+                    ],
+                    "DriverOpts": null,
+                    "GwPriority": 0,
+                    "NetworkID": "[opaque value redacted]",
+                    "EndpointID": "[opaque value redacted]",
+                    "Gateway": "",
+                    "IPAddress": "10.0.57.4",
+                    "MacAddress": "02:c7:98:7e:9e:61",
+                    "IPPrefixLen": 24,
+                    "IPv6Gateway": "",
+                    "GlobalIPv6Address": "",
+                    "GlobalIPv6PrefixLen": 0,
+                    "DNSNames": [
+                        "[opaque value redacted]",
+                        "auth",
+                        "dfb68a50af4b"
+                    ]
+                }
+            }
+        },
+        "ImageManifestDescriptor": {
+            "mediaType": "application/vnd.oci.image.manifest.v1+json",
+            "digest": "sha256:[opaque value redacted]",
+            "size": 1431,
+            "platform": {
+                "architecture": "amd64",
+                "os": "linux"
+            }
+        }
+    },
+    {
+        "Id": "[opaque value redacted]",
+        "Created": "2026-10-14T19:08:50.256331634Z",
+        "Path": "docker-entrypoint.sh",
+        "Args": [
+            "postgres",
+            "-c",
+            "[opaque value redacted]",
+            "-c",
+            "log_min_messages=fatal"
+        ],
+        "State": {
+            "Status": "running",
+            "Running": true,
+            "Paused": false,
+            "Restarting": false,
+            "OOMKilled": false,
+            "Dead": false,
+            "Pid": 3997923,
+            "ExitCode": 0,
+            "Error": "",
+            "StartedAt": "2026-10-14T19:08:50.490229377Z",
+            "FinishedAt": "0001-01-01T00:00:00Z",
+            "Health": {
+                "Status": "healthy",
+                "FailingStreak": 0,
+                "Log": [
+                    {
+                        "Start": "2026-10-14T21:10:17.028756644+02:00",
+                        "End": "2026-10-14T21:10:17.098104422+02:00",
+                        "ExitCode": 0,
+                        "Output": "localhost:5432 - accepting connections\n"
+                    },
+                    {
+                        "Start": "2026-10-14T21:10:19.099331475+02:00",
+                        "End": "2026-10-14T21:10:19.148627737+02:00",
+                        "ExitCode": 0,
+                        "Output": "localhost:5432 - accepting connections\n"
+                    },
+                    {
+                        "Start": "2026-10-14T21:10:21.149639181+02:00",
+                        "End": "2026-10-14T21:10:21.193259694+02:00",
+                        "ExitCode": 0,
+                        "Output": "localhost:5432 - accepting connections\n"
+                    },
+                    {
+                        "Start": "2026-10-14T21:10:23.194377867+02:00",
+                        "End": "2026-10-14T21:10:23.243302612+02:00",
+                        "ExitCode": 0,
+                        "Output": "localhost:5432 - accepting connections\n"
+                    },
+                    {
+                        "Start": "2026-10-14T21:10:25.244634289+02:00",
+                        "End": "2026-10-14T21:10:25.283817461+02:00",
+                        "ExitCode": 0,
+                        "Output": "localhost:5432 - accepting connections\n"
+                    }
+                ]
+            }
+        },
+        "Image": "sha256:[opaque value redacted]",
+        "ResolvConfPath": "[opaque value redacted]",
+        "HostnamePath": "[opaque value redacted]",
+        "HostsPath": "[opaque value redacted]",
+        "LogPath": "[opaque value redacted]",
+        "Name": "[opaque value redacted]",
+        "RestartCount": 0,
+        "Driver": "overlayfs",
+        "Platform": "linux",
+        "MountLabel": "",
+        "ProcessLabel": "",
+        "AppArmorProfile": "docker-default",
+        "ExecIDs": null,
+        "HostConfig": {
+            "Binds": [
+                "/tmp/qa815-backend.ltE5szqT/ops/supabase/db/99-jwt.sql:/docker-entrypoint-initdb.d/init-scripts/99-jwt.sql:ro",
+                "[opaque value redacted]:/var/lib/postgresql/data:rw",
+                "[opaque value redacted]:/etc/postgresql-custom:rw",
+                "/tmp/qa815-backend.[opaque value redacted]:/docker-entrypoint-initdb.d/init-scripts/99-roles.sql:ro"
+            ],
+            "ContainerIDFile": "",
+            "LogConfig": {
+                "Type": "json-file",
+                "Config": {
+                    "max-file": "3",
+                    "max-size": "10m"
+                }
+            },
+            "NetworkMode": "[opaque value redacted]",
+            "PortBindings": {},
+            "RestartPolicy": {
+                "Name": "no",
+                "MaximumRetryCount": 0
+            },
+            "AutoRemove": false,
+            "VolumeDriver": "",
+            "VolumesFrom": null,
+            "ConsoleSize": [
+                0,
+                0
+            ],
+            "CapAdd": null,
+            "CapDrop": null,
+            "CgroupnsMode": "private",
+            "Dns": null,
+            "DnsOptions": null,
+            "DnsSearch": null,
+            "ExtraHosts": [],
+            "GroupAdd": null,
+            "IpcMode": "private",
+            "Cgroup": "",
+            "Links": null,
+            "OomScoreAdj": 0,
+            "PidMode": "",
+            "Privileged": false,
+            "PublishAllPorts": false,
+            "ReadonlyRootfs": false,
+            "SecurityOpt": null,
+            "UTSMode": "",
+            "UsernsMode": "",
+            "ShmSize": 67108864,
+            "Runtime": "runc",
+            "Isolation": "",
+            "CpuShares": 0,
+            "Memory": 805306368,
+            "NanoCpus": 1000000000,
+            "CgroupParent": "",
+            "BlkioWeight": 0,
+            "BlkioWeightDevice": null,
+            "BlkioDeviceReadBps": null,
+            "BlkioDeviceWriteBps": null,
+            "BlkioDeviceReadIOps": null,
+            "BlkioDeviceWriteIOps": null,
+            "CpuPeriod": 0,
+            "CpuQuota": 0,
+            "CpuRealtimePeriod": 0,
+            "CpuRealtimeRuntime": 0,
+            "CpusetCpus": "",
+            "CpusetMems": "",
+            "Devices": null,
+            "DeviceCgroupRules": null,
+            "DeviceRequests": null,
+            "MemoryReservation": 0,
+            "MemorySwap": 1610612736,
+            "MemorySwappiness": null,
+            "OomKillDisable": null,
+            "PidsLimit": null,
+            "Ulimits": null,
+            "CpuCount": 0,
+            "CpuPercent": 0,
+            "IOMaximumIOps": 0,
+            "IOMaximumBandwidth": 0,
+            "MaskedPaths": [
+                "/proc/acpi",
+                "/proc/asound",
+                "/proc/interrupts",
+                "/proc/kcore",
+                "/proc/keys",
+                "/proc/latency_stats",
+                "/proc/sched_debug",
+                "/proc/scsi",
+                "/proc/timer_list",
+                "/proc/timer_stats",
+                "/sys/devices/virtual/powercap",
+                "/sys/firmware"
+            ],
+            "ReadonlyPaths": [
+                "/proc/bus",
+                "/proc/fs",
+                "/proc/irq",
+                "/proc/sys",
+                "/proc/sysrq-trigger"
+            ]
+        },
+        "Storage": {
+            "RootFS": {
+                "Snapshot": {
+                    "Name": "overlayfs"
+                }
+            }
+        },
+        "Mounts": [
+            {
+                "Type": "bind",
+                "Source": "/tmp/qa815-backend.ltE5szqT/ops/supabase/db/99-jwt.sql",
+                "Destination": "/docker-entrypoint-initdb.d/init-scripts/99-jwt.sql",
+                "Mode": "ro",
+                "RW": false,
+                "Propagation": "rprivate"
+            },
+            {
+                "Type": "volume",
+                "Name": "[opaque value redacted]",
+                "Source": "[opaque value redacted]",
+                "Destination": "/var/lib/postgresql/data",
+                "Driver": "local",
+                "Mode": "rw",
+                "RW": true,
+                "Propagation": ""
+            },
+            {
+                "Type": "volume",
+                "Name": "[opaque value redacted]",
+                "Source": "[opaque value redacted]",
+                "Destination": "/etc/postgresql-custom",
+                "Driver": "local",
+                "Mode": "rw",
+                "RW": true,
+                "Propagation": ""
+            },
+            {
+                "Type": "bind",
+                "Source": "/tmp/qa815-backend.[opaque value redacted]",
+                "Destination": "/docker-entrypoint-initdb.d/init-scripts/99-roles.sql",
+                "Mode": "ro",
+                "RW": false,
+                "Propagation": "rprivate"
+            }
+        ],
+        "Config": {
+            "Hostname": "0668d67f74c8",
+            "Domainname": "",
+            "User": "",
+            "AttachStdin": false,
+            "AttachStdout": true,
+            "AttachStderr": true,
+            "ExposedPorts": {
+                "5432/tcp": {}
+            },
+            "Tty": false,
+            "OpenStdin": false,
+            "StdinOnce": false,
+            "Env": [
+                "JWT_EXP=3600",
+                "PGPORT=5432",
+[credential-bearing line redacted]
+                "POSTGRES_DB=postgres",
+                "[opaque value redacted]",
+[credential-bearing line redacted]
+                "POSTGRES_PORT=5432",
+                "PGDATABASE=postgres",
+                "[opaque value redacted]:/usr/lib/postgresql/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "PGDATA=/var/lib/postgresql/data",
+                "POSTGRES_USER=supabase_admin",
+                "[opaque value redacted] --locale-provider=icu --encoding=UTF-8 --icu-locale=en_US.UTF-8",
+                "LANG=en_US.UTF-8",
+                "LANGUAGE=en_US:en",
+                "LC_ALL=en_US.UTF-8",
+                "[opaque value redacted]",
+                "[opaque value redacted]"
+            ],
+            "Cmd": [
+                "postgres",
+                "-c",
+                "[opaque value redacted]",
+                "-c",
+                "log_min_messages=fatal"
+            ],
+            "Healthcheck": {
+                "Test": [
+                    "CMD",
+                    "pg_isready",
+                    "-U",
+                    "postgres",
+                    "-h",
+                    "localhost"
+                ],
+                "Interval": 2000000000,
+                "Timeout": 3000000000,
+                "Retries": 50
+            },
+            "Image": "supabase/postgres:17.6.1.136@sha256:[opaque value redacted]",
+            "Volumes": null,
+            "WorkingDir": "/",
+            "Entrypoint": [
+                "docker-entrypoint.sh"
+            ],
+            "Labels": {
+                "com.docker.compose.config-hash": "[opaque value redacted]",
+                "com.docker.compose.container-number": "1",
+                "com.docker.compose.depends_on": "",
+                "com.docker.compose.image": "sha256:[opaque value redacted]",
+                "com.docker.compose.oneoff": "False",
+                "com.docker.compose.project": "[opaque value redacted]",
+                "com.docker.compose.project.config_files": "/tmp/qa815-backend.ltE5szqT/ops/compose.be02-test.yaml",
+                "com.docker.compose.project.environment_file": "/tmp/qa815-backend.[opaque value redacted]",
+                "com.docker.compose.project.working_dir": "/tmp/qa815-backend.ltE5szqT/ops",
+                "com.docker.compose.service": "db",
+                "com.docker.compose.version": "5.3.1"
+            },
+            "StopSignal": "SIGINT"
+        },
+        "NetworkSettings": {
+            "SandboxID": "[opaque value redacted]",
+            "SandboxKey": "[opaque value redacted]",
+            "Ports": {
+                "5432/tcp": null
+            },
+            "Networks": {
+                "[opaque value redacted]": {
+                    "IPAMConfig": null,
+                    "Links": null,
+                    "Aliases": [
+                        "[opaque value redacted]",
+                        "db"
+                    ],
+                    "DriverOpts": null,
+                    "GwPriority": 0,
+                    "NetworkID": "[opaque value redacted]",
+                    "EndpointID": "[opaque value redacted]",
+                    "Gateway": "",
+                    "IPAddress": "10.0.57.2",
+                    "MacAddress": "8a:68:7d:1e:c0:97",
+                    "IPPrefixLen": 24,
+                    "IPv6Gateway": "",
+                    "GlobalIPv6Address": "",
+                    "GlobalIPv6PrefixLen": 0,
+                    "DNSNames": [
+                        "[opaque value redacted]",
+                        "db",
+                        "0668d67f74c8"
+                    ]
+                }
+            }
+        },
+        "ImageManifestDescriptor": {
+            "mediaType": "application/vnd.oci.image.manifest.v1+json",
+            "digest": "sha256:[opaque value redacted]",
+            "size": 5775,
+            "platform": {
+                "architecture": "amd64",
+                "os": "linux"
+            }
+        }
+    },
+    {
+        "Id": "[opaque value redacted]",
+        "Created": "2026-10-14T19:08:50.251051746Z",
+        "Path": "/mailpit",
+        "Args": [],
+        "State": {
+            "Status": "running",
+            "Running": true,
+            "Paused": false,
+            "Restarting": false,
+            "OOMKilled": false,
+            "Dead": false,
+            "Pid": 3997958,
+            "ExitCode": 0,
+            "Error": "",
+            "StartedAt": "2026-10-14T19:08:50.510931826Z",
+            "FinishedAt": "0001-01-01T00:00:00Z",
+            "Health": {
+                "Status": "healthy",
+                "FailingStreak": 0,
+                "Log": [
+                    {
+                        "Start": "2026-10-14T21:09:21.956224255+02:00",
+                        "End": "2026-10-14T21:09:22.002412914+02:00",
+                        "ExitCode": 0,
+                        "Output": ""
+                    },
+                    {
+                        "Start": "2026-10-14T21:09:37.003650349+02:00",
+                        "End": "2026-10-14T21:09:37.053112337+02:00",
+                        "ExitCode": 0,
+                        "Output": ""
+                    },
+                    {
+                        "Start": "2026-10-14T21:09:52.053715999+02:00",
+                        "End": "2026-10-14T21:09:52.104125148+02:00",
+                        "ExitCode": 0,
+                        "Output": ""
+                    },
+                    {
+                        "Start": "2026-10-14T21:10:07.105344459+02:00",
+                        "End": "2026-10-14T21:10:07.145687535+02:00",
+                        "ExitCode": 0,
+                        "Output": ""
+                    },
+                    {
+                        "Start": "2026-10-14T21:10:22.148184426+02:00",
+                        "End": "2026-10-14T21:10:22.222460912+02:00",
+                        "ExitCode": 0,
+                        "Output": ""
+                    }
+                ]
+            }
+        },
+        "Image": "sha256:[opaque value redacted]",
+        "ResolvConfPath": "[opaque value redacted]",
+        "HostnamePath": "[opaque value redacted]",
+        "HostsPath": "[opaque value redacted]",
+        "LogPath": "[opaque value redacted]",
+        "Name": "[opaque value redacted]",
+        "RestartCount": 0,
+        "Driver": "overlayfs",
+        "Platform": "linux",
+        "MountLabel": "",
+        "ProcessLabel": "",
+        "AppArmorProfile": "docker-default",
+        "ExecIDs": null,
+        "HostConfig": {
+            "Binds": null,
+            "ContainerIDFile": "",
+            "LogConfig": {
+                "Type": "json-file",
+                "Config": {
+                    "max-file": "3",
+                    "max-size": "10m"
+                }
+            },
+            "NetworkMode": "[opaque value redacted]",
+            "PortBindings": {},
+            "RestartPolicy": {
+                "Name": "no",
+                "MaximumRetryCount": 0
+            },
+            "AutoRemove": false,
+            "VolumeDriver": "",
+            "VolumesFrom": null,
+            "ConsoleSize": [
+                0,
+                0
+            ],
+            "CapAdd": null,
+            "CapDrop": null,
+            "CgroupnsMode": "private",
+            "Dns": null,
+            "DnsOptions": null,
+            "DnsSearch": null,
+            "ExtraHosts": [],
+            "GroupAdd": null,
+            "IpcMode": "private",
+            "Cgroup": "",
+            "Links": null,
+            "OomScoreAdj": 0,
+            "PidMode": "",
+            "Privileged": false,
+            "PublishAllPorts": false,
+            "ReadonlyRootfs": false,
+            "SecurityOpt": null,
+            "Tmpfs": {
+                "/data": "",
+                "/tmp": ""
+            },
+            "UTSMode": "",
+            "UsernsMode": "",
+            "ShmSize": 67108864,
+            "Runtime": "runc",
+            "Isolation": "",
+            "CpuShares": 0,
+            "Memory": 134217728,
+            "NanoCpus": 500000000,
+            "CgroupParent": "",
+            "BlkioWeight": 0,
+            "BlkioWeightDevice": null,
+            "BlkioDeviceReadBps": null,
+            "BlkioDeviceWriteBps": null,
+            "BlkioDeviceReadIOps": null,
+            "BlkioDeviceWriteIOps": null,
+            "CpuPeriod": 0,
+            "CpuQuota": 0,
+            "CpuRealtimePeriod": 0,
+            "CpuRealtimeRuntime": 0,
+            "CpusetCpus": "",
+            "CpusetMems": "",
+            "Devices": null,
+            "DeviceCgroupRules": null,
+            "DeviceRequests": null,
+            "MemoryReservation": 0,
+            "MemorySwap": 268435456,
+            "MemorySwappiness": null,
+            "OomKillDisable": null,
+            "PidsLimit": null,
+            "Ulimits": null,
+            "CpuCount": 0,
+            "CpuPercent": 0,
+            "IOMaximumIOps": 0,
+            "IOMaximumBandwidth": 0,
+            "MaskedPaths": [
+                "/proc/acpi",
+                "/proc/asound",
+                "/proc/interrupts",
+                "/proc/kcore",
+                "/proc/keys",
+                "/proc/latency_stats",
+                "/proc/sched_debug",
+                "/proc/scsi",
+                "/proc/timer_list",
+                "/proc/timer_stats",
+                "/sys/devices/virtual/powercap",
+                "/sys/firmware"
+            ],
+            "ReadonlyPaths": [
+                "/proc/bus",
+                "/proc/fs",
+                "/proc/irq",
+                "/proc/sys",
+                "/proc/sysrq-trigger"
+            ]
+        },
+        "Storage": {
+            "RootFS": {
+                "Snapshot": {
+                    "Name": "overlayfs"
+                }
+            }
+        },
+        "Mounts": [],
+        "Config": {
+            "Hostname": "56306d0c9129",
+            "Domainname": "",
+            "User": "",
+            "AttachStdin": false,
+            "AttachStdout": true,
+            "AttachStderr": true,
+            "ExposedPorts": {
+                "1025/tcp": {},
+                "1110/tcp": {},
+                "8025/tcp": {}
+            },
+            "Tty": false,
+            "OpenStdin": false,
+            "StdinOnce": false,
+            "Env": [
+                "MP_SMTP_DISABLE_RDNS=true",
+                "MP_SMTP_AUTH_ACCEPT_ANY=true",
+                "[opaque value redacted]",
+                "MP_SMTP_RELAY_ALL=false",
+                "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+            ],
+            "Cmd": null,
+            "Healthcheck": {
+                "Test": [
+                    "CMD",
+                    "/mailpit",
+                    "readyz"
+                ],
+                "Interval": 15000000000,
+                "StartPeriod": 10000000000,
+                "StartInterval": 1000000000
+            },
+            "Image": "axllent/mailpit:v1.31.5@sha256:[opaque value redacted]",
+            "Volumes": null,
+            "WorkingDir": "/",
+            "Entrypoint": [
+                "/mailpit"
+            ],
+            "Labels": {
+                "com.docker.compose.config-hash": "[opaque value redacted]",
+                "com.docker.compose.container-number": "1",
+                "com.docker.compose.depends_on": "",
+                "com.docker.compose.image": "sha256:[opaque value redacted]",
+                "com.docker.compose.oneoff": "False",
+                "com.docker.compose.project": "[opaque value redacted]",
+                "com.docker.compose.project.config_files": "/tmp/qa815-backend.ltE5szqT/ops/compose.be02-test.yaml",
+                "com.docker.compose.project.environment_file": "/tmp/qa815-backend.[opaque value redacted]",
+                "com.docker.compose.project.working_dir": "/tmp/qa815-backend.ltE5szqT/ops",
+                "com.docker.compose.service": "mailpit",
+                "com.docker.compose.version": "5.3.1",
+                "org.opencontainers.image.description": "An email and SMTP testing tool with API for developers",
+                "org.opencontainers.image.documentation": "https://mailpit.axllent.org/docs/",
+                "org.opencontainers.image.licenses": "MIT",
+                "org.opencontainers.image.source": "https://github.com/axllent/mailpit",
+                "org.opencontainers.image.title": "Mailpit",
+                "org.opencontainers.image.url": "https://mailpit.axllent.org"
+            }
+        },
+        "NetworkSettings": {
+            "SandboxID": "[opaque value redacted]",
+            "SandboxKey": "[opaque value redacted]",
+            "Ports": {
+                "1025/tcp": null,
+                "1110/tcp": null,
+                "8025/tcp": null
+            },
+            "Networks": {
+                "[opaque value redacted]": {
+                    "IPAMConfig": null,
+                    "Links": null,
+                    "Aliases": [
+                        "[opaque value redacted]",
+                        "mailpit"
+                    ],
+                    "DriverOpts": null,
+                    "GwPriority": 0,
+                    "NetworkID": "[opaque value redacted]",
+                    "EndpointID": "[opaque value redacted]",
+                    "Gateway": "",
+                    "IPAddress": "10.0.57.3",
+                    "MacAddress": "42:21:e8:e3:95:0a",
+                    "IPPrefixLen": 24,
+                    "IPv6Gateway": "",
+                    "GlobalIPv6Address": "",
+                    "GlobalIPv6PrefixLen": 0,
+                    "DNSNames": [
+                        "[opaque value redacted]",
+                        "mailpit",
+                        "56306d0c9129"
+                    ]
+                }
+            }
+        },
+        "ImageManifestDescriptor": {
+            "mediaType": "application/vnd.oci.image.manifest.v1+json",
+            "digest": "sha256:[opaque value redacted]",
+            "size": 866,
+            "platform": {
+                "architecture": "amd64",
+                "os": "linux"
+            }
+        }
+    }
+]
+
+exit=0 seconds=0.02

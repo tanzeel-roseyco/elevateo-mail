@@ -766,3 +766,5 @@ QA815 exact `e01c64ad` 137-suite expanded gate found 27 failed suite exits, incl
 QA815 27-suite failure map and two fresh-DB representative PASS probes are diagnostic execution/classification, not independent source reviews. No additional QA815 reviewed LOC or defect density is claimed; broader isolation and source repair require owner review and fleet rerun.
 
 QA815 gateway ACL migrator PASS and assignment-options migrator boolean-text failure are scoped runtime findings, not independent source reviews. Additional QA815 reviewed LOC remains zero; no defect-density claim for owner migration test or SQL is made.
+
+QA815 gateway authority 5/21 PASS and its preserved Compose setup failure are fleet runtime evidence only, not independent source review. Additional QA815 independently reviewed LOC remains zero; no defect-density claim for gateway source or task harness.

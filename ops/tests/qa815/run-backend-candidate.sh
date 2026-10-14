@@ -18,6 +18,9 @@ elif [[ ${QA815_GATEWAY_ACL_FOCUS:-0} == 1 ]]; then
   [[ ${QA815_MIGRATOR_SUITE:-} == assignment-options ]] && focus_label=assignment-options-migrator
   receipt_dir="${receipt_dir}-${focus_label}"
   summary="${summary%.txt}-${focus_label}.txt"
+elif [[ ${QA815_GATEWAY_AUTHORITY_FOCUS:-0} == 1 ]]; then
+  receipt_dir="${receipt_dir}-gateway-authority"
+  summary="${summary%.txt}-gateway-authority.txt"
 fi
 context=$(mktemp -d /tmp/qa815-backend.XXXXXXXX)
 mkdir -p "$receipt_dir"
@@ -229,6 +232,45 @@ source = source.replace(failure,
 path.write_text(source)
 PY
   printf 'task_source_overlay=%s single-suite migrator test role and stop; canonical commit unchanged\n' "$suite" >> "$summary"
+fi
+if [[ ${QA815_GATEWAY_AUTHORITY_FOCUS:-0} == 1 ]]; then
+  [[ ${QA815_GATEWAY_BOOTSTRAP:-0} == 1 ]] || { echo 'Gateway authority requires task-only gateway bootstrap' >&2; exit 2; }
+  [[ ${QA815_FRESH_GROUP:-} == '' && ${QA815_ELARA_FOCUS:-0} != 1 && ${QA815_GATEWAY_ACL_FOCUS:-0} != 1 ]] || {
+    echo 'Choose one focused backend mode' >&2; exit 2;
+  }
+  python3 - "$context/ops/compose.be02-test.yaml" "$context/ops/tests/be02/run.py" <<'PY'
+from pathlib import Path
+import sys
+
+compose = Path(sys.argv[1])
+source = compose.read_text()
+start = source.index('  test:\n')
+end = source.index('  fixture:\n', start)
+block = source[start:end]
+needle = '      BE02_TASK_DATABASE_NAME: postgres\n'
+if block.count(needle) != 1:
+    raise SystemExit('QA815 gateway authority test-service anchor mismatch')
+block = block.replace(needle, needle +
+    '      BE02_ATTACHMENT_GATEWAY_DATABASE_URL: postgres://elevateo_attachment_gateway:${ATTACHMENT_GATEWAY_DB_PASSWORD:-preflight-placeholder}@db:5432/postgres\n')
+compose.write_text(source[:start] + block + source[end:])
+
+runner = Path(sys.argv[2])
+source = runner.read_text()
+needle = '            task.compose("ruby-suites", ["run", "--rm", "--no-deps", "test"], 480)\n'
+failure = '    except Exception as error:\n        failure ='
+if source.count(needle) != 1 or source.count(failure) != 1:
+    raise SystemExit('QA815 gateway authority runner anchors mismatch')
+source = source.replace(needle, needle + '            raise StopIteration("QA815 gateway authority diagnostic complete")\n')
+source = source.replace(failure, '    except StopIteration:\n        status = "DIAGNOSTIC_COMPLETED"\n' + failure)
+runner.write_text(source)
+PY
+  cat > "$context/ops/tests/be02/test-suites.sh" <<'SH'
+#!/usr/bin/env bash
+set -euo pipefail
+cd /workspace/apps/server
+bundle exec ruby test/attachment_gateway/authority_database_test.rb
+SH
+  printf 'task_source_overlay=private gateway URL and authority suite only; stop before HTTP/worker, canonical commit unchanged\n' >> "$summary"
 fi
 set +e
 python3 "$context/ops/tests/be02/run.py" --context default \
