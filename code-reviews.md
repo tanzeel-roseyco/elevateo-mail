@@ -544,3 +544,9 @@ ADV821 dedicated design: 0 defects/344 LOC on prior actual source and 0/123 LOC 
 Elara b7f2aad revocation navigation is source accepted: ADV831 zero/313 unique LOC; ADV832 zero/226, overlapping coverage nonadditive. Exact InboxPage and test blobs retained; runtime NOT_RUN.
 
 ADV829 functional runner review accepted zero defects/191 primary LOC, 0/KLOC. ADV830 erratum: the reviewer withdrew the request-body HIGH finding because challenge travels in headers; original count is one valid JSON-boundary defect/400 LOC (2.5/KLOC), now closed. The retained broader body union is not a runtime defect. Closure accepted zero remaining defects/221 LOC; ADV833 functional review accepted zero defects/104 LOC (0/KLOC), with overlapping coverage nonadditive. Validated object decoding and boundary regressions are source accepted. No accepted Nadia proof source rewritten; no executed-test claim.
+
+## R17 accepted harness integration
+
+ADV840 Tessa functional / ADV841 Vale design each accepted Mira145 unique source LOC, zero defects (0/KLOC). Historical finding: one MED/240 unique source/context LOC (4.17/KLOC), overlap nonadditive. Fresh about:blank navigation forces a new GET while preserving conflict/version/winner assertions.
+
+ADV842 Tessa functional / ADV843 Vale design each accepted Elara330 unique LOC (137 implementation +193 regression), zero defects (0/KLOC). Historical coordinate finding: one MED/281 LOC (3.56/KLOC). Exact descriptor suppression/restoration avoids unsafe formatter/getter/coercion invocation. Author pending-review labels are historical and superseded by root acceptance; authored records are preserved. Coverage overlaps are nonadditive. Source accepted; runtime NOT_RUN, no whole-app acceptance.

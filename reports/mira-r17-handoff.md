@@ -1,0 +1,13 @@
+# Mira OFF-405 / issue14 / R17 source handoff
+
+Prerequisite: `5c5cc39748668f0252bc6420cef46b32f6ef4efc`. Branch: `fix/mira-r17-conflict-navigation`. Application IN PROGRESS; R&D secondary. Requested Sol6.1 LOW/Fast/YOLO effective identity/effort/billing unverified; this session supplies source work only.
+
+Mira OFF-405 / issue #14 / R17 source-only repair over exact `5c5cc39748668f0252bc6420cef46b32f6ef4efc`: draft-conflict `load()` now visits `about:blank` before the existing authenticated GET/navigation barrier, forcing a fresh document while retaining browser-context auth cookies. Total source remains 145 lines; cleanup `finally` remains line 140. Tessa's confirmed navigation finding is 1 MED / 240 unique LOC = 4.17 defects/KLOC; independent closure/design review and Soren fleet runtime remain pending. Original R12 1093ms failure cause remains UNKNOWN; the derived 120s GET timeout fits the confirmed defect but does not establish that original cause. Reported R14 actual evidence remains Python 25 PASS, frontend 629 PASS, diagnostics 8 PASS / 4 FAIL, GUI NOT_RUN; these historical results do not verify R17. Observer OFF; BE02 unaccepted; BE03 closed. Root owns acceptance and actual vault writes; no vault edit here. See the numbered packet alongside this handoff.
+
+Source: `tests/acceptance/playwright/draft-conflict.e2e.ts`; Git blob `4e0e2228ea205760e8e52d9f2744f7a620935acd`; SHA-256 `66ee81f5431bd55c2328c52cbe90f83b398a83b5d4796e8b1562f6ec15022a54`; 9508 bytes; 145 lines. Functional and dedicated design packet: `reports/mira-r17-draft-conflict.packet.txt`, numbered 1–145. Added navigation line40, removed old blank48; lines49–145 unchanged. No production behavior change; backend/contracts/observer/BE03, diagnostics.ts, auth-stale.e2e.ts and transport-barrier.ts untouched.
+
+Changed committed paths: README.md, state.md, documentation.md, code-reviews.md, tests/acceptance/playwright/draft-conflict.e2e.ts, reports/mira-r17-handoff.md, reports/mira-r17-draft-conflict.packet.txt.
+
+Decision: fresh document guarantees the editor mounts and fetches again while the existing browser context retains authentication cookies. Existing load calls use winner or initially clean stale; no stale dirty editor navigation is introduced. No schema, assertion, skip, mock or transport exception change.
+
+Verification: source diff and line/provenance inspection only; no host test/build/install, Docker, local app, live/public/paid operation or actual vault write. Runtime NOT_RUN. Root arranges independent bounded closure/design reviews and exact combined candidate; Soren schedules fleet acceptance. Final immutable commit/bundle receipt and ready notification are produced after commit under reports, control/cassian-inbox.md and output-last-message.
