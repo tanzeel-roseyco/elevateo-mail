@@ -758,3 +758,7 @@ Author self-inspection only; no independent review performed or claimed. Scope: 
 ### FE-805 R10 fleet-failure repair self-inspection (Fable, 2026-10-15)
 
 Author self-inspection only; no independent review performed or claimed. Scope: `Shell.test.tsx` delta (4 LOC), `Sidebar.tsx` delta (2 LOC), `ui/icons.tsx` (+9 LOC), `collaborationNav.test.tsx` (1 LOC), `features/index.test.tsx` (4 LOC). Checked: the act repair awaits the released refresh and changes no assertion; the icon swap keeps the accessible name "Search" and aria-hidden decoration; the two expectation updates track exact owner source (Celeste eleven routes, status text) rather than loosening matchers. Defects found: 0 across 20 LOC (0/KLOC). Fleet 8eb840d evidence read, not reproduced locally.
+
+### FE-805 R11 REV866 response self-inspection (Fable, 2026-10-15)
+
+Author self-inspection only; Maeve's MAC-814 static review is the independent input (1 confirmed test-coverage defect, 1 potential stale-state finding). Scope read: Celeste catch sites (~60 LOC, unchanged) and session consuming paths; scope changed: `outreachSessionPolicy.ts` comment only, `outreachSessionPolicy.test.ts` +33 LOC, `Shell.test.tsx` +27 LOC. Finding 1 closed as not a defect with the page-level evidence recorded in docs/completion/fable.md R11 and a route-level regression; finding 2 closed by the added cases. Defects introduced: 0 across 60 changed LOC (0/KLOC). Tests authored, not executed.

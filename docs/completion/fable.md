@@ -196,6 +196,16 @@ Diagnosis and repair, semantics unchanged:
 
 Celeste owns the remaining three failures (OutreachPages pause/consent, contract consent). Tests remain authored and NOT executed here; focused fleet rerun requested from Soren. No visual claim.
 
+## R11 — Maeve REV866 (MAC-814) stale consumed-error review and regressions (2026-10-15)
+
+Maeve's `mac814-fable-outreach-policy-review-10a64a1.md` raised a potential HIGH: the policy rethrows an error the session controller already consumed (stale generation, current 401, context change), so a page awaiting an old request might commit a stale failure under a replacement context. Exact page catches reviewed (`features/outreach/OutreachPages.tsx` lines 78-83, 132-146, 170-183, 239-261; `ConsentEvidenceForm.tsx` 20-46), not edited:
+
+- Reads run in an effect keyed on `[gateway, context, kind, id, revision, cursor]` whose cleanup aborts the controller; both the success and failure continuations are guarded by `controller.signal.aborted`.
+- Writes keep one pending controller aborted on unmount; every catch and finally is guarded the same way.
+- Every consuming path in `session.tsx` (stale generation after refresh/recovery/switch/sign-out/bootstrap, current 401 → `refreshing`, context change → `recovering`/`retry_required`) unmounts or remounts the protected subtree, so the page's controller is aborted before its catch can run; a context change alone also re-keys her read effect.
+
+Conclusion: no production bug; the rethrow is required so a consumed failure never resolves into a fake result. Repairs are evidence only: a documenting `AIDEV-NOTE` in `outreachSessionPolicy.ts`, three unit cases Maeve listed as missing (successful pass-through with no policy call, stale consumed 401 still rethrown, current context change reported with its generation), and one route-level regression in `Shell.test.tsx`: a held-open `listCampaigns` from identity A fails with 401 only after an explicit switch to organization B; the test asserts no alert, no "Restoring access", organization B visible, the refresh never called and the remounted page's second read listed. FE-805 authored cases now 31, none executed; fleet run requested from Soren.
+
 ## Limitations
 
 - No lint, typecheck, unit test, build or visual check has been executed by Fable; Soren owns execution and Tessa owns visual evidence.

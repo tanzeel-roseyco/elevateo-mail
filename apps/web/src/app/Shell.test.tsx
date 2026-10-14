@@ -571,6 +571,33 @@ describe('Outreach operations under the central session policy (FE-805)', () => 
     expect(screen.queryByRole('status', { name: 'Restoring session' })).toBeNull()
   })
 
+  it('a stale 401 from a request started under the previous identity cannot mark the replacement context (REV866)', async () => {
+    // First read is held open; an explicit organization switch replaces the identity while it is
+    // pending; only then does the old request fail with 401. The policy sees a stale generation and
+    // consumes it; the rethrow reaches a page whose controller was aborted at unmount, so nothing
+    // is committed: no alert, no "Restoring access", and the single bounded refresh is not spent.
+    let failFirst: ((error: unknown) => void) | undefined
+    const listCampaigns = vi.fn<OutreachGateway['listCampaigns']>()
+      .mockImplementationOnce(() => new Promise<never>((_resolve, reject) => { failFirst = reject }))
+      .mockImplementation(async () => ({ items: [{ id: campaignId, name: 'Pilot', status: 'paused' as const, version: 1 }], next_cursor: null }))
+    const base = createFixtureGateway()
+    const refreshSession = vi.spyOn(base, 'refreshSession')
+    renderOutreach(base, '/outreach/campaigns', { outreach: outreachWith({ listCampaigns }) })
+    await screen.findByText('Synthetic organization A')
+    await waitFor(() => expect(failFirst).toBeDefined())
+    fireEvent.click(screen.getByRole('button', { name: 'Account and sign-out' }))
+    const dialog = await screen.findByRole('dialog', { name: 'Account' })
+    fireEvent.click(await within(dialog).findByRole('button', { name: /Synthetic organization B/ }))
+    await screen.findByText('Synthetic organization B')
+    await act(async () => { failFirst!(unauthenticated()) })
+    expect(await screen.findByRole('link', { name: 'Pilot' })).toBeTruthy()
+    expect(screen.queryByRole('alert')).toBeNull()
+    expect(screen.queryByRole('status', { name: 'Restoring access' })).toBeNull()
+    expect(screen.getByText('Synthetic organization B')).toBeTruthy()
+    expect(refreshSession).not.toHaveBeenCalled()
+    expect(listCampaigns).toHaveBeenCalledTimes(2)
+  })
+
   it("an ordinary failure stays on Celeste's page as her own alert without any session transition", async () => {
     const createCampaign = vi.fn(async () => { throw new GatewayError('api', 'request_invalid', 'synthetic', { status: 422, requestId: 'r2' }) })
     renderOutreach(createFixtureGateway(), '/outreach/campaigns/new', { outreach: outreachWith({ createCampaign }) })
