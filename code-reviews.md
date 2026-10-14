@@ -710,3 +710,6 @@ SEND-809 self review: migration and SQL ~230 source LOC, zero confirmed defects 
 ## APK-813 Android scaffold — pending review
 
 Candidate source: `apps/android/`, `ops/build/android/`; bounded adversarial and dedicated design reviews are NOT_PERFORMED. Reviewed LOC, confirmed defects and defects/KLOC are unreported pending independent assignments. Astrid self inspection does not count as independent review. See `docs/completion/astrid.md`.
+## MAC-814 macOS template (pending independent review)
+
+Author self-review only; independent coverage 0 LOC, defects and defects/KLOC not established. Bounded review requested for `apps/orion/macos` template, validator and tests, with a separate design tradeoff review of universal versus architecture-specific DMGs. Runtime evidence pending Soren QA815 static Docker check and eventual Mac runner.
