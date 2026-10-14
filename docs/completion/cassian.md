@@ -35,3 +35,19 @@ Soren's `ruby-batch-next-20261014.txt` records exact bbed59c V2 contract 3 runs/
 Safety correction: Sabine added `app.authorize_outreach_draft_write`, but Dorian's current controller source had not invoked it. Cassian removed campaign/lead write registrations from the active isolated route list and marked their V2 operations disabled until the current-role helper and denied/stale tests are integrated. Read-only campaign/lead/analytics routes remain candidate-active. No prior runtime acceptance is inferred.
 
 Sabine's later protected grant page and Theo controller now return a separately authenticated actor grant on every page. Canonical V2 `OrganizationGrantPage.actor` is required and strict. Lyra must verify actor ID/organization and stable role/revision across pages and use this server proof for UI hints; list position must not decide actor authority. The server remains final authority for every mutation.
+
+### Later integrated candidate and fleet blockers
+
+Dorian b3438e4 now invokes Sabine current-role proof for every Outreach read and draft write inside the guarded transaction. Cassian source-registered four inert draft write operations and marked their V2 OpenAPI statuses active in the isolated candidate. The earlier safety correction remains historically accurate for its SHA; these routes still require SQL/HTTP denied, stale-role, CSRF and replay checks before acceptance. No send route was added.
+
+Soren exact f787bbc web lint failed on Fable Shell.test.tsx parser line 430 and six unused mock parameters in Cassian v2OutreachGateway.test.ts. Cassian repaired the six own lint errors at d9b94de; Fable repair is owner-pending. Exact f787bbc DB migration failed in Nadia AddSendCancellation#up because elevateo_send_owner lacked CREATE on schema app, before application tests. No integrated runtime PASS is claimed. Requested Soren rerun: pinned fleet Docker `ruby contracts/v2/contract_test.rb`, `ruby apps/server/test/v2_route_registry_test.rb`, full web lint/type/unit/build and backend DB migration/SQL/HTTP after owner repairs; generate V2 declarations from exact spec, then compare source hash. Executed here: no app tests/builds/Docker.
+
+The V2 generator wrapper now delegates to the existing web package script from its actual package directory; a matching `check:api:v2` command is available after Soren generates the declaration. The declaration remains absent until fleet Docker emits and validates it. Nadia 08ee821 migration privilege repair and Dorian 2e0e87d digest-backed Outreach RLS are merged in the current candidate but untested here.
+
+Fable 77dbd86 production Outreach binding merged as c966427. Static review still identifies Shell.test.tsx line 431 quote parse, six unused bridge-test mock parameters and likely TypeScript account-method arity mismatch; owner was notified through root. Binding is candidate source only, not a web PASS.
+
+Soren exact ea92754 integrated DB receipt failed at Corin CreateIsolatedInbound#up line 45: PostgreSQL syntax error at end of SQL input after `CASE WHEN jsonb_typeof(p_attachments) = 'array' THEN`. Earlier Nadia migration was passed on that run, but overall migration/SQL/HTTP remain FAILED/NOT_REACHED. Soren cleanup passed; Corin owner repair requested with receipt path in the shared outbox.
+
+Soren exact 93f7b14 fleet web run passed frozen V1 `check:api`, then lint FAILED with six Fable `outreachGatewayBridge.test.ts` unused mock parameters (lines 16/23/31); type/unit/build NOT_REACHED. Cleanup reported zero remaining task containers/image. Fable owner repair requested; no web PASS.
+
+Cassian aligned the inert account adapter signatures to Celeste's campaign-scoped port while preserving zero dispatch. Fable may remove the now-unneeded bridge or forward all four arguments exactly; Fable owns production binding. A focused no-dispatch test covers both account methods, requested for Soren fleet Docker.

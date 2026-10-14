@@ -59,8 +59,14 @@ export function createV2OutreachGateway(fetchImpl?: FetchLike) {
         ...base, method: 'PUT', body: LeadUpdateSchema.parse(input), maxRequestBytes: 2_048, headers: headers(ctx, proof), signal,
       })
     },
-    listAccounts(): Promise<never> { return Promise.reject(new GatewayError('api', 'temporarily_unavailable', 'Account scope is not yet available.')) },
-    getAccount(): Promise<never> { return Promise.reject(new GatewayError('api', 'temporarily_unavailable', 'Account scope is not yet available.')) },
+    listAccounts(ctx: ReadContext, campaignId: string, query: { cursor?: string; limit?: number }, signal: AbortSignal): Promise<never> {
+      void ctx; void campaignId; void query; void signal
+      return Promise.reject(new GatewayError('api', 'temporarily_unavailable', 'Account scope is not yet available.'))
+    },
+    getAccount(ctx: ReadContext, campaignId: string, accountId: string, signal: AbortSignal): Promise<never> {
+      void ctx; void campaignId; void accountId; void signal
+      return Promise.reject(new GatewayError('api', 'temporarily_unavailable', 'Account scope is not yet available.'))
+    },
     listAnalytics(ctx: ReadContext, campaignId: string, signal: AbortSignal) {
       return requestJson(`/v2/outreach/campaigns/${seg(campaignId)}/analytics`, CampaignAnalyticsSchema, 4_096, {
         ...base, headers: headers(ctx), signal,
