@@ -1,0 +1,7 @@
+# SEND809 cancellation fixture guard repair
+
+Evidence: Soren exact integrated `7aa61be4649ca251c3faff368ba61dfa7e313708`, `completion-soren-qa815/docs/completion/qa815-evidence/backend-7aa61be4649c/028-ruby-suites.txt`, eight cancellation errors. PostgreSQL reports `protected write guard required` from `app_auth.assert_protected_write` before `app.cancel_send` reaches cancellation authority. Both send database test-local `cancel` helpers called `begin_write` but omitted `write_guard`, while the approved send helper performs both steps.
+
+Repair coverage: two changed source lines in `test/sends/cancellation_database_test.rb` and `test/sends/cancellation_worker_race_database_test.rb` (about 55 lines of nearby code inspected per file, under 200 per read). Each helper now asserts `write_guard` is `ok` in the same request transaction before invoking the public cancellation facade. The cancellation SQL, protected-write guard and runtime permissions are unchanged. Existing tests exercise successful cancellation, replay, unknown identity, revoked send capability, terminal refusal and claim/attempt races under the real API role.
+
+Static source verdict: fixture omission, not evidence of a production cancellation bypass. No application tests or Docker run by Rowan; Soren must rerun both cancellation database suites in fleet Docker. Author self-review found zero additional defects in the two-line patch; no independent review or runtime PASS is claimed.

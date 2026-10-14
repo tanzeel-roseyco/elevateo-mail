@@ -22,6 +22,7 @@ class SendCancellationWorkerRaceDatabaseTest < SendDatabaseTestCase
 
   def cancel(send)
     begin_write
+    assert_equal "ok", write_guard.fetch("status")
     result = JSON.parse(@api.exec_params("SELECT app.cancel_send($1::text,$2::uuid,$3::uuid,$4::uuid)",
       [@digest, @box, send, @epoch]).getvalue(0, 0))
     @api.exec("COMMIT")
