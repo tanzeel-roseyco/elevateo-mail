@@ -4,7 +4,7 @@ import { describe, expect, it, vi } from 'vitest'
 import { GatewayError } from '@/data/errors'
 import {
   OutreachCampaignCreatePage, OutreachCampaignDetailPage, OutreachCampaignLeadsPage,
-  OutreachCampaignsPage, OutreachLeadDetailPage,
+  OutreachCampaignsPage, OutreachLeadDetailPage, OutreachAccountDetailPage,
 } from './OutreachPages'
 import type { OutreachGateway } from './contract'
 
@@ -37,6 +37,7 @@ function view(path: string, g?: OutreachGateway) {
     <Route path="/outreach/campaigns/:campaignId" element={<OutreachCampaignDetailPage gateway={g} context={context} proof={proof} />} />
     <Route path="/outreach/campaigns/:campaignId/leads" element={<OutreachCampaignLeadsPage gateway={g} context={context} proof={proof} />} />
     <Route path="/outreach/campaigns/:campaignId/leads/:leadId" element={<OutreachLeadDetailPage gateway={g} context={context} proof={proof} />} />
+    <Route path="/outreach/campaigns/:campaignId/accounts/:accountId" element={<OutreachAccountDetailPage gateway={g} context={context} proof={proof} />} />
   </Routes></MemoryRouter>)
 }
 
@@ -143,5 +144,11 @@ describe('Outreach routed pages', () => {
     expect(await screen.findByText(/Evidence source: Signed intake form/)).toBeTruthy()
     expect(screen.getByText(/does not authorize sending/)).toBeTruthy()
     expect(g.getLead).toHaveBeenCalledWith(context, campaignId, leadId, expect.any(AbortSignal))
+  })
+  it('rejects an account detail returned for another campaign', async () => {
+    const g = gateway({ getAccount: vi.fn(async () => ({ id: leadId, campaign_id: leadId, mailbox_id: campaignId, label: 'Foreign', status: 'disabled', version: 1 })) })
+    view(`/outreach/campaigns/${campaignId}/accounts/${leadId}`, g)
+    expect(await screen.findByRole('alert')).toBeTruthy()
+    expect(screen.queryByText('Foreign')).toBeNull()
   })
 })
