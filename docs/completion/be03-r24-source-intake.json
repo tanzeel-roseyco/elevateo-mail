@@ -58,7 +58,7 @@
       "candidate_integrated_runtime": "NOT_RUN"
     },
     "Rowan": {
-      "head": "d48bc9fccfc6ca03929dc99eae5f835e293d1cda",
+      "head": "c20aa0d94645c175195f4f10f304d5423c967807",
       "lightweight_tested_source": "ebf64cdbbea24d8e79af158c1424d0391fce6933",
       "unchanged_owner_bytes": [
         {
@@ -83,7 +83,7 @@
         },
         {
           "path": "apps/server/db/be03_send/grants.sql",
-          "sha256": "19894909e5db918af2227f6230373f9dcda492aa16794077455b80e5e99d020b"
+          "sha256": "73742c907672e5ecbea8d65ee77f381db0dbdfd36eeb7f84bb08c1586bae5461"
         },
         {
           "path": "apps/server/db/be03_send/prerequisite.sql",
@@ -131,7 +131,7 @@
         },
         {
           "path": "apps/server/test/sends/schema_database_test.rb",
-          "sha256": "d68fd45c86f4f5752c8bb35b4d48877f58a5d714085bda64a18c7442c9118bbb"
+          "sha256": "75c7db67f946bc8c002665a9be9b7c2e68e400f32ec4207ae18607941b643cac"
         },
         {
           "path": "ops/db/bootstrap-send.sql",
@@ -146,7 +146,12 @@
       "source_results": "Ruby syntax7filesOK; affectedlint7files0offenses exit0; exactcontainerabsencePASS",
       "sql_api_runtime": "NOT_RUN",
       "migration": "20261013000007_create_send_intents.rb",
-      "bootstrap": "explicit bootstrap-send.sql after baseline bootstrap, before00007"
+      "bootstrap": "explicit bootstrap-send.sql after baseline bootstrap, before00007",
+      "initial_head": "d48bc9fccfc6ca03929dc99eae5f835e293d1cda",
+      "repair_source": "7934218d46fd9f3c719b659300aed479e644df4e",
+      "repair_review": "functional32LOC/design32LOC0defects; overlapnonadditive",
+      "repair_lightweight": "syntax1/lint1 exit0; actualDB pending",
+      "initial_runtime": "1429f1d migration00007FAIL grants.sql blanket cross-owner REVOKE; originalreceipt preserved"
     },
     "Nadia": {
       "head": "50ba21dbba66291979339538b3aade1602e77613",
@@ -390,5 +395,5 @@
     "actual_vault": "NOT_WRITTEN"
   },
   "execution": "Soren lease only for real DB/API; lightweight source checks delegated. No live activation.",
-  "candidate": "37861fc4f89f5b05a81dbe89e1024051aabf0e73"
+  "candidate": "7e25349216cf585052d9a67bc468e9a6188c682e"
 }
