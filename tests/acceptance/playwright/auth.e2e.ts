@@ -1,3 +1,4 @@
+import { z } from 'zod';
 import { expect } from '@playwright/test';
 import { scenario } from './cases.js';
 import { loadCredentials } from './boundaries.js';
@@ -7,6 +8,23 @@ import { mailbox, responseAt, seed, signIn } from './support.js';
 scenario('SCN-AUTH-001-P', 'password-login-primary-manager', async (page, record) => {
   await signIn(page);
   await mailbox(page);
+  // AIDEV-NOTE: Real browser cookies exercise missing/wrong CSRF; rejected logout must preserve the session.
+  for (const proof of [null, 'invalid_csrf_proof_000000000000000000']) {
+    const status = await page.evaluate(async token => {
+      const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+      if (token !== null) headers['X-CSRF-Token'] = token;
+      return (await fetch('/v1/auth/logout', { method: 'POST', headers, body: '{}', credentials: 'same-origin' })).status;
+    }, proof);
+    expect(status).toBe(400);
+    expect((await page.request.get('/v1/session', { maxRedirects: 0 })).status()).toBe(200);
+  }
+  const session = await (await page.request.get('/v1/session')).json() as unknown;
+  const proof = z.object({ csrf_token: z.string().regex(/^[A-Za-z0-9_-]{32,512}$/) }).parse(session).csrf_token;
+  const foreign = await page.request.post('/v1/auth/logout', {
+    headers: { Origin: 'http://foreign.test', 'Content-Type': 'application/json', 'X-CSRF-Token': proof }, data: {}, maxRedirects: 0 });
+  expect(foreign.status()).toBe(400);
+  expect((await page.request.get('/v1/session', { maxRedirects: 0 })).status()).toBe(200);
+  record.assertions.push('Real cookie session survives missing/wrong CSRF and foreign-Origin logout rejection');
   record.assertions.push('Real password login returned 200 and seeded authorized mailbox rendered');
   record.evidence.push('Observed POST /v1/auth/login status 200; no response body captured');
 });

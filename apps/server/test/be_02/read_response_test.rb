@@ -74,7 +74,7 @@ class ReadResponseTest < Minitest::Test
   end
 
   def test_malformed_encoding_nonfinite_numbers_and_reserved_keys_fail
-    [{ "id" => "\xFF".force_encoding("UTF-8") }, { "id" => Float::INFINITY }].each do |item|
+    [{ "id" => "\xFF".dup.force_encoding("UTF-8") }, { "id" => Float::INFINITY }].each do |item|
       assert_raises(RESPONSE::Invalid) { page([item]) }
     end
     assert_raises(RESPONSE::Invalid) { page(Array.new(52) { { "id" => "1" } }) }

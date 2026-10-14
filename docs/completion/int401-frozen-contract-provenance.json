@@ -1,0 +1,22 @@
+[
+  {
+    "path": "contracts/v1/contract-lock.json",
+    "source": "Elevateo Mail - BE02 Codex working source; identical Fable FE01 R1 and Local Completion",
+    "sha256": "98b7379b024b639b22ef757552da859a5e7151d41b039ef17a3d5d7ccf9f2a07"
+  },
+  {
+    "path": "contracts/v1/fixtures.json",
+    "source": "Elevateo Mail - BE02 Codex working source; identical Fable FE01 R1 and Local Completion",
+    "sha256": "182d8dfad62c49d3a5b9eba836716808709255c66320e3a8a09fc4e7ddae2833"
+  },
+  {
+    "path": "contracts/v1/openapi.json",
+    "source": "Elevateo Mail - BE02 Codex working source; identical Fable FE01 R1 and Local Completion",
+    "sha256": "859041382484a3a001ae087ca88e02eeb23540f2cf46aec795b064aa8ea66073"
+  },
+  {
+    "path": "contracts/v1/README.md",
+    "source": "Elevateo Mail - BE02 Codex working source; identical Fable FE01 R1 and Local Completion",
+    "sha256": "24592cbb5a42e269dc85e813d72d06ebaee6b856c56826a02e3df94912e5ddb2"
+  }
+]

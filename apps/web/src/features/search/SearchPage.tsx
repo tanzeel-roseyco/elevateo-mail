@@ -5,6 +5,7 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { Link, useSearchParams } from 'react-router'
 import { describeFailure, type CollaborationFailure } from '@/app/collaborationFailure'
+import { SearchBox } from '@/app/SearchBox'
 import { useMailboxes } from '@/app/mailboxes'
 import { useProtectedRequest } from '@/app/protectedRequest'
 import { useGateway } from '@/app/session'
@@ -28,7 +29,10 @@ export function SearchPage() {
   const q = searchParams.get('q') ?? ''
   const mailboxId = searchParams.get('mailbox') ?? ''
   // Resource owner key (D3): a new query starts with fresh result state and aborts the old one.
-  return <SearchResults key={`${q}\n${mailboxId}`} q={q} mailboxId={mailboxId === '' ? undefined : mailboxId} />
+  return <>
+    <div className="mx-auto max-w-3xl px-3 pt-3"><SearchBox expanded /></div>
+    <SearchResults key={JSON.stringify([q, mailboxId])} q={q} mailboxId={mailboxId === '' ? undefined : mailboxId} />
+  </>
 }
 
 function SearchResults({ q, mailboxId }: { q: string; mailboxId: string | undefined }) {
@@ -104,7 +108,7 @@ function SearchResults({ q, mailboxId }: { q: string; mailboxId: string | undefi
         )}
         <Badge tone="neutral" className="ml-auto">Literal text match</Badge>
       </div>
-      {state.status === 'idle' && <EmptyState title="Search your mail" body="Type a word or phrase in the search box above. Matching is literal and case-insensitive; drafts and notes are not searched." />}
+      {state.status === 'idle' && <EmptyState title="Search your mail" body="Enter a word or phrase and choose a search scope above. Matching is literal and case-insensitive; drafts and notes are not searched." />}
       {state.status === 'invalid' && <div role="alert"><EmptyState title="That search cannot be run" body={state.message} /></div>}
       {state.status === 'loading' && <div role="status" aria-label="Searching"><Skeleton rows={5} /></div>}
       {state.status === 'unavailable' && <EmptyState title="This mailbox is unavailable" body="The selected mailbox may not exist or may not be readable by you now." />}

@@ -59,7 +59,7 @@ class CursorsTest < Minitest::Test
     token = @cursor.encode(position: @position, scope: @scope)
     changed = token.dup
     changed[0] = changed[0] == "A" ? "B" : "A"
-    [nil, "", "x" * 2049, "💌.signature", "\xFF".force_encoding("UTF-8"), changed, "#{token}="].each do |value|
+    [nil, "", "x" * 2049, "💌.signature", "\xFF".dup.force_encoding("UTF-8"), changed, "#{token}="].each do |value|
       assert_raises(Elevateo::Cursors::Invalid) { @cursor.decode(value, scope: @scope) }
     end
     rotated = Elevateo::Cursors.new(secret: "replacement-secret-32-bytes-long!", clock: -> { @now })

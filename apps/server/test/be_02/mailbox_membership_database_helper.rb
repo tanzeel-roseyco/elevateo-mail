@@ -178,7 +178,7 @@ class MailboxMembershipDatabaseCase < CollaborationDatabaseCase
     end
   end
 
-  def message(thread: @thread, box: @box, org: @org, body: "", sender: nil, recipients: [], sent: nil)
+  def fixture_message(thread: @thread, box: @box, org: @org, body: "", sender: nil, recipients: [], sent: nil)
     id = SecureRandom.uuid
     @admin.exec_params(<<~SQL, [id, org, box, thread, body, sender && JSON.generate(sender), JSON.generate(recipients), sent])
       INSERT INTO app.messages(id, organization_id, mailbox_id, thread_id, body_text, sender, recipients, sent_at)

@@ -1,0 +1,7 @@
+# BE-403 independent review of Elara draft privacy case
+
+Reviewer Rowan OFF-403. Source-only full supplied rubric applied. Frozen inspected file tests/acceptance/playwright/draft-privacy.e2e.ts in Elara checkout: 107 physical LOC, SHA256 e49c6d90ba6760e95258eafd4902f67f28f632088721022e83c4a23877c3f4a5. This differs from the earlier 104-LOC request; approval is bounded to this hash. No runtime execution or dependency certification.
+
+Observed defects: 0 / 107 LOC = 0 observed defects/KLOC. Actual distinct browser contexts, real save receipts and reload, closed bounded list schema, bounded pagination with duplicate-cursor detection, complete traversal assertion, author-draft exclusion, peer own-draft positive control, private/nonexistent equal denial and author preservation are meaningful. Random test content is synthetic. Context closes in finally. No authorization credentials are fabricated or exported here.
+
+Limits: helper responseAt/signIn/seed/scenario and underlying APIs are outside assigned scope; test depends on both supplied fixture actors having real compose access to the same mailbox and sequential disposable fixture ownership. Null cursor and empty page are handled; max ten pages is deliberately a bounded fixture expectation, not a product pagination guarantee. The case covers read/detail privacy, not foreign-author write/operation-lookup privacy, observer/ACK-loss or lock directions. Dedicated design-tradeoff review and Soren browser runs remain pending. No acceptance PASS.

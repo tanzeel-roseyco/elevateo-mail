@@ -1,5 +1,5 @@
 #!/bin/sh
-# Thin wrapper: all lifecycle logic lives in compose.yaml / ops/compose.secrets.yaml.
+# AIDEV-NOTE: Advertise only existing Compose services; seed/check have no maintained implementation.
 set -eu
 cd "$(dirname "$0")/.."
 dc() { docker compose -f compose.yaml --env-file ops/local/.env "$@"; }
@@ -8,8 +8,6 @@ case "${1:-}" in
              dc build api && dc up -d --wait db && dc run --rm bootstrap ;;
   up)        dc up -d --wait db auth rest storage mailpit api worker ;;
   migrate)   dc run --rm migrate ;;
-  seed)      dc run --rm seed ;;
-  check)     dc run --rm check ;;
   stop)      dc stop ;;
-  *) echo "usage: scripts/dev {bootstrap|up|migrate|seed|check|stop}" >&2; exit 2 ;;
+  *) echo "usage: scripts/dev {bootstrap|up|migrate|stop}" >&2; exit 2 ;;
 esac

@@ -55,9 +55,10 @@ class ThreadNotesDatabaseTest < CollaborationDatabaseCase
     end
     membership(present: false)
     scope(write: false) do |connection|
-      assert_equal "not_available", assert_raises(Elevateo::CollaborationError) do
+      error = assert_raises(Elevateo::CollaborationError) do
         service(Elevateo::ThreadNotes, connection).list(thread_id: @thread, query: query.merge("cursor" => cursors.first))
-      end.code
+      end
+      assert_equal "not_available", error.code
     end
   end
 
