@@ -688,3 +688,6 @@ Migration 00008, `db/sec802/access.sql`, and organization access database tests 
 ### OUT-804 Dorian source review request (2026-10-15)
 
 Independent functional and dedicated design-tradeoff review requested for migration 00009, campaigns/input.rb, campaigns/repository.rb, campaigns.rbs and campaign tests. Reviewed source lines: 0; found defects: unassessed; defect density: not applicable. No review PASS is claimed; root schedules bounded packets of at most 200 source lines and records the resulting denominator and findings.
+## FE808 isolated author receipt (2026-10-14)
+
+Scope: `apps/web/src/features/members/adminModel.ts`, `AdministrationPage.tsx` and paired tests. Author self-check covered the configuration roster, DTO validation, generic denial, stale-revision and revoked-session handling by source inspection; zero confirmed defects in this check. This is not an independent bounded adversarial or design-tradeoff review, so no independent defect density is claimed. Root must assign <=200-LOC review packets and a dedicated design reviewer after integration. Docker tests and visual acceptance are NOT_RUN.
