@@ -34,7 +34,9 @@ module Elevateo
           transport.call(signed.body, signed.signature, timeout)
         else
           # Kernel.Float preserves Numeric conversion while Net::HTTP setters require Float.
-          exchange(signed, Float(timeout))
+          converted_timeout = Float(timeout)
+          raise Unavailable unless converted_timeout
+          exchange(signed, converted_timeout)
         end
       end
       raise Unavailable if Process.clock_gettime(Process::CLOCK_MONOTONIC) > deadline
