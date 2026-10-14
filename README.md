@@ -4,6 +4,8 @@ Shared company mailroom with one Rails domain authority and a React/TypeScript c
 
 ## Current state
 
+Mira OFF405 R16: initial route now distinguishes completed zero-visible-mailbox guidance from valid selection, pending load and load failure using the existing mailbox snapshot. Four regressions authored; Elara b7f2aad unavailable/revoked handling preserved. Source-only; runtime/tests/lint/typecheck/build/browser NOT_RUN. Root owns integration and independent reviews; Soren sole runtime. See [R16 handoff](docs/completion/mira-r16-empty-mailboxes.md).
+
 Elara OFF404 R15: source-confirmed unavailable inbox retained All/Unread destinations to the revoked mailbox. Minimal filter guard and denied/authorized-empty regressions authored from exact130cb5c; strict real SCN-READ-001-F2 unchanged. Original3bf FAILED16769ms cause UNKNOWN; separate diagnostic FAILED16771ms reached139:85 after real409/recovery/empty-list assertions. Cleanup/independent absence PASS for both historical runs; new runtime/lint/typecheck/browser NOT_RUN. R14ad04d030 preserved separately. See [R15 handoff](docs/completion/elara-r15-revocation.md).
 
 Imported accepted Rowan ADV807, Nadia ADV806 and Elara ADV808 proof sources after immutable **3bf323c**. Permanent GUI-before-HTTP restoration, baseline Auth lifetime and opt-in policy wiring are source accepted by ADV821/822; candidate runtime NOT_RUN. Soren's separate immutable 3bf R12 is untouched: supervisor reports four actual core GUI cases and 16 screenshots, final immutable receipt/manual Mira review pending. Observer OFF; BE02 unaccepted; BE03 closed.

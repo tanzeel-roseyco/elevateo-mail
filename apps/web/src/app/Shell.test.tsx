@@ -12,6 +12,7 @@ import type { MailboxPage } from '@/data/contract'
 import type { MailroomGateway } from '@/data/gateway'
 import { SESSION_FRESHNESS_INTERVAL_MS, SessionProvider } from './session'
 import { Shell } from './Shell'
+import { MailboxSelection } from './MailboxSelection'
 
 const contextChanged = () => new GatewayError('api', 'context_changed', 'synthetic', { status: 409, requestId: 'r1' })
 const cursorInvalid = () => new GatewayError('api', 'cursor_invalid', 'synthetic', { status: 400, requestId: 'r1' })
@@ -369,5 +370,57 @@ describe('identity replacement privacy (V3)', () => {
     }
     // The replacement's first frame starts from fresh mailbox state, not A's loaded rail.
     expect(commits[firstB]).not.toContain('Fixture inbox')
+  })
+})
+
+describe('initial mailbox selection guidance (Mira R16)', () => {
+  it('offers access guidance for a completed zero-visible-mailbox list', async () => {
+    const { gateway, readCalls } = pagedGateway([mailboxPage([], null)])
+    renderShell(gateway, <MailboxSelection />)
+    await screen.findByRole('heading', { name: 'No visible mailboxes', level: 2 })
+    expect(screen.getByText('If you expected a mailbox here, ask your organization administrator to check your access.')).toBeTruthy()
+    expect(screen.getByText('No mailboxes are visible to you.')).toBeTruthy()
+    expect(screen.queryByText('Select a mailbox')).toBeNull()
+    expect(screen.queryByText('Choose a mailbox from the list to read its conversations.')).toBeNull()
+    expect(readCalls()).toBe(1)
+  })
+
+  it('retains selection guidance when a visible mailbox exists', async () => {
+    const { gateway } = pagedGateway([mailboxPage(['Team inbox'], null)])
+    renderShell(gateway, <MailboxSelection />)
+    await screen.findByRole('heading', { name: 'Select a mailbox', level: 2 })
+    expect(screen.getByText('Choose a mailbox from the list to read its conversations.')).toBeTruthy()
+    expect(screen.getByRole('link', { name: 'Team inbox' }).getAttribute('href')).toBe(`/mailboxes/${mailboxIdFor('Team inbox')}`)
+    expect(screen.queryByText('No visible mailboxes')).toBeNull()
+  })
+
+  it('does not infer an empty list while an empty first page has a pending continuation', async () => {
+    let resolvePage!: (page: MailboxPage) => void
+    const continuation = new Promise<MailboxPage>((resolve) => { resolvePage = resolve })
+    const base = createFixtureGateway()
+    const listMailboxes = vi.fn<MailroomGateway['listMailboxes']>().mockResolvedValueOnce(mailboxPage([], 'next')).mockReturnValueOnce(continuation)
+    renderShell({ ...base, listMailboxes }, <MailboxSelection />)
+    await waitFor(() => expect(listMailboxes).toHaveBeenCalledTimes(2))
+    expect(screen.getByRole('status', { name: 'Loading mailbox selection' })).toBeTruthy()
+    expect(screen.queryByText('No visible mailboxes')).toBeNull()
+    expect(screen.queryByText('Select a mailbox')).toBeNull()
+    await act(async () => resolvePage(mailboxPage(['Later inbox'], null)))
+    await screen.findByRole('heading', { name: 'Select a mailbox', level: 2 })
+    expect(screen.getByRole('link', { name: 'Later inbox' })).toBeTruthy()
+  })
+
+  it('shows a load failure without claiming an empty or accessible mailbox list, then allows retry', async () => {
+    const { gateway, readCalls } = pagedGateway([
+      new GatewayError('transport', 'network', 'Mailboxes unavailable'),
+      mailboxPage([], null),
+    ])
+    renderShell(gateway, <MailboxSelection />)
+    await screen.findByRole('heading', { name: 'Mailboxes could not be loaded', level: 2 })
+    expect(screen.getByText('Try again in the mailbox menu.')).toBeTruthy()
+    expect(screen.queryByText('No visible mailboxes')).toBeNull()
+    expect(screen.queryByText('Select a mailbox')).toBeNull()
+    fireEvent.click(screen.getByRole('button', { name: 'Try again' }))
+    await screen.findByRole('heading', { name: 'No visible mailboxes', level: 2 })
+    expect(readCalls()).toBe(2)
   })
 })

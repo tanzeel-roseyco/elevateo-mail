@@ -1,5 +1,7 @@
 # Project state
 
+Mira OFF405 R16: initial route now distinguishes completed zero-visible-mailbox guidance from valid selection, pending load and load failure using the existing mailbox snapshot. Four regressions authored; Elara b7f2aad unavailable/revoked handling preserved. Source-only; runtime/tests/lint/typecheck/build/browser NOT_RUN. Root owns integration and independent reviews; Soren sole runtime. See [R16 handoff](docs/completion/mira-r16-empty-mailboxes.md).
+
 Imported accepted Rowan ADV807, Nadia ADV806 and Elara ADV808 proof sources after immutable **3bf323c**. Permanent GUI-before-HTTP restoration, baseline Auth lifetime and opt-in policy wiring are source accepted by ADV821/822; candidate runtime NOT_RUN. Soren's separate immutable 3bf R12 is untouched: supervisor reports four actual core GUI cases and 16 screenshots, final immutable receipt/manual Mira review pending. Observer OFF; BE02 unaccepted; BE03 closed.
 
 R9 c8 backend390/5792 and frontend624/all eight gates PASS retain original provenance. R10 c3 browser compilation/image and authenticated HTTP1/33/worker drain passed, but seed failed before GUI. R11 confirmed `fresh_auth_fixture_required` with pre-seed Auth count1; both diagnostics cleanup/independent absence passed. These failures remain historical evidence, not new-source test results.

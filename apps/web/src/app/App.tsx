@@ -6,7 +6,7 @@ import { InboxPage } from '@/features/inbox/InboxPage'
 import { MembersPage } from '@/features/members/MembersPage'
 import { SearchPage } from '@/features/search/SearchPage'
 import { ThreadPage } from '@/features/thread/ThreadPage'
-import { EmptyState } from '@/ui/Async'
+import { MailboxSelection } from './MailboxSelection'
 import { DraftIntentProvider } from './draftIntent'
 import { SessionProvider } from './session'
 import { Shell } from './Shell'
@@ -21,7 +21,7 @@ export function App({ gateway }: { gateway: MailroomGateway }) {
       <HashRouter>
         <Routes>
           <Route element={<Shell />}>
-            <Route index element={<EmptyState title="Select a mailbox" body="Choose a mailbox from the list to read its conversations." />} />
+            <Route index element={<MailboxSelection />} />
             <Route path="/mailboxes/:mailboxId" element={<InboxPage />} />
             <Route path="/mailboxes/:mailboxId/threads/:threadId" element={<ThreadPage />} />
             {/* BE-02 C/D: drafts, membership and search are URL-addressed like every other view. */}
