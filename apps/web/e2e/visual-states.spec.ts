@@ -59,9 +59,13 @@ const readerMessage = (i: number, truncated = false) => ({
 const threadDetail = (messages: unknown[], cursor: string | null, truncatedSubject = false) => ({
   ...envelope,
   next_cursor: cursor,
-  thread: { id: THREAD_ID, mailbox_id: MAILBOX_ID, subject: 'Visual conversation 1', subject_truncated: truncatedSubject, unread: true, message_count: 3 },
+  thread: { id: THREAD_ID, mailbox_id: MAILBOX_ID, subject: 'Visual conversation 1', subject_truncated: truncatedSubject, unread: true, message_count: messages.length + (cursor === null ? 0 : 1) },
   messages,
 })
+const assignment = { ...envelope, thread_id: THREAD_ID, mailbox_id: MAILBOX_ID,
+  assignee_id: null, assignment_version: 0, updated_at: null }
+const notes = { ...envelope, thread_id: THREAD_ID, mailbox_id: MAILBOX_ID,
+  next_cursor: null, items: [] }
 
 // Hostile plaintext for the ready-reader capture, mirroring production.spec.ts: must render as
 // inert escaped text (contract-valid payload so the boundary validator admits it).
@@ -121,7 +125,7 @@ async function assertSkeletonContrasts(page: Page, statusName: string): Promise<
 
 interface Scenario {
   name: string
-  routes: Partial<Record<'session' | 'mailboxes' | 'threads' | 'thread' | 'challenge' | 'refresh' | 'login' | 'logout' | 'organizations', Reply[]>>
+  routes: Partial<Record<'session' | 'mailboxes' | 'threads' | 'thread' | 'assignment' | 'notes' | 'challenge' | 'refresh' | 'login' | 'logout' | 'organizations', Reply[]>>
   /** none: stay on the shell; mailbox: open 'Visual mailbox'; thread: then open the first row. */
   nav: 'none' | 'mailbox' | 'thread'
   /** Open the drawer first below md so sidebar-only states are visible for the capture. */
@@ -185,7 +189,14 @@ const SCENARIOS: Scenario[] = [
     routes: { thread: [{ body: threadDetail([{ ...readerMessage(0), body_text: HOSTILE_BODY }], null) }] },
     nav: 'thread',
     expectVisible: { text: '<script>window.__pwned = 1</script>' },
-    assert: async (page) => expect(await page.locator('article script, article img, article iframe').count()).toBe(0),
+    assert: async (page) => {
+      expect(await page.locator('article script, article img, article iframe').count()).toBe(0)
+      await expect(page.getByRole('region', { name: 'Assignment' }).getByText('Unassigned')).toBeVisible()
+      await expect(page.getByRole('region', { name: 'Internal notes' }).getByText('No notes yet.')).toBeVisible()
+      await expect(page.getByRole('region', { name: 'Assignment' }).getByRole('alert')).toHaveCount(0)
+      await expect(page.getByRole('region', { name: 'Internal notes' }).getByRole('alert')).toHaveCount(0)
+      await expect(page.getByText('1 message in this conversation')).toBeVisible()
+    },
   },
   { name: 'session-loading', routes: { session: ['hold'] }, nav: 'none', expectVisible: { status: 'Loading session' }, assert: (page) => assertSkeletonContrasts(page, 'Loading session') },
   // A 401 session performs exactly one challenge+refresh (answered 401 by default) and then shows the sign-in form.
@@ -374,7 +385,9 @@ const ROUTE_MATCHERS = {
   session: (url: URL) => url.pathname.endsWith('/v1/session'),
   mailboxes: (url: URL) => url.pathname.endsWith('/v1/mailboxes'),
   threads: (url: URL) => /\/v1\/mailboxes\/[^/]+\/threads$/.test(url.pathname),
-  thread: (url: URL) => url.pathname.includes('/v1/threads/'),
+  thread: (url: URL) => /\/v1\/threads\/[^/]+$/.test(url.pathname),
+  assignment: (url: URL) => /\/v1\/threads\/[^/]+\/assignment$/.test(url.pathname),
+  notes: (url: URL) => /\/v1\/threads\/[^/]+\/notes$/.test(url.pathname),
   // BE-02A lifecycle routes (challenge + refresh run once after any 401 before sign-in shows).
   challenge: (url: URL) => url.pathname.endsWith('/v1/auth/login-challenge'),
   refresh: (url: URL) => url.pathname.endsWith('/v1/auth/refresh'),
@@ -418,6 +431,8 @@ test.describe('read-checkpoint visual states (capture for human inspection)', ()
             mailboxes: [{ body: MAILBOXES }],
             threads: [{ body: threadsPage(3, null) }],
             thread: [{ body: threadDetail([readerMessage(0), readerMessage(1)], null) }],
+            assignment: [{ body: assignment }],
+            notes: [{ body: notes }],
             challenge: [{ body: CHALLENGE }],
             refresh: [apiError('unauthenticated', 401)],
             login: [{ body: { session: SESSION, access_expires_at: '2026-10-13T01:00:00Z' } }],
