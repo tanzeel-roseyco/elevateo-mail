@@ -262,3 +262,6 @@ Security auditors may read metadata-only organization role audit pages; they can
 OUT-804 actual-role policy assertions now cover API positive, denied app-read proof and cross-actor digest negative on the existing disposable database fixture; authored source is not fleet-executed.
 
 ATT838 Rails configuration now accepts only the internal http://attachment-gateway:4708 endpoint paired with the dedicated 32-byte HMAC key; the gateway client/route and fleet checks remain pending.
+FE807 consent failure behavior: an access-denied evidence write hides loaded lead content and never shows the manual-attestation success message. A definitive operation mismatch returns an error without automatic replay; only a validated successful receipt can show success.
+
+FE807 sequence route seam: `createOutreachFeatureModule` exports `/outreach/campaigns/:campaignId/sequence` and campaign detail links to it. `sequenceContract.ts` validates the proposed V2 sequence/step shape and PUT body, including campaign id, operation id and nullable expected version. `SequencePage.tsx` uses optional `getOutreachSequenceDraft` and `saveOutreachSequenceDraft`, a single atomic Save, explicit draft/held labels, a locked conflict/uncertain state and no send control. Cassian must publish and bind the canonical gateway; Fable registers the route.

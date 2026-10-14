@@ -1,4 +1,5 @@
 import type { ReactElement } from 'react'
+import { OutreachSequencePage } from './SequencePage'
 import {
   OutreachAccountDetailPage, OutreachAccountsPage, OutreachAnalyticsPage, OutreachCampaignAccountsPage,
   OutreachCampaignAnalyticsPage, OutreachCampaignCreatePage, OutreachCampaignDetailPage,
@@ -20,6 +21,7 @@ export function createOutreachFeatureModule(props: OutreachPageProps): OutreachF
     '/outreach/campaigns': <OutreachCampaignsPage {...props} />,
     '/outreach/campaigns/new': <OutreachCampaignCreatePage {...props} />,
     '/outreach/campaigns/:campaignId': <OutreachCampaignDetailPage {...props} />,
+    '/outreach/campaigns/:campaignId/sequence': <OutreachSequencePage {...props} />,
     '/outreach/campaigns/:campaignId/leads': <OutreachCampaignLeadsPage {...props} />,
     '/outreach/campaigns/:campaignId/leads/:leadId': <OutreachLeadDetailPage {...props} />,
     '/outreach/campaigns/:campaignId/analytics': <OutreachCampaignAnalyticsPage {...props} />,

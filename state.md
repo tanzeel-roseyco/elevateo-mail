@@ -198,3 +198,6 @@ SEC-802 Felix REV874 found one further MEDIUM source defect: a failed rollback c
 OUT-804 actual-role policy assertions now cover API positive, denied app-read proof and cross-actor digest negative on the existing disposable database fixture; authored source is not fleet-executed.
 
 ATT838 Rails configuration now accepts only the internal http://attachment-gateway:4708 endpoint paired with the dedicated 32-byte HMAC key; the gateway client/route and fleet checks remain pending.
+FE807 `fa3082a` seam reviewed statically: manual consent adapter and detail GET match owner method signatures. Denied/409 replay UI assertions are authored, not fleet verified.
+
+FE807 sequence source candidate adds `/outreach/campaigns/:campaignId/sequence` with inert draft/held editing under optional gateway methods. GET 404 is treated as no accessible draft, without asserting existence; a tentative create still requires authoritative backend access. Soren fleet type/unit/build and real V2 HTTP/browser checks are pending.
