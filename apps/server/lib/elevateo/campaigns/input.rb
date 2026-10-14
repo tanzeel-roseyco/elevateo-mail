@@ -29,7 +29,7 @@ module Elevateo
           WriteInput.invalid! unless recorded.nil? || (recorded.is_a?(String) && /\A\d{4}-\d\d-\d\dT\d\d:\d\d:\d\dZ\z/.match?(recorded))
           if recorded
             begin
-              Time.iso8601(recorded)
+              WriteInput.invalid! if Time.iso8601(recorded) > Time.now.utc + 300
             rescue ArgumentError
               WriteInput.invalid!
             end

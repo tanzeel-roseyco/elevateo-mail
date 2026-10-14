@@ -122,3 +122,5 @@ Dorian prepared migration 00009 and inert campaign repository/DTO validation on 
 OUT-804 continuation source includes V2 outreach controllers over the inherited protected read/write boundary, versioned idempotent update ledger, UUID keyset pages (maximum 100), and consent evidence/withdrawal/suppression actions. This branch remains untested in Docker and has no active route until Cassian registers the agreed V2 contract. Separate consent recording is a human attestation record, not Delivery send authority.
 
 OUT-804 follow-up candidate `8c9bd82` is source-only: stable request-intent retry fingerprint, 100-row Unicode response budget, private-mailbox RLS probe, and lead consent detail fields are present. Cassian integrated prior `d0b7a9a` into his isolated candidate; this follow-up still awaits integration and Soren Docker results.
+
+OUT-804 pending candidate adds append-only consent history in migration 00009, bound to the same idempotent tenant update transaction. Runtime roles cannot update/delete the history; real role/SQL evidence and Delivery policy review remain pending.

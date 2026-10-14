@@ -58,7 +58,7 @@ module V2
           })
           result = repository.replace(payload, organization_id: identity.org_id,
             expected_version: Elevateo::WriteInput.integer(input.fetch("expected_version"), minimum: 1, maximum: 2_147_483_646),
-            intent: input.merge("campaign_id" => campaign))
+            actor_id: identity.user_id, intent: input.merge("campaign_id" => campaign))
           write_result(public_item("lead", result))
         end
       end
@@ -97,7 +97,7 @@ module V2
           })
           result = repository.replace(payload, organization_id: identity.org_id,
             expected_version: Elevateo::WriteInput.integer(input.fetch("expected_version"), minimum: 1, maximum: 2_147_483_646),
-            intent: input.merge("campaign_id" => campaign))
+            actor_id: identity.user_id, intent: input.merge("campaign_id" => campaign))
           write_result(public_item("lead", result))
         end
       end

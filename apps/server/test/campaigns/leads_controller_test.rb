@@ -71,13 +71,14 @@ class OutreachLeadsControllerTest < Minitest::Test
   def test_sourced_consent_records_actor_and_returns_granted_status
     granted = lead_row.merge("consent_status" => "granted", "consent_recorded_at" => Time.utc(2026, 10, 14, 10),
       "consent_source" => "confirmed opt-in", "consent_recorded_by" => AuthFixtures::USER, "version" => 2)
-    @connection.rows = [[lead_row], [], [], [granted], [granted], []]
+    @connection.rows = [[lead_row], [], [], [granted], [], [granted], []]
     result = dispatch("record_consent", { "operation_id" => TARGET, "expected_version" => 1,
       "source" => "confirmed opt-in", "observed_at" => "2026-10-14T10:00:00Z", "attested" => true })
     assert_equal 200, result[0]
     assert_equal "granted", result[2].fetch("consent_status")
     update = @connection.sql.find { |sql| sql.include?("UPDATE app.campaign_leads") }
     assert_includes update, "consent_recorded_by=$10::uuid"
+    assert(@connection.sql.any? { |sql| sql.include?("INSERT INTO app.campaign_consent_events") })
     assert(@connection.sql.any? { |sql| sql.include?("INSERT INTO app.campaign_mutations") })
   end
 

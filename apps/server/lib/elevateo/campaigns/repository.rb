@@ -151,7 +151,7 @@ module Elevateo
           expected_version.between?(1, 2_147_483_646)
         org = WriteInput.uuid(organization_id)
         actor = actor_id.nil? ? nil : WriteInput.uuid(actor_id)
-        WriteInput.invalid! if input.kind == "lead" && input.attributes.fetch("consent_status") == "granted" && actor.nil?
+        WriteInput.invalid! if input.kind == "lead" && actor.nil?
         intent_fields = intent.nil? ? input.attributes : intent
         WriteInput.invalid! unless intent_fields.is_a?(Hash) && intent_fields.keys.all? { |key| key.is_a?(String) }
         fingerprint = Digest::SHA256.hexdigest(JSON.generate([input.kind, input.id, expected_version,
@@ -186,6 +186,14 @@ module Elevateo
         unless updated
           visible = rows("SELECT id FROM app.#{table_for(input.kind)} WHERE organization_id=$1::uuid AND id=$2::uuid", [org, input.id]).first
           raise CollaborationError.new(visible ? "draft_conflict" : "not_available")
+        end
+        if input.kind == "lead"
+          rows(<<~SQL, [org, fields.fetch("campaign_id"), input.id, input.operation_id, actor,
+            fields.fetch("consent_status"), fields.fetch("consent_source"), fields.fetch("consent_recorded_at")])
+            INSERT INTO app.campaign_consent_events(organization_id,campaign_id,lead_id,operation_id,
+              actor_id,status,source,observed_at)
+            VALUES ($1::uuid,$2::uuid,$3::uuid,$4::uuid,$5::uuid,$6,$7,$8::timestamptz)
+          SQL
         end
         result = detail(kind: input.kind, organization_id: org, id: input.id)
         rows(<<~SQL, [org, input.operation_id, input.kind, input.id, fingerprint, JSON.generate(result)])

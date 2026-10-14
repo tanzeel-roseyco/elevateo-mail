@@ -180,3 +180,5 @@ Campaign, lead, account and suppression tables plus bounded draft/paused inputs 
 OUT-804 continuation prepares V2 outreach controllers for authenticated campaign/lead/account create, detail, update and paginated lists, plus database-backed analytics and separate consent/suppression actions. Routes and canonical DTOs remain Cassian-owned and pending integration; no outbound transport is exposed.
 
 OUT-804 follow-up `8c9bd82` binds update replay to the original request, adds an actual disposable PostgreSQL RLS fixture, and exposes lead consent evidence only in detail responses. Fleet execution and canonical LeadDetail DTO review remain pending.
+
+The OUT-804 consent continuation retains append-only tenant consent events with actor and source while lead status changes; Docker migration and privilege verification remain requested from Soren.

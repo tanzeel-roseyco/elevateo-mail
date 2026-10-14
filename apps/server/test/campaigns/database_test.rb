@@ -80,14 +80,38 @@ class CampaignDatabaseTest < Minitest::Test
     assert_equal "0", @api.exec("SELECT count(*) FROM app.campaign_accounts").getvalue(0, 0)
   end
 
+  def test_private_account_and_mutation_history_disappear_after_membership_revocation
+    @admin.exec_params("INSERT INTO app.mailbox_memberships(organization_id,mailbox_id,user_id) VALUES ($1,$2,$3)",
+      [@org, @private_box, @user])
+    claims(@user, @org)
+    @api.exec_params("INSERT INTO app.campaigns(id,organization_id,operation_id,name,status) VALUES ($1,$2,$3,'Pilot','draft')",
+      [@campaign, @org, SecureRandom.uuid])
+    @api.exec_params(<<~SQL, [@account, @org, @campaign, @private_box, SecureRandom.uuid])
+      INSERT INTO app.campaign_accounts(id,organization_id,campaign_id,mailbox_id,operation_id,label)
+      VALUES ($1,$2,$3,$4,$5,'Private')
+    SQL
+    @api.exec_params(<<~SQL, [@org, SecureRandom.uuid, @account])
+      INSERT INTO app.campaign_mutations(organization_id,operation_id,resource_kind,resource_id,fingerprint,result)
+      VALUES ($1,$2,'account',$3,repeat('a',64),'{}'::jsonb)
+    SQL
+    @api.exec("COMMIT")
+    @admin.exec_params("DELETE FROM app.mailbox_memberships WHERE mailbox_id=$1 AND user_id=$2", [@private_box, @user])
+    claims(@user, @org)
+    assert_equal "0", @api.exec_params("SELECT count(*) FROM app.campaign_accounts WHERE id=$1", [@account]).getvalue(0, 0)
+    assert_equal "0", @api.exec_params("SELECT count(*) FROM app.campaign_mutations WHERE resource_id=$1", [@account]).getvalue(0, 0)
+  end
+
   def test_storage_is_inert_and_rls_forced
     rows = @admin.exec(<<~SQL).to_a
       SELECT relname,relrowsecurity,relforcerowsecurity FROM pg_class
       WHERE relnamespace='app'::regnamespace AND relname IN
-        ('campaigns','campaign_leads','campaign_accounts','campaign_suppressions','campaign_mutations')
+        ('campaigns','campaign_leads','campaign_consent_events','campaign_accounts','campaign_suppressions','campaign_mutations')
     SQL
-    assert_equal 5, rows.length
+    assert_equal 6, rows.length
     assert(rows.all? { |row| row.values_at("relrowsecurity", "relforcerowsecurity") == %w[t t] })
     assert_equal "f", @admin.exec("SELECT has_table_privilege('elevateo_worker','app.campaigns','INSERT')").getvalue(0, 0)
+    assert_equal "f", @admin.exec("SELECT has_table_privilege('elevateo_api','app.campaign_consent_events','UPDATE')").getvalue(0, 0)
+    assert_equal "f", @admin.exec("SELECT has_table_privilege('elevateo_api','app.campaign_mutations','UPDATE')").getvalue(0, 0)
+    assert_equal "f", @admin.exec("SELECT has_table_privilege('elevateo_api','app.campaign_suppressions','DELETE')").getvalue(0, 0)
   end
 end
