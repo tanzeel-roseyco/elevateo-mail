@@ -78,6 +78,23 @@ compose exec -T db psql -U supabase_admin -d postgres -X -q -v ON_ERROR_STOP=1 \
   < "$packet/gateway-bootstrap-smoke.sql" >/dev/null
 compose exec -T db psql -U supabase_admin -d postgres -X -q -v ON_ERROR_STOP=1 \
   < "$packet/gateway-helper-smoke.sql" >/dev/null
+for fixture in gateway_negative_private_schema.sql gateway_negative_private_function.sql; do
+  set +e
+  private_output=$(cat "$packet/$fixture" "$packet/gateway-helper-smoke.sql" |
+    compose exec -T db psql -U supabase_admin -d postgres -X -q -v ON_ERROR_STOP=1 2>&1)
+  private_exit=$?
+  set -e
+  case "$fixture" in
+    gateway_negative_private_schema.sql) expected='gateway private helper boundary failed' ;;
+    gateway_negative_private_function.sql) expected='gateway helper effective grant drift' ;;
+  esac
+  if (( private_exit == 0 )) || [[ "$private_output" != *"$expected"* ]]; then
+    echo "gateway private grant fixture failed expected oracle: $fixture exit=$private_exit" >&2
+    exit 1
+  fi
+done
+compose exec -T db psql -U supabase_admin -d postgres -X -q -v ON_ERROR_STOP=1 \
+  < "$packet/gateway-helper-smoke.sql" >/dev/null
 docker run --rm --network "${project}_private" --read-only --cap-drop ALL \
   --env-file "$gateway_env" \
   -v "$packet/gateway-runtime-smoke.sql:/gateway-runtime-smoke.sql:ro" --entrypoint bash "$image" \
