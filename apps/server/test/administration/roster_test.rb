@@ -16,6 +16,14 @@ class AdministrationRosterTest < Minitest::Test
       Roster.binding(config_key: "elev-person-001", auth_user_id: USER_ID, existing_bindings: {}, verified_subject: USER_ID))
   end
 
+  def test_display_projection_excludes_private_and_proposed_authority_fields
+    people = Roster.public_people(Roster.load)
+    assert_equal 12, people.length
+    assert_equal %w[department display_name enrollment_state key title], people.first.keys.sort
+    refute_includes JSON.generate(people), "proposed_org_role"
+    refute_includes JSON.generate(people), "auth_user_id"
+  end
+
   def test_rejects_unknown_or_duplicate_identity
     assert_raises(Roster::Invalid) { Roster.binding(config_key: "elev-person-013", auth_user_id: USER_ID, existing_bindings: {}, verified_subject: USER_ID) }
     assert_raises(Roster::Invalid) do

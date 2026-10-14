@@ -59,6 +59,16 @@ module Elevateo
       { "key" => config_key, "auth_user_id" => auth_user_id.downcase }
     end
 
+    # Display only: proposed roles are omitted because configuration cannot confer current authority.
+    def self.public_people(document)
+      validate(document)
+      document.fetch("people").map do |person|
+        { "key" => person.fetch("key"), "display_name" => person.fetch("display_name"),
+          "title" => person.fetch("title"), "department" => person["department"],
+          "enrollment_state" => "unbound" }
+      end
+    end
+
     def self.invalid! = raise(Invalid, "invalid administration roster")
   end
 end
