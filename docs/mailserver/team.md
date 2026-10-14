@@ -20,3 +20,16 @@ Soren OFF-402 remains sole Docker owner; scheduler inbox was informed this group
 Ada starting recommendation is Mox localserve for the private fixture; Aster owns a bounded evidence-based final choice and adapter contract. Production Docker support and mailbox-versus-tenant boundaries must be explicit. Review packets capped at 200 unique LOC; implementation tests and independent review remain pending.
 
 Workers were launched and their turns started; this does not establish completed R&D, passed security gates, production readiness or application completion.
+## First slices settled — 2026-10-14
+All six remote runs exit0; all six owned checkouts clean. Sources and remote reports retained. Six positively verified idle manual SSH shell tabs closed through Orca terminal close, each ptyKilled:true. No new tasks or Docker while application queue remains active.
+
+| Worker | Exact final commit | Evidence / remaining gate |
+|---|---|---|
+| Aster #16 | 0ab568b50a98d5bef52d39f520fc44cc58fbc63f | Mox localserve provisional; 164 doc LOC zero findings; two pilot initialization/restart defects block runtime |
+| Rhea #17 | 0ea1c652d64e5f7c40dd8d32fc59f38b7b28aada | Offline validator/fixtures; 185 Python LOC zero defects; two JSON fixture lines review pending |
+| Corin #18 | add0f84235a509733b15169fcf499850ee137a9a | Account validator/restore; one review defect fixed with regression; repair review pending |
+| Vesper #19 | d39ac982bf8565cd1a9c97f292255697602923f2 | Disabled synthetic provider contract/types/fake tests; independent review pending |
+| Leonie #20 | 28c21a887ab63c8f5a35690f6e0ed6cca5033124 | Private Compose candidate/provenance/native runbook; independent review pending |
+| Darius #21 | fcd23438565e918b6c540325c62c60a8bec0fa3c | Synthetic SMTP/IMAP harness; password-boundary defect fixed; re-review pending; two pilot defects reported |
+
+Every Docker/runtime gate is NOT_RUN. No spend, external mail, DNS, infrastructure change or deployment. Full evidence: /home/tanzeel/elevateo-mail-rd-20261014/reports/{name}-final.md, {name}-last-message.md, {name}-events.jsonl and {name}-exit.txt. Commits are source slices, not runtime acceptance. Root owns actual Obsidian vault mirror.

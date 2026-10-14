@@ -119,3 +119,5 @@ INT-401 preservation follow-up: original indexed executable modes restored for c
 
 
 2026-10-14 MAIL-501–506: six new autonomous fleet-02 R&D workers launched with proven thread.started/turn.started; GitHub issues #16–21 and real Orca handles/PIDs recorded in docs/mailserver/team.md. Application acceptance keeps priority; Soren sole Docker owner and Leonie sole private-pilot collector. R&D checks/results pending; no live mail or costs.
+
+R&D first slices settled: six exit0 clean remote commits recorded in docs/mailserver/team.md; six idle shell tabs released. All runtime gates NOT_RUN, application queue priority, no new R&D tasks or Docker. Sources/logs retained.

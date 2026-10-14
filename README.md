@@ -121,3 +121,5 @@ The corrected isolated grantor probe is frozen in docs/evidence/be-01-r1-grantor
 
 
 INT-401 preservation follow-up: original indexed executable modes restored for canonical scripts after Windows overlay staging; baseline remains UNTESTED. Source-only and history bundles remain ignored local deliverables.
+
+R&D first slices settled: six exit0 clean remote commits recorded in docs/mailserver/team.md; six idle shell tabs released. All runtime gates NOT_RUN, application queue priority, no new R&D tasks or Docker. Sources/logs retained.
