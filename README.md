@@ -484,3 +484,5 @@ QA815 exact `b3fec577` pinned-tool Android parser probe passed 17 Python methods
 ATT898 Nadia repository/test import repair is integrated for the exact QA815 attachment strict and standalone test-load failures. Soren fleet Steep and focused attachment tests on the coherent source remain pending; no byte route or live sending was activated.
 
 Core strict successor stages Cassian gateway Numeric conversion and Corin fake inbound scalar validation over exact 215080a4; Nadia attachment index type repair is pending. Soren fleet Steep/full backend/HTTP/worker have not run on this successor.
+
+Core strict-only candidate now includes Nadia's typed attachment metadata authorization callable atop exact 215080a4, alongside gateway and fake inbound fixes; Soren successor Steep/focused units remain pending.

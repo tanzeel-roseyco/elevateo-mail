@@ -427,3 +427,5 @@ QA815 imported exact `b3fec577` Android pinned Build Tools 36 focused probe: 17 
 Nadia ATT898 exact `4557fd73` narrows attachment repository integer values to decimal string binds and imports Minitest mock/Repository in standalone service tests, preserving Cassian's V2 metadata controller source. It is an unexecuted owner repair pending coherent fleet Steep and focused units.
 
 Core strict-only branch adds Cassian gateway and Corin fake inbound type repairs over exact 215080a4, excluding later APP901 feature source; Nadia old controller lambda repair remains pending. No successor PASS is claimed.
+
+Nadia STRICT909 old-controller repair is integrated on the isolated core branch without ATT902 content changes. All ten known 215080 Steep diagnostics have source candidates; exact successor fleet proof is NOT_RUN.

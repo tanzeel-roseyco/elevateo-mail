@@ -1303,3 +1303,5 @@ QA815 `c5a2224` Android pinned-tool receipt is executed fleet test evidence on e
 ATT898 Nadia `4557fd73` source repair responds to QA815 `211df76` repository type and attachment service test-load diagnostics. Its 198-LOC maximum independent packet is specified in `docs/completion/nadia-att898-focused-repair.md`; independent review not yet performed, reviewed LOC/defects/KLOC unclaimed. Successor fleet Steep and units remain pending.
 
 Core strict-only candidate imports Corin 0526a508 fake inbound controller/non-scalar HTTP regression with Cassian a853b7fe gateway Float repair. Corin self-inspected 52 controller and 105 HTTP fixture LOC in separate packets; independent review and successor fleet Steep/HTTP are pending, so no new reviewed LOC/defects/KLOC claim.
+
+Nadia STRICT909 `2418a72c` old-index authorization callable/RBS/test is imported on the isolated core branch with <=216 unique LOC owner review packet. Independent source/design review and fleet strict/unit execution remain pending; reviewed LOC/defects/KLOC unclaimed. No ATT902 byte action is included in this gate candidate.

@@ -489,3 +489,5 @@ The bounded QA815 Android parser probe script and exact retained-APK receipt are
 The ATT898 attachment repository bind/test-import repair is documented in `docs/completion/nadia-att898-focused-repair.md`. It retains SQL casts and transaction authority; Soren's coherent strict and focused service/scanner/database checks are still required.
 
 The isolated core strict successor binds Numeric timeout through Kernel.Float and validates fake inbound provider fields as Strings before MIME ingest. It remains behind Soren Steep and focused HTTP checks plus Nadia old attachment index repair.
+
+The core strict-only attachment metadata adapter now uses Nadia's typed ReadAuthorization callable to recheck current message scope; exact Soren Steep and focused tests remain required before full backend/HTTP/worker gates.
