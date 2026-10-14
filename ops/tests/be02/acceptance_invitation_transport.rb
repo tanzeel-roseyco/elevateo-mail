@@ -18,6 +18,13 @@ module Be02Acceptance
       value
     end
 
+    # AIDEV-NOTE: Reject late bytes/results; per-read timeout is not a hard total interruption deadline.
+    def check_delivery_deadline
+      deadline = @delivery_deadline
+      Be02Acceptance.check(!deadline || Process.clock_gettime(Process::CLOCK_MONOTONIC) < deadline,
+        "invitation_delivery_timeout")
+    end
+
     def request(host, port, method, path, payload: nil, authorization: nil)
       request = method == "post" ? Net::HTTP::Post.new(path) : Net::HTTP::Get.new(path)
       request["Authorization"] = authorization if authorization
@@ -33,12 +40,16 @@ module Be02Acceptance
           Be02Acceptance.check(response.code == "200" && response.content_type == "application/json",
             "invitation_http_failed")
           response.read_body do |chunk|
+            check_delivery_deadline
             Be02Acceptance.check(body.bytesize + chunk.bytesize <= 262_144, "invitation_response_size_invalid")
             body << chunk
           end
         end
       end
-      object(JSON.parse(body))
+      check_delivery_deadline
+      result = object(JSON.parse(body))
+      check_delivery_deadline
+      result
     end
 
     def issue
@@ -92,9 +103,10 @@ module Be02Acceptance
           links = text.scan(%r{https?://[^\s<>"']+}).select { |link| URI.parse(link).path == "/auth/accept" }.uniq
           Be02Acceptance.check(links.length == 1, "invitation_mail_link_invalid")
           self.class.validate_link(links.fetch(0))
+          check_delivery_deadline
           return links.fetch(0)
         end
-        Be02Acceptance.check(Process.clock_gettime(Process::CLOCK_MONOTONIC) < deadline, "invitation_delivery_timeout")
+        check_delivery_deadline
         sleep 0.5
       end
     end

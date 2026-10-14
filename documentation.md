@@ -2,6 +2,8 @@
 
 ## Current execution status
 
+Nadia OFF406 INV406 R15 source-only repair over exact `07a055263d11851b826719dc222ca6ecb3b8635d`: ADV850 deadline checks reject late response chunks, parsed JSON and validated invitation capability using the existing 25-second monotonic deadline. Deterministic trickle/parsing/final-validation regressions authored; all tests, strict typing, lint and runtime NOT_RUN. Soren alone schedules fleet Docker. BE02 unaccepted, BE03 closed, observer OFF; root owns integration/acceptance/vault. See [R15 handoff](docs/completion/nadia-r15-invitation-deadline.md). Effective model/tier/spend unverified.
+
 Nadia OFF406 INV406 R14 source-only candidate over exact `86036e276df9c3294206e6bfa14d478c223c54dd`: adds a real-Auth/Mailpit invitation fixture after completed seed publication, a readonly six-key private browser contract, per-lane identity/access isolation and owned failure cleanup. Requires root integration with Mira INV405 `a5c57be9134ac6c05d8a824b4a0e04424124eb90`; production, canonical contracts, corefour selection, observer and base lifecycle remain unchanged. All authored checks/runtime and independent source/design reviews NOT_RUN; BE02 remains unaccepted, BE03 closed. Soren alone schedules Docker; root owns integration, acceptance and actual vault. See [INV406 handoff](docs/completion/nadia-r14-invitation-browser.md). Requested model/effort/tier/billing not attested.
 
 Application IN PROGRESS: R17 selectively integrates accepted Mira conflict-navigation and Elara native-diagnostic harness repairs over immutable 5c5cc397. Only three test source paths change; production, contracts, observer boundary and Docker recipes remain identical. New candidate runtime NOT_RUN; observer OFF, BE02 unaccepted, BE03 closed.

@@ -35,6 +35,7 @@ module Be02Acceptance
     def object: (invitation_json) -> Hash[String, invitation_json]
     def text: (invitation_json) -> String
     def array: (invitation_json) -> Array[invitation_json]
+    def check_delivery_deadline: () -> void
     def request: (String, Integer, String, String, ?payload: Hash[Symbol, invitation_json]?, ?authorization: String?) -> Hash[String, invitation_json]
     def issue: () -> void
     def self.validate_link: (invitation_json) -> String
