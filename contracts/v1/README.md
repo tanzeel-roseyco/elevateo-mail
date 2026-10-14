@@ -1,3 +1,15 @@
+# Version 1 additive send contract
+
+`openapi.json` is canonical. R24 adds accepted `1.0.0-send.1` Send schemas and four routes under root-authorized isolated implementation; BE02 remains OPEN and integration/release gated. Existing C/D paths, schemas, parameters, responses and `fixtures.json` are preserved. `be03-preservation.json` seals their structural values against baseline03ae770; `send-fixtures.json` contains synthetic examples only. `tests/send_contract_test.rb` is a Docker-only structural/fixture regression suite, not API or database acceptance. Generator/client conformance and actual runtime are pending.
+
+<!-- AIDEV-NOTE: Add Send schemas without widening CollaborationError or changing frozen C/D semantics. -->
+
+The normative send behavior is [the accepted brief](../../docs/completion/be03-implementation-brief.md). A non-ready review renders incomplete saved content with null digest; a ready digest binds canonical server bytes, current sender and policy. Approval accepts only the closed human attestation input, uses current session/Origin/CSRF/context, and returns an immutable approval result under fresh proof metadata. Retry an uncertain response with the original operation ID and binding. Snapshot bytes and dispatch epoch are server-only. Queued status is durable intent, never provider acceptance or delivery. Every result is simulated. Cancellable additionally requires a readable matching external epoch. Offline driver work is separate from S1+S2; BE04 owns live provider integration and durable external reconciliation.
+
+The pinned generator remains openapi-typescript7.13.0; Mira owns generated web artifacts and Soren schedules generation/type checks under the fleet lease. `contract-lock.json` records the new source and retains previous generation evidence as historical; it does not claim that old client output covers Send additions.
+
+## Historical session/read checkpoint (unchanged rules)
+
 # Version 1 session and read contract
 
 `openapi.json` is the canonical machine-readable source for FE-01's four reads and the accepted BE-02A session lifecycle. Version `1.0.0-session.1` preserves every existing read operation and schema, and adds nine lifecycle/organization routes. Two fresh disposable Docker runs of the pinned generator produced identical client types; [generation evidence](../../docs/evidence/be02-contract-generation.json) records their hashes and cleanup. Real Rails, fixture conformance and browser acceptance remain pending. Runtime boundary validation is also required: generated types do not validate a response.

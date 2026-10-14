@@ -1,0 +1,19 @@
+# BE03 R24 contract and integration record
+
+Cassian BE03-CONTRACT owns canonical contracts, source manifest and central documentation on delivery/cassian-r24, baseline03ae770. Root explicitly authorizes isolated implementation in parallel with BE02 acceptance; BE02 remains OPEN, integration/release gated. Deadline12:17 UTC. S1+S2 takes priority over S3-S5. No runtime acceptance or completion claim.
+
+## Source and frozen boundary
+
+Canonical path is contracts/v1/openapi.json; the incoming dispatch's wrong contracts/openapi.yaml was corrected in place and its blocking sequence annotated with root's override. Additive version1.0.0-send.1 introduces SendReview, ApprovalResult, SendStatus, CancellationResult, closed approval/cancellation inputs and independent SendError. Existing C/D operations/components and fixtures remain frozen; be03-preservation.json contains normalized section seals and the original fixture byte hash. New send-fixtures.json is synthetic. Contract-lock records pending generation and retains the prior generation receipt as historical.
+
+Signatures are published in incoming/be03-r24-coordination/cassian-contract.md. Rowan owns every SQL/migration change; Nadia owns Rails routes/config/load/controller/service/RBS seams; Mira owns web generated artifacts/gateway/UI; Elara owns isolated offline worker modules. Approval SQL is app.approve_draft_send(text,uuid,uuid,uuid,integer,text,bytea,uuid)->jsonb. Server-derived snapshot/epoch cannot be browser request fields. Approval return metadata is freshly authorized. Stable send_id is the sole intent/job identity. No approval-operation GET.
+
+## Evidence and review
+
+Actual application tests/generator/lint/type/build/API/worker/UI: NOT_RUN in this source-preparation checkpoint. Structural regression suite covers baseline preservation, four routes, synthetic ready/not-ready/approval/queued/cancelled/error shapes, positive draft versions, original binding-only inputs, no snapshot disclosure, no delivery/reset states. Tests must run in fleet Docker through Soren after bounded source review. Static source preparation is not runtime proof.
+
+Root dispatches <=200-line review packets (<=400 per assignment) plus dedicated design review from Cassian's immutable packet manifest. Findings/defects/KLOC will be recorded in code-reviews.md once received. No design-opinion record substitutes for changed-source adversarial coverage.
+
+## Resources and remaining work
+
+No Docker resources created and no cleanup/deletion commands executed by Cassian. Preserve all persistent resources, Lyra preview port18140, source86036/51ca and previous evidence. Soren alone schedules shared heavy-test lease; exact task cleanup immediately follows each job. Required next evidence: reviewed exact worker receipts, integrated S1+S2 source, real PostgreSQL/Auth/API tests, generated client strict checks and actual UI validation. Actual vault remains root-owned and unsynchronized; no vault write here. Observer OFF. No live sends, production activation, paid paths, research or ultrareviews. Effective Fast unverified.
