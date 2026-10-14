@@ -400,3 +400,5 @@ QA815 `a0a60b6` one-case same-scope outreach witness FAIL 1/5: read=not_found, w
 SMTP888 (source candidate, 2026-10-14): net-smtp 0.5.2 local Mailpit TLS toggle methods are declared for Steep and covered by a no-connection factory regression. Soren fleet strict/unit verification is NOT_RUN; remote SMTP remains held. See docs/completion/rhea-smtp888.md.
 
 ADV124 reported one retained P2 on the nominal attachment HTTP fake. Its response and optional request/start forms are now test-only successors with no production byte-path change; rereview and focused fleet tests remain pending.
+
+SEC802 source candidate removes PostgreSQL `CURRENT_ROLE` name collision in outreach read/write business grant checks; eligibility and actor proof are otherwise unchanged. Focused sales/owner/auditor fleet assertions and independent review pending; earlier shared `not_found` failure remains historical until rerun.
