@@ -7,7 +7,7 @@ module V2
     class LeadsController < BaseController
       def index
         campaign = path_uuid(:campaign_id)
-        protected_read(allowed_query: %w[cursor limit], budget: 65_536) do |connection:, identity:, query:, **|
+        protected_read(allowed_query: %w[cursor limit], budget: 262_144) do |connection:, identity:, query:, **|
           repository = campaign_repository(connection)
           repository.detail(kind: "campaign", organization_id: identity.org_id, id: campaign)
           cursor, limit = page_options(query)
@@ -22,7 +22,7 @@ module V2
           repository = campaign_repository(connection)
           item = repository.detail(kind: "lead", organization_id: identity.org_id, id: id)
           raise Elevateo::CollaborationError.new("not_available") unless item.fetch("campaign_id") == campaign
-          encoded(public_item("lead", item))
+          encoded(public_detail("lead", item))
         end
       end
 
@@ -54,10 +54,11 @@ module V2
           payload = Elevateo::Campaigns::Input.new(kind: "lead", value: {
             "id" => id, "operation_id" => input.fetch("operation_id"), "campaign_id" => campaign,
             "email" => input.fetch("email"), "consent_status" => "unknown", "consent_recorded_at" => nil,
-            "consent_source" => nil, "suppressed" => old.fetch("suppressed")
+            "consent_source" => nil, "suppressed" => false
           })
           result = repository.replace(payload, organization_id: identity.org_id,
-            expected_version: Elevateo::WriteInput.integer(input.fetch("expected_version"), minimum: 1, maximum: 2_147_483_646))
+            expected_version: Elevateo::WriteInput.integer(input.fetch("expected_version"), minimum: 1, maximum: 2_147_483_646),
+            intent: input.merge("campaign_id" => campaign))
           write_result(public_item("lead", result))
         end
       end
@@ -73,11 +74,11 @@ module V2
             "id" => id, "operation_id" => input.fetch("operation_id"), "campaign_id" => campaign,
             "email" => old.fetch("email"), "consent_status" => "granted",
             "consent_recorded_at" => input.fetch("observed_at"), "consent_source" => input.fetch("source"),
-            "suppressed" => old.fetch("suppressed")
+            "suppressed" => false
           })
           result = repository.replace(payload, organization_id: identity.org_id,
             expected_version: Elevateo::WriteInput.integer(input.fetch("expected_version"), minimum: 1, maximum: 2_147_483_646),
-            actor_id: identity.user_id)
+            actor_id: identity.user_id, intent: input.merge("campaign_id" => campaign))
           write_result(public_item("lead", result))
         end
       end
@@ -92,10 +93,11 @@ module V2
           payload = Elevateo::Campaigns::Input.new(kind: "lead", value: {
             "id" => id, "operation_id" => input.fetch("operation_id"), "campaign_id" => campaign,
             "email" => old.fetch("email"), "consent_status" => "withdrawn",
-            "consent_recorded_at" => nil, "consent_source" => nil, "suppressed" => old.fetch("suppressed")
+            "consent_recorded_at" => nil, "consent_source" => nil, "suppressed" => false
           })
           result = repository.replace(payload, organization_id: identity.org_id,
-            expected_version: Elevateo::WriteInput.integer(input.fetch("expected_version"), minimum: 1, maximum: 2_147_483_646))
+            expected_version: Elevateo::WriteInput.integer(input.fetch("expected_version"), minimum: 1, maximum: 2_147_483_646),
+            intent: input.merge("campaign_id" => campaign))
           write_result(public_item("lead", result))
         end
       end

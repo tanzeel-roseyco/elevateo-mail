@@ -6,7 +6,7 @@ module V2
   module Outreach
     class AccountsController < BaseController
       def index
-        protected_read(allowed_query: %w[cursor limit], budget: 65_536) do |connection:, identity:, query:, **|
+        protected_read(allowed_query: %w[cursor limit], budget: 262_144) do |connection:, identity:, query:, **|
           cursor, limit = page_options(query)
           encoded(public_page("account", campaign_repository(connection).page(kind: "account",
             organization_id: identity.org_id, cursor: cursor, limit: limit)))
@@ -46,7 +46,8 @@ module V2
             "label" => input.fetch("label")
           })
           result = repository.replace(payload, organization_id: identity.org_id,
-            expected_version: Elevateo::WriteInput.integer(input.fetch("expected_version"), minimum: 1, maximum: 2_147_483_646))
+            expected_version: Elevateo::WriteInput.integer(input.fetch("expected_version"), minimum: 1, maximum: 2_147_483_646),
+            intent: input)
           write_result(public_item("account", result))
         end
       end

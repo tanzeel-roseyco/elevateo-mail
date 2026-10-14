@@ -25,6 +25,7 @@ module Elevateo
         when "account"
           [input.id, org, input.attributes.fetch("campaign_id"), input.operation_id,
             input.attributes.fetch("mailbox_id"), input.attributes.fetch("label")]
+        else WriteInput.invalid!
         end
         if input.kind == "account"
           visible = rows("SELECT id FROM app.mailboxes WHERE organization_id=$1::uuid AND id=$2::uuid",
@@ -55,6 +56,7 @@ module Elevateo
             ON CONFLICT DO NOTHING
             RETURNING id
           SQL
+        else WriteInput.invalid!
         end
         inserted = rows(sql, values)
         return inserted.first.fetch("id") if inserted.length == 1
@@ -79,6 +81,7 @@ module Elevateo
             (!row["suppressed_at"].nil?) == input.attributes["suppressed"]
         when "account"
           row["mailbox_id"] == input.attributes["mailbox_id"] && row["label"] == input.attributes["label"]
+        else false
         end
       end
 
@@ -143,13 +146,16 @@ module Elevateo
       end
 
       # AIDEV-NOTE: Operation advisory lock serializes same-key retries before row mutation; stored response is replayed.
-      def replace(input, organization_id:, expected_version:, actor_id: nil)
+      def replace(input, organization_id:, expected_version:, actor_id: nil, intent: nil)
         WriteInput.invalid! unless input.is_a?(Input) && expected_version.is_a?(Integer) &&
           expected_version.between?(1, 2_147_483_646)
         org = WriteInput.uuid(organization_id)
         actor = actor_id.nil? ? nil : WriteInput.uuid(actor_id)
         WriteInput.invalid! if input.kind == "lead" && input.attributes.fetch("consent_status") == "granted" && actor.nil?
-        fingerprint = Digest::SHA256.hexdigest(JSON.generate([input.kind, input.id, expected_version, input.attributes, actor]))
+        intent_fields = intent.nil? ? input.attributes : intent
+        WriteInput.invalid! unless intent_fields.is_a?(Hash) && intent_fields.keys.all? { |key| key.is_a?(String) }
+        fingerprint = Digest::SHA256.hexdigest(JSON.generate([input.kind, input.id, expected_version,
+          intent_fields.sort.to_h, actor]))
         rows("SELECT pg_advisory_xact_lock(hashtextextended($1::text, 0))", [input.operation_id])
         previous = rows("SELECT fingerprint,result FROM app.campaign_mutations WHERE organization_id=$1::uuid AND operation_id=$2::uuid", [org, input.operation_id]).first
         if previous
@@ -174,6 +180,7 @@ module Elevateo
         when "account"
           ["UPDATE app.campaign_accounts SET label=$4,version=version+1 WHERE organization_id=$1::uuid AND id=$2::uuid AND version=$3::integer AND campaign_id=$5::uuid AND mailbox_id=$6::uuid RETURNING *",
             [org, input.id, expected_version, fields.fetch("label"), fields.fetch("campaign_id"), fields.fetch("mailbox_id")]]
+        else WriteInput.invalid!
         end
         updated = rows(sql, values).first
         unless updated
@@ -210,7 +217,8 @@ module Elevateo
           { "id" => row.fetch("id"), "campaign_id" => row.fetch("campaign_id"), "email" => row.fetch("email"),
             "consent_status" => row.fetch("consent_status"), "suppressed" => !row["suppressed_at"].nil? || row["globally_suppressed"] == true,
             "consent_recorded_at" => row["consent_recorded_at"]&.utc&.iso8601,
-            "consent_source" => row["consent_source"], "version" => row.fetch("version").to_i }
+            "consent_source" => row["consent_source"], "consent_recorded_by" => row["consent_recorded_by"],
+            "version" => row.fetch("version").to_i }
         when "account"
           { "id" => row.fetch("id"), "campaign_id" => row.fetch("campaign_id"), "mailbox_id" => row.fetch("mailbox_id"),
             "label" => row.fetch("label"), "status" => row.fetch("status"), "version" => row.fetch("version").to_i }

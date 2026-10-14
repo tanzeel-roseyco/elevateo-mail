@@ -99,3 +99,23 @@ class CampaignRepositoryMutationTest < Minitest::Test
     assert_equal ORG, connection.calls.first.last.first
   end
 end
+
+class CampaignRepositoryReplayTest < Minitest::Test
+  ID = CampaignRepositoryTest::ID
+  OP = CampaignRepositoryTest::OP
+  ORG = CampaignRepositoryTest::ORG
+  Connection = CampaignRepositoryTest::Connection
+
+  def test_exact_http_intent_replays_original_result_after_current_state_changes
+    intent = { "operation_id" => OP, "expected_version" => 1, "name" => "Pilot", "status" => "paused" }
+    original = { "id" => ID, "name" => "Pilot", "status" => "paused", "version" => 2 }
+    fingerprint = Digest::SHA256.hexdigest(JSON.generate(["campaign", ID, 1, intent.sort.to_h, nil]))
+    connection = Connection.new([[], [{ "fingerprint" => fingerprint, "result" => JSON.generate(original) }]])
+    changed = Elevateo::Campaigns::Input.new(kind: "campaign", value: {
+      "id" => ID, "operation_id" => OP, "name" => "New current name", "status" => "draft"
+    })
+    assert_equal original, Elevateo::Campaigns::Repository.new(connection: connection).replace(changed,
+      organization_id: ORG, expected_version: 1, intent: intent)
+    refute(connection.calls.any? { |call| call.first.start_with?("UPDATE app.campaigns") })
+  end
+end

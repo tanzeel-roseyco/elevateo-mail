@@ -29,7 +29,7 @@ module V2
 
       def encoded(payload)
         result = JSON.generate(payload, allow_nan: false)
-        raise Elevateo::CollaborationError.new("internal_error") if result.bytesize > 65_536
+        raise Elevateo::CollaborationError.new("internal_error") if result.bytesize > 262_144
         result
       end
 
@@ -45,6 +45,12 @@ module V2
         else Elevateo::WriteInput.invalid!
         end
         item.slice(*fields)
+      end
+
+      def public_detail(kind, item)
+        result = public_item(kind, item)
+        return result unless kind == "lead"
+        result.merge(item.slice("consent_recorded_at", "consent_source", "consent_recorded_by"))
       end
 
       def public_page(kind, page)
