@@ -57,7 +57,7 @@ export function ThreadPage({ readDirectMessage }: { readDirectMessage?: DirectMe
   // A->B would see A's subject/messages under B's URL for a frame, and an A completion landing
   // before cleanup could pass isCurrent. The filter is presentational (back link only), so it
   // stays outside the key and must not remount the reader.
-  return <ConversationReader key={`${mailboxId}\n${threadId}`} mailboxId={mailboxId} threadId={threadId} readDirectMessage={readDirectMessage} />
+  return <ConversationReader key={`${mailboxId}\n${threadId}`} mailboxId={mailboxId} threadId={threadId} {...(readDirectMessage === undefined ? {} : { readDirectMessage })} />
 }
 
 function ConversationReader({ mailboxId, threadId, readDirectMessage }: { mailboxId: string; threadId: string; readDirectMessage?: DirectMessageRead }) {
