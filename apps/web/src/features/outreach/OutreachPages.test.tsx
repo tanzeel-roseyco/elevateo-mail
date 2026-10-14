@@ -4,7 +4,7 @@ import { describe, expect, it, vi } from 'vitest'
 import { GatewayError } from '@/data/errors'
 import {
   OutreachCampaignCreatePage, OutreachCampaignDetailPage, OutreachCampaignLeadsPage,
-  OutreachCampaignsPage, OutreachLeadDetailPage, OutreachAccountDetailPage,
+  OutreachCampaignsPage, OutreachLeadDetailPage, OutreachAccountDetailPage, OutreachCampaignAccountsPage,
 } from './OutreachPages'
 import type { OutreachGateway } from './contract'
 
@@ -38,6 +38,7 @@ function view(path: string, g?: OutreachGateway) {
     <Route path="/outreach/campaigns/:campaignId/leads" element={<OutreachCampaignLeadsPage gateway={g} context={context} proof={proof} />} />
     <Route path="/outreach/campaigns/:campaignId/leads/:leadId" element={<OutreachLeadDetailPage gateway={g} context={context} proof={proof} />} />
     <Route path="/outreach/campaigns/:campaignId/accounts/:accountId" element={<OutreachAccountDetailPage gateway={g} context={context} proof={proof} />} />
+    <Route path="/outreach/campaigns/:campaignId/accounts" element={<OutreachCampaignAccountsPage gateway={g} context={context} proof={proof} />} />
   </Routes></MemoryRouter>)
 }
 
@@ -150,5 +151,10 @@ describe('Outreach routed pages', () => {
     view(`/outreach/campaigns/${campaignId}/accounts/${leadId}`, g)
     expect(await screen.findByRole('alert')).toBeTruthy()
     expect(screen.queryByText('Foreign')).toBeNull()
+  })
+  it('shows a disabled account endpoint as unavailable', async () => {
+    const g = gateway({ listAccounts: vi.fn(async () => { throw new GatewayError('api', 'temporarily_unavailable', 'disabled', { status: 503 }) }) })
+    view(`/outreach/campaigns/${campaignId}/accounts`, g)
+    expect(await screen.findByText(/Outreach API unavailable/)).toBeTruthy()
   })
 })
