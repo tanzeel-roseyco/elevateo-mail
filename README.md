@@ -232,3 +232,5 @@ ADV093's restricted-role follow-up requires minimal SEC802 EXECUTE grants for bo
 Cassian integrated the two narrow helper grants at 338a442. OUT-804 role proof now records both `session_user` and `current_user` before and after restricted-role switch and asserts worker still lacks draft-write EXECUTE; actual fleet results remain pending.
 
 The 00009 policy now separates ordinary content reads from inert writes: SELECT requires session and content-role proof, while INSERT and UPDATE require the protected draft-write marker and the existing tenant, mailbox and consent integrity checks. A disposable valid-digest/no-marker direct UPDATE regression is authored; migration and database runtime on this source are pending.
+
+Soren's exact integrated 882a471 disposable fleet receipt confirms the new 15-policy 00009 migration applied. The runner stopped later at attachment migration 00018, so Outreach role/no-marker database tests and HTTP remain unexecuted.

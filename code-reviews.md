@@ -738,3 +738,5 @@ ADV093 independent bounded design review reports one conditional path integratio
 Cassian 338a442 integrated both narrow grants, preserving revokes. OUT-804 appended session/effective role and worker-denial assertions to the disposable probe; no additional production defect or independent review is claimed, and runtime remains NOT_RUN.
 
 OUT-804 author source audit of migration 00009 uncovered one direct-table write marker bypass in the prior FOR ALL policy (author finding, not independent review; density not assigned). The replacement command-specific policies and generated/disposable DB regressions have no source/runtime PASS yet. Request independent review over bounded migration policy generator plus database test slice, with defect count and LOC from reviewer; do not transfer prior syntax migration PASS to this new policy source.
+
+Soren 882a471 integrated migration SQL for the new 15-policy 00009 source PASSED before unrelated 00018 failure; this is runtime parser/application evidence, not an independent review or behavioral proof of no-marker denial. The bounded review and authenticated SQL tests remain pending.
