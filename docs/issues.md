@@ -75,3 +75,5 @@ Nadia OFF-406: official-document research and practical original mailroom propos
 
 
 RES-406 continuation correction (2026-10-14): skill supplied/read, historical missing-skill blocker resolved. Partial root Orca Accounts semantic observation received; native macOS provider unavailable on root Windows and separate Chrome launch automatically rejected, no bypass. Full runtime/Gmail coverage, independent review, application verification and application verification remain pending; root Obsidian vault is now updated. MailroomGateway/routes source mapping reveals no health/consent/suppression/send API; contract and scenarios are proposals for Mira/Elara/Rowan, not implemented capabilities. Primary citations reopened by Nadia; no tests/builds/live mail. See research continuation history and citation audit.
+
+INT-401 task_ece05977a76b / ctx_23639613cb62: Mira raw-intent LOW resolved in accepted R8; durable F2 recovery remains OPEN. Nadia SCN-READ-001-F2 authored, runtime NOT_RUN, isolated serial dataset mandatory. Rowan isolated Rails.logger fixture repair pending; fullbackend/HTTP/worker/GUI acceptance remains blocked by actual R7 failure.

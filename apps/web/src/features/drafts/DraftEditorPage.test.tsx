@@ -7,7 +7,7 @@
 // attempts survive context recovery (batched and unmounting) for the same owner only.
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { MemoryRouter, Route, Routes } from 'react-router'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { DraftIntentProvider } from '@/app/draftIntent'
 import { SessionProvider, useSession, type SessionController } from '@/app/session'
 import { Shell } from '@/app/Shell'
@@ -733,5 +733,131 @@ describe('context recovery keeps local intent for the same owner', () => {
     fireEvent.click(button('Retry this save'))
     expect(await screen.findByText('Saved version 3')).toBeTruthy()
     expect(h.saves[1]).toEqual(h.saves[0])
+  })
+})
+
+
+describe('memory-only reload boundary', () => {
+  const unload = () => {
+    const event = new Event('beforeunload', { cancelable: true })
+    window.dispatchEvent(event)
+    return event.defaultPrevented
+  }
+
+  it('registers for dirty and unresolved intent, then removes after a confirmed clean save', async () => {
+    const add = vi.spyOn(window, 'addEventListener')
+    const remove = vi.spyOn(window, 'removeEventListener')
+    const h = harness()
+    const view = renderEditor(h.gateway, path(CD.draftId))
+    try {
+      await screen.findByDisplayValue('Fixture draft')
+      expect(unload()).toBe(false)
+      expect(add.mock.calls.filter(([type]) => type === 'beforeunload')).toHaveLength(0)
+      fireEvent.change(input('Subject'), { target: { value: 'Edited' } })
+      await waitFor(() => expect(unload()).toBe(true))
+      h.holdNextSave = true
+      fireEvent.click(button('Save changes'))
+      await waitFor(() => expect(h.heldSaves).toHaveLength(1))
+      expect(screen.getByRole('note').textContent).toContain('Reloading or closing it loses')
+      expect(unload()).toBe(true)
+      await act(async () => h.heldSaves[0]!.fail(api('temporarily_unavailable', 503)))
+      await screen.findByRole('alert')
+      expect(screen.getByRole('note').textContent).toContain('recovery after a full reload is unavailable')
+      // Matching the saved text does not resolve the frozen attempt.
+      fireEvent.change(input('Subject'), { target: { value: 'Fixture draft' } })
+      expect(unload()).toBe(true)
+      fireEvent.change(input('Subject'), { target: { value: 'Edited' } })
+      fireEvent.click(button('Retry this save'))
+      await screen.findByText('Saved version 3')
+      await waitFor(() => expect(unload()).toBe(false))
+      expect(screen.queryByRole('note')).toBeNull()
+      const registrations = add.mock.calls.filter(([type]) => type === 'beforeunload')
+      expect(registrations).toHaveLength(1)
+      expect(remove.mock.calls).toContainEqual(registrations[0])
+      expect(h.saves[1]).toEqual(h.saves[0])
+    } finally {
+      view.unmount()
+      add.mockRestore()
+      remove.mockRestore()
+    }
+  })
+
+  it.each(['padding', 'blank lines'])('guards raw-only %s edits until canonical normalization', async (kind) => {
+    const add = vi.spyOn(window, 'addEventListener')
+    const remove = vi.spyOn(window, 'removeEventListener')
+    const h = harness()
+    const view = renderEditor(h.gateway, path(CD.draftId))
+    try {
+      await screen.findByDisplayValue('Fixture draft')
+      const canonical = input('To').value
+      const raw = kind === 'padding' ? `  ${canonical}  ` : `\n${canonical}\n\n`
+      expect(parseRecipients(raw)).toEqual(parseRecipients(canonical))
+      expect(unload()).toBe(false)
+      fireEvent.change(input('To'), { target: { value: raw } })
+      await waitFor(() => expect(unload()).toBe(true))
+      expect(input('To').value).toBe(raw)
+      expect(h.saves).toHaveLength(0)
+      fireEvent.change(input('To'), { target: { value: canonical } })
+      await waitFor(() => expect(unload()).toBe(false))
+      const registrations = add.mock.calls.filter(([type]) => type === 'beforeunload')
+      expect(registrations).toHaveLength(1)
+      expect(remove.mock.calls).toContainEqual(registrations[0])
+      fireEvent.change(input('To'), { target: { value: raw } })
+      fireEvent.change(input('Subject'), { target: { value: 'Saved with raw formatting' } })
+      fireEvent.click(button('Save changes'))
+      await screen.findByText('Saved version 3')
+      // The server saved normalized content, but raw formatting is still held only in memory.
+      expect(unload()).toBe(true)
+      fireEvent.change(input('To'), { target: { value: canonical } })
+      await waitFor(() => expect(unload()).toBe(false))
+    } finally {
+      view.unmount()
+      add.mockRestore()
+      remove.mockRestore()
+    }
+  })
+
+  it('drops raw-only intent and its guard when the principal changes', async () => {
+    const h = harness()
+    const view = renderEditorInShell(h.gateway, path(CD.draftId))
+    try {
+      await screen.findByText('Saved version 2')
+      const canonical = input('To').value
+      fireEvent.change(input('To'), { target: { value: `  ${canonical}  ` } })
+      await waitFor(() => expect(unload()).toBe(true))
+      h.actor = 'b'
+      act(() => view.controller().refresh())
+      await waitFor(() => expect(h.sessionReads).toBe(2))
+      await screen.findByText('Saved version 2')
+      await waitFor(() => expect(unload()).toBe(false))
+      expect(input('To').value).toBe(canonical)
+      h.actor = 'a'
+      act(() => view.controller().refresh())
+      await waitFor(() => expect(h.sessionReads).toBe(3))
+      await screen.findByText('Saved version 2')
+      expect(input('To').value).toBe(canonical)
+      expect(unload()).toBe(false)
+    } finally {
+      view.unmount()
+    }
+  })
+
+  it('removes the guard on owner clearing and provider unmount', async () => {
+    const h = harness()
+    const view = renderEditor(h.gateway, path(CD.draftId))
+    await screen.findByDisplayValue('Fixture draft')
+    fireEvent.change(input('To'), { target: { value: `  ${input('To').value}  ` } })
+    await waitFor(() => expect(unload()).toBe(true))
+    await act(async () => { await view.controller().signOut('local') })
+    await waitFor(() => expect(unload()).toBe(false))
+    view.unmount()
+    expect(unload()).toBe(false)
+
+    const next = renderEditor(harness().gateway, path(CD.draftId))
+    await screen.findByDisplayValue('Fixture draft')
+    fireEvent.change(input('Subject'), { target: { value: 'Another edit' } })
+    await waitFor(() => expect(unload()).toBe(true))
+    next.unmount()
+    expect(unload()).toBe(false)
   })
 })

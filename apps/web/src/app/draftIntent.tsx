@@ -8,13 +8,24 @@
 // AIDEV-NOTE: Lives between SessionProvider and the router (App.tsx) so it survives Shell's
 // recovering frame and the keyed ProtectedShell; cleared on sign-out and on a principal change.
 import { createContext, useContext, useEffect, useRef, type ReactNode } from 'react'
-import type { DraftBuffer } from '@/domain/draftOperation'
+import { hasUnresolvedAttempt, isDirty, type DraftBuffer } from '@/domain/draftOperation'
 import { useSession } from './session'
 
 export interface DraftIntent {
   buffer: DraftBuffer
   /** The To field exactly as typed, so recovery never silently normalizes incomplete recipients. */
   recipientsText: string
+}
+
+export function formatRecipients(to: DraftBuffer['savedContent']['to']): string {
+  return to
+    .map((a) => (a.display_name !== null && a.address !== null ? `${a.display_name} <${a.address}>` : (a.address ?? a.display_name ?? '')))
+    .join('\n')
+}
+
+/** Raw formatting is memory-only intent even when parsing yields unchanged recipients. */
+export function isDraftIntentDirty({ buffer, recipientsText }: DraftIntent): boolean {
+  return isDirty(buffer) || recipientsText !== formatRecipients(buffer.savedContent.to)
 }
 
 export interface DraftIntentStore {
@@ -41,6 +52,7 @@ export function useDraftIntent(): DraftIntentStore {
 export function DraftIntentProvider({ children }: { children: ReactNode }) {
   const { state } = useSession()
   const entriesRef = useRef(new Map<string, DraftIntent>())
+  const unloadGuardRef = useRef<(() => void) | null>(null)
   const storeRef = useRef<DraftIntentStore | null>(null)
   if (storeRef.current === null) {
     const entries = entriesRef.current
@@ -48,16 +60,41 @@ export function DraftIntentProvider({ children }: { children: ReactNode }) {
       read: (key) => entries.get(key) ?? null,
       write: (key, intent) => {
         entries.set(key, intent)
+        unloadGuardRef.current?.()
       },
       update: (key, transform) => {
         const existing = entries.get(key)
         if (existing !== undefined) entries.set(key, transform(existing))
+        unloadGuardRef.current?.()
       },
       clear: (key) => {
         entries.delete(key)
+        unloadGuardRef.current?.()
       },
     }
   }
+
+  // AIDEV-NOTE: Guard retained normalized and raw edits through recovery unmounts; memory is not durable.
+  useEffect(() => {
+    let registered = false
+    const warn = (event: BeforeUnloadEvent) => {
+      event.preventDefault()
+      event.returnValue = ''
+    }
+    const sync = () => {
+      const needed = [...entriesRef.current.values()].some((intent) => isDraftIntentDirty(intent) || hasUnresolvedAttempt(intent.buffer))
+      if (needed === registered) return
+      if (needed) window.addEventListener('beforeunload', warn)
+      else window.removeEventListener('beforeunload', warn)
+      registered = needed
+    }
+    unloadGuardRef.current = sync
+    sync()
+    return () => {
+      unloadGuardRef.current = null
+      if (registered) window.removeEventListener('beforeunload', warn)
+    }
+  }, [])
 
   // Session policy: sign-out (in flight or done), a session without organization, and a replaced
   // principal all drop every retained intent. Keys already stop cross-owner presentation; this
@@ -69,11 +106,15 @@ export function DraftIntentProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (dropsIntent) {
       entriesRef.current.clear()
+      unloadGuardRef.current?.()
       principalRef.current = null
       return
     }
     if (principal === null) return
-    if (principalRef.current !== null && principalRef.current !== principal) entriesRef.current.clear()
+    if (principalRef.current !== null && principalRef.current !== principal) {
+      entriesRef.current.clear()
+      unloadGuardRef.current?.()
+    }
     principalRef.current = principal
   }, [dropsIntent, principal])
 

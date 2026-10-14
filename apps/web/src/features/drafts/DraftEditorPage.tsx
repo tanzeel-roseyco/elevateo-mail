@@ -9,7 +9,7 @@
 import { useCallback, useEffect, useId, useRef, useState } from 'react'
 import { Link, useParams, useSearchParams } from 'react-router'
 import { describeFailure, type CollaborationFailure } from '@/app/collaborationFailure'
-import { draftIntentKey, useDraftIntent, type DraftIntent } from '@/app/draftIntent'
+import { draftIntentKey, formatRecipients, isDraftIntentDirty, useDraftIntent, type DraftIntent } from '@/app/draftIntent'
 import { useMailbox } from '@/app/mailboxes'
 import { useProtectedRequest } from '@/app/protectedRequest'
 import { useGateway, useSession } from '@/app/session'
@@ -77,11 +77,7 @@ export function parseRecipients(text: string): DraftContent['to'] {
     })
 }
 
-export function formatRecipients(to: DraftContent['to']): string {
-  return to
-    .map((a) => (a.display_name !== null && a.address !== null ? `${a.display_name} <${a.address}>` : (a.address ?? a.display_name ?? '')))
-    .join('\n')
-}
+export { formatRecipients } from '@/app/draftIntent'
 
 function validateContent(content: DraftContent): Partial<Record<'subject' | 'to' | 'body', string>> {
   const errors: Partial<Record<'subject' | 'to' | 'body', string>> = {}
@@ -156,10 +152,10 @@ function DraftEditor({ mailboxId, draftId }: { mailboxId: string; draftId: strin
   }
 
   // Write-through: dirty text, raw recipient input and any non-idle attempt are retained under the
-  // owner key; a clean idle buffer retains nothing. Never proofs, never server copies.
+  // owner key; only canonical clean idle text retains nothing. Never proofs, never server copies.
   useEffect(() => {
     if (ownerKey === null || state.status !== 'ready') return
-    if (isDirty(state.buffer) || state.buffer.status.kind !== 'idle') intentStore.write(ownerKey, { buffer: state.buffer, recipientsText })
+    if (isDraftIntentDirty({ buffer: state.buffer, recipientsText }) || state.buffer.status.kind !== 'idle') intentStore.write(ownerKey, { buffer: state.buffer, recipientsText })
     else intentStore.clear(ownerKey)
   }, [intentStore, ownerKey, state, recipientsText])
 
@@ -390,6 +386,12 @@ function DraftEditor({ mailboxId, draftId }: { mailboxId: string; draftId: strin
             <span>{status.message}</span>
             <Button size="sm" onClick={() => setBuffer(dismissRejection)}>Edit and try again</Button>
           </div>
+        )}
+        {(status.kind === 'saving' || status.kind === 'uncertain') && (
+          <p role="note" className="text-[13px] text-warn">
+            Keep this tab open. Reloading or closing it loses your unsaved text and this save’s retry details.
+            The save may still reach the server; recovery after a full reload is unavailable.
+          </p>
         )}
         {status.kind === 'uncertain' && (
           <div role="alert" className="flex flex-col gap-2 rounded-lg border border-warn/40 bg-warn/10 p-2 text-[13px]">

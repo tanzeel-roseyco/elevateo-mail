@@ -1,88 +1,45 @@
 {
-  "base": "2c31b41eed1346a2945a82f209a2e8d10e8aeabe",
-  "rowan": "d7969301584402110a3f1bc262a181d5c32107d6",
-  "elara_cherry_pick_only": "d47a252504597d390704aca70b2e907ab540c0d4",
-  "task": "task_0c39d9b10966",
-  "dispatch": "ctx_dace007fc53f",
-  "runtime": "UNTESTED",
-  "observer": false,
+  "base": "8a18f399c6d16d90a177b9e4572f4026e1588f47",
+  "parents": [
+    "8a18f399c6d16d90a177b9e4572f4026e1588f47",
+    "1fae7b185a64d2aa600388426607abea92d20070",
+    "3c030f122d196253b4be9e04af06aefc2c17be5a"
+  ],
+  "task": "task_ece05977a76b",
+  "dispatch": "ctx_23639613cb62",
   "manifest": [
     {
-      "file": "apps/server/app/controllers/v1/api_controller.rb",
-      "source": "d7969301584402110a3f1bc262a181d5c32107d6",
-      "blob": "e909db3c5a5d22739ff6bb600939ca14ca6ee1c2",
-      "mode": "100644",
-      "sha256": "8c9e5ccd39ad65038979bc1f5d25c725ff01dd49dfdac38193686bf8fc9c0276"
+      "file": "apps/web/src/app/draftIntent.tsx",
+      "owner": "1fae7b185a64d2aa600388426607abea92d20070",
+      "blob": "e4bf4020fa92dc2e9bf1ba5ee72a8470f644d3ff",
+      "sha256": "be8164f46bcbb2681b7e9846c6864d7200176d45389c7fdf9e75e3676c02a162"
     },
     {
-      "file": "apps/server/app/controllers/v1/auth_controller.rb",
-      "source": "d7969301584402110a3f1bc262a181d5c32107d6",
-      "blob": "18459bc18881f4b78ea505ad68f0901ca09798b9",
-      "mode": "100644",
-      "sha256": "e1e4a63ac654f46803dfc384ea575795cc9cc2fea193d6c5a87e8528339ea7b1"
+      "file": "apps/web/src/features/drafts/DraftEditorPage.tsx",
+      "owner": "1fae7b185a64d2aa600388426607abea92d20070",
+      "blob": "a5644bccbd3eaa0d36a8d366c80e7325df996047",
+      "sha256": "1e2d6093fcef1da7dc21d556e8291d47efd9e4681e8910898c902ee34dffbfb2"
     },
     {
-      "file": "apps/server/sig/auth_controllers.rbs",
-      "source": "d7969301584402110a3f1bc262a181d5c32107d6",
-      "blob": "d96689bb032e684296afc300bdded28e20c9c74c",
-      "mode": "100644",
-      "sha256": "a4c395690fe14068ac85cf07744b145c0eb9449f9c3b54806c5dd08a4952bee5"
+      "file": "apps/web/src/features/drafts/DraftEditorPage.test.tsx",
+      "owner": "1fae7b185a64d2aa600388426607abea92d20070",
+      "blob": "6437b78d342e4a7d5eb4652ab9279f9ccdf15228",
+      "sha256": "59caa0ea4b302bd9c135ac54f2984dc97a2eaae59e5c2659eb543a440a1345a7"
     },
     {
-      "file": "apps/server/test/be_02/auth_controller_request_test.rb",
-      "source": "d7969301584402110a3f1bc262a181d5c32107d6",
-      "blob": "a529c408d4fb2ea62afa170cc393f979a1c8cdf8",
-      "mode": "100644",
-      "sha256": "ee2290df3c9dc6f3b2d6adeaeec9224f0268e3729cdfcd6915a43453105b39b7"
+      "file": "tests/acceptance/playwright/read-revocation.e2e.ts",
+      "owner": "3c030f122d196253b4be9e04af06aefc2c17be5a",
+      "blob": "a30a0f19949f2bf0f1237be54743152e6259e18c",
+      "sha256": "9351a58cdc8109903eedcdc8f8b9dcc58c503487a4a3fcafc28fc399aa7435a1"
     },
     {
-      "file": "docs/completion/be403-r5-http.md",
-      "source": "d7969301584402110a3f1bc262a181d5c32107d6",
-      "blob": "c9e560755b9d0f0058e468c9f6febcc01dbe54dc",
-      "mode": "100644",
-      "sha256": "90dff365cd585053a5184d380f04e24644da11079956717d85cb87ca23052861"
-    },
-    {
-      "file": "docs/completion/qa404-r8-browser-repair.md",
-      "source": "d47a252504597d390704aca70b2e907ab540c0d4",
-      "blob": "2b2f16db049cd556416f6a298d74d731ce746e75",
-      "mode": "100644",
-      "sha256": "1f9b6c16a42613c52d424ff6ea524fb95cad9be417e7f919661cc74066c02b7f"
-    },
-    {
-      "file": "ops/acceptance/seccomp.json",
-      "source": "d47a252504597d390704aca70b2e907ab540c0d4",
-      "blob": "d1d0d0ee6db1fcc28855e9714af3c288f3dd1760",
-      "mode": "100644",
-      "sha256": "f922c7c9bfc1ece0b72b244e56dc85756ded002c837fb46054cfd8b275c74b6b"
-    },
-    {
-      "file": "ops/tests/be02/run.py",
-      "source": "d47a252504597d390704aca70b2e907ab540c0d4",
-      "blob": "43ec5bac128861c030987f0f1607510c5061784b",
-      "mode": "100644",
-      "sha256": "b07b90dabe7fa70a73e2347f25d831b97517d7d2e86064d03f6b4af778b6641c"
-    },
-    {
-      "file": "ops/tests/be02/test_launch_diagnostics.py",
-      "source": "d47a252504597d390704aca70b2e907ab540c0d4",
-      "blob": "d992c893cc8ee70a7d1b6af7bb0a9ba772b4f878",
-      "mode": "100644",
-      "sha256": "cc467936d75730199912cc7ba111b405874a161f1cfbb1808f14677ba491644c"
-    },
-    {
-      "file": "ops/tests/be02/test_r8_constraints.py",
-      "source": "d47a252504597d390704aca70b2e907ab540c0d4",
-      "blob": "d6608580784382b9839d66c7555a43ccc7b98ac0",
-      "mode": "100644",
-      "sha256": "9f8edd9b5150337b462ddbf85e95420bcdda3d32a746e019edba9b72dccfeade"
+      "file": "tests/acceptance/playwright/unavailable.e2e.ts",
+      "owner": "3c030f122d196253b4be9e04af06aefc2c17be5a",
+      "blob": "5f0363510ae3314412093028581355cf491ebcdd",
+      "sha256": "fefdf5af29ab13aa7a0bbefe795e02273568b749909115bea1eca876a3fadd0d"
     }
   ],
-  "vault_sha256": "b4d55aa1698a284270866900cbda3c53173eaeaca672c24e378d8f7eb1a6ce54",
-  "vault_bytes": 56154,
-  "intake_bundle_sha256": {
-    "rowan": "ad4d9e58fb7eb7c6794276a53e02919043c6a8db73903e63041e5d203c7eb563",
-    "elara": "53e9cf5518a472cc2947b34a150e29e18a40ba54150950956f2fffacd2295843"
-  },
-  "review_functional": "ADV764 accepted171LOC packets85/86, 0 actionable defects, 0/KLOC; root msg_971ad80eb1d6"
+  "runtime": "NOT_RUN",
+  "observer": "OFF",
+  "vault_bytes": 61711
 }
