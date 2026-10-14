@@ -149,7 +149,9 @@ module V2
       def update
         organization = path_uuid(:organization_id)
         target = path_uuid(:user_id)
+        # @type var guards: V1::WriteController::target_users
         guards = ->(input:, query:) do
+          # @type var input: Elevateo::WriteInput::object
           raise Elevateo::CollaborationError.new("request_invalid") unless query.empty?
           self.class.change_input(input)
           [target]

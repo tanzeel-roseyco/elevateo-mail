@@ -25,7 +25,13 @@ module V2
       end
 
       def update
-        guards = ->(input:, **) { self.class.input(input); [] }
+        # @type var guards: V1::WriteController::target_users
+        guards = ->(input:, query:) do
+          # @type var input: Elevateo::WriteInput::object
+          raise Elevateo::CollaborationError.new("request_invalid") unless query.empty?
+          self.class.input(input)
+          []
+        end
         protected_write(required: %w[display_name expected_revision], guard_users: guards) do |connection:, identity:, input:, **|
           name, expected = self.class.input(input)
           result = sql_result(connection, WRITE_SQL, "write display preference", [identity.digest, expected, name])

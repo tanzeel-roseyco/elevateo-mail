@@ -50,6 +50,8 @@ PREF-822 source candidate adds display-name-only per-user preferences with optim
 
 ADM-803 roster/grants/audit source was corrected against Soren's exact `fa3082af` Steep/RuboCop errors; fleet rerun and independent bounded review remain pending. See docs/completion/theo-core-static-repair.md.
 
+The `cb1ec5be` fleet Steep receipt found grants and preferences write-guard callback type mismatches. Theo's scoped callback annotations and explicit query validation are source repairs, not a new fleet PASS.
+
 # Project state
 
 **Newer integrated source checkpoint:** `7ec5925` imports Leonie OPS820 isolated gateway role/scanner fixture source, Corin held IMAP attachment ingest at migration 00017, and Sabine gateway helper at migration 00018 after Nadia 00015; no live ingestion or gateway public route is active. Exact fleet migration/role/scan and independent review remain pending for these imports.

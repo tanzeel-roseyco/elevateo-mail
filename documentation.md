@@ -45,6 +45,8 @@ Cassian prepared disabled organization grant, simulation-only outreach and inter
 The scoped ADM-803 static repair for Soren `fa3082af` narrows roster and cursor values without changing role authority; see docs/completion/theo-core-static-repair.md. Current fleet Steep/RuboCop PASS is not claimed.
 ADM-803 provisional administration roster and PREF-822 display-name preference candidate: docs/completion/theo.md. Configuration identities are unbound and grant no effective access; candidate guarded V2 grants/roster, role audit and per-user preference controllers need Cassian route/DTO integration and fleet runtime evidence. Integrated legacy draft migration probes assert protected FK dependency failures separately from the default-privilege assertion; full reapply must run on a disposable BE02-only database.
 
+The subsequent `cb1ec5be` Steep repair gives grants and preference write guards the existing `target_users` callback type and explicit input/query keywords; protected write/session authority is unchanged. Fleet verification remains pending.
+
 # Product requirements and decision record
 
 QA-815 owns serialized fleet Docker checks under the shared Soren lock. The exact Mira FE-806 candidate passed focused frontend checks; the immutable-source scheduler, receipt and cleanup limits are recorded in `docs/completion/soren.md`. This is not integrated or browser acceptance.

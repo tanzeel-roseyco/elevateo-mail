@@ -94,6 +94,8 @@ The next source candidate orders discovered IMAP UIDs and imports at most the ol
 Corin's next focused repair addresses exact fleet Steep/RuboCop failures in the held IMAP store, TLS option types and owned HTTP/unit assertions; the successor strict gate is pending Soren.
 An additive inbound attachment candidate now parses bounded PDF/PNG/JPEG/plaintext parts, stages bytes in private quarantine, and binds pending-scan metadata with the IMAP receipt before cursor advance. It depends on Nadia's ATT823 migration `00015` and a restricted worker Storage adapter; fleet migration, strict checks and storage behavior remain unverified.
 
+Theo's later scoped V2 write-guard typing repair addresses the exact `cb1ec5be` Steep callback mismatch for grants and display preferences; Soren's fleet rerun is pending.
+
 
 ### R25 approval reload recovery candidate
 
