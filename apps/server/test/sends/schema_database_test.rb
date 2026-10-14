@@ -16,6 +16,9 @@ class SendSchemaDatabaseTest < SendDatabaseTestCase
       assert_equal "0", @admin.exec_params(<<~SQL, [role]).getvalue(0, 0)
         SELECT count(*) FROM pg_proc WHERE pronamespace = 'app_send_private'::regnamespace
           AND has_function_privilege($1,oid,'EXECUTE')
+          AND oid NOT IN ('app_send_private.claim_job(uuid,uuid,uuid,integer)'::regprocedure,
+            'app_send_private.authorize_attempt(uuid,uuid,bigint,uuid,uuid,bytea,text,integer)'::regprocedure,
+            'app_send_private.record_observation(uuid,uuid,bigint,uuid,uuid,text,text,bytea)'::regprocedure)
       SQL
     end
     assert_equal "t", @admin.exec(<<~SQL).getvalue(0, 0)
