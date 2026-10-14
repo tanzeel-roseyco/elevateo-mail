@@ -16,7 +16,7 @@ Shared company mailroom with one Rails domain authority and a React/TypeScript c
 
 SEND-810 simulated cancellation source is integrated over Rowan worker authority and Elara direct store/ledger in the isolated `completion-nadia-send810` branch. A possible call remains a stop request until evidence reconciliation. First integrated DB migration found a schema privilege defect; the grant/revoke repair awaits fleet rerun. Independent review and release gates remain pending; see `docs/completion/nadia.md`.
 
-SEND-809 candidate: migration 00010 adds fenced simulated worker claim, attempt, cancellation and observation persistence over BE03, with current capability/suppression checks and reconciliation after stop request; Docker runtime and independent review are pending. See [Rowan evidence](docs/completion/rowan.md).
+SEND-809 candidate: migration 00010 adds fenced simulated worker claim, attempt, cancellation and observation persistence over BE03, with current capability/suppression checks, epoch-scoped bounded-exclusion due discovery and reconciliation after stop request; Docker runtime and independent review are pending. See [Rowan evidence](docs/completion/rowan.md).
 
 
 

@@ -26,6 +26,19 @@ class SendWorkerAuthorityDatabaseTest < SendDatabaseTestCase
     SQL
   end
 
+  def test_due_discovery_is_epoch_scoped_and_skips_active_lease
+    send = approve.fetch("send_id")
+    due = "SELECT app_send_private.next_due_send($1::uuid,$2::uuid[])"
+    assert_nil @worker.exec_params(due, [SecureRandom.uuid, "{}"]).getvalue(0, 0)
+    assert_equal send, @worker.exec_params(due, [@epoch, "{}"]).getvalue(0, 0)
+    assert_nil @worker.exec_params(due, [@epoch, "{#{send}}"]).getvalue(0, 0)
+    assert_raises(PG::InvalidParameterValue) do
+      @worker.exec_params(due, [@epoch, "{#{([send] * 33).join(',')}}"])
+    end
+    claim(send)
+    assert_nil @worker.exec_params(due, [@epoch, "{}"]).getvalue(0, 0)
+  end
+
   def test_claim_is_fenced_and_cancel_before_possible_submission_is_durable
     send = approve.fetch("send_id")
     first = claim(send)
