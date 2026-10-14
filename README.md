@@ -569,6 +569,8 @@ INT801 isolated ATT902 activation candidate now registers both scoped attachment
 
 Orion TEST929 `1aebd99b` backend suite manifest is staged: it discovers every `test/**/*_test.rb`, runs standard suites as isolated processes, fails unknown directories and names dedicated role/state/protocol suites separately. Its core inventory was 130 standard plus nine dedicated from 139; this feature source has additional suites, so the manifest and all dedicated gates remain unexecuted pending independent review and Soren fleet run.
 
+FIX939 source candidate on exact `fc45037`: Soren's fleet gate stopped before Ruby cases when the strict manifest rejected root-level `v2_attachment_error_test.rb`; `v2_route_registry_test.rb` was also unclassified. Both reviewed root files are pure Minitest and now have exact standard-suite entries. The actual integrated tree has 146 tracked server test files (137 standard, nine dedicated), reflecting five additional feature tests since the 139-file core inventory. Root review and Soren's corrected fleet gate remain pending; no suite PASS is inferred.
+
 Nadia FIX933 `b3899a06` is imported into the activated ATT902 candidate: it narrows private binding fields, aligns NoStorage's reject-only keyword type and adds a two-path rejection regression. It is source-only pending Soren exact feature Steep/lint/controller tests and private runtime.
 
 ADV151 reviewed the expanded suite manifest design over 53 LOC/zero defects and identified the outer runtime budget as an evidence boundary: 130 sequential standard suites and nine dedicated gates need exact file, skip and elapsed ledgers before backend coverage can be called complete.

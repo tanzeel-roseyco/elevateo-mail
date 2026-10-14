@@ -514,6 +514,8 @@ ATT902 dual metadata/content V2 routes and browser port are active only in the i
 
 Orion TEST929 expanded backend manifest imported source-only. Core inventory 130 standard/nine dedicated; feature suite count may differ. Independent functional/design review and fleet standard/dedicated execution pending.
 
+FIX939: exact `fc45037` feature tree has 146 tracked server test files, 137 standard after exact admission of two root V2 suites, and nine unchanged dedicated profiles. The prior Soren run rejected the first root suite before cases; corrected source is NOT_RUN until root review and Soren fleet Docker. No application test, route or privilege source changed.
+
 Nadia b3899a06 typed ATT902 controller/RBS/test repair imported feature source-only after earlier two-Steep-error fleet result. Exact successor Steep/lint/controller and real byte gates pending.
 
 ADV151 TEST929 manifest design review 53LOC/0 defects source-only; 480s outer budget may truncate 130 sequential suites, so Soren must report incomplete files/skip counts and nine dedicated results. Functional review/runtime pending.

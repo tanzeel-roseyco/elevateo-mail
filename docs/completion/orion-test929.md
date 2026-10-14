@@ -1,5 +1,12 @@
 # TEST929 backend suite manifest audit
 
+## FIX939 integrated root-suite classification candidate
+
+Soren's exact `fc45037b3d111e8325c859cf22b9a6ae01109c85` fleet backend reached `ops/tests/be02/test-suites.sh` and stopped at `Unclassified test suite: test/v2_attachment_error_test.rb` before any Ruby case; `test/v2_route_registry_test.rb` was the second unclassified root path in the same immutable tree. Read-only inspection found both are pure Minitest: the 23-line error test checks fixed held/absent/error-code envelopes, and the 105-line route registry test exercises in-memory route mapping; neither asks for a task database role, Mailpit or credential. The repair adds only these two exact paths to the standard branch. Its unknown-suite failure, nine dedicated profiles, one-process-per-file rule, timeout, and nonzero aggregation are unchanged. No application code or test body changed.
+
+`git ls-files 'apps/server/test/**/*_test.rb' 'apps/server/test/*_test.rb'` on exact `fc45037` lists **146** files, not the historical 139 core files or the task's provisional 141: 12 administration, three attachment gateway, seven attachments, four R1, 60 BE02, eight campaigns, 11 inbound, five sequence, 11 QA817, one requests, nine send worker, 13 sends, and two root V2 files. Nine remain dedicated, so **137 standard** are selected by the corrected candidate. This is static inventory, not test execution. The prior `fc45037` receipt proves only fail-closed classification and zero cases; it cannot transfer the earlier core 522-case PASS or prove either new test. Root should review the two added case labels against the 55-line runner and both root test files before Soren's fleet-only manifest/list and coherent backend rerun. Orion ran no test or build. Actual identity: Orca Codex `gpt-6-sol` on the local source host; billed tier unverified.
+
+
 Source base: coherent Cassian core `b3aaa07e670c503df676b7b761cd9d3a008b0fbc` with Orion's syntax-only child `435333b16f1777f0475ba90e6e56d2aff1828d31`. Actual worker identity is Orca Codex `gpt-6-sol` on the local source host; no application tests or builds ran here. QA815's exact `backend-b3aaa07e670c` fleet receipt shows 21 migrations, 74 Ruby suite processes/522 cases/7089 assertions and Steep PASS, then 19 RuboCop `--lint` offenses (four parser fatalities in the separately repaired attachment authority fixture). HTTP/worker/real Auth were not reached. Those 522 cases are the three-glob BE02 selection, not full server coverage.
 
 ## Inventory and selection
