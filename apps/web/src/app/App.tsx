@@ -11,15 +11,18 @@ import { SearchPage } from '@/features/search/SearchPage'
 import { ThreadPage } from '@/features/thread/ThreadPage'
 import { MailboxSelection } from './MailboxSelection'
 import { DraftIntentProvider } from './draftIntent'
+import { FeatureGatewaysProvider, type FeatureGateways } from './featureGateways'
 import { featureRoutes } from './features'
 import { SessionProvider } from './session'
 import { Shell } from './Shell'
 
 // AIDEV-NOTE: Hash routing keeps deep links working when Rails or the dev proxy serves one page;
 // swap to BrowserRouter once the host serves the SPA for every route.
-export function App({ gateway }: { gateway: MailroomGateway }) {
+export function App({ gateway, featureGateways = {} }: { gateway: MailroomGateway; featureGateways?: FeatureGateways }) {
   return (
     <SessionProvider gateway={gateway}>
+      {/* FE-805: optional feature capabilities (Outreach reads, V2 admin) sit beside the frozen V1 gateway. */}
+      <FeatureGatewaysProvider value={featureGateways}>
       {/* Unsaved draft intent lives above the router and the recoverable protected subtree. */}
       <DraftIntentProvider>
       <SendIntentProvider>
@@ -46,6 +49,7 @@ export function App({ gateway }: { gateway: MailroomGateway }) {
       </HashRouter>
       </SendIntentProvider>
       </DraftIntentProvider>
+      </FeatureGatewaysProvider>
     </SessionProvider>
   )
 }

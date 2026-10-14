@@ -3,15 +3,15 @@
 // instead of fixed product areas; removed data/store + composerStore imports, mock unread counts
 // and the Compose action (no enabled composer controls in this checkpoint). Active-item
 // presentation and footnote retained. FE-805: the brand header now renders the authentic Elevateo
-// mark (BrandMark) and the rail is split into two independent sections, Personal (mailboxes,
-// search) and Outreach (registered feature links). There is deliberately no global
-// personal/outreach switcher: both lists are always visible and the URL alone says where you are.
+// mark (BrandMark) and the rail is split into independent sections: Personal (mailboxes, search)
+// followed by each registered FEATURE_SECTIONS group (Outreach, Organization). There is
+// deliberately no global mode switcher: every list is always visible and the URL alone says where you are.
 import { Link, useLocation } from 'react-router'
 import type { Mailbox } from '@/data/contract'
 import { cx } from '@/lib/format'
 import { BrandMark } from '@/ui/BrandMark'
 import { MailboxIcon } from '@/ui/icons'
-import type { FeatureNavEntry } from './featureRegistry'
+import { FEATURE_SECTIONS, type FeatureNavEntry, type FeatureSection } from './featureRegistry'
 
 const ITEM = 'flex h-9 items-center gap-3 rounded-lg px-3 text-sm'
 const ACTIVE = 'bg-accent-soft font-semibold text-accent-text'
@@ -96,16 +96,15 @@ function FeatureLink({ entry, onNavigate }: { entry: FeatureNavEntry; onNavigate
 
 interface SidebarProps {
   mailboxes: readonly Mailbox[]
-  /** Registered feature links shown in the Outreach section; empty hides the section. */
-  outreach?: readonly FeatureNavEntry[]
-  /** Registered feature links appended to the Personal section after the mailboxes. */
-  personal?: readonly FeatureNavEntry[]
+  /** Registered feature links per section; an empty section is not rendered at all. */
+  sections?: Partial<Readonly<Record<FeatureSection, readonly FeatureNavEntry[]>>>
   onNavigate?: () => void
   /** One honest line about what this build does and does not do. */
   footnote: string
 }
 
-export function Sidebar({ mailboxes, outreach = [], personal = [], onNavigate, footnote }: SidebarProps) {
+export function Sidebar({ mailboxes, sections = {}, onNavigate, footnote }: SidebarProps) {
+  const personal = sections.personal ?? []
   return (
     <div className="flex h-full flex-col gap-1 p-3">
       <div className="mb-3 flex h-10 items-center gap-2.5 px-1">
@@ -128,16 +127,21 @@ export function Sidebar({ mailboxes, outreach = [], personal = [], onNavigate, f
             ))}
           </ul>
         </nav>
-        {outreach.length > 0 && (
-          <nav aria-labelledby="sidebar-outreach" className="flex flex-col gap-0.5">
-            <p id="sidebar-outreach" className="eyebrow px-3 pb-1 pt-2">Outreach</p>
-            <ul className="flex flex-col gap-0.5">
-              {outreach.map((entry) => (
-                <FeatureLink key={entry.path} entry={entry} onNavigate={onNavigate} />
-              ))}
-            </ul>
-          </nav>
-        )}
+        {/* Each registered section is its own landmark; none of them depends on the others. */}
+        {FEATURE_SECTIONS.map(({ key, label }) => {
+          const entries = sections[key] ?? []
+          if (entries.length === 0) return null
+          return (
+            <nav key={key} aria-labelledby={`sidebar-${key}`} className="flex flex-col gap-0.5">
+              <p id={`sidebar-${key}`} className="eyebrow px-3 pb-1 pt-2">{label}</p>
+              <ul className="flex flex-col gap-0.5">
+                {entries.map((entry) => (
+                  <FeatureLink key={entry.path} entry={entry} onNavigate={onNavigate} />
+                ))}
+              </ul>
+            </nav>
+          )
+        })}
       </div>
       {/* Honest framing wherever the user is. */}
       <p className="px-3 pt-1 text-[11px] leading-snug text-fg">{footnote}</p>

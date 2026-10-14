@@ -427,7 +427,7 @@ describe('initial mailbox selection guidance (Mira R16)', () => {
 })
 
 describe('registered feature routes (FE-805)', () => {
-  it('an Outreach link in the rail reaches the truthful placeholder page inside the shell', async () => {
+  it('an Outreach link in the rail reaches Celeste's real page, which reports the missing Outreach API', async () => {
     render(
       <SessionProvider gateway={createFixtureGateway()}>
         <MemoryRouter initialEntries={['/outreach/campaigns']}>
@@ -443,9 +443,11 @@ describe('registered feature routes (FE-805)', () => {
       </SessionProvider>,
     )
     await screen.findByText('Synthetic organization A')
-    await screen.findByText('Campaigns is not available in this build')
+    expect(await screen.findByRole('heading', { name: 'Campaigns' })).toBeTruthy()
+    expect(screen.getByRole('status').textContent).toMatch(/unavailable until the Outreach API is connected/)
     expect(screen.getByRole('navigation', { name: 'Outreach' })).toBeTruthy()
     expect(screen.getByRole('link', { name: 'Campaigns' }).getAttribute('aria-current')).toBe('page')
+    expect(screen.getByRole('link', { name: 'People' })).toBeTruthy()
     expect(screen.getByText('Simulated local mail')).toBeTruthy()
   })
 })

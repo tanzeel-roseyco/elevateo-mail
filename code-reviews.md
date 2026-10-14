@@ -699,6 +699,15 @@ Scope: `apps/web/src/features/members/adminModel.ts`, `AdministrationPage.tsx` a
 ## FE807 Outreach candidate review request
 
 Celeste authored the read-only feature and three boundary tests. Independent bounded functional review and dedicated design-tradeoff review are pending; reviewed source LOC: 0, confirmed defects: not established, defect density: not applicable. Docker/type/browser verification is requested only; see `docs/completion/celeste.md`.
+### FE-805 shell/sidebar/brand self-inspection (Fable, 2026-10-15)
+
+Coverage: new `featureRegistry.ts` (69 LOC), `features/index.tsx` (54), `FeaturePlaceholderPage.tsx` (18), `BrandMark.tsx` (34), rewritten `Sidebar.tsx` (146) and changed `Shell.tsx`/`App.tsx`/`index.css` hunks (24). Total 345 production LOC, read in two bounded passes under 200 lines each. Author self-inspection only; no independent adversarial or design review has been performed and none is claimed. Self-found defects before commit: 1 (placeholder element map could drift from the route list; added a load-time exact-match check). Provisional density 2.90/KLOC, author evidence only. Tests added: 7 cases across three files, not executed. Formatting delegated to ESLint.
+## FE807 Outreach candidate review request
+
+Celeste authored the read-only feature and three boundary tests. Independent bounded functional review and dedicated design-tradeoff review are pending; reviewed source LOC: 0, confirmed defects: not established, defect density: not applicable. Docker/type/browser verification is requested only; see `docs/completion/celeste.md`.
+## FE808 isolated author receipt (2026-10-14)
+
+Scope: `apps/web/src/features/members/adminModel.ts`, `AdministrationPage.tsx` and paired tests. Author self-check covered the configuration roster, DTO validation, generic denial, stale-revision and revoked-session handling by source inspection; zero confirmed defects in this check. This is not an independent bounded adversarial or design-tradeoff review, so no independent defect density is claimed. Root must assign <=200-LOC review packets and a dedicated design reviewer after integration. Docker tests and visual acceptance are NOT_RUN.
 ## FE-806 candidate review request
 
 Changed source `apps/web/src/features/inbox/InboxPage.tsx` (6 added lines) and test (29 added lines) form a bounded packet under 200 lines. Independent functional/adversarial review and dedicated design tradeoff review are requested from root; neither has executed. Confirmed defects: unknown pending review; defect density: not calculated without an actual review. Fleet tests and visual validation are NOT_RUN.
@@ -755,3 +764,10 @@ OUT-804 continuation review request: assign bounded packets at most 200 LOC cove
 FE807 continuation: author self-inspection of uncommitted Outreach route/forms candidate found the unconfirmed-write duplicate-submission risk; form locks now require navigation after an ambiguous error. Independent bounded source/data review and dedicated design review remain pending; independently reviewed LOC 0, independently confirmed defect density not applicable. Docker/browser/runtime tests not executed by Celeste. Exact source and Soren request: `docs/completion/celeste.md`.
 
 FE807 author follow-up: self-review found that treating every write error as uncertain would block correction after a definitive 400, while a malformed success could have committed. The page now distinguishes definitive validation rejection from uncertain/malformed outcomes and includes a targeted 400 regression. Independent source/design review and fleet execution remain pending; no independent defect-density claim.
+## INT-801 Cassian V2 candidate (2026-10-14)
+
+Independent adversarial functional and design-tradeoff reviews are requested from root; none were performed or claimed by this worker. Proposed bounded packets: `contracts/v2/openapi.json` (split schemas/operations at <=200 source lines), `apps/server/config/v2_route_registry.rb` plus its test, and `contracts/tooling/generate-v2.sh` plus contract test, and `apps/web/src/data/v2Contract.ts` plus its test, `apps/web/src/data/v2Gateway.ts`, and the one-line transport path admission. Reviewed LOC 0; confirmed defects 0; defect density not computable pending review. Fleet execution pending.
+
+### FE-805 R2 wiring self-inspection (Fable, 2026-10-15)
+
+Coverage: `featureGateways.tsx` (27 LOC), rewritten `features/index.tsx` (86), `FeatureNotConnectedPage.tsx` (18), changed hunks in `featureRegistry.ts`/`Sidebar.tsx`/`App.tsx`/`main.tsx`/`index.css` (~60). Total ~191 production LOC in one bounded pass. Author self-inspection only; no independent review claimed. Self-found before commit: 1 (explicit `undefined` props would violate exactOptionalPropertyTypes against Celeste's optional props; replaced with conditional spreads). Provisional density 5.24/KLOC, author evidence. Owner commits merged unmodified are not counted. Tests: 10 FE-805 cases authored across four files, not executed.

@@ -1,6 +1,6 @@
 # Fable FE-805 — shared shell, sidebar, router seam, styles, UI primitives, brand
 
-Officer FE805, Frontend team. Branch `completion/fable-fe805`, isolated Orca worktree cloned from fleet baseline `bbf2353b254a05d48c2da7a508c143e6fba78691`. Candidate SHA: the commit that introduces this file (reported in `control/fable-outbox.md`). Model: Claude Fable 5.1 (`claude-fable-5-1`, effort low, per the Orca launch record).
+Officer FE805, Frontend team. Branch `completion/fable-fe805`, isolated Orca worktree cloned from fleet baseline `bbf2353b254a05d48c2da7a508c143e6fba78691`. R1 candidate `dc1db826d73683be13e201c04908fa24d3377b97`; R2 (integrated wiring) candidate is the commit that updates this section, reported in `control/fable-outbox.md`. Model: Claude Fable 5.1 (`claude-fable-5-1`, effort low, per the Orca launch record).
 
 NO LIVE SPEND. No local builds, tests or Docker were run; every check below is **requested**, not executed.
 
@@ -73,10 +73,48 @@ The recipe runs `check:api`, `lint`, `typecheck`, `vitest --coverage`, `build` a
 - **Two sections vs. a global Personal/Outreach switch.** Chosen: both lists always visible. Simulation: a user deep-links to a campaign while reading mail; with a switcher the rail state could disagree with the URL after reload. With two lists, the URL alone decides, and nothing is stored.
 - **Theme-independent brand tile vs. theme-adaptive mark.** Chosen: fixed dark tile. Simulation: light theme on white; gold `#d4af37` on `#ffffff` is roughly 1.9:1, unreadable, while gold on `#0a0b0f` is above 10:1. A redrawn dark variant would not be the official asset.
 
+## R2 — actual feature wiring (2026-10-15)
+
+Exact owner commits merged into this branch with `--no-ff` and untouched source (shared-doc conflicts resolved as a union of both owners' sections):
+
+| Owner | Exact commit | What it brings |
+| --- | --- | --- |
+| Celeste FE-807 | `152f95a808d03e2dd9eb7671fff58f0863d51c5e` | `OutreachCampaignsPage/LeadsPage/AccountsPage/AnalyticsPage` with `OutreachReads` boundary |
+| Lyra FE-808 | `6f55a014cfc580b8a5159fbf3813411eabd8ecb1` | `AdministrationPage({ gateway: AdminGateway, section })`, `adminModel` |
+| Mira FE-806 | `e31da546a3e24d130c3b9b0e271604492fc292e6` (includes `140218de`) | inbox compose entry and per-message reply prefill on existing routes |
+| Cassian INT-801 | `79476c313edfb2e571f8a5ef30b42619af2226f4` | browser V2 gateway port, strict V2 boundaries, transport admits `/v2/` |
+
+Fable changes in R2 (owned paths):
+
+- `src/app/featureGateways.tsx` (new): `FeatureGateways { outreach?: OutreachReads; admin?: AdminGateway }` context plus `FeatureGatewaysProvider`/`useFeatureGateways`. `App` accepts an optional `featureGateways` prop; `main.tsx` passes `{}`.
+- `src/app/features/index.tsx`: placeholders removed. Outreach routes render Celeste's real pages with the session `context` and the optional `outreach` reads; `/people` and `/settings` render Lyra's `AdministrationPage` when `admin` exists, otherwise `FeatureNotConnectedPage` (new, replaces `FeaturePlaceholderPage`).
+- `src/app/featureRegistry.ts`: third section `organization` and exported `FEATURE_SECTIONS` ordering (Outreach, Organization).
+- `src/app/Sidebar.tsx`: renders Personal plus every non-empty registered section as its own landmark via one `sections` prop. Still no mode switcher.
+- `src/styles/index.css`: base-layer `border-color: var(--line)` so owner pages that use bare `border`/`divide` utilities share the shell hairline in both themes.
+- Tests: `features/index.test.tsx` (3 cases: Outreach happy path through the provider; admin absent; Lyra page through the real protected session), updated registry/sidebar/shell cases. Total authored FE-805 cases: 10. None executed by Fable.
+
+### Gateway reconciliation (why `featureGateways` is empty in production)
+
+- Cassian's V2 has no Outreach read endpoints; only `createOutreachCampaign`. Celeste's `OutreachReads` (list campaigns/leads/accounts/analytics) cannot be served, so her pages show their own "unavailable until the Outreach API is connected" status. Request to Cassian/Dorian: additive `GET /v2/outreach/{campaigns,leads,accounts,analytics}` returning `{ items: [...] }` matching `features/outreach/contract.ts`.
+- Cassian's `OrganizationGrantsSchema` is `{ revision, grants: [{ organization_id, user_id, role(3 values), revision }] }`; Lyra's `AdminGateway` expects `{ revision, can_manage_grants, people[12 unbound, person_key], grants[{ person_key, role(7 values) }] }` and `replaceOrganizationGrant(ctx, proof, personKey, role, expectedRevision)`. Request to Cassian/Lyra/Theo: agree one snapshot DTO; Fable will then add a ~15-line adapter in `main.tsx` from `createV2Gateway()` to `AdminGateway` and remove the not-connected state. No adapter is shipped now because it would turn a shape mismatch into a misleading "could not be loaded" error.
+- V2 routes are disabled server-side (contracts/v2/README.md), so even a reconciled adapter would read 404 today.
+
+### Updated test request for Soren QA815
+
+Same recipe as R1 on the R2 SHA. Expected affected files: `src/app/featureRegistry.test.ts`, `src/app/Sidebar.test.tsx`, `src/app/Shell.test.tsx`, `src/app/features/index.test.tsx`, plus the merged owner suites (`features/outreach/*.test.*`, `features/members/*.test.*`, `features/inbox/InboxPage.test.tsx`, `features/thread/*.test.tsx`, `data/v2Contract.test.ts`).
+
+### Updated screenshot requirements for Tessa QA816
+
+1. Desktop 1280x800 light and dark: rail with Personal (Search, mailboxes), Outreach (Campaigns, Leads, Accounts, Analytics) and Organization (People, Settings); gold mark legible on the dark tile.
+2. `/#/outreach/campaigns`: Celeste's page heading plus "Campaigns are unavailable until the Outreach API is connected", link current in the rail; confirm the hairline borders match the shell.
+3. `/#/people`: "People is not connected in this build" with the Back to mail link.
+4. `/#/mailboxes/<fixture>`: Mira's "Compose draft" link beside Conversations when compose capability is true.
+5. Mobile 375x812: header mark, drawer showing all three sections.
+
 ## Limitations
 
 - No lint, typecheck, unit test, build or visual check has been executed by Fable; Soren owns execution and Tessa owns visual evidence.
-- Mira, Celeste and Lyra have not yet exported feature modules (their branches equal the baseline at the time of writing); the Outreach seam renders placeholders by design.
+- R2 superseded the placeholder note: the owners' exact commits are merged and wired; their gateways remain unconnected pending the reconciliation above.
 - The drawer label still says "Mailboxes" although it now also contains Outreach; renaming requires a coordinated change to the QA-owned e2e spec.
 - `elevateo-logo.png` is shipped but unused in the shell; sign-in/auth brand placement belongs to a later scoped request.
 - No independent review has been performed on this candidate; see `code-reviews.md` for the self-inspection record only.
