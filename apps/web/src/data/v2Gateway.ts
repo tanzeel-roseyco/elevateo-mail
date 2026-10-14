@@ -1,5 +1,7 @@
 import type { FetchLike } from './http/transport'
 import { requestJson } from './http/transport'
+import { createV2PreferencesGateway } from './v2PreferencesGateway'
+import { CollaborationErrorSchema } from './contract'
 import type { CsrfProof, ReadContext } from './gateway'
 import {
   GrantChangeSchema,
@@ -37,8 +39,10 @@ const headers = (ctx: ReadContext, proof?: CsrfProof): Record<string, string> =>
 })
 
 export function createV2Gateway(fetchImpl?: FetchLike) {
-  const base = fetchImpl === undefined ? {} : { fetchImpl }
+  const base = fetchImpl === undefined ? { errorSchema: CollaborationErrorSchema } : { fetchImpl, errorSchema: CollaborationErrorSchema }
   return {
+    // PREF822 remains pending exact fleet SQL and browser proof on this integrated source.
+    ...createV2PreferencesGateway(fetchImpl),
     getDirectMessage(ctx: ReadContext, mailboxId: string, threadId: string, messageId: string, signal?: AbortSignal) {
       const query = new URLSearchParams({ mailbox_id: IdSchema.parse(mailboxId) })
       return requestJson(`/v2/threads/${id(threadId)}/messages/${id(messageId)}?${query}`, DirectMessagePageSchema, 2_097_152, {

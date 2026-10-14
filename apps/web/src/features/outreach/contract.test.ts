@@ -27,5 +27,6 @@ describe('Outreach provisional read boundary', () => {
     expect(consentEvidenceInputSchema.safeParse(input).success).toBe(true)
     expect(consentEvidenceInputSchema.safeParse({ ...input, attested: false }).success).toBe(false)
     expect(consentEvidenceInputSchema.safeParse({ ...input, source: 'form\nwrong' }).success).toBe(false)
+    expect(consentEvidenceInputSchema.safeParse({ ...input, observed_at: '2026-02-31T12:00:00Z' }).success).toBe(false)
   })
 })

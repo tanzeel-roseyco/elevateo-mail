@@ -44,6 +44,13 @@ function view(path: string, g?: OutreachGateway) {
     <Route path="/outreach/campaigns/:campaignId/analytics" element={<OutreachCampaignAnalyticsPage {...props} />} />
   </Routes></MemoryRouter>)
 }
+function submitManualEvidence() {
+  fireEvent.click(screen.getByRole('button', { name: 'Record consent evidence' }))
+  fireEvent.change(screen.getByLabelText('Evidence source'), { target: { value: 'Signed intake form' } })
+  fireEvent.change(screen.getByLabelText('Observed date and time (local)'), { target: { value: '2026-10-14T12:00' } })
+  fireEvent.click(screen.getByRole('checkbox', { name: /I attest/ }))
+  fireEvent.click(screen.getByRole('button', { name: 'Record evidence' }))
+}
 
 describe('Outreach routed pages', () => {
   it('creates a draft and navigates to its detail without any send control', async () => {
@@ -81,7 +88,7 @@ describe('Outreach routed pages', () => {
     await screen.findByText(/Pilot/)
     fireEvent.click(screen.getByRole('button', { name: 'Pause campaign' }))
     expect(await screen.findByRole('alert')).toHaveProperty('textContent', expect.stringMatching(/not confirmed/))
-    expect(screen.getByText(/Pilot · draft/)).toBeTruthy()
+    expect(screen.getByText((_, element) => element?.tagName === 'P' && element.textContent?.includes('Pilot · draft') === true)).toBeTruthy()
   })
   it('hides loaded campaign content after a revoked write', async () => {
     const g = gateway({ updateCampaign: vi.fn(async () => { throw new GatewayError('api', 'unauthenticated', 'revoked', { status: 401 }) }) })
@@ -126,15 +133,31 @@ describe('Outreach routed pages', () => {
     const g = gateway({ recordConsent: vi.fn(async () => ({ ...lead, consent_status: 'granted', version: 2 })) })
     view(`/outreach/campaigns/${campaignId}/leads`, g)
     await screen.findByText(/test@example.invalid/)
-    fireEvent.click(screen.getByRole('button', { name: 'Record consent evidence' }))
-    fireEvent.change(screen.getByLabelText('Evidence source'), { target: { value: 'Signed intake form' } })
-    fireEvent.change(screen.getByLabelText('Observed date and time (local)'), { target: { value: '2026-10-14T12:00' } })
-    fireEvent.click(screen.getByRole('checkbox', { name: /I attest/ }))
-    fireEvent.click(screen.getByRole('button', { name: 'Record evidence' }))
+    submitManualEvidence()
     expect(g.recordConsent).toHaveBeenCalledWith(context, proof, campaignId, leadId, expect.objectContaining({
       operation_id: expect.any(String), expected_version: 1, source: 'Signed intake form', observed_at: expect.stringMatching(/Z$/), attested: true,
     }), expect.any(AbortSignal))
+    expect(await screen.findByText(/Manual attestation recorded for this lead/)).toBeTruthy()
     expect(screen.queryByRole('button', { name: /send/i })).toBeNull()
+  })
+  it('hides loaded lead content after denied consent evidence and shows no success', async () => {
+    const g = gateway({ recordConsent: vi.fn(async () => { throw new GatewayError('api', 'not_available', 'denied', { status: 403 }) }) })
+    view(`/outreach/campaigns/${campaignId}/leads`, g)
+    await screen.findByText(/test@example.invalid/)
+    submitManualEvidence()
+    expect(await screen.findByText(/Lead access changed/)).toBeTruthy()
+    expect(screen.queryByText(/test@example.invalid/)).toBeNull()
+    expect(screen.queryByText(/Manual attestation recorded/)).toBeNull()
+    expect(g.recordConsent).toHaveBeenCalledTimes(1)
+  })
+  it('does not automatically replay a rejected consent evidence operation', async () => {
+    const g = gateway({ recordConsent: vi.fn(async () => { throw new GatewayError('api', 'operation_mismatch', 'conflict', { status: 409 }) }) })
+    view(`/outreach/campaigns/${campaignId}/leads`, g)
+    await screen.findByText(/test@example.invalid/)
+    submitManualEvidence()
+    expect(await screen.findByRole('alert')).toHaveProperty('textContent', expect.stringMatching(/rejected/))
+    expect(screen.queryByText(/Manual attestation recorded/)).toBeNull()
+    expect(g.recordConsent).toHaveBeenCalledTimes(1)
   })
   it('rejects a malformed campaign route before any gateway request', async () => {
     const g = gateway(); view('/outreach/campaigns/not-a-uuid/leads', g)
@@ -155,6 +178,7 @@ describe('Outreach routed pages', () => {
     view(`/outreach/campaigns/${campaignId}/leads/${leadId}`, g)
     expect(await screen.findByText(/Evidence source: Signed intake form/)).toBeTruthy()
     expect(screen.getByText(/Evidence kind: manual attestation/)).toBeTruthy()
+    expect(screen.getByText(/operator attestation; independent verification is not shown/)).toBeTruthy()
     expect(screen.getByText(/does not authorize sending/)).toBeTruthy()
     expect(g.getLead).toHaveBeenCalledWith(context, campaignId, leadId, expect.any(AbortSignal))
   })
@@ -176,9 +200,9 @@ describe('Outreach routed pages', () => {
     expect(screen.queryByText('Pilot')).toBeNull()
     expect(screen.queryByRole('link', { name: 'Create draft campaign' })).toBeNull()
   })
-  it('labels the server aggregate as consented and unsuppressed', async () => {
+  it('labels the server aggregate as recorded claims that may include manual attestations', async () => {
     const g = gateway({ listAnalytics: vi.fn(async () => ({ campaign_id: campaignId, lead_count: 4, consented_count: 1 })) })
     view(`/outreach/campaigns/${campaignId}/analytics`, g)
-    expect(await screen.findByText(/1 consented and unsuppressed of 4 leads/)).toBeTruthy()
+    expect(await screen.findByText(/1 lead with granted consent records and no suppression of 4 leads/)).toBeTruthy()
   })
 })

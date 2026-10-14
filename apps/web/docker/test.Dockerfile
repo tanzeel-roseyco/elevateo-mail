@@ -6,6 +6,7 @@ FROM node:24.21.0-bookworm-slim@sha256:d6aa754f16b3197301076f047b5def2f02ea1dbbc
 
 WORKDIR /workspace
 COPY contracts/v1 ./contracts/v1
+COPY contracts/v2 ./contracts/v2
 COPY apps/web ./apps/web
 
 WORKDIR /workspace/apps/web
@@ -14,4 +15,4 @@ RUN npm ci
 
 # Regeneration, lint, types and tests precede the production bundle marker check.
 # AIDEV-NOTE: Bundle markers alone do not prove runtime fixture isolation; browser QA is separate.
-CMD ["bash", "-ceu", "npm run check:api && npm run lint && npm run typecheck && npm run test -- --coverage && npm run build && ! grep -rl 'dev-fixtures\\|Development fixtures\\|fixture_token_a' dist"]
+CMD ["bash", "-ceu", "npm run check:api && npm run check:api:v2 && npm run lint && npm run typecheck && npm run test -- --coverage && npm run build && ! grep -rl 'dev-fixtures\\|Development fixtures\\|fixture_token_a' dist"]

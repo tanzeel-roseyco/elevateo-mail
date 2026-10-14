@@ -5,6 +5,10 @@ import { MessageSchema } from './contract'
 export const IdSchema = z.uuid()
 const id = IdSchema
 const revision = z.number().int().nonnegative()
+const hasNoControl = (value: string): boolean => Array.from(value).every((character) => {
+  const code = character.codePointAt(0)
+  return code !== undefined && code >= 32 && (code < 127 || code > 159)
+})
 export const OrganizationGrantSchema = z.strictObject({
   organization_id: id,
   user_id: id,
@@ -62,6 +66,13 @@ export const LeadSummarySchema = z.strictObject({
   consent_status: z.enum(['unknown', 'granted', 'withdrawn']),
   suppressed: z.boolean(), version: z.number().int().min(1),
 })
+export const LeadDetailSchema = z.strictObject({
+  ...LeadSummarySchema.shape,
+  consent_recorded_at: z.iso.datetime({ offset: false, local: false }).nullable(),
+  consent_source: z.string().min(1).max(200).refine(hasNoControl).nullable(),
+  consent_recorded_by: id.nullable(),
+  consent_evidence_kind: z.literal('manual_attestation').nullable(),
+})
 export const LeadPageSchema = z.strictObject({ items: z.array(LeadSummarySchema).max(100), next_cursor: id.nullable() })
 export const CampaignAnalyticsSchema = z.strictObject({
   campaign_id: id, lead_count: z.number().int().nonnegative(), consented_count: z.number().int().nonnegative(),
@@ -74,6 +85,16 @@ export const CampaignUpdateSchema = z.strictObject({
 export const LeadCreateSchema = z.strictObject({ id, operation_id: id, email: z.email().max(254) })
 export const LeadUpdateSchema = z.strictObject({
   operation_id: id, expected_version: z.number().int().min(1), email: z.email().max(254),
+})
+export const LeadConsentAttestationSchema = z.strictObject({
+  operation_id: id, expected_version: z.number().int().min(1).max(2_147_483_646),
+  source: z.string().min(1).max(200).refine(hasNoControl).refine((value) => value.trim().length > 0),
+  observed_at: z.string().regex(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/).refine((value) => {
+    const parsed = new Date(value)
+    return !Number.isNaN(parsed.getTime()) && parsed.toISOString().replace('.000Z', 'Z') === value &&
+      parsed.getTime() <= Date.now() + 300_000
+  }),
+  attested: z.literal(true),
 })
 
 export const AccountSummarySchema = z.strictObject({

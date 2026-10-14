@@ -41,8 +41,10 @@ const outreach: OutreachGateway = {
 }
 
 describe('feature route wiring', () => {
-  it('registers Celeste\'s eleven Outreach routes and Lyra\'s three personal routes with top-level nav only', () => {
-    expect(featureRoutes.map((r) => r.path).filter((p) => p.startsWith('/outreach/'))).toHaveLength(11)
+  it('registers Celeste\'s twelve Outreach routes and Lyra\'s three personal routes with top-level nav only', () => {
+    const outreachPaths = featureRoutes.map((r) => r.path).filter((p) => p.startsWith('/outreach/'))
+    expect(outreachPaths).toHaveLength(12)
+    expect(outreachPaths).toContain('/outreach/campaigns/:campaignId/sequence')
     expect(featureRegistry.navBySection.outreach.map((e) => e.label)).toEqual(['Campaigns', 'Leads', 'Accounts', 'Analytics'])
     expect(featureRegistry.navBySection.personal.map((e) => e.path)).toEqual(['/people', '/settings/personal', '/settings/organization'])
   })
@@ -60,10 +62,26 @@ describe('feature route wiring', () => {
     expect((await screen.findByRole('status')).textContent).toBe('Outreach API unavailable for this account.')
   })
 
-  it('renders Lyra\'s personal settings from the live session without any gateway', async () => {
-    renderRoute('/settings/personal', {})
-    expect(await screen.findByText(/Signed in as Fixture user A/)).toBeTruthy()
-    expect(screen.queryByRole('button')).toBeNull()
+  it('renders Lyra\'s personal settings with the current actor preference', async () => {
+    const preferenceFetch = vi.fn(async (path: RequestInfo | URL, init?: RequestInit) => {
+      expect(path).toBe('/v2/me/preferences')
+      const headers = new Headers(init?.headers)
+      return new Response(JSON.stringify({
+        context_id: headers.get('X-Session-Context'),
+        authorization_version: headers.get('X-Authorization-Version'),
+        display_name: 'Fixture user A', revision: 1,
+      }), { headers: { 'Content-Type': 'application/json' } })
+    })
+    vi.stubGlobal('fetch', preferenceFetch)
+    try {
+      renderRoute('/settings/personal', {})
+      expect(await screen.findByText(/Signed in as Fixture user A/)).toBeTruthy()
+      expect(screen.getByRole('textbox', { name: 'Display name' })).toHaveProperty('value', 'Fixture user A')
+      expect(screen.getByRole('button', { name: 'Save display name' })).toBeTruthy()
+      expect(preferenceFetch).toHaveBeenCalledWith('/v2/me/preferences', expect.objectContaining({ method: 'GET' }))
+    } finally {
+      vi.unstubAllGlobals()
+    }
   })
 
   it("routes a campaign-scoped account read through the real V2 adapter, which fails explicitly without any dispatch", async () => {

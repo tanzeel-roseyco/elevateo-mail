@@ -1,0 +1,60 @@
+import { describe, expect, it, vi } from 'vitest'
+import { createV2PreferencesGateway } from './v2PreferencesGateway'
+
+const context = { contextId: 'a'.repeat(16), authorizationVersion: 'b'.repeat(16) }
+const response = (value: unknown) => new Response(JSON.stringify(value), { headers: { 'Content-Type': 'application/json' } })
+
+describe('isolated personal preference gateway proposal', () => {
+  it('reads current actor context and updates only the display name at its revision', async () => {
+    const fetchImpl = vi.fn(async (_path: string, init: RequestInit) => {
+      if (init.method === 'PUT') return response({ display_name: 'Avery', revision: 2 })
+      return response({ context_id: context.contextId, authorization_version: context.authorizationVersion,
+        display_name: 'Avery', revision: 1 })
+    })
+    const gateway = createV2PreferencesGateway(fetchImpl)
+    const page = await gateway.getUserDisplayPreference(context, new AbortController().signal)
+    const saved = await gateway.updateUserDisplayPreference(
+      { display_name: 'Avery', expected_revision: page.revision }, context, { csrfToken: 'proof' }, new AbortController().signal)
+    expect(saved.revision).toBe(2)
+    expect(fetchImpl.mock.calls.map(([path]) => path)).toEqual(['/v2/me/preferences', '/v2/me/preferences'])
+  })
+
+  it('rejects an invalid target field before any request', () => {
+    const fetchImpl = vi.fn(async () => response({}))
+    expect(() => createV2PreferencesGateway(fetchImpl).updateUserDisplayPreference(
+      { display_name: 'Avery', expected_revision: 0, user_id: 'forged' }, context, { csrfToken: 'proof' }, new AbortController().signal))
+      .toThrow()
+    expect(fetchImpl).not.toHaveBeenCalled()
+  })
+
+  it('rejects control characters in a display name before dispatch', () => {
+    const fetchImpl = vi.fn(async () => response({}))
+    expect(() => createV2PreferencesGateway(fetchImpl).updateUserDisplayPreference(
+      { display_name: 'Avery\u0085', expected_revision: 0 }, context, { csrfToken: 'proof' }, new AbortController().signal))
+      .toThrow()
+    expect(fetchImpl).not.toHaveBeenCalled()
+  })
+
+  it('rejects a response without current actor context', async () => {
+    const fetchImpl = vi.fn(async () => response({ display_name: 'Avery', revision: 1 }))
+    await expect(createV2PreferencesGateway(fetchImpl).getUserDisplayPreference(context, new AbortController().signal))
+      .rejects.toMatchObject({ kind: 'transport', code: 'malformed' })
+  })
+
+  it('rejects a stale server context instead of showing another preference', async () => {
+    const fetchImpl = vi.fn(async () => response({ context_id: 'c'.repeat(16),
+      authorization_version: context.authorizationVersion, display_name: 'Avery', revision: 1 }))
+    await expect(createV2PreferencesGateway(fetchImpl).getUserDisplayPreference(context, new AbortController().signal))
+      .rejects.toMatchObject({ kind: 'transport', code: 'malformed' })
+  })
+
+  it('preserves a stale revision conflict without replaying the write', async () => {
+    const fetchImpl = vi.fn(async () => new Response(JSON.stringify({ code: 'membership_conflict',
+      message: 'The preference changed.', request_id: 'request-1' }),
+    { status: 409, headers: { 'Content-Type': 'application/json' } }))
+    await expect(createV2PreferencesGateway(fetchImpl).updateUserDisplayPreference(
+      { display_name: 'Avery', expected_revision: 1 }, context, { csrfToken: 'proof' }, new AbortController().signal))
+      .rejects.toMatchObject({ kind: 'api', status: 409, code: 'membership_conflict' })
+    expect(fetchImpl).toHaveBeenCalledTimes(1)
+  })
+})
