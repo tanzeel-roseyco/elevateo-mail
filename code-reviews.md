@@ -922,3 +922,7 @@ SEND-809 bounded continuation self-review accounting (not independent): 210 adde
 SEND-809 bounded due-discovery repair packet for independent review: worker_authority.sql changed next_due_send function (~23 lines) plus down/grant signature and DB fixture (~12 lines); inspect array boundary validation, NULL handling, exclusion starvation, and no row-lock/authority drift. Independent review NOT_RUN; self review found no confirmed defects in this packet (0/KLOC self-only).
 
 SEND-810 matched due-drain merge: Rowan840ab4c/Elara5945e92 exact owner source imported with lineage. Independent functional/design review and fleet runtime are pending; no new defects/KLOC claim is made for the merge.
+
+QA816 thread transport candidate at 069257f remains authored but independently unreviewed, with 0 reviewed LOC and no computed density; fleet browser runtime NOT_RUN.
+
+QA816 list-only reporter probe is runtime setup evidence with zero browser assertions or independent source review. Independent reviewed LOC remains 0, defect density not computed, actual visual review pending.
