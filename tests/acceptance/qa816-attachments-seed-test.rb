@@ -51,4 +51,29 @@ class Qa816AttachmentsSeedTest < Minitest::Test
     end
     assert_raises(RuntimeError) { Qa816AttachmentsSeed.verify_authorized_bytes(@base, @scope, @clean, fetch: fetch) }
   end
+
+  def assert_download_denied(status: "200", headers: @headers, bytes: Qa816AttachmentsSeed::BYTES)
+    calls = []
+    fetch = lambda do |path, _cookie, _headers = {}|
+      calls << path
+      path == "/v1/session" ? ["200", {}, JSON.generate(@session)] : [status, headers, bytes]
+    end
+    error = assert_raises(RuntimeError) do
+      Qa816AttachmentsSeed.verify_authorized_bytes(@base, @scope, @clean, fetch: fetch)
+    end
+    assert_equal "authorized_bytes_unavailable", error.message
+    assert_equal 2, calls.length
+  end
+
+  def test_non_success_or_redirected_content_cannot_authorize_sidecar
+    %w[302 404 503].each { |status| assert_download_denied(status: status) }
+  end
+
+  def test_every_required_header_must_be_present_and_exact
+    @headers.each_key do |name|
+      assert_download_denied(headers: @headers.reject { |key, _value| key == name })
+      assert_download_denied(headers: @headers.merge(name => "unsafe"))
+    end
+    assert_download_denied(headers: @headers.merge("content-length" => (Qa816AttachmentsSeed::BYTES.bytesize + 1).to_s))
+  end
 end

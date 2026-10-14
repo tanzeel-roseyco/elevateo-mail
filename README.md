@@ -14,6 +14,8 @@ Shared company mailroom with one Rails domain authority and a React/TypeScript c
 
 ## Current state
 
+**QA816 FIX938 test candidate:** The attachment seed's authorization proof now has focused negative oracles for non-200 responses and each required safety header and length. This is source-only; Soren fleet unit execution and independent repair review remain pending. See `docs/completion/nadia-fix938.md`.
+
 **QA816 attachment fixture source:** A disposable-only producer can discover the committed primary/foreign messages, stage private synthetic bytes, record real clamd clean verdicts, and publish a strict private sidecar only after authenticated API byte retrieval matches. The route and fixture dependencies are not yet fleet-proven; see `docs/completion/nadia-qa816-attachments-seed.md`.
 
 **SMTP888 source candidate:** The pinned net-smtp 0.5.2 implements the local Mailpit TLS toggles, but its bundled RBS omits them. A narrow local declaration and preconnect factory regression are added; Soren fleet Steep/unit execution and independent review are pending. Remote SMTP remains held.
