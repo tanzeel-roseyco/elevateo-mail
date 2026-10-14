@@ -70,14 +70,31 @@ class CampaignAuthorizedDatabaseTest < MailboxMembershipDatabaseCase
     assert_equal "3", @admin.exec_params("SELECT version FROM app.campaign_leads WHERE id=$1", [lead]).getvalue(0, 0)
   end
 
-  def test_app_read_role_cannot_call_outreach_proof_from_rls
-    assert_raises(ActiveRecord::StatementInvalid) do
-      outreach_scope do |connection|
+  def test_protected_app_read_role_can_apply_campaign_policy
+    count = nil
+    outreach_scope(write: true) do |connection|
+      connection.execute("SET LOCAL ROLE elevateo_app_read")
+      assert_equal "elevateo_app_read", connection.select_value("SELECT current_user")
+      assert_equal true, connection.select_value("SELECT has_function_privilege(current_user, " \
+        "'app.authorize_outreach_content_read(text)', 'EXECUTE')")
+      raw = connection.exec_query("SELECT app.authorize_outreach_draft_write($1::text) AS result",
+        "OUT804 restricted role proof", [bind(@identity.digest)]).first.fetch("result")
+      result = raw.is_a?(String) ? JSON.parse(raw) : raw
+      assert_equal "ok", result.fetch("status")
+      count = connection.select_value("SELECT count(*) FROM app.campaigns")
+    end
+    assert_operator count.to_i, :>=, 1
+  end
+
+  def test_app_read_role_with_copied_digest_and_no_write_marker_is_denied
+    error = assert_raises(ActiveRecord::StatementInvalid) do
+      scope(write: false) do |connection|
         connection.execute("SET LOCAL ROLE elevateo_app_read")
-        assert_equal "elevateo_app_read", connection.select_value("SELECT current_user")
-        connection.select_value("SELECT count(*) FROM app.campaigns")
+        connection.exec_query("SELECT app.authorize_outreach_draft_write($1::text)", "OUT804 copied digest",
+          [bind(@identity.digest)])
       end
     end
+    assert_match(/protected write guard required|permission denied/i, error.message)
   end
 
   def test_cross_actor_digest_cannot_reuse_current_session_context

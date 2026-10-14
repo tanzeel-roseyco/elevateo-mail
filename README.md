@@ -263,3 +263,32 @@ MAC-814 continuation: Orion NATIVE-812 shell lineage is present in the Mac branc
 MAC-814 sequence gap: an isolated pure Ruby draft scheduling primitive now resolves unambiguous local times to UTC, derives stable occurrence keys, and blocks candidates with reply/unsubscribe signals. No sequence schema, API, send intent, worker integration or live delivery is present; see `docs/completion/maeve-sequence-draft.md`.
 
 PREF-822 candidate integration now registers session-derived GET/PUT `/v2/me/preferences` in canonical V2 draft.6 and connects the personal settings UI to the typed gateway. This is source-only: generated draft.6 DTO, bounded independent review, real PostgreSQL/API-role checks, HTTP and browser evidence remain pending Soren/root.
+OUT-804 creates now persist an immutable request fingerprint, so an exact create retry is recognized even after the draft record has been edited. A changed request with the same operation ID remains a conflict; fleet verification is pending.
+
+Fleet repository tests on b28b7d3 reached eight cases with one assertion failure: the test regex expected an optional conflict target in valid `ON CONFLICT DO NOTHING` SQL. The assertion is corrected in source; exact rerun is pending.
+
+Exact 5bd1b28 fleet rerun passed campaign input 5/8, repository 8/31 and affected lint 9 files/0 offenses. Steep reported six campaign type problems; the owned source/RBS now declares the connection seam, mixed SQL bind vector and string binds, and validates suppression reason before repository use. Exact repaired-source Steep rerun remains pending.
+
+Exact 35273ba fleet rerun passed campaign input 5/8, repository 8/31, affected RuboCop lint 9 files/0 offenses, and full Steep exit 0. Disposable PostgreSQL role/RLS and integrated HTTP remain pending.
+
+OUT-804 account page/detail now explicitly require the actor's RLS-visible mailbox before exposing its ID or label. Mixed visible/hidden and revoked private mailbox cases are authored as controller regressions; fleet verification and route activation remain pending.
+
+OUT-804 review repair binds update replay to the consent-preservation flag, rejects caller-supplied consent actor, and adds SQL policy checks for event actor and mutation resource existence. Migration rollback refuses populated campaign data. Exact fleet verification and the canonical display label for human attestation remain pending.
+
+OUT-804 lead consent projections now carry their event operation ID. A changed status or email is written only after an append-only event for that exact lead, email and status exists in the same protected transaction; SQL policy checks the match. Initial unknown leads have no event. This source invariant awaits real fleet PostgreSQL and concurrency checks.
+
+OUT-804 event snapshots now also bind the lead version, and a database trigger requires version advance on updates. Same-address lead edits lock and return the unchanged row while storing an idempotent operation result. These rules prevent a withdrawn lead from becoming granted again by pointing at an older consent event; fleet proof remains pending.
+
+OUT-804 lead update guard now rejects clearing an existing evidence link and requires a fresh versioned event whenever email or consent fields change. Metadata-only version changes may keep their matching historical evidence link. Real API-role negative and metadata cases remain requested.
+
+OUT-804 campaign account reads and mutations now require the current actor's mailbox membership as well as mailbox visibility and outreach role. Shared mailbox browsing remains governed by its existing rule; account association is stricter. Cross-actor fleet proof and account route review remain pending.
+
+OUT-804 now includes disposable authenticated database tests using the existing real-session API-role fixture: metadata-only lead update with retained evidence, a denied link clear, same-org sales actor account denial without mailbox membership, and actual Repository stale-update event rollback. Only Soren may run these tests in fleet Docker; no PASS is claimed.
+
+The first integrated attempt with the new consent policy failed during migration 00009 because generated SQL joined `END` and `AND` into `ENDAND`. The policy template now inserts an explicit separator, with a generated SQL regression authored; exact fleet migration rerun is pending.
+
+Soren's exact fa3082a full RuboCop receipt found two ambiguous block associations in OUT-804 controller tests. Those assertion calls are parenthesized in source; affected lint and full Steep on the repaired SHA remain requested.
+
+OUT-804 migration 00009 policy role seam now has disposable SQL regressions for an authorized `elevateo_api` write, denied direct `elevateo_app_read` RLS proof execution, and cross-actor session digest rejection. SEC802 grants proof execution only to the API role; these new cases are authored, not fleet-executed.
+
+ADV093's restricted-role follow-up requires minimal SEC802 EXECUTE grants for both protected outreach helpers when `current_user=elevateo_app_read`: 00009 RLS calls content-read, and sequence 00016 calls draft-write. The OUT-804 fixture now requires a genuine protected marker to prove both helper calls under that role and rejects a copied digest without the marker. SEC802 grant source is owned by Sabine/Cassian and absent from this isolated branch; integration and fleet proof are pending.
