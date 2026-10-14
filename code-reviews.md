@@ -333,3 +333,5 @@ SPEC-40301 adversarial source and SPEC-40302 dedicated design tradeoff review: b
 SPEC-40301 test review: 68 Ruby + 1 Compose line, one connection-cleanup defect (14.49 defects/KLOC), fixed by protecting all post-connect operations and closing even if rollback raises. Missing direct bootstrap drift proof explicitly remains in Soren packet. No runtime checks executed.
 
 BE-403 semantic correction: independent current review requested; no defect density asserted before review. Prior 42f6369 review did not cover now-supplied semantic design; owner privilege omission and ACL normalization corrected. Dedicated design-tradeoff review remains root/Ada-owned.
+
+Rowan reviewed Elara draft-privacy.e2e.ts 1-107 at SHA256 e49c6d90ba6760e95258eafd4902f67f28f632088721022e83c4a23877c3f4a5 against full current rubric: 0 demonstrated source defects /107 LOC =0 observed defects/KLOC. Dependency/runtime/design-review limits: docs/completion/be403-elara-privacy-review.md.

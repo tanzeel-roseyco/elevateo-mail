@@ -5,6 +5,9 @@ module Elevateo
     type object = Hash[String, value]
     UUID: Regexp
     JSON_TYPE: Regexp
+    class ExactDecimal
+      def self.try_convert: (String) -> BigDecimal
+    end
     class UniqueObject < Hash[String, value]
       def []=: (String, value) -> value
     end
