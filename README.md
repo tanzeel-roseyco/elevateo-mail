@@ -538,3 +538,5 @@ QA815 ADV144 private browser proof successor is staged from Soren `7738f8fd`/`1f
 Nadia's `200fc016` two-line attachment lint repair is staged in feature and core: NoStorage still rejects every put, and the service regression keeps its assertion count. The exact coherent RuboCop and focused test rerun remain pending Soren.
 
 Sabine's `28ef4d56` gateway ACL test-only lint repair is staged in both candidates; it parenthesizes two existing predicates without changing grant expectations. Coherent fleet RuboCop remains pending.
+
+Corin's `f8d54cd7` fake inbound unused guard callback lint fix is staged in both candidates; the protected actor guard and test-only route behavior remain the same. Orion authority fixture syntax is the remaining fatal lint owner patch.

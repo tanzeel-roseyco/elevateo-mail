@@ -483,3 +483,5 @@ QA815 no-follow browser privacy source and six-case fleet unit receipt are impor
 Nadia 200fc016 attachment controller/service lint repair is imported source-only into feature/core; remaining owner lint fixes and exact fleet rerun pending.
 
 Sabine 28ef4d56 two gateway ACL test lint repairs imported source-only feature/core; exact fleet rerun pending.
+
+Corin f8d54cd7 unused callback lint repair imported feature/core source-only; Orion fatal authority fixture patch remains before coherent fleet lint rerun.

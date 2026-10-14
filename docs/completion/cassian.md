@@ -403,3 +403,5 @@ Soren `7738f8fd` no-follow privacy source, `1fcb462f` corrected fixture and `354
 Nadia `200fc016` attachment lint repair imported feature `4b6448e3` and core `bbc68ba3` using exact two owner source/test hunks, preserving the feature content controller beyond her core-only baseline. No runtime result on successor; Soren full coherent lint gate requested after other owner fixes.
 
 Sabine 28ef4d56 exact two-predicate ACL lint repair imported feature c13c730b and core 84f23338; no behavior change or test execution claimed. Remaining Orion fatal syntax and Corin unused argument repair await owner SHAs before coherent lint gate.
+
+Corin f8d54cd7 fake inbound guard callback lint patch imported feature f4f47fef/core 932a3809; source semantics unchanged and no host tests. Orion authority fixture fatal syntax remains pending.

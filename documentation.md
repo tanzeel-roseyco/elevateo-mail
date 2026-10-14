@@ -543,3 +543,5 @@ QA815 ADV144 no-follow browser proof now rejects symlink redirection while check
 Nadia 200fc016 changes NoStorage#put to accept unused keyword options while still raising Invalid, and parenthesizes one service test map for lint clarity. It is integrated in both candidate branches without host execution; Soren will verify on a coherent source.
 
 Sabine 28ef4d56 disambiguates two migration ACL test block assertions while retaining the same grant predicates and down/up/down/up test sequence. The patch is source-only until Soren's coherent core RuboCop and targeted test run.
+
+Corin f8d54cd7 marks the unused fake inbound protected-write query callback as unused while preserving the actor UUID guard; staged in both candidates, fleet lint/unit rerun pending.
