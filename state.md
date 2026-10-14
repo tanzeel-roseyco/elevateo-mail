@@ -1,5 +1,7 @@
 # Project state
 
+FE806 REPLY901 candidate: the top conversation reply control now seeds a draft from a current readable message sender instead of starting an empty-recipient reply. Selection by message URL is authoritative; unresolved/unavailable or senderless selections cannot silently fall back to another sender. Focused tests are authored, NOT_RUN by Mira; Soren fleet Docker, independent review and browser evidence remain pending. See docs/completion/mira-reply901.md.
+
 FE806 inbound attachment UI candidate: an optional thread reader port follows Cassian's noncanonical list/download proposal, with clean-only download, held/blocked states, explicit retry and owner-abort cleanup. There is no active browser route, scanner verdict writer, or draft/send attachment binding, so the fallback remains the existing attachment count. Source tests are authored but not run; Soren fleet Docker and browser acceptance are pending. See docs/completion/mira.md.
 
 ATT843 candidate repairs the attachment UI's overlapping A/B download busy-state race with per-ID pending ownership and an authored deferred-resolution regression. Soren fleet Docker has not yet run this candidate; no live byte access is claimed.

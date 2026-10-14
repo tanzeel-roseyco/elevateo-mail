@@ -94,17 +94,19 @@ function pagedGateway(pages: Array<ThreadDetailPage | GatewayError>) {
 
 afterEach(() => vi.restoreAllMocks())
 
-function renderReply(page: ThreadDetailPage, compose = true) {
+function renderReply(page: ThreadDetailPage, compose = true, options: {
+  initialEntry?: string; readDirectMessage?: DirectMessageRead; getThread?: () => Promise<ThreadDetailPage>
+} = {}) {
   const base = createFixtureGateway()
-  const gateway: MailroomGateway = { ...base, getThread: async () => page }
+  const gateway: MailroomGateway = { ...base, getThread: options.getThread ?? (async () => page) }
   const save = vi.spyOn(gateway, 'saveDraft')
   render(
     <SessionProvider gateway={gateway}>
       <DraftIntentProvider>
         <MailboxesProvider value={{ status: 'ready', mailboxes: [{ id: CD.mailboxId, display_name: 'Team', display_address: null, capabilities: { read: true, compose, approve_send: false, manage_members: false } }] }}>
-          <MemoryRouter initialEntries={[`/mailboxes/${CD.mailboxId}/threads/${CD.threadId}`]}>
+          <MemoryRouter initialEntries={[options.initialEntry ?? `/mailboxes/${CD.mailboxId}/threads/${CD.threadId}`]}>
             <Routes>
-              <Route path="/mailboxes/:mailboxId/threads/:threadId" element={<ThreadPage />} />
+              <Route path="/mailboxes/:mailboxId/threads/:threadId" element={<ThreadPage {...(options.readDirectMessage === undefined ? {} : { readDirectMessage: options.readDirectMessage })} />} />
               <Route path="/mailboxes/:mailboxId/drafts/:draftId" element={<DraftEditorPage />} />
             </Routes>
           </MemoryRouter>
@@ -124,6 +126,75 @@ function replyPage(sender: ThreadDetailPage['messages'][number]['sender'], trunc
 }
 
 describe('message reply draft', () => {
+  it('starts the top reply with the latest available sender and keeps save explicit', async () => {
+    const save = renderReply(replyPage({ display_name: 'Ada', address: 'ada@example.test' }))
+    fireEvent.click(await screen.findByRole('button', { name: 'Reply as draft' }))
+    expect((await screen.findByLabelText('To') as HTMLTextAreaElement).value).toBe('ada@example.test')
+    expect((screen.getByLabelText('Subject') as HTMLInputElement).value).toBe('Re: Project update')
+    expect(save).not.toHaveBeenCalled()
+  })
+
+  it('holds the top reply when no authorized message has a usable sender', async () => {
+    renderReply(replyPage({ display_name: 'Unknown', address: null }))
+    expect((await screen.findByRole('button', { name: 'Reply as draft' }) as HTMLButtonElement).disabled).toBe(true)
+    expect(screen.getByText('A message with a sender is needed to reply.')).toBeTruthy()
+    expect(screen.queryByRole('heading', { name: 'New draft' })).toBeNull()
+  })
+
+  it('offers no reply while the conversation loads or after its read fails', async () => {
+    let rejectLoad!: (error: Error) => void
+    renderReply(replyPage({ display_name: 'Ada', address: 'ada@example.test' }), true, {
+      getThread: () => new Promise((_resolve, reject) => { rejectLoad = reject }),
+    })
+    await screen.findByLabelText('Loading conversation')
+    expect(screen.queryByRole('button', { name: 'Reply as draft' })).toBeNull()
+    await waitFor(() => expect(typeof rejectLoad).toBe('function'))
+    await act(async () => rejectLoad(new GatewayError('transport', 'network', 'offline')))
+    await screen.findByText('The conversation could not be loaded')
+    expect(screen.queryByRole('button', { name: 'Reply as draft' })).toBeNull()
+  })
+
+  it('follows the selected message URL instead of the latest loaded sender', async () => {
+    const page = replyPage({ display_name: 'Ada', address: 'ada@example.test' })
+    page.messages.push({ id: MESSAGE_B, sender: { display_name: 'Ben', address: 'ben@example.test' }, to: [], sent_at: null, body_text: 'Newer', body_truncated: false, attachment_count: 0 })
+    page.thread.message_count = 2
+    renderReply(page)
+    await screen.findByText('Newer')
+    fireEvent.click(screen.getAllByRole('link', { name: 'Open this message' })[0]!)
+    await waitFor(() => expect(screen.getByRole('listitem', { name: 'Selected message' }).textContent).toContain('Ada'))
+    fireEvent.click(screen.getByRole('button', { name: 'Reply as draft' }))
+    expect((await screen.findByLabelText('To') as HTMLTextAreaElement).value).toBe('ada@example.test')
+  })
+
+  it('waits for the selected deep-link message and replies to that sender only', async () => {
+    let resolveDirect!: (value: Awaited<ReturnType<DirectMessageRead>>) => void
+    const direct = vi.fn<DirectMessageRead>(async () => new Promise((resolve) => { resolveDirect = resolve }))
+    renderReply(replyPage({ display_name: 'Ada', address: 'ada@example.test' }), true, {
+      initialEntry: `/mailboxes/${CD.mailboxId}/threads/${CD.threadId}?message=${MESSAGE_B}`,
+      readDirectMessage: direct,
+    })
+    await waitFor(() => expect(direct).toHaveBeenCalledTimes(1))
+    expect((screen.getByRole('button', { name: 'Reply as draft' }) as HTMLButtonElement).disabled).toBe(true)
+    await act(async () => resolveDirect({
+      context_id: 'context_A_0123456789', authorization_version: 'authz_A_0123456789',
+      mailbox_id: CD.mailboxId, thread_id: CD.threadId,
+      message: { id: MESSAGE_B, sender: { display_name: 'Ben', address: 'ben@example.test' }, to: [], sent_at: null, body_text: 'Later', body_truncated: false, attachment_count: 0 },
+    }))
+    await screen.findByText('Later')
+    fireEvent.click(screen.getByRole('button', { name: 'Reply as draft' }))
+    expect((await screen.findByLabelText('To') as HTMLTextAreaElement).value).toBe('ben@example.test')
+  })
+
+  it('keeps the top reply unavailable after selected-message lookup fails', async () => {
+    const direct = vi.fn<DirectMessageRead>(async () => { throw new GatewayError('api', 'not_available', 'Unavailable', { status: 404, requestId: 'r1' }) })
+    renderReply(replyPage({ display_name: 'Ada', address: 'ada@example.test' }), true, {
+      initialEntry: `/mailboxes/${CD.mailboxId}/threads/${CD.threadId}?message=${MESSAGE_B}`,
+      readDirectMessage: direct,
+    })
+    await screen.findByText('This message is unavailable in this conversation.')
+    expect((screen.getByRole('button', { name: 'Reply as draft' }) as HTMLButtonElement).disabled).toBe(true)
+  })
+
   it('prefills the selected sender and subject, then saves only on explicit action', async () => {
     const save = renderReply(replyPage({ display_name: 'Ada', address: 'ada@example.test' }))
     fireEvent.click(await screen.findByRole('button', { name: 'Reply to this sender as draft' }))
