@@ -714,3 +714,5 @@ QA816 Felix re-review of Ada reply recipient repair: exact 4b946ea matrix diff, 
 QA816 author static check at b327238 tightened one broad Outreach detail `draft` locator to exact case-owned name/status before screenshot. This is not an independent finding or runtime proof; ADV046/047 initial defects and pending repair re-reviews remain recorded above.
 
 QA816 Felix durable functional packet B receipt `787167a` (docs/completion/felix-qa816-review.md): current matrix lines155–263 (109 LOC, SHA f0b5c91f) plus screenshot writer lines1–73 (73 LOC, SHA75fb5b84), 182 unique LOC, zero confirmed static defects (0/KLOC). Initial full B review and exact reply repair diff overlap; no extra LOC counted. Dynamic roster/grant row binding, image pixels, text zoom, V2 writes and browser runtime are outside this source-only result.
+
+QA816 new visual D packet `qa816-visual.e2e.ts` 1–36 (36 LOC) is authored and unreviewed; screenshot writer B adds three physical allowlist lines beyond Felix's B182 receipt. Current B185/D36 independent closure and dedicated design review are pending; no defect density or runtime/pixel result is claimed for the new lines.

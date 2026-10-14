@@ -204,3 +204,5 @@ Felix found and Tessa repaired one MEDIUM QA816 empty-search evidence oracle; th
 QA816 source now repairs three additional independent review findings: delayed send-review denial, empty campaign form no-POST observation, and exact seeded reply recipient equality. Re-review and fleet browser results remain pending.
 
 QA816 campaign detail evidence now waits for the exact case-owned name and draft status; source and screenshot checks remain pending fleet browser execution.
+
+QA816 now requests six additional real API-backed branded shell screenshots at 390, 768 and 1440 pixels in light and dark themes. Fleet capture, pixel inspection and independent review remain pending.

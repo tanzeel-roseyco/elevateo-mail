@@ -214,3 +214,5 @@ QA816 empty search now requires the settled “No matches” state and absence o
 QA816 ADV046/047 repairs require a real send-review denial response and alert, a native invalid campaign-name witness plus bounded no-POST observation, and exact seeded reply recipient before and after reload. These changes are source-only until independent re-review and Soren fleet browser execution.
 
 QA816 Outreach detail screenshot is gated by exact case-owned campaign name plus draft state. This avoids selecting unrelated paused-mode text; runtime and independent repair review remain pending.
+
+QA816 six-partition visual case waits for real mailbox GET200 and seeded thread before each screenshot, then checks branded navigation and overflow at 390/768/1440 in light/dark. It uses the Fable f295b35 mobile labels. No pixel acceptance is inferred until Soren returns real PNGs for root/Tessa inspection.

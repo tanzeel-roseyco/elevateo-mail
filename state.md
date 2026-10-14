@@ -146,3 +146,5 @@ QA816 head 6819af1 repairs Felix's MEDIUM empty-search loading race in QA817-F2 
 QA816 head 1c41d40 repins ADV046/047 repairs in send/outreach/reply browser oracles. Vera identified two gaps and Ada one; exact reviewer coverage/density and repaired-source re-review remain pending. Integrated application/browser/screenshots still NOT_RUN.
 
 QA816 head 0c21185 repins Outreach packet C after exact campaign name/status oracle tightening. Current source has not been compiled or run in fleet browser; earlier 6f91c53 compile/unit receipt remains nontransferable.
+
+QA816 head fa34ea3 adds SCN-QA-822-P (390/768/1440 light/dark) and expands fixed screenshot admission to 34 IDs. Felix's prior B182 review excludes the three new allowlist lines; D36 and B delta reviews plus actual browser images remain pending.
