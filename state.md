@@ -513,3 +513,5 @@ QA815 feature7cae15a7 focused Corin lint PASS; Steep FAIL two Nadia ATT902 contr
 ATT902 dual metadata/content V2 routes and browser port are active only in the isolated feature source candidate for disposable fleet proof, following ADV150. No private byte/scan/session/browser PASS: Nadia Steep two errors, TEST929 suite manifest review, generated declaration check and full feature runtime pending. No live deployment/sends.
 
 Orion TEST929 expanded backend manifest imported source-only. Core inventory 130 standard/nine dedicated; feature suite count may differ. Independent functional/design review and fleet standard/dedicated execution pending.
+
+Nadia b3899a06 typed ATT902 controller/RBS/test repair imported feature source-only after earlier two-Steep-error fleet result. Exact successor Steep/lint/controller and real byte gates pending.
