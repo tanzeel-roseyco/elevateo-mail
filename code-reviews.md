@@ -690,3 +690,5 @@ QA-817 independent SEND-809 peer review: Rowan `apps/server/db/be03_send/worker_
 QA-817 `apps/server/test/qa817/origin_csrf_controller_test.rb`: independent source review NOT_RUN, zero LOC reviewed and density unmeasured. Request <=200 LOC full-rubric functional packet and separate design review; actual controller Docker test/lint NOT_RUN.
 
 QA-817 private sales/personal mailbox integration test: `apps/server/test/qa817/private_sales_database_test.rb`, independent review NOT_RUN (0 LOC, density unmeasured). Request <=200 LOC full-rubric packet and dedicated design review; Docker/Steep/RuboCop NOT_RUN.
+
+QA-817 independent SEC-802 legacy hook review: Sabine `apps/server/db/sec802/membership_patch.sql` SHA-256 `aa1efedbc5b92777954ca76f694489027178afe76cfbca3d4dd9f8e5804d0fb2`, lines 1–85 full review, 0 observed defects (0/KLOC bounded static). Companion policy test lines 1–172 were read as separate coverage context, for 257 unique LOC across two <=200 LOC packets; test defects/density not reviewed. Full rubric and runtime limits: `docs/completion/felix-sec802-legacy-review.md`. Docker/design NOT_RUN.

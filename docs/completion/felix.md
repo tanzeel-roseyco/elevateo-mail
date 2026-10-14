@@ -29,3 +29,5 @@ Added `apps/server/test/qa817/origin_csrf_controller_test.rb`: actual V1 control
 ## SEC-802 integrated privacy candidate
 
 Sabine committed the legacy hook at `1a0ecfa` while integration is pending. Added `apps/server/test/qa817/private_sales_database_test.rb` to check assigned sales read of a private team mailbox, unassigned sales denial, and organization admin denial for a personal mailbox using actual API role/RLS. It requires the SEC-802 migration; it is NOT_RUN on the isolated baseline. Soren command after immutable integration, from `/workspace/apps/server` in the disposable backend image: `bundle exec ruby test/qa817/private_sales_database_test.rb`. Request exact real-DB authorization traces and cleanup; no budget claim. Independent review of this test source remains pending.
+
+Independently reviewed Sabine's 85-line committed legacy mailbox hook with full rubric; 172-line companion test was read only as coverage context, 257 unique LOC across two <=200-line packets. Zero observed SQL defects in bounded static pass, 0/KLOC; runtime/design still pending. See `docs/completion/felix-sec802-legacy-review.md`.
