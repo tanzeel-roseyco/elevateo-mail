@@ -214,6 +214,41 @@ describe('individual message permalink', () => {
     expect(selected.textContent).toContain(MESSAGE_B)
   })
 
+  it('does not steal focus when pagination starts or completes after a selected message was focused', async () => {
+    let resolveMore!: (page: ThreadDetailPage) => void
+    const base = createFixtureGateway()
+    const gateway: MailroomGateway = {
+      ...base,
+      getThread: async (_ctx, _threadId, _mailboxId, query) => query.cursor === undefined
+        ? detailPage([MESSAGE_A], 'next')
+        : new Promise<ThreadDetailPage>((resolve) => { resolveMore = resolve }),
+    }
+    renderReaderWith(gateway, `/mailboxes/${MB}/threads/${THREAD}?message=${MESSAGE_A}`)
+    const selected = await screen.findByLabelText('Selected message')
+    await waitFor(() => expect(document.activeElement).toBe(selected))
+    const back = screen.getByRole('link', { name: /Back to conversations/ })
+    back.focus()
+    fireEvent.click(screen.getByRole('button', { name: 'Show more messages' }))
+    expect(document.activeElement).toBe(back)
+    await act(async () => resolveMore(detailPage([MESSAGE_B], null)))
+    expect(document.activeElement).toBe(back)
+  })
+
+  it('focuses a selected message once when it first arrives on a later page', async () => {
+    const gateway = pagedGateway([detailPage([MESSAGE_A], 'next'), detailPage([MESSAGE_B], 'later'), detailPage(['third'], null)]).gateway
+    renderReaderWith(gateway, `/mailboxes/${MB}/threads/${THREAD}?message=${MESSAGE_B}`)
+    await screen.findByText('This message is on a later page. Show more messages to find it.')
+    const back = screen.getByRole('link', { name: /Back to conversations/ })
+    back.focus()
+    fireEvent.click(screen.getByRole('button', { name: 'Show more messages' }))
+    const selected = await screen.findByLabelText('Selected message')
+    await waitFor(() => expect(document.activeElement).toBe(selected))
+    back.focus()
+    fireEvent.click(screen.getByRole('button', { name: 'Show more messages' }))
+    await screen.findByText('third')
+    expect(document.activeElement).toBe(back)
+  })
+
   it('rejects a malformed message id before any gateway read', async () => {
     const gateway = createFixtureGateway()
     const read = vi.spyOn(gateway, 'getThread')

@@ -67,6 +67,7 @@ function ConversationReader({ mailboxId, threadId }: { mailboxId: string; thread
   const abortRef = useRef<AbortController | null>(null)
   const headingRef = useRef<HTMLHeadingElement | null>(null)
   const selectedMessageRef = useRef<HTMLLIElement | null>(null)
+  const focusedTargetRef = useRef<string | null>(null)
   // One reply-draft id per opened conversation: the link is stable across renders, and nothing
   // exists on the server until the editor's first explicit save (BE-02 C).
   const replyDraftIdRef = useRef(newId())
@@ -157,12 +158,20 @@ function ConversationReader({ mailboxId, threadId }: { mailboxId: string; thread
   // and reach handleError. Abort supplements ownership checks (D3).
   useLayoutEffect(() => () => abortRef.current?.abort(), [])
 
-  // Move focus to the conversation heading once loaded so keyboard reading starts at the content.
+  const selectedMessagePresent = state.status === 'ready' && selectedMessageId !== null && state.messages.some((message) => message.id === selectedMessageId)
+
+  // AIDEV-NOTE: Page loadingMore changes reader state; focus moves only when a new target first appears.
   useEffect(() => {
-    if (state.status !== 'ready') return
-    if (selectedMessageId !== null && state.messages.some((message) => message.id === selectedMessageId)) selectedMessageRef.current?.focus()
-    else if (selectedMessageId === null) headingRef.current?.focus()
-  }, [state, selectedMessageId])
+    if (state.status !== 'ready' || (selectedMessageId !== null && !selectedMessagePresent)) {
+      focusedTargetRef.current = null
+      return
+    }
+    const target = selectedMessageId ?? 'heading'
+    if (focusedTargetRef.current === target) return
+    if (selectedMessageId === null) headingRef.current?.focus()
+    else selectedMessageRef.current?.focus()
+    focusedTargetRef.current = target
+  }, [state.status, selectedMessageId, selectedMessagePresent])
 
   // The back link restores the inbox exactly as it was filtered when the user left it (FE-R11).
   const backTo = `/mailboxes/${mailboxId}${filter === 'unread' ? '?filter=unread' : ''}`
@@ -191,7 +200,7 @@ function ConversationReader({ mailboxId, threadId }: { mailboxId: string; thread
           <p className="mb-2 text-[12px] text-muted">
             {state.thread.message_count} message{state.thread.message_count === 1 ? '' : 's'} in this conversation
           </p>
-          {selectedMessageId !== null && !state.messages.some((message) => message.id === selectedMessageId) && (
+          {selectedMessageId !== null && !selectedMessagePresent && (
             <p role="status" className="mb-2 rounded-lg border border-line bg-surface-2 p-2 text-[13px]">
               {state.nextCursor === null ? 'This message is unavailable in this conversation.' : 'This message is on a later page. Show more messages to find it.'}
             </p>
