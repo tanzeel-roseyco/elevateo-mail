@@ -289,3 +289,5 @@ Exact `651b63a` fleet Steep receipt reported 111 diagnostics (36 errors, 75 fall
 The Cassian-owned client RBS `9b41975` now has an exact 151-LOC bounded independent source packet and a separate concrete design tradeoff question in `docs/completion/cassian-client-rbs-review.md`. No independent review or successor fleet result is claimed; root owns reviewer scheduling and Soren owns Docker.
 
 ADV122 independently found one P2 typing-contract defect in `9b41975`: nominal Net::HTTP factory return rejected the standalone SlowHttp fake. Cassian's successor makes that test fake a Net::HTTP subclass with inherited timeout setters and in-process start/request overrides, without changing production client or RBS. The exact 65-LOC successor packet, concrete tradeoff and pending fleet commands are in `docs/completion/cassian-client-rbs-review.md`; independent re-review/runtime are NOT_RUN.
+
+Elara exact a0a60b6 same-scope protected outreach read/write witness is integrated at 985db69; the source keeps sales `ok` and auditor `not_found` expectations and changes no production policy or enrollment. Soren focused fleet execution is requested, NOT_RUN on this integration.

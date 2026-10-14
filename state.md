@@ -391,3 +391,5 @@ QA815 `c5a8737` current web full PASS 842/842/build with task cleanup; V2 declar
 INB887 strict followup: fleet `065ec91` showed nullable IMAP session accesses and inbound parser/ingress collection typing errors; the prior `1ab4c12` rollback fixture passed that fleet Ruby run. Corin's scoped source changes keep a nonnullable opened session for verified TLS, UID validity and bounded fetch, and type only the existing MIME tuple and attachment collections. Soren's fleet Steep/RuboCop and inbound unit rerun is pending; no protocol runtime or live provider claim.
 
 ADV122 client RBS review found one P2 nominal factory/fake mismatch. The test fake is now a Net::HTTP subclass with in-process overrides; production transport and RBS unchanged. Successor rereview and fleet unit/Steep NOT_RUN.
+
+Elara same-scope protected outreach read/write witness is integrated test-only source. Current protected role `not_found` cause remains UNKNOWN until Soren's focused disposable fleet run; no auth policy or enrollment changed.

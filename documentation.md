@@ -454,3 +454,5 @@ QA815 backend successor receipt `docs/completion/qa815-evidence/backend-065ec91b
 QA815 current full web receipt `docs/completion/qa815-evidence/web-c5a873765a0c.log` records exact `c5a8737` V1/V2/lint/type/unit/build PASS and cleanup. The f70 visual artifact is separate exact-source evidence; see `docs/completion/soren.md`.
 
 The attachment client RBS `http_factory` returns Net::HTTP; its slow-stream test fake now inherits Net::HTTP and overrides network methods in process, preserving aggregate timeout and close assertions. ADV122 found the earlier nominal mismatch; current test-only repair remains unverified by fleet Docker and independent successor review.
+
+The protected outreach authorization diagnostic executes content-read and draft-write checks for the same synthetic sales actor in one guarded scope after inspecting member, role and function owner. It retains existing expected `ok`/auditor-denied assertions and is a test witness only; exact fleet result is pending.
