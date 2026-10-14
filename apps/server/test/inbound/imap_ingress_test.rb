@@ -42,13 +42,27 @@ class ImapIngressTest < Minitest::Test
     assert_empty @store.calls
   end
 
-  def test_attachment_is_rejected_until_quarantine_exists
+  def test_supported_attachment_is_rejected_until_quarantine_exists
     multipart = "From: sender@example.invalid\r\nTo: inbox@example.invalid\r\n" \
       "Content-Type: multipart/mixed; boundary=x\r\n\r\n--x\r\nContent-Type: text/plain\r\n\r\nhello\r\n" \
       "--x\r\nContent-Type: application/octet-stream\r\nContent-Disposition: attachment; filename=a.bin\r\n\r\na\r\n--x--\r\n"
-    assert_equal "unsupported_mime", assert_raises(Elevateo::Inbound::Rejected) {
+    assert_equal "attachment_storage_unavailable", assert_raises(Elevateo::Inbound::Rejected) {
       ingest(raw_mime: multipart)
     }.code
+    assert_empty @store.calls
+  end
+
+  def test_unsupported_attachment_type_never_stages_or_persists
+    storage = Storage.new
+    ingress = Elevateo::Inbound::ImapIngress.new(store: @store, attachment_storage: storage)
+    raw = MIME.sub("Content-Type: text/plain; charset=UTF-8\r\n\r\nhello",
+      "Content-Type: multipart/mixed; boundary=x\r\n\r\n--x\r\nContent-Type: text/plain\r\n\r\nhello\r\n" \
+      "--x\r\nContent-Type: application/x-executable\r\nContent-Disposition: attachment; filename=a.bin\r\n\r\na\r\n--x--\r\n")
+    error = assert_raises(Elevateo::Inbound::Rejected) {
+      ingress.ingest(account_id: ACCOUNT, credential_version: 1, uidvalidity: 42, uid: 7, raw_mime: raw)
+    }
+    assert_equal "unsupported_mime", error.code
+    assert_empty storage.staged
     assert_empty @store.calls
   end
 

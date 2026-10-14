@@ -79,6 +79,9 @@ Cassian merged the Foundation, Frontend, Delivery, Native, QA and Mail owner can
 
 Cassian prepared disabled organization grant, simulation-only outreach and internal worker-status V2 interfaces over `bbf2353`. Frozen V1 contracts and Rails routes remain unchanged. The V2 route registry fails closed until owning controllers and authorization gates are ready. Source and tests are committed for fleet Docker validation; runtime acceptance and generated web DTO adoption remain pending. See `docs/completion/cassian.md`.
 
+INB887 followup: the supported IMAP attachment fixture now asserts the fail-closed `attachment_storage_unavailable` result when quarantine is absent; a separate unsupported-type case checks no staging or persistence. The test-only fake ingress controller has explicit protected-write block types. Soren's focused fleet rerun and strict Steep remain pending; no live inbound claim follows.
+
+Corin's continuation adds migration `00011`, an atomic receipt/thread/message SQL path, a test-only authenticated V2 controller candidate and DB/HTTP fixtures over baseline `bbf2353`. Cassian reserves the additive route and contract; fleet Docker tests, integration review and actual inbound acceptance remain pending. See [Corin's record](docs/completion/corin.md).
 
 The first integrated fleet migration failed parsing the attachment CASE in `00011`; Corin's `e94631f` parenthesizes that expression for a rerun. A bounded protected direct-message permalink reader is now a candidate, with its V2 route and fleet checks pending. Fake ingress does not connect to a receive provider and cannot establish live inbound readiness.
 

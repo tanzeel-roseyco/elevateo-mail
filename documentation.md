@@ -55,6 +55,7 @@ The subsequent `cb1ec5be` Steep repair gives grants and preference write guards 
 # Product requirements and decision record
 
 QA-815 owns serialized fleet Docker checks under the shared Soren lock. The exact Mira FE-806 candidate passed focused frontend checks; the immutable-source scheduler, receipt and cleanup limits are recorded in `docs/completion/soren.md`. This is not integrated or browser acceptance.
+INB887 inbound boundary note: a syntactically supported IMAP attachment without configured private quarantine returns `attachment_storage_unavailable` before database insertion. An unsupported attachment type with storage configured returns `unsupported_mime` before staging or insertion. The isolated fake HTTP controller retains session, CSRF, actor and mailbox grant checks; only its existing Steep block annotations changed. Fleet validation is pending.
 
 ### Mira BE03 UI isolated R24 implementation (2026-10-14)
 

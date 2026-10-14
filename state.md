@@ -82,6 +82,7 @@ Nadia attachment backend candidate adds held-by-default quarantine metadata, a b
 ATT886 authored precise attachment service/scanner type-boundary repairs against Soren's 651b Steep diagnostics. Missing or malformed stored byte size now fails deliberately; focused unit and Steep verification are NOT_RUN pending Soren fleet Docker. See `docs/completion/nadia-att886-steep-repair.md`.
 
 ADV115 response tests the nil-body denial and early rejected-status branch with in-process fake HTTP; these tests are authored, NOT_RUN by Nadia. See `docs/completion/nadia-adv115-storage-regressions.md`.
+INB887 candidate: corrected the IMAP missing-quarantine regression oracle, added an unsupported attachment type failure fixture, and annotated the fake ingress controller's protected-write boundary. Fleet Docker tests and strict Steep on this successor are NOT_RUN; Soren owns execution. This does not enable a live provider.
 
 Application IN PROGRESS — R24 isolated BE03 candidate (2026-10-14). Root authorizes implementation on baseline `03ae770c56271cd8236726bfd8fe63248e81283d` in parallel with BE02 acceptance. BE02 remains OPEN/unaccepted; integration/release gated. S1+S2 priority: saved draft -> consistent review -> human approval -> durable queued intent. Canonical additive `contracts/v1/openapi.json` version `1.0.0-send.1` is prepared; every baseline C/D operation/component and original fixture is preserved.
 ### Mira BE03 UI isolated R24 implementation (2026-10-14)
