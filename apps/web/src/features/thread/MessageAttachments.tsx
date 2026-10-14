@@ -11,7 +11,7 @@ export interface AttachmentSummary {
   filename: string
   content_type: 'application/pdf' | 'image/png' | 'image/jpeg' | 'text/plain'
   byte_size: number
-  scan_status: 'pending_scan' | 'clean' | 'malware' | 'scan_failed'
+  scan_status: 'pending_scan' | 'clean' | 'malware' | 'scan_failed' | 'rejected'
 }
 
 export interface AttachmentReadPort {
@@ -23,11 +23,24 @@ type ListState =
   | { status: 'closed' | 'loading' | 'unavailable' | 'error' }
   | { status: 'ready'; items: AttachmentSummary[]; nextCursor: string | null; loadingMore: boolean; error: string | null }
 
+function safeFilename(filename: string): string | null {
+  if (filename.length === 0 || filename === '.' || filename === '..' || filename.trim() !== filename ||
+      /[\x00-\x1f\x7f\\/\u202a-\u202e\u2066-\u2069]/.test(filename) || new TextEncoder().encode(filename).length > 255) return null
+  return filename
+}
+
+function canDownload(item: AttachmentSummary): boolean {
+  return item.scan_status === 'clean' && safeFilename(item.filename) !== null &&
+    Number.isSafeInteger(item.byte_size) && item.byte_size >= 1 && item.byte_size <= 10 * 1024 * 1024
+}
+
 function statusText(status: AttachmentSummary['scan_status']): string {
   if (status === 'pending_scan') return 'Pending security scan; download held'
   if (status === 'malware') return 'Blocked by security scan'
   if (status === 'scan_failed') return 'Security scan failed; download held'
-  return 'Scan complete'
+  if (status === 'rejected') return 'Rejected before storage; download unavailable'
+  if (status === 'clean') return 'Scan complete'
+  return 'Attachment unavailable'
 }
 
 export function MessageAttachments({ mailboxId, threadId, messageId, count, port }: {
@@ -69,6 +82,7 @@ export function MessageAttachments({ mailboxId, threadId, messageId, count, port
 
   async function download(item: AttachmentSummary) {
     // AIDEV-NOTE: The ref fences duplicate clicks before React commits; each completion owns only its ID.
+    if (!canDownload(item)) return
     if (pendingDownloads.current.has(item.id)) return
     pendingDownloads.current.add(item.id)
     const update = (status: 'loading' | 'error' | 'unavailable' | null) => setDownloadState((prior) => {
@@ -94,7 +108,7 @@ export function MessageAttachments({ mailboxId, threadId, messageId, count, port
       try {
         const anchor = document.createElement('a')
         anchor.href = createdUrl
-        anchor.download = item.filename
+        anchor.download = safeFilename(item.filename) ?? 'attachment'
         anchor.click()
         // A short delay lets the browser start the download; owner cleanup also revokes pending URLs.
         window.setTimeout(() => { URL.revokeObjectURL(createdUrl); activeUrls.current.delete(createdUrl) }, 1000)
@@ -119,8 +133,8 @@ export function MessageAttachments({ mailboxId, threadId, messageId, count, port
     {state.status === 'ready' && <>
       {state.items.length === 0 && <p>No attachment metadata is available.</p>}
       <ul className="flex flex-col gap-2">{state.items.map((item) => <li key={item.id}>
-        <span>{item.filename} ({item.byte_size} bytes) — {statusText(item.scan_status)}</span>
-        {item.scan_status === 'clean' && <Button size="sm" disabled={downloadState.get(item.id) === 'loading'} onClick={() => void download(item)}>Download {item.filename}</Button>}
+        <span>{safeFilename(item.filename) ?? 'Attachment'} ({item.byte_size} bytes) — {canDownload(item) || item.scan_status !== 'clean' ? statusText(item.scan_status) : 'Attachment unavailable'}</span>
+        {canDownload(item) && <Button size="sm" disabled={downloadState.get(item.id) === 'loading'} onClick={() => void download(item)}>Download {safeFilename(item.filename)}</Button>}
         {downloadState.get(item.id) === 'unavailable' && <p role="alert">This attachment is no longer available to download.</p>}
         {downloadState.get(item.id) === 'error' && <p role="alert">Download failed. Retry explicitly.</p>}
       </li>)}</ul>
