@@ -6,8 +6,8 @@ const leadId = '7206b079-7c79-4d06-a025-d80649b39573'
 
 describe('Outreach provisional read boundary', () => {
   it('accepts a paused campaign and granted but suppressed lead without inferring eligibility', () => {
-    expect(campaignPageSchema.parse({ items: [{ id: campaignId, name: 'Pilot', status: 'paused', version: 1 }], next_cursor: null }).items[0].status).toBe('paused')
-    expect(leadPageSchema.parse({ items: [{ id: leadId, campaign_id: campaignId, email: 'test@example.invalid', consent_status: 'granted', suppressed: true, version: 1 }], next_cursor: null }).items[0].suppressed).toBe(true)
+    expect(campaignPageSchema.parse({ items: [{ id: campaignId, name: 'Pilot', status: 'paused', version: 1 }], next_cursor: null }).items[0]?.status).toBe('paused')
+    expect(leadPageSchema.parse({ items: [{ id: leadId, campaign_id: campaignId, email: 'test@example.invalid', consent_status: 'granted', suppressed: true, version: 1 }], next_cursor: null }).items[0]?.suppressed).toBe(true)
   })
   it('rejects a legacy active status or omitted suppression field', () => {
     expect(campaignPageSchema.safeParse({ items: [{ id: campaignId, name: 'Pilot', status: 'active', version: 1 }], next_cursor: null }).success).toBe(false)

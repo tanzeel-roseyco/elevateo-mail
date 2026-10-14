@@ -21,9 +21,9 @@ export interface OutreachPageProps {
 }
 
 type Load<T> = { status: 'loading' } | { status: 'unavailable' } | { status: 'error' } | { status: 'ready'; value: T }
-type Resource = 'campaigns' | 'campaign' | 'leads' | 'accounts' | 'account' | 'analytics'
+type Resource = 'campaigns' | 'campaign' | 'leads' | 'lead' | 'accounts' | 'account' | 'analytics'
 const schemas = {
-  campaigns: campaignPageSchema, campaign: campaignSchema, leads: leadPageSchema,
+  campaigns: campaignPageSchema, campaign: campaignSchema, leads: leadPageSchema, lead: leadSchema,
   accounts: accountPageSchema, account: accountSchema, analytics: analyticsSchema,
 }
 
@@ -33,10 +33,10 @@ function useOutreachRead<K extends Resource>(kind: K, props: OutreachPageProps, 
   const { gateway, context } = props
   const [state, setState] = useState<Load<z.infer<(typeof schemas)[K]>>>({ status: 'loading' })
   useEffect(() => {
-    if (!gateway || !context || (['campaign', 'leads', 'account', 'analytics'].includes(kind) && !id)) {
+    if (!gateway || !context || (['campaign', 'leads', 'lead', 'accounts', 'account', 'analytics'].includes(kind) && !id) || (kind === 'lead' && !gateway.getLead)) {
       setState({ status: 'unavailable' }); return
     }
-    if (id && !z.uuid().safeParse(id).success) { setState({ status: 'error' }); return }
+    if (id && !id.split(':').every((part) => z.uuid().safeParse(part).success)) { setState({ status: 'error' }); return }
     if (cursor && !z.uuid().safeParse(cursor).success) { setState({ status: 'error' }); return }
     const controller = new AbortController()
     setState({ status: 'loading' })
@@ -45,8 +45,15 @@ function useOutreachRead<K extends Resource>(kind: K, props: OutreachPageProps, 
         case 'campaigns': return gateway.listCampaigns(context, cursor ? { cursor } : {}, controller.signal)
         case 'campaign': return gateway.getCampaign(context, id!, controller.signal)
         case 'leads': return gateway.listLeads(context, id!, cursor ? { cursor } : {}, controller.signal)
-        case 'accounts': return gateway.listAccounts(context, cursor ? { cursor } : {}, controller.signal)
-        case 'account': return gateway.getAccount(context, id!, controller.signal)
+        case 'lead': {
+          const [campaignId, leadId] = id!.split(':')
+          return gateway.getLead!(context, campaignId!, leadId!, controller.signal)
+        }
+        case 'accounts': return gateway.listAccounts(context, id!, cursor ? { cursor } : {}, controller.signal)
+        case 'account': {
+          const [campaignId, accountId] = id!.split(':')
+          return gateway.getAccount(context, campaignId!, accountId!, controller.signal)
+        }
         case 'analytics': return gateway.listAnalytics(context, id!, controller.signal)
       }
       throw new Error('Unsupported Outreach resource')
@@ -55,9 +62,11 @@ function useOutreachRead<K extends Resource>(kind: K, props: OutreachPageProps, 
       const parsed = schemas[kind].safeParse(wire)
       const bound = parsed.success && (
         (kind === 'campaign' && parsed.data && 'id' in parsed.data) ? parsed.data.id === id :
-        (kind === 'account' && parsed.data && 'id' in parsed.data) ? parsed.data.id === id :
+        (kind === 'account' && parsed.data && 'id' in parsed.data) ? parsed.data.id === id?.split(':')[1] && 'campaign_id' in parsed.data && parsed.data.campaign_id === id?.split(':')[0] :
+        (kind === 'lead' && parsed.data && 'id' in parsed.data) ? parsed.data.id === id?.split(':')[1] && 'campaign_id' in parsed.data && parsed.data.campaign_id === id?.split(':')[0] :
         (kind === 'analytics' && parsed.data && 'campaign_id' in parsed.data) ? parsed.data.campaign_id === id :
-        (kind === 'leads' && parsed.data && 'items' in parsed.data) ? parsed.data.items.every((item) => 'campaign_id' in item && item.campaign_id === id) : true
+        (kind === 'leads' || kind === 'accounts') && parsed.data && 'items' in parsed.data
+          ? parsed.data.items.every((item) => 'campaign_id' in item && item.campaign_id === id) : true
       )
       if (!controller.signal.aborted) setState(parsed.success && bound ? { status: 'ready', value: parsed.data as z.infer<(typeof schemas)[K]> } : { status: 'error' })
     }).catch(() => { if (!controller.signal.aborted) setState({ status: 'error' }) })
@@ -139,7 +148,7 @@ export function OutreachCampaignDetailPage(props: OutreachPageProps) {
   const { campaignId } = useParams<{ campaignId: string }>()
   return <CampaignDetail key={`${scopeKey(props)}:${campaignId}`} {...props} campaignId={campaignId} />
 }
-function CampaignDetail({ campaignId, ...props }: OutreachPageProps & { campaignId?: string }) {
+function CampaignDetail({ campaignId, ...props }: OutreachPageProps & { campaignId: string | undefined }) {
   const [revision, setRevision] = useState(0)
   const state = useOutreachRead('campaign', props, campaignId, revision)
   const pending = useRef<AbortController | null>(null)
@@ -166,7 +175,7 @@ function CampaignDetail({ campaignId, ...props }: OutreachPageProps & { campaign
     <p><strong>{campaign.name}</strong> · {campaign.status}</p>
     <nav aria-label="Campaign sections" className="flex gap-4">
       <Link to={`/outreach/campaigns/${campaign.id}/leads`}>Leads</Link>
-      <Link to="/outreach/accounts">Accounts</Link>
+      <Link to={`/outreach/campaigns/${campaign.id}/accounts`}>Accounts</Link>
       <Link to={`/outreach/campaigns/${campaign.id}/analytics`}>Analytics</Link>
     </nav>
     <form onSubmit={(event) => { void update(event, campaign, campaign.status) }} className="space-y-3">
@@ -187,10 +196,10 @@ export function OutreachAnalyticsPage(props: OutreachPageProps) {
   const [search] = useSearchParams()
   return <CampaignChooser key={`${scopeKey(props)}:${search.get('cursor') ?? ''}`} {...props} section="analytics" />
 }
-function CampaignChooser({ section, ...props }: OutreachPageProps & { section: 'leads' | 'analytics' }) {
+function CampaignChooser({ section, ...props }: OutreachPageProps & { section: 'leads' | 'accounts' | 'analytics' }) {
   const [search] = useSearchParams()
   const state = useOutreachRead('campaigns', props, undefined, 0, search.get('cursor') ?? undefined)
-  return <Page title={section === 'leads' ? 'Leads' : 'Analytics'}><p>Select a campaign.</p>
+  return <Page title={section === 'leads' ? 'Leads' : section === 'accounts' ? 'Accounts' : 'Analytics'}><p>Select a campaign.</p>
     <Content state={state} empty={(page) => page.items.length === 0 && page.next_cursor === null}>{(page) => <>
       <ul>{page.items.map((campaign) => <li key={campaign.id}><Link to={`/outreach/campaigns/${campaign.id}/${section}`}>{campaign.name}</Link></li>)}</ul>
       {page.next_cursor && <Link to={`?cursor=${encodeURIComponent(page.next_cursor)}`}>Next campaign page</Link>}
@@ -203,7 +212,7 @@ export function OutreachCampaignLeadsPage(props: OutreachPageProps) {
   const [search] = useSearchParams()
   return <CampaignLeads key={`${scopeKey(props)}:${campaignId}:${search.get('cursor') ?? ''}`} {...props} campaignId={campaignId} />
 }
-function CampaignLeads({ campaignId, ...props }: OutreachPageProps & { campaignId?: string }) {
+function CampaignLeads({ campaignId, ...props }: OutreachPageProps & { campaignId: string | undefined }) {
   const [search] = useSearchParams()
   const cursor = search.get('cursor') ?? undefined
   const [revision, setRevision] = useState(0)
@@ -241,7 +250,7 @@ function CampaignLeads({ campaignId, ...props }: OutreachPageProps & { campaignI
   }
   return <Page title="Campaign leads"><Content state={state} empty={(page) => page.items.length === 0 && page.next_cursor === null}>{(page) => <>
     <ul className="space-y-2">{page.items.map((lead: Lead) =>
-      <li key={lead.id}>{lead.email} · consent {lead.consent_status} · {lead.suppressed ? 'suppressed' : 'not suppressed (server report)'}
+      <li key={lead.id}><Link to={`/outreach/campaigns/${campaignId}/leads/${lead.id}`}>{lead.email}</Link> · consent {lead.consent_status} · {lead.suppressed ? 'suppressed' : 'not suppressed (server report)'}
         <Button onClick={() => { setEditId(lead.id); setEmail(lead.email) }}>Edit address</Button>
         {props.gateway?.recordConsent && lead.consent_status !== 'granted' &&
           <Button onClick={() => setConsentId((current) => current === lead.id ? null : lead.id)}>Record consent evidence</Button>}
@@ -260,24 +269,45 @@ function CampaignLeads({ campaignId, ...props }: OutreachPageProps & { campaignI
   </Page>
 }
 
+export function OutreachLeadDetailPage(props: OutreachPageProps) {
+  const { campaignId, leadId } = useParams<{ campaignId: string; leadId: string }>()
+  return <LeadDetail key={`${scopeKey(props)}:${campaignId}:${leadId}`} {...props} campaignId={campaignId} leadId={leadId} />
+}
+function LeadDetail({ campaignId, leadId, ...props }: OutreachPageProps & { campaignId: string | undefined; leadId: string | undefined }) {
+  const state = useOutreachRead('lead', props, campaignId && leadId ? `${campaignId}:${leadId}` : undefined)
+  return <Page title="Lead detail"><Content state={state}>{(lead) => <>
+    <p><strong>{lead.email}</strong></p>
+    <p>Consent: {lead.consent_status}. Suppression: {lead.suppressed ? 'active' : 'not reported by server'}.</p>
+    <p>Evidence source: {lead.consent_source ?? 'none recorded'}</p>
+    <p>Evidence observed: {lead.consent_recorded_at ?? 'none recorded'}</p>
+    <p>Evidence actor: {lead.consent_recorded_by ?? 'none recorded'}</p>
+    <p>This record does not authorize sending.</p>
+  </>}</Content></Page>
+}
+
 export function OutreachAccountsPage(props: OutreachPageProps) {
   const [search] = useSearchParams()
-  return <AccountList key={`${scopeKey(props)}:${search.get('cursor') ?? ''}`} {...props} />
+  return <CampaignChooser key={`${scopeKey(props)}:${search.get('cursor') ?? ''}`} {...props} section="accounts" />
 }
-function AccountList(props: OutreachPageProps) {
+export function OutreachCampaignAccountsPage(props: OutreachPageProps) {
+  const { campaignId } = useParams<{ campaignId: string }>()
   const [search] = useSearchParams()
-  const state = useOutreachRead('accounts', props, undefined, 0, search.get('cursor') ?? undefined)
+  return <AccountList key={`${scopeKey(props)}:${campaignId}:${search.get('cursor') ?? ''}`} {...props} campaignId={campaignId} />
+}
+function AccountList({ campaignId, ...props }: OutreachPageProps & { campaignId: string | undefined }) {
+  const [search] = useSearchParams()
+  const state = useOutreachRead('accounts', props, campaignId, 0, search.get('cursor') ?? undefined)
   return <Page title="Outreach accounts"><Content state={state} empty={(page) => page.items.length === 0 && page.next_cursor === null}>{(page) => <>
-    <ul>{page.items.map((account: Account) => <li key={account.id}><Link to={`/outreach/accounts/${account.id}`}>{account.label}</Link> · disabled</li>)}</ul>
+    <ul>{page.items.map((account: Account) => <li key={account.id}><Link to={`/outreach/campaigns/${campaignId}/accounts/${account.id}`}>{account.label}</Link> · disabled</li>)}</ul>
     {page.next_cursor && <Link to={`?cursor=${encodeURIComponent(page.next_cursor)}`}>Next accounts page</Link>}
   </>}</Content></Page>
 }
 export function OutreachAccountDetailPage(props: OutreachPageProps) {
-  const { accountId } = useParams<{ accountId: string }>()
-  return <AccountDetail key={`${scopeKey(props)}:${accountId}`} {...props} accountId={accountId} />
+  const { campaignId, accountId } = useParams<{ campaignId: string; accountId: string }>()
+  return <AccountDetail key={`${scopeKey(props)}:${campaignId}:${accountId}`} {...props} campaignId={campaignId} accountId={accountId} />
 }
-function AccountDetail({ accountId, ...props }: OutreachPageProps & { accountId?: string }) {
-  const state = useOutreachRead('account', props, accountId)
+function AccountDetail({ campaignId, accountId, ...props }: OutreachPageProps & { campaignId: string | undefined; accountId: string | undefined }) {
+  const state = useOutreachRead('account', props, campaignId && accountId ? `${campaignId}:${accountId}` : undefined)
   return <Page title="Outreach account"><Content state={state}>{(account) => <>
     <p><strong>{account.label}</strong> · {account.status}</p><p>Mailbox {account.mailbox_id}</p>
     <p>This account cannot be activated here.</p>
@@ -287,7 +317,7 @@ export function OutreachCampaignAnalyticsPage(props: OutreachPageProps) {
   const { campaignId } = useParams<{ campaignId: string }>()
   return <CampaignAnalytics key={`${scopeKey(props)}:${campaignId}`} {...props} campaignId={campaignId} />
 }
-function CampaignAnalytics({ campaignId, ...props }: OutreachPageProps & { campaignId?: string }) {
+function CampaignAnalytics({ campaignId, ...props }: OutreachPageProps & { campaignId: string | undefined }) {
   const state = useOutreachRead('analytics', props, campaignId)
   return <Page title="Campaign analytics"><Content state={state}>{(row: Analytics) =>
     <p>{row.consented_count} consented of {row.lead_count} leads (server aggregate)</p>}</Content></Page>
