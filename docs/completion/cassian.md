@@ -203,3 +203,7 @@ Bounded source inspection of Nadia 00015 status/size constraints, Attachments::S
 Added only the V2 adapter class/method RBS and block types for the unregistered InboxAttachmentsController. Soren cb1ec5b Steep preceded this controller but showed missing Attachments domain declarations; Nadia/Corin own those RBS additions. No suppression or runtime claim; exact-source static gate pending.
 
 Nadia confirmed the ATT823 rejected/size-zero visibility choice; proposal attachments.2 and unbound browser port now reflect the agreed wire. Mira owns the UI status/type repair; route remains inactive and Docker acceptance pending.
+
+## Canonical draft.6 generated declaration
+
+Soren exact `web-882a4710860f.log` used canonical V2 OpenAPI SHA256 `7ee511a76fb556bf198896fb5bb31173c3cdeb295977f647b9041c6d7b02e744`, generated `api-v2.d.ts` SHA256 `5c943ec1c13a10fbeec5aed8e7cddcb7bee459352f6a56afd8142e6650307e34`, and passed V1/V2 generation/check, lint and TypeScript. Cassian copied that exact Docker-generated artifact into source and added `check:api:v2` to the maintained web Docker CMD. Vitest on that older source was 57/58 files, 825/827 cases PASS; two Fable shell expectation failures blocked build. The present integrated SHA and new Docker CMD are NOT_RUN.
