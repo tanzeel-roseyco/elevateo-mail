@@ -10,6 +10,8 @@ module Elevateo
       def observation: (send_id: String, attempt_id: String, snapshot_digest: String) -> nil
     end
     class LocalMailpitClient
+      class PreflightFailed < StandardError
+      end
       @profile: SmtpProfile
       @smtp_factory: untyped
       def initialize: (profile: SmtpProfile, ?smtp_factory: untyped) -> void

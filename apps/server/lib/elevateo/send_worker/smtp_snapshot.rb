@@ -20,8 +20,10 @@ module Elevateo
         raise Invalid, "invalid send snapshot" unless bytes.is_a?(String) && bytes.bytesize.between?(1, 1_048_576) &&
           bytes.dup.force_encoding(Encoding::UTF_8).valid_encoding? && Control.valid_epoch?(send_id)
         value = JSON.parse(bytes, max_nesting: 5)
+        identities = value.is_a?(Array) ? value[1, 3] : nil
         raise Invalid, "invalid send snapshot" unless value.is_a?(Array) && value.length == 14 && value[0] == FORMAT &&
-          value[1, 3].all? { |id| Control.valid_epoch?(id) } && value[4].is_a?(Integer) && value[4].positive? &&
+          identities.is_a?(Array) && identities.all? { |id| Control.valid_epoch?(id) } &&
+          value[4].is_a?(Integer) && value[4].positive? &&
           value[5].is_a?(Array) && value[5].length == 2 && value[5][0].nil? &&
           (value[9].nil? || Control.valid_epoch?(value[9]))
         sender = value[5][1]
@@ -33,7 +35,8 @@ module Elevateo
         unless subject.is_a?(String) && subject.length <= 998 && SendAPI::Address.header?(subject) &&
             body.is_a?(String) && body.valid_encoding? && body.length <= MAX_BODY_CHARS && !body.include?("\0") &&
             value[10] == "correspondence" && value[11] == "human_correspondence_attestation" &&
-            value[12] == [] && value[13].is_a?(String) && /\A[1-9][0-9]{0,18}\z/.match?(value[13])
+            value[12].is_a?(Array) && value[12].empty? &&
+            value[13].is_a?(String) && /\A[1-9][0-9]{0,18}\z/.match?(value[13])
           raise Invalid, "unsupported send content"
         end
         mime = build_mime(send_id, sender, recipients, subject, body)
@@ -48,7 +51,7 @@ module Elevateo
         unless value.is_a?(Array) && value.length.between?(1, 100)
           raise Invalid, "invalid recipients"
         end
-        seen = {}
+        seen = {} # : Hash[String, bool]
         value.map do |item|
           unless item.is_a?(Array) && item.length == 2 &&
               (item[0].nil? || (item[0].is_a?(String) && item[0].bytesize <= 256 && SendAPI::Address.header?(item[0]))) &&
@@ -78,7 +81,7 @@ module Elevateo
       # RFC 2047 encoded words are bounded by 30 UTF-8 bytes so every folded line stays short.
       def self.encoded_words(value)
         return "" if value.empty?
-        chunks = []
+        chunks = [] # : Array[String]
         chunk = +""
         value.each_char do |character|
           if chunk.bytesize + character.bytesize > 30

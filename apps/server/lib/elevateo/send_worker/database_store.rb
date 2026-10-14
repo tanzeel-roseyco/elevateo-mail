@@ -13,6 +13,8 @@ module Elevateo
     class DatabaseStore
       class InvalidResult < StandardError; end
       class StaleLease < StandardError; end
+      PROFILES = { "synthetic-v1" => "local:synthetic-v1",
+        "mailpit-smtp-test-v1" => "local:mailpit-smtp-test-v1" }.freeze
 
       def self.next_due_send(connection:, epoch:, excluded:)
         raise ArgumentError, "invalid dispatch epoch" unless Control.valid_epoch?(epoch)
@@ -27,12 +29,14 @@ module Elevateo
       end
 
       # AIDEV-NOTE: This connection must authenticate as elevateo_worker; each function commits before provider I/O.
-      def initialize(connection:, send_id:, lease_seconds: 30, deadline_seconds: 10)
+      def initialize(connection:, send_id:, lease_seconds: 30, deadline_seconds: 10, profile: "synthetic-v1")
         raise ArgumentError, "invalid send identity" unless Control.valid_epoch?(send_id)
         raise ArgumentError, "invalid lease budget" unless lease_seconds.is_a?(Integer) && lease_seconds.between?(1, 120)
         raise ArgumentError, "invalid call budget" unless deadline_seconds.is_a?(Integer) && deadline_seconds.between?(1, 10)
+        raise ArgumentError, "invalid worker profile" unless PROFILES.key?(profile)
         @connection, @send_id = connection, send_id
         @lease_seconds, @deadline_seconds = lease_seconds, deadline_seconds
+        @profile = profile
       end
 
       def claim(epoch:)
@@ -65,7 +69,7 @@ module Elevateo
         result = call("SELECT app_send_private.authorize_attempt($1::uuid,$2::uuid,$3::bigint,$4::uuid,$5::uuid," \
           "decode($6::text,'hex'),$7::text,$8::integer)",
           [claim.send_id, claim.lease_id, claim.generation, attempt_id, epoch,
-            Digest::SHA256.hexdigest("local:synthetic-v1"), "synthetic-v1", @deadline_seconds])
+            Digest::SHA256.hexdigest(PROFILES.fetch(@profile)), @profile, @deadline_seconds])
         return nil if result["code"] == "dispatch_held"
         require_fields(result, %w[attempt_id attempt_no call_deadline_at simulated])
         raise InvalidResult unless result["attempt_id"] == attempt_id && result["simulated"] == true
@@ -81,10 +85,21 @@ module Elevateo
       end
 
       def record_observation(claim:, attempt_id:, snapshot_digest:, result:)
+        if result.kind == "accepted"
+          prefix = @profile == "synthetic-v1" ? "local:" : "mailpit-test-v1:"
+          raise InvalidResult, "receipt/profile mismatch" unless result.receipt_ref.is_a?(String) &&
+            result.receipt_ref.start_with?(prefix)
+        end
         digest = result.evidence_digest(send_id: claim.send_id, attempt_id: attempt_id,
           snapshot_digest: snapshot_digest)
-        value = call("SELECT app_send_private.record_observation($1::uuid,$2::uuid,$3::bigint,$4::uuid," \
-          "$5::uuid,$6::text,$7::text,decode($8::text,'hex'))",
+        sql = if @profile == "synthetic-v1"
+          "SELECT app_send_private.record_observation($1::uuid,$2::uuid,$3::bigint,$4::uuid," \
+            "$5::uuid,$6::text,$7::text,decode($8::text,'hex'))"
+        else
+          "SELECT app_send_private.record_observation_v2($1::uuid,$2::uuid,$3::bigint,$4::uuid," \
+            "$5::uuid,$6::text,$7::text,decode($8::text,'hex'),'mailpit_smtp_test_v1')"
+        end
+        value = call(sql,
           [claim.send_id, claim.lease_id, claim.generation, SecureRandom.uuid, attempt_id,
             result.kind, result.receipt_ref, digest])
         raise StaleLease if value["code"] == "stale_lease"
@@ -101,14 +116,17 @@ module Elevateo
       end
 
       def reconcile(claim:, observation:)
+        attempt_id = claim.attempt_id
+        raise InvalidResult, "reconciliation attempt missing" unless attempt_id.is_a?(String) &&
+          Control.valid_epoch?(attempt_id)
         unless observation
           value = call("SELECT app_send_private.reconcile_no_evidence($1::uuid,$2::uuid,$3::bigint,$4::uuid)",
-            [claim.send_id, claim.lease_id, claim.generation, claim.attempt_id])
+            [claim.send_id, claim.lease_id, claim.generation, attempt_id])
           require_fields(value, %w[state simulated])
           raise InvalidResult unless value["simulated"] == true
           return value
         end
-        record_observation(claim: claim, attempt_id: claim.attempt_id,
+        record_observation(claim: claim, attempt_id: attempt_id,
           snapshot_digest: claim.snapshot_digest, result: observation)
       end
 
