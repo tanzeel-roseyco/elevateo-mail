@@ -8,6 +8,7 @@
 import { createContext, useContext, type ReactNode } from 'react'
 import type { OutreachGateway } from '@/features/outreach/contract'
 import type { DirectMessageRead } from '@/features/thread/ThreadPage'
+import type { AssigneeOptionsReadPort } from '@/data/v2AssigneeOptionsGateway'
 
 export interface FeatureGateways {
   readonly outreach?: OutreachGateway
@@ -18,6 +19,8 @@ export interface FeatureGateways {
    * would spend the single bounded refresh twice, so this seam carries the raw reader.
    */
   readonly readDirectMessage?: DirectMessageRead
+  /** Inject only after mailbox-scoped SQL, route and current-session fleet proof. */
+  readonly assigneeOptions?: AssigneeOptionsReadPort
 }
 
 const NONE: FeatureGateways = {}

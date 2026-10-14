@@ -437,3 +437,5 @@ Exact QA815 `215080a4` eight pure Ruby suites passed 51 runs/225 assertions with
 Android integration adopted six previously missing exact Astrid `d93c331` classifier/test/build blobs. Soren's exact `d93c331` compile-only Docker run passed 20 Python methods, seven Rust units, Gradle packaging and policy on a retained unsigned fixture APK; current integrated-SHA build and installed runtime remain NOT_RUN.
 
 Sabine DIR903 migration 00019 and Theo DIR904 mailbox assignee-options controller/projection/tests are integrated as unexecuted candidates behind a disabled V2 route. SQL rechecks session/context/generation and existing V1 target eligibility; Soren fleet real-role DB/HTTP/Steep and UI proof remain pending.
+
+DIR905 shared feature gateway declares an optional assignee-options read port with production injection still absent. Lyra's picker and runtime proof remain pending.

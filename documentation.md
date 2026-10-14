@@ -499,3 +499,5 @@ QA815 focused receipt `focused-steep-215080a4ed74.txt` identifies one Cassian ga
 Android fail-closed permission/unsigned parsers and the invoking Dockerfile/build script were restored from exact Astrid `d93c331`; `ops/tests/qa815/run-android-candidate.sh` and `docs/completion/qa815-evidence/android-d93c3311d1c1.txt` preserve Soren's compile-only result and cleanup. Exact `215080a4` strict backend receipt is separately imported at `focused-steep-215080a4ed74.txt`; its Steep failure gates broader backend acceptance.
 
 The additive mailbox assignee options source is `apps/server/db/directory/assignment_member_options.sql` with migration 00019 and Theo's `V2::Admin::MailboxAssigneeOptionsController`. It returns only eligible Auth UUIDs, uses current session and signed mailbox cursor scope, and is not registered until Soren verifies SQL/RLS/HTTP and the generated DTO matches canonical draft.8.
+
+`AssigneeOptionsReadPort` is exported by the V2 client adapter and available as an optional `FeatureGateways.assigneeOptions` capability for the AssignmentPanel child. The app entry does not inject it until server activation and fleet verification.

@@ -494,3 +494,5 @@ QA815 exact `215080a4` focused backend gate passed eight pure Ruby suites (51 ru
 The assembled Android lane now includes Astrid's previously omitted permission/unsigned classifiers, tests and exact build recipe. QA815 exact `d93c331` fleet compile-only policy passed on a fixture APK byte-identical to the older rejected artifact; installed Android and release signing remain untested. The receipt is not a build of this later integrated SHA.
 
 DIR903/904 candidate now includes protected mailbox assignee UUID SQL and a bounded V2 read controller/adapter, with the route still inactive. It lists only current eligible Auth UUIDs; the twelve staff references remain unbound. Fleet DB/HTTP/strict/browser checks are pending.
+
+The mailbox assignee picker now has an optional typed feature port for Lyra's UI; production injection remains off until protected SQL, V2 route and fleet proof are accepted.

@@ -4,9 +4,15 @@ import { GatewayError } from './errors'
 import { CollaborationErrorSchema } from './contract'
 import { IdSchema, MailboxAssigneeOptionPageSchema } from './v2Contract'
 import type { ReadContext } from './gateway'
+import type { MailboxAssigneeOptionPage } from './v2Contract'
+
+export interface AssigneeOptionsReadPort {
+  listMailboxAssigneeOptions(ctx: ReadContext, mailboxId: string,
+    query: { cursor?: string; limit?: number }, signal: AbortSignal): Promise<MailboxAssigneeOptionPage>
+}
 
 /** Prepared V2 read adapter. The route is inactive until its SQL authority and controller pass fleet gates. */
-export function createV2AssigneeOptionsGateway(fetchImpl?: FetchLike) {
+export function createV2AssigneeOptionsGateway(fetchImpl?: FetchLike): AssigneeOptionsReadPort {
   return {
     async listMailboxAssigneeOptions(ctx: ReadContext, mailboxId: string,
       query: { cursor?: string; limit?: number }, signal: AbortSignal) {
