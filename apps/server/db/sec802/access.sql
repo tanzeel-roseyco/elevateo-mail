@@ -17,11 +17,17 @@ REVOKE ALL ON app.organization_access FROM PUBLIC, elevateo_api, elevateo_app_re
 CREATE FUNCTION app.prevent_owner_loss() RETURNS trigger
 LANGUAGE plpgsql VOLATILE SECURITY DEFINER SET search_path = pg_catalog AS $$
 BEGIN
-  IF OLD.role = 'owner' AND (TG_OP = 'DELETE' OR NEW.role <> 'owner'
-    OR NEW.organization_id <> OLD.organization_id OR NEW.user_id <> OLD.user_id) THEN
-    RAISE EXCEPTION 'owner transfer required' USING ERRCODE = '23514';
+  IF OLD.role = 'owner' THEN
+    IF TG_OP = 'DELETE' THEN
+      RAISE EXCEPTION 'owner transfer required' USING ERRCODE = '23514';
+    END IF;
+    IF NEW.role <> 'owner' OR NEW.organization_id <> OLD.organization_id
+      OR NEW.user_id <> OLD.user_id THEN
+      RAISE EXCEPTION 'owner transfer required' USING ERRCODE = '23514';
+    END IF;
   END IF;
-  RETURN CASE WHEN TG_OP = 'DELETE' THEN OLD ELSE NEW END;
+  IF TG_OP = 'DELETE' THEN RETURN OLD; END IF;
+  RETURN NEW;
 END $$;
 CREATE TRIGGER guard_owner_loss BEFORE UPDATE OR DELETE ON app.organization_access
   FOR EACH ROW EXECUTE FUNCTION app.prevent_owner_loss();
