@@ -5,7 +5,13 @@ module Elevateo
     class Unavailable < StandardError
     end
     MAX_BYTES: Integer
-    def initialize: (config: Config, ?transport: untyped, ?transaction_open: untyped, ?http_factory: untyped) -> void
+    type transport = ^(String, String, Numeric) -> [Integer, Hash[String, String], String]
+    type http_factory = ^(String, Integer, nil) -> Net::HTTP
+    @config: Config
+    @transport: transport?
+    @transaction_open: ^() -> bool
+    @http_factory: http_factory
+    def initialize: (config: Config, ?transport: transport?, ?transaction_open: (^() -> bool)?, ?http_factory: http_factory?) -> void
     def download: (fields: Hash[String, untyped], timeout: Numeric, ?now: Integer) -> String
     private
     def exchange: (AttachmentGatewayRequest, Numeric) -> [Integer, Hash[String, String], String]
