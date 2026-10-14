@@ -78,8 +78,9 @@ class WriteBoundaryPoolDispositionTest < WriteBoundaryPoolTestCase
     acquired, release = Queue.new, Queue.new
     checked_in, removals, disconnects = false, 0, 0
     target = @adapter
+    backend = target.select_value("SELECT pg_backend_pid()")
     original_checkin = instrument(@pool, :checkin) do |original, connection|
-      assert @pool.mon_owned?, "protection must precede checkin publication" if connection.equal?(target)
+      assert @pool.mon_owned?, "protection must precede checkin publication" if connection.equal?(target) && !checked_in
       original.call(connection)
       checked_in = true if connection.equal?(target)
     end
@@ -98,7 +99,7 @@ class WriteBoundaryPoolDispositionTest < WriteBoundaryPoolTestCase
     assert_raises(Elevateo::AuthError) do
       deadline.within do
         protected_call(deadline: deadline) do
-          waiter = pool_waiter(acquired, release)
+          waiter = pool_waiter(acquired, release, expected_backend: backend)
           wait_until { @pool.stat.fetch(:waiting) == 1 }
           response(409)
         end

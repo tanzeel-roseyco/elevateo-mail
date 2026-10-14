@@ -86,7 +86,9 @@ class CollaborationControllerTest < Minitest::Test
       payload: { "mailbox_id" => BOX, "assignee_id" => nil, "expected_assignment_version" => 0 })
     assert_equal 404, result[0]
     assert_equal({ "code" => "not_available", "message" => "This item is unavailable.", "request_id" => "collaboration-test" }, result[2])
-    assert_equal :rollback, @connection.events.last
+    assert_includes @connection.events, :rollback
+    assert_includes @connection.events, :disconnect
+    assert_operator @connection.events.index(:rollback), :<, @connection.events.index(:disconnect)
   end
 
   def test_notes_post_preserves_maximum_escaped_text_with_larger_request_and_response_budget

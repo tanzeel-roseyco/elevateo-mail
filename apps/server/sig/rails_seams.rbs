@@ -28,6 +28,8 @@ module ActionDispatch
     end
   end
   class Request
+    def request_parameters=: (Hash[String, Object?]) -> void
+    def set_header: (String, Object?) -> Object?
     def query_string: () -> String
     def cookies: () -> Hash[String, String]
     def headers: () -> Http::Headers
@@ -59,6 +61,7 @@ module ActionController
     def self.rescue_from: (singleton(Exception), with: Symbol) -> void
                        | (singleton(Exception)) { (Exception) [self: instance] -> void } -> void
     def self.around_action: (Symbol) -> void
+    def process_action: (*untyped) -> untyped
     def request: () -> ActionDispatch::Request
     def response: () -> ActionDispatch::Response
     def params: () -> Parameters
@@ -159,4 +162,9 @@ class HealthController < ApplicationController
   private
   def check: () { () -> bool } -> bool
   def http_ok?: (String) -> bool
+end
+
+# AIDEV-NOTE: Core RBS omits handle_interrupt's required block; this seam preserves the real block return type.
+class Thread
+  def self.handle_interrupt: [T] (Hash[singleton(Exception), :never | :immediate | :on_blocking]) { () -> T } -> T
 end

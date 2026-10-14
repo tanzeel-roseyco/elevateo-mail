@@ -21,7 +21,9 @@ module Elevateo
         succeeded = false
         begin
           access = @crypto.decrypt(intent["access_token_ciphertext"], purpose: "access")
-          succeeded = @client.logout(access, intent["scope"], deadline: deadline)
+          scope = intent["scope"]
+          raise AuthError.new unless scope.is_a?(String)
+          succeeded = @client.logout(access, scope, deadline: deadline)
         rescue AuthError
           # Failure is recorded durably with bounded DB backoff; no credential or response body is logged.
           succeeded = false

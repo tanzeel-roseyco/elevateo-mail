@@ -11,9 +11,11 @@ module Elevateo
       def initialize: (user_id: String, org_id: String) -> void
     end
     interface _Transaction
+      def equal?: (_Transaction) -> bool
       def open?: () -> bool
     end
     interface _TenantConnection
+      def equal?: (_TenantConnection) -> bool
       def transaction_open?: () -> bool
       def current_transaction: () -> _Transaction
       def clear_query_cache: () -> void
