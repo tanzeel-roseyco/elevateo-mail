@@ -729,3 +729,7 @@ Coverage: `ui/ConnectivityBanner.tsx` (52 LOC), Shell route-hygiene hunk and ban
 ### FE-805 R5 ADV033 repair and gateway bridge (Fable, 2026-10-15)
 
 Root-assigned reviews received: ADV031 registration 180 LOC 0 defects; ADV032 Sidebar 150 LOC 0 defects; ADV033 Shell 270 LOC 1 confirmed defect (unconditional simulated/local-only claims at the footnote, badge and sidebar lines). ADV033 repaired in this commit: label derived from session `simulation_mode`, copy corrected, regression case added. Repair packet: Shell/Sidebar hunks ~14 LOC plus `outreachGatewayBridge.ts` 27 LOC and `main.tsx` 4 LOC; author self-inspection only on the repair, independent re-review pending. Tests: 4 new cases (3 bridge, 1 labelling), not executed.
+
+### FE-805 R7 fleet lint repair (Fable, 2026-10-15)
+
+Fleet lint failure web93f7: six unused parameters in `outreachGatewayBridge.test.ts` (tooling evidence, 1 defect in 36 test LOC). Repaired by removing the bridge and its test now that Cassian's adapter matches Celeste's port; `main.tsx` wires the adapter under the explicit port type. No lint rule disabled. One wiring case added, not executed.

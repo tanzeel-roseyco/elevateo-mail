@@ -158,6 +158,10 @@ FE-805 authored cases: 20. None executed by Fable.
 
 Narrow repair on `77dbd86`: trigger `button "Open navigation"` (no "menu"), `dialog "Navigation"`; the rail landmark is `navigation "Personal"`. `Shell.tsx`, `Shell.test.tsx` and the affected `e2e/read.spec.ts`, `e2e/support.ts`, `e2e/visual-states.spec.ts` selectors changed in the same commit so Tessa's exact labels and the repository specs agree. Fixed the `Shell.test.tsx` test-title apostrophe (now a double-quoted title) that would have failed to parse. Added `viewport-fit=cover` to `index.html` and `dev-fixtures.html` so the safe-area insets in `styles/index.css` apply in notched WebViews. Account-gateway note for Cassian: the bridge's two inert account signatures should be replaced by his canonical campaign-scoped signatures when the real account route is registered; no inert workaround is intended once that route exists. Nothing executed locally.
 
+## R7 — fleet lint failure web93f7 and canonical account port (2026-10-15)
+
+Fleet lint on the previous candidate reported six unused `_input`/`_init` parameters in `outreachGatewayBridge.test.ts`. Rather than silence lint, the bridge and its test are deleted: Cassian's adapter now exposes campaign-scoped account signatures (exact chain cherry-picked with `-x`: `9076a73`, `31c3396`, `2fc1b18`, `be12a48`, `ba5b8a5`), so `main.tsx` passes `createV2OutreachGateway()` straight through, typed as Celeste's `OutreachGateway` so any future drift fails typecheck instead of being masked. Account reads are still rejected by the adapter with `temporarily_unavailable` and no dispatch until the account route is registered; that is the adapter owner's explicit behaviour, not a Fable workaround. New wiring case: the campaign-scoped accounts route through the real adapter renders Celeste's error state with zero network calls. Conflicting `docs/completion/cassian.md` and `contracts/v2/README.md` were taken at Cassian's version. FE-805 authored cases: 18. Nothing executed locally.
+
 ## Limitations
 
 - No lint, typecheck, unit test, build or visual check has been executed by Fable; Soren owns execution and Tessa owns visual evidence.
