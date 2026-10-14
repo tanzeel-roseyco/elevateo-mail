@@ -1,0 +1,402 @@
+{
+  "source": "125f9394716d2f933d32d6191f33d00fd353b025",
+  "checks": [
+    {
+      "name": "compose-validate",
+      "command": [
+        "config",
+        "--quiet"
+      ],
+      "exit": 0,
+      "seconds": 0.07,
+      "actual_summaries": []
+    },
+    {
+      "name": "database-start",
+      "command": [
+        "up",
+        "-d",
+        "--wait",
+        "--wait-timeout",
+        "120",
+        "db",
+        "mailpit"
+      ],
+      "exit": 0,
+      "seconds": 4.937,
+      "actual_summaries": []
+    },
+    {
+      "name": "privilege-guards",
+      "command": [
+        "run",
+        "--rm",
+        "--no-deps",
+        "guards"
+      ],
+      "exit": 0,
+      "seconds": 2.919,
+      "actual_summaries": []
+    },
+    {
+      "name": "bootstrap",
+      "command": [
+        "run",
+        "--rm",
+        "--no-deps",
+        "bootstrap",
+        "-f",
+        "/ops/bootstrap.sql"
+      ],
+      "exit": 0,
+      "seconds": 0.922,
+      "actual_summaries": []
+    },
+    {
+      "name": "auth-start",
+      "command": [
+        "up",
+        "-d",
+        "--wait",
+        "--wait-timeout",
+        "120",
+        "auth"
+      ],
+      "exit": 0,
+      "seconds": 3.081,
+      "actual_summaries": []
+    },
+    {
+      "name": "auth-grants",
+      "command": [
+        "run",
+        "--rm",
+        "--no-deps",
+        "bootstrap",
+        "-f",
+        "/ops/bootstrap-auth-grants.sql"
+      ],
+      "exit": 0,
+      "seconds": 0.611,
+      "actual_summaries": []
+    },
+    {
+      "name": "bootstrap-send",
+      "command": [
+        "run",
+        "--rm",
+        "--no-deps",
+        "bootstrap",
+        "-f",
+        "/ops/bootstrap-send.sql"
+      ],
+      "exit": 0,
+      "seconds": 0.597,
+      "actual_summaries": []
+    },
+    {
+      "name": "migrate",
+      "command": [
+        "run",
+        "--rm",
+        "--no-deps",
+        "migrate"
+      ],
+      "exit": 0,
+      "seconds": 2.292,
+      "actual_summaries": []
+    },
+    {
+      "name": "migration-versions-before",
+      "command": [
+        "run",
+        "--rm",
+        "--no-deps",
+        "bootstrap",
+        "-At",
+        "-c",
+        "SELECT COALESCE(json_agg(version ORDER BY version)::text,'[]') FROM app_meta.schema_migrations"
+      ],
+      "exit": 0,
+      "seconds": 0.963,
+      "actual_summaries": []
+    },
+    {
+      "name": "migrate-second-invocation",
+      "command": [
+        "run",
+        "--rm",
+        "--no-deps",
+        "migrate"
+      ],
+      "exit": 0,
+      "seconds": 1.937,
+      "actual_summaries": []
+    },
+    {
+      "name": "migration-versions-after",
+      "command": [
+        "run",
+        "--rm",
+        "--no-deps",
+        "bootstrap",
+        "-At",
+        "-c",
+        "SELECT COALESCE(json_agg(version ORDER BY version)::text,'[]') FROM app_meta.schema_migrations"
+      ],
+      "exit": 0,
+      "seconds": 0.714,
+      "actual_summaries": []
+    },
+    {
+      "name": "approval_database_test",
+      "command": [
+        "run",
+        "--rm",
+        "--no-deps",
+        "test",
+        "timeout",
+        "-k",
+        "3s",
+        "90s",
+        "bundle",
+        "exec",
+        "ruby",
+        "test/sends/approval_database_test.rb"
+      ],
+      "exit": 0,
+      "seconds": 3.723,
+      "actual_summaries": [
+        "15 runs, 202 assertions, 0 failures, 0 errors, 0 skips"
+      ]
+    },
+    {
+      "name": "schema_database_test",
+      "command": [
+        "run",
+        "--rm",
+        "--no-deps",
+        "test",
+        "timeout",
+        "-k",
+        "3s",
+        "90s",
+        "bundle",
+        "exec",
+        "ruby",
+        "test/sends/schema_database_test.rb"
+      ],
+      "exit": 0,
+      "seconds": 1.548,
+      "actual_summaries": [
+        "6 runs, 79 assertions, 0 failures, 0 errors, 0 skips"
+      ]
+    },
+    {
+      "name": "approval_faults_database_test",
+      "command": [
+        "run",
+        "--rm",
+        "--no-deps",
+        "test",
+        "timeout",
+        "-k",
+        "3s",
+        "90s",
+        "bundle",
+        "exec",
+        "ruby",
+        "test/sends/approval_faults_database_test.rb"
+      ],
+      "exit": 0,
+      "seconds": 1.175,
+      "actual_summaries": [
+        "1 runs, 31 assertions, 0 failures, 0 errors, 0 skips"
+      ]
+    },
+    {
+      "name": "approval_races_database_test",
+      "command": [
+        "run",
+        "--rm",
+        "--no-deps",
+        "test",
+        "timeout",
+        "-k",
+        "3s",
+        "90s",
+        "bundle",
+        "exec",
+        "ruby",
+        "test/sends/approval_races_database_test.rb"
+      ],
+      "exit": 0,
+      "seconds": 1.303,
+      "actual_summaries": [
+        "2 runs, 23 assertions, 0 failures, 0 errors, 0 skips"
+      ]
+    },
+    {
+      "name": "draft_database_test",
+      "command": [
+        "run",
+        "--rm",
+        "--no-deps",
+        "test",
+        "timeout",
+        "-k",
+        "3s",
+        "90s",
+        "bundle",
+        "exec",
+        "ruby",
+        "test/be_02/draft_database_test.rb"
+      ],
+      "exit": 0,
+      "seconds": 1.607,
+      "actual_summaries": [
+        "8 runs, 85 assertions, 0 failures, 0 errors, 0 skips"
+      ]
+    },
+    {
+      "name": "draft_authorization_test",
+      "command": [
+        "run",
+        "--rm",
+        "--no-deps",
+        "test",
+        "timeout",
+        "-k",
+        "3s",
+        "90s",
+        "bundle",
+        "exec",
+        "ruby",
+        "test/be_02/draft_authorization_test.rb"
+      ],
+      "exit": 0,
+      "seconds": 1.62,
+      "actual_summaries": [
+        "6 runs, 59 assertions, 0 failures, 0 errors, 0 skips"
+      ]
+    },
+    {
+      "name": "draft_concurrency_test",
+      "command": [
+        "run",
+        "--rm",
+        "--no-deps",
+        "test",
+        "timeout",
+        "-k",
+        "3s",
+        "90s",
+        "bundle",
+        "exec",
+        "ruby",
+        "test/be_02/draft_concurrency_test.rb"
+      ],
+      "exit": 0,
+      "seconds": 1.368,
+      "actual_summaries": [
+        "4 runs, 39 assertions, 0 failures, 0 errors, 0 skips"
+      ]
+    },
+    {
+      "name": "draft_schema_contract_test",
+      "command": [
+        "run",
+        "--rm",
+        "--no-deps",
+        "test",
+        "timeout",
+        "-k",
+        "3s",
+        "90s",
+        "bundle",
+        "exec",
+        "ruby",
+        "test/be_02/draft_schema_contract_test.rb"
+      ],
+      "exit": 0,
+      "seconds": 1.373,
+      "actual_summaries": [
+        "5 runs, 51 assertions, 0 failures, 0 errors, 0 skips"
+      ]
+    },
+    {
+      "name": "http-compose-validate",
+      "command": [
+        "config",
+        "--quiet"
+      ],
+      "exit": 0,
+      "seconds": 0.076,
+      "actual_summaries": []
+    },
+    {
+      "name": "api-start",
+      "command": [
+        "up",
+        "-d",
+        "--no-deps",
+        "api"
+      ],
+      "exit": 0,
+      "seconds": 0.387,
+      "actual_summaries": []
+    },
+    {
+      "name": "real-http-s1s2",
+      "command": [
+        "run",
+        "--rm",
+        "--no-deps",
+        "fixture",
+        "bundle",
+        "exec",
+        "ruby",
+        "/workspace/ops/tests/be03/http_s1s2.rb"
+      ],
+      "exit": 0,
+      "seconds": 2.12,
+      "actual_summaries": [
+        "BE03 S1S2 real HTTP/Auth/PostgreSQL PASS assertions=42"
+      ]
+    }
+  ],
+  "status": "PASS",
+  "effective_fast": "UNVERIFIED",
+  "HTTP": "PASS",
+  "outbound": "HELD; no dispatch worker started",
+  "source_before": {
+    "files": 3914,
+    "bytes_modes_equal": true
+  },
+  "admission": {
+    "ram": 38111248384,
+    "disk_free": 255615299584,
+    "disk_total": 468702478336
+  },
+  "dependency_image": "sha256:7dc61d4b7e12f94764f95f4f1bfe8e3940049247e6d409898ce9d3ed2810f348",
+  "task_image": "sha256:475bb4bedb05775c2ab64ba7c855fce5dd28a27fd7fcf0f079f59b91ca707cff",
+  "dependency_derivation_verified": true,
+  "migration_second_no_new_version": true,
+  "migration_version_count": 9,
+  "source_after": {
+    "files": 3914,
+    "bytes_modes_equal": true
+  },
+  "cleanup": true,
+  "finalizer_failure": "",
+  "independent_absence": {
+    "container": true,
+    "image": true,
+    "volume": true,
+    "network": true,
+    "compose": true,
+    "env_absent": true,
+    "control_absent": true
+  },
+  "lease": "FREE"
+}

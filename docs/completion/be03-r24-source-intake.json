@@ -58,7 +58,7 @@
       "candidate_integrated_runtime": "NOT_RUN"
     },
     "Rowan": {
-      "head": "c20aa0d94645c175195f4f10f304d5423c967807",
+      "head": "7c20f70700a3a1492214c158e46e284e71399aea",
       "lightweight_tested_source": "ebf64cdbbea24d8e79af158c1424d0391fce6933",
       "unchanged_owner_bytes": [
         {
@@ -67,7 +67,7 @@
         },
         {
           "path": "apps/server/db/be03_send/canonical.sql",
-          "sha256": "ee5890bbb6b1ef97963d7859d91a0b74d42b4f83a69500713f96978026703a42"
+          "sha256": "e120e3b2ef15882d9fc27705c4fef184790eb83a3181830765f1eaf5003f893e"
         },
         {
           "path": "apps/server/db/be03_send/constraints.sql",
@@ -119,7 +119,7 @@
         },
         {
           "path": "apps/server/test/sends/approval_database_test.rb",
-          "sha256": "71684fbe060c27c37df4f4a70029ba9edf3ea54c2ef8d0cdf29d2537081c096b"
+          "sha256": "e8b56b1dbf087dd80ea9026b95b3389a45ba67ee96ac7e4004cbc1b740fe0a36"
         },
         {
           "path": "apps/server/test/sends/approval_faults_database_test.rb",
@@ -148,10 +148,17 @@
       "migration": "20261013000007_create_send_intents.rb",
       "bootstrap": "explicit bootstrap-send.sql after baseline bootstrap, before00007",
       "initial_head": "d48bc9fccfc6ca03929dc99eae5f835e293d1cda",
-      "repair_source": "7934218d46fd9f3c719b659300aed479e644df4e",
-      "repair_review": "functional32LOC/design32LOC0defects; overlapnonadditive",
+      "repair_source": "f7fc830815606ed382ada6c0badde1b39eb21785",
+      "repair_review": "grants32changedLOC functional/design0; grammar20changed functional/74design0; overlapnonadditive",
       "repair_lightweight": "syntax1/lint1 exit0; actualDB pending",
-      "initial_runtime": "1429f1d migration00007FAIL grants.sql blanket cross-owner REVOKE; originalreceipt preserved"
+      "initial_runtime": "1429f1d migration00007FAIL grants.sql blanket cross-owner REVOKE; originalreceipt preserved",
+      "integrated_runtime": {
+        "source": "125f9394716d2f933d32d6191f33d00fd353b025",
+        "newDB": "24runs335assertions0fail/errors/skips",
+        "affectedBE02": "23runs234assertions0fail/errors/skips",
+        "HTTP": "42assertionsPASS",
+        "cleanup": "all7absencePASS/source3914unchanged/leaseFREE"
+      }
     },
     "Nadia": {
       "head": "50ba21dbba66291979339538b3aade1602e77613",
@@ -326,7 +333,9 @@
           "sha256": "9784dae251ff21b499be541d3e1c6b7addf4f12bd13ffbd9778dee73f4d74d98"
         }
       ],
-      "runtime": "owner-only evidence; integrated NOT_RUN"
+      "runtime": "owner-only evidence; integrated NOT_RUN",
+      "initial_intake_sealed_at": "1429f1df2d39d98b1742a2fc677768e69c7762dd",
+      "subsequent_authorized_changes": "Ada_recovery listed paths supersede corresponding initial Mira byte seals"
     },
     "Lyra": {
       "head": "93803de7f9434af61fe9caec5eced3b5e7bf36ef",
@@ -387,6 +396,38 @@
         }
       ],
       "runtime": "owner boundary3/19/type/lintPASS; realHTTP NOT_RUN"
+    },
+    "Ada_recovery": {
+      "head": "1651fdc78965ad6fa7c1b1cf5952844982bd521b",
+      "authority": "root38:33SOURCEGO; runtime gates remain",
+      "unchanged_owner_bytes": [
+        {
+          "path": "apps/web/src/app/approvalRecovery.test.ts",
+          "sha256": "ebeda6499e2ad1840ff66ecec2dc9091bbc2c89fb32647a5b0726351a96156ce"
+        },
+        {
+          "path": "apps/web/src/app/approvalRecovery.ts",
+          "sha256": "0f3bb2bc72c6d013c6272db0fea9e8203d44d5c28a8f9a44c9e3d80075903fbc"
+        },
+        {
+          "path": "apps/web/src/app/sendIntent.test.tsx",
+          "sha256": "62d1b0bc308d462c15ec3502ef6cab5ded23c22f8bdbd3e2d86c49324fb5edb5"
+        },
+        {
+          "path": "apps/web/src/app/sendIntent.tsx",
+          "sha256": "15af02de71998c79146f6c947fd047d423ac90da996e1b387b70941c10cab0d5"
+        },
+        {
+          "path": "apps/web/src/features/send/SendReviewPage.test.tsx",
+          "sha256": "760f57be6361613f6f25d6322458432189d89aba7796bc9ae4e871bd9aeccb84"
+        },
+        {
+          "path": "apps/web/src/features/send/SendReviewPage.tsx",
+          "sha256": "960437f27c776c365c5e9479f57e0b4a3309b4f1a5174dd10175970973c07273"
+        }
+      ],
+      "source_reviews": "Inez170primary/387total0; Lyra246primary0; Opal185assigned186inspected0; Tessa414aggregatecapbreach retained/nonadmitting",
+      "runtime": "type0/unit22PASS/build0; genuine lint1 pendingownerfix; browserNOT_RUN"
     }
   },
   "root_documentation": {
@@ -395,5 +436,5 @@
     "actual_vault": "NOT_WRITTEN"
   },
   "execution": "Soren lease only for real DB/API; lightweight source checks delegated. No live activation.",
-  "candidate": "7e25349216cf585052d9a67bc468e9a6188c682e"
+  "candidate": "8d2ca1bf7917ac812c38fdab3a4b12e6855981f2"
 }

@@ -2,7 +2,7 @@
 
 Cassian owns contracts/manifests/central documentation and the explicitly authorized narrow runner hook. Isolated implementation is authorized while BE02 stays OPEN; integration/release remain gated. No live activation, external dispatch or completion claim. Requested Fast billing is unverified.
 
-The current product candidate is `7e25349216cf585052d9a67bc468e9a6188c682e`; subsequent `5c5f7dc` only adds sealed owner evidence. Exact owner source is preserved, with central documentation conflicts reconciled and both histories retained.
+SQL/API tested candidate is `125f9394716d2f933d32d6191f33d00fd353b025`. Current recovery frontend successor is `8d2ca1bf7917ac812c38fdab3a4b12e6855981f2`, source reviewed but its genuine lint finding remains pending. Backend source is unchanged between them; results remain pinned to the tested SHA. Exact owner source is preserved, with central documentation conflicts reconciled and both histories retained.
 
 | Owner | Immutable intake | Scope |
 | --- | --- | --- |
@@ -22,3 +22,11 @@ Owner-only prior evidence remains scoped: contract8runs78assertions/lintPASS; AP
 Remaining production capabilities: cancellation SQL/API currently503; dispatch/lease/fence/recovery/provider observation loop unimplemented; reload recovery retains existing memory-only limitation pending separately reviewed source; production credentials, account connection, backup/restore acceptance, live activation and release are not authorized here. No durable local recovery or delivery claim.
 
 Root received complete-history clone bundle `incoming/be03-r24-cassian-37861fc.bundle`,46391430bytes,SHA256394bc61301e9046e26e4443f4d9236d44b5ffcdc6787e9b76976272ba919fec6; verify exit0/no prerequisites. It predates grant repair; final successor bundle will be published after current evidence settles. Root alone writes actual Obsidian vault. Persistent resources and previews18140/18141 are preserved;18142 retention is root-directed and Mira-owned.
+
+## Settled S1/S2 runtime receipt
+
+Exact125f939 new sendDB24runs335assertions and affectedBE02draft23runs234assertions allPASS/0failures/errors/skips; every suite exit0. Genuine HTTP/Auth/PostgreSQL42assertionsPASS exit0: review,approval202,exactoneintent/job/approvedaudit,consumedversionunchanged,queuedzeroattempts/status,originaloperationreplay and attestation/Origin/staleconflict/logoutdenials. Nineexactversions and secondmigrateno_new_versionPASS. No sendworker/driver/publicport. Cleanup and all7independentabsence checksPASS; source3914files bytes/modes unchanged, externalcontrol removed, leaseFREE. Receipt be03-r25-integrated-s1s2-docker.json SHA2561c5640bf1453db24727a16626087907e14766d263d6134d8a18fe0d94b273082. Historical failures remain linked; earlier pending statements above are historical checkpoints.
+
+Mira client-only browser candidate1429f1d plus finalharness3bc68cb:14casesPASS/30PNGs desktop/mobile/type0/lint0; root reported actual simulated visual acceptance. Preview18142 intentionally retained by root for delivery/recoveryQA, not cleaned or claimed absent. Actual browser using SQL/API remains a separate unverified boundary.
+
+RootSOURCEGO Ada1651 metadata-only reload recovery integrated without source edits; prior memory-only limit remains open until actual recovered source checks/browser pass. Provisional type0,22targetedtestsPASS/build0 follow setup corrections; lint1 genuine capture-ref issue pending owner repair. Inez170primary387total0, Lyra246primary0, Opal185assigned186inspected0 source reviews GO; Tessa414aggregate over-cap review retained but not admitted as compliant coverage. No backend/contract/dispatch change.
