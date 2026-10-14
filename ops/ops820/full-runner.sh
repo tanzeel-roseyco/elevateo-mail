@@ -56,6 +56,10 @@ schema_dump() {
 schema_dump > "$scratch/before"
 for ((index=${#versions[@]}-1; index>=0; index--)); do
   rails db:migrate:down "VERSION=${versions[index]}"
+  if [[ ${versions[index]} == 20261015000018 ]]; then
+    compose exec -T db psql -U supabase_admin -d postgres -X -q -v ON_ERROR_STOP=1 \
+      < "$root/ops/ops820/gateway-down-smoke.sql" >/dev/null
+  fi
 done
 for version in "${versions[@]}"; do
   rails db:migrate:up "VERSION=$version"
