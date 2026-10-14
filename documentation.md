@@ -258,3 +258,5 @@ QA815 targeted feature receipt `docs/completion/qa815-evidence/web-targeted-58ed
 QA815 real clamd protocol receipt `docs/completion/qa815-evidence/real-clamd-e8e8393d1076.txt` records exact official manifest pin, architecture/image size, preloaded signature hashes, version/PONG, clean/EICAR verdicts, caps and cleanup. It does not establish app clean promotion; see `docs/completion/soren.md`.
 
 QA815 focused feature strict receipt `docs/completion/qa815-evidence/focused-inbound-7cae15a7fe92.txt` records Corin lint PASS, two ATT902 controller Steep errors and cleanup; see `docs/completion/soren.md`.
+
+QA815 acceptance reporter receipts `docs/completion/qa815-evidence/acceptance-list-7cae15a7fe92-offline-install.txt` and `acceptance-list-7cae15a7fe92.txt` distinguish failed offline dependency setup from corrected compiled module/73-unit/Playwright `--list` PASS. No browser case was executed; see `docs/completion/soren.md`.

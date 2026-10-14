@@ -190,3 +190,5 @@ QA815 `58edb11c` targeted web strict type and CollaborationPanels 10/10 PASS, cl
 QA815 `e8e8393d` real pinned ClamAV private clean/EICAR verdicts PASS with exact task cleanup; application Storage/attachment promotion, source/base/full restore and realAuth NOT_RUN.
 
 QA815 `7cae15a7` fake inbound lint one file/zero offenses PASS; Steep two inbox attachment controller errors FAIL, cleanup PASS. Full feature runtime held.
+
+QA815 `7cae15a7` acceptance type/build/unit 73/73 and compiled reporter `--list` PASS; first offline npm setup failure preserved. Browser cases/PNGs/realAuth zero; actual mounted umask proof pending.

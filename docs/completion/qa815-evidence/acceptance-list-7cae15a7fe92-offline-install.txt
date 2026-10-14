@@ -1,0 +1,17 @@
+source=7cae15a7fe92c9674f7e3840fd04042a66ca044e
+image=sha256:d6aa754f16b3197301076f047b5def2f02ea1dbbc2ca920407d46d7ec7f87b20
+mode=COMPILED_REPORTER_LIST_ONLY_SYNTHETIC_SEED
+started=2026-10-14T18:35:18Z
+seed_kind=runtime_from_pinned_example_for_list_only
+seed_mode=600
+npm error code EAI_AGAIN
+npm error syscall getaddrinfo
+npm error errno EAI_AGAIN
+npm error request to https://registry.npmjs.org/zod/-/zod-4.6.5.tgz failed, reason: getaddrinfo EAI_AGAIN registry.npmjs.org
+npm error A complete log of this run can be found in: /tmp/.npm/_logs/2026-10-14T18_35_19_667Z-debug-0.log
+run_exit=1
+source_archive_absent=yes
+private_absent=yes
+output_absent=yes
+remaining_task_containers=0
+finished=2026-10-14T18:36:30Z

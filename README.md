@@ -248,3 +248,5 @@ QA815 feature `58edb11c` targeted TypeScript and CollaborationPanels 10/10 PASS 
 QA815 exact `e8e8393d` isolated real ClamAV1.5.4 pinned private-network protocol PASS: clean verdict clean, EICAR verdict malware, preloaded signature hashes/health recorded, task containers/network/volume/image/fixtures removed. App attachment promotion and restore remain unrun.
 
 QA815 feature `7cae15a7` fake inbound targeted lint PASS, but Steep has two attachment controller type errors; full feature backend/HTTP/worker held. Exact task cleanup passed.
+
+QA815 exact `7cae15a7` acceptance compile/type/unit 73/73 and active compiled Playwright reporter `--list` PASS in fleet Docker. The synthetic list-only seed produced zero browser cases or PNGs; actual mounted browser and real-auth acceptance remain pending.

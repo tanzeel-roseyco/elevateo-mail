@@ -754,3 +754,5 @@ QA815 `58edb11c` targeted TypeScript/ten-case PASS is execution evidence, not in
 QA815 `e8e8393d` real ClamAV clean/EICAR PASS is executed protocol evidence, not independent source review of OPS820 or attachment integration. Additional QA815 independently reviewed LOC remains 0; source defect density unclaimed.
 
 QA815 `7cae15a7` focused lint PASS and two attachment controller Steep diagnostics are execution findings, not independent source review. Additional QA815 reviewed LOC remains 0 and source defect density unclaimed pending owner repair.
+
+QA815 `7cae15a7` acceptance compiled reporter `--list` and 73 unit cases are execution evidence, not independent source review or real browser acceptance. No additional reviewed LOC or source defect-density claim.
