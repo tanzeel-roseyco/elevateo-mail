@@ -694,3 +694,5 @@ FE807 QA815 runtime diagnostic: exact `a460c5a` fleet Docker API check passed, l
 FE807 role-policy follow-up: root supplied owner/admin/sales role matrix while source remained read-only to authorization; one client foreign-campaign account receipt test was added. Enforcement and real DB/HTTP denial review belongs to Sabine/Cassian/Dorian/Felix; no UI-only authorization claim or test PASS.
 
 FE807 disabled account adapter presentation: author review found a known `temporarily_unavailable` gateway response would render generic error. Source now maps that and `not_available` reads to the unavailable state; component regression authored, not executed. Independent review pending.
+
+FE807 denied-read presentation: author self-review found create-draft navigation remained visible after an Outreach list denial. It now appears only after a validated ready list, with a denied-read component regression; backend denial remains the authority. No test execution claimed.

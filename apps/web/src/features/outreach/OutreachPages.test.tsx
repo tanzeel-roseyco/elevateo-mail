@@ -157,4 +157,11 @@ describe('Outreach routed pages', () => {
     view(`/outreach/campaigns/${campaignId}/accounts`, g)
     expect(await screen.findByText(/Outreach API unavailable/)).toBeTruthy()
   })
+  it('shows no campaign contents or create link after a denied read', async () => {
+    const g = gateway({ listCampaigns: vi.fn(async () => { throw new GatewayError('api', 'not_available', 'denied', { status: 404 }) }) })
+    view('/outreach/campaigns', g)
+    expect(await screen.findByText(/Outreach API unavailable/)).toBeTruthy()
+    expect(screen.queryByText('Pilot')).toBeNull()
+    expect(screen.queryByRole('link', { name: 'Create draft campaign' })).toBeNull()
+  })
 })
