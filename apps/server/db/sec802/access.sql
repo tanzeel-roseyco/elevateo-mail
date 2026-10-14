@@ -289,6 +289,7 @@ REVOKE ALL ON FUNCTION app.authorize_outreach_draft_write(text)
 GRANT EXECUTE ON FUNCTION app.authorize_outreach_draft_write(text) TO elevateo_api;
 
 -- AIDEV-NOTE: A digest-backed session proof is required; caller-controlled tenant GUCs alone cannot list grants.
+GRANT CREATE ON SCHEMA app TO elevateo_session_owner;
 SET LOCAL ROLE elevateo_session_owner;
 CREATE FUNCTION app.organization_grants_page(p_digest text, p_after uuid, p_limit integer)
 RETURNS jsonb LANGUAGE plpgsql STABLE SECURITY DEFINER SET search_path = pg_catalog AS $$
@@ -332,3 +333,4 @@ REVOKE ALL ON FUNCTION app.organization_grants_page(text,uuid,integer)
   FROM PUBLIC, elevateo_api, elevateo_app_read, elevateo_worker;
 GRANT EXECUTE ON FUNCTION app.organization_grants_page(text,uuid,integer) TO elevateo_api;
 SET LOCAL ROLE elevateo_owner;
+REVOKE CREATE ON SCHEMA app FROM elevateo_session_owner;
