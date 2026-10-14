@@ -1,0 +1,13 @@
+module Elevateo
+  class AttachmentGatewayClient
+    class NotAvailable < StandardError
+    end
+    class Unavailable < StandardError
+    end
+    MAX_BYTES: Integer
+    def initialize: (config: Config, ?transport: untyped, ?transaction_open: untyped) -> void
+    def download: (fields: Hash[String, untyped], timeout: Numeric, ?now: Integer) -> String
+    private
+    def exchange: (AttachmentGatewayRequest, Numeric) -> [Integer, Hash[String, String], String]
+  end
+end

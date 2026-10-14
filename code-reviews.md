@@ -1107,3 +1107,5 @@ Dispatched Vera finding against `2eca511` identifies one overlapping-download bu
 ATT838 Cassian author review: inspected 57 new pure signer LOC, 15 RBS LOC and 46 test LOC in a bounded 118-LOC packet. One pre-commit source risk was an unrestricted body length; added a 2048-byte cap (1/118=8.47/KLOC self-review only). No independent review or Docker execution; HMAC test mirrors implementation and requires gateway interop proof.
 
 ATT838 ADV095 interface review identified one confirmed signer mismatch: context_id was accepted as a generic opaque hint, but gateway requires the current UUID equal to context_uuid. Five source/test LOC corrected with a mismatch regression; prior author zero-finding claim is superseded for this wire. Fleet and interop pending.
+
+ATT838 private client author review: inspected about 65 source LOC and 65 test LOC in a bounded packet, checking no redirect/retry, short timeout, exact private origin, transaction refusal, response cap and headers. Found one missing content-disposition check during inspection and added it before commit (1/130=7.69/KLOC self-review only). Independent review and fleet gateway interop pending.

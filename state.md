@@ -249,3 +249,5 @@ OUT839 integrated SEC802 grants allow only elevateo_api and restricted elevateo_
 ATT838 Rails now has a pure fixed-field HMAC request builder for the private read gateway: exact ordered JSON, UUID/digest/hint checks and a 0–30 second expiry. It is unbound from any public route until Sabine gateway source and Soren fleet evidence are ready; no Storage token or live bytes were used.
 
 ATT838 wire correction: signed context_id must be the same lowercase UUID as context_uuid; authorization_version remains an opaque signed hint. Sequence migration already occupies 00016, so attachment gateway helper must use 00017 or later.
+
+ATT838 Rails private transport candidate now sends one signed internal POST without redirects or retries, rejects transactions and missing signing config, caps bytes at 10 MiB, and requires exact binary/no-store/nosniff/disposition/length headers. It is not called by a public route; gateway interop and fresh post-fetch authorization remain pending.

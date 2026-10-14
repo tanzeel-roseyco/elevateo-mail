@@ -159,3 +159,7 @@ Dorian b487019 supplies actual-role tests. SEC802 access.sql grants app_read EXE
 `apps/server/lib/elevateo/attachment_gateway_request.rb` constructs only the fixed internal POST body and HMAC header value from the ADV085/Sabine frozen wire. It rejects extra keys, invalid IDs/digest/hints, expiry outside now..now+30 and oversized body. Tests cover exact ordering/signature, extra/wrong operation and expired/long-lived/malformed authority. Source-only, NOT_RUN; transport, repeated authorization and binary response are pending gateway and controller integration.
 
 Sabine ADV095 corrected the wire after cb1ec5b: context_id is UUID and exactly equals context_uuid. Cassian signer source/test corrected accordingly; the previous generic hint validation is superseded. Integrated sequence migration 00016 requires Sabine/Leonie to use 00017 or later for attachment gateway helper.
+
+## ATT838 private transport candidate
+
+`attachment_gateway_client.rb` uses only the exact internal host, dedicated HMAC key and one POST. It refuses an open Rails transaction, missing config, redirects/unexpected statuses, wrong headers/length and >10 MiB. It returns private bytes to a future caller only; no controller or public route is connected, and the required post-fetch session/read recheck is not yet implemented. Source tests cover valid, 404/invalid response and transaction/missing key; Docker/interop NOT_RUN.
