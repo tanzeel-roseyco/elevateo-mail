@@ -14,6 +14,8 @@ Shared company mailroom with one Rails domain authority and a React/TypeScript c
 
 ## Current state
 
+**Expanded backend fleet result:** Exact reviewed `e01c64ad` migrated through 00019 and executed all 137 standard Ruby suites: 110 suite exits passed, 27 failed; 807 runs/7,715 assertions, one failure/106 errors. Steep and 319-file RuboCop lint passed, cleanup passed. Nine dedicated suites remain separately deferred; authenticated HTTP/worker/real Auth did not run. The failures include shared database fixture contamination, closed connections, Rails logger masking and role/privilege mismatches; root and Soren are classifying bounded repairs.
+
 **QA815 reviewed repair fleet checkpoint:** Exact `780f4ed4` producer `ruby -c` and Bundler unit 5 runs/48 assertions PASS; first unbundled setup lacked pg and ran zero cases. On the same source, capped full web V1/V2 checks, lint, strict TypeScript, 62 files/856 units and Vite build PASS with cleanup. Earlier exact `bca9d38f` full web had 855/856 and build not reached; its focused MembersPage 8/8 PASS is separate. The expanded backend, HTTP/worker, real Auth/private bytes and browser remain pending.
 
 **Outbound V2 decision follow-up:** Root chose a draft-owned one-file 1 MiB raw cap and separate proposed 2 MiB complete MIME cap, with current V1 limits unchanged. Cassian's design packet reserves migration 00020 for Nadia staging/selection and 00021 for Rowan snapshot/worker, pending their confirmation; raw binary control headers and operation names remain proposals. No outbound source or route is active.
