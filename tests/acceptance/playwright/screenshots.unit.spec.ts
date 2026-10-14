@@ -96,3 +96,14 @@ test('rejects path escape, linked artifact and linked directory without traversa
     await assert.rejects(persistScreenshot(directory, second, Buffer.alloc(1), 100), /Invalid screenshot directory/);
   });
 });
+
+// AIDEV-NOTE: The real empty-member case must be permitted and remain in the durable aggregate byte budget.
+test('empty member screenshot is permitted and included in later writer budget', async () => {
+  await fixture(async (directory, privateDir) => {
+    const id = 'SCN-READ-001-F1-empty-denied';
+    assert.equal(await persistScreenshot(directory, id, Buffer.from('empty'), 8), `native-private/${id}.png`);
+    await assert.rejects(persistScreenshot(directory, first, Buffer.from('four'), 8), /Screenshot budget exceeded/);
+    assert.equal(await readFile(join(privateDir, `${id}.png`), 'utf8'), 'empty');
+    await assert.rejects(access(join(privateDir, `${first}.png`)));
+  });
+});

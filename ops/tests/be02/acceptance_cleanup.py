@@ -11,7 +11,9 @@ from docker_task import Task
 # AIDEV-NOTE: Any represents Docker's heterogeneous inspect boundary; policy fields are validated below.
 def validate_policy(task: Task, service: str, host: dict[str, Any]) -> None:
     # AIDEV-NOTE: These ceilings mirror frozen Compose, including inherited seed limits and uncapped Rails tmpfs.
-    memory, cpus, pids = {"acceptance-web": (128 * 1024**2, 1_000_000_000, 64),
+    memory, cpus, pids = {"acceptance-observer": (128 * 1024**2, 1_000_000_000, 64),
+                          "acceptance-observer-setup": (768 * 1024**2, 1_000_000_000, 256),
+                          "acceptance-web": (128 * 1024**2, 1_000_000_000, 64),
                           "acceptance-seed": (768 * 1024**2, 1_000_000_000, 256),
                           "acceptance-browser": (3 * 1024**3, 2_000_000_000, 512),
                           "selenium": (3 * 1024**3, 2_000_000_000, 512)}[service]
@@ -21,7 +23,7 @@ def validate_policy(task: Task, service: str, host: dict[str, Any]) -> None:
             raise RuntimeError("acceptance service resource ceiling mismatch")
     uid, gid = acceptance_owner(task)
     tmpfs = {} if service == "acceptance-web" else {"/tmp": "rw,nosuid,nodev,size=512m,mode=1777"}
-    if service == "acceptance-seed":
+    if service in {"acceptance-seed", "acceptance-observer-setup"}:
         tmpfs.update({f"/workspace/apps/server/{name}": f"uid={uid},gid={gid},mode=1770"
                       for name in ("tmp", "log")})
     if (host.get("Tmpfs") or {}) != tmpfs:
@@ -69,12 +71,12 @@ def validate_container(task: Task, item: dict[str, Any]) -> None:
              for mount in item["Mounts"] if mount["Type"] == "bind"}
     expected = task.acceptance_mounts[service]
     if (not binds <= expected or (service != "acceptance-browser" and binds != expected)
-            or (service == "acceptance-browser" and (len(binds) != 3
+            or (service == "acceptance-browser" and (len(binds) != 4
                 or len([entry for entry in binds if entry[1] == "/output" and entry[2]]) != 1))):
         raise RuntimeError("unregistered acceptance bind mount")
     if any(mount["Type"] not in {"bind", "tmpfs"} for mount in item["Mounts"]):
         raise RuntimeError("acceptance containers cannot own volumes")
-    if service != "acceptance-seed":
+    if service not in {"acceptance-seed", "acceptance-observer-setup"}:
         environment = dict(entry.split("=", 1) for entry in config.get("Env", []))
         # AIDEV-NOTE: Pinned Grid embeds public Supervisor/TLS defaults; our direct Java bypasses those scripts.
         if service == "selenium":
@@ -121,3 +123,36 @@ def private_files(task: Task, removed: list[str]) -> None:
         removed.append("private-file:" + str(path))
     directory.rmdir()
     removed.append("private-directory:" + str(directory))
+
+
+def observer_files(task: Task, removed: list[str]) -> None:
+    if not task.acceptance_mounts:
+        return
+    uid, gid = acceptance_owner(task)
+    if task.project_containers():
+        raise RuntimeError("observer files still have consumers")
+    for name, allowed in {
+        "observer-config": {"role.json"},
+        "observer-control": {"binding.json", "request.tmp", "request.json", "result.tmp", "result.json"},
+    }.items():
+        directory = task.evidence / name
+        if not directory.exists():
+            continue
+        info = directory.lstat()
+        if (directory.resolve() != directory or not stat.S_ISDIR(info.st_mode) or info.st_uid != uid
+                or info.st_gid != gid or stat.S_IMODE(info.st_mode) != 0o700):
+            raise RuntimeError("observer directory identity invalid")
+        entries = list(directory.iterdir())
+        for path in [directory, *entries]:
+            if task.docker("observer-file-users", ["container", "ls", "-aq", "--filter", "volume=" + str(path)]).strip():
+                raise RuntimeError("observer files have another consumer")
+        for path in entries:
+            info = path.lstat()
+            if (path.name not in allowed or not stat.S_ISREG(info.st_mode) or info.st_nlink != 1 or info.st_uid != uid
+                    or info.st_gid != gid or stat.S_IMODE(info.st_mode) != 0o600):
+                raise RuntimeError("unexpected observer private file")
+        for path in entries:
+            path.unlink()
+            removed.append("observer-file:" + str(path))
+        directory.rmdir()
+        removed.append("observer-directory:" + str(directory))

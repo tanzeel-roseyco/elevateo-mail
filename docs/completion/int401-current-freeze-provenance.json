@@ -1,39 +1,31 @@
 {
-  "task_id": "task_b9e0ccc5f6a3",
-  "dispatch_id": "ctx_a9df73deec58",
-  "baseline": "837e66859013ff62596ab5407b3a9151f489c303",
-  "merge_parents": [
-    "837e66859013ff62596ab5407b3a9151f489c303",
-    "9a0f75ce10bf3a0a0761721c88b83c5b9fe66887",
-    "f59c35f672a152cf5240a9ecdfd6009aff49fff2"
+  "baseline": "c75805bf6377f6282435fd59ce73a89a5fe9f093",
+  "parents": [
+    "4897a43d4e7af36c1daa946e81057e3abff1b09a",
+    "bacdbab83ff409b9de8420fa070273ed67da97e8",
+    "c08c744a02800e0965193d31f0f36202d581b172"
   ],
-  "excluded_candidates": {
-    "Rowan3c": "bounded-wait defect superseded; replacement review pending",
-    "Elara f22": "two fence defects under repair",
-    "Nadia R5": "frozen review receipt pending"
+  "task": "task_d02fb503a4ac",
+  "dispatch": "ctx_429ce5814d79",
+  "scope": "DIAGNOSTIC only, observer OFF, no full acceptance PASS",
+  "owner_scoped_imports": {
+    "bacdbab83ff409b9de8420fa070273ed67da97e8": [
+      "apps/web/src/features/drafts/DraftEditorPage.tsx",
+      "apps/web/src/features/drafts/DraftEditorPage.test.tsx",
+      "docs/completion/fe405-draft-accessibility.md"
+    ],
+    "c08c744a02800e0965193d31f0f36202d581b172": [
+      "ops/tests/be02/acceptance_variants.rb",
+      "ops/tests/be02/acceptance_variants_test.rb",
+      "docs/completion/res406-variants.md",
+      "docs/completion/res406-variants-r6.md"
+    ]
   },
-  "contracts_verified": [
-    "contracts/v1/README.md",
-    "contracts/v1/openapi.json",
-    "contracts/v1/fixtures.json",
-    "contracts/v1/contract-lock.json"
-  ],
-  "runtime": "NOT_RUN for new integrated SHA",
-  "recipe_source": "C:/Users/Tanzeel/Code and projects/Elevateo Mail - Local Completion/ops/acceptance",
-  "recipes": {
-    "browsers.Dockerfile": {
-      "bytes": 4406,
-      "sha256": "dbc9d8aa333f2482f2ad3ef01b5f9c92a22d35ea0b797630e389db71d4a14f5b"
-    },
-    "seccomp.json": {
-      "bytes": 12997,
-      "sha256": "cc3e61cabda6bbc1e53e54d27ba4d55a9d3be829b6dd1a596f4a7b31b1cc7849"
-    },
-    "web.Dockerfile": {
-      "bytes": 1751,
-      "sha256": "210476d9b267758cb573bf1a431804511d6ccc201e4a394553a3e9afef3effe0"
-    }
+  "excluded": "Rowan64ada unavailable; no moving-tip substitution",
+  "runtime": "NOT_RUN for this integrated revision",
+  "dockerignore": {
+    "source": "C:\\Users\\Tanzeel\\Code and projects\\Elevateo Mail - Acceptance Verification 20261014\\.dockerignore",
+    "sha256": "4b9e4332e47cc53a3822ad569ffb84397f1a6387e2574d26ae6cf872a06b5304"
   },
-  "profile_provenance": "docs/completion/acceptance-runner-handoff.md:47; ops/tests/be02/acceptance_runtime.py SECCOMP_SHA256; prior recipes review excludes profile itself",
-  "direct_copy_closure": "all source paths present; generated dist requires Soren Docker compilation"
+  "pending_defect": "ADV747 LOW mixed-type resource keys; diagnostic uses generated valid maps"
 }

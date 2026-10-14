@@ -38,3 +38,21 @@ export function validateEvidence(records, selection) {
   }
   if (seen.size !== expected.size) throw new Error('Missing acceptance scenarios');
 }
+
+// AIDEV-NOTE: Smoke evidence has its own closed inventory and cannot validate the required full acceptance set.
+/**
+ * @param {Parameters<typeof validateEvidence>[0]} records
+ * @param {Parameters<typeof validateEvidence>[1]} selection
+ */
+export function validateDiagnosticEvidence(records, selection) {
+  if (selection.lane !== 'playwright_real' || selection.browser !== 'chromium' || selection.profile !== 'internal_http')
+    throw new Error('Diagnostic requires real internal Chromium');
+  const required = new Set(['SCN-AUTH-001-P', 'SCN-READ-002-P', 'SCN-DRAFT-001-P', 'SCN-GUI-006-P']);
+  for (const record of records) {
+    if (!required.delete(record.scenario_path_id) || record.status !== 'passed' || record.attempt !== 0
+      || record.implementation_mode !== 'real' || record.run_id !== selection.runId || record.dispatch_id !== selection.dispatchId
+      || record.lane !== selection.lane || record.transport_profile !== selection.profile)
+      throw new Error('Incomplete or mismatched diagnostic smoke');
+  }
+  if (required.size !== 0) throw new Error('Missing diagnostic smoke case');
+}

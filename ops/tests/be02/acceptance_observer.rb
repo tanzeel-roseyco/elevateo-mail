@@ -8,7 +8,7 @@ module Be02Acceptance
   # AIDEV-NOTE: Runner-only fixed SQL; browser credentials, arbitrary SQL and message content never enter this channel.
   class Observer
     UUID = /\A[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\z/
-    KEYS = %w[database_oid role nonce organization_id mailbox_id actor_id sentinel_draft_id].freeze
+    KEYS = %w[database_oid role nonce policy_hash organization_id mailbox_id actor_id sentinel_draft_id].freeze
 
     def initialize(connection_parameters, binding)
       raise ArgumentError, "observer_binding_invalid" unless binding.is_a?(Hash) && binding.keys.sort == KEYS.sort
@@ -16,8 +16,26 @@ module Be02Acceptance
         raise ArgumentError, "observer_binding_invalid" unless binding.fetch(key).is_a?(String) && UUID.match?(binding.fetch(key))
       end
       raise ArgumentError, "observer_binding_invalid" unless /\Aqa404_[0-9a-f]{32}\z/.match?(binding.fetch("role")) &&
-        /\A[0-9a-f]{64}\z/.match?(binding.fetch("nonce")) && binding.fetch("database_oid").is_a?(Integer)
+        /\A[0-9a-f]{64}\z/.match?(binding.fetch("nonce")) &&
+        /\A[0-9a-f]{64}\z/.match?(binding.fetch("policy_hash")) && binding.fetch("database_oid").is_a?(Integer)
       @parameters, @binding = connection_parameters.dup.freeze, binding.dup.freeze
+    end
+
+    def self.policy_hash(db, role)
+      rows = %w[app.drafts app_drafts_private.operations].map do |table|
+        row = db.exec_params(<<~SQL, [table, "#{role}_fence", role]).first
+          SELECT c.relrowsecurity,c.relforcerowsecurity,pg_get_userbyid(c.relowner) AS owner,
+            p.polpermissive,p.polcmd,pg_get_expr(p.polqual,p.polrelid) AS predicate,
+            (p.polroles=ARRAY[(SELECT oid FROM pg_roles WHERE rolname=$3)]) AS exact_role
+          FROM pg_class c JOIN pg_policy p ON p.polrelid=c.oid
+          WHERE c.oid=$1::regclass AND p.polname=$2
+        SQL
+        raise "observer_fence_invalid" unless row && row.fetch("relrowsecurity") == "t" &&
+          row.fetch("relforcerowsecurity") == "t" && row.fetch("owner") == "elevateo_owner" &&
+          row.fetch("polpermissive") == "f" && row.fetch("polcmd") == "r" && row.fetch("exact_role") == "t"
+        [table, row.fetch("predicate")]
+      end
+      Digest::SHA256.hexdigest(JSON.generate(rows))
     end
 
     def observe(draft_id:, operation_id:, nonce:)
@@ -57,6 +75,7 @@ module Be02Acceptance
       raise "observer_role_invalid" unless row && row.fetch("rolname") == @binding.fetch("role") &&
         row.fetch("binding") == expected && Integer(row.fetch("database_oid")) == @binding.fetch("database_oid") &&
         %w[rolsuper rolbypassrls rolcreaterole rolcreatedb rolreplication memberships].all? { |key| row.fetch(key) == "f" }
+      raise "observer_policy_drift" unless self.class.policy_hash(db, @binding.fetch("role")) == @binding.fetch("policy_hash")
       %w[app.drafts app_drafts_private.operations].each do |table|
         writable = db.exec_params("SELECT has_table_privilege(current_user,$1,'INSERT,UPDATE,DELETE,TRUNCATE,TRIGGER') OR has_any_column_privilege(current_user,$1,'INSERT,UPDATE,REFERENCES')", [table])
         raise "observer_role_writable" unless writable.getvalue(0, 0) == "f"

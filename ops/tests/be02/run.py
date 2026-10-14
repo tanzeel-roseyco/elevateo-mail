@@ -88,6 +88,8 @@ def main() -> int:
     parser.add_argument("--server-image", help="Optional previously reviewed immutable sha256 image ID")
     add_arguments(parser)
     args = parser.parse_args()
+    if args.acceptance_diagnostic and not args.acceptance:
+        parser.error("diagnostic requires acceptance mode")
     if sys.platform != "linux" or socket.gethostname().split(".")[0] != args.expect_host:
         raise RuntimeError("run only on the explicitly selected Linux fleet host")
     if any(os.environ.get(key) for key in ("DOCKER_HOST", "DOCKER_TLS_VERIFY", "DOCKER_CERT_PATH")):
@@ -170,24 +172,30 @@ def main() -> int:
             raise RuntimeError("Rails image must not create anonymous volumes")
         task.write("server-image.json", {"id": image["Id"], "built_for_task": not bool(args.server_image)})
         task.compose("migrate", ["run", "--rm", "--no-deps", "migrate"], 90)
-        print("Running isolated Minitest suites and Steep", flush=True)
-        task.compose("ruby-suites", ["run", "--rm", "--no-deps", "test"], 480)
+        if args.acceptance_diagnostic:
+            task.write("diagnostic-scope.json", {"mode": "DIAGNOSTIC", "unexecuted_gates": ["Minitest", "Steep", "RuboCop"],
+                "authority": args.acceptance_dispatch_id, "full_acceptance": "NOT_RUN"})
+        else:
+            print("Running isolated Minitest suites and Steep", flush=True)
+            task.compose("ruby-suites", ["run", "--rm", "--no-deps", "test"], 480)
         task.compose("api-start", ["up", "-d", "api"], 30)
         task.runtime_credentials()
         task.wait_http()
         print("Running real Auth/Mailpit/API HTTP acceptance", flush=True)
-        task.compose("http-acceptance", ["run", "--rm", "--no-deps", "fixture"], 180)
+        if not args.acceptance_diagnostic:
+            task.compose("http-acceptance", ["run", "--rm", "--no-deps", "fixture"], 180)
         task.compose("worker-start", ["up", "-d", "worker"], 30)
         task.runtime_credentials()
-        task.compose("worker-drain", ["run", "--rm", "--no-deps", "fixture", "bundle", "exec", "ruby",
-                                     "/workspace/ops/tests/be02/worker_check.rb"], 45)
+        if not args.acceptance_diagnostic:
+            task.compose("worker-drain", ["run", "--rm", "--no-deps", "fixture", "bundle", "exec", "ruby",
+                                         "/workspace/ops/tests/be02/worker_check.rb"], 45)
         # AIDEV-NOTE: Base HTTP fixtures require api:3000; switch origin only after their final worker assertion.
         if acceptance:
             print("Running selected real-app acceptance lanes", flush=True)
             acceptance.run()
         if source_hashes(root, args.acceptance) != original:
             raise RuntimeError("source changed during execution; evidence cannot attest one snapshot")
-        status = "PASSED"
+        status = "DIAGNOSTIC_COMPLETED" if args.acceptance_diagnostic else "PASSED"
     except Exception as error:
         failure = f"{type(error).__name__}: {error}"
     finally:
@@ -198,7 +206,7 @@ def main() -> int:
         except Exception:
             print("Space measurement unavailable; cleanup.json remains authoritative", flush=True)
     print(f"tests={status} cleanup={'PASSED' if clean else 'FAILED'} evidence={evidence}", flush=True)
-    return 0 if status == "PASSED" and clean else 1
+    return 0 if status in {"PASSED", "DIAGNOSTIC_COMPLETED"} and clean else 1
 
 
 if __name__ == "__main__":
