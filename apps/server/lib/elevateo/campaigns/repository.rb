@@ -163,7 +163,7 @@ module Elevateo
             [org, input.id, expected_version, fields.fetch("name"), fields.fetch("status")]]
         when "lead"
           if preserve_consent
-            ["UPDATE app.campaign_leads SET version=version+1 WHERE organization_id=$1::uuid AND id=$2::uuid AND version=$3::integer AND email=$4 AND campaign_id=$5::uuid RETURNING *",
+            ["SELECT * FROM app.campaign_leads WHERE organization_id=$1::uuid AND id=$2::uuid AND version=$3::integer AND email=$4 AND campaign_id=$5::uuid FOR UPDATE",
               [org, input.id, expected_version, fields.fetch("email"), fields.fetch("campaign_id")]]
           else
             [<<~SQL, [org, input.id, expected_version, fields.fetch("email"), fields.fetch("consent_status"), fields.fetch("consent_recorded_at"), fields.fetch("consent_source"), fields.fetch("suppressed"), fields.fetch("campaign_id"), actor, input.operation_id]]
@@ -183,13 +183,13 @@ module Elevateo
         end
         if input.kind == "lead" && !preserve_consent
           event_values = [org, fields.fetch("campaign_id"), input.id, input.operation_id, actor,
-            fields.fetch("email"), fields.fetch("consent_status"),
+            fields.fetch("email"), expected_version + 1, fields.fetch("consent_status"),
             fields.fetch("consent_status") == "granted" ? "manual_attestation" : "status_change",
             fields.fetch("consent_source"), fields.fetch("consent_recorded_at")]
           rows(<<~SQL, event_values)
             INSERT INTO app.campaign_consent_events(organization_id,campaign_id,lead_id,operation_id,
-              actor_id,email,status,evidence_kind,source,observed_at)
-            VALUES ($1::uuid,$2::uuid,$3::uuid,$4::uuid,$5::uuid,$6,$7,$8,$9,$10::timestamptz)
+              actor_id,email,lead_version,status,evidence_kind,source,observed_at)
+            VALUES ($1::uuid,$2::uuid,$3::uuid,$4::uuid,$5::uuid,$6,$7::integer,$8,$9,$10,$11::timestamptz)
           SQL
         end
         updated = rows(sql, values).first

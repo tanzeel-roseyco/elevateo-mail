@@ -212,3 +212,5 @@ OUT-804 account page/detail now explicitly require the actor's RLS-visible mailb
 OUT-804 review repair binds update replay to the consent-preservation flag, rejects caller-supplied consent actor, and adds SQL policy checks for event actor and mutation resource existence. Migration rollback refuses populated campaign data. Exact fleet verification and the canonical display label for human attestation remain pending.
 
 OUT-804 lead consent projections now carry their event operation ID. A changed status or email is written only after an append-only event for that exact lead, email and status exists in the same protected transaction; SQL policy checks the match. Initial unknown leads have no event. This source invariant awaits real fleet PostgreSQL and concurrency checks.
+
+OUT-804 event snapshots now also bind the lead version, and a database trigger requires version advance on updates. Same-address lead edits lock and return the unchanged row while storing an idempotent operation result. These rules prevent a withdrawn lead from becoming granted again by pointing at an older consent event; fleet proof remains pending.

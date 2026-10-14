@@ -91,12 +91,13 @@ class OutreachLeadsControllerTest < Minitest::Test
     granted = lead_row.merge("consent_status" => "granted", "consent_recorded_at" => Time.utc(2026, 10, 14, 10),
       "consent_source" => "confirmed opt-in", "consent_recorded_by" => AuthFixtures::USER)
     @connection.rows = [[{ "result" => { "status" => "ok" } }], [granted], [], [],
-      [granted.merge("version" => 2)], [granted.merge("version" => 2)], []]
+      [granted], [granted], []]
     result = dispatch("update", { "operation_id" => TARGET, "expected_version" => 1,
       "email" => "A@Example.invalid" })
     assert_equal 200, result[0]
     assert_equal "granted", result[2].fetch("consent_status")
-    assert(@connection.sql.any? { |sql| sql.include?("SET version=version+1") })
+    assert_equal 1, result[2].fetch("version")
+    assert(@connection.sql.any? { |sql| sql.include?("FROM app.campaign_leads") && sql.include?("FOR UPDATE") })
     refute(@connection.sql.any? { |sql| sql.include?("INSERT INTO app.campaign_consent_events") })
   end
 

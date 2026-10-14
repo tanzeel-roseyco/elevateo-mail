@@ -47,6 +47,7 @@ class CreateCampaignFoundation < ActiveRecord::Migration[8.1]
         operation_id uuid NOT NULL,
         actor_id uuid NOT NULL,
         email text NOT NULL CHECK (octet_length(email) BETWEEN 3 AND 254),
+        lead_version integer NOT NULL CHECK (lead_version BETWEEN 2 AND 2147483647),
         status text NOT NULL CHECK (status IN ('unknown', 'granted', 'withdrawn')),
         evidence_kind text NOT NULL CHECK (evidence_kind IN ('manual_attestation', 'status_change')),
         source text CHECK (source IS NULL OR length(source) BETWEEN 1 AND 200),
@@ -92,6 +93,23 @@ class CreateCampaignFoundation < ActiveRecord::Migration[8.1]
         PRIMARY KEY (organization_id, operation_id)
       );
       CREATE INDEX campaign_leads_analytics_idx ON app.campaign_leads(organization_id, campaign_id, consent_status);
+      CREATE FUNCTION app.guard_campaign_lead_update() RETURNS trigger LANGUAGE plpgsql AS $fn$
+      BEGIN
+        IF NEW.version <> OLD.version + 1 THEN
+          RAISE EXCEPTION 'campaign lead version must advance' USING ERRCODE='23514';
+        END IF;
+        IF (NEW.email IS DISTINCT FROM OLD.email OR NEW.consent_status IS DISTINCT FROM OLD.consent_status
+          OR NEW.consent_source IS DISTINCT FROM OLD.consent_source
+          OR NEW.consent_recorded_at IS DISTINCT FROM OLD.consent_recorded_at
+          OR NEW.consent_recorded_by IS DISTINCT FROM OLD.consent_recorded_by)
+          AND NEW.consent_operation_id IS NULL THEN
+          RAISE EXCEPTION 'campaign lead consent change requires event' USING ERRCODE='23514';
+        END IF;
+        RETURN NEW;
+      END;
+      $fn$;
+      CREATE TRIGGER campaign_lead_update_guard BEFORE UPDATE ON app.campaign_leads
+        FOR EACH ROW EXECUTE FUNCTION app.guard_campaign_lead_update();
     SQL
     %w[campaigns campaign_leads campaign_consent_events campaign_accounts campaign_suppressions campaign_mutations].each do |table|
       execute "ALTER TABLE app.#{table} ENABLE ROW LEVEL SECURITY"
@@ -122,6 +140,7 @@ class CreateCampaignFoundation < ActiveRecord::Migration[8.1]
             WHERE e.organization_id=campaign_leads.organization_id
               AND e.campaign_id=campaign_leads.campaign_id AND e.lead_id=campaign_leads.id
               AND e.operation_id=campaign_leads.consent_operation_id AND e.email=campaign_leads.email
+              AND e.lead_version=campaign_leads.version
               AND e.status=campaign_leads.consent_status
               AND e.source IS NOT DISTINCT FROM campaign_leads.consent_source
               AND e.observed_at IS NOT DISTINCT FROM campaign_leads.consent_recorded_at
@@ -164,5 +183,6 @@ class CreateCampaignFoundation < ActiveRecord::Migration[8.1]
       raise ActiveRecord::IrreversibleMigration, "campaign foundation contains records" if %w[t true].include?(present.to_s)
     end
     execute "DROP TABLE app.campaign_mutations, app.campaign_suppressions, app.campaign_accounts, app.campaign_consent_events, app.campaign_leads, app.campaigns"
+    execute "DROP FUNCTION app.guard_campaign_lead_update()"
   end
 end
