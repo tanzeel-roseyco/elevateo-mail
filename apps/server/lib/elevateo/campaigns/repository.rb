@@ -117,6 +117,8 @@ module Elevateo
           values << WriteInput.uuid(campaign_id)
           filter += " AND campaign_id=$2::uuid"
         end
+        # AIDEV-NOTE: Account metadata is visible only while the actor can read its mailbox, including private membership.
+        filter += " AND #{account_mailbox_visible}" if kind == "account"
         values << after
         values << (limit + 1)
         cursor_index, cap_index = values.length - 1, values.length
@@ -128,7 +130,8 @@ module Elevateo
       def detail(kind:, organization_id:, id:)
         org = WriteInput.uuid(organization_id)
         resource = WriteInput.uuid(id)
-        row = rows("SELECT #{selection_for(kind)} FROM app.#{table_for(kind)} WHERE organization_id=$1::uuid AND id=$2::uuid", [org, resource]).first
+        visibility = kind == "account" ? " AND #{account_mailbox_visible}" : ""
+        row = rows("SELECT #{selection_for(kind)} FROM app.#{table_for(kind)} WHERE organization_id=$1::uuid AND id=$2::uuid#{visibility}", [org, resource]).first
         raise CollaborationError.new("not_available") unless row
         project(kind, row)
       end
@@ -145,7 +148,7 @@ module Elevateo
         intent_fields = intent.nil? ? input.attributes : intent
         WriteInput.invalid! unless intent_fields.is_a?(Hash) && intent_fields.keys.all? { |key| key.is_a?(String) }
         fingerprint = Digest::SHA256.hexdigest(JSON.generate([input.kind, input.id, expected_version,
-          intent_fields.sort.to_h, actor]))
+          intent_fields.sort.to_h, actor, preserve_consent]))
         rows("SELECT pg_advisory_xact_lock(hashtextextended($1::text, 0))", [input.operation_id])
         previous = rows("SELECT fingerprint,result FROM app.campaign_mutations WHERE organization_id=$1::uuid AND operation_id=$2::uuid", [org, input.operation_id]).first
         if previous
@@ -203,6 +206,11 @@ module Elevateo
       def selection_for(kind)
         return "*" unless kind == "lead"
         "*, EXISTS (SELECT 1 FROM app.campaign_suppressions s WHERE s.organization_id=campaign_leads.organization_id AND s.email=campaign_leads.email) AS globally_suppressed"
+      end
+
+      def account_mailbox_visible
+        "EXISTS (SELECT 1 FROM app.mailboxes mb WHERE mb.organization_id=campaign_accounts.organization_id " \
+          "AND mb.id=campaign_accounts.mailbox_id)"
       end
 
       def table_for(kind)

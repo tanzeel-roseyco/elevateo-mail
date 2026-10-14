@@ -35,6 +35,7 @@ module Elevateo
       def detail: (kind: String, organization_id: String, id: String) -> Hash[String, untyped]
       def replace: (Input, organization_id: String, expected_version: Integer, ?actor_id: String?, ?intent: Hash[String, untyped]?, ?preserve_consent: bool) -> Hash[String, untyped]
       def selection_for: (String) -> String
+      def account_mailbox_visible: () -> String
       def table_for: (String) -> String
       def project: (String, Hash[String, untyped]) -> Hash[String, untyped]
     end

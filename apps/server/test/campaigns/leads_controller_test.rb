@@ -124,7 +124,15 @@ class OutreachLeadsControllerTest < Minitest::Test
     result = dispatch("record_consent", { "operation_id" => TARGET, "expected_version" => 1,
       "source" => "confirmed opt-in", "observed_at" => "2026-10-14T10:00:00Z", "attested" => false })
     assert_equal [400, "request_invalid"], [result[0], result[2].fetch("code")]
-    assert(@connection.sql.any? { |sql| sql.include?("SET version=version+1") })
+    refute(@connection.sql.any? { |sql| sql.include?("UPDATE app.campaign_leads") })
     refute(@connection.sql.any? { |sql| sql.include?("INSERT INTO app.campaign_consent_events") })
+  end
+
+  def test_request_cannot_supply_consent_actor
+    result = dispatch("record_consent", { "operation_id" => TARGET, "expected_version" => 1,
+      "source" => "confirmed opt-in", "observed_at" => "2026-10-14T10:00:00Z",
+      "attested" => true, "actor_id" => NOTE })
+    assert_equal [400, "request_invalid"], [result[0], result[2].fetch("code")]
+    assert_empty @connection.sql
   end
 end

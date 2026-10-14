@@ -109,6 +109,21 @@ class CreateCampaignFoundation < ActiveRecord::Migration[8.1]
           ELSE (SELECT app.authorize_outreach_content_read(
             NULLIF(current_setting('app.outreach_digest', true), ''))->>'status' = 'ok') END
       SQL
+      write_integrity = case table
+      when "campaign_consent_events"
+        " AND campaign_consent_events.actor_id = app.context_uuid('app.user_id')"
+      when "campaign_mutations"
+        <<~SQL.squish
+          AND ((resource_kind='campaign' AND EXISTS (SELECT 1 FROM app.campaigns c
+            WHERE c.organization_id=campaign_mutations.organization_id AND c.id=campaign_mutations.resource_id))
+          OR (resource_kind='lead' AND EXISTS (SELECT 1 FROM app.campaign_leads l
+            WHERE l.organization_id=campaign_mutations.organization_id AND l.id=campaign_mutations.resource_id))
+          OR (resource_kind='account' AND EXISTS (SELECT 1 FROM app.campaign_accounts a
+            WHERE a.organization_id=campaign_mutations.organization_id AND a.id=campaign_mutations.resource_id)))
+        SQL
+      else
+        ""
+      end
       execute <<~SQL
         CREATE POLICY campaign_tenant ON app.#{table} FOR ALL TO elevateo_app_read
           USING (organization_id = app.context_uuid('app.org_id') AND EXISTS (
@@ -116,7 +131,7 @@ class CreateCampaignFoundation < ActiveRecord::Migration[8.1]
             WHERE m.organization_id = #{table}.organization_id AND m.user_id = app.context_uuid('app.user_id'))#{visible_mailbox}#{role_guard})
           WITH CHECK (organization_id = app.context_uuid('app.org_id') AND EXISTS (
             SELECT 1 FROM app.organization_memberships m
-            WHERE m.organization_id = #{table}.organization_id AND m.user_id = app.context_uuid('app.user_id'))#{visible_mailbox}#{role_guard})
+            WHERE m.organization_id = #{table}.organization_id AND m.user_id = app.context_uuid('app.user_id'))#{visible_mailbox}#{role_guard}#{write_integrity})
       SQL
     end
     # AIDEV-NOTE: Membership RLS limits inert CRUD; no privilege reaches send intents or provider transport.
@@ -125,6 +140,12 @@ class CreateCampaignFoundation < ActiveRecord::Migration[8.1]
   end
 
   def down
+    # AIDEV-NOTE: Rollback is supported for empty disposable schemas only; populated draft/audit rows are preserved.
+    execute "SET LOCAL row_security = off"
+    %w[campaign_mutations campaign_suppressions campaign_accounts campaign_consent_events campaign_leads campaigns].each do |table|
+      present = select_value("SELECT EXISTS (SELECT 1 FROM app.#{table} LIMIT 1)")
+      raise ActiveRecord::IrreversibleMigration, "campaign foundation contains records" if %w[t true].include?(present.to_s)
+    end
     execute "DROP TABLE app.campaign_mutations, app.campaign_suppressions, app.campaign_accounts, app.campaign_consent_events, app.campaign_leads, app.campaigns"
   end
 end
