@@ -144,3 +144,5 @@ QA815 latest isolated units: `845d422` sequence repository/controller 10/45 PASS
 QA815 `f70b654` full web PASS 842/842 and build; same-source seeded eight-PNG visual PASS with exact task cleanup. Synthetic route screenshots are awaiting root/Tessa inspection, not real-auth acceptance. Backend 00018 privilege and other owner repairs remain OPEN.
 
 QA815 `651b63a` PostgreSQL migrations 21 PASS through gateway 00018; Ruby 521/7065 with 1 failure/1 error, Steep 111 problems; HTTP/worker/browser NOT_REACHED. Exact cleanup PASS. Protected role and thread fixture owner defects routed to owners.
+
+QA815 `065ec91` migrations 21 PASS; Ruby 522/7080, 1 role failure, 0 errors; thread fixture repair passes its formerly failing path. Steep111, HTTP/worker/browser NOT_REACHED, cleanup PASS.

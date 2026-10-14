@@ -712,3 +712,5 @@ QA815 sequence and attachment unit PASS receipts are execution evidence, not ind
 QA815 `f70b654` full web and eight seeded PNG passes are execution and sampled visual evidence, not independent source review. Additional independently reviewed source remains 0 LOC; defect density unclaimed. Root owns visual acceptance and review schedule.
 
 QA815 `651b63a` protected role and thread fixture failures are runtime test findings, not independent source review. Additional independently reviewed source remains 0 LOC; density unclaimed. Root/source owners handle repair and review.
+
+QA815 `065ec91` role failure and thread fixture improvement are executed test findings, not an independent source review. Additional independently reviewed LOC remains 0; defect density unclaimed.
