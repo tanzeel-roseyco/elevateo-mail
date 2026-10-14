@@ -818,12 +818,14 @@
           "context_id": {
             "type": "string",
             "minLength": 16,
-            "maxLength": 256
+            "maxLength": 256,
+            "pattern": "^[A-Za-z0-9_-]+$"
           },
           "authorization_version": {
             "type": "string",
             "minLength": 16,
-            "maxLength": 256
+            "maxLength": 256,
+            "pattern": "^[A-Za-z0-9_-]+$"
           },
           "mailbox_id": {
             "$ref": "#/components/schemas/Id"
