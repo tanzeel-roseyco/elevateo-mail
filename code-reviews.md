@@ -731,3 +731,7 @@ Soren authored `ops/tests/qa815/run-web-candidate.sh` and `docs/completion/soren
 ### FE808 continuation author inspection
 
 Scope: `apps/web/src/features/members/{adminModel,AdministrationPage,PersonalSettingsPage,peopleFeatureModule}*`. Author inspection found and fixed one stale-write replay risk by blocking further edits after any failed write until reload. Independent adversarial packets and design reviewer remain pending; no independent defect count or density is claimed. Fleet Docker tests, TypeScript/lint and actual browser checks are NOT_RUN on this candidate.
+
+## FE-806 message permalink review request
+
+Bounded packet: `apps/web/src/features/thread/ThreadPage.tsx` (about 23 changed lines) and `ThreadPage.test.tsx` (about 53 added lines). Request independent adversarial source review plus dedicated design tradeoff review: URL parsing, stale scope, page termination, accessibility/focus and cross-mailbox disclosure. No review was performed in this worker turn; defects and density are pending. Tests and browser evidence are authored/requested, not executed.

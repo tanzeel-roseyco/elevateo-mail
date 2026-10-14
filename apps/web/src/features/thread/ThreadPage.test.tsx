@@ -23,6 +23,8 @@ import { ThreadPage } from './ThreadPage'
 const MB = '00000000-0000-4000-8000-000000000021'
 const THREAD = '00000000-0000-4000-8000-000000000031'
 const THREAD2 = '00000000-0000-4000-8000-000000000032'
+const MESSAGE_A = '00000000-0000-4000-8000-000000000041'
+const MESSAGE_B = '00000000-0000-4000-8000-000000000042'
 
 function renderReader(script: FixtureScript = {}) {
   return renderReaderWith(createFixtureGateway(script))
@@ -181,6 +183,57 @@ describe('plaintext reader', () => {
   it('shows the same unavailable UI for absent or inaccessible conversations', async () => {
     renderReader({ getThread: 'not_available' })
     await screen.findByText('This conversation is unavailable')
+  })
+})
+
+describe('individual message permalink', () => {
+  it('opens a message link without losing the inbox filter', async () => {
+    renderReaderWith(pagedGateway([detailPage([MESSAGE_A], null)]).gateway, `/mailboxes/${MB}/threads/${THREAD}?filter=unread`)
+    fireEvent.click(await screen.findByRole('link', { name: 'Open this message' }))
+    const selected = await screen.findByLabelText('Selected message')
+    expect(selected.textContent).toContain(MESSAGE_A)
+    expect(screen.getByRole('link', { name: /Back to conversations/ }).getAttribute('href')).toBe(`/mailboxes/${MB}?filter=unread`)
+  })
+
+  it('opens a direct message URL, focuses that message, and preserves the unread back filter', async () => {
+    const gateway = pagedGateway([detailPage([MESSAGE_A], null)]).gateway
+    renderReaderWith(gateway, `/mailboxes/${MB}/threads/${THREAD}?filter=unread&message=${MESSAGE_A}`)
+    const selected = await screen.findByLabelText('Selected message')
+    await waitFor(() => expect(document.activeElement).toBe(selected))
+    expect(screen.getByRole('link', { name: 'Open this message' }).getAttribute('href')).toContain(`filter=unread&message=${MESSAGE_A}`)
+    expect(screen.getByRole('link', { name: /Back to conversations/ }).getAttribute('href')).toBe(`/mailboxes/${MB}?filter=unread`)
+  })
+
+  it('keeps a selected later-page message pending until a deliberate bounded continuation', async () => {
+    const gateway = pagedGateway([detailPage([MESSAGE_A], 'next'), detailPage([MESSAGE_B], null)]).gateway
+    renderReaderWith(gateway, `/mailboxes/${MB}/threads/${THREAD}?message=${MESSAGE_B}`)
+    await screen.findByText('This message is on a later page. Show more messages to find it.')
+    expect(screen.queryByLabelText('Selected message')).toBeNull()
+    fireEvent.click(screen.getByRole('button', { name: 'Show more messages' }))
+    const selected = await screen.findByLabelText('Selected message')
+    expect(selected.textContent).toContain(MESSAGE_B)
+  })
+
+  it('rejects a malformed message id before any gateway read', async () => {
+    const gateway = createFixtureGateway()
+    const read = vi.spyOn(gateway, 'getThread')
+    renderReaderWith(gateway, `/mailboxes/${MB}/threads/${THREAD}?message=%3Cscript%3E`)
+    await screen.findByText('This message is unavailable')
+    expect(read).not.toHaveBeenCalled()
+  })
+
+  it('shows an unavailable message after the final page and never walks farther', async () => {
+    const { gateway, readCalls } = pagedGateway([detailPage([MESSAGE_A], null)])
+    renderReaderWith(gateway, `/mailboxes/${MB}/threads/${THREAD}?message=${MESSAGE_B}`)
+    await screen.findByText('This message is unavailable in this conversation.')
+    expect(readCalls()).toBe(1)
+  })
+
+  it('does not reveal message content when the conversation read is denied', async () => {
+    renderReaderWith(createFixtureGateway({ getThread: 'not_available' }), `/mailboxes/${MB}/threads/${THREAD}?message=${MESSAGE_A}`)
+    await screen.findByText('This conversation is unavailable')
+    expect(screen.queryByLabelText('Selected message')).toBeNull()
+    expect(screen.queryByRole('link', { name: 'Open this message' })).toBeNull()
   })
 })
 
