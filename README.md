@@ -81,6 +81,10 @@ MAC-814 isolated sequence draft persistence candidate: migration 00016 and stric
 
 FE808 Personal Settings source now loads and saves the current actor's versioned display name through a proposed V2 gateway seam. Theo's preference controller and Cassian's typed adapter are still in progress; this isolated UI is not integrated or fleet-tested. Timezone and other unsupported preferences remain unavailable. See [Lyra's checkpoint](docs/completion/lyra.md).
 The ADV089 cancellation test gap has an isolated source repair using the real protected-request hook with delayed old read/write replies; fleet execution remains pending.
+### FE806 inbound attachment reader candidate
+
+The isolated thread reader can show bounded private attachment metadata on explicit request and offer an authorized byte-proxy download only for `clean` rows. Pending, blocked and failed scans remain held; a fresh proxy denial remains unavailable. This frontend port follows the noncanonical V2 proposal and is not connected to an active route or scanner. Outbound attachment upload/send remains disabled; fleet tests and browser acceptance are pending. See [Mira's owner record](docs/completion/mira.md).
+
 
 ### R25 approval reload recovery candidate
 
