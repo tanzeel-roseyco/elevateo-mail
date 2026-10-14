@@ -9,7 +9,7 @@ BEGIN
   IF NOT has_schema_privilege('elevateo_attachment_gateway','app_attachment_gateway','USAGE') OR
     has_schema_privilege('elevateo_attachment_gateway','app_attachment_gateway','CREATE') OR
     EXISTS (SELECT 1 FROM pg_namespace n
-      WHERE (n.nspname='app' OR left(n.nspname,4)='app_')
+      WHERE (n.nspname IN ('app','auth','storage') OR left(n.nspname,4)='app_')
         AND n.nspname<>'app_attachment_gateway'
         AND has_schema_privilege('elevateo_attachment_gateway',n.oid,'USAGE,CREATE')) OR
     NOT has_function_privilege('elevateo_attachment_gateway',helper,'EXECUTE') OR
@@ -33,7 +33,7 @@ BEGIN
       WHERE p.oid=helper AND a.grantee=0 AND a.privilege_type='EXECUTE') OR
     EXISTS (SELECT 1 FROM pg_proc p JOIN pg_namespace n ON n.oid=p.pronamespace
       CROSS JOIN LATERAL aclexplode(coalesce(p.proacl,acldefault('f',p.proowner))) a
-      WHERE (n.nspname='app' OR left(n.nspname,4)='app_') AND p.oid<>helper
+      WHERE (n.nspname IN ('app','auth','storage') OR left(n.nspname,4)='app_') AND p.oid<>helper
         AND a.grantee='elevateo_attachment_gateway'::regrole AND a.privilege_type='EXECUTE') OR
     has_function_privilege('elevateo_api',helper,'EXECUTE') OR
     has_function_privilege('elevateo_worker',helper,'EXECUTE')

@@ -46,4 +46,14 @@ BEGIN
     RAISE EXCEPTION 'gateway direct send private function unexpectedly succeeded';
   EXCEPTION WHEN insufficient_privilege THEN NULL;
   END;
+  BEGIN
+    EXECUTE 'SELECT id FROM auth.users LIMIT 1';
+    RAISE EXCEPTION 'gateway direct Supabase Auth SELECT unexpectedly succeeded';
+  EXCEPTION WHEN insufficient_privilege THEN NULL;
+  END;
+  BEGIN
+    EXECUTE 'SELECT id FROM storage.objects LIMIT 1';
+    RAISE EXCEPTION 'gateway direct Supabase Storage SELECT unexpectedly succeeded';
+  EXCEPTION WHEN insufficient_privilege THEN NULL;
+  END;
 END $$;

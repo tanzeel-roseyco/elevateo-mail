@@ -25,6 +25,8 @@ DO $$ BEGIN
       AND has_schema_privilege('elevateo_attachment_gateway','app_drafts_private','USAGE,CREATE'))
     OR EXISTS (SELECT 1 FROM pg_namespace WHERE nspname='app_send_private'
       AND has_schema_privilege('elevateo_attachment_gateway','app_send_private','USAGE,CREATE'))
+    OR EXISTS (SELECT 1 FROM pg_namespace n WHERE n.nspname IN ('auth','storage')
+      AND has_schema_privilege('elevateo_attachment_gateway',n.oid,'USAGE,CREATE'))
     OR (to_regclass('app.inbox_attachments') IS NOT NULL AND
       has_table_privilege('elevateo_attachment_gateway','app.inbox_attachments','SELECT'))
   THEN RAISE EXCEPTION 'gateway role boundary drift; no credential rotation'; END IF;

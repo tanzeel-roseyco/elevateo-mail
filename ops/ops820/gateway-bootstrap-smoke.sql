@@ -9,6 +9,8 @@ DO $$ BEGIN
     OR has_database_privilege('elevateo_attachment_gateway',current_database(),'CREATE')
     OR has_schema_privilege('elevateo_attachment_gateway','app','USAGE,CREATE')
     OR has_schema_privilege('elevateo_attachment_gateway','app_auth','USAGE,CREATE')
+    OR EXISTS (SELECT 1 FROM pg_namespace n WHERE n.nspname IN ('auth','storage')
+      AND has_schema_privilege('elevateo_attachment_gateway',n.oid,'USAGE,CREATE'))
     OR EXISTS (SELECT 1 FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace
       WHERE n.nspname IN ('app','app_auth') AND c.relkind IN ('r','p','v','m','f')
         AND has_table_privilege('elevateo_attachment_gateway',c.oid,
