@@ -694,3 +694,7 @@ Author self-review only; independent coverage 0 LOC, defects and defects/KLOC no
 MAC-814 continuation: new `apps/native` macOS overlay/script/validator/tests await independent bounded source and design tradeoff review. Coverage 0 independently reviewed LOC; defects/KLOC N/A. No runtime test claim.
 
 MAC-814 sequence primitive: independent bounded functional and design reviews NOT_RUN. Reviewed LOC 0, defects/KLOC N/A; authored tests and Soren fleet verification pending. No runtime or send evidence.
+
+## REV-872 Leonie gateway bootstrap source review
+
+Maeve reviewed exact Leonie `f8b07b2afe99549b66a454b37abc58c6d1e46597`: 271 unique target source LOC across bootstrap, two smokes, wrong-owner fixture and restore lines 1–145; zero confirmed Leonie defects (0/KLOC). One external integration blocker was found in visible Sabine `f4bd412` migration00018, which still creates/drops the now bootstrap-owned schema. Sabine context added 84 LOC, yielding 355 aggregate read LOC; five above the requested 350 and under hard400, so reading stopped. No SQL/Docker execution or runtime PASS. See [durable report](docs/completion/maeve-rev872.md).
