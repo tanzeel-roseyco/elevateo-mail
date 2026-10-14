@@ -173,3 +173,7 @@ ATT838 follow-up: Sabine specified the signed authorization_version shape as exa
 ## ATT823 inert metadata controller
 
 `V2::InboxAttachmentsController#index` is an unregistered adapter. It validates UUID path/query input, uses the current authenticated read-only snapshot and `ThreadReads#direct_message` for exact mailbox/thread/message access, then calls Nadia’s bounded metadata service/repository without returning storage keys. It has no active route or browser production port. Source-only, NOT_RUN; Ruby Steep/HTTP/RLS, private byte proxy and post-fetch recheck are pending.
+
+## Fleet SEND809 affected-suite receipt
+
+Rowan relayed Soren exact `backend-cb1ec5be4546/028-ruby-suites.txt`: six named send DB suites (5/37, 4/40, 8/72, 3/24, 6/82, 9/89) show zero failures/errors on cb1ec5be. Overall Ruby still FAILED from other suites and Steep; cleanup PASS. No HTTP, worker drain, browser or later integrated-SHA PASS follows from this bounded receipt.
