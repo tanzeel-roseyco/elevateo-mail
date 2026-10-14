@@ -54,6 +54,14 @@ class VerifyManifestTreeTest(unittest.TestCase):
                 "N: android=http://schemas.android.com/apk/res/android\n"
                 "  E: manifest (line=2)\n  E: application (line=24)\n",
             )
+        with self.assertRaises(ValueError):
+            require_no_view_filter(
+                0,
+                "N: android=http://schemas.android.com/apk/res/android\n"
+                "  E: manifest (line=2)\n"
+                "  E: unrelated (line=3)\n"
+                "    E: application (line=24)\n",
+            )
 
 
 if __name__ == "__main__":
