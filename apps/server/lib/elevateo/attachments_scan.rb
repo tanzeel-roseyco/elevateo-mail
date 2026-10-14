@@ -26,34 +26,36 @@ module Elevateo
 
       def scan(bytes)
         raise Error, "invalid scan input" unless bytes.is_a?(String) && bytes.bytesize.between?(1, MAX_BYTES)
-        socket = nil
         Timeout.timeout(20) do
-          socket = @socket_factory.call
-          write_all(socket, "zINSTREAM\0")
-          offset = 0
-          while offset < bytes.bytesize
-            chunk = bytes.byteslice(offset, CHUNK)
-            write_all(socket, [chunk.bytesize].pack("N"))
-            write_all(socket, chunk)
-            offset += chunk.bytesize
+          active_socket = @socket_factory.call
+          begin
+            write_all(active_socket, "zINSTREAM\0")
+            offset = 0
+            while offset < bytes.bytesize
+              chunk = bytes.byteslice(offset, CHUNK)
+              raise Error, "clamd stream unavailable" unless chunk
+              write_all(active_socket, [chunk.bytesize].pack("N"))
+              write_all(active_socket, chunk)
+              offset += chunk.bytesize
+            end
+            write_all(active_socket, [0].pack("N"))
+            reply = +"".b
+            loop do
+              character = active_socket.read(1)
+              raise Error, "clamd reply unavailable" unless character
+              break if character == "\0"
+              reply << character
+              raise Error, "clamd reply too long" if reply.bytesize > REPLY_MAX
+            end
+            return "clean" if reply == "stream: OK"
+            return "malware" if /\Astream: [A-Za-z0-9._-]{1,128} FOUND\z/.match?(reply)
+            raise Error, "clamd did not return a verdict"
+          ensure
+            active_socket.close
           end
-          write_all(socket, [0].pack("N"))
-          reply = +"".b
-          loop do
-            character = socket.read(1)
-            raise Error, "clamd reply unavailable" unless character
-            break if character == "\0"
-            reply << character
-            raise Error, "clamd reply too long" if reply.bytesize > REPLY_MAX
-          end
-          return "clean" if reply == "stream: OK"
-          return "malware" if /\Astream: [A-Za-z0-9._-]{1,128} FOUND\z/.match?(reply)
-          raise Error, "clamd did not return a verdict"
         end
       rescue Timeout::Error, IOError, SystemCallError
         raise Error, "clamd unavailable"
-      ensure
-        socket&.close
       end
 
       private
@@ -82,10 +84,9 @@ module Elevateo
         @repository.due_scan_ids(limit: limit).each do |id|
           begin
             verdict = inspect(id: id)
-            outcomes.fetch(verdict) # reject an unexpected verdict before counting it
-            outcomes[verdict] += 1
+            outcomes[verdict] = outcomes.fetch(verdict) + 1
           rescue Unavailable
-            outcomes["held"] += 1
+            outcomes["held"] = outcomes.fetch("held") + 1
           end
         end
         outcomes
@@ -95,11 +96,16 @@ module Elevateo
         token = SecureRandom.uuid
         row = @repository.claim_scan(id: id, token: token)
         raise Unavailable, "scan not due" unless row
-        attempt = row.fetch("scan_attempt").to_i
+        attempt = row.fetch("scan_attempt")
         digest = row.fetch("sha256")
+        key = row.fetch("storage_key")
+        expected_size = row.fetch("byte_size")
+        raise Unavailable, "invalid scan claim" unless attempt.is_a?(Integer) && attempt.between?(1, 3) &&
+          digest.is_a?(String) && /\A[0-9a-f]{64}\z/.match?(digest) && key.is_a?(String) &&
+          expected_size.is_a?(Integer) && expected_size.between?(1, MAX_BYTES)
         begin
-          bytes = @storage.get(row.fetch("storage_key"))
-          raise Unavailable, "attachment bytes changed" unless bytes.bytesize == row.fetch("byte_size").to_i &&
+          bytes = @storage.get(key)
+          raise Unavailable, "attachment bytes changed" unless bytes.bytesize == expected_size &&
             Digest::SHA256.hexdigest(bytes) == digest
           verdict = @scanner.scan(bytes)
           raise Unavailable, "invalid scanner verdict" unless %w[clean malware].include?(verdict)

@@ -1,0 +1,115 @@
+module Elevateo
+  module Attachments
+    type row = Hash[String, ReadResponse::json_value]
+    type scope = { organization_id: String, mailbox_id: String, thread_id: String, message_id: String }
+    type scan_counts = Hash[String, Integer]
+
+    interface _Storage
+      def put: (String, String, content_type: String) -> nil
+      def get: (String) -> String
+    end
+    interface _Authorization
+      def call: (organization_id: String, mailbox_id: String, thread_id: String,
+                 message_id: String, capability: Symbol) -> void
+    end
+    interface _QueryResult
+      def to_a: () -> Array[row]
+    end
+    interface _Connection
+      def exec_query: (String, String, Array[ActiveRecord::Relation::QueryAttribute]) -> _QueryResult
+    end
+    interface _Socket
+      def write: (String) -> Integer
+      def read: (Integer) -> String?
+      def close: () -> void
+    end
+    interface _Scanner
+      def scan: (String) -> String
+    end
+    interface _Repository
+      def create: (organization_id: String, mailbox_id: String, thread_id: String,
+        message_id: String, id: String, storage_key: String, filename: String,
+        content_type: String, byte_size: Integer, sha256: String, scan_status: String) -> Array[row]
+      def find: (organization_id: String, mailbox_id: String, thread_id: String,
+        message_id: String, id: String) -> row?
+      def page: (organization_id: String, mailbox_id: String, thread_id: String,
+        message_id: String, cursor: String?, limit: Integer) -> Array[row]
+      def due_scan_ids: (limit: Integer) -> Array[String]
+      def claim_scan: (id: String, token: String) -> row?
+      def record_scan: (id: String, sha256: String, token: String,
+        attempt: Integer, verdict: String) -> nil
+    end
+
+    MAX_BYTES: Integer
+    TYPES: Hash[String, String?]
+    UUID: Regexp
+    NAME: Regexp
+    class Invalid < StandardError
+    end
+    class NotAvailable < StandardError
+    end
+    class Held < StandardError
+    end
+
+    class Service
+      @repository: _Repository
+      @storage: _Storage
+      @authorize: _Authorization
+      def initialize: (repository: _Repository, storage: _Storage, authorize: _Authorization) -> void
+      def stage: (organization_id: String, mailbox_id: String, thread_id: String,
+        message_id: String, filename: String, content_type: String, bytes: String) -> Hash[String, String]
+      def list: (organization_id: String, mailbox_id: String, thread_id: String,
+        message_id: String, ?cursor: String?, ?limit: Integer) -> ReadResponse::item
+      def assert_downloadable: (organization_id: String, mailbox_id: String, thread_id: String,
+        message_id: String, id: String) -> ReadResponse::item
+      private
+      def scope!: (String, String, String, String) -> scope
+      def validate!: (String, String, String) -> void
+    end
+
+    class Repository
+      @connection: _Connection
+      def initialize: (connection: _Connection) -> void
+      def create: (organization_id: String, mailbox_id: String, thread_id: String,
+        message_id: String, id: String, storage_key: String, filename: String,
+        content_type: String, byte_size: Integer, sha256: String, scan_status: String) -> Array[row]
+      def find: (organization_id: String, mailbox_id: String, thread_id: String,
+        message_id: String, id: String) -> row?
+      def page: (organization_id: String, mailbox_id: String, thread_id: String,
+        message_id: String, cursor: String?, limit: Integer) -> Array[row]
+      def due_scan_ids: (limit: Integer) -> Array[String]
+      def claim_scan: (id: String, token: String) -> row?
+      def record_scan: (id: String, sha256: String, token: String,
+        attempt: Integer, verdict: String) -> nil
+      private
+      def rows: (String, Array[String | Integer | nil]) -> Array[row]
+    end
+
+    class ScannerUnavailable
+      class Error < StandardError
+      end
+      def scan: (String) -> String
+    end
+    class ClamdScanner
+      class Error < StandardError
+      end
+      CHUNK: Integer
+      REPLY_MAX: Integer
+      @socket_factory: ^() -> _Socket
+      def initialize: (?host: String, ?port: Integer, ?socket_factory: (^() -> _Socket)?) -> void
+      def scan: (String) -> String
+      private
+      def write_all: (_Socket, String) -> void
+    end
+    class ScanService
+      class Unavailable < StandardError
+      end
+      @repository: _Repository
+      @storage: _Storage
+      @scanner: _Scanner
+      def initialize: (repository: _Repository, storage: _Storage, ?scanner: _Scanner) -> void
+      def run_batch: (?limit: Integer) -> scan_counts
+      def inspect: (id: String) -> String
+    end
+  end
+end
