@@ -1,5 +1,7 @@
 ### INT-801 integrated source candidate (2026-10-14)
 
+Elara `f060f18` strict worker/SMTP type repair and Dorian `82d438e` controller-test lint repair are merged into the isolated core source. Cassian added pinned `net-smtp` to shared Steep libraries for the declared SMTP transport; these repairs have no exact integrated fleet static PASS yet.
+
 ATT-823 parallel phase: a noncanonical V2 proposal defines message-scoped attachment metadata pagination and clean-only authenticated byte streaming, with explicit 400/404/423 error mapping. No scanner, private Storage adapter, list repository, active route or generated DTO exists; browser upload and draft-send attachment remain unsupported. The frozen core candidate is unchanged.
 
 PREF-822 parallel phase: a separate noncanonical OpenAPI proposal defines session-derived GET/PUT `/v2/me/preferences` for display name only. It is absent from the active Rails registry and canonical V2 draft.5, pending Theo source SHA, review and fleet proof; current core candidate remains frozen.

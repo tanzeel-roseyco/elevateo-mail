@@ -189,10 +189,12 @@
         "additionalProperties": false,
         "required": [
           "id",
+          "message_id",
           "filename",
           "content_type",
           "byte_size",
-          "scan_status"
+          "scan_status",
+          "downloadable"
         ],
         "properties": {
           "id": {
@@ -227,6 +229,14 @@
               "malware",
               "scan_failed"
             ]
+          },
+          "message_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "downloadable": {
+            "type": "boolean",
+            "description": "Server-derived true only for clean scan status; current read authorization is still required for bytes."
           }
         }
       },
