@@ -11,9 +11,11 @@ class AttachmentControllerAuthorizationTest < Minitest::Test
 
   class Reader
     attr_reader :calls
+    attr_accessor :deny
     def initialize = @calls = []
     def direct_message(thread_id:, message_id:, query:)
       @calls << [thread_id, message_id, query]
+      raise Elevateo::ThreadReads::NotAvailable if @deny
       "authorized"
     end
   end
@@ -41,5 +43,11 @@ class AttachmentControllerAuthorizationTest < Minitest::Test
       assert_equal "not_available", error.code
     end
     assert_empty @reader.calls
+  end
+
+  def test_current_message_denial_propagates
+    @reader.deny = true
+    assert_raises(Elevateo::ThreadReads::NotAvailable) { @authorize.call(**scope) }
+    assert_equal 1, @reader.calls.length
   end
 end

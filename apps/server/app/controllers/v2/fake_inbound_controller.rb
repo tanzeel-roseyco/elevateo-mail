@@ -29,10 +29,16 @@ module V2
         raise Elevateo::CollaborationError.new("not_available") unless store.authorized?(
           organization_id: identity.org_id, mailbox_id: mailbox)
 
+        account_id = input["provider_account_id"]
+        event_id = input["provider_event_id"]
+        raw_mime = input["raw_mime"]
+        # AIDEV-NOTE: JSON field presence does not establish scalar types; narrow before the MIME boundary.
+        unless account_id.is_a?(String) && event_id.is_a?(String) && raw_mime.is_a?(String)
+          raise Elevateo::CollaborationError.new("request_invalid")
+        end
         result = Elevateo::Inbound::FakeIngress.new(store: store).ingest(
           organization_id: identity.org_id, mailbox_id: mailbox, authorized_mailbox_ids: [mailbox],
-          provider_account_id: input["provider_account_id"], provider_event_id: input["provider_event_id"],
-          raw_mime: input["raw_mime"])
+          provider_account_id: account_id, provider_event_id: event_id, raw_mime: raw_mime)
         payload = result.merge("simulated" => true)
         Elevateo::WriteResponse.new(json: JSON.generate(payload),
           status: result.fetch("result") == "created" ? 201 : 200)
