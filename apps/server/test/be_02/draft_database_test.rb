@@ -12,10 +12,10 @@ class DraftDatabaseTest < DraftDatabaseTestCase
     begin_write
     # AIDEV-NOTE: Execute production pagination SQL to cover tuple ordering beyond the unit adapter's fake rows.
     first = @api.exec_params(Elevateo::Drafts::LIST_SQL, [@org, @user, @box, nil, nil, 2]).to_a
-    assert_equal ids.first(2), first.map { |entry| entry.fetch("id") }
+    assert_equal(ids.first(2), first.map { |entry| entry.fetch("id") })
     second = @api.exec_params(Elevateo::Drafts::LIST_SQL, [@org, @user, @box, first.first.fetch("id"), stamp, 3]).to_a
-    assert_equal ids.drop(1), second.map { |entry| entry.fetch("id") }
-    assert_equal ids, [first.first, *second].map { |entry| entry.fetch("id") }
+    assert_equal(ids.drop(1), second.map { |entry| entry.fetch("id") })
+    assert_equal(ids, [first.first, *second].map { |entry| entry.fetch("id") })
   ensure
     @api.exec("ROLLBACK") if @api.transaction_status != PG::PQTRANS_IDLE
   end
@@ -36,7 +36,7 @@ class DraftDatabaseTest < DraftDatabaseTestCase
     @admin.exec_params("UPDATE app.drafts SET state = 'consumed' WHERE id = $1", [@draft])
     @admin.exec_params("DELETE FROM app.threads WHERE id = $1", [reply])
     assert_equal first, save(original)
-    assert_equal retained.first, ledger.find { |entry| entry.fetch("operation_id") == @operation }
+    assert_equal(retained.first, ledger.find { |entry| entry.fetch("operation_id") == @operation })
     assert_equal "B", draft_row.fetch("body_text")
     assert_equal "2", draft_row.fetch("version")
     result = lookup
@@ -58,7 +58,7 @@ class DraftDatabaseTest < DraftDatabaseTestCase
     assert_equal 1, save(payload("operation_id" => SecureRandom.uuid)).fetch("version")
     assert_equal({ "code" => "draft_conflict" }, save(conflict))
     assert_equal original, lookup
-    assert_equal retained, ledger.find { |entry| entry.fetch("operation_id") == @operation }
+    assert_equal(retained, ledger.find { |entry| entry.fetch("operation_id") == @operation })
     assert_equal({ "code" => "operation_mismatch" }, save(payload))
     assert_equal 2, ledger.length
     assert_equal "1", draft_row.fetch("version")

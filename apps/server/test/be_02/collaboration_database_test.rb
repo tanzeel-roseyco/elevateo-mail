@@ -79,7 +79,7 @@ class CollaborationDatabaseTest < CollaborationDatabaseCase
     results = parallel_services(2) { |index| assignment(actors[index].user_id, 0, identity: actors[index]) }
     assert_equal [200, 409], results.map(&:status).sort
     assert_equal ["assignment_conflict"], results.grep(Elevateo::CollaborationError).map(&:code)
-    assert_equal ["1"], owned_rows("thread_assignments").map { |row| row.fetch("assignment_version") }
+    assert_equal(["1"], owned_rows("thread_assignments").map { |row| row.fetch("assignment_version") })
   end
 
   def test_note_same_actor_copies_and_other_actor_collision_are_safe
@@ -91,7 +91,7 @@ class CollaborationDatabaseTest < CollaborationDatabaseCase
     results = parallel_services(2) { |index| note(id, identity: actors[index]) }
     assert_equal [200, 201], results.map(&:status).sort
     assert_equal 1, results.map(&:json).uniq.length
-    assert_equal [id], owned_rows("thread_notes").map { |row| row.fetch("id") }
+    assert_equal([id], owned_rows("thread_notes").map { |row| row.fetch("id") })
     assert_equal "operation_mismatch", assert_raises(Elevateo::CollaborationError) { note(id, body: "changed") }.code
     other = add_actor
     second_id = SecureRandom.uuid
@@ -141,7 +141,7 @@ class CollaborationDatabaseTest < CollaborationDatabaseCase
         assert_equal [404, "not_available", "This item is unavailable."], [error.status, error.code, error.message]
       end
     end
-    assert_equal before, %w[thread_read_states thread_assignments thread_notes].map { |table| owned_rows(table) }
+    assert_equal(before, %w[thread_read_states thread_assignments thread_notes].map { |table| owned_rows(table) })
     %w[thread_read_states thread_assignments thread_notes].each do |table|
       assert_empty owned_rows(table, box: readable_box, thread: @thread)
       assert_empty owned_rows(table, box: readable_box, thread: readable_thread)

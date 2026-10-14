@@ -58,7 +58,7 @@ class DraftReadsTest < Minitest::Test
     refute item.key?("body_text")
     next_connection = Connection.new([{ "allowed" => true }], [lookahead])
     second = JSON.parse(reader(next_connection).list(query: { "mailbox_id" => BOX, "limit" => "1", "cursor" => page.fetch("next_cursor") }))
-    assert_equal [ID, BOX], (page.fetch("items") + second.fetch("items")).map { |entry| entry.fetch("id") }
+    assert_equal([ID, BOX], (page.fetch("items") + second.fetch("items")).map { |entry| entry.fetch("id") })
     assert_nil second.fetch("next_cursor")
     assert_equal [ID, row.fetch("updated_at"), "2"], next_connection.calls.last.last.last(3)
     assert_raises(Elevateo::Cursors::Invalid) do

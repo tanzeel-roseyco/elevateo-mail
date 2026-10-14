@@ -38,7 +38,7 @@ class SessionLifecycleTest < Minitest::Test
     release << true
     assert_equal cookie, first.value.cookie
     assert_equal 1, client.calls.count(:refresh)
-    assert_equal 1, store.calls.count { |name, _| name == "publish_refresh" }
+    assert_equal(1, store.calls.count { |name, _| name == "publish_refresh" })
   ensure
     release << true if release && first&.alive?
     first&.join
@@ -86,7 +86,7 @@ class SessionLifecycleTest < Minitest::Test
     store.row["access_token_ciphertext"] = service.crypto.encrypt(jwt("exp" => Time.now.to_i - 1), purpose: "access")
     assert_equal cookie, service.refresh(cookie: cookie, deadline: deadline).cookie
     assert_equal [:refresh, :user], client.calls
-    refute store.calls.any? { |name, _| name == "resolve_session" }
+    refute(store.calls.any? { |name, _| name == "resolve_session" })
   end
 
   def test_local_absent_logout_is_idempotent_and_global_denies
@@ -116,7 +116,7 @@ class SessionLifecycleTest < Minitest::Test
     assert_equal [CONTEXT, 1], args.last(2)
     refute_equal CONTEXT, result.metadata["context_id"]
     assert_auth(409) { service.switch(identity, **inputs, deadline: deadline) }
-    assert_equal 1, store.calls.count { |name, _| name == "switch_organization" }
+    assert_equal(1, store.calls.count { |name, _| name == "switch_organization" })
   end
 
   def test_authorize_preserves_the_authenticated_organization_for_bootstrap
@@ -143,7 +143,7 @@ class SessionLifecycleTest < Minitest::Test
       assert_equal [409, "context_changed"], [error.status, error.code]
     end
     assert_equal ORG, identity.org_id
-    refute store.calls.any? { |name, _| name == "touch_session" }
+    refute(store.calls.any? { |name, _| name == "touch_session" })
   end
 
   def test_database_denial_precedes_the_organization_mismatch_and_stale_hints

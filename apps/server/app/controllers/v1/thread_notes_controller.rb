@@ -9,6 +9,10 @@ module V1
       thread = Elevateo::WriteInput.uuid(request.path_parameters[:thread_id])
       protected_read(allowed_query: %w[mailbox_id cursor limit], budget: 262_144) do
         |connection:, identity:, session:, query:, **|
+        # @type var connection: ActiveRecord::ConnectionAdapters::AbstractAdapter
+        # @type var identity: Elevateo::SessionIdentity
+        # @type var session: Elevateo::auth_object
+        # @type var query: Hash[String, String]
         notes(connection, identity, session).list(thread_id: thread, query: query)
       end
     end
@@ -17,9 +21,13 @@ module V1
       # AIDEV-NOTE: Read only route parameters until protected_write validates the raw JSON body.
       thread = Elevateo::WriteInput.uuid(request.path_parameters[:thread_id])
       # @type var validate: V1::WriteController::target_users
-      validate = ->(input:, query:) { Elevateo::ThreadNotes.validate!(input); [] }
+      validate = ->(input:, **) { Elevateo::ThreadNotes.validate!(input); [] }
       protected_write(required: Elevateo::ThreadNotes::REQUIRED, max_bytes: 65_536, budget: 65_536,
         guard_users: validate) do |connection:, identity:, session:, input:, **|
+        # @type var connection: Elevateo::WriteStatements
+        # @type var identity: Elevateo::SessionIdentity
+        # @type var session: Elevateo::auth_object
+        # @type var input: Elevateo::WriteInput::object
         notes(connection, identity, session).post(thread_id: thread, input: input)
       end
     end

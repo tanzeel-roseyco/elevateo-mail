@@ -21,7 +21,10 @@ class ReadControllerTest < Minitest::Test
     def initialize(events) = (@events, @statements = events, [])
     def transaction_open? = @current_transaction&.open? || false
     def clear_query_cache = (@events << :clear_cache)
-    def uncached(dirties: true) = yield
+    def uncached(dirties: true)
+      raise "tenant query-cache invalidation required" unless dirties
+      yield
+    end
     def disconnect! = (@events << :disconnect)
     def execute(sql) = (@statements << sql)
     def exec_query(sql, _label, bindings)
@@ -123,13 +126,14 @@ class ReadControllerTest < Minitest::Test
     assert_equal({ isolation: :repeatable_read }, @connection.options)
     assert_equal "SET TRANSACTION READ ONLY", @connection.statements.first
     assert_equal [USER, ORG], @connection.claims
+    assert_equal [@connection], @store.connections.compact
     assert_same @connection, @sessions.authorization_connection
     assert_same @connection, @seen.fetch(:connection)
     assert_equal({ "limit" => "2" }, @seen.fetch(:query))
     assert_equal @service.presentation.session(@store.row, display_name: "Test"), @seen.fetch(:session)
     order = @events - [:clear_cache]
     assert_equal %i[authenticate begin claims authorize business_read commit touch], order
-    assert_equal 1, @store.calls.count { |name, _| name == "touch_session" }
+    assert_equal(1, @store.calls.count { |name, _| name == "touch_session" })
   end
 
   def test_no_organization_authentication_returns_generic_404_before_tenant_reads
@@ -207,7 +211,7 @@ class ReadControllerTest < Minitest::Test
     # AIDEV-NOTE: Model the database expiry verdict; real clock/idle enforcement belongs to SQL integration tests.
     @sessions.before_touch = -> { @store.row["status"] = "unauthorized" }
     assert_response_error(401, "unauthenticated", dispatch)
-    assert_equal 1, @store.calls.count { |name, _| name == "touch_session" }
+    assert_equal(1, @store.calls.count { |name, _| name == "touch_session" })
   end
 
   def test_database_failure_rolls_back_without_touching_or_releasing_rows
@@ -285,6 +289,6 @@ class ReadControllerTest < Minitest::Test
     refute_includes @events, :commit
     assert_equal business_read, @events.include?(:business_read)
     refute_includes @events, :touch
-    refute @store.calls.any? { |name, _| name == "touch_session" }
+    refute(@store.calls.any? { |name, _| name == "touch_session" })
   end
 end

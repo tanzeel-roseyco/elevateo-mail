@@ -8,7 +8,7 @@ A planned shared company mailbox for approximately **10 people**, available on a
 
 ## Current state
 
-BE-403 (2026-10-14): IN PROGRESS. Rowan authored privileged draft-schema bootstrap and fail-closed migration prerequisite checks on c3ecd1f; rollback retains the schema and unrelated objects for least-privilege reapply. Source review found no blocking defect; new real-role/drift regressions await Soren container execution. No runtime acceptance or release. See docs/completion/be403-bootstrap.md.
+BE-403 (2026-10-14): IN PROGRESS. Approved semantic schema guards are source-reviewed and Soren verified real Rails rollback/reapply, atomic rejection, default-privilege leakage and nonempty sentinel preservation on 786f2f9. Full 28390d7 run:375 runs/5487 assertions,2 native-observation failures,0 errors; later HTTP stages NOT_RUN. Rowan is repairing structured native observation, strict type warnings and lint; current edits are unverified. No public/live mail. See docs/completion/be403-bootstrap.md and reports/rowan-progress.md.
 
 
 INT-401 bounded repair (2026-10-14): restored canonical BE02 compose.yaml, 37 nested BE01 tooling files, three evidence-script dependencies and eight Backend Performance docs. 629 overlay hashes match; 63 static dependency checks leave one inherited frozen-manifest hash conflict, plus scripts/dev seed/check name absent Compose services. Linus ADV-729 reviewed 172 source lines, confirmed two integration defects (11.63/KLOC); repairs are statically observed, independent re-review and all runtime/visual checks remain pending. Application IN PROGRESS; root owns testing and GitHub issues. See docs/completion/int401-repair.md.

@@ -6,6 +6,9 @@ module V1
     def show
       protected_read(allowed_query: %w[mailbox_id draft_id], budget: 4096) do
         |connection:, session:, query:, **|
+        # @type var connection: ActiveRecord::ConnectionAdapters::AbstractAdapter
+        # @type var session: Elevateo::auth_object
+        # @type var query: Hash[String, String]
         operation = params[:operation_id]
         Elevateo::WriteInput.invalid! unless operation.is_a?(String)
         Elevateo::DraftOperations.new(connection: connection, session: session).lookup(operation_id: operation, query: query)

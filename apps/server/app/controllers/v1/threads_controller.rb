@@ -6,6 +6,10 @@ module V1
     def index
       protected_read(allowed_query: %w[cursor limit filter], budget: Elevateo::ReadResponse::THREAD_BYTES) do
         |connection:, identity:, session:, query:, **|
+        # @type var connection: ActiveRecord::ConnectionAdapters::AbstractAdapter
+        # @type var identity: Elevateo::SessionIdentity
+        # @type var session: Elevateo::auth_object
+        # @type var query: Hash[String, String]
         reader(connection, identity, session).list(mailbox_id: path_id(:mailbox_id), query: query)
       end
     rescue Elevateo::ThreadReads::NotAvailable
@@ -17,6 +21,10 @@ module V1
     def show
       protected_read(allowed_query: %w[mailbox_id cursor limit], budget: Elevateo::ReadResponse::MESSAGE_BYTES) do
         |connection:, identity:, session:, query:, **|
+        # @type var connection: ActiveRecord::ConnectionAdapters::AbstractAdapter
+        # @type var identity: Elevateo::SessionIdentity
+        # @type var session: Elevateo::auth_object
+        # @type var query: Hash[String, String]
         reader(connection, identity, session).detail(thread_id: path_id(:thread_id), query: query)
       end
     rescue Elevateo::ThreadReads::NotAvailable

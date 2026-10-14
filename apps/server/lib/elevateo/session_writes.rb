@@ -119,6 +119,7 @@ module Elevateo
       end
     end
 
+    # AIDEV-NOTE: Collect recoverable cleanup failures; process-fatal signals propagate through ownership ensures.
     def discard_connection(pool, connection, correlation, primary, disposition, failures)
       connection.lock.synchronize do
         unless disposition[:started]
@@ -128,7 +129,7 @@ module Elevateo
         if disposition[:detached]
           begin
             connection.disconnect!
-          rescue Exception => error
+          rescue StandardError => error
             failures << ["disconnect", error]
           end
         end
@@ -136,7 +137,7 @@ module Elevateo
       failures.each do |phase, error|
         begin
           Rails.logger.error("protected_write_cleanup phase=#{phase} class=#{error.class.name} correlation=#{correlation}")
-        rescue Exception
+        rescue StandardError
           # AIDEV-NOTE: A failed logging sink must not replace the request's primary exception or expose SQL details.
           raise primary if primary
           raise CollaborationError.new("temporarily_unavailable", retry_after: 1)
@@ -158,7 +159,7 @@ module Elevateo
         # AIDEV-NOTE: Outer monitor deliberately spans Rails replacement I/O; cleanup has no absolute deadline.
         pool.remove(connection)
         removal_completed = true
-      rescue Exception => error
+      rescue StandardError => error
         failures << ["remove", error]
         removal_completed = true
       ensure
@@ -176,7 +177,7 @@ module Elevateo
           failures << ["disposition", Tenancy::ContextError.new("write pool disposition unresolved")]
         end
       end
-    rescue Exception => error
+    rescue StandardError => error
       # AIDEV-NOTE: Unknown queue/owner state is not detachment; preserve the primary and never retry removal.
       failures << ["inspection", error]
     end

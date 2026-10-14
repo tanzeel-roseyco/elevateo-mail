@@ -47,19 +47,19 @@ class CollaborationServicesTest < Minitest::Test
     state = { "is_read" => true, "read_state_version" => 1, "updated_at" => @time }
     empty = Connection.new([{}], [])
     body = JSON.parse(service(Elevateo::ThreadReadState, empty).put(thread_id: @thread, input: { "mailbox_id" => @box, "read" => false }).json)
-    assert_equal [false, 0, nil], %w[read read_state_version updated_at].map { |key| body.fetch(key) }
+    assert_equal([false, 0, nil], %w[read read_state_version updated_at].map { |key| body.fetch(key) })
     assert_equal 2, empty.calls.length
     changed = Connection.new([{}], [], [state])
     assert_equal 1, JSON.parse(service(Elevateo::ThreadReadState, changed).put(thread_id: @thread, input: { "mailbox_id" => @box, "read" => true }).json)["read_state_version"]
     unchanged = Connection.new([{}], [state])
     result = service(Elevateo::ThreadReadState, unchanged).put(thread_id: @thread, input: { "mailbox_id" => @box, "read" => true })
-    assert_equal [true, 1, @time], %w[read read_state_version updated_at].map { |key| JSON.parse(result.json).fetch(key) }
+    assert_equal([true, 1, @time], %w[read read_state_version updated_at].map { |key| JSON.parse(result.json).fetch(key) })
     assert_equal 2, unchanged.calls.length
     maximum = state.merge("read_state_version" => 2_147_483_647)
     maximum_connection = Connection.new([{}], [maximum])
     result = service(Elevateo::ThreadReadState, maximum_connection).put(thread_id: @thread, input: { "mailbox_id" => @box, "read" => true })
     assert_equal 200, result.status
-    assert_equal [true, 2_147_483_647, @time], %w[read read_state_version updated_at].map { |key| JSON.parse(result.json).fetch(key) }
+    assert_equal([true, 2_147_483_647, @time], %w[read read_state_version updated_at].map { |key| JSON.parse(result.json).fetch(key) })
     assert_equal 2, maximum_connection.calls.length
     changing = Connection.new([{}], [maximum])
     error = assert_raises(Error) do
@@ -90,7 +90,7 @@ class CollaborationServicesTest < Minitest::Test
     matched = Connection.new([{}], [{ "eligible" => true }], [], [row])
     result = service(Elevateo::ThreadAssignment, matched).put(thread_id: @thread,
       input: input.merge("expected_assignment_version" => 1.0))
-    assert_equal [@target, 1, @time], %w[assignee_id assignment_version updated_at].map { |key| JSON.parse(result.json).fetch(key) }
+    assert_equal([@target, 1, @time], %w[assignee_id assignment_version updated_at].map { |key| JSON.parse(result.json).fetch(key) })
     assert_equal 4, matched.calls.length
   end
 

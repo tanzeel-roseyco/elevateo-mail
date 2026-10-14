@@ -64,7 +64,7 @@ class CollaborationDatabaseCase < SessionDatabaseTestCase
     @admin.exec_params("SELECT app_auth.lock_authorization_generations($1, NULL)", [org])
     yield
     @admin.exec("COMMIT")
-  rescue Exception
+  rescue StandardError, Minitest::Assertion
     @admin.exec("ROLLBACK")
     raise
   end
@@ -95,7 +95,7 @@ class CollaborationDatabaseCase < SessionDatabaseTestCase
     connection.exec_params("SELECT app_auth.lock_authorization_generations($1, $2)", [@org, user])
     yield connection
     connection.exec("COMMIT")
-  rescue Exception
+  rescue StandardError, Minitest::Assertion
     connection.exec("ROLLBACK")
     raise
   end
@@ -165,7 +165,7 @@ class CollaborationDatabaseCase < SessionDatabaseTestCase
     failure = nil
     threads.each do |thread|
       thread.join
-    rescue Exception => error
+    rescue StandardError, Minitest::Assertion => error
       failure ||= error
     end
     raise failure if failure
@@ -204,7 +204,7 @@ class CollaborationDatabaseCase < SessionDatabaseTestCase
   def assert_state_fields(json, fields, expected)
     body = JSON.parse(json)
     assert_equal (%w[context_id authorization_version thread_id mailbox_id] + fields).sort, body.keys.sort
-    assert_equal expected, fields.map { |field| body.fetch(field) }
+    assert_equal(expected, fields.map { |field| body.fetch(field) })
     body
   end
 

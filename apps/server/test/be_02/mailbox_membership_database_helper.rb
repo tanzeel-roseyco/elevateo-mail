@@ -97,7 +97,7 @@ class MailboxMembershipDatabaseCase < CollaborationDatabaseCase
           worker.join([deadline - Process.clock_gettime(Process::CLOCK_MONOTONIC), 0].max)
           cleanup_error ||= RuntimeError.new("membership worker exceeded shared deadline")
         end
-      rescue Exception => error
+      rescue StandardError, Minitest::Assertion => error
         cleanup_error ||= error
       end
     end
@@ -114,7 +114,7 @@ class MailboxMembershipDatabaseCase < CollaborationDatabaseCase
           ready << [:pid, connection.select_value("SELECT pg_backend_pid()")]
           operation.call
         end
-      rescue Exception => error
+      rescue StandardError, Minitest::Assertion => error
         ready << [:error, error]
         raise
       end

@@ -69,7 +69,7 @@ class WriteBoundaryDatabaseTestCase < SessionDatabaseTestCase
     failure = $!
     begin
       @admin.exec("ROLLBACK") if @admin.transaction_status != PG::PQTRANS_IDLE
-    rescue Exception => error # Preserve assertion failures while still draining the child.
+    rescue StandardError, Minitest::Assertion => error # Preserve assertion failures while still draining the child.
       failure ||= error
     ensure
       begin
@@ -78,7 +78,7 @@ class WriteBoundaryDatabaseTestCase < SessionDatabaseTestCase
           thread.kill
           thread.join(1)
         end
-      rescue Exception => error
+      rescue StandardError, Minitest::Assertion => error
         failure ||= error
       end
     end

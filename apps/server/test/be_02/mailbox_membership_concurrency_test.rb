@@ -24,7 +24,7 @@ class MailboxMembershipConcurrencyTest < MailboxMembershipDatabaseCase
       assert_equal "membership_conflict", membership_result(waiter, deadline).fetch("status")
     end
     assert_equal expected + 1, revision
-    assert_equal [second.user_id], @admin.exec_params(<<~SQL, [@box]).map { |row| row.fetch("user_id") }
+    assert_equal([second.user_id], @admin.exec_params(<<~SQL, [@box]).map { |row| row.fetch("user_id") })
       SELECT m.user_id FROM app.mailbox_memberships m JOIN app.organization_memberships o
         USING (organization_id, user_id) WHERE m.mailbox_id = $1 AND m.manage_members
     SQL

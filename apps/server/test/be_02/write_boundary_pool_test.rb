@@ -182,7 +182,7 @@ class WriteBoundaryPoolTest < WriteBoundaryPoolTestCase
       entered, gate = Queue.new, Queue.new
       deadline = Elevateo::RequestDeadline.new(seconds: 0.5)
       wire = response
-      wire.define_singleton_method(:verify!) { |budget:| entered << true; gate.pop } if phase == :serializer
+      wire.define_singleton_method(:verify!) { |budget:| raise "serializer budget changed" unless budget == 4096; entered << true; gate.pop } if phase == :serializer
       thread = Thread.new do
         assert_raises(Elevateo::AuthError) do
           deadline.within do

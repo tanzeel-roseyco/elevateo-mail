@@ -10,7 +10,7 @@ class WriteBoundaryDatabaseTest < WriteBoundaryDatabaseTestCase
     assert_equal @user, result.fetch("user_id")
     assert_equal @org, result.fetch("organization_id")
     assert_kind_of Integer, result.fetch("authorization_generation")
-    refute result.keys.any? { |key| key.include?("ciphertext") || key.include?("write_") }
+    refute(result.keys.any? { |key| key.include?("ciphertext") || key.include?("write_") })
     @api.exec("COMMIT")
   end
 

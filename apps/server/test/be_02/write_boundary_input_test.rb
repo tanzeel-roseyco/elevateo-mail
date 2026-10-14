@@ -86,7 +86,7 @@ class WriteBoundaryInputTest < Minitest::Test
       assert_equal expected, normalized
     end
     %w[0.99999999999999999 1e-400 -1e-400 2147483647.0000001 -1 2147483648
-      1e400 1e-999999999999999999999999 "1" true null].each do |token|
+      1e400 1e-999999999999999999999999 true null].push('"1"').each do |token|
       invalid do
         Input.integer(Input.object('{"version":' + token + '}').fetch("version"),
           minimum: 0, maximum: 2_147_483_647)
