@@ -443,3 +443,5 @@ DIR905 shared feature gateway declares an optional assignee-options read port wi
 Sabine DIR903 and Theo DIR904 test-only follow-ups are imported after their source candidates; protected SQL and controller runtime remain unverified on this integrated feature SHA.
 
 Lyra DIR905 picker source/tests are imported behind the optional V2 assignee port. It is not injected in production and has no latest-SHA browser/type/test PASS; manual UUID entry is removed per the current feature directive.
+
+DIR905 final picker candidate aborts in-flight options if the optional port disappears; fleet/UI proof remains pending.
