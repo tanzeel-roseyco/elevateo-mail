@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative "acceptance_seed_support"
+require_relative "acceptance_variants"
 
 module Be02Acceptance
   # AIDEV-NOTE: Auth owns user creation; app rows use existing migrations, triggers and the real version signer.
@@ -12,18 +13,28 @@ module Be02Acceptance
 
     def run
       @db = @runtime.database
-      Be02Acceptance.check(@db.exec("SELECT count(*) FROM auth.users WHERE email LIKE '%@acceptance.test'").getvalue(0, 0) == "0",
+      Be02Acceptance.check(@db.exec("SELECT count(*) FROM auth.users").getvalue(0, 0) == "0",
         "fresh_auth_fixture_required")
       @runtime.create_users
       @db.transaction do
         seed_scopes
         seed_memberships
         seed_content
+        @resources = Variants.seed(db: @db, seed: @seed, variant: @seed.fetch("fixture_variant"))
+        @seed.merge!(@resources)
       end
       # AIDEV-NOTE: Verify committed rows in a new snapshot; API/browser consumers must remain stopped until exit 0.
-      @db.transaction do
+      @db.close
+      @db = @runtime.database
+      @db.exec("BEGIN ISOLATION LEVEL REPEATABLE READ READ ONLY")
+      begin
+        Variants.verify(db: @db, seed: @seed, variant: @seed.fetch("fixture_variant"), resources: @resources)
         verify_rows
         verify_actors
+        @db.exec("COMMIT")
+      rescue StandardError
+        @db.exec("ROLLBACK")
+        raise
       end
       @runtime.publish
     ensure
@@ -118,6 +129,8 @@ module Be02Acceptance
     end
 
     def verify_actors
+      ids = @db.exec("SELECT id::text FROM auth.users ORDER BY id").column_values(0)
+      Be02Acceptance.check(ids == @actors.values.map { |actor| actor.fetch("user_id") }.sort, "auth_identity_set_mismatch")
       @actors.each do |name, actor|
         user = actor.fetch("user_id")
         auth = @db.exec_params(<<~SQL, [user, actor.fetch("email")]).first
@@ -134,17 +147,21 @@ module Be02Acceptance
         memberships = @db.exec_params("SELECT organization_id FROM app.organization_memberships WHERE user_id=$1", [user]).column_values(0)
         Be02Acceptance.check(memberships == (org ? [org] : []), "organization_membership_mismatch")
         rows = @db.exec_params("SELECT organization_id,mailbox_id,compose,approve_send,manage_members FROM app.mailbox_memberships WHERE user_id=$1", [user]).to_a
-        actual = []
-        unless rows.empty?
-          Be02Acceptance.check(rows.length == 1 && rows[0].fetch("organization_id") == org && rows[0].fetch("mailbox_id") == box,
-            "mailbox_membership_mismatch")
-          actual << "read"
-          { "compose" => "compose", "approve_send" => "approve_send", "manage_members" => "manage" }.each do |column, capability|
-            actual << capability if rows[0].fetch(column) == "t"
-          end
+        expected = actor.fetch("capabilities").empty? ? [] : [{ "mailbox_id" => box, "capabilities" => actor.fetch("capabilities").sort }]
+        if name == "composer" && @seed.fetch("fixture_variant") == "multi_mailbox"
+          expected << { "mailbox_id" => @seed.fetch("extra_mailboxes").fetch("secondary"), "capabilities" => ["read"] }
         end
-        Be02Acceptance.check(actual.sort == actor.fetch("capabilities").sort, "effective_capabilities_mismatch")
-        actor["capabilities"] = actual
+        actual = rows.map do |row|
+          Be02Acceptance.check(row.fetch("organization_id") == org, "mailbox_organization_mismatch")
+          caps = ["read"]
+          { "compose" => "compose", "approve_send" => "approve_send", "manage_members" => "manage" }.each do |column, capability|
+            caps << capability if row.fetch(column) == "t"
+          end
+          { "mailbox_id" => row.fetch("mailbox_id"), "capabilities" => caps.sort }
+        end
+        Be02Acceptance.check(actual.sort_by { |row| row.fetch("mailbox_id") } == expected.sort_by { |row| row.fetch("mailbox_id") },
+          "effective_capabilities_mismatch")
+        @seed.fetch("expected_mailbox_memberships")[name] = expected
         actor["membership_generation"] = nil
         actor["authorization_version"] = if org && name != "disabled"
           @runtime.presentation.version("user_id" => user, "organization_id" => org, "authorization_generation" => generation(org, user))

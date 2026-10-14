@@ -79,7 +79,7 @@ class ThreadNotesDatabaseTest < CollaborationDatabaseCase
     page = scope(write: false) do |connection|
       JSON.parse(service(Elevateo::ThreadNotes, connection).list(thread_id: @thread, query: { "mailbox_id" => @box }))
     end
-    assert_equal [id], page.fetch("items").map { |item| item.fetch("id") }
+    assert_equal([id], page.fetch("items").map { |item| item.fetch("id") })
     assert_equal author.user_id, page.fetch("items").first.fetch("author_id")
     assert_equal "2", @admin.exec_params("SELECT count(*) FROM app.thread_notes WHERE id = $1", [id]).getvalue(0, 0)
   end

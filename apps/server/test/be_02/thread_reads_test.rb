@@ -146,7 +146,7 @@ class ThreadReadsTest < Minitest::Test
     connection = Connection.new([source.fetch("thread")], [])
     reader(connection).detail(thread_id: @thread, query: { "mailbox_id" => @mailbox, "cursor" => page.fetch("next_cursor") })
     assert_equal [page.fetch("messages").last.fetch("id"), nil], connection.calls.last.last.slice(3, 2)
-    assert page.fetch("messages").all? { |message| message.fetch("body_truncated") }
+    assert(page.fetch("messages").all? { |message| message.fetch("body_truncated") })
   end
 
   def test_invalid_query_and_missing_resources_have_deliberate_errors

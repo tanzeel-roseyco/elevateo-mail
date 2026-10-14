@@ -46,47 +46,53 @@ module AuthFixtures
     def response = { "access_token" => @token, "refresh_token" => "new-refresh", "token_type" => "bearer",
       "expires_in" => 3600, "user" => { "id" => @user } }
     def login(_email, _password, deadline:)
+      deadline.check!
       @calls << :login
       raise @failure if @failure
       response
     end
     def refresh(_token, deadline:)
+      deadline.check!
       @calls << :refresh
       @refresh_gate.call if @refresh_gate
       raise @failure if @failure
       response
     end
     def user(_access, deadline:)
+      deadline.check!
       @calls << :user
       raise @failure if @failure
       { "id" => @user, "user_metadata" => { "display_name" => "Test" } }
     end
     def verify(_token, _kind, deadline:)
+      deadline.check!
       @calls << :verify
       raise @failure if @failure
       response
     end
     def password(_access, _password, deadline:)
+      deadline.check!
       @calls << :password
       raise @password_failure if @password_failure
       { "id" => @user }
     end
-    def recover(_email, deadline:) = (@calls << :recover; true)
-    def logout(_token, _scope, deadline:) = (@calls << :logout; true)
+    def recover(_email, deadline:) = (deadline.check!; @calls << :recover; true)
+    def logout(_token, _scope, deadline:) = (deadline.check!; @calls << :logout; true)
   end
 
   class Store
-    attr_reader :calls, :state
+    attr_reader :calls, :state, :connections
     attr_accessor :row
     def initialize(row, crypto, access)
       @row, @crypto, @access = row, crypto, access
-      @calls, @state, @mutex = [], {}, Mutex.new
+      @calls, @state, @mutex, @connections = [], {}, Mutex.new, []
       @row["access_token_ciphertext"] = @crypto.encrypt(access, purpose: "access")
     end
 
     def call(name, args, deadline:, connection: nil)
       deadline.check!
       @mutex.synchronize do
+        @connections << connection
         @calls << [name, args]
         case name
         when "resolve_session", "authorize_session", "touch_session"

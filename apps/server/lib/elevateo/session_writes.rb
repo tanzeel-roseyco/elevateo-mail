@@ -76,23 +76,24 @@ module Elevateo
       correlation = SecureRandom.uuid
       begin
         # AIDEV-NOTE: Ensure exists before checkout; deferred expiry cannot strand the returned adapter.
-        connection = pool.checkout(deadline.remaining)
+        leased = pool.checkout(deadline.remaining)
+        connection = leased
         deadline.check!
-        result = yield(connection)
+        result = yield(leased)
         raise CollaborationError.new("internal_error") unless result.is_a?(WriteResponse)
         deadline.check!
-        connection.lock.synchronize do
+        leased.lock.synchronize do
           pool.synchronize do
             begin
               deadline.check!
               raise RequestDeadline::Expired if Thread.pending_interrupt?(RequestDeadline::Expired)
-              unless pool.connections.include?(connection) &&
-                  connection.owner.equal?(ActiveSupport::IsolatedExecutionState.context) && !connection.transaction_open?
+              unless pool.connections.include?(leased) &&
+                  leased.owner.equal?(ActiveSupport::IsolatedExecutionState.context) && !leased.transaction_open?
                 raise Tenancy::ContextError, "write connection ownership lost"
               end
               # AIDEV-NOTE: Membership, callbacks, queue insertion and handoff share Rails' adapter/pool lock order.
-              pool.checkin(connection)
-              unless pool.connections.include?(connection) && connection.owner.nil? && !connection.transaction_open?
+              pool.checkin(leased)
+              unless pool.connections.include?(leased) && leased.owner.nil? && !leased.transaction_open?
                 raise Tenancy::ContextError, "write checkin did not transfer a registered adapter"
               end
               # AIDEV-NOTE: Safe transfer precedes late expiry; expiry suppresses only the response, not the lease.
@@ -103,9 +104,11 @@ module Elevateo
               # AIDEV-NOTE: Exceptions and throws quarantine before a waiter can lease a rejected checkin.
               primary = $!
               begin
-                quarantine_connection(pool, connection, disposition, failures) unless handed_off
+                quarantine_connection(pool, leased, disposition, failures) unless handed_off
               ensure
-                # AIDEV-NOTE: Removal may throw; restore a raised primary before outer detached-adapter disposal.
+                # AIDEV-NOTE: Fatal cleanup takes precedence; ordinary request failures still survive cleanup throws.
+                cleanup_error = $!
+                raise cleanup_error if cleanup_error && !cleanup_error.is_a?(StandardError)
                 raise primary if primary
               end
             end
@@ -118,24 +121,29 @@ module Elevateo
       end
     end
 
+    # AIDEV-NOTE: Collect recoverable cleanup failures; process-fatal signals propagate through ownership ensures.
     def discard_connection(pool, connection, correlation, primary, disposition, failures)
       connection.lock.synchronize do
-        unless disposition[:started]
-          pool.synchronize { quarantine_connection(pool, connection, disposition, failures) }
-        end
-        # AIDEV-NOTE: Proven detachment prevents a new lease; disconnect outside the monitor even after remove fails.
-        if disposition[:detached]
+        begin
+          unless disposition[:started]
+            pool.synchronize { quarantine_connection(pool, connection, disposition, failures) }
+          end
+        ensure
+          pending_exit = $!
           begin
-            connection.disconnect!
-          rescue Exception => error
+            # AIDEV-NOTE: After proven detachment, even fatal/nonlocal removal must attempt one native disposal.
+            connection.disconnect! if disposition[:detached]
+          rescue StandardError => error
             failures << ["disconnect", error]
+          ensure
+            raise pending_exit if pending_exit && !pending_exit.is_a?(StandardError)
           end
         end
       end
       failures.each do |phase, error|
         begin
           Rails.logger.error("protected_write_cleanup phase=#{phase} class=#{error.class.name} correlation=#{correlation}")
-        rescue Exception
+        rescue StandardError
           # AIDEV-NOTE: A failed logging sink must not replace the request's primary exception or expose SQL details.
           raise primary if primary
           raise CollaborationError.new("temporarily_unavailable", retry_after: 1)
@@ -157,7 +165,7 @@ module Elevateo
         # AIDEV-NOTE: Outer monitor deliberately spans Rails replacement I/O; cleanup has no absolute deadline.
         pool.remove(connection)
         removal_completed = true
-      rescue Exception => error
+      rescue StandardError => error
         failures << ["remove", error]
         removal_completed = true
       ensure
@@ -175,7 +183,7 @@ module Elevateo
           failures << ["disposition", Tenancy::ContextError.new("write pool disposition unresolved")]
         end
       end
-    rescue Exception => error
+    rescue StandardError => error
       # AIDEV-NOTE: Unknown queue/owner state is not detachment; preserve the primary and never retry removal.
       failures << ["inspection", error]
     end

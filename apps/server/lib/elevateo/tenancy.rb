@@ -7,7 +7,10 @@ module Elevateo
 
     UUID = /\A\h{8}-\h{4}-\h{4}-\h{4}-\h{12}\z/
 
-    Principal = Data.define(:user_id, :org_id) do
+    PrincipalData = Data.define(:user_id, :org_id)
+    private_constant :PrincipalData
+    # AIDEV-NOTE: Name the generated parent so RBS can type super without changing Data value semantics.
+    class Principal < PrincipalData
       def initialize(user_id:, org_id:)
         [user_id, org_id].each { |v| raise ContextError, "principal requires UUID values" unless v.is_a?(String) && UUID.match?(v) }
         # AIDEV-NOTE: Data is shallowly frozen; UUID strings must not mutate after claims establish frame identity.
@@ -39,7 +42,7 @@ module Elevateo
         ownership_lost = false
         begin
           # AIDEV-NOTE: Read authority and rows use one snapshot; Auth HTTP must finish before entering this frame.
-          # @type var options: { isolation?: :repeatable_read }
+          # @type var options: { ?isolation: :repeatable_read }
           options = read_only ? { isolation: :repeatable_read } : {}
           connection.transaction(**options) do
             connection.execute("SET TRANSACTION READ ONLY") if read_only

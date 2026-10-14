@@ -34,7 +34,7 @@ Only provider-permitted correspondence and consent-based marketing. Store consen
 
 Run application lint, typecheck, unit and integration tests inside Docker. Critical tests must use real PostgreSQL for isolation/locking and a deterministic fake provider for crash/timeout/expiry scenarios. Each feature covers its happy path and at least two likely failure cases; fixes include regressions. Numeric coverage percentage is not a substitute for these invariants and remains undecided.
 
-Before publication, validate the actual UI and client packages. Native packaging tests run on their target OS; they supplement Docker application tests. After building, adversarial review assignments cover at most 200 lines each, plus a dedicated design-tradeoff reviewer. Record ranges, defects/fixes and defects per 1,000 reviewed lines in code-reviews.md. The full originating user review rubric is not present in this repository; do not claim conformance until it is recovered.
+Before publication, validate the actual UI and client packages. Native packaging tests run on their target OS; they supplement Docker application tests. After building, adversarial review assignments cover at most 200 lines each, plus a dedicated design-tradeoff reviewer. Record ranges, defects/fixes and defects per 1,000 reviewed lines in code-reviews.md. The user supplied the complete review rubric this session; apply it as recorded in AGENTS.md and .planning/wave-20261014/INT-401.md, with bounded source coverage and explicit evidence limits.
 
 ## 9. Operations and performance
 

@@ -24,7 +24,10 @@ module WriteBoundaryHarness
     end
     def transaction_open? = @current_transaction&.open? || false
     def clear_query_cache = nil
-    def uncached(dirties: true) = yield
+    def uncached(dirties: true)
+      raise "tenant query-cache invalidation required" unless dirties
+      yield
+    end
     def disconnect! = (@events << :disconnect)
     def execute(query) = (@sql << query)
     def exec_query(query, _label, binds)

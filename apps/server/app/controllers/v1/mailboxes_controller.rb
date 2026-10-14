@@ -9,6 +9,10 @@ module V1
       protected_read(
         allowed_query: %w[cursor limit], budget: Elevateo::ReadResponse::MAILBOX_BYTES
       ) do |connection:, identity:, session:, query:, **|
+        # @type var connection: ActiveRecord::ConnectionAdapters::AbstractAdapter
+        # @type var identity: Elevateo::SessionIdentity
+        # @type var session: Elevateo::auth_object
+        # @type var query: Hash[String, String]
         reader = Elevateo::MailboxReads.new(cursor: Elevateo::Cursors.new(secret: read_config.cursor_signing_key))
         reader.call(connection: connection, identity: identity, session: session, query: query)
       end

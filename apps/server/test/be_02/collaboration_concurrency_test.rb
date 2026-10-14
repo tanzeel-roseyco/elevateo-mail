@@ -68,7 +68,7 @@ class CollaborationConcurrencyTest < CollaborationDatabaseCase
     assert_instance_of Elevateo::CollaborationError, error
     assert_equal [404, "not_available", "This item is unavailable."], [error.status, error.code, error.message]
     rows = owned_rows("thread_assignments", box: private_box, thread: private_thread)
-    assert_equal [[@user, "1"]], rows.map { |row| row.values_at("assignee_id", "assignment_version") }
+    assert_equal([[@user, "1"]], rows.map { |row| row.values_at("assignee_id", "assignment_version") })
   ensure
     @admin.exec("ROLLBACK") if @admin && @admin.transaction_status != PG::PQTRANS_IDLE
     contender&.join
@@ -103,7 +103,7 @@ class CollaborationConcurrencyTest < CollaborationDatabaseCase
       end
     rescue Elevateo::CollaborationError => error
       error
-    rescue Exception => error
+    rescue StandardError, Minitest::Assertion => error
       ready << error
       raise
     end

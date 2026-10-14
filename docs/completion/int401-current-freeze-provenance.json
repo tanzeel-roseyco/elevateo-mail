@@ -1,39 +1,73 @@
 {
-  "task_id": "task_b9e0ccc5f6a3",
-  "dispatch_id": "ctx_a9df73deec58",
-  "baseline": "837e66859013ff62596ab5407b3a9151f489c303",
-  "merge_parents": [
-    "837e66859013ff62596ab5407b3a9151f489c303",
-    "9a0f75ce10bf3a0a0761721c88b83c5b9fe66887",
-    "f59c35f672a152cf5240a9ecdfd6009aff49fff2"
-  ],
-  "excluded_candidates": {
-    "Rowan3c": "bounded-wait defect superseded; replacement review pending",
-    "Elara f22": "two fence defects under repair",
-    "Nadia R5": "frozen review receipt pending"
-  },
-  "contracts_verified": [
-    "contracts/v1/README.md",
-    "contracts/v1/openapi.json",
-    "contracts/v1/fixtures.json",
-    "contracts/v1/contract-lock.json"
-  ],
-  "runtime": "NOT_RUN for new integrated SHA",
-  "recipe_source": "C:/Users/Tanzeel/Code and projects/Elevateo Mail - Local Completion/ops/acceptance",
-  "recipes": {
-    "browsers.Dockerfile": {
-      "bytes": 4406,
-      "sha256": "dbc9d8aa333f2482f2ad3ef01b5f9c92a22d35ea0b797630e389db71d4a14f5b"
+  "base": "f37d09c83d6c6e46d88a5ce25cc4dd8806b888a3",
+  "rowan": "951a48e2228b04e22bd50b0ec1e94f4b1e03038c",
+  "elara_cherry_pick_only": "e1ee2f9746227a616beff6ddc5e4daeb61c2d144",
+  "task": "task_5b897c0542a9",
+  "dispatch": "ctx_556bdf3c7c43",
+  "runtime": "UNTESTED",
+  "observer": false,
+  "manifest": [
+    {
+      "file": "apps/server/lib/elevateo/tenancy.rb",
+      "source": "951a48e2228b04e22bd50b0ec1e94f4b1e03038c",
+      "blob": "e6f39b3cbc52baffd0d90ec59683845e5305f43c",
+      "mode": "100644",
+      "sha256": "435f3c185b839e11ffa106445761974d1c8888b0eb6b569290bda4a06d17738f"
     },
-    "seccomp.json": {
-      "bytes": 12997,
-      "sha256": "cc3e61cabda6bbc1e53e54d27ba4d55a9d3be829b6dd1a596f4a7b31b1cc7849"
+    {
+      "file": "apps/server/sig/tenancy.rbs",
+      "source": "951a48e2228b04e22bd50b0ec1e94f4b1e03038c",
+      "blob": "a099ea091c1791fa566a6228967880241c6aefdc",
+      "mode": "100644",
+      "sha256": "cb396c52ada5376ce1a3f9109d7a2c86c0b751488c9f8dd8ec31b77aae373819"
     },
-    "web.Dockerfile": {
-      "bytes": 1751,
-      "sha256": "210476d9b267758cb573bf1a431804511d6ccc201e4a394553a3e9afef3effe0"
+    {
+      "file": "apps/server/test/be_02/tenancy_principal_test.rb",
+      "source": "951a48e2228b04e22bd50b0ec1e94f4b1e03038c",
+      "blob": "a5a3f763da292cb921a6d3ba78642b18f41b8f16",
+      "mode": "100644",
+      "sha256": "7a6506f40b4ea02de8ebd5932ad494acd1b2a7ff4abe667da9545f4e731813af"
+    },
+    {
+      "file": "docs/completion/be403-r4-principal.md",
+      "source": "951a48e2228b04e22bd50b0ec1e94f4b1e03038c",
+      "blob": "79eb6739314a93c8dccde737299ffdfe82a64b98",
+      "mode": "100644",
+      "sha256": "fdc1141fb3fa25fd05c75759f8a6d5f981e9449a3449b97cd852a8321ce240b1"
+    },
+    {
+      "file": "docs/completion/qa404-r7-launch-diagnostics.md",
+      "source": "e1ee2f9746227a616beff6ddc5e4daeb61c2d144",
+      "blob": "c06b08bcbcd3e6d2f11f8494c44b2d36eb6e417e",
+      "mode": "100644",
+      "sha256": "3ccc033cb623775c234c77f0a79bc177fa5e6d7f49ff8c7a2818ad29ed97a66b"
+    },
+    {
+      "file": "ops/tests/be02/acceptance_runtime.py",
+      "source": "e1ee2f9746227a616beff6ddc5e4daeb61c2d144",
+      "blob": "c0d91c581ace518dcd589cc54392f0f285da22ed",
+      "mode": "100644",
+      "sha256": "b432b7c6df16bb372cc814e39aaf1ac8d5d6cf2cfb80eea4b078f5e5b95071c6"
+    },
+    {
+      "file": "ops/tests/be02/docker_task.py",
+      "source": "e1ee2f9746227a616beff6ddc5e4daeb61c2d144",
+      "blob": "02c1a66f0c4cf1faf660e27f06df2739f3f3b72f",
+      "mode": "100644",
+      "sha256": "c1aa117f39c131566118ffee8c5d64c97e0bf0f2723e88bbb75391934cedf2cc"
+    },
+    {
+      "file": "ops/tests/be02/test_launch_diagnostics.py",
+      "source": "e1ee2f9746227a616beff6ddc5e4daeb61c2d144",
+      "blob": "e5f731ecee4ac9ec0eeb796e08f087c65e3484ec",
+      "mode": "100644",
+      "sha256": "bd8e8c62fa5493df9b2716812e00cd1198e803d0d3c2c8be01d3e25b36c21814"
     }
-  },
-  "profile_provenance": "docs/completion/acceptance-runner-handoff.md:47; ops/tests/be02/acceptance_runtime.py SECCOMP_SHA256; prior recipes review excludes profile itself",
-  "direct_copy_closure": "all source paths present; generated dist requires Soren Docker compilation"
+  ],
+  "vault_sha256": "e121b3680b4d4f409d8923020189022be8f88a936993d232cf27aa1576417842",
+  "vault_bytes": 51264,
+  "intake_bundle_sha256": {
+    "rowan": "73bdfdc6aca603ded025d07ddd5f1585a7ac381c1d7d6b4908055cd57cfd2ef7",
+    "elara": "688fe22bb93bc068600a1fd5159806b499d59e426daa57891789161d98b941fc"
+  }
 }

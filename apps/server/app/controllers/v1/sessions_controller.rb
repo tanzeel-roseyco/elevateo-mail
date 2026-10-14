@@ -7,7 +7,8 @@ module V1
   class SessionsController < ReadController
     def show
       # AIDEV-NOTE: Session bootstrap intentionally has no stale-view hints; the protected snapshot still authorizes it.
-      protected_read(allowed_query: [], context_required: false, budget: 16_384) do |connection:, identity:, session:, query:, deadline:|
+      protected_read(allowed_query: [], context_required: false, budget: 16_384) do |session:, **|
+        # @type var session: Elevateo::auth_object
         api_encode(session, limit: 16_384)
       end
     end

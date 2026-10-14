@@ -26,7 +26,7 @@ class CollaborationControllerTest < Minitest::Test
     assert_equal "no-store", result[1].fetch("cache-control")
     assert_equal "Cookie", result[1].fetch("vary")
     assert_equal "nosniff", result[1].fetch("x-content-type-options")
-    refute @connection.sql.any? { |sql| sql.include?("INSERT INTO app.thread_read_states") }
+    refute(@connection.sql.any? { |sql| sql.include?("INSERT INTO app.thread_read_states") })
   end
 
   def test_raw_malformed_duplicate_unknown_and_forged_actor_inputs_fail_before_auth
@@ -76,8 +76,8 @@ class CollaborationControllerTest < Minitest::Test
     assert_equal 200, result[0]
     assert_equal TARGET, result[2].fetch("assignee_id")
     assert_equal "{#{TARGET}}", @connection.guard_arguments.last
-    assert_operator @connection.sql.index { |sql| sql.include?("collaboration_reader") }, :<,
-      @connection.sql.index { |sql| sql.include?("FOR UPDATE") }
+    assert_operator(@connection.sql.index { |sql| sql.include?("collaboration_reader") }, :<,
+      @connection.sql.index { |sql| sql.include?("FOR UPDATE") })
   end
 
   def test_hidden_assignment_uses_generic_cd_error_and_rolls_back
@@ -111,7 +111,7 @@ class CollaborationControllerTest < Minitest::Test
       assert_equal 200, result[0]
       assert_includes @connection.sql, "SET TRANSACTION READ ONLY"
       refute_includes @connection.events, :guard
-      refute @connection.sql.any? { |sql| sql.match?(/INSERT|UPDATE|DELETE/) }
+      refute(@connection.sql.any? { |sql| sql.match?(/INSERT|UPDATE|DELETE/) })
     end
   end
 end

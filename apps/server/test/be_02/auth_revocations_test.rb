@@ -11,6 +11,8 @@ class AuthRevocationsTest < Minitest::Test
       @ciphertext, @acknowledgements = ciphertext, []
     end
     def call(name, arguments, deadline:, connection: nil)
+      deadline.check!
+      raise "worker call cannot borrow a tenant connection" unless connection.nil?
       if name == "claim_revocations"
         { "status" => "ok", "intents" => [{ "id" => 1, "claim_id" => arguments[0], "scope" => "local",
           "access_token_ciphertext" => @ciphertext, "attempts" => 1 }] }

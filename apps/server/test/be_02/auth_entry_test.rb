@@ -56,7 +56,7 @@ class AuthEntryTest < Minitest::Test
     client.failure = nil
     assert_auth(401) { entry.accept(pending_cookie: pending, password: "strong password", caller_cookie: cookie, deadline: deadline) }
     assert_equal [:verify], client.calls
-    refute store.calls.any? { |name, _| name == "complete_entry" }
+    refute(store.calls.any? { |name, _| name == "complete_entry" })
   end
 
   def test_known_password_rejection_only_retries_password

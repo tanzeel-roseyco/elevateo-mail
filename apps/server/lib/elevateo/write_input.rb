@@ -56,10 +56,12 @@ module Elevateo
       source = raw.dup.force_encoding(Encoding::UTF_8)
       invalid! unless source.valid_encoding?
       # AIDEV-NOTE: Keep decimal tokens exact until field validation; binary Float can round fractions into versions.
-      parsed = BigDecimal.save_exception_mode do
+      # @type var parsed: value
+      parsed = nil
+      BigDecimal.save_exception_mode do
         # AIDEV-NOTE: Extreme exponents must not silently underflow to an accepted zero; restore modes on exit.
         BigDecimal.mode(BigDecimal::EXCEPTION_UNDERFLOW, true)
-        JSON.parse(source, decimal_class: ExactDecimal, allow_duplicate_key: false,
+        parsed = JSON.parse(source, decimal_class: ExactDecimal, allow_duplicate_key: false,
           object_class: UniqueObject, max_nesting: 16, allow_nan: false)
       end
       invalid! unless parsed.is_a?(Hash)

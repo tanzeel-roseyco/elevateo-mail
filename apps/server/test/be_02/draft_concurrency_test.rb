@@ -145,8 +145,8 @@ class DraftConcurrencyTest < DraftDatabaseTestCase
         draft_worker_result(waiting)
       end
     end
-    assert_equal 1, results.count { |result| result["version"] == 1 }
-    assert_equal 1, results.count { |result| result["code"] == "draft_conflict" }
+    assert_equal(1, results.count { |result| result["version"] == 1 })
+    assert_equal(1, results.count { |result| result["code"] == "draft_conflict" })
     assert_equal 2, ledger.length
     conflict = values.find { |value| lookup(operation: value.operation_id)["outcome"] == "conflict" }
     refute_nil conflict

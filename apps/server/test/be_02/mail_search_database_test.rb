@@ -8,10 +8,10 @@ class MailSearchDatabaseTest < MailboxMembershipDatabaseCase
     fixture_message(body: literal)
     decoy = conversation
     fixture_message(thread: decoy, body: "100anythingXDone")
-    assert_equal [@thread], search("q" => "100%_\\done").fetch("items").map { |item| item.fetch("id") }
-    assert_equal [@thread], search("q" => "%").fetch("items").map { |item| item.fetch("id") }
-    assert_equal [@thread], search("q" => "_").fetch("items").map { |item| item.fetch("id") }
-    assert_equal [@thread], search("q" => "\\").fetch("items").map { |item| item.fetch("id") }
+    assert_equal([@thread], search("q" => "100%_\\done").fetch("items").map { |item| item.fetch("id") })
+    assert_equal([@thread], search("q" => "%").fetch("items").map { |item| item.fetch("id") })
+    assert_equal([@thread], search("q" => "_").fetch("items").map { |item| item.fetch("id") })
+    assert_equal([@thread], search("q" => "\\").fetch("items").map { |item| item.fetch("id") })
     cases = [
       { sender: { "display_name" => "SenderName", "address" => nil } },
       { sender: { "display_name" => nil, "address" => "sender@example.invalid" } },
@@ -21,7 +21,7 @@ class MailSearchDatabaseTest < MailboxMembershipDatabaseCase
     cases.zip(%w[SenderName sender@example.invalid RecipientName recipient@example.invalid]).each do |attributes, query|
       id = conversation
       fixture_message(thread: id, **attributes)
-      assert_equal [id], search("q" => query).fetch("items").map { |item| item.fetch("id") }
+      assert_equal([id], search("q" => query).fetch("items").map { |item| item.fetch("id") })
     end
   end
 
@@ -41,7 +41,7 @@ class MailSearchDatabaseTest < MailboxMembershipDatabaseCase
     fixture_message
     assert_empty search.fetch("items")
     @admin.exec_params("UPDATE app.threads SET subject = 'needle subject' WHERE id = $1", [@thread])
-    assert_equal [@thread], search.fetch("items").map { |item| item.fetch("id") }
+    assert_equal([@thread], search.fetch("items").map { |item| item.fetch("id") })
     @admin.exec_params("UPDATE app.threads SET subject = NULL WHERE id = $1", [@thread])
     note(SecureRandom.uuid, body: "needle in internal note")
     @admin.exec_params(<<~SQL, [SecureRandom.uuid, @org, @box, @user, @thread])
@@ -62,7 +62,7 @@ class MailSearchDatabaseTest < MailboxMembershipDatabaseCase
     foreign_box = mailbox(org: foreign_org)
     foreign_thread = conversation(box: foreign_box, org: foreign_org)
     fixture_message(thread: foreign_thread, box: foreign_box, org: foreign_org, body: "needle foreign")
-    assert_equal [@thread], search.fetch("items").map { |item| item.fetch("id") }
+    assert_equal([@thread], search.fetch("items").map { |item| item.fetch("id") })
     [private_box, foreign_box, SecureRandom.uuid].each do |box|
       error = assert_raises(Elevateo::CollaborationError) { search("mailbox_id" => box) }
       assert_equal [404, "This item is unavailable."], [error.status, error.message]
@@ -71,12 +71,12 @@ class MailSearchDatabaseTest < MailboxMembershipDatabaseCase
     scope(write: false) do |connection|
       instance = reader(Elevateo::MailSearch, connection)
       query = { "q" => "needle", "mailbox_id" => private_box }
-      assert_equal [private_thread], JSON.parse(instance.search(query: query)).fetch("items").map { |item| item.fetch("id") }
+      assert_equal([private_thread], JSON.parse(instance.search(query: query)).fetch("items").map { |item| item.fetch("id") })
       member_change(@user) { |c| c.exec_params("DELETE FROM app.mailbox_memberships WHERE mailbox_id = $1 AND user_id = $2", [private_box, @user]) }
-      assert_equal [private_thread], JSON.parse(instance.search(query: query)).fetch("items").map { |item| item.fetch("id") }
+      assert_equal([private_thread], JSON.parse(instance.search(query: query)).fetch("items").map { |item| item.fetch("id") })
     end
     assert_equal "not_available", assert_raises(Elevateo::CollaborationError) { search("mailbox_id" => private_box) }.code
-    assert_equal [@thread], search.fetch("items").map { |item| item.fetch("id") }
+    assert_equal([@thread], search.fetch("items").map { |item| item.fetch("id") })
     membership(present: false)
     assert_empty search.fetch("items")
   end
