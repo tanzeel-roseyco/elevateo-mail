@@ -228,3 +228,5 @@ Soren's exact fa3082a full RuboCop receipt found two ambiguous block association
 OUT-804 migration 00009 policy role seam now has disposable SQL regressions for an authorized `elevateo_api` write, denied direct `elevateo_app_read` RLS proof execution, and cross-actor session digest rejection. SEC802 grants proof execution only to the API role; these new cases are authored, not fleet-executed.
 
 ADV093's restricted-role follow-up requires minimal SEC802 EXECUTE grants for both protected outreach helpers when `current_user=elevateo_app_read`: 00009 RLS calls content-read, and sequence 00016 calls draft-write. The OUT-804 fixture now requires a genuine protected marker to prove both helper calls under that role and rejects a copied digest without the marker. SEC802 grant source is owned by Sabine/Cassian and absent from this isolated branch; integration and fleet proof are pending.
+
+Cassian integrated the two narrow helper grants at 338a442. OUT-804 role proof now records both `session_user` and `current_user` before and after restricted-role switch and asserts worker still lacks draft-write EXECUTE; actual fleet results remain pending.
