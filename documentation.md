@@ -356,3 +356,5 @@ Soren exact web `882a471` generated canonical V2 draft.6 declaration from OpenAP
 Elara CORE854 exact `836efc6` integer idle-delay compatibility repair for send worker drain is imported, with a focused regression. It has not been fleet-executed on the integrated SHA; source review and current backend Steep/full-suite rerun remain pending.
 
 Elara CORE854 `cc2ac33` source repair for SEC802 mailbox-membership concurrency fixture actor and rollback oracles is imported. It preserves the stronger production owner guard; exact integrated disposable PostgreSQL rerun and independent review remain pending.
+
+After Nadia’s precise Attachments RBS import, the inactive metadata adapter uses an explicit no-storage port that raises on accidental put/get and returns void from its direct-message authorization callback. This reconciles the typed read-only service seam without granting Storage authority or activating a route; fleet Steep remains pending.

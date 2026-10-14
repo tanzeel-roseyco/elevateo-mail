@@ -211,3 +211,7 @@ Soren exact `web-882a4710860f.log` used canonical V2 OpenAPI SHA256 `7ee511a76fb
 Imported Elara exact 836efc6 CORE854 drain idle-delay typing/runtime compatibility candidate after Soren cb1ec5b diagnostics. Focused test authored by owner; current integrated Docker test NOT_RUN.
 
 Imported Elara exact cc2ac33 CORE854 concurrency fixture actor/rollback correction after the cb1ec5be two-failure/one-error map. Production SEC802 authority remains unchanged; current integrated fleet rerun NOT_RUN.
+
+## Nadia attachment RBS integration
+
+Imported Nadia exact 8d89a18 typed Service/Repository/Scanner RBS and source; Cassian inert metadata adapter now supplies a NoStorage object whose put/get always fail, and its direct-message authorization callback explicitly returns nil. This matches the read-only service interface without putting private Storage authority in Rails. Current integrated Steep/Docker NOT_RUN; Corin owns PrivateStorage/IMAP declarations.

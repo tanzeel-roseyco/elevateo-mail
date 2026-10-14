@@ -1,5 +1,9 @@
 module V2
   class InboxAttachmentsController < V1::WriteController
+    class NoStorage
+      def put: (String, String, content_type: String) -> nil
+      def get: (String) -> String
+    end
     def index: () -> void
     private
     def path_uuid: (Symbol) -> String
