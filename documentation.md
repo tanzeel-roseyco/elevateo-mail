@@ -2,11 +2,13 @@
 
 ## Current execution status
 
-This source-only candidate integrates accepted Elara R10 `7c035de` draft recovery, Nadia R10 `c251b45` literal-read scenarios and Nadia R11 `bbf23cc8` strict optional-body repair over immutable **c8ffa46**. Exact source is accepted; compilation and browser execution remain untested on this candidate. New candidate runtime is **NOT_RUN**. Observer OFF; BE02 unaccepted, BE03 closed, server durability required; unsaved reload retention is memory-only, with F2 demonstration pending.
+Accepted Mira R11 `3e922ab` uncertain-reload source and Elara ADV801's unchanged historical evidence map are selectively integrated after immutable **c3e69f2**. New candidate runtime **NOT_RUN**; Soren R10 continues on c3, untouched. Observer OFF; BE02 unaccepted; BE03 closed.
 
-Actual c8 Soren R9 reports backend 390 tests/5,792 assertions (zero failures/errors/skips across 57 summaries), authenticated HTTP/worker drain and frontend 31 files/624 cases across all eight gates PASS. Acceptance compilation FAILED with TS2769 in read-revocation.e2e.ts:34 (optional body property); browser execution and screenshots remain zero. Final receipt `reports/soren-r9-immutable-receipt.json` SHA256 `54268cd037223da8e7f065d87fc6b0de5a5ffbb5090cd76593b40fe7b5c58e58` confirms these results; independent GUI cleanup passed with no errors and shared bases retained. No result validates the next candidate.
+Actual c8 R9 passed backend 390 tests/5,792 assertions, authenticated HTTP/worker drain and frontend 624 cases/all eight gates. Acceptance compilation failed TS2769, with zero GUI cases/screenshots. Its repair and R10 scenarios are integrated on c3; R10 final receipt is pending. Prior results do not validate this candidate.
 
-See [current provenance](docs/completion/int401-current-freeze-provenance.json), [handoff](docs/completion/int401-r10-acceptance-handoff.md), [history](docs/completion/int401-status-history-20261014.md) and [remaining milestones](docs/completion/int401-remaining-milestones.md). Root owns acceptance and the actual vault; Cassian mirrors it. Soren alone runs fleet Docker validation. No tests/builds or deployment performed here. Authority `task_71a9e1250412 / ctx_0f5d20301a25`.
+F2 durable local recovery remains OPEN: accepted reload loses newer memory-only buffer/operation while the committed server version survives. The new test does not prove warning appearance/dismissal, ledger state or durable local recovery. Source acceptance only.
+
+See [provenance](docs/completion/int401-current-freeze-provenance.json), [handoff](docs/completion/int401-r11-uncertain-reload-handoff.md), [history](docs/completion/int401-status-history-20261014.md) and [milestones](docs/completion/int401-remaining-milestones.md). Root owns acceptance and the actual vault; Cassian mirrors it; Soren alone schedules fleet Docker. No tests/builds/deployment here. Authority `task_be0e5beb6156 / ctx_3448410204a8`.
 
 Design date: 2026-10-11; expanded planning revision: 2026-10-12. Current scoped decisions override older planning assumptions; consent-based sending remains required.
 

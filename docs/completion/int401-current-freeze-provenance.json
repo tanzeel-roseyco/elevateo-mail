@@ -1,56 +1,25 @@
 {
-  "base": "c8ffa46f71a1a10ce4749b65dfd1edf7ccaf7058",
-  "parents": [
-    "c8ffa46f71a1a10ce4749b65dfd1edf7ccaf7058",
-    "7c035de5d52415f2a5923db749eabc7e71c7935c",
-    "c251b45ebfb3bca104d15075d3eb463b0caa93dd",
-    "bbf23cc8a6a18fa37b81bd6501937f1962f5398e"
+  "base": "c3e69f2434753d2d8ea70133c56f03cee4feea3e",
+  "task_id": "task_be0e5beb6156",
+  "dispatch_id": "ctx_3448410204a8",
+  "source_manifest": [
+    {
+      "path": "tests/acceptance/playwright/draft-uncertain-reload.e2e.ts",
+      "mode": "100644",
+      "blob": "b31bce3b96edc8cdf56d72e050b14407288d9d37",
+      "sha256": "a14fd70cea84d4cada3ddf1ea4022e88fc535d597da6c7fe42d3339027c62977"
+    },
+    {
+      "path": "tests/acceptance/playwright/unavailable.e2e.ts",
+      "mode": "100644",
+      "blob": "fc5297fc2c0002c070c560f141852368130b66e5",
+      "sha256": "91b94f25e0ba28a4df780988233bcfec126e449fa8de5a9bbae9d6dd607e48d7"
+    }
   ],
-  "task": "task_71a9e1250412",
-  "dispatch": "ctx_0f5d20301a25",
   "runtime": "NOT_RUN",
   "observer": "OFF",
-  "source_manifest": {
-    "tests/acceptance/playwright/draft-recovery-support.ts": {
-      "owner": "7c035de5d52415f2a5923db749eabc7e71c7935c",
-      "mode": "100644",
-      "blob": "4bbd9a6479cafd1285a481b551dfa2524babc0e2",
-      "sha256": "68e600e9c631a0fb533a86e0c392e7888d52921be3f2003b189348acb2f3ae04"
-    },
-    "tests/acceptance/playwright/draft-recovery.e2e.ts": {
-      "owner": "7c035de5d52415f2a5923db749eabc7e71c7935c",
-      "mode": "100644",
-      "blob": "7d6b17e40e25879b46ec282fed1409ae407c0772",
-      "sha256": "87644ab092246503dc0b105548879ec27631e3dccee90009a126f72ca2ebcbd4"
-    },
-    "tests/acceptance/playwright/read-literal.e2e.ts": {
-      "owner": "c251b45ebfb3bca104d15075d3eb463b0caa93dd",
-      "mode": "100644",
-      "blob": "05aa25c0968efb0f4c715ccecd3d3de2b586cc25",
-      "sha256": "1e619f7cdb3d173dbcdb11516b82a91ab3a8c666ea47b2468ade35fe98e27a95"
-    },
-    "tests/acceptance/playwright/unavailable.e2e.ts": {
-      "owner": "composed exact removals",
-      "mode": "100644",
-      "blob": "a638bcf4806dcbadbf0f9a28c264ffeb9e4e39a8",
-      "sha256": "46a07228e8ebcd5154679f5713c618363233c2880bc4788ec3e55aff7f9dab3a"
-    },
-    "tests/acceptance/playwright/read-revocation.e2e.ts": {
-      "owner": "bbf23cc8a6a18fa37b81bd6501937f1962f5398e",
-      "mode": "100644",
-      "blob": "1126e9d7637759b8106337aca39e242b53ba2aa8",
-      "sha256": "d34b5d70b3811f945362f459d10c41e8a2cdb220af626f585413110d0176ce57"
-    }
-  },
-  "vault_bytes": 80078,
-  "vault_sha256": "2db861331b6791aaeca39a42123807fe4f5e9363476cbd27fa53f2d336ac15e5",
-  "unchanged_boundaries": [
-    "apps",
-    "contracts",
-    "ops",
-    "scripts",
-    "compose.yaml",
-    "build recipes"
-  ],
-  "reviews": "ADV791/793 ADV792/794 ADV802/803 source ACCEPTED only"
+  "vault_sha256": "feb44d25ee97480e1aa64b6651d05836567645fc89de9a66aa19bf00aca22a74",
+  "vault_bytes": 83000,
+  "reviews": "ADV804/805 accepted source; ADV801 bounded historical map",
+  "unchanged": "apps/contracts/ops/scripts/compose/build/shared harness"
 }

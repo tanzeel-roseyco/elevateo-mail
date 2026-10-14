@@ -516,3 +516,7 @@ ADV791/793: each 283 unique LOC including 13 docs, packets 129/154, zero defects
 ## INT401 Nadia R11 strict browser request repair
 
 Root accepted bbf23cc8a6a18fa37b81bd6501937f1962f5398e. ADV802 functional and ADV803 dedicated design each cover 198 unique LOC: read-revocation.e2e.ts 188 and unchanged strict tsconfig 10. Zero defects, 0/KLOC; overlapping reviews are nonadditive. Exact one-line conditional omission removes explicit undefined without type suppression, changed authorization or weakened oracles. Original c8 TS2769 failure is retained; repaired compilation/browser NOT_RUN. No production source or whole-app review claim.
+
+## INT401 R11 source integration
+
+ADV804 functional and ADV805 dedicated design: each210 unique source LOC; packets139/195,334 contextual aggregate with nonadditive overlap; 0 defects,0/KLOC. Exact Mira test blob b31bce3b96edc8cdf56d72e050b14407288d9d37 preserved. ADV801 unchanged historical map is bounded documentation acceptance only. Only SCN-DRAFT-008-F2 removed; prior removals preserved. No production/shared harness changes. Runtime NOT_RUN; F2 OPEN; no application tests/builds performed. See current handoff for proof limits.
