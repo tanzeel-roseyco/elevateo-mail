@@ -168,3 +168,6 @@ FE-405 follow-up: navigation regressions now cover Drafts and reader ancestor se
 
 
 OFF-406 attempt5: IN PROGRESS. Implemented isolated genuine base/multi_mailbox/literal_read fixture helper and real-PG happy/failure contract after explicit Elara ownership agreement. Exact Cassian 7b0678c ancestry preserved; canonical contracts/v1 untouched by this implementation. Source authored; independent review, linter, Soren Docker contract gates and actual invitation/login/inbox browser journey NOT_RUN. Shared publication/invocation remains Elara; root owns Obsidian mirroring. See docs/completion/res406-variants.md.
+
+
+OFF-406 attempt6 ADV743: IN PROGRESS. Required exact primary/other organization/mailbox maps and actor Hash/user_id shape now reject malformed inputs with variant_input_invalid before any DB access. Seed and verify regression authored; Soren fleet Docker and independent repair review NOT_RUN. Historical failures retained; diagnostic observer-OFF smoke is not full acceptance. See docs/completion/res406-variants-r6.md.

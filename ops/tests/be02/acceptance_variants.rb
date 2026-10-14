@@ -59,7 +59,14 @@ module Be02Acceptance
     def validate_seed(seed, variant)
       Be02Acceptance.check(NAMES.include?(variant) && seed.is_a?(Hash), "variant_input_invalid")
       actors = seed.fetch("actors")
-      Be02Acceptance.check(actors.keys.sort == ACTORS.sort, "variant_actors_invalid")
+      Be02Acceptance.check(actors.is_a?(Hash) && actors.size == ACTORS.size &&
+        ACTORS.all? { |name| actors[name].is_a?(Hash) && actors[name].key?("user_id") }, "variant_input_invalid")
+      %w[organizations mailboxes].each do |name|
+        map = seed[name]
+        Be02Acceptance.check(map.is_a?(Hash) && map.size == 2 &&
+          %w[primary other].all? { |key| map.key?(key) }, "variant_input_invalid")
+      end
+      Be02Acceptance.check(seed["data"].is_a?(Hash), "variant_input_invalid")
       ids = actors.values.map { |actor| actor.fetch("user_id") } + seed.fetch("organizations").values +
         seed.fetch("mailboxes").values + seed.fetch("data").values_at("thread_primary", "thread_other", "draft_primary", "draft_other")
       Be02Acceptance.check(ids.all? { |id| id.is_a?(String) && UUID.match?(id) } && ids.uniq.size == ids.size,

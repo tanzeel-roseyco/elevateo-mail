@@ -12,6 +12,8 @@ A planned shared company mailbox for approximately **10 people**, available on a
 
 ## Current state
 
+OFF-406 attempt6 ADV743: IN PROGRESS. Required exact primary/other organization/mailbox maps and actor Hash/user_id shape now reject malformed inputs with variant_input_invalid before any DB access. Seed and verify regression authored; Soren fleet Docker and independent repair review NOT_RUN. Historical failures retained; diagnostic observer-OFF smoke is not full acceptance. See docs/completion/res406-variants-r6.md.
+
 OFF-406 attempt5: IN PROGRESS. Implemented isolated genuine base/multi_mailbox/literal_read fixture helper and real-PG happy/failure contract after explicit Elara ownership agreement. Exact Cassian 7b0678c ancestry preserved; canonical contracts/v1 untouched by this implementation. Source authored; independent review, linter, Soren Docker contract gates and actual invitation/login/inbox browser journey NOT_RUN. Shared publication/invocation remains Elara; root owns Obsidian mirroring. See docs/completion/res406-variants.md.
 
 INT-401 FROZEN APP REVISION (2026-10-14), IN PROGRESS: merged exact Rowan e0c2d358, Mira 81293f77, Elara f28d8589 and Nadia f5235cd3 over Cassian 59a8ce66 with lineage preserved. Restored later canonical contracts/v1 source (identical BE02 Codex/Fable FE01 R1/Local Completion), without regenerating or hand-editing client types. Fixed the Docker mock regression to use an interpreter-backed function while preserving noexec and checking NUL-delimited argv boundaries. New integrated source is UNTESTED; root schedules one frozen fleet acceptance request. Research remains secondary and does not gate app progress.
