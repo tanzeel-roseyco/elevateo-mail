@@ -7,26 +7,34 @@ require_relative "../lib/elevateo/config"
 require_relative "../lib/elevateo/send_worker/executor"
 require_relative "../lib/elevateo/send_worker/database_store"
 require_relative "../lib/elevateo/send_worker/durable_local_driver"
+require_relative "../lib/elevateo/send_worker/drain"
 
 cfg = Elevateo::Config.load!
 raise Elevateo::ConfigError, "send worker requires isolated worker role" unless cfg.db_role == "elevateo_worker"
 raise Elevateo::ConfigError, "send worker requires explicit control" if cfg.send_control_path.empty?
 raise Elevateo::ConfigError, "send worker requires outbound hold profile" unless cfg.outbound_hold
-send_id, scripted_outcome = ARGV
-unless ARGV.length == 2 && Elevateo::SendWorker::Control.valid_epoch?(send_id) &&
+target, scripted_outcome = ARGV
+unless ARGV.length == 2 && (target == "--drain" || Elevateo::SendWorker::Control.valid_epoch?(target)) &&
     Elevateo::SendWorker::DurableLocalDriver::OUTCOMES.include?(scripted_outcome)
-  raise ArgumentError, "usage: send-worker SEND_UUID accept|reject|accept_then_timeout|pause"
+  raise ArgumentError, "usage: send-worker SEND_UUID|--drain accept|reject|accept_then_timeout|pause"
 end
 ledger_path = ENV.fetch("ELEVATEO_LOCAL_ACCEPTANCE_LEDGER")
 
-# AIDEV-NOTE: A one-shot explicit-ID runner cannot discover or target external provider settings.
+# AIDEV-NOTE: Drain reads only worker-scoped due IDs; every submission still needs a fenced SQL claim.
 connection = PG.connect(host: cfg.db_host, dbname: cfg.db_name, user: cfg.db_role, password: cfg.db_password)
 begin
-  store = Elevateo::SendWorker::DatabaseStore.new(connection: connection, send_id: send_id)
+  connection.exec("SET statement_timeout = '3s'")
+  connection.exec("SET lock_timeout = '1s'")
   control = Elevateo::SendWorker::Control.new(path: cfg.send_control_path)
   driver = Elevateo::SendWorker::DurableLocalDriver.new(path: ledger_path, outcome: scripted_outcome)
-  outcome = Elevateo::SendWorker::Executor.new(store: store, driver: driver, control: control).run_once
-  puts JSON.generate(event: "send_worker.step", send_id: send_id, result: outcome, simulated: true)
+  if target == "--drain"
+    steps = Elevateo::SendWorker::Drain.new(connection: connection, control: control, driver: driver).run
+    puts JSON.generate(event: "send_worker.drain", steps: steps, simulated: true)
+  else
+    store = Elevateo::SendWorker::DatabaseStore.new(connection: connection, send_id: target)
+    outcome = Elevateo::SendWorker::Executor.new(store: store, driver: driver, control: control).run_once
+    puts JSON.generate(event: "send_worker.step", send_id: target, result: outcome, simulated: true)
+  end
 ensure
   connection.close
 end

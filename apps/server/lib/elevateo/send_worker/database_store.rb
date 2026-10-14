@@ -14,6 +14,14 @@ module Elevateo
       class InvalidResult < StandardError; end
       class StaleLease < StandardError; end
 
+      def self.next_due_send(connection:, epoch:)
+        raise ArgumentError, "invalid dispatch epoch" unless Control.valid_epoch?(epoch)
+        value = connection.exec_params("SELECT app_send_private.next_due_send($1::uuid)", [epoch]).getvalue(0, 0)
+        return nil if value.nil?
+        raise InvalidResult unless Control.valid_epoch?(value)
+        value
+      end
+
       # AIDEV-NOTE: This connection must authenticate as elevateo_worker; each function commits before provider I/O.
       def initialize(connection:, send_id:, lease_seconds: 30, deadline_seconds: 10)
         raise ArgumentError, "invalid send identity" unless Control.valid_epoch?(send_id)
