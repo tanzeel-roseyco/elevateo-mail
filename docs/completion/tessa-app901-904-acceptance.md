@@ -4,6 +4,8 @@ Status: **scenario design only for DIR903/904 and ATT902; no route, browser or f
 
 DIR904 now also has a separate 69-LOC source-only real-browser **API precursor** (`qa816-assignee-options.e2e.ts`): scoped UUID-only 200, foreign 404 and bad cursor 400. It is not the picker UI, selection, assignment write or revocation acceptance in the table below, and has no runtime receipt.
 
+ATT902 now has a separate 106-LOC source-only real-browser **API precursor** (`qa816-attachment-api.e2e.ts`): clean list/content byte hash and safe headers, held/rejected metadata/content denial, and cross-mailbox byte denial. Its strict sidecar loader requires a future trusted disposable fixture hook and is a setup failure without one. It is not Mira's attachment UI, revocation or gateway-outage acceptance and has no runtime receipt.
+
 ## Exact known seams
 
 - APP901 Mira `fcfaf0f` changes the top thread `Reply as draft` to a button. With a readable sender it prepopulates To and a `Re:` subject while preserving `reply_to_thread_id`; missing/denied/senderless selected messages disable it. QA816 source `cb35a3f` has happy/F1 browser cases, two fixed screenshot IDs, and remains NOT_RUN.
