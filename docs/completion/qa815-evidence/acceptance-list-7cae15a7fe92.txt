@@ -1,0 +1,117 @@
+source=7cae15a7fe92c9674f7e3840fd04042a66ca044e
+image=sha256:d6aa754f16b3197301076f047b5def2f02ea1dbbc2ca920407d46d7ec7f87b20
+mode=COMPILED_REPORTER_LIST_ONLY_SYNTHETIC_SEED
+started=2026-10-14T18:36:58Z
+seed_kind=runtime_from_pinned_example_for_list_only
+seed_mode=600
+dependency_install=public npm registry, exact package-lock, no credentials
+
+added 49 packages in 1s
+npm notice
+npm notice New major version of npm available! 11.19.0 -> 12.2.0
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0
+npm notice To update run: npm install -g npm@12.2.0
+npm notice
+install_exit=0
+
+> elevateo-acceptance@0.1.0 typecheck
+> tsc --noEmit
+
+
+> elevateo-acceptance@0.1.0 build
+> tsc
+
+compiled_reporter=/opt/acceptance/dist/playwright/quiet-reporter.js
+
+> elevateo-acceptance@0.1.0 test
+> node --test "dist/contracts/*.spec.js" "dist/playwright/*.unit.spec.js" "dist/puppeteer/*.unit.spec.js" "dist/selenium/*.unit.spec.js" "dist/proxy/*.spec.js"
+
+✔ valid private config and runtime seed; committed example is not runtime evidence (14.833854ms)
+✔ reject foreign, normalized, credential and query origins; TLS profile is explicit (3.072018ms)
+✔ required identity/output and resource bounds reject unsafe environment values (1.603383ms)
+✔ seed rejects credentials, foreign addresses, duplicate identities and wrong capabilities (1.163881ms)
+✔ seed matches BE02 read grants and opaque session versions without inventing membership generations (1.398324ms)
+✔ disabled and membership-free actors cannot claim a session version; revoked actor retains org login (0.471552ms)
+✔ reject portable path escapes, Windows device names and encoded paths (0.378109ms)
+✔ unknown input, nonfinite times, bad retries and missing assertions cannot pass (1.768989ms)
+✔ immutable attempts preserve first failure and validate predecessor (4.932426ms)
+✔ run/lane/profile mismatch and orphan retry write no record (1.838819ms)
+✔ record and byte caps fail explicitly without temporary file leakage (2.024542ms)
+✔ symlink output is rejected before writing (1.581874ms)
+✔ concurrent duplicate publication preserves one complete record and rejects the duplicate (2.839417ms)
+✔ credentials accept all nine aliases and preserve exact strings (2.289401ms)
+✔ credentials reject absent, extra, empty, short and oversized values with fixed errors (1.009586ms)
+✔ browser accepts exactly the frozen enum and default (0.160396ms)
+✔ draft receipt rejects malformed, non-JSON-shaped and non-editable receipts (1.932321ms)
+✔ puppeteer actual fill path guards allowed origin (0.729298ms)
+✔ puppeteer actual fill path guards rejected origin (0.474687ms)
+✔ puppeteer actual fill path guards rejected origin (0.1028ms)
+✔ selenium actual fill path guards allowed origin (0.1782ms)
+✔ selenium actual fill path guards rejected origin (0.121224ms)
+✔ selenium actual fill path guards rejected origin (0.087672ms)
+✔ playwright actual fill path guards allowed origin (0.154806ms)
+✔ playwright actual fill path guards rejected origin (0.088744ms)
+✔ playwright actual fill path guards rejected origin (3.264412ms)
+✔ Playwright actual credential sequence rechecks after email changes origin (0.343975ms)
+✔ type rejects redirected, malformed and unavailable origins before entry (1.099992ms)
+✔ type rechecks destination between allowed email and rejected password operations (0.854199ms)
+✔ sendKeys rejects redirected, malformed and unavailable origins before entry (0.398577ms)
+✔ sendKeys rechecks destination between allowed email and rejected password operations (0.114622ms)
+✔ fill rejects redirected, malformed and unavailable origins before entry (0.235415ms)
+✔ fill rechecks destination between allowed email and rejected password operations (0.103892ms)
+✔ completed assertions pass and an empty body remains a failure (1.470658ms)
+✔ original body errors fail after completed assertions and retain only safe coordinates (2.863221ms)
+✔ trusted type and validation errors classify without issue values (1.199998ms)
+✔ known conflict cleanup and framework failures remain failures with distinct phases (0.369502ms)
+✔ untrusted errors cannot supply categories or invoke arbitrary stack getters (0.233913ms)
+✔ source parsing rejects paths, coordinate limits, message-only frames and oversized stacks (0.474126ms)
+✔ strict schema rejects raw fields, arbitrary enums, paths and noninteger coordinates (0.434573ms)
+✔ multiline messages cannot supply frame-shaped body or cleanup coordinates (0.197946ms)
+✔ reporter rejects malicious metadata and never publishes annotation reasons or framework messages (1.205087ms)
+✔ assigned native stacks work while custom Error stack getters remain unread (0.322265ms)
+✔ explicit data-property stacks retain exact body and cleanup coordinates (0.25437ms)
+✔ bootstrap formatter descriptor is restored after native extraction and rejected stack values (0.478585ms)
+✔ changed bootstrap descriptor flags are rejected without changing the current descriptor (0.193177ms)
+✔ unformatted native errors never read unsafe name or message properties or coerce values (0.282422ms)
+✔ native extraction never invokes a custom prepareStackTrace hook or getter (0.21126ms)
+✔ invitation source registration publishes coordinates only and rejects beyond frozen bounds (0.298502ms)
+✔ exact invitation contract accepts only bounded private invite at configured authority (3.196247ms)
+✔ malformed foreign userinfo path recovery duplicate type and fragment links fail without secret errors (0.720863ms)
+✔ completion checks reveal only boolean and reject query hash foreign and malformed destinations (0.212923ms)
+✔ private metadata rejects foreign owner public reads and group writes (0.149166ms)
+✔ password fills actual labels and scrubs browser errors and redirected second destination (0.499694ms)
+✔ write failure removes owned target and lock, preserves existing files and permits retry (11.959782ms)
+✔ sync failure removes owned target and lock, preserves existing files and permits retry (6.864857ms)
+✔ close failure removes owned target and lock, preserves existing files and permits retry (6.804846ms)
+✔ replacement helper counts previous screenshot and enforces aggregate before persistence (6.403784ms)
+✔ exclusive artifact and lock creation prevent overwrite and concurrent writers (4.398388ms)
+✔ rejects path escape, linked artifact and linked directory without traversal (1.020415ms)
+✔ empty member screenshot is permitted and included in later writer budget (4.130543ms)
+✔ raw routing rejects unsafe targets and preserves the API target (1.032578ms)
+✔ production documents, assets, containment and methods (24.688806ms)
+✔ API preserves status, cookies, origin and trusted forwarding; limits writes (3.493917ms)
+✔ failed and stalled upstream never return an SPA document (204.391808ms)
+✔ private exact origin, absolute executable, nonroot and bounded exact version (3.804491ms)
+✔ browser identity cannot accept prefix, suffix, or alternate version (0.26001ms)
+✔ strict nine-actor credential shape and password limits (2.356865ms)
+✔ draft identity rejects foreign scope, origin, credentials and URL suffixes (0.598957ms)
+✔ only exact private Grid and complete version tuple accepted (2.632695ms)
+✔ negotiated browser and driver must both match; raw capabilities never escape (1.392473ms)
+✔ credential schema rejects missing, extra, blank, short and oversized secrets without echo (1.893209ms)
+✔ draft route requires correct origin, mailbox and valid UUID without query leakage (0.613033ms)
+ℹ tests 73
+ℹ suites 0
+ℹ pass 73
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1107.177126
+Acceptance framework status: passed
+list_exit=0
+run_exit=0
+source_archive_absent=yes
+private_absent=yes
+output_absent=yes
+remaining_task_containers=0
+finished=2026-10-14T18:37:13Z
