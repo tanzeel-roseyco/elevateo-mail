@@ -142,9 +142,25 @@ class SendApprovalDatabaseTest < SendDatabaseTestCase
     assert_equal 2, save(@saved).fetch("version")
     bytes = snapshot(version: 2, recipients: [["Name\u009f", "Recipient@example.invalid"]])
     result = approve(version: 2, bytes: bytes, review_digest: Digest::SHA256.hexdigest(bytes))
-    refute result.key?("code")
+    refute result.key?("code"), result["code"]
     stored = @admin.exec_params("SELECT encode(snapshot_bytes, 'hex') FROM app_send_private.intents WHERE send_id = $1", [result.fetch("send_id")]).getvalue(0, 0)
     assert_equal bytes.unpack1("H*"), stored
+  end
+
+  def test_every_prohibited_header_scalar_is_rejected_in_subject_and_display_name
+    binding = review
+    ((1..31).to_a + [127]).each do |point|
+      scalar = point.chr(Encoding::UTF_8)
+      [binding.merge("subject" => scalar), binding.merge("recipients" => [
+        { "display_name" => scalar, "address" => "Recipient@example.invalid" }
+      ])].each do |invalid|
+        result = @admin.exec_params(<<~SQL, [JSON.generate(invalid), @bytes.unpack1("H*"), @review_digest]).getvalue(0, 0)
+          SELECT app_send_private.snapshot_validation($1::jsonb,decode($2::text,'hex'),$3::text)
+        SQL
+        assert_equal "send_not_ready", result, "header scalar #{point}"
+      end
+    end
+    assert_equal [0, 0, 0, 0], counts
   end
 
   def test_maximum_content_version_is_consumed_without_increment
