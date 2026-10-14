@@ -2,6 +2,8 @@
 
 ## Current execution status
 
+R24 Nadia BE03 API isolated work is explicitly authorized by root while BE02 remains OPEN and integration/release gated. S1/S2 Rails API source and regression fixtures are in progress; routes default disabled. Fleet runtime and independent reviews remain pending. See [Nadia API evidence](docs/completion/be03-nadia-r24-api.md). Historical R23 BE03-CLOSED wording below is superseded only for isolated implementation.
+
 Application IN PROGRESS — R23 documentation checkpoint (2026-10-14). BE02 OPEN/unaccepted; BE03 CLOSED until root accepts BE02. Application completion has priority; R&D remains separate. Invitation source is exact 51ca5d2eadd74b7ac4c1a2f5f82cd49323b15dc5; core/empty/revoked/logout evidence belongs to exact 86036e276df9c3294206e6bfa14d478c223c54dd. Observer remains OFF. Production, contracts, observer boundary and four Docker recipes are unchanged.
 
 R19 core login/read/persisted-draft/search PASS stands with restoration, authenticated HTTP, worker drain and cleanup. Its sixteen screenshots do not establish complete visual acceptance: search was loading; settled-search evidence remains in R12. R12's 21 PNGs and R18 conflict/revocation PASS stand. R18 logout FAILED, cause UNKNOWN; F2 memory-only recovery limitation remains OPEN.

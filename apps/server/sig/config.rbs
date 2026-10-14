@@ -19,6 +19,8 @@ module Elevateo
     attr_reader auth_url: String
     attr_reader storage_url: String
     attr_reader mailpit_url: String
+    attr_reader send_api_enabled: bool
+    attr_reader send_control_path: String
     attr_reader outbound_hold: bool
     attr_reader process: String
     attr_reader session_key: String

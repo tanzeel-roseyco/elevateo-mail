@@ -1,0 +1,109 @@
+module Elevateo
+  class SendError < StandardError
+    ERRORS: Hash[String, [Integer, String]]
+    attr_reader code: String
+    attr_reader status: Integer
+    attr_reader retry_after: Integer?
+    def initialize: (String, ?retry_after: Integer?) -> void
+    def body: (String?) -> Hash[String, String]
+  end
+  module SendAPI
+    class Input
+      FIELDS: Array[String]
+      attr_reader draft_id: String
+      attr_reader mailbox_id: String
+      attr_reader operation_id: String
+      attr_reader expected_version: Integer
+      attr_reader review_digest: String
+      def initialize: (draft_id: String, input: WriteInput::object) -> void
+    end
+    module Address
+      LOCAL: Regexp
+      LABEL: Regexp
+      def self.canonical: (Object?) -> String?
+      def self.header?: (Object?) -> bool
+    end
+    module Canonical
+      FORMAT: String
+      MAXIMUM: Integer
+      def self.bytes: (organization_id: String, mailbox_id: String, draft_id: String, version: Integer,
+        sender: String?, recipients: Array[Hash[String, String?]], subject: String, body: String,
+        reply_id: String?, policy: String) -> String
+      def self.digest: (String) -> String
+    end
+  end
+end
+module Elevateo
+  module SendAPI
+    class Review
+      FIELDS: Array[String]
+      @binding: ReadResponse::item
+      @issues: Array[ReadResponse::item]
+      @organization: String
+      @mailbox: String
+      @draft: String
+      @version: Integer
+      @subject: String
+      @body: String
+      @reply: String?
+      @policy: String
+      @sender: String?
+      @recipients: Array[Hash[String, String?]]
+      attr_reader snapshot: String
+      attr_reader result: ReadResponse::item
+      def initialize: (ReadResponse::item) -> void
+      private
+      def issue: (String, ?Integer?) -> void
+      def recipients: (ReadResponse::item) -> [Array[Hash[String, String?]], Array[ReadResponse::item]]
+    end
+  end
+end
+module Elevateo
+  module SendAPI
+    class Database < Drafts::Database
+      def object: (String, Array[String?], ?budget: Integer) -> ReadResponse::item
+      def outcome: (ReadResponse::item) -> ReadResponse::item
+    end
+    class Service
+      REVIEW_SQL: String
+      APPROVE_SQL: String
+      STATUS_SQL: String
+      APPROVED: Array[String]
+      SEMANTIC: Array[String]
+      @database: Database
+      def initialize: (connection: _ThreadConnection, session: ReadResponse::item) -> void
+      def review: (draft_id: String, query: Hash[String, String]) -> String
+      def approve: (Input, session_digest: String, epoch: String?, request_id: String?) -> WriteResponse
+      def status: (send_id: String, query: Hash[String, String], epoch: String?) -> String
+      private
+      def target: (Hash[String, String], String) -> [String, String]
+      def validate_approval: (ReadResponse::item, Input) -> void
+    end
+    module Status
+      FIELDS: Array[String]
+      STATES: Array[String]
+      HOLDS: Array[String]
+      def self.validate: (ReadResponse::item, mailbox: String, send_id: String) -> void
+    end
+  end
+end
+module V1
+  class SendController < WriteController
+    protected
+    def send_service: (Elevateo::_ThreadConnection, Elevateo::ReadResponse::item) -> Elevateo::SendAPI::Service
+    def send_path: (Symbol) -> String
+    def send_epoch: () -> String?
+    def api_error: (Elevateo::AuthError | Elevateo::CollaborationError | Elevateo::SendError) -> void
+    def send_invalid_response: (Elevateo::ReadResponse::Overflow) -> void
+  end
+  class SendReviewsController < SendController
+    def show: () -> void
+  end
+  class SendApprovalsController < SendController
+    def create: () -> void
+  end
+  class SendIntentsController < SendController
+    def show: () -> void
+    def cancel: () -> void
+  end
+end

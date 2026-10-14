@@ -565,3 +565,9 @@ ADV868 Tessa R21e source review: 165 source LOC (31 old +39 new wrapper +26 help
 
 
 Vale BE03 read-cap exception is a process note, not code acceptance; see docs/completion/int403-r23-application-state.md.
+
+## BE03 Nadia R24 isolated API source reviews (2026-10-14)
+
+Actual inherited Codex review agents used the INT-401 rubric; no model/billing substitution claim. Boundary reviewer api_boundary_review covered169 nonblank source LOC in110/89 physical-line packets: one MEDIUM nil-policy falsely-ready defect (5.92/KLOC). Service reviewer api_service_review covered250 unique lines in138/112 packets: one MEDIUM missing-control NameError (4.00/KLOC). Dedicated api_design_review covered218 lines in168/50 packets: same missing-control finding (4.59/KLOC), overlapping and nonadditive. No runtime proof.
+
+Nil/zero policy now yields purpose_unavailable/nonready/null digest; independent repair review7LOC0newdefects0/KLOC. Explicit optional control loading and absent-reader nil epoch independently re-reviewed5LOC0newdefects0/KLOC. Original two MEDIUM defects are closed statically; runtime pending. Exact pre/post hashes and sanitized evidence are recorded in docs/completion/be03-nadia-r24-api.md. SQL owner authorization/atomicity and integrated UI remain separate pending evidence. Tests/RBS source review followup pending; no complete acceptance claim.

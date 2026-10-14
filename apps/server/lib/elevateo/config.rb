@@ -21,7 +21,7 @@ module Elevateo
     PROVIDER_PREFIXES = %w[INSTANTLY_ POSTMARK_ SENDGRID_ MAILGUN_ SES_ RESEND_ SMTP_RELAY_].freeze
 
     attr_reader :db_host, :db_name, :db_role, :db_password, :auth_url, :storage_url, :mailpit_url,
-                :outbound_hold, :process, :session_key, :browser_origin, :auth_jwt_issuer,
+                :send_api_enabled, :send_control_path, :outbound_hold, :process, :session_key, :browser_origin, :auth_jwt_issuer,
                 :auth_jwt_audience, :auth_jwt_algorithm, :cookie_secure, :auth_password_minimum, :cursor_signing_key
 
     def self.current = (@current ||= load!)
@@ -31,6 +31,14 @@ module Elevateo
     def initialize(env)
       fetch = ->(key) { value = env[key].to_s; raise ConfigError, "missing required setting #{key}" if value.empty?; value }
       raise ConfigError, "ELEVATEO_MODE must be local" unless fetch.("ELEVATEO_MODE") == "local"
+      # AIDEV-NOTE: BE03 API is opt-in; enabling it never releases outbound hold or supplies a default epoch.
+      send_enabled = env["ELEVATEO_SEND_API_ENABLED"] || "false"
+      raise ConfigError, "invalid send API switch" unless %w[true false].include?(send_enabled)
+      @send_api_enabled = send_enabled == "true"
+      @send_control_path = env["ELEVATEO_SEND_CONTROL_PATH"] || ""
+      unless @send_control_path.empty? || (@send_control_path.start_with?("/") && !@send_control_path.include?("\u0000"))
+        raise ConfigError, "invalid send control path"
+      end
       @outbound_hold = parse_hold(fetch.("ELEVATEO_OUTBOUND_HOLD"))
       @process = fetch.("ELEVATEO_PROCESS")
       @db_host = fetch.("ELEVATEO_DB_HOST")
