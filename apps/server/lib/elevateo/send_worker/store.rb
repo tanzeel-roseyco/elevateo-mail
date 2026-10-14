@@ -21,7 +21,7 @@ module Elevateo
       end
 
       def claim(epoch:)
-        due = @connection.exec("SELECT app_send_private.next_due_send()").getvalue(0, 0)
+        due = @connection.exec_params("SELECT app_send_private.next_due_send($1::uuid)", [epoch]).getvalue(0, 0)
         return nil unless due
         lease = SecureRandom.uuid
         value = object("SELECT app_send_private.claim_job($1::uuid,$2::uuid,$3::uuid,$4::integer)",

@@ -23,7 +23,7 @@ class SendWorkerBridgeDatabaseTest < SendDatabaseTestCase
 
   def test_authorized_worker_reads_exact_snapshot_only_after_claim
     send = approve.fetch("send_id")
-    assert_equal send, @worker.exec("SELECT app_send_private.next_due_send()").getvalue(0, 0)
+    assert_equal send, @worker.exec_params("SELECT app_send_private.next_due_send($1::uuid)", [@epoch]).getvalue(0, 0)
     lease = SecureRandom.uuid
     generation = claim(send, lease).fetch("generation")
     attempt = SecureRandom.uuid

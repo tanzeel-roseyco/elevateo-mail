@@ -8,10 +8,13 @@ $$;
 REVOKE ALL ON FUNCTION app.send_membership_capability(uuid,uuid,uuid) FROM PUBLIC,elevateo_api,elevateo_worker,elevateo_app_read;
 GRANT EXECUTE ON FUNCTION app.send_membership_capability(uuid,uuid,uuid) TO elevateo_send_owner;
 SET LOCAL ROLE elevateo_send_owner;
-CREATE FUNCTION app_send_private.next_due_send() RETURNS uuid
+CREATE FUNCTION app_send_private.next_due_send(p_epoch uuid) RETURNS uuid
 LANGUAGE sql VOLATILE SECURITY DEFINER SET search_path = pg_catalog AS $$
-  SELECT send_id FROM app_send_private.jobs WHERE next_check_at <= clock_timestamp()
-    AND next_action <> 'none' ORDER BY next_check_at,send_id LIMIT 1
+  SELECT j.send_id FROM app_send_private.jobs j JOIN app_send_private.intents i ON i.send_id=j.send_id
+    WHERE i.approval_epoch=p_epoch AND j.next_check_at <= clock_timestamp() AND j.next_action <> 'none'
+      AND j.state NOT IN ('accepted','rejected','cancelled','needs_review')
+      AND (j.cancel_requested_at IS NULL OR j.next_action='reconcile')
+    ORDER BY j.next_check_at,j.send_id LIMIT 1
 $$;
 
 -- AIDEV-NOTE: One job lock spans capability checks and durable attempt authorization.
@@ -78,11 +81,11 @@ BEGIN
   IF NOT FOUND THEN RETURN '{"code":"not_available"}'::jsonb; END IF;
   RETURN jsonb_build_object('attempt_id',a.attempt_id,'snapshot_digest',encode(sha256(i.snapshot_bytes),'hex'));
 END $$;
-REVOKE ALL ON FUNCTION app_send_private.next_due_send(),
+REVOKE ALL ON FUNCTION app_send_private.next_due_send(uuid),
   app_send_private.authorize_and_read(uuid,uuid,bigint,uuid,uuid,text,integer),
   app_send_private.final_submission_check(uuid,uuid,bigint,uuid,uuid),
   app_send_private.reconciliation_binding(uuid,uuid,bigint) FROM PUBLIC,elevateo_api,elevateo_worker,elevateo_app_read;
-GRANT EXECUTE ON FUNCTION app_send_private.next_due_send(),
+GRANT EXECUTE ON FUNCTION app_send_private.next_due_send(uuid),
   app_send_private.authorize_and_read(uuid,uuid,bigint,uuid,uuid,text,integer),
   app_send_private.final_submission_check(uuid,uuid,bigint,uuid,uuid),
   app_send_private.reconciliation_binding(uuid,uuid,bigint) TO elevateo_worker;
