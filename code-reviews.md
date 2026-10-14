@@ -1193,3 +1193,5 @@ Root-supplied independent static reviews: ADV112 Ada 349 unique LOC/0 confirmed 
 QA815 exact e9ead714 fleet Ruby diagnostics are execution evidence, not an independent source review: six listed suites passed, gateway app has two helper keyword errors, sequence controller has zero cases from repository SyntaxError. Defect density is not computed from test output; owner repairs and rerun are pending.
 
 SEQ876 Maeve repository parse fix and FE873 Fable attachment filename lint fix were imported exactly after Soren failed-source diagnostics: 5-line repository diff and 13 production/19 test web LOC. Cassian inspected source provenance/diff only; no independent bounded repair or design review, defect density or current-SHA Docker result is claimed. Owner reports and Soren reruns remain required.
+
+Maeve 89febd2 eight-value bind-order regression adds 9 test lines after her 025f305 syntax repair. Cassian provenance/read inspection only; no independent review density or Docker PASS inferred. Soren focused Ruby repository/controller tests pending.

@@ -15,10 +15,11 @@ class OutreachSequenceRepositoryTest < Minitest::Test
   class Connection
     Result = Struct.new(:to_a)
     attr_accessor :existing, :replay, :authorized, :read_authorized, :history, :steps
-    attr_reader :sql, :transactions
+    attr_reader :sql, :bind_values, :transactions
 
     def initialize
       @sql = []
+      @bind_values = []
       @transactions = 0
       @authorized = true
       @read_authorized = true
@@ -30,8 +31,9 @@ class OutreachSequenceRepositoryTest < Minitest::Test
       yield
     end
 
-    def exec_query(sql, _label, _binds)
+    def exec_query(sql, _label, binds)
       @sql << sql
+      @bind_values << binds.map(&:value_for_database)
       rows = if sql.include?("authorize_outreach_draft_write")
         [{ "result" => { "status" => @authorized ? "ok" : "denied" } }]
       elsif sql.include?("authorize_outreach_content_read")
@@ -67,6 +69,9 @@ class OutreachSequenceRepositoryTest < Minitest::Test
     assert_equal 1, connection.transactions
     assert connection.sql.any? { |sql| sql.include?("pg_advisory_xact_lock") }
     assert connection.sql.any? { |sql| sql.include?("INSERT INTO app.campaign_sequence_steps") }
+    step_insert = connection.sql.index { |sql| sql.include?("INSERT INTO app.campaign_sequence_steps") }
+    assert_equal [STEP, CAMPAIGN, CAMPAIGN, ID, "1", "0", "09:00:00", "First"],
+      connection.bind_values.fetch(step_insert)
     assert connection.sql.any? { |sql| sql.include?("INSERT INTO app.campaign_sequence_mutations") }
   end
 
