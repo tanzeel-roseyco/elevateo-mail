@@ -228,3 +228,5 @@ QA815 exact `37b20c2` focused protected outreach role receipt `docs/completion/q
 QA815 future focused pure Ruby gate includes the Minitest mock import established by the separate `211df76` probe; no newer coherent source has run yet.
 
 QA815 actual pinned Build Tools36 retained-APK parser/signer receipt `docs/completion/qa815-evidence/android-parser-b3fec5772901.txt` records exact Astrid `b3fec57`, 17 passing Python methods, real aapt/apksigner outputs and task cleanup. The inspected artifact remains older, unsigned and permission-rejected; see `docs/completion/soren.md`.
+
+QA815 exact `d93c331` full compile-only APK receipt `docs/completion/qa815-evidence/android-d93c3311d1c1.txt` records current policy PASS, artifact/hash, manifest/signature evidence and task cleanup. Exact `215080a4` focused strict receipt `docs/completion/qa815-evidence/focused-steep-215080a4ed74.txt` records eight pure Ruby suites 51/225 PASS and Steep 10 problems/3 files FAIL. See `docs/completion/soren.md`; full backend/HTTP/worker/real-auth browser remain pending.

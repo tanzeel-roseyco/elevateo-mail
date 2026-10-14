@@ -160,3 +160,5 @@ QA815 exact `37b20c2` protected role one-case 1/14 PASS after 21 migrations; sam
 QA815 future focused pure Ruby runner adds `minitest/mock`; new coherent source is NOT_RUN pending owner pins.
 
 QA815 exact `b3fec57` pinned Android Build Tools36 manifest/unsigned/permissions units 17/17 PASS; actual retained rejected APK manifest classifier and unsigned classifier exit0 around apksigner expected exit1. Task container/archive absent; no accepted new APK or native runtime.
+
+QA815 exact `d93c331` Android compile-only unsigned APK policy/build PASS, SHA256 `743046f4…`, exact task image/context/container cleanup; no signing/install/runtime. Exact coherent `215080a4` focused Ruby eight suites 51 runs/225 assertions PASS, Steep 10 problems/3 files FAIL; broad backend/HTTP/worker/browser held.

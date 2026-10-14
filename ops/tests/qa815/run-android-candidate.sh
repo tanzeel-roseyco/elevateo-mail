@@ -39,6 +39,7 @@ trap cleanup EXIT
 DOCKER_BUILDKIT=0 timeout 1800s docker build --memory 8g --cpu-quota 400000 --cpu-period 100000 \
   --build-arg RUST_IMAGE='rust:1.90.0-bookworm@sha256:3914072ca0c3b8aad871db9169a651ccfce30cf58303e5d6f2db16d1d8a7e58f' \
   -f "$context/ops/build/android/Dockerfile" -t "$tag" "$context" >> "$log" 2>&1
+docker image inspect --format 'derived_image_id={{.Id}} derived_image_bytes={{.Size}}' "$tag" >> "$log"
 
 mkdir -p "$output/cargo-home"
 docker run --rm --name "qa815-apk813-seed-$short" --network none --memory 512m --cpus 1 \
@@ -49,6 +50,32 @@ timeout 5400s docker run --rm --name "qa815-apk813-compile-$short" --user "$(id 
   --memory 8g --memory-swap 10g --cpus 4 --pids-limit 512 --ulimit nofile=65535:65535 \
   -v "$context":/src -v "$output":/artifacts -e APK813_BUILD_ROOT=/artifacts -w /src "$tag" \
   bash ops/build/android/build-unsigned.sh >> "$log" 2>&1
+
+docker run --rm --name "qa815-apk813-inspect-$short" --network none --memory 1g --cpus 1 \
+  --pids-limit 128 --user "$(id -u):$(id -g)" -v "$context":/src:ro -v "$output":/artifacts:ro \
+  -w /src "$tag" bash -ceu '
+    apk=/artifacts/elevateo-android-aarch64-compile-only-unsigned.apk
+    merged=/src/apps/native/src-tauri/gen/android/app/build/intermediates/merged_manifest/universalRelease/processUniversalReleaseMainManifest/AndroidManifest.xml
+    aapt="$ANDROID_HOME/build-tools/36.0.0/aapt"
+    signer="$ANDROID_HOME/build-tools/36.0.0/apksigner"
+    printf "INSPECT apk_sha256="; sha256sum "$apk" | cut -d" " -f1
+    printf "INSPECT merged_manifest_sha256="; sha256sum "$merged" | cut -d" " -f1
+    printf "INSPECT aapt_sha256="; sha256sum "$aapt" | cut -d" " -f1
+    printf "INSPECT apksigner_sha256="; sha256sum "$signer" | cut -d" " -f1
+    printf "INSPECT permissions\n"; "$aapt" dump permissions "$apk"
+    printf "INSPECT manifest tree selected nodes\n"
+    "$aapt" dump xmltree "$apk" AndroidManifest.xml | grep -E "^N: |^  E: manifest |^    E: (application|uses-permission|permission) |android.intent.action.VIEW"
+    printf "INSPECT apksigner expected unsigned diagnostic\n"
+    if "$signer" verify --verbose "$apk"; then
+      echo "Unexpected signed APK" >&2; exit 2
+    else
+      status=$?
+      printf "apksigner_verify_exit=%s\n" "$status"
+      test "$status" -eq 1
+    fi
+    python3 apps/android/verify_unsigned.py "$signer" "$apk"
+    printf "unsigned_classifier_exit=0\n"
+  ' >> "$log" 2>&1
 
 test -f "$output/elevateo-android-aarch64-compile-only-unsigned.apk"
 cp "$output/elevateo-android-aarch64-compile-only-unsigned.apk" "$artifact"

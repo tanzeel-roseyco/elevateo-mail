@@ -1,0 +1,177 @@
+source=215080a4ed74a56f33c06113ea616170443a91f2
+image=sha256:7dc61d4b7e12f94764f95f4f1bfe8e3940049247e6d409898ce9d3ed2810f348
+started=2026-10-14T17:59:07Z
+# Type checking files:
+
+....F...............................................................................................................F.....................................F............................
+
+lib/elevateo/attachment_gateway_client.rb:36:35: [error] Type `::Numeric` does not have method `to_f`
+│ Diagnostic ID: Ruby::NoMethod
+│
+└           exchange(signed, timeout.to_f)
+                                     ~~~~
+
+app/controllers/v2/inbox_attachments_controller.rb:39:73: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           raise Elevateo::CollaborationError.new("not_available") unless capability == :read &&
+                                                                           ~~~~~~~~~~
+
+app/controllers/v2/inbox_attachments_controller.rb:40:12: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└             organization_id == identity.org_id && mailbox_id == mailbox && thread_id == thread && message_id == message
+              ~~~~~~~~~~~~~~~
+
+app/controllers/v2/inbox_attachments_controller.rb:40:50: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└             organization_id == identity.org_id && mailbox_id == mailbox && thread_id == thread && message_id == message
+                                                    ~~~~~~~~~~
+
+app/controllers/v2/inbox_attachments_controller.rb:40:75: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└             organization_id == identity.org_id && mailbox_id == mailbox && thread_id == thread && message_id == message
+                                                                             ~~~~~~~~~
+
+app/controllers/v2/inbox_attachments_controller.rb:40:98: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└             organization_id == identity.org_id && mailbox_id == mailbox && thread_id == thread && message_id == message
+                                                                                                    ~~~~~~~~~~
+
+app/controllers/v2/inbox_attachments_controller.rb:38:8: [error] Cannot assign a value of type `^() -> nil` to a variable of type `::Elevateo::Attachments::_Authorization`
+│   ^() -> nil <: ::Elevateo::Attachments::_Authorization
+│     () -> nil <: (organization_id: ::String, mailbox_id: ::String, thread_id: ::String, message_id: ::String, capability: ::Symbol) -> void
+│       (Params are incompatible)
+│
+│ Diagnostic ID: Ruby::IncompatibleAssignment
+│
+└         authorize = ->(organization_id:, mailbox_id:, thread_id:, message_id:, capability:) {
+          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+app/controllers/v2/fake_inbound_controller.rb:34:31: [error] Cannot pass a value of type `::Elevateo::WriteInput::value` as an argument of type `::String`
+│   ::Elevateo::WriteInput::value <: ::String
+│     (nil | bool | ::String | ::Integer | ::Float | ::BigDecimal | ::Array[::Elevateo::WriteInput::value] | ::Hash[::String, ::Elevateo::WriteInput::value]) <: ::String
+│       nil <: ::String
+│
+│ Diagnostic ID: Ruby::ArgumentTypeMismatch
+│
+└           provider_account_id: input["provider_account_id"], provider_event_id: input["provider_event_id"],
+                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+app/controllers/v2/fake_inbound_controller.rb:34:80: [error] Cannot pass a value of type `::Elevateo::WriteInput::value` as an argument of type `::String`
+│   ::Elevateo::WriteInput::value <: ::String
+│     (nil | bool | ::String | ::Integer | ::Float | ::BigDecimal | ::Array[::Elevateo::WriteInput::value] | ::Hash[::String, ::Elevateo::WriteInput::value]) <: ::String
+│       nil <: ::String
+│
+│ Diagnostic ID: Ruby::ArgumentTypeMismatch
+│
+└           provider_account_id: input["provider_account_id"], provider_event_id: input["provider_event_id"],
+                                                                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+app/controllers/v2/fake_inbound_controller.rb:35:20: [error] Cannot pass a value of type `::Elevateo::WriteInput::value` as an argument of type `::String`
+│   ::Elevateo::WriteInput::value <: ::String
+│     (nil | bool | ::String | ::Integer | ::Float | ::BigDecimal | ::Array[::Elevateo::WriteInput::value] | ::Hash[::String, ::Elevateo::WriteInput::value]) <: ::String
+│       nil <: ::String
+│
+│ Diagnostic ID: Ruby::ArgumentTypeMismatch
+│
+└           raw_mime: input["raw_mime"])
+                      ~~~~~~~~~~~~~~~~~
+
+Detected 10 problems from 3 files
+steep_exit=1
+RUN test/attachments/gateway_client_test.rb
+Run options: --seed 51127
+
+# Running:
+
+....
+
+Finished in 0.052535s, 76.1399 runs/s, 342.6297 assertions/s.
+
+4 runs, 18 assertions, 0 failures, 0 errors, 0 skips
+test_exit=0 file=test/attachments/gateway_client_test.rb
+RUN test/attachments/service_test.rb
+Run options: --seed 7390
+
+# Running:
+
+...................
+
+Finished in 0.010035s, 1893.3230 runs/s, 8370.4805 assertions/s.
+
+19 runs, 84 assertions, 0 failures, 0 errors, 0 skips
+test_exit=0 file=test/attachments/service_test.rb
+RUN test/attachments/clamd_scanner_test.rb
+Run options: --seed 14642
+
+# Running:
+
+......
+
+Finished in 0.008453s, 709.8230 runs/s, 2011.1652 assertions/s.
+
+6 runs, 17 assertions, 0 failures, 0 errors, 0 skips
+test_exit=0 file=test/attachments/clamd_scanner_test.rb
+RUN test/inbound/imap_attachment_parser_test.rb
+Run options: --seed 23056
+
+# Running:
+
+...
+
+Finished in 0.058813s, 51.0093 runs/s, 221.0402 assertions/s.
+
+3 runs, 13 assertions, 0 failures, 0 errors, 0 skips
+test_exit=0 file=test/inbound/imap_attachment_parser_test.rb
+RUN test/inbound/imap_ingress_test.rb
+Run options: --seed 28564
+
+# Running:
+
+.....
+
+Finished in 0.055087s, 90.7661 runs/s, 417.5241 assertions/s.
+
+5 runs, 23 assertions, 0 failures, 0 errors, 0 skips
+test_exit=0 file=test/inbound/imap_ingress_test.rb
+RUN test/inbound/imap_sync_test.rb
+Run options: --seed 490
+
+# Running:
+
+......
+
+Finished in 0.061751s, 97.1642 runs/s, 550.5970 assertions/s.
+
+6 runs, 34 assertions, 0 failures, 0 errors, 0 skips
+test_exit=0 file=test/inbound/imap_sync_test.rb
+RUN test/send_worker/drain_test.rb
+Run options: --seed 21434
+
+# Running:
+
+..
+
+Finished in 0.001245s, 1606.9938 runs/s, 10445.4596 assertions/s.
+
+2 runs, 13 assertions, 0 failures, 0 errors, 0 skips
+test_exit=0 file=test/send_worker/drain_test.rb
+RUN test/send_worker/smtp_transport_test.rb
+Run options: --seed 13287
+
+# Running:
+
+......
+
+Finished in 0.015721s, 381.6670 runs/s, 1463.0567 assertions/s.
+
+6 runs, 23 assertions, 0 failures, 0 errors, 0 skips
+test_exit=0 file=test/send_worker/smtp_transport_test.rb
+run_exit=1
+archive_absent=yes
+remaining_task_containers=0
+finished=2026-10-14T17:59:23Z
