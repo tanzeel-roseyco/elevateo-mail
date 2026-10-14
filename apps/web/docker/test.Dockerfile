@@ -6,6 +6,7 @@ FROM node:24.21.0-bookworm-slim@sha256:d6aa754f16b3197301076f047b5def2f02ea1dbbc
 
 WORKDIR /workspace
 COPY contracts/v1 ./contracts/v1
+COPY contracts/v2 ./contracts/v2
 COPY apps/web ./apps/web
 
 WORKDIR /workspace/apps/web

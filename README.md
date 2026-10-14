@@ -16,6 +16,8 @@ Shared company mailroom with one Rails domain authority and a React/TypeScript c
 
 ### INT-801 integrated source candidate (2026-10-14)
 
+The maintained web test Dockerfile now copies canonical `contracts/v2` beside V1 so Soren can generate and check draft.5 declarations without a task-only COPY overlay. The generated draft.5 declaration is still absent; no Docker build or web gate ran in this worktree. The recipe change followed root’s explicit integration instruction and remains pending Soren fleet validation.
+
 OUT-824/SEQ-831 parallel phase: a noncanonical V2 proposal defines one inert campaign sequence draft at GET/PUT `/v2/outreach/campaigns/{campaign_id}/sequence`, with strict path/body equality, optimistic revision and replay, bounded steps/timezone, and deliberate 400/404/409 errors. No due claim, send eligibility, active route or canonical generated DTO is added. Maeve persistence and Celeste editor remain isolated pending authority review and fleet SQL/HTTP proof.
 
 ADV090 found that two browser tests expected promise rejection from synchronous Zod input parsing; the assertions now check synchronous throws before dispatch. V2 browser gateways also parse the closed CollaborationError envelope, preserving real HTTP 409 `membership_conflict` and `operation_mismatch` results without replay; focused source regressions were added. Fleet execution remains pending.
