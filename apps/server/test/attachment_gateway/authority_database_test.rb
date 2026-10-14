@@ -13,8 +13,9 @@ class AttachmentGatewayAuthorityDatabaseTest < MailboxMembershipDatabaseCase
       @admin.exec_params("UPDATE app.mailboxes SET visibility='private' WHERE id=$1", [@box])
     end
     # AIDEV-NOTE: This admin-only synthetic clean row tests download authority, not a scanner verdict.
-    @admin.exec_params(<<~SQL, [@attachment, @org, @box, @thread, @message,
-      "quarantine/#{@org}/#{@attachment}", Digest::SHA256.hexdigest("fixture".b)])
+    attachment_values = [@attachment, @org, @box, @thread, @message,
+                         "quarantine/#{@org}/#{@attachment}", Digest::SHA256.hexdigest("fixture".b)]
+    @admin.exec_params(<<~SQL, attachment_values)
       INSERT INTO app.inbox_attachments(id,organization_id,mailbox_id,thread_id,message_id,storage_key,
         filename,content_type,byte_size,sha256,scan_status)
       VALUES ($1,$2,$3,$4,$5,$6,'fixture.txt','text/plain',7,$7,'clean')
