@@ -1,5 +1,7 @@
 # Elevateo Mail - ongoing project record
 
+QA-404 R10 ADV787: SCN-DRAFT-003-P source-authored on exact94d32db in isolated worktree. Genuine route.fetch committed receipt then response abort, original-operation applied lookup, exact newer raw fields retained and one-PUT inventory. Dedicated case/engine/attempt disposable dataset mandatory. Observer OFF; R9 ancestry excluded. Source-only runtime/lint/typecheck/browser NOT_RUN; independent adversarial and dedicated theoretical/practical design review PENDING (defects/KLOC not assessed). Other unavailable identities preserved; no F2 reload recovery claim. See docs/completion/qa404-r10-draft-recovery.md. Project mirror only; actual vault remains root-owned and was not written by Elara.
+
 Status: IN PROGRESS. Updated 2026-10-14, Australia/Sydney. This record replaces superseded status claims below with current evidence; it is not a completion report.
 
 ## Nontechnical brief

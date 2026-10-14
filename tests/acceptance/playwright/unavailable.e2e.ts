@@ -8,7 +8,6 @@ const missing: Record<string, string> = {
   'SCN-READ-002-F2': 'Seed contract does not guarantee hostile plaintext, null metadata and long-content partitions',
   'SCN-DRAFT-001-F1': 'No controlled conflict or unavailable-write barrier supplied',
   'SCN-DRAFT-001-F2': 'Boundary rejection with independent unchanged database evidence not supplied in this slice',
-  'SCN-DRAFT-003-P': 'No controlled uncertain-commit operation recovery barrier supplied',
   'SCN-DRAFT-003-F1': 'No controlled unapplied operation recovery barrier supplied',
   'SCN-DRAFT-003-F2': 'No controlled recorded-conflict or unrelated-operation lookup response with independent outcome/recovery evidence supplied',
   'SCN-DRAFT-008-F2': 'No uncertain-save reload barrier supplied; editable persisted reload is separately sampled',
