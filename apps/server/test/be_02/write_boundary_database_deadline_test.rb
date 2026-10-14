@@ -8,6 +8,7 @@ class WriteBoundaryDatabaseDeadlineTest < WriteBoundaryDatabaseTestCase
       connection = connections.fetch(0)
       connection.set_error_verbosity(PG::PQERRORS_VERBOSE)
       backend = connection.backend_pid
+      notices = capture_fatal_notices(connection)
       begin_write(connection: connection)
       assert_operator connection.server_version, :>=, 170_000
       connection.exec("SET LOCAL statement_timeout = '2s'; SET LOCAL lock_timeout = '1s'")
@@ -15,7 +16,12 @@ class WriteBoundaryDatabaseDeadlineTest < WriteBoundaryDatabaseTestCase
       assert_equal "ok", write_guard(connection: connection).fetch("status")
       connection.exec("SELECT pg_sleep(0.15)")
       # AIDEV-NOTE: Each statement fits its own timeout; only the cumulative PG17 deadline aborts this write.
-      assert_transaction_timeout(connection, backend) { connection.exec("SELECT pg_sleep(0.15)") }
+      assert_transaction_timeout(connection, backend, notices) do
+        connection.send_query("SELECT pg_sleep(0.15)")
+        result = connection.sync_get_result
+        refute_nil result, "first native result must be observed before draining the closed socket"
+        result.check
+      end
       assert_rolled_back_and_unlocked
     end
   end
@@ -25,11 +31,20 @@ class WriteBoundaryDatabaseDeadlineTest < WriteBoundaryDatabaseTestCase
       connection = connections.fetch(0)
       connection.set_error_verbosity(PG::PQERRORS_VERBOSE)
       backend = connection.backend_pid
+      notices = capture_fatal_notices(connection)
       begin_write(connection: connection)
       connection.exec("SELECT set_config('transaction_timeout', '150ms', true)")
       assert_equal "ok", write_guard(connection: connection).fetch("status")
       sleep 0.25
-      assert_transaction_timeout(connection, backend) { connection.exec("COMMIT") }
+      assert_transaction_timeout(connection, backend, notices) do
+        begin
+          connection.consume_input
+        rescue PG::ConnectionBad
+          # AIDEV-NOTE: A fatal idle message may already be buffered; parse it before COMMIT discards prior results.
+        end
+        connection.sync_get_result&.check
+        connection.exec("COMMIT")
+      end
       assert_rolled_back_and_unlocked
     end
   end
@@ -75,18 +90,33 @@ class WriteBoundaryDatabaseDeadlineTest < WriteBoundaryDatabaseTestCase
 
   private
 
-  def assert_transaction_timeout(connection, backend)
+  def capture_fatal_notices(connection)
+    notices = []
+    connection.set_notice_receiver do |result|
+      # AIDEV-NOTE: libpq delivers idle ErrorResponse through notices; copy structured fields before it frees PGresult.
+      if result.error_field(PG::Result::PG_DIAG_SEVERITY_NONLOCALIZED) == "FATAL"
+        notices << { "sqlstate" => result.error_field(PG::Result::PG_DIAG_SQLSTATE), "severity" => "FATAL" }
+      end
+    end
+    notices
+  end
+
+  def assert_transaction_timeout(connection, backend, notices)
     error = assert_raises(PG::Error) { yield }
-    # AIDEV-NOTE: Export only diagnostic code/booleans, never raw errors or SQL; keep the structured-result oracle.
+    diagnostics = notices.dup
+    if error.result
+      diagnostics << { "sqlstate" => error.result.error_field(PG::Result::PG_DIAG_SQLSTATE),
+        "severity" => error.result.error_field(PG::Result::PG_DIAG_SEVERITY_NONLOCALIZED) }
+    end
+    # AIDEV-NOTE: A transport failure alone is insufficient; only the original structured server fatal qualifies.
     puts JSON.generate(native_timeout_diagnostic: {
       backend: backend, error_class: error.class.name,
       result_sqlstate: error.result&.error_field(PG::Result::PG_DIAG_SQLSTATE),
       error_has_25p04: /\b25P04\b/.match?(error.message),
       connection_has_25p04: /\b25P04\b/.match?(connection.error_message),
-      connection_bad: connection.status == PG::CONNECTION_BAD
+      connection_bad: connection.status == PG::CONNECTION_BAD, structured_fatal: diagnostics
     })
-    refute_nil error.result, "transport-only failure cannot attest the native timeout mechanism"
-    assert_equal "25P04", error.result.error_field(PG::Result::PG_DIAG_SQLSTATE)
+    assert_includes diagnostics, { "sqlstate" => "25P04", "severity" => "FATAL" }
   end
 
   def assert_rolled_back_and_unlocked

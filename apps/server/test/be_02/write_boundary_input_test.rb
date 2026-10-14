@@ -104,6 +104,15 @@ class WriteBoundaryInputTest < Minitest::Test
     invalid { Input.object('{"x":1,"\u0078":2}') }
   end
 
+  def test_extreme_decimal_true_zero_and_signed_nonzero
+    %w[0e-999999999999999999999999 -0.0e-999999999999999999999999].each do |token|
+      assert_equal 0, Input.integer(Input.object('{"n":' + token + '}').fetch("n"), minimum: 0, maximum: 1)
+    end
+    %w[1e-999999999999999999999999 -1e-999999999999999999999999].each do |token|
+      invalid { Input.object('{"n":' + token + '}') }
+    end
+  end
+
   def test_preserves_exception_modes_on_success_and_parse_failures
     # AIDEV-NOTE: Restore ambient decimal modes even when this regression fails, so later tests stay isolated.
     BigDecimal.save_exception_mode do

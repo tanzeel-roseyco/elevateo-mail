@@ -76,23 +76,24 @@ module Elevateo
       correlation = SecureRandom.uuid
       begin
         # AIDEV-NOTE: Ensure exists before checkout; deferred expiry cannot strand the returned adapter.
-        connection = pool.checkout(deadline.remaining)
+        leased = pool.checkout(deadline.remaining)
+        connection = leased
         deadline.check!
-        result = yield(connection)
+        result = yield(leased)
         raise CollaborationError.new("internal_error") unless result.is_a?(WriteResponse)
         deadline.check!
-        connection.lock.synchronize do
+        leased.lock.synchronize do
           pool.synchronize do
             begin
               deadline.check!
               raise RequestDeadline::Expired if Thread.pending_interrupt?(RequestDeadline::Expired)
-              unless pool.connections.include?(connection) &&
-                  connection.owner.equal?(ActiveSupport::IsolatedExecutionState.context) && !connection.transaction_open?
+              unless pool.connections.include?(leased) &&
+                  leased.owner.equal?(ActiveSupport::IsolatedExecutionState.context) && !leased.transaction_open?
                 raise Tenancy::ContextError, "write connection ownership lost"
               end
               # AIDEV-NOTE: Membership, callbacks, queue insertion and handoff share Rails' adapter/pool lock order.
-              pool.checkin(connection)
-              unless pool.connections.include?(connection) && connection.owner.nil? && !connection.transaction_open?
+              pool.checkin(leased)
+              unless pool.connections.include?(leased) && leased.owner.nil? && !leased.transaction_open?
                 raise Tenancy::ContextError, "write checkin did not transfer a registered adapter"
               end
               # AIDEV-NOTE: Safe transfer precedes late expiry; expiry suppresses only the response, not the lease.
@@ -103,7 +104,7 @@ module Elevateo
               # AIDEV-NOTE: Exceptions and throws quarantine before a waiter can lease a rejected checkin.
               primary = $!
               begin
-                quarantine_connection(pool, connection, disposition, failures) unless handed_off
+                quarantine_connection(pool, leased, disposition, failures) unless handed_off
               ensure
                 # AIDEV-NOTE: Removal may throw; restore a raised primary before outer detached-adapter disposal.
                 raise primary if primary

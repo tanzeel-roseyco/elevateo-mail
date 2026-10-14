@@ -3,8 +3,9 @@
 module Elevateo
   # AIDEV-NOTE: C/D have their own fixed error vocabulary; A/B lifecycle responses keep their existing contract.
   class CollaborationError < StandardError
-    # @type const ERRORS: Hash[String, [Integer, String]]
-    ERRORS = {
+    ERRORS = begin
+      # @type var codes: Hash[String, [Integer, String]]
+      codes = {
       "request_invalid" => [400, "Invalid request"], "cursor_invalid" => [400, "Invalid cursor"],
       "unauthenticated" => [401, "Authentication required"],
       "not_available" => [404, "This item is unavailable."],
@@ -15,7 +16,9 @@ module Elevateo
       "membership_conflict" => [409, "Membership has changed"],
       "rate_limited" => [429, "Too many requests"],
       "temporarily_unavailable" => [503, "Temporarily unavailable"], "internal_error" => [500, "Internal error"]
-    }.freeze
+      }
+      codes.freeze
+    end
     attr_reader :code, :status, :retry_after
 
     def initialize(code, retry_after: nil)

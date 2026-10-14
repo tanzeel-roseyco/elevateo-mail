@@ -9,8 +9,11 @@ module Elevateo
 
   # Boundary validation for runtime configuration. Fails closed; messages never include values.
   class Config
-    # @type const ALLOWED_SMTP: { host: String, port: Integer }
-    ALLOWED_SMTP = { host: "mailpit", port: 1025 }.freeze
+    ALLOWED_SMTP = begin
+      # @type var smtp: { host: String, port: Integer }
+      smtp = { host: "mailpit", port: 1025 }
+      smtp.freeze
+    end
     ALLOWED_HOSTS = { "ELEVATEO_AUTH_URL" => "auth", "ELEVATEO_STORAGE_URL" => "storage",
                       "ELEVATEO_MAILPIT_URL" => "mailpit" }.freeze
     ROLE_PASSWORDS = { "elevateo_api" => "API_DB_PASSWORD", "elevateo_worker" => "WORKER_DB_PASSWORD",
