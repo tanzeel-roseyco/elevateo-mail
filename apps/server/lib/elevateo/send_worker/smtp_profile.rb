@@ -35,8 +35,8 @@ module Elevateo
             credential_ref.is_a?(String) && SECRET_REF.match?(credential_ref)
         end
         raise ArgumentError, "invalid SMTP profile" unless valid
-        @mode, @host, @port = mode.freeze, host.dup.freeze, port
-        @verified_sender, @tls_mode = verified_sender.dup.freeze, tls_mode.freeze
+        @mode, @host, @port = mode.dup.freeze, host.dup.freeze, port
+        @verified_sender, @tls_mode = verified_sender.dup.freeze, tls_mode.dup.freeze
         @credential_ref = credential_ref&.dup&.freeze
         freeze
       end
