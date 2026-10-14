@@ -877,3 +877,4 @@ Coverage: `ui/ConnectivityBanner.tsx` (52 LOC), Shell route-hygiene hunk and ban
 QA816 ce73f55 changes two selector literals from a root/Fable design decision. Independent review and fleet runtime remain pending; no reviewed LOC or density claim is added.
 
 QA816 reply journey at 199c132 is authored and unreviewed by independent agents; reviewed LOC 0, defect density not computed, runtime NOT_RUN.
+QA-817 independent integrated SEND-809 delta: Cassian isolated HEAD 63fe27f worker_authority.sql SHA-256 `e242ce37b407439de1b3dabb44d0b8c0a66df74c219498756cfe836a3b653330`, current lines 70–105, 230–252, 318–340 (82 unique contextual LOC, one <=200 packet), full rubric, 0 confirmed defects observed (0/KLOC static). New due discovery and final false behavior lack fleet runtime cases; earlier reviewed 325 predecessor LOC remain separately pinned to old SHA. See `docs/completion/felix-send809-integrated-delta-review.md`.

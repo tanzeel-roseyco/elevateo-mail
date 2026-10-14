@@ -57,3 +57,5 @@ Added `apps/server/test/qa817/role_owner_race_database_test.rb` for distinct-own
 Added `apps/server/test/qa817/role_escalation_database_test.rb`: real API-role success and stale revision, direct admin self-to-owner rejection, and owner demotion trigger denial. Soren command after immutable SEC-802 integration from `/workspace/apps/server`: `bundle exec ruby test/qa817/role_escalation_database_test.rb`. It supplements Sabine's role tests; NOT_RUN, independent source review pending.
 
 Independently reviewed Theo's 200-line protected grants controller at exact SHA `584fcee9`, with 179 lines of HTTP/input test coverage context in separate bounded packets (379 unique LOC). Zero observed controller defects (0/KLOC static), actual HTTP/DB and design pending; see `docs/completion/felix-adm803-review.md`.
+
+Integrated Cassian SEND-809 delta at SHA `e242ce37` was independently reviewed in 82 bounded contextual LOC: new due discovery and explicit final false, zero observed static defects (0/KLOC), runtime tests for empty/canceled/busy/epoch and claim race pending. See `docs/completion/felix-send809-integrated-delta-review.md`.
