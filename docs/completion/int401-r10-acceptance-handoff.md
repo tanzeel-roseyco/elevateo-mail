@@ -1,0 +1,15 @@
+# INT401 R10 acceptance source handoff
+
+Base c8ffa46f71a1a10ce4749b65dfd1edf7ccaf7058; lineage parents add Elara 7c035de5d52415f2a5923db749eabc7e71c7935c and Nadia c251b45ebfb3bca104d15075d3eb463b0caa93dd, both exact 94d children; Nadia R11 bbf23cc8a6a18fa37b81bd6501937f1962f5398e adds a direct c8 parent. Only owned scenario files/reports are imported; unavailable removals SCN-DRAFT-003-P and SCN-READ-002-F2 preserve all previous c8 removals. No observer ancestry imported.
+
+ADV791/793 Elara functional/design accepted zero defects, each 283 unique LOC including 13 docs, packets 129/154. ADV792 Nadia functional 383 unique LOC zero defects; ADV794 design 257 source +15 docs =272 LOC, packets 100/157, zero defects. All densities 0/KLOC; overlapping coverage is nonadditive. These are source reviews, not executed tests.
+
+Soren immutable c8 runtime and evidence are untouched. Root verifies this next packet before scheduling controlled recovery/literal-read cases with dedicated disposable datasets, affected acceptance checks and actual GUI screenshots. New candidate runtime NOT_RUN. No local tests/builds. BE02 unaccepted, BE03 closed, observer OFF, Unsaved reload retention remains memory-only; actual F2 demonstration is pending. Production source, canonical contracts and build inputs unchanged.
+
+Authority task_71a9e1250412 / ctx_0f5d20301a25, issue #10 Cassian OFF401. Root owns acceptance and the actual vault; Soren owns Docker scheduling.
+
+Root ADV795 disposition: BE02 mandatory identity/races/draft/collaboration/search and real GUI remain acceptance requirements; Storage/full restore/platform/MCP/BE03 are deferred separate debts. Accepted decisions 85-91 require server durability and in-page retention, not unsaved browser reload persistence. Memory-only limitation and actual F2 demonstration remain explicit. Exact accepted decision bytes pinned at .planning/consultations/results/be-02/decisions.md, SHA256 c05741a257be6ede315c5f4bd72e086682f73a2e6bd8964534d098e3c97fd561.
+
+Verified actual R9 immutable receipt SHA256 54268cd037223da8e7f065d87fc6b0de5a5ffbb5090cd76593b40fe7b5c58e58: c8 backend 390/5792 zero failures/errors/skips, authenticated HTTP and real worker drain PASS (two pending local/global intents became completed, attempts one), frontend 31 files/624 tests and eight gates PASS. Acceptance image compile failed TS2769 before GUI; zero cases/screenshots. Scoped backend/frontend/GUI cleanup and independent absence PASS; shared bases/unrelated persistent resources retained. This receipt does not validate the next candidate.
+
+Root accepted Nadia R11 after ADV802 functional and ADV803 dedicated design reviews: each 198 unique LOC (188-line scenario plus unchanged 10-line strict tsconfig), zero defects, 0/KLOC; overlapping coverage is nonadditive. Exact one-line conditional body omission preserves strict typing, request semantics, all oracles and observer OFF. The worker-owned report preserves its original pending-review history; this disposition supersedes that source status only. Compilation and browser runtime remain NOT_RUN.

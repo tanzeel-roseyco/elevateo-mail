@@ -33,7 +33,7 @@ async function api(page: Page, path: string, method = 'GET', headers: Record<str
   return page.evaluate(async ({ path, method, headers, body }) => {
     const response = await fetch(path, { method, credentials: 'same-origin',
       headers: { ...headers, ...(body === undefined ? {} : { 'Content-Type': 'application/json' }) },
-      body: body === undefined ? undefined : JSON.stringify(body), signal: AbortSignal.timeout(10000) });
+      ...(body === undefined ? {} : { body: JSON.stringify(body) }), signal: AbortSignal.timeout(10000) });
     const bytes = new Uint8Array(await response.arrayBuffer());
     if (bytes.length > 262144 || !response.headers.get('content-type')?.includes('application/json')) {
       throw new Error('Invalid API response boundary');

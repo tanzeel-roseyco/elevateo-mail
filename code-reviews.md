@@ -507,3 +507,12 @@ Docs-only task `task_37f01123edfe / ctx_e26df76f1830`, parent application freeze
 ## INT401 R7 worker / R9 conflict / R10 fixture repair freeze
 Rowan ADV783 functional 377 source LOC, zero defects; ADV784 design 350 project+39 provider=389 total LOC, zero new defects (0/KLOC). ADV789 contract clarification 124 unique LOC, zero defects: bounded upstream attempts and explicit pending do not promise eventual provider success; eight exhausted claims may fail. Operator remediation is not proved. Mira R9 ADV779 289 LOC and ADV780 186 unique LOC, zero defects (146 changed LOC). Mira R10 ADV785 functional 38 changed/214 unique LOC (packets166+154 contextual aggregate320), zero defects; ADV786 dedicated design 38 changed/199 unique (packets152+139), zero defects, 0/KLOC. Overlap is nonadditive; full rubric supplied, formatting lint-owned. Exact imported source accepted; runtime NOT_RUN. R10 preserves null-placeholder guard and proves roundtrippable raw-only fixture; production frontend unchanged. R9 needs isolated case/browser/retry dataset. ADV778 memory/reload analysis 388 LOC zero defects is analytical, not an executed Obsidian experiment or durable recovery promise. No whole-app review claim.
 Actual R8 94d backend/HTTP PASS but worker drain FAILED and frontend unit 621/623; GUI NOT_RUN. See current status and immutable receipt; source review does not establish execution.
+
+
+## INT401 R10 acceptance source intake
+
+ADV791/793: each 283 unique LOC including 13 docs, packets 129/154, zero defects, 0/KLOC. ADV792: 383 unique LOC; ADV794: 257 source +15 docs =272 LOC, packets 100/157; zero defects, 0/KLOC. Source ACCEPTED only, overlapping/nonadditive coverage. Exact blobs preserved; two unavailable removals composed against c8. No production source changes. Runtime NOT_RUN; Git checks are not application evidence. See int401-r10-acceptance-handoff.md.
+
+## INT401 Nadia R11 strict browser request repair
+
+Root accepted bbf23cc8a6a18fa37b81bd6501937f1962f5398e. ADV802 functional and ADV803 dedicated design each cover 198 unique LOC: read-revocation.e2e.ts 188 and unchanged strict tsconfig 10. Zero defects, 0/KLOC; overlapping reviews are nonadditive. Exact one-line conditional omission removes explicit undefined without type suppression, changed authorization or weakened oracles. Original c8 TS2769 failure is retained; repaired compilation/browser NOT_RUN. No production source or whole-app review claim.

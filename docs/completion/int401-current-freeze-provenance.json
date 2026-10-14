@@ -1,88 +1,56 @@
 {
-  "base": "94d32db7fa6d626be371361ec01d055a5f497dbb",
-  "documentation_parent": "e37603f1db1a8ae752ec60f3500a516d460e719a",
+  "base": "c8ffa46f71a1a10ce4749b65dfd1edf7ccaf7058",
   "parents": [
-    "e37603f1db1a8ae752ec60f3500a516d460e719a",
-    "6c9a4acbf34b8bef2e2daec388fb1a0455598190",
-    "e88273b6a838413acc18aa22545cf8638bb3e326",
-    "3919d2a7a4cf33fb6672ce01f303e48bd0c4f851"
+    "c8ffa46f71a1a10ce4749b65dfd1edf7ccaf7058",
+    "7c035de5d52415f2a5923db749eabc7e71c7935c",
+    "c251b45ebfb3bca104d15075d3eb463b0caa93dd",
+    "bbf23cc8a6a18fa37b81bd6501937f1962f5398e"
   ],
-  "task": "task_5886a83067b8",
-  "dispatch": "ctx_0a526cc2d333",
+  "task": "task_71a9e1250412",
+  "dispatch": "ctx_0f5d20301a25",
   "runtime": "NOT_RUN",
   "observer": "OFF",
   "source_manifest": {
-    "apps/server/db/be02/revocation.sql": {
-      "owner": "6c9a4acbf34b8bef2e2daec388fb1a0455598190",
+    "tests/acceptance/playwright/draft-recovery-support.ts": {
+      "owner": "7c035de5d52415f2a5923db749eabc7e71c7935c",
       "mode": "100644",
-      "blob": "f592826e488ba15464c77a0ae46bb533587cd1b5",
-      "sha256": "a53944984aa6b62ff7ce724947f935959d1c9334c08bc8dd451551f8102b8065"
+      "blob": "4bbd9a6479cafd1285a481b551dfa2524babc0e2",
+      "sha256": "68e600e9c631a0fb533a86e0c392e7888d52921be3f2003b189348acb2f3ae04"
     },
-    "apps/server/lib/elevateo/auth_client.rb": {
-      "owner": "6c9a4acbf34b8bef2e2daec388fb1a0455598190",
+    "tests/acceptance/playwright/draft-recovery.e2e.ts": {
+      "owner": "7c035de5d52415f2a5923db749eabc7e71c7935c",
       "mode": "100644",
-      "blob": "bf1ca051c9f235270dbcf69ca1c360b540b60ecb",
-      "sha256": "02d560c359f8f5c20e9fb8dd1e9b339b1b754139b3cc46411e85540f8a79850a"
+      "blob": "7d6b17e40e25879b46ec282fed1409ae407c0772",
+      "sha256": "87644ab092246503dc0b105548879ec27631e3dccee90009a126f72ca2ebcbd4"
     },
-    "apps/server/sig/auth_client.rbs": {
-      "owner": "6c9a4acbf34b8bef2e2daec388fb1a0455598190",
+    "tests/acceptance/playwright/read-literal.e2e.ts": {
+      "owner": "c251b45ebfb3bca104d15075d3eb463b0caa93dd",
       "mode": "100644",
-      "blob": "3d6b8a3076df09cc63d8fe37423a9ea5385ecd14",
-      "sha256": "07f2acc872d1a513bd152f7f01414a81bca631b7333e4442a023b4472ee5c3a0"
-    },
-    "apps/server/test/be_02/auth_client_test.rb": {
-      "owner": "6c9a4acbf34b8bef2e2daec388fb1a0455598190",
-      "mode": "100644",
-      "blob": "dee4742d25e2a2fb6a7f786e07b092ffce5b23d8",
-      "sha256": "581b289caa238c7aa2489cc6fecae7a105831ec45e9a8bf83491320054950002"
-    },
-    "apps/server/test/be_02/auth_revocations_test.rb": {
-      "owner": "6c9a4acbf34b8bef2e2daec388fb1a0455598190",
-      "mode": "100644",
-      "blob": "b59a488d7d1929bbcae2f720c3fb60e9852811b6",
-      "sha256": "ec44e6652115a2b9737cb54aef88ea75a223d511c8dc79eac9f73cbbedf50ec3"
-    },
-    "apps/server/test/be_02/session_logout_cut_test.rb": {
-      "owner": "6c9a4acbf34b8bef2e2daec388fb1a0455598190",
-      "mode": "100644",
-      "blob": "7a67302f2b9236f1e9747895cd7ef01a2a85617f",
-      "sha256": "afb9f57e1f0868799c62b810d5589edc9d9f8a9501361363097e7a47e8fe3bb4"
-    },
-    "tests/acceptance/playwright/draft-conflict.e2e.ts": {
-      "owner": "e88273b6a838413acc18aa22545cf8638bb3e326",
-      "mode": "100644",
-      "blob": "9540d10e4cd4a9f6c89e9923b2ee9aeb4ea9902a",
-      "sha256": "095cce77f2e94402db38b39e4634f88feb0d54bf0d26f73558cabbfe38037605"
+      "blob": "05aa25c0968efb0f4c715ccecd3d3de2b586cc25",
+      "sha256": "1e619f7cdb3d173dbcdb11516b82a91ab3a8c666ea47b2468ade35fe98e27a95"
     },
     "tests/acceptance/playwright/unavailable.e2e.ts": {
-      "owner": "e88273b6a838413acc18aa22545cf8638bb3e326",
+      "owner": "composed exact removals",
       "mode": "100644",
-      "blob": "d68dd5fe4c24c60d352eec0306e101e5780ec90b",
-      "sha256": "7c823cfc831050e7a862e569eb9892bd9a3c91a75e50a7d92931e90b35099d4a"
+      "blob": "a638bcf4806dcbadbf0f9a28c264ffeb9e4e39a8",
+      "sha256": "46a07228e8ebcd5154679f5713c618363233c2880bc4788ec3e55aff7f9dab3a"
     },
-    "apps/web/src/features/drafts/DraftEditorPage.test.tsx": {
-      "owner": "3919d2a7a4cf33fb6672ce01f303e48bd0c4f851",
+    "tests/acceptance/playwright/read-revocation.e2e.ts": {
+      "owner": "bbf23cc8a6a18fa37b81bd6501937f1962f5398e",
       "mode": "100644",
-      "blob": "a345ba3f25aef7bfea30ff10870a2b0ed73a40ec",
-      "sha256": "5b94b9871b04a02291b4402ae972b17e023a613e31d72c41217a502b9aa10c37"
+      "blob": "1126e9d7637759b8106337aca39e242b53ba2aa8",
+      "sha256": "d34b5d70b3811f945362f459d10c41e8a2cdb220af626f585413110d0176ce57"
     }
   },
-  "vault_bytes": 70807,
-  "vault_sha256": "4d35e2a7c4a1754cfea36c36ae5683f10711e675e12d76d7e408c9e68469e059",
+  "vault_bytes": 80078,
+  "vault_sha256": "2db861331b6791aaeca39a42123807fe4f5e9363476cbd27fa53f2d336ac15e5",
   "unchanged_boundaries": [
-    "contracts/v1",
-    "migrations",
-    "production frontend",
-    "observer",
+    "apps",
+    "contracts",
+    "ops",
+    "scripts",
+    "compose.yaml",
     "build recipes"
   ],
-  "reviews": [
-    "ADV779",
-    "ADV780",
-    "ADV783",
-    "ADV784",
-    "ADV785",
-    "ADV786",
-    "ADV789"
-  ]
+  "reviews": "ADV791/793 ADV792/794 ADV802/803 source ACCEPTED only"
 }
