@@ -128,3 +128,5 @@ QA-817 added source-only private sales database cases: explicit private team mem
 QA-817 worker observation DB source targets Rowan's corrected SEND-809 seam. The three cases check accepted local receipt, rejected foreign receipt/wrong attempt, and denied stale-generation acceptance using the actual worker login. Soren Docker execution is pending.
 
 QA-817 corrected its SEC-802 source review: prior committed hook SHA aa1efedb has one HIGH delete-ceiling bypass (11.76/KLOC), with new regression source. A later owner working-tree fix is unaccepted until commit, bounded re-review and fleet Docker evidence.
+
+Sabine committed SEC-802 repair 0df2b1f; QA-817 bounded source review finds the earlier revoked-ceiling delete bypass statically addressed on exact hook SHA 6bb09546. Runtime closure remains pending Soren's real-DB regression.
