@@ -162,8 +162,23 @@ class Acceptance:
         self.task.docker("acceptance-start", ["container", "start", identity], quiet=True)
         return identity
 
-    def execute(self, identity: str, command: list[str], seconds: int = 90) -> None:
-        self.task.docker("acceptance-exec", ["container", "exec", identity, *command], seconds, quiet=True)
+    def execute(self, identity: str, command: list[str], seconds: int = 90) -> str:
+        # AIDEV-NOTE: Docker exec does not inherit run.py's umask; browser evidence must be private at creation.
+        return self.task.docker("acceptance-exec", ["container", "exec", identity, "sh", "-c",
+            'umask 077; exec "$@"', "acceptance-private", *command], seconds, quiet=True)
+
+    def private_output_preflight(self, identity: str) -> None:
+        # AIDEV-NOTE: Probe actual browser mount/process before any case; no fixture or credential bytes are read.
+        script = ('proof=/output/native-private/.qa815-umask-proof; '
+                  'test ! -e "$proof"; : > "$proof"; '
+                  'printf "%s %s %s %s\\n" "$(umask)" "$(stat -c %a /output)" '
+                  '"$(stat -c %a /output/native-private)" "$(stat -c %a "$proof")"; '
+                  'rm -- "$proof"')
+        modes = self.execute(identity, ["sh", "-ceu", script]).strip()
+        if modes != "0077 700 700 600":
+            raise RuntimeError("browser private output mode mismatch")
+        self.task.write("acceptance-private-output-proof.json",
+                        {"browser_umask": "0077", "output_mode": "0700", "created_file_mode": "0600"})
 
     def invitation(self) -> None:
         # AIDEV-NOTE: A completed seed is mandatory; regenerate before each lane and never emit private bytes/hashes.
@@ -303,6 +318,7 @@ class Acceptance:
                 self.invitation()
                 identity = self.start("acceptance-browser")
                 self.readiness(identity)
+                self.private_output_preflight(identity)
                 if index == 0:
                     self.execute(identity, ["node", "--test", *(f"dist/{path}.js" for path in UNITS)], 180)
                 if lane == "selenium":
