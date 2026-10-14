@@ -101,18 +101,49 @@ test('reporter rejects malicious metadata and never publishes annotation reasons
     'Acceptance case unavailable; see source scenario inventory');
 });
 
-test('native and data-property stacks work while custom Error stack getters remain unread', () => {
+test('assigned native stacks work while custom Error stack getters remain unread', () => {
   const native = failure();
   assert.equal(captureDiagnostic(native).source?.line, 120);
-  const data = new Error('synthetic-private');
-  Object.defineProperty(data, 'stack', { value: stackAt(source), configurable: true });
-  assert.equal(captureDiagnostic(data).source?.line, 120);
   let reads = 0;
   Object.defineProperty(native, 'stack', { get() { reads++; return stackAt(source, 143); }, configurable: true });
   assert.deepEqual(captureDiagnostic(native), { category: 'error', phase: 'body', source: null });
   assert.equal(reads, 0);
 });
 
+
+test('explicit data-property stacks retain exact body and cleanup coordinates', () => {
+  for (const line of [120, 143]) {
+    const error = new Error('synthetic-private');
+    Object.defineProperty(error, 'stack', { value: stackAt(source, line), configurable: true });
+    assert.deepEqual(captureDiagnostic(error), { category: 'error', phase: line === 143 ? 'cleanup' : 'body',
+      source: { file: 'draft-conflict.e2e.ts', line, column: 7 } });
+  }
+});
+
+test('bootstrap formatter descriptor is restored after native extraction and rejected stack values', () => {
+  const original = Object.getOwnPropertyDescriptor(Error, 'prepareStackTrace');
+  assert.deepEqual(captureDiagnostic(failure()), { category: 'error', phase: 'body',
+    source: { file: 'draft-conflict.e2e.ts', line: 120, column: 7 } });
+  assert.deepEqual(Object.getOwnPropertyDescriptor(Error, 'prepareStackTrace'), original);
+  const unformatted = new Error('synthetic-private');
+  assert.equal(captureDiagnostic(unformatted).source, null);
+  assert.deepEqual(Object.getOwnPropertyDescriptor(Error, 'prepareStackTrace'), original);
+  const rejected = failure();
+  rejected.stack = 'x'.repeat(32769);
+  assert.equal(captureDiagnostic(rejected).source, null);
+  assert.deepEqual(Object.getOwnPropertyDescriptor(Error, 'prepareStackTrace'), original);
+});
+
+test('changed bootstrap descriptor flags are rejected without changing the current descriptor', () => {
+  const original = Object.getOwnPropertyDescriptor(Error, 'prepareStackTrace');
+  assert.ok(original && 'value' in original && original.configurable);
+  try {
+    const changed = { ...original, enumerable: !original.enumerable };
+    Object.defineProperty(Error, 'prepareStackTrace', changed);
+    assert.equal(captureDiagnostic(failure()).source, null);
+    assert.deepEqual(Object.getOwnPropertyDescriptor(Error, 'prepareStackTrace'), changed);
+  } finally { Object.defineProperty(Error, 'prepareStackTrace', original); }
+});
 
 test('unformatted native errors never read unsafe name or message properties or coerce values', () => {
   for (const key of ['name', 'message']) {
