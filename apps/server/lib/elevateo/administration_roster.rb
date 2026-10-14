@@ -19,7 +19,7 @@ module Elevateo
       ["Emil Larsen", "Junior Partner", "cybersecurity", "security_auditor"],
       ["Roy Neven", "Junior Partner", "sales", "sales_member"],
       ["Ben Pantis", "Associate", nil, "organization_member"],
-      ["Matthew", "Associate", nil, "organization_member"],
+      ["Matthew", "Associate; surname unresolved", nil, "organization_member"],
       ["Adria Pros", "Sales representative", "sales", "sales_member"]
     ].freeze
     UUID = /\A[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}\z/i
