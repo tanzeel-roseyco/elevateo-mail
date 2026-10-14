@@ -117,4 +117,4 @@ Cassian manifest reconciliation: contract-lock now seals actual generated client
 
 ### APK-813 Android lane (2026-10-14)
 
-Java Android offline scaffold and pinned fleet build request are committed separately; unsigned APK compile and target runtime checks are NOT_RUN. Shared session/App Link contract remains dependent on Cassian; Orion owns Tauri shell. No live authorization or send path exists.
+Android now has a Tauri-specific configuration and pinned fleet build request using Orion’s shared shell and the existing React UI; the Java placeholder was removed. Unsigned APK compile and target runtime checks are NOT_RUN. Shared session/App Link contract remains dependent on Cassian; no live authorization or send path exists.

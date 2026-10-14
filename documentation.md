@@ -185,4 +185,4 @@ Cassian manifest reconciliation: contract-lock now seals actual generated client
 
 ### APK-813 native client status
 
-`apps/android/README.md` records the pinned toolchain, fleet Docker command, minimal permissions, callback and Keystore requirements, and explicit target-runtime gates. This is development scaffolding only; no Android client acceptance is claimed.
+`apps/android/README.md` records the shared Tauri/React seam, fleet Docker command, permission, callback and Keystore requirements, and target-runtime gates. The earlier standalone Java scaffold was replaced; no Android client acceptance is claimed.

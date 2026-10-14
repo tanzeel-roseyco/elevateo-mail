@@ -175,4 +175,4 @@ Cassian manifest reconciliation: contract-lock now seals actual generated client
 
 ### APK-813 Android development lane
 
-An isolated Java Android offline shell, callback-shape validator, and fleet-only pinned build recipe are prepared in `apps/android`. No APK compile, emulator/device validation, release signing, or shared session integration is claimed. See `docs/completion/astrid.md`.
+The Android lane now targets Orion’s shared Tauri shell and bundled React UI through an Android-only configuration and fleet build script; the earlier Java placeholder has been removed. No APK compile, native login, emulator/device validation or release signing is claimed. See `docs/completion/astrid.md`.

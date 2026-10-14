@@ -680,3 +680,7 @@ R25 lint repair: one tooling defect in the unmount cleanup (ref must be captured
 ## APK-813 Android scaffold — pending review
 
 Candidate source: `apps/android/`, `ops/build/android/`; bounded adversarial and dedicated design reviews are NOT_PERFORMED. Reviewed LOC, confirmed defects and defects/KLOC are unreported pending independent assignments. Astrid self inspection does not count as independent review. See `docs/completion/astrid.md`.
+
+### APK-813 Tauri Android continuation
+
+The original Java scaffold review request is superseded. New Android-specific config, wrapper pinning helper, unit fixtures and fleet recipe await independent <=200 LOC adversarial and separate design reviews. No reviewer has reported coverage or defects; defects/KLOC remains N/A. See `docs/completion/astrid.md`.
