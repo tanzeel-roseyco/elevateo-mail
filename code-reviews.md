@@ -704,4 +704,6 @@ Bounded source packet: `apps/web/src/features/thread/ThreadPage.tsx` (about 28 c
 ### FE-805 shell/sidebar/brand self-inspection (Fable, 2026-10-15)
 
 Coverage: new `featureRegistry.ts` (69 LOC), `features/index.tsx` (54), `FeaturePlaceholderPage.tsx` (18), `BrandMark.tsx` (34), rewritten `Sidebar.tsx` (146) and changed `Shell.tsx`/`App.tsx`/`index.css` hunks (24). Total 345 production LOC, read in two bounded passes under 200 lines each. Author self-inspection only; no independent adversarial or design review has been performed and none is claimed. Self-found defects before commit: 1 (placeholder element map could drift from the route list; added a load-time exact-match check). Provisional density 2.90/KLOC, author evidence only. Tests added: 7 cases across three files, not executed. Formatting delegated to ESLint.
+SEND-810 Nadia candidate: bounded independent functional and design review requested from root; none performed yet, so reviewed LOC, defects and density are unreported. Author static inspection only; Docker and integrated runtime NOT_RUN. See docs/completion/nadia.md.
+
 SEND-809 self review: migration and SQL ~230 source LOC, zero confirmed defects after local corrections (0 confirmed/KLOC). Independent bounded functional and design reviews NOT_RUN; request to root. See docs/completion/rowan.md.

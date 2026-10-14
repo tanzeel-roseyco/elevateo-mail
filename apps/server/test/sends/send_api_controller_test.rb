@@ -171,11 +171,28 @@ class SendAPIControllerTest < Minitest::Test
     refute result[2].key?("snapshot_bytes")
   end
 
-  def test_cancellation_is_guarded_and_unimplemented_without_false_success
+  def cancelled_status
+    { "send_id" => THREAD, "mailbox_id" => BOX, "draft_id" => THREAD, "approved_version" => 1,
+      "approved_at" => TIME, "state" => "cancelled", "attempts" => 0, "first_possible_at" => nil,
+      "retry_deadline_at" => nil, "cancel_requested" => true, "cancellable" => false,
+      "hold_reason" => nil, "updated_at" => TIME, "simulated" => true }
+  end
+
+  def test_cancellation_returns_only_validated_status
+    @connection.rows = [row(cancelled_status)]
     result = dispatch_send(Intents, "cancel", input: { "mailbox_id" => BOX })
-    assert_equal 503, result[0]
-    assert_equal "temporarily_unavailable", result[2]["code"]
-    assert_empty @connection.business
+    assert_equal 200, result[0]
+    assert_equal "cancelled", result[2]["state"]
+    assert_equal true, result[2]["simulated"]
+    assert(@connection.sql.any? { |sql| sql.include?("app.cancel_send") })
+    assert_equal :commit, @connection.events.last
+  end
+
+  def test_cancellation_rejects_provider_data_in_sql_projection
+    @connection.rows = [row(cancelled_status.merge("receipt_ref" => "private"))]
+    result = dispatch_send(Intents, "cancel", input: { "mailbox_id" => BOX })
+    assert_equal 500, result[0]
+    refute result[2].key?("receipt_ref")
     assert_includes @connection.events, :rollback
     refute_includes @connection.events, :commit
   end

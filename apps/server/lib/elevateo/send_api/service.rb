@@ -14,6 +14,7 @@ module Elevateo
       APPROVE_SQL = "SELECT app.approve_draft_send($1::text,$2::uuid,$3::uuid,$4::uuid,$5::integer," \
         "$6::text,$7::bytea,$8::uuid)::text AS result"
       STATUS_SQL = "SELECT app.send_status($1::uuid,$2::uuid,$3::uuid)::text AS result"
+      CANCEL_SQL = "SELECT app.cancel_send($1::text,$2::uuid,$3::uuid,$4::uuid)::text AS result"
       APPROVED = %w[send_id draft_id approved_version review_digest approved_at simulated].freeze
       SEMANTIC = %w[review_stale send_not_ready draft_consumed draft_conflict operation_mismatch].freeze
 
@@ -56,6 +57,20 @@ module Elevateo
         value = @database.outcome(@database.object(STATUS_SQL, [mailbox, send, epoch], budget: 16_384))
         Status.validate(value, mailbox: mailbox, send_id: send)
         @database.encode(@database.envelope.merge(value), budget: 16_384)
+      end
+
+      def cancel(send_id:, mailbox_id:, session_digest:, epoch:)
+        mailbox = WriteInput.uuid(mailbox_id)
+        send = WriteInput.uuid(send_id)
+        value = @database.outcome(@database.object(CANCEL_SQL, [session_digest, mailbox, send, epoch], budget: 16_384))
+        Status.validate(value, mailbox: mailbox, send_id: send)
+        unless value["cancel_requested"] == true && (value["state"] == "cancelled" || value["state"] == "dispatching" ||
+               value["state"] == "unknown" || value["state"] == "needs_review" || value["state"] == "queued")
+          raise ReadResponse::Invalid
+        end
+        result = { "send_id" => send, "result" => value["state"] == "cancelled" ? "cancelled" : "stop_requested",
+          "state" => value["state"], "cancel_requested" => true, "simulated" => true }
+        WriteResponse.new(json: @database.encode(@database.envelope.merge(result), budget: 16_384), status: 200)
       end
 
       private
