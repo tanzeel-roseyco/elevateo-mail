@@ -16,6 +16,8 @@ Shared company mailroom with one Rails domain authority and a React/TypeScript c
 
 ### MAIL-819 isolated inbound boundary
 
+STRICT907 isolated followup: the test-only fake inbound controller now checks that provider account, event and raw MIME fields are strings before passing them to the typed adapter. This addresses three exact Steep diagnostics from the frozen `215080a4` fleet receipt; the successor source still needs Soren's strict Docker rerun.
+
 INB887 followup: the supported IMAP attachment fixture now asserts the fail-closed `attachment_storage_unavailable` result when quarantine is absent; a separate unsupported-type case checks no staging or persistence. The test-only fake ingress controller has explicit protected-write block types. Soren's focused fleet rerun and strict Steep remain pending; no live inbound claim follows.
 
 Corin's continuation adds migration `00011`, an atomic receipt/thread/message SQL path, a test-only authenticated V2 controller candidate and DB/HTTP fixtures over baseline `bbf2353`. Cassian reserves the additive route and contract; fleet Docker tests, integration review and actual inbound acceptance remain pending. See [Corin's record](docs/completion/corin.md).

@@ -96,4 +96,13 @@ class FakeInboundHTTPTest < Minitest::Test
     assert_equal 404, dispatch.first
     refute_includes @connection.business, :ingest
   end
+
+  def test_nonscalar_provider_fields_never_ingest
+    %w[provider_account_id provider_event_id raw_mime].each do |field|
+      status, result = dispatch(payload.merge(field => ["not-a-scalar"]))
+      assert_equal 400, status
+      assert_equal "request_invalid", result.fetch("code")
+    end
+    refute_includes @connection.business, :ingest
+  end
 end

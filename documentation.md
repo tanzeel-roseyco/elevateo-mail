@@ -1,5 +1,7 @@
 # Product requirements and decision record
 
+STRICT907 boundary: presence of the three required fake-ingress JSON fields does not establish their scalar types. The protected controller rejects non-string provider account, event or raw MIME values with `request_invalid` before the typed fake MIME adapter; existing session, CSRF, actor and mailbox checks remain in order. This source is pending Soren's strict fleet check and does not enable live inbound mail.
+
 INB887 inbound boundary note: a syntactically supported IMAP attachment without configured private quarantine returns `attachment_storage_unavailable` before database insertion. An unsupported attachment type with storage configured returns `unsupported_mime` before staging or insertion. The isolated fake HTTP controller retains session, CSRF, actor and mailbox grant checks; only its existing Steep block annotations changed. Fleet validation is pending.
 
 ### Mira BE03 UI isolated R24 implementation (2026-10-14)

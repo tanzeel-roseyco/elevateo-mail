@@ -1,5 +1,7 @@
 # Project state
 
+STRICT907: isolated fake inbound JSON scalar narrowing and malformed-field HTTP regression are authored against frozen `215080a4` equivalent controller source. The prior focused gate passed eight unit files (51 runs/225 assertions) but strict Steep failed with ten errors overall, three in this controller. This successor has not been run by Corin; Cassian/Nadia own the other errors, and Soren owns fleet Docker.
+
 INB887 candidate: corrected the IMAP missing-quarantine regression oracle, added an unsupported attachment type failure fixture, and annotated the fake ingress controller's protected-write boundary. Fleet Docker tests and strict Steep on this successor are NOT_RUN; Soren owns execution. This does not enable a live provider.
 
 Application IN PROGRESS — R24 isolated BE03 candidate (2026-10-14). Root authorizes implementation on baseline `03ae770c56271cd8236726bfd8fe63248e81283d` in parallel with BE02 acceptance. BE02 remains OPEN/unaccepted; integration/release gated. S1+S2 priority: saved draft -> consistent review -> human approval -> durable queued intent. Canonical additive `contracts/v1/openapi.json` version `1.0.0-send.1` is prepared; every baseline C/D operation/component and original fixture is preserved.
