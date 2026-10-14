@@ -8,7 +8,7 @@ class ImapSyncTest < Minitest::Test
   MIME = "From: sender@example.invalid\r\nTo: inbox@example.invalid\r\nContent-Type: text/plain\r\n\r\nhello".freeze
 
   class Store
-    attr_accessor :validity, :last_uid, :fail_once
+    attr_accessor :validity, :last_uid, :fail_once, :fail_after_once
     attr_reader :records
     def initialize
       @validity, @last_uid, @records = 42, 0, {}
@@ -34,6 +34,10 @@ class ImapSyncTest < Minitest::Test
       @records[key] = content_sha256
       @last_uid = uid
       @validity = uidvalidity
+      if @fail_after_once
+        @fail_after_once = false
+        raise "simulated crash after commit"
+      end
       { "result" => "created" }
     end
   end
@@ -83,6 +87,15 @@ class ImapSyncTest < Minitest::Test
     denied = Session.new(validity: 43, events: [], verified: false)
     assert_equal "tls_unverified", assert_raises(Elevateo::Inbound::Rejected) { sync_session(denied) }.code
     assert denied.closed
+  end
+
+  def test_crash_after_commit_reconnects_without_duplicate_message
+    event = { uid: 1, raw_mime: MIME }
+    @store.fail_after_once = true
+    assert_raises(RuntimeError) { sync_session(Session.new(validity: 42, events: [event])) }
+    assert_equal 1, @store.records.length
+    assert_equal 1, sync_session(Session.new(validity: 42, events: [event]))
+    assert_equal 1, @store.records.length
   end
 
   def test_out_of_order_or_oversized_event_cannot_advance_cursor
