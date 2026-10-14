@@ -126,3 +126,5 @@ SEC-802 independent review found a personal-owner last-manager defect in the fir
 SEC-802 role demotion now preserves the last effective team manager through mailbox revision locks; race execution remains pending.
 
 SEC-802 adds an outreach content-read authority routine matching the protected draft-write role matrix; Dorian integration and fleet tests remain pending.
+
+SEC-802 atomic organization role audit source is added: changed-role events only, fixed operation label, owner/admin paged metadata read. Runtime evidence and Theo/Cassian integration remain pending.

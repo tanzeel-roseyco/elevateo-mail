@@ -56,6 +56,17 @@ class OrganizationAccessPolicyTest < MailboxMembershipDatabaseCase
     result
   end
 
+  def audit_status(actor)
+    result = nil
+    scope(identity: actor, write: false) do |connection|
+      bind = ActiveRecord::Relation::QueryAttribute.new("fixture", actor.digest, ActiveRecord::Type::String.new)
+      raw = connection.exec_query("SELECT app.organization_role_audit_page($1,NULL::uuid,50) AS result",
+        "Audit denial fixture", [bind]).first.fetch("result")
+      result = raw.is_a?(String) ? JSON.parse(raw) : raw
+    end
+    result.fetch("status")
+  end
+
   def role_change(actor, target, expected, role)
     result = nil
     scope(identity: actor, targets: [target.user_id]) do |connection|
@@ -77,6 +88,7 @@ class OrganizationAccessPolicyTest < MailboxMembershipDatabaseCase
     assert_equal "ok", raw_change(@user, revision, flags: nil).fetch("status")
     assert_equal "role_conflict", role_change(@identity, manager, 0, "associate").fetch("status")
     assert_equal "admin", @admin.exec_params("SELECT role FROM app.organization_access WHERE user_id=$1", [manager.user_id]).getvalue(0, 0)
+    assert_equal "0", @admin.exec_params("SELECT count(*) FROM app.organization_role_audit WHERE organization_id=$1", [@org]).getvalue(0, 0)
   end
 
   def outreach_authorization(actor)
@@ -263,5 +275,6 @@ class OrganizationAccessPolicyTest < MailboxMembershipDatabaseCase
     other = add_actor
     grant(other, "auditor")
     assert_equal "not_found", grants_page(actor: other).fetch("status")
+    assert_equal "not_found", audit_status(other)
   end
 end

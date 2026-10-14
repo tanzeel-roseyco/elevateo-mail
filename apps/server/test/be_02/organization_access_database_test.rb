@@ -37,13 +37,47 @@ class OrganizationAccessDatabaseTest < MailboxMembershipDatabaseCase
     result
   end
 
+  def audit_page(actor: @identity, after: nil, limit: 50)
+    result = nil
+    scope(identity: actor, write: false) do |connection|
+      values = [actor.digest, after, limit.to_s]
+      binds = values.map { |value| ActiveRecord::Relation::QueryAttribute.new("fixture", value, ActiveRecord::Type::String.new) }
+      raw = connection.exec_query("SELECT app.organization_role_audit_page($1,$2::uuid,$3::integer) AS result",
+        "Audit fixture", binds).first.fetch("result")
+      result = raw.is_a?(String) ? JSON.parse(raw) : raw
+    end
+    result
+  end
+
   def test_owner_can_change_subordinate_and_stale_revision_rejects
     other = add_actor
     grant(@identity, "owner")
     grant(other, "sales")
     assert_equal "ok", change(@identity, other, 0, "sales_manager").fetch("status")
     assert_equal "role_conflict", change(@identity, other, 0, "associate").fetch("status")
+    assert_equal "ok", change(@identity, other, 1, "sales_manager").fetch("status")
+    audit = audit_page.fetch("items")
+    assert_equal 1, audit.length
+    assert_equal [@user, other.user_id, "sales", "sales_manager", 1, "replace_organization_grant"],
+      audit.first.values_at("actor_user_id", "target_user_id", "old_role", "new_role", "revision", "operation")
     assert_equal "sales_manager", @admin.exec_params("SELECT role FROM app.organization_access WHERE user_id=$1", [other.user_id]).getvalue(0, 0)
+  end
+
+  def test_audit_page_is_metadata_only_and_cursor_is_tenant_bound
+    first, second = add_actor, add_actor
+    grant(@identity, "owner")
+    [first, second].each { |target| grant(target, "sales") }
+    assert_equal "ok", change(@identity, first, 0, "associate").fetch("status")
+    assert_equal "ok", change(@identity, second, 0, "associate").fetch("status")
+    page1 = audit_page(limit: 1)
+    assert_equal "ok", page1.fetch("status")
+    assert_equal second.user_id, page1.fetch("items").first.fetch("target_user_id")
+    assert_equal %w[actor_user_id id new_role occurred_at old_role operation revision target_user_id],
+      page1.fetch("items").first.keys.sort
+    page2 = audit_page(after: page1.fetch("next_id"), limit: 1)
+    assert_equal first.user_id, page2.fetch("items").first.fetch("target_user_id")
+    assert_nil page2.fetch("next_id")
+    assert_equal "cursor_invalid", audit_page(after: SecureRandom.uuid).fetch("status")
   end
 
   def test_subordinate_cannot_promote_self_or_change_owner

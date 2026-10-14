@@ -192,3 +192,5 @@ The protected grants page also returns current actor role/revision independently
 Personal mailbox owners cannot lose manager access through the legacy mutation, and non-owners cannot receive personal manager authority. Team last-manager checks count only managers whose current organization role and explicit ceiling permit administration. Outreach draft mutation has a separate protected current-role check for owner/admin/sales_manager/sales; sending remains separately gated.
 
 Outreach content reads have a separate digest-verified role check for owner/admin/sales_manager/sales. Dorian's domain RLS must enforce the same policy; these checks do not confer mailbox or send rights.
+
+Organization role changes append a redacted audit event in the same database transaction only on a real change. The owner/admin audit page is digest-verified, tenant-scoped and newest-first; its UUID cursor resolves to an immutable sequence within the tenant. No message content, addresses or secrets enter this audit.

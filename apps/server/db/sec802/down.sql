@@ -1,9 +1,11 @@
 SET LOCAL ROLE elevateo_session_owner;
+DROP FUNCTION app.organization_role_audit_page(text,uuid,integer);
 DROP FUNCTION app.authorize_outreach_content_read(text);
 DROP FUNCTION app.organization_grants_page(text,uuid,integer);
 SET LOCAL ROLE elevateo_owner;
 DROP FUNCTION app.enroll_verified_organization_grant(uuid,uuid,text,text);
 DROP TABLE app.organization_enrollment_receipts;
+DROP TABLE app.organization_role_audit;
 DROP FUNCTION app.authorize_outreach_draft_write(text);
 DROP FUNCTION app.change_organization_role(text,uuid,integer,text);
 DROP FUNCTION app.provision_verified_mailbox_policy(uuid,text,uuid,uuid,boolean,boolean,boolean,text);

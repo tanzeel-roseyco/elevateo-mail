@@ -16,6 +16,32 @@ CREATE POLICY access_session_read ON app.organization_access FOR SELECT TO eleva
   USING (organization_id = NULLIF(current_setting('app.org_id', true), '')::uuid);
 REVOKE ALL ON app.organization_access FROM PUBLIC, elevateo_api, elevateo_app_read, elevateo_worker;
 GRANT SELECT (organization_id, user_id, role, revision) ON app.organization_access TO elevateo_session_owner;
+-- AIDEV-NOTE: Metadata-only role history is runtime append-only and never stores mailbox content or addresses.
+CREATE TABLE app.organization_role_audit (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  event_sequence bigint GENERATED ALWAYS AS IDENTITY UNIQUE,
+  organization_id uuid NOT NULL REFERENCES app.organizations (id) ON DELETE CASCADE,
+  actor_user_id uuid NOT NULL,
+  target_user_id uuid NOT NULL,
+  old_role text NOT NULL,
+  new_role text NOT NULL,
+  revision integer NOT NULL CHECK (revision BETWEEN 1 AND 2147483647),
+  operation text NOT NULL DEFAULT 'replace_organization_grant'
+    CHECK (operation = 'replace_organization_grant'),
+  occurred_at timestamptz NOT NULL DEFAULT clock_timestamp()
+);
+CREATE INDEX organization_role_audit_page ON app.organization_role_audit
+  (organization_id, event_sequence DESC);
+ALTER TABLE app.organization_role_audit ENABLE ROW LEVEL SECURITY;
+ALTER TABLE app.organization_role_audit FORCE ROW LEVEL SECURITY;
+CREATE POLICY audit_owner_append ON app.organization_role_audit TO elevateo_owner
+  USING (true) WITH CHECK (true);
+CREATE POLICY audit_session_read ON app.organization_role_audit FOR SELECT TO elevateo_session_owner
+  USING (organization_id = NULLIF(current_setting('app.org_id', true), '')::uuid);
+REVOKE ALL ON app.organization_role_audit FROM PUBLIC, elevateo_api, elevateo_app_read, elevateo_worker;
+GRANT SELECT (id, event_sequence, organization_id, actor_user_id, target_user_id,
+  old_role, new_role, revision, operation, occurred_at)
+  ON app.organization_role_audit TO elevateo_session_owner;
 -- AIDEV-NOTE: A sole owner cannot disappear through membership cascade or direct owner-role mutation.
 CREATE FUNCTION app.prevent_owner_loss() RETURNS trigger
 LANGUAGE plpgsql VOLATILE SECURITY DEFINER SET search_path = pg_catalog AS $$
@@ -259,6 +285,8 @@ BEGIN
     UPDATE app.organization_access SET role = p_role, revision = revision + 1
       WHERE organization_id = org AND user_id = p_target;
     current_revision := current_revision + 1;
+    INSERT INTO app.organization_role_audit(organization_id, actor_user_id, target_user_id,
+      old_role, new_role, revision) VALUES (org, actor, p_target, old_role, p_role, current_revision);
   END IF;
   proof := app_auth.assert_protected_write(p_digest, p_target);
   IF proof->>'status' <> 'ok' THEN RETURN proof; END IF;
@@ -356,5 +384,56 @@ END $$;
 REVOKE ALL ON FUNCTION app.authorize_outreach_content_read(text)
   FROM PUBLIC, elevateo_api, elevateo_app_read, elevateo_worker;
 GRANT EXECUTE ON FUNCTION app.authorize_outreach_content_read(text) TO elevateo_api;
+
+-- AIDEV-NOTE: UUID cursor resolves to one tenant-local sequence; page order is immutable newest-first.
+CREATE FUNCTION app.organization_role_audit_page(p_digest text, p_after_id uuid, p_limit integer)
+RETURNS jsonb LANGUAGE plpgsql STABLE SECURITY DEFINER SET search_path = pg_catalog AS $$
+DECLARE proof jsonb; org uuid; actor uuid; actor_role text; after_sequence bigint;
+  rows jsonb; last_id uuid; last_sequence bigint; has_more boolean;
+BEGIN
+  IF p_limit IS NULL OR p_limit NOT BETWEEN 1 AND 50 THEN
+    RAISE EXCEPTION 'invalid audit page limit' USING ERRCODE = '22023';
+  END IF;
+  proof := app_auth.resolve_session(p_digest);
+  IF proof->>'status' <> 'ok' THEN RETURN jsonb_build_object('status', proof->>'status'); END IF;
+  org := (proof->>'organization_id')::uuid;
+  actor := (proof->>'user_id')::uuid;
+  IF org IS NULL OR NULLIF(current_setting('app.org_id', true), '') IS DISTINCT FROM org::text
+    OR NULLIF(current_setting('app.user_id', true), '') IS DISTINCT FROM actor::text THEN
+    RETURN '{"status":"not_found"}'::jsonb;
+  END IF;
+  SELECT role INTO actor_role FROM app.organization_access
+    WHERE organization_id = org AND user_id = actor;
+  IF actor_role NOT IN ('owner', 'admin') OR actor_role IS NULL THEN
+    RETURN '{"status":"not_found"}'::jsonb;
+  END IF;
+  IF p_after_id IS NOT NULL THEN
+    SELECT event_sequence INTO after_sequence FROM app.organization_role_audit
+      WHERE organization_id = org AND id = p_after_id;
+    IF NOT FOUND THEN RETURN '{"status":"cursor_invalid"}'::jsonb; END IF;
+  END IF;
+  SELECT COALESCE(jsonb_agg(jsonb_build_object('id', page.id,
+      'actor_user_id', page.actor_user_id, 'target_user_id', page.target_user_id,
+      'old_role', page.old_role, 'new_role', page.new_role, 'revision', page.revision,
+      'operation', page.operation, 'occurred_at', page.occurred_at)
+      ORDER BY page.event_sequence DESC), '[]'::jsonb)
+    INTO rows FROM (
+      SELECT a.* FROM app.organization_role_audit a WHERE a.organization_id = org
+        AND (after_sequence IS NULL OR a.event_sequence < after_sequence)
+      ORDER BY a.event_sequence DESC LIMIT p_limit
+    ) page;
+  SELECT id, event_sequence INTO last_id, last_sequence FROM app.organization_role_audit
+    WHERE organization_id = org AND (after_sequence IS NULL OR event_sequence < after_sequence)
+    ORDER BY event_sequence DESC OFFSET p_limit - 1 LIMIT 1;
+  IF last_id IS NOT NULL THEN
+    SELECT EXISTS (SELECT 1 FROM app.organization_role_audit
+      WHERE organization_id = org AND event_sequence < last_sequence) INTO has_more;
+  END IF;
+  RETURN jsonb_build_object('status', 'ok', 'items', rows,
+    'next_id', CASE WHEN has_more THEN last_id ELSE NULL END);
+END $$;
+REVOKE ALL ON FUNCTION app.organization_role_audit_page(text,uuid,integer)
+  FROM PUBLIC, elevateo_api, elevateo_app_read, elevateo_worker;
+GRANT EXECUTE ON FUNCTION app.organization_role_audit_page(text,uuid,integer) TO elevateo_api;
 SET LOCAL ROLE elevateo_owner;
 REVOKE CREATE ON SCHEMA app FROM elevateo_session_owner;
