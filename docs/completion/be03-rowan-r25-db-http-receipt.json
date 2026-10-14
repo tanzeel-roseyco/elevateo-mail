@@ -1,0 +1,157 @@
+{
+  "integrated_source": "125f9394716d2f933d32d6191f33d00fd353b025",
+  "rowan_product_source": "f7fc830815606ed382ada6c0badde1b39eb21785",
+  "owner_paths_verified_equal": 20,
+  "status": "PASS",
+  "checks": [
+    {
+      "name": "compose-validate",
+      "exit": 0,
+      "actual_summaries": []
+    },
+    {
+      "name": "database-start",
+      "exit": 0,
+      "actual_summaries": []
+    },
+    {
+      "name": "privilege-guards",
+      "exit": 0,
+      "actual_summaries": []
+    },
+    {
+      "name": "bootstrap",
+      "exit": 0,
+      "actual_summaries": []
+    },
+    {
+      "name": "auth-start",
+      "exit": 0,
+      "actual_summaries": []
+    },
+    {
+      "name": "auth-grants",
+      "exit": 0,
+      "actual_summaries": []
+    },
+    {
+      "name": "bootstrap-send",
+      "exit": 0,
+      "actual_summaries": []
+    },
+    {
+      "name": "migrate",
+      "exit": 0,
+      "actual_summaries": []
+    },
+    {
+      "name": "migration-versions-before",
+      "exit": 0,
+      "actual_summaries": []
+    },
+    {
+      "name": "migrate-second-invocation",
+      "exit": 0,
+      "actual_summaries": []
+    },
+    {
+      "name": "migration-versions-after",
+      "exit": 0,
+      "actual_summaries": []
+    },
+    {
+      "name": "approval_database_test",
+      "exit": 0,
+      "actual_summaries": [
+        "15 runs, 202 assertions, 0 failures, 0 errors, 0 skips"
+      ]
+    },
+    {
+      "name": "schema_database_test",
+      "exit": 0,
+      "actual_summaries": [
+        "6 runs, 79 assertions, 0 failures, 0 errors, 0 skips"
+      ]
+    },
+    {
+      "name": "approval_faults_database_test",
+      "exit": 0,
+      "actual_summaries": [
+        "1 runs, 31 assertions, 0 failures, 0 errors, 0 skips"
+      ]
+    },
+    {
+      "name": "approval_races_database_test",
+      "exit": 0,
+      "actual_summaries": [
+        "2 runs, 23 assertions, 0 failures, 0 errors, 0 skips"
+      ]
+    },
+    {
+      "name": "draft_database_test",
+      "exit": 0,
+      "actual_summaries": [
+        "8 runs, 85 assertions, 0 failures, 0 errors, 0 skips"
+      ]
+    },
+    {
+      "name": "draft_authorization_test",
+      "exit": 0,
+      "actual_summaries": [
+        "6 runs, 59 assertions, 0 failures, 0 errors, 0 skips"
+      ]
+    },
+    {
+      "name": "draft_concurrency_test",
+      "exit": 0,
+      "actual_summaries": [
+        "4 runs, 39 assertions, 0 failures, 0 errors, 0 skips"
+      ]
+    },
+    {
+      "name": "draft_schema_contract_test",
+      "exit": 0,
+      "actual_summaries": [
+        "5 runs, 51 assertions, 0 failures, 0 errors, 0 skips"
+      ]
+    },
+    {
+      "name": "http-compose-validate",
+      "exit": 0,
+      "actual_summaries": []
+    },
+    {
+      "name": "api-start",
+      "exit": 0,
+      "actual_summaries": []
+    },
+    {
+      "name": "real-http-s1s2",
+      "exit": 0,
+      "actual_summaries": [
+        "BE03 S1S2 real HTTP/Auth/PostgreSQL PASS assertions=42"
+      ]
+    }
+  ],
+  "migration_version_count": 9,
+  "migration_second_no_new_version": true,
+  "HTTP": "PASS",
+  "cleanup": true,
+  "independent_absence": {
+    "container": true,
+    "image": true,
+    "volume": true,
+    "network": true,
+    "compose": true,
+    "env_absent": true,
+    "control_absent": true
+  },
+  "source_after": {
+    "files": 3914,
+    "bytes_modes_equal": true
+  },
+  "lease": "FREE",
+  "soren_receipt_sha256": "1c5640bf1453db24727a16626087907e14766d263d6134d8a18fe0d94b273082",
+  "limits": "S1/S2 isolated DB and HTTP only; BE02 OPEN, integration/release gated, no S3-S5 dispatch/cancellation completion",
+  "effective_fast": "UNVERIFIED"
+}
