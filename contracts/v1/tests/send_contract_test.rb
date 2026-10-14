@@ -51,7 +51,7 @@ class SendContractTest < Minitest::Test
         assert_equal "#/components/responses/Send#{status}", operation.fetch("responses").fetch(status).fetch("$ref")
       end
     end
-    refute DOCUMENT.fetch("paths").keys.any? { |path| path.include?("approval-operations") }
+    refute(DOCUMENT.fetch("paths").keys.any? { |path| path.include?("approval-operations") })
   end
 
   # This deliberately small fixture walker covers only keywords used here, and fails on unsupported types.
