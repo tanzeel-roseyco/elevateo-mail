@@ -82,6 +82,8 @@ class OrganizationGrantsHttpTest < Minitest::Test
       query: "limit=1&cursor=#{first.fetch("next_cursor")}")
     assert_equal 200, status
     assert_equal [], second.fetch("items")
+    assert_equal USER, second.fetch("actor").fetch("user_id")
+    assert_equal 3, second.fetch("actor").fetch("revision")
     @connection.page_result = { "status" => "ok", "actor" =>
       { "user_id" => USER, "role" => "owner", "revision" => 3 }, "items" => [
       { "user_id" => TARGET, "role" => "unexpected", "revision" => 2 }], "next_user_id" => nil }
