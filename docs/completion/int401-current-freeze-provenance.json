@@ -1,78 +1,39 @@
 {
-  "baseline": "3bedd32e2d9931d55df0ffed7ba432cad8e27695",
-  "parents": [
-    "3bedd32e2d9931d55df0ffed7ba432cad8e27695",
-    "28390d7cc75203959b5c5002d1e6069fa3f1e29a",
-    "5ec18511d76f69b1202862aa19d880d45fde7d1d",
-    "2f15faed9374eed29fab7d9b7881270d36be1902",
-    "75fc04195ca88c3709a328277b52770cd95d65c4"
+  "task_id": "task_b9e0ccc5f6a3",
+  "dispatch_id": "ctx_a9df73deec58",
+  "baseline": "837e66859013ff62596ab5407b3a9151f489c303",
+  "merge_parents": [
+    "837e66859013ff62596ab5407b3a9151f489c303",
+    "9a0f75ce10bf3a0a0761721c88b83c5b9fe66887",
+    "f59c35f672a152cf5240a9ecdfd6009aff49fff2"
   ],
-  "task_id": "task_8203afa3df08",
-  "dispatch_id": "ctx_058265b077ef",
-  "source_matches": [
-    {
-      "owner": "rowan",
-      "path": "ops/compose.be02-test.yaml",
-      "blob": "0c0a124c76f1b96bb20ea15ad660bef99dffd203"
+  "excluded_candidates": {
+    "Rowan3c": "bounded-wait defect superseded; replacement review pending",
+    "Elara f22": "two fence defects under repair",
+    "Nadia R5": "frozen review receipt pending"
+  },
+  "contracts_verified": [
+    "contracts/v1/README.md",
+    "contracts/v1/openapi.json",
+    "contracts/v1/fixtures.json",
+    "contracts/v1/contract-lock.json"
+  ],
+  "runtime": "NOT_RUN for new integrated SHA",
+  "recipe_source": "C:/Users/Tanzeel/Code and projects/Elevateo Mail - Local Completion/ops/acceptance",
+  "recipes": {
+    "browsers.Dockerfile": {
+      "bytes": 4406,
+      "sha256": "dbc9d8aa333f2482f2ad3ef01b5f9c92a22d35ea0b797630e389db71d4a14f5b"
     },
-    {
-      "owner": "rowan",
-      "path": "ops/tests/be02/cleanup.py",
-      "blob": "5bdb4dc02025b96c28b24418752b702c084459c2"
+    "seccomp.json": {
+      "bytes": 12997,
+      "sha256": "cc3e61cabda6bbc1e53e54d27ba4d55a9d3be829b6dd1a596f4a7b31b1cc7849"
     },
-    {
-      "owner": "mira",
-      "path": "apps/web/src/features/inbox/InboxPage.test.tsx",
-      "blob": "86eb59e8c66e59ad6f236674b36e7abaa7f39984"
-    },
-    {
-      "owner": "mira",
-      "path": "apps/web/src/ui/Async.tsx",
-      "blob": "dfb651c05d0b719feb0975407d909f04c2bc53a7"
-    },
-    {
-      "owner": "elara",
-      "path": "ops/tests/be02/acceptance_observer.rb",
-      "blob": "284bca3770e02efe8883e42319345eae22aa05fc"
-    },
-    {
-      "owner": "elara",
-      "path": "ops/tests/be02/acceptance_observer_role.rb",
-      "blob": "9f1804909cf91eea4fb5c4373aa7ab79975cf232"
-    },
-    {
-      "owner": "elara",
-      "path": "tests/acceptance/playwright/read-empty.e2e.ts",
-      "blob": "1b7b723f0029f036711746939129a83c86e6effd"
-    },
-    {
-      "owner": "elara",
-      "path": "tests/acceptance/playwright/transport-barrier.ts",
-      "blob": "c9aa854cd817eb2486308337e72fefaaac28c89e"
+    "web.Dockerfile": {
+      "bytes": 1751,
+      "sha256": "210476d9b267758cb573bf1a431804511d6ccc201e4a394553a3e9afef3effe0"
     }
-  ],
-  "contracts": [
-    {
-      "path": "contracts/v1/README.md",
-      "git_blob_sha256": "1a2240c4d2fb12bedb4e4827bb7014075d919ba914e5142e2630fc01c53f100e",
-      "unchanged_from": "3bedd32e2d9931d55df0ffed7ba432cad8e27695"
-    },
-    {
-      "path": "contracts/v1/openapi.json",
-      "git_blob_sha256": "65a5f926c661cb028e934e861892a995c2d9271853275546518b78588fa66597",
-      "unchanged_from": "3bedd32e2d9931d55df0ffed7ba432cad8e27695"
-    },
-    {
-      "path": "contracts/v1/fixtures.json",
-      "git_blob_sha256": "bfa2f8832395fcd7c43e4a7671d3e83c687af44ad09488bc722a54a0fc2eb455",
-      "unchanged_from": "3bedd32e2d9931d55df0ffed7ba432cad8e27695"
-    },
-    {
-      "path": "contracts/v1/contract-lock.json",
-      "git_blob_sha256": "fc5cf00e4859246e57b47bb3f9191609c6296247d0395f1fe03dfa65ddc260d4",
-      "unchanged_from": "3bedd32e2d9931d55df0ffed7ba432cad8e27695"
-    }
-  ],
-  "runtime": "NOT_RUN",
-  "pending_review": "Elara observer146; transport/read-empty63 LOC"
+  },
+  "profile_provenance": "docs/completion/acceptance-runner-handoff.md:47; ops/tests/be02/acceptance_runtime.py SECCOMP_SHA256; prior recipes review excludes profile itself",
+  "direct_copy_closure": "all source paths present; generated dist requires Soren Docker compilation"
 }
