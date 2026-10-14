@@ -5,6 +5,10 @@ import { MessageSchema } from './contract'
 export const IdSchema = z.uuid()
 const id = IdSchema
 const revision = z.number().int().nonnegative()
+const hasNoControl = (value: string): boolean => Array.from(value).every((character) => {
+  const code = character.codePointAt(0)
+  return code !== undefined && code >= 32 && (code < 127 || code > 159)
+})
 export const OrganizationGrantSchema = z.strictObject({
   organization_id: id,
   user_id: id,
@@ -65,7 +69,7 @@ export const LeadSummarySchema = z.strictObject({
 export const LeadDetailSchema = z.strictObject({
   ...LeadSummarySchema.shape,
   consent_recorded_at: z.iso.datetime({ offset: false, local: false }).nullable(),
-  consent_source: z.string().min(1).max(200).regex(/^[^\x00-\x1f\x7f]+$/).nullable(),
+  consent_source: z.string().min(1).max(200).refine(hasNoControl).nullable(),
   consent_recorded_by: id.nullable(),
   consent_evidence_kind: z.literal('manual_attestation').nullable(),
 })
@@ -84,7 +88,7 @@ export const LeadUpdateSchema = z.strictObject({
 })
 export const LeadConsentAttestationSchema = z.strictObject({
   operation_id: id, expected_version: z.number().int().min(1).max(2_147_483_646),
-  source: z.string().min(1).max(200).regex(/^[^\x00-\x1f\x7f]+$/).refine((value) => value.trim().length > 0),
+  source: z.string().min(1).max(200).refine(hasNoControl).refine((value) => value.trim().length > 0),
   observed_at: z.string().regex(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/).refine((value) => {
     const parsed = new Date(value)
     return !Number.isNaN(parsed.getTime()) && parsed.toISOString().replace('.000Z', 'Z') === value &&

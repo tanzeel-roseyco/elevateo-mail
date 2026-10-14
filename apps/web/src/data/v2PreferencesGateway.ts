@@ -8,7 +8,10 @@ import type { CsrfProof, ReadContext } from './gateway'
 // AIDEV-NOTE: Server derives the preference owner from the current session; no target user ID enters this port.
 const displayName = z.string().refine((value) => {
   return Array.from(value).length >= 1 && Array.from(value).length <= 256 &&
-    value.trim().length > 0 && !/[\x00-\x1f\x7f-\x9f]/.test(value)
+    value.trim().length > 0 && Array.from(value).every((character) => {
+      const code = character.codePointAt(0)
+      return code !== undefined && code >= 32 && (code < 127 || code > 159)
+    })
 }).nullable()
 const revision = z.number().int().min(0).max(2_147_483_647)
 export const UserDisplayPreferenceSchema = z.strictObject({ display_name: displayName, revision })

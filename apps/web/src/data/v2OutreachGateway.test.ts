@@ -70,6 +70,14 @@ describe('isolated V2 outreach gateway', () => {
     expect(fetchImpl).not.toHaveBeenCalled()
   })
 
+  it('rejects a control character in manual consent source before dispatch', () => {
+    const fetchImpl = vi.fn(async () => response({}))
+    expect(() => createV2OutreachGateway(fetchImpl).recordConsent(context, { csrfToken: 'proof' }, id, id,
+      { operation_id: id, expected_version: 1, source: 'Signed\u0085form', observed_at: '2026-10-14T12:00:00Z', attested: true },
+      new AbortController().signal)).toThrow()
+    expect(fetchImpl).not.toHaveBeenCalled()
+  })
+
   it('rejects incomplete consent detail from the server', async () => {
     const fetchImpl = vi.fn(async () => response({ id, campaign_id: id, email: 'lead@example.test',
       consent_status: 'granted', suppressed: false, version: 2 }))

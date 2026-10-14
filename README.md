@@ -311,3 +311,5 @@ ATT838 Rails now has a pure fixed-field HMAC request builder for the private rea
 ATT838 wire correction: signed context_id must be the same lowercase UUID as context_uuid; authorization_version remains an opaque signed hint. Sequence migration already occupies 00016, so attachment gateway helper must use 00017 or later.
 
 ATT838 Rails private transport candidate now sends one signed internal POST without redirects or retries, rejects transactions and missing signing config, caps bytes at 10 MiB, and requires exact binary/no-store/nosniff/disposition/length headers. It is not called by a public route; gateway interop and fresh post-fetch authorization remain pending.
+
+INT801 repaired the fleet web lint failure by replacing three no-control-regex patterns with explicit Unicode code point validation and added C1-control regressions. The same pass corrected two remaining preference tests to the UI-aligned gateway argument order. Exact repaired-source Docker lint/type/unit/build is pending Soren.

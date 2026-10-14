@@ -163,3 +163,7 @@ Sabine ADV095 corrected the wire after cb1ec5b: context_id is UUID and exactly e
 ## ATT838 private transport candidate
 
 `attachment_gateway_client.rb` uses only the exact internal host, dedicated HMAC key and one POST. It refuses an open Rails transaction, missing config, redirects/unexpected statuses, wrong headers/length and >10 MiB. It returns private bytes to a future caller only; no controller or public route is connected, and the required post-fetch session/read recheck is not yet implemented. Source tests cover valid, 404/invalid response and transaction/missing key; Docker/interop NOT_RUN.
+
+## Web lint repair after cb1ec5b fleet receipt
+
+Root reported no-control-regex offenses at v2Contract.ts 68/87 and v2PreferencesGateway.ts 11. Replaced those patterns with code-point predicates for C0/DEL/C1, added C1 source/display-name regressions, and corrected two old preference gateway tests to the current input-first method order. Exact Docker lint/type/unit/build NOT_RUN on this repair; no broader PASS claimed.

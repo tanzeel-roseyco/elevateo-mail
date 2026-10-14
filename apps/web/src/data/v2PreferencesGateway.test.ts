@@ -13,16 +13,24 @@ describe('isolated personal preference gateway proposal', () => {
     })
     const gateway = createV2PreferencesGateway(fetchImpl)
     const page = await gateway.getUserDisplayPreference(context, new AbortController().signal)
-    const saved = await gateway.updateUserDisplayPreference(context, { csrfToken: 'proof' },
-      { display_name: 'Avery', expected_revision: page.revision }, new AbortController().signal)
+    const saved = await gateway.updateUserDisplayPreference(
+      { display_name: 'Avery', expected_revision: page.revision }, context, { csrfToken: 'proof' }, new AbortController().signal)
     expect(saved.revision).toBe(2)
     expect(fetchImpl.mock.calls.map(([path]) => path)).toEqual(['/v2/me/preferences', '/v2/me/preferences'])
   })
 
   it('rejects an invalid target field before any request', () => {
     const fetchImpl = vi.fn(async () => response({}))
-    expect(() => createV2PreferencesGateway(fetchImpl).updateUserDisplayPreference(context, { csrfToken: 'proof' },
-      { display_name: 'Avery', expected_revision: 0, user_id: 'forged' }, new AbortController().signal))
+    expect(() => createV2PreferencesGateway(fetchImpl).updateUserDisplayPreference(
+      { display_name: 'Avery', expected_revision: 0, user_id: 'forged' }, context, { csrfToken: 'proof' }, new AbortController().signal))
+      .toThrow()
+    expect(fetchImpl).not.toHaveBeenCalled()
+  })
+
+  it('rejects control characters in a display name before dispatch', () => {
+    const fetchImpl = vi.fn(async () => response({}))
+    expect(() => createV2PreferencesGateway(fetchImpl).updateUserDisplayPreference(
+      { display_name: 'Avery\u0085', expected_revision: 0 }, context, { csrfToken: 'proof' }, new AbortController().signal))
       .toThrow()
     expect(fetchImpl).not.toHaveBeenCalled()
   })
