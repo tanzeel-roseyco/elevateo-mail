@@ -1,5 +1,7 @@
 # Elevateo Mail
 
+QA-404 coordination: Rowan observer boundary agreed, implementation pending; Soren backend suite failure prevented HTTP/browser stages. Acceptance remains IN PROGRESS / NOT_RUN.
+
 QA-404 attempt 3: IN PROGRESS. Added real-cookie CSRF/session-continuity checks and unforwarded login duplicate/retry stimulus; fixed private/missing denial comparison after bounded adversarial review. 13 of 26 scenarios source-authored; all fresh runtime/visual results NOT_RUN pending Soren immutable integration scheduling. See docs/completion/qa404-attempt3.md.
 
 
