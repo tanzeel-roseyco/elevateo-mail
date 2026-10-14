@@ -6,14 +6,18 @@ envfile=${2:?private environment required}
 root=${3:?source root required}
 [[ "$project" == ops820-source-* && "$envfile" = /* && "$root" = /* ]] || exit 66
 [[ -f "$envfile" && -d "$root/apps/server" ]] || exit 66
+gateway_password=$(awk -F= '$1=="ATTACHMENT_GATEWAY_DB_PASSWORD" {print $2}' "$envfile")
+[[ "$gateway_password" =~ ^[a-f0-9]{64}$ ]] || exit 66
+unset gateway_password
 server_image=${OPS820_SERVER_IMAGE:?pinned server image required}
 [[ "$server_image" == sha256:* || "$server_image" == *@sha256:* ]] || exit 66
 db_image=$(docker compose -p "$project" --env-file "$envfile" \
   -f "$root/ops/supabase/compose.yaml" images -q db)
 [[ -n "$db_image" ]] || exit 66
 scratch=$(mktemp -d)
-trap 'rm -f -- "$scratch/runtime.env"; rmdir -- "$scratch"' EXIT
+trap 'rm -f -- "$scratch/runtime.env" "$scratch/gateway.env"; rmdir -- "$scratch"' EXIT
 python3 "$root/ops/ops820/runtime_env.py" "$envfile" "$scratch/runtime.env" migrator >/dev/null
+python3 "$root/ops/ops820/gateway_runtime_env.py" "$envfile" "$scratch/gateway.env" >/dev/null
 docker run --rm --network "${project}_private" --read-only --cap-drop ALL \
   --env-file "$envfile" -e PGHOST=db -e PGUSER=supabase_admin -e PGDATABASE=postgres \
   -v "$root/ops/db:/ops:ro" --entrypoint bash "$db_image" \
@@ -26,6 +30,14 @@ docker run --rm --network "${project}_private" --read-only --cap-drop ALL \
   --env-file "$envfile" -e PGHOST=db -e PGUSER=supabase_admin -e PGDATABASE=postgres \
   -v "$root/ops/db:/ops:ro" --entrypoint bash "$db_image" \
   -c 'export PGPASSWORD="$POSTGRES_PASSWORD"; exec psql -v ON_ERROR_STOP=1 -f /ops/bootstrap-auth-grants.sql' >/dev/null
+docker run --rm --network "${project}_private" --read-only --cap-drop ALL \
+  --env-file "$envfile" -e PGHOST=db -e PGUSER=supabase_admin -e PGDATABASE=postgres \
+  -v "$root/ops/ops820/bootstrap-gateway.sql:/bootstrap-gateway.sql:ro" --entrypoint bash "$db_image" \
+  -c 'export PGPASSWORD="$POSTGRES_PASSWORD"; exec psql -v ON_ERROR_STOP=1 -f /bootstrap-gateway.sql' >/dev/null
+docker run --rm --network "${project}_private" --read-only --cap-drop ALL \
+  --env-file "$envfile" -e PGHOST=db -e PGUSER=supabase_admin -e PGDATABASE=postgres \
+  -v "$root/ops/ops820/gateway-bootstrap-smoke.sql:/gateway-bootstrap-smoke.sql:ro" --entrypoint bash "$db_image" \
+  -c 'export PGPASSWORD="$POSTGRES_PASSWORD"; exec psql -v ON_ERROR_STOP=1 -f /gateway-bootstrap-smoke.sql' >/dev/null
 docker run --rm --network "${project}_private" --read-only --cap-drop ALL \
   --user 10001:10001 --memory 768m --pids-limit 256 \
   --env-file "$scratch/runtime.env" -e RAILS_ENV=test -e ELEVATEO_MODE=local \
@@ -40,4 +52,8 @@ docker run --rm --network "${project}_private" --read-only --cap-drop ALL \
   --tmpfs /workspace/apps/server/log:uid=10001,gid=10001,mode=1770 \
   --tmpfs /tmp --workdir /workspace/apps/server --entrypoint bundle \
   "$server_image" exec rails db:migrate
+docker run --rm --network "${project}_private" --read-only --cap-drop ALL \
+  --env-file "$envfile" -e PGHOST=db -e PGUSER=supabase_admin -e PGDATABASE=postgres \
+  -v "$root/ops/ops820/gateway-helper-smoke.sql:/gateway-helper-smoke.sql:ro" --entrypoint bash "$db_image" \
+  -c 'export PGPASSWORD="$POSTGRES_PASSWORD"; exec psql -v ON_ERROR_STOP=1 -f /gateway-helper-smoke.sql' >/dev/null
 echo 'PASS disposable source migrations'
