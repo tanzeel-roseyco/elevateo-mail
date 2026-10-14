@@ -1,5 +1,8 @@
 # Elevateo Mail
 
+QA-404 attempt 3: IN PROGRESS. Added real-cookie CSRF/session-continuity checks and unforwarded login duplicate/retry stimulus; fixed private/missing denial comparison after bounded adversarial review. 13 of 26 scenarios source-authored; all fresh runtime/visual results NOT_RUN pending Soren immutable integration scheduling. See docs/completion/qa404-attempt3.md.
+
+
 QA-404 attempt 2: IN PROGRESS. Elara authored two additional real-backend Playwright cases (zero visible mailboxes and same-mailbox private drafts), preserving all 26 identities; 12 are source-authored and 14 remain explicitly unavailable. All new runtime checks and actual UI evidence are NOT_RUN pending Rowan schema repair and Soren immutable-SHA container scheduling. See docs/completion/qa404-acceptance.md.
 
 A planned shared company mailbox for approximately **10 people**, available on a web subdomain and as downloadable macOS and Windows clients.

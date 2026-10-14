@@ -77,6 +77,7 @@ scenario('SCN-DRAFT-008-F1', 'same-mailbox-author-private-draft', async (page, r
     expect(current.next_cursor).toBeNull();
     expect(sawOwn).toBe(true);
     await expect(peer.locator(`a[href$="/drafts/${ownId}"]`)).toBeVisible();
+    const denials: { code: string; message: string }[] = [];
     for (const id of [privateId, randomUUID()]) {
       const [denied] = await Promise.all([responseAt(peer, `/v1/drafts/${id}`),
         peer.goto(`/#/mailboxes/${seed.mailboxes.primary}/drafts/${id}`)]);
@@ -87,12 +88,14 @@ scenario('SCN-DRAFT-008-F1', 'same-mailbox-author-private-draft', async (page, r
       const error = z.strictObject({ code: z.literal('not_available'), message: z.string().max(512),
         request_id: z.string().min(1).max(256) })
         .safeParse(JSON.parse(bytes.toString('utf8')) as unknown);
-      expect(error.success).toBe(true);
+      if (!error.success) throw new Error("Draft denial contract rejected");
+      denials.push({ code: error.data.code, message: error.data.message });
       expect(bytes.toString('utf8').includes(privateText)).toBe(false);
       await expect(peer.getByRole('heading', { name: 'This draft is unavailable', exact: true })).toBeVisible();
       await expect(peer.getByLabel('Subject', { exact: true })).toHaveCount(0);
       await expect(peer.getByText(privateText, { exact: true })).toHaveCount(0);
     }
+    expect(denials[0]).toEqual(denials[1]);
     await page.reload();
     await expect(page.getByLabel('Subject', { exact: true })).toHaveValue(privateText);
     await expect(page.getByLabel('Message', { exact: true })).toHaveValue(privateText);

@@ -2,7 +2,6 @@ import { unavailable } from './cases.js';
 
 // AIDEV-NOTE: Missing controlled backend faults are explicit evidence gaps, never simulated passing UI cases.
 const missing: Record<string, string> = {
-  'SCN-AUTH-001-F2': 'No controlled Auth outage or delayed duplicate-submit barrier supplied',
   'SCN-AUTH-003-F1': 'No held authenticated-write versus logout barrier supplied',
   'SCN-AUTH-003-F2': 'No delayed pre-logout response barrier supplied',
   'SCN-AUTH-006-P': 'Password-login seed does not supply one-time invitation and acceptance UI seed',
