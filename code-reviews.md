@@ -693,3 +693,6 @@ Changed source `apps/web/src/features/inbox/InboxPage.tsx` (6 added lines) and t
 ## FE-806 message reply review request
 
 Bounded source packet: `apps/web/src/features/thread/ThreadPage.tsx` (about 28 changed lines), `ThreadPage.test.tsx` (about 75 added lines) and provider wiring in `CollaborationPanels.test.tsx` (3 added lines). Request independent functional/adversarial and separate design tradeoff review from root; no such review is claimed here. Confirmed defects/density remain unmeasured until review. Authored tests and Docker request are not execution evidence.
+## INT-801 Cassian V2 candidate (2026-10-14)
+
+Independent adversarial functional and design-tradeoff reviews are requested from root; none were performed or claimed by this worker. Proposed bounded packets: `contracts/v2/openapi.json` (split schemas/operations at <=200 source lines), `apps/server/config/v2_route_registry.rb` plus its test, and `contracts/tooling/generate-v2.sh` plus contract test, and `apps/web/src/data/v2Contract.ts` plus its test, `apps/web/src/data/v2Gateway.ts`, and the one-line transport path admission. Reviewed LOC 0; confirmed defects 0; defect density not computable pending review. Fleet execution pending.

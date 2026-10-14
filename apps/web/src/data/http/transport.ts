@@ -119,7 +119,7 @@ export interface JsonResult<T> {
 }
 
 /**
- * GET (or POST a JSON body to) a relative /v1 path and validate the response body. Rejects
+ * GET (or POST a JSON body to) a relative versioned API path and validate the response body. Rejects
  * absolute URLs, redirects, non-JSON content types and oversized or malformed bodies with
  * deliberate GatewayErrors. The request body is never included in any error.
  */
@@ -138,7 +138,7 @@ export async function requestJsonWithStatus<S extends z.ZodType>(
   maxBytes: number,
   options: RequestOptions,
 ): Promise<JsonResult<z.output<S>>> {
-  if (!path.startsWith('/v1/')) throw new GatewayError('transport', 'network', 'Only relative /v1 paths are allowed.')
+  if (!/^\/v(?:1|2)\//.test(path)) throw new GatewayError('transport', 'network', 'Only relative versioned API paths are allowed.')
   if (options.signal?.aborted) throw new GatewayError('transport', 'aborted', 'The request was cancelled.')
   const hasBody = 'body' in options
   const method: JsonMethod = options.method ?? (hasBody ? 'POST' : 'GET')

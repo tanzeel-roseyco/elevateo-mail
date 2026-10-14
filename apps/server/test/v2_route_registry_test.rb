@@ -1,0 +1,33 @@
+# frozen_string_literal: true
+
+require "minitest/autorun"
+require_relative "../config/v2_route_registry"
+
+class V2RouteRegistryTest < Minitest::Test
+  class Mapper
+    attr_reader :routes
+    def initialize = (@routes = [])
+    %i[get put post].each do |verb|
+      define_method(verb) { |path, to:| @routes << [verb, path, to] }
+    end
+  end
+
+  def test_ready_registry_exposes_only_four_versioned_routes
+    mapper = Mapper.new
+    assert V2RouteRegistry.register!(mapper, enabled: true, controllers_ready: true)
+    assert_equal 4, mapper.routes.size
+    assert mapper.routes.all? { |_, path, _| path.start_with?("/v2/") }
+  end
+
+  def test_disabled_registry_exposes_nothing
+    mapper = Mapper.new
+    refute V2RouteRegistry.register!(mapper, enabled: false, controllers_ready: false)
+    assert_empty mapper.routes
+  end
+
+  def test_unready_registry_fails_before_any_route_is_added
+    mapper = Mapper.new
+    assert_raises(ArgumentError) { V2RouteRegistry.register!(mapper, enabled: true, controllers_ready: false) }
+    assert_empty mapper.routes
+  end
+end

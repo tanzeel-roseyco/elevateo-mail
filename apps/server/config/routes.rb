@@ -1,3 +1,5 @@
+require_relative "v2_route_registry"
+
 Rails.application.routes.draw do
   get "/health", to: "health#live"
   get "/ready", to: "health#ready"
@@ -36,4 +38,7 @@ Rails.application.routes.draw do
   get "/v1/send-intents/:send_id", to: "v1/send_intents#show"
   post "/v1/send-intents/:send_id/cancellation", to: "v1/send_intents#cancel"
   get "/v1/search", to: "v1/search#index"
+
+  # AIDEV-NOTE: V2 stays absent until owning controllers and authority gates pass integration review.
+  V2RouteRegistry.register!(self, enabled: false, controllers_ready: false)
 end
