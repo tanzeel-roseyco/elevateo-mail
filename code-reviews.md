@@ -980,3 +980,5 @@ Author self-inspection only; no independent review performed or claimed. Scope: 
 
 
 FE807 consent-copy author review: one semantic ambiguity found in compact `granted` and analytics labels where manual attestation may be mistaken for verified permission. Presentation labels now distinguish server records from independent verification; the contract enum is unchanged and backend authority remains. Two component assertions updated; no independent bounded review or runtime PASS claimed, so defect density is not reported.
+
+FE807 exact `8eb840d` fleet diagnostic and self-review: 779/789 web unit tests passed after API/lint/typecheck PASS; three owned failures were traced to one real timestamp comparison defect (valid whole-second UTC rejected, blocking consent submit) and one brittle nested-text assertion. Both repaired in isolated source/tests, with an invalid-calendar regression added. Seven nonowned integration test failures remain; build and new repair runtime NOT_REACHED, no independent review density claimed.

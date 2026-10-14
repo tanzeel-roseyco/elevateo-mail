@@ -81,7 +81,7 @@ describe('Outreach routed pages', () => {
     await screen.findByText(/Pilot/)
     fireEvent.click(screen.getByRole('button', { name: 'Pause campaign' }))
     expect(await screen.findByRole('alert')).toHaveProperty('textContent', expect.stringMatching(/not confirmed/))
-    expect(screen.getByText(/Pilot · draft/)).toBeTruthy()
+    expect(screen.getByText((_, element) => element?.tagName === 'P' && element.textContent?.includes('Pilot · draft') === true)).toBeTruthy()
   })
   it('hides loaded campaign content after a revoked write', async () => {
     const g = gateway({ updateCampaign: vi.fn(async () => { throw new GatewayError('api', 'unauthenticated', 'revoked', { status: 401 }) }) })
