@@ -3,7 +3,7 @@ import { scenario } from './cases.js';
 import { responseAt, screenshot, seed, signIn } from './support.js';
 
 // AIDEV-NOTE: Each approval uses a case-owned new draft; no seeded or shared draft is consumed.
-scenario('QA816-SEND-P', 'real-auth-simulated-send-mobile-and-desktop', async (page, record) => {
+scenario('SCN-QA-816-P', 'real-auth-simulated-send-mobile-and-desktop', async (page, record) => {
   await signIn(page, 'manager_primary');
   await page.goto(`/#/mailboxes/${seed.mailboxes.primary}/drafts`);
   await page.getByRole('button', { name: 'New draft', exact: true }).click();
@@ -46,7 +46,7 @@ scenario('QA816-SEND-P', 'real-auth-simulated-send-mobile-and-desktop', async (p
   record.evidence.push('Observed draft PUT 200, review GET 200, approval POST 2xx and status GET 200; no response body or credential retained');
 });
 
-scenario('QA816-SEND-F1', 'reader-cannot-approve-or-manage', async (page, record) => {
+scenario('SCN-QA-816-F1', 'reader-cannot-approve-or-manage', async (page, record) => {
   await signIn(page, 'reader');
   await page.goto(`/#/mailboxes/${seed.mailboxes.primary}/members`);
   await expect(page.getByText('You cannot manage members of this mailbox')).toBeVisible();
@@ -56,7 +56,7 @@ scenario('QA816-SEND-F1', 'reader-cannot-approve-or-manage', async (page, record
   record.assertions.push('Reader cannot manage members and cannot reach an actionable simulated approval');
 });
 
-scenario('QA816-SEND-F2', 'logout-clears-send-review-and-mobile-session', async (page, record) => {
+scenario('SCN-QA-816-F2', 'logout-clears-send-review-and-mobile-session', async (page, record) => {
   await page.setViewportSize({ width: 375, height: 812 });
   await signIn(page, 'manager_primary');
   await page.goto(`/#/mailboxes/${seed.mailboxes.primary}/drafts`);

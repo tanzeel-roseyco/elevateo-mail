@@ -15,3 +15,5 @@ Continuation candidate: `qa816-matrix.e2e.ts` adds authenticated inbox permalink
 `QA816-SEARCH-F2` adds genuine held-response loading, transport-abort error, and server-backed retry to a settled empty result. It uses the existing transport barrier and does not synthesize a business response. The shell scenario requires both Fable FE805 and Celeste FE807 to be integrated with the protected read context; a placeholder-only merge is deliberately insufficient.
 
 `QA816-ZOOM-P` uses Chromium CDP visual viewport scale 2 and verifies `window.visualViewport.scale`, seeded inbox visibility and a screenshot. It is genuine pinch/visual viewport zoom, not desktop browser text zoom, and requires Chromium; that distinction remains in the acceptance ledger.
+
+Reporter identity repair: `quiet-reporter.ts` accepts `SCN-[A-Z]+-NNN-(P|F1|F2)` titles. The nine QA816 cases now use `SCN-QA-816/817/818` identities; prior `QA816-*` titles would have failed publication before an acceptance record existed. Historical evidence inventories remain unchanged; these are supplemental cases with their own records and cannot be counted toward the frozen BE02 set.

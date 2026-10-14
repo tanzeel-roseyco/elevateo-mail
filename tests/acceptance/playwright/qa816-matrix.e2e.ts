@@ -5,7 +5,7 @@ import { mailbox, openThread, responseAt, screenshot, seed, signIn } from './sup
 import { transportBarrier } from './transport-barrier.js';
 
 // AIDEV-NOTE: Evidence is from real browser/API; screenshots follow settled content and omit credentials.
-scenario('QA816-READ-P', 'inbox-permalink-history-keyboard-responsive', async (page, record) => {
+scenario('SCN-QA-817-P', 'inbox-permalink-history-keyboard-responsive', async (page, record) => {
   await signIn(page, 'reader');
   for (const width of [1440, 375, 320]) {
     await page.setViewportSize({ width, height: 812 });
@@ -30,7 +30,7 @@ scenario('QA816-READ-P', 'inbox-permalink-history-keyboard-responsive', async (p
   record.evidence.push('Observed authenticated GET mailbox threads 200 at each viewport; browser content marker stayed in rendered plaintext');
 });
 
-scenario('QA816-DRAFT-F1', 'duplicate-save-click-is-one-version', async (page, record) => {
+scenario('SCN-QA-817-F1', 'duplicate-save-click-is-one-version', async (page, record) => {
   await signIn(page, 'composer');
   await page.goto(`/#/mailboxes/${seed.mailboxes.primary}/drafts`);
   await page.getByRole('button', { name: 'New draft', exact: true }).click();
@@ -59,7 +59,7 @@ scenario('QA816-DRAFT-F1', 'duplicate-save-click-is-one-version', async (page, r
   record.assertions.push('Rapid duplicate save gesture sends one PUT and leaves one persisted draft version after reload');
 });
 
-scenario('QA816-READ-F1', 'unavailable-reader-path-and-search-empty', async (page, record) => {
+scenario('SCN-QA-817-F2', 'unavailable-reader-path-and-search-empty', async (page, record) => {
   await signIn(page, 'reader');
   await mailbox(page);
   await openThread(page);
@@ -80,7 +80,7 @@ scenario('QA816-READ-F1', 'unavailable-reader-path-and-search-empty', async (pag
   record.assertions.push('Foreign thread yields real 404 with prior plaintext cleared; unique search uses real API and settles empty');
 });
 
-scenario('QA816-SHELL-P', 'branded-shell-keyboard-mobile-and-outreach-read', async (page, record) => {
+scenario('SCN-QA-818-P', 'branded-shell-keyboard-mobile-and-outreach-read', async (page, record) => {
   await signIn(page, 'manager_primary');
   for (const colorScheme of ['light', 'dark'] as const) {
     await page.emulateMedia({ colorScheme });
@@ -110,7 +110,7 @@ scenario('QA816-SHELL-P', 'branded-shell-keyboard-mobile-and-outreach-read', asy
 });
 
 
-scenario('QA816-SEARCH-F2', 'real-search-loading-transport-error-retry', async (page, record) => {
+scenario('SCN-QA-818-F1', 'real-search-loading-transport-error-retry', async (page, record) => {
   await signIn(page, 'reader');
   await page.goto('/#/search');
   const search = page.getByRole('search', { name: 'Search conversations', exact: true });
@@ -143,7 +143,7 @@ scenario('QA816-SEARCH-F2', 'real-search-loading-transport-error-retry', async (
   record.evidence.push('Held actual upstream response and aborted an unforwarded request; no fabricated business response');
 });
 
-scenario('QA816-ZOOM-P', 'chromium-visual-viewport-200-percent', async (page, record) => {
+scenario('SCN-QA-818-F2', 'chromium-visual-viewport-200-percent', async (page, record) => {
   await signIn(page, 'reader');
   await page.setViewportSize({ width: 375, height: 812 });
   await mailbox(page);
