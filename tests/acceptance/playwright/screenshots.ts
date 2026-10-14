@@ -11,7 +11,15 @@ const screenshotIds = ['SCN-READ-001-F1-empty-denied', 'SCN-READ-002-F1-unavaila
   'SCN-GUI-006-P-search-1440-light', 'SCN-GUI-006-P-search-1440-dark',
   'SCN-GUI-006-P-search-375-light', 'SCN-GUI-006-P-search-375-dark',
   'SCN-DRAFT-001-P-1440-light', 'SCN-DRAFT-001-P-1440-dark',
-  'SCN-DRAFT-001-P-375-light', 'SCN-DRAFT-001-P-375-dark'];
+  'SCN-DRAFT-001-P-375-light', 'SCN-DRAFT-001-P-375-dark',
+  // AIDEV-NOTE: QA816 supplemental screenshots are fixed IDs; the byte ledger still governs all lanes.
+  'QA816-SEND-P-review-1440', 'QA816-SEND-P-review-375', 'QA816-SEND-P-status-mobile',
+  'QA816-READ-P-1440', 'QA816-READ-P-375', 'QA816-READ-P-320',
+  'QA816-READ-F1-denied', 'QA816-READ-F1-empty-search',
+  'QA816-SHELL-P-desktop-light', 'QA816-SHELL-P-desktop-dark',
+  'QA816-SHELL-P-campaigns-light', 'QA816-SHELL-P-campaigns-dark', 'QA816-SHELL-P-mobile-drawer',
+  'QA816-SEARCH-F2-loading', 'QA816-SEARCH-F2-error',
+  'QA816-ZOOM-P-200-percent-visual-viewport'];
 // AIDEV-NOTE: Only target opening is injectable so regressions exercise real lock, ledger and cleanup paths.
 type OpenTarget = (path: string, flags: number, mode: number) =>
   Promise<Pick<FileHandle, 'writeFile' | 'sync' | 'close'>>;
