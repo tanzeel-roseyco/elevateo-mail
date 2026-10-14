@@ -1,4 +1,4 @@
-ADM-803 provisional administration roster: docs/completion/theo.md. Configuration identities are unbound and grant no effective access; candidate guarded V2 admin controllers need Sabine/Cassian integration and runtime evidence.
+ADM-803 provisional administration roster: docs/completion/theo.md. Configuration identities are unbound and grant no effective access; candidate guarded V2 grants/roster and redacted role-audit controllers need Sabine/Cassian integration and fleet runtime evidence.
 
 # Product requirements and decision record
 

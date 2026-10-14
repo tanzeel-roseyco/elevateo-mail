@@ -1,4 +1,4 @@
-ADM-803: Candidate guarded V2 grants GET/PUT and unbound roster GET with HTTP source regressions are committed on Theo branch; tests requested, not executed. Sabine SQL authority and Cassian V2 routes/contracts are being reconciled. See docs/completion/theo.md.
+ADM-803: Guarded V2 grants/roster source and current-actor DTO are integrated candidates; Theo role-audit read/projection source is committed while Sabine atomic SQL and Cassian audit contract are in progress. Tests requested, not executed by Theo. See docs/completion/theo.md.
 
 # Project state
 

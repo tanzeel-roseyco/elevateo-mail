@@ -14,7 +14,7 @@ Shared company mailroom with one Rails domain authority and a React/TypeScript c
 
 ## Current state
 
-ADM-803 now has candidate guarded V2 grant and unbound roster controllers with HTTP source regressions; Sabine/Cassian integration and fleet Docker verification remain pending. See [Theo handoff](docs/completion/theo.md).
+ADM-803 has candidate guarded V2 grants and unbound roster APIs; an atomic redacted role audit API is being integrated with Sabine SQL and Cassian contracts. Fleet Docker verification remains pending. See [Theo handoff](docs/completion/theo.md).
 
 
 ### R25 approval reload recovery candidate
