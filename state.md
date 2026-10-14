@@ -449,3 +449,5 @@ DIR905 final picker candidate aborts in-flight options if the optional port disa
 Mira REPLY901/906 frontend source and tests are imported as unexecuted candidates; top reply now uses an authorized loaded sender and existing V1 draft association rather than an empty thread link. Soren frontend/Tessa browser evidence remains pending.
 
 Nadia ATT902 final `95acc3b3` private content source/tests are imported as inactive candidate with pre/postfetch scope checks and fixed held 423. The old index lambda strict error remains, and no route, browser injection, scanner verdict or real-auth byte PASS is claimed.
+
+V2 registry knows the draft.8 assignee and attachment controller mappings but keeps all three inactive; a new unexecuted registry regression asserts explicit requests fail closed.

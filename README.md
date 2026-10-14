@@ -504,3 +504,5 @@ DIR905 assignment UI now has an opt-in mailbox-scoped eligible UUID picker candi
 The top conversation Reply as draft candidate now seeds from a concrete available sender and blocks missing selected messages, using the existing V1 draft save path. Fleet browser/type/unit proof remains pending; no send is enabled.
 
 ATT902 candidate now contains Nadia's private inbound attachment content action and before/after authority service, but its V2 route and browser port are still inactive. Fixed held 423 semantics are source-only; fleet strict/security/HTTP/browser proof and old index typing repair remain pending.
+
+The three new V2 route mappings are prepared in the central registry but excluded from its active allowlist; explicit registration is rejected until the feature gates pass.

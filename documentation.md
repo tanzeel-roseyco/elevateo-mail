@@ -509,3 +509,5 @@ Final DIR903/904 owner follow-ups strengthen the cross-organization DB witness a
 The generic top reply control now delegates to the same concrete-message draft intent used by per-message reply and disables itself when the selected message/sender is unavailable. This remains a draft creation flow under frozen V1 save semantics, with no new send API; exact feature-wave browser proof is pending.
 
 The ATT902 inactive content source uses `Attachments::DownloadService` to recheck current scoped metadata before and after a bounded private gateway fetch; the Rails action sends only validated octet-stream bytes and fixed safe headers. `docs/completion/nadia-att902-inbound-content.md` records dependencies and test requests. Registry and main injection remain disabled pending independent review and Soren fleet security/HTTP gates.
+
+`V2RouteRegistry::ROUTES` now records the draft.8 assignee, attachment metadata and private content controller targets, while `ACTIVE_OPERATIONS` excludes them. `v2_route_registry_test.rb` checks explicit activation denial; this is source-only until Soren fleet execution.

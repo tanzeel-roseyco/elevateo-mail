@@ -62,6 +62,16 @@ class V2RouteRegistryTest < Minitest::Test
     assert_empty mapper.routes
   end
 
+  def test_prepared_assignee_and_attachment_routes_remain_inactive
+    %w[listMailboxAssigneeOptions listInboxAttachments downloadCleanInboxAttachment].each do |operation|
+      mapper = Mapper.new
+      assert_raises(ArgumentError) do
+        V2RouteRegistry.register!(mapper, enabled: true, controllers_ready: true, operations: [operation])
+      end
+      assert_empty mapper.routes
+    end
+  end
+
   def test_unready_registry_fails_before_any_route_is_added
     mapper = Mapper.new
     assert_raises(ArgumentError) { V2RouteRegistry.register!(mapper, enabled: true, controllers_ready: false) }

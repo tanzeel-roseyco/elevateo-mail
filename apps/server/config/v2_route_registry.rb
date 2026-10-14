@@ -21,7 +21,10 @@ module V2RouteRegistry
     "getWorkerJob" => ["GET", "/v2/worker/jobs/:job_id", "v2/worker_jobs#show"],
     "getDirectMessage" => ["GET", "/v2/threads/:thread_id/messages/:message_id", "v1/threads#message"],
     "getMyPreferences" => ["GET", "/v2/me/preferences", "v2/admin/user_display_preferences#show"],
-    "replaceMyPreferences" => ["PUT", "/v2/me/preferences", "v2/admin/user_display_preferences#update"]
+    "replaceMyPreferences" => ["PUT", "/v2/me/preferences", "v2/admin/user_display_preferences#update"],
+    "listMailboxAssigneeOptions" => ["GET", "/v2/mailboxes/:mailbox_id/assignee-options", "v2/admin/mailbox_assignee_options#index"],
+    "listInboxAttachments" => ["GET", "/v2/mailboxes/:mailbox_id/threads/:thread_id/messages/:message_id/attachments", "v2/inbox_attachments#index"],
+    "downloadCleanInboxAttachment" => ["GET", "/v2/mailboxes/:mailbox_id/threads/:thread_id/messages/:message_id/attachments/:attachment_id/content", "v2/inbox_attachments#content"]
   }.transform_values(&:freeze).freeze
 
   # AIDEV-NOTE: The worker operation is a proposal until its separate principal is implemented.
