@@ -837,3 +837,28 @@ QA816 V2 campaign browser source a737fd9 is authored, not independently reviewed
 QA816 b76af04 adds a source-only V2 logout case; independent review coverage remains 0 LOC, defects/density not established, and runtime NOT_RUN.
 
 QA816 self-inspection found one unsupported test policy assumption (same-org reader campaign POST denial) in authored source; repaired at 6e164ef as case-owned cross-org GET 404. This is an author finding, not independent reviewed defect density; independent reviewed LOC remains 0, runtime NOT_RUN.
+QA-817 `apps/server/test/qa817/origin_csrf_controller_test.rb`: independent source review NOT_RUN, zero LOC reviewed and density unmeasured. Request <=200 LOC full-rubric functional packet and separate design review; actual controller Docker test/lint NOT_RUN.
+
+QA-817 private sales/personal mailbox integration test: `apps/server/test/qa817/private_sales_database_test.rb`, independent review NOT_RUN (0 LOC, density unmeasured). Request <=200 LOC full-rubric packet and dedicated design review; Docker/Steep/RuboCop NOT_RUN.
+
+QA-817 independent SEC-802 legacy hook review: Sabine `apps/server/db/sec802/membership_patch.sql` SHA-256 `aa1efedbc5b92777954ca76f694489027178afe76cfbca3d4dd9f8e5804d0fb2`, lines 1–85 full review, 0 observed defects (0/KLOC bounded static). Companion policy test lines 1–172 were read as separate coverage context, for 257 unique LOC across two <=200 LOC packets; test defects/density not reviewed. Full rubric and runtime limits: `docs/completion/felix-sec802-legacy-review.md`. Docker/design NOT_RUN.
+
+QA-817 independent SEND-809 follow-up: Rowan worker_authority.sql current SHA-256 `8a6d25e33f04078b45c9e575598f6f561e3f0fb16c86042548e6ba3062d63e99`, commit daf5161, lines 169–325 (157 LOC, one <=200 packet). Full rubric; 0 confirmed defects observed, 0/KLOC bounded static. Trusted-worker pre-final-check plaintext exposure is a design boundary for IPC/logging, not a proven leak. Docker and separate design review NOT_RUN. See `docs/completion/felix-send809-followup-review.md`.
+
+QA-817 worker observation DB candidate `apps/server/test/qa817/worker_observation_database_test.rb`: independent review NOT_RUN (0 LOC reviewed, density unmeasured), request <=200 LOC full-rubric packet plus separate design review. Fleet Docker/lint NOT_RUN.
+
+QA-817 independent NATIVE-812 OAuth peer review: Orion `apps/native/src-tauri/src/oauth.rs` SHA-256 `ccafc770219615f5fcd4e29e14c8c1a54350cb1d696171096dcf77a734dcea4a`, commit 5859593, packets 1–180 and 181–201, 201 unique LOC. Full rubric; 0 confirmed defects observed, 0/KLOC bounded static. Raw callback alias and credential-bearing issuer are analytical policy probes sent to Orion, not proven flaws. Rust/native execution and separate design review NOT_RUN; see `docs/completion/felix-native812-review.md`.
+
+QA-817 correction to the earlier SEC-802 legacy-hook zero-defect line: committed `membership_patch.sql` SHA `aa1efedbc5b92777954ca76f694489027178afe76cfbca3d4dd9f8e5804d0fb2` has 1 HIGH confirmed authorization defect in 85 reviewed LOC, **11.76 defects/KLOC**. `p_delete=true` bypasses `ceiling.manage_members=false` while actor's old membership still has manage authority, deleting another member. Earlier zero was wrong; see corrected `docs/completion/felix-sec802-legacy-review.md` and regression `apps/server/test/qa817/legacy_ceiling_database_test.rb`. Sabine's later dirty fix requires immutable re-review and fleet Docker evidence.
+
+QA-817 independent SEC-802 repair review: Sabine commit `0df2b1f` `membership_patch.sql` SHA-256 `6bb095466223248b3f0cdcc3a377527f0dae1d740a225259fe64cdfee23d3dd1`, lines 1–96, one <=200 LOC packet. Earlier HIGH revoked-ceiling delete bypass statically addressed by unconditional manage ceiling guard; 0 new confirmed defects observed in 96 LOC, 0/KLOC bounded static repair review. Old defect remains historical 1/85 LOC, 11.76/KLOC. Docker and separate design review NOT_RUN; see `docs/completion/felix-sec802-repair-review.md`.
+
+QA-817 independent SEND-809 corrected authority head: Rowan commit daf5161 worker_authority.sql SHA-256 `8a6d25e33f04078b45c9e575598f6f561e3f0fb16c86042548e6ba3062d63e99`, lines 1–168 (168 LOC, <=200 packet), full rubric, 0 observed defects (0/KLOC static). With earlier same-SHA tail lines 169–325 (157 LOC), total 325 unique LOC across two bounded review tasks. Runtime/design NOT_RUN; see `docs/completion/felix-send809-head-review.md`.
+
+QA-817 protected actor DB candidate `apps/server/test/qa817/grant_actor_database_test.rb`: independent source review NOT_RUN (0 LOC reviewed, density unmeasured). Request <=200 LOC full-rubric packet plus design review; Docker/lint NOT_RUN.
+
+QA-817 distinct-owner race DB candidate `apps/server/test/qa817/role_owner_race_database_test.rb`: independent review NOT_RUN (0 LOC, density unmeasured); request <=200 LOC full-rubric packet and design tradeoff review. Docker/lint NOT_RUN.
+
+QA-817 role escalation DB candidate `apps/server/test/qa817/role_escalation_database_test.rb`: independent review NOT_RUN (0 LOC, density unmeasured); request <=200 LOC full-rubric packet and separate design review. Docker/lint NOT_RUN.
+
+QA-817 independent ADM-803 controller review: Theo `organization_grants_controller.rb` SHA-256 `584fcee91ff8f12a7f309917ff16f9f5ec901d2e49a480aa7683578a7e274198`, lines 1–200 full rubric (exact <=200 packet), 0 confirmed defects observed (0/KLOC static). HTTP test lines 1–150 and input test lines 1–29 were separate coverage-context packets, 379 unique physical LOC total in assignment; test defects/density not reviewed. Soren HTTP/DB and design NOT_RUN. See `docs/completion/felix-adm803-review.md`.

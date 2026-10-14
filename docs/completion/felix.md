@@ -23,3 +23,37 @@ Review request: independently review the new 44-line database test against full 
 Independent peer review completed for Sabine's 152-line SEC-802 `access.sql`; exact hash, rubric, 0 observed defects and the unresolved legacy bypass are recorded in `docs/completion/felix-sec802-review.md`. This does not review QA-817's own source or replace the required separate design review.
 
 Independently reviewed Rowan's SEND-809 worker SQL in two <=200-line packets (223 unique LOC); SHA, full rubric, zero observed static defects and untested adapter/race gaps are in `docs/completion/felix-send809-review.md`. No application execution or separate design review is implied.
+
+Added `apps/server/test/qa817/origin_csrf_controller_test.rb`: actual V1 controller with canned SQL, happy same-origin plaintext write and failure cases for cross-origin, missing origin, malformed CSRF and forbidden secret field. Soren command from `/workspace/apps/server`: `bundle exec ruby test/qa817/origin_csrf_controller_test.rb` in the maintained disposable backend image, plus affected lint/Steep. It is NOT_RUN and does not prove authenticated HTTP or real PostgreSQL. Independent QA-817 source review remains requested; no self-review density claim.
+
+## SEC-802 integrated privacy candidate
+
+Sabine committed the legacy hook at `1a0ecfa` while integration is pending. Added `apps/server/test/qa817/private_sales_database_test.rb` to check assigned sales read of a private team mailbox, unassigned sales denial, and organization admin denial for a personal mailbox using actual API role/RLS. It requires the SEC-802 migration; it is NOT_RUN on the isolated baseline. Soren command after immutable integration, from `/workspace/apps/server` in the disposable backend image: `bundle exec ruby test/qa817/private_sales_database_test.rb`. Request exact real-DB authorization traces and cleanup; no budget claim. Independent review of this test source remains pending.
+
+Independently reviewed Sabine's 85-line committed legacy mailbox hook with full rubric; 172-line companion test was read only as coverage context, 257 unique LOC across two <=200-line packets. Zero observed SQL defects in bounded static pass, 0/KLOC; runtime/design still pending. See `docs/completion/felix-sec802-legacy-review.md`.
+
+Reviewed Rowan's corrected SEND-809 tail at commit daf5161, exact SHA and 157-line packet in `docs/completion/felix-send809-followup-review.md`: zero observed static defects, 0/KLOC; worker-memory snapshot boundary and integrated race/runtime gates remain open.
+
+## SEND-809 integrated worker observation candidate
+
+Added `apps/server/test/qa817/worker_observation_database_test.rb` targeting Rowan's corrected single-path SQL. It uses actual worker login and real PostgreSQL: valid `local:` receipt accepts, foreign receipt and wrong attempt leave job dispatching, and stale lease generation cannot mark accepted. Soren command after immutable integration from `/workspace/apps/server`: `bundle exec ruby test/qa817/worker_observation_database_test.rb` with disposable BE02/BE03 fixture environment, then affected lint/Steep. Source is NOT_RUN; independent review requested. The existing Rowan suite covers broader cancellation/revocation/unknown races and remains required.
+
+Independently reviewed Orion's immutable native OAuth seam at commit 5859593 in two <=200-line packets (201 unique LOC), exact SHA and full rubric in `docs/completion/felix-native812-review.md`. Zero confirmed static defects observed; raw callback alias/issuer userinfo policy probes, native IPC wiring, Rust runtime and Windows callback acceptance remain open.
+
+Correction: committed Sabine hook SHA `aa1efedb` has one HIGH legacy delete ceiling bypass (11.76 defects/KLOC in 85 LOC), contrary to my earlier zero-defect report. `apps/server/test/qa817/legacy_ceiling_database_test.rb` checks happy delete, ceiling-revoked delete denial without mutation, and unclassified denial. Soren command after Sabine fix is frozen/integrated: `bundle exec ruby test/qa817/legacy_ceiling_database_test.rb` in the disposable backend image. NOT_RUN; a working-tree fix is not acceptance.
+
+Sabine's committed repair `0df2b1f` was independently re-reviewed at exact hook SHA `6bb09546` (96 LOC). The old HIGH deletion bypass is statically addressed; zero new defects observed (0/KLOC), while the historical 11.76/KLOC remains recorded. See `docs/completion/felix-sec802-repair-review.md`; fleet execution of QA-817 and Sabine cases remains required.
+
+Corrected Rowan SEND-809 SQL now has full bounded static coverage at SHA `8a6d25e`: head lines 1–168 and earlier tail lines 169–325, 325 unique LOC in two <=200-line packets, zero observed static defects in either. See `docs/completion/felix-send809-head-review.md`; fleet SQL/race and separate design evidence still pending.
+
+Critical integration audit: read-only hash of Cassian isolated integration at HEAD `34ee753` showed `membership_patch.sql` SHA `aa1efedb`, the exact confirmed HIGH old-hook bypass. Root/Cassian were escalated to import Sabine immutable repair `0df2b1f` and run the QA-817 real-DB regression before accepting authority. This is an observed source hash, not a runtime test or claim about later integration commits.
+
+## Protected actor projection candidate
+
+Added `apps/server/test/qa817/grant_actor_database_test.rb` for Sabine's current `app.organization_grants_page`: stable owner actor on first and second redacted pages, auditor denial, and forged tenant GUC denial. Uses actual API login and real PostgreSQL; pending integration and NOT_RUN. Soren command from `/workspace/apps/server` in disposable backend Docker: `bundle exec ruby test/qa817/grant_actor_database_test.rb`; record migration SHA, exact exits and cleanup. Separate authenticated Theo V2 HTTP and owner/admin role mutation races remain mandatory.
+
+Added `apps/server/test/qa817/role_owner_race_database_test.rb` for distinct-owner concurrent inserts, bounded worker joins and exact one-owner postcondition using a disposable real PostgreSQL database. Soren command after SEC-802 integration from `/workspace/apps/server`: `bundle exec ruby test/qa817/role_owner_race_database_test.rb`. Test/lint/independent review NOT_RUN; this supplements Sabine's sequential uniqueness and direct owner deletion checks.
+
+Added `apps/server/test/qa817/role_escalation_database_test.rb`: real API-role success and stale revision, direct admin self-to-owner rejection, and owner demotion trigger denial. Soren command after immutable SEC-802 integration from `/workspace/apps/server`: `bundle exec ruby test/qa817/role_escalation_database_test.rb`. It supplements Sabine's role tests; NOT_RUN, independent source review pending.
+
+Independently reviewed Theo's 200-line protected grants controller at exact SHA `584fcee9`, with 179 lines of HTTP/input test coverage context in separate bounded packets (379 unique LOC). Zero observed controller defects (0/KLOC static), actual HTTP/DB and design pending; see `docs/completion/felix-adm803-review.md`.
