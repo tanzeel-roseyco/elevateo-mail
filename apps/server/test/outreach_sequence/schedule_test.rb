@@ -23,6 +23,7 @@ class OutreachSequenceScheduleTest < Minitest::Test
     assert_raises(ArgumentError) { Schedule.due_utc(local_at: "2026-02-30T12:00:00", timezone: "Europe/Berlin") }
     assert_raises(ArgumentError) { Schedule.due_utc(local_at: "2026-03-29T03:30:00Z", timezone: "Europe/Berlin") }
     assert_raises(ArgumentError) { Schedule.due_utc(local_at: "2026-03-29T03:30:00", timezone: "No/SuchZone") }
+    assert_raises(ArgumentError) { Schedule.due_utc(local_at: "\xFF".b, timezone: "Europe/Berlin") }
   end
 
   def test_occurrence_key_is_stable_and_changes_with_step_or_version

@@ -17,13 +17,15 @@ module Elevateo
 
       # AIDEV-NOTE: A DST gap or fold has no unambiguous due instant; the author must choose another local time.
       def due_utc(local_at:, timezone:)
-        raise ArgumentError, "invalid local time" unless local_at.is_a?(String) && (match = LOCAL_AT.match(local_at))
+        raise ArgumentError, "invalid local time" unless local_at.is_a?(String) && local_at.valid_encoding? && local_at.ascii_only? &&
+          (match = LOCAL_AT.match(local_at))
         year, month, day, hour, minute, second = match.captures.map(&:to_i)
         unless Date.valid_date?(year, month, day) && hour.between?(0, 23) &&
                minute.between?(0, 59) && second.between?(0, 59)
           raise ArgumentError, "invalid local time"
         end
-        raise ArgumentError, "invalid timezone" unless timezone.is_a?(String) && timezone.bytesize.between?(1, 128)
+        raise ArgumentError, "invalid timezone" unless timezone.is_a?(String) && timezone.valid_encoding? && timezone.ascii_only? &&
+          timezone.bytesize.between?(1, 128)
         zone = TZInfo::Timezone.get(timezone)
         local = Time.utc(year, month, day, hour, minute, second)
         zone.local_to_utc(local, nil).utc
@@ -36,7 +38,7 @@ module Elevateo
       # Stable occurrence identity for a proposed lead/step on one draft revision; persistence must enforce UNIQUE.
       def occurrence_key(campaign_id:, lead_id:, step_id:, draft_version:)
         ids = [campaign_id, lead_id, step_id]
-        raise ArgumentError, "invalid occurrence id" unless ids.all? { |id| id.is_a?(String) && UUID.match?(id) }
+        raise ArgumentError, "invalid occurrence id" unless ids.all? { |id| id.is_a?(String) && id.valid_encoding? && id.ascii_only? && UUID.match?(id) }
         unless draft_version.is_a?(Integer) && draft_version.between?(1, MAX_VERSION)
           raise ArgumentError, "invalid draft version"
         end
