@@ -41,7 +41,7 @@ cd "$repo_root/apps/web"
 npm ci
 npm run build
 cd "$repo_root/apps/native/src-tauri"
-cargo tauri build --locked --target universal-apple-darwin --bundles dmg
+cargo tauri build --target universal-apple-darwin --bundles dmg -- --locked
 set -- target/universal-apple-darwin/release/bundle/macos/*.app
 [ "$#" -eq 1 ] && [ -d "$1" ] || { echo 'MAC-814 expected exactly one app bundle' >&2; exit 1; }
 app_bundle=$1
