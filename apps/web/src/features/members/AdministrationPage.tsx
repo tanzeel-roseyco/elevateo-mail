@@ -108,7 +108,8 @@ export function AdministrationPage({ section }: { section: 'people' | 'organizat
       else setNotice('The change was not confirmed. Reload current permissions before another change.')
       return
     }
-    // The server returns only the changed grant; reload the whole redacted projection and actor authority.
+    // The server returns only the changed grant; freeze controls until session and full projection reload.
+    setWriteBlocked(true)
     setNotice('Change recorded. Reloading current permissions and audit revision.')
     refresh()
   }

@@ -32,6 +32,7 @@ describe('administration page', () => {
     fireEvent.click(screen.getByText('Save role'))
     await waitFor(() => expect(replace).toHaveBeenCalledWith(orgId, targetId, { role: 'organization_admin', expected_revision: 2 }, expect.anything(), expect.anything(), expect.anything()))
     expect(refresh).toHaveBeenCalled()
+    expect(screen.getByText('Save role').hasAttribute('disabled')).toBe(true)
     expect(replace.mock.calls[0]?.[1]).not.toBe('elev-person-001')
   })
   it('verifies the server roster without treating configuration keys as Auth subjects', async () => {
