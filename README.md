@@ -16,6 +16,8 @@ Shared company mailroom with one Rails domain authority and a React/TypeScript c
 
 ### MAIL-819 isolated inbound boundary
 
+FIX948 source candidate: standalone Rack controller suites in the expanded backend lack `Rails.logger`, causing `ApplicationController`'s error handler to raise and hide the original exception. The handler keeps the Rails logger in booted application mode and emits the same bounded diagnostic to stderr when no Rails logger exists. Soren's fleet check on this successor is pending; the 13 underlying controller failures are not yet classified.
+
 LINT932 correction: the fake inbound authorization callback now accepts unused keywords through `**` while retaining the typed `input:` and protected-write contract. Soren's coherent `a2f58b34` lint gate showed the prior `_query` repair still failed; targeted fleet lint and Steep on this successor are pending.
 
 The b3aaa07e focused lint followup uses an explicitly ignored `query:` callback value in the test-only fake inbound controller. The frozen controller source matched this branch before the edit; Soren's fleet Docker lint rerun on the successor remains pending.

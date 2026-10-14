@@ -1,5 +1,7 @@
 # MAIL-819 isolated inbound boundary
 
+FIX948 shared error-logger source candidate and its focused regression are recorded in [Corin's FIX948 report](corin-fix948.md). The fallback addresses a secondary error masking 13 standalone Rack controller failures; Soren's fleet rerun must reveal and classify the primary failures before acceptance.
+
 LINT932 corrects the `f8d54cd7` fake inbound callback attempt after coherent `a2f58b34` still reported `Lint/UnusedBlockArgument`; see [focused record](corin-lint932.md). The successor uses keyword rest for the unused `query:` argument and awaits Soren's fleet lint/Steep/HTTP checks.
 
 Focused `b3aaa07e` lint repair: Soren's receipt names `app/controllers/v2/fake_inbound_controller.rb:16` `Lint/UnusedBlockArgument`, despite the dispatch's V1 path wording. The frozen V2 controller blob SHA256 `1733908bcb3ac377562539e67e96251980d9036755f70523e052f01f7a7c2b58` matched this branch before editing. The callback continues to receive `query:` under the exact typed `protected_write` contract and marks only its unused local `_query`; scalar validation and protected authorization stay unchanged. Corin ran no application test, Docker, Steep or RuboCop; successor lint remains pending under Soren's fleet lease. Actual runtime is Codex `gpt-6-sol` LOW; fast billing is unverified. Exact commit SHA and check request are in the shared outbox.
