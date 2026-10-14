@@ -35,7 +35,8 @@ export function MessageAttachments({ mailboxId, threadId, messageId, count, port
 }) {
   const { request } = useProtectedRequest()
   const [state, setState] = useState<ListState>({ status: 'closed' })
-  const [downloadState, setDownloadState] = useState<{ id: string; status: 'loading' | 'error' | 'unavailable' } | null>(null)
+  const [downloadState, setDownloadState] = useState<Map<string, 'loading' | 'error' | 'unavailable'>>(() => new Map())
+  const pendingDownloads = useRef(new Set<string>())
   const activeUrls = useRef(new Set<string>())
   // AIDEV-NOTE: The reader keys this component by message; revoke every ephemeral blob URL at owner exit.
   useLayoutEffect(() => {
@@ -67,32 +68,46 @@ export function MessageAttachments({ mailboxId, threadId, messageId, count, port
   }
 
   async function download(item: AttachmentSummary) {
-    setDownloadState({ id: item.id, status: 'loading' })
-    const result = await request((ctx, signal) => port.downloadCleanInboxAttachment(ctx, mailboxId, threadId, messageId, item.id, signal))
-    if (result.kind === 'stale') return
-    if (result.kind === 'failed') {
-      setDownloadState({ id: item.id, status: isApiError(result.error, 'not_available') || (result.error instanceof Error && 'status' in result.error && result.error.status === 423) ? 'unavailable' : 'error' })
-      return
-    }
-    if (result.value.size !== item.byte_size || result.value.size > 10 * 1024 * 1024) {
-      setDownloadState({ id: item.id, status: 'error' })
-      return
-    }
-    let url: string | null = null
+    // AIDEV-NOTE: The ref fences duplicate clicks before React commits; each completion owns only its ID.
+    if (pendingDownloads.current.has(item.id)) return
+    pendingDownloads.current.add(item.id)
+    const update = (status: 'loading' | 'error' | 'unavailable' | null) => setDownloadState((prior) => {
+      const next = new Map(prior)
+      if (status === null) next.delete(item.id)
+      else next.set(item.id, status)
+      return next
+    })
+    update('loading')
     try {
+      const result = await request((ctx, signal) => port.downloadCleanInboxAttachment(ctx, mailboxId, threadId, messageId, item.id, signal))
+      if (result.kind === 'stale') return
+      if (result.kind === 'failed') {
+        update(isApiError(result.error, 'not_available') || (result.error instanceof Error && 'status' in result.error && result.error.status === 423) ? 'unavailable' : 'error')
+        return
+      }
+      if (result.value.size !== item.byte_size || result.value.size > 10 * 1024 * 1024) {
+        update('error')
+        return
+      }
       const createdUrl = URL.createObjectURL(result.value)
-      url = createdUrl
       activeUrls.current.add(createdUrl)
-      const anchor = document.createElement('a')
-      anchor.href = createdUrl
-      anchor.download = item.filename
-      anchor.click()
-      // A short delay lets the browser start the download; owner cleanup also revokes pending URLs.
-      window.setTimeout(() => { URL.revokeObjectURL(createdUrl); activeUrls.current.delete(createdUrl) }, 1000)
-      setDownloadState(null)
+      try {
+        const anchor = document.createElement('a')
+        anchor.href = createdUrl
+        anchor.download = item.filename
+        anchor.click()
+        // A short delay lets the browser start the download; owner cleanup also revokes pending URLs.
+        window.setTimeout(() => { URL.revokeObjectURL(createdUrl); activeUrls.current.delete(createdUrl) }, 1000)
+        update(null)
+      } catch {
+        URL.revokeObjectURL(createdUrl)
+        activeUrls.current.delete(createdUrl)
+        update('error')
+      }
     } catch {
-      if (url !== null) { URL.revokeObjectURL(url); activeUrls.current.delete(url) }
-      setDownloadState({ id: item.id, status: 'error' })
+      update('error')
+    } finally {
+      pendingDownloads.current.delete(item.id)
     }
   }
 
@@ -105,9 +120,9 @@ export function MessageAttachments({ mailboxId, threadId, messageId, count, port
       {state.items.length === 0 && <p>No attachment metadata is available.</p>}
       <ul className="flex flex-col gap-2">{state.items.map((item) => <li key={item.id}>
         <span>{item.filename} ({item.byte_size} bytes) — {statusText(item.scan_status)}</span>
-        {item.scan_status === 'clean' && <Button size="sm" disabled={downloadState?.id === item.id && downloadState.status === 'loading'} onClick={() => void download(item)}>Download {item.filename}</Button>}
-        {downloadState?.id === item.id && downloadState.status === 'unavailable' && <p role="alert">This attachment is no longer available to download.</p>}
-        {downloadState?.id === item.id && downloadState.status === 'error' && <p role="alert">Download failed. Retry explicitly.</p>}
+        {item.scan_status === 'clean' && <Button size="sm" disabled={downloadState.get(item.id) === 'loading'} onClick={() => void download(item)}>Download {item.filename}</Button>}
+        {downloadState.get(item.id) === 'unavailable' && <p role="alert">This attachment is no longer available to download.</p>}
+        {downloadState.get(item.id) === 'error' && <p role="alert">Download failed. Retry explicitly.</p>}
       </li>)}</ul>
       {state.error && <p role="alert">{state.error}</p>}
       {state.nextCursor && <Button size="sm" disabled={state.loadingMore} onClick={() => void load(state.nextCursor ?? undefined)}>{state.loadingMore ? 'Loading…' : 'Show more attachments'}</Button>}

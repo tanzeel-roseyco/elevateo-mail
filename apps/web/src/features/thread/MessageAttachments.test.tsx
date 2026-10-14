@@ -43,6 +43,34 @@ describe('private inbox attachments (ATT830)', () => {
     expect(URL.revokeObjectURL).toHaveBeenCalledWith('blob:private-test')
   })
 
+  it('keeps each overlapping download busy until its own response settles', async () => {
+    const second: AttachmentSummary = { ...clean, id: '00000000-0000-4000-8000-000000000052', filename: 'second.txt' }
+    let finishFirst!: (value: Blob) => void
+    let finishSecond!: (value: Blob) => void
+    const download = vi.fn<AttachmentReadPort['downloadCleanInboxAttachment']>(async (_ctx, _mb, _thread, _message, id) => new Promise<Blob>((resolve) => {
+      if (id === FILE) finishFirst = resolve
+      else finishSecond = resolve
+    }))
+    Object.defineProperty(URL, 'createObjectURL', { configurable: true, value: vi.fn(() => 'blob:private-test') })
+    Object.defineProperty(URL, 'revokeObjectURL', { configurable: true, value: vi.fn() })
+    vi.spyOn(HTMLAnchorElement.prototype, 'click').mockImplementation(() => {})
+    renderAttachments({ listInboxAttachments: async () => ({ items: [clean, second], next_cursor: null }), downloadCleanInboxAttachment: download })
+    fireEvent.click(await screen.findByRole('button', { name: 'Show 1 attachment' }))
+    const firstButton = await screen.findByRole('button', { name: 'Download notes.txt' })
+    const secondButton = screen.getByRole('button', { name: 'Download second.txt' })
+    fireEvent.click(firstButton)
+    fireEvent.click(secondButton)
+    expect(firstButton).toHaveProperty('disabled', true)
+    expect(secondButton).toHaveProperty('disabled', true)
+    await act(async () => finishFirst(new Blob(['hello'])))
+    expect(firstButton).toHaveProperty('disabled', false)
+    expect(secondButton).toHaveProperty('disabled', true)
+    fireEvent.click(secondButton)
+    expect(download).toHaveBeenCalledTimes(2)
+    await act(async () => finishSecond(new Blob(['hello'])))
+    expect(secondButton).toHaveProperty('disabled', false)
+  })
+
   it('holds pending and blocked files without requesting bytes', async () => {
     const download = vi.fn<AttachmentReadPort['downloadCleanInboxAttachment']>()
     renderAttachments({

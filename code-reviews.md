@@ -688,3 +688,7 @@ Bounded source packet: `apps/web/src/features/thread/ThreadPage.tsx` (about 28 c
 ## FE-806 message permalink review request
 
 Bounded packet: `apps/web/src/features/thread/ThreadPage.tsx` (about 23 changed lines) and `ThreadPage.test.tsx` (about 53 added lines). Request independent adversarial source review plus dedicated design tradeoff review: URL parsing, stale scope, page termination, accessibility/focus and cross-mailbox disclosure. No review was performed in this worker turn; defects and density are pending. Tests and browser evidence are authored/requested, not executed.
+
+## ATT843 ADV092 focused repair packet
+
+Dispatched Vera finding against `2eca511` identifies one overlapping-download busy-state defect in `MessageAttachments.tsx` around the single `{id,status}` state. The named full review file was unavailable during this repair, so unique reviewed LOC and review density are not asserted here. Owner repair uses per-ID pending ownership and per-ID visible status; the deferred A/B regression is authored but not executed. Request bounded independent re-review of the changed download function/control and Soren fleet Docker proof on the exact repair SHA; runtime and browser evidence remain pending.

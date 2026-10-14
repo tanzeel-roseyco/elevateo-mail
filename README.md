@@ -18,6 +18,8 @@ Shared company mailroom with one Rails domain authority and a React/TypeScript c
 
 The isolated thread reader can show bounded private attachment metadata on explicit request and offer an authorized byte-proxy download only for `clean` rows. Pending, blocked and failed scans remain held; a fresh proxy denial remains unavailable. This frontend port follows the noncanonical V2 proposal and is not connected to an active route or scanner. Outbound attachment upload/send remains disabled; fleet tests and browser acceptance are pending. See [Mira's owner record](docs/completion/mira.md).
 
+ATT843 repairs overlapping clean-download controls: each attachment retains its own pending/error state, and a second click cannot dispatch a duplicate request while its ID is pending. Source regression and fleet proof are pending.
+
 
 ### R25 approval reload recovery candidate
 
