@@ -700,3 +700,5 @@ FE807 denied-read presentation: author self-review found create-draft navigation
 FE807 analytics copy self-review: backend's candidate `consented_count` excludes suppressions, while UI said merely “consented.” Source now labels the aggregate “consented and unsuppressed” and adds a component case; no execution or independent review claim.
 
 FE807 QA815 `fe96194` fleet result: API check and lint PASS, typecheck FAILED with eight instances of explicit `gateway={undefined}` in test helper under `exactOptionalPropertyTypes`; unit/build NOT_REACHED. Celeste repaired the test helper by omitting the optional prop when absent. Fresh Docker rerun and independent review pending; no PASS claim for the repair.
+
+FE807 Dorian DTO alignment: immutable `b8c3e39` adds nullable `consent_evidence_kind` to lead detail. FE807 strict boundary and component source now display `manual_attestation` as evidence metadata, never send eligibility. No runtime or independent review claim for this follow-up.

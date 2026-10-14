@@ -143,9 +143,10 @@ describe('Outreach routed pages', () => {
     expect(g.listCampaigns).toHaveBeenCalledWith(context, { cursor: campaignId }, expect.any(AbortSignal))
   })
   it('shows server evidence on a distinct lead detail route without claiming send authority', async () => {
-    const g = gateway({ getLead: vi.fn(async () => ({ ...lead, consent_status: 'granted', consent_source: 'Signed intake form', consent_recorded_at: '2026-10-14T12:00:00Z', consent_recorded_by: campaignId })) })
+    const g = gateway({ getLead: vi.fn(async () => ({ ...lead, consent_status: 'granted', consent_source: 'Signed intake form', consent_recorded_at: '2026-10-14T12:00:00Z', consent_recorded_by: campaignId, consent_evidence_kind: 'manual_attestation' })) })
     view(`/outreach/campaigns/${campaignId}/leads/${leadId}`, g)
     expect(await screen.findByText(/Evidence source: Signed intake form/)).toBeTruthy()
+    expect(screen.getByText(/Evidence kind: manual attestation/)).toBeTruthy()
     expect(screen.getByText(/does not authorize sending/)).toBeTruthy()
     expect(g.getLead).toHaveBeenCalledWith(context, campaignId, leadId, expect.any(AbortSignal))
   })
