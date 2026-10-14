@@ -688,3 +688,5 @@ QA816 supplemental expansion through d8abe4a remains pending independent bounded
 QA816 V2 People case at 52e11bd has no independent bounded review yet; unique reviewed LOC 0 and defect density not computed. Its authorization assertions remain NOT_RUN pending Soren's integrated fleet browser run.
 
 QA816 head eb0f394: no new independent adversarial review receipt; source coverage remains 0 independently reviewed LOC and density not computed. Partitioned runtime requests are NOT_RUN.
+
+QA816 V2 campaign browser source a737fd9 is authored, not independently reviewed: reviewed unique LOC 0, defects not established, density not computed. Its three cases and images remain NOT_RUN until integrated adapter/route/seed admission.

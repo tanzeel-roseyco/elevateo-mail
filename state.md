@@ -126,3 +126,5 @@ QA816 head d8abe4a: ten supplemental Playwright scenarios use accepted SCN-QA ID
 QA816 head 52e11bd adds a V2 People manager/reader browser candidate; twenty screenshot IDs are now admitted. Cassian's activated GET and Lyra/Fable UI require integrated fleet execution before any permission or visual PASS is recorded.
 
 Latest QA816 head eb0f394 partitions V1, shell, simulated send and V2 grants so Soren can run only admitted real-browser cases. Current head has NOT_RUN browser status; earlier 302142c compile/unit PASS is nontransferable. Outreach create/detail still awaits an active V2 gateway adapter.
+
+QA816 Outreach candidate a737fd9 adds three real V2 campaign Playwright cases and four fixed screenshot IDs (25 total). The integrated web gateway is currently unbound, so these cases are NOT_RUN pending Cassian's adapter/routes and Soren's disposable fleet stack.
