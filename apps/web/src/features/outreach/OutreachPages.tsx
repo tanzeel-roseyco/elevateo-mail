@@ -110,7 +110,7 @@ function CampaignList(props: OutreachPageProps) {
   const cursor = search.get('cursor') ?? undefined
   const state = useOutreachRead('campaigns', props, undefined, 0, cursor)
   return <Page title="Campaigns">
-    <Link to="/outreach/campaigns/new">Create draft campaign</Link>
+    {state.status === 'ready' && <Link to="/outreach/campaigns/new">Create draft campaign</Link>}
     <Content state={state} empty={(page) => page.items.length === 0 && page.next_cursor === null}>{(page) => <>
       <ul className="space-y-2">{page.items.map((campaign) =>
         <li key={campaign.id}><Link to={`/outreach/campaigns/${campaign.id}`}>{campaign.name}</Link> · {campaign.status}</li>)}</ul>
