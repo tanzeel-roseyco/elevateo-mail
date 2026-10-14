@@ -50,6 +50,7 @@ class DurableLocalDriverTest < Minitest::Test
   def test_corrupt_ledger_fails_closed
     with_driver("accept") do |driver, path|
       File.write(path, "{broken\n")
+      File.chmod(0o600, path)
       assert_raises(ArgumentError) do
         driver.submit(BYTES, send_id: SEND_ID, attempt_id: ATTEMPT_ID, deadline: deadline)
       end
