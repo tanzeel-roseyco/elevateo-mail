@@ -43,9 +43,17 @@ module Elevateo
         provider_account_id: String, provider_event_id: String, raw_mime: String) -> Hash[String, String]
       def capability: (String) -> String
       private
+      def validate_scope!: (String, String, Array[String], String, String, String) -> void
+      def event_key?: (Object) -> bool
+      def select_plaintext: (Mail::Message) -> [Mail::Message, Array[Mail::Message]]
+      def decoded_text: (Mail::Message) -> String
+      def record_for: (Mail::Message, String, String, [Mail::Message, Array[Mail::Message]],
+        Hash[Symbol, String]) -> record
+      def attachment: (Mail::Message) -> attachment
       def uuid?: (Object) -> bool
       def reject: (String) -> bot
       def leaf_parts: (Mail::Message) -> Array[Mail::Message]
+      def add_children: (Array[[Mail::Message, Integer]], Mail::Message, Integer) -> void
       def clean_header: (Object?) -> String
       def clean_filename: (Object?) -> String
     end
