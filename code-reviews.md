@@ -896,6 +896,7 @@ INT-801 resolution of preceding risk: source trace into `be02_writes/guard.sql` 
 
 Fleet lint failure web93f7: six unused parameters in `outreachGatewayBridge.test.ts` (tooling evidence, 1 defect in 36 test LOC). Repaired by removing the bridge and its test now that Cassian's adapter matches Celeste's port; `main.tsx` wires the adapter under the explicit port type. No lint rule disabled. One wiring case added, not executed.
 ADM-803 additive role audit source through `f753a5c`: audit projection 48 physical LOC, audit controller 62 LOC, pure test 53 LOC, HTTP test 103 LOC, RBS 19 LOC. Proposed functional review packets remain <=200 LOC with separate design reviewer; reviewed LOC 0 and defect density unclaimed until independent review. Root delegated audit SQL to Sabine and API to Theo, so SQL atomics/privileges and Rails output require distinct evidence; no Docker runtime claim.
+FE807 role-policy follow-up: root supplied owner/admin/sales role matrix while source remained read-only to authorization; one client foreign-campaign account receipt test was added. Enforcement and real DB/HTTP denial review belongs to Sabine/Cassian/Dorian/Felix; no UI-only authorization claim or test PASS.
 
 ADM-803 independent Felix QA817 functional source review: exact current `organization_grants_controller.rb` SHA-256 584fcee91ff8f12a7f309917ff16f9f5ec901d2e49a480aa7683578a7e274198, physical lines 1–200, 0 confirmed defects (0/KLOC) under full rubric; 179 test context LOC in two separate bounded packets, not counted as controller defects. Report `docs/completion/felix-adm803-review.md` on Felix commit `8f4e2a84bb5723657d6106ab479fa6bd2d54522e`; separate design review and integrated HTTP/SQL runtime remain open. Audit controller/projection were added later and are outside this review. Soren QA815 outbox reports isolated Theo 769c42f roster 4 runs/14 assertions PASS and grant input 3 runs/10 assertions PASS in fleet Docker with task container absence; exact current actor/audit source and integrated routes/SQL were not tested by those runs.
 
@@ -966,3 +967,8 @@ INT-801 direct-message addition self-review: 14 registry/test LOC, 177 new OpenA
 ### FE808 fleet typecheck fixture repair
 
 Soren reported `web-c4fa27c01f5e` API/lint PASS and TypeScript FAIL at two `adminModel.test.ts` lines due a widened fixture department type. Lyra changed only the test projection to parse through the canonical `RosterPersonSchema`; no cast or production contract was changed. Source diff check passed; fleet rerun and independent review remain pending, so no runtime PASS or independent defect density is claimed.
+
+### FE-805 R8 Outreach session policy self-inspection (Fable, 2026-10-15)
+
+Author self-inspection only; no independent review was performed or is claimed. Scope: `apps/web/src/app/outreachSessionPolicy.ts` (58 LOC), `features/index.tsx` delta (12 LOC), tests (`outreachSessionPolicy.test.ts` 60 LOC, `Shell.test.tsx` +95 LOC). Checked: generation captured per call, not at bind time; sync throws and rejections both reach `handleError` and are rethrown unchanged; optional capabilities not fabricated; memo deps are the injected port plus stable session callbacks (`scope` is a ref-stable instance, `handleError` a memoised callback). Defects found: 0 across 225 LOC (0/KLOC). Tests are authored and not executed; fleet run requested from Soren.
+

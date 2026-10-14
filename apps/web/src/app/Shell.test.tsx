@@ -14,6 +14,8 @@ import { SESSION_FRESHNESS_INTERVAL_MS, SessionProvider } from './session'
 import { Shell } from './Shell'
 import { MailboxSelection } from './MailboxSelection'
 import { featureRoutes } from './features'
+import { FeatureGatewaysProvider, type FeatureGateways } from './featureGateways'
+import type { OutreachGateway } from '@/features/outreach/contract'
 
 const contextChanged = () => new GatewayError('api', 'context_changed', 'synthetic', { status: 409, requestId: 'r1' })
 const cursorInvalid = () => new GatewayError('api', 'cursor_invalid', 'synthetic', { status: 400, requestId: 'r1' })
@@ -489,5 +491,94 @@ describe('simulation labelling derives from the session (ADV033)', () => {
     expect(screen.getByText('Simulated local mail')).toBeTruthy()
     expect(screen.getByText('Simulation mode: no mail is sent or received. Drafts and notes are saved on the server.')).toBeTruthy()
     expect(screen.queryByText(/stay on this installation/)).toBeNull()
+  })
+})
+
+// FE-805 central session policy for Outreach: Celeste's pages call the gateway directly, so the
+// registered route polices every operation through SessionProvider.handleError. A 401 from a
+// write therefore clears the whole protected subtree (not only the local form), one context
+// change recovers the session, and an ordinary failure stays on Celeste's page.
+describe('Outreach operations under the central session policy (FE-805)', () => {
+  const unauthenticated = () => new GatewayError('api', 'unauthenticated', 'synthetic', { status: 401, requestId: 'r1' })
+  const unused = vi.fn(async () => { throw new Error('not expected in this test') })
+  const campaignId = '1a40d184-987d-4b50-98d2-f674e41842f9'
+  function outreachWith(overrides: Partial<OutreachGateway>): OutreachGateway {
+    return {
+      listCampaigns: async () => ({ items: [{ id: campaignId, name: 'Pilot', status: 'paused', version: 1 }], next_cursor: null }),
+      getCampaign: unused, createCampaign: unused, updateCampaign: unused, listLeads: unused,
+      addLead: unused, updateLead: unused, listAccounts: unused, getAccount: unused, listAnalytics: unused,
+      ...overrides,
+    }
+  }
+  function renderOutreach(gateway: MailroomGateway, path: string, featureGateways: FeatureGateways) {
+    return render(
+      <SessionProvider gateway={gateway}>
+        <FeatureGatewaysProvider value={featureGateways}>
+          <MemoryRouter initialEntries={[path]}>
+            <Routes>
+              <Route element={<Shell />}>
+                <Route index element={<MailboxSelection />} />
+                {featureRoutes.map((route) => (
+                  <Route key={route.path} path={route.path} element={route.element} />
+                ))}
+              </Route>
+            </Routes>
+          </MemoryRouter>
+        </FeatureGatewaysProvider>
+      </SessionProvider>,
+    )
+  }
+
+  it('a 401 from a campaign write clears the protected shell and restores access centrally (happy path)', async () => {
+    let finishRefresh: (() => void) | undefined
+    const base = createFixtureGateway({ refreshSession: 'lifecycle_a' })
+    const gateway: MailroomGateway = {
+      ...base,
+      refreshSession: (proof, signal) => new Promise((resolve, reject) => {
+        finishRefresh = () => base.refreshSession(proof, signal).then(resolve, reject)
+      }),
+    }
+    const createCampaign = vi.fn(async () => { throw unauthenticated() })
+    renderOutreach(gateway, '/outreach/campaigns/new', { outreach: outreachWith({ createCampaign }) })
+    await screen.findByText('Synthetic organization A')
+    fireEvent.change(await screen.findByLabelText('Campaign name'), { target: { value: 'Pilot' } })
+    fireEvent.click(screen.getByRole('button', { name: 'Save draft' }))
+    // The whole protected subtree is gone while the single bounded refresh runs: no form, no rail.
+    await screen.findByRole('status', { name: 'Restoring access' })
+    expect(screen.queryByLabelText('Campaign name')).toBeNull()
+    expect(screen.queryByRole('navigation', { name: 'Outreach' })).toBeNull()
+    expect(createCampaign).toHaveBeenCalledTimes(1)
+    await waitFor(() => expect(finishRefresh).toBeDefined())
+    act(() => finishRefresh!())
+    await screen.findByText('Synthetic organization A')
+    expect(await screen.findByLabelText('Campaign name')).toBeTruthy()
+  })
+
+  it('one context change from a campaign read recovers the session and the list reloads with the new epoch', async () => {
+    let calls = 0
+    const listCampaigns = vi.fn(async () => {
+      calls += 1
+      if (calls === 1) throw contextChanged()
+      return { items: [{ id: campaignId, name: 'Pilot', status: 'paused' as const, version: 1 }], next_cursor: null }
+    })
+    renderOutreach(createFixtureGateway(), '/outreach/campaigns', { outreach: outreachWith({ listCampaigns }) })
+    await screen.findByText('Synthetic organization A')
+    // Recovery replaces the protected subtree; the remounted page re-reads under the new epoch.
+    expect(await screen.findByRole('link', { name: 'Pilot' })).toBeTruthy()
+    expect(listCampaigns).toHaveBeenCalledTimes(2)
+    expect(screen.queryByRole('status', { name: 'Restoring session' })).toBeNull()
+  })
+
+  it("an ordinary failure stays on Celeste's page as her own alert without any session transition", async () => {
+    const createCampaign = vi.fn(async () => { throw new GatewayError('api', 'request_invalid', 'synthetic', { status: 422, requestId: 'r2' }) })
+    renderOutreach(createFixtureGateway(), '/outreach/campaigns/new', { outreach: outreachWith({ createCampaign }) })
+    await screen.findByText('Synthetic organization A')
+    fireEvent.change(await screen.findByLabelText('Campaign name'), { target: { value: 'Pilot' } })
+    fireEvent.click(screen.getByRole('button', { name: 'Save draft' }))
+    await screen.findByRole('alert')
+    expect(screen.getByLabelText('Campaign name')).toBeTruthy()
+    expect(screen.getByRole('navigation', { name: 'Outreach' })).toBeTruthy()
+    expect(screen.queryByRole('status', { name: 'Restoring access' })).toBeNull()
+    expect(screen.queryByRole('status', { name: 'Restoring session' })).toBeNull()
   })
 })
