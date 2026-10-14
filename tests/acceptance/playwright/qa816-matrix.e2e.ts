@@ -185,3 +185,27 @@ scenario('SCN-QA-819-P', 'manager-roster-reader-denial', async (page, record) =>
   } finally { await context.close(); }
   record.assertions.push('Manager roster renders from real API 200; separate reader session receives API denial and nonactionable UI');
 });
+
+scenario('SCN-QA-819-F1', 'v2-organization-grants-reader-denial', async (page, record) => {
+  const path = `/v2/organizations/${seed.organizations.primary}/grants`;
+  await signIn(page, 'manager_primary');
+  const [grants] = await Promise.all([responseAt(page, path), page.goto('/#/people')]);
+  expect(grants.status()).toBe(200);
+  await expect(page.getByRole('heading', { name: 'People', exact: true })).toBeVisible();
+  await expect(page.getByText('Current grants loaded', { exact: false })).toBeVisible();
+  await expect(page.getByText('These twelve references are unbound.', { exact: false })).toBeVisible();
+  record.artifacts.push(await screenshot(page, 'QA816-ADMIN-F1-manager-people'));
+  const context = await page.context().browser()?.newContext({ baseURL: 'http://app.test' });
+  if (!context) throw new Error('Reader context unavailable');
+  try {
+    const reader = await context.newPage();
+    await signIn(reader, 'reader');
+    const [denied] = await Promise.all([responseAt(reader, path), reader.goto('/#/people')]);
+    expect([403, 404]).toContain(denied.status());
+    await expect(reader.getByText('Administration unavailable')).toBeVisible();
+    await expect(reader.getByText('Current grants loaded', { exact: false })).toHaveCount(0);
+    await expect(reader.getByRole('button', { name: 'Save role' })).toHaveCount(0);
+    record.artifacts.push(await screenshot(reader, 'QA816-ADMIN-F1-reader-people'));
+  } finally { await context.close(); }
+  record.assertions.push('Versioned organization grants GET is real and role scoped; unbound planning identities never become reader grant controls');
+});
