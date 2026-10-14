@@ -194,3 +194,5 @@ QA815 later gate: exact `6c626e2` web V1/V2 checks passed but lint failed five o
 QA815 latest `e9ead71` isolated Ruby: direct read 8/90 and attachment service 13/55 passed; gateway app had two helper keyword errors. V2 contract/input/schedule/preferences units passed, while sequence controller could not load due repository Ruby syntax at line123. These are exact-source unit findings; database migration/HTTP remains blocked separately. See `docs/completion/soren.md`.
 
 QA815 Elara focused diagnostic on isolated `94bd1ee` (not current integration): PostgreSQL migrations passed, one protected outreach draft authorization case failed 1/5 despite membership=true, role=sales and correct function owner; protected result remained `not_found`. Exact task cleanup passed. See `docs/completion/soren.md`.
+
+QA815 `845d422` web successor passed V1/V2/lint/type and 841/842 units; the remaining attachment gateway test calls unavailable jsdom `Blob.text()`. Build and repaired eight-PNG visual rerun await owner fix and a full gate. Current V2 declaration receipt is in `docs/completion/soren.md`.

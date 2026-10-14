@@ -1,0 +1,185 @@
+source=845d422e0ed8373eee9ebc388019462bbdc3b3a4
+started=2026-10-14T17:01:39Z
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            BuildKit is currently disabled; enable it by removing the DOCKER_BUILDKIT=0
+            environment-variable.
+
+Sending build context to Docker daemon  86.46MB
+Step 1/9 : FROM node:24.21.0-bookworm-slim@sha256:d6aa754f16b3197301076f047b5def2f02ea1dbbc2ca920407d46d7ec7f87b20
+ ---> d6aa754f16b3
+Step 2/9 : WORKDIR /workspace
+ ---> Running in ef2ee2d88264
+ ---> Removed intermediate container ef2ee2d88264
+ ---> 7d4443fb04f3
+Step 3/9 : COPY contracts/v1 ./contracts/v1
+ ---> 521648755622
+Step 4/9 : COPY contracts/v2 ./contracts/v2
+ ---> 45ed84592a64
+Step 5/9 : COPY apps/web ./apps/web
+ ---> 2802eaa6df18
+Step 6/9 : WORKDIR /workspace/apps/web
+ ---> Running in 5ffbc944fede
+ ---> Removed intermediate container 5ffbc944fede
+ ---> 45b3f4f54278
+Step 7/9 : RUN npm ci
+ ---> Running in 72a44eb3ab77
+[91mnpm warn deprecated whatwg-encoding@3.1.1: Use @exodus/bytes instead for a more spec-conformant and faster implementation
+[0m
+added 324 packages, and audited 325 packages in 3s
+
+67 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+[91mnpm warn install-scripts 1 package has install scripts not yet covered by allowScripts:
+npm warn install-scripts   esbuild@0.28.2 (postinstall: node install.js)
+npm warn install-scripts
+npm warn install-scripts Run `npm install-scripts ls` to review, or `npm install-scripts approve <pkg>` to allow.
+[0m[91mnpm notice
+npm notice New major version of npm available! 11.19.0 -> 12.2.0
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0
+npm notice To update run: npm install -g npm@12.2.0
+npm notice
+[0m ---> Removed intermediate container 72a44eb3ab77
+ ---> 0b74e6646477
+Step 8/9 : CMD ["bash", "-ceu", "npm run check:api && npm run check:api:v2 && npm run lint && npm run typecheck && npm run test -- --coverage && npm run build && ! grep -rl 'dev-fixtures\\|Development fixtures\\|fixture_token_a' dist"]
+ ---> Running in 4b772ef7b8af
+ ---> Removed intermediate container 4b772ef7b8af
+ ---> a7c5b17e0e6a
+Step 9/9 : LABEL qa815.owner=soren
+ ---> Running in 2575cd3bae42
+ ---> Removed intermediate container 2575cd3bae42
+ ---> 5a1f3ceb0901
+Successfully built 5a1f3ceb0901
+Successfully tagged qa815-web-845d422e0ed8:latest
+
+> @elevateo/web@0.1.0-read.1 check:api
+> openapi-typescript ../../contracts/v1/openapi.json --output src/data/generated/api.d.ts --check
+
+✨ openapi-typescript 7.13.0
+
+> @elevateo/web@0.1.0-read.1 generate:api:v2
+> openapi-typescript ../../contracts/v2/openapi.json --output src/data/generated/api-v2.d.ts
+
+✨ openapi-typescript 7.13.0
+🚀 ../../contracts/v2/openapi.json → src/data/generated/api-v2.d.ts [144.2ms]
+
+> @elevateo/web@0.1.0-read.1 check:api:v2
+> openapi-typescript ../../contracts/v2/openapi.json --output src/data/generated/api-v2.d.ts --check
+
+✨ openapi-typescript 7.13.0
+c22bde38524d4847da11ec51c08d1d6522ba45f55cf8fe613bb95d6988e69610  src/data/generated/api-v2.d.ts
+
+> @elevateo/web@0.1.0-read.1 lint
+> eslint . --max-warnings 0
+
+
+> @elevateo/web@0.1.0-read.1 typecheck
+> tsc -p tsconfig.json --noEmit
+
+
+> @elevateo/web@0.1.0-read.1 test
+> vitest run --coverage
+
+
+[1m[30m[46m RUN [49m[39m[22m [36mv4.1.11 [39m[90m/workspace/apps/web[39m
+      [2mCoverage enabled with [22m[33mv8[39m
+
+ [32m✓[39m src/features/drafts/DraftEditorPage.test.tsx [2m([22m[2m33 tests[22m[2m)[22m[33m 1560[2mms[22m[39m
+ [32m✓[39m src/features/thread/ThreadPage.test.tsx [2m([22m[2m36 tests[22m[2m)[22m[33m 942[2mms[22m[39m
+ [32m✓[39m src/app/Shell.test.tsx [2m([22m[2m27 tests[22m[2m)[22m[33m 1413[2mms[22m[39m
+ [32m✓[39m src/domain/draftOperation.test.ts [2m([22m[2m39 tests[22m[2m)[22m[32m 11[2mms[22m[39m
+ [32m✓[39m src/features/inbox/InboxPage.test.tsx [2m([22m[2m19 tests[22m[2m)[22m[33m 679[2mms[22m[39m
+ [32m✓[39m src/app/session-lifecycle.test.tsx [2m([22m[2m25 tests[22m[2m)[22m[32m 219[2mms[22m[39m
+ [32m✓[39m src/data/fixtures/collaborationState.test.ts [2m([22m[2m19 tests[22m[2m)[22m[32m 25[2mms[22m[39m
+ [32m✓[39m src/data/contract-collaboration.test.ts [2m([22m[2m59 tests[22m[2m)[22m[32m 30[2mms[22m[39m
+ [32m✓[39m src/app/session.test.tsx [2m([22m[2m16 tests[22m[2m)[22m[32m 297[2mms[22m[39m
+ [32m✓[39m src/data/cd-conformance.test.ts [2m([22m[2m44 tests[22m[2m)[22m[32m 42[2mms[22m[39m
+ [32m✓[39m src/features/outreach/OutreachPages.test.tsx [2m([22m[2m20 tests[22m[2m)[22m[33m 405[2mms[22m[39m
+ [32m✓[39m src/features/thread/CollaborationPanels.test.tsx [2m([22m[2m10 tests[22m[2m)[22m[33m 798[2mms[22m[39m
+ [32m✓[39m src/data/contract.test.ts [2m([22m[2m40 tests[22m[2m)[22m[32m 19[2mms[22m[39m
+ [32m✓[39m src/features/thread/MessageAttachments.test.tsx [2m([22m[2m11 tests[22m[2m)[22m[32m 280[2mms[22m[39m
+ [32m✓[39m src/data/http/transport.test.ts [2m([22m[2m27 tests[22m[2m)[22m[32m 29[2mms[22m[39m
+ [32m✓[39m src/features/send/SendReviewPage.test.tsx [2m([22m[2m12 tests[22m[2m)[22m[33m 593[2mms[22m[39m
+ [32m✓[39m src/data/lifecycle-conformance.test.ts [2m([22m[2m24 tests[22m[2m)[22m[32m 29[2mms[22m[39m
+ [32m✓[39m src/app/membershipRecovery.test.tsx [2m([22m[2m2 tests[22m[2m)[22m[33m 325[2mms[22m[39m
+ [32m✓[39m src/app/outreachSessionPolicy.test.ts [2m([22m[2m10 tests[22m[2m)[22m[32m 12[2mms[22m[39m
+ [32m✓[39m src/data/conformance.test.ts [2m([22m[2m40 tests[22m[2m)[22m[32m 31[2mms[22m[39m
+ [32m✓[39m src/features/auth/SignInPage.test.tsx [2m([22m[2m8 tests[22m[2m)[22m[32m 256[2mms[22m[39m
+ [32m✓[39m src/features/members/MembersPage.test.tsx [2m([22m[2m8 tests[22m[2m)[22m[33m 322[2mms[22m[39m
+ [32m✓[39m src/features/members/AdministrationPage.test.tsx [2m([22m[2m10 tests[22m[2m)[22m[32m 235[2mms[22m[39m
+ [32m✓[39m src/features/members/PersonalSettingsPage.test.tsx [2m([22m[2m7 tests[22m[2m)[22m[32m 84[2mms[22m[39m
+ [32m✓[39m src/data/signal-propagation.test.ts [2m([22m[2m100 tests[22m[2m)[22m[32m 63[2mms[22m[39m
+ [32m✓[39m src/data/fixtures/fixtureGateway.test.ts [2m([22m[2m31 tests[22m[2m)[22m[32m 19[2mms[22m[39m
+ [32m✓[39m src/data/v2OutreachGateway.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 26[2mms[22m[39m
+ [32m✓[39m src/features/auth/AuthCompletePage.test.tsx [2m([22m[2m6 tests[22m[2m)[22m[32m 221[2mms[22m[39m
+ [32m✓[39m src/data/send-conformance.test.ts [2m([22m[2m9 tests[22m[2m)[22m[32m 24[2mms[22m[39m
+ [32m✓[39m src/app/features/index.test.tsx [2m([22m[2m5 tests[22m[2m)[22m[32m 123[2mms[22m[39m
+ [32m✓[39m src/app/App.test.tsx [2m([22m[2m3 tests[22m[2m)[22m[32m 275[2mms[22m[39m
+ [32m✓[39m src/lib/readPage.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 7[2mms[22m[39m
+ [32m✓[39m src/data/contract-unicode.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 9[2mms[22m[39m
+ [32m✓[39m src/data/http/transport-cancellation.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 18[2mms[22m[39m
+ [32m✓[39m src/features/outreach/SequencePage.test.tsx [2m([22m[2m4 tests[22m[2m)[22m[32m 179[2mms[22m[39m
+ [32m✓[39m src/data/http/transport-boundaries.test.ts [2m([22m[2m14 tests[22m[2m)[22m[32m 20[2mms[22m[39m
+ [32m✓[39m src/app/collaborationNav.test.tsx [2m([22m[2m4 tests[22m[2m)[22m[33m 351[2mms[22m[39m
+ [32m✓[39m src/features/search/SearchPage.test.tsx [2m([22m[2m5 tests[22m[2m)[22m[32m 168[2mms[22m[39m
+ [32m✓[39m src/data/v2SequenceGateway.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 18[2mms[22m[39m
+ [32m✓[39m src/app/Sidebar.test.tsx [2m([22m[2m3 tests[22m[2m)[22m[32m 133[2mms[22m[39m
+ [32m✓[39m src/features/drafts/DraftsPage.test.tsx [2m([22m[2m2 tests[22m[2m)[22m[32m 161[2mms[22m[39m
+ [32m✓[39m src/data/v2PreferencesGateway.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 18[2mms[22m[39m
+ [32m✓[39m src/features/send/SendStatusPage.test.tsx [2m([22m[2m5 tests[22m[2m)[22m[32m 164[2mms[22m[39m
+ [32m✓[39m src/app/approvalRecovery.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 12[2mms[22m[39m
+ [32m✓[39m src/features/send/SavedDraftSendFlow.test.tsx [2m([22m[2m1 test[22m[2m)[22m[33m 314[2mms[22m[39m
+     [33m[2m✓[22m[39m offers review only after saving current edits and approves exactly the reviewed version [33m 313[2mms[22m[39m
+ [31m❯[39m src/data/v2AttachmentGateway.test.ts [2m([22m[2m4 tests[22m[2m | [22m[31m1 failed[39m[2m)[22m[32m 15[2mms[22m[39m
+[31m     [31m×[31m validates rejected metadata and reads bounded same-origin bytes[39m[32m 11[2mms[22m[39m
+     [32m✓[39m maps denied bytes to unavailable without retry[32m 2[2mms[22m[39m
+     [32m✓[39m rejects wrong binary length and invalid scope before returning a blob[32m 1[2mms[22m[39m
+     [32m✓[39m rejects unsafe metadata filenames before display[32m 1[2mms[22m[39m
+ [32m✓[39m src/data/contract-send.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 12[2mms[22m[39m
+ [32m✓[39m src/features/members/adminModel.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 5[2mms[22m[39m
+ [32m✓[39m src/features/outreach/contract.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 10[2mms[22m[39m
+ [32m✓[39m src/app/sendIntent.test.tsx [2m([22m[2m2 tests[22m[2m)[22m[32m 134[2mms[22m[39m
+ [32m✓[39m src/dev/demoGateway.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 15[2mms[22m[39m
+ [32m✓[39m src/data/send-signal.test.ts [2m([22m[2m12 tests[22m[2m)[22m[32m 15[2mms[22m[39m
+ [32m✓[39m src/app/SearchBox.test.tsx [2m([22m[2m3 tests[22m[2m)[22m[32m 124[2mms[22m[39m
+ [32m✓[39m src/app/featureRegistry.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 5[2mms[22m[39m
+ [32m✓[39m src/ui/ConnectivityBanner.test.tsx [2m([22m[2m3 tests[22m[2m)[22m[32m 91[2mms[22m[39m
+ [32m✓[39m src/data/v2DirectMessageGateway.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 14[2mms[22m[39m
+ [32m✓[39m src/data/v2Contract.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 7[2mms[22m[39m
+ [32m✓[39m src/features/outreach/featureModule.test.tsx [2m([22m[2m1 test[22m[2m)[22m[32m 4[2mms[22m[39m
+ [32m✓[39m src/app/entry.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 3[2mms[22m[39m
+ [32m✓[39m src/app/scope.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 3[2mms[22m[39m
+
+[31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 1 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m src/data/v2AttachmentGateway.test.ts[2m > [22minert private attachment gateway port[2m > [22mvalidates rejected metadata and reads bounded same-origin bytes
+[31m[1mTypeError[22m: blob.text is not a function[39m
+[36m [2m❯[22m src/data/v2AttachmentGateway.test.ts:[2m26:23[22m[39m
+    [90m 24|[39m     [34mexpect[39m(page[33m.[39mitems[[34m0[39m][33m?.[39mscan_status)[33m.[39m[34mtoBe[39m([32m'rejected'[39m)
+    [90m 25|[39m     const blob = await gateway.downloadCleanInboxAttachment(context, i…
+    [90m 26|[39m     [34mexpect[39m([35mawait[39m blob[33m.[39m[34mtext[39m())[33m.[39m[34mtoBe[39m([32m'abc'[39m)
+    [90m   |[39m                       [31m^[39m
+    [90m 27|[39m     expect(fetchImpl.mock.calls[1]?.[1]).toMatchObject({ credentials: …
+    [90m 28|[39m   })
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯[22m[39m
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[2m | [22m[1m[32m59 passed[39m[22m[90m (60)[39m
+[2m      Tests [22m [1m[31m1 failed[39m[22m[2m | [22m[1m[32m841 passed[39m[22m[90m (842)[39m
+[2m   Start at [22m 17:02:08
+[2m   Duration [22m 42.15s[2m (transform 922ms, setup 4.04s, import 4.55s, tests 11.42s, environment 13.95s)[22m
+
+Error response from daemon: No such container: qa815-web-845d422e0ed8
+Untagged: qa815-web-845d422e0ed8:latest
+Deleted: sha256:5a1f3ceb090131f76a67ea7d2d5ab4bf2aca913d9204501ff9355a2d0eac446a
+Deleted: sha256:a7c5b17e0e6aa5ff13b45cf164852cd4550b0f6dd220b9b1332b439d51c973bc
+Deleted: sha256:0b74e664647740176d87067b920cfe133c20c9c650b4a57fc0f3baa565ec7d69
+Deleted: sha256:45b3f4f54278bc6468d1aea7d0de9ed50221a744b262623fe33f14e69f117cba
+Deleted: sha256:2802eaa6df18065ea9158610310a8ccdf9ab6eb5a5a359dbed48148072f52282
+Deleted: sha256:45ed84592a642ecf990eb9ac8a6bb12f7842b668ea6b56ac3a78ac97c986f2d6
+Deleted: sha256:521648755622ea2be3ad1bdab099e294b15b32040a13fa5f98afadd36f9f2dea
+Deleted: sha256:7d4443fb04f37f756c1da02fa38608c83f13a160437c3f0ce80aca28eda75dab
+remaining_containers=0
+remaining_image=0

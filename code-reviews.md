@@ -704,3 +704,5 @@ QA815 later `6c626e2` lint and `8625387` aapt policy failures are executed gate 
 QA815 `e9ead71` isolated Ruby failures were executed tests, not independent bounded review. The gateway helper keyword errors and sequence repository syntax were routed to root/source owners. Additional independent review coverage remains 0 LOC and density unclaimed.
 
 QA815 Elara 94bd1ee focused role failure is a bounded executed diagnostic (one case/five assertions), not an independent source review. The member/role/owner witness was sent to root for owner analysis. Additional independent review remains 0 LOC; defect density unclaimed.
+
+QA815 `845d422` Blob.text unit failure is an executed test finding, not an independent code review or proof of a browser defect. Additional independent source coverage remains 0 LOC; density unclaimed.
