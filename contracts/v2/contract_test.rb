@@ -13,7 +13,7 @@ class ContractV2Test < Minitest::Test
   end
 
   def test_happy_path_has_additive_interfaces
-    assert_equal "2.0.0-draft.6", @contract.dig("info", "version")
+    assert_equal "2.0.0-draft.7", @contract.dig("info", "version")
     assert_equal %w[get post put], @contract.fetch("paths").values.flat_map(&:keys).uniq.sort
     assert @contract.dig("components", "schemas", "OrganizationGrant")
     assert_equal "active", @contract.dig("paths", "/v2/outreach/campaigns", "get", "x-elevateo-status")
@@ -26,6 +26,9 @@ class ContractV2Test < Minitest::Test
     assert_equal "active", @contract.dig("paths", "/v2/threads/{thread_id}/messages/{message_id}", "get", "x-elevateo-status")
     assert_equal "active", @contract.dig("paths", "/v2/me/preferences", "get", "x-elevateo-status")
     assert_equal "active", @contract.dig("paths", "/v2/me/preferences", "put", "x-elevateo-status")
+    sequence = @contract.dig("paths", "/v2/outreach/campaigns/{campaign_id}/sequence")
+    assert_equal %w[getOutreachSequenceDraft saveOutreachSequenceDraft], sequence.values.map { |operation| operation.fetch("operationId") }
+    assert sequence.values.all? { |operation| operation.fetch("x-elevateo-status") == "active" }
   end
 
   def test_failure_no_live_dispatch_or_v1_collision
@@ -34,6 +37,8 @@ class ContractV2Test < Minitest::Test
     refute @contract.fetch("paths").keys.any? { |path| path.include?("send") }
     assert_equal "disabled", @contract.dig("paths", "/v2/outreach/campaigns/{campaign_id}/accounts", "get", "x-elevateo-status")
     assert_equal "disabled", @contract.dig("paths", "/v2/worker/jobs/{job_id}", "get", "x-elevateo-status")
+    assert_equal %w[draft held], @contract.dig("components", "schemas", "OutreachSequenceDraft", "properties", "status", "enum")
+    refute @contract.fetch("paths").keys.any? { |path| path.include?("enroll") || path.include?("due") }
     assert_equal %w[context_id authorization_version mailbox_id thread_id message],
       @contract.dig("components", "schemas", "DirectMessagePage", "required")
   end

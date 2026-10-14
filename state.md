@@ -315,3 +315,5 @@ Follow-up candidate: `Repository#fetch` uses content-read proof and returns nil 
 OUT-804 source audit found a direct-table write gap in 00009: the previous FOR ALL RLS policy used content-read proof for `WITH CHECK`, so a direct caller with valid digest/GUC and table DML privilege could bypass the DB-private write marker. The owned migration now emits six SELECT content-read, six INSERT draft-write, and three UPDATE draft-write policies; append-only tables have no UPDATE policy. A generated-policy regression and authenticated disposable valid-digest/no-marker UPDATE denial are authored. No fleet PASS or production activation follows from source alone.
 
 INT801 draft.7 browser fixture correction: the focused PUT test now sends request-only keys; fleet Docker web check is pending.
+
+INT801 draft.7 contract test now checks the current version and inert sequence operations; Soren fleet execution remains pending.

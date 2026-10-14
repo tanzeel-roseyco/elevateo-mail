@@ -377,3 +377,5 @@ GET reads a tenant-scoped draft under current outreach content-read proof and re
 Migration 00009 now uses separate command policies per table: SELECT checks the digest-backed current content role and tenant/member/mailbox visibility; INSERT checks the same scope plus `authorize_outreach_draft_write` and row integrity; UPDATE exists only for campaigns, leads and accounts, with draft-write proof in both USING and WITH CHECK. Consent events, mutation ledger and suppressions remain insert-only by table grant and policy. The draft-write function calls the DB-private protected-write assertion before role proof, so copied digest/GUCs without that transaction marker must fail. The disposable database test directly issues UPDATE as the API role with a valid digest but no marker and checks rollback. Run migration 00009 and the named database test on fleet before adopting this source.
 
 INT801 draft.7 browser fixture correction: the focused PUT test now sends request-only keys; fleet Docker web check is pending.
+
+INT801 draft.7 contract test now checks the current version and inert sequence operations; Soren fleet execution remains pending.

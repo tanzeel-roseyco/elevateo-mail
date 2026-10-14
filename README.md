@@ -370,3 +370,5 @@ Tessa QA816 exact `e567213` visual fixture repair is integrated over the newer F
 The 00009 policy now separates ordinary content reads from inert writes: SELECT requires session and content-role proof, while INSERT and UPDATE require the protected draft-write marker and the existing tenant, mailbox and consent integrity checks. A disposable valid-digest/no-marker direct UPDATE regression is authored; migration and database runtime on this source are pending.
 
 INT801 draft.7 browser fixture correction: the focused PUT test now sends request-only keys; fleet Docker web check is pending.
+
+INT801 draft.7 contract test now checks the current version and inert sequence operations; Soren fleet execution remains pending.
