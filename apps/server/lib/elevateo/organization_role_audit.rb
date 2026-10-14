@@ -32,11 +32,13 @@ module Elevateo
         end
         occurred_at = ThreadProjection.timestamp(row["occurred_at"])
         raise CollaborationError.new("internal_error") unless occurred_at
+        revision = ThreadProjection.integer(row["revision"], 2_147_483_647)
+        raise CollaborationError.new("internal_error") if revision.zero?
         { "id" => ThreadProjection.uuid(row["id"]), "organization_id" => organization,
           "actor_user_id" => ThreadProjection.uuid(row["actor_user_id"]),
           "target_user_id" => ThreadProjection.uuid(row["target_user_id"]),
           "old_role" => old_role, "new_role" => new_role,
-          "revision" => ThreadProjection.integer(row["revision"], 2_147_483_647),
+          "revision" => revision,
           "operation" => OPERATION, "occurred_at" => occurred_at }
       end
     rescue ReadResponse::Invalid
