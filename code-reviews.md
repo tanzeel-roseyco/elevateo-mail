@@ -696,3 +696,7 @@ Soren reported `web-c4fa27c01f5e` API/lint PASS and TypeScript FAIL at two `admi
 ### OUT804 lead consent bounded adversarial source review — Lyra
 
 Exact source `35273bae8c07550df77e6503ca1e62991bb986c0`; assigned coverage 143-line `leads_controller.rb` and 130-line `leads_controller_test.rb` = 273 LOC, plus 118 bounded context LOC, total 391 under the 400-LOC cap. Two confirmed findings (manual attestation represented as granted consent in compact output; incorrect rejected-attestation test oracle) = **7.33 defects/KLOC** over assigned files. One withdrawal timestamp/history concern is unconfirmed pending DB-default evidence. No runtime tests or source-owner edits. Full severity, evidence, fixes, uncovered scope and limits: [Lyra Dorian lead review](docs/completion/lyra-review-dorian-leads-35273bae.md).
+
+### QA816 Tessa bounded logout/message re-review — Lyra
+
+Exact `e3ac16b9ebc9665db5f634fab612e63dc0df62ec` plus ancestor `c151ecd` logout repair: 15 changed outreach LOC, 59 new message LOC and 3 screenshot allowlist LOC = **77 changed/new LOC**, 0 confirmed defects (**0/KLOC**). Approximately 230 unique versioned code LOC including bounded helper/wiring context were inspected under the 250 packet target; Ada ADV050 D/B coverage was excluded. The logout witness waits for rendered real grant data, and absent/retry deep URLs observe the V2 route; same-page permalink test is scoped honestly. Static only, no browser execution or visual PASS. Full limits: [Lyra QA816 review](docs/completion/lyra-review-tessa-message-e3ac16b.md).
