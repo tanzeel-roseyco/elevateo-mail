@@ -71,8 +71,8 @@ module Elevateo
           file.flock(File::LOCK_EX)
           stat = file.stat
           raise ArgumentError, "invalid local ledger" unless stat.file? && stat.size <= MAX_LEDGER_BYTES &&
-            stat.uid == Process.uid && (stat.mode & 0o077).zero?
-          rows = file.each_line.map { |line| JSON.parse(line) }
+            stat.uid == Process.euid && (stat.mode & 0o077).zero?
+          rows = file.each_line.map { |line| JSON.parse(line, max_nesting: 4) }
           unless rows.all? { |row| row.is_a?(Hash) && row.keys.sort == %w[accepted_receipt attempt_id send_id snapshot_digest] &&
             Control.valid_epoch?(row["send_id"]) && Control.valid_epoch?(row["attempt_id"]) &&
             /\A[0-9a-f]{64}\z/.match?(row["snapshot_digest"]) &&
@@ -94,6 +94,7 @@ module Elevateo
         file.write(line)
         file.flush
         file.fsync
+        Dir.open(File.dirname(@path)) { |directory| directory.fsync }
       end
     end
   end

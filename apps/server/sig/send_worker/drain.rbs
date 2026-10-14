@@ -1,0 +1,18 @@
+module Elevateo
+  module SendWorker
+    class Drain
+      @connection: untyped
+      @control: Control
+      @driver: DurableLocalDriver
+      @max_steps: Integer
+      @max_seconds: Numeric
+      @idle_delay: Numeric
+      @clock: ^() -> Float
+      @sleeper: ^(Numeric) -> void
+      def initialize: (connection: untyped, control: Control, driver: DurableLocalDriver,
+        ?max_steps: Integer, ?max_seconds: Numeric, ?idle_delay: Numeric,
+        ?clock: ^() -> Float, ?sleeper: ^(Numeric) -> void) -> void
+      def run: () -> Integer
+    end
+  end
+end
