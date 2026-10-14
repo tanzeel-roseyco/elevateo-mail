@@ -188,14 +188,17 @@ module Qa816AttachmentsSeed
     request["Origin"] = "http://app.test"
     headers.each { |name, value| request[name] = value }
     Net::HTTP.start("api", 3000, nil, open_timeout: 3, read_timeout: 10, max_retries: 0) do |http|
+      result = nil
       http.request(request) do |response|
         body = +"".b
         response.read_body do |chunk|
           body << chunk
           check(body.bytesize <= 4096, "authorized_response_too_large")
         end
-        [response.code, response.each_header.to_h, body]
+        result = [response.code, response.each_header.to_h, body]
       end
+      check(result, "authorized_response_missing")
+      result
     end
   end
 
