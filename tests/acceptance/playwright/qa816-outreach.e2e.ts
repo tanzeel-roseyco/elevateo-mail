@@ -46,10 +46,14 @@ scenario('SCN-QA-820-F1', 'invalid-campaign-name-does-not-post', async (page, re
     await page.getByLabel('Campaign name').fill('');
     await page.getByRole('button', { name: 'Save draft' }).click();
     await expect(page.getByRole('heading', { name: 'Create campaign' })).toBeVisible();
+    const invalid = await page.getByLabel('Campaign name').evaluate((field: HTMLInputElement) =>
+      field.validity.valueMissing && !field.checkValidity());
+    expect(invalid).toBe(true);
+    await new Promise<void>((resolve) => setTimeout(resolve, 500));
     expect(writes).toBe(0);
     record.artifacts.push(await screenshot(page, 'QA816-OUTREACH-F1-invalid-name'));
   } finally { page.off('request', count); }
-  record.assertions.push('Empty campaign name is rejected by the real browser form before any V2 POST');
+  record.assertions.push('Native required-field validity blocks empty name; no V2 POST during bounded 500ms observation');
 });
 
 scenario('SCN-QA-820-F2', 'foreign-organization-cannot-read-campaign', async (page, record) => {

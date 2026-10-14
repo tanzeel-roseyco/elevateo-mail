@@ -51,7 +51,11 @@ scenario('SCN-QA-816-F1', 'reader-cannot-approve-or-manage', async (page, record
   await page.goto(`/#/mailboxes/${seed.mailboxes.primary}/members`);
   await expect(page.getByText('You cannot manage members of this mailbox')).toBeVisible();
   await expect(page.getByRole('button', { name: 'New draft', exact: true })).toHaveCount(0);
-  await page.goto(`/#/mailboxes/${seed.mailboxes.primary}/drafts/${seed.data.draft_primary}/send-review`);
+  const reviewPath = `/v1/drafts/${seed.data.draft_primary}/send-review`;
+  const [denied] = await Promise.all([responseAt(page, reviewPath),
+    page.goto(`/#/mailboxes/${seed.mailboxes.primary}/drafts/${seed.data.draft_primary}/send-review`)]);
+  expect([403, 404]).toContain(denied.status());
+  await expect(page.getByRole('alert')).toBeVisible();
   await expect(page.getByRole('button', { name: 'Approve simulated send' })).toHaveCount(0);
   record.assertions.push('Reader cannot manage members and cannot reach an actionable simulated approval');
 });
