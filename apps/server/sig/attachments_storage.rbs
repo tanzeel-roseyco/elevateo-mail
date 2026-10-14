@@ -1,0 +1,25 @@
+module Elevateo
+  module Attachments
+    # AIDEV-NOTE: Only the worker/gateway may construct this service-token-backed private adapter.
+    class PrivateStorage
+      class Unavailable < StandardError
+      end
+      type request_class = singleton(Net::HTTP::Post) | singleton(Net::HTTP::Get) | singleton(Net::HTTP::Delete)
+      KEY: Regexp
+      API_KEY: Regexp
+      BUCKET: Regexp
+      @host: String
+      @port: Integer
+      @bucket: String
+      @token: String
+      def initialize: (base_url: String, bucket: String, service_token: String, process: String) -> void
+      def put: (String, String, content_type: String) -> nil
+      def put_once: (String, String) -> nil
+      def get: (String) -> String
+      def delete: (String) -> nil
+      private
+      def private_bucket?: () -> bool
+      def request: (request_class, String, ?bytes: String?, expected: Array[Integer]) -> String
+    end
+  end
+end

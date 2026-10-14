@@ -262,6 +262,18 @@ class AttachmentServiceTest < Minitest::Test
     assert_raises(ArgumentError) { adapter.delete(key) }
   end
 
+  def test_private_storage_keeps_fixed_internal_transport_boundary
+    constructor = { bucket: "inbox-private", service_token: "x" * 32, process: "worker" }
+    ["http://other:5000", "http://storage:5000/object", "http://user@storage:5000",
+      "https://storage:5000"].each do |url|
+      assert_raises(ArgumentError) do
+        Elevateo::Attachments::PrivateStorage.new(**constructor, base_url: url)
+      end
+    end
+    adapter = Elevateo::Attachments::PrivateStorage.new(**constructor, base_url: "http://storage:5000")
+    assert_instance_of Elevateo::Attachments::PrivateStorage, adapter
+  end
+
   def test_cross_tenant_and_cross_mailbox_ids_are_not_downloadable
     id = stage.fetch("id")
     @repository.rows.fetch(id)["scan_status"] = "clean"
