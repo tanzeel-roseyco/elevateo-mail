@@ -128,6 +128,35 @@ describe('compose entry', () => {
 })
 
 describe('continuation and reset (FE-R08/R09)', () => {
+  it('keeps loaded rows through a network continuation failure and retries that page', async () => {
+    const { gateway, readCalls } = pagedGateway([
+      threadPage(['First conversation'], 'next'),
+      new GatewayError('transport', 'network', 'synthetic offline'),
+      threadPage(['Second conversation'], null),
+    ])
+    renderInbox(gateway)
+    await screen.findByRole('link', { name: /First conversation/ })
+    fireEvent.click(screen.getByRole('button', { name: 'Show more conversations' }))
+    await screen.findByRole('alert')
+    expect(screen.getByRole('link', { name: /First conversation/ })).toBeTruthy()
+    fireEvent.click(screen.getByRole('button', { name: 'Retry more conversations' }))
+    await screen.findByRole('link', { name: /Second conversation/ })
+    expect(screen.getByRole('link', { name: /First conversation/ })).toBeTruthy()
+    expect(readCalls()).toBe(3)
+  })
+
+  it('removes loaded rows on a continuation access denial', async () => {
+    const { gateway } = pagedGateway([
+      threadPage(['Previously visible'], 'next'),
+      new GatewayError('api', 'not_available', 'Unavailable', { status: 404, requestId: 'r1' }),
+    ])
+    renderInbox(gateway)
+    await screen.findByRole('link', { name: /Previously visible/ })
+    fireEvent.click(screen.getByRole('button', { name: 'Show more conversations' }))
+    await screen.findByText('This mailbox is unavailable')
+    expect(screen.queryByRole('link', { name: /Previously visible/ })).toBeNull()
+  })
+
   it('an empty page with a cursor stays usable and is distinct from a terminal empty mailbox', async () => {
     const { gateway } = pagedGateway([threadPage([], 'c1'), threadPage(['Late arrival'], null)])
     renderInbox(gateway)
