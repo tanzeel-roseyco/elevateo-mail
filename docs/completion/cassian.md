@@ -293,3 +293,5 @@ ADV122 independently found one P2 typing-contract defect in `9b41975`: nominal N
 Elara exact a0a60b6 same-scope protected outreach read/write witness is integrated at 985db69; the source keeps sales `ok` and auditor `not_found` expectations and changes no production policy or enrollment. Soren focused fleet execution is requested, NOT_RUN on this integration.
 
 Celeste requested the exact FE807 sequence test blob from 98998ee/f8ad22d; it is imported without touching her page or contract source. It stores the created inert sequence and returns the same ID/version for reread, making the saved-version assertion meaningful. The exact predecessor c5a8737 web PASS does not verify this strengthened test; fleet unit/type rerun requested.
+
+Independent review imports: Theo REV890 on Nadia ATT886 `da0bba8` covered 345 unique LOC/0 confirmed defects, with no runtime; Mira REV891 on Corin INB887 `3e9d6fb` covered 358 clearly divided unique LOC/0, below 400 hard cap but over 350 target, also no runtime. Exact reports are `docs/completion/theo-rev890.md` and `docs/completion/mira-rev891.md`; current integrated source still needs focused fleet Steep and affected units.
