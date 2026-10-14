@@ -1,0 +1,23 @@
+module Elevateo
+  module SendWorker
+    class LocalFailureDriver
+      OUTCOMES: Array[String]
+      MAX_INVOCATIONS: Integer
+      @outcomes: Array[String]
+      @pause: ^() -> void
+      @invocations: Integer
+      @mutex: Mutex
+      @snapshots: Hash[String, String]
+      @attempts: Hash[String, [String, String]]
+      @accepted: Hash[String, String]
+      attr_reader invocations: Integer
+      def initialize: (profile: String, outcomes: Array[String], ?pause: ^() -> void) -> void
+      def submit: (String, send_id: String, attempt_id: String, deadline: CallDeadline) -> SubmissionResult
+      def observation: (send_id: String, attempt_id: String, snapshot_digest: String) -> SubmissionResult?
+      private
+      def reserve!: (String, String, String) -> String
+      def validate!: (String, String, String) -> void
+      def execute: (String, String, String, String) -> SubmissionResult
+    end
+  end
+end

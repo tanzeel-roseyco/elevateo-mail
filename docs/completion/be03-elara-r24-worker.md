@@ -1,0 +1,19 @@
+# BE03-E01 isolated offline worker slice — R24
+
+Root authorized isolated BE03 implementation on 2026-10-14 over baseline `03ae770c56271cd8236726bfd8fe63248e81283d`, in parallel with BE02 acceptance. BE02 remains OPEN; integration, acceptance and release remain root-gated. The dispatch's `contracts/openapi.yaml` reference is incorrect: canonical contract is `contracts/v1/openapi.json`. Root's sequencing instruction supersedes its historical preparation-only block.
+
+Elara owns only `lib/elevateo/send_worker`, corresponding RBS/tests and this worker-scoped record. S1/S2 review → approval → durable queued intent has priority. No SQL, migrations, shared routes/config/loading, canonical contract or frontend files changed here.
+
+## Implemented seam
+
+`Control.new(path:).read` returns immutable `ControlState` with `epoch`, `outbound_held`, `readable?`, `submission_allowed?`. An external UTF-8 regular file contains exactly `{ "epoch": "lowercase UUID", "outbound_held": boolean }`, bounded to 4096 bytes; duplicate/unknown keys, invalid encoding/types/epoch, missing/nonregular/unreadable files fail closed to nil epoch/held. The configured path must be outside the application's database backup target. No startup release, epoch rebinding or recovery bypass exists. Operator transitions require quiescing old invokers; a file check cannot revoke an already authorized call.
+
+`LocalFailureDriver` requires explicit `profile: "local"`; production/live/staging profiles are rejected. Its bounded script supports accept, reject, accept-then-timeout and pause. The driver has no network, credential or provider dependency. All normalized results are simulated; accepted never means delivered. It retains only hashes, attempt bindings and synthetic receipt references in bounded process memory, not a durable external ledger. Exact same send ID requires identical snapshot bytes; attempt IDs cannot be invoked twice. A recovered observation is correlated to the exact prior attempt/send/snapshot digest, including acceptance after a scripted timeout. No automatic retry exists.
+
+`CallDeadline` enforces a monotonic budget of at most 10 seconds and strict expiry at equality. It cannot solve the suspended-invoker interval or establish provider request lifetime. The driver receives an already-authorized immutable domain snapshot, not provider wire materialization.
+
+## Integration and remaining evidence
+
+Nadia owns explicit control loading/config and approval use; Rowan owns every worker SQL/session/role/fencing interface. The driver is not registered or started automatically. Final authorization must commit before invocation; record normalized evidence separately from fresh-fence projection, and allow late evidence while held. Real claim, session revocation, cancellation races, stale fencing, PostgreSQL observation/reconciliation and restore acceptance remain NOT_RUN and unimplemented in this slice until those owner interfaces are available. Unit fixtures do not substitute for these checks.
+
+Bounded adversarial reviews completed; three driver defects repaired and re-reviewed with zero remaining actionable defects. Final functional source/test coverage526 unique LOC; dedicated design165 LOC nonadditive. See code-reviews.md. Automated Docker checks and cleanup receipts pending. No host application test/build/install, live send, provider connection, paid path, release or persistent-resource mutation performed. EffectiveFast billing is unverified.

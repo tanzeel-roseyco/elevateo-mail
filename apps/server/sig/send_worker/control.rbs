@@ -1,0 +1,26 @@
+module Elevateo
+  module SendWorker
+    class ControlState
+      @epoch: String?
+      @outbound_held: bool
+      attr_reader epoch: String?
+      attr_reader outbound_held: bool
+      def initialize: (epoch: String?, outbound_held: bool) -> void
+      def readable?: () -> bool
+      def submission_allowed?: () -> bool
+    end
+    class Control
+      MAX_BYTES: Integer
+      UUID: Regexp
+      @path: String
+      def initialize: (path: String) -> void
+      def self.valid_epoch?: (untyped) -> bool
+      def read: () -> ControlState
+      private
+      def held: () -> ControlState
+      class UniqueObject < Hash[String, untyped]
+        def []=: (String, untyped) -> untyped
+      end
+    end
+  end
+end

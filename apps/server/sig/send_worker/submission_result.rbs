@@ -1,0 +1,18 @@
+module Elevateo
+  module SendWorker
+    class SubmissionResult
+      KINDS: Array[String]
+      REJECTION_CODES: Array[String]
+      UNKNOWN_CODES: Array[String]
+      @kind: String
+      @receipt_ref: String?
+      @code: String?
+      attr_reader kind: String
+      attr_reader receipt_ref: String?
+      attr_reader code: String?
+      def initialize: (kind: String, ?receipt_ref: String?, ?code: String?) -> void
+      def simulated?: () -> true
+      def evidence_digest: (send_id: String, attempt_id: String, snapshot_digest: String) -> String
+    end
+  end
+end
