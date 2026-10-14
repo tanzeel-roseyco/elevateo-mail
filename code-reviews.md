@@ -70,6 +70,12 @@ See docs/completion/int401-frozen-app.md.
 
 INT-801 integration evidence (2026-10-14 15:25 UTC): Cassian read Rowan's independent ADV044 Dorian review (352 unique LOC, four findings, 11.36/KLOC) and Nadia's bounded OUT804 controller review (229 assigned LOC, two coverage findings, 8.73/KLOC). These are owner review records, not Cassian-performed reviews; exact scope and limitations are in `docs/completion/adv044-dorian-out804-review.md` and `docs/completion/review-nadia-dorian-out804.md`. The account policy finding keeps all V2 account routes disabled. Dorian's later monotonic consent-history patch was merged without an independent Cassian review or fleet runtime result; no defect-density claim is made for that patch.
 
+## SEQ-876 fleet-derived syntax repair
+
+ADV-117 identified one MEDIUM test oracle defect in `89febd2`: identical organization and campaign UUIDs could not detect swapped binds 2/3. The focused three-line follow-up uses a distinct organization UUID and expected value; production repair `025f305` is unchanged. This is a static repair only, pending Ada's exact-delta re-review and Soren Docker execution. Test-only defect density on the seven-line original assertion/setup packet is 1/7 = 142.86/KLOC; it is not a production defect density.
+
+Soren's isolated `e9ead714` Docker receipt confirmed one HIGH load-blocking Ruby SyntaxError at sequence repository line 123; controller cases never ran. Maeve changed two effective source lines in a 12-line local packet, moving eight ordered bind values before the heredoc call (1 defect/12 reviewed LOC = 83.33/KLOC, a narrow repair denominator rather than whole-file density). Source review found no other issue in that packet; this is not a runtime PASS. Repository/controller retest is requested; see [repair record](docs/completion/maeve-seq876-syntax-repair.md).
+
 ## MAIL-819 Corin continuation candidate
 
 No independent adversarial or design-tradeoff review was performed. Reviewed source coverage and defect density are therefore unclaimed; root should assign bounded packets of at most 200 lines across the inbound parser, migration, adapter, controller and tests. Corin self-inspected authorization, MIME bounds, transaction rollback, receipt scope and no-live behavior; this is not review acceptance.

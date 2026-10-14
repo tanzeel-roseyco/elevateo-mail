@@ -7,6 +7,7 @@ class OutreachSequenceRepositoryTest < Minitest::Test
   Input = Elevateo::OutreachSequence::DraftInput
   Repository = Elevateo::OutreachSequence::Repository
   ID = "11111111-1111-4111-8111-111111111111"
+  ORGANIZATION = "55555555-5555-4555-8555-555555555555"
   CAMPAIGN = "22222222-2222-4222-8222-222222222222"
   OPERATION = "33333333-3333-4333-8333-333333333333"
   STEP = "44444444-4444-4444-8444-444444444444"
@@ -64,13 +65,13 @@ class OutreachSequenceRepositoryTest < Minitest::Test
 
   def test_create_serializes_and_saves_steps_and_replay_result
     connection = Connection.new
-    result = Repository.new(connection: connection).save(input, organization_id: CAMPAIGN, session_digest: DIGEST)
+    result = Repository.new(connection: connection).save(input, organization_id: ORGANIZATION, session_digest: DIGEST)
     assert_equal 1, result.fetch("version")
     assert_equal 1, connection.transactions
     assert connection.sql.any? { |sql| sql.include?("pg_advisory_xact_lock") }
     assert connection.sql.any? { |sql| sql.include?("INSERT INTO app.campaign_sequence_steps") }
     step_insert = connection.sql.index { |sql| sql.include?("INSERT INTO app.campaign_sequence_steps") }
-    assert_equal [STEP, CAMPAIGN, CAMPAIGN, ID, "1", "0", "09:00:00", "First"],
+    assert_equal [STEP, ORGANIZATION, CAMPAIGN, ID, "1", "0", "09:00:00", "First"],
       connection.bind_values.fetch(step_insert)
     assert connection.sql.any? { |sql| sql.include?("INSERT INTO app.campaign_sequence_mutations") }
   end
