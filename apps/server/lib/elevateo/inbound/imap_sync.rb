@@ -35,6 +35,8 @@ module Elevateo
 
         ingress = ImapIngress.new(store: @store)
         events.each do |event|
+          raise Rejected, "invalid_imap_batch" unless event.is_a?(Hash) && event.keys.sort == %i[raw_mime uid]
+
           uid = event.fetch(:uid)
           raw = event.fetch(:raw_mime)
           raise Rejected, "invalid_imap_batch" unless uid.is_a?(Integer) && uid > cursor &&
