@@ -382,6 +382,73 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/drafts/{draft_id}/send-review": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["getSendReview"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/drafts/{draft_id}/send-approvals": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** @description Atomic review-bound approval consumes one draft without incrementing version and queues one durable intent. Retry original operation ID/binding after uncertain response under current authorization; replay preserves immutable outcome and refreshes context proof. No snapshot or epoch request fields. */
+        post: operations["approveDraftSend"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/send-intents/{send_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Original-author status without snapshot/body disclosure. cancellable requires nonterminal, no dispatch authorization and readable matching external epoch; restored null timestamp alone is insufficient. */
+        get: operations["getSendStatus"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/send-intents/{send_id}/cancellation": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** @description One idempotent stop latch. First accepted/rejected cancellation returns send_terminal; already-cancelled replay succeeds. stop_requested never proves non-submission. */
+        post: operations["cancelSend"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -756,6 +823,116 @@ export interface components {
             next_cursor: string | null;
             items: components["schemas"]["ThreadSummary"][];
         };
+        SendDraftVersion: number;
+        /** @enum {string} */
+        SendState: "queued" | "dispatching" | "unknown" | "needs_review" | "cancelled" | "accepted" | "rejected";
+        /** @enum {string} */
+        SendReadinessCode: "draft_consumed" | "recipient_required" | "recipient_invalid" | "recipient_duplicate" | "recipient_suppressed" | "sender_unconfigured" | "sender_invalid" | "mailbox_disabled" | "reply_unavailable" | "header_invalid" | "snapshot_too_large" | "purpose_unavailable";
+        /** @enum {string} */
+        SendHoldReason: "session_invalid" | "authorization_changed" | "capability_revoked" | "mailbox_disabled" | "suppressed" | "policy_changed" | "restore_unreconciled" | "control_unavailable" | "auth_unavailable" | "uncertain" | "retry_expired" | "attempt_limit" | "evidence_conflict" | "counter_exhausted";
+        SendRecipient: {
+            display_name: string | null;
+            address: string | null;
+        };
+        SendSender: {
+            display_name: null;
+            address: string | null;
+        };
+        SendRecipientCheck: {
+            index: number;
+            /** @enum {string} */
+            status: "ok" | "invalid" | "duplicate" | "suppressed";
+        };
+        SendReadinessIssue: {
+            code: components["schemas"]["SendReadinessCode"];
+            recipient_index: number | null;
+        };
+        SendApprovalInput: {
+            mailbox_id: components["schemas"]["Id"];
+            operation_id: components["schemas"]["Id"];
+            expected_version: components["schemas"]["SendDraftVersion"];
+            review_digest: string;
+            /** @constant */
+            correspondence_confirmed: true;
+        };
+        SendCancellationInput: {
+            mailbox_id: components["schemas"]["Id"];
+        };
+        SendError: {
+            /** @enum {string} */
+            code: "request_invalid" | "unauthenticated" | "not_available" | "context_changed" | "review_stale" | "send_not_ready" | "draft_consumed" | "draft_conflict" | "operation_mismatch" | "send_terminal" | "rate_limited" | "temporarily_unavailable" | "dispatch_held" | "internal_error";
+            message: string;
+            request_id: string;
+        };
+        /** @description Bounded author-owned unsent draft; invalid send addresses remain displayable. ready=false requires null review_digest; ready=true requires a digest. No suppression reason or provider content. */
+        SendReview: {
+            context_id: components["schemas"]["OpaqueToken"];
+            authorization_version: components["schemas"]["OpaqueToken"];
+            draft_id: components["schemas"]["Id"];
+            mailbox_id: components["schemas"]["Id"];
+            draft_version: components["schemas"]["SendDraftVersion"];
+            sender: components["schemas"]["SendSender"];
+            to: components["schemas"]["SendRecipient"][];
+            subject: string;
+            body_text: string;
+            reply_to_thread_id: components["schemas"]["Id"] | null;
+            /** @constant */
+            purpose: "correspondence";
+            /** @constant */
+            consent_basis: "human_attestation_required";
+            attachments: unknown[];
+            /** @constant */
+            attachments_supported: false;
+            policy_revision: string;
+            recipient_checks: components["schemas"]["SendRecipientCheck"][];
+            ready: boolean;
+            issues: components["schemas"]["SendReadinessIssue"][];
+            review_digest: string | null;
+            /** @constant */
+            simulated: true;
+        } & (unknown & unknown);
+        ApprovalResult: {
+            context_id: components["schemas"]["OpaqueToken"];
+            authorization_version: components["schemas"]["OpaqueToken"];
+            send_id: components["schemas"]["Id"];
+            draft_id: components["schemas"]["Id"];
+            approved_version: components["schemas"]["SendDraftVersion"];
+            review_digest: string;
+            approved_at: components["schemas"]["UtcTimestamp"];
+            /** @constant */
+            simulated: true;
+        };
+        SendStatus: {
+            context_id: components["schemas"]["OpaqueToken"];
+            authorization_version: components["schemas"]["OpaqueToken"];
+            send_id: components["schemas"]["Id"];
+            mailbox_id: components["schemas"]["Id"];
+            draft_id: components["schemas"]["Id"];
+            approved_version: components["schemas"]["SendDraftVersion"];
+            approved_at: components["schemas"]["UtcTimestamp"];
+            state: components["schemas"]["SendState"];
+            attempts: number;
+            first_possible_at: components["schemas"]["UtcTimestamp"] | null;
+            retry_deadline_at: components["schemas"]["UtcTimestamp"] | null;
+            cancel_requested: boolean;
+            cancellable: boolean;
+            hold_reason: components["schemas"]["SendHoldReason"] | null;
+            updated_at: components["schemas"]["UtcTimestamp"];
+            /** @constant */
+            simulated: true;
+        };
+        CancellationResult: {
+            context_id: components["schemas"]["OpaqueToken"];
+            authorization_version: components["schemas"]["OpaqueToken"];
+            send_id: components["schemas"]["Id"];
+            /** @enum {string} */
+            result: "cancelled" | "stop_requested";
+            state: components["schemas"]["SendState"];
+            /** @constant */
+            cancel_requested: true;
+            /** @constant */
+            simulated: true;
+        };
     };
     responses: {
         /** @description request_invalid for malformed/unknown/duplicate input, invalid UUID, missing context/CSRF/Origin, wrong content type or byte limit; cursor_invalid for invalid/expired/scope-mismatched cursor. No mutation. */
@@ -842,6 +1019,113 @@ export interface components {
             };
             content: {
                 "application/json": components["schemas"]["CollaborationError"];
+            };
+        };
+        /** @description request_invalid; bounded generic error, no content disclosure. */
+        Send400: {
+            headers: {
+                "Cache-Control": "no-store";
+                Vary: "Cookie";
+                "X-Content-Type-Options": "nosniff";
+                [name: string]: unknown;
+            };
+            content: {
+                "application/json": components["schemas"]["SendError"] & {
+                    /** @enum {string} */
+                    code?: "request_invalid";
+                };
+            };
+        };
+        /** @description unauthenticated; bounded generic error, no content disclosure. */
+        Send401: {
+            headers: {
+                "Cache-Control": "no-store";
+                Vary: "Cookie";
+                "X-Content-Type-Options": "nosniff";
+                [name: string]: unknown;
+            };
+            content: {
+                "application/json": components["schemas"]["SendError"] & {
+                    /** @enum {string} */
+                    code?: "unauthenticated";
+                };
+            };
+        };
+        /** @description not_available — This item is unavailable. */
+        Send404: {
+            headers: {
+                "Cache-Control": "no-store";
+                Vary: "Cookie";
+                "X-Content-Type-Options": "nosniff";
+                [name: string]: unknown;
+            };
+            content: {
+                "application/json": components["schemas"]["SendError"] & {
+                    /** @enum {string} */
+                    code?: "not_available";
+                    /** @constant */
+                    message?: "This item is unavailable.";
+                };
+            };
+        };
+        /** @description context_changed,review_stale,send_not_ready,draft_consumed,draft_conflict,operation_mismatch,send_terminal; bounded generic error, no content disclosure. */
+        Send409: {
+            headers: {
+                "Cache-Control": "no-store";
+                Vary: "Cookie";
+                "X-Content-Type-Options": "nosniff";
+                [name: string]: unknown;
+            };
+            content: {
+                "application/json": components["schemas"]["SendError"] & {
+                    /** @enum {string} */
+                    code?: "context_changed" | "review_stale" | "send_not_ready" | "draft_consumed" | "draft_conflict" | "operation_mismatch" | "send_terminal";
+                };
+            };
+        };
+        /** @description rate_limited; bounded generic error, no content disclosure. */
+        Send429: {
+            headers: {
+                "Cache-Control": "no-store";
+                Vary: "Cookie";
+                "X-Content-Type-Options": "nosniff";
+                [name: string]: unknown;
+            };
+            content: {
+                "application/json": components["schemas"]["SendError"] & {
+                    /** @enum {string} */
+                    code?: "rate_limited";
+                };
+            };
+        };
+        /** @description temporarily_unavailable,dispatch_held; bounded generic error, no content disclosure. */
+        Send503: {
+            headers: {
+                "Cache-Control": "no-store";
+                Vary: "Cookie";
+                "X-Content-Type-Options": "nosniff";
+                [name: string]: unknown;
+            };
+            content: {
+                "application/json": components["schemas"]["SendError"] & {
+                    /** @enum {string} */
+                    code?: "temporarily_unavailable" | "dispatch_held";
+                };
+            };
+        };
+        /** @description internal_error; bounded generic error, no content disclosure. */
+        Send500: {
+            headers: {
+                "Cache-Control": "no-store";
+                Vary: "Cookie";
+                "X-Content-Type-Options": "nosniff";
+                [name: string]: unknown;
+            };
+            content: {
+                "application/json": components["schemas"]["SendError"] & {
+                    /** @enum {string} */
+                    code?: "internal_error";
+                };
             };
         };
     };
@@ -2822,6 +3106,174 @@ export interface operations {
             429: components["responses"]["CdRateLimited"];
             500: components["responses"]["CdInternalError"];
             503: components["responses"]["CdUnavailable"];
+        };
+    };
+    getSendReview: {
+        parameters: {
+            query: {
+                mailbox_id: components["parameters"]["CdMailboxQuery"];
+            };
+            header: {
+                /** @description Current bootstrap context, never an authorization grant. */
+                "X-Session-Context": components["parameters"]["CdSessionContext"];
+                /** @description Current bootstrap authorization version; mismatch returns context_changed after authentication. */
+                "X-Authorization-Version": components["parameters"]["CdAuthorizationVersion"];
+            };
+            path: {
+                draft_id: components["schemas"]["Id"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Current-authorized simulated send result; acceptance is never delivery. */
+            200: {
+                headers: {
+                    "Cache-Control": "no-store";
+                    Vary: "Cookie";
+                    "X-Content-Type-Options": "nosniff";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SendReview"];
+                };
+            };
+            400: components["responses"]["Send400"];
+            401: components["responses"]["Send401"];
+            404: components["responses"]["Send404"];
+            409: components["responses"]["Send409"];
+            429: components["responses"]["Send429"];
+            500: components["responses"]["Send500"];
+            503: components["responses"]["Send503"];
+        };
+    };
+    approveDraftSend: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description Current bootstrap context, never an authorization grant. */
+                "X-Session-Context": components["parameters"]["CdSessionContext"];
+                /** @description Current bootstrap authorization version; mismatch returns context_changed after authentication. */
+                "X-Authorization-Version": components["parameters"]["CdAuthorizationVersion"];
+                /** @description Exact configured same-origin value required on every C/D PUT, POST and DELETE. No redirect or permissive CORS. */
+                Origin: components["parameters"]["CdOrigin"];
+                /** @description Current session CSRF proof bound to this cookie and context. A login/refresh challenge is not accepted for C/D writes. */
+                "X-CSRF-Token": components["parameters"]["CdCsrf"];
+            };
+            path: {
+                draft_id: components["schemas"]["Id"];
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SendApprovalInput"];
+            };
+        };
+        responses: {
+            /** @description Current-authorized simulated send result; acceptance is never delivery. */
+            202: {
+                headers: {
+                    "Cache-Control": "no-store";
+                    Vary: "Cookie";
+                    "X-Content-Type-Options": "nosniff";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApprovalResult"];
+                };
+            };
+            400: components["responses"]["Send400"];
+            401: components["responses"]["Send401"];
+            404: components["responses"]["Send404"];
+            409: components["responses"]["Send409"];
+            429: components["responses"]["Send429"];
+            500: components["responses"]["Send500"];
+            503: components["responses"]["Send503"];
+        };
+    };
+    getSendStatus: {
+        parameters: {
+            query: {
+                mailbox_id: components["parameters"]["CdMailboxQuery"];
+            };
+            header: {
+                /** @description Current bootstrap context, never an authorization grant. */
+                "X-Session-Context": components["parameters"]["CdSessionContext"];
+                /** @description Current bootstrap authorization version; mismatch returns context_changed after authentication. */
+                "X-Authorization-Version": components["parameters"]["CdAuthorizationVersion"];
+            };
+            path: {
+                send_id: components["schemas"]["Id"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Current-authorized simulated send result; acceptance is never delivery. */
+            200: {
+                headers: {
+                    "Cache-Control": "no-store";
+                    Vary: "Cookie";
+                    "X-Content-Type-Options": "nosniff";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SendStatus"];
+                };
+            };
+            400: components["responses"]["Send400"];
+            401: components["responses"]["Send401"];
+            404: components["responses"]["Send404"];
+            409: components["responses"]["Send409"];
+            429: components["responses"]["Send429"];
+            500: components["responses"]["Send500"];
+            503: components["responses"]["Send503"];
+        };
+    };
+    cancelSend: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description Current bootstrap context, never an authorization grant. */
+                "X-Session-Context": components["parameters"]["CdSessionContext"];
+                /** @description Current bootstrap authorization version; mismatch returns context_changed after authentication. */
+                "X-Authorization-Version": components["parameters"]["CdAuthorizationVersion"];
+                /** @description Exact configured same-origin value required on every C/D PUT, POST and DELETE. No redirect or permissive CORS. */
+                Origin: components["parameters"]["CdOrigin"];
+                /** @description Current session CSRF proof bound to this cookie and context. A login/refresh challenge is not accepted for C/D writes. */
+                "X-CSRF-Token": components["parameters"]["CdCsrf"];
+            };
+            path: {
+                send_id: components["schemas"]["Id"];
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SendCancellationInput"];
+            };
+        };
+        responses: {
+            /** @description Current-authorized simulated send result; acceptance is never delivery. */
+            200: {
+                headers: {
+                    "Cache-Control": "no-store";
+                    Vary: "Cookie";
+                    "X-Content-Type-Options": "nosniff";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CancellationResult"];
+                };
+            };
+            400: components["responses"]["Send400"];
+            401: components["responses"]["Send401"];
+            404: components["responses"]["Send404"];
+            409: components["responses"]["Send409"];
+            429: components["responses"]["Send429"];
+            500: components["responses"]["Send500"];
+            503: components["responses"]["Send503"];
         };
     };
 }

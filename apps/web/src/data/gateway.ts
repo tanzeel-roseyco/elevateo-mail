@@ -1,3 +1,4 @@
+import type { SendReview, SendApprovalInput, ApprovalResult, SendStatus, SendCancellationInput, CancellationResult } from './sendContract'
 import type {
   AcceptInput,
   AuthAccepted,
@@ -102,6 +103,12 @@ export interface MailroomGateway {
   listDrafts(ctx: ReadContext, mailboxId: string, query: PageQuery, signal?: AbortSignal): Promise<DraftPage>
   /** Ledger lookup for one own operation: applied, conflict, expired (unusable id) or unknown (not proof of absence). */
   getDraftOperation(ctx: ReadContext, operationId: string, mailboxId: string, draftId: string, signal?: AbortSignal): Promise<DraftOperationResponse>
+
+  // BE03: caller-owned operation binding; no approval lookup or automatic retry.
+  getSendReview(ctx: ReadContext, draftId: string, mailboxId: string, signal?: AbortSignal): Promise<SendReview>
+  approveDraftSend(ctx: ReadContext, proof: CsrfProof, draftId: string, input: SendApprovalInput, signal?: AbortSignal): Promise<ApprovalResult>
+  getSendStatus(ctx: ReadContext, sendId: string, mailboxId: string, signal?: AbortSignal): Promise<SendStatus>
+  cancelSend(ctx: ReadContext, proof: CsrfProof, sendId: string, input: SendCancellationInput, signal?: AbortSignal): Promise<CancellationResult>
 
   // --- BE-02 D: read state, assignment, notes, membership, search -----------------------------
   /** Actor-specific desired read boolean; repeating the same value is a no-op. */

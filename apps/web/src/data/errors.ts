@@ -23,19 +23,28 @@ export const COLLABORATION_ERROR_CODES = [
 ] as const
 export type CollaborationErrorCode = (typeof COLLABORATION_ERROR_CODES)[number]
 
+// AIDEV-NOTE: SendError is independent; do not widen frozen CollaborationError validation.
+export const SEND_ERROR_CODES = [
+  'request_invalid', 'unauthenticated', 'not_available', 'context_changed', 'rate_limited',
+  'temporarily_unavailable', 'internal_error', 'review_stale', 'send_not_ready', 'draft_consumed',
+  'draft_conflict', 'operation_mismatch', 'send_terminal', 'dispatch_held',
+] as const
+export type SendErrorCode = (typeof SEND_ERROR_CODES)[number]
+export type GatewayApiErrorCode = CollaborationErrorCode | SendErrorCode
+
 /** Deliberate client-side failures; none of these may activate fixtures. */
 export type TransportErrorCode = 'network' | 'timeout' | 'aborted' | 'redirected' | 'wrong_content_type' | 'oversized' | 'malformed'
 
 export class GatewayError extends Error {
   readonly kind: 'api' | 'transport'
-  readonly code: CollaborationErrorCode | TransportErrorCode
+  readonly code: GatewayApiErrorCode | TransportErrorCode
   readonly status: number | undefined
   readonly requestId: string | undefined
   readonly retryAfterSeconds: number | undefined
 
   constructor(
     kind: 'api' | 'transport',
-    code: CollaborationErrorCode | TransportErrorCode,
+    code: GatewayApiErrorCode | TransportErrorCode,
     message: string,
     opts?: { status?: number; requestId?: string; retryAfterSeconds?: number },
   ) {
@@ -49,7 +58,7 @@ export class GatewayError extends Error {
   }
 }
 
-export function isApiError(error: unknown, code: CollaborationErrorCode): boolean {
+export function isApiError(error: unknown, code: GatewayApiErrorCode): boolean {
   return error instanceof GatewayError && error.kind === 'api' && error.code === code
 }
 
@@ -61,5 +70,5 @@ export function isApiError(error: unknown, code: CollaborationErrorCode): boolea
 export function isUncertainWriteOutcome(error: unknown): boolean {
   if (!(error instanceof GatewayError)) return true
   if (error.kind === 'transport') return error.code !== 'malformed' || error.status !== undefined
-  return error.code === 'rate_limited' || error.code === 'temporarily_unavailable' || error.code === 'internal_error'
+  return error.code === 'rate_limited' || error.code === 'temporarily_unavailable' || error.code === 'internal_error' || error.code === 'dispatch_held'
 }

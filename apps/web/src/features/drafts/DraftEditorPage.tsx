@@ -5,7 +5,7 @@
 // Unsaved text and unresolved attempts are retained in the session-scoped intent store so a
 // context recovery, a remount or a navigation never destroys them; they are shown again only
 // after a current authorized read of the same draft by the same actor and organization.
-// Nothing here sends mail; drafts are stored on this installation only.
+// Saved, unchanged drafts can enter the separate simulated review/approval screen.
 import { useCallback, useEffect, useId, useRef, useState } from 'react'
 import { Link, useParams, useSearchParams } from 'react-router'
 import { describeFailure, type CollaborationFailure } from '@/app/collaborationFailure'
@@ -432,6 +432,9 @@ function DraftEditor({ mailboxId, draftId }: { mailboxId: string; draftId: strin
             <Button type="submit" variant="primary" disabled={locked || Object.keys(errors).length > 0}>
               {status.kind === 'saving' ? 'Saving…' : buffer.savedVersion === 0 ? 'Save draft' : 'Save changes'}
             </Button>
+          )}
+          {!consumed && canCompose && mailbox?.capabilities.approve_send === true && buffer.savedVersion > 0 && status.kind === 'idle' && !dirty && recipientsText === formatRecipients(buffer.savedContent.to) && (
+            <Link to={`/mailboxes/${mailboxId}/drafts/${draftId}/send-review`} className="rounded-lg px-3 py-2 text-[13px] underline">Review simulated send</Link>
           )}
           {status.kind === 'saving' && <span role="status" className="text-[12px] text-muted">Saving…</span>}
         </div>

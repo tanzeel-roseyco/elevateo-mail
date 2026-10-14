@@ -1,3 +1,6 @@
+import { SendReviewPage } from '@/features/send/SendReviewPage'
+import { SendStatusPage } from '@/features/send/SendStatusPage'
+import { SendIntentProvider } from './sendIntent'
 import { HashRouter, Navigate, Route, Routes } from 'react-router'
 import type { MailroomGateway } from '@/data/gateway'
 import { DraftEditorPage } from '@/features/drafts/DraftEditorPage'
@@ -18,6 +21,7 @@ export function App({ gateway }: { gateway: MailroomGateway }) {
     <SessionProvider gateway={gateway}>
       {/* Unsaved draft intent lives above the router and the recoverable protected subtree. */}
       <DraftIntentProvider>
+      <SendIntentProvider>
       <HashRouter>
         <Routes>
           <Route element={<Shell />}>
@@ -27,12 +31,15 @@ export function App({ gateway }: { gateway: MailroomGateway }) {
             {/* BE-02 C/D: drafts, membership and search are URL-addressed like every other view. */}
             <Route path="/mailboxes/:mailboxId/drafts" element={<DraftsPage />} />
             <Route path="/mailboxes/:mailboxId/drafts/:draftId" element={<DraftEditorPage />} />
+            <Route path="/mailboxes/:mailboxId/drafts/:draftId/send-review" element={<SendReviewPage />} />
+            <Route path="/mailboxes/:mailboxId/send-intents/:sendId" element={<SendStatusPage />} />
             <Route path="/mailboxes/:mailboxId/members" element={<MembersPage />} />
             <Route path="/search" element={<SearchPage />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Route>
         </Routes>
       </HashRouter>
+      </SendIntentProvider>
       </DraftIntentProvider>
     </SessionProvider>
   )
