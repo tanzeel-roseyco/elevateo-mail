@@ -10,7 +10,7 @@ import { useMailbox } from '@/app/mailboxes'
 import { useGateway, useSession } from '@/app/session'
 import { draftIntentKey, formatRecipients, useDraftIntent } from '@/app/draftIntent'
 import { edit, newDraftBuffer } from '@/domain/draftOperation'
-import { newId } from '@/lib/ids'
+import { canonicalId, newId } from '@/lib/ids'
 import { newTraversalBudget, readPage } from '@/lib/readPage'
 import { formatDateTime } from '@/lib/format'
 import { Badge } from '@/ui/Badge'
@@ -34,7 +34,12 @@ function sameAddressLine(message: Message): string {
 
 export function ThreadPage() {
   const { mailboxId, threadId } = useParams<{ mailboxId: string; threadId: string }>()
+  const [searchParams] = useSearchParams()
   if (mailboxId === undefined || threadId === undefined) return null
+  const rawMessageId = searchParams.get('message')
+  if (rawMessageId !== null && canonicalId(rawMessageId) === null) {
+    return <EmptyState title="This message is unavailable" body="The message link is not valid." />
+  }
   // AIDEV-NOTE: Resource owner key (D3): reader state, traversal budget and in-flight controller
   // live in a component keyed by mailboxId+threadId, so a changed conversation begins with fresh
   // loading state in its first committed render and unmount cleanup aborts the old traversal at
@@ -51,6 +56,7 @@ function ConversationReader({ mailboxId, threadId }: { mailboxId: string; thread
   const [searchParams] = useSearchParams()
   // Normalized like the inbox: anything but 'unread' is 'all', and 'all' stays out of the URL.
   const filter = searchParams.get('filter') === 'unread' ? 'unread' : 'all'
+  const selectedMessageId = searchParams.get('message') === null ? null : canonicalId(searchParams.get('message') ?? '')
   const gateway = useGateway()
   const { scope, context, handleError, state: sessionState } = useSession()
   const mailbox = useMailbox(mailboxId)
@@ -60,6 +66,7 @@ function ConversationReader({ mailboxId, threadId }: { mailboxId: string; thread
   const budgetRef = useRef(newTraversalBudget())
   const abortRef = useRef<AbortController | null>(null)
   const headingRef = useRef<HTMLHeadingElement | null>(null)
+  const selectedMessageRef = useRef<HTMLLIElement | null>(null)
   // One reply-draft id per opened conversation: the link is stable across renders, and nothing
   // exists on the server until the editor's first explicit save (BE-02 C).
   const replyDraftIdRef = useRef(newId())
@@ -152,8 +159,10 @@ function ConversationReader({ mailboxId, threadId }: { mailboxId: string; thread
 
   // Move focus to the conversation heading once loaded so keyboard reading starts at the content.
   useEffect(() => {
-    if (state.status === 'ready') headingRef.current?.focus()
-  }, [state.status])
+    if (state.status !== 'ready') return
+    if (selectedMessageId !== null && state.messages.some((message) => message.id === selectedMessageId)) selectedMessageRef.current?.focus()
+    else if (selectedMessageId === null) headingRef.current?.focus()
+  }, [state, selectedMessageId])
 
   // The back link restores the inbox exactly as it was filtered when the user left it (FE-R11).
   const backTo = `/mailboxes/${mailboxId}${filter === 'unread' ? '?filter=unread' : ''}`
@@ -182,6 +191,11 @@ function ConversationReader({ mailboxId, threadId }: { mailboxId: string; thread
           <p className="mb-2 text-[12px] text-muted">
             {state.thread.message_count} message{state.thread.message_count === 1 ? '' : 's'} in this conversation
           </p>
+          {selectedMessageId !== null && !state.messages.some((message) => message.id === selectedMessageId) && (
+            <p role="status" className="mb-2 rounded-lg border border-line bg-surface-2 p-2 text-[13px]">
+              {state.nextCursor === null ? 'This message is unavailable in this conversation.' : 'This message is on a later page. Show more messages to find it.'}
+            </p>
+          )}
           <div className="mb-3 flex flex-wrap items-center gap-2">
             <ReadStateControl
               threadId={threadId}
@@ -208,7 +222,7 @@ function ConversationReader({ mailboxId, threadId }: { mailboxId: string; thread
           )}
           <ol className="flex flex-col gap-3">
             {state.messages.map((message) => (
-              <li key={message.id} className="rounded-lg border border-line bg-surface p-3">
+              <li key={message.id} ref={message.id === selectedMessageId ? selectedMessageRef : undefined} tabIndex={message.id === selectedMessageId ? -1 : undefined} aria-label={message.id === selectedMessageId ? 'Selected message' : undefined} className={`rounded-lg border bg-surface p-3 ${message.id === selectedMessageId ? 'border-accent-text' : 'border-line'}`}>
                 <header className="mb-2 flex flex-wrap items-baseline gap-x-2 gap-y-1">
                   <span className="text-sm font-semibold">
                     {message.sender?.display_name ?? message.sender?.address ?? 'Unknown sender'}
@@ -222,6 +236,7 @@ function ConversationReader({ mailboxId, threadId }: { mailboxId: string; thread
                 <pre className="whitespace-pre-wrap break-words font-sans text-sm">{message.body_text}</pre>
                 {/* flex-wrap: both badges together overflow a 390px viewport otherwise (r10 visual QA). */}
                 <footer className="mt-2 flex flex-wrap gap-2">
+                  <Link to={`?${filter === 'unread' ? 'filter=unread&' : ''}message=${encodeURIComponent(message.id)}`} aria-current={message.id === selectedMessageId ? 'location' : undefined} className="rounded px-2 py-1 text-[13px] underline">Open this message</Link>
                   {mailbox?.capabilities.compose === true && message.sender?.address?.trim() && !/[\r\n<>]/.test(message.sender.address) && (
                     <Button size="sm" onClick={() => replyToMessage(message)}>Reply to this sender as draft</Button>
                   )}

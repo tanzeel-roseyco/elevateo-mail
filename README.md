@@ -180,3 +180,7 @@ The inbox now exposes a draft entry only after a successful mailbox read and an 
 ### FE-806 message reply candidate
 
 A message-level reply action now opens a new draft with the selected sender, editable `Re:` subject and thread binding, held only in the existing session-scoped intent store until explicit Save. Sender-less and compose-denied messages have no action; shortened subjects are left blank for the writer. Fleet Docker and integrated browser checks are pending. See `docs/completion/mira.md`.
+
+### FE-806 message permalink candidate
+
+Each loaded plaintext message now has a link that selects it by validated UUID in the thread URL and moves keyboard focus to it. Direct links select a message on the first page; a later page requires deliberate bounded continuation. Malformed IDs are rejected before a thread read, while absent and inaccessible states remain generic. Immediate lookup of an arbitrary later-page message needs an additive Cassian-owned gateway operation. Fleet Docker/browser evidence is pending.

@@ -122,3 +122,7 @@ Inbox compose entry is gated by a successful read and explicit compose capabilit
 ### FE-806 message reply candidate
 
 Selected-message reply prefill now carries recipient, editable subject and thread binding into a new unsaved draft without putting addresses in the URL. The existing draft operation path performs the first write only on Save. Four regression cases are authored; Docker runtime and integrated visual/HTTP acceptance are pending.
+
+### FE-806 message permalink candidate
+
+A validated `message` query parameter selects and focuses an individual loaded thread message without placing content in the URL. Later-page selection waits for deliberate continuation; no automatic unbounded page walk occurs. Invalid IDs fail before read, terminal missing IDs show generic unavailable, and denied threads reveal no messages. Direct arbitrary-message lookup is a Cassian API dependency; Docker and actual browser acceptance remain pending.

@@ -684,3 +684,7 @@ Changed source `apps/web/src/features/inbox/InboxPage.tsx` (6 added lines) and t
 ## FE-806 message reply review request
 
 Bounded source packet: `apps/web/src/features/thread/ThreadPage.tsx` (about 28 changed lines), `ThreadPage.test.tsx` (about 75 added lines) and provider wiring in `CollaborationPanels.test.tsx` (3 added lines). Request independent functional/adversarial and separate design tradeoff review from root; no such review is claimed here. Confirmed defects/density remain unmeasured until review. Authored tests and Docker request are not execution evidence.
+
+## FE-806 message permalink review request
+
+Bounded packet: `apps/web/src/features/thread/ThreadPage.tsx` (about 23 changed lines) and `ThreadPage.test.tsx` (about 53 added lines). Request independent adversarial source review plus dedicated design tradeoff review: URL parsing, stale scope, page termination, accessibility/focus and cross-mailbox disclosure. No review was performed in this worker turn; defects and density are pending. Tests and browser evidence are authored/requested, not executed.

@@ -190,3 +190,7 @@ The inbox offers an explicit route to drafts only when its current read succeede
 ### FE-806 message reply prefill
 
 For a readable message with a sender address and explicit mailbox compose capability, the reader creates a new in-memory draft intent using the selected sender and thread ID. It prefixes an untruncated subject with `Re:` and leaves a truncated subject blank to avoid copying incomplete text. The draft editor still requires its authorized read, all fields remain editable, and saving uses the existing version-zero operation identity; no send is triggered by reply navigation.
+
+### FE-806 individual message links
+
+Each message in the plaintext reader has an accessible link using only its UUID (`?message=`), preserving the inbox unread filter. A selected loaded message gains focus and a visible border. A valid ID outside loaded pages is pending until the person requests the next bounded page; after the terminal page it is unavailable. Invalid IDs do not dispatch a read, and an inaccessible thread remains unavailable without message disclosure. A direct single-message endpoint is requested from Cassian to resolve deep links beyond the first page immediately.
