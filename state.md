@@ -4,6 +4,8 @@ FE806 REPLY901 candidate: the top conversation reply control now seeds a draft f
 
 REPLY906 updates the former stable empty-draft link assertion in CollaborationPanels.test.tsx to verify the top reply button's sender-filled draft and explicit save through rendered UI. This source regression is NOT_RUN; Soren fleet Docker and independent review remain pending. See docs/completion/mira-reply906.md.
 
+REPLY927 repairs the top-reply test oracle for absence before save and exact version-zero/context/mailbox/plaintext reply content after save. The editor's authorized pre-create GET remains expected; fixture storage is absent until Save. This is an authored test repair, NOT_RUN by Mira, not evidence of a production defect. See docs/completion/mira-reply927.md.
+
 COL910 candidate replaces the obsolete manually typed assignment-user ID actions in the collaboration test with a mailbox-scoped option read and selected-user action. It preserves V1 revision advancement and a denied write after an option becomes ineligible. Cassian's integrated port and Lyra `f0cd5a2b` are required; this isolated test is NOT_RUN. See docs/completion/mira-col910.md.
 
 FE806 inbound attachment UI candidate: an optional thread reader port follows Cassian's noncanonical list/download proposal, with clean-only download, held/blocked states, explicit retry and owner-abort cleanup. There is no active browser route, scanner verdict writer, or draft/send attachment binding, so the fallback remains the existing attachment count. Source tests are authored but not run; Soren fleet Docker and browser acceptance are pending. See docs/completion/mira.md.

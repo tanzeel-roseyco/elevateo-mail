@@ -20,6 +20,8 @@ The conversation's top Reply as draft now chooses a current readable message wit
 
 REPLY906 replaces the older collaboration test's empty-draft link expectation with a public UI check of the top button, filled recipient/subject/thread link, and explicit save. The updated test is authored but has not run; see [REPLY906](docs/completion/mira-reply906.md).
 
+REPLY927 strengthens that test's oracle: no draft gateway calls before opening the editor, no stored draft or save before explicit Save, and an exact version-zero, mailbox/context-bound plaintext reply payload afterward. This is a test repair, not a proven production defect; Soren fleet execution remains pending. See [REPLY927](docs/completion/mira-reply927.md).
+
 COL910 updates only the obsolete typed-UUID assignment cases to open Lyra's mailbox-scoped picker, choose a returned user, and retain the V1 revisioned-write and denied-write checks. The test candidate requires Cassian's integrated optional assignee-options port and Lyra `f0cd5a2b`; no local or fleet test has run for this candidate. See [COL910](docs/completion/mira-col910.md).
 
 ### FE806 inbound attachment reader candidate

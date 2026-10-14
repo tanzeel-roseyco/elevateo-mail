@@ -6,6 +6,8 @@
 
 REPLY906 retires the obsolete collaboration assertion that the top reply is a stable empty-draft link. The focused test now renders the draft editor and checks populated To, subject, thread association, no implicit save, and one explicit save; execution is pending Soren fleet Docker. See `docs/completion/mira-reply906.md`.
 
+REPLY927 adds independent test assertions for no draft gateway work in the reader, pre-save server absence despite the editor's expected authorized GET, and exact version-zero save binding and content. It addresses a reviewer-identified test gap, with production source unchanged. No worker-side tests ran; see `docs/completion/mira-reply927.md`.
+
 COL910 aligns the existing collaboration assignment test with Lyra's optional mailbox-scoped assignee picker. It asserts lazy scoped option read, selection and revisioned V1 assignment, then a selected option denied by the authoritative write. The test requires Cassian's integrated port and Lyra `f0cd5a2b`; no runtime evidence exists yet. See `docs/completion/mira-col910.md`.
 
 ### Mira BE03 UI isolated R24 implementation (2026-10-14)
