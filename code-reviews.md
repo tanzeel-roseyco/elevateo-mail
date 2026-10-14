@@ -556,3 +556,12 @@ ADV842 Tessa functional / ADV843 Vale design each accepted Elara330 unique LOC (
 Mira ADV846 MED missing baseURL was repaired; ADV848 functional/ADV849 design accepted zero new defects over 101 unique LOC each. Nadia ADV850 recorded one LOW/354 unique LOC; ADV851/852/853/854 recorded zero new defects over 380/348/376/362 LOC. ADV855 functional/ADV856 design accepted the deadline repair with zero new defects/270 unique LOC each (0/KLOC). Overlaps are nonadditive; the historical LOW is one issue. Equality, late chunks, parsing and final validation reject late results; this is not a hard 25-second interruption and the 90-second outer watchdog remains unchanged.
 
 Integration preserves exact accepted source blobs and protected trees; no new logic or runtime execution. Author receipt pending-review labels are superseded by these root acceptances, not rewritten. Invitation unit/typing/lint/Python/browser/manual visual checks remain NOT_RUN. BE02 remains unaccepted.
+
+## R23 bounded review/runtime reconciliation
+
+ADV865: one MED /170 LOC, 5.88 defects/KLOC, truncation before redaction. Corrected wrapper SHA256 510444061333e34e144703e0585f344025a1ab9557bf968501329b963f898e25. ADV866 53 unique LOC and ADV867 45 unique LOC each zero new defects, 0/KLOC; full registered-secret redaction precedes cap. R21d later executed privacy regression PASS. Full transient stderr buffering and character rather than byte cap remain resource limits; historical defect is retained.
+
+ADV868 Tessa R21e source review: 165 source LOC (31 old +39 new wrapper +26 helper +4 build probe +65 reporter), zero code defects, 0/KLOC; overlapping coverage is nonadditive. Runtime subsequently proved setup insufficient. These counts are bounded source findings, not a zero-total-defect or application acceptance claim. R23 is doc-only and requires no code review.
+
+
+Vale BE03 read-cap exception is a process note, not code acceptance; see docs/completion/int403-r23-application-state.md.

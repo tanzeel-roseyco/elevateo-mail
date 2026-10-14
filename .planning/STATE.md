@@ -1,3 +1,17 @@
+Application IN PROGRESS — R23 documentation checkpoint (2026-10-14). BE02 OPEN/unaccepted; BE03 CLOSED until root accepts BE02. Application completion has priority; R&D remains separate. Invitation source is exact 51ca5d2eadd74b7ac4c1a2f5f82cd49323b15dc5; core/empty/revoked/logout evidence belongs to exact 86036e276df9c3294206e6bfa14d478c223c54dd. Observer remains OFF. Production, contracts, observer boundary and four Docker recipes are unchanged.
+
+R19 core login/read/persisted-draft/search PASS stands with restoration, authenticated HTTP, worker drain and cleanup. Its sixteen screenshots do not establish complete visual acceptance: search was loading; settled-search evidence remains in R12. R12's 21 PNGs and R18 conflict/revocation PASS stand. R18 logout FAILED, cause UNKNOWN; F2 memory-only recovery limitation remains OPEN.
+
+R21d build/TypeScript compile/privacy regression PASS. First empty visual partition failed setup with MODULE_NOT_FOUND ./quiet-reporter.ts: zero cases/zero PNGs; seven partitions not admitted. R21e CLI reporter override was insufficient because config resolves its reporter first: zero cases/zero PNGs, seven not admitted. Exact cleanup/independent absence PASS, lease FREE. R21f private active-config .ts-to-.js correction before tsc is pending review/runtime; no PASS is claimed. Source review does not establish runtime sufficiency.
+
+Remaining: eight empty/revoked UI partitions and root manual visual acceptance; R22 invitation affected unit/lint/type checks, frozen genuine SCN-AUTH-006-P and separate supplemental keyboard/visual evidence on exact51ca; corrected logout on exact86036. Root owns acceptance and actual vault; Jules supervises Soren fleet runtime; Cassian OFF401 / INT-403 owns this documentation integration. No new research gate or repeat of passed unchanged suites is implied.
+
+Project obsidian.md and the remote pending record are NOT synchronized to the actual vault. Actual Obsidian remains 134117 bytes, SHA256 de210bf0205ae28125d2c6125ff18fdbac87f947b6e2f92fff89b4b09e54b372, unchanged because C: is full. Automatic approval review rejected deleting a verified duplicate as “blocked by policy”, with no detailed reason; no deletion or retry. Requested LOW/Fast is not verified effective billing. See the R23 journal for receipt hashes, process history and BE03 readiness; R18 seal and failed histories remain linked.
+
+Evidence: ../docs/completion/int403-r23-application-state.md.
+
+## Historical records retained before R23
+
 Application IN PROGRESS: frozen candidate integrates exact Mira 9a0f75ce and Soren f59c35f infrastructure over 837e668, preserving all three parents. Three omitted canonical acceptance recipes are restored byte-for-byte from Local Completion, including the existing pinned seccomp profile. Four canonical contracts/v1 remain unchanged. Rowan 3c058 and Elara f22d7 are excluded following root ADV-740: bounded-wait and two fence defects remain under repair; newer source requires exact receipts. Nadia R5 is not accepted without its frozen review receipt.
 
 Application IN PROGRESS (2026-10-14): frozen integration joins exact Rowan 28390d7, Mira 5ec1851, Elara 2f15fae and Nadia 75fc041 over Cassian 3bedd32, preserving all five parents. Rowan adds the real bootstrap read-only mount/cleanup boundary; Mira repairs shared heading semantics with a strict regression; Elara supplies restricted CI observation and real-response transport helpers. Canonical contracts/v1 remain unchanged. Soren dirty infrastructure is excluded until an immutable source commit is supplied.

@@ -5,8 +5,8 @@ This checklist consolidates existing plans; it adds no implementation scope. Cur
 ## Local application acceptance
 
 - [ ] Resolve actual logout failure (cause UNKNOWN); retain the accepted conflict/revocation chains and historical failures.
-- [ ] Receive scheduled R19 core-four and changed empty/revoked visual results; interim login/read chains are not final acceptance.
-- [ ] Execute the reviewed genuine invitation producer/browser and manual keyboard/visual QA for new password, confirmation, completion and denial.
+- [ ] R19 core-four PASS stands; complete eight empty/revoked visual partitions and root manual visual acceptance. R21d/e setup failures are not browser passes; R21f pending.
+- [ ] On exact51ca, run affected invitation unit/lint/type checks, frozen genuine SCN-AUTH-006-P and separate R22 supplemental keyboard/visual QA for password, confirmation, completion and denial.
 - [ ] Run appropriate affected final-candidate Docker checks under Soren; preserve existing R12 loading/error/focus evidence and 21 PNGs, without repeating unchanged gates by default.
 - [ ] Root accepts BE02 before BE03 opens. F2 memory-only reload limitation remains explicit and OPEN.
 
