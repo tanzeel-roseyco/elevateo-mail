@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "net/http"
+require "timeout"
 require_relative "attachment_gateway_request"
 
 module Elevateo
@@ -24,11 +25,16 @@ module Elevateo
       raise Unavailable unless url == "http://attachment-gateway:4708" && key.is_a?(String) && key.bytesize == 32
       raise Unavailable unless timeout.is_a?(Numeric) && timeout.positive? && timeout <= 5
       signed = AttachmentGatewayRequest.new(fields: fields, key: key, now: now)
-      status, headers, bytes = if @transport
-        @transport.call(signed.body, signed.signature, timeout)
-      else
-        exchange(signed, timeout)
+      # AIDEV-NOTE: Net::HTTP read_timeout resets per chunk; one outer deadline covers the entire private exchange.
+      deadline = Process.clock_gettime(Process::CLOCK_MONOTONIC) + timeout
+      status, headers, bytes = Timeout.timeout(timeout) do
+        if @transport
+          @transport.call(signed.body, signed.signature, timeout)
+        else
+          exchange(signed, timeout)
+        end
       end
+      raise Unavailable if Process.clock_gettime(Process::CLOCK_MONOTONIC) > deadline
       raise NotAvailable if status == 404
       raise Unavailable unless status == 200 && headers.is_a?(Hash) && bytes.is_a?(String)
       normalized = headers.transform_keys { |name| name.to_s.downcase }

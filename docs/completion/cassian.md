@@ -181,3 +181,7 @@ Rowan relayed Soren exact `backend-cb1ec5be4546/028-ruby-suites.txt`: six named 
 ## Gateway bootstrap and ingest import
 
 Imported Leonie OPS820 3fd0dcb bootstrap/scanner scripts and Corin MAIL819 5dc075d/cfe1b72/664b4a9 held IMAP attachment ingest. Migration order is Nadia 00015, Corin 00017, Sabine 00018; Maeve sequence has earlier-dated 00016. These are source candidates only, Docker/role/scan runtime NOT_RUN on current Cassian SHA. No public gateway route or live source activation.
+
+## ADV101 private transport repair
+
+Vera independently reviewed exact 7b41521 plus signer, 238 LOC, one P2 aggregate timeout defect (4.20/KLOC): per-read/write Net::HTTP timeouts reset for a trickled body. Cassian now wraps only the private HTTP exchange (or injected transport), outside DB work, with one <=5s Timeout and an explicit monotonic deadline check; slow-trickle test authored. Independent repair re-review and Soren Docker execution are pending; this does not activate the route.

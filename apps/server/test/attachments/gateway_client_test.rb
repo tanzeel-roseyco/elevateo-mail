@@ -62,4 +62,20 @@ class AttachmentGatewayClientTest < Minitest::Test
         .download(fields: fields, timeout: 2, now: 1_700_000_000)
     end
   end
+
+  def test_slow_trickled_transport_cannot_extend_the_aggregate_deadline
+    chunks = 0
+    transport = ->(*) {
+      20.times do
+        chunks += 1
+        sleep 0.02
+      end
+      [200, {}, "body"]
+    }
+    assert_raises(Elevateo::AttachmentGatewayClient::Unavailable) do
+      client(transport).download(fields: fields, timeout: 0.05, now: 1_700_000_000)
+    end
+    assert_operator chunks, :>=, 1
+    assert_operator chunks, :<, 20
+  end
 end
