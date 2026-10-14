@@ -38,7 +38,9 @@ BEGIN
     RETURN '{"code":"dispatch_held"}'::jsonb;
   END IF;
   result := app_send_private.authorize_attempt(p_send,p_lease,p_generation,p_attempt,p_epoch,
-    sha256(i.snapshot_bytes),p_profile,p_seconds);
+    sha256(convert_to(jsonb_build_array('elevateo.send.capability.v1',i.organization_id,i.mailbox_id,
+      i.approved_by,i.approval_generation,i.approval_policy_revision,p_epoch,p_profile,true)::text,'UTF8')),
+    p_profile,p_seconds);
   IF result ? 'code' THEN RETURN result; END IF;
   RETURN result || jsonb_build_object('snapshot_hex',encode(i.snapshot_bytes,'hex'));
 END $$;

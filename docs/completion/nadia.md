@@ -19,3 +19,5 @@ Fleet request: apply the merged migrations in a disposable server Docker databas
 ## Process wiring
 
 The existing worker entrypoint now accepts `ELEVATEO_SIMULATED_SEND_WORKER=true` only with `ELEVATEO_DB_ROLE=elevateo_worker`, the opt-in send API, an explicit external control path, and the existing global outbound hold. The sole driver is `LocalFailureDriver(profile: "local")`; no SMTP or provider adapter is loaded. Default remains disabled. Every dispatch reads the control file through Elara's executor. The finite local script intentionally fails closed when exhausted. Soren must exercise startup, a missing/held control, a released epoch and bounded simulated status in fleet Docker before this switch is accepted.
+
+The durable attempt capability hash binds checked organization, mailbox, actor, authorization generation, policy revision, control epoch and local profile; it is distinct from the immutable message snapshot digest. Suppression and current membership are checked again at the final pre-call fence.
