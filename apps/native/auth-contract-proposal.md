@@ -10,9 +10,9 @@ Root selected an online-only exact HTTPS WebView with existing HttpOnly cookie a
 4. Define native API transport independent of browser cookies/CSRF. The current React gateway uses relative paths and browser session semantics. A native adapter must call HTTPS through a narrow Rust command surface that returns validated typed application data, or use a tightly bounded short-lived access-token policy approved by Sabine. No refresh token getter, generic fetch, arbitrary URL, shell or filesystem IPC.
 5. Define approved API origin and client application origin/CORS policy. Public HTTPS origin validation alone is not authorization. Production config must reject placeholders and cleartext; no service-role/provider/SMTP secret or signing key is bundled.
 
-## Native source already present
+## Historical source note
 
-`src-tauri/src/oauth.rs` keeps verifier/state/nonce in native memory for five minutes, validates exact callback URI plus `iss`/state and consumes each callback once. `session_store.rs` has a Windows Credential Manager/macOS Keychain adapter but is not called. The shell has no callback registration, browser opener, authenticated API transport or IPC commands. Android storage is intentionally unavailable until an Android Keystore-backed adapter is reviewed and tested.
+The former `oauth.rs` and `session_store.rs` draft modules were removed from the first-release shell in commit 625bef1. The active shell uses an exact first-party HTTPS WebView and the existing server's HttpOnly cookie/session flow. This proposal is retained as an unapproved future alternative only.
 
 ## Failure simulations for review
 

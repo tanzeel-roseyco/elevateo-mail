@@ -15,6 +15,7 @@ fn main() {
                 .inner_size(1120.0, 760.0)
                 .on_navigation(move |url| navigation::is_approved_navigation(&navigation_origin, url))
                 .on_new_window(|_, _| tauri::webview::NewWindowResponse::Deny)
+                .on_permission_request(|_, _| tauri::webview::PermissionResponse::Deny)
                 .build()?;
             Ok(())
         })
