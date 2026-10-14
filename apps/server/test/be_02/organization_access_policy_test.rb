@@ -107,6 +107,13 @@ class OrganizationAccessPolicyTest < MailboxMembershipDatabaseCase
     grant(sales, "sales")
     auditor = add_actor
     grant(auditor, "auditor")
+    # Pin the fixture and definer identities before the protected role check; a mismatch is a setup failure.
+    assert_equal "sales", @admin.exec_params("SELECT role FROM app.organization_access WHERE organization_id=$1 AND user_id=$2",
+      [@org, sales.user_id]).getvalue(0, 0)
+    assert_equal "elevateo_owner", @admin.exec_params(<<~SQL).getvalue(0, 0)
+      SELECT pg_get_userbyid(p.proowner) FROM pg_proc p
+        WHERE p.oid = 'app.authorize_outreach_draft_write(text)'::regprocedure
+    SQL
     assert_equal "ok", outreach_authorization(sales).fetch("status")
     assert_equal "ok", outreach_read_authorization(sales).fetch("status")
     assert_equal "not_found", outreach_authorization(auditor).fetch("status")
