@@ -39,7 +39,8 @@ module Elevateo
         raise Rejected, "invalid_mime" unless parsed
         handles = []
         unless parsed.fetch(:attachments).empty?
-          raise Rejected, "attachment_storage_unavailable" unless @attachment_storage
+          storage = @attachment_storage
+          raise Rejected, "attachment_storage_unavailable" unless storage
 
           extracted = ImapAttachmentParser.new.parse(raw_mime: raw_mime).fetch(:attachments)
           raise Rejected, "invalid_mime" unless extracted.length == parsed.fetch(:attachments).length
@@ -47,7 +48,7 @@ module Elevateo
           extracted.each do |attachment|
             ordinal = attachment.fetch(:ordinal)
             key = "quarantine/imap/#{account_id.downcase}/#{uidvalidity}/#{uid}/#{ordinal}"
-            @attachment_storage.put_once(key, attachment.fetch(:bytes))
+            storage.put_once(key, attachment.fetch(:bytes))
             handles << { ordinal: ordinal, filename: attachment.fetch(:filename),
               content_type: attachment.fetch(:content_type), byte_size: attachment.fetch(:byte_size),
               sha256: attachment.fetch(:sha256), storage_key: key }
