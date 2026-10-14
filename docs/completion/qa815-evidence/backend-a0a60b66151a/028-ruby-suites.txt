@@ -1,0 +1,26 @@
+Run options: -n [opaque value redacted] --seed 34479
+
+# Running:
+
+QA815 db_current_user=elevateo_api
+QA815 provenance member=t role=sales function_owner=elevateo_owner read_result=not_found write_result=not_found session_count=1 generation=3
+F
+
+Failure:
+OrganizationAccessPolicyTest#[opaque value redacted] [[opaque value redacted]:139]:
+member=t role=sales function_owner=elevateo_owner read_result=not_found.
+Expected: "ok"
+  Actual: "not_found"
+
+bin/rails test [opaque value redacted]:118
+
+
+
+Finished in 0.188525s, 5.3043 runs/s, 26.5217 assertions/s.
+1 runs, 5 assertions, 1 failures, 0 errors, 0 skips
+ Container [opaque value redacted] Creating 
+ Container [opaque value redacted] Created 
+Please switch from -n/--name to -i/--include
+
+
+exit=1 seconds=1.61

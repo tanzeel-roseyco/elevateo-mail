@@ -395,3 +395,5 @@ ADV122 client RBS review found one P2 nominal factory/fake mismatch. The test fa
 Elara same-scope protected outreach read/write witness is integrated test-only source. Current protected role `not_found` cause remains UNKNOWN until Soren's focused disposable fleet run; no auth policy or enrollment changed.
 
 FE807 sequence editor fixture now rereads the created draft ID/DTO after the generic 404 create path. The earlier c5a8737 842/842 web PASS predates this strengthened test; current-source web unit/type evidence pending Soren.
+
+QA815 `a0a60b6` one-case same-scope outreach witness FAIL 1/5: read=not_found, write=not_found, DB current_user=elevateo_api, sales membership and live session; 21 migrations and exact cleanup PASS. Retained rejected `32d043f` APK `aapt` dump PASS under Docker, confirms generated dynamic-receiver permission; native acceptance remains OPEN.

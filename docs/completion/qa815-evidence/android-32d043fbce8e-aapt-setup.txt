@@ -1,0 +1,13 @@
+apk=/home/tanzeel/elevateo-mail-completion-20261015/control/qa815-artifacts/android-32d043fbce8e-permission-rejected-unsigned.apk
+apk_sha256=743046f42bb8fd6d3eb662cc7708ed06612839b1582a5323dc896a6913458c83
+image=python:3.12.9-slim-bookworm
+started=2026-10-14T17:24:35Z
+debconf: delaying package configuration, since apt-utils is not installed
+W: Not using locking for read only lock file /var/lib/dpkg/lock-frontend
+W: Not using locking for read only lock file /var/lib/dpkg/lock
+E: Could not create temporary file for /var/lib/apt/extended_states - mkstemp (30: Read-only file system)
+E: Failed to write temporary StateFile /var/lib/apt/extended_states
+E: Sub-process /usr/bin/dpkg returned an error code (2)
+run_exit=100
+finished=2026-10-14T17:24:37Z
+remaining_task_containers=0
