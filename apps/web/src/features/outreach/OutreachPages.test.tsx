@@ -83,6 +83,14 @@ describe('Outreach routed pages', () => {
     expect(await screen.findByRole('alert')).toHaveProperty('textContent', expect.stringMatching(/not confirmed/))
     expect(screen.getByText(/Pilot · draft/)).toBeTruthy()
   })
+  it('hides loaded campaign content after a revoked write', async () => {
+    const g = gateway({ updateCampaign: vi.fn(async () => { throw new GatewayError('api', 'unauthenticated', 'revoked', { status: 401 }) }) })
+    view(`/outreach/campaigns/${campaignId}`, g)
+    await screen.findByText(/Pilot/)
+    fireEvent.click(screen.getByRole('button', { name: 'Pause campaign' }))
+    expect(await screen.findByRole('alert')).toHaveProperty('textContent', expect.stringMatching(/access changed/))
+    expect(screen.queryByText(/Pilot · draft/)).toBeNull()
+  })
   it('sends a versioned pause intent and reloads server-owned status', async () => {
     const g = gateway({ updateCampaign: vi.fn(async (_ctx, _proof, _id, input) => ({ ...campaign, name: input.name, status: input.status, version: 2 })) })
     view(`/outreach/campaigns/${campaignId}`, g)
