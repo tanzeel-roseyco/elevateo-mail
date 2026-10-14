@@ -33,12 +33,12 @@ DECLARE recipients jsonb := '[]'; item jsonb; address text; seen text[] := '{}';
 BEGIN
   IF p_binding->>'policy_revision' IS NULL OR NOT (p_binding->>'mailbox_enabled')::boolean OR
     NOT (p_binding->>'reply_available')::boolean OR app_send_private.canonical_address(p_binding->>'sender_address') IS NULL OR
-    p_binding->>'subject' ~ '[[:cntrl:]]' OR jsonb_array_length(p_binding->'recipients') NOT BETWEEN 1 AND 100 THEN
+    (p_binding->>'subject') COLLATE "C" ~ '[[:cntrl:]]' OR jsonb_array_length(p_binding->'recipients') NOT BETWEEN 1 AND 100 THEN
     RETURN 'send_not_ready';
   END IF;
   FOR item IN SELECT value FROM jsonb_array_elements(p_binding->'recipients') LOOP
     address := app_send_private.canonical_address(item->>'address');
-    IF address IS NULL OR address = ANY(seen) OR item->>'display_name' ~ '[[:cntrl:]]'
+    IF address IS NULL OR address = ANY(seen) OR (item->>'display_name') COLLATE "C" ~ '[[:cntrl:]]'
       OR (p_binding->'suppressed_addresses') ? address THEN RETURN 'send_not_ready'; END IF;
     seen := array_append(seen,address);
     recipients := recipients || jsonb_build_array(jsonb_build_array(item->'display_name',address));

@@ -136,4 +136,24 @@ class SendApprovalDatabaseTest < SendDatabaseTestCase
     end
   end
 
+  def test_canonical_unicode_and_control_escape_vectors_preserve_exact_reviewed_bytes
+    @saved = payload(expected_version: 1, operation_id: SecureRandom.uuid, subject: "C1\u0085 / \u2028 \u2029 \" \\",
+                     body_text: "\b\f\n\r\t\u0001\u001f /\u2028", to: [{ "display_name" => "Name\u009f", "address" => "Recipient@EXAMPLE.invalid" }])
+    assert_equal 2, save(@saved).fetch("version")
+    bytes = snapshot(version: 2, recipients: [["Name\u009f", "Recipient@example.invalid"]])
+    result = approve(version: 2, bytes: bytes, review_digest: Digest::SHA256.hexdigest(bytes))
+    refute result.key?("code")
+    stored = @admin.exec_params("SELECT encode(snapshot_bytes, 'hex') FROM app_send_private.intents WHERE send_id = $1", [result.fetch("send_id")]).getvalue(0, 0)
+    assert_equal bytes.unpack1("H*"), stored
+  end
+
+  def test_maximum_content_version_is_consumed_without_increment
+    @admin.exec_params("UPDATE app.drafts SET version = 2147483647 WHERE id = $1", [@draft])
+    bytes = snapshot(version: 2_147_483_647)
+    result = approve(version: 2_147_483_647, bytes: bytes, review_digest: Digest::SHA256.hexdigest(bytes))
+    assert_equal 2_147_483_647, result.fetch("approved_version")
+    assert_equal "2147483647", draft_row.fetch("version")
+    assert_equal "consumed", draft_row.fetch("state")
+  end
+
 end
