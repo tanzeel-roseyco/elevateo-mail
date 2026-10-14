@@ -15,6 +15,15 @@ module Mail
   end
 end
 
+module PG
+  class Error < StandardError
+  end
+  class CheckViolation < Error
+  end
+  class InvalidParameterValue < Error
+  end
+end
+
 module Elevateo
   module Inbound
     class Rejected < StandardError

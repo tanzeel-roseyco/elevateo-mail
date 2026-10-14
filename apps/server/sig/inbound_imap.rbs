@@ -1,0 +1,99 @@
+module Net
+  class IMAP
+    def initialize: (String, port: Integer, ssl: Hash[Symbol, Integer]) -> void
+    def login: (String, String) -> untyped
+    def select: (String) -> untyped
+    def responses: () -> Hash[String, Array[untyped]]
+    def uid_search: (Array[String]) -> Array[Integer]
+    def uid_fetch: (Integer, Array[String]) -> Array[untyped]
+    def disconnect: () -> untyped
+  end
+end
+
+module Elevateo
+  module Inbound
+    type imap_event = { uid: Integer, raw_mime: String }
+    type imap_claim = { "credential_ref" => String, "uidvalidity" => Integer?, "last_uid" => Integer }
+
+    interface _ImapStore
+      def claim: (account_id: String, credential_version: Integer) -> imap_claim
+      def reset_uidvalidity: (account_id: String, credential_version: Integer,
+        expected: Integer, replacement: Integer) -> bool
+      def insert_once: (account_id: String, credential_version: Integer, uidvalidity: Integer, uid: Integer,
+        content_sha256: String, from: String, to: Array[String], subject: String, text: String) -> Hash[String, untyped]
+    end
+
+    interface _ImapSession
+      def verified_tls?: () -> bool
+      def uidvalidity: () -> Integer
+      def fetch_after: (Integer, limit: Integer) -> Array[imap_event]
+      def close: () -> untyped
+    end
+
+    interface _ImapTransport
+      def open: (credential_ref: String) -> _ImapSession
+    end
+
+    class ImapIngress
+      DUMMY_SCOPE: String
+      @store: _ImapStore
+      def initialize: (store: _ImapStore) -> void
+      def ingest: (account_id: String, credential_version: Integer, uidvalidity: Integer, uid: Integer,
+        raw_mime: String) -> Hash[String, untyped]
+      class Capture
+        @record: record?
+        def record: () -> record?
+        def insert_once: (record) -> Hash[String, String]
+      end
+    end
+
+    class ImapWorkerStore
+      SQL: String
+      RESET_SQL: String
+      CLAIM_SQL: String
+      @connection: Elevateo::WriteStatements
+      def initialize: (connection: Elevateo::WriteStatements) -> void
+      def insert_once: (account_id: String, credential_version: Integer, uidvalidity: Integer, uid: Integer,
+        content_sha256: String, from: String, to: Array[String], subject: String, text: String) -> Hash[String, untyped]
+      def reset_uidvalidity: (account_id: String, credential_version: Integer,
+        expected: Integer?, replacement: Integer) -> bool
+      def claim: (account_id: String, credential_version: Integer) -> imap_claim
+      private
+      def binds: (Array[String | Integer | nil]) -> Array[ActiveRecord::Relation::QueryAttribute]
+    end
+
+    class ImapSync
+      MAX_BATCH: Integer
+      @store: _ImapStore
+      @transport: _ImapTransport
+      def initialize: (store: _ImapStore, transport: _ImapTransport) -> void
+      def run: (account_id: String, credential_version: Integer) -> Integer
+    end
+
+    class TlsImapTransport
+      @host: String
+      @port: Integer
+      @mailbox: String
+      @resolver: _ImapCredentialResolver
+      @factory: _ImapClientFactory
+      def initialize: (host: String, credential_resolver: _ImapCredentialResolver,
+        ?port: Integer, ?mailbox: String, ?client_factory: _ImapClientFactory) -> void
+      def open: (credential_ref: String) -> Session
+      class Session
+        @client: Net::IMAP
+        def initialize: (Net::IMAP) -> void
+        def verified_tls?: () -> bool
+        def uidvalidity: () -> Integer
+        def fetch_after: (Integer, limit: Integer) -> Array[imap_event]
+        def close: () -> untyped
+      end
+    end
+
+    interface _ImapCredentialResolver
+      def call: (String) -> [String, String]
+    end
+    interface _ImapClientFactory
+      def new: (String, port: Integer, ssl: Hash[Symbol, Integer]) -> Net::IMAP
+    end
+  end
+end

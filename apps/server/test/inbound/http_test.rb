@@ -78,12 +78,12 @@ class FakeInboundHTTPTest < Minitest::Test
     assert_equal "created", result.fetch("result")
     assert_equal true, result.fetch("simulated")
     @connection.outcome = "duplicate"
-    assert_equal [200, "duplicate"], dispatch.then { |code, data| [code, data.fetch("result")] }
+    assert_equal [200, "duplicate"], (dispatch.then { |code, data| [code, data.fetch("result")] })
   end
 
   def test_cross_tenant_or_actor_is_hidden
     @connection.allowed = false
-    assert_equal [404, "not_available"], dispatch.then { |code, data| [code, data.fetch("code")] }
+    assert_equal [404, "not_available"], (dispatch.then { |code, data| [code, data.fetch("code")] })
     @connection.allowed = true
     assert_includes [401, 404, 409], dispatch(payload.merge("actor_id" => THREAD)).first
     refute_includes @connection.business, :ingest
