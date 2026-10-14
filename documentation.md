@@ -125,6 +125,8 @@ The first release is a company mailroom: named addresses, shared conversations, 
 
 FE806 attachment reader candidate displays private metadata only after an explicit request and offers download only for a clean scan state through an authorized byte proxy. A fresh request can still be denied after a clean listing. Pending, malware and failed scans never expose a download action. The additive V2 route, real scanner, private storage adapter and outbound draft/send binding are separate unfinished work; no current attachment download or upload is claimed.
 
+ATT843 keeps overlapping attachment downloads independently busy and suppresses duplicate requests for the same attachment until that attempt settles. It does not change server authorization or enable a download route.
+
 Company correspondence must meet the provider's rules. Marketing sequences are a later, explicitly scoped module with consent evidence, unsubscribe and dispatch-time suppression. The original ambition to resemble Instantly/Smartlead informs workflow quality; Resend is not an approved transport for unsolicited cold outreach. See the [current provider constraints](docs/mail-delivery-and-hosting.md).
 
 This is an API-based mailbox product. Full Gmail/Outlook history synchronization, conventional IMAP access from Apple Mail, calendars, contacts synchronization and federation are not implied by the first release. Add Gmail/Graph adapters later if existing account history becomes a requirement. Do not move existing company MX records to Resend until that migration is separately designed and tested.
