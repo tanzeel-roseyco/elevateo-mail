@@ -204,3 +204,5 @@ QA815 exact `f70b654` full fleet web gate PASSED V1/V2, lint, strict type, 842/8
 QA815 exact `651b63a` disposable backend now passes 21 migrations including attachment gateway 00018 with task-only restricted login bootstrap. Full Ruby remains failed: 521 runs/7065 assertions/1 failure/1 error; Steep 111 problems. Protected organization role and thread fixture table ownership need owner fixes before HTTP/worker/browser. Cleanup passed. See `docs/completion/soren.md`.
 
 QA815 `065ec91` backend retest: 21 migrations PASS, Ruby 522/7080 with one protected organization role failure and zero errors; Rowan's prior thread fixture ownership error is absent. Steep 111 problems; HTTP/worker/browser still pending. Cleanup passed. See `docs/completion/soren.md`.
+
+QA815 current `c5a8737` web successor passes V1/V2, lint, strict type, 842/842 units and production build with exact cleanup. Its attachment-only source changes do not transfer the older f70 screenshots; real-backend browser remains blocked by the backend role failure. See `docs/completion/soren.md`.

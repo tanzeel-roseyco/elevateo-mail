@@ -146,3 +146,5 @@ QA815 `f70b654` full web PASS 842/842 and build; same-source seeded eight-PNG vi
 QA815 `651b63a` PostgreSQL migrations 21 PASS through gateway 00018; Ruby 521/7065 with 1 failure/1 error, Steep 111 problems; HTTP/worker/browser NOT_REACHED. Exact cleanup PASS. Protected role and thread fixture owner defects routed to owners.
 
 QA815 `065ec91` migrations 21 PASS; Ruby 522/7080, 1 role failure, 0 errors; thread fixture repair passes its formerly failing path. Steep111, HTTP/worker/browser NOT_REACHED, cleanup PASS.
+
+QA815 `c5a8737` current web full PASS 842/842/build with task cleanup; V2 declaration/spec hashes unchanged. Current-source real-browser acceptance NOT_RUN; protected backend role remains OPEN.

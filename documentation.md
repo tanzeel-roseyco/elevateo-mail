@@ -214,3 +214,5 @@ QA815 `f70b654` full web receipt `docs/completion/qa815-evidence/web-f70b6543db4
 QA815 current backend receipt `docs/completion/qa815-evidence/backend-651b63a9fdb2/` records 21 migration PASS including gateway 00018, then Ruby/Steep failure and exact cleanup. The OPS820 restricted login was a labeled task-only runner overlay; see `docs/completion/soren.md` for counts and limits. No backend/real-browser acceptance claim follows from migration success.
 
 QA815 backend successor receipt `docs/completion/qa815-evidence/backend-065ec91bf5a3/` records 21 migrations, a single remaining organization role Ruby failure, 111 Steep problems and exact cleanup. See `docs/completion/soren.md` for limits; the corrected thread fixture does not close backend acceptance.
+
+QA815 current full web receipt `docs/completion/qa815-evidence/web-c5a873765a0c.log` records exact `c5a8737` V1/V2/lint/type/unit/build PASS and cleanup. The f70 visual artifact is separate exact-source evidence; see `docs/completion/soren.md`.
