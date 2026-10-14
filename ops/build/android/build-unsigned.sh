@@ -29,7 +29,7 @@ npm ci --ignore-scripts
 npm run build
 cd "$native_dir"
 cargo_lock_before="$(sha256sum Cargo.lock | cut -d " " -f 1)"
-cargo tauri android init --config "$android_dir/tauri.android.conf.json"
+cargo tauri android init --ci --config "$android_dir/tauri.android.conf.json"
 wrapper="$native_dir/gen/android/gradle/wrapper/gradle-wrapper.properties"
 [[ -f "$wrapper" ]] || { echo 'Generated Gradle wrapper missing' >&2; exit 2; }
 python3 "$android_dir/pin_gradle.py" "$wrapper"
