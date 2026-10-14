@@ -1,0 +1,49 @@
+[
+    {
+        "Name": "[opaque value redacted]",
+        "Id": "[opaque value redacted]",
+        "Created": "2026-10-14T17:56:07.777899229+02:00",
+        "Scope": "local",
+        "Driver": "bridge",
+        "EnableIPv4": true,
+        "EnableIPv6": false,
+        "IPAM": {
+            "Driver": "default",
+            "Options": null,
+            "Config": [
+                {
+                    "Subnet": "10.0.57.0/24",
+                    "Gateway": "10.0.57.1"
+                }
+            ]
+        },
+        "Internal": true,
+        "Attachable": false,
+        "Ingress": false,
+        "ConfigFrom": {
+            "Network": ""
+        },
+        "ConfigOnly": false,
+        "Options": {},
+        "Labels": {
+            "com.docker.compose.config-hash": "[opaque value redacted]",
+            "com.docker.compose.network": "isolated",
+            "com.docker.compose.project": "[opaque value redacted]",
+            "com.docker.compose.version": "5.3.1",
+            "elevateo.be02.project": "[opaque value redacted]"
+        },
+        "Containers": {},
+        "Status": {
+            "IPAM": {
+                "Subnets": {
+                    "10.0.57.0/24": {
+                        "IPsInUse": 3,
+                        "DynamicIPsAvailable": 253
+                    }
+                }
+            }
+        }
+    }
+]
+
+exit=0 seconds=0.02

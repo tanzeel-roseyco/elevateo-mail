@@ -1,0 +1,45 @@
+[
+    {
+        "CreatedAt": "2026-10-14T18:16:52+02:00",
+        "Driver": "local",
+        "Labels": {
+            "com.docker.compose.config-hash": "[opaque value redacted]",
+            "com.docker.compose.project": "[opaque value redacted]",
+            "com.docker.compose.version": "5.3.1",
+            "com.docker.compose.volume": "db-config",
+            "elevateo.be02.project": "[opaque value redacted]"
+        },
+        "Mountpoint": "[opaque value redacted]",
+        "Name": "[opaque value redacted]",
+        "Options": null,
+        "Scope": "local"
+    },
+    {
+        "CreatedAt": "2026-10-14T18:16:52+02:00",
+        "Driver": "local",
+        "Labels": {
+            "com.docker.compose.config-hash": "[opaque value redacted]",
+            "com.docker.compose.project": "[opaque value redacted]",
+            "com.docker.compose.version": "5.3.1",
+            "com.docker.compose.volume": "db-data",
+            "elevateo.be02.project": "[opaque value redacted]"
+        },
+        "Mountpoint": "[opaque value redacted]",
+        "Name": "[opaque value redacted]",
+        "Options": null,
+        "Scope": "local"
+    },
+    {
+        "CreatedAt": "2026-10-14T18:17:13+02:00",
+        "Driver": "local",
+        "Labels": {
+            "elevateo.be02.project": "[opaque value redacted]"
+        },
+        "Mountpoint": "[opaque value redacted]",
+        "Name": "[opaque value redacted]",
+        "Options": null,
+        "Scope": "local"
+    }
+]
+
+exit=0 seconds=0.01

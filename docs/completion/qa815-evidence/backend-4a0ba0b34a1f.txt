@@ -1,0 +1,9 @@
+source=4a0ba0b34a1fba16c13a56717d2a7d95870caa38
+started=2026-10-14T15:48:22Z
+BE02 project=be02-2d97369239a54eca911cae95dd5aa83c evidence=/tmp/qa815-backend.y5Bhtxpw/ops/local/be02-2d97369239a54eca911cae95dd5aa83c
+Building bounded task image
+tests=FAILED cleanup=PASSED evidence=/tmp/qa815-backend.y5Bhtxpw/ops/local/be02-2d97369239a54eca911cae95dd5aa83c
+runner_exit=1
+receipt_copy_failed=0
+archive_absent=yes
+finished=2026-10-14T15:50:03Z

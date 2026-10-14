@@ -1,0 +1,73 @@
+[
+    {
+        "Id": "sha256:[opaque value redacted]",
+        "RepoTags": [
+            "axllent/mailpit@sha256:[opaque value redacted]"
+        ],
+        "RepoDigests": [
+            "axllent/mailpit@sha256:[opaque value redacted]"
+        ],
+        "Comment": "buildkit.dockerfile.v0",
+        "Created": "2026-10-11T00:50:40.702164208Z",
+        "Config": {
+            "ExposedPorts": {
+                "1025/tcp": {},
+                "1110/tcp": {},
+                "8025/tcp": {}
+            },
+            "Env": [
+                "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+            ],
+            "Entrypoint": [
+                "/mailpit"
+            ],
+            "WorkingDir": "/",
+            "Labels": {
+                "org.opencontainers.image.description": "An email and SMTP testing tool with API for developers",
+                "org.opencontainers.image.documentation": "https://mailpit.axllent.org/docs/",
+                "org.opencontainers.image.licenses": "MIT",
+                "org.opencontainers.image.source": "https://github.com/axllent/mailpit",
+                "org.opencontainers.image.title": "Mailpit",
+                "org.opencontainers.image.url": "https://mailpit.axllent.org"
+            },
+            "Healthcheck": {
+                "Test": [
+                    "CMD",
+                    "/mailpit",
+                    "readyz"
+                ],
+                "Interval": 15000000000,
+                "StartPeriod": 10000000000,
+                "StartInterval": 1000000000
+            }
+        },
+        "Architecture": "amd64",
+        "Os": "linux",
+        "Size": 16947727,
+        "RootFS": {
+            "Type": "layers",
+            "Layers": [
+                "sha256:[opaque value redacted]",
+                "sha256:[opaque value redacted]",
+                "sha256:[opaque value redacted]"
+            ]
+        },
+        "Metadata": {
+            "LastTagTime": "2026-10-11T21:07:19.523573327Z"
+        },
+        "Descriptor": {
+            "mediaType": "application/vnd.oci.image.index.v1+json",
+            "digest": "sha256:[opaque value redacted]",
+            "size": 2357
+        },
+        "Identity": {
+            "Pull": [
+                {
+                    "Repository": "docker.io/axllent/mailpit"
+                }
+            ]
+        }
+    }
+]
+
+exit=0 seconds=0.03

@@ -1,0 +1,20 @@
+ Network [opaque value redacted] Creating 
+ Network [opaque value redacted] Created 
+ Volume [opaque value redacted] Creating 
+ Volume [opaque value redacted] Created 
+ Volume [opaque value redacted] Creating 
+ Volume [opaque value redacted] Created 
+ Container [opaque value redacted] Creating 
+ Container [opaque value redacted] Creating 
+ Container [opaque value redacted] Created 
+ Container [opaque value redacted] Created 
+ Container [opaque value redacted] Starting 
+ Container [opaque value redacted] Starting 
+ Container [opaque value redacted] Started 
+ Container [opaque value redacted] Started 
+ Container [opaque value redacted] Waiting 
+ Container [opaque value redacted] Waiting 
+ Container [opaque value redacted] Healthy 
+ Container [opaque value redacted] Healthy 
+
+exit=0 seconds=5.01

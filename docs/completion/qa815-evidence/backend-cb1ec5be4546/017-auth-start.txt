@@ -1,0 +1,8 @@
+ Container [opaque value redacted] Creating 
+ Container [opaque value redacted] Created 
+ Container [opaque value redacted] Starting 
+ Container [opaque value redacted] Started 
+ Container [opaque value redacted] Waiting 
+ Container [opaque value redacted] Healthy 
+
+exit=0 seconds=2.88

@@ -1,0 +1,10 @@
+source=cb1ec5be454686fc647e0c6131f3dc9f3884eeb7
+started=2026-10-14T16:16:48Z
+BE02 project=be02-ef58b737fb284f31be19298f1a466705 evidence=/tmp/qa815-backend.1K3FLDhr/ops/local/be02-ef58b737fb284f31be19298f1a466705
+Building bounded task image
+Running isolated Minitest suites and Steep
+tests=FAILED cleanup=PASSED evidence=/tmp/qa815-backend.1K3FLDhr/ops/local/be02-ef58b737fb284f31be19298f1a466705
+runner_exit=1
+receipt_copy_failed=0
+archive_absent=yes
+finished=2026-10-14T16:20:22Z
