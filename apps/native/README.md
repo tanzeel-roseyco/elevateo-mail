@@ -10,6 +10,6 @@ Tauri core/build are pinned to 2.12.3/2.7.2, including the October 2026 NSIS dow
 
 ## Soren fleet-only request
 
-Under Soren's fleet Docker lease: build the existing `apps/web` source in its canonical container; generate and review `apps/native/src-tauri/Cargo.lock` from this exact commit in a task-owned Rust container with Tauri Linux system packages; run `cargo test --locked` and `cargo check --locked` from `apps/native/src-tauri`; validate Tauri JSON schema/capability; record image digests, source SHA, exits and cleanup. No host app build/test is authorized. Linux compile does not prove Windows, Android or macOS WebView behavior.
+Under Soren's fleet Docker lease: build the existing `apps/web` source in its canonical container; generate and review `apps/native/src-tauri/Cargo.lock` from this exact commit in a task-owned Rust container with Tauri Linux system packages; run `cargo test --locked` and `cargo check --locked` from `apps/native/src-tauri`; run `python3 apps/native/ci/verify_boundary.py` from repository root and validate the Tauri JSON schema; record image digests, source SHA, exits and cleanup. No host app build/test is authorized. Linux compile does not prove Windows, Android or macOS WebView behavior.
 
 Target OS gates remain: real Windows NSIS install/run/upgrade/downgrade/uninstall with WebView2 present and absent, Android emulator/device cold start and cookie/session lifecycle, and macOS install/run with signing/notarization later. No signing keys, live credentials, live mail, DNS or deployment are handled here.
