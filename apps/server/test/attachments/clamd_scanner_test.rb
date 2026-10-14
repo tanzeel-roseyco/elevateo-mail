@@ -5,9 +5,9 @@ require_relative "../../lib/elevateo/attachments_scan"
 
 class ClamdScannerTest < Minitest::Test
   class SocketFixture
-    attr_reader :written
+    attr_reader :written, :closed
     def initialize(reply, max_write: nil)
-      @reply, @index, @written, @max_write = reply, 0, +"".b, max_write
+      @reply, @index, @written, @max_write, @closed = reply, 0, +"".b, max_write, false
     end
     def write(bytes)
       accepted = bytes.byteslice(0, @max_write || bytes.bytesize)
@@ -20,7 +20,9 @@ class ClamdScannerTest < Minitest::Test
       @index += value.bytesize
       value
     end
-    def close = nil
+    def close
+      @closed = true
+    end
   end
 
   def scanner(reply)
@@ -48,6 +50,13 @@ class ClamdScannerTest < Minitest::Test
     clamd = Elevateo::Attachments::ClamdScanner.new(socket_factory: -> { socket })
     assert_equal "clean", clamd.scan("hello")
     assert_equal "zINSTREAM\0" + [5].pack("N") + "hello" + [0].pack("N"), socket.written
+    assert socket.closed
+  end
+
+  def test_protocol_failure_closes_socket
+    clamd, socket = scanner("stream: invalid\0")
+    assert_raises(Elevateo::Attachments::ClamdScanner::Error) { clamd.scan("hello") }
+    assert socket.closed
   end
 
   def test_rejects_empty_and_oversized_before_socket

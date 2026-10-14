@@ -49,7 +49,7 @@ module Elevateo
               "content_type" => row.fetch("content_type"), "byte_size" => row.fetch("byte_size").to_i,
               "scan_status" => row.fetch("scan_status") }
           end,
-          "next_cursor" => rows.length > limit ? visible.last.fetch("id") : nil }
+          "next_cursor" => rows.length > limit ? visible.fetch(-1).fetch("id") : nil }
       end
 
       def assert_downloadable(organization_id:, mailbox_id:, thread_id:, message_id:, id:)

@@ -146,6 +146,20 @@ class AttachmentServiceTest < Minitest::Test
     assert_equal "scan_failed", @repository.rows.fetch(id).fetch("scan_status")
   end
 
+  def test_worker_rejects_malformed_claim_before_read_or_verdict
+    id = stage.fetch("id")
+    repository = @repository
+    def repository.claim_scan(id:, token:)
+      row = super
+      row.merge("sha256" => nil) if row
+    end
+    scanner = Object.new
+    def scanner.scan(_bytes) = raise "scanner must not receive malformed claim"
+    service = Elevateo::Attachments::ScanService.new(repository: repository, storage: @storage, scanner: scanner)
+    assert_raises(Elevateo::Attachments::ScanService::Unavailable) { service.inspect(id: id) }
+    assert_equal "pending_scan", @repository.rows.fetch(id).fetch("scan_status")
+  end
+
   def test_late_clean_attempt_cannot_overwrite_newer_malware
     id = stage.fetch("id")
     first = @repository.claim_scan(id: id, token: ORG)
