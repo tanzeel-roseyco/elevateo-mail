@@ -4,7 +4,7 @@ A planned shared company mailbox for approximately **10 people**, available on a
 
 ## Current state
 
-2026-10-14 INT-401: IN PROGRESS. Canonical frontend/backend/acceptance/performance sources are integrated from Local Completion d2de43b in integrate/cassian-unified. This baseline is UNTESTED; historical results below do not validate it. Original histories and working layers are being preserved under ignored .local-audit/INT-401 and refs/preserved/int401. Rowan owns the R3 app_drafts_private migration blocker; Soren schedules all fleet-02 container checks. See docs/issues.md, obsidian.md and docs/completion/int401-overlay-manifest.json.
+2026-10-14 INT-401: IN PROGRESS. Canonical frontend/backend/acceptance/performance sources are integrated from Local Completion d2de43b in integrate/cassian-unified. This baseline is UNTESTED; historical results below do not validate it. Archive capture completed: 19 Git checkouts, 18 preserved HEAD refs, 12 source exports, 45,507 source-file entries; original histories and working layers are preserved under ignored .local-audit/INT-401 and refs/preserved/int401. Rowan owns the R3 app_drafts_private migration blocker; Soren schedules all fleet-02 container checks. See docs/issues.md, obsidian.md and docs/completion/int401-overlay-manifest.json.
 
 
 Current checkpoint: Devin is suspended with $4.20 of the approved existing credit remaining and $0.00 on-demand. Backend source 5785eba is not accepted: the partial ops batch passed heartbeat and egress (one PowerShell skip), but secrets failed to load. The full-bundle Docker runner passed static re-review after cleanup-control repair; execution is pending. Fable completed its source/test draft and review-repair session f85838f4-99dd-42dc-93bc-7dad6b950aab is running. Static review found stale-success ownership defects in inbox and reader, delayed freshness scheduling, misleading empty-continuation text, and a drawer comment defect; repairs and visual validation remain pending.
@@ -110,3 +110,5 @@ Local Docker cleanup removed the task Node image (332 MB reported) and all task 
 ### Reviewed grantor probe checkpoint
 The corrected isolated grantor probe is frozen in docs/evidence/be-01-r1-grantor-probe.md (SHA-256 5b1e35dfa6a7b8446eabbe1dfae6a6f19125f13ab6e4ca1f659682fad14f83a3). Independent cleanup re-review covered 169 Bash lines with zero new defects; execution remains pending. One bounded attempt on the existing Devin session is authorized using existing credit only; implementation remains frozen until catalog evidence is available.
 
+
+INT-401 preservation follow-up: original indexed executable modes restored for canonical scripts after Windows overlay staging; baseline remains UNTESTED. Source-only and history bundles remain ignored local deliverables.

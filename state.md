@@ -1,4 +1,4 @@
-2026-10-14 INT-401: IN PROGRESS. Canonical frontend/backend/acceptance/performance sources are integrated from Local Completion d2de43b in integrate/cassian-unified. This baseline is UNTESTED; historical results below do not validate it. Original histories and working layers are being preserved under ignored .local-audit/INT-401 and refs/preserved/int401. Rowan owns the R3 app_drafts_private migration blocker; Soren schedules all fleet-02 container checks. See docs/issues.md, obsidian.md and docs/completion/int401-overlay-manifest.json.
+2026-10-14 INT-401: IN PROGRESS. Canonical frontend/backend/acceptance/performance sources are integrated from Local Completion d2de43b in integrate/cassian-unified. This baseline is UNTESTED; historical results below do not validate it. Archive capture completed: 19 Git checkouts, 18 preserved HEAD refs, 12 source exports, 45,507 source-file entries; original histories and working layers are preserved under ignored .local-audit/INT-401 and refs/preserved/int401. Rowan owns the R3 app_drafts_private migration blocker; Soren schedules all fleet-02 container checks. See docs/issues.md, obsidian.md and docs/completion/int401-overlay-manifest.json.
 
 # Project state
 
@@ -108,3 +108,5 @@ Devin remains independently verified suspended; last visible credit$5.17 and on-
 
 
 BE-01-R1 source checkpoint `5785eba47f3709debb2815c8d86608f7e62d02f3` is pushed on `fix/astra-low/be-01-r1`. Final authority review 165 LOC, catalog 29 LOC, protocol 131 LOC and dependency 60 LOC report zero new defects; overlapping coverage is not additive. At 18:24:36 UTC Devin resumed for ops-only pinned Ruby Docker tests with a five-minute execution checkpoint and verified cleanup. Last visible prepaid balance $5.17; no purchases. Test results remain pending. Dispatch is preserved under docs/evidence/be-01-r1-ops-dispatch.txt.
+
+INT-401 preservation follow-up: original indexed executable modes restored for canonical scripts after Windows overlay staging; baseline remains UNTESTED. Source-only and history bundles remain ignored local deliverables.
