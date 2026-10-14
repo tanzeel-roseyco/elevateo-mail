@@ -704,3 +704,7 @@ Coverage: `featureGateways.tsx` (27 LOC), rewritten `features/index.tsx` (86), `
 ### FE808 continuation author inspection
 
 Scope: `apps/web/src/features/members/{adminModel,AdministrationPage,PersonalSettingsPage,peopleFeatureModule}*`. Author inspection found and fixed one stale-write replay risk by blocking further edits after any failed write until reload. Independent adversarial packets and design reviewer remain pending; no independent defect count or density is claimed. Fleet Docker tests, TypeScript/lint and actual browser checks are NOT_RUN on this candidate.
+
+FE807 continuation: author self-inspection of uncommitted Outreach route/forms candidate found the unconfirmed-write duplicate-submission risk; form locks now require navigation after an ambiguous error. Independent bounded source/data review and dedicated design review remain pending; independently reviewed LOC 0, independently confirmed defect density not applicable. Docker/browser/runtime tests not executed by Celeste. Exact source and Soren request: `docs/completion/celeste.md`.
+
+FE807 author follow-up: self-review found that treating every write error as uncertain would block correction after a definitive 400, while a malformed success could have committed. The page now distinguishes definitive validation rejection from uncertain/malformed outcomes and includes a targeted 400 regression. Independent source/design review and fleet execution remain pending; no independent defect-density claim.
