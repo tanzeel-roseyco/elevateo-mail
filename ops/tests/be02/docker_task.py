@@ -46,7 +46,7 @@ class Task:
         (self.evidence / name).write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")
 
     def docker(self, name: str, args: list[str], seconds: int = 20, required: bool = True,
-               quiet: bool = False) -> str:
+               quiet: bool = False, diagnostic_stderr: bool = False) -> str:
         remaining = int(self.deadline - time.monotonic())
         if remaining < 1:
             raise RuntimeError("whole-run deadline exceeded")
@@ -60,13 +60,16 @@ class Task:
         try:
             result = subprocess.run(["docker", "--context", self.context, *args], env=env,
                                     stdout=subprocess.DEVNULL if quiet else subprocess.PIPE,
-                                    stderr=subprocess.DEVNULL if quiet else subprocess.PIPE,
+                                    stderr=subprocess.DEVNULL if quiet and not diagnostic_stderr else subprocess.PIPE,
                                     text=True, timeout=bound, check=False)
         except subprocess.TimeoutExpired as error:
             # AIDEV-NOTE: A killed CLI can leave its container running; final cleanup discovers by exact project.
-            log.write_text("TIMEOUT; container cleanup required\n", encoding="utf-8")
+            stderr = error.stderr or ""
+            if isinstance(stderr, bytes):
+                stderr = stderr.decode("utf-8", errors="replace")
+            log.write_text(self.redact(stderr) + "\nTIMEOUT; container cleanup required\n", encoding="utf-8")
             raise RuntimeError(f"{name} exceeded {bound}s") from error
-        # AIDEV-NOTE: Browser errors can contain cookies/passwords; discard native output before it reaches disk.
+        # AIDEV-NOTE: App browser output stays discarded; only credential-free preflight opts into redacted stderr.
         log.write_text(self.redact((result.stdout or "") + (result.stderr or "")) +
                        f"\nexit={result.returncode} seconds={time.monotonic() - started:.2f}\n", encoding="utf-8")
         if required and result.returncode:

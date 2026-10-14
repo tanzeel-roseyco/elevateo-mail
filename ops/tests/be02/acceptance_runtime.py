@@ -289,9 +289,12 @@ class Acceptance:
                     self.readiness(identity, grid=True)
                 if lane == "playwright_real":
                     smoke = "import {" + browser + " as engine} from 'playwright';" + \
-                        "const b=await engine.launch({headless:true,chromiumSandbox:true});" + \
+                        "const b=await engine.launch({headless:true,chromiumSandbox:true,timeout:60000});" + \
                         "try{if(b.version()!==" + json.dumps(VERSIONS[browser]) + ")process.exitCode=1;}finally{await b.close();}"
-                    self.execute(identity, ["node", "--input-type=module", "-e", smoke])
+                    # AIDEV-NOTE: Launch has no app requests; retain its stderr before the outer 90s watchdog.
+                    task.docker("acceptance-launch-preflight", ["container", "exec", identity,
+                                "node", "--input-type=module", "-e", smoke], 90,
+                                quiet=True, diagnostic_stderr=True)
                     command = ["node", "node_modules/@playwright/test/cli.js", "test",
                                "--config=playwright/playwright.config.ts", "--output=/tmp/playwright-native"]
                     if self.diagnostic:
