@@ -10,6 +10,10 @@ module V2
     def index
       mailbox, thread, message = %i[mailbox_id thread_id message_id].map { |key| path_uuid(key) }
       protected_read(allowed_query: %w[cursor limit], budget: 262_144) do |connection:, identity:, session:, query:, **|
+        # @type var connection: ActiveRecord::ConnectionAdapters::AbstractAdapter
+        # @type var identity: Elevateo::SessionIdentity
+        # @type var session: Elevateo::ReadResponse::item
+        # @type var query: Hash[String, String]
         limit = query.fetch("limit", "50")
         unless limit.is_a?(String) && /\A[1-9][0-9]?\z/.match?(limit) && limit.to_i.between?(1, 50)
           raise Elevateo::CollaborationError.new("request_invalid")

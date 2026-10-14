@@ -284,3 +284,5 @@ ADV101 follow-up strengthens the timeout regression through the actual private H
 ATT823 source review found one open metadata contract/UI mismatch before route activation: Nadia 00015 can produce `rejected` with size 0 and list projects it; proposal/MessageAttachments currently accept only four scan statuses and positive sizes, so rejected would fail DTO validation or be mislabeled. Owner decision/repair and fleet proof are pending; public route remains inactive.
 
 ATT823 browser data port is authored but unbound: strict metadata page validation, explicit provisional rejected/size-zero proposal, same-origin private byte GET with no redirects, ten-second abort, binary/header/length and 10-MiB bounds. It is not injected into the shell or registered in Rails; Nadia/Mira rejected-status decision, binary controller, fleet type/unit/HTTP and visual checks remain pending.
+
+INT801 added a narrow RBS/controller annotation for the unregistered attachment metadata adapter; Nadia/Corin still own the missing attachment domain signatures found by fleet Steep. Exact integrated static rerun is pending; no ignore or route activation was added.

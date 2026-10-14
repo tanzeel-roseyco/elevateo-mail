@@ -197,3 +197,7 @@ Bounded source inspection of Nadia 00015 status/size constraints, Attachments::S
 ## ATT823 unbound browser port
 
 `v2AttachmentGateway.ts` validates scoped metadata, including a provisional rejected/size-zero row without private reason, and one bounded same-origin binary GET with no redirect, abort deadline, Content-Type/no-store/nosniff/disposition/length checks and a 10-MiB stream cap. Tests cover metadata/bytes happy path, 404, invalid length/scope and unsafe filename. Proposal attachments.2 records the rejected shape, pending Nadia/Mira confirmation. No production shell injection, Rails public route, generated canonical DTO or Docker execution; NOT_RUN.
+
+## ATT metadata controller static seam
+
+Added only the V2 adapter class/method RBS and block types for the unregistered InboxAttachmentsController. Soren cb1ec5b Steep preceded this controller but showed missing Attachments domain declarations; Nadia/Corin own those RBS additions. No suppression or runtime claim; exact-source static gate pending.

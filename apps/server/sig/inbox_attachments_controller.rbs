@@ -1,0 +1,7 @@
+module V2
+  class InboxAttachmentsController < V1::WriteController
+    def index: () -> void
+    private
+    def path_uuid: (Symbol) -> String
+  end
+end
