@@ -1,5 +1,7 @@
 # Elevateo Mail - ongoing project record
 
+Mira OFF-405 R9 / ADV777 / issue #14: source-authored SCN-DRAFT-001-F1 stale-version acceptance over exact canonical 94d32db. Two isolated sessions of the same composer load v1 before acknowledged winner v2; real stale PUT 409, raw editor retention and authenticated winner GETs are asserted. Runtime, lint/typecheck and browser evidence NOT_RUN; independent full-rubric source/design review pending (defects/KLOC not yet measured). Soren alone schedules Docker; primary flow is not held. Requires case-owned disposable dataset and exact teardown; no shared seed mutation, observer, production routes, dependencies or live mail. See docs/completion/fe405-r9-draft-conflict.md.
+
 Status: IN PROGRESS. Updated 2026-10-14, Australia/Sydney. This record replaces superseded status claims below with current evidence; it is not a completion report.
 
 ## Nontechnical brief
