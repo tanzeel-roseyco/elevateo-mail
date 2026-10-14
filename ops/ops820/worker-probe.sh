@@ -26,7 +26,7 @@ docker run -d --rm --name "$name" --network "${project}_private" \
   -e ELEVATEO_STORAGE_URL=http://storage:5000 -e ELEVATEO_MAILPIT_URL=http://mailpit:8025 \
   -e ELEVATEO_SMTP_HOST=mailpit -e ELEVATEO_SMTP_PORT=1025 \
   -e ELEVATEO_BROWSER_ORIGIN=http://api:3000 -e ELEVATEO_COOKIE_SECURE=false \
-  -e ELEVATEO_LOCAL_HTTP=true -e ELEVATEO_AUTH_JWT_ISSUER=http://auth:9999 \
+  -e ELEVATEO_LOCAL_HTTP=true \
   -e ELEVATEO_AUTH_JWT_AUDIENCE=authenticated -e ELEVATEO_AUTH_JWT_ALGORITHM=HS256 \
   -e ELEVATEO_AUTH_PASSWORD_MINIMUM=12 \
   -v "$root/apps/server:/workspace/apps/server:ro" \

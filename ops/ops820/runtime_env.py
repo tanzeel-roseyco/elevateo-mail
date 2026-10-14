@@ -13,18 +13,24 @@ KEYS = frozenset({
 
 def create(source: pathlib.Path, destination: pathlib.Path) -> None:
     seen: dict[str, str] = {}
+    auth_ports: list[str] = []
     for line in source.read_text(encoding="ascii").splitlines():
         key, separator, value = line.partition("=")
+        if key == "AUTH_PORT":
+            auth_ports.append(value)
         if key in KEYS:
             if separator != "=" or not value or key in seen:
                 raise ValueError("missing or duplicate runtime secret")
             seen[key] = value
     if set(seen) != KEYS:
         raise ValueError("missing runtime secret")
+    if auth_ports not in (["18310"], ["18320"]):
+        raise ValueError("invalid disposable Auth port")
+    seen["ELEVATEO_AUTH_JWT_ISSUER"] = f"http://127.0.0.1:{auth_ports[0]}"
     # AIDEV-NOTE: no Auth signing/admin/service role key crosses the Rails runtime boundary.
     fd = os.open(destination, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW, 0o600)
     with os.fdopen(fd, "w", encoding="ascii") as stream:
-        stream.write("".join(f"{key}={seen[key]}\n" for key in sorted(KEYS)))
+        stream.write("".join(f"{key}={seen[key]}\n" for key in sorted(seen)))
 
 
 if __name__ == "__main__":
