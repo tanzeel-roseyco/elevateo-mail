@@ -82,9 +82,23 @@ module Elevateo
       end
 
       def leaf_parts(message)
-        return [message] unless message.multipart?
-
-        message.parts.flat_map { |part| leaf_parts(part) }.take(MAX_PARTS + 1)
+        stack = [[message, 0]]
+        leaves = []
+        seen = 0
+        until stack.empty?
+          part, depth = stack.pop
+          seen += 1
+          reject("invalid_mime") if seen > MAX_PARTS * 2 || depth > 8
+          if part.multipart?
+            children = part.parts
+            reject("invalid_mime") if children.empty? || children.length > MAX_PARTS
+            children.reverse_each { |child| stack << [child, depth + 1] }
+          else
+            leaves << part
+            reject("invalid_mime") if leaves.length > MAX_PARTS
+          end
+        end
+        leaves
       end
 
       def clean_header(value)

@@ -74,6 +74,18 @@ class FakeIngressTest < Minitest::Test
     assert_empty @store.records
   end
 
+  def test_multipart_part_fanout_is_bounded
+    parts = (1..13).map do |number|
+      "--boundary\r\nContent-Type: text/plain\r\n\r\npart #{number}\r\n"
+    end.join
+    raw = "From: sender@example.invalid\r\nTo: inbox@example.invalid\r\n" \
+      "Content-Type: multipart/mixed; boundary=boundary\r\n\r\n#{parts}--boundary--\r\n"
+    assert_code "invalid_mime" do
+      ingest(raw_mime: raw)
+    end
+    assert_empty @store.records
+  end
+
   def test_unsupported_provider_is_explicit
     assert_equal "isolated_only", @ingress.capability("fake")
     assert_equal "unsupported_provider", @ingress.capability("resend")
