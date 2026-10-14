@@ -71,7 +71,7 @@ module Elevateo
       raw = text(value, maximum_bytes)
       raise ReadResponse::Invalid, "invalid read response" if raw.bytesize > maximum_bytes
 
-      JSON.parse(raw, max_nesting: 4, allow_nan: false, create_additions: false)
+      JSON.parse(raw, max_nesting: 4, allow_nan: false)
     rescue JSON::ParserError, JSON::NestingError
       raise ReadResponse::Invalid, "invalid read response"
     end

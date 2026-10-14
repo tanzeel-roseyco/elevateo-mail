@@ -54,7 +54,7 @@ class MailboxReadsTest < Minitest::Test
       row = base_row.merge("display_name" => "", "display_address" => address)
       actual = read(Connection.new([row])).fetch("items").first
       assert_equal "", actual.fetch("display_name")
-      assert_equal address, actual.fetch("display_address")
+      address.nil? ? assert_nil(actual.fetch("display_address")) : assert_equal(address, actual.fetch("display_address"))
     end
   end
 
@@ -63,7 +63,7 @@ class MailboxReadsTest < Minitest::Test
     assert_equal({ "read" => true, "compose" => true, "approve_send" => true, "manage_members" => false },
                  read(Connection.new([row])).fetch("items").first.fetch("capabilities"))
     [{ "display_name" => nil }, { "display_name" => "x" * 257 }, { "display_address" => "x" * 257 },
-     { "compose" => "false" }, { "id" => "not-an-id" }, { "display_name" => "\xFF".force_encoding("UTF-8") }].each do |change|
+     { "compose" => "false" }, { "id" => "not-an-id" }, { "display_name" => "\xFF".dup.force_encoding("UTF-8") }].each do |change|
       assert_raises(Elevateo::ReadResponse::Invalid) { read(Connection.new([base_row.merge(change)])) }
     end
   end

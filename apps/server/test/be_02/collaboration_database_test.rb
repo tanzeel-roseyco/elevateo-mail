@@ -113,9 +113,10 @@ class CollaborationDatabaseTest < CollaborationDatabaseCase
     assert_equal "not_available", assert_raises(Elevateo::CollaborationError) { note(id, thread: private_thread, box: private_box) }.code
     membership(present: false)
     scope(write: false) do |c|
-      assert_equal "not_available", assert_raises(Elevateo::CollaborationError) do
+      error = assert_raises(Elevateo::CollaborationError) do
         service(Elevateo::ThreadNotes, c).list(thread_id: @thread, query: { "mailbox_id" => @box })
-      end.code
+      end
+      assert_equal "not_available", error.code
     end
   end
 

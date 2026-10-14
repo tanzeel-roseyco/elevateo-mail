@@ -33,11 +33,11 @@ class DraftDatabaseTestCase < WriteBoundaryDatabaseTestCase
     raise
   end
 
-  def payload(changes = {}, draft: @draft)
+  def payload(changes = {}, draft: @draft, **fields)
     Elevateo::Drafts::Payload.new(draft_id: draft, input: {
       "mailbox_id" => @box, "operation_id" => @operation, "expected_version" => 0,
       "subject" => "", "to" => [], "body_text" => "", "reply_to_thread_id" => nil
-    }.merge(changes))
+    }.merge(changes).merge(fields.transform_keys(&:to_s)))
   end
 
   def save_sql(value, connection: @api, digest: @digest)
