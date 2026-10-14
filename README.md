@@ -12,6 +12,8 @@ A planned shared company mailbox for approximately **10 people**, available on a
 
 ## Current state
 
+OFF-737 Nadia R7 ADV747: IN PROGRESS. Resource maps now validate String key types before sorting, including extra_mailboxes/literal_threads. Mixed-key sentinel regressions cover seed and verify input boundaries; resource-input rejection remains variant_resources_invalid. Source authored; independent repair/design review, lint and Soren Docker runtime NOT_RUN. See docs/completion/res406-variants-r7.md.
+
 OFF-406 attempt6 ADV743: IN PROGRESS. Required exact primary/other organization/mailbox maps and actor Hash/user_id shape now reject malformed inputs with variant_input_invalid before any DB access. Seed and verify regression authored; Soren fleet Docker and independent repair review NOT_RUN. Historical failures retained; diagnostic observer-OFF smoke is not full acceptance. See docs/completion/res406-variants-r6.md.
 
 OFF-406 attempt5: IN PROGRESS. Implemented isolated genuine base/multi_mailbox/literal_read fixture helper and real-PG happy/failure contract after explicit Elara ownership agreement. Exact Cassian 7b0678c ancestry preserved; canonical contracts/v1 untouched by this implementation. Source authored; independent review, linter, Soren Docker contract gates and actual invitation/login/inbox browser journey NOT_RUN. Shared publication/invocation remains Elara; root owns Obsidian mirroring. See docs/completion/res406-variants.md.

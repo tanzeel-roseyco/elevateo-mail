@@ -379,3 +379,8 @@ RES-406 attempt5: isolated fixture helper and separate real-PG regression contra
 
 
 OFF-406 attempt6: Linus ADV743 frozen97d6403 helper113/test92 LOC, one LOW required-map defect (4.88/KLOC; helper8.85/test0), context-inclusive397LOC1defect2.52/KLOC. Repair source and meaningful boundary-order regressions authored; independent repair and dedicated design review requested with separate <=200LOC packets, not yet accepted. Full user rubric supplied; all Soren runtime/linter checks NOT_RUN. See docs/completion/res406-variants-r6.md.
+
+
+## OFF-737 Nadia R7 ADV747 boundary repair (2026-10-14)
+
+ADV747 frozen c08c744: helper120 LOC, test120 LOC, context15 LOC, 1 LOW mixed-key sorting defect; affected240 LOC4.17 defects/KLOC, context-inclusive255 LOC3.92/KLOC. ADV743 previous defect CLOSED statically by ADV747. R7 adds explicit String-key validation before resource sorts and Object-sentinel mixed-key regressions. Author inspection only; independent repair/full-rubric and dedicated design-tradeoff review REQUESTED, repair defect count/density PENDING. Separate full helper122/test137 LOC packets stay <=200 each; exact blob/content hashes in external receipt. No host tests; lint and Soren Docker runtime NOT_RUN. See docs/completion/res406-variants-r7.md for boundaries, design rationale and regression applicability to both entrypoints.

@@ -77,9 +77,11 @@ module Be02Acceptance
     end
 
     def validate_resources(seed, variant, resources)
-      Be02Acceptance.check(resources.is_a?(Hash) && resources.keys.sort == %w[extra_mailboxes literal_threads], "variant_resources_invalid")
+      Be02Acceptance.check(resources.is_a?(Hash) &&
+        resources.keys.all? { |key| key.is_a?(String) } && resources.keys.sort == %w[extra_mailboxes literal_threads], "variant_resources_invalid")
       boxes, threads = resources.values_at("extra_mailboxes", "literal_threads")
       Be02Acceptance.check(boxes.is_a?(Hash) && threads.is_a?(Hash) &&
+        boxes.keys.all? { |key| key.is_a?(String) } && threads.keys.all? { |key| key.is_a?(String) } &&
         boxes.keys.sort == (variant == "multi_mailbox" ? %w[excluded secondary] : []) &&
         threads.keys.sort == (variant == "literal_read" ? %w[read_empty read_literal] : []), "variant_resources_invalid")
       ids = boxes.values + threads.values

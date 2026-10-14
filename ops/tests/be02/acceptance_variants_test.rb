@@ -9,6 +9,7 @@ module Be02Acceptance
 
     def run(admin:, seed:, variant:, resources:, open_snapshot:)
       reject_malformed_seeds(seed, variant, resources)
+      reject_mixed_resource_keys(seed, variant, resources)
       Be02Acceptance.check(admin.transaction_status == PG::PQTRANS_IDLE, "variant_test_autocommit_required")
       observe = lambda do |candidate = resources, selected = variant|
         db = open_snapshot.call
@@ -89,6 +90,7 @@ module Be02Acceptance
           seed.merge(name => map.reject { |key, _| key == "primary" }),
           seed.merge(name => map.reject { |key, _| key == "other" }),
           seed.merge(name => map.merge("unexpected" => SecureRandom.uuid)),
+          seed.merge(name => map.merge(:unexpected => SecureRandom.uuid)),
           seed.merge(name => { :primary => map.fetch("primary"), "other" => map.fetch("other") })])
       end
       actors = seed.fetch("actors")
@@ -106,6 +108,21 @@ module Be02Acceptance
       end
     end
 
+    def reject_mixed_resource_keys(seed, variant, resources)
+      untouched_db = Object.new
+      candidates = [resources.merge(:unexpected => {})]
+      %w[extra_mailboxes literal_threads].each do |name|
+        # AIDEV-NOTE: Include a string key even for empty variants, so the old sort always encounters mixed types.
+        map = resources.fetch(name).merge("unexpected" => SecureRandom.uuid, :unexpected => SecureRandom.uuid)
+        candidates << resources.merge(name => map)
+      end
+      candidates.each do |candidate|
+        reject("variant_resources_invalid") do
+          Variants.verify(db: untouched_db, seed: seed, variant: variant, resources: candidate)
+        end
+      end
+    end
+
     def reject(code)
       begin
         yield
@@ -115,6 +132,6 @@ module Be02Acceptance
       end
       raise Failure, "variant_test_expected_rejection"
     end
-    private_class_method :reject, :reject_malformed_seeds
+    private_class_method :reject, :reject_malformed_seeds, :reject_mixed_resource_keys
   end
 end
