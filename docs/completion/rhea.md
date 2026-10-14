@@ -2,7 +2,7 @@
 
 Scope: isolated `ops/mail/mox-pilot/` synthetic SMTP/IMAP fixture only. Baseline
 `bbf2353b254a05d48c2da7a508c143e6fba78691`; source candidate
-`c160c756371fbbdda8399aae296c1070fb858b6b` (the outbox tracks any
+`d8c68aaa5970d65968bc1943f0eea6f4eb8bfe1d` (the outbox tracks any
 documentation-only successor). No production integration is
 dependent on this pilot. Existing BE02/BE03 contracts and application runtime
 are untouched.
