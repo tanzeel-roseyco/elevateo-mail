@@ -33,15 +33,23 @@ module Elevateo
         events = session.fetch_after(cursor, limit: MAX_BATCH)
         raise Rejected, "invalid_imap_batch" unless events.is_a?(Array) && events.length <= MAX_BATCH
 
-        ingress = ImapIngress.new(store: @store)
+        # AIDEV-NOTE: Validate the whole ordered page before the first commit; a reordered tail must not skip a lower UID.
+        previous_uid = cursor
         events.each do |event|
           raise Rejected, "invalid_imap_batch" unless event.is_a?(Hash) && event.keys.sort == %i[raw_mime uid]
 
           uid = event.fetch(:uid)
           raw = event.fetch(:raw_mime)
-          raise Rejected, "invalid_imap_batch" unless uid.is_a?(Integer) && uid > cursor &&
+          raise Rejected, "invalid_imap_batch" unless uid.is_a?(Integer) && uid > previous_uid &&
             raw.is_a?(String) && raw.bytesize.between?(1, FakeIngress::MAX_RAW)
 
+          previous_uid = uid
+        end
+
+        ingress = ImapIngress.new(store: @store)
+        events.each do |event|
+          uid = event.fetch(:uid)
+          raw = event.fetch(:raw_mime)
           result = ingress.ingest(account_id: account_id, credential_version: credential_version,
             uidvalidity: validity, uid: uid, raw_mime: raw)
           raise Rejected, "cursor_changed" if result.fetch("result") == "uidvalidity_changed"

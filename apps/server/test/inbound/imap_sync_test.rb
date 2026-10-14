@@ -8,7 +8,7 @@ class ImapSyncTest < Minitest::Test
   MIME = "From: sender@example.invalid\r\nTo: inbox@example.invalid\r\nContent-Type: text/plain\r\n\r\nhello".freeze
 
   class Store
-    attr_accessor :validity, :last_uid, :fail_once, :fail_after_once
+    attr_accessor :validity, :last_uid, :fail_once, :fail_after_once, :fail_at_uid, :deny_reset
     attr_reader :records
     def initialize
       @validity, @last_uid, @records = 42, 0, {}
@@ -17,11 +17,16 @@ class ImapSyncTest < Minitest::Test
       { "credential_ref" => "test:synthetic", "uidvalidity" => @validity, "last_uid" => @last_uid }
     end
     def reset_uidvalidity(expected:, replacement:, **)
+      return false if @deny_reset
       return false unless @validity == expected
       @validity, @last_uid = replacement, 0
       true
     end
     def insert_once(account_id:, uidvalidity:, uid:, content_sha256:, **)
+      if @fail_at_uid == uid
+        @fail_at_uid = nil
+        raise "simulated fetch/import failure"
+      end
       if @fail_once
         @fail_once = false
         raise "simulated crash before commit"
@@ -51,7 +56,7 @@ class ImapSyncTest < Minitest::Test
     def uidvalidity = @validity
     def fetch_after(cursor, limit:)
       raise "unbounded" unless limit == 50
-      @events.select { |event| event.fetch(:uid) > cursor }
+      @events.select { |event| event.fetch(:uid) > cursor }.first(limit)
     end
     def close = (@closed = true)
   end
@@ -89,6 +94,16 @@ class ImapSyncTest < Minitest::Test
     assert denied.closed
   end
 
+  def test_uidvalidity_reset_race_fails_closed_without_import
+    @store.deny_reset = true
+    assert_equal "cursor_changed", assert_raises(Elevateo::Inbound::Rejected) {
+      sync_session(Session.new(validity: 43, events: [{ uid: 1, raw_mime: MIME }]))
+    }.code
+    assert_equal 42, @store.validity
+    assert_equal 0, @store.last_uid
+    assert_empty @store.records
+  end
+
   def test_crash_after_commit_reconnects_without_duplicate_message
     event = { uid: 1, raw_mime: MIME }
     @store.fail_after_once = true
@@ -102,10 +117,21 @@ class ImapSyncTest < Minitest::Test
     assert_equal "invalid_imap_batch", assert_raises(Elevateo::Inbound::Rejected) {
       sync_session(Session.new(validity: 42, events: [{ uid: 2, raw_mime: MIME }, { uid: 1, raw_mime: MIME }]))
     }.code
-    assert_equal 2, @store.last_uid
+    assert_equal 0, @store.last_uid
     assert_equal "invalid_imap_batch", assert_raises(Elevateo::Inbound::Rejected) {
-      sync_session(Session.new(validity: 42, events: [{ uid: 3, raw_mime: "x" * (1_048_577) }]))
+      sync_session(Session.new(validity: 42, events: [{ uid: 1, raw_mime: "x" * (1_048_577) }]))
     }.code
-    assert_equal 2, @store.last_uid
+    assert_equal 0, @store.last_uid
+  end
+
+  def test_more_than_fifty_and_mid_batch_failure_resume_at_first_uncommitted_uid
+    events = (1..75).map { |uid| { uid: uid, raw_mime: MIME } }
+    @store.fail_at_uid = 25
+    assert_raises(RuntimeError) { sync_session(Session.new(validity: 42, events: events)) }
+    assert_equal 24, @store.last_uid
+    assert_equal 24, @store.records.length
+    assert_equal 74, sync_session(Session.new(validity: 42, events: events))
+    assert_equal 75, sync_session(Session.new(validity: 42, events: events))
+    assert_equal (1..75).to_a, @store.records.keys.map(&:last)
   end
 end
