@@ -704,3 +704,5 @@ QA816 thread transport candidate at 069257f remains authored but independently u
 QA816 list-only reporter probe is runtime setup evidence with zero browser assertions or independent source review. Independent reviewed LOC remains 0, defect density not computed, actual visual review pending.
 
 QA816 Felix functional packet A (matrix lines 1–152, 152 LOC) found 1 confirmed MEDIUM test oracle defect: empty search's zero-link assertion could pass during loading (6.58 defects/KLOC). Tessa repaired it by requiring `No matches` visible and `Searching` absent before screenshot; independent repair review and runtime remain pending. Packet B and C/design findings are not yet accepted.
+
+QA816 Felix repair re-review message: exact e91eac6 two added LOC, 0 new static repair defects (0/KLOC). The initial packet A MEDIUM/152 LOC remains historical and corrected at source; durable reviewer report pending, browser runtime NOT_RUN. Do not add overlapping repair LOC to unique initial coverage.

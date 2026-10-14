@@ -64,3 +64,5 @@ Drawer and list probe follow-up: Fable `f295b35d6a57f90d80ef75c076b8841bdbde880a
 Independent review routing: root assigned Felix. Tessa sent Felix exact functional packets A152+B181=333 LOC with source hashes from `tessa-review-packets.md`; C169 and dedicated design review remain for separate assignments. This is a request only: no review findings, density or acceptance claim yet.
 
 Felix packet A source review found one MEDIUM empty-search oracle defect: `toHaveCount(0)` could pass during loading before a settled empty result. QA816 now waits for exact `No matches`, the `Searching` status to disappear, and zero result links before screenshot. This is a source repair pending Felix re-review and fleet runtime; the initial finding remains in history.
+
+Felix's independent repair re-review on exact `e91eac6`/matrix SHA `6cdc4f41…` examined the two added oracle lines and found 0 new static repair defects (0/KLOC for those 2 LOC). The initial MEDIUM remains historical; packet B and full runtime/visual checks are still pending. Felix said his durable report will follow, so this is a provisional message receipt.
