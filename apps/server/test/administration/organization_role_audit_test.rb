@@ -42,7 +42,8 @@ class OrganizationRoleAuditTest < Minitest::Test
   end
 
   def test_content_or_noop_cannot_enter_audit_projection
-    [row.merge("email" => "private@example.invalid"), row.merge("new_role" => "associate")].each do |value|
+    [row.merge("email" => "private@example.invalid"), row.merge("new_role" => "associate"),
+      row.merge("revision" => 0)].each do |value|
       error = assert_raises(Elevateo::CollaborationError) do
         Audit.items([value], organization: ORG, limit: 1)
       end
