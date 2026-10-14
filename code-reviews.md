@@ -680,3 +680,7 @@ R25 lint repair: one tooling defect in the unmount cleanup (ref must be captured
 ## FE808 isolated author receipt (2026-10-14)
 
 Scope: `apps/web/src/features/members/adminModel.ts`, `AdministrationPage.tsx` and paired tests. Author self-check covered the configuration roster, DTO validation, generic denial, stale-revision and revoked-session handling by source inspection; zero confirmed defects in this check. This is not an independent bounded adversarial or design-tradeoff review, so no independent defect density is claimed. Root must assign <=200-LOC review packets and a dedicated design reviewer after integration. Docker tests and visual acceptance are NOT_RUN.
+
+### FE808 continuation author inspection
+
+Scope: `apps/web/src/features/members/{adminModel,AdministrationPage,PersonalSettingsPage,peopleFeatureModule}*`. Author inspection found and fixed one stale-write replay risk by blocking further edits after any failed write until reload. Independent adversarial packets and design reviewer remain pending; no independent defect count or density is claimed. Fleet Docker tests, TypeScript/lint and actual browser checks are NOT_RUN on this candidate.

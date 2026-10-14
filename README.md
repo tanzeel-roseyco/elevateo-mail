@@ -176,3 +176,5 @@ Cassian manifest reconciliation: contract-lock now seals actual generated client
 ### FE808 people and settings candidate
 
 An isolated people/settings feature now displays the twelve named configuration identities as unbound and separates proposed roles from current server grants. It requires the additive V2 administration gateway and route registration before it can appear in the integrated app. No mailbox-content authority follows from organization administration; frontend tests are requested for fleet Docker and have not run on this candidate.
+
+FE808 continuation exports a Fable `FeatureModule` for `/people`, `/settings/personal` and `/settings/organization`. Active grant reads and revision-guarded role edits now target Cassian's additive V2 UUID gateway; the twelve configuration identities stay unbound and separate. The V2 GET route is intentionally disabled pending a protected read path, so the integrated admin state is unavailable until authorized backend integration and fleet acceptance.

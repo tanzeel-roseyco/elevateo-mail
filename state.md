@@ -118,3 +118,5 @@ Cassian manifest reconciliation: contract-lock now seals actual generated client
 ### FE808 isolated candidate (2026-10-14)
 
 People/settings view and strict DTO draft exist in `apps/web/src/features/members/`. The exact twelve configuration identities have null email and Auth ID, unbound enrollment and no invented login. Cassian V2 gateway, Theo/Sabine authority and Fable route registration remain integration dependencies. Tests are authored, NOT_RUN; no live sending or credentials are enabled.
+
+FE808 continuation candidate: the provisional person-key grant DTO has been removed. The feature imports Cassian's V2 Auth-UUID grant contract, exposes separate personal/organization settings and a People route for Fable registration, and renders generic denial, loading, stale-revision and revoked-session states. Its own checkout lacks Cassian/Fable source imports until integration; application tests and browser acceptance remain NOT_RUN. The V2 GET route is disabled while Theo/Sabine design a protected read.
