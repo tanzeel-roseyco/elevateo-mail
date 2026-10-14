@@ -16,12 +16,14 @@ module V1
         body: body)
       query = api_query(allowed: allowed_query)
       raw = Elevateo::WriteInput.read(request.body, maximum: body ? max_bytes : 0)
+      # @type var input: Elevateo::WriteInput::object
       input = body ? Elevateo::WriteInput.body(raw, required: required) : {}
       context, version = read_context(required: true)
       csrf = request_csrf
       unless csrf.is_a?(String) && /\A[A-Za-z0-9_-]{32,512}\z/.match?(csrf)
         raise Elevateo::CollaborationError.new("request_invalid")
       end
+      # @type var users: Array[String]
       users = guard_users ? guard_users.call(input: input, query: query) : []
       unless users.is_a?(Array) && users.length <= 2
         raise Elevateo::CollaborationError.new("request_invalid")

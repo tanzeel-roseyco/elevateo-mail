@@ -36,10 +36,10 @@ module Elevateo
       raise AuthError.new unless bytes.bytesize >= 30 && bytes.getbyte(0) == 1
       cipher = OpenSSL::Cipher.new("aes-256-gcm").decrypt
       cipher.key = @key
-      cipher.iv = bytes.byteslice(1, 12)
-      cipher.auth_tag = bytes.byteslice(13, 16)
+      cipher.iv = (bytes.byteslice(1, 12) || raise(AuthError.new))
+      cipher.auth_tag = (bytes.byteslice(13, 16) || raise(AuthError.new))
       cipher.auth_data = "elevateo:v1:#{purpose}"
-      cipher.update(bytes.byteslice(29..)) + cipher.final
+      cipher.update((bytes.byteslice(29..) || raise(AuthError.new))) + cipher.final
     rescue ArgumentError, OpenSSL::Cipher::CipherError
       raise AuthError.new
     end

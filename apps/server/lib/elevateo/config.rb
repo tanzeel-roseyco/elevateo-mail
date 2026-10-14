@@ -9,6 +9,7 @@ module Elevateo
 
   # Boundary validation for runtime configuration. Fails closed; messages never include values.
   class Config
+    # @type const ALLOWED_SMTP: { host: String, port: Integer }
     ALLOWED_SMTP = { host: "mailpit", port: 1025 }.freeze
     ALLOWED_HOSTS = { "ELEVATEO_AUTH_URL" => "auth", "ELEVATEO_STORAGE_URL" => "storage",
                       "ELEVATEO_MAILPIT_URL" => "mailpit" }.freeze
@@ -35,7 +36,9 @@ module Elevateo
       password_key = ROLE_PASSWORDS[@db_role] or raise ConfigError, "ELEVATEO_DB_ROLE is not an allowlisted runtime role"
       @db_password = fetch.(password_key)
       validate_smtp(fetch.("ELEVATEO_SMTP_HOST"), fetch.("ELEVATEO_SMTP_PORT"))
-      @auth_url, @storage_url, @mailpit_url = ALLOWED_HOSTS.map { |key, host| internal_url(key, fetch.(key), host) }
+      @auth_url = internal_url("ELEVATEO_AUTH_URL", fetch.("ELEVATEO_AUTH_URL"), ALLOWED_HOSTS.fetch("ELEVATEO_AUTH_URL"))
+      @storage_url = internal_url("ELEVATEO_STORAGE_URL", fetch.("ELEVATEO_STORAGE_URL"), ALLOWED_HOSTS.fetch("ELEVATEO_STORAGE_URL"))
+      @mailpit_url = internal_url("ELEVATEO_MAILPIT_URL", fetch.("ELEVATEO_MAILPIT_URL"), ALLOWED_HOSTS.fetch("ELEVATEO_MAILPIT_URL"))
       reject_provider_settings(env)
       fetch.("SECRET_KEY_BASE")
       configure_auth(env, fetch) unless @db_role == "elevateo_migrator"
@@ -54,7 +57,7 @@ module Elevateo
       @browser_origin = fetch.("ELEVATEO_BROWSER_ORIGIN")
       origin = URI.parse(@browser_origin)
       raise ConfigError, "browser origin must be an exact origin" unless
-        %w[http https].include?(origin.scheme) && origin.host && origin.path.empty? &&
+        %w[http https].include?(origin.scheme) && origin.host && origin.path == "" &&
         origin.query.nil? && origin.fragment.nil? && origin.userinfo.nil?
       secure = fetch.("ELEVATEO_COOKIE_SECURE")
       raise ConfigError, "cookie security must be explicit" unless %w[true false].include?(secure)

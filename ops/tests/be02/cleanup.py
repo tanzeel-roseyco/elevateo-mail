@@ -36,7 +36,8 @@ def cleanup(task: Task) -> bool:
                     path = Path(mount["Source"]).resolve()
                     allowed = {task.root / "apps/server", task.root / "contracts", task.root / "ops/tests/be02",
                                task.root / "ops/tests/be02-guards",
-                               task.root / "ops/db", task.root / "ops/supabase/db/99-roles.sql",
+                               task.root / "ops/db", task.root / "ops/db/bootstrap.sql",
+                               task.root / "ops/supabase/db/99-roles.sql",
                                task.root / "ops/supabase/db/99-jwt.sql"}
                     if path not in allowed or mount["RW"]:
                         raise RuntimeError("unknown or writable source mount")

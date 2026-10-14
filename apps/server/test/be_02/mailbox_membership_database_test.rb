@@ -103,9 +103,10 @@ class MailboxMembershipDatabaseTest < MailboxMembershipDatabaseCase
       assert_equal "not_available", assert_raises(Elevateo::CollaborationError) { roster(identity: identity) }.code
     end
     assert_equal "ok", raw_change(explicit.user_id, revision, flags: FLAGS.merge("approve_send" => true)).fetch("status")
-    assert_equal "cursor_invalid", assert_raises(Elevateo::CollaborationError) do
+    error = assert_raises(Elevateo::CollaborationError) do
       roster(query: { "limit" => "1", "cursor" => first.fetch("next_cursor") })
-    end.code
+    end
+    assert_equal "cursor_invalid", error.code
   end
 
   def test_revision_ceiling_allows_noops_and_rejects_changes_without_partial_generation_bump
