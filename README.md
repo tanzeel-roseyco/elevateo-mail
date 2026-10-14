@@ -14,6 +14,10 @@ Shared company mailroom with one Rails domain authority and a React/TypeScript c
 
 ## Current state
 
+### Fable FE-805 shell/sidebar/brand candidate (2026-10-15)
+
+Isolated on fleet baseline `bbf2353`, branch `completion/fable-fe805`; not integrated. Adds the authentic Elevateo mark under `apps/web/public/brand` (hashes match root's provenance), a `BrandMark` primitive on a fixed dark tile, a pure validated feature registry with an Outreach seam for Celeste, and a rail split into independent Personal and Outreach landmarks with no global switcher. Existing routes, session gate, drawer names and frozen contracts are unchanged. Registry, sidebar and shell tests are added but **not executed**; Docker lint/type/unit/build and visual evidence are requested from Soren/Tessa. See [Fable record](docs/completion/fable.md).
+
 
 ### R25 approval reload recovery candidate
 

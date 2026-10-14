@@ -1,4 +1,7 @@
 // Responsive shell: skip link, sidebar as a drawer below the md breakpoint, labelled main region.
+// FE-805: the rail carries independent Personal/Outreach sections fed by the validated feature
+// registry (./features); the drawer keeps its "Mailboxes" name and trigger label because the
+// existing e2e/read.spec.ts (QA-owned) and the R12/R19 visual evidence depend on them.
 // Layout ideas adapted from first-party Ledger frontend 4322cfbb, src/features/live/LiveShell.tsx
 // (blob 2633baf7…); session/capability wiring replaced with the FE-01 session controller.
 //
@@ -12,12 +15,14 @@ import { GatewayError } from '@/data/errors'
 import { newTraversalBudget, readPage } from '@/lib/readPage'
 import { SignInPage } from '@/features/auth/SignInPage'
 import { Badge } from '@/ui/Badge'
+import { BrandMark } from '@/ui/BrandMark'
 import { Button } from '@/ui/Button'
 import { Drawer } from '@/ui/Drawer'
 import { EmptyState, Skeleton } from '@/ui/Async'
 import { IconButton } from '@/ui/Button'
 import { MenuIcon } from '@/ui/icons'
 import { AccountSheet } from './AccountSheet'
+import { featureRegistry } from './features'
 import { MailboxesProvider, type MailboxesSnapshot } from './mailboxes'
 import { SearchBox } from './SearchBox'
 import { Sidebar } from './Sidebar'
@@ -221,7 +226,13 @@ function ProtectedShell({ session, replacedIdentity }: { session: Session; repla
         <Button size="sm" className="mt-2" onClick={() => setAttempt((n) => n + 1)}>Try again</Button>
       </div>
     ) : (
-      <Sidebar mailboxes={mailboxState.mailboxes} onNavigate={closeDrawer} footnote={FOOTNOTE} />
+      <Sidebar
+        mailboxes={mailboxState.mailboxes}
+        personal={featureRegistry.navBySection.personal}
+        outreach={featureRegistry.navBySection.outreach}
+        onNavigate={closeDrawer}
+        footnote={FOOTNOTE}
+      />
     )
 
   return (
@@ -238,6 +249,8 @@ function ProtectedShell({ session, replacedIdentity }: { session: Session; repla
               {sidebar}
             </Drawer>
           </span>
+          {/* Below md the rail (and its brand header) is hidden, so the authentic mark moves here. */}
+          <BrandMark size={24} className="md:hidden" />
           <p className="min-w-0 truncate text-sm">
             <span className="font-semibold">{session.organization.name}</span>
             <span className="text-muted"> · {session.actor.display_name ?? 'Unnamed user'}</span>
