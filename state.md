@@ -136,3 +136,5 @@ OUT-804 role RLS source follow-up: every new campaign table policy denies missin
 OUT-804 b3438e4 fleet diagnostic: input 5 runs/8 assertions PASS; repository SyntaxError, lint syntax/Struct warning and 95 controller Steep warnings FAILED. Author repaired the event bind expression, test result class and block type annotations; exact repaired-source Docker rerun is pending. Integrated migration failure is attributed to Nadia schema permission, not OUT-804; b071c93 was runner mount setup.
 
 OUT-804 manual consent events are explicitly labeled `manual_attestation` in persisted history and lead detail; changes/withdrawals are `status_change`. Strict V2 LeadDetail DTO, UI wiring and exact fleet verification are pending.
+
+OUT-804 source correction clears current-row `consent_recorded_by` on unknown/withdrawn status while preserving append-only actor history. Exact fleet runtime and integrated HTTP remain pending.

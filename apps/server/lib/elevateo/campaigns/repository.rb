@@ -178,7 +178,7 @@ module Elevateo
           else
             [<<~SQL, [org, input.id, expected_version, fields.fetch("email"), fields.fetch("consent_status"), fields.fetch("consent_recorded_at"), fields.fetch("consent_source"), fields.fetch("suppressed"), fields.fetch("campaign_id"), actor]]
             UPDATE app.campaign_leads SET email=$4,consent_status=$5,consent_recorded_at=$6::timestamptz,
-              consent_source=$7,consent_recorded_by=$10::uuid,
+              consent_source=$7,consent_recorded_by=CASE WHEN $5='granted' THEN $10::uuid ELSE NULL END,
               suppressed_at=CASE WHEN $8::boolean THEN COALESCE(suppressed_at,now()) ELSE suppressed_at END,
               version=version+1
             WHERE organization_id=$1::uuid AND id=$2::uuid AND version=$3::integer AND campaign_id=$9::uuid

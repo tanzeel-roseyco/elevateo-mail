@@ -194,3 +194,5 @@ OUT-804 RLS now also checks a current digest-backed outreach role in each tenant
 Soren's exact b3438e4 fleet diagnostic exposed an OUT-804 repository syntax error and controller typing/lint issues; source repairs are prepared for a new exact Docker run. The later integrated migration failure was in Nadia's send cancellation migration.
 
 OUT-804 lead detail now labels recorded human consent as `manual_attestation`; Delivery must separately verify send eligibility.
+
+OUT-804 current lead detail clears the prior attestation actor when consent becomes unknown or withdrawn; the append-only event retains the earlier actor and status change for audit. Fleet verification remains requested.
