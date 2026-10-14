@@ -45,9 +45,11 @@ CREATE FUNCTION app_send_private.preserve_consumed_draft() RETURNS trigger
 LANGUAGE plpgsql SET search_path = pg_catalog AS $$
 BEGIN
   IF OLD.state = 'consumed' AND (NEW.state,NEW.organization_id,NEW.mailbox_id,NEW.actor_id,NEW.version,
-      NEW.subject,NEW.recipients,NEW.body_text,NEW.reply_to_thread_id) IS DISTINCT FROM
+      NEW.subject,NEW.recipients,NEW.body_text) IS DISTINCT FROM
       (OLD.state,OLD.organization_id,OLD.mailbox_id,OLD.actor_id,OLD.version,
-      OLD.subject,OLD.recipients,OLD.body_text,OLD.reply_to_thread_id) THEN
+      OLD.subject,OLD.recipients,OLD.body_text) OR
+    (OLD.state = 'consumed' AND NEW.reply_to_thread_id IS DISTINCT FROM OLD.reply_to_thread_id
+      AND NOT (OLD.reply_to_thread_id IS NOT NULL AND NEW.reply_to_thread_id IS NULL)) THEN
     RAISE EXCEPTION 'consumed draft is immutable' USING ERRCODE = '55000';
   END IF;
   RETURN NEW;

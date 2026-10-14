@@ -14,7 +14,7 @@ DO $$ BEGIN
 END $$;
 
 SELECT format('CREATE ROLE %I NOLOGIN NOINHERIT', r)
-  FROM unnest(ARRAY['elevateo_owner', 'elevateo_app_read', 'elevateo_session_owner', 'elevateo_send_owner', 'elevateo_send_owner']) AS r
+  FROM unnest(ARRAY['elevateo_owner', 'elevateo_app_read', 'elevateo_session_owner', 'elevateo_send_owner']) AS r
  WHERE NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = r) \gexec
 SELECT format('CREATE ROLE %I LOGIN NOINHERIT', r)
   FROM unnest(ARRAY['elevateo_migrator', 'elevateo_api', 'elevateo_worker']) AS r
