@@ -5,7 +5,7 @@ in [the adapter inventory](rhea-adapter-inventory.md).
 
 Scope: isolated `ops/mail/mox-pilot/` synthetic Mox/Mailpit SMTP/IMAP fixture only. Baseline
 `bbf2353b254a05d48c2da7a508c143e6fba78691`; source candidate
-`d8c68aaa5970d65968bc1943f0eea6f4eb8bfe1d` (the outbox tracks any
+`669f134f35aa78eff966ae071a1c4cbdbe0a5510` (the outbox tracks any
 documentation-only successor). No production integration is
 dependent on this pilot. Existing BE02/BE03 contracts and application runtime
 are untouched.
@@ -17,6 +17,11 @@ third-party source. A Mox image by digest remains a Soren-provided dependency;
 the runner rejects mutable tags and requires the source pin. A digest alone
 does not prove the image was built from that source, so Soren must record
 provenance independently.
+
+SEND-821/MAIL-819 owner seam proposal and protocol fixture boundaries are in
+[`adapter-contract.md`](../../ops/mail/mox-pilot/adapter-contract.md). Elara's
+SMTP adapter and Corin's held IMAP ingress are owner work, not imported here;
+their contract assent and fleet runtime remain pending.
 
 The Docker request is `MOX_IMAGE=<verified-ref@sha256:...>
 PROBE_IMAGE=<verified-python-ref@sha256:...>
