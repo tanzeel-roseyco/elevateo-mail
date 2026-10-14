@@ -186,3 +186,5 @@ The OUT-804 consent continuation retains append-only tenant consent events with 
 OUT-804 lead edits retain consent when the address is unchanged; changing it resets consent to unknown with a recorded event. Exact retries remain bound to the original operation.
 
 An early fleet Ruby receipt found a missing standalone Active Record import in OUT-804, now repaired in source. The integrated disposable DB migration failed before tests on an earlier candidate; its detailed log and rerun remain pending.
+
+OUT-804 V2 reads and writes now call the digest-backed Sabine role checks within the tenant transaction for the root-approved outreach roles. RLS still needs the matching owner-provided role predicate before role-policy acceptance.

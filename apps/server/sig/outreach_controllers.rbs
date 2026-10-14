@@ -1,7 +1,7 @@
 module V2
   module Outreach
     class BaseController < V1::WriteController
-      def campaign_repository: (untyped) -> Elevateo::Campaigns::Repository
+      def campaign_repository: (untyped, identity: Elevateo::SessionIdentity, write: bool) -> Elevateo::Campaigns::Repository
       def path_uuid: (Symbol) -> String
       def page_options: (Hash[String, String]) -> [String?, Integer]
       def encoded: (Hash[String, untyped]) -> String

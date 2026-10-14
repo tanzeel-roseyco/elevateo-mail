@@ -690,3 +690,5 @@ OUT-804 author design check found that overwriting current lead consent on addre
 OUT-804 author inspection corrected same-address lead edits: they had revoked consent even when the address was unchanged, and the first no-op repair would have bypassed operation replay. The current code preserves consent and records the no-op operation result; independent reviewer coverage and defect density remain pending.
 
 OUT-804 fleet diagnostic is not an independent source review: standalone repository unit on 21536e5 failed with `ActiveRecord` NameError; author added an explicit require. A combined Ruby invocation later ran only the input test, leaving repository runtime unverified. Integrated b071c93 DB migration failed before test assertions, cause pending exact log. No current-candidate PASS or density claim.
+
+OUT-804 root policy decision led to a controller authorization repair: every outreach read/write action now invokes Sabine's digest-backed current-role routine before business SQL. A corresponding RLS role predicate is still requested from Sabine; no independent review or current-candidate runtime PASS is claimed.
