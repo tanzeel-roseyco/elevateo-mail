@@ -75,6 +75,8 @@ scenario('SCN-QA-817-F2', 'unavailable-reader-path-and-search-empty', async (pag
   await search.getByLabel('Search scope', { exact: true }).selectOption(seed.mailboxes.primary);
   const [result] = await Promise.all([responseAt(page, '/v1/search'), search.getByLabel('Search mail', { exact: true }).press('Enter')]);
   expect(result.status()).toBe(200);
+  await expect(page.getByText('No matches', { exact: true })).toBeVisible();
+  await expect(page.getByRole('status', { name: 'Searching' })).toHaveCount(0);
   await expect(page.getByRole('region', { name: 'Search results' }).locator('a[data-thread]')).toHaveCount(0);
   record.artifacts.push(await screenshot(page, 'QA816-READ-F1-empty-search'));
   record.assertions.push('Foreign thread yields real 404 with prior plaintext cleared; unique search uses real API and settles empty');
@@ -227,13 +229,14 @@ scenario('SCN-QA-821-F1', 'reply-as-draft-is-real-persisted-compose', async (pag
   await expect(page.getByRole('link', { name: 'Replying to a conversation' })).toBeVisible();
   const draftId = /\/drafts\/([0-9a-f-]{36})/.exec(new URL(page.url()).hash)?.[1];
   if (!draftId) throw new Error('Reply draft route missing');
-  await expect(page.getByLabel('To', { exact: true })).not.toHaveValue('');
+  await expect(page.getByLabel('To', { exact: true })).toHaveValue('sender@acceptance.test');
   const text = `QA816 reply ${randomUUID()}`;
   await page.getByLabel('Message', { exact: true }).fill(text);
   const [saved] = await Promise.all([responseAt(page, `/v1/drafts/${draftId}`, 'PUT'), page.getByRole('button', { name: 'Save draft', exact: true }).click()]);
   expect(saved.status()).toBe(200);
   await page.reload();
   await expect(page.getByLabel('Message', { exact: true })).toHaveValue(text);
+  await expect(page.getByLabel('To', { exact: true })).toHaveValue('sender@acceptance.test');
   await expect(page.getByRole('link', { name: 'Replying to a conversation' })).toHaveAttribute('href', `#/mailboxes/${seed.mailboxes.primary}/threads/${seed.data.thread_primary}`);
   record.artifacts.push(await screenshot(page, 'QA816-REPLY-F1-persisted'));
   record.assertions.push('Seeded thread reply entry retains recipient/context; case-owned reply draft saves via real PUT and reloads from API');
