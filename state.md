@@ -136,3 +136,5 @@ SEC-802 also includes migrator-only mailbox policy bootstrap source with no real
 SEC-802 independent review found a personal-owner last-manager defect in the first patch; source repair and regressions are present, but fleet runtime and re-review remain pending. Outreach draft role check is source-only and does not authorize send.
 
 SEC-802 role demotion now preserves the last effective team manager through mailbox revision locks; race execution remains pending.
+
+SEC-802 adds an outreach content-read authority routine matching the protected draft-write role matrix; Dorian integration and fleet tests remain pending.

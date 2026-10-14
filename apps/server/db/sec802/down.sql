@@ -1,4 +1,5 @@
 SET LOCAL ROLE elevateo_session_owner;
+DROP FUNCTION app.authorize_outreach_content_read(text);
 DROP FUNCTION app.organization_grants_page(text,uuid,integer);
 SET LOCAL ROLE elevateo_owner;
 DROP FUNCTION app.enroll_verified_organization_grant(uuid,uuid,text,text);
@@ -10,6 +11,7 @@ DROP TABLE app.mailbox_policy_receipts;
 DROP TABLE app.mailbox_grant_ceilings;
 DROP TABLE app.mailbox_security;
 DROP FUNCTION app.validate_personal_mailbox_security();
+DROP TRIGGER guard_personal_mailbox_visibility ON app.mailboxes;
 DROP FUNCTION app.prevent_personal_mailbox_sharing();
 DROP TABLE app.organization_access;
 DROP FUNCTION app.prevent_owner_loss();
