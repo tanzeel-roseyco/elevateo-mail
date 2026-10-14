@@ -1,0 +1,12 @@
+source=e01c64adfdf1ef05107239e947ed7351b771580f
+started=2026-10-14T19:15:59Z
+task_source_overlay=OPS820 restricted gateway login before migration; canonical commit unchanged
+task_source_overlay=isolated internal Mailpit protocol suite only; stop before HTTP/worker, canonical commit unchanged
+BE02 project=be02-f8d9a13755cc4cbfb598d6b70451a875 evidence=/tmp/qa815-backend.3CDjITo5/ops/local/be02-f8d9a13755cc4cbfb598d6b70451a875
+Building bounded task image
+Running isolated Minitest suites and Steep
+tests=DIAGNOSTIC_COMPLETED cleanup=PASSED evidence=/tmp/qa815-backend.3CDjITo5/ops/local/be02-f8d9a13755cc4cbfb598d6b70451a875
+runner_exit=0
+receipt_copy_failed=0
+archive_absent=yes
+finished=2026-10-14T19:17:45Z

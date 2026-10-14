@@ -1,0 +1,16 @@
+{
+  "removed": [
+    "container:2be3a9796b41982efb84c3cdb40259685a8cf3ad9bcda58ec8e1858b291c0c5b",
+    "container:d680b017872830dc08b3ce0e32d0404db57e28a42b8ba204a727b66a9eb1ee74",
+    "container:3d76d033fda04e6845126a01e0b83702df5ba3f574be2f0ba52bc4df623daa56",
+    "builder-container:213a352b7cf032bab50d5e01d31c245e1840f3533ac3bd9dff5c954b52de12c3",
+    "builder:be02-f8d9a13755cc4cbfb598d6b70451a875-builder",
+    "volume:be02-f8d9a13755cc4cbfb598d6b70451a875_db-config",
+    "volume:be02-f8d9a13755cc4cbfb598d6b70451a875_db-data",
+    "volume:buildx_buildkit_be02-f8d9a13755cc4cbfb598d6b70451a875-builder0_state",
+    "network:cfe1b40c9a849e2cbbdfb1433ad628ed57eae15efc7514f6e4dd1ba06967331c",
+    "image:sha256:bc4da77ca1e59c5dc7a0cafa1b6097c33a02500bb69595bf56a4f57b75d8001b"
+  ],
+  "errors": [],
+  "shared_bases_retained": true
+}

@@ -14,6 +14,8 @@ Shared company mailroom with one Rails domain authority and a React/TypeScript c
 
 ## Current state
 
+**Dedicated profile continuation:** Exact `e01c64ad` isolated internal Mailpit protocol passed 1 run/6 assertions with cleanup; four of nine dedicated suites now scoped PASS. OUT804 campaign DB executed 7 runs/17 assertions and failed one teardown FK error while deleting a mailbox referenced by `campaign_accounts`; cleanup passed. Four historical R1 profiles remain unattempted, and no live delivery or full backend acceptance follows.
+
 **ATT823 dedicated database profile:** Soren's exact `e01c64ad` fresh disposable admin/migrator/API/worker role fixture passed 6 runs/40 assertions with cleanup. Three of nine dedicated profiles now have scoped PASS; six remain. This verifies actual-role SQL assertions, not real scanner, private Storage bytes, HTTP or browser.
 
 **Dedicated backend profiles:** On exact `e01c64ad`, separate disposable fleet runs passed gateway ACL migrator 1/24 and restricted gateway authority 5/21 with cleanup; two of nine dedicated profiles are scoped PASS. Assignment-options DDL test under the required migrator role then failed its `t/f` versus `true/false` oracle (1 run/2 assertions), so that suite remains open. These results do not establish private Storage/clamd bytes, HTTP, worker or real Auth.
