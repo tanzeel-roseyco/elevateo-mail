@@ -64,3 +64,12 @@ export const LeadPageSchema = z.strictObject({ items: z.array(LeadSummarySchema)
 export const CampaignAnalyticsSchema = z.strictObject({
   campaign_id: id, lead_count: z.number().int().nonnegative(), consented_count: z.number().int().nonnegative(),
 }).refine((value) => value.consented_count <= value.lead_count)
+
+export const CampaignUpdateSchema = z.strictObject({
+  operation_id: id, expected_version: z.number().int().min(1),
+  name: z.string().min(1).max(160), status: z.enum(['draft', 'paused']),
+})
+export const LeadCreateSchema = z.strictObject({ id, operation_id: id, email: z.email().max(254) })
+export const LeadUpdateSchema = z.strictObject({
+  operation_id: id, expected_version: z.number().int().min(1), email: z.email().max(254),
+})
