@@ -49,3 +49,5 @@ Cassian's campaign-scoped account URL is now matched in the owned controller and
 Create replay now uses an immutable SHA-256 request fingerprint stored on each draft row. This addresses exact create retries after later edits, while changed-intent reuse of the operation UUID still errors. Repository regression is authored but unexecuted; migration apply/rollback and replay behavior require Soren's disposable fleet Docker database.
 
 The disposable database fixture now supplies creation fingerprints on its admin seed rows, matching migration 00009's required column. This fixture correction is source-only and needs Soren's exact database run.
+
+The RBS repository surface was pruned to remove the deleted mutable-row replay helper, keeping the declaration aligned with the immutable fingerprint implementation. Strict Steep remains requested from Soren in fleet Docker.
