@@ -1,16 +1,32 @@
 {
-    "version":  "1.0.0-collaboration.1",
-    "stage":  "deterministic_generation_verified_fixture_and_real_api_conformance_pending",
-    "files":  {
-                  "openapi.json":  "859041382484a3a001ae087ca88e02eeb23540f2cf46aec795b064aa8ea66073",
-                  "README.md":  "24592cbb5a42e269dc85e813d72d06ebaee6b856c56826a02e3df94912e5ddb2",
-                  "fixtures.json":  "182d8dfad62c49d3a5b9eba836716808709255c66320e3a8a09fc4e7ddae2833"
-              },
-    "generated_output":  "apps/web/src/data/generated/api.d.ts",
-    "generation_owner":  "Codex contract generation worker task_9a43620259a4",
-    "generator":  "openapi-typescript 7.13.0",
-    "generator_lock_sha256":  "65132a7eaded1decac12c44f001b0cd1c9deb7c07694ed2cc05a38afb7200a74",
-    "app_tests_or_schema_fixture_conformance_executed_here":  false,
-    "generated_sha256":  "bb43a39e6fb514268ab9b89e1b443edb752f6e6eb3a7b0c87468cae5a75b077a",
-    "generation_evidence":  "docs/evidence/be02-cd-contract-generation.json"
+  "version": "1.0.0-send.1",
+  "stage": "isolated_source_prepared_generation_and_runtime_NOT_RUN_be02_OPEN",
+  "files": {
+    "openapi.json": "9ba2546f8fd6e1fc157ffade12138d2ce4588ba03539ac77f6ec17cc54581ecb",
+    "README.md": "c04264aabc639ae01b474eaa44ac4489981140614306b6b631e57f5733bc6c60",
+    "fixtures.json": "bfa2f8832395fcd7c43e4a7671d3e83c687af44ad09488bc722a54a0fc2eb455",
+    "send-fixtures.json": "fb01dd6c2a945449279f450216a16b0ca762ac20b5a1485f133e3de975a05ec6",
+    "be03-preservation.json": "e7f9233b13b19ed39af42b036e3877f570442e7d501c2eb6d0b5061be61a48f1"
+  },
+  "generated_output": "apps/web/src/data/generated/api.d.ts",
+  "generation_owner": "Mira BE03-M01, fleet validation Soren BE03-S01",
+  "generator": "openapi-typescript 7.13.0",
+  "generator_lock_sha256": "65132a7eaded1decac12c44f001b0cd1c9deb7c07694ed2cc05a38afb7200a74",
+  "app_tests_or_schema_fixture_conformance_executed_here": false,
+  "prior_generation": {
+    "version": "1.0.0-collaboration.1",
+    "stage": "deterministic_generation_verified_fixture_and_real_api_conformance_pending",
+    "files": {
+      "openapi.json": "859041382484a3a001ae087ca88e02eeb23540f2cf46aec795b064aa8ea66073",
+      "README.md": "24592cbb5a42e269dc85e813d72d06ebaee6b856c56826a02e3df94912e5ddb2",
+      "fixtures.json": "182d8dfad62c49d3a5b9eba836716808709255c66320e3a8a09fc4e7ddae2833"
+    },
+    "generated_output": "apps/web/src/data/generated/api.d.ts",
+    "generation_owner": "Codex contract generation worker task_9a43620259a4",
+    "generator": "openapi-typescript 7.13.0",
+    "generator_lock_sha256": "65132a7eaded1decac12c44f001b0cd1c9deb7c07694ed2cc05a38afb7200a74",
+    "app_tests_or_schema_fixture_conformance_executed_here": false,
+    "generated_sha256": "bb43a39e6fb514268ab9b89e1b443edb752f6e6eb3a7b0c87468cae5a75b077a",
+    "generation_evidence": "docs/evidence/be02-cd-contract-generation.json"
+  }
 }

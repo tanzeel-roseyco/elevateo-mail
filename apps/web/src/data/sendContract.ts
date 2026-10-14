@@ -27,14 +27,14 @@ export const SendErrorSchema = z.strictObject({
 })
 export const SendReviewSchema = z.strictObject({
   ...envelope, draft_id: id, mailbox_id: id, draft_version: version,
-  sender: z.strictObject({ display_name: z.null(), address: text(256).nullable() }),
+  sender: z.strictObject({ display_name: z.null(), address: text(320).nullable() }),
   to: z.array(AddressSchema).max(100), subject: text(998), body_text: text(65536), reply_to_thread_id: id.nullable(),
   purpose: z.literal('correspondence'), consent_basis: z.literal('human_attestation_required'),
-  attachments: z.array(z.never()).max(0), attachments_supported: z.literal(false), policy_revision: z.string().regex(/^[1-9][0-9]*$/),
+  attachments: z.array(z.never()).max(0), attachments_supported: z.literal(false), policy_revision: z.string().max(19).regex(/^[1-9][0-9]*$/),
   recipient_checks: z.array(z.strictObject({ index: z.number().int().min(0).max(99), status: z.enum(['ok', 'invalid', 'duplicate', 'suppressed']) })).max(100),
-  ready: z.boolean(), issues: z.array(z.strictObject({ code: ReadinessCodeSchema, recipient_index: z.number().int().min(0).max(99).nullable() })).max(1200),
+  ready: z.boolean(), issues: z.array(z.strictObject({ code: ReadinessCodeSchema, recipient_index: z.number().int().min(0).max(99).nullable() })).max(120),
   review_digest: digest.nullable(), simulated: z.literal(true),
-})
+}).refine((review) => review.ready === (review.review_digest !== null))
 export const SendApprovalInputSchema = z.strictObject({
   mailbox_id: id, operation_id: id, expected_version: version, review_digest: digest, correspondence_confirmed: z.literal(true),
 })

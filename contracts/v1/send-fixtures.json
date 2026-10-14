@@ -1,0 +1,160 @@
+{
+  "contract_version": "1.0.0-send.1",
+  "purpose": "Synthetic schema fixtures only; not runtime, SQL or provider evidence. Existing fixtures.json is frozen unchanged.",
+  "routes": {
+    "/v1/drafts/{draft_id}/send-review": "get",
+    "/v1/drafts/{draft_id}/send-approvals": "post",
+    "/v1/send-intents/{send_id}": "get",
+    "/v1/send-intents/{send_id}/cancellation": "post"
+  },
+  "approval_input": {
+    "mailbox_id": "11111111-1111-4111-8111-111111111111",
+    "operation_id": "44444444-4444-4444-8444-444444444444",
+    "expected_version": 1,
+    "review_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "correspondence_confirmed": true
+  },
+  "examples": [
+    {
+      "name": "ready",
+      "schema": "SendReview",
+      "value": {
+        "context_id": "fixture_context_1234567890",
+        "authorization_version": "fixture_auth_version_1234567890",
+        "draft_id": "22222222-2222-4222-8222-222222222222",
+        "mailbox_id": "11111111-1111-4111-8111-111111111111",
+        "draft_version": 1,
+        "sender": {
+          "display_name": null,
+          "address": "sender@example.test"
+        },
+        "to": [
+          {
+            "display_name": null,
+            "address": "Reader@example.test"
+          }
+        ],
+        "subject": "Synthetic correspondence",
+        "body_text": "Synthetic message only.",
+        "reply_to_thread_id": null,
+        "purpose": "correspondence",
+        "consent_basis": "human_attestation_required",
+        "attachments": [],
+        "attachments_supported": false,
+        "policy_revision": "1",
+        "recipient_checks": [
+          {
+            "index": 0,
+            "status": "ok"
+          }
+        ],
+        "ready": true,
+        "issues": [],
+        "review_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "simulated": true
+      }
+    },
+    {
+      "name": "not_ready",
+      "schema": "SendReview",
+      "value": {
+        "context_id": "fixture_context_1234567890",
+        "authorization_version": "fixture_auth_version_1234567890",
+        "draft_id": "22222222-2222-4222-8222-222222222222",
+        "mailbox_id": "11111111-1111-4111-8111-111111111111",
+        "draft_version": 1,
+        "sender": {
+          "display_name": null,
+          "address": "sender@example.test"
+        },
+        "to": [
+          {
+            "display_name": "",
+            "address": "invalid unsent address"
+          }
+        ],
+        "subject": "Synthetic correspondence",
+        "body_text": "Synthetic message only.",
+        "reply_to_thread_id": null,
+        "purpose": "correspondence",
+        "consent_basis": "human_attestation_required",
+        "attachments": [],
+        "attachments_supported": false,
+        "policy_revision": "1",
+        "recipient_checks": [
+          {
+            "index": 0,
+            "status": "invalid"
+          }
+        ],
+        "ready": false,
+        "issues": [
+          {
+            "code": "recipient_invalid",
+            "recipient_index": 0
+          }
+        ],
+        "review_digest": null,
+        "simulated": true
+      }
+    },
+    {
+      "name": "approved",
+      "schema": "ApprovalResult",
+      "value": {
+        "context_id": "fixture_context_1234567890",
+        "authorization_version": "fixture_auth_version_1234567890",
+        "send_id": "33333333-3333-4333-8333-333333333333",
+        "draft_id": "22222222-2222-4222-8222-222222222222",
+        "approved_version": 1,
+        "review_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "approved_at": "2026-10-14T10:40:00Z",
+        "simulated": true
+      }
+    },
+    {
+      "name": "queued",
+      "schema": "SendStatus",
+      "value": {
+        "context_id": "fixture_context_1234567890",
+        "authorization_version": "fixture_auth_version_1234567890",
+        "send_id": "33333333-3333-4333-8333-333333333333",
+        "mailbox_id": "11111111-1111-4111-8111-111111111111",
+        "draft_id": "22222222-2222-4222-8222-222222222222",
+        "approved_version": 1,
+        "approved_at": "2026-10-14T10:40:00Z",
+        "state": "queued",
+        "attempts": 0,
+        "first_possible_at": null,
+        "retry_deadline_at": null,
+        "cancel_requested": false,
+        "cancellable": true,
+        "hold_reason": null,
+        "updated_at": "2026-10-14T10:40:00Z",
+        "simulated": true
+      }
+    },
+    {
+      "name": "cancelled",
+      "schema": "CancellationResult",
+      "value": {
+        "context_id": "fixture_context_1234567890",
+        "authorization_version": "fixture_auth_version_1234567890",
+        "send_id": "33333333-3333-4333-8333-333333333333",
+        "result": "cancelled",
+        "state": "cancelled",
+        "cancel_requested": true,
+        "simulated": true
+      }
+    },
+    {
+      "name": "error",
+      "schema": "SendError",
+      "value": {
+        "code": "not_available",
+        "message": "This item is unavailable.",
+        "request_id": "fixture_request"
+      }
+    }
+  ]
+}
