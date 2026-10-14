@@ -5,8 +5,14 @@ require_relative "../../lib/elevateo/campaigns/repository"
 
 # AIDEV-NOTE: Soren runs this only in the named disposable fleet DB with real session digests and API RLS.
 class CampaignAuthorizedDatabaseTest < MailboxMembershipDatabaseCase
+  def sec802_default_fixture?
+    false
+  end
+
   def setup
     super
+    @admin.exec_params("INSERT INTO app.organization_access(organization_id,user_id,role) VALUES ($1,$2,'owner')",
+      [@org, @user])
     @campaign_id = SecureRandom.uuid
     @admin.exec_params(<<~SQL, [@campaign_id, @org, SecureRandom.uuid])
       INSERT INTO app.campaigns(id,organization_id,operation_id,name,status,creation_fingerprint)
@@ -65,7 +71,7 @@ class CampaignAuthorizedDatabaseTest < MailboxMembershipDatabaseCase
 
   def test_sales_actor_without_shared_mailbox_membership_cannot_read_campaign_account
     actor = add_actor
-    @admin.exec_params("UPDATE app.organization_access SET role='sales' WHERE organization_id=$1 AND user_id=$2",
+    @admin.exec_params("INSERT INTO app.organization_access(organization_id,user_id,role) VALUES ($1,$2,'sales')",
       [@org, actor.user_id])
     account = SecureRandom.uuid
     @admin.exec_params(<<~SQL, [account, @org, @campaign_id, @box, SecureRandom.uuid])
