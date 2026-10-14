@@ -27,3 +27,7 @@ Native broker and synthetic inbound interface proposals are documented in `contr
 ### Browser Outreach adapter candidate
 
 `apps/web/src/data/v2OutreachGateway.ts` now binds campaign, lead and analytics operations to Dorian's versioned endpoints through the existing bounded, same-origin JSON transport. It validates UUID paths, page bounds, CSRF-protected writes and strict server responses. Account methods deliberately return `temporarily_unavailable` without network dispatch while campaign scope and mailbox metadata policy are unresolved. Consent attestation is not exposed by this adapter; the server action remains unregistered. Celeste's UI supplies operation IDs and optimistic versions. Fable owns production `main.tsx` wiring after fleet type/lint/HTTP validation.
+
+### Fleet receipts observed during continuation
+
+Soren's `ruby-batch-next-20261014.txt` records exact bbed59c V2 contract 3 runs/10 assertions and route registry 3 runs/9 assertions, both PASS exit0 in the pinned Ruby image with task container absent. This proves those two structural checks on bbed59c only. The earlier 696549b JSON parse failure remains in history. Soren's integrated DB b071c93 receipt reports migration FAILED before business tests and cleanup PASS; exact migration error was requested. Dorian 21536e5 repository unit failed with missing ActiveRecord constant, and Celeste a460c5a lint failed two control-regex rules; owners received exact findings. No later integrated exact-candidate PASS has been reported.
