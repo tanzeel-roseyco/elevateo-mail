@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import { RosterPersonSchema } from '@/data/v2Contract'
 import type { OrganizationGrant } from '@/data/v2Contract'
 
 // AIDEV-NOTE: Configuration identities are metadata, never Auth subjects or grant targets.
@@ -53,6 +54,20 @@ export function validGrantProjection(organizationId: string, grants: readonly Or
   for (const grant of grants) {
     if (grant.organization_id !== organizationId || seen.has(grant.user_id)) return false
     seen.add(grant.user_id)
+  }
+  return true
+}
+
+/** Server roster is display metadata. Exact keys/names prevent accidental identity inference or substitution. */
+export function validRosterProjection(items: readonly z.infer<typeof RosterPersonSchema>[]): boolean {
+  if (items.length !== CONFIG_PEOPLE.length) return false
+  const byKey = new Map(CONFIG_PEOPLE.map((person) => [person.key, person]))
+  const seen = new Set<string>()
+  for (const item of items) {
+    const reference = byKey.get(item.key)
+    if (!reference || seen.has(item.key) || item.display_name !== reference.display_name ||
+      item.title !== reference.title || item.department !== reference.department || item.enrollment_state !== 'unbound') return false
+    seen.add(item.key)
   }
   return true
 }

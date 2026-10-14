@@ -1,14 +1,16 @@
 import { useCallback, useEffect, useState } from 'react'
 import { useProtectedRequest } from '@/app/protectedRequest'
 import { useSession } from '@/app/session'
-import type { OrganizationGrant } from '@/data/v2Contract'
+import { RosterPersonSchema, type OrganizationGrant } from '@/data/v2Contract'
+import type { z } from 'zod'
 import { createV2Gateway } from '@/data/v2Gateway'
 import { GatewayError } from '@/data/errors'
 import { Button } from '@/ui/Button'
 import { EmptyState, Skeleton } from '@/ui/Async'
-import { CONFIG_PEOPLE, editableRoles, validGrantProjection, type EditableRole } from './adminModel'
+import { CONFIG_PEOPLE, editableRoles, validGrantProjection, validRosterProjection, type EditableRole } from './adminModel'
 
 type Grants = { grants: OrganizationGrant[] }
+type Roster = { status: 'loading' } | { status: 'ready'; items: z.infer<typeof RosterPersonSchema>[] } | { status: 'unavailable' } | { status: 'error' }
 type View = { status: 'loading' } | { status: 'ready'; value: Grants } | { status: 'denied' } | { status: 'error' }
 const adminGateway = createV2Gateway()
 
@@ -24,6 +26,7 @@ export function AdministrationPage({ section }: { section: 'people' | 'organizat
   const organizationId = session?.organization.id ?? null
   const actorId = session?.actor.id ?? null
   const [view, setView] = useState<View>({ status: 'loading' })
+  const [roster, setRoster] = useState<Roster>({ status: 'loading' })
   const [notice, setNotice] = useState<string | null>(null)
   const [pending, setPending] = useState<string | null>(null)
   const [writeBlocked, setWriteBlocked] = useState(false)
@@ -61,7 +64,30 @@ export function AdministrationPage({ section }: { section: 'people' | 'organizat
     }
     setView({ status: 'error' })
   }, [organizationId, request, session?.context_id, session?.authorization_version])
+  const loadRoster = useCallback(async () => {
+    if (!organizationId) return
+    setRoster({ status: 'loading' })
+    let cursor: string | undefined
+    const items: z.infer<typeof RosterPersonSchema>[] = []
+    const cursors = new Set<string>()
+    for (let page = 0; page < 3; page += 1) {
+      const outcome = await request((ctx, signal) => adminGateway.getOrganizationRoster(organizationId, ctx, signal, cursor === undefined ? {} : { cursor }))
+      if (outcome.kind === 'stale') return
+      if (outcome.kind === 'failed') { setRoster({ status: isDenied(outcome.error) ? 'unavailable' : 'error' }); return }
+      if (outcome.value.context_id !== session?.context_id || outcome.value.authorization_version !== session?.authorization_version) {
+        setRoster({ status: 'error' }); return
+      }
+      items.push(...outcome.value.items)
+      const next = outcome.value.next_cursor
+      if (next === null) { setRoster(validRosterProjection(items) ? { status: 'ready', items } : { status: 'error' }); return }
+      if (cursors.has(next)) { setRoster({ status: 'error' }); return }
+      cursors.add(next)
+      cursor = next
+    }
+    setRoster({ status: 'error' })
+  }, [organizationId, request, session?.context_id, session?.authorization_version])
   useEffect(() => { void load() }, [load])
+  useEffect(() => { void loadRoster() }, [loadRoster])
 
   const change = async (target: OrganizationGrant) => {
     if (view.status !== 'ready' || !organizationId || !actorId || !proof || pending || writeBlocked) return
@@ -94,6 +120,10 @@ export function AdministrationPage({ section }: { section: 'people' | 'organizat
     {section === 'organization' && <div className="mt-4 rounded-lg border border-line p-4"><h2 className="font-semibold">Available settings</h2><p className="mt-1 text-sm text-muted">Current organization grants can be reviewed here. Provider, DNS, live delivery and credential settings are unavailable in this build.</p></div>}
     <h2 className="mt-5 font-semibold">Configuration identities</h2>
     <p className="mt-1 text-sm text-muted">These twelve references are unbound. Their proposed roles are planning metadata, not active permissions, accounts, invitations or logins.</p>
+    {roster.status === 'loading' && <p role="status" className="mt-1 text-xs text-muted">Checking organization roster…</p>}
+    {roster.status === 'ready' && <p className="mt-1 text-xs text-muted">Unbound roster verified with the organization gateway.</p>}
+    {roster.status === 'unavailable' && <p className="mt-1 text-xs text-muted">Organization roster unavailable; the reference list below is local configuration only.</p>}
+    {roster.status === 'error' && <p role="alert" className="mt-1 text-xs">Organization roster could not be verified; the reference list below is local configuration only.</p>}
     <ul className="mt-3 grid gap-2 sm:grid-cols-2">
       {CONFIG_PEOPLE.map((person) => <li key={person.key} className="rounded-lg border border-line p-3 text-sm"><p className="font-medium">{person.display_name}</p><p className="text-xs text-muted">{person.title}{person.department ? ` · ${person.department}` : ''}</p><p className="mt-1 text-xs">Unbound · no email or login</p><p className="text-xs text-muted">Proposed: {person.proposed_org_role.replaceAll('_', ' ')}</p></li>)}
     </ul>
