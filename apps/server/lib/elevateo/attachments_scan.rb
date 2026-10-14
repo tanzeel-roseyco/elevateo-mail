@@ -65,7 +65,9 @@ module Elevateo
       def write_all(socket, bytes)
         offset = 0
         while offset < bytes.bytesize
-          written = socket.write(bytes.byteslice(offset, bytes.bytesize - offset))
+          remaining = bytes.byteslice(offset, bytes.bytesize - offset)
+          raise Error, "clamd stream unavailable" unless remaining
+          written = socket.write(remaining)
           raise Error, "clamd write failed" unless written.is_a?(Integer) && written.positive?
           offset += written
         end

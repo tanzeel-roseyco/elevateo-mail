@@ -705,3 +705,7 @@ MAC814 independent static review of Maeve pinned `b3204ce2ed862f415a774a5c8eb343
 ATT870 source-only PrivateStorage RBS repair after Soren `cb1ec5be` strict Steep diagnostics: new narrow declaration and nonnullable internal host/port/body/status handling. Nadia did not independently review or run this successor; no new defect count or density is claimed. A 166 LOC reviewer packet and fleet-only checks are in `docs/completion/nadia-att870-private-storage-types.md`.
 
 ADV115 independently reviewed exact Nadia `8192bbc` PrivateStorage repair: 212 unique versioned LOC, zero confirmed implementation defects (0/KLOC), with two missing direct response-branch tests. Nadia added nil-bucket-body and pre-buffer status-denial fake HTTP regressions; successor has no independent review or runtime PASS. A 97 LOC bounded packet and Soren fleet-only request are in `docs/completion/nadia-adv115-storage-regressions.md`.
+
+## ATT886 attachment strict types (2026-10-14)
+
+Source repair is authored against Soren's `651b63a9fdb2` Steep receipt; no independent review or fleet test has run on this candidate. Proposed bounded packet: service 78 LOC, scanner 56 LOC, RBS 75 LOC, regression context 56 LOC (265 unique LOC maximum, each read <=180); see `docs/completion/nadia-att886-steep-repair.md`. Defects and density for this successor are not assessed; do not infer 0/KLOC or runtime PASS.

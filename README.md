@@ -18,6 +18,8 @@ Nadia attachment backend candidate adds private quarantine metadata (migration 0
 
 ATT870 adds a precise PrivateStorage RBS boundary and fixed internal transport typing; the source and its focused constructor regression are untested. See `docs/completion/nadia-att870-private-storage-types.md`.
 
+ATT886 makes attachment scope keywords explicit for strict Steep, validates stored byte sizes before returning metadata, and narrows scanner writes. The focused repair and regression remain untested until Soren's fleet run; see `docs/completion/nadia-att886-steep-repair.md`.
+
 ADV115 response adds fake HTTP regressions for nil private-bucket body and rejected object status before body buffering; Soren fleet execution is pending. See `docs/completion/nadia-adv115-storage-regressions.md`.
 
 
