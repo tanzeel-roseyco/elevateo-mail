@@ -36,10 +36,7 @@ class SendMailpitTestReceiptDatabaseTest < SendDatabaseTestCase
     claim(send_id, lease)
     attempt = authorize(send_id, lease, mode: mode, hash_basis: hash_basis).fetch("attempt_id")
     @admin.exec("BEGIN")
-    @admin.exec_params(<<~SQL, [send_id])
-      UPDATE app_send_private.jobs SET lease_expires_at=clock_timestamp()+interval '2 seconds'
-        WHERE send_id=$1
-    SQL
+    @admin.exec_params("SELECT send_id FROM app_send_private.jobs WHERE send_id=$1 FOR UPDATE", [send_id])
     thread = Thread.new do
       if mode == MODE
         observe(send_id, lease, attempt, kind: "accepted", receipt: RECEIPT)
@@ -51,11 +48,20 @@ class SendMailpitTestReceiptDatabaseTest < SendDatabaseTestCase
       end
     end
     thread.report_on_exception = false
-    wait_for_lock(@worker, blocker: @admin.backend_pid, lock_kind: "transactionid", seconds: 2)
+    wait_for_lock(@worker, blocker: @admin.backend_pid, lock_kind: "transactionid", seconds: 0.7)
+    # Set the deadline after the worker is provably blocked, then cross it under the fixture lock timeout.
+    @admin.exec_params(<<~SQL, [send_id])
+      UPDATE app_send_private.jobs SET lease_expires_at=clock_timestamp()+interval '100 milliseconds'
+        WHERE send_id=$1
+    SQL
     assert_equal "t", @admin.exec_params(<<~SQL, [send_id]).getvalue(0, 0)
       SELECT clock_timestamp() < lease_expires_at FROM app_send_private.jobs WHERE send_id=$1
     SQL
-    @admin.exec("SELECT pg_sleep(2.1)")
+    # Wait for the database lease deadline while keeping the row lock, within the fixture lock timeout.
+    @admin.exec_params("SELECT pg_sleep_until(lease_expires_at) FROM app_send_private.jobs WHERE send_id=$1", [send_id])
+    assert_equal "t", @admin.exec_params(<<~SQL, [send_id]).getvalue(0, 0)
+      SELECT clock_timestamp() >= lease_expires_at FROM app_send_private.jobs WHERE send_id=$1
+    SQL
     @admin.exec("COMMIT")
     assert_equal "stale_lease", thread.value.fetch("code")
     row = @admin.exec_params(<<~SQL, [send_id]).first

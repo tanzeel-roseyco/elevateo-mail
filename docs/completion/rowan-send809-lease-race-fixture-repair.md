@@ -1,0 +1,7 @@
+# SEND809 observation race fixture repair
+
+Evidence: Soren exact integrated `7aa61be4649ca251c3faff368ba61dfa7e313708`, `completion-soren-qa815/docs/completion/qa815-evidence/backend-7aa61be4649c/028-ruby-suites.txt`, two `PG::LockNotAvailable` errors in legacy and Mailpit observation functions while attempting to acquire the job row. The fixture held the job lock for `pg_sleep(2.1)` despite its worker connection's existing one-second lock timeout. These errors do not show an accepted stale receipt or a production function failure.
+
+The race fixture now locks the job first, starts the worker, verifies via `pg_blocking_pids` that the worker is blocked on that exact admin transaction, then sets a 100 ms lease deadline and waits with PostgreSQL `pg_sleep_until(lease_expires_at)` before release. It asserts the deadline is in the future before the wait and crossed before commit, then still requires `stale_lease`, unchanged job and zero observations. This is a deadline-based barrier tied to the lease, not an arbitrary duration; the production lock timeout is unchanged. Changed source is the bounded 14-line fixture block in `test/sends/mailpit_test_receipt_database_test.rb`, with roughly 45 nearby lines inspected.
+
+Static source verdict: fixture timing conflict, not a reason to weaken lease fencing. No tests or Docker run by Rowan. Soren must rerun the Mailpit receipt database suite under his fleet lease; runtime result pending.
