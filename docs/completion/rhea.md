@@ -38,6 +38,18 @@ hostname verification remain required. This does not exercise the SQL store
 or establish durable cursor or tenant mapping. All TLS/app probes are
 **NOT_RUN** until Soren returns exact fleet receipts.
 
+Ada ADV075 independently reviewed 331 orchestration LOC at `3ea8d26` and
+found two defects (6.04/KLOC): omitted optional interop could be mistaken for
+full success, and unbounded Docker inventory could hang cleanup. Vera ADV074
+reviewed 196 Python/Ruby TLS client LOC with zero confirmed defects
+(0/KLOC), while limiting persistence evidence to the selected subject and
+seeded adapter observations. The runner repair writes per-component status,
+marks omitted Corin probes `skipped_missing_inputs`, requires both Corin
+probes plus verified cleanup for `interop_result=pass`, and bounds all Docker
+inventory calls. The fake-Docker regression packet covers missing app inputs
+and simulated inventory timeout. Repair re-review and all runtime remain
+**NOT_RUN**; this source repair does not close acceptance on its own.
+
 The Docker request is `MOX_IMAGE=<verified-ref@sha256:...>
 PROBE_IMAGE=<verified-python-ref@sha256:...>
 MOX_SOURCE_SHA=1c9587665b321199312e11b6a47a0480a9e2750f

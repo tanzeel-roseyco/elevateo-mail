@@ -5,6 +5,10 @@ MAIL-818 (2026-10-14): isolated Mox localserve pilot source is prepared under
 independent review and exact cleanup evidence remain pending. No production
 transport, contract, DNS, credential or release change. See
 [Rhea's pilot record](docs/completion/rhea.md).
+Ada ADV075 found two runner defects in `3ea8d26`; a source repair now records
+skipped Corin interop separately from base protocol and bounds Docker cleanup
+inventory. Fake-Docker regressions, Soren fleet runtime and repair re-review
+remain pending.
 
 Application IN PROGRESS — R24 isolated BE03 candidate (2026-10-14). Root authorizes implementation on baseline `03ae770c56271cd8236726bfd8fe63248e81283d` in parallel with BE02 acceptance. BE02 remains OPEN/unaccepted; integration/release gated. S1+S2 priority: saved draft -> consistent review -> human approval -> durable queued intent. Canonical additive `contracts/v1/openapi.json` version `1.0.0-send.1` is prepared; every baseline C/D operation/component and original fixture is preserved.
 ### Mira BE03 UI isolated R24 implementation (2026-10-14)

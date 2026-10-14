@@ -17,7 +17,9 @@ Shared company mailroom with one Rails domain authority and a React/TypeScript c
 MAIL-818 has an isolated synthetic Mox localserve pilot under `ops/mail/mox-pilot/`.
 Its Docker protocol and isolation checks are requested from Soren on fleet-02
 and remain NOT_RUN; no production provider change or activation follows from
-this fixture. See [Rhea's pilot record](docs/completion/rhea.md).
+this fixture. Runner receipts now distinguish base protocol from skipped Corin
+interop and fail closed on unverified Docker cleanup inventory. The repair and
+its regression remain NOT_RUN; see [Rhea's pilot record](docs/completion/rhea.md).
 
 
 ### R25 approval reload recovery candidate

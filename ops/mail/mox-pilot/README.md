@@ -71,6 +71,12 @@ same-volume restart observations. The optional container runs as root solely
 to access the private receipt directory; caps are dropped and the app source
 is read-only. It does **not** prove SQL authorization or durable cursor commit.
 Without those three optional inputs, app interoperability is **NOT_RUN**.
+The runner always writes `component-status.txt`: omitted app inputs set
+`corin_initial=skipped_missing_inputs`, `corin_restart=skipped_missing_inputs`
+and `interop_result=not_run_missing_inputs`, even if base protocol exits 0.
+Only both successful Corin probes plus verified cleanup can set
+`interop_result=pass`. A partial input set fails admission. A failed earlier
+probe leaves later components `not_run` and the result `incomplete`.
 
 Exact Soren command after image/source provenance and Docker lease admission:
 
@@ -88,6 +94,28 @@ modes require Soren on fleet-02; no image pull/build or host application test
 is performed by this packet. Receipts include `cert-export.log`, TLS logs,
 optional Corin interop logs, exit status, resource figures and exact
 task-owned cleanup/absence files.
+Each Docker container, network and volume inventory query is independently
+bounded; a timeout or failed query records `cleanup_verification=unverifiable`
+and makes the runner exit nonzero. Soren must reconcile the recorded project
+name before another attempt. A nonempty inventory records
+`cleanup_verification=residual_resources` and also fails. The regression
+`tests/runner_receipt_test.sh` uses fake Docker commands to check omitted
+interop and simulated inventory timeout; Soren alone runs it inside a fleet-02
+Docker test container with `MAIL818_RUNNER_TEST_CONTAINER=1`. It has not run
+in this branch.
+
+Bounded regression command for Soren under the fleet lease, using a locally
+available immutable image with Bash and coreutils (no pull or build):
+
+```sh
+docker run --rm --network none --read-only --tmpfs /tmp:size=32m \
+  -e MAIL818_RUNNER_TEST_CONTAINER=1 \
+  -v "$PWD:/src:ro" -w /src "$RUNNER_TEST_IMAGE" \
+  bash ops/mail/mox-pilot/tests/runner_receipt_test.sh
+```
+
+Soren records the exact image digest, exit, assertions and exact task-owned
+container absence. This fake-Docker regression never starts Mox or an app.
 
 The concurrent Mox/probe limits total 1.75 GiB and 2 CPU; optional Corin
 interop plus Mox caps at 2 GiB and 2 CPU, within the
