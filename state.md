@@ -1,3 +1,7 @@
+### INT-801 additive V2 interface candidate (2026-10-14)
+
+Cassian prepared disabled organization grant, simulation-only outreach and internal worker-status V2 interfaces over `bbf2353`. Frozen V1 contracts and Rails routes remain unchanged. The V2 route registry fails closed until owning controllers and authorization gates are ready. Source and tests are committed for fleet Docker validation; runtime acceptance and generated web DTO adoption remain pending. See `docs/completion/cassian.md`.
+
 # Project state
 
 Application IN PROGRESS — R24 isolated BE03 candidate (2026-10-14). Root authorizes implementation on baseline `03ae770c56271cd8236726bfd8fe63248e81283d` in parallel with BE02 acceptance. BE02 remains OPEN/unaccepted; integration/release gated. S1+S2 priority: saved draft -> consistent review -> human approval -> durable queued intent. Canonical additive `contracts/v1/openapi.json` version `1.0.0-send.1` is prepared; every baseline C/D operation/component and original fixture is preserved.

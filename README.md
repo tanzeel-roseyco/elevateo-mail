@@ -14,6 +14,11 @@ Shared company mailroom with one Rails domain authority and a React/TypeScript c
 
 ## Current state
 
+### INT-801 additive V2 interface candidate (2026-10-14)
+
+Cassian prepared disabled organization grant, simulation-only outreach and internal worker-status V2 interfaces over `bbf2353`. Frozen V1 contracts and Rails routes remain unchanged. The V2 route registry fails closed until owning controllers and authorization gates are ready. Source and tests are committed for fleet Docker validation; runtime acceptance and generated web DTO adoption remain pending. See `docs/completion/cassian.md`.
+
+
 
 ### R25 approval reload recovery candidate
 

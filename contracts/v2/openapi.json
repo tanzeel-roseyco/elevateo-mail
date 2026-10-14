@@ -1,0 +1,37 @@
+{
+  "openapi": "3.1.1",
+  "info": {
+    "title": "Elevateo additive administration and offline workflow API",
+    "version": "2.0.0-draft.1",
+    "description": "Proposed additive interfaces. No endpoint is active until its owning authorization and persistence implementation passes fleet verification. V1 session, read, collaboration and send shapes are unchanged."
+  },
+  "servers": [{"url": "/"}],
+  "security": [{"sessionCookie": []}],
+  "paths": {
+    "/v2/organizations/{organization_id}/grants": {
+      "get": {"operationId": "listOrganizationGrants", "parameters": [{"$ref": "#/components/parameters/OrganizationId"}], "responses": {"200": {"description": "Redacted grants only; no mailbox content", "content": {"application/json": {"schema": {"type": "object", "additionalProperties": false, "required": ["revision", "grants"], "properties": {"revision": {"type": "integer", "minimum": 0}, "grants": {"type": "array", "items": {"$ref": "#/components/schemas/OrganizationGrant"}}}}}}, "403": {"$ref": "#/components/responses/Forbidden"}}}
+    },
+    "/v2/organizations/{organization_id}/grants/{user_id}": {
+      "put": {"operationId": "replaceOrganizationGrant", "parameters": [{"$ref": "#/components/parameters/OrganizationId"}, {"$ref": "#/components/parameters/UserId"}], "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/GrantChange"}}}, "responses": {"200": {"description": "Committed role and new revision", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/OrganizationGrant"}}}, "403": {"$ref": "#/components/responses/Forbidden"}, "409": {"$ref": "#/components/responses/Conflict"}}}
+    },
+    "/v2/outreach/campaigns": {
+      "post": {"operationId": "createOutreachCampaign", "description": "Create a simulation-only campaign plan; never dispatches mail.", "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/OutreachPlan"}}}, "responses": {"201": {"description": "Simulation plan saved", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/OutreachCampaign"}}}, "403": {"$ref": "#/components/responses/Forbidden"}}}
+    },
+    "/v2/worker/jobs/{job_id}": {
+      "get": {"operationId": "getWorkerJob", "description": "Internal worker status; requires worker principal, not browser session.", "security": [{"workerPrincipal": []}], "parameters": [{"$ref": "#/components/parameters/JobId"}], "responses": {"200": {"description": "Redacted status", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/WorkerJob"}}}, "403": {"$ref": "#/components/responses/Forbidden"}}}
+    }
+  },
+  "components": {
+    "securitySchemes": {"sessionCookie": {"type": "apiKey", "in": "cookie", "name": "elevateo_session"}, "workerPrincipal": {"type": "mutualTLS"}},
+    "parameters": {"OrganizationId": {"name": "organization_id", "in": "path", "required": true, "schema": {"$ref": "#/components/schemas/Id"}}, "UserId": {"name": "user_id", "in": "path", "required": true, "schema": {"$ref": "#/components/schemas/Id"}}, "JobId": {"name": "job_id", "in": "path", "required": true, "schema": {"$ref": "#/components/schemas/Id"}}},
+    "responses": {"Forbidden": {"description": "Current authority denied"}, "Conflict": {"description": "Expected revision stale or authority changed"}},
+    "schemas": {
+      "Id": {"type": "string", "format": "uuid"},
+      "OrganizationGrant": {"type": "object", "additionalProperties": false, "required": ["organization_id", "user_id", "role", "revision"], "properties": {"organization_id": {"$ref": "#/components/schemas/Id"}, "user_id": {"$ref": "#/components/schemas/Id"}, "role": {"enum": ["organization_owner", "organization_admin", "organization_member"]}, "revision": {"type": "integer", "minimum": 0}}},
+      "GrantChange": {"type": "object", "additionalProperties": false, "required": ["role", "expected_revision"], "properties": {"role": {"enum": ["organization_admin", "organization_member"]}, "expected_revision": {"type": "integer", "minimum": 0}}},
+      "OutreachPlan": {"type": "object", "additionalProperties": false, "required": ["name", "mode"], "properties": {"name": {"type": "string", "minLength": 1, "maxLength": 120}, "mode": {"const": "simulation"}}},
+      "OutreachCampaign": {"type": "object", "additionalProperties": false, "required": ["id", "name", "mode", "status"], "properties": {"id": {"$ref": "#/components/schemas/Id"}, "name": {"type": "string"}, "mode": {"const": "simulation"}, "status": {"const": "draft"}}},
+      "WorkerJob": {"type": "object", "additionalProperties": false, "required": ["id", "status"], "properties": {"id": {"$ref": "#/components/schemas/Id"}, "status": {"enum": ["queued", "leased", "completed", "failed"]}}}
+    }
+  }
+}
