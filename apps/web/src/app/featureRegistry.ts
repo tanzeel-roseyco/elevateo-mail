@@ -7,11 +7,10 @@
 // path from one worker breaks the build/test run instead of silently shadowing another route.
 
 /** Sidebar sections are independent lists; there is no global personal/outreach state switch. */
-export type FeatureSection = 'personal' | 'outreach' | 'organization'
+export type FeatureSection = 'personal' | 'outreach'
 /** Render order and visible headings of the sidebar sections after Personal. */
 export const FEATURE_SECTIONS: ReadonlyArray<{ key: Exclude<FeatureSection, 'personal'>; label: string }> = [
   { key: 'outreach', label: 'Outreach' },
-  { key: 'organization', label: 'Organization' },
 ]
 
 export interface FeatureNavEntry {
@@ -66,7 +65,7 @@ export function buildFeatureRegistry(modules: readonly FeatureRegistration[]): F
       if (entry.label.trim() === '') throw new FeatureRegistryError(`Feature "${module.id}" nav entry "${entry.path}" has an empty label`)
     }
   }
-  const bySection: Record<FeatureSection, FeatureNavEntry[]> = { personal: [], outreach: [], organization: [] }
+  const bySection: Record<FeatureSection, FeatureNavEntry[]> = { personal: [], outreach: [] }
   for (const module of modules) for (const entry of module.nav) bySection[entry.section].push(entry)
   // Array.prototype.sort is stable (ES2019+), so equal orders keep registration order.
   for (const section of Object.keys(bySection) as FeatureSection[]) bySection[section].sort((a, b) => a.order - b.order)

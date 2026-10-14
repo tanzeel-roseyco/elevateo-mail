@@ -712,3 +712,7 @@ FE807 author follow-up: self-review found that treating every write error as unc
 ## FE-806 message permalink review request
 
 Bounded packet: `apps/web/src/features/thread/ThreadPage.tsx` (about 23 changed lines) and `ThreadPage.test.tsx` (about 53 added lines). Request independent adversarial source review plus dedicated design tradeoff review: URL parsing, stale scope, page termination, accessibility/focus and cross-mailbox disclosure. No review was performed in this worker turn; defects and density are pending. Tests and browser evidence are authored/requested, not executed.
+
+### FE-805 R3 registration self-inspection (Fable, 2026-10-15)
+
+Coverage: rewritten `features/index.tsx` (62 LOC), `featureGateways.tsx` (25), changed hunks in `featureRegistry.ts`/`main.tsx` (~10). ~97 production LOC, one bounded pass; author self-inspection only, no independent review claimed. Self-found before commit: 0 confirmed. Provisional density 0/KLOC, author evidence only. Merged owner commits unmodified and not counted. Tests: 11 FE-805 cases authored, not executed.

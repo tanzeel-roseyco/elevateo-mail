@@ -15,7 +15,6 @@ describe('feature registry', () => {
     const registry = buildFeatureRegistry([outreach])
     expect(registry.navBySection.outreach.map((e) => e.label)).toEqual(['Campaigns', 'Leads'])
     expect(registry.navBySection.personal).toEqual([])
-    expect(registry.navBySection.organization).toEqual([])
     expect(registry.modules).toHaveLength(1)
   })
 

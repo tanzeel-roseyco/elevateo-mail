@@ -4,6 +4,10 @@ Cassian prepared disabled organization grant, simulation-only outreach and inter
 
 # Project state
 
+### Fable FE-805 R3 owner modules registered (2026-10-15)
+
+Branch `completion/fable-fe805` merges exact Lyra `77a86fe`, Celeste `efc609b` and Mira `e120b30` on top of R2 and registers their real modules: Celeste's ten Outreach routes are wrapped with live session context/proof and the optional `OutreachGateway` seam; Lyra's `/people`, `/settings/personal` and `/settings/organization` sit in the Personal section and bind Cassian's V2 gateway directly. No placeholders remain. Production `OutreachGateway` is absent until Cassian/Dorian publish the V2 adapter, and V2 grant routes stay disabled server-side; each owner page shows its own honest state. Eleven FE-805 cases authored, none executed. See [Fable record](docs/completion/fable.md).
+
 ### Fable FE-805 R2 integrated wiring (2026-10-15)
 
 Branch `completion/fable-fe805` now merges exact Celeste `152f95a`, Lyra `6f55a01`, Mira `e31da54` and Cassian `79476c3` (owner source untouched; shared docs unioned) and wires their real exports: Outreach routes render Celeste's pages with session context, `/people` and `/settings` render Lyra's page when a V2 admin gateway is supplied, Mira's compose/reply entries ride the existing routes, and the rail gains an independent Organization section. Placeholders are removed; production feature gateways stay empty because V2 lacks Outreach reads and the grant DTOs are unreconciled, so each page shows its own honest not-connected state. Ten FE-805 cases authored, none executed. See [Fable record](docs/completion/fable.md).

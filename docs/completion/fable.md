@@ -111,6 +111,21 @@ Same recipe as R1 on the R2 SHA. Expected affected files: `src/app/featureRegist
 4. `/#/mailboxes/<fixture>`: Mira's "Compose draft" link beside Conversations when compose capability is true.
 5. Mobile 375x812: header mark, drawer showing all three sections.
 
+## R3 — owners' full modules registered (2026-10-15)
+
+Further exact owner commits merged `--no-ff`, source untouched, shared docs unioned: Lyra `77a86fed836d8f7da6d6cd1ac32902a1004e586b` (`peopleFeatureModule`: `/people`, `/settings/personal`, `/settings/organization`, all in the Personal section; `AdministrationPage` now binds Cassian's `createV2Gateway()` itself), Celeste `efc609b00cd9042c70e343d287fe8979781aeb67` (`createOutreachFeatureModule(props)`: ten routed campaign/lead/account/analytics workflows, four nav entries, draft/paused only), Mira `e120b308d7d54cb4824eb9f49406c7b716e3f21a` (message permalinks on existing routes).
+
+Fable changes in R3:
+
+- `features/index.tsx` registers `peopleFeatureModule` verbatim and wraps Celeste's module: each of her ten paths is an `OutreachRoute` that reads `context`/`proof` from `useProtectedRequest()` and the optional `OutreachGateway` from the feature-gateway seam, then renders her element. Nothing is placeholder any more; `FeatureNotConnectedPage` is deleted.
+- `featureGateways.tsx` narrows to `{ outreach?: OutreachGateway }` (Lyra needs no seam).
+- `featureRegistry.ts` drops the unused `organization` section; Personal now lists mailboxes followed by Lyra's People / Personal settings / Organization settings.
+- Tests: `features/index.test.tsx` rewritten (registration shape; Outreach happy path through a full `OutreachGateway`; Celeste's own unavailable state with no gateway; Lyra's personal settings from the live fixture session). Registry/sidebar/shell cases updated. FE-805 total: 11 cases, none executed.
+
+Gateway reconciliation now reduces to one item: Cassian/Dorian publish an `OutreachGateway` adapter (ten operations in `features/outreach/contract.ts`) over additive V2 routes; Fable then passes it from `main.tsx` in one line. Lyra's V2 grant reads remain disabled server-side, so `/people` and `/settings/organization` show her denied/error states until Sabine/Theo/Cassian activate the route.
+
+Updated Soren request: same Docker recipe on the R3 SHA; expected FE-805 files `featureRegistry.test.ts`, `Sidebar.test.tsx`, `Shell.test.tsx`, `features/index.test.tsx`, plus all merged owner suites. Updated Tessa items: Personal rail shows Search, mailboxes, People, Personal settings, Organization settings; `/#/outreach/campaigns` shows Celeste's heading, "Create draft campaign" link and the unavailable status; `/#/settings/personal` shows "Signed in as"; `/#/people` shows Lyra's denied or error state (not a crash); mobile drawer with both sections.
+
 ## Limitations
 
 - No lint, typecheck, unit test, build or visual check has been executed by Fable; Soren owns execution and Tessa owns visual evidence.
