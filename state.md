@@ -126,3 +126,5 @@ OUT-804 follow-up candidate `8c9bd82` is source-only: stable request-intent retr
 OUT-804 pending candidate adds append-only consent history in migration 00009, bound to the same idempotent tenant update transaction. Runtime roles cannot update/delete the history; real role/SQL evidence and Delivery policy review remain pending.
 
 OUT-804 author correction: same-address lead update preserves consent and consumes the operation key, while a changed address resets consent and appends history. Fleet execution remains pending.
+
+OUT-804 fleet diagnostic on older 21536e5 found a standalone repository NameError; the source now requires Active Record. A combined Ruby command executed only the input test, so repository PASS is unproven. Earlier integrated b071c93 migration failed before tests; detailed cause pending from Soren.

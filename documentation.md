@@ -194,3 +194,5 @@ The OUT-804 lead detail response includes nullable consent time/source/actor fro
 `app.campaign_consent_events` stores append-only human attestation/withdrawal/reset history for lead changes and is linked to the mutation operation ID. Current lead status is a projection; previous evidence is retained. Runtime grants omit UPDATE/DELETE on the event table. No provider transport reads or sends from these records in OUT-804.
 
 Lead email updates distinguish unchanged from changed addresses in the guarded transaction. Unchanged email increments the optimistic version without rewriting consent fields or adding a new consent event; changed email resets consent to unknown and records that reset. Both consume their operation key for exact replay.
+
+OUT-804 test routing correction: run `bundle exec ruby -Itest test/campaigns/input_test.rb` and `bundle exec ruby -Itest test/campaigns/repository_test.rb` as separate commands in the pinned fleet Docker image. Passing both paths to one `ruby` invocation executes only the first script. The repository explicitly requires Active Record for standalone loading after the early fleet NameError.
