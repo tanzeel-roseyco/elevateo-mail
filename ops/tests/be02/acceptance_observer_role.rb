@@ -39,7 +39,7 @@ module Be02Acceptance
     def self.drop(db, binding)
       role = binding.fetch("role")
       raise ArgumentError, "observer_role_invalid" unless /\Aqa404_[0-9a-f]{32}\z/.match?(role)
-      description = db.exec_params("SELECT obj_description(oid,'pg_authid') FROM pg_roles WHERE rolname=$1", [role])
+      description = db.exec_params("SELECT shobj_description(oid,'pg_authid') FROM pg_roles WHERE rolname=$1", [role])
       return if description.ntuples.zero?
       raise "observer_cleanup_binding_invalid" unless description.getvalue(0, 0) == "qa404-disposable:#{binding.fetch('nonce')}"
       quoted_role = PG::Connection.quote_ident(role)

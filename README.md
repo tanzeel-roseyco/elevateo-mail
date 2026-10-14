@@ -152,3 +152,5 @@ BE-403 bootstrap guard regressions authored: exact private-schema DO block exerc
 
 BE-403 numeric underflow repair: ExactDecimal rejects nonzero JSON mantissas converted to zero by extreme BigDecimal exponents, while preserving exact decimals and true zero. Existing precise-version and exception-mode regression failures provide target coverage; current runtime NOT_RUN. Semantic guard order now follows supplied owner/ACL/owner-privileges/runtime sequence.
 FE-405 follow-up: navigation regressions now cover Drafts and reader ancestor semantics. CLI metadata confirms gpt-6.1-sol / low, Fast tier remains unverified (service_tier null). Runtime/visual acceptance still pending.
+
+QA-404 observer draft correction: PostgreSQL role comments use shared-object lookup; typed bounded versions and ledger outcome validation added. Source-only, review/runtime remain pending.

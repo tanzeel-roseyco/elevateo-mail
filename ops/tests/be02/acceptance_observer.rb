@@ -32,6 +32,11 @@ module Be02Acceptance
       raise "observer_visibility_error" unless draft(db, @binding.fetch("sentinel_draft_id")).length == 1
       drafts = draft(db, draft_id)
       operations = operation_id ? operation(db, draft_id, operation_id) : []
+      drafts.each { |row| row["version"] = version(row.fetch("version"), 1) }
+      operations.each do |row|
+        raise "observer_outcome_invalid" unless %w[applied conflict expired].include?(row.fetch("outcome"))
+        row["version"] = version(row.fetch("version"), 0) unless row.fetch("version").nil?
+      end
       db.exec("COMMIT")
       { "drafts" => drafts, "operations" => operations }
     ensure
@@ -43,7 +48,7 @@ module Be02Acceptance
     def verify_principal(db)
       row = db.exec(<<~SQL).first
         SELECT r.rolname, r.rolsuper, r.rolbypassrls, r.rolcreaterole, r.rolcreatedb, r.rolreplication,
-          obj_description(r.oid,'pg_authid') AS binding,
+          shobj_description(r.oid,'pg_authid') AS binding,
           (SELECT oid FROM pg_database WHERE datname=current_database()) AS database_oid,
           EXISTS(SELECT 1 FROM pg_auth_members WHERE member=r.oid) AS memberships
         FROM pg_roles r WHERE rolname=session_user AND session_user=current_user
@@ -58,6 +63,12 @@ module Be02Acceptance
       end
     end
 
+    def version(value, minimum)
+      number = Integer(value, 10)
+      raise "observer_version_invalid" unless (minimum..2_147_483_647).cover?(number)
+      number
+    end
+
     def scope = @binding.values_at("organization_id", "mailbox_id", "actor_id")
 
     def draft(db, id)
@@ -69,7 +80,8 @@ module Be02Acceptance
 
     def operation(db, draft_id, operation_id)
       db.exec_params(<<~SQL, scope + [draft_id, operation_id]).to_a
-        SELECT operation_id::text, detail->>'outcome' AS outcome, detail->>'version' AS version
+        SELECT operation_id::text, CASE WHEN detail IS NULL THEN 'expired' ELSE detail->>'outcome' END AS outcome,
+          COALESCE(detail->>'version',detail->>'current_version') AS version
         FROM app_drafts_private.operations
         WHERE organization_id=$1 AND mailbox_id=$2 AND actor_id=$3 AND draft_id=$4 AND operation_id=$5
       SQL
