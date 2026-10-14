@@ -137,6 +137,9 @@ services:
       GOTRUE_JWT_AUD: authenticated
       GOTRUE_JWT_DEFAULT_GROUP_NAME: authenticated
       GOTRUE_JWT_EXP: "3600"
+      # AIDEV-NOTE: Approved absolute lifetime; independent inactivity and low-AAL limits stay absent.
+      GOTRUE_SESSIONS_TIMEBOX: "12h"
+      GOTRUE_SESSIONS_SINGLE_PER_USER: "false"
       GOTRUE_JWT_SECRET: ${BE02_FIXTURE_SIGNING_SECRET:?}
       GOTRUE_JWT_ISSUER: http://auth:9999
       GOTRUE_EXTERNAL_EMAIL_ENABLED: "true"

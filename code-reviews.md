@@ -520,3 +520,13 @@ Root accepted bbf23cc8a6a18fa37b81bd6501937f1962f5398e. ADV802 functional and AD
 ## INT401 R11 source integration
 
 ADV804 functional and ADV805 dedicated design: each210 unique source LOC; packets139/195,334 contextual aggregate with nonadditive overlap; 0 defects,0/KLOC. Exact Mira test blob b31bce3b96edc8cdf56d72e050b14407288d9d37 preserved. ADV801 unchanged historical map is bounded documentation acceptance only. Only SCN-DRAFT-008-F2 removed; prior removals preserved. No production/shared harness changes. Runtime NOT_RUN; F2 OPEN; no application tests/builds performed. See current handoff for proof limits.
+
+## INT401 R12 imported proofs and new setup repairs
+
+ADV811 functional: 0 defects /334 LOC including docs; ADV812 design: 0/356 including docs, 319 source/context LOC, overlapping coverage nonadditive. ADV816/817 each 0/400 LOC in two bounded packets, source accepted only. ADV813 identified one LOW source-reference defect (1/391, 2.56/KLOC); ADV814 acknowledged the same defect with corrected coverage379 LOC (2.64/KLOC), not a second issue. The raw immutable Auth reference correction is appended to the owned ADV806 documentation without rewriting its original receipt. Imported proof runtime NOT_RUN.
+
+New runner ordering/restoration, baseline Auth configuration, opt-in policy wiring and Python regressions are source accepted by ADV821/822; the original two LOW findings remain recorded below. All tests authored here are unexecuted; Soren alone runs disposable Docker jobs. Existing immutable3bf GUI evidence remains independent.
+
+### INT401 R12 repair review closure
+
+ADV821 dedicated design: 0 defects/344 LOC on prior actual source and 0/123 LOC on added actual phase regression/context; overlapping coverage is nonadditive. ADV822 functional initially found 2 LOW defects/332 LOC (6.02/KLOC): missing main-phase regression and stale coupled overlay comment. Actual phase regression now covers GUI-before-HTTP and failure barriers; overlay comment and committed-LF digest pin corrected together. Final two-line correction accepted with zero new defects; all new runtime NOT_RUN. Imported accepted proof bytes unchanged. R12 supervisor core four flows/16 screenshots do not establish whole GUI acceptance: isolated conflict/revocation failed with exceptions not retained, investigation pending.

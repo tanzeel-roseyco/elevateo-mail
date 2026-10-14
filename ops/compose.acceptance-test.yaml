@@ -1,4 +1,4 @@
-# AIDEV-NOTE: Applied only after BE02 HTTP/worker checks; all lanes reuse that isolated database and Auth.
+# AIDEV-NOTE: GUI seed precedes HTTP fixtures; restore base Auth/API/worker configuration before HTTP checks.
 x-browser: &browser
   pull_policy: never
   # AIDEV-NOTE: Private binds stay mode 0700/0600; only seed/browser use the recorded host UID/GID.

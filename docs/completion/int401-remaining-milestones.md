@@ -4,8 +4,8 @@ This checklist consolidates existing plans; it adds no implementation scope. Cur
 
 ## Local application acceptance
 
-- [ ] Preserve final R9 c8 proof: backend390/5792, authenticated HTTP/worker and frontend624/all eight gates PASS. Compilation repair is integrated; Soren R10 runs immutable c3. Await its receipt; do not repeat unchanged gates without an affected-source reason or new failure.
-- [ ] Obtain actual browser compilation and four-flow GUI/screenshots through Soren, then execute accepted controlled scenarios. New uncertain-reload source is NOT_RUN; F2 memory-only loss remains OPEN without durable local recovery. Prior units do not satisfy visual acceptance.
+- [ ] Preserve original R9 c8 backend390/5792 and frontend624/all eight gates PASS. R10 authenticated HTTP/worker PASS and seed FAIL remain recorded; R11 proves the fresh-Auth ordering defect. Validate the new reviewed runner restoration and affected proof jobs under Soren's sole disposable lease.
+- [ ] Obtain immutable R12 3bf core GUI receipt and manual visual review: supervisor reports four core cases/16 screenshots. Execute newly imported proof sources only after root review/GO; none inherits runtime PASS. F2 memory-only loss remains OPEN.
 - [ ] Complete BE02 race/failure identities, tenant/session invalidation, version conflict/lost ACK, required identity/race/draft/collaboration/search evidence under the [BE02 gate disposition](be02-gate-disposition.md) and [test expansion plan](test-expansion-plan.md). Keep unavailable identities explicit; observer stays OFF in the current GUI candidate.
 - [ ] Demonstrate F2 behavior under accepted decisions 85-91: server durability and in-page retention are required; unsaved reload persistence is not required. Record the memory-only limitation explicitly.
 - [ ] Root accepts BE02 before opening [BE03](be03-implementation-brief.md): reviewed human approval, immutable send intent, bounded worker/lease/cancellation behavior and deterministic simulated failures. BE03 remains closed; simulation is not real delivery.

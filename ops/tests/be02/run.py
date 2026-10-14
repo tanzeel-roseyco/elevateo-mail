@@ -18,6 +18,7 @@ import uuid
 from cleanup import cleanup
 from docker_task import Task
 from acceptance_runtime import Acceptance, add_arguments
+from adv808_auth_attestation import AUTH_PIN, attest_with_controls
 
 
 def source_hashes(root: Path, acceptance: bool = False) -> dict[str, str]:
@@ -81,13 +82,31 @@ def finalize(task: Task, acceptance: bool, armed: bool, original: dict[str, str]
     return status, failure, clean
 
 
+def acceptance_before_http(task: Task, acceptance: Acceptance) -> None:
+    # AIDEV-NOTE: Seed requires empty Auth; restore base origins before unchanged authenticated HTTP gates.
+    base_files = list(task.compose_files)
+    base_env = task.env_file.read_bytes()
+    acceptance.run()
+    task.compose_files[:] = base_files
+    task.env_file.write_bytes(base_env)
+    task.env_file.chmod(0o600)
+    task.compose("base-restore-validate", ["config", "--quiet"])
+    task.compose("base-restore-services", ["up", "-d", "--force-recreate", "--wait",
+                 "--wait-timeout", "120", "auth", "api", "worker"], 160)
+    task.runtime_credentials()
+    task.wait_http()
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--context", required=True, help="Explicit local Docker context")
     parser.add_argument("--expect-host", required=True, help="Exact hostname -s of reviewed fleet host")
     parser.add_argument("--server-image", help="Optional previously reviewed immutable sha256 image ID")
+    parser.add_argument("--adv808-auth-policy", action="store_true", help="Separate disposable Auth policy proof")
     add_arguments(parser)
     args = parser.parse_args()
+    if args.adv808_auth_policy and args.acceptance:
+        parser.error("ADV808 is a separate job; preserve the GUI acceptance queue")
     if args.acceptance_diagnostic and not args.acceptance:
         parser.error("diagnostic requires acceptance mode")
     if sys.platform != "linux" or socket.gethostname().split(".")[0] != args.expect_host:
@@ -107,6 +126,8 @@ def main() -> int:
               "WORKER_DB_PASSWORD", "SECRET_KEY_BASE", "BE02_FIXTURE_SIGNING_SECRET")}
     values["ELEVATEO_SESSION_KEY_BASE64"] = base64.b64encode(secrets.token_bytes(32)).decode("ascii")
     task = Task(root, evidence, project, args.context, values)
+    if args.adv808_auth_policy:
+        task.compose_files.append(root / "ops/tests/be02/adv808_auth_profile.yaml")
     task.image = args.server_image or task.image
     env = {**values, "BE02_SOURCE": str(root), "BE02_PROJECT": project, "BE02_SERVER_IMAGE": task.image}
     task.env_file.write_text("".join(f"{key}={value}\n" for key, value in env.items()), encoding="utf-8")
@@ -157,6 +178,12 @@ def main() -> int:
         task.compose("privilege-guards", ["run", "--rm", "--no-deps", "guards"], 120)
         task.compose("bootstrap", ["run", "--rm", "--no-deps", "bootstrap", "-f", "/ops/bootstrap.sql"], 45)
         task.compose("auth-start", ["up", "-d", "--wait", "--wait-timeout", "120", "auth"], 140)
+        if args.adv808_auth_policy:
+            owned = [item for item in task.project_containers()
+                     if item["Config"]["Labels"].get("com.docker.compose.service") == "auth"]
+            if len(owned) != 1:
+                raise RuntimeError("ADV808 requires exactly one owned Auth container")
+            task.write("adv808-auth-profile.json", attest_with_controls(owned[0], task.inspect("image", [AUTH_PIN])[0], project))
         # AIDEV-NOTE: This phase validates actual Auth schema/types before granting exactly four columns.
         task.compose("auth-grants", ["run", "--rm", "--no-deps", "bootstrap", "-f", "/ops/bootstrap-auth-grants.sql"], 45)
         # AIDEV-NOTE: Probe real Auth catalog/locking after grants, before Rails creates application objects.
@@ -179,6 +206,9 @@ def main() -> int:
         else:
             print("Running isolated Minitest suites and Steep", flush=True)
             task.compose("ruby-suites", ["run", "--rm", "--no-deps", "test"], 480)
+        if acceptance:
+            print("Running selected real-app acceptance lanes before HTTP fixtures", flush=True)
+            acceptance_before_http(task, acceptance)
         task.compose("api-start", ["up", "-d", "api"], 30)
         task.runtime_credentials()
         task.wait_http()
@@ -190,10 +220,12 @@ def main() -> int:
         if not args.acceptance_diagnostic:
             task.compose("worker-drain", ["run", "--rm", "--no-deps", "fixture", "bundle", "exec", "ruby",
                                          "/workspace/ops/tests/be02/worker_check.rb"], 45)
-        # AIDEV-NOTE: Base HTTP fixtures require api:3000; switch origin only after their final worker assertion.
-        if acceptance:
-            print("Running selected real-app acceptance lanes", flush=True)
-            acceptance.run()
+        if args.adv808_auth_policy:
+            task.compose("adv808-auth-policy", ["run", "--rm", "--no-deps", "fixture", "bundle", "exec", "ruby",
+                         "/workspace/ops/tests/be02/adv808_auth_policy.rb"], 240)
+        if not args.acceptance_diagnostic:
+            task.compose("adv806-mailpit-entry", ["run", "--rm", "--no-deps", "fixture", "bundle", "exec", "ruby",
+                         "/workspace/ops/tests/be02/adv806_mailpit_entry_test.rb"], 180)
         if source_hashes(root, args.acceptance) != original:
             raise RuntimeError("source changed during execution; evidence cannot attest one snapshot")
         status = "DIAGNOSTIC_COMPLETED" if args.acceptance_diagnostic else "PASSED"

@@ -1,0 +1,120 @@
+{
+  "task": "OFF403 ADV807",
+  "base": "c3e69f2434753d2d8ea70133c56f03cee4feea3e",
+  "incoming_bundle_sha256": "d2de3e3df037d88e6e1bf30fae09778314a749b2731a9414d9086fc9d17b8f2a",
+  "incoming_prerequisites": [
+    "c8ffa46f71a1a10ce4749b65dfd1edf7ccaf7058",
+    "94d32db7fa6d626be371361ec01d055a5f497dbb"
+  ],
+  "runtime": "NOT_RUN",
+  "independent_review": "PENDING",
+  "owned_files": [
+    {
+      "path": "apps/server/test/be_02/adv807_refresh_process_test.rb",
+      "sha256": "d6bc551a3e496455e13acd162002851b2946dc126cc4821c08f93dea69f0d76c",
+      "git_blob": "311368f4d4198e7a0c3559ca798f179ede212411",
+      "lines": 180
+    },
+    {
+      "path": "apps/server/test/be_02/adv807_refresh_process_child.rb",
+      "sha256": "248fe6d155cb990fda3866a25f5e30824b14800d77ad16f94df04333dec6c1b0",
+      "git_blob": "87a666d827b6f08f118eb709b6acadc87720b5c3",
+      "lines": 48
+    },
+    {
+      "path": "docs/completion/rowan-adv807/README.md",
+      "sha256": "ceedd6259048ff1ac17a36961a8458848ebdf4f00c9468819a5d329669307308",
+      "git_blob": "5be103086e8831713b258374be33f4660160bb81",
+      "lines": 5
+    },
+    {
+      "path": "docs/completion/rowan-adv807/code-reviews.md",
+      "sha256": "799d72360e05c7a29aa9e64194197332ee97265073603d0ea52ea0b81bbe3784",
+      "git_blob": "13745727cdc5146f283073317ef852225d13e718",
+      "lines": 7
+    },
+    {
+      "path": "docs/completion/rowan-adv807/documentation.md",
+      "sha256": "ceedd6259048ff1ac17a36961a8458848ebdf4f00c9468819a5d329669307308",
+      "git_blob": "5be103086e8831713b258374be33f4660160bb81",
+      "lines": 5
+    },
+    {
+      "path": "docs/completion/rowan-adv807/handoff.md",
+      "sha256": "53eb24965a7feee8520c91ea2e90c77c941fea2a93f2dbc6fea7273b2164fcc8",
+      "git_blob": "433cbe0c48cdf167b53931f5c85ec5e1f13291cf",
+      "lines": 15
+    },
+    {
+      "path": "docs/completion/rowan-adv807/state.md",
+      "sha256": "ceedd6259048ff1ac17a36961a8458848ebdf4f00c9468819a5d329669307308",
+      "git_blob": "5be103086e8831713b258374be33f4660160bb81",
+      "lines": 5
+    }
+  ],
+  "unchanged_context": [
+    {
+      "path": "apps/server/db/be02/refresh.sql",
+      "sha256": "74355cb47301123afef7b9d9e3981c4a71d1d983fdb7848e9db3dcaafea60ff0",
+      "git_blob": "f6a9dd3e21630fa56fc01b0094373bd63d1c5176",
+      "lines": 101
+    },
+    {
+      "path": "apps/server/db/be02/revocation.sql",
+      "sha256": "a53944984aa6b62ff7ce724947f935959d1c9334c08bc8dd451551f8102b8065",
+      "git_blob": "f592826e488ba15464c77a0ae46bb533587cd1b5",
+      "lines": 92
+    },
+    {
+      "path": "apps/server/lib/elevateo/session_store.rb",
+      "sha256": "0a5f005a868d75370f9c6b8e82948a652849af964bfda4d8d9d756508fd3185c",
+      "git_blob": "e36c2cc3548dbdc1970a982f931d0d511be1b31c",
+      "lines": 79
+    },
+    {
+      "path": "apps/server/test/be_02/database_test_helper.rb",
+      "sha256": "5b475ba4a638bef718edd2da4126c8e186eb6709f747ed083e80de2f2d6f3a9a",
+      "git_blob": "a6d017d5db5b9da351ef8ce06c6d9a0159ed2b47",
+      "lines": 199
+    },
+    {
+      "path": "ops/tests/be02/test-suites.sh",
+      "sha256": "0ca742e604204566315d293cfc61c102ab793df7b2886529ddcbd7541cb17557",
+      "git_blob": "3bfccc2436e4cbd5985fd55f66bcc7e3d6cd9b84",
+      "lines": 26
+    }
+  ],
+  "review_packets": {
+    "A": {
+      "path": "apps/server/test/be_02/adv807_refresh_process_test.rb",
+      "lines": [
+        1,
+        180
+      ]
+    },
+    "B": {
+      "path": "apps/server/test/be_02/adv807_refresh_process_child.rb",
+      "lines": [
+        1,
+        48
+      ]
+    },
+    "context_ranges": {
+      "apps/server/db/be02/refresh.sql": [
+        1,
+        25
+      ],
+      "apps/server/lib/elevateo/session_store.rb": [
+        44,
+        55
+      ],
+      "apps/server/test/be_02/database_test_helper.rb": [
+        1,
+        54
+      ]
+    },
+    "functional_assignment_lines": 319,
+    "design_assignment_lines_including_owned_markdown": 356
+  },
+  "identity": "Requested gpt-6.1-sol LOW/Fast/YOLO; effective deployment/billing unverified"
+}

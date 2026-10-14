@@ -1,0 +1,10 @@
+# AIDEV-NOTE: Proposed overlay for a NEW disposable BE02 job only; no live/test persistent stack changes.
+services:
+  auth:
+    environment:
+      GOTRUE_SESSIONS_TIMEBOX: 12h
+      GOTRUE_SESSIONS_SINGLE_PER_USER: "false"
+      # Inactivity/allow-low-AAL duration keys MUST be absent, not empty or zero (pinned parser/validation).
+  fixture:
+    environment:
+      ADV808_DISPOSABLE: "1"

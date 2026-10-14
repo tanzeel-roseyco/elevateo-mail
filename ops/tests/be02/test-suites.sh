@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-# AIDEV-NOTE: Include request suites as well as BE02 units; separate processes prevent controller constant leaks.
+# AIDEV-NOTE: Separate suite processes prevent controller leaks; ADV807 also proves child-process behavior.
 set -euo pipefail
 shopt -s nullglob
-for required in session_database auth_entry auth_client auth_revocations session_lifecycle mailbox_reads thread_database thread_reads; do
+for required in session_database auth_entry auth_client auth_revocations session_lifecycle mailbox_reads thread_database thread_reads adv807_refresh_process; do
   [[ -f "test/be_02/${required}_test.rb" ]] || { echo "Missing required suite: ${required}"; exit 1; }
 done
 [[ -f test/requests/drafts_test.rb ]] || { echo 'Missing required draft request suite'; exit 1; }
