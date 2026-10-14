@@ -106,8 +106,9 @@ class CreateInboxAttachments < ActiveRecord::Migration[8.1]
         ON CONFLICT (source_account_id,source_uidvalidity,source_uid,source_ordinal)
           WHERE source_account_id IS NOT NULL DO NOTHING;
         IF FOUND THEN RETURN p_id; END IF;
+        -- AIDEV-NOTE: Immutable binding lookup needs SELECT, not UPDATE RLS, after a terminal scan verdict.
         SELECT * INTO existing FROM app.inbox_attachments a WHERE a.source_account_id=p_account
-          AND a.source_uidvalidity=p_epoch AND a.source_uid=p_uid AND a.source_ordinal=p_ordinal FOR UPDATE;
+          AND a.source_uidvalidity=p_epoch AND a.source_uid=p_uid AND a.source_ordinal=p_ordinal;
         IF NOT FOUND OR existing.organization_id IS DISTINCT FROM p_org OR existing.mailbox_id IS DISTINCT FROM p_box OR
           existing.thread_id IS DISTINCT FROM p_thread OR existing.message_id IS DISTINCT FROM p_message OR
           existing.storage_key IS DISTINCT FROM p_key OR existing.sha256 IS DISTINCT FROM p_sha OR

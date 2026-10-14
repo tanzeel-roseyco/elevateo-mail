@@ -1,0 +1,9 @@
+# ATT823 ADV099 terminal replay repair
+
+Source parent: `a4974de92984e246dd2af09334a57f548dda7f77`. Exact repair commit SHA is recorded in shared `control/nadia-outbox.md` after commit. This is Nadia's implementation and author inspection, not independent re-review or runtime evidence.
+
+Ada ADV099 statically reviewed migration 00015 lines 1–180 and `test/attachments/database_test.rb` lines 1–106: 286 unique versioned LOC, one confirmed defect, 3.50 defects per 1,000 LOC. The `SELECT FOR UPDATE` in the inbound binder required owner UPDATE RLS, hiding clean, malware and rejected rows from an identical replay. Her full report is `advisors/ada-adv099-attachment-sql.md` in the shared completion directory. Vera ADV098 reviewed 350 scanner LOC with zero findings; neither result establishes runtime behavior.
+
+The migration now compares immutable source tuple fields with ordinary `SELECT` after `INSERT ... ON CONFLICT DO NOTHING`, without broadening the scan UPDATE policy. In READ COMMITTED the second statement can see a completed conflicting insert; actual Corin caller transaction isolation and parent deletion must be checked in integration. Existing simultaneous same-tuple and changed-digest tests remain. New disposable actual-role database cases replay clean, malware and rejected imports, requiring canonical ID and unchanged verdict; separate `has_column_privilege` checks for API and app-read plus actual API SELECT attempts require private `storage_key` and `sha256` denial. This test wrapper models Corin's definer entry and does not prove his production caller.
+
+No host test, Docker build, PostgreSQL fixture or ClamAV process was run by Nadia. Soren's exact disposable fleet commands and cleanup conditions are in `docs/completion/nadia-attachments-review-request.md`. Route and byte gateway remain inactive pending Sabine/Cassian integration and current-authority runtime proof. No live mail, credential, DNS, production or paid operation occurred.
