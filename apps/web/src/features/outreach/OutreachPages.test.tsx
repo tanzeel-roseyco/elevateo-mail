@@ -1,6 +1,7 @@
 import { fireEvent, render, screen } from '@testing-library/react'
 import { MemoryRouter, Route, Routes } from 'react-router'
 import { describe, expect, it, vi } from 'vitest'
+import { GatewayError } from '@/data/errors'
 import {
   OutreachCampaignCreatePage, OutreachCampaignDetailPage, OutreachCampaignLeadsPage,
   OutreachCampaignsPage,
@@ -88,5 +89,13 @@ describe('Outreach routed pages', () => {
   it('shows unavailable without an adapter and disables draft creation', () => {
     view('/outreach/campaigns/new')
     expect((screen.getByRole('button', { name: 'Save draft' }) as HTMLButtonElement).disabled).toBe(true)
+  })
+  it('keeps a definitive validation rejection editable', async () => {
+    const g = gateway({ createCampaign: vi.fn(async () => { throw new GatewayError('api', 'request_invalid', 'name rejected', { status: 400 }) }) })
+    view('/outreach/campaigns/new', g)
+    fireEvent.change(screen.getByLabelText('Campaign name'), { target: { value: 'Pilot' } })
+    fireEvent.click(screen.getByRole('button', { name: 'Save draft' }))
+    expect(await screen.findByRole('alert')).toHaveProperty('textContent', expect.stringMatching(/rejected/))
+    expect((screen.getByRole('button', { name: 'Save draft' }) as HTMLButtonElement).disabled).toBe(false)
   })
 })

@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, type FormEvent, type ReactNode, type Synth
 import { Link, useNavigate, useParams } from 'react-router'
 import { z } from 'zod'
 import type { CsrfProof, ReadContext } from '@/data/gateway'
+import { GatewayError, isApiError, isUncertainWriteOutcome } from '@/data/errors'
 import { Button } from '@/ui/Button'
 import { Field, TextInput } from '@/ui/Field'
 import {
@@ -77,6 +78,15 @@ function Page({ title, children }: { title: string; children: ReactNode }) {
   </section>
 }
 function ActionError({ message }: { message: string | null }) { return message && <p role="alert">{message}</p> }
+function writeFailure(error: unknown): { message: string; lock: boolean } {
+  if (isApiError(error, 'unauthenticated') || isApiError(error, 'context_changed') || isApiError(error, 'not_available')) {
+    return { message: 'Access changed or this resource is unavailable. Leave this page and sign in or reopen the campaign.', lock: true }
+  }
+  if (isUncertainWriteOutcome(error) || (error instanceof GatewayError && error.kind === 'transport' && error.code === 'malformed')) {
+    return { message: 'Change was not confirmed. Check the saved resource before trying again.', lock: true }
+  }
+  return { message: 'The server rejected this change. Review the fields and try again.', lock: false }
+}
 const scopeKey = ({ context }: OutreachPageProps) => `${context?.contextId ?? ''}:${context?.authorizationVersion ?? ''}`
 
 export function OutreachCampaignsPage(props: OutreachPageProps) {
@@ -112,8 +122,8 @@ function CampaignCreate({ gateway, context, proof }: OutreachPageProps) {
     try {
       const result = campaignSchema.parse(await gateway.createCampaign(context, proof, input.data, controller.signal))
       if (!controller.signal.aborted) navigate(`/outreach/campaigns/${result.id}`)
-    } catch {
-      if (!controller.signal.aborted) { setError('Draft creation was not confirmed. Check the campaign list before retrying.'); setUncertain(true) }
+    } catch (failure) {
+      if (!controller.signal.aborted) { const outcome = writeFailure(failure); setError(outcome.message); setUncertain(outcome.lock) }
     } finally { if (!controller.signal.aborted) setBusy(false) }
   }
   return <Page title="Create campaign"><form onSubmit={(event) => { void submit(event) }} className="space-y-3">
@@ -149,7 +159,7 @@ function CampaignDetail({ campaignId, ...props }: OutreachPageProps & { campaign
       const result = campaignSchema.parse(await props.gateway.updateCampaign(props.context, props.proof, campaignId, input.data, controller.signal))
       if (result.id !== campaignId || result.status !== status || result.name !== input.data.name) throw new Error('Campaign receipt mismatch')
       if (!controller.signal.aborted) setRevision((value) => value + 1)
-    } catch { if (!controller.signal.aborted) { setError('Change was not confirmed. Reload the campaign before retrying.'); setUncertain(true) } }
+    } catch (failure) { if (!controller.signal.aborted) { const outcome = writeFailure(failure); setError(outcome.message); setUncertain(outcome.lock) } }
     finally { if (!controller.signal.aborted) setBusy(false) }
   }
   return <Page title="Campaign detail"><Content state={state}>{(campaign) => <>
@@ -208,7 +218,7 @@ function CampaignLeads({ campaignId, ...props }: OutreachPageProps & { campaignI
       if (editId && saved.id !== editId) throw new Error('Lead identity mismatch')
       if (saved.email !== input.data.email) throw new Error('Lead receipt mismatch')
       if (!controller.signal.aborted) { setEmail(''); setEditId(null); setRevision((value) => value + 1) }
-    } catch { if (!controller.signal.aborted) { setError('Lead change was not confirmed. Reload before retrying.'); setUncertain(true) } }
+    } catch (failure) { if (!controller.signal.aborted) { const outcome = writeFailure(failure); setError(outcome.message); setUncertain(outcome.lock) } }
     finally { if (!controller.signal.aborted) setBusy(false) }
   }
   return <Page title="Campaign leads"><Content state={state} empty={(page) => page.items.length === 0}>{(page) => <ul className="space-y-2">{page.items.map((lead: Lead) =>
