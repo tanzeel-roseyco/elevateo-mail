@@ -500,3 +500,5 @@ Source reviews: Mira R7 ADV765271 physical0 defects; ADV766282 unique1 LOW(3.55/
 
 ## Rowan R6 source acceptance integrated
 Root accepted exact Rowan R6 b813210173acea67e7333fffa05e146f237193ea: isolated read-controller fixture loads Rails and scopes/restores dispatch logger; production/config/RBS unchanged. ADV774 functional297 physical +13doc context0 defects; ADV775 design252 unique0 defects(0/KLOC), overlap nonadditive. Exact source runtime NOT_RUN. This replaces pending source status only; actual8a full-suite failure remains historical evidence. Soren runs targeted fixture/Auth/Steep/lint, frontend eight gates, mandatory fullbackend HTTP/worker, then four-flow GUI/screenshots; observer OFF.
+
+Mira R10 ADV782: 38 changed source lines (37 additions/1 removal), fixture-only repair and one new regression. Independent source and dedicated design review PENDING; reviewed defects/KLOC unmeasured, no zero-defect claim. Packets A/B including bounded context 152/139 physical LOC, 291 aggregate (overlap nonadditive); exact ranges in docs/completion/fe405-r10-raw-reversion.md. R9 accepted ADV779289LOC0 and ADV780186LOC0 preserved separately; runtime NOT_RUN.
