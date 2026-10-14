@@ -1,5 +1,6 @@
 import { describe, expect, it, vi } from 'vitest'
 import { createV2OutreachGateway } from './v2OutreachGateway'
+import type { OutreachGateway } from '@/features/outreach/contract'
 
 const id = '00000000-0000-4000-8000-000000000001'
 const context = { contextId: 'a'.repeat(16), authorizationVersion: 'b'.repeat(16) }
@@ -8,7 +9,8 @@ const response = (value: unknown) => new Response(JSON.stringify(value), { heade
 describe('isolated V2 outreach gateway', () => {
   it('reads only bounded tenant campaign metadata', async () => {
     const fetchImpl = vi.fn(async (_input: string, _init: RequestInit) => response({ items: [{ id, name: 'Pilot', status: 'draft', version: 1 }], next_cursor: null }))
-    const page = await createV2OutreachGateway(fetchImpl).listCampaigns(context, { limit: 10 }, new AbortController().signal)
+    const gateway: OutreachGateway = createV2OutreachGateway(fetchImpl)
+    const page = await gateway.listCampaigns(context, { limit: 10 }, new AbortController().signal)
     expect(page.items[0]?.id).toBe(id)
     expect(fetchImpl).toHaveBeenCalledTimes(1)
     expect(fetchImpl.mock.calls[0]?.[0]).toBe('/v2/outreach/campaigns?limit=10')
