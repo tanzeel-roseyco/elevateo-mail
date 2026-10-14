@@ -14,7 +14,7 @@ DO $$ BEGIN
 END $$;
 
 SELECT format('CREATE ROLE %I NOLOGIN NOINHERIT', r)
-  FROM unnest(ARRAY['elevateo_owner', 'elevateo_app_read', 'elevateo_session_owner']) AS r
+  FROM unnest(ARRAY['elevateo_owner', 'elevateo_app_read', 'elevateo_session_owner', 'elevateo_send_owner', 'elevateo_send_owner']) AS r
  WHERE NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = r) \gexec
 SELECT format('CREATE ROLE %I LOGIN NOINHERIT', r)
   FROM unnest(ARRAY['elevateo_migrator', 'elevateo_api', 'elevateo_worker']) AS r
@@ -24,7 +24,7 @@ SELECT format('CREATE ROLE %I LOGIN NOINHERIT', r)
 DO $$ BEGIN
   IF EXISTS (
     SELECT 1 FROM pg_roles WHERE rolname IN
-      ('elevateo_owner', 'elevateo_app_read', 'elevateo_session_owner',
+      ('elevateo_owner', 'elevateo_app_read', 'elevateo_session_owner', 'elevateo_send_owner',
        'elevateo_migrator', 'elevateo_api', 'elevateo_worker')
       AND (rolsuper OR rolcreatedb OR rolcreaterole OR rolreplication OR rolbypassrls
         OR (rolname <> 'elevateo_api' AND rolinherit)
@@ -33,14 +33,15 @@ DO $$ BEGIN
   IF EXISTS (
     WITH application_roles AS (
       SELECT oid FROM pg_roles WHERE rolname IN ('elevateo_owner', 'elevateo_app_read',
-        'elevateo_session_owner', 'elevateo_migrator', 'elevateo_api', 'elevateo_worker')
+        'elevateo_session_owner', 'elevateo_send_owner', 'elevateo_migrator', 'elevateo_api', 'elevateo_worker')
     ), permitted(role_name, member_name, grantor_name, admin_opt, inherit_opt, set_opt) AS (
       VALUES
         ('elevateo_app_read', 'elevateo_api', 'supabase_admin', false, true, true),
         ('elevateo_app_read', 'elevateo_api', 'elevateo_owner', false, true, false),
         ('elevateo_app_read', 'elevateo_owner', 'supabase_admin', true, false, false),
         ('elevateo_owner', 'elevateo_migrator', 'supabase_admin', false, false, true),
-        ('elevateo_session_owner', 'elevateo_owner', 'supabase_admin', false, false, true)
+        ('elevateo_session_owner', 'elevateo_owner', 'supabase_admin', false, false, true),
+        ('elevateo_send_owner', 'elevateo_owner', 'supabase_admin', false, false, true)
     )
     SELECT 1 FROM pg_auth_members AS membership
     WHERE (roleid IN (TABLE application_roles) OR member IN (TABLE application_roles)
@@ -126,7 +127,7 @@ END $$;
 DO $$ BEGIN
   IF EXISTS (
     SELECT 1 FROM unnest(ARRAY['elevateo_api', 'elevateo_worker']) AS runtime_role
-    CROSS JOIN unnest(ARRAY['elevateo_owner', 'elevateo_migrator', 'elevateo_session_owner']) AS owner_role
+    CROSS JOIN unnest(ARRAY['elevateo_owner', 'elevateo_migrator', 'elevateo_session_owner', 'elevateo_send_owner']) AS owner_role
     WHERE pg_has_role(runtime_role, owner_role, 'SET, USAGE, MEMBER WITH ADMIN OPTION')
   ) OR EXISTS (
     SELECT 1 FROM unnest(ARRAY['elevateo_api', 'elevateo_worker']) AS runtime_role

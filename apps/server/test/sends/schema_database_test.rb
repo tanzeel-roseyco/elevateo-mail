@@ -1,0 +1,71 @@
+# frozen_string_literal: true
+
+require_relative "approval_database_helper"
+
+class SendSchemaDatabaseTest < SendDatabaseTestCase
+  def test_runtime_roles_cannot_read_tables_or_execute_private_bridges
+    %w[elevateo_api elevateo_worker elevateo_app_read].each do |role|
+      row = @admin.exec_params(<<~SQL, [role]).first
+        SELECT has_schema_privilege($1,'app_send_private','USAGE,CREATE') AS schema_access,
+          pg_has_role($1,'elevateo_send_owner','SET,USAGE,MEMBER') AS owner_access,
+          has_function_privilege($1,'app_send_private.read_draft_binding(uuid,uuid)','EXECUTE') AS bridge_access,
+          has_table_privilege($1,'app_send_private.intents','SELECT,INSERT,UPDATE,DELETE,TRUNCATE') AS table_access
+      SQL
+      assert_equal({ "schema_access" => "f", "owner_access" => "f", "bridge_access" => "f", "table_access" => "f" }, row)
+    end
+    assert_raises(PG::InsufficientPrivilege) { @api.exec("SELECT * FROM app_send_private.intents") }
+    assert_raises(PG::InsufficientPrivilege) { @worker.exec_params("SELECT app.approve_draft_send($1,$2,$3,$4,1,$5,NULL,$6)", [@digest,@box,@draft,@operation,@review_digest,@epoch]) }
+    assert_equal [0, 0, 0, 0], counts
+  end
+
+  def test_all_private_tables_force_owner_only_rls
+    rows = @admin.exec(<<~SQL).to_a
+      SELECT c.relname,c.relrowsecurity,c.relforcerowsecurity,r.rolname
+        FROM pg_class c JOIN pg_roles r ON r.oid=c.relowner
+        WHERE c.relnamespace='app_send_private'::regnamespace AND c.relkind='r'
+    SQL
+    assert_equal 9, rows.length
+    rows.each do |row|
+      assert_equal "t", row.fetch("relrowsecurity")
+      assert_equal "t", row.fetch("relforcerowsecurity")
+      assert_equal "elevateo_send_owner", row.fetch("rolname")
+    end
+  end
+
+  def test_snapshot_and_approval_audit_are_immutable_and_parent_delete_is_restricted
+    result = approve
+    assert_raises(PG::ObjectNotInPrerequisiteState) do
+      @admin.exec_params("UPDATE app_send_private.intents SET review_digest = repeat('b',64) WHERE send_id = $1", [result.fetch("send_id")])
+    end
+    assert_raises(PG::ObjectNotInPrerequisiteState) { @admin.exec("DELETE FROM app_send_private.audit_events") }
+    assert_raises(PG::ForeignKeyViolation) { @admin.exec_params("DELETE FROM app.drafts WHERE id = $1", [@draft]) }
+    assert_raises(PG::ObjectNotInPrerequisiteState) { @admin.exec_params("UPDATE app.drafts SET state = 'editable' WHERE id = $1", [@draft]) }
+    assert_equal [1, 1, 1, 1], counts
+  end
+
+  def test_deferred_completeness_blocks_partial_history_and_down_refuses_nonempty
+    @admin.exec(<<~SQL)
+      CREATE FUNCTION app_send_private.fixture_skip_job() RETURNS trigger LANGUAGE plpgsql AS $$
+      BEGIN RETURN NULL; END $$;
+      CREATE TRIGGER fixture_skip_job BEFORE INSERT ON app_send_private.jobs
+        FOR EACH ROW EXECUTE FUNCTION app_send_private.fixture_skip_job();
+    SQL
+    assert_raises(PG::CheckViolation) { approve }
+    assert_equal [0, 0, 0, 0], counts
+    @admin.exec("DROP TRIGGER fixture_skip_job ON app_send_private.jobs; DROP FUNCTION app_send_private.fixture_skip_job()")
+    result = approve
+    @admin.exec("BEGIN")
+    @admin.exec_params("DELETE FROM app_send_private.jobs WHERE send_id = $1", [result.fetch("send_id")])
+    assert_raises(PG::CheckViolation) { @admin.exec("COMMIT") }
+    assert_equal [1, 1, 1, 1], counts
+    down = File.read(File.expand_path("../../db/be03_send/down.sql", __dir__))
+    assert_raises(PG::ObjectNotInPrerequisiteState) { @admin.exec("SET ROLE elevateo_send_owner; #{down}") }
+  ensure
+    if @admin
+      @admin.exec("ROLLBACK") if @admin.transaction_status != PG::PQTRANS_IDLE
+      @admin.exec("DROP TRIGGER IF EXISTS fixture_skip_job ON app_send_private.jobs; DROP FUNCTION IF EXISTS app_send_private.fixture_skip_job()")
+    end
+    @admin.exec("RESET ROLE") if @admin
+    @admin.exec("ROLLBACK") if @admin && @admin.transaction_status != PG::PQTRANS_IDLE
+  end
+end
