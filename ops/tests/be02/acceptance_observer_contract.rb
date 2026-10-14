@@ -57,6 +57,14 @@ module Be02Acceptance
       restricted.exec("ROLLBACK")
       restricted.close
       restricted = nil
+      hidden_policy = "#{binding.fetch('role')}_hidden_test"
+      predicate = "id=#{admin.escape_literal(sentinel)}::uuid"
+      admin.exec("CREATE POLICY #{PG::Connection.quote_ident(hidden_policy)} ON app.drafts AS RESTRICTIVE FOR SELECT TO PUBLIC USING (#{predicate})")
+      expect_rejection(RuntimeError, message: "observer_unexpected_restriction") do
+        observer.observe(draft_id: foreign_draft_id, operation_id: nil, nonce: nonce)
+      end
+      admin.exec("DROP POLICY #{PG::Connection.quote_ident(hidden_policy)} ON app.drafts")
+      hidden_policy = nil
       admin.exec("ALTER TABLE app.drafts DISABLE ROW LEVEL SECURITY")
       rls_disabled = true
       expect_rejection(RuntimeError, message: "observer_fence_invalid") do
@@ -72,9 +80,10 @@ module Be02Acceptance
       ObserverRole.drop(admin, binding)
       raise "observer_role_cleanup_failed" unless admin.exec_params("SELECT 1 FROM pg_roles WHERE rolname=$1", [binding.fetch("role")]).ntuples.zero?
       binding = nil
-      { "status" => "observed", "scope" => "observer_role_and_draft_visibility_only", "assertions" => 15 }
+      { "status" => "observed", "scope" => "observer_role_and_draft_visibility_only", "assertions" => 16 }
     ensure
       restricted&.close
+      admin.exec("DROP POLICY IF EXISTS #{PG::Connection.quote_ident(hidden_policy)} ON app.drafts") if hidden_policy
       admin.exec("ALTER TABLE app.drafts ENABLE ROW LEVEL SECURITY") if rls_disabled
       if public_policy
         %w[app.drafts app_drafts_private.operations].each do |table|

@@ -33,6 +33,12 @@ module Be02Acceptance
         raise "observer_fence_invalid" unless row && row.fetch("relrowsecurity") == "t" &&
           row.fetch("relforcerowsecurity") == "t" && row.fetch("owner") == "elevateo_owner" &&
           row.fetch("polpermissive") == "f" && row.fetch("polcmd") == "r" && row.fetch("exact_role") == "t"
+        extra = db.exec_params(<<~SQL, [table, "#{role}_fence", role]).getvalue(0, 0)
+          SELECT count(*) FROM pg_policy p
+          WHERE p.polrelid=$1::regclass AND NOT p.polpermissive AND p.polcmd IN ('r','*') AND p.polname<>$2
+            AND (0::oid=ANY(p.polroles) OR (SELECT oid FROM pg_roles WHERE rolname=$3)=ANY(p.polroles))
+        SQL
+        raise "observer_unexpected_restriction" unless extra == "0"
         [table, row.fetch("predicate")]
       end
       Digest::SHA256.hexdigest(JSON.generate(rows))

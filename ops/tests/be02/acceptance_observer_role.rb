@@ -37,10 +37,11 @@ module Be02Acceptance
           fence = PG::Connection.quote_ident("#{role}_fence")
           db.exec("CREATE POLICY #{fence} ON #{table} AS RESTRICTIVE FOR SELECT TO #{quoted_role} USING (#{predicate})")
         end
+        # AIDEV-NOTE: Final attestation belongs before COMMIT so failure cannot orphan a role unknown to the caller.
+        { "database_oid" => Integer(db.exec("SELECT oid FROM pg_database WHERE datname=current_database()").getvalue(0, 0)),
+          "policy_hash" => Observer.policy_hash(db, role), "role" => role, "nonce" => disposable_nonce, "organization_id" => organization_id,
+          "mailbox_id" => mailbox_id, "actor_id" => actor_id, "sentinel_draft_id" => sentinel_draft_id }
       end
-      { "database_oid" => Integer(db.exec("SELECT oid FROM pg_database WHERE datname=current_database()").getvalue(0, 0)),
-        "policy_hash" => Observer.policy_hash(db, role), "role" => role, "nonce" => disposable_nonce, "organization_id" => organization_id,
-        "mailbox_id" => mailbox_id, "actor_id" => actor_id, "sentinel_draft_id" => sentinel_draft_id }
     end
 
     def self.drop(db, binding)
