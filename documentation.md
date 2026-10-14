@@ -469,3 +469,5 @@ The two outreach access helpers now store the organization's granted business ro
 The private attachment client strict candidate retains the existing Numeric 0–5 second external deadline, converts only the Net::HTTP setter value to Float, and returns the bounded response tuple after the HTTP block closes. Its in-process slow fake is constructed with Net::HTTP's required internal host/port. These changes follow exact 211df76 fleet errors and need successor Steep/unit verification.
 
 The Drain unit test explicitly loads Minitest's mock extension before using `.stub`, removing a focused setup error without changing send worker implementation. Soren's successor unit result is pending.
+
+The frozen V1 send-intent cancellation controller adds only local protected-block type declarations for connection, identity and session, following focused Steep fallbacks. It does not change the route, cancellation state machine or no-live transport gate; current-source Steep remains pending.

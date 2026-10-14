@@ -407,3 +407,5 @@ SEC802 source candidate removes PostgreSQL `CURRENT_ROLE` name collision in outr
 Exact 211df76 focused fleet Steep/unit found six attachment gateway client typing diagnostics and one test fake constructor error. The candidate narrows the optional callback, passes Float to Net::HTTP timeout setters, collects a bounded response tuple after the block, and fixes the fake constructor; successor runtime/review pending.
 
 Elara's test-only Drain `minitest/mock` require addresses an isolated unit setup error; corrected fleet runtime pending, simulated send behavior unchanged.
+
+V1 send-intent cancellation protected-block local type annotations are integrated testable source only; no send semantics or live transport changed. Fleet strict/unit verification pending.

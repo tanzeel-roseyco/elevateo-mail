@@ -464,3 +464,5 @@ Elara's SEC802 candidate renames a PL/pgSQL local variable in both outreach read
 Focused fleet strict/unit checks on 211df76 found Cassian attachment client typing errors and a slow-fake constructor error before its timeout assertion. A scoped client/RBS/test candidate addresses those exact diagnostics without weakening private byte/authorization bounds; Soren's successor fleet rerun and independent review are pending.
 
 An isolated Drain unit harness error on the older focused strict run came from missing `minitest/mock`; Elara's test-only require is now integrated. It does not change send behavior, and the corrected unit awaits Soren's fleet rerun.
+
+Elara's V1 send-intent cancellation controller now annotates protected-block connection, identity and session types for the strict checker; endpoint semantics and no-live default are unchanged. Focused fleet Steep and cancellation units remain pending on this successor.
