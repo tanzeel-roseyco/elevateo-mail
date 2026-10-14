@@ -680,3 +680,7 @@ R25 lint repair: one tooling defect in the unmount cleanup (ref must be captured
 ## FE-806 candidate review request
 
 Changed source `apps/web/src/features/inbox/InboxPage.tsx` (6 added lines) and test (29 added lines) form a bounded packet under 200 lines. Independent functional/adversarial review and dedicated design tradeoff review are requested from root; neither has executed. Confirmed defects: unknown pending review; defect density: not calculated without an actual review. Fleet tests and visual validation are NOT_RUN.
+
+## FE-806 message reply review request
+
+Bounded source packet: `apps/web/src/features/thread/ThreadPage.tsx` (about 28 changed lines), `ThreadPage.test.tsx` (about 75 added lines) and provider wiring in `CollaborationPanels.test.tsx` (3 added lines). Request independent functional/adversarial and separate design tradeoff review from root; no such review is claimed here. Confirmed defects/density remain unmeasured until review. Authored tests and Docker request are not execution evidence.

@@ -3,11 +3,13 @@
 // A read never marks mail read (GET-only contract); BE-02 D adds the explicit read-state control,
 // the assignment panel and immutable notes below the messages, and a reply-as-draft entry (C).
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
-import { Link, useParams, useSearchParams } from 'react-router'
+import { Link, useNavigate, useParams, useSearchParams } from 'react-router'
 import type { Message, ThreadDetailPage } from '@/data/contract'
 import { GatewayError, isApiError } from '@/data/errors'
 import { useMailbox } from '@/app/mailboxes'
 import { useGateway, useSession } from '@/app/session'
+import { draftIntentKey, formatRecipients, useDraftIntent } from '@/app/draftIntent'
+import { edit, newDraftBuffer } from '@/domain/draftOperation'
 import { newId } from '@/lib/ids'
 import { newTraversalBudget, readPage } from '@/lib/readPage'
 import { formatDateTime } from '@/lib/format'
@@ -44,11 +46,13 @@ export function ThreadPage() {
 }
 
 function ConversationReader({ mailboxId, threadId }: { mailboxId: string; threadId: string }) {
+  const navigate = useNavigate()
+  const draftIntent = useDraftIntent()
   const [searchParams] = useSearchParams()
   // Normalized like the inbox: anything but 'unread' is 'all', and 'all' stays out of the URL.
   const filter = searchParams.get('filter') === 'unread' ? 'unread' : 'all'
   const gateway = useGateway()
-  const { scope, context, handleError } = useSession()
+  const { scope, context, handleError, state: sessionState } = useSession()
   const mailbox = useMailbox(mailboxId)
   const [state, setState] = useState<ReaderState>({ status: 'loading' })
   // AIDEV-NOTE: One traversal budget for the whole conversation read; continuations share it and
@@ -59,6 +63,23 @@ function ConversationReader({ mailboxId, threadId }: { mailboxId: string; thread
   // One reply-draft id per opened conversation: the link is stable across renders, and nothing
   // exists on the server until the editor's first explicit save (BE-02 C).
   const replyDraftIdRef = useRef(newId())
+
+  const replyToMessage = (message: Message) => {
+    if (stateRef.current.status !== 'ready' || sessionState.status !== 'ready' || mailbox?.capabilities.compose !== true) return
+    const address = message.sender?.address?.trim()
+    if (!address) return
+    const draftId = newId()
+    const subject = stateRef.current.thread.subject_truncated ? '' : (stateRef.current.thread.subject ?? '')
+    const replySubject = subject === '' ? '' : /^re:\s*/i.test(subject) ? subject : `Re: ${subject}`
+    const content = { subject: Array.from(replySubject).slice(0, 998).join(''), to: [{ display_name: message.sender?.display_name ?? null, address }], body_text: '', reply_to_thread_id: threadId }
+    const buffer = edit(newDraftBuffer(draftId, mailboxId, { subject: '', to: [], body_text: '', reply_to_thread_id: threadId }, 0), content)
+    // AIDEV-NOTE: Keep recipient and subject out of the URL; the editor restores only after an authorized draft read.
+    draftIntent.write(draftIntentKey({ actorId: sessionState.session.actor.id, organizationId: sessionState.session.organization.id, mailboxId, draftId }), { buffer, recipientsText: formatRecipients(content.to) })
+    navigate(`/mailboxes/${mailboxId}/drafts/${draftId}?new=1&reply_to=${threadId}`)
+  }
+
+  const stateRef = useRef(state)
+  stateRef.current = state
 
   const load = useCallback(
     (cursor: string | undefined, append: boolean) => {
@@ -201,6 +222,9 @@ function ConversationReader({ mailboxId, threadId }: { mailboxId: string; thread
                 <pre className="whitespace-pre-wrap break-words font-sans text-sm">{message.body_text}</pre>
                 {/* flex-wrap: both badges together overflow a 390px viewport otherwise (r10 visual QA). */}
                 <footer className="mt-2 flex flex-wrap gap-2">
+                  {mailbox?.capabilities.compose === true && message.sender?.address?.trim() && (
+                    <Button size="sm" onClick={() => replyToMessage(message)}>Reply to this sender as draft</Button>
+                  )}
                   {message.body_truncated && <Badge tone="warn">Message shortened by the server</Badge>}
                   {message.attachment_count > 0 && (
                     <Badge tone="neutral">

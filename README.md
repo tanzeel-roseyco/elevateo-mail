@@ -176,3 +176,7 @@ Cassian manifest reconciliation: contract-lock now seals actual generated client
 ### FE-806 inbox compose entry (candidate)
 
 The inbox now exposes a draft entry only after a successful mailbox read and an explicit compose capability. It opens the existing draft journey; no draft or send is created by the link. Fleet Docker checks and integrated gateway/visual acceptance are pending. See `docs/completion/mira.md`.
+
+### FE-806 message reply candidate
+
+A message-level reply action now opens a new draft with the selected sender, editable `Re:` subject and thread binding, held only in the existing session-scoped intent store until explicit Save. Sender-less and compose-denied messages have no action; shortened subjects are left blank for the writer. Fleet Docker and integrated browser checks are pending. See `docs/completion/mira.md`.

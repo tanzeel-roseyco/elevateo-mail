@@ -10,6 +10,10 @@ import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { Link, MemoryRouter, Route, Routes, useParams } from 'react-router'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { SessionProvider } from '@/app/session'
+import { DraftIntentProvider } from '@/app/draftIntent'
+import { MailboxesProvider } from '@/app/mailboxes'
+import { DraftEditorPage } from '@/features/drafts/DraftEditorPage'
+import { CD_FIXTURE as CD } from '@/data/fixtures/collaborationState'
 import { createFixtureGateway, type FixtureScript } from '@/data/fixtures/fixtureGateway'
 import { GatewayError } from '@/data/errors'
 import type { ThreadDetailPage } from '@/data/contract'
@@ -27,11 +31,14 @@ function renderReader(script: FixtureScript = {}) {
 function renderReaderWith(gateway: MailroomGateway, initialEntry = `/mailboxes/${MB}/threads/${THREAD}`) {
   return render(
     <SessionProvider gateway={gateway}>
+      <DraftIntentProvider>
       <MemoryRouter initialEntries={[initialEntry]}>
         <Routes>
           <Route path="/mailboxes/:mailboxId/threads/:threadId" element={<ThreadPage />} />
+          <Route path="/mailboxes/:mailboxId/drafts/:draftId" element={<DraftEditorPage />} />
         </Routes>
       </MemoryRouter>
+      </DraftIntentProvider>
     </SessionProvider>,
   )
 }
@@ -75,6 +82,69 @@ function pagedGateway(pages: Array<ThreadDetailPage | GatewayError>) {
 }
 
 afterEach(() => vi.restoreAllMocks())
+
+function renderReply(page: ThreadDetailPage, compose = true) {
+  const base = createFixtureGateway()
+  const gateway: MailroomGateway = { ...base, getThread: async () => page }
+  const save = vi.spyOn(gateway, 'saveDraft')
+  render(
+    <SessionProvider gateway={gateway}>
+      <DraftIntentProvider>
+        <MailboxesProvider value={{ status: 'ready', mailboxes: [{ id: CD.mailboxId, display_name: 'Team', display_address: null, capabilities: { read: true, compose, approve_send: false, manage_members: false } }] }}>
+          <MemoryRouter initialEntries={[`/mailboxes/${CD.mailboxId}/threads/${CD.threadId}`]}>
+            <Routes>
+              <Route path="/mailboxes/:mailboxId/threads/:threadId" element={<ThreadPage />} />
+              <Route path="/mailboxes/:mailboxId/drafts/:draftId" element={<DraftEditorPage />} />
+            </Routes>
+          </MemoryRouter>
+        </MailboxesProvider>
+      </DraftIntentProvider>
+    </SessionProvider>,
+  )
+  return save
+}
+
+function replyPage(sender: ThreadDetailPage['messages'][number]['sender'], truncated = false): ThreadDetailPage {
+  return {
+    ...detailPage(['Hello'], null),
+    thread: { id: CD.threadId, mailbox_id: CD.mailboxId, subject: 'Project update', subject_truncated: truncated, unread: false, message_count: 1 },
+    messages: [{ id: '00000000-0000-4000-8000-000000000033', sender, to: [], sent_at: null, body_text: 'Hello', body_truncated: false, attachment_count: 0 }],
+  }
+}
+
+describe('message reply draft', () => {
+  it('prefills the selected sender and subject, then saves only on explicit action', async () => {
+    const save = renderReply(replyPage({ display_name: 'Ada', address: 'ada@example.test' }))
+    fireEvent.click(await screen.findByRole('button', { name: 'Reply to this sender as draft' }))
+    expect(await screen.findByRole('heading', { name: 'New draft' })).toBeTruthy()
+    expect((screen.getByLabelText('To') as HTMLTextAreaElement).value).toBe('Ada <ada@example.test>')
+    expect((screen.getByLabelText('Subject') as HTMLInputElement).value).toBe('Re: Project update')
+    expect(save).not.toHaveBeenCalled()
+    fireEvent.click(screen.getByRole('button', { name: 'Save draft' }))
+    await screen.findByText('Saved version 1')
+    expect(save).toHaveBeenCalledTimes(1)
+    expect(save.mock.calls[0]?.[3]).toMatchObject({ reply_to_thread_id: CD.threadId, subject: 'Re: Project update', to: [{ address: 'ada@example.test' }] })
+  })
+
+  it('does not offer sender reply without a usable address', async () => {
+    renderReply(replyPage({ display_name: 'Unknown', address: null }))
+    await screen.findByText('Hello')
+    expect(screen.queryByRole('button', { name: 'Reply to this sender as draft' })).toBeNull()
+  })
+
+  it('does not offer sender reply when compose is denied', async () => {
+    renderReply(replyPage({ display_name: 'Ada', address: 'ada@example.test' }), false)
+    await screen.findByText('Hello')
+    expect(screen.queryByRole('button', { name: 'Reply to this sender as draft' })).toBeNull()
+  })
+
+  it('does not copy a shortened subject into a new reply', async () => {
+    renderReply(replyPage({ display_name: null, address: 'ada@example.test' }, true))
+    fireEvent.click(await screen.findByRole('button', { name: 'Reply to this sender as draft' }))
+    expect(await screen.findByRole('heading', { name: 'New draft' })).toBeTruthy()
+    expect((screen.getByLabelText('Subject') as HTMLInputElement).value).toBe('')
+  })
+})
 
 describe('plaintext reader', () => {
   it('renders hostile content inertly and performs no network request', async () => {
@@ -184,12 +254,14 @@ describe('cross-navigation stale success (D4)', () => {
     }
     render(
       <SessionProvider gateway={gateway}>
+        <DraftIntentProvider>
         <MemoryRouter initialEntries={[`/mailboxes/${MB}/threads/${THREAD}`]}>
           <Link to={`/mailboxes/${MB}/threads/${THREAD2}`}>go to next thread</Link>
           <Routes>
             <Route path="/mailboxes/:mailboxId/threads/:threadId" element={<ThreadPage />} />
           </Routes>
         </MemoryRouter>
+        </DraftIntentProvider>
       </SessionProvider>,
     )
     await waitFor(() => expect(resolveOld).toBeDefined()) // the old thread's request is pending
@@ -228,6 +300,7 @@ describe('resource ownership (D3)', () => {
   function renderWithProbe(gateway: MailroomGateway, frames: Frame[]) {
     render(
       <SessionProvider gateway={gateway}>
+        <DraftIntentProvider>
         <MemoryRouter initialEntries={[`/mailboxes/${MB}/threads/${THREAD}`]}>
           <Link to={`/mailboxes/${MB}/threads/${THREAD2}`}>go to next thread</Link>
           <Routes>
@@ -242,6 +315,7 @@ describe('resource ownership (D3)', () => {
             />
           </Routes>
         </MemoryRouter>
+        </DraftIntentProvider>
       </SessionProvider>,
     )
   }

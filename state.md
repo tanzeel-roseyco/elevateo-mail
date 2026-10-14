@@ -118,3 +118,7 @@ Cassian manifest reconciliation: contract-lock now seals actual generated client
 ### FE-806 candidate
 
 Inbox compose entry is gated by a successful read and explicit compose capability. The existing plaintext reader, draft/reply and simulated send flow remain the implementation seams. Three bounded component cases are authored; fleet execution and integrated visual acceptance are pending. See `docs/completion/mira.md`.
+
+### FE-806 message reply candidate
+
+Selected-message reply prefill now carries recipient, editable subject and thread binding into a new unsaved draft without putting addresses in the URL. The existing draft operation path performs the first write only on Save. Four regression cases are authored; Docker runtime and integrated visual/HTTP acceptance are pending.

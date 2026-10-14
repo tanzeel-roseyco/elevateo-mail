@@ -6,6 +6,7 @@ import { fireEvent, render, screen, waitFor, within } from '@testing-library/rea
 import { MemoryRouter, Route, Routes } from 'react-router'
 import { describe, expect, it } from 'vitest'
 import { SessionProvider } from '@/app/session'
+import { DraftIntentProvider } from '@/app/draftIntent'
 import type { ThreadNoteInput } from '@/data/contract'
 import { GatewayError } from '@/data/errors'
 import { CD_FIXTURE as CD } from '@/data/fixtures/collaborationState'
@@ -55,11 +56,13 @@ function harness(script: FixtureScript = {}) {
 function renderReader(gateway: MailroomGateway) {
   return render(
     <SessionProvider gateway={gateway}>
+      <DraftIntentProvider>
       <MemoryRouter initialEntries={[`/mailboxes/${CD.mailboxId}/threads/${CD.threadId}`]}>
         <Routes>
           <Route path="/mailboxes/:mailboxId/threads/:threadId" element={<ThreadPage />} />
         </Routes>
       </MemoryRouter>
+      </DraftIntentProvider>
     </SessionProvider>,
   )
 }
