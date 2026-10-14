@@ -1,0 +1,23 @@
+--- a/ops/tests/be02/run.py
++++ b/ops/tests/be02/run.py
+@@ -20,0 +21 @@
++from adv808_auth_attestation import AUTH_PIN, attest_with_controls
+@@ -88,0 +90 @@
++    parser.add_argument("--adv808-auth-policy", action="store_true", help="Separate disposable Auth policy proof")
+@@ -90,0 +93,2 @@
++    if args.adv808_auth_policy and args.acceptance:
++        parser.error("ADV808 is a separate job; preserve the GUI acceptance queue")
+@@ -109,0 +114,2 @@
++    if args.adv808_auth_policy:
++        task.compose_files.append(root / "ops/tests/be02/adv808_auth_profile.yaml")
+@@ -159,0 +166,6 @@
++        if args.adv808_auth_policy:
++            owned = [item for item in task.project_containers()
++                     if item["Config"]["Labels"].get("com.docker.compose.service") == "auth"]
++            if len(owned) != 1:
++                raise RuntimeError("ADV808 requires exactly one owned Auth container")
++            task.write("adv808-auth-profile.json", attest_with_controls(owned[0], task.inspect("image", [AUTH_PIN])[0], project))
+@@ -192,0 +205,3 @@
++        if args.adv808_auth_policy:
++            task.compose("adv808-auth-policy", ["run", "--rm", "--no-deps", "fixture", "bundle", "exec", "ruby",
++                         "/workspace/ops/tests/be02/adv808_auth_policy.rb"], 240)
