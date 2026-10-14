@@ -1448,3 +1448,6 @@ INT952 compiler review: 38 boundary LOC, 2 missing override declarations, 52.63 
 
 
 INT953 inline sandbox review: 27 regression-test LOC plus 21 runtime/default/argument LOC inspected; one stale-digest defect (20.83 defects/KLOC), corrected without modifying seccomp.json. Existing inverse-policy R8 regression authenticates the historical single syscall delta. New regression checks shipped policy bytes and three altered-byte failure cases. Self-review only under inline-only instruction; fleet execution pending.
+
+
+INT953 policy regression first run: 11/12 passed; the remaining failure was an older whole-Compose digest. Reviewed the full diff from 8a18f399: GUI-first comment, private invitation fixture service, and read-only private invitation mount only. Existing resource/security limits and browser Dockerfile are unchanged. Updated that pin; seccomp inverse-baseline assertion passed unchanged. Rerun pending; first-run archive/container cleanup passed. Inline reviewed 35 test LOC and 11 Compose diff LOC, one stale-pin defect (21.74/KLOC); no independent-agent review.

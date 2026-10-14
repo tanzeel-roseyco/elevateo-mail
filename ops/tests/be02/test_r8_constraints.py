@@ -26,8 +26,9 @@ class R8ConstraintsTest(unittest.TestCase):
         baseline = (json.dumps(restored, indent="\t") + "\n").encode()
         self.assertEqual(hashlib.sha256(baseline).hexdigest(),
                          "cc3e61cabda6bbc1e53e54d27ba4d55a9d3be829b6dd1a596f4a7b31b1cc7849")
+        # AIDEV-NOTE: Compose includes reviewed GUI-first ordering and a private invitation fixture; limits stay pinned.
         for name, digest in {
-            "ops/compose.acceptance-test.yaml": "8429ed3679c6efa28341ce90727ce9b8fd752245ef2a220f2b27e53475c9f5d9",
+            "ops/compose.acceptance-test.yaml": "00992a043f228047636f2d99d61a0600a215fe4ad64c99bb414135aee0aa0b7f",
             "ops/acceptance/browsers.Dockerfile": "dbc9d8aa333f2482f2ad3ef01b5f9c92a22d35ea0b797630e389db71d4a14f5b",
         }.items():
             self.assertEqual(hashlib.sha256((ROOT / name).read_bytes()).hexdigest(), digest)
