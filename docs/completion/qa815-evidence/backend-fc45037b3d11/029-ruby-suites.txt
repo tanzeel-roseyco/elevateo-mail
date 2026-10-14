@@ -1,0 +1,6 @@
+ Container [opaque value redacted] Creating 
+ Container [opaque value redacted] Created 
+Unclassified test suite: test/v2_attachment_error_test.rb
+
+
+exit=1 seconds=0.65
