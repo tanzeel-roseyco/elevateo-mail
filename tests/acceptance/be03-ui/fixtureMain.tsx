@@ -12,6 +12,8 @@ import '@/styles/index.css'
 // AIDEV-NOTE: Query mode is fixed per document. The original retry binding is compared, never rebased.
 const mode = new URLSearchParams(location.search).get('case') ?? 'happy'
 const state = createCollaborationState()
+// Browser send examples use valid saved recipients; canonical unsent-draft fixtures remain unchanged.
+state.getDraft(CD.draftId, CD.mailboxId).to = [{ display_name: 'Fixture recipient', address: 'recipient@example.test' }]
 const base = createFixtureGateway({}, { state })
 let original: SendApprovalInput | null = null
 let calls = 0

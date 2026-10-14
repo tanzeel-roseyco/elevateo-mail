@@ -20,3 +20,5 @@ Project obsidian.md and the remote pending record are NOT synchronized to the ac
 Evidence: [R23 journal](docs/completion/int403-r23-application-state.md), [R18 seal](docs/completion/int401-r18-handoff.md), [history](docs/completion/int401-status-history-20261014.md).
 
 Mira scoped BE03 browser continuation: `tests/acceptance/be03-ui/` prepares actual desktop/mobile client interaction against an explicitly SIMULATED memory gateway. Awaiting Cassian ONE candidate SHA and fleet execution; runtime/visual NOT_RUN, BE02 OPEN. No product source change. See scoped harness README; central acceptance remains Cassian/root-owned.
+
+Mira browser checkpoint: immutable integrated1429f1df with harness3d6cfb5 passed10actual Chromium headless-shell cases/22PNGs (desktop/mobile), TypeScript/lint0. Visual inspection found LOW synthetic-seed inconsistency (unsent canonical null recipient appeared in ready review); correction seeds only private memory valid recipient, leaving product/canonical fixtures unchanged. Corrected harness re-review/rerun pending; real SQL/HTTP and root visual acceptance separate, BE02 OPEN. Failed browser/container setup retained.
