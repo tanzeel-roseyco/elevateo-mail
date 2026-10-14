@@ -14,7 +14,7 @@ class CampaignInputTest < Minitest::Test
     assert_equal "draft", campaign.attributes.fetch("status")
     lead = Elevateo::Campaigns::Input.new(kind: "lead", value: {
       "id" => ID, "operation_id" => OP, "campaign_id" => ID, "email" => "A@Example.invalid",
-      "consent_status" => "granted", "consent_recorded_at" => "2026-10-15T10:00:00Z", "suppressed" => false
+      "consent_status" => "granted", "consent_recorded_at" => "2026-10-15T10:00:00Z", "consent_source" => "confirmed opt-in", "suppressed" => false
     })
     assert_equal "a@example.invalid", lead.attributes.fetch("email")
   end
@@ -28,7 +28,7 @@ class CampaignInputTest < Minitest::Test
 
   def test_rejects_unproved_consent_and_unbounded_address
     input = { "id" => ID, "operation_id" => OP, "campaign_id" => ID, "email" => "a@example.invalid",
-      "consent_status" => "granted", "consent_recorded_at" => nil, "suppressed" => false }
+      "consent_status" => "granted", "consent_recorded_at" => nil, "consent_source" => nil, "suppressed" => false }
     assert_raises(Elevateo::CollaborationError) { Elevateo::Campaigns::Input.new(kind: "lead", value: input) }
     input["consent_status"] = "unknown"
     input["email"] = "a" * 250 + "@example.invalid"

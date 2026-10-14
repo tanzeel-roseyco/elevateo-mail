@@ -680,3 +680,5 @@ R25 lint repair: one tooling defect in the unmount cleanup (ref must be captured
 ### OUT-804 Dorian source review request (2026-10-15)
 
 Independent functional and dedicated design-tradeoff review requested for migration 00009, campaigns/input.rb, campaigns/repository.rb, campaigns.rbs and campaign tests. Reviewed source lines: 0; found defects: unassessed; defect density: not applicable. No review PASS is claimed; root schedules bounded packets of at most 200 source lines and records the resulting denominator and findings.
+
+OUT-804 continuation review request: assign bounded packets at most 200 LOC covering migration 00009, campaign repository/input, V2 outreach controllers, RBS and request tests, plus a dedicated design-tradeoff review of consent attestation, mailbox RLS and replay locking. Independent lines reviewed: 0; independent defects: unassessed; density: not applicable. Dorian's own source inspection found and corrected the initial account-visibility and mixed-key boundaries; these are author repairs, not an independent review PASS.

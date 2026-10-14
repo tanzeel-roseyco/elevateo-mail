@@ -118,3 +118,5 @@ Cassian manifest reconciliation: contract-lock now seals actual generated client
 ### OUT-804 isolated outreach foundation
 
 Dorian prepared migration 00009 and inert campaign repository/DTO validation on baseline bbf2353. Campaign status is draft/paused, accounts disabled, consent and suppression are explicit, and replay conflicts fail closed. Routes and fleet execution are pending; no live send capability follows from this candidate. See docs/completion/dorian.md.
+
+OUT-804 continuation source includes V2 outreach controllers over the inherited protected read/write boundary, versioned idempotent update ledger, UUID keyset pages (maximum 100), and consent evidence/withdrawal/suppression actions. This branch remains untested in Docker and has no active route until Cassian registers the agreed V2 contract. Separate consent recording is a human attestation record, not Delivery send authority.

@@ -11,7 +11,7 @@ module Elevateo
 
       FIELDS = {
         "campaign" => %w[id operation_id name status],
-        "lead" => %w[id operation_id campaign_id email consent_status consent_recorded_at suppressed],
+        "lead" => %w[id operation_id campaign_id email consent_status consent_recorded_at consent_source suppressed],
         "account" => %w[id operation_id campaign_id mailbox_id label]
       }.freeze
 
@@ -34,11 +34,14 @@ module Elevateo
               WriteInput.invalid!
             end
           end
-          WriteInput.invalid! if status == "granted" && recorded.nil?
+          source = value.fetch("consent_source")
+          WriteInput.invalid! unless source.nil? || (source.is_a?(String) && source.length.between?(1, 200) &&
+            source.valid_encoding? && !source.match?(/[\x00-\x1f\x7f]/))
+          WriteInput.invalid! if status == "granted" && (recorded.nil? || source.nil?)
           suppressed = value.fetch("suppressed")
           WriteInput.invalid! unless suppressed == true || suppressed == false
           { "campaign_id" => WriteInput.uuid(value.fetch("campaign_id")), "email" => self.class.email(value.fetch("email")),
-            "consent_status" => status, "consent_recorded_at" => recorded, "suppressed" => suppressed }
+            "consent_status" => status, "consent_recorded_at" => recorded, "consent_source" => source, "suppressed" => suppressed }
         when "account"
           { "campaign_id" => WriteInput.uuid(value.fetch("campaign_id")),
             "mailbox_id" => WriteInput.uuid(value.fetch("mailbox_id")), "label" => label(value.fetch("label"), 120) }

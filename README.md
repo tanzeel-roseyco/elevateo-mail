@@ -176,3 +176,5 @@ Cassian manifest reconciliation: contract-lock now seals actual generated client
 ### OUT-804 isolated outreach foundation candidate
 
 Campaign, lead, account and suppression tables plus bounded draft/paused inputs and tenant-scoped repository are prepared on Dorian's branch. These plans cannot send mail. Versioned v2 HTTP routes, integrated Docker tests, independent review and delivery authority remain pending; see [Dorian's record](docs/completion/dorian.md).
+
+OUT-804 continuation prepares V2 outreach controllers for authenticated campaign/lead/account create, detail, update and paginated lists, plus database-backed analytics and separate consent/suppression actions. Routes and canonical DTOs remain Cassian-owned and pending integration; no outbound transport is exposed.

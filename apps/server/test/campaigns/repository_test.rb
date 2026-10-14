@@ -54,3 +54,48 @@ class CampaignRepositoryTest < Minitest::Test
     assert_includes connection.calls.last.first, "organization_id=$1::uuid"
   end
 end
+
+class CampaignRepositoryMutationTest < Minitest::Test
+  ID = CampaignRepositoryTest::ID
+  OP = CampaignRepositoryTest::OP
+  ORG = CampaignRepositoryTest::ORG
+  Connection = CampaignRepositoryTest::Connection
+
+  def input
+    Elevateo::Campaigns::Input.new(kind: "campaign", value: {
+      "id" => ID, "operation_id" => OP, "name" => "Paused pilot", "status" => "paused"
+    })
+  end
+
+  def test_update_serializes_operation_and_returns_persisted_version
+    updated = { "id" => ID, "name" => "Paused pilot", "status" => "paused", "version" => 2 }
+    connection = Connection.new([[], [], [updated], [updated], []])
+    result = Elevateo::Campaigns::Repository.new(connection: connection).replace(input,
+      organization_id: ORG, expected_version: 1)
+    assert_equal ["paused", 2], result.values_at("status", "version")
+    assert_match(/pg_advisory_xact_lock/, connection.calls.first.first)
+    assert(connection.calls.any? { |call| call.first.include?("INSERT INTO app.campaign_mutations") })
+  end
+
+  def test_stale_version_fails_without_ledger_insert
+    connection = Connection.new([[], [], [], [{ "id" => ID }]])
+    error = assert_raises(Elevateo::CollaborationError) do
+      Elevateo::Campaigns::Repository.new(connection: connection).replace(input,
+        organization_id: ORG, expected_version: 1)
+    end
+    assert_equal "draft_conflict", error.code
+    refute(connection.calls.any? { |call| call.first.include?("INSERT INTO app.campaign_mutations") })
+  end
+
+  def test_page_caps_and_scopes_cursor_to_tenant
+    first = { "id" => ID, "name" => "One", "status" => "draft", "version" => 1 }
+    second = { "id" => OP, "name" => "Two", "status" => "paused", "version" => 1 }
+    connection = Connection.new([[first, second]])
+    page = Elevateo::Campaigns::Repository.new(connection: connection).page(kind: "campaign",
+      organization_id: ORG, limit: 1)
+    assert_equal ID, page.fetch("items").first.fetch("id")
+    assert_equal ID, page.fetch("next_cursor")
+    assert_includes connection.calls.first.first, "organization_id=$1::uuid"
+    assert_equal ORG, connection.calls.first.last.first
+  end
+end
