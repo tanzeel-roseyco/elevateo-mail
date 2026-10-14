@@ -44,7 +44,7 @@ class DraftAuthorizationTest < DraftDatabaseTestCase
     # AIDEV-NOTE: A real session switch keeps the same actor while changing both authorization context and RLS GUCs.
     generation = authorize.fetch("authorization_generation")
     context = SecureRandom.uuid
-    result = invoke("switch_organization", @digest, @user, @auth, target, context, "next" * 12, @context, generation)
+    result = invoke("switch_organization", @digest, @user, @auth, target, context, SecureRandom.hex(32), @context, generation)
     assert_equal "ok", result.fetch("status")
     @org, @context = target, context
   end

@@ -1,0 +1,61 @@
+1: // Header search form: submits to /search with the query and optional mailbox scope in the URL
+2: // (navigation and filter state belong in the URL). No request happens here.
+3: import { useId, useState, type FormEvent } from 'react'
+4: import { useNavigate, useSearchParams } from 'react-router'
+5: import { useMailboxes } from './mailboxes'
+6: import { inputClass } from '@/ui/Field'
+7: import { Button } from '@/ui/Button'
+8: 
+9: export function SearchBox({ expanded = false }: { expanded?: boolean }) {
+10:   const navigate = useNavigate()
+11:   const [params] = useSearchParams()
+12:   const mailboxes = useMailboxes()
+13:   const fromUrl = { q: params.get('q') ?? '', mailbox: params.get('mailbox') ?? '' }
+14:   const [draft, setDraft] = useState(fromUrl)
+15:   const [editing, setEditing] = useState(false)
+16:   // AIDEV-NOTE: URL changes refresh idle fields; a focused form keeps its draft until focus leaves.
+17:   const fields = editing ? draft : fromUrl
+18:   const { q, mailbox } = fields
+19:   const ids = { q: useId(), mailbox: useId() }
+20: 
+21:   const submit = (event: FormEvent) => {
+22:     event.preventDefault()
+23:     if (q === '') return
+24:     const next = new URLSearchParams({ q })
+25:     if (mailbox !== '') next.set('mailbox', mailbox)
+26:     setEditing(false)
+27:     navigate(`/search?${next.toString()}`)
+28:   }
+29: 
+30:   return (
+31:     <form
+32:       role="search"
+33:       aria-label={expanded ? 'Search conversations' : 'Search mail'}
+34:       onSubmit={submit}
+35:       onFocusCapture={() => { if (!editing) { setDraft(fields); setEditing(true) } }}
+36:       onBlurCapture={(event) => { if (!event.currentTarget.contains(event.relatedTarget)) setEditing(false) }}
+37:       className={expanded ? 'mb-4 flex min-w-0 flex-wrap items-center gap-2' : 'flex min-w-0 items-center gap-1'}
+38:     >
+39:       <label htmlFor={ids.q} className={expanded ? 'text-sm' : 'sr-only'}>Search mail</label>
+40:       <input
+41:         id={ids.q}
+42:         type="search"
+43:         value={q}
+44:         onChange={(e) => { setDraft({ ...fields, q: e.target.value }); setEditing(true) }}
+45:         maxLength={512}
+46:         placeholder="Search"
+47:         autoComplete="off"
+48:         className={`${expanded ? 'h-9 min-w-0 flex-1 basis-40' : 'h-8 w-28 min-w-0 sm:w-44'} ${inputClass}`}
+49:       />
+50:       <label htmlFor={ids.mailbox} className={expanded ? 'text-sm' : 'sr-only'}>Search scope</label>
+51:       <select id={ids.mailbox} value={mailbox} onChange={(e) => { setDraft({ ...fields, mailbox: e.target.value }); setEditing(true) }} className={`${expanded ? 'h-9 min-w-0 max-w-full' : 'hidden h-8 max-w-36 md:block'} ${inputClass}`}>
+52:         <option value="">All mailboxes</option>
+53:         {mailbox !== '' && (mailboxes.status !== 'ready' || !mailboxes.mailboxes.some((m) => m.id === mailbox)) && (
+54:           <option value={mailbox}>Selected mailbox (unavailable)</option>
+55:         )}
+56:         {mailboxes.status === 'ready' && mailboxes.mailboxes.map((m) => <option key={m.id} value={m.id}>{m.display_name}</option>)}
+57:       </select>
+58:       <Button type="submit" size="sm" variant="ghost" aria-label="Run search">Go</Button>
+59:     </form>
+60:   )
+61: }

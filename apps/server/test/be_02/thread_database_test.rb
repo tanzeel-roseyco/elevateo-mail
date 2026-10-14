@@ -49,7 +49,7 @@ class ThreadDatabaseTest < SessionDatabaseTestCase
     assert empty.fetch("thread").fetch("unread")
     assert_nil empty.fetch("thread").fetch("subject")
     @admin.exec_params("UPDATE app.threads SET subject = $1 WHERE id = $2", ["\u{1F48C}" * 2000, @thread])
-    message(body: "<script>plain</script>" + "\u{1F48C}" * 20_000)
+    fixture_message(body: "<script>plain</script>" + "\u{1F48C}" * 20_000)
     page = detail
     assert_equal 998, page.fetch("thread").fetch("subject").length
     assert page.fetch("thread").fetch("subject_truncated")
@@ -68,8 +68,8 @@ class ThreadDatabaseTest < SessionDatabaseTestCase
 
   def test_message_seek_orders_nulls_then_timestamp_then_uuid_without_skipping
     nulls, dated = Array.new(2) { SecureRandom.uuid }.sort, Array.new(2) { SecureRandom.uuid }.sort
-    (nulls + dated).reverse_each { |id| message(id: id, sent_at: dated.include?(id) ? "2026-10-12T00:00:00.000001Z" : nil) }
-    later = message(sent_at: "2026-10-12T00:00:00.000002Z")
+    (nulls + dated).reverse_each { |id| fixture_message(id: id, sent_at: dated.include?(id) ? "2026-10-12T00:00:00.000001Z" : nil) }
+    later = fixture_message(sent_at: "2026-10-12T00:00:00.000002Z")
     pages = walk { |cursor| detail(query: { "limit" => "1" }.merge(cursor ? { "cursor" => cursor } : {})) }
     assert_equal nulls + dated + [later], pages.flat_map { |page| page.fetch("messages").map { |row| row.fetch("id") } }
     assert_nil pages.last.fetch("next_cursor")
@@ -79,9 +79,9 @@ class ThreadDatabaseTest < SessionDatabaseTestCase
   def test_thread_seek_orders_derived_activity_then_uuid_with_nulls_last
     nulls = [@thread, thread].sort.reverse
     dated = Array.new(2) { thread }.sort.reverse
-    dated.each { |id| message(thread_id: id, sent_at: "2026-10-12T00:00:00Z") }
+    dated.each { |id| fixture_message(thread_id: id, sent_at: "2026-10-12T00:00:00Z") }
     latest = thread
-    message(thread_id: latest, sent_at: "2026-10-12T00:00:01Z", body: "latest visible preview")
+    fixture_message(thread_id: latest, sent_at: "2026-10-12T00:00:01Z", body: "latest visible preview")
     pages = walk { |cursor| list(query: { "limit" => "1" }.merge(cursor ? { "cursor" => cursor } : {})) }
     assert_equal [latest] + dated + nulls, pages.flat_map { |page| page.fetch("items").map { |row| row.fetch("id") } }
     assert_equal "latest visible preview", pages.first.fetch("items").first.fetch("preview_text")
@@ -113,7 +113,7 @@ class ThreadDatabaseTest < SessionDatabaseTestCase
     @admin.exec_params("INSERT INTO app.organizations(id, name) VALUES ($1, 'B foreign fixture')", [foreign_org])
     foreign_box = mailbox(org: foreign_org)
     foreign_thread = thread(org: foreign_org, box: foreign_box)
-    message(org: foreign_org, box: foreign_box, thread_id: foreign_thread, body: "must remain invisible")
+    fixture_message(org: foreign_org, box: foreign_box, thread_id: foreign_thread, body: "must remain invisible")
     missing = SecureRandom.uuid
     [private_box, foreign_box, missing].each do |box|
       assert_equal "not available", assert_raises(NotAvailable) { list(box: box) }.message
@@ -166,19 +166,19 @@ class ThreadDatabaseTest < SessionDatabaseTestCase
 
   def test_composite_foreign_keys_and_canonical_json_constraints
     wrong_box = mailbox
-    assert_raises(PG::ForeignKeyViolation) { message(box: wrong_box) }
+    assert_raises(PG::ForeignKeyViolation) { fixture_message(box: wrong_box) }
     assert_raises(PG::ForeignKeyViolation) { thread(org: SecureRandom.uuid) }
     assert_raises(PG::ForeignKeyViolation) { read_state(@thread, SecureRandom.uuid, true) }
     ["{}", "null", '{"display_name":null,"address":null,"html":"x"}'].each do |sender|
-      assert_raises(PG::CheckViolation) { message(sender: sender) }
+      assert_raises(PG::CheckViolation) { fixture_message(sender: sender) }
     end
     ["[null]", "{}", JSON.generate(Array.new(101) { { "display_name" => nil, "address" => nil } })].each do |recipients|
-      assert_raises(PG::CheckViolation) { message(recipients: recipients) }
+      assert_raises(PG::CheckViolation) { fixture_message(recipients: recipients) }
     end
-    assert_raises(PG::CheckViolation) { message(attachments: 1001) }
-    assert_raises(PG::CheckViolation) { message(sent_at: "infinity") }
+    assert_raises(PG::CheckViolation) { fixture_message(attachments: 1001) }
+    assert_raises(PG::CheckViolation) { fixture_message(sent_at: "infinity") }
     maximum = JSON.generate("display_name" => "\u{1F48C}" * 256, "address" => nil)
-    message(sender: maximum, recipients: "[#{maximum}]", attachments: 1000)
+    fixture_message(sender: maximum, recipients: "[#{maximum}]", attachments: 1000)
     assert_equal 256, detail.fetch("messages").first.fetch("sender").fetch("display_name").length
   end
 
@@ -223,7 +223,7 @@ class ThreadDatabaseTest < SessionDatabaseTestCase
     id
   end
 
-  def message(id: SecureRandom.uuid, org: @org, box: @box, thread_id: @thread, sent_at: nil, body: "", sender: nil, recipients: "[]", attachments: 0)
+  def fixture_message(id: SecureRandom.uuid, org: @org, box: @box, thread_id: @thread, sent_at: nil, body: "", sender: nil, recipients: "[]", attachments: 0)
     @admin.exec_params(<<~SQL, [id, org, box, thread_id, sent_at, body, sender, recipients, attachments])
       INSERT INTO app.messages(id, organization_id, mailbox_id, thread_id, sent_at, body_text, sender, recipients, attachment_count)
       VALUES ($1, $2, $3, $4, $5, $6, $7::jsonb, $8::jsonb, $9)

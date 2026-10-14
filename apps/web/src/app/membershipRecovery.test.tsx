@@ -176,7 +176,7 @@ describe('self-membership change through the Shell', () => {
 
     // Shared read access survives the row removal; the explicit-row capabilities do not.
     const mailboxLink = await screen.findByRole('link', { name: 'C/D fixture mailbox' })
-    expect(mailboxLink.getAttribute('aria-current')).toBe('page')
+    expect(mailboxLink.getAttribute('aria-current')).toBeNull()
     expect(screen.queryByRole('link', { name: 'Drafts' })).toBeNull()
     expect(screen.queryByRole('link', { name: 'Members' })).toBeNull()
     expect(await screen.findByText('Members are unavailable')).toBeTruthy()

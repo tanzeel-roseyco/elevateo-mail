@@ -19,6 +19,7 @@ function renderShellAt(entry: string) {
           <Route element={<Shell />}>
             <Route index element={<p>outlet-content</p>} />
             <Route path="mailboxes/:mailboxId" element={<p>outlet-content</p>} />
+            <Route path="mailboxes/:mailboxId/threads/:threadId" element={<p>outlet-content</p>} />
             <Route path="mailboxes/:mailboxId/drafts" element={<p>outlet-content</p>} />
             <Route path="mailboxes/:mailboxId/members" element={<p>outlet-content</p>} />
             <Route path="search" element={<p>outlet-content</p>} />
@@ -51,11 +52,24 @@ describe('collaboration navigation', () => {
     expect(screen.queryByRole('link', { name: 'Members' })).toBeNull()
   })
 
-  it('marks the Members sub-link current while inside it and keeps the mailbox marked current', async () => {
+  it('marks only Drafts current and keeps reader navigation ancestors unannounced', async () => {
+    const drafts = renderShellAt(`/mailboxes/${CD.mailboxId}/drafts`)
+    expect((await screen.findByRole('link', { name: 'Drafts' })).getAttribute('aria-current')).toBe('page')
+    expect(document.querySelectorAll('nav [aria-current="page"]')).toHaveLength(1)
+    drafts.unmount()
+    renderShellAt(`/mailboxes/${CD.mailboxId}/threads/${CD.threadId}`)
+    const mailbox = await screen.findByRole('link', { name: 'C/D fixture mailbox' })
+    expect(mailbox.className).toContain('bg-accent-soft')
+    expect(document.querySelectorAll('nav [aria-current="page"]')).toHaveLength(0)
+  })
+
+  it('marks only the exact Members destination current and retains mailbox group styling', async () => {
     renderShellAt(`/mailboxes/${CD.mailboxId}/members`)
     const members = await screen.findByRole('link', { name: 'Members' })
     expect(members.getAttribute('aria-current')).toBe('page')
     expect(screen.getByRole('link', { name: 'Drafts' }).getAttribute('aria-current')).toBeNull()
-    expect(screen.getByRole('link', { name: 'C/D fixture mailbox' }).getAttribute('aria-current')).toBe('page')
+    expect(screen.getByRole('link', { name: 'C/D fixture mailbox' }).getAttribute('aria-current')).toBeNull()
+    expect(screen.getByRole('link', { name: 'C/D fixture mailbox' }).className).toContain('bg-accent-soft')
+    expect(document.querySelectorAll('nav [aria-current="page"]')).toHaveLength(1)
   })
 })

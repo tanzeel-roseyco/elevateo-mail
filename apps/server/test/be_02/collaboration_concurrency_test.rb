@@ -45,9 +45,10 @@ class CollaborationConcurrencyTest < CollaborationDatabaseCase
       service(Elevateo::ThreadAssignment, connection).get(thread_id: private_thread, query: { "mailbox_id" => private_box })
     end
     assert_equal other.user_id, JSON.parse(history)["assignee_id"]
-    assert_equal "not_available", assert_raises(Elevateo::CollaborationError) do
+    error = assert_raises(Elevateo::CollaborationError) do
       assignment(other.user_id, 1, thread: private_thread, box: private_box)
-    end.code
+    end
+      assert_equal "not_available", error.code
   ensure
     contender&.join
     close_connections([revoker])

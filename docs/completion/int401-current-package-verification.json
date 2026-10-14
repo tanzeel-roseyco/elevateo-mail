@@ -1,0 +1,235 @@
+{
+  "base": "c3ecd1f4cc35b98755a523d48032391ccdd0402c",
+  "closure": [
+    {
+      "path": "compose.yaml",
+      "expected": "3481affe11ee70aaefae2f65c7bc54aa250250f03207ae9dacf6517324d97d2a",
+      "actual": "3481affe11ee70aaefae2f65c7bc54aa250250f03207ae9dacf6517324d97d2a"
+    },
+    {
+      "path": "docs/evidence/scripts/be-01-r1-fleet02-resources.sh",
+      "expected": "86681089c789e3b636f518508e8c6cf496d332f69bd69e5696bbc1dd4302aa4d",
+      "actual": "86681089c789e3b636f518508e8c6cf496d332f69bd69e5696bbc1dd4302aa4d"
+    },
+    {
+      "path": "ops/compose.fleet02-egress.yaml",
+      "expected": "ee26c30bcb80900dbe989083180a967527cbae934f7887c5f0e245867ec2087f",
+      "actual": "ee26c30bcb80900dbe989083180a967527cbae934f7887c5f0e245867ec2087f"
+    },
+    {
+      "path": "ops/compose.secrets.yaml",
+      "expected": "7f222cc1391dfc78b4fd29b0a2ccb8b6bd2571a78826fc3a2394dc3fc6626999",
+      "actual": "7f222cc1391dfc78b4fd29b0a2ccb8b6bd2571a78826fc3a2394dc3fc6626999"
+    },
+    {
+      "path": "ops/tests/be01-services/auth.rb",
+      "expected": "adfcc933e220022b26e9cbbf17c2d769520cf6881defe9ea42a6c5f973d314e3",
+      "actual": "adfcc933e220022b26e9cbbf17c2d769520cf6881defe9ea42a6c5f973d314e3"
+    },
+    {
+      "path": "ops/tests/be01-services/authorized-storage.rb",
+      "expected": "a2538b852d965ef905e6714b71f97536a0c3edb5ddc6f32fe16d08afe9878a83",
+      "actual": "a2538b852d965ef905e6714b71f97536a0c3edb5ddc6f32fe16d08afe9878a83"
+    },
+    {
+      "path": "ops/tests/be01-services/boundary_test.rb",
+      "expected": "4344d3eba939e9c9d2baab42cf59d55f8e73758d24f064d0669255b1d84d5173",
+      "actual": "4344d3eba939e9c9d2baab42cf59d55f8e73758d24f064d0669255b1d84d5173"
+    },
+    {
+      "path": "ops/tests/be01-services/credentials.rb",
+      "expected": "7c065908df06878dc7e2e127cc078441c5f93227e208d95d7a90691e03e8c5ae",
+      "actual": "7c065908df06878dc7e2e127cc078441c5f93227e208d95d7a90691e03e8c5ae"
+    },
+    {
+      "path": "ops/tests/be01-services/database.rb",
+      "expected": "eeeb37061bd031ca20de3d10be1beb5305673f8e56219d1f08692b4b28c23fee",
+      "actual": "eeeb37061bd031ca20de3d10be1beb5305673f8e56219d1f08692b4b28c23fee"
+    },
+    {
+      "path": "ops/tests/be01-services/http.rb",
+      "expected": "79375775aa33cb39756e07d819119bf3e426a921f206b791d6b323d45f8b4acb",
+      "actual": "79375775aa33cb39756e07d819119bf3e426a921f206b791d6b323d45f8b4acb"
+    },
+    {
+      "path": "ops/tests/be01-services/package.sha256",
+      "expected": "028c90c20b356ffaa8c4ba285524d4835dd8513685c096aa41acaa12b22a476d",
+      "actual": "028c90c20b356ffaa8c4ba285524d4835dd8513685c096aa41acaa12b22a476d"
+    },
+    {
+      "path": "ops/tests/be01-services/services.rb",
+      "expected": "82198f2503f4a23fc5b0406d966d6b8dd84e5d768623510f904fc0de669860fa",
+      "actual": "82198f2503f4a23fc5b0406d966d6b8dd84e5d768623510f904fc0de669860fa"
+    },
+    {
+      "path": "ops/tests/be01-services/state.rb",
+      "expected": "151846f49026327c8f6f8a4c935ea8959cbbaf6a3c3f41db09eef18259e92881",
+      "actual": "151846f49026327c8f6f8a4c935ea8959cbbaf6a3c3f41db09eef18259e92881"
+    },
+    {
+      "path": "ops/tests/be01-services/storage.rb",
+      "expected": "e574fe0783062e318241b3dedb25128f498cc968d4e1f65a5f4a131c9c9a47fd",
+      "actual": "e574fe0783062e318241b3dedb25128f498cc968d4e1f65a5f4a131c9c9a47fd"
+    },
+    {
+      "path": "ops/tests/fleet02-egress-baked.rb",
+      "expected": "8f6623be67c715e3aa7aa95f86068f486fdd60c62d41df672a880982266a49e9",
+      "actual": "8f6623be67c715e3aa7aa95f86068f486fdd60c62d41df672a880982266a49e9"
+    },
+    {
+      "path": "ops/tests/fleet02-egress-compose.sh",
+      "expected": "a8d1e2d61de4871f5a4da672e593c6474df3587d37478f27a8cb9bd87197cfbc",
+      "actual": "a8d1e2d61de4871f5a4da672e593c6474df3587d37478f27a8cb9bd87197cfbc"
+    },
+    {
+      "path": "ops/tests/fleet02-egress-resources.sh",
+      "expected": "c4ce5cf3ada3c2bebe92d3557c82d7de92bdef27738603a182e32f5272e8a363",
+      "actual": "c4ce5cf3ada3c2bebe92d3557c82d7de92bdef27738603a182e32f5272e8a363"
+    },
+    {
+      "path": "ops/tests/fleet02-egress-source.sha256",
+      "expected": "03d590ddaa39b22c6b1851c9911405473c0b01b0a50fff08001144e66a14638b",
+      "actual": "03d590ddaa39b22c6b1851c9911405473c0b01b0a50fff08001144e66a14638b"
+    },
+    {
+      "path": "ops/tests/int401-command-surface.sh",
+      "expected": "f1a6a4cfceccc74337695069c7b8dd9b22bedd4d05aa024d1b2e7f9097ff876f",
+      "actual": "f1a6a4cfceccc74337695069c7b8dd9b22bedd4d05aa024d1b2e7f9097ff876f"
+    },
+    {
+      "path": "ops/tests/int401-current-package.sh",
+      "expected": "9c7523b3cb96e8c6068d163d6ec3590239dbb382d852dab0f4a16aa9e51944cd",
+      "actual": "9c7523b3cb96e8c6068d163d6ec3590239dbb382d852dab0f4a16aa9e51944cd"
+    },
+    {
+      "path": "ops/tools/be01-services-tools-v2/Dockerfile",
+      "expected": "b411a7c89da59427a28fefb47d39bc56a11ef7c773a1ef1b7149ee8851ac0645",
+      "actual": "b411a7c89da59427a28fefb47d39bc56a11ef7c773a1ef1b7149ee8851ac0645"
+    },
+    {
+      "path": "ops/tools/be01-services-tools-v2/checks.sh",
+      "expected": "29bb960f831a808275351fbeefbe20a94f2a7c97ff0e8e080eb39b84c801186c",
+      "actual": "29bb960f831a808275351fbeefbe20a94f2a7c97ff0e8e080eb39b84c801186c"
+    },
+    {
+      "path": "ops/tools/be01-services-tools-v2/parent-run.sh",
+      "expected": "7eac7f172e60bbbc0d7c3eb67a20d6ecf35433e682bb1716e6b20e9c948f48c9",
+      "actual": "7eac7f172e60bbbc0d7c3eb67a20d6ecf35433e682bb1716e6b20e9c948f48c9"
+    },
+    {
+      "path": "ops/tools/be01-services-tools-v2/preflight.sh",
+      "expected": "0dd075c1967a8a879cc09b6714d0430516be8d9ef3107e5da8590f09c26e4714",
+      "actual": "0dd075c1967a8a879cc09b6714d0430516be8d9ef3107e5da8590f09c26e4714"
+    },
+    {
+      "path": "ops/tools/be01-services-tools-v2/run-container.sh",
+      "expected": "34c6ecf015a80c5fd5928d0d676439b820ed8b017e4fd7cc2da5ed04010667e9",
+      "actual": "34c6ecf015a80c5fd5928d0d676439b820ed8b017e4fd7cc2da5ed04010667e9"
+    },
+    {
+      "path": "ops/tools/be01-services/config.jq",
+      "expected": "356289830fbc3bf2f6ed42f879b7bb797acbb8f10e0c0e82d29373009ed149d6",
+      "actual": "356289830fbc3bf2f6ed42f879b7bb797acbb8f10e0c0e82d29373009ed149d6"
+    },
+    {
+      "path": "ops/tools/be01-services/dependencies.sha256",
+      "expected": "b1a60a9948b4fc24288ce469a5852fb11eb321c008c6a4d821789d93622b4263",
+      "actual": "b1a60a9948b4fc24288ce469a5852fb11eb321c008c6a4d821789d93622b4263"
+    },
+    {
+      "path": "ops/tools/be01-services/fixture-regression.sh",
+      "expected": "9b9ea89de332ed49a7779dc8dacdbca96ae93772cfa7fff1e01c6c6b0701811e",
+      "actual": "9b9ea89de332ed49a7779dc8dacdbca96ae93772cfa7fff1e01c6c6b0701811e"
+    },
+    {
+      "path": "ops/tools/be01-services/fixture.sh",
+      "expected": "f31145e5624935516c701e555ebc617feafe0f25918a2fd984f86fed684903fe",
+      "actual": "f31145e5624935516c701e555ebc617feafe0f25918a2fd984f86fed684903fe"
+    },
+    {
+      "path": "ops/tools/be01-services/package.sha256",
+      "expected": "ad4773807748c99d23c763f2a6203a4cde276c68cca09ea6f9f030380252235d",
+      "actual": "ad4773807748c99d23c763f2a6203a4cde276c68cca09ea6f9f030380252235d"
+    },
+    {
+      "path": "ops/tools/be01-services/phases.sh",
+      "expected": "8546a9ecbdc18cbf1718114b5d270a622bff1eb9d86643d80921b645c0f40a49",
+      "actual": "8546a9ecbdc18cbf1718114b5d270a622bff1eb9d86643d80921b645c0f40a49"
+    },
+    {
+      "path": "ops/tools/be01-services/profile-regression.sh",
+      "expected": "a80ebee722656cdf1311a28ce4d6621c5332358bd336b63c2668caab8ba93889",
+      "actual": "a80ebee722656cdf1311a28ce4d6621c5332358bd336b63c2668caab8ba93889"
+    },
+    {
+      "path": "ops/tools/be01-services/profile.jq",
+      "expected": "d7e8a7d982b4e9bac6bbca3daf8f13494a8181a40d4d704dcd7a28fc93b9b633",
+      "actual": "d7e8a7d982b4e9bac6bbca3daf8f13494a8181a40d4d704dcd7a28fc93b9b633"
+    },
+    {
+      "path": "ops/tools/be01-services/readiness.rb",
+      "expected": "1f0f018774675e1f1b149fc80b30df0fdd3220807d231eb95638ef259f4d91d6",
+      "actual": "1f0f018774675e1f1b149fc80b30df0fdd3220807d231eb95638ef259f4d91d6"
+    },
+    {
+      "path": "ops/tools/be01-services/regression.sh",
+      "expected": "343056a493d31046ebc2111f4d5fde5ee63a46ffcc7ab0b71ad8fafee8b2fc47",
+      "actual": "343056a493d31046ebc2111f4d5fde5ee63a46ffcc7ab0b71ad8fafee8b2fc47"
+    },
+    {
+      "path": "ops/tools/be01-services/run.sh",
+      "expected": "2bcb852f2e05abdbc29a3935ec2b9bff392968614ad3acf28f9665edd575389c",
+      "actual": "2bcb852f2e05abdbc29a3935ec2b9bff392968614ad3acf28f9665edd575389c"
+    },
+    {
+      "path": "ops/tools/be01-services/stack-regression.sh",
+      "expected": "e950575321eceb0e8effbfe80e14e6aa04917d016aaa5d01fa40b1305d6c6e4f",
+      "actual": "e950575321eceb0e8effbfe80e14e6aa04917d016aaa5d01fa40b1305d6c6e4f"
+    },
+    {
+      "path": "ops/tools/be01-services/stack.sh",
+      "expected": "0c588a647154660bc230178ded87b0fa7c8c89e34284a09398ac97b32cf79733",
+      "actual": "0c588a647154660bc230178ded87b0fa7c8c89e34284a09398ac97b32cf79733"
+    },
+    {
+      "path": "ops/tools/be01-services/volume.rb",
+      "expected": "1c9e6f6a7aeb8cedace643d9c3798bd36d6fb623bff58e2ce6876becee8d54fa",
+      "actual": "1c9e6f6a7aeb8cedace643d9c3798bd36d6fb623bff58e2ce6876becee8d54fa"
+    },
+    {
+      "path": "ops/tools/be01-services/volumes.sh",
+      "expected": "e4672baae00205f056f5b866c7fc022df7549bef622c98eff4d02ec97be68cc9",
+      "actual": "e4672baae00205f056f5b866c7fc022df7549bef622c98eff4d02ec97be68cc9"
+    },
+    {
+      "path": "ops/tools/lane-c-synthetic/cleanup.sh",
+      "expected": "095fb2a580620b724070a0dc3c0d5400e38a98fc347d034c97f3fe3e47dcc3ec",
+      "actual": "095fb2a580620b724070a0dc3c0d5400e38a98fc347d034c97f3fe3e47dcc3ec"
+    },
+    {
+      "path": "scripts/dev",
+      "expected": "f00c7a8bbe1675e02ec053cb61f21a306a775531dfaf5dc4f2da09de4ac03296",
+      "actual": "f00c7a8bbe1675e02ec053cb61f21a306a775531dfaf5dc4f2da09de4ac03296"
+    },
+    {
+      "path": "scripts/dev.ps1",
+      "expected": "abdf149d3037d320dae2218d01fa0d60830dc16ec9746689183a074dda60a42b",
+      "actual": "abdf149d3037d320dae2218d01fa0d60830dc16ec9746689183a074dda60a42b"
+    }
+  ],
+  "unchanged_frozen_files": 31,
+  "source_line_counts": {
+    "ops/tools/be01-services-tools-v2/checks.sh": 19,
+    "ops/tools/be01-services-tools-v2/Dockerfile": 21,
+    "ops/tools/be01-services-tools-v2/parent-run.sh": 78,
+    "ops/tools/be01-services-tools-v2/preflight.sh": 9,
+    "ops/tools/be01-services-tools-v2/run-container.sh": 24,
+    "scripts/dev": 13,
+    "scripts/dev.ps1": 12,
+    "ops/tests/int401-command-surface.sh": 46,
+    "ops/tests/int401-current-package.sh": 19
+  },
+  "runtime": "NOT RUN on frozen integrated revision; root schedules remote validation",
+  "native_powershell": "NOT RUN",
+  "artifact_scope": "Git blob bytes for Linux archive, not Windows newline conversions"
+}

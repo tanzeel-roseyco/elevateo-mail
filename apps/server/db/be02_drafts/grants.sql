@@ -1,3 +1,5 @@
+-- AIDEV-NOTE: Worker needs public function namespace lookup, never private schema or direct draft-table access.
+GRANT USAGE ON SCHEMA app TO elevateo_worker;
 REVOKE ALL ON app.drafts, app_drafts_private.operations FROM PUBLIC, elevateo_app_read, elevateo_api, elevateo_worker;
 GRANT SELECT (id, organization_id, mailbox_id, actor_id, subject, recipients, body_text,
   reply_to_thread_id, version, state, created_at, updated_at) ON app.drafts TO elevateo_app_read;

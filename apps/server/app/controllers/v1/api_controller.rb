@@ -10,6 +10,13 @@ module V1
 
     protected
 
+    # AIDEV-NOTE: Rails instrumentation otherwise parses/truncates raw input before our bounded boundary runs.
+    def process_action(*arguments)
+      request.request_parameters = {}
+      request.set_header("action_dispatch.request.query_parameters", {})
+      super
+    end
+
     def api_boundary
       @api_deadline = Elevateo::RequestDeadline.new
       api_security_headers

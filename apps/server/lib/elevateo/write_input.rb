@@ -17,6 +17,17 @@ module Elevateo
       end
     end
 
+    # AIDEV-NOTE: Some extreme exponents bypass BigDecimal's underflow exception; nonzero tokens cannot become zero.
+    class ExactDecimal
+      def self.try_convert(token)
+        value = BigDecimal(token)
+        if value.zero? && token.sub(/[eE].*\z/, "").match?(/[1-9]/)
+          raise FloatDomainError, "decimal underflow"
+        end
+        value
+      end
+    end
+
     def self.invalid! = raise(CollaborationError.new("request_invalid"))
 
     def self.transport!(origin:, expected_origin:, content_type:, content_encoding:, body:)
@@ -48,7 +59,7 @@ module Elevateo
       parsed = BigDecimal.save_exception_mode do
         # AIDEV-NOTE: Extreme exponents must not silently underflow to an accepted zero; restore modes on exit.
         BigDecimal.mode(BigDecimal::EXCEPTION_UNDERFLOW, true)
-        JSON.parse(source, decimal_class: BigDecimal, allow_duplicate_key: false,
+        JSON.parse(source, decimal_class: ExactDecimal, allow_duplicate_key: false,
           object_class: UniqueObject, max_nesting: 16, allow_nan: false)
       end
       invalid! unless parsed.is_a?(Hash)

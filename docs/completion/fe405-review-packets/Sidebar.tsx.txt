@@ -1,0 +1,102 @@
+1: // Adapted from first-party Ledger frontend 4322cfbb, src/app/Sidebar.tsx SidebarFrame export
+2: // (blob 069b198e…). Changes: navigation is the current mailbox list with an all/unread URL filter
+3: // instead of fixed product areas; removed data/store + composerStore imports, mock unread counts,
+4: // the Compose action (no enabled composer controls in this checkpoint) and the logo.png asset
+5: // (image rights unverified; text brand instead). Active-item presentation and footnote retained.
+6: import { Link, useLocation } from 'react-router'
+7: import type { Mailbox } from '@/data/contract'
+8: import { cx } from '@/lib/format'
+9: import { MailboxIcon } from '@/ui/icons'
+10: 
+11: function Item({ mailbox, onNavigate }: { mailbox: Mailbox; onNavigate?: (() => void) | undefined }) {
+12:   const { pathname } = useLocation()
+13:   const base = `/mailboxes/${mailbox.id}`
+14:   // Whole path segment only, so one mailbox id being a prefix of another cannot mark both active.
+15:   const active = pathname === base || pathname.startsWith(`${base}/`)
+16:   // Sub-areas of the active mailbox (BE-02 C/D). Capabilities are display hints; the server decides.
+17:   const subLinks: Array<{ to: string; label: string }> = []
+18:   if (mailbox.capabilities.compose) subLinks.push({ to: `${base}/drafts`, label: 'Drafts' })
+19:   if (mailbox.capabilities.manage_members) subLinks.push({ to: `${base}/members`, label: 'Members' })
+20:   return (
+21:     <>
+22:       <Link
+23:         to={base}
+24:         onClick={onNavigate}
+25:         aria-current={pathname === base ? 'page' : undefined}
+26:         className={cx(
+27:           'relative flex h-9 items-center gap-3 rounded-lg px-3 text-sm',
+28:           active ? 'bg-accent-soft font-semibold text-accent-text' : 'text-fg hover:bg-surface-2',
+29:         )}
+30:       >
+31:         {/* The bar marks the current area by shape as well as tint, so it survives any accent. */}
+32:         {active && <span aria-hidden className="absolute inset-y-2 left-0 w-[3px] rounded-full bg-accent" />}
+33:         <MailboxIcon aria-hidden className="size-[18px] shrink-0" />
+34:         <span className="min-w-0 flex-1 truncate">{mailbox.display_name}</span>
+35:       </Link>
+36:       {active && subLinks.length > 0 && (
+37:         <ul className="mb-1 ml-8 flex flex-col gap-0.5">
+38:           {subLinks.map((link) => {
+39:             const current = pathname === link.to
+40:             return (
+41:               <li key={link.to}>
+42:                 <Link
+43:                   to={link.to}
+44:                   onClick={onNavigate}
+45:                   aria-current={current ? 'page' : undefined}
+46:                   className={cx('flex h-8 items-center rounded-lg px-2 text-[13px]', current ? 'bg-accent-soft font-semibold text-accent-text' : 'text-fg hover:bg-surface-2')}
+47:                 >
+48:                   {link.label}
+49:                 </Link>
+50:               </li>
+51:             )
+52:           })}
+53:         </ul>
+54:       )}
+55:     </>
+56:   )
+57: }
+58: 
+59: /** Search entry for every viewport; the header form is hidden below the sm breakpoint. */
+60: function SearchLink({ onNavigate }: { onNavigate?: (() => void) | undefined }) {
+61:   const { pathname } = useLocation()
+62:   const active = pathname === '/search'
+63:   return (
+64:     <Link
+65:       to="/search"
+66:       onClick={onNavigate}
+67:       aria-current={active ? 'page' : undefined}
+68:       className={cx('flex h-9 items-center gap-3 rounded-lg px-3 text-sm', active ? 'bg-accent-soft font-semibold text-accent-text' : 'text-fg hover:bg-surface-2')}
+69:     >
+70:       <span aria-hidden className="inline-block size-[18px] shrink-0 text-center">⌕</span>
+71:       <span>Search</span>
+72:     </Link>
+73:   )
+74: }
+75: 
+76: interface SidebarProps {
+77:   mailboxes: readonly Mailbox[]
+78:   onNavigate?: () => void
+79:   /** One honest line about what this build does and does not do. */
+80:   footnote: string
+81: }
+82: 
+83: export function Sidebar({ mailboxes, onNavigate, footnote }: SidebarProps) {
+84:   return (
+85:     <div className="flex h-full flex-col gap-1 p-3">
+86:       <div className="mb-3 flex h-9 items-center gap-2.5 px-2">
+87:         <MailboxIcon aria-hidden className="size-6 shrink-0 text-accent-text" />
+88:         <span className="truncate text-[15px] font-semibold tracking-tight">Elevateo Mail</span>
+89:       </div>
+90:       <nav aria-label="Mailboxes" className="flex flex-1 flex-col gap-0.5">
+91:         <SearchLink onNavigate={onNavigate} />
+92:         <p className="eyebrow px-3 pb-1 pt-2">Mailboxes</p>
+93:         {mailboxes.length === 0 && <p className="px-3 py-2 text-[13px] text-muted">No mailboxes are visible to you.</p>}
+94:         {mailboxes.map((mailbox) => (
+95:           <Item key={mailbox.id} mailbox={mailbox} onNavigate={onNavigate} />
+96:         ))}
+97:       </nav>
+98:       {/* Honest framing wherever the user is. */}
+99:       <p className="px-3 pt-1 text-[11px] leading-snug text-fg">{footnote}</p>
+100:     </div>
+101:   )
+102: }
