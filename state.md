@@ -329,3 +329,5 @@ SEQ863 Maeve 2d2f95a real-role sequence database fixture is imported as source; 
 OUT804 Dorian 92a8a3e positive restricted-role/stale-digest fixture and QA816 Tessa b04ac24 empty Personal navigation oracle are imported; current fleet role and 8-PNG reruns remain pending.
 
 FE864 Fable 8eb133c now passes optional inert sequence read/write through the central session policy; current integrated web Docker and real browser proof remain pending.
+
+INT801 sequence parent lookup uses existing Campaigns::Repository#detail 404 raise; a focused no-save denial regression is authored after Theo REV867, fleet Docker pending.

@@ -27,10 +27,15 @@ class OutreachSequenceControllerTest < Minitest::Test
   end
 
   class CampaignRepository
+    attr_accessor :visible
     attr_reader :lookups
-    def initialize = (@lookups = 0)
+    def initialize
+      @lookups = 0
+      @visible = true
+    end
     def detail(**)
       @lookups += 1
+      raise Elevateo::CollaborationError.new("not_available") unless @visible
       { "id" => CAMPAIGN }
     end
   end
@@ -103,5 +108,13 @@ class OutreachSequenceControllerTest < Minitest::Test
     end
     assert_nil Sequences.draft_repository.saved
     assert_equal 0, Sequences.campaigns.lookups
+  end
+
+  def test_absent_parent_campaign_returns_404_before_sequence_save
+    Sequences.campaigns.visible = false
+    status, result = dispatch("update", method: "PUT", input: input)
+    assert_equal [404, "not_available"], [status, result.fetch("code")]
+    assert_nil Sequences.draft_repository.saved
+    assert_equal 1, Sequences.campaigns.lookups
   end
 end
