@@ -5,6 +5,7 @@ require_relative "approval_database_helper"
 class SendApprovalDatabaseTest < SendDatabaseTestCase
   def test_atomic_queue_and_saved_operation_replay_after_consumption
     result = approve
+    assert_match(/\A\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{6}Z\z/, result.fetch("approved_at"))
     assert_equal [1, 1, 1, 1], counts
     assert_equal "consumed", draft_row.fetch("state")
     assert_equal "1", draft_row.fetch("version")
@@ -14,6 +15,7 @@ class SendApprovalDatabaseTest < SendDatabaseTestCase
     assert_equal "editable", save(@saved).fetch("state")
     assert_equal "draft_consumed", save(payload(operation_id: SecureRandom.uuid)).fetch("code")
     queued = status(result.fetch("send_id"))
+    assert_match(/Z\z/, queued.fetch("updated_at"))
     assert_equal "queued", queued.fetch("state")
     assert_equal 0, queued.fetch("attempts")
     assert queued.fetch("cancellable")

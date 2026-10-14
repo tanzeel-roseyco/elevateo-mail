@@ -1,3 +1,8 @@
+-- AIDEV-NOTE: Reuse C/D UTC microsecond spelling so strict response projection accepts SQL-produced timestamps.
+CREATE FUNCTION app_send_private.utc_timestamp(p_time timestamptz) RETURNS text
+LANGUAGE sql STABLE STRICT SET search_path = pg_catalog AS $$
+  SELECT to_char(p_time AT TIME ZONE 'UTC','YYYY-MM-DD"T"HH24:MI:SS.US"Z"')
+$$;
 -- AIDEV-NOTE: Scope precedes policy disclosure; return suppressions only for at most100 saved recipients.
 CREATE FUNCTION app_send_private.review_policy(p_binding jsonb) RETURNS jsonb
 LANGUAGE sql STABLE SET search_path = pg_catalog AS $$
@@ -23,7 +28,7 @@ CREATE FUNCTION app_send_private.approval_result(p_intent app_send_private.inten
 LANGUAGE sql IMMUTABLE SET search_path = pg_catalog AS $$
   SELECT jsonb_build_object('send_id',p_intent.send_id,'draft_id',p_intent.draft_id,
     'approved_version',p_intent.draft_version,'review_digest',p_intent.review_digest,
-    'approved_at',p_intent.approved_at,'simulated',true)
+    'approved_at',app_send_private.utc_timestamp(p_intent.approved_at),'simulated',true)
 $$;
 CREATE FUNCTION app_send_private.record_approval_operation(p_org uuid,p_actor uuid,p_operation uuid,p_mailbox uuid,
   p_draft uuid,p_expected integer,p_digest text,p_send uuid,p_code text) RETURNS void

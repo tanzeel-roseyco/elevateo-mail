@@ -11,3 +11,5 @@ Tests prepared: atomic counts, saved operation replay after consumption, same/di
 Outstanding: independent bounded source and design reviews, Docker SQL/regression/type/lint results, integrated actual API/UI acceptance; S3-S5 worker SQL intentionally deferred behind tested S1/S2. Root owns acceptance.
 
 Self-review corrections before runtime: bootstrap role list accidentally repeated the new role, which could issue two CREATE ROLE statements on an empty installation; removed duplicate. Consumed-draft guard now permits legacy ON DELETE SET NULL clearing of reply_to_thread_id while immutable intent retains approved reply context. Neither change is runtime-verified yet. Independent defect density remains pending; self-findings are separate.
+
+Integration-seam repair: timestamp JSON projection now follows C/D fixed UTC microsecond Z spelling; default PostgreSQL timestamptz JSON used +00:00 and would fail Nadia strict projection. Actual projection assertions added; runtime NOT_RUN.

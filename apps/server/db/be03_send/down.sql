@@ -12,7 +12,7 @@ DROP TABLE app_send_private.audit_events,app_send_private.observations,app_send_
 DROP FUNCTION app_send_private.assert_complete_intent(),app_send_private.monotonic_job(),app_send_private.reject_mutation(),
   app_send_private.record_approval_operation(uuid,uuid,uuid,uuid,uuid,integer,text,uuid,text),
   app_send_private.snapshot_validation(jsonb,bytea,text),app_send_private.review_policy(jsonb),
-  app_send_private.canonical_address(text),app_send_private.compact_json(jsonb);
+  app_send_private.canonical_address(text),app_send_private.compact_json(jsonb),app_send_private.utc_timestamp(timestamptz);
 SET LOCAL ROLE elevateo_owner;
 DROP TRIGGER preserve_consumed_draft ON app.drafts;
 DROP FUNCTION app_send_private.preserve_consumed_draft(),app_send_private.status_scope(uuid,uuid),
