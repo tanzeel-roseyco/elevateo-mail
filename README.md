@@ -16,6 +16,8 @@ Shared company mailroom with one Rails domain authority and a React/TypeScript c
 
 ADM-803 has candidate guarded V2 grants and unbound roster APIs; an atomic redacted role audit API is being integrated with Sabine SQL and Cassian contracts. Fleet Docker verification remains pending. See [Theo handoff](docs/completion/theo.md).
 
+The integrated legacy draft bootstrap probe now checks BE03's protective send-intent FK transactionally; full BE02 down/reapply remains a separate disposable BE02-only database check. The current fleet rerun is pending.
+
 
 ### R25 approval reload recovery candidate
 

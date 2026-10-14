@@ -28,14 +28,24 @@ class DraftBootstrapTest < SessionDatabaseTestCase
       @migrator.exec("CREATE TABLE app_drafts_private.be403_sentinel (id integer)")
       @migrator.exec("INSERT INTO app_drafts_private.be403_sentinel VALUES (7)")
       @migrator.exec(File.read(File.join(PARTS, "prerequisite.sql")))
-      @migrator.exec(File.read(File.join(PARTS, "down.sql")))
-      assert_equal "7", @migrator.exec("SELECT id FROM app_drafts_private.be403_sentinel").getvalue(0, 0)
-      assert_equal "app_drafts_private", @migrator.exec("SELECT 'app_drafts_private'::regnamespace::text").getvalue(0, 0)
-      assert_nil @migrator.exec("SELECT to_regclass('app.drafts')").getvalue(0, 0)
-      %w[prerequisite tables policies scope save operations grants].each do |part|
-        @migrator.exec(File.read(File.join(PARTS, "#{part}.sql")))
+      if send_intent_dependency?(@migrator)
+        @migrator.exec("SAVEPOINT protected_draft")
+        error = assert_raises(PG::DependentObjectsStillExist) { @migrator.exec(File.read(File.join(PARTS, "down.sql"))) }
+        assert_equal "2BP01", error.result.error_field(PG::Result::PG_DIAG_SQLSTATE)
+        @migrator.exec("ROLLBACK TO SAVEPOINT protected_draft")
+        assert_equal "7", @migrator.exec("SELECT id FROM app_drafts_private.be403_sentinel").getvalue(0, 0)
+        refute_nil @migrator.exec("SELECT to_regclass('app_drafts_private.operations')").getvalue(0, 0)
+        refute_nil @migrator.exec("SELECT to_regclass('app.drafts')").getvalue(0, 0)
+      else
+        @migrator.exec(File.read(File.join(PARTS, "down.sql")))
+        assert_equal "7", @migrator.exec("SELECT id FROM app_drafts_private.be403_sentinel").getvalue(0, 0)
+        assert_equal "app_drafts_private", @migrator.exec("SELECT 'app_drafts_private'::regnamespace::text").getvalue(0, 0)
+        assert_nil @migrator.exec("SELECT to_regclass('app.drafts')").getvalue(0, 0)
+        %w[prerequisite tables policies scope save operations grants].each do |part|
+          @migrator.exec(File.read(File.join(PARTS, "#{part}.sql")))
+        end
+        refute_nil @migrator.exec("SELECT to_regclass('app_drafts_private.operations')").getvalue(0, 0)
       end
-      refute_nil @migrator.exec("SELECT to_regclass('app_drafts_private.operations')").getvalue(0, 0)
     ensure
       begin
         @migrator.exec("ROLLBACK") if @migrator.transaction_status != PG::PQTRANS_IDLE
@@ -56,7 +66,6 @@ class DraftBootstrapTest < SessionDatabaseTestCase
       transaction do
         @admin.exec("SET LOCAL ROLE elevateo_owner")
         @admin.exec(File.read(File.join(PARTS, "prerequisite.sql")))
-        @admin.exec(File.read(File.join(PARTS, "down.sql")))
         @admin.exec("RESET ROLE")
         @admin.exec(drift)
         @admin.exec("SET LOCAL ROLE elevateo_owner")
@@ -64,7 +73,7 @@ class DraftBootstrapTest < SessionDatabaseTestCase
         error = assert_raises(PG::RaiseException) { @admin.exec(File.read(File.join(PARTS, "prerequisite.sql"))) }
         assert_includes error.message, "bootstrap prerequisite failed"
         @admin.exec("ROLLBACK TO SAVEPOINT prerequisite")
-        assert_nil @admin.exec("SELECT to_regclass('app.drafts')").getvalue(0, 0)
+        refute_nil @admin.exec("SELECT to_regclass('app.drafts')").getvalue(0, 0)
       end
     end
   end
@@ -98,6 +107,14 @@ class DraftBootstrapTest < SessionDatabaseTestCase
   end
 
   private
+
+  def send_intent_dependency?(connection)
+    connection.exec(<<~SQL).getvalue(0, 0) == "t"
+      SELECT EXISTS (SELECT 1 FROM pg_constraint
+        WHERE contype = 'f' AND conrelid = to_regclass('app_send_private.intents')
+          AND confrelid = 'app.drafts'::regclass)
+    SQL
+  end
 
   def transaction
     @admin.exec("BEGIN")

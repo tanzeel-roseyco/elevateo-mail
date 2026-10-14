@@ -1,5 +1,7 @@
 ADM-803: Guarded V2 grants/roster source and current-actor DTO are integrated candidates; Theo role-audit read/projection source is committed while Sabine atomic SQL and Cassian audit contract are in progress. Tests requested, not executed by Theo. See docs/completion/theo.md.
 
+Integrated database evidence at Cassian 45be80b exposed a legacy draft down/reapply probe blocked by BE03's real FK. Theo's transaction-local dependency assertion and roster cursor typing correction are source candidates; Soren fleet rerun and isolated destructive-suite proof remain pending.
+
 # Project state
 
 Application IN PROGRESS — R24 isolated BE03 candidate (2026-10-14). Root authorizes implementation on baseline `03ae770c56271cd8236726bfd8fe63248e81283d` in parallel with BE02 acceptance. BE02 remains OPEN/unaccepted; integration/release gated. S1+S2 priority: saved draft -> consistent review -> human approval -> durable queued intent. Canonical additive `contracts/v1/openapi.json` version `1.0.0-send.1` is prepared; every baseline C/D operation/component and original fixture is preserved.

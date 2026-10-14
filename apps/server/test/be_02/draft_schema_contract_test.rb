@@ -28,7 +28,17 @@ class DraftSchemaContractTest < SessionDatabaseTestCase
       # AIDEV-NOTE: A newer empty send schema intentionally restricts draft deletion; downgrade it within this rollback-only probe.
       if @admin.exec("SELECT to_regclass('app_send_private.intents')").getvalue(0, 0)
         @admin.exec("SET LOCAL ROLE elevateo_send_owner")
-        @admin.exec(File.read(File.expand_path("../../db/be03_send/down.sql", __dir__)))
+        @admin.exec("SAVEPOINT send_dependency_probe")
+        begin
+          @admin.exec(File.read(File.expand_path("../../db/be03_send/down.sql", __dir__)))
+        rescue PG::DependentObjectsStillExist => error
+          # AIDEV-NOTE: Later send reconciliation objects legitimately block an older destructive downgrade.
+          assert_equal "2BP01", error.result.error_field(PG::Result::PG_DIAG_SQLSTATE)
+          @admin.exec("ROLLBACK TO SAVEPOINT send_dependency_probe")
+          refute_nil @admin.exec("SELECT to_regclass('app_send_private.intents')").getvalue(0, 0)
+          refute_nil @admin.exec("SELECT to_regclass('app.drafts')").getvalue(0, 0)
+          return
+        end
       end
       @admin.exec("SET LOCAL ROLE elevateo_owner")
       @admin.exec(File.read(File.join(PARTS, "prerequisite.sql")))

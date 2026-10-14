@@ -120,7 +120,12 @@ module V2
             raise Elevateo::CollaborationError.new("cursor_invalid")
           end
           people = Elevateo::AdministrationRoster.public_people(Elevateo::AdministrationRoster.load)
-          offset = position ? Elevateo::AdministrationRoster::KEYS.index(position.fetch("config_key")) + 1 : 0
+          offset = 0
+          if position
+            index = Elevateo::AdministrationRoster::KEYS.index(position.fetch("config_key"))
+            raise Elevateo::CollaborationError.new("cursor_invalid") unless index
+            offset = index + 1
+          end
           items = people.slice(offset, limit) || []
           next_key = offset + limit < people.length ? items.last.fetch("key") : nil
           cursor = next_key && cursors.encode(position: { "config_key" => next_key }, scope: scope)
