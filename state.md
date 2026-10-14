@@ -1,5 +1,7 @@
 # Project state
 
+NATIVE-942 source candidate: separate unsigned/test-only macOS DMG path uses the guarded shared Tauri shell and exact HTTPS origin/config preflights, while Developer ID/notarization remains required for release. Authored preflight tests are NOT_RUN; no Mac DMG or installed-app proof exists. See `docs/completion/maeve-native942.md`.
+
 Application IN PROGRESS — R24 isolated BE03 candidate (2026-10-14). Root authorizes implementation on baseline `03ae770c56271cd8236726bfd8fe63248e81283d` in parallel with BE02 acceptance. BE02 remains OPEN/unaccepted; integration/release gated. S1+S2 priority: saved draft -> consistent review -> human approval -> durable queued intent. Canonical additive `contracts/v1/openapi.json` version `1.0.0-send.1` is prepared; every baseline C/D operation/component and original fixture is preserved.
 ### Mira BE03 UI isolated R24 implementation (2026-10-14)
 

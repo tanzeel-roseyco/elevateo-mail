@@ -14,6 +14,8 @@ Shared company mailroom with one Rails domain authority and a React/TypeScript c
 
 ## Current state
 
+NATIVE-942 adds a macOS unsigned test-only DMG candidate command alongside the unchanged signed-release gate. No Mac runner, DMG, installed-app validation or release evidence exists yet; fleet Docker preflight tests are requested. See [Maeve native record](docs/completion/maeve-native942.md).
+
 SEQ-876 source repair addresses Soren's exact `e9ead714` sequence controller load SyntaxError at repository line 123. Repository/controller fleet retest is pending; see [Maeve repair record](docs/completion/maeve-seq876-syntax-repair.md).
 
 SEQ-863 candidate adds four real PostgreSQL role tests for sequence GET and protected draft mutations, addressing Nadia REV-858's mocked-evidence gap. They are authored only; fleet Docker execution and independent review are pending. See [Maeve SEQ-863 record](docs/completion/maeve-seq863-real-role-review.md).
