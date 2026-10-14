@@ -166,3 +166,5 @@ QA815 exact `d93c331` Android compile-only unsigned APK policy/build PASS, SHA25
 QA815 exact `e8e8393d` OPS820 seven offline Python scripts/23 top-level tests PASS with exact task container/archive cleanup; initial noexec harness failure retained. Source/base/full restore and real ClamAV NOT_RUN. Current real-auth reporter path and browser umask are preflight findings, not browser runtime evidence.
 
 QA815 acceptance runner umask/private-output preflight is implemented with three authored regression cases, NOT_RUN on fleet yet. Reporter config fix belongs to Tessa; browser and real-auth acceptance remain pending.
+
+QA815 exact `5bdf2ee6` umask/private-output unit 3/3 PASS in fleet Docker; real browser mode proof and reporter smoke NOT_RUN.

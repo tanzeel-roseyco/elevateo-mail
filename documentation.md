@@ -234,3 +234,5 @@ QA815 exact `d93c331` full compile-only APK receipt `docs/completion/qa815-evide
 QA815 exact `e8e8393d` OPS820 offline Python receipts are `docs/completion/qa815-evidence/ops820-python-e8e8393d1076-noexec.txt` (first task-harness failure) and `ops820-python-e8e8393d1076.txt` (corrected seven-script/23-test PASS, cleanup). `ops/tests/qa815/run-ops820-python.sh` pins immutable source and cached image. Real restore/scanner and browser runtime remain pending; reporter/umask seam is documented in `docs/completion/soren.md`.
 
 QA815 browser privacy preflight source is `ops/tests/be02/acceptance_runtime.py`, with three scoped regression cases in `ops/tests/be02/test_acceptance_private_output.py`; fleet execution and Tessa's reporter repair are pending. See `docs/completion/soren.md`.
+
+QA815 fleet unit receipt `docs/completion/qa815-evidence/acceptance-private-5bdf2ee6bc9e.txt` records exact `5bdf2ee6` three-case umask/private-output PASS and cleanup. Actual browser proof remains pending.

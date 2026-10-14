@@ -224,3 +224,5 @@ QA815 exact `d93c331` full fleet Android compile-only build passed 20 Python met
 QA815 exact `e8e8393d` OPS820 offline Python batch passed seven scripts/23 top-level tests in a capped, network-disabled fleet container after a preserved noexec task-harness failure; task container/archive cleanup passed. Source/base/full restore, real scanner, and real-auth browser remain unrun. The acceptance reporter path and browser umask require a reviewed preflight correction; see `docs/completion/soren.md`.
 
 QA815 browser runner now requires actual umask077 and private output mode proof before acceptance cases; Tessa owns the permanent compiled reporter config path. Three scoped runner unit cases are authored and fleet execution is pending. See `docs/completion/soren.md`.
+
+QA815 exact `5bdf2ee6` browser private-output runner units passed 3/3 under fleet Docker with task cleanup. Actual browser mount and reporter `--list` smoke remain pending integrated source.
