@@ -25,7 +25,10 @@ module Elevateo
         row = @connection.exec_query(SQL, "IMAP receive", binds(values)).first
         raise Rejected, "store_unavailable" unless row
 
-        result = JSON.parse(row.fetch("result"))
+        raw = row.fetch("result")
+        raise Rejected, "store_unavailable" unless raw.is_a?(String)
+
+        result = JSON.parse(raw)
         unless result.is_a?(Hash) && %w[created duplicate uidvalidity_changed].include?(result["result"])
           raise Rejected, "store_unavailable"
         end
@@ -35,27 +38,38 @@ module Elevateo
       def reset_uidvalidity(account_id:, credential_version:, expected:, replacement:)
         values = [account_id, credential_version, expected, replacement]
         row = @connection.exec_query(RESET_SQL, "IMAP epoch reset", binds(values)).first
-        row && row["result"] == true
+        !row.nil? && row["result"] == true
       end
 
       def claim(account_id:, credential_version:)
         row = @connection.exec_query(CLAIM_SQL, "IMAP account claim", binds([account_id, credential_version])).first
         raise Rejected, "account_unavailable" unless row
 
-        result = JSON.parse(row.fetch("result"))
-        unless result.is_a?(Hash) && result.keys.sort == %w[credential_ref last_uid uidvalidity] &&
-               result["credential_ref"].is_a?(String) && result["credential_ref"].start_with?("test:") &&
-               result["last_uid"].is_a?(Integer) && result["last_uid"] >= 0 &&
-               (result["uidvalidity"].nil? || result["uidvalidity"].is_a?(Integer))
-          raise Rejected, "account_unavailable"
-        end
-        result
+        raw = row.fetch("result")
+        raise Rejected, "account_unavailable" unless raw.is_a?(String)
+
+        result = JSON.parse(raw)
+        raise Rejected, "account_unavailable" unless result.is_a?(Hash) &&
+          result.keys.sort == %w[credential_ref last_uid uidvalidity]
+
+        ref = result.fetch("credential_ref")
+        last_uid = result.fetch("last_uid")
+        validity = result.fetch("uidvalidity")
+        raise Rejected, "account_unavailable" unless ref.is_a?(String) && ref.start_with?("test:")
+        raise Rejected, "account_unavailable" unless last_uid.is_a?(Integer) && last_uid >= 0
+        raise Rejected, "account_unavailable" unless validity.nil? || validity.is_a?(Integer)
+
+        # @type var claim: imap_claim
+        claim = { "credential_ref" => ref, "uidvalidity" => validity, "last_uid" => last_uid }
+        claim
       end
 
       private
 
       def binds(values)
-        values.map { |value| ActiveRecord::Relation::QueryAttribute.new("imap_receive", value, ActiveRecord::Type::String.new) }
+        values.map do |value|
+          ActiveRecord::Relation::QueryAttribute.new("imap_receive", value&.to_s, ActiveRecord::Type::String.new)
+        end
       end
     end
   end
