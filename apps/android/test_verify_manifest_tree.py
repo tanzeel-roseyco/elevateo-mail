@@ -8,13 +8,20 @@ from verify_manifest_tree import require_no_view_filter, verify_manifest_tree
 
 class VerifyManifestTreeTest(unittest.TestCase):
     def test_accepts_successful_nonempty_tree_without_view(self) -> None:
-        require_no_view_filter(0, "E: manifest (line=1)\n  E: application (line=2)\n")
+        require_no_view_filter(
+            0,
+            "N: android=http://schemas.android.com/apk/res/android\n"
+            "  E: manifest (line=2)\n"
+            '    A: package="com.elevateo.mail.fixture" (Raw: "com.elevateo.mail.fixture")\n'
+            "    E: application (line=24)\n",
+        )
 
     def test_rejects_view_callback(self) -> None:
         with self.assertRaises(ValueError):
             require_no_view_filter(
                 0,
-                'E: manifest (line=1)\n  E: application (line=2)\n'
+                'N: android=http://schemas.android.com/apk/res/android\n'
+                '  E: manifest (line=2)\n    E: application (line=24)\n'
                 '    E: action android.intent.action.VIEW\n',
             )
 
@@ -33,8 +40,19 @@ class VerifyManifestTreeTest(unittest.TestCase):
         with self.assertRaises(ValueError):
             require_no_view_filter(
                 0,
-                "E: manifest (line=1)\n  E: application (line=2)\n",
+                "N: android=http://schemas.android.com/apk/res/android\n"
+                "  E: manifest (line=2)\n    E: application (line=24)\n",
                 "warning: malformed resource\n",
+            )
+
+    def test_rejects_flat_or_unrelated_tree(self) -> None:
+        with self.assertRaises(ValueError):
+            require_no_view_filter(0, "E: manifest (line=2)\n  E: application (line=24)\n")
+        with self.assertRaises(ValueError):
+            require_no_view_filter(
+                0,
+                "N: android=http://schemas.android.com/apk/res/android\n"
+                "  E: manifest (line=2)\n  E: application (line=24)\n",
             )
 
 

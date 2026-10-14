@@ -8,9 +8,10 @@ import re
 def require_no_view_filter(returncode: int, output: str, stderr: str = "") -> None:
     if returncode != 0 or stderr.strip():
         raise ValueError("APK manifest xmltree inspection failed")
-    if not re.search(r"(?m)^E: manifest(?: \(|$)", output) or not re.search(
-        r"(?m)^[ \t]+E: application(?: \(|$)", output
-    ):
+    namespace = "N: android=http://schemas.android.com/apk/res/android\n"
+    manifest = re.search(r"(?m)^  E: manifest \(line=\d+\)$", output)
+    application = re.search(r"(?m)^    E: application \(line=\d+\)$", output)
+    if not output.startswith(namespace) or not manifest or not application:
         raise ValueError("aapt output did not contain an Android manifest tree")
     if "android.intent.action.VIEW" in output:
         raise ValueError("Unreviewed Android VIEW callback filter")
