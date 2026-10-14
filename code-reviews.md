@@ -569,3 +569,7 @@ ADV868 Tessa R21e source review: 165 source LOC (31 old +39 new wrapper +26 help
 
 
 Vale BE03 read-cap exception is a process note, not code acceptance; see docs/completion/int403-r23-application-state.md.
+
+## R24 deployment documentation verification
+
+Documentation-only deployment registry checked against six live fleet launcher processes and native thread.started events. Application code reviewed: 0 lines; new code defects: 0; defect density: N/A. No build or test performed by deployment coordinator. Integration/release acceptance remains open.

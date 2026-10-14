@@ -1,0 +1,74 @@
+[
+  {
+    "name": "cassian",
+    "ticket": "BE03-CONTRACT",
+    "branch": "delivery/cassian-r24",
+    "path": "/home/tanzeel/elevateo-mail-wave-20261014/cassian-delivery-r24",
+    "runner": "/home/tanzeel/elevateo-mail-wave-20261014/incoming/delivery-cassian-r24.sh",
+    "terminal_id": "term_ec69b3d1-9199-4898-a1f1-fd95167fc5b9",
+    "pid": 2809271,
+    "process": "2809271 2808246 Ss+  bash",
+    "thread": "01a139fb-3eea-7bc2-9411-6bafe5b053a7",
+    "exit_file": false
+  },
+  {
+    "name": "rowan",
+    "ticket": "BE03-SQL",
+    "branch": "delivery/rowan-r24",
+    "path": "/home/tanzeel/elevateo-mail-wave-20261014/rowan-delivery-r24",
+    "runner": "/home/tanzeel/elevateo-mail-wave-20261014/incoming/delivery-rowan-r24.sh",
+    "terminal_id": "term_0c9cd67d-81d6-440f-8ff3-35291e6b105b",
+    "pid": 2809391,
+    "process": "2809391 2808750 Ss+  bash",
+    "thread": "01a139fb-406d-77a0-9d2f-0c8f1a060f29",
+    "exit_file": false
+  },
+  {
+    "name": "nadia",
+    "ticket": "BE03-API",
+    "branch": "delivery/nadia-r24",
+    "path": "/home/tanzeel/elevateo-mail-wave-20261014/nadia-delivery-r24",
+    "runner": "/home/tanzeel/elevateo-mail-wave-20261014/incoming/delivery-nadia-r24.sh",
+    "terminal_id": "term_c3ddf20f-c50f-47b5-8d5e-908dabeedd8a",
+    "pid": 2809400,
+    "process": "2809400 2808748 Ss+  bash",
+    "thread": "01a139fb-4086-70e1-ad78-8f2d339b9872",
+    "exit_file": false
+  },
+  {
+    "name": "mira",
+    "ticket": "BE03-UI",
+    "branch": "delivery/mira-r24",
+    "path": "/home/tanzeel/elevateo-mail-wave-20261014/mira-delivery-r24",
+    "runner": "/home/tanzeel/elevateo-mail-wave-20261014/incoming/delivery-mira-r24.sh",
+    "terminal_id": "term_827eb0de-a486-4a1a-a76d-4c0ffa141317",
+    "pid": 2809402,
+    "process": "2809402 2808751 Ss+  bash",
+    "thread": "01a139fb-4083-75f0-b68c-6780411a4f8e",
+    "exit_file": false
+  },
+  {
+    "name": "elara",
+    "ticket": "BE03-WORKER",
+    "branch": "delivery/elara-r24",
+    "path": "/home/tanzeel/elevateo-mail-wave-20261014/elara-delivery-r24",
+    "runner": "/home/tanzeel/elevateo-mail-wave-20261014/incoming/delivery-elara-r24.sh",
+    "terminal_id": "term_282bc624-1b00-477c-a4ab-de25f0d76e09",
+    "pid": 2809401,
+    "process": "2809401 2808749 Ss+  bash",
+    "thread": "01a139fb-407f-70f1-a154-15dc942a9b05",
+    "exit_file": false
+  },
+  {
+    "name": "soren",
+    "ticket": "BE02-ACCEPT",
+    "branch": "delivery/soren-r24",
+    "path": "/home/tanzeel/elevateo-mail-wave-20261014/soren-delivery-r24",
+    "runner": "/home/tanzeel/elevateo-mail-wave-20261014/incoming/delivery-soren-r24.sh",
+    "terminal_id": "term_cf5c85d8-38c5-4611-945d-7b0be8c7af4e",
+    "pid": 2809403,
+    "process": "2809403 2808711 Ss+  bash",
+    "thread": "01a139fb-4095-7261-b33d-17a11e679943",
+    "exit_file": false
+  }
+]
