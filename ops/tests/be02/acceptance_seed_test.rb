@@ -6,7 +6,12 @@ require_relative "acceptance_seed"
 # AIDEV-NOTE: Fixture authority is case-specific; these tests never contact Auth or a database.
 class AcceptanceSeedTest < Minitest::Test
   Runtime = Struct.new(:seed)
-  Result = Struct.new(:values)
+  # AIDEV-NOTE: PG exposes values; a plain fake avoids overriding Struct's inherited values method.
+  Result = Data.define(:rows) do
+    def values
+      rows
+    end
+  end
   Database = Struct.new(:rows) do
     def exec(sql)
       raise "unexpected fixture query" unless sql ==
