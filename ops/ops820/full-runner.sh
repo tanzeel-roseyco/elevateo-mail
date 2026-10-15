@@ -1,21 +1,27 @@
 #!/usr/bin/env bash
-# AIDEV-NOTE: destructive migration reversal is confined to the disposable restored project.
+# AIDEV-NOTE: reversal runs only in disposable projects and never crosses the attachment preservation boundary.
 set -Eeuo pipefail
 umask 077
 project=${1:?disposable project required}
 envfile=${2:?private environment required}
 root=${3:?source root required}
-[[ "$project" == ops402-restore-* && "$envfile" = /* && "$root" = /* ]] || exit 66
+mode=${4:-restored}
+[[ "$envfile" = /* && "$root" = /* ]] || exit 66
+case "$mode:$project" in
+  restored:ops402-restore-*) minimum=20261015000017; maximum=99999999999999 ;;
+  pre-attachment:ops820-source-*) minimum=20261013000008; maximum=20261015000014 ;;
+  *) exit 66 ;;
+esac
 image=${OPS820_SERVER_IMAGE:?pinned server image required}
 [[ "$image" == sha256:* || "$image" == *@sha256:* ]] || exit 66
 [[ -f "$envfile" && -d "$root/apps/server/db/migrate" ]] || exit 66
 versions=()
-# AIDEV-NOTE: Reverse the complete tail so newer foreign keys/functions cannot outlive their prerequisites.
+# AIDEV-NOTE: Each stage reverses its complete dependency tail; the immutable attachment migration is never bypassed.
 for file in "$root"/apps/server/db/migrate/*.rb; do
   name=${file##*/}
   [[ -f $file && $name =~ ^([0-9]{14})_[a-z0-9_]+\.rb$ ]] || exit 66
   version=${BASH_REMATCH[1]}
-  if (( version >= 20261013000008 )); then versions+=("$version"); fi
+  if (( version >= minimum && version <= maximum )); then versions+=("$version"); fi
 done
 (( ${#versions[@]} > 0 )) || exit 66
 mapfile -t versions < <(printf '%s\n' "${versions[@]}" | sort -n)
@@ -24,7 +30,11 @@ for version in "${versions[@]}"; do
   (( version > previous )) || exit 66
   previous=$version
 done
-for required in 20261013000008 20261013000009 20261013000010 20261015000011 20261015000018; do
+required_versions=(20261015000017 20261015000018 20261015000019)
+if [[ $mode == pre-attachment ]]; then
+  required_versions=(20261013000008 20261013000009 20261013000010 20261015000011 20261015000014)
+fi
+for required in "${required_versions[@]}"; do
   [[ " ${versions[*]} " == *" $required "* ]] || exit 66
 done
 rails() {
@@ -44,7 +54,7 @@ rails() {
 }
 compose() { docker compose -p "$project" --env-file "$envfile" -f "$root/ops/supabase/compose.yaml" "$@"; }
 scratch=$(mktemp -d)
-trap 'rm -f -- "$scratch/before" "$scratch/after" "$scratch/migrator.env" "$scratch/api.env" "$scratch/worker.env"; rmdir -- "$scratch"' EXIT
+trap 'rm -f -- "$scratch/before" "$scratch/after" "$scratch/refusal" "$scratch/migrator.env" "$scratch/api.env" "$scratch/worker.env"; rmdir -- "$scratch"' EXIT
 for role in migrator api worker; do
   python3 "$root/ops/ops820/runtime_env.py" "$envfile" "$scratch/$role.env" "$role" >/dev/null
 done
@@ -63,6 +73,16 @@ for ((index=${#versions[@]}-1; index>=0; index--)); do
       < "$root/ops/ops820/gateway-down-smoke.sql" >/dev/null
   fi
 done
+if [[ $mode == restored ]]; then
+  # AIDEV-NOTE: Require the intentional refusal, then compare metadata/data too; an unexpected error cannot pass.
+  if rails db:migrate:down VERSION=20261015000015 > "$scratch/refusal" 2>&1; then
+    echo 'attachment preservation boundary unexpectedly reversed' >&2; exit 1
+  fi
+  grep -Fq 'ActiveRecord::IrreversibleMigration' "$scratch/refusal" &&
+    grep -Fq 'preserve attachment metadata and quarantine objects' "$scratch/refusal" || {
+      echo 'attachment preservation boundary failed with an unexpected error' >&2; exit 1;
+    }
+fi
 for version in "${versions[@]}"; do
   rails db:migrate:up "VERSION=$version"
 done
@@ -70,6 +90,8 @@ schema_dump > "$scratch/after"
 cmp -s -- "$scratch/before" "$scratch/after" || {
   echo 'restored app schema/data changed after down/up' >&2; exit 1;
 }
+echo "PASS disposable migrations stage=$mode and app schema/data fingerprint"
+[[ $mode != pre-attachment ]] || exit 0
 compose exec -T db psql -U supabase_admin -d postgres -v ON_ERROR_STOP=1 \
   < "$root/ops/ops820/post_restore.sql" >/dev/null
 docker run --rm --network "${project}_private" --read-only --cap-drop ALL \
@@ -93,4 +115,4 @@ docker run --rm --network none --read-only --cap-drop ALL --user 10001:10001 \
   -relevateo/administration_roster -e 'roster = Elevateo::AdministrationRoster.load; abort "roster not unbound" unless roster.fetch("people").length == 12 && roster.fetch("people").all? { |p| p["auth_user_id"].nil? && p["email"].nil? } && roster.fetch("mailbox_grants") == [] && roster.fetch("live_activation") == false'
 "$root/ops/ops820/health-probe.sh" "$project" "$scratch/api.env" "$root"
 "$root/ops/ops820/worker-probe.sh" "$project" "$scratch/worker.env" "$root"
-echo 'PASS disposable migrations down/up and app schema/data fingerprint'
+echo 'PASS restored application health and held worker'

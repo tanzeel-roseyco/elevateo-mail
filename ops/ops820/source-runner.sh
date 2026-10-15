@@ -38,6 +38,7 @@ docker run --rm --network "${project}_private" --read-only --cap-drop ALL \
   --env-file "$envfile" -e PGHOST=db -e PGUSER=supabase_admin -e PGDATABASE=postgres \
   -v "$root/ops/ops820/gateway-bootstrap-smoke.sql:/gateway-bootstrap-smoke.sql:ro" --entrypoint bash "$db_image" \
   -c 'export PGPASSWORD="$POSTGRES_PASSWORD"; exec psql -v ON_ERROR_STOP=1 -f /gateway-bootstrap-smoke.sql' >/dev/null
+rails_migrate() {
 docker run --rm --network "${project}_private" --read-only --cap-drop ALL \
   --user 10001:10001 --memory 768m --pids-limit 256 \
   --env-file "$scratch/runtime.env" -e RAILS_ENV=test -e ELEVATEO_MODE=local \
@@ -51,7 +52,12 @@ docker run --rm --network "${project}_private" --read-only --cap-drop ALL \
   --tmpfs /workspace/apps/server/tmp:uid=10001,gid=10001,mode=1770 \
   --tmpfs /workspace/apps/server/log:uid=10001,gid=10001,mode=1770 \
   --tmpfs /tmp --workdir /workspace/apps/server --entrypoint bundle \
-  "$server_image" exec rails db:migrate
+  "$server_image" exec rails "$@"
+}
+# AIDEV-NOTE: Prove legacy rollback on a fresh schema before the attachment metadata preservation boundary exists.
+rails_migrate db:migrate VERSION=20261015000014
+"$root/ops/ops820/full-runner.sh" "$project" "$envfile" "$root" pre-attachment
+rails_migrate db:migrate
 docker run --rm --network "${project}_private" --read-only --cap-drop ALL \
   --env-file "$envfile" -e PGHOST=db -e PGUSER=supabase_admin -e PGDATABASE=postgres \
   -v "$root/ops/ops820/gateway-bootstrap-smoke.sql:/gateway-bootstrap-smoke.sql:ro" --entrypoint bash "$db_image" \

@@ -6,7 +6,7 @@ This is an operator template, not approval or execution evidence. Root owns acti
 - [ ] Every deployable image/client has pinned digest, reproducible build provenance, SBOM hash, signing identity and signature verification receipt.
 - [ ] Redacted configuration diff is approved; private secrets are separately provisioned; send API is disabled and outbound hold is active at startup.
 - [ ] Fresh task-owned test backup includes PostgreSQL, globals, private objects and task-owned credentials; manifest hashes and exact source identity recorded.
-- [ ] Disposable restore verifies DB/object markers, 00008–00011 plus worker migration down/up, app schema/data fingerprints, role privileges/FORCE RLS and exact resource cleanup.
+- [ ] Fresh source verifies the complete reversible migration tail from 20261013000008 through 20261015000014 before applying attachments; restored latest schema verifies the complete tail from 20261015000017 and requires attachment rollback refusal, with unchanged app schema/data fingerprints in both stages, DB/object markers, role privileges/FORCE RLS and exact resource cleanup.
 - [ ] Authenticated authorized, denied cross-tenant, anonymous and revoked-principal HTTP/RLS probes pass against restored application services.
 - [ ] API `/health` and `/ready`, held worker heartbeat, queue drain, and no-live-send control are observed.
 - [ ] Restricted attachment gateway login has no membership or direct table/Auth privilege; its dedicated schema exposes only the complete session and mailbox-authorized helper, with revocation probes passing.
