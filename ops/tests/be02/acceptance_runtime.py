@@ -28,7 +28,7 @@ CFT_ARCHIVE = {
 }
 VERSIONS = {"chromium": "156.0.8078.4", "firefox": "157.0", "webkit": "27.2"}
 # AIDEV-NOTE: Keep repair unit entrypoints explicit; ui.browser-probe requires a real browser lane.
-UNITS = ["contracts/report-validation.spec", "proxy/proxy.spec", "playwright/boundaries.unit.spec",
+UNITS = ["contracts/report-validation.spec", "proxy/proxy.spec", "proxy/readiness.spec", "playwright/boundaries.unit.spec",
          "playwright/credential-origin.unit.spec", "playwright/credential-fill.unit.spec",
          "playwright/screenshots.unit.spec", "playwright/invitation.unit.spec",
          "playwright/diagnostics.unit.spec",
@@ -276,16 +276,10 @@ class Acceptance:
                 self.task.docker("observer-remove", ["container", "rm", "-f", identity], 3)
 
     def readiness(self, identity: str, grid: bool = False) -> None:
-        urls = {"http://selenium:4444/status": 200} if grid else {
-            "http://app.test/": 200, "http://app.test/auth/complete": 200,
-            "http://app.test/v1/session": 401, "http://app.test/dev-fixtures.html": 404,
-            "http://app.test/src/main.tsx": 404}
-        script = """const end=Date.now()+60000; let ready=false;
-          while(Date.now()<end&&!ready){try{for(const [url,status] of Object.entries(URLS)){
-            const r=await fetch(url,{signal:AbortSignal.timeout(2000),redirect:'manual'});
-            if(r.status!==status || (url.endsWith('/status') && !(await r.json()).value.ready))throw 0;
-          }ready=true;}catch{await new Promise(r=>setTimeout(r,500));}} if(!ready)process.exit(1);"""
-        self.execute(identity, ["node", "--input-type=module", "-e", script.replace("URLS", json.dumps(urls))])
+        # AIDEV-NOTE: Retain only fixed diagnostic codes; the compiled gate validates API media/schema before UI work.
+        self.task.docker("acceptance-readiness", ["container", "exec", identity,
+            "node", "dist/proxy/readiness-cli.js", "grid" if grid else "app"], 90,
+            quiet=True, diagnostic_stderr=True)
 
     def run(self) -> None:
         task = self.task
