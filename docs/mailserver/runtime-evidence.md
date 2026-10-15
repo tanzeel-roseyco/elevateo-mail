@@ -1,4 +1,40 @@
-# MAIL1017 runtime and REA evidence
+# Mail runtime and REA evidence
+
+## MAIL1018 held worker and inbox composition
+
+The successful fleet-02 gate is `be02-efaf3b7cb1de4ef7a08428120328bc12`, under
+`/home/tanzeel/orca/workspaces/integration/completion-cassian-int801/ops/local/`.
+The gate's `source.sha256.json` binds the tested files. No public ports, production credentials,
+external mail or purchased services were used. The production remote profile remains held.
+
+The standard Ruby gate reports 140 suites, 839 tests and 8,922 assertions. The real Mox composition
+adds 3 tests/74 assertions; authenticated HTTP acceptance adds 1/33. Total: 142 suite summaries,
+843 tests/9,029 assertions, zero failures/errors/skips. Twelve dedicated suites are explicitly
+deferred; this is not all application/native acceptance. Whole-server Steep has no errors;
+canonical RuboCop passes 327 files and Mox RuboCop passes two fixture files. The separate unit
+gate passes 96 tests: 77 BE02 runner, 8 OPS820 and 11 mailserver tests.
+
+The Mox fixture traverses PostgreSQL approval, restricted worker execution, verified STARTTLS,
+versioned receipt storage, TLS IMAP import, durable cursor/receipt and tenant inbox/RLS visibility.
+A delayed acknowledgment leaves the send unknown and does not resend; revoked inbound account
+access fails before a second credential lookup/connection. The fixture is not a production
+credential resolver, aggregate quota implementation or proof of external inbox placement.
+
+`result.json`, `cleanup.json` and `mox-cleanup.json` pass. Cleanup removed five task containers,
+one builder container and registration, three task volumes, one network and one application
+image. Independent exact inspection confirms 17 resource/private-file entries absent, including
+both Mox containers and synthetic credential files. Shared bases and persistent data remain.
+Host free bytes changed 254,982,402,048 to 254,996,930,560: +14,528,512 bytes (13.86 MiB), a
+shared-host delta rather than attributable reclamation. No disk compaction was performed.
+
+Earlier attempts remain failed evidence: `be02-455...` reached Ruby/Mox success but failed an
+inconsistent broader style gate; the corrected runner uses the existing canonical lint policy.
+A prior fixture ownership failure was corrected with private exclusive creation, ownership set
+before writing, close-before-ready handoff, and four regressions. The independent cleanup probe's
+first run failed to recognize Docker's `no builder ... found` response; its corrected absence
+predicate passes. No failed overall run is relabelled as passed.
+
+Review and design coverage is recorded in `code-reviews.md`. MAIL1019 onward remains work.
 
 ## Artifact provenance
 
@@ -82,8 +118,8 @@ No live credentials, password files, TLS private keys or message databases are i
 
 ## Remaining implementation, in dependency order
 
-1. MAIL1018: distinct Mox fixture profile, verified-TLS worker client and versioned receipt SQL/RBS;
-   profile-aware drain and worker composition. Keep remote profiles held.
+1. MAIL1018: held fixture profile, verified-TLS worker, versioned receipt SQL/RBS and worker/inbox
+   composition are complete within the private gate above. Production profiles remain held.
 2. MAIL1019: versioned worker-only secret resolver with tenant binding and a bounded IMAP entrypoint;
    revocation, malformed secret, timeout and UIDVALIDITY reset acceptance.
 3. MAIL1020: PostgreSQL aggregate organization/group/mailbox/domain/IP/destination budgets, reserved

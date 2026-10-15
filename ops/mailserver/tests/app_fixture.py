@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import os
 from pathlib import Path
 import secrets
 import shutil
@@ -9,6 +10,17 @@ import time
 
 import dns_fixture
 from fixture import CONFIG, ROOT, account, command, configure, start, stop
+
+
+def write_credentials(out: Path, passwords: dict[str, str]) -> None:
+    owner = out.stat()
+    if out.is_symlink() or owner.st_mode & 0o777 != 0o700:
+        raise PermissionError('fixture evidence directory must be private')
+    # AIDEV-NOTE: The root fixture hands this 0600 file to the host directory owner; cleanup deletes only this file.
+    descriptor = os.open(out / 'fixture-credentials.json', os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW, 0o600)
+    with os.fdopen(descriptor, 'w', encoding='utf-8') as credentials:
+        os.fchown(credentials.fileno(), owner.st_uid, owner.st_gid)
+        json.dump(passwords, credentials)
 
 
 def main() -> None:
@@ -23,10 +35,7 @@ def main() -> None:
         for address, password in passwords.items():
             command('setaccountpassword', address, data=(password + '\n').encode())
         shutil.copyfile(CONFIG / 'tls.crt', out / 'fixture-ca.pem')
-        # AIDEV-NOTE: Private synthetic credentials exist only for this run; the host trap deletes this exact file.
-        credentials = out / 'fixture-credentials.json'
-        credentials.write_text(json.dumps(passwords), encoding='utf-8')
-        credentials.chmod(0o600)
+        write_credentials(out, passwords)
         (out / 'ready').write_text('ready\n', encoding='ascii')
         end = time.monotonic() + 360
         while time.monotonic() < end:

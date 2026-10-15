@@ -6,10 +6,10 @@ require "openssl"
 require "timeout"
 require "/app/lib/elevateo/send_api/canonical"
 require "/app/lib/elevateo/send_worker/control"
-require "/app/lib/elevateo/send_worker/smtp_transport"
+require "/app/lib/elevateo/send_worker/mox_smtp_transport"
 require "/app/lib/elevateo/inbound/tls_imap_transport"
 
-# AIDEV-NOTE: Direct fixture SMTP proves codecs/IMAP only; production worker selection stays held.
+# AIDEV-NOTE: Actual Mox adapter/IMAP wire proof; database authority is tested separately, production stays held.
 class AppMoxCompatibilityTest < Minitest::Test
   SEND_ID = "11111111-1111-4111-8111-111111111111"
   ORG = "22222222-2222-4222-8222-222222222222"
@@ -33,24 +33,23 @@ class AppMoxCompatibilityTest < Minitest::Test
   end
 
   def snapshot
-    bytes = Elevateo::SendAPI::Canonical.bytes(organization_id: ORG, mailbox_id: BOX, draft_id: DRAFT,
+    Elevateo::SendAPI::Canonical.bytes(organization_id: ORG, mailbox_id: BOX, draft_id: DRAFT,
       version: 1, sender: FROM, recipients: [{ "display_name" => nil, "address" => TO }],
-      subject: "MAIL1017 application compatibility", body: BODY, reply_id: nil, policy: "1")
-    Elevateo::SendWorker::SmtpSnapshot.render(bytes, send_id: SEND_ID, verified_sender: FROM)
+      subject: "MAIL1018 application compatibility", body: BODY, reply_id: nil, policy: "1")
+  end
+
+  def smtp_transport(password: nil, ca: CA)
+    Elevateo::SendWorker::MoxSmtpTransport.new(profile: Elevateo::SendWorker::SmtpProfile.local_mox,
+      ca_file: ca, credential_resolver: ->(_) { [FROM, password || passwords.fetch(FROM)] })
   end
 
   def test_actual_snapshot_survives_verified_tls_and_actual_imap_reader
-    rendered = snapshot
-    context = OpenSSL::SSL::SSLContext.new
-    context.set_params(verify_mode: OpenSSL::SSL::VERIFY_PEER, verify_hostname: true, ca_file: CA)
-    smtp = Net::SMTP.new("localhost", 1587)
-    smtp.open_timeout = smtp.read_timeout = 5
-    smtp.enable_starttls(context)
-    Timeout.timeout(30) do
-      smtp.start("mail.lab.test", FROM, passwords.fetch(FROM), :plain) do |client|
-        assert_match(/\A2/, client.send_message(rendered.mime, rendered.sender, *rendered.recipients).status)
-      end
-    end
+    rendered = Elevateo::SendWorker::SmtpSnapshot.render(snapshot, send_id: SEND_ID, verified_sender: FROM)
+    result = smtp_transport.submit(snapshot, send_id: SEND_ID, attempt_id: DRAFT,
+      deadline: Elevateo::SendWorker::CallDeadline.new(seconds: 10))
+    assert_equal "accepted", result.kind
+    assert result.simulated?
+    assert_match(/\Amox-test-v1:[0-9a-f]{64}\z/, result.receipt_ref)
     rows = []
     Timeout.timeout(30) do
       loop do
@@ -73,7 +72,7 @@ class AppMoxCompatibilityTest < Minitest::Test
     assert_equal [TO], mail.to
     assert_equal BODY, mail.decoded.gsub("\r\n", "\n")
     assert_equal Mail.read_from_string(rendered.mime).message_id, mail.message_id
-    assert_equal "MAIL1017 application compatibility", mail.subject
+    assert_equal "MAIL1018 application compatibility", mail.subject
     session = transport.open(credential_ref: "test:mox-compatibility")
     assert_empty session.fetch_after(rows.first.fetch(:uid), limit: 50)
   ensure
@@ -83,6 +82,17 @@ class AppMoxCompatibilityTest < Minitest::Test
   def test_wrong_imap_password_fails
     assert_raises(Net::IMAP::NoResponseError) do
       transport(password: "deliberately-wrong").open(credential_ref: "test:mox-compatibility")
+    end
+  end
+
+  def test_actual_smtp_wrong_password_and_untrusted_ca_are_held
+    [smtp_transport(password: "deliberately-wrong"),
+     smtp_transport(ca: "/etc/ssl/certs/ca-certificates.crt")].each do |driver|
+      error = assert_raises(Elevateo::SendWorker::SmtpTransport::Held) do
+        driver.submit(snapshot, send_id: SEND_ID, attempt_id: DRAFT,
+          deadline: Elevateo::SendWorker::CallDeadline.new(seconds: 10))
+      end
+      assert_nil error.cause
     end
   end
 

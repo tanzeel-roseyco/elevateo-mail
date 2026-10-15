@@ -20,7 +20,8 @@ module Elevateo
       end
 
       def submit(bytes, send_id:, attempt_id:, deadline:)
-        raise Held, "remote SMTP remains held" if @profile.held?
+        # AIDEV-NOTE: This adapter owns Mailpit only; the Mox adapter has separate TLS and identity admission.
+        raise Held, "Mailpit profile required; remote SMTP remains held" unless @profile.local_test?
         raise ArgumentError, "invalid SMTP attempt" unless Control.valid_epoch?(attempt_id)
         rendered = SmtpSnapshot.render(bytes, send_id: send_id, verified_sender: @profile.verified_sender)
         unless rendered.recipients.all? { |address| address.split("@", 2).last.end_with?(".invalid") }

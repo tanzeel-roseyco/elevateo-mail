@@ -5,7 +5,7 @@ set -euo pipefail
 unset DOCKER_CONTEXT DOCKER_TLS_VERIFY DOCKER_CERT_PATH
 docker() { command docker --host unix:///var/run/docker.sock "$@"; }
 run=${1:?unique run id required}
-[[ $run =~ ^mail1017-app-r[0-9]{1,2}$ ]] || exit 3
+[[ $run =~ ^mail10(17|18)-app-r[0-9]{1,2}$ ]] || exit 3
 base=/home/tanzeel/elevateo-mail-completion-20261015/control/mail1017
 repo=/home/tanzeel/orca/workspaces/integration/completion-cassian-int801
 root=$(cd -- "$(dirname -- "$0")" && pwd)
@@ -26,7 +26,7 @@ for name in "$server" "$client"; do ! grep -Fxq "$name" <<< "$containers" || exi
 docker image inspect "$python" "$ruby" >/dev/null
 umask 077
 mkdir "$out"
-find "$root" "$repo/apps/server/lib" "$repo/apps/server/sig" "$repo/apps/server/test" \
+find "$root" "$repo/apps/server/lib" "$repo/apps/server/sig" "$repo/apps/server/test" "$repo/apps/server/db" \
   -type f -print0 | sort -z | xargs -0 sha256sum > "$out/source-sha256.txt"
 sha256sum "$repo/apps/server/Gemfile" "$repo/apps/server/Gemfile.lock" \
   "$repo/apps/server/Steepfile" >> "$out/source-sha256.txt"

@@ -1,8 +1,18 @@
 module Net
   class SMTP
     # AIDEV-NOTE: net-smtp 0.5.2 implements these before connect; bundled RBS 4.2 omits them.
-    # The caller uses them only for the isolated Mailpit profile.
+    # Disable calls belong to Mailpit; timeout/STARTTLS/block calls belong to the verified Mox fixture.
     def disable_tls: () -> void
     def disable_starttls: () -> void
+    def open_timeout=: (Float) -> Float
+    def read_timeout=: (Float) -> Float
+    def enable_starttls: (OpenSSL::SSL::SSLContext) -> void
+    def start: [A] (String, String, String, Symbol) { (SMTP) -> A } -> A
+    # AIDEV-NOTE: The pinned gem returns SMTP::Response, distinct from the older bundled Net::Response.
+    class Response
+      attr_reader status: String
+    end
+    def send_message: (String, String, *String) -> ::Net::SMTP::Response
+                    | ...
   end
 end

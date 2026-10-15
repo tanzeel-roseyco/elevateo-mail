@@ -80,10 +80,13 @@ round trip is 213 ms. This is not a test of 700 simultaneous users or public-pro
 Five actual application adapter compatibility tests pass (18 assertions), plus six TLS IMAP tests
 (34 assertions), six IMAP synchronization tests (34 assertions), whole-server Steep and affected-file
 RuboCop lint. Fixed typed UID search serialization: a quoted string was rejected by Mox, whereas a
-Net::IMAP::SequenceSet sends the correct wire criterion. Direct adapter success does not establish
-the complete approval/worker/database/inbox flow. See [runtime evidence](runtime-evidence.md).
+Net::IMAP::SequenceSet sends the correct wire criterion. MAIL1018 additionally proves the held
+approval/worker/receipt/Mox/IMAP/database/inbox composition (3 tests/74 assertions), including
+unknown acknowledgment without replay, revocation before I/O and foreign-tenant isolation.
+The full gate totals 843 tests/9,029 assertions; twelve dedicated suites remain deferred.
+See [runtime evidence](runtime-evidence.md) for exact source and acceptance boundaries.
 
-Production worker composition, versioned receipt/profile storage, tenant-bound secret resolution,
+The held fixture has versioned receipt/profile storage. Production composition, tenant-bound secret resolution,
 atomic aggregate sending budgets and native client acceptance remain implementation work.
 Credentials are not the only live prerequisite: Hetzner SMTP unblocking is account-dependent;
 public DNS/TLS/IP reputation and actual provider delivery cannot be proven inside an offline fixture.

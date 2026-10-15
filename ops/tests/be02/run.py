@@ -21,11 +21,13 @@ from acceptance_runtime import Acceptance, add_arguments
 from adv815_runtime import run_expiry
 from adv808_auth_attestation import AUTH_PIN, attest_with_controls
 import attachment_runtime
+import mox_runtime
 
 
 def source_hashes(root: Path, acceptance: bool = False) -> dict[str, str]:
     files = [root / "ops/compose.be02-test.yaml", root / "ops/ops820/bootstrap-gateway.sql"]
-    folders = ["apps/server", "contracts", "ops/db", "ops/supabase/db", "ops/tests/be02", "ops/tests/be02-guards"]
+    folders = ["apps/server", "contracts", "ops/db", "ops/supabase/db", "ops/tests/be02", "ops/tests/be02-guards",
+               "ops/mailserver"]
     if acceptance:
         files.extend([root / "ops/compose.acceptance-test.yaml", root / ".dockerignore"])
         folders.extend(["apps/web", "tests/acceptance", "ops/acceptance"])
@@ -117,8 +119,11 @@ def main() -> int:
     parser.add_argument("--adv808-auth-policy", action="store_true", help="Separate disposable Auth policy proof")
     parser.add_argument("--adv815-expiry", action="store_true", help="Separate disposable real Auth expiry proof")
     parser.add_argument("--attachments", action="store_true", help="Real private Storage/scanner/download acceptance")
+    parser.add_argument("--mox", action="store_true", help="Private real Mox/PostgreSQL worker acceptance")
     add_arguments(parser)
     args = parser.parse_args()
+    if args.mox and (args.acceptance or args.attachments or args.adv808_auth_policy or args.adv815_expiry):
+        parser.error("Mox requires its own disposable job")
     if args.attachments and (args.acceptance or args.adv808_auth_policy or args.adv815_expiry):
         parser.error("attachments require a separate disposable job")
     if args.adv815_expiry and (args.acceptance or args.adv808_auth_policy):
@@ -166,6 +171,7 @@ def main() -> int:
             attachment_runtime.configure(task)
         # AIDEV-NOTE: Source is mounted in runtime containers; reject local dotenv secrets before build or mount.
         for folder in ("apps/server", "contracts", "ops/tests/be02", "ops/tests/be02-guards",
+                       "ops/mailserver",
                        *(["apps/web", "tests/acceptance", "ops/acceptance"] if args.acceptance else [])):
             if any(path.is_file() and not path.name.endswith((".example", ".sample"))
                    for path in (root / folder).rglob(".env*")):
@@ -188,6 +194,8 @@ def main() -> int:
             task.inspect("image", [pin])
         if args.attachments:
             attachment_runtime.preflight(task)
+        if args.mox:
+            mox_runtime.preflight(task)
         task.docker("space-before", ["system", "df"])
         task.write("host-space-before.json", {"free_bytes": os.statvfs(evidence).f_bavail * os.statvfs(evidence).f_frsize})
         builders = task.docker("builders-before", ["buildx", "ls", "--format", "json"])
@@ -231,6 +239,8 @@ def main() -> int:
             print("Running isolated Minitest suites and Steep", flush=True)
             # AIDEV-NOTE: The expanded inventory needs a bounded 30-minute aggregate; each suite still has its own timeout.
             task.compose("ruby-suites", ["run", "--rm", "--no-deps", "test"], 1800)
+        if args.mox:
+            mox_runtime.run(task)
         if acceptance:
             print("Running selected real-app acceptance lanes before HTTP fixtures", flush=True)
             acceptance_before_http(task, acceptance)

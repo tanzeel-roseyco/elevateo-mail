@@ -33,7 +33,8 @@ class R8ConstraintsTest(unittest.TestCase):
         }.items():
             self.assertEqual(hashlib.sha256((ROOT / name).read_bytes()).hexdigest(), digest)
 
-    def phase(self, diagnostic, acceptance=None, acceptance_gate=None, attachments=False, attachment_probe=None):
+    def phase(self, diagnostic, acceptance=None, acceptance_gate=None, attachments=False, attachment_probe=None,
+              mox=False, mox_probe=None):
         # AIDEV-NOTE: Execute actual phase branches with opt-in gates, without secrets or Docker startup.
         tree = ast.parse((ROOT / "ops/tests/be02/run.py").read_text())
         main = next(node for node in tree.body if isinstance(node, ast.FunctionDef) and node.name == "main")
@@ -46,10 +47,11 @@ class R8ConstraintsTest(unittest.TestCase):
         module = ast.Module(body=body[start:end], type_ignores=[])
         exec(compile(module, "run.py-phase", "exec"), {
             "args": SimpleNamespace(acceptance_diagnostic=diagnostic, acceptance_dispatch_id="synthetic",
-                                    adv808_auth_policy=False, adv815_expiry=False, attachments=attachments),
+                                    adv808_auth_policy=False, adv815_expiry=False, attachments=attachments, mox=mox),
             "task": task, "print": output, "acceptance": acceptance,
             "acceptance_before_http": acceptance_gate,
             "attachment_runtime": SimpleNamespace(run=attachment_probe),
+            "mox_runtime": SimpleNamespace(run=mox_probe),
         })
         return task, output
 
@@ -113,6 +115,28 @@ class R8ConstraintsTest(unittest.TestCase):
     def test_default_run_does_not_start_attachment_services(self):
         probe = Mock()
         self.phase(False, attachment_probe=probe)
+        probe.assert_not_called()
+
+    def test_mox_gate_requires_ruby_success_and_precedes_http(self):
+        def probe(task):
+            self.assertEqual([call.args[0] for call in task.compose.call_args_list], ["ruby-suites"])
+        checked = Mock(side_effect=probe)
+        task, _ = self.phase(False, mox=True, mox_probe=checked)
+        checked.assert_called_once_with(task)
+        self.assertIn("http-acceptance", [call.args[0] for call in task.compose.call_args_list])
+
+    def test_mox_failure_stops_http_and_worker(self):
+        captured = []
+        def failed(task):
+            captured.append(task)
+            raise RuntimeError("Mox fixture failed")
+        with self.assertRaisesRegex(RuntimeError, "Mox fixture failed"):
+            self.phase(False, mox=True, mox_probe=failed)
+        self.assertEqual([call.args[0] for call in captured[0].compose.call_args_list], ["ruby-suites"])
+
+    def test_default_run_does_not_start_mox(self):
+        probe = Mock()
+        self.phase(False, mox_probe=probe)
         probe.assert_not_called()
 
 

@@ -14,7 +14,11 @@ module Elevateo
       class InvalidResult < StandardError; end
       class StaleLease < StandardError; end
       PROFILES = { "synthetic-v1" => "local:synthetic-v1",
-        "mailpit-smtp-test-v1" => "local:mailpit-smtp-test-v1" }.freeze
+        "mailpit-smtp-test-v1" => "local:mailpit-smtp-test-v1", "mox-smtp-test-v1" => "local:mox-smtp-test-v1" }.freeze
+      # AIDEV-NOTE: Ruby and SQL both bind the profile, prefix and source; never infer a new provider with else.
+      RECEIPT_PREFIXES = { "synthetic-v1" => "local:", "mailpit-smtp-test-v1" => "mailpit-test-v1:",
+        "mox-smtp-test-v1" => "mox-test-v1:" }.freeze
+      SOURCES = { "mailpit-smtp-test-v1" => "mailpit_smtp_test_v1", "mox-smtp-test-v1" => "mox_smtp_test_v1" }.freeze
 
       def self.next_due_send(connection:, epoch:, excluded:)
         raise ArgumentError, "invalid dispatch epoch" unless Control.valid_epoch?(epoch)
@@ -86,22 +90,23 @@ module Elevateo
 
       def record_observation(claim:, attempt_id:, snapshot_digest:, result:)
         if result.kind == "accepted"
-          prefix = @profile == "synthetic-v1" ? "local:" : "mailpit-test-v1:"
+          prefix = RECEIPT_PREFIXES.fetch(@profile)
           raise InvalidResult, "receipt/profile mismatch" unless result.receipt_ref.is_a?(String) &&
             result.receipt_ref.start_with?(prefix)
         end
         digest = result.evidence_digest(send_id: claim.send_id, attempt_id: attempt_id,
           snapshot_digest: snapshot_digest)
+        values = [claim.send_id, claim.lease_id, claim.generation, SecureRandom.uuid, attempt_id,
+          result.kind, result.receipt_ref, digest]
         sql = if @profile == "synthetic-v1"
           "SELECT app_send_private.record_observation($1::uuid,$2::uuid,$3::bigint,$4::uuid," \
             "$5::uuid,$6::text,$7::text,decode($8::text,'hex'))"
         else
+          values << SOURCES.fetch(@profile)
           "SELECT app_send_private.record_observation_v2($1::uuid,$2::uuid,$3::bigint,$4::uuid," \
-            "$5::uuid,$6::text,$7::text,decode($8::text,'hex'),'mailpit_smtp_test_v1')"
+            "$5::uuid,$6::text,$7::text,decode($8::text,'hex'),$9::text)"
         end
-        value = call(sql,
-          [claim.send_id, claim.lease_id, claim.generation, SecureRandom.uuid, attempt_id,
-            result.kind, result.receipt_ref, digest])
+        value = call(sql, values)
         raise StaleLease if value["code"] == "stale_lease"
         require_fields(value, %w[state simulated])
         raise InvalidResult unless value["simulated"] == true

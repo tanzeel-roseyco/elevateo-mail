@@ -1,0 +1,108 @@
+{
+  "task": "MAIL1018",
+  "run": "/home/tanzeel/orca/workspaces/integration/completion-cassian-int801/ops/local/be02-efaf3b7cb1de4ef7a08428120328bc12",
+  "standard_tests": 839,
+  "standard_assertions": 8922,
+  "mox_tests": 3,
+  "mox_assertions": 74,
+  "http_tests": 1,
+  "http_assertions": 33,
+  "deferred_dedicated_suites": 12,
+  "status": "PASSED",
+  "unit_tests": 96,
+  "source_manifest_sha256": "db73be57fb1c4472b3ebe5da2d50564c981856c793174febb65a72b052a1e2ec",
+  "cleanup": {
+    "removed": [
+      "container:a667eecc3adae8867963d30542f70d2161422caf623a9534aa3680de727e6831",
+      "container:38c83b508dfed74058814c2295128d11f51a27403656ce12a09c877eaacf4a2e",
+      "container:6390803fc8e6d01a172d4b293d3e87f79bc12b340b1d7f016163c4065d19061d",
+      "container:6c8f04a69af4e94b5f650460ab5ec67f758337be5851c77d164ca80a832c390f",
+      "container:2c7f443346cdb02c2649e97c7585fdbc09ef387aeaa10c506b84a8082dfb8422",
+      "builder-container:e72e61554037079f3f38cd4265217cf8bd6cae5dac35468d9533d3b48235eab1",
+      "builder:be02-efaf3b7cb1de4ef7a08428120328bc12-builder",
+      "volume:be02-efaf3b7cb1de4ef7a08428120328bc12_db-config",
+      "volume:be02-efaf3b7cb1de4ef7a08428120328bc12_db-data",
+      "volume:buildx_buildkit_be02-efaf3b7cb1de4ef7a08428120328bc12-builder0_state",
+      "network:dc006f37ff340600e4c13aeb1478ec6f339aba47dd5c76e0a7d3b444a7f67b83",
+      "image:sha256:45797fc4874b9eca8986dea6b8820f6a8467e510c0aed3591d3f78c74b73d680"
+    ],
+    "errors": [],
+    "shared_bases_retained": true
+  },
+  "independent_cleanup": {
+    "passed": true,
+    "checks": [
+      {
+        "resource": "container:a667eecc3adae8867963d30542f70d2161422caf623a9534aa3680de727e6831",
+        "absent": true
+      },
+      {
+        "resource": "container:38c83b508dfed74058814c2295128d11f51a27403656ce12a09c877eaacf4a2e",
+        "absent": true
+      },
+      {
+        "resource": "container:6390803fc8e6d01a172d4b293d3e87f79bc12b340b1d7f016163c4065d19061d",
+        "absent": true
+      },
+      {
+        "resource": "container:6c8f04a69af4e94b5f650460ab5ec67f758337be5851c77d164ca80a832c390f",
+        "absent": true
+      },
+      {
+        "resource": "container:2c7f443346cdb02c2649e97c7585fdbc09ef387aeaa10c506b84a8082dfb8422",
+        "absent": true
+      },
+      {
+        "resource": "builder-container:e72e61554037079f3f38cd4265217cf8bd6cae5dac35468d9533d3b48235eab1",
+        "absent": true
+      },
+      {
+        "resource": "builder:be02-efaf3b7cb1de4ef7a08428120328bc12-builder",
+        "absent": true
+      },
+      {
+        "resource": "volume:be02-efaf3b7cb1de4ef7a08428120328bc12_db-config",
+        "absent": true
+      },
+      {
+        "resource": "volume:be02-efaf3b7cb1de4ef7a08428120328bc12_db-data",
+        "absent": true
+      },
+      {
+        "resource": "volume:buildx_buildkit_be02-efaf3b7cb1de4ef7a08428120328bc12-builder0_state",
+        "absent": true
+      },
+      {
+        "resource": "network:dc006f37ff340600e4c13aeb1478ec6f339aba47dd5c76e0a7d3b444a7f67b83",
+        "absent": true
+      },
+      {
+        "resource": "image:sha256:45797fc4874b9eca8986dea6b8820f6a8467e510c0aed3591d3f78c74b73d680",
+        "absent": true
+      },
+      {
+        "resource": "container:be02-efaf3b7cb1de4ef7a08428120328bc12-mox",
+        "absent": true
+      },
+      {
+        "resource": "container:be02-efaf3b7cb1de4ef7a08428120328bc12-mox-client",
+        "absent": true
+      },
+      {
+        "resource": "file:.env.runtime",
+        "absent": true
+      },
+      {
+        "resource": "file:mox/.env.client",
+        "absent": true
+      },
+      {
+        "resource": "file:mox/fixture-credentials.json",
+        "absent": true
+      }
+    ],
+    "mutations": false
+  },
+  "production_enabled": false,
+  "credentials_only_ready": false
+}

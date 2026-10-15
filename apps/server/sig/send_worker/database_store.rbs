@@ -16,6 +16,8 @@ module Elevateo
     end
     class DatabaseStore
       PROFILES: Hash[String, String]
+      RECEIPT_PREFIXES: Hash[String, String]
+      SOURCES: Hash[String, String]
       class InvalidResult < StandardError
       end
       class StaleLease < StandardError

@@ -88,7 +88,7 @@ personal/team mail. One shared-IP pilot is cheaper but shares a reputation failu
 | Protocol | TLS chain/hostname, STARTTLS/auth, sender authorization, unknown recipient, no open relay | Synthetic `.test` accounts only |
 | Storage | Mailbox quota, SMTP size limit, sentinel/body equality, cross-account isolation, duplicate detection | Tiny payloads; no huge generated corpus |
 | Recovery | Restart, Mox backup, verifydata, restore configuration/TLS/data, recover every sentinel | Container tmpfs and no public networking |
-| App integration | Actual worker -> verified TLS SMTP -> Mox -> IMAP ingestion -> tenant inbox | Direct adapters pass; complete worker/database/inbox gate remains open |
+| App integration | Actual worker -> verified TLS SMTP -> Mox -> IMAP ingestion -> tenant inbox | Held composition passes 3 tests/74 assertions; production composition and tenant secrets remain open |
 | App failures | Revoked credentials, deleted tenant/session, RLS, suppression race, quota race, unknown acknowledgment, no replay | Deterministic service doubles plus isolated integration |
 | Regression | Lint, typecheck, Vitest, backend suites, PostgreSQL/RLS, browser flows, audit | Reuse pinned images, one bounded lease at a time |
 | Native clients | Android APK resource/admission/install/run; Windows/macOS packaging and real runtime acceptance | Fleet builds; platform runtime needed for each claim |
