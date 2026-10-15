@@ -15,7 +15,7 @@ class SendRunnerTest(unittest.TestCase):
         self.assertEqual([call.args for call in task.compose.call_args_list], [
             ("bootstrap", ["run", "--rm", "--no-deps", "bootstrap", "-f", "/ops/bootstrap.sql"], 45),
             ("bootstrap-send", ["run", "--rm", "--no-deps", "bootstrap", "-f", "/ops/bootstrap-send.sql"], 45),
-            ("bootstrap-gateway", ["run", "--rm", "--no-deps", "bootstrap", "-f", "/ops/bootstrap-gateway.sql"], 45)])
+            ("bootstrap-gateway", ["run", "--rm", "--no-deps", "bootstrap", "-f", "/gateway-bootstrap.sql"], 45)])
         task = Mock()
         task.compose.side_effect = RuntimeError("base rejected")
         with self.assertRaises(RuntimeError):

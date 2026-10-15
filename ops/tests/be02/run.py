@@ -100,9 +100,9 @@ def acceptance_before_http(task: Task, acceptance: Acceptance) -> None:
 
 def bootstrap_database_roles(task: Task) -> None:
     # AIDEV-NOTE: Privileged send/gateway roles and schemas must precede their restricted application migrations.
-    for name, filename in (("bootstrap", "bootstrap.sql"), ("bootstrap-send", "bootstrap-send.sql"),
-                           ("bootstrap-gateway", "bootstrap-gateway.sql")):
-        task.compose(name, ["run", "--rm", "--no-deps", "bootstrap", "-f", "/ops/" + filename], 45)
+    for name, filename in (("bootstrap", "/ops/bootstrap.sql"), ("bootstrap-send", "/ops/bootstrap-send.sql"),
+                           ("bootstrap-gateway", "/gateway-bootstrap.sql")):
+        task.compose(name, ["run", "--rm", "--no-deps", "bootstrap", "-f", filename], 45)
 
 
 def main() -> int:

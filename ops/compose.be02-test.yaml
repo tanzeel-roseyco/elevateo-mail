@@ -80,7 +80,8 @@ services:
       ATTACHMENT_GATEWAY_DB_PASSWORD: ${ATTACHMENT_GATEWAY_DB_PASSWORD:?}
     volumes:
       - ./db:/ops:ro
-      - ./ops820/bootstrap-gateway.sql:/ops/bootstrap-gateway.sql:ro
+      # AIDEV-NOTE: A sibling mount avoids creating a child mountpoint inside the read-only /ops bind.
+      - ./ops820/bootstrap-gateway.sql:/gateway-bootstrap.sql:ro
     tmpfs:
       - /var/lib/postgresql/data
       - /etc/postgresql-custom

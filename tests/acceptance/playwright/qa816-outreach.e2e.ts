@@ -17,6 +17,8 @@ scenario('SCN-QA-820-P', 'real-auth-outreach-draft-create-list-detail', async (p
   await page.getByLabel('Campaign name').fill(name);
   const [created] = await Promise.all([responseAt(page, '/v2/outreach/campaigns', 'POST'), page.getByRole('button', { name: 'Save draft' }).click()]);
   expect(created.ok()).toBe(true);
+  // AIDEV-NOTE: POST response headers precede React navigation; wait for the committed detail route.
+  await expect(page).toHaveURL(/#\/outreach\/campaigns\/[0-9a-f-]{36}$/);
   const campaignId = /\/outreach\/campaigns\/([0-9a-f-]{36})/.exec(new URL(page.url()).hash)?.[1];
   if (!campaignId) throw new Error('Campaign detail route missing');
   await expect(page.getByRole('heading', { name: 'Campaign detail' })).toBeVisible();
@@ -63,6 +65,7 @@ scenario('SCN-QA-820-F2', 'foreign-organization-cannot-read-campaign', async (pa
   await page.getByLabel('Campaign name').fill(name);
   const [created] = await Promise.all([responseAt(page, '/v2/outreach/campaigns', 'POST'), page.getByRole('button', { name: 'Save draft' }).click()]);
   expect(created.status()).toBe(201);
+  await expect(page).toHaveURL(/#\/outreach\/campaigns\/[0-9a-f-]{36}$/);
   const campaignId = /\/outreach\/campaigns\/([0-9a-f-]{36})/.exec(new URL(page.url()).hash)?.[1];
   if (!campaignId) throw new Error('Campaign detail route missing');
   const context = await page.context().browser()?.newContext({ baseURL: 'http://app.test' });
