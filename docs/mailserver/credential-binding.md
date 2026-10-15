@@ -1,7 +1,8 @@
 # Held account-bound mail credentials
 
-MAIL1019a changes inbound IMAP only. Remote production stays held; the fixture SMTP profile
-still resolves a fixed test reference and is not multi-tenant SMTP credential integration.
+MAIL1019a/1019b implement bounded IMAP lookup; MAIL1020a adds SMTP authorization and transport
+binding. Both accept only test references. Public remote production remains held.
+See [SMTP attempt binding](smtp-account-binding.md) for outbound revocation and rollback limits.
 
 ## Boundary and rotation
 
@@ -25,39 +26,29 @@ Read-only/no-follow/nonblocking open is followed by descriptor checks: regular f
 Load once into an immutable index: O(1) per lookup and no repeated file parsing. Rotate by revoking
 or advancing the SQL version, atomically replacing the private bundle, then restarting the held
 worker. The intervening gap fails closed. A continuously mutable shared cache would reduce restart
-work but introduce invalidation races and extra complexity. SQL remains the authority at import.
+work but introduce invalidation races and extra complexity. SQL remains the authority at import; SMTP has a separate final authorization fence.
 The migration is reversible; rollback changes claims from seven keys to their previous three-key
 shape and therefore requires a compatible application release while workers are held.
 
 ## Verified execution
 
-Fleet evidence: `ops/local/be02-d1d4f01d583f4e90aa93a0deae34e6de/`.
-Its source hash manifest binds the actual snapshot. Standard Ruby:143 suites/854 tests/9,407
-assertions; Mox compatibility7/27, worker-inbox composition3/80, HTTP1/33. Combined865/9,547,
-zero failures/errors/skips. Twelve dedicated suites were deferred. Steep,334-file canonical lint,
-three-file fixture lint, and97 runner units passed. Units evidence:
-`docs/completion/qa815-evidence/mail1019-be02-units-r1.txt`.
+Current gate: `ops/local/be02-cab695ff6bd6445d9fd4dc6b19a3165e/`.
+901 tests/9,868 assertions passed, zero failures/errors/skips; twelve dedicated suites deferred.
+Steep,344-file canonical lint and3-file fixture lint passed. The source manifest binds the tested
+implementation. Result and cleanup receipts: `docs/completion/qa815-evidence/mail1020a-result.json`.
 
-Tests cover tuple/protocol isolation, malformed bundle and file limits, cached lookup, credential
-rotation after a real Mox fetch, SQL row-lock races, migration down/up and ACLs, unknown SMTP
-acknowledgment without replay, tenant inbox visibility, and inactive-account zero-network behavior.
-FIFO/wrong-owner/path-replacement-race tests are not claimed. A new whole-network deadline and
-socket ownership adapter is staged separately and is not part of this successful snapshot.
+Coverage includes full tuple/protocol isolation, bundle/file bounds, cached lookup, IMAP rotation
+and row-lock races, SMTP stale/disabled/account/sender rejection, immutable attempt identity,
+migration down/up and ACLs, unknown acknowledgment without replay and tenant inbox visibility.
+FIFO/wrong-owner/path-replacement races are not claimed. Whole-network IMAP deadlines and owned
+socket cleanup passed in MAIL1019b and remain in the current snapshot; SQL stays outside timeout.
 
-Task cleanup removed five service containers, builder container/registration/cache volume, two
-other disposable volumes, network and server image; both Mox containers and private fixture files
-were independently absent.17 independent checks passed. Shared pinned bases and persistent data
-were retained. Host bytes252,038,373,376 ->252,060,377,088: shared delta+22,003,712, not attributable
-reclamation; no compaction. Earlier `be02-bf75da24bb9e42d09fcca60801f80b08` failed Steep tuple
-inference; `be02-e2a6e97373f44d01aafc3261dddd1372` failed fixture lint on an unused session variable.
-Both remain failed evidence. The corrected fixture separately owns and closes polling/replay sessions.
+Exact cleanup and17 independent absence checks passed; shared bases and persistent data remain.
+No real secret, public mail delivery, credential purchase or external warmup service was used.
 
 ## Remaining release work
 
-MAIL1019b is accepted with an absolute network deadline, bounded parsing and owned cleanup; see
-imap-runtime-bounds.md for evidence and limits. SQL stays outside asynchronous interruption.
-MAIL1020a: tenant/version-bound SMTP authorization and transport;
-MAIL1020b: atomic organization/group/mailbox/domain/shared-IP/destination budgets. Then bounded
-scheduling, full app/native acceptance, off-host restore, alerts and held native deployment proof.
-Credentials, real domain DNS, public TLS, hosting/port approval and controlled canaries come last.
-No external warmup network or public deliverability claim follows from private consenting seed tests.
+MAIL1020b aggregate budgets, bounded scheduling, full application/native acceptance, off-host
+restore, alerts and held native deployment proof remain. Production secrets, real domain DNS,
+public TLS, hosting/port approval and controlled canaries come last. Private consenting seed
+checks do not prove public deliverability or reproduce an external-provider warmup network.

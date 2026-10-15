@@ -4,7 +4,9 @@ module Elevateo
       attr_reader mime: String
       attr_reader sender: String
       attr_reader recipients: Array[String]
-      def self.new: (mime: String, sender: String, recipients: Array[String]) -> RenderedMail
+      attr_reader organization_id: String
+      attr_reader mailbox_id: String
+      def self.new: (mime: String, sender: String, recipients: Array[String], organization_id: String, mailbox_id: String) -> RenderedMail
     end
     class SmtpSnapshot
       MAX_MIME_BYTES: Integer

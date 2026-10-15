@@ -4,9 +4,12 @@ require "minitest/autorun"
 require "tempfile"
 require_relative "../../lib/elevateo/send_worker/mox_smtp_transport"
 require_relative "../../lib/elevateo/send_api/canonical"
+require_relative "../support/mail_binding"
+require_relative "../../lib/elevateo/mail_credentials/bundle"
 
 # AIDEV-NOTE: Unit doubles enforce TLS/auth call ordering; fleet's real Mox test proves wire compatibility.
 class SendWorkerMoxSmtpTransportTest < Minitest::Test
+  include MailBindingFixture
   SEND = "11111111-1111-4111-8111-111111111111"
   ATTEMPT = "22222222-2222-4222-8222-222222222222"
   SENDER = "outreach000@send.test"
@@ -46,10 +49,12 @@ class SendWorkerMoxSmtpTransportTest < Minitest::Test
   def profile = Elevateo::SendWorker::SmtpProfile.local_mox
   def deadline = Elevateo::SendWorker::CallDeadline.new(seconds: 10.0)
 
-  def transport(credentials: [SENDER, "fixture-only-password"])
+  def binding = mail_binding(organization_id: SEND, mailbox_id: SEND)
+
+  def transport(credentials: [SENDER, "fixture-only-password"], resolver: nil)
     Elevateo::SendWorker::MoxSmtpTransport.new(profile: profile, ca_file: @ca.path,
-      credential_resolver: ->(ref) {
-        raise "reference mismatch" unless ref == "test:mox-fixture"
+      credential_resolver: resolver || ->(value, protocol:) {
+        raise "binding mismatch" unless protocol == "smtp" && value.key(protocol: protocol) == binding.key(protocol: protocol)
         credentials
       }, smtp_factory: ->(host, port) {
         raise "endpoint mismatch" unless [host, port] == ["localhost", 1587]
@@ -64,8 +69,8 @@ class SendWorkerMoxSmtpTransportTest < Minitest::Test
       subject: "Fixture only", body: "plain text", reply_id: nil, policy: "1")
   end
 
-  def submit(driver = transport, bytes: snapshot)
-    driver.submit(bytes, send_id: SEND, attempt_id: ATTEMPT, deadline: deadline)
+  def submit(driver = transport, bytes: snapshot, credential_binding: binding)
+    driver.submit(bytes, send_id: SEND, attempt_id: ATTEMPT, deadline: deadline, credential_binding: credential_binding)
   end
 
   def test_exact_envelope_verified_tls_and_distinct_simulated_receipt
@@ -120,7 +125,9 @@ class SendWorkerMoxSmtpTransportTest < Minitest::Test
     client = Object.new
     def client.deliver(*) = raise("unexpected plaintext connection")
     driver = Elevateo::SendWorker::SmtpTransport.new(profile: profile, client: client)
-    assert_raises(Elevateo::SendWorker::SmtpTransport::Held) { submit(driver) }
+    assert_raises(Elevateo::SendWorker::SmtpTransport::Held) do
+      driver.submit(snapshot, send_id: SEND, attempt_id: ATTEMPT, deadline: deadline)
+    end
     mailpit = Elevateo::SendWorker::SmtpProfile.local_mailpit(verified_sender: "sender@example.invalid")
     assert_raises(Elevateo::SendWorker::SmtpTransport::Held) do
       Elevateo::SendWorker::MoxSmtpTransport.new(profile: mailpit, ca_file: @ca.path,
@@ -133,7 +140,7 @@ class SendWorkerMoxSmtpTransportTest < Minitest::Test
     bound = Elevateo::SendWorker::CallDeadline.new(seconds: 1, clock: -> { now })
     now = 2.0
     assert_raises(Elevateo::SendWorker::SmtpTransport::Held) do
-      transport.submit(snapshot, send_id: SEND, attempt_id: ATTEMPT, deadline: bound)
+      transport.submit(snapshot, send_id: SEND, attempt_id: ATTEMPT, deadline: bound, credential_binding: binding)
     end
     assert_equal 0, @factory_calls
     assert_empty @smtp.messages
@@ -146,4 +153,40 @@ class SendWorkerMoxSmtpTransportTest < Minitest::Test
     assert_nil result.receipt_ref
     assert_equal 1, @smtp.messages.length
   end
+
+  def test_binding_and_private_bundle_reject_cross_identity_without_network
+    entry = { account_id: binding.account_id, organization_id: SEND, mailbox_id: SEND,
+      credential_version: 1, credential_ref: binding.credential_ref, protocol: "smtp",
+      username: SENDER, password: "fixture-only-password" }
+    Tempfile.create("smtp-bundle") do |file|
+      file.chmod(0o600)
+      file.write(JSON.generate(format_version: 1, entries: [entry]))
+      file.flush
+      driver = transport(resolver: Elevateo::MailCredentials::Bundle.new(path: file.path))
+      [nil, "test:synthetic", mail_binding, binding_with(account_id: ATTEMPT),
+       binding_with(credential_version: 2), binding_with(credential_ref: "test:other")].each do |value|
+        error = assert_raises(Elevateo::SendWorker::SmtpTransport::Held) { submit(driver, credential_binding: value) }
+        assert_nil error.cause
+      end
+      assert_equal 0, @factory_calls
+      assert_equal "accepted", submit(driver).kind
+      assert_equal 1, @factory_calls
+    end
+  end
+
+  def test_imap_only_bundle_cannot_authorize_smtp
+    Tempfile.create("imap-bundle") do |file|
+      file.chmod(0o600)
+      file.write(JSON.generate(format_version: 1, entries: [{ account_id: binding.account_id,
+        organization_id: SEND, mailbox_id: SEND, credential_version: 1, credential_ref: binding.credential_ref,
+        protocol: "imap", username: SENDER, password: "fixture-only-password" }]))
+      file.flush
+      driver = transport(resolver: Elevateo::MailCredentials::Bundle.new(path: file.path))
+      assert_raises(Elevateo::SendWorker::SmtpTransport::Held) { submit(driver) }
+      assert_equal 0, @factory_calls
+    end
+  end
+
+  def binding_with(**changes) = mail_binding(**{ organization_id: SEND, mailbox_id: SEND }.merge(changes))
+
 end

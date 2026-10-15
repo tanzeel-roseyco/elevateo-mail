@@ -2,20 +2,30 @@
 
 require "tmpdir"
 require_relative "approval_database_helper"
+require_relative "../support/smtp_account"
 require_relative "../../lib/elevateo/send_worker/database_store"
 require_relative "../../lib/elevateo/send_worker/executor"
 require_relative "../../lib/elevateo/send_worker/submission_result"
 
 # AIDEV-NOTE: Real database authority/provenance, with a counted driver double; real SMTP runs in a separate fleet gate.
 class SendMoxWorkerDatabaseTest < SendDatabaseTestCase
+  include SmtpAccountFixture
+
+  def setup
+    super
+    create_smtp_account
+  end
+
   MODE = "mox-smtp-test-v1"
   SOURCE = "mox_smtp_test_v1"
   RECEIPT = "mox-test-v1:#{'c' * 64}"
 
   def run_worker(send_id, kind: "accepted", receipt: RECEIPT)
     calls = 0
+    expected_binding = smtp_binding.key(protocol: "smtp")
     driver = Object.new
-    driver.define_singleton_method(:submit) do |_bytes, deadline:, **_|
+    driver.define_singleton_method(:submit) do |_bytes, deadline:, credential_binding:, **_|
+      raise "wrong SQL binding" unless credential_binding.key(protocol: "smtp") == expected_binding
       deadline.check!
       calls += 1
       Elevateo::SendWorker::SubmissionResult.new(kind: kind, receipt_ref: kind == "accepted" ? receipt : nil,

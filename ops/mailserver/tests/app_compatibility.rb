@@ -43,13 +43,17 @@ class AppMoxCompatibilityTest < Minitest::Test
 
   def smtp_transport(password: nil, ca: CA)
     Elevateo::SendWorker::MoxSmtpTransport.new(profile: Elevateo::SendWorker::SmtpProfile.local_mox,
-      ca_file: ca, credential_resolver: ->(_) { [FROM, password || passwords.fetch(FROM)] })
+      ca_file: ca, credential_resolver: ->(binding, protocol:) {
+        raise "unexpected SMTP binding" unless protocol == "smtp" &&
+          binding.key(protocol: protocol) == mail_binding.key(protocol: protocol)
+        [FROM, password || passwords.fetch(FROM)]
+      })
   end
 
   def test_actual_snapshot_survives_verified_tls_and_actual_imap_reader
     rendered = Elevateo::SendWorker::SmtpSnapshot.render(snapshot, send_id: SEND_ID, verified_sender: FROM)
     result = smtp_transport.submit(snapshot, send_id: SEND_ID, attempt_id: DRAFT,
-      deadline: Elevateo::SendWorker::CallDeadline.new(seconds: 10))
+      deadline: Elevateo::SendWorker::CallDeadline.new(seconds: 10), credential_binding: mail_binding)
     assert_equal "accepted", result.kind
     assert result.simulated?
     assert_match(/\Amox-test-v1:[0-9a-f]{64}\z/, result.receipt_ref)
@@ -93,7 +97,7 @@ class AppMoxCompatibilityTest < Minitest::Test
      smtp_transport(ca: "/etc/ssl/certs/ca-certificates.crt")].each do |driver|
       error = assert_raises(Elevateo::SendWorker::SmtpTransport::Held) do
         driver.submit(snapshot, send_id: SEND_ID, attempt_id: DRAFT,
-          deadline: Elevateo::SendWorker::CallDeadline.new(seconds: 10))
+          deadline: Elevateo::SendWorker::CallDeadline.new(seconds: 10), credential_binding: mail_binding)
       end
       assert_nil error.cause
     end

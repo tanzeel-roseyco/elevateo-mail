@@ -12,7 +12,8 @@ module Elevateo
     class Authorization
       attr_reader attempt_id: String
       attr_reader snapshot_bytes: String
-      def self.new: (attempt_id: String, snapshot_bytes: String) -> Authorization
+      attr_reader credential_binding: MailCredentials::Binding?
+      def self.new: (attempt_id: String, snapshot_bytes: String, ?credential_binding: MailCredentials::Binding?) -> Authorization
     end
     class DatabaseStore
       PROFILES: Hash[String, String]
@@ -36,6 +37,7 @@ module Elevateo
       def mark_unknown: (claim: Claim, attempt_id: String, reason: String) -> Hash[String, untyped]
       def reconcile: (claim: Claim, observation: SubmissionResult?) -> Hash[String, untyped]?
       private
+      def smtp_binding: (Hash[String, untyped]) -> MailCredentials::Binding?
       def call: (String, Array[untyped]) -> Hash[String, untyped]
       def require_fields: (Hash[String, untyped], Array[String]) -> void
     end

@@ -1,0 +1,148 @@
+{
+  "gate": "be02-cab695ff6bd6445d9fd4dc6b19a3165e",
+  "result": {
+    "tests": "PASSED",
+    "failure": "",
+    "cleanup_passed": true,
+    "finished_at": 1792100630.5925584,
+    "source_snapshot": "source.sha256.json"
+  },
+  "standard": {
+    "suites": 148,
+    "tests": 888,
+    "assertions": 9621,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0
+  },
+  "mox": {
+    "suites": 2,
+    "tests": 10,
+    "assertions": 107,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0
+  },
+  "http": {
+    "suites": 1,
+    "tests": 1,
+    "assertions": 33,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0
+  },
+  "worker_entry": {
+    "suites": 1,
+    "tests": 2,
+    "assertions": 107,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0
+  },
+  "total": {
+    "tests": 901,
+    "assertions": 9868,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0
+  },
+  "deferred_suites": 12,
+  "cleanup": {
+    "removed": [
+      "container:87bf8c7abc4b481562af99c46678bb398611acc6fed542c7beba70e3d1afb59b",
+      "container:bfe5a0d218e68856258734095ba18ae38d9dd0bf2d7e6d75bc96316964388c5c",
+      "container:88e7be33ac37b44844780df1482331dba2d41d00f5fed1ec1edc6000d2a59b85",
+      "container:7170cb14789875a4630975877ecaa7b25a0323cafb8cc88919d02bcaccfb2126",
+      "container:274e3f978815bfa93b173aee8ba4f59534bcc6e84280704b563d978ff8dc4fcc",
+      "builder-container:5b24ac4daa484ff72bdd58877b79afdd4153414df3dad4b76b58ca85d4b0a829",
+      "builder:be02-cab695ff6bd6445d9fd4dc6b19a3165e-builder",
+      "volume:be02-cab695ff6bd6445d9fd4dc6b19a3165e_db-config",
+      "volume:be02-cab695ff6bd6445d9fd4dc6b19a3165e_db-data",
+      "volume:buildx_buildkit_be02-cab695ff6bd6445d9fd4dc6b19a3165e-builder0_state",
+      "network:6abe1c375af63ade7ee5d5c17217ab6906ec171cb6f11e4a51293858b3e941c9",
+      "image:sha256:5c3008bb07a931cbab86d029e0f47f31805e269227db59755b0f20e98d79b05c"
+    ],
+    "errors": [],
+    "shared_bases_retained": true
+  },
+  "independent_cleanup": {
+    "passed": true,
+    "checks": [
+      {
+        "resource": "container:87bf8c7abc4b481562af99c46678bb398611acc6fed542c7beba70e3d1afb59b",
+        "absent": true
+      },
+      {
+        "resource": "container:bfe5a0d218e68856258734095ba18ae38d9dd0bf2d7e6d75bc96316964388c5c",
+        "absent": true
+      },
+      {
+        "resource": "container:88e7be33ac37b44844780df1482331dba2d41d00f5fed1ec1edc6000d2a59b85",
+        "absent": true
+      },
+      {
+        "resource": "container:7170cb14789875a4630975877ecaa7b25a0323cafb8cc88919d02bcaccfb2126",
+        "absent": true
+      },
+      {
+        "resource": "container:274e3f978815bfa93b173aee8ba4f59534bcc6e84280704b563d978ff8dc4fcc",
+        "absent": true
+      },
+      {
+        "resource": "builder-container:5b24ac4daa484ff72bdd58877b79afdd4153414df3dad4b76b58ca85d4b0a829",
+        "absent": true
+      },
+      {
+        "resource": "builder:be02-cab695ff6bd6445d9fd4dc6b19a3165e-builder",
+        "absent": true
+      },
+      {
+        "resource": "volume:be02-cab695ff6bd6445d9fd4dc6b19a3165e_db-config",
+        "absent": true
+      },
+      {
+        "resource": "volume:be02-cab695ff6bd6445d9fd4dc6b19a3165e_db-data",
+        "absent": true
+      },
+      {
+        "resource": "volume:buildx_buildkit_be02-cab695ff6bd6445d9fd4dc6b19a3165e-builder0_state",
+        "absent": true
+      },
+      {
+        "resource": "network:6abe1c375af63ade7ee5d5c17217ab6906ec171cb6f11e4a51293858b3e941c9",
+        "absent": true
+      },
+      {
+        "resource": "image:sha256:5c3008bb07a931cbab86d029e0f47f31805e269227db59755b0f20e98d79b05c",
+        "absent": true
+      },
+      {
+        "resource": "container:be02-cab695ff6bd6445d9fd4dc6b19a3165e-mox",
+        "absent": true
+      },
+      {
+        "resource": "container:be02-cab695ff6bd6445d9fd4dc6b19a3165e-mox-client",
+        "absent": true
+      },
+      {
+        "resource": "file:.env.runtime",
+        "absent": true
+      },
+      {
+        "resource": "file:mox/.env.client",
+        "absent": true
+      },
+      {
+        "resource": "file:mox/fixture-credentials.json",
+        "absent": true
+      }
+    ],
+    "mutations": false
+  },
+  "host_space": {
+    "before": 254805770240,
+    "after": 254871015424,
+    "delta": 65245184
+  },
+  "source_manifest_sha256": "c658b0cba4b557ad235ad5f192afefd20d57aa027d4cadc0010fc4f661b8a57f"
+}

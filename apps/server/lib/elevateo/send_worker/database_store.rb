@@ -4,11 +4,12 @@ require "json"
 require "securerandom"
 require "digest"
 require_relative "control"
+require_relative "../mail_credentials/binding"
 
 module Elevateo
   module SendWorker
     Claim = Struct.new(:send_id, :action, :lease_id, :generation, :attempt_id, :snapshot_digest, keyword_init: true)
-    Authorization = Struct.new(:attempt_id, :snapshot_bytes, keyword_init: true)
+    Authorization = Struct.new(:attempt_id, :snapshot_bytes, :credential_binding, keyword_init: true)
 
     class DatabaseStore
       class InvalidResult < StandardError; end
@@ -77,7 +78,7 @@ module Elevateo
         return nil if result["code"] == "dispatch_held"
         require_fields(result, %w[attempt_id attempt_no call_deadline_at simulated])
         raise InvalidResult unless result["attempt_id"] == attempt_id && result["simulated"] == true
-        Authorization.new(attempt_id: attempt_id, snapshot_bytes: bytes)
+        Authorization.new(attempt_id: attempt_id, snapshot_bytes: bytes, credential_binding: smtp_binding(result))
       end
 
       def final_check(claim:, attempt_id:, epoch:)
@@ -136,6 +137,20 @@ module Elevateo
       end
 
       private
+
+      # AIDEV-NOTE: Only SQL chooses the account tuple; historical unbound attempts can reconcile, never submit.
+      def smtp_binding(result)
+        return nil unless @profile == "mox-smtp-test-v1"
+
+        value = result["credential_binding"]
+        fields = %w[organization_id mailbox_id account_id credential_version credential_ref protocol]
+        raise InvalidResult unless value.is_a?(Hash) && value.keys.sort == fields.sort && value["protocol"] == "smtp"
+
+        MailCredentials::Binding.new(organization_id: value["organization_id"], mailbox_id: value["mailbox_id"],
+          account_id: value["account_id"], credential_version: value["credential_version"], credential_ref: value["credential_ref"])
+      rescue MailCredentials::Unavailable
+        raise InvalidResult, "invalid SMTP binding", cause: nil
+      end
 
       def call(sql, values)
         raw = @connection.exec_params(sql, values).getvalue(0, 0)

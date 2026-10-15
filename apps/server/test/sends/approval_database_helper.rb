@@ -25,7 +25,7 @@ class SendDatabaseTestCase < DraftDatabaseTestCase
       # AIDEV-NOTE: Admin-only fixture disposal; production down refuses history and runtime roles cannot disable triggers.
       @admin.exec("BEGIN")
       @admin.exec("SET LOCAL session_replication_role = replica")
-      %w[audit_events reconciliation_checks observations attempts jobs approval_operations intents recipient_suppressions mailbox_policy organization_policy].each do |table|
+      %w[audit_events reconciliation_checks observations attempts jobs approval_operations intents recipient_suppressions smtp_accounts mailbox_policy organization_policy].each do |table|
         predicate = %w[observations reconciliation_checks attempts jobs audit_events].include?(table) ?
           "send_id IN (SELECT send_id FROM app_send_private.intents WHERE organization_id = $1)" : "organization_id = $1"
         predicate = "attempt_id IN (SELECT attempt_id FROM app_send_private.attempts WHERE send_id IN (SELECT send_id FROM app_send_private.intents WHERE organization_id = $1))" if table == "observations"
@@ -33,7 +33,15 @@ class SendDatabaseTestCase < DraftDatabaseTestCase
       end
       @admin.exec("COMMIT")
     end
-    super
+  ensure
+    primary = $!
+    begin
+      # AIDEV-NOTE: Parent teardown rolls back replica mode and closes logins even when send disposal failed.
+      super
+    rescue StandardError => cleanup
+      raise primary.dup, cause: cleanup if primary
+      raise
+    end
   end
 
   def snapshot(version: 1, subject: @saved.subject, recipients: [[nil, "Recipient@example.invalid"]], policy: "1")

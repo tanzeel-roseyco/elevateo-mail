@@ -3,15 +3,15 @@ module Elevateo
     class MoxSmtpTransport
       @profile: SmtpProfile
       @ca_file: String
-      @credential_resolver: ^(String) -> [String, String]
+      @credential_resolver: ^(MailCredentials::Binding, protocol: String) -> [String, String]
       @smtp_factory: ^(String, Integer) -> Net::SMTP
-      def initialize: (profile: SmtpProfile, ca_file: String, credential_resolver: ^(String) -> [String, String],
+      def initialize: (profile: SmtpProfile, ca_file: String, credential_resolver: ^(MailCredentials::Binding, protocol: String) -> [String, String],
         ?smtp_factory: ^(String, Integer) -> Net::SMTP) -> void
-      def submit: (String, send_id: String, attempt_id: String, deadline: CallDeadline) -> SubmissionResult
+      def submit: (String, send_id: String, attempt_id: String, deadline: CallDeadline, ?credential_binding: MailCredentials::Binding?) -> SubmissionResult
       # AIDEV-NOTE: No SMTP lookup exists; accept the driver's String keywords without consuming them.
       def observation: (**String) -> nil
       private
-      def deliver: (RenderedMail, send_id: String, attempt_id: String, deadline: CallDeadline) -> SubmissionResult
+      def deliver: (RenderedMail, send_id: String, attempt_id: String, deadline: CallDeadline, binding: MailCredentials::Binding) -> SubmissionResult
     end
   end
 end

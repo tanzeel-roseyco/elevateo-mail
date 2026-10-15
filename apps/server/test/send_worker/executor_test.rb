@@ -2,6 +2,7 @@
 
 require "minitest/autorun"
 require "digest"
+require_relative "../support/mail_binding"
 require_relative "../../lib/elevateo/send_worker/executor"
 require_relative "../../lib/elevateo/send_worker/local_failure_driver"
 
@@ -11,7 +12,7 @@ class SendWorkerExecutorTest < Minitest::Test
   EPOCH = "33333333-3333-4333-8333-333333333333"
   BYTES = '["elevateo.send.snapshot.v1","fixture"]'
   Claim = Struct.new(:send_id, :action, :attempt_id, :snapshot_digest, keyword_init: true)
-  Authorization = Struct.new(:attempt_id, :snapshot_bytes, keyword_init: true)
+  Authorization = Struct.new(:attempt_id, :snapshot_bytes, :credential_binding, keyword_init: true)
 
   class Store
     attr_accessor :claim_value, :authorization, :observation, :reconciled, :final_allowed
@@ -98,6 +99,19 @@ class SendWorkerExecutorTest < Minitest::Test
     assert_equal :unknown, executor.run_once
     assert_raises(ArgumentError) { executor.run_once }
     assert_equal 1, @driver.invocations
+  end
+
+  def test_sql_binding_is_forwarded_unchanged_after_final_authorization
+    value = Object.new.extend(MailBindingFixture).mail_binding
+    @store.authorization.credential_binding = value
+    captured = nil
+    @driver = Object.new
+    @driver.define_singleton_method(:submit) do |_bytes, credential_binding:, **_options|
+      captured = credential_binding
+      Elevateo::SendWorker::SubmissionResult.new(kind: "unknown", code: "smtp_uncertain")
+    end
+    assert_equal :unknown, executor.run_once
+    assert_same value, captured
   end
 
   private

@@ -1,9 +1,6 @@
 # Low-cost self-hosted mail readiness
 
-MAIL1019b: Bounded IMAP networking and owned socket/receiver cleanup passed fleet-02 gate be02-71155e5ff2f84877a58056c82334d909. Standard Ruby145 suites/870 tests/9,501 assertions; real Mox10/107, HTTP1/33 and worker-entry2/107: combined883 tests/9,748 assertions, zero failures/errors/skips. Twelve dedicated suites remain deferred. Steep, canonical RuboCop339 files, fixture lint3 files, frozen-source verification and exact cleanup passed;17 independent absence checks passed. Shared bases and persistent data retained. Host free bytes254795493376 ->254793297920 (shared delta -2195456, not attributable reclamation). No spend, live credentials, external mail, DNS or production mutation. SMTP identity binding, aggregate budgets, scheduling, operational activation and remaining app/native acceptance remain open: NOT credentials-only ready. See docs/mailserver/imap-runtime-bounds.md.
-
-MAIL1019a: Account/version/protocol-bound IMAP credentials and durable revocation passed the fleet-02 gate be02-d1d4f01d583f4e90aa93a0deae34e6de. Standard Ruby: 143 suites, 854 tests/9,407 assertions; real Mox compatibility 7/27 and worker/inbox composition 3/80; HTTP 1/33, totaling 865 tests/9,547 assertions with zero failures/errors/skips. Twelve dedicated suites are deferred. Steep, canonical RuboCop (334 files), fixture lint (3 files), and 97 runner units passed. Exact cleanup and 17 independent absence checks passed; shared bases and persistent data retained. Host free bytes rose22,003,712, a shared-host delta, not attributable reclamation. No spend, real credentials, external mail, DNS or production mutation. The timeout adapter remains under review and is excluded from this passing snapshot; SMTP identity binding, aggregate budgets, bounded scheduling, operational activation and app/native acceptance remain open. NOT credentials-only ready. See docs/mailserver/credential-binding.md.
-
+MAIL1020a: SMTP attempts now bind organization, mailbox, account, credential version, reference and protocol; final authorization rechecks sender/account state before the held Mox transport resolves credentials. Fleet-02 gate be02-cab695ff6bd6445d9fd4dc6b19a3165e passed: 148 standard suites/888 tests/9,621 assertions; Mox10/107, HTTP1/33 and worker-entry2/107; combined901 tests/9,868 assertions, zero failures/errors/skips. Twelve dedicated suites remain deferred. Steep, RuboCop344 files, fixture lint3 files, frozen source and exact cleanup passed;17 independent absence checks passed. Shared bases/persistent data retained; free bytes254805770240 ->254871015424 (shared delta+65245184, not attributable reclamation). No spend, live credentials, external mail, DNS or production mutation. Aggregate budgets, scheduling, operational activation and remaining app/native acceptance remain open: NOT credentials-only ready. See docs/mailserver/smtp-account-binding.md.
 
 ## Scope and identity
 
@@ -12,10 +9,10 @@ Research advisers: Aster (cost/licensing) and Selene (delivery design), requeste
 The main agent implements inline. No paid infrastructure, credentials, DNS, real mail or public listeners.
 Runtime model/billing tier is not independently exposed by the shell.
 
-User quantity clarification is pending: 500 messages/day plus 200 diagnostics/day differs from
-500 sending accounts plus 200 diagnostic accounts. Prepare both scenarios; do not equate them.
-Capacity acceptance targets 700 synthetic account definitions and a bounded active subset before
-increasing concurrency. Account count alone cannot establish production throughput or disk needs.
+The prepared scope is500 outreach accounts,200 consenting diagnostic seed accounts and12 personal
+reservations (712 total). Separate projections of500 outreach messages/day and200 diagnostic
+messages/day are not enforced throughput. Account count alone cannot establish production capacity.
+The measured active subset remains eight accounts/two workers, not700 concurrent users.
 
 ## Selection and tradeoff review
 
@@ -82,17 +79,15 @@ and two workers exchange seventeen messages; TLS, sender/recipient isolation, qu
 restart and full configuration/data/TLS restore pass. The measured peak is 356 MiB and median local
 round trip is 213 ms. This is not a test of 700 simultaneous users or public-provider delivery.
 
-Five actual application adapter compatibility tests pass (18 assertions), plus six TLS IMAP tests
-(34 assertions), six IMAP synchronization tests (34 assertions), whole-server Steep and affected-file
-RuboCop lint. Fixed typed UID search serialization: a quoted string was rejected by Mox, whereas a
-Net::IMAP::SequenceSet sends the correct wire criterion. MAIL1018 additionally proves the held
-approval/worker/receipt/Mox/IMAP/database/inbox composition (3 tests/74 assertions), including
-unknown acknowledgment without replay, revocation before I/O and foreign-tenant isolation.
-The full gate totals 843 tests/9,029 assertions; twelve dedicated suites remain deferred.
-See [runtime evidence](runtime-evidence.md) for exact source and acceptance boundaries.
+The current MAIL1020a gate proves held SMTP account/version binding, final authorization, actual
+Mox SMTP/IMAP/inbox composition (3/80) and compatibility (7/27). Combined backend acceptance is
+901 tests/9,868 assertions; twelve dedicated suites remain deferred. IMAP credential binding and
+bounded networking remain covered. See [runtime evidence](runtime-evidence.md) and
+[SMTP binding](smtp-account-binding.md) for exact source and revocation boundaries.
 
-The held fixture has versioned receipt/profile storage. Production composition, tenant-bound secret resolution,
-atomic aggregate sending budgets and native client acceptance remain implementation work.
+Production composition, aggregate sending budgets, scheduling, operational activation and remaining
+application/browser/native acceptance are still work. Test-only credential bundles are implemented;
+a production secret provider and operator rotation/activation proof remain held.
 Credentials are not the only live prerequisite: Hetzner SMTP unblocking is account-dependent;
 public DNS/TLS/IP reputation and actual provider delivery cannot be proven inside an offline fixture.
 

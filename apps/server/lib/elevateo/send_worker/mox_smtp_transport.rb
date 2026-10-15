@@ -2,6 +2,7 @@
 
 require "openssl"
 require_relative "smtp_transport"
+require_relative "../mail_credentials/binding"
 
 module Elevateo
   module SendWorker
@@ -13,13 +14,17 @@ module Elevateo
         @profile, @ca_file, @credential_resolver, @smtp_factory = profile, ca_file, credential_resolver, smtp_factory
       end
 
-      def submit(bytes, send_id:, attempt_id:, deadline:)
+      def submit(bytes, send_id:, attempt_id:, deadline:, credential_binding: nil)
         raise ArgumentError, "invalid SMTP attempt" unless Control.valid_epoch?(attempt_id)
         rendered = SmtpSnapshot.render(bytes, send_id: send_id, verified_sender: @profile.verified_sender)
         unless rendered.recipients == ["seed000@seed.test"]
           return SubmissionResult.new(kind: "rejected", code: "smtp_invalid_snapshot")
         end
-        deliver(rendered, send_id: send_id, attempt_id: attempt_id, deadline: deadline)
+        unless credential_binding.is_a?(MailCredentials::Binding) &&
+            credential_binding.organization_id == rendered.organization_id && credential_binding.mailbox_id == rendered.mailbox_id
+          raise SmtpTransport::Held, "SMTP account binding unavailable", cause: nil
+        end
+        deliver(rendered, send_id: send_id, attempt_id: attempt_id, deadline: deadline, binding: credential_binding)
       rescue SmtpSnapshot::Invalid
         SubmissionResult.new(kind: "rejected", code: "smtp_invalid_snapshot")
       end
@@ -29,13 +34,14 @@ module Elevateo
 
       private
 
-      def deliver(rendered, send_id:, attempt_id:, deadline:)
+      def deliver(rendered, send_id:, attempt_id:, deadline:, binding:)
         started = false
         status = ""
         begin
           deadline.check!
           Timeout.timeout(deadline.remaining, CallDeadline::Expired) do
-            username, password = @credential_resolver.call("test:mox-fixture")
+            # AIDEV-NOTE: Exact account/version/protocol lookup happens before constructing any SMTP client.
+            username, password = @credential_resolver.call(binding, protocol: "smtp")
             unless username == @profile.verified_sender && password.is_a?(String) &&
                 password.bytesize.between?(1, 4096) && !password.match?(/[\x00\r\n]/)
               raise ArgumentError, "invalid fixture credential"

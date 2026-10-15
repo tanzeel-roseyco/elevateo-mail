@@ -7,7 +7,8 @@ require_relative "control"
 
 module Elevateo
   module SendWorker
-    RenderedMail = Struct.new(:mime, :sender, :recipients, keyword_init: true)
+    # AIDEV-NOTE: Keep validated tenant/mailbox identity beside MIME so SMTP cannot pair it with another account.
+    RenderedMail = Struct.new(:mime, :sender, :recipients, :organization_id, :mailbox_id, keyword_init: true)
 
     class SmtpSnapshot
       MAX_MIME_BYTES = 524_288
@@ -42,7 +43,7 @@ module Elevateo
         mime = build_mime(send_id, sender, recipients, subject, body)
         raise Invalid, "MIME size exceeded" if mime.bytesize > MAX_MIME_BYTES
         RenderedMail.new(mime: mime.freeze, sender: sender.freeze,
-          recipients: recipients.map(&:last).freeze).freeze
+          recipients: recipients.map(&:last).freeze, organization_id: value[1].freeze, mailbox_id: value[2].freeze).freeze
       rescue JSON::ParserError, TypeError
         raise Invalid, "invalid send snapshot"
       end

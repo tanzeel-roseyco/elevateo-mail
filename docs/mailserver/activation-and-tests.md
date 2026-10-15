@@ -1,9 +1,6 @@
 # Mox activation and inexpensive acceptance plan
 
-MAIL1019b: Bounded IMAP networking and owned socket/receiver cleanup passed fleet-02 gate be02-71155e5ff2f84877a58056c82334d909. Standard Ruby145 suites/870 tests/9,501 assertions; real Mox10/107, HTTP1/33 and worker-entry2/107: combined883 tests/9,748 assertions, zero failures/errors/skips. Twelve dedicated suites remain deferred. Steep, canonical RuboCop339 files, fixture lint3 files, frozen-source verification and exact cleanup passed;17 independent absence checks passed. Shared bases and persistent data retained. Host free bytes254795493376 ->254793297920 (shared delta -2195456, not attributable reclamation). No spend, live credentials, external mail, DNS or production mutation. SMTP identity binding, aggregate budgets, scheduling, operational activation and remaining app/native acceptance remain open: NOT credentials-only ready. See docs/mailserver/imap-runtime-bounds.md.
-
-MAIL1019a: Account/version/protocol-bound IMAP credentials and durable revocation passed the fleet-02 gate be02-d1d4f01d583f4e90aa93a0deae34e6de. Standard Ruby: 143 suites, 854 tests/9,407 assertions; real Mox compatibility 7/27 and worker/inbox composition 3/80; HTTP 1/33, totaling 865 tests/9,547 assertions with zero failures/errors/skips. Twelve dedicated suites are deferred. Steep, canonical RuboCop (334 files), fixture lint (3 files), and 97 runner units passed. Exact cleanup and 17 independent absence checks passed; shared bases and persistent data retained. Host free bytes rose22,003,712, a shared-host delta, not attributable reclamation. No spend, real credentials, external mail, DNS or production mutation. The timeout adapter remains under review and is excluded from this passing snapshot; SMTP identity binding, aggregate budgets, bounded scheduling, operational activation and app/native acceptance remain open. NOT credentials-only ready. See docs/mailserver/credential-binding.md.
-
+MAIL1020a: SMTP attempts now bind organization, mailbox, account, credential version, reference and protocol; final authorization rechecks sender/account state before the held Mox transport resolves credentials. Fleet-02 gate be02-cab695ff6bd6445d9fd4dc6b19a3165e passed: 148 standard suites/888 tests/9,621 assertions; Mox10/107, HTTP1/33 and worker-entry2/107; combined901 tests/9,868 assertions, zero failures/errors/skips. Twelve dedicated suites remain deferred. Steep, RuboCop344 files, fixture lint3 files, frozen source and exact cleanup passed;17 independent absence checks passed. Shared bases/persistent data retained; free bytes254805770240 ->254871015424 (shared delta+65245184, not attributable reclamation). No spend, live credentials, external mail, DNS or production mutation. Aggregate budgets, scheduling, operational activation and remaining app/native acceptance remain open: NOT credentials-only ready. See docs/mailserver/smtp-account-binding.md.
 
 This is a held preparation packet, not an enabled deployment. Do not change the application's
 `remote_held` contract or bypass its outbound hold to follow this plan. Every executable test runs
@@ -93,7 +90,7 @@ personal/team mail. One shared-IP pilot is cheaper but shares a reputation failu
 | Protocol | TLS chain/hostname, STARTTLS/auth, sender authorization, unknown recipient, no open relay | Synthetic `.test` accounts only |
 | Storage | Mailbox quota, SMTP size limit, sentinel/body equality, cross-account isolation, duplicate detection | Tiny payloads; no huge generated corpus |
 | Recovery | Restart, Mox backup, verifydata, restore configuration/TLS/data, recover every sentinel | Container tmpfs and no public networking |
-| App integration | Actual worker -> verified TLS SMTP -> Mox -> IMAP ingestion -> tenant inbox | Held composition passes 3 tests/74 assertions; production composition and tenant secrets remain open |
+| App integration | Actual worker -> verified TLS SMTP -> Mox -> IMAP ingestion -> tenant inbox | Held composition passes3/80 with account/version-bound test credentials; production integration remains held |
 | App failures | Revoked credentials, deleted tenant/session, RLS, suppression race, quota race, unknown acknowledgment, no replay | Deterministic service doubles plus isolated integration |
 | Regression | Lint, typecheck, Vitest, backend suites, PostgreSQL/RLS, browser flows, audit | Reuse pinned images, one bounded lease at a time |
 | Native clients | Android APK resource/admission/install/run; Windows/macOS packaging and real runtime acceptance | Fleet builds; platform runtime needed for each claim |
@@ -120,5 +117,5 @@ Cost: quotas dominate small-server sizing; budget is provisional until domains/b
 are included. Design: one Mox process lowers baseline cost while shared IP/disk enlarge the failure
 domain. Tests: offline assertions prove the listed scope only. Deployment: no service installed,
 account activated, server purchased, DNS edited or real message sent by this packet. Application:
-production composition, aggregate quotas, secret resolution and exact-source/native acceptance
+production composition, aggregate quotas, production secret activation and exact-source/native acceptance
 remain work, not credential entry. This document must not be reported as credentials-only ready.

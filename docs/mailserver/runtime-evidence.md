@@ -1,11 +1,8 @@
 # Mail runtime and REA evidence
 
-MAIL1019b: Bounded IMAP networking and owned socket/receiver cleanup passed fleet-02 gate be02-71155e5ff2f84877a58056c82334d909. Standard Ruby145 suites/870 tests/9,501 assertions; real Mox10/107, HTTP1/33 and worker-entry2/107: combined883 tests/9,748 assertions, zero failures/errors/skips. Twelve dedicated suites remain deferred. Steep, canonical RuboCop339 files, fixture lint3 files, frozen-source verification and exact cleanup passed;17 independent absence checks passed. Shared bases and persistent data retained. Host free bytes254795493376 ->254793297920 (shared delta -2195456, not attributable reclamation). No spend, live credentials, external mail, DNS or production mutation. SMTP identity binding, aggregate budgets, scheduling, operational activation and remaining app/native acceptance remain open: NOT credentials-only ready. See docs/mailserver/imap-runtime-bounds.md.
+MAIL1020a: SMTP attempts now bind organization, mailbox, account, credential version, reference and protocol; final authorization rechecks sender/account state before the held Mox transport resolves credentials. Fleet-02 gate be02-cab695ff6bd6445d9fd4dc6b19a3165e passed: 148 standard suites/888 tests/9,621 assertions; Mox10/107, HTTP1/33 and worker-entry2/107; combined901 tests/9,868 assertions, zero failures/errors/skips. Twelve dedicated suites remain deferred. Steep, RuboCop344 files, fixture lint3 files, frozen source and exact cleanup passed;17 independent absence checks passed. Shared bases/persistent data retained; free bytes254805770240 ->254871015424 (shared delta+65245184, not attributable reclamation). No spend, live credentials, external mail, DNS or production mutation. Aggregate budgets, scheduling, operational activation and remaining app/native acceptance remain open: NOT credentials-only ready. See docs/mailserver/smtp-account-binding.md.
 
-MAIL1019a: Account/version/protocol-bound IMAP credentials and durable revocation passed the fleet-02 gate be02-d1d4f01d583f4e90aa93a0deae34e6de. Standard Ruby: 143 suites, 854 tests/9,407 assertions; real Mox compatibility 7/27 and worker/inbox composition 3/80; HTTP 1/33, totaling 865 tests/9,547 assertions with zero failures/errors/skips. Twelve dedicated suites are deferred. Steep, canonical RuboCop (334 files), fixture lint (3 files), and 97 runner units passed. Exact cleanup and 17 independent absence checks passed; shared bases and persistent data retained. Host free bytes rose22,003,712, a shared-host delta, not attributable reclamation. No spend, real credentials, external mail, DNS or production mutation. The timeout adapter remains under review and is excluded from this passing snapshot; SMTP identity binding, aggregate budgets, bounded scheduling, operational activation and app/native acceptance remain open. NOT credentials-only ready. See docs/mailserver/credential-binding.md.
-
-
-## MAIL1018 held worker and inbox composition
+## Historical MAIL1018 held worker and inbox composition
 
 The successful fleet-02 gate is `be02-efaf3b7cb1de4ef7a08428120328bc12`, under
 `/home/tanzeel/orca/workspaces/integration/completion-cassian-int801/ops/local/`.
@@ -123,15 +120,12 @@ No live credentials, password files, TLS private keys or message databases are i
 
 ## Remaining implementation, in dependency order
 
-1. MAIL1018: held fixture profile, verified-TLS worker, versioned receipt SQL/RBS and worker/inbox
-   composition are complete within the private gate above. Production profiles remain held.
-2. MAIL1019: versioned worker-only secret resolver with tenant binding and a bounded IMAP entrypoint;
-   revocation, malformed secret, timeout and UIDVALIDITY reset acceptance.
-3. MAIL1020: PostgreSQL aggregate organization/group/mailbox/domain/IP/destination budgets, reserved
-   before I/O under fixed lock order. Charge each envelope recipient; retain unknown-attempt charges.
-4. MAIL1021: real API approval -> atomic claim/quota -> Mox SMTP -> IMAP import -> tenant inbox;
-   race/cancellation/timeout/replay/foreign-tenant acceptance on an isolated exact source snapshot.
-5. MAIL1022: held deployment configuration, target-native systemd validation, off-host encrypted
-   restore, disk/queue alerts, then remaining app/browser/native package acceptance.
-6. Activation: actual hosting/IP/SMTP eligibility, owned domains, TLS/DKIM/DNS, scoped credentials
-   and consented provider canaries. Neither credentials alone nor 200 local seeds proves reputation.
+1. MAIL1018/1019/1020a: held Mox composition, IMAP bounds and account/version/protocol-bound
+   test credentials are complete within their source-specific gates. Production stays held.
+2. MAIL1020b: atomic recipient budgets across organization/group/mailbox/sender domain/shared
+   egress pool/destination domain, fixed lock ordering, unknown-attempt charge retention.
+3. MAIL1021: bounded scheduling and exact-source approval/quota/SMTP/IMAP/inbox race acceptance.
+4. MAIL1022: held native deployment proof, off-host encrypted restore, disk/queue alerts and
+   remaining application/browser/native packaging and runtime acceptance.
+5. Activation: hosting/IP/SMTP eligibility, owned domains, TLS/DKIM/DNS, scoped credentials and
+   consenting provider canaries. Credentials alone and200 private seeds cannot establish reputation.

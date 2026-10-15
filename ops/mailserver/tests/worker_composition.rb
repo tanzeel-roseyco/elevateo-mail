@@ -10,11 +10,13 @@ require "/workspace/apps/server/lib/elevateo/send_worker/mox_smtp_transport"
 require "/workspace/apps/server/lib/elevateo/inbound/tls_imap_transport"
 require "/workspace/apps/server/test/support/mail_binding"
 require_relative "worker_inbox"
+require "/workspace/apps/server/test/support/smtp_account"
+require "/workspace/apps/server/lib/elevateo/mail_credentials/bundle"
 
 # AIDEV-NOTE: Real PostgreSQL approval/worker and Mox SMTP/IMAP; the delayed-ack case injects time, not a receipt.
 class MoxWorkerCompositionTest < SendDatabaseTestCase
   include MoxInboxProof
-  include MailBindingFixture
+  include SmtpAccountFixture
   FROM = "outreach000@send.test"
   TO = "seed000@seed.test"
   CA = "/evidence/fixture-ca.pem"
@@ -34,6 +36,7 @@ class MoxWorkerCompositionTest < SendDatabaseTestCase
     fixture_change do
       @admin.exec_params("UPDATE app.mailboxes SET address=$1 WHERE id=$2", [FROM, @box])
     end
+    create_smtp_account(sender: FROM)
     @subject = "MAIL1018 persisted worker #{@draft}"
     @body = "Private synthetic composition\nUnicode: caf\u00e9 / \u65e5\u672c\u8a9e"
     saved = payload(expected_version: 1, operation_id: SecureRandom.uuid, subject: @subject,
@@ -46,13 +49,16 @@ class MoxWorkerCompositionTest < SendDatabaseTestCase
   end
 
   def execute(smtp_class: Net::SMTP, budget: 10)
-    driver = Elevateo::SendWorker::MoxSmtpTransport.new(
-      profile: Elevateo::SendWorker::SmtpProfile.local_mox, ca_file: CA,
-      credential_resolver: ->(reference) {
-        raise "unexpected SMTP reference" unless reference == "test:mox-fixture"
-        [FROM, @passwords.fetch(FROM)]
-      }, smtp_factory: ->(host, port) { @smtp_connections += 1; smtp_class.new(host, port) })
     Dir.mktmpdir("mox-composition-") do |directory|
+      credentials = File.join(directory, "credentials.json")
+      # AIDEV-NOTE: Real bundle lookup proves SQL identity crosses the composition boundary, not a string-only mock.
+      File.write(credentials, JSON.generate(format_version: 1, entries: [{ organization_id: @org,
+        mailbox_id: @box, account_id: @smtp_account, credential_version: 1, credential_ref: "test:synthetic",
+        protocol: "smtp", username: FROM, password: @passwords.fetch(FROM) }]), mode: "w", perm: 0o600)
+      driver = Elevateo::SendWorker::MoxSmtpTransport.new(
+        profile: Elevateo::SendWorker::SmtpProfile.local_mox, ca_file: CA,
+        credential_resolver: Elevateo::MailCredentials::Bundle.new(path: credentials),
+        smtp_factory: ->(host, port) { @smtp_connections += 1; smtp_class.new(host, port) })
       path = File.join(directory, "control.json")
       File.write(path, JSON.generate(epoch: @epoch, outbound_held: false))
       store = Elevateo::SendWorker::DatabaseStore.new(connection: @worker, send_id: @send_id, profile: "mox-smtp-test-v1")

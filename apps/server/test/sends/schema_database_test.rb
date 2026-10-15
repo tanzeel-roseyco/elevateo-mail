@@ -59,7 +59,9 @@ class SendSchemaDatabaseTest < SendDatabaseTestCase
         FROM pg_class c JOIN pg_roles r ON r.oid=c.relowner
         WHERE c.relnamespace='app_send_private'::regnamespace AND c.relkind='r'
     SQL
-    assert_equal 10, rows.length
+    expected = %w[approval_operations attempts audit_events intents jobs mailbox_policy observations
+                  organization_policy recipient_suppressions reconciliation_checks smtp_accounts]
+    assert_equal expected.sort, rows.map { |row| row.fetch("relname") }.sort
     rows.each do |row|
       assert_equal "t", row.fetch("relrowsecurity")
       assert_equal "t", row.fetch("relforcerowsecurity")
@@ -105,6 +107,8 @@ class SendSchemaDatabaseTest < SendDatabaseTestCase
   end
   def test_empty_down_removes_only_send_objects_and_transaction_rollback_restores_them
     @admin.exec("BEGIN")
+    # AIDEV-NOTE: Reverse dependent SMTP authority before testing the original send-schema teardown.
+    @admin.exec(File.read(File.expand_path("../../db/be03_send/smtp_account_binding_down.sql", __dir__)))
     worker_down = File.read(File.expand_path("../../db/be03_send/worker_authority_down.sql", __dir__))
     @admin.exec(worker_down)
     @admin.exec("SET LOCAL ROLE elevateo_send_owner")

@@ -41,8 +41,10 @@ module Elevateo
           return :held
         end
 
-        result = @driver.submit(authorization.snapshot_bytes, send_id: claim.send_id,
-          attempt_id: authorization.attempt_id, deadline: @deadline_factory.call)
+        # AIDEV-NOTE: Account-bound adapters require the SQL tuple; legacy synthetic adapters have no credential input.
+        options = { send_id: claim.send_id, attempt_id: authorization.attempt_id, deadline: @deadline_factory.call }
+        options[:credential_binding] = authorization.credential_binding if authorization.credential_binding
+        result = @driver.submit(authorization.snapshot_bytes, **options)
         @store.record_observation(claim: claim, attempt_id: authorization.attempt_id,
           snapshot_digest: Digest::SHA256.hexdigest(authorization.snapshot_bytes), result: result)
         result.kind.to_sym
