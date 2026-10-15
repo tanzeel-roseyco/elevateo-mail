@@ -81,8 +81,8 @@ class AttachmentServiceTest < Minitest::Test
 
     def request(request)
       @paths << request.path
-      return yield @object_response if block_given?
-      @bucket_response
+      response = request.path.start_with?("/bucket/") ? @bucket_response : @object_response
+      block_given? ? yield(response) : response
     end
   end
 
@@ -109,6 +109,38 @@ class AttachmentServiceTest < Minitest::Test
     @allowed = false
     assert_raises(Elevateo::Attachments::NotAvailable) { @service.assert_downloadable(**scope, id: id) }
     assert_equal [:write, :write, :read, :read, :read], (@checks.map { |item| item.fetch(:capability) })
+  end
+
+  def test_rejected_metadata_lists_with_zero_bytes_but_never_downloads
+    id = stage.fetch("id")
+    @repository.rows.fetch(id).merge!("scan_status" => "rejected", "byte_size" => 0)
+    item = @service.list(**scope).fetch("items").fetch(0)
+    assert_equal 0, item.fetch("byte_size")
+    assert_equal "rejected", item.fetch("scan_status")
+    refute item.key?("storage_key")
+    assert_raises(Elevateo::Attachments::Held) { @service.assert_downloadable(**scope, id: id) }
+    @allowed = false
+    assert_raises(Elevateo::Attachments::NotAvailable) { @service.list(**scope) }
+  end
+
+  def test_rejected_metadata_requires_integer_zero
+    id = stage.fetch("id")
+    row = @repository.rows.fetch(id)
+    [nil, "0", 0.0, -1, 1, Elevateo::Attachments::MAX_BYTES + 1].each do |size|
+      row.merge!("scan_status" => "rejected", "byte_size" => size)
+      assert_raises(Elevateo::Attachments::Invalid) { @service.list(**scope) }
+    end
+  end
+
+  def test_stored_metadata_still_requires_positive_integer_size
+    id = stage.fetch("id")
+    row = @repository.rows.fetch(id)
+    %w[pending_scan clean malware scan_failed].each do |status|
+      row.merge!("scan_status" => status, "byte_size" => 0)
+      assert_raises(Elevateo::Attachments::Invalid) { @service.list(**scope) }
+    end
+    row["scan_status"] = "clean"
+    assert_raises(Elevateo::Attachments::Invalid) { @service.assert_downloadable(**scope, id: id) }
   end
 
   def test_list_exposes_only_safe_fields_and_fresh_authorization
@@ -305,7 +337,7 @@ class AttachmentServiceTest < Minitest::Test
 
   def test_private_storage_denies_missing_bucket_body_before_object_request
     response = Net::HTTPOK.new("1.1", "200", "OK")
-    response.define_singleton_method(:body) { nil }
+    response.define_singleton_method(:read_body) { |&_block| nil }
     exchange = StorageHttpExchange.new(bucket_response: response)
     adapter = Elevateo::Attachments::PrivateStorage.new(base_url: "http://storage:5000",
       bucket: "inbox-private", service_token: "x" * 32, process: "worker")
@@ -319,7 +351,7 @@ class AttachmentServiceTest < Minitest::Test
 
   def test_private_storage_rejects_status_before_read_body
     bucket = Net::HTTPOK.new("1.1", "200", "OK")
-    bucket.define_singleton_method(:body) { '{"public":false}' }
+    bucket.define_singleton_method(:read_body) { |&block| block.call('{"public":false}') }
     object = Net::HTTPForbidden.new("1.1", "403", "Forbidden")
     reads = []
     object.define_singleton_method(:read_body) { |&_block| reads << :read_body }

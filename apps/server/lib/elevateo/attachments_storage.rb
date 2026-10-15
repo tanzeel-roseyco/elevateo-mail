@@ -69,11 +69,21 @@ module Elevateo
         http.max_retries = 0
         req = Net::HTTP::Get.new("/bucket/#{@bucket}")
         req["Authorization"] = "Bearer #{@token}"
-        response = http.request(req)
-        body = response.body
-        response.code.to_i == 200 && body.is_a?(String) && body.bytesize <= 4096 &&
-          JSON.parse(body).fetch("public") == false
-      rescue IOError, SystemCallError, Timeout::Error, JSON::ParserError, KeyError, NoMethodError
+        body = +"".b
+        # AIDEV-NOTE: Bound the streamed metadata before retaining it; denial never proceeds to an object request.
+        http.start do |session|
+          session.request(req) do |response|
+            raise Unavailable unless response.code.to_i == 200
+            response.read_body do |chunk|
+              raise Unavailable if body.bytesize + chunk.bytesize > 4096
+              body << chunk
+            end
+          end
+        end
+        metadata = JSON.parse(body)
+        metadata.is_a?(Hash) && metadata["public"] == false
+      rescue IOError, SocketError, SystemCallError, Timeout::Error, Net::HTTPBadResponse,
+        Net::HTTPHeaderSyntaxError, JSON::ParserError, Unavailable
         false
       end
 
@@ -93,13 +103,13 @@ module Elevateo
           session.request(req) do |response|
             raise Unavailable, "private object unavailable" unless expected.include?(response.code.to_i)
             response.read_body do |chunk|
+              raise Unavailable, "private object response too large" if body.bytesize + chunk.bytesize > MAX_BYTES
               body << chunk
-              raise Unavailable, "private object response too large" if body.bytesize > MAX_BYTES
             end
           end
         end
         body
-      rescue IOError, SystemCallError, Timeout::Error
+      rescue IOError, SocketError, SystemCallError, Timeout::Error, Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError
         raise Unavailable, "private object unavailable"
       end
     end

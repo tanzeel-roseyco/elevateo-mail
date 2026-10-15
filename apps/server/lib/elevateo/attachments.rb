@@ -15,7 +15,7 @@ module Elevateo
     class NotAvailable < StandardError; end
     class Held < StandardError; end
 
-    # AIDEV-NOTE: Storage is private and has no scanner today; only an independent scanner may record clean.
+    # AIDEV-NOTE: Uploads remain private; only ScanService may record the independent scanner's clean verdict.
     class Service
       def initialize(repository:, storage:, authorize:)
         @repository, @storage, @authorize = repository, storage, authorize
@@ -81,7 +81,9 @@ module Elevateo
 
       def byte_size!(row)
         size = row.fetch("byte_size")
-        raise Invalid unless size.is_a?(Integer) && size.between?(1, MAX_BYTES)
+        # AIDEV-NOTE: V2 rejected metadata represents a refused import with no stored object, so its size must be zero.
+        valid = row.fetch("scan_status") == "rejected" ? size == 0 : size.is_a?(Integer) && size.between?(1, MAX_BYTES)
+        raise Invalid unless size.is_a?(Integer) && valid
         size
       end
 
