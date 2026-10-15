@@ -116,6 +116,6 @@ class CampaignRollbackMigrationTest < Minitest::Test
 
   def assert_forced(rows, expected_count)
     assert_equal expected_count, rows.length
-    assert rows.all? { |row| row[1, 3] == ["true", "true", "elevateo_owner"] }
+    assert(rows.all? { |row| row[1, 3] == ["true", "true", "elevateo_owner"] })
   end
 end
