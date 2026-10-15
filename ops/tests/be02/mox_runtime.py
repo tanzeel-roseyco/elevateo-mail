@@ -66,7 +66,8 @@ class WorkerFixture:
              "bundle exec ruby /mailserver/tests/worker_composition.rb && "
              "bundle exec rubocop --lint --format simple "
              "/mailserver/tests/app_compatibility.rb /mailserver/tests/worker_composition.rb "
-             "/mailserver/tests/worker_inbox.rb"])])
+             "/mailserver/tests/worker_inbox.rb /mailserver/tests/scheduled_inbox.rb "
+             "/mailserver/tests/inbound_process.rb /mailserver/tests/inbound_process_proof.rb"])])
 
     def run(self) -> None:
         self.out.mkdir(mode=0o700)
@@ -89,7 +90,7 @@ class WorkerFixture:
                 raise RuntimeError("Mox fixture did not become ready")
             time.sleep(0.5)
         passwords = json.loads((self.out / "fixture-credentials.json").read_text())
-        if not isinstance(passwords, dict) or set(passwords) != {"outreach000@send.test", "seed000@seed.test"}:
+        if not isinstance(passwords, dict) or set(passwords) != {"outreach000@send.test", "seed000@seed.test", "seed001@seed.test"}:
             raise RuntimeError("unexpected synthetic Mox identities")
         if not all(isinstance(value, str) and 16 <= len(value) <= 256 for value in passwords.values()):
             raise RuntimeError("invalid synthetic Mox credentials")

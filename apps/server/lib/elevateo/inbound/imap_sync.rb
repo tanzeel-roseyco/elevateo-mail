@@ -9,7 +9,10 @@ module Elevateo
       MAX_BATCH = 50
       MAX_UID = 4_294_967_295
 
+      attr_reader :batch_full
+
       def initialize(store:, transport:, attachment_storage: nil)
+        @batch_full = false
         @store = store
         @transport = transport
         @attachment_storage = attachment_storage
@@ -18,6 +21,7 @@ module Elevateo
       def run(account_id:, credential_version:)
         # @type var session: _ImapSession?
         session = nil
+        @batch_full = false
         claim = @store.claim(account_id: account_id, credential_version: credential_version)
         opened = @transport.open(binding: claim.fetch("binding"))
         session = opened
@@ -61,6 +65,7 @@ module Elevateo
 
           cursor = uid
         end
+        @batch_full = events.length == MAX_BATCH
         cursor
       ensure
         session&.close

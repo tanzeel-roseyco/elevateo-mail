@@ -97,7 +97,7 @@ personal/team mail. One shared-IP pilot is cheaper but shares a reputation failu
 | Protocol | TLS chain/hostname, STARTTLS/auth, sender authorization, unknown recipient, no open relay | Synthetic `.test` accounts only |
 | Storage | Mailbox quota, SMTP size limit, sentinel/body equality, cross-account isolation, duplicate detection | Tiny payloads; no huge generated corpus |
 | Recovery | Restart, Mox backup, verifydata, restore configuration/TLS/data, recover every sentinel | Container tmpfs and no public networking |
-| App integration | Actual worker -> verified TLS SMTP -> Mox -> IMAP ingestion -> tenant inbox | Held direct composition passes3/82 with account/version-bound test credentials and six-axis budgets; queued profile and production integration remain open |
+| App integration | Actual worker -> verified TLS SMTP -> Mox -> IMAP ingestion -> tenant inbox | Held direct/queued composition and scheduled real-process IMAP pass with account/version-bound test credentials, six-axis budgets and tenant isolation; general MIME, attachments and production integration remain open |
 | App failures | Revoked credentials, deleted tenant/session, RLS, suppression race, quota race, unknown acknowledgment, no replay | Deterministic service doubles plus isolated integration |
 | Regression | Lint, typecheck, Vitest, backend suites, PostgreSQL/RLS, browser flows, audit | Reuse pinned images, one bounded lease at a time |
 | Native clients | Android APK resource/admission/install/run; Windows/macOS packaging and real runtime acceptance | Fleet builds; platform runtime needed for each claim |
@@ -124,5 +124,5 @@ Cost: quotas dominate small-server sizing; budget is provisional until domains/b
 are included. Design: one Mox process lowers baseline cost while shared IP/disk enlarge the failure
 domain. Tests: offline assertions prove the listed scope only. Deployment: no service installed,
 account activated, server purchased, DNS edited or real message sent by this packet. Application:
-queued/production composition, multi-account ingestion, production secrets and exact-source/native acceptance
+general MIME, rejection quarantine, private attachment/scanner composition, production routing/secrets, operations and exact-source/native acceptance
 remain work, not credential entry. This document must not be reported as credentials-only ready.

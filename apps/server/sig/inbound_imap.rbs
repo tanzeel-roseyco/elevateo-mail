@@ -83,7 +83,8 @@ module Elevateo
       RESET_SQL: String
       CLAIM_SQL: String
       @connection: Elevateo::WriteStatements
-      def initialize: (connection: Elevateo::WriteStatements) -> void
+      @lease_token: String?
+      def initialize: (connection: Elevateo::WriteStatements, ?lease_token: String?) -> void
       def insert_once: (account_id: String, credential_version: Integer, uidvalidity: Integer, uid: Integer,
         content_sha256: String, from: String, to: Array[String], subject: String, text: String,
         ?attachments: Array[staged_attachment]) -> Hash[String, untyped]
@@ -91,10 +92,13 @@ module Elevateo
         expected: Integer?, replacement: Integer) -> bool
       def claim: (account_id: String, credential_version: Integer) -> imap_claim
       private
+      def query: (String, String, Array[String | Integer | nil]) -> ActiveRecord::Result
       def binds: (Array[String | Integer | nil]) -> Array[ActiveRecord::Relation::QueryAttribute]
     end
 
     class ImapSync
+      @batch_full: bool
+      def batch_full: () -> bool
       MAX_BATCH: Integer
       MAX_UID: Integer
       @store: _ImapStore

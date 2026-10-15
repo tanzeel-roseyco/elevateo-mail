@@ -13,6 +13,9 @@ class ImapBindingMigrationTest < DraftDatabaseTestCase
     SQL
     original = definition
     privileges = authority
+    # AIDEV-NOTE: Migration 25 wraps this older function; compare its retained core, then restore the current fence.
+    expected = @admin.exec("SELECT pg_get_functiondef('app.claim_imap_account_unleased_core(uuid,integer)'::regprocedure)")
+      .getvalue(0, 0).sub("app.claim_imap_account_unleased_core(", "app.claim_imap_account(")
     admin = @admin
     migration = BindImapCredentialsToAccount.new
     # AIDEV-NOTE: Execute the real migration DDL on the isolated admin connection; runtime calls use actual worker/API logins.
@@ -24,7 +27,7 @@ class ImapBindingMigrationTest < DraftDatabaseTestCase
     migration.up
     assert_equal %w[account_id credential_ref credential_version last_uid mailbox_id organization_id uidvalidity],
       claim(account).keys.sort
-    assert_equal original, definition
+    assert_equal expected, definition
     assert_equal privileges, authority
     assert_raises(PG::InsufficientPrivilege) { claim(account, connection: @api) }
     @admin.exec_params("UPDATE app.inbound_imap_accounts SET active=false WHERE id=$1", [account])

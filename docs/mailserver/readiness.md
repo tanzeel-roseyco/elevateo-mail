@@ -85,17 +85,9 @@ and two workers exchange seventeen messages; TLS, sender/recipient isolation, qu
 restart and full configuration/data/TLS restore pass. The measured peak is 356 MiB and median local
 round trip is 213 ms. This is not a test of 700 simultaneous users or public-provider delivery.
 
-The current MAIL1022 gate proves held SMTP account/version binding, final authorization, six-axis
-atomic budgets, persisted fair mailbox opportunities, actual Mox composition (3/82) and compatibility
-(7/27). Combined backend acceptance is940 tests/11,055 assertions; twelve dedicated suites remain
-deferred. The712-mailbox selector workload measured p95 23.04ms and eight concurrent maximum193.12ms;
-this measures discovery only. See [runtime evidence](runtime-evidence.md),
-[SMTP binding](smtp-account-binding.md), [budgets](aggregate-send-budgets.md) and
-[mailbox rotation](mailbox-rotation.md) for exact evidence and limits.
+The current MAIL1024 / MAIL1025 gate proves held direct and queued SMTP composition plus leased scheduled IMAP ingestion through the real worker process. Combined backend acceptance is 982 tests / 11,752 assertions; twelve dedicated suites remain deferred. The712-mailbox selector workload previously measured p95 23.04ms and eight concurrent maximum193.12ms; this measures discovery only. See [runtime evidence](runtime-evidence.md), [SMTP binding](smtp-account-binding.md), [budgets](aggregate-send-budgets.md), [mailbox rotation](mailbox-rotation.md) and [scheduled ingestion](imap-polling.md).
 
-Production composition, production secret loading, multi-account ingestion, operational activation and
-remaining application/browser/native acceptance are still work. Test-only credential bundles exist;
-operator rotation/activation and live recovery proof remain held.
+General MIME handling, durable rejection quarantine, private attachment/scanner composition, production endpoint/secret loading, operational activation and remaining application/browser/native acceptance are still work. Test-only credential bundles exist; operator rotation/activation and live recovery proof remain held.
 Credentials are not the only live prerequisite: Hetzner SMTP unblocking is account-dependent;
 public DNS/TLS/IP reputation and actual provider delivery cannot be proven inside an offline fixture.
 

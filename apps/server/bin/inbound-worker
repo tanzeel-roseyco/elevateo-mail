@@ -1,0 +1,52 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require "json"
+require "active_record"
+require_relative "../lib/elevateo/inbound/worker_config"
+require_relative "../lib/elevateo/inbound/poll_loop"
+require_relative "../lib/elevateo/inbound/imap_poller"
+require_relative "../lib/elevateo/inbound/tls_imap_transport"
+require_relative "../lib/elevateo/mail_credentials/bundle"
+
+# AIDEV-NOTE: Dedicated pool and process isolate network deadlines from authentication revocation and HTTP requests.
+class InboundWorkerConnection < ActiveRecord::Base
+  self.abstract_class = true
+end
+
+stopping = false
+%w[INT TERM].each { |signal| Signal.trap(signal) { stopping = true } }
+exit_code = 0
+begin
+  raise ArgumentError, "invalid inbound worker arguments" unless [["--once"], ["--run"]].include?(ARGV)
+  settings = Elevateo::Inbound::WorkerConfig.load!
+  resolver = Elevateo::MailCredentials::Bundle.new(path: settings.credentials_path)
+  cfg = settings.runtime
+  InboundWorkerConnection.establish_connection(adapter: "postgresql", host: cfg.db_host, database: cfg.db_name,
+    username: cfg.db_role, password: cfg.db_password, pool: 1, checkout_timeout: 5, connect_timeout: 5,
+    variables: { statement_timeout: "3s", lock_timeout: "1s" })
+  poll = lambda do
+    InboundWorkerConnection.connection_pool.with_connection do |connection|
+      raise Elevateo::ConfigError, "inbound worker database role mismatch" unless
+        connection.select_value("SELECT session_user") == "elevateo_worker"
+      # AIDEV-NOTE: A cleanup failure poisons one transport; a fresh transport lets the next leased account recover.
+      transport = Elevateo::Inbound::TlsImapTransport.new(host: "localhost", port: 1993,
+        ca_file: settings.ca_path, credential_resolver: resolver)
+      Elevateo::Inbound::ImapPoller.new(connection: connection, transport: transport).run_once
+    end
+  end
+  loop = Elevateo::Inbound::PollLoop.new(poll: poll, logger: ->(line) { $stdout.puts(line); $stdout.flush })
+  outcome = loop.run(stop: -> { stopping }, once: ARGV == ["--once"])
+  exit_code = 1 if outcome == :failed
+rescue StandardError
+  warn JSON.generate(event: "inbound_worker.startup_failed", simulated: true)
+  exit_code = 1
+ensure
+  begin
+    InboundWorkerConnection.remove_connection
+  rescue StandardError
+    warn JSON.generate(event: "inbound_worker.cleanup_failed", simulated: true)
+    exit_code = 1
+  end
+end
+exit(exit_code)

@@ -19,7 +19,11 @@ module Elevateo
       RESET_SQL = "SELECT app.reset_imap_uidvalidity($1::uuid,$2::integer,$3::bigint,$4::bigint) AS result"
       CLAIM_SQL = "SELECT app.claim_imap_account($1::uuid,$2::integer)::text AS result"
 
-      def initialize(connection:)
+      def initialize(connection:, lease_token: nil)
+        unless lease_token.nil? || (lease_token.is_a?(String) && FakeIngress::UUID.match?(lease_token))
+          raise ArgumentError, "invalid IMAP lease"
+        end
+        @lease_token = lease_token&.dup&.freeze
         @connection = connection
       end
 
@@ -31,7 +35,7 @@ module Elevateo
                   attachments.to_json]
         statement = attachments.empty? ? PLAIN_SQL : SQL
         values.pop if attachments.empty?
-        row = @connection.exec_query(statement, "IMAP receive", binds(values)).first
+        row = query(statement, "IMAP receive", values).first
         raise Rejected, "store_unavailable" unless row
 
         raw = row.fetch("result")
@@ -46,12 +50,12 @@ module Elevateo
 
       def reset_uidvalidity(account_id:, credential_version:, expected:, replacement:)
         values = [account_id, credential_version, expected, replacement]
-        row = @connection.exec_query(RESET_SQL, "IMAP epoch reset", binds(values)).first
+        row = query(RESET_SQL, "IMAP epoch reset", values).first
         !row.nil? && row["result"] == true
       end
 
       def claim(account_id:, credential_version:)
-        row = @connection.exec_query(CLAIM_SQL, "IMAP account claim", binds([account_id, credential_version])).first
+        row = query(CLAIM_SQL, "IMAP account claim", [account_id, credential_version]).first
         raise Rejected, "account_unavailable" unless row
 
         raw = row.fetch("result")
@@ -80,6 +84,15 @@ module Elevateo
       end
 
       private
+
+      # AIDEV-NOTE: A fresh token-bound store is used per poll; every read/reset/plain/attachment write carries its fence.
+      def query(statement, name, values)
+        if @lease_token
+          statement = statement.sub("app.", "app.leased_").sub(")", ",$#{values.length + 1}::uuid)")
+          values = [*values, @lease_token]
+        end
+        @connection.exec_query(statement, name, binds(values))
+      end
 
       def binds(values)
         values.map do |value|

@@ -11,6 +11,7 @@ require "/workspace/apps/server/lib/elevateo/send_worker/mox_smtp_transport"
 require "/workspace/apps/server/lib/elevateo/inbound/tls_imap_transport"
 require "/workspace/apps/server/test/support/mail_binding"
 require_relative "worker_inbox"
+require_relative "scheduled_inbox"
 require "/workspace/apps/server/test/support/smtp_account"
 require "/workspace/apps/server/lib/elevateo/mail_credentials/bundle"
 

@@ -1,0 +1,20 @@
+module Elevateo
+  module Inbound
+    type imap_poll_lease = { "account_id" => String, "credential_version" => Integer, "lease_token" => String }
+    class ImapPollStore
+      @connection: Elevateo::WriteStatements
+      def initialize: (connection: Elevateo::WriteStatements) -> void
+      def claim_next: () -> imap_poll_lease?
+      def finish: (imap_poll_lease, outcome: String) -> nil
+    end
+    class ImapPoller
+      @connection: Elevateo::WriteStatements
+      @transport: _ImapTransport
+      @attachment_storage: _AttachmentStorage?
+      @polls: ImapPollStore
+      def initialize: (connection: Elevateo::WriteStatements, transport: _ImapTransport,
+        ?attachment_storage: _AttachmentStorage?) -> void
+      def run_once: () -> (:idle | :polled)
+    end
+  end
+end

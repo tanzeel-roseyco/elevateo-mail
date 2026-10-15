@@ -1,0 +1,552 @@
+{
+  "gate": "be02-582d931978bb4c6885a8102e88266fa8",
+  "result": {
+    "tests": "PASSED",
+    "failure": "",
+    "cleanup_passed": true,
+    "finished_at": 1792107888.2366748,
+    "source_snapshot": "source.sha256.json"
+  },
+  "standard": {
+    "tests": 965,
+    "assertions": 11417,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0,
+    "suites": 164
+  },
+  "mox": {
+    "tests": 14,
+    "assertions": 195,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0,
+    "suites": 2
+  },
+  "http": {
+    "tests": 1,
+    "assertions": 33,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0,
+    "suites": 1
+  },
+  "worker_entry": {
+    "tests": 2,
+    "assertions": 107,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0,
+    "suites": 1
+  },
+  "total": {
+    "tests": 982,
+    "assertions": 11752,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0
+  },
+  "deferred_suites": 12,
+  "cleanup": {
+    "removed": [
+      "container:6bf66f362fdf6492ff41cbb938aa951992ccc6f08b6f5a5df5c18913c8b90dbd",
+      "container:c10a591d55a18b7a303e4a46e1d447c38a7fed5a201fbcf21442e6d4d9f1c448",
+      "container:dc5f2cf8e8731c3113a3c3ac723ceee794a4accb35d3894fe5a62169116c00b1",
+      "container:fef5af873302455f8fb92c8afa10435f1a52971da1b21e6dfb39e0c150f258d7",
+      "container:6479e64e4cf5b3a831326db3b8fe471e5df8f6c451f604271d67160121fab24c",
+      "builder-container:25b79968428c8351ecedd45b3da7ae30dd6b46f7a1181d6563fe3c35ec63c576",
+      "builder:be02-582d931978bb4c6885a8102e88266fa8-builder",
+      "volume:be02-582d931978bb4c6885a8102e88266fa8_db-config",
+      "volume:be02-582d931978bb4c6885a8102e88266fa8_db-data",
+      "volume:buildx_buildkit_be02-582d931978bb4c6885a8102e88266fa8-builder0_state",
+      "network:334e36b2626b631e3d0c67788f041fa5e01e65a33970961ba888ae59fba0876b",
+      "image:sha256:07cdbe368553efd7dfec8171ce3bc30d7b27874db513474bdcdd60b6e288c52e"
+    ],
+    "errors": [],
+    "shared_bases_retained": true
+  },
+  "independent_cleanup": {
+    "passed": true,
+    "checks": [
+      {
+        "resource": "container:6bf66f362fdf6492ff41cbb938aa951992ccc6f08b6f5a5df5c18913c8b90dbd",
+        "absent": true
+      },
+      {
+        "resource": "container:c10a591d55a18b7a303e4a46e1d447c38a7fed5a201fbcf21442e6d4d9f1c448",
+        "absent": true
+      },
+      {
+        "resource": "container:dc5f2cf8e8731c3113a3c3ac723ceee794a4accb35d3894fe5a62169116c00b1",
+        "absent": true
+      },
+      {
+        "resource": "container:fef5af873302455f8fb92c8afa10435f1a52971da1b21e6dfb39e0c150f258d7",
+        "absent": true
+      },
+      {
+        "resource": "container:6479e64e4cf5b3a831326db3b8fe471e5df8f6c451f604271d67160121fab24c",
+        "absent": true
+      },
+      {
+        "resource": "builder-container:25b79968428c8351ecedd45b3da7ae30dd6b46f7a1181d6563fe3c35ec63c576",
+        "absent": true
+      },
+      {
+        "resource": "builder:be02-582d931978bb4c6885a8102e88266fa8-builder",
+        "absent": true
+      },
+      {
+        "resource": "volume:be02-582d931978bb4c6885a8102e88266fa8_db-config",
+        "absent": true
+      },
+      {
+        "resource": "volume:be02-582d931978bb4c6885a8102e88266fa8_db-data",
+        "absent": true
+      },
+      {
+        "resource": "volume:buildx_buildkit_be02-582d931978bb4c6885a8102e88266fa8-builder0_state",
+        "absent": true
+      },
+      {
+        "resource": "network:334e36b2626b631e3d0c67788f041fa5e01e65a33970961ba888ae59fba0876b",
+        "absent": true
+      },
+      {
+        "resource": "image:sha256:07cdbe368553efd7dfec8171ce3bc30d7b27874db513474bdcdd60b6e288c52e",
+        "absent": true
+      },
+      {
+        "resource": "container:be02-582d931978bb4c6885a8102e88266fa8-mox",
+        "absent": true
+      },
+      {
+        "resource": "container:be02-582d931978bb4c6885a8102e88266fa8-mox-client",
+        "absent": true
+      },
+      {
+        "resource": "file:.env.runtime",
+        "absent": true
+      },
+      {
+        "resource": "file:mox/.env.client",
+        "absent": true
+      },
+      {
+        "resource": "file:mox/fixture-credentials.json",
+        "absent": true
+      }
+    ],
+    "mutations": false
+  },
+  "host_space_before": {
+    "free_bytes": 254846464000
+  },
+  "host_space_after": {
+    "free_bytes": 254827958272
+  },
+  "space_delta_attributable": false,
+  "source_frozen": true,
+  "manifest_sha256": "0f5414c21018a5a4849ef8705c2727832fe94b7a0352613ba210cabb5dee4207",
+  "runner_units": {
+    "tests": 97,
+    "passed": true,
+    "evidence": "mail1025-be02-units-r1.txt"
+  },
+  "prior_failed_gates": [
+    {
+      "gate": "be02-23f80d9ca8a84f3499186957aa6a39b9",
+      "reason": "Fixture assertion lint ambiguity",
+      "result": {
+        "tests": "FAILED",
+        "failure": "RuntimeError: RuntimeError: mox-composition failed; see 041-mox-composition.log",
+        "cleanup_passed": true,
+        "finished_at": 1792106110.8394086,
+        "source_snapshot": "source.sha256.json"
+      },
+      "independent_cleanup": {
+        "passed": true,
+        "checks": [
+          {
+            "resource": "container:2711da9f28eab67ab68dc00a4504454911fa61ac8599269f601013baa57ac368",
+            "absent": true
+          },
+          {
+            "resource": "container:311e9c08ea75489749f2261ba677a8b050e061e5af12bf444016e36744f3e16a",
+            "absent": true
+          },
+          {
+            "resource": "container:009b01e8fe4fcfa32f31f22579f7a9873ad29546e7d026c6ed4b5a10996819c3",
+            "absent": true
+          },
+          {
+            "resource": "builder-container:e24dba870c6117ebdff356628c123cc6b6912e5194570c0538da00773291bcc5",
+            "absent": true
+          },
+          {
+            "resource": "builder:be02-23f80d9ca8a84f3499186957aa6a39b9-builder",
+            "absent": true
+          },
+          {
+            "resource": "volume:be02-23f80d9ca8a84f3499186957aa6a39b9_db-config",
+            "absent": true
+          },
+          {
+            "resource": "volume:be02-23f80d9ca8a84f3499186957aa6a39b9_db-data",
+            "absent": true
+          },
+          {
+            "resource": "volume:buildx_buildkit_be02-23f80d9ca8a84f3499186957aa6a39b9-builder0_state",
+            "absent": true
+          },
+          {
+            "resource": "network:d5d20efd0f9d4b4dde8882c7d43d8cf92f2fd163220c63f542a1d1ccf808a8b9",
+            "absent": true
+          },
+          {
+            "resource": "image:sha256:4af5aad6b9d76cc701571251e2fe13a68f98d5ae2af8a9c98f5dbc5323964107",
+            "absent": true
+          },
+          {
+            "resource": "container:be02-23f80d9ca8a84f3499186957aa6a39b9-mox",
+            "absent": true
+          },
+          {
+            "resource": "container:be02-23f80d9ca8a84f3499186957aa6a39b9-mox-client",
+            "absent": true
+          },
+          {
+            "resource": "file:.env.runtime",
+            "absent": true
+          },
+          {
+            "resource": "file:mox/.env.client",
+            "absent": true
+          },
+          {
+            "resource": "file:mox/fixture-credentials.json",
+            "absent": true
+          }
+        ],
+        "mutations": false
+      }
+    },
+    {
+      "gate": "be02-86e755463767428494ee46fdafd47f71",
+      "reason": "Poller test assertion lint ambiguity",
+      "result": {
+        "tests": "FAILED",
+        "failure": "RuntimeError: ruby-suites failed; see 030-ruby-suites.log",
+        "cleanup_passed": true,
+        "finished_at": 1792105618.8926277,
+        "source_snapshot": "source.sha256.json"
+      },
+      "independent_cleanup": {
+        "passed": true,
+        "checks": [
+          {
+            "resource": "container:991379461c83a90b4a4e0b649d4d522866c243b00aec7e85905084ac501585ad",
+            "absent": true
+          },
+          {
+            "resource": "container:f6468ae7e317143b996b87e8ab244ecb52e554c294aad61e25e695783448c370",
+            "absent": true
+          },
+          {
+            "resource": "container:c55d0e5e8f0736edc08449c8fccfeb4d98b46a8ec4eab6e66dd8a0ecc6dea5c6",
+            "absent": true
+          },
+          {
+            "resource": "builder-container:aa417bc8efc0f3496b4318088169795c994915dcda21818d4e8033003555de7d",
+            "absent": true
+          },
+          {
+            "resource": "builder:be02-86e755463767428494ee46fdafd47f71-builder",
+            "absent": true
+          },
+          {
+            "resource": "volume:be02-86e755463767428494ee46fdafd47f71_db-config",
+            "absent": true
+          },
+          {
+            "resource": "volume:be02-86e755463767428494ee46fdafd47f71_db-data",
+            "absent": true
+          },
+          {
+            "resource": "volume:buildx_buildkit_be02-86e755463767428494ee46fdafd47f71-builder0_state",
+            "absent": true
+          },
+          {
+            "resource": "network:819a3d643c1fbf756784909d5f9defc02f4a04317be122acec05e373e908ed76",
+            "absent": true
+          },
+          {
+            "resource": "image:sha256:3defbb0570c82efaf1f7e087c39ffad1427c7e50766544062b0b2d195dd10611",
+            "absent": true
+          },
+          {
+            "resource": "container:be02-86e755463767428494ee46fdafd47f71-mox",
+            "absent": true
+          },
+          {
+            "resource": "container:be02-86e755463767428494ee46fdafd47f71-mox-client",
+            "absent": true
+          },
+          {
+            "resource": "file:.env.runtime",
+            "absent": true
+          },
+          {
+            "resource": "file:mox/.env.client",
+            "absent": true
+          },
+          {
+            "resource": "file:mox/fixture-credentials.json",
+            "absent": true
+          }
+        ],
+        "mutations": false
+      }
+    },
+    {
+      "gate": "be02-619c7d33ee7049f19889f078152ba3e8",
+      "reason": "Four poll-loop assertion lint ambiguities",
+      "result": {
+        "tests": "FAILED",
+        "failure": "RuntimeError: ruby-suites failed; see 030-ruby-suites.log",
+        "cleanup_passed": true,
+        "finished_at": 1792106664.550863,
+        "source_snapshot": "source.sha256.json"
+      },
+      "independent_cleanup": {
+        "passed": true,
+        "checks": [
+          {
+            "resource": "container:cef82080e83f2af271784c2846bc4ffe909fe6b04997119c8d3c9ef5b69ec81b",
+            "absent": true
+          },
+          {
+            "resource": "container:57801631b4a96336c5c8887c5e28ef110971f9415823007358001cc5b3d6b5d8",
+            "absent": true
+          },
+          {
+            "resource": "container:91efeb74e8c6556de7badb05e57d3d326975f74ff182137e4951c8198e6845f4",
+            "absent": true
+          },
+          {
+            "resource": "builder-container:729c46933d37134a136b196be6cbd3e8544f58ea2cb3a53abb3383000a3d746d",
+            "absent": true
+          },
+          {
+            "resource": "builder:be02-619c7d33ee7049f19889f078152ba3e8-builder",
+            "absent": true
+          },
+          {
+            "resource": "volume:be02-619c7d33ee7049f19889f078152ba3e8_db-config",
+            "absent": true
+          },
+          {
+            "resource": "volume:be02-619c7d33ee7049f19889f078152ba3e8_db-data",
+            "absent": true
+          },
+          {
+            "resource": "volume:buildx_buildkit_be02-619c7d33ee7049f19889f078152ba3e8-builder0_state",
+            "absent": true
+          },
+          {
+            "resource": "network:3a0db051b6c5d7f28ae0952712060d52e0b52cedcd4acc897b190f77e5db17a8",
+            "absent": true
+          },
+          {
+            "resource": "image:sha256:2e7cd9f8804e109c4a5f5c6095ac48441c12571f05d0fbdbab0985539753f83e",
+            "absent": true
+          },
+          {
+            "resource": "container:be02-619c7d33ee7049f19889f078152ba3e8-mox",
+            "absent": true
+          },
+          {
+            "resource": "container:be02-619c7d33ee7049f19889f078152ba3e8-mox-client",
+            "absent": true
+          },
+          {
+            "resource": "file:.env.runtime",
+            "absent": true
+          },
+          {
+            "resource": "file:mox/.env.client",
+            "absent": true
+          },
+          {
+            "resource": "file:mox/fixture-credentials.json",
+            "absent": true
+          }
+        ],
+        "mutations": false
+      }
+    },
+    {
+      "gate": "be02-0998da46293c4110a31900b910418148",
+      "reason": "Assertion parentheses still parsed as grouping; removed intervening space",
+      "result": {
+        "tests": "FAILED",
+        "failure": "RuntimeError: ruby-suites failed; see 030-ruby-suites.log",
+        "cleanup_passed": true,
+        "finished_at": 1792107040.2466507,
+        "source_snapshot": "source.sha256.json"
+      },
+      "independent_cleanup": {
+        "passed": true,
+        "checks": [
+          {
+            "resource": "container:a48936514864a8ff3a2837e1fcd61bd29f157bd3d2364bab4d013c1408d0a8f6",
+            "absent": true
+          },
+          {
+            "resource": "container:5e073d3a58bd536e33100566d75c7e321e73ce650e8f12bcf0d9af79dd439c31",
+            "absent": true
+          },
+          {
+            "resource": "container:6a8200e83a1d31d543938743642260351849d497035feb872573f5ad257f2df8",
+            "absent": true
+          },
+          {
+            "resource": "builder-container:4d6d400006e5aac0b7cfd143204268b39b2b493ffa2c6aae8eec0e070b478a92",
+            "absent": true
+          },
+          {
+            "resource": "builder:be02-0998da46293c4110a31900b910418148-builder",
+            "absent": true
+          },
+          {
+            "resource": "volume:be02-0998da46293c4110a31900b910418148_db-config",
+            "absent": true
+          },
+          {
+            "resource": "volume:be02-0998da46293c4110a31900b910418148_db-data",
+            "absent": true
+          },
+          {
+            "resource": "volume:buildx_buildkit_be02-0998da46293c4110a31900b910418148-builder0_state",
+            "absent": true
+          },
+          {
+            "resource": "network:c234e89c688d46e1604ebcf36f157e645c8f5297bd8856cba23898132e538d6c",
+            "absent": true
+          },
+          {
+            "resource": "image:sha256:dcc6f44bc794391d567126510fc69daabbdde1977af0bdf046f882faf682cda5",
+            "absent": true
+          },
+          {
+            "resource": "container:be02-0998da46293c4110a31900b910418148-mox",
+            "absent": true
+          },
+          {
+            "resource": "container:be02-0998da46293c4110a31900b910418148-mox-client",
+            "absent": true
+          },
+          {
+            "resource": "file:.env.runtime",
+            "absent": true
+          },
+          {
+            "resource": "file:mox/.env.client",
+            "absent": true
+          },
+          {
+            "resource": "file:mox/fixture-credentials.json",
+            "absent": true
+          }
+        ],
+        "mutations": false
+      }
+    },
+    {
+      "gate": "be02-00c7e9ab018a45e3a9624ce3a24a41ab",
+      "reason": "Process proof assertion lint ambiguity; runtime suites passed",
+      "result": {
+        "tests": "FAILED",
+        "failure": "RuntimeError: RuntimeError: mox-composition failed; see 041-mox-composition.log",
+        "cleanup_passed": true,
+        "finished_at": 1792107479.8377268,
+        "source_snapshot": "source.sha256.json"
+      },
+      "independent_cleanup": {
+        "passed": true,
+        "checks": [
+          {
+            "resource": "container:5c151a43e8af459e09cdcde34e2b244fc09802163cbf258220612578b1a83aff",
+            "absent": true
+          },
+          {
+            "resource": "container:a4524850eb54074cc127ce554427364176068e2b97fafe294ba53a65e3c0fe4f",
+            "absent": true
+          },
+          {
+            "resource": "container:3e02c302de5784e14590aeb749cd3e09a49703e4f185fd4c5abb635a81dd23c1",
+            "absent": true
+          },
+          {
+            "resource": "builder-container:700440b0e204217d2a34cad81ab3501077efa091ece409ed2253f2b0c97100c8",
+            "absent": true
+          },
+          {
+            "resource": "builder:be02-00c7e9ab018a45e3a9624ce3a24a41ab-builder",
+            "absent": true
+          },
+          {
+            "resource": "volume:be02-00c7e9ab018a45e3a9624ce3a24a41ab_db-config",
+            "absent": true
+          },
+          {
+            "resource": "volume:be02-00c7e9ab018a45e3a9624ce3a24a41ab_db-data",
+            "absent": true
+          },
+          {
+            "resource": "volume:buildx_buildkit_be02-00c7e9ab018a45e3a9624ce3a24a41ab-builder0_state",
+            "absent": true
+          },
+          {
+            "resource": "network:992341845e63c4120cdf632fcc86e775a95e6993b710558c9e4667916b899619",
+            "absent": true
+          },
+          {
+            "resource": "image:sha256:4ced34898557391caf8d5c6c993249c65a5e02ab0c23330804bd15e366f00119",
+            "absent": true
+          },
+          {
+            "resource": "container:be02-00c7e9ab018a45e3a9624ce3a24a41ab-mox",
+            "absent": true
+          },
+          {
+            "resource": "container:be02-00c7e9ab018a45e3a9624ce3a24a41ab-mox-client",
+            "absent": true
+          },
+          {
+            "resource": "file:.env.runtime",
+            "absent": true
+          },
+          {
+            "resource": "file:mox/.env.client",
+            "absent": true
+          },
+          {
+            "resource": "file:mox/fixture-credentials.json",
+            "absent": true
+          }
+        ],
+        "mutations": false
+      }
+    }
+  ],
+  "limits": [
+    "Private held Mox profile only",
+    "12 dedicated suites deferred",
+    "Signal fixture proves idle shutdown, not active-I/O interruption",
+    "Missing CA fixture does not add bad-certificate proof",
+    "No frontend/native rerun",
+    "MIME, rejection quarantine, attachment composition, production routing/secrets and operations remain open",
+    "No live spend, credentials, external mail, DNS or production mutation"
+  ]
+}

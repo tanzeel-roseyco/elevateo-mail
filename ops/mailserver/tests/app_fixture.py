@@ -31,7 +31,7 @@ def main() -> None:
         configure()
         dns = dns_fixture.start()
         process = start(ROOT / 'server.log')
-        passwords = {account(index): secrets.token_urlsafe(24) for index in [0, 500]}
+        passwords = {account(index): secrets.token_urlsafe(24) for index in [0, 500, 501]}
         for address, password in passwords.items():
             command('setaccountpassword', address, data=(password + '\n').encode())
         shutil.copyfile(CONFIG / 'tls.crt', out / 'fixture-ca.pem')
