@@ -223,7 +223,7 @@ test('supplemental feature and screenshot failures expose only reviewed bounded 
     ['qa816-feature-wave.e2e.ts', 46], ['qa816-matrix.e2e.ts', 266],
     ['qa816-outreach.e2e.ts', 117], ['screenshots.ts', 83], ['support.ts', 60],
     ['auth-write-logout.e2e.ts', 94], ['read-mailboxes.e2e.ts', 67],
-    ['draft-boundaries.e2e.ts', 119], ['draft-unapplied.e2e.ts', 120], ['observer.ts', 78], ['transport-barrier.ts', 64],
+    ['draft-recorded-conflict.e2e.ts', 139], ['draft-boundaries.e2e.ts', 119], ['draft-unapplied.e2e.ts', 120], ['observer.ts', 78], ['transport-barrier.ts', 64],
   ] as const) {
     const file = fileURLToPath(new URL(`../../playwright/${name}`, import.meta.url));
     const accepted = frameworkDiagnostic(stackAt(file, lastLine), 'synthetic-private');
