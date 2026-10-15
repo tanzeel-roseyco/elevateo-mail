@@ -33,8 +33,8 @@ class R8ConstraintsTest(unittest.TestCase):
         }.items():
             self.assertEqual(hashlib.sha256((ROOT / name).read_bytes()).hexdigest(), digest)
 
-    def phase(self, diagnostic, acceptance=None, acceptance_gate=None):
-        # AIDEV-NOTE: Execute the actual phase block, without main's filesystem, secrets or Docker startup.
+    def phase(self, diagnostic, acceptance=None, acceptance_gate=None, attachments=False, attachment_probe=None):
+        # AIDEV-NOTE: Execute actual phase branches with opt-in gates, without secrets or Docker startup.
         tree = ast.parse((ROOT / "ops/tests/be02/run.py").read_text())
         main = next(node for node in tree.body if isinstance(node, ast.FunctionDef) and node.name == "main")
         body = next(node.body for node in main.body if isinstance(node, ast.Try))
@@ -45,9 +45,11 @@ class R8ConstraintsTest(unittest.TestCase):
         task, output = Mock(), Mock()
         module = ast.Module(body=body[start:end], type_ignores=[])
         exec(compile(module, "run.py-phase", "exec"), {
-            "args": SimpleNamespace(acceptance_diagnostic=diagnostic, acceptance_dispatch_id="synthetic", adv808_auth_policy=False, adv815_expiry=False),
+            "args": SimpleNamespace(acceptance_diagnostic=diagnostic, acceptance_dispatch_id="synthetic",
+                                    adv808_auth_policy=False, adv815_expiry=False, attachments=attachments),
             "task": task, "print": output, "acceptance": acceptance,
             "acceptance_before_http": acceptance_gate,
+            "attachment_runtime": SimpleNamespace(run=attachment_probe),
         })
         return task, output
 
@@ -86,6 +88,32 @@ class R8ConstraintsTest(unittest.TestCase):
                          ["ruby-suites", "api-start", "http-acceptance", "worker-start", "worker-drain", "adv806-mailpit-entry"])
         self.assertIn("Running real Auth/Mailpit/API HTTP acceptance",
                       [call.args[0] for call in output.call_args_list])
+
+    def test_attachment_gate_follows_readiness_and_precedes_http(self):
+        def probe(task):
+            task.wait_http.assert_called_once_with()
+            self.assertEqual([call.args[0] for call in task.compose.call_args_list],
+                             ["ruby-suites", "api-start"])
+        attachment_probe = Mock(side_effect=probe)
+        task, _ = self.phase(False, attachments=True, attachment_probe=attachment_probe)
+        attachment_probe.assert_called_once_with(task)
+        self.assertIn("http-acceptance", [call.args[0] for call in task.compose.call_args_list])
+
+    def test_attachment_failure_stops_http_and_worker(self):
+        captured = []
+        def failed(task):
+            captured.append(task)
+            raise RuntimeError("attachment fixture failed")
+        with self.assertRaisesRegex(RuntimeError, "attachment fixture failed"):
+            self.phase(False, attachments=True, attachment_probe=failed)
+        self.assertEqual(len(captured), 1)
+        self.assertEqual([call.args[0] for call in captured[0].compose.call_args_list],
+                         ["ruby-suites", "api-start"])
+
+    def test_default_run_does_not_start_attachment_services(self):
+        probe = Mock()
+        self.phase(False, attachment_probe=probe)
+        probe.assert_not_called()
 
 
 if __name__ == "__main__":
