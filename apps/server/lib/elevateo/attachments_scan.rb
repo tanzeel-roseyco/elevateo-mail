@@ -56,7 +56,8 @@ module Elevateo
             active_socket.close
           end
         end
-      rescue Timeout::Error, IOError, SystemCallError
+      # AIDEV-NOTE: Docker DNS loss raises SocketError, outside IOError/SystemCallError; preserve the adapter error.
+      rescue Timeout::Error, IOError, SystemCallError, SocketError
         raise Error, "clamd unavailable"
       end
 

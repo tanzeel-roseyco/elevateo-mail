@@ -73,4 +73,13 @@ class ClamdScannerTest < Minitest::Test
     end
     assert_empty socket.written
   end
+
+  # AIDEV-NOTE: Removing the private daemon can remove its DNS name before TCP connection is attempted.
+  def test_dns_and_connection_failures_have_deliberate_error
+    [SocketError, Socket::ResolutionError, Errno::ECONNREFUSED, Timeout::Error].each do |failure|
+      clamd = Elevateo::Attachments::ClamdScanner.new(socket_factory: -> { raise failure, "private detail" })
+      error = assert_raises(Elevateo::Attachments::ClamdScanner::Error) { clamd.scan("hello") }
+      assert_equal "clamd unavailable", error.message
+    end
+  end
 end
