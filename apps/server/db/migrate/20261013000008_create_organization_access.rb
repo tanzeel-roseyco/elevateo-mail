@@ -8,7 +8,9 @@ class CreateOrganizationAccess < ActiveRecord::Migration[8.1]
   end
 
   def down
-    execute File.read(File.expand_path('../be02_memberships/mutation.sql', __dir__).sub('CREATE FUNCTION', 'CREATE OR REPLACE FUNCTION'))
+    # AIDEV-NOTE: Replace the SQL declaration, preserving the existing function identity, owner and runtime grants.
+    sql = File.read(File.expand_path('../be02_memberships/mutation.sql', __dir__))
+    execute sql.sub('CREATE FUNCTION', 'CREATE OR REPLACE FUNCTION')
     execute File.read(File.expand_path('../sec802/down.sql', __dir__))
   end
 end

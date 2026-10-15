@@ -20,6 +20,8 @@ for test_file in test/**/*_test.rb; do
       deferred+=("$test_file: migrator session and private gateway bootstrap") ;;
     test/administration/assignment_member_options_migration_test.rb)
       deferred+=("$test_file: migrator session for reversible assignment-options DDL") ;;
+    test/administration/organization_access_migration_test.rb)
+      deferred+=("$test_file: migrator session for organization-access rollback DDL") ;;
     test/attachment_gateway/authority_database_test.rb)
       deferred+=("$test_file: dedicated gateway login URL and private bootstrap") ;;
     test/attachments/database_test.rb)
