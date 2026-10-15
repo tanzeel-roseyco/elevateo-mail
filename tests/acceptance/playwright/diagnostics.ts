@@ -28,11 +28,11 @@ const sourceLines = {
   'qa816-assignee-ui.e2e.ts': 79,
   'qa816-attachment-ui.e2e.ts': 97,
   'qa816-feature-wave.e2e.ts': 46,
-  'qa816-matrix.e2e.ts': 263,
+  'qa816-matrix.e2e.ts': 266,
   'qa816-outreach.e2e.ts': 110,
   'screenshots.ts': 83,
   'support.ts': 60,
-  'transport-barrier.ts': 63,
+  'transport-barrier.ts': 64,
 } as const;
 const files = ['auth-invite.e2e.ts', 'invitation.ts', 'auth-stale.e2e.ts', 'auth-transport.e2e.ts', 'auth.e2e.ts', 'boundaries.ts', 'cases.ts', 'credential-origin.ts', 'draft-conflict.e2e.ts', 'draft-privacy.e2e.ts', 'draft-recovery-support.ts', 'draft-recovery.e2e.ts', 'draft-unapplied.e2e.ts', 'draft-uncertain-reload.e2e.ts', 'draft.e2e.ts', 'observer.ts', 'read-empty.e2e.ts', 'read-literal.e2e.ts', 'read-revocation.e2e.ts', 'read.e2e.ts', 'qa816-assignee-ui.e2e.ts', 'qa816-attachment-ui.e2e.ts', 'qa816-feature-wave.e2e.ts', 'qa816-matrix.e2e.ts', 'qa816-outreach.e2e.ts', 'screenshots.ts', 'support.ts', 'transport-barrier.ts'] as const;
 // AIDEV-NOTE: Node 24 uses a native stack accessor; only this intrinsic getter may be invoked.

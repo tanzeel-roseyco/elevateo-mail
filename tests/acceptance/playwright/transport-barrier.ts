@@ -54,8 +54,9 @@ export async function transportBarrier(page: Page, path: string, method: string,
     reached, release,
     close: async () => {
       release();
-      await page.unroute(matcher, handler);
+      // AIDEV-NOTE: Complete owned routes before removing interception; Chromium may otherwise handle them itself.
       await Promise.all([...pending]);
+      await page.unroute(matcher, handler);
       clearTimeout(timer);
       if (expired || handlerFailed) throw new Error('Real transport barrier failed or expired');
     },

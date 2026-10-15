@@ -189,7 +189,10 @@ scenario('SCN-QA-819-P', 'manager-roster-reader-denial', async (page, record) =>
     const [denied] = await Promise.all([responseAt(reader, path), reader.goto(`/#/mailboxes/${seed.mailboxes.primary}/members`)]);
     expect([403, 404]).toContain(denied.status());
     await expect(reader.getByText('You cannot manage members of this mailbox')).toBeVisible();
-    await expect(reader.getByRole('button', { name: 'Save changes' })).toHaveCount(0);
+    // AIDEV-NOTE: Check actual editor controls and the duplicate refusal regression, not a nonexistent button label.
+    await expect(reader.getByRole('button', { name: 'Save member' })).toHaveCount(0);
+    await expect(reader.getByLabel('User id', { exact: true })).toHaveCount(0);
+    await expect(reader.getByText('Members are unavailable', { exact: true })).toHaveCount(0);
     record.artifacts.push(await screenshot(reader, 'QA816-ADMIN-P-reader-denied'));
   } finally { await context.close(); }
   record.assertions.push('Manager roster renders from real API 200; separate reader session receives API denial and nonactionable UI');
