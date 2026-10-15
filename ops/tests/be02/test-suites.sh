@@ -26,6 +26,8 @@ for test_file in test/**/*_test.rb; do
       deferred+=("$test_file: ATT823 admin/migrator/API/worker task URLs") ;;
     test/campaigns/database_test.rb)
       deferred+=("$test_file: OUT804 admin/API task URLs") ;;
+    test/campaigns/rollback_migration_test.rb)
+      deferred+=("$test_file: migrator DDL with private admin fixtures") ;;
     test/send_worker/mailpit_protocol_test.rb)
       deferred+=("$test_file: isolated Mailpit protocol flag and network") ;;
     test/v2_attachment_error_test.rb|test/v2_route_registry_test.rb)

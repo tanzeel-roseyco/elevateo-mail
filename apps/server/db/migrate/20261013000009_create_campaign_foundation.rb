@@ -204,12 +204,16 @@ class CreateCampaignFoundation < ActiveRecord::Migration[8.1]
 
   def down
     # AIDEV-NOTE: Rollback is supported for empty disposable schemas only; populated draft/audit rows are preserved.
-    execute "SET LOCAL row_security = off"
-    %w[campaign_mutations campaign_suppressions campaign_accounts campaign_consent_events campaign_leads campaigns].each do |table|
-      present = select_value("SELECT EXISTS (SELECT 1 FROM app.#{table} LIMIT 1)")
-      raise ActiveRecord::IrreversibleMigration, "campaign foundation contains records" if %w[t true].include?(present.to_s)
+    tables = %w[campaign_mutations campaign_suppressions campaign_accounts campaign_consent_events campaign_leads campaigns]
+    # AIDEV-NOTE: Lock before inspecting all tenants; savepoint rollback restores FORCE even when callers rescue.
+    connection.transaction(requires_new: true) do
+      tables.each { |table| execute "ALTER TABLE app.#{table} NO FORCE ROW LEVEL SECURITY" }
+      tables.each do |table|
+        present = select_value("SELECT EXISTS (SELECT 1 FROM app.#{table} LIMIT 1)")
+        raise ActiveRecord::IrreversibleMigration, "campaign foundation contains records" if %w[t true].include?(present.to_s)
+      end
+      execute "DROP TABLE app.campaign_mutations, app.campaign_suppressions, app.campaign_accounts, app.campaign_consent_events, app.campaign_leads, app.campaigns"
+      execute "DROP FUNCTION app.guard_campaign_lead_update()"
     end
-    execute "DROP TABLE app.campaign_mutations, app.campaign_suppressions, app.campaign_accounts, app.campaign_consent_events, app.campaign_leads, app.campaigns"
-    execute "DROP FUNCTION app.guard_campaign_lead_update()"
   end
 end

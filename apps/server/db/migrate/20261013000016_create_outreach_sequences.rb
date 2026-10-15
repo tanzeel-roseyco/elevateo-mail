@@ -119,11 +119,14 @@ class CreateOutreachSequences < ActiveRecord::Migration[8.1]
   end
 
   def down
-    execute "SET LOCAL row_security = off"
-    TABLES.each do |table|
-      present = select_value("SELECT EXISTS (SELECT 1 FROM app.#{table} LIMIT 1)")
-      raise ActiveRecord::IrreversibleMigration, "sequence draft contains records" if %w[t true].include?(present.to_s)
+    # AIDEV-NOTE: Owner-only DDL locks every table before counting; a refused rollback restores FORCE via savepoint.
+    connection.transaction(requires_new: true) do
+      TABLES.each { |table| execute "ALTER TABLE app.#{table} NO FORCE ROW LEVEL SECURITY" }
+      TABLES.each do |table|
+        present = select_value("SELECT EXISTS (SELECT 1 FROM app.#{table} LIMIT 1)")
+        raise ActiveRecord::IrreversibleMigration, "sequence draft contains records" if %w[t true].include?(present.to_s)
+      end
+      execute "DROP TABLE app.campaign_sequence_mutations, app.campaign_sequence_occurrences, app.campaign_sequence_steps, app.campaign_sequences"
     end
-    execute "DROP TABLE app.campaign_sequence_mutations, app.campaign_sequence_occurrences, app.campaign_sequence_steps, app.campaign_sequences"
   end
 end
