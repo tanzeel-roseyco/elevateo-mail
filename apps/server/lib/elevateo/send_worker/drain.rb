@@ -9,17 +9,18 @@ module Elevateo
       def initialize(connection:, control:, driver:, max_steps: 32, max_seconds: 30,
         idle_delay: 1.0, clock: -> { Process.clock_gettime(Process::CLOCK_MONOTONIC) }, sleeper: ->(seconds) { Kernel.sleep(seconds) })
         unless max_steps.is_a?(Integer) && max_steps.between?(1, 32) &&
-            max_seconds.is_a?(Numeric) && max_seconds.positive? && max_seconds <= 60 &&
+            (max_seconds.is_a?(Integer) || max_seconds.is_a?(Float)) &&
+            max_seconds.finite? && max_seconds.positive? && max_seconds <= 60 &&
             (idle_delay.is_a?(Integer) || idle_delay.is_a?(Float)) &&
             idle_delay.finite? && idle_delay.between?(0.05, 30)
           raise ArgumentError, "invalid drain limits"
         end
         @connection, @control, @driver = connection, control, driver
-        @max_steps, @max_seconds, @idle_delay = max_steps, max_seconds, idle_delay.to_f
+        @max_steps, @max_seconds, @idle_delay = max_steps, max_seconds.to_f, idle_delay.to_f
         @clock, @sleeper = clock, sleeper
       end
 
-      # AIDEV-NOTE: Due lookup is advisory; claim_job is the atomic lease. Every invocation exits within fixed bounds.
+      # AIDEV-NOTE: max_seconds bounds admission, not an in-flight step; SQL and transport retain their own deadlines.
       def run
         deadline = @clock.call + @max_seconds
         steps = 0
@@ -34,9 +35,13 @@ module Elevateo
           unless send_id
             idle_checks += 1
             break if idle_checks >= 2
-            @sleeper.call(@idle_delay)
+            remaining = deadline - @clock.call
+            break unless remaining.positive?
+            @sleeper.call([@idle_delay, remaining].min)
             next
           end
+          # AIDEV-NOTE: A slow advisory lookup must not start a new atomic claim after the admission window closes.
+          break if @clock.call >= deadline
           idle_checks = 0
           raise DatabaseStore::InvalidResult, "due lookup repeated an excluded send" if excluded.include?(send_id)
           excluded << send_id

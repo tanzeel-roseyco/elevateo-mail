@@ -25,11 +25,16 @@ class SendDatabaseTestCase < DraftDatabaseTestCase
       # AIDEV-NOTE: Admin-only fixture disposal; production down refuses history and runtime roles cannot disable triggers.
       @admin.exec("BEGIN")
       @admin.exec("SET LOCAL session_replication_role = replica")
-      %w[audit_events reconciliation_checks observations attempts jobs approval_operations intents recipient_suppressions smtp_accounts mailbox_policy organization_policy].each do |table|
+      %w[audit_events reconciliation_checks attempt_budgets observations attempts jobs approval_operations intents recipient_suppressions smtp_accounts budget_routes mailbox_policy organization_policy].each do |table|
         predicate = %w[observations reconciliation_checks attempts jobs audit_events].include?(table) ?
           "send_id IN (SELECT send_id FROM app_send_private.intents WHERE organization_id = $1)" : "organization_id = $1"
-        predicate = "attempt_id IN (SELECT attempt_id FROM app_send_private.attempts WHERE send_id IN (SELECT send_id FROM app_send_private.intents WHERE organization_id = $1))" if table == "observations"
+        predicate = "attempt_id IN (SELECT attempt_id FROM app_send_private.attempts WHERE send_id IN (SELECT send_id FROM app_send_private.intents WHERE organization_id = $1))" if %w[observations attempt_budgets].include?(table)
         @admin.exec_params("DELETE FROM app_send_private.#{table} WHERE #{predicate}", [@org])
+      end
+      # AIDEV-NOTE: Only this fixture's inserted limits are disposable; shared pre-existing limits remain intact.
+      Array(@budget_limit_ids).each do |id|
+        @admin.exec_params("DELETE FROM app_send_private.budget_usage WHERE limit_id=$1", [id])
+        @admin.exec_params("DELETE FROM app_send_private.budget_limits WHERE id=$1", [id])
       end
       @admin.exec("COMMIT")
     end

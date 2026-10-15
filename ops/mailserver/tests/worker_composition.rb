@@ -36,7 +36,7 @@ class MoxWorkerCompositionTest < SendDatabaseTestCase
     fixture_change do
       @admin.exec_params("UPDATE app.mailboxes SET address=$1 WHERE id=$2", [FROM, @box])
     end
-    create_smtp_account(sender: FROM)
+    create_smtp_account(sender: FROM, destination_domains: ["seed.test"])
     @subject = "MAIL1018 persisted worker #{@draft}"
     @body = "Private synthetic composition\nUnicode: caf\u00e9 / \u65e5\u672c\u8a9e"
     saved = payload(expected_version: 1, operation_id: SecureRandom.uuid, subject: @subject,
@@ -98,6 +98,11 @@ class MoxWorkerCompositionTest < SendDatabaseTestCase
     assert_equal @body, found.first.decoded.gsub("\r\n", "\n")
   end
 
+  def assert_reserved_once
+    row = @admin.exec("SELECT count(*) AS axes, min(used) AS minimum, max(used) AS maximum FROM app_send_private.budget_usage").first
+    assert_equal({ "axes" => "6", "minimum" => "1", "maximum" => "1" }, row)
+  end
+
   def test_persisted_approval_actual_worker_and_verified_imap_without_replay
     assert_equal :accepted, execute
     assert_equal 1, @smtp_connections
@@ -111,6 +116,7 @@ class MoxWorkerCompositionTest < SendDatabaseTestCase
     assert_equal "accepted", status(@send_id).fetch("state")
     wait_for_message
     assert_inbox_import
+    assert_reserved_once
     # AIDEV-NOTE: Accepted work is no longer eligible; a second execution must remain idle without another connection.
     assert_equal :idle, execute
     assert_equal 1, @smtp_connections
@@ -139,6 +145,7 @@ class MoxWorkerCompositionTest < SendDatabaseTestCase
     assert_equal 1, @smtp_connections
     assert_equal 1, messages.length
     assert_equal 1, status(@send_id).fetch("attempts")
+    assert_reserved_once
     assert_nil @admin.exec_params("SELECT accepted_receipt_ref FROM app_send_private.jobs WHERE send_id=$1", [@send_id]).getvalue(0, 0)
   end
 end

@@ -5,12 +5,12 @@ module Elevateo
       @control: Control
       @driver: DurableLocalDriver
       @max_steps: Integer
-      @max_seconds: Numeric
+      @max_seconds: Float
       @idle_delay: Float
       @clock: ^() -> Float
       @sleeper: ^(Float) -> void
       def initialize: (connection: untyped, control: Control, driver: DurableLocalDriver,
-        ?max_steps: Integer, ?max_seconds: Numeric, ?idle_delay: Integer | Float,
+        ?max_steps: Integer, ?max_seconds: Integer | Float, ?idle_delay: Integer | Float,
         ?clock: ^() -> Float, ?sleeper: ^(Float) -> void) -> void
       def run: () -> Integer
     end

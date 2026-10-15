@@ -1,0 +1,150 @@
+{
+  "gate": "be02-43e4649a15314558bc7d7ac7a54f4310",
+  "result": {
+    "tests": "PASSED",
+    "failure": "",
+    "cleanup_passed": true,
+    "finished_at": 1792102546.1077063,
+    "source_snapshot": "source.sha256.json"
+  },
+  "standard": {
+    "suites": 153,
+    "tests": 915,
+    "assertions": 9911,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0
+  },
+  "mox": {
+    "suites": 2,
+    "tests": 10,
+    "assertions": 109,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0
+  },
+  "http": {
+    "suites": 1,
+    "tests": 1,
+    "assertions": 33,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0
+  },
+  "worker_entry": {
+    "suites": 1,
+    "tests": 2,
+    "assertions": 107,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0
+  },
+  "total": {
+    "tests": 928,
+    "assertions": 10160,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0
+  },
+  "deferred_suites": 12,
+  "cleanup": {
+    "removed": [
+      "container:5594a9859c91bcdad33bfde4de87e7385c3d96458735d16b8344d576b9e9b498",
+      "container:d9ed17817f6dc459aae71f7c033ac15322a5471b28701d2c78440f36ea1edeac",
+      "container:12a1b10efae37ff8b315c98c40b0f0a4aafb6c7f1a2d1b19a93029208055ec13",
+      "container:92b44466679add00ea69662dae82470638e1cc25aa7cd21aa4c1dcdcbc3d0d39",
+      "container:1ec5a0aeb876278bf663eb003a57130618d8bb2cf12dd1ef60377f40d8c6c215",
+      "builder-container:c3507bfcc86b53001f552bfa751633b140677ae58bf93a11488be3ed26d1b2b7",
+      "builder:be02-43e4649a15314558bc7d7ac7a54f4310-builder",
+      "volume:be02-43e4649a15314558bc7d7ac7a54f4310_db-config",
+      "volume:be02-43e4649a15314558bc7d7ac7a54f4310_db-data",
+      "volume:buildx_buildkit_be02-43e4649a15314558bc7d7ac7a54f4310-builder0_state",
+      "network:424fc5e183f860ddebed7e5666b27272efed14ee802fb814077dcfd538b71db8",
+      "image:sha256:e97739cfebc4503848673c8acd66fa0b1a159436d149eea7f24f6a3610766ab8"
+    ],
+    "errors": [],
+    "shared_bases_retained": true
+  },
+  "independent_cleanup": {
+    "passed": true,
+    "checks": [
+      {
+        "resource": "container:5594a9859c91bcdad33bfde4de87e7385c3d96458735d16b8344d576b9e9b498",
+        "absent": true
+      },
+      {
+        "resource": "container:d9ed17817f6dc459aae71f7c033ac15322a5471b28701d2c78440f36ea1edeac",
+        "absent": true
+      },
+      {
+        "resource": "container:12a1b10efae37ff8b315c98c40b0f0a4aafb6c7f1a2d1b19a93029208055ec13",
+        "absent": true
+      },
+      {
+        "resource": "container:92b44466679add00ea69662dae82470638e1cc25aa7cd21aa4c1dcdcbc3d0d39",
+        "absent": true
+      },
+      {
+        "resource": "container:1ec5a0aeb876278bf663eb003a57130618d8bb2cf12dd1ef60377f40d8c6c215",
+        "absent": true
+      },
+      {
+        "resource": "builder-container:c3507bfcc86b53001f552bfa751633b140677ae58bf93a11488be3ed26d1b2b7",
+        "absent": true
+      },
+      {
+        "resource": "builder:be02-43e4649a15314558bc7d7ac7a54f4310-builder",
+        "absent": true
+      },
+      {
+        "resource": "volume:be02-43e4649a15314558bc7d7ac7a54f4310_db-config",
+        "absent": true
+      },
+      {
+        "resource": "volume:be02-43e4649a15314558bc7d7ac7a54f4310_db-data",
+        "absent": true
+      },
+      {
+        "resource": "volume:buildx_buildkit_be02-43e4649a15314558bc7d7ac7a54f4310-builder0_state",
+        "absent": true
+      },
+      {
+        "resource": "network:424fc5e183f860ddebed7e5666b27272efed14ee802fb814077dcfd538b71db8",
+        "absent": true
+      },
+      {
+        "resource": "image:sha256:e97739cfebc4503848673c8acd66fa0b1a159436d149eea7f24f6a3610766ab8",
+        "absent": true
+      },
+      {
+        "resource": "container:be02-43e4649a15314558bc7d7ac7a54f4310-mox",
+        "absent": true
+      },
+      {
+        "resource": "container:be02-43e4649a15314558bc7d7ac7a54f4310-mox-client",
+        "absent": true
+      },
+      {
+        "resource": "file:.env.runtime",
+        "absent": true
+      },
+      {
+        "resource": "file:mox/.env.client",
+        "absent": true
+      },
+      {
+        "resource": "file:mox/fixture-credentials.json",
+        "absent": true
+      }
+    ],
+    "mutations": false
+  },
+  "space_before": {
+    "free_bytes": 254839009280
+  },
+  "space_after": {
+    "free_bytes": 254853779456
+  },
+  "source_sha256": "6f1db9406219be18329119e8faea6d4b193701f500ef0757350e4fdc9859ddb3",
+  "frozen_source_unchanged": true
+}

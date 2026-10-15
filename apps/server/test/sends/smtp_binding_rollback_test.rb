@@ -11,9 +11,13 @@ class SendSmtpBindingRollbackTest < SendDatabaseTestCase
     signature = "app_send_private.authorize_attempt(uuid,uuid,bigint,uuid,uuid,bytea,text,integer)"
     before = @admin.exec_params("SELECT oid,proowner,proacl FROM pg_proc WHERE oid=$1::regprocedure", [signature]).first
     @admin.exec("BEGIN")
+    @admin.exec(File.read(File.join(root, "budget_down.sql")))
     @admin.exec(File.read(File.join(root, "smtp_account_binding_down.sql")))
     assert_nil @admin.exec("SELECT to_regclass('app_send_private.smtp_accounts')").getvalue(0, 0)
     @admin.exec(File.read(File.join(root, "smtp_account_binding.sql")))
+    %w[budget_schema budget_requirements budget_reservation budget_authority].each do |name|
+      @admin.exec(File.read(File.join(root, "#{name}.sql")))
+    end
     after = @admin.exec_params("SELECT oid,proowner,proacl FROM pg_proc WHERE oid=$1::regprocedure", [signature]).first
     assert_equal before, after
     @admin.exec("COMMIT")
