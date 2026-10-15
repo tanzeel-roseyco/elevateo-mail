@@ -61,7 +61,7 @@ async function performObservation(draftId: string, operationId: string | null,
       await unlink('/observer-control/result.json');
       return result.facts;
     } catch (error: unknown) {
-      if (!(error instanceof Error && 'code' in error && error.code === 'ENOENT')) throw new Error('Observer proof invalid');
+      if (!(error instanceof Error && 'code' in error && error.code === 'ENOENT')) throw error; // Reporter strips payloads.
     }
     await new Promise(resolve => setTimeout(resolve, 20));
   }

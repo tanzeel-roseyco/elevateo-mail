@@ -1,6 +1,6 @@
 import { strict as assert } from 'node:assert';
 import { test } from 'node:test';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import { z } from 'zod';
 import { caseOutcome } from './quiet-reporter.js';
 import { captureDiagnostic, diagnosticReason, diagnosticSchema, frameworkDiagnostic, runCaseBody } from './diagnostics.js';
@@ -60,6 +60,19 @@ test('source parsing rejects paths, coordinate limits, message-only frames and o
     `    at body (${source}:120:7)`, 'x'.repeat(32769)]) {
     assert.equal(frameworkDiagnostic(stack, 'synthetic-private').source, null);
   }
+});
+
+test('native ESM frames accept only exact canonical file URLs within reviewed source bounds', () => {
+  const url = pathToFileURL(source).href;
+  const message = `synthetic-private\n    at payload (${url}:143:1)`;
+  const diagnostic = frameworkDiagnostic(`Error: ${message}\n    at body (${url}:120:7)`, message);
+  assert.deepEqual(diagnostic.source, { file: 'draft-conflict.e2e.ts', line: 120, column: 7 });
+  assert.equal(JSON.stringify(diagnostic).includes('synthetic-private'), false);
+  for (const rejected of [url + '?private', url + '#private', url.replace('file:///', 'file://foreign/'),
+    url.replace('/playwright/', '/%70laywright/'), url + '/../private', 'https://host/' + url]) {
+    assert.equal(frameworkDiagnostic(stackAt(rejected), 'synthetic-private').source, null);
+  }
+  assert.equal(frameworkDiagnostic(stackAt(url, 146), 'synthetic-private').source, null);
 });
 test('strict schema rejects raw fields, arbitrary enums, paths and noninteger coordinates', () => {
   const valid = captureDiagnostic(failure());

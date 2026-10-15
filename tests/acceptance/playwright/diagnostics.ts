@@ -1,5 +1,5 @@
 import { dirname, basename, resolve } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import { types } from 'node:util';
 import { z, ZodError } from 'zod';
 
@@ -59,7 +59,9 @@ function sourceLocation(stack: unknown, message: unknown): Diagnostic['source'] 
     if (frame.length > 2048) continue;
     const match = /^\s+at (?:[^()\r\n]{1,200} \()?([^()\r\n]+):(\d{1,6}):(\d{1,4})\)?$/.exec(frame);
     if (!match) continue;
-    const file = files.find(name => match[1] === resolve(sourceDirectory, name));
+    // AIDEV-NOTE: Native ESM frames use file URLs; compare canonical paths/URLs without decoding untrusted input.
+    const file = files.find(name => match[1] === resolve(sourceDirectory, name)
+      || match[1] === pathToFileURL(resolve(sourceDirectory, name)).href);
     if (!file) continue;
     const source = { file, line: Number(match[2]), column: Number(match[3]) };
     const checked = diagnosticSchema.safeParse({ category: 'unknown', phase: 'body', source });
