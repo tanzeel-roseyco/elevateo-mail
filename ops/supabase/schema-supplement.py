@@ -6,8 +6,9 @@ evidence=pathlib.Path(sys.argv[2]).resolve(); evidence.mkdir(parents=True,exist_
 sys.path.insert(0,str(root/'ops/tests/be02'))
 from docker_task import Task
 from cleanup import cleanup
-from run import source_hashes
-values={key:secrets.token_hex(32) for key in ('POSTGRES_PASSWORD','MIGRATOR_DB_PASSWORD','API_DB_PASSWORD','WORKER_DB_PASSWORD','SECRET_KEY_BASE','BE02_FIXTURE_SIGNING_SECRET')}
+from run import bootstrap_database_roles, source_hashes
+# AIDEV-NOTE: Use the canonical privileged pre-migration prerequisites as the schema expands.
+values={key:secrets.token_hex(32) for key in ('POSTGRES_PASSWORD','MIGRATOR_DB_PASSWORD','API_DB_PASSWORD','WORKER_DB_PASSWORD','ATTACHMENT_GATEWAY_DB_PASSWORD','SECRET_KEY_BASE','BE02_FIXTURE_SIGNING_SECRET')}
 values['ELEVATEO_SESSION_KEY_BASE64']=base64.b64encode(secrets.token_bytes(32)).decode()
 project='be02-'+uuid.uuid4().hex
 task=Task(root,evidence,project,'default',values)
@@ -58,7 +59,7 @@ try:
     secret_owned=True
     with os.fdopen(fd,'w') as stream:stream.write(''.join(k+'='+v+'\n' for k,v in env.items()))
     task.compose('database-start',['up','-d','--wait','--wait-timeout','120','db','mailpit'],140)
-    task.compose('bootstrap',boot+['-f','/ops/bootstrap.sql'],45)
+    bootstrap_database_roles(task)
     task.compose('auth-start',['up','-d','--wait','--wait-timeout','120','auth'],140)
     task.compose('auth-grants',boot+['-f','/ops/bootstrap-auth-grants.sql'],45)
     task.build()

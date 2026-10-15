@@ -76,8 +76,11 @@ services:
       MIGRATOR_DB_PASSWORD: ${MIGRATOR_DB_PASSWORD:?}
       API_DB_PASSWORD: ${API_DB_PASSWORD:?}
       WORKER_DB_PASSWORD: ${WORKER_DB_PASSWORD:?}
+      # AIDEV-NOTE: Only privileged bootstrap receives this isolated gateway credential; runtime roles never do.
+      ATTACHMENT_GATEWAY_DB_PASSWORD: ${ATTACHMENT_GATEWAY_DB_PASSWORD:?}
     volumes:
       - ./db:/ops:ro
+      - ./ops820/bootstrap-gateway.sql:/ops/bootstrap-gateway.sql:ro
     tmpfs:
       - /var/lib/postgresql/data
       - /etc/postgresql-custom

@@ -115,7 +115,8 @@ class Task:
                 continue
             names = {entry.split("=", 1)[0] for entry in item["Config"]["Env"]}
             forbidden = {"JWT_SECRET", "GOTRUE_JWT_SECRET", "BE02_FIXTURE_SIGNING_SECRET", "POSTGRES_PASSWORD",
-                         "MIGRATOR_DB_PASSWORD", "BE02_ADMIN_DATABASE_URL", "SUPABASE_SERVICE_ROLE_KEY", "SERVICE_ROLE_KEY"}
+                         "MIGRATOR_DB_PASSWORD", "ATTACHMENT_GATEWAY_DB_PASSWORD", "BE02_ADMIN_DATABASE_URL",
+                         "SUPABASE_SERVICE_ROLE_KEY", "SERVICE_ROLE_KEY"}
             forbidden.add("WORKER_DB_PASSWORD" if service == "api" else "API_DB_PASSWORD")
             if names & forbidden:
                 raise RuntimeError(f"{service} received forbidden credentials")

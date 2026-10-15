@@ -14,7 +14,8 @@ class SendRunnerTest(unittest.TestCase):
         bootstrap_database_roles(task)
         self.assertEqual([call.args for call in task.compose.call_args_list], [
             ("bootstrap", ["run", "--rm", "--no-deps", "bootstrap", "-f", "/ops/bootstrap.sql"], 45),
-            ("bootstrap-send", ["run", "--rm", "--no-deps", "bootstrap", "-f", "/ops/bootstrap-send.sql"], 45)])
+            ("bootstrap-send", ["run", "--rm", "--no-deps", "bootstrap", "-f", "/ops/bootstrap-send.sql"], 45),
+            ("bootstrap-gateway", ["run", "--rm", "--no-deps", "bootstrap", "-f", "/ops/bootstrap-gateway.sql"], 45)])
         task = Mock()
         task.compose.side_effect = RuntimeError("base rejected")
         with self.assertRaises(RuntimeError):
@@ -24,6 +25,12 @@ class SendRunnerTest(unittest.TestCase):
         task.compose.side_effect = [None, RuntimeError("send rejected")]
         with self.assertRaises(RuntimeError):
             bootstrap_database_roles(task)
+        self.assertEqual(task.compose.call_count, 2)
+        task = Mock()
+        task.compose.side_effect = [None, None, RuntimeError("gateway rejected")]
+        with self.assertRaisesRegex(RuntimeError, "gateway rejected"):
+            bootstrap_database_roles(task)
+        self.assertEqual(task.compose.call_count, 3)
 
     def run_suites(self, missing: bool = False, failed: bool = False) -> tuple[int, list[str]]:
         with tempfile.TemporaryDirectory() as directory:

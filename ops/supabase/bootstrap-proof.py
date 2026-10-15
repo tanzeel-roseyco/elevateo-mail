@@ -3,7 +3,8 @@ import base64, json, os, pathlib, secrets, subprocess, sys, uuid
 root=pathlib.Path(sys.argv[1]).resolve()
 evidence=pathlib.Path(sys.argv[2]).resolve(); evidence.mkdir(parents=True,exist_ok=True)
 project='ops402-proof-'+uuid.uuid4().hex
-values={key:secrets.token_hex(32) for key in ('POSTGRES_PASSWORD','MIGRATOR_DB_PASSWORD','API_DB_PASSWORD','WORKER_DB_PASSWORD','SECRET_KEY_BASE','BE02_FIXTURE_SIGNING_SECRET')}
+# AIDEV-NOTE: Compose requires an isolated gateway credential even when this proof exercises only base role guards.
+values={key:secrets.token_hex(32) for key in ('POSTGRES_PASSWORD','MIGRATOR_DB_PASSWORD','API_DB_PASSWORD','WORKER_DB_PASSWORD','ATTACHMENT_GATEWAY_DB_PASSWORD','SECRET_KEY_BASE','BE02_FIXTURE_SIGNING_SECRET')}
 values.update(BE02_SOURCE=str(root),BE02_PROJECT=project,BE02_SERVER_IMAGE='unused-proof:local',ELEVATEO_SESSION_KEY_BASE64=base64.b64encode(secrets.token_bytes(32)).decode())
 env=evidence/'.env.proof'
 fd=os.open(env,os.O_WRONLY|os.O_CREAT|os.O_EXCL,0o600)

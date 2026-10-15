@@ -23,7 +23,7 @@ from adv808_auth_attestation import AUTH_PIN, attest_with_controls
 
 
 def source_hashes(root: Path, acceptance: bool = False) -> dict[str, str]:
-    files = [root / "ops/compose.be02-test.yaml"]
+    files = [root / "ops/compose.be02-test.yaml", root / "ops/ops820/bootstrap-gateway.sql"]
     folders = ["apps/server", "contracts", "ops/db", "ops/supabase/db", "ops/tests/be02", "ops/tests/be02-guards"]
     if acceptance:
         files.extend([root / "ops/compose.acceptance-test.yaml", root / ".dockerignore"])
@@ -99,8 +99,9 @@ def acceptance_before_http(task: Task, acceptance: Acceptance) -> None:
 
 
 def bootstrap_database_roles(task: Task) -> None:
-    # AIDEV-NOTE: Send owner/schema must exist before migration00007; failure aborts admission.
-    for name, filename in (("bootstrap", "bootstrap.sql"), ("bootstrap-send", "bootstrap-send.sql")):
+    # AIDEV-NOTE: Privileged send/gateway roles and schemas must precede their restricted application migrations.
+    for name, filename in (("bootstrap", "bootstrap.sql"), ("bootstrap-send", "bootstrap-send.sql"),
+                           ("bootstrap-gateway", "bootstrap-gateway.sql")):
         task.compose(name, ["run", "--rm", "--no-deps", "bootstrap", "-f", "/ops/" + filename], 45)
 
 
@@ -135,7 +136,7 @@ def main() -> int:
     evidence = root / "ops/local" / project
     evidence.mkdir(parents=True, mode=0o700)
     values = {key: secrets.token_hex(32) for key in ("POSTGRES_PASSWORD", "MIGRATOR_DB_PASSWORD", "API_DB_PASSWORD",
-              "WORKER_DB_PASSWORD", "SECRET_KEY_BASE", "BE02_FIXTURE_SIGNING_SECRET")}
+              "WORKER_DB_PASSWORD", "ATTACHMENT_GATEWAY_DB_PASSWORD", "SECRET_KEY_BASE", "BE02_FIXTURE_SIGNING_SECRET")}
     values["ELEVATEO_SESSION_KEY_BASE64"] = base64.b64encode(secrets.token_bytes(32)).decode("ascii")
     task = Task(root, evidence, project, args.context, values)
     if args.adv808_auth_policy:
