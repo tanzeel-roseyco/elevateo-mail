@@ -17,11 +17,14 @@ cleanup() {
     rm_output=$(docker rm -f "$created_id" 2>&1) || rm_exit=$?
     inspect_exit=0
     inspect_output=$(docker inspect "$created_id" 2>&1) || inspect_exit=$?
+    # AIDEV-NOTE: Docker 29 lowercases absence errors; normalize wording while retaining the exact owned ID check.
+    inspect_output=${inspect_output,,}
+    rm_output=${rm_output,,}
     if (( inspect_exit == 0 )) ||
-       [[ "$inspect_output" != *"No such object: $created_id"* &&
-          "$inspect_output" != *"No such container: $created_id"* ]] ||
-       { (( rm_exit != 0 )) && [[ "$rm_output" != *"No such object: $created_id"* &&
-                                      "$rm_output" != *"No such container: $created_id"* ]]; }; then
+       [[ "$inspect_output" != *"no such object: $created_id"* &&
+          "$inspect_output" != *"no such container: $created_id"* ]] ||
+       { (( rm_exit != 0 )) && [[ "$rm_output" != *"no such object: $created_id"* &&
+                                      "$rm_output" != *"no such container: $created_id"* ]]; }; then
       clean=1
     fi
   elif [[ -n "$created_id" ]]; then clean=1; fi

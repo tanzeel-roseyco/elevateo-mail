@@ -11,9 +11,10 @@ SCRIPTS = ("health-probe.sh", "worker-probe.sh")
 
 
 class ProbeCleanupTest(unittest.TestCase):
-    def test_collision_create_cleanup_and_daemon_failure(self):
+    def test_collision_create_cleanup_and_daemon_failure(self) -> None:
         for script in SCRIPTS:
-            for mode in ("collision", "run-failure", "success", "daemon-failure"):
+            for mode in ("collision", "run-failure", "success", "lowercase", "already-removed",
+                         "daemon-failure", "remove-denied", "different-id", "still-present"):
                 with self.subTest(script=script, mode=mode), tempfile.TemporaryDirectory() as directory:
                     folder = pathlib.Path(directory)
                     fake = folder / "docker"
@@ -30,8 +31,13 @@ inspect)
     exit 0
   fi
   if [[ "$2" == "$OPS820_FAKE_ID" ]]; then
-    if [[ "$OPS820_FAKE_MODE" == daemon-failure ]]; then echo 'permission denied' >&2
-    else echo "No such object: $OPS820_FAKE_ID" >&2; fi
+    case "$OPS820_FAKE_MODE" in
+      daemon-failure) echo 'permission denied' >&2 ;;
+      lowercase|already-removed) echo "error: no such object: $OPS820_FAKE_ID" >&2 ;;
+      different-id) echo "error: no such object: aaaaaaaaaaaa" >&2 ;;
+      still-present) echo '{}'; exit 0 ;;
+      *) echo "No such object: $OPS820_FAKE_ID" >&2 ;;
+    esac
     exit 1
   fi
   [[ "$OPS820_FAKE_MODE" == collision ]] && exit 0
@@ -41,7 +47,10 @@ run)
   for arg in "$@"; do [[ "$arg" == -d ]] && { echo "$OPS820_FAKE_ID"; exit 0; }; done
   exit 0 ;;
 rm)
-  [[ "$OPS820_FAKE_MODE" == daemon-failure ]] && { echo 'permission denied' >&2; exit 1; }
+  case "$OPS820_FAKE_MODE" in
+    daemon-failure|remove-denied) echo 'permission denied' >&2; exit 1 ;;
+    already-removed) echo "error: no such container: $OPS820_FAKE_ID" >&2; exit 1 ;;
+  esac
   echo "$OPS820_FAKE_ID"; exit 0 ;;
 exec) exit 0 ;;
 esac
@@ -58,16 +67,18 @@ exit 99
                         ["bash", str(ROOT / "ops/ops820" / script), "ops402-restore-fake",
                          str(envfile), str(ROOT)], env=env, capture_output=True, text=True,
                         check=False, timeout=10)
-                    self.assertEqual(result.returncode == 0, mode == "success", result.stderr)
+                    successful = mode in ("success", "lowercase", "already-removed")
+                    self.assertEqual(result.returncode == 0, successful, result.stderr)
                     calls = log.read_text().splitlines()
+                    created = mode not in ("collision", "run-failure")
                     self.assertEqual(any(call.startswith("rm ") for call in calls),
-                                     mode in ("success", "daemon-failure"), calls)
-                    if mode in ("success", "daemon-failure"):
+                                     created, calls)
+                    if created:
                         self.assertEqual([call for call in calls if call.startswith("rm ")],
                                          ["rm -f " + "b" * 64])
                     self.assertEqual(any(call.startswith("run ") for call in calls), mode != "collision")
-                    if mode == "daemon-failure":
-                        self.assertIn("cleanup_exit=1", result.stdout)
+                    if created:
+                        self.assertIn(f"cleanup_exit={0 if successful else 1}", result.stdout)
 
 
 if __name__ == "__main__":
