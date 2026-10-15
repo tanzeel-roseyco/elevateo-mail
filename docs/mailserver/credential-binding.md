@@ -54,9 +54,9 @@ Both remain failed evidence. The corrected fixture separately owns and closes po
 
 ## Remaining release work
 
-MAIL1019b: one absolute network deadline, bounded response parsing, owned socket/thread cleanup,
-failure quarantine and focused stalled-server regressions. SQL transactions must never receive
-an asynchronous network timeout. MAIL1020a: tenant/version-bound SMTP authorization and transport;
+MAIL1019b is accepted with an absolute network deadline, bounded parsing and owned cleanup; see
+imap-runtime-bounds.md for evidence and limits. SQL stays outside asynchronous interruption.
+MAIL1020a: tenant/version-bound SMTP authorization and transport;
 MAIL1020b: atomic organization/group/mailbox/domain/shared-IP/destination budgets. Then bounded
 scheduling, full app/native acceptance, off-host restore, alerts and held native deployment proof.
 Credentials, real domain DNS, public TLS, hosting/port approval and controlled canaries come last.

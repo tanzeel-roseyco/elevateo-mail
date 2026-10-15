@@ -1,0 +1,128 @@
+{
+  "gate": "be02-71155e5ff2f84877a58056c82334d909",
+  "result": {
+    "tests": "PASSED",
+    "failure": "",
+    "cleanup_passed": true,
+    "finished_at": 1792099387.5611148,
+    "source_snapshot": "source.sha256.json"
+  },
+  "standard": {
+    "suites": 145,
+    "tests": 870,
+    "assertions": 9501
+  },
+  "mox": {
+    "tests": 10,
+    "assertions": 107
+  },
+  "http": {
+    "tests": 1,
+    "assertions": 33
+  },
+  "worker_entry": {
+    "tests": 2,
+    "assertions": 107
+  },
+  "total": {
+    "tests": 883,
+    "assertions": 9748,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0
+  },
+  "deferred_suites": 12,
+  "cleanup": {
+    "removed": [
+      "container:987213da82b025fbd10082e8eb46e6e9a3a844ceb6fc560f965d9b60a74f923e",
+      "container:bcb8fe8728af8f857528a5ea9a89fe6b1e394e11e073de88a63f2c259068cbb2",
+      "container:c60b64a8b87881f198732e601a968490271be0b7204a34c157dfd7f52478aa29",
+      "container:f8003fd8c4a1b5702b9964dfc8141bb13d784f57718852ad42319f89b9452253",
+      "container:6eae95694d0124cbb5a7d28c5b9daf26ba0f57aaceedd72bdebd034d93f7e2b0",
+      "builder-container:63ec6de970363815f01285e91d48a9f83ff5372b2f41d508997e269e2e0ca270",
+      "builder:be02-71155e5ff2f84877a58056c82334d909-builder",
+      "volume:be02-71155e5ff2f84877a58056c82334d909_db-config",
+      "volume:be02-71155e5ff2f84877a58056c82334d909_db-data",
+      "volume:buildx_buildkit_be02-71155e5ff2f84877a58056c82334d909-builder0_state",
+      "network:8c05ddf363acb3a3c100478e150d27e1073b8e3701bb02656152c9b28253aecf",
+      "image:sha256:f71c8de04a83d66978d4fde4ba52f139da9a2e8cca9c428b336b9d45425abc4b"
+    ],
+    "errors": [],
+    "shared_bases_retained": true
+  },
+  "independent_cleanup": {
+    "passed": true,
+    "checks": [
+      {
+        "resource": "container:987213da82b025fbd10082e8eb46e6e9a3a844ceb6fc560f965d9b60a74f923e",
+        "absent": true
+      },
+      {
+        "resource": "container:bcb8fe8728af8f857528a5ea9a89fe6b1e394e11e073de88a63f2c259068cbb2",
+        "absent": true
+      },
+      {
+        "resource": "container:c60b64a8b87881f198732e601a968490271be0b7204a34c157dfd7f52478aa29",
+        "absent": true
+      },
+      {
+        "resource": "container:f8003fd8c4a1b5702b9964dfc8141bb13d784f57718852ad42319f89b9452253",
+        "absent": true
+      },
+      {
+        "resource": "container:6eae95694d0124cbb5a7d28c5b9daf26ba0f57aaceedd72bdebd034d93f7e2b0",
+        "absent": true
+      },
+      {
+        "resource": "builder-container:63ec6de970363815f01285e91d48a9f83ff5372b2f41d508997e269e2e0ca270",
+        "absent": true
+      },
+      {
+        "resource": "builder:be02-71155e5ff2f84877a58056c82334d909-builder",
+        "absent": true
+      },
+      {
+        "resource": "volume:be02-71155e5ff2f84877a58056c82334d909_db-config",
+        "absent": true
+      },
+      {
+        "resource": "volume:be02-71155e5ff2f84877a58056c82334d909_db-data",
+        "absent": true
+      },
+      {
+        "resource": "volume:buildx_buildkit_be02-71155e5ff2f84877a58056c82334d909-builder0_state",
+        "absent": true
+      },
+      {
+        "resource": "network:8c05ddf363acb3a3c100478e150d27e1073b8e3701bb02656152c9b28253aecf",
+        "absent": true
+      },
+      {
+        "resource": "image:sha256:f71c8de04a83d66978d4fde4ba52f139da9a2e8cca9c428b336b9d45425abc4b",
+        "absent": true
+      },
+      {
+        "resource": "container:be02-71155e5ff2f84877a58056c82334d909-mox",
+        "absent": true
+      },
+      {
+        "resource": "container:be02-71155e5ff2f84877a58056c82334d909-mox-client",
+        "absent": true
+      },
+      {
+        "resource": "file:.env.runtime",
+        "absent": true
+      },
+      {
+        "resource": "file:mox/.env.client",
+        "absent": true
+      },
+      {
+        "resource": "file:mox/fixture-credentials.json",
+        "absent": true
+      }
+    ],
+    "mutations": false
+  },
+  "source_manifest_sha256": "bc7985d81aec1380fbb3240c7650eee70ff864c8f679a6f9133272b2fe505547"
+}

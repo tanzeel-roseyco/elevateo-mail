@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "net/imap"
+require_relative "owned_imap_client"
 require "openssl"
 require_relative "fake_ingress"
 require_relative "../mail_credentials/binding"
@@ -13,14 +13,15 @@ module Elevateo
       MAX_UID = 4_294_967_295
 
       class Session
-        def initialize(client)
-          @client = client
+        def initialize(client, deadline: ImapDeadline.new, cleanup_failure: -> {})
+          @client, @deadline, @cleanup_failure = client, deadline, cleanup_failure
+          @closed = false
         end
 
         def verified_tls? = true
 
         def uidvalidity
-          response = @client.responses.fetch("UIDVALIDITY", []).last
+          response = @deadline.call { @client.responses.fetch("UIDVALIDITY", []).last }
           value = response.respond_to?(:data) ? response.data : response
           raise Rejected, "invalid_imap_identity" unless value.is_a?(Integer) && value.between?(1, MAX_UID)
 
@@ -33,7 +34,7 @@ module Elevateo
           return [] if cursor == MAX_UID
 
           # AIDEV-NOTE: net-imap quotes String criteria; a typed sequence set preserves the required UID wire syntax.
-          ids = @client.uid_search(["UID", Net::IMAP::SequenceSet.new("#{cursor + 1}:*")])
+          ids = @deadline.call { @client.uid_search(["UID", Net::IMAP::SequenceSet.new("#{cursor + 1}:*")]) }
           raise Rejected, "invalid_imap_batch" unless ids.is_a?(Array) && ids.length <= MAX_DISCOVERED_UIDS &&
             ids.all? { |id| id.is_a?(Integer) && id.between?(1, MAX_UID) }
 
@@ -42,7 +43,7 @@ module Elevateo
 
           # AIDEV-NOTE: Fetch the smallest pending UIDs first; committing only that prefix preserves the next scan.
           remaining.first(limit).map do |uid|
-            rows = @client.uid_fetch(uid, ["BODY.PEEK[]<0.#{FakeIngress::MAX_RAW + 1}>"])
+            rows = @deadline.call { @client.uid_fetch(uid, ["BODY.PEEK[]<0.#{FakeIngress::MAX_RAW + 1}>"]) }
             raise Rejected, "invalid_imap_batch" unless rows.is_a?(Array) && rows.length == 1
 
             attributes = rows.first.attr
@@ -55,11 +56,21 @@ module Elevateo
         end
 
         def close
+          primary_error = $!
+          return if @closed
+
+          @closed = true
           @client.disconnect
+        rescue StandardError => cleanup_error
+          @cleanup_failure.call
+          ImapCleanup.reraise(primary_error, cleanup_error) if primary_error
+
+          raise
         end
       end
 
-      def initialize(host:, credential_resolver:, port: 993, mailbox: "INBOX", ca_file: nil, client_factory: Net::IMAP)
+      def initialize(host:, credential_resolver:, port: 993, mailbox: "INBOX", ca_file: nil,
+        client_factory: OwnedImapClient, session_timeout: 15.0)
         raise Rejected, "invalid_imap_host" unless host.is_a?(String) &&
           /\A[a-z0-9][a-z0-9.-]{0,252}\z/i.match?(host) &&
           port.is_a?(Integer) && port.between?(1, 65_535) && mailbox == "INBOX" &&
@@ -67,10 +78,13 @@ module Elevateo
 
         @host, @port, @mailbox, @ca_file = host, port, mailbox, ca_file
         @resolver, @factory = credential_resolver, client_factory
+        ImapDeadline.new(seconds: session_timeout)
+        @session_timeout = session_timeout
+        @available = true
       end
 
       def open(binding:)
-        raise Rejected, "account_unavailable" unless binding.is_a?(MailCredentials::Binding)
+        raise Rejected, "account_unavailable" unless @available && binding.is_a?(MailCredentials::Binding)
 
         credentials = @resolver.call(binding, protocol: "imap")
         raise Rejected, "account_unavailable" unless credentials.is_a?(Array) && credentials.length == 2 &&
@@ -80,12 +94,20 @@ module Elevateo
         ssl_options = { verify_mode: OpenSSL::SSL::VERIFY_PEER, verify_hostname: true }
         ca_file = @ca_file
         ssl_options[:ca_file] = ca_file if ca_file
-        client = @factory.new(@host, port: @port, ssl: ssl_options)
-        client.login(credentials.fetch(0), credentials.fetch(1))
-        client.select(@mailbox)
-        Session.new(client)
-      rescue StandardError
-        client&.disconnect
+        deadline = ImapDeadline.new(seconds: @session_timeout)
+        cleanup_failure = -> { @available = false }
+        client = @factory.new(@host, port: @port, ssl: ssl_options,
+          deadline: deadline, cleanup_failure: cleanup_failure)
+        deadline.call { client.login(credentials.fetch(0), credentials.fetch(1)) }
+        deadline.call { client.select(@mailbox) }
+        Session.new(client, deadline: deadline, cleanup_failure: cleanup_failure)
+      rescue StandardError => primary_error
+        begin
+          client&.disconnect
+        rescue StandardError => cleanup_error
+          @available = false
+          ImapCleanup.reraise(primary_error, cleanup_error)
+        end
         raise
       end
     end

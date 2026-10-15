@@ -4,7 +4,7 @@ target :app do
   signature "sig"
   check "lib/elevateo"
   check "app/controllers"
-  library "uri", "net-http", "net-smtp", "json", "openssl", "base64", "digest", "timeout", "ipaddr", "securerandom", "time", "bigdecimal", "logger"
+  library "uri", "net-http", "net-smtp", "json", "openssl", "base64", "digest", "timeout", "socket", "ipaddr", "securerandom", "time", "bigdecimal", "logger"
   configure_code_diagnostics(Steep::Diagnostic::Ruby.strict) do |hash|
     # AIDEV-NOTE: Bounded Rails seams live in sig/rails_seams.rbs; missing framework names remain errors.
     hash[Steep::Diagnostic::Ruby::UnknownConstant] = :error

@@ -1,6 +1,7 @@
 module Net
   class IMAP
-    def initialize: (String, port: Integer, ssl: Hash[Symbol, Integer | String | bool]) -> void
+    def initialize: (String, port: Integer, ssl: Hash[Symbol, Integer | String | bool], ?open_timeout: Numeric,
+      ?max_response_size: Integer, ?debug: bool) -> void
     def login: (String, String) -> untyped
     def select: (String) -> untyped
     def responses: () -> Hash[String, Array[untyped]]
@@ -10,6 +11,9 @@ module Net
     def uid_search: (Array[String | SequenceSet]) -> Array[Integer]
     def uid_fetch: (Integer, Array[String]) -> Array[untyped]
     def disconnect: () -> untyped
+    private
+    def tcp_socket: (String, Integer) -> Socket
+    def start_receiver_thread: () -> Thread
   end
 end
 
@@ -101,6 +105,37 @@ module Elevateo
       def run: (account_id: String, credential_version: Integer) -> Integer
     end
 
+    module ImapCleanup
+      def self.reraise: (Exception, StandardError) -> bot
+    end
+
+    class ImapDeadline
+      class Expired < Timeout::Error
+      end
+      @expires_at: Float
+      def initialize: (?seconds: Integer | Float) -> void
+      def remaining: () -> Float
+      def call: [T] () { () -> T } -> T
+    end
+
+    class OwnedImapClient < Net::IMAP
+      class CleanupFailed < StandardError
+      end
+      MAX_RESPONSE_BYTES: Integer
+      @deadline: ImapDeadline
+      @cleanup_failure: ^() -> void
+      @raw_socket: Socket?
+      @owned_receiver: Thread?
+      def initialize: (String, port: Integer, ssl: Hash[Symbol, Integer | String | bool],
+        deadline: ImapDeadline, cleanup_failure: ^() -> void) -> void
+      def disconnect: () -> void
+      private
+      def close_socket: () -> void
+      def stop_receiver: () -> void
+      def tcp_socket: (String, Integer) -> Socket
+      def start_receiver_thread: () -> Thread
+    end
+
     class TlsImapTransport
       MAX_DISCOVERED_UIDS: Integer
       MAX_UID: Integer
@@ -110,12 +145,18 @@ module Elevateo
       @ca_file: String?
       @resolver: _ImapCredentialResolver
       @factory: _ImapClientFactory
+      @session_timeout: Integer | Float
+      @available: bool
       def initialize: (host: String, credential_resolver: _ImapCredentialResolver,
-        ?port: Integer, ?mailbox: String, ?ca_file: String?, ?client_factory: _ImapClientFactory) -> void
+        ?port: Integer, ?mailbox: String, ?ca_file: String?, ?client_factory: _ImapClientFactory,
+        ?session_timeout: Integer | Float) -> void
       def open: (binding: MailCredentials::Binding) -> Session
       class Session
         @client: Net::IMAP
-        def initialize: (Net::IMAP) -> void
+        @deadline: ImapDeadline
+        @cleanup_failure: ^() -> void
+        @closed: bool
+        def initialize: (Net::IMAP, ?deadline: ImapDeadline, ?cleanup_failure: ^() -> void) -> void
         def verified_tls?: () -> bool
         def uidvalidity: () -> Integer
         def fetch_after: (Integer, limit: Integer) -> Array[imap_event]
@@ -127,7 +168,8 @@ module Elevateo
       def call: (MailCredentials::Binding, protocol: String) -> [String, String]
     end
     interface _ImapClientFactory
-      def new: (String, port: Integer, ssl: Hash[Symbol, Integer | String | bool]) -> Net::IMAP
+      def new: (String, port: Integer, ssl: Hash[Symbol, Integer | String | bool],
+        deadline: ImapDeadline, cleanup_failure: ^() -> void) -> Net::IMAP
     end
   end
 end
