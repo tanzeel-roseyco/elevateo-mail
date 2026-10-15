@@ -41,9 +41,10 @@ describe('sidebar sections', () => {
     // No switcher: there is no button or tab control anywhere in the rail.
     expect(screen.queryByRole('button')).toBeNull()
     expect(screen.queryByRole('tab')).toBeNull()
-    // The authentic PNG, not a redrawn or text substitute; decorative beside the product name.
+    // AIDEV-NOTE: Compact publisher assets; BrandMark tests verify authentic hashes and transfer budgets.
     const mark = screen.getByTestId('brand-mark').querySelector('img')
-    expect(mark?.getAttribute('src')).toBe('/brand/logo-icon.png')
+    expect(mark?.getAttribute('src')).toBe('/brand/logo-mark-64.png')
+    expect(mark?.getAttribute('srcset')).toBe('/brand/logo-mark-64.png 64w, /brand/logo-mark-180.png 180w')
     expect(mark?.getAttribute('alt')).toBe('')
     expect(screen.getByText('Elevateo Mail')).toBeTruthy()
   })

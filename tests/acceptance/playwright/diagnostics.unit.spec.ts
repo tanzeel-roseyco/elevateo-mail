@@ -208,6 +208,7 @@ test('supplemental feature and screenshot failures expose only reviewed bounded 
   for (const [name, lastLine] of [
     ['qa816-assignee-ui.e2e.ts', 79], ['qa816-attachment-ui.e2e.ts', 97],
     ['qa816-feature-wave.e2e.ts', 46], ['screenshots.ts', 83], ['support.ts', 60],
+    ['draft-unapplied.e2e.ts', 117],
   ] as const) {
     const file = fileURLToPath(new URL(`../../playwright/${name}`, import.meta.url));
     const accepted = frameworkDiagnostic(stackAt(file, lastLine), 'synthetic-private');
