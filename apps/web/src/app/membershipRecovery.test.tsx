@@ -179,8 +179,10 @@ describe('self-membership change through the Shell', () => {
     expect(mailboxLink.getAttribute('aria-current')).toBeNull()
     expect(screen.queryByRole('link', { name: 'Drafts' })).toBeNull()
     expect(screen.queryByRole('link', { name: 'Members' })).toBeNull()
-    expect(await screen.findByText('Members are unavailable')).toBeTruthy()
     expect(await screen.findByText('You cannot manage members of this mailbox')).toBeTruthy()
+    // AIDEV-NOTE: A settled refusal has one explanation and no remaining membership editor.
+    expect(screen.queryByText('Members are unavailable')).toBeNull()
+    expect(screen.queryByLabelText('User id')).toBeNull()
     expect(screen.queryByText(/Roster revision/)).toBeNull()
     expect(controller().context?.authorizationVersion).toBe(CD.rotatedAuthorizationVersion)
 

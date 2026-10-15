@@ -169,11 +169,12 @@ function MemberRoster({ mailboxId }: { mailboxId: string }) {
       <p className="mb-3 px-1 text-[12px] text-muted">
         Explicit members of this mailbox. An explicit row grants read; shared mailboxes may also be readable without a row. Only user ids are shown: this build has no user directory.
       </p>
-      {mailbox !== undefined && !canManage && (
-        <EmptyState title="You cannot manage members of this mailbox" body="Managing members requires the manage-members capability." />
-      )}
       {roster.status === 'loading' && <div role="status" aria-label="Loading members"><Skeleton rows={4} /></div>}
-      {roster.status === 'unavailable' && <EmptyState title="Members are unavailable" body="This mailbox may not exist, or you may not currently be able to manage its members." />}
+      {/* AIDEV-NOTE: One API refusal gets one panel; known read-only access can explain it more precisely. */}
+      {roster.status === 'unavailable' && <EmptyState
+        title={canManage ? 'Members are unavailable' : 'You cannot manage members of this mailbox'}
+        body={canManage ? 'This mailbox may not exist, or you may not currently be able to manage its members.' : 'Managing members requires the manage-members capability.'}
+      />}
       {roster.status === 'error' && (
         <div role="alert">
           <EmptyState title="Members could not be loaded" body={roster.failure.message} action={<Button variant="primary" onClick={() => void load()}>Try again</Button>} />
