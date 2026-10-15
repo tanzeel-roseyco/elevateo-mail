@@ -1533,3 +1533,8 @@ Validation: qa815-evidence/inline982-acceptance-units.log records strict TypeScr
 ## INT987 inline review
 
 INT987 inline self-review: the complete 87-line logout race scenario and 90-line role-fixture regression were reviewed in separate bounded passes, plus five registration/inventory lines (182 LOC). One confirmed test-helper defect caught by RuboCop: overriding Struct#values; 5.49 defects/KLOC. The new scenario checks actual upstream commit, independent database metadata, logout API denial and safe fresh-login recovery; payloads remain private. Design tradeoff: exercise the response race after a real committed write, preserving honest limits about cancellation and database lock ordering. No independent agent review claimed; fresh execution remains required.
+
+
+## INT988 inline review
+
+INT988 inline self-review: reviewed the complete 64-line mailbox case plus four diagnostic/inventory edits (68 LOC); zero confirmed new defects, 0 defects/KLOC. Checks compare exact committed capability sets, reject extra boxes, prove actual 404s for hidden mailboxes and verify read-only UI after reload. Design tradeoff: reuse the existing independently verified two-mailbox fixture to test capability differences; pagination is explicitly outside this case. No production source change and no independent agent review claimed. The six inspected screenshots show bounded search/retry and assignment controls plus a single reader denial; the manager roster still uses UUIDs and needs a future product-quality identity presentation review.
