@@ -24,3 +24,5 @@ def pin_wrapper(path: Path) -> None:
 if __name__ == "__main__":
     if len(sys.argv) != 2:
         raise SystemExit("usage: pin-gradle.py gradle-wrapper.properties")
+    # AIDEV-NOTE: The Docker build invokes this CLI; testing the helper alone misses a no-op entrypoint.
+    pin_wrapper(Path(sys.argv[1]))

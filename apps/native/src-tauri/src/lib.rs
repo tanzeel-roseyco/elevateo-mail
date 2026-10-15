@@ -3,7 +3,7 @@ mod navigation;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
-    // AIDEV-NOTE: The public origin is embedded by the release build; absent or invalid config fails before any WebView.
+    // AIDEV-NOTE: Build kind and embedded origin are checked together before any WebView; QA is debug-only.
     let approved = config::launch_origin(
         option_env!("ELEVATEO_WEB_ORIGIN").unwrap_or(""),
         option_env!("ELEVATEO_NATIVE_ARTIFACT").unwrap_or(""),

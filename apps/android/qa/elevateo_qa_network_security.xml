@@ -1,0 +1,10 @@
+<network-security-config>
+    <!-- AIDEV-NOTE: No user CA or global debug override; only this exact synthetic host trusts the QA CA. -->
+    <base-config cleartextTrafficPermitted="false">
+        <trust-anchors><certificates src="system" /></trust-anchors>
+    </base-config>
+    <domain-config cleartextTrafficPermitted="false">
+        <domain includeSubdomains="false">elevateo.qa.internal</domain>
+        <trust-anchors><certificates src="@raw/elevateo_qa_ca" /></trust-anchors>
+    </domain-config>
+</network-security-config>

@@ -8,7 +8,7 @@ ENV ANDROID_HOME=/opt/android-sdk \
     NDK_HOME=/opt/android-sdk/ndk/28.2.13676358 \
     PATH=/root/.cargo/bin:${PATH}
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    openjdk-17-jdk curl ca-certificates unzip python3 pkg-config \
+    openjdk-17-jdk curl ca-certificates openssl unzip python3 pkg-config \
     libssl-dev libgtk-3-dev libwebkit2gtk-4.1-dev \
     libayatana-appindicator3-dev librsvg2-dev patchelf \
     && rm -rf /var/lib/apt/lists/*
@@ -22,6 +22,12 @@ RUN yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses >/dev/n
     && "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" \
       'platforms;android-36' 'platforms;android-37.0' \
       'build-tools;36.0.0' 'ndk;28.2.13676358' 'platform-tools'
-RUN rustup target add aarch64-linux-android \
+# AIDEV-NOTE: ARM64 is the device candidate; x86_64 is the separate local-emulator QA package.
+RUN rustup target add aarch64-linux-android x86_64-linux-android \
     && cargo install tauri-cli --version '=2.12.2' --locked
+# AIDEV-NOTE: Java resolves this disposable user's writable home without overriding the host HOME variable.
+ARG QA_UID=1000
+ARG QA_GID=1000
+RUN groupadd --gid "$QA_GID" elevateoqa \
+    && useradd --uid "$QA_UID" --gid "$QA_GID" --create-home elevateoqa
 WORKDIR /src
