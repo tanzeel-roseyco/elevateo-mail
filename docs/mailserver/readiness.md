@@ -1,5 +1,7 @@
 # Low-cost self-hosted mail readiness
 
+MAIL1022: Durable mailbox rotation prevents one busy mailbox from monopolizing due-job discovery. All712 synthetic mailboxes received one opportunity before the1000-job backlog received its second; selector p95 23.04ms, maximum48.17ms, eight concurrent lookups maximum193.12ms with3s statement/1s lock limits. Fleet-02 gate be02-d1d8d767a42e44f79a8ea17f24a92e80 passed157 standard suites/927 tests/10,806 assertions; Mox10/109, HTTP1/33 and worker-entry2/107; combined940 tests/11,055 assertions with zero failures/errors/skips. Twelve dedicated suites remain deferred. Steep, RuboCop359 files, fixture lint3 files, frozen source and exact cleanup passed;17 independent absence checks passed. Shared bases/persistent data retained; free bytes254850682880 ->254832197632 (shared delta-18485248, not attributable reclamation). No spend, live credentials, external mail, DNS or production mutation. Held profile composition, production secrets, multi-account ingestion and app/native acceptance remain open: NOT credentials-only ready. See docs/mailserver/mailbox-rotation.md.
+
 MAIL1020b / MAIL1021: Held Mox attempts now atomically reserve daily recipient budgets across organization, group, mailbox, sender domain, shared egress pool and destination domain. Unknown delivery retains charges; late-axis denial rolls back the entire reservation. Worker admission now clamps idle waits and rechecks the clock after discovery; in-flight work retains its own deadlines. Fleet-02 gate be02-43e4649a15314558bc7d7ac7a54f4310 passed: 153 standard suites/915 tests/9,911 assertions; Mox10/109, HTTP1/33 and worker-entry2/107; combined928 tests/10,160 assertions, zero failures/errors/skips. Twelve dedicated suites remain deferred. Steep, RuboCop352 files, fixture lint3 files, frozen source and exact cleanup passed;17 independent absence checks passed. Shared bases/persistent data retained; free bytes254839009280 ->254853779456 (shared delta+14770176, not attributable reclamation). No spend, live credentials, external mail, DNS or production mutation. Fair scheduling, operational activation and remaining app/native acceptance remain open: NOT credentials-only ready. See docs/mailserver/aggregate-send-budgets.md.
 
 MAIL1020a: SMTP attempts now bind organization, mailbox, account, credential version, reference and protocol; final authorization rechecks sender/account state before the held Mox transport resolves credentials. Fleet-02 gate be02-cab695ff6bd6445d9fd4dc6b19a3165e passed: 148 standard suites/888 tests/9,621 assertions; Mox10/107, HTTP1/33 and worker-entry2/107; combined901 tests/9,868 assertions, zero failures/errors/skips. Twelve dedicated suites remain deferred. Steep, RuboCop344 files, fixture lint3 files, frozen source and exact cleanup passed;17 independent absence checks passed. Shared bases/persistent data retained; free bytes254805770240 ->254871015424 (shared delta+65245184, not attributable reclamation). No spend, live credentials, external mail, DNS or production mutation. Aggregate budgets, scheduling, operational activation and remaining app/native acceptance remain open: NOT credentials-only ready. See docs/mailserver/smtp-account-binding.md.
@@ -81,15 +83,17 @@ and two workers exchange seventeen messages; TLS, sender/recipient isolation, qu
 restart and full configuration/data/TLS restore pass. The measured peak is 356 MiB and median local
 round trip is 213 ms. This is not a test of 700 simultaneous users or public-provider delivery.
 
-The current MAIL1020a gate proves held SMTP account/version binding, final authorization, actual
-Mox SMTP/IMAP/inbox composition (3/80) and compatibility (7/27). Combined backend acceptance is
-901 tests/9,868 assertions; twelve dedicated suites remain deferred. IMAP credential binding and
-bounded networking remain covered. See [runtime evidence](runtime-evidence.md) and
-[SMTP binding](smtp-account-binding.md) for exact source and revocation boundaries.
+The current MAIL1022 gate proves held SMTP account/version binding, final authorization, six-axis
+atomic budgets, persisted fair mailbox opportunities, actual Mox composition (3/82) and compatibility
+(7/27). Combined backend acceptance is940 tests/11,055 assertions; twelve dedicated suites remain
+deferred. The712-mailbox selector workload measured p95 23.04ms and eight concurrent maximum193.12ms;
+this measures discovery only. See [runtime evidence](runtime-evidence.md),
+[SMTP binding](smtp-account-binding.md), [budgets](aggregate-send-budgets.md) and
+[mailbox rotation](mailbox-rotation.md) for exact evidence and limits.
 
-Production composition, aggregate sending budgets, scheduling, operational activation and remaining
-application/browser/native acceptance are still work. Test-only credential bundles are implemented;
-a production secret provider and operator rotation/activation proof remain held.
+Production composition, production secret loading, multi-account ingestion, operational activation and
+remaining application/browser/native acceptance are still work. Test-only credential bundles exist;
+operator rotation/activation and live recovery proof remain held.
 Credentials are not the only live prerequisite: Hetzner SMTP unblocking is account-dependent;
 public DNS/TLS/IP reputation and actual provider delivery cannot be proven inside an offline fixture.
 

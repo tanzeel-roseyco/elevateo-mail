@@ -61,7 +61,7 @@ class SendSchemaDatabaseTest < SendDatabaseTestCase
     SQL
     expected = %w[approval_operations attempts audit_events intents jobs mailbox_policy observations
                   organization_policy recipient_suppressions reconciliation_checks smtp_accounts
-                  budget_routes budget_limits budget_usage attempt_budgets]
+                  budget_routes budget_limits budget_usage attempt_budgets scheduler_cursor mailbox_schedule]
     assert_equal expected.sort, rows.map { |row| row.fetch("relname") }.sort
     rows.each do |row|
       assert_equal "t", row.fetch("relrowsecurity")
@@ -108,7 +108,8 @@ class SendSchemaDatabaseTest < SendDatabaseTestCase
   end
   def test_empty_down_removes_only_send_objects_and_transaction_rollback_restores_them
     @admin.exec("BEGIN")
-    # AIDEV-NOTE: Reverse dependent budget and SMTP authority before the original send-schema teardown.
+    # AIDEV-NOTE: Reverse rotation, budget and SMTP dependencies before the original send-schema teardown.
+    @admin.exec(File.read(File.expand_path("../../db/be03_send/mailbox_rotation_down.sql", __dir__)))
     @admin.exec(File.read(File.expand_path("../../db/be03_send/budget_down.sql", __dir__)))
     @admin.exec(File.read(File.expand_path("../../db/be03_send/smtp_account_binding_down.sql", __dir__)))
     worker_down = File.read(File.expand_path("../../db/be03_send/worker_authority_down.sql", __dir__))

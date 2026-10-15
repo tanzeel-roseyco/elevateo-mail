@@ -1,5 +1,7 @@
 # Mox activation and inexpensive acceptance plan
 
+MAIL1022: Durable mailbox rotation prevents one busy mailbox from monopolizing due-job discovery. All712 synthetic mailboxes received one opportunity before the1000-job backlog received its second; selector p95 23.04ms, maximum48.17ms, eight concurrent lookups maximum193.12ms with3s statement/1s lock limits. Fleet-02 gate be02-d1d8d767a42e44f79a8ea17f24a92e80 passed157 standard suites/927 tests/10,806 assertions; Mox10/109, HTTP1/33 and worker-entry2/107; combined940 tests/11,055 assertions with zero failures/errors/skips. Twelve dedicated suites remain deferred. Steep, RuboCop359 files, fixture lint3 files, frozen source and exact cleanup passed;17 independent absence checks passed. Shared bases/persistent data retained; free bytes254850682880 ->254832197632 (shared delta-18485248, not attributable reclamation). No spend, live credentials, external mail, DNS or production mutation. Held profile composition, production secrets, multi-account ingestion and app/native acceptance remain open: NOT credentials-only ready. See docs/mailserver/mailbox-rotation.md.
+
 MAIL1020b / MAIL1021: Held Mox attempts now atomically reserve daily recipient budgets across organization, group, mailbox, sender domain, shared egress pool and destination domain. Unknown delivery retains charges; late-axis denial rolls back the entire reservation. Worker admission now clamps idle waits and rechecks the clock after discovery; in-flight work retains its own deadlines. Fleet-02 gate be02-43e4649a15314558bc7d7ac7a54f4310 passed: 153 standard suites/915 tests/9,911 assertions; Mox10/109, HTTP1/33 and worker-entry2/107; combined928 tests/10,160 assertions, zero failures/errors/skips. Twelve dedicated suites remain deferred. Steep, RuboCop352 files, fixture lint3 files, frozen source and exact cleanup passed;17 independent absence checks passed. Shared bases/persistent data retained; free bytes254839009280 ->254853779456 (shared delta+14770176, not attributable reclamation). No spend, live credentials, external mail, DNS or production mutation. Fair scheduling, operational activation and remaining app/native acceptance remain open: NOT credentials-only ready. See docs/mailserver/aggregate-send-budgets.md.
 
 MAIL1020a: SMTP attempts now bind organization, mailbox, account, credential version, reference and protocol; final authorization rechecks sender/account state before the held Mox transport resolves credentials. Fleet-02 gate be02-cab695ff6bd6445d9fd4dc6b19a3165e passed: 148 standard suites/888 tests/9,621 assertions; Mox10/107, HTTP1/33 and worker-entry2/107; combined901 tests/9,868 assertions, zero failures/errors/skips. Twelve dedicated suites remain deferred. Steep, RuboCop344 files, fixture lint3 files, frozen source and exact cleanup passed;17 independent absence checks passed. Shared bases/persistent data retained; free bytes254805770240 ->254871015424 (shared delta+65245184, not attributable reclamation). No spend, live credentials, external mail, DNS or production mutation. Aggregate budgets, scheduling, operational activation and remaining app/native acceptance remain open: NOT credentials-only ready. See docs/mailserver/smtp-account-binding.md.
@@ -26,7 +28,8 @@ only after recalculating disk and backup cost. Never silently delete customer ma
 The planned 500 outreach messages/day and 200 diagnostic messages/day are projections. Mox's
 30 outgoing / 10 first-time-recipient daily limits are per account, not a fleet-wide budget.
 All generated accounts have login disabled, all domains are disabled, and listeners are loopback.
-Aggregate mailbox/domain/IP/destination budget enforcement is an application activation blocker.
+Held application attempts now reserve six budget axes atomically; activation must configure their
+actual limits, validated shared egress mappings and correspondence policy before any real send.
 At two workers and 5 seconds/operation, 700 operations require roughly 29 minutes; at 15 seconds,
 88 minutes. This is scheduling arithmetic, not a measured public-provider throughput promise.
 
@@ -92,7 +95,7 @@ personal/team mail. One shared-IP pilot is cheaper but shares a reputation failu
 | Protocol | TLS chain/hostname, STARTTLS/auth, sender authorization, unknown recipient, no open relay | Synthetic `.test` accounts only |
 | Storage | Mailbox quota, SMTP size limit, sentinel/body equality, cross-account isolation, duplicate detection | Tiny payloads; no huge generated corpus |
 | Recovery | Restart, Mox backup, verifydata, restore configuration/TLS/data, recover every sentinel | Container tmpfs and no public networking |
-| App integration | Actual worker -> verified TLS SMTP -> Mox -> IMAP ingestion -> tenant inbox | Held composition passes3/80 with account/version-bound test credentials; production integration remains held |
+| App integration | Actual worker -> verified TLS SMTP -> Mox -> IMAP ingestion -> tenant inbox | Held direct composition passes3/82 with account/version-bound test credentials and six-axis budgets; queued profile and production integration remain open |
 | App failures | Revoked credentials, deleted tenant/session, RLS, suppression race, quota race, unknown acknowledgment, no replay | Deterministic service doubles plus isolated integration |
 | Regression | Lint, typecheck, Vitest, backend suites, PostgreSQL/RLS, browser flows, audit | Reuse pinned images, one bounded lease at a time |
 | Native clients | Android APK resource/admission/install/run; Windows/macOS packaging and real runtime acceptance | Fleet builds; platform runtime needed for each claim |
@@ -119,5 +122,5 @@ Cost: quotas dominate small-server sizing; budget is provisional until domains/b
 are included. Design: one Mox process lowers baseline cost while shared IP/disk enlarge the failure
 domain. Tests: offline assertions prove the listed scope only. Deployment: no service installed,
 account activated, server purchased, DNS edited or real message sent by this packet. Application:
-production composition, aggregate quotas, production secret activation and exact-source/native acceptance
+queued/production composition, multi-account ingestion, production secrets and exact-source/native acceptance
 remain work, not credential entry. This document must not be reported as credentials-only ready.

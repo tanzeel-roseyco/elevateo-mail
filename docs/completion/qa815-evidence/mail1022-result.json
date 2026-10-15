@@ -1,0 +1,163 @@
+{
+  "gate": "be02-d1d8d767a42e44f79a8ea17f24a92e80",
+  "result": {
+    "tests": "PASSED",
+    "failure": "",
+    "cleanup_passed": true,
+    "finished_at": 1792103381.273392,
+    "source_snapshot": "source.sha256.json"
+  },
+  "standard": {
+    "tests": 927,
+    "assertions": 10806,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0,
+    "suites": 157
+  },
+  "mox": {
+    "tests": 10,
+    "assertions": 109,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0,
+    "suites": 2
+  },
+  "http": {
+    "tests": 1,
+    "assertions": 33,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0,
+    "suites": 1
+  },
+  "worker_entry": {
+    "tests": 2,
+    "assertions": 107,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0,
+    "suites": 1
+  },
+  "total": {
+    "tests": 940,
+    "assertions": 11055,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0
+  },
+  "deferred_suites": 12,
+  "cleanup": {
+    "removed": [
+      "container:0322051ea72cdadd1ddc7821e1b4371024b2b905395e4c4e34e5650e3d641a6f",
+      "container:86fe95e377e6abac70a2e338ac9ea16d5b7b00310c7edb8531e21b505fabcfbc",
+      "container:42691ce046beabcba75221fd5780b63a622fd9a5b71bc9c49da50cc47dcfcbdc",
+      "container:669ede73f118948693e66cc53a8a4b24bc6a354973bd985d0719afc1d062ca48",
+      "container:d5b4c05daab06bb9467399071d33eba96d76fd058e1ce4225818bc7ce29f881f",
+      "builder-container:61b0a656f6801e3fe31f7590cd97c6dcc5788ccae1361df985a0a273beec3088",
+      "builder:be02-d1d8d767a42e44f79a8ea17f24a92e80-builder",
+      "volume:be02-d1d8d767a42e44f79a8ea17f24a92e80_db-config",
+      "volume:be02-d1d8d767a42e44f79a8ea17f24a92e80_db-data",
+      "volume:buildx_buildkit_be02-d1d8d767a42e44f79a8ea17f24a92e80-builder0_state",
+      "network:bde9601e4757db1e330ae6af45c1924dad0fb80c17003f4feb27ebc2976b081f",
+      "image:sha256:8cf13763754f2069b9086673e7ac84228680cfb770d4446bda5c75b4a1decd98"
+    ],
+    "errors": [],
+    "shared_bases_retained": true
+  },
+  "independent_cleanup": {
+    "passed": true,
+    "checks": [
+      {
+        "resource": "container:0322051ea72cdadd1ddc7821e1b4371024b2b905395e4c4e34e5650e3d641a6f",
+        "absent": true
+      },
+      {
+        "resource": "container:86fe95e377e6abac70a2e338ac9ea16d5b7b00310c7edb8531e21b505fabcfbc",
+        "absent": true
+      },
+      {
+        "resource": "container:42691ce046beabcba75221fd5780b63a622fd9a5b71bc9c49da50cc47dcfcbdc",
+        "absent": true
+      },
+      {
+        "resource": "container:669ede73f118948693e66cc53a8a4b24bc6a354973bd985d0719afc1d062ca48",
+        "absent": true
+      },
+      {
+        "resource": "container:d5b4c05daab06bb9467399071d33eba96d76fd058e1ce4225818bc7ce29f881f",
+        "absent": true
+      },
+      {
+        "resource": "builder-container:61b0a656f6801e3fe31f7590cd97c6dcc5788ccae1361df985a0a273beec3088",
+        "absent": true
+      },
+      {
+        "resource": "builder:be02-d1d8d767a42e44f79a8ea17f24a92e80-builder",
+        "absent": true
+      },
+      {
+        "resource": "volume:be02-d1d8d767a42e44f79a8ea17f24a92e80_db-config",
+        "absent": true
+      },
+      {
+        "resource": "volume:be02-d1d8d767a42e44f79a8ea17f24a92e80_db-data",
+        "absent": true
+      },
+      {
+        "resource": "volume:buildx_buildkit_be02-d1d8d767a42e44f79a8ea17f24a92e80-builder0_state",
+        "absent": true
+      },
+      {
+        "resource": "network:bde9601e4757db1e330ae6af45c1924dad0fb80c17003f4feb27ebc2976b081f",
+        "absent": true
+      },
+      {
+        "resource": "image:sha256:8cf13763754f2069b9086673e7ac84228680cfb770d4446bda5c75b4a1decd98",
+        "absent": true
+      },
+      {
+        "resource": "container:be02-d1d8d767a42e44f79a8ea17f24a92e80-mox",
+        "absent": true
+      },
+      {
+        "resource": "container:be02-d1d8d767a42e44f79a8ea17f24a92e80-mox-client",
+        "absent": true
+      },
+      {
+        "resource": "file:.env.runtime",
+        "absent": true
+      },
+      {
+        "resource": "file:mox/.env.client",
+        "absent": true
+      },
+      {
+        "resource": "file:mox/fixture-credentials.json",
+        "absent": true
+      }
+    ],
+    "mutations": false
+  },
+  "space_before": {
+    "free_bytes": 254850682880
+  },
+  "space_after": {
+    "free_bytes": 254832197632
+  },
+  "source_manifest_sha256": "6e373e9382eb3b7f42bbea9c70ccadfc2e92187ad38596334bf4e8598e4e11ac",
+  "source_unchanged": true,
+  "load": {
+    "event": "mail1022_selector_load",
+    "mailboxes": 712,
+    "initial_active": 1711,
+    "terminal_history": 14241,
+    "lookups": 712,
+    "p95_ms": 23.04,
+    "max_ms": 48.17,
+    "concurrent_lookups": 8,
+    "concurrent_max_ms": 193.12,
+    "worker_statement_timeout_ms": 3000,
+    "worker_lock_timeout_ms": 1000
+  }
+}
