@@ -18,6 +18,8 @@ module Elevateo
         @path, @outcome = path.dup.freeze, outcome
       end
 
+      def database_profile = "synthetic-v1"
+
       def submit(bytes, send_id:, attempt_id:, deadline:)
         validate!(bytes, send_id, attempt_id)
         deadline.check!

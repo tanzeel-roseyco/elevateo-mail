@@ -6,6 +6,7 @@ module Elevateo
       @path: String
       @outcome: String
       def initialize: (path: String, outcome: String) -> void
+      def database_profile: () -> String
       def submit: (String, send_id: String, attempt_id: String, deadline: CallDeadline) -> SubmissionResult
       def observation: (send_id: String, attempt_id: String, snapshot_digest: String) -> SubmissionResult?
       private

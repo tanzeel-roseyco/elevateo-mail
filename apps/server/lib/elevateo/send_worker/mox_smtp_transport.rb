@@ -14,6 +14,8 @@ module Elevateo
         @profile, @ca_file, @credential_resolver, @smtp_factory = profile, ca_file, credential_resolver, smtp_factory
       end
 
+      def database_profile = "mox-smtp-test-v1"
+
       def submit(bytes, send_id:, attempt_id:, deadline:, credential_binding: nil)
         raise ArgumentError, "invalid SMTP attempt" unless Control.valid_epoch?(attempt_id)
         rendered = SmtpSnapshot.render(bytes, send_id: send_id, verified_sender: @profile.verified_sender)

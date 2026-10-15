@@ -19,6 +19,12 @@ module Elevateo
         @client = client
       end
 
+      # AIDEV-NOTE: Constructor accepts held configuration, but a queue must reject it before claiming any work.
+      def database_profile
+        raise Held, "Mailpit profile required; remote SMTP remains held" unless @profile.local_test?
+        "mailpit-smtp-test-v1"
+      end
+
       def submit(bytes, send_id:, attempt_id:, deadline:)
         # AIDEV-NOTE: This adapter owns Mailpit only; the Mox adapter has separate TLS and identity admission.
         raise Held, "Mailpit profile required; remote SMTP remains held" unless @profile.local_test?

@@ -3,13 +3,14 @@ module Elevateo
     class Drain
       @connection: untyped
       @control: Control
-      @driver: DurableLocalDriver
+      @driver: DurableLocalDriver | SmtpTransport | MoxSmtpTransport
+      @profile: String
       @max_steps: Integer
       @max_seconds: Float
       @idle_delay: Float
       @clock: ^() -> Float
       @sleeper: ^(Float) -> void
-      def initialize: (connection: untyped, control: Control, driver: DurableLocalDriver,
+      def initialize: (connection: untyped, control: Control, driver: DurableLocalDriver | SmtpTransport | MoxSmtpTransport,
         ?max_steps: Integer, ?max_seconds: Integer | Float, ?idle_delay: Integer | Float,
         ?clock: ^() -> Float, ?sleeper: ^(Float) -> void) -> void
       def run: () -> Integer

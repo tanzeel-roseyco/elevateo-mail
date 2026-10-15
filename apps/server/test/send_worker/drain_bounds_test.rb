@@ -3,6 +3,7 @@
 require "minitest/autorun"
 require "minitest/mock"
 require_relative "../../lib/elevateo/send_worker/drain"
+require_relative "../../lib/elevateo/send_worker/durable_local_driver"
 
 class SendWorkerDrainBoundsTest < Minitest::Test
   EPOCH = "a1111111-1111-4111-8111-111111111111"
@@ -62,7 +63,8 @@ class SendWorkerDrainBoundsTest < Minitest::Test
   def build(clock:, sleeper: ->(_seconds) {}, max_seconds: 1)
     state = Struct.new(:epoch) { def submission_allowed? = true }.new(EPOCH)
     control = Struct.new(:state) { def read = state }.new(state)
-    Elevateo::SendWorker::Drain.new(connection: Object.new, control: control, driver: Object.new,
+    driver = Elevateo::SendWorker::DurableLocalDriver.new(path: "/unused/drain-test.jsonl", outcome: "accept")
+    Elevateo::SendWorker::Drain.new(connection: Object.new, control: control, driver: driver,
       max_seconds: max_seconds, idle_delay: 30, clock: clock, sleeper: sleeper)
   end
 end
