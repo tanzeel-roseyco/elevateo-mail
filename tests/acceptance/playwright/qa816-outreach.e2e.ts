@@ -80,11 +80,11 @@ scenario('SCN-QA-820-F2', 'foreign-organization-cannot-read-campaign', async (pa
     const [denied] = await Promise.all([responseAt(foreign, `/v2/outreach/campaigns/${campaignId}`),
       foreign.goto(`/#/outreach/campaigns/${campaignId}`)]);
     expect(denied.status()).toBe(404);
-    // AIDEV-NOTE: The alert paragraph owns this text directly; a descendant text locator cannot select it.
-    const refusal = foreign.getByRole('alert');
+    // AIDEV-NOTE: A real not_available 404 maps to Content's unavailable status, not its generic error alert.
+    const refusal = foreign.getByRole('region', { name: 'Campaign detail', exact: true }).getByRole('status');
     await expect(refusal).toHaveCount(1);
     await expect(refusal).toBeVisible();
-    await expect(refusal).toHaveText('Unable to load this Outreach resource. Please try again later.');
+    await expect(refusal).toHaveText('Outreach API unavailable for this account.');
     await expect(foreign.getByText(name, { exact: true })).toHaveCount(0);
     record.artifacts.push(await screenshot(foreign, 'QA816-OUTREACH-F2-foreign-denied'));
   } finally { await context.close(); }
