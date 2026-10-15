@@ -1,0 +1,40 @@
+{
+  "passed": true,
+  "mode": "serve",
+  "network": "none",
+  "planner_unit_tests": 7,
+  "prepared_accounts": 712,
+  "native_config_parsed": true,
+  "prepared_login_denied": true,
+  "prepared_domain_delivery_denied": true,
+  "checks": [
+    "STARTTLS required; unauthenticated submission rejected",
+    "unauthenticated relay denied",
+    "sender impersonation and unknown local recipient denied",
+    "wrong SMTP password denied",
+    "cross-account IMAP password denied",
+    "certificate chain or hostname mismatch denied",
+    "certificate chain or hostname mismatch denied",
+    "SMTP TLS to IMAP TLS exact sentinel delivery and isolation"
+  ],
+  "accounts_configured": 700,
+  "accounts_password_provisioned": 700,
+  "accounts_in_delivery_workload": 8,
+  "provision_seconds": 78.27976516634226,
+  "concurrent_workers": 2,
+  "messages_verified": 17,
+  "first_delivery_seconds": 0.2103272331878543,
+  "roundtrip_max_seconds": 0.2740943292155862,
+  "roundtrip_median_seconds": 0.21275367587804794,
+  "limit_checks": [
+    "oversized SMTP envelope rejected at 1 MiB",
+    "IMAP over-quota append rejected atomically; small append accepted"
+  ],
+  "restart_verified": true,
+  "restore_verified_messages": 17,
+  "restore_scope": "mail store plus config and TLS files from Mox backup",
+  "mail_storage_bytes": 184101214,
+  "mail_storage_allocated_bytes": 103686144,
+  "memory_peak_bytes": 373288960,
+  "elapsed_seconds": 140.8639579610899
+}

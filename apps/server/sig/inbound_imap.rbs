@@ -4,7 +4,10 @@ module Net
     def login: (String, String) -> untyped
     def select: (String) -> untyped
     def responses: () -> Hash[String, Array[untyped]]
-    def uid_search: (Array[String]) -> Array[Integer]
+    class SequenceSet
+      def initialize: (String) -> void
+    end
+    def uid_search: (Array[String | SequenceSet]) -> Array[Integer]
     def uid_fetch: (Integer, Array[String]) -> Array[untyped]
     def disconnect: () -> untyped
   end
@@ -99,6 +102,7 @@ module Elevateo
 
     class TlsImapTransport
       MAX_DISCOVERED_UIDS: Integer
+      MAX_UID: Integer
       @host: String
       @port: Integer
       @mailbox: String

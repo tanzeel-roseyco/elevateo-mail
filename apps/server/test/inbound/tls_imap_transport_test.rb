@@ -5,14 +5,17 @@ require_relative "../../lib/elevateo/inbound/tls_imap_transport"
 
 class TlsImapTransportTest < Minitest::Test
   class Client
-    attr_reader :options, :login_args, :selected, :disconnected
+    attr_reader :options, :login_args, :selected, :disconnected, :search_criteria
     def initialize(host, **options)
       @host, @options = host, options
     end
     def login(*args) = (@login_args = args)
     def select(mailbox) = (@selected = mailbox)
     def responses = { "UIDVALIDITY" => [42] }
-    def uid_search(_) = [7]
+    def uid_search(criteria)
+      @search_criteria = criteria
+      [7]
+    end
     def uid_fetch(_, _)
       [Struct.new(:attr).new({ "BODY[]<0>" => "From: sender@example.invalid\r\nTo: inbox@example.invalid\r\nContent-Type: text/plain\r\n\r\nhello" })]
     end
@@ -40,6 +43,10 @@ class TlsImapTransportTest < Minitest::Test
     assert_equal "INBOX", client.selected
     assert_equal 42, session.uidvalidity
     assert_equal 7, session.fetch_after(0, limit: 50).first.fetch(:uid)
+    # AIDEV-NOTE: A String looks equivalent in a mock but emits invalid quoted UID syntax on a real Mox connection.
+    assert_equal "UID", client.search_criteria.first
+    assert_instance_of Net::IMAP::SequenceSet, client.search_criteria.last
+    assert_equal "1:*", client.search_criteria.last.to_s
     session.close
     assert client.disconnected
   end
@@ -50,6 +57,24 @@ class TlsImapTransportTest < Minitest::Test
     assert_equal "account_unavailable", assert_raises(Elevateo::Inbound::Rejected) {
       transport.open(credential_ref: "prod:mailbox")
     }.code
+  end
+
+  def test_uid_ceiling_is_empty_without_searching_an_invalid_range
+    client = Client.new("mox.test")
+    session = Elevateo::Inbound::TlsImapTransport::Session.new(client)
+    assert_empty session.fetch_after((2**32) - 1, limit: 50)
+    assert_nil client.search_criteria
+  end
+
+  def test_invalid_uid_and_batch_boundaries_fail_before_network_access
+    client = Client.new("mox.test")
+    session = Elevateo::Inbound::TlsImapTransport::Session.new(client)
+    [[nil, 50], [-1, 50], [2**32, 50], [0, 0], [0, 51], [0, nil]].each do |cursor, limit|
+      assert_equal "invalid_imap_batch", assert_raises(Elevateo::Inbound::Rejected) {
+        session.fetch_after(cursor, limit: limit)
+      }.code
+    end
+    assert_nil client.search_criteria
   end
 
   def test_reordered_discovery_fetches_oldest_fifty_then_remaining_twenty_five

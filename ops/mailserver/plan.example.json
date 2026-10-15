@@ -1,0 +1,16 @@
+{
+  "hostname": "mail.lab.test",
+  "personal_domain": "team.test",
+  "outreach_domain": "send.test",
+  "seed_domain": "seed.test",
+  "personal_accounts": 12,
+  "outreach_accounts": 500,
+  "seed_accounts": 200,
+  "personal_quota_mib": 250,
+  "mailbox_quota_mib": 50,
+  "disk_gb": 80,
+  "workers": 2,
+  "planned_outreach_messages_per_day": 500,
+  "planned_seed_messages_per_day": 200,
+  "outbound_hold": true
+}

@@ -9,6 +9,7 @@ module Elevateo
     # AIDEV-NOTE: Only a server-side resolver sees synthetic credentials; every connection requires verified TLS.
     class TlsImapTransport
       MAX_DISCOVERED_UIDS = 10_000
+      MAX_UID = 4_294_967_295
 
       class Session
         def initialize(client)
@@ -26,10 +27,12 @@ module Elevateo
         end
 
         def fetch_after(cursor, limit:)
-          raise Rejected, "invalid_imap_batch" unless cursor.is_a?(Integer) && cursor >= 0 &&
+          raise Rejected, "invalid_imap_batch" unless cursor.is_a?(Integer) && cursor.between?(0, MAX_UID) &&
             limit.is_a?(Integer) && limit.between?(1, 50)
+          return [] if cursor == MAX_UID
 
-          ids = @client.uid_search(["UID", "#{cursor + 1}:*"])
+          # AIDEV-NOTE: net-imap quotes String criteria; a typed sequence set preserves the required UID wire syntax.
+          ids = @client.uid_search(["UID", Net::IMAP::SequenceSet.new("#{cursor + 1}:*")])
           raise Rejected, "invalid_imap_batch" unless ids.is_a?(Array) && ids.length <= MAX_DISCOVERED_UIDS &&
             ids.all? { |id| id.is_a?(Integer) && id.positive? }
 
