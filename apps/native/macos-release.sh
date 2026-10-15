@@ -43,6 +43,8 @@ repo_root=$(CDPATH= cd -- "$(dirname "$0")/../.." && pwd)
   echo 'MAC-814 requires reviewed Cargo.lock' >&2; exit 2;
 }
 cd "$repo_root/apps/native/src-tauri"
+# AIDEV-NOTE: launch_origin requires this provenance marker; Tauri handles signing separately.
+export ELEVATEO_NATIVE_ARTIFACT=unsigned-candidate
 cargo tauri build --target universal-apple-darwin --bundles dmg -- --locked
 set -- target/universal-apple-darwin/release/bundle/macos/*.app
 [ "$#" -eq 1 ] && [ -d "$1" ] || { echo 'MAC-814 expected exactly one app bundle' >&2; exit 1; }

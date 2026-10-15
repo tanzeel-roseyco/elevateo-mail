@@ -6,5 +6,5 @@
     "useUnknownInCatchVariables": true, "verbatimModuleSyntax": true,
     "rootDir": ".", "outDir": "dist", "types": ["node"], "skipLibCheck": false
   },
-  "include": ["shared/**/*.ts", "contracts/**/*.ts", "playwright/**/*.ts", "puppeteer/**/*.ts", "selenium/**/*.ts", "proxy/**/*.ts"]
+  "include": ["diagnostics.config.ts", "shared/**/*.ts", "contracts/**/*.ts", "playwright/**/*.ts", "puppeteer/**/*.ts", "selenium/**/*.ts", "proxy/**/*.ts"]
 }

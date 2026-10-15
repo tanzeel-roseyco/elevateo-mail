@@ -9,6 +9,7 @@
     "build": "tsc",
     "test": "node --test \"dist/contracts/*.spec.js\" \"dist/playwright/*.unit.spec.js\" \"dist/puppeteer/*.unit.spec.js\" \"dist/selenium/*.unit.spec.js\" \"dist/proxy/*.spec.js\"",
     "test:playwright": "playwright test --config playwright/playwright.config.ts",
+    "test:diagnostics": "playwright test --config diagnostics.config.ts",
     "test:puppeteer": "node dist/puppeteer/run.js",
     "test:selenium": "node dist/selenium/run.js"
   },

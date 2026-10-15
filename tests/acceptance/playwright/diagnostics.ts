@@ -28,14 +28,16 @@ const sourceLines = {
   'qa816-assignee-ui.e2e.ts': 79,
   'qa816-attachment-ui.e2e.ts': 97,
   'qa816-feature-wave.e2e.ts': 46,
+  'qa816-matrix.e2e.ts': 263,
+  'qa816-outreach.e2e.ts': 110,
   'screenshots.ts': 83,
   'support.ts': 60,
   'transport-barrier.ts': 63,
 } as const;
-const files = ['auth-invite.e2e.ts', 'invitation.ts', 'auth-stale.e2e.ts', 'auth-transport.e2e.ts', 'auth.e2e.ts', 'boundaries.ts', 'cases.ts', 'credential-origin.ts', 'draft-conflict.e2e.ts', 'draft-privacy.e2e.ts', 'draft-recovery-support.ts', 'draft-recovery.e2e.ts', 'draft-unapplied.e2e.ts', 'draft-uncertain-reload.e2e.ts', 'draft.e2e.ts', 'observer.ts', 'read-empty.e2e.ts', 'read-literal.e2e.ts', 'read-revocation.e2e.ts', 'read.e2e.ts', 'qa816-assignee-ui.e2e.ts', 'qa816-attachment-ui.e2e.ts', 'qa816-feature-wave.e2e.ts', 'screenshots.ts', 'support.ts', 'transport-barrier.ts'] as const;
+const files = ['auth-invite.e2e.ts', 'invitation.ts', 'auth-stale.e2e.ts', 'auth-transport.e2e.ts', 'auth.e2e.ts', 'boundaries.ts', 'cases.ts', 'credential-origin.ts', 'draft-conflict.e2e.ts', 'draft-privacy.e2e.ts', 'draft-recovery-support.ts', 'draft-recovery.e2e.ts', 'draft-unapplied.e2e.ts', 'draft-uncertain-reload.e2e.ts', 'draft.e2e.ts', 'observer.ts', 'read-empty.e2e.ts', 'read-literal.e2e.ts', 'read-revocation.e2e.ts', 'read.e2e.ts', 'qa816-assignee-ui.e2e.ts', 'qa816-attachment-ui.e2e.ts', 'qa816-feature-wave.e2e.ts', 'qa816-matrix.e2e.ts', 'qa816-outreach.e2e.ts', 'screenshots.ts', 'support.ts', 'transport-barrier.ts'] as const;
 // AIDEV-NOTE: Node 24 uses a native stack accessor; only this intrinsic getter may be invoked.
 const nativeStackGetter = Object.getOwnPropertyDescriptor(new Error(), 'stack')?.get;
-// AIDEV-NOTE: Snapshot bootstrap formatter identity; never invoke it, and reject later replacement hooks.
+// AIDEV-NOTE: Only the unchanged toolchain formatter may map native frames; reject later replacement hooks.
 const initialStackFormatter = Object.getOwnPropertyDescriptor(Error, 'prepareStackTrace');
 const moduleDirectory = dirname(fileURLToPath(import.meta.url));
 const parent = dirname(moduleDirectory);
@@ -97,14 +99,6 @@ function safeNativeFormatting(error: Error): boolean {
     && ownHook.configurable === initialStackFormatter.configurable
     && (ownHook.value === undefined || (typeof ownHook.value === 'function' && ownHook.configurable === true));
 }
-function nativeStackValue(error: Error, getter: () => unknown): unknown {
-  const hook = Object.getOwnPropertyDescriptor(Error, 'prepareStackTrace');
-  // AIDEV-NOTE: Node 24 installs a bootstrap formatter; suppress it synchronously and restore its exact descriptor.
-  if (!hook || hook.value === undefined) return Reflect.apply(getter, error, []);
-  Object.defineProperty(Error, 'prepareStackTrace', { ...hook, value: undefined });
-  try { return Reflect.apply(getter, error, []); }
-  finally { Object.defineProperty(Error, 'prepareStackTrace', hook); }
-}
 export function captureDiagnostic(error: unknown): Diagnostic {
   let category: Diagnostic['category'] = 'unknown';
   let source: Diagnostic['source'] = null;
@@ -118,7 +112,8 @@ export function captureDiagnostic(error: unknown): Diagnostic {
       const stack = Object.getOwnPropertyDescriptor(error, 'stack');
       let stackValue: unknown = stack?.value;
       if (stack?.get && stack.get === nativeStackGetter && safeNativeFormatting(error))
-        stackValue = nativeStackValue(error, stack.get);
+        // AIDEV-NOTE: Keep trusted source-map formatting; native generated offsets are not source coordinates.
+        stackValue = Reflect.apply(stack.get, error, []);
       source = sourceLocation(stackValue,
         Object.getOwnPropertyDescriptor(error, 'message')?.value);
     }
