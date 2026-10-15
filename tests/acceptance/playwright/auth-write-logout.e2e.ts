@@ -48,6 +48,12 @@ scenario(id, 'committed-draft-acknowledgment-after-real-logout', async (page, re
     expect(submitted).toEqual({ mailbox_id: seed.mailboxes.primary, operation_id: submitted.operation_id,
       expected_version: 0, subject, to: [{ display_name: null, address: 'recipient@acceptance.test' }],
       body_text: body, reply_to_thread_id: null });
+    // AIDEV-NOTE: Keep valid request context so post-logout denial exercises authentication, not malformed input.
+    const context = await writes[0]?.headerValue('X-Session-Context');
+    const version = await writes[0]?.headerValue('X-Authorization-Version');
+    if (!context || !version || !/^[A-Za-z0-9_-]{16,256}$/.test(context)
+      || !/^[A-Za-z0-9_-]{16,256}$/.test(version)) throw new Error('Write context boundary rejected');
+    const headers = { 'X-Session-Context': context, 'X-Authorization-Version': version };
     await page.getByRole('button', { name: 'Account and sign-out' }).click();
     const [logout] = await Promise.all([responseAt(page, '/v1/auth/logout', 'POST'),
       page.getByRole('dialog', { name: 'Account', exact: true })
@@ -58,7 +64,8 @@ scenario(id, 'committed-draft-acknowledgment-after-real-logout', async (page, re
     await barrier.close();
     barrier = undefined;
     expect((await page.request.get('/v1/session', { maxRedirects: 0 })).status()).toBe(401);
-    expect((await page.request.get(`/v1/drafts/${draftId}`, { maxRedirects: 0 })).status()).toBe(401);
+    expect((await page.request.get(`/v1/drafts/${draftId}?mailbox_id=${seed.mailboxes.primary}`,
+      { maxRedirects: 0, headers })).status()).toBe(401);
     expect(await observeDraft(draftId, submitted.operation_id, 'after')).toEqual({
       drafts: [{ id: draftId, version: 1, state: 'editable' }],
       operations: [{ operation_id: submitted.operation_id, outcome: 'applied', version: 1 }] });

@@ -41,7 +41,10 @@ scenario(id, 'two-authorized-mailboxes-with-distinct-capabilities', async (page,
   }
   for (const hidden of [excluded, seed.mailboxes.other]) {
     await expect(page.locator(`a[href^="#/mailboxes/${hidden}"]`)).toHaveCount(0);
-    expect((await page.request.get(`/v1/mailboxes/${hidden}/threads`, { maxRedirects: 0 })).status()).toBe(404);
+    // AIDEV-NOTE: Valid real context makes this an authorization check rather than a missing-header rejection.
+    expect((await page.request.get(`/v1/mailboxes/${hidden}/threads`, { maxRedirects: 0,
+      headers: { 'X-Session-Context': parsed.data.context_id,
+        'X-Authorization-Version': parsed.data.authorization_version } })).status()).toBe(404);
   }
   record.assertions.push('Real mailbox API and navigation expose exactly two authorized mailboxes with exact capability sets; ungranted private and foreign mailbox reads return 404');
   await page.goto(`/#/mailboxes/${seed.mailboxes.primary}`);
