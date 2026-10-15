@@ -23,6 +23,7 @@ flock -n 9 || exit 75
 available=$(awk '/MemAvailable:/ {printf "%.0f\n", $2*1024}' /proc/meminfo)
 awk -v a="$available" 'BEGIN {exit !(a >= 8589934592)}' || exit 75
 project="ops820-source-$(date +%s)-$$"
+printf 'drill_project=%s\n' "$project"
 envfile=$(mktemp "$base/.env.ops820-source.XXXXXX")
 started=0
 made_snapshot=0
@@ -30,7 +31,12 @@ compose() { docker compose -p "$project" --env-file "$envfile" -f "$base/compose
 source "$root/ops/ops820/compose_absence.sh"
 cleanup() {
   local job=$? clean=0
-  if (( started )); then compose down --volumes --remove-orphans >/dev/null 2>&1 || clean=$?; fi
+  if (( started )); then
+    # AIDEV-NOTE: inspect exact task mounts/volume ownership before any destructive Compose cleanup.
+    if python3 "$root/ops/ops820/cleanup_ownership.py" "$project" "$root"; then
+      compose down --volumes --remove-orphans >/dev/null 2>&1 || clean=$?
+    else clean=1; fi
+  fi
   ops820_compose_absent "$project" || clean=1
   rm -f -- "$envfile"
   if (( job || clean )) && (( made_snapshot )); then

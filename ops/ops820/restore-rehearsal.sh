@@ -38,6 +38,7 @@ flock -n 9 || exit 75
 available=$(awk '/MemAvailable:/ {printf "%.0f\n", $2*1024}' /proc/meminfo)
 awk -v a="$available" 'BEGIN {exit !(a >= 8589934592)}' || exit 75
 project="ops402-restore-$(date +%s)-$$"
+printf 'drill_project=%s\n' "$project"
 envfile=$(mktemp "$base/.env.restore.XXXXXX")
 gateway_dir=$(mktemp -d)
 gateway_env="$gateway_dir/gateway.env"
@@ -46,7 +47,12 @@ source "$packet/compose_absence.sh"
 started=0
 cleanup() {
   local job=$? clean=0
-  if (( started )); then compose down --volumes --remove-orphans >/dev/null 2>&1 || clean=$?; fi
+  if (( started )); then
+    # AIDEV-NOTE: inspect exact task mounts/volume ownership before any destructive Compose cleanup.
+    if python3 "$packet/cleanup_ownership.py" "$project" "$(cd -- "$packet/../.." && pwd)"; then
+      compose down --volumes --remove-orphans >/dev/null 2>&1 || clean=$?
+    else clean=1; fi
+  fi
   ops820_compose_absent "$project" || clean=1
   rm -f -- "$envfile"
   rm -f -- "$gateway_env"
