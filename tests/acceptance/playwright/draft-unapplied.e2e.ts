@@ -54,6 +54,7 @@ scenario(id, 'unforwarded-save-unknown-lookup-exact-retry-newer-buffer', async (
     await to.fill(original.to);
     await body.fill(original.body);
     expect(await observeDraft(draftId, null, 'before')).toEqual({ drafts: [], operations: [] });
+    record.evidence.push('Independent SQL before dropped save: no draft or operation row.');
     barrier = await transportBarrier(page, `/v1/drafts/${draftId}`, 'PUT', 'no-forward');
     await page.getByRole('button', { name: 'Save draft', exact: true }).click();
     expect(await barrier.reached).toBeNull();
@@ -87,13 +88,15 @@ scenario(id, 'unforwarded-save-unknown-lookup-exact-retry-newer-buffer', async (
     await expect(to).toHaveValue(newer.to);
     await expect(body).toHaveValue(newer.body);
     expect(await observeDraft(draftId, submitted.operation_id, 'after')).toEqual({ drafts: [], operations: [] });
-    const [saved] = await Promise.all([responseAt(page, `/v1/drafts/${draftId}`), retry.click()]);
+    record.evidence.push('Independent SQL after unknown lookup: no draft or operation row.');
+    const [saved] = await Promise.all([responseAt(page, `/v1/drafts/${draftId}`, 'PUT'), retry.click()]);
     expect(input(saved.request())).toEqual(submitted);
     expect(savedReceipt.parse(await receiptJson(saved))).toEqual({ draft_id: draftId,
       operation_id: submitted.operation_id, version: 1, state: 'editable' });
     expect(await observeDraft(draftId, submitted.operation_id, 'after')).toEqual({
       drafts: [{ id: draftId, version: 1, state: 'editable' }],
       operations: [{ operation_id: submitted.operation_id, outcome: 'applied', version: 1 }] });
+    record.evidence.push('Independent SQL after original retry: one editable draft version and one applied operation.');
     await expect(page.getByText('Saved version 1', { exact: true })).toBeVisible();
     await expect(subject).toHaveValue(newer.subject);
     await expect(to).toHaveValue(newer.to);
