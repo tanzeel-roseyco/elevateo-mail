@@ -73,6 +73,8 @@ compose up -d --wait --wait-timeout 180 db mailpit
 python3 "$base/restore-globals.py" "$snapshot/globals.sql" | compose exec -T db psql -U supabase_admin -d postgres -v ON_ERROR_STOP=1 >/dev/null
 compose exec -T db pg_restore -U supabase_admin -d postgres --clean --if-exists --exit-on-error < "$snapshot/database.dump"
 image=$(compose images -q db)
+# AIDEV-NOTE: Compose must label the volume before tar mounts it; an implicit Docker volume has no owner labels.
+compose create --no-recreate --no-build --pull never storage
 docker run --rm --network none --user 0 --entrypoint tar \
   -v "${project}_storage-data:/objects" -v "$snapshot/objects.tar:/objects.tar:ro" "$image" \
   -C /objects -xf /objects.tar

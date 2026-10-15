@@ -91,5 +91,7 @@ class CreateAttachmentGatewayBinding < ActiveRecord::Migration[8.1]
     execute "REVOKE USAGE ON SCHEMA app_attachment_gateway FROM elevateo_attachment_gateway"
     execute "SET LOCAL ROLE elevateo_session_owner"
     execute "REVOKE EXECUTE ON FUNCTION app_auth.authorize_session(text,uuid,uuid,uuid,bigint) FROM elevateo_owner"
+    # AIDEV-NOTE: Rails deletes its app_meta version row after down returns, within this same transaction.
+    execute "SET LOCAL ROLE elevateo_owner"
   end
 end

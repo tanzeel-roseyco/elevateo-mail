@@ -10,23 +10,23 @@ image=${OPS820_SERVER_IMAGE:?pinned server image required}
 [[ "$image" == sha256:* || "$image" == *@sha256:* ]] || exit 66
 [[ -f "$envfile" && -d "$root/apps/server/db/migrate" ]] || exit 66
 versions=()
-for suffix in 08 09 10; do
-  files=("$root"/apps/server/db/migrate/202610130000"$suffix"*.rb)
-  [[ ${#files[@]} -eq 1 && -f ${files[0]} ]] || exit 66
-  versions+=("202610130000$suffix")
+# AIDEV-NOTE: Reverse the complete tail so newer foreign keys/functions cannot outlive their prerequisites.
+for file in "$root"/apps/server/db/migrate/*.rb; do
+  name=${file##*/}
+  [[ -f $file && $name =~ ^([0-9]{14})_[a-z0-9_]+\.rb$ ]] || exit 66
+  version=${BASH_REMATCH[1]}
+  if (( version >= 20261013000008 )); then versions+=("$version"); fi
 done
-files=("$root"/apps/server/db/migrate/20261015000011*.rb)
-[[ ${#files[@]} -eq 1 && -f ${files[0]} ]] || exit 66
-versions+=(20261015000011)
-for suffix in 12 13; do
-  files=("$root"/apps/server/db/migrate/202610130000"$suffix"*.rb)
-  if [[ -f ${files[0]} ]]; then versions+=("202610130000$suffix"); fi
-done
-files=("$root"/apps/server/db/migrate/20261015000008*.rb)
-if [[ -f ${files[0]} ]]; then versions+=(20261015000008); fi
-files=("$root"/apps/server/db/migrate/20261015000018*.rb)
-if [[ -f ${files[0]} ]]; then versions+=(20261015000018); fi
+(( ${#versions[@]} > 0 )) || exit 66
 mapfile -t versions < <(printf '%s\n' "${versions[@]}" | sort -n)
+previous=0
+for version in "${versions[@]}"; do
+  (( version > previous )) || exit 66
+  previous=$version
+done
+for required in 20261013000008 20261013000009 20261013000010 20261015000011 20261015000018; do
+  [[ " ${versions[*]} " == *" $required "* ]] || exit 66
+done
 rails() {
   docker run --rm --network "${project}_private" --read-only --cap-drop ALL \
     --user 10001:10001 --memory 768m --pids-limit 256 --env-file "$scratch/migrator.env" \
@@ -48,8 +48,10 @@ trap 'rm -f -- "$scratch/before" "$scratch/after" "$scratch/migrator.env" "$scra
 for role in migrator api worker; do
   python3 "$root/ops/ops820/runtime_env.py" "$envfile" "$scratch/$role.env" "$role" >/dev/null
 done
+# AIDEV-NOTE: One fresh key makes comparison-only dumps repeatable; these files are never restored or executed.
+restrict_key=$(python3 -c 'import secrets; print(secrets.token_hex(32))')
 schema_dump() {
-  compose exec -T db pg_dump -U supabase_admin -d postgres --schema-only -n 'app*'
+  compose exec -T db pg_dump -U supabase_admin -d postgres --schema-only -n 'app*' --restrict-key="$restrict_key"
   compose exec -T db psql -U supabase_admin -d postgres -X -q -v ON_ERROR_STOP=1 \
     < "$root/ops/ops820/data_fingerprint.sql"
 }

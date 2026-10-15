@@ -6,6 +6,31 @@ require_relative "../../db/migrate/20261015000018_create_attachment_gateway_bind
 
 # AIDEV-NOTE: Only a disposable migrated database may run this transaction-scoped grant lifecycle probe.
 class AttachmentGatewayMigrationAclTest < Minitest::Test
+  def test_rails_down_up_updates_metadata_without_leaking_the_session_owner_role
+    connection = ActiveRecord::Base.connection
+    assert_equal ["elevateo_migrator", ENV.fetch("BE02_TASK_DATABASE_NAME")],
+      connection.select_rows("SELECT session_user,current_database()").first
+    context = ActiveRecord::Base.connection_pool.migration_context
+    version = 20_261_015_000_018
+    applied = snapshot(connection)
+    versions = context.get_all_versions.sort
+    assert_includes versions, version
+
+    # AIDEV-NOTE: Calling migration.down directly misses Rails' subsequent metadata write and role boundary.
+    connection.transaction do
+      context.run(:down, version)
+      assert_equal "elevateo_owner", connection.select_value("SELECT current_user")
+      assert_equal versions - [version], context.get_all_versions.sort
+      assert_bootstrap_only(snapshot(connection))
+      context.run(:up, version)
+      assert_equal versions, context.get_all_versions.sort
+      assert_equal applied, snapshot(connection)
+      raise ActiveRecord::Rollback
+    end
+    assert_equal versions, context.get_all_versions.sort
+    assert_equal applied, snapshot(connection)
+  end
+
   def test_bootstrap_schema_and_gateway_grants_survive_up_down_up
     connection = ActiveRecord::Base.connection
     assert_equal ["elevateo_migrator", ENV.fetch("BE02_TASK_DATABASE_NAME")],
