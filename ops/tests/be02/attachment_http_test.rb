@@ -61,7 +61,8 @@ class AttachmentHttpTest < Minitest::Test
     expect(client.request("post", "/v1/auth/accept", body: { password: fixture.password }, headers: client.challenge), 200)
   end
 
-  def message(fixture)
+  # AIDEV-NOTE: Keep Minitest::Assertions#message intact; every assertion uses its two-argument formatter.
+  def attachment_message_id(fixture)
     @admin.exec_params("SELECT id FROM app.messages WHERE thread_id=$1", [fixture.thread]).getvalue(0, 0)
   end
 
@@ -69,7 +70,7 @@ class AttachmentHttpTest < Minitest::Test
     id = SecureRandom.uuid
     key = "quarantine/#{fixture.organization}/#{id}"
     @storage.put(key, bytes, content_type: "application/octet-stream") unless rejected
-    values = [id, fixture.organization, fixture.mailbox, fixture.thread, message(fixture),
+    values = [id, fixture.organization, fixture.mailbox, fixture.thread, attachment_message_id(fixture),
               rejected ? nil : key, rejected ? 0 : bytes.bytesize, rejected ? nil : Digest::SHA256.hexdigest(bytes),
               rejected ? "rejected" : "pending_scan", rejected ? "invalid_signature" : nil]
     @admin.exec_params(<<~SQL, values)
@@ -77,8 +78,8 @@ class AttachmentHttpTest < Minitest::Test
         filename,content_type,byte_size,sha256,scan_status,rejection_reason)
       VALUES ($1,$2,$3,$4,$5,$6,'integration.bin','text/plain',$7,$8,$9,$10)
     SQL
-    @admin.exec_params("UPDATE app.messages SET attachment_count=attachment_count+1 WHERE id=$1", [message(fixture)])
-    { id: id, key: key, path: "/v2/mailboxes/#{fixture.mailbox}/threads/#{fixture.thread}/messages/#{message(fixture)}/attachments/#{id}/content" }
+    @admin.exec_params("UPDATE app.messages SET attachment_count=attachment_count+1 WHERE id=$1", [attachment_message_id(fixture)])
+    { id: id, key: key, path: "/v2/mailboxes/#{fixture.mailbox}/threads/#{fixture.thread}/messages/#{attachment_message_id(fixture)}/attachments/#{id}/content" }
   end
 
   def download(item, client: @client, hints: @hints)
