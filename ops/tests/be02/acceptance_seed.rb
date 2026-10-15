@@ -19,6 +19,7 @@ module Be02Acceptance
       @db.transaction do
         seed_scopes
         seed_memberships
+        organization_grants.each { |row| insert("app.organization_access", row) }
         seed_content
         @resources = Variants.seed(db: @db, seed: @seed, variant: @seed.fetch("fixture_variant"))
         @seed.merge!(@resources)
@@ -30,6 +31,7 @@ module Be02Acceptance
       begin
         Variants.verify(db: @db, seed: @seed, variant: @seed.fetch("fixture_variant"), resources: @resources)
         verify_rows
+        verify_organization_grants
         verify_actors
         @db.exec("COMMIT")
       rescue StandardError
@@ -118,6 +120,26 @@ module Be02Acceptance
       insert("app.thread_read_states", { organization_id: org, mailbox_id: box, thread_id: @data.fetch("thread_primary"),
         user_id: @actors.fetch("manager_backup").fetch("user_id"), is_read: true,
         read_state_version: 1, updated_at: @data.fetch("ordered_at") })
+    end
+
+    # AIDEV-NOTE: Only named V2 cases receive business roles; mailbox-manager capability never implies org admin.
+    def organization_grants
+      case_id = @seed.fetch("fixture_identity").fetch("case_id")
+      cases = %w[SCN-QA-819-F1 SCN-QA-820-P SCN-QA-820-F1 SCN-QA-820-F2 SCN-QA-821-P]
+      names = cases.include?(case_id) ? ["manager_primary"] : []
+      names << "other_org" if case_id == "SCN-QA-820-F2"
+      names.map do |name|
+        actor = @actors.fetch(name)
+        { organization_id: @seed.fetch("organizations").fetch(actor.fetch("organization")),
+          user_id: actor.fetch("user_id"), role: "admin" }
+      end
+    end
+
+    def verify_organization_grants
+      # AIDEV-NOTE: Check the entire committed role set, including absence for readers and unrelated scenarios.
+      actual = @db.exec("SELECT organization_id,user_id,role,revision FROM app.organization_access").values
+      expected = organization_grants.map { |row| row.values + ["0"] }
+      Be02Acceptance.check(actual.sort == expected.sort, "organization_grant_set_mismatch")
     end
 
     def verify_rows

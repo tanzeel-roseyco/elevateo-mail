@@ -70,6 +70,10 @@ scenario('SCN-QA-820-F2', 'foreign-organization-cannot-read-campaign', async (pa
   try {
     const foreign = await context.newPage();
     await signIn(foreign, 'other_org');
+    // AIDEV-NOTE: Prove the foreign actor has outreach access before testing cross-organization isolation.
+    const [ownList] = await Promise.all([responseAt(foreign, '/v2/outreach/campaigns'),
+      foreign.goto('/#/outreach/campaigns')]);
+    expect(ownList.status()).toBe(200);
     const [denied] = await Promise.all([responseAt(foreign, `/v2/outreach/campaigns/${campaignId}`),
       foreign.goto(`/#/outreach/campaigns/${campaignId}`)]);
     expect(denied.status()).toBe(404);
@@ -77,7 +81,7 @@ scenario('SCN-QA-820-F2', 'foreign-organization-cannot-read-campaign', async (pa
     await expect(foreign.getByText(name, { exact: true })).toHaveCount(0);
     record.artifacts.push(await screenshot(foreign, 'QA816-OUTREACH-F2-foreign-denied'));
   } finally { await context.close(); }
-  record.assertions.push('Separate other-organization browser session receives real V2 404 and no case-owned campaign detail');
+  record.assertions.push('Foreign session reads its own campaign list, then receives V2 404 and no cross-organization detail');
 });
 
 scenario('SCN-QA-821-P', 'logout-revokes-outreach-and-people-cache', async (page, record) => {
