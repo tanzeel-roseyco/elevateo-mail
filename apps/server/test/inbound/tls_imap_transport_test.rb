@@ -2,8 +2,10 @@
 
 require "minitest/autorun"
 require_relative "../../lib/elevateo/inbound/tls_imap_transport"
+require_relative "../support/mail_binding"
 
 class TlsImapTransportTest < Minitest::Test
+  include MailBindingFixture
   class Client
     attr_reader :options, :login_args, :selected, :disconnected, :search_criteria
     def initialize(host, **options)
@@ -33,9 +35,12 @@ class TlsImapTransportTest < Minitest::Test
 
   def test_verified_tls_and_bounded_partial_fetch
     transport = Elevateo::Inbound::TlsImapTransport.new(host: "mox.test",
-      credential_resolver: ->(ref) { raise "wrong ref" unless ref == "test:synthetic"; ["user", "synthetic-password"] },
+      credential_resolver: ->(binding, protocol:) {
+        assert_equal mail_binding.key(protocol: "imap"), binding.key(protocol: protocol)
+        ["user", "synthetic-password"]
+      },
       client_factory: Client)
-    session = transport.open(credential_ref: "test:synthetic")
+    session = transport.open(binding: mail_binding)
     client = session.instance_variable_get(:@client)
     assert_equal OpenSSL::SSL::VERIFY_PEER, client.options.fetch(:ssl).fetch(:verify_mode)
     assert_equal true, client.options.fetch(:ssl).fetch(:verify_hostname)
@@ -53,9 +58,9 @@ class TlsImapTransportTest < Minitest::Test
 
   def test_unsupported_reference_is_denied_before_connection
     transport = Elevateo::Inbound::TlsImapTransport.new(host: "mox.test",
-      credential_resolver: ->(_) { raise "resolver must not run" }, client_factory: Client)
+      credential_resolver: ->(*) { raise "resolver must not run" }, client_factory: Client)
     assert_equal "account_unavailable", assert_raises(Elevateo::Inbound::Rejected) {
-      transport.open(credential_ref: "prod:mailbox")
+      transport.open(binding: "prod:mailbox")
     }.code
   end
 
@@ -64,6 +69,22 @@ class TlsImapTransportTest < Minitest::Test
     session = Elevateo::Inbound::TlsImapTransport::Session.new(client)
     assert_empty session.fetch_after((2**32) - 1, limit: 50)
     assert_nil client.search_criteria
+  end
+
+  def test_server_uid_and_validity_must_fit_unsigned_32_bits
+    client = Client.new("mox.test")
+    fetched = 0
+    client.define_singleton_method(:uid_fetch) { |*_| fetched += 1 }
+    session = Elevateo::Inbound::TlsImapTransport::Session.new(client)
+    [0, -1, 2**32, "1", nil].each do |value|
+      client.define_singleton_method(:uid_search) { |_| [value] }
+      client.define_singleton_method(:responses) { { "UIDVALIDITY" => [value] } }
+      assert_raises(Elevateo::Inbound::Rejected) { session.fetch_after(0, limit: 50) }
+      assert_raises(Elevateo::Inbound::Rejected) { session.uidvalidity }
+    end
+    assert_equal 0, fetched
+    client.define_singleton_method(:responses) { { "UIDVALIDITY" => [(2**32) - 1] } }
+    assert_equal (2**32) - 1, session.uidvalidity
   end
 
   def test_invalid_uid_and_batch_boundaries_fail_before_network_access
@@ -79,8 +100,8 @@ class TlsImapTransportTest < Minitest::Test
 
   def test_reordered_discovery_fetches_oldest_fifty_then_remaining_twenty_five
     transport = Elevateo::Inbound::TlsImapTransport.new(host: "mox.test",
-      credential_resolver: ->(_) { ["user", "synthetic-password"] }, client_factory: BacklogClient)
-    session = transport.open(credential_ref: "test:synthetic")
+      credential_resolver: ->(*, **) { ["user", "synthetic-password"] }, client_factory: BacklogClient)
+    session = transport.open(binding: mail_binding)
     assert_equal (1..50).to_a, (session.fetch_after(0, limit: 50).map { |event| event.fetch(:uid) })
     assert_equal (51..75).to_a, (session.fetch_after(50, limit: 50).map { |event| event.fetch(:uid) })
     assert_equal (1..75).to_a, session.instance_variable_get(:@client).fetched
@@ -90,8 +111,8 @@ class TlsImapTransportTest < Minitest::Test
   def test_synthetic_mox_certificate_uses_explicit_ca_and_hostname_verification
     transport = Elevateo::Inbound::TlsImapTransport.new(host: "localhost", port: 1993,
       ca_file: "/synthetic/localserve/localhost.crt",
-      credential_resolver: ->(_) { ["user", "synthetic-password"] }, client_factory: Client)
-    session = transport.open(credential_ref: "test:synthetic")
+      credential_resolver: ->(*, **) { ["user", "synthetic-password"] }, client_factory: Client)
+    session = transport.open(binding: mail_binding)
     ssl = session.instance_variable_get(:@client).options.fetch(:ssl)
     assert_equal "/synthetic/localserve/localhost.crt", ssl.fetch(:ca_file)
     assert_equal true, ssl.fetch(:verify_hostname)

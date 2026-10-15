@@ -59,11 +59,14 @@ class WorkerFixture:
         args = ["create", "--name", name, "--label", "elevateo.mail1018.project=" + self.task.project]
         for source, destination, readonly in mounts:
             args += ["--mount", f"type=bind,src={source},dst={destination}" + (",readonly" if readonly else "")]
+        # AIDEV-NOTE: Compatibility needs the empty inbox; composition filters its own subjects, and every stage fails closed.
         self.task.docker("mox-create", [*args, *arguments, image, *(
             ["/mailserver/tests/app_fixture.py"] if name == self.server else
-            ["-c", "bundle exec ruby /mailserver/tests/worker_composition.rb && "
+            ["-c", "bundle exec ruby /mailserver/tests/app_compatibility.rb && "
+             "bundle exec ruby /mailserver/tests/worker_composition.rb && "
              "bundle exec rubocop --lint --format simple "
-             "/mailserver/tests/worker_composition.rb /mailserver/tests/worker_inbox.rb"])])
+             "/mailserver/tests/app_compatibility.rb /mailserver/tests/worker_composition.rb "
+             "/mailserver/tests/worker_inbox.rb"])])
 
     def run(self) -> None:
         self.out.mkdir(mode=0o700)

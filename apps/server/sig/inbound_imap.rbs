@@ -16,7 +16,7 @@ end
 module Elevateo
   module Inbound
     type imap_event = { uid: Integer, raw_mime: String }
-    type imap_claim = { "credential_ref" => String, "uidvalidity" => Integer?, "last_uid" => Integer }
+    type imap_claim = { "binding" => MailCredentials::Binding, "uidvalidity" => Integer?, "last_uid" => Integer }
     type staged_attachment = { ordinal: Integer, filename: String, content_type: String,
       byte_size: Integer, sha256: String, storage_key: String }
     type parsed_attachment = { ordinal: Integer, filename: String, content_type: String,
@@ -43,7 +43,7 @@ module Elevateo
     end
 
     interface _ImapTransport
-      def open: (credential_ref: String) -> _ImapSession
+      def open: (binding: MailCredentials::Binding) -> _ImapSession
     end
 
     class ImapIngress
@@ -92,6 +92,7 @@ module Elevateo
 
     class ImapSync
       MAX_BATCH: Integer
+      MAX_UID: Integer
       @store: _ImapStore
       @transport: _ImapTransport
       @attachment_storage: _AttachmentStorage?
@@ -111,7 +112,7 @@ module Elevateo
       @factory: _ImapClientFactory
       def initialize: (host: String, credential_resolver: _ImapCredentialResolver,
         ?port: Integer, ?mailbox: String, ?ca_file: String?, ?client_factory: _ImapClientFactory) -> void
-      def open: (credential_ref: String) -> Session
+      def open: (binding: MailCredentials::Binding) -> Session
       class Session
         @client: Net::IMAP
         def initialize: (Net::IMAP) -> void
@@ -123,7 +124,7 @@ module Elevateo
     end
 
     interface _ImapCredentialResolver
-      def call: (String) -> [String, String]
+      def call: (MailCredentials::Binding, protocol: String) -> [String, String]
     end
     interface _ImapClientFactory
       def new: (String, port: Integer, ssl: Hash[Symbol, Integer | String | bool]) -> Net::IMAP

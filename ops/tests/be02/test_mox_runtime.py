@@ -2,6 +2,8 @@
 from __future__ import annotations
 
 import hashlib
+import os
+import subprocess
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from types import SimpleNamespace
@@ -46,6 +48,33 @@ class MoxRuntimeTest(unittest.TestCase):
                 mox_runtime, "MOX_SHA256", hashlib.sha256(binary.read_bytes()).hexdigest()):
             mox_runtime.preflight(self.task)
         self.task.inspect.assert_called_once_with("image", [mox_runtime.PYTHON])
+
+    def test_client_stages_run_in_order_and_stop_on_either_suite_failure(self) -> None:
+        fixture = mox_runtime.WorkerFixture(self.task)
+        self.task.inspect.return_value = [{"Id": "sha256:owned"}]
+        fixture.create(fixture.client, self.task.image, [], [])
+        command = self.task.docker.call_args.args[1][-1]
+        bundle = self.task.root / "bundle"
+        bundle.write_text('#!/bin/sh\nprintf "%s\\n" "$*" >> "$CALLS"\n'
+                          'case "$*" in *"$FAIL_STAGE"*) exit 9;; esac\nexit 0\n')
+        bundle.chmod(0o700)
+        calls = self.task.root / "calls"
+        for fail, count, status in (("app_compatibility.rb", 1, 9),
+                                     ("worker_composition.rb", 2, 9), ("never-match", 3, 0)):
+            with self.subTest(fail=fail):
+                calls.unlink(missing_ok=True)
+                result = subprocess.run(["bash", "-c", command], check=False, capture_output=True,
+                    env={**os.environ, "PATH": str(self.task.root) + os.pathsep + os.environ["PATH"],
+                         "CALLS": str(calls), "FAIL_STAGE": fail}, timeout=5)
+                stages = calls.read_text().splitlines()
+                self.assertEqual(result.returncode, status)
+                self.assertEqual(len(stages), count)
+                self.assertEqual(stages[0], "exec ruby /mailserver/tests/app_compatibility.rb")
+                if count > 1:
+                    self.assertEqual(stages[1], "exec ruby /mailserver/tests/worker_composition.rb")
+                if count > 2:
+                    self.assertTrue(stages[2].startswith("exec rubocop --lint "))
+                    self.assertIn("/mailserver/tests/app_compatibility.rb", stages[2])
 
     def test_external_network_is_rejected_before_container_creation(self) -> None:
         self.task.inspect.return_value = [{"Internal": False}]

@@ -2,6 +2,7 @@
 
 require "json"
 require_relative "fake_ingress"
+require_relative "../mail_credentials/binding"
 
 module Elevateo
   module Inbound
@@ -58,18 +59,24 @@ module Elevateo
 
         result = JSON.parse(raw)
         raise Rejected, "account_unavailable" unless result.is_a?(Hash) &&
-          result.keys.sort == %w[credential_ref last_uid uidvalidity]
+          result.keys.sort == %w[account_id credential_ref credential_version last_uid mailbox_id organization_id uidvalidity]
 
-        ref = result.fetch("credential_ref")
+        # AIDEV-NOTE: Preserve SQL tenant authority through secret resolution; caller IDs cannot supply missing scope.
+        binding = MailCredentials::Binding.new(account_id: result.fetch("account_id"),
+          organization_id: result.fetch("organization_id"), mailbox_id: result.fetch("mailbox_id"),
+          credential_version: result.fetch("credential_version"), credential_ref: result.fetch("credential_ref"))
         last_uid = result.fetch("last_uid")
         validity = result.fetch("uidvalidity")
-        raise Rejected, "account_unavailable" unless ref.is_a?(String) && ref.start_with?("test:")
-        raise Rejected, "account_unavailable" unless last_uid.is_a?(Integer) && last_uid >= 0
-        raise Rejected, "account_unavailable" unless validity.nil? || validity.is_a?(Integer)
+        raise Rejected, "account_unavailable" unless binding.account_id == account_id &&
+          binding.credential_version == credential_version && last_uid.is_a?(Integer) &&
+          last_uid.between?(0, 4_294_967_295) &&
+          (validity.nil? ? last_uid.zero? : validity.is_a?(Integer) && validity.between?(1, 4_294_967_295))
 
         # @type var claim: imap_claim
-        claim = { "credential_ref" => ref, "uidvalidity" => validity, "last_uid" => last_uid }
+        claim = { "binding" => binding, "uidvalidity" => validity, "last_uid" => last_uid }
         claim
+      rescue JSON::ParserError, KeyError, MailCredentials::Unavailable
+        raise Rejected, "account_unavailable", cause: nil
       end
 
       private

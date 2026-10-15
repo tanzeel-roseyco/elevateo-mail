@@ -62,4 +62,44 @@ class ImapDatabaseTest < DraftDatabaseTestCase
     assert_raises(PG::InsufficientPrivilege) { ingest }
     assert_raises(PG::InsufficientPrivilege) { @api.exec("SELECT app.ingest_imap_mail(NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL)") }
   end
+
+  def claim(version: 1, connection: @worker)
+    JSON.parse(connection.exec_params("SELECT app.claim_imap_account($1::uuid,$2::integer)", [@account, version]).getvalue(0, 0))
+  end
+
+  def test_claim_binds_tenant_and_version_and_cannot_be_called_by_api
+    assert_equal({ "account_id" => @account, "organization_id" => @org, "mailbox_id" => @box,
+      "credential_ref" => "test:synthetic-only", "credential_version" => 1, "uidvalidity" => nil, "last_uid" => 0 }, claim)
+    assert_raises(PG::InsufficientPrivilege) { claim(connection: @api) }
+    assert_raises(PG::InsufficientPrivilege) { @worker.exec("SELECT * FROM app.inbound_imap_accounts") }
+    @admin.exec_params("UPDATE app.inbound_imap_accounts SET credential_version=2 WHERE id=$1", [@account])
+    assert_raises(PG::InsufficientPrivilege) { claim }
+    assert_equal 2, claim(version: 2).fetch("credential_version")
+  end
+
+  def test_revocation_lock_wins_over_import_from_previous_claim
+    assert_equal 1, claim.fetch("credential_version")
+    @admin.exec("BEGIN")
+    @admin.exec_params("UPDATE app.inbound_imap_accounts SET credential_version=2 WHERE id=$1", [@account])
+    # AIDEV-NOTE: Prove the real ingest is waiting on revocation, rather than assuming thread scheduling proves a race.
+    task = Thread.new do
+      ingest
+    rescue PG::Error => error
+      error
+    end
+    task.report_on_exception = false
+    wait_for_lock(@worker, seconds: 3)
+    @admin.exec("COMMIT")
+    assert task.join(12), "worker import did not finish"
+    assert_instance_of PG::InsufficientPrivilege, task.value
+    assert_equal "0", @admin.exec_params("SELECT count(*) FROM app.inbound_imap_receipts WHERE account_id=$1", [@account]).getvalue(0, 0)
+    assert_equal [nil, "0"], @admin.exec_params("SELECT uidvalidity,last_uid FROM app.inbound_imap_accounts WHERE id=$1", [@account]).values.first
+    assert_equal "created", ingest(version: 2).fetch("result")
+  ensure
+    @admin.exec("ROLLBACK") if @admin && @admin.transaction_status != PG::PQTRANS_IDLE
+    if task && !task.join(12)
+      @worker.cancel
+      raise "import cleanup timed out" unless task.join(2)
+    end
+  end
 end

@@ -2,19 +2,21 @@
 
 require "minitest/autorun"
 require_relative "../../lib/elevateo/inbound/imap_sync"
+require_relative "../support/mail_binding"
 
 class ImapSyncTest < Minitest::Test
   ACCOUNT = "11111111-1111-4111-8111-111111111111"
   MIME = "From: sender@example.invalid\r\nTo: inbox@example.invalid\r\nContent-Type: text/plain\r\n\r\nhello".freeze
 
   class Store
+    include MailBindingFixture
     attr_accessor :validity, :last_uid, :fail_once, :fail_after_once, :fail_at_uid, :deny_reset
     attr_reader :records
     def initialize
       @validity, @last_uid, @records = 42, 0, {}
     end
     def claim(**)
-      { "credential_ref" => "test:synthetic", "uidvalidity" => @validity, "last_uid" => @last_uid }
+      { "binding" => mail_binding, "uidvalidity" => @validity, "last_uid" => @last_uid }
     end
     def reset_uidvalidity(expected:, replacement:, **)
       return false if @deny_reset
@@ -63,8 +65,8 @@ class ImapSyncTest < Minitest::Test
 
   class Transport
     def initialize(session) = (@session = session)
-    def open(credential_ref:)
-      raise "secret leaked" unless credential_ref == "test:synthetic"
+    def open(binding:)
+      raise "wrong account scope" unless binding.account_id == ACCOUNT && binding.credential_ref == "test:synthetic"
       @session
     end
   end
@@ -102,6 +104,17 @@ class ImapSyncTest < Minitest::Test
     assert_equal 42, @store.validity
     assert_equal 0, @store.last_uid
     assert_empty @store.records
+  end
+
+  def test_oversized_identity_and_uid_leave_cursor_unchanged
+    [[2**32, 1], [42, 2**32]].each do |validity, uid|
+      session = Session.new(validity: validity, events: [{ uid: uid, raw_mime: MIME }])
+      assert_raises(Elevateo::Inbound::Rejected) { sync_session(session) }
+      assert session.closed
+      assert_equal 42, @store.validity
+      assert_equal 0, @store.last_uid
+      assert_empty @store.records
+    end
   end
 
   def test_crash_after_commit_reconnects_without_duplicate_message

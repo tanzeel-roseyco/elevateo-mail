@@ -8,11 +8,13 @@ require "/workspace/apps/server/lib/elevateo/send_worker/database_store"
 require "/workspace/apps/server/lib/elevateo/send_worker/executor"
 require "/workspace/apps/server/lib/elevateo/send_worker/mox_smtp_transport"
 require "/workspace/apps/server/lib/elevateo/inbound/tls_imap_transport"
+require "/workspace/apps/server/test/support/mail_binding"
 require_relative "worker_inbox"
 
 # AIDEV-NOTE: Real PostgreSQL approval/worker and Mox SMTP/IMAP; the delayed-ack case injects time, not a receipt.
 class MoxWorkerCompositionTest < SendDatabaseTestCase
   include MoxInboxProof
+  include MailBindingFixture
   FROM = "outreach000@send.test"
   TO = "seed000@seed.test"
   CA = "/evidence/fixture-ca.pem"
@@ -60,13 +62,14 @@ class MoxWorkerCompositionTest < SendDatabaseTestCase
   end
 
   def messages
-    # AIDEV-NOTE: Each gate has a fresh Mox tmpfs; these three tests can deliver at most two messages in total.
+    # AIDEV-NOTE: The fresh Mox fixture holds at most three messages including compatibility; filter by this test subject.
     transport = Elevateo::Inbound::TlsImapTransport.new(host: "localhost", port: 1993, ca_file: CA,
-      credential_resolver: ->(reference) {
-        raise "unexpected IMAP reference" unless reference == "test:mox-composition"
+      credential_resolver: ->(binding, protocol:) {
+        raise "unexpected IMAP binding" unless protocol == "imap" &&
+          binding.key(protocol: protocol) == mail_binding.key(protocol: protocol)
         [TO, @passwords.fetch(TO)]
       })
-    session = transport.open(credential_ref: "test:mox-composition")
+    session = transport.open(binding: mail_binding)
     assert session.verified_tls?
     session.fetch_after(0, limit: 50).map { |row| Mail.read_from_string(row.fetch(:raw_mime)) }
       .select { |mail| mail.subject == @subject }

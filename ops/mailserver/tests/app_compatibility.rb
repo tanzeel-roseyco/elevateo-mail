@@ -4,13 +4,15 @@ require "minitest/autorun"
 require "net/smtp"
 require "openssl"
 require "timeout"
-require "/app/lib/elevateo/send_api/canonical"
-require "/app/lib/elevateo/send_worker/control"
-require "/app/lib/elevateo/send_worker/mox_smtp_transport"
-require "/app/lib/elevateo/inbound/tls_imap_transport"
+require "./lib/elevateo/send_api/canonical"
+require "./lib/elevateo/send_worker/control"
+require "./lib/elevateo/send_worker/mox_smtp_transport"
+require "./lib/elevateo/inbound/tls_imap_transport"
+require "./test/support/mail_binding"
 
 # AIDEV-NOTE: Actual Mox adapter/IMAP wire proof; database authority is tested separately, production stays held.
 class AppMoxCompatibilityTest < Minitest::Test
+  include MailBindingFixture
   SEND_ID = "11111111-1111-4111-8111-111111111111"
   ORG = "22222222-2222-4222-8222-222222222222"
   BOX = "33333333-3333-4333-8333-333333333333"
@@ -26,8 +28,9 @@ class AppMoxCompatibilityTest < Minitest::Test
 
   def transport(address: TO, password: nil, ca: CA)
     Elevateo::Inbound::TlsImapTransport.new(host: "localhost", port: 1993, ca_file: ca,
-      credential_resolver: ->(reference) {
-        raise "unexpected credential reference" unless reference == "test:mox-compatibility"
+      credential_resolver: ->(binding, protocol:) {
+        raise "unexpected credential binding" unless protocol == "imap" &&
+          binding.key(protocol: protocol) == mail_binding.key(protocol: protocol)
         [address, password || passwords.fetch(address)]
       })
   end
@@ -53,14 +56,14 @@ class AppMoxCompatibilityTest < Minitest::Test
     rows = []
     Timeout.timeout(30) do
       loop do
-        session = transport.open(credential_ref: "test:mox-compatibility")
+        # AIDEV-NOTE: Each poll owns its connection; the later replay check has a separate method-scope session.
+        poll_session = transport.open(binding: mail_binding)
         begin
-          assert session.verified_tls?
-          assert_operator session.uidvalidity, :>, 0
-          rows = session.fetch_after(0, limit: 50)
+          assert poll_session.verified_tls?
+          assert_operator poll_session.uidvalidity, :>, 0
+          rows = poll_session.fetch_after(0, limit: 50)
         ensure
-          session.close
-          session = nil
+          poll_session.close
         end
         break unless rows.empty?
         sleep 0.2
@@ -73,7 +76,7 @@ class AppMoxCompatibilityTest < Minitest::Test
     assert_equal BODY, mail.decoded.gsub("\r\n", "\n")
     assert_equal Mail.read_from_string(rendered.mime).message_id, mail.message_id
     assert_equal "MAIL1018 application compatibility", mail.subject
-    session = transport.open(credential_ref: "test:mox-compatibility")
+    session = transport.open(binding: mail_binding)
     assert_empty session.fetch_after(rows.first.fetch(:uid), limit: 50)
   ensure
     session&.close
@@ -81,7 +84,7 @@ class AppMoxCompatibilityTest < Minitest::Test
 
   def test_wrong_imap_password_fails
     assert_raises(Net::IMAP::NoResponseError) do
-      transport(password: "deliberately-wrong").open(credential_ref: "test:mox-compatibility")
+      transport(password: "deliberately-wrong").open(binding: mail_binding)
     end
   end
 
@@ -98,15 +101,23 @@ class AppMoxCompatibilityTest < Minitest::Test
 
   def test_untrusted_ca_fails
     assert_raises(OpenSSL::SSL::SSLError) do
-      transport(ca: nil).open(credential_ref: "test:mox-compatibility")
+      transport(ca: nil).open(binding: mail_binding)
     end
   end
 
-  def test_nonfixture_credential_reference_fails
+  def test_malformed_credential_binding_fails
     error = assert_raises(Elevateo::Inbound::Rejected) do
-      transport.open(credential_ref: "secret://production")
+      transport.open(binding: "secret://production")
     end
     assert_equal "account_unavailable", error.code
+  end
+
+  def test_nonfixture_credential_reference_fails
+    error = assert_raises(Elevateo::MailCredentials::Unavailable) do
+      mail_binding(credential_ref: "secret://production")
+    end
+    assert_equal "mail_credentials_unavailable", error.message
+    assert_nil error.cause
   end
 
   def test_remote_hold_rejects_even_injected_client

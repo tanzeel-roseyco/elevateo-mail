@@ -1,0 +1,244 @@
+{
+  "incident": "Local archive removal happened after an unsupported PowerShell -AsHashtable parameter; the non-terminating error allowed removal before intended local-versus-remote hash comparison. All 27 transferred remote archives exist and all tar payloads are readable; 24 match pre-existing remote copies. No pre-copy hash evidence remains for the first three. These are transfer archives, not source directories or persistent application data.",
+  "archives": [
+    {
+      "name": "inline950-changes.tar",
+      "bytes": 701952,
+      "sha256": "3559b77c9f94fa265ac59f9a91c81465114ad4f53d42e529312cde7818756475",
+      "matching_previous_remote_copies": [],
+      "tar_all_payloads_readable": true
+    },
+    {
+      "name": "inline951-changes.tar",
+      "bytes": 630784,
+      "sha256": "11b08e743d3feefad896b7a642531cefea0e0c5c855f7dcad721b19cd776c8b9",
+      "matching_previous_remote_copies": [],
+      "tar_all_payloads_readable": true
+    },
+    {
+      "name": "inline952-changes.tar",
+      "bytes": 669184,
+      "sha256": "fc5aaee2dc6be653f31da5ed2a5dea6e3c5011fb8c8720ff88c440ae41ebce62",
+      "matching_previous_remote_copies": [],
+      "tar_all_payloads_readable": true
+    },
+    {
+      "name": "inline953-source.tar",
+      "bytes": 643584,
+      "sha256": "b670992a3b7ca72762efa764449b7e86562ea51056e12d745f8ba0264ee62e77",
+      "matching_previous_remote_copies": [
+        "/home/tanzeel/elevateo-mail-completion-20261015/control/inline953-source.tar"
+      ],
+      "tar_all_payloads_readable": true
+    },
+    {
+      "name": "inline955-source.tar",
+      "bytes": 835584,
+      "sha256": "9468c3cd7f25175da24a300667bb3cd267542acd3fc13b2c8fe004f0358f641f",
+      "matching_previous_remote_copies": [
+        "/home/tanzeel/elevateo-mail-completion-20261015/control/inline955-source.tar"
+      ],
+      "tar_all_payloads_readable": true
+    },
+    {
+      "name": "inline956-source.tar",
+      "bytes": 821760,
+      "sha256": "3fa5d694fc2a03a3c99be4cf3e2c7579aaae9fc733b3cb15ecd85c4e9820428d",
+      "matching_previous_remote_copies": [
+        "/home/tanzeel/elevateo-mail-completion-20261015/control/inline956-source.tar"
+      ],
+      "tar_all_payloads_readable": true
+    },
+    {
+      "name": "inline957-source.tar",
+      "bytes": 824832,
+      "sha256": "8dd103aa9304824bbcd0e5d0c4896290de4f0e2ba8d1ec425d4694d038011278",
+      "matching_previous_remote_copies": [
+        "/home/tanzeel/elevateo-mail-completion-20261015/control/inline957-source.tar"
+      ],
+      "tar_all_payloads_readable": true
+    },
+    {
+      "name": "inline958-source.tar",
+      "bytes": 830976,
+      "sha256": "c972730ab8a7aaec81ac3701a4f9f948a0456a57df0f87848eb80ad39efa39ee",
+      "matching_previous_remote_copies": [
+        "/home/tanzeel/elevateo-mail-completion-20261015/control/inline958-source.tar"
+      ],
+      "tar_all_payloads_readable": true
+    },
+    {
+      "name": "inline959.tar",
+      "bytes": 899584,
+      "sha256": "9e39319c62af7b08d71900775cca5159ef9cec595f2140816e573932128cf173",
+      "matching_previous_remote_copies": [
+        "/home/tanzeel/elevateo-mail-completion-20261015/control/inline959.tar"
+      ],
+      "tar_all_payloads_readable": true
+    },
+    {
+      "name": "inline960.tar",
+      "bytes": 871936,
+      "sha256": "6671a0a76a3d07039028d8558b8fd2dec6d281b6db85eefff46a6d47a34c87d3",
+      "matching_previous_remote_copies": [
+        "/home/tanzeel/elevateo-mail-completion-20261015/control/inline960.tar"
+      ],
+      "tar_all_payloads_readable": true
+    },
+    {
+      "name": "inline963-update.tar",
+      "bytes": 881664,
+      "sha256": "b54021db94aa8f1170311345b54ee1f257e7f8c851a2dab57a4d6018fa6c52ca",
+      "matching_previous_remote_copies": [
+        "/home/tanzeel/elevateo-mail-completion-20261015/control/inline963-update.tar"
+      ],
+      "tar_all_payloads_readable": true
+    },
+    {
+      "name": "inline964-update.tar",
+      "bytes": 875008,
+      "sha256": "4e7193db4bcfe6c797766b8fcd4fa64bf3ca95e5b48f3a04e129557d75b77841",
+      "matching_previous_remote_copies": [
+        "/home/tanzeel/elevateo-mail-completion-20261015/control/inline964-update.tar"
+      ],
+      "tar_all_payloads_readable": true
+    },
+    {
+      "name": "inline967-update.tar",
+      "bytes": 895488,
+      "sha256": "faa49ba6bb76dea4a5a5bee0eac36581775028b3aebdb13ad2ab75560f40d36c",
+      "matching_previous_remote_copies": [
+        "/home/tanzeel/elevateo-mail-completion-20261015/control/inline967-update.tar"
+      ],
+      "tar_all_payloads_readable": true
+    },
+    {
+      "name": "inline968-tests.tar",
+      "bytes": 20480,
+      "sha256": "d2590de526f3adf0d09f6eb50fb20ae78c059a72eb838e64cc134ea9117a1679",
+      "matching_previous_remote_copies": [
+        "/home/tanzeel/elevateo-mail-completion-20261015/control/inline968-tests.tar"
+      ],
+      "tar_all_payloads_readable": true
+    },
+    {
+      "name": "inline968-update.tar",
+      "bytes": 908288,
+      "sha256": "bd4d7c518ec11d3b60c80ec150f10de2de4f8262d16148b56fe14d652017417b",
+      "matching_previous_remote_copies": [
+        "/home/tanzeel/elevateo-mail-completion-20261015/control/inline968-update.tar"
+      ],
+      "tar_all_payloads_readable": true
+    },
+    {
+      "name": "inline969-update.tar",
+      "bytes": 907264,
+      "sha256": "bcdf2cf670a5bbcf946b640ff83a22da5226c31cf5b8b1495bd1204c099947eb",
+      "matching_previous_remote_copies": [
+        "/home/tanzeel/elevateo-mail-completion-20261015/control/inline969-update.tar"
+      ],
+      "tar_all_payloads_readable": true
+    },
+    {
+      "name": "inline970-evidence.tar",
+      "bytes": 1699840,
+      "sha256": "c48bdd3cf8592082f20f8a233a35e848c4d205e82dd1a405f9b4c6d5b2b7700f",
+      "matching_previous_remote_copies": [
+        "/home/tanzeel/elevateo-mail-completion-20261015/control/inline970-evidence.tar"
+      ],
+      "tar_all_payloads_readable": true
+    },
+    {
+      "name": "inline971-update.tar",
+      "bytes": 914432,
+      "sha256": "7ed2ab28fc51532c7626ddb00dec59444319843c3a0a3a99cbc808fb71d1da22",
+      "matching_previous_remote_copies": [
+        "/home/tanzeel/elevateo-mail-completion-20261015/control/inline971-update.tar"
+      ],
+      "tar_all_payloads_readable": true
+    },
+    {
+      "name": "inline972-visual.tar",
+      "bytes": 686080,
+      "sha256": "81ae2c925253a0b2b1acda9c86739051ff386df8d7e60603e677c729d03efc12",
+      "matching_previous_remote_copies": [
+        "/home/tanzeel/elevateo-mail-completion-20261015/control/inline972-visual.tar"
+      ],
+      "tar_all_payloads_readable": true
+    },
+    {
+      "name": "inline973-update.tar",
+      "bytes": 1007104,
+      "sha256": "b6d4b6c55fd307ba6df19f7fdae02137c47d324f450ac31c9cc60e207caa6b95",
+      "matching_previous_remote_copies": [
+        "/home/tanzeel/elevateo-mail-completion-20261015/control/inline973-update.tar"
+      ],
+      "tar_all_payloads_readable": true
+    },
+    {
+      "name": "inline974-update.tar",
+      "bytes": 902656,
+      "sha256": "309c92c18425a0d7933b2b45a66bc535895d6cdcce73f8d1d47796d1acdc6eaf",
+      "matching_previous_remote_copies": [
+        "/home/tanzeel/elevateo-mail-completion-20261015/control/inline974-update.tar"
+      ],
+      "tar_all_payloads_readable": true
+    },
+    {
+      "name": "inline975-update.tar",
+      "bytes": 931840,
+      "sha256": "c42f164bcd1aae8a9a2bd2f6e2a601f73ffc9f41544beca3cd19a19a231ad115",
+      "matching_previous_remote_copies": [
+        "/home/tanzeel/elevateo-mail-completion-20261015/control/inline975-update.tar"
+      ],
+      "tar_all_payloads_readable": true
+    },
+    {
+      "name": "mail1018-fix.tar",
+      "bytes": 25088,
+      "sha256": "a011dcebd35da2ff38fe7cd93b04bdf0666b7c9e399a420a4f5ee26ebe7d3b2c",
+      "matching_previous_remote_copies": [
+        "/home/tanzeel/elevateo-mail-completion-20261015/control/mail1018-fix.tar"
+      ],
+      "tar_all_payloads_readable": true
+    },
+    {
+      "name": "mail1018-gate.tar",
+      "bytes": 59904,
+      "sha256": "972986f256ea15e62a27d172fa134ec3e3d516a3308c7ea25104f327c1413654",
+      "matching_previous_remote_copies": [
+        "/home/tanzeel/elevateo-mail-completion-20261015/control/mail1018-gate.tar"
+      ],
+      "tar_all_payloads_readable": true
+    },
+    {
+      "name": "mail1018-r5.tar",
+      "bytes": 17920,
+      "sha256": "41b2fc646407b909fa200a4b25187e5da9be83c1b7a46216b91cba16048296fb",
+      "matching_previous_remote_copies": [
+        "/home/tanzeel/elevateo-mail-completion-20261015/control/mail1018-r5.tar"
+      ],
+      "tar_all_payloads_readable": true
+    },
+    {
+      "name": "mail1018-r6.tar",
+      "bytes": 7680,
+      "sha256": "93707b1ce92e00c1a1526b9c5a46c1f3503b707c8d418119c31b06ea775e6d43",
+      "matching_previous_remote_copies": [
+        "/home/tanzeel/elevateo-mail-completion-20261015/control/mail1018-r6.tar"
+      ],
+      "tar_all_payloads_readable": true
+    },
+    {
+      "name": "mail1018-source-r1.tar",
+      "bytes": 102912,
+      "sha256": "fb2c3e5bf7f342151023f80726b5e5904380f862bb74e5ad1a4459c9844d8388",
+      "matching_previous_remote_copies": [
+        "/home/tanzeel/elevateo-mail-completion-20261015/control/mail1018-source-r1.tar"
+      ],
+      "tar_all_payloads_readable": true
+    }
+  ],
+  "total_bytes": 18573824,
+  "local_space_reclaimed_not_attributable": true
+}

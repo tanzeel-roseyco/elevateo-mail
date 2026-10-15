@@ -1,8 +1,10 @@
 # frozen_string_literal: true
 
 require "active_record"
+require "tmpdir"
 require "/workspace/apps/server/lib/elevateo/inbound/imap_sync"
 require "/workspace/apps/server/lib/elevateo/inbound/imap_worker_store"
+require "/workspace/apps/server/lib/elevateo/mail_credentials/bundle"
 
 # AIDEV-NOTE: Use the real restricted worker adapter and API RLS; administrative SQL only provisions and observes.
 module MoxInboxProof
@@ -28,22 +30,26 @@ module MoxInboxProof
       connect_timeout: 5, variables: { statement_timeout: "10s" })
     WorkerConnection.connection_pool.with_connection do |connection|
       assert_equal "elevateo_worker", connection.select_value("SELECT session_user")
-      transport = inbox_transport
+      transport = inbox_transport(account: account, inbox: inbox)
       sync = Elevateo::Inbound::ImapSync.new(
         store: Elevateo::Inbound::ImapWorkerStore.new(connection: connection), transport: transport)
-      cursor = sync.run(account_id: account, credential_version: 1)
+      assert_midread_rotation(sync, transport, account)
+      transport = inbox_transport(account: account, inbox: inbox, version: 2)
+      sync = Elevateo::Inbound::ImapSync.new(
+        store: Elevateo::Inbound::ImapWorkerStore.new(connection: connection), transport: transport)
+      cursor = sync.run(account_id: account, credential_version: 2)
       assert_operator cursor, :>, 0
       first = inbox_receipt(account)
       assert_equal 1, first.length
       assert_equal @body, first.first.fetch("body_text").gsub("\r\n", "\n")
       assert_equal inbox, first.first.fetch("mailbox_id")
-      assert_equal cursor, sync.run(account_id: account, credential_version: 1)
+      assert_equal cursor, sync.run(account_id: account, credential_version: 2)
       assert_equal first, inbox_receipt(account)
       assert_inbox_visibility(first.first.fetch("message_id"), inbox)
       # AIDEV-NOTE: SQL revocation is checked before resolving credentials or opening another IMAP connection.
       @admin.exec_params("UPDATE app.inbound_imap_accounts SET active=false WHERE id=$1", [account])
       transport.define_singleton_method(:open) { |**_| raise "revoked account reached IMAP transport" }
-      error = assert_raises(ActiveRecord::StatementInvalid) { sync.run(account_id: account, credential_version: 1) }
+      error = assert_raises(ActiveRecord::StatementInvalid) { sync.run(account_id: account, credential_version: 2) }
       assert_instance_of PG::InsufficientPrivilege, error.cause
       assert_equal first, inbox_receipt(account)
     end
@@ -55,12 +61,41 @@ module MoxInboxProof
     end
   end
 
-  def inbox_transport
+  def assert_midread_rotation(sync, transport, account)
+    # AIDEV-NOTE: Fetch real Mox bytes, rotate before SQL ingest, and prove no stale receipt or cursor can commit.
+    opening = transport.method(:open)
+    admin = @admin
+    fetched = 0
+    transport.define_singleton_method(:open) do |**arguments|
+      session = opening.call(**arguments)
+      fetching = session.method(:fetch_after)
+      session.define_singleton_method(:fetch_after) do |cursor, limit:|
+        rows = fetching.call(cursor, limit: limit)
+        fetched += rows.length
+        admin.exec_params("UPDATE app.inbound_imap_accounts SET credential_version=2 WHERE id=$1", [account])
+        rows
+      end
+      session
+    end
+    error = assert_raises(ActiveRecord::StatementInvalid) { sync.run(account_id: account, credential_version: 1) }
+    assert_instance_of PG::InsufficientPrivilege, error.cause
+    assert_operator fetched, :>, 0
+    assert_equal "0", @admin.exec_params("SELECT count(*) FROM app.inbound_imap_receipts WHERE account_id=$1", [account]).getvalue(0, 0)
+    assert_equal [nil, "0"], @admin.exec_params("SELECT uidvalidity,last_uid FROM app.inbound_imap_accounts WHERE id=$1", [account]).values.first
+  end
+
+  def inbox_transport(account:, inbox:, version: 1)
+    # AIDEV-NOTE: The real bundle resolves only the tuple emitted by worker SQL; this private fixture never leaves tmpfs.
+    resolver = Dir.mktmpdir("mox-inbox-bundle-") do |directory|
+      path = File.join(directory, "credentials.json")
+      entry = { account_id: account, organization_id: @org, mailbox_id: inbox, credential_version: version,
+        credential_ref: "test:mox-composition", protocol: "imap", username: self.class::TO,
+        password: @passwords.fetch(self.class::TO) }
+      File.write(path, JSON.generate(format_version: 1, entries: [entry]), perm: 0o600)
+      Elevateo::MailCredentials::Bundle.new(path: path)
+    end
     Elevateo::Inbound::TlsImapTransport.new(host: "localhost", port: 1993, ca_file: self.class::CA,
-      credential_resolver: ->(reference) {
-        raise "unexpected IMAP reference" unless reference == "test:mox-composition"
-        [self.class::TO, @passwords.fetch(self.class::TO)]
-      })
+      credential_resolver: resolver)
   end
 
   def inbox_receipt(account)

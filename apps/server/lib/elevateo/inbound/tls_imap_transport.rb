@@ -3,10 +3,11 @@
 require "net/imap"
 require "openssl"
 require_relative "fake_ingress"
+require_relative "../mail_credentials/binding"
 
 module Elevateo
   module Inbound
-    # AIDEV-NOTE: Only a server-side resolver sees synthetic credentials; every connection requires verified TLS.
+    # AIDEV-NOTE: SQL-bound account identity reaches the private resolver before any connection; TLS is always verified.
     class TlsImapTransport
       MAX_DISCOVERED_UIDS = 10_000
       MAX_UID = 4_294_967_295
@@ -21,7 +22,7 @@ module Elevateo
         def uidvalidity
           response = @client.responses.fetch("UIDVALIDITY", []).last
           value = response.respond_to?(:data) ? response.data : response
-          raise Rejected, "invalid_imap_identity" unless value.is_a?(Integer) && value.positive?
+          raise Rejected, "invalid_imap_identity" unless value.is_a?(Integer) && value.between?(1, MAX_UID)
 
           value
         end
@@ -34,7 +35,7 @@ module Elevateo
           # AIDEV-NOTE: net-imap quotes String criteria; a typed sequence set preserves the required UID wire syntax.
           ids = @client.uid_search(["UID", Net::IMAP::SequenceSet.new("#{cursor + 1}:*")])
           raise Rejected, "invalid_imap_batch" unless ids.is_a?(Array) && ids.length <= MAX_DISCOVERED_UIDS &&
-            ids.all? { |id| id.is_a?(Integer) && id.positive? }
+            ids.all? { |id| id.is_a?(Integer) && id.between?(1, MAX_UID) }
 
           remaining = ids.select { |id| id > cursor }.sort
           raise Rejected, "invalid_imap_batch" unless remaining.uniq.length == remaining.length
@@ -68,11 +69,10 @@ module Elevateo
         @resolver, @factory = credential_resolver, client_factory
       end
 
-      def open(credential_ref:)
-        raise Rejected, "account_unavailable" unless credential_ref.is_a?(String) &&
-          /\Atest:[A-Za-z0-9_.:-]{1,120}\z/.match?(credential_ref)
+      def open(binding:)
+        raise Rejected, "account_unavailable" unless binding.is_a?(MailCredentials::Binding)
 
-        credentials = @resolver.call(credential_ref)
+        credentials = @resolver.call(binding, protocol: "imap")
         raise Rejected, "account_unavailable" unless credentials.is_a?(Array) && credentials.length == 2 &&
           credentials.all? { |value| value.is_a?(String) && !value.empty? }
 

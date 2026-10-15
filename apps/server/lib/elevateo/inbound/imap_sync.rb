@@ -7,6 +7,7 @@ module Elevateo
     # AIDEV-NOTE: A verified isolated IMAP session feeds one worker-only SQL receipt per UID; no HTTP route is involved.
     class ImapSync
       MAX_BATCH = 50
+      MAX_UID = 4_294_967_295
 
       def initialize(store:, transport:, attachment_storage: nil)
         @store = store
@@ -18,12 +19,12 @@ module Elevateo
         # @type var session: _ImapSession?
         session = nil
         claim = @store.claim(account_id: account_id, credential_version: credential_version)
-        opened = @transport.open(credential_ref: claim.fetch("credential_ref"))
+        opened = @transport.open(binding: claim.fetch("binding"))
         session = opened
         raise Rejected, "tls_unverified" unless opened.verified_tls?
 
         validity = opened.uidvalidity
-        raise Rejected, "invalid_imap_identity" unless validity.is_a?(Integer) && validity.positive?
+        raise Rejected, "invalid_imap_identity" unless validity.is_a?(Integer) && validity.between?(1, MAX_UID)
 
         previous = claim["uidvalidity"]
         cursor = claim.fetch("last_uid")
@@ -44,7 +45,7 @@ module Elevateo
 
           uid = event.fetch(:uid)
           raw = event.fetch(:raw_mime)
-          raise Rejected, "invalid_imap_batch" unless uid.is_a?(Integer) && uid > previous_uid &&
+          raise Rejected, "invalid_imap_batch" unless uid.is_a?(Integer) && uid.between?(1, MAX_UID) && uid > previous_uid &&
             raw.is_a?(String) && raw.bytesize.between?(1, FakeIngress::MAX_RAW)
 
           previous_uid = uid
