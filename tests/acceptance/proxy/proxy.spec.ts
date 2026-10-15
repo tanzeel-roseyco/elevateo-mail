@@ -45,6 +45,10 @@ test('raw routing rejects unsafe targets and preserves the API target', () => {
   for (const host of [undefined, 'evil.test', 'app.test:8080', 'app.test:80', 'APP.TEST'])
     assert.deepEqual(routeRequest(host, '/'), { kind: 'reject', status: 421 });
   assert.deepEqual(routeRequest('app.test', '/v1/session?x=1'), { kind: 'api', path: '/v1/session?x=1' });
+  assert.deepEqual(routeRequest('app.test', '/v2/campaigns?cursor=a%2Fb'),
+    { kind: 'api', path: '/v2/campaigns?cursor=a%2Fb' });
+  for (const path of ['/v1', '/v2']) assert.deepEqual(routeRequest('app.test', path), { kind: 'reject', status: 404 });
+  assert.equal(routeRequest('app.test', '/v20/campaigns').kind, 'static');
   assert.equal(routeRequest('app.test', '/auth/accept').kind, 'api');
   assert.equal(routeRequest('app.test', `/${'x'.repeat(8192)}`).kind, 'reject');
 });
@@ -116,7 +120,7 @@ test('failed and stalled upstream never return an SPA document', async t => {
   t.after(() => rm(root, { recursive: true, force: true }));
   await writeFile(join(root, 'index.html'), '<html>must not leak</html>');
   const api = createServer((input, output) => {
-    if (input.url === '/v1/fail') output.destroy();
+    if (input.url === '/v1/fail' || input.url === '/v2/fail') output.destroy();
     // The other path deliberately stays open until the proxy deadline aborts it.
   });
   const apiPort = await listen(api);
@@ -124,8 +128,52 @@ test('failed and stalled upstream never return an SPA document', async t => {
   const server = createAcceptanceServer(root, new URL(`http://127.0.0.1:${apiPort}`), 200);
   const port = await listen(server);
   t.after(() => close(server));
-  assert.equal((await get(port, '/v1/fail')).status, 502);
-  const stalled = await get(port, '/v1/stalled');
-  assert.equal(stalled.status, 504);
-  assert.doesNotMatch(stalled.body, /html/);
+  for (const version of ['v1', 'v2']) {
+    const failed = await get(port, `/${version}/fail`);
+    assert.equal(failed.status, 502);
+    assert.doesNotMatch(failed.body, /html/);
+    const stalled = await get(port, `/${version}/stalled`);
+    assert.equal(stalled.status, 504);
+    assert.doesNotMatch(stalled.body, /html/);
+  }
+});
+test('V2 responses retain API semantics and reject oversized writes', async t => {
+  const root = await mkdtemp(join(tmpdir(), 'acceptance-proxy-v2-'));
+  t.after(() => rm(root, { recursive: true, force: true }));
+  await writeFile(join(root, 'index.html'), '<html>must not leak</html>');
+  const requests: { method: string | undefined; path: string | undefined; body: string }[] = [];
+  const api = createServer((input, output) => {
+    assert.equal(input.headers.cookie, 'synthetic=session');
+    assert.equal(input.headers.origin, 'http://app.test');
+    assert.equal(input.headers['x-forwarded-host'], 'app.test');
+    const chunks: Buffer[] = [];
+    input.on('data', (chunk: Buffer) => chunks.push(chunk));
+    input.on('end', () => {
+      requests.push({ method: input.method, path: input.url, body: Buffer.concat(chunks).toString() });
+      const missing = input.method === 'GET';
+      output.writeHead(missing ? 404 : 200, { 'content-type': 'application/json', 'x-request-id': 'synthetic-v2' });
+      output.end(missing ? '{"error":"not_available"}' : '{"version":2}');
+    });
+  });
+  const apiPort = await listen(api);
+  t.after(() => close(api));
+  const server = createAcceptanceServer(root, new URL(`http://127.0.0.1:${apiPort}`));
+  const port = await listen(server);
+  t.after(() => close(server));
+  const headers = { cookie: 'synthetic=session', origin: 'http://app.test', 'content-type': 'application/json' };
+  const missing = await get(port, '/v2/threads/missing/messages/missing?cursor=a%2Fb', headers);
+  assert.equal(missing.status, 404);
+  assert.equal(missing.headers['content-type'], 'application/json');
+  assert.equal(missing.body, '{"error":"not_available"}');
+  const saved = await get(port, '/v2/campaigns/candidate?version=1', headers, 'PUT', '{"name":"Synthetic"}');
+  assert.equal(saved.status, 200);
+  assert.equal(saved.body, '{"version":2}');
+  assert.equal(saved.headers['x-request-id'], 'synthetic-v2');
+  assert.equal((await get(port, '/v2/campaigns', { 'content-length': String(MAX_BODY_BYTES + 1) }, 'POST')).status, 413);
+  assert.equal((await get(port, '/v2/campaigns', { host: 'evil.test' })).status, 421);
+  assert.equal((await get(port, '/v2/%2e%2e/secret')).status, 400);
+  assert.deepEqual(requests, [
+    { method: 'GET', path: '/v2/threads/missing/messages/missing?cursor=a%2Fb', body: '' },
+    { method: 'PUT', path: '/v2/campaigns/candidate?version=1', body: '{"name":"Synthetic"}' },
+  ]);
 });
