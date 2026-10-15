@@ -1,0 +1,80 @@
+# AIDEV-NOTE: Test-only overlay; file objects live in bounded tmpfs and no service publishes a host port.
+x-private: &private
+  pull_policy: never
+  networks: [isolated]
+  read_only: true
+  cap_drop: [ALL]
+  security_opt: [no-new-privileges:true]
+  mem_limit: 768m
+  cpus: 1
+  pids_limit: 128
+  tmpfs: [/tmp]
+services:
+  api:
+    environment:
+      ELEVATEO_ATTACHMENT_GATEWAY_URL: http://attachment-gateway:4708
+      ELEVATEO_ATTACHMENT_GATEWAY_HMAC_KEY_BASE64: ${ELEVATEO_ATTACHMENT_GATEWAY_HMAC_KEY_BASE64:?}
+  fixture:
+    environment:
+      BE02_WORKER_DATABASE_URL: postgres://elevateo_worker:${WORKER_DB_PASSWORD:?}@db:5432/postgres
+      BE02_STORAGE_SERVICE: ${BE02_STORAGE_SERVICE:?}
+  attachment-rest:
+    <<: *private
+    image: postgrest/postgrest:v14.17@sha256:c9dc201e555f5d8e37e7f39cdd4df0229774996e213bfd7de8d10ac609030f2c
+    environment:
+      PGRST_DB_URI: postgres://authenticator:${POSTGRES_PASSWORD:?}@db:5432/postgres
+      PGRST_DB_SCHEMAS: public
+      PGRST_DB_ANON_ROLE: anon
+      PGRST_JWT_SECRET: ${BE02_FIXTURE_SIGNING_SECRET:?}
+      PGRST_DB_USE_LEGACY_GUCS: "false"
+      PGRST_DB_MAX_ROWS: "1000"
+  storage:
+    <<: *private
+    image: supabase/storage-api:v1.74.0@sha256:f1546fac6d1c7e345428ac904bfaa7be7cecd50a1f549fe1cf38c628a7b15c85
+    environment:
+      ANON_KEY: ${BE02_STORAGE_ANON:?}
+      SERVICE_KEY: ${BE02_STORAGE_SERVICE:?}
+      POSTGREST_URL: http://attachment-rest:3000
+      AUTH_JWT_SECRET: ${BE02_FIXTURE_SIGNING_SECRET:?}
+      DATABASE_URL: postgres://supabase_storage_admin:${POSTGRES_PASSWORD:?}@db:5432/postgres
+      STORAGE_PUBLIC_URL: http://storage:5000
+      REQUEST_ALLOW_X_FORWARDED_PATH: "false"
+      FILE_SIZE_LIMIT: "10485760"
+      STORAGE_BACKEND: file
+      FILE_STORAGE_BACKEND_PATH: /var/lib/storage
+      GLOBAL_S3_BUCKET: stub
+      TENANT_ID: be02-attachment-fixture
+      REGION: local
+      ENABLE_IMAGE_TRANSFORMATION: "false"
+      IMAGE_TRANSFORMATION_ENABLED: "false"
+    tmpfs: [/tmp, "/var/lib/storage:rw,size=64m,mode=1777"]
+  clamav:
+    <<: *private
+    image: clamav/clamav@sha256:705e0723f02fc13bf6e5e8a8e13a8c44420acf5e7ed06dfa2197081da00c7a73
+    user: "100:100"
+    mem_limit: 4g
+    memswap_limit: 4g
+    cpus: 2
+    pids_limit: 64
+    entrypoint: [/usr/sbin/clamd]
+    command: [--config-file=/etc/clamav/be02-clamd.conf]
+    healthcheck:
+      disable: true
+    volumes:
+      - ${BE02_SOURCE:?}/ops/tests/be02/clamd.conf:/etc/clamav/be02-clamd.conf:ro
+    tmpfs: ["/tmp:rw,size=256m,mode=1777"]
+  attachment-gateway:
+    <<: *private
+    image: ${BE02_SERVER_IMAGE:?}
+    working_dir: /workspace/apps/server
+    command: [bundle, exec, puma, -C, attachment_gateway/puma.rb, attachment_gateway/config.ru]
+    environment:
+      ELEVATEO_PROCESS: attachment_gateway
+      ELEVATEO_DB_NAME: postgres
+      ELEVATEO_STORAGE_URL: http://storage:5000
+      ELEVATEO_ATTACHMENT_BUCKET: be02-attachments
+      ELEVATEO_ATTACHMENT_STORAGE_SERVICE_TOKEN: ${BE02_STORAGE_SERVICE:?}
+      ELEVATEO_ATTACHMENT_GATEWAY_HMAC_KEY_BASE64: ${ELEVATEO_ATTACHMENT_GATEWAY_HMAC_KEY_BASE64:?}
+      ELEVATEO_ATTACHMENT_GATEWAY_DATABASE_URL: postgres://elevateo_attachment_gateway:${ATTACHMENT_GATEWAY_DB_PASSWORD:?}@db:5432/postgres
+    volumes:
+      - ${BE02_SOURCE:?}/apps/server:/workspace/apps/server:ro

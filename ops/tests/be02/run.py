@@ -20,6 +20,7 @@ from docker_task import Task
 from acceptance_runtime import Acceptance, add_arguments
 from adv815_runtime import run_expiry
 from adv808_auth_attestation import AUTH_PIN, attest_with_controls
+import attachment_runtime
 
 
 def source_hashes(root: Path, acceptance: bool = False) -> dict[str, str]:
@@ -46,7 +47,10 @@ def finalize(task: Task, acceptance: bool, armed: bool, original: dict[str, str]
     clean = False
     try:
         if not acceptance:
-            task.compose("service-logs", ["logs", "--no-color", "--tail", "150", "db", "auth", "api", "worker"], 20)
+            services = ["db", "auth", "api", "worker"]
+            if task.root / "ops/tests/be02/attachments.yaml" in task.compose_files:
+                services.extend(sorted(attachment_runtime.SERVICES))
+            task.compose("service-logs", ["logs", "--no-color", "--tail", "150", *services], 20)
     except Exception as error:
         try:
             task.write("service-log-capture-error.json", {"error": task.redact(str(error))})
@@ -112,8 +116,11 @@ def main() -> int:
     parser.add_argument("--server-image", help="Optional previously reviewed immutable sha256 image ID")
     parser.add_argument("--adv808-auth-policy", action="store_true", help="Separate disposable Auth policy proof")
     parser.add_argument("--adv815-expiry", action="store_true", help="Separate disposable real Auth expiry proof")
+    parser.add_argument("--attachments", action="store_true", help="Real private Storage/scanner/download acceptance")
     add_arguments(parser)
     args = parser.parse_args()
+    if args.attachments and (args.acceptance or args.adv808_auth_policy or args.adv815_expiry):
+        parser.error("attachments require a separate disposable job")
     if args.adv815_expiry and (args.acceptance or args.adv808_auth_policy):
         parser.error("ADV815 requires its own disposable job; preserve GUI/policy queues")
     if args.adv808_auth_policy and args.acceptance:
@@ -155,6 +162,8 @@ def main() -> int:
     signal.signal(signal.SIGTERM, interrupted)
     signal.signal(signal.SIGINT, interrupted)
     try:
+        if args.attachments:
+            attachment_runtime.configure(task)
         # AIDEV-NOTE: Source is mounted in runtime containers; reject local dotenv secrets before build or mount.
         for folder in ("apps/server", "contracts", "ops/tests/be02", "ops/tests/be02-guards",
                        *(["apps/web", "tests/acceptance", "ops/acceptance"] if args.acceptance else [])):
@@ -177,6 +186,8 @@ def main() -> int:
         pins = sorted(set(re.findall(r"image: (\S+@sha256:[a-f0-9]{64})", (root / "ops/compose.be02-test.yaml").read_text())))
         for pin in pins:
             task.inspect("image", [pin])
+        if args.attachments:
+            attachment_runtime.preflight(task)
         task.docker("space-before", ["system", "df"])
         task.write("host-space-before.json", {"free_bytes": os.statvfs(evidence).f_bavail * os.statvfs(evidence).f_frsize})
         builders = task.docker("builders-before", ["buildx", "ls", "--format", "json"])
@@ -226,6 +237,8 @@ def main() -> int:
         task.compose("api-start", ["up", "-d", "api"], 30)
         task.runtime_credentials()
         task.wait_http()
+        if args.attachments:
+            attachment_runtime.run(task)
         if not args.acceptance_diagnostic:
             print("Running real Auth/Mailpit/API HTTP acceptance", flush=True)
             task.compose("http-acceptance", ["run", "--rm", "--no-deps", "fixture"], 180)

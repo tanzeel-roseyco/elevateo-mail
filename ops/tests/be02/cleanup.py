@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import Callable
 from docker_task import SERVICES, Task
 from acceptance_cleanup import private_files, observer_files, validate_container
+import attachment_runtime
 
 
 def cleanup(task: Task) -> bool:
@@ -21,7 +22,7 @@ def cleanup(task: Task) -> bool:
 
     def containers() -> None:
         owned = task.project_containers()
-        if len(owned) > 14 + len(task.acceptance_mounts):
+        if len(owned) > 14 + len(task.acceptance_mounts) + len(attachment_runtime.SERVICES):
             raise RuntimeError("unexpected task container count")
         # AIDEV-NOTE: Validate every mount before removing any container; unknown mounts fail closed.
         for item in owned:
@@ -29,7 +30,9 @@ def cleanup(task: Task) -> bool:
             if service in task.acceptance_mounts:
                 validate_container(task, item)
                 continue
-            if service not in SERVICES or item["HostConfig"].get("PortBindings"):
+            if service in attachment_runtime.SERVICES:
+                attachment_runtime.validate_container(task, item)
+            elif service not in SERVICES or item["HostConfig"].get("PortBindings"):
                 raise RuntimeError("unexpected service or published port")
             for mount in item["Mounts"]:
                 if mount["Type"] == "bind":
@@ -38,6 +41,7 @@ def cleanup(task: Task) -> bool:
                                task.root / "ops/tests/be02-guards",
                                task.root / "ops/db", task.root / "ops/db/bootstrap.sql",
                                task.root / "ops/ops820/bootstrap-gateway.sql",
+                               task.root / "ops/tests/be02/clamd.conf",
                                task.root / "ops/supabase/db/99-roles.sql",
                                task.root / "ops/supabase/db/99-jwt.sql"}
                     if path not in allowed or mount["RW"]:
