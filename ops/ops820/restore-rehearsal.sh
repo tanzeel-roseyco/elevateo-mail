@@ -5,6 +5,10 @@ base=$(cd -- "$(dirname -- "$0")/../supabase" && pwd)
 packet=$(cd -- "$(dirname -- "$0")" && pwd)
 snapshot=${1:?paired backup directory required}
 [[ "$snapshot" = /* ]] || exit 66
+# AIDEV-NOTE: admit an existing immutable image before any stack or private environment is created.
+python_image=${OPS820_PYTHON_IMAGE:?pinned local Python image required}
+[[ "$python_image" =~ ^sha256:[a-f0-9]{64}$ ]] || exit 66
+docker image inspect "$python_image" >/dev/null 2>&1 || { echo 'Python image unavailable' >&2; exit 66; }
 mode=${2:-base}
 case "$mode" in base|full) ;; *) echo 'usage: restore-rehearsal.sh SNAPSHOT base|full' >&2; exit 64;; esac
 if [[ "$mode" == full ]]; then
@@ -142,4 +146,4 @@ replication=$(compose exec -T db psql -U supabase_admin -d postgres -X -At -v ON
 echo "PASS catalog/RLS/role reachability; negative_fixture_exit=$negative_exit direct_negative_exit=$direct_exit cleanup=0"
 docker run --rm --network "${project}_private" --read-only --cap-drop ALL --memory 128m \
   --env-file "$envfile" -v "$base/drill-object.py:/drill.py:ro" --entrypoint python3 \
-  sha256:f040863673aea2570c3ff6a5c3fb4c673a016cbc5375005ad145915922b6b78a /drill.py verify
+  "$python_image" /drill.py verify

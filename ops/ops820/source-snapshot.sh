@@ -6,6 +6,10 @@ base=$(cd -- "$(dirname -- "$0")/../supabase" && pwd)
 root=$(cd -- "$base/../.." && pwd)
 snapshot=${1:?private snapshot destination required}
 [[ "$snapshot" = /* ]] || exit 66
+# AIDEV-NOTE: admit an existing immutable image before any stack or private environment is created.
+python_image=${OPS820_PYTHON_IMAGE:?pinned local Python image required}
+[[ "$python_image" =~ ^sha256:[a-f0-9]{64}$ ]] || exit 66
+docker image inspect "$python_image" >/dev/null 2>&1 || { echo 'Python image unavailable' >&2; exit 66; }
 env_source=${OPS820_PRIVATE_TEST_ENV:?private disposable test env required}
 runner=${OPS820_SOURCE_RUNNER:?reviewed source runner required}
 [[ "$env_source" = /* && -f "$env_source" && ! -L "$env_source" ]] || exit 66
@@ -56,7 +60,7 @@ SQL
 image=$(compose images -q db)
 docker run --rm --network "${project}_private" --read-only --cap-drop ALL --memory 128m \
   --env-file "$envfile" -v "$base/drill-object.py:/drill.py:ro" --entrypoint python3 \
-  sha256:f040863673aea2570c3ff6a5c3fb4c673a016cbc5375005ad145915922b6b78a /drill.py create
+  "$python_image" /drill.py create
 compose stop auth rest storage
 compose exec -T db psql -U supabase_admin -d postgres -v ON_ERROR_STOP=1 >/dev/null <<'SQL'
 DO $$ BEGIN
