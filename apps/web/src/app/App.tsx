@@ -1,4 +1,5 @@
 import { lazy } from 'react'
+import { useEditableViewport } from '@/ui/useEditableViewport'
 import { SendIntentProvider } from './sendIntent'
 import { HashRouter, Navigate, Route, Routes } from 'react-router'
 import type { MailroomGateway } from '@/data/gateway'
@@ -30,6 +31,7 @@ function ThreadRoute() {
 // AIDEV-NOTE: Hash routing keeps deep links working when Rails or the dev proxy serves one page;
 // swap to BrowserRouter once the host serves the SPA for every route.
 export function App({ gateway, featureGateways = {} }: { gateway: MailroomGateway; featureGateways?: FeatureGateways }) {
+  useEditableViewport()
   return (
     <SessionProvider gateway={gateway}>
       {/* FE-805: optional feature capabilities (Outreach reads, V2 admin) sit beside the frozen V1 gateway. */}

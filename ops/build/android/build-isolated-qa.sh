@@ -24,6 +24,7 @@ cargo test --locked
 # Release profile is required to execute cfg!(debug_assertions)==false rather than infer release rejection.
 cargo test --locked --release config::tests
 cargo tauri android init --ci --config "$android_dir/tauri.android.conf.json" --config "$native_dir/tauri.qa.conf.json"
+python3 "$android_dir/customize_generated.py" "$native_dir/gen/android"
 debug="$native_dir/gen/android/app/src/debug"
 mkdir -p "$debug/res/xml" "$debug/res/raw"
 cp "$android_dir/qa/AndroidManifest.xml" "$debug/AndroidManifest.xml"

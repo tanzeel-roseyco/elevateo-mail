@@ -1,23 +1,24 @@
 """Regression checks for the real fixture-expiry and evidence acceptance boundary."""
 import json
+from itertools import chain, repeat
 from pathlib import Path
 import tempfile
 import unittest
 from unittest.mock import Mock, patch
 import runtime
 
-CHECKS = ('login', 'inbox', 'thread', 'navigation', 'rotation', 'lifecycle', 'offline', 'logout')
+CHECKS = ('login', 'inbox', 'thread', 'navigation', 'rotation', 'lifecycle', 'offline', 'logout', 'keyboard')
 
 
 class RuntimeTest(unittest.TestCase):
-    def exercise(self, *, expiry: int = 1200, done: bool = True, result: object = None, late: bool = False) -> tuple[Mock, Path]:
+    def exercise(self, *, expiry: int = 1200, done: bool = True, result: object = None, late: bool = False, emulator_alive: bool = True, startup_alive: bool = True, launch_fails: bool = False, launch_output: str = "Status: ok\n") -> tuple[Mock, Path]:
         directory = tempfile.TemporaryDirectory()
         self.addCleanup(directory.cleanup)
         base = Path(directory.name); root = base / 'root'; control = base / 'control'; evidence = base / 'evidence'
         evidence.mkdir(); control.mkdir(); (evidence / 'emulator-ready.json').write_text('{}')
         fixture_evidence = root / 'ops/local' / ('be02-' + 'a' * 32); fixture_evidence.mkdir(parents=True)
         (fixture_evidence / 'android-ready.json').write_text(json.dumps({'status': 'READY', 'expires_at': expiry}))
-        tls = control / 'qa815-artifacts/android1031-qa-r2-94e8afbee937'; tls.mkdir(parents=True)
+        tls = control / 'selected-apk-tls'; tls.mkdir(parents=True)
         (tls / 'ca.pem').write_text('synthetic-public-ca')
         if done:
             (evidence / 'acceptance-done').touch()
@@ -26,24 +27,57 @@ class RuntimeTest(unittest.TestCase):
         def start(_args: list[str], **kwargs: object) -> Mock:
             self.assertEqual(_args[_args.index('--expect-host') + 1], 'Ubuntu-noble-latest-amd64-base')
             self.assertEqual(_args[_args.index('--android-socket-dir') + 1], str(base / 'relay'))
+            self.assertEqual(_args[_args.index('--android-certs') + 1], str(tls))
             log = kwargs['stdout']
             log.write('BE02 project=' + fixture_evidence.name + ' evidence=' + str(fixture_evidence) + '\n')
             log.flush()
             return process
+        states = chain([startup_alive], repeat(emulator_alive))
+        logged = Mock()
+        def run(args: list[str]) -> Mock:
+            if args[1] == 'inspect':
+                return Mock(stdout=json.dumps([{'State': {'Running': next(states)}}]))
+            self.assertEqual(args, ['docker', 'exec', 'owned-emulator', 'adb', '-s', 'emulator-5554',
+                                   'shell', 'am', 'start', '-W', '-n', 'com.elevateo.mail.qa/.MainActivity'])
+            if launch_fails:
+                raise RuntimeError('Activity launch failed')
+            return Mock(stdout=launch_output)
         # AIDEV-NOTE: Advance beyond the derived GUI window without sleeping or launching any process.
         with patch.object(runtime.subprocess, 'Popen', side_effect=start), \
                 patch.object(runtime.time, 'time', return_value=1000), \
                 patch.object(runtime.time, 'monotonic', side_effect=[0, 0, 1, 2, 900] if late else [0, 0, 1, 2, 3, 4, 900]):
             try:
-                runtime.exercise(root, control, evidence, 'owned-emulator', base / 'relay', Mock(), Mock())
+                runtime.exercise(root, control, evidence, 'owned-emulator', base / 'relay', tls,
+                    run, logged)
+                self.assertEqual(logged.call_args_list[0].args[0][-1], '/probe.py')
+                self.assertEqual((evidence / 'activity-launch.txt').read_text(), launch_output)
             finally:
-                self.assertTrue((fixture_evidence / 'android-stop').is_file())
+                self.assertEqual((fixture_evidence / 'android-stop').is_file(), startup_alive)
+                if not startup_alive:
+                    process.send_signal.assert_called_once_with(runtime.signal.SIGINT)
                 process.wait.assert_called_once_with(timeout=300)
-                self.assertEqual(json.loads((control / 'android1035-active.json').read_text())['status'], 'CLOSED')
+                self.assertEqual(json.loads((control / 'android-active.json').read_text())['status'], 'CLOSED')
         return process, evidence
 
-    def test_complete_eight_checks_accept(self) -> None:
+    def test_complete_nine_checks_accept(self) -> None:
         self.exercise(result={'status': 'PASSED', 'checks': dict.fromkeys(CHECKS, 'PASSED')})
+
+    def test_launch_failure_stops_fixture_and_never_accepts_result(self) -> None:
+        with self.assertRaisesRegex(RuntimeError, 'Activity launch failed'):
+            self.exercise(launch_fails=True, result={'status': 'PASSED', 'checks': dict.fromkeys(CHECKS, 'PASSED')})
+
+    def test_error_output_without_process_failure_is_rejected(self) -> None:
+        with self.assertRaisesRegex(RuntimeError, 'did not report success'):
+            self.exercise(launch_output='Error: Activity class does not exist',
+                result={'status': 'PASSED', 'checks': dict.fromkeys(CHECKS, 'PASSED')})
+
+    def test_emulator_death_rejects_even_complete_result(self) -> None:
+        with self.assertRaisesRegex(RuntimeError, 'Emulator stopped while GUI acceptance'):
+            self.exercise(emulator_alive=False, result={'status': 'PASSED', 'checks': dict.fromkeys(CHECKS, 'PASSED')})
+
+    def test_emulator_death_during_fixture_startup_stops_fixture(self) -> None:
+        with self.assertRaisesRegex(RuntimeError, 'Emulator stopped while fixture startup'):
+            self.exercise(startup_alive=False)
 
     def test_expired_fixture_rejects_even_complete_result(self) -> None:
         with self.assertRaisesRegex(RuntimeError, 'no GUI acceptance budget'):

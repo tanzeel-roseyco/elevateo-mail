@@ -10,6 +10,7 @@ from test_qa_resource_table import TABLE
 
 MANIFEST = '''<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.elevateo.mail.qa">
 <uses-permission android:name="android.permission.INTERNET" />
+<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 <uses-permission android:name="com.elevateo.mail.qa.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
 <permission android:name="com.elevateo.mail.qa.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" android:protectionLevel="signature" />
 <application android:debuggable="true" android:usesCleartextTraffic="false"
@@ -55,6 +56,12 @@ class QaPackageTest(unittest.TestCase):
                          ("</manifest>", '<action android:name="android.intent.action.VIEW" /></manifest>')]:
             with self.subTest(new=new), self.assertRaises(ValueError):
                 verify_manifest(MANIFEST.replace(old, new), BINDINGS)
+
+    def test_manifest_requires_unique_network_state_permission(self) -> None:
+        permission = '<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />'
+        for replacement in ("", permission * 2):
+            with self.subTest(replacement=replacement), self.assertRaises(ValueError):
+                verify_manifest(MANIFEST.replace(permission, replacement), BINDINGS)
 
     def test_network_rejects_broad_or_changed_trust(self) -> None:
         for old, new in [('includeSubdomains="false"', 'includeSubdomains="true"'),

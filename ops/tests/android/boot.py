@@ -36,11 +36,11 @@ def main() -> None:
     (avd / 'config.ini').write_text(''.join(key + '=' + value + '\n' for key, value in options.items()))
     with (EVIDENCE / 'emulator.log').open('w') as log:
         children: list[subprocess.Popen[str]] = []
-        # AIDEV-NOTE: Track each child immediately so partial startup failures still terminate the emulator.
+        # AIDEV-NOTE: Track children immediately; disable Vulkan as a bounded graphics-crash diagnostic.
         try:
             emulator = subprocess.Popen(['emulator', '-avd', 'ElevateoFleetQA', '-no-window', '-no-audio',
                 '-no-boot-anim', '-no-snapshot', '-gpu', 'swiftshader', '-accel', 'on', '-port', '5554',
-                '-no-metrics'], stdout=log, stderr=subprocess.STDOUT)
+                '-no-metrics', '-feature', '-Vulkan'], stdout=log, stderr=subprocess.STDOUT)
             children.append(emulator)
             relay = subprocess.Popen(['python3', '-I', '-B', '/qa/relay.py', 'container'], stdout=log, stderr=subprocess.STDOUT)
             children.append(relay)

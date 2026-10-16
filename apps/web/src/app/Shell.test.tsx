@@ -490,7 +490,7 @@ describe('simulation labelling derives from the session (ADV033)', () => {
     renderShell(createFixtureGateway())
     await screen.findByText('Synthetic organization A')
     expect(screen.getByText('Simulated local mail')).toBeTruthy()
-    expect(screen.getByText('Simulation mode: no mail is sent or received. Drafts and notes are saved on the server.')).toBeTruthy()
+    expect(await screen.findByText('Simulation mode: no mail is sent or received. Drafts and notes are saved on the server.')).toBeTruthy()
     expect(screen.queryByText(/stay on this installation/)).toBeNull()
   })
 })
