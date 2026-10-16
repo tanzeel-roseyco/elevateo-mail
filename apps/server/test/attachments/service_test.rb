@@ -70,7 +70,7 @@ class AttachmentServiceTest < Minitest::Test
   end
 
   class StorageHttpExchange
-    attr_accessor :max_retries, :open_timeout, :read_timeout, :write_timeout
+    attr_accessor :max_retries, :open_timeout, :read_timeout, :write_timeout, :ignore_eof
     attr_reader :paths
 
     def initialize(bucket_response:, object_response: nil)

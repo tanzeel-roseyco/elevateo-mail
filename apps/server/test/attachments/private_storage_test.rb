@@ -24,7 +24,7 @@ class PrivateAttachmentStorageTest < Minitest::Test
   end
 
   class Exchange
-    attr_accessor :open_timeout, :read_timeout, :write_timeout, :max_retries
+    attr_accessor :open_timeout, :read_timeout, :write_timeout, :max_retries, :ignore_eof
     attr_reader :paths
     def initialize(bucket:, object:)
       @bucket, @object, @paths = bucket, object, []

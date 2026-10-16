@@ -1,0 +1,513 @@
+{
+  "gate": "be02-d833c3471a1e41088072711a2c02ad06",
+  "source_base": "520af2d1382fac50c39e461ec36d9eb4fe4a0576",
+  "source_frozen": true,
+  "source_manifest_sha256": "3f27302260410d5f3c88e3f01cd9dd241b818f6067220329ad7e3b56020f89dd",
+  "source_files": [
+    {
+      "path": "apps/server/lib/elevateo/attachments_scan_config.rb",
+      "before_sha256": null,
+      "after_sha256": "351a2fb7f08952a22cff47223928a8619af6fb9f7ba974231654ed43d2dcaee1"
+    },
+    {
+      "path": "apps/server/lib/elevateo/attachments_scan_loop.rb",
+      "before_sha256": null,
+      "after_sha256": "21ab49080551f9e2397280366c5121fe6eff40c8485d94a8b976fbadd7856d4a"
+    },
+    {
+      "path": "apps/server/bin/attachment-scanner",
+      "before_sha256": null,
+      "after_sha256": "a7bf612d84d56a97e389482dcaf75a125045d7cd6336e88347a7e2987702ad4e"
+    },
+    {
+      "path": "apps/server/sig/attachments_scan_runtime.rbs",
+      "before_sha256": null,
+      "after_sha256": "0a6a990a1579a0171916bf530056de724ff6e8cb2e563fa1224772a656ae8989"
+    },
+    {
+      "path": "apps/server/test/attachments/scan_config_test.rb",
+      "before_sha256": null,
+      "after_sha256": "c4a5063d8fe8a03cbe976b06c460cad4683eab30bfc83beb47b8774ff3a0fd00"
+    },
+    {
+      "path": "apps/server/test/attachments/scan_loop_test.rb",
+      "before_sha256": null,
+      "after_sha256": "5d516fb6730b912f99c4e1cd5262139621b7fe5dc7ba675ceff908213559c3a3"
+    },
+    {
+      "path": "ops/tests/be02/scanner_process.rb",
+      "before_sha256": null,
+      "after_sha256": "0aba876c8fac5fd870864f7f685fad38e4c9d1a7b5a4556e090091cb6a335b10"
+    },
+    {
+      "path": "ops/tests/be02/attachment_scanner_test.rb",
+      "before_sha256": null,
+      "after_sha256": "75dccc2c465263d38c19fce54b12a6629c18a872567dfa449c47ec493b38a8db"
+    },
+    {
+      "path": "ops/tests/be02/attachment_runtime.py",
+      "before_sha256": "de1557525ce2789a43d8b2c8834a4f4ee0d1273cc767b9d7240d1d83ed442836",
+      "after_sha256": "7355c4dea5f3dfdfc5993306fde7cfcebed858cb83729fb803cbaaf2a0578a33"
+    },
+    {
+      "path": "ops/tests/be02/test_attachment_runtime.py",
+      "before_sha256": "52b6dccbcd0f278479d72191e74281eb6d5822e04c62022af0dd96bf884bda6d",
+      "after_sha256": "dfc5631e8d3c8f2347715070fd9198744d63e48218e5fb2a07ff6f7c348826d4"
+    },
+    {
+      "path": "ops/tests/be02/scanner_event_test.rb",
+      "before_sha256": null,
+      "after_sha256": "7c263b204410bafb4fec8582cb61a07d0bf8106e879782c3276dc48602af9f6a"
+    },
+    {
+      "path": "apps/server/lib/elevateo/attachments_storage.rb",
+      "before_sha256": "7720e01a7fde9348aa0ed4c279444e6d58fadc7f79d3e80a2aef024bf94fceca",
+      "after_sha256": "bfa719f778e46255bdce8a5152435028561c2b3c48465be2917059db6fde71df"
+    },
+    {
+      "path": "apps/server/sig/attachments_storage.rbs",
+      "before_sha256": "f5db3b39b430f42165d337988a7468c7359978a07b43c940582f77b0c0ce591c",
+      "after_sha256": "b4aca290f50d5b478eaaac5a050400fee32691a309393ea30211d53115cea798"
+    },
+    {
+      "path": "apps/server/test/attachments/storage_deadline_server.rb",
+      "before_sha256": null,
+      "after_sha256": "f9db2a4d8ad0f9cfa2d189af65f2e987f39f00dcd30ea6af2f3df2a2ad394f31"
+    },
+    {
+      "path": "apps/server/test/attachments/storage_deadline_test.rb",
+      "before_sha256": null,
+      "after_sha256": "a5a1d1f976648444db5f59e951181bd76409438515e7d5e02b57b1a5978da87a"
+    },
+    {
+      "path": "apps/server/test/attachments/private_storage_test.rb",
+      "before_sha256": "b30f37c9a4a7818a334b47476ce4fcdba0fd0816efa5b9996e1d29e5db511d01",
+      "after_sha256": "0fda75362068b5fd86f493773ae1351548f7c9bd6dbcf62d98d491345c377f57"
+    },
+    {
+      "path": "apps/server/test/attachments/service_test.rb",
+      "before_sha256": "98b5c7544a78f51502229e9a7e963c122e2dddc7b758994822a521864b126dff",
+      "after_sha256": "f3195c4cc06370f256d9ca444ea8acab08421245aa68fcd44e29f5cf93b72155"
+    },
+    {
+      "path": "apps/server/sig/net_http_compat.rbs",
+      "before_sha256": null,
+      "after_sha256": "5151a86f3edf1331c8d482dc18e0115705564fa12514e7d7ec21c9066900ba56"
+    }
+  ],
+  "result": {
+    "tests": "PASSED",
+    "failure": "",
+    "cleanup_passed": true,
+    "finished_at": 1792118463.1570034,
+    "source_snapshot": "source.sha256.json"
+  },
+  "parts": {
+    "standard": {
+      "tests": 1044,
+      "assertions": 12267,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0,
+      "suites": 179,
+      "log": "033-ruby-suites.log",
+      "sha256": "96136beeae37454b7bd52922bf1c619327d4007407e107e28df3d12dc2c98eec"
+    },
+    "mox": {
+      "tests": 17,
+      "assertions": 306,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0,
+      "suites": 3,
+      "log": "051-mox-composition.log",
+      "sha256": "b1903d16a27f712109625aa4e6c88c895ee393ceb69aceeaffbfa1d3e67b4026"
+    },
+    "attachment_http": {
+      "tests": 1,
+      "assertions": 45,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0,
+      "suites": 1,
+      "log": "067-attachment-acceptance.log",
+      "sha256": "31f3a796d647fed3fa2a71905f4ea48499fa881d6a386cb0e0f10e1a5a5940af"
+    },
+    "scanner_process": {
+      "tests": 4,
+      "assertions": 121,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0,
+      "suites": 1,
+      "log": "068-attachment-scanner-acceptance.log",
+      "sha256": "2e28be16c73cf32fec7d1dcc52c1fcbd706c14a4851d51c4fedbc0c04c2e73df"
+    },
+    "http": {
+      "tests": 1,
+      "assertions": 33,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0,
+      "suites": 1,
+      "log": "070-http-acceptance.log",
+      "sha256": "44220f361fb613fd71de1828a09154b10742c6a3459ab385c76c71c283420d87"
+    },
+    "worker_entry": {
+      "tests": 2,
+      "assertions": 107,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0,
+      "suites": 1,
+      "log": "075-adv806-mailpit-entry.log",
+      "sha256": "19a15cb354f34e813eb1854b0f250141fdde689ada509657e07ed557697b043a"
+    }
+  },
+  "total": {
+    "tests": 1069,
+    "assertions": 12879,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0
+  },
+  "steep_passed": true,
+  "rubocop_files": 401,
+  "mox_fixture_lint_files": 10,
+  "scanner_fixture_lint_files": 3,
+  "deferred_suites": 12,
+  "runner_checks": {
+    "tests": 108,
+    "sha256": "c4046a6b0d8649523ef12013768b6f2309c1fc48e2ef19fd2528ba8bcd3f1673",
+    "log": "docs/completion/qa815-evidence/mail1029-be02-units-r1.txt",
+    "scope": "Earlier 17-file scanner/storage overlay; orchestration unchanged since."
+  },
+  "cleanup": {
+    "removed": [
+      "container:ebdcd5481470c73d248588678f95a1369a90b2903130cdc1de3b02bce8896e51",
+      "container:4499e9f78a03fae9ca49f248c83f3420d72d168c1e73dbde43f503e37edb86eb",
+      "container:fb295f5c8bed8ffd8297ea821f3d3b2cbaa8056776dbc6916646afff9791432d",
+      "container:94f48c33933f2aba58763e4577e1fb7ea1356342146edb0e7f2e9b6f15d0127a",
+      "container:46f862820db56dc211a10d17088dc7f690243b9e313692d742dbf586f65fab45",
+      "container:91973a674d392064301031fe61fb16390c3d1da58536fe89983d08fa4ffc73e1",
+      "container:66a2769d2cc976fdd2b89bee62d03e690e629e5a95bdfb631166dbd97db1ac2f",
+      "container:e96f51a36b0889cd3ebe721ea21c016239d48fb1220ee0c6ce2f9e324cc04b62",
+      "container:332de4aa30da4cc98ebf18488b1d21524b2dba0dcc32df0a279581b4dead7937",
+      "builder-container:ebd3f5a8a1f83727f8c8d757a56038d0178cc86bf7636320bcd4506273f6c80a",
+      "builder:be02-d833c3471a1e41088072711a2c02ad06-builder",
+      "volume:be02-d833c3471a1e41088072711a2c02ad06_db-config",
+      "volume:be02-d833c3471a1e41088072711a2c02ad06_db-data",
+      "volume:buildx_buildkit_be02-d833c3471a1e41088072711a2c02ad06-builder0_state",
+      "network:02f7ef5e9097e9a746361d4ca4182c981f2d7cd3650b808aa4897735050cbbb7",
+      "image:sha256:0bff857f97f426e0d4126988c58c1e4aaebb332e633b8c73838fb98f843c31c3"
+    ],
+    "errors": [],
+    "shared_bases_retained": true
+  },
+  "independent_cleanup": {
+    "passed": true,
+    "checks": [
+      {
+        "resource": "container:ebdcd5481470c73d248588678f95a1369a90b2903130cdc1de3b02bce8896e51",
+        "absent": true
+      },
+      {
+        "resource": "container:4499e9f78a03fae9ca49f248c83f3420d72d168c1e73dbde43f503e37edb86eb",
+        "absent": true
+      },
+      {
+        "resource": "container:fb295f5c8bed8ffd8297ea821f3d3b2cbaa8056776dbc6916646afff9791432d",
+        "absent": true
+      },
+      {
+        "resource": "container:94f48c33933f2aba58763e4577e1fb7ea1356342146edb0e7f2e9b6f15d0127a",
+        "absent": true
+      },
+      {
+        "resource": "container:46f862820db56dc211a10d17088dc7f690243b9e313692d742dbf586f65fab45",
+        "absent": true
+      },
+      {
+        "resource": "container:91973a674d392064301031fe61fb16390c3d1da58536fe89983d08fa4ffc73e1",
+        "absent": true
+      },
+      {
+        "resource": "container:66a2769d2cc976fdd2b89bee62d03e690e629e5a95bdfb631166dbd97db1ac2f",
+        "absent": true
+      },
+      {
+        "resource": "container:e96f51a36b0889cd3ebe721ea21c016239d48fb1220ee0c6ce2f9e324cc04b62",
+        "absent": true
+      },
+      {
+        "resource": "container:332de4aa30da4cc98ebf18488b1d21524b2dba0dcc32df0a279581b4dead7937",
+        "absent": true
+      },
+      {
+        "resource": "builder-container:ebd3f5a8a1f83727f8c8d757a56038d0178cc86bf7636320bcd4506273f6c80a",
+        "absent": true
+      },
+      {
+        "resource": "builder:be02-d833c3471a1e41088072711a2c02ad06-builder",
+        "absent": true
+      },
+      {
+        "resource": "volume:be02-d833c3471a1e41088072711a2c02ad06_db-config",
+        "absent": true
+      },
+      {
+        "resource": "volume:be02-d833c3471a1e41088072711a2c02ad06_db-data",
+        "absent": true
+      },
+      {
+        "resource": "volume:buildx_buildkit_be02-d833c3471a1e41088072711a2c02ad06-builder0_state",
+        "absent": true
+      },
+      {
+        "resource": "network:02f7ef5e9097e9a746361d4ca4182c981f2d7cd3650b808aa4897735050cbbb7",
+        "absent": true
+      },
+      {
+        "resource": "image:sha256:0bff857f97f426e0d4126988c58c1e4aaebb332e633b8c73838fb98f843c31c3",
+        "absent": true
+      },
+      {
+        "resource": "container:be02-d833c3471a1e41088072711a2c02ad06-mox",
+        "absent": true
+      },
+      {
+        "resource": "container:be02-d833c3471a1e41088072711a2c02ad06-mox-client",
+        "absent": true
+      },
+      {
+        "resource": "file:.env.runtime",
+        "absent": true
+      },
+      {
+        "resource": "file:mox/.env.client",
+        "absent": true
+      },
+      {
+        "resource": "file:mox/fixture-credentials.json",
+        "absent": true
+      }
+    ],
+    "mutations": false
+  },
+  "wrapper": {
+    "started_at": 1792118058.1273715,
+    "pin": "clamav/clamav@sha256:705e0723f02fc13bf6e5e8a8e13a8c44420acf5e7ed06dfa2197081da00c7a73",
+    "cleanup_passed": true,
+    "pin_preexisting": false,
+    "host_free_before": 254192549888,
+    "image_id": "sha256:705e0723f02fc13bf6e5e8a8e13a8c44420acf5e7ed06dfa2197081da00c7a73",
+    "exit_code": 0,
+    "finished_at": 1792118464.906421,
+    "host_free_after": 254206836736
+  },
+  "prior_failed_gates": [
+    {
+      "attempt": 1,
+      "project": "be02-d1297f3698e942a3a7b52fbc5b824b90",
+      "result": {
+        "tests": "FAILED",
+        "failure": "RuntimeError: ruby-suites failed; see 033-ruby-suites.log",
+        "cleanup_passed": true,
+        "finished_at": 1792117278.7561219,
+        "source_snapshot": "source.sha256.json"
+      },
+      "independent_cleanup": {
+        "passed": true,
+        "checks": [
+          {
+            "resource": "container:3189c2adf0c5f9e389c831cf0e518453c49117f9eee62aaf1447070b878c31ae",
+            "absent": true
+          },
+          {
+            "resource": "container:7426dd5a28d8f1ad34272d0455c627d518e2cb61d85e9f085fd370f066354baf",
+            "absent": true
+          },
+          {
+            "resource": "container:fc1c7564231f5d7ce43cd0abd9a3585ce728e39a5aa972cb4c4cce458c779c74",
+            "absent": true
+          },
+          {
+            "resource": "builder-container:fc04588be1603fd57feeb9fb4e7ba50df143f77af60c9d7b1f9db511cb4d1d23",
+            "absent": true
+          },
+          {
+            "resource": "builder:be02-d1297f3698e942a3a7b52fbc5b824b90-builder",
+            "absent": true
+          },
+          {
+            "resource": "volume:be02-d1297f3698e942a3a7b52fbc5b824b90_db-config",
+            "absent": true
+          },
+          {
+            "resource": "volume:be02-d1297f3698e942a3a7b52fbc5b824b90_db-data",
+            "absent": true
+          },
+          {
+            "resource": "volume:buildx_buildkit_be02-d1297f3698e942a3a7b52fbc5b824b90-builder0_state",
+            "absent": true
+          },
+          {
+            "resource": "network:d140d05ba6c8894e44ab5d61e9a3f92d0fd543a06f90c1a58a700a876de6cfed",
+            "absent": true
+          },
+          {
+            "resource": "image:sha256:bb9931642b938cbd20a62fc7101883f633aff14776feb8b7035d04f392b70bfd",
+            "absent": true
+          },
+          {
+            "resource": "container:be02-d1297f3698e942a3a7b52fbc5b824b90-mox",
+            "absent": true
+          },
+          {
+            "resource": "container:be02-d1297f3698e942a3a7b52fbc5b824b90-mox-client",
+            "absent": true
+          },
+          {
+            "resource": "file:.env.runtime",
+            "absent": true
+          },
+          {
+            "resource": "file:mox/.env.client",
+            "absent": true
+          },
+          {
+            "resource": "file:mox/fixture-credentials.json",
+            "absent": true
+          }
+        ],
+        "mutations": false
+      },
+      "wrapper": {
+        "started_at": 1792116937.4974089,
+        "pin": "clamav/clamav@sha256:705e0723f02fc13bf6e5e8a8e13a8c44420acf5e7ed06dfa2197081da00c7a73",
+        "cleanup_passed": true,
+        "pin_preexisting": false,
+        "host_free_before": 254198468608,
+        "image_id": "sha256:705e0723f02fc13bf6e5e8a8e13a8c44420acf5e7ed06dfa2197081da00c7a73",
+        "exit_code": 1,
+        "finished_at": 1792117281.1396856,
+        "host_free_after": 254213304320
+      }
+    },
+    {
+      "attempt": 2,
+      "project": "be02-2511f4be8de84946a079821406133471",
+      "result": {
+        "tests": "FAILED",
+        "failure": "RuntimeError: attachment-fixture-lint failed; see 069-attachment-fixture-lint.log",
+        "cleanup_passed": true,
+        "finished_at": 1792117836.7874858,
+        "source_snapshot": "source.sha256.json"
+      },
+      "independent_cleanup": {
+        "passed": true,
+        "checks": [
+          {
+            "resource": "container:b40b6fe9f39c51e9eae1ef13a60f014d8ff89d29c149e491601965681a4c66e8",
+            "absent": true
+          },
+          {
+            "resource": "container:4d8e764b9ed935c3fffccbf7fd17fb837203f2f9ccba33c3e069098f525c5193",
+            "absent": true
+          },
+          {
+            "resource": "container:cce42d23805889c9d3dc98ad7b5546f0a72d5413249d3e1575be2acb0ed10f21",
+            "absent": true
+          },
+          {
+            "resource": "container:ef74e684bc0c394e1cde9ab3f2975d9e7aebebd11a731797a208571f71725c9e",
+            "absent": true
+          },
+          {
+            "resource": "container:21d06883b702ed4adee1bf759e23413b686116219d7478f6edcf465bc0785e9b",
+            "absent": true
+          },
+          {
+            "resource": "container:96235736212bb7f425ddc3a37d972ac3cf5e1b34696edf5eccb4ffc76ddce4d6",
+            "absent": true
+          },
+          {
+            "resource": "container:0cec877fcab4568f147424914d1437fb21fbd76014f8e80031a3992fb41c32c8",
+            "absent": true
+          },
+          {
+            "resource": "container:8f07817a2f5c284bdfcde67e7c08f5a2bde27acf161c124a9708bbd55f73dcb8",
+            "absent": true
+          },
+          {
+            "resource": "builder-container:344a0d7950d1bba03d800a82da3d553ef693900eb1c573abda7d24a10eb011cf",
+            "absent": true
+          },
+          {
+            "resource": "builder:be02-2511f4be8de84946a079821406133471-builder",
+            "absent": true
+          },
+          {
+            "resource": "volume:be02-2511f4be8de84946a079821406133471_db-config",
+            "absent": true
+          },
+          {
+            "resource": "volume:be02-2511f4be8de84946a079821406133471_db-data",
+            "absent": true
+          },
+          {
+            "resource": "volume:buildx_buildkit_be02-2511f4be8de84946a079821406133471-builder0_state",
+            "absent": true
+          },
+          {
+            "resource": "network:aba4cbed1a5f0dafbc39dfaea620b6008dc79189377a648a774cb0d8b3c22832",
+            "absent": true
+          },
+          {
+            "resource": "image:sha256:5d4ac21174fcfd3b9421da8ee3836253b0dc5da0c76b4dadc2d4f2cd86b45535",
+            "absent": true
+          },
+          {
+            "resource": "container:be02-2511f4be8de84946a079821406133471-mox",
+            "absent": true
+          },
+          {
+            "resource": "container:be02-2511f4be8de84946a079821406133471-mox-client",
+            "absent": true
+          },
+          {
+            "resource": "file:.env.runtime",
+            "absent": true
+          },
+          {
+            "resource": "file:mox/.env.client",
+            "absent": true
+          },
+          {
+            "resource": "file:mox/fixture-credentials.json",
+            "absent": true
+          }
+        ],
+        "mutations": false
+      },
+      "wrapper": {
+        "started_at": 1792117441.3600101,
+        "pin": "clamav/clamav@sha256:705e0723f02fc13bf6e5e8a8e13a8c44420acf5e7ed06dfa2197081da00c7a73",
+        "cleanup_passed": true,
+        "pin_preexisting": false,
+        "host_free_before": 254229942272,
+        "image_id": "sha256:705e0723f02fc13bf6e5e8a8e13a8c44420acf5e7ed06dfa2197081da00c7a73",
+        "exit_code": 1,
+        "finished_at": 1792117839.2637134,
+        "host_free_after": 253997301760
+      }
+    }
+  ],
+  "limits": [
+    "Held internal private-storage-test-v1 only",
+    "No production endpoint/secret loading or supervision acceptance",
+    "12 dedicated suites deferred",
+    "No frontend/native rerun",
+    "No live spend, credentials, external mail, DNS or production mutation"
+  ]
+}

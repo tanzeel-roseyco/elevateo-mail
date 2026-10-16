@@ -81,6 +81,21 @@ class AttachmentRuntimeTest(unittest.TestCase):
         receipt = json.loads((self.root / "cleanup.json").read_text())
         self.assertIn("unknown or writable source mount", receipt["errors"][0])
 
+    def test_scanner_and_lint_follow_http_acceptance(self) -> None:
+        with patch.object(self.task, "compose", return_value="") as compose:
+            runtime.run(self.task)
+        self.assertEqual([call.args[0] for call in compose.call_args_list],
+                         ["attachment-services", "attachment-acceptance", "attachment-scanner-acceptance", "attachment-fixture-lint"])
+        scanner = compose.call_args_list[2]
+        self.assertEqual(scanner.args[1][-1], "/workspace/ops/tests/be02/attachment_scanner_test.rb")
+        self.assertEqual(scanner.args[2], 240)
+
+    def test_scanner_failure_stops_lint(self) -> None:
+        with patch.object(self.task, "compose", side_effect=["", "", RuntimeError("scanner failed")]) as compose:
+            with self.assertRaisesRegex(RuntimeError, "scanner failed"):
+                runtime.run(self.task)
+        self.assertEqual(compose.call_count, 3)
+
     def test_attachment_failure_propagates(self) -> None:
         with patch.object(self.task, "compose", side_effect=["", RuntimeError("fixture failed")]) as compose:
             with self.assertRaisesRegex(RuntimeError, "fixture failed"):

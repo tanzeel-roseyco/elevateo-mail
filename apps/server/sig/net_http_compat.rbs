@@ -1,0 +1,6 @@
+module Net
+  class HTTP
+    # AIDEV-NOTE: net-http 0.6 exposes this setter; the pinned RBS library predates its public declaration.
+    def ignore_eof=: (bool) -> bool
+  end
+end

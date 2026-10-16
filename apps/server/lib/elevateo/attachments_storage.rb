@@ -3,6 +3,7 @@
 require "net/http"
 require "json"
 require "uri"
+require "timeout"
 require_relative "attachments"
 
 module Elevateo
@@ -12,6 +13,8 @@ module Elevateo
       class Unavailable < StandardError; end
       KEY = %r{\Aquarantine/(?:[0-9a-f-]{36}/[0-9a-f-]{36}|imap/[0-9a-f-]{36}/[0-9]+/[0-9]+/[0-9]+)\z}
       API_KEY = %r{\Aquarantine/[0-9a-f-]{36}/[0-9a-f-]{36}\z}
+      METADATA_SECONDS = 5.0
+      OBJECT_SECONDS = 20.0
       BUCKET = /\A[a-z0-9][a-z0-9-]{2,62}\z/
 
       def initialize(base_url:, bucket:, service_token:, process:)
@@ -70,17 +73,21 @@ module Elevateo
         http = Net::HTTP.new(@host, @port, nil)
         http.open_timeout = 3
         http.read_timeout = 5
+        # AIDEV-NOTE: A truncated Content-Length response must not be admitted as complete private data.
+        http.ignore_eof = false
         http.max_retries = 0
         req = Net::HTTP::Get.new("/bucket/#{@bucket}")
         req["Authorization"] = "Bearer #{@token}"
         body = +"".b
-        # AIDEV-NOTE: Bound the streamed metadata before retaining it; denial never proceeds to an object request.
-        http.start do |session|
-          session.request(req) do |response|
-            raise Unavailable unless response.code.to_i == 200
-            response.read_body do |chunk|
-              raise Unavailable if body.bytesize + chunk.bytesize > 4096
-              body << chunk
+        # AIDEV-NOTE: Total exchange deadlines also bound slow headers/trickles; session ensure closes the socket.
+        Timeout.timeout(METADATA_SECONDS) do
+          http.start do |session|
+            session.request(req) do |response|
+              raise Unavailable unless response.code.to_i == 200
+              response.read_body do |chunk|
+                raise Unavailable if body.bytesize + chunk.bytesize > 4096
+                body << chunk
+              end
             end
           end
         end
@@ -97,24 +104,29 @@ module Elevateo
         http.open_timeout = 3
         http.read_timeout = 15
         http.write_timeout = 15
+        # AIDEV-NOTE: A truncated Content-Length response must not be admitted as complete private data.
+        http.ignore_eof = false
         http.max_retries = 0
         req = method.new(path)
         req["Authorization"] = "Bearer #{@token}"
         req["Content-Type"] = "application/octet-stream"
         req.body = bytes if bytes
         body = +"".b
-        http.start do |session|
-          session.request(req) do |response|
-            raise Unavailable, "private object unavailable" unless expected.include?(response.code.to_i)
-            response.read_body do |chunk|
-              raise Unavailable, "private object response too large" if body.bytesize + chunk.bytesize > MAX_BYTES
-              body << chunk
+        # AIDEV-NOTE: A timed-out upload may already exist; automatic replay remains disabled.
+        Timeout.timeout(OBJECT_SECONDS) do
+          http.start do |session|
+            session.request(req) do |response|
+              raise Unavailable, "private object unavailable" unless expected.include?(response.code.to_i)
+              response.read_body do |chunk|
+                raise Unavailable, "private object response too large" if body.bytesize + chunk.bytesize > MAX_BYTES
+                body << chunk
+              end
             end
           end
         end
         body
       rescue IOError, SocketError, SystemCallError, Timeout::Error, Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError
-        raise Unavailable, "private object unavailable"
+        raise Unavailable, "private object unavailable", cause: nil
       end
     end
   end

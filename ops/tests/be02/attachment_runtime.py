@@ -50,6 +50,12 @@ def run(task: Task) -> None:
     task.compose("attachment-services", ["up", "-d", "--no-deps", *sorted(SERVICES)], 45)
     task.compose("attachment-acceptance", ["run", "--rm", "--no-deps", "fixture", "bundle", "exec", "ruby",
                   "/workspace/ops/tests/be02/attachment_http_test.rb"], 240)
+    # AIDEV-NOTE: Exercise the shipped process only after HTTP acceptance; each failure stops later evidence.
+    task.compose("attachment-scanner-acceptance", ["run", "--rm", "--no-deps", "fixture", "bundle", "exec", "ruby",
+                  "/workspace/ops/tests/be02/attachment_scanner_test.rb"], 240)
+    task.compose("attachment-fixture-lint", ["run", "--rm", "--no-deps", "fixture", "bundle", "exec", "rubocop",
+                  "--lint", "--format", "simple", "/workspace/ops/tests/be02/scanner_process.rb",
+                  "/workspace/ops/tests/be02/attachment_scanner_test.rb", "/workspace/ops/tests/be02/scanner_event_test.rb"], 90)
 
 
 def validate_container(task: Task, item: dict[str, Any]) -> None:

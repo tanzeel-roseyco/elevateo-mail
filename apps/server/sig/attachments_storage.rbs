@@ -10,6 +10,8 @@ module Elevateo
       KEY: Regexp
       API_KEY: Regexp
       BUCKET: Regexp
+      METADATA_SECONDS: Float
+      OBJECT_SECONDS: Float
       @host: String
       @port: Integer
       @bucket: String

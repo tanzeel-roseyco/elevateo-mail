@@ -1,0 +1,48 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require "json"
+require "active_record"
+require_relative "../lib/elevateo/attachments_scan_config"
+require_relative "../lib/elevateo/attachments_scan_loop"
+require_relative "../lib/elevateo/attachments_scan"
+require_relative "../lib/elevateo/attachments_repository"
+
+# AIDEV-NOTE: Scanner I/O runs outside a DB transaction; one connection cannot starve API or IMAP worker pools.
+class AttachmentScannerConnection < ActiveRecord::Base
+  self.abstract_class = true
+end
+
+stopping = false
+%w[INT TERM].each { |signal| Signal.trap(signal) { stopping = true } }
+exit_code = 0
+begin
+  raise ArgumentError, "invalid scanner arguments" unless [["--once"], ["--run"]].include?(ARGV)
+  settings = Elevateo::Attachments::ScanConfig.load!
+  cfg = settings.runtime
+  AttachmentScannerConnection.establish_connection(adapter: "postgresql", host: cfg.db_host, database: cfg.db_name,
+    username: cfg.db_role, password: cfg.db_password, pool: 1, checkout_timeout: 5, connect_timeout: 5,
+    variables: { statement_timeout: "3s", lock_timeout: "1s" })
+  scan = lambda do
+    AttachmentScannerConnection.connection_pool.with_connection do |connection|
+      raise Elevateo::ConfigError, "scanner database role mismatch" unless
+        connection.select_value("SELECT session_user") == "elevateo_worker"
+      Elevateo::Attachments::ScanService.new(repository: Elevateo::Attachments::Repository.new(connection: connection),
+        storage: settings.storage, scanner: Elevateo::Attachments::ClamdScanner.new).run_batch(limit: 1)
+    end
+  end
+  loop = Elevateo::Attachments::ScanLoop.new(scan: scan, logger: ->(line) { $stdout.puts(line); $stdout.flush })
+  outcome = loop.run(stop: -> { stopping }, once: ARGV == ["--once"])
+  exit_code = 1 if [:failed, :held].include?(outcome)
+rescue StandardError
+  warn JSON.generate(event: "attachment_scanner.startup_failed", simulated: true)
+  exit_code = 1
+ensure
+  begin
+    AttachmentScannerConnection.remove_connection
+  rescue StandardError
+    warn JSON.generate(event: "attachment_scanner.cleanup_failed", simulated: true)
+    exit_code = 1
+  end
+end
+exit(exit_code)
