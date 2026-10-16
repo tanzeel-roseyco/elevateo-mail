@@ -22,6 +22,7 @@ from adv815_runtime import run_expiry
 from adv808_auth_attestation import AUTH_PIN, attest_with_controls
 import attachment_runtime
 import mox_runtime
+import android_fixture
 
 
 def source_hashes(root: Path, acceptance: bool = False) -> dict[str, str]:
@@ -30,6 +31,8 @@ def source_hashes(root: Path, acceptance: bool = False) -> dict[str, str]:
                "ops/mailserver"]
     if acceptance:
         files.extend([root / "ops/compose.acceptance-test.yaml", root / ".dockerignore"])
+        if (root / "ops/compose.android-test.yaml").is_file():
+            files.append(root / "ops/compose.android-test.yaml")
         folders.extend(["apps/web", "tests/acceptance", "ops/acceptance"])
     for folder in folders:
         files.extend(path for path in (root / folder).rglob("*") if path.is_file()
@@ -121,7 +124,10 @@ def main() -> int:
     parser.add_argument("--attachments", action="store_true", help="Real private Storage/scanner/download acceptance")
     parser.add_argument("--mox", action="store_true", help="Private real Mox/PostgreSQL worker acceptance")
     add_arguments(parser)
+    android_fixture.add_arguments(parser)
     args = parser.parse_args()
+    android_fixture.validate_arguments(args)
+    web_fixture = args.acceptance or args.android_fixture
     if args.mox and (args.acceptance or args.adv808_auth_policy or args.adv815_expiry):
         parser.error("Mox requires its own disposable job")
     if args.attachments and (args.acceptance or args.adv808_auth_policy or args.adv815_expiry):
@@ -166,18 +172,21 @@ def main() -> int:
 
     signal.signal(signal.SIGTERM, interrupted)
     signal.signal(signal.SIGINT, interrupted)
+    # AIDEV-NOTE: A disconnected foreground SSH session must finalize; detached fleet runs retain their TTL.
+    signal.signal(signal.SIGHUP, interrupted)
     try:
         if args.attachments:
             attachment_runtime.configure(task)
         # AIDEV-NOTE: Source is mounted in runtime containers; reject local dotenv secrets before build or mount.
         for folder in ("apps/server", "contracts", "ops/tests/be02", "ops/tests/be02-guards",
                        "ops/mailserver",
-                       *(["apps/web", "tests/acceptance", "ops/acceptance"] if args.acceptance else [])):
+                       *(["apps/web", "tests/acceptance", "ops/acceptance"] if web_fixture else [])):
             if any(path.is_file() and not path.name.endswith((".example", ".sample"))
                    for path in (root / folder).rglob(".env*")):
                 raise RuntimeError("source mount contains a local dotenv file")
         acceptance = Acceptance(task, args) if args.acceptance else None
-        original = source_hashes(root, args.acceptance)
+        android = android_fixture.AndroidFixture(task, args) if args.android_fixture else None
+        original = source_hashes(root, web_fixture)
         task.write("source.sha256.json", original)
         task.write("run.json", {"project": project, "host": args.expect_host, "context": args.context,
                                 "status": "RUNNING", "source": str(root), "started_at": time.time()})
@@ -232,8 +241,8 @@ def main() -> int:
         task.write("server-image.json", {"id": image["Id"], "built_for_task": not bool(args.server_image)})
         task.compose("migrate", ["run", "--rm", "--no-deps", "migrate"], 90)
         # AIDEV-NOTE: Readiness is not authenticated HTTP acceptance; report every diagnostic skip.
-        if args.acceptance_diagnostic:
-            task.write("diagnostic-scope.json", {"mode": "DIAGNOSTIC", "unexecuted_gates": ["Minitest", "Steep", "RuboCop", "http-acceptance", "worker-drain"],
+        if args.acceptance_diagnostic or args.android_fixture:
+            task.write("diagnostic-scope.json", {"mode": "ANDROID_FIXTURE" if args.android_fixture else "DIAGNOSTIC", "unexecuted_gates": ["Minitest", "Steep", "RuboCop", "http-acceptance", "worker-drain"],
                 "authority": args.acceptance_dispatch_id, "full_acceptance": "NOT_RUN"})
         else:
             print("Running isolated Minitest suites and Steep", flush=True)
@@ -249,41 +258,45 @@ def main() -> int:
         if acceptance:
             print("Running selected real-app acceptance lanes before HTTP fixtures", flush=True)
             acceptance_before_http(task, acceptance)
-        task.compose("api-start", ["up", "-d", "api"], 30)
-        task.runtime_credentials()
-        task.wait_http()
-        if args.attachments:
-            attachment_runtime.run(task)
-        if not args.acceptance_diagnostic:
-            print("Running real Auth/Mailpit/API HTTP acceptance", flush=True)
-            task.compose("http-acceptance", ["run", "--rm", "--no-deps", "fixture"], 180)
-        task.compose("worker-start", ["up", "-d", "worker"], 30)
-        task.runtime_credentials()
-        if not args.acceptance_diagnostic:
-            task.compose("worker-drain", ["run", "--rm", "--no-deps", "fixture", "bundle", "exec", "ruby",
-                                         "/workspace/ops/tests/be02/worker_check.rb"], 45)
-        if args.adv808_auth_policy:
-            task.compose("adv808-auth-policy", ["run", "--rm", "--no-deps", "fixture", "bundle", "exec", "ruby",
-                         "/workspace/ops/tests/be02/adv808_auth_policy.rb"], 240)
-        if not args.acceptance_diagnostic:
-            task.compose("adv806-mailpit-entry", ["run", "--rm", "--no-deps", "fixture", "bundle", "exec", "ruby",
-                         "/workspace/ops/tests/be02/adv806_mailpit_entry_test.rb"], 180)
-        if args.adv815_expiry:
-            run_expiry(task)
-        if source_hashes(root, args.acceptance) != original:
+        if android:
+            android.run()
+            status = "FIXTURE_CLOSED"
+        else:
+            task.compose("api-start", ["up", "-d", "api"], 30)
+            task.runtime_credentials()
+            task.wait_http()
+            if args.attachments:
+                attachment_runtime.run(task)
+            if not args.acceptance_diagnostic:
+                print("Running real Auth/Mailpit/API HTTP acceptance", flush=True)
+                task.compose("http-acceptance", ["run", "--rm", "--no-deps", "fixture"], 180)
+            task.compose("worker-start", ["up", "-d", "worker"], 30)
+            task.runtime_credentials()
+            if not args.acceptance_diagnostic:
+                task.compose("worker-drain", ["run", "--rm", "--no-deps", "fixture", "bundle", "exec", "ruby",
+                                             "/workspace/ops/tests/be02/worker_check.rb"], 45)
+            if args.adv808_auth_policy:
+                task.compose("adv808-auth-policy", ["run", "--rm", "--no-deps", "fixture", "bundle", "exec", "ruby",
+                             "/workspace/ops/tests/be02/adv808_auth_policy.rb"], 240)
+            if not args.acceptance_diagnostic:
+                task.compose("adv806-mailpit-entry", ["run", "--rm", "--no-deps", "fixture", "bundle", "exec", "ruby",
+                             "/workspace/ops/tests/be02/adv806_mailpit_entry_test.rb"], 180)
+            if args.adv815_expiry:
+                run_expiry(task)
+            status = "DIAGNOSTIC_COMPLETED" if args.acceptance_diagnostic else "PASSED"
+        if source_hashes(root, web_fixture) != original:
             raise RuntimeError("source changed during execution; evidence cannot attest one snapshot")
-        status = "DIAGNOSTIC_COMPLETED" if args.acceptance_diagnostic else "PASSED"
     except Exception as error:
         failure = f"{type(error).__name__}: {error}"
     finally:
-        status, failure, clean = finalize(task, args.acceptance, armed, original, status, failure)
+        status, failure, clean = finalize(task, web_fixture, armed, original, status, failure)
         try:
             task.docker("space-after", ["system", "df"])
             task.write("host-space-after.json", {"free_bytes": os.statvfs(evidence).f_bavail * os.statvfs(evidence).f_frsize})
         except Exception:
             print("Space measurement unavailable; cleanup.json remains authoritative", flush=True)
     print(f"tests={status} cleanup={'PASSED' if clean else 'FAILED'} evidence={evidence}", flush=True)
-    return 0 if status in {"PASSED", "DIAGNOSTIC_COMPLETED"} and clean else 1
+    return 0 if status in {"PASSED", "DIAGNOSTIC_COMPLETED", "FIXTURE_CLOSED"} and clean else 1
 
 
 if __name__ == "__main__":

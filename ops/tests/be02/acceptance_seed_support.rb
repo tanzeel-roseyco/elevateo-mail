@@ -22,12 +22,13 @@ module Be02Acceptance
     raise Failure, code unless condition
   end
 
-  # AIDEV-NOTE: This privileged fixture only accepts the isolated fleet service names and a fresh private output mount.
+  # AIDEV-NOTE: Android pairs its explicit engine with the fixed HTTPS origin; browser fixtures retain their HTTP origin.
   class Runtime
     attr_reader :seed, :passwords, :presentation
 
     def initialize
-      Be02Acceptance.check(ENV.fetch("ELEVATEO_BROWSER_ORIGIN") == "http://app.test" &&
+      Be02Acceptance.check(ENV.fetch("ELEVATEO_BROWSER_ORIGIN") == (ENV.fetch("BE02_ACCEPTANCE_BROWSER") == "android_webview" ?
+        "https://elevateo.qa.internal" : "http://app.test") &&
         ENV.fetch("ELEVATEO_AUTH_URL") == "http://auth:9999" && ENV.fetch("ELEVATEO_MODE") == "local" &&
         ENV.fetch("ELEVATEO_OUTBOUND_HOLD") == "true", "isolated_environment_required")
       @signing_key = ENV.fetch("BE02_FIXTURE_SIGNING_SECRET")
@@ -60,7 +61,7 @@ module Be02Acceptance
         "dataset_id" => SecureRandom.uuid, "nonce" => ENV.fetch("BE02_ACCEPTANCE_NONCE") }
       identity = @seed.fetch("fixture_identity")
       Be02Acceptance.check(%w[run_id dispatch_id].all? { |key| /\A[A-Za-z0-9][A-Za-z0-9_-]{0,79}\z/.match?(identity.fetch(key)) } &&
-        %w[chromium firefox webkit chrome].include?(identity.fetch("engine")) &&
+        %w[chromium firefox webkit chrome android_webview].include?(identity.fetch("engine")) &&
         /\A[0-9a-f]{64}\z/.match?(identity.fetch("nonce")) &&
         (identity.fetch("case_id") == "shared-diagnostic" ||
           /\ASCN-[A-Z][A-Z0-9]{1,19}-\d{3}-(P|F1|F2)\z/.match?(identity.fetch("case_id"))), "fixture_identity_invalid")

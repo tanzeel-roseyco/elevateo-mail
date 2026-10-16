@@ -1,0 +1,85 @@
+# AIDEV-NOTE: Only the fixed CONNECT endpoint is published on loopback; all app services stay internal.
+x-android-edge: &edge
+  image: ${BE02_ACCEPTANCE_WEB_IMAGE:?}
+  pull_policy: never
+  user: "${BE02_ACCEPTANCE_UID:?}:${BE02_ACCEPTANCE_GID:?}"
+  read_only: true
+  init: true
+  cap_drop: [ALL]
+  security_opt: [no-new-privileges:true]
+  networks: [isolated]
+  mem_limit: 128m
+  cpus: 1
+  pids_limit: 64
+  logging: {driver: none}
+services:
+  api:
+    environment:
+      ELEVATEO_BROWSER_ORIGIN: https://elevateo.qa.internal
+      ELEVATEO_COOKIE_SECURE: "true"
+      ELEVATEO_LOCAL_HTTP: !reset null
+    logging: {driver: none}
+  worker:
+    environment:
+      ELEVATEO_BROWSER_ORIGIN: https://elevateo.qa.internal
+      ELEVATEO_COOKIE_SECURE: "true"
+      ELEVATEO_LOCAL_HTTP: !reset null
+    logging: {driver: none}
+  auth:
+    environment:
+      API_EXTERNAL_URL: https://elevateo.qa.internal
+      GOTRUE_SITE_URL: https://elevateo.qa.internal
+      GOTRUE_URI_ALLOW_LIST: https://elevateo.qa.internal/auth/complete
+    logging: {driver: none}
+  acceptance-seed:
+    extends: {file: compose.be02-test.yaml, service: fixture}
+    user: "${BE02_ACCEPTANCE_UID:?}:${BE02_ACCEPTANCE_GID:?}"
+    # AIDEV-NOTE: Replace inherited image-UID tmpfs ownership without changing the base fixture service.
+    tmpfs: !override
+      - /workspace/apps/server/tmp:uid=${BE02_ACCEPTANCE_UID:?},gid=${BE02_ACCEPTANCE_GID:?},mode=1770
+      - /workspace/apps/server/log:uid=${BE02_ACCEPTANCE_UID:?},gid=${BE02_ACCEPTANCE_GID:?},mode=1770
+      - /tmp:rw,nosuid,nodev,size=512m,mode=1777
+    environment:
+      BE02_ACCEPTANCE_RUN_ID: ${BE02_ACCEPTANCE_RUN_ID:?}
+      BE02_ACCEPTANCE_DISPATCH_ID: ${BE02_ACCEPTANCE_DISPATCH_ID:?}
+      BE02_ACCEPTANCE_BROWSER: android_webview
+      BE02_ACCEPTANCE_NONCE: ${BE02_ACCEPTANCE_NONCE:?}
+      BE02_ACCEPTANCE_VARIANT: multi_mailbox
+      BE02_ACCEPTANCE_CASE_ID: ${BE02_ACCEPTANCE_CASE_ID:-shared-diagnostic}
+      ELEVATEO_MODE: local
+      ELEVATEO_OUTBOUND_HOLD: "true"
+      ELEVATEO_BROWSER_ORIGIN: https://elevateo.qa.internal
+      ELEVATEO_COOKIE_SECURE: "true"
+      ELEVATEO_LOCAL_HTTP: !reset null
+      ELEVATEO_AUTH_URL: http://auth:9999
+      ELEVATEO_SESSION_KEY_BASE64: ${ELEVATEO_SESSION_KEY_BASE64:?}
+    volumes:
+      - ${BE02_SOURCE:?}/tests/acceptance/shared/seed-contract.json:/acceptance-contract/seed-contract.json:ro
+      - ${BE02_ACCEPTANCE_PRIVATE:?}:/acceptance
+    command: [bundle, exec, ruby, /workspace/ops/tests/be02/acceptance_seed.rb]
+    logging: {driver: none}
+  android-web:
+    <<: *edge
+    sysctls: {net.ipv4.ip_unprivileged_port_start: "0"}
+    networks:
+      isolated:
+        aliases: [elevateo.qa.internal]
+    volumes:
+      - ${BE02_ANDROID_TLS:?}/ca.pem:/run/android-tls/ca.pem:ro
+      - ${BE02_ANDROID_TLS:?}/server.pem:/run/android-tls/server.pem:ro
+      - ${BE02_ANDROID_TLS:?}/server.key:/run/android-tls/server.key:ro
+    command: [node, android-main.js]
+  android-connect:
+    <<: *edge
+    ports: ["127.0.0.1:19443:19443"]
+    command: [node, android-connect-main.js]
+  android-probe:
+    <<: *edge
+    image: python@sha256:48a11b7ba705fd53bf15248d1f94d36c39549903c5d59edcfa2f3f84126e7b44
+    # AIDEV-NOTE: This one-shot probe proves the actual host loopback binding; it never receives app credentials.
+    networks: !reset []
+    network_mode: host
+    volumes:
+      - ${BE02_ANDROID_TLS:?}/ca.pem:/run/android-tls/ca.pem:ro
+      - ${BE02_SOURCE:?}/ops/tests/be02/android_connect_probe.py:/probe.py:ro
+    command: [python3, -I, -B, /probe.py]

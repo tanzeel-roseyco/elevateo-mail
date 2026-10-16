@@ -1,7 +1,7 @@
 // AIDEV-NOTE: Validate the raw target before URL normalization can erase traversal evidence.
 export type Route = { kind: 'api' | 'static'; path: string } | { kind: 'reject'; status: number };
-export function routeRequest(host: string | undefined, target: string): Route {
-  if (host !== 'app.test') return { kind: 'reject', status: 421 };
+export function routeRequest(host: string | undefined, target: string, expectedHost = 'app.test'): Route {
+  if (host !== expectedHost) return { kind: 'reject', status: 421 };
   if (target.length > 8192) return { kind: 'reject', status: 414 };
   if (!target.startsWith('/') || target.startsWith('//') || /[\x00-\x20\x7f#\\]/.test(target))
     return { kind: 'reject', status: 400 };

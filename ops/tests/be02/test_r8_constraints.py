@@ -35,21 +35,22 @@ class R8ConstraintsTest(unittest.TestCase):
             self.assertEqual(hashlib.sha256((ROOT / name).read_bytes()).hexdigest(), digest)
 
     def phase(self, diagnostic, acceptance=None, acceptance_gate=None, attachments=False, attachment_probe=None,
-              mox=False, mox_probe=None):
+              mox=False, mox_probe=None, android=None):
         # AIDEV-NOTE: Execute actual phase branches with opt-in gates, without secrets or Docker startup.
         tree = ast.parse((ROOT / "ops/tests/be02/run.py").read_text())
         main = next(node for node in tree.body if isinstance(node, ast.FunctionDef) and node.name == "main")
         body = next(node.body for node in main.body if isinstance(node, ast.Try))
         start = next(i for i, node in enumerate(body) if isinstance(node, ast.If)
-                     and ast.unparse(node.test) == "args.acceptance_diagnostic")
+                     and ast.unparse(node.test) == "args.acceptance_diagnostic or args.android_fixture")
         end = next(i for i in range(start, len(body)) if isinstance(body[i], ast.If)
                    and ast.unparse(body[i].test).startswith("source_hashes("))
         task, output = Mock(), Mock()
         module = ast.Module(body=body[start:end], type_ignores=[])
         exec(compile(module, "run.py-phase", "exec"), {
             "args": SimpleNamespace(acceptance_diagnostic=diagnostic, acceptance_dispatch_id="synthetic",
-                                    adv808_auth_policy=False, adv815_expiry=False, attachments=attachments, mox=mox),
-            "task": task, "print": output, "acceptance": acceptance,
+                                    adv808_auth_policy=False, adv815_expiry=False, attachments=attachments, mox=mox,
+                                    android_fixture=android is not None),
+            "task": task, "print": output, "acceptance": acceptance, "android": android,
             "acceptance_before_http": acceptance_gate,
             "attachment_runtime": SimpleNamespace(run=attachment_probe, SERVICES=SERVICES),
             "mox_runtime": SimpleNamespace(run=mox_probe),
@@ -83,6 +84,25 @@ class R8ConstraintsTest(unittest.TestCase):
         self.assertEqual([call.args[0] for call in task.compose.call_args_list], ["api-start", "worker-start"])
         task.wait_http.assert_called_once_with()
         output.assert_not_called()
+
+    def test_android_fixture_reports_skips_without_running_standard_gates(self):
+        android = Mock()
+        task, output = self.phase(False, android=android)
+        android.run.assert_called_once_with()
+        task.compose.assert_not_called()
+        task.wait_http.assert_not_called()
+        task.write.assert_called_once_with("diagnostic-scope.json", {
+            "mode": "ANDROID_FIXTURE", "unexecuted_gates": ["Minitest", "Steep", "RuboCop", "http-acceptance", "worker-drain"],
+            "authority": "synthetic", "full_acceptance": "NOT_RUN",
+        })
+        output.assert_not_called()
+
+    def test_android_fixture_failure_cannot_fall_through_to_standard_gates(self):
+        android = Mock()
+        android.run.side_effect = RuntimeError("CONNECT readiness failed")
+        with self.assertRaisesRegex(RuntimeError, "CONNECT readiness failed"):
+            self.phase(False, android=android)
+        android.run.assert_called_once_with()
 
     def test_full_run_executes_and_announces_http_without_skip_receipt(self):
         task, output = self.phase(False)

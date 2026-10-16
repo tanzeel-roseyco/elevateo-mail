@@ -11,6 +11,7 @@ import stat
 import secrets
 import time
 from acceptance_cleanup import acceptance_owner, validate_container
+from acceptance_fixture import seed_application, start_service
 from acceptance_observer_bridge import ObserverBridge
 from docker_task import Task
 
@@ -161,18 +162,7 @@ class Acceptance:
         self.task.env_file.write_text(self.base_env + "".join(f"{key}={value}\n" for key, value in values.items()))
 
     def start(self, service: str) -> str:
-        if any(item["Config"]["Labels"].get("com.docker.compose.service") == service
-               for item in self.task.project_containers()):
-            raise RuntimeError("acceptance service already exists; retain it for inspected final cleanup")
-        self.task.compose("acceptance-create", ["create", service], 45, quiet=True)
-        items = [item for item in self.task.project_containers()
-                 if item["Config"]["Labels"].get("com.docker.compose.service") == service]
-        if len(items) != 1:
-            raise RuntimeError("acceptance service identity missing or ambiguous")
-        validate_container(self.task, items[0])
-        identity: str = items[0]["Id"]
-        self.task.docker("acceptance-start", ["container", "start", identity], quiet=True)
-        return identity
+        return start_service(self.task, service)
 
     def execute(self, identity: str, command: list[str], seconds: int = 90) -> str:
         # AIDEV-NOTE: Docker exec does not inherit run.py's umask; browser evidence must be private at creation.
@@ -314,27 +304,7 @@ class Acceptance:
         task.compose_files.append(task.root / "ops/compose.acceptance-test.yaml")
         self.environment(0)
         task.compose("acceptance-config", ["config", "--quiet"], quiet=True)
-        # AIDEV-NOTE: Keep application consumers stopped until the seed publishes its complete private manifest.
-        task.compose("acceptance-consumers-stop", ["stop", "-t", "10", "api", "worker"], 35, quiet=True)
-        task.compose("acceptance-origin", ["up", "-d", "--no-deps", "--force-recreate", "--wait",
-                     "--wait-timeout", "120", "auth"], 140, quiet=True)
-        task.runtime_credentials()
-        network = task.inspect("network", [task.project + "_isolated"])[0]
-        if not network["Internal"] or network.get("Labels", {}).get("elevateo.be02.project") != task.project:
-            raise RuntimeError("acceptance requires the task's internal network")
-        seed = self.start("acceptance-seed")
-        code = task.docker("acceptance-seed-wait", ["container", "wait", seed], 180).strip()
-        if code != "0":
-            raise RuntimeError("supported Auth seed did not complete")
-        validate_container(task, task.inspect("container", [seed])[0])
-        task.docker("acceptance-seed-remove", ["container", "rm", seed])
-        for name in ("seed.json", "acceptance-credentials.json"):
-            info = (self.private / name).lstat()
-            if (not stat.S_ISREG(info.st_mode) or info.st_uid != uid or info.st_gid != gid
-                    or stat.S_IMODE(info.st_mode) != 0o600
-                    or info.st_nlink != 1 or not 0 < info.st_size <= 65536):
-                raise RuntimeError("seed output private-file contract mismatch")
-        task.write("acceptance-seed.sha256.json", {"seed.json": hashlib.sha256((self.private / "seed.json").read_bytes()).hexdigest()})
+        seed_application(task, self.private)
         if self.observer_enabled:
             setup = self.start("acceptance-observer-setup")
             try:

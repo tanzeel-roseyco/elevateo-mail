@@ -12,14 +12,16 @@ WORKDIR /build/tests/acceptance
 COPY tests/acceptance/package.json tests/acceptance/package-lock.json ./
 RUN npm ci --no-audit --no-fund
 COPY tests/acceptance/proxy/ ./proxy/
-RUN ./node_modules/.bin/tsc --target ES2023 --module NodeNext --moduleResolution NodeNext --strict --noUncheckedIndexedAccess --exactOptionalPropertyTypes --noImplicitOverride --noFallthroughCasesInSwitch --useUnknownInCatchVariables --verbatimModuleSyntax --types node --rootDir proxy --outDir dist proxy/main.ts proxy/proxy.spec.ts
+RUN ./node_modules/.bin/tsc --target ES2023 --module NodeNext --moduleResolution NodeNext --strict --noUncheckedIndexedAccess --exactOptionalPropertyTypes --noImplicitOverride --noFallthroughCasesInSwitch --useUnknownInCatchVariables --verbatimModuleSyntax --types node --rootDir proxy --outDir dist proxy/main.ts proxy/proxy.spec.ts proxy/android-main.ts proxy/android-connect-main.ts proxy/android-edge.spec.ts proxy/android-readiness.ts
 
 FROM node:24.21.0-bookworm-slim@sha256:d6aa754f16b3197301076f047b5def2f02ea1dbbc2ca920407d46d7ec7f87b20
 WORKDIR /srv/proxy
 COPY --from=frontend /build/apps/web/dist/ /srv/web/
 COPY --from=proxy-build /build/tests/acceptance/dist/main.js /build/tests/acceptance/dist/server.js /build/tests/acceptance/dist/routing.js /build/tests/acceptance/dist/static.js /build/tests/acceptance/dist/upstream.js ./
+COPY --from=proxy-build /build/tests/acceptance/dist/edge-profile.js /build/tests/acceptance/dist/android-tls.js /build/tests/acceptance/dist/android-main.js /build/tests/acceptance/dist/android-connect.js /build/tests/acceptance/dist/android-connect-main.js ./
+COPY --from=proxy-build /build/tests/acceptance/dist/android-readiness.js /build/tests/acceptance/dist/readiness.js ./
 COPY --from=proxy-build /build/tests/acceptance/package.json ./package.json
 USER node
-# AIDEV-NOTE: Root supplies internal DNS app.test, no published ports, and unprivileged_port_start <=80.
+# AIDEV-NOTE: Compose selects HTTP or private Android TLS; only its fixed CONNECT gateway publishes a loopback port.
 EXPOSE 80
 CMD ["node", "main.js"]

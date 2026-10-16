@@ -14,6 +14,9 @@ def validate_policy(task: Task, service: str, host: dict[str, Any]) -> None:
     memory, cpus, pids = {"acceptance-observer": (128 * 1024**2, 1_000_000_000, 64),
                           "acceptance-observer-setup": (768 * 1024**2, 1_000_000_000, 256),
                           "acceptance-web": (128 * 1024**2, 1_000_000_000, 64),
+                          "android-web": (128 * 1024**2, 1_000_000_000, 64),
+                          "android-connect": (128 * 1024**2, 1_000_000_000, 64),
+                          "android-probe": (128 * 1024**2, 1_000_000_000, 64),
                           "acceptance-invitation": (768 * 1024**2, 1_000_000_000, 256),
                           "acceptance-seed": (768 * 1024**2, 1_000_000_000, 256),
                           "acceptance-browser": (3 * 1024**3, 2_000_000_000, 512),
@@ -23,7 +26,7 @@ def validate_policy(task: Task, service: str, host: dict[str, Any]) -> None:
         if type(value) is not int or value != ceiling:
             raise RuntimeError("acceptance service resource ceiling mismatch")
     uid, gid = acceptance_owner(task)
-    tmpfs = {} if service == "acceptance-web" else {"/tmp": "rw,nosuid,nodev,size=512m,mode=1777"}
+    tmpfs = {} if service in {"acceptance-web", "android-web", "android-connect", "android-probe"} else {"/tmp": "rw,nosuid,nodev,size=512m,mode=1777"}
     if service in {"acceptance-seed", "acceptance-invitation", "acceptance-observer-setup"}:
         tmpfs.update({f"/workspace/apps/server/{name}": f"uid={uid},gid={gid},mode=1770"
                       for name in ("tmp", "log")})
@@ -60,11 +63,20 @@ def validate_container(task: Task, item: dict[str, Any]) -> None:
     host, config = item["HostConfig"], item["Config"]
     uid, gid = acceptance_owner(task)
     expected_user = {"acceptance-web": "10001:10001", "selenium": "1200:1201"}.get(service, f"{uid}:{gid}")
+    # AIDEV-NOTE: Only Android CONNECT exposes one loopback port; HTTP/browser services remain unpublished.
+    ports = {"19443/tcp": [{"HostIp": "127.0.0.1", "HostPort": "19443"}]} if service == "android-connect" else {}
+    network = "host" if service == "android-probe" else task.project + "_isolated"
+    # AIDEV-NOTE: The host-network exception is a fixed one-shot probe with only code and public CA mounts.
+    if service == "android-probe" and (config.get("Cmd") != ["python3", "-I", "-B", "/probe.py"] or config.get("Entrypoint")):
+        raise RuntimeError("Android probe command mismatch")
     if (config["User"] != expected_user or not host["ReadonlyRootfs"] or host.get("Privileged")
-            or host.get("CapAdd") or "ALL" not in host.get("CapDrop", []) or host.get("PortBindings")
-            or host.get("NetworkMode") != task.project + "_isolated"
+            or host.get("CapAdd") or "ALL" not in host.get("CapDrop", []) or (host.get("PortBindings") or {}) != ports
+            or host.get("NetworkMode") != network
             or host.get("LogConfig", {}).get("Type") != "none"):
         raise RuntimeError("acceptance container isolation mismatch")
+    if (service == "android-connect" and item.get("State", {}).get("Running")
+            and item.get("NetworkSettings", {}).get("Ports") != ports):
+        raise RuntimeError("Android CONNECT live port binding mismatch")
     if item["Image"] != task.acceptance_images[service]:
         raise RuntimeError("acceptance image identity mismatch")
     validate_policy(task, service, host)

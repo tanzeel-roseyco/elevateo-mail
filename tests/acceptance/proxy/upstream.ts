@@ -1,6 +1,8 @@
 import { request } from 'node:http';
 import type { IncomingHttpHeaders, IncomingMessage, ServerResponse } from 'node:http';
 import { safeError } from './static.js';
+import { HTTP_EDGE } from './edge-profile.js';
+import type { EdgeProfile } from './edge-profile.js';
 
 export const MAX_BODY_BYTES = 1024 * 1024;
 function endToEnd(headers: IncomingHttpHeaders): IncomingHttpHeaders {
@@ -12,7 +14,7 @@ function endToEnd(headers: IncomingHttpHeaders): IncomingHttpHeaders {
 }
 // AIDEV-NOTE: Buffer only a bounded body so oversized writes never partially reach the real API.
 export async function proxyApi(input: IncomingMessage, output: ServerResponse, target: string,
-  upstream: URL, deadlineMs: number): Promise<void> {
+  upstream: URL, deadlineMs: number, edge: EdgeProfile = HTTP_EDGE): Promise<void> {
   const chunks: Buffer[] = [];
   let bytes = 0;
   for await (const chunk of input) {
@@ -23,11 +25,12 @@ export async function proxyApi(input: IncomingMessage, output: ServerResponse, t
   }
   if (output.destroyed) return;
   const headers = endToEnd(input.headers);
-  // AIDEV-NOTE: Only this private HTTP edge supplies forwarding identity; browser Origin/Cookie remain unchanged.
-  headers.host = 'app.test';
-  headers['x-forwarded-host'] = 'app.test';
-  headers['x-forwarded-proto'] = 'http';
-  headers['x-forwarded-port'] = '80';
+  // AIDEV-NOTE: Edge identity is fixed; preserve browser Origin/Cookie and collapse fixture clients to one IP.
+  headers.host = edge.host;
+  headers['x-forwarded-host'] = edge.host;
+  headers['x-forwarded-proto'] = edge.scheme;
+  headers['x-forwarded-port'] = edge.port;
+  headers['x-forwarded-for'] = '127.0.0.1';
   headers['content-length'] = String(bytes);
   const outgoing = request({ hostname: upstream.hostname, port: upstream.port, path: target,
     method: input.method, headers, agent: false }, incoming => {

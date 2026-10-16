@@ -100,13 +100,18 @@ class FocusedAcceptanceTests(unittest.TestCase):
                 self.assertTrue(acceptance.diagnostic)
                 self.assertEqual(task.sequence, 0)
 
-    def test_unit_inventory_includes_each_current_dependency_free_entrypoint_once(self) -> None:
+    def test_inventory_classifies_each_entrypoint_without_skipping_dependency_free_tests(self) -> None:
         root = Path(__file__).resolve().parents[3] / "tests/acceptance"
         expected = [path.relative_to(root).as_posix().removesuffix(".ts")
                     for pattern in ("contracts/*.spec.ts", "proxy/*.spec.ts", "playwright/*.unit.spec.ts",
                                     "puppeteer/*.unit.spec.ts", "selenium/*.unit.spec.ts")
                     for path in root.glob(pattern)]
-        self.assertEqual(sorted(UNITS), sorted(expected))
+        # AIDEV-NOTE: Android socket tests need the APK-bound TLS fixture and run in its dedicated fleet gate.
+        certificate_required = {"proxy/android-edge.spec"}
+        self.assertTrue(certificate_required.issubset(expected))
+        self.assertEqual(len(UNITS), len(set(UNITS)))
+        self.assertTrue(certificate_required.isdisjoint(UNITS))
+        self.assertEqual(sorted(UNITS), sorted(set(expected) - certificate_required))
 
 
 if __name__ == "__main__":

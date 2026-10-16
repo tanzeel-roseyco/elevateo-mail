@@ -29,6 +29,7 @@ class Task:
         self.acceptance_mounts: dict[str, set[tuple[Path, str, bool]]] = {}
         self.acceptance_images: dict[str, str] = {}
         self.acceptance_private: Path | None = None
+        self.android_tls: Path | None = None
         self.buildkit_id = ""
         self.deadline = time.monotonic() + 1800
         self.cleanup_mode = False
