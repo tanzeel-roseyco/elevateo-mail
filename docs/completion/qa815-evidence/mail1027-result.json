@@ -1,0 +1,238 @@
+{
+  "gate": "be02-737b22692265418e864d6a3dabb49334",
+  "result": {
+    "tests": "PASSED",
+    "failure": "",
+    "cleanup_passed": true,
+    "finished_at": 1792110222.6904466,
+    "source_snapshot": "source.sha256.json"
+  },
+  "standard": {
+    "tests": 1003,
+    "assertions": 11753,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0,
+    "suites": 172
+  },
+  "mox": {
+    "tests": 16,
+    "assertions": 253,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0,
+    "suites": 2
+  },
+  "http": {
+    "tests": 1,
+    "assertions": 33,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0,
+    "suites": 1
+  },
+  "worker_entry": {
+    "tests": 2,
+    "assertions": 107,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0,
+    "suites": 1
+  },
+  "total": {
+    "tests": 1022,
+    "assertions": 12146,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0
+  },
+  "deferred_suites": 12,
+  "cleanup": {
+    "removed": [
+      "container:abe2bd1b3436ee8291425aa78fd916cbf480866e64e5117155866f743e0b44ac",
+      "container:cd55bfd37e418f4d72a5c89fccb21f08b689045137ee92b33cae1b92b3807116",
+      "container:51e6e48e36deb129f986b17cccb9b9b9750c724f3ab30862df479532addce6c6",
+      "container:710b8d723fec5b5d94e70737424f482564a7aa63b9f4f1c33a1566e2e2f49198",
+      "container:f2f98a8202a845d29ff69b7a5755f001de10543c4359a225e4481fe42cc5a858",
+      "builder-container:78565141ecbb40022671788380b1d37114fa2c4cd7ab750cd4395d691bd496ae",
+      "builder:be02-737b22692265418e864d6a3dabb49334-builder",
+      "volume:be02-737b22692265418e864d6a3dabb49334_db-config",
+      "volume:be02-737b22692265418e864d6a3dabb49334_db-data",
+      "volume:buildx_buildkit_be02-737b22692265418e864d6a3dabb49334-builder0_state",
+      "network:cab906a13cd4529c2b894839cfb75eb638655e9079cd396a92b12f6d887b02a3",
+      "image:sha256:0bc024432532a20515caeaaab7b6334ba7c643ba410a1c371a3ac53493801084"
+    ],
+    "errors": [],
+    "shared_bases_retained": true
+  },
+  "independent_cleanup": {
+    "passed": true,
+    "checks": [
+      {
+        "resource": "container:abe2bd1b3436ee8291425aa78fd916cbf480866e64e5117155866f743e0b44ac",
+        "absent": true
+      },
+      {
+        "resource": "container:cd55bfd37e418f4d72a5c89fccb21f08b689045137ee92b33cae1b92b3807116",
+        "absent": true
+      },
+      {
+        "resource": "container:51e6e48e36deb129f986b17cccb9b9b9750c724f3ab30862df479532addce6c6",
+        "absent": true
+      },
+      {
+        "resource": "container:710b8d723fec5b5d94e70737424f482564a7aa63b9f4f1c33a1566e2e2f49198",
+        "absent": true
+      },
+      {
+        "resource": "container:f2f98a8202a845d29ff69b7a5755f001de10543c4359a225e4481fe42cc5a858",
+        "absent": true
+      },
+      {
+        "resource": "builder-container:78565141ecbb40022671788380b1d37114fa2c4cd7ab750cd4395d691bd496ae",
+        "absent": true
+      },
+      {
+        "resource": "builder:be02-737b22692265418e864d6a3dabb49334-builder",
+        "absent": true
+      },
+      {
+        "resource": "volume:be02-737b22692265418e864d6a3dabb49334_db-config",
+        "absent": true
+      },
+      {
+        "resource": "volume:be02-737b22692265418e864d6a3dabb49334_db-data",
+        "absent": true
+      },
+      {
+        "resource": "volume:buildx_buildkit_be02-737b22692265418e864d6a3dabb49334-builder0_state",
+        "absent": true
+      },
+      {
+        "resource": "network:cab906a13cd4529c2b894839cfb75eb638655e9079cd396a92b12f6d887b02a3",
+        "absent": true
+      },
+      {
+        "resource": "image:sha256:0bc024432532a20515caeaaab7b6334ba7c643ba410a1c371a3ac53493801084",
+        "absent": true
+      },
+      {
+        "resource": "container:be02-737b22692265418e864d6a3dabb49334-mox",
+        "absent": true
+      },
+      {
+        "resource": "container:be02-737b22692265418e864d6a3dabb49334-mox-client",
+        "absent": true
+      },
+      {
+        "resource": "file:.env.runtime",
+        "absent": true
+      },
+      {
+        "resource": "file:mox/.env.client",
+        "absent": true
+      },
+      {
+        "resource": "file:mox/fixture-credentials.json",
+        "absent": true
+      }
+    ],
+    "mutations": false
+  },
+  "host_space_before": {
+    "free_bytes": 254308225024
+  },
+  "host_space_after": {
+    "free_bytes": 254406819840
+  },
+  "space_delta_attributable": false,
+  "source_frozen": true,
+  "manifest_sha256": "fa812b608b7c5cb109927b58e16672392c0d93ba3d143f1e8dba6e967c52584a",
+  "steep_passed": true,
+  "rubocop_files": 388,
+  "fixture_lint_files": 7,
+  "prior_failed_gate": {
+    "gate": "be02-aba8596df87f4546ba002174068d0dcc",
+    "reason": "PG conninfo empty service and strict JSON String typing; corrected and clean rerun required",
+    "result": {
+      "tests": "FAILED",
+      "failure": "RuntimeError: ruby-suites failed; see 030-ruby-suites.log",
+      "cleanup_passed": true,
+      "finished_at": 1792109610.6040578,
+      "source_snapshot": "source.sha256.json"
+    },
+    "independent_cleanup": {
+      "passed": true,
+      "checks": [
+        {
+          "resource": "container:05a85a65c5616f2c236d1b3f902b0fe8bce555da23abd370007a037421521a2d",
+          "absent": true
+        },
+        {
+          "resource": "container:66d82715c1680b1f6299236b71a4b92c06e4b03215e4a38b59a10a483d666a5f",
+          "absent": true
+        },
+        {
+          "resource": "container:361ea8b53090ec3526376610583ec92ece082403c8af7a30239ef45ea35d6ca1",
+          "absent": true
+        },
+        {
+          "resource": "builder-container:a9daef9d92767db05bf673729594da05b346748158851233d913573b92bd9cc0",
+          "absent": true
+        },
+        {
+          "resource": "builder:be02-aba8596df87f4546ba002174068d0dcc-builder",
+          "absent": true
+        },
+        {
+          "resource": "volume:be02-aba8596df87f4546ba002174068d0dcc_db-config",
+          "absent": true
+        },
+        {
+          "resource": "volume:be02-aba8596df87f4546ba002174068d0dcc_db-data",
+          "absent": true
+        },
+        {
+          "resource": "volume:buildx_buildkit_be02-aba8596df87f4546ba002174068d0dcc-builder0_state",
+          "absent": true
+        },
+        {
+          "resource": "network:b05f77f43f2e5ae7b13117f5b24c98b868020a34859f9f947c804bf7621ba643",
+          "absent": true
+        },
+        {
+          "resource": "image:sha256:2550a90d7f2bb27557de6a919e689fb6310d3e000fba90526e4962a0ddaf595e",
+          "absent": true
+        },
+        {
+          "resource": "container:be02-aba8596df87f4546ba002174068d0dcc-mox",
+          "absent": true
+        },
+        {
+          "resource": "container:be02-aba8596df87f4546ba002174068d0dcc-mox-client",
+          "absent": true
+        },
+        {
+          "resource": "file:.env.runtime",
+          "absent": true
+        },
+        {
+          "resource": "file:mox/.env.client",
+          "absent": true
+        },
+        {
+          "resource": "file:mox/fixture-credentials.json",
+          "absent": true
+        }
+      ],
+      "mutations": false
+    }
+  },
+  "limits": [
+    "Private Mox profile only",
+    "12 dedicated suites deferred",
+    "No frontend/native rerun",
+    "Whole-page oversize guard can still block ingestion; attachment/scanner composition, production routing/secrets and operations remain open",
+    "No live spend, credentials, external mail, DNS or production mutation"
+  ]
+}

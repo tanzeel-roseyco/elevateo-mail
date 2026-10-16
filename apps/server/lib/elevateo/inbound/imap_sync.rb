@@ -59,8 +59,14 @@ module Elevateo
         events.each do |event|
           uid = event.fetch(:uid)
           raw = event.fetch(:raw_mime)
-          result = ingress.ingest(account_id: account_id, credential_version: credential_version,
-            uidvalidity: validity, uid: uid, raw_mime: raw)
+          # AIDEV-NOTE: Advance past malformed mail only after SQL commits its fenced rejection receipt and cursor.
+          result = begin
+            ingress.ingest(account_id: account_id, credential_version: credential_version,
+              uidvalidity: validity, uid: uid, raw_mime: raw)
+          rescue MimeRejected => error
+            @store.reject_once(account_id: account_id, credential_version: credential_version,
+              uidvalidity: validity, uid: uid, content_sha256: Digest::SHA256.hexdigest(raw.b), reason: error.code)
+          end
           raise Rejected, "cursor_changed" if result.fetch("result") == "uidvalidity_changed"
 
           cursor = uid

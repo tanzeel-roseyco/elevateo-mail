@@ -75,6 +75,7 @@ class MoxRuntimeTest(unittest.TestCase):
                 if count > 2:
                     self.assertTrue(stages[2].startswith("exec rubocop --lint "))
                     self.assertIn("/mailserver/tests/app_compatibility.rb", stages[2])
+                    self.assertIn("/mailserver/tests/inbound_rejection_proof.rb", stages[2])
 
     def test_external_network_is_rejected_before_container_creation(self) -> None:
         self.task.inspect.return_value = [{"Internal": False}]

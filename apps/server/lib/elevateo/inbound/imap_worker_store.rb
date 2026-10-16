@@ -18,6 +18,7 @@ module Elevateo
       SQL
       RESET_SQL = "SELECT app.reset_imap_uidvalidity($1::uuid,$2::integer,$3::bigint,$4::bigint) AS result"
       CLAIM_SQL = "SELECT app.claim_imap_account($1::uuid,$2::integer)::text AS result"
+      REJECT_SQL = "SELECT app.reject_imap_mail($1::uuid,$2::integer,$3::bigint,$4::bigint,$5::text,$6::text)::text AS result"
 
       def initialize(connection:, lease_token: nil)
         unless lease_token.nil? || (lease_token.is_a?(String) && FakeIngress::UUID.match?(lease_token))
@@ -46,6 +47,25 @@ module Elevateo
           raise Rejected, "store_unavailable"
         end
         result
+      end
+
+      def reject_once(account_id:, credential_version:, uidvalidity:, uid:, content_sha256:, reason:)
+        # AIDEV-NOTE: Rejection is scheduled-worker only; no unleased function exists to bypass the ownership fence.
+        raise Rejected, "lease_unavailable" unless @lease_token
+
+        row = query(REJECT_SQL, "IMAP rejection", [account_id, credential_version, uidvalidity, uid, content_sha256, reason]).first
+        raise Rejected, "store_unavailable" unless row
+
+        raw = row.fetch("result")
+        raise Rejected, "store_unavailable" unless raw.is_a?(String)
+
+        result = JSON.parse(raw)
+        unless result.is_a?(Hash) && %w[rejected duplicate_rejection uidvalidity_changed].include?(result["result"])
+          raise Rejected, "store_unavailable"
+        end
+        result
+      rescue JSON::ParserError, KeyError
+        raise Rejected, "store_unavailable", cause: nil
       end
 
       def reset_uidvalidity(account_id:, credential_version:, expected:, replacement:)

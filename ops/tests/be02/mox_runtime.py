@@ -67,7 +67,8 @@ class WorkerFixture:
              "bundle exec rubocop --lint --format simple "
              "/mailserver/tests/app_compatibility.rb /mailserver/tests/worker_composition.rb "
              "/mailserver/tests/worker_inbox.rb /mailserver/tests/scheduled_inbox.rb "
-             "/mailserver/tests/inbound_process.rb /mailserver/tests/inbound_process_proof.rb"])])
+             "/mailserver/tests/inbound_process.rb /mailserver/tests/inbound_process_proof.rb "
+             "/mailserver/tests/inbound_rejection_proof.rb"])])
 
     def run(self) -> None:
         self.out.mkdir(mode=0o700)

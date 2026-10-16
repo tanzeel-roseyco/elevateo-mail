@@ -2,6 +2,7 @@
 
 require "digest"
 require "mail"
+require_relative "imap_mime_error"
 require_relative "imap_mime_tree"
 require_relative "imap_html_text"
 
@@ -13,12 +14,12 @@ module Elevateo
       ALLOWED_TYPES = %w[application/pdf image/png image/jpeg text/plain].freeze
 
       def parse(raw_mime:)
-        raise Rejected, "invalid_mime" unless raw_mime.is_a?(String) && raw_mime.valid_encoding? &&
+        raise MimeRejected, "invalid_mime" unless raw_mime.is_a?(String) && raw_mime.valid_encoding? &&
           raw_mime.bytesize.between?(1, FakeIngress::MAX_RAW) && !raw_mime.include?("\0")
 
         mail = Mail.read_from_string(raw_mime)
         senders, recipients = mail.from, mail.to
-        raise Rejected, "invalid_mime" unless mail.header && senders.is_a?(Array) && senders.length == 1 &&
+        raise MimeRejected, "invalid_mime" unless mail.header && senders.is_a?(Array) && senders.length == 1 &&
           recipients.is_a?(Array) && recipients.length.between?(1, 100) &&
           (senders + recipients).all? { |address| address.bytesize <= 255 && /\A[^@\s]+@[^@\s]+\z/.match?(address) }
 
@@ -32,7 +33,7 @@ module Elevateo
                     to: recipients.map { |value| header(value) }, subject: header(mail.subject), text: body },
           attachments: attachments }
       rescue ArgumentError, EncodingError, Mail::UnknownEncodingType
-        raise Rejected, "invalid_mime"
+        raise MimeRejected, "invalid_mime"
       end
 
       private
@@ -40,24 +41,24 @@ module Elevateo
       def text(part)
         # AIDEV-NOTE: Message#decoded already transcodes; use Body#decoded bytes to apply the declared charset exactly once.
         value = part.body.decoded
-        raise Rejected, "invalid_text" if value.bytesize > FakeIngress::MAX_TEXT
+        raise MimeRejected, "invalid_text" if value.bytesize > FakeIngress::MAX_TEXT
 
         value = value.encode("UTF-8", part.charset || "UTF-8")
-        raise Rejected, "invalid_text" unless value.valid_encoding? && value.bytesize <= FakeIngress::MAX_TEXT && !value.include?("\0")
+        raise MimeRejected, "invalid_text" unless value.valid_encoding? && value.bytesize <= FakeIngress::MAX_TEXT && !value.include?("\0")
 
         value
       end
 
       def attachment(part, ordinal)
         type = part.mime_type
-        raise Rejected, "unsupported_mime" unless type.is_a?(String) && ALLOWED_TYPES.include?(type)
+        raise MimeRejected, "unsupported_mime" unless type.is_a?(String) && ALLOWED_TYPES.include?(type)
 
         # AIDEV-NOTE: Attachment hashes and size describe original transfer-decoded bytes, never transcoded text.
         bytes = part.body.decoded.b
-        raise Rejected, "oversized_attachment" unless bytes.bytesize.between?(1, FakeIngress::MAX_TEXT)
+        raise MimeRejected, "oversized_attachment" unless bytes.bytesize.between?(1, FakeIngress::MAX_TEXT)
 
         name = header(part.filename.to_s.tr("\\", "/").split("/").last).byteslice(0, FakeIngress::MAX_FILENAME).to_s.scrub("")
-        raise Rejected, "invalid_filename" if name.empty? || name == "." || name == ".."
+        raise MimeRejected, "invalid_filename" if name.empty? || name == "." || name == ".."
 
         { ordinal: ordinal, filename: name, content_type: type, byte_size: bytes.bytesize,
           sha256: Digest::SHA256.hexdigest(bytes), bytes: bytes }

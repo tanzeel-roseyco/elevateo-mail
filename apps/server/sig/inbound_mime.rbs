@@ -31,6 +31,8 @@ end
 
 module Elevateo
   module Inbound
+    class MimeRejected < Rejected
+    end
     type imap_mime_record = { content_sha256: String, from: String, to: Array[String], subject: String, text: String }
     type mime_selection = [Array[Mail::Message], Array[Mail::Message]]
 

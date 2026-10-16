@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require "nokogiri"
-require_relative "fake_ingress"
+require_relative "imap_mime_error"
 
 module Elevateo
   module Inbound
@@ -12,7 +12,7 @@ module Elevateo
       MAX_NODES = 16_384
 
       def convert(html)
-        raise Rejected, "invalid_text" unless html.valid_encoding? && html.bytesize <= FakeIngress::MAX_TEXT && !html.include?("\0")
+        raise MimeRejected, "invalid_text" unless html.valid_encoding? && html.bytesize <= FakeIngress::MAX_TEXT && !html.include?("\0")
 
         document = Nokogiri::HTML5::Document.parse(html, nil, "UTF-8",
           max_tree_depth: 64, max_attributes: 64, max_errors: 0)
@@ -31,7 +31,7 @@ module Elevateo
             next
           end
           count += 1
-          raise Rejected, "invalid_text" if count > MAX_NODES
+          raise MimeRejected, "invalid_text" if count > MAX_NODES
           next if OMIT.include?(node.name)
 
           if node.text?
@@ -45,13 +45,13 @@ module Elevateo
         end
         output.gsub(/[ \t\r\f]+/, " ").gsub(/ *\n */, "\n").gsub(/\n{3,}/, "\n\n").strip
       rescue ArgumentError, EncodingError
-        raise Rejected, "invalid_text"
+        raise MimeRejected, "invalid_text"
       end
 
       private
 
       def append(output, value)
-        raise Rejected, "invalid_text" if output.bytesize + value.bytesize > FakeIngress::MAX_TEXT
+        raise MimeRejected, "invalid_text" if output.bytesize + value.bytesize > FakeIngress::MAX_TEXT
 
         output << value
       end

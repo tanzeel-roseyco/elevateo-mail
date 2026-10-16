@@ -2,12 +2,14 @@
 
 require "net/smtp"
 require_relative "inbound_process_proof"
+require_relative "inbound_rejection_proof"
 require "/workspace/apps/server/lib/elevateo/inbound/imap_poller"
 
 # AIDEV-NOTE: Two real Mox accounts traverse SQL selection, fenced import, durable schedule and tenant-visible inboxes.
 class MoxScheduledInboxTest < DraftDatabaseTestCase
   include MoxInboxProof
   include MoxInboundProcessProof
+  include MoxInboundRejectionProof
   FROM = "outreach000@send.test"
   CA = "/evidence/fixture-ca.pem"
 
@@ -128,6 +130,7 @@ class MoxScheduledInboxTest < DraftDatabaseTestCase
   def teardown
     WorkerConnection.remove_connection
     @accounts&.each do |account|
+      @admin.exec_params("DELETE FROM app.inbound_imap_rejections WHERE account_id=$1", [account])
       @admin.exec_params("DELETE FROM app.inbound_imap_receipts WHERE account_id=$1", [account])
       @admin.exec_params("DELETE FROM app.inbound_imap_accounts WHERE id=$1", [account])
     end
