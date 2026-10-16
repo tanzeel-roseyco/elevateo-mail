@@ -16,7 +16,7 @@ class ThreadDatabaseTest < SessionDatabaseTestCase
   UnexpectedLaterDependency = Class.new(StandardError)
   PARTS = File.expand_path("../../db/be02_threads", __dir__)
   # AIDEV-NOTE: These later-owned FKs are the only dependency exceptions to the B/C/D rollback probe.
-  # Names and definitions are pinned so a future schema addition requires an explicit fixture review.
+  # Draft attachment metadata is included; pinned definitions require review before another dependency is detached.
   LATER_THREAD_FOREIGN_KEYS = {
     "app_send_private.intents" => {
       "intents_organization_id_mailbox_id_draft_id_fkey" =>
@@ -33,6 +33,10 @@ class ThreadDatabaseTest < SessionDatabaseTestCase
         "FOREIGN KEY (organization_id, mailbox_id, thread_id) REFERENCES app.threads(organization_id, mailbox_id, id) DEFERRABLE INITIALLY DEFERRED",
       "inbound_imap_receipts_organization_id_mailbox_id_thread_i_fkey1" =>
         "FOREIGN KEY (organization_id, mailbox_id, thread_id, message_id) REFERENCES app.messages(organization_id, mailbox_id, thread_id, id) DEFERRABLE INITIALLY DEFERRED"
+    },
+    "app.draft_attachments" => {
+      "draft_attachments_organization_id_mailbox_id_draft_id_fkey" =>
+        "FOREIGN KEY (organization_id, mailbox_id, draft_id) REFERENCES app.drafts(organization_id, mailbox_id, id) ON DELETE CASCADE"
     },
     "app.inbox_attachments" => {
       "inbox_attachments_organization_id_mailbox_id_thread_id_mes_fkey" =>
@@ -321,7 +325,8 @@ class ThreadDatabaseTest < SessionDatabaseTestCase
        WHERE c.contype = 'f'
          AND c.conrelid IN (
            to_regclass('app_send_private.intents'), to_regclass('app.inbound_receipts'),
-           to_regclass('app.inbound_imap_receipts'), to_regclass('app.inbox_attachments'))
+           to_regclass('app.inbound_imap_receipts'), to_regclass('app.inbox_attachments'),
+            to_regclass('app.draft_attachments'))
          AND c.confrelid IN (
            to_regclass('app.drafts'), to_regclass('app.threads'), to_regclass('app.messages'))
        ORDER BY c.conrelid::regclass::text, c.conname

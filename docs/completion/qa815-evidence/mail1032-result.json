@@ -1,0 +1,202 @@
+{
+  "source_base": "95284f0f64dd5ed223f200bc202a03e74c1750cb",
+  "implementation": [
+    {
+      "path": "apps/server/db/draft_attachments/tables.sql",
+      "before_sha256": null,
+      "after_sha256": "b2fcff6fe3d09f84c0cefb8b5ba501af35c73370ccd3a8938d7f128cdf96ad3a"
+    },
+    {
+      "path": "apps/server/db/draft_attachments/authority.sql",
+      "before_sha256": null,
+      "after_sha256": "f63ed054a38c02d7c3320cddd72f9843aa888833bd2b9a1c986626ecbb617e52"
+    },
+    {
+      "path": "apps/server/db/draft_attachments/reserve.sql",
+      "before_sha256": null,
+      "after_sha256": "e4ac4ac900eb15b2d2718cf69b77986567e5e312b0fec014a9802f2c51f409b7"
+    },
+    {
+      "path": "apps/server/db/draft_attachments/finalize.sql",
+      "before_sha256": null,
+      "after_sha256": "0ec49b2456a5dd803e0247ca0627c55295863dd36617c88c1e18f74477e347da"
+    },
+    {
+      "path": "apps/server/db/draft_attachments/read.sql",
+      "before_sha256": null,
+      "after_sha256": "c4f00f7ce85adbb5aa62c81c0263d4546ce5bb675972d40841da9e1fe4820396"
+    },
+    {
+      "path": "apps/server/db/draft_attachments/scan.sql",
+      "before_sha256": null,
+      "after_sha256": "f1707047c35360163f0a6c91f754a49d7bd292f8440e269b9e2fdc5bb76490c8"
+    },
+    {
+      "path": "apps/server/db/draft_attachments/grants.sql",
+      "before_sha256": null,
+      "after_sha256": "823043e068f944603cd541c9859155974ae6a828d2d848a14bd22bb665a16260"
+    },
+    {
+      "path": "apps/server/db/draft_attachments/down.sql",
+      "before_sha256": null,
+      "after_sha256": "0bf7c31dea2709f6af2e872c2165738e4acf2c7b8fa33358c89448a3485597ef"
+    },
+    {
+      "path": "apps/server/db/migrate/20261016000028_create_draft_attachment_staging.rb",
+      "before_sha256": null,
+      "after_sha256": "422d3124e8a17f5e51fd50f26234d0e9d09ddf250e3c9656f98cb281e103d9d4"
+    },
+    {
+      "path": "apps/server/test/attachments/draft_staging_database_helper.rb",
+      "before_sha256": null,
+      "after_sha256": "911804f8d86d2111ce48a2d747cd03c7f31629f48b86237937d49e8425769a55"
+    },
+    {
+      "path": "apps/server/test/attachments/draft_staging_database_test.rb",
+      "before_sha256": null,
+      "after_sha256": "e2c4d721aab3b13bdacbca313d895c90a66933714d25b8408407a3ab1416740a"
+    },
+    {
+      "path": "apps/server/test/attachments/draft_scan_database_test.rb",
+      "before_sha256": null,
+      "after_sha256": "98a079933a12adfbcfd24e3d53b2b8a75b4dda6f81832c10ead0573b083dea7e"
+    },
+    {
+      "path": "apps/server/test/attachments/draft_staging_race_database_test.rb",
+      "before_sha256": null,
+      "after_sha256": "82950f9cea29a7b1f78886e07c1651c46f9d4564f3846d55fe77be66f2710724"
+    },
+    {
+      "path": "apps/server/test/attachments/draft_staging_migration_test.rb",
+      "before_sha256": null,
+      "after_sha256": "e77dad3b56789cd67bf63a57f1638e9c1c755f12172d774940343d60a391d842"
+    },
+    {
+      "path": "apps/server/test/attachments/draft_scan_race_database_test.rb",
+      "before_sha256": null,
+      "after_sha256": "db87e1e3dff3db0bdc5a539d624c05a3144377227c770450fef8490bdae3b1cd"
+    },
+    {
+      "path": "apps/server/db/draft_attachments/lifecycle.sql",
+      "before_sha256": null,
+      "after_sha256": "ea69e7ef972573ce36dc6b51ef73b0e1cf4c325d01b9e24c9797dfdb377f265c"
+    },
+    {
+      "path": "apps/server/test/be_02/thread_database_test.rb",
+      "before_sha256": "399dab62a9c375e58f7a072c679296ed55879755c0d9a3973accae901f92b371",
+      "after_sha256": "b1aee6d9ad98dedcfcc6db5ba2c4aecbbf4a3f562a1eccf65192a4ca9dd1af16"
+    }
+  ],
+  "gate": "be02-20c3f1d9302a4daa8de238792d326154",
+  "tests": 1068,
+  "assertions": 12806,
+  "failures": 0,
+  "errors": 0,
+  "skips": 0,
+  "standard_suites": 184,
+  "dedicated_suites_deferred": 12,
+  "steep": "PASSED",
+  "rubocop_files": 408,
+  "result": {
+    "tests": "PASSED",
+    "failure": "",
+    "cleanup_passed": true,
+    "finished_at": 1792119763.3787456,
+    "source_snapshot": "source.sha256.json"
+  },
+  "cleanup": {
+    "removed": [
+      "container:bfd5a9cd2e19707a3b4859ce612bc180deec1d180847fcea986bc59805ad4ad9",
+      "container:86c580b97a3b286c93d2f7563c4736757333a824d62949ed91bb856e661ef56e",
+      "container:422a0f6f1a22d1c06e735f5398e2236dbe9bcdbeb74693f184c8c14ddffe27e7",
+      "container:e98b757a6106143fd479695d438ccb8bffb2890f3c67aadb0c2d80b943cf8c2b",
+      "container:bfa59694e698c9c9d4ef4fc8222ec36adf47f34b43f82540abdd2e7ea65f6aba",
+      "builder-container:bb02d332e32dbeea9acc3c8ac89d5f0d4f7a14c1c74c29697331c9057f9a6e76",
+      "builder:be02-20c3f1d9302a4daa8de238792d326154-builder",
+      "volume:be02-20c3f1d9302a4daa8de238792d326154_db-config",
+      "volume:be02-20c3f1d9302a4daa8de238792d326154_db-data",
+      "volume:buildx_buildkit_be02-20c3f1d9302a4daa8de238792d326154-builder0_state",
+      "network:abe86084e415cddcbfa38a76a5621bef91b8fb9065c2e76c96db7e846aaae7c8",
+      "image:sha256:b27dfdaad739ca89c1a2abdbbc4ab3aa474ce6141259b4fc377ba752b65cc4e8"
+    ],
+    "errors": [],
+    "shared_bases_retained": true
+  },
+  "independent_cleanup": {
+    "passed": true,
+    "checks": [
+      {
+        "resource": "container:bfd5a9cd2e19707a3b4859ce612bc180deec1d180847fcea986bc59805ad4ad9",
+        "absent": true
+      },
+      {
+        "resource": "container:86c580b97a3b286c93d2f7563c4736757333a824d62949ed91bb856e661ef56e",
+        "absent": true
+      },
+      {
+        "resource": "container:422a0f6f1a22d1c06e735f5398e2236dbe9bcdbeb74693f184c8c14ddffe27e7",
+        "absent": true
+      },
+      {
+        "resource": "container:e98b757a6106143fd479695d438ccb8bffb2890f3c67aadb0c2d80b943cf8c2b",
+        "absent": true
+      },
+      {
+        "resource": "container:bfa59694e698c9c9d4ef4fc8222ec36adf47f34b43f82540abdd2e7ea65f6aba",
+        "absent": true
+      },
+      {
+        "resource": "builder-container:bb02d332e32dbeea9acc3c8ac89d5f0d4f7a14c1c74c29697331c9057f9a6e76",
+        "absent": true
+      },
+      {
+        "resource": "builder:be02-20c3f1d9302a4daa8de238792d326154-builder",
+        "absent": true
+      },
+      {
+        "resource": "volume:be02-20c3f1d9302a4daa8de238792d326154_db-config",
+        "absent": true
+      },
+      {
+        "resource": "volume:be02-20c3f1d9302a4daa8de238792d326154_db-data",
+        "absent": true
+      },
+      {
+        "resource": "volume:buildx_buildkit_be02-20c3f1d9302a4daa8de238792d326154-builder0_state",
+        "absent": true
+      },
+      {
+        "resource": "network:abe86084e415cddcbfa38a76a5621bef91b8fb9065c2e76c96db7e846aaae7c8",
+        "absent": true
+      },
+      {
+        "resource": "image:sha256:b27dfdaad739ca89c1a2abdbbc4ab3aa474ce6141259b4fc377ba752b65cc4e8",
+        "absent": true
+      },
+      {
+        "resource": "container:be02-20c3f1d9302a4daa8de238792d326154-mox",
+        "absent": true
+      },
+      {
+        "resource": "container:be02-20c3f1d9302a4daa8de238792d326154-mox-client",
+        "absent": true
+      },
+      {
+        "resource": "file:.env.runtime",
+        "absent": true
+      },
+      {
+        "resource": "file:mox/.env.client",
+        "absent": true
+      },
+      {
+        "resource": "file:mox/fixture-credentials.json",
+        "absent": true
+      }
+    ],
+    "mutations": false
+  },
+  "free_before": 254219001856,
+  "free_after": 254116356096,
+  "claim": "Database slice only; upload and app/native acceptance remain open."
+}
