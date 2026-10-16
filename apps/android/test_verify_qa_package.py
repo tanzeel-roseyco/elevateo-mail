@@ -5,6 +5,8 @@ import unittest
 from zipfile import ZipFile
 
 from verify_qa_package import verify_ca, verify_manifest, verify_network
+from qa_resource_table import resource_bindings
+from test_qa_resource_table import TABLE
 
 MANIFEST = '''<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.elevateo.mail.qa">
 <uses-permission android:name="android.permission.INTERNET" />
@@ -13,13 +15,35 @@ MANIFEST = '''<manifest xmlns:android="http://schemas.android.com/apk/res/androi
 <application android:debuggable="true" android:usesCleartextTraffic="false"
 android:networkSecurityConfig="@xml/elevateo_qa_network_security" /></manifest>'''
 NETWORK = (Path(__file__).parent / "qa/elevateo_qa_network_security.xml").read_text(encoding="utf-8")
+BINDINGS = resource_bindings(TABLE)
 CA = b"-----BEGIN CERTIFICATE-----\nsynthetic parser fixture\n-----END CERTIFICATE-----\n"
 
 
 class QaPackageTest(unittest.TestCase):
     def test_expected_identity_and_policy(self) -> None:
-        verify_manifest(MANIFEST)
-        verify_network(NETWORK)
+        verify_manifest(MANIFEST, BINDINGS)
+        verify_network(NETWORK, BINDINGS)
+
+    def test_decoded_numeric_references_require_exact_resource_binding(self) -> None:
+        # AIDEV-NOTE: Match the real APK decoder's output, including the exact signature protection bit.
+        manifest = MANIFEST.replace("@xml/elevateo_qa_network_security", "@ref/0x7f130000").replace("signature", "0x2")
+        network = NETWORK.replace("@raw/elevateo_qa_ca", "@ref/0x7f0f0000")
+        verify_manifest(manifest, BINDINGS)
+        verify_network(network, BINDINGS)
+        with self.assertRaises(ValueError):
+            verify_manifest(manifest.replace("0x7f130000", "0x7f130001"), BINDINGS)
+        with self.assertRaises(ValueError):
+            verify_network(network.replace("0x7f0f0000", "0x7f0f0001"), BINDINGS)
+        for unsafe in ("0x12", "0x3", "signature|privileged", "0x0002", "2"):
+            with self.subTest(unsafe=unsafe), self.assertRaises(ValueError):
+                verify_manifest(manifest.replace('protectionLevel="0x2"', 'protectionLevel="' + unsafe + '"'), BINDINGS)
+
+    def test_reassigned_ids_are_checked_against_the_same_table(self) -> None:
+        bindings = resource_bindings(TABLE.replace("0x7f130000", "0x7f1300ab").replace("0x7f0f0000", "0x7f0f00cd"))
+        verify_manifest(MANIFEST.replace("@xml/elevateo_qa_network_security", "@ref/0x7f1300ab"), bindings)
+        verify_network(NETWORK.replace("@raw/elevateo_qa_ca", "@ref/0x7f0f00cd"), bindings)
+        with self.assertRaises(ValueError):
+            verify_manifest(MANIFEST.replace("@xml/elevateo_qa_network_security", "@ref/0x7f130000"), bindings)
 
     def test_manifest_rejects_permission_identity_and_cleartext_changes(self) -> None:
         for old, new in [("com.elevateo.mail.qa", "com.elevateo.mail"), ('debuggable="true"', 'debuggable="false"'),
@@ -30,7 +54,7 @@ class QaPackageTest(unittest.TestCase):
                          ("</manifest>", '<application /></manifest>'),
                          ("</manifest>", '<action android:name="android.intent.action.VIEW" /></manifest>')]:
             with self.subTest(new=new), self.assertRaises(ValueError):
-                verify_manifest(MANIFEST.replace(old, new))
+                verify_manifest(MANIFEST.replace(old, new), BINDINGS)
 
     def test_network_rejects_broad_or_changed_trust(self) -> None:
         for old, new in [('includeSubdomains="false"', 'includeSubdomains="true"'),
@@ -39,7 +63,7 @@ class QaPackageTest(unittest.TestCase):
                          ("elevateo.qa.internal", "attacker.invalid"),
                          ("</network-security-config>", "<debug-overrides /></network-security-config>")]:
             with self.subTest(new=new), self.assertRaises(ValueError):
-                verify_network(NETWORK.replace(old, new))
+                verify_network(NETWORK.replace(old, new), BINDINGS)
 
     def test_ca_matches_exactly(self) -> None:
         with TemporaryDirectory() as directory:

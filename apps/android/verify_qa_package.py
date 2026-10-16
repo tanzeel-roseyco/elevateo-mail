@@ -4,6 +4,8 @@ import sys
 from xml.etree import ElementTree as ET
 from zipfile import ZipFile
 
+from qa_resource_table import bound_reference, resource_bindings
+
 ANDROID = "{http://schemas.android.com/apk/res/android}"
 PACKAGE = "com.elevateo.mail.qa"
 RECEIVER = PACKAGE + ".DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
@@ -14,26 +16,27 @@ def require(condition: bool, message: str) -> None:
         raise ValueError(message)
 
 
-def verify_manifest(manifest: str) -> None:
+def verify_manifest(manifest: str, bindings: dict[str, str]) -> None:
     root = ET.fromstring(manifest)
     require(root.tag == "manifest" and root.get("package") == PACKAGE, "wrong QA identity")
     apps = root.findall("application")
     require(len(apps) == 1, "expected one application")
     app = apps[0]
-    for key, expected in {"debuggable": "true", "usesCleartextTraffic": "false",
-                          "networkSecurityConfig": "@xml/elevateo_qa_network_security"}.items():
+    for key, expected in {"debuggable": "true", "usesCleartextTraffic": "false"}.items():
         require(app.get(ANDROID + key) == expected, "unexpected application " + key)
+    require(bound_reference(app.get(ANDROID + "networkSecurityConfig"),
+                            "xml/elevateo_qa_network_security", bindings), "unbound network policy")
     permissions = [e.get(ANDROID + "name") for e in root if e.tag.startswith("uses-permission")]
     require(len(permissions) == 2 and set(permissions) == {"android.permission.INTERNET", RECEIVER},
             "unexpected QA permissions")
     declarations = root.findall("permission")
     require(len(declarations) == 1 and declarations[0].get(ANDROID + "name") == RECEIVER
-            and declarations[0].get(ANDROID + "protectionLevel") == "signature", "unsafe receiver permission")
+            and declarations[0].get(ANDROID + "protectionLevel") in ("signature", "0x2"), "unsafe receiver permission")
     require(not any(e.get(ANDROID + "name") == "android.intent.action.VIEW"
                     for e in root.iter("action")), "unreviewed VIEW callback")
 
 
-def verify_network(network: str) -> None:
+def verify_network(network: str, bindings: dict[str, str]) -> None:
     # AIDEV-NOTE: Compare the entire policy tree so extra trust domains/debug overrides cannot hide in valid XML.
     expected = ET.fromstring('''<network-security-config>
       <base-config cleartextTrafficPermitted="false"><trust-anchors><certificates src="system" />
@@ -47,7 +50,11 @@ def verify_network(network: str) -> None:
                 and not (left.tail or "").strip() and len(left) == len(right)
                 and all(same(a, b) for a, b in zip(left, right)))
 
-    require(same(ET.fromstring(network), expected), "QA network trust policy differs")
+    actual = ET.fromstring(network)
+    for cert in actual.findall("domain-config/trust-anchors/certificates"):
+        if bound_reference(cert.get("src"), "raw/elevateo_qa_ca", bindings):
+            cert.set("src", "@raw/elevateo_qa_ca")
+    require(same(actual, expected), "QA network trust policy differs")
 
 
 def verify_ca(apk: Path, certificate: Path) -> None:
@@ -61,9 +68,10 @@ def verify_ca(apk: Path, certificate: Path) -> None:
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 5:
-        raise SystemExit("usage: verify_qa_package.py MANIFEST_XML NETWORK_XML APK PUBLIC_CA")
-    verify_manifest(Path(sys.argv[1]).read_text(encoding="utf-8"))
-    verify_network(Path(sys.argv[2]).read_text(encoding="utf-8"))
+    if len(sys.argv) != 6:
+        raise SystemExit("usage: verify_qa_package.py MANIFEST_XML NETWORK_XML APK PUBLIC_CA RESOURCE_TABLE")
+    bindings = resource_bindings(Path(sys.argv[5]).read_text(encoding="utf-8"))
+    verify_manifest(Path(sys.argv[1]).read_text(encoding="utf-8"), bindings)
+    verify_network(Path(sys.argv[2]).read_text(encoding="utf-8"), bindings)
     verify_ca(Path(sys.argv[3]), Path(sys.argv[4]))
     print("isolated QA packaged identity, permissions, trust and CA PASS")

@@ -37,10 +37,11 @@ mapfile -d '' apks < <(find "$native_dir/gen/android/app/build/outputs/apk" -typ
 [[ ${#apks[@]} -eq 1 ]] || { echo 'Expected one QA APK' >&2; exit 2; }
 apk=${apks[0]}
 "$ANDROID_HOME/build-tools/36.0.0/apksigner" verify --verbose --print-certs "$apk"
+"$ANDROID_HOME/build-tools/36.0.0/aapt2" dump resources "$apk" > "$QA_BUILD_ROOT/packaged-resources.txt"
 analyzer="$ANDROID_HOME/cmdline-tools/latest/bin/apkanalyzer"
 "$analyzer" manifest print "$apk" > "$QA_BUILD_ROOT/packaged-manifest.xml"
 "$analyzer" resources xml --file /res/xml/elevateo_qa_network_security.xml "$apk" > "$QA_BUILD_ROOT/packaged-network.xml"
 python3 "$android_dir/verify_qa_package.py" "$QA_BUILD_ROOT/packaged-manifest.xml" \
-  "$QA_BUILD_ROOT/packaged-network.xml" "$apk" "$QA_CA_CERT"
+  "$QA_BUILD_ROOT/packaged-network.xml" "$apk" "$QA_CA_CERT" "$QA_BUILD_ROOT/packaged-resources.txt"
 cp "$apk" "$QA_BUILD_ROOT/elevateo-android-x86_64-isolated-qa.apk"
 sha256sum "$QA_BUILD_ROOT/elevateo-android-x86_64-isolated-qa.apk"

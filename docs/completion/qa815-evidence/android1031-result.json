@@ -1,0 +1,87 @@
+{
+  "build": {
+    "source": "94e8afbee937b3e9b1326989734c55733feadb11",
+    "tests": "PASSED",
+    "free_before": 254338924544,
+    "overlay_sha256": {
+      "apps/android/qa_resource_table.py": "520ccde8cc1869199a482888686c46f7e6345c15c0e307c064a4cc921a56b31c",
+      "apps/android/verify_qa_package.py": "490840c66f24cf71de3c48a91f73596b441140ecde49d6366896d72f8219eec2",
+      "ops/build/android/build-isolated-qa.sh": "a89a2c3a25d4a2b8ed0a64158f93c5373985060a77a8df84221ef7cb65a42cc1",
+      "apps/android/test_verify_qa_package.py": "f235180696617a7ed5bd44a6b7e4c6e98c234fc141b6dcec53c634946d0f39a0",
+      "apps/android/test_qa_resource_table.py": "fdcd96d50cf607eaac8166b94d2c28cfb41b41e08dc2b5312fb60db5c4a72b0b"
+    },
+    "apk_sha256": "a4611c88c2d33124a1a6a01c2bc3e572aaddbad0ad724a70b52f71e8157ad626",
+    "cleanup_passed": true,
+    "cleanup_errors": [],
+    "work_absent": true,
+    "free_after": 254230740992,
+    "finished_at": 1792116341.6308985,
+    "artifact": "/home/tanzeel/elevateo-mail-completion-20261015/control/qa815-artifacts/android1031-qa-r2-94e8afbee937"
+  },
+  "independent_cleanup": {
+    "passed": true,
+    "checks": [
+      {
+        "resource": "container:android1031-qa-r2-94e8afbee937-compile",
+        "absent": true
+      },
+      {
+        "resource": "container:buildx_buildkit_android1031-qa-r2-94e8afbee9370",
+        "absent": true
+      },
+      {
+        "resource": "volume:buildx_buildkit_android1031-qa-r2-94e8afbee9370_state",
+        "absent": true
+      },
+      {
+        "resource": "image:android1031-qa-r2-94e8afbee937:toolchain",
+        "absent": true
+      },
+      {
+        "resource": "builder:android1031-qa-r2-94e8afbee937",
+        "absent": true
+      },
+      {
+        "resource": "task build directories",
+        "absent": true
+      }
+    ],
+    "mutations": false,
+    "apk_bytes": 122496231,
+    "retained_files": [
+      "ca.pem",
+      "elevateo-android-x86_64-isolated-qa.apk",
+      "server.key",
+      "server.pem"
+    ]
+  },
+  "integrated_after": "d02ff36f1c54a73e862e10ae9ca7f7b2432141ed",
+  "tests": {
+    "python": 35,
+    "rust": 10,
+    "release_config": 7,
+    "installed_runtime": "NOT_RUN"
+  },
+  "standalone_units_sha256": "180bf3738a71d10515c95dd9d74f229dd3737f988a70ce8c51cb71af2747708d",
+  "build_log_sha256": "ea8a1d2ae82c17e1cf2dbd946a101d9fff273728ce9fb9c98bb0e911d64514bb",
+  "prior_failure": {
+    "source": "94e8afbee937b3e9b1326989734c55733feadb11",
+    "tests": "FAILED",
+    "free_before": 254327611392,
+    "overlay_sha256": {
+      "apps/android/qa_resource_table.py": "3a02cc987563cfd1bef801884c6e8d319e6cb593e0f7be3f2e56010b06939e6b",
+      "apps/android/verify_qa_package.py": "490840c66f24cf71de3c48a91f73596b441140ecde49d6366896d72f8219eec2",
+      "ops/build/android/build-isolated-qa.sh": "a89a2c3a25d4a2b8ed0a64158f93c5373985060a77a8df84221ef7cb65a42cc1",
+      "apps/android/test_verify_qa_package.py": "f235180696617a7ed5bd44a6b7e4c6e98c234fc141b6dcec53c634946d0f39a0",
+      "apps/android/test_qa_resource_table.py": "8c7f6f6d7811912eb46bf8220d75e3e96ee77f9d987120f9e1c2d26829dc53f2"
+    },
+    "failure": "CalledProcessError: Command '['docker', 'run', '--rm', '--name', 'android1031-qa-r1-94e8afbee937-compile', '--label', 'elevateo.task=android1031-qa-r1-94e8afbee937', '--user', '1001:1001', '--memory', '8g', '--memory-swap', '10g', '--cpus', '4', '--pids-limit', '768', '--cap-drop', 'ALL', '--security-opt', 'no-new-privileges', '-v', '/home/tanzeel/elevateo-mail-completion-20261015/control/qa815-builds/android1031-qa-r1-94e8afbee937-exbn7evl/source:/src', '-v', '/home/tanzeel/elevateo-mail-completion-20261015/control/qa815-builds/android1031-qa-r1-94e8afbee937-exbn7evl/output:/artifacts', '-e', 'QA_BUILD_ROOT=/artifacts', '-e', 'QA_CA_CERT=/artifacts/tls/ca.pem', '-w', '/src', 'android1031-qa-r1-94e8afbee937:toolchain', 'bash', '-c', \"set -euo pipefail\\numask 077\\nmkdir -p /artifacts/tls\\ncd /artifacts/tls\\nopenssl req -x509 -newkey rsa:2048 -nodes -keyout ca.key -out ca.pem -days 7 -subj /CN=ElevateoIsolatedQA\\nopenssl req -newkey rsa:2048 -nodes -keyout server.key -out server.csr -subj /CN=elevateo.qa.internal\\nprintf '%s\\\\n' 'subjectAltName=DNS:elevateo.qa.internal' 'extendedKeyUsage=serverAuth' > server.ext\\nopenssl x509 -req -in server.csr -CA ca.pem -CAkey ca.key -CAcreateserial -out server.pem -days 7 -extfile server.ext\\nopenssl verify -CAfile ca.pem -verify_hostname elevateo.qa.internal server.pem\\ncd /src\\nbash ops/build/android/build-isolated-qa.sh\\n\"]' returned non-zero exit status 1.",
+    "cleanup_passed": true,
+    "cleanup_errors": [],
+    "work_absent": true,
+    "free_after": 254375178240,
+    "finished_at": 1792115016.4437647,
+    "artifact": "/home/tanzeel/elevateo-mail-completion-20261015/control/qa815-artifacts/android1031-qa-r1-94e8afbee937"
+  },
+  "space_delta_attributable": false
+}
