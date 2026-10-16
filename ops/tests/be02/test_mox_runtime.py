@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import hashlib
+import json
 import os
 import subprocess
 from pathlib import Path
@@ -76,6 +77,73 @@ class MoxRuntimeTest(unittest.TestCase):
                     self.assertTrue(stages[2].startswith("exec rubocop --lint "))
                     self.assertIn("/mailserver/tests/app_compatibility.rb", stages[2])
                     self.assertIn("/mailserver/tests/inbound_rejection_proof.rb", stages[2])
+
+    def test_attachment_stage_stops_before_lint_on_failure(self) -> None:
+        fixture = mox_runtime.WorkerFixture(self.task, attachments=True)
+        self.task.inspect.return_value = [{"Id": "sha256:owned"}]
+        fixture.create(fixture.client, self.task.image, [], [])
+        command = self.task.docker.call_args.args[1][-1]
+        bundle = self.task.root / "bundle"
+        bundle.write_text('#!/bin/sh\nprintf "%s\\n" "$*" >> "$CALLS"\n'
+                          'case "$*" in *"$FAIL_STAGE"*) exit 9;; esac\nexit 0\n')
+        bundle.chmod(0o700)
+        calls = self.task.root / "calls"
+        for fail, count, status in (("app_compatibility.rb", 1, 9), ("worker_composition.rb", 2, 9),
+                                     ("attachment_ingress.rb", 3, 9), ("never-match", 4, 0)):
+            with self.subTest(fail=fail):
+                calls.unlink(missing_ok=True)
+                result = subprocess.run(["bash", "-c", command], check=False, capture_output=True,
+                    env={**os.environ, "PATH": str(self.task.root) + os.pathsep + os.environ["PATH"],
+                         "CALLS": str(calls), "FAIL_STAGE": fail}, timeout=5)
+                stages = calls.read_text().splitlines()
+                self.assertEqual(result.returncode, status)
+                self.assertEqual(len(stages), count)
+                if count > 2:
+                    self.assertEqual(stages[2], "exec ruby /mailserver/tests/attachment_ingress.rb")
+                if count > 3:
+                    self.assertTrue(stages[3].startswith("exec rubocop --lint "))
+                    for target in ("attachment_ingress.rb", "attachment_support.rb", "attachment_http_test.rb"):
+                        self.assertIn(target, stages[3])
+
+    def test_run_propagates_attachment_mode_and_cleans(self) -> None:
+        with patch.object(mox_runtime, "WorkerFixture") as constructor:
+            mox_runtime.run(self.task, attachments=True)
+            constructor.assert_called_once_with(self.task, attachments=True)
+            constructor.return_value.cleanup.assert_called_once_with()
+
+    def test_prepare_failure_cleans_the_actual_partially_started_fixture(self) -> None:
+        fixture = mox_runtime.WorkerFixture(self.task, attachments=True)
+        self.task.secrets = {key: "synthetic" for key in (
+            "POSTGRES_PASSWORD", "MIGRATOR_DB_PASSWORD", "API_DB_PASSWORD", "WORKER_DB_PASSWORD")}
+        self.task.project_containers = Mock(return_value=[{"Config": {"Labels": {
+            "com.docker.compose.service": "db"}}, "NetworkSettings": {"Networks": {
+            self.task.project + "_isolated": {"IPAddress": "172.22.0.2"}}}}])
+        def inspect(kind: str, names: list[str]) -> list[dict[str, object]]:
+            if kind == "network":
+                return [{"Internal": True}]
+            if kind == "image":
+                return [{"Id": "sha256:owned"}]
+            image, mounts = fixture.expected[fixture.server]
+            return [{"Image": image, "Config": {"Labels": {"elevateo.mail1018.project": self.task.project}},
+                     "Mounts": [{"Type": "bind", "Source": src, "Destination": dst, "RW": rw}
+                                for src, dst, rw in mounts]}]
+        def docker(stage: str, *args: object, **kwargs: object) -> str:
+            if stage == "mox-start":
+                (fixture.out / "ready").write_text("ready")
+                (fixture.out / "fixture-credentials.json").write_text(json.dumps({
+                    address: "synthetic-password" for address in (
+                        "outreach000@send.test", "seed000@seed.test", "seed001@seed.test")}))
+            return fixture.server if stage == "mox-owned-names" else ""
+        self.task.inspect.side_effect = inspect
+        self.task.docker.side_effect = docker
+        with patch.object(mox_runtime, "WorkerFixture", return_value=fixture):
+            with self.assertRaisesRegex(RuntimeError, "attachment fixture services missing"):
+                mox_runtime.run(self.task, attachments=True)
+        self.assertIn("mox-remove", [call.args[0] for call in self.task.docker.call_args_list])
+        self.assertEqual(set(fixture.expected), {fixture.server})
+        self.assertTrue(self.task.write.call_args.args[1]["passed"])
+        self.assert_private_files_removed(fixture)
+        self.assertEqual(self.task.deadline, 100)
 
     def test_external_network_is_rejected_before_container_creation(self) -> None:
         self.task.inspect.return_value = [{"Internal": False}]

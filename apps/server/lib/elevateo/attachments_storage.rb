@@ -27,6 +27,9 @@ module Elevateo
         raise ArgumentError, "private Storage URL required"
       end
 
+      def inspect = "#<Elevateo::Attachments::PrivateStorage redacted>"
+      alias to_s inspect
+
       def put(key, bytes, content_type:)
         raise ArgumentError, "invalid object" unless API_KEY.match?(key.to_s) && bytes.is_a?(String) &&
           bytes.bytesize.between?(1, MAX_BYTES) && content_type == "application/octet-stream"
@@ -40,7 +43,8 @@ module Elevateo
         raise ArgumentError, "invalid inbound object" unless KEY.match?(key.to_s) && key.start_with?("quarantine/imap/") &&
           bytes.is_a?(String) && bytes.bytesize.between?(1, 262_144)
         raise Unavailable, "private bucket unavailable" unless private_bucket?
-        request(Net::HTTP::Post, key, bytes: bytes, expected: [200, 201, 409])
+        # AIDEV-NOTE: Supabase may report duplicates as 400 or 409; only exact authorized read-back admits a retry.
+        request(Net::HTTP::Post, key, bytes: bytes, expected: [200, 201, 400, 409])
         stored = get(key)
         raise Unavailable, "staged object conflict" unless stored == bytes
         nil

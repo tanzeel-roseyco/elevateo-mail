@@ -7,6 +7,7 @@ from pathlib import Path
 from types import SimpleNamespace
 import unittest
 from unittest.mock import Mock
+from attachment_runtime import SERVICES
 
 ROOT = Path(__file__).resolve().parents[3]
 
@@ -50,7 +51,7 @@ class R8ConstraintsTest(unittest.TestCase):
                                     adv808_auth_policy=False, adv815_expiry=False, attachments=attachments, mox=mox),
             "task": task, "print": output, "acceptance": acceptance,
             "acceptance_before_http": acceptance_gate,
-            "attachment_runtime": SimpleNamespace(run=attachment_probe),
+            "attachment_runtime": SimpleNamespace(run=attachment_probe, SERVICES=SERVICES),
             "mox_runtime": SimpleNamespace(run=mox_probe),
         })
         return task, output
@@ -117,22 +118,51 @@ class R8ConstraintsTest(unittest.TestCase):
         self.phase(False, attachment_probe=probe)
         probe.assert_not_called()
 
-    def test_mox_gate_requires_ruby_success_and_precedes_http(self):
-        def probe(task):
+    def test_mox_gate_requires_ruby_success_and_precedes_http(self) -> None:
+        def probe(task: Mock, *, attachments: bool) -> None:
+            self.assertFalse(attachments)
             self.assertEqual([call.args[0] for call in task.compose.call_args_list], ["ruby-suites"])
         checked = Mock(side_effect=probe)
         task, _ = self.phase(False, mox=True, mox_probe=checked)
-        checked.assert_called_once_with(task)
+        checked.assert_called_once_with(task, attachments=False)
         self.assertIn("http-acceptance", [call.args[0] for call in task.compose.call_args_list])
 
-    def test_mox_failure_stops_http_and_worker(self):
+    def test_mox_failure_stops_http_and_worker(self) -> None:
         captured = []
-        def failed(task):
+        def failed(task: Mock, *, attachments: bool) -> None:
+            self.assertFalse(attachments)
             captured.append(task)
             raise RuntimeError("Mox fixture failed")
         with self.assertRaisesRegex(RuntimeError, "Mox fixture failed"):
             self.phase(False, mox=True, mox_probe=failed)
         self.assertEqual([call.args[0] for call in captured[0].compose.call_args_list], ["ruby-suites"])
+
+    def test_combined_lane_starts_services_and_http_readiness_before_mox(self) -> None:
+        def probe(task: Mock, *, attachments: bool) -> None:
+            self.assertTrue(attachments)
+            self.assertEqual([call.args[0] for call in task.compose.call_args_list],
+                             ["ruby-suites", "attachment-api-start", "attachment-services"])
+            task.runtime_credentials.assert_called_once_with()
+            task.wait_http.assert_called_once_with()
+            self.assertEqual(task.compose.call_args.args[1], ["up", "-d", "--no-deps", *sorted(SERVICES)])
+        mox_probe, attachment_probe = Mock(side_effect=probe), Mock()
+        task, _ = self.phase(False, attachments=True, mox=True, mox_probe=mox_probe, attachment_probe=attachment_probe)
+        mox_probe.assert_called_once_with(task, attachments=True)
+        attachment_probe.assert_called_once_with(task)
+        self.assertEqual(task.wait_http.call_count, 2)
+
+    def test_combined_lane_failure_cannot_run_later_http_or_worker(self) -> None:
+        captured = []
+        attachment_probe = Mock()
+        def failed(task: Mock, *, attachments: bool) -> None:
+            self.assertTrue(attachments)
+            captured.append(task)
+            raise RuntimeError("combined attachment fixture failed")
+        with self.assertRaisesRegex(RuntimeError, "combined attachment fixture failed"):
+            self.phase(False, attachments=True, mox=True, mox_probe=failed, attachment_probe=attachment_probe)
+        attachment_probe.assert_not_called()
+        self.assertEqual([call.args[0] for call in captured[0].compose.call_args_list],
+                         ["ruby-suites", "attachment-api-start", "attachment-services"])
 
     def test_default_run_does_not_start_mox(self):
         probe = Mock()

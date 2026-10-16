@@ -1,12 +1,13 @@
 # frozen_string_literal: true
 
 require_relative "../config"
+require_relative "../attachments_worker_storage"
 
 module Elevateo
   module Inbound
     # AIDEV-NOTE: This opt-in profile reaches only the isolated Mox namespace; production endpoints remain unavailable.
     class WorkerConfig
-      attr_reader :runtime, :credentials_path, :ca_path
+      attr_reader :runtime, :credentials_path, :ca_path, :attachment_storage
 
       def self.load!(env = ENV) = new(runtime: Config.load!(env), env: env)
 
@@ -18,6 +19,7 @@ module Elevateo
         @runtime = runtime
         @credentials_path = absolute_path(env["ELEVATEO_IMAP_CREDENTIALS_PATH"])
         @ca_path = absolute_path(env["ELEVATEO_IMAP_CA_PATH"])
+        @attachment_storage = Attachments::WorkerStorage.load!(env)
         freeze
       end
 

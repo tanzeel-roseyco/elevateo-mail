@@ -5,6 +5,7 @@ module Elevateo
       attr_reader runtime: Config
       attr_reader credentials_path: String
       attr_reader ca_path: String
+      attr_reader attachment_storage: Attachments::PrivateStorage?
       def self.load!: (?_ConfigEnvironment) -> WorkerConfig
       def initialize: (runtime: Config, env: _ConfigEnvironment) -> void
       def inspect: () -> String

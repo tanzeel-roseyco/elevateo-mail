@@ -122,7 +122,7 @@ def main() -> int:
     parser.add_argument("--mox", action="store_true", help="Private real Mox/PostgreSQL worker acceptance")
     add_arguments(parser)
     args = parser.parse_args()
-    if args.mox and (args.acceptance or args.attachments or args.adv808_auth_policy or args.adv815_expiry):
+    if args.mox and (args.acceptance or args.adv808_auth_policy or args.adv815_expiry):
         parser.error("Mox requires its own disposable job")
     if args.attachments and (args.acceptance or args.adv808_auth_policy or args.adv815_expiry):
         parser.error("attachments require a separate disposable job")
@@ -239,8 +239,13 @@ def main() -> int:
             print("Running isolated Minitest suites and Steep", flush=True)
             # AIDEV-NOTE: The expanded inventory needs a bounded 30-minute aggregate; each suite still has its own timeout.
             task.compose("ruby-suites", ["run", "--rm", "--no-deps", "test"], 1800)
+        if args.mox and args.attachments:
+            task.compose("attachment-api-start", ["up", "-d", "api"], 30)
+            task.runtime_credentials()
+            task.wait_http()
+            task.compose("attachment-services", ["up", "-d", "--no-deps", *sorted(attachment_runtime.SERVICES)], 45)
         if args.mox:
-            mox_runtime.run(task)
+            mox_runtime.run(task, attachments=args.attachments)
         if acceptance:
             print("Running selected real-app acceptance lanes before HTTP fixtures", flush=True)
             acceptance_before_http(task, acceptance)

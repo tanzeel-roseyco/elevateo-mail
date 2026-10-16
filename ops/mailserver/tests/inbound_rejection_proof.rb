@@ -30,11 +30,15 @@ module MoxInboundRejectionProof
     account = scope.fetch(:account)
     poison = "Content-Type: application/octet-stream\r\nContent-Transfer-Encoding: base64\r\n\r\ncG9pc29u\r\n"
     submit_fixture_mail(scope.fetch(:address), mime: poison)
+    binding = Elevateo::MailCredentials::Binding.new(account_id: account, organization_id: @org,
+      mailbox_id: scope.fetch(:inbox), credential_version: 1, credential_ref: "test:scheduled-mox")
+    identity = wait_for_inbox_identity(transport, binding, @subject)
     with_worker_credentials do |path|
       env = process_environment(path)
-      run_until_inbound(env) { rejected_receipts(account).length == 1 }
+      run_until_inbound(env) { !rejected_inbox_identity(account, identity).nil? }
       rejected = rejected_receipts(account)
-      receipt = rejected.fetch(0)
+      receipt = rejected_inbox_identity(account, identity)
+      refute_nil receipt
       assert_equal [account, @org, scope.fetch(:inbox), "unsupported_mime"],
         receipt.values_at("account_id", "organization_id", "mailbox_id", "reason")
       assert_match(/\A[0-9a-f]{64}\z/, receipt.fetch("content_sha256"))

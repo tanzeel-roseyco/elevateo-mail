@@ -1,0 +1,7 @@
+module Elevateo
+  module Attachments
+    class WorkerStorage
+      def self.load!: (_ConfigEnvironment) -> PrivateStorage?
+    end
+  end
+end

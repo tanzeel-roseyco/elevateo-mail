@@ -32,7 +32,8 @@ begin
       # AIDEV-NOTE: A cleanup failure poisons one transport; a fresh transport lets the next leased account recover.
       transport = Elevateo::Inbound::TlsImapTransport.new(host: "localhost", port: 1993,
         ca_file: settings.ca_path, credential_resolver: resolver)
-      Elevateo::Inbound::ImapPoller.new(connection: connection, transport: transport).run_once
+      Elevateo::Inbound::ImapPoller.new(connection: connection, transport: transport,
+        attachment_storage: settings.attachment_storage).run_once
     end
   end
   loop = Elevateo::Inbound::PollLoop.new(poll: poll, logger: ->(line) { $stdout.puts(line); $stdout.flush })

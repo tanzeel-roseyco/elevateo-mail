@@ -7,6 +7,7 @@ import json
 from pathlib import Path
 import time
 from docker_task import Task
+import mox_attachment_runtime
 
 PYTHON = "python:3.12.9@sha256:48a11b7ba705fd53bf15248d1f94d36c39549903c5d59edcfa2f3f84126e7b44"
 MOX = Path("/home/tanzeel/elevateo-mail-completion-20261015/control/mail1017/release/mox")
@@ -21,8 +22,8 @@ def preflight(task: Task) -> None:
     task.inspect("image", [PYTHON])
 
 
-def run(task: Task) -> None:
-    fixture = WorkerFixture(task)
+def run(task: Task, *, attachments: bool = False) -> None:
+    fixture = WorkerFixture(task, attachments=attachments)
     failures: list[str] = []
     try:
         fixture.run()
@@ -44,8 +45,9 @@ def run(task: Task) -> None:
 
 class WorkerFixture:
     # AIDEV-NOTE: These two containers are separate from Compose; validate their exact identity/mounts before removal.
-    def __init__(self, task: Task) -> None:
+    def __init__(self, task: Task, *, attachments: bool = False) -> None:
         self.task = task
+        self.attachments = attachments
         self.out = task.evidence / "mox"
         self.root = task.root / "ops/mailserver"
         self.server, self.client = task.project + "-mox", task.project + "-mox-client"
@@ -60,15 +62,17 @@ class WorkerFixture:
         for source, destination, readonly in mounts:
             args += ["--mount", f"type=bind,src={source},dst={destination}" + (",readonly" if readonly else "")]
         # AIDEV-NOTE: Compatibility needs the empty inbox; composition filters its own subjects, and every stage fails closed.
+        extra = "bundle exec ruby /mailserver/tests/attachment_ingress.rb && " if self.attachments else ""
+        lint = " /mailserver/tests/attachment_ingress.rb /workspace/ops/tests/be02/attachment_support.rb /workspace/ops/tests/be02/attachment_http_test.rb" if self.attachments else ""
         self.task.docker("mox-create", [*args, *arguments, image, *(
             ["/mailserver/tests/app_fixture.py"] if name == self.server else
             ["-c", "bundle exec ruby /mailserver/tests/app_compatibility.rb && "
-             "bundle exec ruby /mailserver/tests/worker_composition.rb && "
+             "bundle exec ruby /mailserver/tests/worker_composition.rb && " + extra +
              "bundle exec rubocop --lint --format simple "
              "/mailserver/tests/app_compatibility.rb /mailserver/tests/worker_composition.rb "
              "/mailserver/tests/worker_inbox.rb /mailserver/tests/scheduled_inbox.rb "
              "/mailserver/tests/inbound_process.rb /mailserver/tests/inbound_process_proof.rb "
-             "/mailserver/tests/inbound_rejection_proof.rb"])])
+             "/mailserver/tests/inbound_rejection_proof.rb" + lint])])
 
     def run(self) -> None:
         self.out.mkdir(mode=0o700)
@@ -108,16 +112,20 @@ class WorkerFixture:
         values = {"BE02_TASK_DATABASE_NAME": "postgres", "HOME": "/tmp", "RUBOCOP_CACHE_ROOT": "/tmp/rubocop"}
         for key, (role, secret) in roles.items():
             values["BE02_" + key + "_DATABASE_URL"] = f"postgres://{role}:{self.task.secrets[secret]}@{address}:5432/postgres"
+        extra_mounts: list[tuple[Path, str, bool]] = []
+        if self.attachments:
+            extra_mounts, extra_values = mox_attachment_runtime.prepare(self.task, self.out)
+            values.update(extra_values)
         self.env.write_text("".join(f"{key}={value}\n" for key, value in values.items()), encoding="ascii")
         self.env.chmod(0o600)
         self.create(self.client, self.task.image, [(self.task.root / "apps/server", "/workspace/apps/server", True),
             (self.task.root / "contracts", "/workspace/contracts", True), (self.root, "/mailserver", True),
-            (self.out, "/evidence", True)], ["--network", "container:" + self.server,
+            (self.out, "/evidence", True), *extra_mounts], ["--network", "container:" + self.server,
             "--read-only", "--user", "0", "--cap-drop", "ALL", "--cap-add", "DAC_READ_SEARCH",
             "--security-opt", "no-new-privileges", "--memory", "1g", "--cpus", "1", "--pids-limit", "64",
             "--tmpfs", "/tmp:rw,nosuid,size=134217728", "--env-file", str(self.env),
             "--workdir", "/workspace/apps/server", "--entrypoint", "bash"])
-        self.task.docker("mox-composition", ["start", "-a", self.client], 150)
+        self.task.docker("mox-composition", ["start", "-a", self.client], 300 if self.attachments else 150)
         if self.task.inspect("container", [self.client])[0]["State"]["ExitCode"] != 0:
             raise RuntimeError("Mox composition tests failed")
         (self.out / "finished").write_text("finished\n", encoding="ascii")

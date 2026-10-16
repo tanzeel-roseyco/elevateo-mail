@@ -122,6 +122,7 @@ class MoxWorkerCompositionTest < SendDatabaseTestCase
     assert_match(/\Amox-test-v1:[0-9a-f]{64}\z/, row.fetch("receipt_ref"))
     assert_equal "accepted", status(@send_id).fetch("state")
     wait_for_message
+    submit_inbox_poison
     assert_inbox_import
     assert_reserved_once
     # AIDEV-NOTE: Accepted work is no longer eligible; a second execution must remain idle without another connection.

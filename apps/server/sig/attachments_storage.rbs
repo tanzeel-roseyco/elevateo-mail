@@ -2,6 +2,8 @@ module Elevateo
   module Attachments
     # AIDEV-NOTE: Only the worker/gateway may construct this service-token-backed private adapter.
     class PrivateStorage
+      def inspect: () -> String
+      alias to_s inspect
       class Unavailable < StandardError
       end
       type request_class = singleton(Net::HTTP::Post) | singleton(Net::HTTP::Get) | singleton(Net::HTTP::Delete)
