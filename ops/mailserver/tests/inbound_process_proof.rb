@@ -72,6 +72,33 @@ module MoxInboundProcessProof
     assert_raises(JSON::ParserError) { append_process_event("{", []) }
   end
 
+  def test_real_process_imports_html_and_prefers_plain_alternative
+    html = "Content-Type: text/html; charset=UTF-8\r\n\r\n<p>#{@body}</p><script>hidden</script>\r\n"
+    alternative = "Content-Type: multipart/alternative; boundary=mime-proof\r\n\r\n" \
+      "--mime-proof\r\nContent-Type: text/plain; charset=UTF-8\r\n\r\n#{@body}\r\n" \
+      "--mime-proof\r\nContent-Type: text/html; charset=UTF-8\r\n\r\n<p>different HTML</p>\r\n--mime-proof--\r\n"
+    [html, alternative].each_with_index { |mime, index| submit_fixture_mail(@scopes.fetch(index).fetch(:address), mime: mime) }
+    with_worker_credentials do |path|
+      status, events, signalled = worker_process(process_environment(path), ["--run"], signal: "TERM") do
+        ready = @accounts.all? { |account| inbox_receipt(account).length == 1 }
+        @accounts.each { |account| @admin.exec_params("UPDATE app.inbound_imap_accounts SET poll_next_at=clock_timestamp() WHERE id=$1", [account]) } unless ready
+        ready
+      end
+      assert_equal 0, status
+      assert signalled
+      assert(events.any? { |event| event["result"] == "polled" })
+      @scopes.each do |scope|
+        receipt = inbox_receipt(scope.fetch(:account))
+        assert_equal 1, receipt.length
+        assert_equal "Synthetic consenting seed fixture", receipt.first.fetch("body_text").strip
+        # AIDEV-NOTE: Tenant reads must expose exactly the converted worker text, never HTML markup.
+        @body = receipt.first.fetch("body_text")
+        assert_inbox_visibility(receipt.first.fetch("message_id"), scope.fetch(:inbox))
+      end
+      assert_no_poll_leases
+    end
+  end
+
   def assert_no_poll_leases
     @accounts.each do |account|
       row = @admin.exec_params("SELECT poll_lease_token FROM app.inbound_imap_accounts WHERE id=$1", [account]).first

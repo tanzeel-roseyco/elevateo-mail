@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 require "minitest/autorun"
-require_relative "../../lib/elevateo/inbound/imap_attachment_parser"
+require_relative "../../lib/elevateo/inbound/imap_mime_parser"
 
-class ImapAttachmentParserTest < Minitest::Test
+class ImapMimeParserAttachmentTest < Minitest::Test
   HEADER = "From: sender@example.invalid\r\nTo: inbox@example.invalid\r\n".freeze
 
   def test_bounded_plaintext_and_attachment_bytes
@@ -36,7 +36,7 @@ class ImapAttachmentParserTest < Minitest::Test
 
   private
 
-  def parser = Elevateo::Inbound::ImapAttachmentParser.new
+  def parser = Elevateo::Inbound::ImapMimeParser.new
 
   def multipart(type, filename, bytes)
     HEADER + "Content-Type: multipart/mixed; boundary=x\r\n\r\n" \

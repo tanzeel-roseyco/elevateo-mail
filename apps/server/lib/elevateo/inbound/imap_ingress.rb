@@ -1,23 +1,12 @@
 # frozen_string_literal: true
 
 require_relative "fake_ingress"
-require_relative "imap_attachment_parser"
+require_relative "imap_mime_parser"
 
 module Elevateo
   module Inbound
     # AIDEV-NOTE: Protocol evidence is worker supplied; SQL maps account to tenant and owns replay/cursor atomicity.
     class ImapIngress
-      DUMMY_SCOPE = "00000000-0000-4000-8000-000000000000"
-
-      class Capture
-        attr_reader :record
-
-        def insert_once(record)
-          @record = record
-          {}
-        end
-      end
-
       def initialize(store:, attachment_storage: nil)
         @store = store
         @attachment_storage = attachment_storage
@@ -31,20 +20,14 @@ module Elevateo
           raise Rejected, "invalid_imap_identity"
         end
 
-        capture = Capture.new
-        FakeIngress.new(store: capture).ingest(organization_id: DUMMY_SCOPE, mailbox_id: DUMMY_SCOPE,
-          authorized_mailbox_ids: [DUMMY_SCOPE], provider_account_id: "imap", provider_event_id: "u#{uid}",
-          raw_mime: raw_mime)
-        parsed = capture.record
-        raise Rejected, "invalid_mime" unless parsed
+        parsed_mime = ImapMimeParser.new.parse(raw_mime: raw_mime)
+        parsed = parsed_mime.fetch(:record)
+        extracted = parsed_mime.fetch(:attachments)
         # @type var handles: Array[staged_attachment]
         handles = []
-        unless parsed.fetch(:attachments).empty?
+        unless extracted.empty?
           storage = @attachment_storage
           raise Rejected, "attachment_storage_unavailable" unless storage
-
-          extracted = ImapAttachmentParser.new.parse(raw_mime: raw_mime).fetch(:attachments)
-          raise Rejected, "invalid_mime" unless extracted.length == parsed.fetch(:attachments).length
 
           extracted.each do |attachment|
             ordinal = attachment.fetch(:ordinal)

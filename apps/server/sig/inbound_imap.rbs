@@ -51,30 +51,11 @@ module Elevateo
     end
 
     class ImapIngress
-      DUMMY_SCOPE: String
       @store: _ImapStore
       @attachment_storage: _AttachmentStorage?
       def initialize: (store: _ImapStore, ?attachment_storage: _AttachmentStorage?) -> void
       def ingest: (account_id: String, credential_version: Integer, uidvalidity: Integer, uid: Integer,
         raw_mime: String) -> Hash[String, untyped]
-      class Capture
-        @record: record?
-        def record: () -> record?
-        def insert_once: (record) -> Hash[String, String]
-      end
-    end
-
-    class ImapAttachmentParser
-      ALLOWED_TYPES: Array[String]
-      DUMMY_SCOPE: String
-      def parse: (raw_mime: String) -> { record: record, attachments: Array[parsed_attachment] }
-      private
-      def leaves: (Mail::Message) -> Array[Mail::Message]
-      class Capture
-        @record: record?
-        def record: () -> record?
-        def insert_once: (record) -> Hash[String, String]
-      end
     end
 
     class ImapWorkerStore

@@ -6,6 +6,8 @@ gem "rails", "8.1.4"
 gem "pg", "~> 1.6"
 gem "puma", "~> 7.0"
 gem "net-imap", "0.6.7"
+# AIDEV-NOTE: Direct HTML-to-text parsing uses the already locked Nokogiri; no new runtime package is installed.
+gem "nokogiri", "1.19.4"
 
 group :development, :test do
   gem "steep", "2.1.0", require: false

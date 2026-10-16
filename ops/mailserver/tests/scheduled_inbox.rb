@@ -38,7 +38,7 @@ class MoxScheduledInboxTest < DraftDatabaseTestCase
     { account: account, inbox: inbox, address: address }
   end
 
-  def submit_fixture_mail(address)
+  def submit_fixture_mail(address, mime: nil)
     # AIDEV-NOTE: Fixture-only raw SMTP populates two consenting inboxes; production sending remains held.
     context = OpenSSL::SSL::SSLContext.new
     context.set_params(verify_mode: OpenSSL::SSL::VERIFY_PEER, ca_file: CA)
@@ -48,8 +48,8 @@ class MoxScheduledInboxTest < DraftDatabaseTestCase
     smtp.enable_starttls(context)
     Timeout.timeout(10) do
       smtp.start("localhost", FROM, @passwords.fetch(FROM), :plain) do |client|
-        client.send_message("From: #{FROM}\r\nTo: #{address}\r\nSubject: #{@subject}\r\n" \
-          "Content-Type: text/plain; charset=UTF-8\r\n\r\n#{@body}\r\n", FROM, address)
+        content = mime || "Content-Type: text/plain; charset=UTF-8\r\n\r\n#{@body}\r\n"
+        client.send_message("From: #{FROM}\r\nTo: #{address}\r\nSubject: #{@subject}\r\n#{content}", FROM, address)
       end
     end
   end

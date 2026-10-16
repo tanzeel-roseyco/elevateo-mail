@@ -1,0 +1,63 @@
+module Mail
+  class Body
+    def decoded: () -> String
+  end
+  class Message
+    def body: () -> Body
+  end
+  class UnknownEncodingType < StandardError
+  end
+end
+
+module Nokogiri
+  module XML
+    class Node
+      def name: () -> String
+      def content: () -> String
+      def text?: () -> bool
+      def element?: () -> bool
+      def children: () -> NodeSet
+    end
+    class NodeSet
+      def to_a: () -> Array[Node]
+    end
+  end
+  module HTML5
+    class Document < XML::Node
+      def self.parse: (String, nil, String, max_tree_depth: Integer, max_attributes: Integer, max_errors: Integer) -> Document
+    end
+  end
+end
+
+module Elevateo
+  module Inbound
+    type imap_mime_record = { content_sha256: String, from: String, to: Array[String], subject: String, text: String }
+    type mime_selection = [Array[Mail::Message], Array[Mail::Message]]
+
+    class ImapMimeTree
+      def select: (Mail::Message) -> mime_selection
+      private
+      def visit: (Mail::Message, Integer, Hash[Symbol, Integer]) -> mime_selection
+      def multipart: (Mail::Message, Integer, Hash[Symbol, Integer]) -> mime_selection
+      def alternatives: (Array[Mail::Message], Integer, Hash[Symbol, Integer]) -> mime_selection
+    end
+
+    class ImapHtmlText
+      OMIT: Array[String]
+      BLOCK: Array[String]
+      MAX_NODES: Integer
+      def convert: (String) -> String
+      private
+      def append: (String, String) -> String
+    end
+
+    class ImapMimeParser
+      ALLOWED_TYPES: Array[String]
+      def parse: (raw_mime: String) -> { record: imap_mime_record, attachments: Array[parsed_attachment] }
+      private
+      def text: (Mail::Message) -> String
+      def attachment: (Mail::Message, Integer) -> parsed_attachment
+      def header: (String?) -> String
+    end
+  end
+end
