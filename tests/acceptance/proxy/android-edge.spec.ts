@@ -62,9 +62,9 @@ function get(port: number, headers: Record<string, string> = {}, servername = AN
     outgoing.on('error', reject); outgoing.end();
   });
 }
-function tunnel(port: number, target = `${ANDROID_EDGE.host}:443`, extra = '', payload = '') {
+function tunnel(port: number | string, target = `${ANDROID_EDGE.host}:443`, extra = '', payload = '') {
   return new Promise<{ socket: Socket; head: string; tail: string }>((resolve, reject) => {
-    const socket = connect(port, '127.0.0.1'); let data = '';
+    const socket = typeof port === 'string' ? connect(port) : connect(port, '127.0.0.1'); let data = '';
     const fail = (error: Error) => { socket.destroy(); reject(error); };
     socket.setTimeout(3000, () => fail(new Error('CONNECT test timeout')));
     socket.once('error', fail);
@@ -159,8 +159,17 @@ test('TLS through the allowlisted CONNECT tunnel verifies the CA and serves the 
   await writeFile(join(root, 'index.html'), '<html>fixture-production</html>');
   const server = createAndroidServer(root, certificate, key); const tlsPort = await listen(server);
   t.after(() => { server.closeAllConnections(); return close(server); });
-  const proxy = createAndroidConnect('127.0.0.1', tlsPort); const port = await listen(proxy.server);
-  t.after(() => proxy.close()); const result = await tunnel(port); assert.equal(result.tail, '');
+  const proxy = createAndroidConnect('127.0.0.1', tlsPort); const socketPath = join(root, 'edge.sock');
+  // AIDEV-NOTE: Exercise the actual UNIX transport used across container mount boundaries.
+  await new Promise<void>((resolve, reject) => {
+    proxy.server.once('error', reject); proxy.server.listen(socketPath, resolve);
+  });
+  t.after(() => proxy.close());
+  const collision = tcpServer();
+  await assert.rejects(new Promise<void>((resolve, reject) => {
+    collision.once('error', reject); collision.listen(socketPath, resolve);
+  }), { code: 'EADDRINUSE' });
+  const result = await tunnel(socketPath); assert.equal(result.tail, '');
   const socket = tlsConnect({ socket: result.socket, servername: ANDROID_EDGE.host, ca });
   t.after(() => socket.destroy());
   const response = readUntil(socket, '', data => data.includes('<html>fixture-production</html>'));

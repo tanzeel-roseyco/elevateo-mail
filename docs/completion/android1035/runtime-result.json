@@ -1,0 +1,24 @@
+{
+  "tag": "android1035-ab65bce1fad4",
+  "tests": "FAILED",
+  "free_before": 254224130048,
+  "app_acceptance": "NOT_RUN",
+  "source_sha256": {
+    "test_boot.py": "d98b00bd98e5afd7d2188687e18ad1faebdc9e28618a0078007a0ec1797919b9",
+    "test_relay.py": "7cf32b0bc24dbcb8a2d5accdb4513039ed04dfc4825606763946de95804e9ab5",
+    "fetch_sdk.py": "b549226a3dd73381453793d800695b91cc0442bf6e315f5bd6b18fee8adde197",
+    "test_runtime.py": "1623654b81df098ca517cbc449f3ad0b9072bb457271540094bce4856b998455",
+    "gui.mjs": "85ae229dadc8ea4e82ae2ad15ea11f03f6e6b792a1bfba05ac665caac97c9a87",
+    "runtime.py": "b128e30e7b6c653686ce99280421eb017d5a7bbfea715a0ed1fad21d77e7dc2d",
+    "test_listener.py": "1299e773641ad0803ccc9acb6601c653339e0a052b4a1765bad471b313ca7bcf",
+    "relay.py": "e9b3493f78c1d1725cd54a011bcfc53276643023e8c1ac50904e55d7aa8591c2",
+    "boot.py": "10b79c88004c4d676a131ee34968c2e00b965be9e42dd6dc6d97ad0b652c92bf",
+    "Dockerfile": "4c64732944c242db9aa56271b150178067ea2e5b8ac855c99ad2839092a065ca"
+  },
+  "unit_tests": "PASSED",
+  "failure": "RuntimeError: Required Android acceptance checks did not pass",
+  "cleanup_passed": true,
+  "cleanup_errors": [],
+  "work_absent": true,
+  "free_after": 254153338880
+}

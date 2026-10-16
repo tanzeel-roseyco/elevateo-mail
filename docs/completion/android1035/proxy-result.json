@@ -1,0 +1,24 @@
+{
+  "source": "1c345911bb306f71ecaa153f9b38760272fa2c79",
+  "tests": "PASSED",
+  "tag": "android1035-unix-f1ae9de59549",
+  "free_before": 254169976832,
+  "overlay_sha256": {
+    "ops/acceptance/web.Dockerfile": "32dedb0fcb3107a2b2afcb5c0ff7cd7cf3ca235ecef30539de6e920baf03047f",
+    "ops/compose.android-test.yaml": "911d082eba5e2277bd3ae95801eb697a767e85b3e6b4bf082b3acf06ecc2a71c",
+    "ops/tests/be02/acceptance_cleanup.py": "fddcfd830bfe3e5a3e080d5c60f3fe05f9666bb3902fd58143cd14a2d3e612ee",
+    "ops/tests/be02/android_connect_probe.py": "2c97f76452c494de8cbb8526176f4b4f2b2d447c29b2b50e113a9dbd867a1ba1",
+    "ops/tests/be02/android_fixture.py": "5b1064cc346474d29291e2c1fedbb30e8a75eada1a09866595405f76f4c5b982",
+    "ops/tests/be02/test_android_connect_probe.py": "22fa8a27c16f215f91d662304a35ceff6b319fc458d83c68ac46341c9f8b19cb",
+    "ops/tests/be02/test_android_fixture.py": "6615c94b640e9e392c9cf8f60cfda75f6922d624ec13e7951e7399d51aa21cd9",
+    "ops/tests/be02/test_android_probe_policy.py": "04530b30aae6e1059bf5d396f2b281f6d045264dd309597ea49091ab715d1ebb",
+    "tests/acceptance/proxy/android-connect-main.ts": "fa298cc53b2f3be5eb3b6ecb519ffb8f1aa11298292df21e2c60906417e52871",
+    "tests/acceptance/proxy/android-connect.ts": "9d25f74a37a43568f46acd4bd1f2b03af9decf76f221c08220d58a3471dcb24d",
+    "tests/acceptance/proxy/android-edge.spec.ts": "b23eb4f5293c185341527edc36704744f30be3b17b508a7147a7f8416b9a8b23"
+  },
+  "runner_tests": "PASSED",
+  "cleanup_passed": true,
+  "cleanup_errors": [],
+  "work_absent": true,
+  "free_after": 254153019392
+}

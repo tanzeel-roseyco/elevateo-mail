@@ -1,0 +1,181 @@
+{
+  "checks": [
+    {
+      "kind": "container",
+      "name": "48ba57fb5ce0dbcf5c81bc2710ce4b3f3686e4fd28bcb08637ba3a0de41d8711",
+      "absent": true
+    },
+    {
+      "kind": "container",
+      "name": "ccc9e6ccdc476cc758df3a106b9a891f0205aa024aa60dbf4da0a3719eb94fae",
+      "absent": true
+    },
+    {
+      "kind": "container",
+      "name": "c1a9d524f1a47d2ee19c99a3c5e8d2417b1ac265f087d422e226db14a155cb15",
+      "absent": true
+    },
+    {
+      "kind": "container",
+      "name": "373fdcbb89462c0aee4451759abe175f3e4e032619487ec88231366dc61cb011",
+      "absent": true
+    },
+    {
+      "kind": "container",
+      "name": "1f2458a07fba979d721b3b246598890184dcb213178d03e8432306015ebc9419",
+      "absent": true
+    },
+    {
+      "kind": "container",
+      "name": "c7066e18266d3cd896a2a78ce23918f3d7473b4c96b46f19d407dbde6919c109",
+      "absent": true
+    },
+    {
+      "kind": "container",
+      "name": "9c818e9c274477efa77b61bfb8f9fba865cf10a2c54f0a41fc91ea7026d43ee2",
+      "absent": true
+    },
+    {
+      "kind": "container",
+      "name": "4da400fd760e5e359dc559563815027d115c593bc9d8841516bedbedbd2131a7",
+      "absent": true
+    },
+    {
+      "kind": "builder",
+      "name": "be02-8a79a7064eeb4383884d2c7fa8e72964-builder",
+      "absent": true
+    },
+    {
+      "kind": "volume",
+      "name": "be02-8a79a7064eeb4383884d2c7fa8e72964_db-config",
+      "absent": true
+    },
+    {
+      "kind": "volume",
+      "name": "be02-8a79a7064eeb4383884d2c7fa8e72964_db-data",
+      "absent": true
+    },
+    {
+      "kind": "volume",
+      "name": "buildx_buildkit_be02-8a79a7064eeb4383884d2c7fa8e72964-builder0_state",
+      "absent": true
+    },
+    {
+      "kind": "network",
+      "name": "053e644f3ada20a6f34ca3111673fc76cde60bc26e27661facab2e56b394a242",
+      "absent": true
+    },
+    {
+      "kind": "image",
+      "name": "sha256:b675acd453aeed7fa72d9524380dc360bb671e80e99e95497d3091d4c5e16c7d",
+      "absent": true
+    },
+    {
+      "kind": "image",
+      "name": "sha256:a430d628d48b766fb201fea7c3828d272741e884d26469660b0827ccf1aad72a",
+      "absent": true
+    },
+    {
+      "kind": "android-certificate",
+      "name": "/home/tanzeel/orca/workspaces/integration/completion-cassian-int801/ops/local/be02-8a79a7064eeb4383884d2c7fa8e72964/android-tls/ca.pem",
+      "absent": true
+    },
+    {
+      "kind": "android-certificate",
+      "name": "/home/tanzeel/orca/workspaces/integration/completion-cassian-int801/ops/local/be02-8a79a7064eeb4383884d2c7fa8e72964/android-tls/server.pem",
+      "absent": true
+    },
+    {
+      "kind": "android-certificate",
+      "name": "/home/tanzeel/orca/workspaces/integration/completion-cassian-int801/ops/local/be02-8a79a7064eeb4383884d2c7fa8e72964/android-tls/server.key",
+      "absent": true
+    },
+    {
+      "kind": "android-certificate-directory",
+      "name": "/home/tanzeel/orca/workspaces/integration/completion-cassian-int801/ops/local/be02-8a79a7064eeb4383884d2c7fa8e72964/android-tls",
+      "absent": true
+    },
+    {
+      "kind": "private-file",
+      "name": "/home/tanzeel/orca/workspaces/integration/completion-cassian-int801/ops/local/be02-8a79a7064eeb4383884d2c7fa8e72964/acceptance-private/seed.json",
+      "absent": true
+    },
+    {
+      "kind": "private-file",
+      "name": "/home/tanzeel/orca/workspaces/integration/completion-cassian-int801/ops/local/be02-8a79a7064eeb4383884d2c7fa8e72964/acceptance-private/acceptance-credentials.json",
+      "absent": true
+    },
+    {
+      "kind": "private-directory",
+      "name": "/home/tanzeel/orca/workspaces/integration/completion-cassian-int801/ops/local/be02-8a79a7064eeb4383884d2c7fa8e72964/acceptance-private",
+      "absent": true
+    },
+    {
+      "kind": "container",
+      "name": "android1035-ab65bce1fad4-units",
+      "absent": true
+    },
+    {
+      "kind": "container",
+      "name": "android1035-ab65bce1fad4-emulator",
+      "absent": true
+    },
+    {
+      "kind": "container",
+      "name": "buildx_buildkit_android1035-ab65bce1fad40",
+      "absent": true
+    },
+    {
+      "kind": "volume",
+      "name": "buildx_buildkit_android1035-ab65bce1fad40_state",
+      "absent": true
+    },
+    {
+      "kind": "builder",
+      "name": "android1035-ab65bce1fad4",
+      "absent": true
+    },
+    {
+      "kind": "image",
+      "name": "android1035-ab65bce1fad4:emulator",
+      "absent": true
+    },
+    {
+      "kind": "work",
+      "name": "android1035-ab65bce1fad4",
+      "absent": true
+    },
+    {
+      "kind": "container",
+      "name": "android1035-unix-f1ae9de59549-test",
+      "absent": true
+    },
+    {
+      "kind": "container",
+      "name": "buildx_buildkit_android1035-unix-f1ae9de595490",
+      "absent": true
+    },
+    {
+      "kind": "volume",
+      "name": "buildx_buildkit_android1035-unix-f1ae9de595490_state",
+      "absent": true
+    },
+    {
+      "kind": "builder",
+      "name": "android1035-unix-f1ae9de59549",
+      "absent": true
+    },
+    {
+      "kind": "image",
+      "name": "android1035-unix-f1ae9de59549:proxy",
+      "absent": true
+    },
+    {
+      "kind": "work",
+      "name": "android1035-unix-f1ae9de59549",
+      "absent": true
+    }
+  ],
+  "free_bytes": 254169436160,
+  "retained": "shared pinned bases, persistent data, QA APK and synthetic build TLS artifacts"
+}

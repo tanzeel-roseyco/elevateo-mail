@@ -22,6 +22,6 @@ COPY --from=proxy-build /build/tests/acceptance/dist/edge-profile.js /build/test
 COPY --from=proxy-build /build/tests/acceptance/dist/android-readiness.js /build/tests/acceptance/dist/readiness.js ./
 COPY --from=proxy-build /build/tests/acceptance/package.json ./package.json
 USER node
-# AIDEV-NOTE: Compose selects HTTP or private Android TLS; only its fixed CONNECT gateway publishes a loopback port.
+# AIDEV-NOTE: Compose selects HTTP or private Android TLS; its fixed CONNECT gateway uses an owned UNIX socket.
 EXPOSE 80
 CMD ["node", "main.js"]

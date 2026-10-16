@@ -63,20 +63,19 @@ def validate_container(task: Task, item: dict[str, Any]) -> None:
     host, config = item["HostConfig"], item["Config"]
     uid, gid = acceptance_owner(task)
     expected_user = {"acceptance-web": "10001:10001", "selenium": "1200:1201"}.get(service, f"{uid}:{gid}")
-    # AIDEV-NOTE: Only Android CONNECT exposes one loopback port; HTTP/browser services remain unpublished.
-    ports = {"19443/tcp": [{"HostIp": "127.0.0.1", "HostPort": "19443"}]} if service == "android-connect" else {}
-    network = "host" if service == "android-probe" else task.project + "_isolated"
-    # AIDEV-NOTE: The host-network exception is a fixed one-shot probe with only code and public CA mounts.
-    if service == "android-probe" and (config.get("Cmd") != ["python3", "-I", "-B", "/probe.py"] or config.get("Entrypoint")):
+    # AIDEV-NOTE: Android enters through a mounted UNIX socket; every acceptance service remains unpublished.
+    ports: dict[str, object] = {}
+    network = "none" if service == "android-probe" else task.project + "_isolated"
+    # AIDEV-NOTE: The offline probe gets only code, the public CA and the fixed socket mount.
+    if service == "android-probe" and (config.get("Cmd") != ["python3", "-I", "-B", "/probe.py", "--unix"] or config.get("Entrypoint")):
         raise RuntimeError("Android probe command mismatch")
     if (config["User"] != expected_user or not host["ReadonlyRootfs"] or host.get("Privileged")
             or host.get("CapAdd") or "ALL" not in host.get("CapDrop", []) or (host.get("PortBindings") or {}) != ports
             or host.get("NetworkMode") != network
             or host.get("LogConfig", {}).get("Type") != "none"):
         raise RuntimeError("acceptance container isolation mismatch")
-    if (service == "android-connect" and item.get("State", {}).get("Running")
-            and item.get("NetworkSettings", {}).get("Ports") != ports):
-        raise RuntimeError("Android CONNECT live port binding mismatch")
+    if service.startswith("android-") and any((item.get("NetworkSettings", {}).get("Ports") or {}).values()):
+        raise RuntimeError("Android service has an unexpected published port")
     if item["Image"] != task.acceptance_images[service]:
         raise RuntimeError("acceptance image identity mismatch")
     validate_policy(task, service, host)

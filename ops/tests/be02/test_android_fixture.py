@@ -7,13 +7,13 @@ from tempfile import TemporaryDirectory
 import unittest
 from unittest.mock import Mock, patch
 from acceptance_fixture import seed_application
-from android_fixture import hold_fixture, probe_connection, validate_arguments
+from android_fixture import hold_fixture, probe_connection, validate_arguments, validate_socket_directory
 
 
 class AndroidFixtureTests(unittest.TestCase):
     def args(self) -> argparse.Namespace:
         return argparse.Namespace(android_fixture=True, android_certs=Path("/private/certs"),
-            android_ca_sha256="a" * 64, android_ttl=30, acceptance_dispatch_id="android-test",
+            android_socket_dir=Path("/private/socket"), android_ca_sha256="a" * 64, android_ttl=30, acceptance_dispatch_id="android-test",
             acceptance=False, acceptance_diagnostic=False, acceptance_case=None, acceptance_observer=False,
             mox=False, attachments=False, adv808_auth_policy=False, adv815_expiry=False)
 
@@ -21,11 +21,35 @@ class AndroidFixtureTests(unittest.TestCase):
         validate_arguments(self.args())
         for key, value in {"acceptance": True, "acceptance_diagnostic": True, "mox": True,
                            "attachments": True, "android_ttl": 901, "android_ca_sha256": "",
-                           "android_certs": Path("relative"), "acceptance_dispatch_id": "bad\nidentity"}.items():
+                           "android_socket_dir": Path("relative"), "android_certs": Path("relative"), "acceptance_dispatch_id": "bad\nidentity"}.items():
             with self.subTest(key=key), self.assertRaises(RuntimeError):
                 args = self.args()
                 setattr(args, key, value)
                 validate_arguments(args)
+
+    def test_socket_directory_rejects_nonempty_permissions_symlink_and_wrong_owner(self) -> None:
+        with TemporaryDirectory() as directory:
+            root = Path(directory).resolve()
+            owned = root / "owned"
+            owned.mkdir(mode=0o700)
+            validate_socket_directory(owned, os.getuid(), os.getgid())
+            for uid, gid in ((os.getuid() + 1, os.getgid()), (os.getuid(), os.getgid() + 1)):
+                with self.assertRaises(RuntimeError):
+                    validate_socket_directory(owned, uid, gid)
+            owned.chmod(0o755)
+            with self.assertRaises(RuntimeError):
+                validate_socket_directory(owned, os.getuid(), os.getgid())
+            owned.chmod(0o700)
+            (owned / "existing").touch()
+            with self.assertRaises(RuntimeError):
+                validate_socket_directory(owned, os.getuid(), os.getgid())
+            (owned / "existing").unlink()
+            link = root / "link"
+            link.symlink_to(owned, target_is_directory=True)
+            with self.assertRaises(RuntimeError):
+                validate_socket_directory(link, os.getuid(), os.getgid())
+            with self.assertRaises(FileNotFoundError):
+                validate_socket_directory(root / "absent", os.getuid(), os.getgid())
 
     def test_ttl_expires_without_external_liveness_and_stop_is_distinct(self) -> None:
         for stop in (False, True):

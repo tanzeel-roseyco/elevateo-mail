@@ -15,7 +15,7 @@ export function createAndroidConnect(host = 'android-web', port = 443, lifetimeM
   server.on('upgrade', (_input, socket) => socket.destroy());
   server.on('clientError', (_error, socket) => socket.destroy());
   server.on('connect', (input, client, head) => {
-    // AIDEV-NOTE: Node types allow any Duplex here; idle deadlines require a real TCP socket.
+    // AIDEV-NOTE: Node types allow any Duplex here; idle deadlines require a real TCP or UNIX socket.
     if (!(client instanceof Socket)) { client.destroy(); return; }
     const hostFields = input.rawHeaders.filter((_value, index) => index % 2 === 0)
       .filter(name => name.toLowerCase() === 'host');

@@ -1,0 +1,25 @@
+{
+  "status": "FAILED",
+  "checks": {
+    "login": "PASSED",
+    "inbox": "PASSED",
+    "thread": "PASSED",
+    "navigation": "PASSED",
+    "rotation": "FAILED",
+    "lifecycle": "PASSED",
+    "offline": "FAILED",
+    "logout": "NOT_RUN"
+  },
+  "observed_at": "2026-10-16T19:09:10.624308+00:00",
+  "details": {
+    "login": "Real seeded account authenticated over verified HTTPS; protected shell loaded.",
+    "inbox": "Mailbox URL loaded synthetic conversation.",
+    "thread": "Individual message query link loaded; literal markup remained text; no horizontal overflow.",
+    "navigation": "Mobile drawer exposes separate PERSONAL and OUTREACH sections and mailbox navigation closes drawer.",
+    "rotation": "360x640 to640x360 retained thread but system bars overlap header and right/bottom content.",
+    "lifecycle": "HOME/resume retained message URL; force-stop/relaunch preserved session and returned root.",
+    "offline": "OS default network none while navigator.onLine stayed true; later session failure removed protected content and Try again recovered after restoration.",
+    "logout": "A disabled organization switcher was selected by an imprecise QA selector; no logout dispatched. Emulator exited before corrected attempt; NOT_RUN.",
+    "emulator": "Stopped exit1 OOMKilledfalse; emulator log ends Failed to find ColorBuffer107 / invalid color buffer; root cause unproven."
+  }
+}

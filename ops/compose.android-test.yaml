@@ -1,4 +1,4 @@
-# AIDEV-NOTE: Only the fixed CONNECT endpoint is published on loopback; all app services stay internal.
+# AIDEV-NOTE: Assign networks per service; the offline probe cannot inherit a network alongside network_mode.
 x-android-edge: &edge
   image: ${BE02_ACCEPTANCE_WEB_IMAGE:?}
   pull_policy: never
@@ -7,7 +7,6 @@ x-android-edge: &edge
   init: true
   cap_drop: [ALL]
   security_opt: [no-new-privileges:true]
-  networks: [isolated]
   mem_limit: 128m
   cpus: 1
   pids_limit: 64
@@ -71,15 +70,17 @@ services:
     command: [node, android-main.js]
   android-connect:
     <<: *edge
-    ports: ["127.0.0.1:19443:19443"]
+    networks: [isolated]
+    volumes:
+      - ${BE02_ANDROID_SOCKET_DIR:?}:/relay
     command: [node, android-connect-main.js]
   android-probe:
     <<: *edge
     image: python@sha256:48a11b7ba705fd53bf15248d1f94d36c39549903c5d59edcfa2f3f84126e7b44
-    # AIDEV-NOTE: This one-shot probe proves the actual host loopback binding; it never receives app credentials.
-    networks: !reset []
-    network_mode: host
+    # AIDEV-NOTE: This offline probe verifies CONNECT and TLS through the same socket used by the emulator.
+    network_mode: none
     volumes:
       - ${BE02_ANDROID_TLS:?}/ca.pem:/run/android-tls/ca.pem:ro
       - ${BE02_SOURCE:?}/ops/tests/be02/android_connect_probe.py:/probe.py:ro
-    command: [python3, -I, -B, /probe.py]
+      - ${BE02_ANDROID_SOCKET_DIR:?}:/relay:ro
+    command: [python3, -I, -B, /probe.py, --unix]
