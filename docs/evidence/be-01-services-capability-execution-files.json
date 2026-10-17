@@ -1,0 +1,17 @@
+[
+    {
+        "path":  "docs/evidence/scripts/be01-capability-probe-recovery.sh",
+        "sha256":  "9f829601d00091efc94cc31a8af2c0949ed5257ac0a5632f8d0b8d8a95b4932f",
+        "lines":  56
+    },
+    {
+        "path":  "docs/evidence/scripts/be01-capability-stage.py",
+        "sha256":  "f0ec97799654f24c8b657575406da6f40901ecb9e64f61242f36c3778ccd9dd1",
+        "lines":  92
+    },
+    {
+        "path":  "docs/evidence/scripts/be01-capability-check-launch.sh",
+        "sha256":  "0a38d5252cd5c9e363d70658c7dba0182f65bc097531d1857b857a25f57431c7",
+        "lines":  51
+    }
+]

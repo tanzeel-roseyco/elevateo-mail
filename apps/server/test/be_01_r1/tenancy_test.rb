@@ -44,7 +44,8 @@ class TenancyTest < RestrictedRoleTest
       assert_equal IDS_A, rows
     end
     assert_cleared
-    assert_raises(RuntimeError) { with_principal(B) { raise "synthetic caller failure" } }
+    original = NoMethodError.new("synthetic caller failure with intact ownership")
+    assert_same original, assert_raises(NoMethodError) { with_principal(B) { raise original } }
     assert_cleared
   end
 
@@ -173,21 +174,33 @@ class TenancyTest < RestrictedRoleTest
     ActiveRecord::Base.connection_pool.with_connection { |connection| assert_cleared(connection) }
   end
 
-  # AIDEV-NOTE: Adapter transaction APIs simulate callers ending/replacing the frame without raw SQL state drift.
+  # AIDEV-NOTE: Exercise ended/replaced frames on every exit path; session claims prove physical disposal is needed.
   def test_ended_or_replaced_owned_transaction_is_rejected_and_cleaned
-    [false, true].each do |replace|
-      assert_raises(Elevateo::Tenancy::ContextError) do
-        with_principal(A) do |connection|
-          connection.commit_transaction
-          connection.begin_transaction if replace
-          assert_raises(Elevateo::Tenancy::ContextError) do
-            with_principal(A, connection) { flunk "ended/replaced frame yielded" }
+    [:commit_transaction, :rollback_transaction].product([0, 1, 2], [:normal, :error, :rollback, :throw]).each do |ending, depth, exit_mode|
+      backend = @connection.select_value("SELECT pg_backend_pid()")
+      error = assert_raises(Elevateo::Tenancy::ContextError) do
+        catch(:caller_exit) do
+          with_principal(A) do |connection|
+            connection.public_send(ending)
+            depth.times { connection.begin_transaction }
+            connection.execute("SELECT set_config('app.user_id', '#{A.user_id}', false), set_config('app.org_id', '#{A.org_id}', false)")
+            assert_raises(Elevateo::Tenancy::ContextError) do
+              with_principal(A, connection) { flunk "ended/replaced frame yielded" }
+            end
+            case exit_mode
+            when :error then raise "synthetic caller failure after ownership loss"
+            when :rollback then raise ActiveRecord::Rollback
+            when :throw then throw :caller_exit
+            end
           end
         end
       end
+      assert_equal "owned tenant transaction ended or changed", error.message
+      refute @connection.connected?, "untrusted physical session was retained"
       refute @connection.transaction_open?
       assert_nil Thread.current[Elevateo::Tenancy::STACK_KEY]
       assert_cleared
+      refute_equal backend, @connection.select_value("SELECT pg_backend_pid()")
       with_principal(B) { assert_equal IDS_B, rows }
       ActiveRecord::Base.connection_pool.release_connection
       @connection = ActiveRecord::Base.connection

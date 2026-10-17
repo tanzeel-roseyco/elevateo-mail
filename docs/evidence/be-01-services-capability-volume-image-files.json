@@ -1,0 +1,22 @@
+[
+    {
+        "path":  "docs/evidence/scripts/be01-capability-content-probe.sh",
+        "sha256":  "e0c8e2d50f224436e92fb5b6c9ceae6388ea5e1dc3a6f8490c02a047fd17d20c",
+        "lines":  50
+    },
+    {
+        "path":  "docs/evidence/scripts/be01-capability-image-recovery.sh",
+        "sha256":  "8ac8a690a9dd1e31a71b226bdf10d0cc9eca04381c94c51c0c1b771deb7b8348",
+        "lines":  85
+    },
+    {
+        "path":  "docs/evidence/scripts/be01-capability-volume-recovery.sh",
+        "sha256":  "cb9a1281dfa9a2ed34a6407b1b7012dbe1838ca39f12d3d0337d97338fb18be9",
+        "lines":  106
+    },
+    {
+        "path":  "docs/evidence/scripts/be01-capability-image-recovery-regression.sh",
+        "sha256":  "aaccab391834af57f3f8e26dd2c3397caca27f92f6bde74e0b76aa4264b92f91",
+        "lines":  26
+    }
+]

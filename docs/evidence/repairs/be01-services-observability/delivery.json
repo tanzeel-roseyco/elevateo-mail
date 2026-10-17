@@ -1,0 +1,51 @@
+{
+    "directory":  "C:\\Users\\Tanzeel\\AppData\\Local\\Temp\\be01-diagnostic-delivery-6081ca98-9972-4568-b3ab-135f12dc0671",
+    "archive":  "C:\\Users\\Tanzeel\\AppData\\Local\\Temp\\be01-diagnostic-delivery-6081ca98-9972-4568-b3ab-135f12dc0671.tar",
+    "sha256":  "1b2631a11e91e231399b71e18ac9a0fbcb783204bfcf6cd209f2b33a8978cf87",
+    "members":  [
+                    {
+                        "path":  "dispatch.sh",
+                        "sha256":  "63501c5f2b16e1f6d6db5fb53a56dde104260f97c43f39db9d7c81b6ef7f1007"
+                    },
+                    {
+                        "path":  "reconcile.sh",
+                        "sha256":  "0a0e73b595445c3848a961d650f03f5b147f09c84856a1abfcec957eac4cf101"
+                    },
+                    {
+                        "path":  "source/inputs.sha256",
+                        "sha256":  "380bc01a2bb830133cb385be4f5e825b514cb283635a28fad9b565767b3fd573"
+                    },
+                    {
+                        "path":  "source/docs/evidence/repairs/be01-services-observability/services.rb",
+                        "sha256":  "b2fedbbbb2634d3eba2cf9b88a5127b0b829e5d49ec46c0ee43f8813c30e2368"
+                    },
+                    {
+                        "path":  "source/docs/evidence/repairs/be01-services-observability/diagnostic.rb",
+                        "sha256":  "35d30ed56f8d1590ad333803e481f65bad6d1e7ba076f8a24c551937874f52eb"
+                    },
+                    {
+                        "path":  "source/docs/evidence/repairs/be01-services-observability/regression.rb",
+                        "sha256":  "ac7f7c541b35604cd477df24bddc64d40805899d89d6974c69d8fcdd2731c5a6"
+                    },
+                    {
+                        "path":  "source/docs/evidence/repairs/be01-services-observability/package.sha256",
+                        "sha256":  "f048bb6f640ae835a6886d476e7f2d496e2b9ddaac1f69c028ce08b5d2cf3f56"
+                    },
+                    {
+                        "path":  "source/ops/tests/be01-services/http.rb",
+                        "sha256":  "79375775aa33cb39756e07d819119bf3e426a921f206b791d6b323d45f8b4acb"
+                    },
+                    {
+                        "path":  "source/ops/tests/be01-services/services.rb",
+                        "sha256":  "82198f2503f4a23fc5b0406d966d6b8dd84e5d768623510f904fc0de669860fa"
+                    },
+                    {
+                        "path":  "source/checks.sh",
+                        "sha256":  "8cecdca8d33721cc2b92d7f15b6de3dedfee83ccfac0f28622058353346a359e"
+                    },
+                    {
+                        "path":  "source/minitest-6.0.6.gem",
+                        "sha256":  "153ea36d1d987a62942382b61075745042a2b3123b1cd48f4c3675af9cc7d6f1"
+                    }
+                ]
+}

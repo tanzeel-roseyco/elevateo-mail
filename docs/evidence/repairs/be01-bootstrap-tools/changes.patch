@@ -1,0 +1,40 @@
+--- reviewed/parent.sh
++++ candidate/parent.sh
+@@ -69,6 +69,9 @@
+ phase=readability
+ check_readability
+ run_container -c 'cd /src && sha256sum -c docs/evidence/repairs/be01-bootstrap-tools/package.sha256 && (cd docs/evidence/repairs/be01-diagnostic-bootstrap && sha256sum -c fixture.sha256)' 
++# AIDEV-NOTE: Check status precedence with fake daemon failures inside the pinned, socket-free Ruby container.
++phase=status-regression
++run_container -c 'timeout -k 2s 40s bash /src/docs/evidence/repairs/be01-bootstrap-tools/status-regression.sh'
+ run_id=''; fingerprint=''
+ docker volume create --label "elevateo.r1.run=$nonce" "$cache" > /dev/null
+ docker buildx create --name "$builder" --driver docker-container \
+--- reviewed/fixture-run.sh
++++ candidate/fixture-run.sh
+@@ -31,8 +31,21 @@
+   owned_run
+   # Capture original test status; inspected stopped container remains until the inherited EXIT cleanup.
+   timeout -k 10s 180s docker --context "$TOOLS_CONTEXT" start -a "$run_id" > "$evidence/checks.log" 2>&1 || status=$?
+-  printf 'test_exit=%s\n' "$status" > "$evidence/fixture.status"
+-  docker inspect "$run_id" > "$evidence/fixture.after.json"
+-  owned_run
+-  return "$status"
++  finish_fixture "$status"
+ }
++finish_fixture() {
++  local status=$1 inspect_status=0 ownership_status=NOT_RUN report_status=0
++  # AIDEV-NOTE: Verification must not replace a failed test; successful tests still fail on unverifiable state.
++  printf 'test_exit=%s\n' "$status" > "$evidence/fixture.status" || report_status=$?
++  docker inspect "$run_id" > "$evidence/fixture.after.json" || inspect_status=$?
++  if (( inspect_status == 0 )); then
++    ownership_status=0
++    owned_run || ownership_status=$?
++  fi
++  printf 'inspect_exit=%s\nownership_exit=%s\n' "$inspect_status" "$ownership_status" \
++    > "$evidence/fixture.verification.status" || report_status=$?
++  if (( status != 0 )); then return "$status"; fi
++  if (( report_status != 0 )); then return "$report_status"; fi
++  if (( inspect_status != 0 )); then return "$inspect_status"; fi
++  return "$ownership_status"
++}

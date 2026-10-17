@@ -1,0 +1,587 @@
+{
+  "schema_version": 1,
+  "task": "BE-02",
+  "local_date": "2026-10-12",
+  "foundation_manifest_sha256": "74aec501830f5e886ba763aee3b24c17d6ff2541f3369d2e472029ba457c12af",
+  "canonical_source_manifest_sha256": "03d590ddaa39b22c6b1851c9911405473c0b01b0a50fff08001144e66a14638b",
+  "common_sha256": "b0e80a92d2871b85e0b3fd4b49780f635732a2cc37ef5b5b26031c85d3c2154a",
+  "common_bytes": 561092,
+  "identical_common_body_verified": true,
+  "required_procedure_documents_complete": [
+    "documentation.md",
+    ".planning/POLYGLOT_ARCHITECTURE.md",
+    ".planning/CLIENTS_AND_CLI_CONNECTORS.md",
+    ".planning/AGENT_ORCHESTRATION.md",
+    ".planning/MAIL_ACCOUNTS_AND_ACTIVATION.md",
+    ".planning/TASK_BACKLOG.md",
+    ".planning/research/reuse-market-scan.md",
+    "docs/component-adoption.md",
+    "docs/contracts-and-reliability.md",
+    "docs/local-completion-plan.md"
+  ],
+  "inputs": [
+    {
+      "requested_model": "claude-fable-5",
+      "input": "C:\\Users\\Tanzeel\\AppData\\Local\\ElevateoCoordinator\\be02-consult-freeze-20261012\\fable-5.txt",
+      "sha256": "a3f17045e122424738b01b4bd85dd13dc58a7aba1cd7a5aab838766e0f63e1b0",
+      "bytes": 562140,
+      "common_offset": 1048,
+      "common_sha256": "b0e80a92d2871b85e0b3fd4b49780f635732a2cc37ef5b5b26031c85d3c2154a",
+      "focus_sha256": "80cd50379f4c5396eeb4ac93440538316838885549091ad8dee5f96d576e8f3e",
+      "status": "prepared; not dispatched"
+    },
+    {
+      "requested_model": "claude-opus-5-5",
+      "input": "C:\\Users\\Tanzeel\\AppData\\Local\\ElevateoCoordinator\\be02-consult-freeze-20261012\\opus-5-5.txt",
+      "sha256": "eef6804b1879905d80811dc7ec54687e7e5ba7fe738bc645bdc46a01a5e75d6a",
+      "bytes": 562193,
+      "common_offset": 1101,
+      "common_sha256": "b0e80a92d2871b85e0b3fd4b49780f635732a2cc37ef5b5b26031c85d3c2154a",
+      "focus_sha256": "34ad3fec0c0d8ceeb62f34b7a7fb941e3925e52a3fba80e616537bd8dc8b5074",
+      "status": "prepared; not dispatched"
+    },
+    {
+      "requested_model": "claude-fable-5-1",
+      "input": "C:\\Users\\Tanzeel\\AppData\\Local\\ElevateoCoordinator\\be02-consult-freeze-20261012\\fable-5-1.txt",
+      "sha256": "024ee0c61387a85fc435f5d28b248dc349fbcd7d3066f5806c6eaa87a922d828",
+      "bytes": 562198,
+      "common_offset": 1106,
+      "common_sha256": "b0e80a92d2871b85e0b3fd4b49780f635732a2cc37ef5b5b26031c85d3c2154a",
+      "focus_sha256": "930b64a50dde48f1e80b3af2c886a2049ba4d82301cca3d6fdc2d715e7d7edd5",
+      "status": "prepared; not dispatched"
+    }
+  ],
+  "evidence": [
+    {
+      "source": "C:\\Users\\Tanzeel\\Code and projects\\Elevateo Mail - BE01 R1\\documentation.md",
+      "packet_path": "documentation.md",
+      "sha256": "e940b75a4c9322a5d7f7b9c629bbf70615c74a4dd5c4d49a4660709c20776381",
+      "bytes": 22979
+    },
+    {
+      "source": "C:\\Users\\Tanzeel\\Code and projects\\Elevateo Mail - BE01 R1\\.planning\\POLYGLOT_ARCHITECTURE.md",
+      "packet_path": ".planning/POLYGLOT_ARCHITECTURE.md",
+      "sha256": "c8d3656cf7c8acc4a898c9a1603241b84ba9da254725856595c25be85ece2cea",
+      "bytes": 21799
+    },
+    {
+      "source": "C:\\Users\\Tanzeel\\Code and projects\\Elevateo Mail - BE01 R1\\.planning\\CLIENTS_AND_CLI_CONNECTORS.md",
+      "packet_path": ".planning/CLIENTS_AND_CLI_CONNECTORS.md",
+      "sha256": "82c92e8c007de491709e5149df7031651028ad5b6272d5fc3713f9d6d0d55801",
+      "bytes": 18610
+    },
+    {
+      "source": "C:\\Users\\Tanzeel\\Code and projects\\Elevateo Mail - BE01 R1\\.planning\\AGENT_ORCHESTRATION.md",
+      "packet_path": ".planning/AGENT_ORCHESTRATION.md",
+      "sha256": "ccb27c98e654b636f33bd5acfd737902b5fd28f2a7d970c45add0cf40cb00ea7",
+      "bytes": 12348
+    },
+    {
+      "source": "C:\\Users\\Tanzeel\\Code and projects\\Elevateo Mail - BE01 R1\\.planning\\MAIL_ACCOUNTS_AND_ACTIVATION.md",
+      "packet_path": ".planning/MAIL_ACCOUNTS_AND_ACTIVATION.md",
+      "sha256": "9d759caa3ffb1430af0cf3b81a062a584122895fef659246d0c1f37d5028e9e9",
+      "bytes": 8034
+    },
+    {
+      "source": "C:\\Users\\Tanzeel\\Code and projects\\Elevateo Mail - BE01 R1\\.planning\\TASK_BACKLOG.md",
+      "packet_path": ".planning/TASK_BACKLOG.md",
+      "sha256": "aba7e19ad1640015e30210d9d37fbfc55410bc5819f0747d4e2ba075dbb7487e",
+      "bytes": 6095
+    },
+    {
+      "source": "C:\\Users\\Tanzeel\\Code and projects\\Elevateo Mail - BE01 R1\\.planning\\research\\reuse-market-scan.md",
+      "packet_path": ".planning/research/reuse-market-scan.md",
+      "sha256": "6f798e4dfd837498cdc52aa1badd117c8c66d9298feb982d02f029bd6af83723",
+      "bytes": 28477
+    },
+    {
+      "source": "C:\\Users\\Tanzeel\\Code and projects\\Elevateo Mail - BE01 R1\\docs\\component-adoption.md",
+      "packet_path": "docs/component-adoption.md",
+      "sha256": "99cdcc56128a4c4ae0864d17c5f95fdf063c72b5f2112336ec9118810936f7e3",
+      "bytes": 10322
+    },
+    {
+      "source": "C:\\Users\\Tanzeel\\Code and projects\\Elevateo Mail - BE01 R1\\docs\\contracts-and-reliability.md",
+      "packet_path": "docs/contracts-and-reliability.md",
+      "sha256": "6210dcedd89eb678afe9f9f6f9dbf4270cdb1eded81f8e3e35d3f2656d6fbaa6",
+      "bytes": 11824
+    },
+    {
+      "source": "C:\\Users\\Tanzeel\\Code and projects\\Elevateo Mail - BE01 R1\\docs\\local-completion-plan.md",
+      "packet_path": "docs/local-completion-plan.md",
+      "sha256": "552816a61c2c0fce5511a524d05aa7b19b7993be9266b8faea9049f3542fbfd1",
+      "bytes": 25381
+    },
+    {
+      "source": "C:\\Users\\Tanzeel\\Code and projects\\Elevateo Mail - BE01 R1\\AGENTS.md",
+      "packet_path": "AGENTS.md",
+      "sha256": "33415df7f7cc5a595c45f5ef526744dd52a1d72d9d0a462fea8a9d9674d88971",
+      "bytes": 4279
+    },
+    {
+      "source": "C:\\Users\\Tanzeel\\Code and projects\\Elevateo Mail - BE01 R1\\LOCAL_BUILD_PROMPT.md",
+      "packet_path": "LOCAL_BUILD_PROMPT.md",
+      "sha256": "7bc9ffe8a3e8556fbba5b78f123941827a9f4bcd5043af35ecd39736eb5041d7",
+      "bytes": 14417
+    },
+    {
+      "source": "C:\\Users\\Tanzeel\\Code and projects\\Elevateo Mail - BE01 R1\\.planning\\STANDARDS.md",
+      "packet_path": ".planning/STANDARDS.md",
+      "sha256": "7c01430086ed2dc263c8edcb1b2a9f41b572a23a11b36c1179be802e2874bd10",
+      "bytes": 7218
+    },
+    {
+      "source": "C:\\Users\\Tanzeel\\Code and projects\\Elevateo Mail - BE01 R1\\.planning\\README.md",
+      "packet_path": ".planning/README.md",
+      "sha256": "18dd4ee6c0516da1a12165e46c55242a1690988bf41719b7f6b76e247f94070b",
+      "bytes": 3719
+    },
+    {
+      "source": "C:\\Users\\Tanzeel\\Code and projects\\Elevateo Mail - BE01 R1\\.planning\\consultations\\README.md",
+      "packet_path": ".planning/consultations/README.md",
+      "sha256": "a7252075d73574d1bcbb5238424333eeafbb1ed64513fe48f72ef53c48315e0e",
+      "bytes": 6541
+    },
+    {
+      "source": "C:\\Users\\Tanzeel\\Code and projects\\Elevateo Mail - BE01 R1\\.planning\\templates\\task-brief.md",
+      "packet_path": ".planning/templates/task-brief.md",
+      "sha256": "c0a2b7de85279baca928ab84e018368984e350638caa69fe577a95977a5b1742",
+      "bytes": 1215
+    },
+    {
+      "source": "C:\\Users\\Tanzeel\\Code and projects\\Elevateo Mail - BE01 R1\\docs\\end-goal.md",
+      "packet_path": "docs/end-goal.md",
+      "sha256": "cecec916cea09ae25736f83915094e87f536e7cab338b817ae4eb888e68fa65f",
+      "bytes": 12919
+    },
+    {
+      "source": "C:\\Users\\Tanzeel\\Code and projects\\Elevateo Mail - BE01 R1\\docs\\decisions\\0002-local-architecture.md",
+      "packet_path": "docs/decisions/0002-local-architecture.md",
+      "sha256": "5a9c7bd24bb35f8a19f78925ea25786ec77e632622535ea3da184da03eef223b",
+      "bytes": 2977
+    },
+    {
+      "source": "C:\\Users\\Tanzeel\\Code and projects\\Elevateo Mail - BE01 R1\\.planning\\consultations\\results\\be-01\\decisions.md",
+      "packet_path": ".planning/consultations/results/be-01/decisions.md",
+      "sha256": "a6b67079f31d17b7b11c4fdb284d1c324e68a4faacbab18c5ab71ef5c90ec59c",
+      "bytes": 15940
+    },
+    {
+      "source": "C:\\Users\\Tanzeel\\Code and projects\\Elevateo Mail - BE01 R1\\.planning\\consultations\\results\\be-01\\foundation-dependencies.snapshot.md",
+      "packet_path": ".planning/consultations/results/be-01/foundation-dependencies.snapshot.md",
+      "sha256": "cdffb8d9e54cc109d511854dc519aa26929adfbc19da1637f6518e54d92f9665",
+      "bytes": 10570
+    },
+    {
+      "source": "C:\\Users\\Tanzeel\\Code and projects\\Elevateo Mail - BE01 R1\\docs\\be-02-readiness-handoff.md",
+      "packet_path": "docs/be-02-readiness-handoff.md",
+      "sha256": "8c07491da4803beae038a2c77e334c3e402606273904400dbfb5a7f90837374f",
+      "bytes": 14468
+    },
+    {
+      "source": "C:\\Users\\Tanzeel\\Code and projects\\Elevateo Mail - BE01 R1\\docs\\be-02-consultation-brief.md",
+      "packet_path": "docs/be-02-consultation-brief.md",
+      "sha256": "9ebbc809cc6c2ecf114fe7d8c2c0bc15b86092845adfefc09e8edefc0653a081",
+      "bytes": 10620
+    },
+    {
+      "source": "C:\\Users\\Tanzeel\\Code and projects\\Elevateo Mail - BE01 R1\\docs\\research\\be-02-auth-delta.md",
+      "packet_path": "docs/research/be-02-auth-delta.md",
+      "sha256": "3f38418928e530bee4e8c38c30bfa49c12a680bc3ff309602b83d479c4962cbd",
+      "bytes": 6957
+    },
+    {
+      "source": "C:\\Users\\Tanzeel\\Code and projects\\Elevateo Mail - BE01 R1\\docs\\evidence\\be-01-r1-lane-p-result.md",
+      "packet_path": "docs/evidence/be-01-r1-lane-p-result.md",
+      "sha256": "b7004ee80613b416995b47ed44c069da7f628cd213b2b7fdaec67ade6f9f143e",
+      "bytes": 2813
+    },
+    {
+      "source": "C:\\Users\\Tanzeel\\Code and projects\\Elevateo Mail - BE01 R1\\docs\\evidence\\be-01-r1-findings-ledger.md",
+      "packet_path": "docs/evidence/be-01-r1-findings-ledger.md",
+      "sha256": "ae17035fdb2f5d2ec2e7d94c9b3f715d148c242ef3a0aade9c321fc6502e64f4",
+      "bytes": 4236
+    },
+    {
+      "source": "C:\\Users\\Tanzeel\\Code and projects\\Elevateo Mail - Local Completion\\contracts\\v1\\openapi.json",
+      "packet_path": "coordinator/contracts/v1/openapi.json",
+      "sha256": "94c5f31bc5d514fed420dcbcee2f6ce49bf4254e325000ea0794fe6a1140e8ca",
+      "bytes": 47227
+    },
+    {
+      "source": "C:\\Users\\Tanzeel\\Code and projects\\Elevateo Mail - Local Completion\\contracts\\v1\\README.md",
+      "packet_path": "coordinator/contracts/v1/README.md",
+      "sha256": "17d899805779a043d952be9fa8e894cc084ed758412b0c9c8d6ba01bab2bfc4e",
+      "bytes": 8248
+    },
+    {
+      "source": "C:\\Users\\Tanzeel\\Code and projects\\Elevateo Mail - Local Completion\\contracts\\v1\\contract-lock.json",
+      "packet_path": "coordinator/contracts/v1/contract-lock.json",
+      "sha256": "a3c873700889142a68e6d1677f849e104949e64185b1562b6736effa8de6bc7b",
+      "bytes": 571
+    },
+    {
+      "source": "C:\\Users\\Tanzeel\\Code and projects\\Elevateo Mail - Fable FE01 R1\\docs\\fe-rails-integration-packet.md",
+      "packet_path": "frontend/docs/fe-rails-integration-packet.md",
+      "sha256": "9d5d82cd5e7723d7a7f817f409fe4ea02d999e6178b26209fa4443e0147ad0cf",
+      "bytes": 9281
+    },
+    {
+      "source": "C:\\Users\\Tanzeel\\Code and projects\\Elevateo Mail - Fable FE01 R1\\.planning\\consultations\\results\\fe-01\\decisions.md",
+      "packet_path": "frontend/.planning/consultations/results/fe-01/decisions.md",
+      "sha256": "3d83b5740c74fde3ec9255c67e3cfe6d8c8a6b590ca0077e301809875b309a3e",
+      "bytes": 9396
+    },
+    {
+      "source": "C:\\Users\\Tanzeel\\AppData\\Local\\ElevateoCoordinator\\be02-consult-freeze-20261012\\foundation\\apps\\server\\.dockerignore",
+      "packet_path": "frozen-foundation/apps/server/.dockerignore",
+      "sha256": "6106c5e69f8e4fc7e8c0214e7802e1e1afe8f8bcd18f6bd8c79367babc56d6bf",
+      "bytes": 23
+    },
+    {
+      "source": "C:\\Users\\Tanzeel\\AppData\\Local\\ElevateoCoordinator\\be02-consult-freeze-20261012\\foundation\\apps\\server\\Dockerfile",
+      "packet_path": "frozen-foundation/apps/server/Dockerfile",
+      "sha256": "9a42897c22b1dfbd08cb88b79a185a4962e7cab157c0222d1f9b7ea5bb8ac0f9",
+      "bytes": 590
+    },
+    {
+      "source": "C:\\Users\\Tanzeel\\AppData\\Local\\ElevateoCoordinator\\be02-consult-freeze-20261012\\foundation\\apps\\server\\Gemfile",
+      "packet_path": "frozen-foundation/apps/server/Gemfile",
+      "sha256": "19044c02efd7ed6fd03abec9f6e051e10248d53b820dd964592fc2e689abfe60",
+      "bytes": 379
+    },
+    {
+      "source": "C:\\Users\\Tanzeel\\AppData\\Local\\ElevateoCoordinator\\be02-consult-freeze-20261012\\foundation\\apps\\server\\Gemfile.lock",
+      "packet_path": "frozen-foundation/apps/server/Gemfile.lock",
+      "sha256": "67b2f69a0ed30c1d9926ab2940fe54173991d238192feca38a8f04b97390ea23",
+      "bytes": 7423
+    },
+    {
+      "source": "C:\\Users\\Tanzeel\\AppData\\Local\\ElevateoCoordinator\\be02-consult-freeze-20261012\\foundation\\apps\\server\\Rakefile",
+      "packet_path": "frozen-foundation/apps/server/Rakefile",
+      "sha256": "ec561de742a266784cc94e681a29b5b3c19b73ffa4898a7077e742d370618a14",
+      "bytes": 67
+    },
+    {
+      "source": "C:\\Users\\Tanzeel\\AppData\\Local\\ElevateoCoordinator\\be02-consult-freeze-20261012\\foundation\\apps\\server\\Steepfile",
+      "packet_path": "frozen-foundation/apps/server/Steepfile",
+      "sha256": "7fad25bcb858097f94888267cc89b02aa0a68f4543b6b27f9155d8f7c5d57c8a",
+      "bytes": 363
+    },
+    {
+      "source": "C:\\Users\\Tanzeel\\AppData\\Local\\ElevateoCoordinator\\be02-consult-freeze-20261012\\foundation\\apps\\server\\app\\controllers\\application_controller.rb",
+      "packet_path": "frozen-foundation/apps/server/app/controllers/application_controller.rb",
+      "sha256": "5fed6f27575e5519f9a13045f84eee809fd358c506867b61a965cab9ed3d8c98",
+      "bytes": 383
+    },
+    {
+      "source": "C:\\Users\\Tanzeel\\AppData\\Local\\ElevateoCoordinator\\be02-consult-freeze-20261012\\foundation\\apps\\server\\app\\controllers\\health_controller.rb",
+      "packet_path": "frozen-foundation/apps/server/app/controllers/health_controller.rb",
+      "sha256": "369bbddfe8093377ee89a955c8f1b1164a9abf602e947cf0c1b89960bf23bdd7",
+      "bytes": 1040
+    },
+    {
+      "source": "C:\\Users\\Tanzeel\\AppData\\Local\\ElevateoCoordinator\\be02-consult-freeze-20261012\\foundation\\apps\\server\\bin\\rails",
+      "packet_path": "frozen-foundation/apps/server/bin/rails",
+      "sha256": "0862d7bc09d5ed61785d677ef2dba10ce285387d4d5d9e3d90d97630e3f69ab6",
+      "bytes": 141
+    },
+    {
+      "source": "C:\\Users\\Tanzeel\\AppData\\Local\\ElevateoCoordinator\\be02-consult-freeze-20261012\\foundation\\apps\\server\\bin\\worker",
+      "packet_path": "frozen-foundation/apps/server/bin/worker",
+      "sha256": "37c80474a92ccc9dc963de10e96817e68c51203e3c0b847e578f3d62e22256ad",
+      "bytes": 582
+    },
+    {
+      "source": "C:\\Users\\Tanzeel\\AppData\\Local\\ElevateoCoordinator\\be02-consult-freeze-20261012\\foundation\\apps\\server\\bin\\worker-health",
+      "packet_path": "frozen-foundation/apps/server/bin/worker-health",
+      "sha256": "e05b0003f57cbe83217818bdda1db9ac60d39e19f99ade4f8ca410c80b1af2f0",
+      "bytes": 139
+    },
+    {
+      "source": "C:\\Users\\Tanzeel\\AppData\\Local\\ElevateoCoordinator\\be02-consult-freeze-20261012\\foundation\\apps\\server\\config.ru",
+      "packet_path": "frozen-foundation/apps/server/config.ru",
+      "sha256": "cd06f4ca6833c03189e939314b78470244f616e69f68560ddc609d43f1ca566d",
+      "bytes": 60
+    },
+    {
+      "source": "C:\\Users\\Tanzeel\\AppData\\Local\\ElevateoCoordinator\\be02-consult-freeze-20261012\\foundation\\apps\\server\\config\\application.rb",
+      "packet_path": "frozen-foundation/apps/server/config/application.rb",
+      "sha256": "938313d8c72317466b33ea707c199e4556f9423bca406e465f93ee1f023e3f2e",
+      "bytes": 1150
+    },
+    {
+      "source": "C:\\Users\\Tanzeel\\AppData\\Local\\ElevateoCoordinator\\be02-consult-freeze-20261012\\foundation\\apps\\server\\config\\boot.rb",
+      "packet_path": "frozen-foundation/apps/server/config/boot.rb",
+      "sha256": "22c9bd4f8a795557470dde3e9c2b3a1c6a19a6906cdf8add692bc8cd4261b0d7",
+      "bytes": 90
+    },
+    {
+      "source": "C:\\Users\\Tanzeel\\AppData\\Local\\ElevateoCoordinator\\be02-consult-freeze-20261012\\foundation\\apps\\server\\config\\database.yml",
+      "packet_path": "frozen-foundation/apps/server/config/database.yml",
+      "sha256": "5db77f655405144f4ee892375a83a6aee987001d024dad4a58da641dd6888bfd",
+      "bytes": 364
+    },
+    {
+      "source": "C:\\Users\\Tanzeel\\AppData\\Local\\ElevateoCoordinator\\be02-consult-freeze-20261012\\foundation\\apps\\server\\config\\environment.rb",
+      "packet_path": "frozen-foundation/apps/server/config/environment.rb",
+      "sha256": "dd5c34405b8ad268a97c0798e345a183cddebe7c8f3e250db87be8a4a20e7c91",
+      "bytes": 61
+    },
+    {
+      "source": "C:\\Users\\Tanzeel\\AppData\\Local\\ElevateoCoordinator\\be02-consult-freeze-20261012\\foundation\\apps\\server\\config\\routes.rb",
+      "packet_path": "frozen-foundation/apps/server/config/routes.rb",
+      "sha256": "594c6fc3ae6e0671e064527b0e3e220b08ada2c4b7e271f0c84fe2748e7f05d9",
+      "bytes": 107
+    },
+    {
+      "source": "C:\\Users\\Tanzeel\\AppData\\Local\\ElevateoCoordinator\\be02-consult-freeze-20261012\\foundation\\apps\\server\\db\\migrate\\20261012000001_create_app_foundation.rb",
+      "packet_path": "frozen-foundation/apps/server/db/migrate/20261012000001_create_app_foundation.rb",
+      "sha256": "cf06387268570e5920b3bbf7e84dc06dc1ed9242a23038a5288fb7f3cd36e459",
+      "bytes": 4055
+    },
+    {
+      "source": "C:\\Users\\Tanzeel\\AppData\\Local\\ElevateoCoordinator\\be02-consult-freeze-20261012\\foundation\\apps\\server\\db\\migrate\\20261012000002_restrict_api_read_membership.rb",
+      "packet_path": "frozen-foundation/apps/server/db/migrate/20261012000002_restrict_api_read_membership.rb",
+      "sha256": "031df44311df04768207b207b21a1a012f434f9d765c02005badee74b5d3aff8",
+      "bytes": 3331
+    },
+    {
+      "source": "C:\\Users\\Tanzeel\\AppData\\Local\\ElevateoCoordinator\\be02-consult-freeze-20261012\\foundation\\apps\\server\\lib\\elevateo\\config.rb",
+      "packet_path": "frozen-foundation/apps/server/lib/elevateo/config.rb",
+      "sha256": "909db3a472abd87002aaa3330b6d3079fc3da97ed418455dd2d9cfbce556c873",
+      "bytes": 2791
+    },
+    {
+      "source": "C:\\Users\\Tanzeel\\AppData\\Local\\ElevateoCoordinator\\be02-consult-freeze-20261012\\foundation\\apps\\server\\lib\\elevateo\\heartbeat.rb",
+      "packet_path": "frozen-foundation/apps/server/lib/elevateo/heartbeat.rb",
+      "sha256": "9ae5aeebfed65f6f00567484716668cdffc5f9993d489fd448b76748c55cfbee",
+      "bytes": 1023
+    },
+    {
+      "source": "C:\\Users\\Tanzeel\\AppData\\Local\\ElevateoCoordinator\\be02-consult-freeze-20261012\\foundation\\apps\\server\\lib\\elevateo\\tenancy.rb",
+      "packet_path": "frozen-foundation/apps/server/lib/elevateo/tenancy.rb",
+      "sha256": "6d38a972fc99f2f873bbc197062dd261eb4fcace3d842125df27c02800180f6c",
+      "bytes": 3542
+    },
+    {
+      "source": "C:\\Users\\Tanzeel\\AppData\\Local\\ElevateoCoordinator\\be02-consult-freeze-20261012\\foundation\\apps\\server\\log\\.keep",
+      "packet_path": "frozen-foundation/apps/server/log/.keep",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "source": "C:\\Users\\Tanzeel\\AppData\\Local\\ElevateoCoordinator\\be02-consult-freeze-20261012\\foundation\\apps\\server\\sig\\heartbeat.rbs",
+      "packet_path": "frozen-foundation/apps/server/sig/heartbeat.rbs",
+      "sha256": "2ad718574e60f884b290d047d8bec5a07630c05e9b683c0f4fc389e303bfa281",
+      "bytes": 206
+    },
+    {
+      "source": "C:\\Users\\Tanzeel\\AppData\\Local\\ElevateoCoordinator\\be02-consult-freeze-20261012\\foundation\\apps\\server\\sig\\tenancy.rbs",
+      "packet_path": "frozen-foundation/apps/server/sig/tenancy.rbs",
+      "sha256": "a181caf20766cffc70926c81341f4179db94d7182ce4d2d30fb889e10bcdf405",
+      "bytes": 1360
+    },
+    {
+      "source": "C:\\Users\\Tanzeel\\AppData\\Local\\ElevateoCoordinator\\be02-consult-freeze-20261012\\foundation\\apps\\server\\test\\be_01_r1\\authority_guards.rb",
+      "packet_path": "frozen-foundation/apps/server/test/be_01_r1/authority_guards.rb",
+      "sha256": "e757c6dcdec9984526e35f002cfc4fac884e7a9eb4e5d7a5e91fbaa5d011894c",
+      "bytes": 3213
+    },
+    {
+      "source": "C:\\Users\\Tanzeel\\AppData\\Local\\ElevateoCoordinator\\be02-consult-freeze-20261012\\foundation\\apps\\server\\test\\be_01_r1\\authority_guards_test.rb",
+      "packet_path": "frozen-foundation/apps/server/test/be_01_r1/authority_guards_test.rb",
+      "sha256": "13d46189b2e700858a27c1e833b816b9a5ca376257571c7ec2cf33051a9eeccb",
+      "bytes": 3254
+    },
+    {
+      "source": "C:\\Users\\Tanzeel\\AppData\\Local\\ElevateoCoordinator\\be02-consult-freeze-20261012\\foundation\\apps\\server\\test\\be_01_r1\\baseline_driver.rb",
+      "packet_path": "frozen-foundation/apps/server/test/be_01_r1/baseline_driver.rb",
+      "sha256": "3e279e4616a85456fabec59a3f2a3153dd533f0ca09804c0a1b7fc1ae95576b7",
+      "bytes": 3860
+    },
+    {
+      "source": "C:\\Users\\Tanzeel\\AppData\\Local\\ElevateoCoordinator\\be02-consult-freeze-20261012\\foundation\\apps\\server\\test\\be_01_r1\\baseline_scenarios.rb",
+      "packet_path": "frozen-foundation/apps/server/test/be_01_r1/baseline_scenarios.rb",
+      "sha256": "29205f43bcf7229f4ca36f06b9ff34b2c82d4c6c15d67ba5504b09f9ca31e385",
+      "bytes": 6639
+    },
+    {
+      "source": "C:\\Users\\Tanzeel\\AppData\\Local\\ElevateoCoordinator\\be02-consult-freeze-20261012\\foundation\\apps\\server\\test\\be_01_r1\\membership_migration_test.rb",
+      "packet_path": "frozen-foundation/apps/server/test/be_01_r1/membership_migration_test.rb",
+      "sha256": "aeb3af2619151e38d75283ccda0e0cbc80e9efb0547baccd52e5223cec4bac2d",
+      "bytes": 4133
+    },
+    {
+      "source": "C:\\Users\\Tanzeel\\AppData\\Local\\ElevateoCoordinator\\be02-consult-freeze-20261012\\foundation\\apps\\server\\test\\be_01_r1\\tenancy_test.rb",
+      "packet_path": "frozen-foundation/apps/server/test/be_01_r1/tenancy_test.rb",
+      "sha256": "ebb80f9d45d6735d509e19d1953a654286126c7aa9ec1d09ad82b50f96744e4e",
+      "bytes": 11398
+    },
+    {
+      "source": "C:\\Users\\Tanzeel\\AppData\\Local\\ElevateoCoordinator\\be02-consult-freeze-20261012\\foundation\\apps\\server\\test\\be_01_r1\\test_helper.rb",
+      "packet_path": "frozen-foundation/apps/server/test/be_01_r1/test_helper.rb",
+      "sha256": "fd8d08f84959ddccdd87c3f50e2ff77fe71fb5f017cd8d7607be701803e226b7",
+      "bytes": 1290
+    },
+    {
+      "source": "C:\\Users\\Tanzeel\\AppData\\Local\\ElevateoCoordinator\\be02-consult-freeze-20261012\\foundation\\apps\\server\\test\\be_01_r1\\worker_role_test.rb",
+      "packet_path": "frozen-foundation/apps/server/test/be_01_r1/worker_role_test.rb",
+      "sha256": "2212ca8a045b3fe82746c8105f693ebf11d58801013e4e7203ff40022212b57a",
+      "bytes": 1195
+    },
+    {
+      "source": "C:\\Users\\Tanzeel\\AppData\\Local\\ElevateoCoordinator\\be02-consult-freeze-20261012\\foundation\\apps\\server\\tmp\\.keep",
+      "packet_path": "frozen-foundation/apps/server/tmp/.keep",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "source": "C:\\Users\\Tanzeel\\AppData\\Local\\ElevateoCoordinator\\be02-consult-freeze-20261012\\foundation\\compose.yaml",
+      "packet_path": "frozen-foundation/compose.yaml",
+      "sha256": "3481affe11ee70aaefae2f65c7bc54aa250250f03207ae9dacf6517324d97d2a",
+      "bytes": 7930
+    },
+    {
+      "source": "C:\\Users\\Tanzeel\\AppData\\Local\\ElevateoCoordinator\\be02-consult-freeze-20261012\\foundation\\ops\\bin\\generate-secrets.rb",
+      "packet_path": "frozen-foundation/ops/bin/generate-secrets.rb",
+      "sha256": "c622ff9697f02e8d2dac6fda65b782833a3807f2a9dd2b7dd2fc50cb7e3a143f",
+      "bytes": 5274
+    },
+    {
+      "source": "C:\\Users\\Tanzeel\\AppData\\Local\\ElevateoCoordinator\\be02-consult-freeze-20261012\\foundation\\ops\\compose.r1-test.yaml",
+      "packet_path": "frozen-foundation/ops/compose.r1-test.yaml",
+      "sha256": "47e9352ef23d06f525e2b43022f50540f38ca59a4fa1f5973292637b7d7615a3",
+      "bytes": 2141
+    },
+    {
+      "source": "C:\\Users\\Tanzeel\\AppData\\Local\\ElevateoCoordinator\\be02-consult-freeze-20261012\\foundation\\ops\\compose.secrets.yaml",
+      "packet_path": "frozen-foundation/ops/compose.secrets.yaml",
+      "sha256": "7f222cc1391dfc78b4fd29b0a2ccb8b6bd2571a78826fc3a2394dc3fc6626999",
+      "bytes": 313
+    },
+    {
+      "source": "C:\\Users\\Tanzeel\\AppData\\Local\\ElevateoCoordinator\\be02-consult-freeze-20261012\\foundation\\ops\\db\\bootstrap.sql",
+      "packet_path": "frozen-foundation/ops/db/bootstrap.sql",
+      "sha256": "1abda6871c0110dc7f374fdf0fadbe6243013c8b18904ac20e9ec9ff6d33eba1",
+      "bytes": 5304
+    },
+    {
+      "source": "C:\\Users\\Tanzeel\\AppData\\Local\\ElevateoCoordinator\\be02-consult-freeze-20261012\\foundation\\ops\\local\\.gitignore",
+      "packet_path": "frozen-foundation/ops/local/.gitignore",
+      "sha256": "240a3e0d37d2e86b614063f5347eb02d4f99ca6c254de6b82871ff8d95532a7d",
+      "bytes": 14
+    },
+    {
+      "source": "C:\\Users\\Tanzeel\\AppData\\Local\\ElevateoCoordinator\\be02-consult-freeze-20261012\\foundation\\ops\\supabase\\db\\99-jwt.sql",
+      "packet_path": "frozen-foundation/ops/supabase/db/99-jwt.sql",
+      "sha256": "9db312f7d5f5a6f42788f30069dd632da2bcf295ee16178ae9849864f8b5fa13",
+      "bytes": 244
+    },
+    {
+      "source": "C:\\Users\\Tanzeel\\AppData\\Local\\ElevateoCoordinator\\be02-consult-freeze-20261012\\foundation\\ops\\supabase\\db\\99-roles.sql",
+      "packet_path": "frozen-foundation/ops/supabase/db/99-roles.sql",
+      "sha256": "dc1c7c6117a3c94f9993f22b49fc41d5e4cc301ec9580321459261177bb1a183",
+      "bytes": 457
+    },
+    {
+      "source": "C:\\Users\\Tanzeel\\AppData\\Local\\ElevateoCoordinator\\be02-consult-freeze-20261012\\foundation\\ops\\tests\\db-fixtures.sql",
+      "packet_path": "frozen-foundation/ops/tests/db-fixtures.sql",
+      "sha256": "a20dd934aaabd2afef40c0b3c92a9d3e591aa6e498fadab6d3f63db8de60e989",
+      "bytes": 1267
+    },
+    {
+      "source": "C:\\Users\\Tanzeel\\AppData\\Local\\ElevateoCoordinator\\be02-consult-freeze-20261012\\foundation\\ops\\tests\\egress-check.ps1",
+      "packet_path": "frozen-foundation/ops/tests/egress-check.ps1",
+      "sha256": "ac7e97a468a830cfda441b089d5a469d670cf7ca9fe26642b0a23de2a5887732",
+      "bytes": 6912
+    },
+    {
+      "source": "C:\\Users\\Tanzeel\\AppData\\Local\\ElevateoCoordinator\\be02-consult-freeze-20261012\\foundation\\ops\\tests\\egress-check.sh",
+      "packet_path": "frozen-foundation/ops/tests/egress-check.sh",
+      "sha256": "8b527c18cbde5616c2384a7c4b974087455a8ac85ee2f910d91900a101b9c18e",
+      "bytes": 5957
+    },
+    {
+      "source": "C:\\Users\\Tanzeel\\AppData\\Local\\ElevateoCoordinator\\be02-consult-freeze-20261012\\foundation\\ops\\tests\\egress_assert.rb",
+      "packet_path": "frozen-foundation/ops/tests/egress_assert.rb",
+      "sha256": "39ff773d684f6bf9d82acb8f21ecf86bf841f41cdb33c6e04c6ede9b9dd64120",
+      "bytes": 5403
+    },
+    {
+      "source": "C:\\Users\\Tanzeel\\AppData\\Local\\ElevateoCoordinator\\be02-consult-freeze-20261012\\foundation\\ops\\tests\\egress_listener.rb",
+      "packet_path": "frozen-foundation/ops/tests/egress_listener.rb",
+      "sha256": "2a76bc16d3075d0fdf2e2507f0450adbd75bd055c80f6d9a9834747bec23b580",
+      "bytes": 240
+    },
+    {
+      "source": "C:\\Users\\Tanzeel\\AppData\\Local\\ElevateoCoordinator\\be02-consult-freeze-20261012\\foundation\\ops\\tests\\egress_probe.rb",
+      "packet_path": "frozen-foundation/ops/tests/egress_probe.rb",
+      "sha256": "61c131badb6f0fe89e15a5f67318572703cc1bd4aa2ff28b3182ba5bab69f82c",
+      "bytes": 1359
+    },
+    {
+      "source": "C:\\Users\\Tanzeel\\AppData\\Local\\ElevateoCoordinator\\be02-consult-freeze-20261012\\foundation\\ops\\tests\\egress_test.rb",
+      "packet_path": "frozen-foundation/ops/tests/egress_test.rb",
+      "sha256": "d31859d7747c9035b994f167bd84c5f80268af2d2d5c499514183838a5f237bf",
+      "bytes": 7262
+    },
+    {
+      "source": "C:\\Users\\Tanzeel\\AppData\\Local\\ElevateoCoordinator\\be02-consult-freeze-20261012\\foundation\\ops\\tests\\heartbeat_test.rb",
+      "packet_path": "frozen-foundation/ops/tests/heartbeat_test.rb",
+      "sha256": "3e389c563d07baa5f4d25cf1db5fb9d71ead35140bbedd50056f29f16db3ff01",
+      "bytes": 1319
+    },
+    {
+      "source": "C:\\Users\\Tanzeel\\AppData\\Local\\ElevateoCoordinator\\be02-consult-freeze-20261012\\foundation\\ops\\tests\\membership-catalog.sql",
+      "packet_path": "frozen-foundation/ops/tests/membership-catalog.sql",
+      "sha256": "e1a347ce15e6779b93b9b8e4f1dd2baa3d3eac520d3ad294b919193aa1cdc77a",
+      "bytes": 2538
+    },
+    {
+      "source": "C:\\Users\\Tanzeel\\AppData\\Local\\ElevateoCoordinator\\be02-consult-freeze-20261012\\foundation\\ops\\tests\\secrets_test.rb",
+      "packet_path": "frozen-foundation/ops/tests/secrets_test.rb",
+      "sha256": "c822e3870cb6359f15471d1cbc7775f5d6a9b69986b64d2af58807a4b39bbd04",
+      "bytes": 4270
+    },
+    {
+      "source": "C:\\Users\\Tanzeel\\AppData\\Local\\ElevateoCoordinator\\be02-consult-freeze-20261012\\foundation\\scripts\\dev",
+      "packet_path": "frozen-foundation/scripts/dev",
+      "sha256": "c815d042a5528acc4f5b9ea98d6c22f95c846e19d7e05f56af6d844303aab77a",
+      "bytes": 655
+    },
+    {
+      "source": "C:\\Users\\Tanzeel\\AppData\\Local\\ElevateoCoordinator\\be02-consult-freeze-20261012\\foundation\\scripts\\dev.ps1",
+      "packet_path": "frozen-foundation/scripts/dev.ps1",
+      "sha256": "ff6516b88fd7eb7c8d6ee96aa9ab20315a8130ed2ba0dc3abb85404599bb76e8",
+      "bytes": 890
+    },
+    {
+      "source": "C:\\Users\\Tanzeel\\AppData\\Local\\ElevateoCoordinator\\be02-consult-freeze-20261012\\foundation-input.json",
+      "packet_path": "foundation-input.json",
+      "sha256": "74aec501830f5e886ba763aee3b24c17d6ff2541f3369d2e472029ba457c12af",
+      "bytes": 50264
+    }
+  ],
+  "omissions": [
+    "Earlier independent opinion texts and raw outputs intentionally excluded; accepted decisions included.",
+    "Secrets, ignored local credentials, real messages and raw authentication logs excluded.",
+    "Full upstream source snapshots not copied: no new reuse implementation proposed; relevant audited dependency pin evidence included.",
+    "Validation-script bodies and long historical code-review/repair/runtime documents omitted from design body; full 93-entry foundation snapshot and hashes retained outside Git. Focused runtime evidence attribution included. All 52 product/test source files and both lifecycle wrappers are included in full."
+  ],
+  "runtime_status": "Not dispatched. No model identity/auth/help capability or live credit/cap verified in this freeze. No Docker or remote workloads.",
+  "generated_sections": [
+    {
+      "path": "C:\\Users\\Tanzeel\\AppData\\Local\\ElevateoCoordinator\\be02-consult-freeze-20261012\\shared-brief.txt",
+      "sha256": "7eab831e3a681e680d9d4fb1144a964c77604e5493de0b62f058c76716aa000e"
+    },
+    {
+      "path": "C:\\Users\\Tanzeel\\AppData\\Local\\ElevateoCoordinator\\be02-consult-freeze-20261012\\task-brief.txt",
+      "sha256": "b3a27b123852bc056b0e97e0a596280fdf3ff661b7a0717b91ef9feaf72d5499"
+    },
+    {
+      "path": "C:\\Users\\Tanzeel\\AppData\\Local\\ElevateoCoordinator\\be02-consult-freeze-20261012\\foundation-evidence.txt",
+      "sha256": "c2ad52b8a615cbd7fcd19b582f1c01614ddae060a88cf643b2ee746f0f580f3c"
+    }
+  ]
+}
