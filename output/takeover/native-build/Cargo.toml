@@ -1,0 +1,12 @@
+[package]
+name="elevateo-containment-check"
+version="0.1.0"
+edition="2021"
+[features]
+containment-fixtures=[]
+[[bin]]
+name="bridge-fixture"
+path="src/bin/bridge-fixture.rs"
+required-features=["containment-fixtures"]
+[target.'cfg(windows)'.dev-dependencies]
+windows-sys={version="=0.59.0",features=["Win32_Foundation","Win32_Security","Win32_System_JobObjects","Win32_System_Threading"]}

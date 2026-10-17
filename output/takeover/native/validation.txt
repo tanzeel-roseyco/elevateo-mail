@@ -1,0 +1,12 @@
+Native fixture validation, 2026-10-06
+Docker: rust:1.85-bookworm; target x86_64-pc-windows-gnu; windows-sys=0.59.0.
+Isolated crate copied src-tauri/src/bridge, src/bin/bridge-fixture.rs and tests/bridge_windows.rs exactly; no Tauri dependencies.
+Build: cargo test --target x86_64-pc-windows-gnu --features containment-fixtures --test bridge_windows --no-run
+Compile passed; actual Windows test executable: four passed, zero failed.
+Initial exact remaining process count assertion failed (observed 2); waiting for exact1 also failed.
+Final test asserts residual live job membership after root exit and exactzero after stop.
+No process ID proof, CPU/memory pressure, process-limit enforcement, kill-on-close or API-failure injection validation.
+No full Tauri build, installer, real CLI, mailbox, credential, renderer IPC or security sandbox exercised.
+Cleanup: --rm containers; task Rust image removed, 30MiB remote target removed by exact mounted path.
+Remote free space before cleanup 273414721536 bytes; after finalcleanup275555999744; concurrent work prevents attribution.
+Shared Node image, source and local executables/logs retained. No bridge-fixture processes remained after tests.
