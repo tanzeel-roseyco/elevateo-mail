@@ -22,9 +22,11 @@ export function Skeleton({ rows = 5 }: { rows?: number }) {
 
 export function EmptyState({ title, body, action }: { title: string; body?: string; action?: ReactNode }) {
   return (
-    <div className="flex flex-col items-center gap-2 px-6 py-12 text-center">
-      <AlertIcon className="size-5 text-muted" />
-      <h2 className="text-sm font-semibold">{title}</h2>
+    <div className="flex flex-col items-center gap-2 px-6 py-14 text-center">
+      <span aria-hidden className="mb-1 inline-flex size-10 items-center justify-center rounded-full bg-surface-2 text-muted">
+        <AlertIcon className="size-5" />
+      </span>
+      <h2 className="text-[15px] font-semibold">{title}</h2>
       {body && <p className="max-w-sm text-[13px] text-muted">{body}</p>}
       {action && <div className="mt-2">{action}</div>}
     </div>
