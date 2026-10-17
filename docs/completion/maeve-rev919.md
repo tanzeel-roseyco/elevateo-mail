@@ -1,0 +1,17 @@
+# REV-919 Mira Top Reply source review
+
+Target: Mira exact `fcfaf0fc8d4d116b0d66dc9f4597ee90bf5c793c`, production `apps/web/src/features/thread/ThreadPage.tsx` only. Reviewer runtime identity: Codex `gpt-6-sol` from Orca worker-show. This is a read-only static review; application tests, Docker and UI runtime were NOT_RUN by Maeve. Elara's prior over-budget REV-915 review was not used as acceptance evidence.
+
+## Coverage and limit
+
+I read the target commit's changed hunks with ten lines of adjacent context around target lines 37–61, 81–104, 213–239, 276–325 and 331–351, including their parent deletions. The diff contains 122 context lines counted once, 24 added lines and 14 deleted lines: **160 unique logical source LOC**. Targeted reference lines for `selectedMessageId`, `selectedOnPage` and `directResult` were also inspected; total unique source read stayed below the 180-LOC cap. No whole-file read was performed. The message loader implementation, draft-intent storage, sender/address DTO validation, tests and documentation text were excluded by this production-only packet. The commit stat shows a changed `ThreadPage.test.tsx` and docs, but their assertions/content were not reviewed here.
+
+## Findings
+
+**Zero confirmed defects in 160 primary reviewed LOC: 0 defects/KLOC.** When a message URL is selected, Top Reply chooses that concrete loaded page message or its matching direct-read result; it does not fall back to another sender while the selection is unresolved. Without a selection, it chooses the last loaded message whose sender address passes the shared `replyAddress` check. A missing sender, empty list, unavailable selected message or unready session leaves the top control disabled or shows an explanation. The control is rendered only with `mailbox.capabilities.compose === true`; the click handler rechecks ready thread/session/compose and sender address before creating a fresh draft intent.
+
+The draft content uses the current thread ID, the selected sender address and a `Re:` subject derived from the loaded thread; truncated subject stays blank and the 998-code-point bound is retained. Clicking writes a client-side draft intent and navigates to the editor. This changed code does not call a send API or persist a server draft; the separate editor's explicit-save behavior was not inspected. Per-message Reply actions use the same sender predicate and handler, preserving consistent action semantics. The added helper rejects empty address plus CR, LF and angle brackets; full address validity depends on the omitted loaded-message contract and editor boundary.
+
+The design tradeoff is a fresh draft ID per click instead of a preallocated conversation link, ensuring each action derives from the sender visible at click time. The array reversal and sender scan are linear in loaded messages per render; no concrete unbounded list or performance failure was established. State handling and names are straightforward; no new class or duplicated send authority appears in the reviewed hunk. Authorization still depends on the existing compose capability and downstream editor/write checks, which were not re-reviewed here.
+
+Omitted acceptance: test happy/failure assertions, direct-read stale-result handling, mailbox authorization source, draft-intent durability, actual keyboard/accessibility interaction and visual behavior. Soren fleet-02 Docker tests and UI review are needed for runtime claims. No live send or release conclusion follows.
