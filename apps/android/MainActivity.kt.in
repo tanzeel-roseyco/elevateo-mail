@@ -1,0 +1,35 @@
+package @PACKAGE@
+
+import android.os.Bundle
+import android.view.ViewGroup
+import android.webkit.WebView
+import androidx.activity.enableEdgeToEdge
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.doOnAttach
+
+class MainActivity : TauriActivity() {
+  override fun onCreate(savedInstanceState: Bundle?) {
+    enableEdgeToEdge()
+    super.onCreate(savedInstanceState)
+  }
+
+  override fun onWebViewCreate(webView: WebView) {
+    super.onWebViewCreate(webView)
+    // AIDEV-NOTE: Native margins own bars/cutouts/IME; older WebViews do not expose usable CSS safe-area insets.
+    ViewCompat.setOnApplyWindowInsetsListener(webView) { view, insets ->
+      val safe = insets.getInsets(WindowInsetsCompat.Type.systemBars()
+        or WindowInsetsCompat.Type.displayCutout() or WindowInsetsCompat.Type.ime())
+      val layout = view.layoutParams as ViewGroup.MarginLayoutParams
+      // AIDEV-NOTE: Assign absolute margins so rotation and keyboard changes never accumulate padding.
+      if (layout.leftMargin != safe.left || layout.topMargin != safe.top ||
+          layout.rightMargin != safe.right || layout.bottomMargin != safe.bottom) {
+        layout.setMargins(safe.left, safe.top, safe.right, safe.bottom)
+        view.layoutParams = layout
+      }
+      WindowInsetsCompat.CONSUMED
+    }
+    // Wry calls this hook before setContentView, so wait until the actual WebView has a parent/layout.
+    webView.doOnAttach { ViewCompat.requestApplyInsets(it) }
+  }
+}
