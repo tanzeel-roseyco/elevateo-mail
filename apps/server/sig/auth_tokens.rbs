@@ -1,0 +1,29 @@
+module Elevateo
+  class AuthTokens
+    @config: _AuthConfig
+    @clock: ^() -> Time
+    class Claims < Data
+      attr_reader user_id: String
+      attr_reader auth_session_id: String
+      attr_reader expires_at: Time
+      def self.new: (user_id: String, auth_session_id: String, expires_at: Time) -> Claims
+    end
+    class Verified < Data
+      attr_reader access: String
+      attr_reader refresh: String
+      attr_reader user_id: String
+      attr_reader auth_session_id: String
+      attr_reader expires_at: Time
+      attr_reader display_name: String?
+      def self.new: (access: String, refresh: String, user_id: String, auth_session_id: String,
+                     expires_at: Time, display_name: String?) -> Verified
+    end
+    def initialize: (config: _AuthConfig, ?clock: ^() -> Time) -> void
+    def claims: (auth_value) -> Claims
+    def identity: (String, auth_object, ?expected_user: String?, ?expected_session: String?) -> Claims
+    def verified: (auth_object, client: _AuthClient, deadline: RequestDeadline,
+                   ?expected_user: String?, ?expected_session: String?) -> Verified
+    def stored: (access: String, refresh: String, client: _AuthClient, deadline: RequestDeadline,
+                 expected_user: String?, expected_session: String?) -> Verified
+  end
+end

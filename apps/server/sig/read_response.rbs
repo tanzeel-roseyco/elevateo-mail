@@ -1,0 +1,17 @@
+module Elevateo
+  module ReadResponse
+    type json_value = nil | bool | Integer | Float | String | Array[json_value] | Hash[String, json_value]
+    type item = Hash[String, json_value]
+    class Overflow < StandardError
+    end
+    class Invalid < Overflow
+    end
+    MAILBOX_BYTES: Integer
+    THREAD_BYTES: Integer
+    MESSAGE_BYTES: Integer
+    def self.page: (items: Array[item], limit: Integer, envelope: item,
+                    cursor_for: ^(item) -> String, budget: Integer, ?items_key: String) -> String
+    def self.dump: (json_value) -> String
+    def self.validate_json: (json_value, Integer) -> nil
+  end
+end

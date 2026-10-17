@@ -8,6 +8,8 @@ ENV BUNDLE_DEPLOYMENT=0 BUNDLE_PATH=/usr/local/bundle
 COPY Gemfile Gemfile.lock* ./
 RUN bundle install --jobs 4
 COPY . .
-RUN useradd --system --uid 10001 --home /app elevateo && chown -R elevateo /app/tmp /app/log 2>/dev/null || true
+# AIDEV-NOTE: Empty directories may be absent from an archive; create them and fail if ownership setup fails.
+RUN useradd --system --uid 10001 --home /app elevateo \
+ && install -d -o elevateo -g elevateo /app/tmp /app/log
 USER 10001
-CMD ["bin/rails", "server", "-b", "0.0.0.0"]
+CMD ["bundle", "exec", "rails", "server", "-b", "0.0.0.0"]

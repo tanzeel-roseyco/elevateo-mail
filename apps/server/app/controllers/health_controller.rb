@@ -30,7 +30,12 @@ class HealthController < ApplicationController
   end
 
   def http_ok?(url)
-    uri = URI(url)
-    Net::HTTP.start(uri.host, uri.port, open_timeout: 2, read_timeout: 2) { |h| h.get(uri.request_uri).code == "200" }
+    uri = URI.parse(url)
+    # AIDEV-NOTE: URI.parse also accepts relative and non-HTTP URIs; narrow before using HTTP-only methods.
+    return false unless uri.is_a?(URI::HTTP)
+    host, port = uri.host, uri.port
+    return false unless host.is_a?(String) && port.is_a?(Integer)
+
+    Net::HTTP.start(host, port, open_timeout: 2, read_timeout: 2) { |h| h.get(uri.request_uri).code == "200" }
   end
 end

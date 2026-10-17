@@ -1,0 +1,143 @@
+# AIDEV-NOTE: Applied only after BE02 HTTP/worker checks; all lanes reuse that isolated database and Auth.
+x-browser: &browser
+  pull_policy: never
+  # AIDEV-NOTE: Private binds stay mode 0700/0600; only seed/browser use the recorded host UID/GID.
+  user: "${BE02_ACCEPTANCE_UID:?nonroot host UID required}:${BE02_ACCEPTANCE_GID:?nonroot host GID required}"
+  read_only: true
+  init: true
+  cap_drop: [ALL]
+  security_opt:
+    - no-new-privileges:true
+    - seccomp=${BE02_ACCEPTANCE_SECCOMP:?reviewed sandbox profile required}
+  networks: [isolated]
+  mem_limit: 3g
+  cpus: 2
+  shm_size: 1g
+  pids_limit: 512
+  tmpfs: ["/tmp:rw,nosuid,nodev,size=512m,mode=1777"]
+  logging: {driver: none}
+services:
+  api:
+    environment:
+      ELEVATEO_BROWSER_ORIGIN: http://app.test
+    logging: {driver: none}
+  worker:
+    environment:
+      ELEVATEO_BROWSER_ORIGIN: http://app.test
+    logging: {driver: none}
+  auth:
+    environment:
+      API_EXTERNAL_URL: http://app.test
+      GOTRUE_SITE_URL: http://app.test
+      GOTRUE_URI_ALLOW_LIST: http://app.test/auth/complete
+    logging: {driver: none}
+  acceptance-seed:
+    extends: {file: compose.be02-test.yaml, service: fixture}
+    user: "${BE02_ACCEPTANCE_UID:?}:${BE02_ACCEPTANCE_GID:?}"
+    # AIDEV-NOTE: Replace inherited image-UID tmpfs ownership without changing the base fixture service.
+    tmpfs: !override
+      - /workspace/apps/server/tmp:uid=${BE02_ACCEPTANCE_UID:?},gid=${BE02_ACCEPTANCE_GID:?},mode=1770
+      - /workspace/apps/server/log:uid=${BE02_ACCEPTANCE_UID:?},gid=${BE02_ACCEPTANCE_GID:?},mode=1770
+      - /tmp:rw,nosuid,nodev,size=512m,mode=1777
+    environment:
+      ELEVATEO_MODE: local
+      ELEVATEO_OUTBOUND_HOLD: "true"
+      ELEVATEO_BROWSER_ORIGIN: http://app.test
+      ELEVATEO_AUTH_URL: http://auth:9999
+      ELEVATEO_SESSION_KEY_BASE64: ${ELEVATEO_SESSION_KEY_BASE64:?}
+    volumes:
+      - ${BE02_SOURCE:?}/tests/acceptance/shared/seed-contract.json:/acceptance-contract/seed-contract.json:ro
+      - ${BE02_ACCEPTANCE_PRIVATE:?}:/acceptance
+    command: [bundle, exec, ruby, /workspace/ops/tests/be02/acceptance_seed.rb]
+    logging: {driver: none}
+  acceptance-web:
+    image: ${BE02_ACCEPTANCE_WEB_IMAGE:?}
+    pull_policy: never
+    user: "10001:10001"
+    read_only: true
+    init: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    sysctls: {net.ipv4.ip_unprivileged_port_start: "0"}
+    networks:
+      isolated:
+        aliases: [app.test]
+    mem_limit: 128m
+    cpus: 1
+    pids_limit: 64
+    logging: {driver: none}
+  acceptance-browser:
+    <<: *browser
+    image: ${BE02_ACCEPTANCE_BROWSER_IMAGE:?}
+    working_dir: /opt/acceptance
+    entrypoint: [sleep]
+    command: ["1800"]
+    environment:
+      HOME: /tmp
+      ACCEPTANCE_BASE_URL: http://app.test
+      ACCEPTANCE_PROFILE: internal_http
+      ACCEPTANCE_LANE: ${BE02_ACCEPTANCE_LANE:?}
+      ACCEPTANCE_BROWSER: ${BE02_ACCEPTANCE_BROWSER:?}
+      ACCEPTANCE_RUN_ID: ${BE02_ACCEPTANCE_RUN_ID:?}
+      ACCEPTANCE_DISPATCH_ID: ${BE02_ACCEPTANCE_DISPATCH_ID:?}
+      ACCEPTANCE_SEED_PATH: /acceptance/seed.json
+      ACCEPTANCE_OUTPUT_DIR: /output
+      ACCEPTANCE_TIMEOUT_MS: "120000"
+      ACCEPTANCE_MEMORY_MIB: "3072"
+      ACCEPTANCE_CPUS: "2"
+      ACCEPTANCE_MAX_ARTIFACT_BYTES: "262144000"
+      ACCEPTANCE_MAX_RECORDS: "5000"
+      ACCEPTANCE_MAX_RECORD_BYTES: "262144"
+      PUPPETEER_EXECUTABLE_PATH: /opt/cft/chrome-linux64/chrome
+      PUPPETEER_EXPECTED_BROWSER_VERSION: 155.0.8059.39
+      SELENIUM_GRID_URL: http://selenium:4444
+      SELENIUM_EXPECTED_BROWSER: chrome
+      SELENIUM_EXPECTED_BROWSER_VERSION: 153.0.8010.47
+      SELENIUM_EXPECTED_DRIVER_VERSION: 153.0.8010.47
+    volumes:
+      - ${BE02_ACCEPTANCE_PRIVATE:?}/seed.json:/acceptance/seed.json:ro
+      - ${BE02_ACCEPTANCE_PRIVATE:?}/acceptance-credentials.json:/run/secrets/acceptance-credentials.json:ro
+      - ${BE02_ACCEPTANCE_OUTPUT:?}:/output
+  selenium:
+    <<: *browser
+    image: ${BE02_ACCEPTANCE_GRID_IMAGE:?}
+    user: "1200:1201"
+    environment: {HOME: /tmp}
+    # AIDEV-NOTE: Direct Java/ELF paths bypass the image's Chrome wrapper, which hardcodes --no-sandbox.
+    entrypoint:
+      - java
+      - -Dwebdriver.chrome.driver=/usr/bin/chromedriver
+      - -Dwebdriver.chrome.logfile=/dev/null
+      - -Dwebdriver.chrome.silentOutput=true
+      - -Dwebdriver.remote.enableTracing=false
+      - -Duser.home=/tmp
+      - -jar
+      - /opt/selenium/selenium-server.jar
+    command:
+      - standalone
+      - --host
+      - selenium
+      - --port
+      - "4444"
+      - --detect-drivers
+      - "false"
+      - --selenium-manager
+      - "false"
+      - --max-sessions
+      - "1"
+      - --session-request-timeout
+      - "45"
+      - --session-timeout
+      - "90"
+      - --log-level
+      - "OFF"
+      - --http-logs
+      - "false"
+      - --tracing
+      - "false"
+      - --enable-cdp
+      - "false"
+      - --driver-configuration
+      - display-name=Chrome
+      - max-sessions=1
+      - 'stereotype={"browserName":"chrome","browserVersion":"153.0.8010.47","goog:chromeOptions":{"binary":"/opt/google/chrome/chrome","args":["--headless=new"]}}'

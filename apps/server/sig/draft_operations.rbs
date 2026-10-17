@@ -1,0 +1,12 @@
+module Elevateo
+  class DraftOperations
+    SAVE_SQL: String
+    LOOKUP_SQL: String
+    @database: Drafts::Database
+    def initialize: (connection: _ThreadConnection, session: ReadResponse::item) -> void
+    def save: (Drafts::Payload, session_digest: String, request_id: String?) -> WriteResponse
+    def lookup: (operation_id: String, query: Hash[String, String]) -> String
+    private
+    def validate_lookup: (ReadResponse::item, String, String, String) -> void
+  end
+end

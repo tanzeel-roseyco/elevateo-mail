@@ -1,0 +1,8 @@
+8fce6bd5ebfc4c85f8805a886627b0ac260093b1776968bab43590007386ec2f  ops/tools/lane-c-synthetic/Dockerfile
+e92a416815a8a8e499bac7686484a5be8b83d24884c34f71c605715b6c81cc10  ops/tools/lane-c-synthetic/checks.sh
+1af110b569c506396122500936dbadb53e5396041aa4422acb7d658bcab1dae8  ops/tools/lane-c-synthetic/parent-run.sh
+095fb2a580620b724070a0dc3c0d5400e38a98fc347d034c97f3fe3e47dcc3ec  ops/tools/lane-c-synthetic/cleanup.sh
+564276a8850672c41bb7821ce9a61f5a194b35482377072ca6f52ce7fa4472d6  ops/tools/lane-c-synthetic/cleanup-regression.sh
+5d5a3a202a637c2f01cf43c505362130bf65def4113f82ca1f56bbf0789d5d25  ops/tools/lane-c-synthetic/run-container.sh
+7783d8678d2941ec54cb5fff84c17270be15ceed8016e2108ed1b47f4dbcb444  ops/tools/lane-c-synthetic/preflight.sh
+77bc8b48def7cdb18f0b13c473035190eca5da4810d5cae805125f746e260e3a  ops/tools/lane-c-synthetic/preflight-regression.sh

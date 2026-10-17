@@ -1,0 +1,10 @@
+module V1
+  class ThreadsController < ReadController
+    def index: () -> void
+    def show: () -> void
+    private
+    def path_id: (Symbol) -> String
+    def reader: (Elevateo::_ThreadConnection, Elevateo::_ThreadIdentity,
+                 Elevateo::ReadResponse::item) -> Elevateo::ThreadReads
+  end
+end

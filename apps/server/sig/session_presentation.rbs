@@ -1,0 +1,28 @@
+module Elevateo
+  class SessionPresentation
+    @crypto: SessionCrypto
+    def initialize: (crypto: SessionCrypto) -> void
+    def version: (auth_object) -> String
+    def check_context!: (auth_object, String?, String?) -> void
+    def session: (auth_object, ?display_name: String?) -> auth_object
+    def lifecycle: (auth_object, expires_at: Time, ?display_name: String?) -> auth_object
+    def required: (auth_object, String) -> String
+  end
+  class SessionIdentity < Data
+    attr_reader user_id: String
+    attr_reader org_id: String
+    attr_reader auth_session_id: String
+    attr_reader digest: String
+    attr_reader display_name: String?
+    attr_reader metadata: auth_object
+    def self.new: (user_id: String, org_id: String, auth_session_id: String, digest: String,
+                   display_name: String?, metadata: auth_object) -> SessionIdentity
+  end
+  class SessionResult < Data
+    attr_reader cookie: String?
+    attr_reader metadata: auth_object
+    attr_reader expires_at: Time
+    attr_reader display_name: String?
+    def self.new: (cookie: String?, metadata: auth_object, expires_at: Time, display_name: String?) -> SessionResult
+  end
+end

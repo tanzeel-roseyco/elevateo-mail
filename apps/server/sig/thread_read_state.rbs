@@ -1,0 +1,14 @@
+module Elevateo
+  class ThreadReadState < ThreadCollaboration
+    REQUIRED: Array[String]
+    STATE_SQL: String
+    SAVE_SQL: String
+    def self.validate!: (WriteInput::object) -> nil
+    def put: (thread_id: String, input: WriteInput::object) -> WriteResponse
+  end
+end
+module V1
+  class ThreadReadStatesController < WriteController
+    def update: () -> void
+  end
+end

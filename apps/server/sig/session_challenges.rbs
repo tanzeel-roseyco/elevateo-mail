@@ -1,0 +1,11 @@
+module Elevateo
+  class SessionChallenges
+    @config: _AuthConfig
+    @crypto: SessionCrypto
+    @clock: ^() -> Time
+    def initialize: (config: _AuthConfig, crypto: SessionCrypto, ?clock: ^() -> Time) -> void
+    def issue: (session_cookie: String?, pending_cookie: String?) -> { cookie: String, body: auth_object }
+    def origin!: (String?) -> void
+    def verify!: (cookie: String?, proof: String?, origin: String?, session_cookie: String?, pending_cookie: String?) -> bool
+  end
+end

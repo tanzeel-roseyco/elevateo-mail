@@ -1,0 +1,10 @@
+module Elevateo
+  class CollaborationError < StandardError
+    ERRORS: Hash[String, [Integer, String]]
+    attr_reader code: String
+    attr_reader status: Integer
+    attr_reader retry_after: Integer?
+    def initialize: (String, ?retry_after: Integer?) -> void
+    def body: (String?) -> Hash[String, String]
+  end
+end
