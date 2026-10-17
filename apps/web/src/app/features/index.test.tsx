@@ -48,7 +48,8 @@ describe('feature route wiring', () => {
     expect(outreachPaths).toHaveLength(12)
     expect(outreachPaths).toContain('/outreach/campaigns/:campaignId/sequence')
     expect(featureRegistry.navBySection.outreach.map((e) => e.label)).toEqual(['Campaigns', 'Leads', 'Accounts', 'Analytics'])
-    expect(featureRegistry.navBySection.personal.map((e) => e.path)).toEqual(['/people', '/settings/personal', '/settings/organization'])
+    expect(featureRegistry.navBySection.contacts.map((e) => e.path)).toEqual(['/people'])
+    expect(featureRegistry.navBySection.settings.map((e) => e.path)).toEqual(['/settings/personal', '/settings/organization'])
   })
 
   it('passes the session context and Outreach gateway to Celeste\'s campaigns page (happy path)', async () => {

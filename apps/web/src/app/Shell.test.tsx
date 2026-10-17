@@ -12,7 +12,7 @@ import type { MailboxPage } from '@/data/contract'
 import type { MailroomGateway } from '@/data/gateway'
 import { SESSION_FRESHNESS_INTERVAL_MS, SessionProvider } from './session'
 import { Shell } from './Shell'
-import { MailboxSelection } from './MailboxSelection'
+import { HomePage } from './HomePage'
 import { featureRoutes } from './features'
 import { FeatureGatewaysProvider, type FeatureGateways } from './featureGateways'
 import type { OutreachGateway } from '@/features/outreach/contract'
@@ -377,24 +377,26 @@ describe('identity replacement privacy (V3)', () => {
   })
 })
 
-describe('initial mailbox selection guidance (Mira R16)', () => {
+describe('home screen guidance (Mira R16, IA refresh Today page)', () => {
   it('offers access guidance for a completed zero-visible-mailbox list', async () => {
     const { gateway, readCalls } = pagedGateway([mailboxPage([], null)])
-    renderShell(gateway, <MailboxSelection />)
+    renderShell(gateway, <HomePage />)
     await screen.findByRole('heading', { name: 'No visible mailboxes', level: 2 })
     expect(screen.getByText('If you expected a mailbox here, ask your organization administrator to check your access.')).toBeTruthy()
     expect(screen.getByText('No mailboxes are visible to you.')).toBeTruthy()
-    expect(screen.queryByText('Select a mailbox')).toBeNull()
-    expect(screen.queryByText('Choose a mailbox from the list to read its conversations.')).toBeNull()
+    expect(screen.queryByRole('heading', { name: 'Today' })).toBeNull()
     expect(readCalls()).toBe(1)
   })
 
-  it('retains selection guidance when a visible mailbox exists', async () => {
+  it('shows the Today summary with a link to each visible mailbox', async () => {
     const { gateway } = pagedGateway([mailboxPage(['Team inbox'], null)])
-    renderShell(gateway, <MailboxSelection />)
-    await screen.findByRole('heading', { name: 'Select a mailbox', level: 2 })
-    expect(screen.getByText('Choose a mailbox from the list to read its conversations.')).toBeTruthy()
-    expect(screen.getByRole('link', { name: 'Team inbox' }).getAttribute('href')).toBe(`/mailboxes/${mailboxIdFor('Team inbox')}`)
+    renderShell(gateway, <HomePage />)
+    await screen.findByRole('heading', { name: 'Today', level: 1 })
+    expect(screen.getByRole('region', { name: 'Attention summary' })).toBeTruthy()
+    // Rail link and home row both lead to the same inbox.
+    for (const link of screen.getAllByRole('link', { name: 'Team inbox' })) {
+      expect(link.getAttribute('href')).toBe(`/mailboxes/${mailboxIdFor('Team inbox')}`)
+    }
     expect(screen.queryByText('No visible mailboxes')).toBeNull()
   })
 
@@ -403,14 +405,14 @@ describe('initial mailbox selection guidance (Mira R16)', () => {
     const continuation = new Promise<MailboxPage>((resolve) => { resolvePage = resolve })
     const base = createFixtureGateway()
     const listMailboxes = vi.fn<MailroomGateway['listMailboxes']>().mockResolvedValueOnce(mailboxPage([], 'next')).mockReturnValueOnce(continuation)
-    renderShell({ ...base, listMailboxes }, <MailboxSelection />)
+    renderShell({ ...base, listMailboxes }, <HomePage />)
     await waitFor(() => expect(listMailboxes).toHaveBeenCalledTimes(2))
     expect(screen.getByRole('status', { name: 'Loading mailbox selection' })).toBeTruthy()
     expect(screen.queryByText('No visible mailboxes')).toBeNull()
-    expect(screen.queryByText('Select a mailbox')).toBeNull()
+    expect(screen.queryByRole('heading', { name: 'Today' })).toBeNull()
     await act(async () => resolvePage(mailboxPage(['Later inbox'], null)))
-    await screen.findByRole('heading', { name: 'Select a mailbox', level: 2 })
-    expect(screen.getByRole('link', { name: 'Later inbox' })).toBeTruthy()
+    await screen.findByRole('heading', { name: 'Today', level: 1 })
+    expect(screen.getAllByRole('link', { name: 'Later inbox' }).length).toBeGreaterThan(0)
   })
 
   it('shows a load failure without claiming an empty or accessible mailbox list, then allows retry', async () => {
@@ -418,11 +420,11 @@ describe('initial mailbox selection guidance (Mira R16)', () => {
       new GatewayError('transport', 'network', 'Mailboxes unavailable'),
       mailboxPage([], null),
     ])
-    renderShell(gateway, <MailboxSelection />)
+    renderShell(gateway, <HomePage />)
     await screen.findByRole('heading', { name: 'Mailboxes could not be loaded', level: 2 })
-    expect(screen.getByText('Try again in the mailbox menu.')).toBeTruthy()
+    expect(screen.getByText('Use Try again in the navigation menu, or reload the page.')).toBeTruthy()
     expect(screen.queryByText('No visible mailboxes')).toBeNull()
-    expect(screen.queryByText('Select a mailbox')).toBeNull()
+    expect(screen.queryByRole('heading', { name: 'Today' })).toBeNull()
     fireEvent.click(screen.getByRole('button', { name: 'Try again' }))
     await screen.findByRole('heading', { name: 'No visible mailboxes', level: 2 })
     expect(readCalls()).toBe(2)
@@ -436,7 +438,7 @@ describe('registered feature routes (FE-805)', () => {
         <MemoryRouter initialEntries={['/outreach/campaigns']}>
           <Routes>
             <Route element={<Shell />}>
-              <Route index element={<MailboxSelection />} />
+              <Route index element={<HomePage />} />
               {featureRoutes.map((route) => (
                 <Route key={route.path} path={route.path} element={route.element} />
               ))}
@@ -451,7 +453,7 @@ describe('registered feature routes (FE-805)', () => {
     await waitFor(() => expect(screen.getByRole('status').textContent).toBe('Outreach API unavailable for this account.'))
     expect(screen.getByRole('navigation', { name: 'Outreach' })).toBeTruthy()
     expect(screen.getByRole('link', { name: 'Campaigns' }).getAttribute('aria-current')).toBe('page')
-    expect(within(screen.getByRole('navigation', { name: 'Personal' })).getByRole('link', { name: 'People' })).toBeTruthy()
+    expect(within(screen.getByRole('navigation', { name: 'Contacts' })).getByRole('link', { name: 'People' })).toBeTruthy()
     expect(screen.getByText('Simulated local mail')).toBeTruthy()
   })
 })
@@ -518,7 +520,7 @@ describe('Outreach operations under the central session policy (FE-805)', () => 
           <MemoryRouter initialEntries={[path]}>
             <Routes>
               <Route element={<Shell />}>
-                <Route index element={<MailboxSelection />} />
+                <Route index element={<HomePage />} />
                 {featureRoutes.map((route) => (
                   <Route key={route.path} path={route.path} element={route.element} />
                 ))}

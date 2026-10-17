@@ -13,7 +13,7 @@ function drawerTrigger(page: Page) {
 export async function expectMailboxNavReady(page: Page): Promise<void> {
   await expect(page.getByText('Simulated local mail')).toBeVisible()
   if (await drawerTrigger(page).isVisible()) return
-  await expect(page.getByRole('navigation', { name: 'Personal' })).toBeVisible()
+  await expect(page.getByRole('navigation', { name: 'Mail' })).toBeVisible()
 }
 
 /** Clicks a mailbox link via the rail, or via the drawer below md. The drawer path also asserts
@@ -24,7 +24,7 @@ export async function openMailbox(page: Page, name: string): Promise<void> {
   if (await trigger.isVisible()) {
     await trigger.click()
     const dialog = page.getByRole('dialog', { name: 'Navigation' })
-    await expect(dialog.getByRole('navigation', { name: 'Personal' })).toBeVisible()
+    await expect(dialog.getByRole('navigation', { name: 'Mail' })).toBeVisible()
     await dialog.getByRole('link', { name }).click()
     await expect(dialog).not.toBeVisible()
   } else {
