@@ -1,0 +1,36 @@
+{
+  "schema": "mail818-adapter-negative-cases-v1",
+  "execution": "NOT_RUN; input expectations for owner adapter tests, not pilot runtime proof",
+  "cases": [
+    {
+      "id": "SMTP-CREDENTIAL-ROTATED-BEFORE-CONNECT",
+      "profile": "remote_held",
+      "given": {"account_id": "synthetic-account-1", "snapshot_credential_version": 4, "current_credential_version": 5, "credential_ref": "test:rotated", "revoked": false},
+      "expect": {"smtp_connections": 0, "secret_resolutions": 0, "submission": "rejected_pre_io", "observation": null}
+    },
+    {
+      "id": "SMTP-CREDENTIAL-REVOKED-BEFORE-CONNECT",
+      "profile": "remote_held",
+      "given": {"account_id": "synthetic-account-1", "snapshot_credential_version": 5, "current_credential_version": 5, "credential_ref": "test:revoked", "revoked": true},
+      "expect": {"smtp_connections": 0, "secret_resolutions": 0, "submission": "rejected_pre_io", "observation": null}
+    },
+    {
+      "id": "SMTP-DATA-RESPONSE-LOST",
+      "profile": "mailpit-smtp-test-v1",
+      "given": {"mail_from": "sender@example.invalid", "rcpt_to": ["recipient@example.invalid"], "mail_accepted": true, "rcpt_accepted": true, "data_octets_sent": true, "final_data_reply": null},
+      "expect": {"submission": "unknown", "observation": null, "automatic_replays": 0, "provider_lookups": 0, "operator_review_required": true}
+    },
+    {
+      "id": "IMAP-UIDVALIDITY-CHANGED",
+      "profile": "mox-pilot-local-only",
+      "given": {"account_id": "synthetic-account-1", "credential_version": 5, "stored_uidvalidity": 10, "stored_last_uid": 42, "server_uidvalidity": 11, "server_uid": 1},
+      "expect": {"reuse_old_cursor": false, "reset_or_rescan_required": true, "idempotency_key": ["synthetic-account-1", 11, 1], "cross_tenant_ingests": 0}
+    },
+    {
+      "id": "IMAP-STALE-CREDENTIAL-VERSION",
+      "profile": "mox-pilot-local-only",
+      "given": {"account_id": "synthetic-account-1", "worker_credential_version": 4, "current_credential_version": 5, "credential_ref": "test:rotated"},
+      "expect": {"imap_connections": 0, "ingested_messages": 0, "cursor_updates": 0}
+    }
+  ]
+}

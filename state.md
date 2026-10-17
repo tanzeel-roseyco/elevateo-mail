@@ -704,3 +704,15 @@ QA815 exact `e01c64ad` ATT823 dedicated fresh DB role profile passed six runs/40
 QA815 exact `e01c64ad` isolated task Mailpit protocol flag/profile passed 1 run/6 assertions/zero failures/errors/skips, cleanup PASS; no external SMTP/live send. Four of nine dedicated profiles scoped PASS. OUT804 campaign DB fresh admin/API profile ran 7 cases/17 assertions/zero failures/one teardown FK error deleting an organization while campaign_accounts references its mailbox; overall that suite FAILED, cleanup PASS. Four historical R1 profiles unattempted. Owner Dorian test teardown repair pending; no full backend/HTTP/worker/real Auth acceptance.
 
 Android runtime completion: Android1037 passed all nine isolated checks (login, navigation, inbox, thread, rotation, keyboard, lifecycle, offline, logout), including visual inspection and force-stop session recovery. Evidence: docs/completion/android1037-acceptance.md. Disposable runtime cleanup passed; no live release performed.
+
+## MAIL-818 Mox pilot records carried from completion-rhea-mail818 (merged 2026-10-18)
+
+MAIL-818 (2026-10-14): isolated Mox localserve pilot source is prepared under
+`ops/mail/mox-pilot/` on baseline `bbf2353`; Soren's fleet-only Docker execution,
+independent review and exact cleanup evidence remain pending. No production
+transport, contract, DNS, credential or release change. See
+[Rhea's pilot record](docs/completion/rhea.md).
+Ada ADV075 found two runner defects in `3ea8d26`; a source repair now records
+skipped Corin interop separately from base protocol and bounds Docker cleanup
+inventory. Fake-Docker regressions, Soren fleet runtime and repair re-review
+remain pending.

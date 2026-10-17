@@ -307,6 +307,13 @@ ATT866 followup source repairs the direct-message serializer and the rollback-on
 REV874 source review found that fixture could detach an unreviewed future FK. The followup pins the expected later-table FK names and definitions and fails before detachment on catalog drift; Soren's fleet rerun remains pending.
 INB887 followup narrows verified IMAP session access and annotates bounded MIME attachment tuples to match strict RBS. This is a source candidate pending Soren's fleet Steep, RuboCop and inbound unit checks; no receive protocol pilot or live account was activated.
 
+MAIL-818 has an isolated synthetic Mox localserve pilot under `ops/mail/mox-pilot/`.
+Its Docker protocol and isolation checks are requested from Soren on fleet-02
+and remain NOT_RUN; no production provider change or activation follows from
+this fixture. Runner receipts now distinguish base protocol from skipped Corin
+interop and fail closed on unverified Docker cleanup inventory. The repair and
+its regression remain NOT_RUN; see [Rhea's pilot record](docs/completion/rhea.md).
+
 
 ### R25 approval reload recovery candidate
 
