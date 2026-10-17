@@ -14,6 +14,8 @@ Shared company mailroom with one Rails domain authority and a React/TypeScript c
 
 ## Current state
 
+DESIGN-REFRESH (2026-10-18, branch design/opus-ui-refresh): web navigation regrouped by job (Today, Mail, Outreach, Contacts, Settings) with icons; a context strip gives every route its group, purpose and, where useful, a back link; home is now a Today summary (unread replies and open drafts via real gateway reads, the 30-per-mailbox daily limit, and an explicit 'not reported yet' for quota usage, approvals and failures). Refreshed cool-neutral tokens with elevation; outreach states and nested-main error states fixed. No dependencies added; apps/server and API contracts unchanged. Web gate in Docker: lint, typecheck, build and 68 files / 895 Vitest tests, API contract checks v1/v2 all pass; one full-suite rerun under load hit a timing flake in an unchanged Shell focus test that passed on rerun. Before/after screenshots: docs/design/screenshots-20261018/.
+
 RESEND-FIRST scope (2026-10-17): user deferred self-hosted mailserver deployment to ongoing repository development and selected Resend for the immediate app launch. Existing research/tests/plans remain preserved. Web gate: 874 Vitest tests plus API checks/lint/typecheck/build PASS; Android restart acceptance remains unresolved. Live Resend transport/production configuration is not implemented; the current worker supports simulated/Mailpit sends only. Final provider/browser/operational acceptance and live activation remain: NOT credentials-only ready. Lead opt-in is unresolved; Resend prohibits cold outreach. See docs/completion/resend-first-launch.md. GitHub publication of this update is not yet verified.
 
 
