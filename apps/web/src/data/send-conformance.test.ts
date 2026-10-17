@@ -41,10 +41,10 @@ describe('BE03 send HTTP boundary', () => {
     expect(SendApprovalInputSchema.safeParse({ ...input, body_text: 'forged' }).success).toBe(false)
     expect(fetcher).not.toHaveBeenCalled()
   })
-  it('accepts legal Unicode limits and literal empty content but rejects live/extra response fields', () => {
+  it('accepts legal Unicode limits and literal empty content and live mode but rejects extra response fields', () => {
     expect(SendReviewSchema.safeParse({ ...REVIEW, subject: '😀'.repeat(998), body_text: '', sender: { display_name: null, address: null } }).success).toBe(true)
     expect(SendReviewSchema.safeParse({ ...REVIEW, subject: '😀'.repeat(999) }).success).toBe(false)
-    expect(SendReviewSchema.safeParse({ ...REVIEW, simulated: false }).success).toBe(false)
+    expect(SendReviewSchema.safeParse({ ...REVIEW, simulated: false }).success).toBe(true)
     expect(SendReviewSchema.safeParse({ ...REVIEW, snapshot_bytes: 'private' }).success).toBe(false)
   })
   it('rejects send status responses over the 16KiB serialized budget', async () => {

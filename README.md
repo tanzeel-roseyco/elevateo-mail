@@ -1,5 +1,22 @@
 # Elevateo Mail
 
+## Current state
+
+<!-- completion-wave-current:start -->
+### Authoritative completion status (2026-10-17)
+
+This summary supersedes the historical checkpoints below. The immediate launch scope is Resend; self-hosted Mox deployment remains deferred to ongoing repository development.
+
+- **Android acceptance passed:** commit `2f9c7e508ea43c26c27e7958e297bbb3bfb7ef0d` includes the viewport, connectivity and diagnostic-harness fixes. All nine Android 14/WebView 113 runtime checks passed, including rotation, keyboard visibility, force-stop/restart session recovery, offline feedback and logout. See `docs/completion/android1037-acceptance.md`.
+- **Frontend automated gate passed:** fleet-02 Docker run `root1041-web-r3` passed API generation/checks, lint, typecheck, all **891 tests in 67 files**, coverage thresholds and production build. The gate reports `checks_exit=0` and `cleanup_failed=0`; evidence is `docs/completion/qa815-evidence/root1041-web-r3.log`. Saved-draft send review/approval, session handling and draft attachment UI changes are included. Pilot browser Docker run `root1041-pilot-browser-r3` passed all 20 scenarios across Chromium, Firefox, WebKit and a 390px narrow viewport; `checks_exit=0` and `context_absent=yes`. Evidence is retained in `docs/completion/qa815-evidence/root1041-pilot-browser-r3.log` and four selected review/delivery PNGs in `docs/completion/qa815-evidence/root1041-pilot-browser-r3/`. Manual Chromium desktop and narrow-viewport inspection passed: readable aligned content, no horizontal overflow, inert hostile plaintext, clear consent/attachment status and delivered-versus-read distinction. These are controlled browser fixtures, not live provider delivery.
+- **Backend suites, types and lint passed; integrated acceptance pending:** Resend outbound transport, signed provider events/inbound handling, draft attachment reserve/upload/finalize/list/remove, scanning and approved-send attachment binding are staged in the integration work. The latest combined backend Docker run passed its complete suites, Steep and RuboCop. Integrated acceptance was blocked by a missing pinned Node image in the runner; the corrected acceptance and recovery candidate is running. Final integrated and recovery acceptance remain pending. Resend operations Compose syntax validation passed, which does not establish deployment or provider acceptance.
+- **Live activation remains held:** production credentials, verified sending domain and sender, signed webhook setup, recipient consent/eligibility, deployment verification and backup/restore evidence remain prerequisites. No live Resend delivery or complete production readiness is claimed. Existing historical simulated/Mailpit evidence is not live provider evidence; GitHub publication of this completion wave is not yet verified.
+
+Historical records are retained for traceability. Earlier Android failures, lower frontend test counts and statements that Resend implementation has not started describe their original checkpoints, not the current implementation above.
+<!-- completion-wave-current:end -->
+
+## Historical implementation notes
+
 ### Mira BE03 UI isolated R24 implementation (2026-10-14)
 
 Root authorizes isolated BE03 implementation over `03ae770` while BE02 remains OPEN/unaccepted and integration/release gated. Mira owns the send gateway, generated web artifacts after canonical contract, and review/approval/status UI. The S1/S2 UI renders full saved plaintext content, explicit correspondence approval, original-binding uncertain retry, and server-owned simulated status. Paired corrected exact canonical contract `aa35c3d`; source607fcb2c passed Docker generator/check/lint/type and8files/260affectedtests; independent functional/data/design reviews found0confirmeddefects. Exact generated artifact and strengthened tests are present, follow-up sourcee037cb9b passed Docker APIcheck/lint/type/full37files660tests/build/fixture-isolation checks; bounded follow-up reviews found0confirmeddefects. Final fixture-only pre-abort repair8f6f5bf8 passed lint/type/9files174affectedtests and independent40LOC repair review0newdefects; seven exact owned containers independently absent, shared image/Lyra18140 preserved; actual visual/integrated validation remains pending; no completion or delivery claim. Canonical source is `contracts/v1/openapi.json`. See [Mira scoped evidence](docs/completion/be03-mira-r24.md).
@@ -12,7 +29,10 @@ Private synthetic frontend preview is running; Docker lint/typecheck/build and 6
 
 Shared company mailroom with one Rails domain authority and a React/TypeScript client.
 
-## Current state
+## Historical checkpoints
+
+RESEND-FIRST scope (2026-10-17): user deferred self-hosted mailserver deployment to ongoing repository development and selected Resend for the immediate app launch. Existing research/tests/plans remain preserved. Web gate: 874 Vitest tests plus API checks/lint/typecheck/build PASS; Android restart acceptance remains unresolved. Live Resend transport/production configuration is not implemented; the current worker supports simulated/Mailpit sends only. Final provider/browser/operational acceptance and live activation remain: NOT credentials-only ready. Lead opt-in is unresolved; Resend prohibits cold outreach. See docs/completion/resend-first-launch.md. GitHub publication of this update is not yet verified.
+
 
 ANDROID1035: real Android 14/WebView113 fleet acceptance passed login, inbox, message links, plaintext rendering, drawer navigation and session restart/resume. Acceptance FAILED: system bars overlap the app after rotation, network loss is not reflected by navigator.onLine, and logout was not verified before the emulator stopped with a graphics error. The final private UNIX transport gate passed 112 Python tests plus 9 socket/TLS tests and strict TypeScript; the emulator harness passed 19 tests. Independent checks verified 35 exact task resources/private paths absent. No live spend, credentials, mail, DNS or production changes. Upload integration, outbound attachment MIME, native fixes and final browser/native acceptance remain open: NOT credentials-only ready. See docs/completion/android1035-acceptance.md.
 

@@ -92,8 +92,9 @@ describe('malformed payloads are rejected', () => {
     delete rest.csrf_token
     expect(SessionSchema.safeParse(rest).success).toBe(false)
   })
-  it('rejects simulation_mode false', () => {
-    expect(SessionSchema.safeParse({ ...session, simulation_mode: false }).success).toBe(false)
+  it('accepts live sessions and rejects non-boolean simulation flags', () => {
+    expect(SessionSchema.safeParse({ ...session, simulation_mode: false }).success).toBe(true)
+    expect(SessionSchema.safeParse({ ...session, simulation_mode: 'false' }).success).toBe(false)
   })
   it('rejects an opaque token with invalid characters or short length', () => {
     expect(SessionSchema.safeParse({ ...session, context_id: 'short' }).success).toBe(false)

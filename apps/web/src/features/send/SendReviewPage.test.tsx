@@ -45,6 +45,28 @@ describe('BE03 saved review and approval', () => {
     expect(g.getSendStatus).toHaveBeenCalledWith(expect.anything(), APPROVAL.send_id, CD.mailboxId, expect.any(AbortSignal))
     expect(screen.getByText(/durably queued/)).not.toBeNull()
   })
+  it('requires explicit live approval and preserves live status wording', async () => {
+    const g = gateway({ getSendReview: async () => ({ ...REVIEW, simulated: false }), approveDraftSend: vi.fn(async () => ({ ...APPROVAL, simulated: false })), getSendStatus: async () => ({ ...STATUS, simulated: false }) })
+    setup(g); await ready()
+    expect(screen.getByText('Live email - sends to real recipients')).not.toBeNull()
+    const button = screen.getByRole('button', { name: 'Approve live send' }) as HTMLButtonElement
+    expect(button.disabled).toBe(true)
+    expect(screen.queryByRole('button', { name: 'Approve simulated send' })).toBeNull()
+    fireEvent.click(screen.getByRole('checkbox', { name: /recipients have opted in/ }))
+    fireEvent.click(button)
+    await screen.findByRole('heading', { name: 'Send intent: queued' })
+    expect(screen.getByText('Live email')).not.toBeNull()
+    expect(screen.getByText(/Submission attempts: 0/)).not.toBeNull()
+  })
+  it('shows attachment scan readiness and blocks approval for unscanned bytes', async () => {
+    setup(gateway({ getSendReview: async () => ({ ...REVIEW, attachments_supported: true,
+      attachments: [{ id: CD.draftId, filename: 'contract.pdf', content_type: 'application/pdf', byte_size: 123, status: 'pending_scan' }],
+      ready: false, review_digest: null, issues: [{ code: 'attachment_not_clean', recipient_index: null }],
+    }) }))
+    await ready()
+    expect(screen.getByText(/contract.pdf.*Sending blocked/)).not.toBeNull()
+    expect((screen.getByRole('button', { name: 'Approve simulated send' }) as HTMLButtonElement).disabled).toBe(true)
+  })
   it('retains the original operation/version/digest after a lost response and retries exactly', async () => {
     const calls: SendApprovalInput[] = []
     const g = gateway({ approveDraftSend: vi.fn(async (_ctx, _proof, _id, input) => { calls.push(input); if (calls.length === 1) throw new GatewayError('transport', 'timeout', 'synthetic'); return APPROVAL }) })

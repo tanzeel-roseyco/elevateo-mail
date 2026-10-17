@@ -9,7 +9,8 @@ import type { MailroomGateway } from '@/data/gateway'
 import { Button } from '@/ui/Button'
 import { MailboxIcon } from '@/ui/icons'
 
-const FOOTNOTE = 'Simulated local mail. This form talks only to this installation; no live email is sent.'
+// AIDEV-NOTE: Transport mode is only known after authentication; this form must not claim mail is simulated.
+const FOOTNOTE = 'Sign in securely to this Elevateo Mail installation.'
 const ENTRY_REJECTION = 'This link is no longer valid or was already used. Request a new invitation or recovery message.'
 
 type Outcome = { kind: 'form' } | { kind: 'done' } | { kind: 'no_organization' } | { kind: 'rejected' }

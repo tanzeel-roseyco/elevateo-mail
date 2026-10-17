@@ -449,6 +449,41 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/drafts/{draft_id}/attachments": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description List one private attachment owned by the current draft author. Returns scan state without private storage keys. */
+        get: operations["listDraftAttachments"];
+        put?: never;
+        /** @description Reserve an immutable upload operation, upload bounded bytes to the private gateway, and finalize pending scan metadata. Same operation and bytes replay safely. Fresh ownership and CSRF are required; network work occurs outside SQL transactions. */
+        post: operations["uploadDraftAttachment"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/drafts/{draft_id}/attachments/{attachment_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** @description Retire draft attachment metadata and reservation under fresh author, editable draft and CSRF checks. Private bytes remain for scoped storage cleanup. */
+        delete: operations["removeDraftAttachment"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -486,8 +521,7 @@ export interface components {
                 id: components["schemas"]["Id"];
                 name: string;
             };
-            /** @constant */
-            simulation_mode: true;
+            simulation_mode: boolean;
             csrf_token: components["schemas"]["OpaqueToken"];
         };
         MailboxPage: {
@@ -827,7 +861,7 @@ export interface components {
         /** @enum {string} */
         SendState: "queued" | "dispatching" | "unknown" | "needs_review" | "cancelled" | "accepted" | "rejected";
         /** @enum {string} */
-        SendReadinessCode: "draft_consumed" | "recipient_required" | "recipient_invalid" | "recipient_duplicate" | "recipient_suppressed" | "sender_unconfigured" | "sender_invalid" | "mailbox_disabled" | "reply_unavailable" | "header_invalid" | "snapshot_too_large" | "purpose_unavailable";
+        SendReadinessCode: "draft_consumed" | "recipient_required" | "recipient_invalid" | "recipient_duplicate" | "recipient_suppressed" | "sender_unconfigured" | "sender_invalid" | "mailbox_disabled" | "reply_unavailable" | "header_invalid" | "snapshot_too_large" | "purpose_unavailable" | "attachment_not_clean";
         /** @enum {string} */
         SendHoldReason: "session_invalid" | "authorization_changed" | "capability_revoked" | "mailbox_disabled" | "suppressed" | "policy_changed" | "restore_unreconciled" | "control_unavailable" | "auth_unavailable" | "uncertain" | "retry_expired" | "attempt_limit" | "evidence_conflict" | "counter_exhausted";
         SendRecipient: {
@@ -880,16 +914,14 @@ export interface components {
             purpose: "correspondence";
             /** @constant */
             consent_basis: "human_attestation_required";
-            attachments: unknown[];
-            /** @constant */
-            attachments_supported: false;
+            attachments: components["schemas"]["DraftAttachment"][];
+            attachments_supported: boolean;
             policy_revision: string;
             recipient_checks: components["schemas"]["SendRecipientCheck"][];
             ready: boolean;
             issues: components["schemas"]["SendReadinessIssue"][];
             review_digest: string | null;
-            /** @constant */
-            simulated: true;
+            simulated: boolean;
         } & (unknown & unknown);
         ApprovalResult: {
             context_id: components["schemas"]["OpaqueToken"];
@@ -899,8 +931,7 @@ export interface components {
             approved_version: components["schemas"]["SendDraftVersion"];
             review_digest: string;
             approved_at: components["schemas"]["UtcTimestamp"];
-            /** @constant */
-            simulated: true;
+            simulated: boolean;
         };
         SendStatus: {
             context_id: components["schemas"]["OpaqueToken"];
@@ -918,8 +949,11 @@ export interface components {
             cancellable: boolean;
             hold_reason: components["schemas"]["SendHoldReason"] | null;
             updated_at: components["schemas"]["UtcTimestamp"];
-            /** @constant */
-            simulated: true;
+            simulated: boolean;
+            /** @enum {string|null} */
+            delivery_status: "sent" | "delivery_delayed" | "delivered" | "failed" | "bounced" | "suppressed" | "complained" | null;
+            /** Format: date-time */
+            delivery_updated_at: string | null;
         };
         CancellationResult: {
             context_id: components["schemas"]["OpaqueToken"];
@@ -930,8 +964,31 @@ export interface components {
             state: components["schemas"]["SendState"];
             /** @constant */
             cancel_requested: true;
+            simulated: boolean;
+        };
+        DraftAttachment: {
+            id: components["schemas"]["Id"];
+            filename: string;
+            /** @enum {string} */
+            content_type: "application/pdf" | "image/png" | "image/jpeg" | "text/plain";
+            byte_size: number;
+            /** @enum {string} */
+            status: "pending_scan" | "clean" | "malware" | "scan_failed";
+        };
+        DraftAttachmentPage: {
+            items: components["schemas"]["DraftAttachment"][];
+        };
+        DraftAttachmentUpload: {
+            operation_id: components["schemas"]["Id"];
+            mailbox_id: components["schemas"]["Id"];
+            filename: string;
+            /** @enum {string} */
+            content_type: "application/pdf" | "image/png" | "image/jpeg" | "text/plain";
+            content_base64: string;
+        };
+        DraftAttachmentRemoved: {
             /** @constant */
-            simulated: true;
+            removed: true;
         };
     };
     responses: {
@@ -1051,7 +1108,7 @@ export interface components {
                 };
             };
         };
-        /** @description not_available — This item is unavailable. */
+        /** @description not_available â€” This item is unavailable. */
         Send404: {
             headers: {
                 "Cache-Control": "no-store";
@@ -3126,7 +3183,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Current-authorized simulated send result; acceptance is never delivery. */
+            /** @description Current-authorized send result; acceptance is never delivery. */
             200: {
                 headers: {
                     "Cache-Control": "no-store";
@@ -3171,7 +3228,7 @@ export interface operations {
             };
         };
         responses: {
-            /** @description Current-authorized simulated send result; acceptance is never delivery. */
+            /** @description Current-authorized send result; acceptance is never delivery. */
             202: {
                 headers: {
                     "Cache-Control": "no-store";
@@ -3210,7 +3267,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Current-authorized simulated send result; acceptance is never delivery. */
+            /** @description Current-authorized send result; acceptance is never delivery. */
             200: {
                 headers: {
                     "Cache-Control": "no-store";
@@ -3255,7 +3312,7 @@ export interface operations {
             };
         };
         responses: {
-            /** @description Current-authorized simulated send result; acceptance is never delivery. */
+            /** @description Current-authorized send result; acceptance is never delivery. */
             200: {
                 headers: {
                     "Cache-Control": "no-store";
@@ -3274,6 +3331,134 @@ export interface operations {
             429: components["responses"]["Send429"];
             500: components["responses"]["Send500"];
             503: components["responses"]["Send503"];
+        };
+    };
+    listDraftAttachments: {
+        parameters: {
+            query: {
+                mailbox_id: components["parameters"]["CdMailboxQuery"];
+            };
+            header: {
+                /** @description Current bootstrap context, never an authorization grant. */
+                "X-Session-Context": components["parameters"]["CdSessionContext"];
+                /** @description Current bootstrap authorization version; mismatch returns context_changed after authentication. */
+                "X-Authorization-Version": components["parameters"]["CdAuthorizationVersion"];
+            };
+            path: {
+                draft_id: components["schemas"]["Id"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Current-authorized C/D result; Cache-Control no-store, Vary Cookie, nosniff. */
+            200: {
+                headers: {
+                    "Cache-Control": "no-store";
+                    Vary: "Cookie";
+                    "X-Content-Type-Options": "nosniff";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DraftAttachmentPage"];
+                };
+            };
+            400: components["responses"]["CdBadRequest"];
+            401: components["responses"]["CdUnauthenticated"];
+            404: components["responses"]["CdNotAvailable"];
+            409: components["responses"]["CdConflict"];
+            429: components["responses"]["CdRateLimited"];
+            500: components["responses"]["CdInternalError"];
+            503: components["responses"]["CdUnavailable"];
+        };
+    };
+    uploadDraftAttachment: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description Current bootstrap context, never an authorization grant. */
+                "X-Session-Context": components["parameters"]["CdSessionContext"];
+                /** @description Current bootstrap authorization version; mismatch returns context_changed after authentication. */
+                "X-Authorization-Version": components["parameters"]["CdAuthorizationVersion"];
+                /** @description Exact configured same-origin value required on every C/D PUT, POST and DELETE. No redirect or permissive CORS. */
+                Origin: components["parameters"]["CdOrigin"];
+                /** @description Current session CSRF proof bound to this cookie and context. A login/refresh challenge is not accepted for C/D writes. */
+                "X-CSRF-Token": components["parameters"]["CdCsrf"];
+            };
+            path: {
+                draft_id: components["schemas"]["Id"];
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["DraftAttachmentUpload"];
+            };
+        };
+        responses: {
+            /** @description Current-authorized C/D result; Cache-Control no-store, Vary Cookie, nosniff. */
+            200: {
+                headers: {
+                    "Cache-Control": "no-store";
+                    Vary: "Cookie";
+                    "X-Content-Type-Options": "nosniff";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DraftAttachment"];
+                };
+            };
+            400: components["responses"]["CdBadRequest"];
+            401: components["responses"]["CdUnauthenticated"];
+            404: components["responses"]["CdNotAvailable"];
+            409: components["responses"]["CdConflict"];
+            429: components["responses"]["CdRateLimited"];
+            500: components["responses"]["CdInternalError"];
+            503: components["responses"]["CdUnavailable"];
+        };
+    };
+    removeDraftAttachment: {
+        parameters: {
+            query: {
+                mailbox_id: components["parameters"]["CdMailboxQuery"];
+            };
+            header: {
+                /** @description Current bootstrap context, never an authorization grant. */
+                "X-Session-Context": components["parameters"]["CdSessionContext"];
+                /** @description Current bootstrap authorization version; mismatch returns context_changed after authentication. */
+                "X-Authorization-Version": components["parameters"]["CdAuthorizationVersion"];
+                /** @description Exact configured same-origin value required on every C/D PUT, POST and DELETE. No redirect or permissive CORS. */
+                Origin: components["parameters"]["CdOrigin"];
+                /** @description Current session CSRF proof bound to this cookie and context. A login/refresh challenge is not accepted for C/D writes. */
+                "X-CSRF-Token": components["parameters"]["CdCsrf"];
+            };
+            path: {
+                draft_id: components["schemas"]["Id"];
+                attachment_id: components["schemas"]["Id"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Current-authorized C/D result; Cache-Control no-store, Vary Cookie, nosniff. */
+            200: {
+                headers: {
+                    "Cache-Control": "no-store";
+                    Vary: "Cookie";
+                    "X-Content-Type-Options": "nosniff";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DraftAttachmentRemoved"];
+                };
+            };
+            400: components["responses"]["CdBadRequest"];
+            401: components["responses"]["CdUnauthenticated"];
+            404: components["responses"]["CdNotAvailable"];
+            409: components["responses"]["CdConflict"];
+            429: components["responses"]["CdRateLimited"];
+            500: components["responses"]["CdInternalError"];
+            503: components["responses"]["CdUnavailable"];
         };
     };
 }

@@ -53,7 +53,7 @@ export const SessionSchema = z.strictObject({
   authorization_version: opaqueToken,
   actor: z.strictObject({ id, display_name: text(256).nullable() }),
   organization: z.strictObject({ id, name: text(256) }),
-  simulation_mode: z.literal(true),
+  simulation_mode: z.boolean(),
   csrf_token: opaqueToken,
 })
 
