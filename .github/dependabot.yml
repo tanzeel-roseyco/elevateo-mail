@@ -1,0 +1,43 @@
+# AIDEV-NOTE: Monthly grouped updates keep PR noise low; security updates still arrive immediately.
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /apps/web
+    schedule:
+      interval: monthly
+    groups:
+      web:
+        patterns: ["*"]
+  - package-ecosystem: npm
+    directory: /tests/acceptance
+    schedule:
+      interval: monthly
+    groups:
+      acceptance:
+        patterns: ["*"]
+  - package-ecosystem: npm
+    directory: /contracts/tooling
+    schedule:
+      interval: monthly
+  - package-ecosystem: bundler
+    directory: /apps/server
+    schedule:
+      interval: monthly
+    groups:
+      server:
+        patterns: ["*"]
+  - package-ecosystem: cargo
+    directory: /apps/native/src-tauri
+    schedule:
+      interval: monthly
+    groups:
+      native:
+        patterns: ["*"]
+  - package-ecosystem: docker
+    directory: /apps/server
+    schedule:
+      interval: monthly
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly

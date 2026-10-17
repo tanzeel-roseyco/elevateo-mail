@@ -1,0 +1,28 @@
+# AIDEV-NOTE: Extends the gitleaks default rules. Allowlists cover vendored upstream snapshots, SHA-256 digests in
+# contract locks and manifests, and synthetic credentials used by disposable test stacks. Real secrets never belong
+# in tests or evidence; the allowlisted paths are reviewed, not exempt from judgement.
+title = "Elevateo Mail secret scanning"
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Vendored snapshots, generated types, lockfiles, digest manifests, synthetic test credentials"
+paths = [
+  '''(^|/)third_party/upstream/''',
+  '''\.example\.env$''',
+  '''\.lock$''',
+  '''(^|/)apps/web/src/data/generated/''',
+  '''(^|/)contracts/v1/(contract-lock|be03-preservation|fixtures)\.json$''',
+  '''(^|/)docs/completion/[^/]*(manifest|receipt)\.json$''',
+  '''(^|/)docs/evidence/''',
+  '''(^|/)docs/research/''',
+  '''(^|/)\.planning/(capability-status\.json$|consultations/)''',
+  '''(^|/)apps/server/test/''',
+  '''(^|/)apps/web/e2e/''',
+  '''(^|/)apps/web/src/.*\.test\.tsx?$''',
+  '''(^|/)ops/tests/''',
+]
+regexes = [
+  '''^[a-f0-9]{64}$''',
+]
