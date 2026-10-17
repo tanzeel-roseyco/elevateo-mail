@@ -1,0 +1,31 @@
+{
+  "source_sha256": "1a368d4d0f71df09cbbc11d7661e016ed966cfe8cf3ec2ac2acada52e3ac065b",
+  "source_files": 420,
+  "results": [
+    {
+      "suite": "evidence",
+      "exit_code": 0,
+      "log": "evidence-units.log"
+    },
+    {
+      "suite": "policy-finalizer",
+      "exit_code": 0,
+      "log": "policy-finalizer-units.log"
+    },
+    {
+      "suite": "acceptance",
+      "exit_code": 0,
+      "log": "acceptance-units.log"
+    }
+  ],
+  "container_absent": true,
+  "created_images": 0,
+  "created_volumes": 0,
+  "build_cache_created": false,
+  "shared_bases_retained": [
+    "node:24.21.0-bookworm-slim@sha256:d6aa754f16b3197301076f047b5def2f02ea1dbbc2ca920407d46d7ec7f87b20",
+    "selenium/standalone-chrome:4.49.0-20260909@sha256:88dacdd42d93ab738bed045129376b2f965117c5f2e4710693e54695d531380d"
+  ],
+  "free_bytes_before": 266440609792,
+  "free_bytes_after": 266473910272
+}

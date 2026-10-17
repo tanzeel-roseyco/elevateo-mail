@@ -1,0 +1,7 @@
+{
+  "tests": "FAILED",
+  "failure": "RuntimeError: migrate failed; see 026-migrate.log",
+  "cleanup_passed": true,
+  "finished_at": 1791931012.2880006,
+  "source_snapshot": "source.sha256.json"
+}

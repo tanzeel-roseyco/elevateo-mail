@@ -1,0 +1,8 @@
+{
+  "remote": "/home/tanzeel/elevateo-mail-tests-20261012-ultra/c1-regression-7f40572dce524d048714de86282abd25",
+  "container_name": "elevateo-c1-7f40572dce524d048714de86282abd25",
+  "image": "sha256:22165c5f904d76a8a02fbdd419d0269481369523fd66978232d16c88099730e2",
+  "ssh_exit": 0,
+  "executed_at_utc": "2026-10-12T20:46:46.784770+00:00",
+  "result_file": "c1-7f40572dce524d048714de86282abd25-result.log"
+}

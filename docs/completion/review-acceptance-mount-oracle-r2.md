@@ -1,0 +1,40 @@
+# Mount oracle R2 — bounded independent static review
+
+Disposition: **zero confirmed defects within assigned static coverage**. Reviewer runtime: **NOT_RUN**. Full-stack acceptance remains unaccepted, including the coordinator-reported R3 schema-creation failure.
+
+## Provenance and coverage
+
+- Task `task_9e035a1d7669`; dispatch `ctx_4abe6a63cf08`.
+- Actual reviewer: GPT-6-Astra, LOW, as confirmed by coordinator launch/effective/live metadata in message msg_fd5ecf7027c0. This identity evidence is coordinator-reported, not independently available through reviewer introspection.
+- Sole implementation inspected: `ops/local/mount-oracle-repair-r2.py`, lines **1–142**, one 142-physical-line pass, **142 unique LOC**, including embedded JavaScript, comments and blanks. No other implementation/test source inspected.
+- SHA256 verified before reading and again before reporting: `3a107af599759737f99ea0a4d02af34d075317b288bafcf824e37c8d50594004`.
+- Context read: supplied full rubric/task constraints, root AGENTS.md, .planning/STANDARDS.md, prior mount-oracle review. README/state/documentation checkpoint searches were consulted; combined output was truncated, so these documents were not fully inspected. No nested AGENTS.md was found beneath the queried ops/docs/planning paths.
+- No host application tests, Docker, SSH, servers, installs, commits, subagents or source changes. Only this report is written; root owns shared documentation and code-reviews.md. Formatting remains delegated to linters.
+
+## Numbered defects and explicit correction
+
+No confirmed defects remain. Original finding 1 (HIGH delimiter escaping) is **withdrawn as a reviewer false positive**, not a source repair. I misread JSON-escaped tool output as raw source characters.
+
+On this follow-up I reverified the unchanged SHA256 above and inspected raw character codes for assigned lines 68, 79, 90, 119 and 121 without executing application code. Line 68 has exactly one backslash at zero-based offset 77; adjacent codes are `[40,39,92,110,39,41]`, meaning opening parenthesis, quote, backslash, n, quote, closing parenthesis. The marker lines likewise contain one backslash followed by n: offsets 51, 43, 87 and 94 respectively. Python's raw PROBE string preserves that single backslash for JavaScript, which interprets it as a newline escape; the ordinary Python expected-output strings also interpret it as a newline. The parser and marker comparisons are therefore correct. No source patch is needed or authorized.
+
+The follow-up character inspection covers five previously reviewed lines; unique implementation coverage remains **142 LOC**, and each pass remains below 200 lines. Defect count: **0**. Defect density: **0.00 defects/KLOC** (`0 / 142 * 1000`). The prior umask defect is statically repaired and is not counted again.
+
+Coordinator message `msg_fd5ecf7027c0` reports independent remote SHA256 verification matching this exact file, all four Docker cases PASS with exits **0/66/125/125**, no source drift and container absence. Those are attributed runtime results, not tests executed or raw runtime artifacts inspected by this reviewer. My runtime status remains **NOT_RUN**.
+
+## Checklist
+
+- **Fixture fidelity:** explicit chmod at 39/43 overrides umask 0077. Actual root metadata checks at 47–49 compare source and fixture roots to UID/GID 1001 and 0755. Child directories receive explicit chmod and inherit the process identity under this controlled construction; their metadata is not separately asserted. OUT remains private, appropriately distinct from its bind-mounted children. Mode assertions mask permission bits, not special bits or ACLs; this is a bounded ordinary-DAC fixture claim.
+- **Topology and false positives:** correct newline parsing, exact mountpoint cardinality, root `ro`, and child `rw` plus `tmpfs` checks discriminate actual topology from EACCES. Child writes/readback test usability. Missing/duplicate entries fail closed. The raw-character follow-up confirms the parser uses the intended newline delimiter.
+- **Source remains RO:** line 110 omits `readonly` only for the disposable writable-control fixture. Neither negative missing-directory case uses the real source. Cleanup's allowed-source/RW mapping mirrors this restriction.
+- **Negative targets:** fixture construction omits exactly the named directory; cases require Docker exit 125 plus read-only-filesystem text naming the intended missing target. Actual daemon wording/behavior is NOT_RUN. The missing-target cases alone cannot establish positive acceptance.
+- **Inner/outer cleanup:** each run enters a finally cleanup; the outer finally retries cleanup and verifies source. Exact container name, task label and allowed bind mappings are checked before removal by ID. Preexisting same-name containers block execution. Docker CLI failures/timeouts propagate; unexpected mounts prevent deletion rather than expanding cleanup authority. Cleanup exceptions can suppress report creation or mask an earlier exception, but do not create a passing report. Concurrent reuse of this fixed name and interrupted-process recovery are outside this bounded single-owner construction.
+- **Failure accounting:** completed failing cases yield `passed: false`; all four must pass for overall success. Exceptions propagate rather than being interpreted as success. Assertions require Python without optimization. Source checks compare regular-file contents/file sets and empty non-symlink scratch directories; they do not establish all metadata/link invariants and deliberately exclude ops/local paths.
+- **Boundaries/security:** fixed host, UID/GID, daemon endpoint, digest, no network, dropped capabilities and bounded container resources constrain execution. The manifest is trusted local input; malformed/missing fields fail loudly. No credentials or product authorization flow is involved. No arbitrary external requests enter this harness.
+- **Tests/documentation:** the file is a four-case regression harness covering positive, DAC-denied writable and two missing-target paths. Presence of assertions is not execution evidence. The supposed delimiter error was a review mistake, so no new regression test or source change is recommended for it. Prior review context documents the umask issue, and the new AIDEV comment explains its correction; repository-wide test/documentation conformance is unchecked.
+- **Maintainability/performance:** small helpers are appropriate for a one-off bounded harness; no broad abstraction/refactor is warranted. Whole-file hashing is acceptable only for the stated bounded snapshot. No application hot-path performance claim is made.
+
+## Design limits and unchecked dependencies
+
+Static tradeoff assessment: failed writes alone conflate DAC denial with read-only topology; independent mountinfo parsing plus scratch readback provides better evidence without changing real-source permissions. That benefit depends on correctly preserving escapes across Python and JavaScript. This is not a general mount-tree auditor: extra descendant mounts, root source identity, tmpfs options and metadata are principally controlled by the fixed argument construction, not exhaustively proved by the probe. No Obsidian simulation was performed or implied in this constrained review.
+
+Unchecked dependencies: Docker daemon/runtime and stderr behavior, pinned Node image contents, real frozen manifest and source permissions/ACLs, coordinator fleet invocation and any transport transformations, remote hash identity, independent cleanup inventories, other application implementation/tests, and R3 migration behavior. Resource-creation/retention report fields are construction-based declarations rather than independent inventory measurements. Coordinator-reported fleet results and matching remote hash are recorded above; their underlying runtime artifacts were not independently inspected here. No static finding conflicts with those four-case results. This bounded correction does not accept the application or close the R3 schema-creation failure.

@@ -1,0 +1,175 @@
+{
+  "utc": "2026-10-13T21:25:00.452458+00:00",
+  "task": "fe01r1-20261013-211444-705a2d1b",
+  "checks": {
+    "labelled_containers": {
+      "argv": [
+        "docker",
+        "ps",
+        "-a",
+        "--filter",
+        "label=elevateo.task=fe01r1-20261013-211444-705a2d1b",
+        "--format",
+        "{{.ID}} {{.Names}}"
+      ],
+      "exit": 0,
+      "stdout": "",
+      "stderr": "",
+      "pass": true
+    },
+    "named_containers": {
+      "argv": [
+        "docker",
+        "ps",
+        "-a",
+        "--filter",
+        "name=fe01r1-20261013-211444-705a2d1b",
+        "--format",
+        "{{.ID}} {{.Names}}"
+      ],
+      "exit": 0,
+      "stdout": "",
+      "stderr": "",
+      "pass": true
+    },
+    "labelled_images": {
+      "argv": [
+        "docker",
+        "image",
+        "ls",
+        "--filter",
+        "label=elevateo.task=fe01r1-20261013-211444-705a2d1b",
+        "--format",
+        "{{.ID}} {{.Repository}}:{{.Tag}}"
+      ],
+      "exit": 0,
+      "stdout": "",
+      "stderr": "",
+      "pass": true
+    },
+    "named_images": {
+      "argv": [
+        "docker",
+        "image",
+        "ls",
+        "--format",
+        "{{.ID}} {{.Repository}}:{{.Tag}}"
+      ],
+      "exit": 0,
+      "stdout": "",
+      "stderr": "",
+      "pass": true
+    },
+    "labelled_volumes": {
+      "argv": [
+        "docker",
+        "volume",
+        "ls",
+        "--filter",
+        "label=elevateo.task=fe01r1-20261013-211444-705a2d1b",
+        "--format",
+        "{{.Name}}"
+      ],
+      "exit": 0,
+      "stdout": "",
+      "stderr": "",
+      "pass": true
+    },
+    "named_volumes": {
+      "argv": [
+        "docker",
+        "volume",
+        "ls",
+        "--format",
+        "{{.Name}}"
+      ],
+      "exit": 0,
+      "stdout": "",
+      "stderr": "",
+      "pass": true
+    },
+    "builders": {
+      "argv": [
+        "docker",
+        "buildx",
+        "ls",
+        "--format",
+        "{{.Name}}"
+      ],
+      "exit": 0,
+      "stdout": "default\ndefault",
+      "stderr": "",
+      "pass": true
+    }
+  },
+  "pass": true,
+  "shared": [
+    {
+      "argv": [
+        "docker",
+        "image",
+        "inspect",
+        "--format",
+        "{{.Id}}",
+        "node:24.21.0-bookworm-slim@sha256:d6aa754f16b3197301076f047b5def2f02ea1dbbc2ca920407d46d7ec7f87b20"
+      ],
+      "exit": 0,
+      "stdout": "sha256:d6aa754f16b3197301076f047b5def2f02ea1dbbc2ca920407d46d7ec7f87b20",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "docker",
+        "image",
+        "inspect",
+        "--format",
+        "{{.Id}}",
+        "mcr.microsoft.com/playwright:v1.64.0-noble@sha256:06a9939e57531807f8d5fd76ce44b53165ffb7d7501d87ab10e285c20b1e971f"
+      ],
+      "exit": 0,
+      "stdout": "sha256:06a9939e57531807f8d5fd76ce44b53165ffb7d7501d87ab10e285c20b1e971f",
+      "stderr": ""
+    }
+  ],
+  "host_free_bytes": 269758365696,
+  "artifact_directory": "/home/tanzeel/elevateo-mail-tests-20261012-ultra/fe02-postrun-repair-20261014/results-fe02-postrun-repair-20261014",
+  "artifacts": {
+    ".log": {
+      "count": 5,
+      "bytes": 21318
+    },
+    ".json": {
+      "count": 7,
+      "bytes": 483334
+    },
+    ".js": {
+      "count": 1,
+      "bytes": 630
+    },
+    ".ts": {
+      "count": 42,
+      "bytes": 476165
+    },
+    ".md": {
+      "count": 3,
+      "bytes": 23827
+    },
+    ".html": {
+      "count": 2,
+      "bytes": 831
+    },
+    ".tsx": {
+      "count": 41,
+      "bytes": 353089
+    },
+    ".Dockerfile": {
+      "count": 1,
+      "bytes": 994
+    },
+    ".css": {
+      "count": 1,
+      "bytes": 4020
+    }
+  },
+  "total_artifact_bytes": 1364208
+}

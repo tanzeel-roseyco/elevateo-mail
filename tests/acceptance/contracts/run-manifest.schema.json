@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://app.test/contracts/acceptance/run-manifest-v1",
+  "title": "Root-sealed acceptance run manifest v1",
+  "$comment": "Null observed means NOT_RUN, never inferred from planned. Root verifies hashes, topology, source drift, guards and actual versions before sealing.",
+  "type": "object", "additionalProperties": false,
+  "required": ["schema_version", "run_id", "dispatch_id", "task_label", "lane", "transport_profile", "base_url", "started_at", "ended_at", "status", "source", "hashes", "planned", "observed", "resources", "guards", "feature_subset"],
+  "properties": {
+    "schema_version": { "const": 1 },
+    "run_id": { "$ref": "#/$defs/id" }, "dispatch_id": { "$ref": "#/$defs/id" },
+    "task_label": { "$ref": "#/$defs/id" },
+    "lane": { "enum": ["unit", "database", "real_auth_api", "playwright_real", "playwright_mock", "puppeteer_cdp", "selenium", "native_platform"] },
+    "transport_profile": { "enum": ["fixture", "internal_http", "tls", "native"] },
+    "base_url": { "enum": ["http://app.test", "https://app.test", "http://api:3000"] },
+    "started_at": { "type": ["string", "null"], "format": "date-time" },
+    "ended_at": { "type": ["string", "null"], "format": "date-time" },
+    "status": { "enum": ["passed", "failed", "not_run", "blocked", "skipped"] },
+    "source": { "type": "object", "additionalProperties": false, "required": ["git_sha", "dirty", "drift"], "properties": {
+      "git_sha": { "type": "string", "pattern": "^([a-f0-9]{40}|[a-f0-9]{64})$" },
+      "dirty": { "type": "boolean" }, "drift": { "enum": ["not_checked", "unchanged", "changed"] }
+    } },
+    "hashes": { "type": "object", "additionalProperties": false,
+      "required": ["source_archive", "contract", "seed", "harness", "lock"], "properties": {
+        "source_archive": { "$ref": "#/$defs/hash" }, "contract": { "$ref": "#/$defs/hash" },
+        "seed": { "$ref": "#/$defs/hash" }, "harness": { "$ref": "#/$defs/hash" }, "lock": { "$ref": "#/$defs/hash" }
+      }
+    },
+    "planned": { "$ref": "#/$defs/environment" },
+    "observed": { "anyOf": [{ "$ref": "#/$defs/environment" }, { "type": "null" }] },
+    "resources": { "type": "object", "additionalProperties": false,
+      "required": ["cpus", "memory_mib", "shm_mib", "workers", "timeout_ms", "artifact_bytes", "record_bytes", "records"], "properties": {
+        "cpus": { "type": "integer", "minimum": 1, "maximum": 2 },
+        "memory_mib": { "type": "integer", "minimum": 1, "maximum": 4096 },
+        "shm_mib": { "type": "integer", "minimum": 1, "maximum": 512 }, "workers": { "const": 1 },
+        "timeout_ms": { "type": "integer", "minimum": 1, "maximum": 3600000 },
+        "artifact_bytes": { "type": "integer", "minimum": 1, "maximum": 536870912 },
+        "record_bytes": { "type": "integer", "minimum": 1, "maximum": 1048576 },
+        "records": { "type": "integer", "minimum": 1, "maximum": 10000 }
+      }
+    },
+    "guards": { "type": "object", "additionalProperties": false,
+      "required": ["public_egress", "published_ports", "live_sends", "certificate_checks", "auth_path", "artifact_scan"], "properties": {
+        "public_egress": { "const": false }, "published_ports": { "const": false }, "live_sends": { "const": false },
+        "certificate_checks": { "const": true }, "auth_path": { "const": "admin_invite_mailpit_ui_accept" },
+        "artifact_scan": { "enum": ["not_run", "passed", "failed"] }
+      }
+    },
+    "feature_subset": { "type": "array", "maxItems": 500, "uniqueItems": true, "items": { "$ref": "#/$defs/id" } }
+  },
+  "$defs": {
+    "id": { "type": "string", "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_-]{0,79}$" },
+    "hash": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "version": { "type": ["string", "null"], "maxLength": 120, "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._+:/-]*$" },
+    "environment": { "type": "object", "additionalProperties": false,
+      "required": ["node", "browser", "driver", "protocol", "binding", "images"], "properties": {
+        "node": { "$ref": "#/$defs/version" }, "browser": { "$ref": "#/$defs/version" },
+        "driver": { "$ref": "#/$defs/version" }, "protocol": { "$ref": "#/$defs/version" }, "binding": { "$ref": "#/$defs/version" },
+        "images": { "type": "array", "maxItems": 20, "items": {
+          "type": "object", "additionalProperties": false, "required": ["role", "digest", "architecture"], "properties": {
+            "role": { "$ref": "#/$defs/id" }, "digest": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+            "architecture": { "enum": ["linux/amd64", "linux/arm64", "windows/amd64", "darwin/arm64", "darwin/amd64"] }
+          }
+        } }
+      }
+    }
+  }
+}

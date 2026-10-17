@@ -1,0 +1,360 @@
+{
+  "task": "ACCEPTANCE-FIXTURE-OBSERVER-R1",
+  "frozen_at_utc": "2026-10-13T23:06:13.136798+00:00",
+  "base_heads": {
+    "coordinator": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+    "backend": "5785eba47f3709debb2815c8d86608f7e62d02f3"
+  },
+  "unique_source_lines": 348,
+  "review_passes": [
+    181,
+    167
+  ],
+  "documents": [
+    {
+      "path": "README.md",
+      "base": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "sha256": "2df4a841db2746682a3f1a9d502b33b0c5703150bf48e528f3aeda1297e9e15a",
+      "total_lines": 378,
+      "included_ranges": [
+        [
+          1,
+          3
+        ],
+        [
+          264,
+          315
+        ]
+      ],
+      "selected_text_sha256": "e3329e2e1e3fd6fa83e0db0f1ac5882b32b08892c9c4e215542706a7f4377ff9"
+    },
+    {
+      "path": "state.md",
+      "base": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "sha256": "fc3bdb548baca1200628e75a47c883ce99f7cfa58d76a26c1b6ccf5b1669cc1b",
+      "total_lines": 414,
+      "included_ranges": [
+        [
+          1,
+          3
+        ],
+        [
+          49,
+          97
+        ]
+      ],
+      "selected_text_sha256": "d6beb2fac646adc861006cf3ca9de8a5f5eafc4420afa8b8737ed5aab6e3df56"
+    },
+    {
+      "path": "documentation.md",
+      "base": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "sha256": "ef3956e66f7fbaee2fef66db4dc5d2bf48035c105e0ecf0c86eed79f01e9c3da",
+      "total_lines": 399,
+      "included_ranges": [
+        [
+          1,
+          3
+        ],
+        [
+          50,
+          112
+        ]
+      ],
+      "selected_text_sha256": "75874af147804ee1272057f037a9125580e0958513ba1ad0d568fcc8c128a9ed"
+    },
+    {
+      "path": "AGENTS.md",
+      "base": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "sha256": "33415df7f7cc5a595c45f5ef526744dd52a1d72d9d0a462fea8a9d9674d88971",
+      "total_lines": 21,
+      "included_ranges": [
+        [
+          1,
+          21
+        ]
+      ],
+      "selected_text_sha256": "86804affacfc52285ed69fef4a13ec31ae872964534a232341d6276db8a924dc"
+    },
+    {
+      "path": ".planning/STANDARDS.md",
+      "base": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "sha256": "7c01430086ed2dc263c8edcb1b2a9f41b572a23a11b36c1179be802e2874bd10",
+      "total_lines": 49,
+      "included_ranges": [
+        [
+          1,
+          49
+        ]
+      ],
+      "selected_text_sha256": "9be171d86fc6be93f949956fbfef057e14af83a4ce4fadf25a67fecaf5e531cd"
+    },
+    {
+      "path": ".planning/README.md",
+      "base": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "sha256": "c66ed014226854477394b03659cbc23050ecdd3900de1532f87f27bd7039bb87",
+      "total_lines": 22,
+      "included_ranges": [
+        [
+          1,
+          22
+        ]
+      ],
+      "selected_text_sha256": "6527249f31d7b73b2993e2fad59caa8340ae7141928ccfbaec1f2b250122915e"
+    },
+    {
+      "path": ".planning/AGENT_ORCHESTRATION.md",
+      "base": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "sha256": "84562b8099de369f2498dd41f6d579323abbf741d70757c51486619082cfa21f",
+      "total_lines": 78,
+      "included_ranges": [
+        [
+          1,
+          78
+        ]
+      ],
+      "selected_text_sha256": "5234af14c955d0ad5abb38505f3001db651ba0d1968fc75b924b9aa1f2426b48"
+    },
+    {
+      "path": ".planning/consultations/README.md",
+      "base": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "sha256": "26c1665ea5220654ef84d7393272edf2ff66efae3e8534f3cd8851ad3c2e4338",
+      "total_lines": 41,
+      "included_ranges": [
+        [
+          1,
+          41
+        ]
+      ],
+      "selected_text_sha256": "dcb6f3e3049199cb89d82ae77aed15e71416b443dfce1e6a7119598b50cd7f59"
+    },
+    {
+      "path": ".planning/consultations/shared-brief.md",
+      "base": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "sha256": "3895880fe89c255d3f00429fcd875e37bca64e55ac7e5b057bf1018b3c405bdd",
+      "total_lines": 40,
+      "included_ranges": [
+        [
+          1,
+          40
+        ]
+      ],
+      "selected_text_sha256": "7f923ffed6301b2b29ffb829655a33bec8a846017138094f21fcb8f446212f54"
+    },
+    {
+      "path": ".planning/POLYGLOT_ARCHITECTURE.md",
+      "base": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "sha256": "c8d3656cf7c8acc4a898c9a1603241b84ba9da254725856595c25be85ece2cea",
+      "total_lines": 122,
+      "included_ranges": [
+        [
+          1,
+          122
+        ]
+      ],
+      "selected_text_sha256": "4213f8addb82559a96e95fd2c8eedf6efd578ccfa420a375f9e84edddf6e1d64"
+    },
+    {
+      "path": ".planning/CLIENTS_AND_CLI_CONNECTORS.md",
+      "base": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "sha256": "82c92e8c007de491709e5149df7031651028ad5b6272d5fc3713f9d6d0d55801",
+      "total_lines": 113,
+      "included_ranges": [
+        [
+          1,
+          113
+        ]
+      ],
+      "selected_text_sha256": "4f69ac1e052f86f4d11dafe7f384cd9b5489ffc413897deaa6843d0633a61737"
+    },
+    {
+      "path": ".planning/MAIL_ACCOUNTS_AND_ACTIVATION.md",
+      "base": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "sha256": "9d759caa3ffb1430af0cf3b81a062a584122895fef659246d0c1f37d5028e9e9",
+      "total_lines": 51,
+      "included_ranges": [
+        [
+          1,
+          51
+        ]
+      ],
+      "selected_text_sha256": "be89c9a85b9750bc50c2fe7460486721782b58c184aad32947abe3986b13f964"
+    },
+    {
+      "path": ".planning/TASK_BACKLOG.md",
+      "base": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "sha256": "aba7e19ad1640015e30210d9d37fbfc55410bc5819f0747d4e2ba075dbb7487e",
+      "total_lines": 35,
+      "included_ranges": [
+        [
+          1,
+          35
+        ]
+      ],
+      "selected_text_sha256": "5ec37d1bcf3999e16caccdbfc108525983f2b6d2ca9cb4a010399f12930d22c8"
+    },
+    {
+      "path": ".planning/research/reuse-market-scan.md",
+      "base": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "sha256": "6f798e4dfd837498cdc52aa1badd117c8c66d9298feb982d02f029bd6af83723",
+      "total_lines": 190,
+      "included_ranges": [
+        [
+          1,
+          190
+        ]
+      ],
+      "selected_text_sha256": "56972a9eeee6dae34adc83baa64694deff4dfc546c706857df1fa103a5b149e3"
+    },
+    {
+      "path": "docs/component-adoption.md",
+      "base": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "sha256": "99cdcc56128a4c4ae0864d17c5f95fdf063c72b5f2112336ec9118810936f7e3",
+      "total_lines": 48,
+      "included_ranges": [
+        [
+          1,
+          48
+        ]
+      ],
+      "selected_text_sha256": "929bafa9dc719fa0b4081bf7454e43fe4998aa48c0418b8c9839cbfd62029608"
+    },
+    {
+      "path": "docs/contracts-and-reliability.md",
+      "base": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "sha256": "6834eee80f7bdfb9dd9437a3417e4a621554ec6f367530ed64fdd5b024a2a6d2",
+      "total_lines": 105,
+      "included_ranges": [
+        [
+          1,
+          105
+        ]
+      ],
+      "selected_text_sha256": "de8d98f46aa2427853fa061626217e21e1c600422545817f22cc3e7ab7c995e8"
+    },
+    {
+      "path": "docs/local-completion-plan.md",
+      "base": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "sha256": "7e7355a889fd0a24bb62d80dbef752d67b761b7bd97ad4b2c5b8f699b9f5adfa",
+      "total_lines": 151,
+      "included_ranges": [
+        [
+          1,
+          151
+        ]
+      ],
+      "selected_text_sha256": "3bdf846d3cb0cab5153285040888afa64952189508859413034a3704d45a2b66"
+    },
+    {
+      "path": "LOCAL_BUILD_PROMPT.md",
+      "base": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "sha256": "7bc9ffe8a3e8556fbba5b78f123941827a9f4bcd5043af35ecd39736eb5041d7",
+      "total_lines": 66,
+      "included_ranges": [
+        [
+          1,
+          66
+        ]
+      ],
+      "selected_text_sha256": "3ccade9f4c8288e3265c3f7152cf048743aecd7f8f90825febe2a8813a59d8bb"
+    },
+    {
+      "path": "docs/completion/acceptance-controls-design.md",
+      "base": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "sha256": "db0bfcb372cf69df928fece8e526bad076dd4e979f8a76a5b0c620c287be1656",
+      "total_lines": 148,
+      "included_ranges": [
+        [
+          1,
+          148
+        ]
+      ],
+      "selected_text_sha256": "54ddd744ae621e597e23c6093ee678621469e12d3f3cc5a9ecfdbdbc6587b95d"
+    },
+    {
+      "path": "docs/completion/test-expansion-plan.md",
+      "base": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "sha256": "809770209cdbdcbcaba120e26d9693c375ad8ec4a6b33bfa997e2dcb2f92cb81",
+      "total_lines": 158,
+      "included_ranges": [
+        [
+          1,
+          158
+        ]
+      ],
+      "selected_text_sha256": "6d01f0496ff0ca57d9d70c3df134cc5dec6b718bf8b3e05e76dab49b9d4a79b5"
+    }
+  ],
+  "sources": [
+    {
+      "repository": "backend",
+      "path": "ops/tests/be02/acceptance_seed.rb",
+      "range": [
+        1,
+        181
+      ],
+      "sha256": "d11cc2e713ad7f3bdc60722198606645139419a22d7a2c88ec574bed59a774a3"
+    },
+    {
+      "repository": "backend",
+      "path": "apps/server/db/be02_drafts/tables.sql",
+      "range": [
+        1,
+        45
+      ],
+      "sha256": "c2c507d3d301703eca1091b7e5243242bbdb76b3ffe6e1f592fad362f4947cf1"
+    },
+    {
+      "repository": "backend",
+      "path": "apps/server/db/be02_drafts/operations.sql",
+      "range": [
+        1,
+        50
+      ],
+      "sha256": "9b2999a43136a27432a12d72d60793e29ac4a7693fc2f7114ab9dfe43b11d4a1"
+    },
+    {
+      "repository": "backend",
+      "path": "apps/server/db/be02_threads/tables.sql",
+      "range": [
+        1,
+        50
+      ],
+      "sha256": "dce2ada3d0cc33aad99a02e5411dd3dc64fb55e6080449f280fe3451cb456a80"
+    },
+    {
+      "repository": "coordinator",
+      "path": "tests/acceptance/shared/seed-contract.json",
+      "range": [
+        1,
+        22
+      ],
+      "sha256": "221d49259f52f2dcc9944a3af7744327cc2cbc1a3030fa4d13ae85b292e6a952"
+    }
+  ],
+  "omissions": "README, state and documentation include current line 3 and selected standing sections. All other lines are identically omitted historical checkpoints/introduction in all three packets. Full-file hashes retain identity. No earlier opinion outputs are included; supplied context design documents are prior accepted task context. No other required governing file is abbreviated.",
+  "shared_packet_sha256": "7b3d7eccca8c29c4365f63205b90138036fcb359775e91f3b2cdcb41e684ca34",
+  "shared_packet_bytes": 319374,
+  "inputs": [
+    {
+      "model": "claude-fable-5",
+      "input_file": "claude-fable-5.input.txt",
+      "input_sha256": "0f35eb1fac8002d88c3beb869ddfc94c6fec81fe8a434260dea53bc780af2a88",
+      "focus_file": "fable-5.md",
+      "focus_sha256": "8f2ddb6f9916650a8f8cb93c98e9e7cddaff7f44751e42460cb81b97ac11fc11"
+    },
+    {
+      "model": "claude-opus-5-5",
+      "input_file": "claude-opus-5-5.input.txt",
+      "input_sha256": "ea2d0b0d93ee6ca4b0062cf5672bb0a5429b73704ff25db4aec541029f59853d",
+      "focus_file": "opus-5-5.md",
+      "focus_sha256": "b0ae63e509cf23ed7283e0962a6305dfcb607d77f619047096203ddc83911704"
+    },
+    {
+      "model": "claude-fable-5-1",
+      "input_file": "claude-fable-5-1.input.txt",
+      "input_sha256": "00f48261ba9f8dc31a0bcae8bdd651c8bf40ceafcae6b530c708440f4509c471",
+      "focus_file": "fable-5-1.md",
+      "focus_sha256": "95d740050c77d242a452bc20b82313928426df11747658a02848411d0e3ff5cc"
+    }
+  ]
+}

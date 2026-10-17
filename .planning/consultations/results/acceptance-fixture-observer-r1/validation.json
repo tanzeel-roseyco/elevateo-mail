@@ -1,0 +1,126 @@
+{
+  "task": "ACCEPTANCE-FIXTURE-OBSERVER-R1",
+  "checked_at_utc": "2026-10-13T23:33:17.923218+00:00",
+  "check_kind": "Document/provenance integrity only; no application test or code execution",
+  "three_exact_models_nonerror_exit0_unique_sessions": true,
+  "common_packet_and_inputs_hash_verified": true,
+  "same_packet_occurs_once_in_each_input": true,
+  "opinion_outputs_absent_from_all_inputs": true,
+  "verbatim_opinion_text_and_published_hashes_verified": true,
+  "dispositions": {
+    "Adapt": 30,
+    "Accept": 7,
+    "Reject": 2
+  },
+  "local_document_links_verified": 13,
+  "private_files_all_gitignored": true,
+  "bounded_secret_pattern_check_passed": true,
+  "secret_check_limit": "Supplementary pattern check; human review remains necessary and was performed. No guarantee is inferred solely from regexes.",
+  "current_heads": {
+    "coordinator": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+    "backend": "5785eba47f3709debb2815c8d86608f7e62d02f3"
+  },
+  "frozen_source_checks": [
+    {
+      "repository": "backend",
+      "path": "ops/tests/be02/acceptance_seed.rb",
+      "range": [
+        1,
+        181
+      ],
+      "frozen_sha256": "d11cc2e713ad7f3bdc60722198606645139419a22d7a2c88ec574bed59a774a3",
+      "current_sha256": "d11cc2e713ad7f3bdc60722198606645139419a22d7a2c88ec574bed59a774a3",
+      "unchanged": true
+    },
+    {
+      "repository": "backend",
+      "path": "apps/server/db/be02_drafts/tables.sql",
+      "range": [
+        1,
+        45
+      ],
+      "frozen_sha256": "c2c507d3d301703eca1091b7e5243242bbdb76b3ffe6e1f592fad362f4947cf1",
+      "current_sha256": "c2c507d3d301703eca1091b7e5243242bbdb76b3ffe6e1f592fad362f4947cf1",
+      "unchanged": true
+    },
+    {
+      "repository": "backend",
+      "path": "apps/server/db/be02_drafts/operations.sql",
+      "range": [
+        1,
+        50
+      ],
+      "frozen_sha256": "9b2999a43136a27432a12d72d60793e29ac4a7693fc2f7114ab9dfe43b11d4a1",
+      "current_sha256": "9b2999a43136a27432a12d72d60793e29ac4a7693fc2f7114ab9dfe43b11d4a1",
+      "unchanged": true
+    },
+    {
+      "repository": "backend",
+      "path": "apps/server/db/be02_threads/tables.sql",
+      "range": [
+        1,
+        50
+      ],
+      "frozen_sha256": "dce2ada3d0cc33aad99a02e5411dd3dc64fb55e6080449f280fe3451cb456a80",
+      "current_sha256": "dce2ada3d0cc33aad99a02e5411dd3dc64fb55e6080449f280fe3451cb456a80",
+      "unchanged": true
+    },
+    {
+      "repository": "coordinator",
+      "path": "tests/acceptance/shared/seed-contract.json",
+      "range": [
+        1,
+        22
+      ],
+      "frozen_sha256": "221d49259f52f2dcc9944a3af7744327cc2cbc1a3030fa4d13ae85b292e6a952",
+      "current_sha256": "221d49259f52f2dcc9944a3af7744327cc2cbc1a3030fa4d13ae85b292e6a952",
+      "unchanged": true
+    }
+  ],
+  "changed_governing_documents_since_freeze": [],
+  "review_unique_source_loc": 348,
+  "newly_confirmed_defects": 0,
+  "confirmed_defects_per_kloc": 0.0,
+  "unresolved_schema_dependencies": 1,
+  "candidate_density_per_kloc": 2.87,
+  "application_tests_run": false,
+  "docker_resources_created_or_deleted": 0,
+  "full_application_acceptance": "NOT_READY",
+  "public_files": [
+    {
+      "path": "docs/completion/acceptance-fixture-observer-design.md",
+      "sha256": "3a7b12d19f5b22f4195a515b33a263c1bc4f49b6c42ffd4f967753e2324d8150",
+      "bytes": 48400
+    },
+    {
+      "path": ".planning/consultations/results/acceptance-fixture-observer-r1/astra-max-synthesis.md",
+      "sha256": "ff2600c12f8d5d629229ec8aba98d7479a34544a6a2645c589da0d5332c6d037",
+      "bytes": 19040
+    },
+    {
+      "path": ".planning/consultations/results/acceptance-fixture-observer-r1/claude-fable-5-1.md",
+      "sha256": "9e20817e52a78d6599e387e1d8acf019dfdadbe7415d32fa465c14366c29ce11",
+      "bytes": 16406
+    },
+    {
+      "path": ".planning/consultations/results/acceptance-fixture-observer-r1/claude-fable-5.md",
+      "sha256": "20f5dd397faf5a9d1f7608875b1aa88aeaf0c5edaa7036ea25991e38df9776a1",
+      "bytes": 15256
+    },
+    {
+      "path": ".planning/consultations/results/acceptance-fixture-observer-r1/claude-opus-5-5.md",
+      "sha256": "e803594c6b472b5fd125ac7e77b7fcae80d84ab8a1711b9a32eb58bbd2547912",
+      "bytes": 20487
+    },
+    {
+      "path": ".planning/consultations/results/acceptance-fixture-observer-r1/metadata.json",
+      "sha256": "4ca3cef0de4aff72f4b162823520b4249118850bfab9c2f2e34f9688ec615443",
+      "bytes": 5695
+    },
+    {
+      "path": ".planning/consultations/results/acceptance-fixture-observer-r1/packet-manifest.json",
+      "sha256": "59ccd8365bc36c27d110c2361c6e5832995914b75b3e1ad182a1c2b524c0955d",
+      "bytes": 11247
+    }
+  ]
+}

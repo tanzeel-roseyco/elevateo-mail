@@ -1,0 +1,35 @@
+{
+  "results": [
+    {
+      "case": "read-only-positive",
+      "passed": true,
+      "observed_exit": 0
+    },
+    {
+      "case": "writable-control",
+      "passed": true,
+      "observed_exit": 66
+    },
+    {
+      "case": "missing-log",
+      "passed": true,
+      "observed_exit": 125
+    },
+    {
+      "case": "missing-tmp",
+      "passed": true,
+      "observed_exit": 125
+    }
+  ],
+  "passed": true,
+  "source_unchanged": true,
+  "container_absent": true,
+  "created_images": 0,
+  "created_volumes": 0,
+  "build_cache_created": false,
+  "shared_bases_retained": [
+    "node:24.21.0-bookworm-slim@sha256:d6aa754f16b3197301076f047b5def2f02ea1dbbc2ca920407d46d7ec7f87b20"
+  ],
+  "free_bytes_before": 266457661440,
+  "free_bytes_after": 266474479616
+}

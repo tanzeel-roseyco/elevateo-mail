@@ -1,0 +1,83 @@
+{
+  "inspected_at_utc": "2026-10-12T23:37:02.775821+00:00",
+  "inputs": [
+    {
+      "origin": "backend",
+      "path": "apps/server/lib/elevateo/mailbox_memberships.rb",
+      "sha256": "4e1f78b319c1cbeb713cb2e3d4d0b5dd79feec1f641ce037d0a2e504a4f54050",
+      "purpose": "Astra-only call-site/interface or image-pin inspection; not supplied to Claude opinions"
+    },
+    {
+      "origin": "backend",
+      "path": "apps/server/lib/elevateo/thread_reads.rb",
+      "sha256": "167c2a62dca3da4f0307fa609435d8251b168f1484dd47604b4111bcf42c53d6",
+      "purpose": "Astra-only call-site/interface or image-pin inspection; not supplied to Claude opinions"
+    },
+    {
+      "origin": "backend",
+      "path": "apps/server/lib/elevateo/thread_notes.rb",
+      "sha256": "161024d2d079bace051db792a30eb6a7b13f117238a72a302d478087432b3437",
+      "purpose": "Astra-only call-site/interface or image-pin inspection; not supplied to Claude opinions"
+    },
+    {
+      "origin": "backend",
+      "path": "apps/server/lib/elevateo/thread_assignment.rb",
+      "sha256": "9a99d0d2f11ddf7b26a9c530a2cc11294b325e133aea4e843573ab09202ab9c8",
+      "purpose": "Astra-only call-site/interface or image-pin inspection; not supplied to Claude opinions"
+    },
+    {
+      "origin": "backend",
+      "path": "apps/server/lib/elevateo/thread_read_state.rb",
+      "sha256": "a05f3af1b6a163b2df8b11cf7b2b63758fa532543acc3c7543cd16d030f9e6c0",
+      "purpose": "Astra-only call-site/interface or image-pin inspection; not supplied to Claude opinions"
+    },
+    {
+      "origin": "backend",
+      "path": "apps/server/sig/thread_reads.rbs",
+      "sha256": "90b06c278d9add26cf832adc31eb7220d28651a8b5624bf300f6095bf555b029",
+      "purpose": "Astra-only call-site/interface or image-pin inspection; not supplied to Claude opinions"
+    },
+    {
+      "origin": "backend",
+      "path": "apps/server/app/controllers/v1/mailbox_members_controller.rb",
+      "sha256": "00d878968c96197ddb8015f56c0385a740cea5798850e3166f4cba642851a51b",
+      "purpose": "Astra-only call-site/interface or image-pin inspection; not supplied to Claude opinions"
+    },
+    {
+      "origin": "backend",
+      "path": "apps/server/app/controllers/v1/thread_notes_controller.rb",
+      "sha256": "96b56c8305a2393d31749d8e755f752803173580db98a7a748f3399765d0dca3",
+      "purpose": "Astra-only call-site/interface or image-pin inspection; not supplied to Claude opinions"
+    },
+    {
+      "origin": "backend",
+      "path": "apps/server/app/controllers/v1/thread_assignments_controller.rb",
+      "sha256": "436ea2f9db5aa639a6a2f985692aca571ca7b2f35e07ffbd26815b93b5319940",
+      "purpose": "Astra-only call-site/interface or image-pin inspection; not supplied to Claude opinions"
+    },
+    {
+      "origin": "backend",
+      "path": "apps/server/app/controllers/v1/thread_read_states_controller.rb",
+      "sha256": "00a915d7c7029bdc59a6cac079485707c7f82f9cb39de14f729e3c81493f4cb6",
+      "purpose": "Astra-only call-site/interface or image-pin inspection; not supplied to Claude opinions"
+    },
+    {
+      "origin": "backend",
+      "path": "ops/compose.be02-test.yaml",
+      "sha256": "0489257e5600f16db380e9d5241686e76563cb92b29b8f91768b8e6802284f5c",
+      "purpose": "Astra-only call-site/interface or image-pin inspection; not supplied to Claude opinions"
+    },
+    {
+      "origin": "external",
+      "snapshot": "rails-adapter.rb",
+      "sha256": "cd24ab0b645268e756ea5bee484d9c2e5498821e310814dcc72166ba0bea0f8b",
+      "included_ranges": [
+        [
+          279,
+          353
+        ]
+      ],
+      "purpose": "Astra-only lease/expire ownership and lock-order inspection"
+    }
+  ]
+}
