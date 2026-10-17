@@ -27,7 +27,9 @@ def verify_manifest(manifest: str, bindings: dict[str, str]) -> None:
     require(bound_reference(app.get(ANDROID + "networkSecurityConfig"),
                             "xml/elevateo_qa_network_security", bindings), "unbound network policy")
     permissions = [e.get(ANDROID + "name") for e in root if e.tag.startswith("uses-permission")]
-    require(len(permissions) == 2 and set(permissions) == {"android.permission.INTERNET", RECEIVER},
+    # AIDEV-NOTE: Network-state access enables WebView connectivity events without privileged WiFi/location access.
+    require(len(permissions) == 3 and set(permissions) == {"android.permission.INTERNET",
+            "android.permission.ACCESS_NETWORK_STATE", RECEIVER},
             "unexpected QA permissions")
     declarations = root.findall("permission")
     require(len(declarations) == 1 and declarations[0].get(ANDROID + "name") == RECEIVER

@@ -11,14 +11,16 @@ def merged_manifest(protection: str = "signature", package: str = "com.elevateo.
         '<manifest xmlns:android="http://schemas.android.com/apk/res/android">'
         f'<permission android:name="{permission}" android:protectionLevel="{protection}" />'
         '<uses-permission android:name="android.permission.INTERNET" />'
+        '<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />'
         f'<uses-permission android:name="{permission}" />'
         '</manifest>'
     )
 
 
 class VerifyPermissionsTest(unittest.TestCase):
-    def test_allows_internet_and_androidx_signature_receiver(self) -> None:
+    def test_allows_network_state_internet_and_androidx_signature_receiver(self) -> None:
         verify_permissions(
+            "android.permission.ACCESS_NETWORK_STATE\n"
             "android.permission.INTERNET\n"
             "com.elevateo.mail.fixture.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION\n"
         )
@@ -26,10 +28,19 @@ class VerifyPermissionsTest(unittest.TestCase):
     def test_rejects_extra_platform_permission(self) -> None:
         with self.assertRaises(ValueError):
             verify_permissions(
-                "android.permission.INTERNET\n"
+                "android.permission.ACCESS_NETWORK_STATE\n"
+            "android.permission.INTERNET\n"
                 "android.permission.CAMERA\n"
                 "com.elevateo.mail.fixture.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION\n"
             )
+
+    def test_rejects_missing_network_state(self) -> None:
+        with self.assertRaises(ValueError):
+            verify_permissions("android.permission.INTERNET\n"
+                               "com.elevateo.mail.fixture.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION\n")
+        with self.assertRaises(ValueError):
+            verify_receiver_declaration(merged_manifest().replace(
+                '<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />', ""))
 
     def test_rejects_empty_aapt_permission_output(self) -> None:
         with self.assertRaises(ValueError):
@@ -38,7 +49,8 @@ class VerifyPermissionsTest(unittest.TestCase):
     def test_rejects_lookalike_receiver_permission(self) -> None:
         with self.assertRaises(ValueError):
             verify_permissions(
-                "android.permission.INTERNET\n"
+                "android.permission.ACCESS_NETWORK_STATE\n"
+            "android.permission.INTERNET\n"
                 "com.elevateo.mail.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION\n"
             )
 

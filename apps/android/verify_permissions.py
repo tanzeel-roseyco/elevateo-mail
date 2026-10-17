@@ -6,6 +6,8 @@ from xml.etree import ElementTree
 
 EXPECTED = frozenset(
     {
+        # AIDEV-NOTE: WebView requires this normal permission to observe offline/online network changes.
+        "android.permission.ACCESS_NETWORK_STATE",
         "android.permission.INTERNET",
         "com.elevateo.mail.fixture.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION",
     }

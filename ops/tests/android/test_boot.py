@@ -28,11 +28,12 @@ class StartupTest(unittest.TestCase):
             emulator.poll.return_value = relay.poll.return_value = None
             with patch.object(boot, 'WORK', work), patch.object(boot, 'EVIDENCE', evidence), \
                     patch.object(boot.subprocess, 'run'), \
-                    patch.object(boot.subprocess, 'Popen', side_effect=[emulator, relay]), \
+                    patch.object(boot.subprocess, 'Popen', side_effect=[emulator, relay]) as start, \
                     patch.object(boot.signal, 'signal'), \
                     patch.object(boot.time, 'monotonic', side_effect=[0, 1, 0, 3601]), \
                     patch.object(boot, 'adb', return_value='1') as adb:
                 boot.main()
+            self.assertEqual(start.call_args_list[0].args[0][-3:], ['-no-metrics', '-feature', '-Vulkan'])
             adb.assert_any_call('shell', 'getprop', 'sys.boot_completed', timeout=5)
             adb.assert_any_call('install', '--no-streaming', '/apk/elevateo.apk', timeout=180)
             self.assertTrue((evidence / 'emulator-ready.json').is_file())
