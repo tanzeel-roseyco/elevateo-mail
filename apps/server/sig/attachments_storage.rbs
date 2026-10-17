@@ -8,6 +8,7 @@ module Elevateo
       end
       type request_class = singleton(Net::HTTP::Post) | singleton(Net::HTTP::Get) | singleton(Net::HTTP::Delete)
       KEY: Regexp
+      DRAFT_KEY: Regexp
       API_KEY: Regexp
       BUCKET: Regexp
       METADATA_SECONDS: Float

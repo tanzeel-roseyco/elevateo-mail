@@ -257,6 +257,28 @@ class AttachmentServiceTest < Minitest::Test
     assert_raises(Elevateo::Attachments::NotAvailable) { repository.due_scan_ids(limit: 1) }
   end
 
+  def test_scan_repository_selects_only_the_requested_queue
+    klass = Class.new(Elevateo::Attachments::Repository) do
+      attr_reader :queries
+      private
+      def rows(sql, values)
+        (@queries ||= []) << [sql, values]
+        [{ "id" => "attachment", "recorded" => true }]
+      end
+    end
+    [:inbox, :draft].each do |kind|
+      repository = klass.new(connection: nil, scan_kind: kind)
+      assert_equal ["attachment"], repository.due_scan_ids(limit: 1)
+      repository.claim_scan(id: ORG, token: BOX)
+      repository.record_scan(id: ORG, sha256: "a" * 64, token: BOX, attempt: 1, verdict: "clean")
+      assert_includes repository.queries[0][0], "app.due_#{kind}_attachment_scans"
+      assert_includes repository.queries[1][0], "app.claim_#{kind}_attachment_scan"
+      assert_includes repository.queries[2][0], "app.record_#{kind}_attachment_scan"
+      assert_equal [ORG, "a" * 64, BOX, 1, "clean"], repository.queries[2][1]
+    end
+    assert_raises(ArgumentError) { klass.new(connection: nil, scan_kind: "draft;DROP") }
+  end
+
   def test_late_clean_attempt_cannot_overwrite_newer_malware
     id = stage.fetch("id")
     first = @repository.claim_scan(id: id, token: ORG)

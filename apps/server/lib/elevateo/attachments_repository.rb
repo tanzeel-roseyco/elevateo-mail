@@ -7,8 +7,11 @@ module Elevateo
   module Attachments
     # AIDEV-NOTE: Caller owns the authenticated tenant transaction; SQL also checks current compose/RLS rights.
     class Repository
-      def initialize(connection:)
+      def initialize(connection:, scan_kind: :inbox)
+        raise ArgumentError, "invalid scan kind" unless [:inbox, :draft].include?(scan_kind)
         @connection = connection
+        # AIDEV-NOTE: Only this allowlist selects SQL function names; values still use bound parameters.
+        @scan_kind = scan_kind.to_s
       end
 
       def create(organization_id:, mailbox_id:, thread_id:, message_id:, id:, storage_key:,
@@ -36,7 +39,7 @@ module Elevateo
       end
 
       def due_scan_ids(limit:)
-        rows("SELECT id FROM app.due_inbox_attachment_scans($1::integer)", [limit]).map do |row|
+        rows("SELECT id FROM app.due_#{@scan_kind}_attachment_scans($1::integer)", [limit]).map do |row|
           id = row["id"]
           raise NotAvailable unless id.is_a?(String)
           id
@@ -44,11 +47,11 @@ module Elevateo
       end
 
       def claim_scan(id:, token:)
-        rows("SELECT * FROM app.claim_inbox_attachment_scan($1::uuid,$2::uuid)", [id, token]).first
+        rows("SELECT * FROM app.claim_#{@scan_kind}_attachment_scan($1::uuid,$2::uuid)", [id, token]).first
       end
 
       def record_scan(id:, sha256:, token:, attempt:, verdict:)
-        row = rows("SELECT app.record_inbox_attachment_scan($1::uuid,$2,$3::uuid,$4::integer,$5) AS recorded",
+        row = rows("SELECT app.record_#{@scan_kind}_attachment_scan($1::uuid,$2,$3::uuid,$4::integer,$5) AS recorded",
           [id, sha256, token, attempt, verdict]).first
         raise NotAvailable unless row && row["recorded"] == true
       end

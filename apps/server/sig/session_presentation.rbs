@@ -1,7 +1,8 @@
 module Elevateo
   class SessionPresentation
     @crypto: SessionCrypto
-    def initialize: (crypto: SessionCrypto) -> void
+    @simulation_mode: bool
+    def initialize: (crypto: SessionCrypto, ?simulation_mode: bool) -> void
     def version: (auth_object) -> String
     def check_context!: (auth_object, String?, String?) -> void
     def session: (auth_object, ?display_name: String?) -> auth_object

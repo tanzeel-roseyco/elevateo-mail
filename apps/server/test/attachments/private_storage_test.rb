@@ -58,6 +58,16 @@ class PrivateAttachmentStorageTest < Minitest::Test
     end
   end
 
+  def test_draft_keys_are_readable_but_not_writable_through_inbox_adapter
+    key = KEY.sub("quarantine/", "drafts/")
+    with_exchange(bucket: Response.new) do
+      assert_equal "bytes", @adapter.get(key)
+    end
+    assert_raises(ArgumentError) { @adapter.put(key, "bytes", content_type: "application/octet-stream") }
+    assert_raises(ArgumentError) { @adapter.delete(key) }
+    assert_raises(ArgumentError) { @adapter.get(key + "/../secret") }
+  end
+
   def test_public_missing_malformed_and_nonobject_metadata_never_reach_object
     ['{"public":true}', '{"public":"false"}', '{}', '[]', 'null', 'false', '0', '"text"', '{', ''].each do |json|
       with_exchange(bucket: Response.new(chunks: [json])) do |exchange|

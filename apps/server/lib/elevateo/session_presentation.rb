@@ -7,7 +7,9 @@ require_relative "session_store"
 module Elevateo
   # AIDEV-NOTE: Wire versions are HMACs, never database generations; neither a version nor context grants authority.
   class SessionPresentation
-    def initialize(crypto:) = (@crypto = crypto)
+    def initialize(crypto:, simulation_mode: true)
+      @crypto, @simulation_mode = crypto, simulation_mode
+    end
 
     def version(metadata)
       fields = %w[user_id organization_id authorization_generation].map { |field| metadata.fetch(field) }
@@ -27,7 +29,7 @@ module Elevateo
       { "context_id" => required(metadata, "context_id"), "authorization_version" => version(metadata),
         "actor" => { "id" => required(metadata, "user_id"), "display_name" => display_name },
         "organization" => { "id" => required(metadata, "organization_id"), "name" => name },
-        "simulation_mode" => true, "csrf_token" => required(metadata, "csrf_token") }
+        "simulation_mode" => @simulation_mode, "csrf_token" => required(metadata, "csrf_token") }
     end
 
     def lifecycle(metadata, expires_at:, display_name: nil)

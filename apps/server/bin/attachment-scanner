@@ -27,8 +27,15 @@ begin
     AttachmentScannerConnection.connection_pool.with_connection do |connection|
       raise Elevateo::ConfigError, "scanner database role mismatch" unless
         connection.select_value("SELECT session_user") == "elevateo_worker"
-      Elevateo::Attachments::ScanService.new(repository: Elevateo::Attachments::Repository.new(connection: connection),
-        storage: settings.storage, scanner: Elevateo::Attachments::ClamdScanner.new).run_batch(limit: 1)
+      # AIDEV-NOTE: One item from each queue prevents inbound traffic from starving saved draft scans.
+      counts = { "clean" => 0, "malware" => 0, "held" => 0 }
+      [:inbox, :draft].each do |kind|
+        repository = Elevateo::Attachments::Repository.new(connection: connection, scan_kind: kind)
+        result = Elevateo::Attachments::ScanService.new(repository: repository,
+          storage: settings.storage, scanner: Elevateo::Attachments::ClamdScanner.new).run_batch(limit: 1)
+        result.each { |verdict, count| counts[verdict] = counts.fetch(verdict) + count }
+      end
+      counts
     end
   end
   loop = Elevateo::Attachments::ScanLoop.new(scan: scan, logger: ->(line) { $stdout.puts(line); $stdout.flush })

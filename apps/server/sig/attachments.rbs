@@ -72,7 +72,8 @@ module Elevateo
 
     class Repository
       @connection: _Connection
-      def initialize: (connection: _Connection) -> void
+      @scan_kind: String
+      def initialize: (connection: _Connection, ?scan_kind: :inbox | :draft) -> void
       def create: (organization_id: String, mailbox_id: String, thread_id: String,
         message_id: String, id: String, storage_key: String, filename: String,
         content_type: String, byte_size: Integer, sha256: String, scan_status: String) -> Array[row]

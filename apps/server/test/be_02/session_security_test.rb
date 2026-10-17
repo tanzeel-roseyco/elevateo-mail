@@ -5,6 +5,16 @@ require_relative "auth_test_helper"
 class SessionSecurityTest < Minitest::Test
   include AuthFixtures
 
+  def test_session_labels_follow_installation_mode_without_changing_authority
+    crypto = Elevateo::SessionCrypto.new(config: config)
+    simulated = Elevateo::SessionPresentation.new(crypto: crypto).session(metadata)
+    live = Elevateo::SessionPresentation.new(crypto: crypto, simulation_mode: false).session(metadata)
+    assert_equal true, simulated.fetch("simulation_mode")
+    assert_equal false, live.fetch("simulation_mode")
+    assert_equal simulated.reject { |key, _| key == "simulation_mode" },
+      live.reject { |key, _| key == "simulation_mode" }
+  end
+
   def test_ciphertext_authentication_and_purpose_separation
     crypto = Elevateo::SessionCrypto.new(config: config)
     encrypted = crypto.encrypt("secret", purpose: "access")

@@ -12,6 +12,7 @@ module Elevateo
     class PrivateStorage
       class Unavailable < StandardError; end
       KEY = %r{\Aquarantine/(?:[0-9a-f-]{36}/[0-9a-f-]{36}|imap/[0-9a-f-]{36}/[0-9]+/[0-9]+/[0-9]+)\z}
+      DRAFT_KEY = %r{\Adrafts/[0-9a-f-]{36}/[0-9a-f-]{36}\z}
       API_KEY = %r{\Aquarantine/[0-9a-f-]{36}/[0-9a-f-]{36}\z}
       METADATA_SECONDS = 5.0
       OBJECT_SECONDS = 20.0
@@ -54,7 +55,7 @@ module Elevateo
       end
 
       def get(key)
-        raise ArgumentError, "invalid key" unless KEY.match?(key.to_s)
+        raise ArgumentError, "invalid key" unless KEY.match?(key.to_s) || DRAFT_KEY.match?(key.to_s)
         raise Unavailable, "private bucket unavailable" unless private_bucket?
         request(Net::HTTP::Get, key, expected: [200])
       end
