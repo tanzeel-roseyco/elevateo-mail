@@ -1,15 +1,17 @@
 # Product and design context
 
 ## Confirmed product
-Elevateo Mail is a Windows personal inbox and consent-based campaign application. Ten independent users can connect up to ten mailboxes each across separate Google Workspace organisations or personal Gmail. Users remain private from each other.
+Elevateo Mail is a personal inbox and consent-based campaign application planned for web, Windows and macOS. Ten independent users can connect up to ten mailboxes each across separate Google Workspace organisations or personal Gmail. Users remain private from each other.
 
 Each connected mailbox may send at most 30 emails per day through the app. This permits at most 300 per user and 3,000 across the pilot. Rolling 24-hour counting by recipient delivery, including CC/BCC, is proposed; aliases, reconnects and different sending routes must share the same mailbox quota. The app cannot limit messages sent elsewhere.
 
 Existing inboxes need real Gmail sync and notifications. Resend is suitable for eligible opted-in campaigns on owned verified domains, not a replacement for Gmail mailbox hosting. Named self-hosted providers follow through explicit capabilities; “any provider” is not an implemented promise. Users can add mailboxes, import recipients and import history.
 
-Cloud scheduling keeps approved campaigns running while the PC is off. Local Codex is the primary AI provider; restricted Claude fallback uses each user's own account. Read selected mailboxes and draft are defaults; sending requires separate permission and approval. Hunter is optional personalisation. AMF needs identification. Provider keys belong to their user.
+Cloud scheduling keeps approved campaigns running while the PC is off. Local Codex is the primary AI provider; restricted Claude fallback uses each user's own account. Read selected mailboxes and draft are defaults; sending requires separate permission and approval. Hunter and AMF provide optional enrichment data; AI performs personalisation. AMF's role is confirmed, but its exact product/API still needs identification. Provider keys belong to their user.
 
 ## Canonical planning documents
+- [Distribution PDF addendum](output/pdf/elevateo-mail-distribution-plan.pdf): web access, direct Windows/Mac downloads, desktop-only local AI, signed updates and separate release costs. Extends the earlier master PDF's Windows-only scope; implementation remains unstarted.
+- [Master plan PDF](output/pdf/elevateo-mail-master-plan.pdf): requested reader edition, with [frontend](output/imagegen/elevateo-mail-frontend-sketch.png) and [system architecture](output/imagegen/elevateo-mail-system-design.png) concept sketches. Generated using the built-in image tool; [generation and edit prompts](output/imagegen/sketch-prompts.txt). All ten PDF pages were rendered and visually inspected.
 - [Product master plan](docs/product-master-plan.md): plain-English decisions, diagrams and section-specific review.
 - [Backend blueprint](docs/backend-blueprint.md): data ownership, API boundaries, failure handling and rollout.
 - [Efficiency plan](docs/efficiency-plan.md): resource/cost controls and measurable performance targets.

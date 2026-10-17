@@ -2,7 +2,11 @@
 
 **Planning draft · 4 October 2026.** The frontend prototype exists. The desktop app and backend are not built. This proposes the next direction; it does not approve implementation.
 
-**Recommendation:** keep the React interface, package it as a lightweight Windows app, and run a small cloud backend that keeps approved campaigns working while the computer is off. Connect existing Google inboxes first, then a specifically tested self-hosted provider. Hunter is optional assistance for personalisation. Keep paid services and background work to a measured minimum.
+**Recommendation:** share the React interface between a web app and lightweight Windows/macOS desktop apps, backed by one small cloud backend that keeps approved campaigns working while the computer is off. Connect existing Google inboxes first, then a specifically tested self-hosted provider. Hunter and AMF provide optional enrichment data; AI performs personalisation. Keep paid services and background work to a measured minimum.
+
+Reader edition: [PDF master plan](../output/pdf/elevateo-mail-master-plan.pdf), with fresh [frontend](../output/imagegen/elevateo-mail-frontend-sketch.png) and [architecture](../output/imagegen/elevateo-mail-system-design.png) sketches. These are proposed designs, not implemented screenshots.
+
+Platform scope update: the [distribution PDF addendum](../output/pdf/elevateo-mail-distribution-plan.pdf) extends the earlier Windows-focused PDF and drawings to web, Windows and macOS. Desktop AI stays local; the initial web app has no local CLI bridge. Section 11 below records this change.
 
 ## 1. What we are building
 
@@ -13,7 +17,7 @@
 | At most 30 outgoing emails per connected mailbox per day | Enforce in the backend across campaigns, manual sending and AI actions; aliases share the mailbox allowance. |
 | Up to ten mailboxes per user | Effective pilot maximum 300/user/day. The earlier 600/user/day ceiling requires a later mailbox expansion. |
 | Personal inbox and campaigns | Read, reply, compose, organise mail, prepare sequences and handle replies. |
-| Installed Windows app | Own window, taskbar icon, tray and incoming-mail notifications. |
+| Web app plus installed Windows and macOS apps | Shared inbox/campaign UI and backend; native window, taskbar/Dock presence and notifications on desktop. |
 | Local Codex; Claude fallback | Each user signs into their own CLI account. AI runs on demand. |
 | Campaigns continue with the PC off | Approved messages and schedules are saved in the cloud before activation. |
 | Manually add all three kinds of email data | Connect mailboxes, add/import recipients, import historical messages. |
@@ -45,7 +49,8 @@ Apply that process to each feature before choosing services. The [engineering bl
 
 ```mermaid
 flowchart TB
-  subgraph PC[Each user's Windows computer]
+  WEB[Web app: inbox and campaigns]
+  subgraph PC[Each user's Windows or Mac computer]
     UI[React interface inside Tauri]
     BR[Local agent bridge]
     AI[Codex CLI / restricted Claude fallback]
@@ -66,6 +71,7 @@ flowchart TB
     JOB --> FILES
   end
   UI <-->|HTTPS / bounded change checks| API
+  WEB <-->|HTTPS / no local CLI access| API
   MCP --> API
   JOB <-->|Authorised mailbox API| GOOGLE[Google mailboxes]
   GOOGLE --> PUSH[Google Pub/Sub notification]
@@ -73,14 +79,14 @@ flowchart TB
   JOB --> SEND[Resend for opted-in campaigns]
   SEND -->|Authenticated events| API
   JOB <-->|Supported adapter only| SELF[User's reachable self-hosted mail server]
-  API -. Optional personalisation .-> HUNTER[User's Hunter / confirmed AMF integration]
+  API -. Optional enrichment data .-> HUNTER[User's Hunter / AMF adapter]
 ```
 
 The database is the saved record of what should happen. The queue delivers work and may deliver a job twice. Workers must recognise work already processed.
 
 | Part | Proposal | Why |
 | --- | --- | --- |
-| Windows app | Tauri 2 + existing React/TypeScript | Reuse the prototype; measure actual CPU/RAM before accepting the shell. |
+| Web and desktop | Shared React/TypeScript; Tauri 2 on Windows/macOS | Reuse the interface; measure actual CPU/RAM on each OS before accepting the shell. |
 | Cloud code | Cloudflare Workers, TypeScript | Small workloads without an always-running server. |
 | Structured data | Cloudflare D1 | Affordable starting point with explicit storage/write limits. |
 | Files | Cloudflare R2 | Keep large email content out of database rows. |
@@ -101,8 +107,8 @@ D1 is conditional on measured fit. Its paid database ceiling is 10 GB and a data
 | Gmail / Workspace | Existing inboxes, incoming mail, replies and authorised mailbox sending. |
 | Resend | Confirmed campaign sending choice for opted-in clients, using verified sender domains and each user's own credentials. Google still supplies personal inboxes. |
 | Self-hosted mail | A tested JMAP/HTTPS adapter first; IMAP/SMTP requires a separate compatibility and cost check. A desktop-only connection cannot run while the PC is off. |
-| Hunter | Optional company/contact information for personalisation; no dependency for inbox or approved sending. |
-| AMF | Exact product/API still unknown; no critical dependency. |
+| Hunter / AMF | Optional contact/company enrichment data. Exact AMF product/API still needs identification. Neither performs AI personalisation, establishes consent or blocks ordinary inbox/sending work. |
+| Codex / Claude | AI personalisation and drafting, using permitted mail context and available enrichment; sending remains separately authorised. |
 | EmailGuard | Optional verification/deliverability information, never an inbox-placement guarantee. |
 | Instantly / Smartlead | Later campaign execution adapter. Each campaign has one scheduling authority. |
 
@@ -139,13 +145,15 @@ Campaign creation: **recipients → consent check → content → schedule → r
 
 AI chat shows accessible accounts, proposed changes, a reviewable draft and a distinct approval action. Settings include private API keys, CLI health, resource limits, notifications, storage, export and removal. Every screen needs keyboard access and useful empty/loading/error states.
 
-Connections has four clear areas: **mailboxes, sending services, AI access, domains**. Show supported actions, last successful sync, remaining allowance, reconnect and revoke. Credentials are entered through secure forms, never AI chat. Domain changes show exact before/after records and consequences. [Connections plan and implementation contracts](connections/README.md)
+Connections has five clear areas: **mailboxes, sending services, AI access, enrichment, domains**. Show supported actions, last successful sync, remaining allowance, reconnect and revoke. Credentials are entered through secure forms, never AI chat. Domain changes show exact before/after records and consequences. [Connections plan and implementation contracts](connections/README.md)
 
 Original references: [product wireframes](references/preliminary-product-wireframes.png), [backend sketch](references/preliminary-backend-architecture.png). Their labels are preliminary proposals, not instructions to configure services.
 
 ## 6. AI and desktop performance
 
 The agent prepares content; backend code enforces permissions and sends approved work. A local CLI subscription is not a cloud AI service when the PC is off.
+
+Keep the stages separate: optional Hunter/AMF enrichment supplies facts; AI personalisation turns permitted facts and user instructions into a draft; human review approves the content; the backend schedules and sends it. Store the source and age of enrichment, show missing facts, and do not invent details when enrichment is unavailable. Neither enrichment nor generated copy proves recipient consent.
 
 Local CLI does not mean local AI processing: selected message content can be sent to OpenAI or Anthropic. User permission alone is insufficient: check the actual subscription's data terms against Google's user-data rules before enabling mailbox context. Keep that feature off until resolved. Never send whole inboxes by default.
 
@@ -180,8 +188,10 @@ Our health screen shows last successful sync, queue delay, failed/unknown sends,
 Proposed destination after deliberate migration; retain the working prototype until then:
 
 ```text
-apps/desktop/       React app + small Tauri host
+apps/web/           Browser entry point and browser-only services
+apps/desktop/       Small Tauri host and desktop-specific services
 apps/backend/       API, scheduler and queue handlers
+packages/ui/        Shared React screens, created when both clients exist
 packages/domain/    Pure mail, consent and campaign rules
 packages/contracts/ Shared request/response schemas
 packages/providers/ Gmail, Resend, optional adapters
@@ -211,3 +221,19 @@ Build in order: **(1)** settle Google approval/backend standards, **(2)** connec
 | Engineering | Review [draft backend standards](../.planning/BACKEND-STANDARDS.md) by section before implementation. |
 
 Research is complete: the initial three GPT-6.1 Sol low-effort agents and three independent Claude CLI sessions, followed by ten connection/efficiency assignments. The ten ran in waves because this session permits only three simultaneous child agents. Evidence, limitations and section-targeted reviews are in the [research index](research/2026-10-04/README.md). Research supports decisions; this plan and approved standards govern implementation.
+
+## 11. Distribution: web, Windows and Mac
+
+Confirmed addition: provide a browser version and directly downloadable Windows/macOS apps. No store listing is planned. This is a distribution proposal, not an available download or approved implementation.
+
+- One HTTPS website offers Open web app, Download Windows and Download Mac. Publish installers separately from the private source repository; users do not need GitHub access. A Cloudflare static site plus R2 download storage is the proposed hosting route, subject to the total usage budget. No domain or DNS changes are made during planning.
+- Windows: signed NSIS `.exe` installer by default; offer `.msi` only if managed company deployment needs it. macOS: Developer ID signed and notarized `.dmg`, with separate Apple Silicon and Intel builds only for architectures we test. Native install/update checks require actual Windows/macOS resources.
+- Share screens, business rules and one cloud backend. Keep browser and desktop platform services separate. The desktop loads packaged interface assets; a remote webpage does not receive native CLI privileges. Both clients enforce the same permissions, consent rules and mailbox quotas at the backend.
+- Browser users can read mail and manage approved campaigns. A normal webpage cannot directly launch Codex/Claude CLI; a PWA installation does not change that. Initial local AI is desktop-only, using the user's installed and authenticated CLI. A browser-to-local helper would be a separate, explicitly paired feature with its own security review. Do not silently substitute a paid cloud AI service.
+- Approved, fully prepared campaigns run in the cloud while the device is off. New local-AI work waits for the desktop to be available. Browser notification behaviour depends on browser/OS permissions and background support; do not promise desktop-equivalent closed-browser notifications before testing.
+- Use Tauri signed updates over HTTPS, independent of OS code signing; protect and back up signing keys. Publish versioned artifacts first and update metadata last. Test wrong signatures, interrupted updates, old-client API compatibility and preserved user data. Schedule update checks sparingly and defer installation during active work.
+- Budget Apple Developer Program membership (currently US$99/year, regional pricing applies), Windows signing, build runners and real-device testing separately from the A$15/month hosting target. Windows signing establishes publisher identity but does not guarantee absence of SmartScreen warnings. Mac packaging needs a macOS build environment; Windows Docker checks cannot prove Mac behaviour.
+
+**Section review:** before release, choose supported OS versions/architectures, name the signing owner, confirm access to a Mac test/build environment and settle notification expectations. Extend backend/desktop standards with OS-specific credential storage, CLI discovery, sandbox verification and OAuth return handling before implementation.
+
+Primary references checked 4 October 2026: [Windows installers](https://v2.tauri.app/distribute/windows-installer/), [Mac DMG](https://v2.tauri.app/distribute/dmg/), [Apple Developer ID](https://developer.apple.com/developer-id/), [Apple membership](https://developer.apple.com/help/account/membership/program-enrollment/), [Windows signing](https://v2.tauri.app/distribute/sign/windows/), [signed updater](https://v2.tauri.app/plugin/updater/).

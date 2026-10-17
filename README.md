@@ -1,11 +1,13 @@
 # Elevateo Mail
 
-A Gmail-style Windows inbox and consent-based campaign application, planned for ten independent users. The current browser prototype demonstrates a unified inbox, floating composer, campaigns, contacts and settings using nine fictional sender identities.
+A Gmail-style inbox and consent-based campaign application planned for web, Windows and macOS, for ten independent users. The current browser prototype demonstrates a unified inbox, floating composer, campaigns, contacts and settings using nine fictional sender identities.
 
 This repository currently contains a **frontend-only interactive prototype**. There is no backend. All data is fictional and lives in the browser; sending, scheduling, and domain verification are simulated and labelled as such in the UI. Nothing here connects to Resend, Gmail, or DNS.
 
 ## Current state
 
+- Distribution scope now includes web plus directly downloadable Windows `.exe` and Mac `.dmg` apps; no store listing is planned. [Distribution PDF addendum](output/pdf/elevateo-mail-distribution-plan.pdf) extends the earlier Windows-focused master PDF. Local CLI AI is initially desktop-only; signed updates, OS-specific checks and separate signing/build costs are planned. No installers or production web app exist yet.
+- Reader edition: [10-page master plan PDF](output/pdf/elevateo-mail-master-plan.pdf), [frontend sketch](output/imagegen/elevateo-mail-frontend-sketch.png) and [system design sketch](output/imagegen/elevateo-mail-system-design.png). All PDF pages were rendered and visually inspected. Hunter and AMF provide optional enrichment; AI performs personalisation. Documentation and concept artwork only; no application code changed for this edition.
 - Product planning: [master plan](docs/product-master-plan.md), [backend blueprint](docs/backend-blueprint.md), [efficiency plan](docs/efficiency-plan.md), [draft standards](.planning/BACKEND-STANDARDS.md) and [research synthesis](docs/research/2026-10-04/README.md) completed as proposals. Six initial and ten follow-up research assignments are complete; the ten ran in waves of up to three children. No backend implementation approval is recorded.
 - Latest requirements: ten private users across Google organisations/personal Gmail, up to ten connected mailboxes each (100 total); Resend opted-in campaigns; maximum 30 outgoing emails per connected mailbox per day. Effective pilot ceiling: 300/user/day and 3,000 total/day. The earlier 600/user/day figure is a later expansion scenario. Aliases share quota; rolling-window/per-recipient counting is proposed. Private Connections will support selected-mailbox AI read/draft access, separately enabled sending, and reviewed DNS changes on explicitly approved subdomains. Preserve company root MX.
 - Repository renamed: local directory `C:\Users\Tanzeel\Code and projects\Elevateo Mail`; private remote [tanzeel-roseyco/elevateo-mail](https://github.com/tanzeel-roseyco/elevateo-mail). Product branding changed; existing browser-storage keys are intentionally preserved.
@@ -114,6 +116,7 @@ Dependencies point inward: `features → data → domain`. Design tokens are CSS
 
 ## Planning documents
 
+- [Master plan PDF](output/pdf/elevateo-mail-master-plan.pdf) — reader edition with the two new concept sketches; confirmed requirements, proposals and unresolved decisions are labelled
 - `docs/product-master-plan.md` — plain-English product/stack plan, diagrams, budget and section-specific decisions
 - `docs/backend-blueprint.md` — data ownership, sending/recovery rules, API direction, operations and build gates
 - `docs/efficiency-plan.md` — cost worksheet, workload bounds and performance targets
