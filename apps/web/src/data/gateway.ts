@@ -1,3 +1,4 @@
+import type { DraftAttachmentGateway } from './draftAttachmentGateway'
 import type { SendReview, SendApprovalInput, ApprovalResult, SendStatus, SendCancellationInput, CancellationResult } from './sendContract'
 import type {
   AcceptInput,
@@ -68,6 +69,8 @@ export interface NoteWriteResult {
  * read context; every method accepts an abort signal and rejects with GatewayError only.
  */
 export interface MailroomGateway {
+  /** Optional in isolated fixtures; production always supplies the authenticated attachment port. */
+  draftAttachments?: DraftAttachmentGateway
   getSession(signal?: AbortSignal): Promise<Session>
   listMailboxes(ctx: ReadContext, query: PageQuery, signal?: AbortSignal): Promise<MailboxPage>
   listThreads(ctx: ReadContext, mailboxId: string, query: PageQuery & { filter?: ThreadFilter }, signal?: AbortSignal): Promise<ThreadPage>

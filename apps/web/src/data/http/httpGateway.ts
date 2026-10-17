@@ -1,3 +1,4 @@
+import { createDraftAttachmentGateway } from '../draftAttachmentGateway'
 import { SendReviewSchema, SendApprovalInputSchema, ApprovalResultSchema, SendStatusSchema, SendCancellationInputSchema, CancellationResultSchema, SendErrorSchema } from '../sendContract'
 // HTTP adapter for the MailroomGateway port. Routes, headers and byte budgets follow
 // contracts/v1/openapi.json 1.0.0-collaboration.1; every response and error is validated by the
@@ -88,6 +89,7 @@ export function createHttpGateway(fetchImpl?: FetchLike): MailroomGateway {
     cd(ctx, { headers: proofHeaders(proof), body, method, maxRequestBytes, signal })
 
   return {
+    draftAttachments: createDraftAttachmentGateway(fetchImpl),
     getSession(signal) {
       return requestJson('/v1/session', SessionSchema, MAX_BYTES.session, { ...base, signal })
     },

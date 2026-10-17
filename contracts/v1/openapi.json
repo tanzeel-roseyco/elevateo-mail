@@ -4805,28 +4805,76 @@
       "get": {
         "operationId": "getSendReview",
         "parameters": [
-          {"$ref": "#/components/parameters/CdSessionContext"},
-          {"$ref": "#/components/parameters/CdAuthorizationVersion"},
-          {"name": "draft_id","in": "path","required": true,"schema": {"$ref": "#/components/schemas/Id"}},
-          {"$ref": "#/components/parameters/CdMailboxQuery"}
+          {
+            "$ref": "#/components/parameters/CdSessionContext"
+          },
+          {
+            "$ref": "#/components/parameters/CdAuthorizationVersion"
+          },
+          {
+            "name": "draft_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Id"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/CdMailboxQuery"
+          }
         ],
         "responses": {
           "200": {
-            "description": "Current-authorized simulated send result; acceptance is never delivery.",
+            "description": "Current-authorized send result; acceptance is never delivery.",
             "headers": {
-              "Cache-Control": {"required": true,"schema": {"const": "no-store"}},
-              "Vary": {"required": true,"schema": {"const": "Cookie"}},
-              "X-Content-Type-Options": {"required": true,"schema": {"const": "nosniff"}}
+              "Cache-Control": {
+                "required": true,
+                "schema": {
+                  "const": "no-store"
+                }
+              },
+              "Vary": {
+                "required": true,
+                "schema": {
+                  "const": "Cookie"
+                }
+              },
+              "X-Content-Type-Options": {
+                "required": true,
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
             },
-            "content": {"application/json": {"schema": {"$ref": "#/components/schemas/SendReview"}}}
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SendReview"
+                }
+              }
+            }
           },
-          "400": {"$ref": "#/components/responses/Send400"},
-          "401": {"$ref": "#/components/responses/Send401"},
-          "404": {"$ref": "#/components/responses/Send404"},
-          "409": {"$ref": "#/components/responses/Send409"},
-          "429": {"$ref": "#/components/responses/Send429"},
-          "503": {"$ref": "#/components/responses/Send503"},
-          "500": {"$ref": "#/components/responses/Send500"}
+          "400": {
+            "$ref": "#/components/responses/Send400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Send401"
+          },
+          "404": {
+            "$ref": "#/components/responses/Send404"
+          },
+          "409": {
+            "$ref": "#/components/responses/Send409"
+          },
+          "429": {
+            "$ref": "#/components/responses/Send429"
+          },
+          "503": {
+            "$ref": "#/components/responses/Send503"
+          },
+          "500": {
+            "$ref": "#/components/responses/Send500"
+          }
         },
         "x-max-response-bytes": 2097152,
         "x-deadline-ms": 10000,
@@ -4838,35 +4886,94 @@
       "post": {
         "operationId": "approveDraftSend",
         "parameters": [
-          {"$ref": "#/components/parameters/CdSessionContext"},
-          {"$ref": "#/components/parameters/CdAuthorizationVersion"},
-          {"$ref": "#/components/parameters/CdOrigin"},
-          {"$ref": "#/components/parameters/CdCsrf"},
-          {"name": "draft_id","in": "path","required": true,"schema": {"$ref": "#/components/schemas/Id"}}
+          {
+            "$ref": "#/components/parameters/CdSessionContext"
+          },
+          {
+            "$ref": "#/components/parameters/CdAuthorizationVersion"
+          },
+          {
+            "$ref": "#/components/parameters/CdOrigin"
+          },
+          {
+            "$ref": "#/components/parameters/CdCsrf"
+          },
+          {
+            "name": "draft_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Id"
+            }
+          }
         ],
         "responses": {
           "202": {
-            "description": "Current-authorized simulated send result; acceptance is never delivery.",
+            "description": "Current-authorized send result; acceptance is never delivery.",
             "headers": {
-              "Cache-Control": {"required": true,"schema": {"const": "no-store"}},
-              "Vary": {"required": true,"schema": {"const": "Cookie"}},
-              "X-Content-Type-Options": {"required": true,"schema": {"const": "nosniff"}}
+              "Cache-Control": {
+                "required": true,
+                "schema": {
+                  "const": "no-store"
+                }
+              },
+              "Vary": {
+                "required": true,
+                "schema": {
+                  "const": "Cookie"
+                }
+              },
+              "X-Content-Type-Options": {
+                "required": true,
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
             },
-            "content": {"application/json": {"schema": {"$ref": "#/components/schemas/ApprovalResult"}}}
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApprovalResult"
+                }
+              }
+            }
           },
-          "400": {"$ref": "#/components/responses/Send400"},
-          "401": {"$ref": "#/components/responses/Send401"},
-          "404": {"$ref": "#/components/responses/Send404"},
-          "409": {"$ref": "#/components/responses/Send409"},
-          "429": {"$ref": "#/components/responses/Send429"},
-          "503": {"$ref": "#/components/responses/Send503"},
-          "500": {"$ref": "#/components/responses/Send500"}
+          "400": {
+            "$ref": "#/components/responses/Send400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Send401"
+          },
+          "404": {
+            "$ref": "#/components/responses/Send404"
+          },
+          "409": {
+            "$ref": "#/components/responses/Send409"
+          },
+          "429": {
+            "$ref": "#/components/responses/Send429"
+          },
+          "503": {
+            "$ref": "#/components/responses/Send503"
+          },
+          "500": {
+            "$ref": "#/components/responses/Send500"
+          }
         },
         "x-max-response-bytes": 16384,
         "x-deadline-ms": 10000,
         "x-request-validation": "Reject unknown/duplicate decoded query keys (including aliases/brackets), duplicate JSON keys at every depth, unknown properties, malformed UTF-8, unpaired surrogates and U+0000 before framework merging or mutation. GET has no body; only declared query keys are allowed. JSON maxLength counts Unicode code points. UUIDs are parsed and canonicalized before binding/digest comparison.",
         "x-authorization": "Current cookie-bound original author and compose; review/approval/cancellation also require approve_send. Auth before context, scope before replay/readiness. No connector authority.",
-        "requestBody": {"required": true,"content": {"application/json": {"schema": {"$ref": "#/components/schemas/SendApprovalInput"}}}},
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SendApprovalInput"
+              }
+            }
+          }
+        },
         "x-max-request-bytes": 4096,
         "description": "Atomic review-bound approval consumes one draft without incrementing version and queues one durable intent. Retry original operation ID/binding after uncertain response under current authorization; replay preserves immutable outcome and refreshes context proof. No snapshot or epoch request fields."
       }
@@ -4875,28 +4982,76 @@
       "get": {
         "operationId": "getSendStatus",
         "parameters": [
-          {"$ref": "#/components/parameters/CdSessionContext"},
-          {"$ref": "#/components/parameters/CdAuthorizationVersion"},
-          {"name": "send_id","in": "path","required": true,"schema": {"$ref": "#/components/schemas/Id"}},
-          {"$ref": "#/components/parameters/CdMailboxQuery"}
+          {
+            "$ref": "#/components/parameters/CdSessionContext"
+          },
+          {
+            "$ref": "#/components/parameters/CdAuthorizationVersion"
+          },
+          {
+            "name": "send_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Id"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/CdMailboxQuery"
+          }
         ],
         "responses": {
           "200": {
-            "description": "Current-authorized simulated send result; acceptance is never delivery.",
+            "description": "Current-authorized send result; acceptance is never delivery.",
             "headers": {
-              "Cache-Control": {"required": true,"schema": {"const": "no-store"}},
-              "Vary": {"required": true,"schema": {"const": "Cookie"}},
-              "X-Content-Type-Options": {"required": true,"schema": {"const": "nosniff"}}
+              "Cache-Control": {
+                "required": true,
+                "schema": {
+                  "const": "no-store"
+                }
+              },
+              "Vary": {
+                "required": true,
+                "schema": {
+                  "const": "Cookie"
+                }
+              },
+              "X-Content-Type-Options": {
+                "required": true,
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
             },
-            "content": {"application/json": {"schema": {"$ref": "#/components/schemas/SendStatus"}}}
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SendStatus"
+                }
+              }
+            }
           },
-          "400": {"$ref": "#/components/responses/Send400"},
-          "401": {"$ref": "#/components/responses/Send401"},
-          "404": {"$ref": "#/components/responses/Send404"},
-          "409": {"$ref": "#/components/responses/Send409"},
-          "429": {"$ref": "#/components/responses/Send429"},
-          "503": {"$ref": "#/components/responses/Send503"},
-          "500": {"$ref": "#/components/responses/Send500"}
+          "400": {
+            "$ref": "#/components/responses/Send400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Send401"
+          },
+          "404": {
+            "$ref": "#/components/responses/Send404"
+          },
+          "409": {
+            "$ref": "#/components/responses/Send409"
+          },
+          "429": {
+            "$ref": "#/components/responses/Send429"
+          },
+          "503": {
+            "$ref": "#/components/responses/Send503"
+          },
+          "500": {
+            "$ref": "#/components/responses/Send500"
+          }
         },
         "x-max-response-bytes": 16384,
         "x-deadline-ms": 10000,
@@ -4909,37 +5064,371 @@
       "post": {
         "operationId": "cancelSend",
         "parameters": [
-          {"$ref": "#/components/parameters/CdSessionContext"},
-          {"$ref": "#/components/parameters/CdAuthorizationVersion"},
-          {"$ref": "#/components/parameters/CdOrigin"},
-          {"$ref": "#/components/parameters/CdCsrf"},
-          {"name": "send_id","in": "path","required": true,"schema": {"$ref": "#/components/schemas/Id"}}
+          {
+            "$ref": "#/components/parameters/CdSessionContext"
+          },
+          {
+            "$ref": "#/components/parameters/CdAuthorizationVersion"
+          },
+          {
+            "$ref": "#/components/parameters/CdOrigin"
+          },
+          {
+            "$ref": "#/components/parameters/CdCsrf"
+          },
+          {
+            "name": "send_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Id"
+            }
+          }
         ],
         "responses": {
           "200": {
-            "description": "Current-authorized simulated send result; acceptance is never delivery.",
+            "description": "Current-authorized send result; acceptance is never delivery.",
             "headers": {
-              "Cache-Control": {"required": true,"schema": {"const": "no-store"}},
-              "Vary": {"required": true,"schema": {"const": "Cookie"}},
-              "X-Content-Type-Options": {"required": true,"schema": {"const": "nosniff"}}
+              "Cache-Control": {
+                "required": true,
+                "schema": {
+                  "const": "no-store"
+                }
+              },
+              "Vary": {
+                "required": true,
+                "schema": {
+                  "const": "Cookie"
+                }
+              },
+              "X-Content-Type-Options": {
+                "required": true,
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
             },
-            "content": {"application/json": {"schema": {"$ref": "#/components/schemas/CancellationResult"}}}
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CancellationResult"
+                }
+              }
+            }
           },
-          "400": {"$ref": "#/components/responses/Send400"},
-          "401": {"$ref": "#/components/responses/Send401"},
-          "404": {"$ref": "#/components/responses/Send404"},
-          "409": {"$ref": "#/components/responses/Send409"},
-          "429": {"$ref": "#/components/responses/Send429"},
-          "503": {"$ref": "#/components/responses/Send503"},
-          "500": {"$ref": "#/components/responses/Send500"}
+          "400": {
+            "$ref": "#/components/responses/Send400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Send401"
+          },
+          "404": {
+            "$ref": "#/components/responses/Send404"
+          },
+          "409": {
+            "$ref": "#/components/responses/Send409"
+          },
+          "429": {
+            "$ref": "#/components/responses/Send429"
+          },
+          "503": {
+            "$ref": "#/components/responses/Send503"
+          },
+          "500": {
+            "$ref": "#/components/responses/Send500"
+          }
         },
         "x-max-response-bytes": 16384,
         "x-deadline-ms": 10000,
         "x-request-validation": "Reject unknown/duplicate decoded query keys (including aliases/brackets), duplicate JSON keys at every depth, unknown properties, malformed UTF-8, unpaired surrogates and U+0000 before framework merging or mutation. GET has no body; only declared query keys are allowed. JSON maxLength counts Unicode code points. UUIDs are parsed and canonicalized before binding/digest comparison.",
         "x-authorization": "Current cookie-bound original author and compose; review/approval/cancellation also require approve_send. Auth before context, scope before replay/readiness. No connector authority.",
-        "requestBody": {"required": true,"content": {"application/json": {"schema": {"$ref": "#/components/schemas/SendCancellationInput"}}}},
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SendCancellationInput"
+              }
+            }
+          }
+        },
         "x-max-request-bytes": 4096,
         "description": "One idempotent stop latch. First accepted/rejected cancellation returns send_terminal; already-cancelled replay succeeds. stop_requested never proves non-submission."
+      }
+    },
+    "/v1/drafts/{draft_id}/attachments": {
+      "get": {
+        "operationId": "listDraftAttachments",
+        "description": "List one private attachment owned by the current draft author. Returns scan state without private storage keys.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/CdSessionContext"
+          },
+          {
+            "$ref": "#/components/parameters/CdAuthorizationVersion"
+          },
+          {
+            "name": "draft_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Id"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/CdMailboxQuery"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Current-authorized C/D result; Cache-Control no-store, Vary Cookie, nosniff.",
+            "headers": {
+              "Cache-Control": {
+                "required": true,
+                "schema": {
+                  "const": "no-store"
+                }
+              },
+              "Vary": {
+                "required": true,
+                "schema": {
+                  "const": "Cookie"
+                }
+              },
+              "X-Content-Type-Options": {
+                "required": true,
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DraftAttachmentPage"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/CdBadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/CdUnauthenticated"
+          },
+          "404": {
+            "$ref": "#/components/responses/CdNotAvailable"
+          },
+          "409": {
+            "$ref": "#/components/responses/CdConflict"
+          },
+          "429": {
+            "$ref": "#/components/responses/CdRateLimited"
+          },
+          "500": {
+            "$ref": "#/components/responses/CdInternalError"
+          },
+          "503": {
+            "$ref": "#/components/responses/CdUnavailable"
+          }
+        },
+        "x-max-response-bytes": 4096,
+        "x-request-validation": "Reject unknown/duplicate decoded query keys (including aliases/brackets), duplicate JSON keys at every depth, unknown properties, malformed UTF-8, unpaired surrogates and U+0000 before framework merging or mutation. GET has no body; only declared query keys are allowed. JSON maxLength counts Unicode code points. UUIDs are parsed and canonicalized before binding/digest comparison.",
+        "x-deadline-ms": 10000
+      },
+      "post": {
+        "operationId": "uploadDraftAttachment",
+        "description": "Reserve an immutable upload operation, upload bounded bytes to the private gateway, and finalize pending scan metadata. Same operation and bytes replay safely. Fresh ownership and CSRF are required; network work occurs outside SQL transactions.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/CdSessionContext"
+          },
+          {
+            "$ref": "#/components/parameters/CdAuthorizationVersion"
+          },
+          {
+            "$ref": "#/components/parameters/CdOrigin"
+          },
+          {
+            "$ref": "#/components/parameters/CdCsrf"
+          },
+          {
+            "name": "draft_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DraftAttachmentUpload"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Current-authorized C/D result; Cache-Control no-store, Vary Cookie, nosniff.",
+            "headers": {
+              "Cache-Control": {
+                "required": true,
+                "schema": {
+                  "const": "no-store"
+                }
+              },
+              "Vary": {
+                "required": true,
+                "schema": {
+                  "const": "Cookie"
+                }
+              },
+              "X-Content-Type-Options": {
+                "required": true,
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DraftAttachment"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/CdBadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/CdUnauthenticated"
+          },
+          "404": {
+            "$ref": "#/components/responses/CdNotAvailable"
+          },
+          "409": {
+            "$ref": "#/components/responses/CdConflict"
+          },
+          "429": {
+            "$ref": "#/components/responses/CdRateLimited"
+          },
+          "500": {
+            "$ref": "#/components/responses/CdInternalError"
+          },
+          "503": {
+            "$ref": "#/components/responses/CdUnavailable"
+          }
+        },
+        "x-max-response-bytes": 4096,
+        "x-max-request-bytes": 1400000,
+        "x-request-validation": "Reject unknown/duplicate decoded query keys (including aliases/brackets), duplicate JSON keys at every depth, unknown properties, malformed UTF-8, unpaired surrogates and U+0000 before framework merging or mutation. GET has no body; only declared query keys are allowed. JSON maxLength counts Unicode code points. UUIDs are parsed and canonicalized before binding/digest comparison.",
+        "x-deadline-ms": 10000,
+        "x-conflict-codes": [
+          "context_changed",
+          "draft_conflict",
+          "operation_mismatch",
+          "draft_consumed"
+        ]
+      }
+    },
+    "/v1/drafts/{draft_id}/attachments/{attachment_id}": {
+      "delete": {
+        "operationId": "removeDraftAttachment",
+        "description": "Retire draft attachment metadata and reservation under fresh author, editable draft and CSRF checks. Private bytes remain for scoped storage cleanup.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/CdSessionContext"
+          },
+          {
+            "$ref": "#/components/parameters/CdAuthorizationVersion"
+          },
+          {
+            "name": "draft_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Id"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/CdMailboxQuery"
+          },
+          {
+            "$ref": "#/components/parameters/CdOrigin"
+          },
+          {
+            "$ref": "#/components/parameters/CdCsrf"
+          },
+          {
+            "name": "attachment_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Current-authorized C/D result; Cache-Control no-store, Vary Cookie, nosniff.",
+            "headers": {
+              "Cache-Control": {
+                "required": true,
+                "schema": {
+                  "const": "no-store"
+                }
+              },
+              "Vary": {
+                "required": true,
+                "schema": {
+                  "const": "Cookie"
+                }
+              },
+              "X-Content-Type-Options": {
+                "required": true,
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DraftAttachmentRemoved"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/CdBadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/CdUnauthenticated"
+          },
+          "404": {
+            "$ref": "#/components/responses/CdNotAvailable"
+          },
+          "409": {
+            "$ref": "#/components/responses/CdConflict"
+          },
+          "429": {
+            "$ref": "#/components/responses/CdRateLimited"
+          },
+          "500": {
+            "$ref": "#/components/responses/CdInternalError"
+          },
+          "503": {
+            "$ref": "#/components/responses/CdUnavailable"
+          }
+        },
+        "x-max-response-bytes": 1024,
+        "x-request-validation": "Reject unknown/duplicate decoded query keys (including aliases/brackets), duplicate JSON keys at every depth, unknown properties, malformed UTF-8, unpaired surrogates and U+0000 before framework merging or mutation. GET has no body; only declared query keys are allowed. JSON maxLength counts Unicode code points. UUIDs are parsed and canonicalized before binding/digest comparison.",
+        "x-deadline-ms": 10000
       }
     }
   },
@@ -5129,7 +5618,7 @@
             }
           },
           "simulation_mode": {
-            "const": true
+            "type": "boolean"
           },
           "csrf_token": {
             "$ref": "#/components/schemas/OpaqueToken"
@@ -6632,8 +7121,23 @@
         },
         "description": "One authorized result per thread using unchanged plaintext ThreadSummary. q is echoed exactly, mailbox_id=null is all currently readable mailboxes. No total counts, rank, HTML highlights or extra body access."
       },
-      "SendDraftVersion": {"type": "integer","minimum": 1,"maximum": 2147483647},
-      "SendState": {"type": "string","enum": ["queued","dispatching","unknown","needs_review","cancelled","accepted","rejected"]},
+      "SendDraftVersion": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 2147483647
+      },
+      "SendState": {
+        "type": "string",
+        "enum": [
+          "queued",
+          "dispatching",
+          "unknown",
+          "needs_review",
+          "cancelled",
+          "accepted",
+          "rejected"
+        ]
+      },
       "SendReadinessCode": {
         "type": "string",
         "enum": [
@@ -6648,7 +7152,8 @@
           "reply_unavailable",
           "header_invalid",
           "snapshot_too_large",
-          "purpose_unavailable"
+          "purpose_unavailable",
+          "attachment_not_clean"
         ]
       },
       "SendHoldReason": {
@@ -6673,50 +7178,159 @@
       "SendRecipient": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["display_name","address"],
+        "required": [
+          "display_name",
+          "address"
+        ],
         "properties": {
-          "display_name": {"anyOf": [{"type": "string","maxLength": 256},{"type": "null"}]},
-          "address": {"anyOf": [{"type": "string","maxLength": 256},{"type": "null"}]}
+          "display_name": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 256
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "address": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 256
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
         }
       },
       "SendSender": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["display_name","address"],
-        "properties": {"display_name": {"type": "null"},"address": {"anyOf": [{"type": "string","maxLength": 320},{"type": "null"}]}}
+        "required": [
+          "display_name",
+          "address"
+        ],
+        "properties": {
+          "display_name": {
+            "type": "null"
+          },
+          "address": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 320
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        }
       },
       "SendRecipientCheck": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["index","status"],
-        "properties": {"index": {"type": "integer","minimum": 0,"maximum": 99},"status": {"type": "string","enum": ["ok","invalid","duplicate","suppressed"]}}
+        "required": [
+          "index",
+          "status"
+        ],
+        "properties": {
+          "index": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 99
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "ok",
+              "invalid",
+              "duplicate",
+              "suppressed"
+            ]
+          }
+        }
       },
       "SendReadinessIssue": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["code","recipient_index"],
+        "required": [
+          "code",
+          "recipient_index"
+        ],
         "properties": {
-          "code": {"$ref": "#/components/schemas/SendReadinessCode"},
-          "recipient_index": {"anyOf": [{"type": "integer","minimum": 0,"maximum": 99},{"type": "null"}]}
+          "code": {
+            "$ref": "#/components/schemas/SendReadinessCode"
+          },
+          "recipient_index": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 99
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
         }
       },
       "SendApprovalInput": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["mailbox_id","operation_id","expected_version","review_digest","correspondence_confirmed"],
+        "required": [
+          "mailbox_id",
+          "operation_id",
+          "expected_version",
+          "review_digest",
+          "correspondence_confirmed"
+        ],
         "properties": {
-          "mailbox_id": {"$ref": "#/components/schemas/Id"},
-          "operation_id": {"$ref": "#/components/schemas/Id"},
-          "expected_version": {"$ref": "#/components/schemas/SendDraftVersion"},
-          "review_digest": {"type": "string","pattern": "^[0-9a-f]{64}$","minLength": 64,"maxLength": 64},
-          "correspondence_confirmed": {"const": true}
+          "mailbox_id": {
+            "$ref": "#/components/schemas/Id"
+          },
+          "operation_id": {
+            "$ref": "#/components/schemas/Id"
+          },
+          "expected_version": {
+            "$ref": "#/components/schemas/SendDraftVersion"
+          },
+          "review_digest": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$",
+            "minLength": 64,
+            "maxLength": 64
+          },
+          "correspondence_confirmed": {
+            "const": true
+          }
         }
       },
-      "SendCancellationInput": {"type": "object","additionalProperties": false,"required": ["mailbox_id"],"properties": {"mailbox_id": {"$ref": "#/components/schemas/Id"}}},
+      "SendCancellationInput": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "mailbox_id"
+        ],
+        "properties": {
+          "mailbox_id": {
+            "$ref": "#/components/schemas/Id"
+          }
+        }
+      },
       "SendError": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["code","message","request_id"],
+        "required": [
+          "code",
+          "message",
+          "request_id"
+        ],
         "properties": {
           "code": {
             "type": "string",
@@ -6737,8 +7351,15 @@
               "internal_error"
             ]
           },
-          "message": {"type": "string","maxLength": 256},
-          "request_id": {"type": "string","minLength": 1,"maxLength": 128}
+          "message": {
+            "type": "string",
+            "maxLength": 256
+          },
+          "request_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          }
         }
       },
       "SendReview": {
@@ -6767,49 +7388,184 @@
           "simulated"
         ],
         "properties": {
-          "context_id": {"$ref": "#/components/schemas/OpaqueToken"},
-          "authorization_version": {"$ref": "#/components/schemas/OpaqueToken"},
-          "draft_id": {"$ref": "#/components/schemas/Id"},
-          "mailbox_id": {"$ref": "#/components/schemas/Id"},
-          "draft_version": {"$ref": "#/components/schemas/SendDraftVersion"},
-          "sender": {"$ref": "#/components/schemas/SendSender"},
-          "to": {"type": "array","maxItems": 100,"items": {"$ref": "#/components/schemas/SendRecipient"}},
-          "subject": {"type": "string","maxLength": 998},
-          "body_text": {"type": "string","maxLength": 65536},
-          "reply_to_thread_id": {"anyOf": [{"$ref": "#/components/schemas/Id"},{"type": "null"}]},
-          "purpose": {"const": "correspondence"},
-          "consent_basis": {"const": "human_attestation_required"},
-          "attachments": {"type": "array","maxItems": 0,"items": false},
-          "attachments_supported": {"const": false},
-          "policy_revision": {"type": "string","pattern": "^(0|[1-9][0-9]*)$","maxLength": 19},
-          "recipient_checks": {"type": "array","maxItems": 100,"items": {"$ref": "#/components/schemas/SendRecipientCheck"}},
-          "ready": {"type": "boolean"},
-          "issues": {"type": "array","maxItems": 210,"items": {"$ref": "#/components/schemas/SendReadinessIssue"}},
-          "review_digest": {"anyOf": [{"type": "string","pattern": "^[0-9a-f]{64}$","minLength": 64,"maxLength": 64},{"type": "null"}]},
-          "simulated": {"const": true}
+          "context_id": {
+            "$ref": "#/components/schemas/OpaqueToken"
+          },
+          "authorization_version": {
+            "$ref": "#/components/schemas/OpaqueToken"
+          },
+          "draft_id": {
+            "$ref": "#/components/schemas/Id"
+          },
+          "mailbox_id": {
+            "$ref": "#/components/schemas/Id"
+          },
+          "draft_version": {
+            "$ref": "#/components/schemas/SendDraftVersion"
+          },
+          "sender": {
+            "$ref": "#/components/schemas/SendSender"
+          },
+          "to": {
+            "type": "array",
+            "maxItems": 100,
+            "items": {
+              "$ref": "#/components/schemas/SendRecipient"
+            }
+          },
+          "subject": {
+            "type": "string",
+            "maxLength": 998
+          },
+          "body_text": {
+            "type": "string",
+            "maxLength": 65536
+          },
+          "reply_to_thread_id": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Id"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "purpose": {
+            "const": "correspondence"
+          },
+          "consent_basis": {
+            "const": "human_attestation_required"
+          },
+          "attachments": {
+            "type": "array",
+            "maxItems": 1,
+            "items": {
+              "$ref": "#/components/schemas/DraftAttachment"
+            }
+          },
+          "attachments_supported": {
+            "type": "boolean"
+          },
+          "policy_revision": {
+            "type": "string",
+            "pattern": "^(0|[1-9][0-9]*)$",
+            "maxLength": 19
+          },
+          "recipient_checks": {
+            "type": "array",
+            "maxItems": 100,
+            "items": {
+              "$ref": "#/components/schemas/SendRecipientCheck"
+            }
+          },
+          "ready": {
+            "type": "boolean"
+          },
+          "issues": {
+            "type": "array",
+            "maxItems": 210,
+            "items": {
+              "$ref": "#/components/schemas/SendReadinessIssue"
+            }
+          },
+          "review_digest": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$",
+                "minLength": 64,
+                "maxLength": 64
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "simulated": {
+            "type": "boolean"
+          }
         },
         "description": "Bounded author-owned unsent draft; invalid send addresses remain displayable. ready=false requires null review_digest; ready=true requires a digest. No suppression reason or provider content.",
         "allOf": [
-          {"if": {"properties": {"ready": {"const": false}}},"then": {"properties": {"review_digest": {"type": "null"}}}},
           {
-            "if": {"properties": {"ready": {"const": true}}},
-            "then": {"properties": {"review_digest": {"type": "string","pattern": "^[0-9a-f]{64}$","minLength": 64,"maxLength": 64}}}
+            "if": {
+              "properties": {
+                "ready": {
+                  "const": false
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "review_digest": {
+                  "type": "null"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "ready": {
+                  "const": true
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "review_digest": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$",
+                  "minLength": 64,
+                  "maxLength": 64
+                }
+              }
+            }
           }
         ]
       },
       "ApprovalResult": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["context_id","authorization_version","send_id","draft_id","approved_version","review_digest","approved_at","simulated"],
+        "required": [
+          "context_id",
+          "authorization_version",
+          "send_id",
+          "draft_id",
+          "approved_version",
+          "review_digest",
+          "approved_at",
+          "simulated"
+        ],
         "properties": {
-          "context_id": {"$ref": "#/components/schemas/OpaqueToken"},
-          "authorization_version": {"$ref": "#/components/schemas/OpaqueToken"},
-          "send_id": {"$ref": "#/components/schemas/Id"},
-          "draft_id": {"$ref": "#/components/schemas/Id"},
-          "approved_version": {"$ref": "#/components/schemas/SendDraftVersion"},
-          "review_digest": {"type": "string","pattern": "^[0-9a-f]{64}$","minLength": 64,"maxLength": 64},
-          "approved_at": {"$ref": "#/components/schemas/UtcTimestamp"},
-          "simulated": {"const": true}
+          "context_id": {
+            "$ref": "#/components/schemas/OpaqueToken"
+          },
+          "authorization_version": {
+            "$ref": "#/components/schemas/OpaqueToken"
+          },
+          "send_id": {
+            "$ref": "#/components/schemas/Id"
+          },
+          "draft_id": {
+            "$ref": "#/components/schemas/Id"
+          },
+          "approved_version": {
+            "$ref": "#/components/schemas/SendDraftVersion"
+          },
+          "review_digest": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$",
+            "minLength": 64,
+            "maxLength": 64
+          },
+          "approved_at": {
+            "$ref": "#/components/schemas/UtcTimestamp"
+          },
+          "simulated": {
+            "type": "boolean"
+          }
         }
       },
       "SendStatus": {
@@ -6831,39 +7587,256 @@
           "cancellable",
           "hold_reason",
           "updated_at",
-          "simulated"
+          "simulated",
+          "delivery_status",
+          "delivery_updated_at"
         ],
         "properties": {
-          "context_id": {"$ref": "#/components/schemas/OpaqueToken"},
-          "authorization_version": {"$ref": "#/components/schemas/OpaqueToken"},
-          "send_id": {"$ref": "#/components/schemas/Id"},
-          "mailbox_id": {"$ref": "#/components/schemas/Id"},
-          "draft_id": {"$ref": "#/components/schemas/Id"},
-          "approved_version": {"$ref": "#/components/schemas/SendDraftVersion"},
-          "approved_at": {"$ref": "#/components/schemas/UtcTimestamp"},
-          "state": {"$ref": "#/components/schemas/SendState"},
-          "attempts": {"type": "integer","minimum": 0,"maximum": 3},
-          "first_possible_at": {"anyOf": [{"$ref": "#/components/schemas/UtcTimestamp"},{"type": "null"}]},
-          "retry_deadline_at": {"anyOf": [{"$ref": "#/components/schemas/UtcTimestamp"},{"type": "null"}]},
-          "cancel_requested": {"type": "boolean"},
-          "cancellable": {"type": "boolean"},
-          "hold_reason": {"anyOf": [{"$ref": "#/components/schemas/SendHoldReason"},{"type": "null"}]},
-          "updated_at": {"$ref": "#/components/schemas/UtcTimestamp"},
-          "simulated": {"const": true}
+          "context_id": {
+            "$ref": "#/components/schemas/OpaqueToken"
+          },
+          "authorization_version": {
+            "$ref": "#/components/schemas/OpaqueToken"
+          },
+          "send_id": {
+            "$ref": "#/components/schemas/Id"
+          },
+          "mailbox_id": {
+            "$ref": "#/components/schemas/Id"
+          },
+          "draft_id": {
+            "$ref": "#/components/schemas/Id"
+          },
+          "approved_version": {
+            "$ref": "#/components/schemas/SendDraftVersion"
+          },
+          "approved_at": {
+            "$ref": "#/components/schemas/UtcTimestamp"
+          },
+          "state": {
+            "$ref": "#/components/schemas/SendState"
+          },
+          "attempts": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 3
+          },
+          "first_possible_at": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/UtcTimestamp"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "retry_deadline_at": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/UtcTimestamp"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "cancel_requested": {
+            "type": "boolean"
+          },
+          "cancellable": {
+            "type": "boolean"
+          },
+          "hold_reason": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SendHoldReason"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "updated_at": {
+            "$ref": "#/components/schemas/UtcTimestamp"
+          },
+          "simulated": {
+            "type": "boolean"
+          },
+          "delivery_status": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "enum": [
+              "sent",
+              "delivery_delayed",
+              "delivered",
+              "failed",
+              "bounced",
+              "suppressed",
+              "complained",
+              null
+            ]
+          },
+          "delivery_updated_at": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          }
         }
       },
       "CancellationResult": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["context_id","authorization_version","send_id","result","state","cancel_requested","simulated"],
+        "required": [
+          "context_id",
+          "authorization_version",
+          "send_id",
+          "result",
+          "state",
+          "cancel_requested",
+          "simulated"
+        ],
         "properties": {
-          "context_id": {"$ref": "#/components/schemas/OpaqueToken"},
-          "authorization_version": {"$ref": "#/components/schemas/OpaqueToken"},
-          "send_id": {"$ref": "#/components/schemas/Id"},
-          "result": {"type": "string","enum": ["cancelled","stop_requested"]},
-          "state": {"$ref": "#/components/schemas/SendState"},
-          "cancel_requested": {"const": true},
-          "simulated": {"const": true}
+          "context_id": {
+            "$ref": "#/components/schemas/OpaqueToken"
+          },
+          "authorization_version": {
+            "$ref": "#/components/schemas/OpaqueToken"
+          },
+          "send_id": {
+            "$ref": "#/components/schemas/Id"
+          },
+          "result": {
+            "type": "string",
+            "enum": [
+              "cancelled",
+              "stop_requested"
+            ]
+          },
+          "state": {
+            "$ref": "#/components/schemas/SendState"
+          },
+          "cancel_requested": {
+            "const": true
+          },
+          "simulated": {
+            "type": "boolean"
+          }
+        }
+      },
+      "DraftAttachment": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "filename",
+          "content_type",
+          "byte_size",
+          "status"
+        ],
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/Id"
+          },
+          "filename": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255
+          },
+          "content_type": {
+            "type": "string",
+            "enum": [
+              "application/pdf",
+              "image/png",
+              "image/jpeg",
+              "text/plain"
+            ]
+          },
+          "byte_size": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1048576
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "pending_scan",
+              "clean",
+              "malware",
+              "scan_failed"
+            ]
+          }
+        }
+      },
+      "DraftAttachmentPage": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "items"
+        ],
+        "properties": {
+          "items": {
+            "type": "array",
+            "maxItems": 1,
+            "items": {
+              "$ref": "#/components/schemas/DraftAttachment"
+            }
+          }
+        }
+      },
+      "DraftAttachmentUpload": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "operation_id",
+          "mailbox_id",
+          "filename",
+          "content_type",
+          "content_base64"
+        ],
+        "properties": {
+          "operation_id": {
+            "$ref": "#/components/schemas/Id"
+          },
+          "mailbox_id": {
+            "$ref": "#/components/schemas/Id"
+          },
+          "filename": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255
+          },
+          "content_type": {
+            "type": "string",
+            "enum": [
+              "application/pdf",
+              "image/png",
+              "image/jpeg",
+              "text/plain"
+            ]
+          },
+          "content_base64": {
+            "type": "string",
+            "minLength": 4,
+            "maxLength": 1398104,
+            "pattern": "^[A-Za-z0-9+/]+={0,2}$"
+          }
+        }
+      },
+      "DraftAttachmentRemoved": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "removed"
+        ],
+        "properties": {
+          "removed": {
+            "const": true
+          }
         }
       }
     },
@@ -7171,64 +8144,40 @@
       "Send400": {
         "description": "request_invalid; bounded generic error, no content disclosure.",
         "headers": {
-          "Cache-Control": {"required": true,"schema": {"const": "no-store"}},
-          "Vary": {"required": true,"schema": {"const": "Cookie"}},
-          "X-Content-Type-Options": {"required": true,"schema": {"const": "nosniff"}}
-        },
-        "content": {
-          "application/json": {"schema": {"allOf": [{"$ref": "#/components/schemas/SendError"},{"properties": {"code": {"type": "string","enum": ["request_invalid"]}}}]}}
-        },
-        "x-max-response-bytes": 4096,
-        "x-error-codes": ["request_invalid"]
-      },
-      "Send401": {
-        "description": "unauthenticated; bounded generic error, no content disclosure.",
-        "headers": {
-          "Cache-Control": {"required": true,"schema": {"const": "no-store"}},
-          "Vary": {"required": true,"schema": {"const": "Cookie"}},
-          "X-Content-Type-Options": {"required": true,"schema": {"const": "nosniff"}}
-        },
-        "content": {
-          "application/json": {"schema": {"allOf": [{"$ref": "#/components/schemas/SendError"},{"properties": {"code": {"type": "string","enum": ["unauthenticated"]}}}]}}
-        },
-        "x-max-response-bytes": 4096,
-        "x-error-codes": ["unauthenticated"]
-      },
-      "Send404": {
-        "description": "not_available — This item is unavailable.",
-        "headers": {
-          "Cache-Control": {"required": true,"schema": {"const": "no-store"}},
-          "Vary": {"required": true,"schema": {"const": "Cookie"}},
-          "X-Content-Type-Options": {"required": true,"schema": {"const": "nosniff"}}
-        },
-        "content": {
-          "application/json": {
+          "Cache-Control": {
+            "required": true,
             "schema": {
-              "allOf": [
-                {"$ref": "#/components/schemas/SendError"},
-                {"properties": {"code": {"type": "string","enum": ["not_available"]},"message": {"const": "This item is unavailable."}}}
-              ]
+              "const": "no-store"
+            }
+          },
+          "Vary": {
+            "required": true,
+            "schema": {
+              "const": "Cookie"
+            }
+          },
+          "X-Content-Type-Options": {
+            "required": true,
+            "schema": {
+              "const": "nosniff"
             }
           }
         },
-        "x-max-response-bytes": 4096,
-        "x-error-codes": ["not_available"]
-      },
-      "Send409": {
-        "description": "context_changed,review_stale,send_not_ready,draft_consumed,draft_conflict,operation_mismatch,send_terminal; bounded generic error, no content disclosure.",
-        "headers": {
-          "Cache-Control": {"required": true,"schema": {"const": "no-store"}},
-          "Vary": {"required": true,"schema": {"const": "Cookie"}},
-          "X-Content-Type-Options": {"required": true,"schema": {"const": "nosniff"}}
-        },
         "content": {
           "application/json": {
             "schema": {
               "allOf": [
-                {"$ref": "#/components/schemas/SendError"},
+                {
+                  "$ref": "#/components/schemas/SendError"
+                },
                 {
                   "properties": {
-                    "code": {"type": "string","enum": ["context_changed","review_stale","send_not_ready","draft_consumed","draft_conflict","operation_mismatch","send_terminal"]}
+                    "code": {
+                      "type": "string",
+                      "enum": [
+                        "request_invalid"
+                      ]
+                    }
                   }
                 }
               ]
@@ -7236,50 +8185,314 @@
           }
         },
         "x-max-response-bytes": 4096,
-        "x-error-codes": ["context_changed","review_stale","send_not_ready","draft_consumed","draft_conflict","operation_mismatch","send_terminal"]
+        "x-error-codes": [
+          "request_invalid"
+        ]
       },
-      "Send429": {
-        "description": "rate_limited; bounded generic error, no content disclosure.",
+      "Send401": {
+        "description": "unauthenticated; bounded generic error, no content disclosure.",
         "headers": {
-          "Cache-Control": {"required": true,"schema": {"const": "no-store"}},
-          "Vary": {"required": true,"schema": {"const": "Cookie"}},
-          "X-Content-Type-Options": {"required": true,"schema": {"const": "nosniff"}}
-        },
-        "content": {
-          "application/json": {"schema": {"allOf": [{"$ref": "#/components/schemas/SendError"},{"properties": {"code": {"type": "string","enum": ["rate_limited"]}}}]}}
-        },
-        "x-max-response-bytes": 4096,
-        "x-error-codes": ["rate_limited"]
-      },
-      "Send503": {
-        "description": "temporarily_unavailable,dispatch_held; bounded generic error, no content disclosure.",
-        "headers": {
-          "Cache-Control": {"required": true,"schema": {"const": "no-store"}},
-          "Vary": {"required": true,"schema": {"const": "Cookie"}},
-          "X-Content-Type-Options": {"required": true,"schema": {"const": "nosniff"}}
+          "Cache-Control": {
+            "required": true,
+            "schema": {
+              "const": "no-store"
+            }
+          },
+          "Vary": {
+            "required": true,
+            "schema": {
+              "const": "Cookie"
+            }
+          },
+          "X-Content-Type-Options": {
+            "required": true,
+            "schema": {
+              "const": "nosniff"
+            }
+          }
         },
         "content": {
           "application/json": {
             "schema": {
-              "allOf": [{"$ref": "#/components/schemas/SendError"},{"properties": {"code": {"type": "string","enum": ["temporarily_unavailable","dispatch_held"]}}}]
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/SendError"
+                },
+                {
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "enum": [
+                        "unauthenticated"
+                      ]
+                    }
+                  }
+                }
+              ]
             }
           }
         },
         "x-max-response-bytes": 4096,
-        "x-error-codes": ["temporarily_unavailable","dispatch_held"]
+        "x-error-codes": [
+          "unauthenticated"
+        ]
+      },
+      "Send404": {
+        "description": "not_available \u00e2\u20ac\u201d This item is unavailable.",
+        "headers": {
+          "Cache-Control": {
+            "required": true,
+            "schema": {
+              "const": "no-store"
+            }
+          },
+          "Vary": {
+            "required": true,
+            "schema": {
+              "const": "Cookie"
+            }
+          },
+          "X-Content-Type-Options": {
+            "required": true,
+            "schema": {
+              "const": "nosniff"
+            }
+          }
+        },
+        "content": {
+          "application/json": {
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/SendError"
+                },
+                {
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "enum": [
+                        "not_available"
+                      ]
+                    },
+                    "message": {
+                      "const": "This item is unavailable."
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "x-max-response-bytes": 4096,
+        "x-error-codes": [
+          "not_available"
+        ]
+      },
+      "Send409": {
+        "description": "context_changed,review_stale,send_not_ready,draft_consumed,draft_conflict,operation_mismatch,send_terminal; bounded generic error, no content disclosure.",
+        "headers": {
+          "Cache-Control": {
+            "required": true,
+            "schema": {
+              "const": "no-store"
+            }
+          },
+          "Vary": {
+            "required": true,
+            "schema": {
+              "const": "Cookie"
+            }
+          },
+          "X-Content-Type-Options": {
+            "required": true,
+            "schema": {
+              "const": "nosniff"
+            }
+          }
+        },
+        "content": {
+          "application/json": {
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/SendError"
+                },
+                {
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "enum": [
+                        "context_changed",
+                        "review_stale",
+                        "send_not_ready",
+                        "draft_consumed",
+                        "draft_conflict",
+                        "operation_mismatch",
+                        "send_terminal"
+                      ]
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "x-max-response-bytes": 4096,
+        "x-error-codes": [
+          "context_changed",
+          "review_stale",
+          "send_not_ready",
+          "draft_consumed",
+          "draft_conflict",
+          "operation_mismatch",
+          "send_terminal"
+        ]
+      },
+      "Send429": {
+        "description": "rate_limited; bounded generic error, no content disclosure.",
+        "headers": {
+          "Cache-Control": {
+            "required": true,
+            "schema": {
+              "const": "no-store"
+            }
+          },
+          "Vary": {
+            "required": true,
+            "schema": {
+              "const": "Cookie"
+            }
+          },
+          "X-Content-Type-Options": {
+            "required": true,
+            "schema": {
+              "const": "nosniff"
+            }
+          }
+        },
+        "content": {
+          "application/json": {
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/SendError"
+                },
+                {
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "enum": [
+                        "rate_limited"
+                      ]
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "x-max-response-bytes": 4096,
+        "x-error-codes": [
+          "rate_limited"
+        ]
+      },
+      "Send503": {
+        "description": "temporarily_unavailable,dispatch_held; bounded generic error, no content disclosure.",
+        "headers": {
+          "Cache-Control": {
+            "required": true,
+            "schema": {
+              "const": "no-store"
+            }
+          },
+          "Vary": {
+            "required": true,
+            "schema": {
+              "const": "Cookie"
+            }
+          },
+          "X-Content-Type-Options": {
+            "required": true,
+            "schema": {
+              "const": "nosniff"
+            }
+          }
+        },
+        "content": {
+          "application/json": {
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/SendError"
+                },
+                {
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "enum": [
+                        "temporarily_unavailable",
+                        "dispatch_held"
+                      ]
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "x-max-response-bytes": 4096,
+        "x-error-codes": [
+          "temporarily_unavailable",
+          "dispatch_held"
+        ]
       },
       "Send500": {
         "description": "internal_error; bounded generic error, no content disclosure.",
         "headers": {
-          "Cache-Control": {"required": true,"schema": {"const": "no-store"}},
-          "Vary": {"required": true,"schema": {"const": "Cookie"}},
-          "X-Content-Type-Options": {"required": true,"schema": {"const": "nosniff"}}
+          "Cache-Control": {
+            "required": true,
+            "schema": {
+              "const": "no-store"
+            }
+          },
+          "Vary": {
+            "required": true,
+            "schema": {
+              "const": "Cookie"
+            }
+          },
+          "X-Content-Type-Options": {
+            "required": true,
+            "schema": {
+              "const": "nosniff"
+            }
+          }
         },
         "content": {
-          "application/json": {"schema": {"allOf": [{"$ref": "#/components/schemas/SendError"},{"properties": {"code": {"type": "string","enum": ["internal_error"]}}}]}}
+          "application/json": {
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/SendError"
+                },
+                {
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "enum": [
+                        "internal_error"
+                      ]
+                    }
+                  }
+                }
+              ]
+            }
+          }
         },
         "x-max-response-bytes": 4096,
-        "x-error-codes": ["internal_error"]
+        "x-error-codes": [
+          "internal_error"
+        ]
       }
     }
   },
@@ -7295,7 +8508,7 @@
   "x-send-contract": {
     "stage": "isolated-implementation-runtime-pending-be02-open",
     "approval_response_immutable": true,
-    "transport": "offline-simulated-only",
+    "transport": "simulated-default-explicit-resend-opt-in",
     "canonical_snapshot": "elevateo.send.snapshot.v1",
     "approval_request_max_bytes": 4096
   }

@@ -135,7 +135,9 @@
         "cancellable": true,
         "hold_reason": null,
         "updated_at": "2026-10-14T10:40:00Z",
-        "simulated": true
+        "simulated": true,
+        "delivery_status": null,
+        "delivery_updated_at": null
       }
     },
     {

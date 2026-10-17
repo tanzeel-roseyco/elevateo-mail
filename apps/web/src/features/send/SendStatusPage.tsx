@@ -10,12 +10,22 @@ import { EmptyState, Skeleton } from '@/ui/Async'
 
 const DESCRIPTIONS: Record<SendStatus['state'], string> = {
   queued: 'The approved intent is durably queued. No delivery is established.',
-  dispatching: 'A simulated submission is in progress. No delivery is established.',
-  unknown: 'The simulated submission outcome is unknown. Do not resend or create a replacement draft.',
+  dispatching: 'A submission is in progress. No delivery is established.',
+  unknown: 'The submission outcome is unknown. Do not resend or create a replacement draft.',
   needs_review: 'This intent is held. It cannot be reopened or safely resent from this screen.',
   cancelled: 'The intent was cancelled before dispatch authorization.',
-  accepted: 'The simulated provider accepted this intent. Acceptance does not establish delivery.',
-  rejected: 'The simulated provider rejected this intent. No delivery is established.',
+  accepted: 'The provider accepted this intent. Acceptance does not establish delivery.',
+  rejected: 'The provider rejected this intent. No delivery is established.',
+}
+// AIDEV-NOTE: Provider delivery events are separate from durable submission acceptance.
+const DELIVERY: Record<NonNullable<SendStatus['delivery_status']>, string> = {
+  sent: 'The provider sent the email. Delivery is not yet confirmed.',
+  delivery_delayed: 'Delivery is delayed. Do not resend while the provider is retrying.',
+  delivered: 'The recipient mail server accepted delivery. This does not confirm the email was read.',
+  failed: 'The provider reported a delivery failure.',
+  bounced: 'The email bounced. This recipient is suppressed from further sends.',
+  suppressed: 'The provider suppressed this email.',
+  complained: 'A spam complaint was received. This recipient is suppressed from further sends.',
 }
 type State = { kind: 'loading' } | { kind: 'error' } | { kind: 'ready'; status: SendStatus }
 export function SendStatusPage() {
@@ -58,10 +68,11 @@ function Status({ mailboxId, sendId }: { mailboxId: string; sendId: string }) {
   const status = state.status
   const terminal = ['accepted', 'rejected', 'cancelled'].includes(status.state)
   return <article className="mx-auto max-w-3xl p-3" aria-busy={busy}>
-    <Badge tone="warn">Simulated — no live mail</Badge>
+    <Badge tone="warn">{status.simulated ? 'Simulated - no live mail' : 'Live email'}</Badge>
     <h1 ref={heading} tabIndex={-1} className="my-3 text-base font-semibold">Send intent: {status.state.replaceAll('_', ' ')}</h1>
     <p role="status">{DESCRIPTIONS[status.state]}</p>
-    <p>Approved draft version {status.approved_version}. Simulated attempts: {status.attempts}.</p>
+    {status.delivery_status !== null && <section aria-label="Delivery update"><h2>Delivery: {status.delivery_status.replaceAll('_', ' ')}</h2><p>{DELIVERY[status.delivery_status]}</p>{status.delivery_updated_at && <time dateTime={status.delivery_updated_at}>{new Date(status.delivery_updated_at).toLocaleString()}</time>}</section>}
+    <p>Approved draft version {status.approved_version}. {status.simulated ? 'Simulated attempts' : 'Submission attempts'}: {status.attempts}.</p>
     {status.hold_reason !== null && <p>Hold: {status.hold_reason.replaceAll('_', ' ')}</p>}
     {status.cancel_requested && <p>Stop has been requested. A late acceptance can still appear.</p>}
     {message && <p role="alert">{message}</p>}

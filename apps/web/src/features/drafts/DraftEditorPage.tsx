@@ -1,3 +1,4 @@
+import { DraftAttachments } from './DraftAttachments'
 // Durable draft editor (BE-02 C §4–§5) over the pure draft-operation model. Explicit Save only:
 // each save is one operation id bound to one frozen payload. Definitive conflicts offer "load
 // the server copy" or "keep my text and continue from the server version" (a fresh operation on
@@ -5,7 +6,7 @@
 // Unsaved text and unresolved attempts are retained in the session-scoped intent store so a
 // context recovery, a remount or a navigation never destroys them; they are shown again only
 // after a current authorized read of the same draft by the same actor and organization.
-// Saved, unchanged drafts can enter the separate simulated review/approval screen.
+// Saved, unchanged drafts can enter the separate review/approval screen; its server response identifies live transport.
 import { useCallback, useEffect, useId, useRef, useState } from 'react'
 import { Link, useParams, useSearchParams } from 'react-router'
 import { describeFailure, type CollaborationFailure } from '@/app/collaborationFailure'
@@ -381,6 +382,8 @@ function DraftEditor({ mailboxId, draftId }: { mailboxId: string; draftId: strin
           <TextArea id={ids.body} value={buffer.content.body_text} onChange={(e) => updateContent({ body_text: e.target.value })} disabled={locked} rows={12} aria-describedby={`${ids.body}-hint${errors.body ? ` ${ids.body}-error` : ''}`} aria-invalid={errors.body ? true : undefined} />
         </Field>
 
+        {buffer.savedVersion > 0 && <DraftAttachments draftId={draftId} mailboxId={mailboxId} disabled={locked || dirty || status.kind !== 'idle'} />}
+
         {status.kind === 'rejected' && (
           <div role="alert" className="flex flex-wrap items-center gap-2 rounded-lg border border-danger/40 bg-danger/10 p-2 text-[13px]">
             <span>{status.message}</span>
@@ -434,7 +437,7 @@ function DraftEditor({ mailboxId, draftId }: { mailboxId: string; draftId: strin
             </Button>
           )}
           {!consumed && canCompose && mailbox?.capabilities.approve_send === true && buffer.savedVersion > 0 && status.kind === 'idle' && !dirty && recipientsText === formatRecipients(buffer.savedContent.to) && (
-            <Link to={`/mailboxes/${mailboxId}/drafts/${draftId}/send-review`} className="rounded-lg px-3 py-2 text-[13px] underline">Review simulated send</Link>
+            <Link to={`/mailboxes/${mailboxId}/drafts/${draftId}/send-review`} className="rounded-lg px-3 py-2 text-[13px] underline">{sessionState.status === 'ready' && sessionState.session.simulation_mode ? 'Review simulated send' : 'Review send'}</Link>
           )}
           {status.kind === 'saving' && <span role="status" className="text-[12px] text-muted">Saving…</span>}
         </div>

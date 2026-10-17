@@ -21,6 +21,7 @@ export const APPROVAL: ApprovalResult = {
 export const STATUS: SendStatus = {
   context_id: CD.contextId, authorization_version: CD.authorizationVersion,
   send_id: SEND_ID, mailbox_id: CD.mailboxId, draft_id: CD.draftId, approved_version: 1,
+  delivery_status: null, delivery_updated_at: null,
   approved_at: APPROVAL.approved_at, state: 'queued', attempts: 0, first_possible_at: null, retry_deadline_at: null,
   cancel_requested: false, cancellable: true, hold_reason: null, updated_at: APPROVAL.approved_at, simulated: true,
 }

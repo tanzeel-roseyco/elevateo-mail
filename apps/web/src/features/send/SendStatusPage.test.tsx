@@ -46,6 +46,12 @@ describe('BE03 simulated status', () => {
     expect(screen.getByText(/Acceptance does not establish delivery/)).not.toBeNull()
     expect(screen.queryByRole('button', { name: /Cancel|Request stop/ })).toBeNull()
   })
+  it('shows delivery evidence separately from provider acceptance', async () => {
+    setup({ ...STATUS, state: 'accepted', simulated: false, cancellable: false, delivery_status: 'delivered', delivery_updated_at: STATUS.approved_at })
+    await screen.findByRole('heading', { name: 'Delivery: delivered' })
+    expect(screen.getByText(/does not confirm the email was read/)).not.toBeNull()
+    expect(screen.getByText('Live email')).not.toBeNull()
+  })
   it('does not present a foreign mailbox status as this intent', async () => {
     setup({ ...STATUS, mailbox_id: STATUS.send_id })
     await screen.findByText(/This send status is unavailable/)
