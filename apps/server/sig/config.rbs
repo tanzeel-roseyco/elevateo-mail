@@ -1,0 +1,42 @@
+module Elevateo
+  class ConfigError < StandardError
+  end
+  interface _ConfigEnvironment
+    def []: (String) -> String?
+    def keys: () -> Array[String]
+    def key?: (String) -> bool
+  end
+  class Config
+    ALLOWED_SMTP: { host: String, port: Integer }
+    ALLOWED_HOSTS: Hash[String, String]
+    ROLE_PASSWORDS: Hash[String, String]
+    PROVIDER_PREFIXES: Array[String]
+    self.@current: Config?
+    attr_reader db_host: String
+    attr_reader db_name: String
+    attr_reader db_role: String
+    attr_reader db_password: String
+    attr_reader auth_url: String
+    attr_reader storage_url: String
+    attr_reader mailpit_url: String
+    attr_reader outbound_hold: bool
+    attr_reader process: String
+    attr_reader session_key: String
+    attr_reader cursor_signing_key: String
+    attr_reader browser_origin: String
+    attr_reader auth_jwt_issuer: String
+    attr_reader auth_jwt_audience: String
+    attr_reader auth_jwt_algorithm: String
+    attr_reader cookie_secure: bool
+    attr_reader auth_password_minimum: Integer
+    def self.current: () -> Config
+    def self.load!: (?_ConfigEnvironment) -> Config
+    def initialize: (_ConfigEnvironment) -> void
+    private
+    def configure_auth: (_ConfigEnvironment, ^(String) -> String) -> void
+    def parse_hold: (String) -> bool
+    def validate_smtp: (String, String) -> void
+    def internal_url: (String, String, String) -> String
+    def reject_provider_settings: (_ConfigEnvironment) -> void
+  end
+end

@@ -1,0 +1,428 @@
+{
+  "contract_version": "1.0.0-session.1",
+  "purpose": "Synthetic examples and required conformance scenarios; no execution or backend-completion claim.",
+  "error_status_codes": {
+    "400": [
+      "request_invalid",
+      "cursor_invalid"
+    ],
+    "401": [
+      "unauthenticated"
+    ],
+    "404": [
+      "not_available"
+    ],
+    "409": [
+      "context_changed"
+    ],
+    "429": [
+      "rate_limited"
+    ],
+    "500": [
+      "internal_error"
+    ],
+    "503": [
+      "temporarily_unavailable"
+    ]
+  },
+  "examples": {
+    "session_a": {
+      "schema": "openapi.json#/components/schemas/Session",
+      "status": 200,
+      "body": {
+        "context_id": "context_A_0123456789",
+        "authorization_version": "authz_A_0123456789",
+        "actor": {
+          "id": "00000000-0000-4000-8000-000000000001",
+          "display_name": "Fixture user A"
+        },
+        "organization": {
+          "id": "00000000-0000-4000-8000-000000000011",
+          "name": "Synthetic organization A"
+        },
+        "simulation_mode": true,
+        "csrf_token": "fixture_token_a_0123456789"
+      }
+    },
+    "session_b": {
+      "schema": "openapi.json#/components/schemas/Session",
+      "status": 200,
+      "body": {
+        "context_id": "context_B_0123456789",
+        "authorization_version": "authz_B_0123456789",
+        "actor": {
+          "id": "00000000-0000-4000-8000-000000000002",
+          "display_name": "Fixture user B"
+        },
+        "organization": {
+          "id": "00000000-0000-4000-8000-000000000012",
+          "name": "Synthetic organization B"
+        },
+        "simulation_mode": true,
+        "csrf_token": "fixture_token_b_0123456789"
+      }
+    },
+    "mailboxes": {
+      "schema": "openapi.json#/components/schemas/MailboxPage",
+      "status": 200,
+      "body": {
+        "context_id": "context_A_0123456789",
+        "authorization_version": "authz_A_0123456789",
+        "next_cursor": null,
+        "items": [
+          {
+            "id": "00000000-0000-4000-8000-000000000021",
+            "display_name": "Fixture inbox",
+            "display_address": "person@example.test",
+            "capabilities": {
+              "read": true,
+              "compose": false,
+              "approve_send": false,
+              "manage_members": false
+            }
+          }
+        ]
+      }
+    },
+    "mailboxes_empty": {
+      "schema": "openapi.json#/components/schemas/MailboxPage",
+      "status": 200,
+      "body": {
+        "context_id": "context_A_0123456789",
+        "authorization_version": "authz_A_0123456789",
+        "next_cursor": null,
+        "items": []
+      }
+    },
+    "threads": {
+      "schema": "openapi.json#/components/schemas/ThreadPage",
+      "status": 200,
+      "body": {
+        "context_id": "context_A_0123456789",
+        "authorization_version": "authz_A_0123456789",
+        "mailbox_id": "00000000-0000-4000-8000-000000000021",
+        "next_cursor": null,
+        "items": [
+          {
+            "id": "00000000-0000-4000-8000-000000000031",
+            "mailbox_id": "00000000-0000-4000-8000-000000000021",
+            "subject": null,
+            "subject_truncated": false,
+            "sender": null,
+            "preview_text": "<img src=\"https://example.invalid/pixel\"> & plaintext",
+            "last_message_at": "2026-10-12T00:00:00Z",
+            "unread": true,
+            "message_count": 1
+          }
+        ]
+      }
+    },
+    "threads_empty": {
+      "schema": "openapi.json#/components/schemas/ThreadPage",
+      "status": 200,
+      "body": {
+        "context_id": "context_A_0123456789",
+        "authorization_version": "authz_A_0123456789",
+        "mailbox_id": "00000000-0000-4000-8000-000000000021",
+        "next_cursor": null,
+        "items": []
+      }
+    },
+    "thread_hostile_plaintext": {
+      "schema": "openapi.json#/components/schemas/ThreadDetailPage",
+      "status": 200,
+      "body": {
+        "context_id": "context_A_0123456789",
+        "authorization_version": "authz_A_0123456789",
+        "next_cursor": null,
+        "thread": {
+          "id": "00000000-0000-4000-8000-000000000031",
+          "mailbox_id": "00000000-0000-4000-8000-000000000021",
+          "subject": null,
+          "subject_truncated": false,
+          "unread": true,
+          "message_count": 1
+        },
+        "messages": [
+          {
+            "id": "00000000-0000-4000-8000-000000000041",
+            "sender": null,
+            "to": [],
+            "sent_at": null,
+            "body_text": "<script>alert(1)</script>\n<img src=\"https://example.invalid/pixel\">\n[link](javascript:alert(1))\nhttps://example.invalid/do-not-fetch",
+            "body_truncated": false,
+            "attachment_count": 0
+          }
+        ]
+      }
+    },
+    "thread_empty": {
+      "schema": "openapi.json#/components/schemas/ThreadDetailPage",
+      "status": 200,
+      "body": {
+        "context_id": "context_A_0123456789",
+        "authorization_version": "authz_A_0123456789",
+        "next_cursor": null,
+        "thread": {
+          "id": "00000000-0000-4000-8000-000000000032",
+          "mailbox_id": "00000000-0000-4000-8000-000000000021",
+          "subject": null,
+          "subject_truncated": false,
+          "unread": true,
+          "message_count": 0
+        },
+        "messages": []
+      }
+    },
+    "thread_truncated": {
+      "schema": "openapi.json#/components/schemas/ThreadDetailPage",
+      "status": 200,
+      "body": {
+        "context_id": "context_A_0123456789",
+        "authorization_version": "authz_A_0123456789",
+        "next_cursor": "synthetic_next_cursor_2",
+        "thread": {
+          "id": "00000000-0000-4000-8000-000000000031",
+          "mailbox_id": "00000000-0000-4000-8000-000000000021",
+          "subject": null,
+          "subject_truncated": false,
+          "unread": true,
+          "message_count": 1
+        },
+        "messages": [
+          {
+            "id": "00000000-0000-4000-8000-000000000041",
+            "sender": null,
+            "to": [],
+            "sent_at": null,
+            "body_text": "Synthetic truncated message excerpt",
+            "body_truncated": true,
+            "attachment_count": 0
+          }
+        ]
+      }
+    },
+    "request_invalid": {
+      "schema": "openapi.json#/components/schemas/Error",
+      "status": 400,
+      "body": {
+        "code": "request_invalid",
+        "message": "Synthetic request invalid.",
+        "request_id": "fixture-request-001"
+      }
+    },
+    "cursor_invalid": {
+      "schema": "openapi.json#/components/schemas/Error",
+      "status": 400,
+      "body": {
+        "code": "cursor_invalid",
+        "message": "Synthetic cursor invalid.",
+        "request_id": "fixture-request-001"
+      }
+    },
+    "unauthenticated": {
+      "schema": "openapi.json#/components/schemas/Error",
+      "status": 401,
+      "body": {
+        "code": "unauthenticated",
+        "message": "Synthetic unauthenticated.",
+        "request_id": "fixture-request-001"
+      }
+    },
+    "not_available": {
+      "schema": "openapi.json#/components/schemas/Error",
+      "status": 404,
+      "body": {
+        "code": "not_available",
+        "message": "This item is unavailable.",
+        "request_id": "fixture-request-001"
+      }
+    },
+    "context_changed": {
+      "schema": "openapi.json#/components/schemas/Error",
+      "status": 409,
+      "body": {
+        "code": "context_changed",
+        "message": "Synthetic context changed.",
+        "request_id": "fixture-request-001"
+      }
+    },
+    "rate_limited": {
+      "schema": "openapi.json#/components/schemas/Error",
+      "status": 429,
+      "body": {
+        "code": "rate_limited",
+        "message": "Synthetic rate limited.",
+        "request_id": "fixture-request-001"
+      }
+    },
+    "internal_error": {
+      "schema": "openapi.json#/components/schemas/Error",
+      "status": 500,
+      "body": {
+        "code": "internal_error",
+        "message": "Synthetic internal error.",
+        "request_id": "fixture-request-001"
+      }
+    },
+    "temporarily_unavailable": {
+      "schema": "openapi.json#/components/schemas/Error",
+      "status": 503,
+      "body": {
+        "code": "temporarily_unavailable",
+        "message": "Synthetic temporarily unavailable.",
+        "request_id": "fixture-request-001"
+      }
+    }
+  },
+  "scenarios": [
+    {
+      "id": "stale_mailbox",
+      "steps": [
+        "Start mailbox A request",
+        "Switch to mailbox B and increment request generation",
+        "Resolve A success or error"
+      ],
+      "expect": "Neither response nor error mutates B state."
+    },
+    {
+      "id": "stale_session",
+      "steps": [
+        "Start actor A request",
+        "Replace context with session_b",
+        "Resolve A success or 401"
+      ],
+      "expect": "No A data appears and old A 401 does not clear current B state."
+    },
+    {
+      "id": "current_unauthenticated",
+      "steps": [
+        "Render session_a mail",
+        "Current request returns unauthenticated"
+      ],
+      "expect": "Clear sensitive state, abort outstanding requests, show session-unavailable UI."
+    },
+    {
+      "id": "authorization_changed",
+      "steps": [
+        "Send old authorization version",
+        "Return context_changed",
+        "Re-bootstrap exactly once"
+      ],
+      "expect": "No old data retained; repeated mismatch requires explicit retry."
+    },
+    {
+      "id": "cursor_recovery",
+      "steps": [
+        "Request a scoped page with expired/mismatched cursor",
+        "Return cursor_invalid",
+        "Retry first page once retaining filter"
+      ],
+      "expect": "No repeated recovery loop; no fabricated offset."
+    },
+    {
+      "id": "non_enumeration",
+      "steps": [
+        "Request nonexistent thread",
+        "Request inaccessible thread"
+      ],
+      "expect": "Identical status/code/message and UI; no foreign content."
+    },
+    {
+      "id": "transport_failures",
+      "steps": [
+        "Return malformed/wrong-content-type/oversized/redirected response or exceed timeout"
+      ],
+      "expect": "Deliberate bounded client error, no fallback to fixtures and no partial data."
+    },
+    {
+      "id": "hostile_plaintext",
+      "steps": [
+        "Render thread_hostile_plaintext"
+      ],
+      "expect": "Inert visible strings; no script, HTML, Markdown, autolink, image or attachment load."
+    },
+    {
+      "id": "separate_pagination",
+      "steps": [
+        "Load summary continuation",
+        "Load message continuation in selected thread"
+      ],
+      "expect": "Independent scoped cursors; detail continuation does not replace list cursor."
+    },
+    {
+      "id": "production_failure",
+      "steps": [
+        "Load production entrypoint",
+        "Make API unavailable"
+      ],
+      "expect": "Unavailable UI; no fixture modules/data in bundle or fixture fallback."
+    }
+  ],
+  "lifecycle_error_status_codes": {
+    "400": [
+      "request_invalid",
+      "cursor_invalid"
+    ],
+    "401": [
+      "unauthenticated",
+      "unauthenticated"
+    ],
+    "404": [
+      "not_available"
+    ],
+    "409": [
+      "context_changed"
+    ],
+    "429": [
+      "rate_limited"
+    ],
+    "500": [
+      "internal_error"
+    ],
+    "503": [
+      "temporarily_unavailable"
+    ]
+  },
+  "lifecycle_examples": {
+    "challenge": {
+      "schema": "openapi.json#/components/schemas/AuthChallenge",
+      "value": {
+        "csrf_token": "synthetic_challenge_token_00000001",
+        "expires_at": "2026-10-13T00:05:00Z"
+      }
+    },
+    "logout_pending": {
+      "schema": "openapi.json#/components/schemas/AuthLogout",
+      "value": {
+        "local_revoked": true,
+        "upstream_status": "pending"
+      }
+    },
+    "recovery_accepted": {
+      "schema": "openapi.json#/components/schemas/AuthAccepted",
+      "value": {
+        "accepted": true
+      }
+    }
+  },
+  "lifecycle_scenarios": [
+    "challenge_binds_session_and_pending_entry_without_auth_http",
+    "origin_csrf_duplicate_unknown_and_byte_checks_before_io",
+    "password_login_replaces_supplied_cookie_and_derives_organization",
+    "valid_identity_without_membership_returns_404_and_no_invented_session_payload",
+    "known_unknown_recovery_same_202_upstream_outage_503",
+    "callback_get_never_consumes_hash_or_follows_redirect_and_redacts_query",
+    "accept_sets_password_before_application_access",
+    "ambiguous_verify_never_replays_hash_password_pending_only_retries_password_step",
+    "refresh_expired_access_with_locally_valid_cookie_and_cookie_bound_challenge",
+    "concurrent_refresh_one_auth_call_loser_503_retry_after_1",
+    "logout_racing_late_refresh_never_resurrects_session",
+    "refresh_claim_past_original_request_deadline_revokes_without_replay",
+    "logout_local_global_commit_before_auth_and_survive_auth_outage",
+    "missing_deleted_wrong_user_auth_sid_and_policy_expiry_deny_reads",
+    "transient_or_malformed_auth_returns_503_without_cookie_deletion_or_mail",
+    "organization_switch_checks_membership_rotates_context_and_csrf",
+    "email_and_source_ip_rate_limits_both_enforced_without_trusting_forwarded_headers"
+  ]
+}

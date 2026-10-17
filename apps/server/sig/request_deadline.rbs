@@ -1,0 +1,13 @@
+module Elevateo
+  class RequestDeadline
+    class Expired < StandardError
+    end
+    @clock: ^() -> Float
+    @expires: Float
+    def initialize: (?seconds: Float, ?clock: ^() -> Float) -> void
+    def remaining: () -> Float
+    def check!: () -> Float
+    def timeout: (?Float) -> Float
+    def within: [T] (?Float) { () -> T } -> T
+  end
+end

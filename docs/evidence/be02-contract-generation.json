@@ -1,0 +1,27 @@
+{
+  "task": "be02-contract-95b2cf3cd1174710a06523d9ab83db5d",
+  "result": "deterministic_generation_pass",
+  "generator": "openapi-typescript 7.13.0",
+  "image": "node:24.21.0-bookworm-slim@sha256:d6aa754f16b3197301076f047b5def2f02ea1dbbc2ca920407d46d7ec7f87b20",
+  "input_archive_sha256": "9d4af94e0e37c89d4cda05907eac34b6218d99481dc5c89861b4d37c2c567ed5",
+  "openapi_sha256": "f6524b78e870d9af7e6b8c38bda9a327c3d05c8e2c974ef450db489d31c2a7e4",
+  "generated_output": "apps/web/src/data/generated/api.d.ts",
+  "generated_sha256": "19b95855911060455ef31418e4c4cf3339b0f658e38409c24c55581b5667112d",
+  "independent_runs": 2,
+  "byte_identical": true,
+  "test_exit": 0,
+  "application_tests_executed": false,
+  "fixture_conformance_executed": false,
+  "remote_evidence_directory": "/home/tanzeel/elevateo-mail-tests-20261012-ultra/be02-contract-95b2cf3cd1174710a06523d9ab83db5d",
+  "successful_log": "result-2.log",
+  "cleanup": {
+    "task_containers_remaining": 0,
+    "disposable_images_build_cache_or_volumes_created": false,
+    "shared_pinned_node_image_retained": true,
+    "free_bytes_before": 258794532864,
+    "free_bytes_after": 258844704768,
+    "shared_host_delta_bytes": 50171904,
+    "attributable_reclamation": false
+  },
+  "earlier_attempt": "Exit 126 from executable dependencies on a noexec temporary mount; corrected task-owned /work mount to exec."
+}
