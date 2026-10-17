@@ -1,0 +1,35 @@
+﻿{
+  "id": "384d1f06-1cf6-4aeb-89ca-0061e945aa69",
+  "ok": false,
+  "error": {
+    "code": "selector_not_found",
+    "message": "selector_not_found",
+    "data": {
+      "selector": "37f2e099-3ae8-4df2-9574-e1b770a064e5::/home/tanzeel/elevateo-mail-rd-20261014/aster",
+      "validSelectorForms": [
+        "id:<repo-id>::<absolute-path>",
+        "path:<absolute-path>",
+        "name:<display-name>",
+        "branch:<branch>",
+        "identity:<identity-key>",
+        "issue:<number>",
+        "current",
+        "active"
+      ],
+      "suggestions": [
+        "id:37f2e099-3ae8-4df2-9574-e1b770a064e5::/home/tanzeel/elevateo-mail-rd-20261014/aster::<absolute-path>",
+        "name:37f2e099-3ae8-4df2-9574-e1b770a064e5::/home/tanzeel/elevateo-mail-rd-20261014/aster",
+        "branch:37f2e099-3ae8-4df2-9574-e1b770a064e5::/home/tanzeel/elevateo-mail-rd-20261014/aster"
+      ],
+      "nextSteps": [
+        "No Orca workspace matched the worktree selector \"37f2e099-3ae8-4df2-9574-e1b770a064e5::/home/tanzeel/elevateo-mail-rd-20261014/aster\".",
+        "Did you mean: id:37f2e099-3ae8-4df2-9574-e1b770a064e5::/home/tanzeel/elevateo-mail-rd-20261014/aster::<absolute-path>, name:37f2e099-3ae8-4df2-9574-e1b770a064e5::/home/tanzeel/elevateo-mail-rd-20261014/aster, branch:37f2e099-3ae8-4df2-9574-e1b770a064e5::/home/tanzeel/elevateo-mail-rd-20261014/aster",
+        "Valid selector forms: id:<repo-id>::<absolute-path>, path:<absolute-path>, name:<display-name>, branch:<branch>, identity:<identity-key>, issue:<number>, current, active.",
+        "List the exact values with `orca worktree list --json`; a bare repository id is not a worktree id."
+      ]
+    }
+  },
+  "_meta": {
+    "runtimeId": "7ac5f6b2-96ec-4df0-b4df-673efc85f5c1"
+  }
+}

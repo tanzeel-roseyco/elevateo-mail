@@ -1,0 +1,21 @@
+{
+  "id": "199211cd-a997-4c96-93f2-81186bb5e73a",
+  "ok": true,
+  "result": {
+    "terminal": {
+      "handle": "term_c2793fdb-b1bf-492c-b87b-5e7cd7d0fe91",
+      "tabId": "7805da3d-7373-483f-829f-4ee7cb87ebc7",
+      "paneKey": "7805da3d-7373-483f-829f-4ee7cb87ebc7:56c2e993-0b4a-4147-b158-e9287b26b833",
+      "ptyId": "3e4d4246-e3f8-41a1-954b-a9a8c5e90626::C:/Users/Tanzeel/Code and projects/Elevateo Mail - Mailserver R&D 20261014@@8f1579fe",
+      "worktreeId": "3e4d4246-e3f8-41a1-954b-a9a8c5e90626::C:/Users/Tanzeel/Code and projects/Elevateo Mail - Mailserver R&D 20261014",
+      "title": "Leonie",
+      "executionHostId": "local",
+      "incarnationId": "610bc387-01c9-45a9-9ae3-736b3eb988e9",
+      "hostPlatform": "win32",
+      "surface": "visible"
+    }
+  },
+  "_meta": {
+    "runtimeId": "396fae0f-6272-4785-a590-c66df65a0af0"
+  }
+}
