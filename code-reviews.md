@@ -283,3 +283,296 @@ Final provenance wording re-review: 28 documentation lines, 0 defects, 0/KLOC; S
 ## Claude CLI ultrareview checkpoint (2026-10-12)
 
 The user authorized a maximum of two ultrareviews across frontend and backend. Frontend source will be frozen on review/ultra/frontend-reader, with ce95e89 as the explicit base. Review launch/results are pending at this checkpoint. New ultrareview defects: not yet known; reviewed-line count and defect density are unavailable until results. Earlier review counts remain historical evidence. Current UI tests and actual visual validation remain pending.
+
+
+### FE-01-R1 regression-repair bounded review (2026-10-12)
+
+Parent-run bounded adversarial review of the repair diff: `apps/web/src/app/session.tsx` (reported
+181 reviewed lines, SHA `7d7b88d`), 0 defects (0/1,000); `apps/web/e2e/support.ts`, `read.spec.ts`
+and `production.spec.ts` (reported 260 reviewed lines), 0 repair defects (0/1,000). Unit-test-only
+repair files (`Shell.test.tsx`, `InboxPage.test.tsx`) await their own bounded assignments.
+
+One pre-existing evidence gap (not a repair defect) was found in the contrast spec: on mobile the
+`document.querySelector` sidebar-active measurement could read the `display:none` desktop rail
+after the drawer closed — token-identical colors, but not evidence of what the viewer sees. Fixed
+in `read.spec.ts`: below md the test reopens the drawer and measures the visible active link
+(chosen by non-empty client rects; a missing rendered copy now fails the must-measure check), then
+closes it via Escape. All four measured surfaces and the 4.5:1 threshold are unchanged; no UI
+change was needed. Current working-tree git blob hashes: session.tsx `2b536f04`, support.ts
+`a86459d3`, read.spec.ts `237cddad`, production.spec.ts `11047488`. Docker/browser re-validation
+of the repaired tree remains pending and parent-owned.
+
+
+### r7 fleet-02 Docker validation (2026-10-12)
+
+Lint, strict typecheck, 209 unit tests with coverage, production build and all 48 browser checks
+passed; exact task-owned Docker cleanup passed. This Docker-verifies the Stage-A micro-gap patches
+(Unicode code-point contract semantics including cursors/request ids, per-adapter caller-signal
+propagation, strict whole-seconds Retry-After parsing, 10s deadline boundaries) and keeps the
+r5/r6 read-checkpoint evidence current. Still open: human visual acceptance of the actual UI,
+automatic retry scheduler (absent; scheduling-horizon regression unresolved by design), real Rails
+integration and mutation flows. No further ultrareviews are authorized; the ledger reconciles
+against existing review output only. See docs/frontend-regression-repair-status.md for the
+per-finding reconciliation.
+
+### Bounded review of visual-states.spec.ts (2026-10-12, test-only; not executed)
+
+Scope: `apps/web/e2e/visual-states.spec.ts`, 176 primary LOC at SHA-256
+`803477aebce9d4474b85a5b6d744f76210be6781a7c371259aeac6db067fbbab` (bounded caller context read
+additionally, not counted). Merged code + dedicated design review: 4 unique defects / 176 LOC =
+22.73/KLOC (code 3/176 = 17.05/KLOC; design 2/176 = 11.36/KLOC; one finding overlapped). No
+execution evidence exists yet for this spec.
+
+1. (design) Missing matrix ready rows — shell-ready, inbox-ready, active unread filter,
+   hostile-plaintext reader — and the reduced-motion representative set used session-loading where
+   the matrix requests shell-ready. FIXED: four ready scenarios added (26 total), representative
+   set now {shell-ready, inbox-loading, reader-ready-hostile}; matrix updated to match.
+2. (design/code overlap) mailboxes-empty asserted only the general 'Simulated local mail' label.
+   FIXED: now asserts the loaded empty sidebar directly — 'No mailboxes are visible to you.'
+   inside the Mailboxes navigation, zero mailbox links, and absence of the loading status and any
+   alert.
+3. (code) Glob route `**/v1/mailboxes` does not match the continuation request
+   `/v1/mailboxes?cursor=…`, silently un-routing the second page. FIXED: all four routes use URL
+   pathname predicates, so query strings cannot defeat matching and `mailboxes` cannot shadow the
+   threads path.
+4. (code) Mobile readiness race at the sidebar-reveal step: an immediate `trigger.isVisible()`
+   after navigation could run before the ProtectedShell rendered and skip the drawer forever.
+   FIXED: the test awaits shell readiness, decides by the project's known viewport width (<768),
+   and asserts the opened Mailboxes dialog.
+
+Docs aligned in the same change: `docs/visual-qa-matrix.md` no longer claims a manual release step
+for held requests (they stay unanswered until teardown). Frozen r7 product source untouched; no
+Docker run (fleet-02 remains Codex-exclusive); repaired spec awaits the next parent snapshot.
+
+### Visual spec re-review round 2 (2026-10-12, test-only; not executed)
+
+Scope: repaired `apps/web/e2e/visual-states.spec.ts` at 229 LOC. Findings: code 2/229, design
+1/229 (final design review pending). All three repaired:
+
+1. (code) The pagination capture could race ahead of the first page's response: nothing proved
+   the `cursor_visual_page_2` continuation request had been issued (and held) before the
+   screenshot. FIXED: new `awaitRequest` support — a `page.waitForRequest` predicate registered
+   BEFORE navigation and awaited before the capture.
+2. (code) The unread-filter scenario served the same mixed list under a highlighted pill. FIXED:
+   the threads route is now URL-aware — `filter=unread` receives an unread-only payload; the test
+   awaits the `filter=unread` request, asserts the two unread rows visible and the read row
+   (`Visual conversation 2`) excluded (count 0), plus `aria-current` on the pill.
+3. (design) No populated ready drawer-open-over-content capture existed (only loading/error/empty
+   drawer states). FIXED: `drawer-open-populated` scenario — mobile-only (skipped at ≥768px),
+   ready inbox content behind an opened Mailboxes dialog containing the mailbox link; the theme
+   loop covers the dark×390 cell.
+
+Frozen r7 product source untouched; no Docker; spec awaits the next parent snapshot/validation.
+
+### Visual spec final re-reviews — PASS, spec frozen (2026-10-12)
+
+Both independent re-reviews passed the repaired spec at SHA-256
+`2b0fedfbfdfd5a9a5b4ab93ba2916ff4a1ac164419d68b9c896da76e4f606eb5` (267 LOC, git blob
+`47e34414`): the code review covered 267 LOC with zero defects; the dedicated design review
+covered the same 267 LOC plus the 109-line `docs/visual-qa-matrix.md` with zero code defects.
+Coverage accounting without double-counting: unique primary lines reviewed in this final round are
+267 (spec) + 109 (matrix) = 376; the spec's 267 lines were covered by BOTH reviewers (overlapping
+coverage recorded, counted once), and the earlier round-1/round-2 findings (4 + 3, all repaired
+above) remain the cumulative defect history for this file. The spec is FROZEN at this hash; no
+execution evidence exists yet — capture/inspection follows the next fleet-02 validation run.
+
+### r8 fleet-02 validation + visual spec scoping defect and repair (2026-10-12)
+
+r8 run (task `fe01r1-20261011-221953-633b2120`, archive `736bf531…e5e2d0`): unit stage PASS
+(lint, typecheck, 209 units, coverage, build, marker scan); browser stage 156 passed / 4 failed /
+50 skipped (skip pattern exactly as proposed); runner cleanup EXACT (`cleanup_failed=0`, all
+task-named containers/images/builder/cache volume removed; remaining elevateo resources on
+fleet-02 are pre-existing other-project stacks, none task-owned). 108 of 112 visual PNGs captured.
+
+Defect (1 test-scoping defect / 267 LOC, found by execution): all 4 failures are narrow-390
+`mailboxes-error`/`mailboxes-empty` (both themes) at the line-260 text expectation.
+`Shell.tsx:184` permanently renders the desktop sidebar (`hidden md:block`) before the drawer's
+copy, so a page-global `getByText(...).first()` selects the display:none aside duplicate and
+fails `toBeVisible` although the drawer visibly shows the text — corroborated by the parent's
+inspection of the copied `test-failed-1.png` (drawer open, "No mailboxes are visible to you."
+rendered). Role-based locators were unaffected (display:none drops the aside from the
+accessibility tree), which is why only text expectations failed. REPAIRED: sidebar-state text
+expectations are scoped to the open Mailboxes dialog below md (`textScope`); `toBeVisible` stays
+strict; drawer opening/proof at line ~247 was already correct. New spec: 275 LOC, SHA-256
+`f84265524cf4ecfd7c8493a620073ac9576cb26be6f7277ea2a8af6818725de3`. A full visual rerun (r9)
+remains REQUIRED — the 4 missing matrix cells have no passing capture; the 108 passing PNGs stand.
+
+### Scoping repair re-reviews — PASS (2026-10-12, static only)
+
+Both independent reviews passed the scoping repair: code review and dedicated design review, each
+0 defects over the SAME 97 unique primary LOC (`visual-states.spec.ts:220-275` = 56 LOC at
+SHA-256 `f84265524cf4ecfd7c8493a620073ac9576cb26be6f7277ea2a8af6818725de3`, unchanged by review;
+`Shell.tsx:160-200` = 41 LOC read-only context at blob
+`d54334af6ff92a0d5fb142a3a9e35512ac773b3df13021e76bc3c622978d6b0d`). Density 0/KLOC. Overlapping
+coverage recorded as 97 unique lines, not 194. Design review confirms the repair stays strict: a
+missing or hidden-only Mailboxes dialog still fails (`toBeVisible` on the dialog-scoped text), and
+the <768 breakpoint coupling mirrors the existing Shell/support.ts convention rather than adding a
+new one. Obsidian unavailable; analytical comparison only — this is static acceptance. The r9 full
+Docker matrix (after the backend releases fleet-02) must eliminate the 4 failures with NO new
+skips to close the evidence.
+
+### r9 result, overbroad-scope defect, and r10 reviews — PASS (2026-10-12)
+
+r9 (task `fe01r1-20261011-224141-7335f889`, archive `ffc7497a…962744`): unit PASS; browser
+**158 passed / 2 failed / 50 skipped** (56.7 s); cleanup exact (`cleanup_failed=0`, all task
+resources confirmed gone); 110 of 112 PNGs. The 4 r8 sidebar failures are ELIMINATED. The 2 new
+failures are one defect introduced by the r8 scoping repair: the dialog `textScope` was applied to
+EVERY revealSidebar narrow scenario, including `drawer-open-populated`, whose content proof
+('Visual conversation 1') renders behind the overlay OUTSIDE the dialog — the dialog-scoped
+lookup found nothing. REPAIRED: that scenario's text expectation now names dialog content
+('Visual mailbox') and the behind-content row is proven page-scoped in its assert via rendered
+text (Radix marks modal background aria-hidden, so role queries cannot see it). Also the r8
+leftover volume `fe01r8-probes-stage` was inspected in a disposable container (empty, zero
+mounts), removed and confirmed gone.
+
+r10 bounded reviews: code and dedicated design both PASS at SHA-256
+`4ed59502f3c27be95e95365fa77befabdfe82ae72af6c90333aa6b5989b5fd67` (281 LOC), 58 unique physical
+LOC reviewed (128-147, 244-281; overlapping coverage counted once, not 116), zero confirmed
+defects, 0/KLOC. Explicit mixed-scope assertions judged appropriate. Noted limitation:
+`toBeVisible` proves layout visibility, not absence of overlay occlusion — actual screenshots
+remain required evidence. Spec FROZEN at this hash as the sole r10 snapshot delta. r10 acceptance
+(to be observed, not assumed): 209 units, 160 browser passed, 50 expected skips, 112 captures,
+exact cleanup.
+
+### r10 staging verification and probe-exit correction (2026-10-12)
+
+Parent independently verified all 58 r10 archive entries against the manifest and the sole
+r9→r10 delta (the reviewed spec hash). r10 archive `5a17b32b6346124f88d3e9662e74f1feee7e28c08aa90c1ecd2d20cdb044c4b1`;
+runner byte-identical (`dcaa2bc9…`). Probe-exit defect in MY staging invocation (not the frozen
+runner): `probes.sh | tail` reported tail's status, not Docker's. Re-ran with full output
+preserved (`r10-fe01/probes-r10.log`, 16 lines, 15 PASS) and explicit capture:
+docker-probes-exit=0. The earlier r8/r9 probe invocations used the same pipeline shape; their
+PASS lines were printed by the probes themselves, but their recorded exits carry the same caveat.
+
+Additional r8 visual sampling by the parent: desktop-light-reader-ready-hostile and
+narrow-390-dark-reader-ready-hostile — literal hostile markup visible as inert text, no obvious
+layout defects; sample observations only, not full acceptance.
+
+### r10 fleet-02 validation — PASS; attested cleanup (2026-10-12)
+
+r10 (task `fe01r1-20261011-225114-b4aee6cb`, archive `5a17b32b…44c4b1`, sole delta the reviewed
+spec `4ed59502…`): runner exit 0, `cleanup_failed=0`. Unit: 209 tests / 14 files passed.
+Browser: **160 passed / 0 failed / 50 expected skips** (54.4 s); **112/112 visual PNGs** captured.
+The r9 drawer-open-populated failures and the r8 sidebar failures are all eliminated with no new
+skips — acceptance bar met by observation. Guard probes: docker-probes-exit=0 with full log
+preserved (`probes-r10.log`, 15/15 PASS). Cleanup attestation (read-only, per-command exits
+captured; an earlier CR-terminated compound inventory and grep-pipeline forms are NOT claimed):
+ssh exit 0; docker ps/images/volume-ls/buildx-ls each exit 0 with full inventories preserved
+(`r10-fe01/inv-*.txt`: 303/67/246/3 lines); zero matches for task names, `fe01r10*`, or
+`fe01r8-probes-stage`; no elevateo-bx builders, default buildx only. Parent independently read the
+same PASS counts and visually inspected both narrow-390 drawer-open-populated themes (no layout
+defects; two-state sample only, not full acceptance).
+
+### Light-theme skeleton + badge-overflow repairs — FROZEN for bounded review (2026-10-12)
+
+Visual QA findings (r10 captures; parent-confirmed root cause): (1) light `--surface-2` equals
+`--bg` (#f4f4f5), so `bg-surface-2` skeleton bars were INVISIBLE on canvas screens —
+session-loading/session-recovering entirely blank, inbox/reader loading content regions blank —
+in desktop-light and narrow-light alike (this session's narrow-light inspection corroborates);
+animate-pulse only modulates opacity of the invisible color. Dark theme unaffected. The
+mailboxes skeleton was visible only because the sidebar sits on `--surface` #ffffff. (2) Both
+reader footer badges overflow a 390px viewport (footer lacked flex-wrap).
+
+Repairs (approved FE bug-fix scope; r7 source freeze superseded by this authorization):
+- `apps/web/src/styles/index.css` — new `--skeleton` token (light #e4e4e7, distinct from canvas
+  #f4f4f5 and panel #ffffff; dark #2f3035 unchanged behavior) mapped as `--color-skeleton`, in
+  all three theme blocks; AIDEV note records the defect.
+- `apps/web/src/ui/Async.tsx` — Skeleton uses `bg-skeleton`; AIDEV note; reduced-motion global
+  rule untouched (animate-pulse still stilled under reduce).
+- `apps/web/src/features/thread/ThreadPage.tsx` — footer `flex flex-wrap gap-2`.
+- `apps/web/e2e/visual-states.spec.ts` — meaningful regressions, geometry/visibility not class
+  equality: `assertSkeletonContrasts` proves the bar's COMPUTED background differs from the first
+  painted background behind it, attached to all four skeleton scenarios (canvas AND panel
+  surfaces, both themes via the theme loop); reader-truncated-badges asserts both badges'
+  bounding boxes fit the viewport width.
+
+Frozen for bounded adversarial + design review (no Docker until reviewed; no new runtime used):
+| file | LOC | SHA-256 |
+| --- | --- | --- |
+| apps/web/src/styles/index.css | 147 | 5d00d5ae76e61e55525a120580d572df2865bab710ade2053cf44b167fa151a3 |
+| apps/web/src/ui/Async.tsx | 45 | d6252d68e4b94ad22766e792a9cdf882391ccf22374478a91279110b08e47f5c |
+| apps/web/src/features/thread/ThreadPage.tsx | 198 | e529eca8a77e34bc735ec707fe9da7900ff2731a48c03b9b57995c5c8a9715df |
+| apps/web/e2e/visual-states.spec.ts | 320 | 160e321ed0df4ab83b89dea7126e31dc3682e8747857dc528e38604eb505301b |
+
+r10 evidence preserved untouched; full visual acceptance is NOT claimed (parent-assigned all-27
+narrow-light inspection proceeding independently; this session's own narrow-light observations:
+session-loading/recovering blank (the defect), shell/inbox/unread/reader-hostile/mailboxes
+loading-paginated-empty-error/inbox-empty all otherwise correct).
+
+### Skeleton-repair bounded reviews + oracle P2 fix — test slice re-frozen (2026-10-12)
+
+Review results: product review 174 LOC zero confirmed defects; dedicated design review the SAME
+174 LOC (overlapping, counted once) zero confirmed defects; test review exactly 200 LOC
+(visual-states 91-159, 190-320) found ONE P2. Unique reviewed coverage 374 LOC, 1 defect,
+2.67/KLOC overall (test slice 5.0/KLOC). Product and design hashes matched the frozen table.
+
+P2 (oracle): `assertSkeletonContrasts` compared raw color strings, so a fully transparent
+`rgba(0,0,0,0)` fill would PASS (it differs textually from an opaque parent) while painting
+nothing; `toBeVisible` does not prove a painted fill. FIXED narrowly: shared `CONTRAST_PROBE`
+rejects alpha-0 fills outright, otherwise alpha-composites the fill over the first opaque
+backdrop and requires a non-zero effective channel delta; unparseable colors fail closed. In-spec
+oracle regression added: transparent fill fails, a 50%-white-over-white no-op composite fails, a
+distinct opaque fill passes.
+
+Recorded LIMITATION (not a defect): under the reduced-motion project the representative set
+covers the inbox skeleton in both themes, but the reader skeleton and attachment-badge geometry
+checks are skipped there; geometry checks prove viewport containment only (no overlap/ordering
+claims).
+
+Re-frozen test slice for re-review before r11: `apps/web/e2e/visual-states.spec.ts` 350 LOC,
+SHA-256 `1c8f1f3ddd67b98f9b97b92ad498e7a43586d27156f0ba4bc0dda2eac876771a`. Product files unchanged from the reviewed freeze (index.css `5d00d5ae…`,
+Async.tsx `d6252d68…`, ThreadPage.tsx `e529eca8…`). No Docker; r10 evidence preserved.
+
+### Oracle P2 closure — final re-reviews PASS (2026-10-12)
+
+Final 57-LOC adversarial and design re-reviews both PASS with zero confirmed defects at visual
+spec SHA-256 `1c8f1f3ddd67b98f9b97b92ad498e7a43586d27156f0ba4bc0dda2eac876771a` (unchanged).
+The original P2 is CLOSED STATICALLY within the current opaque-hex theme scope: no perceptual
+(ΔE/WCAG) contrast claim and no fresh runtime evidence is implied. Wording correction to the
+previous entry (ledger only; implementation and reviewed bytes untouched): the probe selects the
+first NON-TRANSPARENT ancestor (computed alpha > 0), not strictly the first opaque one; with the
+current themes every such ancestor is opaque hex, which is the scope the closure rests on.
+
+### r11 fleet-02 validation — PASS; repairs visually verified; attested cleanup (2026-10-12)
+
+r11 (task `fe01r1-20261011-232744-84542099`, archive `0eedf661…b0a350`, delta = the four reviewed
+repair files): runner exit 0, `cleanup_failed=0`. Preflight verified daemon identity
+(Ubuntu-noble…zst, 29.6.2) and task-name absence with per-command exits before any mutation.
+Probes 15/15, docker-probes-exit=0, log preserved. Unit 209/14 PASS. Browser **163 passed / 0
+failed / 50 expected skips** (55.7 s) — acceptance met by observation, including the new contrast
+oracle regression ×3 projects. 112/112 PNGs retrieved locally.
+
+Visual verification of the repairs (inspected captures, light theme): session-loading and
+session-recovering now show skeleton bars on the canvas at desktop and narrow; inbox-loading and
+reader-loading content skeletons visible; narrow truncated badges wrap within the viewport (both
+themes, parent-inspected); dark theme unchanged and correct (spot-checked). The blank
+reduced-motion session-loading `test-finished` frame is NOT a defect: `screenshot: 'on'` captures
+even tests skipped before navigation, and session-loading is intentionally outside the
+reduced-motion representative set — recorded as the existing coverage limitation. This remains
+targeted verification of the repaired cells plus samples, not full 112-capture human acceptance.
+
+Cleanup attestation (per-command exits): ssh 0; ps/images/volumes/buildx each 0; inventories
+preserved (`r11-fe01/inv-*.txt`); zero matches for `fe01r11`, the task id, `elevateo-bx` or
+`elevateo-web`; default buildx only. Fleet-02 released after retrieval.
+
+### r11 full visual QA — all 112 captures individually inspected, 112/112 PASS (2026-10-12)
+
+Authorized manual agent visual verification, local-only (no fleet/Docker use, no frontend code
+change). Every r11 PNG under `Elevateo Mail - FE Validation 20261012-r11/results-fe01r11/
+e2e-results/visual/` was opened individually at full resolution: desktop-light 26, desktop-dark
+26, narrow-390-light 27, narrow-390-dark 27, reduced-motion 6. Zero defects. r10 acceptance was
+treated as historical; the r11 set was verified itself. Confirmations: light skeletons #e4e4e7
+visible on canvas and white surfaces at both viewports; dark skeletons #2f3035 visible and
+unchanged; narrow truncated badges wrap inside 390px in both themes; hostile plaintext inert in
+all four captured contexts; unread filter shows only unread rows with the active pill; all
+empty/error/unavailable/cursor-continuation copy and actions correct. Acceptance observations
+(as-designed, not defects): mailboxes-error replaces sidebar/drawer content with bare raw error
+text + Try again (Shell.tsx:170-174); reader header "3 messages in this conversation" with one
+rendered message is a synthetic fixture artifact (message_count: 3). Limitations recorded:
+static images do not prove interaction; reduced-motion covers only the three representative rows
+per theme (no reduced-motion session-loading capture by design); geometry assertions prove
+viewport containment only; contrast oracle closed statically within the opaque-hex theme scope.
+Docs synchronized: visual-qa-matrix.md (status COMPLETE at agent inspection level),
+frontend-regression-repair-status.md (full QA section; superseded "pending full suite" language
+replaced). This is agent visual verification of the FE01 read checkpoint, not whole-application
+acceptance.

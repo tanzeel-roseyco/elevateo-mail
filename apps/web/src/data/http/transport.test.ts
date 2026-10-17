@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { z } from 'zod'
-import { MAX_BYTES } from '../contract'
+import { MAX_BYTES, MAX_REQUEST_BYTES } from '../contract'
 import { GatewayError } from '../errors'
 import { requestJson, REQUEST_TIMEOUT_MS, type FetchLike } from './transport'
 
@@ -129,5 +129,73 @@ describe('content type and byte boundaries', () => {
   it('uses the error budget independently of the success budget', async () => {
     await expect(request(new Response('x'.repeat(MAX_BYTES.error + 1), { status: 500, headers }), undefined, MAX_BYTES.thread))
       .rejects.toMatchObject({ code: 'oversized' })
+  })
+})
+
+// BE-02A: bounded same-origin JSON POST. The proof header is the only addition; Origin is the
+// browser's own forbidden header and must never appear in the init we hand to fetch.
+describe('json post', () => {
+  function capture(response: Response) {
+    const fetchImpl = vi.fn<FetchLike>(async () => response)
+    return { fetchImpl, init: () => fetchImpl.mock.calls[0]?.[1] }
+  }
+
+  it('sends method, JSON content type, serialized body and the proof header; never Origin', async () => {
+    const { fetchImpl, init } = capture(new Response(json, { headers }))
+    await expect(requestJson('/v1/auth/login', schema, 1024, { fetchImpl, body: { email: 'a@example.test', password: 'p' }, headers: { 'X-CSRF-Token': 'synthetic_challenge_token_00000001' } }))
+      .resolves.toEqual({ value: 'ok' })
+    const sent = init()!
+    expect(sent.method).toBe('POST')
+    expect(sent.credentials).toBe('same-origin')
+    expect(sent.cache).toBe('no-store')
+    expect(sent.redirect).toBe('manual')
+    expect(sent.body).toBe('{"email":"a@example.test","password":"p"}')
+    const sentHeaders = sent.headers as Record<string, string>
+    expect(sentHeaders['Content-Type']).toBe('application/json')
+    expect(sentHeaders['X-CSRF-Token']).toBe('synthetic_challenge_token_00000001')
+    expect(Object.keys(sentHeaders).map((k) => k.toLowerCase())).not.toContain('origin')
+  })
+
+  it('a GET carries neither a body nor a JSON content type', async () => {
+    const { fetchImpl, init } = capture(new Response(json, { headers }))
+    await requestJson('/v1/session', schema, 1024, { fetchImpl })
+    expect(init()!.method).toBe('GET')
+    expect(init()!.body).toBeUndefined()
+    expect((init()!.headers as Record<string, string>)['Content-Type']).toBeUndefined()
+  })
+
+  it('accepts 202 as success and keeps rejecting redirects for POST', async () => {
+    await expect(requestJson('/v1/auth/recovery', schema, 1024, { fetchImpl: async () => new Response(json, { status: 202, headers }), body: {} })).resolves.toEqual({ value: 'ok' })
+    const { response, cancel } = streamResponse('application/json', 303)
+    await expect(requestJson('/v1/auth/accept', schema, 1024, { fetchImpl: async () => response, body: {} })).rejects.toMatchObject({ code: 'redirected' })
+    expect(cancel).toHaveBeenCalledOnce()
+  })
+
+  it('bounds the serialized request at exactly 8 KiB and never dispatches a larger one', async () => {
+    const fetchImpl = vi.fn(async () => new Response(json, { headers }))
+    const overhead = '{"password":""}'.length
+    const fits = { password: 'x'.repeat(MAX_REQUEST_BYTES - overhead) }
+    const over = { password: 'x'.repeat(MAX_REQUEST_BYTES - overhead + 1) }
+    await expect(requestJson('/v1/auth/login', schema, 1024, { fetchImpl, body: fits })).resolves.toEqual({ value: 'ok' })
+    await expect(requestJson('/v1/auth/login', schema, 1024, { fetchImpl, body: over })).rejects.toMatchObject({ kind: 'transport', code: 'oversized' })
+    expect(fetchImpl).toHaveBeenCalledTimes(1)
+  })
+
+  it('counts request bytes in UTF-8, not characters', async () => {
+    const fetchImpl = vi.fn(async () => new Response(json, { headers }))
+    const overhead = '{"password":""}'.length
+    const fourBytesEach = '\u{1F48C}'.repeat(Math.floor((MAX_REQUEST_BYTES - overhead) / 4) + 1) // over by bytes, under by chars
+    await expect(requestJson('/v1/auth/login', schema, 1024, { fetchImpl, body: { password: fourBytesEach } })).rejects.toMatchObject({ code: 'oversized' })
+    expect(fetchImpl).not.toHaveBeenCalled()
+  })
+
+  it('an API error from a POST carries status, code and request id but never the request body', async () => {
+    const error = { code: 'unauthenticated', message: 'Rejected.', request_id: 'r-9' }
+    const fetchImpl: FetchLike = async () => new Response(JSON.stringify(error), { status: 401, headers })
+    const caught: unknown = await requestJson('/v1/auth/login', schema, 1024, { fetchImpl, body: { password: 'hunter2hunter2' } }).catch((e: unknown) => e)
+    expect(caught).toBeInstanceOf(GatewayError)
+    expect(caught).toMatchObject({ kind: 'api', code: 'unauthenticated', status: 401, requestId: 'r-9' })
+    expect(JSON.stringify(caught)).not.toContain('hunter2')
+    expect((caught as GatewayError).message).not.toContain('hunter2')
   })
 })

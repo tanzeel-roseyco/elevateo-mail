@@ -94,7 +94,9 @@ describe('continuation and reset (FE-R08/R09)', () => {
     await screen.findByText('Nothing on this page')
     const more = screen.getByRole('button', { name: 'Show more conversations' })
     fireEvent.click(more)
-    await screen.findByText(/Late arrival/)
+    // Row queries target the link's accessible name: a bare subject regex would also match the
+    // "<subject> preview" span and make the text query ambiguous.
+    await screen.findByRole('link', { name: /Late arrival/ })
     expect(screen.queryByRole('button', { name: 'Show more conversations' })).toBeNull()
   })
 
@@ -111,11 +113,12 @@ describe('continuation and reset (FE-R08/R09)', () => {
       threadPage(['Fresh row'], null),
     ])
     renderInbox(gateway)
-    await screen.findByText(/Stale row/)
+    await screen.findByRole('link', { name: /Stale row/ })
     fireEvent.click(screen.getByRole('button', { name: 'Show more conversations' }))
-    await screen.findByText(/Fresh row/)
-    // The pre-reset accumulation was discarded, not merged under the fresh page (FE-R08).
-    expect(screen.queryByText(/Stale row/)).toBeNull()
+    await screen.findByRole('link', { name: /Fresh row/ })
+    // The pre-reset accumulation was discarded, not merged under the fresh page (FE-R08): neither
+    // its subject nor its preview text remains anywhere.
+    expect(screen.queryAllByText(/Stale row/)).toHaveLength(0)
     expect(readCalls()).toBe(3)
   })
 
@@ -128,15 +131,15 @@ describe('continuation and reset (FE-R08/R09)', () => {
       threadPage(['After retry'], null),
     ])
     renderInbox(gateway)
-    await screen.findByText(/Page one/)
+    await screen.findByRole('link', { name: /Page one/ })
     fireEvent.click(screen.getByRole('button', { name: 'Show more conversations' }))
-    await screen.findByText(/Reset page/)
+    await screen.findByRole('link', { name: /Reset page/ })
     expect(readCalls()).toBe(3)
     fireEvent.click(screen.getByRole('button', { name: 'Show more conversations' }))
     await screen.findByText('Conversations could not be loaded')
     expect(readCalls()).toBe(4)
     fireEvent.click(screen.getByRole('button', { name: 'Try again' }))
-    await screen.findByText(/After retry/)
+    await screen.findByRole('link', { name: /After retry/ })
     expect(readCalls()).toBe(5)
   })
 
@@ -144,9 +147,9 @@ describe('continuation and reset (FE-R08/R09)', () => {
     // 'Repeat' shares its id across both pages, as a concurrently reordered summary would.
     const { gateway } = pagedGateway([threadPage(['Repeat'], 'c1'), threadPage(['Repeat', 'Second'], null)])
     renderInbox(gateway)
-    await screen.findByText(/Repeat/)
+    await screen.findByRole('link', { name: /Repeat/ })
     fireEvent.click(screen.getByRole('button', { name: 'Show more conversations' }))
-    await screen.findByText(/Second/)
+    await screen.findByRole('link', { name: /Second/ })
     await waitFor(() => expect(screen.getAllByText(/Repeat preview/).length).toBe(1))
   })
 
@@ -181,13 +184,13 @@ describe('cross-navigation stale outcomes (D4)', () => {
     renderAThenB(() => new Promise<ThreadPage>((resolve) => (resolveA = resolve)), threadPage(['B row'], null))
     await waitFor(() => expect(resolveA).toBeDefined()) // A's request is actually pending
     fireEvent.click(screen.getByText('go to B'))
-    await screen.findByText(/B row/)
+    await screen.findByRole('link', { name: /B row/ })
 
     await act(async () => resolveA!(threadPage(['A stale row'], 'cA')))
     // Without the success ownership guard, A's late page would replace B's rows and its stale
     // cursor would offer a continuation, while row links point at mailbox B (P1 stale success).
-    expect(screen.queryByText(/A stale row/)).toBeNull()
-    expect(screen.getByText(/B row/)).toBeTruthy()
+    expect(screen.queryAllByText(/A stale row/)).toHaveLength(0)
+    expect(screen.getByRole('link', { name: /B row/ })).toBeTruthy()
     expect(screen.queryByRole('button', { name: 'Show more conversations' })).toBeNull()
     expect(screen.getByRole('link', { name: /B row/ }).getAttribute('href')).toContain(MB2)
   })
@@ -197,12 +200,12 @@ describe('cross-navigation stale outcomes (D4)', () => {
     renderAThenB(() => new Promise<ThreadPage>((_resolve, reject) => (rejectA = reject)), threadPage(['B row'], null))
     await waitFor(() => expect(rejectA).toBeDefined())
     fireEvent.click(screen.getByText('go to B'))
-    await screen.findByText(/B row/)
+    await screen.findByRole('link', { name: /B row/ })
 
     await act(async () => rejectA!(new GatewayError('api', 'not_available', 'synthetic', { status: 404, requestId: 'r1' })))
     expect(screen.queryByText('This mailbox is unavailable')).toBeNull()
     expect(screen.queryByText('Conversations could not be loaded')).toBeNull()
-    expect(screen.getByText(/B row/)).toBeTruthy()
+    expect(screen.getByRole('link', { name: /B row/ })).toBeTruthy()
   })
 })
 
@@ -222,7 +225,9 @@ describe('resource ownership (D3)', () => {
       frames.push({
         mailboxId,
         filter: searchParams.get('filter'),
-        staleRowVisible: screen.queryByText(staleText) !== null,
+        // queryAll: the stale subject regex also matches its "<subject> preview" span, and a
+        // single-match query would throw inside this layout effect on multiple matches.
+        staleRowVisible: screen.queryAllByText(staleText).length > 0,
         loadingVisible: screen.queryByLabelText('Loading conversations') !== null,
       })
     })
@@ -260,7 +265,7 @@ describe('resource ownership (D3)', () => {
     }
     const frames: Frame[] = []
     renderWithProbe(gateway, frames, /A row/, `/mailboxes/${MB2}`)
-    await screen.findByText(/A row/) // mailbox A is fully loaded, not merely pending
+    await screen.findByRole('link', { name: /A row/ }) // mailbox A is fully loaded, not merely pending
     fireEvent.click(screen.getByText('navigate'))
     const firstB = frames.find((frame) => frame.mailboxId === MB2)
     // The very first frame committed under mailbox B's URL must already be fresh loading state:
@@ -271,7 +276,7 @@ describe('resource ownership (D3)', () => {
     expect(firstB!.loadingVisible).toBe(true)
     await waitFor(() => expect(resolveB).toBeDefined())
     await act(async () => resolveB!(threadPage(['B row'], null)))
-    await screen.findByText(/B row/)
+    await screen.findByRole('link', { name: /B row/ })
     // A's accumulated cursor did not survive into B's traversal.
     expect(screen.queryByRole('button', { name: 'Show more conversations' })).toBeNull()
   })
@@ -286,7 +291,7 @@ describe('resource ownership (D3)', () => {
     }
     const frames: Frame[] = []
     renderWithProbe(gateway, frames, /All row/, `/mailboxes/${MB}?filter=unread`)
-    await screen.findByText(/All row/)
+    await screen.findByRole('link', { name: /All row/ })
     fireEvent.click(screen.getByText('navigate'))
     const firstUnread = frames.find((frame) => frame.filter === 'unread')
     expect(firstUnread).toBeDefined()
@@ -294,8 +299,8 @@ describe('resource ownership (D3)', () => {
     expect(firstUnread!.loadingVisible).toBe(true)
     await waitFor(() => expect(resolveUnread).toBeDefined())
     await act(async () => resolveUnread!(threadPage(['Unread row'], null)))
-    await screen.findByText(/Unread row/)
-    expect(screen.queryByText(/All row/)).toBeNull()
+    await screen.findByRole('link', { name: /Unread row/ })
+    expect(screen.queryAllByText(/All row/)).toHaveLength(0)
   })
 
   it('a late continuation failure from a loaded previous mailbox leaks no error and spends no recovery', async () => {
@@ -317,17 +322,17 @@ describe('resource ownership (D3)', () => {
     }
     const frames: Frame[] = []
     renderWithProbe(gateway, frames, /A row/, `/mailboxes/${MB2}`)
-    await screen.findByText(/A row/)
+    await screen.findByRole('link', { name: /A row/ })
     fireEvent.click(screen.getByRole('button', { name: 'Show more conversations' }))
     await waitFor(() => expect(rejectA).toBeDefined())
     fireEvent.click(screen.getByText('navigate'))
-    await screen.findByText(/B row/)
+    await screen.findByRole('link', { name: /B row/ })
     const sessionReadsBefore = sessionReads
     await act(async () => rejectA!(new GatewayError('api', 'context_changed', 'synthetic', { status: 409, requestId: 'r1' })))
     // The stale 409 from A's traversal must not start session recovery for the current context,
     // surface an error on B, or clear B's rows (D2 stale failure, D3 ownership).
     expect(sessionReads).toBe(sessionReadsBefore)
     expect(screen.queryByRole('alert')).toBeNull()
-    expect(screen.getByText(/B row/)).toBeTruthy()
+    expect(screen.getByRole('link', { name: /B row/ })).toBeTruthy()
   })
 })

@@ -1,5 +1,6 @@
 // Authored, not executed: coordinator runs these in the pinned Playwright container (R6).
 import { expect, test } from '@playwright/test'
+import { expectMailboxNavReady, openMailbox } from './support'
 
 const ENTRY = '/dev-fixtures.html'
 
@@ -12,8 +13,8 @@ test('fixture entry is visibly labelled and shows the simulated-mail indicator',
 
 test('keyboard traversal: skip link, mailbox, conversation, reader focus', async ({ page }) => {
   await page.goto(ENTRY)
-  await expect(page.getByRole('navigation', { name: 'Mailboxes' })).toBeVisible()
-  await page.getByRole('link', { name: 'Fixture inbox' }).click()
+  await expectMailboxNavReady(page)
+  await openMailbox(page, 'Fixture inbox')
   const thread = page.locator('a[data-thread]').first()
   await expect(thread).toBeVisible()
   await thread.focus()
@@ -36,7 +37,7 @@ test('no horizontal overflow at 390px and readable empty state', async ({ page }
 
 test('real keyboard traversal: Tab reaches the skip link, Enter lands on main', async ({ page }) => {
   await page.goto(ENTRY)
-  await expect(page.getByRole('navigation', { name: 'Mailboxes' })).toBeVisible()
+  await expectMailboxNavReady(page)
   await page.keyboard.press('Tab')
   await expect(page.getByRole('link', { name: 'Skip to content' })).toBeFocused()
   await page.keyboard.press('Enter')
@@ -45,7 +46,7 @@ test('real keyboard traversal: Tab reaches the skip link, Enter lands on main', 
 
 test('real keyboard navigation: Tab reaches a conversation row and Enter opens its reader', async ({ page }) => {
   await page.goto(ENTRY)
-  await page.getByRole('link', { name: 'Fixture inbox' }).click()
+  await openMailbox(page, 'Fixture inbox')
   const firstThread = page.locator('a[data-thread]').first()
   await expect(firstThread).toBeVisible()
   // Walk real Tab stops until the first conversation link holds focus; bounded so a broken tab
@@ -126,17 +127,107 @@ for (const theme of ['light', 'dark'] as const) {
     await page.evaluate((t) => {
       document.documentElement.setAttribute('data-theme', t)
     }, theme)
-    await page.getByRole('link', { name: 'Fixture inbox' }).click()
-    await expect(page.getByRole('link', { name: 'Unread' })).toBeVisible()
-    const ratios = await page.evaluate(() => {
-      const luminance = (rgb: string): number => {
-        const parts = rgb.match(/\d+(\.\d+)?/g)
-        if (!parts || parts.length < 3) throw new Error(`Unparseable color: ${rgb}`)
-        const [r, g, b] = parts.slice(0, 3).map((v) => {
-          const c = Number(v) / 255
-          return c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4
-        }) as [number, number, number]
+    await openMailbox(page, 'Fixture inbox')
+    // exact: a substring 'Unread' would also match conversation rows carrying the Unread badge.
+    await expect(page.getByRole('link', { name: 'Unread', exact: true })).toBeVisible()
+    // Below md the rail copy of the sidebar is display:none, so the active-link measurement must
+    // come from the reopened drawer's visible copy — measuring the hidden rail is not evidence of
+    // what the viewer sees. The filter pill stays rendered beneath the modal and measures as-is.
+    const trigger = page.getByRole('button', { name: 'Open mailbox menu' })
+    const drawerPresentation = await trigger.isVisible()
+    if (drawerPresentation) {
+      await trigger.click()
+      await expect(page.getByRole('dialog', { name: 'Mailboxes' })).toBeVisible()
+    }
+    // Transition settling: a background-color mid-transition reports its interpolated value
+    // (serialized as oklab in Chromium), so every FINITE animation/transition is deliberately
+    // awaited to completion (infinite ones, e.g. the skeleton pulse, never end and are skipped);
+    // a bounded deadline prevents a hang, and two frames then flush the settled computed styles.
+    await page.evaluate(async () => {
+      // The rejecting deadline RACES the pending waits, so a finite animation that outlives it
+      // fails the test rather than letting an unsettled color be measured; the timer is cleaned
+      // up either way. A cancelled animation resolves its wait deliberately (`finished.catch`):
+      // cancellation also ends interpolation, so its computed value is settled.
+      const deadlineMs = 5000
+      let timer: ReturnType<typeof setTimeout> | undefined
+      const expiry = new Promise<never>((_, reject) => {
+        timer = setTimeout(() => reject(new Error(`finite animations still running after ${deadlineMs}ms; refusing to measure unsettled colors`)), deadlineMs)
+      })
+      try {
+        for (;;) {
+          const pending = document.getAnimations().filter((a) => {
+            const timing = a.effect?.getComputedTiming()
+            return timing !== undefined && timing.endTime !== Infinity && a.playState === 'running'
+          })
+          if (pending.length === 0) break
+          await Promise.race([Promise.all(pending.map((a) => a.finished.catch(() => {}))), expiry])
+        }
+      } finally {
+        clearTimeout(timer)
+      }
+      await new Promise<void>((done) => requestAnimationFrame(() => requestAnimationFrame(() => done())))
+    })
+    const measured = await page.evaluate(() => {
+      // Fail-closed color handling. Computed values arrive as rgb()/rgba() (0–255), color(srgb …)
+      // (0–1 floats, from color-mix results — dividing those by 255 once read a pale cream as
+      // near-black), or other spaces such as oklab(…) (transition interpolation, seen in the r5
+      // reduced-motion run). The first two parse directly at full precision; everything else is
+      // converted by actually painting it into an explicit-sRGB canvas pixel. Alpha < 1 throws.
+      // Bounded, non-recursive fallback: validate the value via the two-sentinel fillStyle check
+      // (an invalid assignment keeps the prior fillStyle), then DRAW it into an explicit-sRGB
+      // 1x1 canvas and read the composited pixel with getImageData — a real sRGB pixel
+      // conversion, independent of whatever string the browser would serialize. A non-opaque
+      // pixel (alpha < 255) is rejected rather than composited against an assumed backdrop.
+      const pixelChannels = (raw: string): [number, number, number] => {
+        const canvas = document.createElement('canvas')
+        canvas.width = 1
+        canvas.height = 1
+        const ctx = canvas.getContext('2d', { colorSpace: 'srgb', willReadFrequently: true })
+        if (!ctx) throw new Error('no 2d canvas context for color conversion')
+        ctx.fillStyle = '#010203'
+        ctx.fillStyle = raw
+        const first = String(ctx.fillStyle)
+        ctx.fillStyle = '#fefdfc'
+        ctx.fillStyle = raw
+        if (first !== String(ctx.fillStyle)) throw new Error(`Unsupported color value: ${raw}`)
+        ctx.clearRect(0, 0, 1, 1)
+        ctx.fillRect(0, 0, 1, 1)
+        const [r, g, b, a] = ctx.getImageData(0, 0, 1, 1, { colorSpace: 'srgb' }).data
+        if (a !== 255) throw new Error(`Non-opaque color: ${raw}`)
+        return [r! / 255, g! / 255, b! / 255]
+      }
+      const channels = (raw: string): [number, number, number] => {
+        let m = raw.match(/^rgba?\((\d+(?:\.\d+)?)[,\s]+(\d+(?:\.\d+)?)[,\s]+(\d+(?:\.\d+)?)(?:[,\s/]+([\d.]+%?))?\)$/)
+        if (m) {
+          if (m[4] !== undefined && m[4] !== '1' && m[4] !== '100%') throw new Error(`Non-opaque color: ${raw}`)
+          return [Number(m[1]) / 255, Number(m[2]) / 255, Number(m[3]) / 255]
+        }
+        m = raw.match(/^color\(srgb ([\d.]+) ([\d.]+) ([\d.]+)(?:\s*\/\s*([\d.]+%?))?\)$/)
+        if (m) {
+          if (m[4] !== undefined && m[4] !== '1' && m[4] !== '100%') throw new Error(`Non-opaque color: ${raw}`)
+          return [Number(m[1]), Number(m[2]), Number(m[3])]
+        }
+        return pixelChannels(raw) // single bounded step; no serialization re-parse, no recursion
+      }
+      const luminance = (raw: string): number => {
+        const [r, g, b] = channels(raw).map((c) => (c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4)) as [
+          number, number, number,
+        ]
         return 0.2126 * r + 0.7152 * g + 0.0722 * b
+      }
+      // Representative parser regressions, returned for Node-side assertion: both direct
+      // serializations agree on identical colors, color(srgb …) creams are light, the exact
+      // oklab(…) value that failed the r5 reduced-motion run normalizes to a near-white, and
+      // garbage still fails closed.
+      let unknownThrew = false
+      try { luminance('definitely-not-a-color') } catch { unknownThrew = true }
+      const parser = {
+        white: luminance('rgb(255, 255, 255)'),
+        cream: luminance('color(srgb 0.957 0.91 0.788)'),
+        redDelta: Math.abs(luminance('rgb(255, 0, 0)') - luminance('color(srgb 1 0 0)')),
+        oklabLight: luminance('oklab(0.967428 0.000417888 -0.00125271)'),
+        oklabWhiteDelta: Math.abs(luminance('oklab(1 0 0)') - luminance('rgb(255, 255, 255)')),
+        unknownThrew,
       }
       const contrast = (fg: string, bg: string): number => {
         const [a, b] = [luminance(fg), luminance(bg)]
@@ -150,34 +241,96 @@ for (const theme of ['light', 'dark'] as const) {
         return getComputedStyle(document.body).backgroundColor
       }
       const results: Record<string, number> = {}
-      // Active sidebar item: accent text over the accent-soft tint.
-      const active = document.querySelector('nav[aria-label="Mailboxes"] a[aria-current="page"]')
-      if (active) results['sidebar-active'] = contrast(getComputedStyle(active).color, surfaceBehind(active))
+      // Raw computed serializations per surface: the evidence record of what the browser actually
+      // reported, so a ratio can be audited against the real pixels instead of trusted blindly.
+      const raws: Record<string, string> = {}
+      const measure = (key: string, fg: string, bg: string) => {
+        raws[key] = `${fg} on ${bg}`
+        results[key] = contrast(fg, bg)
+      }
+      // Active sidebar item: accent text over the accent-soft tint, measured only on a RENDERED
+      // copy (the drawer's below md, the rail's otherwise) — a display:none rail copy has no
+      // client rects and is skipped, so a missing visible copy fails the must-measure check below.
+      const active = Array.from(
+        document.querySelectorAll('nav[aria-label="Mailboxes"] a[aria-current="page"]'),
+      ).find((el) => el.getClientRects().length > 0)
+      if (active) measure('sidebar-active', getComputedStyle(active).color, surfaceBehind(active))
       // Active filter pill in the content area.
       const pill = document.querySelector('nav[aria-label="Filter"] a[aria-current="page"]')
-      if (pill) results['filter-active'] = contrast(getComputedStyle(pill).color, surfaceBehind(pill))
+      if (pill) measure('filter-active', getComputedStyle(pill).color, surfaceBehind(pill))
       // Focus indicator color against the panel surface.
       const probe = document.createElement('span')
       probe.style.color = 'var(--accent-text)'
       probe.style.backgroundColor = 'var(--surface)'
       document.body.append(probe)
-      results['accent-on-surface'] = contrast(getComputedStyle(probe).color, getComputedStyle(probe).backgroundColor)
+      measure('accent-on-surface', getComputedStyle(probe).color, getComputedStyle(probe).backgroundColor)
       probe.style.backgroundColor = 'var(--surface-2)'
-      results['accent-on-surface-2'] = contrast(getComputedStyle(probe).color, getComputedStyle(probe).backgroundColor)
+      measure('accent-on-surface-2', getComputedStyle(probe).color, getComputedStyle(probe).backgroundColor)
       probe.remove()
-      return results
+      return { ratios: results, raws, parser }
     })
+    if (drawerPresentation) {
+      await page.keyboard.press('Escape')
+      await expect(page.getByRole('dialog', { name: 'Mailboxes' })).not.toBeVisible()
+    }
+    const { ratios, raws, parser } = measured
+    // Parser regressions: both serializations agree, color(srgb …) creams read as light, unknown
+    // formats fail closed. These guard the oracle itself before any ratio is trusted.
+    expect(parser.white, 'rgb white luminance').toBeCloseTo(1, 5)
+    expect(parser.cream, 'color(srgb) cream must read light, not near-black').toBeGreaterThan(0.7)
+    expect(parser.redDelta, 'rgb vs color(srgb) must agree').toBeLessThan(1e-9)
+    expect(parser.oklabLight, 'r5 oklab near-white must normalize light, not near-black').toBeGreaterThan(0.7)
+    expect(parser.oklabWhiteDelta, 'oklab white must normalize to sRGB white').toBeLessThan(0.02)
+    expect(parser.unknownThrew, 'unknown serialization must throw').toBe(true)
+    // Actual computed values travel into the run record for parent audit against the screenshot.
+    test.info().annotations.push({ type: `computed-colors-${theme}`, description: JSON.stringify(raws) })
     // Every measured surface must actually be present: a missing active-sidebar or active-filter
     // selector is a failure, not a silent skip of that contrast measurement.
     for (const key of ['sidebar-active', 'filter-active', 'accent-on-surface', 'accent-on-surface-2']) {
       expect(Object.keys(ratios), `surface not found/measured: ${key}`).toContain(key)
     }
     for (const [surface, ratio] of Object.entries(ratios)) {
-      expect(ratio, `${theme} ${surface} measured ${ratio.toFixed(2)}:1`).toBeGreaterThanOrEqual(4.5)
+      expect(ratio, `${theme} ${surface} measured ${ratio.toFixed(2)}:1 (${raws[surface]})`).toBeGreaterThanOrEqual(4.5)
     }
     await page.screenshot({ path: `e2e/.results/contrast-${theme}.png`, fullPage: true })
   })
 }
+
+// Closes the recorded coverage gap: configuring the reduced-motion project proved nothing about
+// behavior. This asserts the REAL computed animation state from the bundle CSS in every project:
+// under reduce, index.css collapses all animation/transition durations to 0.01ms so nothing can
+// visibly move; without it, the pulse animation must genuinely run. Fail-closed on both branches.
+test('animations respect the reduced-motion preference (FE-R16)', async ({ page }) => {
+  await page.goto(ENTRY)
+  await expect(page.getByText('Simulated local mail')).toBeVisible()
+  const probe = await page.evaluate(() => {
+    const pulse = document.createElement('div')
+    pulse.className = 'animate-pulse' // the skeleton animation class actually shipped in the bundle
+    document.body.append(pulse)
+    const pulseStyle = getComputedStyle(pulse)
+    const transitioned = document.querySelector('.transition') // e.g. the drawer trigger button
+    const result = {
+      reduce: window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+      animationName: pulseStyle.animationName,
+      animationDuration: pulseStyle.animationDuration.split(',')[0]!.trim(),
+      transitionDuration: transitioned ? getComputedStyle(transitioned).transitionDuration.split(',')[0]!.trim() : null,
+    }
+    pulse.remove()
+    return result
+  })
+  const seconds = (v: string): number => (v.endsWith('ms') ? parseFloat(v) / 1000 : parseFloat(v))
+  expect(probe.animationName, 'pulse animation must exist in the bundle CSS').not.toBe('none')
+  expect(probe.transitionDuration, 'a transitioned element must be present to measure').not.toBeNull()
+  if (probe.reduce) {
+    // 0.01ms (sub-millisecond) means no perceivable motion; a vacuous pass is impossible because
+    // the same properties are asserted to be genuinely animated when the preference is absent.
+    expect(seconds(probe.animationDuration), `animation-duration ${probe.animationDuration}`).toBeLessThanOrEqual(0.001)
+    expect(seconds(probe.transitionDuration!), `transition-duration ${probe.transitionDuration}`).toBeLessThanOrEqual(0.001)
+  } else {
+    expect(seconds(probe.animationDuration), `animation-duration ${probe.animationDuration}`).toBeGreaterThanOrEqual(1)
+    expect(seconds(probe.transitionDuration!), `transition-duration ${probe.transitionDuration}`).toBeGreaterThanOrEqual(0.1)
+  }
+})
 
 test('no request leaves for remote hosts while reading hostile content', async ({ page }) => {
   const external: string[] = []
@@ -186,7 +339,7 @@ test('no request leaves for remote hosts while reading hostile content', async (
     if (url.hostname !== '127.0.0.1') external.push(request.url())
   })
   await page.goto(ENTRY)
-  await page.getByRole('link', { name: 'Fixture inbox' }).click()
+  await openMailbox(page, 'Fixture inbox')
   await page.locator('a[data-thread]').first().click()
   await expect(page.getByText('alert(1)', { exact: false })).toBeVisible()
   expect(external).toEqual([])
