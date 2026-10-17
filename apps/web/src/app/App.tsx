@@ -4,7 +4,7 @@ import { SendIntentProvider } from './sendIntent'
 import { HashRouter, Navigate, Route, Routes } from 'react-router'
 import type { MailroomGateway } from '@/data/gateway'
 import { InboxPage } from '@/features/inbox/InboxPage'
-import { MailboxSelection } from './MailboxSelection'
+import { HomePage } from './HomePage'
 import { DraftIntentProvider } from './draftIntent'
 import { FeatureGatewaysProvider, useFeatureGateways, type FeatureGateways } from './featureGateways'
 import { featureRoutes } from './features'
@@ -42,7 +42,7 @@ export function App({ gateway, featureGateways = {} }: { gateway: MailroomGatewa
       <HashRouter>
         <Routes>
           <Route element={<Shell />}>
-            <Route index element={<MailboxSelection />} />
+            <Route index element={<HomePage />} />
             <Route path="/mailboxes/:mailboxId" element={<InboxPage />} />
             <Route path="/mailboxes/:mailboxId/threads/:threadId" element={<ThreadRoute />} />
             {/* BE-02 C/D: drafts, membership and search are URL-addressed like every other view. */}

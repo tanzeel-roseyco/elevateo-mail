@@ -64,7 +64,7 @@ function Status({ mailboxId, sendId }: { mailboxId: string; sendId: string }) {
     await load()
   }
   if (state.kind === 'loading') return <div role="status" aria-label="Loading send status"><Skeleton rows={3} /></div>
-  if (state.kind === 'error') return <main className="mx-auto max-w-3xl p-3"><p role="alert">This send status is unavailable. No outcome or safe resend is established.</p><Button onClick={() => void load()}>Refresh status</Button></main>
+  if (state.kind === 'error') return <div className="mx-auto flex max-w-3xl flex-col items-start gap-3 p-4"><p role="alert">This send status is unavailable. No outcome or safe resend is established.</p><Button onClick={() => void load()}>Refresh status</Button></div>
   const status = state.status
   const terminal = ['accepted', 'rejected', 'cancelled'].includes(status.state)
   return <article className="mx-auto max-w-3xl p-3" aria-busy={busy}>

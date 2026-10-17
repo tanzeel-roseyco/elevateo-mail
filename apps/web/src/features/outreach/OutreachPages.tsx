@@ -86,15 +86,15 @@ function useOutreachRead<K extends Resource>(kind: K, props: OutreachPageProps, 
 }
 
 function Content<T>({ state, empty, children }: { state: Load<T>; empty?: (value: T) => boolean; children: (value: T) => ReactNode }) {
-  if (state.status === 'loading') return <p role="status">Loading…</p>
-  if (state.status === 'unavailable') return <p role="status">Outreach API unavailable for this account.</p>
-  if (state.status === 'error') return <p role="alert">Unable to load this Outreach resource. Please try again later.</p>
-  if (empty?.(state.value)) return <p role="status">Nothing here yet.</p>
+  if (state.status === 'loading') return <p role="status" className="panel px-4 py-6 text-[13px] text-muted">Loading…</p>
+  if (state.status === 'unavailable') return <p role="status" className="panel px-4 py-6 text-[13px] text-muted">Outreach API unavailable for this account.</p>
+  if (state.status === 'error') return <p role="alert" className="rounded-xl border border-danger/40 bg-danger/10 px-4 py-3 text-[13px] text-danger">Unable to load this Outreach resource. Please try again later.</p>
+  if (empty?.(state.value)) return <p role="status" className="panel px-4 py-6 text-[13px] text-muted">Nothing here yet.</p>
   return <>{children(state.value)}</>
 }
 function Page({ title, children }: { title: string; children: ReactNode }) {
   return <section aria-label={title} className="mx-auto max-w-3xl space-y-4 p-4">
-    <header><h1 className="text-xl font-semibold">{title}</h1><p>Outreach is draft or paused. Sending and enrollment are unavailable.</p></header>
+    <header><h1 className="page-title">{title}</h1><p className="mt-2 inline-flex rounded-md border border-warn/40 bg-warn/10 px-2.5 py-1 text-[13px] text-warn">Outreach is draft or paused. Sending and enrollment are unavailable.</p></header>
     {children}
   </section>
 }

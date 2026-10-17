@@ -773,3 +773,15 @@ INT988 inline self-review: reviewed the complete 64-line mailbox case plus four 
 Local disk preservation: 30 exact generated archives (50,048,676 bytes) were copied to remote control/local-archive-backup-20261016, size/hash verified before exact local deletion; verified-transfer-second-batch.json records proof. The earlier 27-archive PowerShell incompatibility incident is retained in docs/completion/qa815-evidence/mail1019-archive-preservation.json: all27 remote archives validate,24 match older remote copies,three lack an independent pre-copy hash. Do not claim verified-before-delete for that earlier batch. Source, installed applications, Android assets, persistent data and credentials were retained.
 
 Android runtime completion: Android1037 passed all nine isolated checks (login, navigation, inbox, thread, rotation, keyboard, lifecycle, offline, logout), including visual inspection and force-stop session recovery. Evidence: docs/completion/android1037-acceptance.md. Disposable runtime cleanup passed; no live release performed.
+
+## Web navigation and visual system (2026-10-18 design refresh)
+
+- Sidebar groups: Today (`/`), Mail (Search, each mailbox with Drafts/Members), Outreach, Contacts, Settings.
+  Feature modules register into `mail | outreach | contacts | settings` in `apps/web/src/app/featureRegistry.ts`;
+  icons are mapped by path in `Sidebar.tsx`.
+- Route orientation (group, crumb, purpose, optional back link) is the pure table in
+  `apps/web/src/app/pageMeta.ts`, rendered by `RouteContext.tsx` above every page. Add a rule when adding a route.
+- Today (`HomePage.tsx`) reads the first page of unread threads and drafts per mailbox through the gateway.
+  Quota usage, approvals and failures are shown as not reported until the API serves them.
+- Tokens: `apps/web/src/styles/index.css` (cool neutral colours, `--elev-1/2` elevation as `shadow-1/2`,
+  `.page-title`, `.panel`). Rationale and evidence: `docs/design/ux-audit-20261018.md`.
