@@ -1,0 +1,508 @@
+{
+  "schema_version": 1,
+  "scope": "PERF-01 design consultation only: three independent exact-model opinions on the bounded candidate classes, measurement plan, harness safety and gates. Not implementation permission, not a benchmark result, not performance acceptance, not Astra MAX synthesis.",
+  "verified_at_utc": "2026-10-11T21:59:40.666598+00:00",
+  "local_planning_date": "2026-10-12",
+  "task": "PERF-01",
+  "base_commit": "5785eba47f3709debb2815c8d86608f7e62d02f3",
+  "working_tree_diff_sha256": "472e848b9445783fdeebfe89955bc25510a56a8d084d2fdc2557fb01fa24de86",
+  "branch": "perf/fable-5-1/backend-speed",
+  "repository": "https://github.com/tanzeel-roseyco/elevateo-mail",
+  "runner": "Claude Code CLI 2.1.296; flags: --safe-mode --print --model <exact> --tools \"\" --no-session-persistence --output-format json; no fallback model, no permission bypass, no resume",
+  "input_directory_outside_git": "C:/Users/Tanzeel/AppData/Local/Temp/elevateo-perf01-consult-20261012/input-2",
+  "common_sha256": "f3ce7c85b090d5debee3701fd01a590f776cbe71ec7ca498555a5b9033e7c2e4",
+  "common_bytes": 425418,
+  "task_override_sha256": "0962cb00e05e37d9166397d3f0db32540e2c6a5120eba6e784e11504b6587e04",
+  "identical_common_packet_verified": true,
+  "source_files": [
+    {
+      "path": "documentation.md",
+      "sha256": "2aa25eda3be787ab15edbb08a877444e3c5cbe95b92d1fa2a92d4b8298a82bf5",
+      "bytes": 12103
+    },
+    {
+      "path": ".planning/POLYGLOT_ARCHITECTURE.md",
+      "sha256": "c8d3656cf7c8acc4a898c9a1603241b84ba9da254725856595c25be85ece2cea",
+      "bytes": 21799
+    },
+    {
+      "path": ".planning/CLIENTS_AND_CLI_CONNECTORS.md",
+      "sha256": "82c92e8c007de491709e5149df7031651028ad5b6272d5fc3713f9d6d0d55801",
+      "bytes": 18610
+    },
+    {
+      "path": ".planning/AGENT_ORCHESTRATION.md",
+      "sha256": "ccb27c98e654b636f33bd5acfd737902b5fd28f2a7d970c45add0cf40cb00ea7",
+      "bytes": 12348
+    },
+    {
+      "path": ".planning/MAIL_ACCOUNTS_AND_ACTIVATION.md",
+      "sha256": "9d759caa3ffb1430af0cf3b81a062a584122895fef659246d0c1f37d5028e9e9",
+      "bytes": 8034
+    },
+    {
+      "path": ".planning/TASK_BACKLOG.md",
+      "sha256": "aba7e19ad1640015e30210d9d37fbfc55410bc5819f0747d4e2ba075dbb7487e",
+      "bytes": 6095
+    },
+    {
+      "path": ".planning/research/reuse-market-scan.md",
+      "sha256": "6f798e4dfd837498cdc52aa1badd117c8c66d9298feb982d02f029bd6af83723",
+      "bytes": 28477
+    },
+    {
+      "path": "docs/component-adoption.md",
+      "sha256": "99cdcc56128a4c4ae0864d17c5f95fdf063c72b5f2112336ec9118810936f7e3",
+      "bytes": 10322
+    },
+    {
+      "path": "docs/contracts-and-reliability.md",
+      "sha256": "6210dcedd89eb678afe9f9f6f9dbf4270cdb1eded81f8e3e35d3f2656d6fbaa6",
+      "bytes": 11824
+    },
+    {
+      "path": "docs/local-completion-plan.md",
+      "sha256": "552816a61c2c0fce5511a524d05aa7b19b7993be9266b8faea9049f3542fbfd1",
+      "bytes": 25381
+    },
+    {
+      "path": "docs/decisions/0001-mailbox-ownership.md",
+      "sha256": "767bd1bccd0cefc7f8421764b03f834031ccec2beca179fe21ce2b07438068dd",
+      "bytes": 2817
+    },
+    {
+      "path": "docs/decisions/0002-local-architecture.md",
+      "sha256": "5a9c7bd24bb35f8a19f78925ea25786ec77e632622535ea3da184da03eef223b",
+      "bytes": 2977
+    },
+    {
+      "path": ".planning/consultations/results/initial-plan/accepted-decisions.md",
+      "sha256": "1a2c08ec49b54c2f4c363644da7fe340728b594c54384b860a1ea9fa99a532e3",
+      "bytes": 13644
+    },
+    {
+      "path": ".planning/STANDARDS.md",
+      "sha256": "7c01430086ed2dc263c8edcb1b2a9f41b572a23a11b36c1179be802e2874bd10",
+      "bytes": 7218
+    },
+    {
+      "path": "docs/backend-performance-task.md",
+      "sha256": "3a0782a7f83b8e7e8e3fde50bfddd7cb2acd632c2e11e0d36dc7b78f3840e7d6",
+      "bytes": 11335
+    },
+    {
+      "path": "docs/perf-01/README.md",
+      "sha256": "9dcf8a50b59ab844b728f9e5ce1c164ba487d21e2ba04f6d2859d89bc8e57245",
+      "bytes": 22676
+    },
+    {
+      "path": "docs/perf-01/database-path.md",
+      "sha256": "5248f4fa634c3b07101d58816073aae1d089b271975da3487d1812721dc711fd",
+      "bytes": 22448
+    },
+    {
+      "path": "docs/perf-01/request-path.md",
+      "sha256": "3ebb6bbc1c83bd114e0fda42ce3813920fed994bb1e7d1f71d9dd25ef6d4fd34",
+      "bytes": 27853
+    },
+    {
+      "path": "docs/perf-01/worker-path.md",
+      "sha256": "ce44cfad81aa00350aab6e650b02c4037d37f9a2ad7aa7a262675d361f3aa8af",
+      "bytes": 22585
+    },
+    {
+      "path": "docs/perf-01/backend-contracts.md",
+      "sha256": "501df9f9e4b6f9756208c30d1bcee16e0c88d822d5d470eb5de7191d9923f7fc",
+      "bytes": 20812
+    },
+    {
+      "path": "docs/perf-01/benchmark-runner.md",
+      "sha256": "8f2c1a18a0e0a5f726c1dffaf689bfdc71110e52de26fa4b8361dc52e0029374",
+      "bytes": 35693
+    },
+    {
+      "path": "docs/perf-01/design-adversary.md",
+      "sha256": "e94c3e8b0198c9abc68c2f577a71122c2e8219bd9c09b257577e6df2d1283292",
+      "bytes": 27064
+    },
+    {
+      "path": "ops/perf/cleanup.sh",
+      "sha256": "f135397cf049a5a94221d7e34fc9e8a4cdc8f8743787fa1b7143894839d2db1d",
+      "bytes": 8852
+    },
+    {
+      "path": "apps/server/config/routes.rb",
+      "sha256": "dccf1f793b07fce49b4ff70d5f6a2d7ced5551cc26912684a58f3baa2d39b001",
+      "bytes": 111
+    },
+    {
+      "path": "apps/server/app/controllers/application_controller.rb",
+      "sha256": "dec75bb004bd18031faa5850be2329a002b1e0d6795fb910363ac70f7ea0eb45",
+      "bytes": 391
+    },
+    {
+      "path": "apps/server/app/controllers/health_controller.rb",
+      "sha256": "225915b1a4a838937a64bd53369c8a42d245a8259c0399f7c0cd0ab9d1416246",
+      "bytes": 1076
+    },
+    {
+      "path": "apps/server/lib/elevateo/config.rb",
+      "sha256": "8b78f09e84c26db161b96947a113fd7131f9ddbc66ce3bb9478cb7d7a39deb1a",
+      "bytes": 2856
+    },
+    {
+      "path": "apps/server/lib/elevateo/tenancy.rb",
+      "sha256": "d2a074551fe29120fd61aeeb948d372f84fac1397ca7d3d8a145aad25b1eb746",
+      "bytes": 2846
+    },
+    {
+      "path": "apps/server/lib/elevateo/heartbeat.rb",
+      "sha256": "97d220ca308006bc3faefe4e9349e1a27bc4dde50e64f29ed70ff2de6de2b4e3",
+      "bytes": 1059
+    },
+    {
+      "path": "apps/server/bin/worker",
+      "sha256": "37c80474a92ccc9dc963de10e96817e68c51203e3c0b847e578f3d62e22256ad",
+      "bytes": 582
+    },
+    {
+      "path": "apps/server/bin/worker-health",
+      "sha256": "e05b0003f57cbe83217818bdda1db9ac60d39e19f99ade4f8ca410c80b1af2f0",
+      "bytes": 139
+    },
+    {
+      "path": "apps/server/config/application.rb",
+      "sha256": "2f8d142bd8fcb532f7e6fe42164ea32a6a6bd3aaa01c2856c98dd4d655fa24d2",
+      "bytes": 1178
+    },
+    {
+      "path": "apps/server/config/database.yml",
+      "sha256": "50f0f5e55591e152fa2a94a28aa55501dbbbee1b31f979ea3532cf76613331d2",
+      "bytes": 378
+    },
+    {
+      "path": "apps/server/Dockerfile",
+      "sha256": "b0cb60aea2986ba945b3b0a2456166edfeaae845cb77512304377a2254740e67",
+      "bytes": 603
+    },
+    {
+      "path": "apps/server/Gemfile",
+      "sha256": "a9522468335488525fe40b2a9b30bb91dc13ccf8bc0494974c41f42421f9f66a",
+      "bytes": 394
+    },
+    {
+      "path": "apps/server/Steepfile",
+      "sha256": "c136b2bf959c9529edf42d2b113531e53e311d279c7621c852b194485ff86a6b",
+      "bytes": 375
+    },
+    {
+      "path": "apps/server/db/migrate/20261012000001_create_app_foundation.rb",
+      "sha256": "6691621d6f260ea56aecb2faec3dbefdcc590499076f0f11873f1aa47efbe80a",
+      "bytes": 4140
+    },
+    {
+      "path": "apps/server/db/migrate/20261012000002_restrict_api_read_membership.rb",
+      "sha256": "7138c6a14ead43b20886e7fcb0e67c99c7319051ea2bca0540d5fc25cfad6c83",
+      "bytes": 3396
+    },
+    {
+      "path": "compose.yaml",
+      "sha256": "cc01c5e9365f5c7580f2ee67cfc9c20b83111eae39eb0543ee97a1cabe3e35cb",
+      "bytes": 8152
+    }
+  ],
+  "packet_policy": "Ten mandated current documents, accepted ADRs/decision record and standards, the PERF-01 brief and seven inventory documents, ops/perf/cleanup.sh at the reviewed revision with its four confirmed findings, and complete current backend source. No earlier model opinion or synthesis included. Credential-shape scan of the common packet: 0 matches, 0 PEM blocks (counts only).",
+  "independence": "Three distinct single-turn fresh sessions run sequentially; common packet identical; model-specific prefixes retained; no PERF-01 opinion supplied to another input.",
+  "sanitization": "Full substantive opinion texts retained with terminal newline normalized only; credential-shape scan per opinion recorded; raw JSON, stderr and status logs remain outside Git.",
+  "all_three_accepted": true,
+  "opinions": [
+    {
+      "file_stem": "fable-5",
+      "requested_model": "claude-fable-5",
+      "input_sha256": "4e06ee60b390cc75c058909a225de2a4895bcd0bca44b32dc61e360defdb9441",
+      "input_bytes": 432680,
+      "process_status": {
+        "exit_code": 0,
+        "elapsed_seconds": 94,
+        "started_utc": "2026-10-11T21:52:48Z",
+        "ended_utc": "2026-10-11T21:54:22Z"
+      },
+      "stderr_bytes": 0,
+      "raw_result_sha256": "07f6d0e435e56e6d2d9f3bae195cd17c60c22810beefe735bae3c68be26ab43f",
+      "observed_models": [
+        "claude-fable-5"
+      ],
+      "observed_model": "claude-fable-5",
+      "canonical_models": [
+        "claude-fable-5"
+      ],
+      "execution_metadata": {
+        "type": "result",
+        "subtype": "success",
+        "is_error": false,
+        "terminal_reason": "completed",
+        "stop_reason": "end_turn",
+        "num_turns": 1,
+        "session_id": "48780c56-e826-4092-812a-8dbcb4e79773",
+        "uuid": "14cce774-d540-4af2-b6b6-65ca2444e3bb",
+        "duration_ms": 90462,
+        "duration_api_ms": 89747,
+        "total_cost_usd": 3.6256200000000005,
+        "usage": {
+          "input_tokens": 2,
+          "cache_creation_input_tokens": 166835,
+          "cache_read_input_tokens": 0,
+          "output_tokens": 5778,
+          "output_tokens_details": {
+            "thinking_tokens": 44
+          },
+          "server_tool_use": {
+            "web_search_requests": 0,
+            "web_fetch_requests": 0
+          },
+          "service_tier": "standard",
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 166835,
+            "ephemeral_5m_input_tokens": 0
+          },
+          "inference_geo": "global",
+          "iterations": [
+            {
+              "input_tokens": 2,
+              "output_tokens": 5778,
+              "cache_read_input_tokens": 0,
+              "cache_creation_input_tokens": 166835,
+              "cache_creation": {
+                "ephemeral_5m_input_tokens": 0,
+                "ephemeral_1h_input_tokens": 166835
+              },
+              "type": "message"
+            }
+          ],
+          "speed": "standard",
+          "fallback_credit": null
+        },
+        "modelUsage": {
+          "claude-fable-5": {
+            "inputTokens": 2,
+            "outputTokens": 5778,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 166835,
+            "webSearchRequests": 0,
+            "costUSD": 3.6256200000000005,
+            "contextWindow": 1000000,
+            "maxOutputTokens": 64000,
+            "thinkingTokens": 44,
+            "canonicalModel": "claude-fable-5",
+            "provider": "firstParty",
+            "costBasis": "list"
+          }
+        },
+        "permission_denials": [],
+        "api_error_status": null
+      },
+      "outcome": "completed",
+      "not_accepted_reasons": [],
+      "sanitization": {
+        "credential_shaped_matches": 0,
+        "terminal_newline_normalized": true
+      },
+      "opinion_path": "fable-5.opinion.md",
+      "opinion_text_sha256": "54f7b9feac02a28fc02d264f4b0ba140bfb6e74fc0b049d0c512268fcac78e01",
+      "opinion_words": 2339,
+      "prefix_path": "fable-5.input-prefix.md"
+    },
+    {
+      "file_stem": "opus-5-5",
+      "requested_model": "claude-opus-5-5",
+      "input_sha256": "2c5eee1a7bfc1cd27e7812e267cc21d44dfdab63653d7378a3850af9c3d42fb2",
+      "input_bytes": 432733,
+      "process_status": {
+        "exit_code": 0,
+        "elapsed_seconds": 81,
+        "started_utc": "2026-10-11T21:54:23Z",
+        "ended_utc": "2026-10-11T21:55:43Z"
+      },
+      "stderr_bytes": 0,
+      "raw_result_sha256": "c415161c4f712086157012998404f0703169091277de9604a7bc037344def7d2",
+      "observed_models": [
+        "claude-opus-5-5"
+      ],
+      "observed_model": "claude-opus-5-5",
+      "canonical_models": [
+        "claude-opus-5-5"
+      ],
+      "execution_metadata": {
+        "type": "result",
+        "subtype": "success",
+        "is_error": false,
+        "terminal_reason": "completed",
+        "stop_reason": "end_turn",
+        "num_turns": 1,
+        "session_id": "d8a27acd-73e7-47f2-bbed-ccc0bf86d0e7",
+        "uuid": "e8f1d621-8b14-43a3-997a-d8fdf9458434",
+        "duration_ms": 77495,
+        "duration_api_ms": 77050,
+        "total_cost_usd": 1.462619,
+        "usage": {
+          "input_tokens": 2,
+          "cache_creation_input_tokens": 165268,
+          "cache_read_input_tokens": 535,
+          "output_tokens": 7018,
+          "output_tokens_details": {
+            "thinking_tokens": 2935
+          },
+          "server_tool_use": {
+            "web_search_requests": 0,
+            "web_fetch_requests": 0
+          },
+          "service_tier": "standard",
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 165268,
+            "ephemeral_5m_input_tokens": 0
+          },
+          "inference_geo": "global",
+          "iterations": [
+            {
+              "input_tokens": 2,
+              "output_tokens": 7018,
+              "cache_read_input_tokens": 535,
+              "cache_creation_input_tokens": 165268,
+              "cache_creation": {
+                "ephemeral_5m_input_tokens": 0,
+                "ephemeral_1h_input_tokens": 165268
+              },
+              "type": "message"
+            }
+          ],
+          "speed": "standard",
+          "fallback_credit": null
+        },
+        "modelUsage": {
+          "claude-opus-5-5": {
+            "inputTokens": 2,
+            "outputTokens": 7018,
+            "cacheReadInputTokens": 535,
+            "cacheCreationInputTokens": 165268,
+            "webSearchRequests": 0,
+            "costUSD": 1.462619,
+            "contextWindow": 1000000,
+            "maxOutputTokens": 128000,
+            "thinkingTokens": 2935,
+            "canonicalModel": "claude-opus-5-5",
+            "provider": "firstParty",
+            "costBasis": "list"
+          }
+        },
+        "permission_denials": [],
+        "api_error_status": null
+      },
+      "outcome": "completed",
+      "not_accepted_reasons": [],
+      "sanitization": {
+        "credential_shaped_matches": 0,
+        "terminal_newline_normalized": true
+      },
+      "opinion_path": "opus-5-5.opinion.md",
+      "opinion_text_sha256": "c72690292b845dceb7e5b646d440aa9f22fb5d15a0260f82fdb2a249c6d30729",
+      "opinion_words": 1781,
+      "prefix_path": "opus-5-5.input-prefix.md"
+    },
+    {
+      "file_stem": "fable-5-1",
+      "requested_model": "claude-fable-5-1",
+      "input_sha256": "b8945a5654cbff0cfb8773f7cf81280c015ef2b576c477793c9b08ddee470140",
+      "input_bytes": 432738,
+      "process_status": {
+        "exit_code": 0,
+        "elapsed_seconds": 195,
+        "started_utc": "2026-10-11T21:55:43Z",
+        "ended_utc": "2026-10-11T21:58:58Z"
+      },
+      "stderr_bytes": 0,
+      "raw_result_sha256": "8e39457c0b74ee62f95c7d56a3fe680f7438be0c96c556f9723dcf8ddd45671e",
+      "observed_models": [
+        "claude-fable-5-1"
+      ],
+      "observed_model": "claude-fable-5-1",
+      "canonical_models": [
+        "claude-fable-5-1"
+      ],
+      "execution_metadata": {
+        "type": "result",
+        "subtype": "success",
+        "is_error": false,
+        "terminal_reason": "completed",
+        "stop_reason": "end_turn",
+        "num_turns": 1,
+        "session_id": "bbdcfb62-e6fb-44c9-b0ff-abb02ca1f564",
+        "uuid": "235b3ef8-99a6-43f3-aac0-a6f6ff49875e",
+        "duration_ms": 192410,
+        "duration_api_ms": 191936,
+        "total_cost_usd": 3.9449137499999996,
+        "usage": {
+          "input_tokens": 2,
+          "cache_creation_input_tokens": 166923,
+          "cache_read_input_tokens": 535,
+          "output_tokens": 12126,
+          "output_tokens_details": {
+            "thinking_tokens": 8605
+          },
+          "server_tool_use": {
+            "web_search_requests": 0,
+            "web_fetch_requests": 0
+          },
+          "service_tier": "standard",
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 166923,
+            "ephemeral_5m_input_tokens": 0
+          },
+          "inference_geo": "global",
+          "iterations": [
+            {
+              "input_tokens": 2,
+              "output_tokens": 12126,
+              "cache_read_input_tokens": 535,
+              "cache_creation_input_tokens": 166923,
+              "cache_creation": {
+                "ephemeral_5m_input_tokens": 0,
+                "ephemeral_1h_input_tokens": 166923
+              },
+              "type": "message"
+            }
+          ],
+          "speed": "standard",
+          "fallback_credit": null
+        },
+        "modelUsage": {
+          "claude-fable-5-1": {
+            "inputTokens": 2,
+            "outputTokens": 12126,
+            "cacheReadInputTokens": 535,
+            "cacheCreationInputTokens": 166923,
+            "webSearchRequests": 0,
+            "costUSD": 3.9449137499999996,
+            "contextWindow": 1000000,
+            "maxOutputTokens": 64000,
+            "thinkingTokens": 8605,
+            "canonicalModel": "claude-fable-5-1",
+            "provider": "firstParty",
+            "costBasis": "list"
+          }
+        },
+        "permission_denials": [],
+        "api_error_status": null
+      },
+      "outcome": "completed",
+      "not_accepted_reasons": [],
+      "sanitization": {
+        "credential_shaped_matches": 0,
+        "terminal_newline_normalized": true
+      },
+      "opinion_path": "fable-5-1.opinion.md",
+      "opinion_text_sha256": "ce62cbd914d324e10139f04bca85f8bbd2e724686ec7d2b53f287095b9493d0d",
+      "opinion_words": 1631,
+      "prefix_path": "fable-5-1.input-prefix.md"
+    }
+  ]
+}
