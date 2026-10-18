@@ -14,7 +14,7 @@ describe('feature registry', () => {
   it('groups nav entries by section and sorts by order within a section (happy path)', () => {
     const registry = buildFeatureRegistry([outreach])
     expect(registry.navBySection.outreach.map((e) => e.label)).toEqual(['Campaigns', 'Leads'])
-    expect(registry.navBySection.personal).toEqual([])
+    expect(registry.navBySection.mail).toEqual([])
     expect(registry.modules).toHaveLength(1)
   })
 
@@ -28,8 +28,8 @@ describe('feature registry', () => {
     expect(isValidRoutePath('/outreach/campaigns/:campaignId')).toBe(true)
     for (const bad of ['outreach', '/Outreach', '/outreach/', '/a?b=1', '/a#b', '/*', '']) expect(isValidRoutePath(bad)).toBe(false)
     expect(() => buildFeatureRegistry([{ id: 'x', routes: ['/x/'], nav: [] }])).toThrow(/invalid route path/)
-    expect(() => buildFeatureRegistry([{ id: 'x', routes: ['/x'], nav: [{ path: '/y', label: 'Y', section: 'personal', order: 0 }] }])).toThrow(/no matching route/)
+    expect(() => buildFeatureRegistry([{ id: 'x', routes: ['/x'], nav: [{ path: '/y', label: 'Y', section: 'mail', order: 0 }] }])).toThrow(/no matching route/)
     expect(() => buildFeatureRegistry([{ id: '', routes: [], nav: [] }])).toThrow(/Duplicate or empty feature id/)
-    expect(() => buildFeatureRegistry([{ id: 'x', routes: ['/x'], nav: [{ path: '/x', label: ' ', section: 'personal', order: 0 }] }])).toThrow(/empty label/)
+    expect(() => buildFeatureRegistry([{ id: 'x', routes: ['/x'], nav: [{ path: '/x', label: ' ', section: 'mail', order: 0 }] }])).toThrow(/empty label/)
   })
 })

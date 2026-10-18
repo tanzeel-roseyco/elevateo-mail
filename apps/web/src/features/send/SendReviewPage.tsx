@@ -101,7 +101,7 @@ function Review({ mailboxId, draftId }: { mailboxId: string; draftId: string }) 
   }
   const back = `/mailboxes/${mailboxId}/drafts/${draftId}`
   if (state.kind === 'loading') return <div role="status" aria-label="Loading send review"><Skeleton rows={5} /></div>
-  if (state.kind === 'error') return <main className="mx-auto max-w-3xl p-3"><p role="alert">{message ?? state.message}</p><Button onClick={() => void load()}>Load fresh review</Button><Link to={back}>Back to draft</Link></main>
+  if (state.kind === 'error') return <div className="mx-auto flex max-w-3xl flex-col items-start gap-3 p-4"><p role="alert">{message ?? state.message}</p><Button onClick={() => void load()}>Load fresh review</Button><Link to={back} className="text-[13px] font-medium text-accent-text underline-offset-2 hover:underline">Back to draft</Link></div>
   const review = state.review
   const retry = attempt?.phase === 'uncertain'
   return <article className="mx-auto max-w-3xl p-3" aria-busy={busy}>

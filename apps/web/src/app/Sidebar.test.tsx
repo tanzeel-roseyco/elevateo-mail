@@ -1,4 +1,4 @@
-// FE-805: the rail shows Personal and Outreach as independent landmarks with no state switcher;
+// FE-805 + IA refresh: the rail shows Mail, Outreach and Contacts as independent landmarks with no switcher;
 // the URL alone decides which link is current, and an empty Outreach registry hides that section.
 import { render, screen, within } from '@testing-library/react'
 import { MemoryRouter } from 'react-router'
@@ -17,9 +17,9 @@ const outreach: FeatureNavEntry[] = [
   { path: '/outreach/campaigns', label: 'Campaigns', section: 'outreach', order: 10 },
   { path: '/outreach/leads', label: 'Leads', section: 'outreach', order: 20 },
 ]
-const personal: FeatureNavEntry[] = [{ path: '/people', label: 'People', section: 'personal', order: 70 }]
+const contacts: FeatureNavEntry[] = [{ path: '/people', label: 'People', section: 'contacts', order: 70 }]
 
-function renderAt(path: string, sections: Parameters<typeof Sidebar>[0]['sections'] = { outreach, personal }) {
+function renderAt(path: string, sections: Parameters<typeof Sidebar>[0]['sections'] = { outreach, contacts }) {
   return render(
     <MemoryRouter initialEntries={[path]}>
       <Sidebar mailboxes={[inbox]} sections={sections} footnote="footnote" />
@@ -28,15 +28,14 @@ function renderAt(path: string, sections: Parameters<typeof Sidebar>[0]['section
 }
 
 describe('sidebar sections', () => {
-  it('renders Personal and Outreach as independent landmarks with the authentic mark', () => {
+  it('renders Today, Mail, Outreach and Contacts as independent landmarks with the authentic mark', () => {
     renderAt('/outreach/campaigns/123')
-    const personal = screen.getByRole('navigation', { name: 'Personal' })
+    const mail = screen.getByRole('navigation', { name: 'Mail' })
     const outreachNav = screen.getByRole('navigation', { name: 'Outreach' })
-    // Registered personal links (Lyra's People/settings) follow the mailboxes inside Personal.
-    expect(within(personal).getAllByRole('link').map((l) => l.textContent)).toEqual(['Search', 'Fixture inbox', 'People'])
-    expect(screen.getAllByRole('navigation').map((n) => n.getAttribute('aria-labelledby'))).toEqual(['sidebar-personal', 'sidebar-outreach'])
-    expect(within(personal).getByRole('link', { name: 'Fixture inbox' })).toBeTruthy()
-    expect(within(personal).getByRole('link', { name: 'Search' })).toBeTruthy()
+    expect(within(screen.getByRole('navigation', { name: 'Home' })).getByRole('link', { name: 'Today' }).getAttribute('href')).toBe('/')
+    expect(within(mail).getAllByRole('link').map((l) => l.textContent)).toEqual(['Search', 'Fixture inbox'])
+    expect(screen.getAllByRole('navigation').slice(1).map((n) => n.getAttribute('aria-labelledby'))).toEqual(['sidebar-mail', 'sidebar-outreach', 'sidebar-contacts'])
+    expect(within(screen.getByRole('navigation', { name: 'Contacts' })).getByRole('link', { name: 'People' })).toBeTruthy()
     expect(within(outreachNav).getAllByRole('link').map((l) => l.textContent)).toEqual(['Campaigns', 'Leads'])
     // No switcher: there is no button or tab control anywhere in the rail.
     expect(screen.queryByRole('button')).toBeNull()
@@ -59,9 +58,10 @@ describe('sidebar sections', () => {
     expect(screen.queryByRole('link', { name: 'Drafts' })).toBeNull()
   })
 
-  it('hides every empty feature section and keeps Personal intact', () => {
+  it('hides every empty feature section and keeps Mail intact', () => {
     renderAt('/mailboxes/00000000-0000-4000-8000-000000000061/drafts', {})
     expect(screen.queryByRole('navigation', { name: 'Outreach' })).toBeNull()
+    expect(screen.queryByRole('navigation', { name: 'Contacts' })).toBeNull()
     expect(screen.getByRole('link', { name: 'Drafts' }).getAttribute('aria-current')).toBe('page')
     expect(screen.getByRole('link', { name: 'Fixture inbox' }).getAttribute('aria-current')).toBeNull()
   })

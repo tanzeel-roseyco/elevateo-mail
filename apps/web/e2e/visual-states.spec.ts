@@ -143,7 +143,7 @@ interface Scenario {
 
 const SCENARIOS: Scenario[] = [
   // Ready matrix rows (unsampled theme/viewport cells of states the r7 PNGs sampled elsewhere).
-  { name: 'shell-ready', routes: {}, nav: 'none', expectVisible: { text: 'Select a mailbox' } },
+  { name: 'shell-ready', routes: {}, nav: 'none', expectVisible: { text: 'Your mailboxes' } },
   { name: 'inbox-ready', routes: {}, nav: 'mailbox', expectVisible: { text: 'Visual conversation 1' } },
   {
     name: 'inbox-unread-filter-active',
@@ -207,7 +207,7 @@ const SCENARIOS: Scenario[] = [
   // A held refresh freezes the fenced 'Restoring access' skeleton; no protected content exists yet.
   { name: 'session-refreshing', routes: { session: [apiError('unauthenticated', 401)], refresh: ['hold'] }, nav: 'none', awaitRequest: '/v1/auth/refresh', expectVisible: { status: 'Restoring access' }, assert: (page) => assertSkeletonContrasts(page, 'Restoring access') },
   // A refresh that succeeds reaches the shell without a second session read.
-  { name: 'session-refreshed', routes: { session: [apiError('unauthenticated', 401)], refresh: [{ body: { session: SESSION, access_expires_at: '2026-10-13T01:00:00Z' } }] }, nav: 'none', expectVisible: { text: 'Select a mailbox' } },
+  { name: 'session-refreshed', routes: { session: [apiError('unauthenticated', 401)], refresh: [{ body: { session: SESSION, access_expires_at: '2026-10-13T01:00:00Z' } }] }, nav: 'none', expectVisible: { text: 'Your mailboxes' } },
   { name: 'session-no-organization', routes: { session: [apiError('not_available', 404)] }, nav: 'none', expectVisible: { text: 'No organization is available' } },
   {
     name: 'sign-in-rejected',
@@ -253,7 +253,7 @@ const SCENARIOS: Scenario[] = [
       await page.getByLabel('Password').fill('right-password')
       await page.getByRole('button', { name: 'Sign in' }).click()
     },
-    expectVisible: { text: 'Select a mailbox' },
+    expectVisible: { text: 'Your mailboxes' },
   },
   {
     name: 'recovery-form',
