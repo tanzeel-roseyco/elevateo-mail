@@ -11,8 +11,8 @@ class SessionSecurityTest < Minitest::Test
     live = Elevateo::SessionPresentation.new(crypto: crypto, simulation_mode: false).session(metadata)
     assert_equal true, simulated.fetch("simulation_mode")
     assert_equal false, live.fetch("simulation_mode")
-    assert_equal simulated.reject { |key, _| key == "simulation_mode" },
-                 live.reject { |key, _| key == "simulation_mode" }
+    assert_equal(simulated.reject { |key, _| key == "simulation_mode" },
+      live.reject { |key, _| key == "simulation_mode" })
   end
 
   def test_ciphertext_authentication_and_purpose_separation
