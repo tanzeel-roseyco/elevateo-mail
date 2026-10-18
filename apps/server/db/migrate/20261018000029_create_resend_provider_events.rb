@@ -3,6 +3,8 @@
 class CreateResendProviderEvents < ActiveRecord::Migration[8.1]
   def up
     execute <<~SQL
+      -- AIDEV-NOTE: The private send owner must own the table and has REFERENCES authority on the intent ledger.
+      SET LOCAL ROLE elevateo_send_owner;
       CREATE TABLE app_send_private.resend_events (
         event_id text PRIMARY KEY CHECK (event_id ~ '^[A-Za-z0-9_.:-]{1,128}$'),
         event_type text NOT NULL CHECK (event_type IN ('email.sent','email.delivered','email.delivery_delayed',
