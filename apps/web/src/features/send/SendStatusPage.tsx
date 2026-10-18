@@ -27,6 +27,10 @@ const DELIVERY: Record<NonNullable<SendStatus['delivery_status']>, string> = {
   suppressed: 'The provider suppressed this email.',
   complained: 'A spam complaint was received. This recipient is suppressed from further sends.',
 }
+const SUPPRESSION: Record<NonNullable<SendStatus['suppression_reason']>, string> = {
+  bounced: 'Suppressed after a bounce. Future sends to this recipient are blocked.',
+  complained: 'Suppressed after a spam complaint. Future sends to this recipient are blocked.',
+}
 type State = { kind: 'loading' } | { kind: 'error' } | { kind: 'ready'; status: SendStatus }
 export function SendStatusPage() {
   const { mailboxId, sendId } = useParams()
@@ -73,6 +77,7 @@ function Status({ mailboxId, sendId }: { mailboxId: string; sendId: string }) {
     <p role="status">{DESCRIPTIONS[status.state]}</p>
     {status.delivery_status !== null && <section aria-label="Delivery update"><h2>Delivery: {status.delivery_status.replaceAll('_', ' ')}</h2><p>{DELIVERY[status.delivery_status]}</p>{status.delivery_updated_at && <time dateTime={status.delivery_updated_at}>{new Date(status.delivery_updated_at).toLocaleString()}</time>}</section>}
     <p>Approved draft version {status.approved_version}. {status.simulated ? 'Simulated attempts' : 'Submission attempts'}: {status.attempts}.</p>
+    {status.suppression_reason !== null && <p role="note" aria-label="Suppression" className="my-2 rounded-lg border border-warn/40 bg-warn/10 px-3 py-2 text-[13px]">{SUPPRESSION[status.suppression_reason]}</p>}
     {status.hold_reason !== null && <p>Hold: {status.hold_reason.replaceAll('_', ' ')}</p>}
     {status.cancel_requested && <p>Stop has been requested. A late acceptance can still appear.</p>}
     {message && <p role="alert">{message}</p>}

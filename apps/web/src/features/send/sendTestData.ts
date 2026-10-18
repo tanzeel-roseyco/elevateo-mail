@@ -11,7 +11,8 @@ export const REVIEW: SendReview = {
   subject: '<script>literal subject</script>', body_text: '<img src="https://example.invalid/pixel">\nLiteral body',
   reply_to_thread_id: null, purpose: 'correspondence', consent_basis: 'human_attestation_required',
   attachments: [], attachments_supported: false, policy_revision: '1',
-  recipient_checks: [{ index: 0, status: 'ok' }], ready: true, issues: [], review_digest: DIGEST, simulated: true,
+  recipient_checks: [{ index: 0, status: 'ok', consent_evidence: false }], ready: true, issues: [], review_digest: DIGEST, simulated: true,
+  outbound_mode: 'held',
 }
 export const APPROVAL: ApprovalResult = {
   context_id: CD.contextId, authorization_version: CD.authorizationVersion,
@@ -21,7 +22,7 @@ export const APPROVAL: ApprovalResult = {
 export const STATUS: SendStatus = {
   context_id: CD.contextId, authorization_version: CD.authorizationVersion,
   send_id: SEND_ID, mailbox_id: CD.mailboxId, draft_id: CD.draftId, approved_version: 1,
-  delivery_status: null, delivery_updated_at: null,
+  delivery_status: null, delivery_updated_at: null, suppression_reason: null,
   approved_at: APPROVAL.approved_at, state: 'queued', attempts: 0, first_possible_at: null, retry_deadline_at: null,
   cancel_requested: false, cancellable: true, hold_reason: null, updated_at: APPROVAL.approved_at, simulated: true,
 }

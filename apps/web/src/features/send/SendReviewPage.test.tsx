@@ -30,6 +30,39 @@ function setup(g: MailroomGateway, shell = false) {
 }
 async function ready() { await screen.findByRole('heading', { name: /Review saved draft version/ }) }
 
+describe('Resend consent gate on review', () => {
+  beforeEach(() => { window.sessionStorage.clear(); vi.restoreAllMocks() })
+  const live = { ...REVIEW, simulated: false }
+  it('blocks approval under resend when a recipient has no consent evidence', async () => {
+    const g = gateway({ getSendReview: async () => ({ ...live, outbound_mode: 'resend' as const }) })
+    setup(g); await ready()
+    const alert = screen.getByRole('alert', { name: 'Consent required' })
+    expect(alert.textContent).toMatch(/limited to recipients who opted in/)
+    expect(alert.textContent).toMatch(/Recipient 1: recipient@example.test has no consent evidence/)
+    expect((screen.getByRole('checkbox') as HTMLInputElement).disabled).toBe(true)
+    expect((screen.getByRole('button', { name: 'Approve live send' }) as HTMLButtonElement).disabled).toBe(true)
+    expect(g.approveDraftSend).not.toHaveBeenCalled()
+  })
+  it('allows approval under mailpit without consent evidence', async () => {
+    const g = gateway({ getSendReview: async () => ({ ...live, outbound_mode: 'mailpit' as const }), getSendStatus: async () => ({ ...STATUS, simulated: false }) })
+    setup(g); await ready()
+    expect(screen.queryByRole('alert', { name: 'Consent required' })).toBeNull()
+    expect(screen.getByText('Mailpit test transport - no real inbox')).not.toBeNull()
+    confirm(); fireEvent.click(screen.getByRole('button', { name: 'Approve live send' }))
+    await screen.findByRole('heading', { name: 'Send intent: queued' })
+    expect(g.approveDraftSend).toHaveBeenCalledTimes(1)
+  })
+  it('shows a server consent_required refusal as a persistent reason with no retry', async () => {
+    const g = gateway({ approveDraftSend: vi.fn(async () => { throw new GatewayError('api', 'consent_required', 'synthetic', { status: 409 }) }) })
+    setup(g); await ready()
+    confirm(); approve()
+    const heading = await screen.findByRole('heading', { name: 'Approval blocked: consent required' })
+    expect(heading.closest('[role="alert"]')?.textContent).toMatch(/Nothing was queued/)
+    expect(screen.queryByRole('button')).toBeNull()
+    expect(screen.getByRole('link', { name: 'Record consent evidence' })).not.toBeNull()
+  })
+})
+
 describe('BE03 saved review and approval', () => {
   beforeEach(() => { window.sessionStorage.clear(); vi.restoreAllMocks() })
   it('renders all literal content, requires explicit attestation, then reads durable queued status', async () => {
@@ -46,9 +79,10 @@ describe('BE03 saved review and approval', () => {
     expect(screen.getByText(/durably queued/)).not.toBeNull()
   })
   it('requires explicit live approval and preserves live status wording', async () => {
-    const g = gateway({ getSendReview: async () => ({ ...REVIEW, simulated: false }), approveDraftSend: vi.fn(async () => ({ ...APPROVAL, simulated: false })), getSendStatus: async () => ({ ...STATUS, simulated: false }) })
+    const g = gateway({ getSendReview: async () => ({ ...REVIEW, simulated: false, outbound_mode: 'resend' as const, recipient_checks: [{ index: 0, status: 'ok' as const, consent_evidence: true }] }), approveDraftSend: vi.fn(async () => ({ ...APPROVAL, simulated: false })), getSendStatus: async () => ({ ...STATUS, simulated: false }) })
     setup(g); await ready()
-    expect(screen.getByText('Live email - sends to real recipients')).not.toBeNull()
+    expect(screen.getByText('Live email via Resend - sends to real recipients')).not.toBeNull()
+    expect(screen.queryByText(/Simulated/)).toBeNull()
     const button = screen.getByRole('button', { name: 'Approve live send' }) as HTMLButtonElement
     expect(button.disabled).toBe(true)
     expect(screen.queryByRole('button', { name: 'Approve simulated send' })).toBeNull()

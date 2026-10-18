@@ -45,13 +45,15 @@
         "recipient_checks": [
           {
             "index": 0,
-            "status": "ok"
+            "status": "ok",
+            "consent_evidence": false
           }
         ],
         "ready": true,
         "issues": [],
         "review_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-        "simulated": true
+        "simulated": true,
+        "outbound_mode": "held"
       }
     },
     {
@@ -84,7 +86,8 @@
         "recipient_checks": [
           {
             "index": 0,
-            "status": "invalid"
+            "status": "invalid",
+            "consent_evidence": false
           }
         ],
         "ready": false,
@@ -99,7 +102,8 @@
           }
         ],
         "review_digest": null,
-        "simulated": true
+        "simulated": true,
+        "outbound_mode": "held"
       }
     },
     {
@@ -137,7 +141,8 @@
         "updated_at": "2026-10-14T10:40:00Z",
         "simulated": true,
         "delivery_status": null,
-        "delivery_updated_at": null
+        "delivery_updated_at": null,
+        "suppression_reason": null
       }
     },
     {
