@@ -1,0 +1,11 @@
+module Elevateo
+  module SendWorker
+    class ResendTransport
+      PROFILE: String
+      def initialize: (api_key: String, from_domain: String, ?base_url: String, ?http_factory: untyped) -> void
+      def database_profile: () -> String
+      def submit: (String, send_id: String, attempt_id: String, deadline: CallDeadline) -> SubmissionResult
+      def observation: (send_id: String, attempt_id: String, snapshot_digest: String) -> SubmissionResult?
+    end
+  end
+end

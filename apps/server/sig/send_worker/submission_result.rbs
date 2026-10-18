@@ -11,7 +11,7 @@ module Elevateo
       attr_reader receipt_ref: String?
       attr_reader code: String?
       def initialize: (kind: String, ?receipt_ref: String?, ?code: String?) -> void
-      def simulated?: () -> true
+      def simulated?: () -> bool
       def evidence_digest: (send_id: String, attempt_id: String, snapshot_digest: String) -> String
     end
   end
