@@ -13,6 +13,8 @@ This summary supersedes the historical checkpoints below. The immediate launch s
 - **Backend suites, types and lint passed; integrated acceptance pending:** Resend outbound transport, signed provider events/inbound handling, draft attachment reserve/upload/finalize/list/remove, scanning and approved-send attachment binding are staged in the integration work. The latest combined backend Docker run passed its complete suites, Steep and RuboCop. Integrated acceptance was blocked by a missing pinned Node image in the runner; the corrected acceptance and recovery candidate is running. Final integrated and recovery acceptance remain pending. Resend operations Compose syntax validation passed, which does not establish deployment or provider acceptance.
 - **Live activation remains held:** production credentials, verified sending domain and sender, signed webhook setup, recipient consent/eligibility, deployment verification and backup/restore evidence remain prerequisites. No live Resend delivery or complete production readiness is claimed. Existing historical simulated/Mailpit evidence is not live provider evidence; GitHub publication of this completion wave is not yet verified.
 
+- **Launch blockers plan:** the six remaining launch blockers, owner routes, critical path and costs are in `docs/launch-blockers-plan.md` (2026-10-18).
+
 Historical records are retained for traceability. Earlier Android failures, lower frontend test counts and statements that Resend implementation has not started describe their original checkpoints, not the current implementation above.
 <!-- completion-wave-current:end -->
 
