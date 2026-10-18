@@ -12,6 +12,7 @@ module Elevateo
     ROLE_PASSWORDS: Hash[String, String]
     PROVIDER_PREFIXES: Array[String]
     self.@current: Config?
+    attr_reader mode: String
     attr_reader db_host: String
     attr_reader db_name: String
     attr_reader db_role: String

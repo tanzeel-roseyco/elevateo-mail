@@ -14,7 +14,7 @@ module AuthFixtures
   CONTEXT = "44444444-4444-4444-8444-444444444444"
 
   def config
-    OpenStruct.new(session_key: "k" * 32, browser_origin: "https://app.test", auth_url: "http://auth:9999",
+    OpenStruct.new(mode: "local", session_key: "k" * 32, browser_origin: "https://app.test", auth_url: "http://auth:9999",
       auth_jwt_issuer: "http://auth:9999", auth_jwt_audience: "authenticated", auth_jwt_algorithm: "HS256",
       auth_password_minimum: 12, cookie_secure: true)
   end
