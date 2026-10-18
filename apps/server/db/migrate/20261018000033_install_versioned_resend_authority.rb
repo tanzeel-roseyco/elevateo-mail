@@ -3,6 +3,7 @@
 class InstallVersionedResendAuthority < ActiveRecord::Migration[8.1]
   def up
     # AIDEV-NOTE: These versioned files are additive migration inputs; historical migrations keep their original SQL.
+    execute "GRANT CREATE ON SCHEMA app TO elevateo_send_owner"
     execute <<~SQL
       SET LOCAL ROLE elevateo_send_owner;
       ALTER TABLE app_send_private.attempts DROP CONSTRAINT send_attempt_profile_v3;
@@ -25,9 +26,11 @@ class InstallVersionedResendAuthority < ActiveRecord::Migration[8.1]
     sql = File.read(Rails.root.join("db/be03_send/mox_test_receipt_resend_v1.sql"))
     execute sql[sql.index("CREATE OR REPLACE FUNCTION app_send_private.record_observation_v2")..]
     execute "RESET ROLE"
+    execute "REVOKE CREATE ON SCHEMA app FROM elevateo_send_owner"
   end
 
   def down
+    execute "GRANT CREATE ON SCHEMA app TO elevateo_send_owner"
     execute "SET LOCAL ROLE elevateo_send_owner"
     execute File.read(Rails.root.join("db/be03_send/scope.sql")).gsub("CREATE FUNCTION", "CREATE OR REPLACE FUNCTION")
     execute "SET LOCAL ROLE elevateo_send_owner"
@@ -50,5 +53,6 @@ class InstallVersionedResendAuthority < ActiveRecord::Migration[8.1]
         OR (source='mox_smtp_test_v1' AND (receipt_ref IS NULL OR receipt_ref ~ '^mox-test-v1:[0-9a-f]{64}$')));
       RESET ROLE;
     SQL
+    execute "REVOKE CREATE ON SCHEMA app FROM elevateo_send_owner"
   end
 end
