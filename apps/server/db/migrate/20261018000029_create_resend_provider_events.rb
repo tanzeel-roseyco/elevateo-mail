@@ -2,7 +2,10 @@
 
 class CreateResendProviderEvents < ActiveRecord::Migration[8.1]
   def up
+    execute "GRANT CREATE ON SCHEMA app TO elevateo_send_owner"
     execute <<~SQL
+      -- AIDEV-NOTE: The private send owner must own the table and has REFERENCES authority on the intent ledger.
+      SET LOCAL ROLE elevateo_send_owner;
       CREATE TABLE app_send_private.resend_events (
         event_id text PRIMARY KEY CHECK (event_id ~ '^[A-Za-z0-9_.:-]{1,128}$'),
         event_type text NOT NULL CHECK (event_type IN ('email.sent','email.delivered','email.delivery_delayed',
@@ -45,11 +48,12 @@ class CreateResendProviderEvents < ActiveRecord::Migration[8.1]
       END $$;
       REVOKE ALL ON FUNCTION app.ingest_resend_event(text,text,text,text) FROM PUBLIC,elevateo_worker,elevateo_app_read;
       GRANT EXECUTE ON FUNCTION app.ingest_resend_event(text,text,text,text) TO elevateo_api;
-
     SQL
+    execute "REVOKE CREATE ON SCHEMA app FROM elevateo_send_owner"
   end
 
   def down
+    execute "SET LOCAL ROLE elevateo_send_owner"
     execute "DROP FUNCTION app.ingest_resend_event(text,text,text,text)"
     execute "DROP TABLE app_send_private.resend_events"
   end
