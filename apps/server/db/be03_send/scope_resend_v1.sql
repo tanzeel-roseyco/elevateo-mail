@@ -1,10 +1,10 @@
 -- AIDEV-NOTE: Reuse C/D UTC microsecond spelling so strict response projection accepts SQL-produced timestamps.
-CREATE FUNCTION app_send_private.utc_timestamp(p_time timestamptz) RETURNS text
+CREATE OR REPLACE FUNCTION app_send_private.utc_timestamp(p_time timestamptz) RETURNS text
 LANGUAGE sql STABLE STRICT SET search_path = pg_catalog AS $$
   SELECT to_char(p_time AT TIME ZONE 'UTC','YYYY-MM-DD"T"HH24:MI:SS.US"Z"')
 $$;
 -- AIDEV-NOTE: Scope precedes policy disclosure; return suppressions only for at most100 saved recipients.
-CREATE FUNCTION app_send_private.review_policy(p_binding jsonb) RETURNS jsonb
+CREATE OR REPLACE FUNCTION app_send_private.review_policy(p_binding jsonb) RETURNS jsonb
 LANGUAGE sql STABLE SET search_path = pg_catalog AS $$
   SELECT p_binding || jsonb_build_object(
     'policy_revision',(SELECT revision::text FROM app_send_private.organization_policy
@@ -22,7 +22,7 @@ LANGUAGE sql STABLE SET search_path = pg_catalog AS $$
         (SELECT app_send_private.canonical_address(value->>'address')
           FROM jsonb_array_elements(p_binding->'recipients'))),'[]'::jsonb))
 $$;
-CREATE FUNCTION app.send_review(p_mailbox uuid,p_draft uuid) RETURNS jsonb
+CREATE OR REPLACE FUNCTION app.send_review(p_mailbox uuid,p_draft uuid) RETURNS jsonb
 LANGUAGE plpgsql STABLE SECURITY DEFINER SET search_path = pg_catalog AS $$
 DECLARE binding jsonb;
 BEGIN
@@ -30,13 +30,13 @@ BEGIN
   IF binding ? 'code' THEN RETURN binding; END IF;
   RETURN app_send_private.review_policy(binding);
 END $$;
-CREATE FUNCTION app_send_private.approval_result(p_intent app_send_private.intents) RETURNS jsonb
+CREATE OR REPLACE FUNCTION app_send_private.approval_result(p_intent app_send_private.intents) RETURNS jsonb
 LANGUAGE sql IMMUTABLE SET search_path = pg_catalog AS $$
   SELECT jsonb_build_object('send_id',p_intent.send_id,'draft_id',p_intent.draft_id,
     'approved_version',p_intent.draft_version,'review_digest',p_intent.review_digest,
     'approved_at',app_send_private.utc_timestamp(p_intent.approved_at),'simulated',true)
 $$;
-CREATE FUNCTION app_send_private.record_approval_operation(p_org uuid,p_actor uuid,p_operation uuid,p_mailbox uuid,
+CREATE OR REPLACE FUNCTION app_send_private.record_approval_operation(p_org uuid,p_actor uuid,p_operation uuid,p_mailbox uuid,
   p_draft uuid,p_expected integer,p_digest text,p_send uuid,p_code text) RETURNS void
 LANGUAGE sql VOLATILE SET search_path = pg_catalog AS $$
   INSERT INTO app_send_private.approval_operations(organization_id,actor_id,operation_id,mailbox_id,draft_id,
