@@ -2,6 +2,8 @@
 
 ## Current state
 
+- 2026-10-18: `feature/resend-transport` adds the fail-closed Resend configuration boundary, bounded stdlib HTTP transport, worker profile/budget admission, signed/idempotent webhook storage, and live-mode consent checks. Static JSON/Python checks pass; Ruby and Docker verification were not run locally. Live activation remains blocked on durable non-simulated send semantics, atomic approval-time consent, and tenant-safe `email.received` routing.
+
 - 2026-10-18: `integrate/unified-20261018` consolidates all worker branches (see `docs/integration/merge-ledger-20261018.md`); backend suites green, Steep/RuboCop B12–B13 pending.
 <!-- completion-wave-current:start -->
 ### Authoritative completion status (2026-10-17)
