@@ -17,7 +17,7 @@ module V1
 
     def send_service(connection, session)
       raise Elevateo::SendError.new("temporarily_unavailable") unless read_config.send_api_enabled
-      Elevateo::SendAPI::Service.new(connection: connection, session: session)
+      Elevateo::SendAPI::Service.new(connection: connection, session: session, outbound_mode: read_config.outbound_mode)
     end
 
     def send_path(key)

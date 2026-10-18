@@ -9,10 +9,11 @@ module Elevateo
     # AIDEV-NOTE: Binding comes from one protected SQL snapshot; readiness never queries arbitrary suppression lists.
     class Review
       FIELDS = %w[organization_id mailbox_id draft_id actor_id version state sender_address recipients subject body_text
-                  reply_to_thread_id policy_revision mailbox_enabled reply_available suppressed_addresses].freeze
+                  reply_to_thread_id policy_revision mailbox_enabled reply_available suppressed_addresses
+                  consented_addresses].freeze
       attr_reader :snapshot, :result
 
-      def initialize(binding)
+      def initialize(binding, outbound_mode: "held")
         raise ReadResponse::Invalid unless binding.keys.sort == FIELDS.sort
         @binding = binding
         @issues = [] # : Array[ReadResponse::item]
@@ -35,6 +36,7 @@ module Elevateo
         issue("mailbox_disabled") unless ThreadProjection.boolean(binding["mailbox_enabled"])
         issue("reply_unavailable") unless ThreadProjection.boolean(binding["reply_available"])
         issue("header_invalid") unless Address.header?(@subject)
+        @consent_required = outbound_mode == "resend"
         @recipients, checks = recipients(binding)
         @snapshot = Canonical.bytes(organization_id: @organization, mailbox_id: @mailbox, draft_id: @draft,
           version: @version, sender: @sender, recipients: @recipients, subject: @subject, body: @body,
@@ -58,8 +60,11 @@ module Elevateo
       def recipients(binding)
         values = binding["recipients"]
         suppressed = binding["suppressed_addresses"]
+        consented = binding["consented_addresses"]
         unless values.is_a?(Array) && values.length <= 100 && suppressed.is_a?(Array) && suppressed.length <= 100 &&
-               suppressed.all? { |value| value.is_a?(String) && Address.canonical(value) == value }
+               suppressed.all? { |value| value.is_a?(String) && Address.canonical(value) == value } &&
+               consented.is_a?(Array) && consented.length <= 100 &&
+               consented.all? { |value| value.is_a?(String) && Address.canonical(value) == value }
           raise ReadResponse::Invalid
         end
         issue("recipient_required") if values.empty?
@@ -75,10 +80,11 @@ module Elevateo
           status = if !address then "invalid"
             elsif seen[address] then "duplicate"
             elsif suppressed.include?(address) then "suppressed"
+            elsif @consent_required && !consented.include?(address) then "consent_required"
             else "ok"
             end
           seen[address] = true if address
-          issue("recipient_#{status}", index) unless status == "ok"
+          issue(status == "consent_required" ? "consent_required" : "recipient_#{status}", index) unless status == "ok"
           issue("header_invalid", index) if name && !Address.header?(name)
           checks << { "index" => index, "status" => status }
           { "display_name" => name, "address" => address || raw }

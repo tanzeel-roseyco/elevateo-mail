@@ -14,7 +14,13 @@ LANGUAGE sql STABLE SET search_path = pg_catalog AS $$
     'suppressed_addresses',COALESCE((SELECT jsonb_agg(canonical_address ORDER BY canonical_address)
       FROM app_send_private.recipient_suppressions WHERE organization_id = (p_binding->>'organization_id')::uuid
       AND canonical_address IN (SELECT app_send_private.canonical_address(value->>'address')
-        FROM jsonb_array_elements(p_binding->'recipients'))),'[]'::jsonb))
+        FROM jsonb_array_elements(p_binding->'recipients'))),'[]'::jsonb),
+    'consented_addresses',COALESCE((SELECT jsonb_agg(DISTINCT lower(email) ORDER BY lower(email))
+      FROM app.campaign_leads WHERE organization_id=(p_binding->>'organization_id')::uuid
+      AND consent_status='granted' AND consent_recorded_at IS NOT NULL AND consent_source IS NOT NULL
+      AND consent_recorded_by IS NOT NULL AND lower(email) IN
+        (SELECT app_send_private.canonical_address(value->>'address')
+          FROM jsonb_array_elements(p_binding->'recipients'))),'[]'::jsonb))
 $$;
 CREATE FUNCTION app.send_review(p_mailbox uuid,p_draft uuid) RETURNS jsonb
 LANGUAGE plpgsql STABLE SECURITY DEFINER SET search_path = pg_catalog AS $$

@@ -76,7 +76,7 @@ class SendAPIControllerTest < Minitest::Test
       "version" => 1, "state" => "editable", "subject" => "Hello", "body_text" => "body",
       "recipients" => [{ "display_name" => nil, "address" => "Local@EXAMPLE.invalid" }],
       "reply_to_thread_id" => nil, "sender_address" => "Sender@EXAMPLE.invalid", "reply_available" => true,
-      "policy_revision" => "1", "mailbox_enabled" => true, "suppressed_addresses" => [] }
+      "policy_revision" => "1", "mailbox_enabled" => true, "suppressed_addresses" => [], "consented_addresses" => [] }
   end
 
   def test_first_approval_binds_exact_snapshot_and_readable_held_epoch

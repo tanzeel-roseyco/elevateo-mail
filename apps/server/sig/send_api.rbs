@@ -51,7 +51,7 @@ module Elevateo
       @recipients: Array[Hash[String, String?]]
       attr_reader snapshot: String
       attr_reader result: ReadResponse::item
-      def initialize: (ReadResponse::item) -> void
+      def initialize: (ReadResponse::item, ?outbound_mode: String) -> void
       private
       def issue: (String, ?Integer?) -> void
       def recipients: (ReadResponse::item) -> [Array[Hash[String, String?]], Array[ReadResponse::item]]
@@ -72,7 +72,7 @@ module Elevateo
       APPROVED: Array[String]
       SEMANTIC: Array[String]
       @database: Database
-      def initialize: (connection: _ThreadConnection, session: ReadResponse::item) -> void
+      def initialize: (connection: _ThreadConnection, session: ReadResponse::item, ?outbound_mode: String) -> void
       def review: (draft_id: String, query: Hash[String, String]) -> String
       def approve: (Input, session_digest: String, epoch: String?, request_id: String?) -> WriteResponse
       def status: (send_id: String, query: Hash[String, String], epoch: String?) -> String

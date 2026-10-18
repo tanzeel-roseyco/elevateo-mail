@@ -14,7 +14,8 @@ module Elevateo
       "internal_error" => [500, "Internal error"], "review_stale" => [409, "Review has changed"],
       "send_not_ready" => [409, "Send is not ready"], "draft_consumed" => [409, "Draft has already been consumed"],
       "draft_conflict" => [409, "Draft has changed"], "operation_mismatch" => [409, "Operation does not match"],
-      "send_terminal" => [409, "Send is terminal"], "dispatch_held" => [503, "Dispatch is held"]
+      "send_terminal" => [409, "Send is terminal"], "dispatch_held" => [503, "Dispatch is held"],
+      "consent_required" => [409, "Documented recipient consent is required"]
       }
       codes.freeze
     end

@@ -12,7 +12,19 @@ class SendAPIBoundaryTest < Minitest::Test
       "version" => 1, "state" => "editable", "subject" => "Hello", "body_text" => "body/\u2028\u{1F48C}",
       "recipients" => [{ "display_name" => nil, "address" => "Local@EXAMPLE.invalid" }],
       "reply_to_thread_id" => nil, "sender_address" => "Sender@EXAMPLE.invalid", "reply_available" => true,
-      "policy_revision" => "1", "mailbox_enabled" => true, "suppressed_addresses" => [] }
+      "policy_revision" => "1", "mailbox_enabled" => true, "suppressed_addresses" => [], "consented_addresses" => [] }
+  end
+
+  def test_resend_requires_consent_evidence_for_every_recipient
+    denied = Elevateo::SendAPI::Review.new(binding, outbound_mode: "resend").result
+    assert_equal false, denied.fetch("ready")
+    assert_equal "consent_required", denied.fetch("recipient_checks").first.fetch("status")
+    assert_includes denied.fetch("issues"), { "code" => "consent_required", "recipient_index" => 0 }
+
+    allowed = Elevateo::SendAPI::Review.new(
+      binding.merge("consented_addresses" => ["local@example.invalid"]), outbound_mode: "resend"
+    ).result
+    assert_equal true, allowed.fetch("ready")
   end
 
   def approval

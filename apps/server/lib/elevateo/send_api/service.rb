@@ -18,13 +18,15 @@ module Elevateo
       APPROVED = %w[send_id draft_id approved_version review_digest approved_at simulated].freeze
       SEMANTIC = %w[review_stale send_not_ready draft_consumed draft_conflict operation_mismatch].freeze
 
-      def initialize(connection:, session:)
+      def initialize(connection:, session:, outbound_mode: "held")
         @database = Database.new(connection: connection, session: session)
+        @outbound_mode = outbound_mode
       end
 
       def review(draft_id:, query:)
         mailbox, draft = target(query, draft_id)
-        result = Review.new(@database.outcome(@database.object(REVIEW_SQL, [mailbox, draft]))).result
+        result = Review.new(@database.outcome(@database.object(REVIEW_SQL, [mailbox, draft])),
+          outbound_mode: @outbound_mode).result
         @database.encode(@database.envelope.merge(result), budget: 2_097_152)
       end
 
@@ -33,7 +35,11 @@ module Elevateo
         binding = @database.object(REVIEW_SQL, [input.mailbox_id, input.draft_id])
         snapshot = nil # : String?
         unless binding.key?("code")
-          review = Review.new(binding)
+          review = Review.new(binding, outbound_mode: @outbound_mode)
+          if review.result.fetch("issues").any? { |issue| issue["code"] == "consent_required" }
+            error = SendError.new("consent_required")
+            return WriteResponse.new(json: @database.encode(error.body(request_id), budget: 4096), status: 409)
+          end
           snapshot = review.snapshot if review.result["ready"] == true
         end
         # bytea text format avoids adapter binary encoding ambiguity; bytes are never interpolated as SQL.

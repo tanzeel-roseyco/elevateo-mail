@@ -31,7 +31,7 @@ class SendAPIReadsTest < Minitest::Test
       "version" => 1, "state" => "editable", "subject" => "Hello", "body_text" => "literal <script> text",
       "recipients" => [{ "display_name" => nil, "address" => "Local@EXAMPLE.invalid" }],
       "reply_to_thread_id" => nil, "sender_address" => "Sender@EXAMPLE.invalid", "reply_available" => true,
-      "policy_revision" => "1", "mailbox_enabled" => true, "suppressed_addresses" => [] }
+      "policy_revision" => "1", "mailbox_enabled" => true, "suppressed_addresses" => [], "consented_addresses" => [] }
   end
 
   def status
