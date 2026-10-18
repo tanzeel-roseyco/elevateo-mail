@@ -2,6 +2,7 @@
 
 ## Current state
 
+- 2026-10-18: `integrate/unified-20261018` consolidates all worker branches (see `docs/integration/merge-ledger-20261018.md`); backend suites green, Steep/RuboCop B12–B13 pending.
 <!-- completion-wave-current:start -->
 ### Authoritative completion status (2026-10-17)
 
