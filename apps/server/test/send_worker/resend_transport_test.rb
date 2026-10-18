@@ -11,13 +11,17 @@ class SendWorkerResendTransportTest < Minitest::Test
 
   FakeResponse = Struct.new(:code, :body)
   class FakeHTTP
-    attr_accessor :open_timeout, :read_timeout
+    attr_accessor :open_timeout, :read_timeout, :write_timeout
     attr_reader :requests
     def initialize(responses) = (@responses, @requests = responses, [])
     def request(request)
       @requests << request
       @responses.shift || raise("missing fake response")
     end
+  end
+
+  class BlockingHTTP < FakeHTTP
+    def request(_request) = sleep(1)
   end
 
   def snapshot
@@ -47,6 +51,14 @@ class SendWorkerResendTransportTest < Minitest::Test
     result = instance.observation(send_id: SEND, attempt_id: ATTEMPT, snapshot_digest: "a" * 64)
     assert_equal "accepted", result.kind
     assert_equal "/emails/provider_1", http.requests.last.path
+  end
+
+  def test_entire_http_exchange_is_bounded_and_configures_write_timeout
+    http = BlockingHTTP.new([])
+    result = transport(http).submit(snapshot, send_id: SEND, attempt_id: ATTEMPT,
+      deadline: Elevateo::SendWorker::CallDeadline.new(seconds: 0.01))
+    assert_equal "unknown", result.kind
+    assert_operator http.write_timeout, :>, 0
   end
 
   private

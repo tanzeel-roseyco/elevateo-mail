@@ -75,14 +75,15 @@ module Elevateo
       raise ConfigError, "invalid ELEVATEO_MAILBOX_DAILY_SEND_LIMIT" unless /\A[1-9][0-9]{0,3}\z/.match?(raw_limit)
       @mailbox_daily_send_limit = raw_limit.to_i
 
-      names = %w[RESEND_API_KEY ELEVATEO_RESEND_FROM_DOMAIN RESEND_WEBHOOK_SECRET ELEVATEO_RESEND_BASE_URL]
+      required_names = %w[RESEND_API_KEY ELEVATEO_RESEND_FROM_DOMAIN RESEND_WEBHOOK_SECRET]
+      names = required_names + %w[ELEVATEO_RESEND_BASE_URL]
       if @outbound_mode != "resend"
         found = names.find { |name| env.key?(name) }
         raise ConfigError, "#{found} requires ELEVATEO_OUTBOUND_MODE=resend" if found
         return
       end
       raise ConfigError, "ELEVATEO_OUTBOUND_HOLD must be false for resend mode" if @outbound_hold
-      names.each { |name| raise ConfigError, "missing required setting #{name}" if env[name].to_s.empty? }
+      required_names.each { |name| raise ConfigError, "missing required setting #{name}" if env[name].to_s.empty? }
       key = env.fetch("RESEND_API_KEY")
       raise ConfigError, "invalid RESEND_API_KEY" unless /\Are_[A-Za-z0-9_-]{16,}\z/.match?(key)
       domain = env.fetch("ELEVATEO_RESEND_FROM_DOMAIN")

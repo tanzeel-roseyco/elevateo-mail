@@ -82,7 +82,9 @@ module Elevateo
         http = @http_factory.call(uri)
         http.open_timeout = [3.0, deadline.remaining].min
         http.read_timeout = deadline.remaining
-        http.request(request)
+        http.write_timeout = deadline.remaining if http.respond_to?(:write_timeout=)
+        # AIDEV-NOTE: Per-phase Net::HTTP limits can add together; this outer bound owns the entire provider call.
+        Timeout.timeout(deadline.remaining, CallDeadline::Expired) { http.request(request) }
       end
 
       def response_id(body)
