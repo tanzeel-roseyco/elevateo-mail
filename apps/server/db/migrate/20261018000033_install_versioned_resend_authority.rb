@@ -17,17 +17,22 @@ class InstallVersionedResendAuthority < ActiveRecord::Migration[8.1]
         OR (source='mailpit_smtp_test_v1' AND (receipt_ref IS NULL OR receipt_ref ~ '^mailpit-test-v1:[0-9a-f]{64}$'))
         OR (source='mox_smtp_test_v1' AND (receipt_ref IS NULL OR receipt_ref ~ '^mox-test-v1:[0-9a-f]{64}$'))
         OR (source='resend_v1' AND (receipt_ref IS NULL OR receipt_ref ~ '^resend:[A-Za-z0-9_-]{1,128}$')));
-      RESET ROLE;
     SQL
     execute File.read(Rails.root.join("db/be03_send/scope_resend_v1.sql"))
+    execute "SET LOCAL ROLE elevateo_send_owner"
     execute File.read(Rails.root.join("db/be03_send/budget_authority_resend_v1.sql"))
+    execute "SET LOCAL ROLE elevateo_send_owner"
     sql = File.read(Rails.root.join("db/be03_send/mox_test_receipt_resend_v1.sql"))
     execute sql[sql.index("CREATE OR REPLACE FUNCTION app_send_private.record_observation_v2")..]
+    execute "RESET ROLE"
   end
 
   def down
+    execute "SET LOCAL ROLE elevateo_send_owner"
     execute File.read(Rails.root.join("db/be03_send/scope.sql")).gsub("CREATE FUNCTION", "CREATE OR REPLACE FUNCTION")
+    execute "SET LOCAL ROLE elevateo_send_owner"
     execute File.read(Rails.root.join("db/be03_send/budget_authority.sql"))
+    execute "SET LOCAL ROLE elevateo_send_owner"
     sql = File.read(Rails.root.join("db/be03_send/mox_test_receipt.sql"))
     execute sql[sql.index("CREATE OR REPLACE FUNCTION app_send_private.record_observation_v2")..]
     execute <<~SQL
