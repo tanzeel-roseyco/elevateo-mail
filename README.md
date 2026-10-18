@@ -3,6 +3,7 @@
 ## Current state
 
 - 2026-10-18: `integrate/unified-20261018` consolidates all worker branches (see `docs/integration/merge-ledger-20261018.md`); backend suites green, Steep/RuboCop B12–B13 pending.
+- 2026-10-18: pilot Playwright suite green (28/28, 4 projects) after scoping the mailbox locator to the Mail nav.
 - 2026-10-18: web enforces the Resend consent gate (blocks review without consent evidence under `resend`) and shows provider delivery states with suppression reasons; contract fields `outbound_mode`, `consent_evidence`, `suppression_reason`, error `consent_required`.
 <!-- completion-wave-current:start -->
 ### Authoritative completion status (2026-10-17)

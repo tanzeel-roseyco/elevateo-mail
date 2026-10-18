@@ -25,9 +25,10 @@ export async function openMailbox(page: Page, name: string): Promise<void> {
     await trigger.click()
     const dialog = page.getByRole('dialog', { name: 'Navigation' })
     await expect(dialog.getByRole('navigation', { name: 'Mail' })).toBeVisible()
-    await dialog.getByRole('link', { name }).click()
+    await dialog.getByRole('navigation', { name: 'Mail' }).getByRole('link', { name, exact: true }).click()
     await expect(dialog).not.toBeVisible()
   } else {
-    await page.getByRole('link', { name }).click()
+    // Rail-scoped and exact: Today also links each mailbox, and "50 unread in <name>" matches a substring.
+    await page.getByRole('navigation', { name: 'Mail' }).getByRole('link', { name, exact: true }).click()
   }
 }
