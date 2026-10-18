@@ -15,11 +15,13 @@ module Elevateo
       class InvalidResult < StandardError; end
       class StaleLease < StandardError; end
       PROFILES = { "synthetic-v1" => "local:synthetic-v1",
-        "mailpit-smtp-test-v1" => "local:mailpit-smtp-test-v1", "mox-smtp-test-v1" => "local:mox-smtp-test-v1" }.freeze
+        "mailpit-smtp-test-v1" => "local:mailpit-smtp-test-v1", "mox-smtp-test-v1" => "local:mox-smtp-test-v1",
+        "resend-v1" => "provider:resend-v1" }.freeze
       # AIDEV-NOTE: Ruby and SQL both bind the profile, prefix and source; never infer a new provider with else.
       RECEIPT_PREFIXES = { "synthetic-v1" => "local:", "mailpit-smtp-test-v1" => "mailpit-test-v1:",
-        "mox-smtp-test-v1" => "mox-test-v1:" }.freeze
-      SOURCES = { "mailpit-smtp-test-v1" => "mailpit_smtp_test_v1", "mox-smtp-test-v1" => "mox_smtp_test_v1" }.freeze
+        "mox-smtp-test-v1" => "mox-test-v1:", "resend-v1" => "resend:" }.freeze
+      SOURCES = { "mailpit-smtp-test-v1" => "mailpit_smtp_test_v1", "mox-smtp-test-v1" => "mox_smtp_test_v1",
+        "resend-v1" => "resend_v1" }.freeze
 
       def self.next_due_send(connection:, epoch:, excluded:)
         raise ArgumentError, "invalid dispatch epoch" unless Control.valid_epoch?(epoch)

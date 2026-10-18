@@ -26,6 +26,8 @@ module Elevateo
 
       def database_profile = PROFILE
 
+      def inspect = "#<Elevateo::SendWorker::ResendTransport redacted>"
+
       def submit(bytes, send_id:, attempt_id:, deadline:)
         raise ArgumentError, "invalid Resend attempt" unless Control.valid_epoch?(attempt_id)
         # AIDEV-NOTE: The approved sender must remain inside the configured verified domain; no API response can widen it.

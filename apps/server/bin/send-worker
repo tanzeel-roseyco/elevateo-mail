@@ -12,20 +12,25 @@ require_relative "../lib/elevateo/send_worker/drain"
 cfg = Elevateo::Config.load!
 raise Elevateo::ConfigError, "send worker requires isolated worker role" unless cfg.db_role == "elevateo_worker"
 raise Elevateo::ConfigError, "send worker requires explicit control" if cfg.send_control_path.empty?
-raise Elevateo::ConfigError, "send worker requires outbound hold profile" unless cfg.outbound_hold
+raise Elevateo::ConfigError, "held mode cannot submit" if cfg.outbound_mode == "held" && !cfg.outbound_hold
 mailpit_test = ARGV.first == "--mailpit-test"
+resend = cfg.outbound_mode == "resend" && !mailpit_test
 target, option = mailpit_test ? ARGV.drop(1) : ARGV
-unless ARGV.length == (mailpit_test ? 3 : 2) &&
+unless ARGV.length == (mailpit_test ? 3 : (resend ? 1 : 2)) &&
     (mailpit_test ? Elevateo::SendWorker::Control.valid_epoch?(target) :
       (target == "--drain" || Elevateo::SendWorker::Control.valid_epoch?(target))) &&
-    (mailpit_test || Elevateo::SendWorker::DurableLocalDriver::OUTCOMES.include?(option))
+    (mailpit_test || resend || Elevateo::SendWorker::DurableLocalDriver::OUTCOMES.include?(option))
   raise ArgumentError, "usage: send-worker SEND_UUID|--drain accept|reject|accept_then_timeout|pause " \
     "OR send-worker --mailpit-test SEND_UUID sender@example.invalid"
 end
-profile = mailpit_test ? "mailpit-smtp-test-v1" : "synthetic-v1"
+profile = resend ? "resend-v1" : (mailpit_test ? "mailpit-smtp-test-v1" : "synthetic-v1")
 driver = if mailpit_test
   require_relative "../lib/elevateo/send_worker/smtp_transport"
   Elevateo::SendWorker::SmtpTransport.new(profile: Elevateo::SendWorker::SmtpProfile.local_mailpit(verified_sender: option))
+elsif resend
+  require_relative "../lib/elevateo/send_worker/resend_transport"
+  raise Elevateo::ConfigError, "Resend configuration unavailable" unless cfg.resend_api_key && cfg.resend_from_domain
+  Elevateo::SendWorker::ResendTransport.new(api_key: cfg.resend_api_key, from_domain: cfg.resend_from_domain)
 else
   Elevateo::SendWorker::DurableLocalDriver.new(path: ENV.fetch("ELEVATEO_LOCAL_ACCEPTANCE_LEDGER"), outcome: option)
 end
@@ -35,6 +40,12 @@ connection = PG.connect(host: cfg.db_host, dbname: cfg.db_name, user: cfg.db_rol
 begin
   connection.exec("SET statement_timeout = '3s'")
   connection.exec("SET lock_timeout = '1s'")
+  # AIDEV-NOTE: SQL owns reservations; startup refuses database limits wider than the configured pilot ceiling.
+  if resend
+    wider = connection.exec_params("SELECT count(*) FROM app_send_private.budget_limits " \
+      "WHERE kind='mailbox' AND enabled AND ceiling>$1::integer", [cfg.mailbox_daily_send_limit]).getvalue(0, 0)
+    raise Elevateo::ConfigError, "mailbox budget exceeds ELEVATEO_MAILBOX_DAILY_SEND_LIMIT" unless wider == "0"
+  end
   control = Elevateo::SendWorker::Control.new(path: cfg.send_control_path)
   if target == "--drain"
     steps = Elevateo::SendWorker::Drain.new(connection: connection, control: control, driver: driver).run

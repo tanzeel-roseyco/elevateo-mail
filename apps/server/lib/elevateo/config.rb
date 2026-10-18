@@ -27,6 +27,9 @@ module Elevateo
                 :attachment_gateway_hmac_key, :attachment_gateway_url, :outbound_mode, :resend_api_key,
                 :resend_from_domain, :resend_webhook_secret, :mailbox_daily_send_limit
 
+    # Credentials live on this boundary object, so the default instance-variable dump is unsafe.
+    def inspect = "#<Elevateo::Config redacted>"
+
     def self.current = (@current ||= load!)
 
     def self.load!(env = ENV) = new(env)
