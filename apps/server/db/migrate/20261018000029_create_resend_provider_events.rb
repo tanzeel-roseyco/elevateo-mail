@@ -49,6 +49,8 @@ class CreateResendProviderEvents < ActiveRecord::Migration[8.1]
       REVOKE ALL ON FUNCTION app.ingest_resend_event(text,text,text,text) FROM PUBLIC,elevateo_worker,elevateo_app_read;
       GRANT EXECUTE ON FUNCTION app.ingest_resend_event(text,text,text,text) TO elevateo_api;
     SQL
+    # SET LOCAL ROLE survives until the migration transaction ends, including Rails' schema-migration insert.
+    execute "RESET ROLE"
     execute "REVOKE CREATE ON SCHEMA app FROM elevateo_send_owner"
   end
 
@@ -56,5 +58,6 @@ class CreateResendProviderEvents < ActiveRecord::Migration[8.1]
     execute "SET LOCAL ROLE elevateo_send_owner"
     execute "DROP FUNCTION app.ingest_resend_event(text,text,text,text)"
     execute "DROP TABLE app_send_private.resend_events"
+    execute "RESET ROLE"
   end
 end
