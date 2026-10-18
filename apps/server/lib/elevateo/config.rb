@@ -25,7 +25,7 @@ module Elevateo
                 :send_api_enabled, :send_control_path, :outbound_hold, :process, :session_key, :browser_origin, :auth_jwt_issuer,
                 :auth_jwt_audience, :auth_jwt_algorithm, :cookie_secure, :auth_password_minimum, :cursor_signing_key,
                 :attachment_gateway_hmac_key, :attachment_gateway_url, :outbound_mode, :resend_api_key,
-                :resend_from_domain, :resend_webhook_secret, :mailbox_daily_send_limit
+                :resend_from_domain, :resend_webhook_secret, :resend_base_url, :mailbox_daily_send_limit
 
     # Credentials live on this boundary object, so the default instance-variable dump is unsafe.
     def inspect = "#<Elevateo::Config redacted>"
@@ -75,7 +75,7 @@ module Elevateo
       raise ConfigError, "invalid ELEVATEO_MAILBOX_DAILY_SEND_LIMIT" unless /\A[1-9][0-9]{0,3}\z/.match?(raw_limit)
       @mailbox_daily_send_limit = raw_limit.to_i
 
-      names = %w[RESEND_API_KEY ELEVATEO_RESEND_FROM_DOMAIN RESEND_WEBHOOK_SECRET]
+      names = %w[RESEND_API_KEY ELEVATEO_RESEND_FROM_DOMAIN RESEND_WEBHOOK_SECRET ELEVATEO_RESEND_BASE_URL]
       if @outbound_mode != "resend"
         found = names.find { |name| env.key?(name) }
         raise ConfigError, "#{found} requires ELEVATEO_OUTBOUND_MODE=resend" if found
@@ -97,6 +97,11 @@ module Elevateo
       @resend_api_key = key.dup.freeze
       @resend_from_domain = domain.downcase.freeze
       @resend_webhook_secret = secret.dup.freeze
+      @resend_base_url = env.fetch("ELEVATEO_RESEND_BASE_URL", "https://api.resend.com")
+      unless ["https://api.resend.com", "http://resend-stub:8788"].include?(@resend_base_url)
+        raise ConfigError, "invalid ELEVATEO_RESEND_BASE_URL"
+      end
+      @resend_base_url = @resend_base_url.dup.freeze
     rescue ArgumentError
       raise ConfigError, "invalid RESEND_WEBHOOK_SECRET"
     end

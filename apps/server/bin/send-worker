@@ -30,7 +30,8 @@ driver = if mailpit_test
 elsif resend
   require_relative "../lib/elevateo/send_worker/resend_transport"
   raise Elevateo::ConfigError, "Resend configuration unavailable" unless cfg.resend_api_key && cfg.resend_from_domain
-  Elevateo::SendWorker::ResendTransport.new(api_key: cfg.resend_api_key, from_domain: cfg.resend_from_domain)
+  Elevateo::SendWorker::ResendTransport.new(api_key: cfg.resend_api_key, from_domain: cfg.resend_from_domain,
+    base_url: cfg.resend_base_url)
 else
   Elevateo::SendWorker::DurableLocalDriver.new(path: ENV.fetch("ELEVATEO_LOCAL_ACCEPTANCE_LEDGER"), outcome: option)
 end
@@ -42,18 +43,18 @@ begin
   connection.exec("SET lock_timeout = '1s'")
   # AIDEV-NOTE: SQL owns reservations; startup refuses database limits wider than the configured pilot ceiling.
   if resend
-    wider = connection.exec_params("SELECT count(*) FROM app_send_private.budget_limits " \
-      "WHERE kind='mailbox' AND enabled AND ceiling>$1::integer", [cfg.mailbox_daily_send_limit]).getvalue(0, 0)
-    raise Elevateo::ConfigError, "mailbox budget exceeds ELEVATEO_MAILBOX_DAILY_SEND_LIMIT" unless wider == "0"
+    valid = connection.exec_params("SELECT app.resend_mailbox_limit_valid($1::integer)",
+      [cfg.mailbox_daily_send_limit]).getvalue(0, 0)
+    raise Elevateo::ConfigError, "mailbox budget exceeds ELEVATEO_MAILBOX_DAILY_SEND_LIMIT" unless valid == "t"
   end
   control = Elevateo::SendWorker::Control.new(path: cfg.send_control_path)
   if target == "--drain"
     steps = Elevateo::SendWorker::Drain.new(connection: connection, control: control, driver: driver).run
-    puts JSON.generate(event: "send_worker.drain", steps: steps, simulated: true)
+    puts JSON.generate(event: "send_worker.drain", steps: steps, simulated: !resend)
   else
     store = Elevateo::SendWorker::DatabaseStore.new(connection: connection, send_id: target, profile: profile)
     outcome = Elevateo::SendWorker::Executor.new(store: store, driver: driver, control: control).run_once
-    puts JSON.generate(event: "send_worker.step", send_id: target, result: outcome, simulated: true)
+    puts JSON.generate(event: "send_worker.step", send_id: target, result: outcome, simulated: !resend)
   end
 ensure
   connection.close

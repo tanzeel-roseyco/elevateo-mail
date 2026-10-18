@@ -39,6 +39,7 @@ module Elevateo
     attr_reader resend_api_key: String?
     attr_reader resend_from_domain: String?
     attr_reader resend_webhook_secret: String?
+    attr_reader resend_base_url: String?
     attr_reader mailbox_daily_send_limit: Integer
     def self.current: () -> Config
     def self.load!: (?_ConfigEnvironment) -> Config
