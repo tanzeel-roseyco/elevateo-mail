@@ -37,6 +37,8 @@ Rails.application.routes.draw do
   post "/v1/drafts/:draft_id/send-approvals", to: "v1/send_approvals#create"
   get "/v1/send-intents/:send_id", to: "v1/send_intents#show"
   post "/v1/send-intents/:send_id/cancellation", to: "v1/send_intents#cancel"
+  # AIDEV-NOTE: This route is unauthenticated by design; the controller verifies the bounded raw body before SQL.
+  post "/v2/provider-events/resend", to: "v2/resend_provider_events#create"
   get "/v1/search", to: "v1/search#index"
 
   # AIDEV-NOTE: Isolated V2 candidates require current role proof inside each guarded transaction.

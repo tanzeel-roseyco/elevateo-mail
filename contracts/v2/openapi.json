@@ -16,6 +16,24 @@
     }
   ],
   "paths": {
+    "/v2/provider-events/resend": {
+      "post": {
+        "operationId": "ingestResendProviderEvent",
+        "security": [],
+        "x-elevateo-status": "active",
+        "summary": "Ingest one Svix-signed Resend provider event",
+        "parameters": [
+          { "name": "svix-id", "in": "header", "required": true, "schema": { "type": "string" } },
+          { "name": "svix-timestamp", "in": "header", "required": true, "schema": { "type": "string" } },
+          { "name": "svix-signature", "in": "header", "required": true, "schema": { "type": "string" } }
+        ],
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "type": "object" } } } },
+        "responses": {
+          "200": { "description": "Event created or duplicate replay acknowledged" },
+          "401": { "description": "Missing, stale, or invalid signature" }
+        }
+      }
+    },
     "/v2/mailboxes/{mailbox_id}/assignee-options": {
       "get": {
         "operationId": "listMailboxAssigneeOptions",

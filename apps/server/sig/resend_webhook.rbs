@@ -1,0 +1,16 @@
+module Elevateo
+  module ResendWebhook
+    class Invalid < StandardError
+    end
+    class Verifier
+      TOLERANCE: Integer
+      def initialize: (secret: String, ?clock: ^() -> Integer) -> void
+      def verify!: (id: String, timestamp: String, signatures: String, body: String) -> bool
+    end
+    class Handler
+      TYPES: Array[String]
+      def initialize: (connection: untyped, ?binder: ^(String?) -> untyped) -> void
+      def ingest: (id: String, body: String) -> Hash[String, untyped]
+    end
+  end
+end
