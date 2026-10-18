@@ -3,7 +3,7 @@
 require "minitest/autorun"
 require "base64"
 require "openssl"
-require_relative "../lib/elevateo/resend_webhook"
+require_relative "../../lib/elevateo/resend_webhook"
 
 class ResendWebhookTest < Minitest::Test
   NOW = 1_800_000_000
