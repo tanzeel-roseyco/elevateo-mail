@@ -7,10 +7,10 @@ import type { OutreachPageProps } from './OutreachPages'
 import { isAccessLoss, writeFailure } from './writeFailure'
 
 /** Records a human assertion for backend review. It never grants send or enrollment capability. */
-export function ConsentEvidenceForm({ lead, campaignId, gateway, context, proof, onSaved, onAccessLost }: OutreachPageProps & {
-  lead: Lead; campaignId: string; gateway?: OutreachGateway; onSaved(): void; onAccessLost(): void
+export function ConsentEvidenceForm({ lead, campaignId, gateway, context, proof, onSaved, onAccessLost, initialSource = '' }: OutreachPageProps & {
+  lead: Lead; campaignId: string; gateway?: OutreachGateway; onSaved(): void; onAccessLost(): void; initialSource?: string
 }) {
-  const [source, setSource] = useState('')
+  const [source, setSource] = useState(initialSource)
   const [localTime, setLocalTime] = useState('')
   const [attested, setAttested] = useState(false)
   const [busy, setBusy] = useState(false)

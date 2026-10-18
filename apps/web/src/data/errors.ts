@@ -27,7 +27,7 @@ export type CollaborationErrorCode = (typeof COLLABORATION_ERROR_CODES)[number]
 export const SEND_ERROR_CODES = [
   'request_invalid', 'unauthenticated', 'not_available', 'context_changed', 'rate_limited',
   'temporarily_unavailable', 'internal_error', 'review_stale', 'send_not_ready', 'draft_consumed',
-  'draft_conflict', 'operation_mismatch', 'send_terminal', 'dispatch_held',
+  'draft_conflict', 'operation_mismatch', 'send_terminal', 'dispatch_held', 'consent_required',
 ] as const
 export type SendErrorCode = (typeof SEND_ERROR_CODES)[number]
 export type GatewayApiErrorCode = CollaborationErrorCode | SendErrorCode

@@ -14,6 +14,7 @@ import {
 } from './contract'
 import { isAccessLoss, writeFailure } from './writeFailure'
 import { ConsentEvidenceForm } from './ConsentEvidenceForm'
+import { validateLeadIntake } from '@/domain/sendConsent'
 
 export interface OutreachPageProps {
   gateway?: OutreachGateway
@@ -231,6 +232,8 @@ function CampaignLeads({ campaignId, ...props }: OutreachPageProps & { campaignI
   const state = useOutreachRead('leads', props, campaignId, revision, cursor)
   const pending = useRef<AbortController | null>(null)
   const [email, setEmail] = useState('')
+  const [consentSource, setConsentSource] = useState('')
+  const [intakeSource, setIntakeSource] = useState<{ leadId: string; source: string } | null>(null)
   const [editId, setEditId] = useState<string | null>(null)
   const [consentId, setConsentId] = useState<string | null>(null)
   const [consentSavedId, setConsentSavedId] = useState<string | null>(null)
@@ -243,6 +246,9 @@ function CampaignLeads({ campaignId, ...props }: OutreachPageProps & { campaignI
     event.preventDefault()
     if (!props.gateway || !props.context || !props.proof || !campaignId || busy || uncertain) return
     const selected = state.status === 'ready' ? state.value.items.find((lead) => lead.id === editId) : undefined
+    // AIDEV-NOTE: New leads need a stated opt-in source; it prefills the evidence form, it is not consent.
+    const intake = editId ? null : validateLeadIntake({ email, consentSource })
+    if (intake && !intake.ok) { setError(intake.message); return }
     const input = editId
       ? updateLeadInputSchema.safeParse({ operation_id: newId(), expected_version: selected?.version, email: email.trim().toLowerCase() })
       : addLeadInputSchema.safeParse({ id: newId(), operation_id: newId(), email: email.trim().toLowerCase() })
@@ -258,7 +264,10 @@ function CampaignLeads({ campaignId, ...props }: OutreachPageProps & { campaignI
       if (!editId && saved.id !== addLeadInputSchema.parse(input.data).id) throw new Error('Lead identity mismatch')
       if (saved.campaign_id !== campaignId) throw new Error('Lead campaign mismatch')
       if (saved.email !== input.data.email) throw new Error('Lead receipt mismatch')
-      if (!controller.signal.aborted) { setEmail(''); setEditId(null); setRevision((value) => value + 1) }
+      if (!controller.signal.aborted) {
+        if (intake?.ok) { setIntakeSource({ leadId: saved.id, source: intake.consentSource }); setConsentSavedId(null); setConsentId(props.gateway.recordConsent ? saved.id : null) }
+        setEmail(''); setConsentSource(''); setEditId(null); setRevision((value) => value + 1)
+      }
     } catch (failure) { if (!controller.signal.aborted) { const outcome = writeFailure(failure); setError(outcome.message); setUncertain(outcome.lock); if (isAccessLoss(failure)) setAccessLost(true) } }
     finally { if (!controller.signal.aborted) setBusy(false) }
   }
@@ -269,13 +278,14 @@ function CampaignLeads({ campaignId, ...props }: OutreachPageProps & { campaignI
         {props.gateway?.recordConsent && lead.consent_status !== 'granted' &&
           <Button onClick={() => { setConsentSavedId(null); setConsentId((current) => current === lead.id ? null : lead.id) }}>Record consent evidence</Button>}
         {consentSavedId === lead.id && <p role="status">Manual attestation recorded for this lead. Independent verification is not shown; sending remains unavailable.</p>}
-        {consentId === lead.id && campaignId && <ConsentEvidenceForm key={`${lead.id}:${lead.version}`} lead={lead} campaignId={campaignId} {...props} onSaved={() => { setConsentSavedId(lead.id); setConsentId(null); setRevision((value) => value + 1) }} onAccessLost={() => setAccessLost(true)} />}
+        {consentId === lead.id && campaignId && <ConsentEvidenceForm key={`${lead.id}:${lead.version}`} lead={lead} campaignId={campaignId} {...props} initialSource={intakeSource?.leadId === lead.id ? intakeSource.source : ''} onSaved={() => { setConsentSavedId(lead.id); setConsentId(null); setRevision((value) => value + 1) }} onAccessLost={() => setAccessLost(true)} />}
       </li>)}</ul>
     {page.next_cursor && <Link to={`?cursor=${encodeURIComponent(page.next_cursor)}`}>Next leads page</Link>}
   </>}</Content>
     <form onSubmit={(event) => { void save(event) }} className="space-y-3">
       <Field id="lead-email" label={editId ? 'Edit lead email' : 'Add lead email'}><TextInput id="lead-email" type="email" value={email} onChange={(event) => setEmail(event.target.value)} required /></Field>
-      <p>Adding or editing an address does not grant consent or enroll it for sending.</p>
+      {!editId && <Field id="lead-consent-source" label="Consent source (where this person opted in)"><TextInput id="lead-consent-source" value={consentSource} maxLength={200} onChange={(event) => setConsentSource(event.target.value)} required /></Field>}
+      <p>Adding or editing an address does not grant consent or enroll it for sending. Live Resend sends need recorded consent evidence.</p>
       <ActionError message={error} />
       <Button type="submit" disabled={!props.gateway || !props.context || !props.proof || busy || uncertain}>{busy ? 'Saving…' : editId ? 'Save address' : 'Add lead'}</Button>
       {editId && <Button onClick={() => { setEditId(null); setEmail('') }}>Cancel edit</Button>}

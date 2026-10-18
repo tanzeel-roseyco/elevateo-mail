@@ -52,6 +52,23 @@ describe('BE03 simulated status', () => {
     expect(screen.getByText(/does not confirm the email was read/)).not.toBeNull()
     expect(screen.getByText('Live email')).not.toBeNull()
   })
+  it.each([['bounced', /after a bounce/], ['complained', /after a spam complaint/]] as const)('shows the %s provider state and its suppression reason on a live send', async (state, reason) => {
+    setup({ ...STATUS, state: 'accepted', simulated: false, cancellable: false, delivery_status: state, delivery_updated_at: STATUS.approved_at, suppression_reason: state })
+    await screen.findByRole('heading', { name: `Delivery: ${state}` })
+    expect(screen.getByRole('note', { name: 'Suppression' }).textContent).toMatch(reason)
+    expect(screen.queryByText(/Simulated/)).toBeNull()
+  })
+  it('shows delivery delays without a suppression reason', async () => {
+    setup({ ...STATUS, state: 'accepted', simulated: false, cancellable: false, delivery_status: 'delivery_delayed', delivery_updated_at: STATUS.approved_at })
+    await screen.findByRole('heading', { name: 'Delivery: delivery delayed' })
+    expect(screen.queryByRole('note', { name: 'Suppression' })).toBeNull()
+  })
+  it('keeps the simulated label on simulated sends', async () => {
+    setup(STATUS)
+    await screen.findByRole('heading', { name: 'Send intent: queued' })
+    expect(screen.getByText('Simulated - no live mail')).not.toBeNull()
+    expect(screen.getByText(/Simulated attempts/)).not.toBeNull()
+  })
   it('does not present a foreign mailbox status as this intent', async () => {
     setup({ ...STATUS, mailbox_id: STATUS.send_id })
     await screen.findByText(/This send status is unavailable/)

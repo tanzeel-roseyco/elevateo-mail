@@ -2,7 +2,7 @@ import { defineConfig, devices } from '@playwright/test'
 
 // AIDEV-NOTE: Runs built production UI with controlled API replies inside the fleet Docker gate.
 export default defineConfig({
-  testDir: './e2e', testMatch: ['live-send.spec.ts', 'production.spec.ts'],
+  testDir: './e2e', testMatch: ['live-send.spec.ts', 'consent-send.spec.ts', 'production.spec.ts'],
   outputDir: './e2e/.results/pilot', workers: 1,
   use: { baseURL: 'http://127.0.0.1:4173', screenshot: 'only-on-failure', trace: 'retain-on-failure' },
   projects: [

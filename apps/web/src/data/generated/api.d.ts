@@ -876,6 +876,8 @@ export interface components {
             index: number;
             /** @enum {string} */
             status: "ok" | "invalid" | "duplicate" | "suppressed";
+            /** @description True only when the server holds consent evidence for this recipient. */
+            consent_evidence: boolean;
         };
         SendReadinessIssue: {
             code: components["schemas"]["SendReadinessCode"];
@@ -894,7 +896,7 @@ export interface components {
         };
         SendError: {
             /** @enum {string} */
-            code: "request_invalid" | "unauthenticated" | "not_available" | "context_changed" | "review_stale" | "send_not_ready" | "draft_consumed" | "draft_conflict" | "operation_mismatch" | "send_terminal" | "rate_limited" | "temporarily_unavailable" | "dispatch_held" | "internal_error";
+            code: "request_invalid" | "unauthenticated" | "not_available" | "context_changed" | "review_stale" | "send_not_ready" | "draft_consumed" | "draft_conflict" | "operation_mismatch" | "send_terminal" | "rate_limited" | "temporarily_unavailable" | "dispatch_held" | "consent_required" | "internal_error";
             message: string;
             request_id: string;
         };
@@ -922,6 +924,7 @@ export interface components {
             issues: components["schemas"]["SendReadinessIssue"][];
             review_digest: string | null;
             simulated: boolean;
+            outbound_mode: components["schemas"]["SendOutboundMode"];
         } & (unknown & unknown);
         ApprovalResult: {
             context_id: components["schemas"]["OpaqueToken"];
@@ -954,6 +957,11 @@ export interface components {
             delivery_status: "sent" | "delivery_delayed" | "delivered" | "failed" | "bounced" | "suppressed" | "complained" | null;
             /** Format: date-time */
             delivery_updated_at: string | null;
+            /**
+             * @description Why the recipient is suppressed after a provider bounce or complaint event.
+             * @enum {string|null}
+             */
+            suppression_reason: "bounced" | "complained" | null;
         };
         CancellationResult: {
             context_id: components["schemas"]["OpaqueToken"];
@@ -990,6 +998,11 @@ export interface components {
             /** @constant */
             removed: true;
         };
+        /**
+         * @description Server-selected outbound transport. Under resend, every recipient needs consent evidence (Resend acceptable use policy).
+         * @enum {string}
+         */
+        SendOutboundMode: "held" | "mailpit" | "resend";
     };
     responses: {
         /** @description request_invalid for malformed/unknown/duplicate input, invalid UUID, missing context/CSRF/Origin, wrong content type or byte limit; cursor_invalid for invalid/expired/scope-mismatched cursor. No mutation. */

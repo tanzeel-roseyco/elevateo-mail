@@ -7236,7 +7236,8 @@
         "additionalProperties": false,
         "required": [
           "index",
-          "status"
+          "status",
+          "consent_evidence"
         ],
         "properties": {
           "index": {
@@ -7252,6 +7253,10 @@
               "duplicate",
               "suppressed"
             ]
+          },
+          "consent_evidence": {
+            "type": "boolean",
+            "description": "True only when the server holds consent evidence for this recipient."
           }
         }
       },
@@ -7348,6 +7353,7 @@
               "rate_limited",
               "temporarily_unavailable",
               "dispatch_held",
+              "consent_required",
               "internal_error"
             ]
           },
@@ -7385,7 +7391,8 @@
           "ready",
           "issues",
           "review_digest",
-          "simulated"
+          "simulated",
+          "outbound_mode"
         ],
         "properties": {
           "context_id": {
@@ -7484,6 +7491,9 @@
           },
           "simulated": {
             "type": "boolean"
+          },
+          "outbound_mode": {
+            "$ref": "#/components/schemas/SendOutboundMode"
           }
         },
         "description": "Bounded author-owned unsent draft; invalid send addresses remain displayable. ready=false requires null review_digest; ready=true requires a digest. No suppression reason or provider content.",
@@ -7589,7 +7599,8 @@
           "updated_at",
           "simulated",
           "delivery_status",
-          "delivery_updated_at"
+          "delivery_updated_at",
+          "suppression_reason"
         ],
         "properties": {
           "context_id": {
@@ -7685,6 +7696,18 @@
               "null"
             ],
             "format": "date-time"
+          },
+          "suppression_reason": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "enum": [
+              "bounced",
+              "complained",
+              null
+            ],
+            "description": "Why the recipient is suppressed after a provider bounce or complaint event."
           }
         }
       },
@@ -7838,6 +7861,15 @@
             "const": true
           }
         }
+      },
+      "SendOutboundMode": {
+        "type": "string",
+        "enum": [
+          "held",
+          "mailpit",
+          "resend"
+        ],
+        "description": "Server-selected outbound transport. Under resend, every recipient needs consent evidence (Resend acceptable use policy)."
       }
     },
     "parameters": {
@@ -8238,7 +8270,7 @@
         ]
       },
       "Send404": {
-        "description": "not_available \u00e2\u20ac\u201d This item is unavailable.",
+        "description": "not_available â€” This item is unavailable.",
         "headers": {
           "Cache-Control": {
             "required": true,
