@@ -20,7 +20,7 @@ module Elevateo
                        "elevateo_migrator" => "MIGRATOR_DB_PASSWORD" }.freeze
     PROVIDER_PREFIXES = %w[INSTANTLY_ POSTMARK_ SENDGRID_ MAILGUN_ SES_ RESEND_ SMTP_RELAY_].freeze
 
-    attr_reader :db_host, :db_name, :db_role, :db_password, :auth_url, :storage_url, :mailpit_url,
+    attr_reader :mode, :db_host, :db_name, :db_role, :db_password, :auth_url, :storage_url, :mailpit_url,
                 :send_api_enabled, :send_control_path, :outbound_hold, :process, :session_key, :browser_origin, :auth_jwt_issuer,
                 :auth_jwt_audience, :auth_jwt_algorithm, :cookie_secure, :auth_password_minimum, :cursor_signing_key,
                 :attachment_gateway_hmac_key, :attachment_gateway_url
@@ -33,7 +33,8 @@ module Elevateo
       # AIDEV-NOTE: Even migration/worker Rails processes must never inherit the gateway's Storage authority.
       raise ConfigError, "attachment storage token is gateway-only" if env.key?("ELEVATEO_ATTACHMENT_STORAGE_SERVICE_TOKEN")
       fetch = ->(key) { value = env[key].to_s; raise ConfigError, "missing required setting #{key}" if value.empty?; value }
-      raise ConfigError, "ELEVATEO_MODE must be local" unless fetch.("ELEVATEO_MODE") == "local"
+      @mode = fetch.("ELEVATEO_MODE")
+      raise ConfigError, "ELEVATEO_MODE must be local" unless @mode == "local"
       # AIDEV-NOTE: BE03 API is opt-in; enabling it never releases outbound hold or supplies a default epoch.
       send_enabled = env["ELEVATEO_SEND_API_ENABLED"] || "false"
       raise ConfigError, "invalid send API switch" unless %w[true false].include?(send_enabled)

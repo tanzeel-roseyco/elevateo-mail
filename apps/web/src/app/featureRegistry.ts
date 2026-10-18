@@ -6,11 +6,16 @@
 // AIDEV-NOTE: Validation is deliberate and fails loud at module load, so a duplicate or malformed
 // path from one worker breaks the build/test run instead of silently shadowing another route.
 
-/** Sidebar sections are independent lists; there is no global personal/outreach state switch. */
-export type FeatureSection = 'personal' | 'outreach'
-/** Render order and visible headings of the sidebar sections after Personal. */
-export const FEATURE_SECTIONS: ReadonlyArray<{ key: Exclude<FeatureSection, 'personal'>; label: string }> = [
+/**
+ * Sidebar sections are independent lists grouped by job (2026-10-18 IA refresh); there is no global
+ * mode switch. `mail` entries join the Mail group after the mailboxes.
+ */
+export type FeatureSection = 'mail' | 'outreach' | 'contacts' | 'settings'
+/** Render order and visible headings of the sidebar sections after Mail. */
+export const FEATURE_SECTIONS: ReadonlyArray<{ key: Exclude<FeatureSection, 'mail'>; label: string }> = [
   { key: 'outreach', label: 'Outreach' },
+  { key: 'contacts', label: 'Contacts' },
+  { key: 'settings', label: 'Settings' },
 ]
 
 export interface FeatureNavEntry {
@@ -65,7 +70,7 @@ export function buildFeatureRegistry(modules: readonly FeatureRegistration[]): F
       if (entry.label.trim() === '') throw new FeatureRegistryError(`Feature "${module.id}" nav entry "${entry.path}" has an empty label`)
     }
   }
-  const bySection: Record<FeatureSection, FeatureNavEntry[]> = { personal: [], outreach: [] }
+  const bySection: Record<FeatureSection, FeatureNavEntry[]> = { mail: [], outreach: [], contacts: [], settings: [] }
   for (const module of modules) for (const entry of module.nav) bySection[entry.section].push(entry)
   // Array.prototype.sort is stable (ES2019+), so equal orders keep registration order.
   for (const section of Object.keys(bySection) as FeatureSection[]) bySection[section].sort((a, b) => a.order - b.order)

@@ -5,6 +5,7 @@ module Elevateo
   type session_argument = String | Integer | bool | nil
 
   interface _AuthConfig
+    def mode: () -> String
     def session_key: () -> String
     def cursor_signing_key: () -> String
     def browser_origin: () -> String

@@ -306,16 +306,16 @@ function DraftEditor({ mailboxId, draftId }: { mailboxId: string; draftId: strin
   if (state.status === 'loading') return <div role="status" aria-label="Loading draft" className="mx-auto max-w-3xl p-3"><Skeleton rows={5} /></div>
   if (state.status === 'unavailable') {
     return (
-      <main className="mx-auto max-w-3xl p-3">
+      <div className="mx-auto max-w-3xl p-3">
         <EmptyState title="This draft is unavailable" body="It may not exist, it may belong to someone else, or you may no longer be able to compose in this mailbox." action={<Link to={backTo} className="text-[13px] underline">Back to drafts</Link>} />
-      </main>
+      </div>
     )
   }
   if (state.status === 'error') {
     return (
-      <main role="alert" className="mx-auto max-w-3xl p-3">
+      <div role="alert" className="mx-auto max-w-3xl p-3">
         <EmptyState title="The draft could not be loaded" body={state.failure.message} action={<Button variant="primary" onClick={() => void load()}>Try again</Button>} />
-      </main>
+      </div>
     )
   }
 

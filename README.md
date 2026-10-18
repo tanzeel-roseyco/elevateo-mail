@@ -1,5 +1,25 @@
 # Elevateo Mail
 
+## Current state
+
+- 2026-10-18: `integrate/unified-20261018` consolidates all worker branches (see `docs/integration/merge-ledger-20261018.md`); backend suites green, Steep/RuboCop B12–B13 pending.
+<!-- completion-wave-current:start -->
+### Authoritative completion status (2026-10-17)
+
+This summary supersedes the historical checkpoints below. The immediate launch scope is Resend; self-hosted Mox deployment remains deferred to ongoing repository development.
+
+- **Android acceptance passed:** commit `2f9c7e508ea43c26c27e7958e297bbb3bfb7ef0d` includes the viewport, connectivity and diagnostic-harness fixes. All nine Android 14/WebView 113 runtime checks passed, including rotation, keyboard visibility, force-stop/restart session recovery, offline feedback and logout. See `docs/completion/android1037-acceptance.md`.
+- **Frontend automated gate passed:** fleet-02 Docker run `root1041-web-r3` passed API generation/checks, lint, typecheck, all **891 tests in 67 files**, coverage thresholds and production build. The gate reports `checks_exit=0` and `cleanup_failed=0`; evidence is `docs/completion/qa815-evidence/root1041-web-r3.log`. Saved-draft send review/approval, session handling and draft attachment UI changes are included. Pilot browser Docker run `root1041-pilot-browser-r3` passed all 20 scenarios across Chromium, Firefox, WebKit and a 390px narrow viewport; `checks_exit=0` and `context_absent=yes`. Evidence is retained in `docs/completion/qa815-evidence/root1041-pilot-browser-r3.log` and four selected review/delivery PNGs in `docs/completion/qa815-evidence/root1041-pilot-browser-r3/`. Manual Chromium desktop and narrow-viewport inspection passed: readable aligned content, no horizontal overflow, inert hostile plaintext, clear consent/attachment status and delivered-versus-read distinction. These are controlled browser fixtures, not live provider delivery.
+- **Backend suites, types and lint passed; integrated acceptance pending:** Resend outbound transport, signed provider events/inbound handling, draft attachment reserve/upload/finalize/list/remove, scanning and approved-send attachment binding are staged in the integration work. The latest combined backend Docker run passed its complete suites, Steep and RuboCop. Integrated acceptance was blocked by a missing pinned Node image in the runner; the corrected acceptance and recovery candidate is running. Final integrated and recovery acceptance remain pending. Resend operations Compose syntax validation passed, which does not establish deployment or provider acceptance.
+- **Live activation remains held:** production credentials, verified sending domain and sender, signed webhook setup, recipient consent/eligibility, deployment verification and backup/restore evidence remain prerequisites. No live Resend delivery or complete production readiness is claimed. Existing historical simulated/Mailpit evidence is not live provider evidence; GitHub publication of this completion wave is not yet verified.
+
+- **Launch blockers plan:** the six remaining launch blockers, owner routes, critical path and costs are in `docs/launch-blockers-plan.md` (2026-10-18).
+
+Historical records are retained for traceability. Earlier Android failures, lower frontend test counts and statements that Resend implementation has not started describe their original checkpoints, not the current implementation above.
+<!-- completion-wave-current:end -->
+
+## Historical implementation notes
+
 ### Mira BE03 UI isolated R24 implementation (2026-10-14)
 
 Root authorizes isolated BE03 implementation over `03ae770` while BE02 remains OPEN/unaccepted and integration/release gated. Mira owns the send gateway, generated web artifacts after canonical contract, and review/approval/status UI. The S1/S2 UI renders full saved plaintext content, explicit correspondence approval, original-binding uncertain retry, and server-owned simulated status. Paired corrected exact canonical contract `aa35c3d`; source607fcb2c passed Docker generator/check/lint/type and8files/260affectedtests; independent functional/data/design reviews found0confirmeddefects. Exact generated artifact and strengthened tests are present, follow-up sourcee037cb9b passed Docker APIcheck/lint/type/full37files660tests/build/fixture-isolation checks; bounded follow-up reviews found0confirmeddefects. Final fixture-only pre-abort repair8f6f5bf8 passed lint/type/9files174affectedtests and independent40LOC repair review0newdefects; seven exact owned containers independently absent, shared image/Lyra18140 preserved; actual visual/integrated validation remains pending; no completion or delivery claim. Canonical source is `contracts/v1/openapi.json`. See [Mira scoped evidence](docs/completion/be03-mira-r24.md).
@@ -12,7 +32,11 @@ Private synthetic frontend preview is running; Docker lint/typecheck/build and 6
 
 Shared company mailroom with one Rails domain authority and a React/TypeScript client.
 
-## Current state
+## Historical checkpoints
+
+PLAN1036 (2026-10-18): added `financial planning/` (cost model CSV with live-checked prices, pilot, growth and enterprise scenarios) and `docs/production-readiness-plan.md` (141 items: 49 ALREADY-DONE, 37 APPLIES-NOW, 35 APPLIES-LATER, 20 NOT-APPLICABLE, with owners, effort, a risk-ordered pilot plan and 13 backend tasks). Applied without backend changes: SECURITY.md, CHANGELOG.md, Dependabot, a GitHub Actions CI workflow (web lint, typecheck, contract checks and Vitest; server RuboCop lint and Steep; gitleaks), `.gitleaks.toml`, stolen-laptop, incident-response and disaster-recovery runbooks under `docs/runbooks/`, and `docs/large-files.md`. Docker checks on fleet-02 at 712a3cbf: web 67 files / 891 Vitest tests, lint, typecheck and both contract checks PASS; server `rubocop --lint` FAILS with one Lint/AmbiguousBlockAssociation offense in `test/be_02/session_security_test.rb:14` and `steep check` FAILS with one NoMethod (`Config#mode`) in `lib/elevateo/sessions.rb`; both are handed to the backend route (tasks B12, B13). Pilot hosting-only estimate A$12.94 to A$27.64 per month; all-in excluding people, mailboxes and AI A$39.26 to A$400.59. No live spend, credentials, DNS or production changes.
+
+DESIGN-REFRESH (2026-10-18, branch design/opus-ui-refresh): web navigation regrouped by job (Today, Mail, Outreach, Contacts, Settings) with icons; a context strip gives every route its group, purpose and, where useful, a back link; home is now a Today summary (unread replies and open drafts via real gateway reads, the 30-per-mailbox daily limit, and an explicit 'not reported yet' for quota usage, approvals and failures). Refreshed cool-neutral tokens with elevation; outreach states and nested-main error states fixed. No dependencies added; apps/server and API contracts unchanged. Web gate in Docker: lint, typecheck, build and 68 files / 895 Vitest tests, API contract checks v1/v2 all pass; one full-suite rerun under load hit a timing flake in an unchanged Shell focus test that passed on rerun. Before/after screenshots: docs/design/screenshots-20261018/.
 
 RESEND-FIRST scope (2026-10-17): user deferred self-hosted mailserver deployment to ongoing repository development and selected Resend for the immediate app launch. Existing research/tests/plans remain preserved. Web gate: 874 Vitest tests plus API checks/lint/typecheck/build PASS; Android restart acceptance remains unresolved. Live Resend transport/production configuration is not implemented; the current worker supports simulated/Mailpit sends only. Final provider/browser/operational acceptance and live activation remain: NOT credentials-only ready. Lead opt-in is unresolved; Resend prohibits cold outreach. See docs/completion/resend-first-launch.md. GitHub publication of this update is not yet verified.
 
@@ -289,6 +313,13 @@ MAC-814 follow-up source splits content reads from protected writes and adds a m
 ATT866 followup source repairs the direct-message serializer and the rollback-only BE02 thread schema fixture after the integrated `cb1ec5b` backend receipt. Soren's targeted fleet rerun is pending; Nadia owns separate attachment Storage declarations.
 REV874 source review found that fixture could detach an unreviewed future FK. The followup pins the expected later-table FK names and definitions and fails before detachment on catalog drift; Soren's fleet rerun remains pending.
 INB887 followup narrows verified IMAP session access and annotates bounded MIME attachment tuples to match strict RBS. This is a source candidate pending Soren's fleet Steep, RuboCop and inbound unit checks; no receive protocol pilot or live account was activated.
+
+MAIL-818 has an isolated synthetic Mox localserve pilot under `ops/mail/mox-pilot/`.
+Its Docker protocol and isolation checks are requested from Soren on fleet-02
+and remain NOT_RUN; no production provider change or activation follows from
+this fixture. Runner receipts now distinguish base protocol from skipped Corin
+interop and fail closed on unverified Docker cleanup inventory. The repair and
+its regression remain NOT_RUN; see [Rhea's pilot record](docs/completion/rhea.md).
 
 
 ### R25 approval reload recovery candidate
@@ -744,6 +775,8 @@ QA815 exact feature `7cae15a7` fleet focused fake inbound RuboCop passed, while 
 INT801 isolated ATT902 activation candidate now registers both scoped attachment metadata and clean-content V2 GET routes, marks those two additive OpenAPI operations active and injects the existing strict private attachment port into the normal web shell. This is an ordinary app path for Soren's disposable private fixture, not public deployment or acceptance: Nadia's two Steep errors, expanded backend suites, real Storage/clamd/Auth byte proof, browser visual checks and generated V2 check on this exact contract successor remain pending. Frozen V1 BE02/BE03 and live sending stay unchanged.
 
 Orion TEST929 `1aebd99b` backend suite manifest is staged: it discovers every `test/**/*_test.rb`, runs standard suites as isolated processes, fails unknown directories and names dedicated role/state/protocol suites separately. Its core inventory was 130 standard plus nine dedicated from 139; this feature source has additional suites, so the manifest and all dedicated gates remain unexecuted pending independent review and Soren fleet run.
+
+FIX939 source candidate on exact `fc45037`: Soren's fleet gate stopped before Ruby cases when the strict manifest rejected root-level `v2_attachment_error_test.rb`; `v2_route_registry_test.rb` was also unclassified. Both reviewed root files are pure Minitest and now have exact standard-suite entries. The actual integrated tree has 146 tracked server test files (137 standard, nine dedicated), reflecting five additional feature tests since the 139-file core inventory. Root review and Soren's corrected fleet gate remain pending; no suite PASS is inferred.
 
 Nadia FIX933 `b3899a06` is imported into the activated ATT902 candidate: it narrows private binding fields, aligns NoStorage's reject-only keyword type and adds a two-path rejection regression. It is source-only pending Soren exact feature Steep/lint/controller tests and private runtime.
 

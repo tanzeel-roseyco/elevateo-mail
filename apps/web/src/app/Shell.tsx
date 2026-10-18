@@ -1,5 +1,5 @@
 // Responsive shell: skip link, sidebar as a drawer below the md breakpoint, labelled main region.
-// FE-805: the rail carries independent Personal/Outreach sections fed by the validated feature
+// FE-805: the rail carries independent Mail/Outreach/Contacts/Settings sections fed by the validated feature
 // registry (./features); the drawer is named "Navigation" / "Open navigation" as agreed with
 // QA, and Tessa updates the e2e selectors in step (older R12/R19 evidence used the previous names).
 // Layout ideas adapted from first-party Ledger frontend 4322cfbb, src/features/live/LiveShell.tsx
@@ -26,6 +26,7 @@ import { AccountSheet } from './AccountSheet'
 import { featureRegistry } from './features'
 import { MailboxesProvider, type MailboxesSnapshot } from './mailboxes'
 import { PageBoundary } from './PageBoundary'
+import { RouteContext } from './RouteContext'
 import { SearchBox } from './SearchBox'
 import { Sidebar } from './Sidebar'
 import { sessionIdentityKey, useGateway, useSession } from './session'
@@ -264,7 +265,7 @@ function ProtectedShell({ session, replacedIdentity }: { session: Session; repla
       </a>
       <aside className="hidden w-64 shrink-0 border-r border-line bg-surface md:block">{sidebar}</aside>
       <div className="flex min-w-0 flex-1 flex-col">
-        <header className="flex items-center gap-2 border-b border-line bg-surface px-3 py-2">
+        <header className="flex h-14 shrink-0 items-center gap-2 border-b border-line bg-surface px-3 sm:px-4">
           <span className="md:hidden">
             {/* Names agreed with QA (ADV/Tessa): the drawer holds every section, not only mailboxes. */}
             <Drawer open={drawerOpen} onOpenChange={setDrawerOpen} title="Navigation" trigger={<IconButton label="Open navigation"><MenuIcon /></IconButton>}>
@@ -286,6 +287,8 @@ function ProtectedShell({ session, replacedIdentity }: { session: Session; repla
         {/* Online-only: no cache, no queue; a drop is announced and a return offers an explicit reload. */}
         <ConnectivityBanner onReload={refresh} />
         <main id="main" tabIndex={-1} className="min-h-0 flex-1 overflow-y-auto">
+          {/* IA refresh: group, purpose and back path for every known route (app/pageMeta.ts). */}
+          <RouteContext />
           <PageBoundary><Outlet /></PageBoundary>
         </main>
       </div>

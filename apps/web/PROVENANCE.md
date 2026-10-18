@@ -26,3 +26,10 @@ entries, configs and tests.
 ## FE-01-R1 data repair
 
 Astra LOW updated transport lifecycle cleanup, strict JSON media-type handling and operation-specific fixture validation under the accepted repair dispatch. Coordinator added pinned Node declarations/lint tooling and shared test cleanup wiring. Source/test hashes and Docker evidence are in `docs/evidence/fe-01-r1-data`. This changes the adapted behavior described above without changing its first-party provenance.
+
+## 2026-10-18 design refresh
+
+First-party. `src/app/HomePage.tsx`, `src/app/RouteContext.tsx`, `src/app/pageMeta.ts` and the new icons in
+`src/ui/icons.tsx` are original. Design references in `docs/design/ux-audit-20261018.md` section 6
+(design-taste, better-design, superdesign, canvas-ui, paper-design/shaders, uilayouts, motion-primitives,
+cursify) were reviewed as guidance only: no code, assets or dependencies were copied or added.

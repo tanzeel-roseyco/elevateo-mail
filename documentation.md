@@ -1,3 +1,18 @@
+<!-- completion-wave-current:start -->
+### Authoritative completion status (2026-10-17)
+
+This summary supersedes the historical checkpoints below. The immediate launch scope is Resend; self-hosted Mox deployment remains deferred to ongoing repository development.
+
+- **Android acceptance passed:** commit `2f9c7e508ea43c26c27e7958e297bbb3bfb7ef0d` includes the viewport, connectivity and diagnostic-harness fixes. All nine Android 14/WebView 113 runtime checks passed, including rotation, keyboard visibility, force-stop/restart session recovery, offline feedback and logout. See `docs/completion/android1037-acceptance.md`.
+- **Frontend automated gate passed:** fleet-02 Docker run `root1041-web-r3` passed API generation/checks, lint, typecheck, all **891 tests in 67 files**, coverage thresholds and production build. The gate reports `checks_exit=0` and `cleanup_failed=0`; evidence is `docs/completion/qa815-evidence/root1041-web-r3.log`. Saved-draft send review/approval, session handling and draft attachment UI changes are included. Pilot browser Docker run `root1041-pilot-browser-r3` passed all 20 scenarios across Chromium, Firefox, WebKit and a 390px narrow viewport; `checks_exit=0` and `context_absent=yes`. Evidence is retained in `docs/completion/qa815-evidence/root1041-pilot-browser-r3.log` and four selected review/delivery PNGs in `docs/completion/qa815-evidence/root1041-pilot-browser-r3/`. Manual Chromium desktop and narrow-viewport inspection passed: readable aligned content, no horizontal overflow, inert hostile plaintext, clear consent/attachment status and delivered-versus-read distinction. These are controlled browser fixtures, not live provider delivery.
+- **Backend suites, types and lint passed; integrated acceptance pending:** Resend outbound transport, signed provider events/inbound handling, draft attachment reserve/upload/finalize/list/remove, scanning and approved-send attachment binding are staged in the integration work. The latest combined backend Docker run passed its complete suites, Steep and RuboCop. Integrated acceptance was blocked by a missing pinned Node image in the runner; the corrected acceptance and recovery candidate is running. Final integrated and recovery acceptance remain pending. Resend operations Compose syntax validation passed, which does not establish deployment or provider acceptance.
+- **Live activation remains held:** production credentials, verified sending domain and sender, signed webhook setup, recipient consent/eligibility, deployment verification and backup/restore evidence remain prerequisites. No live Resend delivery or complete production readiness is claimed. Existing historical simulated/Mailpit evidence is not live provider evidence; GitHub publication of this completion wave is not yet verified.
+
+Historical records are retained for traceability. Earlier Android failures, lower frontend test counts and statements that Resend implementation has not started describe their original checkpoints, not the current implementation above.
+<!-- completion-wave-current:end -->
+
+## Historical checkpoints
+
 RESEND-FIRST scope (2026-10-17): user deferred self-hosted mailserver deployment to ongoing repository development and selected Resend for the immediate app launch. Existing research/tests/plans remain preserved. Web gate: 874 Vitest tests plus API checks/lint/typecheck/build PASS; Android restart acceptance remains unresolved. Live Resend transport/production configuration is not implemented; the current worker supports simulated/Mailpit sends only. Final provider/browser/operational acceptance and live activation remain: NOT credentials-only ready. Lead opt-in is unresolved; Resend prohibits cold outreach. See docs/completion/resend-first-launch.md. GitHub publication of this update is not yet verified.
 
 ANDROID1035: real Android 14/WebView113 fleet acceptance passed login, inbox, message links, plaintext rendering, drawer navigation and session restart/resume. Acceptance FAILED: system bars overlap the app after rotation, network loss is not reflected by navigator.onLine, and logout was not verified before the emulator stopped with a graphics error. The final private UNIX transport gate passed 112 Python tests plus 9 socket/TLS tests and strict TypeScript; the emulator harness passed 19 tests. Independent checks verified 35 exact task resources/private paths absent. No live spend, credentials, mail, DNS or production changes. Upload integration, outbound attachment MIME, native fixes and final browser/native acceptance remain open: NOT credentials-only ready. See docs/completion/android1035-acceptance.md.
@@ -259,6 +274,13 @@ Project obsidian.md and the remote pending record are NOT synchronized to the ac
 Evidence: [R23 journal](docs/completion/int403-r23-application-state.md), [R18 seal](docs/completion/int401-r18-handoff.md), [history](docs/completion/int401-status-history-20261014.md).
 
 Design date: 2026-10-11; expanded planning revision: 2026-10-12. Current scoped decisions override older planning assumptions; consent-based sending remains required.
+
+MAIL-818 adds an isolated synthetic Mox SMTP/IMAP protocol fixture as R&D.
+The app's mail provider and no-live-send boundary are unchanged. Pilot design,
+license and execution limits are in [the pilot README](ops/mail/mox-pilot/README.md).
+The runner's component receipt distinguishes omitted Corin adapter probes
+from a passing base protocol; timed-out cleanup inventory is unverifiable and
+fails the run. These source changes and regressions await fleet Docker proof.
 
 ## Confirmed by the user
 
@@ -730,6 +752,8 @@ ADV150 chose normal candidate activation to break the fixture/content-route proo
 
 TEST929 expands `ops/tests/be02/test-suites.sh` from three fixed globs to explicit `globstar` classification of all Ruby suite paths; unknown directories fail admission, standard suites run per process, and nine historically dedicated role/state/Mailpit suites print as deferred for separate disposable fleet gates. Exact feature source has more files than Orion's 139-file core inventory; do not infer suite or case PASS until Soren executes the reviewed manifest and dedicated commands. No hidden skip or credential substitution is authorized.
 
+FIX939 keeps that closed classification while admitting only `test/v2_attachment_error_test.rb` and `test/v2_route_registry_test.rb` as standard suites. On exact `fc45037`, tracked inventory is 146 files: 137 standard and nine dedicated. The first Soren fleet attempt failed at classification before any Ruby case; the corrected manifest awaits root review and one coherent Soren rerun. No production code or test body changed.
+
 FIX933 keeps the existing NoStorage stub unconditionally rejecting writes while declaring anonymous string keyword options in RBS, and narrows scan status/id to strings before constructing the private download binding. The imported test checks both required and unexpected keyword rejection. This addresses Soren's two Steep diagnostics at source, but exact fleet Steep/lint/controller tests and real gateway bytes remain pending.
 
 ADV151 design review of Orion's 53-line TEST929 runner found zero confirmed source defects, while warning that 130 per-process suites may exceed the 480-second outer lease. Soren must retain an exact integrated-source ledger of selected/deferred files, per-file exits/cases/skips and completion; nine role/state/Mailpit files require their own task-owned gates. No automatic skip/timeout may be called PASS.
@@ -773,3 +797,15 @@ INT988 inline self-review: reviewed the complete 64-line mailbox case plus four 
 Local disk preservation: 30 exact generated archives (50,048,676 bytes) were copied to remote control/local-archive-backup-20261016, size/hash verified before exact local deletion; verified-transfer-second-batch.json records proof. The earlier 27-archive PowerShell incompatibility incident is retained in docs/completion/qa815-evidence/mail1019-archive-preservation.json: all27 remote archives validate,24 match older remote copies,three lack an independent pre-copy hash. Do not claim verified-before-delete for that earlier batch. Source, installed applications, Android assets, persistent data and credentials were retained.
 
 Android runtime completion: Android1037 passed all nine isolated checks (login, navigation, inbox, thread, rotation, keyboard, lifecycle, offline, logout), including visual inspection and force-stop session recovery. Evidence: docs/completion/android1037-acceptance.md. Disposable runtime cleanup passed; no live release performed.
+
+## Web navigation and visual system (2026-10-18 design refresh)
+
+- Sidebar groups: Today (`/`), Mail (Search, each mailbox with Drafts/Members), Outreach, Contacts, Settings.
+  Feature modules register into `mail | outreach | contacts | settings` in `apps/web/src/app/featureRegistry.ts`;
+  icons are mapped by path in `Sidebar.tsx`.
+- Route orientation (group, crumb, purpose, optional back link) is the pure table in
+  `apps/web/src/app/pageMeta.ts`, rendered by `RouteContext.tsx` above every page. Add a rule when adding a route.
+- Today (`HomePage.tsx`) reads the first page of unread threads and drafts per mailbox through the gateway.
+  Quota usage, approvals and failures are shown as not reported until the API serves them.
+- Tokens: `apps/web/src/styles/index.css` (cool neutral colours, `--elev-1/2` elevation as `shadow-1/2`,
+  `.page-title`, `.panel`). Rationale and evidence: `docs/design/ux-audit-20261018.md`.

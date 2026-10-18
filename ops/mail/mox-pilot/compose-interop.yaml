@@ -1,0 +1,21 @@
+services:
+  corin_interop:
+    image: ${APP_TEST_IMAGE:?Soren-provided immutable app test image required}
+    pull_policy: never
+    command: ["bundle", "exec", "ruby", "-I/app/apps/server/lib", "/pilot/corin_tls_interop.rb"]
+    working_dir: /app/apps/server
+    user: "0:0"
+    environment:
+      MOX_PILOT_SUBJECT: ${MOX_PILOT_SUBJECT:?synthetic subject required}
+    volumes:
+      - ${APP_SOURCE_DIR:?exact Corin source checkout required}:/app:ro
+      - ./corin_tls_interop.rb:/pilot/corin_tls_interop.rb:ro
+      - ${MOX_PILOT_RECEIPT_DIR:?private pilot receipt directory required}:/pilot-evidence
+    network_mode: "service:mox"
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    mem_limit: 512m
+    cpus: 0.5
+    pids_limit: 64
+    restart: "no"
+    depends_on: [mox]

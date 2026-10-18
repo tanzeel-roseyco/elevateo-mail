@@ -21,22 +21,29 @@
   --color-success: var(--success);
   --color-warn: var(--warn);
   --color-brand-tile: var(--brand-tile);
+  /* Elevation: shadow-1 for resting panels, shadow-2 for popovers/drawers. Radius uses Tailwind's
+     scale on purpose: rounded-md (6px) controls, rounded-lg (8px) rows, rounded-xl (12px) panels. */
+  --shadow-1: var(--elev-1);
+  --shadow-2: var(--elev-2);
   --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
-/* AIDEV-NOTE: Brand palette: white light mode, dark-grey dark mode, gold accent. */
+/* AIDEV-NOTE: Brand palette (2026-10-18 refresh, docs/design/ux-audit-20261018.md): cool neutral greys, never
+   cream; white panels on a grey canvas in light mode, graphite in dark; gold stays the only accent. */
 :root,
 [data-theme="light"] {
-  --bg: #f4f4f5;
+  --bg: #eceef2;
   --surface: #ffffff;
-  --surface-2: #f4f4f5;
+  --surface-2: #f4f5f8;
   /* AIDEV-NOTE: Skeleton placeholders need their own token: light --surface-2 equals --bg, so
      bg-surface-2 bars were invisible on the canvas (blank loading screens in r10 visual QA).
      #e4e4e7 is distinct from both the canvas (#f4f4f5) and panels (#ffffff). */
-  --skeleton: #e4e4e7;
-  --line: #e2e2e6;
-  --fg: #18181b;
-  --muted: #55555e;
+  --skeleton: #e1e4ea;
+  --line: #dde0e6;
+  --fg: #14161a;
+  --muted: #555b66;
+  --elev-1: 0 1px 2px rgb(20 22 26 / 0.06), 0 0 0 1px rgb(20 22 26 / 0.04);
+  --elev-2: 0 6px 20px -6px rgb(20 22 26 / 0.18), 0 0 0 1px rgb(20 22 26 / 0.05);
   --danger: #b42318;
   --danger-fg: #ffffff;
   --success: #067647;
@@ -46,11 +53,13 @@
 
 /* Dark grey, not black: panels (--surface) sit one step lighter than the canvas (--bg). */
 [data-theme="dark"] {
-  --bg: #1b1c1f;
-  --surface: #25262a;
-  --surface-2: #2f3035;
-  --skeleton: #2f3035; /* already distinct from the dark canvas and panels */
-  --line: #3c3d44;
+  --bg: #141619;
+  --surface: #1c1f23;
+  --surface-2: #262a2f;
+  --skeleton: #2b2f35; /* distinct from the dark canvas and panels */
+  --line: #33373e;
+  --elev-1: 0 1px 2px rgb(0 0 0 / 0.4), 0 0 0 1px rgb(255 255 255 / 0.03);
+  --elev-2: 0 10px 28px -8px rgb(0 0 0 / 0.6), 0 0 0 1px rgb(255 255 255 / 0.05);
   --fg: #ececee;
   --muted: #a9abb3;
   --danger: #f97066;
@@ -62,11 +71,13 @@
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme]) {
-    --bg: #1b1c1f;
-    --surface: #25262a;
-    --surface-2: #2f3035;
-    --skeleton: #2f3035;
-    --line: #3c3d44;
+    --bg: #141619;
+    --surface: #1c1f23;
+    --surface-2: #262a2f;
+    --skeleton: #2b2f35;
+    --line: #33373e;
+    --elev-1: 0 1px 2px rgb(0 0 0 / 0.4), 0 0 0 1px rgb(255 255 255 / 0.03);
+    --elev-2: 0 10px 28px -8px rgb(0 0 0 / 0.6), 0 0 0 1px rgb(255 255 255 / 0.05);
     --fg: #ececee;
     --muted: #a9abb3;
     --danger: #f97066;
@@ -93,7 +104,7 @@
 }
 
 /* AIDEV-NOTE: FE-R14 — the light-theme gold (#7a6218) is too dark against dark surfaces. Calculated
-   WCAG ratios for #e3c35c: 8.8:1 on --surface #25262a, 7.7:1 on --surface-2 #2f3035, ≥6.9:1 on the
+   WCAG ratios for #e3c35c: ≥8.8:1 on --surface #1c1f23 and ≥7.7:1 on --surface-2 #262a2f (darker than the pre-refresh values), ≥6.9:1 on the
    dark --accent-soft mix; light theme keeps #7a6218 (5.9:1 on #ffffff). Browser-measured computed
    contrast in both themes remains a coordinator acceptance gate. */
 [data-theme="dark"] {
@@ -141,14 +152,37 @@ body {
   padding-block: var(--row-py);
 }
 
-/* Section label used above panels and rail groups: small caps carry hierarchy so headings can stay quiet. */
+/* Section label above panels and rail groups. Sentence case, not tracked caps: the refresh avoids
+   the shouty eyebrow look and lets weight + colour carry the hierarchy. */
 .eyebrow {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
-  letter-spacing: 0.08em;
   line-height: 1.2;
-  text-transform: uppercase;
   color: var(--muted);
+}
+
+/* Type scale shared by every page header (ui/PageHeader.tsx) so titles read the same everywhere. */
+.page-title {
+  font-size: 20px;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+}
+
+/* Panels: one surface, hairline and elevation recipe for cards across features. */
+.panel {
+  background: var(--surface);
+  border-radius: 12px;
+  box-shadow: var(--elev-1);
+}
+
+/* AIDEV-NOTE: #main takes programmatic focus on route change (Shell) for screen readers; the ring
+   is for keyboard targets, so the outline Chrome drew on main and on focused page headings is suppressed. */
+#main:focus,
+#main:focus-visible,
+h1[tabindex="-1"]:focus,
+h2[tabindex="-1"]:focus {
+  outline: none;
 }
 
 /* AIDEV-NOTE: FE-805 mobile/WebView frame. The app is online-only and served as one HTTPS page in
