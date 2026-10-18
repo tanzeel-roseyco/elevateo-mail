@@ -65,4 +65,14 @@ class ResendWebhookTest < Minitest::Test
     replay = handler.ingest(id: "evt_email.sent", body: '{"type":"email.sent","data":{"email_id":"email_1"}}')
     assert_equal "duplicate", replay.fetch("result")
   end
+
+  def test_unknown_provider_id_is_acknowledged_without_ownership_details
+    connection = FakeConnection.new([{ "result" => "ignored" }])
+    handler = Elevateo::ResendWebhook::Handler.new(connection: connection, binder: ->(value) { value })
+
+    result = handler.ingest(id: "evt_unknown",
+      body: '{"type":"email.delivered","data":{"email_id":"unknown"}}')
+
+    assert_equal({ "result" => "ignored" }, result)
+  end
 end

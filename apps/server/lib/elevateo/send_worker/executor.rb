@@ -57,9 +57,9 @@ module Elevateo
       private
 
       def reconcile(claim)
-        # AIDEV-NOTE: Reconciliation queries exact attempt evidence; it never submits again.
+        # AIDEV-NOTE: Resend safely replays the exact attempt key/body to recover a lost provider ID; other drivers only query.
         observation = @driver.observation(send_id: claim.send_id, attempt_id: claim.attempt_id,
-          snapshot_digest: claim.snapshot_digest)
+          snapshot_digest: claim.snapshot_digest, snapshot_bytes: claim.snapshot_bytes)
         @store.reconcile(claim: claim, observation: observation)
         observation ? observation.kind.to_sym : :unknown
       end
@@ -68,7 +68,8 @@ module Elevateo
         valid = Control.valid_epoch?(claim.send_id) && %w[submit reconcile].include?(claim.action)
         if claim.action == "reconcile"
           valid &&= Control.valid_epoch?(claim.attempt_id) &&
-            claim.snapshot_digest.is_a?(String) && /\A[0-9a-f]{64}\z/.match?(claim.snapshot_digest)
+            claim.snapshot_digest.is_a?(String) && /\A[0-9a-f]{64}\z/.match?(claim.snapshot_digest) &&
+            claim.snapshot_bytes.is_a?(String) && Digest::SHA256.hexdigest(claim.snapshot_bytes) == claim.snapshot_digest
         end
         raise ArgumentError, "invalid worker claim" unless valid
       end

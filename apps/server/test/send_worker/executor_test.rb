@@ -11,7 +11,7 @@ class SendWorkerExecutorTest < Minitest::Test
   ATTEMPT_ID = "22222222-2222-4222-8222-222222222222"
   EPOCH = "33333333-3333-4333-8333-333333333333"
   BYTES = '["elevateo.send.snapshot.v1","fixture"]'
-  Claim = Struct.new(:send_id, :action, :attempt_id, :snapshot_digest, keyword_init: true)
+  Claim = Struct.new(:send_id, :action, :attempt_id, :snapshot_digest, :snapshot_bytes, keyword_init: true)
   Authorization = Struct.new(:attempt_id, :snapshot_bytes, :credential_binding, keyword_init: true)
 
   class Store
@@ -74,7 +74,7 @@ class SendWorkerExecutorTest < Minitest::Test
     assert_equal 1, @driver.invocations
     assert_equal "unknown", @store.observation.kind
     @store.claim_value = Claim.new(send_id: SEND_ID, action: "reconcile", attempt_id: ATTEMPT_ID,
-      snapshot_digest: Digest::SHA256.hexdigest(BYTES))
+      snapshot_digest: Digest::SHA256.hexdigest(BYTES), snapshot_bytes: BYTES)
     assert_equal :accepted, executor.run_once
     assert_equal "accepted", @store.reconciled.kind
     assert_equal 1, @driver.invocations

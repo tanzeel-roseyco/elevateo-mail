@@ -7,7 +7,8 @@ module Elevateo
     # AIDEV-NOTE: Status deliberately excludes snapshot/body/session bindings and validates SQL's closed projection.
     module Status
       FIELDS = %w[send_id mailbox_id draft_id approved_version approved_at state attempts first_possible_at
-                  retry_deadline_at cancel_requested cancellable hold_reason updated_at simulated].freeze
+                  retry_deadline_at cancel_requested cancellable hold_reason updated_at delivery_state
+                  suppression_reason simulated].freeze
       STATES = %w[queued dispatching unknown needs_review accepted rejected cancelled].freeze
       HOLDS = %w[session_invalid authorization_changed capability_revoked mailbox_disabled suppressed policy_changed
                  restore_unreconciled control_unavailable auth_unavailable uncertain retry_expired attempt_limit
@@ -15,7 +16,7 @@ module Elevateo
 
       def self.validate(value, mailbox:, send_id:)
         unless value.keys.sort == FIELDS.sort && value["send_id"] == send_id && value["mailbox_id"] == mailbox &&
-               value["simulated"] == true && STATES.include?(value["state"]) &&
+               [true, false].include?(value["simulated"]) && STATES.include?(value["state"]) &&
                (value["hold_reason"].nil? || HOLDS.include?(value["hold_reason"]))
           raise ReadResponse::Invalid
         end
@@ -25,6 +26,10 @@ module Elevateo
         %w[approved_at updated_at].each { |key| Drafts::Projection.timestamp(value[key]) }
         %w[first_possible_at retry_deadline_at].each { |key| ThreadProjection.timestamp(value[key]) }
         %w[cancel_requested cancellable].each { |key| ThreadProjection.boolean(value[key]) }
+        delivery = value["delivery_state"]
+        suppression = value["suppression_reason"]
+        raise ReadResponse::Invalid unless delivery.nil? || %w[sent delivered delivery_delayed bounced complained].include?(delivery)
+        raise ReadResponse::Invalid unless suppression.nil? || %w[bounce complaint].include?(suppression)
       end
     end
   end

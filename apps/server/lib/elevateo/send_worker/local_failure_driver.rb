@@ -47,7 +47,7 @@ module Elevateo
       end
 
       # AIDEV-NOTE: Recovery only exposes an earlier scripted acceptance for its exact attempt and snapshot binding.
-      def observation(send_id:, attempt_id:, snapshot_digest:)
+      def observation(send_id:, attempt_id:, snapshot_digest:, snapshot_bytes: nil)
         binding = @mutex.synchronize { @attempts[attempt_id] }
         return nil unless binding == [send_id, snapshot_digest]
         receipt = @mutex.synchronize { @accepted[attempt_id] }

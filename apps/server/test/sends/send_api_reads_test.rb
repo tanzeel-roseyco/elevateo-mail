@@ -38,7 +38,8 @@ class SendAPIReadsTest < Minitest::Test
     { "send_id" => THREAD, "mailbox_id" => BOX, "draft_id" => THREAD, "approved_version" => 1,
       "approved_at" => TIME, "state" => "queued", "attempts" => 0, "first_possible_at" => nil,
       "retry_deadline_at" => nil, "cancel_requested" => false, "cancellable" => false,
-      "hold_reason" => nil, "updated_at" => TIME, "simulated" => true }
+      "hold_reason" => nil, "updated_at" => TIME, "delivery_state" => nil,
+      "suppression_reason" => nil, "simulated" => true }
   end
 
   def dispatch_read(controller, query: "mailbox_id=#{BOX}", headers: {})

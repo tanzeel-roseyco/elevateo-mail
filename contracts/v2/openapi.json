@@ -29,7 +29,18 @@
         ],
         "requestBody": { "required": true, "content": { "application/json": { "schema": { "type": "object" } } } },
         "responses": {
-          "200": { "description": "Event created or duplicate replay acknowledged" },
+          "200": {
+            "description": "Owned event created, duplicate replay acknowledged, or unknown provider id ignored without disclosure",
+            "content": { "application/json": { "schema": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["result"],
+              "properties": {
+                "result": { "enum": ["created", "duplicate", "ignored"] },
+                "delivery_state": { "type": ["string", "null"], "enum": ["sent", "delivered", "delivery_delayed", "bounced", "complained", "received", null] }
+              }
+            } } }
+          },
           "401": { "description": "Missing, stale, or invalid signature" }
         }
       }

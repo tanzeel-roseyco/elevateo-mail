@@ -8,7 +8,8 @@ require_relative "../mail_credentials/binding"
 
 module Elevateo
   module SendWorker
-    Claim = Struct.new(:send_id, :action, :lease_id, :generation, :attempt_id, :snapshot_digest, keyword_init: true)
+    Claim = Struct.new(:send_id, :action, :lease_id, :generation, :attempt_id, :snapshot_digest, :snapshot_bytes,
+      keyword_init: true)
     Authorization = Struct.new(:attempt_id, :snapshot_bytes, :credential_binding, keyword_init: true)
 
     class DatabaseStore
@@ -54,14 +55,16 @@ module Elevateo
         require_fields(value, %w[send_id lease_id generation action attempts simulated])
         raise InvalidResult unless value["send_id"] == @send_id && value["lease_id"] == lease_id &&
           value["generation"].is_a?(Integer) && value["generation"].positive? &&
-          %w[submit reconcile].include?(value["action"]) && value["simulated"] == true
+          %w[submit reconcile].include?(value["action"]) && value["simulated"] == (@profile != "resend-v1")
         binding = call("SELECT app_send_private.worker_binding($1::uuid,$2::uuid,$3::bigint,$4::uuid)",
           [@send_id, lease_id, value["generation"], epoch])
-        require_fields(binding, %w[send_id action attempt_id snapshot_digest])
+        require_fields(binding, %w[send_id action attempt_id snapshot_digest snapshot_hex])
         raise InvalidResult unless binding["send_id"] == @send_id && binding["action"] == value["action"]
+        bytes = [binding["snapshot_hex"]].pack("H*")
+        raise InvalidResult unless Digest::SHA256.hexdigest(bytes) == binding["snapshot_digest"]
         Claim.new(send_id: @send_id, action: value["action"], lease_id: lease_id,
           generation: value["generation"], attempt_id: binding["attempt_id"],
-          snapshot_digest: binding["snapshot_digest"])
+          snapshot_digest: binding["snapshot_digest"], snapshot_bytes: bytes)
       end
 
       def authorize_submission(claim:, epoch:)
@@ -131,7 +134,7 @@ module Elevateo
           value = call("SELECT app_send_private.reconcile_no_evidence($1::uuid,$2::uuid,$3::bigint,$4::uuid)",
             [claim.send_id, claim.lease_id, claim.generation, attempt_id])
           require_fields(value, %w[state simulated])
-          raise InvalidResult unless value["simulated"] == true
+          raise InvalidResult unless value["simulated"] == (@profile != "resend-v1")
           return value
         end
         record_observation(claim: claim, attempt_id: attempt_id,

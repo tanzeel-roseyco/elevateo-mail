@@ -12,11 +12,11 @@ module Elevateo
     class Service
       REVIEW_SQL = "SELECT app.send_review($1::uuid, $2::uuid)::text AS result"
       APPROVE_SQL = "SELECT app.approve_draft_send($1::text,$2::uuid,$3::uuid,$4::uuid,$5::integer," \
-        "$6::text,$7::bytea,$8::uuid)::text AS result"
+        "$6::text,$7::bytea,$8::uuid,$9::text)::text AS result"
       STATUS_SQL = "SELECT app.send_status($1::uuid,$2::uuid,$3::uuid)::text AS result"
       CANCEL_SQL = "SELECT app.cancel_send($1::text,$2::uuid,$3::uuid,$4::uuid)::text AS result"
       APPROVED = %w[send_id draft_id approved_version review_digest approved_at simulated].freeze
-      SEMANTIC = %w[review_stale send_not_ready draft_consumed draft_conflict operation_mismatch].freeze
+      SEMANTIC = %w[review_stale send_not_ready draft_consumed draft_conflict operation_mismatch consent_required].freeze
 
       def initialize(connection:, session:, outbound_mode: "held")
         @database = Database.new(connection: connection, session: session)
@@ -45,7 +45,7 @@ module Elevateo
         # bytea text format avoids adapter binary encoding ambiguity; bytes are never interpolated as SQL.
         bytes = snapshot ? "\\x#{snapshot.unpack1('H*')}" : nil
         value = @database.object(APPROVE_SQL, [session_digest, input.mailbox_id, input.draft_id, input.operation_id,
-          input.expected_version.to_s, input.review_digest, bytes, epoch], budget: 16_384)
+          input.expected_version.to_s, input.review_digest, bytes, epoch, @outbound_mode], budget: 16_384)
         if value.key?("code")
           code = value["code"]
           if value.keys == ["code"] && code.is_a?(String) && SEMANTIC.include?(code)
@@ -75,7 +75,7 @@ module Elevateo
           raise ReadResponse::Invalid
         end
         result = { "send_id" => send, "result" => value["state"] == "cancelled" ? "cancelled" : "stop_requested",
-          "state" => value["state"], "cancel_requested" => true, "simulated" => true }
+          "state" => value["state"], "cancel_requested" => true, "simulated" => value.fetch("simulated") }
         WriteResponse.new(json: @database.encode(@database.envelope.merge(result), budget: 16_384), status: 200)
       end
 
@@ -89,7 +89,7 @@ module Elevateo
       def validate_approval(value, input)
         unless value.keys.sort == APPROVED.sort && value["draft_id"] == input.draft_id &&
                value["approved_version"] == input.expected_version && value["review_digest"] == input.review_digest &&
-               value["simulated"] == true
+               value["simulated"] == (@outbound_mode != "resend")
           raise ReadResponse::Invalid
         end
         ThreadProjection.uuid(value["send_id"])

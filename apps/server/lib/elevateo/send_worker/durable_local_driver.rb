@@ -45,7 +45,7 @@ module Elevateo
         SubmissionResult.new(kind: "unknown", code: "deadline_expired")
       end
 
-      def observation(send_id:, attempt_id:, snapshot_digest:)
+      def observation(send_id:, attempt_id:, snapshot_digest:, snapshot_bytes: nil)
         return nil unless Control.valid_epoch?(send_id) && Control.valid_epoch?(attempt_id) &&
           snapshot_digest.is_a?(String) && /\A[0-9a-f]{64}\z/.match?(snapshot_digest)
         with_ledger do |rows, _file|

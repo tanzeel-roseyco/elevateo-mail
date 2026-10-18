@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "json"
+require "digest"
 require "net/http"
 require "uri"
 require "timeout"
@@ -49,11 +50,18 @@ module Elevateo
         unknown
       end
 
-      def observation(send_id:, attempt_id:, snapshot_digest:)
+      def observation(send_id:, attempt_id:, snapshot_digest:, snapshot_bytes:)
         return nil unless Control.valid_epoch?(send_id) && Control.valid_epoch?(attempt_id) &&
-          /\A[0-9a-f]{64}\z/.match?(snapshot_digest.to_s)
+          /\A[0-9a-f]{64}\z/.match?(snapshot_digest.to_s) && snapshot_bytes.is_a?(String) &&
+          Digest::SHA256.hexdigest(snapshot_bytes) == snapshot_digest
         provider_id = @provider_ids[attempt_id]
-        return nil unless provider_id
+        unless provider_id
+          # AIDEV-NOTE: Resend retains idempotency keys for 24h; replay recovers the original ID after a process crash.
+          recovered = submit(snapshot_bytes, send_id: send_id, attempt_id: attempt_id,
+            deadline: CallDeadline.new(seconds: 10))
+          return recovered unless recovered.kind == "accepted"
+          provider_id = @provider_ids[attempt_id]
+        end
         response = request(Net::HTTP::Get, "/emails/#{URI.encode_www_form_component(provider_id)}",
           deadline: CallDeadline.new(seconds: 10))
         return unknown unless response.code.to_i.between?(200, 299) && response_id(response.body) == provider_id

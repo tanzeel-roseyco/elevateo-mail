@@ -42,14 +42,16 @@ class SendWorkerResendTransportTest < Minitest::Test
     end
   end
 
-  def test_observation_only_fetches_a_recorded_provider_id
+  def test_observation_replays_the_attempt_key_to_recover_a_lost_provider_id
     http = FakeHTTP.new([FakeResponse.new("202", '{"id":"provider_1"}'),
       FakeResponse.new("200", '{"id":"provider_1"}')])
     instance = transport(http)
-    assert_nil instance.observation(send_id: SEND, attempt_id: ATTEMPT, snapshot_digest: "a" * 64)
-    instance.submit(snapshot, send_id: SEND, attempt_id: ATTEMPT, deadline: deadline)
-    result = instance.observation(send_id: SEND, attempt_id: ATTEMPT, snapshot_digest: "a" * 64)
+    digest = Digest::SHA256.hexdigest(snapshot)
+    result = instance.observation(send_id: SEND, attempt_id: ATTEMPT, snapshot_digest: digest,
+      snapshot_bytes: snapshot)
     assert_equal "accepted", result.kind
+    assert_equal ATTEMPT, http.requests.first["Idempotency-Key"]
+    assert_equal "POST", http.requests.first.method
     assert_equal "/emails/provider_1", http.requests.last.path
   end
 
