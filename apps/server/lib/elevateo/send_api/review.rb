@@ -37,6 +37,7 @@ module Elevateo
         issue("reply_unavailable") unless ThreadProjection.boolean(binding["reply_available"])
         issue("header_invalid") unless Address.header?(@subject)
         @consent_required = outbound_mode == "resend"
+        @outbound_mode = outbound_mode
         @recipients, checks = recipients(binding)
         @snapshot = Canonical.bytes(organization_id: @organization, mailbox_id: @mailbox, draft_id: @draft,
           version: @version, sender: @sender, recipients: @recipients, subject: @subject, body: @body,
@@ -48,7 +49,8 @@ module Elevateo
           "purpose" => "correspondence", "consent_basis" => "human_attestation_required",
           "attachments" => [], "attachments_supported" => false, "policy_revision" => @policy,
           "recipient_checks" => checks, "ready" => @issues.empty?, "issues" => @issues,
-          "review_digest" => @issues.empty? ? Canonical.digest(@snapshot) : nil, "simulated" => true }
+          "review_digest" => @issues.empty? ? Canonical.digest(@snapshot) : nil,
+          "simulated" => outbound_mode != "resend", "outbound_mode" => outbound_mode }
       end
 
       private
@@ -80,13 +82,14 @@ module Elevateo
           status = if !address then "invalid"
             elsif seen[address] then "duplicate"
             elsif suppressed.include?(address) then "suppressed"
-            elsif @consent_required && !consented.include?(address) then "consent_required"
             else "ok"
             end
+          consent_evidence = !address.nil? && consented.include?(address)
           seen[address] = true if address
-          issue(status == "consent_required" ? "consent_required" : "recipient_#{status}", index) unless status == "ok"
+          issue("recipient_#{status}", index) unless status == "ok"
+          issue("consent_required", index) if status == "ok" && @consent_required && !consent_evidence
           issue("header_invalid", index) if name && !Address.header?(name)
-          checks << { "index" => index, "status" => status }
+          checks << { "index" => index, "status" => status, "consent_evidence" => consent_evidence }
           { "display_name" => name, "address" => address || raw }
         end
         [items, checks]

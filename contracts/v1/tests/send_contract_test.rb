@@ -126,6 +126,19 @@ class SendContractTest < Minitest::Test
     refute valid?(schema("SendReview"), review.merge("to" => review.fetch("to") * 101))
     refute valid?(schema("SendReview"), review.merge("attachments" => ["unsupported"]))
     refute valid?(schema("SendReview"), review.merge("simulated" => false))
+    refute valid?(schema("SendReview"), review.reject { |key, _| key == "outbound_mode" })
+    refute valid?(schema("SendReview"), review.merge("outbound_mode" => "smtp"))
+    check = review.fetch("recipient_checks").first
+    refute valid?(schema("SendRecipientCheck"), check.reject { |key, _| key == "consent_evidence" })
+  end
+
+  def test_live_review_and_consent_error_match_the_web_contract
+    review = FIXTURES.fetch("examples").find { |item| item.fetch("name") == "ready" }.fetch("value")
+    live = review.merge("outbound_mode" => "resend", "simulated" => false)
+    assert valid?(schema("SendReview"), live)
+    %w[held mailpit resend].each { |mode| assert valid?(schema("SendReview"), review.merge("outbound_mode" => mode)) }
+    error = { "code" => "consent_required", "message" => "Consent evidence is required.", "request_id" => "request" }
+    assert valid?(schema("SendError"), error)
   end
 
   def test_non_ready_review_keeps_absent_policy_and_multiple_issues_per_recipient
@@ -135,7 +148,9 @@ class SendContractTest < Minitest::Test
       [{ "code" => "recipient_invalid", "recipient_index" => index },
        { "code" => "header_invalid", "recipient_index" => index }]
     end
-    checks = (0...100).map { |index| { "index" => index, "status" => "invalid" } }
+    checks = (0...100).map do |index|
+      { "index" => index, "status" => "invalid", "consent_evidence" => false }
+    end
     candidate = review.merge("policy_revision" => "0", "to" => recipients,
       "recipient_checks" => checks, "issues" => issues + [{ "code" => "purpose_unavailable", "recipient_index" => nil }])
     assert valid?(schema("SendReview"), candidate)
@@ -152,5 +167,14 @@ class SendContractTest < Minitest::Test
     refute valid?(schema("SendStatus"), status.merge("snapshot_bytes" => "private"))
     refute valid?(schema("SendStatus"), status.merge("attempts" => 4))
     refute valid?(schema("SendStatus"), status.merge("hold_reason" => "provider-secret"))
+    refute valid?(schema("SendStatus"), status.reject { |key, _| key == "suppression_reason" })
+    refute valid?(schema("SendStatus"), status.merge("delivery_state" => "delivered"))
+    %w[sent delivery_delayed delivered failed bounced suppressed complained].each do |delivery|
+      assert valid?(schema("SendStatus"), status.merge("delivery_status" => delivery,
+        "delivery_updated_at" => "2026-10-18T00:00:00Z"))
+    end
+    %w[bounced complained].each do |reason|
+      assert valid?(schema("SendStatus"), status.merge("suppression_reason" => reason))
+    end
   end
 end

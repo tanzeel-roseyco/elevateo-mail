@@ -175,8 +175,8 @@ class SendAPIControllerTest < Minitest::Test
     { "send_id" => THREAD, "mailbox_id" => BOX, "draft_id" => THREAD, "approved_version" => 1,
       "approved_at" => TIME, "state" => "cancelled", "attempts" => 0, "first_possible_at" => nil,
       "retry_deadline_at" => nil, "cancel_requested" => true, "cancellable" => false,
-      "hold_reason" => nil, "updated_at" => TIME, "delivery_state" => nil,
-      "suppression_reason" => nil, "simulated" => true }
+      "hold_reason" => nil, "updated_at" => TIME, "delivery_status" => nil,
+      "delivery_updated_at" => nil, "suppression_reason" => nil, "simulated" => true }
   end
 
   def test_cancellation_returns_only_validated_status

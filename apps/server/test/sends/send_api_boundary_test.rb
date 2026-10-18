@@ -18,13 +18,17 @@ class SendAPIBoundaryTest < Minitest::Test
   def test_resend_requires_consent_evidence_for_every_recipient
     denied = Elevateo::SendAPI::Review.new(binding, outbound_mode: "resend").result
     assert_equal false, denied.fetch("ready")
-    assert_equal "consent_required", denied.fetch("recipient_checks").first.fetch("status")
+    assert_equal "ok", denied.fetch("recipient_checks").first.fetch("status")
+    assert_equal false, denied.fetch("recipient_checks").first.fetch("consent_evidence")
     assert_includes denied.fetch("issues"), { "code" => "consent_required", "recipient_index" => 0 }
 
     allowed = Elevateo::SendAPI::Review.new(
       binding.merge("consented_addresses" => ["local@example.invalid"]), outbound_mode: "resend"
     ).result
     assert_equal true, allowed.fetch("ready")
+    assert_equal true, allowed.fetch("recipient_checks").first.fetch("consent_evidence")
+    assert_equal "resend", allowed.fetch("outbound_mode")
+    assert_equal false, allowed.fetch("simulated")
   end
 
   def approval
@@ -36,6 +40,8 @@ class SendAPIBoundaryTest < Minitest::Test
     source = binding
     review = Elevateo::SendAPI::Review.new(source)
     assert_equal true, review.result["ready"]
+    assert_equal "held", review.result["outbound_mode"]
+    assert_equal false, review.result["recipient_checks"].first.fetch("consent_evidence")
     assert_equal "Local@example.invalid", review.result["to"][0]["address"]
     assert_equal "Sender@example.invalid", review.result["sender"]["address"]
     assert_equal source["body_text"], review.result["body_text"]
