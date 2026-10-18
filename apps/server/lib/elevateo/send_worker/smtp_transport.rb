@@ -30,7 +30,7 @@ module Elevateo
         raise Held, "Mailpit profile required; remote SMTP remains held" unless @profile.local_test?
         raise ArgumentError, "invalid SMTP attempt" unless Control.valid_epoch?(attempt_id)
         rendered = SmtpSnapshot.render(bytes, send_id: send_id, verified_sender: @profile.verified_sender)
-        unless rendered.recipients.all? { |address| address.split("@", 2).last.end_with?(".invalid") }
+        unless rendered.recipient_addresses.all? { |address| address.split("@", 2).last.end_with?(".invalid") }
           return SubmissionResult.new(kind: "rejected", code: "smtp_invalid_snapshot")
         end
         client = @client || LocalMailpitClient.new(profile: @profile)
@@ -60,7 +60,7 @@ module Elevateo
       end
 
       def deliver(rendered, deadline:)
-        raise ArgumentError, "invalid rendered mail" unless rendered.is_a?(RenderedMail)
+        raise ArgumentError, "invalid rendered mail" unless rendered.is_a?(RenderedMessage) && rendered.mime
         deadline.check!
         smtp = begin
           @smtp_factory.call(@profile.host, @profile.port)
@@ -80,7 +80,7 @@ module Elevateo
             smtp.start("localhost") do |session|
               deadline.check!
               submission_started = true
-              response_status = session.send_message(rendered.mime, rendered.sender, *rendered.recipients).status
+              response_status = session.send_message(rendered.mime, rendered.sender, *rendered.recipient_addresses).status
             end
           end
         rescue StandardError

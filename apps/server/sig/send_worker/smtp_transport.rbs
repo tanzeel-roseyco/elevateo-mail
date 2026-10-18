@@ -16,7 +16,7 @@ module Elevateo
       @profile: SmtpProfile
       @smtp_factory: untyped
       def initialize: (profile: SmtpProfile, ?smtp_factory: untyped) -> void
-      def deliver: (RenderedMail, deadline: CallDeadline) -> SubmissionResult
+      def deliver: (RenderedMessage, deadline: CallDeadline) -> SubmissionResult
     end
   end
 end

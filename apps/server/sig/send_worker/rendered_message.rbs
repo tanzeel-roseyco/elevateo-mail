@@ -1,0 +1,18 @@
+module Elevateo
+  module SendWorker
+    class RenderedMessage
+      attr_reader sender: String
+      attr_reader recipients: Array[[String?, String]]
+      attr_reader subject: String
+      attr_reader text: String
+      attr_reader attachments: Array[untyped]
+      attr_reader organization_id: String
+      attr_reader mailbox_id: String
+      attr_reader mime: String?
+      def initialize: (sender: String, recipients: Array[[String?, String]], subject: String, text: String,
+        attachments: Array[untyped], organization_id: String, mailbox_id: String, ?mime: String?) -> void
+      def recipient_addresses: () -> Array[String]
+      def with_mime: (String) -> RenderedMessage
+    end
+  end
+end

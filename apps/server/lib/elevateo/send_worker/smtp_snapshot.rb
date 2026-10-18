@@ -4,12 +4,10 @@ require "json"
 require "base64"
 require_relative "../send_api/address"
 require_relative "control"
+require_relative "rendered_message"
 
 module Elevateo
   module SendWorker
-    # AIDEV-NOTE: Keep validated tenant/mailbox identity beside MIME so SMTP cannot pair it with another account.
-    RenderedMail = Struct.new(:mime, :sender, :recipients, :organization_id, :mailbox_id, keyword_init: true)
-
     class SmtpSnapshot
       MAX_MIME_BYTES = 524_288
       MAX_BODY_CHARS = 65_536
@@ -40,10 +38,11 @@ module Elevateo
             value[13].is_a?(String) && /\A[1-9][0-9]{0,18}\z/.match?(value[13])
           raise Invalid, "unsupported send content"
         end
-        mime = build_mime(send_id, sender, recipients, subject, body)
+        message = RenderedMessage.new(sender: sender, recipients: recipients, subject: subject, text: body,
+          attachments: value[12], organization_id: value[1], mailbox_id: value[2])
+        mime = build_mime(send_id, message)
         raise Invalid, "MIME size exceeded" if mime.bytesize > MAX_MIME_BYTES
-        RenderedMail.new(mime: mime.freeze, sender: sender.freeze,
-          recipients: recipients.map(&:last).freeze, organization_id: value[1].freeze, mailbox_id: value[2].freeze).freeze
+        message.with_mime(mime)
       rescue JSON::ParserError, TypeError
         raise Invalid, "invalid send snapshot"
       end
@@ -65,14 +64,14 @@ module Elevateo
       end
       private_class_method :parse_recipients
 
-      def self.build_mime(send_id, sender, recipients, subject, body)
-        encoded_subject = encoded_words(subject)
-        encoded_body = Base64.strict_encode64(body.encode(Encoding::UTF_8)).scan(/.{1,76}/).join("\r\n")
-        domain = sender.split("@", 2).last
-        destinations = recipients.map do |name, address|
+      def self.build_mime(send_id, message)
+        encoded_subject = encoded_words(message.subject)
+        encoded_body = Base64.strict_encode64(message.text.encode(Encoding::UTF_8)).scan(/.{1,76}/).join("\r\n")
+        domain = message.sender.split("@", 2).last
+        destinations = message.recipients.map do |name, address|
           name ? "#{encoded_words(name)} <#{address}>" : address
         end
-        headers = ["From: #{sender}", "To: #{destinations.join(",\r\n ")}", "Subject: #{encoded_subject}",
+        headers = ["From: #{message.sender}", "To: #{destinations.join(",\r\n ")}", "Subject: #{encoded_subject}",
           "Message-ID: <elevateo-#{send_id}@#{domain}>", "MIME-Version: 1.0",
           "Content-Type: text/plain; charset=UTF-8", "Content-Transfer-Encoding: base64"]
         headers.join("\r\n") + "\r\n\r\n" + encoded_body + "\r\n"

@@ -1,22 +1,14 @@
 module Elevateo
   module SendWorker
-    class RenderedMail
-      attr_reader mime: String
-      attr_reader sender: String
-      attr_reader recipients: Array[String]
-      attr_reader organization_id: String
-      attr_reader mailbox_id: String
-      def self.new: (mime: String, sender: String, recipients: Array[String], organization_id: String, mailbox_id: String) -> RenderedMail
-    end
     class SmtpSnapshot
       MAX_MIME_BYTES: Integer
       MAX_BODY_CHARS: Integer
       FORMAT: String
       class Invalid < StandardError
       end
-      def self.render: (String, send_id: String, verified_sender: String) -> RenderedMail
+      def self.render: (String, send_id: String, verified_sender: String) -> RenderedMessage
       def self.parse_recipients: (untyped) -> Array[[String?, String]]
-      def self.build_mime: (String, String, Array[[String?, String]], String, String) -> String
+      def self.build_mime: (String, RenderedMessage) -> String
       def self.encoded_words: (String) -> String
     end
   end
