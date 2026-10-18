@@ -11,6 +11,7 @@ module Elevateo
     ALLOWED_HOSTS: Hash[String, String]
     ROLE_PASSWORDS: Hash[String, String]
     PROVIDER_PREFIXES: Array[String]
+    OUTBOUND_MODES: Array[String]
     self.@current: Config?
     attr_reader mode: String
     attr_reader db_host: String
@@ -34,10 +35,16 @@ module Elevateo
     attr_reader auth_jwt_algorithm: String
     attr_reader cookie_secure: bool
     attr_reader auth_password_minimum: Integer
+    attr_reader outbound_mode: String
+    attr_reader resend_api_key: String?
+    attr_reader resend_from_domain: String?
+    attr_reader resend_webhook_secret: String?
+    attr_reader mailbox_daily_send_limit: Integer
     def self.current: () -> Config
     def self.load!: (?_ConfigEnvironment) -> Config
     def initialize: (_ConfigEnvironment) -> void
     private
+    def configure_outbound: (_ConfigEnvironment) -> void
     def configure_auth: (_ConfigEnvironment, ^(String) -> String) -> void
     def parse_hold: (String) -> bool
     def validate_smtp: (String, String) -> void
