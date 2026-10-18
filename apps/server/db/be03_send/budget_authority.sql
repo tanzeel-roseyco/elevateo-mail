@@ -8,7 +8,7 @@ DECLARE j app_send_private.jobs; i app_send_private.intents; g jsonb; n timestam
 BEGIN
   IF p_send IS NULL OR p_lease IS NULL OR p_generation IS NULL OR p_attempt IS NULL OR p_epoch IS NULL
     OR p_capability_hash IS NULL OR octet_length(p_capability_hash) <> 32
-    OR p_profile IS NULL OR p_profile NOT IN ('synthetic-v1','mailpit-smtp-test-v1','mox-smtp-test-v1')
+    OR p_profile IS NULL OR p_profile NOT IN ('synthetic-v1','mailpit-smtp-test-v1','mox-smtp-test-v1','resend-v1')
     OR p_deadline_seconds IS NULL OR p_deadline_seconds NOT BETWEEN 1 AND 60 THEN RETURN '{"code":"request_invalid"}'::jsonb; END IF;
   -- AIDEV-NOTE: Lock session, generation, policy, mailbox, SMTP account, job, route, then sorted limits. Cancel locks job.
   SELECT * INTO i FROM app_send_private.intents WHERE send_id=p_send;
@@ -59,7 +59,9 @@ BEGIN
       OR (p_profile='mailpit-smtp-test-v1'
         AND p_capability_hash=sha256(convert_to('local:mailpit-smtp-test-v1','UTF8')))
       OR (p_profile='mox-smtp-test-v1'
-        AND p_capability_hash=sha256(convert_to('local:mox-smtp-test-v1','UTF8')))) THEN
+        AND p_capability_hash=sha256(convert_to('local:mox-smtp-test-v1','UTF8')))
+      OR (p_profile='resend-v1'
+        AND p_capability_hash=sha256(convert_to('provider:resend-v1','UTF8')))) THEN
     UPDATE app_send_private.jobs SET state='needs_review',next_action='none',next_check_at=NULL,
       lease_id=NULL,lease_expires_at=NULL,hold_reason='authorization_changed',updated_at=n WHERE send_id=p_send;
     RETURN '{"code":"dispatch_held"}'::jsonb;
@@ -72,7 +74,7 @@ BEGIN
         CASE WHEN p_profile='mox-smtp-test-v1' THEN account.credential_version END,
         CASE WHEN p_profile='mox-smtp-test-v1' THEN account.credential_ref END,
         CASE WHEN p_profile='mox-smtp-test-v1' THEN account.sender END);
-    IF p_profile='mox-smtp-test-v1' THEN
+    IF p_profile IN ('mox-smtp-test-v1','resend-v1') THEN
       PERFORM app_send_private.reserve_budget(p_send,p_attempt);
       -- AIDEV-NOTE: Quota contention consumes the existing call window; expired authority rolls the entire attempt back.
       IF clock_timestamp()>=j.lease_expires_at OR clock_timestamp()>=n+make_interval(secs=>p_deadline_seconds)
@@ -86,7 +88,7 @@ BEGIN
     INSERT INTO app_send_private.audit_events(send_id,event_key,kind,lease_generation,from_state,to_state,recorded_at)
       VALUES(p_send,'attempt:'||(j.attempt_count+1),'attempt_authorized',p_generation,j.state,'dispatching',n);
     RETURN jsonb_build_object('attempt_id',p_attempt,'attempt_no',j.attempt_count+1,
-      'call_deadline_at',n+make_interval(secs=>p_deadline_seconds),'simulated',true)
+      'call_deadline_at',n+make_interval(secs=>p_deadline_seconds),'simulated',p_profile<>'resend-v1')
       || CASE WHEN p_profile='mox-smtp-test-v1' THEN jsonb_build_object('credential_binding',
         jsonb_build_object('organization_id',i.organization_id,'mailbox_id',i.mailbox_id,'account_id',account.id,
           'credential_version',account.credential_version,'credential_ref',account.credential_ref,'protocol','smtp'))
@@ -133,7 +135,7 @@ BEGIN
   END IF;
   SELECT * INTO j FROM app_send_private.jobs WHERE send_id=p_send FOR UPDATE;
   SELECT * INTO a FROM app_send_private.attempts WHERE send_id=p_send AND attempt_id=p_attempt;
-  IF a.profile='mox-smtp-test-v1' THEN
+  IF a.profile IN ('mox-smtp-test-v1','resend-v1') THEN
     budgets_ok := app_send_private.check_budget(p_send,p_attempt);
   END IF;
   RETURN jsonb_build_object('allowed',COALESCE(j.send_id IS NOT NULL AND a.attempt_id IS NOT NULL AND budgets_ok
@@ -142,7 +144,8 @@ BEGIN
     AND a.lease_generation=p_generation AND a.call_deadline_at>clock_timestamp()
     AND ((a.profile='synthetic-v1' AND a.capability_hash=sha256(convert_to('local:synthetic-v1','UTF8')))
       OR (a.profile='mailpit-smtp-test-v1' AND a.capability_hash=sha256(convert_to('local:mailpit-smtp-test-v1','UTF8')))
-      OR (a.profile='mox-smtp-test-v1' AND a.capability_hash=sha256(convert_to('local:mox-smtp-test-v1','UTF8'))))
+      OR (a.profile='mox-smtp-test-v1' AND a.capability_hash=sha256(convert_to('local:mox-smtp-test-v1','UTF8')))
+      OR (a.profile='resend-v1' AND a.capability_hash=sha256(convert_to('provider:resend-v1','UTF8'))))
     AND g->>'status'='ok' AND (g->>'organization_id')::uuid=i.organization_id
     AND (g->>'auth_session_id')::uuid=i.approval_auth_session_id
     AND (g->>'context_id')::uuid=i.approval_context_id

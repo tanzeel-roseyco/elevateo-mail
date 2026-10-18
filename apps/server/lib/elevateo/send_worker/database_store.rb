@@ -79,7 +79,7 @@ module Elevateo
             Digest::SHA256.hexdigest(PROFILES.fetch(@profile)), @profile, @deadline_seconds])
         return nil if result["code"] == "dispatch_held"
         require_fields(result, %w[attempt_id attempt_no call_deadline_at simulated])
-        raise InvalidResult unless result["attempt_id"] == attempt_id && result["simulated"] == true
+        raise InvalidResult unless result["attempt_id"] == attempt_id && result["simulated"] == (@profile != "resend-v1")
         Authorization.new(attempt_id: attempt_id, snapshot_bytes: bytes, credential_binding: smtp_binding(result))
       end
 
@@ -112,7 +112,7 @@ module Elevateo
         value = call(sql, values)
         raise StaleLease if value["code"] == "stale_lease"
         require_fields(value, %w[state simulated])
-        raise InvalidResult unless value["simulated"] == true
+        raise InvalidResult unless value["simulated"] == (@profile != "resend-v1")
         value
       end
 
