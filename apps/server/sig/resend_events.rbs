@@ -1,0 +1,102 @@
+module Mail
+  class Address
+    def initialize: (String) -> void
+    def address: () -> String?
+  end
+  class Field
+    class ParseError < StandardError
+    end
+  end
+end
+
+module Elevateo
+  module ResendEvents
+    type value = nil | bool | String | Integer | Float | Array[value] | Hash[String, value]
+    type object = Hash[String, value]
+    class Invalid < StandardError
+    end
+    class Signature
+      MAX_BODY: Integer
+      UUID: Regexp
+      @key: String
+      def initialize: (secret: String) -> void
+      def inspect: () -> String
+      def to_s: () -> String
+      def verify: (body: String, id: String, timestamp: String, signatures: String, ?now: Integer) -> object
+    end
+    class Config
+      @signature: Signature?
+      self.@current: Config?
+      attr_reader signature: Signature?
+      def self.current: () -> Config
+      def initialize: (Hash[String, String]) -> void
+    end
+    class Redaction
+      @app: Elevateo::AuthCallbackRedaction::_App
+      def initialize: (Elevateo::AuthCallbackRedaction::_App) -> void
+      def call: (Rack::environment) -> Rack::response
+    end
+    interface _Store
+      def claim: () -> object
+      def apply: (id: String, lease: String) -> object
+      def ingest: (id: String, lease: String, content: object) -> object
+    end
+    class Store
+      @connection: Elevateo::WriteStatements | ActiveRecord::ConnectionAdapters::AbstractAdapter
+      def initialize: (connection: Elevateo::WriteStatements | ActiveRecord::ConnectionAdapters::AbstractAdapter) -> void
+      def receive: (id: String, body: String) -> object
+      def claim: () -> object
+      def apply: (id: String, lease: String) -> object
+      def ingest: (id: String, lease: String, content: object) -> object
+      private
+      def query: (String, Array[String]) -> object
+    end
+    interface _Client
+      def retrieve: (String) -> object
+      def attachment: (String, String) -> String
+    end
+    class Client
+      MAX_RESPONSE: Integer
+      @api_key: String
+      def initialize: (api_key: String?) -> void
+      def retrieve: (String) -> object
+      def attachment: (String, String) -> String
+      def inspect: () -> String
+      def to_s: () -> String
+      private
+      def json: (String) -> object
+      def request: (String, String, limit: Integer, authorized: bool) -> String
+    end
+    class Content
+      def normalize: (object) -> object
+      private
+      def address: (value) -> String
+    end
+    interface _Storage
+      def put_once: (String, String) -> void
+    end
+    class AttachmentStager
+      @client: _Client
+      @storage: _Storage?
+      def initialize: (client: _Client, storage: _Storage?) -> void
+      def stage: (String, Array[value]) -> Array[object]
+      private
+      def stage_one: (String, value, Integer) -> object
+      def rejected: (Integer, String, String) -> object
+    end
+    class Worker
+      @store: _Store
+      @client: _Client
+      @stager: AttachmentStager
+      def initialize: (store: _Store, client: _Client, ?storage: _Storage?) -> void
+      def run_once: () -> String
+      private
+      def process_once: () -> String
+    end
+  end
+end
+class ResendEventsController < ApplicationController
+  def create: () -> void
+  private
+  def header: (String) -> String
+end

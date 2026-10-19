@@ -3,12 +3,12 @@
 ## Current state
 
 <!-- completion-wave-current:start -->
-### Authoritative completion status (2026-10-19)
+### Authoritative completion status (2026-10-20)
 
 The active continuation preserves October 18 source `5c39dc9e` and integrates the unfinished backend work into `completion/resend-pilot-20261019`. The launch scope is Resend; self-hosted Mox remains deferred.
 
 - **Latest frontend passed:** Docker API generation/contracts, lint, type checks, 913 tests across 69 files, coverage thresholds and production build. All 28 browser scenarios passed across Chromium, Firefox, WebKit and a 390px viewport. Eight desktop/narrow screenshots were manually inspected. These controlled fixtures do not establish live provider delivery. See [current web evidence](docs/completion/completion1019-web-validation.md).
-- **Backend integration in progress:** preserve atomic consent approval and live/simulated semantics while completing authenticated draft uploads, immutable approved attachments, durable signed provider events and mailbox-scoped inbound routing. A combined real-database/HTTP-provider regression covers consent, approval, submission, bounce replay and ambiguous-response safety. Final combined backend, integrated acceptance and restore evidence are pending.
+- **Combined backend passed:** authenticated draft uploads, immutable approved attachments, durable signed provider events, mailbox-scoped inbound routing and atomic consent approval are integrated. Fleet Docker passed 195 suites / 1,119 tests / 13,013 assertions, Steep, RuboCop, HTTP acceptance and revocation-worker checks. Real-storage attachment/scanner checks also passed (5 tests / 166 assertions). Integrated browser and final populated restore checks remain in progress. See `docs/completion/completion1020-integration.md` for evidence and limits.
 - **Android historical acceptance passed:** nine Android 14/WebView 113 runtime checks passed at `2f9c7e50`; this is not a new signed native build or a physical-device release claim. See `docs/completion/android1037-acceptance.md`.
 - **Activation remains separate:** verified sending identity, production credentials/webhook configuration, deployment verification and signed native distribution have not been completed. No live mail or production activation is claimed.
 

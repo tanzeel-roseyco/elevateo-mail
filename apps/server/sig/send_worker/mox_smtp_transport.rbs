@@ -10,9 +10,9 @@ module Elevateo
       def database_profile: () -> String
       def submit: (String, send_id: String, attempt_id: String, deadline: CallDeadline, ?credential_binding: MailCredentials::Binding?) -> SubmissionResult
       # AIDEV-NOTE: No SMTP lookup exists; accept the driver's String keywords without consuming them.
-      def observation: (**String) -> nil
+      def observation: (**(String | nil)) -> nil
       private
-      def deliver: (RenderedMail, send_id: String, attempt_id: String, deadline: CallDeadline, binding: MailCredentials::Binding) -> SubmissionResult
+      def deliver: (RenderedMessage, send_id: String, attempt_id: String, deadline: CallDeadline, binding: MailCredentials::Binding) -> SubmissionResult
     end
   end
 end

@@ -30,6 +30,7 @@ module ActionDispatch
   class Request
     def request_parameters=: (Hash[String, Object?]) -> void
     def set_header: (String, Object?) -> Object?
+    def raw_post: () -> String
     def query_string: () -> String
     def cookies: () -> Hash[String, String]
     def headers: () -> Http::Headers

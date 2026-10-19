@@ -11,7 +11,7 @@ module Elevateo
     # AIDEV-NOTE: This privileged adapter belongs only in a restricted worker/gateway, never the Rails API process.
     class PrivateStorage
       class Unavailable < StandardError; end
-      KEY = %r{\Aquarantine/(?:[0-9a-f-]{36}/[0-9a-f-]{36}|imap/[0-9a-f-]{36}/[0-9]+/[0-9]+/[0-9]+)\z}
+      KEY = %r{\Aquarantine/(?:[0-9a-f-]{36}/[0-9a-f-]{36}|imap/[0-9a-f-]{36}/[0-9]+/[0-9]+/[0-9]+|resend/[0-9a-f-]{36}/[0-9]+)\z}
       DRAFT_KEY = %r{\Adrafts/[0-9a-f-]{36}/[0-9a-f-]{36}\z}
       API_KEY = %r{\Aquarantine/[0-9a-f-]{36}/[0-9a-f-]{36}\z}
       METADATA_SECONDS = 5.0
@@ -44,13 +44,23 @@ module Elevateo
 
       # AIDEV-NOTE: Inbound retries compare committed bytes; they never overwrite or delete an earlier object.
       def put_once(key, bytes)
-        raise ArgumentError, "invalid inbound object" unless KEY.match?(key.to_s) && key.start_with?("quarantine/imap/") &&
+        raise ArgumentError, "invalid inbound object" unless KEY.match?(key.to_s) && key.start_with?("quarantine/imap/", "quarantine/resend/") &&
           bytes.is_a?(String) && bytes.bytesize.between?(1, 262_144)
         raise Unavailable, "private bucket unavailable" unless private_bucket?
         # AIDEV-NOTE: Supabase may report duplicates as 400 or 409; only exact authorized read-back admits a retry.
         request(Net::HTTP::Post, key, bytes: bytes, expected: [200, 201, 400, 409])
         stored = get(key)
         raise Unavailable, "staged object conflict" unless stored == bytes
+        nil
+      end
+
+      # AIDEV-NOTE: The reservation selects a unique immutable object; retries read only and never overwrite.
+      def put_draft(key, bytes)
+        raise ArgumentError, "invalid draft object" unless DRAFT_KEY.match?(key.to_s) && bytes.is_a?(String) &&
+          bytes.bytesize.between?(1, 1_048_576)
+        raise Unavailable, "private bucket unavailable" unless private_bucket?
+        request(Net::HTTP::Post, key, bytes: bytes, expected: [200, 201, 400, 409])
+        raise Unavailable, "staged object conflict" unless get(key) == bytes
         nil
       end
 

@@ -15,6 +15,8 @@ raise Elevateo::ConfigError, "send worker requires explicit control" if cfg.send
 raise Elevateo::ConfigError, "held mode cannot submit" if cfg.outbound_mode == "held" && !cfg.outbound_hold
 mailpit_test = ARGV.first == "--mailpit-test"
 resend = cfg.outbound_mode == "resend" && !mailpit_test
+# AIDEV-NOTE: The environment hold must fence dispatch before storage or provider clients are initialized.
+raise Elevateo::ConfigError, "Resend dispatch is held" if resend && cfg.outbound_hold
 target, option = mailpit_test ? ARGV.drop(1) : ARGV
 unless ARGV.length == (mailpit_test ? 3 : (resend ? 1 : 2)) &&
     (mailpit_test ? Elevateo::SendWorker::Control.valid_epoch?(target) :
@@ -29,9 +31,13 @@ driver = if mailpit_test
   Elevateo::SendWorker::SmtpTransport.new(profile: Elevateo::SendWorker::SmtpProfile.local_mailpit(verified_sender: option))
 elsif resend
   require_relative "../lib/elevateo/send_worker/resend_transport"
+  require_relative "../lib/elevateo/attachments_worker_storage"
+  storage = Elevateo::Attachments::WorkerStorage.load!(
+    "ELEVATEO_INBOUND_STORAGE_TOKEN_PATH" => ENV["ELEVATEO_RESEND_STORAGE_TOKEN_PATH"],
+    "ELEVATEO_INBOUND_STORAGE_BUCKET" => ENV["ELEVATEO_RESEND_STORAGE_BUCKET"])
   raise Elevateo::ConfigError, "Resend configuration unavailable" unless cfg.resend_api_key && cfg.resend_from_domain
   Elevateo::SendWorker::ResendTransport.new(api_key: cfg.resend_api_key, from_domain: cfg.resend_from_domain,
-    base_url: cfg.resend_base_url)
+    base_url: cfg.resend_base_url, attachment_storage: storage)
 else
   Elevateo::SendWorker::DurableLocalDriver.new(path: ENV.fetch("ELEVATEO_LOCAL_ACCEPTANCE_LEDGER"), outcome: option)
 end

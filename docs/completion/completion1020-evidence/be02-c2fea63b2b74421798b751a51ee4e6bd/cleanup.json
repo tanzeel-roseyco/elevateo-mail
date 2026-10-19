@@ -1,0 +1,18 @@
+{
+  "removed": [
+    "container:40893014e531b9655a09efdc11a4bf5008d9242835cd0113dbd294fbfe2f807c",
+    "container:f6262c394714664f460a79288c1a31c4a018feaeaf19ffa9474456c2933bbe76",
+    "container:caafc1b8283364ba85538a23a533f1d4aa28741ef2d85922fcb1238c645aeb2a",
+    "container:310c941a5292533bc4e8ec377f9bea27cecd34d40c79348c48a7db84e0b8650e",
+    "container:9ecd4ab0896baf4d4acd96b929f3d3baa3a644749482a70cf3d8c04272c55d19",
+    "builder-container:98a9a40eb5bce3452c2449349eb5231d3ab24a80d62904fb377d735010cb3806",
+    "builder:be02-c2fea63b2b74421798b751a51ee4e6bd-builder",
+    "volume:be02-c2fea63b2b74421798b751a51ee4e6bd_db-config",
+    "volume:be02-c2fea63b2b74421798b751a51ee4e6bd_db-data",
+    "volume:buildx_buildkit_be02-c2fea63b2b74421798b751a51ee4e6bd-builder0_state",
+    "network:ca66cf1f020eae7a38a1242a8856ffad673ad17ed97f2add9d2b783f2422d371",
+    "image:sha256:05b7260bc8b6eebe4656252be70f414b728cfe9c4b49aa65084b5f446ddd019a"
+  ],
+  "errors": [],
+  "shared_bases_retained": true
+}

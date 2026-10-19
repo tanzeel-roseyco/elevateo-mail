@@ -1,6 +1,7 @@
 require_relative "v2_route_registry"
 
 Rails.application.routes.draw do
+  post "/webhooks/resend", to: "resend_events#create"
   get "/health", to: "health#live"
   get "/ready", to: "health#ready"
 
@@ -23,6 +24,9 @@ Rails.application.routes.draw do
   get "/v1/drafts", to: "v1/drafts#index"
   get "/v1/drafts/:draft_id", to: "v1/drafts#show"
   put "/v1/drafts/:draft_id", to: "v1/drafts#update"
+  get "/v1/drafts/:draft_id/attachments", to: "v1/draft_attachments#index"
+  post "/v1/drafts/:draft_id/attachments", to: "v1/draft_attachments#create"
+  delete "/v1/drafts/:draft_id/attachments/:attachment_id", to: "v1/draft_attachments#destroy"
   get "/v1/draft-operations/:operation_id", to: "v1/draft_operations#show"
   put "/v1/threads/:thread_id/read-state", to: "v1/thread_read_states#update"
   get "/v1/threads/:thread_id/assignment", to: "v1/thread_assignments#show"
@@ -38,7 +42,7 @@ Rails.application.routes.draw do
   get "/v1/send-intents/:send_id", to: "v1/send_intents#show"
   post "/v1/send-intents/:send_id/cancellation", to: "v1/send_intents#cancel"
   # AIDEV-NOTE: This route is unauthenticated by design; the controller verifies the bounded raw body before SQL.
-  post "/v2/provider-events/resend", to: "v2/resend_provider_events#create"
+  post "/v2/provider-events/resend", to: "resend_events#create"
   get "/v1/search", to: "v1/search#index"
 
   # AIDEV-NOTE: Isolated V2 candidates require current role proof inside each guarded transaction.

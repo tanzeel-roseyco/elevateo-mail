@@ -59,9 +59,15 @@ module Elevateo
         email = Array(data["to"]).first
         raise Invalid, "invalid webhook body" unless provider_id.is_a?(String) &&
           provider_id.match?(/\A[A-Za-z0-9_-]{1,128}\z/) && (email.nil? || email.is_a?(String))
-        raw = @connection.exec_query("SELECT app.ingest_resend_event($1,$2,$3,$4)::text AS result", "Resend event",
-          [bind(id), bind(event.fetch("type")), bind(provider_id), bind(email)]).first.fetch("result")
-        JSON.parse(raw)
+        row = @connection.exec_query("SELECT app.ingest_resend_event($1,$2,$3,$4)::text AS result", "Resend event",
+          [bind(id), bind(event.fetch("type")), bind(provider_id), bind(email)]).first
+        # AIDEV-NOTE: Database event responses must be present JSON objects before the controller returns success.
+        raise Invalid, "invalid event result" unless row
+        raw = row.fetch("result")
+        raise Invalid, "invalid event result" unless raw.is_a?(String)
+        result = JSON.parse(raw)
+        raise Invalid, "invalid event result" unless result.is_a?(Hash)
+        result
       rescue JSON::ParserError, KeyError, TypeError
         raise Invalid, "invalid webhook body", cause: nil
       end

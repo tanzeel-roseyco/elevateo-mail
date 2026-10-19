@@ -3,6 +3,7 @@ module Elevateo
   end
   interface _ConfigEnvironment
     def []: (String) -> String?
+    def fetch: (String, ?String) -> String
     def keys: () -> Array[String]
     def key?: (String) -> bool
   end

@@ -25,6 +25,10 @@ class DraftStagingMigrationTest < DraftStagingDatabaseTestCase
     connection.exec("BEGIN")
     connection.exec("SET LOCAL ROLE elevateo_owner")
     object.public_send(direction)
+    # AIDEV-NOTE: Reapply migration32 list semantics after restoring migration28 scaffolding.
+    if direction == :up
+      connection.exec(File.read(File.expand_path("../../db/draft_attachments/read_recoverable.sql", __dir__)))
+    end
     connection.exec("COMMIT")
   ensure
     connection.exec("ROLLBACK") if connection.transaction_status != PG::PQTRANS_IDLE

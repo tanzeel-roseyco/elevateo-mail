@@ -211,6 +211,7 @@ services:
       BE02_MIGRATOR_DATABASE_URL: postgres://elevateo_migrator:${MIGRATOR_DB_PASSWORD:?}@db:5432/postgres
       BE02_API_DATABASE_URL: postgres://elevateo_api:${API_DB_PASSWORD:?}@db:5432/postgres
       BE02_WORKER_DATABASE_URL: postgres://elevateo_worker:${WORKER_DB_PASSWORD:?}@db:5432/postgres
+      BE02_ATTACHMENT_GATEWAY_DATABASE_URL: postgres://elevateo_attachment_gateway:${ATTACHMENT_GATEWAY_DB_PASSWORD:?}@db:5432/postgres
       BE02_TASK_DATABASE_NAME: postgres
     command: [bash, /workspace/ops/tests/be02/test-suites.sh]
   fixture:

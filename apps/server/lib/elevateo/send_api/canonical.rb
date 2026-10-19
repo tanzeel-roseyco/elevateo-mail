@@ -10,9 +10,8 @@ module Elevateo
       FORMAT = "elevateo.send.snapshot.v1"
       MAXIMUM = 1_048_576
 
-      def self.bytes(organization_id:, mailbox_id:, draft_id:, version:, sender:, recipients:, subject:, body:, reply_id:, policy:)
-        attachments = [] # : Array[String]
-        JSON.generate([FORMAT, organization_id, mailbox_id, draft_id, version, [nil, sender],
+      def self.bytes(organization_id:, mailbox_id:, draft_id:, version:, sender:, recipients:, subject:, body:, reply_id:, policy:, attachments: [])
+        JSON.generate([attachments.empty? ? FORMAT : "elevateo.send.snapshot.v2", organization_id, mailbox_id, draft_id, version, [nil, sender],
           recipients.map { |item| [item["display_name"], item["address"]] }, subject, body, reply_id,
           "correspondence", "human_correspondence_attestation", attachments, policy], allow_nan: false)
       end

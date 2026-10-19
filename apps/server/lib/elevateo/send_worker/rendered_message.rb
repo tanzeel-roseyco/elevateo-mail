@@ -12,7 +12,12 @@ module Elevateo
           recipients.all? { |item| item.is_a?(Array) && item.length == 2 } && subject.is_a?(String) &&
           text.is_a?(String) && attachments.is_a?(Array) && attachments.empty?
         @sender = sender.freeze
-        @recipients = recipients.map { |item| item.map { |part| part&.dup&.freeze }.freeze }.freeze
+        # AIDEV-NOTE: Preserve the nullable display-name/address tuple while copying the immutable approved message.
+        @recipients = recipients.map do |item|
+          # @type var recipient: [String?, String]
+          recipient = [item[0]&.dup&.freeze, item[1].dup.freeze]
+          recipient.freeze
+        end.freeze
         @subject = subject.freeze
         @text = text.freeze
         @attachments = attachments.freeze

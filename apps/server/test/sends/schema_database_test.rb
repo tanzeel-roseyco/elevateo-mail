@@ -61,7 +61,8 @@ class SendSchemaDatabaseTest < SendDatabaseTestCase
     SQL
     expected = %w[approval_operations attempts audit_events intents jobs mailbox_policy observations
                   organization_policy recipient_suppressions reconciliation_checks smtp_accounts
-                  budget_routes budget_limits budget_usage attempt_budgets scheduler_cursor mailbox_schedule]
+                  budget_routes budget_limits budget_usage attempt_budgets scheduler_cursor mailbox_schedule
+                  resend_events resend_delivery resend_acceptance]
     assert_equal expected.sort, rows.map { |row| row.fetch("relname") }.sort
     rows.each do |row|
       assert_equal "t", row.fetch("relrowsecurity")
@@ -108,6 +109,20 @@ class SendSchemaDatabaseTest < SendDatabaseTestCase
   end
   def test_empty_down_removes_only_send_objects_and_transaction_rollback_restores_them
     @admin.exec("BEGIN")
+    # AIDEV-NOTE: Detach only later typed/FK dependencies; rollback restores their exact definitions.
+    dependencies = @admin.exec(<<~SQL).to_a
+      SELECT conrelid::regclass::text AS relation,conname,pg_get_constraintdef(oid) AS definition
+        FROM pg_constraint WHERE contype='f'
+          AND conrelid IN ('app_send_private.resend_events'::regclass,
+            'app_send_private.resend_delivery'::regclass,'app_send_private.resend_acceptance'::regclass)
+          AND confrelid IN ('app_send_private.intents'::regclass,'app_send_private.attempts'::regclass)
+        ORDER BY conrelid,conname
+    SQL
+    assert_equal 3, dependencies.length
+    dependencies.each do |dependency|
+      @admin.exec("ALTER TABLE #{dependency.fetch("relation")} DROP CONSTRAINT #{PG::Connection.quote_ident(dependency.fetch("conname"))}")
+    end
+    @admin.exec("DROP FUNCTION app_send_private.resend_attachments_allowed(app_send_private.intents)")
     # AIDEV-NOTE: Reverse rotation, budget and SMTP dependencies before the original send-schema teardown.
     @admin.exec(File.read(File.expand_path("../../db/be03_send/mailbox_rotation_down.sql", __dir__)))
     @admin.exec(File.read(File.expand_path("../../db/be03_send/budget_down.sql", __dir__)))
@@ -122,6 +137,14 @@ class SendSchemaDatabaseTest < SendDatabaseTestCase
     assert_nil @admin.exec("SELECT to_regprocedure('app.send_review(uuid,uuid)')").getvalue(0, 0)
     @admin.exec("ROLLBACK")
     refute_nil @admin.exec("SELECT to_regclass('app_send_private.intents')").getvalue(0, 0)
+    dependencies.each do |dependency|
+      restored = @admin.exec_params(
+        "SELECT pg_get_constraintdef(oid) FROM pg_constraint WHERE conrelid=$1::regclass AND conname=$2",
+        [dependency.fetch("relation"), dependency.fetch("conname")]
+      ).getvalue(0, 0)
+      assert_equal dependency.fetch("definition"), restored
+    end
+    refute_nil @admin.exec("SELECT to_regprocedure('app_send_private.resend_attachments_allowed(app_send_private.intents)')").getvalue(0, 0)
     refute approve.key?("code")
   ensure
     @admin.exec("ROLLBACK") if @admin && @admin.transaction_status != PG::PQTRANS_IDLE

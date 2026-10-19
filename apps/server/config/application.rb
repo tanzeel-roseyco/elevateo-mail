@@ -4,6 +4,7 @@ require "active_record/railtie"
 require "action_controller/railtie"
 require_relative "../lib/elevateo/config"
 require_relative "../lib/elevateo/auth_callback_redaction"
+require_relative "../lib/elevateo/resend_events/redaction"
 
 Bundler.require(*Rails.groups)
 
@@ -24,7 +25,8 @@ module ElevateoServer
     config.log_level = :info
     # AIDEV-NOTE: Stage callback secrets before Rails logs or exception middleware can capture the request URL.
     config.middleware.insert_before Rails::Rack::Logger, Elevateo::AuthCallbackRedaction
-    config.filter_parameters += %i[password token secret key]
+    config.middleware.insert_before Rails::Rack::Logger, Elevateo::ResendEvents::Redaction
+    config.filter_parameters += %i[password token secret key content_base64]
     config.hosts.clear
     config.secret_key_base = ENV.fetch("SECRET_KEY_BASE")
   end

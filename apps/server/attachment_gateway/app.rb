@@ -6,10 +6,12 @@ require "rack"
 require "timeout"
 require_relative "authority"
 require_relative "protocol"
+require_relative "draft_stage"
 
 module Elevateo
   module AttachmentGateway
     class App
+      include DraftStage
       MAX_BYTES = 10 * 1024 * 1024
       RESPONSE_HEADERS = { "Cache-Control" => "no-store", "X-Content-Type-Options" => "nosniff",
                            "Content-Type" => "application/octet-stream",
@@ -26,6 +28,7 @@ module Elevateo
       def call(env)
         @slots.pop(true)
         acquired = true
+        return stage_draft(env) if env["PATH_INFO"] == DraftAttachmentRequest::PATH
         claim = Protocol.verify(env, key: @key, now: @clock.call)
         first = @authority.clean_binding(claim)
         bytes = Timeout.timeout(22) { @storage.get(first.fetch("storage_key")) }

@@ -67,6 +67,13 @@ image=$(compose images -q db)
 docker run --rm --network "${project}_private" --read-only --cap-drop ALL --memory 128m \
   --env-file "$envfile" -v "$base/drill-object.py:/drill.py:ro" --entrypoint python3 \
   "$python_image" /drill.py create
+if [[ ${OPS1040_RECOVERY_FIXTURE:-0} == 1 ]]; then
+# AIDEV-NOTE: Include real Resend queue/route and pending draft metadata in the paired backup.
+compose exec -T db psql -U supabase_admin -d postgres -X -q -v ON_ERROR_STOP=1 < "$root/ops/ops820/resend-recovery-seed.sql"
+docker run --rm --network "${project}_private" --read-only --cap-drop ALL --memory 128m \
+  --env-file "$envfile" -v "$root/ops/ops820/resend-recovery-object.py:/recovery.py:ro" --entrypoint python3 \
+  "$python_image" /recovery.py create
+fi
 compose stop auth rest storage
 compose exec -T db psql -U supabase_admin -d postgres -v ON_ERROR_STOP=1 >/dev/null <<'SQL'
 DO $$ BEGIN

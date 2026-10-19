@@ -1,11 +1,31 @@
 module Elevateo
   module SendWorker
+    interface _ResendAttachmentStorage
+      def get: (String) -> String
+    end
     class ResendTransport
       PROFILE: String
-      def initialize: (api_key: String, from_domain: String, ?base_url: String, ?http_factory: untyped) -> void
+      UUID: Regexp
+      @storage: _ResendAttachmentStorage?
+      @api_key: String
+      @from_domain: String
+      @base_uri: URI::Generic
+      @http_factory: ^(URI::Generic) -> Net::HTTP
+      def initialize: (api_key: String, from_domain: String, ?base_url: String,
+        ?http_factory: (^(URI::Generic) -> Net::HTTP)?, ?attachment_storage: _ResendAttachmentStorage?) -> void
+      def inspect: () -> String
       def database_profile: () -> String
       def submit: (String, send_id: String, attempt_id: String, deadline: CallDeadline) -> SubmissionResult
-      def observation: (send_id: String, attempt_id: String, snapshot_digest: String) -> SubmissionResult?
+      def observation: (send_id: String, attempt_id: String, snapshot_digest: String, ?snapshot_bytes: String?) -> nil
+      private
+      # AIDEV-NOTE: Parsed JSON stays untyped only until attachment_payload validates each snapshot field.
+      def attachment_payload: (Array[untyped], CallDeadline) -> Array[Hash[Symbol, String]]
+      def snapshot_sender: (String) -> String
+      def request: (singleton(Net::HTTP::Post), String, deadline: CallDeadline,
+        ?body: String?, ?headers: Hash[String, String]) -> Net::HTTPResponse
+      def response_id: (String) -> String?
+      def rejected: () -> SubmissionResult
+      def unknown: () -> SubmissionResult
     end
   end
 end

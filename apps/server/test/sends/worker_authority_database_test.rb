@@ -107,7 +107,8 @@ class SendWorkerAuthorityDatabaseTest < SendDatabaseTestCase
     assert_equal "reconcile", claim(send, next_lease).fetch("action")
     binding = worker_json("SELECT app_send_private.worker_binding($1::uuid,$2::uuid,2,$3::uuid)", [send, next_lease, @epoch])
     assert_equal attempt, binding.fetch("attempt_id")
-    assert_nil binding.fetch("snapshot_hex")
+    # AIDEV-NOTE: Reconciliation validates the same immutable snapshot; the action fence forbids resubmission.
+    assert_equal binding.fetch("snapshot_digest"), Digest::SHA256.hexdigest([binding.fetch("snapshot_hex")].pack("H*"))
     assert_equal "dispatch_held", authorize(send, next_lease, generation: 2).fetch("code")
     assert_equal "accepted", observe(send, next_lease, 2, attempt, kind: "accepted", receipt: "local:#{'a' * 64}").fetch("state")
     assert_equal 1, status(send).fetch("attempts")

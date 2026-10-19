@@ -7,7 +7,8 @@ module Elevateo
       attr_reader generation: Integer
       attr_reader attempt_id: String?
       attr_reader snapshot_digest: String
-      def self.new: (send_id: String, action: String, lease_id: String, generation: Integer, attempt_id: String?, snapshot_digest: String) -> Claim
+      attr_reader snapshot_bytes: String
+      def self.new: (send_id: String, action: String, lease_id: String, generation: Integer, attempt_id: String?, snapshot_digest: String, snapshot_bytes: String) -> Claim
     end
     class Authorization
       attr_reader attempt_id: String

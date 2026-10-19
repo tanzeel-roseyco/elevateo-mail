@@ -24,6 +24,10 @@ class ResendPilotFlowTest < SendDatabaseTestCase
     @stub&.close
     @admin.exec_params("DELETE FROM app.resend_webhook_events WHERE event_id=$1", [@event_id]) if @event_id
   ensure
+    if @admin && @org
+      @admin.exec_params("DELETE FROM app_send_private.resend_acceptance WHERE attempt_id IN (SELECT attempt_id FROM app_send_private.attempts WHERE send_id IN (SELECT send_id FROM app_send_private.intents WHERE organization_id=$1))", [@org])
+      @admin.exec_params("DELETE FROM app_send_private.resend_delivery WHERE send_id IN (SELECT send_id FROM app_send_private.intents WHERE organization_id=$1)", [@org])
+    end
     super
   end
 
@@ -43,10 +47,14 @@ class ResendPilotFlowTest < SendDatabaseTestCase
     assert_equal "POST /emails HTTP/1.1\r\n", request.fetch(:line)
     assert_equal "Bearer re_disposable_fixture", request.fetch(:headers).fetch("authorization")
     assert_equal({ "from" => "#{@box}@example.invalid", "to" => ["Recipient@example.invalid"],
-      "subject" => @saved.subject, "text" => @saved.body_text }, JSON.parse(request.fetch(:body)))
+      "subject" => @saved.subject, "text" => @saved.body_text, "attachments" => [],
+      "headers" => { "Message-ID" => "<elevateo.#{approved.fetch('send_id')}@example.invalid>" },
+      "tags" => [{ "name" => "send_id", "value" => approved.fetch("send_id") },
+        { "name" => "attempt_id", "value" => JSON.parse(request.fetch(:body)).fetch("tags").last.fetch("value") }] }, JSON.parse(request.fetch(:body)))
     attempt = @admin.exec_params("SELECT attempt_id::text,profile FROM app_send_private.attempts WHERE send_id=$1", [approved.fetch("send_id")]).first
     assert_equal "resend-v1", attempt.fetch("profile")
-    assert_equal attempt.fetch("attempt_id"), request.fetch(:headers).fetch("idempotency-key")
+    assert_equal "elevateo/#{approved.fetch('send_id')}", request.fetch(:headers).fetch("idempotency-key")
+    assert_equal attempt.fetch("attempt_id"), JSON.parse(request.fetch(:body)).fetch("tags").last.fetch("value")
     assert_equal 1, status(approved.fetch("send_id")).fetch("attempts")
     assert_signed_bounce_replay(approved.fetch("send_id"))
   end
@@ -71,7 +79,102 @@ class ResendPilotFlowTest < SendDatabaseTestCase
     assert_empty @stub.requests
   end
 
+  def test_pending_attachment_blocks_approval_then_clean_bytes_are_sent
+    grant_consent
+    attachment, operation, token = Array.new(3) { SecureRandom.uuid }
+    content = "pilot evidence"
+    sha = Digest::SHA256.hexdigest(content)
+    begin_write
+    assert_equal "ok", write_guard.fetch("status")
+    values = [@digest, @box, @draft, operation, "a" * 64, attachment, token, "proof.txt", "text/plain", content.bytesize, sha]
+    reserved = JSON.parse(@api.exec_params(<<~SQL, values).getvalue(0, 0))
+      SELECT app.reserve_draft_attachment($1::text,$2::uuid,$3::uuid,$4::uuid,$5::text,$6::uuid,$7::uuid,
+        $8::text,$9::text,$10::integer,$11::text)
+    SQL
+    assert_equal "reserved", reserved.fetch("stage_state")
+    @api.exec("COMMIT")
+    begin_write
+    assert_equal "ok", write_guard.fetch("status")
+    finalized = JSON.parse(@api.exec_params(<<~SQL, [@digest, @box, @draft, operation, "a" * 64, token]).getvalue(0, 0))
+      SELECT app.finalize_draft_attachment($1::text,$2::uuid,$3::uuid,$4::uuid,$5::text,$6::uuid)
+    SQL
+    assert_equal "committed", finalized.fetch("stage_state")
+    @api.exec("COMMIT")
+    refute Elevateo::SendAPI::Review.new(review, outbound_mode: "resend").result.fetch("ready")
+    assert_equal "send_not_ready", approve.fetch("code")
+    # AIDEV-NOTE: Rejected approval operations are immutable; clean review starts a fresh operation.
+    @operation = SecureRandom.uuid
+    scan_token = SecureRandom.uuid
+    claimed = @worker.exec_params("SELECT * FROM app.claim_draft_attachment_scan($1::uuid,$2::uuid)", [attachment, scan_token]).first
+    assert_equal sha, claimed.fetch("sha256")
+    assert_equal "t", @worker.exec_params(<<~SQL, [attachment, sha, scan_token, claimed.fetch("scan_attempt")]).getvalue(0, 0)
+      SELECT app.record_draft_attachment_scan($1::uuid,$2::text,$3::uuid,$4::integer,'clean')
+    SQL
+    reviewed = Elevateo::SendAPI::Review.new(review, outbound_mode: "resend")
+    assert reviewed.result.fetch("ready"), reviewed.result.fetch("issues").inspect
+    assert_equal "elevateo.send.snapshot.v2", JSON.parse(reviewed.snapshot).first
+    send_id = approve(bytes: reviewed.snapshot, review_digest: reviewed.result.fetch("review_digest")).fetch("send_id")
+    storage = Object.new
+    expected_key = "drafts/#{@org}/#{attachment}"
+    storage.define_singleton_method(:get) { |key| raise "wrong immutable key" unless key == expected_key; content }
+    @stub = ResendHTTPStub.new(body: JSON.generate(id: SecureRandom.uuid))
+    assert_equal :accepted, execute(send_id, storage: storage)
+    assert_equal [{ "filename" => "proof.txt", "content_type" => "text/plain", "content" => Base64.strict_encode64(content) }],
+      JSON.parse(@stub.requests.fetch(0).fetch(:body)).fetch("attachments")
+  end
+
+  def test_approval_consent_lock_blocks_withdrawal_until_commit
+    grant_consent
+    operation = SecureRandom.uuid
+    @admin.exec_params(<<~SQL, [@org, operation, @user])
+      INSERT INTO app.campaign_consent_events(organization_id,campaign_id,lead_id,operation_id,actor_id,
+        email,lead_version,status,evidence_kind)
+        SELECT organization_id,campaign_id,id,$2,$3,email,3,'withdrawn','status_change'
+        FROM app.campaign_leads WHERE organization_id=$1
+    SQL
+    connection = connect("BE02_ADMIN_DATABASE_URL", "supabase_admin")
+    reviewed = Elevateo::SendAPI::Review.new(review, outbound_mode: "resend")
+    begin_write
+    assert_equal "ok", write_guard.fetch("status")
+    result = approve_sql(bytes: reviewed.snapshot, review_digest: reviewed.result.fetch("review_digest"))
+    assert result.key?("send_id"), result.inspect
+    withdrawal = Thread.new do
+      connection.exec_params(<<~SQL, [@org, operation])
+        UPDATE app.campaign_leads SET consent_status='withdrawn',consent_operation_id=$2,
+          consent_source=NULL,consent_recorded_at=NULL,consent_recorded_by=NULL,version=3 WHERE organization_id=$1
+      SQL
+    end
+    withdrawal.report_on_exception = false
+    wait_for_lock(connection, blocker: @api.backend_pid, lock_kind: "transactionid", seconds: 0.7)
+    @api.exec("COMMIT")
+    assert_equal 1, withdrawal.value.cmd_tuples
+  ensure
+    @api.exec("ROLLBACK") if @api && @api.transaction_status != PG::PQTRANS_IDLE
+    withdrawal&.join(3)
+    connection&.close
+  end
+
+  def test_send_owner_can_lock_consent_but_cannot_mutate_it
+    grant_consent
+    # AIDEV-NOTE: Isolate RLS from the earlier version trigger; rollback restores the trigger before teardown.
+    @admin.exec("BEGIN; ALTER TABLE app.campaign_leads DISABLE TRIGGER campaign_lead_update_guard; SET LOCAL ROLE elevateo_send_owner")
+    assert_equal 1, @admin.exec_params("SELECT email FROM app.campaign_leads WHERE organization_id=$1 FOR SHARE", [@org]).ntuples
+    assert_raises(PG::InsufficientPrivilege) do
+      @admin.exec_params("UPDATE app.campaign_leads SET email=email WHERE organization_id=$1", [@org])
+    end
+  ensure
+    @admin.exec("ROLLBACK") if @admin && @admin.transaction_status != PG::PQTRANS_IDLE
+  end
+
   private
+
+  def prepare_organization_fixture_cleanup
+    if @admin && @org
+      @admin.exec_params("DELETE FROM app.draft_attachments WHERE organization_id=$1", [@org])
+      @admin.exec_params("DELETE FROM app_drafts_private.attachment_stage_operations WHERE organization_id=$1", [@org])
+    end
+    super
+  end
 
   def event_store(connection)
     # AIDEV-NOTE: Adapt only ActiveRecord's bind wrapper; every query still executes through the restricted PG login.
@@ -100,7 +203,7 @@ class ResendPilotFlowTest < SendDatabaseTestCase
     claim = worker.claim
     assert_equal @event_id, claim.fetch("id")
     assert_equal "processed", worker.apply(id: @event_id, lease: claim.fetch("lease")).fetch("result")
-    assert_equal "bounced", status(send_id).fetch("delivery_state")
+    assert_equal "bounced", status(send_id).fetch("delivery_status")
     assert_equal "stored", intake.receive(id: @event_id, body: body).fetch("result")
     assert_equal "empty", worker.claim.fetch("result")
     assert_equal "1", @admin.exec_params(<<~SQL, [@org]).getvalue(0, 0)
@@ -145,9 +248,9 @@ class ResendPilotFlowTest < SendDatabaseTestCase
     SQL
   end
 
-  def execute(send_id)
+  def execute(send_id, storage: nil)
     transport = Elevateo::SendWorker::ResendTransport.new(api_key: "re_disposable_fixture",
-      from_domain: "example.invalid", http_factory: @stub.method(:client))
+      from_domain: "example.invalid", http_factory: @stub.method(:client), attachment_storage: storage)
     Dir.mktmpdir("resend-pilot-control-") do |dir|
       path = File.join(dir, "control.json")
       File.write(path, JSON.generate(epoch: @epoch, outbound_held: false))

@@ -19,7 +19,7 @@ module Elevateo
       def submit(bytes, send_id:, attempt_id:, deadline:, credential_binding: nil)
         raise ArgumentError, "invalid SMTP attempt" unless Control.valid_epoch?(attempt_id)
         rendered = SmtpSnapshot.render(bytes, send_id: send_id, verified_sender: @profile.verified_sender)
-        unless rendered.recipients == ["seed000@seed.test"]
+        unless rendered.recipient_addresses == ["seed000@seed.test"]
           return SubmissionResult.new(kind: "rejected", code: "smtp_invalid_snapshot")
         end
         unless credential_binding.is_a?(MailCredentials::Binding) &&
@@ -37,6 +37,9 @@ module Elevateo
       private
 
       def deliver(rendered, send_id:, attempt_id:, deadline:, binding:)
+        # AIDEV-NOTE: SMTP needs MIME and envelope addresses; provider display-name tuples are not SMTP recipients.
+        mime = rendered.mime
+        raise SmtpTransport::Held, "SMTP MIME unavailable" unless mime
         started = false
         status = ""
         begin
@@ -57,7 +60,7 @@ module Elevateo
               deadline.check!
               # AIDEV-NOTE: Once DATA might start, every exception is ambiguous, including a lost final response.
               started = true
-              status = session.send_message(rendered.mime, rendered.sender, *rendered.recipients).status
+              status = session.send_message(mime, rendered.sender, *rendered.recipient_addresses).status
             end
           end
         rescue StandardError

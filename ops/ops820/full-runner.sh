@@ -61,7 +61,7 @@ done
 # AIDEV-NOTE: One fresh key makes comparison-only dumps repeatable; these files are never restored or executed.
 restrict_key=$(python3 -c 'import secrets; print(secrets.token_hex(32))')
 schema_dump() {
-  compose exec -T db pg_dump -U supabase_admin -d postgres --schema-only -n 'app*' --restrict-key="$restrict_key"
+  compose exec -T db pg_dump -U supabase_admin -d postgres --schema-only -n 'app*' --restrict-key="$restrict_key" | python3 "$root/ops/ops820/normalize_schema_dump.py"
   compose exec -T db psql -U supabase_admin -d postgres -X -q -v ON_ERROR_STOP=1 \
     < "$root/ops/ops820/data_fingerprint.sql"
 }
@@ -88,6 +88,8 @@ for version in "${versions[@]}"; do
 done
 schema_dump > "$scratch/after"
 cmp -s -- "$scratch/before" "$scratch/after" || {
+  # AIDEV-NOTE: Fingerprints contain schema and aggregate hashes only; expose exact drift before disposable cleanup.
+  diff -u -- "$scratch/before" "$scratch/after" >&2 || true
   echo 'restored app schema/data changed after down/up' >&2; exit 1;
 }
 echo "PASS disposable migrations stage=$mode and app schema/data fingerprint"

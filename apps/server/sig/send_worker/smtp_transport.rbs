@@ -8,7 +8,7 @@ module Elevateo
       def initialize: (profile: SmtpProfile, ?client: untyped) -> void
       def database_profile: () -> String
       def submit: (String, send_id: String, attempt_id: String, deadline: CallDeadline) -> SubmissionResult
-      def observation: (send_id: String, attempt_id: String, snapshot_digest: String) -> nil
+      def observation: (send_id: String, attempt_id: String, snapshot_digest: String, ?snapshot_bytes: String?) -> nil
     end
     class LocalMailpitClient
       class PreflightFailed < StandardError

@@ -7,7 +7,7 @@ require_relative "call_deadline"
 module Elevateo
   module SendWorker
     # The store owns transactions, leases, authorization, and durable observations.
-    # The driver is deliberately restricted to the local simulated profile.
+    # AIDEV-NOTE: Each driver is bound to the immutable attempt profile and SQL authority gates.
     class Executor
       def initialize(store:, driver:, control:, budget_seconds: 10, deadline_factory: nil)
         raise ArgumentError, "invalid worker dependencies" unless store && driver && control
@@ -57,7 +57,7 @@ module Elevateo
       private
 
       def reconcile(claim)
-        # AIDEV-NOTE: Resend safely replays the exact attempt key/body to recover a lost provider ID; other drivers only query.
+        # AIDEV-NOTE: Ambiguous Resend sends reconcile from signed durable events without replaying provider POSTs.
         observation = @driver.observation(send_id: claim.send_id, attempt_id: claim.attempt_id,
           snapshot_digest: claim.snapshot_digest, snapshot_bytes: claim.snapshot_bytes)
         @store.reconcile(claim: claim, observation: observation)

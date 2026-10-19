@@ -23,7 +23,7 @@ class SendAPIBoundaryTest < Minitest::Test
     assert_includes denied.fetch("issues"), { "code" => "consent_required", "recipient_index" => 0 }
 
     allowed = Elevateo::SendAPI::Review.new(
-      binding.merge("consented_addresses" => ["local@example.invalid"]), outbound_mode: "resend"
+      binding.merge("consented_addresses" => ["Local@example.invalid"]), outbound_mode: "resend"
     ).result
     assert_equal true, allowed.fetch("ready")
     assert_equal true, allowed.fetch("recipient_checks").first.fetch("consent_evidence")

@@ -13,7 +13,7 @@ module Elevateo
       attr_reader invocations: Integer
       def initialize: (profile: String, outcomes: Array[String], ?pause: ^() -> void) -> void
       def submit: (String, send_id: String, attempt_id: String, deadline: CallDeadline) -> SubmissionResult
-      def observation: (send_id: String, attempt_id: String, snapshot_digest: String) -> SubmissionResult?
+      def observation: (send_id: String, attempt_id: String, snapshot_digest: String, ?snapshot_bytes: String?) -> SubmissionResult?
       private
       def reserve!: (String, String, String) -> String
       def validate!: (String, String, String) -> void

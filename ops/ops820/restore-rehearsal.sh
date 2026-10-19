@@ -79,6 +79,15 @@ docker run --rm --network none --user 0 --entrypoint tar \
   -v "${project}_storage-data:/objects" -v "$snapshot/objects.tar:/objects.tar:ro" "$image" \
   -C /objects -xf /objects.tar
 compose up -d --wait --wait-timeout 180
+if [[ ${OPS1040_RECOVERY_FIXTURE:-0} == 1 ]]; then
+# AIDEV-NOTE: Restore proof precedes fixture removal and unchanged destructive down/up schema proof.
+compose exec -T db psql -U supabase_admin -d postgres -X -q -v ON_ERROR_STOP=1 < "$packet/resend-recovery-verify.sql"
+docker run --rm --network "${project}_private" --read-only --cap-drop ALL --memory 128m \
+  --env-file "$envfile" -v "$packet/resend-recovery-object.py:/recovery.py:ro" --entrypoint python3 \
+  "$python_image" /recovery.py verify
+echo 'PASS populated Resend queue/route and draft metadata recovery'
+compose exec -T db psql -U supabase_admin -d postgres -X -q -v ON_ERROR_STOP=1 < "$packet/resend-recovery-cleanup.sql"
+fi
 if [[ "$mode" == full ]]; then
   "$runner" "$project" "$envfile" "$source_root"
 fi

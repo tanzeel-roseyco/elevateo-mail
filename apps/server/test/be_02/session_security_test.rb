@@ -6,6 +6,10 @@ class SessionSecurityTest < Minitest::Test
   include AuthFixtures
 
   def test_session_labels_follow_installation_mode_without_changing_authority
+    live_config = config
+    live_config.outbound_mode = "resend"
+    service = Elevateo::Sessions.new(config: live_config, store: Object.new)
+    assert_equal false, service.presentation.session(metadata).fetch("simulation_mode")
     crypto = Elevateo::SessionCrypto.new(config: config)
     simulated = Elevateo::SessionPresentation.new(crypto: crypto).session(metadata)
     live = Elevateo::SessionPresentation.new(crypto: crypto, simulation_mode: false).session(metadata)

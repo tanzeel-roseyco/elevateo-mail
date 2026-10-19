@@ -48,8 +48,8 @@ module Elevateo
       unless @send_control_path.empty? || (@send_control_path.start_with?("/") && !@send_control_path.include?("\u0000"))
         raise ConfigError, "invalid send control path"
       end
-      configure_outbound(env)
       @process = fetch.("ELEVATEO_PROCESS")
+      configure_outbound(env)
       @db_host = fetch.("ELEVATEO_DB_HOST")
       @db_name = fetch.("ELEVATEO_DB_NAME")
       @db_role = fetch.("ELEVATEO_DB_ROLE")
@@ -75,29 +75,32 @@ module Elevateo
       raise ConfigError, "invalid ELEVATEO_MAILBOX_DAILY_SEND_LIMIT" unless /\A[1-9][0-9]{0,3}\z/.match?(raw_limit)
       @mailbox_daily_send_limit = raw_limit.to_i
 
-      required_names = %w[RESEND_API_KEY ELEVATEO_RESEND_FROM_DOMAIN RESEND_WEBHOOK_SECRET]
-      names = required_names + %w[ELEVATEO_RESEND_BASE_URL]
+      required_names = ["ELEVATEO_RESEND_FROM_DOMAIN", @process == "worker" ? "RESEND_API_KEY" : "RESEND_WEBHOOK_SECRET"]
+      names = %w[RESEND_API_KEY ELEVATEO_RESEND_FROM_DOMAIN RESEND_WEBHOOK_SECRET ELEVATEO_RESEND_BASE_URL]
       if @outbound_mode != "resend"
         found = names.find { |name| env.key?(name) }
         raise ConfigError, "#{found} requires ELEVATEO_OUTBOUND_MODE=resend" if found
         return
       end
-      raise ConfigError, "ELEVATEO_OUTBOUND_HOLD must be false for resend mode" if @outbound_hold
+      # AIDEV-NOTE: Held Resend processes still receive events; the send worker enforces submission controls.
       required_names.each { |name| raise ConfigError, "missing required setting #{name}" if env[name].to_s.empty? }
-      key = env.fetch("RESEND_API_KEY")
-      raise ConfigError, "invalid RESEND_API_KEY" unless /\Are_[A-Za-z0-9_-]{16,}\z/.match?(key)
+      # AIDEV-NOTE: Public API verification never needs the credential that authorizes provider submissions.
+      raise ConfigError, "RESEND_API_KEY is worker-only" if @process != "worker" && env.key?("RESEND_API_KEY")
+      key = env["RESEND_API_KEY"]
+      raise ConfigError, "invalid RESEND_API_KEY" if key && !/\Are_[A-Za-z0-9_-]{16,}\z/.match?(key)
       domain = env.fetch("ELEVATEO_RESEND_FROM_DOMAIN")
       labels = domain.split(".", -1)
       unless labels.length >= 2 && labels.all? { |label| /\A[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?\z/.match?(label) }
         raise ConfigError, "invalid ELEVATEO_RESEND_FROM_DOMAIN"
       end
-      secret = env.fetch("RESEND_WEBHOOK_SECRET")
-      encoded = secret.delete_prefix("whsec_")
-      decoded = Base64.strict_decode64(encoded)
-      raise ConfigError, "invalid RESEND_WEBHOOK_SECRET" unless secret.start_with?("whsec_") && decoded.bytesize >= 16
-      @resend_api_key = key.dup.freeze
+      secret = env["RESEND_WEBHOOK_SECRET"]
+      if secret
+        decoded = Base64.strict_decode64(secret.delete_prefix("whsec_"))
+        raise ConfigError, "invalid RESEND_WEBHOOK_SECRET" unless secret.start_with?("whsec_") && decoded.bytesize >= 16
+      end
+      @resend_api_key = key&.dup&.freeze
       @resend_from_domain = domain.downcase.freeze
-      @resend_webhook_secret = secret.dup.freeze
+      @resend_webhook_secret = secret&.dup&.freeze
       @resend_base_url = env.fetch("ELEVATEO_RESEND_BASE_URL", "https://api.resend.com")
       unless ["https://api.resend.com", "http://resend-stub:8788"].include?(@resend_base_url)
         raise ConfigError, "invalid ELEVATEO_RESEND_BASE_URL"

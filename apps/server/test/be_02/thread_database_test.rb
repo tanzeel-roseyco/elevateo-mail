@@ -34,6 +34,10 @@ class ThreadDatabaseTest < SessionDatabaseTestCase
       "inbound_imap_receipts_organization_id_mailbox_id_thread_i_fkey1" =>
         "FOREIGN KEY (organization_id, mailbox_id, thread_id, message_id) REFERENCES app.messages(organization_id, mailbox_id, thread_id, id) DEFERRABLE INITIALLY DEFERRED"
     },
+    "app.resend_inbound_receipts" => {
+      "resend_inbound_receipts_organization_id_mailbox_id_thread__fkey" =>
+        "FOREIGN KEY (organization_id, mailbox_id, thread_id, message_id) REFERENCES app.messages(organization_id, mailbox_id, thread_id, id) DEFERRABLE INITIALLY DEFERRED"
+    },
     "app.draft_attachments" => {
       "draft_attachments_organization_id_mailbox_id_draft_id_fkey" =>
         "FOREIGN KEY (organization_id, mailbox_id, draft_id) REFERENCES app.drafts(organization_id, mailbox_id, id) ON DELETE CASCADE"
@@ -244,7 +248,7 @@ class ThreadDatabaseTest < SessionDatabaseTestCase
     before_foreign_keys = later_thread_foreign_keys
     before_policies = later_thread_policies
     @admin.exec("BEGIN")
-    # AIDEV-NOTE: Detach only known later-feature FKs and read policy inside this rollback-only transaction.
+    # AIDEV-NOTE: Detach known later-feature FKs, including Resend receipts, and read policy inside this rollback-only transaction.
     # Their definitions, tables and rows return with rollback; the original B/C/D scripts stay unchanged.
     detach_later_thread_foreign_keys
     @admin.exec("SET LOCAL ROLE elevateo_owner")
@@ -326,7 +330,7 @@ class ThreadDatabaseTest < SessionDatabaseTestCase
          AND c.conrelid IN (
            to_regclass('app_send_private.intents'), to_regclass('app.inbound_receipts'),
            to_regclass('app.inbound_imap_receipts'), to_regclass('app.inbox_attachments'),
-            to_regclass('app.draft_attachments'))
+            to_regclass('app.draft_attachments'), to_regclass('app.resend_inbound_receipts'))
          AND c.confrelid IN (
            to_regclass('app.drafts'), to_regclass('app.threads'), to_regclass('app.messages'))
        ORDER BY c.conrelid::regclass::text, c.conname

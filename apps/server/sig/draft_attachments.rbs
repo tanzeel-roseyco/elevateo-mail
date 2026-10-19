@@ -1,0 +1,49 @@
+module Elevateo
+  class DraftAttachmentPayload
+    FIELDS: Array[String]
+    MAX_BYTES: Integer
+    attr_reader draft_id: String
+    attr_reader mailbox_id: String
+    attr_reader operation_id: String
+    attr_reader filename: String
+    attr_reader content_type: String
+    attr_reader bytes: String
+    attr_reader sha256: String
+    attr_reader digest: String
+    def initialize: (draft_id: String, input: WriteInput::object) -> void
+  end
+  class DraftAttachments
+    @database: Drafts::Database
+    def initialize: (connection: _ThreadConnection, session: ReadResponse::item) -> void
+    def list: (String, String) -> ReadResponse::item
+    def reserve: (DraftAttachmentPayload, String) -> ReadResponse::item
+    def finalize: (DraftAttachmentPayload, String, String) -> ReadResponse::item
+    def remove: (String, String, String, String) -> ReadResponse::item
+    private
+    def result: (String, Array[String?]) -> ReadResponse::item
+  end
+  class DraftAttachmentRequest
+    PATH: String
+    MAX_BODY: Integer
+    IDS: Array[String]
+    ORDER: Array[String]
+    UUID: Regexp
+    attr_reader body: String
+    attr_reader signature: String
+    def initialize: (fields: Hash[String, String | Integer], key: String, ?now: Integer) -> void
+  end
+  class DraftAttachmentGateway
+    @config: Config
+    def initialize: (config: Config) -> void
+    def stage: (fields: Hash[String, String | Integer]) -> void
+  end
+end
+module V1
+  class DraftAttachmentsController < WriteController
+    def index: () -> void
+    def create: () -> void
+    def destroy: () -> void
+    private
+    def stage_transaction: (String?, String?, String) { (Elevateo::DraftAttachments, Elevateo::SessionIdentity, Elevateo::auth_object) -> Elevateo::WriteResponse } -> Elevateo::WriteResponse
+  end
+end

@@ -36,7 +36,8 @@ module Elevateo
         snapshot = nil # : String?
         unless binding.key?("code")
           review = Review.new(binding, outbound_mode: @outbound_mode)
-          if review.result.fetch("issues").any? { |issue| issue["code"] == "consent_required" }
+          issues = review.result.fetch("issues")
+          if issues.is_a?(Array) && issues.any? { |issue| issue.is_a?(Hash) && issue["code"] == "consent_required" }
             error = SendError.new("consent_required")
             return WriteResponse.new(json: @database.encode(error.body(request_id), budget: 4096), status: 409)
           end

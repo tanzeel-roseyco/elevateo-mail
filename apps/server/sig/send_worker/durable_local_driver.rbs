@@ -8,7 +8,7 @@ module Elevateo
       def initialize: (path: String, outcome: String) -> void
       def database_profile: () -> String
       def submit: (String, send_id: String, attempt_id: String, deadline: CallDeadline) -> SubmissionResult
-      def observation: (send_id: String, attempt_id: String, snapshot_digest: String) -> SubmissionResult?
+      def observation: (send_id: String, attempt_id: String, snapshot_digest: String, ?snapshot_bytes: String?) -> SubmissionResult?
       private
       def validate!: (String, String, String) -> void
       def with_ledger: [T] () { (Array[Hash[String, untyped]], File) -> T } -> T

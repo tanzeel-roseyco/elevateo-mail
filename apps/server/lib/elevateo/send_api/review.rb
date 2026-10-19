@@ -14,7 +14,7 @@ module Elevateo
       attr_reader :snapshot, :result
 
       def initialize(binding, outbound_mode: "held")
-        raise ReadResponse::Invalid unless binding.keys.sort == FIELDS.sort
+        raise ReadResponse::Invalid unless [FIELDS.sort, (FIELDS + ["attachment_binding"]).sort].include?(binding.keys.sort)
         @binding = binding
         @issues = [] # : Array[ReadResponse::item]
         @organization = ThreadProjection.uuid(binding["organization_id"])
@@ -39,15 +39,16 @@ module Elevateo
         @consent_required = outbound_mode == "resend"
         @outbound_mode = outbound_mode
         @recipients, checks = recipients(binding)
+        attachment_items, attachment_tuples = attachments(binding)
         @snapshot = Canonical.bytes(organization_id: @organization, mailbox_id: @mailbox, draft_id: @draft,
           version: @version, sender: @sender, recipients: @recipients, subject: @subject, body: @body,
-          reply_id: @reply, policy: @policy)
+          reply_id: @reply, policy: @policy, attachments: attachment_tuples)
         issue("snapshot_too_large") if @snapshot.bytesize > Canonical::MAXIMUM
         @result = { "draft_id" => @draft, "mailbox_id" => @mailbox, "draft_version" => @version,
           "sender" => { "display_name" => nil, "address" => @sender || sender }, "to" => @recipients,
           "subject" => @subject, "body_text" => @body, "reply_to_thread_id" => @reply,
           "purpose" => "correspondence", "consent_basis" => "human_attestation_required",
-          "attachments" => [], "attachments_supported" => false, "policy_revision" => @policy,
+          "attachments" => attachment_items, "attachments_supported" => outbound_mode == "resend", "policy_revision" => @policy,
           "recipient_checks" => checks, "ready" => @issues.empty?, "issues" => @issues,
           "review_digest" => @issues.empty? ? Canonical.digest(@snapshot) : nil,
           "simulated" => outbound_mode != "resend", "outbound_mode" => outbound_mode }
@@ -57,6 +58,32 @@ module Elevateo
 
       def issue(code, index = nil)
         @issues << { "code" => code, "recipient_index" => index }
+      end
+
+      # AIDEV-NOTE: Object keys and hashes enter approval bytes but never enter the public review response.
+      def attachments(binding)
+        values = binding.fetch("attachment_binding", [])
+        raise ReadResponse::Invalid unless values.is_a?(Array) && values.length <= 1
+        tuples = [] # : Array[Array[String | Integer]]
+        items = values.map do |value|
+          raise ReadResponse::Invalid unless value.is_a?(Hash) && value.keys.sort == %w[byte_size content_type filename id object_key sha256 status]
+          id = ThreadProjection.uuid(value["id"])
+          name = ThreadProjection.text(value["filename"], 255)
+          size = ThreadProjection.integer(value["byte_size"], 1_048_576)
+          type = value["content_type"]
+          status = value["status"]
+          key, sha = value["object_key"], value["sha256"]
+          unless size.positive? && type.is_a?(String) && status.is_a?(String) && key.is_a?(String) &&
+              %w[application/pdf image/png image/jpeg text/plain].include?(type) &&
+              %w[pending_scan clean malware scan_failed].include?(status) &&
+              key == "drafts/#{@organization}/#{id}" && sha.is_a?(String) && /\A[0-9a-f]{64}\z/.match?(sha)
+            raise ReadResponse::Invalid
+          end
+          issue("attachment_not_clean") if status != "clean" || @outbound_mode != "resend"
+          tuples << [id, key, name, type, size, sha]
+          { "id" => id, "filename" => name, "content_type" => type, "byte_size" => size, "status" => status }
+        end
+        [items, tuples]
       end
 
       def recipients(binding)

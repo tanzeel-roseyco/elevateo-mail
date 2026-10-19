@@ -87,22 +87,26 @@ class AuthConfigTest < Minitest::Test
   def test_resend_boundary_defaults_and_redacts_secrets
     assert_equal "held", Elevateo::Config.load!(environment).outbound_mode
     secret = "whsec_#{Base64.strict_encode64("w" * 32)}"
-    values = environment.merge("ELEVATEO_OUTBOUND_MODE" => "resend", "ELEVATEO_OUTBOUND_HOLD" => "false",
+    values = environment.merge("ELEVATEO_PROCESS" => "worker", "ELEVATEO_OUTBOUND_MODE" => "resend", "ELEVATEO_OUTBOUND_HOLD" => "false",
       "RESEND_API_KEY" => "re_abcdefghijklmnop", "ELEVATEO_RESEND_FROM_DOMAIN" => "Example.Test",
       "RESEND_WEBHOOK_SECRET" => secret)
     config = Elevateo::Config.load!(values)
     assert_equal "https://api.resend.com", config.resend_base_url
     assert_equal "example.test", config.resend_from_domain
+    assert Elevateo::Config.load!(values.merge("ELEVATEO_OUTBOUND_HOLD" => "true")).outbound_hold
     refute_includes config.inspect, values.fetch("RESEND_API_KEY")
     refute_includes config.inspect, secret
+    api_values = values.reject { |name, _| name == "RESEND_API_KEY" }.merge("ELEVATEO_PROCESS" => "api")
+    assert_nil Elevateo::Config.load!(api_values).resend_api_key
+    assert_raises(Elevateo::ConfigError) { Elevateo::Config.load!(api_values.merge("RESEND_API_KEY" => "re_abcdefghijklmnop")) }
   end
 
   def test_resend_boundary_rejects_missing_invalid_and_out_of_mode_values_without_echoing_them
     assert_raises(Elevateo::ConfigError) { Elevateo::Config.load!(environment.merge("RESEND_API_KEY" => "secret")) }
-    base = environment.merge("ELEVATEO_OUTBOUND_MODE" => "resend", "ELEVATEO_OUTBOUND_HOLD" => "false",
+    base = environment.merge("ELEVATEO_PROCESS" => "worker", "ELEVATEO_OUTBOUND_MODE" => "resend", "ELEVATEO_OUTBOUND_HOLD" => "false",
       "RESEND_API_KEY" => "re_abcdefghijklmnop", "ELEVATEO_RESEND_FROM_DOMAIN" => "example.test",
       "RESEND_WEBHOOK_SECRET" => "whsec_#{Base64.strict_encode64("w" * 32)}")
-    %w[RESEND_API_KEY ELEVATEO_RESEND_FROM_DOMAIN RESEND_WEBHOOK_SECRET].each do |name|
+    %w[RESEND_API_KEY ELEVATEO_RESEND_FROM_DOMAIN].each do |name|
       error = assert_raises(Elevateo::ConfigError) { Elevateo::Config.load!(base.merge(name => "")) }
       assert_includes error.message, name
     end

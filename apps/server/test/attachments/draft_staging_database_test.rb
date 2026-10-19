@@ -8,7 +8,7 @@ class DraftStagingDatabaseTest < DraftStagingDatabaseTestCase
     assert_equal "reserved", first.fetch("stage_state")
     assert_equal "drafts/#{@org}/#{@attachment}", first.fetch("object_key")
     assert_nil scan_row
-    assert_empty attachment_list.fetch("items")
+    assert_equal "scan_failed", attachment_list.fetch("items").fetch(0).fetch("status")
     replay = reserve(attachment: SecureRandom.uuid, token: SecureRandom.uuid)
     assert_equal first.merge("stage_state" => "reconcile"), replay
     assert_equal 1, stage_rows.length

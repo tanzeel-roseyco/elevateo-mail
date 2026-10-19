@@ -8,7 +8,7 @@ module Elevateo
     class Denied < StandardError; end
     class Unavailable < StandardError; end
 
-    # AIDEV-NOTE: The dedicated login has only EXECUTE on one complete authorization and binding helper.
+    # AIDEV-NOTE: The dedicated login has only EXECUTE on complete inbox and draft authorization/binding helpers.
     class Authority
       def initialize(gateway_database_url:, database_name:)
         @database_name = database_name
@@ -27,6 +27,28 @@ module Elevateo
           SELECT storage_key, byte_size, sha256, content_type, filename
           FROM app_attachment_gateway.private_binding($1::text,$2::uuid,$3::uuid,$4::uuid,$5::bigint,
             $6::uuid,$7::text,$8::uuid,$9::uuid,$10::uuid,$11::uuid,$12::uuid)
+        SQL
+        connection.exec("COMMIT")
+        raise Denied unless row
+        row.freeze
+      rescue PG::Error
+        raise Unavailable
+      ensure
+        connection&.finish unless connection&.finished?
+      end
+
+      def draft_binding(claim)
+        connection = PG.connect(**@connection_options)
+        raise Denied unless connection.exec("SELECT session_user, current_database()").first ==
+          { "session_user" => "elevateo_attachment_gateway", "current_database" => @database_name }
+        connection.exec("BEGIN ISOLATION LEVEL REPEATABLE READ READ ONLY")
+        connection.exec("SET LOCAL statement_timeout = '3s'")
+        connection.exec("SET LOCAL lock_timeout = '1s'")
+        values = %w[session_digest expected_user_id expected_auth_session_id context_id authorization_generation
+          organization_id mailbox_id draft_id operation_id reservation_token].map { |key| claim.fetch(key) }
+        row = connection.exec_params(<<~SQL, values).first
+          SELECT storage_key,byte_size,sha256,stage_state FROM app_attachment_gateway.draft_binding(
+            $1::text,$2::uuid,$3::uuid,$4::uuid,$5::bigint,$6::uuid,$7::uuid,$8::uuid,$9::uuid,$10::uuid)
         SQL
         connection.exec("COMMIT")
         raise Denied unless row

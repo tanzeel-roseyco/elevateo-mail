@@ -20,6 +20,7 @@ module Elevateo
       def initialize: (base_url: String, bucket: String, service_token: String, process: String) -> void
       def put: (String, String, content_type: String) -> nil
       def put_once: (String, String) -> nil
+      def put_draft: (String, String) -> nil
       def get: (String) -> String
       def delete: (String) -> nil
       private

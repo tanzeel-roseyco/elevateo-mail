@@ -130,6 +130,13 @@ module Elevateo
         attempt_id = claim.attempt_id
         raise InvalidResult, "reconciliation attempt missing" unless attempt_id.is_a?(String) &&
           Control.valid_epoch?(attempt_id)
+        if observation.nil? && @profile == "resend-v1"
+          evidence = call("SELECT app_send_private.resend_acceptance_evidence($1::uuid,$2::uuid)", [claim.send_id, attempt_id])
+          if evidence["receipt_ref"]
+            require_relative "submission_result"
+            observation = SubmissionResult.new(kind: "accepted", receipt_ref: evidence["receipt_ref"])
+          end
+        end
         unless observation
           value = call("SELECT app_send_private.reconcile_no_evidence($1::uuid,$2::uuid,$3::bigint,$4::uuid)",
             [claim.send_id, claim.lease_id, claim.generation, attempt_id])

@@ -23,15 +23,15 @@ class SendWorkerSmtpSnapshotTest < Minitest::Test
     second = render(snapshot)
     assert_equal first.mime, second.mime
     assert_equal SENDER, first.sender
-    assert_equal [["JosÃ©", "recipient@example.invalid"]], first.recipients
+    assert_equal [["José", "recipient@example.invalid"]], first.recipients
     assert_includes first.mime, "Content-Type: text/plain; charset=UTF-8\r\n"
     assert_includes first.mime, "Content-Transfer-Encoding: base64\r\n"
     refute_includes first.mime, "line one\nline two"
     assert_operator first.mime.bytesize, :<=, Elevateo::SendWorker::SmtpSnapshot::MAX_MIME_BYTES
-    # Exact fixture protects the Mailpit V1 wire representation while rendering is shared with HTTP providers.
+    # AIDEV-NOTE: UTF-8 names stay UTF-8; the exact fixture protects the Mailpit V1 wire representation while rendering is shared with HTTP providers.
     assert_equal "From: sender@example.invalid\r\n" \
-      "To: =?UTF-8?B?Sm9zw4PCqQ==?= <recipient@example.invalid>\r\n" \
-      "Subject: =?UTF-8?B?SGVsbG8gLyDDg8KW?=\r\n" \
+      "To: =?UTF-8?B?Sm9zw6k=?= <recipient@example.invalid>\r\n" \
+      "Subject: =?UTF-8?B?SGVsbG8gLyDDlg==?=\r\n" \
       "Message-ID: <elevateo-#{SEND_ID}@example.invalid>\r\n" \
       "MIME-Version: 1.0\r\nContent-Type: text/plain; charset=UTF-8\r\n" \
       "Content-Transfer-Encoding: base64\r\n\r\nbGluZSBvbmUKbGluZSB0d28=\r\n", first.mime

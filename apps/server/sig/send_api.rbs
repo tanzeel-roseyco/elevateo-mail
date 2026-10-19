@@ -28,7 +28,7 @@ module Elevateo
       MAXIMUM: Integer
       def self.bytes: (organization_id: String, mailbox_id: String, draft_id: String, version: Integer,
         sender: String?, recipients: Array[Hash[String, String?]], subject: String, body: String,
-        reply_id: String?, policy: String) -> String
+        reply_id: String?, policy: String, ?attachments: Array[Array[String | Integer]]) -> String
       def self.digest: (String) -> String
     end
   end
@@ -38,6 +38,8 @@ module Elevateo
     class Review
       FIELDS: Array[String]
       @binding: ReadResponse::item
+      @consent_required: bool
+      @outbound_mode: String
       @issues: Array[ReadResponse::item]
       @organization: String
       @mailbox: String
@@ -54,6 +56,7 @@ module Elevateo
       def initialize: (ReadResponse::item, ?outbound_mode: String) -> void
       private
       def issue: (String, ?Integer?) -> void
+      def attachments: (ReadResponse::item) -> [Array[ReadResponse::item], Array[Array[String | Integer]]]
       def recipients: (ReadResponse::item) -> [Array[Hash[String, String?]], Array[ReadResponse::item]]
     end
   end
@@ -72,6 +75,7 @@ module Elevateo
       APPROVED: Array[String]
       SEMANTIC: Array[String]
       @database: Database
+      @outbound_mode: String
       def initialize: (connection: _ThreadConnection, session: ReadResponse::item, ?outbound_mode: String) -> void
       def review: (draft_id: String, query: Hash[String, String]) -> String
       def approve: (Input, session_digest: String, epoch: String?, request_id: String?) -> WriteResponse

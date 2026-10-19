@@ -6,7 +6,9 @@ module V2
   class ResendProviderEventsController < ApplicationController
     def create
       body = request.raw_post
-      Elevateo::ResendWebhook::Verifier.new(secret: Elevateo::Config.current.resend_webhook_secret).verify!(
+      secret = Elevateo::Config.current.resend_webhook_secret
+      raise Elevateo::ResendWebhook::Invalid, "webhook is not configured" unless secret
+      Elevateo::ResendWebhook::Verifier.new(secret: secret).verify!(
         id: request.headers["svix-id"].to_s, timestamp: request.headers["svix-timestamp"].to_s,
         signatures: request.headers["svix-signature"].to_s, body: body)
       result = Elevateo::ResendWebhook::Handler.new(connection: ActiveRecord::Base.connection).ingest(

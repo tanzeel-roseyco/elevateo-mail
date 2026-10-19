@@ -4,7 +4,7 @@ CREATE TABLE app_send_private.smtp_accounts (
   id uuid PRIMARY KEY, organization_id uuid NOT NULL, mailbox_id uuid NOT NULL,
   credential_version integer NOT NULL CHECK (credential_version > 0),
   credential_ref text NOT NULL CHECK (credential_ref ~ '^test:[A-Za-z0-9_.:-]{1,120}$'),
-  sender text NOT NULL CHECK (octet_length(sender) BETWEEN 1 AND 254
+  sender text NOT NULL CHECK (octet_length(sender) >= 1 AND octet_length(sender) <= 254
     AND app_send_private.canonical_address(sender) IS NOT NULL AND sender=app_send_private.canonical_address(sender)),
   active boolean NOT NULL DEFAULT false,
   UNIQUE (organization_id,mailbox_id),

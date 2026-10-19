@@ -9,14 +9,18 @@ class SendWorkerResendTransportTest < Minitest::Test
   SEND = "11111111-1111-4111-8111-111111111111"
   ATTEMPT = "22222222-2222-4222-8222-222222222222"
 
-  FakeResponse = Struct.new(:code, :body)
+  FakeResponse = Struct.new(:code, :body) do
+    def read_body = yield(body)
+  end
   class FakeHTTP
-    attr_accessor :open_timeout, :read_timeout, :write_timeout
+    attr_accessor :open_timeout, :read_timeout, :write_timeout, :max_retries, :ignore_eof
     attr_reader :requests
     def initialize(responses) = (@responses, @requests = responses, [])
     def request(request)
       @requests << request
-      @responses.shift || raise("missing fake response")
+      response = @responses.shift || raise("missing fake response")
+      yield response if block_given?
+      response
     end
   end
 
@@ -37,22 +41,40 @@ class SendWorkerResendTransportTest < Minitest::Test
       http = FakeHTTP.new([FakeResponse.new(code.to_s, body)])
       result = transport(http).submit(snapshot, send_id: SEND, attempt_id: ATTEMPT, deadline: deadline)
       assert_equal kind, result.kind, "HTTP #{code}"
-      assert_equal ATTEMPT, http.requests.fetch(0)["Idempotency-Key"]
+      assert_equal "elevateo/#{SEND}", http.requests.fetch(0)["Idempotency-Key"]
       assert_equal "Bearer re_test_token_not_a_secret", http.requests.fetch(0)["Authorization"]
     end
   end
 
-  def test_observation_replays_the_attempt_key_to_recover_a_lost_provider_id
-    http = FakeHTTP.new([FakeResponse.new("202", '{"id":"provider_1"}'),
-      FakeResponse.new("200", '{"id":"provider_1"}')])
-    instance = transport(http)
-    digest = Digest::SHA256.hexdigest(snapshot)
-    result = instance.observation(send_id: SEND, attempt_id: ATTEMPT, snapshot_digest: digest,
-      snapshot_bytes: snapshot)
-    assert_equal "accepted", result.kind
-    assert_equal ATTEMPT, http.requests.first["Idempotency-Key"]
-    assert_equal "POST", http.requests.first.method
-    assert_equal "/emails/provider_1", http.requests.last.path
+  # AIDEV-NOTE: A process restart cannot establish whether an old ambiguous POST is within provider retention.
+  def test_observation_never_resubmits_an_ambiguous_post
+    http = FakeHTTP.new([])
+    result = transport(http).observation(send_id: SEND, attempt_id: ATTEMPT,
+      snapshot_digest: Digest::SHA256.hexdigest(snapshot), snapshot_bytes: snapshot)
+    assert_nil result
+    assert_empty http.requests
+  end
+
+  def test_attachments_bind_exact_private_bytes_before_provider_io
+    bytes = "private attachment"
+    approved = JSON.parse(snapshot)
+    approved[0] = "elevateo.send.snapshot.v2"
+    approved[12] = [[ATTEMPT, "drafts/#{approved[1]}/#{ATTEMPT}", "note.txt", "text/plain",
+      bytes.bytesize, Digest::SHA256.hexdigest(bytes)]]
+    storage = Object.new
+    storage.define_singleton_method(:get) { |_key| bytes }
+    http = FakeHTTP.new([FakeResponse.new("200", '{"id":"provider_1"}')])
+    instance = Elevateo::SendWorker::ResendTransport.new(api_key: "re_test_token_not_a_secret",
+      from_domain: "example.test", http_factory: ->(_uri) { http }, attachment_storage: storage)
+    assert_equal "accepted", instance.submit(JSON.generate(approved), send_id: SEND,
+      attempt_id: ATTEMPT, deadline: deadline).kind
+    payload = JSON.parse(http.requests.fetch(0).body)
+    assert_equal bytes, Base64.strict_decode64(payload.fetch("attachments").first.fetch("content"))
+    assert_equal "<elevateo.#{SEND}@example.test>", payload.fetch("headers").fetch("Message-ID")
+    storage.define_singleton_method(:get) { |_key| "changed" }
+    assert_equal "unknown", instance.submit(JSON.generate(approved), send_id: SEND,
+      attempt_id: ATTEMPT, deadline: deadline).kind
+    assert_equal 1, http.requests.length
   end
 
   def test_entire_http_exchange_is_bounded_and_configures_write_timeout
@@ -67,7 +89,7 @@ class SendWorkerResendTransportTest < Minitest::Test
 
   def transport(http)
     Elevateo::SendWorker::ResendTransport.new(api_key: "re_test_token_not_a_secret", from_domain: "example.test",
-      base_url: "http://resend.test", http_factory: ->(_uri) { http })
+      base_url: "http://resend-stub:8788", http_factory: ->(_uri) { http })
   end
 
   def deadline = Elevateo::SendWorker::CallDeadline.new(seconds: 10)

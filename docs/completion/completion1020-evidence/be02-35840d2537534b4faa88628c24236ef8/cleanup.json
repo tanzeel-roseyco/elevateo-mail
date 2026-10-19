@@ -1,0 +1,18 @@
+{
+  "removed": [
+    "container:b45132cfd68f00c18ac99a021d1f2611694bc6a9b39e830f4fa3c02c40ca7420",
+    "container:b983eb0cf8d5f50bc466a7d1a233e090d1a512022f9b064a104615343c323ca4",
+    "container:1a8bfc42652525c317216b926e5be04e57d83164865b8688799b08a08e85b4bc",
+    "container:8ac29062cd956fffe30243288e14c573b856021423e8995fd99a5bcb91b9cb14",
+    "container:4da8e303759af6e0d9f5754c468e5e1c7d8c4cbf2d8951c4abbc292eaa9c0414",
+    "container:19b8e0c85cdc74d7b7257440e68dbb0567375ce296fe2a63bc0fa773aa25585b",
+    "container:407372e9a8e8db39e8a5857ef299ab8bfd814d844598f606a3a783febac82ec8",
+    "container:25bc5325c454f9e100ddc22a523179d0d06c3800d9e7c069ea545f07da7007e2",
+    "container:28325b83d49f1f162bbb411b7cc73976b38427ede3c7eac2b0599885aad2d56d",
+    "volume:be02-35840d2537534b4faa88628c24236ef8_db-config",
+    "volume:be02-35840d2537534b4faa88628c24236ef8_db-data",
+    "network:273ae5f0030861e6cc6c202434bb790a7b9dbdf741cd20f55d8dcb121a696671"
+  ],
+  "errors": [],
+  "shared_bases_retained": true
+}
