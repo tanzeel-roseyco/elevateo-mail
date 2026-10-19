@@ -1,0 +1,75 @@
+started=2026-10-19T02:48:01Z
+npm warn deprecated whatwg-encoding@3.1.1: Use @exodus/bytes instead for a more spec-conformant and faster implementation
+
+added 324 packages, and audited 325 packages in 13s
+
+67 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+npm warn install-scripts 1 package has install scripts not yet covered by allowScripts:
+npm warn install-scripts   esbuild@0.28.2 (postinstall: node install.js)
+npm warn install-scripts
+npm warn install-scripts Run `npm install-scripts ls` to review, or `npm install-scripts approve <pkg>` to allow.
+
+> @elevateo/web@0.1.0-read.1 generate:api
+> openapi-typescript ../../contracts/v1/openapi.json --output src/data/generated/api.d.ts
+
+✨ openapi-typescript 7.13.0
+🚀 ../../contracts/v1/openapi.json → src/data/generated/api.d.ts [153.4ms]
+
+> @elevateo/web@0.1.0-read.1 generate:api:v2
+> openapi-typescript ../../contracts/v2/openapi.json --output src/data/generated/api-v2.d.ts
+
+✨ openapi-typescript 7.13.0
+🚀 ../../contracts/v2/openapi.json → src/data/generated/api-v2.d.ts [105ms]
+
+> @elevateo/web@0.1.0-read.1 build
+> tsc -p tsconfig.json --noEmit && vite build
+
+[36mvite v7.3.6 [32mbuilding client environment for production...[36m[39m
+transforming...
+[33mnode_modules/zod/v4/core/regexes.js (74:0): A comment
+
+"/** Anchors a pattern source. The interpolation lives here rather than at the call site because
+ * esbuild will not drop a `@__PURE__` call whose own argument interpolates a variable, but it
+ * will drop `anchor(dateSource)`. Keeping it inline pinned `date` into every bundle. */"
+
+in "node_modules/zod/v4/core/regexes.js" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.[39m
+[33mnode_modules/zod/v4/core/util.js (400:0): A comment
+
+"// Wrapped in a `@__PURE__` IIFE: esbuild never tree-shakes a top-level initializer that contains a member access on `Number`, so the bare object literal survived into every bundle."
+
+in "node_modules/zod/v4/core/util.js" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.[39m
+[32m✓[39m 265 modules transformed.
+rendering chunks...
+computing gzip size...
+[2mdist/[22m[32mindex.html                               [39m[1m[2m  0.48 kB[22m[1m[22m[2m │ gzip:   0.30 kB[22m
+[2mdist/[22m[2massets/[22m[35mapp-CENHzs_G.css                  [39m[1m[2m 26.64 kB[22m[1m[22m[2m │ gzip:   6.06 kB[22m
+[2mdist/[22m[2massets/[22m[36mwriteFailure-bh2xsE2C.js          [39m[1m[2m  0.55 kB[22m[1m[22m[2m │ gzip:   0.36 kB[22m
+[2mdist/[22m[2massets/[22m[36msendConsent-C1uqSgKh.js           [39m[1m[2m  0.87 kB[22m[1m[22m[2m │ gzip:   0.51 kB[22m
+[2mdist/[22m[2massets/[22m[36mcollaborationFailure-CsZCgmeg.js  [39m[1m[2m  2.63 kB[22m[1m[22m[2m │ gzip:   0.88 kB[22m
+[2mdist/[22m[2massets/[22m[36mPersonalSettingsPage-CyHXlQ2K.js  [39m[1m[2m  3.69 kB[22m[1m[22m[2m │ gzip:   1.53 kB[22m
+[2mdist/[22m[2massets/[22m[36mDraftsPage-DyCZ4TB5.js            [39m[1m[2m  3.89 kB[22m[1m[22m[2m │ gzip:   1.75 kB[22m
+[2mdist/[22m[2massets/[22m[36mSearchPage-B8GnAAfP.js            [39m[1m[2m  4.68 kB[22m[1m[22m[2m │ gzip:   2.07 kB[22m
+[2mdist/[22m[2massets/[22m[36mSendStatusPage-Cly1m2u7.js        [39m[1m[2m  4.89 kB[22m[1m[22m[2m │ gzip:   1.95 kB[22m
+[2mdist/[22m[2massets/[22m[36mSequencePage-BlhvUbOh.js          [39m[1m[2m  5.41 kB[22m[1m[22m[2m │ gzip:   2.25 kB[22m
+[2mdist/[22m[2massets/[22m[36mMembersPage-DxxLWOoE.js           [39m[1m[2m  6.97 kB[22m[1m[22m[2m │ gzip:   2.89 kB[22m
+[2mdist/[22m[2massets/[22m[36mSendReviewPage-D-wYEyqb.js        [39m[1m[2m  8.98 kB[22m[1m[22m[2m │ gzip:   3.31 kB[22m
+[2mdist/[22m[2massets/[22m[36mAdministrationPage-BElazR29.js    [39m[1m[2m  9.69 kB[22m[1m[22m[2m │ gzip:   3.36 kB[22m
+[2mdist/[22m[2massets/[22m[36mDraftEditorPage-CEff2RAM.js       [39m[1m[2m 15.71 kB[22m[1m[22m[2m │ gzip:   5.63 kB[22m
+[2mdist/[22m[2massets/[22m[36mOutreachPages-Bh9QJy9Y.js         [39m[1m[2m 19.12 kB[22m[1m[22m[2m │ gzip:   5.77 kB[22m
+[2mdist/[22m[2massets/[22m[36mThreadPage-DGSR4UgY.js            [39m[1m[2m 26.82 kB[22m[1m[22m[2m │ gzip:   8.00 kB[22m
+[2mdist/[22m[2massets/[22m[36mapp-DMpo1K70.js                   [39m[1m[33m503.62 kB[39m[22m[2m │ gzip: 155.43 kB[22m
+[33m
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.[39m
+[32m✓ built in 1.95s[39m
+
+Running 28 tests using 1 worker
+····························
+  28 passed (32.0s)
+checks_exit=0
+context_absent=yes

@@ -1,11 +1,11 @@
 <!-- completion-wave-current:start -->
-## Current verification record (2026-10-17)
+## Current verification record (2026-10-19)
 
-No new adversarial review wave was run, following the user's instruction to prioritize completion and stop repeated reviews. No new inspected-LOC total or source-review defect density is claimed; both are not applicable to this verification-only update. Earlier review coverage and defect counts below remain historical and are not reclassified.
+One bounded review of the new integration tests was completed by the existing Android/web teammate: `resend_pilot_flow_test.rb` (159 lines) and `resend_http_stub.rb` (50 lines), each reviewed separately against the project rubric. Confirmed defects: **0**; defect density: **0 / 209 LOC (0 per KLOC)**. Formatting remains delegated to lint. This count applies only to these tests, not the entire application.
 
-Verification findings include the browser runner/harness correction and the migration test/setup correction. These were found while executing acceptance gates, not through a new counted source-review assignment. The draft-upload CSRF regression supplied the valid fixture token as its invalid input; the corrected test uses a distinct token and asserts the difference. Production constant-time CSRF checks remain unchanged. Backend suites, Steep and RuboCop passed. Integrated acceptance and recovery-drill results remain pending after a missing runner Node image was corrected; no final acceptance claim is inferred.
+The dedicated design assessment confirmed that restricted PostgreSQL roles and actual container-local HTTP requests connect consent, immutable approval, submission and signed-event persistence. Injecting only the HTTP destination preserves production endpoint restrictions. The test does not establish Rack routing, TLS or real-provider delivery; separate request/acceptance gates and activation are still needed. Coverage includes missing consent, revoked sessions, ambiguous-response restart without resubmission, signature tampering and webhook replay.
 
-Android's nine runtime checks passed at `2f9c7e5`. Frontend API/lint/type/coverage/build checks and 891 tests passed (`root1041-web-r3`). Browser gate `root1041-pilot-browser-r3` passed 20 scenarios across Chromium, Firefox, WebKit and narrow390; manual desktop/narrow review and delivery screenshots passed. See `docs/completion/resend-first-launch.md` and `docs/completion/qa815-evidence/`. These supersede earlier runtime-absent/Android-failed status statements below while preserving the original review evidence.
+Latest web verification passed 913 tests/69 files, contracts, lint, types, coverage and build; all 28 browser scenarios and eight manual screenshot checks passed. Final combined backend acceptance and recovery remain pending. Earlier records below describe their original source revisions.
 <!-- completion-wave-current:end -->
 
 ## Resend transport adversarial review (2026-10-18)

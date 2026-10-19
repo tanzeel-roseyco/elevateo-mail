@@ -2,24 +2,17 @@
 
 ## Current state
 
-- 2026-10-18: `feature/resend-transport` adds the fail-closed Resend configuration boundary, bounded stdlib HTTP transport, worker profile/budget admission, signed/idempotent webhook storage, and live-mode consent checks. Static JSON/Python checks pass; Ruby and Docker verification were not run locally. Live activation remains blocked on durable non-simulated send semantics, atomic approval-time consent, and tenant-safe `email.received` routing.
-
-- 2026-10-18: `integrate/unified-20261018` consolidates all worker branches (see `docs/integration/merge-ledger-20261018.md`); backend suites green, Steep/RuboCop B12–B13 pending.
-- 2026-10-18: pilot Playwright suite green (28/28, 4 projects) after scoping the mailbox locator to the Mail nav.
-- 2026-10-18: web enforces the Resend consent gate (blocks review without consent evidence under `resend`) and shows provider delivery states with suppression reasons; contract fields `outbound_mode`, `consent_evidence`, `suppression_reason`, error `consent_required`.
 <!-- completion-wave-current:start -->
-### Authoritative completion status (2026-10-17)
+### Authoritative completion status (2026-10-19)
 
-This summary supersedes the historical checkpoints below. The immediate launch scope is Resend; self-hosted Mox deployment remains deferred to ongoing repository development.
+The active continuation preserves October 18 source `5c39dc9e` and integrates the unfinished backend work into `completion/resend-pilot-20261019`. The launch scope is Resend; self-hosted Mox remains deferred.
 
-- **Android acceptance passed:** commit `2f9c7e508ea43c26c27e7958e297bbb3bfb7ef0d` includes the viewport, connectivity and diagnostic-harness fixes. All nine Android 14/WebView 113 runtime checks passed, including rotation, keyboard visibility, force-stop/restart session recovery, offline feedback and logout. See `docs/completion/android1037-acceptance.md`.
-- **Frontend automated gate passed:** fleet-02 Docker run `root1041-web-r3` passed API generation/checks, lint, typecheck, all **891 tests in 67 files**, coverage thresholds and production build. The gate reports `checks_exit=0` and `cleanup_failed=0`; evidence is `docs/completion/qa815-evidence/root1041-web-r3.log`. Saved-draft send review/approval, session handling and draft attachment UI changes are included. Pilot browser Docker run `root1041-pilot-browser-r3` passed all 20 scenarios across Chromium, Firefox, WebKit and a 390px narrow viewport; `checks_exit=0` and `context_absent=yes`. Evidence is retained in `docs/completion/qa815-evidence/root1041-pilot-browser-r3.log` and four selected review/delivery PNGs in `docs/completion/qa815-evidence/root1041-pilot-browser-r3/`. Manual Chromium desktop and narrow-viewport inspection passed: readable aligned content, no horizontal overflow, inert hostile plaintext, clear consent/attachment status and delivered-versus-read distinction. These are controlled browser fixtures, not live provider delivery.
-- **Backend suites, types and lint passed; integrated acceptance pending:** Resend outbound transport, signed provider events/inbound handling, draft attachment reserve/upload/finalize/list/remove, scanning and approved-send attachment binding are staged in the integration work. The latest combined backend Docker run passed its complete suites, Steep and RuboCop. Integrated acceptance was blocked by a missing pinned Node image in the runner; the corrected acceptance and recovery candidate is running. Final integrated and recovery acceptance remain pending. Resend operations Compose syntax validation passed, which does not establish deployment or provider acceptance.
-- **Live activation remains held:** production credentials, verified sending domain and sender, signed webhook setup, recipient consent/eligibility, deployment verification and backup/restore evidence remain prerequisites. No live Resend delivery or complete production readiness is claimed. Existing historical simulated/Mailpit evidence is not live provider evidence; GitHub publication of this completion wave is not yet verified.
+- **Latest frontend passed:** Docker API generation/contracts, lint, type checks, 913 tests across 69 files, coverage thresholds and production build. All 28 browser scenarios passed across Chromium, Firefox, WebKit and a 390px viewport. Eight desktop/narrow screenshots were manually inspected. These controlled fixtures do not establish live provider delivery. See [current web evidence](docs/completion/completion1019-web-validation.md).
+- **Backend integration in progress:** preserve atomic consent approval and live/simulated semantics while completing authenticated draft uploads, immutable approved attachments, durable signed provider events and mailbox-scoped inbound routing. A combined real-database/HTTP-provider regression covers consent, approval, submission, bounce replay and ambiguous-response safety. Final combined backend, integrated acceptance and restore evidence are pending.
+- **Android historical acceptance passed:** nine Android 14/WebView 113 runtime checks passed at `2f9c7e50`; this is not a new signed native build or a physical-device release claim. See `docs/completion/android1037-acceptance.md`.
+- **Activation remains separate:** verified sending identity, production credentials/webhook configuration, deployment verification and signed native distribution have not been completed. No live mail or production activation is claimed.
 
-- **Launch blockers plan:** the six remaining launch blockers, owner routes, critical path and costs are in `docs/launch-blockers-plan.md` (2026-10-18).
-
-Historical records are retained for traceability. Earlier Android failures, lower frontend test counts and statements that Resend implementation has not started describe their original checkpoints, not the current implementation above.
+Latest web task containers/build resources were cleaned successfully. Backend/recovery candidates and shared pinned images remain available for final checks; exact task cleanup is pending. Earlier test totals below belong to their recorded revisions.
 <!-- completion-wave-current:end -->
 
 ## Historical implementation notes
