@@ -1,0 +1,10 @@
+{
+  "removed": [
+    "builder-container:55644c0d75206a770fb88a19758c75c4f90a4c6ae3f95b1dc4bb9ca533ef11d9",
+    "builder:be02-39607fa39c7344408e2f2e69e2b08146-builder",
+    "volume:buildx_buildkit_be02-39607fa39c7344408e2f2e69e2b08146-builder0_state",
+    "image:sha256:050a642fe64d1cf20d95fad8c7f3e16b213663cec818b99e37e38950b222ad02"
+  ],
+  "errors": [],
+  "shared_bases_retained": true
+}

@@ -55,8 +55,10 @@ scenario('SCN-AUTH-006-P', 'genuine-invitation-scanner-victim-replay', async (pa
     if (!parsed.success) throw new Error('Invitation session contract rejected');
     expect(parsed.data.actor.id === invitation.actor_id).toBe(true);
     expect(parsed.data.organization.id === invitation.organization_id).toBe(true);
-    await expect(accepted.locator(`a[href="#/mailboxes/${invitation.mailbox_id}"]`)).toBeVisible();
-    await accepted.locator(`a[href="#/mailboxes/${invitation.mailbox_id}"]`).click();
+    // AIDEV-NOTE: Today and sidebar both link this mailbox; exercise the main-content entry point.
+    const mailboxLink = accepted.getByRole('main').locator(`a[href="#/mailboxes/${invitation.mailbox_id}"]`);
+    await expect(mailboxLink).toBeVisible();
+    await mailboxLink.click();
     await expect(accepted.getByRole('region', { name: 'Conversations', exact: true })).toBeVisible();
     record.assertions.push('Scanner GET did not consume invitation; genuine UI acceptance bound actor and organization and rendered mailbox');
     record.evidence.push('Observed POST /v1/auth/accept 200 and GET /v1/session 401 before acceptance, 200 afterward');

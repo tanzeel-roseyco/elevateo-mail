@@ -1705,3 +1705,7 @@ The consent policy permits row-lock visibility to the NOLOGIN send owner but rej
 ### Completion 20261020 â€” restore fingerprint normalization
 
 Focused adversarial/design review covered 63 lines across the comparison-only normalizer, regression tests and shell integration: 0 defects, 0/KLOC. Docker passed three regression tests. The restore had already proved populated queue/route/metadata and private bytes, but strict schema reversal comparison exposed equivalent PostgreSQL BETWEEN parenthesization. Only the exact redundant AND group in the named filename constraint is normalized; changed bounds/operators, other constraints and other content remain distinguishable. Historical migrations and executable dumps are unchanged. Full paired runtime rerun remains required. Obsidian tooling is unavailable; comparison-only canonicalization avoids changing deployed schemas to accommodate serializer spelling.
+
+### Completion 20261020 — invitation navigation selector
+
+Fresh isolated AUTH-006 reproduced a strict-locator failure because Today and the sidebar both provide the same mailbox link. The test now selects that exact link inside the main content landmark, retaining uniqueness, visibility, actor/organization checks and actual mailbox navigation. Independent adversarial/design review covered 4 added lines: 0 defects, 0/KLOC. Runtime rerun remains pending; no application behavior changed.
