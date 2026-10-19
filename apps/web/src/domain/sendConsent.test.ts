@@ -12,6 +12,11 @@ describe('consentGate', () => {
   it.each(['mailpit', 'held'] as const)('allows %s even without consent evidence', (mode) => {
     expect(consentGate(mode, [{ index: 0, consent_evidence: false }])).toEqual({ allowed: true })
   })
+  it.each(['mailpit', 'held', 'resend'] as const)('requires recorded consent for marketing in %s', (mode) => {
+    expect(consentGate(mode, [{ index: 0, consent_evidence: false }], 'marketing'))
+      .toMatchObject({ allowed: false, recipientIndexes: [0], reason: expect.stringContaining('Marketing requires') })
+    expect(consentGate(mode, [{ index: 0, consent_evidence: true }], 'marketing')).toEqual({ allowed: true })
+  })
   it('leaves an empty recipient list to the readiness checks', () => {
     expect(consentGate('resend', [])).toEqual({ allowed: true })
   })

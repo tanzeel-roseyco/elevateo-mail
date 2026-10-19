@@ -43,6 +43,23 @@ describe('Resend consent gate on review', () => {
     expect((screen.getByRole('button', { name: 'Approve live send' }) as HTMLButtonElement).disabled).toBe(true)
     expect(g.approveDraftSend).not.toHaveBeenCalled()
   })
+  it('blocks simulated marketing without recorded consent', async () => {
+    const g = gateway({ getSendReview: async () => ({ ...REVIEW, purpose: 'marketing' as const, consent_basis: 'recorded_consent' as const }) })
+    setup(g); await ready()
+    expect(screen.getByRole('alert', { name: 'Consent required' }).textContent).toMatch(/Marketing requires recorded opt-in/)
+    expect((screen.getByRole('checkbox') as HTMLInputElement).disabled).toBe(true)
+    expect(g.approveDraftSend).not.toHaveBeenCalled()
+  })
+  it('explains consent withdrawal after a simulated marketing review', async () => {
+    const review = { ...REVIEW, purpose: 'marketing' as const, consent_basis: 'recorded_consent' as const,
+      recipient_checks: REVIEW.recipient_checks.map((recipient) => ({ ...recipient, consent_evidence: true })) }
+    const g = gateway({ getSendReview: async () => review,
+      approveDraftSend: vi.fn(async () => { throw new GatewayError('api', 'consent_required', 'synthetic', { status: 409 }) }) })
+    setup(g); await ready(); confirm(); approve()
+    await screen.findByRole('heading', { name: 'Approval blocked: consent required' })
+    expect(screen.getByRole('alert').textContent).toMatch(/Recorded opt-in consent is required/)
+    expect(screen.getByRole('alert').textContent).not.toMatch(/Live sending through Resend/)
+  })
   it('allows approval under mailpit without consent evidence', async () => {
     const g = gateway({ getSendReview: async () => ({ ...live, outbound_mode: 'mailpit' as const }), getSendStatus: async () => ({ ...STATUS, simulated: false }) })
     setup(g); await ready()

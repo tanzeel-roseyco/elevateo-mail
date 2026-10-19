@@ -23,25 +23,83 @@
         "x-elevateo-status": "active",
         "summary": "Ingest one Svix-signed Resend provider event",
         "parameters": [
-          { "name": "svix-id", "in": "header", "required": true, "schema": { "type": "string" } },
-          { "name": "svix-timestamp", "in": "header", "required": true, "schema": { "type": "string" } },
-          { "name": "svix-signature", "in": "header", "required": true, "schema": { "type": "string" } }
+          {
+            "name": "svix-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "svix-timestamp",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "svix-signature",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
         ],
-        "requestBody": { "required": true, "content": { "application/json": { "schema": { "type": "object" } } } },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "Owned event created, duplicate replay acknowledged, or unknown provider id ignored without disclosure",
-            "content": { "application/json": { "schema": {
-              "type": "object",
-              "additionalProperties": false,
-              "required": ["result"],
-              "properties": {
-                "result": { "enum": ["created", "duplicate", "ignored"] },
-                "delivery_state": { "type": ["string", "null"], "enum": ["sent", "delivered", "delivery_delayed", "bounced", "complained", "received", null] }
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "result"
+                  ],
+                  "properties": {
+                    "result": {
+                      "enum": [
+                        "created",
+                        "duplicate",
+                        "ignored"
+                      ]
+                    },
+                    "delivery_state": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "enum": [
+                        "sent",
+                        "delivered",
+                        "delivery_delayed",
+                        "bounced",
+                        "complained",
+                        "received",
+                        null
+                      ]
+                    }
+                  }
+                }
               }
-            } } }
+            }
           },
-          "401": { "description": "Missing, stale, or invalid signature" }
+          "401": {
+            "description": "Missing, stale, or invalid signature"
+          }
         }
       }
     },
@@ -95,7 +153,9 @@
             "description": "Malformed path, limit, or invalid or expired cursor",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/ScopedReadError" }
+                "schema": {
+                  "$ref": "#/components/schemas/ScopedReadError"
+                }
               }
             }
           },
@@ -103,7 +163,9 @@
             "description": "Unauthenticated session",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/ScopedReadError" }
+                "schema": {
+                  "$ref": "#/components/schemas/ScopedReadError"
+                }
               }
             }
           },
@@ -111,7 +173,9 @@
             "description": "Mailbox missing or inaccessible; foreign organization is indistinguishable",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/ScopedReadError" }
+                "schema": {
+                  "$ref": "#/components/schemas/ScopedReadError"
+                }
               }
             }
           }
@@ -184,7 +248,9 @@
             "description": "Malformed scope or page query",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/ScopedReadError" }
+                "schema": {
+                  "$ref": "#/components/schemas/ScopedReadError"
+                }
               }
             }
           },
@@ -192,7 +258,9 @@
             "description": "Unauthenticated or revoked session",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/ScopedReadError" }
+                "schema": {
+                  "$ref": "#/components/schemas/ScopedReadError"
+                }
               }
             }
           },
@@ -200,7 +268,9 @@
             "description": "Missing or inaccessible mailbox, message or attachment",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/ScopedReadError" }
+                "schema": {
+                  "$ref": "#/components/schemas/ScopedReadError"
+                }
               }
             }
           }
@@ -287,7 +357,9 @@
             "description": "Malformed scope or page query",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/ScopedReadError" }
+                "schema": {
+                  "$ref": "#/components/schemas/ScopedReadError"
+                }
               }
             }
           },
@@ -295,7 +367,9 @@
             "description": "Unauthenticated or revoked session",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/ScopedReadError" }
+                "schema": {
+                  "$ref": "#/components/schemas/ScopedReadError"
+                }
               }
             }
           },
@@ -303,7 +377,9 @@
             "description": "Missing or inaccessible mailbox, message or attachment",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/ScopedReadError" }
+                "schema": {
+                  "$ref": "#/components/schemas/ScopedReadError"
+                }
               }
             }
           },
@@ -314,11 +390,25 @@
                 "schema": {
                   "type": "object",
                   "additionalProperties": false,
-                  "required": ["code", "message", "request_id"],
+                  "required": [
+                    "code",
+                    "message",
+                    "request_id"
+                  ],
                   "properties": {
-                    "code": { "type": "string", "const": "attachment_held" },
-                    "message": { "type": "string", "maxLength": 256 },
-                    "request_id": { "type": "string", "minLength": 1, "maxLength": 128 }
+                    "code": {
+                      "type": "string",
+                      "const": "attachment_held"
+                    },
+                    "message": {
+                      "type": "string",
+                      "maxLength": 256
+                    },
+                    "request_id": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 128
+                    }
                   }
                 }
               }
@@ -328,7 +418,9 @@
             "description": "Private gateway or storage unavailable; no bytes released",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/ScopedReadError" }
+                "schema": {
+                  "$ref": "#/components/schemas/ScopedReadError"
+                }
               }
             }
           }
@@ -1235,6 +1327,219 @@
         },
         "description": "Inert campaign sequence draft metadata; no send, due claim or enrollment authority."
       }
+    },
+    "/v2/outreach/campaigns/{campaign_id}/runs": {
+      "get": {
+        "operationId": "listOutreachRuns",
+        "x-elevateo-status": "active",
+        "summary": "listOutreachRuns",
+        "parameters": [
+          {
+            "name": "campaign_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Bounded immutable run. Queued is the run control state; recipient states are live.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OutreachRunPage"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "404": {
+            "description": "Run or eligible audience unavailable"
+          },
+          "409": {
+            "description": "Campaign version or operation conflict"
+          },
+          "503": {
+            "description": "Send queue unavailable"
+          }
+        }
+      },
+      "post": {
+        "operationId": "createOutreachRun",
+        "x-elevateo-status": "active",
+        "summary": "createOutreachRun",
+        "parameters": [
+          {
+            "name": "campaign_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Bounded immutable run. Queued is the run control state; recipient states are live.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OutreachRun"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "404": {
+            "description": "Run or eligible audience unavailable"
+          },
+          "409": {
+            "description": "Campaign version or operation conflict"
+          },
+          "503": {
+            "description": "Send queue unavailable"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OutreachRunCreate"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/outreach/campaigns/{campaign_id}/runs/{run_id}": {
+      "get": {
+        "operationId": "getOutreachRun",
+        "x-elevateo-status": "active",
+        "summary": "getOutreachRun",
+        "parameters": [
+          {
+            "name": "campaign_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Bounded immutable run. Queued is the run control state; recipient states are live.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OutreachRun"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "404": {
+            "description": "Run or eligible audience unavailable"
+          },
+          "409": {
+            "description": "Campaign version or operation conflict"
+          },
+          "503": {
+            "description": "Send queue unavailable"
+          }
+        }
+      }
+    },
+    "/v2/outreach/campaigns/{campaign_id}/runs/{run_id}/cancel": {
+      "post": {
+        "operationId": "cancelOutreachRun",
+        "x-elevateo-status": "active",
+        "summary": "cancelOutreachRun",
+        "parameters": [
+          {
+            "name": "campaign_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Bounded immutable run. Queued is the run control state; recipient states are live.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OutreachRun"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "404": {
+            "description": "Run or eligible audience unavailable"
+          },
+          "409": {
+            "description": "Campaign version or operation conflict"
+          },
+          "503": {
+            "description": "Send queue unavailable"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OutreachRunCancel"
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -1286,11 +1591,27 @@
       "ScopedReadError": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["code", "message", "request_id"],
+        "required": [
+          "code",
+          "message",
+          "request_id"
+        ],
         "properties": {
-          "code": { "type": "string", "minLength": 1, "maxLength": 64 },
-          "message": { "type": "string", "minLength": 1, "maxLength": 256 },
-          "request_id": { "type": "string", "minLength": 1, "maxLength": 128 }
+          "code": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 64
+          },
+          "message": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "request_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          }
         }
       },
       "MailboxAssigneeOption": {
@@ -2444,6 +2765,215 @@
             "type": "string",
             "minLength": 1,
             "maxLength": 128
+          }
+        }
+      },
+      "OutreachRunCreate": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "operation_id",
+          "mailbox_id",
+          "expected_campaign_version",
+          "subject",
+          "body_text",
+          "lead_ids",
+          "marketing_confirmed"
+        ],
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "mailbox_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "expected_campaign_version": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 2147483647
+          },
+          "subject": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 998
+          },
+          "body_text": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 65536,
+            "description": "At most 65536 UTF-8 bytes."
+          },
+          "lead_ids": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 25,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          "marketing_confirmed": {
+            "type": "boolean",
+            "const": true
+          }
+        }
+      },
+      "OutreachRunRecipient": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "lead_id",
+          "email",
+          "draft_id",
+          "send_id",
+          "state",
+          "delivery_state"
+        ],
+        "properties": {
+          "lead_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "email": {
+            "type": "string"
+          },
+          "draft_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "send_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "queued",
+              "dispatching",
+              "unknown",
+              "needs_review",
+              "accepted",
+              "rejected",
+              "cancelled"
+            ]
+          },
+          "delivery_state": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "enum": [
+              null,
+              "sent",
+              "delivered",
+              "delivery_delayed",
+              "failed",
+              "bounced",
+              "suppressed",
+              "complained"
+            ]
+          }
+        }
+      },
+      "OutreachRun": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "campaign_id",
+          "mailbox_id",
+          "operation_id",
+          "state",
+          "subject",
+          "body_text",
+          "created_at",
+          "simulated",
+          "recipients"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "campaign_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "mailbox_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "queued",
+              "cancelled"
+            ]
+          },
+          "subject": {
+            "type": "string"
+          },
+          "body_text": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "simulated": {
+            "type": "boolean"
+          },
+          "recipients": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 25,
+            "items": {
+              "$ref": "#/components/schemas/OutreachRunRecipient"
+            }
+          }
+        }
+      },
+      "OutreachRunPage": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "items",
+          "next_cursor"
+        ],
+        "properties": {
+          "items": {
+            "type": "array",
+            "maxItems": 10,
+            "items": {
+              "$ref": "#/components/schemas/OutreachRun"
+            }
+          },
+          "next_cursor": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uuid"
+          }
+        }
+      },
+      "OutreachRunCancel": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "operation_id"
+        ],
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
           }
         }
       }

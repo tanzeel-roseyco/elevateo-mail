@@ -41,3 +41,45 @@ module Elevateo
     end
   end
 end
+
+module Elevateo
+  module Campaigns
+    class RunInput
+      FIELDS: Array[String]
+      @operation_id: String
+      @mailbox_id: String
+      @expected_version: Integer
+      @subject: String
+      @body_text: String
+      @lead_ids: Array[String]
+      @digest: String
+      attr_reader operation_id: String
+      attr_reader mailbox_id: String
+      attr_reader expected_version: Integer
+      attr_reader subject: String
+      attr_reader body_text: String
+      attr_reader lead_ids: Array[String]
+      attr_reader digest: String
+      def initialize: (Hash[String, untyped]) -> void
+      private
+      def text: (untyped, Integer) -> String
+    end
+    class Runs
+      @repository: Repository
+      @database: SendAPI::Database
+      @drafts: DraftOperations
+      @sends: SendAPI::Service
+      @identity: SessionIdentity
+      @outbound_mode: String
+      @epoch: String?
+      def initialize: (connection: _ThreadConnection, session: auth_object, identity: SessionIdentity, outbound_mode: String, epoch: String?) -> void
+      def create: (String, RunInput, request_id: String) -> Hash[String, untyped]
+      def list: (String, ?cursor: String?) -> Hash[String, untyped]
+      def detail: (String, String) -> Hash[String, untyped]
+      def cancel: (String, String) -> Hash[String, untyped]
+      private
+      def eligible: (String, Array[String]) -> Array[Hash[String, untyped]]
+      def queue_recipient: (String, RunInput, Hash[String, untyped], String) -> untyped
+    end
+  end
+end

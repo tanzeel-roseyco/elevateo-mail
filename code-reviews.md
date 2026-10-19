@@ -1723,3 +1723,21 @@ Independent bounded review covered 109 helper/producer lines (0 defects, 0/KLOC)
 ### Completion 20261020 - diagnostic boundary correction
 
 Independent adversarial review covered 2 changed lines, with under 40 lines of supporting context: 0 new defects, 0/KLOC. The screenshot source now has 84 lines; its regression accepts line 84 and rejects line 85 while retaining private-text redaction assertions. A duplicate QA830 allowlist entry was removed without changing coverage. The stale boundary assertion is a runtime harness defect, separate from review findings. Docker diagnostic tests passed 27/27.
+
+### Unified dashboard 20261020 — bounded adversarial and design review
+
+All packets used the user-supplied full review rubric; formatting was delegated to ESLint/RuboCop. Overlapping packets are not additive coverage claims.
+
+| Packet | Reviewed lines | Defects | Defects/KLOC | Disposition |
+| --- | ---: | ---: | ---: | --- |
+| Initial campaign input/send authority design | 169 | 0 | 0 | Source-only |
+| InboxWorkspace, CampaignOverview, shell/CSS slices | 182 | 2 | 10.99 | Fixed stale passive cleanup and incorrect reader selector |
+| Purpose/consent six-file change | 43 changed | 1 | 23.26 | Fixed transport-specific refusal copy; regression added |
+| Migration + authority SQL 1–65 | 164 | 1 | 6.10 | Guarded rollback implemented; runtime pending |
+| Authority SQL 66–265 | 200 | 0 | 0 | Existing authority ACL dependency and cancellation race escalated |
+| Authority SQL 266–287 | 22 | 0 | 0 | Source-only |
+| Run composer/intent/schema; history/gateway | 147 + 102 | 2 | 8.03 | Fixed stale session recovery and UTF-8/whitespace mismatch |
+| Run composer/intent tests; history/gateway tests | 132 + 105 | 0 | 0 | Independent review; Docker results in state.md |
+| Dedicated run retry/session design | 147 | 0 | 0 | Exact operation replay and principal ownership coherent |
+
+Backend Runs/input/controller review found a probable terminal cancellation race; owner implemented a terminal no-op while preserving remaining cancellation. Runtime confirmation pending. Dedicated design assessment supports bounded single-message batches through existing approval/queue authority rather than a parallel transport. Memory-only recovery survives route replacement and temporary recovery, but closes with the tab; before-unload warns. Multi-step automation remains outside this implementation. No Obsidian connection is available; tradeoffs are recorded here. Mobile visual inspection additionally found and fixed flex-basis overlap; this runtime finding is separate from source review density.

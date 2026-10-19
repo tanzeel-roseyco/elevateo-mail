@@ -3,7 +3,10 @@
 ## Current state
 
 <!-- completion-wave-current:start -->
-### Authoritative completion status (2026-10-20)
+### Active unified dashboard work (2026-10-20)
+
+The isolated `feat/unified-inbox-marketing` continuation adds an inbox-first dashboard with an inline reader and marketing panel, plus campaign run composition, history and cancellation. Runs use the existing approval/queue pipeline for up to 25 consented recipients per single-message batch. Frontend contract/lint/type checks, 940 full-suite tests plus the corrected six-test file, and production build passed in fleet-02 Docker. Desktop/mobile inbox visuals were inspected. Backend acceptance and campaign-form browser QA are still in progress; these additions are not yet delivery-accepted or activated. Earlier totals below describe the baseline. See the latest entries in `state.md`, `documentation.md`, and `code-reviews.md`.
+### Baseline completion status (2026-10-20)
 
 The active continuation preserves October 18 source `5c39dc9e` and integrates the unfinished backend work into `completion/resend-pilot-20261019`. The launch scope is Resend; self-hosted Mox remains deferred.
 

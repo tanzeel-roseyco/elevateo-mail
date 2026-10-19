@@ -14,7 +14,10 @@ module Elevateo
       attr_reader :snapshot, :result
 
       def initialize(binding, outbound_mode: "held")
-        raise ReadResponse::Invalid unless [FIELDS.sort, (FIELDS + ["attachment_binding"]).sort].include?(binding.keys.sort)
+        allowed = FIELDS + %w[attachment_binding purpose]
+        raise ReadResponse::Invalid unless (FIELDS - binding.keys).empty? && (binding.keys - allowed).empty?
+        @purpose = binding.fetch("purpose", "correspondence")
+        raise ReadResponse::Invalid unless %w[correspondence marketing].include?(@purpose)
         @binding = binding
         @issues = [] # : Array[ReadResponse::item]
         @organization = ThreadProjection.uuid(binding["organization_id"])
@@ -36,18 +39,18 @@ module Elevateo
         issue("mailbox_disabled") unless ThreadProjection.boolean(binding["mailbox_enabled"])
         issue("reply_unavailable") unless ThreadProjection.boolean(binding["reply_available"])
         issue("header_invalid") unless Address.header?(@subject)
-        @consent_required = outbound_mode == "resend"
+        @consent_required = outbound_mode == "resend" || @purpose == "marketing"
         @outbound_mode = outbound_mode
         @recipients, checks = recipients(binding)
         attachment_items, attachment_tuples = attachments(binding)
         @snapshot = Canonical.bytes(organization_id: @organization, mailbox_id: @mailbox, draft_id: @draft,
           version: @version, sender: @sender, recipients: @recipients, subject: @subject, body: @body,
-          reply_id: @reply, policy: @policy, attachments: attachment_tuples)
+          reply_id: @reply, policy: @policy, attachments: attachment_tuples, purpose: @purpose)
         issue("snapshot_too_large") if @snapshot.bytesize > Canonical::MAXIMUM
         @result = { "draft_id" => @draft, "mailbox_id" => @mailbox, "draft_version" => @version,
           "sender" => { "display_name" => nil, "address" => @sender || sender }, "to" => @recipients,
           "subject" => @subject, "body_text" => @body, "reply_to_thread_id" => @reply,
-          "purpose" => "correspondence", "consent_basis" => "human_attestation_required",
+          "purpose" => @purpose, "consent_basis" => @purpose == "marketing" ? "recorded_consent" : "human_attestation_required",
           "attachments" => attachment_items, "attachments_supported" => outbound_mode == "resend", "policy_revision" => @policy,
           "recipient_checks" => checks, "ready" => @issues.empty?, "issues" => @issues,
           "review_digest" => @issues.empty? ? Canonical.digest(@snapshot) : nil,

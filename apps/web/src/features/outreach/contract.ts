@@ -1,6 +1,7 @@
 import { z } from 'zod'
 import type { ReadContext } from '@/data/gateway'
 import type { SequencePut } from './sequenceContract'
+import type { CampaignRunInput } from './runContract'
 
 // AIDEV-NOTE: Provisional FE-807 read boundary. Cassian must reconcile exact V2 wire names
 // before connecting HTTP. Eligibility and suppression are server-owned decisions.
@@ -51,6 +52,10 @@ export type Analytics = z.infer<typeof analyticsSchema>
 export interface OutreachPageQuery { cursor?: string; limit?: number }
 
 export interface OutreachGateway {
+  createCampaignRun?(ctx: ReadContext, proof: { csrfToken: string }, campaignId: string, input: CampaignRunInput, signal: AbortSignal): Promise<unknown>
+  listCampaignRuns?(ctx: ReadContext, campaignId: string, query: { cursor?: string }, signal: AbortSignal): Promise<unknown>
+  getCampaignRun?(ctx: ReadContext, campaignId: string, runId: string, signal: AbortSignal): Promise<unknown>
+  cancelCampaignRun?(ctx: ReadContext, proof: { csrfToken: string }, campaignId: string, runId: string, input: { operation_id: string }, signal: AbortSignal): Promise<unknown>
   getOutreachSequenceDraft?(ctx: ReadContext, campaignId: string, signal: AbortSignal): Promise<unknown>
   saveOutreachSequenceDraft?(ctx: ReadContext, proof: { csrfToken: string }, campaignId: string, input: SequencePut, signal: AbortSignal): Promise<unknown>
   listCampaigns(ctx: ReadContext, query: OutreachPageQuery, signal: AbortSignal): Promise<unknown>

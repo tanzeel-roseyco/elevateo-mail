@@ -3,13 +3,14 @@ import { useEditableViewport } from '@/ui/useEditableViewport'
 import { SendIntentProvider } from './sendIntent'
 import { HashRouter, Navigate, Route, Routes } from 'react-router'
 import type { MailroomGateway } from '@/data/gateway'
-import { InboxPage } from '@/features/inbox/InboxPage'
+import { InboxWorkspace } from './InboxWorkspace'
 import { HomePage } from './HomePage'
 import { DraftIntentProvider } from './draftIntent'
 import { FeatureGatewaysProvider, useFeatureGateways, type FeatureGateways } from './featureGateways'
 import { featureRoutes } from './features'
 import { SessionProvider } from './session'
 import { Shell } from './Shell'
+import { RunIntentProvider } from '@/features/outreach/RunIntent'
 
 // AIDEV-NOTE: Keep the initial inbox eager; other pages share Shell's loading/error boundary and session guard.
 const DraftEditorPage = lazy(() => import('@/features/drafts/DraftEditorPage').then((page) => ({ default: page.DraftEditorPage })))
@@ -19,13 +20,14 @@ const SearchPage = lazy(() => import('@/features/search/SearchPage').then((page)
 const ThreadPage = lazy(() => import('@/features/thread/ThreadPage').then((page) => ({ default: page.ThreadPage })))
 const SendReviewPage = lazy(() => import('@/features/send/SendReviewPage').then((page) => ({ default: page.SendReviewPage })))
 const SendStatusPage = lazy(() => import('@/features/send/SendStatusPage').then((page) => ({ default: page.SendStatusPage })))
+const CampaignRunsPage = lazy(() => import('@/features/outreach/CampaignRunsPage').then((page) => ({ default: page.CampaignRunsPage })))
 
 // FE-805: Mira's reader takes the direct-message capability as an optional prop; absence keeps her
 // honest "unavailable" state. exactOptionalPropertyTypes forbids an explicit undefined, hence the spread.
 function ThreadRoute() {
   const { readDirectMessage, attachmentPort } = useFeatureGateways()
-  return <ThreadPage {...(readDirectMessage === undefined ? {} : { readDirectMessage })}
-    {...(attachmentPort === undefined ? {} : { attachmentPort })} />
+  return <InboxWorkspace><ThreadPage {...(readDirectMessage === undefined ? {} : { readDirectMessage })}
+    {...(attachmentPort === undefined ? {} : { attachmentPort })} /></InboxWorkspace>
 }
 
 // AIDEV-NOTE: Hash routing keeps deep links working when Rails or the dev proxy serves one page;
@@ -39,11 +41,14 @@ export function App({ gateway, featureGateways = {} }: { gateway: MailroomGatewa
       {/* Unsaved draft intent lives above the router and the recoverable protected subtree. */}
       <DraftIntentProvider>
       <SendIntentProvider>
+      <RunIntentProvider>
       <HashRouter>
         <Routes>
           <Route element={<Shell />}>
-            <Route index element={<HomePage />} />
-            <Route path="/mailboxes/:mailboxId" element={<InboxPage />} />
+            <Route index element={<InboxWorkspace />} />
+            <Route path="/overview" element={<HomePage />} />
+            <Route path="/outreach/campaigns/:campaignId/runs" element={<CampaignRunsPage />} />
+            <Route path="/mailboxes/:mailboxId" element={<InboxWorkspace />} />
             <Route path="/mailboxes/:mailboxId/threads/:threadId" element={<ThreadRoute />} />
             {/* BE-02 C/D: drafts, membership and search are URL-addressed like every other view. */}
             <Route path="/mailboxes/:mailboxId/drafts" element={<DraftsPage />} />
@@ -60,6 +65,7 @@ export function App({ gateway, featureGateways = {} }: { gateway: MailroomGatewa
           </Route>
         </Routes>
       </HashRouter>
+      </RunIntentProvider>
       </SendIntentProvider>
       </DraftIntentProvider>
       </FeatureGatewaysProvider>

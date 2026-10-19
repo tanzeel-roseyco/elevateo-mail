@@ -9,6 +9,7 @@ require_relative "rendered_message"
 module Elevateo
   module SendWorker
     class SmtpSnapshot
+      # AIDEV-NOTE: Marketing purpose is admitted only after SQL rechecks exact enrollment and current consent.
       MAX_MIME_BYTES = 524_288
       MAX_BODY_CHARS = 65_536
       FORMAT = "elevateo.send.snapshot.v1"
@@ -33,7 +34,8 @@ module Elevateo
         subject, body = value[7], value[8]
         unless subject.is_a?(String) && subject.length <= 998 && SendAPI::Address.header?(subject) &&
             body.is_a?(String) && body.valid_encoding? && body.length <= MAX_BODY_CHARS && !body.include?("\0") &&
-            value[10] == "correspondence" && value[11] == "human_correspondence_attestation" &&
+            ((value[10] == "correspondence" && value[11] == "human_correspondence_attestation") ||
+              (value[10] == "marketing" && value[11] == "recorded_marketing_consent")) &&
             value[12].is_a?(Array) && value[12].empty? &&
             value[13].is_a?(String) && /\A[1-9][0-9]{0,18}\z/.match?(value[13])
           raise Invalid, "unsupported send content"

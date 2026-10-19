@@ -4,6 +4,23 @@
  */
 
 export interface paths {
+    "/v2/provider-events/resend": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Ingest one Svix-signed Resend provider event */
+        post: operations["ingestResendProviderEvent"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/v2/mailboxes/{mailbox_id}/assignee-options": {
         parameters: {
             query?: never;
@@ -311,6 +328,58 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v2/outreach/campaigns/{campaign_id}/runs": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** listOutreachRuns */
+        get: operations["listOutreachRuns"];
+        put?: never;
+        /** createOutreachRun */
+        post: operations["createOutreachRun"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v2/outreach/campaigns/{campaign_id}/runs/{run_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** getOutreachRun */
+        get: operations["getOutreachRun"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v2/outreach/campaigns/{campaign_id}/runs/{run_id}/cancel": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** cancelOutreachRun */
+        post: operations["cancelOutreachRun"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -567,6 +636,59 @@ export interface components {
             message: string;
             request_id: string;
         };
+        OutreachRunCreate: {
+            /** Format: uuid */
+            operation_id: string;
+            /** Format: uuid */
+            mailbox_id: string;
+            expected_campaign_version: number;
+            subject: string;
+            /** @description At most 65536 UTF-8 bytes. */
+            body_text: string;
+            lead_ids: string[];
+            /** @constant */
+            marketing_confirmed: true;
+        };
+        OutreachRunRecipient: {
+            /** Format: uuid */
+            lead_id: string;
+            email: string;
+            /** Format: uuid */
+            draft_id: string;
+            /** Format: uuid */
+            send_id: string;
+            /** @enum {string} */
+            state: "queued" | "dispatching" | "unknown" | "needs_review" | "accepted" | "rejected" | "cancelled";
+            /** @enum {string|null} */
+            delivery_state: null | "sent" | "delivered" | "delivery_delayed" | "failed" | "bounced" | "suppressed" | "complained";
+        };
+        OutreachRun: {
+            /** Format: uuid */
+            id: string;
+            /** Format: uuid */
+            campaign_id: string;
+            /** Format: uuid */
+            mailbox_id: string;
+            /** Format: uuid */
+            operation_id: string;
+            /** @enum {string} */
+            state: "queued" | "cancelled";
+            subject: string;
+            body_text: string;
+            /** Format: date-time */
+            created_at: string;
+            simulated: boolean;
+            recipients: components["schemas"]["OutreachRunRecipient"][];
+        };
+        OutreachRunPage: {
+            items: components["schemas"]["OutreachRun"][];
+            /** Format: uuid */
+            next_cursor: string | null;
+        };
+        OutreachRunCancel: {
+            /** Format: uuid */
+            operation_id: string;
+        };
     };
     responses: {
         /** @description Current authority denied */
@@ -595,6 +717,46 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
+    ingestResendProviderEvent: {
+        parameters: {
+            query?: never;
+            header: {
+                "svix-id": string;
+                "svix-timestamp": string;
+                "svix-signature": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": Record<string, never>;
+            };
+        };
+        responses: {
+            /** @description Owned event created, duplicate replay acknowledged, or unknown provider id ignored without disclosure */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @enum {unknown} */
+                        result: "created" | "duplicate" | "ignored";
+                        /** @enum {string|null} */
+                        delivery_state?: "sent" | "delivered" | "delivery_delayed" | "bounced" | "complained" | "received" | null;
+                    };
+                };
+            };
+            /** @description Missing, stale, or invalid signature */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
     listMailboxAssigneeOptions: {
         parameters: {
             query?: {
@@ -1397,6 +1559,218 @@ export interface operations {
                 content: {
                     "application/json": components["schemas"]["OutreachSequenceError"];
                 };
+            };
+        };
+    };
+    listOutreachRuns: {
+        parameters: {
+            query?: {
+                cursor?: string;
+            };
+            header?: never;
+            path: {
+                campaign_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Bounded immutable run. Queued is the run control state; recipient states are live. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["OutreachRunPage"];
+                };
+            };
+            /** @description Invalid request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Run or eligible audience unavailable */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Campaign version or operation conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Send queue unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    createOutreachRun: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                campaign_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["OutreachRunCreate"];
+            };
+        };
+        responses: {
+            /** @description Bounded immutable run. Queued is the run control state; recipient states are live. */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["OutreachRun"];
+                };
+            };
+            /** @description Invalid request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Run or eligible audience unavailable */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Campaign version or operation conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Send queue unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    getOutreachRun: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                campaign_id: string;
+                run_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Bounded immutable run. Queued is the run control state; recipient states are live. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["OutreachRun"];
+                };
+            };
+            /** @description Invalid request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Run or eligible audience unavailable */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Campaign version or operation conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Send queue unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    cancelOutreachRun: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                campaign_id: string;
+                run_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["OutreachRunCancel"];
+            };
+        };
+        responses: {
+            /** @description Bounded immutable run. Queued is the run control state; recipient states are live. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["OutreachRun"];
+                };
+            };
+            /** @description Invalid request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Run or eligible audience unavailable */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Campaign version or operation conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Send queue unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };

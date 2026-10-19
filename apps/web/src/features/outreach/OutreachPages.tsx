@@ -95,7 +95,7 @@ function Content<T>({ state, empty, children }: { state: Load<T>; empty?: (value
 }
 function Page({ title, children }: { title: string; children: ReactNode }) {
   return <section aria-label={title} className="mx-auto max-w-3xl space-y-4 p-4">
-    <header><h1 className="page-title">{title}</h1><p className="mt-2 inline-flex rounded-md border border-warn/40 bg-warn/10 px-2.5 py-1 text-[13px] text-warn">Outreach is draft or paused. Sending and enrollment are unavailable.</p></header>
+    <header><h1 className="page-title">{title}</h1><p className="mt-2 inline-flex rounded-md border border-warn/40 bg-warn/10 px-2.5 py-1 text-[13px] text-warn">Campaign settings are draft or paused. Open Marketing runs for supported consent-based sending.</p></header>
     {children}
   </section>
 }
@@ -190,6 +190,7 @@ function CampaignDetail({ campaignId, ...props }: OutreachPageProps & { campaign
       <Link to={`/outreach/campaigns/${campaign.id}/leads`}>Leads</Link>
       <Link to={`/outreach/campaigns/${campaign.id}/accounts`}>Accounts</Link>
       <Link to={`/outreach/campaigns/${campaign.id}/analytics`}>Analytics</Link>
+      <Link to={`/outreach/campaigns/${campaign.id}/runs`}>Marketing runs</Link>
     </nav>
     <form onSubmit={(event) => { void update(event, campaign, campaign.status) }} className="space-y-3">
       <Field id="edit-campaign-name" label="Campaign name"><TextInput id="edit-campaign-name" value={name} placeholder={campaign.name} onChange={(event) => setName(event.target.value)} maxLength={160} /></Field>
@@ -277,7 +278,7 @@ function CampaignLeads({ campaignId, ...props }: OutreachPageProps & { campaignI
         <Button onClick={() => { setEditId(lead.id); setEmail(lead.email) }}>Edit address</Button>
         {props.gateway?.recordConsent && lead.consent_status !== 'granted' &&
           <Button onClick={() => { setConsentSavedId(null); setConsentId((current) => current === lead.id ? null : lead.id) }}>Record consent evidence</Button>}
-        {consentSavedId === lead.id && <p role="status">Manual attestation recorded for this lead. Independent verification is not shown; sending remains unavailable.</p>}
+        {consentSavedId === lead.id && <p role="status">Manual attestation recorded for this lead. Independent verification is not shown; current consent is checked again when a marketing run is queued.</p>}
         {consentId === lead.id && campaignId && <ConsentEvidenceForm key={`${lead.id}:${lead.version}`} lead={lead} campaignId={campaignId} {...props} initialSource={intakeSource?.leadId === lead.id ? intakeSource.source : ''} onSaved={() => { setConsentSavedId(lead.id); setConsentId(null); setRevision((value) => value + 1) }} onAccessLost={() => setAccessLost(true)} />}
       </li>)}</ul>
     {page.next_cursor && <Link to={`?cursor=${encodeURIComponent(page.next_cursor)}`}>Next leads page</Link>}

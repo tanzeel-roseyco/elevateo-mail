@@ -4,6 +4,7 @@ import { GatewayError } from './errors'
 import { CollaborationErrorSchema } from './contract'
 import type { CsrfProof, ReadContext } from './gateway'
 import { sequencePutSchema, sequenceSchema, type SequencePut } from '@/features/outreach/sequenceContract'
+import { campaignRunInputSchema, campaignRunSchema, campaignRunPageSchema, type CampaignRunInput } from '@/features/outreach/runContract'
 import {
   CampaignAnalyticsSchema, CampaignPageSchema, CampaignUpdateSchema, IdSchema,
   LeadConsentAttestationSchema, LeadCreateSchema, LeadDetailSchema, LeadPageSchema, LeadSummarySchema, LeadUpdateSchema,
@@ -28,10 +29,26 @@ const page = (query: { cursor?: string; limit?: number }): string => {
   return encoded ? `?${encoded}` : ''
 }
 
-/** Isolated V2 adapter. No send, provider, account activation or fixture fallback is reachable here. */
+/** V2 outreach adapter; run creation is explicit and never activates accounts or falls back to fixtures. */
 export function createV2OutreachGateway(fetchImpl?: FetchLike) {
   const base = fetchImpl === undefined ? { errorSchema: CollaborationErrorSchema } : { fetchImpl, errorSchema: CollaborationErrorSchema }
   return {
+    createCampaignRun(ctx: ReadContext, proof: CsrfProof, campaignId: string, input: CampaignRunInput, signal: AbortSignal) {
+      return requestJson(`/v2/outreach/campaigns/${seg(campaignId)}/runs`, campaignRunSchema, 262_144,
+        { ...base, method: 'POST', body: campaignRunInputSchema.parse(input), maxRequestBytes: 400_000, headers: headers(ctx, proof), signal })
+    },
+    listCampaignRuns(ctx: ReadContext, campaignId: string, query: { cursor?: string }, signal: AbortSignal) {
+      return requestJson(`/v2/outreach/campaigns/${seg(campaignId)}/runs${page(query)}`, campaignRunPageSchema, 2_097_152,
+        { ...base, headers: headers(ctx), signal })
+    },
+    getCampaignRun(ctx: ReadContext, campaignId: string, runId: string, signal: AbortSignal) {
+      return requestJson(`/v2/outreach/campaigns/${seg(campaignId)}/runs/${seg(runId)}`, campaignRunSchema, 262_144,
+        { ...base, headers: headers(ctx), signal })
+    },
+    cancelCampaignRun(ctx: ReadContext, proof: CsrfProof, campaignId: string, runId: string, input: { operation_id: string }, signal: AbortSignal) {
+      return requestJson(`/v2/outreach/campaigns/${seg(campaignId)}/runs/${seg(runId)}/cancel`, campaignRunSchema, 262_144,
+        { ...base, method: 'POST', body: { operation_id: IdSchema.parse(input.operation_id) }, maxRequestBytes: 128, headers: headers(ctx, proof), signal })
+    },
     getOutreachSequenceDraft(ctx: ReadContext, campaignId: string, signal: AbortSignal) {
       return requestJson(`/v2/outreach/campaigns/${seg(campaignId)}/sequence`, sequenceSchema, 16_384,
         { ...base, headers: headers(ctx), signal })

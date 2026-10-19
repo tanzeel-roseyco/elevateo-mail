@@ -7439,10 +7439,18 @@
             ]
           },
           "purpose": {
-            "const": "correspondence"
+            "type": "string",
+            "enum": [
+              "correspondence",
+              "marketing"
+            ]
           },
           "consent_basis": {
-            "const": "human_attestation_required"
+            "type": "string",
+            "enum": [
+              "human_attestation_required",
+              "recorded_consent"
+            ]
           },
           "attachments": {
             "type": "array",
@@ -8270,7 +8278,7 @@
         ]
       },
       "Send404": {
-        "description": "not_available â€” This item is unavailable.",
+        "description": "not_available \u00e2\u20ac\u201d This item is unavailable.",
         "headers": {
           "Cache-Control": {
             "required": true,

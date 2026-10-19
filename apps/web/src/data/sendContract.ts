@@ -32,12 +32,14 @@ export const SendReviewSchema = z.strictObject({
   ...envelope, draft_id: id, mailbox_id: id, draft_version: version,
   sender: z.strictObject({ display_name: z.null(), address: text(320).nullable() }),
   to: z.array(AddressSchema).max(100), subject: text(998), body_text: text(65536), reply_to_thread_id: id.nullable(),
-  purpose: z.literal('correspondence'), consent_basis: z.literal('human_attestation_required'),
+  purpose: z.enum(['correspondence', 'marketing']), consent_basis: z.enum(['human_attestation_required', 'recorded_consent']),
   attachments: z.array(DraftAttachmentSchema).max(1), attachments_supported: z.boolean(), policy_revision: z.string().max(19).regex(/^(0|[1-9][0-9]*)$/),
   recipient_checks: z.array(z.strictObject({ index: z.number().int().min(0).max(99), status: z.enum(['ok', 'invalid', 'duplicate', 'suppressed']), consent_evidence: z.boolean() })).max(100),
   ready: z.boolean(), issues: z.array(z.strictObject({ code: ReadinessCodeSchema, recipient_index: z.number().int().min(0).max(99).nullable() })).max(210),
   review_digest: digest.nullable(), simulated: z.boolean(), outbound_mode: OutboundModeSchema,
 }).refine((review) => review.ready === (review.review_digest !== null))
+  // AIDEV-NOTE: Marketing never borrows the individual correspondence attestation basis.
+  .refine((review) => (review.purpose === 'marketing') === (review.consent_basis === 'recorded_consent'))
 export const SendApprovalInputSchema = z.strictObject({
   mailbox_id: id, operation_id: id, expected_version: version, review_digest: digest, correspondence_confirmed: z.literal(true),
 })

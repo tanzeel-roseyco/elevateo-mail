@@ -1,8 +1,8 @@
 // Adapted from first-party Ledger frontend 4322cfbb, src/app/Sidebar.tsx SidebarFrame export
 // (blob 069b198e…). Changes: navigation is the current mailbox list instead of fixed product areas;
 // removed data/store + composerStore imports, mock unread counts and the Compose action.
-// 2026-10-18 IA refresh (docs/design/ux-audit-20261018.md): the rail is grouped by job — Today,
-// Mail (search, mailboxes with their drafts/members), then each registered FEATURE_SECTIONS group
+// AIDEV-NOTE: Inbox is the primary workspace; Overview preserves the daily summary. Mail navigation
+// includes search, mailboxes with drafts/members, then each registered FEATURE_SECTIONS group
 // (Outreach, Contacts, Settings). Every item carries an icon so groups scan by shape as well as text.
 // There is deliberately no global mode switcher: every list is always visible and the URL alone
 // says where you are.
@@ -88,7 +88,7 @@ function MailboxItem({ mailbox, onNavigate }: { mailbox: Mailbox; onNavigate?: (
   )
 }
 
-/** A plain top-level link (Today, Search, registered features); active for its path and anything nested under it. */
+/** A plain top-level link (Inbox, Overview, Search, registered features); active for its path and anything nested under it. */
 function NavLink({ to, label, exact = false, Icon, onNavigate }: {
   to: string
   label: string
@@ -139,7 +139,8 @@ export function Sidebar({ mailboxes, sections = {}, onNavigate, footnote }: Side
       <div className="flex flex-1 flex-col gap-1 overflow-y-auto">
         <nav aria-label="Home">
           <ul>
-            <NavLink to="/" label="Today" exact Icon={HomeIcon} onNavigate={onNavigate} />
+            <NavLink to="/" label="Inbox" exact Icon={InboxIcon} onNavigate={onNavigate} />
+            <NavLink to="/overview" label="Overview" exact Icon={HomeIcon} onNavigate={onNavigate} />
           </ul>
         </nav>
         {/* Mail: search and the actor's visible mailboxes. Independent of the sections below. */}
