@@ -1,0 +1,102 @@
+FOCUSED_PREFLIGHT passed
+docker.io/library/ruby@sha256:22165c5f904d76a8a02fbdd419d0269481369523fd66978232d16c88099730e2: Pulling from library/ruby
+75e5b5a407cc: Pulling fs layer
+e8c7a94bad89: Pulling fs layer
+7f84af6b3bb9: Pulling fs layer
+58a08904a017: Pulling fs layer
+75e5b5a407cc: Download complete
+e8c7a94bad89: Download complete
+58a08904a017: Download complete
+7f84af6b3bb9: Download complete
+75e5b5a407cc: Pull complete
+e8c7a94bad89: Pull complete
+d47539ed6e9a: Download complete
+53fd365ff2c8: Download complete
+58a08904a017: Pull complete
+7f84af6b3bb9: Pull complete
+Digest: sha256:22165c5f904d76a8a02fbdd419d0269481369523fd66978232d16c88099730e2
+Status: Downloaded newer image for ruby@sha256:22165c5f904d76a8a02fbdd419d0269481369523fd66978232d16c88099730e2
+docker.io/library/ruby:3.4.11-slim-bookworm@sha256:22165c5f904d76a8a02fbdd419d0269481369523fd66978232d16c88099730e2
+docker.io/library/node@sha256:d6aa754f16b3197301076f047b5def2f02ea1dbbc2ca920407d46d7ec7f87b20: Pulling from library/node
+5d98766f4b4e: Download complete
+ad4671196672: Download complete
+Digest: sha256:d6aa754f16b3197301076f047b5def2f02ea1dbbc2ca920407d46d7ec7f87b20
+Status: Downloaded newer image for node@sha256:d6aa754f16b3197301076f047b5def2f02ea1dbbc2ca920407d46d7ec7f87b20
+docker.io/library/node:24.21.0-bookworm-slim@sha256:d6aa754f16b3197301076f047b5def2f02ea1dbbc2ca920407d46d7ec7f87b20
+mcr.microsoft.com/playwright@sha256:06a9939e57531807f8d5fd76ce44b53165ffb7d7501d87ab10e285c20b1e971f: Pulling from playwright
+9a29e489bcc7: Pulling fs layer
+071058c704d1: Pulling fs layer
+46a6c541a51c: Pulling fs layer
+a60ef8ec184e: Pulling fs layer
+dbe9e6168a20: Pulling fs layer
+ffa10a63dd93: Pulling fs layer
+aaf28652d7b7: Pulling fs layer
+ffa10a63dd93: Download complete
+a60ef8ec184e: Download complete
+a60ef8ec184e: Pull complete
+9a29e489bcc7: Download complete
+46a6c541a51c: Download complete
+071058c704d1: Download complete
+9a29e489bcc7: Pull complete
+ffa10a63dd93: Pull complete
+dbe9e6168a20: Download complete
+aaf28652d7b7: Download complete
+dbe9e6168a20: Pull complete
+aaf28652d7b7: Pull complete
+071058c704d1: Pull complete
+46a6c541a51c: Pull complete
+Digest: sha256:06a9939e57531807f8d5fd76ce44b53165ffb7d7501d87ab10e285c20b1e971f
+Status: Downloaded newer image for mcr.microsoft.com/playwright@sha256:06a9939e57531807f8d5fd76ce44b53165ffb7d7501d87ab10e285c20b1e971f
+mcr.microsoft.com/playwright:v1.64.0-noble@sha256:06a9939e57531807f8d5fd76ce44b53165ffb7d7501d87ab10e285c20b1e971f
+docker.io/clamav/clamav@sha256:705e0723f02fc13bf6e5e8a8e13a8c44420acf5e7ed06dfa2197081da00c7a73: Pulling from clamav/clamav
+9b392526e73d: Pulling fs layer
+c03aeff1bf16: Pulling fs layer
+134b4d67f1e4: Pulling fs layer
+fe5bd983a40a: Pulling fs layer
+c8c770fdac25: Pulling fs layer
+d7a6a000bfe6: Pulling fs layer
+9b392526e73d: Download complete
+134b4d67f1e4: Download complete
+d7a6a000bfe6: Download complete
+c03aeff1bf16: Download complete
+c03aeff1bf16: Pull complete
+c8c770fdac25: Download complete
+fe5bd983a40a: Download complete
+9b392526e73d: Pull complete
+134b4d67f1e4: Pull complete
+d7a6a000bfe6: Pull complete
+c8c770fdac25: Pull complete
+fe5bd983a40a: Pull complete
+Digest: sha256:705e0723f02fc13bf6e5e8a8e13a8c44420acf5e7ed06dfa2197081da00c7a73
+Status: Downloaded newer image for clamav/clamav@sha256:705e0723f02fc13bf6e5e8a8e13a8c44420acf5e7ed06dfa2197081da00c7a73
+docker.io/clamav/clamav@sha256:705e0723f02fc13bf6e5e8a8e13a8c44420acf5e7ed06dfa2197081da00c7a73
+BE02 project=be02-fea52b05996845dabda602a2f61d5388 evidence=/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-fea52b05996845dabda602a2f61d5388
+Running selected real-app acceptance lanes before HTTP fixtures
+tests=FAILED cleanup=PASSED evidence=/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-fea52b05996845dabda602a2f61d5388
+FOCUSED_RESULT {"case": "SCN-QA-830-P", "exit": 1, "evidence": ["/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-fea52b05996845dabda602a2f61d5388"]}
+BE02 project=be02-ad3b04e4ef7548c8a837868983632d5f evidence=/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-ad3b04e4ef7548c8a837868983632d5f
+Running selected real-app acceptance lanes before HTTP fixtures
+tests=FAILED cleanup=PASSED evidence=/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-ad3b04e4ef7548c8a837868983632d5f
+FOCUSED_RESULT {"case": "SCN-QA-829-P", "exit": 1, "evidence": ["/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-ad3b04e4ef7548c8a837868983632d5f"]}
+BE02 project=be02-602a126011834fe18834d4a7d0b6de6b evidence=/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-602a126011834fe18834d4a7d0b6de6b
+Running selected real-app acceptance lanes before HTTP fixtures
+tests=FAILED cleanup=PASSED evidence=/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-602a126011834fe18834d4a7d0b6de6b
+FOCUSED_RESULT {"case": "SCN-QA-829-F1", "exit": 1, "evidence": ["/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-602a126011834fe18834d4a7d0b6de6b"]}
+BE02 project=be02-92a34341dc86489fb4d67ac5ad037635 evidence=/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-92a34341dc86489fb4d67ac5ad037635
+tests=FAILED cleanup=PASSED evidence=/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-92a34341dc86489fb4d67ac5ad037635
+FOCUSED_RESULT {"case": "SCN-QA-827-P", "exit": 1, "evidence": ["/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-06dd6406594c48adb1a132ade1d88dc2", "/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-087ea53cf2bc4c7fb704c250ab550618", "/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-15d8ce4b5c3242abadcf625e99dcfb5b", "/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-1ae845a531854bceb206433330b8f1bc", "/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-4041468cda794846b26212032bd1f28e", "/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-4ea18154c15a47f69cbd3f3b7f1b521a", "/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-4f9ca0fc572045f39ddbf9144ff9a2da", "/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-6077cbef09ad410b8bd8d23f8af9b2a9", "/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-8258be5f3abf4612a789ed64b4d452c1", "/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-92a34341dc86489fb4d67ac5ad037635", "/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-942e3f8f20b94088ae0acba6cc9cfdf7", "/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-95f0c87268f4473f8fed1d20f71a74f2", "/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-98042e2a06584f79b29d347f81303a4b", "/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-b034c0ccfd5c4a9288e3c86194b7f92d", "/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-ba5f59d1d2cc48589bc9a58984b2b0ac", "/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-bd1cd272668e44aab0929df437462c32", "/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-c014474d18274867a50a02907016895c", "/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-eba328cebab6494a9204145e35a60fac", "/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-ed3e513b782040f6902a94bc7a734c40", "/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-f165da47fe09416eafaf9ae31779721d"]}
+BE02 project=be02-cc43f4e87ea34741a14c116680a0a703 evidence=/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-cc43f4e87ea34741a14c116680a0a703
+tests=FAILED cleanup=PASSED evidence=/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-cc43f4e87ea34741a14c116680a0a703
+FOCUSED_RESULT {"case": "SCN-QA-827-F1", "exit": 1, "evidence": ["/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-cc43f4e87ea34741a14c116680a0a703"]}
+BE02 project=be02-83e0f37fac2f41739414fee354e7c38d evidence=/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-83e0f37fac2f41739414fee354e7c38d
+tests=FAILED cleanup=PASSED evidence=/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-83e0f37fac2f41739414fee354e7c38d
+FOCUSED_RESULT {"case": "SCN-QA-827-F2", "exit": 1, "evidence": ["/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-83e0f37fac2f41739414fee354e7c38d"]}
+Untagged: clamav/clamav@sha256:705e0723f02fc13bf6e5e8a8e13a8c44420acf5e7ed06dfa2197081da00c7a73
+Deleted: sha256:705e0723f02fc13bf6e5e8a8e13a8c44420acf5e7ed06dfa2197081da00c7a73
+Untagged: mcr.microsoft.com/playwright@sha256:06a9939e57531807f8d5fd76ce44b53165ffb7d7501d87ab10e285c20b1e971f
+Deleted: sha256:06a9939e57531807f8d5fd76ce44b53165ffb7d7501d87ab10e285c20b1e971f
+Untagged: node@sha256:d6aa754f16b3197301076f047b5def2f02ea1dbbc2ca920407d46d7ec7f87b20
+Deleted: sha256:d6aa754f16b3197301076f047b5def2f02ea1dbbc2ca920407d46d7ec7f87b20
+Untagged: ruby@sha256:22165c5f904d76a8a02fbdd419d0269481369523fd66978232d16c88099730e2
+Deleted: sha256:22165c5f904d76a8a02fbdd419d0269481369523fd66978232d16c88099730e2
+FOCUSED_CLEANUP {"passed": true, "source_unchanged": false}

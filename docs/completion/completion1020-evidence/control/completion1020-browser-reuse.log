@@ -1,0 +1,22 @@
+FOCUSED_PREFLIGHT passed
+BE02 project=be02-942e3f8f20b94088ae0acba6cc9cfdf7 evidence=/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-942e3f8f20b94088ae0acba6cc9cfdf7
+Running selected real-app acceptance lanes before HTTP fixtures
+tests=FAILED cleanup=PASSED evidence=/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-942e3f8f20b94088ae0acba6cc9cfdf7
+FOCUSED_RESULT {"case": "SCN-QA-830-P", "exit": 1, "evidence": ["/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-942e3f8f20b94088ae0acba6cc9cfdf7"]}
+BE02 project=be02-c014474d18274867a50a02907016895c evidence=/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-c014474d18274867a50a02907016895c
+tests=FAILED cleanup=PASSED evidence=/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-c014474d18274867a50a02907016895c
+FOCUSED_RESULT {"case": "SCN-QA-829-P", "exit": 1, "evidence": ["/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-c014474d18274867a50a02907016895c"]}
+BE02 project=be02-15d8ce4b5c3242abadcf625e99dcfb5b evidence=/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-15d8ce4b5c3242abadcf625e99dcfb5b
+Running selected real-app acceptance lanes before HTTP fixtures
+tests=FAILED cleanup=PASSED evidence=/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-15d8ce4b5c3242abadcf625e99dcfb5b
+FOCUSED_RESULT {"case": "SCN-QA-829-F1", "exit": 1, "evidence": ["/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-15d8ce4b5c3242abadcf625e99dcfb5b", "/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-4041468cda794846b26212032bd1f28e", "/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-4f9ca0fc572045f39ddbf9144ff9a2da", "/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-98042e2a06584f79b29d347f81303a4b", "/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-b034c0ccfd5c4a9288e3c86194b7f92d", "/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-ba5f59d1d2cc48589bc9a58984b2b0ac", "/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-bd1cd272668e44aab0929df437462c32"]}
+BE02 project=be02-ed3e513b782040f6902a94bc7a734c40 evidence=/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-ed3e513b782040f6902a94bc7a734c40
+tests=FAILED cleanup=PASSED evidence=/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-ed3e513b782040f6902a94bc7a734c40
+FOCUSED_RESULT {"case": "SCN-QA-827-P", "exit": 1, "evidence": ["/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-ed3e513b782040f6902a94bc7a734c40"]}
+BE02 project=be02-f165da47fe09416eafaf9ae31779721d evidence=/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-f165da47fe09416eafaf9ae31779721d
+tests=FAILED cleanup=PASSED evidence=/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-f165da47fe09416eafaf9ae31779721d
+FOCUSED_RESULT {"case": "SCN-QA-827-F1", "exit": 1, "evidence": ["/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-f165da47fe09416eafaf9ae31779721d"]}
+BE02 project=be02-8258be5f3abf4612a789ed64b4d452c1 evidence=/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-8258be5f3abf4612a789ed64b4d452c1
+tests=FAILED cleanup=PASSED evidence=/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-8258be5f3abf4612a789ed64b4d452c1
+FOCUSED_RESULT {"case": "SCN-QA-827-F2", "exit": 1, "evidence": ["/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-8258be5f3abf4612a789ed64b4d452c1"]}
+FOCUSED_CLEANUP {"passed": true, "source_unchanged": false}

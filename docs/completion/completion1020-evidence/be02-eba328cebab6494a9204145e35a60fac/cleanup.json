@@ -1,0 +1,28 @@
+{
+  "removed": [
+    "container:78d9f7a479e698702ba4c9a819badfab122ebfe373d46531f58f68e4419a73dc",
+    "container:8ce529aec252d216752792fd868141c27acd1232057a7578f74b1630bece0eff",
+    "container:7a77003fa54dc8a72bdd1c44457d9cf313b563ed033050e6806a86dd0a921487",
+    "container:2aa7fdebfd9103e27ddd5fa6462c3df68f3d544989ff361f8c6c511b77d0eb58",
+    "container:d5aa9f8242bfd674cb7ba7c71cb1f98e32f69270c2abfaf467820dbb69d5b417",
+    "container:b927b96b72e55bc03ccb4188a327d97a36f7221f95c238afce07961bfd378357",
+    "container:e60191bde517a9338d9253855d1629b52f09c70216bb7a95c3c2836e7a7639cc",
+    "container:49bab11e0615d204cb25e24f2d9c4d415f6d7587ddbf7a35a1c7b1142d43f960",
+    "container:934446df4f431f4333a61930f5e58450a20d79756fd0f980003d43f1a649b69c",
+    "container:cb12e8b1ad5c7950aba0e6c393f05c8e87e453d9aa25a1518252b6a67cd559fd",
+    "volume:be02-eba328cebab6494a9204145e35a60fac_db-config",
+    "volume:be02-eba328cebab6494a9204145e35a60fac_db-data",
+    "network:a84a9b87c26f3ce9fb6ead7360a1875d3663d688094800df0a01930cbf0ecace",
+    "private-file:/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-eba328cebab6494a9204145e35a60fac/acceptance-private/qa816-attachments.json",
+    "private-file:/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-eba328cebab6494a9204145e35a60fac/acceptance-private/seed.json",
+    "private-file:/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-eba328cebab6494a9204145e35a60fac/acceptance-private/acceptance-invitation.json",
+    "private-file:/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-eba328cebab6494a9204145e35a60fac/acceptance-private/acceptance-credentials.json",
+    "private-directory:/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-eba328cebab6494a9204145e35a60fac/acceptance-private",
+    "observer-file:/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-eba328cebab6494a9204145e35a60fac/observer-config/role.json",
+    "observer-directory:/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-eba328cebab6494a9204145e35a60fac/observer-config",
+    "observer-file:/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-eba328cebab6494a9204145e35a60fac/observer-control/binding.json",
+    "observer-directory:/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-eba328cebab6494a9204145e35a60fac/observer-control"
+  ],
+  "errors": [],
+  "shared_bases_retained": true
+}

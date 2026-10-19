@@ -1,0 +1,66 @@
+{
+  "scope": "Six isolated attachment Chromium cases; broader acceptance remains unverified",
+  "runs": [
+    {
+      "case": "SCN-QA-830-P",
+      "exit": 1,
+      "evidence": [
+        "/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-fea52b05996845dabda602a2f61d5388"
+      ]
+    },
+    {
+      "case": "SCN-QA-829-P",
+      "exit": 1,
+      "evidence": [
+        "/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-ad3b04e4ef7548c8a837868983632d5f"
+      ]
+    },
+    {
+      "case": "SCN-QA-829-F1",
+      "exit": 1,
+      "evidence": [
+        "/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-602a126011834fe18834d4a7d0b6de6b"
+      ]
+    },
+    {
+      "case": "SCN-QA-827-P",
+      "exit": 1,
+      "evidence": [
+        "/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-06dd6406594c48adb1a132ade1d88dc2",
+        "/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-087ea53cf2bc4c7fb704c250ab550618",
+        "/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-15d8ce4b5c3242abadcf625e99dcfb5b",
+        "/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-1ae845a531854bceb206433330b8f1bc",
+        "/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-4041468cda794846b26212032bd1f28e",
+        "/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-4ea18154c15a47f69cbd3f3b7f1b521a",
+        "/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-4f9ca0fc572045f39ddbf9144ff9a2da",
+        "/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-6077cbef09ad410b8bd8d23f8af9b2a9",
+        "/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-8258be5f3abf4612a789ed64b4d452c1",
+        "/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-92a34341dc86489fb4d67ac5ad037635",
+        "/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-942e3f8f20b94088ae0acba6cc9cfdf7",
+        "/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-95f0c87268f4473f8fed1d20f71a74f2",
+        "/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-98042e2a06584f79b29d347f81303a4b",
+        "/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-b034c0ccfd5c4a9288e3c86194b7f92d",
+        "/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-ba5f59d1d2cc48589bc9a58984b2b0ac",
+        "/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-bd1cd272668e44aab0929df437462c32",
+        "/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-c014474d18274867a50a02907016895c",
+        "/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-eba328cebab6494a9204145e35a60fac",
+        "/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-ed3e513b782040f6902a94bc7a734c40",
+        "/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-f165da47fe09416eafaf9ae31779721d"
+      ]
+    },
+    {
+      "case": "SCN-QA-827-F1",
+      "exit": 1,
+      "evidence": [
+        "/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-cc43f4e87ea34741a14c116680a0a703"
+      ]
+    },
+    {
+      "case": "SCN-QA-827-F2",
+      "exit": 1,
+      "evidence": [
+        "/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-83e0f37fac2f41739414fee354e7c38d"
+      ]
+    }
+  ]
+}

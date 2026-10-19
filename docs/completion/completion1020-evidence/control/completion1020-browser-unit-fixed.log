@@ -1,0 +1,35 @@
+✔ completed assertions pass and an empty body remains a failure (1.93752ms)
+✔ original body errors fail after completed assertions and retain only safe coordinates (3.705858ms)
+✔ trusted type and validation errors classify without issue values (2.696073ms)
+✔ known conflict cleanup and framework failures remain failures with distinct phases (1.091758ms)
+✔ untrusted errors cannot supply categories or invoke arbitrary stack getters (0.511726ms)
+✔ source parsing rejects paths, coordinate limits, message-only frames and oversized stacks (1.478151ms)
+✔ native ESM frames accept only exact canonical file URLs within reviewed source bounds (3.965498ms)
+✔ strict schema rejects raw fields, arbitrary enums, paths and noninteger coordinates (0.863706ms)
+✔ multiline messages cannot supply frame-shaped body or cleanup coordinates (0.468716ms)
+✔ reporter rejects malicious metadata and never publishes annotation reasons or framework messages (2.179468ms)
+✔ assigned native stacks work while custom Error stack getters remain unread (0.412111ms)
+✔ explicit data-property stacks retain exact body and cleanup coordinates (0.355597ms)
+✔ bootstrap formatter descriptor is restored after native extraction and rejected stack values (0.969682ms)
+✔ changed bootstrap descriptor flags are rejected without changing the current descriptor (0.201362ms)
+✔ unformatted native errors never read unsafe name or message properties or coerce values (0.274347ms)
+✔ native extraction never invokes a custom prepareStackTrace hook or getter (0.212854ms)
+✔ invitation source registration publishes coordinates only and rejects beyond frozen bounds (0.22208ms)
+✔ settled reader source accepts its final line and rejects coordinates past the file (0.244222ms)
+✔ supplemental feature and screenshot failures expose only reviewed bounded coordinates (3.839625ms)
+✔ write failure removes owned target and lock, preserves existing files and permits retry (53.586021ms)
+✔ sync failure removes owned target and lock, preserves existing files and permits retry (30.943911ms)
+✔ close failure removes owned target and lock, preserves existing files and permits retry (26.753127ms)
+✔ replacement helper counts previous screenshot and enforces aggregate before persistence (24.485737ms)
+✔ exclusive artifact and lock creation prevent overwrite and concurrent writers (11.554752ms)
+✔ rejects path escape, linked artifact and linked directory without traversal (2.233808ms)
+✔ empty member screenshot is permitted and included in later writer budget (11.903536ms)
+✔ reply, directory and attachment evidence shares one durable byte ledger (60.253021ms)
+ℹ tests 27
+ℹ suites 0
+ℹ pass 27
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 291.463595

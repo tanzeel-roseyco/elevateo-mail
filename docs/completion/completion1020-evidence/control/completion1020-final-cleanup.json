@@ -1,0 +1,49 @@
+{
+  "verified_projects": [
+    "be02-087ea53cf2bc4c7fb704c250ab550618",
+    "be02-15d8ce4b5c3242abadcf625e99dcfb5b",
+    "be02-4041468cda794846b26212032bd1f28e",
+    "be02-40a9bd2c2a964f4c9588adf9e16c53f2",
+    "be02-4ea18154c15a47f69cbd3f3b7f1b521a",
+    "be02-602a126011834fe18834d4a7d0b6de6b",
+    "be02-6077cbef09ad410b8bd8d23f8af9b2a9",
+    "be02-8258be5f3abf4612a789ed64b4d452c1",
+    "be02-83e0f37fac2f41739414fee354e7c38d",
+    "be02-92a34341dc86489fb4d67ac5ad037635",
+    "be02-942e3f8f20b94088ae0acba6cc9cfdf7",
+    "be02-95f0c87268f4473f8fed1d20f71a74f2",
+    "be02-ad3b04e4ef7548c8a837868983632d5f",
+    "be02-b034c0ccfd5c4a9288e3c86194b7f92d",
+    "be02-c014474d18274867a50a02907016895c",
+    "be02-cc43f4e87ea34741a14c116680a0a703",
+    "be02-eba328cebab6494a9204145e35a60fac",
+    "be02-ed3e513b782040f6902a94bc7a734c40",
+    "be02-f165da47fe09416eafaf9ae31779721d",
+    "be02-fea52b05996845dabda602a2f61d5388"
+  ],
+  "remaining_owned_resources": {
+    "containers": [],
+    "volumes": [],
+    "networks": [],
+    "images": [],
+    "builders": []
+  },
+  "all_owned_resources_absent": true,
+  "host_before": {
+    "total": 468702478336,
+    "used": 224230858752,
+    "free": 220587614208
+  },
+  "host_after": {
+    "total": 468702478336,
+    "used": 209437933568,
+    "free": 235380539392
+  },
+  "docker_after": "{\"Active\":\"74\",\"Reclaimable\":\"5.987GB (5%)\",\"Size\":\"101.2GB\",\"TotalCount\":\"76\",\"Type\":\"Images\"}\n{\"Active\":\"324\",\"Reclaimable\":\"97.04MB (1%)\",\"Size\":\"6.722GB\",\"TotalCount\":\"356\",\"Type\":\"Containers\"}\n{\"Active\":\"68\",\"Reclaimable\":\"13.72GB (81%)\",\"Size\":\"16.75GB\",\"TotalCount\":\"259\",\"Type\":\"Local Volumes\"}\n{\"Active\":\"1\",\"Reclaimable\":\"0B\",\"Size\":\"4.62MB\",\"TotalCount\":\"1\",\"Type\":\"Build Cache\"}\n",
+  "old_browser_image_removed": "sha256:a12be863e068b5af7707ecbfc102f350344f682d6706993e8b1b6a71e4922247",
+  "original_owner_cleanup_passed": true,
+  "original_owner_source_unchanged": false,
+  "source_delta_reason": "Reviewed helper mount and diagnostic boundary correction; server/web unchanged; browser rebuilt; persisted regression copied after final passing snapshot.",
+  "host_free_bytes_net_increase": 14792925184,
+  "disk_attribution": "Observed net host increase; shared workloads prevent exact task attribution. Other workloads preserved."
+}

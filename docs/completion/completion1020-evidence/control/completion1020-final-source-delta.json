@@ -1,0 +1,14 @@
+{
+  "changed_since_server_web_build": [
+    "ops/tests/be02/acceptance_attachments.py",
+    "tests/acceptance/playwright/diagnostics.unit.spec.ts",
+    "tests/acceptance/playwright/diagnostics.ts"
+  ],
+  "server_web_source_unchanged": true,
+  "browser_recompiled_from_current_source": true,
+  "browser_overlay_used_in_final_run": false,
+  "after_final_snapshot": {
+    "path": "ops/tests/be02/test_focused_cleanup.py",
+    "reason": "Copied byte-identical persisted regression after passing source snapshot closed; six Docker harness tests already passed."
+  }
+}

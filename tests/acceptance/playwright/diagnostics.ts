@@ -5,7 +5,7 @@ import { z, ZodError } from 'zod';
 
 // AIDEV-NOTE: Frozen source bounds must be reviewed when these files change; never publish stack text.
 const sourceLines = {
-  'auth-invite.e2e.ts': 79,
+  'auth-invite.e2e.ts': 81,
   'invitation.ts': 73,
   'auth-stale.e2e.ts': 32,
   'auth-write-logout.e2e.ts': 94,
@@ -30,15 +30,17 @@ const sourceLines = {
   'read-revocation.e2e.ts': 188,
   'read.e2e.ts': 97,
   'qa816-assignee-ui.e2e.ts': 79,
+  'qa816-assignee-options.e2e.ts': 80,
   'qa816-attachment-ui.e2e.ts': 97,
   'qa816-feature-wave.e2e.ts': 46,
   'qa816-matrix.e2e.ts': 266,
   'qa816-outreach.e2e.ts': 121,
-  'screenshots.ts': 83,
+  'screenshots.ts': 84,
+  'qa830-draft-attachment.e2e.ts': 60,
   'support.ts': 60,
   'transport-barrier.ts': 64,
 } as const;
-const files = ['auth-invite.e2e.ts', 'invitation.ts', 'auth-stale.e2e.ts', 'auth-write-logout.e2e.ts', 'auth-transport.e2e.ts', 'auth.e2e.ts', 'boundaries.ts', 'cases.ts', 'credential-origin.ts', 'draft-boundaries.e2e.ts', 'draft-conflict.e2e.ts', 'draft-recorded-conflict.e2e.ts', 'draft-privacy.e2e.ts', 'draft-recovery-support.ts', 'draft-recovery.e2e.ts', 'draft-unapplied.e2e.ts', 'draft-uncertain-reload.e2e.ts', 'draft.e2e.ts', 'observer.ts', 'read-mailboxes.e2e.ts', 'read-empty.e2e.ts', 'read-literal.e2e.ts', 'read-revocation.e2e.ts', 'read.e2e.ts', 'qa816-assignee-ui.e2e.ts', 'qa816-attachment-ui.e2e.ts', 'qa816-feature-wave.e2e.ts', 'qa816-matrix.e2e.ts', 'qa816-outreach.e2e.ts', 'screenshots.ts', 'support.ts', 'transport-barrier.ts'] as const;
+const files = ['auth-invite.e2e.ts', 'invitation.ts', 'auth-stale.e2e.ts', 'auth-write-logout.e2e.ts', 'auth-transport.e2e.ts', 'auth.e2e.ts', 'boundaries.ts', 'cases.ts', 'credential-origin.ts', 'draft-boundaries.e2e.ts', 'draft-conflict.e2e.ts', 'draft-recorded-conflict.e2e.ts', 'draft-privacy.e2e.ts', 'draft-recovery-support.ts', 'draft-recovery.e2e.ts', 'draft-unapplied.e2e.ts', 'draft-uncertain-reload.e2e.ts', 'draft.e2e.ts', 'observer.ts', 'read-mailboxes.e2e.ts', 'read-empty.e2e.ts', 'read-literal.e2e.ts', 'read-revocation.e2e.ts', 'read.e2e.ts', 'qa816-assignee-ui.e2e.ts', 'qa816-assignee-options.e2e.ts', 'qa816-attachment-ui.e2e.ts', 'qa816-feature-wave.e2e.ts', 'qa816-matrix.e2e.ts', 'qa816-outreach.e2e.ts', 'qa830-draft-attachment.e2e.ts', 'screenshots.ts', 'support.ts', 'transport-barrier.ts'] as const;
 // AIDEV-NOTE: Node 24 uses a native stack accessor; only this intrinsic getter may be invoked.
 const nativeStackGetter = Object.getOwnPropertyDescriptor(new Error(), 'stack')?.get;
 // AIDEV-NOTE: Only the unchanged toolchain formatter may map native frames; reject later replacement hooks.

@@ -1,0 +1,53 @@
+{
+  "scope": "Eight targeted isolated Chromium cases; broader multi-engine acceptance unverified",
+  "cases": [
+    {
+      "case": "SCN-QA-830-P",
+      "project": "be02-b034c0ccfd5c4a9288e3c86194b7f92d",
+      "status": "passed",
+      "cleanup": true
+    },
+    {
+      "case": "SCN-QA-829-P",
+      "project": "be02-6077cbef09ad410b8bd8d23f8af9b2a9",
+      "status": "passed",
+      "cleanup": true
+    },
+    {
+      "case": "SCN-QA-829-F1",
+      "project": "be02-4ea18154c15a47f69cbd3f3b7f1b521a",
+      "status": "passed",
+      "cleanup": true
+    },
+    {
+      "case": "SCN-QA-827-P",
+      "project": "be02-eba328cebab6494a9204145e35a60fac",
+      "status": "passed",
+      "cleanup": true
+    },
+    {
+      "case": "SCN-QA-827-F1",
+      "project": "be02-95f0c87268f4473f8fed1d20f71a74f2",
+      "status": "passed",
+      "cleanup": true
+    },
+    {
+      "case": "SCN-QA-827-F2",
+      "project": "be02-087ea53cf2bc4c7fb704c250ab550618",
+      "status": "passed",
+      "cleanup": true
+    },
+    {
+      "case": "SCN-AUTH-006-P",
+      "project": "be02-e9a0fa0ee9284caeb2729af5a715cd6f",
+      "status": "passed",
+      "cleanup": true
+    },
+    {
+      "case": "SCN-QA-826-P",
+      "project": "be02-d71b0d68ca4a4cf4905e97ac51c5f31c",
+      "status": "passed",
+      "cleanup": true
+    }
+  ]
+}

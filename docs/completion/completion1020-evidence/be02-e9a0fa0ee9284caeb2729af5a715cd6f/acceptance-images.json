@@ -1,0 +1,20 @@
+{
+  "inputs": [
+    "node:24.21.0-bookworm-slim@sha256:d6aa754f16b3197301076f047b5def2f02ea1dbbc2ca920407d46d7ec7f87b20",
+    "mcr.microsoft.com/playwright:v1.64.0-noble@sha256:06a9939e57531807f8d5fd76ce44b53165ffb7d7501d87ab10e285c20b1e971f"
+  ],
+  "chrome_for_testing_archive": {
+    "version": "155.0.8059.39",
+    "url": "https://storage.googleapis.com/chrome-for-testing-public/155.0.8059.39/linux64/chrome-linux64.zip",
+    "bytes": 198195769,
+    "sha256": "55672d1f392fd3e7b7a08621b6e804e6bcb39d40cf155504abb74b3a021ea8ea"
+  },
+  "services": {
+    "acceptance-web": "sha256:f256145dda3c84d523fa72c88c0eb0dc3a5080b03c920a24950b73ebbcfd36e2",
+    "acceptance-browser": "sha256:35544b1f7ff85ff3d50a550adefc1955745336e88cee47a333b6f1f67a92f5b5",
+    "acceptance-seed": "sha256:3f633b2091c76f16213cc865b00d92ef8e69e8bac6c5a057e4331e459878db61",
+    "acceptance-invitation": "sha256:3f633b2091c76f16213cc865b00d92ef8e69e8bac6c5a057e4331e459878db61",
+    "acceptance-observer-setup": "sha256:3f633b2091c76f16213cc865b00d92ef8e69e8bac6c5a057e4331e459878db61",
+    "acceptance-observer": "sha256:3f633b2091c76f16213cc865b00d92ef8e69e8bac6c5a057e4331e459878db61"
+  }
+}

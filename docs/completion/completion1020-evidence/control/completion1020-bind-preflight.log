@@ -1,0 +1,6 @@
+/workspace/tests/acceptance/acceptance_attachment_producer.rb exit=125
+docker: Error response from daemon: failed to create task for container: failed to create shim task: OCI runtime create failed: runc create failed: unable to start container process: error during container init: error mounting "/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/tests/be02/acceptance_attachment_producer.rb" to rootfs at "/workspace/tests/acceptance/acceptance_attachment_producer.rb": create mountpoint for /workspace/tests/acceptance/acceptance_attachment_producer.rb mount: make mountpoint "/workspace/tests/acceptance/acceptance_attachment_producer.rb": read-only file system
+
+Run 'docker run --help' for more information
+/workspace/attachment-producer.rb exit=0
+fixture_bind=ready

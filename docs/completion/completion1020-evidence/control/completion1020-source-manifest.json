@@ -1,0 +1,12 @@
+{
+  "ops/tests/be02/acceptance_attachments.py": "14356462f8d03f80d0585a06e255da3e606fa9319a9e9bc598000d7e6b3dfdca",
+  "ops/tests/be02/acceptance_attachment_producer.rb": "20bb12fbc7bf2eafaae5289b15b1dc5f08fd4f117d08358c9ed680703db748f1",
+  "ops/tests/be02/run_focused_acceptance.py": "650eb2a271192348be4cccf53074b5b92738bafec9bccc3da879c2b4f0a1732b",
+  "ops/tests/be02/test_acceptance_attachments.py": "aa48348d6ced0ab7189b859a2999f8203b3cd1530eb3af76f81604686fbdf767",
+  "ops/tests/be02/test_focused_cleanup.py": "d8401550e61d2ff598be6c7b8c15c20995ebaeda795764ea38e81b969203356f",
+  "tests/acceptance/playwright/diagnostics.ts": "48f0c8722d8b13926f17d8f6e70dd986eccad48e9c5aa26d81064ee8b50bb70d",
+  "tests/acceptance/playwright/diagnostics.unit.spec.ts": "0901bc2d06b3fa708ec6e28d9af769a8cc8e6f69f85b1597ede656e4e6a0b19a",
+  "tests/acceptance/playwright/qa830-draft-attachment.e2e.ts": "45d150d63d0cd8bb52b71dc49ecd8b2fcbef80133be2fdac0dedc2c14454ba7f",
+  "tests/acceptance/playwright/screenshots.ts": "00fd207ddb816680d1882f40af08b81f107dd26de453764f673a0f4837831b8c",
+  "tests/acceptance/playwright/auth-invite.e2e.ts": "41886826d9b2c72c535dc73755f0d21d70efe3f7d92ce661f4b6cc408c4802cc"
+}

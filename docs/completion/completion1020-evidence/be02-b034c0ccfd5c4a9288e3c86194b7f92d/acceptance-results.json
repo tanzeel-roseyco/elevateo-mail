@@ -1,0 +1,10 @@
+{
+  "scope": "DIAGNOSTIC fresh case SCN-QA-830-P; full gates unverified",
+  "runs": [
+    {
+      "lane": "playwright_real",
+      "browser": "chromium",
+      "status": "DIAGNOSTIC_COMPLETED"
+    }
+  ]
+}

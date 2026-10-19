@@ -1,0 +1,200 @@
+[
+  {
+    "id": "0fff517e392dd7013ab08c8f2e259bc23d544bc36f3f925d6585a3b5eb0d0908",
+    "mounts": [
+      {
+        "Type": "bind",
+        "Source": "/home/tanzeel/elevateo-mail-completion-20261015/control/completion1020-compiled/playwright/diagnostics.unit.spec.js",
+        "Destination": "/opt/acceptance/dist/playwright/diagnostics.unit.spec.js",
+        "Mode": "ro",
+        "RW": false,
+        "Propagation": "rprivate"
+      },
+      {
+        "Type": "bind",
+        "Source": "/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-4041468cda794846b26212032bd1f28e/acceptance-private/seed.json",
+        "Destination": "/acceptance/seed.json",
+        "Mode": "ro",
+        "RW": false,
+        "Propagation": "rprivate"
+      },
+      {
+        "Type": "bind",
+        "Source": "/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-4041468cda794846b26212032bd1f28e/acceptance-private/acceptance-credentials.json",
+        "Destination": "/run/secrets/acceptance-credentials.json",
+        "Mode": "ro",
+        "RW": false,
+        "Propagation": "rprivate"
+      },
+      {
+        "Type": "bind",
+        "Source": "/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-4041468cda794846b26212032bd1f28e/acceptance-private/acceptance-invitation.json",
+        "Destination": "/run/secrets/acceptance-invitation.json",
+        "Mode": "ro",
+        "RW": false,
+        "Propagation": "rprivate"
+      },
+      {
+        "Type": "bind",
+        "Source": "/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-4041468cda794846b26212032bd1f28e/playwright_real-chromium",
+        "Destination": "/output",
+        "Mode": "rw",
+        "RW": true,
+        "Propagation": "rprivate"
+      },
+      {
+        "Type": "bind",
+        "Source": "/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-4041468cda794846b26212032bd1f28e/observer-control",
+        "Destination": "/observer-control",
+        "Mode": "rw",
+        "RW": true,
+        "Propagation": "rprivate"
+      }
+    ]
+  },
+  {
+    "id": "6a0bbf4a22f88dbe9c395aa6e6f2e8b7e4eb28eb6eeb9eb7f6b766862663c5d6",
+    "mounts": []
+  },
+  {
+    "id": "6af0c836e8a9eb02a7264a78f9caf8490038c619bfaf5d6440e69da2445398ff",
+    "mounts": []
+  },
+  {
+    "id": "7ba2d2b0ed4172dc879d1385070d656ebf1880b1ed3c4149231d49decddfdd38",
+    "mounts": [
+      {
+        "Type": "bind",
+        "Source": "/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/apps/server",
+        "Destination": "/workspace/apps/server",
+        "Mode": "ro",
+        "RW": false,
+        "Propagation": "rprivate"
+      }
+    ]
+  },
+  {
+    "id": "f27ce774a3ff70bd89ecc342ea26265186302e5f5c9364034da70fc90e8720f2",
+    "mounts": [
+      {
+        "Type": "bind",
+        "Source": "/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/tests/be02/clamd.conf",
+        "Destination": "/etc/clamav/be02-clamd.conf",
+        "Mode": "ro",
+        "RW": false,
+        "Propagation": "rprivate"
+      }
+    ]
+  },
+  {
+    "id": "aa41aa3914d822611c55771890a45b0dde4118b12d9ed45e6d91e5ae05e4a01a",
+    "mounts": []
+  },
+  {
+    "id": "8e0865b7d5c73dd9b342a6aac85cd9a3325021601b5d29d6771a0886574d7821",
+    "mounts": [
+      {
+        "Type": "bind",
+        "Source": "/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/contracts",
+        "Destination": "/workspace/contracts",
+        "Mode": "ro",
+        "RW": false,
+        "Propagation": "rprivate"
+      },
+      {
+        "Type": "bind",
+        "Source": "/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/tests/be02",
+        "Destination": "/workspace/ops/tests/be02",
+        "Mode": "ro",
+        "RW": false,
+        "Propagation": "rprivate"
+      },
+      {
+        "Type": "bind",
+        "Source": "/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/apps/server",
+        "Destination": "/workspace/apps/server",
+        "Mode": "ro",
+        "RW": false,
+        "Propagation": "rprivate"
+      }
+    ]
+  },
+  {
+    "id": "a7b10ea1e3c34e11f25485e11f01213cd6a3e821700c4503f88e5d5cb7c593e9",
+    "mounts": [
+      {
+        "Type": "bind",
+        "Source": "/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/tests/be02",
+        "Destination": "/workspace/ops/tests/be02",
+        "Mode": "ro",
+        "RW": false,
+        "Propagation": "rprivate"
+      },
+      {
+        "Type": "bind",
+        "Source": "/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/apps/server",
+        "Destination": "/workspace/apps/server",
+        "Mode": "ro",
+        "RW": false,
+        "Propagation": "rprivate"
+      },
+      {
+        "Type": "bind",
+        "Source": "/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/contracts",
+        "Destination": "/workspace/contracts",
+        "Mode": "ro",
+        "RW": false,
+        "Propagation": "rprivate"
+      }
+    ]
+  },
+  {
+    "id": "633443b8494e881f42d22af9ead63d1cc118efb0482fd1c8237fba482d24a2e9",
+    "mounts": []
+  },
+  {
+    "id": "3cc2a2100407838ebda7aa41b85bef04f6bd691a610a549a7b6a2749137d25ed",
+    "mounts": [
+      {
+        "Type": "volume",
+        "Name": "be02-4041468cda794846b26212032bd1f28e_db-data",
+        "Source": "/var/lib/docker/volumes/be02-4041468cda794846b26212032bd1f28e_db-data/_data",
+        "Destination": "/var/lib/postgresql/data",
+        "Driver": "local",
+        "Mode": "rw",
+        "RW": true,
+        "Propagation": ""
+      },
+      {
+        "Type": "volume",
+        "Name": "be02-4041468cda794846b26212032bd1f28e_db-config",
+        "Source": "/var/lib/docker/volumes/be02-4041468cda794846b26212032bd1f28e_db-config/_data",
+        "Destination": "/etc/postgresql-custom",
+        "Driver": "local",
+        "Mode": "rw",
+        "RW": true,
+        "Propagation": ""
+      },
+      {
+        "Type": "bind",
+        "Source": "/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/supabase/db/99-roles.sql",
+        "Destination": "/docker-entrypoint-initdb.d/init-scripts/99-roles.sql",
+        "Mode": "ro",
+        "RW": false,
+        "Propagation": "rprivate"
+      },
+      {
+        "Type": "bind",
+        "Source": "/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/supabase/db/99-jwt.sql",
+        "Destination": "/docker-entrypoint-initdb.d/init-scripts/99-jwt.sql",
+        "Mode": "ro",
+        "RW": false,
+        "Propagation": "rprivate"
+      }
+    ]
+  },
+  {
+    "id": "40b4a50b6bf2b6c58696c82d68c949405267ee9472b52d5a791d4bd781c7bc77",
+    "mounts": []
+  }
+]

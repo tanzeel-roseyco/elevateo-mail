@@ -1,0 +1,11 @@
+{
+  "removed": [],
+  "errors": [
+    "containers: RuntimeError: unregistered acceptance bind mount",
+    "volumes: RuntimeError: volume still has consumers",
+    "networks: RuntimeError: network ownership/consumers mismatch",
+    "private-files: RuntimeError: private seed still has potential consumers",
+    "observer-files: RuntimeError: observer files still have consumers"
+  ],
+  "shared_bases_retained": true
+}

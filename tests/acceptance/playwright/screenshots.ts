@@ -36,7 +36,8 @@ const screenshotIds = ['SCN-READ-001-F1-empty-denied', 'SCN-READ-002-F1-unavaila
   'QA816-DIR-P-picker-390', 'QA816-DIR-P-assigned-390',
   'QA816-DIR-F1-loading-390', 'QA816-DIR-F1-error-390',
   'QA816-ATT-P-list-390', 'QA816-ATT-P-downloaded-390',
-  'QA816-ATT-F1-loading-390', 'QA816-ATT-F1-error-390'];
+  'QA816-ATT-F1-loading-390', 'QA816-ATT-F1-error-390',
+  'QA830-DRAFT-ATT-uploaded-390', 'QA830-DRAFT-ATT-removed-390'];
 // AIDEV-NOTE: Only target opening is injectable so regressions exercise real lock, ledger and cleanup paths.
 type OpenTarget = (path: string, flags: number, mode: number) =>
   Promise<Pick<FileHandle, 'writeFile' | 'sync' | 'close'>>;

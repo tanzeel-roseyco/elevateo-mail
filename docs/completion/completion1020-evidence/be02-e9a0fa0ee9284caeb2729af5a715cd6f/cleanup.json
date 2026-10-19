@@ -1,0 +1,23 @@
+{
+  "removed": [
+    "container:c83faa54997164ebfbe01a82dcd116efbe5332518aa713c4016abeda5a00d096",
+    "container:7a9a4e28f0f2d6bb1a1d0297992dcf772fc3a4d365bee6310be65542e3a4a581",
+    "container:f4092d2dcbe49a3ea360a5ce6021e278ab828413906f5652ca385934e640fae6",
+    "container:243c51c9fdd9c3d8d339d2e9170286b58366aa1d7faff4c18b7e571ad636e2c6",
+    "container:1a9a5e1499d2e59642a3fcaa1c92a51b5e35383f07e8f7db8b4ac883a3555463",
+    "container:81779f36996c717fe0c138d7b4901e00f632fe2b4eec68c9f66c08d59aa9c148",
+    "volume:be02-e9a0fa0ee9284caeb2729af5a715cd6f_db-config",
+    "volume:be02-e9a0fa0ee9284caeb2729af5a715cd6f_db-data",
+    "network:0dbd8013ca1918d7bb6d348f082e883fc335221021ce91a3353211cc90a90341",
+    "private-file:/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-e9a0fa0ee9284caeb2729af5a715cd6f/acceptance-private/seed.json",
+    "private-file:/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-e9a0fa0ee9284caeb2729af5a715cd6f/acceptance-private/acceptance-invitation.json",
+    "private-file:/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-e9a0fa0ee9284caeb2729af5a715cd6f/acceptance-private/acceptance-credentials.json",
+    "private-directory:/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-e9a0fa0ee9284caeb2729af5a715cd6f/acceptance-private",
+    "observer-file:/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-e9a0fa0ee9284caeb2729af5a715cd6f/observer-config/role.json",
+    "observer-directory:/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-e9a0fa0ee9284caeb2729af5a715cd6f/observer-config",
+    "observer-file:/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-e9a0fa0ee9284caeb2729af5a715cd6f/observer-control/binding.json",
+    "observer-directory:/home/tanzeel/orca/workspaces/integration/completion-newest-20261019/ops/local/be02-e9a0fa0ee9284caeb2729af5a715cd6f/observer-control"
+  ],
+  "errors": [],
+  "shared_bases_retained": true
+}
