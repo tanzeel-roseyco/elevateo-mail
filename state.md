@@ -41,6 +41,14 @@ untouched; the parked marketing backend was not modified.
   contracts/v1 and v2 OpenAPI, cookie-session auth, empty session variables, no credential) with a
   Docker test that rebuilds it from the contracts and compares byte for byte, plus the white-label
   contact card.
+- R6: R4 unit gate (945 PASS / 25 FAIL across ten files) corrected: auth frame lockup is static
+  (no router Link outside the router), one accessible "Compose" per inbox, no doubled role=alert
+  around ErrorState, single h1 on Review send, settings/inbox selected tab actually styled (Tailwind
+  class-order defect confirmed by the coordinator's 1440 screenshot), page subtitles wrap a
+  4096-character help query, webhook event options stack with a gap, a 244-character attachment
+  filename wraps instead of clipping Download, and outdated test oracles updated without weakening
+  (compose opens a fresh draft window; Lyra's personal-settings assertions now run through the
+  Settings redirect).
 - Verification: pending the shell worker's corrected fleet-02 checkpoint (check:api, check:api:v2,
   lint, typecheck, test, build, fixture preview) and the nine feature-worker browser matrices; this
   entry is updated with the results.

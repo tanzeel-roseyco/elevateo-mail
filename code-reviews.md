@@ -2038,3 +2038,22 @@ Defects fixed in this pass: 4 (PW-02, CS-02, CS-01 retry, comment); 1 adjudicate
 | Finding | Disposition |
 | --- | --- |
 | Brief parity: Developer API must offer a Postman collection download and a white-label contact card | Fixed: `lib/postmanCollection.ts` builds a v2.1 collection from both OpenAPI documents (resolves `#/components/parameters` refs, `:path` variables, `{{sessionContext}}`/`{{authorizationVersion}}` headers, raw JSON body placeholder, no auth block); committed file `public/developer/elevateo-mail.postman_collection.json` (33 v1 + 29 v2 requests); `postmanCollection.test.ts` rebuilds and compares byte for byte and checks the no-credential invariants; `SettingsRoutes.test.tsx` asserts the download anchor and the white-label contact link. Earlier "CLI article" substitution withdrawn. |
+
+
+### Fable R6 disposition — 2026-10-20 (R4 checkpoint 582a01d6: unit 945 PASS / 25 FAIL, 6 uncaught)
+
+| Finding | Disposition |
+| --- | --- |
+| SignInPage 8 + AuthCompletePage 6 + 6 uncaught: `Link` basename null (BrandLockup is a router Link; the auth frame renders outside any router) | Fixed in source: `BrandLockup linked={false}` renders a plain span; `AuthFrame` uses it. Existing auth tests unchanged. |
+| collaborationNav 2 + InboxLayout 1: multiple buttons named "Compose" (column, tablet row, phone FAB) | Fixed in source: tablet and FAB copies are named "Compose a new draft"; the visible column button stays the single "Compose". Tests unchanged. |
+| MembersPage 1 + DraftEditorPage 1: multiple role=alert on 503 (wrapper div doubled ErrorState's role) | Fixed in source: wrapper role removed. Tests unchanged. |
+| SendReviewPage 2: two h1 headings; "Submission attempts" now a dt/dd pair | Fixed in source: card heading is an h2 under the PageHeader h1 (focus target kept); tests query the named heading and the dd value. |
+| InboxPage 1: compose entry now links to a fresh draft window (`/drafts/<uuid>?new=1`) | Test oracle updated to the Gmail compose behaviour (v4 id + `?new=1`, saveDraft still never called). |
+| SettingsRoutes 2: hub link read before the index redirect; Personal Details needs the preferences fetch | Tests corrected: `findByRole` after the redirect; fetch stubbed as in the former index test. |
+| features/index 1: `/settings/personal` is no longer a registered feature route | Test moved verbatim into the SettingsRoutes legacy-redirect test (same four assertions incl. GET /v2/me/preferences). |
+| Coordinator visual: Settings selected tab shows no gold underline/text at 1440 | Confirmed product defect: `TAB` carried `border-transparent text-zinc-500`, which Tailwind emitted after `SELECTED`. Colours split into INACTIVE/SELECTED; applies to ButtonTabs (inbox All/Unread/Starred) too. Regression: LinkTabs class test. |
+| Integrations worker: 4096-character help query widens the page (subtitle echo) | Fixed: PageHeader subtitle wraps (`break-words`). Regression: PageHeader subtitle test. |
+| API worker P3: webhook event checkboxes abut each other at 1440/390 | Fixed: each CheckboxField is a block flex row so the fieldset's vertical spacing applies. |
+| Thread worker TS-02: 244-character attachment filename pushes Download past the reader edge | Fixed: row wraps, filename `break-all`, button text is "Download" with the filename in its accessible name (unchanged name "Download <file>"). |
+
+Changed source lines this round: ~55 across BrandLockup, SignInPage, FolderNav, MembersPage, DraftEditorPage, SendReviewPage, Tabs, PageHeader, WebhooksPages, MessageAttachments; 4 defects confirmed from runtime evidence (tab styling, subtitle overflow, webhook spacing, attachment clipping), 0 new defects found in review of the changed lines.

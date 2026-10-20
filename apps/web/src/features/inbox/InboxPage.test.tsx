@@ -104,12 +104,13 @@ describe('denied mailbox navigation', () => {
 })
 
 describe('compose entry', () => {
-  it('opens drafts for an authorized readable mailbox without creating a draft', async () => {
+  it('opens a fresh compose window for an authorized mailbox without saving a draft', async () => {
     const gateway = createFixtureGateway()
     const save = vi.spyOn(gateway, 'saveDraft')
     renderInbox(gateway, `/mailboxes/${MB}`, true)
     const link = await screen.findByRole('link', { name: 'Compose draft' })
-    expect(link.getAttribute('href')).toBe(`/mailboxes/${MB}/drafts`)
+    // Gmail compose (INBOX-SPEC §5): a caller-generated draft id, saved only once the person types.
+    expect(link.getAttribute('href')).toMatch(new RegExp(`^/mailboxes/${MB}/drafts/[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}\\?new=1$`))
     expect(save).not.toHaveBeenCalled()
   })
 

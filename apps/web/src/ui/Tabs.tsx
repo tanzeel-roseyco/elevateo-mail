@@ -5,8 +5,11 @@ import { NavLink } from 'react-router'
 import { cx } from '@/lib/format'
 
 const ROW = 'flex h-10 gap-4 overflow-x-auto border-b border-zinc-800/10 dark:border-white/10'
+const TAB = '-mb-px inline-flex shrink-0 items-center border-b-2 px-2 text-sm font-medium'
+// AIDEV-NOTE: Colour classes never go in TAB. Tailwind orders same-property utilities itself, so a
+// border-transparent/text-zinc-500 default there silently out-ranked SELECTED (no gold underline).
 // Inactive text is zinc-500 (4.75:1 on white, AA) rather than the lighter reference grey.
-const TAB = '-mb-px inline-flex shrink-0 items-center border-b-2 border-transparent px-2 text-sm font-medium text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-white'
+const INACTIVE = 'border-transparent text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-white'
 const SELECTED = 'border-(--color-accent-content) text-(--color-accent-content)'
 
 export interface LinkTab {
@@ -20,7 +23,7 @@ export function LinkTabs({ tabs, label, className }: { tabs: readonly LinkTab[];
   return (
     <nav aria-label={label} className={cx(ROW, className)}>
       {tabs.map((tab) => (
-        <NavLink key={tab.to} to={tab.to} end={tab.end ?? true} className={({ isActive }) => cx(TAB, isActive && SELECTED)}>
+        <NavLink key={tab.to} to={tab.to} end={tab.end ?? true} className={({ isActive }) => cx(TAB, isActive ? SELECTED : INACTIVE)}>
           {tab.label}
         </NavLink>
       ))}
@@ -54,7 +57,7 @@ export function ButtonTabs<K extends string>({ tabs, value, onChange, label, cla
             role="tab"
             aria-selected={selected}
             tabIndex={selected ? 0 : -1}
-            className={cx(TAB, selected && SELECTED)}
+            className={cx(TAB, selected ? SELECTED : INACTIVE)}
             onClick={() => onChange(tab.key)}
             onKeyDown={(event) => {
               // Left/Right move selection within the tablist, per the ARIA tabs pattern.

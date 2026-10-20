@@ -25,6 +25,18 @@ function renderAttachments(port: AttachmentReadPort) {
 afterEach(() => vi.restoreAllMocks())
 
 describe('private inbox attachments (ATT830)', () => {
+  it('wraps a 244-character filename in the row and keeps the Download button short (TS-02)', async () => {
+    const long = `${'a'.repeat(240)}.txt`
+    const list = vi.fn<AttachmentReadPort['listInboxAttachments']>(async () => ({ items: [{ ...clean, filename: long }], next_cursor: null }))
+    renderAttachments({ listInboxAttachments: list, downloadCleanInboxAttachment: vi.fn() })
+    fireEvent.click(await screen.findByRole('button', { name: 'Show 1 attachment' }))
+    const button = await screen.findByRole('button', { name: `Download ${long}` })
+    expect(button.textContent).toBe('Download')
+    const row = button.closest('li')
+    expect(row?.className).toContain('flex-wrap')
+    expect(row?.querySelector('span')?.className).toContain('break-all')
+  })
+
   it('lists clean metadata and downloads through the authorized byte port only after explicit action', async () => {
     const list = vi.fn<AttachmentReadPort['listInboxAttachments']>(async () => ({ items: [clean], next_cursor: null }))
     const download = vi.fn<AttachmentReadPort['downloadCleanInboxAttachment']>(async () => new Blob(['hello'], { type: 'text/plain' }))

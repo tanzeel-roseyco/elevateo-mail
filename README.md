@@ -14,7 +14,8 @@ does not own are explicitly labelled simulated UI adapters (browser-local, never
 persistence); real gateway, consent and authorization rules, plaintext rendering, backend and contracts
 are unchanged. Route inventory, decisions and review disposition: `docs/design/emailguard-replica.md`.
 Verification runs only in fleet-02 Docker under the shell worker: checkpoint b08ec3e7 failed typecheck
-and three shell tests (fixed in b88fcb50 and the R3 follow-up); the corrected checkpoint and the
+and three shell tests (fixed in b88fcb50 and the R3 follow-up); checkpoint 582a01d6 passed API/lint/
+typecheck but failed 25 unit cases (fixed in the R6 follow-up); the corrected checkpoint and the
 per-feature browser diagnostics are recorded in `state.md` as they complete. Historical receipts below
 are not evidence for this candidate.
 

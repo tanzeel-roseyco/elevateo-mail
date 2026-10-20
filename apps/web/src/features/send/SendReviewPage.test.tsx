@@ -90,7 +90,7 @@ describe('BE03 saved review and approval', () => {
     expect(screen.getByText(REVIEW.subject).className).toContain('break-words')
     expect(screen.getByText(/Literal body/)).not.toBeNull()
     expect(document.querySelector('img, script')).toBeNull()
-    expect(document.activeElement).toBe(screen.getByRole('heading'))
+    expect(document.activeElement).toBe(screen.getByRole('heading', { name: /Review saved draft version/ }))
     confirm(); approve()
     await screen.findByRole('heading', { name: 'Send intent: queued' })
     expect(g.approveDraftSend).toHaveBeenCalledWith(expect.anything(), expect.objectContaining({ csrfToken: expect.any(String) }), CD.draftId, expect.objectContaining({ mailbox_id: CD.mailboxId, expected_version: 1, review_digest: REVIEW.review_digest, correspondence_confirmed: true }), expect.any(AbortSignal))
@@ -109,7 +109,7 @@ describe('BE03 saved review and approval', () => {
     fireEvent.click(button)
     await screen.findByRole('heading', { name: 'Send intent: queued' })
     expect(screen.getByText('Live email')).not.toBeNull()
-    expect(screen.getByText(/Submission attempts: 0/)).not.toBeNull()
+    expect(screen.getByText('Submission attempts').nextElementSibling?.textContent).toBe('0')
   })
   it('shows attachment scan readiness and blocks approval for unscanned bytes', async () => {
     setup(gateway({ getSendReview: async () => ({ ...REVIEW, attachments_supported: true,

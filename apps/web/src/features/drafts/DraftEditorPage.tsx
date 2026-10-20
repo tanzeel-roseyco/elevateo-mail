@@ -313,7 +313,7 @@ function DraftEditor({ mailboxId, draftId }: { mailboxId: string; draftId: strin
   }
   if (state.status === 'error') {
     return (
-      <div role="alert" className="p-4">
+      <div className="p-4">
         <ErrorState title="The draft could not be loaded" body={state.failure.message} action={<Button variant="primary" onClick={() => void load()}>Try again</Button>} />
       </div>
     )

@@ -4,7 +4,6 @@ import { render, screen } from '@testing-library/react'
 import { MemoryRouter, Route, Routes } from 'react-router'
 import { describe, expect, it, vi } from 'vitest'
 import { createFixtureGateway } from '@/data/fixtures/fixtureGateway'
-import { CD_FIXTURE } from '@/data/fixtures/collaborationState'
 import { createV2OutreachGateway } from '@/data/v2OutreachGateway'
 import type { OutreachGateway } from '@/features/outreach/contract'
 import { FeatureGatewaysProvider, type FeatureGateways } from '../featureGateways'
@@ -63,30 +62,6 @@ describe('feature route wiring', () => {
     renderRoute('/outreach/campaigns', {})
     expect(await screen.findByRole('heading', { name: 'Campaigns' })).toBeTruthy()
     expect((await screen.findByText('Outreach API unavailable for this account.')).getAttribute('role')).toBe('status')
-  })
-
-  it('renders Lyra\'s personal settings with the current actor preference', async () => {
-    const preferenceFetch = vi.fn(async (path: RequestInfo | URL, init?: RequestInit) => {
-      expect(path).toBe('/v2/me/preferences')
-      const headers = new Headers(init?.headers)
-      expect(headers.get('X-Session-Context')).toBe(CD_FIXTURE.contextId)
-      expect(headers.get('X-Authorization-Version')).toBe(CD_FIXTURE.authorizationVersion)
-      return new Response(JSON.stringify({
-        context_id: CD_FIXTURE.contextId,
-        authorization_version: CD_FIXTURE.authorizationVersion,
-        display_name: 'Fixture user A', revision: 1,
-      }), { headers: { 'Content-Type': 'application/json' } })
-    })
-    vi.stubGlobal('fetch', preferenceFetch)
-    try {
-      renderRoute('/settings/personal', {})
-      expect(await screen.findByText(/Signed in as Fixture user A/)).toBeTruthy()
-      expect(screen.getByRole('textbox', { name: 'Display name' })).toHaveProperty('value', 'Fixture user A')
-      expect(screen.getByRole('button', { name: 'Save display name' })).toBeTruthy()
-      expect(preferenceFetch).toHaveBeenCalledWith('/v2/me/preferences', expect.objectContaining({ method: 'GET' }))
-    } finally {
-      vi.unstubAllGlobals()
-    }
   })
 
   it("routes a campaign-scoped account read through the real V2 adapter, which fails explicitly without any dispatch", async () => {

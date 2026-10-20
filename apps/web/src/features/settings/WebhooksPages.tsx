@@ -130,7 +130,7 @@ export function WebhookCreatePage() {
           <fieldset className="space-y-2" aria-describedby={eventsError ? `${id}-events-error` : undefined} aria-invalid={eventsError ? true : undefined}>
             <legend className="mb-3 text-sm font-medium text-zinc-800 dark:text-white">Events</legend>
             {WEBHOOK_EVENTS.map((event) => (
-              <CheckboxField key={event.key} id={`${id}-${event.key}`} label={event.label} checked={events.includes(event.key)} onChange={(change) => toggle(event.key, change.target.checked)} />
+              <CheckboxField key={event.key} id={`${id}-${event.key}`} label={event.label} className="flex" checked={events.includes(event.key)} onChange={(change) => toggle(event.key, change.target.checked)} />
             ))}
             {eventsError && <p id={`${id}-events-error`} role="alert" className="mt-2 text-sm font-medium text-red-500">{eventsError}</p>}
           </fieldset>

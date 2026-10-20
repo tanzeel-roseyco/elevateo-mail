@@ -143,9 +143,10 @@ export function MessageAttachments({ mailboxId, threadId, messageId, count, port
     {state.status === 'error' && <p role="alert">Attachments could not be loaded. <Button size="sm" onClick={() => void load()}>Retry attachments</Button></p>}
     {state.status === 'ready' && <>
       {state.items.length === 0 && <p>No attachment metadata is available.</p>}
-      <ul className="flex flex-col gap-2">{state.items.map((item) => <li key={item.id}>
-        <span>{safeFilename(item.filename) ?? 'Attachment'} ({item.byte_size} bytes) — {canDownload(item) || item.scan_status !== 'clean' ? statusText(item.scan_status) : 'Attachment unavailable'}</span>
-        {canDownload(item) && <Button size="sm" disabled={downloadState.get(item.id) === 'loading'} onClick={() => void download(item)}>Download {safeFilename(item.filename)}</Button>}
+      {/* break-all + short button text: a 255-byte unbroken filename wraps in the row (TS-02). */}
+      <ul className="flex flex-col gap-2">{state.items.map((item) => <li key={item.id} className="flex flex-wrap items-center gap-2">
+        <span className="min-w-0 break-all">{safeFilename(item.filename) ?? 'Attachment'} ({item.byte_size} bytes) — {canDownload(item) || item.scan_status !== 'clean' ? statusText(item.scan_status) : 'Attachment unavailable'}</span>
+        {canDownload(item) && <Button size="sm" aria-label={`Download ${safeFilename(item.filename) ?? ''}`} disabled={downloadState.get(item.id) === 'loading'} onClick={() => void download(item)}>Download</Button>}
         {downloadState.get(item.id) === 'unavailable' && <p role="alert">This attachment is no longer available to download.</p>}
         {downloadState.get(item.id) === 'error' && <p role="alert">Download failed. Retry explicitly.</p>}
       </li>)}</ul>

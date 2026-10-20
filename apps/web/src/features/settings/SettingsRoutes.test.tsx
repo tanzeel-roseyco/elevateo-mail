@@ -2,7 +2,8 @@
 // (tags, tokens, webhooks) that must be labelled and must stay in the browser.
 import { fireEvent, render, screen, within } from '@testing-library/react'
 import { MemoryRouter, Route, Routes } from 'react-router'
-import { afterEach, beforeEach, describe, expect, it } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { CD_FIXTURE } from '@/data/fixtures/collaborationState'
 import { createFixtureGateway } from '@/data/fixtures/fixtureGateway'
 import { SessionProvider } from '@/app/session'
 import { Shell } from '@/app/Shell'
@@ -41,14 +42,35 @@ describe('settings area', () => {
     const tabs = screen.getByRole('navigation', { name: 'Settings sections' })
     expect(within(tabs).getAllByRole('link').map((l) => l.textContent)).toEqual(['Workspace', 'Profile', 'Tags', 'Developer API', 'Webhooks', 'Integrations'])
     expect(within(tabs).queryByRole('link', { name: 'Billing' })).toBeNull()
-    expect(screen.getByRole('link', { name: /Manage Members/ }).getAttribute('href')).toBe('/settings/workspace/members')
+    // The index route redirects in an effect, so the hub cards arrive one render after the heading.
+    expect((await screen.findByRole('link', { name: /Manage Members/ })).getAttribute('href')).toBe('/settings/workspace/members')
   })
 
   it('redirects the legacy personal and organization routes into the new sections', async () => {
-    const first = renderSettings('/settings/personal')
-    expect(await screen.findByRole('heading', { name: 'Personal Details', level: 1 })).toBeTruthy()
-    expect(await screen.findByLabelText('Display name')).toBeTruthy()
-    first.unmount()
+    // Personal Details is Lyra's real page: it reads /v2/me/preferences with the session headers.
+    const preferenceFetch = vi.fn(async (path: RequestInfo | URL, init?: RequestInit) => {
+      expect(path).toBe('/v2/me/preferences')
+      const headers = new Headers(init?.headers)
+      expect(headers.get('X-Session-Context')).toBe(CD_FIXTURE.contextId)
+      expect(headers.get('X-Authorization-Version')).toBe(CD_FIXTURE.authorizationVersion)
+      return new Response(JSON.stringify({
+        context_id: CD_FIXTURE.contextId,
+        authorization_version: CD_FIXTURE.authorizationVersion,
+        display_name: 'Fixture user A', revision: 1,
+      }), { headers: { 'Content-Type': 'application/json' } })
+    })
+    vi.stubGlobal('fetch', preferenceFetch)
+    try {
+      const first = renderSettings('/settings/personal')
+      expect(await screen.findByRole('heading', { name: 'Personal Details', level: 1 })).toBeTruthy()
+      expect(await screen.findByText(/Signed in as Fixture user A/)).toBeTruthy()
+      expect(screen.getByRole('textbox', { name: 'Display name' })).toHaveProperty('value', 'Fixture user A')
+      expect(screen.getByRole('button', { name: 'Save display name' })).toBeTruthy()
+      expect(preferenceFetch).toHaveBeenCalledWith('/v2/me/preferences', expect.objectContaining({ method: 'GET' }))
+      first.unmount()
+    } finally {
+      vi.unstubAllGlobals()
+    }
     renderSettings('/settings/organization')
     expect(await screen.findByRole('heading', { name: 'Manage Members', level: 1 })).toBeTruthy()
     expect(await screen.findByRole('link', { name: /Fixture inbox/ })).toBeTruthy()

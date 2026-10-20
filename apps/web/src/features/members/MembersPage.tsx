@@ -186,7 +186,7 @@ function MemberRoster({ mailboxId }: { mailboxId: string }) {
         body={canManage ? 'This mailbox may not exist, or you may not currently be able to manage its members.' : 'Managing members requires the manage-members capability.'}
       />}
       {roster.status === 'error' && (
-        <div role="alert">
+        <div>
           <ErrorState title="Members could not be loaded" body={roster.failure.message} action={<Button variant="primary" onClick={() => void load()}>Try again</Button>} />
         </div>
       )}

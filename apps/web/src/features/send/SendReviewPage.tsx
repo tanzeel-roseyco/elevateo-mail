@@ -126,7 +126,8 @@ function Review({ mailboxId, draftId }: { mailboxId: string; draftId: string }) 
     <PageHeader title="Review send" subtitle="Approve the exact saved content before anything is queued" />
     <Card className="max-w-3xl space-y-5">
       <div className="flex flex-wrap items-center gap-2"><Badge tone="warn">{review.simulated ? 'Simulated - no live mail' : MODE_LABEL[review.outbound_mode]}</Badge></div>
-      <h1 ref={heading} tabIndex={-1} className="text-base font-medium text-zinc-800 dark:text-white">Review saved draft version {review.draft_version}</h1>
+      {/* h2: PageHeader owns the page h1; focus still lands here so the reviewed version is announced. */}
+      <h2 ref={heading} tabIndex={-1} className="text-base font-medium text-zinc-800 dark:text-white">Review saved draft version {review.draft_version}</h2>
       <p className="text-sm text-zinc-500">{review.purpose === 'marketing' ? 'You are reviewing a campaign message with recorded marketing consent.' : 'You are approving your own saved draft for individual correspondence.'}</p>
       <dl className="grid gap-4 sm:grid-cols-2"><div><dt className={dt}>From</dt><dd className={`${dd} whitespace-pre-wrap`}>{review.sender.address ?? '(sender not configured)'}</dd></div>
         <div><dt className={dt}>Purpose</dt><dd className={dd}>{review.purpose === 'marketing' ? 'Marketing campaign' : 'Individual correspondence'}</dd></div>

@@ -84,11 +84,14 @@ function MailboxPicker({ mailboxId, className }: { mailboxId: string; className?
   )
 }
 
-function ComposeButton({ mailbox, mailboxId, className }: { mailbox: Mailbox | undefined; mailboxId: string; className?: string }) {
+// AIDEV-NOTE: Column, tablet row and phone FAB each carry a compose control; CSS shows one at a time.
+// The tablet/phone copies take the longer accessible name so the column button is the single "Compose".
+function ComposeButton({ mailbox, mailboxId, className, label }: { mailbox: Mailbox | undefined; mailboxId: string; className?: string; label?: string }) {
   const navigate = useNavigate()
   const canCompose = mailbox?.capabilities.compose === true
   return (
     <Button
+      aria-label={label}
       variant="primary"
       icon={<PencilSquareIcon className="size-5" />}
       className={cx('justify-center', className)}
@@ -165,7 +168,7 @@ export function FolderSelect({ mailboxId, mailbox, counts }: FolderNavProps) {
           <option key={folder.key} value={folder.key}>{folder.label}{folder.badge !== undefined ? ` (${folder.badge})` : ''}</option>
         ))}
       </Select>
-      <ComposeButton mailbox={mailbox} mailboxId={mailboxId} className="max-md:hidden" />
+      <ComposeButton mailbox={mailbox} mailboxId={mailboxId} className="max-md:hidden" label="Compose a new draft" />
     </div>
   )
 }
@@ -177,7 +180,7 @@ export function ComposeFab({ mailboxId, mailbox }: { mailboxId: string; mailbox:
   return (
     <button
       type="button"
-      aria-label="Compose"
+      aria-label="Compose a new draft"
       onClick={() => navigate(composeDraftPath(mailboxId))}
       className="fixed bottom-6 end-6 z-20 flex size-14 items-center justify-center rounded-full bg-(--color-accent) text-(--color-accent-foreground) shadow-lg hover:bg-gold-400 md:hidden"
     >

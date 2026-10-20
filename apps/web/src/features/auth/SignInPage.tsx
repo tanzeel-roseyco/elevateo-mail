@@ -52,7 +52,7 @@ export function AuthFrame({ children, labelledBy }: { children: ReactNode; label
   return (
     <main className="flex min-h-dvh items-center justify-center bg-zinc-50 p-6 dark:bg-zinc-900" aria-labelledby={labelledBy}>
       <div className="flex w-full max-w-sm flex-col gap-6 rounded-xl border border-zinc-200 bg-white p-6 shadow-xs dark:border-zinc-700 dark:bg-zinc-800">
-        <BrandLockup />
+        <BrandLockup linked={false} />
         {children}
         <p className="text-xs leading-snug text-zinc-500">{FOOTNOTE}</p>
       </div>

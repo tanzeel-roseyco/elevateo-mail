@@ -10,8 +10,9 @@ import { Breadcrumbs } from './Breadcrumbs'
 import { CopyButton } from './CodeBlock'
 import { Menu, MenuItem } from './Menu'
 import { Modal } from './Modal'
+import { PageHeader } from './PageHeader'
 import { GetHelpMenu } from './GetHelpMenu'
-import { ButtonTabs } from './Tabs'
+import { ButtonTabs, LinkTabs } from './Tabs'
 import { Tooltip } from './Tooltip'
 
 afterEach(() => {
@@ -84,6 +85,30 @@ describe('GetHelpMenu', () => {
     fireEvent.keyDown(dialog, { key: 'Escape' })
     await waitFor(() => expect(screen.queryByRole('dialog')).toBeNull())
     await waitFor(() => expect(document.activeElement).toBe(trigger))
+  })
+})
+
+describe('LinkTabs', () => {
+  it('gives only the current section the accent underline classes', () => {
+    render(
+      <MemoryRouter initialEntries={['/settings/profile/password']}>
+        <LinkTabs label="Settings sections" tabs={[{ to: '/settings/workspace', label: 'Workspace', end: false }, { to: '/settings/profile', label: 'Profile', end: false }]} />
+      </MemoryRouter>,
+    )
+    const profile = screen.getByRole('link', { name: 'Profile' })
+    const workspace = screen.getByRole('link', { name: 'Workspace' })
+    expect(profile.getAttribute('aria-current')).toBe('page')
+    expect(profile.className).toContain('border-(--color-accent-content)')
+    expect(profile.className).not.toContain('border-transparent')
+    expect(workspace.className).toContain('border-transparent')
+    expect(workspace.className).not.toContain('border-(--color-accent-content)')
+  })
+})
+
+describe('PageHeader', () => {
+  it('wraps an unbroken 4096-character subtitle instead of widening the page', () => {
+    render(<PageHeader title="Search results" subtitle={'x'.repeat(4096)} help={false} />)
+    expect(screen.getByText(/^x+$/).className).toContain('break-words')
   })
 })
 
