@@ -80,6 +80,14 @@ describe('settings area', () => {
     expect(window.localStorage.length).toBe(0)
   })
 
+  it('offers the Postman collection as a same-tab download next to the API reference', async () => {
+    renderSettings('/settings/developer-api')
+    const card = await screen.findByRole('link', { name: /Postman Collection/ })
+    expect(card.getAttribute('href')).toBe('/developer/elevateo-mail.postman_collection.json')
+    expect(card.hasAttribute('download')).toBe(true)
+    expect(screen.getByRole('link', { name: 'Contact us about white-label' }).getAttribute('href')).toBe('/help/community')
+  })
+
   it('resolves page titles by the longest matching route prefix', () => {
     expect(settingsPageMeta('/settings/profile/password').title).toBe('Password')
     expect(settingsPageMeta('/settings/integrations/mcp').parents?.[0]?.to).toBe('/settings/integrations')

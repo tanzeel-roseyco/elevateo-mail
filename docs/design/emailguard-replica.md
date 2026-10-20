@@ -47,7 +47,7 @@ Touch devices: 40px nav rows, 44px header controls (`@media (pointer: coarse)`).
 | Settings | `/settings/workspace/members` | real mailboxes + organization grants | loading, empty, error |
 | Settings | `/settings/profile`, `…/personal-details` (real display name), `…/password` (simulated) | | loading, denied, per-field errors |
 | Settings | `/settings/tags` | simulated, 20-swatch modal | empty, capacity |
-| Settings | `/settings/developer-api` | simulated tokens, one-time reveal | empty, capacity |
+| Settings | `/settings/developer-api` | API reference link, Postman v2.1 download (`public/developer/elevateo-mail.postman_collection.json`, rebuilt from contracts by `lib/postmanCollection.ts`), white-label contact card, simulated tokens with one-time reveal | empty, capacity |
 | Settings | `/settings/webhooks`, `…/create` | simulated, https-only | empty, capacity, per-control errors |
 | Settings | `/settings/integrations`, `…/:slug` (`mcp`, `cli`) | static | not found |
 | Settings | `/settings/personal`, `/settings/organization` | legacy redirects | |

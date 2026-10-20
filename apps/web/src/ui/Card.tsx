@@ -35,17 +35,26 @@ interface LinkCardProps {
   text: string
   /** External links render an anchor and open in a new tab. */
   external?: boolean
+  /** Static files (the Postman collection) render a same-tab download anchor. */
+  download?: boolean
 }
 
 const LINK_CARD = 'block h-full rounded-xl border border-zinc-200 bg-white p-6 hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900 dark:hover:bg-zinc-800'
 
-export function LinkCard({ to, title, text, external = false }: LinkCardProps) {
+export function LinkCard({ to, title, text, external = false, download = false }: LinkCardProps) {
   const body = (
     <>
       <p className="text-sm font-medium text-zinc-800 dark:text-white">{title}</p>
       <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">{text}</p>
     </>
   )
+  if (download) {
+    return (
+      <a href={to} download className={LINK_CARD}>
+        {body}
+      </a>
+    )
+  }
   if (external) {
     return (
       <a href={to} target="_blank" rel="noreferrer noopener" className={LINK_CARD}>

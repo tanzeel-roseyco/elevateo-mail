@@ -1,14 +1,16 @@
-// Settings › Developer API (EmailGuard "api-settings"): two link cards (reference, Postman), the
+// Settings › Developer API (EmailGuard "api-settings"): two link cards (reference, Postman download),
+// the white-label contact card, the
 // API Tokens section with the "Add New API Token" modal (Token Name, Token Type api-user |
 // super-admin, the recommendation callout, Generate Token) and the "No token yet." empty state.
 // Tokens have no issuing endpoint in this build: the secret is generated locally, shown once, and
 // only its name, type, prefix and creation time are kept in the simulated adapter store.
 import { useId, useState, type FormEvent } from 'react'
 import { z } from 'zod'
-import { formatDateTime } from '@/lib/format'
 import { EmptyState } from '@/ui/Async'
 import { Badge } from '@/ui/Badge'
-import { Button } from '@/ui/Button'
+import { Link } from 'react-router'
+import { cx, formatDateTime } from '@/lib/format'
+import { Button, buttonClass } from '@/ui/Button'
 import { Callout } from '@/ui/Callout'
 import { Card, LinkCard, LinkCardGrid } from '@/ui/Card'
 import { CodeBlock } from '@/ui/CodeBlock'
@@ -69,12 +71,15 @@ export function DeveloperApiPage() {
     <>
       <LinkCardGrid className="mb-8">
         <LinkCard to="/help/articles/developer-api-overview" title="Full API Reference" text="Read the endpoints, envelopes and error codes the Elevateo gateway exposes" />
-        <LinkCard to="/help/articles/cli-connector" title="Command-line access" text="Script drafts and searches from a terminal with the Elevateo CLI connector" />
+        {/* Generated from contracts/v1+v2 by lib/postmanCollection.ts; the Docker test keeps it in sync. */}
+        <LinkCard to="/developer/elevateo-mail.postman_collection.json" download title="Postman Collection" text="Download the v2.1 collection for every v1 and v2 endpoint; fill baseUrl and the session variables" />
       </LinkCardGrid>
 
-      <Callout variant="accent" heading="Hosted and self-managed deployments" className="mb-8 max-w-3xl">
-        Elevateo runs as a single tenant per organization. Ask your workspace operator about a dedicated deployment if you need separate infrastructure for a client.
-      </Callout>
+      <Card className="mb-8 max-w-3xl">
+        <h2 className="text-sm font-medium text-zinc-800 dark:text-white">White-label Elevateo Mail</h2>
+        <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">Run the mailroom under your own brand and domain for your clients. Each organization is a separate tenant with its own members, mailboxes and simulated-mail boundary.</p>
+        <Link to="/help/community" className={cx(buttonClass('outline', 'xs'), 'mt-4')}>Contact us about white-label</Link>
+      </Card>
 
       <SectionHeader
         title="API Tokens"

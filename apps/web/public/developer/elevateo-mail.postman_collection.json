@@ -1,0 +1,2603 @@
+{
+  "info": {
+    "name": "Elevateo Mail API",
+    "description": "Generated from the canonical Elevateo contracts (v1 session/mailbox API and v2 additive API). Requests authenticate with the browser session cookie: sign in to the same host first, then fill sessionContext and authorizationVersion from GET /v1/session. No credential is stored in this collection.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "description": "Origin of the Elevateo Mail API without a trailing slash."
+    },
+    {
+      "key": "sessionContext",
+      "value": "",
+      "description": "context_id from GET /v1/session."
+    },
+    {
+      "key": "authorizationVersion",
+      "value": "",
+      "description": "authorization_version from GET /v1/session."
+    }
+  ],
+  "item": [
+    {
+      "name": "v1 · Elevateo local session and mailbox contract (1.0.0-send.1)",
+      "description": "Canonical accepted BE-02A lifecycle amendment and unchanged FE-01 read checkpoint. Design contract, not implementation acceptance. All mail content is plaintext. See README.md for normative authorization, lifecycle, byte limits and transport rules.",
+      "item": [
+        {
+          "name": "getSession",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v1/session",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "session"
+              ]
+            },
+            "description": "Authenticate and check current session revocation before returning actor, organization, context and in-memory CSRF bootstrap token. Does not create or refresh a login. Does not list mailboxes; getMailboxes is the sole capability list. A valid cookie with no currently usable organization returns not_available."
+          }
+        },
+        {
+          "name": "getMailboxes",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Session-Context",
+                "value": "{{sessionContext}}",
+                "description": "Current bootstrap context, never an authorization grant."
+              },
+              {
+                "key": "X-Authorization-Version",
+                "value": "{{authorizationVersion}}",
+                "description": "Current bootstrap authorization version; mismatch returns context_changed after authentication."
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/mailboxes",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "mailboxes"
+              ],
+              "query": [
+                {
+                  "key": "cursor",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "limit",
+                  "value": "",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Visible mailboxes in the current organization only, sorted by immutable id ascending. Read capability is always true for returned objects. All other capabilities are current server-derived hints and do not authorize a mutation."
+          }
+        },
+        {
+          "name": "listThreads",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Session-Context",
+                "value": "{{sessionContext}}",
+                "description": "Current bootstrap context, never an authorization grant."
+              },
+              {
+                "key": "X-Authorization-Version",
+                "value": "{{authorizationVersion}}",
+                "description": "Current bootstrap authorization version; mismatch returns context_changed after authentication."
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/mailboxes/:mailbox_id/threads",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "mailboxes",
+                ":mailbox_id",
+                "threads"
+              ],
+              "query": [
+                {
+                  "key": "cursor",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "limit",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "filter",
+                  "value": "",
+                  "disabled": true
+                }
+              ],
+              "variable": [
+                {
+                  "key": "mailbox_id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Current-authorized mailbox thread summaries. Stable keyset order: last_message_at descending, null last, then id descending. Cursor binds actor, organization, session context, authorization version, mailbox, filter, ordering and limit. Does not mark read."
+          }
+        },
+        {
+          "name": "getThread",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Session-Context",
+                "value": "{{sessionContext}}",
+                "description": "Current bootstrap context, never an authorization grant."
+              },
+              {
+                "key": "X-Authorization-Version",
+                "value": "{{authorizationVersion}}",
+                "description": "Current bootstrap authorization version; mismatch returns context_changed after authentication."
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/threads/:thread_id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "threads",
+                ":thread_id"
+              ],
+              "query": [
+                {
+                  "key": "mailbox_id",
+                  "value": "",
+                  "disabled": false
+                },
+                {
+                  "key": "cursor",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "limit",
+                  "value": "",
+                  "disabled": true
+                }
+              ],
+              "variable": [
+                {
+                  "key": "thread_id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Current-authorized conversation in the explicitly selected mailbox; mismatched mailbox and thread is not_available. Messages have independent keyset pagination by sent_at ascending, null first, then id ascending. Cursor binds thread and mailbox plus actor, organization, session context, authorization version, ordering and limit. Empty conversations are valid. Does not mark read."
+          }
+        },
+        {
+          "name": "getLoginChallenge",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v1/auth/login-challenge",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "auth",
+                "login-challenge"
+              ]
+            },
+            "description": "Issue a five-minute signed browser challenge without calling Auth. Bind to both current session digest and pending-entry digest when present. No query parameters; no identity or account information."
+          }
+        },
+        {
+          "name": "login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Origin",
+                "value": "",
+                "description": "Must exactly equal the configured browser origin. Host and forwarded headers cannot extend the allowlist."
+              },
+              {
+                "key": "X-CSRF-Token",
+                "value": "",
+                "description": "Signed double-submit challenge proof for entry/refresh, or current session proof where explicitly allowed. Must match its browser cookie binding."
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "auth",
+                "login"
+              ]
+            },
+            "description": "Exact Origin and signed challenge required. Exchange email/password internally, validate identity/policy, replace caller cookie, and select sole or UUID-first current organization. Generic failure; no signup. 404 may retain the newly issued opaque cookie when there is no membership.",
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "requestRecovery",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Origin",
+                "value": "",
+                "description": "Must exactly equal the configured browser origin. Host and forwarded headers cannot extend the allowlist."
+              },
+              {
+                "key": "X-CSRF-Token",
+                "value": "",
+                "description": "Signed double-submit challenge proof for entry/refresh, or current session proof where explicitly allowed. Must match its browser cookie binding."
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/auth/recovery",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "auth",
+                "recovery"
+              ]
+            },
+            "description": "Exact Origin and signed challenge required. Known and unknown email return identical acceptance; use only the configured callback and local Mailpit. Upstream outage is 503. Never expose account existence or send live email.",
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "stageAuthEntry",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/auth/accept",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "accept"
+              ],
+              "query": [
+                {
+                  "key": "token",
+                  "value": "",
+                  "description": "Pinned Auth mailer token hash; scrub raw query before request/access logging. Never echo it or consume it on GET.",
+                  "disabled": false
+                },
+                {
+                  "key": "type",
+                  "value": "",
+                  "disabled": false
+                },
+                {
+                  "key": "redirect_to",
+                  "value": "",
+                  "description": "If present must exactly match the configured same-origin completion destination; never follow or echo arbitrary redirects.",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Stage the encrypted invite/recovery token hash under a fresh opaque pending-entry cookie for ten minutes. GET performs no verify/password operation. Always redirect to the fixed query-free /auth/complete; no token in HTML or JavaScript."
+          }
+        },
+        {
+          "name": "acceptAuthEntry",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Origin",
+                "value": "",
+                "description": "Must exactly equal the configured browser origin. Host and forwarded headers cannot extend the allowlist."
+              },
+              {
+                "key": "X-CSRF-Token",
+                "value": "",
+                "description": "Signed double-submit challenge proof for entry/refresh, or current session proof where explicitly allowed. Must match its browser cookie binding."
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/auth/accept",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "auth",
+                "accept"
+              ]
+            },
+            "description": "Exact Origin plus challenge bound to the pending entry. Claim the entry before POST verify, then set password and verify identity before publishing a local session. Pending entry grants no mail access. Replayed/expired/ambiguous verification fails generically; known password_pending state may retry only password setting, never blindly retry the one-time hash. Clear pending-entry and challenge cookies on completion.",
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "refreshSession",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Origin",
+                "value": "",
+                "description": "Must exactly equal the configured browser origin. Host and forwarded headers cannot extend the allowlist."
+              },
+              {
+                "key": "X-CSRF-Token",
+                "value": "",
+                "description": "Signed double-submit challenge proof for entry/refresh, or current session proof where explicitly allowed. Must match its browser cookie binding."
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/auth/refresh",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "auth",
+                "refresh"
+              ]
+            },
+            "description": "Exact Origin and challenge bound to the existing opaque session. A locally valid cookie with an expired access JWT may refresh; do not require the ordinary online-read precheck. Commit one durable claim, call Auth once, and CAS publish within the original ten-second request deadline. Contenders return 503 Retry-After 1. Uncertain/expired claim requires reauthentication; never steal/replay it or resurrect after logout. Context and CSRF remain stable. With no selected organization, explicit refresh may select a newly provisioned membership; otherwise keep the local cookie and return 404.",
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "logout",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Origin",
+                "value": "",
+                "description": "Must exactly equal the configured browser origin. Host and forwarded headers cannot extend the allowlist."
+              },
+              {
+                "key": "X-CSRF-Token",
+                "value": "",
+                "description": "Signed double-submit challenge proof for entry/refresh, or current session proof where explicitly allowed. Must match its browser cookie binding."
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/auth/logout",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "auth",
+                "logout"
+              ]
+            },
+            "description": "Exact Origin and current session CSRF or challenge bound to the supplied cookie. Commit local/default or all bound-user local/global revocation and durable upstream intent before Auth. Clear cookie even if Auth is down or access JWT expired. Missing/invalid cookie with valid challenge is idempotent local completion without identity data. Never accept a browser user ID. Clear session and challenge cookies. Global scope requires a locally valid bound user; an expired local session cannot perform global logout and returns 401.",
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "listOrganizations",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Session-Context",
+                "value": "{{sessionContext}}",
+                "description": "Current bootstrap context, never an authorization grant."
+              },
+              {
+                "key": "X-Authorization-Version",
+                "value": "{{authorizationVersion}}",
+                "description": "Current bootstrap authorization version; mismatch returns context_changed after authentication."
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/organizations",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "organizations"
+              ],
+              "query": [
+                {
+                  "key": "cursor",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "limit",
+                  "value": "",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Current online identity and bound-cookie memberships only; UUID-ascending page, at most 50, signed cursor bound to current actor/context/generation/order/limit. No other users, membership lists, counts or mail."
+          }
+        },
+        {
+          "name": "switchOrganization",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Session-Context",
+                "value": "{{sessionContext}}",
+                "description": "Current bootstrap context, never an authorization grant."
+              },
+              {
+                "key": "X-Authorization-Version",
+                "value": "{{authorizationVersion}}",
+                "description": "Current bootstrap authorization version; mismatch returns context_changed after authentication."
+              },
+              {
+                "key": "Origin",
+                "value": "",
+                "description": "Must exactly equal the configured browser origin. Host and forwarded headers cannot extend the allowlist."
+              },
+              {
+                "key": "X-CSRF-Token",
+                "value": "",
+                "description": "Signed double-submit challenge proof for entry/refresh, or current session proof where explicitly allowed. Must match its browser cookie binding."
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/session/organization",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "session",
+                "organization"
+              ]
+            },
+            "description": "Require current online identity, exact Origin/session CSRF/context/version and current target membership. Foreign or absent target returns generic 404. Atomically rotate session context and CSRF; return current target organization and capabilities remain on mailbox reads.",
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "getDraft",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Session-Context",
+                "value": "{{sessionContext}}",
+                "description": "Current bootstrap context, never an authorization grant."
+              },
+              {
+                "key": "X-Authorization-Version",
+                "value": "{{authorizationVersion}}",
+                "description": "Current bootstrap authorization version; mismatch returns context_changed after authentication."
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/drafts/:draft_id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "drafts",
+                ":draft_id"
+              ],
+              "query": [
+                {
+                  "key": "mailbox_id",
+                  "value": "",
+                  "disabled": false
+                }
+              ],
+              "variable": [
+                {
+                  "key": "draft_id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Current actor's complete own draft with current compose permission in the selected organization/mailbox. Foreign owner, wrong mailbox relation or absent draft: generic 404. Includes reserved consumed state; GET has no save/send/read-state side effect."
+          }
+        },
+        {
+          "name": "saveDraft",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "X-Session-Context",
+                "value": "{{sessionContext}}",
+                "description": "Current bootstrap context, never an authorization grant."
+              },
+              {
+                "key": "X-Authorization-Version",
+                "value": "{{authorizationVersion}}",
+                "description": "Current bootstrap authorization version; mismatch returns context_changed after authentication."
+              },
+              {
+                "key": "Origin",
+                "value": "",
+                "description": "Exact configured same-origin value required on every C/D PUT, POST and DELETE. No redirect or permissive CORS."
+              },
+              {
+                "key": "X-CSRF-Token",
+                "value": "",
+                "description": "Current session CSRF proof bound to this cookie and context. A login/refresh challenge is not accepted for C/D writes."
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/drafts/:draft_id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "drafts",
+                ":draft_id"
+              ],
+              "variable": [
+                {
+                  "key": "draft_id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Complete durable save with current compose permission and session/context/Origin/CSRF. expected_version=0 creates version 1; positive expected_version must equal current version. After current scope/ownership checks, inspect the actor/org/operation unique ledger before draft version/state or reply-target checks: same binding and canonical digest returns the original applied result even after later save B or consumption; a recorded conflict replays its original 409. Different binding/digest or any expired ID gives 409 operation_mismatch. For a new operation, reply_to_thread_id must be null or a currently readable thread in this mailbox; consumed drafts give draft_consumed, then stale/missing versions give draft_conflict. No live send or consume endpoint. Save and terminal ledger record commit atomically; concurrent identical requests converge without incrementing twice. See docs/completion/be02-cd-contract.md for the exact digest and seven-day retention boundary.",
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "listDrafts",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Session-Context",
+                "value": "{{sessionContext}}",
+                "description": "Current bootstrap context, never an authorization grant."
+              },
+              {
+                "key": "X-Authorization-Version",
+                "value": "{{authorizationVersion}}",
+                "description": "Current bootstrap authorization version; mismatch returns context_changed after authentication."
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/drafts",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "drafts"
+              ],
+              "query": [
+                {
+                  "key": "mailbox_id",
+                  "value": "",
+                  "disabled": false
+                },
+                {
+                  "key": "cursor",
+                  "value": "",
+                  "description": "Signed, expiring keyset token bound to actor, organization, session context, authorization generation, route, resource IDs, filters, ordering and effective limit. Membership pages also bind membership_version. Invalid/expired/scope mismatch: 400 cursor_invalid.",
+                  "disabled": true
+                },
+                {
+                  "key": "limit",
+                  "value": "",
+                  "description": "Single decimal integer 1..50; no signs, fractions, exponents, coercion, arrays or duplicate keys.",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Current compose permission; actor-owned editable and consumed summaries in the required mailbox, ordered updated_at DESC, id DESC. Max 50 and 256 KiB after escaping, whole records only, cursor from the last included row. Empty terminal page has null cursor. Mutable ordering is not a cross-page snapshot; clients deduplicate by id and refresh."
+          }
+        },
+        {
+          "name": "getDraftOperation",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Session-Context",
+                "value": "{{sessionContext}}",
+                "description": "Current bootstrap context, never an authorization grant."
+              },
+              {
+                "key": "X-Authorization-Version",
+                "value": "{{authorizationVersion}}",
+                "description": "Current bootstrap authorization version; mismatch returns context_changed after authentication."
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/draft-operations/:operation_id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "draft-operations",
+                ":operation_id"
+              ],
+              "query": [
+                {
+                  "key": "mailbox_id",
+                  "value": "",
+                  "disabled": false
+                },
+                {
+                  "key": "draft_id",
+                  "value": "",
+                  "disabled": false
+                }
+              ],
+              "variable": [
+                {
+                  "key": "operation_id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Authorize current session/context, compose capability, requested draft ownership and mailbox scope before ledger lookup. An unclaimed/absent own-draft ID in an authorized mailbox may return unknown for an in-flight creation; an existing foreign/hidden draft is generic 404. Lookup uses only the current actor/org key, never another actor's ledger. A known own operation with a different requested mailbox/draft binding is generic 404. Applied/conflict returns original metadata only, even after later saves; no body/recipients/subject/digest. At recorded_at + seven days or later return expired even if physical compaction is delayed. Absence is unknown, never not performed. GET cannot execute, reserve or retry a save."
+          }
+        },
+        {
+          "name": "setThreadReadState",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "X-Session-Context",
+                "value": "{{sessionContext}}",
+                "description": "Current bootstrap context, never an authorization grant."
+              },
+              {
+                "key": "X-Authorization-Version",
+                "value": "{{authorizationVersion}}",
+                "description": "Current bootstrap authorization version; mismatch returns context_changed after authentication."
+              },
+              {
+                "key": "Origin",
+                "value": "",
+                "description": "Exact configured same-origin value required on every C/D PUT, POST and DELETE. No redirect or permissive CORS."
+              },
+              {
+                "key": "X-CSRF-Token",
+                "value": "",
+                "description": "Current session CSRF proof bound to this cookie and context. A login/refresh challenge is not accepted for C/D writes."
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/threads/:thread_id/read-state",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "threads",
+                ":thread_id",
+                "read-state"
+              ],
+              "variable": [
+                {
+                  "key": "thread_id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Any current mailbox reader may set only their own thread read boolean. No actor supplied by the caller. Missing state defaults unread; matching desired state is a no-op. Differing writes serialize and last committed wins; returned revision is informational, not a precondition. Unchanged B GET unread is exactly the inverse of this persisted boolean, defaults true; GET never changes it. New inbound-message behavior is outside BE-02.",
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "getThreadAssignment",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Session-Context",
+                "value": "{{sessionContext}}",
+                "description": "Current bootstrap context, never an authorization grant."
+              },
+              {
+                "key": "X-Authorization-Version",
+                "value": "{{authorizationVersion}}",
+                "description": "Current bootstrap authorization version; mismatch returns context_changed after authentication."
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/threads/:thread_id/assignment",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "threads",
+                ":thread_id",
+                "assignment"
+              ],
+              "query": [
+                {
+                  "key": "mailbox_id",
+                  "value": "",
+                  "disabled": false
+                }
+              ],
+              "variable": [
+                {
+                  "key": "thread_id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Any current reader of this thread may inspect assignment metadata. Initial assignment is null/version 0. A historical assignee ID confers no permission; eligibility is checked anew on every assignment PUT."
+          }
+        },
+        {
+          "name": "setThreadAssignment",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "X-Session-Context",
+                "value": "{{sessionContext}}",
+                "description": "Current bootstrap context, never an authorization grant."
+              },
+              {
+                "key": "X-Authorization-Version",
+                "value": "{{authorizationVersion}}",
+                "description": "Current bootstrap authorization version; mismatch returns context_changed after authentication."
+              },
+              {
+                "key": "Origin",
+                "value": "",
+                "description": "Exact configured same-origin value required on every C/D PUT, POST and DELETE. No redirect or permissive CORS."
+              },
+              {
+                "key": "X-CSRF-Token",
+                "value": "",
+                "description": "Current session CSRF proof bound to this cookie and context. A login/refresh challenge is not accepted for C/D writes."
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/threads/:thread_id/assignment",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "threads",
+                ":thread_id",
+                "assignment"
+              ],
+              "variable": [
+                {
+                  "key": "thread_id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Any current reader may set/null assignment after expected_assignment_version matches. Non-null target must currently belong to this organization and be able to read this mailbox, including shared-mailbox readers; otherwise generic 404. Recheck eligibility under the same sorted generation guards used for revocation. Stale version gives 409 assignment_conflict; matching-version identical value is a no-op; changed value increments once.",
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "listThreadNotes",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Session-Context",
+                "value": "{{sessionContext}}",
+                "description": "Current bootstrap context, never an authorization grant."
+              },
+              {
+                "key": "X-Authorization-Version",
+                "value": "{{authorizationVersion}}",
+                "description": "Current bootstrap authorization version; mismatch returns context_changed after authentication."
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/threads/:thread_id/notes",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "threads",
+                ":thread_id",
+                "notes"
+              ],
+              "query": [
+                {
+                  "key": "mailbox_id",
+                  "value": "",
+                  "disabled": false
+                },
+                {
+                  "key": "cursor",
+                  "value": "",
+                  "description": "Signed, expiring keyset token bound to actor, organization, session context, authorization generation, route, resource IDs, filters, ordering and effective limit. Membership pages also bind membership_version. Invalid/expired/scope mismatch: 400 cursor_invalid.",
+                  "disabled": true
+                },
+                {
+                  "key": "limit",
+                  "value": "",
+                  "description": "Single decimal integer 1..50; no signs, fractions, exponents, coercion, arrays or duplicate keys.",
+                  "disabled": true
+                }
+              ],
+              "variable": [
+                {
+                  "key": "thread_id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Any current reader may list immutable plaintext notes for this mailbox/thread, ordered created_at ASC, id ASC. Max 50/256 KiB escaped JSON, whole records and cursor from last included; no totals or other-mailbox notes."
+          }
+        },
+        {
+          "name": "createThreadNote",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Session-Context",
+                "value": "{{sessionContext}}",
+                "description": "Current bootstrap context, never an authorization grant."
+              },
+              {
+                "key": "X-Authorization-Version",
+                "value": "{{authorizationVersion}}",
+                "description": "Current bootstrap authorization version; mismatch returns context_changed after authentication."
+              },
+              {
+                "key": "Origin",
+                "value": "",
+                "description": "Exact configured same-origin value required on every C/D PUT, POST and DELETE. No redirect or permissive CORS."
+              },
+              {
+                "key": "X-CSRF-Token",
+                "value": "",
+                "description": "Current session CSRF proof bound to this cookie and context. A login/refresh challenge is not accepted for C/D writes."
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/threads/:thread_id/notes",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "threads",
+                ":thread_id",
+                "notes"
+              ],
+              "variable": [
+                {
+                  "key": "thread_id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Any current reader may create an immutable note using note_id unique within the organization. First create returns 201; same current actor, mailbox, thread, note_id and exact body returns original note with 200. Same actor's currently visible existing ID with different binding/content returns 409 operation_mismatch; another author's or hidden ID is generic 404. Current authorization precedes replay. No edit/delete route, note notification or implicit email send.",
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "listMailboxMembers",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Session-Context",
+                "value": "{{sessionContext}}",
+                "description": "Current bootstrap context, never an authorization grant."
+              },
+              {
+                "key": "X-Authorization-Version",
+                "value": "{{authorizationVersion}}",
+                "description": "Current bootstrap authorization version; mismatch returns context_changed after authentication."
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/mailboxes/:mailbox_id/members",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "mailboxes",
+                ":mailbox_id",
+                "members"
+              ],
+              "query": [
+                {
+                  "key": "cursor",
+                  "value": "",
+                  "description": "Signed, expiring keyset token bound to actor, organization, session context, authorization generation, route, resource IDs, filters, ordering and effective limit. Membership pages also bind membership_version. Invalid/expired/scope mismatch: 400 cursor_invalid.",
+                  "disabled": true
+                },
+                {
+                  "key": "limit",
+                  "value": "",
+                  "description": "Single decimal integer 1..50; no signs, fractions, exponents, coercion, arrays or duplicate keys.",
+                  "disabled": true
+                }
+              ],
+              "variable": [
+                {
+                  "key": "mailbox_id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Requires current manage_members capability. Enumerate only explicit members still belonging to the selected organization, user_id ASC, max 50 and 128 KiB; no organization-wide/effective shared-reader directory or totals. membership_version is the mailbox-wide mutation revision; cursors bind it and fail cursor_invalid if it changes even when actor authorization_version did not change."
+          }
+        },
+        {
+          "name": "putMailboxMember",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "X-Session-Context",
+                "value": "{{sessionContext}}",
+                "description": "Current bootstrap context, never an authorization grant."
+              },
+              {
+                "key": "X-Authorization-Version",
+                "value": "{{authorizationVersion}}",
+                "description": "Current bootstrap authorization version; mismatch returns context_changed after authentication."
+              },
+              {
+                "key": "Origin",
+                "value": "",
+                "description": "Exact configured same-origin value required on every C/D PUT, POST and DELETE. No redirect or permissive CORS."
+              },
+              {
+                "key": "X-CSRF-Token",
+                "value": "",
+                "description": "Current session CSRF proof bound to this cookie and context. A login/refresh challenge is not accepted for C/D writes."
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/mailboxes/:mailbox_id/members/:user_id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "mailboxes",
+                ":mailbox_id",
+                "members",
+                ":user_id"
+              ],
+              "variable": [
+                {
+                  "key": "mailbox_id",
+                  "value": ""
+                },
+                {
+                  "key": "user_id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Current manage_members required; path target must be a current member of this organization, otherwise generic 404. Compare expected_membership_version to mailbox-wide revision; stale revision or demoting the final current manager returns 409 membership_conflict. Upsert the explicit reader row and replace all three flags; identical existing flags at current version is a no-op. Every stored membership change increments mailbox revision and affected authorization generations atomically under session, sorted generation and mailbox/business guards, even when shared read already existed; never direct membership-table grants. Provisioning is separate.",
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "deleteMailboxMember",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "X-Session-Context",
+                "value": "{{sessionContext}}",
+                "description": "Current bootstrap context, never an authorization grant."
+              },
+              {
+                "key": "X-Authorization-Version",
+                "value": "{{authorizationVersion}}",
+                "description": "Current bootstrap authorization version; mismatch returns context_changed after authentication."
+              },
+              {
+                "key": "Origin",
+                "value": "",
+                "description": "Exact configured same-origin value required on every C/D PUT, POST and DELETE. No redirect or permissive CORS."
+              },
+              {
+                "key": "X-CSRF-Token",
+                "value": "",
+                "description": "Current session CSRF proof bound to this cookie and context. A login/refresh challenge is not accepted for C/D writes."
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/mailboxes/:mailbox_id/members/:user_id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "mailboxes",
+                ":mailbox_id",
+                "members",
+                ":user_id"
+              ],
+              "query": [
+                {
+                  "key": "expected_membership_version",
+                  "value": "",
+                  "description": "Single unsigned decimal integer in range, without signs/exponents/fractions/arrays; duplicate keys rejected.",
+                  "disabled": false
+                }
+              ],
+              "variable": [
+                {
+                  "key": "mailbox_id",
+                  "value": ""
+                },
+                {
+                  "key": "user_id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Current manage_members required; target must currently belong to this organization. expected_membership_version is a required single query integer; DELETE has no body. Stale mailbox revision or removal of the final current manager returns 409 membership_conflict. At the matching revision an absent explicit row is a no-op with member=null; an existing row is removed and mailbox revision/affected authorization generations increment atomically. Shared organization readers can retain read after explicit removal. Re-bootstrap after a successful permission change; no late response restores prior authority."
+          }
+        },
+        {
+          "name": "searchMail",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Session-Context",
+                "value": "{{sessionContext}}",
+                "description": "Current bootstrap context, never an authorization grant."
+              },
+              {
+                "key": "X-Authorization-Version",
+                "value": "{{authorizationVersion}}",
+                "description": "Current bootstrap authorization version; mismatch returns context_changed after authentication."
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/search",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "search"
+              ],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "",
+                  "disabled": false
+                },
+                {
+                  "key": "mailbox_id",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "cursor",
+                  "value": "",
+                  "description": "Signed, expiring keyset token bound to actor, organization, session context, authorization generation, route, resource IDs, filters, ordering and effective limit. Membership pages also bind membership_version. Invalid/expired/scope mismatch: 400 cursor_invalid.",
+                  "disabled": true
+                },
+                {
+                  "key": "limit",
+                  "value": "",
+                  "description": "Single decimal integer 1..50; no signs, fractions, exponents, coercion, arrays or duplicate keys.",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Search only currently authorized plaintext thread subject and message body/sender/to display names and addresses; never drafts or notes. q is 1..256 Unicode code points, not solely whitespace, and otherwise preserved. Literal case-insensitive substring matching using parameterized PostgreSQL with %, _ and backslash escaped as literals; no SQL/regex/tsquery syntax from callers. Match a thread once if any authorized searchable field contains q; return its unchanged canonical ThreadSummary preview, not an HTML highlight or an extra excerpt. Optional mailbox must be currently readable or generic 404. Order last_message_at DESC NULLS LAST, id DESC; at most 50/256 KiB, signed scoped cursor, whole entries, no totals. Existing database query only; indexes need representative EXPLAIN evidence."
+          }
+        },
+        {
+          "name": "getSendReview",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Session-Context",
+                "value": "{{sessionContext}}",
+                "description": "Current bootstrap context, never an authorization grant."
+              },
+              {
+                "key": "X-Authorization-Version",
+                "value": "{{authorizationVersion}}",
+                "description": "Current bootstrap authorization version; mismatch returns context_changed after authentication."
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/drafts/:draft_id/send-review",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "drafts",
+                ":draft_id",
+                "send-review"
+              ],
+              "query": [
+                {
+                  "key": "mailbox_id",
+                  "value": "",
+                  "disabled": false
+                }
+              ],
+              "variable": [
+                {
+                  "key": "draft_id",
+                  "value": ""
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "approveDraftSend",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Session-Context",
+                "value": "{{sessionContext}}",
+                "description": "Current bootstrap context, never an authorization grant."
+              },
+              {
+                "key": "X-Authorization-Version",
+                "value": "{{authorizationVersion}}",
+                "description": "Current bootstrap authorization version; mismatch returns context_changed after authentication."
+              },
+              {
+                "key": "Origin",
+                "value": "",
+                "description": "Exact configured same-origin value required on every C/D PUT, POST and DELETE. No redirect or permissive CORS."
+              },
+              {
+                "key": "X-CSRF-Token",
+                "value": "",
+                "description": "Current session CSRF proof bound to this cookie and context. A login/refresh challenge is not accepted for C/D writes."
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/drafts/:draft_id/send-approvals",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "drafts",
+                ":draft_id",
+                "send-approvals"
+              ],
+              "variable": [
+                {
+                  "key": "draft_id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Atomic review-bound approval consumes one draft without incrementing version and queues one durable intent. Retry original operation ID/binding after uncertain response under current authorization; replay preserves immutable outcome and refreshes context proof. No snapshot or epoch request fields.",
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "getSendStatus",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Session-Context",
+                "value": "{{sessionContext}}",
+                "description": "Current bootstrap context, never an authorization grant."
+              },
+              {
+                "key": "X-Authorization-Version",
+                "value": "{{authorizationVersion}}",
+                "description": "Current bootstrap authorization version; mismatch returns context_changed after authentication."
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/send-intents/:send_id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "send-intents",
+                ":send_id"
+              ],
+              "query": [
+                {
+                  "key": "mailbox_id",
+                  "value": "",
+                  "disabled": false
+                }
+              ],
+              "variable": [
+                {
+                  "key": "send_id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Original-author status without snapshot/body disclosure. cancellable requires nonterminal, no dispatch authorization and readable matching external epoch; restored null timestamp alone is insufficient."
+          }
+        },
+        {
+          "name": "cancelSend",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Session-Context",
+                "value": "{{sessionContext}}",
+                "description": "Current bootstrap context, never an authorization grant."
+              },
+              {
+                "key": "X-Authorization-Version",
+                "value": "{{authorizationVersion}}",
+                "description": "Current bootstrap authorization version; mismatch returns context_changed after authentication."
+              },
+              {
+                "key": "Origin",
+                "value": "",
+                "description": "Exact configured same-origin value required on every C/D PUT, POST and DELETE. No redirect or permissive CORS."
+              },
+              {
+                "key": "X-CSRF-Token",
+                "value": "",
+                "description": "Current session CSRF proof bound to this cookie and context. A login/refresh challenge is not accepted for C/D writes."
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/send-intents/:send_id/cancellation",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "send-intents",
+                ":send_id",
+                "cancellation"
+              ],
+              "variable": [
+                {
+                  "key": "send_id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "One idempotent stop latch. First accepted/rejected cancellation returns send_terminal; already-cancelled replay succeeds. stop_requested never proves non-submission.",
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "listDraftAttachments",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Session-Context",
+                "value": "{{sessionContext}}",
+                "description": "Current bootstrap context, never an authorization grant."
+              },
+              {
+                "key": "X-Authorization-Version",
+                "value": "{{authorizationVersion}}",
+                "description": "Current bootstrap authorization version; mismatch returns context_changed after authentication."
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/drafts/:draft_id/attachments",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "drafts",
+                ":draft_id",
+                "attachments"
+              ],
+              "query": [
+                {
+                  "key": "mailbox_id",
+                  "value": "",
+                  "disabled": false
+                }
+              ],
+              "variable": [
+                {
+                  "key": "draft_id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "List one private attachment owned by the current draft author. Returns scan state without private storage keys."
+          }
+        },
+        {
+          "name": "uploadDraftAttachment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Session-Context",
+                "value": "{{sessionContext}}",
+                "description": "Current bootstrap context, never an authorization grant."
+              },
+              {
+                "key": "X-Authorization-Version",
+                "value": "{{authorizationVersion}}",
+                "description": "Current bootstrap authorization version; mismatch returns context_changed after authentication."
+              },
+              {
+                "key": "Origin",
+                "value": "",
+                "description": "Exact configured same-origin value required on every C/D PUT, POST and DELETE. No redirect or permissive CORS."
+              },
+              {
+                "key": "X-CSRF-Token",
+                "value": "",
+                "description": "Current session CSRF proof bound to this cookie and context. A login/refresh challenge is not accepted for C/D writes."
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/drafts/:draft_id/attachments",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "drafts",
+                ":draft_id",
+                "attachments"
+              ],
+              "variable": [
+                {
+                  "key": "draft_id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Reserve an immutable upload operation, upload bounded bytes to the private gateway, and finalize pending scan metadata. Same operation and bytes replay safely. Fresh ownership and CSRF are required; network work occurs outside SQL transactions.",
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "removeDraftAttachment",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "X-Session-Context",
+                "value": "{{sessionContext}}",
+                "description": "Current bootstrap context, never an authorization grant."
+              },
+              {
+                "key": "X-Authorization-Version",
+                "value": "{{authorizationVersion}}",
+                "description": "Current bootstrap authorization version; mismatch returns context_changed after authentication."
+              },
+              {
+                "key": "Origin",
+                "value": "",
+                "description": "Exact configured same-origin value required on every C/D PUT, POST and DELETE. No redirect or permissive CORS."
+              },
+              {
+                "key": "X-CSRF-Token",
+                "value": "",
+                "description": "Current session CSRF proof bound to this cookie and context. A login/refresh challenge is not accepted for C/D writes."
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/drafts/:draft_id/attachments/:attachment_id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "drafts",
+                ":draft_id",
+                "attachments",
+                ":attachment_id"
+              ],
+              "query": [
+                {
+                  "key": "mailbox_id",
+                  "value": "",
+                  "disabled": false
+                }
+              ],
+              "variable": [
+                {
+                  "key": "draft_id",
+                  "value": ""
+                },
+                {
+                  "key": "attachment_id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Retire draft attachment metadata and reservation under fresh author, editable draft and CSRF checks. Private bytes remain for scoped storage cleanup."
+          }
+        }
+      ]
+    },
+    {
+      "name": "v2 · Elevateo additive administration, outreach and scoped read API (2.0.0-draft.8)",
+      "description": "V1 schemas unchanged. Guarded mailbox-scoped assignee options and private inbound attachment reads are active in the isolated candidate for fleet proof. Delivery, enrollment and worker status remain disabled.",
+      "item": [
+        {
+          "name": "Ingest one Svix-signed Resend provider event",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "svix-id",
+                "value": ""
+              },
+              {
+                "key": "svix-timestamp",
+                "value": ""
+              },
+              {
+                "key": "svix-signature",
+                "value": ""
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v2/provider-events/resend",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2",
+                "provider-events",
+                "resend"
+              ]
+            },
+            "description": "Ingest one Svix-signed Resend provider event",
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "List current eligible assignee Auth UUIDs for one assignable mailbox",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v2/mailboxes/:mailbox_id/assignee-options",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2",
+                "mailboxes",
+                ":mailbox_id",
+                "assignee-options"
+              ],
+              "query": [
+                {
+                  "key": "cursor",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "limit",
+                  "value": "",
+                  "disabled": true
+                }
+              ],
+              "variable": [
+                {
+                  "key": "mailbox_id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Requires current mailbox assignment authority inside the protected read transaction. Eligible subjects are sorted by UUID. The opaque cursor is signed and bound to actor, organization, mailbox, session authorization version and ordering. The V1 assignment write remains final authority."
+          }
+        },
+        {
+          "name": "List bounded attachment metadata for one currently readable message",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v2/mailboxes/:mailbox_id/threads/:thread_id/messages/:message_id/attachments",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2",
+                "mailboxes",
+                ":mailbox_id",
+                "threads",
+                ":thread_id",
+                "messages",
+                ":message_id",
+                "attachments"
+              ],
+              "query": [
+                {
+                  "key": "cursor",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "limit",
+                  "value": "",
+                  "disabled": true
+                }
+              ],
+              "variable": [
+                {
+                  "key": "mailbox_id",
+                  "value": ""
+                },
+                {
+                  "key": "thread_id",
+                  "value": ""
+                },
+                {
+                  "key": "message_id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Use id-sorted UUID cursor pagination scoped to the current message; clean status alone never guarantees byte access."
+          }
+        },
+        {
+          "name": "Stream bytes only after current read authorization and clean scan verdict",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v2/mailboxes/:mailbox_id/threads/:thread_id/messages/:message_id/attachments/:attachment_id/content",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2",
+                "mailboxes",
+                ":mailbox_id",
+                "threads",
+                ":thread_id",
+                "messages",
+                ":message_id",
+                "attachments",
+                ":attachment_id",
+                "content"
+              ],
+              "variable": [
+                {
+                  "key": "mailbox_id",
+                  "value": ""
+                },
+                {
+                  "key": "thread_id",
+                  "value": ""
+                },
+                {
+                  "key": "message_id",
+                  "value": ""
+                },
+                {
+                  "key": "attachment_id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Stream bytes only after current read authorization and clean scan verdict"
+          }
+        },
+        {
+          "name": "getDirectMessage",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v2/threads/:thread_id/messages/:message_id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2",
+                "threads",
+                ":thread_id",
+                "messages",
+                ":message_id"
+              ],
+              "query": [
+                {
+                  "key": "mailbox_id",
+                  "value": "",
+                  "disabled": false
+                }
+              ],
+              "variable": [
+                {
+                  "key": "thread_id",
+                  "value": ""
+                },
+                {
+                  "key": "message_id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "One authorized plaintext message in the requested mailbox and thread; absent and inaccessible are indistinguishable."
+          }
+        },
+        {
+          "name": "listOrganizationGrants",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v2/organizations/:organization_id/grants",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2",
+                "organizations",
+                ":organization_id",
+                "grants"
+              ],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "cursor",
+                  "value": "",
+                  "disabled": true
+                }
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": ""
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "replaceOrganizationGrant",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v2/organizations/:organization_id/grants/:user_id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2",
+                "organizations",
+                ":organization_id",
+                "grants",
+                ":user_id"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": ""
+                },
+                {
+                  "key": "user_id",
+                  "value": ""
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "listOutreachCampaigns",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v2/outreach/campaigns",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2",
+                "outreach",
+                "campaigns"
+              ],
+              "query": [
+                {
+                  "key": "cursor",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "limit",
+                  "value": "",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Authenticated tenant-scoped inert campaign summaries; no send capability."
+          }
+        },
+        {
+          "name": "createOutreachCampaign",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v2/outreach/campaigns",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2",
+                "outreach",
+                "campaigns"
+              ]
+            },
+            "description": "Proposed idempotent inert plan creation; no dispatch.",
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "getWorkerJob",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v2/worker/jobs/:job_id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2",
+                "worker",
+                "jobs",
+                ":job_id"
+              ],
+              "variable": [
+                {
+                  "key": "job_id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Internal worker principal only; never a browser session."
+          }
+        },
+        {
+          "name": "getOrganizationRoster",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v2/organizations/:organization_id/roster",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2",
+                "organizations",
+                ":organization_id",
+                "roster"
+              ],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "cursor",
+                  "value": "",
+                  "disabled": true
+                }
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": ""
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "getOutreachCampaign",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v2/outreach/campaigns/:campaign_id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2",
+                "outreach",
+                "campaigns",
+                ":campaign_id"
+              ],
+              "variable": [
+                {
+                  "key": "campaign_id",
+                  "value": ""
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "updateOutreachCampaign",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v2/outreach/campaigns/:campaign_id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2",
+                "outreach",
+                "campaigns",
+                ":campaign_id"
+              ],
+              "variable": [
+                {
+                  "key": "campaign_id",
+                  "value": ""
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "listOutreachLeads",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v2/outreach/campaigns/:campaign_id/leads",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2",
+                "outreach",
+                "campaigns",
+                ":campaign_id",
+                "leads"
+              ],
+              "query": [
+                {
+                  "key": "cursor",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "limit",
+                  "value": "",
+                  "disabled": true
+                }
+              ],
+              "variable": [
+                {
+                  "key": "campaign_id",
+                  "value": ""
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "addOutreachLead",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v2/outreach/campaigns/:campaign_id/leads",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2",
+                "outreach",
+                "campaigns",
+                ":campaign_id",
+                "leads"
+              ],
+              "variable": [
+                {
+                  "key": "campaign_id",
+                  "value": ""
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "getOutreachLead",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v2/outreach/campaigns/:campaign_id/leads/:lead_id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2",
+                "outreach",
+                "campaigns",
+                ":campaign_id",
+                "leads",
+                ":lead_id"
+              ],
+              "variable": [
+                {
+                  "key": "campaign_id",
+                  "value": ""
+                },
+                {
+                  "key": "lead_id",
+                  "value": ""
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "updateOutreachLead",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v2/outreach/campaigns/:campaign_id/leads/:lead_id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2",
+                "outreach",
+                "campaigns",
+                ":campaign_id",
+                "leads",
+                ":lead_id"
+              ],
+              "variable": [
+                {
+                  "key": "campaign_id",
+                  "value": ""
+                },
+                {
+                  "key": "lead_id",
+                  "value": ""
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "getOutreachAnalytics",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v2/outreach/campaigns/:campaign_id/analytics",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2",
+                "outreach",
+                "campaigns",
+                ":campaign_id",
+                "analytics"
+              ],
+              "variable": [
+                {
+                  "key": "campaign_id",
+                  "value": ""
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "listOutreachAccounts",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v2/outreach/campaigns/:campaign_id/accounts",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2",
+                "outreach",
+                "campaigns",
+                ":campaign_id",
+                "accounts"
+              ],
+              "query": [
+                {
+                  "key": "cursor",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "limit",
+                  "value": "",
+                  "disabled": true
+                }
+              ],
+              "variable": [
+                {
+                  "key": "campaign_id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Requires current mailbox visibility and campaign scope; never activates the account."
+          }
+        },
+        {
+          "name": "getOutreachAccount",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v2/outreach/campaigns/:campaign_id/accounts/:account_id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2",
+                "outreach",
+                "campaigns",
+                ":campaign_id",
+                "accounts",
+                ":account_id"
+              ],
+              "variable": [
+                {
+                  "key": "campaign_id",
+                  "value": ""
+                },
+                {
+                  "key": "account_id",
+                  "value": ""
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Record a manual, unverified consent attestation without sending",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v2/outreach/campaigns/:campaign_id/leads/:lead_id/consent",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2",
+                "outreach",
+                "campaigns",
+                ":campaign_id",
+                "leads",
+                ":lead_id",
+                "consent"
+              ],
+              "variable": [
+                {
+                  "key": "campaign_id",
+                  "value": ""
+                },
+                {
+                  "key": "lead_id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Record a manual, unverified consent attestation without sending",
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Read the authenticated actor's display name only",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v2/me/preferences",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2",
+                "me",
+                "preferences"
+              ]
+            },
+            "description": "Read the authenticated actor's display name only"
+          }
+        },
+        {
+          "name": "Replace the authenticated actor's display name at an expected revision",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "X-CSRF-Token",
+                "value": ""
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v2/me/preferences",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2",
+                "me",
+                "preferences"
+              ]
+            },
+            "description": "Replace the authenticated actor's display name at an expected revision",
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "getOutreachSequenceDraft",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v2/outreach/campaigns/:campaign_id/sequence",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2",
+                "outreach",
+                "campaigns",
+                ":campaign_id",
+                "sequence"
+              ],
+              "variable": [
+                {
+                  "key": "campaign_id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Inert campaign sequence draft metadata; no send, due claim or enrollment authority."
+          }
+        },
+        {
+          "name": "saveOutreachSequenceDraft",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "X-CSRF-Token",
+                "value": ""
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v2/outreach/campaigns/:campaign_id/sequence",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2",
+                "outreach",
+                "campaigns",
+                ":campaign_id",
+                "sequence"
+              ],
+              "variable": [
+                {
+                  "key": "campaign_id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Inert campaign sequence draft metadata; no send, due claim or enrollment authority.",
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "listOutreachRuns",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v2/outreach/campaigns/:campaign_id/runs",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2",
+                "outreach",
+                "campaigns",
+                ":campaign_id",
+                "runs"
+              ],
+              "query": [
+                {
+                  "key": "cursor",
+                  "value": "",
+                  "disabled": true
+                }
+              ],
+              "variable": [
+                {
+                  "key": "campaign_id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "listOutreachRuns"
+          }
+        },
+        {
+          "name": "createOutreachRun",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v2/outreach/campaigns/:campaign_id/runs",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2",
+                "outreach",
+                "campaigns",
+                ":campaign_id",
+                "runs"
+              ],
+              "variable": [
+                {
+                  "key": "campaign_id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "createOutreachRun",
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "getOutreachRun",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v2/outreach/campaigns/:campaign_id/runs/:run_id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2",
+                "outreach",
+                "campaigns",
+                ":campaign_id",
+                "runs",
+                ":run_id"
+              ],
+              "variable": [
+                {
+                  "key": "campaign_id",
+                  "value": ""
+                },
+                {
+                  "key": "run_id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "getOutreachRun"
+          }
+        },
+        {
+          "name": "cancelOutreachRun",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v2/outreach/campaigns/:campaign_id/runs/:run_id/cancel",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2",
+                "outreach",
+                "campaigns",
+                ":campaign_id",
+                "runs",
+                ":run_id",
+                "cancel"
+              ],
+              "variable": [
+                {
+                  "key": "campaign_id",
+                  "value": ""
+                },
+                {
+                  "key": "run_id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "cancelOutreachRun",
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -37,6 +37,10 @@ untouched; the parked marketing backend was not modified.
   skips elements inside another dialog or a menu and documents the Radix fallback honestly.
 - R4: Live Chat dialog returns focus to the Get Help button through `Modal returnFocusTo`
   (Button forwards its ref); 390px organization grant rows stack identity above the controls.
+- R5: Developer API now ships the brief's Postman collection download (generated from
+  contracts/v1 and v2 OpenAPI, cookie-session auth, empty session variables, no credential) with a
+  Docker test that rebuilds it from the contracts and compares byte for byte, plus the white-label
+  contact card.
 - Verification: pending the shell worker's corrected fleet-02 checkpoint (check:api, check:api:v2,
   lint, typecheck, test, build, fixture preview) and the nine feature-worker browser matrices; this
   entry is updated with the results.

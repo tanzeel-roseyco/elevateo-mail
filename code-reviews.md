@@ -2031,3 +2031,10 @@ Defects fixed in this pass: 4 (PW-02, CS-02, CS-01 retry, comment); 1 adjudicate
 | 390px People: editable grant identity crushed beside Role select | Fixed: identity cell is `basis-full` below `sm`, so the UUID/role text owns the first line and the controls wrap under it. |
 | Contacts browser: member id cleared on 409/503; Suppression note unnamed | Already fixed in b88fcb50 (confirmed by the worker as b08ec3e7-era defects). |
 | CS-02 reported against b88fcb50 | Fixed in 76df0606. |
+
+
+### Fable R5 disposition — 2026-10-20
+
+| Finding | Disposition |
+| --- | --- |
+| Brief parity: Developer API must offer a Postman collection download and a white-label contact card | Fixed: `lib/postmanCollection.ts` builds a v2.1 collection from both OpenAPI documents (resolves `#/components/parameters` refs, `:path` variables, `{{sessionContext}}`/`{{authorizationVersion}}` headers, raw JSON body placeholder, no auth block); committed file `public/developer/elevateo-mail.postman_collection.json` (33 v1 + 29 v2 requests); `postmanCollection.test.ts` rebuilds and compares byte for byte and checks the no-credential invariants; `SettingsRoutes.test.tsx` asserts the download anchor and the white-label contact link. Earlier "CLI article" substitution withdrawn. |
