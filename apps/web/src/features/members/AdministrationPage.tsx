@@ -163,8 +163,9 @@ export function AdministrationPage({ section }: { section: 'people' | 'organizat
           {view.value.grants.map((grant) => {
             const roles = editableRoles(view.value.actor, grant)
             const selected = selection[grant.user_id] ?? grant.role
+            {/* basis-full below sm: the UUID/role text owns the first line at 390px; controls wrap under it. */}
             return <li key={grant.user_id} className="flex flex-wrap items-center gap-3 px-6 py-4 text-sm">
-              <div className="min-w-0 flex-1"><p className="break-all font-mono text-xs text-zinc-700 dark:text-zinc-300">{grant.user_id}</p><p className="text-xs text-zinc-500">Current: {grant.role.replaceAll('_', ' ')} · revision {grant.revision}</p></div>
+              <div className="min-w-0 basis-full sm:flex-1 sm:basis-auto"><p className="break-all font-mono text-xs text-zinc-700 dark:text-zinc-300">{grant.user_id}</p><p className="text-xs text-zinc-500">Current: {grant.role.replaceAll('_', ' ')} · revision {grant.revision}</p></div>
               {roles.length > 0 && <><label className="text-xs text-zinc-500">Role <select aria-label={`Role for ${grant.user_id}`} className={`ms-1 ${selectClass}`} disabled={pending !== null || writeBlocked} value={selected} onChange={(event) => { const role = roles.find((candidate) => candidate === event.target.value); if (role) setSelection((before) => ({ ...before, [grant.user_id]: role })) }}>{[grant.role, ...roles.filter((role) => role !== grant.role)].map((role) => <option key={role} value={role}>{role.replaceAll('_', ' ')}</option>)}</select></label><Button size="sm" disabled={pending !== null || writeBlocked || selected === grant.role} onClick={() => void change(grant)}>Save role</Button></>}
             </li>
           })}

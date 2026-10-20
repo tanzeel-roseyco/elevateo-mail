@@ -26,7 +26,7 @@ export function DraftAttachments({ draftId, mailboxId, disabled }: { draftId: st
     const current = ++revision.current
     const outcome = await request((ctx, signal) => port.list(ctx, draftId, mailboxId, signal))
     if (current !== revision.current) return
-    if (outcome.kind === 'ok') setItems(outcome.value.items)
+    if (outcome.kind === 'ok') { setItems(outcome.value.items); setMessage(null) }
     else if (outcome.kind === 'failed') setMessage('Attachments could not be loaded. Refresh to try again.')
   }, [port, request, draftId, mailboxId])
   useEffect(() => { void load() }, [load])

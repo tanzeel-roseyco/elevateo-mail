@@ -1,7 +1,7 @@
 // "Get Help" dropdown (DESIGN-SPEC §4.2): Live Chat · Help Centre · Community. Live chat has no
 // provider connected in this build, so the item opens a modal that says so and points at the help
 // centre instead of pretending a chat session started.
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { Button } from './Button'
 import { BookOpenIcon, ChatBubbleLeftRightIcon, ChevronDownMiniIcon, QuestionMarkCircleIcon, UserGroupIcon } from './icons'
 import { Menu, MenuItem, MenuLink } from './Menu'
@@ -10,13 +10,15 @@ import { Text, TextLink } from './Text'
 
 export function GetHelpMenu() {
   const [chatOpen, setChatOpen] = useState(false)
+  // The menu item that opens the dialog unmounts with the menu, so the dialog returns focus here.
+  const helpButton = useRef<HTMLButtonElement | null>(null)
   return (
     <>
       <Menu
         align="end"
         label="Get Help"
         trigger={
-          <Button variant="outline" size="xs" className="pe-4" icon={<QuestionMarkCircleIcon className="size-4" />} iconTrailing={<ChevronDownMiniIcon className="size-4 text-zinc-400" />}>
+          <Button ref={helpButton} variant="outline" size="xs" className="pe-4" icon={<QuestionMarkCircleIcon className="size-4" />} iconTrailing={<ChevronDownMiniIcon className="size-4 text-zinc-400" />}>
             Get Help
           </Button>
         }
@@ -34,6 +36,7 @@ export function GetHelpMenu() {
       <Modal
         open={chatOpen}
         onOpenChange={setChatOpen}
+        returnFocusTo={helpButton}
         title="Live chat is not connected"
         footer={
           <Button variant="primary" onClick={() => setChatOpen(false)}>

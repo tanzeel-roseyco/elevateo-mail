@@ -14,8 +14,8 @@ const listeners = new Set<() => void>()
 const cache = new Map<string, unknown>()
 // AIDEV-NOTE: Keys whose last setItem failed (quota, blocked). Memory is the authority for them:
 // a fresh read must not replace the unsaved value with null/stale disk data (PW-02). The flag
-// clears on the next successful write; a storage event from another tab for such a key is ignored
-// because the other tab's copy can only be older than the unsaved value held here.
+// clears on the next successful write. A storage event from another tab for such a key is ignored:
+// policy keeps this tab's unsaved value even though the other tab's copy may be newer.
 const unsaved = new Set<string>()
 
 // AIDEV-NOTE: Another tab writing, removing or clearing storage must not leave this tab's cache

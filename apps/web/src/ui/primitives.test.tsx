@@ -10,6 +10,7 @@ import { Breadcrumbs } from './Breadcrumbs'
 import { CopyButton } from './CodeBlock'
 import { Menu, MenuItem } from './Menu'
 import { Modal } from './Modal'
+import { GetHelpMenu } from './GetHelpMenu'
 import { ButtonTabs } from './Tabs'
 import { Tooltip } from './Tooltip'
 
@@ -66,6 +67,23 @@ describe('Modal', () => {
     fireEvent.keyDown(dialog, { key: 'Escape' })
     await waitFor(() => expect(screen.queryByRole('dialog')).toBeNull())
     await waitFor(() => expect(document.activeElement).toBe(opener))
+  })
+})
+
+describe('GetHelpMenu', () => {
+  it('returns focus to the Get Help button after the Live Chat dialog closes', async () => {
+    render(
+      <MemoryRouter>
+        <GetHelpMenu />
+      </MemoryRouter>,
+    )
+    const trigger = screen.getByRole('button', { name: 'Get Help' })
+    fireEvent.click(trigger)
+    fireEvent.click(screen.getByRole('menuitem', { name: 'Live Chat' }))
+    const dialog = await screen.findByRole('dialog', { name: 'Live chat is not connected' })
+    fireEvent.keyDown(dialog, { key: 'Escape' })
+    await waitFor(() => expect(screen.queryByRole('dialog')).toBeNull())
+    await waitFor(() => expect(document.activeElement).toBe(trigger))
   })
 })
 
@@ -137,7 +155,7 @@ describe('Tooltip', () => {
 
 function TabHarness() {
   const [value, setValue] = useState<'a' | 'b'>('a')
-  return <ButtonTabs label="Views" value={value} onChange={setValue} tabs={[{ key: 'a', label: 'All' }, { key: 'b', label: 'Unread' }]} />
+  return <ButtonTabs<'a' | 'b'> label="Views" value={value} onChange={(key) => setValue(key)} tabs={[{ key: 'a', label: 'All' }, { key: 'b', label: 'Unread' }]} />
 }
 
 describe('ButtonTabs', () => {

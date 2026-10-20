@@ -35,6 +35,8 @@ untouched; the parked marketing backend was not modified.
   per-key unsaved memory authority; CS-02 unbroken 998-character subject wraps inside the send
   review card; CS-01 failed attachment list offers "Retry loading attachments"; Modal opener capture
   skips elements inside another dialog or a menu and documents the Radix fallback honestly.
+- R4: Live Chat dialog returns focus to the Get Help button through `Modal returnFocusTo`
+  (Button forwards its ref); 390px organization grant rows stack identity above the controls.
 - Verification: pending the shell worker's corrected fleet-02 checkpoint (check:api, check:api:v2,
   lint, typecheck, test, build, fixture preview) and the nine feature-worker browser matrices; this
   entry is updated with the results.

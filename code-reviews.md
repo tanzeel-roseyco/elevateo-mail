@@ -2020,3 +2020,14 @@ Defects fixed in this pass: 18. Densities for the reviewed packets remain as rec
 | SearchPage TS-01 | Fixed in b88fcb50 (recovery load keeps the one-shot flag). |
 
 Defects fixed in this pass: 4 (PW-02, CS-02, CS-01 retry, comment); 1 adjudicated.
+
+
+
+### Fable R4 disposition — 2026-10-20
+
+| Finding | Disposition |
+| --- | --- |
+| DA02 Live Chat dialog: Get Help loses focus (menuitem unmounts) | Fixed deterministically: `Modal` gains `returnFocusTo`; `GetHelpMenu` passes a ref to the Get Help button (Button now forwards its React 19 `ref`; Menu merges it). Test "returns focus to the Get Help button after the Live Chat dialog closes". |
+| 390px People: editable grant identity crushed beside Role select | Fixed: identity cell is `basis-full` below `sm`, so the UUID/role text owns the first line and the controls wrap under it. |
+| Contacts browser: member id cleared on 409/503; Suppression note unnamed | Already fixed in b88fcb50 (confirmed by the worker as b08ec3e7-era defects). |
+| CS-02 reported against b88fcb50 | Fixed in 76df0606. |

@@ -2,7 +2,7 @@
 // primary / outline / ghost / danger buttons; `secondary` is kept as the outline alias used by
 // pre-existing pages, so no legacy call site changes meaning.
 // AIDEV-NOTE: Primary is gold with slate-950 text (8.4:1); never white-on-gold (2.4:1 fails AA).
-import type { ButtonHTMLAttributes, ReactNode } from 'react'
+import type { ButtonHTMLAttributes, ReactNode, Ref } from 'react'
 import { cx } from '@/lib/format'
 
 export type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'ghost' | 'subtle' | 'danger'
@@ -37,6 +37,8 @@ export const buttonClass = (variant: ButtonVariant = 'outline', size: ButtonSize
   )
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+  /** React 19 ref prop; Menu merges it with its own trigger ref. */
+  ref?: Ref<HTMLButtonElement>
   variant?: ButtonVariant
   size?: ButtonSize
   /** Leading icon slot (Heroicons mini/micro at size-4). */

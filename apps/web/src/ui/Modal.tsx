@@ -2,7 +2,7 @@
 // white card, title + hairline, body, right-aligned footer and the top-end close button. Focus
 // containment, Escape and focus restoration come from the primitive (D6); no handwritten trapping.
 import * as Dialog from '@radix-ui/react-dialog'
-import { useLayoutEffect, useRef, type ReactNode } from 'react'
+import { useLayoutEffect, useRef, type ReactNode, type RefObject } from 'react'
 import { cx } from '@/lib/format'
 import { IconButton } from './Button'
 import { XMarkIcon } from './icons'
@@ -15,6 +15,8 @@ interface ModalProps {
   description?: string
   /** Optional opener rendered via asChild so Radix wires aria-* and focus return onto it. */
   trigger?: ReactNode
+  /** Element to focus on close when the dialog was not opened from the focused control (menus). */
+  returnFocusTo?: RefObject<HTMLElement | null>
   /** Footer actions, usually [Cancel ghost][primary]. */
   footer?: ReactNode
   /** Wider variant for code-heavy content (integration snippets). */
@@ -22,7 +24,7 @@ interface ModalProps {
   children: ReactNode
 }
 
-export function Modal({ open, onOpenChange, title, description, trigger, footer, size = 'md', children }: ModalProps) {
+export function Modal({ open, onOpenChange, title, description, trigger, returnFocusTo, footer, size = 'md', children }: ModalProps) {
   // AIDEV-NOTE: Radix's modal content always refocuses its own trigger on close, which is null for
   // controlled trigger-less dialogs (Add New Tag, Live Chat opened from a menu). The layout effect
   // runs before Radix's autofocus effect, so activeElement is still the opener; an element inside
@@ -35,7 +37,8 @@ export function Modal({ open, onOpenChange, title, description, trigger, footer,
     opener.current = active instanceof HTMLElement && active !== document.body && !active.closest('[role="dialog"], [role="menu"]') ? active : null
   }, [open])
   const restoreOpener = (event: Event) => {
-    const target = opener.current
+    const explicit = returnFocusTo?.current
+    const target = explicit && explicit.isConnected ? explicit : opener.current
     if (target && target.isConnected) {
       event.preventDefault()
       target.focus()
