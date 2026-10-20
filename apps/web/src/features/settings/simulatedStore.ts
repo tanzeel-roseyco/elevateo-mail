@@ -12,25 +12,30 @@ import { useSession } from '@/app/session'
 const PREFIX = 'elevateo.settings.'
 const listeners = new Set<() => void>()
 const cache = new Map<string, unknown>()
+// AIDEV-NOTE: Keys whose last setItem failed (quota, blocked). Memory is the authority for them:
+// a fresh read must not replace the unsaved value with null/stale disk data (PW-02). The flag
+// clears on the next successful write; a storage event from another tab for such a key is ignored
+// because the other tab's copy can only be older than the unsaved value held here.
+const unsaved = new Set<string>()
 
 // AIDEV-NOTE: Another tab writing, removing or clearing storage must not leave this tab's cache
 // stale (review P2): drop the affected keys and re-render subscribers on every storage event.
 if (typeof window !== 'undefined') {
   window.addEventListener('storage', (event) => {
-    if (event.key === null) cache.clear()
-    else if (event.key.startsWith(PREFIX)) cache.delete(event.key)
+    if (event.key === null) for (const key of [...cache.keys()]) { if (!unsaved.has(key)) cache.delete(key) }
+    else if (event.key.startsWith(PREFIX) && !unsaved.has(event.key)) cache.delete(event.key)
     else return
     for (const listener of listeners) listener()
   })
 }
 
 /**
- * `fresh` re-reads persisted storage even when a cached value exists (read-modify-write). When
- * storage throws (blocked, private mode), the cached in-memory value survives instead of being
- * replaced by the fallback, so memory-only records are never lost between two updates.
+ * `fresh` re-reads persisted storage even when a cached value exists (read-modify-write), except
+ * for keys with an unsaved in-memory value, which stays authoritative. When reading itself throws
+ * (blocked, private mode) the cached value survives instead of being replaced by the fallback.
  */
 function readStorage<T>(key: string, schema: z.ZodType<T>, fallback: T, fresh = false): T {
-  if (!fresh && cache.has(key)) return cache.get(key) as T
+  if (cache.has(key) && (!fresh || unsaved.has(key))) return cache.get(key) as T
   let value: T
   try {
     const raw = window.localStorage.getItem(key)
@@ -50,8 +55,10 @@ function writeStorage<T>(key: string, value: T): void {
   cache.set(key, value)
   try {
     window.localStorage.setItem(key, JSON.stringify(value))
+    unsaved.delete(key)
   } catch {
-    // Local convenience only; the in-memory value still drives this session.
+    // Quota or blocked storage: memory now holds the only copy, so later reads must prefer it.
+    unsaved.add(key)
   }
   for (const listener of listeners) listener()
 }
@@ -111,4 +118,5 @@ export function simulatedId(): string {
 /** Test seam: forget cached values so a test can start from a clean storage state. */
 export function resetSimulatedCache(): void {
   cache.clear()
+  unsaved.clear()
 }

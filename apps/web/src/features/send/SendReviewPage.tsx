@@ -120,7 +120,8 @@ function Review({ mailboxId, draftId }: { mailboxId: string; draftId: string }) 
   const gate = consentGate(review.outbound_mode, review.recipient_checks, review.purpose)
   const approvable = review.ready && gate.allowed
   const dt = 'text-xs font-medium uppercase tracking-wide text-zinc-500'
-  const dd = 'mt-1 text-sm text-zinc-800 dark:text-white'
+  // break-words: a 998-character unbroken subject or address must wrap inside the card (CS-02).
+  const dd = 'mt-1 min-w-0 break-words text-sm text-zinc-800 dark:text-white'
   return <article aria-busy={busy}>
     <PageHeader title="Review send" subtitle="Approve the exact saved content before anything is queued" />
     <Card className="max-w-3xl space-y-5">

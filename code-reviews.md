@@ -2004,3 +2004,19 @@ history), `MembersPage.test.tsx` (id kept after refusal), `DraftAttachments.test
 | Toast stack cap | Not changed: no rapid caller exists; recorded as integration risk only. |
 
 Defects fixed in this pass: 18. Densities for the reviewed packets remain as recorded by the reviewers.
+
+
+
+### Fable R3 disposition — 2026-10-20 (after b88fcb50)
+
+| Finding | Disposition |
+| --- | --- |
+| PW-02 write-only failure (getItem ok / setItem throws) discards cached A on update B | Fixed: `unsaved` key set; a failed `setItem` makes memory authoritative for that key until a later write succeeds; fresh reads and other-tab storage events skip such keys. Test "keeps the first tag when getItem works but setItem throws quota". |
+| CS-02 unbroken subject overflows send review at 1440/390 | Fixed: review `dd` cells are `min-w-0 break-words`; approval content is wrapped, never truncated. Test asserts the class on the subject cell. |
+| CS-01 attachment error keeps loading indicator | Fixed earlier (loading only while no error); now also an explicit "Retry loading attachments" button. Test extended. |
+| Modal opener capture caveat | Hardened: ignores `<body>` and elements inside `[role=dialog]`/`[role=menu]`; comment now states the Radix fallback instead of claiming focus never lands on body. Runtime proof is the design worker's. |
+| CodeBlock stale header comment | Fixed. |
+| Developer API second card (Postman download in EmailGuard) | Adjudicated: no Postman collection exists for Elevateo; the card links the CLI connector article instead of inventing a download. Recorded as a deliberate content substitution. |
+| SearchPage TS-01 | Fixed in b88fcb50 (recovery load keeps the one-shot flag). |
+
+Defects fixed in this pass: 4 (PW-02, CS-02, CS-01 retry, comment); 1 adjudicated.

@@ -31,6 +31,7 @@ describe('saved draft attachment panel', () => {
     setup({ list: vi.fn(async () => { throw new GatewayError('transport', 'network', 'down') }) })
     expect(await screen.findByText('Attachments could not be loaded. Refresh to try again.')).toBeTruthy()
     expect(screen.queryByText('Loading attachments...')).toBeNull()
+    expect(screen.getByRole('button', { name: 'Retry loading attachments' })).toBeTruthy()
   })
 
   it('uploads, displays scan state, refreshes, and removes', async () => {

@@ -112,6 +112,27 @@ describe('blocked storage', () => {
   })
 })
 
+describe('write-only storage failure (PW-02)', () => {
+  it('keeps the first tag when getItem works but setItem throws quota', async () => {
+    const setItem = vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => { throw new DOMException('quota', 'QuotaExceededError') })
+    try {
+      renderSettings('/settings/tags')
+      await screen.findByText('No tags yet')
+      await createTag('Alpha')
+      await createTag('Beta')
+      const list = await screen.findByRole('list', { name: 'Tags' })
+      expect(within(list).getByText('Alpha')).toBeTruthy()
+      expect(within(list).getByText('Beta')).toBeTruthy()
+      // Another tab's (older) copy of the key does not evict the unsaved value.
+      const session = await createFixtureGateway().getSession()
+      fireEvent(window, new StorageEvent('storage', { key: `elevateo.settings.tags.${session.actor.id}.${session.organization.id}`, newValue: '[]' }))
+      expect(within(list).getByText('Alpha')).toBeTruthy()
+    } finally {
+      setItem.mockRestore()
+    }
+  })
+})
+
 describe('tag colour radiogroup', () => {
   it('exposes one tab stop and moves selection with the arrow keys', async () => {
     renderSettings('/settings/tags')

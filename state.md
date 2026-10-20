@@ -31,8 +31,13 @@ untouched; the parked marketing backend was not modified.
   SendStatus suppression note named again, Outreach lists have structured loading/unavailable/error/
   empty states, and the sidebar mark now derives from the handoff logo
   (`public/brand/elevateo-mark-{64,180}.png`). Next snapshot/build belongs to the shell worker.
-- Verification: pending fleet-02 Docker run (check:api, check:api:v2, lint, typecheck, test, build)
-  and 1440/390 screenshot harness; this entry is updated with the results.
+- R3 (after b88fcb50): PW-02 write-only storage failure (getItem ok, setItem quota) now keeps a
+  per-key unsaved memory authority; CS-02 unbroken 998-character subject wraps inside the send
+  review card; CS-01 failed attachment list offers "Retry loading attachments"; Modal opener capture
+  skips elements inside another dialog or a menu and documents the Radix fallback honestly.
+- Verification: pending the shell worker's corrected fleet-02 checkpoint (check:api, check:api:v2,
+  lint, typecheck, test, build, fixture preview) and the nine feature-worker browser matrices; this
+  entry is updated with the results.
 
 ### Authoritative completion status (2026-10-20)
 

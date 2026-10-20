@@ -1,5 +1,6 @@
-// Flux code block (integration detail pages): dark pre with a top-end Copy button. Copy failures are
-// reported inline rather than swallowed so the person knows to select the text by hand.
+// Flux code block (integration detail pages, DESIGN-SPEC §5): light zinc-50 pre with a hairline and
+// a top-end Copy button. Copy failures are reported inline rather than swallowed so the person knows
+// to select the text by hand.
 import { useEffect, useState } from 'react'
 import { copyText } from '@/lib/clipboard'
 import { cx } from '@/lib/format'

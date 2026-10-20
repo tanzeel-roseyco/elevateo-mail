@@ -64,6 +64,7 @@ export function DraftAttachments({ draftId, mailboxId, disabled }: { draftId: st
     <h2 className="font-semibold">Attachment</h2>
     <p className="my-1 text-zinc-500">One PDF, PNG, JPEG or text file, at most 1 MiB. Sending waits for a successful security scan.</p>
     {items === null && message === null && <p role="status">Loading attachments...</p>}
+    {items === null && message !== null && <Button disabled={busy} onClick={() => void load()}>Retry loading attachments</Button>}
     {items?.map((item) => <div key={item.id} className="my-2 flex flex-wrap items-center gap-2">
       <span className="break-all">{item.filename} ({item.byte_size} bytes)</span>
       <span role="status">{statusText[item.status]}</span>

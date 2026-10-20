@@ -23,12 +23,16 @@ interface ModalProps {
 }
 
 export function Modal({ open, onOpenChange, title, description, trigger, footer, size = 'md', children }: ModalProps) {
-  // AIDEV-NOTE: Controlled trigger-less dialogs (Add New Tag, Live Chat from a menu) capture the
-  // opener before Radix moves focus and restore it on close; a detached opener falls back to the
-  // Radix default so focus is never left on <body>.
+  // AIDEV-NOTE: Radix's modal content always refocuses its own trigger on close, which is null for
+  // controlled trigger-less dialogs (Add New Tag, Live Chat opened from a menu). The layout effect
+  // runs before Radix's autofocus effect, so activeElement is still the opener; an element inside
+  // another dialog or a menu (already closing) is not a usable opener and is skipped. With no
+  // usable opener the Radix default applies, so browser evidence decides whether focus lands well.
   const opener = useRef<HTMLElement | null>(null)
   useLayoutEffect(() => {
-    if (open) opener.current = document.activeElement instanceof HTMLElement ? document.activeElement : null
+    if (!open) return
+    const active = document.activeElement
+    opener.current = active instanceof HTMLElement && active !== document.body && !active.closest('[role="dialog"], [role="menu"]') ? active : null
   }, [open])
   const restoreOpener = (event: Event) => {
     const target = opener.current
