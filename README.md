@@ -13,11 +13,16 @@ styled with the EmailGuard tokens. No billing, plans or payments exist in the UI
 does not own are explicitly labelled simulated UI adapters (browser-local, never claimed as server
 persistence); real gateway, consent and authorization rules, plaintext rendering, backend and contracts
 are unchanged. Route inventory, decisions and review disposition: `docs/design/emailguard-replica.md`.
-Verification runs only in fleet-02 Docker under the shell worker: checkpoint b08ec3e7 failed typecheck
-and three shell tests (fixed in b88fcb50 and the R3 follow-up); checkpoint 582a01d6 passed API/lint/
-typecheck but failed 25 unit cases (fixed in the R6 follow-up); the corrected checkpoint and the
-per-feature browser diagnostics are recorded in `state.md` as they complete. Historical receipts below
-are not evidence for this candidate.
+Verification ran only in fleet-02 Docker under the shell worker. Canonical candidate `521f6942` (R9,
+archive SHA256 `0c90b20e…bf670f`): check:api, check:api:v2, lint, typecheck PASS, affected unit files
+19/19 PASS, production build and fixture exclusion PASS; the last full unit run (R7 `9f647973`) was
+977/979 with both failures fixed in R9. Synthetic browser matrices (Chromium 1440/390) pass for
+shell 32/32, compose 52/52, campaigns 74/74, contacts 44/44, profile 26/26, API/tags/webhooks 14/14
+plus spacing/Postman parity, integrations/help 40/40 and the targeted reader cases; inbox acceptance
+remains BLOCKED on untested folder/filter/star/bulk/pagination limits, and the final design captures
+are recorded in `state.md`. Nothing here verifies
+live mail, backend authorization or persistence; simulated adapters are labelled as such in the UI.
+Full ledger, commands and limits: `state.md`; coverage and defect density: `code-reviews.md`.
 
 ### Active unified dashboard work (2026-10-20)
 

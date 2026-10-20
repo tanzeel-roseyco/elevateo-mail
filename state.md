@@ -61,9 +61,45 @@ untouched; the parked marketing backend was not modified.
   search-then-immediate-Back shows the restored query even when the location key is unchanged;
   App direct-message test waits up to 5s (it passed at 1.34s in R6 and timed out at 1s under R7
   load; no thread-path source changed).
-- Verification: pending the shell worker's corrected fleet-02 checkpoint (check:api, check:api:v2,
-  lint, typecheck, test, build, fixture preview) and the nine feature-worker browser matrices; this
-  entry is updated with the results.
+- Verification ledger (final, 2026-10-20): canonical candidate `521f6942e5186c5dcc5b9593f9be4c264b5ac411`
+  (R9), clean tree, archive SHA256 `0c90b20e6f7251691acae484567e57b58877b0ded55f6042c3b6ec8679bf670f`,
+  captured and tested only by the shell worker (ctx_583ca94d85e9) in fleet-02 Docker under the shared
+  lease: `docker build -f apps/web/docker/test.Dockerfile -t elevateo-eg-feature-1020-checkpoint-r9 .`
+  then `docker run --rm … npm run check:api && npm run check:api:v2 && npm run lint && npm run
+  typecheck && npm run test …`, plus the separate production build / fixture-exclusion run. R9 result:
+  check:api, check:api:v2, lint, typecheck PASS; affected unit files 19/19 PASS; production build and
+  fixture exclusion exit 0. The last full unit run is R7 `9f647973`: 977 PASS / 2 FAIL of 979, both
+  failures fixed in R9 and covered by its affected set; no full 979 rerun on `521f6942` is claimed.
+  Earlier gates: 582a01d6 (R4) 945/970 unit, 696cca78 (R6) 973/976. Logs: fleet
+  `/tmp/elevateo-emailguard-feature-20261020/evidence-r{4,6,7,9}/checkpoint.log` and the local copies
+  `feature-verification/shell-dashboard-ctx583-r{4,6,7}-checkpoint.log`.
+- Browser evidence (synthetic fixtures, intercepted HTTP, Chromium 1440/390, Codex verification
+  workers; reports and PNGs under `C:\Users\Tanzeel\Code and projects\Elevateo EmailGuard Frontend
+  20261020\feature-verification\<area>/`): shell/dashboard 32/32 distinct PASS (R6+R7, incl. mobile
+  nested Escape); inbox 28 distinct cases partly exercised, corrected targeted 8/8 PASS, acceptance
+  BLOCKED (folders, filter races, star persistence/isolation, multi-select, cursor limits and
+  cross-client freshness untested; see `inbox.md`); reader/search/attachments R4 28/30 then R6 targeted
+  2/2 PASS (TS-01/TS-02 closed); compose/send 52/52 distinct PASS (CS-02 closed at 390 on R7);
+  campaigns 74/74 PASS (C3 copy fixed in R7); contacts/members 44/44 PASS; profile/workspaces 26/26
+  PASS; API/tags/webhooks 14/14 behavioural PASS plus R9 spacing 2/2 PASS (12.3px gaps) and Postman
+  v1/v2 parity PASS; integrations/help/tools 40/40 distinct PASS (R9 rapid Back 2/2), mobile Copy
+  visual pending; design/accessibility: R9 behavioural matrix 28/28 complete (two contrast cases collect evidence rather than assert), R4 focus 4/4 PASS, mobile Copy overlay PASS, active tab 2px gold border and inactive text 4.767:1 PASS; 168 page captures complete with literal 1–2px parity FAIL on the Profile heading offset caused by the required simulated notices (recorded as a deviation); 404 probe classified as fixture gaps, not product defects: /v2 organization grants/roster (People/Members) and /v2/me/preferences (Personal Details) have no V2 mocks under dev-fixtures, so those pages captured their honest error states and their populated visual acceptance is blocked.
+- Honest limits: no live mail, provider, purchase or deployment; backend, contracts and the parked
+  marketing backend untouched; every browser result uses synthetic fixtures, so server authorization,
+  persistence, pagination maxima and cross-client freshness are unverified. Simulated UI adapters
+  (labelled on each page, browser-local, never claimed as server persistence): workspace name,
+  invitations, workspace creation, tags, API tokens, webhooks, password change, integration
+  connections. Unsupported inbox folders (Snoozed, Spam, Trash) are listed disabled "Not available
+  yet"; stars are local-only; Outreach Accounts has no populated adapter. Below 768px the inbox is
+  list-only (INBOX-SPEC §63–65): folder and All/Unread/Starred controls are not reachable on phones
+  (capability gap, recorded beside the blocked inbox acceptance). Visual parity: the design worker's
+  final measurement puts the Profile heading at y 146.39 vs 86 (1440) and y 267.78 vs 158 (390)
+  because the required simulated-mail/fixture notices add height above the content; the literal
+  1–2px parity gate therefore FAILS and is recorded as a deviation, not waived. Docker cleanup
+  (shell worker receipt 01:28 UTC): preview container, 28 task image IDs and the internal network
+  removed, absence verified; ~2.12 GB reclaimed on fleet-02; volumes, caches, source, evidence, deps
+  and the shared Playwright image retained. Fable's idle fleet task dir
+  `/tmp/elevateo-fe-emailguard-1020` (no containers) removed at close.
 
 ### Authoritative completion status (2026-10-20)
 

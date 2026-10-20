@@ -4,7 +4,19 @@
 `apps/web` is now the EmailGuard-replica UI described in `docs/design/emailguard-replica.md`: shell,
 dashboard, Gmail-behaviour inbox, six settings sections and a help centre with original copy. Settings
 without a backend endpoint are simulated UI adapters labelled on every page; nothing claims server
-persistence and no API was added. Verification is Docker-only on fleet-02; see `state.md`.
+persistence and no API was added. Developer API offers the API reference link, a Postman v2.1
+collection generated from `contracts/v1` and `contracts/v2` (`apps/web/src/lib/postmanCollection.ts`,
+byte-compared in Docker) and a white-label contact card.
+
+Verification is Docker-only on fleet-02 (shell worker ctx_583ca94d85e9). Final candidate `521f6942`:
+contract checks, lint, typecheck, affected units 19/19, production build and fixture exclusion PASS;
+last full unit run R7 977/979 with both failures fixed in R9. Ten Codex browser/source verification
+reports (synthetic fixtures, Chromium 1440/390) live outside the repo under
+`Elevateo EmailGuard Frontend 20261020/feature-verification/`; `state.md` carries the per-area ledger.
+Known limits: inbox acceptance BLOCKED on untested folder/filter/star/bulk/pagination cases;
+unsupported folders disabled; stars local-only; simulated adapters for workspace name, invitations,
+workspace creation, tags, tokens, webhooks, password and integrations; Outreach Accounts without a
+populated adapter; no live mail, backend, authorization or persistence evidence.
 
 ### Authoritative completion status (2026-10-20)
 

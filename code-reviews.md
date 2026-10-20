@@ -2089,3 +2089,22 @@ Changed source lines this round: ~40 across SettingsRoutes, SettingsLayout, Tabs
 | --- | --- |
 | HelpRoutes same-batch test: expected consent, received draft (integrator hypothesis confirmed: forward+Back restores the same location key, so the R7 key dependency never fires) | Source: the field is a draft over the URL query (`draft ?? initial`), cleared on submit and on URL change; the URL is the source of truth after a search. Same single-act regression now exercises the real mechanism. 1 defect in my R7 change, fixed. |
 | App.test direct-message happy path: "Selected message" not found | Timing, not a regression: 1339ms PASS in R6 vs 1439ms FAIL in R7 against the 1s default wait; no thread-path source changed in R7. Wait raised to 5s with the assertion unchanged. |
+
+
+### EmailGuard replica — final coverage and density (2026-10-20, candidate 521f6942)
+
+Reviews were bounded read-only packets (<=200 source lines each) by the Codex verification workers,
+plus the coordinator's spot-checks; Claude Fable 5.1 (claude-fable-5-1) made every source change. Rows
+cite the external reports under `feature-verification/`; they are not whole-project approval.
+
+| Packet / worker | LOC | Defects | Density | Status |
+| --- | --- | --- | --- | --- |
+| Design/accessibility (Modal, Tabs, TagsPage, GetHelpMenu) | 178 | 1 confirmed (DA-01), 2 risks | 5.62/KLOC | DA-01/02/03 fixed in b88fcb50–582a01d6; runtime focus 4/4 PASS |
+| API/tags/webhooks (DeveloperApi, Tags, Webhooks, Postman) | 188 | 1 original (spacing), 0 new | 5.32/KLOC | fixed in R8; R9 spacing 2/2 PASS |
+| Scheduler review of R9 help change | 46 | 0 new | 0/KLOC | R9 Back 2/2 PASS |
+| Integrator R3 storage packet (simulatedStore) | 122 | 1 low (comment) | 8.2/KLOC | fixed in R4 |
+| Fable R6–R9 repair patches (self-reported, confirmed by runtime) | ~150 changed | 2 (webhook `flex` override lost to `inline-flex`; help `location.key` dependency) | 13.3/KLOC | both fixed (R8, R9) |
+
+Other worker packets (shell, inbox, thread, compose, campaigns, contacts, profile) record their own
+LOC, defects and densities in their reports; their defects are dispositioned in the R3–R9 tables above.
+Final design/accessibility runtime: R9 behavioural matrix 28/28 complete (two contrast cases collect evidence rather than assert), R4 focus 4/4 PASS, mobile Copy overlay PASS, active tab 2px gold border and inactive text 4.767:1 PASS; 168 page captures complete with literal 1–2px parity FAIL on the Profile heading offset caused by the required simulated notices (recorded as a deviation); 404 probe classified as fixture gaps, not product defects: /v2 organization grants/roster (People/Members) and /v2/me/preferences (Personal Details) have no V2 mocks under dev-fixtures, so those pages captured their honest error states and their populated visual acceptance is blocked.
