@@ -148,7 +148,7 @@ function Status({ mailboxId, sendId }: { mailboxId: string; sendId: string }) {
           <div><dt className="text-zinc-500">{status.simulated ? 'Simulated attempts' : 'Submission attempts'}</dt><dd className="font-medium text-zinc-800 dark:text-white">{status.attempts}</dd></div>
           {status.hold_reason !== null && <div><dt className="text-zinc-500">Hold</dt><dd className="font-medium text-zinc-800 dark:text-white">{status.hold_reason.replaceAll('_', ' ')}</dd></div>}
         </dl>
-        {status.suppression_reason !== null && <Callout variant="warning" role="note">{SUPPRESSION[status.suppression_reason]}</Callout>}
+        {status.suppression_reason !== null && <Callout variant="warning" role="note" label="Suppression">{SUPPRESSION[status.suppression_reason]}</Callout>}
         {status.cancel_requested && <p className="text-sm text-zinc-500">Stop has been requested. A late acceptance can still appear.</p>}
         {message && <Callout variant="neutral" role="alert">{message}</Callout>}
         <div className="flex flex-wrap items-center gap-2 pt-2">

@@ -335,7 +335,7 @@ function Dashboard({ mailboxes, name }: { mailboxes: readonly Mailbox[]; name: s
         <StatCard label="Unread replies" value={sum(entries, (c) => c.unread)} />
         <StatCard label="Open drafts" value={sum(entries, (c) => c.drafts)} />
         <StatCard label="Daily send limit" value={String(mailboxes.length * DAILY_SEND_LIMIT_PER_MAILBOX)} note={`${DAILY_SEND_LIMIT_PER_MAILBOX} per mailbox; usage so far is not reported by the server`} />
-        <StatCard label="Campaigns" value={campaignCount} note={campaigns.status === 'unavailable' ? 'Outreach is not connected' : undefined} />
+        <StatCard label="Campaigns" value={campaignCount} {...(campaigns.status === 'unavailable' ? { note: 'Outreach is not connected' } : {})} />
       </section>
 
       <div className="mt-4">

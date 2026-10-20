@@ -133,7 +133,21 @@ function TagModal({ open, onOpenChange, onCreate }: { open: boolean; onOpenChang
         <fieldset>
           <legend className="text-sm font-medium text-zinc-800 dark:text-white">Color</legend>
           {/* Ten columns match the reference at ≥640px; five keep 32px swatches inside a 390px modal. */}
-          <div className="mt-2 grid grid-cols-5 gap-2 sm:grid-cols-10" role="radiogroup" aria-label="Tag colour">
+          {/* Roving tabindex: the chosen swatch is the group's only tab stop; arrows move the choice. */}
+          <div
+            className="mt-2 grid grid-cols-5 gap-2 sm:grid-cols-10"
+            role="radiogroup"
+            aria-label="Tag colour"
+            onKeyDown={(event) => {
+              const step = event.key === 'ArrowRight' || event.key === 'ArrowDown' ? 1 : event.key === 'ArrowLeft' || event.key === 'ArrowUp' ? -1 : 0
+              if (step === 0) return
+              event.preventDefault()
+              const index = TAG_COLOURS.findIndex((swatch) => swatch.hex === color)
+              const next = TAG_COLOURS[(index + step + TAG_COLOURS.length) % TAG_COLOURS.length]!
+              setColor(next.hex)
+              event.currentTarget.querySelectorAll<HTMLElement>('[role="radio"]')[(index + step + TAG_COLOURS.length) % TAG_COLOURS.length]?.focus()
+            }}
+          >
             {TAG_COLOURS.map((swatch) => {
               const selected = swatch.hex === color
               return (
@@ -143,6 +157,7 @@ function TagModal({ open, onOpenChange, onCreate }: { open: boolean; onOpenChang
                   role="radio"
                   aria-checked={selected}
                   aria-label={swatch.name}
+                  tabIndex={selected ? 0 : -1}
                   onClick={() => setColor(swatch.hex)}
                   style={{ backgroundColor: swatch.hex }}
                   className={cx('h-8 w-8 rounded-full transition-transform duration-75 hover:scale-105', selected && 'ring-2 ring-zinc-500 ring-offset-2 dark:ring-offset-zinc-800')}

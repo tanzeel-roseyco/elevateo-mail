@@ -24,13 +24,15 @@ interface CalloutProps {
   actions?: ReactNode
   /** `alert` for failures that need immediate announcement, `status` for live updates, `note` otherwise. */
   role?: 'alert' | 'status' | 'note'
+  /** Accessible name for the landmark-like note when there is no visible heading. */
+  label?: string
   className?: string
 }
 
-export function Callout({ variant = 'neutral', icon = true, heading, children, actions, role = 'note', className }: CalloutProps) {
+export function Callout({ variant = 'neutral', icon = true, heading, children, actions, role = 'note', label, className }: CalloutProps) {
   const palette = VARIANTS[variant]
   return (
-    <div role={role} className={cx('flex rounded-xl border p-2', palette.panel, className)}>
+    <div role={role} aria-label={label} className={cx('flex rounded-xl border p-2', palette.panel, className)}>
       {icon ? (
         <span aria-hidden className="flex size-8 shrink-0 items-center justify-center">{palette.icon}</span>
       ) : (

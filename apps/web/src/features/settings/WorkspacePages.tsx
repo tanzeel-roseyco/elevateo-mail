@@ -12,7 +12,8 @@ import { Badge } from '@/ui/Badge'
 import { Button, buttonClass } from '@/ui/Button'
 import { Callout } from '@/ui/Callout'
 import { Card, LinkCard, LinkCardGrid } from '@/ui/Card'
-import { Field, TextArea, TextInput } from '@/ui/Field'
+import { Field, Select, TextArea, TextInput } from '@/ui/Field'
+import { Modal } from '@/ui/Modal'
 import { SectionHeader } from '@/ui/PageHeader'
 import { EnvelopeIcon } from '@/ui/icons'
 import { useToast } from '@/ui/Toast'
@@ -153,13 +154,28 @@ export function WorkspaceInvitePage() {
 export function WorkspaceInvitationsPage() {
   const store = useInvitations()
   const { toast } = useToast()
+  const [editing, setEditing] = useState<Invitation | null>(null)
   const remove = (id: string) => {
     store.update((current) => current.filter((inv) => inv.id !== id))
     toast('Invitation removed.', 'neutral')
   }
+  /** Returns an error message when the edit is refused (duplicate address); null on success. */
+  const save = (id: string, email: string, role: Invitation['role']): string | null => {
+    let refused: string | null = null
+    store.update((current) => {
+      if (current.some((inv) => inv.id !== id && inv.email.toLowerCase() === email)) {
+        refused = 'Another pending invitation already uses that address.'
+        return null
+      }
+      return current.map((inv) => (inv.id === id ? { ...inv, email, role } : inv))
+    })
+    if (refused === null) toast('Invitation updated in this browser only.', 'neutral')
+    return refused
+  }
   return (
     <>
       <SimulatedAdapterNotice />
+      {editing && <EditInvitationModal invitation={editing} onClose={() => setEditing(null)} onSave={save} />}
       <div className="max-w-3xl">
         {store.value.length === 0 ? (
           <EmptyState icon={<EnvelopeIcon className="size-5" />} title="No pending invitations" body="Invitations you record on the Invite New Members page appear here until you remove them." action={<Link to="/settings/workspace/invite" className={buttonClass('primary', 'md')}>Invite New Members</Link>} />
@@ -171,6 +187,7 @@ export function WorkspaceInvitationsPage() {
                   <span className="min-w-0 flex-1 truncate font-medium text-zinc-800 dark:text-white">{inv.email}</span>
                   <Badge tone="neutral" size="sm">{inv.role === 'admin' ? 'Administrator' : 'Member'}</Badge>
                   <Badge tone="warn" size="sm">Pending · not sent</Badge>
+                  <Button size="sm" onClick={() => setEditing(inv)}>Edit</Button>
                   <Button size="sm" variant="danger" onClick={() => remove(inv.id)}>Remove</Button>
                 </li>
               ))}
@@ -179,6 +196,48 @@ export function WorkspaceInvitationsPage() {
         )}
       </div>
     </>
+  )
+}
+
+function EditInvitationModal({ invitation, onClose, onSave }: { invitation: Invitation; onClose(): void; onSave(id: string, email: string, role: Invitation['role']): string | null }) {
+  const id = useId()
+  const [email, setEmail] = useState(invitation.email)
+  const [role, setRole] = useState<Invitation['role']>(invitation.role)
+  const [error, setError] = useState<string | null>(null)
+  const submit = (event: FormEvent) => {
+    event.preventDefault()
+    const normalized = email.trim().toLowerCase()
+    if (!InvitationSchema.shape.email.safeParse(normalized).success) return setError('Enter a valid email address.')
+    const refused = onSave(invitation.id, normalized, role)
+    if (refused !== null) return setError(refused)
+    onClose()
+  }
+  return (
+    <Modal
+      open
+      onOpenChange={(next) => {
+        if (!next) onClose()
+      }}
+      title="Edit invitation"
+      footer={
+        <>
+          <Button variant="ghost" onClick={onClose}>Cancel</Button>
+          <Button variant="primary" type="submit" form={`${id}-form`}>Save changes</Button>
+        </>
+      }
+    >
+      <form id={`${id}-form`} className="space-y-4" onSubmit={submit} noValidate>
+        <Field id={`${id}-email`} label="Email address" error={error}>
+          <TextInput id={`${id}-email`} type="email" value={email} maxLength={254} onChange={(event) => setEmail(event.target.value)} aria-invalid={error ? true : undefined} aria-describedby={error ? `${id}-email-error` : undefined} />
+        </Field>
+        <Field id={`${id}-role`} label="Role">
+          <Select id={`${id}-role`} value={role} onChange={(event) => setRole(event.target.value === 'admin' ? 'admin' : 'member')}>
+            <option value="member">Member</option>
+            <option value="admin">Administrator</option>
+          </Select>
+        </Field>
+      </form>
+    </Modal>
   )
 }
 

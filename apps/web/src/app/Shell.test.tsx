@@ -461,7 +461,7 @@ describe('registered feature routes (FE-805)', () => {
     await screen.findByText('Synthetic organization A')
     expect(await screen.findByRole('heading', { name: 'Campaigns' })).toBeTruthy()
     // AIDEV-NOTE: The lazy page heading mounts before its separate API request settles.
-    await waitFor(() => expect(screen.getByRole('status').textContent).toBe('Outreach API unavailable for this account.'))
+    expect((await screen.findByText('Outreach API unavailable for this account.')).getAttribute('role')).toBe('status')
     expect(screen.getByRole('navigation', { name: 'Outreach' })).toBeTruthy()
     expect(screen.getByRole('link', { name: 'Campaigns' }).getAttribute('aria-current')).toBe('page')
     expect(within(screen.getByRole('navigation', { name: 'Contacts' })).getByRole('link', { name: 'People' })).toBeTruthy()
@@ -489,7 +489,7 @@ describe('online-only shell hygiene (FE-805)', () => {
     renderShell(createFixtureGateway())
     await screen.findByText('Synthetic organization A')
     act(() => { window.dispatchEvent(new Event('offline')) })
-    expect(screen.getByRole('status').textContent).toMatch(/Your device reports a connection problem/)
+    expect(screen.getByText(/Your device reports a connection problem/).closest('[role="status"]')).not.toBeNull()
     expect(screen.getByText('outlet-content')).toBeTruthy()
     act(() => { window.dispatchEvent(new Event('online')) })
     fireEvent.click(screen.getByRole('button', { name: 'Reload' }))

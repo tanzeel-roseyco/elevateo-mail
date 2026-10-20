@@ -19,6 +19,18 @@ untouched; the parked marketing backend was not modified.
 - Review disposition: every open coordinator checklist item in `code-reviews.md` applied with
   regression tests; `GlobeAltIcon` adjudicated as the verbatim Heroicons glyph; Modal focus restore
   already provided by Radix.
+- Checkpoint b08ec3e7 (shell worker ctx_583ca94d85e9, fleet-02 Docker): check:api, check:api:v2 and
+  lint PASS; typecheck FAIL (DashboardPage optional `note`, OutreachPages duplicate className,
+  Menu close arity) and 3 shell/sidebar tests FAIL (brand wordmark oracle, ambiguous status queries).
+  All fixed in the follow-up commit together with the runtime findings from the feature workers:
+  controlled Modal restores focus to its opener (tag modal, Live Chat dialog), tag colour radiogroup
+  has one tab stop with arrow navigation, inactive tabs zinc-500 (AA), code blocks follow the
+  DESIGN-SPEC light recipe, simulated store keeps memory-only records when storage throws,
+  invitation Edit, help search field follows Back/Forward, draft attachments show only the error after
+  a failed list, search auto-reset once per user search, member id kept after a refused add,
+  SendStatus suppression note named again, Outreach lists have structured loading/unavailable/error/
+  empty states, and the sidebar mark now derives from the handoff logo
+  (`public/brand/elevateo-mark-{64,180}.png`). Next snapshot/build belongs to the shell worker.
 - Verification: pending fleet-02 Docker run (check:api, check:api:v2, lint, typecheck, test, build)
   and 1440/390 screenshot harness; this entry is updated with the results.
 

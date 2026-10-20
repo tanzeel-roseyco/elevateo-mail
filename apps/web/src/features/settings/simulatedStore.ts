@@ -24,17 +24,23 @@ if (typeof window !== 'undefined') {
   })
 }
 
-function readStorage<T>(key: string, schema: z.ZodType<T>, fallback: T): T {
-  if (cache.has(key)) return cache.get(key) as T
-  let value = fallback
+/**
+ * `fresh` re-reads persisted storage even when a cached value exists (read-modify-write). When
+ * storage throws (blocked, private mode), the cached in-memory value survives instead of being
+ * replaced by the fallback, so memory-only records are never lost between two updates.
+ */
+function readStorage<T>(key: string, schema: z.ZodType<T>, fallback: T, fresh = false): T {
+  if (!fresh && cache.has(key)) return cache.get(key) as T
+  let value: T
   try {
     const raw = window.localStorage.getItem(key)
+    value = fallback
     if (raw !== null) {
       const parsed = schema.safeParse(JSON.parse(raw))
       if (parsed.success) value = parsed.data
     }
   } catch {
-    // Unreadable storage: the adapter starts from its default for this session.
+    value = cache.has(key) ? (cache.get(key) as T) : fallback
   }
   cache.set(key, value)
   return value
@@ -89,8 +95,7 @@ export function useSimulatedStore<T>(name: string, schema: z.ZodType<T>, fallbac
     },
     update: (mutate) => {
       if (key === null) return
-      cache.delete(key)
-      const next = mutate(readStorage(key, schema, fallback))
+      const next = mutate(readStorage(key, schema, fallback, true))
       if (next !== null) writeStorage(key, next)
     },
   }

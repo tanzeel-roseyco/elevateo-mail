@@ -3,7 +3,7 @@
 // invalidation when another tab writes the same storage key.
 import { fireEvent, render, screen, within } from '@testing-library/react'
 import { MemoryRouter, Route, Routes } from 'react-router'
-import { afterEach, beforeEach, describe, expect, it } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { createFixtureGateway } from '@/data/fixtures/fixtureGateway'
 import { SessionProvider } from '@/app/session'
 import { Shell } from '@/app/Shell'
@@ -90,6 +90,66 @@ describe('tags adapter', () => {
     expect(grid.className).toContain('grid-cols-5')
     expect(grid.className).toContain('sm:grid-cols-10')
     expect(within(grid).getAllByRole('radio')).toHaveLength(20)
+  })
+})
+
+describe('blocked storage', () => {
+  it('keeps memory-only records across two updates when localStorage throws', async () => {
+    const getItem = vi.spyOn(Storage.prototype, 'getItem').mockImplementation(() => { throw new Error('blocked') })
+    const setItem = vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => { throw new Error('blocked') })
+    try {
+      renderSettings('/settings/tags')
+      await screen.findByText('No tags yet')
+      await createTag('First')
+      await createTag('Second')
+      const list = await screen.findByRole('list', { name: 'Tags' })
+      expect(within(list).getByText('First')).toBeTruthy()
+      expect(within(list).getByText('Second')).toBeTruthy()
+    } finally {
+      getItem.mockRestore()
+      setItem.mockRestore()
+    }
+  })
+})
+
+describe('tag colour radiogroup', () => {
+  it('exposes one tab stop and moves selection with the arrow keys', async () => {
+    renderSettings('/settings/tags')
+    await screen.findByText('No tags yet')
+    fireEvent.click(screen.getAllByRole('button', { name: 'Add New Tag' })[0]!)
+    const group = within(await screen.findByRole('dialog', { name: 'Add New Tag' })).getByRole('radiogroup', { name: 'Tag colour' })
+    const radios = within(group).getAllByRole('radio')
+    expect(radios.filter((r) => r.tabIndex === 0)).toHaveLength(1)
+    radios[0]!.focus()
+    fireEvent.keyDown(group, { key: 'ArrowRight' })
+    expect(within(group).getByRole('radio', { name: 'Peach' }).getAttribute('aria-checked')).toBe('true')
+    expect(document.activeElement).toBe(within(group).getByRole('radio', { name: 'Peach' }))
+    fireEvent.keyDown(group, { key: 'ArrowLeft' })
+    fireEvent.keyDown(group, { key: 'ArrowLeft' })
+    expect(within(group).getByRole('radio', { name: 'Slate' }).getAttribute('aria-checked')).toBe('true')
+  })
+})
+
+describe('pending invitations', () => {
+  it('edits an invitation in place and refuses an address another invitation already uses', async () => {
+    const key = await invitationsKey()
+    window.localStorage.setItem(key, JSON.stringify([
+      { id: 'x1', email: 'one@example.test', role: 'member', created_at: '2026-10-20T10:00:00Z' },
+      { id: 'x2', email: 'two@example.test', role: 'member', created_at: '2026-10-20T10:00:00Z' },
+    ]))
+    renderSettings('/settings/workspace/invitations')
+    const list = await screen.findByRole('list', { name: 'Pending invitations' })
+    fireEvent.click(within(within(list).getByText('one@example.test').closest('li')!).getByRole('button', { name: 'Edit' }))
+    const dialog = await screen.findByRole('dialog', { name: 'Edit invitation' })
+    fireEvent.change(within(dialog).getByLabelText('Email address'), { target: { value: 'TWO@example.test' } })
+    fireEvent.click(within(dialog).getByRole('button', { name: 'Save changes' }))
+    expect(await within(dialog).findByText('Another pending invitation already uses that address.')).toBeTruthy()
+    fireEvent.change(within(dialog).getByLabelText('Email address'), { target: { value: 'lead@example.test' } })
+    fireEvent.change(within(dialog).getByLabelText('Role'), { target: { value: 'admin' } })
+    fireEvent.click(within(dialog).getByRole('button', { name: 'Save changes' }))
+    expect(await within(list).findByText('lead@example.test')).toBeTruthy()
+    expect(within(within(list).getByText('lead@example.test').closest('li')!).getByText('Administrator')).toBeTruthy()
+    expect(JSON.parse(window.localStorage.getItem(key) ?? '[]')[0]).toMatchObject({ id: 'x1', email: 'lead@example.test', role: 'admin' })
   })
 })
 

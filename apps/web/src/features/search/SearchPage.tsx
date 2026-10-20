@@ -50,7 +50,7 @@ function SearchResults({ q, mailboxId }: { q: string; mailboxId: string | undefi
   const abortRef = useRef<AbortController | null>(null)
 
   const load = useCallback(
-    async (cursor: string | undefined, append: boolean) => {
+    async (cursor: string | undefined, append: boolean, recovering = false) => {
       const parsed = SearchQuerySchema.safeParse(mailboxId === undefined ? { q } : { q, mailbox_id: mailboxId })
       if (!parsed.success) {
         setState({ status: 'invalid', message: 'Enter between 1 and 256 characters, not only spaces.' })
@@ -60,7 +60,8 @@ function SearchResults({ q, mailboxId }: { q: string; mailboxId: string | undefi
       abortRef.current?.abort()
       const controller = new AbortController()
       abortRef.current = controller
-      if (!append) resetUsedRef.current = false
+      // A recovery load keeps the flag set: one automatic reset per user-initiated search.
+      if (!append && !recovering) resetUsedRef.current = false
       if (append) setState((prev) => (prev.status === 'ready' ? { ...prev, loadingMore: true } : prev))
       else setState({ status: 'loading' })
       const outcome = await request((ctx, signal) => {
@@ -74,7 +75,7 @@ function SearchResults({ q, mailboxId }: { q: string; mailboxId: string | undefi
       if (outcome.kind === 'failed') {
         if (isApiError(outcome.error, 'cursor_invalid') && cursor !== undefined && !resetUsedRef.current) {
           resetUsedRef.current = true
-          void load(undefined, false)
+          void load(undefined, false, true)
           return
         }
         const failure = describeFailure(outcome.error, 'read')

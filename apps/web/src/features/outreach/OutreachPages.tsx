@@ -4,10 +4,13 @@ import { z } from 'zod'
 import type { CsrfProof, ReadContext } from '@/data/gateway'
 import { isApiError } from '@/data/errors'
 import { Badge } from '@/ui/Badge'
+import { EmptyState, ErrorState, Skeleton } from '@/ui/Async'
 import { Button, buttonClass } from '@/ui/Button'
+import { PaperAirplaneIcon, RectangleStackIcon } from '@/ui/icons'
 import { PageHeader } from '@/ui/PageHeader'
 import { linkClass } from '@/ui/Text'
 import { Field, TextInput } from '@/ui/Field'
+import { cx } from '@/lib/format'
 import { newId } from '@/lib/ids'
 import {
   accountPageSchema, accountSchema, addLeadInputSchema, analyticsSchema,
@@ -89,11 +92,30 @@ function useOutreachRead<K extends Resource>(kind: K, props: OutreachPageProps, 
   return state
 }
 
+// Every Outreach list shares one loading / unavailable / error / empty presentation. The unavailable
+// sentence keeps its role="status" text because the registry and shell tests assert it verbatim.
 function Content<T>({ state, empty, children }: { state: Load<T>; empty?: (value: T) => boolean; children: (value: T) => ReactNode }) {
-  if (state.status === 'loading') return <p role="status" className="px-4 py-6 text-sm text-zinc-500 rounded-xl border border-zinc-200 bg-white shadow-xs dark:border-zinc-700 dark:bg-zinc-800">Loading…</p>
-  if (state.status === 'unavailable') return <p role="status" className="px-4 py-6 text-sm text-zinc-500 rounded-xl border border-zinc-200 bg-white shadow-xs dark:border-zinc-700 dark:bg-zinc-800">Outreach API unavailable for this account.</p>
-  if (state.status === 'error') return <p role="alert" className="rounded-xl border border-red-300 bg-red-50 px-4 py-3 text-sm text-red-700 dark:border-red-500/40 dark:bg-red-500/10 dark:text-red-300">Unable to load this Outreach resource. Please try again later.</p>
-  if (empty?.(state.value)) return <p role="status" className="px-4 py-6 text-sm text-zinc-500 rounded-xl border border-zinc-200 bg-white shadow-xs dark:border-zinc-700 dark:bg-zinc-800">Nothing here yet.</p>
+  if (state.status === 'loading') return <div role="status" aria-label="Loading Outreach"><Skeleton rows={3} /></div>
+  if (state.status === 'unavailable') {
+    return (
+      <div className="rounded-xl border border-zinc-200 bg-white px-6 py-8 text-center shadow-xs dark:border-zinc-700 dark:bg-zinc-800">
+        <PaperAirplaneIcon aria-hidden className="mx-auto size-5 text-zinc-400" />
+        <p role="status" className="mt-3 font-medium text-zinc-800 dark:text-white">Outreach API unavailable for this account.</p>
+        <p className="mt-1 text-sm text-zinc-500">Campaign data lives in the Outreach service, which is not connected to this workspace. Your mail, drafts and members are unaffected.</p>
+        <Link to="/" className={cx(buttonClass('outline', 'md'), 'mt-4')}>Back to dashboard</Link>
+      </div>
+    )
+  }
+  if (state.status === 'error') {
+    return (
+      <ErrorState
+        title="Outreach could not be loaded"
+        body="The Outreach service did not answer. Reload to try again; nothing was changed."
+        action={<Button variant="primary" onClick={() => window.location.reload()}>Reload</Button>}
+      />
+    )
+  }
+  if (empty?.(state.value)) return <EmptyState icon={<RectangleStackIcon className="size-5" />} title="Nothing here yet" body="Items appear here as soon as they exist in Outreach. Use the actions above to create the first one." />
   return <>{children(state.value)}</>
 }
 function Page({ title, children }: { title: string; children: ReactNode }) {
@@ -114,7 +136,7 @@ function CampaignList(props: OutreachPageProps) {
   const cursor = search.get('cursor') ?? undefined
   const state = useOutreachRead('campaigns', props, undefined, 0, cursor)
   return <Page title="Campaigns">
-    {state.status === 'ready' && <Link className={linkClass} to="/outreach/campaigns/new" className={buttonClass('primary', 'md')}>Create draft campaign</Link>}
+    {state.status === 'ready' && <Link to="/outreach/campaigns/new" className={buttonClass('primary', 'md')}>Create draft campaign</Link>}
     <Content state={state} empty={(page) => page.items.length === 0 && page.next_cursor === null}>{(page) => <>
       <ul className="divide-y divide-zinc-200 rounded-xl border border-zinc-200 bg-white shadow-xs dark:border-zinc-700 dark:bg-zinc-800">{page.items.map((campaign) =>
         <li key={campaign.id} className="flex items-center justify-between gap-3 px-4 py-3 text-sm"><Link className={linkClass} to={`/outreach/campaigns/${campaign.id}`}>{campaign.name}</Link><Badge tone={campaign.status === 'paused' ? 'warn' : 'neutral'} size="sm">{campaign.status}</Badge></li>)}</ul>

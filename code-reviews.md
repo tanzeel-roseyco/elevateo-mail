@@ -1971,3 +1971,36 @@ additions above are preserved unchanged. Docker/browser evidence follows in `sta
 
 Defects fixed in this pass: 24 across the files above. Coverage and density figures for the reviewed
 packets remain as the reviewers recorded them; the fixed sources have not yet been re-reviewed.
+
+
+
+### Fable disposition of the b08ec3e7 checkpoint and feature-worker findings — 2026-10-20
+
+Shell worker ctx_583ca94d85e9 owns the fleet-02 Docker build; this pass fixes everything it and the
+nine feature workers reported. Regression tests: `settingsAdapters.test.tsx` (blocked storage, roving
+swatches, invitation edit), `primitives.test.tsx` (modal opener focus), `HelpRoutes.test.tsx` (search
+history), `MembersPage.test.tsx` (id kept after refusal), `DraftAttachments.test.tsx` (failed list).
+
+| Finding | Disposition |
+| --- | --- |
+| DashboardPage.tsx:338 TS2375 optional `note` | Fixed: conditional spread. |
+| OutreachPages.tsx:117 TS17001 duplicate className | Fixed; `Content` now renders skeleton / structured unavailable (status sentence kept verbatim) / ErrorState with Reload / EmptyState with icon and guidance. |
+| Menu.tsx:212/215 TS2554 close arity | Fixed: context `close(restoreFocus?)`. |
+| Sidebar.test "Elevateo Mail" oracle | Fixed: the handoff wordmark is "ELEVATEO CO."; oracle is `Elevateo Co.` and the mark src is the handoff-derived asset. |
+| Shell tests "multiple role=status" | Fixed: queries target the Outreach sentence and the connectivity notice directly. |
+| simulatedStore blocked-storage regression | Fixed: `readStorage(…, fresh)` keeps the cached value when storage throws; test covers two successive adds. |
+| WorkspaceInvitationsPage missing Edit | Fixed: Edit modal (address + role) with duplicate refusal. |
+| HelpRoutes search field stale on Back/Forward | Fixed: effect syncs the field with `q`. |
+| DraftAttachments loading beside error | Fixed: loading shows only while no error is recorded. |
+| SearchPage repeated automatic cursor reset | Fixed: recovery load keeps the one-shot flag. |
+| MembersPage clears id before success | Fixed: `write` resolves a boolean; the field clears only on confirmation. |
+| SendStatusPage suppression note name | Fixed: Callout `label="Suppression"`. |
+| Tag modal / Live Chat dialog Escape loses opener focus | Fixed: Modal captures the opener in a layout effect and restores it in `onCloseAutoFocus` when still connected. |
+| Tag radiogroup 20 tab stops, no arrows | Fixed: roving tabindex, Arrow Left/Right/Up/Down move selection and focus. |
+| Inactive LinkTabs 2.63:1 | Fixed: zinc-500 (4.75:1 on white); dark zinc-400 on zinc-900. |
+| CodeBlock dark recipe vs DESIGN-SPEC | Fixed per spec recipe (`rounded-lg bg-zinc-50 border-zinc-200 font-mono text-sm px-3 py-2`), dark variant zinc-900. |
+| Campaign generic empty/error content | Fixed (see Content above). |
+| Handoff logo assets | Fixed: `public/brand/elevateo-mark-{64,180}.png` are LANCZOS downscales of `branding/elevateo-mail-logo-transparent.png` (SHA-256 80f46c5f…2368); BrandMark test pins the new hashes. |
+| Toast stack cap | Not changed: no rapid caller exists; recorded as integration risk only. |
+
+Defects fixed in this pass: 18. Densities for the reviewed packets remain as recorded by the reviewers.

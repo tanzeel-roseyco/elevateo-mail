@@ -62,9 +62,9 @@ describe('sidebar sections', () => {
     expect(screen.getByRole('button', { name: 'Account and sign-out' }).textContent).toContain('Test user')
     // AIDEV-NOTE: Compact publisher assets; BrandMark tests verify authentic hashes and transfer budgets.
     const mark = screen.getByTestId('brand-mark').querySelector('img')
-    expect(mark?.getAttribute('src')).toBe('/brand/logo-mark-64.png')
+    expect(mark?.getAttribute('src')).toBe('/brand/elevateo-mark-64.png')
     expect(mark?.getAttribute('alt')).toBe('')
-    expect(screen.getByText('Elevateo Mail')).toBeTruthy()
+    expect(screen.getByText('Elevateo Co.')).toBeTruthy()
   })
 
   it('marks only the exact page with aria-current while a nested path keeps its parent highlighted', () => {

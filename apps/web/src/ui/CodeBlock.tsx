@@ -29,7 +29,7 @@ export function CopyButton({ text, label = 'Copy', className }: { text: string; 
     <button
       type="button"
       onClick={() => void copy(text)}
-      className={cx('rounded-md px-2 py-1 text-xs font-medium text-zinc-400 hover:bg-white/10 hover:text-zinc-100', className)}
+      className={cx('rounded-md px-2 py-1 text-xs font-medium text-zinc-500 hover:bg-zinc-200/60 hover:text-zinc-800 dark:text-zinc-400 dark:hover:bg-white/10 dark:hover:text-white', className)}
       aria-live="polite"
     >
       {status === 'copied' ? 'Copied' : status === 'failed' ? 'Copy failed' : label}
@@ -40,7 +40,8 @@ export function CopyButton({ text, label = 'Copy', className }: { text: string; 
 export function CodeBlock({ code, language, className }: { code: string; language?: string; className?: string }) {
   return (
     <div className={cx('relative', className)}>
-      <pre className="overflow-x-auto rounded-lg bg-zinc-900 p-4 pe-20 font-mono text-xs leading-5 text-zinc-100" data-language={language}>
+      {/* DESIGN-SPEC §5 "Code block with copy": rounded-lg bg-zinc-50 border-zinc-200 font-mono text-sm px-3 py-2. */}
+      <pre className="overflow-x-auto rounded-lg border border-zinc-200 bg-zinc-50 px-3 py-2 pe-20 font-mono text-sm leading-6 text-zinc-800 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100" data-language={language}>
         <code>{code}</code>
       </pre>
       <CopyButton text={code} className="absolute end-2 top-2" />

@@ -5,7 +5,8 @@ import { NavLink } from 'react-router'
 import { cx } from '@/lib/format'
 
 const ROW = 'flex h-10 gap-4 overflow-x-auto border-b border-zinc-800/10 dark:border-white/10'
-const TAB = '-mb-px inline-flex shrink-0 items-center border-b-2 border-transparent px-2 text-sm font-medium text-zinc-400 hover:text-zinc-800 dark:hover:text-white'
+// Inactive text is zinc-500 (4.75:1 on white, AA) rather than the lighter reference grey.
+const TAB = '-mb-px inline-flex shrink-0 items-center border-b-2 border-transparent px-2 text-sm font-medium text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-white'
 const SELECTED = 'border-(--color-accent-content) text-(--color-accent-content)'
 
 export interface LinkTab {

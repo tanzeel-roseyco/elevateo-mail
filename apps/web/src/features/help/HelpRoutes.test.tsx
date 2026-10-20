@@ -1,7 +1,7 @@
 // Help centre: collections render from content.ts, search is literal and case-insensitive, and
 // "Copy for LLM" copies the article as Markdown (or reports the failure inline).
-import { fireEvent, render, screen, within } from '@testing-library/react'
-import { MemoryRouter, Route, Routes } from 'react-router'
+import { fireEvent, render, screen, waitFor, within } from '@testing-library/react'
+import { MemoryRouter, Route, Routes, useNavigate } from 'react-router'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { HelpRoutes } from './HelpRoutes'
 import { ARTICLES, COLLECTIONS, articleToMarkdown, findArticle, searchArticles } from './content'
@@ -18,6 +18,28 @@ function renderHelp(entry: string) {
 
 afterEach(() => {
   vi.restoreAllMocks()
+})
+
+function BackButton() {
+  const navigate = useNavigate()
+  return <button type="button" onClick={() => void navigate(-1)}>history back</button>
+}
+
+describe('help search history', () => {
+  it('updates the search field when the browser goes back to an earlier query', async () => {
+    render(
+      <MemoryRouter initialEntries={['/help/search?q=draft', '/help/search?q=consent']} initialIndex={1}>
+        <BackButton />
+        <Routes>
+          <Route path="/help/*" element={<HelpRoutes />} />
+        </Routes>
+      </MemoryRouter>,
+    )
+    const field = screen.getByRole('searchbox', { name: 'Search help articles' }) as HTMLInputElement
+    expect(field.value).toBe('consent')
+    fireEvent.click(screen.getByRole('button', { name: 'history back' }))
+    await waitFor(() => expect((screen.getByRole('searchbox', { name: 'Search help articles' }) as HTMLInputElement).value).toBe('draft'))
+  })
 })
 
 describe('help centre', () => {

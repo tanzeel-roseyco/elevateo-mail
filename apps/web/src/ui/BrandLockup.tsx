@@ -1,6 +1,7 @@
-// Sidebar brand lockup (DESIGN-SPEC §3): the authentic gold Elevateo mark on its dark tile beside a
-// text wordmark, at the 24px logo height EmailGuard uses. The wordmark is typeset, not an image,
-// so it inherits the slate text colour in both themes while the mark artwork stays untouched.
+// Sidebar brand lockup (DESIGN-SPEC §3, handoff branding/elevateo-logo.png = gold mark above
+// "ELEVATEO CO."): the handoff mark on its dark tile beside the typeset wordmark at the 24px logo
+// height EmailGuard uses. Typeset text inherits the slate colour in both themes; the mark artwork
+// itself is never recoloured.
 import { Link } from 'react-router'
 import { cx } from '@/lib/format'
 import { BrandMark } from './BrandMark'

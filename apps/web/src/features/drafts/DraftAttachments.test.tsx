@@ -27,6 +27,12 @@ async function choose() {
 
 describe('saved draft attachment panel', () => {
   beforeEach(() => { window.sessionStorage.clear(); vi.restoreAllMocks() })
+  it('a failed first list shows the error without a lingering loading status', async () => {
+    setup({ list: vi.fn(async () => { throw new GatewayError('transport', 'network', 'down') }) })
+    expect(await screen.findByText('Attachments could not be loaded. Refresh to try again.')).toBeTruthy()
+    expect(screen.queryByText('Loading attachments...')).toBeNull()
+  })
+
   it('uploads, displays scan state, refreshes, and removes', async () => {
     const { port } = setup()
     await choose()

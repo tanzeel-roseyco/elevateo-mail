@@ -9,8 +9,8 @@ describe('official brand mark', () => {
   it.each([24, 28, 36] as const)('reserves a square %i pixel slot and offers density-aware sources', size => {
     render(<BrandMark size={size} />)
     const mark = screen.getByRole('img', { name: 'Elevateo' })
-    expect(mark.getAttribute('src')).toBe('/brand/logo-mark-64.png')
-    expect(mark.getAttribute('srcset')).toBe('/brand/logo-mark-64.png 64w, /brand/logo-mark-180.png 180w')
+    expect(mark.getAttribute('src')).toBe('/brand/elevateo-mark-64.png')
+    expect(mark.getAttribute('srcset')).toBe('/brand/elevateo-mark-64.png 64w, /brand/elevateo-mark-180.png 180w')
     expect(mark.getAttribute('sizes')).toBe(`${size}px`)
     expect(mark.getAttribute('width')).toBe(String(size))
     expect(mark.getAttribute('height')).toBe(String(size))
@@ -22,10 +22,10 @@ describe('official brand mark', () => {
     expect(container.querySelector('img')?.getAttribute('alt')).toBe('')
   })
 
-  // AIDEV-NOTE: Hashes pin unchanged official artwork; budgets prevent restoring the multi-megabyte master.
+  // AIDEV-NOTE: Hashes pin the handoff-derived artwork; budgets prevent shipping the 954 KB master.
   it.each([
-    ['logo-mark-64.png', 64, 8192, '69e64beb0e9414bb8f0ade0a703c15f3cd9c6801b6b95e4bc236ae9a48ec14b9'],
-    ['logo-mark-180.png', 180, 49152, '0afd2777ac35b3c0af53d62e9a7dbb4fb95c7b74bc85df6c968d8691d2d7d9a5'],
+    ['elevateo-mark-64.png', 64, 8192, '58b580ea5396176695ec1fcfe6eb7363564207c9dce629f5c7782ecaf48c8ae3'],
+    ['elevateo-mark-180.png', 180, 49152, 'bbd2e6f9fffc92562dd7b3a457f88e15a4f40abdee81cf812b8602b4eed21e5e'],
   ] as const)('keeps %s authentic, square and within its download budget', (file, size, budget, digest) => {
     const bytes = readFileSync(new NodeURL(`../../public/brand/${file}`, import.meta.url))
     expect(bytes.byteLength).toBeLessThanOrEqual(budget)

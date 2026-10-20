@@ -121,11 +121,12 @@ function MemberRoster({ mailboxId }: { mailboxId: string }) {
   }
 
   /** One guarded membership write at the roster revision currently on screen. */
+  /** Resolves `true` only when the server confirmed the write. */
   const write = async (
     userId: string,
     work: (ctx: ReadContext, proof: CsrfProof, expectedVersion: number, signal: AbortSignal) => Promise<MailboxMembershipResult>,
-  ) => {
-    if (roster.status !== 'ready' || !proof || busyUser !== null) return
+  ): Promise<boolean> => {
+    if (roster.status !== 'ready' || !proof || busyUser !== null) return false
     const expected = roster.version
     const sessionProof = proof
     const token = ++writeTokenRef.current
@@ -134,16 +135,17 @@ function MemberRoster({ mailboxId }: { mailboxId: string }) {
     const outcome = await request((ctx, signal) => work(ctx, sessionProof, expected, signal))
     // Release the busy row whatever happened, but only while this write still owns it.
     if (writeTokenRef.current === token) setBusyUser(null)
-    if (outcome.kind === 'stale') return
+    if (outcome.kind === 'stale') return false
     if (outcome.kind === 'failed') {
       setFailure(describeFailure(outcome.error, 'write'))
-      return
+      return false
     }
     applyResult(outcome.value)
+    return true
   }
 
   const putMember = (userId: string, capabilities: MembershipCapabilities) =>
-    void write(userId, (ctx, sessionProof, expected, signal) =>
+    write(userId, (ctx, sessionProof, expected, signal) =>
       gateway.putMailboxMember(ctx, sessionProof, mailboxId, userId, { expected_membership_version: expected, capabilities }, signal),
     )
 
@@ -157,8 +159,10 @@ function MemberRoster({ mailboxId }: { mailboxId: string }) {
       return
     }
     setNewUserError(null)
-    putMember(userId, newFlags)
-    setNewUserText('')
+    // The field clears only after a confirmed add; a 409/503 keeps the id for the retry.
+    void putMember(userId, newFlags).then((ok) => {
+      if (ok) setNewUserText('')
+    })
   }
 
   const canManage = mailbox === undefined ? true : mailbox.capabilities.manage_members

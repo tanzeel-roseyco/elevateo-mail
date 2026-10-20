@@ -1,7 +1,7 @@
 // Regression tests for the primitive findings from the bounded reviews: menu dismissal with no
 // items, breadcrumb list structure, code-point initials, repeated copy feedback, tooltip Escape and
 // button-tab focus movement.
-import { act, fireEvent, render, screen } from '@testing-library/react'
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { MemoryRouter } from 'react-router'
 import { useState } from 'react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
@@ -9,6 +9,7 @@ import { initialsOf } from './Avatar'
 import { Breadcrumbs } from './Breadcrumbs'
 import { CopyButton } from './CodeBlock'
 import { Menu, MenuItem } from './Menu'
+import { Modal } from './Modal'
 import { ButtonTabs } from './Tabs'
 import { Tooltip } from './Tooltip'
 
@@ -40,6 +41,31 @@ describe('Menu', () => {
       </Menu>,
     )
     expect(seen[0]).toBe(screen.getByRole('button', { name: 'Open' }))
+  })
+})
+
+function ModalHarness() {
+  const [open, setOpen] = useState(false)
+  return (
+    <>
+      <button type="button" onClick={() => setOpen(true)}>Open dialog</button>
+      <Modal open={open} onOpenChange={setOpen} title="Example">
+        <p>Body</p>
+      </Modal>
+    </>
+  )
+}
+
+describe('Modal', () => {
+  it('returns focus to the control that opened a trigger-less dialog', async () => {
+    render(<ModalHarness />)
+    const opener = screen.getByRole('button', { name: 'Open dialog' })
+    opener.focus()
+    fireEvent.click(opener)
+    const dialog = await screen.findByRole('dialog', { name: 'Example' })
+    fireEvent.keyDown(dialog, { key: 'Escape' })
+    await waitFor(() => expect(screen.queryByRole('dialog')).toBeNull())
+    await waitFor(() => expect(document.activeElement).toBe(opener))
   })
 })
 

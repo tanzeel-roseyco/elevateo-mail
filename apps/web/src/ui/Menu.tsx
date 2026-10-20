@@ -10,7 +10,8 @@ import { cx } from '@/lib/format'
 import { CheckMiniIcon } from './icons'
 
 interface MenuContextValue {
-  close(): void
+  /** Closes the panel; `restoreFocus=false` leaves focus where the activated item sent it. */
+  close(restoreFocus?: boolean): void
 }
 const MenuContext = createContext<MenuContextValue | null>(null)
 

@@ -1,7 +1,7 @@
 // Help centre (DESIGN-SPEC §6, help-center/INDEX.md structure): home with search and collection
 // cards, collection pages, article pages with breadcrumb and "Copy for LLM", the Community page
 // and a search results view. All copy is Elevateo's own (features/help/content.ts).
-import { useId, useState, type FormEvent } from 'react'
+import { useEffect, useId, useState, type FormEvent } from 'react'
 import { Link, Navigate, Route, Routes, useNavigate, useParams, useSearchParams } from 'react-router'
 import { cx } from '@/lib/format'
 import { EmptyState } from '@/ui/Async'
@@ -30,6 +30,8 @@ export function HelpRoutes() {
 
 function HelpSearchForm({ initial = '', autoFocus = false }: { initial?: string; autoFocus?: boolean }) {
   const [query, setQuery] = useState(initial)
+  // Browser Back/Forward changes `q` without remounting the form: keep the field in step with the URL.
+  useEffect(() => setQuery(initial), [initial])
   const navigate = useNavigate()
   const id = useId()
   const submit = (event: FormEvent) => {

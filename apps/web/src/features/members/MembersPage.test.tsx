@@ -84,6 +84,8 @@ describe('roster', () => {
     const alert = await screen.findByRole('alert')
     expect(alert.textContent).toContain('changed elsewhere')
     expect(screen.getByText('Roster revision 1')).toBeTruthy()
+    // The refused id stays in the field for the retry after reload.
+    expect((screen.getByLabelText('User id') as HTMLInputElement).value).toBe(CD.readerId)
     fireEvent.click(button('Reload members'))
     expect(await screen.findByText('Roster revision 2')).toBeTruthy()
     expect(screen.getByText(CD.readerId)).toBeTruthy()
