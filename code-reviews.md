@@ -2081,3 +2081,11 @@ Changed source lines this round: ~40 across SettingsRoutes, SettingsLayout, Tabs
 | Finding | Disposition |
 | --- | --- |
 | API worker P3 (R6 screenshots): webhook event options still touch | R6 fix was ineffective: `className="flex"` on the inline-flex label loses in Tailwind's class order. Fixed structurally with a block `div` per option; test asserts the wrapper and the spaced fieldset. 1 defect in my R6 change (class-order), now fixed. |
+
+
+### Fable R9 disposition — 2026-10-20 (R7 checkpoint 9f647973: API/lint/typecheck PASS, unit 977/979)
+
+| Finding | Disposition |
+| --- | --- |
+| HelpRoutes same-batch test: expected consent, received draft (integrator hypothesis confirmed: forward+Back restores the same location key, so the R7 key dependency never fires) | Source: the field is a draft over the URL query (`draft ?? initial`), cleared on submit and on URL change; the URL is the source of truth after a search. Same single-act regression now exercises the real mechanism. 1 defect in my R7 change, fixed. |
+| App.test direct-message happy path: "Selected message" not found | Timing, not a regression: 1339ms PASS in R6 vs 1439ms FAIL in R7 against the 1s default wait; no thread-path source changed in R7. Wait raised to 5s with the assertion unchanged. |

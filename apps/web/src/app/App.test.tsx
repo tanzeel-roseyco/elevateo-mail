@@ -66,7 +66,9 @@ describe('direct message binding on the thread route (FE-805)', () => {
     const { gateway, readCalls } = pagedGateway()
     const direct = vi.fn<DirectMessageRead>(async () => directPage())
     renderApp(gateway, direct)
-    const selected = await screen.findByLabelText('Selected message')
+    // The full App (session, mailboxes, shell, thread page, direct read) takes ~1.3s on the shared
+    // fleet runner; the default 1s wait made this pass/fail with machine load (R6 PASS, R7 FAIL).
+    const selected = await screen.findByLabelText('Selected message', {}, { timeout: 5000 })
     expect(selected.textContent).toContain('Direct plaintext')
     expect(direct).toHaveBeenCalledTimes(1)
     expect(direct).toHaveBeenCalledWith(expect.objectContaining({ contextId: expect.any(String) }), MB, THREAD, MESSAGE_B, expect.any(AbortSignal))

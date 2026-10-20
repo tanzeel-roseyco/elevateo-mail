@@ -53,10 +53,14 @@ untouched; the parked marketing backend was not modified.
   `/settings` renders the hub directly (Workspace tab selected there via `LinkTab.activeAt`);
   legacy-redirect test scopes to main; mobile drawer keeps open when Escape closes a nested popup;
   help subtitle/review values use `wrap-anywhere` (break-words does not shrink min-content);
-  help field re-syncs on the location key after search-then-immediate-Back; Copy sits on an opaque
+  help field keeps the URL as its source of truth after a submit (see R9); Copy sits on an opaque
   fade in code blocks; Leads empty-state copy no longer points "above".
 - R8: webhook event options wrapped in block rows (the R6 `flex` override lost to the primitive's
   `inline-flex` in Tailwind's class order, so the options still touched in the R6 screenshots).
+- R9 (R7 gate 977/979): help search field is a draft over the URL query and clears on submit, so
+  search-then-immediate-Back shows the restored query even when the location key is unchanged;
+  App direct-message test waits up to 5s (it passed at 1.34s in R6 and timed out at 1s under R7
+  load; no thread-path source changed).
 - Verification: pending the shell worker's corrected fleet-02 checkpoint (check:api, check:api:v2,
   lint, typecheck, test, build, fixture preview) and the nine feature-worker browser matrices; this
   entry is updated with the results.

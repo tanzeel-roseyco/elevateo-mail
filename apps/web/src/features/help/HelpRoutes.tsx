@@ -2,7 +2,7 @@
 // cards, collection pages, article pages with breadcrumb and "Copy for LLM", the Community page
 // and a search results view. All copy is Elevateo's own (features/help/content.ts).
 import { useEffect, useId, useState, type FormEvent } from 'react'
-import { Link, Navigate, Route, Routes, useLocation, useNavigate, useParams, useSearchParams } from 'react-router'
+import { Link, Navigate, Route, Routes, useNavigate, useParams, useSearchParams } from 'react-router'
 import { cx } from '@/lib/format'
 import { EmptyState } from '@/ui/Async'
 import { Breadcrumbs, type Crumb } from '@/ui/Breadcrumbs'
@@ -29,17 +29,20 @@ export function HelpRoutes() {
 }
 
 function HelpSearchForm({ initial = '', autoFocus = false }: { initial?: string; autoFocus?: boolean }) {
-  const [query, setQuery] = useState(initial)
-  const { key } = useLocation()
-  // Browser Back/Forward changes `q` without remounting the form: keep the field in step with the URL.
-  // The location key is a dependency too: search then immediate Back can commit in one batch with
-  // `initial` unchanged, which would otherwise leave the typed value in the field.
-  useEffect(() => setQuery(initial), [initial, key])
+  // Typed text since the last URL change or submit; null means the field shows the URL's own query.
+  // AIDEV-NOTE: Search then immediate Back can commit as one render with `initial` and even the
+  // location key unchanged (memory/hash history restores the same entry), so no effect dependency
+  // can observe it. Clearing the draft on submit makes the URL the source of truth from then on.
+  const [draft, setDraft] = useState<string | null>(null)
+  // Browser Back/Forward changes `q` without remounting the form: the URL wins over stale typing.
+  useEffect(() => setDraft(null), [initial])
+  const query = draft ?? initial
   const navigate = useNavigate()
   const id = useId()
   const submit = (event: FormEvent) => {
     event.preventDefault()
     const trimmed = query.trim()
+    setDraft(null)
     void navigate(trimmed === '' ? '/help' : `/help/search?q=${encodeURIComponent(trimmed)}`)
   }
   return (
@@ -47,7 +50,7 @@ function HelpSearchForm({ initial = '', autoFocus = false }: { initial?: string;
       <label htmlFor={id} className="sr-only">Search help articles</label>
       <span className="relative flex-1">
         <MagnifyingGlassIcon aria-hidden className="pointer-events-none absolute start-3 top-1/2 size-5 -translate-y-1/2 text-zinc-400" />
-        <input id={id} type="search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search for articles..." autoFocus={autoFocus} className={cx(inputClass, 'h-10 ps-10')} />
+        <input id={id} type="search" value={query} onChange={(event) => setDraft(event.target.value)} placeholder="Search for articles..." autoFocus={autoFocus} className={cx(inputClass, 'h-10 ps-10')} />
       </span>
       <Button type="submit" variant="primary">Search</Button>
     </form>
