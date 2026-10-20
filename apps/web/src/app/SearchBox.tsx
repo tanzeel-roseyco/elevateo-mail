@@ -1,12 +1,16 @@
-// Header search form: submits to /search with the query and optional mailbox scope in the URL
+// Search form: submits to /search with the query and optional mailbox scope in the URL
 // (navigation and filter state belong in the URL). No request happens here.
+// Two looks (INBOX-SPEC §2 "search input"): `header` is the compact h-10 field with a magnifier
+// in the inbox page header; `expanded` is the full form with a visible scope select on /search.
 import { useId, useState, type FormEvent } from 'react'
 import { useNavigate, useSearchParams } from 'react-router'
 import { useMailboxes } from './mailboxes'
-import { inputClass } from '@/ui/Field'
+import { inputClass, Select } from '@/ui/Field'
 import { Button } from '@/ui/Button'
+import { MagnifyingGlassIcon } from '@/ui/icons'
+import { cx } from '@/lib/format'
 
-export function SearchBox({ expanded = false }: { expanded?: boolean }) {
+export function SearchBox({ expanded = false, variant = expanded ? 'expanded' : 'header' }: { expanded?: boolean; variant?: 'header' | 'expanded' }) {
   const navigate = useNavigate()
   const [params] = useSearchParams()
   const mailboxes = useMailboxes()
@@ -17,6 +21,7 @@ export function SearchBox({ expanded = false }: { expanded?: boolean }) {
   const fields = editing ? draft : fromUrl
   const { q, mailbox } = fields
   const ids = { q: useId(), mailbox: useId() }
+  const full = variant === 'expanded'
 
   const submit = (event: FormEvent) => {
     event.preventDefault()
@@ -30,37 +35,40 @@ export function SearchBox({ expanded = false }: { expanded?: boolean }) {
   return (
     <form
       role="search"
-      aria-label={expanded ? 'Search conversations' : 'Search mail'}
+      aria-label={full ? 'Search conversations' : 'Search mail'}
       onSubmit={submit}
       onFocusCapture={() => { if (!editing) { setDraft(fields); setEditing(true) } }}
       onBlurCapture={(event) => { if (!event.currentTarget.contains(event.relatedTarget)) setEditing(false) }}
-      className={expanded ? 'mb-4 flex min-w-0 flex-wrap items-end gap-2' : 'flex min-w-0 items-center gap-1'}
+      className={full ? 'mb-6 flex w-full max-w-xl flex-wrap items-end gap-3' : 'flex min-w-0 items-center gap-2'}
     >
       {/* AIDEV-NOTE: Keep each visible label with its control when the expanded form wraps on mobile. */}
-      <div className={expanded ? 'flex min-w-0 flex-1 basis-64 flex-col gap-1' : 'contents'}>
-        <label htmlFor={ids.q} className={expanded ? 'text-sm' : 'sr-only'}>Search mail</label>
-        <input
-          id={ids.q}
-          type="search"
-          value={q}
-          onChange={(e) => { setDraft({ ...fields, q: e.target.value }); setEditing(true) }}
-          maxLength={512}
-          placeholder="Search"
-          autoComplete="off"
-          className={`${expanded ? 'h-9 w-full min-w-0' : 'h-8 w-28 min-w-0 sm:w-44'} ${inputClass}`}
-        />
+      <div className={full ? 'flex min-w-0 flex-1 basis-64 flex-col gap-1' : 'relative'}>
+        <label htmlFor={ids.q} className={full ? 'text-sm font-medium text-zinc-800 dark:text-white' : 'sr-only'}>Search mail</label>
+        <div className="relative">
+          <MagnifyingGlassIcon aria-hidden className="pointer-events-none absolute start-3 top-1/2 size-5 -translate-y-1/2 text-zinc-400" />
+          <input
+            id={ids.q}
+            type="search"
+            value={q}
+            onChange={(e) => { setDraft({ ...fields, q: e.target.value }); setEditing(true) }}
+            maxLength={512}
+            placeholder="Search"
+            autoComplete="off"
+            className={cx(inputClass, 'ps-10', full ? 'w-full' : 'w-48 sm:w-64')}
+          />
+        </div>
       </div>
-      <div className={expanded ? 'flex min-w-0 flex-1 basis-48 flex-col gap-1 sm:flex-none' : 'contents'}>
-        <label htmlFor={ids.mailbox} className={expanded ? 'text-sm' : 'sr-only'}>Search scope</label>
-        <select id={ids.mailbox} value={mailbox} onChange={(e) => { setDraft({ ...fields, mailbox: e.target.value }); setEditing(true) }} className={`${expanded ? 'h-9 w-full min-w-0' : 'hidden h-8 max-w-36 md:block'} ${inputClass}`}>
+      <div className={full ? 'flex min-w-0 flex-1 basis-48 flex-col gap-1 sm:flex-none' : 'contents'}>
+        <label htmlFor={ids.mailbox} className={full ? 'text-sm font-medium text-zinc-800 dark:text-white' : 'sr-only'}>Search scope</label>
+        <Select id={ids.mailbox} value={mailbox} onChange={(e) => { setDraft({ ...fields, mailbox: e.target.value }); setEditing(true) }} className={full ? 'w-full min-w-0' : 'hidden max-w-40 md:block'}>
           <option value="">All mailboxes</option>
           {mailbox !== '' && (mailboxes.status !== 'ready' || !mailboxes.mailboxes.some((m) => m.id === mailbox)) && (
             <option value={mailbox}>Selected mailbox (unavailable)</option>
           )}
           {mailboxes.status === 'ready' && mailboxes.mailboxes.map((m) => <option key={m.id} value={m.id}>{m.display_name}</option>)}
-        </select>
+        </Select>
       </div>
-      <Button type="submit" size="sm" variant="ghost" aria-label="Run search">Go</Button>
+      <Button type="submit" variant={full ? 'primary' : 'ghost'} aria-label="Run search">{full ? 'Search' : 'Go'}</Button>
     </form>
   )
 }

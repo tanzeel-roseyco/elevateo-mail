@@ -1,10 +1,65 @@
-/* Adapted from first-party Ledger frontend commit 4322cfbb639a383c4e8d940f2dbb019a9832e977,
-   src/styles/index.css (blob 98806313f6ce2b6a5ebb0aabbcb82159e58c1b91). See apps/web/PROVENANCE.md.
-   Removed: runtime appearance overrides from app/appearance.ts (no Settings surface in this checkpoint). */
+/* Elevateo application theme: the EmailGuard design system (Tailwind v4 + Flux UI recipes, see
+   docs/design/emailguard-replica.md) with two brand exceptions, the Elevateo logo and a GOLD accent
+   in place of blue. Neutrals are Tailwind slate (Flux aliases its zinc scale to slate), the type
+   stack is the OS system font, radii/shadows/spacing follow DESIGN-SPEC §2.4.
+   AIDEV-NOTE: Legacy semantic tokens (--color-surface, --color-line, --color-fg, --color-muted,
+   --color-accent-text …) are kept as aliases onto the slate/gold scales so every pre-existing page
+   keeps compiling and picks up the new palette without touching its own classes. */
 @import "tailwindcss";
 
-/* AIDEV-NOTE: Tokens stay CSS variables so a later Settings surface can restyle Tailwind utilities at runtime. */
-@theme inline {
+/* Dark mode is opt-in through data-theme="dark" and otherwise follows the OS preference, matching
+   the visual-state browser captures that toggle the attribute explicitly. */
+@custom-variant dark {
+  &:where([data-theme="dark"], [data-theme="dark"] *) {
+    @slot;
+  }
+  @media (prefers-color-scheme: dark) {
+    &:where(:root:not([data-theme="light"]), :root:not([data-theme="light"]) *) {
+      @slot;
+    }
+  }
+}
+
+@theme {
+  /* §2.3 system stack, exactly as EmailGuard renders it (Figtree is loaded there but unused). */
+  --font-sans: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+
+  /* §2.1 Flux's zinc scale aliased to Tailwind slate: every neutral in the app is slate. */
+  --color-zinc-50: var(--color-slate-50);
+  --color-zinc-100: var(--color-slate-100);
+  --color-zinc-200: var(--color-slate-200);
+  --color-zinc-300: var(--color-slate-300);
+  --color-zinc-400: var(--color-slate-400);
+  --color-zinc-500: var(--color-slate-500);
+  --color-zinc-600: var(--color-slate-600);
+  --color-zinc-700: var(--color-slate-700);
+  --color-zinc-800: var(--color-slate-800);
+  --color-zinc-900: var(--color-slate-900);
+  --color-zinc-950: var(--color-slate-950);
+
+  /* §2.2 Elevateo gold, matched to the logo's metallic gold (~#C9A65A). */
+  --color-gold-50: #fbf7ec;
+  --color-gold-100: #f5edd3;
+  --color-gold-200: #ebdba8;
+  --color-gold-300: #dfc67a;
+  --color-gold-400: #d4b262;
+  --color-gold-500: #c9a24e;
+  --color-gold-600: #a9853a;
+  --color-gold-700: #86682d;
+  --color-gold-800: #634c22;
+  --color-gold-900: #43341a;
+  --color-gold-950: #261d0e;
+
+  /* Accent tokens the Flux recipes read (var(--color-accent) etc.). Dark values are set on :root
+     below because @theme cannot carry a media query. */
+  --color-accent: var(--color-gold-500);
+  --color-accent-content: var(--color-gold-700);
+  --color-accent-foreground: var(--color-slate-950);
+  /* AIDEV-NOTE: Focus rings use gold-600, not gold-500: 3.3:1 against white meets the WCAG 2.2
+     non-text contrast floor while gold-500 (2.6:1) does not. Visually it is still "the gold ring". */
+  --color-ring: var(--color-gold-600);
+
+  /* Legacy semantic aliases consumed by pre-existing pages (kept intentionally, see file header). */
   --color-bg: var(--bg);
   --color-surface: var(--surface);
   --color-surface-2: var(--surface-2);
@@ -12,108 +67,86 @@
   --color-line: var(--line);
   --color-fg: var(--fg);
   --color-muted: var(--muted);
-  --color-accent: var(--accent);
-  --color-accent-fg: var(--accent-fg);
-  --color-accent-text: var(--accent-text);
+  --color-accent-fg: var(--color-accent-foreground);
+  --color-accent-text: var(--color-accent-content);
   --color-accent-soft: var(--accent-soft);
   --color-danger: var(--danger);
   --color-danger-fg: var(--danger-fg);
   --color-success: var(--success);
   --color-warn: var(--warn);
-  --color-brand-tile: var(--brand-tile);
-  /* Elevation: shadow-1 for resting panels, shadow-2 for popovers/drawers. Radius uses Tailwind's
-     scale on purpose: rounded-md (6px) controls, rounded-lg (8px) rows, rounded-xl (12px) panels. */
-  --shadow-1: var(--elev-1);
-  --shadow-2: var(--elev-2);
-  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --color-brand-tile: #0a0b0f;
+
+  /* §2.4 shadows (Tailwind v4 names; listed so the exact EmailGuard values are pinned here). */
+  --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
 }
 
-/* AIDEV-NOTE: Brand palette (2026-10-18 refresh, docs/design/ux-audit-20261018.md): cool neutral greys, never
-   cream; white panels on a grey canvas in light mode, graphite in dark; gold stays the only accent. */
+/* Light theme (primary). */
 :root,
 [data-theme="light"] {
-  --bg: #eceef2;
+  --bg: #ffffff;
   --surface: #ffffff;
-  --surface-2: #f4f5f8;
-  /* AIDEV-NOTE: Skeleton placeholders need their own token: light --surface-2 equals --bg, so
-     bg-surface-2 bars were invisible on the canvas (blank loading screens in r10 visual QA).
-     #e4e4e7 is distinct from both the canvas (#f4f4f5) and panels (#ffffff). */
-  --skeleton: #e1e4ea;
-  --line: #dde0e6;
-  --fg: #14161a;
-  --muted: #555b66;
-  --elev-1: 0 1px 2px rgb(20 22 26 / 0.06), 0 0 0 1px rgb(20 22 26 / 0.04);
-  --elev-2: 0 6px 20px -6px rgb(20 22 26 / 0.18), 0 0 0 1px rgb(20 22 26 / 0.05);
-  --danger: #b42318;
+  --surface-2: var(--color-slate-50);
+  --skeleton: var(--color-slate-100);
+  --line: var(--color-slate-200);
+  --fg: var(--color-slate-800);
+  --muted: var(--color-slate-500);
+  --accent-soft: var(--color-gold-50);
+  --danger: var(--color-red-500);
   --danger-fg: #ffffff;
-  --success: #067647;
-  --warn: #7a5200;
+  --success: var(--color-green-600);
+  --warn: var(--color-amber-600);
+  /* AIDEV-NOTE: Accent tokens are re-asserted here so an explicit data-theme="light" subtree nested
+     inside an OS-dark :root does not inherit the dark gold values set on :root below. */
+  --color-accent: var(--color-gold-500);
+  --color-accent-content: var(--color-gold-700);
+  --color-accent-foreground: var(--color-slate-950);
+  --color-ring: var(--color-gold-600);
   color-scheme: light;
 }
 
-/* Dark grey, not black: panels (--surface) sit one step lighter than the canvas (--bg). */
+/* Dark theme: Flux's dark surfaces (zinc-800 page, zinc-900 sidebar) with a lighter gold so gold
+   text stays readable; dark text on gold fills is kept because white-on-gold fails contrast. */
 [data-theme="dark"] {
-  --bg: #141619;
-  --surface: #1c1f23;
-  --surface-2: #262a2f;
-  --skeleton: #2b2f35; /* distinct from the dark canvas and panels */
-  --line: #33373e;
-  --elev-1: 0 1px 2px rgb(0 0 0 / 0.4), 0 0 0 1px rgb(255 255 255 / 0.03);
-  --elev-2: 0 10px 28px -8px rgb(0 0 0 / 0.6), 0 0 0 1px rgb(255 255 255 / 0.05);
-  --fg: #ececee;
-  --muted: #a9abb3;
-  --danger: #f97066;
-  --danger-fg: #1a0b09;
-  --success: #47cd89;
-  --warn: #fdb022;
+  --bg: var(--color-slate-800);
+  --surface: var(--color-slate-800);
+  --surface-2: var(--color-slate-900);
+  --skeleton: var(--color-slate-700);
+  --line: var(--color-slate-700);
+  --fg: #ffffff;
+  --muted: var(--color-slate-400);
+  --accent-soft: color-mix(in oklab, var(--color-gold-400) 20%, transparent);
+  --color-accent: var(--color-gold-400);
+  --color-accent-content: var(--color-gold-300);
+  --color-accent-foreground: var(--color-slate-950);
+  --color-ring: var(--color-gold-400);
+  --danger: var(--color-red-400);
+  --danger-fg: var(--color-slate-950);
+  --success: var(--color-green-400);
+  --warn: var(--color-amber-400);
   color-scheme: dark;
 }
 
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme]) {
-    --bg: #141619;
-    --surface: #1c1f23;
-    --surface-2: #262a2f;
-    --skeleton: #2b2f35;
-    --line: #33373e;
-    --elev-1: 0 1px 2px rgb(0 0 0 / 0.4), 0 0 0 1px rgb(255 255 255 / 0.03);
-    --elev-2: 0 10px 28px -8px rgb(0 0 0 / 0.6), 0 0 0 1px rgb(255 255 255 / 0.05);
-    --fg: #ececee;
-    --muted: #a9abb3;
-    --danger: #f97066;
-    --danger-fg: #1a0b09;
-    --success: #47cd89;
-    --warn: #fdb022;
+  :root:not([data-theme="light"]) {
+    --bg: var(--color-slate-800);
+    --surface: var(--color-slate-800);
+    --surface-2: var(--color-slate-900);
+    --skeleton: var(--color-slate-700);
+    --line: var(--color-slate-700);
+    --fg: #ffffff;
+    --muted: var(--color-slate-400);
+    --accent-soft: color-mix(in oklab, var(--color-gold-400) 20%, transparent);
+    --color-accent: var(--color-gold-400);
+    --color-accent-content: var(--color-gold-300);
+    --color-accent-foreground: var(--color-slate-950);
+    --color-ring: var(--color-gold-400);
+    --danger: var(--color-red-400);
+    --danger-fg: var(--color-slate-950);
+    --success: var(--color-green-400);
+    --warn: var(--color-amber-400);
     color-scheme: dark;
-  }
-}
-
-:root {
-  --accent: #c9a227;
-  --accent-fg: #000000;
-  --accent-text: #7a6218;
-  --row-py: 0.625rem;
-  /* AIDEV-NOTE: FE-805 brand tile is theme-independent on purpose: the authentic gold PNG mark is
-     only guaranteed legible on a dark neutral surface (elevateoco.com uses #080a0e/#0a0b0f). */
-  --brand-tile: #0a0b0f;
-}
-
-:root,
-[data-theme] {
-  --accent-soft: color-mix(in srgb, var(--accent) 14%, var(--surface));
-}
-
-/* AIDEV-NOTE: FE-R14 — the light-theme gold (#7a6218) is too dark against dark surfaces. Calculated
-   WCAG ratios for #e3c35c: ≥8.8:1 on --surface #1c1f23 and ≥7.7:1 on --surface-2 #262a2f (darker than the pre-refresh values), ≥6.9:1 on the
-   dark --accent-soft mix; light theme keeps #7a6218 (5.9:1 on #ffffff). Browser-measured computed
-   contrast in both themes remains a coordinator acceptance gate. */
-[data-theme="dark"] {
-  --accent-text: #e3c35c;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme]) {
-    --accent-text: #e3c35c;
   }
 }
 
@@ -127,14 +160,13 @@ body {
   background: var(--bg);
   color: var(--fg);
   font-family: var(--font-sans);
+  /* Unclassed text reads at the app's workhorse 14px; Tailwind text-* utilities stay rem-based. */
   font-size: 14px;
   line-height: 1.45;
   -webkit-font-smoothing: antialiased;
 }
 
-/* AIDEV-NOTE: FE-805 coherence: feature pages (Outreach, Administration) use bare `border`/`divide`
-   utilities; Tailwind 4 defaults those to currentColor, which reads as harsh black/white lines.
-   Defaulting to the --line token keeps every panel on the same hairline without owners touching CSS. */
+/* Tailwind v4 defaults bare `border`/`divide` to currentColor; EmailGuard's hairline is zinc-200. */
 @layer base {
   *,
   ::before,
@@ -143,71 +175,17 @@ body {
   }
 }
 
+/* §Acceptance 6: a visible accent ring on every keyboard-focused control, legacy controls included.
+   Form controls keep the same ring hugging their own border instead of floating 2px outside it. */
 :focus-visible {
-  outline: 2px solid var(--accent-text);
+  outline: 2px solid var(--color-ring);
   outline-offset: 2px;
 }
-
-.row {
-  padding-block: var(--row-py);
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline-offset: 0;
 }
-
-/* Section label above panels and rail groups. Sentence case, not tracked caps: the refresh avoids
-   the shouty eyebrow look and lets weight + colour carry the hierarchy. */
-.eyebrow {
-  font-size: 12px;
-  font-weight: 600;
-  line-height: 1.2;
-  color: var(--muted);
-}
-
-/* Type scale shared by every page header (ui/PageHeader.tsx) so titles read the same everywhere. */
-.page-title {
-  font-size: 20px;
-  font-weight: 650;
-  letter-spacing: -0.01em;
-  line-height: 1.25;
-}
-
-/* Panels: one surface, hairline and elevation recipe for cards across features. */
-.panel {
-  background: var(--surface);
-  border-radius: 12px;
-  box-shadow: var(--elev-1);
-}
-
-/* AIDEV-NOTE: Narrow screens show either list or reader; the shell owns scrolling to preserve route focus. */
-.inbox-workspace { padding: 0; min-height: calc(100dvh - 110px); background: var(--surface); }
-.workspace-heading { display:flex; align-items:center; justify-content:space-between; gap:16px; padding:24px 28px; border-bottom:1px solid var(--line); }
-.workspace-columns { display:flex; min-height:calc(100dvh - 221px); }
-.workspace-mail { display:grid; grid-template-columns:minmax(300px, 390px) minmax(260px, 1fr); flex:1; min-width:0; }
-.workspace-list { min-width:0; border-right:1px solid var(--line); }
-.workspace-mailbox { display:flex; flex-direction:column; gap:8px; padding:20px 16px; border-bottom:1px solid var(--line); }
-.workspace-mailbox select { width:100%; border:1px solid var(--line); border-radius:8px; padding:9px 10px; background:var(--surface); font-size:13px; color:var(--fg); }
-.inbox-conversations { padding:16px 0; }
-.inbox-conversations > div:first-child { padding:0 16px 12px; flex-wrap:wrap; }
-.conversation-avatar { display:flex; align-items:center; justify-content:center; width:32px; height:32px; flex-shrink:0; border-radius:10px; background:var(--accent-soft); color:var(--accent-text); font-size:12px; font-weight:600; }
-.conversation-row { transition:background-color 120ms; }
-.conversation-row[aria-current="page"] { background:var(--accent-soft); box-shadow:inset 3px 0 var(--accent); }
-.workspace-reader { min-width:0; background:var(--surface-2); }
-.workspace-reader > article { max-width:none; padding:24px; }
-.workspace-reader-empty { min-height:520px; height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:24px; }
-.workspace-empty-icon { display:flex; align-items:center; justify-content:center; width:64px; height:64px; border:1px solid var(--line); border-radius:20px; background:var(--surface); color:var(--accent-text); box-shadow:var(--elev-1); }
-.workspace-marketing { width:280px; flex-shrink:0; border-left:1px solid var(--line); padding:24px 20px; }
-.workspace-link { display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:8px 12px; border:1px solid var(--line); border-radius:7px; background:var(--surface); font-size:12px; font-weight:500; }
-.workspace-link:hover { background:var(--surface-2); }
-.workspace-compose { display:inline-flex; justify-content:center; align-items:center; padding:9px 14px; border-radius:7px; background:var(--accent); color:var(--accent-fg); font-size:12px; font-weight:650; }
-.marketing-intro { padding:18px 15px; border:1px solid var(--line); border-radius:10px; background:var(--surface-2); }
-.campaign-preview { display:flex; align-items:center; justify-content:space-between; gap:8px; padding:12px 10px; border:1px solid var(--line); border-radius:8px; font-size:12px; }
-.campaign-preview:hover { background:var(--surface-2); }
-.campaign-status { border-radius:4px; padding:3px 5px; background:var(--surface-2); color:var(--muted); font-size:10px; text-transform:capitalize; }
-.marketing-tool { display:flex; align-items:center; gap:10px; padding:10px 4px; font-size:12px; color:var(--muted); }
-.marketing-tool:hover { color:var(--fg); }
-@media (min-width:768px) { .workspace-shell > aside { width:218px; background:var(--surface-2); } }
-/* AIDEV-NOTE: Give wrapped mail its own row; flex basis zero otherwise collapses it beside marketing. */
-@media (max-width:1279px) { .workspace-columns { flex-wrap:wrap; } .workspace-mail { flex-basis:100%; width:100%; } .workspace-marketing { width:100%; border-left:0; border-top:1px solid var(--line); } .workspace-marketing > div { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:20px; } .workspace-marketing > div > * { margin-top:0; } }
-@media (max-width:1023px) { .workspace-mail { display:block; } .workspace-list { border-right:0; } .workspace-reader { display:none; } .has-reader .workspace-list { display:none; } .has-reader .workspace-reader { display:block; } }
-@media (max-width:639px) { .workspace-heading { align-items:flex-start; flex-direction:column; padding:20px 16px; } .workspace-marketing { padding:20px 16px; } .workspace-marketing > div { display:flex; flex-direction:column; } .workspace-reader > article { padding:16px; } }
 
 /* AIDEV-NOTE: #main takes programmatic focus on route change (Shell) for screen readers; the ring
    is for keyboard targets, so the outline Chrome drew on main and on focused page headings is suppressed. */
@@ -216,6 +194,30 @@ body {
 h1[tabindex="-1"]:focus,
 h2[tabindex="-1"]:focus {
   outline: none;
+}
+
+/* Legacy helpers still referenced by pre-existing feature pages, re-expressed in the new scale. */
+.eyebrow {
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--color-slate-500);
+}
+.page-title {
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.55;
+  color: var(--fg);
+}
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+.row {
+  padding-block: 0.625rem;
 }
 
 /* AIDEV-NOTE: FE-805 mobile/WebView frame. The app is online-only and served as one HTTPS page in
@@ -227,10 +229,12 @@ h2[tabindex="-1"]:focus {
   padding-bottom: env(safe-area-inset-bottom);
 }
 
-/* Touch devices get 44px targets on rail, drawer and header controls without changing desktop density. */
+/* Touch devices: 40px nav rows (DESIGN-SPEC §4 mobile) and 44px header controls, desktop density unchanged. */
 @media (pointer: coarse) {
   aside a,
-  [role="dialog"] a,
+  [role="dialog"] a {
+    min-height: 40px;
+  }
   header button,
   header a {
     min-height: 44px;

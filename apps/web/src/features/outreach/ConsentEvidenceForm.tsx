@@ -45,13 +45,13 @@ export function ConsentEvidenceForm({ lead, campaignId, gateway, context, proof,
       }
     } finally { if (!controller.signal.aborted) setBusy(false) }
   }
-  return <form onSubmit={(event) => { void submit(event) }} className="space-y-2 rounded border p-3" aria-label={`Consent evidence for ${lead.email}`}>
-    <p>Record observed consent evidence. The backend will assess it; this does not authorize sending.</p>
+  return <form onSubmit={(event) => { void submit(event) }} className="w-full space-y-4 rounded-xl border border-zinc-200 bg-zinc-50 p-4 dark:border-zinc-700 dark:bg-zinc-900" aria-label={`Consent evidence for ${lead.email}`}>
+    <p className="text-sm text-zinc-600 dark:text-zinc-400">Record observed consent evidence. The backend will assess it; this does not authorize sending.</p>
     <Field id={`consent-source-${lead.id}`} label="Evidence source"><TextInput id={`consent-source-${lead.id}`} value={source} maxLength={200} onChange={(event) => setSource(event.target.value)} required /></Field>
     <Field id={`consent-time-${lead.id}`} label="Observed date and time (local)"><TextInput id={`consent-time-${lead.id}`} type="datetime-local" value={localTime} onChange={(event) => setLocalTime(event.target.value)} required /></Field>
     <CheckboxField id={`consent-attested-${lead.id}`} label="I attest that this source records the lead's consent" checked={attested} onChange={(event) => setAttested(event.target.checked)} />
-    {error && <p role="alert">{error}</p>}
-    <Button type="submit" disabled={!context || !proof || busy || locked}>{busy ? 'Recording…' : 'Record evidence'}</Button>
-    {locked && <p>Outcome is uncertain. Reopen this campaign before any further attempt.</p>}
+    {error && <p role="alert" className="text-sm font-medium text-red-500">{error}</p>}
+    <Button type="submit" variant="primary" size="sm" disabled={!context || !proof || busy || locked}>{busy ? 'Recording…' : 'Record evidence'}</Button>
+    {locked && <p className="text-sm text-zinc-600 dark:text-zinc-400">Outcome is uncertain. Reopen this campaign before any further attempt.</p>}
   </form>
 }

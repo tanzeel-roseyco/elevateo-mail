@@ -11,7 +11,12 @@ import { consentGate } from '@/domain/sendConsent'
 import type { SendReview } from '@/data/sendContract'
 import { canonicalId, newId } from '@/lib/ids'
 import { Badge } from '@/ui/Badge'
-import { Button } from '@/ui/Button'
+import { Button, buttonClass } from '@/ui/Button'
+import { Callout } from '@/ui/Callout'
+import { Card } from '@/ui/Card'
+import { Checkbox } from '@/ui/Field'
+import { PageHeader } from '@/ui/PageHeader'
+import { linkClass } from '@/ui/Text'
 import { EmptyState, Skeleton } from '@/ui/Async'
 
 // AIDEV-NOTE: 'consent_blocked' has no dismiss or retry: only new consent evidence can change it.
@@ -21,7 +26,7 @@ const MODE_LABEL: Record<SendReview['outbound_mode'], string> = {
 }
 export function SendReviewPage() {
   const { mailboxId, draftId } = useParams()
-  if (!mailboxId || !draftId || !canonicalId(mailboxId) || !canonicalId(draftId)) return <EmptyState title="Invalid review link" body="Open a saved draft to review it." />
+  if (!mailboxId || !draftId || !canonicalId(mailboxId) || !canonicalId(draftId)) return <><PageHeader title="Review send" /><EmptyState title="Invalid review link" body="Open a saved draft to review it." /></>
   return <Review key={`${mailboxId}\n${draftId}`} mailboxId={mailboxId} draftId={draftId} />
 }
 function Review({ mailboxId, draftId }: { mailboxId: string; draftId: string }) {
@@ -107,31 +112,40 @@ function Review({ mailboxId, draftId }: { mailboxId: string; draftId: string }) 
     } finally { pending.current = false; setBusy(false) }
   }
   const back = `/mailboxes/${mailboxId}/drafts/${draftId}`
-  if (state.kind === 'loading') return <div role="status" aria-label="Loading send review"><Skeleton rows={5} /></div>
-  if (state.kind === 'consent_blocked') return <div className="mx-auto flex max-w-3xl flex-col items-start gap-3 p-4"><div role="alert" className="space-y-1 rounded-xl border border-danger/40 bg-danger/10 px-4 py-3 text-[13px]"><h1 className="text-base font-semibold text-danger">Approval blocked: consent required</h1><p>Recorded opt-in consent is required for every recipient before this message can be queued.</p><p>The server refused this approval. Nothing was queued.</p></div><Link to="/outreach/leads" className="font-medium text-accent-text underline underline-offset-2">Record consent evidence</Link><Link to={back}>Back to draft</Link></div>
-  if (state.kind === 'error') return <div className="mx-auto flex max-w-3xl flex-col items-start gap-3 p-4"><p role="alert">{message ?? state.message}</p><Button onClick={() => void load()}>Load fresh review</Button><Link to={back} className="text-[13px] font-medium text-accent-text underline-offset-2 hover:underline">Back to draft</Link></div>
+  if (state.kind === 'loading') return <><PageHeader title="Review send" /><div role="status" aria-label="Loading send review"><Skeleton rows={5} /></div></>
+  if (state.kind === 'consent_blocked') return <><PageHeader title="Review send" /><div className="flex max-w-3xl flex-col items-start gap-4"><Callout variant="danger" role="alert" heading="Approval blocked: consent required"><p>Recorded opt-in consent is required for every recipient before this message can be queued.</p><p>The server refused this approval. Nothing was queued.</p></Callout><Link to="/outreach/leads" className={buttonClass('primary', 'md')}>Record consent evidence</Link><Link to={back} className={linkClass}>Back to draft</Link></div></>
+  if (state.kind === 'error') return <><PageHeader title="Review send" /><div className="flex max-w-3xl flex-col items-start gap-4"><Callout variant="danger" role="alert">{message ?? state.message}</Callout><Button variant="primary" onClick={() => void load()}>Load fresh review</Button><Link to={back} className={linkClass}>Back to draft</Link></div></>
   const review = state.review
   const retry = attempt?.phase === 'uncertain'
   const gate = consentGate(review.outbound_mode, review.recipient_checks, review.purpose)
   const approvable = review.ready && gate.allowed
-  return <article className="mx-auto max-w-3xl p-3" aria-busy={busy}>
-    <Link to={back}>Back to draft</Link> <Badge tone="warn">{review.simulated ? 'Simulated - no live mail' : MODE_LABEL[review.outbound_mode]}</Badge>
-    <h1 ref={heading} tabIndex={-1} className="my-3 text-base font-semibold">Review saved draft version {review.draft_version}</h1>
-    <p>{review.purpose === 'marketing' ? 'You are reviewing a campaign message with recorded marketing consent.' : 'You are approving your own saved draft for individual correspondence.'}</p>
-    <dl className="my-3 space-y-2"><dt>From</dt><dd className="whitespace-pre-wrap">{review.sender.address ?? '(sender not configured)'}</dd>
-      <dt>To — all {review.to.length} recipients</dt><dd>{review.to.length === 0 ? '(no recipients)' : <ol>{review.to.map((recipient, index) => <li key={index} className="whitespace-pre-wrap">{recipient.display_name === null ? '' : `${recipient.display_name} `}{recipient.address ?? '(address missing)'}</li>)}</ol>}</dd>
-      <dt>Subject</dt><dd className="whitespace-pre-wrap">{review.subject === '' ? '(no subject)' : review.subject}</dd>
-      <dt>Message</dt><dd className="whitespace-pre-wrap break-words">{review.body_text === '' ? '(empty message)' : review.body_text}</dd>
-      <dt>Purpose</dt><dd>{review.purpose === 'marketing' ? 'Marketing campaign' : 'Individual correspondence'}</dd><dt>Attachments</dt>
-      <dd>{review.attachments.length === 0 ? 'None.' : <ul>{review.attachments.map((attachment) =>
-        <li key={attachment.id} className="break-all">{attachment.filename} ({attachment.byte_size} bytes): {attachment.status === 'clean' ? 'Security scan passed' : 'Sending blocked: security scan not passed'}</li>)}</ul>}
-      {!review.attachments_supported && ' This sending route does not support attachments.'}</dd>
-    </dl>
-    {review.reply_to_thread_id !== null && <Link to={`/mailboxes/${mailboxId}/threads/${review.reply_to_thread_id}`}>Reply context</Link>}
-    {!review.ready && <div role="alert"><p>This draft is not ready for approval.</p><ul>{review.issues.map((issue, index) => <li key={index}>{issue.code.replaceAll('_', ' ')}{issue.recipient_index === null ? '' : ` — recipient ${issue.recipient_index + 1}`}</li>)}</ul></div>}
-    {!gate.allowed && <div role="alert" aria-label="Consent required" className="my-3 space-y-1 rounded-xl border border-danger/40 bg-danger/10 px-4 py-3 text-[13px]"><p className="font-semibold text-danger">Approval blocked: consent required</p><p>{gate.reason}</p><ul>{gate.recipientIndexes.map((index) => <li key={index} className="whitespace-pre-wrap">Recipient {index + 1}: {review.to[index]?.address ?? '(address missing)'} has no consent evidence</li>)}</ul><Link to="/outreach/leads" className="font-medium text-accent-text underline underline-offset-2">Record consent evidence</Link></div>}
-    {message && <p role="alert">{message}</p>}
-    {retry ? <p role="note">Original approval retry details survive reloads in this tab. Closing this tab clears them. The earlier approval may already be stored.</p> : <div className="my-3"><input id={checkbox} type="checkbox" checked={confirmed} onChange={(event) => setConfirmed(event.target.checked)} disabled={busy || !approvable} /><label htmlFor={checkbox}>{review.purpose === 'marketing' ? 'I confirm this marketing message and its opted-in recipients, and approve the full content shown above.' : review.simulated ? 'I confirm this is individual correspondence and approve the full content and recipients shown above.' : 'I confirm these recipients have opted in and approve sending this full content as live email.'}</label></div>}
-    <Button variant="primary" disabled={busy || !proof || mailbox?.capabilities.approve_send === false || (!retry && (!confirmed || !approvable || review.review_digest === null))} onClick={() => void approve()}>{busy ? 'Approving…' : retry ? 'Retry original approval' : review.simulated ? 'Approve simulated send' : 'Approve live send'}</Button>
+  const dt = 'text-xs font-medium uppercase tracking-wide text-zinc-500'
+  const dd = 'mt-1 text-sm text-zinc-800 dark:text-white'
+  return <article aria-busy={busy}>
+    <PageHeader title="Review send" subtitle="Approve the exact saved content before anything is queued" />
+    <Card className="max-w-3xl space-y-5">
+      <div className="flex flex-wrap items-center gap-2"><Badge tone="warn">{review.simulated ? 'Simulated - no live mail' : MODE_LABEL[review.outbound_mode]}</Badge></div>
+      <h1 ref={heading} tabIndex={-1} className="text-base font-medium text-zinc-800 dark:text-white">Review saved draft version {review.draft_version}</h1>
+      <p className="text-sm text-zinc-500">{review.purpose === 'marketing' ? 'You are reviewing a campaign message with recorded marketing consent.' : 'You are approving your own saved draft for individual correspondence.'}</p>
+      <dl className="grid gap-4 sm:grid-cols-2"><div><dt className={dt}>From</dt><dd className={`${dd} whitespace-pre-wrap`}>{review.sender.address ?? '(sender not configured)'}</dd></div>
+        <div><dt className={dt}>Purpose</dt><dd className={dd}>{review.purpose === 'marketing' ? 'Marketing campaign' : 'Individual correspondence'}</dd></div>
+        <div className="sm:col-span-2"><dt className={dt}>To — all {review.to.length} recipients</dt><dd className={dd}>{review.to.length === 0 ? '(no recipients)' : <ol className="list-decimal ps-5">{review.to.map((recipient, index) => <li key={index} className="whitespace-pre-wrap">{recipient.display_name === null ? '' : `${recipient.display_name} `}{recipient.address ?? '(address missing)'}</li>)}</ol>}</dd></div>
+        <div className="sm:col-span-2"><dt className={dt}>Subject</dt><dd className={`${dd} whitespace-pre-wrap`}>{review.subject === '' ? '(no subject)' : review.subject}</dd></div>
+        <div className="sm:col-span-2"><dt className={dt}>Message</dt><dd className={`${dd} whitespace-pre-wrap break-words rounded-lg border border-zinc-200 bg-zinc-50 p-3 leading-6 dark:border-zinc-700 dark:bg-zinc-900`}>{review.body_text === '' ? '(empty message)' : review.body_text}</dd></div>
+        <div className="sm:col-span-2"><dt className={dt}>Attachments</dt>
+        <dd className={dd}>{review.attachments.length === 0 ? 'None.' : <ul className="list-disc ps-5">{review.attachments.map((attachment) =>
+          <li key={attachment.id} className="break-all">{attachment.filename} ({attachment.byte_size} bytes): {attachment.status === 'clean' ? 'Security scan passed' : 'Sending blocked: security scan not passed'}</li>)}</ul>}
+        {!review.attachments_supported && ' This sending route does not support attachments.'}</dd></div>
+      </dl>
+      {review.reply_to_thread_id !== null && <Link to={`/mailboxes/${mailboxId}/threads/${review.reply_to_thread_id}`} className={linkClass}>Reply context</Link>}
+      {!review.ready && <Callout variant="warning" role="alert"><p>This draft is not ready for approval.</p><ul className="list-disc ps-5">{review.issues.map((issue, index) => <li key={index}>{issue.code.replaceAll('_', ' ')}{issue.recipient_index === null ? '' : ` — recipient ${issue.recipient_index + 1}`}</li>)}</ul></Callout>}
+      {!gate.allowed && <div role="alert" aria-label="Consent required"><Callout variant="danger" heading="Approval blocked: consent required" actions={<Link to="/outreach/leads" className={buttonClass('outline', 'sm')}>Record consent evidence</Link>}><p>{gate.reason}</p><ul className="list-disc ps-5">{gate.recipientIndexes.map((index) => <li key={index} className="whitespace-pre-wrap">Recipient {index + 1}: {review.to[index]?.address ?? '(address missing)'} has no consent evidence</li>)}</ul></Callout></div>}
+      {message && <Callout variant="neutral" role="alert">{message}</Callout>}
+      {retry ? <p role="note" className="text-sm text-zinc-500">Original approval retry details survive reloads in this tab. Closing this tab clears them. The earlier approval may already be stored.</p> : <div className="flex items-start gap-3"><Checkbox id={checkbox} checked={confirmed} onChange={(event) => setConfirmed(event.target.checked)} disabled={busy || !approvable} className="mt-0.5" /><label htmlFor={checkbox} className="text-sm text-zinc-800 dark:text-white">{review.purpose === 'marketing' ? 'I confirm this marketing message and its opted-in recipients, and approve the full content shown above.' : review.simulated ? 'I confirm this is individual correspondence and approve the full content and recipients shown above.' : 'I confirm these recipients have opted in and approve sending this full content as live email.'}</label></div>}
+      <div className="flex flex-wrap gap-2 border-t border-zinc-200 pt-5 dark:border-zinc-700">
+        <Button variant="primary" disabled={busy || !proof || mailbox?.capabilities.approve_send === false || (!retry && (!confirmed || !approvable || review.review_digest === null))} onClick={() => void approve()}>{busy ? 'Approving…' : retry ? 'Retry original approval' : review.simulated ? 'Approve simulated send' : 'Approve live send'}</Button>
+        <Link to={back} className={buttonClass('ghost', 'md')}>Back to draft</Link>
+      </div>
+    </Card>
   </article>
 }

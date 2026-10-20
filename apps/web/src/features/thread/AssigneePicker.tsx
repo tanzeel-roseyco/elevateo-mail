@@ -111,18 +111,18 @@ export function AssigneePicker({ mailboxId, actorId, currentAssigneeId, disabled
   return (
     <div className="flex flex-col gap-2">
       {!portAvailable ? (
-        <p className="text-[12px] text-muted">Assignee choices are unavailable.</p>
+        <p className="text-xs text-zinc-500">Assignee choices are unavailable.</p>
       ) : directory.kind === 'closed' ? (
         <Button size="sm" disabled={disabled || sessionKey === null} onClick={open}>Choose assignee</Button>
       ) : (
-        <div className="rounded-lg border border-line p-2" aria-labelledby={`${id}-label`}>
+        <div className="rounded-lg border border-zinc-200 p-2" aria-labelledby={`${id}-label`}>
           <div className="flex items-center justify-between gap-2">
             <h3 id={`${id}-label`} className="text-sm font-medium">Eligible mailbox users</h3>
             <Button size="sm" onClick={close}>Close assignee choices</Button>
           </div>
-          <p className="text-[12px] text-muted">Verified user IDs only. The server checks assignment permission when you save.</p>
+          <p className="text-xs text-zinc-500">Verified user IDs only. The server checks assignment permission when you save.</p>
           {currentAssigneeId !== null && !directory.items.includes(currentAssigneeId) && (
-            <p className="text-[12px] text-muted">Current assignee: {currentAssigneeId}</p>
+            <p className="text-xs text-zinc-500">Current assignee: {currentAssigneeId}</p>
           )}
           {directory.items.length > 0 && (
             <ul className="mt-2 flex flex-col gap-1">
@@ -138,10 +138,10 @@ export function AssigneePicker({ mailboxId, actorId, currentAssigneeId, disabled
               ))}
             </ul>
           )}
-          {directory.kind === 'loading' && <p role="status" className="text-[12px] text-muted">Loading assignee choices…</p>}
-          {directory.kind === 'ready' && directory.items.length === 0 && <p className="text-[12px] text-muted">No eligible users were returned.</p>}
+          {directory.kind === 'loading' && <p role="status" className="text-xs text-zinc-500">Loading assignee choices…</p>}
+          {directory.kind === 'ready' && directory.items.length === 0 && <p className="text-xs text-zinc-500">No eligible users were returned.</p>}
           {directory.kind === 'error' && (
-            <div role="alert" className="flex items-center gap-2 text-[12px] text-danger">
+            <div role="alert" className="flex items-center gap-2 text-xs text-red-500">
               <span>{directory.message}</span>
               <Button size="sm" onClick={() => void load(directory.cursor, directory.items)}>Try assignee choices again</Button>
             </div>

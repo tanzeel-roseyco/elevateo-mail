@@ -115,7 +115,7 @@ describe('compose entry', () => {
 
   it('hides compose when capability is denied', async () => {
     renderInbox(createFixtureGateway())
-    await screen.findByRole('heading', { name: 'Conversations', level: 1 })
+    await screen.findByRole('heading', { name: 'Conversations', level: 2 })
     expect(screen.queryByRole('link', { name: 'Compose draft' })).toBeNull()
   })
 

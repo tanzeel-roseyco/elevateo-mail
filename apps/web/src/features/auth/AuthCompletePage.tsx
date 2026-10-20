@@ -2,15 +2,14 @@
 // The pending credential was staged server-side by GET /auth/accept and travels only as the
 // opaque elevateo_pending cookie; this page never reads the URL, never sees a token and loads no
 // external resource. The new password lives in component state until the one POST completes.
-import { useEffect, useId, useRef, useState, type FormEvent, type ReactNode } from 'react'
+import { useEffect, useId, useRef, useState, type FormEvent } from 'react'
 import { classifyFailure, type ActionFailure } from '@/app/actionFailure'
 import { AcceptInputSchema } from '@/data/contract'
 import type { MailroomGateway } from '@/data/gateway'
-import { Button } from '@/ui/Button'
-import { MailboxIcon } from '@/ui/icons'
+import { Button, buttonClass } from '@/ui/Button'
+import { Field, TextInput } from '@/ui/Field'
+import { AuthFrame } from './SignInPage'
 
-// AIDEV-NOTE: Transport mode is only known after authentication; this form must not claim mail is simulated.
-const FOOTNOTE = 'Sign in securely to this Elevateo Mail installation.'
 const ENTRY_REJECTION = 'This link is no longer valid or was already used. Request a new invitation or recovery message.'
 
 type Outcome = { kind: 'form' } | { kind: 'done' } | { kind: 'no_organization' } | { kind: 'rejected' }
@@ -82,25 +81,28 @@ export function AuthCompletePage({ gateway }: { gateway: MailroomGateway }) {
           ? { title: 'Password set, no organization yet', body: 'Your password is set, but no organization is available for this account yet. Ask an administrator to add you, then sign in.' }
           : { title: 'This link cannot be used', body: ENTRY_REJECTION }
     return (
-      <Frame>
-        <h1 ref={headingRef} tabIndex={-1} className="text-lg font-semibold tracking-tight">{copy.title}</h1>
-        <p role="status" className="text-[13px] text-muted">{copy.body}</p>
+      <AuthFrame>
+        <div className="space-y-2">
+          <h1 ref={headingRef} tabIndex={-1} className="text-lg font-medium text-zinc-800 dark:text-white">{copy.title}</h1>
+          <p role="status" className="text-sm text-zinc-500 dark:text-zinc-400">{copy.body}</p>
+        </div>
         {/* Plain navigation to the application root: this page lives outside the hash router. */}
-        <a href="/" className="inline-flex h-9 items-center justify-center rounded-lg bg-accent px-3.5 text-sm font-medium text-accent-fg shadow-sm hover:brightness-110">
+        <a href="/" className={buttonClass('primary', 'md')}>
           {outcome.kind === 'done' ? 'Open Elevateo Mail' : 'Go to sign-in'}
         </a>
-      </Frame>
+      </AuthFrame>
     )
   }
 
   return (
-    <Frame>
-      <h1 ref={headingRef} tabIndex={-1} className="text-lg font-semibold tracking-tight">Set your password</h1>
-      <p id={ids.hint} className="text-[13px] text-muted">Choose a password of at least 12 characters. Setting it completes your invitation or recovery and signs you in.</p>
-      <form onSubmit={submit} aria-busy={busy} aria-describedby={failure ? `${ids.hint} ${ids.error}` : ids.hint} className="flex flex-col gap-3" noValidate>
-        <div className="flex flex-col gap-1">
-          <label htmlFor={ids.password} className="text-[13px] font-medium">New password</label>
-          <input
+    <AuthFrame>
+      <div className="space-y-2">
+        <h1 ref={headingRef} tabIndex={-1} className="text-lg font-medium text-zinc-800 dark:text-white">Set your password</h1>
+        <p id={ids.hint} className="text-sm text-zinc-500 dark:text-zinc-400">Choose a password of at least 12 characters. Setting it completes your invitation or recovery and signs you in.</p>
+      </div>
+      <form onSubmit={submit} aria-busy={busy} aria-describedby={failure ? `${ids.hint} ${ids.error}` : ids.hint} className="flex flex-col gap-4" noValidate>
+        <Field id={ids.password} label="New password">
+          <TextInput
             id={ids.password}
             name="new-password"
             type="password"
@@ -111,12 +113,10 @@ export function AuthCompletePage({ gateway }: { gateway: MailroomGateway }) {
             onChange={(e) => setPassword(e.target.value)}
             disabled={busy}
             aria-invalid={failure?.code === 'invalid' ? true : undefined}
-            className="h-9 rounded-lg border border-line bg-surface px-3 text-sm text-fg disabled:opacity-55"
           />
-        </div>
-        <div className="flex flex-col gap-1">
-          <label htmlFor={ids.confirmation} className="text-[13px] font-medium">Confirm password</label>
-          <input
+        </Field>
+        <Field id={ids.confirmation} label="Confirm password">
+          <TextInput
             id={ids.confirmation}
             name="confirm-password"
             type="password"
@@ -126,15 +126,14 @@ export function AuthCompletePage({ gateway }: { gateway: MailroomGateway }) {
             onChange={(e) => setConfirmation(e.target.value)}
             disabled={busy}
             aria-invalid={failure?.code === 'invalid' ? true : undefined}
-            className="h-9 rounded-lg border border-line bg-surface px-3 text-sm text-fg disabled:opacity-55"
           />
-        </div>
+        </Field>
         {failure && (
-          <p id={ids.error} role="alert" className="text-[13px] text-danger">{failure.message}</p>
+          <p id={ids.error} role="alert" className="text-sm font-medium text-red-500">{failure.message}</p>
         )}
-        <Button type="submit" variant="primary" disabled={busy}>{busy ? 'Setting password…' : 'Set password and sign in'}</Button>
+        <Button type="submit" variant="primary" className="w-full" disabled={busy}>{busy ? 'Setting password…' : 'Set password and sign in'}</Button>
       </form>
-    </Frame>
+    </AuthFrame>
   )
 }
 
@@ -144,17 +143,4 @@ function validateLocally(password: string, confirmation: string): ActionFailure 
   const result = AcceptInputSchema.safeParse({ password })
   if (!result.success) return { code: 'invalid', message: 'Use at least 12 characters and at most 1024 bytes.' }
   return null
-}
-
-function Frame({ children }: { children: ReactNode }) {
-  return (
-    <main className="mx-auto flex max-w-sm flex-col gap-4 p-8">
-      <div className="flex h-9 items-center gap-2.5">
-        <MailboxIcon aria-hidden className="size-6 shrink-0 text-accent-text" />
-        <span className="truncate text-[15px] font-semibold tracking-tight">Elevateo Mail</span>
-      </div>
-      {children}
-      <p className="text-[11px] leading-snug text-fg">{FOOTNOTE}</p>
-    </main>
-  )
 }

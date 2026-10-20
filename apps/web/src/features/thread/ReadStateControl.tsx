@@ -42,7 +42,7 @@ export function ReadStateControl({ threadId, mailboxId, unread, onConfirmed }: P
         {busy ? 'Saving…' : unread ? 'Mark as read' : 'Mark as unread'}
       </Button>
       {failure && (
-        <p role="alert" className="text-[12px] text-danger">
+        <p role="alert" className="text-xs text-red-500">
           {failure.message}
           {failure.uncertain && ' Reload the conversation to see the current state, or try again (repeating the same choice is safe).'}
         </p>

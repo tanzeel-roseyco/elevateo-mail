@@ -68,12 +68,12 @@ export function AssignmentPanel({ threadId, mailboxId }: { threadId: string; mai
   }
 
   return (
-    <section aria-labelledby={`${ids.target}-heading`} className="rounded-lg border border-line bg-surface p-3">
-      <h2 id={`${ids.target}-heading`} className="eyebrow mb-2">Assignment</h2>
-      {state.status === 'loading' && <p role="status" className="text-[13px] text-muted">Loading assignment…</p>}
-      {state.status === 'unavailable' && <p className="text-[13px] text-muted">Assignment is unavailable for this conversation.</p>}
+    <section aria-labelledby={`${ids.target}-heading`} className="rounded-xl border border-zinc-200 bg-white p-4 shadow-xs dark:border-zinc-700 dark:bg-zinc-800">
+      <h2 id={`${ids.target}-heading`} className="mb-2 text-sm font-medium text-zinc-800 dark:text-white">Assignment</h2>
+      {state.status === 'loading' && <p role="status" className="text-sm text-zinc-500">Loading assignment…</p>}
+      {state.status === 'unavailable' && <p className="text-sm text-zinc-500">Assignment is unavailable for this conversation.</p>}
       {state.status === 'error' && (
-        <div role="alert" className="flex flex-wrap items-center gap-2 text-[13px] text-danger">
+        <div role="alert" className="flex flex-wrap items-center gap-2 text-sm text-red-500">
           <span>{state.failure.message}</span>
           <Button size="sm" onClick={() => void load()}>Try again</Button>
         </div>
@@ -82,7 +82,7 @@ export function AssignmentPanel({ threadId, mailboxId }: { threadId: string; mai
         <div className="flex flex-col gap-2">
           <p className="text-sm">
             <span className="font-medium">{describeAssignee(state.assignment)}</span>
-            <span className="text-[12px] text-muted">
+            <span className="text-xs text-zinc-500">
               {' '}· revision {state.assignment.assignment_version}
               {state.assignment.updated_at !== null && ` · ${formatDateTime(state.assignment.updated_at)}`}
             </span>
@@ -98,9 +98,9 @@ export function AssignmentPanel({ threadId, mailboxId }: { threadId: string; mai
           <AssigneePicker key={mailboxId} mailboxId={mailboxId} actorId={actorId}
             currentAssigneeId={state.assignment.assignee_id} disabled={writing || !proof}
             onAssign={(id) => void assign(id)} />
-          {writing && <p role="status" className="text-[12px] text-muted">Saving assignment…</p>}
+          {writing && <p role="status" className="text-xs text-zinc-500">Saving assignment…</p>}
           {writeFailure && (
-            <div role="alert" className="flex flex-wrap items-center gap-2 text-[12px] text-danger">
+            <div role="alert" className="flex flex-wrap items-center gap-2 text-xs text-red-500">
               <span>{writeFailure.message}</span>
               {(writeFailure.code === 'stale_version' || writeFailure.uncertain) && (
                 <Button size="sm" onClick={() => void load()}>Reload assignment</Button>

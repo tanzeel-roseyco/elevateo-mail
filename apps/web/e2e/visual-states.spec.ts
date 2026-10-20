@@ -263,24 +263,39 @@ const SCENARIOS: Scenario[] = [
     expectVisible: { text: 'Recover access' },
   },
   {
-    name: 'account-sheet-open',
+    name: 'workspace-switcher-open',
     routes: {},
     nav: 'none',
-    act: async (page) => page.getByRole('button', { name: 'Account and sign-out' }).click(),
+    revealSidebar: true,
+    act: async (page) => {
+      const scope = (page.viewportSize()?.width ?? 1280) < 1024 ? page.getByRole('dialog', { name: 'Navigation' }) : page
+      await scope.getByRole('button', { name: 'Workspace: Visual organization' }).click()
+    },
     expectVisible: { text: 'Second organization' },
     assert: async (page) => {
-      const dialog = page.getByRole('dialog', { name: 'Account' })
-      await expect(dialog.getByRole('button', { name: /Visual organization/ })).toHaveAttribute('aria-current', 'true')
-      await expect(dialog.getByRole('button', { name: 'Sign out everywhere' })).toBeVisible()
+      const listbox = page.getByRole('listbox', { name: 'Workspaces' })
+      await expect(listbox.getByRole('option', { name: /Visual organization/ })).toHaveAttribute('aria-selected', 'true')
     },
+  },
+  {
+    name: 'account-menu-open',
+    routes: {},
+    nav: 'none',
+    act: async (page) => {
+      const narrow = (page.viewportSize()?.width ?? 1280) < 1024
+      await page.getByRole('button', { name: narrow ? 'Account menu' : 'Account and sign-out' }).click()
+    },
+    expectVisible: { text: 'Sign out everywhere' },
+    assert: async (page) => expect(page.getByRole('menuitem', { name: 'Sign out', exact: true })).toBeVisible(),
   },
   {
     name: 'signed-out-notice',
     routes: {},
     nav: 'none',
     act: async (page) => {
-      await page.getByRole('button', { name: 'Account and sign-out' }).click()
-      await page.getByRole('dialog', { name: 'Account' }).getByRole('button', { name: 'Sign out', exact: true }).click()
+      const narrow = (page.viewportSize()?.width ?? 1280) < 1024
+      await page.getByRole('button', { name: narrow ? 'Account menu' : 'Account and sign-out' }).click()
+      await page.getByRole('menuitem', { name: 'Sign out', exact: true }).click()
     },
     expectVisible: { text: 'still pending' },
     assert: async (page) => {
@@ -293,11 +308,12 @@ const SCENARIOS: Scenario[] = [
     routes: { logout: [apiError('temporarily_unavailable')] },
     nav: 'none',
     act: async (page) => {
-      await page.getByRole('button', { name: 'Account and sign-out' }).click()
-      await page.getByRole('dialog', { name: 'Account' }).getByRole('button', { name: 'Sign out', exact: true }).click()
+      const narrow = (page.viewportSize()?.width ?? 1280) < 1024
+      await page.getByRole('button', { name: narrow ? 'Account menu' : 'Account and sign-out' }).click()
+      await page.getByRole('menuitem', { name: 'Sign out', exact: true }).click()
     },
     expectVisible: { text: 'Sign-out was not confirmed' },
-    assert: async (page) => expect(page.getByText('Select a mailbox')).toHaveCount(0),
+    assert: async (page) => expect(page.getByText('Workspace summary')).toHaveCount(0),
   },
   { name: 'session-error', routes: { session: [apiError('internal_error', 500)] }, nav: 'none', expectVisible: { text: 'The session could not be loaded' } },
   // context_changed on the mailbox list consumes the one recovery; a held session refetch freezes 'recovering'.
@@ -317,18 +333,17 @@ const SCENARIOS: Scenario[] = [
     routes: { mailboxes: [{ body: { ...MAILBOXES, items: [] } }] },
     nav: 'none',
     revealSidebar: true,
-    // The LOADED empty sidebar, proven directly: the empty copy inside the mailbox navigation,
-    // zero mailbox links while registered static Personal routes remain available, and the
+    // The LOADED empty sidebar, proven directly: the empty copy inside the Mail navigation, zero
+    // mailbox links while the static Search, People and Settings routes remain available, and the
     // loading/error presentations absent.
     expectVisible: { text: 'No mailboxes are visible to you.' },
     assert: async (page) => {
-      const nav = page.getByRole('navigation', { name: 'Personal' })
-      await expect(nav).toBeVisible()
-      await expect(nav.locator('a[href*="/mailboxes/"]')).toHaveCount(0)
-      await expect(nav.getByRole('link', { name: 'Search' })).toHaveAttribute('href', '#/search')
-      await expect(nav.getByRole('link', { name: 'People' })).toHaveAttribute('href', '#/people')
-      await expect(nav.getByRole('link', { name: 'Personal settings' })).toHaveAttribute('href', '#/settings/personal')
-      await expect(nav.getByRole('link', { name: 'Organization settings' })).toHaveAttribute('href', '#/settings/organization')
+      const mail = page.getByRole('navigation', { name: 'Mail' })
+      await expect(mail).toBeVisible()
+      await expect(mail.locator('a[href*="/mailboxes/"]')).toHaveCount(0)
+      await expect(mail.getByRole('link', { name: 'Search' })).toHaveAttribute('href', '#/search')
+      await expect(page.getByRole('navigation', { name: 'Contacts' }).getByRole('link', { name: 'People' })).toHaveAttribute('href', '#/people')
+      await expect(page.getByRole('navigation', { name: 'Administration' }).getByRole('link', { name: 'Settings' })).toHaveAttribute('href', '#/settings')
       await expect(page.getByRole('status', { name: 'Loading mailboxes' })).toHaveCount(0)
       await expect(page.getByRole('alert')).toHaveCount(0)
     },
@@ -423,7 +438,7 @@ test.describe('read-checkpoint visual states (capture for human inspection)', ()
     for (const scenario of SCENARIOS) {
       test(`${scenario.name} (${theme})`, async ({ page }, testInfo) => {
         test.skip(testInfo.project.name.includes('reduced-motion') && !REPRESENTATIVE.has(scenario.name), 'representative rows only under reduced motion')
-        test.skip(scenario.mobileOnly === true && (page.viewportSize()?.width ?? 1280) >= 768, 'drawer presentation exists only below md')
+        test.skip(scenario.mobileOnly === true && (page.viewportSize()?.width ?? 1280) >= 1024, 'drawer presentation exists only below lg')
         await page.emulateMedia({ colorScheme: theme })
         // Registered before navigation so an early request cannot be missed; awaited before capture.
         const issued = scenario.awaitRequest === undefined ? null : page.waitForRequest((request) => request.url().includes(scenario.awaitRequest!))
@@ -457,7 +472,7 @@ test.describe('read-checkpoint visual states (capture for human inspection)', ()
           // skip the drawer forever — then decide by the project's known viewport and prove the
           // dialog actually opened.
           await expect(page.getByText('Simulated local mail')).toBeVisible()
-          if ((page.viewportSize()?.width ?? 1280) < 768) {
+          if ((page.viewportSize()?.width ?? 1280) < 1024) {
             await page.getByRole('button', { name: 'Open navigation' }).click()
             await expect(page.getByRole('dialog', { name: 'Navigation' })).toBeVisible()
           }
@@ -470,7 +485,7 @@ test.describe('read-checkpoint visual states (capture for human inspection)', ()
         // rendered). Scope sidebar-state text expectations to the open Mailboxes dialog on narrow
         // viewports; role-based locators are unaffected (display:none drops the aside from the
         // accessibility tree). toBeVisible stays strict.
-        const textScope = scenario.revealSidebar && (page.viewportSize()?.width ?? 1280) < 768 ? page.getByRole('dialog', { name: 'Navigation' }) : page
+        const textScope = scenario.revealSidebar && (page.viewportSize()?.width ?? 1280) < 1024 ? page.getByRole('dialog', { name: 'Navigation' }) : page
         if (scenario.expectVisible.status !== undefined) await expect(page.getByRole('status', { name: scenario.expectVisible.status })).toBeVisible()
         if (scenario.expectVisible.text !== undefined) await expect(textScope.getByText(scenario.expectVisible.text).first()).toBeVisible()
         if (scenario.assert) await scenario.assert(page)

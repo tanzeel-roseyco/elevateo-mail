@@ -1,4 +1,27 @@
 <!-- completion-wave-current:start -->
+### EmailGuard replica web UI — 2026-10-20 (task_d036e44f6d3d, worker Claude Fable 5.1)
+
+Workspace `Elevateo Mail - Unified Dashboard 20261020/elevateo-emailguard-fable`, branch
+`Tanzeel/elevateo-emailguard-fable`, baseline commit `7b868f0d`. Frontend only; backend/contracts
+untouched; the parked marketing backend was not modified.
+
+- Shell: 264px zinc-50 rail (56px collapsed), drawer below `lg`, workspace switcher listbox, account
+  menu, "Get Help" menu (Live Chat · Help Centre · Community), simulated-mail banner.
+- Dashboard replica of `source-html/app/dashboard.html` with 2/3/5 stat columns, failed-count and
+  failed-conversation states, Outreach-unavailable state without a creation link.
+- Inbox per INBOX-SPEC: folder rail, Gmail list rows, star store (cross-tab safe), selection toolbar
+  that wraps at 390px, unread-folder removal on confirmed read, bulk read guarded against stale
+  sessions/unmount, `u` / `c` / `/` shortcuts, compose window (minimise wins over maximise).
+- Settings: six sections, legacy `/settings/personal` and `/settings/organization` redirects, real
+  display name and member management, simulated adapters with capacity refusal (500 invitations,
+  200 tags, 50 tokens, 50 webhooks), per-control error association, modal drafts reset on Cancel.
+- Help centre: `/help`, search, collections, articles with "Copy for LLM", community page.
+- Review disposition: every open coordinator checklist item in `code-reviews.md` applied with
+  regression tests; `GlobeAltIcon` adjudicated as the verbatim Heroicons glyph; Modal focus restore
+  already provided by Radix.
+- Verification: pending fleet-02 Docker run (check:api, check:api:v2, lint, typecheck, test, build)
+  and 1440/390 screenshot harness; this entry is updated with the results.
+
 ### Authoritative completion status (2026-10-20)
 
 The active continuation preserves October 18 source `5c39dc9e` and integrates the unfinished backend work into `completion/resend-pilot-20261019`. The launch scope is Resend; self-hosted Mox remains deferred.

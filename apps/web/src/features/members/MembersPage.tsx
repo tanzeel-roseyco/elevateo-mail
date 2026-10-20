@@ -13,9 +13,14 @@ import type { MailboxMember, MailboxMemberPage, MailboxMembershipResult, Members
 import { isApiError } from '@/data/errors'
 import type { CsrfProof, ReadContext } from '@/data/gateway'
 import { canonicalId } from '@/lib/ids'
+import { Avatar } from '@/ui/Avatar'
 import { Badge } from '@/ui/Badge'
+import { Callout } from '@/ui/Callout'
+import { Card } from '@/ui/Card'
+import { PageHeader } from '@/ui/PageHeader'
+import { UserGroupIcon } from '@/ui/icons'
 import { Button } from '@/ui/Button'
-import { EmptyState, Skeleton } from '@/ui/Async'
+import { EmptyState, ErrorState, Skeleton } from '@/ui/Async'
 import { CheckboxField, Field, TextInput } from '@/ui/Field'
 
 /** Bounded roster traversal: at most this many pages (50 members each) per load. */
@@ -160,77 +165,85 @@ function MemberRoster({ mailboxId }: { mailboxId: string }) {
   const disabled = !proof || busyUser !== null || roster.status !== 'ready'
 
   return (
-    <section aria-label="Mailbox members" className="mx-auto max-w-3xl p-3">
-      <div className="mb-2 flex flex-wrap items-center gap-2 px-1">
-        <h1 className="text-sm font-semibold">Members</h1>
-        {mailbox && <span className="text-[13px] text-muted">{mailbox.display_name}</span>}
-        {roster.status === 'ready' && <Badge tone="neutral" className="ml-auto">Roster revision {roster.version}</Badge>}
-      </div>
-      <p className="mb-3 px-1 text-[12px] text-muted">
+    <section aria-label="Mailbox members">
+      <PageHeader
+        title="Members"
+        subtitle={mailbox ? `${mailbox.display_name}${mailbox.display_address ? ` · ${mailbox.display_address}` : ''}` : 'Mailbox membership'}
+        actions={roster.status === 'ready' ? <Badge tone="neutral">Roster revision {roster.version}</Badge> : undefined}
+      />
+      <p className="mb-6 max-w-3xl text-sm text-zinc-500">
         Explicit members of this mailbox. An explicit row grants read; shared mailboxes may also be readable without a row. Only user ids are shown: this build has no user directory.
       </p>
       {roster.status === 'loading' && <div role="status" aria-label="Loading members"><Skeleton rows={4} /></div>}
       {/* AIDEV-NOTE: One API refusal gets one panel; known read-only access can explain it more precisely. */}
       {roster.status === 'unavailable' && <EmptyState
+        icon={<UserGroupIcon className="size-5" />}
         title={canManage ? 'Members are unavailable' : 'You cannot manage members of this mailbox'}
         body={canManage ? 'This mailbox may not exist, or you may not currently be able to manage its members.' : 'Managing members requires the manage-members capability.'}
       />}
       {roster.status === 'error' && (
         <div role="alert">
-          <EmptyState title="Members could not be loaded" body={roster.failure.message} action={<Button variant="primary" onClick={() => void load()}>Try again</Button>} />
+          <ErrorState title="Members could not be loaded" body={roster.failure.message} action={<Button variant="primary" onClick={() => void load()}>Try again</Button>} />
         </div>
       )}
       {roster.status === 'ready' && (
-        <>
-          {roster.members.length === 0 && <EmptyState title="No explicit members" body="Nobody has an explicit membership row in this mailbox." />}
-          {roster.members.length > 0 && (
-            <ul className="divide-y divide-line rounded-lg border border-line bg-surface">
-              {roster.members.map((member) => (
-                <MemberRow
-                  key={member.user_id}
-                  member={member}
-                  isSelf={member.user_id === actorId}
-                  busy={busyUser === member.user_id}
-                  disabled={disabled || !canManage}
-                  onApply={(capabilities) => putMember(member.user_id, capabilities)}
-                  onRemove={() => removeMember(member.user_id)}
-                />
-              ))}
-            </ul>
-          )}
-          {roster.more && <p className="mt-1 text-[12px] text-muted">More members exist than are shown here.</p>}
-          {failure && (
-            <div role="alert" className="mt-3 flex flex-wrap items-center gap-2 rounded-lg border border-danger/40 bg-danger/10 p-2 text-[13px]">
-              <span>{failure.message}</span>
-              {(failure.code === 'stale_version' || failure.uncertain) && <Button size="sm" onClick={() => void load()}>Reload members</Button>}
-            </div>
-          )}
-          {canManage && (
-            <form
-              className="mt-4 flex flex-col gap-2 rounded-lg border border-line bg-surface p-3"
-              onSubmit={(e) => {
-                e.preventDefault()
-                addMember()
-              }}
-              noValidate
-            >
-              <h2 className="eyebrow">Add or update a member</h2>
-              <Field id={ids.user} label="User id" hint="UUID of a current organization member. An existing member's flags are replaced." error={newUserError}>
-                <TextInput id={ids.user} value={newUserText} onChange={(e) => setNewUserText(e.target.value)} disabled={disabled} autoComplete="off" spellCheck={false} aria-invalid={newUserError ? true : undefined} aria-describedby={`${ids.user}-hint`} className="font-mono text-[12px]" />
-              </Field>
-              <fieldset className="flex flex-wrap gap-4" aria-describedby={`${ids.flags}-hint`}>
-                <legend className="text-[13px] font-medium">Capabilities</legend>
-                {FLAGS.map((flag) => (
-                  <CheckboxField key={flag.key} id={`${ids.flags}-${flag.key}`} label={flag.label} checked={newFlags[flag.key]} disabled={disabled} onChange={(e) => setNewFlags({ ...newFlags, [flag.key]: e.target.checked })} />
-                ))}
-              </fieldset>
-              <p id={`${ids.flags}-hint`} className="text-[12px] text-muted">Read is granted by the membership itself. Sending is not available in this build regardless of these flags.</p>
-              <div>
-                <Button type="submit" size="sm" variant="primary" disabled={disabled || newUserText.trim() === ''}>Save member</Button>
+        <div className="grid gap-6 xl:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
+          <div className="min-w-0">
+            {roster.members.length === 0 && <EmptyState icon={<UserGroupIcon className="size-5" />} title="No explicit members" body="Nobody has an explicit membership row in this mailbox." />}
+            {roster.members.length > 0 && (
+              <Card className="p-0">
+                <ul className="divide-y divide-zinc-200 dark:divide-zinc-700">
+                  {roster.members.map((member) => (
+                    <MemberRow
+                      key={member.user_id}
+                      member={member}
+                      isSelf={member.user_id === actorId}
+                      busy={busyUser === member.user_id}
+                      disabled={disabled || !canManage}
+                      onApply={(capabilities) => putMember(member.user_id, capabilities)}
+                      onRemove={() => removeMember(member.user_id)}
+                    />
+                  ))}
+                </ul>
+              </Card>
+            )}
+            {roster.more && <p className="mt-2 text-xs text-zinc-500">More members exist than are shown here.</p>}
+            {failure && (
+              <div className="mt-4">
+                <Callout variant="danger" role="alert" actions={(failure.code === 'stale_version' || failure.uncertain) && <Button size="sm" onClick={() => void load()}>Reload members</Button>}>
+                  {failure.message}
+                </Callout>
               </div>
-            </form>
+            )}
+          </div>
+          {canManage && (
+            <Card>
+              <form
+                className="flex flex-col gap-4"
+                onSubmit={(e) => {
+                  e.preventDefault()
+                  addMember()
+                }}
+                noValidate
+              >
+                <h2 className="text-base font-medium text-zinc-800 dark:text-white">Add or update a member</h2>
+                <Field id={ids.user} label="User id" hint="UUID of a current organization member. An existing member's flags are replaced." error={newUserError}>
+                  <TextInput id={ids.user} value={newUserText} onChange={(e) => setNewUserText(e.target.value)} disabled={disabled} autoComplete="off" spellCheck={false} aria-invalid={newUserError ? true : undefined} aria-describedby={`${ids.user}-hint`} className="font-mono text-xs" />
+                </Field>
+                <fieldset className="flex flex-col gap-2" aria-describedby={`${ids.flags}-hint`}>
+                  <legend className="mb-2 text-sm font-medium text-zinc-800 dark:text-white">Capabilities</legend>
+                  {FLAGS.map((flag) => (
+                    <CheckboxField key={flag.key} id={`${ids.flags}-${flag.key}`} label={flag.label} checked={newFlags[flag.key]} disabled={disabled} onChange={(e) => setNewFlags({ ...newFlags, [flag.key]: e.target.checked })} />
+                  ))}
+                </fieldset>
+                <p id={`${ids.flags}-hint`} className="text-xs text-zinc-500">Read is granted by the membership itself. Sending is not available in this build regardless of these flags.</p>
+                <div>
+                  <Button type="submit" variant="primary" disabled={disabled || newUserText.trim() === ''}>Save member</Button>
+                </div>
+              </form>
+            </Card>
           )}
-        </>
+        </div>
       )}
     </section>
   )
@@ -247,17 +260,18 @@ function MemberRow({ member, isSelf, busy, disabled, onApply, onRemove }: { memb
   }
   const changed = FLAGS.some((f) => flags[f.key] !== member.capabilities[f.key])
   return (
-    <li className="flex flex-col gap-2 px-3 py-2">
-      <div className="flex flex-wrap items-center gap-2">
-        <code className="min-w-0 flex-1 truncate font-mono text-[12px]">{member.user_id}</code>
-        {isSelf && <Badge tone="accent">You</Badge>}
-        {busy && <span role="status" className="text-[12px] text-muted">Saving…</span>}
+    <li className="flex flex-col gap-3 px-6 py-4">
+      <div className="flex flex-wrap items-center gap-3">
+        <Avatar name={member.user_id.slice(0, 2)} />
+        <code className="min-w-0 flex-1 truncate font-mono text-xs text-zinc-700 dark:text-zinc-300">{member.user_id}</code>
+        {isSelf && <Badge tone="accent" size="sm">You</Badge>}
+        {busy && <span role="status" className="text-xs text-zinc-500">Saving…</span>}
       </div>
-      <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+      <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
         {FLAGS.map((flag) => (
           <CheckboxField key={flag.key} id={`${rowId}-${flag.key}`} label={flag.label} checked={flags[flag.key]} disabled={disabled || busy} onChange={(e) => setFlags({ ...flags, [flag.key]: e.target.checked })} />
         ))}
-        <span className="ml-auto flex gap-2">
+        <span className="ms-auto flex gap-2">
           <Button size="sm" variant="primary" disabled={disabled || busy || !changed} onClick={() => onApply(flags)}>Apply</Button>
           <Button size="sm" variant="danger" disabled={disabled || busy} onClick={onRemove}>Remove</Button>
         </span>

@@ -7,7 +7,7 @@ import { DraftAttachments } from './DraftAttachments'
 // context recovery, a remount or a navigation never destroys them; they are shown again only
 // after a current authorized read of the same draft by the same actor and organization.
 // Saved, unchanged drafts can enter the separate review/approval screen; its server response identifies live transport.
-import { useCallback, useEffect, useId, useRef, useState } from 'react'
+import { useCallback, useEffect, useId, useRef, useState, type ReactNode } from 'react'
 import { Link, useParams, useSearchParams } from 'react-router'
 import { describeFailure, type CollaborationFailure } from '@/app/collaborationFailure'
 import { draftIntentKey, formatRecipients, isDraftIntentDirty, useDraftIntent, type DraftIntent } from '@/app/draftIntent'
@@ -33,12 +33,12 @@ import {
   type DraftContent,
 } from '@/domain/draftOperation'
 import { canonicalId, codePoints, newId } from '@/lib/ids'
-import { formatDateTime } from '@/lib/format'
+import { cx, formatDateTime } from '@/lib/format'
 import { Badge } from '@/ui/Badge'
-import { Button } from '@/ui/Button'
-import { EmptyState, Skeleton } from '@/ui/Async'
-import { Field, TextArea, TextInput } from '@/ui/Field'
-import { BackIcon } from '@/ui/icons'
+import { Button, IconButton, buttonClass } from '@/ui/Button'
+import { Callout } from '@/ui/Callout'
+import { EmptyState, ErrorState, Skeleton } from '@/ui/Async'
+import { ArrowLeftIcon, DocumentTextIcon, PaperClipIcon, TrashIcon } from '@/ui/icons'
 
 const LIMITS = { subject: 998, body: 65536, recipients: 100, addressPart: 256 } as const
 
@@ -303,18 +303,18 @@ function DraftEditor({ mailboxId, draftId }: { mailboxId: string; draftId: strin
   }
 
   const backTo = `/mailboxes/${mailboxId}/drafts`
-  if (state.status === 'loading') return <div role="status" aria-label="Loading draft" className="mx-auto max-w-3xl p-3"><Skeleton rows={5} /></div>
+  if (state.status === 'loading') return <div role="status" aria-label="Loading draft" className="p-4"><Skeleton rows={5} /></div>
   if (state.status === 'unavailable') {
     return (
-      <div className="mx-auto max-w-3xl p-3">
-        <EmptyState title="This draft is unavailable" body="It may not exist, it may belong to someone else, or you may no longer be able to compose in this mailbox." action={<Link to={backTo} className="text-[13px] underline">Back to drafts</Link>} />
+      <div className="p-4">
+        <EmptyState icon={<DocumentTextIcon className="size-5" />} title="This draft is unavailable" body="It may not exist, it may belong to someone else, or you may no longer be able to compose in this mailbox." action={<Link to={backTo} className={buttonClass('primary', 'md')}>Back to drafts</Link>} />
       </div>
     )
   }
   if (state.status === 'error') {
     return (
-      <div role="alert" className="mx-auto max-w-3xl p-3">
-        <EmptyState title="The draft could not be loaded" body={state.failure.message} action={<Button variant="primary" onClick={() => void load()}>Try again</Button>} />
+      <div role="alert" className="p-4">
+        <ErrorState title="The draft could not be loaded" body={state.failure.message} action={<Button variant="primary" onClick={() => void load()}>Try again</Button>} />
       </div>
     )
   }
@@ -327,32 +327,31 @@ function DraftEditor({ mailboxId, draftId }: { mailboxId: string; draftId: strin
   const canWrite = !consumed && proof !== null && canCompose
   const dirty = isDirty(buffer)
   const hold = status.kind === 'uncertain' ? status.retryAfterSeconds : null
+  const title = buffer.savedVersion === 0 ? 'New draft' : buffer.content.subject === '' ? '(no subject)' : buffer.content.subject
 
   return (
-    <article aria-label="Draft" className="mx-auto max-w-3xl p-3">
-      <div className="mb-2 flex flex-wrap items-center gap-2">
-        <Link to={backTo} className="inline-flex items-center gap-1 rounded-lg px-2 py-1 text-[13px] text-fg hover:bg-surface-2">
-          <BackIcon className="size-4" /> Back to drafts
+    <article aria-label="Draft" className="flex min-h-0 flex-col">
+      {/* Status strip: back link, save state and the transport reminder. */}
+      <div className="flex flex-wrap items-center gap-2 border-b border-zinc-200 px-4 py-2 text-xs text-zinc-500 dark:border-zinc-700">
+        <Link to={backTo} className="inline-flex items-center gap-1 rounded-md font-medium text-zinc-700 hover:underline dark:text-zinc-300">
+          <ArrowLeftIcon className="size-4" /> Back to drafts
         </Link>
-        <Badge tone="warn" className="ml-auto">Draft only — nothing is sent</Badge>
-      </div>
-      <h1 ref={headingRef} tabIndex={-1} className="mb-1 text-base font-semibold">
-        {buffer.savedVersion === 0 ? 'New draft' : buffer.content.subject === '' ? '(no subject)' : buffer.content.subject}
-      </h1>
-      <p className="mb-3 flex flex-wrap items-center gap-2 text-[12px] text-muted">
+        <span aria-hidden>·</span>
         <span>{buffer.savedVersion === 0 ? 'Not saved yet' : `Saved version ${buffer.savedVersion}`}</span>
         {state.meta.updatedAt !== null && <span>· updated {formatDateTime(state.meta.updatedAt)}</span>}
-        {dirty && !consumed && <Badge tone="accent">Unsaved changes</Badge>}
-        {consumed && <Badge tone="neutral">Consumed — read only</Badge>}
+        {dirty && !consumed && <Badge tone="accent" size="sm">Unsaved changes</Badge>}
+        {consumed && <Badge tone="neutral" size="sm">Consumed — read only</Badge>}
         {buffer.content.reply_to_thread_id !== null && (
           <Link to={`/mailboxes/${mailboxId}/threads/${buffer.content.reply_to_thread_id}`} className="underline">Replying to a conversation</Link>
         )}
-      </p>
-      {!canCompose && <p role="alert" className="mb-3 text-[13px] text-danger">Composing is not available in this mailbox; this draft is shown read-only.</p>}
-      {note !== null && <p role="status" className="mb-3 rounded-lg border border-line bg-surface-2 p-2 text-[13px]">{note}</p>}
+        <Badge tone="warn" size="sm" className="ms-auto">Draft only — nothing is sent</Badge>
+      </div>
+      <h1 ref={headingRef} tabIndex={-1} className="sr-only">{title}</h1>
+      {!canCompose && <p role="alert" className="border-b border-zinc-200 px-4 py-2 text-sm text-red-500 dark:border-zinc-700">Composing is not available in this mailbox; this draft is shown read-only.</p>}
+      {note !== null && <p role="status" className="border-b border-zinc-200 bg-zinc-50 px-4 py-2 text-sm text-zinc-700 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-300">{note}</p>}
 
       <form
-        className="flex flex-col gap-3"
+        className="flex min-h-0 flex-1 flex-col"
         onSubmit={(e) => {
           e.preventDefault()
           void save()
@@ -360,11 +359,9 @@ function DraftEditor({ mailboxId, draftId }: { mailboxId: string; draftId: strin
         aria-busy={status.kind === 'saving' || busy}
         noValidate
       >
-        <Field id={ids.subject} label="Subject" error={errors.subject ?? null}>
-          <TextInput id={ids.subject} value={buffer.content.subject} onChange={(e) => updateContent({ subject: e.target.value })} disabled={locked} aria-invalid={errors.subject ? true : undefined} aria-describedby={errors.subject ? `${ids.subject}-error` : undefined} autoComplete="off" />
-        </Field>
-        <Field id={ids.to} label="To" hint="One recipient per line: Name <address> or just an address. Incomplete recipients are kept as typed." error={errors.to ?? null}>
-          <TextArea
+        {/* Borderless Gmail-style rows separated by hairlines (INBOX-SPEC compose window). */}
+        <ComposeField id={ids.to} label="To" hint="One recipient per line: Name <address> or just an address. Incomplete recipients are kept as typed." error={errors.to ?? null}>
+          <textarea
             id={ids.to}
             value={recipientsText}
             onChange={(e) => {
@@ -372,76 +369,107 @@ function DraftEditor({ mailboxId, draftId }: { mailboxId: string; draftId: strin
               updateContent({ to: parseRecipients(e.target.value) })
             }}
             disabled={locked}
-            rows={3}
+            rows={2}
             aria-describedby={`${ids.to}-hint${errors.to ? ` ${ids.to}-error` : ''}`}
             aria-invalid={errors.to ? true : undefined}
             spellCheck={false}
+            className={COMPOSE_INPUT}
           />
-        </Field>
-        <Field id={ids.body} label="Message" hint={`${codePoints(buffer.content.body_text)} / ${LIMITS.body} characters`} error={errors.body ?? null}>
-          <TextArea id={ids.body} value={buffer.content.body_text} onChange={(e) => updateContent({ body_text: e.target.value })} disabled={locked} rows={12} aria-describedby={`${ids.body}-hint${errors.body ? ` ${ids.body}-error` : ''}`} aria-invalid={errors.body ? true : undefined} />
-        </Field>
+        </ComposeField>
+        <ComposeField id={ids.subject} label="Subject" error={errors.subject ?? null}>
+          <input id={ids.subject} type="text" value={buffer.content.subject} onChange={(e) => updateContent({ subject: e.target.value })} disabled={locked} aria-invalid={errors.subject ? true : undefined} aria-describedby={errors.subject ? `${ids.subject}-error` : undefined} autoComplete="off" className={cx(COMPOSE_INPUT, 'h-10')} />
+        </ComposeField>
+        <ComposeField id={ids.body} label="Message" labelHidden hint={`${codePoints(buffer.content.body_text)} / ${LIMITS.body} characters`} error={errors.body ?? null}>
+          <textarea id={ids.body} value={buffer.content.body_text} onChange={(e) => updateContent({ body_text: e.target.value })} disabled={locked} rows={10} aria-describedby={`${ids.body}-hint${errors.body ? ` ${ids.body}-error` : ''}`} aria-invalid={errors.body ? true : undefined} placeholder="Write your message" className={cx(COMPOSE_INPUT, 'min-h-40 py-2 leading-6')} />
+        </ComposeField>
 
-        {buffer.savedVersion > 0 && <DraftAttachments draftId={draftId} mailboxId={mailboxId} disabled={locked || dirty || status.kind !== 'idle'} />}
+        <div className="flex flex-col gap-3 px-4 py-3">
+          {buffer.savedVersion > 0 && <DraftAttachments draftId={draftId} mailboxId={mailboxId} disabled={locked || dirty || status.kind !== 'idle'} />}
 
-        {status.kind === 'rejected' && (
-          <div role="alert" className="flex flex-wrap items-center gap-2 rounded-lg border border-danger/40 bg-danger/10 p-2 text-[13px]">
-            <span>{status.message}</span>
-            <Button size="sm" onClick={() => setBuffer(dismissRejection)}>Edit and try again</Button>
-          </div>
-        )}
-        {(status.kind === 'saving' || status.kind === 'uncertain') && (
-          <p role="note" className="text-[13px] text-warn">
-            Keep this tab open. Reloading or closing it loses your unsaved text and this save’s retry details.
-            The save may still reach the server; recovery after a full reload is unavailable.
-          </p>
-        )}
-        {status.kind === 'uncertain' && (
-          <div role="alert" className="flex flex-col gap-2 rounded-lg border border-warn/40 bg-warn/10 p-2 text-[13px]">
-            <span>{status.message}{hold !== null && ` The server asked to wait ${hold} s before retrying.`}</span>
-            <div className="flex flex-wrap gap-2">
-              <Button size="sm" variant="primary" disabled={busy || !canWrite} onClick={() => void save()}>Retry this save</Button>
-              <Button size="sm" disabled={busy} onClick={() => void checkOutcome()}>{busy ? 'Checking…' : 'Check what the server stored'}</Button>
-            </div>
-            <span className="text-[12px] text-muted">The retry resends exactly the same save (same attempt id and text), so it cannot create a second version.</span>
-          </div>
-        )}
-        {status.kind === 'conflict' && (
-          <div role="alert" className="flex flex-col gap-2 rounded-lg border border-warn/40 bg-warn/10 p-2 text-[13px]">
-            <span>
+          {status.kind === 'rejected' && (
+            <Callout variant="danger" role="alert" actions={<Button size="sm" onClick={() => setBuffer(dismissRejection)}>Edit and try again</Button>}>
+              {status.message}
+            </Callout>
+          )}
+          {(status.kind === 'saving' || status.kind === 'uncertain') && (
+            <p role="note" className="text-sm text-amber-700 dark:text-amber-300">
+              Keep this tab open. Reloading or closing it loses your unsaved text and this save’s retry details.
+              The save may still reach the server; recovery after a full reload is unavailable.
+            </p>
+          )}
+          {status.kind === 'uncertain' && (
+            <Callout
+              variant="warning"
+              role="alert"
+              actions={
+                <>
+                  <Button size="sm" variant="primary" disabled={busy || !canWrite} onClick={() => void save()}>Retry this save</Button>
+                  <Button size="sm" disabled={busy} onClick={() => void checkOutcome()}>{busy ? 'Checking…' : 'Check what the server stored'}</Button>
+                </>
+              }
+            >
+              <span>{status.message}{hold !== null && ` The server asked to wait ${hold} s before retrying.`}</span>
+              <span className="block text-xs text-zinc-500">The retry resends exactly the same save (same attempt id and text), so it cannot create a second version.</span>
+            </Callout>
+          )}
+          {status.kind === 'conflict' && (
+            <Callout
+              variant="warning"
+              role="alert"
+              actions={
+                <>
+                  {canWrite && <Button size="sm" variant="primary" disabled={busy} onClick={() => void resolveConflict('rebase')}>Keep my text and continue from the server version</Button>}
+                  <Button size="sm" disabled={busy} onClick={() => void resolveConflict('adopt')}>Discard my text and load the server copy</Button>
+                </>
+              }
+            >
               {status.code === 'draft_consumed'
                 ? 'This draft has been consumed and can no longer be edited. Your text is kept on this screen only.'
                 : `This draft changed elsewhere${status.currentVersion !== null ? ` (now version ${status.currentVersion})` : ''}. Your text was not saved and nothing was overwritten.`}
-            </span>
-            <div className="flex flex-wrap gap-2">
-              {canWrite && <Button size="sm" variant="primary" disabled={busy} onClick={() => void resolveConflict('rebase')}>Keep my text and continue from the server version</Button>}
-              <Button size="sm" disabled={busy} onClick={() => void resolveConflict('adopt')}>Discard my text and load the server copy</Button>
-            </div>
-          </div>
-        )}
-        {status.kind === 'unusable' && (
-          <div role="alert" className="flex flex-col gap-2 rounded-lg border border-warn/40 bg-warn/10 p-2 text-[13px]">
-            <span>
+            </Callout>
+          )}
+          {status.kind === 'unusable' && (
+            <Callout variant="warning" role="alert" actions={canWrite && <Button size="sm" variant="primary" disabled={busy} onClick={() => void resolveConflict('rebase')}>Start a new save from the server version</Button>}>
               {status.reason === 'expired'
                 ? 'The record of this save attempt has expired, so the attempt cannot be reused. Your text is kept here.'
                 : 'This save attempt cannot be reused with different content. Your text is kept here.'}
-            </span>
-            {canWrite && <Button size="sm" variant="primary" disabled={busy} onClick={() => void resolveConflict('rebase')}>Start a new save from the server version</Button>}
-          </div>
-        )}
+            </Callout>
+          )}
+        </div>
 
-        <div className="flex flex-wrap items-center gap-2">
+        {/* Footer: primary save, review-send entry, attachment and discard affordances. */}
+        <div className="mt-auto flex flex-wrap items-center gap-2 border-t border-zinc-200 px-4 py-3 dark:border-zinc-700">
           {status.kind !== 'uncertain' && (
             <Button type="submit" variant="primary" disabled={locked || Object.keys(errors).length > 0}>
               {status.kind === 'saving' ? 'Saving…' : buffer.savedVersion === 0 ? 'Save draft' : 'Save changes'}
             </Button>
           )}
           {!consumed && canCompose && mailbox?.capabilities.approve_send === true && buffer.savedVersion > 0 && status.kind === 'idle' && !dirty && recipientsText === formatRecipients(buffer.savedContent.to) && (
-            <Link to={`/mailboxes/${mailboxId}/drafts/${draftId}/send-review`} className="rounded-lg px-3 py-2 text-[13px] underline">{sessionState.status === 'ready' && sessionState.session.simulation_mode ? 'Review simulated send' : 'Review send'}</Link>
+            <Link to={`/mailboxes/${mailboxId}/drafts/${draftId}/send-review`} className={buttonClass('outline', 'md')}>{sessionState.status === 'ready' && sessionState.session.simulation_mode ? 'Review simulated send' : 'Review send'}</Link>
           )}
-          {status.kind === 'saving' && <span role="status" className="text-[12px] text-muted">Saving…</span>}
+          {status.kind === 'saving' && <span role="status" className="text-xs text-zinc-500">Saving…</span>}
+          <span className="ms-auto flex items-center gap-0.5">
+            <IconButton label="Attach file (save the draft first)" disabled><PaperClipIcon className="size-5" /></IconButton>
+            <IconButton label="Discard (not available yet)" disabled><TrashIcon className="size-5" /></IconButton>
+          </span>
         </div>
       </form>
     </article>
+  )
+}
+
+const COMPOSE_INPUT = 'w-full min-w-0 bg-transparent px-0 text-sm text-zinc-800 placeholder-zinc-400 outline-none focus-visible:outline-2 focus-visible:outline-offset-2 disabled:opacity-50 dark:text-white'
+
+/** Borderless compose row: label on the start side, control filling the rest, hint/error below. */
+function ComposeField({ id, label, labelHidden = false, hint, error, children }: { id: string; label: string; labelHidden?: boolean; hint?: string; error: string | null; children: ReactNode }) {
+  return (
+    <div className="border-b border-zinc-200 px-4 py-1 dark:border-zinc-700">
+      <div className="flex items-start gap-3">
+        <label htmlFor={id} className={cx('w-16 shrink-0 pt-2.5 text-sm text-zinc-500', labelHidden && 'sr-only')}>{label}</label>
+        <div className="min-w-0 flex-1">{children}</div>
+      </div>
+      {hint && <p id={`${id}-hint`} className="pb-1 text-xs text-zinc-400">{hint}</p>}
+      {error && <p id={`${id}-error`} role="alert" className="pb-1 text-sm font-medium text-red-500">{error}</p>}
+    </div>
   )
 }

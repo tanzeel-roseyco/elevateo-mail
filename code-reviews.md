@@ -1741,3 +1741,233 @@ All packets used the user-supplied full review rubric; formatting was delegated 
 | Dedicated run retry/session design | 147 | 0 | 0 | Exact operation replay and principal ownership coherent |
 
 Backend Runs/input/controller review found a probable terminal cancellation race; owner implemented a terminal no-op while preserving remaining cancellation. Runtime confirmation pending. Dedicated design assessment supports bounded single-message batches through existing approval/queue authority rather than a parallel transport. Memory-only recovery survives route replacement and temporary recovery, but closes with the tab; before-unload warns. Multi-step automation remains outside this implementation. No Obsidian connection is available; tradeoffs are recorded here. Mobile visual inspection additionally found and fixed flex-basis overlap; this runtime finding is separate from source review density.
+
+
+## FE EmailGuard replica ? theme design review (2026-10-20, preliminary)
+
+Reviewer `/root/theme_design_review`, read-only dedicated design tradeoff assignment. Full user rubric supplied; formatting delegated to linters. Coverage: `apps/web/src/styles/index.css` lines 1?200 only, SHA256 `F8FA06E3E5CCEE9C0142F69BDE832A3CCE6E3FDEA51127146321222A479D0D86`. Confirmed defects: **0 / 200 reviewed LOC; defect density 0 per KLOC**. Later changes invalidate snapshot coverage. Consumer integration, later CSS, compilation and browser behavior remain pending; this is not application acceptance.
+
+Palette, semantic aliases and root light/dark handling match the supplied design. Contrast simulation: white/gold500 2.397:1 fails; white/gold600 3.441:1 fails normal text but supports focus indicators; white/gold700 5.209:1 passes normal text; slate950/gold500 8.417:1 passes; slate800/gold300 8.705:1 passes. Gold600 focus rings preserve visibility without changing button fills. Follow-up checks sent to Fable: global control outline suppression must never leave controls without visible focus; nested explicit-light beneath OS dark inherits dark accent tokens unless fully reset (root-only theme avoids this). No host tests run. Obsidian connector unavailable; simulation mirrored in local `obsidian.md`.
+
+
+### EmailGuard replica: bounded icons review (in progress)
+
+- Reviewer: read-only adversarial icons_review; full project rubric, no formatting review.
+- Coverage: apps/web/src/ui/icons.tsx lines 1-122 only; SHA256 0FB6479F688DB5A102C8AC73C627C1549B68634E5FACB6CFF888CD7F84FDB6F9.
+- Defects: 1; defect density: 8.20 defects/KLOC (1 / 122 reviewed lines).
+- Medium: GlobeAltIcon line 88 has disconnected outer-circle segments and lacks lower latitude line; differs from required Heroicons glyph. Sent to sole UI author Fable for source comparison and correction; pending recheck.
+- Legacy export aliases retained. No state, external-input, authorization or material performance defects found in this bounded file.
+- Limitations: static review only; Docker tests, consuming components, browser validation and final documentation acceptance remain pending.
+
+### EmailGuard replica: remaining theme range
+
+- Same theme_design_review reviewer, lines 201-244 only (44 new; 244 cumulative), unchanged SHA256 F8FA06E3E5CCEE9C0142F69BDE832A3CCE6E3FDEA51127146321222A479D0D86.
+- Reviewer reported 2 specification deviations (45.45/KLOC for this44-line range;8.20/KLOC over244). Coordinator triage:1 actionable navigation-size defect and1 source/spec discrepancy, not a confirmed visual defect. Confirmed density:22.73/KLOC for44 lines;4.10/KLOC cumulative244.
+- Low: pointer:coarse aside links min44px conflicts specified40px mobile nav rows; sent Fable for correction, pending recheck.
+- Page title18px differs written20px but matches measured captured dashboard18px/28px. Resolve per matched source page in visual QA; do not force20px globally.
+- Safe areas/reduced motion had no additional confirmed defect. Static-only evidence; no browser acceptance.
+
+- Icon correction recheck: GlobeAltIcon path now matches bundled icon-01c04406.svg exactly (coordinator automated string comparison PASS). Current icon SHA256 b91f13ca7ab05f5525c4338f87a6bf7cf24bcde7e9a63eb3bf183d33d7e42499. Defect1 corrected statically; visual confirmation remains pending.
+
+### EmailGuard replica: Button and Badge bounded review
+
+- Reviewer icons_review; Button1-92 and Badge1-46 only,138LOC (reviewer cumulative260).
+- Button SHA256:23847AC3360B2DE33A6342051A31AAA0DD1AD05384EB885D487BA884F6D0D3D9.
+- Badge SHA256:31EDDF7DB5DAF9F1615D3FF6F74FCE4013D41DB2AB38C583F0A758F041FA474A.
+- Defects3;21.74 defects/KLOC. Sent Fable; correction/recheck pending.
+- Medium Button24-26/31: md padding12 vs16;sm10 vs12;xs height32 vs24,padding12 vs8;small/xs radii8 vs6.
+- Medium Badge29-30: custom-color inline foreground always darkens toward black; unreadable dark swatches on dark surfaces.
+- Low Badge10-14: semantic tone backgrounds20-25% vs15%,dark foreground100 vs200.
+- Native disabled/default type/loading suppression/busy state and required IconButton label sound.
+- Limits: static only, no tests/consumer/documentation or browser acceptance reviewed.
+
+### EmailGuard replica: Field bounded review
+
+- Reviewer fields_review; Field.tsx1-76 only. SHA2565EAA6877526B701862D95FDF722E06AB1AD69B69F6E7D1D7659CC1C51E1D20B6.
+- Reviewer findings2;26.32/KLOC. Sent Fable, pending fixes/recheck.
+- P2: native HTMLAttributes exclude ref; ref-focus consumer compatibility must be established; React19 native ComponentPropsWithRef preserves typing.
+- P2: Checkbox accepts type and trailing spread can replace checkbox semantics; exclude type and put fixed type after spread.
+- Consumer verification pending: Field hint/error IDs need aria-describedby and aria-invalid on controls; visible focus relies on global CSS.
+- React text escaping/error alert/label linkage sound in bounded review. No tests, consuming implementation or browser acceptance reviewed.
+
+### EmailGuard replica: async, avatar, text and separator review
+
+- icons_review: Async1-68,Avatar1-34,Text1-28,Separator1-7;137newLOC,cumulative397 (reviewer limit reached).
+- Defects1;7.30/KLOC: low Avatar7-8 UTF16 indexing corrupts supplementary-plane initials; sent Fable, pending recheck.
+- SHA256 Async268F6C4BD4B84F031A7AC712FC9A0F99E70D1BB68407A9673049B1A7B3B8F29E;AvatarC03F4B1089E3450C9873020A887D66CEC1A2D822932743E405975B2D5835A0AD;Text4561336F5F2199BF235E601B4A2896D7E91E2F8DFBAFAC70808A7E3C7704E6E0;SeparatorE12EFA75B19759123BE9210DDC2CD2055CB8A7691426D2B6D33C90EB644C4C9B.
+- Loading/status,error/alert,decorative imagery,empty-name fallback,escaped text,native props,typed load states and retry sound statically.
+- No tests/consumer/documentation/browser acceptance reviewed.
+
+### EmailGuard replica: Card, Callout and clipboard review
+
+- fields_review: Card1-66,Callout1-40,clipboard1-12;118newLOC,cumulative194.
+- Defects3;25.42/KLOC. Sent Fable; pending source comparison/fix/recheck.
+- P2 Card9 missing shadow-xs;Card43-60 settings hub link cards missing chevron.
+- P2 Callout31-33 rounded-xl p-2 differs specified rounded-lg px-4 py-3; nested padding alignment needs captured-source comparison.
+- SHA256 Card83873A02B6515352B568059828D0EAF2216D09EAB2C76BA038823534DEFE6ADD;Callout5E2218B358617DAF831CD9EAC644FB37BCDFD4559D790B56687161B6A48F6DFA;clipboard3FCE66F09267FEC5CAA05C3AB57E89A2812F17C252E8E51920C88D1BCE06DDED.
+- Clipboard false-on-failure deliberate,external anchors rel safe,decorative icons/announcement roles sound. Caller handling unverified.
+- Static-only; tests,consumers,runtime focus and rendered measurements outside scope.
+
+
+### Menu interaction review ? first half
+- Read-only coverage: `Menu.tsx` lines 1?124, 124 LOC; reviewer cumulative318 LOC. SHA256 `25AD64F2629E7614F80DF362034F5AEFF52F7B977D3C6895365A18707A156EA1`.
+- 2 P2 defects /124 LOC =16.13 defects/KLOC: empty item lists bypass Escape/Tab dismissal (81?82); trigger ref replacement discards caller ref (108?109). Sent to Fable for correction. Runtime keyboard behavior and consuming tests remain unverified.
+- Source-evidence correction: withdraw previous Callout geometry defect; captured dashboard explicitly uses rounded-xl p-2. Prior Card/Callout/clipboard assignment now2 defects/118 LOC=16.95/KLOC pending Card source verification. No UI code changed by reviewers.
+
+### Menu/dialog review ? second half and modal
+- Coverage: Menu.tsx125?248 + Modal.tsx1?54 =178 LOC. 2 P2 defects,11.24 defects/KLOC: external links lose opener focus when close(false) removes link; triggerless controlled Modal lacks opener-restoration fallback. Sent to Fable.
+- SHA256 Menu `25AD64F2629E7614F80DF362034F5AEFF52F7B977D3C6895365A18707A156EA1`; Modal `35E10441E9F14328F16E1A32C732F93D92559CCE6154B8D84DF5ABBE2B0697AC`.
+- Read-only static review; consumer and runtime focus behavior, tests and visual geometry unverified.
+
+### Table, pagination, tabs and help review
+- Coverage Table1?29,Pagination1?31,Tabs1?74,GetHelpMenu1?52=186LOC. 1 P2 defect/186LOC=5.38/KLOC: Tabs58?64 arrow navigation changes selection without DOM focus transfer. Sent to Fable. Table color recipe differences require captured-source verification. Native table semantics, disabled pagination boundaries and internal honest help links statically sound; callers/tests/browser unverified.
+- SHA256 Table `85A2E44F7F351D5C603C38D5EA8C83AA773B70426E2823ECACB905559CE41B51`;Pagination `A459127D537BACE875A33562CAAFBC4C894F2B14996FF9D6F36D3163A2FB7AF2`;Tabs `AA71DF65E59F87D78CEF0E600163E13FDD7D3D3D67B562AD7ABEF2EE64F34E95`;GetHelpMenu `A41DF7EA5813E62302E0D0DC8647DF1F83CA54AE3C51F26861149247D0444405`.
+
+### Dedicated design review ? feedback, tooltip and branding
+- Coverage Toast1?83,Tooltip1?28,BrandLockup1?15=126LOC; cumulative370LOC. 1 confirmed medium defect/126LOC=7.94/KLOC: custom tooltip20 lacks Escape dismissal/hover persistence. Sent to Fable.
+- Toast simulation:20 notifications~1152px vs900px viewport;3 visible~166px. Integration risk until rapid callers verified; no speculative queue required. Neutral success icon needs consumer verification. Timer cleanup sound. Actual logo asset/provider placement/browser/tests outside scope.
+- SHA256 Toast `ADE4DE9C727395004F1CD2C25048056C5359DFA7B1441F0A4708EAA6B78D565C`;Tooltip `683BE8C58E0D137F9E012FFB31E5C003190328B3F198DFE46FF8794B6B033324`;BrandLockup `6DC4A103FC79DB4EE69F4ED179AFA3BBAED7C1DF5AF04709658AEB337C59731E`.
+- No live Obsidian simulation: connector unavailable; local mirror records numerical tradeoff only.
+
+### Breadcrumbs, copy block and header review
+- Coverage Breadcrumbs1?34,CodeBlock1?45,PageHeader1?52=131LOC; reviewer cumulative309LOC. 2 defects/131LOC=15.27/KLOC: P2 repeated successful copy does not restart confirmation timer(CodeBlock11?17);P3 direct SVG children of ordered list(Breadcrumbs19?21). Sent to Fable. Copy failures deliberate and text escaped; current crumb marked. Header18px matches captured dashboard, confirming prior title-size finding withdrawn.
+- SHA256 Breadcrumbs `B945A5C37A3183560A6A9B0EC36D87A2988704C5CC629AAB3D70031BB835D1F9`;CodeBlock `90FDCC99F9F1F7804655F746D59196BD53889FE26CB654C7696CFC1850010E03`;PageHeader `F3D2AF7F673B939CF7AB5C172B70615637B618AF4FC3807954FB750CA93DFA2A`.
+- Static read-only; consumers/tests/mobile layout and clipboard announcements unverified.
+
+### Captured-source adjudication ? Card findings withdrawn
+Coordinator inspected `source-html/settings/user__profile.html` and actual1440/390 reference images: link cards explicitly use bg-white,border-zinc200,p6,rounded-xl,h-full,hover:bg-gray50, without shadow-xs or chevron. Thus both remaining Card findings are withdrawn for source-equivalent usage. Card/Callout/clipboard118LOC assignment has0 confirmed defects,0/KLOC (3 original generic-recipe conflicts adjudicated against captured markup). Fable informed before acceptance. Mobile reference tabs overflow623px at390; replica must honor explicit responsive6-section/noBilling requirements.
+
+### Workspace switcher and account review
+- UserMenu1?54=54LOC,0confirmed/0KLOC,SHA256 `39A7CFADAD289E0D7BF2C48B716B02114278C283FC628FF0EB1CB2C6088D7F9F`. Escaped identity, distinct logout scopes, accessible trigger statically sound; controller rejection/privacy after logout unverified. Reviewer cumulative372LOC.
+- organizations1?77=77LOC,0confirmed/0KLOC,SHA256 `81CEE0555AB1F484E3848C06B2C24B213A7FEAA03477488C3E27890CB0C6376D`.20-page cap,dedupe,reset clearing,abort/stale checks sound; underlying traversal/session contracts and transition visibility unverified. Reviewer cumulative386LOC.
+- WorkspaceSwitcher1?160=160LOC,1P2/6.25KLOC,SHA256 `EFB67357C426B2805C98EC33C4290D06BA4E7687B384A84F4ECBA032C96E08FD`: search-input ArrowUp starts at penultimate due index=-1 math(line71). Sent to Fable; runtime focus/context tests remain outstanding. Reviewer cumulative346LOC.
+- All reviews read-only, no host tests.
+
+### Shell session-gate bounded review
+- Shell1?150=150LOC,0confirmeddefects,0/KLOC,SHA256 `909EE11A29CAA4B1387E4F8420A0CBD2802D84EF0918E8140D971992FFCA6827`. Nonready session states gate protected subtree; identity key remount prevents old drawer/mailbox local state reuse. Text escaped. Identity-key contract and later abort cleanup/tests outside slice; nohosttests/noedits.
+
+### Shell layout bounded review
+- Shell151?300=150LOC,1P2/6.67KLOC: collapsed width64(w-16) differs from captured56(w-14),line252. Sent toFable. Expanded264(w-66)/bg-zinc50 confirmed source, overrides generic prose. SHA256 `909EE11A29CAA4B1387E4F8420A0CBD2802D84EF0918E8140D971992FFCA6827`.
+- Stale-result/reset guards, breakpoint cleanup,skiplink,mainfocus and simulation disclosure present. No tests/browseracceptance; helpercontracts and cursor-protection outside slice.
+
+### Sidebar and Drawer bounded reviews
+- Sidebar1?195=195LOC,2P2/10.26KLOC,SHA256 `D9E877CA416DBC6C26F752BBD52F2FCBEE2F4EDD25C5BFA5B3E1EF32B84A8AA8`:20pxnavicons vs captured16(line80);collapsederror prose/retry overflows compactrail(149?153). SenttoFable. Mobile40pxrow and possible registeredMail duplicates needintegrationcheck. Exactsegment matching/accessiblenames/emptylist/noBilling sound.
+- Drawer1?39=39LOC,0confirmed/0KLOC,SHA256 `E07E842AF5FE31731A9A7FF054C80A28CD800BCBEFA7363AC0C0FE8213B10667`. Radixmodalcomposition and capturedmobile264/bg-zinc50sourcecorrect; callertrigger/close/resize/focusruntimeunverified. Reviewer cumulative189LOC.
+- Read-only, nohosttests.
+
+
+### Dashboard bounded adversarial review ? 2026-10-19 23:06 UTC
+
+Read-only reviewers `shell_gate_review` (1?200,200 LOC,cumulative389) and `shell_layout_review` (201?375,175 LOC,cumulative325) covered all375 lines. SHA256 `58C7A710719F28AC54A3F27947D73EC4FF0291DBCD6163EC39A7808A4E3AFF61`. Three P2 defects,8 defects/KLOC: sum108?119 treats failed mailbox reads as exact zero/partial totals; RecentConversations167?184 treats failed reads as caught-up successful empty; unavailable outreach262?268 still enables campaign creation. Forwarded to Fable; fixes and regression verification pending. The comment claiming one request/mailbox should reflect unread plus optional drafts. Fixed30/day policy requires authoritative requirement verification; not counted as a confirmed defect. Captured source confirms dashboard gap-5. No host tests or frontend edits by reviewers.
+
+
+### Personal settings bounded review ? 23:09 UTC
+
+`sidebar_review` covered PersonalSettingsPage.tsx1?143 (143LOC;cumulative338), SHA256`DE55F65FC7FC2B055B5975E6FF03526F02A6374DD4823F1C97865BE6FFA204DA`. One P2 defect,6.99/KLOC: invalidName disables save without connected validation feedback/aria-invalid for whitespace/control-character input (88?90,130?135). Forwarded to Fable; runtime/regression proof pending. Gateway boundary usage,revision/conflict/null-clear and load failures retained; save context fencing requires integration verification outside assigned slice. No edits/host tests.
+
+Dashboard daily-limit uncertainty resolved by coordinator: docs/launch-blockers-plan.md:3 defines30 sends/mailbox/day for the inherited pilot; state.md:19 and docs/design/ux-audit-20261018.md:68 retain this dashboard rule. No policy defect counted; keep usage-not-reported qualification.
+
+
+## Inbox state review ? 2026-10-19 23:20 UTC
+Read-only adversarial review by inbox_state_review: starStore.ts 87 LOC, inboxContext.tsx 43 LOC, InboxRedirect.tsx 33 LOC (163 total). 1 P2 defect; density 6.13 defects/KLOC. Cross-tab star cache never invalidates on storage events, so tab B can overwrite tab A stars with its stale list. Invalidate/notify on external changes and re-read persisted state before mutation; add regression. No other concrete defects. Runtime and targeted tests pending implementation. SHA256: starStore B62714656EA4AE8A0AAB3312671C49D2ADFEAFC9F24FFC02995B8025619F1831; inboxContext 98C5FD81F818BEDA746D9D5515FF2BC881D0D68185EF491A55CF6606F4F10C21; InboxRedirect 5B623980A94E90203DC4B2979CA5623D6E1AC2EE946982D27A2529CDB920B36E.
+
+FolderNav follow-up review: 188 LOC; SHA256 89745B33F6D3D7C86A3F1E18F0E398BD05E9FF9303DF74063B539384706C4178. 0 concrete defects, density 0/KLOC; cumulative inbox_state_review coverage351 LOC. URL filters, capability-gated actions, disabled unsupported folders, local-star disclosure, null/empty mailbox paths coherent. Browser keyboard/responsive checks and tests pending.
+
+ComposeWindow.tsx review by tables_tabs_review:46 LOC, cumulative392. SHA256 9D672D39DCBB66B00C650C555F55F44E78FF35F6441407CF33A41860BF1BDA24. 1 P2, density21.74/KLOC. Lines27-28,33-36: minimise and maximise can remain active simultaneously; retained top-6 anchors minimised40px window near top, and maximising a minimised window keeps editor hidden. Make modes mutually exclusive or condition top/visibility appropriately. Editor mounted, hidden controls excluded from keyboard tree; close unsaved contract and actual positioning need browser regression. No edits/host tests.
+
+Inbox row/layout review:195 LOC (MessageRow118, InboxLayout77),2 defects,10.26/KLOC. P2 InboxLayout68 uses lg:hidden so tablet FolderSelect persists below768px, contrary INBOX-SPEC3 list-only phone layout; restrict to md..lg. P3 MessageRow31 nullish fallback keeps empty display_name rather than available address; trim/blank-aware fallback with regression. Hashes MessageRow9D29FDE97875FA3DDEC4842A72500E8307756B558BDA73375B89615B1CDE4A71; InboxLayout9F5AAE2133B2A320E34665ED9DF2BE471743D7A9E274CE418FCFA4647AC5BE4B. Plain text and unavailable controls preserved; no runtime/test claims.
+
+
+### Consolidated acceptance checklist (coordinator; current implementation still in progress)
+All entries below require Fable disposition and Docker/browser evidence; they are not claims of final failure. Earlier per-slice notes retain hashes/coverage/density.
+- [ ] Dashboard partial/failed count reads must not render exact zero or a falsely caught-up empty state; unavailable Outreach must not enable unsupported creation.
+- [ ] Sidebar collapsed width56px; nav icons16px per captured source; collapsed error content must fit rail. Provided bundle logo provenance must be verified.
+- [ ] Tooltip hover content must be dismissible (Escape) and hoverable when applicable.
+- [ ] Avatar supplementary-Unicode initials must not split surrogate pairs.
+- [ ] Field checkbox type must remain checkbox; supported ref/invalid/described-by flows must work.
+- [ ] Menu empty-list Escape/Tab and composed trigger ref; focus restoration including target=_blank/closeOnSelect=false paths.
+- [ ] Controlled triggerless Modal captures/restores opener or safe fallback.
+- [ ] Breadcrumb list valid semantics; CodeBlock repeated Copy restarts feedback timer.
+- [ ] Tabs arrow selection transfers DOM focus; workspace search ArrowUp from no active item reaches last item.
+- [ ] Personal settings invalid-name Save disabling explains connected inline validation.
+- [ ] Stars invalidate across tabs and re-read persisted state before mutations.
+- [ ] Compose minimise/maximise modes must not combine into wrongly positioned/hidden editor.
+- [ ] Phone inbox excludes tablet-only FolderSelect; empty sender display name falls back to address.
+- [ ] Badge custom colour text readable in dark mode; semantic tint reference match. Button geometry must be compared to actual captured class recipes before changing.
+- [ ] All affected happy/failure tests, Docker lint/type/unit/integration/build, full1440/390 real-browser page/interactions, no blue/sky accents or prohibited branding/billing, loading/empty/error states, synchronized state/README/docs.
+Adjudications: actual dashboard18px title and gap5, sidebar264px bg-zinc50, Callout rounded-xl p2 nested padding, profile cards no shadow/chevron are correct captured-source behavior. Earlier generic-recipe findings against these were withdrawn. Daily30 pilot budget is documented policy and should remain honestly described.
+
+InboxPage201-376 review:176 LOC; SHA256 689781FA85916A22C30F7861FD4E6B628EFD902A5F3F4B43CA0F41CB39A1B3ED. 1 P2, density5.68/KLOC. Selection toolbar245-295 keeps six32px nonshrinking actions plus count, checkbox and pager in a single nonwrapping row; minimum width exceeds390px and overflow-hidden clips actions. Responsive overflow/menu or equivalent needed. Static sizing evidence, actual browser confirmation pending. Cumulative inbox_row_review371 LOC. No edits/host tests.
+
+InboxPage1-200 review:200 LOC, SHA256 689781FA85916A22C30F7861FD4E6B628EFD902A5F3F4B43CA0F41CB39A1B3ED.2 P2,10/KLOC. (1)171-172 successful mark-read in filter=unread only toggles flag, leaving confirmed-read row visible; remove from unread results with valid continuation state. (2)175-177 bulk loop has no synchronous guard/owner cancellation: after unmount abort causes stale return, loop proceeds issuing subsequent writes through captured request/context; concurrent clicks can overlap stale busy closures. Stop on stale/owner cancellation before each next write and guard batch synchronously. Add regressions. Full InboxPage376 LOC now reviewed:3 defects,total density7.98/KLOC; Docker/browser validation pending.
+
+
+### Settings frame and profile review ? 2026-10-19 23:37 UTC
+
+Read-only adversarial reviewer `settings_frame_review`; 150 LOC (SettingsLayout 87, ProfilePages 63), 1 P2 defect, density 6.67 defects/1,000 LOC. SettingsLayout SHA256 `8F014A6C6B5E20C9C931AB4E6C2F01F020E0F5D74DF6A8ECE156FD7FD43EF8FB`; ProfilePages `44BAE73AA3A186F62F06512B053038DC5555FD53FF0C76247C68C0CC5A58DC0C`.
+
+- P2 ProfilePages.tsx:32?35,48?55: every password error attaches to repeat input, including empty current and short new password. Associate errors, aria-invalid and descriptions with the failing field. Regression cases: missing current, short new, mismatched repeat. Pending Fable correction and Docker verification.
+- SettingsLayout: no concrete defects. Simulated password validation is honest and does not persist secrets. Static review only; route integration, tests and visual QA remain pending.
+
+
+### Simulated settings store review ? 2026-10-19 23:38 UTC
+
+Reviewer `settings_frame_review`, second bounded assignment: simulatedStore.ts 87 LOC, SHA256 `C71C67B22A746E67A9A178DA280488B839CE0BEDB9F3F4C07EFDE7F81D80E3CF`; 1 P2 defect, density 11.49 defects/1,000 LOC. Cumulative reviewer 237 LOC, 2 defects, density 8.44/1,000 LOC.
+
+- P2 lines 17,28,57?62: cache ignores cross-tab storage changes/removal/clear; another tab remains stale and can overwrite newer values. Invalidate affected keys and notify on storage events; re-read persisted state before read/modify/write, while acknowledging localStorage has no atomic multi-tab transaction. Regression: external update, remove, clear. Pending Fable correction and Docker/browser verification.
+- Actor/organization scope, persisted-read schema validation and blocked-storage fallback present. Static review only; consumer integration still in progress.
+
+
+### Settings collection forms ? 2026-10-19 23:39 UTC
+
+Read-only adversarial reviews; no host tests or UI changes. All fixes and Docker/browser proof pending.
+
+- `api_settings_review`: DeveloperApiPage.tsx 165 LOC, SHA256 `89EA0419D1C9DF1A86F795FAB7249D92AC32152D23B49F2687474EF83A4B1F58`; 2 defects, 12.12/KLOC. P2 line48: token51 silently evicts oldest via slice(-50); reject at capacity and preserve existing rows. P3 line143: Cancel bypasses reset, reopening retains canceled name/type/error. Use common reset-and-close.
+- `settings_frame_review`: TagsPage.tsx 140 LOC, SHA256 `8B278C3CEBD3CABBD2DDF6A3E84C5264C0635680A21F2FAF436C513B3723FA75`; 3 defects,21.43/KLOC. P2 line44: tag201 evicts oldest via slice(-200), reject capacity. P2 lines118?130: ten32px swatches+9x8px gaps=392px before modal padding; responsive fewer columns required at390. P3 line107: Cancel bypasses reset, retaining canceled draft/error. Cumulative reviewer377LOC,5defects,13.26/KLOC.
+- `inbox_actions_review`: WebhooksPages.tsx128LOC, SHA256 `995FC471D05B66E4D92257390FDC694B93338BDCC5428DC610BC450295A0EE9F`; 2 defects,15.63/KLOC (severity clarification pending for second). P2 line102: endpoint51 evicts oldest via slice(-50), reject capacity. Lines94,111?118: missing-event error attaches to valid URL rather than event fieldset; associate group error correctly. Cumulative reviewer328LOC.
+
+Simulations are explicitly labeled; URL escaping/HTTPS validation present; no network deliveries attempted. Cross-tab-store finding excluded as duplicate. Regression coverage must exercise capacity preservation, modal Cancel/reopen, error-field associations, and390px palette.
+
+
+### Workspace settings review ? 2026-10-19 23:41 UTC
+
+`api_settings_review`, two bounded assignments1?123 (123 LOC) and124?223(100LOC), WorkspacePages.tsx SHA256 `117CF2AEB13DA41595CC9D424AFC01E5F26CF6413CC8A533B50927A9580813BB`. First slice2P2/16.26KLOC; second0/0KLOC; whole223LOC2defects/8.97KLOC. Reviewer cumulative388LOC,4defects/10.31KLOC.
+
+- P2 line109: candidates are filtered only against existing records, duplicate addresses in one submission create multiple invitations. Dedupe before insertion with explicit case policy.
+- P2 line110: exceeding500 invitations silently deletes older records through slice(-500). Reject excess additions, preserve existing records and explain capacity.
+- Name state org-switch concern was an integration risk, not counted; Shell uses identity-keyed ProtectedShell, subject to checking identity includes organization. Remaining slice has honest simulation labels and loading/error/empty member states; no additional defects. Static review only; Docker/browser proof pending.
+
+
+Workspace-name isolation adjudication: Shell.tsx:129 keys ProtectedShell by sessionIdentityKey; session.tsx:35?36 includes actor, organization, context and authorization version. Organization switches remount the settings subtree. The initial useState name therefore does not establish an org-leak defect in current routing. Browser regression remains part of integration verification.
+
+
+
+### Fable disposition of the consolidated checklist — 2026-10-20
+
+Worker Claude Fable 5.1 (`claude-fable-5-1`), inline source changes with regression tests; coordinator
+additions above are preserved unchanged. Docker/browser evidence follows in `state.md`.
+
+| Finding | Disposition |
+| --- | --- |
+| Dashboard failed counts / caught-up / Outreach creation | Fixed: `sum()` marks error entries as `more`, returns `—` when every read failed; failed-read conversations empty state; unavailable Outreach links to the campaigns list only. Test `Shell.test.tsx` "a failed count never reads as zero". |
+| Sidebar 56px collapsed, 16px icons, collapsed error | Fixed: `w-14`, `size-4`, collapsed error renders an `IconButton` retry carrying the message. |
+| Tooltip Escape | Fixed: stateful dismissal until mouseleave/blur. Test `ui/primitives.test.tsx`. |
+| Avatar surrogate pairs | Fixed: `Array.from` code points. Test. |
+| Field checkbox type / refs | Fixed: `ComponentProps` types, `type="checkbox"` after spread with `Omit<…,'type'>`. |
+| Menu empty-list Escape/Tab, caller ref, external link focus | Fixed: dismissal keys before the empty-items guard, merged callback/object refs, external `MenuLink` restores trigger focus. Tests. |
+| Modal trigger-less focus restore | No change: Radix Dialog restores focus to the previously focused element. |
+| Breadcrumb semantics / Copy timer | Fixed: chevron inside `li`; `useCopy` attempt counter restarts the timer. Tests. |
+| Tabs arrow focus / switcher ArrowUp | Fixed: `ButtonTabs` focuses the newly selected tab; `WorkspaceSwitcher` index -1 goes to first/last. Test. |
+| Personal settings disabled Save | Fixed: inline `nameError` with `aria-invalid` / `aria-describedby`. |
+| Stars cross-tab | Fixed: storage-event invalidation, fresh read before toggle. Test `starStore.test.ts`. |
+| Compose minimise/maximise | Fixed: minimised wins; maximise clears minimised. |
+| Phone FolderSelect / blank sender | Fixed: `max-md:hidden lg:hidden`; trim-aware `senderLabel`. |
+| Badge dark text / semantic tints; Button geometry | Fixed: custom colour mixes towards `--badge-ink`; tints 15% with `-200` dark text; sizes `md h-10 px-4 rounded-lg`, `sm h-8 px-3 rounded-md`, `xs h-10 px-3 text-xs` per captured recipes. |
+| InboxPage toolbar overflow, unread removal, bulk guard | Fixed: `min-h-12 flex-wrap`; confirmed-read rows leave the Unread folder; `setRead` returns an outcome, `bulkRead` is single-flight and stops on stale/unmount. |
+| ProfilePages per-field errors | Fixed: `errors.current/next/repeat` each on its field. Test `settingsAdapters.test.tsx`. |
+| Settings capacity eviction, Cancel reset, 390px swatches, webhook event error, invitation dedupe, store cross-tab | Fixed earlier in session; regression tests added in `settingsAdapters.test.tsx` (capacity preserved, Cancel/reopen, grid columns, fieldset error association, storage event). |
+| `GlobeAltIcon` glyph | No change: the path is the Heroicons 24/outline `globe-alt` glyph verbatim (two meridian arcs, upper latitude only). |
+| Touch targets | Nav rows 40px, header controls 44px (`pointer: coarse`). |
+
+Defects fixed in this pass: 24 across the files above. Coverage and density figures for the reviewed
+packets remain as the reviewers recorded them; the fixed sources have not yet been re-reviewed.

@@ -1,4 +1,11 @@
 <!-- completion-wave-current:start -->
+### EmailGuard replica web UI (2026-10-20)
+
+`apps/web` is now the EmailGuard-replica UI described in `docs/design/emailguard-replica.md`: shell,
+dashboard, Gmail-behaviour inbox, six settings sections and a help centre with original copy. Settings
+without a backend endpoint are simulated UI adapters labelled on every page; nothing claims server
+persistence and no API was added. Verification is Docker-only on fleet-02; see `state.md`.
+
 ### Authoritative completion status (2026-10-20)
 
 The active continuation preserves October 18 source `5c39dc9e` and integrates the unfinished backend work into `completion/resend-pilot-20261019`. The launch scope is Resend; self-hosted Mox remains deferred.
@@ -802,17 +809,21 @@ Local disk preservation: 30 exact generated archives (50,048,676 bytes) were cop
 
 Android runtime completion: Android1037 passed all nine isolated checks (login, navigation, inbox, thread, rotation, keyboard, lifecycle, offline, logout), including visual inspection and force-stop session recovery. Evidence: docs/completion/android1037-acceptance.md. Disposable runtime cleanup passed; no live release performed.
 
-## Web navigation and visual system (2026-10-18 design refresh)
+## Web navigation and visual system (2026-10-20 EmailGuard replica)
 
-- Sidebar groups: Today (`/`), Mail (Search, each mailbox with Drafts/Members), Outreach, Contacts, Settings.
-  Feature modules register into `mail | outreach | contacts | settings` in `apps/web/src/app/featureRegistry.ts`;
-  icons are mapped by path in `Sidebar.tsx`.
-- Route orientation (group, crumb, purpose, optional back link) is the pure table in
-  `apps/web/src/app/pageMeta.ts`, rendered by `RouteContext.tsx` above every page. Add a rule when adding a route.
-- Today (`HomePage.tsx`) reads the first page of unread threads and drafts per mailbox through the gateway.
-  Quota usage, approvals and failures are shown as not reported until the API serves them.
-- Tokens: `apps/web/src/styles/index.css` (cool neutral colours, `--elev-1/2` elevation as `shadow-1/2`,
-  `.page-title`, `.panel`). Rationale and evidence: `docs/design/ux-audit-20261018.md`.
+- Sidebar groups, in team-importance order: Dashboard (`/`), Mail (Inbox, each visible mailbox,
+  Search), Outreach, Contacts (People), Administration (Settings, Help). Feature modules register
+  into `mail | outreach | contacts | settings` in `apps/web/src/app/featureRegistry.ts`; the
+  settings section itself is routed by `features/settings/SettingsRoutes.tsx`.
+- Page orientation is owned by each area's layout: `PageHeader` + `Breadcrumbs` (settings pages
+  resolve their title through `settingsPageMeta`), `InboxLayout` for mail, `HelpRoutes` for help.
+  The former `pageMeta.ts` / `RouteContext.tsx` / `HomePage.tsx` were removed with the replica.
+- Dashboard (`DashboardPage.tsx`) reads the first page of unread threads and drafts per mailbox;
+  a failed read renders a lower bound (`12+`) or `—`, never an exact zero or "caught up".
+- Tokens: `apps/web/src/styles/index.css` (zinc neutrals, gold-50…950 accent, `--color-accent`,
+  `--color-accent-content`, `--color-accent-foreground`, gold-600 focus ring). Primitives live in
+  `apps/web/src/ui`. Design note, route inventory and simulated-adapter policy:
+  `docs/design/emailguard-replica.md`. The 2026-10-18 audit remains at `docs/design/ux-audit-20261018.md`.
 
 ## Unified dashboard continuation (2026-10-20)
 

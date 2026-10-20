@@ -12,7 +12,7 @@ import type { MailboxPage } from '@/data/contract'
 import type { MailroomGateway } from '@/data/gateway'
 import { SESSION_FRESHNESS_INTERVAL_MS, SessionProvider } from './session'
 import { Shell } from './Shell'
-import { HomePage } from './HomePage'
+import { DashboardPage } from './DashboardPage'
 import { featureRoutes } from './features'
 import { FeatureGatewaysProvider, type FeatureGateways } from './featureGateways'
 import type { OutreachGateway } from '@/features/outreach/contract'
@@ -128,19 +128,18 @@ describe('BE-02A session controls', () => {
     await screen.findByRole('heading', { name: 'Sign in' })
   })
 
-  it('the account sheet lists memberships and an explicit switch replaces the identity', async () => {
+  it('the workspace switcher lists memberships and an explicit switch replaces the identity', async () => {
     renderShell(createFixtureGateway())
     await screen.findByText('Synthetic organization A')
-    fireEvent.click(screen.getByRole('button', { name: 'Account and sign-out' }))
-    const dialog = await screen.findByRole('dialog', { name: 'Account' })
-    expect(within(dialog).getByText('Fixture user A')).toBeTruthy()
-    const current = await within(dialog).findByRole('button', { name: /Synthetic organization A/ })
-    expect(current.getAttribute('aria-current')).toBe('true')
-    expect((current as HTMLButtonElement).disabled).toBe(true)
-    fireEvent.click(within(dialog).getByRole('button', { name: /Synthetic organization B/ }))
-    // The replaced identity remounts the protected subtree: new header, sheet closed.
-    await screen.findByText('Synthetic organization B')
-    await waitFor(() => expect(screen.queryByRole('dialog', { name: 'Account' })).toBeNull())
+    expect(screen.getByRole('button', { name: 'Account and sign-out' }).textContent).toContain('Fixture user A')
+    fireEvent.click(screen.getByRole('button', { name: 'Workspace: Synthetic organization A' }))
+    const listbox = await screen.findByRole('listbox', { name: 'Workspaces' })
+    const current = await within(listbox).findByRole('option', { name: /Synthetic organization A/ })
+    expect(current.getAttribute('aria-selected')).toBe('true')
+    fireEvent.click(within(listbox).getByRole('option', { name: /Synthetic organization B/ }))
+    // The replaced identity remounts the protected subtree: new switcher label, list closed.
+    await screen.findByRole('button', { name: 'Workspace: Synthetic organization B' })
+    await waitFor(() => expect(screen.queryByRole('listbox', { name: 'Workspaces' })).toBeNull())
     expect(screen.getByText('outlet-content')).toBeTruthy()
   })
 
@@ -151,14 +150,13 @@ describe('BE-02A session controls', () => {
     }
     renderShell(gateway)
     await screen.findByText('Synthetic organization A')
-    fireEvent.click(screen.getByRole('button', { name: 'Account and sign-out' }))
-    const dialog = await screen.findByRole('dialog', { name: 'Account' })
-    fireEvent.click(await within(dialog).findByRole('button', { name: /Synthetic organization B/ }))
-    await within(dialog).findByRole('alert')
-    // Session A survives: the shell header (banner; aria-hidden while the Radix dialog is open)
-    // still names organization A, the routed outlet is still mounted, and no no-organization or
-    // sign-in screen replaced the protected subtree. The sheet repeats the name, so scope to the header.
-    expect(screen.getByRole('banner', { hidden: true }).textContent).toContain('Synthetic organization A')
+    fireEvent.click(screen.getByRole('button', { name: 'Workspace: Synthetic organization A' }))
+    const listbox = await screen.findByRole('listbox', { name: 'Workspaces' })
+    fireEvent.click(await within(listbox).findByRole('option', { name: /Synthetic organization B/ }))
+    await screen.findByRole('alert')
+    // Session A survives: the switcher still names organization A, the routed outlet is still
+    // mounted, and no no-organization or sign-in screen replaced the protected subtree.
+    expect(screen.getByRole('button', { name: 'Workspace: Synthetic organization A' })).toBeTruthy()
     expect(screen.getByText('outlet-content')).toBeTruthy()
     expect(screen.queryByText('No organization is available')).toBeNull()
     expect(screen.queryByRole('heading', { name: 'Sign in' })).toBeNull()
@@ -177,8 +175,7 @@ describe('BE-02A session controls', () => {
     renderShell(gateway)
     await screen.findByText('Synthetic organization A')
     fireEvent.click(screen.getByRole('button', { name: 'Account and sign-out' }))
-    const dialog = await screen.findByRole('dialog', { name: 'Account' })
-    fireEvent.click(within(dialog).getByRole('button', { name: 'Sign out' }))
+    fireEvent.click(await screen.findByRole('menuitem', { name: 'Sign out' }))
     await screen.findByRole('status', { name: 'Signing out' })
     expect(screen.queryByText('Synthetic organization A')).toBeNull()
     expect(screen.queryByText('outlet-content')).toBeNull()
@@ -195,8 +192,7 @@ describe('BE-02A session controls', () => {
     renderShell(gateway)
     await screen.findByText('Synthetic organization A')
     fireEvent.click(screen.getByRole('button', { name: 'Account and sign-out' }))
-    const dialog = await screen.findByRole('dialog', { name: 'Account' })
-    fireEvent.click(within(dialog).getByRole('button', { name: 'Sign out' }))
+    fireEvent.click(await screen.findByRole('menuitem', { name: 'Sign out' }))
     await screen.findByText('Sign-out was not confirmed')
     expect(screen.queryByText('outlet-content')).toBeNull()
     fireEvent.click(screen.getByRole('button', { name: 'Return to mail' }))
@@ -377,26 +373,26 @@ describe('identity replacement privacy (V3)', () => {
   })
 })
 
-describe('home screen guidance (Mira R16, IA refresh Today page)', () => {
+describe('dashboard guidance (Mira R16, EmailGuard replica dashboard)', () => {
   it('offers access guidance for a completed zero-visible-mailbox list', async () => {
     const { gateway, readCalls } = pagedGateway([mailboxPage([], null)])
-    renderShell(gateway, <HomePage />)
+    renderShell(gateway, <DashboardPage />)
     await screen.findByRole('heading', { name: 'No visible mailboxes', level: 2 })
     expect(screen.getByText('If you expected a mailbox here, ask your organization administrator to check your access.')).toBeTruthy()
     expect(screen.getByText('No mailboxes are visible to you.')).toBeTruthy()
-    expect(screen.queryByRole('heading', { name: 'Today' })).toBeNull()
+    expect(screen.queryByRole('region', { name: 'Workspace summary' })).toBeNull()
     expect(readCalls()).toBe(1)
   })
 
-  it('shows the Today summary with a link to each visible mailbox', async () => {
+  it('shows the dashboard summary with a link to each visible mailbox', async () => {
     const { gateway } = pagedGateway([mailboxPage(['Team inbox'], null)])
-    renderShell(gateway, <HomePage />)
-    await screen.findByRole('heading', { name: 'Today', level: 1 })
-    expect(screen.getByRole('region', { name: 'Attention summary' })).toBeTruthy()
-    // Rail link and home row both lead to the same inbox.
-    for (const link of screen.getAllByRole('link', { name: 'Team inbox' })) {
-      expect(link.getAttribute('href')).toBe(`/mailboxes/${mailboxIdFor('Team inbox')}`)
-    }
+    renderShell(gateway, <DashboardPage />)
+    await screen.findByRole('heading', { name: 'Dashboard', level: 1 })
+    expect(await screen.findByRole('region', { name: 'Workspace summary' })).toBeTruthy()
+    // The rail links the inbox, and the dashboard's mailbox section links it again.
+    const rail = within(screen.getByRole('navigation', { name: 'Mail' })).getByRole('link', { name: 'Team inbox' })
+    expect(rail.getAttribute('href')).toBe(`/mailboxes/${mailboxIdFor('Team inbox')}`)
+    expect(screen.getAllByRole('link', { name: /Team inbox/ }).length).toBeGreaterThan(1)
     expect(screen.queryByText('No visible mailboxes')).toBeNull()
   })
 
@@ -405,13 +401,13 @@ describe('home screen guidance (Mira R16, IA refresh Today page)', () => {
     const continuation = new Promise<MailboxPage>((resolve) => { resolvePage = resolve })
     const base = createFixtureGateway()
     const listMailboxes = vi.fn<MailroomGateway['listMailboxes']>().mockResolvedValueOnce(mailboxPage([], 'next')).mockReturnValueOnce(continuation)
-    renderShell({ ...base, listMailboxes }, <HomePage />)
+    renderShell({ ...base, listMailboxes }, <DashboardPage />)
     await waitFor(() => expect(listMailboxes).toHaveBeenCalledTimes(2))
     expect(screen.getByRole('status', { name: 'Loading mailbox selection' })).toBeTruthy()
     expect(screen.queryByText('No visible mailboxes')).toBeNull()
-    expect(screen.queryByRole('heading', { name: 'Today' })).toBeNull()
+    expect(screen.queryByRole('region', { name: 'Workspace summary' })).toBeNull()
     await act(async () => resolvePage(mailboxPage(['Later inbox'], null)))
-    await screen.findByRole('heading', { name: 'Today', level: 1 })
+    await screen.findByRole('region', { name: 'Workspace summary' })
     expect(screen.getAllByRole('link', { name: 'Later inbox' }).length).toBeGreaterThan(0)
   })
 
@@ -420,14 +416,29 @@ describe('home screen guidance (Mira R16, IA refresh Today page)', () => {
       new GatewayError('transport', 'network', 'Mailboxes unavailable'),
       mailboxPage([], null),
     ])
-    renderShell(gateway, <HomePage />)
+    renderShell(gateway, <DashboardPage />)
     await screen.findByRole('heading', { name: 'Mailboxes could not be loaded', level: 2 })
-    expect(screen.getByText('Use Try again in the navigation menu, or reload the page.')).toBeTruthy()
+    expect(screen.getByText('Use Try again in the navigation, or reload the page.')).toBeTruthy()
     expect(screen.queryByText('No visible mailboxes')).toBeNull()
-    expect(screen.queryByRole('heading', { name: 'Today' })).toBeNull()
+    expect(screen.queryByRole('region', { name: 'Workspace summary' })).toBeNull()
     fireEvent.click(screen.getByRole('button', { name: 'Try again' }))
     await screen.findByRole('heading', { name: 'No visible mailboxes', level: 2 })
     expect(readCalls()).toBe(2)
+  })
+
+  it('a failed count never reads as zero or as "caught up"', async () => {
+    const { gateway } = pagedGateway([mailboxPage(['Team inbox'], null)])
+    const failing: MailroomGateway = {
+      ...gateway,
+      listThreads: async () => { throw new GatewayError('transport', 'network', 'Threads unavailable') },
+    }
+    renderShell(failing, <DashboardPage />)
+    const summary = await screen.findByRole('region', { name: 'Workspace summary' })
+    await screen.findByRole('heading', { name: 'Recent conversations could not be loaded', level: 2 })
+    // The unread card shows a dash, not 0: nothing could be counted.
+    const unreadLabel = within(summary).getByText('Unread replies')
+    await waitFor(() => expect(unreadLabel.nextElementSibling?.textContent).toBe('—'))
+    expect(screen.queryByText('No unread conversations')).toBeNull()
   })
 })
 
@@ -438,7 +449,7 @@ describe('registered feature routes (FE-805)', () => {
         <MemoryRouter initialEntries={['/outreach/campaigns']}>
           <Routes>
             <Route element={<Shell />}>
-              <Route index element={<HomePage />} />
+              <Route index element={<DashboardPage />} />
               {featureRoutes.map((route) => (
                 <Route key={route.path} path={route.path} element={route.element} />
               ))}
@@ -520,7 +531,7 @@ describe('Outreach operations under the central session policy (FE-805)', () => 
           <MemoryRouter initialEntries={[path]}>
             <Routes>
               <Route element={<Shell />}>
-                <Route index element={<HomePage />} />
+                <Route index element={<DashboardPage />} />
                 {featureRoutes.map((route) => (
                   <Route key={route.path} path={route.path} element={route.element} />
                 ))}
@@ -588,10 +599,10 @@ describe('Outreach operations under the central session policy (FE-805)', () => 
     renderOutreach(base, '/outreach/campaigns', { outreach: outreachWith({ listCampaigns }) })
     await screen.findByText('Synthetic organization A')
     await waitFor(() => expect(failFirst).toBeDefined())
-    fireEvent.click(screen.getByRole('button', { name: 'Account and sign-out' }))
-    const dialog = await screen.findByRole('dialog', { name: 'Account' })
-    fireEvent.click(await within(dialog).findByRole('button', { name: /Synthetic organization B/ }))
-    await screen.findByText('Synthetic organization B')
+    fireEvent.click(screen.getByRole('button', { name: 'Workspace: Synthetic organization A' }))
+    const listbox = await screen.findByRole('listbox', { name: 'Workspaces' })
+    fireEvent.click(await within(listbox).findByRole('option', { name: /Synthetic organization B/ }))
+    await screen.findByRole('button', { name: 'Workspace: Synthetic organization B' })
     await act(async () => { failFirst!(unauthenticated()) })
     expect(await screen.findByRole('link', { name: 'Pilot' })).toBeTruthy()
     expect(screen.queryByRole('alert')).toBeNull()

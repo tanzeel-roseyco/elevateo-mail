@@ -80,27 +80,31 @@ test('recovery reads the same for any address', async ({ page }) => {
   await page.screenshot({ path: 'e2e/.results/recovery-sent.png', fullPage: true })
 })
 
-test('account sheet: Escape closes it, an explicit switch replaces the identity, sign-out fences the shell', async ({ page }) => {
+test('workspace switcher: Escape closes it, an explicit switch replaces the identity, sign-out fences the shell', async ({ page }) => {
   await page.goto(ENTRY)
   await expectMailboxNavReady(page)
-  const trigger = page.getByRole('button', { name: 'Account and sign-out' })
-  await trigger.click()
-  const dialog = page.getByRole('dialog', { name: 'Account' })
-  await expect(dialog).toBeVisible()
-  await expect(dialog.getByText('Fixture user A')).toBeVisible()
-  await expect(dialog.getByRole('button', { name: /Synthetic organization A/ })).toHaveAttribute('aria-current', 'true')
+  // The switcher and account menu live in the sidebar rail (desktop) or the drawer (narrow).
+  const trigger = page.getByRole('button', { name: 'Open navigation' })
+  const scope = (await trigger.isVisible()) ? page.getByRole('dialog', { name: 'Navigation' }) : page
+  if (await trigger.isVisible()) await trigger.click()
+  const switcher = scope.getByRole('button', { name: 'Workspace: Synthetic organization A' })
+  await switcher.click()
+  const listbox = scope.getByRole('listbox', { name: 'Workspaces' })
+  await expect(listbox).toBeVisible()
+  await expect(listbox.getByRole('option', { name: /Synthetic organization A/ })).toHaveAttribute('aria-selected', 'true')
   await page.keyboard.press('Escape')
-  await expect(dialog).not.toBeVisible()
-  await expect(trigger).toBeFocused() // dismissal restores focus to the opener (D6)
+  await expect(listbox).not.toBeVisible()
+  await expect(switcher).toBeFocused() // dismissal restores focus to the opener (D6)
 
-  await trigger.click()
-  await dialog.getByRole('button', { name: /Synthetic organization B/ }).click()
-  await expect(page.getByText('Synthetic organization B')).toBeVisible()
-  await expect(dialog).not.toBeVisible() // the replaced identity remounted the protected subtree
+  await switcher.click()
+  await listbox.getByRole('option', { name: /Synthetic organization B/ }).click()
+  await expect(page.getByRole('button', { name: 'Workspace: Synthetic organization B' }).first()).toBeVisible()
+  await expect(listbox).not.toBeVisible() // the replaced identity remounted the protected subtree
   await page.screenshot({ path: 'e2e/.results/switched-organization.png', fullPage: true })
 
-  await page.getByRole('button', { name: 'Account and sign-out' }).click()
-  await page.getByRole('dialog', { name: 'Account' }).getByRole('button', { name: 'Sign out', exact: true }).click()
+  const account = (await trigger.isVisible()) ? page.getByRole('button', { name: 'Account menu' }) : page.getByRole('button', { name: 'Account and sign-out' })
+  await account.click()
+  await page.getByRole('menuitem', { name: 'Sign out', exact: true }).click()
   await expect(page.getByRole('heading', { name: 'Sign in' })).toBeVisible()
   await expect(page.getByRole('status')).toContainText('signed out')
   await expect(page.getByText('Synthetic organization B')).toHaveCount(0)

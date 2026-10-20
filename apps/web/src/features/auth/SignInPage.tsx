@@ -2,11 +2,14 @@
 // state for the duration of the form; nothing is stored, logged or echoed. The controller owns the
 // challenge/login exchange; this page only renders its generic outcomes (contract: no account
 // existence leakage, bounded 429/503 retry, 503 keeps the entries).
-import { useEffect, useId, useRef, useState, type FormEvent } from 'react'
+// Presentation: a centred Flux card on the zinc-50 canvas (DESIGN-SPEC §5.3/§5.5).
+import { useEffect, useId, useRef, useState, type FormEvent, type ReactNode } from 'react'
 import type { ActionFailure } from '@/app/actionFailure'
 import { useSession, type SignedOutNotice } from '@/app/session'
+import { BrandLockup } from '@/ui/BrandLockup'
 import { Button } from '@/ui/Button'
-import { MailboxIcon } from '@/ui/icons'
+import { Callout } from '@/ui/Callout'
+import { Field, TextInput } from '@/ui/Field'
 
 // AIDEV-NOTE: Transport mode is only known after authentication; this form must not claim mail is simulated.
 const FOOTNOTE = 'Sign in securely to this Elevateo Mail installation.'
@@ -42,6 +45,19 @@ function useRetryHold(failure: ActionFailure | null): number {
     return () => clearTimeout(timer)
   }, [failure])
   return remaining
+}
+
+/** Centred card frame shared by sign-in, recovery and the completion form. */
+export function AuthFrame({ children, labelledBy }: { children: ReactNode; labelledBy?: string }) {
+  return (
+    <main className="flex min-h-dvh items-center justify-center bg-zinc-50 p-6 dark:bg-zinc-900" aria-labelledby={labelledBy}>
+      <div className="flex w-full max-w-sm flex-col gap-6 rounded-xl border border-zinc-200 bg-white p-6 shadow-xs dark:border-zinc-700 dark:bg-zinc-800">
+        <BrandLockup />
+        {children}
+        <p className="text-xs leading-snug text-zinc-500">{FOOTNOTE}</p>
+      </div>
+    </main>
+  )
 }
 
 export function SignInPage() {
@@ -96,40 +112,41 @@ export function SignInPage() {
 
   const disabled = busy || hold > 0
   const describedBy = [failure ? ids.error : null, notice ? ids.notice : null].filter(Boolean).join(' ') || undefined
+  const invalid = failure?.code === 'invalid' || failure?.code === 'rejected' ? true : undefined
 
   if (mode === 'recovery_sent') {
     return (
-      <main className="mx-auto flex max-w-sm flex-col gap-4 p-8" aria-labelledby="recovery-sent-heading">
-        <Brand />
-        <h1 id="recovery-sent-heading" ref={headingRef} tabIndex={-1} className="text-lg font-semibold tracking-tight">Check your email</h1>
-        <p role="status" className="text-[13px] text-muted">
-          If an account exists for that address, a recovery message has been sent. Open the link in it to set a new password. The link works once and expires.
-        </p>
-        <Button variant="secondary" onClick={() => switchMode('sign_in')}>Back to sign-in</Button>
-        <p className="text-[11px] leading-snug text-fg">{FOOTNOTE}</p>
-      </main>
+      <AuthFrame labelledBy="recovery-sent-heading">
+        <div className="space-y-2">
+          <h1 id="recovery-sent-heading" ref={headingRef} tabIndex={-1} className="text-lg font-medium text-zinc-800 dark:text-white">Check your email</h1>
+          <p role="status" className="text-sm text-zinc-500 dark:text-zinc-400">
+            If an account exists for that address, a recovery message has been sent. Open the link in it to set a new password. The link works once and expires.
+          </p>
+        </div>
+        <Button variant="outline" onClick={() => switchMode('sign_in')}>Back to sign-in</Button>
+      </AuthFrame>
     )
   }
 
   const recovery = mode === 'recovery'
   return (
-    <main className="mx-auto flex max-w-sm flex-col gap-4 p-8" aria-labelledby="sign-in-heading">
-      <Brand />
-      <h1 id="sign-in-heading" ref={headingRef} tabIndex={-1} className="text-lg font-semibold tracking-tight">
-        {recovery ? 'Recover access' : 'Sign in'}
-      </h1>
+    <AuthFrame labelledBy="sign-in-heading">
+      <div className="space-y-2">
+        <h1 id="sign-in-heading" ref={headingRef} tabIndex={-1} className="text-lg font-medium text-zinc-800 dark:text-white">
+          {recovery ? 'Recover access' : 'Sign in'}
+        </h1>
+        {recovery && (
+          <p className="text-sm text-zinc-500 dark:text-zinc-400">Enter your email address. If an account exists, a message with a one-time link will be sent to it.</p>
+        )}
+      </div>
       {notice && !recovery && (
-        <p id={ids.notice} role="status" className="rounded-lg border border-line bg-surface-2 px-3 py-2 text-[13px]">
-          {notice}
-        </p>
+        <div id={ids.notice}>
+          <Callout variant="neutral" role="status">{notice}</Callout>
+        </div>
       )}
-      {recovery && (
-        <p className="text-[13px] text-muted">Enter your email address. If an account exists, a message with a one-time link will be sent to it.</p>
-      )}
-      <form onSubmit={submit} aria-busy={busy} aria-describedby={describedBy} className="flex flex-col gap-3" noValidate>
-        <div className="flex flex-col gap-1">
-          <label htmlFor={ids.email} className="text-[13px] font-medium">Email address</label>
-          <input
+      <form onSubmit={submit} aria-busy={busy} aria-describedby={describedBy} className="flex flex-col gap-4" noValidate>
+        <Field id={ids.email} label="Email address">
+          <TextInput
             id={ids.email}
             name="email"
             type="email"
@@ -140,14 +157,20 @@ export function SignInPage() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             disabled={disabled}
-            aria-invalid={failure?.code === 'invalid' || failure?.code === 'rejected' ? true : undefined}
-            className="h-9 rounded-lg border border-line bg-surface px-3 text-sm text-fg disabled:opacity-55"
+            aria-invalid={invalid}
           />
-        </div>
+        </Field>
         {!recovery && (
-          <div className="flex flex-col gap-1">
-            <label htmlFor={ids.password} className="text-[13px] font-medium">Password</label>
-            <input
+          <Field
+            id={ids.password}
+            label="Password"
+            labelAside={
+              <button type="button" className="text-sm font-medium text-(--color-accent-content) hover:underline" onClick={() => switchMode('recovery')} disabled={busy}>
+                Forgot your password?
+              </button>
+            }
+          >
+            <TextInput
               id={ids.password}
               name="password"
               type="password"
@@ -156,34 +179,25 @@ export function SignInPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               disabled={disabled}
-              aria-invalid={failure?.code === 'invalid' || failure?.code === 'rejected' ? true : undefined}
-              className="h-9 rounded-lg border border-line bg-surface px-3 text-sm text-fg disabled:opacity-55"
+              aria-invalid={invalid}
             />
-          </div>
+          </Field>
         )}
         {failure && (
-          <p id={ids.error} role="alert" className="text-[13px] text-danger">
+          <p id={ids.error} role="alert" className="text-sm font-medium text-red-500">
             {failure.message}
             {hold > 0 && ` You can try again in ${hold} s.`}
           </p>
         )}
-        <Button type="submit" variant="primary" disabled={disabled}>
+        <Button type="submit" variant="primary" className="w-full" disabled={disabled}>
           {busy ? (recovery ? 'Sending…' : 'Signing in…') : recovery ? 'Send recovery message' : 'Sign in'}
         </Button>
       </form>
-      <Button variant="ghost" size="sm" className="self-start" onClick={() => switchMode(recovery ? 'sign_in' : 'recovery')} disabled={busy}>
-        {recovery ? 'Back to sign-in' : 'Forgot your password?'}
-      </Button>
-      <p className="text-[11px] leading-snug text-fg">{FOOTNOTE}</p>
-    </main>
-  )
-}
-
-function Brand() {
-  return (
-    <div className="flex h-9 items-center gap-2.5">
-      <MailboxIcon aria-hidden className="size-6 shrink-0 text-accent-text" />
-      <span className="truncate text-[15px] font-semibold tracking-tight">Elevateo Mail</span>
-    </div>
+      {recovery && (
+        <Button variant="ghost" size="sm" className="self-start" onClick={() => switchMode('sign_in')} disabled={busy}>
+          Back to sign-in
+        </Button>
+      )}
+    </AuthFrame>
   )
 }

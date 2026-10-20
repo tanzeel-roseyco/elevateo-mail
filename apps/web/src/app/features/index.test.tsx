@@ -49,14 +49,14 @@ describe('feature route wiring', () => {
     expect(outreachPaths).toContain('/outreach/campaigns/:campaignId/sequence')
     expect(featureRegistry.navBySection.outreach.map((e) => e.label)).toEqual(['Campaigns', 'Leads', 'Accounts', 'Analytics'])
     expect(featureRegistry.navBySection.contacts.map((e) => e.path)).toEqual(['/people'])
-    expect(featureRegistry.navBySection.settings.map((e) => e.path)).toEqual(['/settings/personal', '/settings/organization'])
+    expect(featureRegistry.navBySection.settings).toEqual([])
   })
 
   it('passes the session context and Outreach gateway to Celeste\'s campaigns page (happy path)', async () => {
     renderRoute('/outreach/campaigns', { outreach })
     expect(await screen.findByRole('link', { name: 'Pilot' })).toBeTruthy()
     expect(screen.getByRole('link', { name: 'Create draft campaign' })).toBeTruthy()
-    expect(screen.queryByRole('button')).toBeNull()
+    expect(screen.queryByRole('button', { name: /save|pause|add|create/i })).toBeNull()
   })
 
   it('shows Celeste\'s own unavailable state when no Outreach gateway is connected', async () => {
@@ -96,6 +96,6 @@ describe('feature route wiring', () => {
     // that as her own unavailable status rather than an error alert.
     expect((await screen.findByText('Outreach API unavailable for this account.')).getAttribute('role')).toBe('status')
     expect(fetchImpl).not.toHaveBeenCalled()
-    expect(screen.queryByRole('button')).toBeNull()
+    expect(screen.queryByRole('button', { name: /save|pause|add|create/i })).toBeNull()
   })
 })

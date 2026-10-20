@@ -60,9 +60,9 @@ export function DraftAttachments({ draftId, mailboxId, disabled }: { draftId: st
     if (outcome.kind === 'ok') { setItems([]); setPending(null) }
     else setMessage('Removal was not confirmed. Refresh attachments before trying again.')
   }
-  return <section aria-label="Draft attachment" aria-busy={busy} className="rounded-lg border border-line p-3 text-sm">
+  return <section aria-label="Draft attachment" aria-busy={busy} className="rounded-lg border border-zinc-200 p-3 text-sm">
     <h2 className="font-semibold">Attachment</h2>
-    <p className="my-1 text-muted">One PDF, PNG, JPEG or text file, at most 1 MiB. Sending waits for a successful security scan.</p>
+    <p className="my-1 text-zinc-500">One PDF, PNG, JPEG or text file, at most 1 MiB. Sending waits for a successful security scan.</p>
     {items === null && <p role="status">Loading attachments...</p>}
     {items?.map((item) => <div key={item.id} className="my-2 flex flex-wrap items-center gap-2">
       <span className="break-all">{item.filename} ({item.byte_size} bytes)</span>

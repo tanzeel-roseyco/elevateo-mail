@@ -75,7 +75,7 @@ describe('Resend consent gate on review', () => {
     confirm(); approve()
     const heading = await screen.findByRole('heading', { name: 'Approval blocked: consent required' })
     expect(heading.closest('[role="alert"]')?.textContent).toMatch(/Nothing was queued/)
-    expect(screen.queryByRole('button')).toBeNull()
+    expect(screen.queryByRole('button', { name: /approve|retry/i })).toBeNull()
     expect(screen.getByRole('link', { name: 'Record consent evidence' })).not.toBeNull()
   })
 })

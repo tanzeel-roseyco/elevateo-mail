@@ -3,16 +3,20 @@ import { useEditableViewport } from '@/ui/useEditableViewport'
 import { SendIntentProvider } from './sendIntent'
 import { HashRouter, Navigate, Route, Routes } from 'react-router'
 import type { MailroomGateway } from '@/data/gateway'
-import { InboxWorkspace } from './InboxWorkspace'
-import { HomePage } from './HomePage'
+import { DashboardPage } from './DashboardPage'
 import { DraftIntentProvider } from './draftIntent'
 import { FeatureGatewaysProvider, useFeatureGateways, type FeatureGateways } from './featureGateways'
 import { featureRoutes } from './features'
 import { SessionProvider } from './session'
 import { Shell } from './Shell'
 import { RunIntentProvider } from '@/features/outreach/RunIntent'
+import { InboxLayout } from '@/features/inbox/InboxLayout'
+import { InboxPage } from '@/features/inbox/InboxPage'
+import { InboxRedirect } from '@/features/inbox/InboxRedirect'
 
-// AIDEV-NOTE: Keep the initial inbox eager; other pages share Shell's loading/error boundary and session guard.
+// AIDEV-NOTE: Dashboard and the inbox list stay eager (first paint); every other page is a lazy
+// chunk behind Shell's loading/error boundary and session guard.
+const ComposeWindow = lazy(() => import('@/features/drafts/ComposeWindow').then((page) => ({ default: page.ComposeWindow })))
 const DraftEditorPage = lazy(() => import('@/features/drafts/DraftEditorPage').then((page) => ({ default: page.DraftEditorPage })))
 const DraftsPage = lazy(() => import('@/features/drafts/DraftsPage').then((page) => ({ default: page.DraftsPage })))
 const MembersPage = lazy(() => import('@/features/members/MembersPage').then((page) => ({ default: page.MembersPage })))
@@ -21,13 +25,25 @@ const ThreadPage = lazy(() => import('@/features/thread/ThreadPage').then((page)
 const SendReviewPage = lazy(() => import('@/features/send/SendReviewPage').then((page) => ({ default: page.SendReviewPage })))
 const SendStatusPage = lazy(() => import('@/features/send/SendStatusPage').then((page) => ({ default: page.SendStatusPage })))
 const CampaignRunsPage = lazy(() => import('@/features/outreach/CampaignRunsPage').then((page) => ({ default: page.CampaignRunsPage })))
+const SettingsRoutes = lazy(() => import('@/features/settings/SettingsRoutes').then((page) => ({ default: page.SettingsRoutes })))
+const HelpRoutes = lazy(() => import('@/features/help/HelpRoutes').then((page) => ({ default: page.HelpRoutes })))
 
 // FE-805: Mira's reader takes the direct-message capability as an optional prop; absence keeps her
 // honest "unavailable" state. exactOptionalPropertyTypes forbids an explicit undefined, hence the spread.
 function ThreadRoute() {
   const { readDirectMessage, attachmentPort } = useFeatureGateways()
-  return <InboxWorkspace><ThreadPage {...(readDirectMessage === undefined ? {} : { readDirectMessage })}
-    {...(attachmentPort === undefined ? {} : { attachmentPort })} /></InboxWorkspace>
+  return <ThreadPage {...(readDirectMessage === undefined ? {} : { readDirectMessage })}
+    {...(attachmentPort === undefined ? {} : { attachmentPort })} />
+}
+
+/** Gmail-style compose: the draft list stays behind the fixed compose window (INBOX-SPEC §5). */
+function DraftEditorRoute() {
+  return (
+    <>
+      <DraftsPage />
+      <ComposeWindow><DraftEditorPage /></ComposeWindow>
+    </>
+  )
 }
 
 // AIDEV-NOTE: Hash routing keeps deep links working when Rails or the dev proxy serves one page;
@@ -45,18 +61,25 @@ export function App({ gateway, featureGateways = {} }: { gateway: MailroomGatewa
       <HashRouter>
         <Routes>
           <Route element={<Shell />}>
-            <Route index element={<InboxWorkspace />} />
-            <Route path="/overview" element={<HomePage />} />
+            <Route index element={<DashboardPage />} />
+            {/* The old overview URL and the sidebar "Inbox" entry both resolve to real pages. */}
+            <Route path="/overview" element={<Navigate to="/" replace />} />
+            <Route path="/inbox" element={<InboxRedirect />} />
             <Route path="/outreach/campaigns/:campaignId/runs" element={<CampaignRunsPage />} />
-            <Route path="/mailboxes/:mailboxId" element={<InboxWorkspace />} />
-            <Route path="/mailboxes/:mailboxId/threads/:threadId" element={<ThreadRoute />} />
-            {/* BE-02 C/D: drafts, membership and search are URL-addressed like every other view. */}
-            <Route path="/mailboxes/:mailboxId/drafts" element={<DraftsPage />} />
-            <Route path="/mailboxes/:mailboxId/drafts/:draftId" element={<DraftEditorPage />} />
+            {/* Gmail-structured mailbox area: folder column + list/thread/drafts (INBOX-SPEC). */}
+            <Route path="/mailboxes/:mailboxId" element={<InboxLayout />}>
+              <Route index element={<InboxPage />} />
+              <Route path="threads/:threadId" element={<ThreadRoute />} />
+              {/* BE-02 C/D: drafts, membership and search are URL-addressed like every other view. */}
+              <Route path="drafts" element={<DraftsPage />} />
+              <Route path="drafts/:draftId" element={<DraftEditorRoute />} />
+            </Route>
             <Route path="/mailboxes/:mailboxId/drafts/:draftId/send-review" element={<SendReviewPage />} />
             <Route path="/mailboxes/:mailboxId/send-intents/:sendId" element={<SendStatusPage />} />
             <Route path="/mailboxes/:mailboxId/members" element={<MembersPage />} />
             <Route path="/search" element={<SearchPage />} />
+            <Route path="/settings/*" element={<SettingsRoutes />} />
+            <Route path="/help/*" element={<HelpRoutes />} />
             {/* FE-805: registered feature routes (Outreach etc.) come from the validated registry. */}
             {featureRoutes.map((route) => (
               <Route key={route.path} path={route.path} element={route.element} />

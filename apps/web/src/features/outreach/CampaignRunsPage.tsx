@@ -4,6 +4,8 @@ import { useFeatureGateways } from '@/app/featureGateways'
 import { useProtectedRequest } from '@/app/protectedRequest'
 import { useSession, sessionIdentityKey } from '@/app/session'
 import { Button } from '@/ui/Button'
+import { PageHeader } from '@/ui/PageHeader'
+import { linkClass } from '@/ui/Text'
 import { campaignSchema, leadPageSchema } from './contract'
 import { campaignRunPageSchema, campaignRunSchema, type CampaignRun } from './runContract'
 import { RunComposer } from './RunComposer'
@@ -73,23 +75,25 @@ function RunsWorkspace({ campaignId }: { campaignId: string }) {
     if (result.kind === 'ok') setRevision((value) => value + 1)
     else setError('Cancellation was not confirmed. Refresh status or retry cancellation; mail already accepted cannot be recalled.')
   }
-  return <section className="mx-auto max-w-6xl space-y-5 p-4 md:p-6" aria-label="Campaign runs">
-    <header className="flex flex-wrap items-center justify-between gap-3"><div><Link to={`/outreach/campaigns/${campaignId}`} className="text-sm text-accent-text">← Campaign details</Link><h1 className="page-title mt-2">{data?.campaign.name ?? 'Campaign'} · Runs</h1></div><Button onClick={() => setRevision((value) => value + 1)}>Refresh status</Button></header>
-    {!available && <p role="status">Campaign runs are unavailable in this connection. No marketing mail can be queued here.</p>}
-    {available && !data && !error && <p role="status">Loading campaign runs…</p>}
-    {error && <p role="alert" className="text-danger">{error}</p>}
+  return <section aria-label="Campaign runs">
+    <PageHeader title={`${data?.campaign.name ?? 'Campaign'} · Runs`} subtitle="Consent-based single-message runs for this campaign" actions={<><Link to={`/outreach/campaigns/${campaignId}`} className={linkClass}>Campaign details</Link><Button size="xs" onClick={() => setRevision((value) => value + 1)}>Refresh status</Button></>} />
+    <div className="space-y-6">
+    {!available && <p role="status" className="text-sm text-zinc-500">Campaign runs are unavailable in this connection. No marketing mail can be queued here.</p>}
+    {available && !data && !error && <p role="status" className="text-sm text-zinc-500">Loading campaign runs…</p>}
+    {error && <p role="alert" className="text-sm text-red-500">{error}</p>}
     {available && data && outreach && <>
       <RunComposer gateway={outreach} campaign={data.campaign} leads={data.leads.items} onCreated={() => setRevision((value) => value + 1)} />
-      {data.leads.next_cursor && <Link className="workspace-link" to={`?leads_cursor=${encodeURIComponent(data.leads.next_cursor)}`}>Next lead page</Link>}
-      <section aria-label="Existing runs" className="space-y-4"><h2 className="text-lg font-semibold">Run history</h2>
-        {data.runs.items.length === 0 && <p className="text-sm text-muted">No runs on this page.</p>}
-        {data.runs.items.map((run) => <article key={run.id} className="panel space-y-3 p-4">
-          <header className="flex flex-wrap items-center justify-between gap-2"><div><h3 className="font-semibold">{run.subject}</h3><p className="text-xs text-muted">{run.state === 'cancelled' ? 'Cancellation requested' : 'Run queued'} · {run.created_at}{run.simulated ? ' · Simulated' : ''}</p></div>{run.state !== 'cancelled' && <Button disabled={busy || !proof} onClick={() => { void cancel(run) }}>Cancel remaining sends</Button>}</header>
-          <ul className="divide-y divide-line text-sm">{run.recipients.map((recipient) => <li className="flex flex-wrap justify-between gap-2 py-2" key={recipient.lead_id}><span>{recipient.email}</span><Link className="text-accent-text" to={`/mailboxes/${run.mailbox_id}/send-intents/${recipient.send_id}`}>{recipient.state}{recipient.delivery_state ? ` · ${recipient.delivery_state}` : ''}</Link></li>)}</ul>
+      {data.leads.next_cursor && <Link className={linkClass} to={`?leads_cursor=${encodeURIComponent(data.leads.next_cursor)}`}>Next lead page</Link>}
+      <section aria-label="Existing runs" className="space-y-4"><h2 className="text-lg font-medium text-zinc-800 dark:text-white">Run history</h2>
+        {data.runs.items.length === 0 && <p className="text-sm text-zinc-500">No runs on this page.</p>}
+        {data.runs.items.map((run) => <article key={run.id} className="space-y-3 p-5 rounded-xl border border-zinc-200 bg-white shadow-xs dark:border-zinc-700 dark:bg-zinc-800">
+          <header className="flex flex-wrap items-center justify-between gap-2"><div><h3 className="text-sm font-semibold text-zinc-800 dark:text-white">{run.subject}</h3><p className="text-xs text-zinc-500">{run.state === 'cancelled' ? 'Cancellation requested' : 'Run queued'} · {run.created_at}{run.simulated ? ' · Simulated' : ''}</p></div>{run.state !== 'cancelled' && <Button size="sm" variant="danger" disabled={busy || !proof} onClick={() => { void cancel(run) }}>Cancel remaining sends</Button>}</header>
+          <ul className="divide-y divide-zinc-200 dark:divide-zinc-700 text-sm">{run.recipients.map((recipient) => <li className="flex flex-wrap justify-between gap-2 py-2" key={recipient.lead_id}><span>{recipient.email}</span><Link className="text-(--color-accent-content) font-medium" to={`/mailboxes/${run.mailbox_id}/send-intents/${recipient.send_id}`}>{recipient.state}{recipient.delivery_state ? ` · ${recipient.delivery_state}` : ''}</Link></li>)}</ul>
         </article>)}
-        {data.runs.next_cursor && <Link className="workspace-link" to={`?cursor=${encodeURIComponent(data.runs.next_cursor)}`}>Next run page</Link>}
-        {(runCursor || leadCursor) && <Link className="workspace-link" to={`/outreach/campaigns/${campaignId}/runs`}>First pages</Link>}
+        {data.runs.next_cursor && <Link className={linkClass} to={`?cursor=${encodeURIComponent(data.runs.next_cursor)}`}>Next run page</Link>}
+        {(runCursor || leadCursor) && <Link className={linkClass} to={`/outreach/campaigns/${campaignId}/runs`}>First pages</Link>}
       </section>
     </>}
+    </div>
   </section>
 }

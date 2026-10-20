@@ -3,7 +3,10 @@ import { Link, useNavigate, useParams, useSearchParams } from 'react-router'
 import { z } from 'zod'
 import type { CsrfProof, ReadContext } from '@/data/gateway'
 import { isApiError } from '@/data/errors'
-import { Button } from '@/ui/Button'
+import { Badge } from '@/ui/Badge'
+import { Button, buttonClass } from '@/ui/Button'
+import { PageHeader } from '@/ui/PageHeader'
+import { linkClass } from '@/ui/Text'
 import { Field, TextInput } from '@/ui/Field'
 import { newId } from '@/lib/ids'
 import {
@@ -87,19 +90,19 @@ function useOutreachRead<K extends Resource>(kind: K, props: OutreachPageProps, 
 }
 
 function Content<T>({ state, empty, children }: { state: Load<T>; empty?: (value: T) => boolean; children: (value: T) => ReactNode }) {
-  if (state.status === 'loading') return <p role="status" className="panel px-4 py-6 text-[13px] text-muted">Loading…</p>
-  if (state.status === 'unavailable') return <p role="status" className="panel px-4 py-6 text-[13px] text-muted">Outreach API unavailable for this account.</p>
-  if (state.status === 'error') return <p role="alert" className="rounded-xl border border-danger/40 bg-danger/10 px-4 py-3 text-[13px] text-danger">Unable to load this Outreach resource. Please try again later.</p>
-  if (empty?.(state.value)) return <p role="status" className="panel px-4 py-6 text-[13px] text-muted">Nothing here yet.</p>
+  if (state.status === 'loading') return <p role="status" className="px-4 py-6 text-sm text-zinc-500 rounded-xl border border-zinc-200 bg-white shadow-xs dark:border-zinc-700 dark:bg-zinc-800">Loading…</p>
+  if (state.status === 'unavailable') return <p role="status" className="px-4 py-6 text-sm text-zinc-500 rounded-xl border border-zinc-200 bg-white shadow-xs dark:border-zinc-700 dark:bg-zinc-800">Outreach API unavailable for this account.</p>
+  if (state.status === 'error') return <p role="alert" className="rounded-xl border border-red-300 bg-red-50 px-4 py-3 text-sm text-red-700 dark:border-red-500/40 dark:bg-red-500/10 dark:text-red-300">Unable to load this Outreach resource. Please try again later.</p>
+  if (empty?.(state.value)) return <p role="status" className="px-4 py-6 text-sm text-zinc-500 rounded-xl border border-zinc-200 bg-white shadow-xs dark:border-zinc-700 dark:bg-zinc-800">Nothing here yet.</p>
   return <>{children(state.value)}</>
 }
 function Page({ title, children }: { title: string; children: ReactNode }) {
-  return <section aria-label={title} className="mx-auto max-w-3xl space-y-4 p-4">
-    <header><h1 className="page-title">{title}</h1><p className="mt-2 inline-flex rounded-md border border-warn/40 bg-warn/10 px-2.5 py-1 text-[13px] text-warn">Campaign settings are draft or paused. Open Marketing runs for supported consent-based sending.</p></header>
-    {children}
+  return <section aria-label={title}>
+    <PageHeader title={title} subtitle="Campaign settings are draft or paused. Open Marketing runs for supported consent-based sending." />
+    <div className="max-w-3xl space-y-6">{children}</div>
   </section>
 }
-function ActionError({ message }: { message: string | null }) { return message && <p role="alert">{message}</p> }
+function ActionError({ message }: { message: string | null }) { return message && <p role="alert" className="text-sm font-medium text-red-500">{message}</p> }
 const scopeKey = ({ context }: OutreachPageProps) => `${context?.contextId ?? ''}:${context?.authorizationVersion ?? ''}`
 
 export function OutreachCampaignsPage(props: OutreachPageProps) {
@@ -111,11 +114,11 @@ function CampaignList(props: OutreachPageProps) {
   const cursor = search.get('cursor') ?? undefined
   const state = useOutreachRead('campaigns', props, undefined, 0, cursor)
   return <Page title="Campaigns">
-    {state.status === 'ready' && <Link to="/outreach/campaigns/new">Create draft campaign</Link>}
+    {state.status === 'ready' && <Link className={linkClass} to="/outreach/campaigns/new" className={buttonClass('primary', 'md')}>Create draft campaign</Link>}
     <Content state={state} empty={(page) => page.items.length === 0 && page.next_cursor === null}>{(page) => <>
-      <ul className="space-y-2">{page.items.map((campaign) =>
-        <li key={campaign.id}><Link to={`/outreach/campaigns/${campaign.id}`}>{campaign.name}</Link> · {campaign.status}</li>)}</ul>
-      {page.next_cursor && <Link to={`?cursor=${encodeURIComponent(page.next_cursor)}`}>Next campaign page</Link>}
+      <ul className="divide-y divide-zinc-200 rounded-xl border border-zinc-200 bg-white shadow-xs dark:border-zinc-700 dark:bg-zinc-800">{page.items.map((campaign) =>
+        <li key={campaign.id} className="flex items-center justify-between gap-3 px-4 py-3 text-sm"><Link className={linkClass} to={`/outreach/campaigns/${campaign.id}`}>{campaign.name}</Link><Badge tone={campaign.status === 'paused' ? 'warn' : 'neutral'} size="sm">{campaign.status}</Badge></li>)}</ul>
+      {page.next_cursor && <Link className={linkClass} to={`?cursor=${encodeURIComponent(page.next_cursor)}`}>Next campaign page</Link>}
     </>}</Content>
   </Page>
 }
@@ -146,12 +149,12 @@ function CampaignCreate({ gateway, context, proof }: OutreachPageProps) {
       if (!controller.signal.aborted) { const outcome = writeFailure(failure); setError(outcome.message); setUncertain(outcome.lock) }
     } finally { if (!controller.signal.aborted) setBusy(false) }
   }
-  return <Page title="Create campaign"><form onSubmit={(event) => { void submit(event) }} className="space-y-3">
+  return <Page title="Create campaign"><form onSubmit={(event) => { void submit(event) }} className="space-y-4 p-6 rounded-xl border border-zinc-200 bg-white shadow-xs dark:border-zinc-700 dark:bg-zinc-800">
     <Field id="campaign-name" label="Campaign name"><TextInput id="campaign-name" value={name} onChange={(event) => setName(event.target.value)} maxLength={160} required /></Field>
-    <p>New campaigns remain drafts. This form cannot start sending.</p>
+    <p className="text-sm text-zinc-600 dark:text-zinc-400">New campaigns remain drafts. This form cannot start sending.</p>
     <ActionError message={error} />
-    <Button type="submit" disabled={!gateway || !context || !proof || busy || uncertain}>{busy ? 'Saving…' : 'Save draft'}</Button>
-    {uncertain && <Link to="/outreach/campaigns">Check campaign list</Link>}
+    <Button type="submit" variant="primary" disabled={!gateway || !context || !proof || busy || uncertain}>{busy ? 'Saving…' : 'Save draft'}</Button>
+    {uncertain && <Link className={linkClass} to="/outreach/campaigns">Check campaign list</Link>}
   </form></Page>
 }
 
@@ -184,20 +187,20 @@ function CampaignDetail({ campaignId, ...props }: OutreachPageProps & { campaign
     finally { if (!controller.signal.aborted) setBusy(false) }
   }
   return <Page title="Campaign detail">{accessLost ? <p role="alert">Campaign access changed. Reopen it after your session is refreshed.</p> : <Content state={state}>{(campaign) => <>
-    <p><strong>{campaign.name}</strong> · {campaign.status}</p>
-    <nav aria-label="Campaign sections" className="flex gap-4">
-      <Link to={`/outreach/campaigns/${campaign.id}/sequence`}>Sequence</Link>
-      <Link to={`/outreach/campaigns/${campaign.id}/leads`}>Leads</Link>
-      <Link to={`/outreach/campaigns/${campaign.id}/accounts`}>Accounts</Link>
-      <Link to={`/outreach/campaigns/${campaign.id}/analytics`}>Analytics</Link>
-      <Link to={`/outreach/campaigns/${campaign.id}/runs`}>Marketing runs</Link>
+    <p className="text-sm text-zinc-800 dark:text-white"><strong>{campaign.name}</strong> · {campaign.status}</p>
+    <nav aria-label="Campaign sections" className="flex flex-wrap gap-1 border-b border-zinc-200 dark:border-zinc-700">
+      <Link className="inline-flex h-9 items-center border-b-2 border-transparent px-3 text-sm font-medium text-zinc-500 hover:text-zinc-800 dark:hover:text-white" to={`/outreach/campaigns/${campaign.id}/sequence`}>Sequence</Link>
+      <Link className="inline-flex h-9 items-center border-b-2 border-transparent px-3 text-sm font-medium text-zinc-500 hover:text-zinc-800 dark:hover:text-white" to={`/outreach/campaigns/${campaign.id}/leads`}>Leads</Link>
+      <Link className="inline-flex h-9 items-center border-b-2 border-transparent px-3 text-sm font-medium text-zinc-500 hover:text-zinc-800 dark:hover:text-white" to={`/outreach/campaigns/${campaign.id}/accounts`}>Accounts</Link>
+      <Link className="inline-flex h-9 items-center border-b-2 border-transparent px-3 text-sm font-medium text-zinc-500 hover:text-zinc-800 dark:hover:text-white" to={`/outreach/campaigns/${campaign.id}/analytics`}>Analytics</Link>
+      <Link className="inline-flex h-9 items-center border-b-2 border-transparent px-3 text-sm font-medium text-zinc-500 hover:text-zinc-800 dark:hover:text-white" to={`/outreach/campaigns/${campaign.id}/runs`}>Marketing runs</Link>
     </nav>
-    <form onSubmit={(event) => { void update(event, campaign, campaign.status) }} className="space-y-3">
+    <form onSubmit={(event) => { void update(event, campaign, campaign.status) }} className="space-y-4 p-6 rounded-xl border border-zinc-200 bg-white shadow-xs dark:border-zinc-700 dark:bg-zinc-800">
       <Field id="edit-campaign-name" label="Campaign name"><TextInput id="edit-campaign-name" value={name} placeholder={campaign.name} onChange={(event) => setName(event.target.value)} maxLength={160} /></Field>
       <ActionError message={error} />
-      <Button type="submit" disabled={!props.gateway || !props.proof || busy || uncertain}>Save changes</Button>
+      <Button type="submit" variant="primary" disabled={!props.gateway || !props.proof || busy || uncertain}>Save changes</Button>
       {campaign.status === 'draft' && <Button disabled={!props.gateway || !props.proof || busy || uncertain} onClick={(event) => { void update(event, campaign, 'paused') }}>Pause campaign</Button>}
-      {uncertain && <Link to="/outreach/campaigns">Check campaign list</Link>}
+      {uncertain && <Link className={linkClass} to="/outreach/campaigns">Check campaign list</Link>}
     </form>
   </>}</Content>}</Page>
 }
@@ -213,10 +216,10 @@ export function OutreachAnalyticsPage(props: OutreachPageProps) {
 function CampaignChooser({ section, ...props }: OutreachPageProps & { section: 'leads' | 'accounts' | 'analytics' }) {
   const [search] = useSearchParams()
   const state = useOutreachRead('campaigns', props, undefined, 0, search.get('cursor') ?? undefined)
-  return <Page title={section === 'leads' ? 'Leads' : section === 'accounts' ? 'Accounts' : 'Analytics'}><p>Select a campaign.</p>
+  return <Page title={section === 'leads' ? 'Leads' : section === 'accounts' ? 'Accounts' : 'Analytics'}><p className="text-sm text-zinc-600 dark:text-zinc-400">Select a campaign.</p>
     <Content state={state} empty={(page) => page.items.length === 0 && page.next_cursor === null}>{(page) => <>
-      <ul>{page.items.map((campaign) => <li key={campaign.id}><Link to={`/outreach/campaigns/${campaign.id}/${section}`}>{campaign.name}</Link></li>)}</ul>
-      {page.next_cursor && <Link to={`?cursor=${encodeURIComponent(page.next_cursor)}`}>Next campaign page</Link>}
+      <ul className="divide-y divide-zinc-200 rounded-xl border border-zinc-200 bg-white shadow-xs dark:border-zinc-700 dark:bg-zinc-800">{page.items.map((campaign) => <li key={campaign.id} className="px-4 py-3 text-sm"><Link className={linkClass} to={`/outreach/campaigns/${campaign.id}/${section}`}>{campaign.name}</Link></li>)}</ul>
+      {page.next_cursor && <Link className={linkClass} to={`?cursor=${encodeURIComponent(page.next_cursor)}`}>Next campaign page</Link>}
     </>}</Content>
   </Page>
 }
@@ -273,24 +276,24 @@ function CampaignLeads({ campaignId, ...props }: OutreachPageProps & { campaignI
     finally { if (!controller.signal.aborted) setBusy(false) }
   }
   return <Page title="Campaign leads">{accessLost ? <p role="alert">Lead access changed. Reopen this campaign after your session is refreshed.</p> : <><Content state={state} empty={(page) => page.items.length === 0 && page.next_cursor === null}>{(page) => <>
-    <ul className="space-y-2">{page.items.map((lead: Lead) =>
-      <li key={lead.id}><Link to={`/outreach/campaigns/${campaignId}/leads/${lead.id}`}>{lead.email}</Link> · consent record {lead.consent_status} (evidence in detail) · {lead.suppressed ? 'suppressed' : 'not suppressed (server report)'}
-        <Button onClick={() => { setEditId(lead.id); setEmail(lead.email) }}>Edit address</Button>
+    <ul className="divide-y divide-zinc-200 rounded-xl border border-zinc-200 bg-white shadow-xs dark:border-zinc-700 dark:bg-zinc-800">{page.items.map((lead: Lead) =>
+      <li key={lead.id} className="flex flex-wrap items-center gap-2 px-4 py-3 text-sm"><Link className={linkClass} to={`/outreach/campaigns/${campaignId}/leads/${lead.id}`}>{lead.email}</Link> · consent record {lead.consent_status} (evidence in detail) · {lead.suppressed ? 'suppressed' : 'not suppressed (server report)'}
+        <Button size="sm" onClick={() => { setEditId(lead.id); setEmail(lead.email) }}>Edit address</Button>
         {props.gateway?.recordConsent && lead.consent_status !== 'granted' &&
-          <Button onClick={() => { setConsentSavedId(null); setConsentId((current) => current === lead.id ? null : lead.id) }}>Record consent evidence</Button>}
+          <Button size="sm" onClick={() => { setConsentSavedId(null); setConsentId((current) => current === lead.id ? null : lead.id) }}>Record consent evidence</Button>}
         {consentSavedId === lead.id && <p role="status">Manual attestation recorded for this lead. Independent verification is not shown; current consent is checked again when a marketing run is queued.</p>}
         {consentId === lead.id && campaignId && <ConsentEvidenceForm key={`${lead.id}:${lead.version}`} lead={lead} campaignId={campaignId} {...props} initialSource={intakeSource?.leadId === lead.id ? intakeSource.source : ''} onSaved={() => { setConsentSavedId(lead.id); setConsentId(null); setRevision((value) => value + 1) }} onAccessLost={() => setAccessLost(true)} />}
       </li>)}</ul>
-    {page.next_cursor && <Link to={`?cursor=${encodeURIComponent(page.next_cursor)}`}>Next leads page</Link>}
+    {page.next_cursor && <Link className={linkClass} to={`?cursor=${encodeURIComponent(page.next_cursor)}`}>Next leads page</Link>}
   </>}</Content>
-    <form onSubmit={(event) => { void save(event) }} className="space-y-3">
+    <form onSubmit={(event) => { void save(event) }} className="space-y-4 p-6 rounded-xl border border-zinc-200 bg-white shadow-xs dark:border-zinc-700 dark:bg-zinc-800">
       <Field id="lead-email" label={editId ? 'Edit lead email' : 'Add lead email'}><TextInput id="lead-email" type="email" value={email} onChange={(event) => setEmail(event.target.value)} required /></Field>
       {!editId && <Field id="lead-consent-source" label="Consent source (where this person opted in)"><TextInput id="lead-consent-source" value={consentSource} maxLength={200} onChange={(event) => setConsentSource(event.target.value)} required /></Field>}
-      <p>Adding or editing an address does not grant consent or enroll it for sending. Live Resend sends need recorded consent evidence.</p>
+      <p className="text-sm text-zinc-600 dark:text-zinc-400">Adding or editing an address does not grant consent or enroll it for sending. Live Resend sends need recorded consent evidence.</p>
       <ActionError message={error} />
-      <Button type="submit" disabled={!props.gateway || !props.context || !props.proof || busy || uncertain}>{busy ? 'Saving…' : editId ? 'Save address' : 'Add lead'}</Button>
-      {editId && <Button onClick={() => { setEditId(null); setEmail('') }}>Cancel edit</Button>}
-      {uncertain && <Link to={`/outreach/campaigns/${campaignId}`}>Check campaign</Link>}
+      <Button type="submit" variant="primary" disabled={!props.gateway || !props.context || !props.proof || busy || uncertain}>{busy ? 'Saving…' : editId ? 'Save address' : 'Add lead'}</Button>
+      {editId && <Button size="sm" onClick={() => { setEditId(null); setEmail('') }}>Cancel edit</Button>}
+      {uncertain && <Link className={linkClass} to={`/outreach/campaigns/${campaignId}`}>Check campaign</Link>}
     </form>
   </>}</Page>
 }
@@ -302,14 +305,14 @@ export function OutreachLeadDetailPage(props: OutreachPageProps) {
 function LeadDetail({ campaignId, leadId, ...props }: OutreachPageProps & { campaignId: string | undefined; leadId: string | undefined }) {
   const state = useOutreachRead('lead', props, campaignId && leadId ? `${campaignId}:${leadId}` : undefined)
   return <Page title="Lead detail"><Content state={state}>{(lead) => <>
-    <p><strong>{lead.email}</strong></p>
-    <p>Consent record: {lead.consent_status}. Suppression: {lead.suppressed ? 'active' : 'not reported by server'}.</p>
-    <p>Evidence source: {lead.consent_source ?? 'none recorded'}</p>
-    <p>Evidence observed: {lead.consent_recorded_at ?? 'none recorded'}</p>
-    <p>Evidence actor: {lead.consent_recorded_by ?? 'none recorded'}</p>
-    <p>Evidence kind: {lead.consent_evidence_kind === 'manual_attestation' ? 'manual attestation' : 'none recorded'}</p>
-    {lead.consent_evidence_kind === 'manual_attestation' && <p>This consent record is an operator attestation; independent verification is not shown.</p>}
-    <p>This record does not authorize sending.</p>
+    <p className="text-sm text-zinc-800 dark:text-white"><strong>{lead.email}</strong></p>
+    <p className="text-sm text-zinc-600 dark:text-zinc-400">Consent record: {lead.consent_status}. Suppression: {lead.suppressed ? 'active' : 'not reported by server'}.</p>
+    <p className="text-sm text-zinc-600 dark:text-zinc-400">Evidence source: {lead.consent_source ?? 'none recorded'}</p>
+    <p className="text-sm text-zinc-600 dark:text-zinc-400">Evidence observed: {lead.consent_recorded_at ?? 'none recorded'}</p>
+    <p className="text-sm text-zinc-600 dark:text-zinc-400">Evidence actor: {lead.consent_recorded_by ?? 'none recorded'}</p>
+    <p className="text-sm text-zinc-600 dark:text-zinc-400">Evidence kind: {lead.consent_evidence_kind === 'manual_attestation' ? 'manual attestation' : 'none recorded'}</p>
+    {lead.consent_evidence_kind === 'manual_attestation' && <p className="text-sm text-zinc-600 dark:text-zinc-400">This consent record is an operator attestation; independent verification is not shown.</p>}
+    <p className="text-sm text-zinc-600 dark:text-zinc-400">This record does not authorize sending.</p>
   </>}</Content></Page>
 }
 
@@ -326,8 +329,8 @@ function AccountList({ campaignId, ...props }: OutreachPageProps & { campaignId:
   const [search] = useSearchParams()
   const state = useOutreachRead('accounts', props, campaignId, 0, search.get('cursor') ?? undefined)
   return <Page title="Outreach accounts"><Content state={state} empty={(page) => page.items.length === 0 && page.next_cursor === null}>{(page) => <>
-    <ul>{page.items.map((account: Account) => <li key={account.id}><Link to={`/outreach/campaigns/${campaignId}/accounts/${account.id}`}>{account.label}</Link> · disabled</li>)}</ul>
-    {page.next_cursor && <Link to={`?cursor=${encodeURIComponent(page.next_cursor)}`}>Next accounts page</Link>}
+    <ul className="divide-y divide-zinc-200 rounded-xl border border-zinc-200 bg-white shadow-xs dark:border-zinc-700 dark:bg-zinc-800">{page.items.map((account: Account) => <li key={account.id} className="px-4 py-3 text-sm"><Link className={linkClass} to={`/outreach/campaigns/${campaignId}/accounts/${account.id}`}>{account.label}</Link> · disabled</li>)}</ul>
+    {page.next_cursor && <Link className={linkClass} to={`?cursor=${encodeURIComponent(page.next_cursor)}`}>Next accounts page</Link>}
   </>}</Content></Page>
 }
 export function OutreachAccountDetailPage(props: OutreachPageProps) {
@@ -337,8 +340,8 @@ export function OutreachAccountDetailPage(props: OutreachPageProps) {
 function AccountDetail({ campaignId, accountId, ...props }: OutreachPageProps & { campaignId: string | undefined; accountId: string | undefined }) {
   const state = useOutreachRead('account', props, campaignId && accountId ? `${campaignId}:${accountId}` : undefined)
   return <Page title="Outreach account"><Content state={state}>{(account) => <>
-    <p><strong>{account.label}</strong> · {account.status}</p><p>Mailbox {account.mailbox_id}</p>
-    <p>This account cannot be activated here.</p>
+    <p className="text-sm text-zinc-800 dark:text-white"><strong>{account.label}</strong> · {account.status}</p><p className="text-sm text-zinc-600 dark:text-zinc-400">Mailbox {account.mailbox_id}</p>
+    <p className="text-sm text-zinc-600 dark:text-zinc-400">This account cannot be activated here.</p>
   </>}</Content></Page>
 }
 export function OutreachCampaignAnalyticsPage(props: OutreachPageProps) {
@@ -348,5 +351,5 @@ export function OutreachCampaignAnalyticsPage(props: OutreachPageProps) {
 function CampaignAnalytics({ campaignId, ...props }: OutreachPageProps & { campaignId: string | undefined }) {
   const state = useOutreachRead('analytics', props, campaignId)
   return <Page title="Campaign analytics"><Content state={state}>{(row: Analytics) =>
-    <p>{row.consented_count} {row.consented_count === 1 ? 'lead' : 'leads'} with granted consent records and no suppression of {row.lead_count} leads (server aggregate; may include manual attestations)</p>}</Content></Page>
+    <p className="text-sm text-zinc-600 dark:text-zinc-400">{row.consented_count} {row.consented_count === 1 ? 'lead' : 'leads'} with granted consent records and no suppression of {row.lead_count} leads (server aggregate; may include manual attestations)</p>}</Content></Page>
 }

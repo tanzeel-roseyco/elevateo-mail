@@ -14,11 +14,13 @@ import { draftIntentKey, formatRecipients, useDraftIntent } from '@/app/draftInt
 import { edit, newDraftBuffer } from '@/domain/draftOperation'
 import { canonicalId, newId } from '@/lib/ids'
 import { newTraversalBudget, readPage } from '@/lib/readPage'
-import { formatDateTime } from '@/lib/format'
+import { cx, formatDateTime } from '@/lib/format'
+import { Avatar } from '@/ui/Avatar'
+import { Callout } from '@/ui/Callout'
 import { Badge } from '@/ui/Badge'
-import { Button } from '@/ui/Button'
+import { Button, IconButton } from '@/ui/Button'
 import { EmptyState, Skeleton } from '@/ui/Async'
-import { BackIcon } from '@/ui/icons'
+import { ArchiveBoxIcon, ArrowLeftIcon, ArrowUturnLeftIcon, ArrowUturnRightIcon, ClockIcon, EllipsisVerticalIcon, EnvelopeIcon, ExclamationTriangleIcon, TrashIcon } from '@/ui/icons'
 import { AssignmentPanel } from './AssignmentPanel'
 import { NotesPanel } from './NotesPanel'
 import { ReadStateControl } from './ReadStateControl'
@@ -242,130 +244,178 @@ function ConversationReader({ mailboxId, threadId, readDirectMessage, attachment
 
   // The back link restores the inbox exactly as it was filtered when the user left it (FE-R11).
   const backTo = `/mailboxes/${mailboxId}${filter === 'unread' ? '?filter=unread' : ''}`
+  const canCompose = mailbox?.capabilities.compose === true
+  const attachmentsFor = (message: Message) =>
+    message.attachment_count > 0 && (
+      attachmentPort ? (
+        <MessageAttachments key={`${message.id}\n${context?.contextId}\n${context?.authorizationVersion}`} mailboxId={mailboxId} threadId={threadId} messageId={message.id} count={message.attachment_count} port={attachmentPort} />
+      ) : (
+        <Badge tone="neutral">{message.attachment_count} attachment{message.attachment_count === 1 ? '' : 's'} (viewing not yet available)</Badge>
+      )
+    )
+
   return (
-    <article aria-label="Conversation" className="mx-auto max-w-3xl p-3">
-      <div className="mb-2 flex items-center gap-2">
-        <Link to={backTo} className="inline-flex items-center gap-1 rounded-lg px-2 py-1 text-[13px] text-fg hover:bg-surface-2">
-          <BackIcon className="size-4" /> Back to conversations
-        </Link>
+    <article aria-label="Conversation" className="flex min-h-0 flex-1 flex-col">
+      <div className="overflow-hidden rounded-xl border border-zinc-200 bg-white shadow-xs dark:border-zinc-700 dark:bg-zinc-800">
+        {/* Thread toolbar (INBOX-SPEC thread view): back, unavailable actions, the real read toggle. */}
+        <div className="flex h-12 items-center gap-1 border-b border-zinc-200 px-2 dark:border-zinc-700">
+          <Link to={backTo} className="inline-flex h-8 items-center gap-1.5 rounded-lg px-2 text-sm font-medium text-zinc-700 hover:bg-zinc-800/5 dark:text-zinc-300 dark:hover:bg-white/10">
+            <ArrowLeftIcon className="size-5" /> Back to conversations
+          </Link>
+          <span className="mx-1 h-5 w-px bg-zinc-200 dark:bg-zinc-700" aria-hidden />
+          <IconButton label="Archive (not available yet)" disabled><ArchiveBoxIcon className="size-5" /></IconButton>
+          <IconButton label="Report spam (not available yet)" disabled><ExclamationTriangleIcon className="size-5" /></IconButton>
+          <IconButton label="Delete (not available yet)" disabled><TrashIcon className="size-5" /></IconButton>
+          <IconButton label="Snooze (not available yet)" disabled><ClockIcon className="size-5" /></IconButton>
+          <div className="flex-1" />
+          <IconButton label="More (not available yet)" disabled><EllipsisVerticalIcon className="size-5" /></IconButton>
+        </div>
+
+        {state.status === 'loading' && <div role="status" aria-label="Loading conversation" className="p-6"><Skeleton rows={4} /></div>}
+        {state.status === 'unavailable' && (
+          <EmptyState icon={<EnvelopeIcon className="size-5" />} title="This conversation is unavailable" body="It may not exist or you may not currently have access to it." className="m-6" />
+        )}
+        {state.status === 'error' && (
+          <div role="alert" className="p-3">
+            <Callout variant="danger" heading="The conversation could not be loaded" actions={<Button variant="primary" onClick={() => load(undefined, false)}>Try again</Button>}>
+              {state.message}
+            </Callout>
+          </div>
+        )}
+        {state.status === 'ready' && (
+          <>
+            <header className="px-6 pb-4 pt-5">
+              <div className="flex flex-wrap items-center gap-2">
+                <h1 ref={headingRef} tabIndex={-1} className="min-w-0 text-xl font-medium text-zinc-800 dark:text-white">
+                  {state.thread.subject ?? '(no subject)'}
+                </h1>
+                {state.thread.subject_truncated && <Badge tone="warn" size="sm">Subject shortened</Badge>}
+                {state.thread.unread && <Badge tone="accent" size="sm">Unread</Badge>}
+              </div>
+              <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-2">
+                <p className="text-xs text-zinc-500">
+                  {state.thread.message_count} message{state.thread.message_count === 1 ? '' : 's'} in this conversation
+                </p>
+                <ReadStateControl
+                  threadId={threadId}
+                  mailboxId={mailboxId}
+                  unread={state.thread.unread}
+                  onConfirmed={(read) => setState((prev) => (prev.status === 'ready' ? { ...prev, thread: { ...prev.thread, unread: !read } } : prev))}
+                />
+              </div>
+            </header>
+            {selectedMessageId !== null && !selectedMessagePresent && (
+              <div className="px-6 pb-4">
+                {readDirectMessage ? (
+                  directResult?.status === 'error' ? (
+                    <div role="alert"><Callout variant="danger" actions={<Button size="sm" onClick={() => setDirectRetry((count) => count + 1)}>Retry message</Button>}>The message could not be loaded.</Callout></div>
+                  ) : (
+                    <p role="status"><Callout variant="neutral">{directResult?.status === 'unavailable' ? 'This message is unavailable in this conversation.' : 'Loading selected message…'}</Callout></p>
+                  )
+                ) : (
+                  <p role="status"><Callout variant="neutral">{state.nextCursor === null ? 'This message is unavailable in this conversation.' : 'This message is on a later page. Show more messages to find it.'}</Callout></p>
+                )}
+              </div>
+            )}
+            {canCompose && (replyMessage === null || replyAddress(replyMessage) === null) && (
+              <p className="px-6 pb-4 text-xs text-zinc-500">
+                {selectedMessageId === null ? 'A message with a sender is needed to reply.' : 'This selected message cannot be replied to yet.'}
+              </p>
+            )}
+            {/* An empty page with a continuation cursor is not a terminal empty conversation (D4). */}
+            {state.messages.length === 0 && state.nextCursor === null && (
+              <EmptyState icon={<EnvelopeIcon className="size-5" />} title="No messages" body="This conversation exists but has no readable messages yet." className="mx-6 mb-6" />
+            )}
+            {state.messages.length === 0 && state.nextCursor !== null && (
+              <EmptyState icon={<EnvelopeIcon className="size-5" />} title="Nothing on this page" body="This page of the conversation was empty, but more messages may be available below." className="mx-6 mb-6" />
+            )}
+            {!selectedOnPage && directResult?.status === 'ready' && (
+              <ol className="border-t border-zinc-200 dark:border-zinc-700">
+                <li ref={selectedMessageRef} tabIndex={-1} aria-label="Selected message" className="border-s-2 border-s-gold-500 bg-gold-50/40 px-6 py-5 dark:bg-gold-400/5">
+                  <MessageHeader message={directResult.message} />
+                  <pre className="mt-3 whitespace-pre-wrap break-words font-sans text-sm leading-6 text-zinc-700 dark:text-zinc-300">{directResult.message.body_text}</pre>
+                  <footer className="mt-3 flex flex-wrap items-center gap-2">
+                    {canCompose && replyAddress(directResult.message) !== null && (
+                      <Button size="sm" icon={<ArrowUturnLeftIcon className="size-4" />} onClick={() => replyToMessage(directResult.message)}>Reply to this sender as draft</Button>
+                    )}
+                    {directResult.message.body_truncated && <Badge tone="warn">Message shortened by the server</Badge>}
+                    {attachmentsFor(directResult.message)}
+                  </footer>
+                </li>
+              </ol>
+            )}
+            <ol className="divide-y divide-zinc-200 border-t border-zinc-200 dark:divide-zinc-700 dark:border-zinc-700">
+              {state.messages.map((message) => {
+                const isSelected = canonicalId(message.id) === selectedMessageId
+                return (
+                  <li key={message.id} ref={isSelected ? selectedMessageRef : undefined} tabIndex={isSelected ? -1 : undefined} aria-label={isSelected ? 'Selected message' : undefined} className={cx('px-6 py-5', isSelected && 'border-s-2 border-s-gold-500 bg-gold-50/40 dark:bg-gold-400/5')}>
+                    <MessageHeader message={message} />
+                    {/* Escaped plaintext only: React text rendering in a wrapping <pre>; nothing is parsed. */}
+                    <pre className="mt-3 whitespace-pre-wrap break-words font-sans text-sm leading-6 text-zinc-700 dark:text-zinc-300">{message.body_text}</pre>
+                    {/* flex-wrap: both badges together overflow a 390px viewport otherwise (r10 visual QA). */}
+                    <footer className="mt-3 flex flex-wrap items-center gap-2">
+                      <Link to={`?${filter === 'unread' ? 'filter=unread&' : ''}message=${encodeURIComponent(message.id)}`} aria-current={isSelected ? 'location' : undefined} className="rounded-md text-sm font-medium text-(--color-accent-content) underline-offset-4 hover:underline">Open this message</Link>
+                      {canCompose && replyAddress(message) !== null && (
+                        <Button size="sm" icon={<ArrowUturnLeftIcon className="size-4" />} onClick={() => replyToMessage(message)}>Reply to this sender as draft</Button>
+                      )}
+                      {message.body_truncated && <Badge tone="warn">Message shortened by the server</Badge>}
+                      {attachmentsFor(message)}
+                    </footer>
+                  </li>
+                )
+              })}
+            </ol>
+            {state.nextCursor !== null && (
+              <div className="flex justify-center border-t border-zinc-200 p-3 dark:border-zinc-700">
+                <div className="flex flex-col items-center gap-2">
+                  {state.pageError !== null && <p role="alert" className="text-sm text-red-500">{state.pageError}</p>}
+                  <Button size="sm" disabled={state.loadingMore} onClick={() => load(state.nextCursor ?? undefined, true)}>
+                    {state.loadingMore ? 'Loading…' : state.pageError !== null ? 'Retry more messages' : 'Show more messages'}
+                  </Button>
+                </div>
+              </div>
+            )}
+            {/* Reply bar (INBOX-SPEC): only "Reply as draft" is backed by the draft API. */}
+            <div className="flex flex-wrap items-center gap-2 border-t border-zinc-200 px-6 py-4 dark:border-zinc-700">
+              {canCompose && (
+                <Button icon={<ArrowUturnLeftIcon className="size-4" />} disabled={replyMessage === null || replyAddress(replyMessage) === null || sessionState.status !== 'ready'}
+                  onClick={() => { if (replyMessage !== null) replyToMessage(replyMessage) }}>
+                  Reply as draft
+                </Button>
+              )}
+              <Button icon={<ArrowUturnLeftIcon className="size-4" />} disabled title="Not available yet">Reply all</Button>
+              <Button icon={<ArrowUturnRightIcon className="size-4" />} disabled title="Not available yet">Forward</Button>
+              <span className="text-xs text-zinc-400">Reply all and Forward are not available yet.</span>
+            </div>
+          </>
+        )}
       </div>
-      {state.status === 'loading' && <div role="status" aria-label="Loading conversation"><Skeleton rows={4} /></div>}
-      {state.status === 'unavailable' && (
-        <EmptyState title="This conversation is unavailable" body="It may not exist or you may not currently have access to it." />
-      )}
-      {state.status === 'error' && (
-        <div role="alert">
-          <EmptyState title="The conversation could not be loaded" body={state.message} action={<Button variant="primary" onClick={() => load(undefined, false)}>Try again</Button>} />
+      {state.status === 'ready' && (
+        <div className="mt-6 grid gap-6 lg:grid-cols-2">
+          <AssignmentPanel threadId={threadId} mailboxId={mailboxId} />
+          <NotesPanel threadId={threadId} mailboxId={mailboxId} />
         </div>
       )}
-      {state.status === 'ready' && (
-        <>
-          <h1 ref={headingRef} tabIndex={-1} className="mb-1 text-base font-semibold">
-            {state.thread.subject ?? '(no subject)'}
-            {state.thread.subject_truncated && <Badge tone="warn" className="ml-2">Subject shortened</Badge>}
-          </h1>
-          <p className="mb-2 text-[12px] text-muted">
-            {state.thread.message_count} message{state.thread.message_count === 1 ? '' : 's'} in this conversation
-          </p>
-          {selectedMessageId !== null && !selectedMessagePresent && (
-            readDirectMessage ? (
-              directResult?.status === 'error' ? <div role="alert" className="mb-2 rounded-lg border border-line p-2 text-[13px]">The message could not be loaded. <Button size="sm" onClick={() => setDirectRetry((count) => count + 1)}>Retry message</Button></div>
-                : <p role="status" className="mb-2 rounded-lg border border-line bg-surface-2 p-2 text-[13px]">{directResult?.status === 'unavailable' ? 'This message is unavailable in this conversation.' : 'Loading selected message…'}</p>
-            ) : <p role="status" className="mb-2 rounded-lg border border-line bg-surface-2 p-2 text-[13px]">
-              {state.nextCursor === null ? 'This message is unavailable in this conversation.' : 'This message is on a later page. Show more messages to find it.'}
-            </p>
-          )}
-          <div className="mb-3 flex flex-wrap items-center gap-2">
-            <ReadStateControl
-              threadId={threadId}
-              mailboxId={mailboxId}
-              unread={state.thread.unread}
-              onConfirmed={(read) => setState((prev) => (prev.status === 'ready' ? { ...prev, thread: { ...prev.thread, unread: !read } } : prev))}
-            />
-            {state.thread.unread && <Badge tone="accent">Unread</Badge>}
-            {mailbox?.capabilities.compose === true && (
-              <Button size="sm" disabled={replyMessage === null || replyAddress(replyMessage) === null || sessionState.status !== 'ready'}
-                onClick={() => { if (replyMessage !== null) replyToMessage(replyMessage) }}>
-                Reply as draft
-              </Button>
-            )}
-          </div>
-          {mailbox?.capabilities.compose === true && (replyMessage === null || replyAddress(replyMessage) === null) && (
-            <p className="mb-3 text-[12px] text-muted">
-              {selectedMessageId === null ? 'A message with a sender is needed to reply.' : 'This selected message cannot be replied to yet.'}
-            </p>
-          )}
-          {/* An empty page with a continuation cursor is not a terminal empty conversation (D4). */}
-          {state.messages.length === 0 && state.nextCursor === null && (
-            <EmptyState title="No messages" body="This conversation exists but has no readable messages yet." />
-          )}
-          {state.messages.length === 0 && state.nextCursor !== null && (
-            <EmptyState title="Nothing on this page" body="This page of the conversation was empty, but more messages may be available below." />
-          )}
-          {!selectedOnPage && directResult?.status === 'ready' && (
-            <ol className="mb-3">
-              <li ref={selectedMessageRef} tabIndex={-1} aria-label="Selected message" className="rounded-lg border border-accent-text bg-surface p-3">
-                <header className="mb-2 flex flex-wrap items-baseline gap-2">
-                  <span className="text-sm font-semibold">{directResult.message.sender?.display_name ?? directResult.message.sender?.address ?? 'Unknown sender'}</span>
-                  <span className="text-[12px] text-muted">{sameAddressLine(directResult.message)}</span>
-                  <span className="ml-auto text-[12px] text-muted">{directResult.message.sent_at === null ? 'No date recorded' : formatDateTime(directResult.message.sent_at)}</span>
-                </header>
-                <pre className="whitespace-pre-wrap break-words font-sans text-sm">{directResult.message.body_text}</pre>
-                <footer className="mt-2 flex flex-wrap gap-2">
-                  {mailbox?.capabilities.compose === true && replyAddress(directResult.message) !== null && (
-                    <Button size="sm" onClick={() => replyToMessage(directResult.message)}>Reply to this sender as draft</Button>
-                  )}
-                  {directResult.message.body_truncated && <Badge tone="warn">Message shortened by the server</Badge>}
-                  {directResult.message.attachment_count > 0 && (attachmentPort ? <MessageAttachments key={`${directResult.message.id}\n${context?.contextId}\n${context?.authorizationVersion}`} mailboxId={mailboxId} threadId={threadId} messageId={directResult.message.id} count={directResult.message.attachment_count} port={attachmentPort} /> : <Badge tone="neutral">{directResult.message.attachment_count} attachment(s) (viewing not yet available)</Badge>)}
-                </footer>
-              </li>
-            </ol>
-          )}
-          <ol className="flex flex-col gap-3">
-            {state.messages.map((message) => (
-              <li key={message.id} ref={canonicalId(message.id) === selectedMessageId ? selectedMessageRef : undefined} tabIndex={canonicalId(message.id) === selectedMessageId ? -1 : undefined} aria-label={canonicalId(message.id) === selectedMessageId ? 'Selected message' : undefined} className={`rounded-lg border bg-surface p-3 ${canonicalId(message.id) === selectedMessageId ? 'border-accent-text' : 'border-line'}`}>
-                <header className="mb-2 flex flex-wrap items-baseline gap-x-2 gap-y-1">
-                  <span className="text-sm font-semibold">
-                    {message.sender?.display_name ?? message.sender?.address ?? 'Unknown sender'}
-                  </span>
-                  <span className="text-[12px] text-muted">{sameAddressLine(message)}</span>
-                  <span className="ml-auto text-[12px] tabular-nums text-muted">
-                    {message.sent_at === null ? 'No date recorded' : formatDateTime(message.sent_at)}
-                  </span>
-                </header>
-                {/* Escaped plaintext only: React text rendering in a wrapping <pre>; nothing is parsed. */}
-                <pre className="whitespace-pre-wrap break-words font-sans text-sm">{message.body_text}</pre>
-                {/* flex-wrap: both badges together overflow a 390px viewport otherwise (r10 visual QA). */}
-                <footer className="mt-2 flex flex-wrap gap-2">
-                  <Link to={`?${filter === 'unread' ? 'filter=unread&' : ''}message=${encodeURIComponent(message.id)}`} aria-current={canonicalId(message.id) === selectedMessageId ? 'location' : undefined} className="rounded px-2 py-1 text-[13px] underline">Open this message</Link>
-                  {mailbox?.capabilities.compose === true && replyAddress(message) !== null && (
-                    <Button size="sm" onClick={() => replyToMessage(message)}>Reply to this sender as draft</Button>
-                  )}
-                  {message.body_truncated && <Badge tone="warn">Message shortened by the server</Badge>}
-                  {message.attachment_count > 0 && (
-                    attachmentPort ? <MessageAttachments key={`${message.id}\n${context?.contextId}\n${context?.authorizationVersion}`} mailboxId={mailboxId} threadId={threadId} messageId={message.id} count={message.attachment_count} port={attachmentPort} /> :
-                      <Badge tone="neutral">{message.attachment_count} attachment{message.attachment_count === 1 ? '' : 's'} (viewing not yet available)</Badge>
-                  )}
-                </footer>
-              </li>
-            ))}
-          </ol>
-          {state.nextCursor !== null && (
-            <div className="mt-3 flex justify-center">
-              <div className="flex flex-col items-center gap-2">
-                {state.pageError !== null && <p role="alert" className="text-[13px] text-danger">{state.pageError}</p>}
-                <Button size="sm" disabled={state.loadingMore} onClick={() => load(state.nextCursor ?? undefined, true)}>
-                  {state.loadingMore ? 'Loading…' : state.pageError !== null ? 'Retry more messages' : 'Show more messages'}
-                </Button>
-              </div>
-            </div>
-          )}
-          <div className="mt-4 flex flex-col gap-3">
-            <AssignmentPanel threadId={threadId} mailboxId={mailboxId} />
-            <NotesPanel threadId={threadId} mailboxId={mailboxId} />
-          </div>
-        </>
-      )}
     </article>
+  )
+}
+
+/** Gmail message header in the Flux skin: 40px round avatar, bold name, grey address, time on the end side. */
+function MessageHeader({ message }: { message: Message }) {
+  const name = message.sender?.display_name ?? message.sender?.address ?? 'Unknown sender'
+  return (
+    <header className="flex items-start gap-3">
+      <Avatar name={name} size={10} shape="circle" />
+      <div className="min-w-0 flex-1">
+        <p className="truncate text-sm font-semibold text-zinc-800 dark:text-white">{name}</p>
+        <p className="truncate text-xs text-zinc-500">
+          {message.sender?.display_name && message.sender.address ? `${message.sender.address} · ` : ''}
+          {sameAddressLine(message)}
+        </p>
+      </div>
+      <time dateTime={message.sent_at ?? undefined} className="shrink-0 text-xs tabular-nums text-zinc-500">
+        {message.sent_at === null ? 'No date recorded' : formatDateTime(message.sent_at)}
+      </time>
+    </header>
   )
 }

@@ -1,7 +1,9 @@
-// Mobile drawer over the approved @radix-ui/react-dialog primitive (accepted D6): initial focus,
-// Tab/Shift+Tab containment, background inerting, Escape and dismissal focus restoration come from
-// the primitive; no handwritten focus trapping. The trigger is rendered via asChild so Radix wires
-// aria-expanded/aria-controls onto the caller's existing button and restores focus to it on close.
+// Mobile navigation drawer over the approved @radix-ui/react-dialog primitive (accepted D6): initial
+// focus, Tab/Shift+Tab containment, background inerting, Escape and dismissal focus restoration come
+// from the primitive; no handwritten focus trapping. The trigger is rendered via asChild so Radix
+// wires aria-expanded/aria-controls onto the caller's existing button and restores focus on close.
+// AIDEV-NOTE: The drawer exists below the lg breakpoint (1024px), matching EmailGuard's lg:hidden
+// header; Shell closes it when the viewport grows past that width.
 import * as Dialog from '@radix-ui/react-dialog'
 import type { ReactNode } from 'react'
 
@@ -20,14 +22,13 @@ export function Drawer({ open, onOpenChange, trigger, title, children }: DrawerP
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
       <Dialog.Trigger asChild>{trigger}</Dialog.Trigger>
       <Dialog.Portal>
-        <Dialog.Overlay className="fixed inset-0 z-10 bg-black/40 md:hidden" />
-        {/* md:hidden only hides overlay/content visuals; it does not disable Radix modal behavior
+        <Dialog.Overlay className="fixed inset-0 z-20 bg-black/10 lg:hidden" />
+        {/* lg:hidden only hides overlay/content visuals; it does not disable Radix modal behavior
             (focus trap and background inerting persist while open). The caller's matchMedia close
-            in Shell is what actually releases the dialog on a resize to desktop; actual-browser
-            resize verification remains a coordinator visual check (D6, FE-R06). */}
+            in Shell is what actually releases the dialog on a resize to desktop (D6, FE-R06). */}
         <Dialog.Content
           aria-describedby={undefined}
-          className="fixed inset-y-0 left-0 z-10 w-72 max-w-[85vw] bg-surface shadow-lg md:hidden"
+          className="fixed inset-y-0 start-0 z-20 w-66 max-w-[85vw] overflow-y-auto overscroll-contain border-e border-zinc-200 bg-zinc-50 shadow-lg lg:hidden dark:border-zinc-700 dark:bg-zinc-900"
         >
           <Dialog.Title className="sr-only">{title}</Dialog.Title>
           {children}
