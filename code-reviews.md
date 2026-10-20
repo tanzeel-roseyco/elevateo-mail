@@ -2074,3 +2074,10 @@ Changed source lines this round: ~55 across BrandLockup, SignInPage, FolderNav, 
 | Campaigns worker C3 LOW: Leads empty state says "actions above" but the form is below | Copy made direction-free. |
 
 Changed source lines this round: ~40 across SettingsRoutes, SettingsLayout, Tabs, PageHeader, HelpRoutes, Drawer, CodeBlock, SendReviewPage, OutreachPages; 6 runtime-confirmed defects fixed, 0 new defects found in the changed lines.
+
+
+### Fable R8 disposition — 2026-10-20
+
+| Finding | Disposition |
+| --- | --- |
+| API worker P3 (R6 screenshots): webhook event options still touch | R6 fix was ineffective: `className="flex"` on the inline-flex label loses in Tailwind's class order. Fixed structurally with a block `div` per option; test asserts the wrapper and the spaced fieldset. 1 defect in my R6 change (class-order), now fixed. |

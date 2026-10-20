@@ -55,6 +55,8 @@ untouched; the parked marketing backend was not modified.
   help subtitle/review values use `wrap-anywhere` (break-words does not shrink min-content);
   help field re-syncs on the location key after search-then-immediate-Back; Copy sits on an opaque
   fade in code blocks; Leads empty-state copy no longer points "above".
+- R8: webhook event options wrapped in block rows (the R6 `flex` override lost to the primitive's
+  `inline-flex` in Tailwind's class order, so the options still touched in the R6 screenshots).
 - Verification: pending the shell worker's corrected fleet-02 checkpoint (check:api, check:api:v2,
   lint, typecheck, test, build, fixture preview) and the nine feature-worker browser matrices; this
   entry is updated with the results.

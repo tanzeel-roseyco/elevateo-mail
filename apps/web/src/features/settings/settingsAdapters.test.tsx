@@ -179,8 +179,10 @@ describe('webhook create form', () => {
     renderSettings('/settings/webhooks/create')
     const url = await screen.findByLabelText('Endpoint URL')
     fireEvent.change(url, { target: { value: 'https://example.test/hook' } })
-    // Event options are block rows so the fieldset's vertical spacing separates them (API QA P3).
-    expect(screen.getByLabelText('Conversation received').closest('label')?.className).toContain('flex')
+    // Each option sits in its own block wrapper so the fieldset's vertical spacing separates them (API QA P3).
+    const option = screen.getByLabelText('Conversation received').closest('label')?.parentElement
+    expect(option?.tagName).toBe('DIV')
+    expect(option?.parentElement?.className).toContain('space-y-2')
     fireEvent.click(screen.getByLabelText('Conversation received'))
     fireEvent.click(screen.getByRole('button', { name: 'Save webhook' }))
     const alert = await screen.findByRole('alert')
