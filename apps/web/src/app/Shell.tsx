@@ -259,7 +259,7 @@ function ProtectedShell({ session, replacedIdentity }: { session: Session; repla
 
   return (
     <MailboxesProvider value={mailboxesSnapshot}>
-    <div className="flex h-full min-h-0">
+    <div className="workspace-shell flex h-full min-h-0">
       <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:left-2 focus:top-2 focus:z-20 focus:rounded-lg focus:bg-surface focus:px-3 focus:py-2">
         Skip to content
       </a>

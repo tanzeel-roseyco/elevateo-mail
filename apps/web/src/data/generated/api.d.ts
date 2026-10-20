@@ -912,10 +912,10 @@ export interface components {
             subject: string;
             body_text: string;
             reply_to_thread_id: components["schemas"]["Id"] | null;
-            /** @constant */
-            purpose: "correspondence";
-            /** @constant */
-            consent_basis: "human_attestation_required";
+            /** @enum {string} */
+            purpose: "correspondence" | "marketing";
+            /** @enum {string} */
+            consent_basis: "human_attestation_required" | "recorded_consent";
             attachments: components["schemas"]["DraftAttachment"][];
             attachments_supported: boolean;
             policy_revision: string;

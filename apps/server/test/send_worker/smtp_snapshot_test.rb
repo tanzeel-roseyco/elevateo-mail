@@ -18,6 +18,14 @@ class SendWorkerSmtpSnapshotTest < Minitest::Test
       subject: "Hello / Ö", body: "line one\nline two", reply_id: nil, policy: "1")
   end
 
+  def test_marketing_requires_its_explicit_recorded_consent_pair
+    value = JSON.parse(snapshot)
+    value[10], value[11] = "marketing", "recorded_marketing_consent"
+    assert_equal SENDER, render(JSON.generate(value)).sender
+    value[11] = "human_correspondence_attestation"
+    assert_raises(Elevateo::SendWorker::SmtpSnapshot::Invalid) { render(JSON.generate(value)) }
+  end
+
   def test_plain_text_mime_is_deterministic_and_bounded
     first = render(snapshot)
     second = render(snapshot)

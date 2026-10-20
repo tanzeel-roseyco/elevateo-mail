@@ -1,8 +1,6 @@
 // Pure consent gate for send review and lead intake (launch blocker 6). No React, no store.
-// AIDEV-NOTE: Resend's acceptable use policy requires opted-in recipients, so under the resend
-// transport every recipient needs server-reported consent evidence. Held and Mailpit never reach a
-// real inbox, so they stay allowed. The server enforces the same gate (consent_required); this
-// module only lets the UI explain the block before the person tries to approve.
+// AIDEV-NOTE: Marketing always needs recorded consent; individual Resend mail also needs opt-in.
+// The server enforces consent_required. This pure gate explains the same restriction before approval.
 
 export type OutboundMode = 'held' | 'mailpit' | 'resend'
 
@@ -19,11 +17,11 @@ export type ConsentGate =
 export const CONSENT_REQUIRED_REASON =
   'Live sending through Resend is limited to recipients who opted in. Record consent evidence for every recipient before approving.'
 
-export function consentGate(mode: OutboundMode, recipients: readonly RecipientConsent[]): ConsentGate {
-  if (mode !== 'resend') return { allowed: true }
+export function consentGate(mode: OutboundMode, recipients: readonly RecipientConsent[], purpose: 'correspondence' | 'marketing' = 'correspondence'): ConsentGate {
+  if (mode !== 'resend' && purpose !== 'marketing') return { allowed: true }
   const missing = recipients.filter((recipient) => !recipient.consent_evidence).map((recipient) => recipient.index)
   if (missing.length === 0) return { allowed: true }
-  return { allowed: false, reason: CONSENT_REQUIRED_REASON, recipientIndexes: missing }
+  return { allowed: false, reason: purpose === 'marketing' ? 'Marketing requires recorded opt-in consent for every recipient before approval.' : CONSENT_REQUIRED_REASON, recipientIndexes: missing }
 }
 
 export type LeadIntake =

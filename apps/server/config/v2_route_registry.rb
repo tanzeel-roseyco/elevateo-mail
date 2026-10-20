@@ -3,6 +3,11 @@
 # AIDEV-NOTE: V2 is a reviewed registration plan; no route may be exposed without its owning controller and auth gate.
 module V2RouteRegistry
   ROUTES = {
+    "listOutreachRuns" => ["GET", "/v2/outreach/campaigns/:campaign_id/runs", "v2/outreach/runs#index"],
+    "createOutreachRun" => ["POST", "/v2/outreach/campaigns/:campaign_id/runs", "v2/outreach/runs#create"],
+    "getOutreachRun" => ["GET", "/v2/outreach/campaigns/:campaign_id/runs/:run_id", "v2/outreach/runs#show"],
+    "cancelOutreachRun" => ["POST", "/v2/outreach/campaigns/:campaign_id/runs/:run_id/cancel", "v2/outreach/runs#cancel"],
+
     "listOutreachCampaigns" => ["GET", "/v2/outreach/campaigns", "v2/outreach/campaigns#index"],
     "getOutreachCampaign" => ["GET", "/v2/outreach/campaigns/:campaign_id", "v2/outreach/campaigns#show"],
     "createOutreachCampaign" => ["POST", "/v2/outreach/campaigns", "v2/outreach/campaigns#create"],
@@ -33,6 +38,7 @@ module V2RouteRegistry
     listOutreachCampaigns getOutreachCampaign createOutreachCampaign updateOutreachCampaign
     listOutreachLeads getOutreachLead addOutreachLead updateOutreachLead recordOutreachLeadConsent getOutreachAnalytics
     getOutreachSequenceDraft saveOutreachSequenceDraft
+    listOutreachRuns createOutreachRun getOutreachRun cancelOutreachRun
     getDirectMessage getMyPreferences replaceMyPreferences listMailboxAssigneeOptions
     listInboxAttachments downloadCleanInboxAttachment
   ].freeze

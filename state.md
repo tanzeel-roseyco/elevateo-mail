@@ -721,3 +721,13 @@ Ada ADV075 found two runner defects in `3ea8d26`; a source repair now records
 skipped Corin interop separately from base protocol and bounds Docker cleanup
 inventory. Fake-Docker regressions, Soren fleet runtime and repair re-review
 remain pending.
+
+## Unified inbox and marketing continuation — 2026-10-20
+
+Active workspace: `Elevateo Mail - Unified Dashboard 20261020`, branch `feat/unified-inbox-marketing`, based on `ba2d7ebf`. Prior workspace is preserved. No publication or live activation.
+
+The root route is an inbox-first workspace with account selection, conversation list, inline reader, and campaign panel. The previous summary remains at `/overview`. Desktop and 390px mobile light/dark captures exist in the adjacent Unified Dashboard Screenshots directory. A mobile flex-wrap overlap was found by visual inspection and fixed.
+
+Campaign runs add a single-message batch of 1–25 explicitly consented leads through the existing immutable draft/approval/queue authority. The run UI retains the original operation and payload across route navigation and uncertain receipts, exposes recipient states and cancellation, and validates byte limits. Marketing purpose and recorded consent are distinct from individual correspondence in review and dispatch. This is not multi-step automatic sequence execution or complete Instantly feature parity.
+
+Verification: fleet-02 Docker v1/v2 contract generation checks, ESLint and TypeScript passed. Full Vitest run passed 940/941 cases; the one failing Unicode test was a transfer-corrupted question-mark fixture, corrected to an explicit Unicode escape. Its six-case file rerun passed, and production build passed. Backend lifecycle/migration/type verification remains in progress after a failed initial runner; do not regard campaign delivery as accepted yet. Run-form browser validation remains in progress. Disposable containers use `--rm`; final task resource cleanup pending.

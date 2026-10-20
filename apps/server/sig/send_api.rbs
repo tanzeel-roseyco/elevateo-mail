@@ -28,7 +28,7 @@ module Elevateo
       MAXIMUM: Integer
       def self.bytes: (organization_id: String, mailbox_id: String, draft_id: String, version: Integer,
         sender: String?, recipients: Array[Hash[String, String?]], subject: String, body: String,
-        reply_id: String?, policy: String, ?attachments: Array[Array[String | Integer]]) -> String
+        reply_id: String?, policy: String, ?attachments: Array[Array[String | Integer]], ?purpose: String) -> String
       def self.digest: (String) -> String
     end
   end
@@ -40,6 +40,7 @@ module Elevateo
       @binding: ReadResponse::item
       @consent_required: bool
       @outbound_mode: String
+      @purpose: String
       @issues: Array[ReadResponse::item]
       @organization: String
       @mailbox: String

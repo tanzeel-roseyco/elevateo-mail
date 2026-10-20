@@ -28,11 +28,11 @@ function renderAt(path: string, sections: Parameters<typeof Sidebar>[0]['section
 }
 
 describe('sidebar sections', () => {
-  it('renders Today, Mail, Outreach and Contacts as independent landmarks with the authentic mark', () => {
+  it('renders Inbox, Overview, Mail, Outreach and Contacts as independent landmarks with the authentic mark', () => {
     renderAt('/outreach/campaigns/123')
     const mail = screen.getByRole('navigation', { name: 'Mail' })
     const outreachNav = screen.getByRole('navigation', { name: 'Outreach' })
-    expect(within(screen.getByRole('navigation', { name: 'Home' })).getByRole('link', { name: 'Today' }).getAttribute('href')).toBe('/')
+    expect(within(screen.getByRole('navigation', { name: 'Home' })).getByRole('link', { name: 'Inbox' }).getAttribute('href')).toBe('/')
     expect(within(mail).getAllByRole('link').map((l) => l.textContent)).toEqual(['Search', 'Fixture inbox'])
     expect(screen.getAllByRole('navigation').slice(1).map((n) => n.getAttribute('aria-labelledby'))).toEqual(['sidebar-mail', 'sidebar-outreach', 'sidebar-contacts'])
     expect(within(screen.getByRole('navigation', { name: 'Contacts' })).getByRole('link', { name: 'People' })).toBeTruthy()

@@ -43,3 +43,17 @@ module V2
     end
   end
 end
+
+module V2
+  module Outreach
+    class RunsController < BaseController
+      def index: () -> void
+      def show: () -> void
+      def create: () -> void
+      def cancel: () -> void
+      private
+      def run_service: (Elevateo::_ThreadConnection, Elevateo::auth_object, Elevateo::SessionIdentity) -> Elevateo::Campaigns::Runs
+      def run_send_error: (Elevateo::SendError) -> void
+    end
+  end
+end

@@ -28,7 +28,8 @@ const SEG = '([^/]+)'
 
 // Ordered: more specific paths first.
 const RULES: readonly Rule[] = [
-  { pattern: /^\/$/, build: () => ({ group: 'Home', crumb: 'Today', purpose: 'What needs your attention today across every mailbox you can see.' }) },
+  { pattern: /^\/$/, build: () => ({ group: 'Mail', crumb: 'Inbox', purpose: 'Your individual inbox and marketing workspace, together.' }) },
+  { pattern: /^\/overview$/, build: () => ({ group: 'Home', crumb: 'Today', purpose: 'What needs your attention today across every mailbox you can see.' }) },
   {
     pattern: new RegExp(`^/mailboxes/${SEG}/drafts/${SEG}/send-review$`),
     build: ([, m = ''], name) => ({

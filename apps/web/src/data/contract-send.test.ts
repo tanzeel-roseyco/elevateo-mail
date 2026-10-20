@@ -24,6 +24,11 @@ describe('canonical send contract equality', () => {
     expect(ApprovalResultSchema.safeParse(APPROVAL).success).toBe(true)
     expect(SendStatusSchema.safeParse(STATUS).success).toBe(true)
   })
+  it('accepts marketing only with its recorded consent basis', () => {
+    expect(SendReviewSchema.safeParse({ ...REVIEW, purpose: 'marketing', consent_basis: 'recorded_consent' }).success).toBe(true)
+    expect(SendReviewSchema.safeParse({ ...REVIEW, purpose: 'marketing' }).success).toBe(false)
+    expect(SendReviewSchema.safeParse({ ...REVIEW, consent_basis: 'recorded_consent' }).success).toBe(false)
+  })
   it('validates every canonical synthetic send fixture', () => {
     for (const fixture of sendFixtures.examples) {
       const schema = { SendReview: SendReviewSchema, ApprovalResult: ApprovalResultSchema, SendStatus: SendStatusSchema, CancellationResult: CancellationResultSchema, SendError: SendErrorSchema }[fixture.schema as 'SendReview' | 'ApprovalResult' | 'SendStatus' | 'CancellationResult' | 'SendError']

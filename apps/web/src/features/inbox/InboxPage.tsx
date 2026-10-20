@@ -10,7 +10,6 @@ import { useGateway, useSession } from '@/app/session'
 import { useMailbox } from '@/app/mailboxes'
 import { newTraversalBudget, readPage } from '@/lib/readPage'
 import { cx, formatWhen } from '@/lib/format'
-import { Badge } from '@/ui/Badge'
 import { Button } from '@/ui/Button'
 import { EmptyState, Skeleton } from '@/ui/Async'
 
@@ -20,8 +19,9 @@ type ListState =
   | { status: 'unavailable' }
   | { status: 'error'; message: string }
 
-export function InboxPage() {
-  const { mailboxId } = useParams<{ mailboxId: string }>()
+export function InboxPage({ selectedMailboxId }: { selectedMailboxId?: string } = {}) {
+  const params = useParams<{ mailboxId: string; threadId: string }>()
+  const mailboxId = selectedMailboxId ?? params.mailboxId
   const [searchParams] = useSearchParams()
   const rawFilter = searchParams.get('filter')
   const filter = rawFilter === 'unread' ? 'unread' : 'all'
@@ -35,6 +35,7 @@ export function InboxPage() {
 }
 
 function MailboxThreadList({ mailboxId, filter }: { mailboxId: string; filter: 'all' | 'unread' }) {
+  const { threadId } = useParams<{ threadId: string }>()
   const gateway = useGateway()
   const mailbox = useMailbox(mailboxId)
   const { scope, context, handleError } = useSession()
@@ -128,7 +129,7 @@ function MailboxThreadList({ mailboxId, filter }: { mailboxId: string; filter: '
   // The active filter travels into the reader so its back link can restore this view (FE-R11).
   const filterSuffix = filter === 'unread' ? '?filter=unread' : ''
   return (
-    <section aria-label="Conversations" className="mx-auto max-w-3xl p-3">
+    <section aria-label="Conversations" className="inbox-conversations">
       <div className="mb-2 flex items-center gap-2 px-1">
         <h1 className="text-sm font-semibold">Conversations</h1>
         {/* AIDEV-NOTE: An unknown mailbox capability is never treated as compose authority. */}
@@ -168,25 +169,25 @@ function MailboxThreadList({ mailboxId, filter }: { mailboxId: string; filter: '
             <EmptyState title="Nothing on this page" body="This page of results was empty, but more conversations may be available below." />
           )}
           {state.items.length > 0 && (
-            <ol ref={listRef} onKeyDown={onListKeyDown} className="divide-y divide-line rounded-lg border border-line bg-surface">
+            <ol ref={listRef} onKeyDown={onListKeyDown} className="divide-y divide-line bg-surface">
               {state.items.map((thread) => (
                 <li key={thread.id}>
                   <Link
                     data-thread
+                    aria-current={threadId === thread.id ? 'page' : undefined}
                     to={`/mailboxes/${mailboxId}/threads/${thread.id}${filterSuffix}`}
-                    className="row flex items-baseline gap-3 px-3 hover:bg-surface-2"
+                    className="conversation-row flex gap-3 px-4 py-4 hover:bg-surface-2"
                   >
-                    <span className={cx('min-w-0 flex-1 truncate text-sm', thread.unread && 'font-semibold')}>
-                      {thread.sender?.display_name ?? thread.sender?.address ?? 'Unknown sender'}
-                      <span className="text-muted"> — </span>
-                      {thread.subject ?? '(no subject)'}
-                      {thread.subject_truncated && <span title="Subject shortened">…</span>}
+                    <span aria-hidden className="conversation-avatar">{(thread.sender?.display_name ?? thread.sender?.address ?? '?').slice(0, 1).toUpperCase()}</span>
+                    <span className="min-w-0 flex-1">
+                      <span className="flex items-center justify-between gap-2">
+                        <span className={cx('truncate text-sm', thread.unread && 'font-semibold')}>{thread.sender?.display_name ?? thread.sender?.address ?? 'Unknown sender'}</span>
+                        <span className="shrink-0 text-[11px] tabular-nums text-muted">{thread.last_message_at === null ? 'No date' : formatWhen(thread.last_message_at)}</span>
+                      </span>
+                      <span className={cx('mt-1 block truncate text-[13px]', thread.unread && 'font-semibold')}>{thread.subject ?? '(no subject)'}{thread.subject_truncated && <span title="Subject shortened">…</span>}</span>
+                      <span className="mt-1 block truncate text-[12px] text-muted">{thread.preview_text}</span>
                     </span>
-                    <span className="hidden max-w-[18rem] truncate text-[13px] text-muted sm:inline">{thread.preview_text}</span>
-                    {thread.unread && <Badge tone="accent">Unread</Badge>}
-                    <span className="shrink-0 text-[12px] tabular-nums text-muted">
-                      {thread.last_message_at === null ? 'No date' : formatWhen(thread.last_message_at)}
-                    </span>
+                    {thread.unread && <span className="mt-1.5 size-2 shrink-0 rounded-full bg-accent"><span className="sr-only">Unread</span></span>}
                   </Link>
                 </li>
               ))}

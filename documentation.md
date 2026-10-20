@@ -813,3 +813,9 @@ Android runtime completion: Android1037 passed all nine isolated checks (login, 
   Quota usage, approvals and failures are shown as not reported until the API serves them.
 - Tokens: `apps/web/src/styles/index.css` (cool neutral colours, `--elev-1/2` elevation as `shadow-1/2`,
   `.page-title`, `.panel`). Rationale and evidence: `docs/design/ux-audit-20261018.md`.
+
+## Unified dashboard continuation (2026-10-20)
+
+`/` now hosts the account-scoped inbox, selected conversation and marketing overview in one shell; `/overview` retains the previous summary. Navigation/filter state remains URL-owned. The campaign route `/outreach/campaigns/:campaignId/runs` supports explicit single-message runs of up to 25 eligible leads, immutable operation retries, recipient history, and cancellation of work not yet accepted by the transport. Marketing consent is checked separately from correspondence and is required even for simulated profiles. No live mail was sent or production activated.
+
+Source is in the isolated `Elevateo Mail - Unified Dashboard 20261020` workspace. Backend acceptance and run-form visual validation are pending; see the latest state.md entry. Earlier acceptance totals describe the previous baseline.

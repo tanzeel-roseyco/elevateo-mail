@@ -5,9 +5,10 @@ import { describeRoute } from './pageMeta'
 const name = (id: string) => (id === 'mbx1' ? 'Team inbox' : 'Unknown mailbox')
 
 describe('describeRoute', () => {
-  it('names the home screen as Today with no back path', () => {
-    expect(describeRoute('/', name)).toMatchObject({ group: 'Home', crumb: 'Today' })
+  it('opens the home screen on Inbox and keeps Today under Overview', () => {
+    expect(describeRoute('/', name)).toMatchObject({ group: 'Mail', crumb: 'Inbox' })
     expect(describeRoute('/', name)?.back).toBeUndefined()
+    expect(describeRoute('/overview', name)).toMatchObject({ group: 'Home', crumb: 'Today' })
   })
 
   it('places mailbox screens under Mail with the mailbox name', () => {
