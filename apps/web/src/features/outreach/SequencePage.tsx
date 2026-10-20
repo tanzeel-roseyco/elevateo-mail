@@ -5,6 +5,8 @@ import { GatewayError, isApiError } from '@/data/errors'
 import { newId } from '@/lib/ids'
 import { Button } from '@/ui/Button'
 import { PageHeader } from '@/ui/PageHeader'
+import { Breadcrumbs } from '@/ui/Breadcrumbs'
+import { outreachCrumbs } from './OutreachPages'
 import { linkClass } from '@/ui/Text'
 import { Field, TextInput } from '@/ui/Field'
 import type { OutreachPageProps } from './OutreachPages'
@@ -83,6 +85,7 @@ function SequenceEditor({ campaignId, gateway, context, proof }: OutreachPagePro
     } finally { if (!controller.signal.aborted) setBusy(false) }
   }
   return <section aria-label="Campaign sequence">
+    <Breadcrumbs crumbs={outreachCrumbs('Campaign sequence', `/outreach/campaigns/${campaignId}/sequence`)} />
     <PageHeader title="Campaign sequence" subtitle="Draft and held sequences cannot send or enroll leads." />
     <div className="max-w-3xl space-y-6">
     {accessLost ? <p role="alert" className="text-sm font-medium text-red-500">Sequence access changed. Reopen this campaign after your session is refreshed.</p> :

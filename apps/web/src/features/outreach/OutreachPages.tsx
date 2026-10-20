@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type FormEvent, type ReactNode, type SyntheticEvent } from 'react'
-import { Link, useNavigate, useParams, useSearchParams } from 'react-router'
+import { Link, useNavigate, useParams, useSearchParams, useLocation } from 'react-router'
 import { z } from 'zod'
 import type { CsrfProof, ReadContext } from '@/data/gateway'
 import { isApiError } from '@/data/errors'
@@ -8,6 +8,7 @@ import { EmptyState, ErrorState, Skeleton } from '@/ui/Async'
 import { Button, buttonClass } from '@/ui/Button'
 import { PaperAirplaneIcon, RectangleStackIcon } from '@/ui/icons'
 import { PageHeader } from '@/ui/PageHeader'
+import { Breadcrumbs, type Crumb } from '@/ui/Breadcrumbs'
 import { linkClass } from '@/ui/Text'
 import { Field, TextInput } from '@/ui/Field'
 import { cx } from '@/lib/format'
@@ -118,8 +119,15 @@ function Content<T>({ state, empty, children }: { state: Load<T>; empty?: (value
   if (empty?.(state.value)) return <EmptyState icon={<RectangleStackIcon className="size-5" />} title="Nothing here yet" body="Items appear here as soon as they exist in Outreach. Create the first one from this page." />
   return <>{children(state.value)}</>
 }
+/** Reference app pages carry a breadcrumb row above the heading (EmailGuard "Home > Email Accounts"). */
+export function outreachCrumbs(title: string, pathname: string): readonly Crumb[] {
+  const underCampaign = pathname.startsWith('/outreach/campaigns/')
+  return [{ label: 'Home', to: '/' }, ...(underCampaign ? [{ label: 'Campaigns', to: '/outreach/campaigns' }] : []), { label: title }]
+}
 function Page({ title, children }: { title: string; children: ReactNode }) {
+  const { pathname } = useLocation()
   return <section aria-label={title}>
+    <Breadcrumbs crumbs={outreachCrumbs(title, pathname)} />
     <PageHeader title={title} subtitle="Campaign settings are draft or paused. Open Marketing runs for supported consent-based sending." />
     <div className="max-w-3xl space-y-6">{children}</div>
   </section>

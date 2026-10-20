@@ -2,15 +2,21 @@
 // dot, sender (200px), subject – snippet (fluid), date (72px) that hover/focus replaces with quick
 // actions. Below 768px the same markup becomes a 72px two-line row with an avatar.
 //
-// AIDEV-NOTE: Archive, delete and snooze have no backend; they render disabled with
-// "Not available yet" instead of pretending. Mark read/unread is the real per-actor write.
+// AIDEV-NOTE: Every control here is a real server write supplied by the caller (BE-05 folders,
+// snooze, star; BE-02 read state). A caller that cannot write passes no handlers, and the row
+// renders no controls rather than disabled placeholders.
 import { Link } from 'react-router'
 import type { ThreadSummary } from '@/data/contract'
+import { isSnoozing } from '@/domain/threadFolders'
 import { cx, formatWhen } from '@/lib/format'
 import { Avatar } from '@/ui/Avatar'
 import { IconButton } from '@/ui/Button'
 import { Checkbox } from '@/ui/Field'
-import { ArchiveBoxIcon, ClockIcon, EnvelopeIcon, EnvelopeOpenIcon, StarIcon, StarSolidIcon, TrashIcon } from '@/ui/icons'
+import { Menu, MenuHeading, MenuItem, MenuSeparator } from '@/ui/Menu'
+import { ClockIcon, EllipsisVerticalIcon, EnvelopeIcon, EnvelopeOpenIcon, StarIcon, StarSolidIcon } from '@/ui/icons'
+import { snoozePresets } from '@/domain/threadFolders'
+import type { RowAction } from './rowActions'
+import { SnoozeMenu } from './SnoozeMenu'
 
 export interface MessageRowProps {
   thread: ThreadSummary
@@ -19,11 +25,17 @@ export interface MessageRowProps {
   mailboxName?: string | undefined
   selected: boolean
   onSelect?: ((checked: boolean) => void) | undefined
-  starred: boolean
+  /** Real actor star write; absent when the caller cannot write. */
   onStar?: (() => void) | undefined
   /** Real read-state write; absent when the caller cannot write (no proof). */
   onToggleRead?: (() => void) | undefined
-  readBusy?: boolean | undefined
+  /** Folder moves offered in the current view, performed by the caller. */
+  actions?: readonly RowAction[] | undefined
+  onAction?: ((action: RowAction) => void) | undefined
+  /** Snooze chooser; absent in views where snoozing makes no sense. */
+  onSnooze?: ((snoozedUntil: string | null) => void) | undefined
+  /** A write for this thread is in flight: controls stay visible but inert. */
+  busy?: boolean | undefined
   current?: boolean | undefined
 }
 
@@ -35,14 +47,22 @@ export function senderLabel(thread: ThreadSummary): string {
   return address !== '' ? address : 'Unknown sender'
 }
 
-export function MessageRow({ thread, to, mailboxName, selected, onSelect, starred, onStar, onToggleRead, readBusy = false, current = false }: MessageRowProps) {
+export function MessageRow({ thread, to, mailboxName, selected, onSelect, onStar, onToggleRead, actions = [], onAction, onSnooze, busy = false, current = false }: MessageRowProps) {
   const sender = senderLabel(thread)
   const subject = thread.subject ?? '(no subject)'
-  const date = thread.last_message_at === null ? 'No date' : formatWhen(thread.last_message_at)
   const unread = thread.unread
+  const starred = thread.starred
+  const snoozing = isSnoozing(thread.snoozed_until)
+  // A snoozed row shows when it returns rather than when it was last active.
+  const date = snoozing && thread.snoozed_until !== null ? formatWhen(thread.snoozed_until) : thread.last_message_at === null ? 'No date' : formatWhen(thread.last_message_at)
+  const hasActions = onToggleRead !== undefined || onAction !== undefined || onSnooze !== undefined
+  // AIDEV-NOTE: Accessible names carry the sender as well as the subject: repeated subjects
+  // ("Invoice", "(no subject)") would otherwise produce indistinguishable controls.
+  const name = `${subject} from ${sender}`
   return (
     <li
       data-selected={selected || undefined}
+      aria-busy={busy || undefined}
       className={cx(
         'group relative flex items-center gap-2 border-b border-zinc-800/10 px-2 text-sm last:border-b-0 hover:bg-zinc-50 hover:shadow-[inset_0_-1px_0_var(--color-zinc-200)] max-md:h-18 md:h-10 dark:border-white/10 dark:hover:bg-white/5',
         unread ? 'bg-white dark:bg-transparent' : 'bg-zinc-50/60 dark:bg-white/[0.02]',
@@ -50,16 +70,16 @@ export function MessageRow({ thread, to, mailboxName, selected, onSelect, starre
       )}
     >
       {onSelect && (
-        <Checkbox aria-label={`Select ${subject}`} checked={selected} onChange={(event) => onSelect(event.target.checked)} className="max-md:hidden" />
+        <Checkbox aria-label={`Select ${name}`} checked={selected} onChange={(event) => onSelect(event.target.checked)} className="max-md:hidden" />
       )}
       {onStar && (
         <button
           type="button"
           aria-pressed={starred}
-          aria-label={starred ? `Unstar ${subject}` : `Star ${subject}`}
-          title={starred ? 'Starred on this device' : 'Star on this device'}
+          aria-label={starred ? `Unstar ${name}` : `Star ${name}`}
+          disabled={busy}
           onClick={onStar}
-          className="flex size-8 shrink-0 items-center justify-center rounded-lg text-zinc-300 hover:text-zinc-500 max-md:hidden dark:text-zinc-600"
+          className="flex size-8 shrink-0 items-center justify-center rounded-lg text-zinc-300 hover:text-zinc-500 disabled:opacity-50 dark:text-zinc-600"
         >
           {starred ? <StarSolidIcon className="size-5 text-gold-500" /> : <StarIcon className="size-5" />}
         </button>
@@ -73,6 +93,7 @@ export function MessageRow({ thread, to, mailboxName, selected, onSelect, starre
         <Avatar name={sender} size={10} shape="circle" className="md:hidden" />
         <span aria-hidden className={cx('size-1.5 shrink-0 rounded-full bg-gold-500 max-md:hidden', !unread && 'invisible')} />
         {unread && <span className="sr-only">Unread, </span>}
+        {starred && !onStar && <span className="sr-only">Starred, </span>}
         <span className="flex min-w-0 flex-1 flex-col md:flex-row md:items-center md:gap-2">
           <span className="flex items-center justify-between gap-2 md:contents">
             <span className={cx('truncate md:w-50 md:shrink-0', unread ? 'font-semibold text-zinc-800 dark:text-white' : 'text-zinc-600 dark:text-zinc-400')}>{sender}</span>
@@ -87,21 +108,77 @@ export function MessageRow({ thread, to, mailboxName, selected, onSelect, starre
             {mailboxName !== undefined && <span className="text-zinc-400"> · {mailboxName}</span>}
           </span>
         </span>
-        <span className={cx('w-18 shrink-0 text-end text-xs max-md:hidden', unread ? 'font-semibold text-zinc-800 dark:text-white' : 'text-zinc-500', (onToggleRead || onStar) && 'group-focus-within:invisible group-hover:invisible')}>{date}</span>
+        <span className={cx('flex w-18 shrink-0 items-center justify-end gap-1 text-end text-xs max-md:hidden', unread ? 'font-semibold text-zinc-800 dark:text-white' : 'text-zinc-500', hasActions && 'group-focus-within:invisible group-hover:invisible')}>
+          {snoozing && <ClockIcon aria-hidden className="size-3.5 text-zinc-400" />}
+          {date}
+        </span>
       </Link>
-      {(onToggleRead || onStar) && (
+      {hasActions && (
         <span className="absolute end-2 top-1/2 hidden -translate-y-1/2 items-center gap-0.5 bg-inherit group-focus-within:flex group-hover:flex max-md:hidden">
-          <IconButton label="Archive (not available yet)" disabled><ArchiveBoxIcon className="size-5" /></IconButton>
-          <IconButton label="Delete (not available yet)" disabled><TrashIcon className="size-5" /></IconButton>
+          {onAction && actions.map((action) => (
+            <IconButton key={action.key} label={`${action.label} ${name}`} onClick={() => onAction(action)} disabled={busy}>
+              <action.Icon className="size-5" />
+            </IconButton>
+          ))}
           {onToggleRead && (
-            <IconButton label={unread ? `Mark ${subject} as read` : `Mark ${subject} as unread`} onClick={onToggleRead} disabled={readBusy} aria-busy={readBusy}>
+            <IconButton label={unread ? `Mark ${name} as read` : `Mark ${name} as unread`} onClick={onToggleRead} disabled={busy}>
               {unread ? <EnvelopeOpenIcon className="size-5" /> : <EnvelopeIcon className="size-5" />}
             </IconButton>
           )}
-          <IconButton label="Snooze (not available yet)" disabled><ClockIcon className="size-5" /></IconButton>
+          {onSnooze && <SnoozeMenu label={`Snooze ${name}`} snoozedUntil={thread.snoozed_until} disabled={busy} onSnooze={onSnooze} />}
         </span>
       )}
+      {(hasActions || onSelect) && (
+        // Phones have no hover: the same writes live in a per-row menu (touch targets, no checkbox).
+        <Menu
+          label={`Actions for ${name}`}
+          align="end"
+          className="md:hidden"
+          trigger={
+            <IconButton label={`Actions for ${name}`} disabled={busy} className="md:hidden">
+              <EllipsisVerticalIcon className="size-5" />
+            </IconButton>
+          }
+        >
+          <RowMenuItems selected={selected} unread={unread} snoozedUntil={thread.snoozed_until} actions={actions} onSelect={onSelect} onToggleRead={onToggleRead} onAction={onAction} onSnooze={onSnooze} />
+        </Menu>
+      )}
     </li>
+  )
+}
+
+interface RowMenuItemsProps {
+  selected: boolean
+  unread: boolean
+  snoozedUntil: string | null
+  actions: readonly RowAction[]
+  onSelect: MessageRowProps['onSelect']
+  onToggleRead: MessageRowProps['onToggleRead']
+  onAction: MessageRowProps['onAction']
+  onSnooze: MessageRowProps['onSnooze']
+}
+
+/** Mounted only while the phone row menu is open, so snooze presets are relative to that moment. */
+function RowMenuItems({ selected, unread, snoozedUntil, actions, onSelect, onToggleRead, onAction, onSnooze }: RowMenuItemsProps) {
+  const snoozing = isSnoozing(snoozedUntil)
+  return (
+    <>
+      {onSelect && <MenuItem onSelect={() => onSelect(!selected)}>{selected ? 'Deselect' : 'Select'}</MenuItem>}
+      {onToggleRead && <MenuItem onSelect={onToggleRead}>{unread ? 'Mark as read' : 'Mark as unread'}</MenuItem>}
+      {onAction && actions.map((action) => (
+        <MenuItem key={action.key} icon={<action.Icon className="size-4" />} onSelect={() => onAction(action)}>{action.label}</MenuItem>
+      ))}
+      {onSnooze && (
+        <>
+          <MenuSeparator />
+          <MenuHeading>Snooze until</MenuHeading>
+          {snoozePresets().map((preset) => (
+            <MenuItem key={preset.key} onSelect={() => onSnooze(preset.at)}>{preset.label}</MenuItem>
+          ))}
+          {snoozing && <MenuItem onSelect={() => onSnooze(null)}>Remove snooze</MenuItem>}
+        </>
+      )}
+    </>
   )
 }
 

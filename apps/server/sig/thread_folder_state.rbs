@@ -1,0 +1,26 @@
+module Elevateo
+  class ThreadFolderState < ThreadCollaboration
+    FOLDER_REQUIRED: Array[String]
+    SNOOZE_REQUIRED: Array[String]
+    STATE_SQL: String
+    SAVE_FOLDER_SQL: String
+    VALID_SNOOZE_SQL: String
+    SAVE_SNOOZE_SQL: String
+    def self.validate_folder!: (WriteInput::object) -> nil
+    def self.validate_snooze!: (WriteInput::object) -> nil
+    def put_folder: (thread_id: String, input: WriteInput::object) -> WriteResponse
+    def put_snooze: (thread_id: String, input: WriteInput::object) -> WriteResponse
+    private
+    def mutate: (String, WriteInput::object, folder: String?, snooze: bool, ?desired_snooze: String?) -> WriteResponse
+    def folder_response: (String, String, ReadResponse::item) -> WriteResponse
+  end
+end
+
+module V1
+  class ThreadFoldersController < WriteController
+    def update: () -> void
+  end
+  class ThreadSnoozesController < WriteController
+    def update: () -> void
+  end
+end

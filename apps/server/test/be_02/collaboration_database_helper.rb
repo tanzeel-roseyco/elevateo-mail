@@ -6,6 +6,7 @@ require_relative "../../lib/elevateo/thread_read_state"
 require_relative "../../lib/elevateo/thread_assignment"
 require_relative "../../lib/elevateo/thread_notes"
 require_relative "../../lib/elevateo/thread_reads"
+require_relative "../../lib/elevateo/thread_star_state"
 require_relative "../../lib/elevateo/tenancy"
 
 class CollaborationApiRecord < ActiveRecord::Base
@@ -148,6 +149,13 @@ class CollaborationDatabaseCase < SessionDatabaseTestCase
     scope(identity: identity) do |connection|
       service(Elevateo::ThreadNotes, connection, identity: identity).post(thread_id: thread,
         input: { "mailbox_id" => box, "note_id" => id, "body_text" => body })
+    end
+  end
+
+  def star(value, thread: @thread, box: @box, identity: @identity)
+    scope(identity: identity) do |connection|
+      service(Elevateo::ThreadStarState, connection, identity: identity).put(thread_id: thread,
+        input: { "mailbox_id" => box, "starred" => value })
     end
   end
 

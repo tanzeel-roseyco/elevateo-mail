@@ -23,7 +23,7 @@
   ],
   "item": [
     {
-      "name": "v1 · Elevateo local session and mailbox contract (1.0.0-send.1)",
+      "name": "v1 · Elevateo local session and mailbox contract (1.0.0-folders.1)",
       "description": "Canonical accepted BE-02A lifecycle amendment and unchanged FE-01 read checkpoint. Design contract, not implementation acceptance. All mail content is plaintext. See README.md for normative authorization, lifecycle, byte limits and transport rules.",
       "item": [
         {
@@ -126,6 +126,7 @@
                 {
                   "key": "filter",
                   "value": "",
+                  "description": "all: folder=inbox and not currently snoozed. unread: all plus unread for the actor. starred: starred by the actor in any folder except spam and trash. snoozed: folder=inbox with snoozed_until in the future. archive/spam/trash: that folder regardless of snooze. Ordering is unchanged (last_message_at desc nulls last, id desc).",
                   "disabled": true
                 }
               ],
@@ -784,6 +785,174 @@
           }
         },
         {
+          "name": "setThreadFolder",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "X-Session-Context",
+                "value": "{{sessionContext}}",
+                "description": "Current bootstrap context, never an authorization grant."
+              },
+              {
+                "key": "X-Authorization-Version",
+                "value": "{{authorizationVersion}}",
+                "description": "Current bootstrap authorization version; mismatch returns context_changed after authentication."
+              },
+              {
+                "key": "Origin",
+                "value": "",
+                "description": "Exact configured same-origin value required on every C/D PUT, POST and DELETE. No redirect or permissive CORS."
+              },
+              {
+                "key": "X-CSRF-Token",
+                "value": "",
+                "description": "Current session CSRF proof bound to this cookie and context. A login/refresh challenge is not accepted for C/D writes."
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/threads/:thread_id/folder",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "threads",
+                ":thread_id",
+                "folder"
+              ],
+              "variable": [
+                {
+                  "key": "thread_id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Any current mailbox reader moves the thread between the mailbox-shared folders inbox, archive, spam and trash. Snooze is left untouched. Missing state means inbox. Matching desired folder is a no-op. Differing writes serialize and last committed wins; folder_version is informational, not a precondition.",
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "setThreadSnooze",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "X-Session-Context",
+                "value": "{{sessionContext}}",
+                "description": "Current bootstrap context, never an authorization grant."
+              },
+              {
+                "key": "X-Authorization-Version",
+                "value": "{{authorizationVersion}}",
+                "description": "Current bootstrap authorization version; mismatch returns context_changed after authentication."
+              },
+              {
+                "key": "Origin",
+                "value": "",
+                "description": "Exact configured same-origin value required on every C/D PUT, POST and DELETE. No redirect or permissive CORS."
+              },
+              {
+                "key": "X-CSRF-Token",
+                "value": "",
+                "description": "Current session CSRF proof bound to this cookie and context. A login/refresh challenge is not accepted for C/D writes."
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/threads/:thread_id/snooze",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "threads",
+                ":thread_id",
+                "snooze"
+              ],
+              "variable": [
+                {
+                  "key": "thread_id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Any current mailbox reader sets or clears the mailbox-shared snooze. A non-null time must lie 60 seconds to 366 days after the server clock (else 400 request_invalid) and also moves the thread back to the inbox folder so it reappears there when the time passes. null clears the snooze without changing the folder. Matching desired state is a no-op.",
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "setThreadStar",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "X-Session-Context",
+                "value": "{{sessionContext}}",
+                "description": "Current bootstrap context, never an authorization grant."
+              },
+              {
+                "key": "X-Authorization-Version",
+                "value": "{{authorizationVersion}}",
+                "description": "Current bootstrap authorization version; mismatch returns context_changed after authentication."
+              },
+              {
+                "key": "Origin",
+                "value": "",
+                "description": "Exact configured same-origin value required on every C/D PUT, POST and DELETE. No redirect or permissive CORS."
+              },
+              {
+                "key": "X-CSRF-Token",
+                "value": "",
+                "description": "Current session CSRF proof bound to this cookie and context. A login/refresh challenge is not accepted for C/D writes."
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/threads/:thread_id/star",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "threads",
+                ":thread_id",
+                "star"
+              ],
+              "variable": [
+                {
+                  "key": "thread_id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Any current mailbox reader sets only their own star boolean for the thread. No actor supplied by the caller. Missing state defaults unstarred; matching desired state is a no-op. Stars never change the folder.",
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
           "name": "getThreadAssignment",
           "request": {
             "method": "GET",
@@ -1217,7 +1386,7 @@
                 }
               ]
             },
-            "description": "Search only currently authorized plaintext thread subject and message body/sender/to display names and addresses; never drafts or notes. q is 1..256 Unicode code points, not solely whitespace, and otherwise preserved. Literal case-insensitive substring matching using parameterized PostgreSQL with %, _ and backslash escaped as literals; no SQL/regex/tsquery syntax from callers. Match a thread once if any authorized searchable field contains q; return its unchanged canonical ThreadSummary preview, not an HTML highlight or an extra excerpt. Optional mailbox must be currently readable or generic 404. Order last_message_at DESC NULLS LAST, id DESC; at most 50/256 KiB, signed scoped cursor, whole entries, no totals. Existing database query only; indexes need representative EXPLAIN evidence."
+            "description": "Search only currently authorized plaintext thread subject and message body/sender/to display names and addresses; never drafts or notes. q is 1..256 Unicode code points, not solely whitespace, and otherwise preserved. Literal case-insensitive substring matching using parameterized PostgreSQL with %, _ and backslash escaped as literals; no SQL/regex/tsquery syntax from callers. Match a thread once if any authorized searchable field contains q; return its unchanged canonical ThreadSummary preview, not an HTML highlight or an extra excerpt. Optional mailbox must be currently readable or generic 404. Order last_message_at DESC NULLS LAST, id DESC; at most 50/256 KiB, signed scoped cursor, whole entries, no totals. Existing database query only; indexes need representative EXPLAIN evidence. Search never returns threads in the spam or trash folders."
           }
         },
         {

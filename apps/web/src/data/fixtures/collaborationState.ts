@@ -3,6 +3,7 @@
 // revision and last-manager guard, and literal search. It models the contract's observable rules
 // (be02-cd-contract.md §4–§9) closely enough for browser/unit proof of CLIENT policy; it is not a
 // backend emulator and proves nothing about Rails. Only the dev-fixtures entry and tests load it.
+import { matchesView } from '@/domain/threadFolders'
 import type {
   Draft,
   DraftOperation,
@@ -11,10 +12,14 @@ import type {
   MailboxMember,
   MembershipCapabilities,
   ThreadAssignment,
+  ThreadFolder,
+  ThreadFolderState,
   ThreadNote,
   ThreadReadState,
+  ThreadStarState,
   ThreadSummary,
 } from '../contract'
+import type { ThreadFilter } from '../gateway'
 import { GatewayError, type CollaborationErrorCode } from '../errors'
 
 export const CD_FIXTURE = {
@@ -83,6 +88,9 @@ export class CollaborationState {
   private readonly drafts = new Map<string, Draft>()
   private readonly ledger = new Map<string, LedgerRecord>()
   private readonly readStates = new Map<string, { read: boolean; version: number; updatedAt: string | null }>()
+  // BE-05: folder/snooze are mailbox-shared (one entry per thread); stars are the actor's own.
+  private readonly folderStates = new Map<string, { folder: ThreadFolder; snoozedUntil: string | null; version: number; updatedAt: string | null }>()
+  private readonly stars = new Map<string, { starred: boolean; version: number; updatedAt: string | null }>()
   private readonly assignments = new Map<string, { assigneeId: string | null; version: number; updatedAt: string | null }>()
   private readonly notes = new Map<string, ThreadNote[]>()
   private readonly noteBindings = new Map<string, { threadId: string; mailboxId: string; body: string }>()
@@ -249,6 +257,76 @@ export class CollaborationState {
     return { ...this.envelope(), thread_id: threadId, mailbox_id: mailboxId, read: next.read, read_state_version: next.version, updated_at: next.updatedAt }
   }
 
+  // --- BE-05: folder / snooze / star ------------------------------------------------------------
+
+  /** Shared folder state; a thread that never moved reports its seed folder at version 0. */
+  folderStateFor(threadId: string) {
+    const seed = this.threadSeed(threadId)
+    return this.folderStates.get(threadId) ?? { folder: seed?.summary.folder ?? 'inbox', snoozedUntil: seed?.summary.snoozed_until ?? null, version: 0, updatedAt: null }
+  }
+
+  starFor(threadId: string) {
+    const seed = this.threadSeed(threadId)
+    return this.stars.get(threadId) ?? { starred: seed?.summary.starred ?? false, version: 0, updatedAt: null }
+  }
+
+  private folderResponse(threadId: string, mailboxId: string): ThreadFolderState {
+    const s = this.folderStateFor(threadId)
+    return { ...this.envelope(), thread_id: threadId, mailbox_id: mailboxId, folder: s.folder, snoozed_until: s.snoozedUntil, folder_version: s.version, updated_at: s.updatedAt }
+  }
+
+  setFolder(threadId: string, mailboxId: string, folder: ThreadFolder): ThreadFolderState {
+    this.requireThread(threadId, mailboxId)
+    const current = this.folderStateFor(threadId)
+    // A folder move leaves the snooze alone (contract: snooze untouched).
+    const next = current.folder === folder ? current : { ...current, folder, version: current.version + 1, updatedAt: this.clock.next() }
+    this.folderStates.set(threadId, next)
+    return this.folderResponse(threadId, mailboxId)
+  }
+
+  /** Mirrors the server window: a non-null time must be 60 s .. 366 d after "now" (the real clock here). */
+  setSnooze(threadId: string, mailboxId: string, snoozedUntil: string | null, now = Date.now()): ThreadFolderState {
+    this.requireThread(threadId, mailboxId)
+    if (snoozedUntil !== null) {
+      const at = Date.parse(snoozedUntil)
+      if (!(at >= now + 60_000 && at <= now + 366 * 86_400_000)) fail(400, 'request_invalid', 'Synthetic snooze time outside the allowed window.')
+    }
+    const current = this.folderStateFor(threadId)
+    // Snoozing returns the thread to the inbox so it reappears there; clearing keeps the folder.
+    const folder = snoozedUntil === null ? current.folder : 'inbox'
+    const unchanged = current.snoozedUntil === snoozedUntil && current.folder === folder
+    const next = unchanged ? current : { folder, snoozedUntil, version: current.version + 1, updatedAt: this.clock.next() }
+    this.folderStates.set(threadId, next)
+    return this.folderResponse(threadId, mailboxId)
+  }
+
+  setStar(threadId: string, mailboxId: string, starred: boolean): ThreadStarState {
+    this.requireThread(threadId, mailboxId)
+    const current = this.starFor(threadId)
+    const next = current.starred === starred ? current : { starred, version: current.version + 1, updatedAt: this.clock.next() }
+    this.stars.set(threadId, next)
+    return { ...this.envelope(), thread_id: threadId, mailbox_id: mailboxId, starred: next.starred, star_version: next.version, updated_at: next.updatedAt }
+  }
+
+  /** A thread outside the stated mailbox is the generic 404, like every foreign relation. */
+  /** Unknown and foreign threads share the generic 404 so existence never leaks across mailboxes. */
+  private requireThread(threadId: string, mailboxId: string): void {
+    const seed = this.threadSeed(threadId)
+    if (!seed || seed.summary.mailbox_id !== mailboxId) fail(404, 'not_available', NOT_AVAILABLE)
+  }
+
+  /** Seed summary with the actor's read/star state and the shared folder state applied. */
+  private decorate(seed: ThreadSeed): ThreadSummary {
+    const folder = this.folderStateFor(seed.summary.id)
+    return { ...seed.summary, unread: !this.readStateFor(seed.summary.id).read, folder: folder.folder, snoozed_until: folder.snoozedUntil, starred: this.starFor(seed.summary.id).starred }
+  }
+
+  /** The server's folder-view predicate (contract filter description), evaluated at `now`. */
+  /** Same rule as the UI: the fixture filter is the domain `matchesView` so the two never drift. */
+  static matchesFilter(t: ThreadSummary, filter: ThreadFilter, now = Date.now()): boolean {
+    return matchesView(t, filter, now)
+  }
+
   getAssignment(threadId: string, mailboxId: string): ThreadAssignment {
     const a = this.assignments.get(threadId) ?? { assigneeId: null, version: 0, updatedAt: null }
     return { ...this.envelope(), thread_id: threadId, mailbox_id: mailboxId, assignee_id: a.assigneeId, assignment_version: a.version, updated_at: a.updatedAt }
@@ -346,12 +424,17 @@ export class CollaborationState {
         const fields = [t.summary.subject, t.summary.preview_text, t.bodyText, t.summary.sender?.display_name, t.summary.sender?.address]
         return fields.some((f) => typeof f === 'string' && f.toLowerCase().includes(needle))
       })
-      .map((t) => ({ ...t.summary, unread: !this.readStateFor(t.summary.id).read }))
+      .map((t) => this.decorate(t))
+      // Search never surfaces spam or trash (contract 1.0.0-folders.1).
+      .filter((t) => t.folder !== 'spam' && t.folder !== 'trash')
   }
 
-  /** Thread rows for a fixture mailbox with the actor's read state applied (B unread is the inverse). */
-  threadsIn(mailboxId: string): ThreadSummary[] {
-    return this.threads.filter((t) => t.summary.mailbox_id === mailboxId).map((t) => ({ ...t.summary, unread: !this.readStateFor(t.summary.id).read }))
+  /** Thread rows for a fixture mailbox in one server folder view, with read/star/folder state applied. */
+  threadsIn(mailboxId: string, filter: ThreadFilter = 'all', now = Date.now()): ThreadSummary[] {
+    return this.threads
+      .filter((t) => t.summary.mailbox_id === mailboxId)
+      .map((t) => this.decorate(t))
+      .filter((t) => CollaborationState.matchesFilter(t, filter, now))
   }
 
   threadSeed(threadId: string): ThreadSeed | undefined {

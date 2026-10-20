@@ -29,6 +29,48 @@ class CollaborationControllerTest < Minitest::Test
     refute(@connection.sql.any? { |sql| sql.include?("INSERT INTO app.thread_read_states") })
   end
 
+  def test_folder_snooze_and_star_routes_return_session_envelopes
+    cases = [
+      [FolderController, { "mailbox_id" => BOX, "folder" => "archive" },
+       [[{ "id" => THREAD }], [{ "folder" => "inbox", "snoozed_until" => nil, "folder_version" => 0, "updated_at" => nil }],
+        [{ "folder" => "archive", "snoozed_until" => nil, "folder_version" => 1, "updated_at" => TIME }]], "folder"],
+      [SnoozeController, { "mailbox_id" => BOX, "snoozed_until" => nil },
+       [[{ "id" => THREAD }], [{ "folder" => "archive", "snoozed_until" => nil, "folder_version" => 1,
+                                "updated_at" => TIME }]], "snoozed_until"],
+      [StarController, { "mailbox_id" => BOX, "starred" => true },
+       [[{ "id" => THREAD }], [{ "id" => THREAD }], [],
+        [{ "starred" => true, "star_version" => 1, "updated_at" => TIME }]], "starred"]
+    ]
+    cases.each do |controller, payload, rows, field|
+      @connection = CollaborationControllerHarness::Connection.new(metadata)
+      @connection.rows = rows
+      result = dispatch_collaboration(controller, "update", payload: payload)
+      assert_equal 200, result[0]
+      assert_equal AuthFixtures::CONTEXT, result[2].fetch("context_id")
+      assert_equal THREAD, result[2].fetch("thread_id")
+      assert result[2].key?(field)
+    end
+  end
+
+  def test_folder_snooze_and_star_invalid_bodies_fail_before_auth_and_unknown_threads_are_hidden
+    [[FolderController, { "mailbox_id" => BOX, "folder" => "junk" }],
+     [SnoozeController, { "mailbox_id" => BOX, "snoozed_until" => "tomorrow" }],
+     [StarController, { "mailbox_id" => BOX, "starred" => 1 }]].each do |controller, payload|
+      @connection = CollaborationControllerHarness::Connection.new(metadata)
+      result = dispatch_collaboration(controller, "update", payload: payload)
+      assert_equal [400, "request_invalid"], [result[0], result[2].fetch("code")]
+      assert_empty @connection.events
+    end
+    [[FolderController, { "mailbox_id" => BOX, "folder" => "trash" }],
+     [SnoozeController, { "mailbox_id" => BOX, "snoozed_until" => nil }],
+     [StarController, { "mailbox_id" => BOX, "starred" => true }]].each do |controller, payload|
+      @connection = CollaborationControllerHarness::Connection.new(metadata)
+      @connection.rows = [[]]
+      result = dispatch_collaboration(controller, "update", payload: payload)
+      assert_equal [404, "not_available"], [result[0], result[2].fetch("code")]
+    end
+  end
+
   def test_raw_malformed_duplicate_unknown_and_forged_actor_inputs_fail_before_auth
     ["{", '{"mailbox_id":"' + BOX + '","read":true,"read":false}',
       JSON.generate("mailbox_id" => BOX, "read" => true, "user_id" => TARGET),

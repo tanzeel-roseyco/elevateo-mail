@@ -2,6 +2,9 @@
 
 require_relative "write_boundary_test_helper"
 require_relative "../../app/controllers/v1/thread_read_states_controller"
+require_relative "../../app/controllers/v1/thread_folders_controller"
+require_relative "../../app/controllers/v1/thread_snoozes_controller"
+require_relative "../../app/controllers/v1/thread_stars_controller"
 require_relative "../../app/controllers/v1/thread_assignments_controller"
 require_relative "../../app/controllers/v1/thread_notes_controller"
 
@@ -21,6 +24,15 @@ module CollaborationControllerHarness
   end
 
   class ReadStateController < V1::ThreadReadStatesController
+    include Sessions
+  end
+  class FolderController < V1::ThreadFoldersController
+    include Sessions
+  end
+  class SnoozeController < V1::ThreadSnoozesController
+    include Sessions
+  end
+  class StarController < V1::ThreadStarsController
     include Sessions
   end
   class AssignmentController < V1::ThreadAssignmentsController
@@ -84,6 +96,11 @@ module CollaborationControllerHarness
     resource = [{ "id" => THREAD }]
     initial = [{ "assignee_id" => nil, "assignment_version" => 0, "updated_at" => nil }]
     [[ReadStateController, "update", 8192, { "mailbox_id" => BOX, "read" => false }, [resource, []], 200],
+     [FolderController, "update", 8192, { "mailbox_id" => BOX, "folder" => "inbox" },
+      [resource, [{ "folder" => "inbox", "snoozed_until" => nil, "folder_version" => 0, "updated_at" => nil }]], 200],
+     [SnoozeController, "update", 8192, { "mailbox_id" => BOX, "snoozed_until" => nil },
+      [resource, [{ "folder" => "inbox", "snoozed_until" => nil, "folder_version" => 0, "updated_at" => nil }]], 200],
+     [StarController, "update", 8192, { "mailbox_id" => BOX, "starred" => false }, [resource, resource, []], 200],
      [AssignmentController, "update", 8192,
       { "mailbox_id" => BOX, "assignee_id" => nil, "expected_assignment_version" => 0 }, [resource, [], initial], 200],
      [NotesController, "create", 65_536, { "mailbox_id" => BOX, "note_id" => NOTE, "body_text" => "valid" },

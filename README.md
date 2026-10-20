@@ -3,6 +3,32 @@
 ## Current state
 
 <!-- completion-wave-current:start -->
+### Thread folders, snooze, stars, Reply all / Forward (2026-10-20, BE-05)
+
+The inbox gaps recorded below are closed on this branch. The API gains three protected writes,
+`PUT /v1/threads/{id}/folder|snooze|star` (`contracts/v1/openapi.json` `1.0.0-folders.1`), and every
+thread summary carries `folder`, `snoozed_until` and `starred`. Folder (inbox / archive / spam /
+trash) and snooze are shared by the mailbox; a star is per user and stored on the server
+(`app.thread_stars`, RLS-scoped), so stars follow the person across devices and are invisible to
+other members. The list filter is server-side for all seven views (`all`, `unread`, `starred`,
+`snoozed`, `archive`, `spam`, `trash`), cursors are scoped by filter, search excludes spam and trash,
+and a snooze must be 60 s to 366 days ahead on the server clock. The web client performs every
+row/toolbar/bulk action as a confirmed server write (no optimistic flip), removes a row only when the
+server's answer no longer matches the view (`src/domain/threadFolders.ts`), keeps failed rows selected
+during a bulk run, adds `e` / `!` / `#` shortcuts, and reaches every view on phones through a folder
+select. The reader archives/snoozes/stars the same way and returns to the originating view. Reply all
+and Forward start ordinary drafts built by `src/domain/replyComposition.ts` (own mailbox address
+excluded, truncated subjects never reused, forwards unthreaded). Limits: no Sent folder, no permanent
+delete (Trash keeps conversations). Nine adversarial review packets (29 defects, 3.17/KLOC, all
+fixed; `code-reviews.md`) hardened address parsing, snooze presets, the per-thread write claim, the
+star upsert under concurrency, and added a phone per-row actions menu. Visual parity: the simulated-mail banner is now a fixed bottom
+strip and the fixture note a bottom-end pill, so desktop headings sit within 2px of the EmailGuard
+reference on dashboard, every settings page and (with the new breadcrumb row) every Outreach page;
+on 390px the reference pages disagree among themselves by 6px (profile/workspace/dashboard at 158/110
+vs tags/webhooks/integrations at 152) and the client matches the 152 group exactly and the others at
+-6px; the Outreach pages sit 22px above the Email Accounts reference, whose heading is centred beside
+two stacked action buttons the Campaigns pages do not have. Gates: web Docker gate (fleet-02, `apps/web/docker/test.Dockerfile`): check:api, check:api:v2, lint, typecheck, 83 files / 1029 tests PASS, coverage 85.39% statements, production build and fixture-exclusion PASS; backend gate (fleet-02, `ops/tests/be02/run.py`) after the review fixes: PASS (fleet-02 `ops/tests/be02/run.py --context default`: 200 isolated Minitest suites, 1149 runs / 13368 assertions, 0 failures / 0 errors, Steep 0 problems, RuboCop 463 files 0 offenses, HTTP acceptance, cleanup PASSED). Review coverage and density: `code-reviews.md`.
+
 ### EmailGuard replica web UI (2026-10-20, task_d036e44f6d3d)
 
 Branch `Tanzeel/elevateo-emailguard-fable` rebuilds `apps/web` as a close replica of the EmailGuard web

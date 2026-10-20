@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Elevateo local session and mailbox contract",
-    "version": "1.0.0-send.1",
+    "version": "1.0.0-folders.1",
     "description": "Canonical accepted BE-02A lifecycle amendment and unchanged FE-01 read checkpoint. Design contract, not implementation acceptance. All mail content is plaintext. See README.md for normative authorization, lifecycle, byte limits and transport rules."
   },
   "servers": [
@@ -595,10 +595,16 @@
               "type": "string",
               "enum": [
                 "all",
-                "unread"
+                "unread",
+                "starred",
+                "snoozed",
+                "archive",
+                "spam",
+                "trash"
               ],
               "default": "all"
-            }
+            },
+            "description": "all: folder=inbox and not currently snoozed. unread: all plus unread for the actor. starred: starred by the actor in any folder except spam and trash. snoozed: folder=inbox with snoozed_until in the future. archive/spam/trash: that folder regardless of snooze. Ordering is unchanged (last_message_at desc nulls last, id desc)."
           }
         ],
         "responses": {
@@ -4021,6 +4027,300 @@
         ]
       }
     },
+    "/v1/threads/{thread_id}/folder": {
+      "put": {
+        "operationId": "setThreadFolder",
+        "description": "Any current mailbox reader moves the thread between the mailbox-shared folders inbox, archive, spam and trash. Snooze is left untouched. Missing state means inbox. Matching desired folder is a no-op. Differing writes serialize and last committed wins; folder_version is informational, not a precondition.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/CdSessionContext"
+          },
+          {
+            "$ref": "#/components/parameters/CdAuthorizationVersion"
+          },
+          {
+            "$ref": "#/components/parameters/CdOrigin"
+          },
+          {
+            "$ref": "#/components/parameters/CdCsrf"
+          },
+          {
+            "name": "thread_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ThreadFolderInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Current-authorized C/D result; Cache-Control no-store, Vary Cookie, nosniff.",
+            "headers": {
+              "Cache-Control": {
+                "required": true,
+                "schema": {
+                  "const": "no-store"
+                }
+              },
+              "Vary": {
+                "required": true,
+                "schema": {
+                  "const": "Cookie"
+                }
+              },
+              "X-Content-Type-Options": {
+                "required": true,
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ThreadFolderState"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/CdBadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/CdUnauthenticated"
+          },
+          "404": {
+            "$ref": "#/components/responses/CdNotAvailable"
+          },
+          "409": {
+            "$ref": "#/components/responses/CdConflict"
+          },
+          "429": {
+            "$ref": "#/components/responses/CdRateLimited"
+          },
+          "500": {
+            "$ref": "#/components/responses/CdInternalError"
+          },
+          "503": {
+            "$ref": "#/components/responses/CdUnavailable"
+          }
+        },
+        "x-max-response-bytes": 4096,
+        "x-max-request-bytes": 8192,
+        "x-request-validation": "Reject unknown/duplicate decoded query keys (including aliases/brackets), duplicate JSON keys at every depth, unknown properties, malformed UTF-8, unpaired surrogates and U+0000 before framework merging or mutation. GET has no body; only declared query keys are allowed. JSON maxLength counts Unicode code points. UUIDs are parsed and canonicalized before binding/digest comparison.",
+        "x-deadline-ms": 10000,
+        "x-conflict-codes": [
+          "context_changed"
+        ]
+      }
+    },
+    "/v1/threads/{thread_id}/snooze": {
+      "put": {
+        "operationId": "setThreadSnooze",
+        "description": "Any current mailbox reader sets or clears the mailbox-shared snooze. A non-null time must lie 60 seconds to 366 days after the server clock (else 400 request_invalid) and also moves the thread back to the inbox folder so it reappears there when the time passes. null clears the snooze without changing the folder. Matching desired state is a no-op.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/CdSessionContext"
+          },
+          {
+            "$ref": "#/components/parameters/CdAuthorizationVersion"
+          },
+          {
+            "$ref": "#/components/parameters/CdOrigin"
+          },
+          {
+            "$ref": "#/components/parameters/CdCsrf"
+          },
+          {
+            "name": "thread_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ThreadSnoozeInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Current-authorized C/D result; Cache-Control no-store, Vary Cookie, nosniff.",
+            "headers": {
+              "Cache-Control": {
+                "required": true,
+                "schema": {
+                  "const": "no-store"
+                }
+              },
+              "Vary": {
+                "required": true,
+                "schema": {
+                  "const": "Cookie"
+                }
+              },
+              "X-Content-Type-Options": {
+                "required": true,
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ThreadFolderState"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/CdBadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/CdUnauthenticated"
+          },
+          "404": {
+            "$ref": "#/components/responses/CdNotAvailable"
+          },
+          "409": {
+            "$ref": "#/components/responses/CdConflict"
+          },
+          "429": {
+            "$ref": "#/components/responses/CdRateLimited"
+          },
+          "500": {
+            "$ref": "#/components/responses/CdInternalError"
+          },
+          "503": {
+            "$ref": "#/components/responses/CdUnavailable"
+          }
+        },
+        "x-max-response-bytes": 4096,
+        "x-max-request-bytes": 8192,
+        "x-request-validation": "Reject unknown/duplicate decoded query keys (including aliases/brackets), duplicate JSON keys at every depth, unknown properties, malformed UTF-8, unpaired surrogates and U+0000 before framework merging or mutation. GET has no body; only declared query keys are allowed. JSON maxLength counts Unicode code points. UUIDs are parsed and canonicalized before binding/digest comparison.",
+        "x-deadline-ms": 10000,
+        "x-conflict-codes": [
+          "context_changed"
+        ]
+      }
+    },
+    "/v1/threads/{thread_id}/star": {
+      "put": {
+        "operationId": "setThreadStar",
+        "description": "Any current mailbox reader sets only their own star boolean for the thread. No actor supplied by the caller. Missing state defaults unstarred; matching desired state is a no-op. Stars never change the folder.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/CdSessionContext"
+          },
+          {
+            "$ref": "#/components/parameters/CdAuthorizationVersion"
+          },
+          {
+            "$ref": "#/components/parameters/CdOrigin"
+          },
+          {
+            "$ref": "#/components/parameters/CdCsrf"
+          },
+          {
+            "name": "thread_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ThreadStarInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Current-authorized C/D result; Cache-Control no-store, Vary Cookie, nosniff.",
+            "headers": {
+              "Cache-Control": {
+                "required": true,
+                "schema": {
+                  "const": "no-store"
+                }
+              },
+              "Vary": {
+                "required": true,
+                "schema": {
+                  "const": "Cookie"
+                }
+              },
+              "X-Content-Type-Options": {
+                "required": true,
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ThreadStarState"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/CdBadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/CdUnauthenticated"
+          },
+          "404": {
+            "$ref": "#/components/responses/CdNotAvailable"
+          },
+          "409": {
+            "$ref": "#/components/responses/CdConflict"
+          },
+          "429": {
+            "$ref": "#/components/responses/CdRateLimited"
+          },
+          "500": {
+            "$ref": "#/components/responses/CdInternalError"
+          },
+          "503": {
+            "$ref": "#/components/responses/CdUnavailable"
+          }
+        },
+        "x-max-response-bytes": 4096,
+        "x-max-request-bytes": 8192,
+        "x-request-validation": "Reject unknown/duplicate decoded query keys (including aliases/brackets), duplicate JSON keys at every depth, unknown properties, malformed UTF-8, unpaired surrogates and U+0000 before framework merging or mutation. GET has no body; only declared query keys are allowed. JSON maxLength counts Unicode code points. UUIDs are parsed and canonicalized before binding/digest comparison.",
+        "x-deadline-ms": 10000,
+        "x-conflict-codes": [
+          "context_changed"
+        ]
+      }
+    },
     "/v1/threads/{thread_id}/assignment": {
       "get": {
         "operationId": "getThreadAssignment",
@@ -4711,7 +5011,7 @@
     "/v1/search": {
       "get": {
         "operationId": "searchMail",
-        "description": "Search only currently authorized plaintext thread subject and message body/sender/to display names and addresses; never drafts or notes. q is 1..256 Unicode code points, not solely whitespace, and otherwise preserved. Literal case-insensitive substring matching using parameterized PostgreSQL with %, _ and backslash escaped as literals; no SQL/regex/tsquery syntax from callers. Match a thread once if any authorized searchable field contains q; return its unchanged canonical ThreadSummary preview, not an HTML highlight or an extra excerpt. Optional mailbox must be currently readable or generic 404. Order last_message_at DESC NULLS LAST, id DESC; at most 50/256 KiB, signed scoped cursor, whole entries, no totals. Existing database query only; indexes need representative EXPLAIN evidence.",
+        "description": "Search only currently authorized plaintext thread subject and message body/sender/to display names and addresses; never drafts or notes. q is 1..256 Unicode code points, not solely whitespace, and otherwise preserved. Literal case-insensitive substring matching using parameterized PostgreSQL with %, _ and backslash escaped as literals; no SQL/regex/tsquery syntax from callers. Match a thread once if any authorized searchable field contains q; return its unchanged canonical ThreadSummary preview, not an HTML highlight or an extra excerpt. Optional mailbox must be currently readable or generic 404. Order last_message_at DESC NULLS LAST, id DESC; at most 50/256 KiB, signed scoped cursor, whole entries, no totals. Existing database query only; indexes need representative EXPLAIN evidence. Search never returns threads in the spam or trash folders.",
         "parameters": [
           {
             "$ref": "#/components/parameters/CdSessionContext"
@@ -5674,7 +5974,10 @@
           "preview_text",
           "last_message_at",
           "unread",
-          "message_count"
+          "message_count",
+          "folder",
+          "snoozed_until",
+          "starred"
         ],
         "properties": {
           "id": {
@@ -5728,6 +6031,24 @@
             "type": "integer",
             "minimum": 0,
             "maximum": 2147483647
+          },
+          "folder": {
+            "$ref": "#/components/schemas/ThreadFolder"
+          },
+          "snoozed_until": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/UtcTimestamp"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "While in the future the thread is hidden from the all/unread folders and listed under snoozed; it returns automatically once the time passes. Mailbox-shared."
+          },
+          "starred": {
+            "type": "boolean",
+            "description": "Actor-specific star; defaults false when no star row exists."
           }
         }
       },
@@ -5867,7 +6188,10 @@
               "subject",
               "subject_truncated",
               "unread",
-              "message_count"
+              "message_count",
+              "folder",
+              "snoozed_until",
+              "starred"
             ],
             "properties": {
               "id": {
@@ -5897,6 +6221,24 @@
                 "type": "integer",
                 "minimum": 0,
                 "maximum": 2147483647
+              },
+              "folder": {
+                "$ref": "#/components/schemas/ThreadFolder"
+              },
+              "snoozed_until": {
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/UtcTimestamp"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "While in the future the thread is hidden from the all/unread folders and listed under snoozed; it returns automatically once the time passes. Mailbox-shared."
+              },
+              "starred": {
+                "type": "boolean",
+                "description": "Actor-specific star; defaults false when no star row exists."
               }
             }
           },
@@ -7878,6 +8220,171 @@
           "resend"
         ],
         "description": "Server-selected outbound transport. Under resend, every recipient needs consent evidence (Resend acceptable use policy)."
+      },
+      "ThreadFolder": {
+        "type": "string",
+        "enum": [
+          "inbox",
+          "archive",
+          "spam",
+          "trash"
+        ],
+        "description": "Mailbox-shared folder of a thread. Every member of the mailbox sees the same folder; it is not actor-specific."
+      },
+      "ThreadFolderInput": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "mailbox_id",
+          "folder"
+        ],
+        "properties": {
+          "mailbox_id": {
+            "$ref": "#/components/schemas/Id"
+          },
+          "folder": {
+            "$ref": "#/components/schemas/ThreadFolder"
+          }
+        }
+      },
+      "ThreadSnoozeInput": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "mailbox_id",
+          "snoozed_until"
+        ],
+        "properties": {
+          "mailbox_id": {
+            "$ref": "#/components/schemas/Id"
+          },
+          "snoozed_until": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/UtcTimestamp"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "null clears the snooze. A value must be at least 60 seconds and at most 366 days after the server clock, else 400 request_invalid."
+          }
+        }
+      },
+      "ThreadStarInput": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "mailbox_id",
+          "starred"
+        ],
+        "properties": {
+          "mailbox_id": {
+            "$ref": "#/components/schemas/Id"
+          },
+          "starred": {
+            "type": "boolean"
+          }
+        }
+      },
+      "ThreadFolderState": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "context_id",
+          "authorization_version",
+          "thread_id",
+          "mailbox_id",
+          "folder",
+          "snoozed_until",
+          "folder_version",
+          "updated_at"
+        ],
+        "properties": {
+          "context_id": {
+            "$ref": "#/components/schemas/OpaqueToken"
+          },
+          "authorization_version": {
+            "$ref": "#/components/schemas/OpaqueToken"
+          },
+          "thread_id": {
+            "$ref": "#/components/schemas/Id"
+          },
+          "mailbox_id": {
+            "$ref": "#/components/schemas/Id"
+          },
+          "folder": {
+            "$ref": "#/components/schemas/ThreadFolder"
+          },
+          "snoozed_until": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/UtcTimestamp"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "folder_version": {
+            "$ref": "#/components/schemas/ResourceVersion"
+          },
+          "updated_at": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/UtcTimestamp"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "description": "Mailbox-shared folder and snooze state after a folder or snooze write. A thread that never moved reports folder=inbox, snoozed_until=null, folder_version=0 and updated_at=null. Repeating the same desired state does not increment the version. Differing writes serialize; last committed wins. The version is informational, never a precondition."
+      },
+      "ThreadStarState": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "context_id",
+          "authorization_version",
+          "thread_id",
+          "mailbox_id",
+          "starred",
+          "star_version",
+          "updated_at"
+        ],
+        "properties": {
+          "context_id": {
+            "$ref": "#/components/schemas/OpaqueToken"
+          },
+          "authorization_version": {
+            "$ref": "#/components/schemas/OpaqueToken"
+          },
+          "thread_id": {
+            "$ref": "#/components/schemas/Id"
+          },
+          "mailbox_id": {
+            "$ref": "#/components/schemas/Id"
+          },
+          "starred": {
+            "type": "boolean"
+          },
+          "star_version": {
+            "$ref": "#/components/schemas/ResourceVersion"
+          },
+          "updated_at": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/UtcTimestamp"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "description": "Actor-specific star after a star write. Missing state is starred=false/version=0/updated_at=null. Repeating the same desired state is a no-op."
       }
     },
     "parameters": {

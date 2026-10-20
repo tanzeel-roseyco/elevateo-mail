@@ -39,6 +39,9 @@ function threadPage(subjects: string[], nextCursor: string | null): ThreadPage {
       last_message_at: '2026-10-12T00:00:00Z',
       unread: false,
       message_count: 1,
+      folder: 'inbox',
+      snoozed_until: null,
+      starred: false,
     })),
   }
 }

@@ -294,6 +294,57 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/threads/{thread_id}/folder": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** @description Any current mailbox reader moves the thread between the mailbox-shared folders inbox, archive, spam and trash. Snooze is left untouched. Missing state means inbox. Matching desired folder is a no-op. Differing writes serialize and last committed wins; folder_version is informational, not a precondition. */
+        put: operations["setThreadFolder"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/threads/{thread_id}/snooze": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** @description Any current mailbox reader sets or clears the mailbox-shared snooze. A non-null time must lie 60 seconds to 366 days after the server clock (else 400 request_invalid) and also moves the thread back to the inbox folder so it reappears there when the time passes. null clears the snooze without changing the folder. Matching desired state is a no-op. */
+        put: operations["setThreadSnooze"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/threads/{thread_id}/star": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** @description Any current mailbox reader sets only their own star boolean for the thread. No actor supplied by the caller. Missing state defaults unstarred; matching desired state is a no-op. Stars never change the folder. */
+        put: operations["setThreadStar"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/v1/threads/{thread_id}/assignment": {
         parameters: {
             query?: never;
@@ -372,7 +423,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** @description Search only currently authorized plaintext thread subject and message body/sender/to display names and addresses; never drafts or notes. q is 1..256 Unicode code points, not solely whitespace, and otherwise preserved. Literal case-insensitive substring matching using parameterized PostgreSQL with %, _ and backslash escaped as literals; no SQL/regex/tsquery syntax from callers. Match a thread once if any authorized searchable field contains q; return its unchanged canonical ThreadSummary preview, not an HTML highlight or an extra excerpt. Optional mailbox must be currently readable or generic 404. Order last_message_at DESC NULLS LAST, id DESC; at most 50/256 KiB, signed scoped cursor, whole entries, no totals. Existing database query only; indexes need representative EXPLAIN evidence. */
+        /** @description Search only currently authorized plaintext thread subject and message body/sender/to display names and addresses; never drafts or notes. q is 1..256 Unicode code points, not solely whitespace, and otherwise preserved. Literal case-insensitive substring matching using parameterized PostgreSQL with %, _ and backslash escaped as literals; no SQL/regex/tsquery syntax from callers. Match a thread once if any authorized searchable field contains q; return its unchanged canonical ThreadSummary preview, not an HTML highlight or an extra excerpt. Optional mailbox must be currently readable or generic 404. Order last_message_at DESC NULLS LAST, id DESC; at most 50/256 KiB, signed scoped cursor, whole entries, no totals. Existing database query only; indexes need representative EXPLAIN evidence. Search never returns threads in the spam or trash folders. */
         get: operations["searchMail"];
         put?: never;
         post?: never;
@@ -540,6 +591,11 @@ export interface components {
             last_message_at: components["schemas"]["UtcTimestamp"] | null;
             unread: boolean;
             message_count: number;
+            folder: components["schemas"]["ThreadFolder"];
+            /** @description While in the future the thread is hidden from the all/unread folders and listed under snoozed; it returns automatically once the time passes. Mailbox-shared. */
+            snoozed_until: components["schemas"]["UtcTimestamp"] | null;
+            /** @description Actor-specific star; defaults false when no star row exists. */
+            starred: boolean;
         };
         ThreadPage: {
             context_id: components["schemas"]["OpaqueToken"];
@@ -568,6 +624,11 @@ export interface components {
                 subject_truncated: boolean;
                 unread: boolean;
                 message_count: number;
+                folder: components["schemas"]["ThreadFolder"];
+                /** @description While in the future the thread is hidden from the all/unread folders and listed under snoozed; it returns automatically once the time passes. Mailbox-shared. */
+                snoozed_until: components["schemas"]["UtcTimestamp"] | null;
+                /** @description Actor-specific star; defaults false when no star row exists. */
+                starred: boolean;
             };
             messages: components["schemas"]["Message"][];
         };
@@ -1003,6 +1064,45 @@ export interface components {
          * @enum {string}
          */
         SendOutboundMode: "held" | "mailpit" | "resend";
+        /**
+         * @description Mailbox-shared folder of a thread. Every member of the mailbox sees the same folder; it is not actor-specific.
+         * @enum {string}
+         */
+        ThreadFolder: "inbox" | "archive" | "spam" | "trash";
+        ThreadFolderInput: {
+            mailbox_id: components["schemas"]["Id"];
+            folder: components["schemas"]["ThreadFolder"];
+        };
+        ThreadSnoozeInput: {
+            mailbox_id: components["schemas"]["Id"];
+            /** @description null clears the snooze. A value must be at least 60 seconds and at most 366 days after the server clock, else 400 request_invalid. */
+            snoozed_until: components["schemas"]["UtcTimestamp"] | null;
+        };
+        ThreadStarInput: {
+            mailbox_id: components["schemas"]["Id"];
+            starred: boolean;
+        };
+        /** @description Mailbox-shared folder and snooze state after a folder or snooze write. A thread that never moved reports folder=inbox, snoozed_until=null, folder_version=0 and updated_at=null. Repeating the same desired state does not increment the version. Differing writes serialize; last committed wins. The version is informational, never a precondition. */
+        ThreadFolderState: {
+            context_id: components["schemas"]["OpaqueToken"];
+            authorization_version: components["schemas"]["OpaqueToken"];
+            thread_id: components["schemas"]["Id"];
+            mailbox_id: components["schemas"]["Id"];
+            folder: components["schemas"]["ThreadFolder"];
+            snoozed_until: components["schemas"]["UtcTimestamp"] | null;
+            folder_version: components["schemas"]["ResourceVersion"];
+            updated_at: components["schemas"]["UtcTimestamp"] | null;
+        };
+        /** @description Actor-specific star after a star write. Missing state is starred=false/version=0/updated_at=null. Repeating the same desired state is a no-op. */
+        ThreadStarState: {
+            context_id: components["schemas"]["OpaqueToken"];
+            authorization_version: components["schemas"]["OpaqueToken"];
+            thread_id: components["schemas"]["Id"];
+            mailbox_id: components["schemas"]["Id"];
+            starred: boolean;
+            star_version: components["schemas"]["ResourceVersion"];
+            updated_at: components["schemas"]["UtcTimestamp"] | null;
+        };
     };
     responses: {
         /** @description request_invalid for malformed/unknown/duplicate input, invalid UUID, missing context/CSRF/Origin, wrong content type or byte limit; cursor_invalid for invalid/expired/scope-mismatched cursor. No mutation. */
@@ -1437,7 +1537,8 @@ export interface operations {
             query?: {
                 cursor?: string;
                 limit?: number;
-                filter?: "all" | "unread";
+                /** @description all: folder=inbox and not currently snoozed. unread: all plus unread for the actor. starred: starred by the actor in any folder except spam and trash. snoozed: folder=inbox with snoozed_until in the future. archive/spam/trash: that folder regardless of snooze. Ordering is unchanged (last_message_at desc nulls last, id desc). */
+                filter?: "all" | "unread" | "starred" | "snoozed" | "archive" | "spam" | "trash";
             };
             header: {
                 /** @description Current bootstrap context, never an authorization grant. */
@@ -2808,6 +2909,141 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ThreadReadState"];
+                };
+            };
+            400: components["responses"]["CdBadRequest"];
+            401: components["responses"]["CdUnauthenticated"];
+            404: components["responses"]["CdNotAvailable"];
+            409: components["responses"]["CdConflict"];
+            429: components["responses"]["CdRateLimited"];
+            500: components["responses"]["CdInternalError"];
+            503: components["responses"]["CdUnavailable"];
+        };
+    };
+    setThreadFolder: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description Current bootstrap context, never an authorization grant. */
+                "X-Session-Context": components["parameters"]["CdSessionContext"];
+                /** @description Current bootstrap authorization version; mismatch returns context_changed after authentication. */
+                "X-Authorization-Version": components["parameters"]["CdAuthorizationVersion"];
+                /** @description Exact configured same-origin value required on every C/D PUT, POST and DELETE. No redirect or permissive CORS. */
+                Origin: components["parameters"]["CdOrigin"];
+                /** @description Current session CSRF proof bound to this cookie and context. A login/refresh challenge is not accepted for C/D writes. */
+                "X-CSRF-Token": components["parameters"]["CdCsrf"];
+            };
+            path: {
+                thread_id: components["schemas"]["Id"];
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ThreadFolderInput"];
+            };
+        };
+        responses: {
+            /** @description Current-authorized C/D result; Cache-Control no-store, Vary Cookie, nosniff. */
+            200: {
+                headers: {
+                    "Cache-Control": "no-store";
+                    Vary: "Cookie";
+                    "X-Content-Type-Options": "nosniff";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ThreadFolderState"];
+                };
+            };
+            400: components["responses"]["CdBadRequest"];
+            401: components["responses"]["CdUnauthenticated"];
+            404: components["responses"]["CdNotAvailable"];
+            409: components["responses"]["CdConflict"];
+            429: components["responses"]["CdRateLimited"];
+            500: components["responses"]["CdInternalError"];
+            503: components["responses"]["CdUnavailable"];
+        };
+    };
+    setThreadSnooze: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description Current bootstrap context, never an authorization grant. */
+                "X-Session-Context": components["parameters"]["CdSessionContext"];
+                /** @description Current bootstrap authorization version; mismatch returns context_changed after authentication. */
+                "X-Authorization-Version": components["parameters"]["CdAuthorizationVersion"];
+                /** @description Exact configured same-origin value required on every C/D PUT, POST and DELETE. No redirect or permissive CORS. */
+                Origin: components["parameters"]["CdOrigin"];
+                /** @description Current session CSRF proof bound to this cookie and context. A login/refresh challenge is not accepted for C/D writes. */
+                "X-CSRF-Token": components["parameters"]["CdCsrf"];
+            };
+            path: {
+                thread_id: components["schemas"]["Id"];
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ThreadSnoozeInput"];
+            };
+        };
+        responses: {
+            /** @description Current-authorized C/D result; Cache-Control no-store, Vary Cookie, nosniff. */
+            200: {
+                headers: {
+                    "Cache-Control": "no-store";
+                    Vary: "Cookie";
+                    "X-Content-Type-Options": "nosniff";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ThreadFolderState"];
+                };
+            };
+            400: components["responses"]["CdBadRequest"];
+            401: components["responses"]["CdUnauthenticated"];
+            404: components["responses"]["CdNotAvailable"];
+            409: components["responses"]["CdConflict"];
+            429: components["responses"]["CdRateLimited"];
+            500: components["responses"]["CdInternalError"];
+            503: components["responses"]["CdUnavailable"];
+        };
+    };
+    setThreadStar: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description Current bootstrap context, never an authorization grant. */
+                "X-Session-Context": components["parameters"]["CdSessionContext"];
+                /** @description Current bootstrap authorization version; mismatch returns context_changed after authentication. */
+                "X-Authorization-Version": components["parameters"]["CdAuthorizationVersion"];
+                /** @description Exact configured same-origin value required on every C/D PUT, POST and DELETE. No redirect or permissive CORS. */
+                Origin: components["parameters"]["CdOrigin"];
+                /** @description Current session CSRF proof bound to this cookie and context. A login/refresh challenge is not accepted for C/D writes. */
+                "X-CSRF-Token": components["parameters"]["CdCsrf"];
+            };
+            path: {
+                thread_id: components["schemas"]["Id"];
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ThreadStarInput"];
+            };
+        };
+        responses: {
+            /** @description Current-authorized C/D result; Cache-Control no-store, Vary Cookie, nosniff. */
+            200: {
+                headers: {
+                    "Cache-Control": "no-store";
+                    Vary: "Cookie";
+                    "X-Content-Type-Options": "nosniff";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ThreadStarState"];
                 };
             };
             400: components["responses"]["CdBadRequest"];

@@ -24,11 +24,13 @@ const gateway = createFixtureGateway(scriptFromHash(window.location.hash))
 const completion = window.location.hash === '#/auth/complete'
 createRoot(root).render(
   <StrictMode>
-    <div className="flex h-full flex-col">
-      <p role="note" className="shrink-0 bg-warn/15 px-3 py-1 text-center text-[12px] font-semibold text-warn">
+    <div className="h-full">
+      {completion ? <AuthCompletePage gateway={gateway} /> : <App gateway={gateway} />}
+      {/* Fixed bottom-start pill: it must not push page content down (reference screenshots have no
+          banner), must not cover the bottom-end compose button, and never intercepts a tap. */}
+      <p role="note" className="pointer-events-none fixed bottom-14 start-3 z-40 rounded-full bg-warn/15 px-3 py-1 text-[12px] font-semibold text-warn shadow-xs">
         Development fixtures — synthetic data only. Nothing is sent, received or saved.
       </p>
-      <div className="min-h-0 flex-1">{completion ? <AuthCompletePage gateway={gateway} /> : <App gateway={gateway} />}</div>
     </div>
   </StrictMode>,
 )

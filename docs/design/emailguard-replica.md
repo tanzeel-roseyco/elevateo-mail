@@ -32,8 +32,8 @@ Touch devices: 40px nav rows, 44px header controls (`@media (pointer: coarse)`).
 | Dashboard | `/` | `DashboardPage` | loading skeletons, empty mailboxes, failed count (`—`/`12+`), failed conversations, Outreach unavailable |
 | Dashboard | `/overview` | redirect to `/` | |
 | Inbox | `/inbox` | `InboxRedirect` → first readable mailbox | loading, none |
-| Inbox | `/mailboxes/:mailboxId` | `InboxLayout` + `InboxPage` (Gmail list, folders, selection toolbar, u/c/`/` shortcuts) | loading, empty folder, unavailable, write error |
-| Inbox | `/mailboxes/:mailboxId/threads/:threadId` | `ThreadPage` (plaintext) | loading, not found, denied |
+| Inbox | `/mailboxes/:mailboxId` (`?filter=all|unread|starred|snoozed|archive|spam|trash`) | `InboxLayout` + `InboxPage` (Gmail list, seven server folder views, confirmed archive/spam/delete/snooze/star/read writes, selection toolbar, j/k/o/x/s/e/!/#/Shift+U/u/c/`/` shortcuts, phone folder select) | loading, empty per view, unavailable, write error |
+| Inbox | `/mailboxes/:mailboxId/threads/:threadId` | `ThreadPage` (plaintext; archive/spam/delete/snooze/star toolbar; Reply, Reply all, Forward as drafts) | loading, not found, denied, write error |
 | Inbox | `/mailboxes/:mailboxId/drafts` | `DraftsPage` | loading, empty, error |
 | Inbox | `/mailboxes/:mailboxId/drafts/:draftId` | `DraftsPage` + `ComposeWindow`(`DraftEditorPage`) | loading, error, minimised/maximised |
 | Send | `/mailboxes/:mailboxId/drafts/:draftId/send-review` | `SendReviewPage` | loading, denied, failure |
@@ -60,10 +60,22 @@ Contacts (People) · Administration (Settings, Help). "Get Help" menu: Live Chat
 ## Review disposition (2026-10-20)
 
 All coordinator checklist items in `code-reviews.md` were applied in source with regression tests
-(`settings/settingsAdapters.test.tsx`, `ui/primitives.test.tsx`, `inbox/starStore.test.ts`,
-`app/Shell.test.tsx`). Adjudicated without change: `GlobeAltIcon` is the Heroicons 24/outline
+(`settings/settingsAdapters.test.tsx`, `ui/primitives.test.tsx`, `app/Shell.test.tsx`; the former
+`inbox/starStore` was replaced by server stars in BE-05). Adjudicated without change: `GlobeAltIcon` is the Heroicons 24/outline
 `globe-alt` path verbatim (two meridian arcs, one upper latitude, no lower latitude line); the Radix
 Modal already restores focus to the opener for controlled trigger-less dialogs.
+
+## BE-05 visual decision (2026-10-20)
+
+The simulated-mail banner moved from the top of the content column to a fixed bottom strip (main
+reserves `pb-16`) and the dev-fixture note became a fixed bottom-end pill: both top banners had pushed
+every heading 60px (1440) / 110px (390) below the reference. Outreach pages gained the breadcrumb row
+that every non-dashboard EmailGuard app page carries (`Home > Email Accounts`), which is why their
+heading sits at the 86px reference offset. On 390px the reference pages disagree among themselves
+(158/110 vs 152); the client matches the 152 group exactly and the rest at -6px. The Outreach
+pages' 390px reference (`app-email-accounts-390`) centres its heading beside two stacked action
+buttons and was captured 472px wide, so its 174px heading offset is not reproduced (ours is 152, the
+settings value); that 22px is a reference-structure difference, recorded rather than imitated.
 
 ## Verification
 

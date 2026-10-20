@@ -23,6 +23,67 @@ class CollaborationSchemaTest < CollaborationDatabaseCase
     assert_raises(PG::CheckViolation) { @admin.exec("UPDATE app.thread_read_states SET read_state_version = 0") }
   end
 
+  def test_folder_star_schema_policy_constraints_and_grants
+    columns = @admin.exec(<<~SQL).map { |row| row.fetch("column_name") }
+      SELECT column_name FROM information_schema.columns
+       WHERE table_schema = 'app' AND table_name = 'threads'
+         AND column_name IN ('folder','snoozed_until','folder_version','folder_updated_at')
+    SQL
+    assert_equal %w[folder folder_updated_at folder_version snoozed_until], columns.sort
+    star_columns = @admin.exec(<<~SQL).map { |row| row.values_at("column_name", "is_nullable", "column_default") }
+      SELECT column_name, is_nullable, column_default
+        FROM information_schema.columns
+       WHERE table_schema = 'app' AND table_name = 'thread_stars'
+       ORDER BY ordinal_position
+    SQL
+    assert_equal [
+      ["organization_id", "NO", nil], ["mailbox_id", "NO", nil], ["thread_id", "NO", nil],
+      ["user_id", "NO", nil], ["starred", "NO", "false"], ["star_version", "NO", "0"],
+      ["updated_at", "NO", "clock_timestamp()"]
+    ], star_columns
+    constraints = @admin.exec(<<~SQL).to_a
+      SELECT contype, pg_get_constraintdef(oid) AS definition
+        FROM pg_constraint
+       WHERE conrelid = 'app.thread_stars'::regclass
+    SQL
+    assert_equal({ "c" => 1, "f" => 2, "p" => 1 }, constraints.map { |row| row.fetch("contype") }.tally)
+    assert(constraints.any? { |row| row.fetch("definition").include?("star_version >= 0") })
+    primary = constraints.select { |row| row.fetch("contype") == "p" }.map { |row| row.fetch("definition") }
+    assert_equal ["PRIMARY KEY (organization_id, mailbox_id, thread_id, user_id)"], primary
+    foreign = constraints.select { |row| row.fetch("contype") == "f" }.map { |row| row.fetch("definition") }
+    assert_includes foreign,
+      "FOREIGN KEY (organization_id, mailbox_id, thread_id) " \
+      "REFERENCES app.threads(organization_id, mailbox_id, id) ON DELETE CASCADE"
+    assert_includes foreign,
+      "FOREIGN KEY (organization_id, user_id) " \
+      "REFERENCES app.organization_memberships(organization_id, user_id) ON DELETE CASCADE"
+    actor_index = @admin.exec(<<~SQL).getvalue(0, 0)
+      SELECT indexdef FROM pg_indexes
+       WHERE schemaname = 'app' AND tablename = 'thread_stars' AND indexname = 'thread_stars_actor'
+    SQL
+    assert_includes actor_index, "(organization_id, user_id, mailbox_id, thread_id)"
+    policy = @admin.exec("SELECT policyname FROM pg_policies WHERE schemaname='app' AND tablename='thread_stars'").column_values(0)
+    assert_equal ["own_visible_thread_star"], policy
+    assert_equal "t", @admin.exec("SELECT relrowsecurity AND relforcerowsecurity FROM pg_class WHERE oid='app.thread_stars'::regclass").getvalue(0, 0)
+    assert_equal "t", @admin.exec("SELECT has_column_privilege('elevateo_app_read','app.threads','folder','SELECT')").getvalue(0, 0)
+    assert_equal "t", @admin.exec("SELECT has_column_privilege('elevateo_api','app.threads','folder_version','SELECT')").getvalue(0, 0)
+    assert_equal "t", @admin.exec("SELECT has_column_privilege('elevateo_api','app.threads','folder','UPDATE')").getvalue(0, 0)
+    assert_equal "t", @admin.exec("SELECT has_column_privilege('elevateo_api','app.thread_stars','star_version','SELECT')").getvalue(0, 0)
+    %w[organization_id mailbox_id thread_id user_id starred].each do |column|
+      assert_equal "t", @admin.exec_params(
+        "SELECT has_column_privilege('elevateo_app_read','app.thread_stars',$1,'SELECT')", [column]
+      ).getvalue(0, 0)
+    end
+    %w[star_version updated_at].each do |column|
+      assert_equal "f", @admin.exec_params(
+        "SELECT has_column_privilege('elevateo_app_read','app.thread_stars',$1,'SELECT')", [column]
+      ).getvalue(0, 0)
+    end
+    assert_equal "f", @admin.exec("SELECT has_column_privilege('elevateo_api','app.threads','subject','UPDATE')").getvalue(0, 0)
+    assert_raises(PG::CheckViolation) { @admin.exec_params("UPDATE app.threads SET folder = $1 WHERE id = $2", ["junk", @thread]) }
+    assert_raises(PG::CheckViolation) { @admin.exec_params("UPDATE app.threads SET snoozed_until = $1 WHERE id = $2", ["infinity", @thread]) }
+  end
+
   def test_scoped_down_preserves_b_states_and_rollback_restores_all_d_data
     state(true)
     state(false)

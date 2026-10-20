@@ -1,4 +1,23 @@
 <!-- completion-wave-current:start -->
+### Thread folders, snooze, stars, Reply all / Forward (2026-10-20, BE-05)
+
+Design decisions (binding for follow-up work): `folder` and `snoozed_until` are mailbox-shared;
+`starred` is per actor; `all` = inbox and not snoozing, `unread` = all and unread, `starred` =
+starred and not spam/trash, `snoozed` = inbox with a future `snoozed_until`, `archive|spam|trash` =
+that folder; search excludes spam/trash; snooze window 60 s..366 d on the server clock and a
+non-null snooze moves the thread to the inbox; no Sent folder and no permanent delete. The UI applies
+only server-confirmed state and removes a row only when `matchesView` says it left the view; the
+reader returns to the originating view after a move. Reply all / Forward are ordinary drafts (no new
+API verbs; a forward carries no `reply_to_thread_id`). The simulated-mail banner is a fixed bottom
+strip and the fixture note a fixed, non-interactive pill at the start edge so page headings match the
+EmailGuard reference offsets; the phone compose button sits above the strip. On phones every row has
+an actions menu (select, read state, moves, snooze) because hover controls do not exist there. The
+reader derives its moves from the thread's confirmed folder, never from the URL view. Star writes lock
+the parent thread row first and only bump the version on a real change (concurrent first stars stay
+idempotent). Known follow-ups: a bounded bulk endpoint (today bulk runs row by row), one measured
+shared bottom inset for the strip/FAB/pill (`AIDEV-TODO` in `Shell.tsx`), DST cases for snooze presets.
+Gates and evidence: `state.md`; coverage and density: `code-reviews.md`.
+
 ### EmailGuard replica web UI (2026-10-20)
 
 `apps/web` is now the EmailGuard-replica UI described in `docs/design/emailguard-replica.md`: shell,

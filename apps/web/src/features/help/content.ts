@@ -57,8 +57,8 @@ export const ARTICLES: readonly Article[] = [
     title: 'What does "Simulation mode" mean?',
     summary: 'No mail leaves or enters the workspace; drafts, notes and assignments are still saved on the server.',
     blocks: [
-      { kind: 'p', text: 'The amber banner at the top of the app appears whenever the server reports that mail transport is simulated. In this mode no message is sent to a real recipient and nothing is fetched from an external provider.' },
-      { kind: 'list', items: ['Drafts, notes, assignments and read state are saved on the server as usual.', 'Approving a send records a simulated send intent that you can follow on the send status page.', 'Starred conversations are kept on this device only.'] },
+      { kind: 'p', text: 'The amber banner along the bottom of the app appears whenever the server reports that mail transport is simulated. In this mode no message is sent to a real recipient and nothing is fetched from an external provider.' },
+      { kind: 'list', items: ['Drafts, notes, assignments and read state are saved on the server as usual.', 'Approving a send records a simulated send intent that you can follow on the send status page.', 'Stars, folders and snoozes are saved on the server too.'] },
       { kind: 'p', text: 'Simulation is switched off by an operator when live sending is activated for a workspace; the banner disappears at that point.' },
     ],
   },
@@ -78,9 +78,9 @@ export const ARTICLES: readonly Article[] = [
     title: 'How is the inbox organised?',
     summary: 'Folders on the left, conversations in the middle, one row per conversation.',
     blocks: [
-      { kind: 'p', text: 'Each mailbox has a folder column with Inbox, Unread, Starred and (when you can compose) Drafts. The conversation list shows the sender, subject and a preview on one line; unread conversations are bold with a gold dot.' },
+      { kind: 'p', text: 'Each mailbox has a folder column with Inbox, Unread, Starred, Snoozed, Archive, Spam, Trash and (when you can compose) Drafts. The conversation list shows the sender, subject and a preview on one line; unread conversations are bold with a gold dot.' },
       { kind: 'p', text: 'On smaller screens the folder column becomes a folder selector above the list, and below tablet width the list fills the screen with a compose button in the corner.' },
-      { kind: 'note', text: 'Archive, Snooze, Spam and Trash are shown but disabled: the server has no folders yet, so those actions are labelled "Not available yet".' },
+      { kind: 'note', text: 'Archive, Spam and Trash are shared by everyone in the mailbox; stars are yours alone. Sent mail has no folder yet and is labelled "Not available yet". There is no permanent delete: Trash keeps conversations until a retention rule exists.' },
     ],
   },
   {
@@ -106,11 +106,11 @@ export const ARTICLES: readonly Article[] = [
   {
     slug: 'starring',
     collection: 'inbox',
-    title: 'Why are stars "on this device only"?',
-    summary: 'The server has no star field, so stars live in your browser.',
+    title: 'Who sees my stars, snoozes and folders?',
+    summary: 'Stars are personal and follow you across devices; folders and snoozes are shared by the mailbox.',
     blocks: [
-      { kind: 'p', text: 'Stars are a personal bookmark kept in this browser for the current mailbox and workspace. Another device, another browser or another team member will not see them.' },
-      { kind: 'p', text: 'The Starred folder filters the conversations already loaded in the list. Clearing site data removes your stars.' },
+      { kind: 'p', text: 'A star is a personal bookmark saved on the server for you alone: it follows you to any device, and no other member of the mailbox sees it.' },
+      { kind: 'p', text: 'Archive, Spam, Trash and Snooze change the conversation for everyone who shares the mailbox. A snoozed conversation returns to the inbox at the chosen time (between one minute and a year ahead).' },
     ],
   },
   {

@@ -11,6 +11,7 @@ import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react'
 import { Outlet, useLocation } from 'react-router'
 import type { Mailbox, MailboxPage, Session } from '@/data/contract'
 import { GatewayError } from '@/data/errors'
+import { cx } from '@/lib/format'
 import { newTraversalBudget, readPage } from '@/lib/readPage'
 import { SignInPage } from '@/features/auth/SignInPage'
 import { EmptyState, ErrorState, Skeleton } from '@/ui/Async'
@@ -260,13 +261,6 @@ function ProtectedShell({ session, replacedIdentity }: { session: Session; repla
             />
           </aside>
           <div className="flex min-w-0 flex-1 flex-col">
-            {/* Simulated transport must be unmistakable, but only when the server says it is simulated. */}
-            {session.simulation_mode && (
-              <div className="flex flex-wrap items-center gap-x-3 gap-y-1 border-b border-amber-200 bg-amber-50 px-6 py-2 text-xs text-amber-800 lg:px-8 dark:border-amber-400/30 dark:bg-amber-400/10 dark:text-amber-100">
-                <Badge tone="warn" size="sm">Simulated local mail</Badge>
-                <span>{SIMULATION_FOOTNOTE}</span>
-              </div>
-            )}
             <header className="flex min-h-14 items-center px-6 lg:hidden">
               {/* Names agreed with QA (ADV/Tessa): the drawer holds every section, not only mailboxes. */}
               <Drawer
@@ -287,11 +281,21 @@ function ProtectedShell({ session, replacedIdentity }: { session: Session; repla
             </header>
             {/* Online-only: no cache, no queue; a drop is announced and a return offers an explicit reload. */}
             <ConnectivityBanner onReload={refresh} />
-            <main id="main" tabIndex={-1} className="flex min-h-0 flex-1 flex-col p-6 lg:p-8">
+            <main id="main" tabIndex={-1} className={cx('flex min-h-0 flex-1 flex-col p-6 lg:p-8', session.simulation_mode && 'pb-16')}>
               <div className="flex w-full max-w-7xl flex-1 flex-col">
                 <PageBoundary><Outlet /></PageBoundary>
               </div>
             </main>
+            {/* AIDEV-NOTE: Simulated transport must be unmistakable, but only when the server says so. It is a
+                fixed bottom strip (main reserves its height) so page headings sit at the reference offset.
+                AIDEV-TODO: expose the strip's measured height as one shared bottom inset (safe-area aware) for
+                main, the compose FAB and the fixture pill; today each reserves a fixed 64px/80px by hand. */}
+            {session.simulation_mode && (
+              <div role="status" className="fixed inset-x-0 bottom-0 z-30 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 border-t border-amber-200 bg-amber-50 px-6 py-2 text-xs text-amber-800 dark:border-amber-400/30 dark:bg-amber-400/10 dark:text-amber-100">
+                <Badge tone="warn" size="sm">Simulated local mail</Badge>
+                <span>{SIMULATION_FOOTNOTE}</span>
+              </div>
+            )}
           </div>
         </div>
       </ToastProvider>

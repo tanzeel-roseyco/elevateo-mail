@@ -4,6 +4,7 @@ require "json"
 require "bigdecimal"
 require "uri"
 require_relative "collaboration_error"
+require_relative "thread_projection"
 
 module Elevateo
   # AIDEV-NOTE: C/D transport is stricter than legacy AuthInput; changing it must not broaden lifecycle endpoints.
@@ -141,6 +142,20 @@ module Elevateo
       when true, false then value
       else invalid!
       end
+    end
+
+    def self.folder(value)
+      invalid! unless value.is_a?(String) && %w[inbox archive spam trash].include?(value)
+      value
+    end
+
+    def self.nullable_timestamp(value)
+      return nil if value.nil?
+      invalid! unless value.is_a?(String)
+
+      ThreadProjection.timestamp(value)
+    rescue ReadResponse::Invalid
+      invalid!
     end
   end
 end

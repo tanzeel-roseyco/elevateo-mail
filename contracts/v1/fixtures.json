@@ -112,7 +112,10 @@
             "preview_text": "<img src=\"https://example.invalid/pixel\"> & plaintext",
             "last_message_at": "2026-10-12T00:00:00Z",
             "unread": true,
-            "message_count": 1
+            "message_count": 1,
+            "folder": "inbox",
+            "snoozed_until": null,
+            "starred": false
           }
         ]
       }
@@ -141,7 +144,10 @@
           "subject": null,
           "subject_truncated": false,
           "unread": true,
-          "message_count": 1
+          "message_count": 1,
+          "folder": "inbox",
+          "snoozed_until": null,
+          "starred": false
         },
         "messages": [
           {
@@ -169,7 +175,10 @@
           "subject": null,
           "subject_truncated": false,
           "unread": true,
-          "message_count": 0
+          "message_count": 0,
+          "folder": "inbox",
+          "snoozed_until": null,
+          "starred": false
         },
         "messages": []
       }
@@ -187,7 +196,10 @@
           "subject": null,
           "subject_truncated": false,
           "unread": true,
-          "message_count": 1
+          "message_count": 1,
+          "folder": "inbox",
+          "snoozed_until": null,
+          "starred": false
         },
         "messages": [
           {
@@ -1024,7 +1036,10 @@
             "preview_text": "<img src=\"https://example.invalid/pixel\"> & plaintext",
             "last_message_at": "2026-10-13T00:00:00Z",
             "unread": true,
-            "message_count": 1
+            "message_count": 1,
+            "folder": "inbox",
+            "snoozed_until": null,
+            "starred": false
           }
         ]
       }

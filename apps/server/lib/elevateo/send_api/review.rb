@@ -16,8 +16,9 @@ module Elevateo
       def initialize(binding, outbound_mode: "held")
         allowed = FIELDS + %w[attachment_binding purpose]
         raise ReadResponse::Invalid unless (FIELDS - binding.keys).empty? && (binding.keys - allowed).empty?
-        @purpose = binding.fetch("purpose", "correspondence")
-        raise ReadResponse::Invalid unless %w[correspondence marketing].include?(@purpose)
+        purpose = binding.fetch("purpose", "correspondence")
+        raise ReadResponse::Invalid unless purpose.is_a?(String) && %w[correspondence marketing].include?(purpose)
+        @purpose = purpose
         @binding = binding
         @issues = [] # : Array[ReadResponse::item]
         @organization = ThreadProjection.uuid(binding["organization_id"])

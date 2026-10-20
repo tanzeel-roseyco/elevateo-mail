@@ -1,18 +1,21 @@
 // Gmail folder column in the Flux navlist skin (INBOX-SPEC §1–2): mailbox picker, gold Compose,
-// then Inbox / Unread / Starred / Drafts / Members. Folders the backend does not provide (Sent,
-// Snoozed, Spam, Trash) are listed disabled as "Not available yet" rather than hidden, so the
-// structure matches the reference without inventing data.
+// then Inbox / Unread / Starred / Snoozed / Archive / Spam / Trash / Drafts / Members. The one
+// folder the backend still does not provide (Sent) is listed disabled as "Not available yet"
+// rather than hidden, so the structure matches the reference without inventing data.
 //
-// AIDEV-NOTE: "Starred" is a per-device mark (see starStore.ts); the label says so. Drafts and
-// Members follow the mailbox capabilities the server reported; an unknown capability hides the link.
+// AIDEV-NOTE: Every listed folder is a server view (BE-05); the URL `filter` query carries it.
+// Drafts and Members follow the mailbox capabilities the server reported; an unknown capability
+// hides the link.
 import type { ComponentType, SVGProps } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router'
 import type { Mailbox } from '@/data/contract'
 import { useMailboxes } from '@/app/mailboxes'
+import { useSession } from '@/app/session'
 import { cx } from '@/lib/format'
 import { Button } from '@/ui/Button'
 import { Select } from '@/ui/Field'
 import {
+  ArchiveBoxIcon,
   ClockIcon,
   DocumentTextIcon,
   EnvelopeIcon,
@@ -24,7 +27,7 @@ import {
   TrashIcon,
   UserGroupIcon,
 } from '@/ui/icons'
-import { composeDraftPath, parseView, type InboxCounts } from './inboxContext'
+import { composeDraftPath, parseView, viewPath, VIEW_LABELS, type InboxCounts, type InboxView } from './inboxContext'
 
 type Icon = ComponentType<SVGProps<SVGSVGElement>>
 
@@ -37,15 +40,20 @@ interface Folder {
   /** Parent highlight (thread open inside this folder) without aria-current. */
   readonly within: boolean
   readonly badge?: string | undefined
-  readonly title?: string | undefined
 }
 
-const UNSUPPORTED: ReadonlyArray<{ label: string; Icon: Icon }> = [
-  { label: 'Sent', Icon: PaperAirplaneIcon },
-  { label: 'Snoozed', Icon: ClockIcon },
-  { label: 'Spam', Icon: ExclamationTriangleIcon },
-  { label: 'Trash', Icon: TrashIcon },
-]
+const VIEW_ICONS: Record<InboxView, Icon> = {
+  all: InboxIcon,
+  unread: EnvelopeIcon,
+  starred: StarIcon,
+  snoozed: ClockIcon,
+  archive: ArchiveBoxIcon,
+  spam: ExclamationTriangleIcon,
+  trash: TrashIcon,
+}
+const VIEW_ORDER: readonly InboxView[] = ['all', 'unread', 'starred', 'snoozed', 'archive', 'spam', 'trash']
+
+const UNSUPPORTED: ReadonlyArray<{ label: string; Icon: Icon }> = [{ label: 'Sent', Icon: PaperAirplaneIcon }]
 
 const ITEM =
   'my-px flex h-8 items-center gap-3 rounded-lg border border-transparent px-3 text-sm font-medium text-zinc-500 hover:bg-zinc-800/5 hover:text-zinc-800 dark:text-zinc-400 dark:hover:bg-white/10 dark:hover:text-white'
@@ -57,11 +65,15 @@ export function useFolders(mailboxId: string, mailbox: Mailbox | undefined, coun
   const view = parseView(new URLSearchParams(search).get('filter'))
   const onList = pathname === base
   const inThread = pathname.startsWith(`${base}/threads/`)
-  const folders: Folder[] = [
-    { key: 'inbox', label: 'Inbox', to: base, Icon: InboxIcon, current: onList && view === 'all', within: inThread && view === 'all', badge: counts?.unread },
-    { key: 'unread', label: 'Unread', to: `${base}?filter=unread`, Icon: EnvelopeIcon, current: onList && view === 'unread', within: inThread && view === 'unread' },
-    { key: 'starred', label: 'Starred', to: `${base}?filter=starred`, Icon: StarIcon, current: onList && view === 'starred', within: inThread && view === 'starred', title: 'Starred on this device only' },
-  ]
+  const folders: Folder[] = VIEW_ORDER.map((key) => ({
+    key,
+    label: VIEW_LABELS[key],
+    to: viewPath(mailboxId, key),
+    Icon: VIEW_ICONS[key],
+    current: onList && view === key,
+    within: inThread && view === key,
+    badge: key === 'all' ? counts?.unread : undefined,
+  }))
   if (mailbox?.capabilities.compose === true) {
     folders.push({ key: 'drafts', label: 'Drafts', to: `${base}/drafts`, Icon: DocumentTextIcon, current: pathname === `${base}/drafts`, within: pathname.startsWith(`${base}/drafts/`) })
   }
@@ -125,7 +137,6 @@ export function FolderColumn({ mailboxId, mailbox, counts }: FolderNavProps) {
                 to={folder.to}
                 aria-current={folder.current ? 'page' : undefined}
                 data-current={folder.current || folder.within || undefined}
-                title={folder.title}
                 className={cx(ITEM, (folder.current || folder.within) && CURRENT)}
               >
                 <folder.Icon aria-hidden className={cx('size-5 shrink-0', (folder.current || folder.within) && 'text-(--color-accent-content)')} />
@@ -163,7 +174,7 @@ export function FolderSelect({ mailboxId, mailbox, counts }: FolderNavProps) {
   return (
     <div className="mb-4 flex flex-wrap items-center gap-3">
       <MailboxPicker mailboxId={mailboxId} className="max-w-xs" />
-      <Select aria-label="Folder" value={current?.key ?? 'inbox'} onChange={(event) => { const next = folders.find((f) => f.key === event.target.value); if (next) navigate(next.to) }} className="max-w-xs">
+      <Select aria-label="Folder" value={current?.key ?? 'all'} onChange={(event) => { const next = folders.find((f) => f.key === event.target.value); if (next) navigate(next.to) }} className="max-w-xs">
         {folders.map((folder) => (
           <option key={folder.key} value={folder.key}>{folder.label}{folder.badge !== undefined ? ` (${folder.badge})` : ''}</option>
         ))}
@@ -176,16 +187,18 @@ export function FolderSelect({ mailboxId, mailbox, counts }: FolderNavProps) {
 /** Phone floating action button (< 768px). */
 export function ComposeFab({ mailboxId, mailbox }: { mailboxId: string; mailbox: Mailbox | undefined }) {
   const navigate = useNavigate()
+  const { state } = useSession()
+  // The simulated-mail strip is fixed to the bottom edge (Shell); the button must sit above it.
+  const aboveStrip = state.status === 'ready' && state.session.simulation_mode
   if (mailbox?.capabilities.compose !== true) return null
   return (
     <button
       type="button"
       aria-label="Compose a new draft"
       onClick={() => navigate(composeDraftPath(mailboxId))}
-      className="fixed bottom-6 end-6 z-20 flex size-14 items-center justify-center rounded-full bg-(--color-accent) text-(--color-accent-foreground) shadow-lg hover:bg-gold-400 md:hidden"
+      className={cx('fixed end-6 z-20 flex size-14 items-center justify-center rounded-full bg-(--color-accent) text-(--color-accent-foreground) shadow-lg hover:bg-gold-400 md:hidden', aboveStrip ? 'bottom-20' : 'bottom-6')}
     >
       <PencilSquareIcon className="size-6" />
     </button>
   )
 }
-

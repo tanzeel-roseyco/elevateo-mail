@@ -16,7 +16,9 @@ module Elevateo
       result = { "id" => uuid(row["id"]), "mailbox_id" => uuid(row["mailbox_id"]),
                  "subject" => subject&.slice(0, maximum),
                  "subject_truncated" => !subject.nil? && subject.length > maximum,
-                 "unread" => boolean(row["unread"]), "message_count" => integer(row["message_count"], 2_147_483_647) }
+                 "unread" => boolean(row["unread"]), "message_count" => integer(row["message_count"], 2_147_483_647),
+                 "folder" => folder(row["folder"]), "snoozed_until" => timestamp(row["snoozed_until"]),
+                 "starred" => boolean(row["starred"]) }
       if summary
         result["sender"] = address(row["sender"], nullable: true)
         result["preview_text"] = text(row["preview_text"], 256)
@@ -100,6 +102,13 @@ module Elevateo
       when TrueClass, FalseClass then value
       else raise ReadResponse::Invalid, "invalid read response"
       end
+    end
+
+    def self.folder(value)
+      raw = text(value, 7)
+      raise ReadResponse::Invalid, "invalid read response" unless %w[inbox archive spam trash].include?(raw)
+
+      raw
     end
 
     def self.integer(value, maximum)

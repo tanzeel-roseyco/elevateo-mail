@@ -1,11 +1,12 @@
 // Shared state between the inbox layout (folder column) and the pages it hosts. The list page
 // reports what it has loaded so the folder column can show an unread badge without a second
-// request; the layout owns the folder "view" (inbox, unread, starred) that the URL encodes.
+// request; the layout owns the folder "view" that the URL encodes.
 //
 // AIDEV-NOTE: Everything here is optional: a page rendered outside InboxLayout (unit tests, the
 // search results) sees a null context and simply skips the report.
 import { createContext, useContext } from 'react'
 import { newId } from '@/lib/ids'
+import { parseThreadView, type ThreadView } from '@/domain/threadFolders'
 
 export interface InboxCounts {
   /** Unread rows loaded so far, with "+" when the server has more pages. */
@@ -22,11 +23,24 @@ export function useInboxReport(): InboxReport | null {
   return useContext(InboxReportContext)
 }
 
-/** Folder views the list page understands; the URL `filter` query encodes them. */
-export type InboxView = 'all' | 'unread' | 'starred'
+/** Folder views the list page understands; the URL `filter` query encodes them (BE-05: all server-side). */
+export type InboxView = ThreadView
 
-export function parseView(raw: string | null): InboxView {
-  return raw === 'unread' ? 'unread' : raw === 'starred' ? 'starred' : 'all'
+export const parseView = parseThreadView
+
+/** Path of a mailbox view; the default inbox view stays out of the URL. */
+export function viewPath(mailboxId: string, view: InboxView): string {
+  return view === 'all' ? `/mailboxes/${mailboxId}` : `/mailboxes/${mailboxId}?filter=${view}`
+}
+
+export const VIEW_LABELS: Record<InboxView, string> = {
+  all: 'Inbox',
+  unread: 'Unread',
+  starred: 'Starred',
+  snoozed: 'Snoozed',
+  archive: 'Archive',
+  spam: 'Spam',
+  trash: 'Trash',
 }
 
 /** Keyboard shortcuts must never fire while the person is typing. */

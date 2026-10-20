@@ -26,12 +26,17 @@ import type {
   ThreadAssignment,
   ThreadAssignmentInput,
   ThreadDetailPage,
+  ThreadFolderInput,
+  ThreadFolderState,
   ThreadNoteInput,
   ThreadNotePage,
   ThreadNoteResponse,
   ThreadPage,
   ThreadReadState,
   ThreadReadStateInput,
+  ThreadSnoozeInput,
+  ThreadStarInput,
+  ThreadStarState,
 } from './contract'
 
 /** Consistency headers from the session bootstrap; never an authorization grant. */
@@ -48,7 +53,12 @@ export interface CsrfProof {
   csrfToken: string
 }
 
-export type ThreadFilter = 'all' | 'unread'
+/**
+ * Server folder views (contract 1.0.0-folders.1): `all` is the inbox folder minus active snoozes,
+ * `unread` narrows it to the actor's unread rows, `starred` is the actor's stars outside spam/trash,
+ * `snoozed` is the inbox folder with a future snooze, and the last three are the shared folders.
+ */
+export type ThreadFilter = 'all' | 'unread' | 'starred' | 'snoozed' | 'archive' | 'spam' | 'trash'
 
 export interface PageQuery {
   cursor?: string
@@ -116,6 +126,13 @@ export interface MailroomGateway {
   // --- BE-02 D: read state, assignment, notes, membership, search -----------------------------
   /** Actor-specific desired read boolean; repeating the same value is a no-op. */
   setThreadReadState(ctx: ReadContext, proof: CsrfProof, threadId: string, input: ThreadReadStateInput, signal?: AbortSignal): Promise<ThreadReadState>
+  // --- BE-05: mailbox-shared folder and snooze, actor-specific star ----------------------------
+  /** Move between inbox/archive/spam/trash for every member; repeating the same folder is a no-op. */
+  setThreadFolder(ctx: ReadContext, proof: CsrfProof, threadId: string, input: ThreadFolderInput, signal?: AbortSignal): Promise<ThreadFolderState>
+  /** A future time hides the thread from the inbox until then (and moves it back to inbox); null clears the snooze. */
+  setThreadSnooze(ctx: ReadContext, proof: CsrfProof, threadId: string, input: ThreadSnoozeInput, signal?: AbortSignal): Promise<ThreadFolderState>
+  /** Actor-specific desired star boolean; repeating the same value is a no-op. */
+  setThreadStar(ctx: ReadContext, proof: CsrfProof, threadId: string, input: ThreadStarInput, signal?: AbortSignal): Promise<ThreadStarState>
   getThreadAssignment(ctx: ReadContext, threadId: string, mailboxId: string, signal?: AbortSignal): Promise<ThreadAssignment>
   /** Optimistic assignment; a stale expected version is 409 assignment_conflict even when the value matches. */
   setThreadAssignment(ctx: ReadContext, proof: CsrfProof, threadId: string, input: ThreadAssignmentInput, signal?: AbortSignal): Promise<ThreadAssignment>

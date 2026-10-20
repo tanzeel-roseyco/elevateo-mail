@@ -1,4 +1,29 @@
 <!-- completion-wave-current:start -->
+## BE-05 thread folders, snooze, stars, Reply all / Forward — adversarial review (2026-10-20)
+
+Nine bounded read-only assignments ran sequentially through the Codex CLI (pinned `gpt-5.6-sol`,
+low effort; the CLI session metadata resolved the model as `gpt-6.1-sol`, recorded as a route
+discrepancy, not a verified 5.6 run) against the full user rubric with CONTEXT/RUBRIC packets and the
+exact diff per packet. Formatting was left to lint. Claude Fable 5.1 made every web change; the
+codex-backend route made every `apps/server` / `contracts/v1` change. Reviewer-LOC include context
+lines the reviewer read, so densities are per reviewer coverage, not per unique repository size.
+
+| Packet | Files | Reviewer LOC | Defects (major/minor) | Density | Disposition |
+| --- | --- | --- | --- | --- | --- |
+| r1 domain | `domain/replyComposition.ts`, `domain/threadFolders.ts` + tests | 303 | 4 (2/2) | 13.20/KLOC | fixed: `usableAddress` rejects whitespace/control/`,;"()[]\\` and requires one `@`; forward header values flattened to one line; presets unique, ascending, no weekend choice on Sat/Sun; table-driven Sat/Sun/month-end/year-end tests (DST transitions still untested) |
+| r2 data | contract, gateway, http gateway, fixture state/gateway + tests | 1,821 | 3 (2/1) | 1.65/KLOC | fixed: unknown thread is the same 404 as a foreign one; example-backed list path applies the view filter; fixture-state tests (404s, 59 s/60 s/366 d/366 d+1 s, snooze→inbox, every view) and HTTP wiring/failure tests for the three PUT routes |
+| r3 inbox | `useThreadMutations.ts`, `InboxPage.tsx`, `rowActions.ts` | 558 | 5 (3/2) | 8.96/KLOC | fixed: synchronous ref-backed per-thread claim released in `finally` on every outcome incl. stale; bulk `done` reconciled in `finally`; error cleared once per user action; destructive shortcut focuses the surviving row (previous when last) |
+| r4 ui | `MessageRow`, `FolderNav`, `SnoozeMenu`, `inboxContext`, `Shell`, `fixtureMain`, help, `SearchPage` | 1,308 | 6 (4/2) | 4.59/KLOC | fixed: phone per-row actions menu (select, read, moves, snooze); compose FAB lifted above the simulation strip; fixture pill moved to the start edge and made non-interactive; snooze presets computed when the menu opens; accessible names carry the sender; help copy says bottom |
+| r5 thread | `ThreadPage.tsx`, `ThreadActions.test.tsx`, `InboxFolders.test.tsx` | 783 | 6 (3/3) | 7.66/KLOC | fixed: Forward and Reply all act on the newest message without needing a usable sender; reader moves follow the thread's confirmed folder (deep-link regression test); deferred-write test proves no optimistic navigation; mixed two-row bulk test; real `#`-in-Trash test |
+| r6 backend http | three controllers, routes, migration, tables/policies/down SQL | 222 | 0 | 0/KLOC | none |
+| r6b backend services | folder/star state, thread reads, projection, search SQL, write input, RBS | 853 | 1 (1/0) | 1.17/KLOC | fixed by codex-backend: parent thread row locked before the star read; upsert advances only on a changed value below the integer ceiling; unchanged/ceiling/two-connection tests |
+| r7 backend tests | BE-02 test files, contract seal test, fixtures, contract README | 3,286 | 4 (2/2) | 1.22/KLOC | fixed by codex-backend: preservation seal keeps the true BE-03 baseline hashes and records the folders extension separately; per-actor star test with a second member; folder max-version and exact server-clock snooze boundaries; README distinguishes baseline from extension |
+| r8 design | shared vs per-actor state, star table, read-time snooze expiry, confirmed/sequential writes, server filters, draft-based reply/forward, bottom banner | n/a | 0 defects; 5 keep, 2 bounded changes | n/a | kept as designed; bounded changes: bulk endpoint deferred until multi-row selection is a supported production workflow (documented limit); shared measured bottom inset recorded as an `AIDEV-TODO` in `Shell.tsx` (FAB offset applied by hand for now) |
+
+Totals: 29 defects over 9,134 reviewer-LOC = **3.17 defects/KLOC**; 29 fixed (r1-4 partially: DST
+cases remain unwritten). Full reports and diffs are in the session scratchpad (`review/final-*.md`);
+the backend fixes were verified by the fleet-02 gate recorded in `state.md`.
+
 ## Current verification record (2026-10-19)
 
 One bounded review of the new integration tests was completed by the existing Android/web teammate: `resend_pilot_flow_test.rb` (159 lines) and `resend_http_stub.rb` (50 lines), each reviewed separately against the project rubric. Confirmed defects: **0**; defect density: **0 / 209 LOC (0 per KLOC)**. Formatting remains delegated to lint. This count applies only to these tests, not the entire application.

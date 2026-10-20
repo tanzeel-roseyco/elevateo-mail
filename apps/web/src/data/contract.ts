@@ -64,6 +64,11 @@ export const MailboxPageSchema = z.strictObject({
   items: z.array(MailboxSchema).max(50),
 })
 
+// AIDEV-NOTE: BE-05 folders: `folder` and `snoozed_until` are mailbox-shared (every member sees
+// the same move), `starred` is actor-specific like `unread`. The list filter decides visibility;
+// the UI never re-derives folder membership from these fields on its own.
+export const ThreadFolderSchema = z.enum(['inbox', 'archive', 'spam', 'trash'])
+
 export const ThreadSummarySchema = z.strictObject({
   id,
   mailbox_id: id,
@@ -74,6 +79,9 @@ export const ThreadSummarySchema = z.strictObject({
   last_message_at: utcTimestamp.nullable(),
   unread: z.boolean(),
   message_count: z.number().int().min(0).max(2147483647),
+  folder: ThreadFolderSchema,
+  snoozed_until: utcTimestamp.nullable(),
+  starred: z.boolean(),
 })
 
 export const ThreadPageSchema = z.strictObject({
@@ -105,6 +113,9 @@ export const ThreadDetailPageSchema = z.strictObject({
     subject_truncated: z.boolean(),
     unread: z.boolean(),
     message_count: z.number().int().min(0).max(2147483647),
+    folder: ThreadFolderSchema,
+    snoozed_until: utcTimestamp.nullable(),
+    starred: z.boolean(),
   }),
   messages: z.array(MessageSchema).max(20),
 })
@@ -179,6 +190,7 @@ export type Session = components['schemas']['Session']
 export type Mailbox = components['schemas']['Mailbox']
 export type MailboxPage = components['schemas']['MailboxPage']
 export type ThreadSummary = components['schemas']['ThreadSummary']
+export type ThreadFolder = components['schemas']['ThreadFolder']
 export type ThreadPage = components['schemas']['ThreadPage']
 export type Message = components['schemas']['Message']
 export type ThreadDetailPage = components['schemas']['ThreadDetailPage']
@@ -306,6 +318,28 @@ export const ThreadReadStateSchema = z.strictObject({
   updated_at: utcTimestamp.nullable(),
 })
 
+// BE-05: folder/snooze share one mailbox-wide revision; stars are per actor like read state.
+export const ThreadFolderStateSchema = z.strictObject({
+  context_id: opaqueToken,
+  authorization_version: opaqueToken,
+  thread_id: id,
+  mailbox_id: id,
+  folder: ThreadFolderSchema,
+  snoozed_until: utcTimestamp.nullable(),
+  folder_version: resourceVersion,
+  updated_at: utcTimestamp.nullable(),
+})
+
+export const ThreadStarStateSchema = z.strictObject({
+  context_id: opaqueToken,
+  authorization_version: opaqueToken,
+  thread_id: id,
+  mailbox_id: id,
+  starred: z.boolean(),
+  star_version: resourceVersion,
+  updated_at: utcTimestamp.nullable(),
+})
+
 export const ThreadAssignmentSchema = z.strictObject({
   context_id: opaqueToken,
   authorization_version: opaqueToken,
@@ -387,6 +421,11 @@ export const DraftSaveInputSchema = z.strictObject({
   reply_to_thread_id: id.nullable(),
 })
 export const ThreadReadStateInputSchema = z.strictObject({ mailbox_id: id, read: z.boolean() })
+export const ThreadFolderInputSchema = z.strictObject({ mailbox_id: id, folder: ThreadFolderSchema })
+// AIDEV-NOTE: The server enforces the 60s..366d snooze window against its own clock; the browser
+// only checks the shape so a skewed device clock never blocks a legal request.
+export const ThreadSnoozeInputSchema = z.strictObject({ mailbox_id: id, snoozed_until: utcTimestamp.nullable() })
+export const ThreadStarInputSchema = z.strictObject({ mailbox_id: id, starred: z.boolean() })
 export const ThreadAssignmentInputSchema = z.strictObject({
   mailbox_id: id,
   assignee_id: id.nullable(),
@@ -419,6 +458,11 @@ export type DraftOperation = components['schemas']['DraftOperation']
 export type DraftOperationResponse = components['schemas']['DraftOperationResponse']
 export type ThreadReadState = components['schemas']['ThreadReadState']
 export type ThreadReadStateInput = components['schemas']['ThreadReadStateInput']
+export type ThreadFolderState = components['schemas']['ThreadFolderState']
+export type ThreadFolderInput = components['schemas']['ThreadFolderInput']
+export type ThreadSnoozeInput = components['schemas']['ThreadSnoozeInput']
+export type ThreadStarState = components['schemas']['ThreadStarState']
+export type ThreadStarInput = components['schemas']['ThreadStarInput']
 export type ThreadAssignment = components['schemas']['ThreadAssignment']
 export type ThreadAssignmentInput = components['schemas']['ThreadAssignmentInput']
 export type ThreadNote = components['schemas']['ThreadNote']
@@ -440,6 +484,8 @@ export const CD_MAX_BYTES = {
   drafts: 262_144,
   operation: 4_096,
   readState: 4_096,
+  folderState: 4_096,
+  starState: 4_096,
   assignment: 4_096,
   notes: 262_144,
   note: 65_536,

@@ -1,0 +1,16 @@
+module Elevateo
+  class ThreadStarState < ThreadCollaboration
+    REQUIRED: Array[String]
+    THREAD_LOCK_SQL: String
+    STATE_SQL: String
+    SAVE_SQL: String
+    def self.validate!: (WriteInput::object) -> nil
+    def put: (thread_id: String, input: WriteInput::object) -> WriteResponse
+  end
+end
+
+module V1
+  class ThreadStarsController < WriteController
+    def update: () -> void
+  end
+end

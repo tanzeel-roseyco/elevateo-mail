@@ -24,9 +24,11 @@ class WriteBoundaryDatabaseTestCase < SessionDatabaseTestCase
   end
 
   def write_guard(targets: [], connection: @api, digest: @digest, user: @user, auth: @auth)
-    JSON.parse(connection.exec_params(<<~SQL, [digest, user, auth, "{#{targets.join(',')}}"]).getvalue(0, 0))
+    value = connection.exec_params(<<~SQL, [digest, user, auth, "{#{targets.join(',')}}"]).getvalue(0, 0)
       SELECT app_auth.begin_protected_write($1::text, $2::uuid, $3::uuid, $4::uuid[])
     SQL
+    # AIDEV-NOTE: PG result type maps decode jsonb to Hash; untyped test connections still return JSON text.
+    value.is_a?(String) ? JSON.parse(value) : value
   end
 
   def private_assert(target: @user, connection: @admin)

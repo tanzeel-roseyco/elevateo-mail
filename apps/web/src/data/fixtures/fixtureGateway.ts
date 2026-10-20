@@ -28,10 +28,12 @@ import {
   SessionSchema,
   ThreadAssignmentSchema,
   ThreadDetailPageSchema,
+  ThreadFolderStateSchema,
   ThreadNotePageSchema,
   ThreadNoteResponseSchema,
   ThreadPageSchema,
   ThreadReadStateSchema,
+  ThreadStarStateSchema,
   type ThreadSummary,
 } from '../contract'
 import type { MailroomGateway } from '../gateway'
@@ -55,6 +57,9 @@ type Operation =
   | 'listDrafts'
   | 'getDraftOperation'
   | 'setThreadReadState'
+  | 'setThreadFolder'
+  | 'setThreadSnooze'
+  | 'setThreadStar'
   | 'getThreadAssignment'
   | 'setThreadAssignment'
   | 'listThreadNotes'
@@ -93,6 +98,9 @@ type CdOperation =
   | 'listDrafts'
   | 'getDraftOperation'
   | 'setThreadReadState'
+  | 'setThreadFolder'
+  | 'setThreadSnooze'
+  | 'setThreadStar'
   | 'getThreadAssignment'
   | 'setThreadAssignment'
   | 'listThreadNotes'
@@ -207,6 +215,9 @@ function threadSeeds(): ThreadSeed[] {
     last_message_at: '2026-10-13T00:00:00Z',
     unread: true,
     message_count: 1,
+    folder: 'inbox',
+    snoozed_until: null,
+    starred: false,
   }
   seeds.push({ summary: cdThread, bodyText: '<img src="https://example.invalid/pixel"> & plaintext body of the C/D fixture thread.' })
   return seeds
@@ -251,22 +262,38 @@ export function createFixtureGateway(script: FixtureScript = {}, options: Fixtur
     listThreads: async (_ctx, mailboxId, query, signal) => {
       throwIfAborted(signal)
       if (script['listThreads'] === undefined && mailboxId === CD_FIXTURE.mailboxId) {
-        const items = state.threadsIn(mailboxId).filter((t) => query.filter !== 'unread' || t.unread)
+        const items = state.threadsIn(mailboxId, query.filter ?? 'all')
         return validated(ThreadPageSchema, { ...envelope(), next_cursor: null, mailbox_id: mailboxId, items })
       }
       const page = resolve('listThreads', script, ThreadPageSchema)
-      // The actor's explicit read state is the exact inverse of B unread (§6).
-      return { ...page, items: page.items.map((t) => ({ ...t, unread: state.readStateFor(t.id).version === 0 ? t.unread : !state.readStateFor(t.id).read })) }
+      // The actor's explicit read/star state and a shared folder move override the example once
+      // written (version > 0); the example row stands until then (§6). The requested view then
+      // filters the decorated rows exactly as the C/D path does.
+      const filter = query.filter ?? 'all'
+      const decorated = page.items.map((t) => {
+          const read = state.readStateFor(t.id)
+          const star = state.starFor(t.id)
+          const folder = state.folderStateFor(t.id)
+          return {
+            ...t,
+            unread: read.version === 0 ? t.unread : !read.read,
+            starred: star.version === 0 ? t.starred : star.starred,
+            folder: folder.version === 0 ? t.folder : folder.folder,
+            snoozed_until: folder.version === 0 ? t.snoozed_until : folder.snoozedUntil,
+          }
+        })
+      return { ...page, items: decorated.filter((t) => CollaborationState.matchesFilter(t, filter)) }
     },
     getThread: async (_ctx, threadId, mailboxId, _query, signal) => {
       throwIfAborted(signal)
       const seed = script['getThread'] === undefined ? state.threadSeed(threadId) : undefined
       if (seed && seed.summary.mailbox_id === CD_FIXTURE.mailboxId && mailboxId === CD_FIXTURE.mailboxId) {
         const unread = !state.readStateFor(threadId).read
+        const folder = state.folderStateFor(threadId)
         return validated(ThreadDetailPageSchema, {
           ...envelope(),
           next_cursor: null,
-          thread: { id: threadId, mailbox_id: mailboxId, subject: seed.summary.subject, subject_truncated: false, unread, message_count: 1 },
+          thread: { id: threadId, mailbox_id: mailboxId, subject: seed.summary.subject, subject_truncated: false, unread, message_count: 1, folder: folder.folder, snoozed_until: folder.snoozedUntil, starred: state.starFor(threadId).starred },
           messages: [{ id: '00000000-0000-4000-8000-000000000133', sender: seed.summary.sender, to: [], sent_at: seed.summary.last_message_at, body_text: seed.bodyText, body_truncated: false, attachment_count: 0 }],
         })
       }
@@ -331,6 +358,18 @@ export function createFixtureGateway(script: FixtureScript = {}, options: Fixtur
     setThreadReadState: async (_ctx, _proof, threadId, input, signal) => {
       throwIfAborted(signal)
       return scripted('setThreadReadState', ThreadReadStateSchema) ?? validated(ThreadReadStateSchema, state.setReadState(threadId, input.mailbox_id, input.read))
+    },
+    setThreadFolder: async (_ctx, _proof, threadId, input, signal) => {
+      throwIfAborted(signal)
+      return scripted('setThreadFolder', ThreadFolderStateSchema) ?? validated(ThreadFolderStateSchema, state.setFolder(threadId, input.mailbox_id, input.folder))
+    },
+    setThreadSnooze: async (_ctx, _proof, threadId, input, signal) => {
+      throwIfAborted(signal)
+      return scripted('setThreadSnooze', ThreadFolderStateSchema) ?? validated(ThreadFolderStateSchema, state.setSnooze(threadId, input.mailbox_id, input.snoozed_until))
+    },
+    setThreadStar: async (_ctx, _proof, threadId, input, signal) => {
+      throwIfAborted(signal)
+      return scripted('setThreadStar', ThreadStarStateSchema) ?? validated(ThreadStarStateSchema, state.setStar(threadId, input.mailbox_id, input.starred))
     },
     getThreadAssignment: async (_ctx, threadId, mailboxId, signal) => {
       throwIfAborted(signal)

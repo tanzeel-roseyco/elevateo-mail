@@ -138,6 +138,53 @@ class ThreadDatabaseTest < SessionDatabaseTestCase
     end
   end
 
+  def test_folder_snooze_star_filters_and_projection
+    past, future, archive, spam, trash = Array.new(5) { thread }
+    other = SecureRandom.uuid
+    @other_users << other
+    fixture_change do
+      @admin.exec_params("INSERT INTO app.organization_memberships(organization_id, user_id) VALUES ($1, $2)", [@org, other])
+    end
+    fixture_change do
+      @admin.exec_params("UPDATE app.threads SET snoozed_until = clock_timestamp() - interval '1 minute' WHERE id = $1", [past])
+      @admin.exec_params("UPDATE app.threads SET snoozed_until = clock_timestamp() + interval '1 day' WHERE id = $1", [future])
+      { archive => "archive", spam => "spam", trash => "trash" }.each do |id, folder|
+        @admin.exec_params("UPDATE app.threads SET folder = $1 WHERE id = $2", [folder, id])
+      end
+      @admin.exec_params(<<~SQL, [@org, @box, @thread, other])
+        INSERT INTO app.thread_stars(organization_id,mailbox_id,thread_id,user_id,starred,star_version)
+        VALUES ($1,$2,$3,$4,true,1)
+      SQL
+      [archive, spam, trash].each do |id|
+        @admin.exec_params(<<~SQL, [@org, @box, id, @user])
+          INSERT INTO app.thread_stars(organization_id,mailbox_id,thread_id,user_id,starred,star_version)
+          VALUES ($1,$2,$3,$4,true,1)
+        SQL
+      end
+    end
+    read_state(past, @user, true)
+
+    ids = ->(filter) { list(query: { "filter" => filter }).fetch("items").map { |item| item.fetch("id") }.sort }
+    assert_equal [@thread, past].sort, ids.call("all")
+    assert_equal [@thread], ids.call("unread")
+    assert_equal [archive], ids.call("starred")
+    assert_equal [future], ids.call("snoozed")
+    assert_equal [archive], ids.call("archive")
+    assert_equal [spam], ids.call("spam")
+    assert_equal [trash], ids.call("trash")
+    projected = detail.fetch("thread")
+    assert_equal ["inbox", nil, false], projected.values_at("folder", "snoozed_until", "starred")
+
+    fixture_change do
+      @admin.exec_params(<<~SQL, [@org, @box, @thread, @user])
+        INSERT INTO app.thread_stars(organization_id,mailbox_id,thread_id,user_id,starred,star_version)
+        VALUES ($1,$2,$3,$4,true,1)
+      SQL
+    end
+    assert_equal [@thread, archive].sort, ids.call("starred")
+    assert_equal true, detail.fetch("thread").fetch("starred")
+  end
+
   def test_foreign_private_missing_and_mismatched_resources_are_indistinguishable
     private_box = mailbox(visibility: "private")
     private_thread = thread(box: private_box)
@@ -255,6 +302,9 @@ class ThreadDatabaseTest < SessionDatabaseTestCase
     detach_later_thread_policies
     drafts = File.expand_path("../be02_drafts", PARTS)
     collaboration = File.expand_path("../be02_collaboration", PARTS)
+    folders = File.expand_path("../be05_folders", PARTS)
+    # AIDEV-NOTE: BE-05 owns direct thread dependencies, so unwind it before the base thread schema.
+    @admin.exec(File.read(File.join(folders, "down.sql")))
     @admin.exec(File.read(File.join(collaboration, "down.sql")))
     @admin.exec(File.read(File.join(drafts, "down.sql")))
     @admin.exec(File.read(File.join(PARTS, "down.sql")))
@@ -265,6 +315,7 @@ class ThreadDatabaseTest < SessionDatabaseTestCase
     %w[validation tables policies].each { |part| @admin.exec(File.read(File.join(PARTS, "#{part}.sql"))) }
     %w[tables policies scope save operations grants].each { |part| @admin.exec(File.read(File.join(drafts, "#{part}.sql"))) }
     %w[tables policies target_reader].each { |part| @admin.exec(File.read(File.join(collaboration, "#{part}.sql"))) }
+    %w[tables policies].each { |part| @admin.exec(File.read(File.join(folders, "#{part}.sql"))) }
     refute_nil @admin.exec("SELECT to_regclass('app.messages')").getvalue(0, 0)
     @admin.exec("ROLLBACK")
     assert_equal before, business_snapshot

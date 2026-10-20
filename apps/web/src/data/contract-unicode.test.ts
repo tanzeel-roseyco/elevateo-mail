@@ -23,6 +23,9 @@ const summary = (subject: string | null, preview = 'p') => ({
   last_message_at: null,
   unread: false,
   message_count: 0,
+  folder: 'inbox',
+  snoozed_until: null,
+  starred: false,
 })
 
 const message = (bodyText: string) => ({
@@ -39,7 +42,7 @@ const detailPage = (subject: string) => ({
   context_id: TOKEN,
   authorization_version: TOKEN,
   next_cursor: null,
-  thread: { id: ID, mailbox_id: MB, subject, subject_truncated: false, unread: true, message_count: 1 },
+  thread: { id: ID, mailbox_id: MB, subject, subject_truncated: false, unread: true, message_count: 1, folder: 'inbox', snoozed_until: null, starred: false },
   messages: [],
 })
 

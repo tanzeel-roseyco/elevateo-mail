@@ -1,6 +1,6 @@
 {
   "baseline_commit": "03ae770c56271cd8236726bfd8fe63248e81283d",
-  "baseline_openapi_sha256": "65a5f926c661cb028e934e861892a995c2d9271853275546518b78588fa66597",
+  "baseline_openapi_sha256": "859041382484a3a001ae087ca88e02eeb23540f2cf46aec795b064aa8ea66073",
   "normalization": "UTF-8 sorted-key compact JSON, ensure_ascii=false",
   "frozen_sections": {
     "paths": {
@@ -22,13 +22,16 @@
         "/v1/drafts",
         "/v1/draft-operations/{operation_id}",
         "/v1/threads/{thread_id}/read-state",
+        "/v1/threads/{thread_id}/folder",
+        "/v1/threads/{thread_id}/snooze",
+        "/v1/threads/{thread_id}/star",
         "/v1/threads/{thread_id}/assignment",
         "/v1/threads/{thread_id}/notes",
         "/v1/mailboxes/{mailbox_id}/members",
         "/v1/mailboxes/{mailbox_id}/members/{user_id}",
         "/v1/search"
       ],
-      "sha256": "17bc8c14974b5f3ef41b2ff4c063f20ac6e75872031c339738f21626072e2976"
+      "sha256": "223b984c154059fedd0bdd64c4ada67a782b2c1eb5fe070608dcbb093ef05ec4"
     },
     "components/securitySchemes": {
       "keys": [
@@ -81,6 +84,12 @@
         "DraftOperationResponse",
         "ThreadReadStateInput",
         "ThreadReadState",
+        "ThreadFolder",
+        "ThreadFolderInput",
+        "ThreadSnoozeInput",
+        "ThreadStarInput",
+        "ThreadFolderState",
+        "ThreadStarState",
         "ThreadAssignmentInput",
         "ThreadAssignment",
         "ThreadNoteInput",
@@ -94,7 +103,7 @@
         "MailboxMembershipResult",
         "SearchPage"
       ],
-      "sha256": "d97cf79fcfa95ef897beaed6b6907ad1f2de082f410222aaa58b38df1d411ca8"
+      "sha256": "92a42f34ddd819f477be4d91c5c8951ba336a77fda63348cb34640d85495bb78"
     },
     "components/parameters": {
       "keys": [
@@ -121,7 +130,12 @@
       "sha256": "53497f011144dba5379a4948049edc5aaaba868a4b9ee3ad7258b5953c081a84"
     }
   },
-  "baseline_fixtures_sha256": "bfa2f8832395fcd7c43e4a7671d3e83c687af44ad09488bc722a54a0fc2eb455",
+  "baseline_fixtures_sha256": "5b89d3478a40f8046efd9273699edd3cfc6ce706f6607ee38752affcd889e772",
+  "extension": {
+    "name": "folders",
+    "openapi_sha256": "7284a572e5c9bc64961d4ae76fe6821c94341ef4672097277499642a959a2cae",
+    "fixtures_sha256": "4e3051d9d42d98914f324c0351288d04d7be58d33696f57828230de7381ef3e5"
+  },
   "runtime": "NOT_RUN",
   "be02": "OPEN",
   "integration_release": "GATED"

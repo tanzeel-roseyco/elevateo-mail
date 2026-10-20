@@ -1,4 +1,61 @@
 <!-- completion-wave-current:start -->
+### Thread folders, snooze, stars, Reply all / Forward — 2026-10-20 (BE-05, Claude Fable 5.1 + Codex)
+
+Workspace `Elevateo Mail - Unified Dashboard 20261020/elevateo-emailguard-fable`, branch
+`Tanzeel/elevateo-emailguard-fable`. Frontend by Fable inline; backend (`apps/server`) by the
+codex-backend route on `gpt-6.1-sol`, low reasoning effort, no fast mode (the backend route for this
+project; the Codex CLI session metadata confirmed `gpt-6.1-sol`).
+
+- Contract: `ThreadFolder` enum; `folder`, `snoozed_until`, `starred` required on `ThreadSummary` and
+  the detail thread; list `filter` enum of seven views; `PUT /v1/threads/{id}/folder`, `/snooze`,
+  `/star` with `ThreadFolderState` / `ThreadStarState` (versions 0..2^31-1); fixtures, seals and lock
+  re-sealed; `api.d.ts` regenerated; Postman collection regenerated.
+- Backend: migration `20261020000040_create_thread_folders` (`app.threads.folder`, `snoozed_until`,
+  `folder_version`, `folder_updated_at`; `app.thread_stars` per user with RLS; `down.sql`), services
+  `thread_folder_state.rb` / `thread_star_state.rb`, three controllers on `WriteController#protected_write`,
+  `ThreadReads` filter SQL with snooze expiry on `clock_timestamp()` and filter-scoped cursors,
+  `MailSearchSQL` excluding spam/trash, RBS, Minitest coverage per endpoint.
+- Web: `domain/threadFolders.ts` (views, `matchesView`, snooze window, presets) and
+  `domain/replyComposition.ts` (pure); `useThreadMutations` (per-thread busy, server-confirmed only);
+  `rowActions.ts` (view-dependent moves; Trash restore-only; no snooze in spam/trash); `SnoozeMenu`;
+  rewritten `InboxPage` / `MessageRow` / `FolderNav` / `inboxContext`; `ThreadPage` real toolbar,
+  star, Reply all / Forward; `SearchPage` server star; `starStore` deleted; help copy updated;
+  simulation banner fixed at the bottom (`Shell.tsx`), fixture note fixed pill (`fixtureMain.tsx`);
+  Outreach pages gained the reference breadcrumb row.
+- Tests added: `domain/threadFolders.test.ts`, `domain/replyComposition.test.ts`,
+  `data/contract-folders.test.ts`, `inbox/InboxFolders.test.tsx` (archive/restore/trash/bulk partial
+  failure/star/snooze/select/shortcuts), `thread/ThreadActions.test.tsx` (reply all, forward,
+  archive-back, rejected move, trash, snooze-back).
+- Visual (fleet-02 Docker, Chromium 1440/390, 168 captures, `all-pages.cjs` against the design
+  worker's reference geometry): desktop dashboard and 16 settings pages dy -2 (was +60.4); 13
+  Outreach pages dy -2 after the breadcrumb (was -13 with banner, -50 without); 390px dashboard and
+  settings pages dy -6 against the 158/110 references and 0 against the 152 references (was +110).
+  Fixture 404s on People / Manage Members / Personal Details are the known V2 fixture gaps.
+- Adversarial review (nine Codex packets, `code-reviews.md`): 29 defects / 9,134 reviewer-LOC
+  (3.17/KLOC), all fixed in this wave; backend fixes by the codex-backend route (`gpt-6.1-sol`, low effort,
+  no fast mode). Notable repairs: `usableAddress` hardening, one-line forward
+  headers, unique ascending presets, ref-backed per-thread claim, bulk reconciliation in `finally`,
+  phone row actions menu, FAB above the strip, non-interactive fixture pill at the start edge,
+  reader moves from the confirmed folder, Forward/Reply all without a usable sender, star upsert
+  locking the parent thread with a change-conditional version bump, preservation seal with a
+  separate folders extension, per-actor star and snooze/version boundary tests.
+- Gates after the review fixes: web Docker gate PASS (fleet-02 `apps/web/docker/test.Dockerfile`: check:api, check:api:v2, lint, typecheck, 83 files / 1029 tests, coverage 85.39% statements / 80.69% branches, build, fixture exclusion); backend gate PASS (fleet-02 `ops/tests/be02/run.py --context default`: 200 isolated Minitest suites, 1149 runs / 13368 assertions, 0 failures / 0 errors, Steep 0 problems, RuboCop 463 files 0 offenses, HTTP acceptance, cleanup PASSED). The first post-fix backend run
+  died at `inspect-image` because the earlier mandatory `docker image prune -a` had removed the pinned
+  `ruby:3.4.11-slim-bookworm` base (re-pulled by digest); the second run failed one new test on a
+  reserved-word CTE alias (`offset`, renamed by Codex); the third run is the one recorded here.
+- Visual after the review fixes (fleet-02 Docker, Chromium 1440/390, 171 captures, same runner and
+  reference geometry): every 1440 page PASS (dashboard, 16 settings pages and all 13 Outreach pages at
+  dy -2 with the breadcrumb row); 390 dashboard/settings at dy -6 against the 158/110 references and 0
+  against the 152 references (unchanged, reference inconsistency); 390 Outreach pages at dy -22 against
+  the `app-email-accounts-390` reference, which centres its heading beside two stacked action buttons
+  (Connect email / Get Help) that the Campaigns pages do not have, and whose capture is 472px wide, so
+  this is a reference-structure difference, not a shell offset; the campaign Runs page sits at +4. Known
+  fixture 404s (People, Manage Members, Personal Details) unchanged.
+- Gates before the review fixes: web Docker gate PASS (fleet-02 `apps/web/docker/test.Dockerfile`: check:api, check:api:v2, lint, typecheck, 83 files / 1008 tests, coverage 85.28% statements / 80.6% branches, build, fixture exclusion); backend gate PASS (fleet-02 `ops/tests/be02/run.py --context default`, run on the host after LF normalisation and pulling the pinned `ruby:3.4.11-slim-bookworm` base: 202 suites, 1142 runs / 13316 assertions, 0 failures / 0 errors, Steep 0 problems, RuboCop 0 offenses, real Auth/Mailpit/API HTTP acceptance, cleanup PASSED). Two earlier gate runs failed first on CRLF line endings from the Windows tarball and then on 7 BE-05/pre-existing checks (fixed by Codex: projection fixtures, folder-state test scope, star SQL assertion, RBS declarations, RuboCop ambiguity, JSONB write-guard helper, send-schema teardown dependency).
+- Limits: no Sent folder; no permanent delete; snoozed threads return by read-time expiry (no
+  worker); bulk actions are sequential per row (no batch endpoint); the mobile 6px reference
+  disagreement is recorded, not waived; Codex route model discrepancy recorded above.
+
 ### EmailGuard replica web UI — 2026-10-20 (task_d036e44f6d3d, worker Claude Fable 5.1)
 
 Workspace `Elevateo Mail - Unified Dashboard 20261020/elevateo-emailguard-fable`, branch

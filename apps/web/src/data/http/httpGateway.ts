@@ -35,12 +35,17 @@ import {
   ThreadAssignmentInputSchema,
   ThreadAssignmentSchema,
   ThreadDetailPageSchema,
+  ThreadFolderInputSchema,
+  ThreadFolderStateSchema,
   ThreadNoteInputSchema,
   ThreadNotePageSchema,
   ThreadNoteResponseSchema,
   ThreadPageSchema,
   ThreadReadStateInputSchema,
   ThreadReadStateSchema,
+  ThreadSnoozeInputSchema,
+  ThreadStarInputSchema,
+  ThreadStarStateSchema,
 } from '../contract'
 import { GatewayError } from '../errors'
 import type { CsrfProof, MailroomGateway, PageQuery, ReadContext, ThreadFilter } from '../gateway'
@@ -188,6 +193,19 @@ export function createHttpGateway(fetchImpl?: FetchLike): MailroomGateway {
     async setThreadReadState(ctx, proof, threadId, input, signal) {
       const body = validated(ThreadReadStateInputSchema, input)
       return requestJson(`/v1/threads/${seg(threadId)}/read-state`, ThreadReadStateSchema, CD_MAX_BYTES.readState, cdWrite(ctx, proof, body, 'PUT', CD_MAX_REQUEST_BYTES.small, signal))
+    },
+    // --- BE-05: folder, snooze and star share the read-state write shape -------------------
+    async setThreadFolder(ctx, proof, threadId, input, signal) {
+      const body = validated(ThreadFolderInputSchema, input)
+      return requestJson(`/v1/threads/${seg(threadId)}/folder`, ThreadFolderStateSchema, CD_MAX_BYTES.folderState, cdWrite(ctx, proof, body, 'PUT', CD_MAX_REQUEST_BYTES.small, signal))
+    },
+    async setThreadSnooze(ctx, proof, threadId, input, signal) {
+      const body = validated(ThreadSnoozeInputSchema, input)
+      return requestJson(`/v1/threads/${seg(threadId)}/snooze`, ThreadFolderStateSchema, CD_MAX_BYTES.folderState, cdWrite(ctx, proof, body, 'PUT', CD_MAX_REQUEST_BYTES.small, signal))
+    },
+    async setThreadStar(ctx, proof, threadId, input, signal) {
+      const body = validated(ThreadStarInputSchema, input)
+      return requestJson(`/v1/threads/${seg(threadId)}/star`, ThreadStarStateSchema, CD_MAX_BYTES.starState, cdWrite(ctx, proof, body, 'PUT', CD_MAX_REQUEST_BYTES.small, signal))
     },
     getThreadAssignment(ctx, threadId, mailboxId, signal) {
       return requestJson(`/v1/threads/${seg(threadId)}/assignment${query({ mailbox_id: mailboxId })}`, ThreadAssignmentSchema, CD_MAX_BYTES.assignment, cd(ctx, { signal }))

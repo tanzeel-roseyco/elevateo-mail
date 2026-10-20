@@ -10,6 +10,7 @@ module Elevateo
     def self.text: (ReadResponse::json_value, Integer) -> String
     def self.nullable_text: (ReadResponse::json_value, Integer) -> String?
     def self.boolean: (ReadResponse::json_value) -> bool
+    def self.folder: (ReadResponse::json_value) -> String
     def self.integer: (ReadResponse::json_value, Integer) -> Integer
   end
 end

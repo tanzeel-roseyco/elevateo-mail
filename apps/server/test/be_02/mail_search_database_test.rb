@@ -51,6 +51,29 @@ class MailSearchDatabaseTest < MailboxMembershipDatabaseCase
     assert_empty search.fetch("items")
   end
 
+  def test_search_excludes_spam_and_trash_and_projects_folder_state
+    fixture_message(body: "needle inbox")
+    other = add_actor
+    star(true, identity: other)
+    spam = conversation
+    trash = conversation
+    archive = conversation
+    fixture_message(thread: spam, body: "needle spam")
+    fixture_message(thread: trash, body: "needle trash")
+    fixture_message(thread: archive, body: "needle archive")
+    @admin.exec_params("UPDATE app.threads SET folder = 'spam' WHERE id = $1", [spam])
+    @admin.exec_params("UPDATE app.threads SET folder = 'trash' WHERE id = $1", [trash])
+    @admin.exec_params("UPDATE app.threads SET folder = 'archive' WHERE id = $1", [archive])
+    items = search.fetch("items")
+    assert_equal [@thread, archive].sort, items.map { |item| item.fetch("id") }.sort
+    assert(items.all? { |item| item.key?("snoozed_until") && item.fetch("starred") == false })
+    assert_equal %w[archive inbox], items.map { |item| item.fetch("folder") }.sort
+
+    star(true)
+    current_item = search.fetch("items").find { |item| item.fetch("id") == @thread }
+    assert_equal true, current_item.fetch("starred")
+  end
+
   def test_foreign_private_explicit_filter_and_revocation_follow_current_scope
     fixture_message(body: "needle visible")
     private_box = mailbox(visibility: "private")

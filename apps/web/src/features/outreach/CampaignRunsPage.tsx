@@ -5,6 +5,8 @@ import { useProtectedRequest } from '@/app/protectedRequest'
 import { useSession, sessionIdentityKey } from '@/app/session'
 import { Button } from '@/ui/Button'
 import { PageHeader } from '@/ui/PageHeader'
+import { Breadcrumbs } from '@/ui/Breadcrumbs'
+import { outreachCrumbs } from './OutreachPages'
 import { linkClass } from '@/ui/Text'
 import { campaignSchema, leadPageSchema } from './contract'
 import { campaignRunPageSchema, campaignRunSchema, type CampaignRun } from './runContract'
@@ -76,6 +78,7 @@ function RunsWorkspace({ campaignId }: { campaignId: string }) {
     else setError('Cancellation was not confirmed. Refresh status or retry cancellation; mail already accepted cannot be recalled.')
   }
   return <section aria-label="Campaign runs">
+    <Breadcrumbs crumbs={outreachCrumbs(`${data?.campaign.name ?? 'Campaign'} · Runs`, `/outreach/campaigns/${campaignId}/runs`)} />
     <PageHeader title={`${data?.campaign.name ?? 'Campaign'} · Runs`} subtitle="Consent-based single-message runs for this campaign" actions={<><Link to={`/outreach/campaigns/${campaignId}`} className={linkClass}>Campaign details</Link><Button size="xs" onClick={() => setRevision((value) => value + 1)}>Refresh status</Button></>} />
     <div className="space-y-6">
     {!available && <p role="status" className="text-sm text-zinc-500">Campaign runs are unavailable in this connection. No marketing mail can be queued here.</p>}

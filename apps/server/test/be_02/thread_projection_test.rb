@@ -11,7 +11,8 @@ class ThreadProjectionTest < Minitest::Test
 
   def thread_row
     { "id" => ID, "mailbox_id" => MAILBOX, "subject" => nil, "unread" => true, "message_count" => 0,
-      "sender" => nil, "preview_text" => "", "last_message_at" => nil }
+      "sender" => nil, "preview_text" => "", "last_message_at" => nil, "folder" => "inbox",
+      "snoozed_until" => nil, "starred" => false }
   end
 
   def message_row
@@ -23,10 +24,14 @@ class ThreadProjectionTest < Minitest::Test
     assert_nil summary.fetch("subject")
     assert_nil summary.fetch("sender")
     assert_nil summary.fetch("last_message_at")
+    assert_equal "inbox", summary.fetch("folder")
+    assert_nil summary.fetch("snoozed_until")
+    refute summary.fetch("starred")
     refute summary.fetch("subject_truncated")
     assert_equal 0, summary.fetch("message_count")
     assert_equal %w[attachment_count body_text body_truncated id sender sent_at to], Projection.message(message_row).keys.sort
-    assert_equal %w[id mailbox_id message_count subject subject_truncated unread], Projection.thread(thread_row, summary: false).keys.sort
+    assert_equal %w[folder id mailbox_id message_count snoozed_until starred subject subject_truncated unread],
+      Projection.thread(thread_row, summary: false).keys.sort
     nullable = { "display_name" => nil, "address" => nil }
     assert_equal nullable, Projection.address(nullable, nullable: false)
   end
@@ -93,9 +98,18 @@ class ThreadProjectionTest < Minitest::Test
     end
   end
 
+  def test_folder_snooze_and_actor_star_values_match_the_contract
+    row = thread_row.merge("folder" => "archive", "snoozed_until" => "2026-10-20T00:00:00.000001Z",
+                           "starred" => true)
+    projected = Projection.thread(row, summary: false)
+    assert_equal ["archive", "2026-10-20T00:00:00.000001Z", true],
+      projected.values_at("folder", "snoozed_until", "starred")
+  end
+
   def test_invalid_storage_fails_closed_without_repairing_the_payload
     [{ "id" => nil }, { "subject" => "x" * 1000 }, { "unread" => nil }, { "message_count" => -1 },
-     { "message_count" => 2_147_483_648 }, { "preview_text" => nil }].each do |change|
+     { "message_count" => 2_147_483_648 }, { "preview_text" => nil }, { "folder" => "deleted" },
+     { "snoozed_until" => "2026-10-20T00:00:00+01:00" }, { "starred" => nil }].each do |change|
       assert_raises(Invalid) { Projection.thread(thread_row.merge(change), summary: true) }
     end
     [{ "recipients" => nil }, { "recipients" => [nil] }, { "recipients" => Array.new(101) { {} } },

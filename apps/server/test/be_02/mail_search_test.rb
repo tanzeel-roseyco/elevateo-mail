@@ -13,6 +13,7 @@ class MailSearchTest < MailboxMembershipUnitCase
     assert_equal "%  \\%\\_\\\\ Needle 💌  %", connection.calls.first.last.fetch(3)
     refute_includes connection.calls.first.first, term
     assert_nil body.fetch("next_cursor")
+    assert_includes Elevateo::MailSearchSQL::PAGE, "thread.folder NOT IN ('spam', 'trash')"
   end
 
   def test_unicode_scalar_and_query_bounds_reject_only_whitespace_only_searches

@@ -24,5 +24,7 @@ module Elevateo
     def self.text: (Object?, maximum: Integer, ?empty: bool) -> String
     def self.integer: (Object?, minimum: Integer, maximum: Integer) -> Integer
     def self.boolean: (Object?) -> bool
+    def self.folder: (Object?) -> String
+    def self.nullable_timestamp: (Object?) -> String?
   end
 end

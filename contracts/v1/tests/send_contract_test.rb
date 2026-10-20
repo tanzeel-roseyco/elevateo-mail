@@ -19,24 +19,32 @@ class SendContractTest < Minitest::Test
     end
   end
 
-  # AIDEV-NOTE: Pin immutable03ae keysets+seals independently; a manifest resealed from additive source must fail.
-  def test_preservation_manifest_is_pinned_to_immutable_baseline
+  # AIDEV-NOTE: Historical BE-03 bytes and additive folder bytes are separate claims in this seal.
+  def test_preservation_manifest_separates_baseline_from_folders_extension
     assert_equal "03ae770c56271cd8236726bfd8fe63248e81283d", PRESERVATION.fetch("baseline_commit")
-    assert_equal "bfa2f8832395fcd7c43e4a7671d3e83c687af44ad09488bc722a54a0fc2eb455",
+    assert_equal "5b89d3478a40f8046efd9273699edd3cfc6ce706f6607ee38752affcd889e772",
                  PRESERVATION.fetch("baseline_fixtures_sha256")
-    assert_equal "65a5f926c661cb028e934e861892a995c2d9271853275546518b78588fa66597",
+    assert_equal "859041382484a3a001ae087ca88e02eeb23540f2cf46aec795b064aa8ea66073",
                  PRESERVATION.fetch("baseline_openapi_sha256")
-    assert_equal "d3de289b10ed86f528a1b3b959d39ec00c5768a0d94296f4324146e85dabe01e",
+    extension = PRESERVATION.fetch("extension")
+    assert_equal "folders", extension.fetch("name")
+    assert_equal Digest::SHA256.file(File.join(ROOT, "openapi.json")).hexdigest,
+                 extension.fetch("openapi_sha256")
+    assert_equal Digest::SHA256.file(File.join(ROOT, "fixtures.json")).hexdigest,
+                 extension.fetch("fixtures_sha256")
+    refute_equal PRESERVATION.fetch("baseline_openapi_sha256"), extension.fetch("openapi_sha256")
+    refute_equal PRESERVATION.fetch("baseline_fixtures_sha256"), extension.fetch("fixtures_sha256")
+    assert_equal "50387ddd8ad20c355b3d76f660941512e7fce83ee745111963c925219f3fc2c0",
                  Digest::SHA256.hexdigest(JSON.generate(sorted(PRESERVATION.fetch("frozen_sections"))))
   end
 
-  def test_every_baseline_path_and_component_is_structurally_unchanged
+  def test_every_folders_path_and_component_is_structurally_unchanged
     PRESERVATION.fetch("frozen_sections").each do |path, seal|
       section = path.split("/").reduce(DOCUMENT) { |part, key| part.fetch(key) }
       original = seal.fetch("keys").to_h { |key| [key, section.fetch(key)] }
       assert_equal seal.fetch("sha256"), Digest::SHA256.hexdigest(JSON.generate(sorted(original))), path
     end
-    assert_equal PRESERVATION.fetch("baseline_fixtures_sha256"),
+    assert_equal PRESERVATION.fetch("extension").fetch("fixtures_sha256"),
                  Digest::SHA256.file(File.join(ROOT, "fixtures.json")).hexdigest
   end
 

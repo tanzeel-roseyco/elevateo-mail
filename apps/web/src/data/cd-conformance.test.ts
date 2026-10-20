@@ -208,6 +208,60 @@ describe('D: read state, assignment, notes, membership and search over the HTTP 
   })
 })
 
+describe('BE-05: folder, snooze and star writes over the HTTP gateway', () => {
+  const folderState = (over: Record<string, unknown> = {}) => ({
+    context_id: CD.contextId, authorization_version: CD.authorizationVersion, thread_id: CD.threadId, mailbox_id: CD.mailboxId,
+    folder: 'archive', snoozed_until: null, folder_version: 1, updated_at: '2026-10-20T12:00:00Z', ...over,
+  })
+
+  it('PUT /v1/threads/{id}/folder sends the mailbox and folder with the proof and accepts the state', async () => {
+    const { gateway, last } = recording(200, folderState())
+    const result = await gateway.setThreadFolder(CTX, PROOF, CD.threadId, { mailbox_id: CD.mailboxId, folder: 'archive' })
+    expect(result).toMatchObject({ folder: 'archive', folder_version: 1 })
+    expect(last().path).toBe(`/v1/threads/${CD.threadId}/folder`)
+    expectProofWrite(last(), 'PUT')
+    expect(sentBody(last())).toEqual({ mailbox_id: CD.mailboxId, folder: 'archive' })
+  })
+
+  it('PUT /v1/threads/{id}/snooze sends the instant or null and reports the inbox move', async () => {
+    const at = '2026-10-21T08:00:00Z'
+    const { gateway, last } = recording(200, folderState({ folder: 'inbox', snoozed_until: at, folder_version: 2 }))
+    const result = await gateway.setThreadSnooze(CTX, PROOF, CD.threadId, { mailbox_id: CD.mailboxId, snoozed_until: at })
+    expect(result).toMatchObject({ folder: 'inbox', snoozed_until: at })
+    expect(last().path).toBe(`/v1/threads/${CD.threadId}/snooze`)
+    expectProofWrite(last(), 'PUT')
+    expect(sentBody(last())).toEqual({ mailbox_id: CD.mailboxId, snoozed_until: at })
+    const cleared = recording(200, folderState({ folder: 'inbox', snoozed_until: null, folder_version: 3 }))
+    await cleared.gateway.setThreadSnooze(CTX, PROOF, CD.threadId, { mailbox_id: CD.mailboxId, snoozed_until: null })
+    expect(sentBody(cleared.last())).toEqual({ mailbox_id: CD.mailboxId, snoozed_until: null })
+  })
+
+  it('PUT /v1/threads/{id}/star sends the desired boolean and accepts the per-actor state', async () => {
+    const payload = { context_id: CD.contextId, authorization_version: CD.authorizationVersion, thread_id: CD.threadId, mailbox_id: CD.mailboxId, starred: true, star_version: 1, updated_at: '2026-10-20T12:00:00Z' }
+    const { gateway, last } = recording(200, payload)
+    const result = await gateway.setThreadStar(CTX, PROOF, CD.threadId, { mailbox_id: CD.mailboxId, starred: true })
+    expect(result).toMatchObject({ starred: true, star_version: 1 })
+    expect(last().path).toBe(`/v1/threads/${CD.threadId}/star`)
+    expectProofWrite(last(), 'PUT')
+    expect(sentBody(last())).toEqual({ mailbox_id: CD.mailboxId, starred: true })
+  })
+
+  it('refuses invalid input before any fetch and rejects wrong-shaped or oversized answers', async () => {
+    const bad = recording(200, folderState())
+    await expect(bad.gateway.setThreadFolder(CTX, PROOF, CD.threadId, { mailbox_id: CD.mailboxId, folder: 'sent' as 'archive' })).rejects.toMatchObject({ kind: 'transport', code: 'malformed' })
+    await expect(bad.gateway.setThreadSnooze(CTX, PROOF, CD.threadId, { mailbox_id: CD.mailboxId, snoozed_until: 'tomorrow' })).rejects.toMatchObject({ kind: 'transport', code: 'malformed' })
+    expect(bad.calls).toHaveLength(0)
+    const wrong = recording(200, folderState({ folder: 'outbox' }))
+    await expect(wrong.gateway.setThreadFolder(CTX, PROOF, CD.threadId, { mailbox_id: CD.mailboxId, folder: 'archive' })).rejects.toMatchObject({ kind: 'transport', code: 'malformed' })
+    const huge = recording(200, folderState({ updated_at: '2026-10-20T12:00:00Z', extra: 'x'.repeat(5_000) }))
+    await expect(huge.gateway.setThreadStar(CTX, PROOF, CD.threadId, { mailbox_id: CD.mailboxId, starred: true })).rejects.toMatchObject({ kind: 'transport', code: 'oversized' })
+    const unavailable = recording(404, body('not_available'))
+    await expect(unavailable.gateway.setThreadStar(CTX, PROOF, CD.threadId, { mailbox_id: CD.mailboxId, starred: true })).rejects.toMatchObject({ code: 'not_available' })
+    const invalid = recording(400, body('request_invalid'))
+    await expect(invalid.gateway.setThreadSnooze(CTX, PROOF, CD.threadId, { mailbox_id: CD.mailboxId, snoozed_until: '2026-10-20T12:00:30Z' })).rejects.toMatchObject({ code: 'request_invalid' })
+  })
+})
+
 describe('browser-side validation refuses out-of-bound C/D input before any fetch', () => {
   const cases: ReadonlyArray<[string, (gateway: ReturnType<typeof createHttpGateway>) => Promise<unknown>]> = [
     ['saveDraft with a negative expected version', (g) => g.saveDraft(CTX, PROOF, CD.draftId, { ...requestValue<DraftSaveInput>('draft_save_plaintext_b'), expected_version: -1 })],

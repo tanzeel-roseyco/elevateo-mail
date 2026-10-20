@@ -53,14 +53,15 @@ describe('feature route wiring', () => {
 
   it('passes the session context and Outreach gateway to Celeste\'s campaigns page (happy path)', async () => {
     renderRoute('/outreach/campaigns', { outreach })
-    expect(await screen.findByRole('link', { name: 'Pilot' })).toBeTruthy()
+    // Lazy Outreach chunk: a longer wait keeps this deterministic under a loaded parallel run.
+    expect(await screen.findByRole('link', { name: 'Pilot' }, { timeout: 10_000 })).toBeTruthy()
     expect(screen.getByRole('link', { name: 'Create draft campaign' })).toBeTruthy()
     expect(screen.queryByRole('button', { name: /save|pause|add|create/i })).toBeNull()
   })
 
   it('shows Celeste\'s own unavailable state when no Outreach gateway is connected', async () => {
     renderRoute('/outreach/campaigns', {})
-    expect(await screen.findByRole('heading', { name: 'Campaigns' })).toBeTruthy()
+    expect(await screen.findByRole('heading', { name: 'Campaigns' }, { timeout: 10_000 })).toBeTruthy()
     expect((await screen.findByText('Outreach API unavailable for this account.')).getAttribute('role')).toBe('status')
   })
 

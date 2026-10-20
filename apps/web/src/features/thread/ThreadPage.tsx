@@ -12,6 +12,12 @@ import { useMailbox } from '@/app/mailboxes'
 import { useGateway, useSession } from '@/app/session'
 import { draftIntentKey, formatRecipients, useDraftIntent } from '@/app/draftIntent'
 import { edit, newDraftBuffer } from '@/domain/draftOperation'
+import { forwardBody, forwardSubject, replyAllRecipients, replySubject, usableAddress } from '@/domain/replyComposition'
+import { isSnoozing, parseThreadView, type ThreadView } from '@/domain/threadFolders'
+import { viewPath } from '@/features/inbox/inboxContext'
+import { canSnoozeIn, folderActionsFor, type RowAction } from '@/features/inbox/rowActions'
+import { SnoozeMenu } from '@/features/inbox/SnoozeMenu'
+import { useThreadMutations } from '@/features/inbox/useThreadMutations'
 import { canonicalId, newId } from '@/lib/ids'
 import { newTraversalBudget, readPage } from '@/lib/readPage'
 import { cx, formatDateTime } from '@/lib/format'
@@ -20,7 +26,7 @@ import { Callout } from '@/ui/Callout'
 import { Badge } from '@/ui/Badge'
 import { Button, IconButton } from '@/ui/Button'
 import { EmptyState, Skeleton } from '@/ui/Async'
-import { ArchiveBoxIcon, ArrowLeftIcon, ArrowUturnLeftIcon, ArrowUturnRightIcon, ClockIcon, EllipsisVerticalIcon, EnvelopeIcon, ExclamationTriangleIcon, TrashIcon } from '@/ui/icons'
+import { ArrowLeftIcon, ArrowUturnLeftIcon, ArrowUturnRightIcon, EnvelopeIcon, StarIcon, StarSolidIcon } from '@/ui/icons'
 import { AssignmentPanel } from './AssignmentPanel'
 import { NotesPanel } from './NotesPanel'
 import { ReadStateControl } from './ReadStateControl'
@@ -46,10 +52,10 @@ function sameAddressLine(message: Message): string {
   return `To: ${message.to.map((a) => a.display_name ?? a.address ?? 'Unknown recipient').join(', ')}`
 }
 
-function replyAddress(message: Message): string | null {
-  const address = message.sender?.address?.trim()
-  return address && !/[\r\n<>]/.test(address) ? address : null
-}
+const replyAddress = (message: Message): string | null => usableAddress(message.sender?.address)
+
+/** How a draft is started from a message; Reply all and Forward differ only in recipients, subject and body. */
+type DraftKind = 'reply' | 'reply_all' | 'forward'
 
 export function ThreadPage({ readDirectMessage, attachmentPort }: { readDirectMessage?: DirectMessageRead; attachmentPort?: AttachmentReadPort } = {}) {
   const { mailboxId, threadId } = useParams<{ mailboxId: string; threadId: string }>()
@@ -73,8 +79,8 @@ function ConversationReader({ mailboxId, threadId, readDirectMessage, attachment
   const navigate = useNavigate()
   const draftIntent = useDraftIntent()
   const [searchParams] = useSearchParams()
-  // Normalized like the inbox: anything but 'unread' is 'all', and 'all' stays out of the URL.
-  const filter = searchParams.get('filter') === 'unread' ? 'unread' : 'all'
+  // Normalized like the inbox: an unknown view is 'all', and 'all' stays out of the URL.
+  const view = parseThreadView(searchParams.get('filter'))
   const selectedMessageId = searchParams.get('message') === null ? null : canonicalId(searchParams.get('message') ?? '')
   const gateway = useGateway()
   const { scope, context, handleError, state: sessionState } = useSession()
@@ -90,18 +96,45 @@ function ConversationReader({ mailboxId, threadId, readDirectMessage, attachment
   const headingRef = useRef<HTMLHeadingElement | null>(null)
   const selectedMessageRef = useRef<HTMLLIElement | null>(null)
   const focusedTargetRef = useRef<string | null>(null)
-  const replyToMessage = (message: Message) => {
+  const mutations = useThreadMutations(mailboxId)
+  // AIDEV-NOTE: Reply, Reply all and Forward all become ordinary drafts (the draft API has no
+  // separate verbs). A forward carries no reply_to_thread_id so it is not threaded as a reply.
+  const draftFromMessage = (message: Message, kind: DraftKind) => {
     if (stateRef.current.status !== 'ready' || sessionState.status !== 'ready' || mailbox?.capabilities.compose !== true) return
+    const { subject: rawSubject, subject_truncated: truncated } = stateRef.current.thread
+    // Only a plain reply needs the sender; reply all stands on its validated recipient list and a
+    // forward needs no recipient at all.
     const address = replyAddress(message)
-    if (address === null) return
+    if (kind === 'reply' && address === null) return
+    const recipients = kind === 'reply_all' ? replyAllRecipients(message, mailbox.display_address) : []
+    if (kind === 'reply_all' && recipients.length === 0) return
     const draftId = newId()
-    const subject = stateRef.current.thread.subject_truncated ? '' : (stateRef.current.thread.subject ?? '')
-    const replySubject = subject === '' ? '' : /^re:\s*/i.test(subject) ? subject : `Re: ${subject}`
-    const content = { subject: Array.from(replySubject).slice(0, 998).join(''), to: [{ display_name: null, address }], body_text: '', reply_to_thread_id: threadId }
+    const to = kind === 'reply' ? [{ display_name: null, address: address ?? '' }] : recipients
+    const subject = kind === 'forward' ? forwardSubject(rawSubject, truncated) : replySubject(rawSubject, truncated)
+    const content = kind === 'forward'
+      ? { subject, to, body_text: forwardBody(message, truncated ? null : rawSubject), reply_to_thread_id: null }
+      : { subject, to, body_text: '', reply_to_thread_id: threadId }
     const buffer = edit(newDraftBuffer(draftId, mailboxId, { subject: '', to: [], body_text: '', reply_to_thread_id: threadId }, 0), content)
     // AIDEV-NOTE: Keep recipient and subject out of the URL; the editor restores only after an authorized draft read.
     draftIntent.write(draftIntentKey({ actorId: sessionState.session.actor.id, organizationId: sessionState.session.organization.id, mailboxId, draftId }), { buffer, recipientsText: formatRecipients(content.to) })
-    navigate(`/mailboxes/${mailboxId}/drafts/${draftId}?new=1&reply_to=${threadId}`)
+    navigate(`/mailboxes/${mailboxId}/drafts/${draftId}?new=1${kind === 'forward' ? '' : `&reply_to=${threadId}`}`)
+  }
+  const replyToMessage = (message: Message) => draftFromMessage(message, 'reply')
+
+  // Folder, snooze and star are real writes; after a move or snooze the thread no longer belongs to
+  // this view, so the reader returns to the list the person came from (Gmail behaviour).
+  const applyFolder = async (action: RowAction) => {
+    const outcome = action.move.kind === 'unsnooze' ? await mutations.setSnooze(threadId, null) : await mutations.setFolder(threadId, action.move.folder)
+    if (outcome.kind === 'ok') navigate(viewPath(mailboxId, view))
+  }
+  const applySnooze = async (snoozedUntil: string | null) => {
+    const outcome = await mutations.setSnooze(threadId, snoozedUntil)
+    if (outcome.kind === 'ok') navigate(viewPath(mailboxId, view))
+  }
+  const toggleStar = async () => {
+    if (stateRef.current.status !== 'ready') return
+    const outcome = await mutations.setStar(threadId, !stateRef.current.thread.starred)
+    if (outcome.kind === 'ok') setState((prev) => (prev.status === 'ready' ? { ...prev, thread: { ...prev.thread, starred: outcome.value.starred } } : prev))
   }
 
   const stateRef = useRef(state)
@@ -222,11 +255,15 @@ function ConversationReader({ mailboxId, threadId, readDirectMessage, attachment
   }, [selectedMessageId, state.status, selectedOnPage, readDirectMessage, context, mailboxId, threadId, scope, handleError, directRetry])
 
   const selectedMessagePresent = selectedOnPage || directResult?.status === 'ready'
-  // A selected URL must never fall back to another sender while its own message is unresolved.
-  // Without a selection, use the latest loaded message with a usable sender.
-  const replyMessage = state.status !== 'ready' ? null : selectedMessageId !== null
+  // A selected URL must never fall back to another message while its own is unresolved. Without a
+  // selection, Reply all and Forward act on the latest loaded message; a plain Reply needs a
+  // usable sender and takes the latest message that has one.
+  const sourceMessage = state.status !== 'ready' ? null : selectedMessageId !== null
     ? state.messages.find((message) => canonicalId(message.id) === selectedMessageId) ??
       (directResult?.status === 'ready' ? directResult.message : null)
+    : state.messages.at(-1) ?? null
+  const replyMessage = state.status !== 'ready' ? null : selectedMessageId !== null
+    ? sourceMessage
     : [...state.messages].reverse().find((message) => replyAddress(message) !== null) ?? null
 
   // AIDEV-NOTE: Page loadingMore changes reader state; focus moves only when a new target first appears.
@@ -243,8 +280,18 @@ function ConversationReader({ mailboxId, threadId, readDirectMessage, attachment
   }, [state.status, selectedMessageId, selectedMessagePresent])
 
   // The back link restores the inbox exactly as it was filtered when the user left it (FE-R11).
-  const backTo = `/mailboxes/${mailboxId}${filter === 'unread' ? '?filter=unread' : ''}`
+  const backTo = viewPath(mailboxId, view)
   const canCompose = mailbox?.capabilities.compose === true
+  const canWrite = mutations.canWrite && state.status === 'ready'
+  const busy = mutations.busy.has(threadId)
+  const starred = state.status === 'ready' && state.thread.starred
+  const snoozedUntil = state.status === 'ready' ? state.thread.snoozed_until : null
+  // AIDEV-NOTE: The moves on offer follow the thread's confirmed folder, not the URL view: a deep
+  // link to a trashed thread without ?filter=trash must still offer only a restore. The URL view
+  // is only where "back" and a confirmed move return to.
+  const actionView: ThreadView = state.status !== 'ready' ? view
+    : state.thread.folder !== 'inbox' ? state.thread.folder
+    : isSnoozing(state.thread.snoozed_until) ? 'snoozed' : 'all'
   const attachmentsFor = (message: Message) =>
     message.attachment_count > 0 && (
       attachmentPort ? (
@@ -257,19 +304,28 @@ function ConversationReader({ mailboxId, threadId, readDirectMessage, attachment
   return (
     <article aria-label="Conversation" className="flex min-h-0 flex-1 flex-col">
       <div className="overflow-hidden rounded-xl border border-zinc-200 bg-white shadow-xs dark:border-zinc-700 dark:bg-zinc-800">
-        {/* Thread toolbar (INBOX-SPEC thread view): back, unavailable actions, the real read toggle. */}
-        <div className="flex h-12 items-center gap-1 border-b border-zinc-200 px-2 dark:border-zinc-700">
+        {/* Thread toolbar (INBOX-SPEC thread view): back, folder moves, snooze, star; all server writes. */}
+        <div className="flex min-h-12 flex-wrap items-center gap-1 border-b border-zinc-200 px-2 dark:border-zinc-700">
           <Link to={backTo} className="inline-flex h-8 items-center gap-1.5 rounded-lg px-2 text-sm font-medium text-zinc-700 hover:bg-zinc-800/5 dark:text-zinc-300 dark:hover:bg-white/10">
             <ArrowLeftIcon className="size-5" /> Back to conversations
           </Link>
           <span className="mx-1 h-5 w-px bg-zinc-200 dark:bg-zinc-700" aria-hidden />
-          <IconButton label="Archive (not available yet)" disabled><ArchiveBoxIcon className="size-5" /></IconButton>
-          <IconButton label="Report spam (not available yet)" disabled><ExclamationTriangleIcon className="size-5" /></IconButton>
-          <IconButton label="Delete (not available yet)" disabled><TrashIcon className="size-5" /></IconButton>
-          <IconButton label="Snooze (not available yet)" disabled><ClockIcon className="size-5" /></IconButton>
+          {folderActionsFor(actionView).map((action) => (
+            <IconButton key={action.key} label={action.label} disabled={!canWrite || busy} onClick={() => void applyFolder(action)}>
+              <action.Icon className="size-5" />
+            </IconButton>
+          ))}
+          {canSnoozeIn(actionView) && <SnoozeMenu snoozedUntil={snoozedUntil} disabled={!canWrite || busy} onSnooze={(at) => void applySnooze(at)} />}
           <div className="flex-1" />
-          <IconButton label="More (not available yet)" disabled><EllipsisVerticalIcon className="size-5" /></IconButton>
+          <IconButton label={starred ? 'Unstar' : 'Star'} aria-pressed={starred} disabled={!canWrite || busy} onClick={() => void toggleStar()}>
+            {starred ? <StarSolidIcon className="size-5 text-gold-500" /> : <StarIcon className="size-5" />}
+          </IconButton>
         </div>
+        {mutations.error !== null && (
+          <div className="p-3">
+            <Callout variant="danger" role="alert" actions={<Button size="sm" onClick={mutations.clearError}>Dismiss</Button>}>{mutations.error}</Callout>
+          </div>
+        )}
 
         {state.status === 'loading' && <div role="status" aria-label="Loading conversation" className="p-6"><Skeleton rows={4} /></div>}
         {state.status === 'unavailable' && (
@@ -354,7 +410,7 @@ function ConversationReader({ mailboxId, threadId, readDirectMessage, attachment
                     <pre className="mt-3 whitespace-pre-wrap break-words font-sans text-sm leading-6 text-zinc-700 dark:text-zinc-300">{message.body_text}</pre>
                     {/* flex-wrap: both badges together overflow a 390px viewport otherwise (r10 visual QA). */}
                     <footer className="mt-3 flex flex-wrap items-center gap-2">
-                      <Link to={`?${filter === 'unread' ? 'filter=unread&' : ''}message=${encodeURIComponent(message.id)}`} aria-current={isSelected ? 'location' : undefined} className="rounded-md text-sm font-medium text-(--color-accent-content) underline-offset-4 hover:underline">Open this message</Link>
+                      <Link to={`?${view === 'all' ? '' : `filter=${view}&`}message=${encodeURIComponent(message.id)}`} aria-current={isSelected ? 'location' : undefined} className="rounded-md text-sm font-medium text-(--color-accent-content) underline-offset-4 hover:underline">Open this message</Link>
                       {canCompose && replyAddress(message) !== null && (
                         <Button size="sm" icon={<ArrowUturnLeftIcon className="size-4" />} onClick={() => replyToMessage(message)}>Reply to this sender as draft</Button>
                       )}
@@ -375,18 +431,23 @@ function ConversationReader({ mailboxId, threadId, readDirectMessage, attachment
                 </div>
               </div>
             )}
-            {/* Reply bar (INBOX-SPEC): only "Reply as draft" is backed by the draft API. */}
-            <div className="flex flex-wrap items-center gap-2 border-t border-zinc-200 px-6 py-4 dark:border-zinc-700">
-              {canCompose && (
+            {/* Reply bar (INBOX-SPEC): every button starts a draft; nothing is sent from here. */}
+            {canCompose && (
+              <div className="flex flex-wrap items-center gap-2 border-t border-zinc-200 px-6 py-4 dark:border-zinc-700">
                 <Button icon={<ArrowUturnLeftIcon className="size-4" />} disabled={replyMessage === null || replyAddress(replyMessage) === null || sessionState.status !== 'ready'}
                   onClick={() => { if (replyMessage !== null) replyToMessage(replyMessage) }}>
                   Reply as draft
                 </Button>
-              )}
-              <Button icon={<ArrowUturnLeftIcon className="size-4" />} disabled title="Not available yet">Reply all</Button>
-              <Button icon={<ArrowUturnRightIcon className="size-4" />} disabled title="Not available yet">Forward</Button>
-              <span className="text-xs text-zinc-400">Reply all and Forward are not available yet.</span>
-            </div>
+                <Button icon={<ArrowUturnLeftIcon className="size-4" />} disabled={sourceMessage === null || replyAllRecipients(sourceMessage, mailbox?.display_address ?? null).length === 0 || sessionState.status !== 'ready'}
+                  onClick={() => { if (sourceMessage !== null) draftFromMessage(sourceMessage, 'reply_all') }}>
+                  Reply all as draft
+                </Button>
+                <Button icon={<ArrowUturnRightIcon className="size-4" />} disabled={sourceMessage === null || sessionState.status !== 'ready'}
+                  onClick={() => { if (sourceMessage !== null) draftFromMessage(sourceMessage, 'forward') }}>
+                  Forward as draft
+                </Button>
+              </div>
+            )}
           </>
         )}
       </div>

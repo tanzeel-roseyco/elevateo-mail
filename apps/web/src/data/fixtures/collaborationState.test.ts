@@ -244,3 +244,81 @@ describe('fixture gateway over the state', () => {
     expect((await b.searchMail(CTX, { q: 'anything' })).items).toEqual([])
   })
 })
+
+describe('folders, snooze and stars (BE-05)', () => {
+  const T0 = Date.parse('2026-10-20T12:00:00Z')
+  const iso = (ms: number) => new Date(ms).toISOString()
+
+  it('an unknown thread and a foreign-mailbox thread are the same generic 404', () => {
+    const state = createCollaborationState()
+    const unknown = '00000000-0000-4000-8000-0000000000aa'
+    for (const call of [
+      () => state.setFolder(unknown, CD.mailboxId, 'archive'),
+      () => state.setSnooze(unknown, CD.mailboxId, null),
+      () => state.setStar(unknown, CD.mailboxId, true),
+      () => state.setFolder(CD.threadId, OUTSIDER, 'archive'),
+      () => state.setStar(CD.threadId, OUTSIDER, true),
+    ]) {
+      expect(thrown(call)).toMatchObject({ status: 404, code: 'not_available' })
+    }
+  })
+
+  it('accepts a snooze at exactly 60 s and 366 d ahead and rejects just outside the window', () => {
+    const state = createCollaborationState()
+    expect(state.setSnooze(CD.threadId, CD.mailboxId, iso(T0 + 60_000), T0).snoozed_until).toBe(iso(T0 + 60_000))
+    expect(state.setSnooze(CD.threadId, CD.mailboxId, iso(T0 + 366 * 86_400_000), T0).snoozed_until).toBe(iso(T0 + 366 * 86_400_000))
+    expect(thrown(() => state.setSnooze(CD.threadId, CD.mailboxId, iso(T0 + 59_000), T0))).toMatchObject({ status: 400, code: 'request_invalid' })
+    expect(thrown(() => state.setSnooze(CD.threadId, CD.mailboxId, iso(T0 + 366 * 86_400_000 + 1_000), T0))).toMatchObject({ status: 400, code: 'request_invalid' })
+  })
+
+  it('snoozing moves an archived thread back to the inbox; clearing keeps the folder; repeats do not bump versions', () => {
+    const state = createCollaborationState()
+    const archived = state.setFolder(CD.threadId, CD.mailboxId, 'archive')
+    expect(archived).toMatchObject({ folder: 'archive', snoozed_until: null, folder_version: 1 })
+    expect(state.setFolder(CD.threadId, CD.mailboxId, 'archive').folder_version).toBe(1)
+    const snoozed = state.setSnooze(CD.threadId, CD.mailboxId, iso(T0 + 3_600_000), T0)
+    expect(snoozed).toMatchObject({ folder: 'inbox', snoozed_until: iso(T0 + 3_600_000), folder_version: 2 })
+    expect(state.setSnooze(CD.threadId, CD.mailboxId, iso(T0 + 3_600_000), T0).folder_version).toBe(2)
+    expect(state.setFolder(CD.threadId, CD.mailboxId, 'trash')).toMatchObject({ folder: 'trash', snoozed_until: iso(T0 + 3_600_000), folder_version: 3 })
+    expect(state.setSnooze(CD.threadId, CD.mailboxId, null, T0)).toMatchObject({ folder: 'trash', snoozed_until: null, folder_version: 4 })
+    expect(state.setStar(CD.threadId, CD.mailboxId, true).star_version).toBe(1)
+    expect(state.setStar(CD.threadId, CD.mailboxId, true).star_version).toBe(1)
+    expect(state.setStar(CD.threadId, CD.mailboxId, false).star_version).toBe(2)
+  })
+
+  it('every server view lists the thread exactly where its confirmed state says', () => {
+    const state = createCollaborationState()
+    const ids = (filter: Parameters<typeof state.threadsIn>[1], now = T0) => state.threadsIn(CD.mailboxId, filter, now).map((t) => t.id)
+    expect(ids('all')).toEqual([CD.threadId])
+    expect(ids('unread')).toEqual([CD.threadId])
+    expect(ids('starred')).toEqual([])
+    state.setStar(CD.threadId, CD.mailboxId, true)
+    expect(ids('starred')).toEqual([CD.threadId])
+    state.setSnooze(CD.threadId, CD.mailboxId, iso(T0 + 3_600_000), T0)
+    expect(ids('all')).toEqual([])
+    expect(ids('snoozed')).toEqual([CD.threadId])
+    // Once the time passes the thread is back in the inbox views without any write.
+    expect(ids('all', T0 + 3_600_001)).toEqual([CD.threadId])
+    expect(ids('snoozed', T0 + 3_600_001)).toEqual([])
+    state.setFolder(CD.threadId, CD.mailboxId, 'spam')
+    expect(ids('spam')).toEqual([CD.threadId])
+    expect(ids('starred')).toEqual([])
+    expect(ids('all', T0 + 3_600_001)).toEqual([])
+    state.setFolder(CD.threadId, CD.mailboxId, 'trash')
+    expect(ids('trash')).toEqual([CD.threadId])
+    expect(ids('spam')).toEqual([])
+  })
+
+  it('the example-backed list path honours the requested view as the C/D path does', async () => {
+    const state = createCollaborationState()
+    const gateway = createFixtureGateway({}, { state })
+    const example = '00000000-0000-4000-8000-000000000021'
+    const before = await gateway.listThreads(CTX, example, {})
+    const id = before.items[0]?.id
+    expect(id).toBeDefined()
+    expect((await gateway.listThreads(CTX, example, { filter: 'archive' })).items).toEqual([])
+    await gateway.setThreadFolder(CTX, PROOF, id!, { mailbox_id: example, folder: 'archive' })
+    expect((await gateway.listThreads(CTX, example, {})).items).toEqual([])
+    expect((await gateway.listThreads(CTX, example, { filter: 'archive' })).items.map((t) => t.id)).toEqual([id])
+  })
+})

@@ -112,6 +112,18 @@ class ThreadReadsTest < Minitest::Test
     assert_raises(Elevateo::Cursors::Invalid) { reader(Connection.new).detail(thread_id: @thread, query: { "mailbox_id" => @mailbox, "limit" => "1", "cursor" => token }) }
   end
 
+  def test_each_contract_filter_is_accepted_and_bound_into_cursor_scope
+    %w[all unread starred snoozed archive spam trash].each do |filter|
+      connection = Connection.new([{}], [])
+      page = JSON.parse(reader(connection).list(mailbox_id: @mailbox, query: { "filter" => filter }))
+      assert_empty page.fetch("items")
+      assert_equal filter, connection.calls.last.last.fetch(3)
+    end
+    assert_includes Elevateo::ThreadReads::LIST_SQL,
+      "COALESCE(star.starred, FALSE) AND thread.folder NOT IN ('spam', 'trash')"
+    assert_includes Elevateo::ThreadReads::LIST_SQL, "thread.snoozed_until > clock_timestamp()"
+  end
+
   def test_list_byte_budget_keeps_whole_entries_and_included_cursor
     address = { "display_name" => "\u0001" * 256, "address" => "\u0001" * 256 }
     rows = (1..51).map do |number|

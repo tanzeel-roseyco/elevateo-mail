@@ -109,7 +109,7 @@ class SendSchemaDatabaseTest < SendDatabaseTestCase
   end
   def test_empty_down_removes_only_send_objects_and_transaction_rollback_restores_them
     @admin.exec("BEGIN")
-    # AIDEV-NOTE: Detach only later typed/FK dependencies; rollback restores their exact definitions.
+    # AIDEV-NOTE: Detach later typed-function/FK dependencies; rollback restores their exact definitions.
     dependencies = @admin.exec(<<~SQL).to_a
       SELECT conrelid::regclass::text AS relation,conname,pg_get_constraintdef(oid) AS definition
         FROM pg_constraint WHERE contype='f'
@@ -122,6 +122,7 @@ class SendSchemaDatabaseTest < SendDatabaseTestCase
     dependencies.each do |dependency|
       @admin.exec("ALTER TABLE #{dependency.fetch("relation")} DROP CONSTRAINT #{PG::Connection.quote_ident(dependency.fetch("conname"))}")
     end
+    @admin.exec("DROP FUNCTION app_send_private.marketing_dispatch_allowed(app_send_private.intents)")
     @admin.exec("DROP FUNCTION app_send_private.resend_attachments_allowed(app_send_private.intents)")
     # AIDEV-NOTE: Reverse rotation, budget and SMTP dependencies before the original send-schema teardown.
     @admin.exec(File.read(File.expand_path("../../db/be03_send/mailbox_rotation_down.sql", __dir__)))
@@ -144,6 +145,7 @@ class SendSchemaDatabaseTest < SendDatabaseTestCase
       ).getvalue(0, 0)
       assert_equal dependency.fetch("definition"), restored
     end
+    refute_nil @admin.exec("SELECT to_regprocedure('app_send_private.marketing_dispatch_allowed(app_send_private.intents)')").getvalue(0, 0)
     refute_nil @admin.exec("SELECT to_regprocedure('app_send_private.resend_attachments_allowed(app_send_private.intents)')").getvalue(0, 0)
     refute approve.key?("code")
   ensure

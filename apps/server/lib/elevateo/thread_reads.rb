@@ -15,12 +15,17 @@ module Elevateo
     LIST_SQL = <<~SQL.freeze
       WITH page AS (
         SELECT thread.id, thread.mailbox_id, left(thread.subject, 257) AS subject,
-               NOT COALESCE(state.is_read, FALSE) AS unread, latest.id AS latest_id,
+               NOT COALESCE(state.is_read, FALSE) AS unread, thread.folder,
+               to_char(thread.snoozed_until AT TIME ZONE 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS.US"Z"') AS snoozed_until,
+               COALESCE(star.starred, FALSE) AS starred, latest.id AS latest_id,
                latest.sent_at AS activity
           FROM app.threads AS thread
           LEFT JOIN app.thread_read_states AS state
             ON state.organization_id = thread.organization_id AND state.mailbox_id = thread.mailbox_id
            AND state.thread_id = thread.id AND state.user_id = $3::uuid
+          LEFT JOIN app.thread_stars AS star
+            ON star.organization_id = thread.organization_id AND star.mailbox_id = thread.mailbox_id
+           AND star.thread_id = thread.id AND star.user_id = $3::uuid
           LEFT JOIN LATERAL (
             SELECT message.id, message.sent_at FROM app.messages AS message
              WHERE message.organization_id = $1::uuid AND message.mailbox_id = $2::uuid
@@ -28,14 +33,26 @@ module Elevateo
              ORDER BY message.sent_at DESC NULLS LAST, message.id DESC LIMIT 1
           ) AS latest ON TRUE
          WHERE thread.organization_id = $1::uuid AND thread.mailbox_id = $2::uuid
-           AND ($4::text = 'all' OR NOT COALESCE(state.is_read, FALSE))
+           AND CASE $4::text
+             WHEN 'all' THEN thread.folder = 'inbox' AND
+               (thread.snoozed_until IS NULL OR thread.snoozed_until <= clock_timestamp())
+             WHEN 'unread' THEN thread.folder = 'inbox' AND
+               (thread.snoozed_until IS NULL OR thread.snoozed_until <= clock_timestamp()) AND
+               NOT COALESCE(state.is_read, FALSE)
+             WHEN 'starred' THEN COALESCE(star.starred, FALSE) AND thread.folder NOT IN ('spam', 'trash')
+             WHEN 'snoozed' THEN thread.folder = 'inbox' AND thread.snoozed_until > clock_timestamp()
+             WHEN 'archive' THEN thread.folder = 'archive'
+             WHEN 'spam' THEN thread.folder = 'spam'
+             WHEN 'trash' THEN thread.folder = 'trash'
+             ELSE FALSE END
            AND ($5::uuid IS NULL OR
              ($6::timestamptz IS NULL AND latest.sent_at IS NULL AND thread.id < $5::uuid) OR
              ($6::timestamptz IS NOT NULL AND (latest.sent_at IS NULL OR latest.sent_at < $6::timestamptz OR
                (latest.sent_at = $6::timestamptz AND thread.id < $5::uuid))))
          ORDER BY latest.sent_at DESC NULLS LAST, thread.id DESC LIMIT $7::integer
       )
-      SELECT page.id, page.mailbox_id, page.subject, page.unread, latest.sender::text AS sender,
+      SELECT page.id, page.mailbox_id, page.subject, page.unread, page.folder, page.snoozed_until,
+             page.starred, latest.sender::text AS sender,
              COALESCE(left(latest.body_text, 256), '') AS preview_text,
              to_char(page.activity AT TIME ZONE 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS.US"Z"') AS last_message_at,
              (SELECT LEAST(count(message.id), 2147483647)::integer FROM app.messages AS message
@@ -49,13 +66,18 @@ module Elevateo
 
     THREAD_SQL = <<~SQL.freeze
       SELECT thread.id, thread.mailbox_id, left(thread.subject, 999) AS subject,
-             NOT COALESCE(state.is_read, FALSE) AS unread,
+             NOT COALESCE(state.is_read, FALSE) AS unread, thread.folder,
+             to_char(thread.snoozed_until AT TIME ZONE 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS.US"Z"') AS snoozed_until,
+             COALESCE(star.starred, FALSE) AS starred,
              (SELECT LEAST(count(message.id), 2147483647)::integer FROM app.messages AS message
                WHERE message.organization_id = $1::uuid AND message.mailbox_id = $2::uuid
                  AND message.thread_id = thread.id) AS message_count
         FROM app.threads AS thread LEFT JOIN app.thread_read_states AS state
           ON state.organization_id = thread.organization_id AND state.mailbox_id = thread.mailbox_id
          AND state.thread_id = thread.id AND state.user_id = $3::uuid
+        LEFT JOIN app.thread_stars AS star
+          ON star.organization_id = thread.organization_id AND star.mailbox_id = thread.mailbox_id
+         AND star.thread_id = thread.id AND star.user_id = $3::uuid
        WHERE thread.organization_id = $1::uuid AND thread.mailbox_id = $2::uuid AND thread.id = $4::uuid
        LIMIT 1
     SQL
@@ -100,7 +122,7 @@ module Elevateo
       limit = query_limit(query, maximum: 50, allowed: %w[cursor limit filter])
       mailbox = request_uuid(mailbox_id)
       filter = query.fetch("filter", "all")
-      raise InvalidQuery, "invalid request" unless %w[all unread].include?(filter)
+      raise InvalidQuery, "invalid request" unless %w[all unread starred snoozed archive spam trash].include?(filter)
 
       envelope = session_envelope.merge("mailbox_id" => mailbox)
       scope = cursor_scope(resource: "threads", filters: { "mailbox_id" => mailbox, "filter" => filter },

@@ -132,7 +132,7 @@ function SearchResults({ q, mailboxId }: { q: string; mailboxId: string | undefi
             {state.items.length > 0 && (
               <ol aria-label="Matching conversations">
                 {state.items.map((thread) => (
-                  <MessageRow key={thread.id} thread={thread} to={`/mailboxes/${thread.mailbox_id}/threads/${thread.id}`} mailboxName={mailboxName(thread.mailbox_id)} selected={false} starred={false} />
+                  <MessageRow key={thread.id} thread={thread} to={`/mailboxes/${thread.mailbox_id}/threads/${thread.id}`} mailboxName={mailboxName(thread.mailbox_id)} selected={false} />
                 ))}
               </ol>
             )}

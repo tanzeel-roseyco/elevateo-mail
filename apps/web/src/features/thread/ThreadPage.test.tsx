@@ -53,7 +53,7 @@ function detailPage(bodies: string[], nextCursor: string | null): ThreadDetailPa
     context_id: 'context_A_0123456789',
     authorization_version: 'authz_A_0123456789',
     next_cursor: nextCursor,
-    thread: { id: THREAD, mailbox_id: MB, subject: 'Paged subject', subject_truncated: false, unread: false, message_count: bodies.length },
+    thread: { id: THREAD, mailbox_id: MB, subject: 'Paged subject', subject_truncated: false, unread: false, message_count: bodies.length, folder: 'inbox', snoozed_until: null, starred: false },
     messages: bodies.map((body) => ({
       // The body doubles as a stable id: equal bodies model the same message across pages.
       id: body,
@@ -120,7 +120,7 @@ function renderReply(page: ThreadDetailPage, compose = true, options: {
 function replyPage(sender: ThreadDetailPage['messages'][number]['sender'], truncated = false): ThreadDetailPage {
   return {
     ...detailPage(['Hello'], null),
-    thread: { id: CD.threadId, mailbox_id: CD.mailboxId, subject: 'Project update', subject_truncated: truncated, unread: false, message_count: 1 },
+    thread: { id: CD.threadId, mailbox_id: CD.mailboxId, subject: 'Project update', subject_truncated: truncated, unread: false, message_count: 1, folder: 'inbox', snoozed_until: null, starred: false },
     messages: [{ id: '00000000-0000-4000-8000-000000000033', sender, to: [], sent_at: null, body_text: 'Hello', body_truncated: false, attachment_count: 0 }],
   }
 }

@@ -22,7 +22,7 @@ function firstPage(): ThreadDetailPage {
     context_id: 'context_A_0123456789',
     authorization_version: 'authz_A_0123456789',
     next_cursor: 'cursor_next',
-    thread: { id: THREAD, mailbox_id: MB, subject: 'Paged subject', subject_truncated: false, unread: false, message_count: 2 },
+    thread: { id: THREAD, mailbox_id: MB, subject: 'Paged subject', subject_truncated: false, unread: false, message_count: 2, folder: 'inbox', snoozed_until: null, starred: false },
     messages: [{ id: MESSAGE_A, sender: null, to: [], sent_at: null, body_text: 'First page plaintext', body_truncated: false, attachment_count: 0 }],
   }
 }

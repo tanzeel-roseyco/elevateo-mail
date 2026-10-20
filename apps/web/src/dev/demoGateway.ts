@@ -30,6 +30,9 @@ function threadSeeds(): ThreadSeed[] {
       last_message_at: `2026-10-14T${String(10 - index).padStart(2, '0')}:15:00Z`,
       unread,
       message_count: 1,
+      folder: 'inbox',
+      snoozed_until: null,
+      starred: false,
     },
     bodyText: ['Hi Alex,', '', preview, '', 'Everything here is a fictitious example for the Elevateo Mail preview.', '', 'Best,', name].join(String.fromCharCode(10)),
   }))

@@ -4,6 +4,59 @@ require_relative "collaboration_database_helper"
 
 # AIDEV-NOTE: Database lock observation supplies barriers; assertions never depend on which Ruby thread runs first.
 class CollaborationConcurrencyTest < CollaborationDatabaseCase
+  def query_binds(*values)
+    values.map do |value|
+      ActiveRecord::Relation::QueryAttribute.new("fixture", value, ActiveRecord::Type::String.new)
+    end
+  end
+
+  def test_unchanged_star_upsert_conflict_preserves_the_database_version
+    star(true)
+    row = scope do |connection|
+      binds = query_binds(@org, @box, @thread, @user, "true")
+      connection.exec_query(Elevateo::ThreadStarState::SAVE_SQL, "Repeat star", binds).first
+    end
+    assert_equal [true, 1], [ActiveModel::Type::Boolean.new.cast(row.fetch("starred")), row.fetch("star_version")]
+    assert_equal "1", owned_rows("thread_stars", user: @user).first.fetch("star_version")
+  end
+
+  def test_changed_star_upsert_conflict_at_maximum_returns_domain_unavailable
+    star(true)
+    @admin.exec_params(<<~SQL, [@org, @box, @thread, @user])
+      UPDATE app.thread_stars SET starred = false, star_version = 2147483647
+       WHERE organization_id = $1 AND mailbox_id = $2 AND thread_id = $3 AND user_id = $4
+    SQL
+    row = scope do |connection|
+      binds = query_binds(@org, @box, @thread, @user, "true")
+      connection.exec_query(Elevateo::ThreadStarState::SAVE_SQL, "Exhausted star", binds).first
+    end
+    assert_equal [false, 2_147_483_647],
+      [ActiveModel::Type::Boolean.new.cast(row.fetch("starred")), row.fetch("star_version")]
+    error = assert_raises(Elevateo::CollaborationError) { star(true) }
+    assert_equal [503, "temporarily_unavailable"], [error.status, error.code]
+  end
+
+  def test_concurrent_first_star_writes_serialize_on_the_parent_thread
+    retry_digest = SecureRandom.hex(32)
+    assert_equal "ok", create(digest: retry_digest).fetch("status")
+    retry_actor = Identity.new(user_id: @user, org_id: @org, digest: retry_digest, auth_session_id: @auth)
+    contender = nil
+    scope do |connection|
+      assert_empty owned_rows("thread_stars", user: @user)
+      binds = query_binds(@org, @box, @thread)
+      connection.exec_query(Elevateo::ThreadStarState::THREAD_LOCK_SQL, "Hold star parent", binds)
+      contender, pid = start_service { star(true, identity: retry_actor) }
+      wait_for_lock(pid, blocker: connection.raw_connection.backend_pid)
+      first = service(Elevateo::ThreadStarState, connection).put(thread_id: @thread,
+        input: { "mailbox_id" => @box, "starred" => true })
+      assert_equal [true, 1], JSON.parse(first.json).values_at("starred", "star_version")
+    end
+    assert_equal [true, 1], JSON.parse(contender.value.json).values_at("starred", "star_version")
+    assert_equal 1, owned_rows("thread_stars", user: @user).length
+  ensure
+    contender&.join
+  end
+
   def test_differing_read_writes_from_separate_sessions_serialize
     retry_digest = SecureRandom.hex(32)
     assert_equal "ok", create(digest: retry_digest)["status"]
