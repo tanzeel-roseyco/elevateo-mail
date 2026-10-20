@@ -21,12 +21,13 @@ export function PageHeader({ title, subtitle, actions, help = true, className }:
   // separator underneath) so the 1440px title/button positions land within 1–2px.
   return (
     <div className={cx('mb-10 flex items-start max-md:flex-col', className)}>
-      <div className="flex-1 self-stretch max-md:pt-6">
+      <div className="min-w-0 flex-1 self-stretch max-md:pt-6">
         <div className="flex items-center justify-between gap-4 max-sm:flex-col max-sm:items-start">
           <div className="min-w-0 space-y-1">
             <h1 tabIndex={-1} className={cx('text-lg font-medium text-zinc-800 dark:text-white', subtitle && 'mb-2')}>{title}</h1>
-            {/* break-words: a subtitle that echoes user input (help search query) must wrap, not widen. */}
-            {subtitle && <p className="break-words text-sm text-zinc-500 dark:text-zinc-400">{subtitle}</p>}
+            {/* wrap-anywhere (not break-words): only overflow-wrap:anywhere shrinks a 4096-character
+                query's min-content width inside the flex column, so the page cannot widen. */}
+            {subtitle && <p className="wrap-anywhere text-sm text-zinc-500 dark:text-zinc-400">{subtitle}</p>}
           </div>
           <div className="mb-6 flex flex-wrap items-center gap-3">
             {actions}

@@ -49,6 +49,12 @@ untouched; the parked marketing backend was not modified.
   filename wraps instead of clipping Download, and outdated test oracles updated without weakening
   (compose opens a fresh draft window; Lyra's personal-settings assertions now run through the
   Settings redirect).
+- R7 (R6 gate 973/976 + runtime): auth privacy test pins the brand mark as the only resource;
+  `/settings` renders the hub directly (Workspace tab selected there via `LinkTab.activeAt`);
+  legacy-redirect test scopes to main; mobile drawer keeps open when Escape closes a nested popup;
+  help subtitle/review values use `wrap-anywhere` (break-words does not shrink min-content);
+  help field re-syncs on the location key after search-then-immediate-Back; Copy sits on an opaque
+  fade in code blocks; Leads empty-state copy no longer points "above".
 - Verification: pending the shell worker's corrected fleet-02 checkpoint (check:api, check:api:v2,
   lint, typecheck, test, build, fixture preview) and the nine feature-worker browser matrices; this
   entry is updated with the results.

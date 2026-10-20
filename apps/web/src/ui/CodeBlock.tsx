@@ -45,7 +45,9 @@ export function CodeBlock({ code, language, className }: { code: string; languag
       <pre className="overflow-x-auto rounded-lg border border-zinc-200 bg-zinc-50 px-3 py-2 pe-20 font-mono text-sm leading-6 text-zinc-800 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100" data-language={language}>
         <code>{code}</code>
       </pre>
-      <CopyButton text={code} className="absolute end-2 top-2" />
+      {/* The fade gives Copy an opaque surface: long lines scroll under it instead of through it (390px). */}
+      <span aria-hidden className="pointer-events-none absolute inset-y-px end-px w-20 rounded-e-lg bg-linear-to-l from-zinc-50 from-60% to-transparent dark:from-zinc-900" />
+      <CopyButton text={code} className="absolute end-2 top-2 bg-zinc-50 dark:bg-zinc-900" />
     </div>
   )
 }

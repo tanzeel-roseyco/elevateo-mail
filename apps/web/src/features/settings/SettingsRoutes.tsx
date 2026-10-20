@@ -17,7 +17,8 @@ export function SettingsRoutes() {
   return (
     <Routes>
       <Route element={<SettingsLayout />}>
-        <Route index element={<Navigate to="/settings/workspace" replace />} />
+        {/* /settings is the hub itself: an index Navigate left the outlet empty in jsdom (R4/R6 gate). */}
+        <Route index element={<WorkspaceHubPage />} />
         <Route path="workspace" element={<WorkspaceHubPage />} />
         <Route path="workspace/name" element={<WorkspaceNamePage />} />
         <Route path="workspace/invite" element={<WorkspaceInvitePage />} />

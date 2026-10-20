@@ -42,8 +42,8 @@ describe('settings area', () => {
     const tabs = screen.getByRole('navigation', { name: 'Settings sections' })
     expect(within(tabs).getAllByRole('link').map((l) => l.textContent)).toEqual(['Workspace', 'Profile', 'Tags', 'Developer API', 'Webhooks', 'Integrations'])
     expect(within(tabs).queryByRole('link', { name: 'Billing' })).toBeNull()
-    // The index route redirects in an effect, so the hub cards arrive one render after the heading.
-    expect((await screen.findByRole('link', { name: /Manage Members/ })).getAttribute('href')).toBe('/settings/workspace/members')
+    expect(within(tabs).getByRole('link', { name: 'Workspace' }).getAttribute('aria-current')).toBe('page')
+    expect(screen.getByRole('link', { name: /Manage Members/ }).getAttribute('href')).toBe('/settings/workspace/members')
   })
 
   it('redirects the legacy personal and organization routes into the new sections', async () => {
@@ -73,7 +73,7 @@ describe('settings area', () => {
     }
     renderSettings('/settings/organization')
     expect(await screen.findByRole('heading', { name: 'Manage Members', level: 1 })).toBeTruthy()
-    expect(await screen.findByRole('link', { name: /Fixture inbox/ })).toBeTruthy()
+    expect(await within(screen.getByRole('main')).findByRole('link', { name: /Fixture inbox/ })).toBeTruthy()
   })
 
   it('creates a tag through the modal and labels the page as a simulated adapter', async () => {

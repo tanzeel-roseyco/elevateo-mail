@@ -314,6 +314,20 @@ describe('mobile drawer', () => {
     await waitFor(() => expect(document.activeElement).toBe(trigger))
   })
 
+  it('Escape inside the workspace popup closes only the popup and keeps the drawer open', async () => {
+    renderShell(createFixtureGateway())
+    await screen.findByText('Synthetic organization A')
+    fireEvent.click(screen.getByRole('button', { name: 'Open navigation' }))
+    const dialog = await screen.findByRole('dialog', { name: 'Navigation' })
+    const switcher = within(dialog).getByRole('button', { name: /^Workspace: / })
+    fireEvent.click(switcher)
+    await within(dialog).findByRole('listbox', { name: 'Workspaces' })
+    fireEvent.keyDown(document.activeElement ?? switcher, { key: 'Escape' })
+    await waitFor(() => expect(within(dialog).queryByRole('listbox', { name: 'Workspaces' })).toBeNull())
+    expect(screen.getByRole('dialog', { name: 'Navigation' })).toBeTruthy()
+    expect(document.activeElement).toBe(switcher)
+  })
+
   it('growing past the md breakpoint closes an open drawer', async () => {
     renderShell(createFixtureGateway())
     await screen.findByText('Synthetic organization A')

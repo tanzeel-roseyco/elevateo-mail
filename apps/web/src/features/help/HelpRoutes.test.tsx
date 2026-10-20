@@ -1,6 +1,6 @@
 // Help centre: collections render from content.ts, search is literal and case-insensitive, and
 // "Copy for LLM" copies the article as Markdown (or reports the failure inline).
-import { fireEvent, render, screen, waitFor, within } from '@testing-library/react'
+import { act, fireEvent, render, screen, waitFor, within } from '@testing-library/react'
 import { MemoryRouter, Route, Routes, useNavigate } from 'react-router'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { HelpRoutes } from './HelpRoutes'
@@ -39,6 +39,25 @@ describe('help search history', () => {
     expect(field.value).toBe('consent')
     fireEvent.click(screen.getByRole('button', { name: 'history back' }))
     await waitFor(() => expect((screen.getByRole('searchbox', { name: 'Search help articles' }) as HTMLInputElement).value).toBe('draft'))
+  })
+
+  it('a search followed by an immediate Back in the same batch restores the earlier query', async () => {
+    render(
+      <MemoryRouter initialEntries={['/help/search?q=consent']}>
+        <BackButton />
+        <Routes>
+          <Route path="/help/*" element={<HelpRoutes />} />
+        </Routes>
+      </MemoryRouter>,
+    )
+    const field = screen.getByRole('searchbox', { name: 'Search help articles' }) as HTMLInputElement
+    fireEvent.change(field, { target: { value: 'draft' } })
+    // One act: the forward navigation and the Back commit together, so `q` ends where it started.
+    act(() => {
+      fireEvent.submit(field.closest('form')!)
+      fireEvent.click(screen.getByRole('button', { name: 'history back' }))
+    })
+    await waitFor(() => expect((screen.getByRole('searchbox', { name: 'Search help articles' }) as HTMLInputElement).value).toBe('consent'))
   })
 })
 

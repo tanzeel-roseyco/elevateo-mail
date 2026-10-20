@@ -2057,3 +2057,20 @@ Defects fixed in this pass: 4 (PW-02, CS-02, CS-01 retry, comment); 1 adjudicate
 | Thread worker TS-02: 244-character attachment filename pushes Download past the reader edge | Fixed: row wraps, filename `break-all`, button text is "Download" with the filename in its accessible name (unchanged name "Download <file>"). |
 
 Changed source lines this round: ~55 across BrandLockup, SignInPage, FolderNav, MembersPage, DraftEditorPage, SendReviewPage, Tabs, PageHeader, WebhooksPages, MessageAttachments; 4 defects confirmed from runtime evidence (tab styling, subtitle overflow, webhook spacing, attachment clipping), 0 new defects found in review of the changed lines.
+
+
+### Fable R7 disposition — 2026-10-20 (R6 checkpoint 696cca78: API/lint/typecheck/build PASS, unit 973/976)
+
+| Finding | Disposition |
+| --- | --- |
+| AuthCompletePage privacy test: brand `img` counted as a resource | Oracle sharpened: the resource list must equal exactly the constant brand mark path (still proves nothing URL-derived). |
+| SettingsRoutes hub: Manage Members link absent after the index redirect (outlet stayed empty in jsdom; accessible-role dump shows no hub cards) | Source: `/settings` renders `WorkspaceHubPage` itself; Workspace tab selected there through `LinkTab.activeAt` (LinkTabs now a `Link`+`useMatch` item). Test asserts `aria-current` and the hub link synchronously. |
+| Legacy organization redirect: "Fixture inbox" link ambiguous (sidebar + page) | Test scoped to the `main` landmark. |
+| Shell worker: 390px drawer closes entirely on Escape inside the workspace popup | Source: `Drawer` prevents Radix's Escape close when the event target is inside a listbox/menu or an expanded trigger; the popup's own handler closes it and restores focus. Regression in Shell.test. |
+| Integrations worker: 4096-character help query still widens the page after break-words | Source: PageHeader column `min-w-0` and subtitle `wrap-anywhere` (overflow-wrap:anywhere affects min-content; break-word does not). Test updated. |
+| Integrations worker: search then immediate Back leaves the typed query | Source: HelpSearchForm sync effect also keyed on `location.key`. Regression: single-act submit+back test. |
+| Integrations worker: 390px Copy label drawn over command text in code blocks | Source: opaque fade + button background in CodeBlock. Regression test. |
+| Compose worker CS-02: 998-character subject still overflows at 390 | Source: review values use `wrap-anywhere`; test updated. |
+| Campaigns worker C3 LOW: Leads empty state says "actions above" but the form is below | Copy made direction-free. |
+
+Changed source lines this round: ~40 across SettingsRoutes, SettingsLayout, Tabs, PageHeader, HelpRoutes, Drawer, CodeBlock, SendReviewPage, OutreachPages; 6 runtime-confirmed defects fixed, 0 new defects found in the changed lines.

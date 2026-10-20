@@ -115,7 +115,7 @@ function Content<T>({ state, empty, children }: { state: Load<T>; empty?: (value
       />
     )
   }
-  if (empty?.(state.value)) return <EmptyState icon={<RectangleStackIcon className="size-5" />} title="Nothing here yet" body="Items appear here as soon as they exist in Outreach. Use the actions above to create the first one." />
+  if (empty?.(state.value)) return <EmptyState icon={<RectangleStackIcon className="size-5" />} title="Nothing here yet" body="Items appear here as soon as they exist in Outreach. Create the first one from this page." />
   return <>{children(state.value)}</>
 }
 function Page({ title, children }: { title: string; children: ReactNode }) {

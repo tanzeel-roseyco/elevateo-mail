@@ -2,7 +2,7 @@
 // cards, collection pages, article pages with breadcrumb and "Copy for LLM", the Community page
 // and a search results view. All copy is Elevateo's own (features/help/content.ts).
 import { useEffect, useId, useState, type FormEvent } from 'react'
-import { Link, Navigate, Route, Routes, useNavigate, useParams, useSearchParams } from 'react-router'
+import { Link, Navigate, Route, Routes, useLocation, useNavigate, useParams, useSearchParams } from 'react-router'
 import { cx } from '@/lib/format'
 import { EmptyState } from '@/ui/Async'
 import { Breadcrumbs, type Crumb } from '@/ui/Breadcrumbs'
@@ -30,8 +30,11 @@ export function HelpRoutes() {
 
 function HelpSearchForm({ initial = '', autoFocus = false }: { initial?: string; autoFocus?: boolean }) {
   const [query, setQuery] = useState(initial)
+  const { key } = useLocation()
   // Browser Back/Forward changes `q` without remounting the form: keep the field in step with the URL.
-  useEffect(() => setQuery(initial), [initial])
+  // The location key is a dependency too: search then immediate Back can commit in one batch with
+  // `initial` unchanged, which would otherwise leave the typed value in the field.
+  useEffect(() => setQuery(initial), [initial, key])
   const navigate = useNavigate()
   const id = useId()
   const submit = (event: FormEvent) => {

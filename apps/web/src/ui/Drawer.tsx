@@ -7,6 +7,19 @@
 import * as Dialog from '@radix-ui/react-dialog'
 import type { ReactNode } from 'react'
 
+/**
+ * Escape pressed while a nested popup (workspace listbox, a Menu) is open belongs to that popup:
+ * its own handler closes it and restores focus. Radix's document-level listener runs first, so the
+ * drawer must decline the close. An open popup is detected through its expanded haspopup trigger
+ * inside this dialog; disclosure buttons (sidebar collapse) carry no aria-haspopup and do not count.
+ */
+function escapeBelongsToNestedPopup(event: KeyboardEvent): boolean {
+  const target = event.target
+  if (!(target instanceof Element)) return false
+  const dialog = target.closest('[role="dialog"]')
+  return dialog !== null && dialog.querySelector('[aria-haspopup][aria-expanded="true"]') !== null
+}
+
 interface DrawerProps {
   open: boolean
   onOpenChange(open: boolean): void
@@ -28,6 +41,7 @@ export function Drawer({ open, onOpenChange, trigger, title, children }: DrawerP
             in Shell is what actually releases the dialog on a resize to desktop (D6, FE-R06). */}
         <Dialog.Content
           aria-describedby={undefined}
+          onEscapeKeyDown={(event) => { if (escapeBelongsToNestedPopup(event)) event.preventDefault() }}
           className="fixed inset-y-0 start-0 z-20 w-66 max-w-[85vw] overflow-y-auto overscroll-contain border-e border-zinc-200 bg-zinc-50 shadow-lg lg:hidden dark:border-zinc-700 dark:bg-zinc-900"
         >
           <Dialog.Title className="sr-only">{title}</Dialog.Title>

@@ -12,7 +12,7 @@ import { PageHeader } from '@/ui/PageHeader'
 import { LinkTabs, type LinkTab } from '@/ui/Tabs'
 
 export const SETTINGS_TABS: readonly LinkTab[] = [
-  { to: '/settings/workspace', label: 'Workspace', end: false },
+  { to: '/settings/workspace', label: 'Workspace', end: false, activeAt: ['/settings'] },
   { to: '/settings/profile', label: 'Profile', end: false },
   { to: '/settings/tags', label: 'Tags', end: false },
   { to: '/settings/developer-api', label: 'Developer API', end: false },

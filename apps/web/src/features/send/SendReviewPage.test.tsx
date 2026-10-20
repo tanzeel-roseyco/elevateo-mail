@@ -87,7 +87,7 @@ describe('BE03 saved review and approval', () => {
     expect((screen.getByRole('button', { name: 'Approve simulated send' }) as HTMLButtonElement).disabled).toBe(true)
     expect(screen.getByText(REVIEW.subject)).not.toBeNull()
     // CS-02: an unbroken maximum-length subject must wrap inside the card, not widen the page.
-    expect(screen.getByText(REVIEW.subject).className).toContain('break-words')
+    expect(screen.getByText(REVIEW.subject).className).toContain('wrap-anywhere')
     expect(screen.getByText(/Literal body/)).not.toBeNull()
     expect(document.querySelector('img, script')).toBeNull()
     expect(document.activeElement).toBe(screen.getByRole('heading', { name: /Review saved draft version/ }))

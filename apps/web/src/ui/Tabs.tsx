@@ -1,7 +1,7 @@
 // Flux tabs recipe (DESIGN-SPEC §5.13): h-10 row, hairline underneath, 2px accent underline on the
 // selected tab. `LinkTabs` is navigation between routes (settings sections); `ButtonTabs` switches
 // in-page views (inbox All/Unread) and exposes the WAI-ARIA tablist pattern.
-import { NavLink } from 'react-router'
+import { Link, useLocation, useMatch } from 'react-router'
 import { cx } from '@/lib/format'
 
 const ROW = 'flex h-10 gap-4 overflow-x-auto border-b border-zinc-800/10 dark:border-white/10'
@@ -17,16 +17,25 @@ export interface LinkTab {
   label: string
   /** Match the route exactly (default) or as a prefix. */
   end?: boolean
+  /** Extra exact pathnames that also select this tab (the settings hub at bare /settings). */
+  activeAt?: readonly string[]
+}
+
+function LinkTabItem({ tab }: { tab: LinkTab }) {
+  const { pathname } = useLocation()
+  const matched = useMatch({ path: tab.to, end: tab.end ?? true }) !== null
+  const active = matched || (tab.activeAt?.includes(pathname) ?? false)
+  return (
+    <Link to={tab.to} aria-current={active ? 'page' : undefined} className={cx(TAB, active ? SELECTED : INACTIVE)}>
+      {tab.label}
+    </Link>
+  )
 }
 
 export function LinkTabs({ tabs, label, className }: { tabs: readonly LinkTab[]; label: string; className?: string }) {
   return (
     <nav aria-label={label} className={cx(ROW, className)}>
-      {tabs.map((tab) => (
-        <NavLink key={tab.to} to={tab.to} end={tab.end ?? true} className={({ isActive }) => cx(TAB, isActive ? SELECTED : INACTIVE)}>
-          {tab.label}
-        </NavLink>
-      ))}
+      {tabs.map((tab) => <LinkTabItem key={tab.to} tab={tab} />)}
     </nav>
   )
 }

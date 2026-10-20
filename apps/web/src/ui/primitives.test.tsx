@@ -7,7 +7,7 @@ import { useState } from 'react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { initialsOf } from './Avatar'
 import { Breadcrumbs } from './Breadcrumbs'
-import { CopyButton } from './CodeBlock'
+import { CodeBlock, CopyButton } from './CodeBlock'
 import { Menu, MenuItem } from './Menu'
 import { Modal } from './Modal'
 import { PageHeader } from './PageHeader'
@@ -105,10 +105,18 @@ describe('LinkTabs', () => {
   })
 })
 
+describe('CodeBlock', () => {
+  it('keeps the Copy control on an opaque surface so scrolled code cannot show through it', () => {
+    render(<CodeBlock code={'x'.repeat(400)} />)
+    expect(screen.getByRole('button', { name: 'Copy' }).className).toContain('bg-zinc-50')
+    expect(document.querySelector('[aria-hidden].bg-linear-to-l')).not.toBeNull()
+  })
+})
+
 describe('PageHeader', () => {
   it('wraps an unbroken 4096-character subtitle instead of widening the page', () => {
     render(<PageHeader title="Search results" subtitle={'x'.repeat(4096)} help={false} />)
-    expect(screen.getByText(/^x+$/).className).toContain('break-words')
+    expect(screen.getByText(/^x+$/).className).toContain('wrap-anywhere')
   })
 })
 

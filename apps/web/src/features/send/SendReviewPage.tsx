@@ -120,8 +120,9 @@ function Review({ mailboxId, draftId }: { mailboxId: string; draftId: string }) 
   const gate = consentGate(review.outbound_mode, review.recipient_checks, review.purpose)
   const approvable = review.ready && gate.allowed
   const dt = 'text-xs font-medium uppercase tracking-wide text-zinc-500'
-  // break-words: a 998-character unbroken subject or address must wrap inside the card (CS-02).
-  const dd = 'mt-1 min-w-0 break-words text-sm text-zinc-800 dark:text-white'
+  // wrap-anywhere (CS-02): a 998-character unbroken subject must wrap at 390px too; break-words
+  // leaves the grid item's min-content width at the full subject length, anywhere does not.
+  const dd = 'mt-1 min-w-0 wrap-anywhere text-sm text-zinc-800 dark:text-white'
   return <article aria-busy={busy}>
     <PageHeader title="Review send" subtitle="Approve the exact saved content before anything is queued" />
     <Card className="max-w-3xl space-y-5">
@@ -133,7 +134,7 @@ function Review({ mailboxId, draftId }: { mailboxId: string; draftId: string }) 
         <div><dt className={dt}>Purpose</dt><dd className={dd}>{review.purpose === 'marketing' ? 'Marketing campaign' : 'Individual correspondence'}</dd></div>
         <div className="sm:col-span-2"><dt className={dt}>To — all {review.to.length} recipients</dt><dd className={dd}>{review.to.length === 0 ? '(no recipients)' : <ol className="list-decimal ps-5">{review.to.map((recipient, index) => <li key={index} className="whitespace-pre-wrap">{recipient.display_name === null ? '' : `${recipient.display_name} `}{recipient.address ?? '(address missing)'}</li>)}</ol>}</dd></div>
         <div className="sm:col-span-2"><dt className={dt}>Subject</dt><dd className={`${dd} whitespace-pre-wrap`}>{review.subject === '' ? '(no subject)' : review.subject}</dd></div>
-        <div className="sm:col-span-2"><dt className={dt}>Message</dt><dd className={`${dd} whitespace-pre-wrap break-words rounded-lg border border-zinc-200 bg-zinc-50 p-3 leading-6 dark:border-zinc-700 dark:bg-zinc-900`}>{review.body_text === '' ? '(empty message)' : review.body_text}</dd></div>
+        <div className="sm:col-span-2"><dt className={dt}>Message</dt><dd className={`${dd} whitespace-pre-wrap rounded-lg border border-zinc-200 bg-zinc-50 p-3 leading-6 dark:border-zinc-700 dark:bg-zinc-900`}>{review.body_text === '' ? '(empty message)' : review.body_text}</dd></div>
         <div className="sm:col-span-2"><dt className={dt}>Attachments</dt>
         <dd className={dd}>{review.attachments.length === 0 ? 'None.' : <ul className="list-disc ps-5">{review.attachments.map((attachment) =>
           <li key={attachment.id} className="break-all">{attachment.filename} ({attachment.byte_size} bytes): {attachment.status === 'clean' ? 'Security scan passed' : 'Sending blocked: security scan not passed'}</li>)}</ul>}
