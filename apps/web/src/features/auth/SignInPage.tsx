@@ -281,7 +281,8 @@ export function SignInPage({ navigation = browserNavigation }: { navigation?: Si
           onMode={setMode}
           email={email}
           onEmail={setEmail}
-          describedBy={[notice ? ids.notice : null, landing ? ids.landing : null]}
+          // The callouts are not rendered while recovering, so the form must not reference their ids.
+          describedBy={recovery ? [] : [notice ? ids.notice : null, landing ? ids.landing : null]}
           locked={redirecting}
           secondary={ssoEnabled}
         />

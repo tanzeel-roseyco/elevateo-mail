@@ -21,12 +21,20 @@ test('Google and password entries: gold primary button, separator, form; Google 
   // Keyboard: Tab from the focused heading reaches the Google button first, with a visible ring.
   await page.keyboard.press('Tab')
   await expect(google).toBeFocused()
-  // Visible focus: Flux's 2px ring is a box-shadow/outline in the accent (gold) colour.
-  const ring = await google.evaluate((el) => {
+  // Visible focus: the global :focus-visible rule draws a 2px solid gold-600 outline (#a9853a,
+  // light scheme). Checking style != 'none' alone would pass a transparent or zero-width ring, so
+  // the computed width and colour are asserted, with the blurred (unfocused) heading as the control.
+  const ringOf = (el: Element) => {
     const style = getComputedStyle(el)
-    return { outline: style.outlineStyle, boxShadow: style.boxShadow }
-  })
-  expect(ring.outline !== 'none' || ring.boxShadow !== 'none').toBe(true)
+    return { style: style.outlineStyle, width: parseFloat(style.outlineWidth), color: style.outlineColor }
+  }
+  const ring = await google.evaluate(ringOf)
+  expect(ring.style).toBe('solid')
+  expect(ring.width).toBeGreaterThanOrEqual(2)
+  expect(ring.color).toBe('rgb(169, 133, 58)')
+  // Negative control: the element that lost focus must not carry the ring any more.
+  const blurred = await page.getByRole('heading', { name: 'Sign in' }).evaluate(ringOf)
+  expect(blurred.width === 0 || blurred.style === 'none').toBe(true)
   await page.screenshot({ path: shot('sso-google-focus', testInfo.project.name), fullPage: true })
   const navigated = page.waitForURL('**/v1/auth/sso/start')
   await page.keyboard.press('Enter')

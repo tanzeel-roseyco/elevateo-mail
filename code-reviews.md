@@ -18,6 +18,14 @@ findings; the redirect-lock MEDIUM was reported by three reviewers and the stale
 All 14 fixed in this commit and re-verified by the fleet-02 web gate (85 files / 1063 tests) and the
 Playwright SSO spec (10/10) recorded in `state.md`. No file was edited by a reviewer.
 
+
+### Follow-up: independent Codex LOW finding (2026-10-23)
+
+| Packet | LOC | Defects | Density | Status |
+| --- | --- | --- | --- | --- |
+| `e2e/sso.spec.ts` focus assertion (Codex, read-only) | 74 | 1 LOW (invisible ring passes `!= none`) | 13.5/KLOC | fixed: computed width >= 2px + gold-600 colour + blurred negative control; fleet-02 Playwright 10/10 |
+| `SignInPage.tsx` recovery `aria-describedby` (coordinator inspection request) | 45 | 1 LOW (dangling idrefs while callouts hidden) | 22.2/KLOC | fixed + regression test; fleet-02 29/29 |
+
 ## BE-05 thread folders, snooze, stars, Reply all / Forward — adversarial review (2026-10-20)
 
 Nine bounded read-only assignments ran sequentially through the Codex CLI (pinned `gpt-5.6-sol`,

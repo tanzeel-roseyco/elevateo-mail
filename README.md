@@ -17,6 +17,8 @@ entry, which is unchanged here. No live SSO success is claimed (no Google creden
 Gates (fleet-02 Docker): web gate PASS, 85 files / 1063 tests, build and fixture exclusion PASS;
 Playwright SSO spec 10/10 at 1440 and 390 with 14 inspected captures in
 `docs/completion/launch-sso/screenshots/`. Receipt: `docs/completion/launch-sso/README.md`.
+Follow-up: the e2e focus assertion checks the computed gold ring width/colour with a negative control,
+and the recovery view drops hidden callout ids from `aria-describedby` (fleet-02: 29/29 unit, 10/10 e2e).
 
 ### Thread folders, snooze, stars, Reply all / Forward (2026-10-20, BE-05)
 

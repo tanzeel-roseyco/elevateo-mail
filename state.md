@@ -24,6 +24,14 @@ over `32c76167`; model verified as `claude-fable-5-1` before editing. Frontend o
 - Review: see `code-reviews.md` (Launch SSO sign-in entry).
 - Docker: only task-owned images/containers removed afterwards; shared images and caches kept
   (coordinator instruction after another worker's image disappeared).
+- Follow-up (2026-10-23, independent Codex LOW finding): `e2e/sso.spec.ts` focus check now asserts the
+  computed ring (`solid`, width ≥ 2px, gold-600 `rgb(169, 133, 58)`) with the blurred heading as the
+  negative control, instead of `style != none`, which a transparent or zero-width ring would pass.
+  `SignInPage.tsx` recovery view no longer puts the hidden notice/landing callout ids in the form's
+  `aria-describedby` (dangling idrefs); regression test added (`SignInPage.sso.test.tsx`, now 21).
+  fleet-02 Docker: typecheck + SignInPage suites 29/29, Playwright 10/10 at 1440/390 (vite watcher
+  needed `CHOKIDAR_USEPOLLING=1` because host inotify instances were exhausted by a parallel gate);
+  focus captures byte-identical to the committed ones, so screenshots are unchanged.
 
 ### Thread folders, snooze, stars, Reply all / Forward — 2026-10-20 (BE-05, Claude Fable 5.1 + Codex)
 

@@ -71,3 +71,15 @@ callback and cookie behaviour are the backend worker's to prove.
 
 See `code-reviews.md` ("Launch SSO sign-in entry"). Four bounded read-only Fable reviewers (three
 ≤ 230-line source packets plus a design-tradeoff reviewer).
+
+## Follow-up after the independent Codex review (2026-10-23)
+
+| Finding | Change | Evidence |
+| --- | --- | --- |
+| LOW: `e2e/sso.spec.ts` focus check passed on `outlineStyle != none OR boxShadow != none`, which a transparent or zero-width ring satisfies | Asserts computed `outlineStyle === 'solid'`, `outlineWidth >= 2`, `outlineColor === rgb(169, 133, 58)` (gold-600, the `--color-ring` light value); negative control: the blurred heading has no ring | fleet-02 Playwright v1.64.0-noble 10/10 at 1440 and 390; focus captures byte-identical to the committed PNGs |
+| Inspection: `SignInPage.tsx` recovery view hides the notice/landing callouts but still passed their ids to the form's `aria-describedby` | Real defect (dangling idrefs fail axe `aria-valid-attr-value`): `describedBy` is empty while recovering; regression test asserts every referenced id resolves | fleet-02 typecheck + `SignInPage.sso.test.tsx` (21) + `SignInPage.test.tsx` (8): 29/29 |
+
+Runner note: the vite dev server inside the Playwright container failed with `EMFILE` on `vite.config.ts`
+because the host's 128 inotify instances were consumed by a parallel gate; `CHOKIDAR_USEPOLLING=1` was
+set for this run only. Task-owned image `elevateo-sso-fu-web-test`, containers and `/tmp/elevateo-sso-fu-20261023`
+were removed; shared images and caches were kept. The full 1063-test gate was not rerun (three files changed, two of them tests).

@@ -196,6 +196,18 @@ describe('callback failure landing', () => {
     expect(screen.queryByRole('alert')).toBeNull()
   })
 
+  it('drops the callout reference from the form while recovering, because the callout is not rendered', async () => {
+    renderSignedOut({}, {}, '?sso_error=access_denied')
+    const alert = await screen.findByRole('alert')
+    expect(document.querySelector('form')!.getAttribute('aria-describedby')).toContain(alert.parentElement!.id)
+    fireEvent.click(screen.getByRole('button', { name: 'Forgot your password?' }))
+    await screen.findByRole('heading', { name: 'Recover access' })
+    expect(screen.queryByRole('alert')).toBeNull()
+    // Every id the form references must resolve, or assistive tech announces nothing for it.
+    const refs = (document.querySelector('form')!.getAttribute('aria-describedby') ?? '').split(' ').filter(Boolean)
+    expect(refs.every((id) => document.getElementById(id) !== null)).toBe(true)
+  })
+
   it('maps unavailable to its copy', async () => {
     renderSignedOut({}, {}, '?sso_error=unavailable')
     expect((await screen.findByRole('alert')).textContent).toContain('temporarily unavailable')
