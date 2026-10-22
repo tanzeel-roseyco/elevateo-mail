@@ -1,4 +1,5 @@
 import type { DraftAttachmentGateway } from './draftAttachmentGateway'
+import type { AuthSsoStatus } from './ssoContract'
 import type { SendReview, SendApprovalInput, ApprovalResult, SendStatus, SendCancellationInput, CancellationResult } from './sendContract'
 import type {
   AcceptInput,
@@ -88,6 +89,8 @@ export interface MailroomGateway {
 
   /** Five-minute signed challenge; no identity or account data. */
   getLoginChallenge(signal?: AbortSignal): Promise<AuthChallenge>
+  /** Which sign-in entries the server offers (SSO provider, password); see ssoContract.ts. */
+  getSsoStatus(signal?: AbortSignal): Promise<AuthSsoStatus>
   /** Password login under a challenge proof. Generic 401; 404 when identity has no organization. */
   login(proof: CsrfProof, input: LoginInput, signal?: AbortSignal): Promise<AuthLifecycle>
   /** Recovery request; identical acceptance for known and unknown email. */

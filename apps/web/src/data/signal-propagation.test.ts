@@ -28,6 +28,7 @@ const METHODS: ReadonlyArray<[string, (gateway: MailroomGateway, signal: AbortSi
   ['getThread', (g, s) => g.getThread(CTX, TH, MB, {}, s)],
   // BE-02A lifecycle surfaces share the same cancellation contract.
   ['getLoginChallenge', (g, s) => g.getLoginChallenge(s)],
+  ['getSsoStatus', (g, s) => g.getSsoStatus(s)],
   ['login', (g, s) => g.login(PROOF, { email: 'a@example.test', password: 'secret' }, s)],
   ['requestRecovery', (g, s) => g.requestRecovery(PROOF, { email: 'a@example.test' }, s)],
   ['acceptAuthEntry', (g, s) => g.acceptAuthEntry(PROOF, { password: 'twelve-chars-long' }, s)],

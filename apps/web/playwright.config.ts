@@ -14,6 +14,8 @@ export default defineConfig({
   },
   projects: [
     { name: 'desktop', use: { ...devices['Desktop Chrome'] } },
+    // Design-review width (DESIGN-SPEC §7 step 6 pairs 1440 with 390).
+    { name: 'desktop-1440', use: { ...devices['Desktop Chrome'], viewport: { width: 1440, height: 900 } } },
     { name: 'narrow-390', use: { ...devices['Desktop Chrome'], viewport: { width: 390, height: 844 } } },
     { name: 'reduced-motion', use: { ...devices['Desktop Chrome'], contextOptions: { reducedMotion: 'reduce' } } },
   ],

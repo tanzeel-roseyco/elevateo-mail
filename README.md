@@ -3,6 +3,21 @@
 ## Current state
 
 <!-- completion-wave-current:start -->
+### App-level SSO sign-in entry (2026-10-23, launch sprint, web only)
+
+Branch `Tanzeel/elevateo-launch-sso-fable-20261023` adds the production sign-in entry for app-level
+Google SSO on Railway (no Cloudflare Access, no Workspace/MX change). The sign-in page now reads
+`GET /v1/auth/sso/status` first and offers exactly what the server reports: a gold "Continue with
+Google" button (a full-page navigation to `GET /v1/auth/sso/start`), the password form only when
+`password_login_enabled` is true, an empty state when nothing is enabled, and a fail-closed error card
+with retry when the status cannot be read. A callback failure (`/?sso_error=access_denied|unavailable|
+invalid_response`) is shown once as generic copy and stripped from the URL. The contract lives in one
+module (`apps/web/src/data/ssoContract.ts`); the backend worker owns the server side and the OpenAPI
+entry, which is unchanged here. No live SSO success is claimed (no Google credentials exist yet).
+Gates (fleet-02 Docker): web gate PASS, 85 files / 1063 tests, build and fixture exclusion PASS;
+Playwright SSO spec 10/10 at 1440 and 390 with 14 inspected captures in
+`docs/completion/launch-sso/screenshots/`. Receipt: `docs/completion/launch-sso/README.md`.
+
 ### Thread folders, snooze, stars, Reply all / Forward (2026-10-20, BE-05)
 
 The inbox gaps recorded below are closed on this branch. The API gains three protected writes,

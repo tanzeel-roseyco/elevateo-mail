@@ -1,4 +1,20 @@
 <!-- completion-wave-current:start -->
+### App-level SSO sign-in entry (2026-10-23)
+
+Design decisions (binding for follow-up work): the server decides which sign-in entries exist; the
+client never assumes password login and fails closed when the status read fails. The SSO start is a
+top-level navigation to a same-origin absolute path, never a fetch, so the IdP round trip leaves the
+document and the callback's cookie lands on the next ordinary session bootstrap; the UI never sees a
+token, an authorization URL or a `return_to`. The only SSO surface the client spells is
+`src/data/ssoContract.ts`; adapters validate the status with a strict schema (an unknown provider is a
+contract error, not a new button). Callback failures are read once from `?sso_error`, collapsed to a
+known code or `unknown`, rendered as generic copy (no account or provider detail) and removed from the
+URL with `history.replaceState` so reloads and bookmarks do not repeat them. The Google mark is
+monochrome (currentColor) because the brand logo's blue segment is excluded by the gold-only accent
+rule. Known follow-ups: when the backend finalises the status route in `contracts/v1/openapi.json`,
+move the schema's type to the generated declarations; none open for the help article (the sign-in article now describes Google sign-in).
+Gates and evidence: `state.md` and `docs/completion/launch-sso/README.md`.
+
 ### Thread folders, snooze, stars, Reply all / Forward (2026-10-20, BE-05)
 
 Design decisions (binding for follow-up work): `folder` and `snoozed_until` are mailbox-shared;

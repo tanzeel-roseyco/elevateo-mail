@@ -1,4 +1,23 @@
 <!-- completion-wave-current:start -->
+## Launch SSO sign-in entry — adversarial review (2026-10-23)
+
+Four bounded read-only assignments ran as Claude Fable 5.1 subagents (`claude-fable-5-1`, the only
+coding route available in this worker session; no Codex CLI was dispatched) against the full user
+rubric: three source packets of at most 230 lines plus a dedicated design-tradeoff reviewer.
+Formatting was left to lint. Reviewer-LOC include context lines the reviewer read.
+
+| Packet | Files | Reviewer LOC | Defects (major/minor) | Density | Disposition |
+| --- | --- | --- | --- | --- | --- |
+| A contract + adapters | `data/ssoContract.ts` + test, `gateway.ts`, `http/httpGateway.ts`, `fixtures/fixtureGateway.ts`, `signal-propagation.test.ts` diffs | 194 | 3 (0/3) | 15.46/KLOC | fixed: schema refine rejects `enabled`/`provider` contradictions (+2 tests); `sso_password_only` fixture asserted; README/state/documentation entries written |
+| B page logic | `features/auth/SignInPage.tsx` 1–205 | 205 | 4 (1/3) | 19.51/KLOC | fixed: `onRestore` (pageshow `persisted`) through `SignInNavigation` resets the redirect lock (+ unit test, + adapter test); strip effect idempotent under StrictMode via consumed ref (+ StrictMode test); recovery derived from `passwordEnabled` so a disabled password entry cannot orphan the recovery heading; `browserNavigation.replaceSearch` tested in jsdom |
+| C page render + tests | `SignInPage.tsx` 205–end, `GoogleMark.tsx`, `SignInPage.sso.test.tsx`, `e2e/sso.spec.ts` | 410 | 9 (2/7) | 21.95/KLOC | fixed: redirect lock release (shared with B) and `try/catch` around `assign`; existing notice test now waits for the heading before `findByRole('status')`; email lifted so Back from the recovery confirmation keeps it (+ test); notice/landing callouts rendered in the nothing-enabled state (+ test); order + variant asserted; tautological test replaced by a `fetch` spy; `invalid_response` test; stale e2e note corrected; computed-style focus-ring assertion added |
+| D design tradeoffs | contract isolation, status read placement, navigation injection, landing-error handling | n/a | 2 (1/1; both overlap B/C) | n/a | 4 KEEP, 1 CHANGE applied: `Shell.tsx` strips a stale `?sso_error` once the authenticated tree renders; the page-level read, strict schema, injected `location.assign` and fail-closed empty state kept as designed |
+
+Unique defects after de-duplication: 14 over 809 reviewer-LOC = **17.31 defects/KLOC** (18 raw
+findings; the redirect-lock MEDIUM was reported by three reviewers and the stale-landing LOW by two).
+All 14 fixed in this commit and re-verified by the fleet-02 web gate (85 files / 1063 tests) and the
+Playwright SSO spec (10/10) recorded in `state.md`. No file was edited by a reviewer.
+
 ## BE-05 thread folders, snooze, stars, Reply all / Forward — adversarial review (2026-10-20)
 
 Nine bounded read-only assignments ran sequentially through the Codex CLI (pinned `gpt-5.6-sol`,

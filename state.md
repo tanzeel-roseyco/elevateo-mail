@@ -1,4 +1,30 @@
 <!-- completion-wave-current:start -->
+### App-level SSO sign-in entry — 2026-10-23 (launch sprint, Claude Fable 5.1, web only)
+
+Worktree `elevateo-launch-sso-fable-20261023`, branch `Tanzeel/elevateo-launch-sso-fable-20261023`
+over `32c76167`; model verified as `claude-fable-5-1` before editing. Frontend only; backend worker
+`ctx_346cc2b0409f` implements `/v1/auth/sso/{status,start,callback}` separately.
+
+- Contract (coordinator-confirmed): status `{enabled, provider: "google"|null, password_login_enabled}`,
+  full-page start without `return_to`, callback cookie + redirect `/`, failure `/?sso_error=…`.
+  Spelled only in `src/data/ssoContract.ts`; `getSsoStatus` added to the gateway port, HTTP and fixture
+  adapters (`sso_google_and_password` default keeps every earlier sign-in test valid).
+- UI: `SignInPage.tsx` reworked (status read → loading / error / empty / entries); `GoogleMark.tsx`
+  monochrome; password submit outline under Google, primary alone; `SignInNavigation` injection so no
+  jsdom navigation runs in tests; `playwright.config.ts` gains `desktop-1440`.
+- Tests: `ssoContract.test.ts` (10), `SignInPage.sso.test.tsx` (20), `signal-propagation` +1,
+  `e2e/sso.spec.ts` (5 cases × 2 widths).
+- Gates (fleet-02 `/tmp/elevateo-sso-20261023`, CRLF→LF normalised): web gate exit 0 — check:api,
+  check:api:v2, lint, typecheck, 85 files / 1063 tests, coverage 85.61% / 80.94%, build, fixture
+  exclusion; Playwright v1.64.0-noble 10/10 (`evidence/gate4.log`, `evidence/e2e6.log`, after the review fixes).
+  `collaborationNav.test.tsx` failed once under load and passed on every rerun (pre-existing flake).
+- Visual: 14 captures (1440×900, 390×844) in `docs/completion/launch-sso/screenshots/`, inspected.
+  Limit: the redirecting captures come from Playwright's failure hook (a pending top-level navigation
+  blocks locator assertions); the unit test pins that state.
+- Review: see `code-reviews.md` (Launch SSO sign-in entry).
+- Docker: only task-owned images/containers removed afterwards; shared images and caches kept
+  (coordinator instruction after another worker's image disappeared).
+
 ### Thread folders, snooze, stars, Reply all / Forward — 2026-10-20 (BE-05, Claude Fable 5.1 + Codex)
 
 Workspace `Elevateo Mail - Unified Dashboard 20261020/elevateo-emailguard-fable`, branch

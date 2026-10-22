@@ -9,6 +9,7 @@
 import fixtures from '../../../../../contracts/v1/fixtures.json'
 import type { z } from 'zod'
 import { GatewayError } from '../errors'
+import { AuthSsoStatusSchema } from '../ssoContract'
 import {
   AuthAcceptedSchema,
   AuthChallengeSchema,
@@ -45,6 +46,7 @@ type Operation =
   | 'listThreads'
   | 'getThread'
   | 'getLoginChallenge'
+  | 'getSsoStatus'
   | 'login'
   | 'requestRecovery'
   | 'acceptAuthEntry'
@@ -83,6 +85,7 @@ const DEFAULTS: Record<Exclude<Operation, CdOperation>, string> = {
   listThreads: 'threads',
   getThread: 'thread_hostile_plaintext',
   getLoginChallenge: 'challenge',
+  getSsoStatus: 'sso_google_and_password',
   login: 'lifecycle_a',
   requestRecovery: 'recovery_accepted',
   acceptAuthEntry: 'lifecycle_a',
@@ -147,6 +150,12 @@ const SYNTHETIC: Record<string, Example> = {
   organizations: organizationPage([sessionExample('session_a')['organization'], sessionExample('session_b')['organization']]),
   organizations_empty: organizationPage([]),
   mailboxes_collaboration: mailboxesWithCollaboration(),
+  // SSO status variants (ssoContract.ts). The default keeps the password form so every earlier
+  // sign-in test and browser check still finds it; the others script the launch SSO states.
+  sso_google_and_password: { status: 200, body: { enabled: true, provider: 'google', password_login_enabled: true } },
+  sso_google_only: { status: 200, body: { enabled: true, provider: 'google', password_login_enabled: false } },
+  sso_password_only: { status: 200, body: { enabled: false, provider: null, password_login_enabled: true } },
+  sso_none: { status: 200, body: { enabled: false, provider: null, password_login_enabled: false } },
 }
 
 function example(name: string): Example {
@@ -302,6 +311,10 @@ export function createFixtureGateway(script: FixtureScript = {}, options: Fixtur
     getLoginChallenge: async (signal) => {
       throwIfAborted(signal)
       return resolve('getLoginChallenge', script, AuthChallengeSchema)
+    },
+    getSsoStatus: async (signal) => {
+      throwIfAborted(signal)
+      return resolve('getSsoStatus', script, AuthSsoStatusSchema)
     },
     login: async (_proof, _input, signal) => {
       throwIfAborted(signal)

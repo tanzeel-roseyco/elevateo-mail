@@ -44,10 +44,10 @@ export const ARTICLES: readonly Article[] = [
     slug: 'signing-in',
     collection: 'getting-started',
     title: 'How do I sign in to Elevateo Mail?',
-    summary: 'Email and password sign-in, recovery, and what happens when a session expires.',
+    summary: 'Google sign-in, email and password sign-in, recovery, and what happens when a session expires.',
     blocks: [
-      { kind: 'p', text: 'Open the app and enter the email address and password your workspace administrator gave you. After a successful sign-in the app loads your organization and every mailbox you are a member of.' },
-      { kind: 'p', text: 'If you forgot your password, choose "Forgot your password?" on the sign-in page. The recovery message reads the same for any address so nobody can learn which accounts exist.' },
+      { kind: 'p', text: 'Open the app and choose "Continue with Google" to sign in with your workspace Google account. You are taken to Google and back; after a successful sign-in the app loads your organization and every mailbox you are a member of. If Google does not accept the account for this workspace, the sign-in page says so without naming the account.' },
+      { kind: 'p', text: 'The sign-in page only shows the entries your installation enables. Where password sign-in is enabled, enter the email address and password your workspace administrator gave you. If you forgot your password, choose "Forgot your password?"; the recovery message reads the same for any address so nobody can learn which accounts exist.' },
       { kind: 'note', text: 'When a session expires the app tries one silent refresh. If that fails you are returned to the sign-in page and nothing from the old session stays on screen.' },
     ],
   },
