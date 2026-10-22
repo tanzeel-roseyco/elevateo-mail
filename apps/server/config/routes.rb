@@ -8,6 +8,9 @@ Rails.application.routes.draw do
   # AIDEV-NOTE: The callback stages opaque entry material; only the CSRF-protected POST consumes it.
   get "/auth/accept", to: "auth_entries#stage"
   get "/v1/auth/login-challenge", to: "v1/auth#challenge"
+  get "/v1/auth/sso/status", to: "v1/sso#status"
+  get "/v1/auth/sso/start", to: "v1/sso#start"
+  get "/v1/auth/sso/callback", to: "v1/sso#callback"
   post "/v1/auth/login", to: "v1/auth#login"
   post "/v1/auth/recovery", to: "v1/auth#recovery"
   post "/v1/auth/accept", to: "v1/auth#accept"

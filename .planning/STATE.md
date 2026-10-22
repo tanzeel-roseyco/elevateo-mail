@@ -1,3 +1,16 @@
+Latest edge follow-up: 234 fleet Docker assertions PASS; independent 156-line review, zero defects.
+Task containers/image/base reference and staging removed; persistent data and shared cache retained.
+Receipt: `docs/completion/launch-20261023-edge-followup.md`. No live deployment or delivery.
+
+## Latest launch checkpoint — 2026-10-23
+
+Source preparation and isolated Docker verification advanced; public activation remains incomplete.
+Backend 1,169 tests / 13,577 assertions PASS; full web 1,063 tests PASS plus final 29 targeted and
+10 browser cases PASS. Google OAuth credentials, preservation-first schema initialization, verified
+tenant setup and real inbox provisioning remain outstanding. No Cloudflare or Workspace routing
+change. Exact current status: `../docs/completion/launch-20261023-handoff.md`; earlier totals below
+are historical. Do not infer live delivery from synthetic fixtures or provider-listing checks.
+
 <!-- completion-wave-current:start -->
 ### Authoritative completion status (2026-10-20)
 

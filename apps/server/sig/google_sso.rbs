@@ -1,0 +1,22 @@
+module Elevateo
+  class GoogleSso
+    CALLBACK: String
+    @sessions: Sessions
+    @config: _AuthConfig
+    @clock: ^() -> Integer
+    def initialize: (sessions: Sessions, ?config: _AuthConfig, ?clock: ^() -> Integer) -> void
+    def status: () -> auth_object
+    def start: () -> { cookie: String, location: String }
+    def complete: (raw_query: String, cookie: String?, caller_cookie: String?, deadline: RequestDeadline) -> SessionResult
+  end
+end
+
+module V1
+  class SsoController < AuthController
+    def status: () -> void
+    def start: () -> void
+    def callback: () -> void
+    def redirect_browser: (String) -> bool
+    def sso: () -> Elevateo::GoogleSso
+  end
+end

@@ -1,0 +1,54 @@
+# AIDEV-NOTE: Only the fixed local SSH upstream reaches private data; Rails enforces SSO and session authorization.
+pid /tmp/nginx.pid;
+# AIDEV-NOTE: Request errors can contain OAuth codes; config validation and health checks provide diagnostics.
+error_log /dev/null crit;
+events { worker_connections 512; }
+http {
+  include /etc/nginx/mime.types;
+  default_type application/octet-stream;
+  access_log off;
+  server_tokens off;
+  client_body_temp_path /tmp/client_body;
+  proxy_temp_path /tmp/proxy;
+  server {
+    listen ${PORT};
+    root /srv/web;
+    client_max_body_size 26m;
+    add_header X-Content-Type-Options nosniff always;
+    add_header Referrer-Policy no-referrer always;
+    add_header X-Frame-Options DENY always;
+    add_header Strict-Transport-Security "max-age=31536000" always;
+    add_header Cache-Control no-store always;
+    location = /edge-health { return 200 'ok'; }
+    # AIDEV-NOTE: Live provider ingestion remains blocked until its separate activation gate passes.
+    location = /webhooks/resend { return 503; }
+    location = /v2/provider-events/resend { return 503; }
+    # AIDEV-NOTE: Only OAuth navigation reaches GoTrue; its administrative/password endpoints stay private.
+    location ~ ^/auth/v1/(authorize|callback)$ {
+      rewrite ^/auth/v1/(.*)$ /$1 break;
+      proxy_pass http://127.0.0.1:4711;
+      proxy_set_header Host mail.elevateoco.com;
+      proxy_set_header X-Forwarded-Proto https;
+      proxy_set_header X-Forwarded-Host mail.elevateoco.com;
+      proxy_set_header X-Forwarded-For "";
+      proxy_set_header Forwarded "";
+      proxy_connect_timeout 3s;
+      proxy_read_timeout 30s;
+    }
+    location /auth/v1/ { return 404; }
+    location ~ ^/(v1/|v2/|auth/accept$|health$|ready$) {
+      proxy_pass http://127.0.0.1:4710;
+      proxy_http_version 1.1;
+      proxy_set_header Host mail.elevateoco.com;
+      proxy_set_header X-Forwarded-Proto https;
+      proxy_set_header X-Forwarded-Host mail.elevateoco.com;
+      proxy_set_header X-Forwarded-For "";
+      proxy_set_header Forwarded "";
+      proxy_set_header Connection "";
+      proxy_connect_timeout 3s;
+      proxy_read_timeout 30s;
+      proxy_cache off;
+    }
+    location / { try_files $uri $uri/ /index.html; }
+  }
+}

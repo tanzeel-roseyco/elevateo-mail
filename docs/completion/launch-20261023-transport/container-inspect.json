@@ -1,0 +1,244 @@
+[
+    {
+        "Id": "603437d53905daa3cc5592db80490c58b20b108cd2f7de2adba9942c642eb495",
+        "Created": "2026-10-22T18:09:35.757959806Z",
+        "Path": "/usr/sbin/sshd",
+        "Args": [
+            "-D",
+            "-e",
+            "-f",
+            "/etc/ssh/elevateo_sshd_config"
+        ],
+        "State": {
+            "Status": "running",
+            "Running": true,
+            "Paused": false,
+            "Restarting": false,
+            "OOMKilled": false,
+            "Dead": false,
+            "Pid": 3442679,
+            "ExitCode": 0,
+            "Error": "",
+            "StartedAt": "2026-10-22T18:09:36.029325519Z",
+            "FinishedAt": "0001-01-01T00:00:00Z"
+        },
+        "Image": "sha256:a230bad75ac83e7617441463dfb7241dc33e648e49ad4e53b52f7c723c1a7c4f",
+        "ResolvConfPath": "/var/lib/docker/containers/603437d53905daa3cc5592db80490c58b20b108cd2f7de2adba9942c642eb495/resolv.conf",
+        "HostnamePath": "/var/lib/docker/containers/603437d53905daa3cc5592db80490c58b20b108cd2f7de2adba9942c642eb495/hostname",
+        "HostsPath": "/var/lib/docker/containers/603437d53905daa3cc5592db80490c58b20b108cd2f7de2adba9942c642eb495/hosts",
+        "LogPath": "/var/lib/docker/containers/603437d53905daa3cc5592db80490c58b20b108cd2f7de2adba9942c642eb495/603437d53905daa3cc5592db80490c58b20b108cd2f7de2adba9942c642eb495-json.log",
+        "Name": "/elevateo-launch-20261023-transport-ssh",
+        "RestartCount": 0,
+        "Driver": "overlayfs",
+        "Platform": "linux",
+        "MountLabel": "",
+        "ProcessLabel": "",
+        "AppArmorProfile": "docker-default",
+        "ExecIDs": null,
+        "HostConfig": {
+            "Binds": [
+                "/tmp/elevateo-launch-20261023-transport/keys:/run/keys:ro"
+            ],
+            "ContainerIDFile": "",
+            "LogConfig": {
+                "Type": "json-file",
+                "Config": {
+                    "max-file": "3",
+                    "max-size": "10m"
+                }
+            },
+            "NetworkMode": "elevateo-launch-20261023-transport",
+            "PortBindings": {},
+            "RestartPolicy": {
+                "Name": "no",
+                "MaximumRetryCount": 0
+            },
+            "AutoRemove": false,
+            "VolumeDriver": "",
+            "VolumesFrom": null,
+            "ConsoleSize": [
+                0,
+                0
+            ],
+            "CapAdd": [
+                "CAP_SETGID",
+                "CAP_SETUID",
+                "CAP_SYS_CHROOT"
+            ],
+            "CapDrop": [
+                "ALL"
+            ],
+            "CgroupnsMode": "private",
+            "Dns": null,
+            "DnsOptions": [],
+            "DnsSearch": [],
+            "ExtraHosts": null,
+            "GroupAdd": null,
+            "IpcMode": "private",
+            "Cgroup": "",
+            "Links": null,
+            "OomScoreAdj": 0,
+            "PidMode": "",
+            "Privileged": false,
+            "PublishAllPorts": false,
+            "ReadonlyRootfs": true,
+            "SecurityOpt": [
+                "no-new-privileges:true"
+            ],
+            "Tmpfs": {
+                "/run": "mode=0755",
+                "/run/sshd": "mode=0755",
+                "/tmp": "mode=0700"
+            },
+            "UTSMode": "",
+            "UsernsMode": "",
+            "ShmSize": 67108864,
+            "Runtime": "runc",
+            "Isolation": "",
+            "CpuShares": 0,
+            "Memory": 100663296,
+            "NanoCpus": 250000000,
+            "CgroupParent": "",
+            "BlkioWeight": 0,
+            "BlkioWeightDevice": [],
+            "BlkioDeviceReadBps": [],
+            "BlkioDeviceWriteBps": [],
+            "BlkioDeviceReadIOps": [],
+            "BlkioDeviceWriteIOps": [],
+            "CpuPeriod": 0,
+            "CpuQuota": 0,
+            "CpuRealtimePeriod": 0,
+            "CpuRealtimeRuntime": 0,
+            "CpusetCpus": "",
+            "CpusetMems": "",
+            "Devices": [],
+            "DeviceCgroupRules": null,
+            "DeviceRequests": null,
+            "MemoryReservation": 0,
+            "MemorySwap": 201326592,
+            "MemorySwappiness": null,
+            "OomKillDisable": null,
+            "PidsLimit": 32,
+            "Ulimits": [],
+            "CpuCount": 0,
+            "CpuPercent": 0,
+            "IOMaximumIOps": 0,
+            "IOMaximumBandwidth": 0,
+            "MaskedPaths": [
+                "/proc/acpi",
+                "/proc/asound",
+                "/proc/interrupts",
+                "/proc/kcore",
+                "/proc/keys",
+                "/proc/latency_stats",
+                "/proc/sched_debug",
+                "/proc/scsi",
+                "/proc/timer_list",
+                "/proc/timer_stats",
+                "/sys/devices/virtual/powercap",
+                "/sys/firmware"
+            ],
+            "ReadonlyPaths": [
+                "/proc/bus",
+                "/proc/fs",
+                "/proc/irq",
+                "/proc/sys",
+                "/proc/sysrq-trigger"
+            ]
+        },
+        "Storage": {
+            "RootFS": {
+                "Snapshot": {
+                    "Name": "overlayfs"
+                }
+            }
+        },
+        "Mounts": [
+            {
+                "Type": "bind",
+                "Source": "/tmp/elevateo-launch-20261023-transport/keys",
+                "Destination": "/run/keys",
+                "Mode": "ro",
+                "RW": false,
+                "Propagation": "rprivate"
+            }
+        ],
+        "Config": {
+            "Hostname": "603437d53905",
+            "Domainname": "",
+            "User": "",
+            "AttachStdin": false,
+            "AttachStdout": false,
+            "AttachStderr": false,
+            "ExposedPorts": {
+                "2222/tcp": {}
+            },
+            "Tty": false,
+            "OpenStdin": false,
+            "StdinOnce": false,
+            "Env": [
+                "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "NODE_VERSION=24.21.0",
+                "YARN_VERSION=1.22.22"
+            ],
+            "Cmd": null,
+            "Image": "elevateo-launch-20261023-transport:check",
+            "Volumes": null,
+            "WorkingDir": "",
+            "Entrypoint": [
+                "/usr/sbin/sshd",
+                "-D",
+                "-e",
+                "-f",
+                "/etc/ssh/elevateo_sshd_config"
+            ],
+            "Labels": {}
+        },
+        "NetworkSettings": {
+            "SandboxID": "2f524e436a4a1f66ccd163c2df0dc734484723a1dc4ad13c745a89dca67885e4",
+            "SandboxKey": "/var/run/docker/netns/2f524e436a4a",
+            "Ports": {
+                "2222/tcp": null
+            },
+            "Networks": {
+                "elevateo-launch-20261023-transport": {
+                    "IPAMConfig": null,
+                    "Links": null,
+                    "Aliases": [
+                        "transport"
+                    ],
+                    "DriverOpts": null,
+                    "GwPriority": 0,
+                    "NetworkID": "f8845b3e4828434bd6597b049c9d48024dd741fa3af0459bfb66a61db7dd85a9",
+                    "EndpointID": "6168d42b772cf6957603987c969e8d72b913f4e86e08dcf2d707c24f3339fe9c",
+                    "Gateway": "",
+                    "IPAddress": "10.0.51.4",
+                    "MacAddress": "12:67:22:9f:3a:d3",
+                    "IPPrefixLen": 24,
+                    "IPv6Gateway": "",
+                    "GlobalIPv6Address": "",
+                    "GlobalIPv6PrefixLen": 0,
+                    "DNSNames": [
+                        "elevateo-launch-20261023-transport-ssh",
+                        "transport",
+                        "603437d53905"
+                    ]
+                }
+            }
+        },
+        "ImageManifestDescriptor": {
+            "mediaType": "application/vnd.oci.image.manifest.v1+json",
+            "digest": "sha256:a230bad75ac83e7617441463dfb7241dc33e648e49ad4e53b52f7c723c1a7c4f",
+            "size": 1624,
+            "annotations": {
+                "io.containerd.image.name": "docker.io/library/elevateo-launch-20261023-transport:check",
+                "org.opencontainers.image.created": "2026-10-22T18:09:31Z",
+                "org.opencontainers.image.ref.name": "check"
+            },
+            "platform": {
+                "architecture": "amd64",
+                "os": "linux"
+            }
+        }
+    }
+]

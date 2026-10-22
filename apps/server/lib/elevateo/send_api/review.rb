@@ -68,7 +68,8 @@ module Elevateo
       def attachments(binding)
         values = binding.fetch("attachment_binding", [])
         raise ReadResponse::Invalid unless values.is_a?(Array) && values.length <= 1
-        tuples = [] # : Array[Array[String | Integer]]
+        # @type var tuples: Array[Array[String | Integer]]
+        tuples = []
         items = values.map do |value|
           raise ReadResponse::Invalid unless value.is_a?(Hash) && value.keys.sort == %w[byte_size content_type filename id object_key sha256 status]
           id = ThreadProjection.uuid(value["id"])
@@ -91,6 +92,7 @@ module Elevateo
       end
 
       def recipients(binding)
+        # @type var seen: Hash[String, bool]
         values = binding["recipients"]
         suppressed = binding["suppressed_addresses"]
         consented = binding["consented_addresses"]
@@ -101,8 +103,9 @@ module Elevateo
           raise ReadResponse::Invalid
         end
         issue("recipient_required") if values.empty?
-        seen = {} # : Hash[String, bool]
-        checks = [] # : Array[ReadResponse::item]
+        seen = {}
+        # @type var checks: Array[ReadResponse::item]
+        checks = []
         items = values.each_with_index.map do |value, index|
           unless value.is_a?(Hash) && value.keys.sort == %w[address display_name]
             raise ReadResponse::Invalid

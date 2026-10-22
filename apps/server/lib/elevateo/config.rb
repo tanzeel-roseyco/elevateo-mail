@@ -21,11 +21,12 @@ module Elevateo
     PROVIDER_PREFIXES = %w[INSTANTLY_ POSTMARK_ SENDGRID_ MAILGUN_ SES_ SMTP_RELAY_].freeze
     OUTBOUND_MODES = %w[held mailpit resend].freeze
 
-    attr_reader :mode, :db_host, :db_name, :db_role, :db_password, :auth_url, :storage_url, :mailpit_url,
+    attr_reader :mode, :db_host, :db_name, :db_role, :db_password, :db_pool, :auth_url, :storage_url, :mailpit_url,
                 :send_api_enabled, :send_control_path, :outbound_hold, :process, :session_key, :browser_origin, :auth_jwt_issuer,
                 :auth_jwt_audience, :auth_jwt_algorithm, :cookie_secure, :auth_password_minimum, :cursor_signing_key,
                 :attachment_gateway_hmac_key, :attachment_gateway_url, :outbound_mode, :resend_api_key,
-                :resend_from_domain, :resend_webhook_secret, :resend_base_url, :mailbox_daily_send_limit
+                :resend_from_domain, :resend_webhook_secret, :resend_base_url, :mailbox_daily_send_limit,
+                :sso_enabled, :sso_only, :auth_public_url
 
     # Credentials live on this boundary object, so the default instance-variable dump is unsafe.
     def inspect = "#<Elevateo::Config redacted>"
@@ -39,7 +40,10 @@ module Elevateo
       raise ConfigError, "attachment storage token is gateway-only" if env.key?("ELEVATEO_ATTACHMENT_STORAGE_SERVICE_TOKEN")
       fetch = ->(key) { value = env[key].to_s; raise ConfigError, "missing required setting #{key}" if value.empty?; value }
       @mode = fetch.("ELEVATEO_MODE")
-      raise ConfigError, "ELEVATEO_MODE must be local" unless @mode == "local"
+      raise ConfigError, "invalid ELEVATEO_MODE" unless %w[local production].include?(@mode)
+      if env["RAILS_ENV"] == "production" && @mode != "production"
+        raise ConfigError, "Rails production requires production mode"
+      end
       # AIDEV-NOTE: BE03 API is opt-in; enabling it never releases outbound hold or supplies a default epoch.
       send_enabled = env["ELEVATEO_SEND_API_ENABLED"] || "false"
       raise ConfigError, "invalid send API switch" unless %w[true false].include?(send_enabled)
@@ -55,6 +59,10 @@ module Elevateo
       @db_role = fetch.("ELEVATEO_DB_ROLE")
       password_key = ROLE_PASSWORDS[@db_role] or raise ConfigError, "ELEVATEO_DB_ROLE is not an allowlisted runtime role"
       @db_password = fetch.(password_key)
+      # AIDEV-NOTE: Bound connection demand and emit only integers into the Rails YAML pool setting.
+      pool = env.fetch("ELEVATEO_DB_POOL", "5")
+      raise ConfigError, "ELEVATEO_DB_POOL must be an integer from 1 to 100" unless /\A(?:[1-9][0-9]?|100)\z/.match?(pool)
+      @db_pool = pool.to_i
       validate_smtp(fetch.("ELEVATEO_SMTP_HOST"), fetch.("ELEVATEO_SMTP_PORT"))
       @auth_url = internal_url("ELEVATEO_AUTH_URL", fetch.("ELEVATEO_AUTH_URL"), ALLOWED_HOSTS.fetch("ELEVATEO_AUTH_URL"))
       @storage_url = internal_url("ELEVATEO_STORAGE_URL", fetch.("ELEVATEO_STORAGE_URL"), ALLOWED_HOSTS.fetch("ELEVATEO_STORAGE_URL"))
@@ -62,9 +70,29 @@ module Elevateo
       reject_provider_settings(env)
       fetch.("SECRET_KEY_BASE")
       configure_auth(env, fetch) unless @db_role == "elevateo_migrator"
+      validate_production(env) if @mode == "production"
     end
 
     private
+
+    # AIDEV-NOTE: Production reuses private Docker service names; this launch profile cannot release outbound mail.
+    def validate_production(env)
+      raise ConfigError, "production requires Rails production" unless env["RAILS_ENV"] == "production"
+      raise ConfigError, "production requires private database" unless @db_host == "db"
+      raise ConfigError, "production requires outbound hold" unless @outbound_hold && @outbound_mode == "held"
+      raise ConfigError, "production local HTTP is forbidden" if env.key?("ELEVATEO_LOCAL_HTTP")
+      raise ConfigError, "production secret key is too short" unless env["SECRET_KEY_BASE"].to_s.bytesize >= 64
+      expected = { "elevateo_api" => "api", "elevateo_worker" => "worker", "elevateo_migrator" => "migrate" }
+      raise ConfigError, "production process and database role mismatch" unless expected[@db_role] == @process
+      return if @db_role == "elevateo_migrator"
+      unless @cookie_secure && @browser_origin == "https://mail.elevateoco.com"
+        raise ConfigError, "production requires the secure launch origin"
+      end
+      # AIDEV-NOTE: Enabling production SSO must not leave password/recovery entry as an alternate login path.
+      if @sso_enabled && (!@sso_only || @auth_public_url != "https://mail.elevateoco.com/auth/v1")
+        raise ConfigError, "production SSO requires SSO-only and the exact public Auth endpoint"
+      end
+    end
 
     # AIDEV-NOTE: Provider secrets are retained only in frozen private fields and never interpolated into errors.
     def configure_outbound(env)
@@ -150,8 +178,30 @@ module Elevateo
       raise ConfigError, "unsupported Auth JWT policy" unless @auth_jwt_audience == "authenticated" && @auth_jwt_algorithm == "HS256"
       raise ConfigError, "local Auth password minimum must be 12" unless fetch.("ELEVATEO_AUTH_PASSWORD_MINIMUM") == "12"
       @auth_password_minimum = 12
+      configure_sso(env)
     rescue ArgumentError, URI::InvalidURIError
       raise ConfigError, "invalid authentication configuration"
+    end
+
+    # AIDEV-NOTE: Public Auth supports the explicit gateway prefix; server requests retain the private auth_url.
+    def configure_sso(env)
+      enabled = env.fetch("ELEVATEO_SSO_ENABLED", "false")
+      only = env.fetch("ELEVATEO_SSO_ONLY", "false")
+      unless [enabled, only].all? { |value| %w[true false].include?(value) }
+        raise ConfigError, "invalid SSO switch"
+      end
+      @sso_enabled = enabled == "true"
+      @sso_only = only == "true"
+      raise ConfigError, "SSO-only requires SSO enabled" if @sso_only && !@sso_enabled
+      @auth_public_url = env["ELEVATEO_AUTH_PUBLIC_URL"]
+      return unless @sso_enabled || @auth_public_url
+      uri = URI.parse(@auth_public_url.to_s)
+      unless uri.scheme == "https" && uri.host && ["", "/auth/v1"].include?(uri.path) && uri.userinfo.nil? &&
+          uri.query.nil? && uri.fragment.nil? && uri.port == 443
+        raise ConfigError, "SSO requires an exact HTTPS public Auth endpoint"
+      end
+    rescue URI::InvalidURIError
+      raise ConfigError, "invalid public Auth endpoint"
     end
 
     def parse_hold(value)

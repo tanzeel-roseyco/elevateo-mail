@@ -32,6 +32,8 @@ module Elevateo
       end
 
       def multipart(part, depth, counts)
+        # @type var bodies: Array[Mail::Message]
+        # @type var attachments: Array[Mail::Message]
         children = part.parts
         raise MimeRejected, "invalid_mime" unless children.length.between?(1, FakeIngress::MAX_PARTS)
         raise MimeRejected, "unsupported_mime" unless %w[multipart/alternative multipart/mixed multipart/related].include?(part.mime_type)
@@ -39,9 +41,7 @@ module Elevateo
         if part.mime_type == "multipart/alternative"
           return alternatives(children, depth, counts)
         end
-        # @type var bodies: Array[Mail::Message]
         bodies = []
-        # @type var attachments: Array[Mail::Message]
         attachments = []
         children.each do |child|
           selected, attached = visit(child, depth + 1, counts)

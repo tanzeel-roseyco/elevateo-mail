@@ -1,3 +1,17 @@
+Latest edge follow-up: 234 fleet Docker assertions PASS; independent 156-line review, zero defects.
+Task containers/image/base reference and staging removed; persistent data and shared cache retained.
+Receipt: `docs/completion/launch-20261023-edge-followup.md`. No live deployment or delivery.
+
+## Launch integration — 2026-10-23
+
+The application uses Google SSO through private GoTrue, exposed only at the two fixed OAuth
+navigation paths. Rails owns encrypted PKCE/state cookies, opaque sessions and tenant authorization;
+the Fable login screen reads the server capability contract and fails closed on unavailable status.
+Railway edge configuration is in `ops/railway`; held backend manifests are in `ops/production`.
+No Cloudflare access wall or proxy is part of this topology. Production activation is incomplete.
+See `docs/completion/launch-20261023-handoff.md` for the authoritative verification and remaining
+credential, database, organization membership, mailbox and live acceptance gates.
+
 <!-- completion-wave-current:start -->
 ### Thread folders, snooze, stars, Reply all / Forward (2026-10-20, BE-05)
 
@@ -861,3 +875,15 @@ Android runtime completion: Android1037 passed all nine isolated checks (login, 
 `/` now hosts the account-scoped inbox, selected conversation and marketing overview in one shell; `/overview` retains the previous summary. Navigation/filter state remains URL-owned. The campaign route `/outreach/campaigns/:campaignId/runs` supports explicit single-message runs of up to 25 eligible leads, immutable operation retries, recipient history, and cancellation of work not yet accepted by the transport. Marketing consent is checked separately from correspondence and is required even for simulated profiles. No live mail was sent or production activated.
 
 Source is in the isolated `Elevateo Mail - Unified Dashboard 20261020` workspace. Backend acceptance and run-form visual validation are pending; see the latest state.md entry. Earlier acceptance totals describe the previous baseline.
+
+## Google SSO backend task_8bef3d83f3ab (2026-10-23)
+Routes, security boundaries, required coordinator-owned OAuth values and scoped fleet Docker evidence are recorded in docs/completion/launch-20261023-google-sso.md. No frontend changes or provider calls; fixed callbacks retain existing opaque sessions and invite-only authorization.
+
+Final explicit-openid scope regression passed seven cases/50 assertions and targeted lint in fleet Docker; affected nonadditive evidence totals 65 cases/507 assertions across scoped runs. Google must be the sole enabled social provider and production SSO-only mode must be enabled before launch; credentials and live acceptance remain coordinator-owned.
+
+
+SSO task_8bef3d83f3ab addendum: coordinator-authorized private nginx OAuth bridge preparation passed isolated fleet fake-Auth route/header/log checks; containers/network independently absent. Final design/proxy review and real Google/browser acceptance remain pending; coordinator retains pinned image temporarily for transport work. See docs/completion/launch-20261023-google-sso.md.
+
+Transport task_7232b18516ab: isolated fleet Docker verification PASS for two allowed forwards, denied shell/arbitrary/loopback/remote/Unix forwards, wrong host pin and unauthorized key, minimal caps and read-only mounts. Exact task containers/network/image/builder volume/keys removed and independently absent. Evidence: docs/completion/launch-20261023-transport.md; independent functional/design reviews and production integration remain coordinator-owned, no deployment.
+
+Google SSO final receipt: docs/completion/launch-20261023-google-sso.md records accepted final proxy rereview (127 LOC, zero defects, 0/KLOC), original repaired findings and fleet evidence. Separate read-only initialization assessment documents bootstrap order and data-preservation boundaries; no database/Auth mutation or public activation was performed.

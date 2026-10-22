@@ -27,6 +27,7 @@ module Elevateo
     end
 
     def accept(pending_cookie:, password:, caller_cookie:, deadline:)
+      raise AuthError.unauthorized if @config.sso_only
       password = AuthInput.password(password, minimum: @config.auth_password_minimum)
       digest, claim = @crypto.digest(pending_cookie), SecureRandom.uuid
       owned = @sessions.checked("claim_entry", [digest, claim], deadline)

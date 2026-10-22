@@ -18,6 +18,7 @@ module Elevateo
       end
 
       def retrieve(email_id)
+        # @type var value: object
         raise Invalid, "invalid email id" unless Signature::UUID.match?(email_id)
         value = json("/emails/receiving/#{email_id}?html_format=cid")
         raise Invalid, "invalid received content" unless value["id"] == email_id

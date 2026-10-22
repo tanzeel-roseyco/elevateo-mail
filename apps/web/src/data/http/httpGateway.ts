@@ -48,6 +48,7 @@ import {
   ThreadStarStateSchema,
 } from '../contract'
 import { GatewayError } from '../errors'
+import { AuthSsoStatusSchema, SSO_STATUS_MAX_BYTES } from '../ssoContract'
 import type { CsrfProof, MailroomGateway, PageQuery, ReadContext, ThreadFilter } from '../gateway'
 import { requestJson, requestJsonWithStatus, type FetchLike, type RequestOptions } from './transport'
 
@@ -121,6 +122,9 @@ export function createHttpGateway(fetchImpl?: FetchLike): MailroomGateway {
     // --- BE-02A session lifecycle ---------------------------------------------------------
     getLoginChallenge(signal) {
       return requestJson('/v1/auth/login-challenge', AuthChallengeSchema, MAX_BYTES.challenge, { ...base, signal })
+    },
+    getSsoStatus(signal) {
+      return requestJson('/v1/auth/sso/status', AuthSsoStatusSchema, SSO_STATUS_MAX_BYTES, { ...base, signal })
     },
     async login(proof, input, signal) {
       const body = validated(LoginInputSchema, input)

@@ -11,6 +11,7 @@ module V1
     protected
 
     def protected_write(allowed_query: [], required: [], max_bytes: 8192, budget: 4096, guard_users: nil, body: true)
+      # @type var users: Array[String]
       Elevateo::WriteInput.transport!(origin: request.headers["Origin"], expected_origin: read_config.browser_origin,
         content_type: request.get_header("CONTENT_TYPE"), content_encoding: request.get_header("HTTP_CONTENT_ENCODING"),
         body: body)
@@ -23,7 +24,6 @@ module V1
       unless csrf.is_a?(String) && /\A[A-Za-z0-9_-]{32,512}\z/.match?(csrf)
         raise Elevateo::CollaborationError.new("request_invalid")
       end
-      # @type var users: Array[String]
       users = guard_users ? guard_users.call(input: input, query: query) : []
       unless users.is_a?(Array) && users.length <= 2
         raise Elevateo::CollaborationError.new("request_invalid")

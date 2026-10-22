@@ -40,7 +40,8 @@ module Elevateo
         raise SmtpSnapshot::Invalid unless snapshot.is_a?(Array) && snapshot.length == 14
         normalized = snapshot.dup
         normalized[0] = "elevateo.send.snapshot.v1"
-        empty_attachments = [] # : Array[String]
+        # @type var empty_attachments: Array[String]
+        empty_attachments = []
         normalized[12] = empty_attachments
         message = SmtpSnapshot.render(JSON.generate(normalized), send_id: send_id, verified_sender: snapshot_sender(bytes))
         return rejected unless message.sender.split("@", 2).last.downcase == @from_domain

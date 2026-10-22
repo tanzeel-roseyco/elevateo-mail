@@ -1,0 +1,16 @@
+{
+  "image_id": "sha256:87dc00d663ef00c7f0fb2408e6ad8f2d5e449388c81b87ef16fb45f7bcdf9833",
+  "tag": "elevateo-config-followup:checks",
+  "image_size_bytes": 233537953,
+  "labels": {
+    "elevateo.task": "config-followup"
+  },
+  "containers_before": [],
+  "docker_before": "TYPE            TOTAL     ACTIVE    SIZE      RECLAIMABLE\nImages          85        80        108.3GB   4.882GB (4%)\nContainers      358       292       4.88GB    95.59MB (1%)\nLocal Volumes   258       65        16.81GB   13.77GB (81%)\nBuild Cache     40        1         1.521GB   1.384GB\n",
+  "host_before": "Filesystem        1B-blocks         Used   Available Use% Mounted on\n/dev/md2       468702478336 377082097664 67736375296  85% /\n",
+  "removed": "Untagged: elevateo-config-followup:checks\nDeleted: sha256:87dc00d663ef00c7f0fb2408e6ad8f2d5e449388c81b87ef16fb45f7bcdf9833\n",
+  "absent": true,
+  "docker_after": "TYPE            TOTAL     ACTIVE    SIZE      RECLAIMABLE\nImages          84        80        107.5GB   4.084GB (3%)\nContainers      358       292       4.88GB    95.59MB (1%)\nLocal Volumes   258       65        16.81GB   13.77GB (81%)\nBuild Cache     40        1         1.521GB   1.384GB\n",
+  "host_after": "Filesystem        1B-blocks         Used   Available Use% Mounted on\n/dev/md2       468702478336 376335097856 68483375104  85% /\n",
+  "retained": "Shared pinned bases and default-builder cache: task attribution cannot be independently established; no prune."
+}

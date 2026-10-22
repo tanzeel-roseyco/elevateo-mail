@@ -27,7 +27,15 @@ module ElevateoServer
     config.middleware.insert_before Rails::Rack::Logger, Elevateo::AuthCallbackRedaction
     config.middleware.insert_before Rails::Rack::Logger, Elevateo::ResendEvents::Redaction
     config.filter_parameters += %i[password token secret key content_base64]
-    config.hosts.clear
+    # AIDEV-NOTE: Only the private proxy reaches production; public origin and Docker health host are exact.
+    if Rails.env.production?
+      Elevateo::Config.current
+      config.hosts = ["mail.elevateoco.com", "api"]
+      config.assume_ssl = true
+      config.force_ssl = true
+    else
+      config.hosts.clear
+    end
     config.secret_key_base = ENV.fetch("SECRET_KEY_BASE")
   end
 end

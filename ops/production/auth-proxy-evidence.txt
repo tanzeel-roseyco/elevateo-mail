@@ -1,0 +1,13 @@
+nginx: the configuration file /etc/nginx/test.conf syntax is ok
+nginx: configuration file /etc/nginx/test.conf test is successful
+path=/authorize?state=secret-state&code_challenge=challenge host=mail.elevateoco.com proto=https cookie=flow=opaque auth= forwarded=
+path=/authorize?state=secret-state&code_challenge=challenge host=mail.elevateoco.com proto=https cookie=flow=opaque auth= forwarded=
+Cache-Control: no-store
+Referrer-Policy: no-referrer
+Location: https://mail.elevateoco.com/v1/auth/sso/callback?code=opaque
+Set-Cookie: auth=opaque; HttpOnly
+AUTH_PROXY_CHECKS_PASS
+AUTH_PROXY_NEGATIVE_PASS logs_failure
+AUTH_PROXY_NEGATIVE_PASS cleanup_failure
+AUTH_PROXY_NEGATIVE_PASS listing_failure
+AUTH_PROXY_NEGATIVE_PASS cleanup_listing_failure

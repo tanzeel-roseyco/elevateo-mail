@@ -1,0 +1,36 @@
+# Config and backend typing follow-up
+
+Task `task_4f34bffeab63`, dispatch `ctx_7abcb43e02e5`. Base HEAD `32c76167442c26dc0782a3295976d7d66ac806c8`; tests attest a dirty, concurrent-work snapshot, not a committed revision or release. Implementation was inline; root owns independent adversarial reviews and central documentation integration.
+
+## Changes
+
+Database scalar fields use JSON quoting with explicit escapes for YAML-sensitive Unicode code points. This preserves leading `#`, colon-space, quotes, control characters, numeric-looking strings, BMP and supplementary Unicode, and long passwords without logging credentials. Final follow-up also escapes forbidden U+FFFE/U+FFFF; red/green Docker receipts confirm the repair (3 runs / 62 assertions green). Config owns a bounded `db_pool` Integer: default 5, accepted decimal 1–100, all empty/noncanonical/unbounded/injected values rejected. The RBS seam agrees.
+
+Fifteen existing Steep-failing files received narrow collection annotations or annotation scope corrections. MIME traversal constructs its initial tuple explicitly; IMAP lease freezing returns the already typed lease. No suppression, untyped signature widening, architecture change or frontend edit was introduced. Concurrent SSO/auth changes were preserved; pool Config ownership was coordinated with the SSO worker.
+
+The held-production wrapper admits only SHA256 references before executing Docker Compose. The manifest consumes its admitted variable, and operator commands document the wrapper. Tests substitute a local fake Docker executable, validate arguments, and prove missing/tag/malformed references never invoke it. No deployment was run.
+
+## Docker evidence
+
+All application execution used fleet-02, lease `/tmp/elevateo-launch-20261023-config-followup/lease`, image `elevateo-config-followup:checks` (`sha256:87dc00d663ef00c7f0fb2408e6ad8f2d5e449388c81b87ef16fb45f7bcdf9833`). Focused containers used `--rm`, no network, read-only root/source, UID 10001 and bounded tmpfs. The final admission harness explicitly uses `exec` on its disposable tmpfs so the fake Docker executable can run; the later coordinator-approved canonical backend test fixture adds the read-only production-script mount and executable test tmpfs. No live/provider/mail calls or production database changes occurred.
+
+- `baseline-steep.log`: exact HEAD archive independently reproduces **28 problems in 15 files**.
+- `unicode-red.log`: U+0085 fails before separator escaping (1 run, 1 assertion, 1 failure).
+- `focused.log`: 16 targeted suites pass, **114 runs / 1184 assertions**. Initial mixed mailbox suite has 12 setup errors: five DB cases lack `BE02_TASK_DATABASE_NAME`, seven unit cases lacked the contract fixture in the initial narrow source snapshot. Unit cases were rerun with the unchanged fixture; database acceptance is separately recorded below.
+- `final5.log`: database YAML **3/56**, image admission **2/22**, mailbox unit **7/52**, Config **12/101**, production runtime **2/7**, all zero failures/errors. Canonical lint **162 files, zero offenses**; full Steep **zero type errors**.
+
+Earlier attempts are preserved in fleet task logs: default all-cop RuboCop found style offenses (noncanonical invocation); intermediate annotation attempts failed Steep; an ASCII-only JSON serializer failed supplementary Unicode; initial fake-Docker acceptance failed due to noexec tmpfs. These were corrected, not suppressed. `final.log` and `final2.log` are retained locally as failed histories; final5 supersedes their verification status.
+
+## Full private backend gate
+
+Coordinator requested unchanged `ops/tests/be02/run.py` with existing immutable server image and a fresh isolated fixture namespace. First two attempts stopped before application checks because snapshot shell files used CRLF; exact cleanup passed. Third attempt reached Auth concurrency, then its immutable SQL hash guard rejected CRLF in bootstrap-auth-grants.sql; LF normalization reproduces the exact expected hash 2f63d116e2b23af69d7abd0452893509231e39658d298a9ad207e75a8a96fcd6. Fourth attempt uses documented snapshot-only shell/SQL line-ending normalization, without changing repository recipes, expected hashes or guards; fourth result FAILED at suite stage with cleanup PASS: 205 suites / 1169 runs / 13557 assertions / 2 failures / 0 errors. Both failures were the admission test missing its production-script mount. Full Steep passed; lint inspected 470 files and found seven ScriptPermission offenses: six tracked executable modes lost during Windows copying, plus one real HEAD mode defect (resend-events-worker tracked 100644). Root approved its exact 100755 mode repair and the canonical test-only read-only mount; test tmpfs enables execution of the fake Docker stub. Fifth corrected run PASSED; final counts and cleanup receipts follow below. Normalization paths are retained in shell-lf-normalized.txt; source receipts describe the actual test snapshot.
+
+## Review and cleanup
+
+See root-coordinated bounded packets and `code-reviews.md`. Prior 190 LOC review had one MEDIUM defect (5.26/KLOC); Unicode and pool follow-ups each identified a defect. Review scopes overlap and must not be summed. Independent admission rereview: 75 physical LOC, zero defects (0/KLOC). Steep packets: 29 and 27 changed lines, zero defects (0/KLOC each). Config rereview: 88 nonblank LOC, one MEDIUM forbidden-Unicode defect (11.36/KLOC); repaired; final Unicode rereview assessed 72 physical LOC with zero defects (0/KLOC). Review scopes overlap and are nonadditive.
+
+Final gate receipt: `ops/local/be02-daa32bd9f7274cbb961760ce9bbc90d9/result.json` records tests PASSED and cleanup PASSED. Its 205 suites total **1169 runs / 13577 assertions / zero failures, errors or skips**; full Steep reports no type errors and lint inspects **470 files / zero offenses**. Separate authenticated HTTP acceptance passes **1 run / 33 assertions**, Mailpit entry passes **2 runs / 107 assertions**, and the real HTTP worker drain exits zero. Source-before/after hashes match. This fifth run supersedes the pending status above; the approved six-line canonical test fixture change and exact executable-mode correction are part of its snapshot. Production deployment recipes were not executed.
+
+Cleanup removed five owned containers, two owned database volumes and one owned network, with no cleanup errors. After the SSO worker released the borrowed image, exact tag/ID/ownership and zero consumers were checked before deleting only `elevateo-config-followup:checks`; subsequent inspection confirmed absence. `image-cleanup.json` records its 233537953-byte logical size and observed host free-space increase of 746999808 bytes; concurrent shared-host changes prevent attributing the entire increase to this task. Shared default-builder cache could not be safely attributed and was retained, along with shared base images and source/evidence. No other task resources were deleted; local Docker/WSL was unused, so Windows disk compaction does not apply.
+
+Final independent fixture review accepted: 180 source lines plus executable-mode metadata, zero defects (0/KLOC), coordinator receipt msg_133c499f4fb5. API and worker privileges remain unchanged; coverage overlaps earlier packets and is nonadditive.

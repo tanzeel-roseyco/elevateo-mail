@@ -1,3 +1,15 @@
+## Latest launch checkpoint — 2026-10-23
+
+Not live. Google SSO backend and Fable-authored login UI are integrated. Fleet Docker backend:
+1,169 tests / 13,577 assertions, Steep and lint PASS; web: full 1,063 tests PASS before final
+accessibility/test repair, then 29 targeted tests and 10 browser cases PASS. Fourteen login
+screenshots inspected. Railway edge: build and 234 isolated startup/routing assertions PASS; final 156-line
+port-guard review found zero defects. Live Google credentials, schema initialization, verified tenant
+bootstrap and real mailbox provisioning remain unresolved. Resend: six HTTP calls, zero sends.
+No deployment, Cloudflare change, Workspace routing change or production database mutation.
+Current paths, evidence, cleanup and exact activation sequence: `docs/completion/launch-20261023-handoff.md`.
+Older entries below retain their original revision-specific limits.
+
 <!-- completion-wave-current:start -->
 ### Thread folders, snooze, stars, Reply all / Forward — 2026-10-20 (BE-05, Claude Fable 5.1 + Codex)
 
@@ -890,3 +902,13 @@ The root route is an inbox-first workspace with account selection, conversation 
 Campaign runs add a single-message batch of 1–25 explicitly consented leads through the existing immutable draft/approval/queue authority. The run UI retains the original operation and payload across route navigation and uncertain receipts, exposes recipient states and cancellation, and validates byte limits. Marketing purpose and recorded consent are distinct from individual correspondence in review and dispatch. This is not multi-step automatic sequence execution or complete Instantly feature parity.
 
 Verification: fleet-02 Docker v1/v2 contract generation checks, ESLint and TypeScript passed. Full Vitest run passed 940/941 cases; the one failing Unicode test was a transfer-corrupted question-mark fixture, corrected to an explicit Unicode escape. Its six-case file rerun passed, and production build passed. Backend lifecycle/migration/type verification remains in progress after a failed initial runner; do not regard campaign delivery as accepted yet. Run-form browser validation remains in progress. Disposable containers use `--rm`; final task resource cleanup pending.
+
+## Google SSO backend task_8bef3d83f3ab (2026-10-23)
+Backend PKCE/state integration implemented; affected fleet Docker evidence totals 65 cases/507 assertions across scoped runs, including final explicit-openid regression PASS. Exact tested baseline Steep had 28 diagnostics; separate configuration repairs are outside this receipt. Residual independent review, credentials and live acceptance remain pending. See docs/completion/launch-20261023-google-sso.md; no deployment authority implied.
+
+
+SSO task_8bef3d83f3ab addendum: coordinator-authorized private nginx OAuth bridge preparation passed isolated fleet fake-Auth route/header/log checks; containers/network independently absent. Final design/proxy review and real Google/browser acceptance remain pending; coordinator retains pinned image temporarily for transport work. See docs/completion/launch-20261023-google-sso.md.
+
+Transport task_7232b18516ab: isolated fleet Docker verification PASS for two allowed forwards, denied shell/arbitrary/loopback/remote/Unix forwards, wrong host pin and unauthorized key, minimal caps and read-only mounts. Exact task containers/network/image/builder volume/keys removed and independently absent. Evidence: docs/completion/launch-20261023-transport.md; independent functional/design reviews and production integration remain coordinator-owned, no deployment.
+
+Google SSO dispatch closure: coordinator accepted final proxy rereview 127 LOC / 0 defects (0/KLOC), following repaired original 2 MEDIUM / 138 LOC (14.49/KLOC); real proxy and four negative regressions PASS. Read-only schema assessment is docs/completion/launch-20261023-schema-initialization-assessment.md; no live initialization performed. Root owns integration, credentials, tenant provisioning and live verification.

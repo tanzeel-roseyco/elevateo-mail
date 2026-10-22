@@ -24,11 +24,69 @@ class AuthConfigTest < Minitest::Test
     assert config.session_key.frozen?
   end
 
+  # AIDEV-NOTE: Deployment profile must never broaden local endpoint policy or unlock delivery by configuration.
+  def test_production_profile_accepts_only_secure_held_private_runtime
+    values = environment.merge("ELEVATEO_MODE" => "production", "RAILS_ENV" => "production",
+      "SECRET_KEY_BASE" => "s" * 64, "ELEVATEO_BROWSER_ORIGIN" => "https://mail.elevateoco.com")
+    assert_equal "production", Elevateo::Config.load!(values).mode
+    { "RAILS_ENV" => "development", "ELEVATEO_DB_HOST" => "public.example.test",
+      "ELEVATEO_OUTBOUND_HOLD" => "false", "ELEVATEO_OUTBOUND_MODE" => "mailpit",
+      "ELEVATEO_LOCAL_HTTP" => "true", "SECRET_KEY_BASE" => "short",
+      "ELEVATEO_MODE" => "local", "ELEVATEO_PROCESS" => "worker", "ELEVATEO_COOKIE_SECURE" => "false",
+      "ELEVATEO_BROWSER_ORIGIN" => "https://other.example.test",
+      "ELEVATEO_AUTH_URL" => "https://public.example.test" }.each do |name, value|
+      assert_raises(Elevateo::ConfigError) { Elevateo::Config.load!(values.merge(name => value)) }
+    end
+    worker = values.merge("ELEVATEO_PROCESS" => "worker", "ELEVATEO_DB_ROLE" => "elevateo_worker",
+      "WORKER_DB_PASSWORD" => "disposable")
+    assert_equal "worker", Elevateo::Config.load!(worker).process
+    migrator = values.merge("ELEVATEO_PROCESS" => "migrate", "ELEVATEO_DB_ROLE" => "elevateo_migrator",
+      "MIGRATOR_DB_PASSWORD" => "disposable")
+    assert_equal "migrate", Elevateo::Config.load!(migrator).process
+  end
+
   def test_rejects_missing_short_or_non_base64_key_without_echoing_value
     [nil, Base64.strict_encode64("too-short"), "not*base64"].each do |key|
       error = assert_raises(Elevateo::ConfigError) { Elevateo::Config.load!(environment.merge("ELEVATEO_SESSION_KEY_BASE64" => key)) }
       refute_includes error.message, "too-short"
       refute_includes error.message, "not*base64"
+    end
+  end
+
+  def test_sso_switches_and_public_origin_do_not_change_private_auth_endpoint
+    config = Elevateo::Config.load!(environment)
+    refute config.sso_enabled
+    refute config.sso_only
+    assert_nil config.auth_public_url
+    enabled = environment.merge("ELEVATEO_SSO_ENABLED" => "true", "ELEVATEO_SSO_ONLY" => "true",
+      "ELEVATEO_AUTH_PUBLIC_URL" => "https://auth.example.test")
+    config = Elevateo::Config.load!(enabled)
+    assert config.sso_enabled
+    assert config.sso_only
+    assert_equal "http://auth:9999", config.auth_url
+    assert_equal "https://auth.example.test", config.auth_public_url
+    assert_equal "https://auth.example.test/auth/v1", Elevateo::Config.load!(enabled.merge(
+      "ELEVATEO_AUTH_PUBLIC_URL" => "https://auth.example.test/auth/v1")).auth_public_url
+    [nil, "http://auth.example.test", "https://auth.example.test/path", "https://user@auth.example.test",
+      "https://auth.example.test/", "https://auth.example.test/auth/v1/", "https://auth.example.test:8443",
+      "https://auth.example.test?x=1"].each do |url|
+      assert_raises(Elevateo::ConfigError) { Elevateo::Config.load!(enabled.merge("ELEVATEO_AUTH_PUBLIC_URL" => url)) }
+    end
+    assert_raises(Elevateo::ConfigError) { Elevateo::Config.load!(enabled.merge("ELEVATEO_SSO_ENABLED" => "false")) }
+    %w[ELEVATEO_SSO_ENABLED ELEVATEO_SSO_ONLY].each do |name|
+      assert_raises(Elevateo::ConfigError) { Elevateo::Config.load!(enabled.merge(name => "yes")) }
+    end
+  end
+
+  def test_production_sso_requires_password_lock_and_exact_gateway
+    values = environment.merge("ELEVATEO_MODE" => "production", "RAILS_ENV" => "production",
+      "SECRET_KEY_BASE" => "s" * 64, "ELEVATEO_BROWSER_ORIGIN" => "https://mail.elevateoco.com",
+      "ELEVATEO_SSO_ENABLED" => "true", "ELEVATEO_SSO_ONLY" => "true",
+      "ELEVATEO_AUTH_PUBLIC_URL" => "https://mail.elevateoco.com/auth/v1")
+    assert Elevateo::Config.load!(values).sso_only
+    assert_raises(Elevateo::ConfigError) { Elevateo::Config.load!(values.merge("ELEVATEO_SSO_ONLY" => "false")) }
+    assert_raises(Elevateo::ConfigError) do
+      Elevateo::Config.load!(values.merge("ELEVATEO_AUTH_PUBLIC_URL" => "https://auth.example.test/auth/v1"))
     end
   end
 

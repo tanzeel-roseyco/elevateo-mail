@@ -19,6 +19,7 @@ module Elevateo
     attr_reader db_name: String
     attr_reader db_role: String
     attr_reader db_password: String
+    attr_reader db_pool: Integer
     attr_reader auth_url: String
     attr_reader storage_url: String
     attr_reader mailpit_url: String
@@ -42,12 +43,17 @@ module Elevateo
     attr_reader resend_webhook_secret: String?
     attr_reader resend_base_url: String?
     attr_reader mailbox_daily_send_limit: Integer
+    attr_reader sso_enabled: bool
+    attr_reader sso_only: bool
+    attr_reader auth_public_url: String?
     def self.current: () -> Config
     def self.load!: (?_ConfigEnvironment) -> Config
     def initialize: (_ConfigEnvironment) -> void
     private
+    def validate_production: (_ConfigEnvironment) -> void
     def configure_outbound: (_ConfigEnvironment) -> void
     def configure_auth: (_ConfigEnvironment, ^(String) -> String) -> void
+    def configure_sso: (_ConfigEnvironment) -> void
     def parse_hold: (String) -> bool
     def validate_smtp: (String, String) -> void
     def internal_url: (String, String, String) -> String

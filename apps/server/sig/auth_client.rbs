@@ -10,6 +10,7 @@ module Elevateo
     @transaction_open: ^() -> bool?
     def initialize: (config: _AuthConfig, ?transport: transport?, ?transaction_open: (^() -> bool?)?) -> void
     def login: (String, String, deadline: RequestDeadline) -> auth_object
+    def exchange_code: (String, String, deadline: RequestDeadline) -> auth_object
     def refresh: (String, deadline: RequestDeadline) -> auth_object
     def user: (String, deadline: RequestDeadline) -> auth_object
     def recover: (String, deadline: RequestDeadline) -> bool

@@ -14,6 +14,7 @@ import { GatewayError } from '@/data/errors'
 import { cx } from '@/lib/format'
 import { newTraversalBudget, readPage } from '@/lib/readPage'
 import { SignInPage } from '@/features/auth/SignInPage'
+import { readSsoLandingError, stripSsoLandingError } from '@/data/ssoContract'
 import { EmptyState, ErrorState, Skeleton } from '@/ui/Async'
 import { Badge } from '@/ui/Badge'
 import { BrandLockup } from '@/ui/BrandLockup'
@@ -53,6 +54,14 @@ export function Shell() {
   const identity = sessionState.status === 'ready' ? sessionIdentityKey(sessionState.session) : null
   useEffect(() => {
     if (identity !== null) lastIdentityRef.current = identity
+  }, [identity])
+  // AIDEV-NOTE: An SSO callback failure that lands on an already-signed-in browser must not sit in
+  // the URL until a later sign-out shows it as a stale alert; drop it once the app renders.
+  useEffect(() => {
+    if (identity === null) return
+    const search = window.location.search
+    if (readSsoLandingError(search) === null) return
+    window.history.replaceState(window.history.state, '', `${window.location.pathname}${stripSsoLandingError(search)}${window.location.hash}`)
   }, [identity])
 
   if (sessionState.status === 'loading') {

@@ -112,7 +112,8 @@ module Elevateo
         org = WriteInput.uuid(organization_id)
         after = cursor.nil? ? nil : WriteInput.uuid(cursor)
         table = table_for(kind)
-        values = [org] # : Array[untyped]
+        # @type var values: Array[String | Integer | nil]
+        values = [org]
         filter = "organization_id=$1::uuid"
         WriteInput.invalid! if %w[lead account].include?(kind) && campaign_id.nil?
         if campaign_id

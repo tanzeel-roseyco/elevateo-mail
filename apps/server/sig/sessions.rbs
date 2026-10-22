@@ -14,6 +14,7 @@ module Elevateo
     def touch: (SessionIdentity, deadline: RequestDeadline) -> auth_object
     def limits!: (String, String, deadline: RequestDeadline) -> auth_object
     def login: (email: auth_value, password: auth_value, source_ip: String, caller_cookie: String?, deadline: RequestDeadline) -> SessionResult
+    def establish: (AuthTokens::Verified, caller_cookie: String?, deadline: RequestDeadline) -> SessionResult
     def recovery: (email: auth_value, source_ip: String, deadline: RequestDeadline) -> bool
     def refresh: (cookie: String?, deadline: RequestDeadline) -> SessionResult
     def logout_csrf!: (cookie: String?, proof: String?, deadline: RequestDeadline) -> bool

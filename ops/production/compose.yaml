@@ -1,0 +1,83 @@
+# AIDEV-NOTE: Reuse the private data plane; API and OAuth bridge publish loopback ports, never database ports.
+name: elevateo-launch
+x-runtime: &runtime
+  image: ${ELEVATEO_ADMITTED_PRODUCTION_IMAGE:?run ops/production/deploy.sh with a reviewed SHA256 image}
+  restart: unless-stopped
+  init: true
+  user: "10001:10001"
+  read_only: true
+  tmpfs: ["/app/tmp:uid=10001,gid=10001,mode=0700", "/tmp:uid=10001,gid=10001,mode=0700"]
+  cap_drop: [ALL]
+  security_opt: ["no-new-privileges:true"]
+  networks: [private]
+  logging:
+    driver: json-file
+    options: {max-size: "10m", max-file: "3"}
+x-env: &environment
+  RAILS_ENV: production
+  ELEVATEO_MODE: production
+  ELEVATEO_OUTBOUND_MODE: held
+  ELEVATEO_OUTBOUND_HOLD: "true"
+  ELEVATEO_SEND_API_ENABLED: "false"
+  ELEVATEO_DB_HOST: db
+  ELEVATEO_DB_NAME: postgres
+  ELEVATEO_AUTH_URL: http://auth:9999
+  ELEVATEO_STORAGE_URL: http://storage:5000
+  ELEVATEO_MAILPIT_URL: http://mailpit:8025
+  ELEVATEO_SMTP_HOST: mailpit
+  ELEVATEO_SMTP_PORT: "1025"
+  ELEVATEO_BROWSER_ORIGIN: https://mail.elevateoco.com
+  ELEVATEO_COOKIE_SECURE: "true"
+  ELEVATEO_SSO_ENABLED: "true"
+  ELEVATEO_SSO_ONLY: "true"
+  ELEVATEO_ATTACHMENT_GATEWAY_URL: http://attachment-gateway:4708
+
+services:
+  auth-browser-proxy:
+    image: nginx:1.28.3-alpine@sha256:a8b39bd9cf0f83869a2162827a0caf6137ddf759d50a171451b335cecc87d236
+    restart: unless-stopped
+    user: "10001:10001"
+    read_only: true
+    tmpfs: ["/tmp:uid=10001,gid=10001,mode=0700"]
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    networks: [private]
+    ports: ["127.0.0.1:4712:8080"]
+    volumes: ["./auth-browser-proxy.conf:/etc/nginx/elevateo.conf:ro"]
+    entrypoint: [nginx]
+    command: [-c, /etc/nginx/elevateo.conf, -g, "daemon off;"]
+  launch-api:
+    <<: *runtime
+    env_file: ["${ELEVATEO_API_ENV_FILE:?set absolute protected API env file}"]
+    environment:
+      <<: *environment
+      ELEVATEO_PROCESS: api
+      ELEVATEO_DB_ROLE: elevateo_api
+    command: [bundle, exec, rails, server, -b, "0.0.0.0", -p, "3000"]
+    # AIDEV-NOTE: Only the restricted SSH forward can reach this loopback origin; never bind 0.0.0.0 here.
+    ports: ["127.0.0.1:4709:3000"]
+    healthcheck:
+      test: [CMD, ruby, -rnet/http, -e, "r=Net::HTTP.start('127.0.0.1',3000){|h| h.get('/health',{'Host'=>'api'})}; exit(r.code=='200' ? 0 : 1)"]
+      interval: 15s
+      timeout: 5s
+      retries: 4
+      start_period: 30s
+  launch-worker:
+    <<: *runtime
+    env_file: ["${ELEVATEO_WORKER_ENV_FILE:?set absolute protected worker env file}"]
+    environment:
+      <<: *environment
+      ELEVATEO_PROCESS: worker
+      ELEVATEO_DB_ROLE: elevateo_worker
+    command: [bundle, exec, ruby, bin/worker]
+  attachment-gateway:
+    <<: *runtime
+    env_file: ["${ELEVATEO_GATEWAY_ENV_FILE:?set absolute protected gateway env file}"]
+    environment:
+      ELEVATEO_PROCESS: attachment_gateway
+    command: [bundle, exec, puma, -b, "tcp://0.0.0.0:4708", attachment_gateway/config.ru]
+
+networks:
+  private:
+    external: true
+    name: elevateo-mail-live_private

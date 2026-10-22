@@ -54,9 +54,15 @@ module Elevateo
     end
 
     def login(email:, password:, source_ip:, caller_cookie:, deadline:)
+      raise AuthError.unauthorized if @config.sso_only
       email, password = AuthInput.email(email), AuthInput.password(password)
       limits!(email, source_ip, deadline: deadline)
       credentials = @tokens.verified(@client.login(email, password, deadline: deadline), client: @client, deadline: deadline)
+      establish(credentials, caller_cookie: caller_cookie, deadline: deadline)
+    end
+
+    # AIDEV-NOTE: Every identity entry uses the same SQL membership gate and encrypted opaque session storage.
+    def establish(credentials, caller_cookie:, deadline:)
       replace_caller(caller_cookie, deadline)
       cookie = @crypto.cookie
       metadata = @store.call("create_session", [@crypto.digest(cookie), credentials.user_id, credentials.auth_session_id,
@@ -66,6 +72,7 @@ module Elevateo
     end
 
     def recovery(email:, source_ip:, deadline:)
+      raise AuthError.unauthorized if @config.sso_only
       email = AuthInput.email(email)
       limits!(email, source_ip, deadline: deadline)
       @client.recover(email, deadline: deadline)

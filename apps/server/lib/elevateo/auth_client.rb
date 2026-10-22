@@ -27,6 +27,11 @@ module Elevateo
       request(:post, "/token?grant_type=refresh_token", { "refresh_token" => token }, deadline: deadline)
     end
 
+    # AIDEV-NOTE: PKCE exchange shares the bounded, no-retry transport used by password and refresh.
+    def exchange_code(code, verifier, deadline:)
+      request(:post, "/token?grant_type=pkce", { "auth_code" => code, "code_verifier" => verifier }, deadline: deadline)
+    end
+
     def user(access, deadline:) = request(:get, "/user", nil, access: access, deadline: deadline)
 
     def recover(email, deadline:)

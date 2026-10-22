@@ -2,6 +2,22 @@
 
 ## Current state
 
+### Launch preparation — 2026-10-23
+
+Application Google SSO, the Fable 5.1 login interface, a restricted fleet transport and the Railway
+edge are implemented and tested in isolated fleet-02 Docker. **The application is not live.**
+Latest backend gate: 205 suites, 1,169 tests, 13,577 assertions, Steep and lint PASS. Web full gate:
+1,063 tests, lint/typechecks/contracts/build PASS; subsequent accessibility repair: 29 targeted tests
+and 10 desktop/mobile browser cases PASS. All 14 login screenshots were manually inspected.
+The edge passed 234 isolated startup/routing assertions; final 156-line independent review found zero defects. These are controlled tests, not live Google or mail delivery.
+
+Activation still requires Google OAuth client credentials, preservation-first application schema
+initialization, verified tenant membership, and real mailbox provisioning/credentials. No Cloudflare
+proxy or Access wall is used; Google Workspace mail routing is untouched. Resend testing used six
+of the permitted 100 HTTP calls and sent zero emails. The requested 120 mailboxes are not provisioned.
+Exact evidence and remaining steps: [launch handoff](docs/completion/launch-20261023-handoff.md).
+Older checkpoint entries below are historical and do not supersede this activation status.
+
 <!-- completion-wave-current:start -->
 ### Thread folders, snooze, stars, Reply all / Forward (2026-10-20, BE-05)
 

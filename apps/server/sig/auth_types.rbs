@@ -5,6 +5,9 @@ module Elevateo
   type session_argument = String | Integer | bool | nil
 
   interface _AuthConfig
+    def sso_enabled: () -> bool
+    def sso_only: () -> bool
+    def auth_public_url: () -> String?
     def mode: () -> String
     def outbound_mode: () -> String
     def session_key: () -> String
@@ -35,6 +38,7 @@ module Elevateo
   end
 
   interface _AuthClient
+    def exchange_code: (String, String, deadline: RequestDeadline) -> auth_object
     def login: (String, String, deadline: RequestDeadline) -> auth_object
     def refresh: (String, deadline: RequestDeadline) -> auth_object
     def user: (String, deadline: RequestDeadline) -> auth_object

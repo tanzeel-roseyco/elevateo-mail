@@ -1,3 +1,45 @@
+## Launch coordinator integration reviews — 2026-10-23
+
+All packets are bounded source reviews under the full user rubric; linters own formatting.
+Scopes overlap and are nonadditive. Zero findings in a packet do not establish whole-application
+approval. Runtime tests and visual inspection are recorded separately in the launch receipts.
+
+| Packet / dispatch | Reviewed LOC | Defects | Density | Disposition |
+| --- | ---: | ---: | ---: | --- |
+| Fable login source A / ctx_8e2154fc53b1 | 165 | 0 | 0/KLOC | accepted |
+| Fable login source B / ctx_e34ed167d0bb | 177 | 0 confirmed in original review | 0/KLOC | recovery dangling description later confirmed and fixed by Fable |
+| Fable login source C / ctx_d4eb4f67f9df | 86 | 0 | 0/KLOC | accepted |
+| Client contract/gateway / ctx_45781e24512c | 104 | 0 | 0/KLOC | accepted |
+| Login tests / ctx_95312a9330a3 | 199 | 1 LOW | 5.03/KLOC | vacuous focus assertion repaired by Fable |
+| Login supplementary tests / ctx_9e5969575a2f | 124 | 0 | 0/KLOC | accepted |
+| Login remaining integration / ctx_0a1954ce8ce1 | 95 | 0 | 0/KLOC | accepted |
+| Final Fable accessibility/test repair / ctx_07b4dde6d9f7 | 89 | 0 | 0/KLOC | accepted; 29 targeted and 10 browser cases PASS separately |
+| Railway edge initial / ctx_b884 | 180 | 0 | 0/KLOC | accepted with live/negative-test gaps recorded |
+| Transport final / ctx_7370e4517e4d | 182 | 0 | 0/KLOC | accepted; real transport and eight cleanup negatives PASS |
+| Canonical test fixture + executable mode / ctx_d5c9ca3021e8 | 180 + mode metadata | 0 | 0/KLOC | accepted; full backend gate PASS |
+| Dedicated SSO/edge design / ctx_83b5859316e1, Claude Fable 5.1 | 184 | 1 LOW | 5.43/KLOC | LOW repaired; 234 Docker assertions PASS; final review below |
+
+Final startup guard review `ctx_755c0f7f3c5f`: `start.sh:1-36` and `edge-test.cjs:1-120`,
+156 physical LOC, zero defects, 0/KLOC. Source hashes match the follow-up receipt.
+Independent static acceptance and producer fleet Docker execution are separate: 234 assertions
+PASS (188 new validation checks plus all 46 original routing checks). The LOW startup finding
+is resolved. The RBS SSO signature received a trailing-blank-line normalization only; no runtime change.
+
+Transport independent intermediate review found two MEDIUM defects in 146 LOC (13.70/KLOC):
+occupied Unix-listener false-positive and swallowed cleanup failures. Both repaired; final review
+above supersedes the earlier pending status. Infrastructure design packet: 74 LOC, zero defects,
+0/KLOC; simulated key theft, destination scope, reconnect and resource exhaustion tradeoffs.
+Obsidian connection unavailable; no vault-backed simulation claimed.
+
+Fable's original internal four review packets reported 14 repaired defects. Some original packets
+exceeded the requested 200-line cap (up to 230); record this procedural failure rather than claiming
+full compliance. Root independent source packets above stayed bounded. Recovery description defect
+was subsequently confirmed by Fable and fixed in `9188737b`; original zero-findings review does not
+erase that missed defect. Reviewers' runtime abstention is separate from producer Docker evidence.
+
+Dedicated design findings, remaining attack-surface inventory and explicit live-security gaps:
+`docs/completion/launch-20261023-security.md`. No whole-project or live penetration-test approval.
+
 <!-- completion-wave-current:start -->
 ## BE-05 thread folders, snooze, stars, Reply all / Forward — adversarial review (2026-10-20)
 
@@ -1735,13 +1777,13 @@ Focused adversarial/design review covered 63 lines across the comparison-only no
 
 Fresh isolated AUTH-006 reproduced a strict-locator failure because Today and the sidebar both provide the same mailbox link. The test now selects that exact link inside the main content landmark, retaining uniqueness, visibility, actor/organization checks and actual mailbox navigation. Independent adversarial/design review covered 4 added lines: 0 defects, 0/KLOC. Fresh isolated AUTH-006 runtime passed in be02-e9a0fa0ee9284caeb2729af5a715cd6f; cleanup passed. No application behavior changed.
 
-### Completion 20261020 � saved draft attachment browser coverage
+### Completion 20261020 � saved draft attachment browser coverage
 
 Focused adversarial review covered 62 changed lines in `qa830-draft-attachment.e2e.ts` and its screenshot allowlist: 0 defects, 0/KLOC. The scenario checks real authenticated draft save/upload/delete responses, metadata and reload persistence, plus recovery from empty and unsupported files. Pending scan is intentional: scanner completion and immutable outbound bytes are independently exercised by the backend/storage gates. Real Chromium runtime passed in be02-b034c0ccfd5c4a9288e3c86194b7f92d, including fresh-stack cleanup. Both 390px upload/removal screenshots were manually inspected: readable controls and status, no horizontal overflow. The scanner remains intentionally held.
 
 Dedicated design review of the same 60-line QA830 scenario found 0 defects (0/KLOC; overlapping coverage is nonadditive). Holding the scanner makes pending metadata/reload/removal deterministic; a concurrent scanner could legitimately change the state before assertions. Separate real-scanner and immutable-send tests cover that authority. Browser-visible pending-to-clean transition is not claimed. No Obsidian connection is available; this tradeoff is recorded here.
 
-### Completion 20261020 � focused browser fixture runner
+### Completion 20261020 � focused browser fixture runner
 
 Independent bounded review covered 109 helper/producer lines (0 defects, 0/KLOC) and 105 runner lines (1 defect, 9.52/KLOC). The runner could abort remaining acquired-image cleanup after one failed removal; it now attempts all pins and records cleanup failure plus source integrity. Docker regression injection covered a nonzero removal result followed by timeout and a final successful attempt. Runtime setup exposed harness defects, recorded separately from review density: missing privileged fixture environment, acceptance overlay registered before its base services, and a nested file mount inside a read-only directory. A stale diagnostic source boundary was also fixed. An attempted compiled-test bind workaround was rejected by mount validation and abandoned in favor of rebuilding only the browser image; its stack was subsequently cleaned with exact mount validation. Corrections preserve credential isolation and existing mount validation; application assertions were not relaxed. All six affected real-backend Chromium attachment cases passed, with fresh-stack cleanup and unchanged source. The exact persisted fixture/cleanup regressions passed 6/6 in Docker.
 
@@ -2133,3 +2175,42 @@ cite the external reports under `feature-verification/`; they are not whole-proj
 Other worker packets (shell, inbox, thread, compose, campaigns, contacts, profile) record their own
 LOC, defects and densities in their reports; their defects are dispositioned in the R3–R9 tables above.
 Final design/accessibility runtime: R9 behavioural matrix 28/28 complete (two contrast cases collect evidence rather than assert), R4 focus 4/4 PASS, mobile Copy overlay PASS, active tab 2px gold border and inactive text 4.767:1 PASS; 168 page captures complete with literal 1–2px parity FAIL on the Profile heading offset caused by the required simulated notices (recorded as a deviation); 404 probe classified as fixture gaps, not product defects: /v2 organization grants/roster (People/Members) and /v2/me/preferences (Personal Details) have no V2 mocks under dev-fixtures, so those pages captured their honest error states and their populated visual acceptance is blocked.
+
+## Held production backend preparation (task_5c9e9e9b08db)
+
+Bounded read-only functional review: 143 changed LOC, 0 defects, 0/KLOC. Dedicated design review: 171 LOC, 2 MEDIUM SSH restriction defects, 11.70/KLOC; repaired explicit Unix-socket forwarding denial and key-only authentication. Independent 11-line repair review: 0 residual defects, 0/KLOC. Overlapping counts are nonadditive. Source review is not deployment acceptance; Obsidian scenario simulation was unavailable. Scope, fleet Docker evidence (32 tests/230 assertions PASS; full Steep FAIL outside edited config), cleanup and remaining launch gates: [production receipt](ops/production/verification.md).
+
+## Google SSO backend task_8bef3d83f3ab (2026-10-23)
+
+Coordinator-routed bounded adversarial review: GoogleSso service 53 LOC, 0 defects, 0/KLOC; SsoController 52 LOC plus request regression 99 LOC, 0 SSO defects, 0/KLOC across 151 LOC. Dedicated design/config/proxy review remains pending. Runtime found one read-only nginx temp-path configuration defect, repaired and rerun PASS; runtime defect density is not mixed with source-review coverage. See [SSO receipt](docs/completion/launch-20261023-google-sso.md) for exact scope and limits.
+
+## Config follow-up — task_4f34bffeab63 / ctx_7abcb43e02e5 (2026-10-23)
+
+- Prior Config review ctx_78e320b49ac0: 190 reviewed LOC, **1 MEDIUM defect**, **5.26 defects/KLOC**. Raw ERB passwords were interpreted as YAML syntax; repaired with JSON quoting plus explicit YAML-sensitive Unicode escaping.
+- Functional follow-up: 185 reviewed LOC, **1 Unicode candidate confirmed by Docker** (U+0085 folding), **5.41 defects/KLOC**. ASCII-only JSON was insufficient for supplementary Unicode because Psych rejects JSON surrogate-pair escapes; the final serializer preserves UTF-8 and escapes U+007F–U+009F/U+2028/U+2029. Regression covers both separator and supplementary Unicode cases.
+- Dedicated design follow-up: 162 reviewed LOC, **1 LOW pool-validation defect**, **6.17 defects/KLOC**. Config now accepts only canonical decimal integers 1–100 (default 5), and YAML emits the validated Integer.
+- Coordinator also reported one mutable-image admission defect; original reviewed LOC denominator was not supplied, so no defect-density claim is made for that packet. A pre-Docker digest gate and rejected/accepted reference tests were added.
+- These review scopes overlap and are **nonadditive**; neither zero-defect whole-project approval nor final re-review is claimed. Final bounded packets: `docs/completion/config-followup-20261023/{config-review.txt,admission-review.txt,steep-review-1.diff,steep-review-2.diff}`; root coordinates functional and dedicated design re-review.
+- Verification and historical failed attempts are recorded in `docs/completion/config-followup-20261023/verification.md`. Exact HEAD baseline reproduces 28 Steep problems/15 files; final repaired full Steep and canonical lint pass. No code styling review is delegated to agents.
+## Transport task_7232b18516ab � bounded inline review
+- Packet A: transport.Dockerfile 8 + sshd_config 33 + transport.compose.yaml 33 = 74 LOC; 0 confirmed defects, 0/KLOC.
+- Packet B: check-transport.sh 146 LOC; 8 development harness defects found and repaired, 54.79/KLOC; zero known unresolved defects.
+- Full fleet Docker transport probes and exact cleanup PASS; independent functional/design reviews remain coordinator-owned and were requested, not claimed.
+- Evidence and repaired-defect inventory: docs/completion/launch-20261023-transport.md. No production/edge/frontend change or deployment.
+
+
+### SSO proxy harness adversarial follow-up (task_8bef3d83f3ab)
+Reviewer assessed 138 LOC and found 2 MEDIUM defects: unchecked docker logs pipeline and suppressed/unverified cleanup; defect density 14.49/KLOC. Both are repaired with checked log capture and propagated exact verified cleanup before PASS; fake-Docker negative regression covers log failure, removal failure and listing failure. Final rereview/runtime receipts pending. Residual auth review assessed 200 LOC with zero confirmed defects (0/KLOC); accidental display of 13 additional lines was a procedural coverage failure, not accepted additional coverage. Dedicated design review remains pending.
+
+SSO proxy repair runtime: real proxy checks PASS after checked preflight and verified cleanup; four disposable Docker fake-daemon negatives PASS (log capture, removal, preflight listing, cleanup listing failures). Evidence: ops/production/auth-proxy-evidence.txt. Initial negative harness setup failed because tmpfs was noexec; corrected container-only /tmp:exec run passed. Final repair rereview remains pending; runtime proof does not replace independent review.
+
+### Config follow-up final bounded rereviews
+Admission: 75 physical LOC, 0 defects, 0/KLOC. Steep packets: 29 and 27 changed lines, 0 defects, 0/KLOC each. Config: 88 nonblank LOC, 1 MEDIUM forbidden-Unicode defect (U+FFFE/U+FFFF), 11.36 defects/KLOC; repaired with explicit escapes and Docker red/green regression (3 runs/62 assertions green). Exact three-line repair packet: docs/completion/config-followup-20261023/noncharacters-review.txt; final Unicode disposition is recorded below. These overlapping scopes are nonadditive.
+
+
+
+## Google SSO proxy final rereview — 2026-10-23
+
+Coordinator receipt msg_7aaa583ce7e8 accepted independent final review of 127 physical LOC: 0 defects, 0/KLOC. Original review: 2 MEDIUM defects / 138 LOC = 14.49/KLOC, both repaired (checked Docker logs; checked cleanup/absence). Real proxy plus four negative regressions PASS accepted. Coverage overlaps and is nonadditive. Final integration and live verification remain root-owned; no production/database mutation in this dispatch.
+
+Final Unicode rereview: 72 physical LOC, 0 defects, 0/KLOC (coordinator receipt msg_98e1d1170b1a). Full runtime additionally exposed one canonical test-fixture mount defect and one existing Git executable-mode defect; both repaired with coordinator approval, without folding runtime findings into source-review denominators. Corrected full fleet gate PASSED: 205 suites, 1169 runs, 13577 assertions, zero failures/errors/skips; full Steep and lint (470 files) PASS. Authenticated HTTP, worker drain, Mailpit and exact cleanup PASS; independent fixture review accepted 180 source lines plus mode metadata, zero defects (0/KLOC), coordinator receipt msg_133c499f4fb5. API and worker privileges remain unchanged.

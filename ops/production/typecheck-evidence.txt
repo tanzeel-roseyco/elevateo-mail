@@ -1,0 +1,216 @@
+# Type checking files:
+
+.................F...F...............F......FF..............F.......F...........F......F.....F.F..................F......F.....................F.F....................................................................................................
+
+lib/elevateo/auth_input.rb:36:15: [error] Empty hash doesn't have type annotation
+│ Diagnostic ID: Ruby::UnannotatedEmptyCollection
+│
+└       result = {} # : Hash[String, String]
+                 ~~
+
+lib/elevateo/campaigns/repository.rb:124:18: [error] Cannot pass a value of type `(nil | ::String)` as an argument of type `::String`
+│   (nil | ::String) <: ::String
+│     nil <: ::String
+│
+│ Diagnostic ID: Ruby::ArgumentTypeMismatch
+│
+└         values << after
+                    ~~~~~
+
+lib/elevateo/campaigns/repository.rb:125:18: [error] Cannot pass a value of type `::Integer` as an argument of type `::String`
+│   ::Integer <: ::String
+│     ::Numeric <: ::String
+│       ::Object <: ::String
+│         ::BasicObject <: ::String
+│
+│ Diagnostic ID: Ruby::ArgumentTypeMismatch
+│
+└         values << (limit + 1)
+                    ~~~~~~~~~~~
+
+lib/elevateo/inbound/fake_ingress.rb:138:66: [error] Type `(::Mail::Message | ::Integer | nil)` does not have method `>`
+│ Diagnostic ID: Ruby::NoMethod
+│
+└           reject("invalid_mime") if seen > MAX_PARTS * 2 || depth > 8
+                                                                    ~
+
+lib/elevateo/inbound/fake_ingress.rb:139:15: [error] Type `(::Mail::Message | ::Integer | nil)` does not have method `multipart?`
+│ Diagnostic ID: Ruby::NoMethod
+│
+└           part.multipart? ? add_children(stack, part, depth) : leaves << part
+                 ~~~~~~~~~~
+
+lib/elevateo/inbound/fake_ingress.rb:139:41: [error] Cannot pass a value of type `::Array[::Array[(::Mail::Message | ::Integer)]]` as an argument of type `::Array[[::Mail::Message, ::Integer]]`
+│   ::Array[::Array[(::Mail::Message | ::Integer)]] <: ::Array[[::Mail::Message, ::Integer]]
+│     ::Array[(::Mail::Message | ::Integer)] <: [::Mail::Message, ::Integer]
+│
+│ Diagnostic ID: Ruby::ArgumentTypeMismatch
+│
+└           part.multipart? ? add_children(stack, part, depth) : leaves << part
+                                           ~~~~~
+
+lib/elevateo/inbound/fake_ingress.rb:139:48: [error] Cannot pass a value of type `(::Mail::Message | ::Integer | nil)` as an argument of type `::Mail::Message`
+│   (::Mail::Message | ::Integer | nil) <: ::Mail::Message
+│     ::Integer <: ::Mail::Message
+│       ::Numeric <: ::Mail::Message
+│         ::Object <: ::Mail::Message
+│           ::BasicObject <: ::Mail::Message
+│
+│ Diagnostic ID: Ruby::ArgumentTypeMismatch
+│
+└           part.multipart? ? add_children(stack, part, depth) : leaves << part
+                                                  ~~~~
+
+lib/elevateo/inbound/fake_ingress.rb:139:54: [error] Cannot pass a value of type `(::Mail::Message | ::Integer | nil)` as an argument of type `::Integer`
+│   (::Mail::Message | ::Integer | nil) <: ::Integer
+│     ::Mail::Message <: ::Integer
+│       ::Object <: ::Integer
+│         ::BasicObject <: ::Integer
+│
+│ Diagnostic ID: Ruby::ArgumentTypeMismatch
+│
+└           part.multipart? ? add_children(stack, part, depth) : leaves << part
+                                                        ~~~~~
+
+lib/elevateo/inbound/fake_ingress.rb:139:73: [error] Cannot pass a value of type `(::Mail::Message | ::Integer | nil)` as an argument of type `::Mail::Message`
+│   (::Mail::Message | ::Integer | nil) <: ::Mail::Message
+│     ::Integer <: ::Mail::Message
+│       ::Numeric <: ::Mail::Message
+│         ::Object <: ::Mail::Message
+│           ::BasicObject <: ::Mail::Message
+│
+│ Diagnostic ID: Ruby::ArgumentTypeMismatch
+│
+└           part.multipart? ? add_children(stack, part, depth) : leaves << part
+                                                                           ~~~~
+
+lib/elevateo/inbound/imap_mime_tree.rb:43:17: [error] Empty array doesn't have type annotation
+│ Diagnostic ID: Ruby::UnannotatedEmptyCollection
+│
+└         bodies = []
+                   ~~
+
+lib/elevateo/inbound/imap_poll_store.rb:14:10: [error] Cannot allow method body have type `::Hash[::String, untyped]` because declared as type `(::Elevateo::Inbound::imap_poll_lease | nil)`
+│   ::Hash[::String, untyped] <: (::Elevateo::Inbound::imap_poll_lease | nil)
+│     ::Hash[::String, untyped] <: ::Elevateo::Inbound::imap_poll_lease
+│       ::Hash[::String, untyped] <: { "account_id" => ::String, "credential_version" => ::Integer, "lease_token" => ::String }
+│
+│ Diagnostic ID: Ruby::MethodBodyTypeMismatch
+│
+└       def claim_next
+            ~~~~~~~~~~
+
+lib/elevateo/mailbox_reads.rb:36:16: [error] Empty hash doesn't have type annotation
+│ Diagnostic ID: Ruby::UnannotatedEmptyCollection
+│
+└       filters = {} # : Hash[String, String]
+                  ~~
+
+lib/elevateo/resend_events/client.rb:23:62: [error] Type `(nil | bool | ::String | ::Integer | ::Float | ::Array[::Elevateo::ResendEvents::value] | ::Hash[::String, ::Elevateo::ResendEvents::value])` does not have method `[]`
+│ Diagnostic ID: Ruby::NoMethod
+│
+└         raise Invalid, "invalid received content" unless value["id"] == email_id
+                                                                ~~~~~~
+
+lib/elevateo/resend_events/client.rb:20:10: [error] Cannot allow method body have type `::Elevateo::ResendEvents::value` because declared as type `::Elevateo::ResendEvents::object`
+│   ::Elevateo::ResendEvents::value <: ::Hash[::String, ::Elevateo::ResendEvents::value]
+│     (nil | bool | ::String | ::Integer | ::Float | ::Array[::Elevateo::ResendEvents::value] | ::Hash[::String, ::Elevateo::ResendEvents::value]) <: ::Hash[::String, ::Elevateo::ResendEvents::value]
+│       nil <: ::Hash[::String, ::Elevateo::ResendEvents::value]
+│
+│ Diagnostic ID: Ruby::MethodBodyTypeMismatch
+│
+└       def retrieve(email_id)
+            ~~~~~~~~
+
+lib/elevateo/send_api/review.rb:71:17: [error] Empty array doesn't have type annotation
+│ Diagnostic ID: Ruby::UnannotatedEmptyCollection
+│
+└         tuples = [] # : Array[Array[String | Integer]]
+                   ~~
+
+lib/elevateo/send_api/review.rb:104:15: [error] Empty hash doesn't have type annotation
+│ Diagnostic ID: Ruby::UnannotatedEmptyCollection
+│
+└         seen = {} # : Hash[String, bool]
+                 ~~
+
+lib/elevateo/send_api/review.rb:105:17: [error] Empty array doesn't have type annotation
+│ Diagnostic ID: Ruby::UnannotatedEmptyCollection
+│
+└         checks = [] # : Array[ReadResponse::item]
+                   ~~
+
+lib/elevateo/send_worker/drain.rb:33:19: [error] Empty array doesn't have type annotation
+│ Diagnostic ID: Ruby::UnannotatedEmptyCollection
+│
+└         excluded = [] # : Array[String]
+                     ~~
+
+lib/elevateo/send_worker/resend_transport.rb:43:28: [error] Empty array doesn't have type annotation
+│ Diagnostic ID: Ruby::UnannotatedEmptyCollection
+│
+└         empty_attachments = [] # : Array[String]
+                              ~~
+
+lib/elevateo/send_worker/smtp_snapshot.rb:56:15: [error] Empty hash doesn't have type annotation
+│ Diagnostic ID: Ruby::UnannotatedEmptyCollection
+│
+└         seen = {} # : Hash[String, bool]
+                 ~~
+
+lib/elevateo/send_worker/smtp_snapshot.rb:86:17: [error] Empty array doesn't have type annotation
+│ Diagnostic ID: Ruby::UnannotatedEmptyCollection
+│
+└         chunks = [] # : Array[String]
+                   ~~
+
+lib/elevateo/write_input.rb:83:15: [error] Empty hash doesn't have type annotation
+│ Diagnostic ID: Ruby::UnannotatedEmptyCollection
+│
+└       result = {} # : Hash[String, String]
+                 ~~
+
+app/controllers/v1/api_controller.rb:15:25: [error] Empty hash doesn't have type annotation
+│ Diagnostic ID: Ruby::UnannotatedEmptyCollection
+│
+└       empty_parameters = {} # : Hash[String, Object?]
+                           ~~
+
+app/controllers/v1/write_controller.rb:27:75: [error] Empty array doesn't have type annotation
+│ Diagnostic ID: Ruby::UnannotatedEmptyCollection
+│
+└       users = guard_users ? guard_users.call(input: input, query: query) : []
+                                                                             ~~
+
+app/controllers/v2/admin/organization_grants_controller.rb:95:43: [error] Type `nil` does not have method `<`
+│ Diagnostic ID: Ruby::NoMethod
+│
+└           unless previous.nil? || previous < user
+                                             ~
+
+app/controllers/v2/admin/organization_grants_controller.rb:98:10: [error] Cannot assign a value of type `::String` to a variable of type `nil`
+│   ::String <: nil
+│
+│ Diagnostic ID: Ruby::IncompatibleAssignment
+│
+└           previous = user
+            ~~~~~~~~~~~~~~~
+
+app/controllers/v2/admin/organization_grants_controller.rb:174:16: [warning] Cannot detect the type of the expression
+│ Diagnostic ID: Ruby::FallbackAny
+│
+└           row = connection.exec_query(CHANGE_SQL, "organization role change",
+                  ~~~~~~~~~~
+
+app/controllers/v2/admin/organization_grants_controller.rb:168:75: [error] Cannot pass a value of type `^() -> ::Array[::String]` as an argument of type `(::V1::WriteController::target_users | nil)`
+│   ^() -> ::Array[::String] <: (::V1::WriteController::target_users | nil)
+│     ^() -> ::Array[::String] <: ::V1::WriteController::target_users
+│       ^() -> ::Array[::String] <: ^(input: ::Elevateo::WriteInput::object, query: ::Hash[::String, ::String]) -> ::Array[::String]
+│         (Params are incompatible)
+│
+│ Diagnostic ID: Ruby::ArgumentTypeMismatch
+│
+└         protected_write(required: %w[role expected_revision], guard_users: guards) do |connection:, identity:, input:, **|
+                                                                             ~~~~~~
+
+Detected 28 problems from 15 files

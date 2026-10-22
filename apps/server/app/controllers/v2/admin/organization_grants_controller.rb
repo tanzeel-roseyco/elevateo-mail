@@ -82,11 +82,11 @@ module V2
       end
 
       def self.project_grants(rows, organization, limit)
+        # @type var previous: String?
+        previous = nil
         unless rows.is_a?(Array) && rows.length <= limit
           raise Elevateo::CollaborationError.new("internal_error")
         end
-        # @type var previous: String?
-        previous = nil
         rows.map do |row|
           unless row.is_a?(Hash) && row.keys.sort == %w[revision role user_id]
             raise Elevateo::CollaborationError.new("internal_error")
@@ -155,9 +155,9 @@ module V2
       end
 
       def update
+        # @type var guards: V1::WriteController::target_users
         organization = path_uuid(:organization_id)
         target = path_uuid(:user_id)
-        # @type var guards: V1::WriteController::target_users
         guards = ->(input:, query:) do
           # @type var input: Elevateo::WriteInput::object
           # @type var query: Hash[String, String]

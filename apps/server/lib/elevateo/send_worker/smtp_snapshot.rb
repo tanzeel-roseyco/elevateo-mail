@@ -50,10 +50,11 @@ module Elevateo
       end
 
       def self.parse_recipients(value)
+        # @type var seen: Hash[String, bool]
         unless value.is_a?(Array) && value.length.between?(1, 100)
           raise Invalid, "invalid recipients"
         end
-        seen = {} # : Hash[String, bool]
+        seen = {}
         value.map do |item|
           unless item.is_a?(Array) && item.length == 2 &&
               (item[0].nil? || (item[0].is_a?(String) && item[0].bytesize <= 256 && SendAPI::Address.header?(item[0]))) &&
@@ -83,7 +84,8 @@ module Elevateo
       # RFC 2047 encoded words are bounded by 30 UTF-8 bytes so every folded line stays short.
       def self.encoded_words(value)
         return "" if value.empty?
-        chunks = [] # : Array[String]
+        # @type var chunks: Array[String]
+        chunks = []
         chunk = +""
         value.each_char do |character|
           if chunk.bytesize + character.bytesize > 30

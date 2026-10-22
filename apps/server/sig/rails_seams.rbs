@@ -45,8 +45,8 @@ module ActionDispatch
   class Response
     def headers: () -> Rack::headers
     def set_cookie: (String, value: String, path: String, httponly: bool,
-                     same_site: :strict, secure: bool, max_age: Integer) -> void
-    def delete_cookie: (String, path: String, httponly: bool, same_site: :strict, secure: bool) -> void
+                     same_site: :strict | :lax, secure: bool, max_age: Integer) -> void
+    def delete_cookie: (String, path: String, httponly: bool, same_site: :strict | :lax, secure: bool) -> void
   end
 end
 

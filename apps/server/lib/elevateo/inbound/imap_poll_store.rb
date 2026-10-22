@@ -12,6 +12,7 @@ module Elevateo
       end
 
       def claim_next
+        # @type var lease: imap_poll_lease
         row = @connection.exec_query("SELECT app.lease_due_imap_account()::text AS result", "IMAP due", []).first
         raise Rejected, "poll_unavailable" unless row && row.key?("result")
         raw = row.fetch("result")
@@ -24,10 +25,10 @@ module Elevateo
             result["credential_version"].is_a?(Integer) && result["credential_version"].positive?
           raise Rejected, "poll_unavailable"
         end
-        # @type var lease: imap_poll_lease
         lease = { "account_id" => result.fetch("account_id"), "credential_version" => result.fetch("credential_version"),
           "lease_token" => result.fetch("lease_token") }
         lease.freeze
+        lease
       rescue JSON::ParserError
         raise Rejected, "poll_unavailable", cause: nil
       end

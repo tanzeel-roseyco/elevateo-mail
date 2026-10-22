@@ -124,8 +124,10 @@ module Elevateo
       end
 
       def leaf_parts(message)
+        # AIDEV-NOTE: Explicit tuple context keeps MIME nodes and depth counters distinct during stack traversal.
         # @type var stack: Array[[Mail::Message, Integer]]
-        stack = [[message, 0]]
+        stack = []
+        stack << [message, 0]
         # @type var leaves: Array[Mail::Message]
         leaves = []
         seen = 0

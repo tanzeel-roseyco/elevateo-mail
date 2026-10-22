@@ -7,11 +7,11 @@ module Elevateo
 
     # AIDEV-NOTE: Install before Rails::Rack::Logger; downstream controllers read only this private raw-query slot.
     def call(environment)
-      if environment["PATH_INFO"] == "/auth/accept"
+      if ["/auth/accept", "/v1/auth/sso/callback"].include?(environment["PATH_INFO"])
         environment[QUERY_KEY] = environment["QUERY_STRING"].to_s
         environment["QUERY_STRING"] = ""
-        environment["REQUEST_URI"] = "/auth/accept"
-        environment["ORIGINAL_FULLPATH"] = "/auth/accept"
+        environment["REQUEST_URI"] = environment["PATH_INFO"]
+        environment["ORIGINAL_FULLPATH"] = environment["PATH_INFO"]
       end
       @app.call(environment)
     end

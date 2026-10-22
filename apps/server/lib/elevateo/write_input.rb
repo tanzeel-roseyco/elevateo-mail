@@ -80,7 +80,8 @@ module Elevateo
 
     def self.query(raw, allowed:)
       invalid! unless raw.bytesize <= 8192
-      result = {} # : Hash[String, String]
+      # @type var result: Hash[String, String]
+      result = {}
       return result if raw.empty?
       raw.split("&", -1).each do |pair|
         key, value = pair.split("=", 2)

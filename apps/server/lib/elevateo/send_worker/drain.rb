@@ -30,7 +30,8 @@ module Elevateo
         deadline = @clock.call + @max_seconds
         steps = 0
         idle_checks = 0
-        excluded = [] # : Array[String]
+        # @type var excluded: Array[String]
+        excluded = []
         while steps < @max_steps && @clock.call < deadline
           state = @control.read
           break unless state.submission_allowed?

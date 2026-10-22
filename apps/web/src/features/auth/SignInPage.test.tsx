@@ -130,6 +130,7 @@ describe('sign-in form', () => {
     await act(async () => {
       await latest!.signOut('local')
     })
+    await screen.findByRole('heading', { name: 'Sign in' })
     const notice = await screen.findByRole('status')
     expect(notice.textContent).toContain('signed out')
     expect(notice.textContent).toContain('still pending')

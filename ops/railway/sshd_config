@@ -1,0 +1,33 @@
+# AIDEV-NOTE: A key grants only two fixed forwards; it never grants a host or container shell.
+Port 2222
+ListenAddress 0.0.0.0
+HostKey /run/keys/ssh_host_ed25519_key
+PidFile /run/sshd.pid
+AuthorizedKeysFile /run/keys/authorized_keys
+StrictModes yes
+AllowUsers forward
+PermitRootLogin no
+PasswordAuthentication no
+KbdInteractiveAuthentication no
+PubkeyAuthentication yes
+AuthenticationMethods publickey
+UsePAM no
+PermitEmptyPasswords no
+AllowTcpForwarding local
+PermitOpen launch-api:3000 oauth-proxy:8080
+PermitListen none
+GatewayPorts no
+AllowStreamLocalForwarding no
+AllowAgentForwarding no
+X11Forwarding no
+PermitTTY no
+PermitTunnel no
+PermitUserEnvironment no
+ForceCommand /bin/false
+MaxAuthTries 2
+MaxSessions 0
+LoginGraceTime 20
+MaxStartups 2:30:10
+ClientAliveInterval 30
+ClientAliveCountMax 2
+LogLevel ERROR
