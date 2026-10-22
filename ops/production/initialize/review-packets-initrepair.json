@@ -1,0 +1,92 @@
+[
+    {
+        "path":  "ops/production/initialize/admission.py",
+        "start":  1,
+        "end":  115,
+        "sha256":  "77521674eab0cdb3bca05e84075d79f117e38f5112241ab2cf1f82c234a5e8a8"
+    },
+    {
+        "path":  "ops/production/initialize/initialize.py",
+        "start":  1,
+        "end":  96,
+        "sha256":  "0c519827edf8abae32a1a0c510f23a080018f81e46bbcc6568a52b3e786f08bf"
+    },
+    {
+        "path":  "ops/production/initialize/preflight.sql",
+        "start":  1,
+        "end":  18,
+        "sha256":  "d98cfab30b13483c5a79ebb410dc9c710f41de324fe3e9635ec5eb272e38ee7b"
+    },
+    {
+        "path":  "ops/production/initialize/tenant.sql",
+        "start":  1,
+        "end":  88,
+        "sha256":  "f338ce20388a24bc07aa92192bed5bd91be190004e2913a0670600c4831f1c32"
+    },
+    {
+        "path":  "ops/production/initialize/test_source.py",
+        "start":  1,
+        "end":  91,
+        "sha256":  "a5f94f5d7829356db38559894f8fd270a846c5965d75917974f26c13d66cf212"
+    },
+    {
+        "path":  "ops/production/initialize/test_admission.py",
+        "start":  1,
+        "end":  87,
+        "sha256":  "49ccec8cf78d757b35ff1b647debb5fcc36553bd0989aba0f491494a916e353d"
+    },
+    {
+        "path":  "ops/production/initialize/test_tenant.py",
+        "start":  1,
+        "end":  115,
+        "sha256":  "d263c90d876e2df4ca4822196b3339b8922e78fb33d0986b536768c758149a24"
+    },
+    {
+        "path":  "ops/production/initialize/rehearsal.py",
+        "start":  1,
+        "end":  91,
+        "sha256":  "5958000f05ca05131f6792774867591bc06c2219f39a7227a7857b9de7b302ac"
+    },
+    {
+        "path":  "ops/production/initialize/fleet-rehearsal.sh",
+        "start":  1,
+        "end":  112,
+        "sha256":  "fea708e7d7b0737dbda5ad3940907526460223a20932cbf465143968a2860881"
+    },
+    {
+        "path":  "ops/production/initialize/prepare-runner.sh",
+        "start":  1,
+        "end":  24,
+        "sha256":  "99ed3b46ea76369f60b376fef4f86899bb60afbeeeb53f358c829e4b9451df85"
+    },
+    {
+        "path":  "ops/production/initialize/build-runner.sh",
+        "start":  1,
+        "end":  27,
+        "sha256":  "f09cbb050f3ed7efda065968259cb0ac43bf45b3eb2d559f2e72ff8a0ec02cd1"
+    },
+    {
+        "path":  "ops/production/initialize/test_builder.sh",
+        "start":  1,
+        "end":  34,
+        "sha256":  "afbf601b07c2e45b16eb818580626e68c67a7290b0dc9eb4fb90416ca2e401e1"
+    },
+    {
+        "path":  "ops/production/initialize/stage-final.sh",
+        "start":  1,
+        "end":  21,
+        "sha256":  "f7372d9503ac776005ddf209cafbe9b552cc90696b30342cf9c2c3639be07c42"
+    },
+    {
+        "path":  "ops/production/initialize/test_stage.sh",
+        "start":  1,
+        "end":  34,
+        "sha256":  "591182d5e9e5eb957aebacf8618e58b614ce99aaad9d23e63b0c1dbb8edb4cef"
+    },
+    {
+        "path":  "ops/production/initialize/quality.sh",
+        "start":  1,
+        "end":  5,
+        "sha256":  "2aa03257ee65aaf74cfa1ce67f0cbea54445ce2edb07648ed48c62a67479876a"
+    }
+]

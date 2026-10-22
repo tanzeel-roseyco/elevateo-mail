@@ -15,7 +15,7 @@ module Elevateo
         identifiers = [account_id, organization_id, mailbox_id]
         unless identifiers.all? { |value| value.is_a?(String) && UUID.match?(value) } &&
             credential_version.is_a?(Integer) && credential_version.between?(1, 2_147_483_647) &&
-            credential_ref.is_a?(String) && /\Atest:[A-Za-z0-9_.:-]{1,120}\z/.match?(credential_ref)
+            credential_ref.is_a?(String) && /\A(?:test|secret):[A-Za-z0-9_.:-]{1,120}\z/.match?(credential_ref)
           raise Unavailable, "mail_credentials_unavailable"
         end
         @account_id = account_id.dup.freeze

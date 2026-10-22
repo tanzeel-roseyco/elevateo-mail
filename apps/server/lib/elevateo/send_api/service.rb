@@ -90,7 +90,7 @@ module Elevateo
       def validate_approval(value, input)
         unless value.keys.sort == APPROVED.sort && value["draft_id"] == input.draft_id &&
                value["approved_version"] == input.expected_version && value["review_digest"] == input.review_digest &&
-               value["simulated"] == (@outbound_mode != "resend")
+               value["simulated"] == (!%w[resend mox].include?(@outbound_mode))
           raise ReadResponse::Invalid
         end
         ThreadProjection.uuid(value["send_id"])

@@ -2,6 +2,22 @@ Latest edge follow-up: 234 fleet Docker assertions PASS; independent 156-line re
 Task containers/image/base reference and staging removed; persistent data and shared cache retained.
 Receipt: `docs/completion/launch-20261023-edge-followup.md`. No live deployment or delivery.
 
+## Self-hosted production integration — 2026-10-23
+
+The held Mox deployment lives in `ops/selfhosted-mail`; application transport and database
+authority live in `apps/server`; the protected operator initializer lives in
+`ops/production/initialize`. Production and fixture transport profiles are distinct. TLS,
+tenant/account/version binding, explicit domain approval and unknown-outcome holds are
+required before mail dispatch. Private Bundles must use actual application identity metadata.
+The initializer preserves Auth/Storage and requires independently accepted backup/restore
+evidence bound to the exact reviewed source. It does not create Google OAuth credentials.
+
+This continuation is not publicly deployed or production accepted. Existing Google Workspace
+MX/routing is unchanged; Cloudflare proxy/Access is excluded. Railway's application edge is
+intended to use the existing Google SSO wall. See
+`docs/completion/selfhosted-production-20261023-handoff.md` for current verification,
+capacity/domain/identity/backup gates and inherited product limitations.
+
 ## Launch integration — 2026-10-23
 
 The application uses Google SSO through private GoTrue, exposed only at the two fixed OAuth

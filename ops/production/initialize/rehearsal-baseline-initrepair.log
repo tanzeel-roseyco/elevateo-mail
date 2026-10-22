@@ -1,0 +1,29 @@
+f1ba54332437c924f6d5ecf6837816bd18550582cd9e80c7df9141dd17da91eb  /tmp/elevateo-initrepair20261023/backups/database.dump
+de4fc828e820c218e8cde7c173563f487b10fce858c8d002a1e7be8582bed318  /tmp/elevateo-initrepair20261023/backups/globals.sql
+9d9280fccfa1549d62030b15ca47bde3ad6b8c165ad6bb5b9ee41cfcc155bc25  /tmp/elevateo-initrepair20261023/backups/storage.tar
+NOTICE:  role "authenticator" has already been granted membership in role "anon" by role "supabase_admin"
+NOTICE:  role "postgres" has already been granted membership in role "anon" by role "supabase_admin"
+NOTICE:  role "authenticator" has already been granted membership in role "authenticated" by role "supabase_admin"
+NOTICE:  role "postgres" has already been granted membership in role "authenticated" by role "supabase_admin"
+NOTICE:  role "postgres" has already been granted membership in role "authenticator" by role "supabase_admin"
+NOTICE:  role "supabase_storage_admin" has already been granted membership in role "authenticator" by role "supabase_admin"
+NOTICE:  role "postgres" has already been granted membership in role "pg_create_subscription" by role "supabase_admin"
+NOTICE:  role "postgres" has already been granted membership in role "pg_monitor" by role "supabase_admin"
+NOTICE:  role "supabase_etl_admin" has already been granted membership in role "pg_monitor" by role "supabase_admin"
+NOTICE:  role "supabase_read_only_user" has already been granted membership in role "pg_monitor" by role "supabase_admin"
+NOTICE:  role "postgres" has already been granted membership in role "pg_read_all_data" by role "supabase_admin"
+NOTICE:  role "supabase_etl_admin" has already been granted membership in role "pg_read_all_data" by role "supabase_admin"
+NOTICE:  role "supabase_read_only_user" has already been granted membership in role "pg_read_all_data" by role "supabase_admin"
+NOTICE:  role "postgres" has already been granted membership in role "pg_signal_backend" by role "supabase_admin"
+NOTICE:  role "authenticator" has already been granted membership in role "service_role" by role "supabase_admin"
+NOTICE:  role "postgres" has already been granted membership in role "service_role" by role "supabase_admin"
+NOTICE:  role "postgres" has already been granted membership in role "supabase_privileged_role" by role "supabase_admin"
+NOTICE:  role "supabase_etl_admin" has already been granted membership in role "supabase_privileged_role" by role "supabase_admin"
+47dcb079a40b61970729c51f8db307b800d78239a04ae3dfa1a79a9f91bc15b6  /content/stub/initrepair20261023-preserve/sentinel.txt
+{"failure_rollbacks": 2, "forced_rls_tables": 4, "migrations": 42, "protected_sha256": "81db67c5aaa199bbd50f6013d3efd83738387bc8544364c6d33687cb93c44c16", "source_sha256": "fe3d653b8abbb1b2e16676eb58c941903bb79266e9b4ba3ad7a39c913f06d6e0", "tenant_replay": "PASS"}
+PASS: actual Auth/Storage schemas, baseline backup+isolated restore, all Rails migrations, tenant rehearsal; source untouched
+[{"Type":"bind","Source":"/tmp/elevateo-initrepair20261023/content-source","Destination":"/var/lib/storage","Mode":"","RW":true,"Propagation":"rprivate"}] {"/tmp":""}
+[] null
+[] {"/var/lib/postgresql/data":""}
+[] {"/var/lib/postgresql/data":""}
+CLEANUP PASS: exact rehearsal containers/networks/tmpfs absent; no named volumes/build caches

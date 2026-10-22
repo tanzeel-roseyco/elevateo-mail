@@ -124,9 +124,9 @@ class SendMoxWorkerDatabaseTest < SendDatabaseTestCase
     root = File.expand_path("../../db/be03_send", __dir__)
     # AIDEV-NOTE: Recreate the historical v3 constraint surface inside this rolled-back fixture before testing its down.
     @admin.exec(File.read(File.join(root, "mox_test_receipt.sql")).split("CREATE OR REPLACE FUNCTION").first
-      .gsub("DROP CONSTRAINT send_attempt_profile_v2", "DROP CONSTRAINT send_attempt_profile_v4")
-      .gsub("DROP CONSTRAINT send_observation_source_v2", "DROP CONSTRAINT send_observation_source_v4")
-      .gsub("DROP CONSTRAINT send_observation_receipt_source_v2", "DROP CONSTRAINT send_observation_receipt_source_v4"))
+      .gsub("DROP CONSTRAINT send_attempt_profile_v2", "DROP CONSTRAINT send_attempt_profile_v5")
+      .gsub("DROP CONSTRAINT send_observation_source_v2", "DROP CONSTRAINT send_observation_source_v5")
+      .gsub("DROP CONSTRAINT send_observation_receipt_source_v2", "DROP CONSTRAINT send_observation_receipt_source_v5"))
     @admin.exec(File.read(File.join(root, "mox_test_receipt_down.sql")))
     # AIDEV-NOTE: Execute the old provider after rollback; function-text matching alone cannot prove compatibility.
     @admin.exec("SET LOCAL ROLE elevateo_worker")

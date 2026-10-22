@@ -1,0 +1,14 @@
+﻿containers_absent=both
+active_mount_intersections=0
+24851679	/tmp/elevateo-mailruntime20261023
+Filesystem        1B-blocks         Used   Available Use% Mounted on
+/dev/md2       468702478336 371429326848 73389146112  84% /
+5cc57d15d1550e5ac6d8e295650fc13445ecd2dfbdf5c3935a8048d5d536b5cf  /tmp/elevateo-mailruntime20261023/evidence/run.log
+3ad1d1f88c7e4b4f0725160c3b02cf95439d1144fda0c94404e5e99b3c357393  /tmp/elevateo-mailruntime20261023/evidence/source-check.log
+42c3ed2753fdd91173850494f3804991df58c44842c878f2cc48bcfb0ae69986  /tmp/elevateo-mailruntime20261023/evidence/mailruntime-restored-server.log
+798a937d371e9d724d454ec8938e0b7d40883874c080d584cec15e0a000f5877  /tmp/elevateo-mailruntime20261023/evidence/mailruntime-server.log
+exact_task_staging_absent=1
+images_build_caches_volumes_created=0
+shared_resources_preserved=1
+Filesystem        1B-blocks         Used   Available Use% Mounted on
+/dev/md2       468702478336 371404161024 73414311936  84% /

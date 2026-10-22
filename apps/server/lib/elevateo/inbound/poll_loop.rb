@@ -6,9 +6,10 @@ module Elevateo
   module Inbound
     # AIDEV-NOTE: SQL owns per-account schedules; this single-process loop bounds idle/error CPU and shutdown waits.
     class PollLoop
-      def initialize(poll:, logger:, clock: -> { Process.clock_gettime(Process::CLOCK_MONOTONIC) },
+      def initialize(poll:, logger:, simulated: true, clock: -> { Process.clock_gettime(Process::CLOCK_MONOTONIC) },
         sleeper: ->(seconds) { sleep(seconds) })
         @poll, @logger, @clock, @sleeper = poll, logger, clock, sleeper
+        @simulated = simulated
         @failures = 0
         @last_outcome = nil
         @last_log_at = nil
@@ -43,7 +44,7 @@ module Elevateo
         last = @last_log_at
         return if outcome == @last_outcome && last && now - last < 60.0
         @logger.call(JSON.generate(event: "inbound_worker.poll", result: outcome.to_s,
-          elapsed_ms: ((now - started) * 1000).round, retry_seconds: delay, simulated: true))
+          elapsed_ms: ((now - started) * 1000).round, retry_seconds: delay, simulated: @simulated))
         @last_outcome, @last_log_at = outcome, now
       end
 

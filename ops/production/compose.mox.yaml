@@ -1,0 +1,77 @@
+# AIDEV-NOTE: Merge after compose.yaml via deploy.sh; profiles never release either submission hold.
+x-mox-runtime: &mox-runtime
+  image: ${ELEVATEO_ADMITTED_PRODUCTION_IMAGE:?use deploy.sh digest admission}
+  restart: "no"
+  init: true
+  user: "10001:10001"
+  read_only: true
+  working_dir: /app
+  tmpfs: ["/app/tmp:uid=10001,gid=10001,mode=0700", "/tmp:uid=10001,gid=10001,mode=0700"]
+  cap_drop: [ALL]
+  security_opt: ["no-new-privileges:true"]
+  networks: [private]
+  logging:
+    driver: json-file
+    options: {max-size: "10m", max-file: "3"}
+x-mox-env: &mox-env
+  BUNDLE_GEMFILE: /app/Gemfile
+  BUNDLE_PATH: /usr/local/bundle
+  RAILS_ENV: production
+  ELEVATEO_MODE: production
+  ELEVATEO_PROCESS: worker
+  ELEVATEO_DB_ROLE: elevateo_worker
+  ELEVATEO_DB_HOST: db
+  ELEVATEO_DB_NAME: postgres
+  ELEVATEO_OUTBOUND_MODE: mox
+  ELEVATEO_OUTBOUND_HOLD: "true"
+  ELEVATEO_MOX_PRODUCTION_ENABLED: "false"
+  ELEVATEO_SEND_API_ENABLED: "false"
+  ELEVATEO_AUTH_URL: http://auth:9999
+  ELEVATEO_STORAGE_URL: http://storage:5000
+  # AIDEV-NOTE: Config requires legacy fixture metadata; production transports ignore these catcher endpoints.
+  ELEVATEO_MAILPIT_URL: http://mailpit:8025
+  ELEVATEO_SMTP_HOST: mailpit
+  ELEVATEO_SMTP_PORT: "1025"
+  ELEVATEO_BROWSER_ORIGIN: https://mail.elevateoco.com
+  ELEVATEO_COOKIE_SECURE: "true"
+  ELEVATEO_SSO_ENABLED: "true"
+  ELEVATEO_SSO_ONLY: "true"
+  ELEVATEO_AUTH_PUBLIC_URL: https://mail.elevateoco.com/auth/v1
+  ELEVATEO_MOX_CREDENTIALS_PATH: /run/mox/credentials.json
+
+services:
+  mox-send-worker:
+    <<: *mox-runtime
+    profiles: [mox-send-manual]
+    env_file: ["${ELEVATEO_MOX_SEND_ENV_FILE:?set absolute protected send env file}"]
+    environment:
+      <<: *mox-env
+      ELEVATEO_SEND_CONTROL_PATH: /run/dispatch/control.json
+    command: [bundle, exec, ruby, bin/send-worker, --drain]
+    volumes:
+      - type: bind
+        source: ${ELEVATEO_MOX_SEND_DIR:?set absolute protected SMTP Bundle directory}
+        target: /run/mox
+        read_only: true
+        bind: {create_host_path: false}
+      - type: bind
+        source: ${ELEVATEO_MOX_CONTROL_DIR:?set absolute protected dispatch control directory}
+        target: /run/dispatch
+        read_only: true
+        bind: {create_host_path: false}
+  mox-inbound-worker:
+    <<: *mox-runtime
+    profiles: [mox-inbound]
+    env_file: ["${ELEVATEO_MOX_INBOUND_ENV_FILE:?set absolute protected inbound env file}"]
+    environment:
+      <<: *mox-env
+      ELEVATEO_IMAP_PROFILE: mox-imap-v1
+      ELEVATEO_IMAP_CREDENTIALS_PATH: /run/mox/credentials.json
+      ELEVATEO_INBOUND_STORAGE_TOKEN_PATH: /run/mox/storage-token
+    command: [bundle, exec, ruby, bin/inbound-worker, --run]
+    volumes:
+      - type: bind
+        source: ${ELEVATEO_MOX_INBOUND_DIR:?set absolute protected IMAP Bundle directory}
+        target: /run/mox
+        read_only: true
+        bind: {create_host_path: false}

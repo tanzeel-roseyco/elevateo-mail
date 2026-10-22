@@ -17,12 +17,12 @@ module Elevateo
       class StaleLease < StandardError; end
       PROFILES = { "synthetic-v1" => "local:synthetic-v1",
         "mailpit-smtp-test-v1" => "local:mailpit-smtp-test-v1", "mox-smtp-test-v1" => "local:mox-smtp-test-v1",
-        "resend-v1" => "provider:resend-v1" }.freeze
+        "mox-smtp-v1" => "provider:mox-smtp-v1", "resend-v1" => "provider:resend-v1" }.freeze
       # AIDEV-NOTE: Ruby and SQL both bind the profile, prefix and source; never infer a new provider with else.
       RECEIPT_PREFIXES = { "synthetic-v1" => "local:", "mailpit-smtp-test-v1" => "mailpit-test-v1:",
-        "mox-smtp-test-v1" => "mox-test-v1:", "resend-v1" => "resend:" }.freeze
+        "mox-smtp-test-v1" => "mox-test-v1:", "mox-smtp-v1" => "mox-v1:", "resend-v1" => "resend:" }.freeze
       SOURCES = { "mailpit-smtp-test-v1" => "mailpit_smtp_test_v1", "mox-smtp-test-v1" => "mox_smtp_test_v1",
-        "resend-v1" => "resend_v1" }.freeze
+        "mox-smtp-v1" => "mox_smtp_v1", "resend-v1" => "resend_v1" }.freeze
 
       def self.next_due_send(connection:, epoch:, excluded:)
         raise ArgumentError, "invalid dispatch epoch" unless Control.valid_epoch?(epoch)
@@ -55,7 +55,7 @@ module Elevateo
         require_fields(value, %w[send_id lease_id generation action attempts simulated])
         raise InvalidResult unless value["send_id"] == @send_id && value["lease_id"] == lease_id &&
           value["generation"].is_a?(Integer) && value["generation"].positive? &&
-          %w[submit reconcile].include?(value["action"]) && value["simulated"] == (@profile != "resend-v1")
+          %w[submit reconcile].include?(value["action"]) && value["simulated"] == (!%w[resend-v1 mox-smtp-v1].include?(@profile))
         binding = call("SELECT app_send_private.worker_binding($1::uuid,$2::uuid,$3::bigint,$4::uuid)",
           [@send_id, lease_id, value["generation"], epoch])
         require_fields(binding, %w[send_id action attempt_id snapshot_digest snapshot_hex])
@@ -82,7 +82,7 @@ module Elevateo
             Digest::SHA256.hexdigest(PROFILES.fetch(@profile)), @profile, @deadline_seconds])
         return nil if result["code"] == "dispatch_held"
         require_fields(result, %w[attempt_id attempt_no call_deadline_at simulated])
-        raise InvalidResult unless result["attempt_id"] == attempt_id && result["simulated"] == (@profile != "resend-v1")
+        raise InvalidResult unless result["attempt_id"] == attempt_id && result["simulated"] == (!%w[resend-v1 mox-smtp-v1].include?(@profile))
         Authorization.new(attempt_id: attempt_id, snapshot_bytes: bytes, credential_binding: smtp_binding(result))
       end
 
@@ -115,7 +115,7 @@ module Elevateo
         value = call(sql, values)
         raise StaleLease if value["code"] == "stale_lease"
         require_fields(value, %w[state simulated])
-        raise InvalidResult unless value["simulated"] == (@profile != "resend-v1")
+        raise InvalidResult unless value["simulated"] == (!%w[resend-v1 mox-smtp-v1].include?(@profile))
         value
       end
 
@@ -141,7 +141,7 @@ module Elevateo
           value = call("SELECT app_send_private.reconcile_no_evidence($1::uuid,$2::uuid,$3::bigint,$4::uuid)",
             [claim.send_id, claim.lease_id, claim.generation, attempt_id])
           require_fields(value, %w[state simulated])
-          raise InvalidResult unless value["simulated"] == (@profile != "resend-v1")
+          raise InvalidResult unless value["simulated"] == (!%w[resend-v1 mox-smtp-v1].include?(@profile))
           return value
         end
         record_observation(claim: claim, attempt_id: attempt_id,
@@ -152,7 +152,7 @@ module Elevateo
 
       # AIDEV-NOTE: Only SQL chooses the account tuple; historical unbound attempts can reconcile, never submit.
       def smtp_binding(result)
-        return nil unless @profile == "mox-smtp-test-v1"
+        return nil unless %w[mox-smtp-test-v1 mox-smtp-v1].include?(@profile)
 
         value = result["credential_binding"]
         fields = %w[organization_id mailbox_id account_id credential_version credential_ref protocol]

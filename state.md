@@ -1,3 +1,19 @@
+## Self-hosted continuation — 2026-10-23
+
+Implementation and bounded isolated verification are recorded; **not live or production accepted**.
+Current source is on `Tanzeel/elevateo-emailguard-fable` in the Orca unified-dashboard worktree.
+`ops/selfhosted-mail` supplies held Mox provisioning and private credentials; `apps/server`
+adds separate production SMTP/IMAP profiles and SQL authority; `ops/production/initialize`
+supplies source-bound, preservation-first initialization. Real isolated Mox delivery and
+populated restart/restore passed on final source (76.736 seconds), including 13 runtime tests.
+Initializer offline regressions (13), strict typing and lint passed. Actual Supabase Auth/Storage
+backup and isolated restore, all 43 forward migrations, tenant replay and two failure rollbacks
+passed. Full backend passed 1,204 tests / 13,808 assertions plus strict types/lint; final source reviews have zero open findings. Dedicated Ruby-to-Mox proof is NOT VERIFIED: the isolated harness failed before Ruby cases.
+No production DB, Workspace routing, DNS, Cloudflare application or public deployment changed.
+120 real accounts remain planned; Resend usage remains six HTTP calls and zero sends.
+Exact paths, evidence and activation gates: `docs/completion/selfhosted-production-20261023-handoff.md`.
+The historical checkpoint below does not verify this continuation's new source.
+
 ## Latest launch checkpoint — 2026-10-23
 
 Not live. Google SSO backend and Fable-authored login UI are integrated. Fleet Docker backend:

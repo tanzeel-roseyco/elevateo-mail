@@ -1,0 +1,9 @@
+{
+  "passed": false,
+  "network": "none",
+  "mode": "serve",
+  "binary_sha256": "29f054f2b2bc0f191b22576ffbd95fbe74901dae31ac749058c7efb8f61e547c",
+  "version": "v0.0.17-go1.27.0\nlinux/amd64",
+  "failure_type": "AssertionError",
+  "seconds": 1.936
+}

@@ -62,7 +62,7 @@ class SendSchemaDatabaseTest < SendDatabaseTestCase
     expected = %w[approval_operations attempts audit_events intents jobs mailbox_policy observations
                   organization_policy recipient_suppressions reconciliation_checks smtp_accounts
                   budget_routes budget_limits budget_usage attempt_budgets scheduler_cursor mailbox_schedule
-                  resend_events resend_delivery resend_acceptance]
+                  resend_events resend_delivery resend_acceptance mox_domains]
     assert_equal expected.sort, rows.map { |row| row.fetch("relname") }.sort
     rows.each do |row|
       assert_equal "t", row.fetch("relrowsecurity")
@@ -109,7 +109,7 @@ class SendSchemaDatabaseTest < SendDatabaseTestCase
   end
   def test_empty_down_removes_only_send_objects_and_transaction_rollback_restores_them
     @admin.exec("BEGIN")
-    # AIDEV-NOTE: Detach later typed-function/FK dependencies; rollback restores their exact definitions.
+    # AIDEV-NOTE: Detach later typed-function/FK dependencies, including Mox; rollback restores exact definitions.
     dependencies = @admin.exec(<<~SQL).to_a
       SELECT conrelid::regclass::text AS relation,conname,pg_get_constraintdef(oid) AS definition
         FROM pg_constraint WHERE contype='f'
@@ -124,6 +124,7 @@ class SendSchemaDatabaseTest < SendDatabaseTestCase
     end
     @admin.exec("DROP FUNCTION app_send_private.marketing_dispatch_allowed(app_send_private.intents)")
     @admin.exec("DROP FUNCTION app_send_private.resend_attachments_allowed(app_send_private.intents)")
+    @admin.exec("DROP FUNCTION app_send_private.mox_dispatch_allowed(app_send_private.intents)")
     # AIDEV-NOTE: Reverse rotation, budget and SMTP dependencies before the original send-schema teardown.
     @admin.exec(File.read(File.expand_path("../../db/be03_send/mailbox_rotation_down.sql", __dir__)))
     @admin.exec(File.read(File.expand_path("../../db/be03_send/budget_down.sql", __dir__)))
@@ -147,6 +148,7 @@ class SendSchemaDatabaseTest < SendDatabaseTestCase
     end
     refute_nil @admin.exec("SELECT to_regprocedure('app_send_private.marketing_dispatch_allowed(app_send_private.intents)')").getvalue(0, 0)
     refute_nil @admin.exec("SELECT to_regprocedure('app_send_private.resend_attachments_allowed(app_send_private.intents)')").getvalue(0, 0)
+    refute_nil @admin.exec("SELECT to_regprocedure('app_send_private.mox_dispatch_allowed(app_send_private.intents)')").getvalue(0, 0)
     refute approve.key?("code")
   ensure
     @admin.exec("ROLLBACK") if @admin && @admin.transaction_status != PG::PQTRANS_IDLE

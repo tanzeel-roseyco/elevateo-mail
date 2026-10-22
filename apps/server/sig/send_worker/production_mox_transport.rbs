@@ -1,0 +1,30 @@
+module Elevateo
+  module SendWorker
+    class ProductionMoxProfile
+      @host: String
+      @domains: Array[String]
+      @credentials_path: String
+      attr_reader host: String
+      attr_reader domains: Array[String]
+      attr_reader credentials_path: String
+      def initialize: (_ConfigEnvironment) -> void
+      def port: () -> Integer
+      def permits_sender?: (String) -> bool
+      def inspect: () -> String
+      private
+      # AIDEV-NOTE: JSON values are untyped at admission; hostname validates String before use.
+      def hostname: (untyped) -> String
+    end
+    class ProductionMoxTransport
+      @profile: ProductionMoxProfile
+      @credential_resolver: ^(MailCredentials::Binding, protocol: String) -> [String, String]
+      @smtp_factory: ^(String, Integer) -> Net::SMTP
+      def initialize: (profile: ProductionMoxProfile, credential_resolver: ^(MailCredentials::Binding, protocol: String) -> [String, String], ?smtp_factory: ^(String, Integer) -> Net::SMTP) -> void
+      def database_profile: () -> String
+      def observation: (**(String | nil)) -> nil
+      def submit: (String, send_id: String, attempt_id: String, deadline: CallDeadline, ?credential_binding: MailCredentials::Binding?) -> SubmissionResult
+      private
+      def deliver: (RenderedMessage, String, String, String, String, CallDeadline) -> SubmissionResult
+    end
+  end
+end

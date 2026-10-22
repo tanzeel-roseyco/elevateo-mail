@@ -14,7 +14,7 @@ module Elevateo
       @client, @crypto = client || AuthClient.new(config: config), crypto || SessionCrypto.new(config: config)
       @tokens = AuthTokens.new(config: config)
       # AIDEV-NOTE: Outbound mode informs labels; each send review still determines its own transport authority.
-      @presentation = SessionPresentation.new(crypto: @crypto, simulation_mode: config.outbound_mode != "resend")
+      @presentation = SessionPresentation.new(crypto: @crypto, simulation_mode: !%w[resend mox].include?(config.outbound_mode))
     end
 
     def authenticate(cookie:, deadline:)

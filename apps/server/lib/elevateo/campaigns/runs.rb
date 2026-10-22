@@ -38,7 +38,7 @@ module Elevateo
         @repository.rows("INSERT INTO app.marketing_runs(id,organization_id,campaign_id,mailbox_id,actor_id,operation_id," \
           "request_digest,subject,body_text,simulated) VALUES($1::uuid,$2::uuid,$3::uuid,$4::uuid,$5::uuid,$6::uuid,$7,$8,$9,$10::boolean)",
           [id, @identity.org_id, campaign_id, input.mailbox_id, @identity.user_id, input.operation_id, input.digest,
-            input.subject, input.body_text, @outbound_mode != "resend"])
+            input.subject, input.body_text, !%w[resend mox].include?(@outbound_mode)])
         leads.each { |lead| queue_recipient(id, input, lead, request_id) }
         detail(campaign_id, id)
       end

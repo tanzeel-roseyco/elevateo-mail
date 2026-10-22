@@ -11,11 +11,11 @@ module Elevateo
       UNKNOWN_CODES = %w[local_timeout local_paused deadline_expired smtp_uncertain resend_unknown].freeze
       attr_reader :kind, :receipt_ref, :code
 
-      # AIDEV-NOTE: Only normalized simulated evidence crosses this seam; acceptance never means delivery.
+      # AIDEV-NOTE: Normalized evidence retains transport provenance; SMTP acceptance never means delivery.
       def initialize(kind:, receipt_ref: nil, code: nil)
         valid = case kind
                 when "accepted"
-                  receipt_ref.is_a?(String) && (/\A(?:local:|mailpit-test-v1:|mox-test-v1:)[0-9a-f]{64}\z/.match?(receipt_ref) ||
+                  receipt_ref.is_a?(String) && (/\A(?:local:|mailpit-test-v1:|mox-test-v1:|mox-v1:)[0-9a-f]{64}\z/.match?(receipt_ref) ||
                     /\Aresend:[A-Za-z0-9_-]{1,128}\z/.match?(receipt_ref)) && code.nil?
                 when "rejected" then receipt_ref.nil? && REJECTION_CODES.include?(code)
                 when "unknown" then receipt_ref.nil? && UNKNOWN_CODES.include?(code)
@@ -28,7 +28,7 @@ module Elevateo
         freeze
       end
 
-      def simulated? = !receipt_ref&.start_with?("resend:")
+      def simulated? = !receipt_ref&.start_with?("resend:", "mox-v1:")
 
       def evidence_digest(send_id:, attempt_id:, snapshot_digest:)
         Digest::SHA256.hexdigest(JSON.generate(["elevateo.local.observation.v1", send_id, attempt_id,

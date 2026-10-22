@@ -1,3 +1,49 @@
+## Self-hosted continuation reviews — 2026-10-23
+
+Mandatory full-rubric adversarial Orca Codex reviews, bounded to <=200 physical LOC per
+packet and <=400 unique LOC per reviewer. Formatting belongs to fleet Docker linters.
+Every report records its ranges and hashes. Denominators overlap: do not sum these rows
+or interpret zero findings as application-wide approval. Runtime evidence is separate.
+
+| Report suffix (`selfhosted-…-20261023.md`) | LOC | Defects | Defects/KLOC | Current disposition |
+| --- | ---: | ---: | ---: | --- |
+| review-validation | 100 | 2 | 20.00 | global IPv4 and reserved-domain admission repaired |
+| review-generation | 107 | 1 | 9.35 | private provisioning parent repaired |
+| review-initializer-admission | 168 | 2 | 11.90 | empty/hash-root and directory-symlink admission repaired |
+| review-initializer-final | 310 | 0 | 0 | source-only, exact original hashes |
+| review-initializer-admission-final | 206 | 0 | 0 | final admission and regression hashes accepted |
+| review-mail-final | 245 | 1 | 4.08 | private provisioning parent repaired; overlaps generation finding |
+| review-tls | 107 | 0 | 0 | original key/TLS hashes; later key checks reviewed separately |
+| review-design-bundle | 158 | 2 | 12.66 | atomic export and non-assert binary pin repaired |
+| review-runtime-final | 356 baseline | 1 | 2.81 | optimized-runtime assertion stripping repaired; 372 LOC final source accepted |
+| review-runtime-protocol | 248 | 1 | 4.03 | HIGH required APPEND parameters repaired; final independent review below |
+| review-runtime-protocol-repair | 141 | 0 | 0 | final APPEND/UID protocol hash accepted; real serve rerun passed |
+| review-transport | 113 | 0 | 0 | original production adapter/profile source hashes only |
+| review-sql-authority | 348 | 0 | 0 | authority/schema/observation source accepted |
+| review-sql-approval | 326 | 1 | 3.07 | LOW NULL-mode guard repaired; alleged replay bypass withdrawn |
+| review-wiring | 285 | 0 | 0 | CLI/config/inbound/API binding source accepted |
+| review-state | 347 | 1 | 2.88 | missing SMTP 450/550 regression coverage repaired; final test review below |
+| review-sql-repairs | 348 | 0 | 0 | NULL guard, rollback-role correction and regression hashes accepted |
+| review-initializer-recovery | 231 | 1 | 4.33 | quality working-directory defect repaired; corrected gate passed Docker |
+| review-initializer-build | 29 | 1 | 34.48 | HIGH existing-builder deletion guard repaired |
+| review-initializer-build-final | 66 | 0 | 0 | exact builder, quality and regression hashes accepted; runtime separate |
+| review-transport-design | 198 | 0 implementation; 1 LOW documentation | 0 implementation; 5.05 issues/KLOC | stale configuration instruction repaired; dedicated design simulations recorded |
+| review-overlay-final | 175 | 1 MEDIUM | 5.71 | overlay accepted; staging symlink escape repaired; separate final repair review |
+| review-transport-tests-final | 383 | 1 LOW | 2.61 | SMTP rejection/enrollment/RBS accepted; fresh-message nonce repaired; final MIME-aware review below |
+| review-staging-repair | 57 baseline; 60 final | 1 MEDIUM baseline; 0 final | 17.54 baseline; 0 final | hard-link escape repaired; baseline, five symlink and two hard-link Docker regressions passed |
+| review-schema-oracle | 44 | 0 | 0 | exact inventory and typed-function rollback assertions accepted; runtime separate |
+| review-transport-freeze | 400 cross-version | 1 historical oracle defect; 0 open | 2.50 historical; 0 open | owner repaired encoded-MIME nonce matcher; final decoded-field delta accepted |
+
+Recovery-harness reviewer found one MEDIUM path defect in the checked-in quality gate;
+the independently reviewed correction passed Docker. A subsequent fallback-runner build script
+and quality-scope addition passed a final 66-line review. The subsequent staging helper,
+production overlay passed bounded review. Final staging hard-link and fresh-message test
+repairs passed hash-specific final review; these findings concern verification tooling.
+Dedicated infrastructure and Bundle design reviewers recorded failure/tradeoff simulations.
+Obsidian integration was unavailable; no external synchronization is claimed. A dedicated
+application-transport design reviewer also recorded bounded failure simulations. Final runtime
+receipts record full backend PASS and dedicated Ruby protocol NOT VERIFIED: harness startup failed before cases.
+
 ## Launch coordinator integration reviews — 2026-10-23
 
 All packets are bounded source reviews under the full user rubric; linters own formatting.

@@ -58,7 +58,34 @@ class InboundWorkerConfigTest < Minitest::Test
     end
   end
 
+  def test_production_imap_uses_verified_system_roots_and_separate_port
+    config = Elevateo::Inbound::WorkerConfig.load!(production_environment)
+    assert_equal "mail.dispatch.company.com", config.host
+    assert_equal 993, config.port
+    refute config.simulated
+    assert_nil config.ca_path
+    assert config.runtime.outbound_hold
+  end
+
+  def test_production_dispatch_requires_explicit_activation_and_independent_hold
+    env = production_environment.merge("ELEVATEO_OUTBOUND_HOLD" => "false")
+    assert_raises(Elevateo::ConfigError) { Elevateo::Inbound::WorkerConfig.load!(env) }
+    config = Elevateo::Inbound::WorkerConfig.load!(env.merge("ELEVATEO_MOX_PRODUCTION_ENABLED" => "true"))
+    refute config.runtime.outbound_hold
+    assert_raises(Elevateo::ConfigError) do
+      Elevateo::Inbound::WorkerConfig.load!(production_environment.merge("ELEVATEO_MOX_HOST" => "localhost"))
+    end
+  end
+
   private
+
+  def production_environment
+    worker_environment.merge("ELEVATEO_MODE" => "production", "RAILS_ENV" => "production",
+      "SECRET_KEY_BASE" => "s" * 64, "ELEVATEO_BROWSER_ORIGIN" => "https://mail.elevateoco.com",
+      "ELEVATEO_OUTBOUND_MODE" => "mox", "ELEVATEO_IMAP_PROFILE" => "mox-imap-v1",
+      "ELEVATEO_MOX_HOST" => "mail.dispatch.company.com", "ELEVATEO_MOX_VERIFIED_DOMAINS" => '["dispatch.company.com"]' ,
+      "ELEVATEO_MOX_CREDENTIALS_PATH" => "/private/smtp.json")
+  end
 
   def load_changes(change) = Elevateo::Inbound::WorkerConfig.load!(worker_environment.merge(change))
 end

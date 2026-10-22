@@ -6,7 +6,7 @@ require_relative "../mail_credentials/binding"
 
 module Elevateo
   module SendWorker
-    # AIDEV-NOTE: Fixed loopback fixture, mandatory verified STARTTLS, exact envelope; production stays held.
+    # AIDEV-NOTE: Fixed loopback fixture and test-only credentials cannot select the separate production transport.
     class MoxSmtpTransport
       def initialize(profile:, ca_file:, credential_resolver:, smtp_factory: ->(host, port) { Net::SMTP.new(host, port) })
         raise SmtpTransport::Held, "Mox fixture profile required" unless profile.is_a?(SmtpProfile) && profile.mox_test?
@@ -22,7 +22,7 @@ module Elevateo
         unless rendered.recipient_addresses == ["seed000@seed.test"]
           return SubmissionResult.new(kind: "rejected", code: "smtp_invalid_snapshot")
         end
-        unless credential_binding.is_a?(MailCredentials::Binding) &&
+        unless credential_binding.is_a?(MailCredentials::Binding) && credential_binding.credential_ref.start_with?("test:") &&
             credential_binding.organization_id == rendered.organization_id && credential_binding.mailbox_id == rendered.mailbox_id
           raise SmtpTransport::Held, "SMTP account binding unavailable", cause: nil
         end

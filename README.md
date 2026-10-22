@@ -2,6 +2,18 @@
 
 ## Current state
 
+### Self-hosted mail continuation — 2026-10-23
+
+Self-hosted deployment source lives in `ops/selfhosted-mail`, protected schema/tenant initialization
+in `ops/production/initialize`, and a distinct production SMTP/IMAP route in `apps/server`.
+Isolated fleet Docker proved real SMTP-to-IMAP delivery, mailbox isolation, restart persistence
+and populated Mox backup restoration. A separate Supabase restore passed all 43 migrations,
+tenant replay/failure checks and Auth/Storage preservation. The full backend gate passed 1,204 tests / 13,808 assertions, strict types and lint; dedicated Ruby-to-Mox proof is blocked by isolated harness startup; **this application is not live**. The 120 production mailboxes are
+not provisioned. Host capacity/IP, exact approved mail domains, Google SSO credentials, encrypted
+off-host backups and external acceptance remain release gates. Workspace routing and public DNS
+remain unchanged. See the [current handoff](docs/completion/selfhosted-production-20261023-handoff.md).
+Historical totals below describe their recorded revisions, not acceptance of this continuation.
+
 ### Launch preparation — 2026-10-23
 
 Application Google SSO, the Fable 5.1 login interface, a restricted fleet transport and the Railway

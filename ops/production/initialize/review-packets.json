@@ -1,0 +1,62 @@
+﻿[
+    {
+        "path":  "ops/production/initialize/admission.py",
+        "first_line":  1,
+        "last_line":  80,
+        "sha256":  "d9904b102a9c27e6f3be3c0837a600cdd2634fa5487f108698b74d1f31e6eb29"
+    },
+    {
+        "path":  "ops/production/initialize/cleanup-receipt.txt",
+        "first_line":  1,
+        "last_line":  13,
+        "sha256":  "8ee5566094818dadda56fd520709a4941eb15766e82f206869b6ef7e3f0a6e98"
+    },
+    {
+        "path":  "ops/production/initialize/fleet-runtime.txt",
+        "first_line":  1,
+        "last_line":  28,
+        "sha256":  "1bdc874dfc2cbcfcaa3bc8adf5b90b476e5302ba93c661452364f1684980c705"
+    },
+    {
+        "path":  "ops/production/initialize/fleet-test.sh",
+        "first_line":  1,
+        "last_line":  39,
+        "sha256":  "5bd43febbe5758c1af19ddc6500ecc7bf40ae169b21bd42022b458a8378a80ef"
+    },
+    {
+        "path":  "ops/production/initialize/initialize.py",
+        "first_line":  1,
+        "last_line":  96,
+        "sha256":  "0c519827edf8abae32a1a0c510f23a080018f81e46bbcc6568a52b3e786f08bf"
+    },
+    {
+        "path":  "ops/production/initialize/preflight.sql",
+        "first_line":  1,
+        "last_line":  18,
+        "sha256":  "d98cfab30b13483c5a79ebb410dc9c710f41de324fe3e9635ec5eb272e38ee7b"
+    },
+    {
+        "path":  "ops/production/initialize/README.md",
+        "first_line":  1,
+        "last_line":  99,
+        "sha256":  "b6c41fe4dbf0df1529e441fe6abd6e0694b3ad556a3913c17abf3e98268f1c97"
+    },
+    {
+        "path":  "ops/production/initialize/tenant.sql",
+        "first_line":  1,
+        "last_line":  88,
+        "sha256":  "f338ce20388a24bc07aa92192bed5bd91be190004e2913a0670600c4831f1c32"
+    },
+    {
+        "path":  "ops/production/initialize/test_admission.py",
+        "first_line":  1,
+        "last_line":  87,
+        "sha256":  "49ccec8cf78d757b35ff1b647debb5fcc36553bd0989aba0f491494a916e353d"
+    },
+    {
+        "path":  "ops/production/initialize/test_tenant.py",
+        "first_line":  1,
+        "last_line":  115,
+        "sha256":  "d263c90d876e2df4ca4822196b3339b8922e78fb33d0986b536768c758149a24"
+    }
+]

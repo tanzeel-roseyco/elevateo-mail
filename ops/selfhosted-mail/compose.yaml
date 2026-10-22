@@ -1,0 +1,39 @@
+# AIDEV-NOTE: Dedicated Linux host; bridge/NAT loses peer IP reputation and must not replace host networking.
+services:
+  mox:
+    image: r.xmox.nl/mox@sha256:831c6f11b3c2ee1633077052e6d4b7ae53f73972adf4bf08be0a740121d24cc7
+    platform: linux/amd64
+    network_mode: host
+    working_dir: /mox
+    command: [mox, serve]
+    environment:
+      MOX_DOCKER: "yes"
+      GOMAXPROCS: "2"
+      GOMEMLIMIT: 768MiB
+    volumes:
+      - type: bind
+        source: ${MAIL_ROOT:?absolute private mail root required}/config
+        target: /mox/config
+        bind:
+          create_host_path: false
+      - type: bind
+        source: ${MAIL_ROOT:?absolute private mail root required}/data
+        target: /mox/data
+        bind:
+          create_host_path: false
+      - type: bind
+        source: ${MAIL_ROOT:?absolute private mail root required}/tls
+        target: /mox/tls
+        read_only: true
+        bind:
+          create_host_path: false
+    restart: unless-stopped
+    stop_grace_period: 60s
+    mem_limit: 2g
+    cpus: 2
+    pids_limit: 128
+    ulimits:
+      nofile: {soft: 8192, hard: 8192}
+    logging:
+      driver: json-file
+      options: {max-size: 10m, max-file: "3"}

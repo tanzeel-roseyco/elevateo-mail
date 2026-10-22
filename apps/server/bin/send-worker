@@ -15,20 +15,29 @@ raise Elevateo::ConfigError, "send worker requires explicit control" if cfg.send
 raise Elevateo::ConfigError, "held mode cannot submit" if cfg.outbound_mode == "held" && !cfg.outbound_hold
 mailpit_test = ARGV.first == "--mailpit-test"
 resend = cfg.outbound_mode == "resend" && !mailpit_test
+mox = cfg.outbound_mode == "mox"
+live = resend || mox
+raise Elevateo::ConfigError, "Mox fixture override forbidden" if mox && mailpit_test
 # AIDEV-NOTE: The environment hold must fence dispatch before storage or provider clients are initialized.
-raise Elevateo::ConfigError, "Resend dispatch is held" if resend && cfg.outbound_hold
+raise Elevateo::ConfigError, "Production dispatch is held" if live && cfg.outbound_hold
 target, option = mailpit_test ? ARGV.drop(1) : ARGV
-unless ARGV.length == (mailpit_test ? 3 : (resend ? 1 : 2)) &&
+unless ARGV.length == (mailpit_test ? 3 : (live ? 1 : 2)) &&
     (mailpit_test ? Elevateo::SendWorker::Control.valid_epoch?(target) :
       (target == "--drain" || Elevateo::SendWorker::Control.valid_epoch?(target))) &&
-    (mailpit_test || resend || Elevateo::SendWorker::DurableLocalDriver::OUTCOMES.include?(option))
+    (mailpit_test || live || Elevateo::SendWorker::DurableLocalDriver::OUTCOMES.include?(option))
   raise ArgumentError, "usage: send-worker SEND_UUID|--drain accept|reject|accept_then_timeout|pause " \
     "OR send-worker --mailpit-test SEND_UUID sender@example.invalid"
 end
-profile = resend ? "resend-v1" : (mailpit_test ? "mailpit-smtp-test-v1" : "synthetic-v1")
+profile = mox ? "mox-smtp-v1" : resend ? "resend-v1" : (mailpit_test ? "mailpit-smtp-test-v1" : "synthetic-v1")
 driver = if mailpit_test
   require_relative "../lib/elevateo/send_worker/smtp_transport"
   Elevateo::SendWorker::SmtpTransport.new(profile: Elevateo::SendWorker::SmtpProfile.local_mailpit(verified_sender: option))
+elsif mox
+  require_relative "../lib/elevateo/send_worker/production_mox_transport"
+  require_relative "../lib/elevateo/mail_credentials/bundle"
+  production_profile = Elevateo::SendWorker::ProductionMoxProfile.new(ENV)
+  bundle = Elevateo::MailCredentials::Bundle.new(path: production_profile.credentials_path)
+  Elevateo::SendWorker::ProductionMoxTransport.new(profile: production_profile, credential_resolver: bundle)
 elsif resend
   require_relative "../lib/elevateo/send_worker/resend_transport"
   require_relative "../lib/elevateo/attachments_worker_storage"
@@ -48,7 +57,7 @@ begin
   connection.exec("SET statement_timeout = '3s'")
   connection.exec("SET lock_timeout = '1s'")
   # AIDEV-NOTE: SQL owns reservations; startup refuses database limits wider than the configured pilot ceiling.
-  if resend
+  if live
     valid = connection.exec_params("SELECT app.resend_mailbox_limit_valid($1::integer)",
       [cfg.mailbox_daily_send_limit]).getvalue(0, 0)
     raise Elevateo::ConfigError, "mailbox budget exceeds ELEVATEO_MAILBOX_DAILY_SEND_LIMIT" unless valid == "t"
@@ -56,11 +65,11 @@ begin
   control = Elevateo::SendWorker::Control.new(path: cfg.send_control_path)
   if target == "--drain"
     steps = Elevateo::SendWorker::Drain.new(connection: connection, control: control, driver: driver).run
-    puts JSON.generate(event: "send_worker.drain", steps: steps, simulated: !resend)
+    puts JSON.generate(event: "send_worker.drain", steps: steps, simulated: !live)
   else
     store = Elevateo::SendWorker::DatabaseStore.new(connection: connection, send_id: target, profile: profile)
     outcome = Elevateo::SendWorker::Executor.new(store: store, driver: driver, control: control).run_once
-    puts JSON.generate(event: "send_worker.step", send_id: target, result: outcome, simulated: !resend)
+    puts JSON.generate(event: "send_worker.step", send_id: target, result: outcome, simulated: !live)
   end
 ensure
   connection.close

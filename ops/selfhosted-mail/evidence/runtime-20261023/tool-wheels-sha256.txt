@@ -1,0 +1,4 @@
+1be4cccdb0f2482337c4743e60421de3a356cd97508abadd57d47403e94f5505  4963  mypy_extensions-1.1.0-py3-none-any.whl
+8023ff13985661b50a5928fc7a5ca15f3d1affb41e5f0a9952cb68ef090b31ee  12410020  mypy-1.15.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.manylinux_2_28_x86_64.whl
+4ffbc82d70424b275b089166310448051afdc6e914fdab90e08df66c43bb5ca9  11555640  ruff-0.11.13-py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
+a439e7c04b49fec3e5d3e2beaa21755cadbbdc391694e28ccdd36ca4a1408f8c  45806  typing_extensions-4.13.2-py3-none-any.whl

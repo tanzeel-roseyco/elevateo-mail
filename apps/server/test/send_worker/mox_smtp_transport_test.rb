@@ -164,7 +164,8 @@ class SendWorkerMoxSmtpTransportTest < Minitest::Test
       file.flush
       driver = transport(resolver: Elevateo::MailCredentials::Bundle.new(path: file.path))
       [nil, "test:synthetic", mail_binding, binding_with(account_id: ATTEMPT),
-       binding_with(credential_version: 2), binding_with(credential_ref: "test:other")].each do |value|
+       binding_with(credential_version: 2), binding_with(credential_ref: "test:other"),
+       binding_with(credential_ref: "secret:synthetic")].each do |value|
         error = assert_raises(Elevateo::SendWorker::SmtpTransport::Held) { submit(driver, credential_binding: value) }
         assert_nil error.cause
       end

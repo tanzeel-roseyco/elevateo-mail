@@ -40,7 +40,7 @@ module Elevateo
         issue("mailbox_disabled") unless ThreadProjection.boolean(binding["mailbox_enabled"])
         issue("reply_unavailable") unless ThreadProjection.boolean(binding["reply_available"])
         issue("header_invalid") unless Address.header?(@subject)
-        @consent_required = outbound_mode == "resend" || @purpose == "marketing"
+        @consent_required = %w[resend mox].include?(outbound_mode) || @purpose == "marketing"
         @outbound_mode = outbound_mode
         @recipients, checks = recipients(binding)
         attachment_items, attachment_tuples = attachments(binding)
@@ -55,7 +55,7 @@ module Elevateo
           "attachments" => attachment_items, "attachments_supported" => outbound_mode == "resend", "policy_revision" => @policy,
           "recipient_checks" => checks, "ready" => @issues.empty?, "issues" => @issues,
           "review_digest" => @issues.empty? ? Canonical.digest(@snapshot) : nil,
-          "simulated" => outbound_mode != "resend", "outbound_mode" => outbound_mode }
+          "simulated" => !%w[resend mox].include?(outbound_mode), "outbound_mode" => outbound_mode }
       end
 
       private

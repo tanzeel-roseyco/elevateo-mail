@@ -1,0 +1,5 @@
+﻿Untagged: initrepair20261023-runner:disposable
+Deleted: sha256:17fb6ed0382d8c0a9675d0a8a3fe1891adae01ea090bbf12f96f06d9235f3371
+Untagged: initrepair20261023-backend:disposable
+Deleted: sha256:9cce7a1f822506e17bbe03ac803b150372af0933a888b76c099d4bce9caa81b5
+PASS: task image removal exit0; root-owned Storage fixtures removed in task-labelled no-network --rm container exit0; exact canonical /tmp/elevateo-initrepair20261023 removed and absence verified exit0. Pre-removal stage measured3841159bytes. Task-labelled containers/networks, task image tags and buildx_buildkit_initrepair202610230_state lists empty. Shared resources retained; see cleanup-verification-initrepair.txt.

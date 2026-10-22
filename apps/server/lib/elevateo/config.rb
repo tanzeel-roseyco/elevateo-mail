@@ -19,7 +19,7 @@ module Elevateo
     ROLE_PASSWORDS = { "elevateo_api" => "API_DB_PASSWORD", "elevateo_worker" => "WORKER_DB_PASSWORD",
                        "elevateo_migrator" => "MIGRATOR_DB_PASSWORD" }.freeze
     PROVIDER_PREFIXES = %w[INSTANTLY_ POSTMARK_ SENDGRID_ MAILGUN_ SES_ SMTP_RELAY_].freeze
-    OUTBOUND_MODES = %w[held mailpit resend].freeze
+    OUTBOUND_MODES = %w[held mailpit resend mox].freeze
 
     attr_reader :mode, :db_host, :db_name, :db_role, :db_password, :db_pool, :auth_url, :storage_url, :mailpit_url,
                 :send_api_enabled, :send_control_path, :outbound_hold, :process, :session_key, :browser_origin, :auth_jwt_issuer,
@@ -75,11 +75,15 @@ module Elevateo
 
     private
 
-    # AIDEV-NOTE: Production reuses private Docker service names; this launch profile cannot release outbound mail.
+    # AIDEV-NOTE: Production Mox needs separate operator activation as well as the independent runtime hold.
     def validate_production(env)
       raise ConfigError, "production requires Rails production" unless env["RAILS_ENV"] == "production"
       raise ConfigError, "production requires private database" unless @db_host == "db"
-      raise ConfigError, "production requires outbound hold" unless @outbound_hold && @outbound_mode == "held"
+      activation = env.fetch("ELEVATEO_MOX_PRODUCTION_ENABLED", "false")
+      raise ConfigError, "invalid Mox production activation" unless %w[true false].include?(activation)
+      allowed = (@outbound_hold && %w[held mox].include?(@outbound_mode)) ||
+        (@outbound_mode == "mox" && activation == "true")
+      raise ConfigError, "production transport is held" unless allowed
       raise ConfigError, "production local HTTP is forbidden" if env.key?("ELEVATEO_LOCAL_HTTP")
       raise ConfigError, "production secret key is too short" unless env["SECRET_KEY_BASE"].to_s.bytesize >= 64
       expected = { "elevateo_api" => "api", "elevateo_worker" => "worker", "elevateo_migrator" => "migrate" }
@@ -99,6 +103,9 @@ module Elevateo
       @outbound_mode = env.fetch("ELEVATEO_OUTBOUND_MODE", "held")
       raise ConfigError, "invalid ELEVATEO_OUTBOUND_MODE" unless OUTBOUND_MODES.include?(@outbound_mode)
       @outbound_hold = parse_hold(env.fetch("ELEVATEO_OUTBOUND_HOLD", "true"))
+      if @outbound_mode == "mox" && @mode != "production"
+        raise ConfigError, "production Mox requires production mode"
+      end
       raw_limit = env.fetch("ELEVATEO_MAILBOX_DAILY_SEND_LIMIT", "30")
       raise ConfigError, "invalid ELEVATEO_MAILBOX_DAILY_SEND_LIMIT" unless /\A[1-9][0-9]{0,3}\z/.match?(raw_limit)
       @mailbox_daily_send_limit = raw_limit.to_i

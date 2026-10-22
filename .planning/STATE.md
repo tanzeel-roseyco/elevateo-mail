@@ -1,3 +1,10 @@
+Latest self-hosted continuation (2026-10-23): implementation checkpoint; dedicated integration proof blocked;
+NOT LIVE / NOT PRODUCTION ACCEPTED. See `../docs/completion/selfhosted-production-20261023-handoff.md`.
+Held Mox source, separate production application profiles and source-bound initializer exist.
+Final Mox source runtime and populated restore passed. Actual Auth/Storage backup/restore,
+all 43 migrations and tenant replay/failure checks passed. Full backend: 1,204 tests / 13,808 assertions, strict types and lint PASS; dedicated Ruby-to-Mox proof NOT VERIFIED (harness startup failed before Ruby cases).
+No production DB, Workspace DNS/routing, Cloudflare application or public deploy changed.
+
 Latest edge follow-up: 234 fleet Docker assertions PASS; independent 156-line review, zero defects.
 Task containers/image/base reference and staging removed; persistent data and shared cache retained.
 Receipt: `docs/completion/launch-20261023-edge-followup.md`. No live deployment or delivery.

@@ -4,10 +4,14 @@ module Elevateo
     class WorkerConfig
       attr_reader runtime: Config
       attr_reader credentials_path: String
-      attr_reader ca_path: String
+      attr_reader ca_path: String?
+      attr_reader host: String
+      attr_reader port: Integer
+      attr_reader simulated: bool
       attr_reader attachment_storage: Attachments::PrivateStorage?
       def self.load!: (?_ConfigEnvironment) -> WorkerConfig
       def initialize: (runtime: Config, env: _ConfigEnvironment) -> void
+      def resolve: (MailCredentials::Bundle, MailCredentials::Binding, protocol: String) -> [String, String]
       def inspect: () -> String
       alias to_s inspect
       private
@@ -18,11 +22,12 @@ module Elevateo
       @logger: ^(String) -> void
       @clock: ^() -> Float
       @sleeper: ^(Float) -> void
+      @simulated: bool
       @failures: Integer
       @last_outcome: poll_outcome?
       @last_log_at: Float?
       def initialize: (poll: ^() -> (:idle | :polled), logger: ^(String) -> void,
-        ?clock: ^() -> Float, ?sleeper: ^(Float) -> void) -> void
+        ?simulated: bool, ?clock: ^() -> Float, ?sleeper: ^(Float) -> void) -> void
       def run: (stop: ^() -> bool, ?once: bool) -> (poll_outcome | :stopped)
       private
       def step: () -> [poll_outcome, Float]

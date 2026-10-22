@@ -1,0 +1,21 @@
+{
+  "passed": false,
+  "network": "none",
+  "mode": "serve",
+  "binary_sha256": "29f054f2b2bc0f191b22576ffbd95fbe74901dae31ac749058c7efb8f61e547c",
+  "version": "v0.0.17-go1.27.0\nlinux/amd64",
+  "checks": [
+    "unknown local RCPT response 250; required denial=False",
+    "unauthenticated external relay denied",
+    "wrong SMTP password denied; unauthenticated submission denied",
+    "A cannot submit as B",
+    "owned authenticated SMTP587 STARTTLS accepted",
+    "A password cannot authenticate/read B",
+    "verified IMAP993 owned append/read",
+    "A cannot see B sentinel or select B mailbox",
+    "untrusted chain or wrong server name denied",
+    "untrusted chain or wrong server name denied"
+  ],
+  "failure_type": "RuntimeError",
+  "seconds": 53.532
+}
