@@ -4,7 +4,7 @@ require_relative "budget_database_helper"
 
 class SendBudgetSchemaTest < SendBudgetDatabaseTestCase
   def test_scope_and_integer_boundaries_reject_invalid_configuration
-    [["organization", []], ["organization", [@org, @box]], ["group", [@org, "unknown"]],
+    [["user", []], ["user", ["invalid"]], ["user", [@user, @org]], ["organization", []], ["organization", [@org, @box]], ["group", [@org, "unknown"]],
       ["mailbox", [@org, "invalid"]], ["sender_domain", ["UPPER.invalid"]],
       ["destination_domain", ["a@domain.invalid"]], ["egress", [nil]], ["other", [@org]]].each do |kind, scope|
       assert_raises(PG::CheckViolation) do
@@ -47,7 +47,7 @@ class SendBudgetSchemaTest < SendBudgetDatabaseTestCase
     @admin.exec("BEGIN")
     assert_raises(PG::ObjectNotInPrerequisiteState) { @admin.exec(File.read(File.join(budget_root, "budget_down.sql"))) }
     @admin.exec("ROLLBACK")
-    assert_equal "7", @admin.exec("SELECT count(*) FROM app_send_private.budget_limits").getvalue(0, 0)
+    assert_equal "8", @admin.exec("SELECT count(*) FROM app_send_private.budget_limits").getvalue(0, 0)
     assert_equal "1", @admin.exec("SELECT count(*) FROM app_send_private.budget_routes").getvalue(0, 0)
   end
 end

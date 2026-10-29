@@ -1,20 +1,21 @@
 # frozen_string_literal: true
 
 require "net/http"
+require "timeout"
 
 class HealthController < ApplicationController
   def live
     render json: { status: "ok" }
   end
 
-  # Side-effect-free dependency checks; no tokens issued, mail sent or objects created.
+  # AIDEV-NOTE: Only mailpit mode depends on a catcher; held/Resend readiness must not require an unused service.
   def ready
     cfg = Elevateo::Config.current
     checks = {
       database: check { ActiveRecord::Base.connection.select_value("SELECT 1") == 1 },
       auth: check { http_ok?("#{cfg.auth_url}/health") },
       storage: check { http_ok?("#{cfg.storage_url}/status") },
-      mail_catcher: check { http_ok?("#{cfg.mailpit_url}/livez") }
+      mail_catcher: cfg.outbound_mode != "mailpit" || check { http_ok?("#{cfg.mailpit_url}/livez") }
     }
     ready = checks.values.all?
     render json: { status: ready ? "ready" : "not_ready", outbound_hold: cfg.outbound_hold, checks: checks },
@@ -36,6 +37,13 @@ class HealthController < ApplicationController
     host, port = uri.host, uri.port
     return false unless host.is_a?(String) && port.is_a?(Integer)
 
-    Net::HTTP.start(host, port, open_timeout: 2, read_timeout: 2) { |h| h.get(uri.request_uri).code == "200" }
+    # AIDEV-NOTE: Return from the header callback before Net::HTTP buffers an unbounded dependency response body.
+    Timeout.timeout(3) do
+      Net::HTTP.start(host, port, nil, use_ssl: uri.scheme == "https", open_timeout: 2,
+                     read_timeout: 2, write_timeout: 2, max_retries: 0) do |http|
+        http.request(Net::HTTP::Get.new(uri.request_uri)) { |response| return response.code == "200" }
+      end
+    end
+    false
   end
 end
