@@ -1,0 +1,77 @@
+module Elevateo
+  module EmailFinder
+    # AIDEV-NOTE: JSONB/ActiveRecord seams are dynamically shaped; Input validates wire values before persistence.
+    type object = Hash[String, untyped]
+    module Input
+      KINDS: Array[String]
+      LIMITS: Hash[String, Integer]
+      def self.text: (untyped, Integer) -> String
+      def self.domain: (untyped) -> String
+      def self.email: (untyped) -> String
+      def self.row: (String, untyped) -> Hash[String, String]
+      def self.rows: (String, untyped, untyped) -> Array[Hash[String, String]]
+      def self.suppression: (String, untyped) -> String
+    end
+    class Config
+      attr_reader public_ip: String
+      def initialize: (?untyped) -> void
+    end
+    class Repository
+      @connection: _ThreadConnection
+      def initialize: (connection: _ThreadConnection) -> void
+      def rows: (String, ?Array[untyped]) -> Array[object]
+      def object: (untyped) -> untyped
+      def enqueue: (String, String, String, Array[Hash[String, String]]) -> object
+      def jobs: (String, String) -> Array[object]
+      def job: (String, String, String) -> object
+      def project_job: (object) -> object
+      def suppressed_result: () -> object
+      def suppression_rules: (String) -> Hash[String, bool]
+      def suppressions: (String) -> Array[object]
+      def suppress: (String, String, untyped) -> object
+      def unsuppress: (String, String) -> object
+      def suppressed?: (String, object, ?Hash[String, bool]?) -> bool
+      def state_get: (String) -> object
+      def state_put: (String, object) -> void
+      def health: () -> object
+      def timestamp: (untyped) -> String
+      def export: (object) -> String
+    end
+    class Worker
+      LOCK: Integer
+      @repository: Repository
+      @public_ip: String
+      @discovery: Discovery
+      @smtp: Smtp?
+      def initialize: (repository: Repository, public_ip: String, ?discovery: Discovery?, ?smtp: Smtp?) -> void
+      def startup: () -> bool
+      def run_once: () -> bool
+      def process: (object) -> void
+      def discover: (String, object, String) -> object
+      def pattern_counts: (String, String?) -> Hash[String, Integer]
+      def verify: (object, Array[object], object, String, object) -> object?
+      def reserve_probe: (String) -> Integer?
+      def apply_backoff: (String, object) -> void
+      def learn: (String, object, object) -> void
+      def result: (String, ?email: String?, ?confidence: Integer, ?reasons: Array[String], ?sources: Array[String]) -> object
+      def decorate: (object, object) -> object
+      def save: (object, Array[object], ?Integer) -> void
+      def finish: (object, Array[object], object) -> void
+    end
+  end
+end
+
+module V2
+  class EmailFinderController < Outreach::BaseController
+    def index: () -> untyped
+    def show: () -> untyped
+    def export: () -> untyped
+    def health: () -> untyped
+    def suppressions: () -> untyped
+    def create: () -> untyped
+    def suppress: () -> untyped
+    def unsuppress: () -> untyped
+    def finder_repository: (Elevateo::_ThreadConnection, identity: Elevateo::SessionIdentity, write: bool) -> Elevateo::EmailFinder::Repository
+    def read_finder: () { (Elevateo::EmailFinder::Repository, Elevateo::SessionIdentity) -> Elevateo::EmailFinder::object } -> untyped
+  end
+end

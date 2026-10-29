@@ -14,6 +14,7 @@ import { buildFeatureRegistry, type FeatureRegistration } from '../featureRegist
 import { createOutreachFeatureModule } from '@/features/outreach/featureModule'
 import type { OutreachPageProps } from '@/features/outreach/OutreachPages'
 import { peopleFeatureModule } from '@/features/members/peopleFeatureModule'
+import { emailFinderFeatureModule } from '@/features/email-finder/featureModule'
 
 export interface FeatureModule extends FeatureRegistration {
   /** One element per registered route path; keys must equal `routes` exactly. */
@@ -57,7 +58,7 @@ const outreach: FeatureModule = {
 }
 
 // --- People and settings (Lyra FE-808): personal section, session-bound pages ---------------
-export const FEATURE_MODULES: readonly FeatureModule[] = [outreach, peopleFeatureModule]
+export const FEATURE_MODULES: readonly FeatureModule[] = [outreach, peopleFeatureModule, emailFinderFeatureModule]
 
 /** Validated at module load: a bad registration fails the build/test run rather than the user. */
 export const featureRegistry = buildFeatureRegistry(FEATURE_MODULES)

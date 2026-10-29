@@ -2371,3 +2371,33 @@ Fleet Docker: contract regeneration checks, lint, typecheck, 88 suites / 1,092 t
 ### Compose footer follow-up - 2026-10-24
 
 Visual inspection reproduced the mobile floating compose action covering the draft attachment/delete controls. It is now absent on editor/review routes. Independent adversarial review applied the full rubric to 50 implementation/test lines, found one MEDIUM trailing-slash draft-list regression (20 defects/KLOC), and confirmed its repair on the same 50 lines (zero remaining, 0/KLOC). Seven route/capability regression cases pass. Latest full Docker gate: 89 files / 1,099 tests, 85.41% statements; lint, typecheck, contracts, production build pass. Earlier totals above describe the preceding snapshot. Dedicated design review and safe-area follow-up remain recorded above. No whole-application acceptance inferred.
+
+## Email finder module review - 2026-10-29
+
+Scope: new module and minimal integration points on `feature/email-finder`, based on `c1ac27bd`. Adversarial reviewers used the full project rubric; each reading chunk was at most 200 lines and each assignment at most 400 lines. Formatting belongs to lint gates. Counts below are assignment coverage, not unique application-wide coverage; overlapping follow-ups are not summed.
+
+| Assignment | Implementation LOC | Defects found | Defects/KLOC | Resolution |
+| --- | ---: | ---: | ---: | --- |
+| Input and repository | 242 | 3 | 12.40 | Check returned email domain as well as input domain; serialize suppression capacity check; reject repeated trailing dots. |
+| Controller and SQL permissions | 149 | 2 | 13.42 | Allow bounded JSON expansion while retaining 2 MB decoded CSV limit; enforce creator isolation with restrictive job RLS. |
+| Dedicated worker design review | 235 | 3 | 12.77 | Match requested role; derive verifier domain from address; bound persisted provenance and list/create responses. |
+| Core and SMTP adapter | 269 | 3 | 11.15 | Blocklist replies always unknown; retain multiline warning flags on malformed/EOF replies; enforce address/local-part length. |
+| Discovery adapter | 268 | 2 | 7.46 | Check redirect robots policy before fetch, including apex/www; honor specific crawler agent groups. |
+| Feature UI | 293 | 2 | 6.83 | Distinguish unavailable discovery from empty results; hide expired SMTP halt alerts. |
+| Gateway and runtime contract | 196 | 2 | 10.20 | Align domain/UTF-8/company-row boundaries; reject impossible job progress and duplicate/out-of-range rows. |
+| Configuration, runner and integration | 181 | 2 | 11.05 | Preserve contract-generator failure; add empty/invalid/valid configuration regressions. |
+| Migration reversal follow-up | 126 | 1 | 7.94 | Remove UTF-8 BOM from SQL; transactional down/up test compares RLS and grants and rolls back. |
+| Suppression projection follow-up | 166 | 1 | 6.02 | Index suppression rules once per batch instead of scanning 10,000 rules for every exported row. |
+| Dedicated final design follow-up | 198 | 0 | 0.00 | Confirmed bounded indexed suppression checks and durable probe reservation ordering. |
+| Final local Docker harness | 112 | 2 | 17.86 | Gate cleanup on validated local context; propagate cleanup failures. |
+| Harness cleanup re-review | 63 | 0 | 0.00 | Both prior findings resolved; no new confirmed defects. |
+
+Tests accompany fixes, including successful STARTTLS negotiation against a test certificate, no DATA, robots redirects, owner isolation, oversized CSV transport, malformed replies, suppressed cache projections and crash recovery. Test results are recorded in the completion report after container verification; review alone is not a test pass.
+
+Design scenarios modeled crash-after-reservation, retry-after-restart, global limits across organizations, a 5,000-row export, and suppressed cached results. Reserving before TCP may conservatively spend a probe after a crash; this preserves hard limits. Whole-job JSON checkpoints favor simple recovery at the deliberately low probe budget. Pattern fallback is organization-wide to avoid cross-tenant evidence disclosure. No Obsidian connection was available, so these were analytical/code-based scenarios; no vault simulation is claimed.
+
+The final Docker harness also exposed two harness defects: PowerShell interpreted ordinary Docker stderr as fatal, and a tmpfs mount hid PostgreSQL image configuration. Both were corrected before verification. No live SMTP or discovery calls were used.
+
+Docker integration tests subsequently exposed one production defect: a broad `FOR ALL` RLS policy invoked the write guard during reads. Separate INSERT and DELETE policies fixed it; the database round-trip regression passes. A controller test constant and the route mapper/count fixture also needed correction. These execution findings are separate from review defect-density counts.
+
+Final integration checks caught stale generated Postman content and navigation expectations. Regenerated the artifact from the canonical builder and updated the registry and real keyboard traversal budget for the added sidebar link. Windows nested shell quoting was replaced by a mounted gate script. Final Steep and backend lint pass; detailed execution results and unrelated repository failures are in `docs/completion/email-finder-20261029.md`.

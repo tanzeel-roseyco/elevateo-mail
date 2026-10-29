@@ -14,7 +14,7 @@ class ContractV2Test < Minitest::Test
 
   def test_happy_path_has_additive_interfaces
     assert_equal "2.0.0-draft.8", @contract.dig("info", "version")
-    assert_equal %w[get post put], @contract.fetch("paths").values.flat_map(&:keys).uniq.sort
+    assert_equal %w[delete get post put], @contract.fetch("paths").values.flat_map(&:keys).uniq.sort
     assert @contract.dig("components", "schemas", "OrganizationGrant")
     assert_equal "active", @contract.dig("paths", "/v2/outreach/campaigns", "get", "x-elevateo-status")
     assert_equal "active", @contract.dig("paths", "/v2/outreach/campaigns", "post", "x-elevateo-status")

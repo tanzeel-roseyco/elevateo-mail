@@ -70,6 +70,15 @@ services:
       ELEVATEO_PROCESS: worker
       ELEVATEO_DB_ROLE: elevateo_worker
     command: [bundle, exec, ruby, bin/worker]
+  email-finder-worker:
+    <<: *runtime
+    env_file: ["${ELEVATEO_WORKER_ENV_FILE:?set absolute protected worker env file}"]
+    environment:
+      <<: *environment
+      ELEVATEO_PROCESS: worker
+      ELEVATEO_DB_ROLE: elevateo_worker
+    # AIDEV-NOTE: A database advisory lock serializes discovery and probes even if this service is scaled.
+    command: [bundle, exec, ruby, bin/email-finder-worker]
   attachment-gateway:
     <<: *runtime
     env_file: ["${ELEVATEO_GATEWAY_ENV_FILE:?set absolute protected gateway env file}"]

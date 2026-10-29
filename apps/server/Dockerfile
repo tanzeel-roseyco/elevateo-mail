@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 FROM ruby:3.4.11-slim-bookworm@sha256:22165c5f904d76a8a02fbdd419d0269481369523fd66978232d16c88099730e2
 RUN apt-get update -qq \
- && apt-get install -y --no-install-recommends build-essential libpq-dev libyaml-dev pkg-config \
+ && apt-get install -y --no-install-recommends build-essential libpq-dev libyaml-dev pkg-config poppler-utils \
  && rm -rf /var/lib/apt/lists/*
 WORKDIR /app
 ENV BUNDLE_DEPLOYMENT=0 BUNDLE_PATH=/usr/local/bundle

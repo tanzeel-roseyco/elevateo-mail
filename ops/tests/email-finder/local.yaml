@@ -1,0 +1,18 @@
+# AIDEV-NOTE: Merge after compose.be02-test.yaml; database state is disposable RAM, never a host volume.
+services:
+  db:
+    pull_policy: missing
+    volumes: !override
+      - ./supabase/db/99-roles.sql:/docker-entrypoint-initdb.d/init-scripts/99-roles.sql:ro
+      - ./supabase/db/99-jwt.sql:/docker-entrypoint-initdb.d/init-scripts/99-jwt.sql:ro
+    tmpfs:
+      - /var/lib/postgresql/data
+    # AIDEV-NOTE: Keep image-supplied custom configuration; an empty tmpfs hides its required include files.
+  auth:
+    pull_policy: missing
+  mailpit:
+    pull_policy: missing
+  bootstrap:
+    pull_policy: missing
+  guards:
+    pull_policy: missing

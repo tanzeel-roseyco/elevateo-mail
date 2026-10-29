@@ -1,0 +1,83 @@
+module Nokogiri
+  module XML
+    class Node
+      def css: (String) -> NodeSet
+      def xpath: (String) -> NodeSet
+      def at_css: (String) -> Node?
+      def []: (String) -> String?
+    end
+  end
+end
+
+module Elevateo
+  module EmailFinder
+    type candidate = Hash[String, String]
+    type probe_reply = { "code" => Integer?, "message" => String, "status" => String, "blocklisted" => bool, "temporary" => bool }
+    type mx_record = { "host" => String, "priority" => Integer }
+    # AIDEV-NOTE: JSON state/result boundaries are heterogeneous; typed core and adapter arguments constrain use.
+    type discovery_payload = Hash[String, untyped]
+    interface _DiscoveryState
+      def state_get: (String) -> Hash[String, untyped]
+      def state_put: (String, Hash[String, untyped]) -> untyped
+    end
+    module Core
+      PATTERNS: Array[String]
+      EMAIL: Regexp
+      TITLE: Regexp
+      def self.role_matches?: (String, String) -> bool
+      def self.normalize: (String) -> String
+      def self.name_parts: (String) -> [String, String]
+      def self.candidates: (String, String, ?Hash[String, Integer], ?Hash[String, Integer]) -> Array[candidate]
+      def self.patterns_for: (String, String) -> Array[String]
+      def self.classify: (Integer?, ?String) -> String
+      def self.blocked?: (String) -> bool
+      def self.catch_all_score: (Integer, Integer, Integer) -> Integer
+      def self.result: (String, checked_at: String, ?email: String?, ?confidence: Integer, ?reasons: Array[String], ?sources: Array[String]) -> discovery_payload
+      def self.extract_emails: (String, ?String?) -> Array[String]
+      def self.document: (String) -> Nokogiri::HTML5::Document
+      def self.node_text: (Nokogiri::XML::Node) -> String
+      def self.extract_people: (String) -> Array[Hash[String, String]]
+      def self.person_from_snippet: (String, String) -> Hash[String, String]?
+      def self.provider: (Array[String]) -> String
+    end
+    module DNS
+      PRIVATE_RANGES: Array[IPAddr]
+      def self.public_ip?: (String) -> bool
+      def self.address: (String) -> String
+      def self.mx: (String) -> Array[mx_record]
+      def self.ptr: (String) -> String
+    end
+    class Smtp
+      @hostname: String
+      @reply_blocklisted: bool
+      @reply_temporary: bool
+      def initialize: (hostname: String) -> void
+      def self.startup: (public_ip: String) -> discovery_payload
+      def probe: (host: String, email: String) -> probe_reply
+      private
+      def exchange: (IO | OpenSSL::SSL::SSLSocket, String, String) -> probe_reply
+      def outcome: (Integer?, String, ?recipient: bool) -> probe_reply
+      def merge_warning: (probe_reply, Integer, String) -> void
+      def command: (IO | OpenSSL::SSL::SSLSocket, String) -> [Integer, String]
+      def reply: (IO | OpenSSL::SSL::SSLSocket) -> [Integer, String]
+    end
+    class Discovery
+      ENGINES: Hash[String, String]
+      AGENTS: Array[String]
+      PATHS: Array[String]
+      @state: _DiscoveryState
+      def initialize: (state: _DiscoveryState) -> void
+      def discover: (?domain: String?, ?company: String?, ?role: String?, ?allowed_domain: ^(String) -> bool) -> discovery_payload
+      def search: (String) -> discovery_payload
+      def parse_search: (String, String) -> Array[Hash[String, String]]
+      def crawl: (String) -> discovery_payload
+      def robots_allowed?: (String, String) -> bool
+      private
+      def blocked?: (String) -> bool
+      def empty: (Array[String], bool) -> discovery_payload
+      def same_site?: (URI::Generic, String) -> bool
+      def fetch: (String, ?origin: String?, ?redirects: Integer, ?robots_cache: Hash[String, String]?) -> discovery_payload
+      def pdf_text: (String) -> String
+    end
+  end
+end

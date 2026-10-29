@@ -1,3 +1,6 @@
+## Email finder implementation — 2026-10-29
+
+Implemented on `feature/email-finder`, based on `c1ac27bd`. Module tests, Steep/lint, web unit tests, finder browser cases, build and deployment-config dry run pass in local Docker. Desktop/mobile UI inspected. Existing repository-wide failures and cleanup are recorded in `docs/completion/email-finder-20261029.md`; no all-green production acceptance is claimed. No deployment or live probes. No new secrets; public IP/PTR and port 25 remain future activation checks.
 ## Frontend refinement checkpoint - 2026-10-24
 
 The user authorized direct Codex frontend implementation, superseding the earlier Fable-only block. Shared measured notice spacing now protects compose windows, mobile actions, content, sidebar and toasts. Mobile compose no longer covers an open draft's footer controls; draft-list trailing slashes retain the action. Fleet-02 Docker passes contracts, lint, typecheck, 89 test files / 1,099 tests, coverage (85.41% statements), production build and fixture exclusion. Ten regression cases were added across notice lifecycle and compose routing.

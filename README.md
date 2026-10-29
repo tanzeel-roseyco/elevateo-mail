@@ -2,6 +2,17 @@
 
 ## Current state
 
+### Email finder module — 2026-10-29
+
+The isolated `feature/email-finder` branch adds person lookup, email verification,
+company email discovery, decision-maker lookup, CSV jobs, suppression management and
+worker health to the existing Rails/PostgreSQL/Authentik and React application. It adds
+no API keys or external services. Module tests, strict types, lint, build and desktop/mobile
+visual checks pass in local Docker. Existing repository-wide contract/database/browser
+failures remain documented; this is not an all-green production acceptance. No deployment
+or live probing occurred. See [operation and Hetzner setup](docs/email-finder.md) and the
+[verification and follow-up receipt](docs/completion/email-finder-20261029.md).
+
 ## Frontend refinement checkpoint - 2026-10-24
 
 The user authorized direct Codex frontend implementation, superseding the earlier Fable-only block. Shared measured notice spacing now protects compose windows, mobile actions, content, sidebar and toasts. Mobile compose no longer covers an open draft's footer controls; draft-list trailing slashes retain the action. Fleet-02 Docker passes contracts, lint, typecheck, 89 test files / 1,099 tests, coverage (85.41% statements), production build and fixture exclusion. Ten regression cases were added across notice lifecycle and compose routing.

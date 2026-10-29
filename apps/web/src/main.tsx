@@ -10,6 +10,7 @@ import { createV2Gateway } from './data/v2Gateway'
 import { createV2OutreachGateway } from './data/v2OutreachGateway'
 import { createV2AssigneeOptionsGateway } from './data/v2AssigneeOptionsGateway'
 import { createV2AttachmentGateway } from './data/v2AttachmentGateway'
+import { createV2EmailFinderGateway } from './data/v2EmailFinderGateway'
 import type { OutreachGateway } from './features/outreach/contract'
 import { AuthCompletePage } from './features/auth/AuthCompletePage'
 import './styles/index.css'
@@ -27,6 +28,7 @@ const outreach: OutreachGateway = createV2OutreachGateway()
 // reader; Mira's page owns the session policy and the mailbox/thread checks on the response.
 const v2 = createV2Gateway()
 const featureGateways: FeatureGateways = {
+  emailFinder: createV2EmailFinderGateway(),
   outreach,
   assigneeOptions: createV2AssigneeOptionsGateway(),
   attachmentPort: createV2AttachmentGateway(),

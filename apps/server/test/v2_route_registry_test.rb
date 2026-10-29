@@ -7,15 +7,15 @@ class V2RouteRegistryTest < Minitest::Test
   class Mapper
     attr_reader :routes
     def initialize = (@routes = [])
-    %i[get put post].each do |verb|
+    %i[get put post delete].each do |verb|
       define_method(verb) { |path, to:| @routes << [verb, path, to] }
     end
   end
 
-  def test_ready_registry_exposes_only_twenty_five_active_versioned_routes
+  def test_ready_registry_exposes_only_thirty_three_active_versioned_routes
     mapper = Mapper.new
     assert V2RouteRegistry.register!(mapper, enabled: true, controllers_ready: true)
-    assert_equal 25, mapper.routes.size
+    assert_equal 33, mapper.routes.size
     assert(mapper.routes.all? { |_, path, _| path.start_with?("/v2/") })
     refute(mapper.routes.any? { |_, path, _| path.start_with?("/v2/worker/") })
   end

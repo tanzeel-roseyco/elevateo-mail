@@ -10,8 +10,10 @@ import type { OutreachGateway } from '@/features/outreach/contract'
 import type { DirectMessageRead } from '@/features/thread/ThreadPage'
 import type { AssigneeOptionsReadPort } from '@/data/v2AssigneeOptionsGateway'
 import type { AttachmentReadPort } from '@/features/thread/MessageAttachments'
+import type { EmailFinderGateway } from '@/features/email-finder/contract'
 
 export interface FeatureGateways {
+  readonly emailFinder?: EmailFinderGateway
   readonly outreach?: OutreachGateway
   /**
    * Cassian's exact V2 `getDirectMessage(ctx, mailboxId, threadId, messageId, signal)` reader for
