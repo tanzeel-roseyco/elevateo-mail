@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-FROM ruby:3.4.11-slim-bookworm@sha256:22165c5f904d76a8a02fbdd419d0269481369523fd66978232d16c88099730e2
+FROM ruby:4.0.0-slim-bookworm@sha256:d456e74d02e8a83109658bc598c570c5bd69690cdc629a1e0524aabee33b8e20
 RUN apt-get update -qq \
  && apt-get install -y --no-install-recommends build-essential libpq-dev libyaml-dev pkg-config poppler-utils \
  && rm -rf /var/lib/apt/lists/*
