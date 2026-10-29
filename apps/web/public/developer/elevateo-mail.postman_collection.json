@@ -2812,6 +2812,282 @@
               }
             }
           }
+        },
+        {
+          "name": "Authenticated tenant-scoped email finder; network work is queued",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Session-Context",
+                "value": "{{sessionContext}}"
+              },
+              {
+                "key": "X-Authorization-Version",
+                "value": "{{authorizationVersion}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v2/email-finder/jobs",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2",
+                "email-finder",
+                "jobs"
+              ]
+            },
+            "description": "Authenticated tenant-scoped email finder; network work is queued"
+          }
+        },
+        {
+          "name": "Authenticated tenant-scoped email finder; network work is queued",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Session-Context",
+                "value": "{{sessionContext}}"
+              },
+              {
+                "key": "X-Authorization-Version",
+                "value": "{{authorizationVersion}}"
+              },
+              {
+                "key": "X-CSRF-Token",
+                "value": ""
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v2/email-finder/jobs",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2",
+                "email-finder",
+                "jobs"
+              ]
+            },
+            "description": "Authenticated tenant-scoped email finder; network work is queued",
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Authenticated tenant-scoped email finder; network work is queued",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Session-Context",
+                "value": "{{sessionContext}}"
+              },
+              {
+                "key": "X-Authorization-Version",
+                "value": "{{authorizationVersion}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v2/email-finder/jobs/:job_id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2",
+                "email-finder",
+                "jobs",
+                ":job_id"
+              ],
+              "variable": [
+                {
+                  "key": "job_id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Authenticated tenant-scoped email finder; network work is queued"
+          }
+        },
+        {
+          "name": "Authenticated tenant-scoped email finder; network work is queued",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Session-Context",
+                "value": "{{sessionContext}}"
+              },
+              {
+                "key": "X-Authorization-Version",
+                "value": "{{authorizationVersion}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v2/email-finder/jobs/:job_id/export",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2",
+                "email-finder",
+                "jobs",
+                ":job_id",
+                "export"
+              ],
+              "variable": [
+                {
+                  "key": "job_id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Authenticated tenant-scoped email finder; network work is queued"
+          }
+        },
+        {
+          "name": "Authenticated tenant-scoped email finder; network work is queued",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Session-Context",
+                "value": "{{sessionContext}}"
+              },
+              {
+                "key": "X-Authorization-Version",
+                "value": "{{authorizationVersion}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v2/email-finder/health",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2",
+                "email-finder",
+                "health"
+              ]
+            },
+            "description": "Authenticated tenant-scoped email finder; network work is queued"
+          }
+        },
+        {
+          "name": "Authenticated tenant-scoped email finder; network work is queued",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Session-Context",
+                "value": "{{sessionContext}}"
+              },
+              {
+                "key": "X-Authorization-Version",
+                "value": "{{authorizationVersion}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v2/email-finder/suppressions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2",
+                "email-finder",
+                "suppressions"
+              ]
+            },
+            "description": "Authenticated tenant-scoped email finder; network work is queued"
+          }
+        },
+        {
+          "name": "Authenticated tenant-scoped email finder; network work is queued",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Session-Context",
+                "value": "{{sessionContext}}"
+              },
+              {
+                "key": "X-Authorization-Version",
+                "value": "{{authorizationVersion}}"
+              },
+              {
+                "key": "X-CSRF-Token",
+                "value": ""
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v2/email-finder/suppressions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2",
+                "email-finder",
+                "suppressions"
+              ]
+            },
+            "description": "Authenticated tenant-scoped email finder; network work is queued",
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Authenticated tenant-scoped email finder; network work is queued",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "X-Session-Context",
+                "value": "{{sessionContext}}"
+              },
+              {
+                "key": "X-Authorization-Version",
+                "value": "{{authorizationVersion}}"
+              },
+              {
+                "key": "X-CSRF-Token",
+                "value": ""
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v2/email-finder/suppressions/:suppression_id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2",
+                "email-finder",
+                "suppressions",
+                ":suppression_id"
+              ],
+              "variable": [
+                {
+                  "key": "suppression_id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Authenticated tenant-scoped email finder; network work is queued"
+          }
         }
       ]
     }

@@ -380,6 +380,110 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v2/email-finder/jobs": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Authenticated tenant-scoped email finder; network work is queued */
+        get: operations["listEmailFinderJobs"];
+        put?: never;
+        /** Authenticated tenant-scoped email finder; network work is queued */
+        post: operations["createEmailFinderJob"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v2/email-finder/jobs/{job_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Authenticated tenant-scoped email finder; network work is queued */
+        get: operations["getEmailFinderJob"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v2/email-finder/jobs/{job_id}/export": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Authenticated tenant-scoped email finder; network work is queued */
+        get: operations["exportEmailFinderJob"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v2/email-finder/health": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Authenticated tenant-scoped email finder; network work is queued */
+        get: operations["getEmailFinderHealth"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v2/email-finder/suppressions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Authenticated tenant-scoped email finder; network work is queued */
+        get: operations["listEmailFinderSuppressions"];
+        put?: never;
+        /** Authenticated tenant-scoped email finder; network work is queued */
+        post: operations["createEmailFinderSuppression"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v2/email-finder/suppressions/{suppression_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Authenticated tenant-scoped email finder; network work is queued */
+        delete: operations["deleteEmailFinderSuppression"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -688,6 +792,66 @@ export interface components {
         OutreachRunCancel: {
             /** Format: uuid */
             operation_id: string;
+        };
+        EmailFinderInput: {
+            name?: string;
+            company?: string;
+            domain?: string;
+            email?: string;
+            role?: string;
+        };
+        EmailFinderResult: {
+            /** @enum {unknown} */
+            status: "valid" | "invalid" | "risky" | "unknown" | "sources_unavailable" | "suppressed";
+            email?: string;
+            confidence: number;
+            reasons: string[];
+            sources: string[];
+            /** Format: date-time */
+            checked_at: string;
+            name?: string;
+            title?: string;
+            emails?: components["schemas"]["EmailFinderResult"][];
+        };
+        EmailFinderJob: {
+            /** Format: uuid */
+            id: string;
+            /** @enum {unknown} */
+            kind: "person" | "verify" | "company" | "decision_maker";
+            /** @enum {unknown} */
+            status: "queued" | "running" | "completed" | "failed";
+            total: number;
+            completed: number;
+            /** Format: date-time */
+            created_at: string;
+            items: {
+                row: number;
+                input: components["schemas"]["EmailFinderInput"];
+                result?: components["schemas"]["EmailFinderResult"];
+            }[];
+        };
+        EmailFinderSuppression: {
+            /** Format: uuid */
+            id: string;
+            /** @enum {unknown} */
+            kind: "email" | "domain" | "person";
+            value: string;
+            /** Format: date-time */
+            created_at: string;
+        };
+        EmailFinderHealth: {
+            smtp_available: boolean;
+            smtp_reason: string;
+            ehlo_hostname: string | null;
+            remaining_daily_probes: number;
+            halted_until: string | null;
+            worker_seen_at: string | null;
+        };
+        EmailFinderCreateJob: {
+            /** @enum {unknown} */
+            kind: "person" | "verify" | "company" | "decision_maker";
+            rows: components["schemas"]["EmailFinderInput"][] | null;
+            csv: string | null;
         };
     };
     responses: {
@@ -1772,6 +1936,300 @@ export interface operations {
                 };
                 content?: never;
             };
+        };
+    };
+    listEmailFinderJobs: {
+        parameters: {
+            query?: never;
+            header: {
+                "X-Session-Context": string;
+                "X-Authorization-Version": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Success */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        items: components["schemas"]["EmailFinderJob"][];
+                    };
+                };
+            };
+            /** @description Invalid input */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ScopedReadError"];
+                };
+            };
+            403: components["responses"]["Forbidden"];
+        };
+    };
+    createEmailFinderJob: {
+        parameters: {
+            query?: never;
+            header: {
+                "X-Session-Context": string;
+                "X-Authorization-Version": string;
+                "X-CSRF-Token": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["EmailFinderCreateJob"];
+            };
+        };
+        responses: {
+            /** @description Success */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EmailFinderJob"];
+                };
+            };
+            /** @description Invalid input */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ScopedReadError"];
+                };
+            };
+            403: components["responses"]["Forbidden"];
+        };
+    };
+    getEmailFinderJob: {
+        parameters: {
+            query?: never;
+            header: {
+                "X-Session-Context": string;
+                "X-Authorization-Version": string;
+            };
+            path: {
+                job_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Success */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EmailFinderJob"];
+                };
+            };
+            /** @description Invalid input */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ScopedReadError"];
+                };
+            };
+            403: components["responses"]["Forbidden"];
+        };
+    };
+    exportEmailFinderJob: {
+        parameters: {
+            query?: never;
+            header: {
+                "X-Session-Context": string;
+                "X-Authorization-Version": string;
+            };
+            path: {
+                job_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Success */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        csv: string;
+                    };
+                };
+            };
+            /** @description Invalid input */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ScopedReadError"];
+                };
+            };
+            403: components["responses"]["Forbidden"];
+        };
+    };
+    getEmailFinderHealth: {
+        parameters: {
+            query?: never;
+            header: {
+                "X-Session-Context": string;
+                "X-Authorization-Version": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Success */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EmailFinderHealth"];
+                };
+            };
+            /** @description Invalid input */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ScopedReadError"];
+                };
+            };
+            403: components["responses"]["Forbidden"];
+        };
+    };
+    listEmailFinderSuppressions: {
+        parameters: {
+            query?: never;
+            header: {
+                "X-Session-Context": string;
+                "X-Authorization-Version": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Success */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        items: components["schemas"]["EmailFinderSuppression"][];
+                    };
+                };
+            };
+            /** @description Invalid input */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ScopedReadError"];
+                };
+            };
+            403: components["responses"]["Forbidden"];
+        };
+    };
+    createEmailFinderSuppression: {
+        parameters: {
+            query?: never;
+            header: {
+                "X-Session-Context": string;
+                "X-Authorization-Version": string;
+                "X-CSRF-Token": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    /** @enum {unknown} */
+                    kind: "email" | "domain" | "person";
+                    value: string;
+                };
+            };
+        };
+        responses: {
+            /** @description Success */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EmailFinderSuppression"];
+                };
+            };
+            /** @description Invalid input */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ScopedReadError"];
+                };
+            };
+            403: components["responses"]["Forbidden"];
+        };
+    };
+    deleteEmailFinderSuppression: {
+        parameters: {
+            query?: never;
+            header: {
+                "X-Session-Context": string;
+                "X-Authorization-Version": string;
+                "X-CSRF-Token": string;
+            };
+            path: {
+                suppression_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Success */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @constant */
+                        deleted: true;
+                    };
+                };
+            };
+            /** @description Invalid input */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ScopedReadError"];
+                };
+            };
+            403: components["responses"]["Forbidden"];
         };
     };
 }

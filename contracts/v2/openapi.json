@@ -1540,6 +1540,565 @@
           }
         }
       }
+    },
+    "/v2/email-finder/jobs": {
+      "get": {
+        "operationId": "listEmailFinderJobs",
+        "x-elevateo-status": "active",
+        "summary": "Authenticated tenant-scoped email finder; network work is queued",
+        "parameters": [
+          {
+            "name": "X-Session-Context",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 16,
+              "maxLength": 512
+            }
+          },
+          {
+            "name": "X-Authorization-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 16,
+              "maxLength": 512
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "items"
+                  ],
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/EmailFinderJob"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScopedReadError"
+                }
+              }
+            }
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          }
+        }
+      },
+      "post": {
+        "operationId": "createEmailFinderJob",
+        "x-elevateo-status": "active",
+        "summary": "Authenticated tenant-scoped email finder; network work is queued",
+        "parameters": [
+          {
+            "name": "X-Session-Context",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 16,
+              "maxLength": 512
+            }
+          },
+          {
+            "name": "X-Authorization-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 16,
+              "maxLength": 512
+            }
+          },
+          {
+            "name": "X-CSRF-Token",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmailFinderJob"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScopedReadError"
+                }
+              }
+            }
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EmailFinderCreateJob"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/email-finder/jobs/{job_id}": {
+      "get": {
+        "operationId": "getEmailFinderJob",
+        "x-elevateo-status": "active",
+        "summary": "Authenticated tenant-scoped email finder; network work is queued",
+        "parameters": [
+          {
+            "name": "X-Session-Context",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 16,
+              "maxLength": 512
+            }
+          },
+          {
+            "name": "X-Authorization-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 16,
+              "maxLength": 512
+            }
+          },
+          {
+            "name": "job_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmailFinderJob"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScopedReadError"
+                }
+              }
+            }
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          }
+        }
+      }
+    },
+    "/v2/email-finder/jobs/{job_id}/export": {
+      "get": {
+        "operationId": "exportEmailFinderJob",
+        "x-elevateo-status": "active",
+        "summary": "Authenticated tenant-scoped email finder; network work is queued",
+        "parameters": [
+          {
+            "name": "X-Session-Context",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 16,
+              "maxLength": 512
+            }
+          },
+          {
+            "name": "X-Authorization-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 16,
+              "maxLength": 512
+            }
+          },
+          {
+            "name": "job_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "csv"
+                  ],
+                  "properties": {
+                    "csv": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScopedReadError"
+                }
+              }
+            }
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          }
+        }
+      }
+    },
+    "/v2/email-finder/health": {
+      "get": {
+        "operationId": "getEmailFinderHealth",
+        "x-elevateo-status": "active",
+        "summary": "Authenticated tenant-scoped email finder; network work is queued",
+        "parameters": [
+          {
+            "name": "X-Session-Context",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 16,
+              "maxLength": 512
+            }
+          },
+          {
+            "name": "X-Authorization-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 16,
+              "maxLength": 512
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmailFinderHealth"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScopedReadError"
+                }
+              }
+            }
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          }
+        }
+      }
+    },
+    "/v2/email-finder/suppressions": {
+      "get": {
+        "operationId": "listEmailFinderSuppressions",
+        "x-elevateo-status": "active",
+        "summary": "Authenticated tenant-scoped email finder; network work is queued",
+        "parameters": [
+          {
+            "name": "X-Session-Context",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 16,
+              "maxLength": 512
+            }
+          },
+          {
+            "name": "X-Authorization-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 16,
+              "maxLength": 512
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "items"
+                  ],
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/EmailFinderSuppression"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScopedReadError"
+                }
+              }
+            }
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          }
+        }
+      },
+      "post": {
+        "operationId": "createEmailFinderSuppression",
+        "x-elevateo-status": "active",
+        "summary": "Authenticated tenant-scoped email finder; network work is queued",
+        "parameters": [
+          {
+            "name": "X-Session-Context",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 16,
+              "maxLength": 512
+            }
+          },
+          {
+            "name": "X-Authorization-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 16,
+              "maxLength": 512
+            }
+          },
+          {
+            "name": "X-CSRF-Token",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmailFinderSuppression"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScopedReadError"
+                }
+              }
+            }
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "kind",
+                  "value"
+                ],
+                "properties": {
+                  "kind": {
+                    "enum": [
+                      "email",
+                      "domain",
+                      "person"
+                    ]
+                  },
+                  "value": {
+                    "type": "string",
+                    "maxLength": 254
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/email-finder/suppressions/{suppression_id}": {
+      "delete": {
+        "operationId": "deleteEmailFinderSuppression",
+        "x-elevateo-status": "active",
+        "summary": "Authenticated tenant-scoped email finder; network work is queued",
+        "parameters": [
+          {
+            "name": "X-Session-Context",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 16,
+              "maxLength": 512
+            }
+          },
+          {
+            "name": "X-Authorization-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 16,
+              "maxLength": 512
+            }
+          },
+          {
+            "name": "X-CSRF-Token",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "suppression_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "deleted"
+                  ],
+                  "properties": {
+                    "deleted": {
+                      "const": true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScopedReadError"
+                }
+              }
+            }
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -2974,6 +3533,269 @@
           "operation_id": {
             "type": "string",
             "format": "uuid"
+          }
+        }
+      },
+      "EmailFinderInput": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [],
+        "properties": {
+          "name": {
+            "type": "string",
+            "maxLength": 200
+          },
+          "company": {
+            "type": "string",
+            "maxLength": 250
+          },
+          "domain": {
+            "type": "string",
+            "maxLength": 253
+          },
+          "email": {
+            "type": "string",
+            "maxLength": 254
+          },
+          "role": {
+            "type": "string",
+            "maxLength": 200
+          }
+        }
+      },
+      "EmailFinderResult": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "status",
+          "confidence",
+          "reasons",
+          "sources",
+          "checked_at"
+        ],
+        "properties": {
+          "status": {
+            "enum": [
+              "valid",
+              "invalid",
+              "risky",
+              "unknown",
+              "sources_unavailable",
+              "suppressed"
+            ]
+          },
+          "email": {
+            "type": "string"
+          },
+          "confidence": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "reasons": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "sources": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "checked_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "name": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "emails": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EmailFinderResult"
+            }
+          }
+        }
+      },
+      "EmailFinderJob": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "kind",
+          "status",
+          "total",
+          "completed",
+          "created_at",
+          "items"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "kind": {
+            "enum": [
+              "person",
+              "verify",
+              "company",
+              "decision_maker"
+            ]
+          },
+          "status": {
+            "enum": [
+              "queued",
+              "running",
+              "completed",
+              "failed"
+            ]
+          },
+          "total": {
+            "type": "integer"
+          },
+          "completed": {
+            "type": "integer"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "row",
+                "input"
+              ],
+              "properties": {
+                "row": {
+                  "type": "integer"
+                },
+                "input": {
+                  "$ref": "#/components/schemas/EmailFinderInput"
+                },
+                "result": {
+                  "$ref": "#/components/schemas/EmailFinderResult"
+                }
+              }
+            }
+          }
+        }
+      },
+      "EmailFinderSuppression": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "kind",
+          "value",
+          "created_at"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "kind": {
+            "enum": [
+              "email",
+              "domain",
+              "person"
+            ]
+          },
+          "value": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "EmailFinderHealth": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "smtp_available",
+          "smtp_reason",
+          "ehlo_hostname",
+          "remaining_daily_probes",
+          "halted_until",
+          "worker_seen_at"
+        ],
+        "properties": {
+          "smtp_available": {
+            "type": "boolean"
+          },
+          "smtp_reason": {
+            "type": "string"
+          },
+          "ehlo_hostname": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "remaining_daily_probes": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 50
+          },
+          "halted_until": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "worker_seen_at": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      },
+      "EmailFinderCreateJob": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "kind",
+          "rows",
+          "csv"
+        ],
+        "properties": {
+          "kind": {
+            "enum": [
+              "person",
+              "verify",
+              "company",
+              "decision_maker"
+            ]
+          },
+          "rows": {
+            "type": [
+              "array",
+              "null"
+            ],
+            "minItems": 1,
+            "maxItems": 5000,
+            "items": {
+              "$ref": "#/components/schemas/EmailFinderInput"
+            }
+          },
+          "csv": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 2097152
           }
         }
       }

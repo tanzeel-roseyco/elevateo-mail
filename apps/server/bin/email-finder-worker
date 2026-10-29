@@ -1,0 +1,23 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require_relative "../config/environment"
+require_relative "../lib/elevateo/email_finder/config"
+require_relative "../lib/elevateo/email_finder/worker"
+
+# AIDEV-NOTE: Keep this connection leased: its session advisory lock serializes every finder network operation.
+$stdout.sync = true
+config = Elevateo::EmailFinder::Config.new
+stop = false
+%w[TERM INT].each { |signal| Signal.trap(signal) { stop = true } }
+ActiveRecord::Base.connection_pool.with_connection do |connection|
+  repository = Elevateo::EmailFinder::Repository.new(connection: connection)
+  worker = Elevateo::EmailFinder::Worker.new(repository: repository, public_ip: config.public_ip)
+  abort "Another email finder worker already holds the global lock" unless worker.startup
+  until stop
+    worker.run_once
+    sleep 1 unless stop
+  end
+ensure
+  connection.execute("SELECT pg_advisory_unlock(#{Elevateo::EmailFinder::Worker::LOCK})")
+end

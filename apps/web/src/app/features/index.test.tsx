@@ -47,7 +47,8 @@ describe('feature route wiring', () => {
     expect(outreachPaths).toHaveLength(12)
     expect(outreachPaths).toContain('/outreach/campaigns/:campaignId/sequence')
     expect(featureRegistry.navBySection.outreach.map((e) => e.label)).toEqual(['Campaigns', 'Leads', 'Accounts', 'Analytics'])
-    expect(featureRegistry.navBySection.contacts.map((e) => e.path)).toEqual(['/people'])
+    expect(featureRegistry.navBySection.contacts.map((e) => e.path)).toEqual(['/people', '/email-finder'])
+    expect(featureRoutes.filter((route) => route.path === '/email-finder')).toHaveLength(1)
     expect(featureRegistry.navBySection.settings).toEqual([])
   })
 

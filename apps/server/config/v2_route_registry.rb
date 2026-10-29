@@ -3,6 +3,14 @@
 # AIDEV-NOTE: V2 is a reviewed registration plan; no route may be exposed without its owning controller and auth gate.
 module V2RouteRegistry
   ROUTES = {
+    "listEmailFinderJobs" => ["GET", "/v2/email-finder/jobs", "v2/email_finder#index"],
+    "createEmailFinderJob" => ["POST", "/v2/email-finder/jobs", "v2/email_finder#create"],
+    "getEmailFinderJob" => ["GET", "/v2/email-finder/jobs/:job_id", "v2/email_finder#show"],
+    "exportEmailFinderJob" => ["GET", "/v2/email-finder/jobs/:job_id/export", "v2/email_finder#export"],
+    "getEmailFinderHealth" => ["GET", "/v2/email-finder/health", "v2/email_finder#health"],
+    "listEmailFinderSuppressions" => ["GET", "/v2/email-finder/suppressions", "v2/email_finder#suppressions"],
+    "createEmailFinderSuppression" => ["POST", "/v2/email-finder/suppressions", "v2/email_finder#suppress"],
+    "deleteEmailFinderSuppression" => ["DELETE", "/v2/email-finder/suppressions/:suppression_id", "v2/email_finder#unsuppress"],
     "listOutreachRuns" => ["GET", "/v2/outreach/campaigns/:campaign_id/runs", "v2/outreach/runs#index"],
     "createOutreachRun" => ["POST", "/v2/outreach/campaigns/:campaign_id/runs", "v2/outreach/runs#create"],
     "getOutreachRun" => ["GET", "/v2/outreach/campaigns/:campaign_id/runs/:run_id", "v2/outreach/runs#show"],
@@ -34,6 +42,8 @@ module V2RouteRegistry
 
   # AIDEV-NOTE: The worker operation is a proposal until its separate principal is implemented.
   ACTIVE_OPERATIONS = %w[
+    listEmailFinderJobs createEmailFinderJob getEmailFinderJob exportEmailFinderJob getEmailFinderHealth
+    listEmailFinderSuppressions createEmailFinderSuppression deleteEmailFinderSuppression
     listOrganizationGrants getOrganizationRoster replaceOrganizationGrant
     listOutreachCampaigns getOutreachCampaign createOutreachCampaign updateOutreachCampaign
     listOutreachLeads getOutreachLead addOutreachLead updateOutreachLead recordOutreachLeadConsent getOutreachAnalytics

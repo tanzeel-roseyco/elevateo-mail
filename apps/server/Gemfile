@@ -8,6 +8,8 @@ gem "puma", "~> 7.0"
 gem "net-imap", "0.6.7"
 # AIDEV-NOTE: Direct HTML-to-text parsing uses the already locked Nokogiri; no new runtime package is installed.
 gem "nokogiri", "1.19.4"
+# AIDEV-NOTE: Finder CSV jobs need the parser in production, independent of development tooling.
+gem "csv", "3.3.6"
 
 group :development, :test do
   gem "steep", "2.1.0", require: false

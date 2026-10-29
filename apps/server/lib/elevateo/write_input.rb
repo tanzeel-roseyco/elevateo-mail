@@ -41,7 +41,8 @@ module Elevateo
 
     # AIDEV-NOTE: Rack Content-Length is an untrusted hint; consume at most max+1 actual bytes, including short reads.
     def self.read(stream, maximum:)
-      raise ArgumentError, "invalid input bound" unless maximum.between?(0, 2_097_152)
+      # AIDEV-NOTE: Finder permits JSON escaping of a 2 MB CSV; existing endpoints retain their explicit lower bounds.
+      raise ArgumentError, "invalid input bound" unless maximum.between?(0, 16_777_216)
       result = String.new(encoding: Encoding::BINARY)
       while result.bytesize <= maximum
         chunk = stream.read(maximum + 1 - result.bytesize)

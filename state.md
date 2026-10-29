@@ -1,3 +1,6 @@
+## Email finder implementation — 2026-10-29
+
+Implemented on `feature/email-finder`, based on `c1ac27bd`, in the Email Finder worktree. Four tools, durable CSV jobs, suppression and health integrate with existing Authentik, gateway and tenancy. Local Docker: 53 finder tests, strict types/lint, 1,131 web unit tests, 12 finder browser cases, build and config dry run pass. Desktop/mobile UI inspected. Repository-wide contract/database/browser failures remain; see `docs/completion/email-finder-20261029.md`. No deployment or live probes. New nonsecret variable: `ELEVATEO_FINDER_PUBLIC_IP`. Disposable resources cleaned; persistent data preserved.
 ## Frontend refinement checkpoint - 2026-10-24
 
 The user authorized direct Codex frontend implementation, superseding the earlier Fable-only block. Shared measured notice spacing now protects compose windows, mobile actions, content, sidebar and toasts. Mobile compose no longer covers an open draft's footer controls; draft-list trailing slashes retain the action. Fleet-02 Docker passes contracts, lint, typecheck, 89 test files / 1,099 tests, coverage (85.41% statements), production build and fixture exclusion. Ten regression cases were added across notice lifecycle and compose routing.

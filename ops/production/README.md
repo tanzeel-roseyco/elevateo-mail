@@ -1,5 +1,15 @@
 # Held production backend
 
+## Email finder worker
+
+The `email-finder-worker` service reuses the production server image, private database
+and protected worker environment file. Add nonsecret `ELEVATEO_FINDER_PUBLIC_IP` to
+that file to enable its PTR/port-25 startup check. No new secret or service account is
+required. Apply the reversible finder migration with the existing migrator before
+starting it. See [finder operations](../../docs/email-finder.md) for limits, opt-outs,
+Hetzner port-25 restrictions and PTR setup. This configuration is prepared only; it has
+not been deployed and makes no live sends.
+
 Prepared for the coordinator; no deployment or persistent mutation is performed by this change.
 Railway owns the web/edge at `https://mail.elevateoco.com` behind application-level SSO.
 Its restricted SSH local forward reaches `launch-api:3000` through the isolated transport overlay.

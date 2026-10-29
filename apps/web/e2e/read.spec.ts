@@ -49,10 +49,14 @@ test('real keyboard navigation: Tab reaches a conversation row and Enter opens i
   await openMailbox(page, 'Fixture inbox')
   const firstThread = page.locator('a[data-thread]').first()
   await expect(firstThread).toBeVisible()
-  // Walk real Tab stops until the first conversation link holds focus; bounded so a broken tab
-  // order fails instead of looping.
+  // AIDEV-NOTE: Registered feature links grow the sidebar; derive the bound instead of assuming 25 stops.
+  // Walk at most one full tab cycle, preserving the failure for an unreachable conversation link.
+  const tabStops = await page.locator('a[href], button, input, select, textarea, [tabindex]').evaluateAll((elements) =>
+    elements.filter((element) => element instanceof HTMLElement && element.tabIndex >= 0 &&
+      element.getClientRects().length > 0 && !element.matches(':disabled') && !element.closest('[inert]')).length,
+  )
   let reached = false
-  for (let i = 0; i < 25 && !reached; i += 1) {
+  for (let i = 0; i <= tabStops && !reached; i += 1) {
     await page.keyboard.press('Tab')
     reached = await firstThread.evaluate((el) => el === document.activeElement)
   }

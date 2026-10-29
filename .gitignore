@@ -1,6 +1,7 @@
 .env
 .env.*
 !.env.example
+!.env.production.example
 node_modules/
 dist/
 coverage/
@@ -12,3 +13,4 @@ ops/supabase/.backups/
 ops/supabase/.evidence/
 
 .local-jobs/
+apps/web/e2e/.results/
