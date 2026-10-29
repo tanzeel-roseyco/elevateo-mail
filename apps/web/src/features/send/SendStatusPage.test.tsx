@@ -1,6 +1,6 @@
-import { fireEvent, render, screen } from '@testing-library/react'
+import { act, fireEvent, render, screen } from '@testing-library/react'
 import { MemoryRouter, Route, Routes } from 'react-router'
-import { describe, expect, it, vi } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import { SessionProvider } from '@/app/session'
 import { GatewayError } from '@/data/errors'
 import { CD_FIXTURE as CD } from '@/data/fixtures/collaborationState'
@@ -73,5 +73,56 @@ describe('BE03 simulated status', () => {
     setup({ ...STATUS, mailbox_id: STATUS.send_id })
     await screen.findByText(/This send status is unavailable/)
     expect(screen.queryByText(/durably queued/)).toBeNull()
+  })
+})
+
+// Polling with bounded backoff: a non-terminal status re-checks on a timer, a terminal status stops,
+// and a failed poll stops the automatic schedule while leaving the manual refresh in place.
+describe('BE03 status polling', () => {
+  const flush = () => act(async () => {})
+  afterEach(() => vi.useRealTimers())
+
+  function renderStatus(getSendStatus: () => Promise<SendStatus>) {
+    const g = { ...createFixtureGateway(), getSendStatus: vi.fn(getSendStatus) }
+    render(<SessionProvider gateway={g}><MemoryRouter initialEntries={[`/mailboxes/${CD.mailboxId}/send-intents/${STATUS.send_id}`]}><Routes><Route path="/mailboxes/:mailboxId/send-intents/:sendId" element={<SendStatusPage />} /></Routes></MemoryRouter></SessionProvider>)
+    return g
+  }
+
+  it('re-checks a pending send and stops once the status is terminal', async () => {
+    vi.useFakeTimers()
+    const delivered: SendStatus = { ...STATUS, state: 'accepted', cancellable: false, attempts: 1, delivery_status: 'delivered', delivery_updated_at: STATUS.approved_at }
+    const queue = [STATUS, delivered]
+    let i = 0
+    const g = renderStatus(async () => queue[Math.min(i++, queue.length - 1)]!)
+    await flush()
+    expect(g.getSendStatus).toHaveBeenCalledTimes(1) // initial load: queued (non-terminal)
+    await act(async () => { vi.advanceTimersByTime(4000) })
+    await flush()
+    expect(g.getSendStatus).toHaveBeenCalledTimes(2) // first poll: delivered (terminal)
+    await act(async () => { vi.advanceTimersByTime(20_000) })
+    await flush()
+    expect(g.getSendStatus).toHaveBeenCalledTimes(2) // no further polls after a terminal status
+  })
+
+  it('stops automatic polling when a poll fails and keeps the manual refresh working', async () => {
+    vi.useFakeTimers()
+    let calls = 0
+    const g = renderStatus(async () => {
+      calls += 1
+      if (calls >= 2) throw new GatewayError('transport', 'timeout', 'synthetic')
+      return STATUS
+    })
+    await flush()
+    expect(g.getSendStatus).toHaveBeenCalledTimes(1)
+    await act(async () => { vi.advanceTimersByTime(4000) })
+    await flush()
+    expect(g.getSendStatus).toHaveBeenCalledTimes(2) // poll failed -> schedule stops
+    await act(async () => { vi.advanceTimersByTime(20_000) })
+    await flush()
+    expect(g.getSendStatus).toHaveBeenCalledTimes(2) // no more automatic polls
+    fireEvent.click(screen.getByRole('button', { name: 'Refresh status' }))
+    await flush()
+    expect(g.getSendStatus).toHaveBeenCalledTimes(3) // manual refresh still issues a request
+    expect(screen.getByText(/This send status is unavailable/)).toBeTruthy()
   })
 })
