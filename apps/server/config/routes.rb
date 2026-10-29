@@ -51,6 +51,13 @@ Rails.application.routes.draw do
   post "/v1/send-intents/:send_id/cancellation", to: "v1/send_intents#cancel"
   # AIDEV-NOTE: This route is unauthenticated by design; the controller verifies the bounded raw body before SQL.
   post "/v2/provider-events/resend", to: "resend_events#create"
+  # AIDEV-NOTE: Connector grants are browser-managed; tool operations accept scoped bearer authority only.
+  get "/v2/connector-grants", to: "v2/connector_grants#index"
+  post "/v2/connector-grants", to: "v2/connector_grants#create"
+  post "/v2/connector-grants/:grant_id/revoke", to: "v2/connector_grants#revoke"
+  post "/v2/connector/search", to: "v2/connector#search"
+  post "/v2/connector/read", to: "v2/connector#read"
+  post "/v2/connector/draft", to: "v2/connector#draft"
   get "/v1/search", to: "v1/search#index"
 
   # AIDEV-NOTE: Isolated V2 candidates require current role proof inside each guarded transaction.

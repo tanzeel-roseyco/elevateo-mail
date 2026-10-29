@@ -5,6 +5,16 @@ Runtime tests are deferred until all implementation is complete, per the user. R
 | Scope | LOC | Defects | Defects/KLOC | Disposition |
 | --- | ---: | ---: | ---: | --- |
 | Resend V3 transport | 149 | 0 | 0 | Source review only; reply and attachment regressions pending execution |
+| MCP protocol/backend initial | 118 | 1 | 8.47 | Standard tool `_meta` rejected; now accepted as inert metadata, never forwarded |
+| MCP transports initial | 94 | 2 | 21.28 | Error-write backpressure and transport test coverage repaired |
+| MCP transports follow-up | 147 | 1 | 6.80 | Oversize upload reset hazard repaired by retaining iterator input until response finish |
+| MCP transports final | 153 | 0 | 0 | Streamed-disconnect edge remains a final verification concern |
+| Connector controllers/operations | 163 | 1 | 6.13 | UTF-8 response budget enforced while selecting search results; regression added |
+| Grant database/design review | 160 | 2 | 12.50 | Active-first list and NULL proof rejection repaired; actor locks serialize revocation |
+| Grant migration/bootstrap follow-up | 141 | 0 | 0 | Privileged bootstrap owns schema; rollback retains empty bootstrap schema |
+| Connector database regressions | 144 | 0 | 0 | Source-only review; HTTP and concurrency gates remain separate |
+
+Design tradeoff: resolve locates a source session but grants no authority; the subsequent live identity check and guarded database transaction decide every request. Actor-wide serialization favors immediate revocation correctness over same-user parallel throughput. No network I/O occurs while the authorization transaction is open. Request-first/revoke-first schedules were reasoned through statically; runtime race proof is pending. No Obsidian connector is available, so this is a repository-recorded analysis, not a claimed Obsidian simulation.
 
 ## Self-hosted continuation reviews — 2026-10-23
 
