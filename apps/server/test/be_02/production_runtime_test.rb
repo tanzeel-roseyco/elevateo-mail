@@ -9,7 +9,11 @@ require "base64"
 class ProductionRuntimeTest < Minitest::Test
   def environment
     { "PATH" => ENV.fetch("PATH"), "HOME" => "/tmp", "RAILS_ENV" => "production",
-      "ELEVATEO_MODE" => "production", "ELEVATEO_PROCESS" => "api", "ELEVATEO_DB_HOST" => "db",
+      "ELEVATEO_SSO_ENABLED" => "true", "ELEVATEO_SSO_ONLY" => "true",
+      "ELEVATEO_AUTH_PUBLIC_URL" => "https://mail.elevateoco.com/auth/v1",
+      "ELEVATEO_AUTHENTIK_ISSUER" => "https://identity.test/application/o/elevateo-mail/",
+      "ELEVATEO_AUTHENTIK_GROUP" => "11111111-1111-4111-8111-111111111111",
+      "ELEVATEO_AUTHENTIK_API_TOKEN" => "x" * 32, "ELEVATEO_MODE" => "production", "ELEVATEO_PROCESS" => "api", "ELEVATEO_DB_HOST" => "db",
       "ELEVATEO_DB_NAME" => "test", "ELEVATEO_DB_ROLE" => "elevateo_api", "API_DB_PASSWORD" => "disposable",
       "ELEVATEO_SMTP_HOST" => "mailpit", "ELEVATEO_SMTP_PORT" => "1025",
       "ELEVATEO_AUTH_URL" => "http://auth:9999", "ELEVATEO_STORAGE_URL" => "http://storage:5000",

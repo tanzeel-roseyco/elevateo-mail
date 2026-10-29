@@ -80,7 +80,11 @@ class InboundWorkerConfigTest < Minitest::Test
   private
 
   def production_environment
-    worker_environment.merge("ELEVATEO_MODE" => "production", "RAILS_ENV" => "production",
+    worker_environment.merge("ELEVATEO_SSO_ENABLED" => "true", "ELEVATEO_SSO_ONLY" => "true",
+      "ELEVATEO_AUTH_PUBLIC_URL" => "https://mail.elevateoco.com/auth/v1",
+      "ELEVATEO_AUTHENTIK_ISSUER" => "https://identity.test/application/o/elevateo-mail/",
+      "ELEVATEO_AUTHENTIK_GROUP" => "11111111-1111-4111-8111-111111111111",
+      "ELEVATEO_AUTHENTIK_API_TOKEN" => "x" * 32, "ELEVATEO_MODE" => "production", "RAILS_ENV" => "production",
       "SECRET_KEY_BASE" => "s" * 64, "ELEVATEO_BROWSER_ORIGIN" => "https://mail.elevateoco.com",
       "ELEVATEO_OUTBOUND_MODE" => "mox", "ELEVATEO_IMAP_PROFILE" => "mox-imap-v1",
       "ELEVATEO_MOX_HOST" => "mail.dispatch.company.com", "ELEVATEO_MOX_VERIFIED_DOMAINS" => '["dispatch.company.com"]' ,

@@ -12,6 +12,7 @@ Runtime tests are deferred until all implementation is complete, per the user. R
 | Connector controllers/operations | 163 | 1 | 6.13 | UTF-8 response budget enforced while selecting search results; regression added |
 | Grant database/design review | 160 | 2 | 12.50 | Active-first list and NULL proof rejection repaired; actor locks serialize revocation |
 | Grant migration/bootstrap follow-up | 141 | 0 | 0 | Privileged bootstrap owns schema; rollback retains empty bootstrap schema |
+| Authentik/production configuration | 86 | 0 | 0 | Source review; disabled-SSO regression added, all execution deferred |
 | Connector database regressions | 144 | 0 | 0 | Source-only review; HTTP and concurrency gates remain separate |
 
 Design tradeoff: resolve locates a source session but grants no authority; the subsequent live identity check and guarded database transaction decide every request. Actor-wide serialization favors immediate revocation correctness over same-user parallel throughput. No network I/O occurs while the authorization transaction is open. Request-first/revoke-first schedules were reasoned through statically; runtime race proof is pending. No Obsidian connector is available, so this is a repository-recorded analysis, not a claimed Obsidian simulation.
