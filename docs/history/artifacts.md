@@ -36,3 +36,21 @@ Verify a download with `sha256sum <file>`, and extract it with `tar -xzf <file>`
 | `elevateo-mail-unified-dashboard-screenshots-20261020.tar.gz` | Elevateo Mail - Unified Dashboard Screenshots 20261020 | 14 | 2.3 MB | `75038a129ad4f40eb66fe5c58c4e52686c3a80e662fcdfdc754071ca6262c807` |
 | `elevateo-existing-infrastructure-launch-20261023.tar.gz` | Elevateo Existing Infrastructure Launch 20261023 | 6 | 0.0 MB | `13250f37acca8ad18416b2285b771bd9d01bc616f3a744bd5d46266574309207` |
 | `elevateo-self-hosted-production-20261023.tar.gz` | Elevateo Self Hosted Production 20261023 | 2 | 0.0 MB | `1da3f64ca3a5a093b38a4b24438248c94b47803b36152db3b7fc47e0797ecdcc` |
+
+## Local-only files from git checkouts
+
+Files that were ignored by git, and so would have been lost with their checkouts: logs, evidence, job outputs, audit snapshots. `.env*` files and dependency folders are excluded. The one live secret, `ops/.env.resend.worker` (`RESEND_API_KEY`), was not uploaded anywhere. It was copied, still gitignored, to the same path in this repository's local checkout only.
+
+| Archive | Checkout | Files | Size | SHA-256 |
+| --- | --- | ---: | ---: | --- |
+| `ignored-elevateo-mail.tar.gz` | Elevateo Mail | 75 | 6.3 MB | `425f09a25da223beed9474b832b52f80a9be2b00fd0bc58689d7b52935922c20` |
+| `ignored-elevateo-mail-backend.tar.gz` | Elevateo Mail - Backend | 1 | 0.0 MB | `e72030d62d6b564173210f2a041ada554dc433848afd0fdb4d1ee82284d762ca` |
+| `ignored-elevateo-mail-be01-r1.tar.gz` | Elevateo Mail - BE01 R1 | 2 | 0.0 MB | `68cc29b49e7c35c6407b98f2220ff55862b054e0242d1764390ec03069acdb13` |
+| `ignored-elevateo-mail-be02-codex.tar.gz` | Elevateo Mail - BE02 Codex | 632 | 1.4 MB | `c3245cdfc6fc43b88406ccdcdc4a23a46a0e8857d788b897c1c0362f73faf4cd` |
+| `ignored-elevateo-mail-cassian-20261014.tar.gz` | Elevateo Mail - Cassian 20261014 | 45741 | 827.7 MB | `0bfe6f4cb38cc0a83b9b6e9ab448a0786bb106ae739f22720dfaab19a8f7d3cf` |
+| `ignored-elevateo-mail-email-finder.tar.gz` | Elevateo Mail - Email Finder | 1540 | 60.1 MB | `df244078144d7de3b3a53134b4a512208aa1adb5b803ca8b60f541adc50c68dc` |
+| `ignored-elevateo-mail-fable-fe01-r1.tar.gz` | Elevateo Mail - Fable FE01 R1 | 5 | 0.0 MB | `2ceb96c436689912e6502f4c8c0c23d31c4cbbd4fe168c684ee1ee324fda456d` |
+| `ignored-elevateo-mail-fable-frontend.tar.gz` | Elevateo Mail - Fable Frontend | 428 | 28.0 MB | `dad9c163fb8bd1887afc201d033b15e4521be9888980893436598790b7fdfa89` |
+| `ignored-elevateo-mail-integration.tar.gz` | Elevateo Mail - Integration | 40 | 0.1 MB | `d21b14a8b70caa85761a7bff0709e8102af94722f46614e34d621b9564432998` |
+| `ignored-elevateo-mail-local-completion.tar.gz` | Elevateo Mail - Local Completion | 3596 | 41.2 MB | `f3b25932ff9aacbb3a6dfb2bd406a7ad7d3c025c23c3b614fc65044d49901ff5` |
+| `ignored-elevateo-emailguard-fable.tar.gz` | elevateo-emailguard-fable | 285 | 0.4 MB | `2a8cd70e77f5d87b20c2b223ab94c96935c9697cfaf408e89867ff8fdc4ab254` |
