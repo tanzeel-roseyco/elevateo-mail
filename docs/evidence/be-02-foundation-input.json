@@ -1,0 +1,1304 @@
+{
+  "schema_version": 1,
+  "task": "BE-02 consultation foundation input; not acceptance",
+  "head": "5785eba47f3709debb2815c8d86608f7e62d02f3",
+  "original_review_base": "eedc43b736791e7e41656d405f10caf3d4164e01",
+  "canonical_source_manifest_sha256": "03d590ddaa39b22c6b1851c9911405473c0b01b0a50fff08001144e66a14638b",
+  "canonical_source_count": 52,
+  "semantics": "HEAD plus explicit dirty overlays; preserve existing pinned bytes exactly, including mixed line endings when pinned. Only external snapshot copies use CRLF-to-LF when necessary to match an existing pin. No canonical source repinning. Supplemental lifecycle files are included, not newly validated.",
+  "files": [
+    {
+      "path": "apps/server/.dockerignore",
+      "sha256": "6106c5e69f8e4fc7e8c0214e7802e1e1afe8f8bcd18f6bd8c79367babc56d6bf",
+      "bytes": 23,
+      "checkout_sha256": "c0700672000c77e057489c36669f75a07b0564cd55dfb96dca69cb18476136de",
+      "copy_transform": "CRLF-to-LF matched existing pin",
+      "git_head_blob": "b7826a12322dd87b3963bb2c9b773a27ccfc4270",
+      "git_head_mode": "100644",
+      "dirty_overlay": false,
+      "classification": "canonical-52",
+      "pinned_by": [
+        "ops/tests/fleet02-egress-source.sha256"
+      ]
+    },
+    {
+      "path": "apps/server/Dockerfile",
+      "sha256": "9a42897c22b1dfbd08cb88b79a185a4962e7cab157c0222d1f9b7ea5bb8ac0f9",
+      "bytes": 590,
+      "checkout_sha256": "b0cb60aea2986ba945b3b0a2456166edfeaae845cb77512304377a2254740e67",
+      "copy_transform": "CRLF-to-LF matched existing pin",
+      "git_head_blob": "b824aaf249fcb42223d46a99d259ea7365e7232f",
+      "git_head_mode": "100644",
+      "dirty_overlay": false,
+      "classification": "canonical-52",
+      "pinned_by": [
+        "ops/tests/fleet02-egress-source.sha256"
+      ]
+    },
+    {
+      "path": "apps/server/Gemfile",
+      "sha256": "19044c02efd7ed6fd03abec9f6e051e10248d53b820dd964592fc2e689abfe60",
+      "bytes": 379,
+      "checkout_sha256": "3322e597bf18efb5670c001d8b3e1543940aef5f741c4488bf1812a4f15fc2ab",
+      "copy_transform": "CRLF-to-LF matched existing pin",
+      "git_head_blob": "6b9dbf0eab0a4d93a7f22db43300e26c1e039a6d",
+      "git_head_mode": "100644",
+      "dirty_overlay": false,
+      "classification": "canonical-52",
+      "pinned_by": [
+        "ops/tests/fleet02-egress-source.sha256"
+      ]
+    },
+    {
+      "path": "apps/server/Gemfile.lock",
+      "sha256": "67b2f69a0ed30c1d9926ab2940fe54173991d238192feca38a8f04b97390ea23",
+      "bytes": 7423,
+      "checkout_sha256": "0773b117257c847ecaf7b999938b5a1d0d4630a4f252a468af98d8e2c5725f1e",
+      "copy_transform": "CRLF-to-LF matched existing pin",
+      "git_head_blob": "cb42fce238e5e8b47518abb65d8330186c90357f",
+      "git_head_mode": "100644",
+      "dirty_overlay": false,
+      "classification": "canonical-52",
+      "pinned_by": [
+        "ops/tests/fleet02-egress-source.sha256"
+      ]
+    },
+    {
+      "path": "apps/server/Rakefile",
+      "sha256": "ec561de742a266784cc94e681a29b5b3c19b73ffa4898a7077e742d370618a14",
+      "bytes": 67,
+      "checkout_sha256": "7e612418b909fcfbeb2d24f0ab667004bf18e6cbdc4ced9f91a89135264d3e19",
+      "copy_transform": "CRLF-to-LF matched existing pin",
+      "git_head_blob": "7820749a9d3d1110fb5a7a009abe5a34d0d93fd2",
+      "git_head_mode": "100644",
+      "dirty_overlay": false,
+      "classification": "canonical-52",
+      "pinned_by": [
+        "ops/tests/fleet02-egress-source.sha256"
+      ]
+    },
+    {
+      "path": "apps/server/Steepfile",
+      "sha256": "7fad25bcb858097f94888267cc89b02aa0a68f4543b6b27f9155d8f7c5d57c8a",
+      "bytes": 363,
+      "checkout_sha256": "c136b2bf959c9529edf42d2b113531e53e311d279c7621c852b194485ff86a6b",
+      "copy_transform": "CRLF-to-LF matched existing pin",
+      "git_head_blob": "beee7c3ea80a56422310fb707c09b05b6ff323b4",
+      "git_head_mode": "100644",
+      "dirty_overlay": false,
+      "classification": "canonical-52",
+      "pinned_by": [
+        "ops/tests/fleet02-egress-source.sha256"
+      ]
+    },
+    {
+      "path": "apps/server/app/controllers/application_controller.rb",
+      "sha256": "5fed6f27575e5519f9a13045f84eee809fd358c506867b61a965cab9ed3d8c98",
+      "bytes": 383,
+      "checkout_sha256": "dec75bb004bd18031faa5850be2329a002b1e0d6795fb910363ac70f7ea0eb45",
+      "copy_transform": "CRLF-to-LF matched existing pin",
+      "git_head_blob": "d2dd6f8470d581846bd29a3fc008ee6b88bbb4f0",
+      "git_head_mode": "100644",
+      "dirty_overlay": false,
+      "classification": "canonical-52",
+      "pinned_by": [
+        "ops/tests/fleet02-egress-source.sha256"
+      ]
+    },
+    {
+      "path": "apps/server/app/controllers/health_controller.rb",
+      "sha256": "369bbddfe8093377ee89a955c8f1b1164a9abf602e947cf0c1b89960bf23bdd7",
+      "bytes": 1040,
+      "checkout_sha256": "225915b1a4a838937a64bd53369c8a42d245a8259c0399f7c0cd0ab9d1416246",
+      "copy_transform": "CRLF-to-LF matched existing pin",
+      "git_head_blob": "4f5aa2b47efef878d7428019c6082d41ea2ab56c",
+      "git_head_mode": "100644",
+      "dirty_overlay": false,
+      "classification": "canonical-52",
+      "pinned_by": [
+        "ops/tests/fleet02-egress-source.sha256"
+      ]
+    },
+    {
+      "path": "apps/server/bin/rails",
+      "sha256": "0862d7bc09d5ed61785d677ef2dba10ce285387d4d5d9e3d90d97630e3f69ab6",
+      "bytes": 141,
+      "checkout_sha256": "0862d7bc09d5ed61785d677ef2dba10ce285387d4d5d9e3d90d97630e3f69ab6",
+      "copy_transform": "none",
+      "git_head_blob": "efc0377492f7e0ec9f6cedf7b5e1f6119bbbd24e",
+      "git_head_mode": "100755",
+      "dirty_overlay": false,
+      "classification": "canonical-52",
+      "pinned_by": [
+        "ops/tests/fleet02-egress-source.sha256"
+      ],
+      "required_linux_mode": "0755"
+    },
+    {
+      "path": "apps/server/bin/worker",
+      "sha256": "37c80474a92ccc9dc963de10e96817e68c51203e3c0b847e578f3d62e22256ad",
+      "bytes": 582,
+      "checkout_sha256": "37c80474a92ccc9dc963de10e96817e68c51203e3c0b847e578f3d62e22256ad",
+      "copy_transform": "none",
+      "git_head_blob": "33dfe6aa7f05f27e343d0dc080b9726426ce23eb",
+      "git_head_mode": "100755",
+      "dirty_overlay": false,
+      "classification": "canonical-52",
+      "pinned_by": [
+        "ops/tests/fleet02-egress-source.sha256"
+      ],
+      "required_linux_mode": "0755"
+    },
+    {
+      "path": "apps/server/bin/worker-health",
+      "sha256": "e05b0003f57cbe83217818bdda1db9ac60d39e19f99ade4f8ca410c80b1af2f0",
+      "bytes": 139,
+      "checkout_sha256": "e05b0003f57cbe83217818bdda1db9ac60d39e19f99ade4f8ca410c80b1af2f0",
+      "copy_transform": "none",
+      "git_head_blob": "883f4f12d8186248050bbabd54feb144a4fb15f2",
+      "git_head_mode": "100644",
+      "dirty_overlay": false,
+      "classification": "canonical-52",
+      "pinned_by": [
+        "ops/tests/fleet02-egress-source.sha256"
+      ],
+      "required_linux_mode": "0755"
+    },
+    {
+      "path": "apps/server/config.ru",
+      "sha256": "cd06f4ca6833c03189e939314b78470244f616e69f68560ddc609d43f1ca566d",
+      "bytes": 60,
+      "checkout_sha256": "37bff73301c8f763381e45bff1d7b64efb1935b52adfd7109f6f30d6b8e14f00",
+      "copy_transform": "CRLF-to-LF matched existing pin",
+      "git_head_blob": "cb0bc694bf5bb97e1da9d2c1a8b81e841a2b1020",
+      "git_head_mode": "100644",
+      "dirty_overlay": false,
+      "classification": "canonical-52",
+      "pinned_by": [
+        "ops/tests/fleet02-egress-source.sha256"
+      ]
+    },
+    {
+      "path": "apps/server/config/application.rb",
+      "sha256": "938313d8c72317466b33ea707c199e4556f9423bca406e465f93ee1f023e3f2e",
+      "bytes": 1150,
+      "checkout_sha256": "2f8d142bd8fcb532f7e6fe42164ea32a6a6bd3aaa01c2856c98dd4d655fa24d2",
+      "copy_transform": "CRLF-to-LF matched existing pin",
+      "git_head_blob": "3b06f7d84cc8d31cb65da209f879772cc56d682d",
+      "git_head_mode": "100644",
+      "dirty_overlay": false,
+      "classification": "canonical-52",
+      "pinned_by": [
+        "ops/tests/fleet02-egress-source.sha256"
+      ]
+    },
+    {
+      "path": "apps/server/config/boot.rb",
+      "sha256": "22c9bd4f8a795557470dde3e9c2b3a1c6a19a6906cdf8add692bc8cd4261b0d7",
+      "bytes": 90,
+      "checkout_sha256": "b40bcdae313fec70f2720e1a235bb6841db2e5588c7b4dea21e37b928de4afa2",
+      "copy_transform": "CRLF-to-LF matched existing pin",
+      "git_head_blob": "fbd15a535dc80863fc03d527f961277d6aeb371f",
+      "git_head_mode": "100644",
+      "dirty_overlay": false,
+      "classification": "canonical-52",
+      "pinned_by": [
+        "ops/tests/fleet02-egress-source.sha256"
+      ]
+    },
+    {
+      "path": "apps/server/config/database.yml",
+      "sha256": "5db77f655405144f4ee892375a83a6aee987001d024dad4a58da641dd6888bfd",
+      "bytes": 364,
+      "checkout_sha256": "50f0f5e55591e152fa2a94a28aa55501dbbbee1b31f979ea3532cf76613331d2",
+      "copy_transform": "CRLF-to-LF matched existing pin",
+      "git_head_blob": "7c7a58b06126d58b1e89ec68d2c069288bf6242e",
+      "git_head_mode": "100644",
+      "dirty_overlay": false,
+      "classification": "canonical-52",
+      "pinned_by": [
+        "ops/tests/fleet02-egress-source.sha256"
+      ]
+    },
+    {
+      "path": "apps/server/config/environment.rb",
+      "sha256": "dd5c34405b8ad268a97c0798e345a183cddebe7c8f3e250db87be8a4a20e7c91",
+      "bytes": 61,
+      "checkout_sha256": "d51399da8bcd154d42d532e6849204afb0d0202ce6020fdae19b6e15be533b1c",
+      "copy_transform": "CRLF-to-LF matched existing pin",
+      "git_head_blob": "40c19d29e60c7b452db42d44e6e58f218f5d9338",
+      "git_head_mode": "100644",
+      "dirty_overlay": false,
+      "classification": "canonical-52",
+      "pinned_by": [
+        "ops/tests/fleet02-egress-source.sha256"
+      ]
+    },
+    {
+      "path": "apps/server/config/routes.rb",
+      "sha256": "594c6fc3ae6e0671e064527b0e3e220b08ada2c4b7e271f0c84fe2748e7f05d9",
+      "bytes": 107,
+      "checkout_sha256": "dccf1f793b07fce49b4ff70d5f6a2d7ced5551cc26912684a58f3baa2d39b001",
+      "copy_transform": "CRLF-to-LF matched existing pin",
+      "git_head_blob": "7ef94e9c73077f9e4aa1d76a05ec6613bc049a8e",
+      "git_head_mode": "100644",
+      "dirty_overlay": false,
+      "classification": "canonical-52",
+      "pinned_by": [
+        "ops/tests/fleet02-egress-source.sha256"
+      ]
+    },
+    {
+      "path": "apps/server/db/migrate/20261012000001_create_app_foundation.rb",
+      "sha256": "cf06387268570e5920b3bbf7e84dc06dc1ed9242a23038a5288fb7f3cd36e459",
+      "bytes": 4055,
+      "checkout_sha256": "6691621d6f260ea56aecb2faec3dbefdcc590499076f0f11873f1aa47efbe80a",
+      "copy_transform": "CRLF-to-LF matched existing pin",
+      "git_head_blob": "a44c04ff1bd7d88539503082021737a49ffa8a00",
+      "git_head_mode": "100644",
+      "dirty_overlay": false,
+      "classification": "canonical-52",
+      "pinned_by": [
+        "ops/tests/fleet02-egress-source.sha256"
+      ]
+    },
+    {
+      "path": "apps/server/db/migrate/20261012000002_restrict_api_read_membership.rb",
+      "sha256": "031df44311df04768207b207b21a1a012f434f9d765c02005badee74b5d3aff8",
+      "bytes": 3331,
+      "checkout_sha256": "031df44311df04768207b207b21a1a012f434f9d765c02005badee74b5d3aff8",
+      "copy_transform": "none",
+      "git_head_blob": "0e0acb86238dbd5ba477791fc9f32c04f22ba888",
+      "git_head_mode": "100644",
+      "dirty_overlay": false,
+      "classification": "canonical-52",
+      "pinned_by": [
+        "ops/tests/fleet02-egress-source.sha256"
+      ]
+    },
+    {
+      "path": "apps/server/lib/elevateo/config.rb",
+      "sha256": "909db3a472abd87002aaa3330b6d3079fc3da97ed418455dd2d9cfbce556c873",
+      "bytes": 2791,
+      "checkout_sha256": "8b78f09e84c26db161b96947a113fd7131f9ddbc66ce3bb9478cb7d7a39deb1a",
+      "copy_transform": "CRLF-to-LF matched existing pin",
+      "git_head_blob": "b1fdd9b13c8c03ba7aab51eb2e4e3a86506506ad",
+      "git_head_mode": "100644",
+      "dirty_overlay": false,
+      "classification": "canonical-52",
+      "pinned_by": [
+        "ops/tests/fleet02-egress-source.sha256"
+      ]
+    },
+    {
+      "path": "apps/server/lib/elevateo/heartbeat.rb",
+      "sha256": "9ae5aeebfed65f6f00567484716668cdffc5f9993d489fd448b76748c55cfbee",
+      "bytes": 1023,
+      "checkout_sha256": "9ae5aeebfed65f6f00567484716668cdffc5f9993d489fd448b76748c55cfbee",
+      "copy_transform": "none",
+      "git_head_blob": "40cedf7450e2a76a669bee00bd6a556e8439f58d",
+      "git_head_mode": "100644",
+      "dirty_overlay": false,
+      "classification": "canonical-52",
+      "pinned_by": [
+        "ops/tests/fleet02-egress-source.sha256"
+      ]
+    },
+    {
+      "path": "apps/server/lib/elevateo/tenancy.rb",
+      "sha256": "6d38a972fc99f2f873bbc197062dd261eb4fcace3d842125df27c02800180f6c",
+      "bytes": 3542,
+      "checkout_sha256": "6d38a972fc99f2f873bbc197062dd261eb4fcace3d842125df27c02800180f6c",
+      "copy_transform": "none",
+      "git_head_blob": "79b75ea4737a85b54dc49262f9642b05e76bc819",
+      "git_head_mode": "100644",
+      "dirty_overlay": true,
+      "classification": "canonical-52",
+      "pinned_by": [
+        "ops/tests/fleet02-egress-source.sha256"
+      ]
+    },
+    {
+      "path": "apps/server/log/.keep",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "checkout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "copy_transform": "none",
+      "git_head_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "git_head_mode": "100644",
+      "dirty_overlay": false,
+      "classification": "canonical-52",
+      "pinned_by": [
+        "ops/tests/fleet02-egress-source.sha256"
+      ]
+    },
+    {
+      "path": "apps/server/sig/heartbeat.rbs",
+      "sha256": "2ad718574e60f884b290d047d8bec5a07630c05e9b683c0f4fc389e303bfa281",
+      "bytes": 206,
+      "checkout_sha256": "2ad718574e60f884b290d047d8bec5a07630c05e9b683c0f4fc389e303bfa281",
+      "copy_transform": "none",
+      "git_head_blob": "b846eb977853cf0fd679dad27f4ceddfa34e4e0f",
+      "git_head_mode": "100644",
+      "dirty_overlay": false,
+      "classification": "canonical-52",
+      "pinned_by": [
+        "ops/tests/fleet02-egress-source.sha256"
+      ]
+    },
+    {
+      "path": "apps/server/sig/tenancy.rbs",
+      "sha256": "a181caf20766cffc70926c81341f4179db94d7182ce4d2d30fb889e10bcdf405",
+      "bytes": 1360,
+      "checkout_sha256": "a181caf20766cffc70926c81341f4179db94d7182ce4d2d30fb889e10bcdf405",
+      "copy_transform": "none",
+      "git_head_blob": "0c317ff12637ee60c6eecebc74376d76548eae7f",
+      "git_head_mode": "100644",
+      "dirty_overlay": false,
+      "classification": "canonical-52",
+      "pinned_by": [
+        "ops/tests/fleet02-egress-source.sha256"
+      ]
+    },
+    {
+      "path": "apps/server/test/be_01_r1/authority_guards.rb",
+      "sha256": "e757c6dcdec9984526e35f002cfc4fac884e7a9eb4e5d7a5e91fbaa5d011894c",
+      "bytes": 3213,
+      "checkout_sha256": "e757c6dcdec9984526e35f002cfc4fac884e7a9eb4e5d7a5e91fbaa5d011894c",
+      "copy_transform": "none",
+      "git_head_blob": "0243115f700184b6cd70b3e2875eb14181376190",
+      "git_head_mode": "100644",
+      "dirty_overlay": false,
+      "classification": "canonical-52",
+      "pinned_by": [
+        "ops/tests/fleet02-egress-source.sha256"
+      ]
+    },
+    {
+      "path": "apps/server/test/be_01_r1/authority_guards_test.rb",
+      "sha256": "13d46189b2e700858a27c1e833b816b9a5ca376257571c7ec2cf33051a9eeccb",
+      "bytes": 3254,
+      "checkout_sha256": "13d46189b2e700858a27c1e833b816b9a5ca376257571c7ec2cf33051a9eeccb",
+      "copy_transform": "none",
+      "git_head_blob": "cc4fc46da741f6199f3ead98b147830e035d9e3b",
+      "git_head_mode": "100644",
+      "dirty_overlay": false,
+      "classification": "canonical-52",
+      "pinned_by": [
+        "ops/tests/fleet02-egress-source.sha256"
+      ]
+    },
+    {
+      "path": "apps/server/test/be_01_r1/baseline_driver.rb",
+      "sha256": "3e279e4616a85456fabec59a3f2a3153dd533f0ca09804c0a1b7fc1ae95576b7",
+      "bytes": 3860,
+      "checkout_sha256": "3e279e4616a85456fabec59a3f2a3153dd533f0ca09804c0a1b7fc1ae95576b7",
+      "copy_transform": "none",
+      "git_head_blob": "593d25bba70d80e7da49a48f812cc450db6dc2fa",
+      "git_head_mode": "100644",
+      "dirty_overlay": false,
+      "classification": "canonical-52",
+      "pinned_by": [
+        "ops/tests/fleet02-egress-source.sha256"
+      ]
+    },
+    {
+      "path": "apps/server/test/be_01_r1/baseline_scenarios.rb",
+      "sha256": "29205f43bcf7229f4ca36f06b9ff34b2c82d4c6c15d67ba5504b09f9ca31e385",
+      "bytes": 6639,
+      "checkout_sha256": "29205f43bcf7229f4ca36f06b9ff34b2c82d4c6c15d67ba5504b09f9ca31e385",
+      "copy_transform": "none",
+      "git_head_blob": "a471ac5fba60ecd35603b3bb64c538ceeae9b057",
+      "git_head_mode": "100644",
+      "dirty_overlay": false,
+      "classification": "canonical-52",
+      "pinned_by": [
+        "ops/tests/fleet02-egress-source.sha256"
+      ]
+    },
+    {
+      "path": "apps/server/test/be_01_r1/membership_migration_test.rb",
+      "sha256": "aeb3af2619151e38d75283ccda0e0cbc80e9efb0547baccd52e5223cec4bac2d",
+      "bytes": 4133,
+      "checkout_sha256": "aeb3af2619151e38d75283ccda0e0cbc80e9efb0547baccd52e5223cec4bac2d",
+      "copy_transform": "none",
+      "git_head_blob": "fe2bfbd4b4f23c46f424da50ba3053476854c275",
+      "git_head_mode": "100644",
+      "dirty_overlay": false,
+      "classification": "canonical-52",
+      "pinned_by": [
+        "ops/tests/fleet02-egress-source.sha256"
+      ]
+    },
+    {
+      "path": "apps/server/test/be_01_r1/tenancy_test.rb",
+      "sha256": "ebb80f9d45d6735d509e19d1953a654286126c7aa9ec1d09ad82b50f96744e4e",
+      "bytes": 11398,
+      "checkout_sha256": "ebb80f9d45d6735d509e19d1953a654286126c7aa9ec1d09ad82b50f96744e4e",
+      "copy_transform": "none",
+      "git_head_blob": "01b9a43450431d8655c6543bb9b7f9ad3519a440",
+      "git_head_mode": "100644",
+      "dirty_overlay": true,
+      "classification": "canonical-52",
+      "pinned_by": [
+        "ops/tests/fleet02-egress-source.sha256"
+      ]
+    },
+    {
+      "path": "apps/server/test/be_01_r1/test_helper.rb",
+      "sha256": "fd8d08f84959ddccdd87c3f50e2ff77fe71fb5f017cd8d7607be701803e226b7",
+      "bytes": 1290,
+      "checkout_sha256": "fd8d08f84959ddccdd87c3f50e2ff77fe71fb5f017cd8d7607be701803e226b7",
+      "copy_transform": "none",
+      "git_head_blob": "88ebc0888a1f5a01cc8892aa501c6cbb9324bc61",
+      "git_head_mode": "100644",
+      "dirty_overlay": false,
+      "classification": "canonical-52",
+      "pinned_by": [
+        "ops/tests/fleet02-egress-source.sha256"
+      ]
+    },
+    {
+      "path": "apps/server/test/be_01_r1/worker_role_test.rb",
+      "sha256": "2212ca8a045b3fe82746c8105f693ebf11d58801013e4e7203ff40022212b57a",
+      "bytes": 1195,
+      "checkout_sha256": "2212ca8a045b3fe82746c8105f693ebf11d58801013e4e7203ff40022212b57a",
+      "copy_transform": "none",
+      "git_head_blob": "c406388f0a5f83c1eaf652043ab6c61e795ff105",
+      "git_head_mode": "100644",
+      "dirty_overlay": true,
+      "classification": "canonical-52",
+      "pinned_by": [
+        "ops/tests/fleet02-egress-source.sha256"
+      ]
+    },
+    {
+      "path": "apps/server/tmp/.keep",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "checkout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "copy_transform": "none",
+      "git_head_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "git_head_mode": "100644",
+      "dirty_overlay": false,
+      "classification": "canonical-52",
+      "pinned_by": [
+        "ops/tests/fleet02-egress-source.sha256"
+      ]
+    },
+    {
+      "path": "compose.yaml",
+      "sha256": "3481affe11ee70aaefae2f65c7bc54aa250250f03207ae9dacf6517324d97d2a",
+      "bytes": 7930,
+      "checkout_sha256": "953753e0561b1fbd62f9ea6da1c67714c18cb337b90c2cfc6c67253c92456cb5",
+      "copy_transform": "CRLF-to-LF matched existing pin",
+      "git_head_blob": "163a5081eb6b2ac73af728799cd014cd41017bce",
+      "git_head_mode": "100644",
+      "dirty_overlay": false,
+      "classification": "canonical-52",
+      "pinned_by": [
+        "ops/tests/fleet02-egress-source.sha256"
+      ]
+    },
+    {
+      "path": "docs/evidence/scripts/be-01-r1-fleet02-compose-egress.sh",
+      "sha256": "97bdb91a0cc406cff6611c5eb97158988e12ffd19cd4413231ea578de7c5a1f4",
+      "bytes": 4769,
+      "checkout_sha256": "97bdb91a0cc406cff6611c5eb97158988e12ffd19cd4413231ea578de7c5a1f4",
+      "copy_transform": "none",
+      "git_head_blob": null,
+      "git_head_mode": null,
+      "dirty_overlay": null,
+      "classification": "validation-artifact",
+      "pinned_by": []
+    },
+    {
+      "path": "docs/evidence/scripts/be-01-r1-fleet02-full-run.sh",
+      "sha256": "e2d409e0284cf486ea8894637f6376459994f4c5ae97a332b5a5c293aaf80066",
+      "bytes": 13434,
+      "checkout_sha256": "e2d409e0284cf486ea8894637f6376459994f4c5ae97a332b5a5c293aaf80066",
+      "copy_transform": "none",
+      "git_head_blob": null,
+      "git_head_mode": null,
+      "dirty_overlay": null,
+      "classification": "validation-artifact",
+      "pinned_by": []
+    },
+    {
+      "path": "docs/evidence/scripts/be-01-r1-fleet02-resources.sh",
+      "sha256": "86681089c789e3b636f518508e8c6cf496d332f69bd69e5696bbc1dd4302aa4d",
+      "bytes": 11026,
+      "checkout_sha256": "86681089c789e3b636f518508e8c6cf496d332f69bd69e5696bbc1dd4302aa4d",
+      "copy_transform": "none",
+      "git_head_blob": null,
+      "git_head_mode": null,
+      "dirty_overlay": null,
+      "classification": "validation-artifact",
+      "pinned_by": [
+        "ops/tools/lane-p-dispatch/dispatch.sha256"
+      ]
+    },
+    {
+      "path": "ops/bin/generate-secrets.rb",
+      "sha256": "c622ff9697f02e8d2dac6fda65b782833a3807f2a9dd2b7dd2fc50cb7e3a143f",
+      "bytes": 5274,
+      "checkout_sha256": "c622ff9697f02e8d2dac6fda65b782833a3807f2a9dd2b7dd2fc50cb7e3a143f",
+      "copy_transform": "none",
+      "git_head_blob": "f3fae4ba8e654aa45ad3552a8fa8f2a2d7d0cc1f",
+      "git_head_mode": "100644",
+      "dirty_overlay": false,
+      "classification": "canonical-52",
+      "pinned_by": [
+        "ops/tests/fleet02-egress-source.sha256"
+      ]
+    },
+    {
+      "path": "ops/compose.fleet02-egress.yaml",
+      "sha256": "ee26c30bcb80900dbe989083180a967527cbae934f7887c5f0e245867ec2087f",
+      "bytes": 2261,
+      "checkout_sha256": "ee26c30bcb80900dbe989083180a967527cbae934f7887c5f0e245867ec2087f",
+      "copy_transform": "none",
+      "git_head_blob": null,
+      "git_head_mode": null,
+      "dirty_overlay": null,
+      "classification": "validation-artifact",
+      "pinned_by": [
+        "ops/tests/fleet02-egress-package.sha256"
+      ]
+    },
+    {
+      "path": "ops/compose.r1-test.yaml",
+      "sha256": "47e9352ef23d06f525e2b43022f50540f38ca59a4fa1f5973292637b7d7615a3",
+      "bytes": 2141,
+      "checkout_sha256": "47e9352ef23d06f525e2b43022f50540f38ca59a4fa1f5973292637b7d7615a3",
+      "copy_transform": "none",
+      "git_head_blob": "686c7b16a4f83f6ecfa283391587b8304e6ee13b",
+      "git_head_mode": "100644",
+      "dirty_overlay": false,
+      "classification": "canonical-52",
+      "pinned_by": [
+        "ops/tests/fleet02-egress-source.sha256"
+      ]
+    },
+    {
+      "path": "ops/compose.secrets.yaml",
+      "sha256": "7f222cc1391dfc78b4fd29b0a2ccb8b6bd2571a78826fc3a2394dc3fc6626999",
+      "bytes": 313,
+      "checkout_sha256": "c74b00a94c80988c439ffe1fb3d523683f7d32dda5b4daae60c6bc0431c2334c",
+      "copy_transform": "CRLF-to-LF matched existing pin",
+      "git_head_blob": "c88d54987a2132f6d1619263e67c88f358d4f60d",
+      "git_head_mode": "100644",
+      "dirty_overlay": false,
+      "classification": "canonical-52",
+      "pinned_by": [
+        "ops/tests/fleet02-egress-source.sha256"
+      ]
+    },
+    {
+      "path": "ops/db/bootstrap.sql",
+      "sha256": "1abda6871c0110dc7f374fdf0fadbe6243013c8b18904ac20e9ec9ff6d33eba1",
+      "bytes": 5304,
+      "checkout_sha256": "1abda6871c0110dc7f374fdf0fadbe6243013c8b18904ac20e9ec9ff6d33eba1",
+      "copy_transform": "none",
+      "git_head_blob": "2b542fa52cafca93af55b8958f96e24318d61f8b",
+      "git_head_mode": "100644",
+      "dirty_overlay": false,
+      "classification": "canonical-52",
+      "pinned_by": [
+        "ops/tests/fleet02-egress-source.sha256"
+      ]
+    },
+    {
+      "path": "ops/local/.gitignore",
+      "sha256": "240a3e0d37d2e86b614063f5347eb02d4f99ca6c254de6b82871ff8d95532a7d",
+      "bytes": 14,
+      "checkout_sha256": "4bb38be6d6d9ef0d2f9bcc339850ff48d821eccfa739369402b354c9ba946ea2",
+      "copy_transform": "CRLF-to-LF matched existing pin",
+      "git_head_blob": "d6b7ef32c8478a48c3994dcadc86837f4371184d",
+      "git_head_mode": "100644",
+      "dirty_overlay": false,
+      "classification": "canonical-52",
+      "pinned_by": [
+        "ops/tests/fleet02-egress-source.sha256"
+      ]
+    },
+    {
+      "path": "ops/supabase/db/99-jwt.sql",
+      "sha256": "9db312f7d5f5a6f42788f30069dd632da2bcf295ee16178ae9849864f8b5fa13",
+      "bytes": 244,
+      "checkout_sha256": "9db312f7d5f5a6f42788f30069dd632da2bcf295ee16178ae9849864f8b5fa13",
+      "copy_transform": "none",
+      "git_head_blob": "24886046527531a409fbed7cb0dcb6cd1deb9ec0",
+      "git_head_mode": "100644",
+      "dirty_overlay": false,
+      "classification": "canonical-52",
+      "pinned_by": [
+        "ops/tests/fleet02-egress-source.sha256"
+      ]
+    },
+    {
+      "path": "ops/supabase/db/99-roles.sql",
+      "sha256": "dc1c7c6117a3c94f9993f22b49fc41d5e4cc301ec9580321459261177bb1a183",
+      "bytes": 457,
+      "checkout_sha256": "dc1c7c6117a3c94f9993f22b49fc41d5e4cc301ec9580321459261177bb1a183",
+      "copy_transform": "none",
+      "git_head_blob": "58afe1678fbf635e894944d336920a3b8bd24048",
+      "git_head_mode": "100644",
+      "dirty_overlay": false,
+      "classification": "canonical-52",
+      "pinned_by": [
+        "ops/tests/fleet02-egress-source.sha256"
+      ]
+    },
+    {
+      "path": "ops/tests/db-fixtures.sql",
+      "sha256": "a20dd934aaabd2afef40c0b3c92a9d3e591aa6e498fadab6d3f63db8de60e989",
+      "bytes": 1267,
+      "checkout_sha256": "a20dd934aaabd2afef40c0b3c92a9d3e591aa6e498fadab6d3f63db8de60e989",
+      "copy_transform": "none",
+      "git_head_blob": "fd22a6db346e25fa0fa7450f2cab9952757c3f6c",
+      "git_head_mode": "100644",
+      "dirty_overlay": false,
+      "classification": "canonical-52",
+      "pinned_by": [
+        "ops/tests/fleet02-egress-source.sha256"
+      ]
+    },
+    {
+      "path": "ops/tests/egress-check-fleet02.sh",
+      "sha256": "54df513b4eb38d8569bf5c7ffc356455468f1c5f3c81b6f2d601ae168f78e1db",
+      "bytes": 4920,
+      "checkout_sha256": "54df513b4eb38d8569bf5c7ffc356455468f1c5f3c81b6f2d601ae168f78e1db",
+      "copy_transform": "none",
+      "git_head_blob": null,
+      "git_head_mode": null,
+      "dirty_overlay": null,
+      "classification": "validation-artifact",
+      "pinned_by": [
+        "ops/tests/fleet02-egress-package.sha256"
+      ]
+    },
+    {
+      "path": "ops/tests/egress-check.ps1",
+      "sha256": "ac7e97a468a830cfda441b089d5a469d670cf7ca9fe26642b0a23de2a5887732",
+      "bytes": 6912,
+      "checkout_sha256": "ac7e97a468a830cfda441b089d5a469d670cf7ca9fe26642b0a23de2a5887732",
+      "copy_transform": "none",
+      "git_head_blob": "920b8a02a2cc4cbcd520c5713698221234d05b43",
+      "git_head_mode": "100644",
+      "dirty_overlay": false,
+      "classification": "canonical-52",
+      "pinned_by": [
+        "ops/tests/fleet02-egress-source.sha256"
+      ]
+    },
+    {
+      "path": "ops/tests/egress-check.sh",
+      "sha256": "8b527c18cbde5616c2384a7c4b974087455a8ac85ee2f910d91900a101b9c18e",
+      "bytes": 5957,
+      "checkout_sha256": "8b527c18cbde5616c2384a7c4b974087455a8ac85ee2f910d91900a101b9c18e",
+      "copy_transform": "none",
+      "git_head_blob": "c6e143a6271009eb7abdae3aa3601ba9381aa7db",
+      "git_head_mode": "100755",
+      "dirty_overlay": false,
+      "classification": "canonical-52",
+      "pinned_by": [
+        "ops/tests/fleet02-egress-source.sha256"
+      ]
+    },
+    {
+      "path": "ops/tests/egress_assert.rb",
+      "sha256": "39ff773d684f6bf9d82acb8f21ecf86bf841f41cdb33c6e04c6ede9b9dd64120",
+      "bytes": 5403,
+      "checkout_sha256": "39ff773d684f6bf9d82acb8f21ecf86bf841f41cdb33c6e04c6ede9b9dd64120",
+      "copy_transform": "none",
+      "git_head_blob": "9277e0d883312f68251c3ef2bbd0d80ec3005ad1",
+      "git_head_mode": "100644",
+      "dirty_overlay": false,
+      "classification": "canonical-52",
+      "pinned_by": [
+        "ops/tests/fleet02-egress-source.sha256"
+      ]
+    },
+    {
+      "path": "ops/tests/egress_listener.rb",
+      "sha256": "2a76bc16d3075d0fdf2e2507f0450adbd75bd055c80f6d9a9834747bec23b580",
+      "bytes": 240,
+      "checkout_sha256": "2a76bc16d3075d0fdf2e2507f0450adbd75bd055c80f6d9a9834747bec23b580",
+      "copy_transform": "none",
+      "git_head_blob": "c11c245c0f68ab8404f8f2f7d02cecb3d01c595e",
+      "git_head_mode": "100644",
+      "dirty_overlay": false,
+      "classification": "canonical-52",
+      "pinned_by": [
+        "ops/tests/fleet02-egress-source.sha256"
+      ]
+    },
+    {
+      "path": "ops/tests/egress_probe.rb",
+      "sha256": "61c131badb6f0fe89e15a5f67318572703cc1bd4aa2ff28b3182ba5bab69f82c",
+      "bytes": 1359,
+      "checkout_sha256": "61c131badb6f0fe89e15a5f67318572703cc1bd4aa2ff28b3182ba5bab69f82c",
+      "copy_transform": "none",
+      "git_head_blob": "beed8f281cd4633b580a436e8387fcebd34ec9d4",
+      "git_head_mode": "100644",
+      "dirty_overlay": false,
+      "classification": "canonical-52",
+      "pinned_by": [
+        "ops/tests/fleet02-egress-source.sha256"
+      ]
+    },
+    {
+      "path": "ops/tests/egress_test.rb",
+      "sha256": "d31859d7747c9035b994f167bd84c5f80268af2d2d5c499514183838a5f237bf",
+      "bytes": 7262,
+      "checkout_sha256": "d31859d7747c9035b994f167bd84c5f80268af2d2d5c499514183838a5f237bf",
+      "copy_transform": "none",
+      "git_head_blob": "5dd9a3d5bfd171666f91405797fda79ac1264491",
+      "git_head_mode": "100644",
+      "dirty_overlay": true,
+      "classification": "canonical-52",
+      "pinned_by": [
+        "ops/tests/fleet02-egress-source.sha256"
+      ]
+    },
+    {
+      "path": "ops/tests/fleet02-egress-baked.rb",
+      "sha256": "8f6623be67c715e3aa7aa95f86068f486fdd60c62d41df672a880982266a49e9",
+      "bytes": 1244,
+      "checkout_sha256": "8f6623be67c715e3aa7aa95f86068f486fdd60c62d41df672a880982266a49e9",
+      "copy_transform": "none",
+      "git_head_blob": null,
+      "git_head_mode": null,
+      "dirty_overlay": null,
+      "classification": "validation-artifact",
+      "pinned_by": [
+        "ops/tests/fleet02-egress-package.sha256"
+      ]
+    },
+    {
+      "path": "ops/tests/fleet02-egress-compose.sh",
+      "sha256": "a8d1e2d61de4871f5a4da672e593c6474df3587d37478f27a8cb9bd87197cfbc",
+      "bytes": 5300,
+      "checkout_sha256": "a8d1e2d61de4871f5a4da672e593c6474df3587d37478f27a8cb9bd87197cfbc",
+      "copy_transform": "none",
+      "git_head_blob": null,
+      "git_head_mode": null,
+      "dirty_overlay": null,
+      "classification": "validation-artifact",
+      "pinned_by": [
+        "ops/tests/fleet02-egress-package.sha256"
+      ]
+    },
+    {
+      "path": "ops/tests/fleet02-egress-context-regression.sh",
+      "sha256": "de1968ba3426f4edb1e8e765ec2d102b2575df8af121d29fb733c11b31007890",
+      "bytes": 3032,
+      "checkout_sha256": "de1968ba3426f4edb1e8e765ec2d102b2575df8af121d29fb733c11b31007890",
+      "copy_transform": "none",
+      "git_head_blob": null,
+      "git_head_mode": null,
+      "dirty_overlay": null,
+      "classification": "validation-artifact",
+      "pinned_by": [
+        "ops/tests/fleet02-egress-package.sha256"
+      ]
+    },
+    {
+      "path": "ops/tests/fleet02-egress-create-regression.sh",
+      "sha256": "759ecf0544262e40beac0ceb5714c5fd39265bd6bf46f23b976e7442d52f20b2",
+      "bytes": 3135,
+      "checkout_sha256": "759ecf0544262e40beac0ceb5714c5fd39265bd6bf46f23b976e7442d52f20b2",
+      "copy_transform": "none",
+      "git_head_blob": null,
+      "git_head_mode": null,
+      "dirty_overlay": null,
+      "classification": "validation-artifact",
+      "pinned_by": [
+        "ops/tests/fleet02-egress-package.sha256"
+      ]
+    },
+    {
+      "path": "ops/tests/fleet02-egress-inspect.jq",
+      "sha256": "ee8df9810329ea884b4e706e0b9dee558026262fd7488afeff8abde2af873f4e",
+      "bytes": 2713,
+      "checkout_sha256": "ee8df9810329ea884b4e706e0b9dee558026262fd7488afeff8abde2af873f4e",
+      "copy_transform": "none",
+      "git_head_blob": null,
+      "git_head_mode": null,
+      "dirty_overlay": null,
+      "classification": "validation-artifact",
+      "pinned_by": [
+        "ops/tests/fleet02-egress-package.sha256"
+      ]
+    },
+    {
+      "path": "ops/tests/fleet02-egress-package.sha256",
+      "sha256": "46b296fd1158da3e9df1362162d903e01013c5fedd33465bf8ab323ed4217862",
+      "bytes": 1156,
+      "checkout_sha256": "46b296fd1158da3e9df1362162d903e01013c5fedd33465bf8ab323ed4217862",
+      "copy_transform": "none",
+      "git_head_blob": null,
+      "git_head_mode": null,
+      "dirty_overlay": null,
+      "classification": "validation-artifact",
+      "pinned_by": []
+    },
+    {
+      "path": "ops/tests/fleet02-egress-readiness-regression.sh",
+      "sha256": "38603fc91c2e1690ca56c49929183c76775ae93d650076a3947aad763fe1323c",
+      "bytes": 2807,
+      "checkout_sha256": "38603fc91c2e1690ca56c49929183c76775ae93d650076a3947aad763fe1323c",
+      "copy_transform": "none",
+      "git_head_blob": null,
+      "git_head_mode": null,
+      "dirty_overlay": null,
+      "classification": "validation-artifact",
+      "pinned_by": [
+        "ops/tests/fleet02-egress-package.sha256"
+      ]
+    },
+    {
+      "path": "ops/tests/fleet02-egress-regression.sh",
+      "sha256": "cdf0e32c0ee2e68a3130fa11132343408a5cf88b04ae777882a5b053f34b4694",
+      "bytes": 7157,
+      "checkout_sha256": "cdf0e32c0ee2e68a3130fa11132343408a5cf88b04ae777882a5b053f34b4694",
+      "copy_transform": "none",
+      "git_head_blob": null,
+      "git_head_mode": null,
+      "dirty_overlay": null,
+      "classification": "validation-artifact",
+      "pinned_by": [
+        "ops/tests/fleet02-egress-package.sha256"
+      ]
+    },
+    {
+      "path": "ops/tests/fleet02-egress-resources.sh",
+      "sha256": "c4ce5cf3ada3c2bebe92d3557c82d7de92bdef27738603a182e32f5272e8a363",
+      "bytes": 5958,
+      "checkout_sha256": "c4ce5cf3ada3c2bebe92d3557c82d7de92bdef27738603a182e32f5272e8a363",
+      "copy_transform": "none",
+      "git_head_blob": null,
+      "git_head_mode": null,
+      "dirty_overlay": null,
+      "classification": "validation-artifact",
+      "pinned_by": [
+        "ops/tests/fleet02-egress-package.sha256"
+      ]
+    },
+    {
+      "path": "ops/tests/fleet02-egress-source.sha256",
+      "sha256": "03d590ddaa39b22c6b1851c9911405473c0b01b0a50fff08001144e66a14638b",
+      "bytes": 5105,
+      "checkout_sha256": "03d590ddaa39b22c6b1851c9911405473c0b01b0a50fff08001144e66a14638b",
+      "copy_transform": "none",
+      "git_head_blob": null,
+      "git_head_mode": null,
+      "dirty_overlay": null,
+      "classification": "validation-artifact",
+      "pinned_by": [
+        "ops/tests/fleet02-egress-package.sha256"
+      ]
+    },
+    {
+      "path": "ops/tests/fleet02_powershell_protocol.sh",
+      "sha256": "5c011bd57503af6d17f570a3b2793e7e255c5c45bd50b79dcc6f5aeecc861701",
+      "bytes": 1406,
+      "checkout_sha256": "5c011bd57503af6d17f570a3b2793e7e255c5c45bd50b79dcc6f5aeecc861701",
+      "copy_transform": "none",
+      "git_head_blob": null,
+      "git_head_mode": null,
+      "dirty_overlay": null,
+      "classification": "validation-artifact",
+      "pinned_by": [
+        "ops/tools/lane-p-dispatch/dispatch.sha256"
+      ]
+    },
+    {
+      "path": "ops/tests/fleet02_runner_regression.sh",
+      "sha256": "a8ff7b5c2a616bd9542d577f239fca00f4eea23fcf96a9510e536039b523883d",
+      "bytes": 6675,
+      "checkout_sha256": "a8ff7b5c2a616bd9542d577f239fca00f4eea23fcf96a9510e536039b523883d",
+      "copy_transform": "none",
+      "git_head_blob": null,
+      "git_head_mode": null,
+      "dirty_overlay": null,
+      "classification": "validation-artifact",
+      "pinned_by": []
+    },
+    {
+      "path": "ops/tests/heartbeat_test.rb",
+      "sha256": "3e389c563d07baa5f4d25cf1db5fb9d71ead35140bbedd50056f29f16db3ff01",
+      "bytes": 1319,
+      "checkout_sha256": "3e389c563d07baa5f4d25cf1db5fb9d71ead35140bbedd50056f29f16db3ff01",
+      "copy_transform": "none",
+      "git_head_blob": "8346eb92a7f5294d90f7f6c0800406b83abba2b4",
+      "git_head_mode": "100644",
+      "dirty_overlay": false,
+      "classification": "canonical-52",
+      "pinned_by": [
+        "ops/tests/fleet02-egress-source.sha256"
+      ]
+    },
+    {
+      "path": "ops/tests/membership-catalog.sql",
+      "sha256": "e1a347ce15e6779b93b9b8e4f1dd2baa3d3eac520d3ad294b919193aa1cdc77a",
+      "bytes": 2538,
+      "checkout_sha256": "e1a347ce15e6779b93b9b8e4f1dd2baa3d3eac520d3ad294b919193aa1cdc77a",
+      "copy_transform": "none",
+      "git_head_blob": "f921df4074cc5100a11cf2a20d9b1e9cf02a9fa9",
+      "git_head_mode": "100644",
+      "dirty_overlay": true,
+      "classification": "canonical-52",
+      "pinned_by": [
+        "ops/tests/fleet02-egress-source.sha256"
+      ]
+    },
+    {
+      "path": "ops/tests/secrets_test.rb",
+      "sha256": "c822e3870cb6359f15471d1cbc7775f5d6a9b69986b64d2af58807a4b39bbd04",
+      "bytes": 4270,
+      "checkout_sha256": "c822e3870cb6359f15471d1cbc7775f5d6a9b69986b64d2af58807a4b39bbd04",
+      "copy_transform": "none",
+      "git_head_blob": "dff0ef97d0d30605651d7b7ab0c0887119751b8c",
+      "git_head_mode": "100644",
+      "dirty_overlay": false,
+      "classification": "canonical-52",
+      "pinned_by": [
+        "ops/tests/fleet02-egress-source.sha256"
+      ]
+    },
+    {
+      "path": "ops/tools/lane-c-app/app.sha256",
+      "sha256": "1eeeca5c896bc1082e43202478b5816e8d909efdf0c40e712c367df4ad50f9c4",
+      "bytes": 299,
+      "checkout_sha256": "1eeeca5c896bc1082e43202478b5816e8d909efdf0c40e712c367df4ad50f9c4",
+      "copy_transform": "none",
+      "git_head_blob": null,
+      "git_head_mode": null,
+      "dirty_overlay": null,
+      "classification": "validation-artifact",
+      "pinned_by": []
+    },
+    {
+      "path": "ops/tools/lane-c-app/parent-run.sh",
+      "sha256": "c18bf4df32f373e5c6f00535d7ed2e688504790f5898a28024138eb586321f45",
+      "bytes": 5371,
+      "checkout_sha256": "c18bf4df32f373e5c6f00535d7ed2e688504790f5898a28024138eb586321f45",
+      "copy_transform": "none",
+      "git_head_blob": null,
+      "git_head_mode": null,
+      "dirty_overlay": null,
+      "classification": "validation-artifact",
+      "pinned_by": [
+        "ops/tools/lane-c-app/app.sha256"
+      ]
+    },
+    {
+      "path": "ops/tools/lane-c-app/regression.sh",
+      "sha256": "dde4730db073af7e1a61a8a3bf1bffbc55976406a0ef898ec4422b5ad2ab79d0",
+      "bytes": 2128,
+      "checkout_sha256": "dde4730db073af7e1a61a8a3bf1bffbc55976406a0ef898ec4422b5ad2ab79d0",
+      "copy_transform": "none",
+      "git_head_blob": null,
+      "git_head_mode": null,
+      "dirty_overlay": null,
+      "classification": "validation-artifact",
+      "pinned_by": [
+        "ops/tools/lane-c-app/app.sha256"
+      ]
+    },
+    {
+      "path": "ops/tools/lane-c-app/source.sh",
+      "sha256": "339cc168f1ce84fbb581ed4bcf26d37a0d80d5aa30b5bb559dd9575771e1ccd8",
+      "bytes": 1972,
+      "checkout_sha256": "339cc168f1ce84fbb581ed4bcf26d37a0d80d5aa30b5bb559dd9575771e1ccd8",
+      "copy_transform": "none",
+      "git_head_blob": null,
+      "git_head_mode": null,
+      "dirty_overlay": null,
+      "classification": "validation-artifact",
+      "pinned_by": [
+        "ops/tools/lane-c-app/app.sha256"
+      ]
+    },
+    {
+      "path": "ops/tools/lane-c-synthetic/Dockerfile",
+      "sha256": "8fce6bd5ebfc4c85f8805a886627b0ac260093b1776968bab43590007386ec2f",
+      "bytes": 395,
+      "checkout_sha256": "8fce6bd5ebfc4c85f8805a886627b0ac260093b1776968bab43590007386ec2f",
+      "copy_transform": "none",
+      "git_head_blob": null,
+      "git_head_mode": null,
+      "dirty_overlay": null,
+      "classification": "validation-artifact",
+      "pinned_by": [
+        "ops/tools/lane-c-synthetic/tools.sha256"
+      ]
+    },
+    {
+      "path": "ops/tools/lane-c-synthetic/checks.sh",
+      "sha256": "e92a416815a8a8e499bac7686484a5be8b83d24884c34f71c605715b6c81cc10",
+      "bytes": 1373,
+      "checkout_sha256": "e92a416815a8a8e499bac7686484a5be8b83d24884c34f71c605715b6c81cc10",
+      "copy_transform": "none",
+      "git_head_blob": null,
+      "git_head_mode": null,
+      "dirty_overlay": null,
+      "classification": "validation-artifact",
+      "pinned_by": [
+        "ops/tools/lane-c-synthetic/tools.sha256"
+      ]
+    },
+    {
+      "path": "ops/tools/lane-c-synthetic/cleanup-regression.sh",
+      "sha256": "564276a8850672c41bb7821ce9a61f5a194b35482377072ca6f52ce7fa4472d6",
+      "bytes": 4939,
+      "checkout_sha256": "564276a8850672c41bb7821ce9a61f5a194b35482377072ca6f52ce7fa4472d6",
+      "copy_transform": "none",
+      "git_head_blob": null,
+      "git_head_mode": null,
+      "dirty_overlay": null,
+      "classification": "validation-artifact",
+      "pinned_by": [
+        "ops/tools/lane-c-synthetic/tools.sha256"
+      ]
+    },
+    {
+      "path": "ops/tools/lane-c-synthetic/cleanup.sh",
+      "sha256": "095fb2a580620b724070a0dc3c0d5400e38a98fc347d034c97f3fe3e47dcc3ec",
+      "bytes": 7722,
+      "checkout_sha256": "095fb2a580620b724070a0dc3c0d5400e38a98fc347d034c97f3fe3e47dcc3ec",
+      "copy_transform": "none",
+      "git_head_blob": null,
+      "git_head_mode": null,
+      "dirty_overlay": null,
+      "classification": "validation-artifact",
+      "pinned_by": [
+        "ops/tools/lane-c-synthetic/tools.sha256",
+        "ops/tools/lane-p-dispatch/dispatch.sha256"
+      ]
+    },
+    {
+      "path": "ops/tools/lane-c-synthetic/parent-run.sh",
+      "sha256": "1af110b569c506396122500936dbadb53e5396041aa4422acb7d658bcab1dae8",
+      "bytes": 4598,
+      "checkout_sha256": "1af110b569c506396122500936dbadb53e5396041aa4422acb7d658bcab1dae8",
+      "copy_transform": "none",
+      "git_head_blob": null,
+      "git_head_mode": null,
+      "dirty_overlay": null,
+      "classification": "validation-artifact",
+      "pinned_by": [
+        "ops/tools/lane-c-synthetic/tools.sha256"
+      ]
+    },
+    {
+      "path": "ops/tools/lane-c-synthetic/preflight-regression.sh",
+      "sha256": "77bc8b48def7cdb18f0b13c473035190eca5da4810d5cae805125f746e260e3a",
+      "bytes": 3131,
+      "checkout_sha256": "77bc8b48def7cdb18f0b13c473035190eca5da4810d5cae805125f746e260e3a",
+      "copy_transform": "none",
+      "git_head_blob": null,
+      "git_head_mode": null,
+      "dirty_overlay": null,
+      "classification": "validation-artifact",
+      "pinned_by": [
+        "ops/tools/lane-c-synthetic/tools.sha256"
+      ]
+    },
+    {
+      "path": "ops/tools/lane-c-synthetic/preflight.sh",
+      "sha256": "7783d8678d2941ec54cb5fff84c17270be15ceed8016e2108ed1b47f4dbcb444",
+      "bytes": 387,
+      "checkout_sha256": "7783d8678d2941ec54cb5fff84c17270be15ceed8016e2108ed1b47f4dbcb444",
+      "copy_transform": "none",
+      "git_head_blob": null,
+      "git_head_mode": null,
+      "dirty_overlay": null,
+      "classification": "validation-artifact",
+      "pinned_by": [
+        "ops/tools/lane-c-synthetic/tools.sha256"
+      ]
+    },
+    {
+      "path": "ops/tools/lane-c-synthetic/run-container.sh",
+      "sha256": "5d5a3a202a637c2f01cf43c505362130bf65def4113f82ca1f56bbf0789d5d25",
+      "bytes": 1510,
+      "checkout_sha256": "5d5a3a202a637c2f01cf43c505362130bf65def4113f82ca1f56bbf0789d5d25",
+      "copy_transform": "none",
+      "git_head_blob": null,
+      "git_head_mode": null,
+      "dirty_overlay": null,
+      "classification": "validation-artifact",
+      "pinned_by": [
+        "ops/tools/lane-c-synthetic/tools.sha256"
+      ]
+    },
+    {
+      "path": "ops/tools/lane-c-synthetic/tools.sha256",
+      "sha256": "f799b9edefd8f88fccd10ab6c452e253d6174cf68b2cdee919a3d5d15e046b6e",
+      "bytes": 866,
+      "checkout_sha256": "f799b9edefd8f88fccd10ab6c452e253d6174cf68b2cdee919a3d5d15e046b6e",
+      "copy_transform": "none",
+      "git_head_blob": null,
+      "git_head_mode": null,
+      "dirty_overlay": null,
+      "classification": "validation-artifact",
+      "pinned_by": []
+    },
+    {
+      "path": "ops/tools/lane-p-dispatch/dispatch.sha256",
+      "sha256": "4509ce8417eb93167847a67093b435eb000e11b1e82755e8ddcd0803402cdb25",
+      "bytes": 1169,
+      "checkout_sha256": "4509ce8417eb93167847a67093b435eb000e11b1e82755e8ddcd0803402cdb25",
+      "copy_transform": "none",
+      "git_head_blob": null,
+      "git_head_mode": null,
+      "dirty_overlay": null,
+      "classification": "validation-artifact",
+      "pinned_by": []
+    },
+    {
+      "path": "ops/tools/lane-p-dispatch/parent-run.sh",
+      "sha256": "091abb67db93b235655520115f51f7dd245f4479ae76e99c4239c3e7b7c6d114",
+      "bytes": 5165,
+      "checkout_sha256": "091abb67db93b235655520115f51f7dd245f4479ae76e99c4239c3e7b7c6d114",
+      "copy_transform": "none",
+      "git_head_blob": null,
+      "git_head_mode": null,
+      "dirty_overlay": null,
+      "classification": "validation-artifact",
+      "pinned_by": [
+        "ops/tools/lane-p-dispatch/dispatch.sha256"
+      ]
+    },
+    {
+      "path": "ops/tools/lane-p-dispatch/preflight.sh",
+      "sha256": "bbded0f0293175732e60c42251b54bc1010a3f895ea5b6d49bd37f05f6dfc613",
+      "bytes": 385,
+      "checkout_sha256": "bbded0f0293175732e60c42251b54bc1010a3f895ea5b6d49bd37f05f6dfc613",
+      "copy_transform": "none",
+      "git_head_blob": null,
+      "git_head_mode": null,
+      "dirty_overlay": null,
+      "classification": "validation-artifact",
+      "pinned_by": [
+        "ops/tools/lane-p-dispatch/dispatch.sha256"
+      ]
+    },
+    {
+      "path": "ops/tools/lane-p-dispatch/run-container.sh",
+      "sha256": "3b847a5faa7a59b3c0f8cf325d91429f1d9a5be757fb5ffe29975f9bedde7289",
+      "bytes": 1562,
+      "checkout_sha256": "3b847a5faa7a59b3c0f8cf325d91429f1d9a5be757fb5ffe29975f9bedde7289",
+      "copy_transform": "none",
+      "git_head_blob": null,
+      "git_head_mode": null,
+      "dirty_overlay": null,
+      "classification": "validation-artifact",
+      "pinned_by": [
+        "ops/tools/lane-p-dispatch/dispatch.sha256"
+      ]
+    },
+    {
+      "path": "ops/tools/lane-p-protocol/Dockerfile",
+      "sha256": "815122c2b11123910e890218c6344bd7250eb34d322891a29cb50bd9f7e97ad0",
+      "bytes": 2458,
+      "checkout_sha256": "815122c2b11123910e890218c6344bd7250eb34d322891a29cb50bd9f7e97ad0",
+      "copy_transform": "none",
+      "git_head_blob": null,
+      "git_head_mode": null,
+      "dirty_overlay": null,
+      "classification": "validation-artifact",
+      "pinned_by": [
+        "ops/tools/lane-p-dispatch/dispatch.sha256",
+        "ops/tools/lane-p-protocol/package.sha256"
+      ]
+    },
+    {
+      "path": "ops/tools/lane-p-protocol/checks.sh",
+      "sha256": "1d67265211561f1e490db657acbf1bc294876157cb292b134428314ee3078f27",
+      "bytes": 1186,
+      "checkout_sha256": "1d67265211561f1e490db657acbf1bc294876157cb292b134428314ee3078f27",
+      "copy_transform": "none",
+      "git_head_blob": null,
+      "git_head_mode": null,
+      "dirty_overlay": null,
+      "classification": "validation-artifact",
+      "pinned_by": [
+        "ops/tools/lane-p-dispatch/dispatch.sha256",
+        "ops/tools/lane-p-protocol/package.sha256"
+      ]
+    },
+    {
+      "path": "ops/tools/lane-p-protocol/gems.rb",
+      "sha256": "47cb5b490e706b30d962b85c961f2b72875a4df4ecf16c35449a8fca8b025b55",
+      "bytes": 238,
+      "checkout_sha256": "47cb5b490e706b30d962b85c961f2b72875a4df4ecf16c35449a8fca8b025b55",
+      "copy_transform": "none",
+      "git_head_blob": null,
+      "git_head_mode": null,
+      "dirty_overlay": null,
+      "classification": "validation-artifact",
+      "pinned_by": [
+        "ops/tools/lane-p-dispatch/dispatch.sha256",
+        "ops/tools/lane-p-protocol/package.sha256"
+      ]
+    },
+    {
+      "path": "ops/tools/lane-p-protocol/package.sha256",
+      "sha256": "a86ec51727ac71f3984ef7d5f13649afe2b95c8e1dc719468d357799a34abb1b",
+      "bytes": 413,
+      "checkout_sha256": "a86ec51727ac71f3984ef7d5f13649afe2b95c8e1dc719468d357799a34abb1b",
+      "copy_transform": "none",
+      "git_head_blob": null,
+      "git_head_mode": null,
+      "dirty_overlay": null,
+      "classification": "validation-artifact",
+      "pinned_by": [
+        "ops/tools/lane-p-dispatch/dispatch.sha256"
+      ]
+    },
+    {
+      "path": "ops/tools/lane-p-protocol/provenance.json",
+      "sha256": "85c3b448fb36e48f53eb05a4c3ea5d8c5f86351d476a42aaa9506847119572eb",
+      "bytes": 5404,
+      "checkout_sha256": "85c3b448fb36e48f53eb05a4c3ea5d8c5f86351d476a42aaa9506847119572eb",
+      "copy_transform": "none",
+      "git_head_blob": null,
+      "git_head_mode": null,
+      "dirty_overlay": null,
+      "classification": "validation-artifact",
+      "pinned_by": [
+        "ops/tools/lane-p-dispatch/dispatch.sha256",
+        "ops/tools/lane-p-protocol/package.sha256"
+      ]
+    },
+    {
+      "path": "scripts/dev",
+      "sha256": "c815d042a5528acc4f5b9ea98d6c22f95c846e19d7e05f56af6d844303aab77a",
+      "bytes": 655,
+      "checkout_sha256": "c815d042a5528acc4f5b9ea98d6c22f95c846e19d7e05f56af6d844303aab77a",
+      "copy_transform": "none",
+      "git_head_blob": "b000ca09b7ced65dd7e514e6a106b944d525ad77",
+      "git_head_mode": "100755",
+      "dirty_overlay": false,
+      "classification": "tracked-lifecycle-supplement",
+      "pinned_by": [],
+      "required_linux_mode": "0755"
+    },
+    {
+      "path": "scripts/dev.ps1",
+      "sha256": "ff6516b88fd7eb7c8d6ee96aa9ab20315a8130ed2ba0dc3abb85404599bb76e8",
+      "bytes": 890,
+      "checkout_sha256": "a8f3a92aa3ff951ff547b2d96fe65e601cdc3edba796c3b0e8fce028cb775dbd",
+      "copy_transform": "CRLF-to-LF matched existing pin",
+      "git_head_blob": "f22736fa09a119365728c84313bfd3a189c02514",
+      "git_head_mode": "100644",
+      "dirty_overlay": false,
+      "classification": "tracked-lifecycle-supplement",
+      "pinned_by": []
+    }
+  ]
+}

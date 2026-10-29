@@ -1,0 +1,43 @@
+Lane P activation repair: independent bounded code and dedicated design reviews both PASS, zero confirmed defects, 140 executable LOC / 155 including manifests, 0/KLOC; overlap counted once. All six hashes verified unchanged; dispatcher manifest 4509ce8417eb93167847a67093b435eb000e11b1e82755e8ddcd0803402cdb25. Authenticated six-file LF archive including gems.rb and proposed rerun commands prepared locally; see docs/evidence/be-01-r1-lane-p-rerun.md. Frontend r8 retains fleet-02 reservation. No remote staging, Docker rerun or ultrareviews; runtime and native Windows acceptance remain pending. Earlier review-pending statements are historical.
+
+Current Lane P result: FAILED before assertions (SSH exit=1, test_exit=1, cleanup_failed=0); child Ruby could not require minitest/mock. Independent worker and parent inventories confirm exact task resources absent, shared bases retained. Backend fleet reservation released to frontend r8. Six-file tools-only gem activation repair is frozen for parent review; no rerun until review and reservation return. Canonical source/test/harness remain unchanged. See docs/evidence/be-01-r1-lane-p-activation.md for hashes, regression prerequisite and cleanup evidence. Earlier pending/running statements below are historical. No native Windows acceptance or ultrareviews.
+
+Lane P package static reviews closed: two independent reviews, zero defects over 130 unique LOC (40 executable + 90 provenance), 0/KLOC. Separate dispatcher is frozen for bounded review at 116 executable LOC; see docs/evidence/be-01-r1-lane-p-dispatch.md. No execution; fleet reservation remains released. Linux pwsh and native Windows acceptance remain pending and distinct. Prior review-pending package statements below are historical.
+
+# Lane P tools proposal — frozen for bounded parent review
+
+Prepared only. No Docker build, image pull, host test, remote execution or ultrareview. Fleet reservation remains released. This package supplements the frozen Lane C/product/tools bytes; it does not modify their manifests or the canonical 52-source manifest. The earlier request for the user to select an image is superseded by this concrete selection.
+
+## Selected inputs and provenance
+
+Use the existing Ruby 3.4.11 slim-bookworm index digest `sha256:22165c5f904d76a8a02fbdd419d0269481369523fd66978232d16c88099730e2`, explicitly linux/amd64. Read-only Docker Hub registry API returned that exact Docker-Content-Digest and selected child manifest `sha256:b297f2323b1adbcfdc3dbd2708bda208c8b48282ec026a8709007843947b3429`. Its annotations identify [official Ruby Docker source](https://github.com/docker-library/ruby/tree/3f45e4c352eff67a95e61c8aa0bec55deee5a8fc/3.4/slim-bookworm), version 3.4.11-slim-bookworm. No Docker CLI was invoked.
+
+Select [PowerShell 7.4.20 LTS official release](https://github.com/PowerShell/PowerShell/releases/tag/v7.4.20), published 2026-09-08, release ID 385023873. Self-contained glibc Linux x64 archive asset ID 551205602, 72533071 bytes, SHA256 `ed8008345c7f5337f5e293145f5e243ce132e5ee4dfc24ac551c45a4b3092181`. Release notes and [GitHub asset metadata](https://api.github.com/repos/PowerShell/PowerShell/releases/tags/v7.4.20) agree. The archive itself has not been downloaded locally; Docker ADD must verify its bytes before extraction. This is an upstream checksum provenance check, not an independent signature attestation.
+
+[Microsoft container guidance](https://learn.microsoft.com/en-us/powershell/scripting/install/powershell-in-docker) points to .NET SDK images and deprecates older PowerShell-team images. An SDK image would add a second language build stack and still need Ruby. The standalone official archive preserves the existing Ruby baseline. [Microsoft Debian instructions](https://learn.microsoft.com/en-us/powershell/scripting/install/install-debian) identify the 7.4 LTS release and link binary archive installation. This proposed combination still needs Docker runtime verification; no compatibility pass is claimed.
+
+Debian packages come only from signed bookworm and bookworm-security snapshots at `20261010T000000Z`, with expiry checking disabled for those historical sources, not signature verification. Debian bookworm Release URL was reachable; complete dependency resolution remains untested. Runtime libraries supply .NET globalization/TLS/Kerberos/C++/compression support. No Docker client or socket is included. No new application dependency is introduced.
+
+Gem bytes are pinned using RubyGems version API SHA256 fields and ADD checksums: minitest 6.0.6, minitest-mock 5.27.0 and base64 0.3.0. API URLs follow `https://rubygems.org/api/v2/rubygems/<name>/versions/<version>.json`; captured metadata is in provenance.json. Minitest runtime requirements are drb ~>2.0 and prism ~>1.5; Ruby 3.4.11 sources include drb 2.2.1 ([bundled list](https://github.com/ruby/ruby/blob/v3_4_11/gems/bundled_gems)) and prism 1.5.3 ([version](https://github.com/ruby/ruby/blob/v3_4_11/prism/version.h)). `gem install --local` deliberately fails if dependencies are absent instead of fetching replacements.
+
+## Review boundary and frozen files
+
+Dockerfile plus checks.sh are the new executable review surface; provenance.json is metadata and package.sha256 binds all three. All bytes are UTF-8 LF. No changes to existing execution modules. No external bounded review completed yet; confirmed defect count/density not assessed.
+
+| File | Physical LOC | SHA256 |
+| --- | ---: | --- |
+| ops/tools/lane-p-protocol/Dockerfile | 29 | `90f475f81794453c6097bc0d34e1011180db487f5c56129470629ea7afbfd062` |
+| ops/tools/lane-p-protocol/checks.sh | 11 | `cf4fc142e453481fc5477038d5d280b2f3dd2b8b31c5baf3829b9034f69d8896` |
+| ops/tools/lane-p-protocol/provenance.json | 90 | `85c3b448fb36e48f53eb05a4c3ea5d8c5f86351d476a42aaa9506847119572eb` |
+
+Package manifest SHA256: `1ed3709b52ae53dd204fbde32a0b1577f42635835992e20e46e30b5b317365d7`.
+
+## Pending build and acceptance sequence
+
+1. Parent bounded review of this package and a separate minimal lifecycle adaptation before execution. Preserve existing reviewed lifecycle files; reuse their supported Buildx inventory, exact ownership recovery and bounded cleanup in a separately pinned Lane P dispatcher. Do not execute the synthetic tools parent unchanged: it builds a different context and runs different checks.
+2. Authenticate this package, unchanged harness SHA `5c011bd57503af6d17f570a3b2793e7e255c5c45bd50b79dcc6f5aeecc861701`, canonical 52-source manifest `03d590ddaa39b22c6b1851c9911405473c0b01b0a50fff08001144e66a14638b`, and five harness source pins before and after. Do not repin local CRLF sources. Dedicated build context is only ops/tools/lane-p-protocol; no repository COPY or credentials.
+3. Reacquire fleet ownership, verify short hostname Ubuntu-noble-latest-amd64-base and explicit default context. Dedicated labelled builder at 2 CPU / 2 GiB, using existing immutable BuildKit `moby/buildkit:buildx-stable-1@sha256:cec9f139f45e93c5c69c60f8b07cfad9f43f4ef6b6a6cd917527fea5ff2e3dea`. Build platform linux/amd64; capture build metadata, image ID and package versions. Builder needs network only for authenticated downloads. Overall lifecycle and each daemon call must be bounded as in the validated tools lifecycle. No actual output image digest exists yet; do not substitute a tag for the captured immutable ID.
+4. Run captured image ID with no socket, network none, read-only root/source, UID/GID 10001, 1 CPU / 1 GiB memory+swap, pids128, all caps dropped, no-new-privileges and /tmp rw,noexec,nosuid,nodev size128m mode1777. Keep HOME/DOTNET_CLI_HOME/TMPDIR at /tmp. Use the image entrypoint; do not bypass checks.sh. Outer test timeout120s/kill15s; unchanged harness has timeout90s/kill5s. No broad host/home mounts. Check bind readability for UID10001 before dispatch.
+5. Oracle: unchanged nine-test matrix, 48 assertions, zero failures/errors/skips. checks.sh rejects wrong UID/platform, missing tools, mismatched Ruby/PowerShell/gems or harness bytes before assertions. No runtime evidence is claimed for these guards yet. Capture original test exit separately from cleanup. Inspect exact ownership/mounts/caps before cleanup; retain uncertain resources. Remove only task containers, image, builder and cache with the validated lifecycle; record fresh independent inventories and host space. Keep shared inputs.
+
+This proves Linux pwsh pipeline/LASTEXITCODE behavior with the existing synthetic Docker function. It does not prove actual PowerShell Docker orchestration (Lane P2), native Windows filesystem/process behavior or all BE01 requirements. Product, Lane C and existing tools remain frozen; no fleet reservation acquired for preparation.

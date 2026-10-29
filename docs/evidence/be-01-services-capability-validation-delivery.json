@@ -1,0 +1,28 @@
+{
+    "archive":  "C:\\Users\\Tanzeel\\AppData\\Local\\Temp\\be01-recovery-validation-b328d81a-3b95-4bde-933e-c174238f5001.tar",
+    "archive_sha256":  "8fa39315af9d8e56ff15a0147f0cfd662a025c0771aa15bd150f1b8ef90f013f",
+    "manifest_sha256":  "3c388c9889c007055671592b3d4ad758d77eaf9817c2779fcfb36223b14e3318",
+    "members":  [
+                    "be01-capability-content-probe.sh",
+                    "be01-capability-image-recovery.sh",
+                    "be01-capability-volume-recovery.sh",
+                    "be01-capability-image-recovery-regression.sh",
+                    "profile.jq",
+                    "be-01-services-capability-volume-image-files.json",
+                    "be01-capability-validation-parent.sh",
+                    "be01-capability-validation-checks.sh",
+                    "be01-capability-validation-inventory.sh",
+                    "validation.sha256"
+                ],
+    "entries":  [
+                    "e0c8e2d50f224436e92fb5b6c9ceae6388ea5e1dc3a6f8490c02a047fd17d20c  be01-capability-content-probe.sh",
+                    "8ac8a690a9dd1e31a71b226bdf10d0cc9eca04381c94c51c0c1b771deb7b8348  be01-capability-image-recovery.sh",
+                    "cb9a1281dfa9a2ed34a6407b1b7012dbe1838ca39f12d3d0337d97338fb18be9  be01-capability-volume-recovery.sh",
+                    "aaccab391834af57f3f8e26dd2c3397caca27f92f6bde74e0b76aa4264b92f91  be01-capability-image-recovery-regression.sh",
+                    "d7e8a7d982b4e9bac6bbca3daf8f13494a8181a40d4d704dcd7a28fc93b9b633  profile.jq",
+                    "a727ce2126c4294b8481a9c85c146ac11fb8cf71e79d8100119531439bae1a42  be-01-services-capability-volume-image-files.json",
+                    "01ca66e2dd0332fd39c0b9ebfa8857eb594bef06216306475f8413785000cb75  be01-capability-validation-parent.sh",
+                    "eb2a90caf805b66caf2f7d3f0adecaa2a3a0ee5424f74f708fc85dad92a40edc  be01-capability-validation-checks.sh",
+                    "7ac8fee18a2b8ae164a61eb51cfa927db2e66e9923e2122d581b5d3a09b3733f  be01-capability-validation-inventory.sh"
+                ]
+}

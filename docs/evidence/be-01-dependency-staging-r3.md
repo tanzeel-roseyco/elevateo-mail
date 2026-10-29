@@ -1,0 +1,13 @@
+# Repaired additive staging: PASS
+
+Staging-only reservation consumed2026-10-12T00:42:03UTC and now RELEASED after independent final audit SSH0. Fresh host/context/source52/capacity/five-absent-target preflight SSH0; no conflicting task activity. Shared builder/state retained.
+
+Evidence: `/home/tanzeel/elevateo-mail-tests-20261012-ultra/be01-dependency-stage-r3-20261012-0045` (private0700). Authenticated launcher2c724d8a309446cdd5de184ab90827fc8d0a7c964e557d80a73c7797d891ca96 and orchestration3fb24873c048d63aa7e5b17cd3b8a72725af3d92d9639bd5663f8541b5c22536 before invocation. Delivery200b242786e02c92e3f808a9f03669f4a9ffb6bf196c41089b433bfb73c207df and reviewmanifest9d39e2e authenticated before parsing/deployment; exact five regular flat members and all member hashes verified. Identity supplement and tools archive also authenticated.
+
+First SSH stdin invocation authenticated scripts but CR appended to filename: exit127 before stager. Authorized direct fixed-path invocation then succeeded with repeated absent-target checks; no retry over existing targets. Final staging.log/status.txt: dependency_stage0, tools_stage0, exclusive_acceptance_creation0, identity_stage0, all source/package checks0, STAGING_EXIT0; SSH_STAGE0.
+
+Fresh independent reconciliation verified canonical52, adapter3044a0e2, fixtures028c90c2, tools844af34c, identity30ceb632 pins and every referenced hash; modes new directories0755/files0644, .acceptance0755, hosthome0750 unchanged. That read reached completion with component0 but trailing CR produced SSH127. Subsequent nested-shell audit command failed1 from argument quoting, not source corruption. Uploaded LF final audit then independently repeated all manifest checks and exact task inventories: SSH_FINAL0, INDEPENDENT_VERIFICATION_PASS. Parent separately verified identical source/package pins and canonical root0775 unchanged.
+
+No BE task containers/volumes exist; shared buildx_buildkit_fleet02 and state remain. No Docker workload, pull, test or cleanup mutation occurred. Before free bytes272811384832; final272861114368; raw shared-host delta+49729536, not attributable reclaimed space. Evidence and additive source retained.
+
+Local logs `%TEMP%/be01-dependency-r3-{preflight,stage-console,direct-console,reconciliation,final,final-clean}.log`; final LF audit `%TEMP%/be01-dependency-r3-final.sh`. Runtime UID access and all jq/Python/service tests remain pending. Nine dependency regressions remain NOT_RUN. Coordinator separately authorizes only next jq identity phase after this successful reconciliation; Python/full services remain blocked.

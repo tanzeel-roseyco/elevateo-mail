@@ -1,0 +1,3 @@
+1a12dd0feb2271b937cd0c2af305603a5a41603d59c8a5de51fa968dc444bae8  ops/tools/be01-services-app-check/parent-run.sh
+170a6d29ff559958baa8ced9cdd0ae878a8331744bc49ce1464fe461c1e60467  ops/tools/be01-services-app-check/checks.sh
+42aac7690a105cef719f7b0d9a30edf0b5003889d635bb918db27c8927778f44  ops/tools/be01-services-app-check/regression.sh
