@@ -1,0 +1,302 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 60;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		E1E70000000000000000B001 /* ElevateoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1E70000000000000000F001 /* ElevateoApp.swift */; };
+		E1E70000000000000000B002 /* AppConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1E70000000000000000F002 /* AppConfig.swift */; };
+		E1E70000000000000000B003 /* AppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1E70000000000000000F003 /* AppModel.swift */; };
+		E1E70000000000000000B004 /* KeychainTokenStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1E70000000000000000F004 /* KeychainTokenStore.swift */; };
+		E1E70000000000000000B005 /* LoadState.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1E70000000000000000F005 /* LoadState.swift */; };
+		E1E70000000000000000B006 /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1E70000000000000000F006 /* SignInView.swift */; };
+		E1E70000000000000000B007 /* MailboxListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1E70000000000000000F007 /* MailboxListView.swift */; };
+		E1E70000000000000000B008 /* ThreadListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1E70000000000000000F008 /* ThreadListView.swift */; };
+		E1E70000000000000000B009 /* ThreadDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1E70000000000000000F009 /* ThreadDetailView.swift */; };
+		E1E70000000000000000B00A /* ReplyComposerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1E70000000000000000F00A /* ReplyComposerView.swift */; };
+		E1E70000000000000000B00B /* ElevateoCore in Frameworks */ = {isa = PBXBuildFile; productRef = E1E70000000000000000D001 /* ElevateoCore */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		E1E70000000000000000A001 /* Elevateo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Elevateo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E1E70000000000000000F001 /* ElevateoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElevateoApp.swift; sourceTree = "<group>"; };
+		E1E70000000000000000F002 /* AppConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConfig.swift; sourceTree = "<group>"; };
+		E1E70000000000000000F003 /* AppModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppModel.swift; sourceTree = "<group>"; };
+		E1E70000000000000000F004 /* KeychainTokenStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainTokenStore.swift; sourceTree = "<group>"; };
+		E1E70000000000000000F005 /* LoadState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadState.swift; sourceTree = "<group>"; };
+		E1E70000000000000000F006 /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
+		E1E70000000000000000F007 /* MailboxListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailboxListView.swift; sourceTree = "<group>"; };
+		E1E70000000000000000F008 /* ThreadListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreadListView.swift; sourceTree = "<group>"; };
+		E1E70000000000000000F009 /* ThreadDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreadDetailView.swift; sourceTree = "<group>"; };
+		E1E70000000000000000F00A /* ReplyComposerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyComposerView.swift; sourceTree = "<group>"; };
+		E1E70000000000000000F00B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		E1E700000000000000000F02 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E1E70000000000000000B00B /* ElevateoCore in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		E1E700000000000000000001 /* Project */ = {
+			isa = PBXGroup;
+			children = (
+				E1E700000000000000000002 /* Elevateo */,
+				E1E700000000000000000004 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		E1E700000000000000000002 /* Elevateo */ = {
+			isa = PBXGroup;
+			children = (
+				E1E700000000000000000003 /* Sources */,
+				E1E70000000000000000F00B /* Info.plist */,
+			);
+			path = Elevateo;
+			sourceTree = "<group>";
+		};
+		E1E700000000000000000003 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				E1E70000000000000000F001 /* ElevateoApp.swift */,
+				E1E70000000000000000F002 /* AppConfig.swift */,
+				E1E70000000000000000F003 /* AppModel.swift */,
+				E1E70000000000000000F004 /* KeychainTokenStore.swift */,
+				E1E70000000000000000F005 /* LoadState.swift */,
+				E1E70000000000000000F006 /* SignInView.swift */,
+				E1E70000000000000000F007 /* MailboxListView.swift */,
+				E1E70000000000000000F008 /* ThreadListView.swift */,
+				E1E70000000000000000F009 /* ThreadDetailView.swift */,
+				E1E70000000000000000F00A /* ReplyComposerView.swift */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		E1E700000000000000000004 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E1E70000000000000000A001 /* Elevateo.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		E1E700000000000000000010 /* Elevateo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E1E700000000000000000C03 /* Build configuration list for PBXNativeTarget "Elevateo" */;
+			buildPhases = (
+				E1E700000000000000000F01 /* Sources */,
+				E1E700000000000000000F02 /* Frameworks */,
+				E1E700000000000000000F03 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Elevateo;
+			packageProductDependencies = (
+				E1E70000000000000000D001 /* ElevateoCore */,
+			);
+			productName = Elevateo;
+			productReference = E1E70000000000000000A001 /* Elevateo.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		E1E700000000000000000000 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1500;
+				LastUpgradeCheck = 1500;
+				TargetAttributes = {
+					E1E700000000000000000010 = {
+						CreatedOnToolsVersion = 15.0;
+					};
+				};
+			};
+			buildConfigurationList = E1E700000000000000000C00 /* Build configuration list for PBXProject "Elevateo" */;
+			compatibilityVersion = "Xcode 15.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = E1E700000000000000000001 /* Project */;
+			packageReferences = (
+				E1E70000000000000000E001 /* XCLocalSwiftPackageReference "ElevateoCore" */,
+			);
+			productRefGroup = E1E700000000000000000004 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				E1E700000000000000000010 /* Elevateo */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		E1E700000000000000000F03 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		E1E700000000000000000F01 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E1E70000000000000000B001 /* ElevateoApp.swift in Sources */,
+				E1E70000000000000000B002 /* AppConfig.swift in Sources */,
+				E1E70000000000000000B003 /* AppModel.swift in Sources */,
+				E1E70000000000000000B004 /* KeychainTokenStore.swift in Sources */,
+				E1E70000000000000000B005 /* LoadState.swift in Sources */,
+				E1E70000000000000000B006 /* SignInView.swift in Sources */,
+				E1E70000000000000000B007 /* MailboxListView.swift in Sources */,
+				E1E70000000000000000B008 /* ThreadListView.swift in Sources */,
+				E1E70000000000000000B009 /* ThreadDetailView.swift in Sources */,
+				E1E70000000000000000B00A /* ReplyComposerView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		E1E700000000000000000C01 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ELEVATEO_API_BASE_URL = "https://mail.company.example";
+				ELEVATEO_SSO_AUTHORIZATION_ENDPOINT = "https://sso.company.example/application/o/authorize/";
+				ELEVATEO_SSO_CLIENT_ID = "elevateo-ios";
+				ELEVATEO_SSO_REDIRECT_URI = "elevateo://auth/callback";
+				ENABLE_TESTABILITY = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_STRICT_CONCURRENCY = complete;
+				SWIFT_VERSION = 6.0;
+			};
+			name = Debug;
+		};
+		E1E700000000000000000C02 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ELEVATEO_API_BASE_URL = "https://mail.company.example";
+				ELEVATEO_SSO_AUTHORIZATION_ENDPOINT = "https://sso.company.example/application/o/authorize/";
+				ELEVATEO_SSO_CLIENT_ID = "elevateo-ios";
+				ELEVATEO_SSO_REDIRECT_URI = "elevateo://auth/callback";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_STRICT_CONCURRENCY = complete;
+				SWIFT_VERSION = 6.0;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		E1E700000000000000000C04 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGNING_ALLOWED = NO;
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Elevateo/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = co.elevateo.mail.ios;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		E1E700000000000000000C05 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGNING_ALLOWED = NO;
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Elevateo/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = co.elevateo.mail.ios;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		E1E700000000000000000C00 /* Build configuration list for PBXProject "Elevateo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E1E700000000000000000C01 /* Debug */,
+				E1E700000000000000000C02 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E1E700000000000000000C03 /* Build configuration list for PBXNativeTarget "Elevateo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E1E700000000000000000C04 /* Debug */,
+				E1E700000000000000000C05 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		E1E70000000000000000E001 /* XCLocalSwiftPackageReference "ElevateoCore" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ElevateoCore;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		E1E70000000000000000D001 /* ElevateoCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ElevateoCore;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = E1E700000000000000000000 /* Project object */;
+}

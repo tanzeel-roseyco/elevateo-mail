@@ -4,7 +4,7 @@ import Foundation
 
 /// Opaque bootstrap/CSRF token. The contract constrains it to 16...256 URL-safe characters;
 /// we enforce that at the decode boundary so a tampered payload fails as a typed error.
-public struct OpaqueToken: Sendable, Equatable, Codable {
+public struct OpaqueToken: Sendable, Hashable, Codable {
     public let rawValue: String
 
     public init(validating raw: String) throws {
@@ -26,13 +26,13 @@ public struct OpaqueToken: Sendable, Equatable, Codable {
 }
 
 /// UTC timestamp; contract requires an ISO-8601 date-time ending in "Z".
-public struct UTCTimestamp: Sendable, Equatable, Codable {
+public struct UTCTimestamp: Sendable, Hashable, Codable {
     public let rawValue: String
     public let date: Date
 
     public init(from decoder: Decoder) throws {
         let raw = try decoder.singleValueContainer().decode(String.self)
-        guard raw.hasSuffix("Z"), let parsed = UTCTimestamp.parser.date(from: raw) ?? UTCTimestamp.fractionalParser.date(from: raw) else {
+        guard raw.hasSuffix("Z"), let parsed = UTCTimestamp.parse(raw) else {
             throw ModelValidationError.invalidTimestamp(raw)
         }
         self.rawValue = raw
@@ -44,17 +44,16 @@ public struct UTCTimestamp: Sendable, Equatable, Codable {
         try c.encode(rawValue)
     }
 
-    // AIDEV-NOTE: two parsers because the server may emit fractional seconds; ISO8601DateFormatter cannot do both at once.
-    private static let parser: ISO8601DateFormatter = {
-        let f = ISO8601DateFormatter()
-        f.formatOptions = [.withInternetDateTime]
-        return f
-    }()
-    private static let fractionalParser: ISO8601DateFormatter = {
-        let f = ISO8601DateFormatter()
-        f.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
-        return f
-    }()
+    // AIDEV-NOTE: formatters built per parse: ISO8601DateFormatter is not reliably Sendable on Linux,
+    // and it cannot accept both plain and fractional seconds at once.
+    private static func parse(_ raw: String) -> Date? {
+        let plain = ISO8601DateFormatter()
+        plain.formatOptions = [.withInternetDateTime]
+        if let date = plain.date(from: raw) { return date }
+        let fractional = ISO8601DateFormatter()
+        fractional.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        return fractional.date(from: raw)
+    }
 }
 
 public enum ModelValidationError: Error, Sendable, Equatable {
@@ -62,7 +61,7 @@ public enum ModelValidationError: Error, Sendable, Equatable {
     case invalidTimestamp(String)
 }
 
-public struct Address: Sendable, Equatable, Codable {
+public struct Address: Sendable, Hashable, Codable {
     public let displayName: String?
     public let address: String?
 
@@ -77,7 +76,7 @@ public struct Address: Sendable, Equatable, Codable {
     }
 }
 
-public struct Capabilities: Sendable, Equatable, Codable {
+public struct Capabilities: Sendable, Hashable, Codable {
     public let read: Bool
     public let compose: Bool
     public let approveSend: Bool
@@ -90,7 +89,7 @@ public struct Capabilities: Sendable, Equatable, Codable {
     }
 }
 
-public struct Mailbox: Sendable, Equatable, Codable, Identifiable {
+public struct Mailbox: Sendable, Hashable, Codable, Identifiable {
     public let id: UUID
     public let displayName: String
     public let displayAddress: String?
@@ -152,7 +151,7 @@ public enum ThreadFolder: String, Sendable, Codable {
     case inbox, archive, spam, trash
 }
 
-public struct ThreadSummary: Sendable, Equatable, Codable, Identifiable {
+public struct ThreadSummary: Sendable, Hashable, Codable, Identifiable {
     public let id: UUID
     public let mailboxID: UUID
     public let subject: String?

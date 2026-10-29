@@ -24,7 +24,8 @@ public protocol HTTPTransport: Sendable {
     func send(_ request: URLRequest) async throws -> (Data, HTTPURLResponse)
 }
 
-public struct URLSessionTransport: HTTPTransport {
+// URLSession is documented thread-safe; @unchecked because Linux Foundation lacks the Sendable annotation.
+public struct URLSessionTransport: HTTPTransport, @unchecked Sendable {
     let session: URLSession
 
     public init(session: URLSession = .shared) {
@@ -96,13 +97,13 @@ public enum ThreadFilter: String, Sendable, CaseIterable {
 
 public struct ElevateoAPIClient: Sendable {
     public let baseURL: URL
-    let transport: HTTPTransport
+    let transport: any HTTPTransport
     let timeout: TimeInterval
     let requestIDProvider: @Sendable () -> String
 
     public init(
         baseURL: URL,
-        transport: HTTPTransport = URLSessionTransport(),
+        transport: any HTTPTransport = URLSessionTransport(),
         timeout: TimeInterval = 15,
         requestIDProvider: @escaping @Sendable () -> String = { UUID().uuidString.lowercased() }
     ) {
