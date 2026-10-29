@@ -2405,3 +2405,7 @@ Readiness repair independently reviewed: 57 LOC, 0 new defects, 0/KLOC; prior fi
 ## Completion user quotas and readiness - 2026-10-29
 
 Bounded quota review: 128 LOC, one missing cross-mailbox concurrency regression (7.81 defects/KLOC). Added the competing-mailbox test. Follow-up 69 LOC found one transaction-visibility defect in its oracle (14.49/KLOC); corrected assertions to observe committed winner totals. Final independent review: 71 LOC, zero new defects (0/KLOC). Readiness review: 117 LOC, one unbounded dependency body defect (8.55/KLOC). Header-only response handling and total timeout repair reviewed over 100 LOC, zero new defects (0/KLOC). Counts overlap and do not represent unique coverage. Runtime, strict types and lint remain unexecuted until the final local Docker gate. No fleet usage, deployment or provider calls.
+
+## Portable Mox protocol harness review - 2026-10-29
+
+Independent adversarial review covered 105 LOC across the container definition, runner and admission tests. One defect (9.52 defects/KLOC): a ready marker bypassed fixture liveness validation. The runner now polls before accepting readiness, and a stale-marker regression was added. No Docker build or test has run; runtime acceptance remains pending.
