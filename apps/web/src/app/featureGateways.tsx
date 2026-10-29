@@ -6,6 +6,7 @@
 // AIDEV-NOTE: The production entry injects implemented V2 ports; isolated hosts may omit them.
 // An omitted capability must stay unavailable rather than switch to fixture data.
 import { createContext, useContext, type ReactNode } from 'react'
+import type { AgentsBridge } from '@/features/assistant/bridge'
 import type { OutreachGateway } from '@/features/outreach/contract'
 import type { DirectMessageRead } from '@/features/thread/ThreadPage'
 import type { AssigneeOptionsReadPort } from '@/data/v2AssigneeOptionsGateway'
@@ -31,6 +32,11 @@ export interface FeatureGateways {
    * state instead of a local save that could be mistaken for server persistence.
    */
   readonly simulatedSettings?: true
+  /**
+   * Desktop in-app agents bridge for the assistant panel (FC-MAC). Normally unset: the panel
+   * detects the typed desktop capability itself; tests and fixture hosts inject a fake here.
+   */
+  readonly assistant?: AgentsBridge
 }
 
 const NONE: FeatureGateways = {}
