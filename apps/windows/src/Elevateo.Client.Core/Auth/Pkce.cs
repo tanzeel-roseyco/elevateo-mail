@@ -20,10 +20,13 @@ public sealed class PkceMaterial
     public static PkceMaterial Create()
     {
         var verifier = Base64Url(RandomNumberGenerator.GetBytes(48)); // 64 chars, within RFC 43..128
-        var challenge = Base64Url(SHA256.HashData(Encoding.ASCII.GetBytes(verifier)));
+        var challenge = ChallengeFor(verifier);
         var state = Base64Url(RandomNumberGenerator.GetBytes(24));
         return new PkceMaterial(verifier, challenge, state);
     }
+
+    /// <summary>S256 challenge for a verifier (checked against apps/shared/auth-conformance-vectors.json).</summary>
+    public static string ChallengeFor(string verifier) => Base64Url(SHA256.HashData(Encoding.ASCII.GetBytes(verifier)));
 
     private static string Base64Url(byte[] bytes) =>
         Convert.ToBase64String(bytes).TrimEnd('=').Replace('+', '-').Replace('/', '_');

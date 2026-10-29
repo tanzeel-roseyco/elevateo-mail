@@ -1,0 +1,20 @@
+{
+  "_comment": "Shared native sign-in conformance vectors. Consumed by apps/native (Rust), apps/windows (C#) and apps/ios (Swift) tests so the three PKCE clients cannot drift. Change only with all three suites.",
+  "version": 1,
+  "pkce_s256": [
+    { "source": "RFC 7636 appendix B", "verifier": "dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk", "challenge": "E9Melhoa2OwvFrEMTJguCHaoeK1t8URWbuGJSstw-cM" }
+  ],
+  "identity_provider_endpoints": [
+    { "url": "https://sso.company.org/application/o/authorize/", "accepted": true },
+    { "url": "https://sso.company.org:8443/application/o/authorize/", "accepted": true },
+    { "url": "http://sso.company.org/application/o/authorize/", "accepted": false, "reason": "cleartext" },
+    { "url": "https://user:secret@sso.company.org/application/o/authorize/", "accepted": false, "reason": "embedded credentials" },
+    { "url": "ftp://sso.company.org/application/o/authorize/", "accepted": false, "reason": "not https" }
+  ],
+  "native_session_exchange": {
+    "method": "POST",
+    "path": "/v1/native/sessions",
+    "request_fields": ["code", "code_verifier", "redirect_uri", "client_id"],
+    "response_fields": ["access_token", "token_type", "expires_in", "refresh_token"]
+  }
+}

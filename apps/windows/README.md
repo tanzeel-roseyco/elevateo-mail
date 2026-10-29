@@ -55,7 +55,9 @@ docker run --rm -v "$PWD/apps/windows:/workspace" elevateo-win-build \
 
 Output lands in `apps/windows/artifacts/`. The API base URL ships as the placeholder
 `https://mail.company.example` in `appsettings.json`; override with `ELEVATEO_API_BASE_URL`
-(plus `ELEVATEO_OIDC_AUTHORIZE_URL`, `ELEVATEO_OIDC_TOKEN_URL`, `ELEVATEO_OIDC_CLIENT_ID`).
+(plus `ELEVATEO_OIDC_AUTHORIZE_URL`, `ELEVATEO_OIDC_CLIENT_ID`). The authorization code is
+exchanged with the Elevateo server at `POST <api base>/v1/native/sessions` (proposed contract,
+`docs/contract-requests.md` §2), never directly with the identity provider.
 No secrets are stored in configuration.
 
 ## Known contract gaps (desktop)

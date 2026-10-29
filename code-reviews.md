@@ -2,7 +2,7 @@
 
 Adversarial reviewers: Codex CLI `codex exec -m gpt-6-astra -c model_reasoning_effort=low`, launched from PowerShell, read-only in a detached review worktree at `5218a274` (worktree verified clean afterwards). Model and effort were verified from each run's header (`model: gpt-6-astra`, `reasoning effort: low`). Each packet holds at most 380 changed lines. The rubric is the user's full review system prompt, verbatim, plus STANDARDS.md conformance; formatting is left to linters. Excluded as generated or boilerplate: `apps/ios/Elevateo.xcodeproj/project.pbxproj`, `apps/windows/Elevateo.Windows.sln`, `apps/windows/VERSION`, `.gitignore`. Full findings: [review-findings-wave1.md](docs/completion/frontend-completion-20261029/review-findings-wave1.md).
 
-**Wave 1 status: 23 of 34 packets complete; P24–P34 did not run** because Claude Code stopped the background review job when the host ran critically low on memory. Completed: 6280 lines, 65 defects (HIGH 18, MEDIUM 43, LOW 4), **10.35 defects/KLOC**. All findings are open and not yet repaired.
+**Wave 1 status: 23 of 34 packets complete; P24–P34 did not run** because Claude Code stopped the background review job when the host ran critically low on memory. Completed: 6280 lines, 65 defects (HIGH 18, MEDIUM 43, LOW 4), **10.35 defects/KLOC**. Repair dispositions are under "Repairs" below.
 
 | Packet | Scope | LOC | Defects | Defects/KLOC | Disposition |
 | --- | --- | ---: | ---: | ---: | --- |
@@ -56,7 +56,40 @@ Reviewer: Claude Code `claude-fable-5`, low effort (verified from result metadat
 5. The IdP-in-WebView risk acceptance is undocumented.
 6. Shared auth conformance vectors are needed across Rust/C#/Swift.
 
-Status: open.
+Status: design defects 1 and 3–6 repaired in batch R1 (below); 2 open.
+
+### Repairs (step 1 of the 2026-10-29 resume order)
+
+Defect numbers are the order of the findings within each packet in review-findings-wave1.md. Every repair has a regression test unless marked doc-only. Tests run in the final local Docker pass.
+
+**Batch R1 — native updater, loopback login, desktop host wiring, auth alignment** (commit "Fix native updater rollback, loopback login bounds and desktop host wiring"):
+
+| Finding | Repair | Regression test |
+| --- | --- | --- |
+| P13-1 HIGH test does not compile | `matches!` on the exchange result | `auth.rs` test module compiles and runs |
+| P13-2 MED issuer path joined into authorize URL | authorize URL built from the issuer origin | `authorize_url_ignores_the_issuer_application_path` |
+| P13-3 HIGH insecure issuer accepted | https, no userinfo, else `InvalidIssuer`; command rejects before opening a socket | `authorize_url_rejects_cleartext_and_credential_issuers`, shared vectors |
+| P13-4 MED abandoned listener never stops | non-blocking accept with deadline and `ListenerHandle::cancel`; `abandon()` cancels | `cancelled_or_expired_listener_stops_and_disconnects_the_receiver`, `abandoning_the_login_cancels_its_listener` |
+| P13-5 HIGH unbounded callback read | 8 KiB request-line cap, 2 s read timeout, 400 on overflow | `oversized_request_line_is_rejected_and_listener_keeps_serving`, `stalled_client_cannot_block_the_genuine_callback` |
+| P14-1 MED listener failure paths untested | stray 404, provider error, oversized, stalled, cancelled | as above |
+| P15-2 MED missing python3 skipped validation | python3 required for every run | `test_missing_python3_fails_before_validation_or_build` |
+| P16-1, P17-1, P18-1 HIGH update rolled back before its first launch | phased marker Installed → Launched → Ready, written only after a successful install; failed install removes the archive | `healthy_update_gets_its_first_launch_and_is_kept_after_reporting_ready`, `update_that_never_reaches_ready_rolls_back_on_the_following_start` |
+| P16-2 HIGH busy gate never fed | web reports draft/send state (`desktopHost.ts`); host blocks until a complete report | `install_is_blocked_while_busy_or_before_the_web_ui_reported`, `desktopHost.test.ts` |
+| P16-3 HIGH busy state changes during download | download and install split; gate re-read right before install | gate unit test (install path is plugin I/O, covered by the re-check call site) |
+| P16-4, P17-4 MED probe ignores port | probe uses `port_or_known_default()` | covered by origin validation tests; call-site change |
+| P16-5 LOW emit errors discarded | `emit_or_log` for every native event | call-site change (no Tauri runtime in unit tests) |
+| P17-2 HIGH native Sign Out left web session | `useDesktopSignOut` runs the web `signOut('local')` | `desktopHost.test.ts` sign-out case |
+| P17-3 MED page load certified health | init-script load ping removed; `useDesktopReady` from the signed-in shell / sign-in page; failures logged | `desktopHost.test.ts` readiness case |
+| P18-2 MED marker read errors became "none" | `read_marker` returns `io::Result<Option<_>>`; startup reports and keeps the archive | `corrupt_or_unreadable_marker_is_an_error_not_absence` |
+| P18-3 MED cross-volume restore | archive copied to staging beside the bundle, same-volume swap, archive kept until success | `restore_copies_from_a_separate_archive_location_and_cleans_up`, `failed_restore_keeps_the_current_bundle_and_leaves_no_staging` |
+| P09-1 MED callback destination unchecked | scheme/host/port/path must equal the redirect URI; mismatch does not burn the attempt | `testCallbackToAnotherDestinationIsRejectedWithoutBurningTheAttempt` |
+| P09-2 HIGH cleartext authorization endpoint | `isAcceptableEndpoint` checked before building the URL | `testCleartextAuthorizationEndpointIsRejectedBeforeBuildingTheURL`, shared vectors |
+| Design 1 | `READY_WINDOW_SECS` removed; "never ready during its launch" is the failure signal | lifecycle tests above |
+| Design 3, 5 | sign-in paths and IdP-in-WebView risk acceptance recorded in `apps/native/README.md` | doc-only |
+| Design 4 | manual restore procedure in `apps/native/README.md` | doc-only |
+| Design 6 | `apps/shared/auth-conformance-vectors.json` read by the Rust, C# and Swift suites; Windows now exchanges codes at `POST /v1/native/sessions` and rejects credentialed endpoints | `conforms_to_shared_auth_vectors`, `Client_ConformsToSharedAuthVectors`, `testConformsToSharedAuthVectors` |
+
+Also found while repairing (not in wave 1): the web app had no listener for `host://update`, so "Check for Updates…" showed nothing. It is now shown as an "App update" status notice (test in `desktopHost.test.ts`). Follow-up, not repaired: the Mac PKCE broker (`auth_begin_login`) has no web caller, because the Mac signs in through WebView SSO; it is kept for parity until the native exchange exists.
 
 ## Self-hosted continuation reviews — 2026-10-23
 

@@ -13,6 +13,8 @@ public enum AuthFlowError: Error, Sendable, Equatable {
     case noPendingAuthorization
     case randomSourceFailure
     case invalidConfiguration(String)
+    /// The callback URL is not the configured redirect URI (wrong scheme, host, port or path).
+    case unexpectedCallbackDestination
 }
 
 public struct OIDCConfiguration: Sendable, Equatable {
@@ -26,6 +28,26 @@ public struct OIDCConfiguration: Sendable, Equatable {
         self.clientID = clientID
         self.redirectURI = redirectURI
         self.scopes = scopes
+    }
+
+    /// An identity-provider endpoint must be HTTPS with a host and no embedded credentials
+    /// (same rule as apps/shared/auth-conformance-vectors.json for the Mac and Windows clients).
+    public static func isAcceptableEndpoint(_ url: URL) -> Bool {
+        guard let components = URLComponents(url: url, resolvingAgainstBaseURL: false) else { return false }
+        return components.scheme?.lowercased() == "https"
+            && !(components.host ?? "").isEmpty
+            && components.user == nil
+            && components.password == nil
+    }
+
+    /// True when `url` arrives at exactly the configured redirect destination (query ignored).
+    func isRedirectDestination(_ url: URL) -> Bool {
+        guard let actual = URLComponents(url: url, resolvingAgainstBaseURL: false),
+              let expected = URLComponents(url: redirectURI, resolvingAgainstBaseURL: false) else { return false }
+        return actual.scheme?.lowercased() == expected.scheme?.lowercased()
+            && actual.host?.lowercased() == expected.host?.lowercased()
+            && actual.port == expected.port
+            && actual.path == expected.path
     }
 }
 
@@ -63,8 +85,10 @@ public actor OIDCAuthFlow {
         guard stateBytes.count == 32 else { throw AuthFlowError.randomSourceFailure }
         let state = PKCEPair.base64URL(Data(stateBytes))
 
-        guard var components = URLComponents(url: configuration.authorizationEndpoint, resolvingAgainstBaseURL: false) else {
-            throw AuthFlowError.invalidConfiguration("authorization endpoint is not a valid URL")
+        // Checked before any state or PKCE challenge is placed in a URL that could travel in cleartext.
+        guard OIDCConfiguration.isAcceptableEndpoint(configuration.authorizationEndpoint),
+              var components = URLComponents(url: configuration.authorizationEndpoint, resolvingAgainstBaseURL: false) else {
+            throw AuthFlowError.invalidConfiguration("authorization endpoint must be an HTTPS URL with a host and no credentials")
         }
         components.queryItems = (components.queryItems ?? []) + [
             URLQueryItem(name: "response_type", value: "code"),
@@ -88,6 +112,9 @@ public actor OIDCAuthFlow {
     /// provider error so an attacker-supplied error on a stale callback cannot cancel a live attempt.
     public func handleCallback(_ url: URL, now: Date = Date()) throws -> AuthorizedCode {
         guard let attempt = pending else { throw AuthFlowError.replayed }
+        // A callback to any other destination is not ours; like a wrong state it does not burn
+        // the pending attempt, so it cannot be used to deny the real callback.
+        guard configuration.isRedirectDestination(url) else { throw AuthFlowError.unexpectedCallbackDestination }
 
         let items = URLComponents(url: url, resolvingAgainstBaseURL: false)?.queryItems ?? []
         func value(_ name: String) -> String? { items.first(where: { $0.name == name })?.value }

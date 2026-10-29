@@ -1,4 +1,5 @@
 using System.Net;
+using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -8,7 +9,7 @@ using Elevateo.Client.Core.Configuration;
 
 namespace Elevateo.Client.Core.Auth;
 
-/// <summary>Validated token endpoint response (OIDC/Authentik).</summary>
+/// <summary>Validated native-session response (proposed POST /v1/native/sessions).</summary>
 public sealed record TokenResponse
 {
     [JsonPropertyName("access_token")] public required string AccessToken { get; init; }
@@ -16,6 +17,13 @@ public sealed record TokenResponse
     [JsonPropertyName("expires_in")] public required int ExpiresIn { get; init; }
     [JsonPropertyName("refresh_token")] public string? RefreshToken { get; init; }
 }
+
+/// <summary>Body of the proposed POST /v1/native/sessions code exchange.</summary>
+public sealed record NativeSessionRequest(
+    [property: JsonPropertyName("code")] string Code,
+    [property: JsonPropertyName("code_verifier")] string CodeVerifier,
+    [property: JsonPropertyName("redirect_uri")] string RedirectUri,
+    [property: JsonPropertyName("client_id")] string ClientId);
 
 public sealed record SignInSuccess(string AccessToken, DateTimeOffset AccessExpiresAt, string? RefreshToken);
 
@@ -119,16 +127,13 @@ public sealed class LoopbackAuthenticator
     private async Task<SignInResult> ExchangeCodeAsync(string code, string redirectUri, string verifier, CancellationToken ct)
     {
         using var http = new HttpClient(_tokenHandler, disposeHandler: false) { Timeout = _config.RequestTimeout };
-        using var request = new HttpRequestMessage(HttpMethod.Post, _config.OidcTokenEndpoint)
+        // AIDEV-NOTE: the server, not this client, redeems the code with the IdP and binds it to the
+        // verifier/redirect/client (contract-requests §2, shared with the Mac and iOS clients).
+        using var request = new HttpRequestMessage(HttpMethod.Post, _config.NativeSessionsEndpoint)
         {
-            Content = new FormUrlEncodedContent(new Dictionary<string, string>
-            {
-                ["grant_type"] = "authorization_code",
-                ["code"] = code,
-                ["redirect_uri"] = redirectUri,
-                ["client_id"] = _config.OidcClientId,
-                ["code_verifier"] = verifier,
-            }),
+            Content = JsonContent.Create(
+                new NativeSessionRequest(code, verifier, redirectUri, _config.OidcClientId),
+                ApiJsonContext.Default.NativeSessionRequest),
         };
 
         HttpResponseMessage response;

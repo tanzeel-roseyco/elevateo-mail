@@ -9,6 +9,7 @@
 // recovering frame and the keyed ProtectedShell; cleared on sign-out and on a principal change.
 import { createContext, useContext, useEffect, useRef, type ReactNode } from 'react'
 import { hasUnresolvedAttempt, isDirty, type DraftBuffer } from '@/domain/draftOperation'
+import { reportDesktopBusy } from './desktopHost'
 import { useSession } from './session'
 
 export interface DraftIntent {
@@ -83,6 +84,8 @@ export function DraftIntentProvider({ children }: { children: ReactNode }) {
     }
     const sync = () => {
       const needed = [...entriesRef.current.values()].some((intent) => isDraftIntentDirty(intent) || hasUnresolvedAttempt(intent.buffer))
+      // The same condition that guards a tab close also blocks a desktop update install.
+      reportDesktopBusy('unsavedDraft', needed)
       if (needed === registered) return
       if (needed) window.addEventListener('beforeunload', warn)
       else window.removeEventListener('beforeunload', warn)

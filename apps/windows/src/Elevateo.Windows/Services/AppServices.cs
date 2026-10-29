@@ -49,7 +49,6 @@ public sealed class AppServices
         return new AppServices(ClientConfiguration.Create(
             apiBase,
             Environment.GetEnvironmentVariable("ELEVATEO_OIDC_AUTHORIZE_URL") ?? Read("oidcAuthorizeEndpoint"),
-            Environment.GetEnvironmentVariable("ELEVATEO_OIDC_TOKEN_URL") ?? Read("oidcTokenEndpoint"),
             Environment.GetEnvironmentVariable("ELEVATEO_OIDC_CLIENT_ID") ?? Read("oidcClientId")));
     }
 

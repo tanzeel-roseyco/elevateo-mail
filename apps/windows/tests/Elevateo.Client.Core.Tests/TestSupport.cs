@@ -30,7 +30,6 @@ public static class TestConfig
     public static ClientConfiguration Create() => ClientConfiguration.Create(
         "https://mail.test.example",
         "https://mail.test.example/application/o/authorize/",
-        "https://mail.test.example/application/o/token/",
         "elevateo-windows-desktop",
         TimeSpan.FromSeconds(10));
 }

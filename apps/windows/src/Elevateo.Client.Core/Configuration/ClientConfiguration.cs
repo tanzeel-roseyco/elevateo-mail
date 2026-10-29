@@ -5,15 +5,15 @@ public sealed class ClientConfiguration
 {
     public Uri ApiBaseUri { get; }
     public Uri OidcAuthorizeEndpoint { get; }
-    public Uri OidcTokenEndpoint { get; }
+    /// <summary>Server-side code exchange (docs/contract-requests.md §2), derived from the API base.</summary>
+    public Uri NativeSessionsEndpoint => new(ApiBaseUri, "v1/native/sessions");
     public string OidcClientId { get; }
     public TimeSpan RequestTimeout { get; }
 
-    private ClientConfiguration(Uri apiBaseUri, Uri authorize, Uri token, string clientId, TimeSpan timeout)
+    private ClientConfiguration(Uri apiBaseUri, Uri authorize, string clientId, TimeSpan timeout)
     {
         ApiBaseUri = apiBaseUri;
         OidcAuthorizeEndpoint = authorize;
-        OidcTokenEndpoint = token;
         OidcClientId = clientId;
         RequestTimeout = timeout;
     }
@@ -25,13 +25,11 @@ public sealed class ClientConfiguration
     public static ClientConfiguration Create(
         string apiBaseUrl,
         string oidcAuthorizeEndpoint,
-        string oidcTokenEndpoint,
         string oidcClientId,
         TimeSpan? requestTimeout = null)
     {
         var api = ParseEndpoint(apiBaseUrl, nameof(apiBaseUrl));
         var authorize = ParseEndpoint(oidcAuthorizeEndpoint, nameof(oidcAuthorizeEndpoint));
-        var token = ParseEndpoint(oidcTokenEndpoint, nameof(oidcTokenEndpoint));
         if (string.IsNullOrWhiteSpace(oidcClientId) || oidcClientId.Length > 256)
         {
             throw new ArgumentException("OIDC client id must be 1..256 characters.", nameof(oidcClientId));
@@ -43,7 +41,7 @@ public sealed class ClientConfiguration
             throw new ArgumentOutOfRangeException(nameof(requestTimeout), "Timeout must be in (0s, 5m].");
         }
 
-        return new ClientConfiguration(api, authorize, token, oidcClientId.Trim(), timeout);
+        return new ClientConfiguration(api, authorize, oidcClientId.Trim(), timeout);
     }
 
     private static Uri ParseEndpoint(string value, string name)
@@ -57,6 +55,12 @@ public sealed class ClientConfiguration
         if (uri.Scheme != Uri.UriSchemeHttps && !(uri.Scheme == Uri.UriSchemeHttp && isLoopback))
         {
             throw new ArgumentException($"'{name}' must use https (http allowed only for loopback).", name);
+        }
+
+        // Credentials in a URL leak into logs and browser history; configuration never carries them.
+        if (!string.IsNullOrEmpty(uri.UserInfo))
+        {
+            throw new ArgumentException($"'{name}' must not embed credentials.", name);
         }
 
         return uri;

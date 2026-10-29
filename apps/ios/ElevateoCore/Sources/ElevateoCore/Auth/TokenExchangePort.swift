@@ -1,9 +1,10 @@
 import Foundation
 
 // AIDEV-NOTE: contract-request — contracts/v1 has no native OIDC code-for-session exchange.
-// Needed: POST /v1/auth/native-exchange { code, pkce_verifier, redirect_uri, client_id } ->
-// AuthLifecycle (session + access_expires_at) with code/verifier/redirect/client binding and
-// replay rejection, per apps/native/auth-contract-proposal.md. Until it exists this port's
+// Needed (one exchange shared with the Mac and Windows clients, docs/contract-requests.md §2):
+// POST /v1/native/sessions { code, code_verifier, redirect_uri, client_id } ->
+// { access_token, token_type: "Bearer", expires_in, refresh_token } with code/verifier/redirect/
+// client binding and replay rejection. Until it exists this port's
 // production implementation reports unavailable and the UI shows an honest state.
 
 public enum TokenExchangeOutcome: Sendable, Equatable {

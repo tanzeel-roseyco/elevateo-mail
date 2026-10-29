@@ -86,4 +86,61 @@ final class AuthFlowTests: XCTestCase {
             XCTAssertEqual(error, .expired)
         }
     }
+
+    // apps/shared/auth-conformance-vectors.json, shared with the Mac (Rust) and Windows (C#) suites.
+    // ELEVATEO_AUTH_VECTORS points at it when only apps/ios is mounted (Docker runs).
+    private func sharedVectors() throws -> [String: Any] {
+        let path = ProcessInfo.processInfo.environment["ELEVATEO_AUTH_VECTORS"]
+            ?? URL(fileURLWithPath: #filePath)
+                .deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()
+                .deletingLastPathComponent().deletingLastPathComponent()
+                .appendingPathComponent("shared/auth-conformance-vectors.json").path
+        let data = try Data(contentsOf: URL(fileURLWithPath: path))
+        return try XCTUnwrap(JSONSerialization.jsonObject(with: data) as? [String: Any])
+    }
+
+    func testConformsToSharedAuthVectors() throws {
+        let vectors = try sharedVectors()
+        for vector in try XCTUnwrap(vectors["pkce_s256"] as? [[String: Any]]) {
+            let verifier = try XCTUnwrap(vector["verifier"] as? String)
+            XCTAssertEqual(PKCEPair.challenge(forVerifier: verifier), vector["challenge"] as? String)
+        }
+        for vector in try XCTUnwrap(vectors["identity_provider_endpoints"] as? [[String: Any]]) {
+            let url = try XCTUnwrap(URL(string: try XCTUnwrap(vector["url"] as? String)))
+            XCTAssertEqual(OIDCConfiguration.isAcceptableEndpoint(url), vector["accepted"] as? Bool, url.absoluteString)
+        }
+        let exchange = try XCTUnwrap(vectors["native_session_exchange"] as? [String: Any])
+        XCTAssertEqual(exchange["path"] as? String, "/v1/native/sessions")
+    }
+
+    // Regression (P09): a cleartext authorization endpoint never receives state or a challenge.
+    func testCleartextAuthorizationEndpointIsRejectedBeforeBuildingTheURL() async throws {
+        let flow = OIDCAuthFlow(configuration: OIDCConfiguration(
+            authorizationEndpoint: URL(string: "http://sso.example/application/o/authorize/")!,
+            clientID: "elevateo-ios",
+            redirectURI: URL(string: "elevateo://auth/callback")!
+        ))
+        do {
+            _ = try await flow.begin(randomBytes: fixedBytes)
+            XCTFail("cleartext endpoint must be rejected")
+        } catch let error as AuthFlowError {
+            guard case .invalidConfiguration = error else { return XCTFail("unexpected \(error)") }
+        }
+    }
+
+    // Regression (P09): a matching state at the wrong destination is rejected and the attempt survives.
+    func testCallbackToAnotherDestinationIsRejectedWithoutBurningTheAttempt() async throws {
+        let flow = makeFlow()
+        let pending = try await flow.begin(now: Date(timeIntervalSince1970: 0), randomBytes: fixedBytes)
+        var wrong = URLComponents(string: "elevateo://wrong/path")!
+        wrong.queryItems = [URLQueryItem(name: "state", value: pending.state), URLQueryItem(name: "code", value: "abc")]
+        do {
+            _ = try await flow.handleCallback(wrong.url!, now: Date(timeIntervalSince1970: 1))
+            XCTFail("wrong destination must be rejected")
+        } catch let error as AuthFlowError {
+            XCTAssertEqual(error, .unexpectedCallbackDestination)
+        }
+        let authorized = try await flow.handleCallback(callback(state: pending.state), now: Date(timeIntervalSince1970: 2))
+        XCTAssertEqual(authorized.code, "abc123")
+    }
 }

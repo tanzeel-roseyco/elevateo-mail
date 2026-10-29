@@ -108,6 +108,27 @@ esac
         self.assertIn("requires a macOS runner", result.stderr)
         self.assertFalse(self.capture.exists())
 
+    # Regression (P15): a missing python3 used to skip validation and still report success.
+    def test_missing_python3_fails_before_validation_or_build(self) -> None:
+        self.env.update(FULL_CREDENTIALS)
+        restricted = self.root / "no-python"
+        restricted.mkdir()
+        for directory in os.defpath.split(os.pathsep):
+            if not directory or not os.path.isdir(directory):
+                continue
+            for name in os.listdir(directory):
+                target = restricted / name
+                if name.startswith("python") or target.exists():
+                    continue
+                target.symlink_to(Path(directory) / name)
+        self.env["PATH"] = f"{self.root}:{restricted}"
+        for args in ((), ("--dry-run",)):
+            result = self.run_script(*args)
+            self.assertEqual(2, result.returncode, result.stdout)
+            self.assertIn("requires python3", result.stderr)
+            self.assertNotIn("configuration validated", result.stdout)
+            self.assertFalse(self.capture.exists())
+
     def test_arm64_arch_selects_the_aarch64_target(self) -> None:
         self.env.update(FULL_CREDENTIALS)
         result = self.run_script("--dry-run", "--arch", "arm64")

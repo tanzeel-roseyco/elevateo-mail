@@ -105,13 +105,14 @@ esac
 repo_root=$(CDPATH= cd -- "$(dirname "$0")/../.." && pwd)
 src_tauri="$repo_root/apps/native/src-tauri"
 [ -f "$src_tauri/Cargo.lock" ] || { echo 'FC-MAC requires reviewed Cargo.lock' >&2; exit 2; }
-if command -v python3 >/dev/null 2>&1; then
-  python3 "$repo_root/apps/native/validate_macos_config.py" "$src_tauri" || {
-    echo 'FC-MAC static configuration validation failed' >&2; exit 2;
-  }
-else
-  echo 'FC-MAC python3 unavailable; static configuration validation skipped' >&2
-fi
+# Static validation (capabilities, asset access, entitlements) is mandatory for every run,
+# including dry runs: without python3 there is no validated configuration to report.
+command -v python3 >/dev/null 2>&1 || {
+  echo 'FC-MAC requires python3 for static configuration validation; nothing was built' >&2; exit 2;
+}
+python3 "$repo_root/apps/native/validate_macos_config.py" "$src_tauri" || {
+  echo 'FC-MAC static configuration validation failed' >&2; exit 2;
+}
 
 # A run only executes commands when fully credentialed and not --dry-run; otherwise it prints them.
 EXECUTE=1

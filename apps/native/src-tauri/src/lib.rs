@@ -20,7 +20,8 @@ use tauri::{Emitter, Manager};
 
 /// Injected before any page script. It is the typed desktop capability the web UI validates
 /// (`window.elevateoDesktop`), the event subscription helper, the network-event translation into
-/// standard window online/offline events, and the post-load ready ping for the update health check.
+/// standard window online/offline events. Update readiness is reported by the web app itself
+/// (desktopHost.ts) once a meaningful screen renders, never by a bare page load.
 ///
 /// AIDEV-NOTE: couples to apps/web/src/features/assistant/bridge.ts (desktopHostSchema) and to
 /// Tauri's __TAURI_INTERNALS__ IPC object; revisit on Tauri major upgrades.
@@ -50,14 +51,58 @@ fn init_script(app_origin: &str) -> String {
   listen('host://network-changed', function (payload) {{
     window.dispatchEvent(new Event(payload && payload.online ? 'online' : 'offline'));
   }});
-  // The page finishing a real load from the approved origin is the post-update health signal.
-  window.addEventListener('load', function () {{ invoke('host_ready').catch(function () {{}}); }});
 }})();"#,
         platform = std::env::consts::OS,
         version = env!("CARGO_PKG_VERSION"),
         // validate_web_origin guarantees a bare https origin, so this cannot break out of the JS string.
         app_origin = app_origin,
     )
+}
+
+/// Acts on the update launch marker (see update.rs for the Installed -> Launched -> Ready cycle).
+#[cfg(desktop)]
+fn apply_post_launch_action(app: &tauri::App) -> Result<(), Box<dyn std::error::Error>> {
+    let data_dir = app.path().app_data_dir()?;
+    let archive = update::archive_path(&data_dir);
+    let marker = match update::read_marker(&data_dir) {
+        Ok(marker) => marker,
+        Err(e) => {
+            // A corrupt or unreadable marker must not block startup or be read as "healthy":
+            // report it, drop the marker, and keep the archive for a manual restore (README).
+            eprintln!("update launch marker unusable ({e}); keeping {} for manual restore", archive.display());
+            update::clear_marker(&data_dir)?;
+            return Ok(());
+        }
+    };
+    match update::post_launch_action(marker.as_ref(), archive.is_dir()) {
+        update::PostLaunchAction::None => {}
+        update::PostLaunchAction::BeginHealthCheck => {
+            update::mark_launched(&data_dir)?;
+        }
+        update::PostLaunchAction::KeepAndCleanUp => {
+            update::clear_marker(&data_dir)?;
+            update::remove_dir_if_present(&archive)?;
+        }
+        update::PostLaunchAction::Rollback => {
+            #[cfg(target_os = "macos")]
+            {
+                if let Some(bundle) = host::running_app_bundle()? {
+                    update::restore_previous_bundle(&bundle, &archive)?;
+                    update::clear_marker(&data_dir)?;
+                    // Re-exec: the path now holds the restored previous version.
+                    app.handle().restart();
+                }
+            }
+            // Not a macOS bundle (dev run): nothing to restore into; clear and continue.
+            eprintln!("previous update launch never became ready, but this is not an app bundle; keeping current version");
+            update::clear_marker(&data_dir)?;
+        }
+        update::PostLaunchAction::FailedNoArchive => {
+            update::clear_marker(&data_dir)?;
+            eprintln!("previous update launch never became ready and no archive exists; keeping current version");
+        }
+    }
+    Ok(())
 }
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
@@ -96,35 +141,8 @@ pub fn run() {
         .setup(move |app| {
             #[cfg(desktop)]
             {
-            // Post-update health verdict from the previous launch, before any window exists.
-            let data_dir = app.path().app_data_dir()?;
-            let marker = update::read_marker(&data_dir);
-            let archive = update::archive_path(&data_dir);
-            match update::post_launch_action(marker.as_ref(), archive.is_dir()) {
-                update::PostLaunchAction::None => {}
-                update::PostLaunchAction::KeepAndCleanUp => {
-                    update::clear_marker(&data_dir)?;
-                    let _ = std::fs::remove_dir_all(&archive);
-                }
-                update::PostLaunchAction::Rollback => {
-                    #[cfg(target_os = "macos")]
-                    {
-                        let exe = std::env::current_exe()?;
-                        if let Some(bundle) = exe.ancestors().nth(3).filter(|p| p.extension().is_some_and(|e| e == "app")) {
-                            update::restore_previous_bundle(bundle, &archive)?;
-                            update::clear_marker(&data_dir)?;
-                            // Re-exec: the path now holds the restored previous version.
-                            app.handle().restart();
-                        }
-                    }
-                    // Not a macOS bundle (dev run): nothing to restore into; clear and continue.
-                    update::clear_marker(&data_dir)?;
-                }
-                update::PostLaunchAction::FailedNoArchive => {
-                    update::clear_marker(&data_dir)?;
-                    eprintln!("previous update launch failed its health check and no archive exists; keeping current version");
-                }
-            }
+            // Post-update health verdict from earlier launches, before any window exists.
+            apply_post_launch_action(app)?;
 
             // App + Edit menus. Edit's predefined items give the WebView standard clipboard keys.
             let app_menu = SubmenuBuilder::new(app, "Elevateo Mail")
@@ -155,13 +173,16 @@ pub fn run() {
                     if let Err(e) = auth::CredentialStore::clear(&auth::KeychainStore) {
                         eprintln!("keychain clear on sign-out failed: {e:?}");
                     }
-                    let _ = app.emit("host://sign-out", ());
+                    // apps/web desktopHost.ts useDesktopSignOut runs the web cookie sign-out on this.
+                    if let Err(e) = app.emit("host://sign-out", ()) {
+                        eprintln!("sign-out could not reach the web app: {e}");
+                    }
                 }
                 _ => {}
             });
 
-            if let Some(hostname) = approved.host_str() {
-                host::spawn_network_probe(app.handle().clone(), hostname.to_owned());
+            if let (Some(hostname), Some(port)) = (approved.host_str(), approved.port_or_known_default()) {
+                host::spawn_network_probe(app.handle().clone(), hostname.to_owned(), port);
             }
             }
 

@@ -1,6 +1,8 @@
 using System.Net;
+using System.Text.Json;
 using System.Web;
 using Elevateo.Client.Core.Auth;
+using Elevateo.Client.Core.Configuration;
 using Xunit;
 
 namespace Elevateo.Client.Core.Tests;
@@ -27,6 +29,44 @@ public class AuthFlowTests
         return (query["redirect_uri"]!, query["state"]!);
     }
 
+    /// <summary>
+    /// apps/shared/auth-conformance-vectors.json, shared with the Mac (Rust) and iOS (Swift) suites.
+    /// ELEVATEO_AUTH_VECTORS points at it when only apps/windows is mounted (Docker runs).
+    /// </summary>
+    private static JsonElement SharedVectors()
+    {
+        var path = Environment.GetEnvironmentVariable("ELEVATEO_AUTH_VECTORS");
+        for (var dir = new DirectoryInfo(AppContext.BaseDirectory); path is null && dir is not null; dir = dir.Parent)
+        {
+            var candidate = Path.Combine(dir.FullName, "shared", "auth-conformance-vectors.json");
+            if (File.Exists(candidate)) path = candidate;
+        }
+
+        Assert.True(path is not null, "apps/shared/auth-conformance-vectors.json not found; set ELEVATEO_AUTH_VECTORS");
+        return JsonDocument.Parse(File.ReadAllText(path!)).RootElement;
+    }
+
+    [Fact]
+    public void Client_ConformsToSharedAuthVectors()
+    {
+        var vectors = SharedVectors();
+        foreach (var vector in vectors.GetProperty("pkce_s256").EnumerateArray())
+        {
+            Assert.Equal(vector.GetProperty("challenge").GetString(), PkceMaterial.ChallengeFor(vector.GetProperty("verifier").GetString()!));
+        }
+
+        foreach (var vector in vectors.GetProperty("identity_provider_endpoints").EnumerateArray())
+        {
+            var url = vector.GetProperty("url").GetString()!;
+            var accepted = Record.Exception(() => ClientConfiguration.Create("https://mail.test.example", url, "client")) is null;
+            Assert.True(accepted == vector.GetProperty("accepted").GetBoolean(), url);
+        }
+
+        Assert.Equal(
+            vectors.GetProperty("native_session_exchange").GetProperty("path").GetString(),
+            TestConfig.Create().NativeSessionsEndpoint.AbsolutePath);
+    }
+
     [Fact] // happy path
     public async Task SignIn_WithValidCallback_ReturnsTokens()
     {
@@ -44,9 +84,12 @@ public class AuthFlowTests
         Assert.Equal("at-123", result.Success!.AccessToken);
         Assert.Equal("rt-456", result.Success.RefreshToken);
 
-        var tokenBody = await tokens.LastRequest!.Content!.ReadAsStringAsync();
-        Assert.Contains("code=abc", tokenBody);
-        Assert.Contains("code_verifier=", tokenBody);
+        // The code goes to the Elevateo server's native-session exchange as JSON, not to the IdP.
+        Assert.Equal(new Uri("https://mail.test.example/v1/native/sessions"), tokens.LastRequest!.RequestUri);
+        var tokenBody = await tokens.LastRequest.Content!.ReadAsStringAsync();
+        Assert.Contains("\"code\":\"abc\"", tokenBody);
+        Assert.Contains("\"code_verifier\":", tokenBody);
+        Assert.Contains($"\"redirect_uri\":\"{redirectUri}\"", tokenBody);
     }
 
     [Fact] // failure path 1: state mismatch is rejected and does not complete the flow

@@ -27,6 +27,7 @@ import { Button } from '@/ui/Button'
 import { Callout } from '@/ui/Callout'
 import { Field, TextInput } from '@/ui/Field'
 import { ArrowRightStartOnRectangleIcon, KeyIcon } from '@/ui/icons'
+import { useDesktopReady } from '@/app/desktopHost'
 
 // AIDEV-NOTE: Transport mode is only known after authentication; this form must not claim mail is simulated.
 const FOOTNOTE = 'Sign in securely to this Elevateo Mail installation.'
@@ -151,6 +152,8 @@ export function SignInPage({ navigation = browserNavigation }: { navigation?: Si
   const [landing, setLanding] = useState<SsoLandingError | null>(() => readSsoLandingError(navigation.readSearch()))
   const headingRef = useRef<HTMLHeadingElement | null>(null)
   const ids = { notice: useId(), landing: useId() }
+  // Reaching sign-in after an update is a healthy launch (desktop shell only; no-op in browsers).
+  useDesktopReady(true)
 
   // Consumed exactly once per mount (StrictMode runs effects twice; the ref keeps replaceSearch single).
   const landingConsumedRef = useRef(false)

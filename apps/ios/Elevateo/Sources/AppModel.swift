@@ -143,6 +143,7 @@ final class AppModel {
         case .noPendingAuthorization: "No sign-in is in progress."
         case .randomSourceFailure: "Secure random generation failed; cannot sign in."
         case .invalidConfiguration(let detail): "Sign-in configuration problem: \(detail)"
+        case .unexpectedCallbackDestination: "Sign-in returned to an unexpected address. Try again."
         }
     }
 }

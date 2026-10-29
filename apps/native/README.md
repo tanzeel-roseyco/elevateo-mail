@@ -20,19 +20,39 @@ private key (`TAURI_SIGNING_PRIVATE_KEY`) exists only in release automation env.
 
 ### Auto-update rollback flow
 
-1. "Check for Updates" asks the web UI's reported busy state first (`host_report_busy`): an
-   unsaved draft or in-flight send blocks the install; the user finishes and retries.
-2. Before `tauri-plugin-updater` installs a verified signed update, the current `.app` is copied
-   to `<app data dir>/Elevateo Mail.previous.app` and a launch marker
-   (`update-launch-marker.json`, `ready: false`) is written.
-3. On the next launch, the injected init script calls `host_ready` when the approved origin's page
-   finishes loading; that flips the marker to `ready: true`.
-4. The launch after that evaluates the marker (`update::post_launch_action`): ready → keep the new
-   version, delete marker and archive; not ready and archive present → the previous bundle is
-   restored over the failed one and the app re-execs itself (now the previous version); not ready
-   with no archive → keep running and clear the marker.
-5. Limitation: a new version that crashes before Tauri setup never re-evaluates the marker; the
-   user relaunches manually and step 4 then rolls back.
+1. "Check for Updates" requires a complete busy report from the web UI (`host_report_busy`, sent
+   by `apps/web/src/app/desktopHost.ts` from the draft and send-approval providers). No report
+   yet, an unsaved draft, or an unresolved send blocks the install; the gate is checked before
+   the download and again right before install. Status text appears in the app as an
+   "App update" notice (`host://update`).
+2. After the signed update downloads, the current `.app` is copied to
+   `<app data dir>/Elevateo Mail.previous.app` and the update installs. Only a successful install
+   writes the launch marker (`update-launch-marker.json`, phase `installed`); a failed install
+   deletes the archive.
+3. First start of the new version: `installed` → `launched`, then the window opens. The web app
+   calls `host_ready` once the signed-in shell or the sign-in page renders (a bare page load, an
+   HTTP error page or an IdP page does not count) and the marker becomes `ready`.
+4. The following start evaluates the marker (`update::post_launch_action`): `ready` → keep the
+   version, delete marker and archive; still `launched` with an archive → copy the archive beside
+   the installed bundle, swap it in with same-volume renames and re-exec (now the previous
+   version); no archive → keep running and clear the marker. There is no wall-clock deadline:
+   a slow but healthy first start is never rolled back.
+5. A corrupt or unreadable marker is reported to stderr, cleared, and the archive is kept.
+6. Manual restore (a new version that crashes before Tauri setup never reaches step 4): quit the
+   app, then in Finder replace `/Applications/Elevateo Mail.app` with
+   `~/Library/Application Support/<bundle id>/Elevateo Mail.previous.app` renamed to
+   `Elevateo Mail.app`, or reinstall the previous signed `.dmg` from the release page.
+
+### Desktop sign-in paths (design decision, 2026-10-29)
+
+The Mac window signs in through the web SSO flow inside the WebView: `navigation.rs` admits the
+configured IdP origin, which gets no `window.elevateoDesktop` object, and every host command
+rejects non-first-party callers. Accepted risk: credentials are typed into a WebView rather than
+the system browser. The native PKCE broker (`src/auth.rs`) is kept because the 2026-10-29 brief
+requires native login for the Windows and iOS clients, which have no web shell. All three PKCE
+implementations share one `POST /v1/native/sessions` exchange proposal
+(`docs/contract-requests.md` §2) and the conformance vectors in
+`apps/shared/auth-conformance-vectors.json`.
 
 ### Release script
 

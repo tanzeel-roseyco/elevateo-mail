@@ -6,10 +6,11 @@
 //
 // AIDEV-NOTE: contract-request — the native token-exchange endpoint is not in contracts/v1 or v2.
 // TokenExchange stays a typed port; ContractPendingExchange reports honest unavailability.
-use std::io::{BufRead, BufReader, Write};
+use std::io::{BufRead, BufReader, Read, Write};
 use std::net::{TcpListener, TcpStream};
+use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::mpsc;
-use std::sync::Mutex;
+use std::sync::{Arc, Mutex};
 use std::time::{Duration, Instant};
 
 use base64::engine::general_purpose::URL_SAFE_NO_PAD;
@@ -76,15 +77,24 @@ pub enum AuthError {
 /// replayed callback (second delivery of the same state+code) fails with NoPendingLogin.
 pub struct LoginBroker {
     pending: Mutex<Option<PendingLogin>>,
+    /// Cancels the loopback listener of the current login so abandoning it frees the socket/thread.
+    listener: Mutex<Option<ListenerHandle>>,
 }
 
 impl Default for LoginBroker {
     fn default() -> Self {
-        Self { pending: Mutex::new(None) }
+        Self { pending: Mutex::new(None), listener: Mutex::new(None) }
     }
 }
 
 impl LoginBroker {
+    /// Attaches the listener serving the current login; any previous listener is cancelled.
+    pub fn attach_listener(&self, handle: ListenerHandle) {
+        if let Some(previous) = self.listener.lock().expect("login broker lock poisoned").replace(handle) {
+            previous.cancel();
+        }
+    }
+
     /// Starts a login, replacing (burning) any earlier pending one.
     pub fn begin(&self, redirect_uri: String) -> PendingLogin {
         let pending = PendingLogin {
@@ -129,16 +139,29 @@ impl LoginBroker {
         })
     }
 
-    /// Drops any pending login (sign-out, window close).
+    /// Drops any pending login and stops its loopback listener (sign-out, window close, timeout).
     pub fn abandon(&self) {
         *self.pending.lock().expect("login broker lock poisoned") = None;
+        if let Some(handle) = self.listener.lock().expect("login broker lock poisoned").take() {
+            handle.cancel();
+        }
     }
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum AuthConfigError {
+    /// The issuer is absent, not HTTPS, unparsable, or carries credentials.
+    InvalidIssuer,
 }
 
 /// Builds the Authentik authorization URL for the system browser. Issuer and client id are public
 /// build-time values (like ELEVATEO_WEB_ORIGIN), never secrets.
-pub fn authorize_url(issuer: &str, client_id: &str, pending: &PendingLogin) -> Result<url::Url, url::ParseError> {
-    let mut authorize = url::Url::parse(issuer)?.join("application/o/authorize/")?;
+///
+/// AIDEV-NOTE: Authentik serves one authorize endpoint per host (`/application/o/authorize/`); the
+/// issuer's per-application path must not prefix it, so the URL is built from the issuer origin.
+pub fn authorize_url(issuer: &str, client_id: &str, pending: &PendingLogin) -> Result<url::Url, AuthConfigError> {
+    let origin = crate::navigation::identity_provider_origin(Some(issuer)).ok_or(AuthConfigError::InvalidIssuer)?;
+    let mut authorize = origin.join("application/o/authorize/").map_err(|_| AuthConfigError::InvalidIssuer)?;
     authorize
         .query_pairs_mut()
         .append_pair("response_type", "code")
@@ -173,8 +196,11 @@ pub trait TokenExchange: Send + Sync {
     fn exchange(&self, grant: &AuthorizedGrant) -> Result<TokenSet, ExchangeError>;
 }
 
-/// AIDEV-NOTE: contract-request — proposed POST /v1/native/sessions {code, code_verifier,
-/// redirect_uri, client_id} -> {access_token, refresh_token, expires_in}; see final report.
+/// Proposed server exchange shared by the Mac, Windows and iOS clients (contract-requests §2).
+pub const NATIVE_SESSIONS_PATH: &str = "/v1/native/sessions";
+
+/// AIDEV-NOTE: contract-request — proposed POST {NATIVE_SESSIONS_PATH} {code, code_verifier,
+/// redirect_uri, client_id} -> {access_token, token_type, expires_in, refresh_token}.
 pub struct ContractPendingExchange;
 
 impl TokenExchange for ContractPendingExchange {
@@ -242,33 +268,74 @@ pub struct CallbackQuery {
     pub error: Option<String>,
 }
 
+/// Longest accepted request line; a real callback (state + code) is far below this.
+const MAX_REQUEST_LINE: u64 = 8 * 1024;
+/// Per-connection read budget, so a client that connects and stalls cannot hold the listener.
+const CONNECTION_READ_TIMEOUT: Duration = Duration::from_secs(2);
+/// How often the non-blocking accept loop re-checks cancellation and the deadline.
+const ACCEPT_POLL: Duration = Duration::from_millis(50);
+
+/// Stops a running callback listener; dropping the handle does not stop it, `cancel` does.
+#[derive(Debug, Clone)]
+pub struct ListenerHandle(Arc<AtomicBool>);
+
+impl ListenerHandle {
+    pub fn cancel(&self) {
+        self.0.store(true, Ordering::SeqCst);
+    }
+}
+
 /// Binds 127.0.0.1 on an OS-assigned port and serves exactly one callback request, then stops.
-/// Returns the bound port and the receiver that yields the parsed callback once.
-pub fn spawn_callback_listener() -> std::io::Result<(u16, mpsc::Receiver<CallbackQuery>)> {
+/// The listener also stops at `deadline` or when its handle is cancelled; the receiver then
+/// reports disconnection instead of waiting forever.
+pub fn spawn_callback_listener(deadline: Duration) -> std::io::Result<(u16, mpsc::Receiver<CallbackQuery>, ListenerHandle)> {
     // AIDEV-NOTE: loopback-only bind per RFC 8252 §7.3; a random port avoids squatting conflicts.
     let listener = TcpListener::bind(("127.0.0.1", 0))?;
     let port = listener.local_addr()?.port();
+    // Non-blocking accept so the thread can observe cancellation/deadline instead of parking
+    // inside accept() until some client happens to connect.
+    listener.set_nonblocking(true)?;
     let (sender, receiver) = mpsc::channel();
+    let cancelled = Arc::new(AtomicBool::new(false));
+    let handle = ListenerHandle(cancelled.clone());
+    let stop_at = Instant::now() + deadline;
     std::thread::spawn(move || {
-        // Accept until one valid /callback request arrives or the channel is dropped.
-        for stream in listener.incoming() {
-            let Ok(stream) = stream else { continue };
-            // A stray request (favicon probe, wrong path) is answered 404 and does not consume
-            // the one-shot slot; only a parsed /callback ends the listener.
-            if let Some(query) = handle_callback_request(stream) {
-                let _ = sender.send(query);
-                return;
+        while !cancelled.load(Ordering::SeqCst) && Instant::now() < stop_at {
+            match listener.accept() {
+                Ok((stream, _)) => {
+                    // A stray request (favicon probe, wrong path, oversized or stalled) is answered
+                    // or dropped and does not consume the one-shot slot; only a parsed /callback does.
+                    if let Some(query) = handle_callback_request(stream) {
+                        // The receiver may already be gone (login timed out); nothing left to notify.
+                        let _ = sender.send(query);
+                        return;
+                    }
+                }
+                Err(e) if e.kind() == std::io::ErrorKind::WouldBlock => std::thread::sleep(ACCEPT_POLL),
+                Err(e) => {
+                    eprintln!("loopback callback listener stopped: {e}");
+                    return;
+                }
             }
         }
     });
-    Ok((port, receiver))
+    Ok((port, receiver, handle))
 }
 
-/// Parses `GET /callback?...` from one connection; anything else gets 404 and None.
+/// Parses `GET /callback?...` from one connection; anything else gets 404/400 and None.
 fn handle_callback_request(mut stream: TcpStream) -> Option<CallbackQuery> {
-    let mut reader = BufReader::new(stream.try_clone().ok()?);
+    // Accepted sockets inherit non-blocking mode on some platforms; reads here must block, bounded.
+    stream.set_nonblocking(false).ok()?;
+    stream.set_read_timeout(Some(CONNECTION_READ_TIMEOUT)).ok()?;
+    let mut reader = BufReader::new(stream.try_clone().ok()?.take(MAX_REQUEST_LINE + 1));
     let mut request_line = String::new();
+    // A stalled client hits the read timeout and errors here; it never blocks the listener for long.
     reader.read_line(&mut request_line).ok()?;
+    if !request_line.ends_with('\n') {
+        // Oversized (no newline within the limit) or truncated request line.
+        let _ = stream.write_all(b"HTTP/1.1 400 Bad Request\r\nContent-Length: 0\r\nConnection: close\r\n\r\n");
+        return None;
+    }
     let path = request_line.strip_prefix("GET ")?.split(' ').next()?;
     let parsed = url::Url::parse(&format!("http://127.0.0.1{path}")).ok()?;
     if parsed.path() != "/callback" {
@@ -302,6 +369,26 @@ fn handle_callback_request(mut stream: TcpStream) -> Option<CallbackQuery> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    /// apps/shared/auth-conformance-vectors.json: the same file the Windows and iOS suites read.
+    fn shared_vectors() -> serde_json::Value {
+        serde_json::from_str(include_str!(concat!(env!("CARGO_MANIFEST_DIR"), "/../../shared/auth-conformance-vectors.json")))
+            .expect("shared auth vectors parse")
+    }
+
+    #[test]
+    fn conforms_to_shared_auth_vectors() {
+        let vectors = shared_vectors();
+        for case in vectors["pkce_s256"].as_array().unwrap() {
+            assert_eq!(challenge_for(case["verifier"].as_str().unwrap()), case["challenge"].as_str().unwrap());
+        }
+        for case in vectors["identity_provider_endpoints"].as_array().unwrap() {
+            let url = case["url"].as_str().unwrap();
+            let accepted = crate::navigation::identity_provider_origin(Some(url)).is_some();
+            assert_eq!(accepted, case["accepted"].as_bool().unwrap(), "{url}");
+        }
+        assert_eq!(vectors["native_session_exchange"]["path"], NATIVE_SESSIONS_PATH);
+    }
 
     #[test]
     fn pkce_challenge_is_s256_of_verifier() {
@@ -373,7 +460,26 @@ mod tests {
     #[test]
     fn exchange_port_reports_contract_unavailable() {
         let grant = AuthorizedGrant { code: "c".into(), verifier: "v".into(), redirect_uri: "r".into() };
-        assert_eq!(ContractPendingExchange.exchange(&grant), Err(ExchangeError::ContractUnavailable));
+        // TokenSet has no PartialEq (it holds secrets); match the error instead of comparing Results.
+        assert!(matches!(ContractPendingExchange.exchange(&grant), Err(ExchangeError::ContractUnavailable)));
+    }
+
+    #[test]
+    fn authorize_url_ignores_the_issuer_application_path() {
+        let broker = LoginBroker::default();
+        let pending = broker.begin("http://127.0.0.1:49152/callback".into());
+        let url = authorize_url("https://auth.company.org/application/o/elevateo/", "desktop-client", &pending).unwrap();
+        assert_eq!(url.path(), "/application/o/authorize/");
+        assert_eq!(url.host_str(), Some("auth.company.org"));
+    }
+
+    #[test]
+    fn authorize_url_rejects_cleartext_and_credential_issuers() {
+        let broker = LoginBroker::default();
+        let pending = broker.begin("http://127.0.0.1:49152/callback".into());
+        assert_eq!(authorize_url("http://auth.company.org/", "c", &pending), Err(AuthConfigError::InvalidIssuer));
+        assert_eq!(authorize_url("https://u:p@auth.company.org/", "c", &pending), Err(AuthConfigError::InvalidIssuer));
+        assert_eq!(authorize_url("not a url", "c", &pending), Err(AuthConfigError::InvalidIssuer));
     }
 
     #[test]
@@ -389,14 +495,78 @@ mod tests {
         assert_eq!(query["response_type"], "code");
     }
 
+    fn send_request(port: u16, request: &[u8]) -> String {
+        let mut stream = TcpStream::connect(("127.0.0.1", port)).unwrap();
+        stream.write_all(request).unwrap();
+        let mut response = String::new();
+        // The listener closes the connection after answering; read whatever it sent.
+        let _ = stream.read_to_string(&mut response);
+        response
+    }
+
     #[test]
     fn loopback_listener_parses_one_callback() {
-        let (port, receiver) = spawn_callback_listener().unwrap();
-        let mut stream = TcpStream::connect(("127.0.0.1", port)).unwrap();
-        stream
-            .write_all(b"GET /callback?state=abc&code=xyz HTTP/1.1\r\nHost: 127.0.0.1\r\n\r\n")
-            .unwrap();
+        let (port, receiver, _handle) = spawn_callback_listener(Duration::from_secs(10)).unwrap();
+        send_request(port, b"GET /callback?state=abc&code=xyz HTTP/1.1\r\nHost: 127.0.0.1\r\n\r\n");
         let query = receiver.recv_timeout(Duration::from_secs(5)).unwrap();
         assert_eq!(query, CallbackQuery { state: "abc".into(), code: "xyz".into(), error: None });
+    }
+
+    #[test]
+    fn stray_request_gets_404_and_does_not_consume_the_listener() {
+        let (port, receiver, _handle) = spawn_callback_listener(Duration::from_secs(10)).unwrap();
+        assert!(send_request(port, b"GET /favicon.ico HTTP/1.1\r\n\r\n").starts_with("HTTP/1.1 404"));
+        send_request(port, b"GET /callback?state=s&code=c HTTP/1.1\r\n\r\n");
+        assert_eq!(receiver.recv_timeout(Duration::from_secs(5)).unwrap().code, "c");
+    }
+
+    #[test]
+    fn provider_error_callback_keeps_state_and_error_without_a_code() {
+        let (port, receiver, _handle) = spawn_callback_listener(Duration::from_secs(10)).unwrap();
+        send_request(port, b"GET /callback?state=s&error=access_denied HTTP/1.1\r\n\r\n");
+        let query = receiver.recv_timeout(Duration::from_secs(5)).unwrap();
+        assert_eq!(query, CallbackQuery { state: "s".into(), code: String::new(), error: Some("access_denied".into()) });
+    }
+
+    #[test]
+    fn oversized_request_line_is_rejected_and_listener_keeps_serving() {
+        let (port, receiver, _handle) = spawn_callback_listener(Duration::from_secs(10)).unwrap();
+        let mut huge = b"GET /callback?state=".to_vec();
+        huge.extend(std::iter::repeat(b'a').take(MAX_REQUEST_LINE as usize + 10));
+        huge.extend_from_slice(b" HTTP/1.1\r\n\r\n");
+        // The 400 itself may be lost to a TCP reset (unread bytes at close); what matters is that
+        // the oversized line yields no callback, so the first one delivered is the genuine one.
+        send_request(port, &huge);
+        send_request(port, b"GET /callback?state=s&code=c HTTP/1.1\r\n\r\n");
+        assert_eq!(receiver.recv_timeout(Duration::from_secs(5)).unwrap().state, "s");
+    }
+
+    #[test]
+    fn stalled_client_cannot_block_the_genuine_callback() {
+        let (port, receiver, _handle) = spawn_callback_listener(Duration::from_secs(10)).unwrap();
+        // Connects and never sends a newline; the per-connection read timeout releases it.
+        let _stalled = TcpStream::connect(("127.0.0.1", port)).unwrap();
+        send_request(port, b"GET /callback?state=s&code=c HTTP/1.1\r\n\r\n");
+        let wait = CONNECTION_READ_TIMEOUT + Duration::from_secs(3);
+        assert_eq!(receiver.recv_timeout(wait).unwrap().code, "c");
+    }
+
+    #[test]
+    fn cancelled_or_expired_listener_stops_and_disconnects_the_receiver() {
+        let (_port, receiver, handle) = spawn_callback_listener(Duration::from_secs(10)).unwrap();
+        handle.cancel();
+        assert_eq!(receiver.recv_timeout(Duration::from_secs(2)), Err(mpsc::RecvTimeoutError::Disconnected));
+        let (_port, receiver, _handle) = spawn_callback_listener(Duration::from_millis(100)).unwrap();
+        assert_eq!(receiver.recv_timeout(Duration::from_secs(2)), Err(mpsc::RecvTimeoutError::Disconnected));
+    }
+
+    #[test]
+    fn abandoning_the_login_cancels_its_listener() {
+        let broker = LoginBroker::default();
+        let (_port, receiver, handle) = spawn_callback_listener(Duration::from_secs(10)).unwrap();
+        broker.attach_listener(handle);
+        broker.begin("http://127.0.0.1:49152/callback".into());
+        broker.abandon();
+        assert_eq!(receiver.recv_timeout(Duration::from_secs(2)), Err(mpsc::RecvTimeoutError::Disconnected));
     }
 }
