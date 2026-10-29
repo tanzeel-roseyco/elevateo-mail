@@ -141,4 +141,18 @@ class ConnectorDatabaseTest < CollaborationDatabaseCase
   def test_unprivileged_role_cannot_read_grant_hashes
     assert_raises(PG::InsufficientPrivilege) { @api.exec("SELECT * FROM app_connector_private.grants") }
   end
+
+  # AIDEV-NOTE: Rejected source authority must not leave an editable draft or an idempotency operation behind.
+  def test_cross_mailbox_citation_rejection_does_not_create_a_draft
+    token = compose_grant
+    input = draft_input
+    other = mailbox
+    input.fetch("citations").first.merge!("mailbox_id" => other,
+      "uri" => "elevateo://mailboxes/#{other}/threads/#{@thread}/messages/#{@message}")
+    assert_raises(Elevateo::CollaborationError) do
+      authorized(token, operation: "draft") { |op| op.draft(input, digest: @digest, request_id: SecureRandom.uuid) }
+    end
+    assert_equal "0", @admin.exec_params("SELECT count(*) FROM app.drafts WHERE id=$1", [input.fetch("draft_id")]).getvalue(0, 0)
+    assert_equal "0", @admin.exec_params("SELECT count(*) FROM app_drafts_private.operations WHERE organization_id=$1", [@org]).getvalue(0, 0)
+  end
 end

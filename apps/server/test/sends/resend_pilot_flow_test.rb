@@ -56,7 +56,7 @@ class ResendPilotFlowTest < SendDatabaseTestCase
     assert_equal "elevateo/#{approved.fetch('send_id')}", request.fetch(:headers).fetch("idempotency-key")
     assert_equal attempt.fetch("attempt_id"), JSON.parse(request.fetch(:body)).fetch("tags").last.fetch("value")
     assert_equal 1, status(approved.fetch("send_id")).fetch("attempts")
-    assert_signed_bounce_replay(approved.fetch("send_id"))
+    assert_signed_suppression_replay(approved.fetch("send_id"))
   end
 
   def test_ambiguous_provider_response_survives_worker_restart_without_resubmission
@@ -68,6 +68,15 @@ class ResendPilotFlowTest < SendDatabaseTestCase
     assert_equal :unknown, execute(send_id)
     assert_equal 1, @stub.requests.length
     assert_equal 1, status(send_id).fetch("attempts")
+  end
+
+  def test_signed_complaint_projects_delivery_and_suppresses_recipient
+    grant_consent
+    send_id = approve_live.fetch("send_id")
+    @provider_id = SecureRandom.uuid
+    @stub = ResendHTTPStub.new(body: JSON.generate(id: @provider_id))
+    assert_equal :accepted, execute(send_id)
+    assert_signed_suppression_replay(send_id, event_type: "email.complained", delivery_status: "complained")
   end
 
   def test_revoked_approval_session_prevents_provider_io
@@ -185,9 +194,10 @@ class ResendPilotFlowTest < SendDatabaseTestCase
     Elevateo::ResendEvents::Store.new(connection: adapter)
   end
 
-  def assert_signed_bounce_replay(send_id)
+  # AIDEV-NOTE: Both negative delivery events must survive signed intake and suppress only once on replay.
+  def assert_signed_suppression_replay(send_id, event_type: "email.bounced", delivery_status: "bounced")
     @event_id = "msg_#{SecureRandom.hex(12)}"
-    body = JSON.generate(type: "email.bounced", created_at: Time.now.utc.iso8601,
+    body = JSON.generate(type: event_type, created_at: Time.now.utc.iso8601,
       data: { email_id: @provider_id, from: "#{@box}@example.invalid", to: ["Recipient@example.invalid"] })
     key = "disposable-signing-fixture-32-byte"
     timestamp = Time.now.to_i.to_s
@@ -203,7 +213,7 @@ class ResendPilotFlowTest < SendDatabaseTestCase
     claim = worker.claim
     assert_equal @event_id, claim.fetch("id")
     assert_equal "processed", worker.apply(id: @event_id, lease: claim.fetch("lease")).fetch("result")
-    assert_equal "bounced", status(send_id).fetch("delivery_status")
+    assert_equal delivery_status, status(send_id).fetch("delivery_status")
     assert_equal "stored", intake.receive(id: @event_id, body: body).fetch("result")
     assert_equal "empty", worker.claim.fetch("result")
     assert_equal "1", @admin.exec_params(<<~SQL, [@org]).getvalue(0, 0)

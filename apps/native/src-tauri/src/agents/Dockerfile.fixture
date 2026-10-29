@@ -1,0 +1,7 @@
+# AIDEV-NOTE: Deterministic process-tree fixture; this image cannot invoke either provider.
+ARG PYTHON_IMAGE
+FROM ${PYTHON_IMAGE}
+COPY runtime/fake_launch.py /opt/elevateo/launch.py
+COPY runtime/proxy.py /opt/elevateo/proxy.py
+USER 10001:10001
+ENTRYPOINT ["python3", "/opt/elevateo/launch.py"]

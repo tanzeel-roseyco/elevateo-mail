@@ -4,11 +4,21 @@ require_relative "attachments_storage"
 
 module Elevateo
   module Attachments
-    # AIDEV-NOTE: IMAP gets a read-once private file; Storage authority remains absent from the Rails API environment.
+    # AIDEV-NOTE: Workers accept an environment secret or a legacy protected file; API receives neither authority.
     class WorkerStorage
       def self.load!(env)
         path, bucket = env["ELEVATEO_INBOUND_STORAGE_TOKEN_PATH"], env["ELEVATEO_INBOUND_STORAGE_BUCKET"]
-        return nil if path.nil? && bucket.nil?
+        secret = env["ELEVATEO_INBOUND_STORAGE_TOKEN"]
+        return nil if path.nil? && bucket.nil? && secret.nil?
+        if secret
+          unless path.nil? && env["ELEVATEO_PROCESS"] == "worker" && bucket.is_a?(String) &&
+              PrivateStorage::BUCKET.match?(bucket) && secret.bytesize.between?(32, 4096) &&
+              /\A[A-Za-z0-9._~+\/-]+=*\z/n.match?(secret.b)
+            raise ArgumentError
+          end
+          return PrivateStorage.new(base_url: "http://storage:5000", bucket: bucket.dup.freeze,
+            service_token: secret.dup.freeze, process: "worker")
+        end
 
         unless path.is_a?(String) && path.start_with?("/") && path.bytesize.between?(2, 4096) &&
             !path.include?("\0") && bucket.is_a?(String) && PrivateStorage::BUCKET.match?(bucket)

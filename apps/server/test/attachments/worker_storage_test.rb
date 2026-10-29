@@ -32,6 +32,27 @@ class AttachmentWorkerStorageTest < Minitest::Test
     refute_includes error.full_message, TOKEN
   end
 
+  def test_environment_token_is_worker_only_and_redacted
+    env = { "ELEVATEO_PROCESS" => "worker", "ELEVATEO_INBOUND_STORAGE_TOKEN" => TOKEN,
+      "ELEVATEO_INBOUND_STORAGE_BUCKET" => "be02-attachments" }
+    adapter = Elevateo::Attachments::WorkerStorage.load!(env)
+    assert_instance_of Elevateo::Attachments::PrivateStorage, adapter
+    refute_includes adapter.inspect, TOKEN
+  end
+
+  def test_environment_token_rejects_api_and_ambiguous_file_source
+    assert_unavailable("ELEVATEO_INBOUND_STORAGE_TOKEN" => TOKEN, "ELEVATEO_PROCESS" => "worker")
+    assert_unavailable("ELEVATEO_INBOUND_STORAGE_TOKEN_PATH" => nil,
+      "ELEVATEO_INBOUND_STORAGE_TOKEN" => TOKEN, "ELEVATEO_PROCESS" => "api")
+  end
+
+  def test_environment_token_rejects_empty_oversized_or_header_injection
+    ["", "x" * 4097, TOKEN + "\r\n"].each do |token|
+      assert_unavailable("ELEVATEO_INBOUND_STORAGE_TOKEN_PATH" => nil,
+        "ELEVATEO_INBOUND_STORAGE_TOKEN" => token, "ELEVATEO_PROCESS" => "worker")
+    end
+  end
+
   def test_optional_profile_and_read_once_redacted_adapter
     assert_nil Elevateo::Attachments::WorkerStorage.load!({})
     adapter = load_storage

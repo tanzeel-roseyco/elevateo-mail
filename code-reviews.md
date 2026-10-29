@@ -1,3 +1,41 @@
+## Backend completion final source reviews - 2026-10-30
+
+These are source reviews, not passing runtime results. Each assignment used the full AGENTS rubric with at most 200 primary lines; related follow-up passes overlap and must not be summed. Density is confirmed defects per 1,000 reviewed lines. Linters remain a final Docker gate.
+
+| Scope | LOC | Defects | Defects/KLOC | Disposition |
+| --- | ---: | ---: | ---: | --- |
+| Native protocol and supervisor | 164 | 0 | 0 | Owner-bound bounded process events |
+| Native library | 114 | 0 | 0 | Grant resolver is the trusted integration boundary |
+| Native sandbox and supervisor follow-up | 176 | 0 | 0 | No host filesystem or socket in runtime sandbox |
+| Native launcher | 166 | 1 | 6.02 | Added actual offline child execution tests |
+| Native proxy and fixture | 114 | 1 | 8.77 | Absolute header deadline prevents slowloris |
+| Native Rust tests | 148 | 0 | 0 | Actual Docker lifecycle remains final gate |
+| Native Python tests and Dockerfiles | 110 | 0 | 0 | Runtime execution deferred |
+| Provisioning Python boundaries | 169 | 1 | 5.92 | DNS label length validation fixed |
+| Provisioning SQL | 67 | 0 | 0 | Locked verified membership and fail-closed routing |
+| Volume backup | 113 | 1 | 8.85 | Missing source volumes now fail before Docker can create empty ones |
+| Recovery | 146 | 1 | 6.85 | Non-object manifest rejected |
+| Mox initializer | 137 | 1 | 7.30 | Parse certificate and prove private-key match before writes |
+| Restore fence and drill | 95 | 0 | 0 | Rollback revokes authority and holds pending sends |
+| Production deployment admission/orchestration | 173 | 4 | 23.12 | Shared lock, budget bounds, running-Mox retry and missing private-bucket initialization fixed |
+| Production Compose first batch | 140 | 0 | 0 | Private services and environment secrets |
+| Production Compose second batch | 103 | 1 | 9.71 | Added missing service health checks |
+| Authentik registration and tests | 141 | 0 | 0 | Fixed private origin, bounded responses, fail-closed conflicts |
+| Resend worker overlay/storage/tests | 92 | 0 | 0 | Scoped environment credential, no API credential fallback |
+| Backend runner original | 150 | 0 | 0 | Adjacent suite integration duplicate wire execution repaired separately |
+| Backend runner independent follow-up | 163 | 0 | 0 | Local-only context and offline contract/wire execution |
+| Resend wire suite | 77 | 0 | 0 | Exactly six loopback stub calls, no provider traffic |
+| Restore runner, seed, operations image | 186 | 0 | 0 | Six-volume archive proof and temporal authority fencing |
+| Private storage initializer and tests | 102 | 0 | 0 | Independent parent review: creation readback refuses public/conflicting bucket |
+| Mox protocol readiness and tests follow-up | 97 | 0 | 0 | Independent parent review after fragmented-greeting fix |
+| Restore drill readiness and tests | 112 | 0 | 0 | Independent follow-up confirms readiness precedes mutation |
+| Historical R1 local runner | 94 | 0 | 0 | Isolated exact two-migration snapshot, pools 1/5 and worker role |
+| Native header fix and execution regressions | 181 | 1 | 5.52 | Malformed-JSON regression requested in addition to valid JSON null case |
+
+Integration review also found two defects outside those denominators: deploy bucket validation differed from PrivateStorage (now same 3-63 lowercase/hyphen rule with regression), and the restore drill could issue SQL before the restarted database was ready (bounded readiness barrier plus three tests). Neither is hidden in an unrelated zero-defect count.
+
+Dedicated design review compared live per-request grant checks versus caching, globally locked user budgets versus per-mailbox counters, cold six-volume snapshots versus online partial snapshots, and host process access versus disposable containers. Request-first/revoke-first, concurrent final budget unit, restore-after-provider-acceptance and partial provisioning retry were simulated as explicit state schedules in `docs/backend-completion-design.md`. Cold recovery favors consistent authority and no replay over availability; concurrency locks favor correctness over same-user throughput. Obsidian is unavailable, so these are recorded analytical simulations, not claimed connector executions.
+
 ## Backend completion source reviews - 2026-10-29
 
 Runtime tests are deferred until all implementation is complete, per the user. Review density is defects per 1,000 reviewed lines; overlapping passes are not additive. Full user rubric applied; lint is a separate final Docker gate.
@@ -2409,3 +2447,18 @@ Bounded quota review: 128 LOC, one missing cross-mailbox concurrency regression 
 ## Portable Mox protocol harness review - 2026-10-29
 
 Independent adversarial review covered 105 LOC across the container definition, runner and admission tests. One defect (9.52 defects/KLOC): a ready marker bypassed fixture liveness validation. The runner now polls before accepting readiness, and a stale-marker regression was added. No Docker build or test has run; runtime acceptance remains pending.
+
+## Historical application-chain wrapper review - 2026-10-30
+
+Independent adversarial review of the initial 93-LOC wrapper identified three defects
+(one P1, two P2), 32.26 defects/KLOC: local/Mox configuration rejected boot, a broad
+repository mount exposed unchecked source credentials, and failed container removal
+skipped temporary credential deletion. Repairs use a guarded test-only boot adapter,
+three scoped read-only mounts with dotenv rejection, and unconditional credential cleanup.
+Production configuration guards are unchanged. Final bounded review covered wrapper97,
+adapter17 and admission tests29 (143 LOC), plus the five-line test invocation separately;
+zero remaining concrete source defects, 0/KLOC. Two admission test methods cover four
+rejected configurations; the actual chain provides accepted boot coverage. All remain
+unexecuted. This pipeline oracle proves HTTP/SQL/SMTP/IMAP only when run successfully,
+not production Authentik composition. Design scenarios were analytical; Obsidian was
+unavailable. Review denominators overlap and must not be summed as unique coverage.

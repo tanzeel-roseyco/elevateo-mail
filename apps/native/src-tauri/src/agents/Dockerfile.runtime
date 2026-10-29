@@ -1,0 +1,12 @@
+# AIDEV-NOTE: Build only at the final local Docker gate; the bridge accepts the resulting immutable digest.
+ARG NODE_IMAGE
+FROM ${NODE_IMAGE}
+RUN apt-get update && apt-get install -y --no-install-recommends python3 ca-certificates \
+    && rm -rf /var/lib/apt/lists/* \
+    && npm install --global @openai/codex@0.165.0 @anthropic-ai/claude-code@2.1.312 \
+    && npm cache clean --force
+COPY runtime/ /opt/elevateo/
+RUN mkdir -p /workspace /home/agent && chown 10001:10001 /workspace /home/agent
+USER 10001:10001
+WORKDIR /workspace
+ENTRYPOINT ["python3", "/opt/elevateo/launch.py"]
