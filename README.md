@@ -15,7 +15,7 @@ Goal: finish every frontend/client area so web, Mac, Windows and Android (plus i
 | Mac (Tauri): menus, single instance, PKCE login with Keychain, signed auto-update with rollback, assistant panel, `.dmg` release script with env-only signing | pending merge |
 | Windows (`apps/windows`, .NET 8 + Avalonia, NSIS + osslsigncode): SSO login, mailboxes, threads, plain-text thread view, reply draft, assistant panel, installer script | merged, not yet built/tested |
 | Android (`apps/android/build`): current-API audit, local Docker APK build, headless emulator acceptance (needs `/dev/kvm`) | merged, not yet run |
-| iOS (`apps/ios`): ElevateoCore Swift package (Linux-testable) + SwiftUI app, Xcode project, `build.sh` | pending merge |
+| iOS (`apps/ios`): ElevateoCore Swift package (Linux-testable) + SwiftUI app, Xcode project, `build.sh` | merged; app target cannot be built: no macOS host |
 
 Known gaps so far: native shells deny the cross-origin Authentik redirect (`apps/native/src-tauri/src/navigation.rs`), so native SSO cannot complete yet; `apps/native/src-tauri/Cargo.lock` must be refreshed for new Mac dependencies; desktop/mobile token exchange and the agents bridge are contract requests. `.dmg` signing/notarization and the iOS app build need a Mac host (accepted by the user).
 <!-- frontend-completion-20261029:end -->

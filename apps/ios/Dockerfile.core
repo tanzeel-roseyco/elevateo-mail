@@ -1,0 +1,10 @@
+# AIDEV-NOTE: Linux verification of ElevateoCore only; the iOS app target needs a macOS host.
+# Build context must be apps/ios:  docker build -f Dockerfile.core -t elevateo-ios-core .
+FROM swift:6.0
+
+WORKDIR /workspace
+COPY ElevateoCore ./ElevateoCore
+
+WORKDIR /workspace/ElevateoCore
+RUN swift build
+CMD ["swift", "test"]
