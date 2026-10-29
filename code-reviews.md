@@ -127,3 +127,26 @@ Scope: six branding changes only, plus master plan/blueprint/standards/research 
 Fresh verification: Docker lint, typecheck, 101 unit/component tests, production build, and Playwright 27 passed / one desktop-only test skipped on mobile. Domain coverage 99.69% lines / 98.68% branches; initial JS 176.72 KB gzip. Desktop overview and mobile drawer screenshots inspected: correct branding and no visible clipping. Existing draft/appearance persistence journeys pass; storage keys remain unchanged.
 
 Dependency audit separately found three moderate development-tool entries representing one Vitest advisory, not three new source defects. Upgrade requires a supported-major migration and is tracked separately; no production dependency entry was reported. [Evidence, advisory and test limits](docs/validation/2026-10-04.md).
+
+## 2026-10-04 — PDF reader edition and concept sketches
+
+Artifact review only: ten rendered PDF pages visually inspected, page count/text presence verified, and sketch responsibilities checked against the corrected enrichment/AI split. Remaining observed layout defects: **0**. Code defect density: **not applicable (0 application source lines changed)**. This was a manual artifact review, not a new adversarial source review or application test run. The architecture sketch simplifies provider events and file access; its caption and the backend blueprint supply the exact responsibilities. Backend standards remain a proposal.
+
+## 2026-10-04 — Web and desktop distribution addendum
+
+Artifact review only: both PDF pages rendered and visually inspected; text extraction and six source-link annotations checked. Remaining observed layout defects: **0**. Code defect density: **not applicable (0 application source lines changed)**. Canonical planning documents now distinguish browser access, native CLI access, OS signing, updater signing and release costs. No application tests were rerun for this documentation change; no installers or production website were built or published.
+
+## 2026-10-05 — Independent frontend/backend handover review
+
+Reviewed frontend commit 48c437d (design/fable-frontend) and backend commit 49fc23e (feature/backend-foundation), with three scoped reviewers: backend implementation, frontend contracts/permissions, and documentation-based design tradeoffs. No application source changed. Earlier agent test results were inspected, not independently rerun.
+
+Reviewed source: backend 261 lines; frontend 252 lines. Four findings: backend 3 (11.49 defects per 1,000 reviewed lines); frontend 1 (3.97 per 1,000). Combined 4 / 513 = 7.80 per 1,000 reviewed lines. These are scoped review figures, not whole-project defect estimates. Findings remain open:
+
+1. P1: worker lifecycle never calls ledger reconciliation; a crash after durable receipt can leave unknown sends and quota reservations stranded. Add bounded operational reconciliation without resending, tested through Worker lifecycle.
+2. P2: supported 60-second approval TTL is shorter than five-minute relay cadence. Coordinate expiry and scheduling; test approval immediately after a cron tick.
+3. P2: dispatch catches validation and provider exceptions without diagnostic context. Validate before invocation; retain redacted correlation and outcome diagnostics without releasing ambiguous-send reservations.
+4. P2: frontend assistantQueue/checkAiDraft permit retained grants for disconnected/error mailboxes. Require connected status and regression tests.
+
+Design/contract findings (excluded from source defect count): frontend direct-send result cannot express immutable create/approve/status lifecycle; browser-midnight quota conflicts with rolling reservations; authentication exists only as seeded sessions; several frontend methods lack endpoints; mailbox disconnect/cap semantics differ; no distinct backend AI draft grant. Next milestone: credential-free real HTTP integration with synthetic sessions, real local D1 and durable fake sending. Separate mock demo mode; unsupported actions must not emulate success.
+
+Tradeoff scenarios: lost acceptance response must reconcile instead of resend; backend outage must show retry instead of mock mail; future approvals must disclose held quota; provider identities must not globally strip plus tags; polling/history/context require bounds even at 3,000 maximum daily recipients. Obsidian was unavailable, so these are analytical scenarios, not executed Obsidian simulations. Live providers, OAuth, actual inbox sync, local CLI bridge, DNS and distribution remain later gates.

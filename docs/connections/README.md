@@ -20,6 +20,7 @@ The two development assignments produced implementation contracts because backen
 
 ## Decisions carried into the master plan
 
+- Hunter and AMF are optional enrichment connections. AI performs personalisation using permitted facts; enrichment providers have no sending or consent authority. Exact AMF product/API identification remains open.
 - Gmail supplies existing personal inboxes without changing MX. Resend is a campaign sender with explicit capabilities; its receiving/inbox products do not automatically connect existing Google or arbitrary self-hosted mailboxes.
 - Pilot one named self-hosted server/API before promising generic compatibility. A private desktop-only server cannot receive cloud work while that computer is off.
 - AI may guide setup, but credentials and consent go through secure application screens. Backend code enforces selected-mailbox grants on every action.

@@ -4,6 +4,8 @@
 
 Review and challenge each numbered section. Record approval or changes by section here before implementation. All sections currently **proposed**.
 
+Distribution scope addition: web, Windows and macOS now share one backend and reusable React screens. Initial local CLI AI is desktop-only. Before implementation, extend platform checks to Mac signing/notarization, secure credential storage, CLI discovery/sandboxing, OAuth return handling and native notification/update tests. See master plan section 11. This addition does not record standards approval.
+
 ## 1. Languages and versions
 
 Retain the repository's pinned React 19, TypeScript 5, Vite 7 and Node 24 tooling initially. Enable strict typing and unchecked-index protection. Add Tauri 2 with a minimal Rust host; pin exact Rust/Tauri/CLI/tool versions and the Workers compatibility date after a compatibility/security check. Do not infer current latest versions from this proposal. Use one lockfile/workspace configuration and a documented package-manager version. Every dependency needs a reason; prefer platform APIs.
