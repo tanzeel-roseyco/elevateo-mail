@@ -4,6 +4,8 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { App } from '@/app/App'
 import { createFixtureGateway, type FixtureScript } from '@/data/fixtures/fixtureGateway'
+import { createSimulatedDeliveryReportsGateway } from '@/data/simulatedDeliveryReports'
+import type { FeatureGateways } from '@/app/featureGateways'
 import { AuthCompletePage } from '@/features/auth/AuthCompletePage'
 import '@/styles/index.css'
 import { useBottomNotice } from '@/ui/useBottomNotice'
@@ -26,10 +28,15 @@ const completion = window.location.hash === '#/auth/complete'
 // `?production-settings` renders the settings pages exactly as the production entry does (no
 // browser-local adapters), so their unavailable states can be captured against fixture data.
 const simulatedSettings = !new URLSearchParams(window.location.search).has('production-settings')
+// `?production-settings` also drops the simulated delivery-report port so the Bounces/Suppressions
+// unavailable states can be captured exactly as production renders them.
+const featureGateways: FeatureGateways = simulatedSettings
+  ? { simulatedSettings: true, deliveryReports: createSimulatedDeliveryReportsGateway() }
+  : {}
 createRoot(root).render(
   <StrictMode>
     <div className="min-h-full pb-[var(--fixture-inset,0px)]">
-      {completion ? <AuthCompletePage gateway={gateway} /> : <App gateway={gateway} featureGateways={simulatedSettings ? { simulatedSettings: true } : {}} />}
+      {completion ? <AuthCompletePage gateway={gateway} /> : <App gateway={gateway} featureGateways={featureGateways} />}
       <FixtureNotice />
     </div>
   </StrictMode>,

@@ -10,9 +10,16 @@ import type { OutreachGateway } from '@/features/outreach/contract'
 import type { DirectMessageRead } from '@/features/thread/ThreadPage'
 import type { AssigneeOptionsReadPort } from '@/data/v2AssigneeOptionsGateway'
 import type { AttachmentReadPort } from '@/features/thread/MessageAttachments'
+import type { DeliveryReportsGateway } from '@/data/deliveryReportsContract'
 
 export interface FeatureGateways {
   readonly outreach?: OutreachGateway
+  /**
+   * Bounce and suppression read port. No server endpoint exists yet, so the production entry leaves
+   * this unset and the Bounces/Suppressions pages show an honest unavailable state; demo/fixture
+   * entries bind the clearly simulated adapter. See data/deliveryReportsContract.ts (contract-request).
+   */
+  readonly deliveryReports?: DeliveryReportsGateway
   /**
    * Cassian's exact V2 `getDirectMessage(ctx, mailboxId, threadId, messageId, signal)` reader for
    * a message URL beyond the loaded thread page. Mira's ThreadPage applies the shared session
