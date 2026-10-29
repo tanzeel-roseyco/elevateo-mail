@@ -1,3 +1,63 @@
+## Frontend completion reviews — 2026-10-29 (`c1ac27bd..5218a274`)
+
+Adversarial reviewers: Codex CLI `codex exec -m gpt-6-astra -c model_reasoning_effort=low`, launched from PowerShell, read-only in a detached review worktree at `5218a274` (worktree verified clean afterwards). Model and effort were verified from each run's header (`model: gpt-6-astra`, `reasoning effort: low`). Each packet holds at most 380 changed lines. The rubric is the user's full review system prompt, verbatim, plus STANDARDS.md conformance; formatting is left to linters. Excluded as generated or boilerplate: `apps/ios/Elevateo.xcodeproj/project.pbxproj`, `apps/windows/Elevateo.Windows.sln`, `apps/windows/VERSION`, `.gitignore`. Full findings: [review-findings-wave1.md](docs/completion/frontend-completion-20261029/review-findings-wave1.md).
+
+**Wave 1 status: 23 of 34 packets complete; P24–P34 did not run** because Claude Code stopped the background review job when the host ran critically low on memory. Completed: 6280 lines, 65 defects (HIGH 18, MEDIUM 43, LOW 4), **10.35 defects/KLOC**. All findings are open and not yet repaired.
+
+| Packet | Scope | LOC | Defects | Defects/KLOC | Disposition |
+| --- | --- | ---: | ---: | ---: | --- |
+| P01 | android/build/Dockerfile, android/build/acceptance_results.py, android/build/build-apk.sh | 285 | 2 | 7.02 | open |
+| P02 | android/build/emulator-acceptance.sh, android/build/fixture_origin.py | 345 | 3 | 8.70 | open |
+| P03 | android/build/test_acceptance_results.py | 122 | 1 | 8.20 | open |
+| P04 | ios/Dockerfile.core, ios/Elevateo/Info.plist, ios/Elevateo/Sources/AppConfig.swift, ios/Elevateo/Sources/AppModel.swift, ios/Elevateo/Sources/ElevateoApp.swift, ios/Elevateo/Sources/KeychainTokenStore.swift | 347 | 3 | 8.65 | open |
+| P05 | ios/Elevateo/Sources/LoadState.swift, ios/Elevateo/Sources/MailboxListView.swift, ios/Elevateo/Sources/ReplyComposerView.swift | 281 | 5 | 17.79 | open |
+| P06 | ios/Elevateo/Sources/SignInView.swift, ios/Elevateo/Sources/ThreadDetailView.swift | 265 | 2 | 7.55 | open |
+| P07 | ios/Elevateo/Sources/ThreadListView.swift, ios/ElevateoCore/Package.swift | 192 | 3 | 15.62 | open |
+| P08 | ios/ElevateoCore/Sources/ElevateoCore/APIClient.swift | 264 | 3 | 11.36 | open |
+| P09 | ios/ElevateoCore/Sources/ElevateoCore/Auth/OIDCAuthFlow.swift, ios/ElevateoCore/Sources/ElevateoCore/Auth/PKCE.swift, ios/ElevateoCore/Sources/ElevateoCore/Auth/TokenExchangePort.swift, ios/ElevateoCore/Sources/ElevateoCore/Auth/TokenStore.swift | 234 | 2 | 8.55 | open |
+| P10 | ios/ElevateoCore/Sources/ElevateoCore/Models.swift | 375 | 2 | 5.33 | open |
+| P11 | ios/ElevateoCore/Tests/ElevateoCoreTests/APIClientTests.swift, ios/ElevateoCore/Tests/ElevateoCoreTests/AuthFlowTests.swift, ios/ElevateoCore/Tests/ElevateoCoreTests/DraftTests.swift, ios/ElevateoCore/Tests/ElevateoCoreTests/TestSupport.swift | 359 | 1 | 2.79 | open |
+| P12 | ios/build.sh, ios/project.yml | 166 | 3 | 18.07 | open |
+| P13 | native/src-tauri/src/auth.rs:1-380 | 380 | 5 | 13.16 | open |
+| P14 | native/src-tauri/src/auth.rs:381-403 | 22 | 1 | 45.45 | open |
+| P15 | native/ci/verify_boundary.py, native/macos-release.sh, native/src-tauri/Cargo.toml, native/src-tauri/capabilities/main.json | 239 | 2 | 8.37 | open |
+| P16 | native/src-tauri/src/host.rs | 266 | 5 | 18.80 | open |
+| P17 | native/src-tauri/src/lib.rs, native/src-tauri/src/navigation.rs | 211 | 4 | 18.96 | open |
+| P18 | native/src-tauri/src/update.rs, native/src-tauri/tauri.conf.json, native/src-tauri/tauri.macos.conf.json, native/test_macos_release.py, native/test_validate_macos_config.py, native/validate_macos_config.py | 357 | 3 | 8.40 | open |
+| P19 | web/src/app/App.tsx, web/src/app/Shell.tsx, web/src/app/featureGateways.tsx, web/src/data/connectorGrantsContract.ts, web/src/data/deliveryReportsContract.ts, web/src/data/fixtures/simulatedConnectorGrants.ts, web/src/data/http/httpConnectorGrantsGateway.ts | 378 | 4 | 10.58 | open |
+| P20 | web/src/data/http/httpDeliveryReportsGateway.ts, web/src/data/simulatedDeliveryReports.ts, web/src/data/ssoContract.ts, web/src/dev/demoMain.tsx, web/src/dev/fixtureMain.tsx, web/src/domain/sendSuppression.test.ts, web/src/domain/sendSuppression.ts, web/src/features/assistant/AssistantPanel.test.tsx | 299 | 3 | 10.03 | open |
+| P21 | web/src/features/assistant/AssistantPanel.tsx | 299 | 4 | 13.38 | open |
+| P22 | web/src/features/assistant/bridge.ts, web/src/features/auth/SignInPage.sso.test.tsx, web/src/features/auth/SignInPage.tsx, web/src/features/drafts/DraftAttachments.test.tsx, web/src/features/drafts/DraftAttachments.tsx, web/src/features/help/content.ts, web/src/features/inbox/FolderNav.tsx, web/src/features/send/BouncesPage.test.tsx | 262 | 2 | 7.63 | open |
+| P23 | web/src/features/send/BouncesPage.tsx, web/src/features/send/SendReviewPage.tsx, web/src/features/send/SendStatusPage.test.tsx, web/src/features/send/SendStatusPage.tsx | 332 | 2 | 6.02 | open |
+| P24 | web/src/features/settings/ConnectionsPage.tsx:1-380 | 380 | not run | — | stopped by host memory pressure |
+| P25 | web/src/features/settings/ConnectionsPage.tsx:381-579 | 199 | not run | — | stopped by host memory pressure |
+| P26 | web/src/features/send/SuppressionsPage.test.tsx, web/src/features/send/SuppressionsPage.tsx, web/src/features/send/deliveryFilters.ts, web/src/features/settings/ConnectionsPage.test.tsx, web/src/features/settings/IntegrationsPages.tsx, web/src/features/settings/SettingsLayout.tsx, web/src/features/settings/SettingsRoutes.tsx, web/src/main.tsx | 325 | not run | — | stopped by host memory pressure |
+| P27 | windows/Directory.Build.props, windows/build/Dockerfile, windows/build/build-installer.sh, windows/installer/elevateo.nsi, windows/src/Elevateo.Client.Core/Agents/IAgentsBridge.cs, windows/src/Elevateo.Client.Core/Api/ApiError.cs, windows/src/Elevateo.Client.Core/Api/ApiJsonContext.cs | 278 | not run | — | stopped by host memory pressure |
+| P28 | windows/src/Elevateo.Client.Core/Api/ElevateoApiClient.cs, windows/src/Elevateo.Client.Core/Api/IElevateoApiClient.cs | 264 | not run | — | stopped by host memory pressure |
+| P29 | windows/src/Elevateo.Client.Core/Api/Models.cs, windows/src/Elevateo.Client.Core/Auth/AuthCallbackValidator.cs, windows/src/Elevateo.Client.Core/Auth/ITokenStore.cs | 283 | not run | — | stopped by host memory pressure |
+| P30 | windows/src/Elevateo.Client.Core/Auth/LoopbackAuthenticator.cs, windows/src/Elevateo.Client.Core/Auth/Pkce.cs, windows/src/Elevateo.Client.Core/Auth/WindowsCredentialStore.cs | 377 | not run | — | stopped by host memory pressure |
+| P31 | windows/src/Elevateo.Client.Core/Configuration/ClientConfiguration.cs, windows/src/Elevateo.Client.Core/Elevateo.Client.Core.csproj, windows/src/Elevateo.Windows/App.axaml, windows/src/Elevateo.Windows/App.axaml.cs, windows/src/Elevateo.Windows/Elevateo.Windows.csproj, windows/src/Elevateo.Windows/Program.cs, windows/src/Elevateo.Windows/Services/AppServices.cs, windows/src/Elevateo.Windows/ViewModels/AssistantViewModel.cs | 324 | not run | — | stopped by host memory pressure |
+| P32 | windows/src/Elevateo.Windows/ViewModels/MainViewModel.cs | 340 | not run | — | stopped by host memory pressure |
+| P33 | windows/src/Elevateo.Windows/Views/MainWindow.axaml, windows/src/Elevateo.Windows/Views/MainWindow.axaml.cs, windows/src/Elevateo.Windows/app.manifest, windows/src/Elevateo.Windows/appsettings.json, windows/tests/Elevateo.Client.Core.Tests/ApiClientValidationTests.cs | 332 | not run | — | stopped by host memory pressure |
+| P34 | windows/tests/Elevateo.Client.Core.Tests/AuthFlowTests.cs, windows/tests/Elevateo.Client.Core.Tests/CredentialStoreTests.cs, windows/tests/Elevateo.Client.Core.Tests/Elevateo.Client.Core.Tests.csproj, windows/tests/Elevateo.Client.Core.Tests/TestSupport.cs | 185 | not run | — | stopped by host memory pressure |
+
+### Design-tradeoff review
+
+Reviewer: Claude Code `claude-fable-5`, low effort (verified from result metadata), read-only, dedicated to design tradeoffs with scenario simulations. It read about 1,900–2,300 lines directly. The Obsidian architecture notes exist only in the 2026-10-02 backup and are past their monthly review date (last reviewed 2026-07-08), so they were used only as background. Verdicts:
+- KEEP: Windows Avalonia; typed ports with unavailable states; send-status polling instead of push (one fix noted below); Connections and the assistant boundary; iOS core split; Android WebView.
+- CHANGE: the Mac update rollback (MEDIUM).
+- CHANGE-LATER: the dual native/WebView sign-in paths (HIGH).
+
+**6 design defects** (about 2.7/KLOC of the lines read, not comparable to the line-level density above):
+1. `update.rs` has an unenforced `READY_WINDOW_SECS`.
+2. A single failed send-status poll stops auto-polling silently.
+3. The native PKCE path conflicts with the recorded WebView-cookie decision. Windows and iOS need it under the 2026-10-29 brief; to be recorded.
+4. Rollback cannot fire if the new binary never launches; undocumented.
+5. The IdP-in-WebView risk acceptance is undocumented.
+6. Shared auth conformance vectors are needed across Rust/C#/Swift.
+
+Status: open.
+
 ## Self-hosted continuation reviews — 2026-10-23
 
 Mandatory full-rubric adversarial Orca Codex reviews, bounded to <=200 physical LOC per

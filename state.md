@@ -7,11 +7,13 @@ Goal: finish every frontend/client area so web, Mac, Windows and Android (plus i
 | --- | --- |
 | Web: Authentik-only SSO sign-in (fails closed on a `google` provider report), Connections screen at `/settings/integrations/mcp` to grant/revoke per-mailbox MCP access with external-AI notices | merged, not yet built/tested |
 | Web: Resend send-status timeline with bounded-backoff polling, mailbox Bounces and Suppressions views, attachment upload progress and suppressed-recipient links in send review | merged, not yet built/tested |
-| Web: code-splitting (500 KB main chunk), People/Members/Personal Details fixtures, state/a11y pass | pending |
+| Web: code-splitting (500 KB main chunk), People/Members/Personal Details fixtures, state/a11y pass, capture/Playwright coverage | interrupted: only vendor chunking + budget check started (branch `feature/fc-web-quality` at `7b87a94b`, not merged); host ran out of memory |
 | Mac (Tauri): menus, single instance, PKCE login with Keychain, signed auto-update with rollback, assistant panel, `.dmg` release script with env-only signing | merged, not yet built/tested |
 | Windows (`apps/windows`, .NET 8 + Avalonia, NSIS + osslsigncode): SSO login, mailboxes, threads, plain-text thread view, reply draft, assistant panel, installer script | merged, not yet built/tested |
 | Android (`apps/android/build`): current-API audit, local Docker APK build, headless emulator acceptance (needs `/dev/kvm`) | merged, not yet run |
 | iOS (`apps/ios`): ElevateoCore Swift package (Linux-testable) + SwiftUI app, Xcode project, `build.sh` | merged; app target cannot be built: no macOS host |
+
+Reviews (see code-reviews.md): 23 of 34 adversarial packets done, 65 open defects (18 HIGH) over 6,280 lines, 10.35/KLOC; the design-tradeoff review is done, with 6 open design defects. Nothing is repaired yet, and the HIGH findings include a Mac update rollback that fires before the first updated launch and a stale `Cargo.lock`. No lint, typecheck, test, build or visual QA has run yet.
 
 Known gaps so far: native shells now allow only the configured Authentik origin for the web-session SSO round trip (host commands stay app-origin-only; unverified on a device); `apps/native/src-tauri/Cargo.lock` must be refreshed for new Mac dependencies; desktop/mobile token exchange and the agents bridge are contract requests. `.dmg` signing/notarization and the iOS app build need a Mac host (accepted by the user).
 <!-- frontend-completion-20261029:end -->
