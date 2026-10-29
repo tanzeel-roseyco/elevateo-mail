@@ -1,0 +1,166 @@
+# AIDEV-NOTE: PERF01_PROJECT must be a fresh perf01-<hex>; run-baseline.sh refuses existing resources before creating any.
+# PERF-01 overlay: docker compose -p $PERF01_PROJECT --project-directory <task root> -f compose.yaml -f ops/perf/compose.perf.yaml
+# Relative paths resolve against the task checkout root (the first -f file), exactly like ops/compose.r1-test.yaml.
+#
+# Resource caps use the `cpus` / `mem_limit` / `pids_limit` service keys. Legacy docker-compose v1 ignored
+# `deploy.resources.limits` unless run with --compatibility; Compose v2 honours both forms, but these keys are
+# unambiguous on every version and land in HostConfig.NanoCpus / HostConfig.Memory, which preflight.sh and
+# cleanup.sh read back to prove the caps were applied. Values can be lowered per run through PERF01_*_CPUS/MEM.
+#
+# `restart: "no"` overrides the base `unless-stopped`: a disposable benchmark stack on a shared production host
+# must never come back by itself after the run, a daemon restart or a host reboot. It changes no request path.
+#
+# Runtime network stays `internal: true`; dependency downloads (apt, bundler) happen only in the build phase.
+# No published ports, no privileged mode, no socket mounts, no host networking, no production mounts.
+#
+# PERF01_RUN_ID (exported by run-baseline.sh) stamps every resource with the invocation that created it, so the
+# run script's exit trap can stop exactly its own containers and nothing that merely shares the project name.
+x-perf-labels: &perf-labels
+  elevateo.perf.task: perf01
+  elevateo.perf.project: ${PERF01_PROJECT:?}
+  elevateo.perf.run: ${PERF01_RUN_ID:?}
+
+x-perf-server: &perf-server
+  image: ${PERF01_PROJECT:?}-server:perf
+  restart: "no"
+  labels: *perf-labels
+
+x-perf-tool: &perf-tool
+  restart: "no"
+  labels: *perf-labels
+  cpus: ${PERF01_TOOL_CPUS:-0.5}
+  mem_limit: ${PERF01_TOOL_MEM:-512m}
+  pids_limit: 128
+
+services:
+  db:
+    restart: "no"
+    labels: *perf-labels
+    cpus: ${PERF01_DB_CPUS:-1.5}
+    mem_limit: ${PERF01_DB_MEM:-1536m}
+    pids_limit: 512
+
+  bootstrap:
+    <<: *perf-tool
+
+  auth:
+    restart: "no"
+    labels: *perf-labels
+    cpus: 0.25
+    mem_limit: 256m
+    pids_limit: 128
+
+  rest:
+    restart: "no"
+    labels: *perf-labels
+    cpus: 0.25
+    mem_limit: 256m
+    pids_limit: 128
+
+  storage:
+    restart: "no"
+    labels: *perf-labels
+    cpus: 0.5
+    mem_limit: 512m
+    pids_limit: 256
+
+  mailpit:
+    restart: "no"
+    labels: *perf-labels
+    cpus: 0.25
+    mem_limit: 128m
+    pids_limit: 64
+
+  api:
+    <<: *perf-server
+    build:
+      context: ./apps/server
+      labels: *perf-labels
+    cpus: ${PERF01_API_CPUS:-1.0}
+    mem_limit: ${PERF01_API_MEM:-768m}
+    pids_limit: 256
+
+  worker:
+    <<: *perf-server
+    cpus: ${PERF01_WORKER_CPUS:-0.25}
+    mem_limit: ${PERF01_WORKER_MEM:-256m}
+    pids_limit: 64
+
+  migrate:
+    <<: *perf-server
+    cpus: 0.5
+    mem_limit: 512m
+    pids_limit: 128
+
+  # Synthetic tenant fixtures (two orgs, three users, three mailboxes) loaded once by the admin role, as in R1.
+  perf-fixtures:
+    <<: *perf-tool
+    image: supabase/postgres:17.6.1.136@sha256:f371b5f3f2ac0a05703f33d6e6134515fb2498cab708fb948a0aeb7481467c00
+    profiles: [perf]
+    networks: [runtime]
+    environment:
+      PGPASSWORD: ${POSTGRES_PASSWORD:?}
+    volumes:
+      - ./ops/tests/db-fixtures.sql:/perf/fixtures.sql:ro
+    entrypoint: ["psql", "-X", "-h", "db", "-U", "supabase_admin", "-d", "postgres", "-v", "ON_ERROR_STOP=1", "-f", "/perf/fixtures.sql"]
+
+  # EXPLAIN runs as the restricted API role inside owned transactions with transaction-local claims.
+  # The SQL directory is read-only; the password reaches only this container's environment, never stdout.
+  perf-sql:
+    <<: *perf-tool
+    image: supabase/postgres:17.6.1.136@sha256:f371b5f3f2ac0a05703f33d6e6134515fb2498cab708fb948a0aeb7481467c00
+    profiles: [perf]
+    networks: [runtime]
+    cpus: 0.25
+    mem_limit: 256m
+    environment:
+      PGHOST: db
+      PGDATABASE: postgres
+      PGUSER: elevateo_api
+      PGPASSWORD: ${API_DB_PASSWORD:?}
+      PGOPTIONS: "-c search_path=app,app_meta"
+    volumes:
+      - ./ops/perf/sql:/perf/sql:ro
+    entrypoint: ["psql", "-X", "-v", "ON_ERROR_STOP=1"]
+    command: ["-f", "/perf/sql/explain-rls.sql"]
+
+  # HTTP load generator: plain Ruby (net/http, json from stdlib) in the already-built server image, so no new
+  # runtime dependency. It needs none of the Rails environment; the image CMD is replaced by `ruby load.rb`.
+  # Results go to stdout (JSON document) so the container stays read-only and needs no writable bind mount.
+  # Own cgroup and caps: the client contends with api for host cores but not inside api's cgroup.
+  perf-load:
+    image: ${PERF01_PROJECT:?}-server:perf
+    profiles: [perf]
+    networks: [runtime]
+    restart: "no"
+    labels: *perf-labels
+    cpus: ${PERF01_LOAD_CPUS:-1.0}
+    mem_limit: ${PERF01_LOAD_MEM:-512m}
+    pids_limit: 128
+    read_only: true
+    tmpfs: [/tmp]
+    working_dir: /perf
+    volumes:
+      - ./ops/perf/load.rb:/perf/load.rb:ro
+    entrypoint: ["ruby", "/perf/load.rb"]
+    command: ["--help"]
+
+networks:
+  runtime:
+    name: ${PERF01_PROJECT:?}-runtime
+    internal: true
+    labels: *perf-labels
+
+# The three disposable volumes are external: run-baseline.sh creates them first with `docker volume create` carrying
+# the task, project, run and a fresh elevateo.perf.generation label, inspects them, and records their identity for
+# cleanup.sh's volume proof. Compose only attaches to them by exact name and never creates or labels a volume here.
+volumes:
+  db-data:
+    external: true
+    name: ${PERF01_PROJECT:?}-db-data
+  db-config:
+    external: true
+    name: ${PERF01_PROJECT:?}-db-config
+  storage-data:
+    external: true
+    name: ${PERF01_PROJECT:?}-storage-data

@@ -1,0 +1,13 @@
+#!/bin/sh
+# AIDEV-NOTE: Fake `date` for the PERF-01 guard tests. With FAKE_DATE_EPOCH set, every call answers for that fixed
+# instant (GNU `date -d @<epoch>`), so two run-baseline.sh invocations compute the same second-resolution RUN_ID and
+# the run-directory collision guard can be exercised. Without it, this is the real date. Never used outside tests.
+set -u
+for real in /usr/bin/date /bin/date; do
+  if [ -x "$real" ]; then
+    if [ -n "${FAKE_DATE_EPOCH-}" ]; then exec "$real" -d "@$FAKE_DATE_EPOCH" "$@"; fi
+    exec "$real" "$@"
+  fi
+done
+echo "fake date: no real date binary found" >&2
+exit 1
