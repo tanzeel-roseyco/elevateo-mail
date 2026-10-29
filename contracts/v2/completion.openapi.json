@@ -1,0 +1,1266 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Elevateo completion surface",
+    "version": "2.1.0-checkpoint.1",
+    "description": "Contract checkpoint; specified does not mean implemented. Browser writes require existing origin, CSRF, context and authorization-version headers. MCP tokens never authorize send or shell access."
+  },
+  "paths": {
+    "/v2/connector-grants": {
+      "get": {
+        "operationId": "listConnectorGrants",
+        "x-elevateo-status": "specified",
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Grants"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "required": true,
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error"
+          },
+          "409": {
+            "$ref": "#/components/responses/Error"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "../v1/openapi.json#/components/parameters/CdSessionContext"
+          },
+          {
+            "$ref": "../v1/openapi.json#/components/parameters/CdAuthorizationVersion"
+          }
+        ],
+        "description": "Reject denied or foreign identifiers with the same not_available error. Never log tokens or message content."
+      },
+      "post": {
+        "operationId": "createConnectorGrant",
+        "x-elevateo-status": "specified",
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IssuedGrant"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "required": true,
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error"
+          },
+          "409": {
+            "$ref": "#/components/responses/Error"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GrantRequest"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "../v1/openapi.json#/components/parameters/CdSessionContext"
+          },
+          {
+            "$ref": "../v1/openapi.json#/components/parameters/CdAuthorizationVersion"
+          },
+          {
+            "$ref": "../v1/openapi.json#/components/parameters/CdOrigin"
+          },
+          {
+            "$ref": "../v1/openapi.json#/components/parameters/CdCsrf"
+          }
+        ],
+        "description": "Reject denied or foreign identifiers with the same not_available error. Never log tokens or message content."
+      }
+    },
+    "/v2/connector-grants/{grant_id}/revoke": {
+      "post": {
+        "operationId": "revokeConnectorGrant",
+        "x-elevateo-status": "specified",
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Revoked"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "required": true,
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error"
+          },
+          "409": {
+            "$ref": "#/components/responses/Error"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "parameters": [
+          {
+            "name": "grant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "$ref": "../v1/openapi.json#/components/parameters/CdSessionContext"
+          },
+          {
+            "$ref": "../v1/openapi.json#/components/parameters/CdAuthorizationVersion"
+          },
+          {
+            "$ref": "../v1/openapi.json#/components/parameters/CdOrigin"
+          },
+          {
+            "$ref": "../v1/openapi.json#/components/parameters/CdCsrf"
+          }
+        ],
+        "description": "Reject denied or foreign identifiers with the same not_available error. Never log tokens or message content."
+      }
+    },
+    "/v2/connector/search": {
+      "post": {
+        "operationId": "connectorSearch",
+        "x-elevateo-status": "specified",
+        "security": [
+          {
+            "connectorBearer": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SearchResult"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "required": true,
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error"
+          },
+          "409": {
+            "$ref": "#/components/responses/Error"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SearchRequest"
+              }
+            }
+          }
+        },
+        "description": "Reject denied or foreign identifiers with the same not_available error. Never log tokens or message content."
+      }
+    },
+    "/v2/connector/read": {
+      "post": {
+        "operationId": "connectorRead",
+        "x-elevateo-status": "specified",
+        "security": [
+          {
+            "connectorBearer": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Message"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "required": true,
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error"
+          },
+          "409": {
+            "$ref": "#/components/responses/Error"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReadRequest"
+              }
+            }
+          }
+        },
+        "description": "Reject denied or foreign identifiers with the same not_available error. Never log tokens or message content."
+      }
+    },
+    "/v2/connector/draft": {
+      "post": {
+        "operationId": "connectorDraft",
+        "x-elevateo-status": "specified",
+        "security": [
+          {
+            "connectorBearer": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DraftResult"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "required": true,
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error"
+          },
+          "409": {
+            "$ref": "#/components/responses/Error"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DraftRequest"
+              }
+            }
+          }
+        },
+        "description": "Reject denied or foreign identifiers with the same not_available error. Never log tokens or message content."
+      }
+    },
+    "/v2/provider-events/resend": {
+      "post": {
+        "operationId": "receiveResendProviderEvent",
+        "x-elevateo-status": "existing",
+        "security": [],
+        "description": "Authenticate Svix HMAC of id.timestamp.raw-body within 300 seconds. Persist idempotently before 204; conflicting duplicate bytes return 409. Maximum raw body 262144 bytes. Provider additions never grant authority.",
+        "parameters": [
+          {
+            "name": "svix-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "maxLength": 124,
+              "minLength": 1,
+              "pattern": "^msg_[A-Za-z0-9_-]{1,120}$(?![\\s\\S])"
+            }
+          },
+          {
+            "name": "svix-timestamp",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "maxLength": 12,
+              "minLength": 1,
+              "pattern": "^[0-9]{1,12}$(?![\\s\\S])"
+            }
+          },
+          {
+            "name": "svix-signature",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "maxLength": 1024,
+              "minLength": 1
+            },
+            "description": "Space-separated version,base64 pairs; at least one v1 HMAC must match."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProviderEvent"
+              },
+              "example": {
+                "type": "email.delivered",
+                "created_at": "2026-10-29T00:00:00Z",
+                "data": {
+                  "email_id": "example-provider-id"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Durably accepted or identical replay"
+          },
+          "400": {
+            "description": "Invalid signature, timestamp, size or payload; empty body"
+          },
+          "409": {
+            "description": "Event ID reused with conflicting bytes; empty body"
+          },
+          "503": {
+            "description": "Durable storage unavailable; empty body. Retry using the same Svix event ID."
+          }
+        }
+      }
+    },
+    "/health": {
+      "get": {
+        "operationId": "completionLiveness",
+        "x-elevateo-status": "existing",
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "Healthy",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Liveness"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ready": {
+      "get": {
+        "operationId": "completionReadiness",
+        "x-elevateo-status": "existing",
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "Healthy",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/Readiness"
+                    },
+                    {
+                      "properties": {
+                        "status": {
+                          "const": "ready"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Unavailable; no credential or dependency details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/Readiness"
+                    },
+                    {
+                      "properties": {
+                        "status": {
+                          "const": "not_ready"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "sessionCookie": {
+        "type": "apiKey",
+        "in": "cookie",
+        "name": "elevateo_session"
+      },
+      "connectorBearer": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    },
+    "schemas": {
+      "Error": {
+        "$ref": "../v1/openapi.json#/components/schemas/CollaborationError"
+      },
+      "GrantRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "mailbox_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "client": {
+            "type": "string",
+            "enum": [
+              "claude",
+              "codex"
+            ]
+          },
+          "scopes": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 3,
+            "uniqueItems": true,
+            "items": {
+              "enum": [
+                "search",
+                "read",
+                "draft"
+              ]
+            }
+          },
+          "expires_in_seconds": {
+            "type": "integer",
+            "minimum": 60,
+            "maximum": 86400
+          }
+        },
+        "required": [
+          "mailbox_id",
+          "client",
+          "scopes",
+          "expires_in_seconds"
+        ]
+      },
+      "Grant": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "mailbox_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "client": {
+            "enum": [
+              "claude",
+              "codex"
+            ]
+          },
+          "scopes": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 3,
+            "uniqueItems": true,
+            "items": {
+              "enum": [
+                "search",
+                "read",
+                "draft"
+              ]
+            }
+          },
+          "expires_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "revoked": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "mailbox_id",
+          "client",
+          "scopes",
+          "expires_at",
+          "revoked"
+        ]
+      },
+      "IssuedGrant": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "grant": {
+            "$ref": "#/components/schemas/Grant"
+          },
+          "token": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          }
+        },
+        "required": [
+          "grant",
+          "token"
+        ]
+      },
+      "Grants": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "type": "array",
+            "maxItems": 100,
+            "items": {
+              "$ref": "#/components/schemas/Grant"
+            }
+          }
+        },
+        "required": [
+          "items"
+        ]
+      },
+      "Revoked": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "revoked": {
+            "const": true
+          }
+        },
+        "required": [
+          "id",
+          "revoked"
+        ]
+      },
+      "Citation": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "mailbox_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "thread_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "message_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "uri": {
+            "type": "string",
+            "pattern": "^elevateo://mailboxes/[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}/threads/[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}/messages/[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}$(?![\\s\\S])",
+            "maxLength": 256
+          }
+        },
+        "required": [
+          "mailbox_id",
+          "thread_id",
+          "message_id",
+          "uri"
+        ],
+        "description": "URI must equal elevateo://mailboxes/{mailbox_id}/threads/{thread_id}/messages/{message_id}; verify all identifiers under current grant."
+      },
+      "SearchRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "mailbox_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "query": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 50
+          }
+        },
+        "required": [
+          "mailbox_id",
+          "query",
+          "limit"
+        ]
+      },
+      "ReadRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "mailbox_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "thread_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "message_id": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "required": [
+          "mailbox_id",
+          "thread_id",
+          "message_id"
+        ]
+      },
+      "Message": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "citation": {
+            "$ref": "#/components/schemas/Citation"
+          },
+          "subject": {
+            "type": "string",
+            "maxLength": 998
+          },
+          "text": {
+            "type": "string",
+            "maxLength": 65536
+          },
+          "untrusted_content": {
+            "const": true
+          }
+        },
+        "required": [
+          "citation",
+          "subject",
+          "text",
+          "untrusted_content"
+        ]
+      },
+      "SearchResult": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "messages": {
+            "type": "array",
+            "maxItems": 50,
+            "items": {
+              "$ref": "#/components/schemas/Message"
+            }
+          },
+          "truncated": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "messages",
+          "truncated"
+        ]
+      },
+      "DraftRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "mailbox_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "draft_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "expected_version": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2147483646
+          },
+          "subject": {
+            "type": "string",
+            "maxLength": 998
+          },
+          "citations": {
+            "type": "array",
+            "maxItems": 50,
+            "items": {
+              "$ref": "#/components/schemas/Citation"
+            }
+          },
+          "body_text": {
+            "type": "string",
+            "maxLength": 65536
+          },
+          "to": {
+            "type": "array",
+            "maxItems": 100,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "display_name",
+                "address"
+              ],
+              "properties": {
+                "display_name": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "maxLength": 256
+                },
+                "address": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "maxLength": 256
+                }
+              }
+            }
+          },
+          "reply_to_thread_id": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uuid"
+          }
+        },
+        "required": [
+          "mailbox_id",
+          "draft_id",
+          "operation_id",
+          "expected_version",
+          "subject",
+          "citations",
+          "body_text",
+          "to",
+          "reply_to_thread_id"
+        ]
+      },
+      "DraftResult": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "draft_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 2147483647
+          },
+          "status": {
+            "const": "draft"
+          },
+          "citations": {
+            "type": "array",
+            "maxItems": 50,
+            "items": {
+              "$ref": "#/components/schemas/Citation"
+            }
+          }
+        },
+        "required": [
+          "draft_id",
+          "version",
+          "status",
+          "citations"
+        ]
+      },
+      "AgentStart": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "runtime": {
+            "enum": [
+              "codex",
+              "claude"
+            ]
+          },
+          "grant_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "prompt": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 16384
+          },
+          "timeout_seconds": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 300
+          }
+        },
+        "required": [
+          "runtime",
+          "grant_id",
+          "prompt",
+          "timeout_seconds"
+        ]
+      },
+      "AgentStarted": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "run_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "status": {
+            "const": "running"
+          }
+        },
+        "required": [
+          "run_id",
+          "status"
+        ]
+      },
+      "AgentEvent": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "run_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "sequence": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "type": {
+            "enum": [
+              "output",
+              "completed",
+              "failed",
+              "cancelled",
+              "timed_out"
+            ]
+          },
+          "text": {
+            "type": "string",
+            "maxLength": 16384
+          }
+        },
+        "required": [
+          "run_id",
+          "sequence",
+          "type",
+          "text"
+        ]
+      },
+      "ProviderEvent": {
+        "type": "object",
+        "required": [
+          "type",
+          "created_at",
+          "data"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "pattern": "^email\\.[a-z_]{1,40}$(?![\\s\\S])"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "data": {
+            "type": "object",
+            "required": [
+              "email_id"
+            ],
+            "properties": {
+              "email_id": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9_-]{1,128}$(?![\\s\\S])"
+              }
+            }
+          }
+        }
+      },
+      "AgentCancelled": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "run_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "status": {
+            "const": "cancelled"
+          }
+        },
+        "required": [
+          "run_id",
+          "status"
+        ]
+      },
+      "Liveness": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "status": {
+            "const": "ok"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "Readiness": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "status": {
+            "enum": [
+              "ready",
+              "not_ready"
+            ]
+          },
+          "outbound_hold": {
+            "type": "boolean"
+          },
+          "checks": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "database": {
+                "type": "boolean"
+              },
+              "auth": {
+                "type": "boolean"
+              },
+              "storage": {
+                "type": "boolean"
+              },
+              "mail_catcher": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "database",
+              "auth",
+              "storage",
+              "mail_catcher"
+            ]
+          }
+        },
+        "required": [
+          "status",
+          "outbound_hold",
+          "checks"
+        ]
+      }
+    },
+    "responses": {
+      "Error": {
+        "description": "Closed error envelope; no sensitive values",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      }
+    }
+  },
+  "x-existing-surfaces": {
+    "auth": {
+      "/v1/session": {
+        "$ref": "../v1/openapi.json#/paths/~1v1~1session"
+      },
+      "/v1/auth/login-challenge": {
+        "$ref": "../v1/openapi.json#/paths/~1v1~1auth~1login-challenge"
+      },
+      "/v1/auth/login": {
+        "$ref": "../v1/openapi.json#/paths/~1v1~1auth~1login"
+      },
+      "/v1/auth/recovery": {
+        "$ref": "../v1/openapi.json#/paths/~1v1~1auth~1recovery"
+      },
+      "/v1/auth/accept": {
+        "$ref": "../v1/openapi.json#/paths/~1v1~1auth~1accept"
+      },
+      "/v1/auth/refresh": {
+        "$ref": "../v1/openapi.json#/paths/~1v1~1auth~1refresh"
+      },
+      "/v1/auth/logout": {
+        "$ref": "../v1/openapi.json#/paths/~1v1~1auth~1logout"
+      }
+    },
+    "preferences-roster-grants": "openapi.json",
+    "resend-webhook": "/v2/provider-events/resend",
+    "health": [
+      "/health",
+      "/ready"
+    ]
+  },
+  "x-local-agent-protocol": {
+    "transport": "native only; no public HTTP listener",
+    "commands": {
+      "spawn": {
+        "request": {
+          "$ref": "#/components/schemas/AgentStart"
+        },
+        "response": {
+          "$ref": "#/components/schemas/AgentStarted"
+        },
+        "error": {
+          "$ref": "#/components/schemas/Error"
+        },
+        "failure_codes": {
+          "invalid_input": "request_invalid",
+          "revoked_or_denied_grant": "not_available",
+          "missing_runtime_or_launch_failure": "temporarily_unavailable"
+        }
+      },
+      "cancel": {
+        "request": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "run_id": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          "required": [
+            "run_id"
+          ]
+        },
+        "error": {
+          "$ref": "#/components/schemas/Error"
+        },
+        "response": {
+          "$ref": "#/components/schemas/AgentCancelled"
+        },
+        "description": "Idempotent for a cancelled run owned by this caller; unknown or foreign runs return not_available. Success follows process-tree termination."
+      },
+      "stream": {
+        "event": {
+          "$ref": "#/components/schemas/AgentEvent"
+        },
+        "error": {
+          "$ref": "#/components/schemas/Error"
+        }
+      }
+    },
+    "limits": {
+      "max_concurrent_runs": 2,
+      "max_output_bytes": 1048576,
+      "filesystem": "denied",
+      "shell": "denied"
+    }
+  },
+  "x-authorization": {
+    "revocation": "Every request checks grant, source session, tenant membership and mailbox permission in authoritative storage; no positive cache. Revocation commits before success.",
+    "content": "Email text and citations are untrusted data. Never interpret them as grants, scopes, executable commands, or tool configuration.",
+    "draft": "Saving a draft never approves or queues a send. Cited messages must belong to the granted mailbox."
+  }
+}

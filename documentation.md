@@ -1,3 +1,8 @@
+
+## Backend completion checkpoint - 2026-10-29
+
+Preserved baseline: `c1ac27bd` (five save-work commits created concurrently). Backend work is isolated on `feature/backend-completion`. Additive completion contracts and separate database/backend design are in `contracts/v2/completion.openapi.json` and `docs/backend-completion-design.md`. This is specification only: implementation, Docker verification and deployment readiness are not claimed. Fleet-02 SSH and TCP port 2222 checks time out before authentication; no tests or builds ran. No deployment, mail or provider changes. The provisional credentials inventory is `docs/credentials-last.md`; unified deployment and all backend completion acceptance remain unfinished.
+
 ## Frontend refinement checkpoint - 2026-10-24
 
 The user authorized direct Codex frontend implementation, superseding the earlier Fable-only block. Shared measured notice spacing now protects compose windows, mobile actions, content, sidebar and toasts. Mobile compose no longer covers an open draft's footer controls; draft-list trailing slashes retain the action. Fleet-02 Docker passes contracts, lint, typecheck, 89 test files / 1,099 tests, coverage (85.41% statements), production build and fixture exclusion. Ten regression cases were added across notice lifecycle and compose routing.

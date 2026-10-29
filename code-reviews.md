@@ -2371,3 +2371,14 @@ Fleet Docker: contract regeneration checks, lint, typecheck, 88 suites / 1,092 t
 ### Compose footer follow-up - 2026-10-24
 
 Visual inspection reproduced the mobile floating compose action covering the draft attachment/delete controls. It is now absent on editor/review routes. Independent adversarial review applied the full rubric to 50 implementation/test lines, found one MEDIUM trailing-slash draft-list regression (20 defects/KLOC), and confirmed its repair on the same 50 lines (zero remaining, 0/KLOC). Seven route/capability regression cases pass. Latest full Docker gate: 89 files / 1,099 tests, 85.41% statements; lint, typecheck, contracts, production build pass. Earlier totals above describe the preceding snapshot. Dedicated design review and safe-area follow-up remain recorded above. No whole-application acceptance inferred.
+## Backend completion design review - 2026-10-29
+
+Independent design reviewer: docs/backend-completion-design.md, initial lines 1-39; 39 LOC, 3 defects (2 high, 1 medium), 76.92 defects/KLOC. Added coordinated backup barriers/manifests, restore session/grant invalidation and send quarantine, and unique UTC-attributed budget reservation semantics. These are specification repairs, not implemented or tested guarantees. Analytical failure simulations only; no Obsidian connection was available.
+
+### Completion contract checkpoint reviews - 2026-10-29
+
+Initial bounded contract packets: schema430-629 (200 LOC, 1 defect, 5/KLOC); contract1-200 (200 LOC, 2 defects, 10/KLOC); native810-1009 (200 LOC, 2 defects, 10/KLOC); schema630-809 (180 LOC, 1 defect, 5.56/KLOC); contract201-400 (200 LOC, 2 defects, 10/KLOC); tail1010-1038 plus401-429 and68 Ruby test lines (126 LOC, 3 defects, 23.81/KLOC). Ranges refer to the initial review snapshot. Repaired citation grammar, machine-readable session headers, no-store grants, native errors, anchored provider identifiers, int32 version bounds, Svix header bounds, outage response, cancellation response, health schemas and executable payload validation.
+
+Payload review: 190 LOC (80 test lines plus110 example lines), 1 format-validation defect, 5.26/KLOC. Enabled pinned standard format validators and malformed UUID/date cases. Independent repair review: 90 LOC, 0 residual defects, 0/KLOC. Final response delta review: 145 LOC, 1 readiness HTTP/body consistency defect, 6.90/KLOC; added per-status schema constraints and both reversed-status regression cases. Review totals overlap and are not unique-source coverage. All results are static only; no Docker test/build acceptance, runtime authorization or production readiness is inferred. No Obsidian connection available; design scenarios are analytical.
+
+Readiness repair independently reviewed: 57 LOC, 0 new defects, 0/KLOC; prior finding resolved by inspection. Regression tests remain unexecuted because fleet-02 is unreachable.
