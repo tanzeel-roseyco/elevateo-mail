@@ -1,3 +1,11 @@
+## Backend completion source reviews - 2026-10-29
+
+Runtime tests are deferred until all implementation is complete, per the user. Review density is defects per 1,000 reviewed lines; overlapping passes are not additive. Full user rubric applied; lint is a separate final Docker gate.
+
+| Scope | LOC | Defects | Defects/KLOC | Disposition |
+| --- | ---: | ---: | ---: | --- |
+| Resend V3 transport | 149 | 0 | 0 | Source review only; reply and attachment regressions pending execution |
+
 ## Self-hosted continuation reviews — 2026-10-23
 
 Mandatory full-rubric adversarial Orca Codex reviews, bounded to <=200 physical LOC per

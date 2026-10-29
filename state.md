@@ -1,7 +1,7 @@
 
 ## Backend completion checkpoint - 2026-10-29
 
-Preserved baseline: `c1ac27bd` (five save-work commits created concurrently). Backend work is isolated on `feature/backend-completion`. Additive completion contracts and separate database/backend design are in `contracts/v2/completion.openapi.json` and `docs/backend-completion-design.md`. This is specification only: implementation, Docker verification and deployment readiness are not claimed. Fleet-02 SSH and TCP port 2222 checks time out before authentication; no tests or builds ran. No deployment, mail or provider changes. The provisional credentials inventory is `docs/credentials-last.md`; unified deployment and all backend completion acceptance remain unfinished.
+Backend completion is in progress on `feature/backend-completion`, based on preserved baseline `c1ac27bd` and contracts checkpoint `9fb45425`. Resend transport now preserves V3 reply identity while rendering attachments; regression cases are written and its 149-line source review found zero defects. Runtime verification is pending. The latest user instruction excludes fleet-02 and defers all local Docker builds/tests until implementation and source reviews are complete. No builds, deployment, live mail or provider changes have occurred during this completion work. Remaining implementation includes connector integration, native process isolation, budgets, portable protocol verification and unified production operations. Credentials inventory: `docs/credentials-last.md`.
 
 ## Frontend refinement checkpoint - 2026-10-24
 
