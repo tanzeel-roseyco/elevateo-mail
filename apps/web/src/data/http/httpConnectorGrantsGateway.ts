@@ -10,6 +10,7 @@ import { CollaborationErrorSchema } from '../contract'
 import { GatewayError } from '../errors'
 import type { CsrfProof, ReadContext } from '../gateway'
 import {
+  CONNECTOR_GRANT_MAX_BYTES,
   CONNECTOR_GRANTS_MAX_BYTES,
   CONNECTOR_GRANT_REQUEST_MAX_BYTES,
   ConnectorGrantCreateInputSchema,
@@ -46,7 +47,7 @@ export function createHttpConnectorGrantsGateway(fetchImpl?: FetchLike): Connect
     },
     async createConnectorGrant(ctx, proof, input, signal) {
       const body = validated(ConnectorGrantCreateInputSchema, input)
-      return requestJson('/v2/me/connector-grants', ConnectorGrantSecretSchema, CONNECTOR_GRANTS_MAX_BYTES, {
+      return requestJson('/v2/me/connector-grants', ConnectorGrantSecretSchema, CONNECTOR_GRANT_MAX_BYTES, {
         ...base,
         errorSchema,
         headers: { ...contextHeaders(ctx), ...proofHeaders(proof) },
@@ -69,7 +70,7 @@ export function createHttpConnectorGrantsGateway(fetchImpl?: FetchLike): Connect
     async removeConnectorGrantMailbox(ctx, proof, grantId, mailboxId, signal) {
       // Returns the updated grant (its remaining mailboxes); the server revokes the whole grant if the
       // last mailbox is removed, which the caller handles by reconciling against the next list.
-      return requestJson(`/v2/me/connector-grants/${seg(grantId)}/mailboxes/${seg(mailboxId)}`, ConnectorGrantSchema, CONNECTOR_GRANTS_MAX_BYTES, {
+      return requestJson(`/v2/me/connector-grants/${seg(grantId)}/mailboxes/${seg(mailboxId)}`, ConnectorGrantSchema, CONNECTOR_GRANT_MAX_BYTES, {
         ...base,
         errorSchema,
         headers: { ...contextHeaders(ctx), ...proofHeaders(proof) },

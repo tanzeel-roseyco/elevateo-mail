@@ -56,7 +56,7 @@ Reviewer: Claude Code `claude-fable-5`, low effort (verified from result metadat
 5. The IdP-in-WebView risk acceptance is undocumented.
 6. Shared auth conformance vectors are needed across Rust/C#/Swift.
 
-Status: design defects 1 and 3–6 repaired in batch R1 (`cfd45c87`, below); 2 open.
+Status: design defects 1 and 3–6 repaired in batch R1 (`cfd45c87`, below); 2 repaired in batch R4.
 
 ### Repairs (step 1 of the 2026-10-29 resume order)
 
@@ -128,6 +128,28 @@ Also found while repairing (not in wave 1): the web app had no listener for `hos
 | P02-2 MED unknown focus became PASS | `classify_external_link`: failed launch or unknown focus is NOT_RUN, never PASS | `ExternalLinkTest` |
 | P02-3 MED rotation oracle passed on the notice alone | `signed_in_view` requires the signed-in shell controls and rejects the sign-in screen, checked before rotation, after it and after relaunch | `SignedInViewTest` |
 | P03-1 LOW untyped test methods | `-> None` on every test method | mypy-visible signatures |
+
+**Batch R4 — web send status, proposed-route adapters, assistant panel** (commit "Repair web send-status polling, proposed adapters and assistant session lifecycle"). Batch R3 is commit `e9b4066c`. This closes the 71 wave-1 findings plus the 6 design defects.
+
+| Finding | Repair | Regression test |
+| --- | --- | --- |
+| P23-1 MED, Design 2 failed poll left the auto-update claim | failed or mismatched polls retry at 30 s up to 3 times with a "may be out of date" notice, then an alert says automatic updates stopped; the auto-update claim shows only while polling is healthy | `warns after a failed poll, retries a bounded number of times, then reports the status as stale` |
+| P23-2 MED late poll overwrote newer results | one read generation shared by load, refresh, poll and cancel; superseded responses are discarded; one automatic poll in flight at a time | `never lets a late poll overwrite a confirmed cancellation` |
+| P19-1 MED grant list budget below schema maximum | 20 connections per user (proposed contract), budgets derived from the schema limits at 6 bytes per character | `accepts a maximum-size grant list` |
+| P19-2 LOW scopes arrays aliased the store | `copyGrant` copies every scopes array | `returns copies that cannot mutate stored grants` |
+| P19-3 MED simulated writes ignored cancellation | every simulated method rejects an aborted signal before touching state | `rejects cancelled writes without changing state` |
+| P19-4 MED HTTP grants adapter untested | direct adapter tests in `proposedAdapters.test.ts` | routes and headers, invalid create body not sent, contract-invalid response |
+| P20-1 MED bounce page budget below schema maximum | bounce and suppression budgets derived from the schema (the suppression budget was also too small) | `accepts a maximum-size bounce page` |
+| P20-2 MED delivery adapters untested | direct adapter tests | query string and headers, wrong-mailbox echo, out-of-range limit not sent |
+| P20-3 LOW simulated reads ignored paging | limit plus an opaque offset cursor; foreign cursors rejected | `pages through suppressions without omissions or duplicates`, `rejects a cursor it did not issue` |
+| P21-1 MED subscription failure left the session usable | Start waits for the event channel; failure shows an error with "Try again" | `keeps Start disabled until the event channel is ready and offers a retry when it fails` |
+| P21-2 MED closing abandoned the runtime session | unmount ends the owned session, and a start resolving after close is ended | `ends the owned session on close, and a start that resolves after close` |
+| P21-3 MED failed end shown as ended | `ending` / `end_failed` states; "Try ending again" | `shows a failed end with a retry instead of claiming the session ended` |
+| P21-4 MED concurrent sends | Send disabled and guarded while a reply streams | `locks Send while a response is streaming` |
+| P22-1 MED malformed events silently dropped | `subscribe(onEvent, onProtocolError)`; the panel stops the turn, cancels it and shows a notice (payload never shown or logged) | `stops the current response when the runtime sends an unreadable event`, `reports malformed events as protocol errors without forwarding them` |
+| P22-2 MED TauriAgentsBridge untested | tests against a fake `DesktopHost` | start and event forwarding, malformed events, malformed capability and start responses |
+
+P15-1 (Cargo.lock) is regenerated at the start of the final Docker pass, where `cargo` runs.
 
 ## Self-hosted continuation reviews — 2026-10-23
 

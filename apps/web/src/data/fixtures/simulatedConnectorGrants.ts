@@ -25,6 +25,16 @@ function fallbackName(mailboxId: string): string {
 }
 
 /** One seeded example so the demo shows a populated Connections screen (clearly simulated). */
+/** Detached copy (including each scopes array) so callers can never mutate the stored grants. */
+function copyGrant(grant: ConnectorGrant): ConnectorGrant {
+  return { ...grant, mailboxes: grant.mailboxes.map((m) => ({ ...m, scopes: [...m.scopes] })) }
+}
+
+/** Honours the port's cancellation contract: a cancelled call neither reads nor mutates state. */
+function throwIfAborted(signal: AbortSignal | undefined): void {
+  if (signal?.aborted) throw new GatewayError('transport', 'aborted', 'The request was cancelled.')
+}
+
 function seed(): ConnectorGrant[] {
   const now = Date.now()
   const iso = (offsetMs: number) => new Date(now - offsetMs).toISOString()
@@ -44,11 +54,12 @@ function seed(): ConnectorGrant[] {
 export function createSimulatedConnectorGrantsGateway(): ConnectorGrantsGateway {
   let grants = seed()
   return {
-    async listConnectorGrants() {
-      // Return a deep-ish copy so a caller mutating a row cannot corrupt the store.
-      return { items: grants.map((grant) => ({ ...grant, mailboxes: grant.mailboxes.map((m) => ({ ...m })) })) }
+    async listConnectorGrants(_ctx, signal) {
+      throwIfAborted(signal)
+      return { items: grants.map(copyGrant) }
     },
-    async createConnectorGrant(_ctx, _proof, input: ConnectorGrantCreateInput): Promise<ConnectorGrantSecret> {
+    async createConnectorGrant(_ctx, _proof, input: ConnectorGrantCreateInput, signal): Promise<ConnectorGrantSecret> {
+      throwIfAborted(signal)
       const grant: ConnectorGrant = {
         id: crypto.randomUUID(),
         client_name: input.client_name,
@@ -59,19 +70,21 @@ export function createSimulatedConnectorGrantsGateway(): ConnectorGrantsGateway 
         mailboxes: input.mailboxes.map((m) => ({ mailbox_id: m.mailbox_id, display_name: fallbackName(m.mailbox_id), scopes: [...m.scopes] })),
       }
       grants = [grant, ...grants]
-      return { grant: { ...grant, mailboxes: grant.mailboxes.map((m) => ({ ...m })) }, secret: generateSecret() }
+      return { grant: copyGrant(grant), secret: generateSecret() }
     },
-    async revokeConnectorGrant(_ctx, _proof, grantId) {
+    async revokeConnectorGrant(_ctx, _proof, grantId, signal) {
+      throwIfAborted(signal)
       grants = grants.filter((grant) => grant.id !== grantId)
     },
-    async removeConnectorGrantMailbox(_ctx, _proof, grantId, mailboxId) {
+    async removeConnectorGrantMailbox(_ctx, _proof, grantId, mailboxId, signal) {
+      throwIfAborted(signal)
       const grant = grants.find((candidate) => candidate.id === grantId)
       if (grant === undefined) throw new GatewayError('api', 'not_available', 'That connection no longer exists.')
       // Removing the last mailbox would empty the grant; the screen revokes the whole connection instead.
       if (grant.mailboxes.length <= 1) throw new GatewayError('api', 'request_invalid', 'Revoke the connection to remove its only mailbox.')
       const updated: ConnectorGrant = { ...grant, mailboxes: grant.mailboxes.filter((m) => m.mailbox_id !== mailboxId) }
       grants = grants.map((candidate) => (candidate.id === grantId ? updated : candidate))
-      return { ...updated, mailboxes: updated.mailboxes.map((m) => ({ ...m })) }
+      return copyGrant(updated)
     },
   }
 }

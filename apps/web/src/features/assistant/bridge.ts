@@ -63,8 +63,12 @@ export interface AgentsBridge {
   cancel(sessionId: string): Promise<void>
   /** Ends the session and releases the runtime process. */
   end(sessionId: string): Promise<void>
-  /** Streams validated events; invalid payloads are dropped, never rendered. Returns unsubscribe. */
-  subscribe(onEvent: (event: AgentEvent) => void): Promise<() => void>
+  /**
+   * Streams validated events. An invalid payload is never rendered or forwarded: it is reported
+   * through onProtocolError so the caller can stop the turn instead of waiting forever.
+   * Returns unsubscribe; rejects when the event channel cannot be opened.
+   */
+  subscribe(onEvent: (event: AgentEvent) => void, onProtocolError: () => void): Promise<() => void>
 }
 
 const startResultSchema = z.object({ session_id: z.string().min(1) })
@@ -102,11 +106,12 @@ export class TauriAgentsBridge implements AgentsBridge {
     await this.host.invoke('agents_end', { session_id: sessionId })
   }
 
-  async subscribe(onEvent: (event: AgentEvent) => void): Promise<() => void> {
+  async subscribe(onEvent: (event: AgentEvent) => void, onProtocolError: () => void): Promise<() => void> {
     return this.host.listen(AGENT_EVENT_CHANNEL, (payload) => {
       const parsed = agentEventSchema.safeParse(payload)
-      // An unparseable event is dropped: better a stalled transcript than rendering unknown data.
+      // The payload itself is never rendered or logged (it may hold mail content); the failure is.
       if (parsed.success) onEvent(parsed.data)
+      else onProtocolError()
     })
   }
 }

@@ -11,6 +11,9 @@
 import { z } from 'zod'
 import type { ReadContext } from './gateway'
 
+/** Largest page either list returns; the HTTP adapter rejects larger limits before sending. */
+export const DELIVERY_REPORTS_MAX_PAGE = 50
+
 const id = z.uuid()
 const timestamp = z.iso.datetime()
 const context = z.string().min(16).max(256)
@@ -47,7 +50,7 @@ export const BouncePageSchema = z.strictObject({
   context_id: context,
   authorization_version: context,
   mailbox_id: id,
-  items: z.array(BounceRecordSchema).max(50),
+  items: z.array(BounceRecordSchema).max(DELIVERY_REPORTS_MAX_PAGE),
   next_cursor: cursor,
 })
 export type BouncePage = z.infer<typeof BouncePageSchema>
@@ -71,10 +74,19 @@ export const SuppressionPageSchema = z.strictObject({
   context_id: context,
   authorization_version: context,
   organization_id: id,
-  items: z.array(SuppressionRecordSchema).max(50),
+  items: z.array(SuppressionRecordSchema).max(DELIVERY_REPORTS_MAX_PAGE),
   next_cursor: cursor,
 })
 export type SuppressionPage = z.infer<typeof SuppressionPageSchema>
+
+// AIDEV-NOTE: page byte budgets derive from the schema limits so a schema-valid page is never rejected
+// as oversized (review P20-1). Strings cost 6 bytes per character (worst JSON escape); 256 bytes per
+// record cover keys, enums and timestamps, and the envelope allows two contexts plus a cursor.
+const ENVELOPE_MAX_BYTES = 2 * 256 * 6 + 2048 * 6 + 512
+const BOUNCE_RECORD_MAX_BYTES = 3 * 36 + 254 * 6 + 2048 * 6 + 256
+const SUPPRESSION_RECORD_MAX_BYTES = 2 * 36 + 254 * 6 + 256
+export const BOUNCE_PAGE_MAX_BYTES = ENVELOPE_MAX_BYTES + DELIVERY_REPORTS_MAX_PAGE * BOUNCE_RECORD_MAX_BYTES
+export const SUPPRESSION_PAGE_MAX_BYTES = ENVELOPE_MAX_BYTES + DELIVERY_REPORTS_MAX_PAGE * SUPPRESSION_RECORD_MAX_BYTES
 
 /** Bounce list filter. `type` 'complaint' selects complaint events; 'hard'/'soft' select bounces. */
 export interface BounceQuery {

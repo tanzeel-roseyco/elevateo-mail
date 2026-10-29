@@ -7,6 +7,8 @@
 //
 // AIDEV-NOTE: mounted by Shell via AssistantDock; tests inject a fake bridge through the
 // featureGateways `assistant` seam (or the bridge prop), production falls back to createAssistantBridge().
+// The panel owns its runtime session: closing (unmounting) it ends that session, a start that resolves
+// after close is ended at once, and "ended" is shown only after the runtime confirms termination.
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useFeatureGateways } from '@/app/featureGateways'
 import { EmptyState, ErrorState, Skeleton } from '@/ui/Async'
@@ -30,11 +32,15 @@ const PERMISSIONS_NOTICE =
 const SHARING_NOTICE = 'What you type here, and any mail content you include, is shared with the external AI runtime.'
 
 type Availability = { status: 'checking' } | { status: 'unavailable'; reason: string } | { status: 'available' }
+/** Event-channel readiness: a session may start only once its output can actually be received. */
+type Listening = 'connecting' | 'ready' | 'failed'
 type SessionState =
   | { status: 'idle' }
   | { status: 'starting' }
   | { status: 'start_failed'; message: string }
   | { status: 'active'; sessionId: string; streaming: boolean }
+  | { status: 'ending'; sessionId: string }
+  | { status: 'end_failed'; sessionId: string }
   | { status: 'ended' }
 
 interface TranscriptEntry {
@@ -72,7 +78,11 @@ export function AssistantPanel({ bridge, onClose }: { bridge: AgentsBridge; onCl
   const [runtime, setRuntime] = useState<AssistantRuntime>('codex')
   const [transcript, setTranscript] = useState<TranscriptEntry[]>([])
   const [input, setInput] = useState('')
+  const [listening, setListening] = useState<Listening>('connecting')
+  const [subscribeAttempt, setSubscribeAttempt] = useState(0)
+  // Session whose events are shown and which unmount must end; null while none is owned or ending.
   const sessionRef = useRef<string | null>(null)
+  const disposedRef = useRef(false)
   const transcriptEndRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
@@ -91,11 +101,20 @@ export function AssistantPanel({ bridge, onClose }: { bridge: AgentsBridge; onCl
     }
   }, [bridge])
 
-  // One subscription for the panel's lifetime; events for other sessions are ignored.
+  // One subscription for the panel's lifetime (re-opened by "Try again"); events for other sessions
+  // are ignored. Start stays disabled until it is ready, so no early output can be missed.
   useEffect(() => {
     let unsubscribe: (() => void) | null = null
     let disposed = false
-    void bridge.subscribe((event: AgentEvent) => {
+    const onProtocolError = () => {
+      const id = sessionRef.current
+      console.error('An assistant event did not match the bridge contract; the current response was stopped.')
+      if (id === null) return
+      setTranscript((entries) => [...entries, { role: 'system', text: 'The assistant sent an update this app could not read, so the current response was stopped.' }])
+      setSession((s) => (s.status === 'active' ? { ...s, streaming: false } : s))
+      bridge.cancel(id).catch((error: unknown) => console.error('Cancelling after an unreadable assistant event failed.', error))
+    }
+    bridge.subscribe((event: AgentEvent) => {
       if (event.session_id !== sessionRef.current) return
       if (event.type === 'output_delta') {
         setTranscript((entries) => {
@@ -114,13 +133,36 @@ export function AssistantPanel({ bridge, onClose }: { bridge: AgentsBridge; onCl
         sessionRef.current = null
         setSession({ status: 'ended' })
       }
-    }).then((stop) => {
-      if (disposed) stop()
-      else unsubscribe = stop
-    })
+    }, onProtocolError).then(
+      (stop) => {
+        if (disposed) stop()
+        else {
+          unsubscribe = stop
+          setListening('ready')
+        }
+      },
+      (error: unknown) => {
+        if (disposed) return
+        console.error('The assistant event channel could not be connected.', error)
+        setListening('failed')
+      },
+    )
     return () => {
       disposed = true
       unsubscribe?.()
+    }
+  }, [bridge, subscribeAttempt])
+
+  // Closing the panel releases the runtime process it owns (P21-2). disposedRef is reset on mount so
+  // a StrictMode remount does not leave it set.
+  useEffect(() => {
+    disposedRef.current = false
+    return () => {
+      disposedRef.current = true
+      const id = sessionRef.current
+      if (id === null) return
+      sessionRef.current = null
+      bridge.end(id).catch((error: unknown) => console.error('The assistant session could not be ended when the panel closed.', error))
     }
   }, [bridge])
 
@@ -133,6 +175,11 @@ export function AssistantPanel({ bridge, onClose }: { bridge: AgentsBridge; onCl
     setSession({ status: 'starting' })
     bridge.start(runtime).then(
       (sessionId) => {
+        if (disposedRef.current) {
+          // The panel closed while starting: nobody can use this session, so release it now.
+          bridge.end(sessionId).catch((error: unknown) => console.error('A session started after the panel closed could not be ended.', error))
+          return
+        }
         sessionRef.current = sessionId
         setTranscript([])
         setSession({ status: 'active', sessionId, streaming: false })
@@ -144,7 +191,8 @@ export function AssistantPanel({ bridge, onClose }: { bridge: AgentsBridge; onCl
   }, [bridge, runtime])
 
   const sendMessage = useCallback(() => {
-    if (session.status !== 'active') return
+    // One turn at a time: events carry no turn id, so a second send would interleave replies (P21-4).
+    if (session.status !== 'active' || session.streaming) return
     const text = input.trim()
     if (text === '') return
     setInput('')
@@ -166,15 +214,28 @@ export function AssistantPanel({ bridge, onClose }: { bridge: AgentsBridge; onCl
     })
   }, [bridge, session])
 
+  // "Ended" is shown only after the runtime confirms; a failure keeps the id for a retry (P21-3).
   const endSession = useCallback(() => {
-    if (session.status !== 'active') return
+    if (session.status !== 'active' && session.status !== 'end_failed') return
     const id = session.sessionId
     sessionRef.current = null
-    setSession({ status: 'ended' })
-    bridge.end(id).catch(() => {
-      setTranscript((entries) => [...entries, { role: 'system', text: 'The session may not have ended cleanly on the runtime side.' }])
-    })
+    setSession({ status: 'ending', sessionId: id })
+    bridge.end(id).then(
+      () => setSession((s) => (s.status === 'ending' && s.sessionId === id ? { status: 'ended' } : s)),
+      (error: unknown) => {
+        console.error('The assistant session could not be ended.', error)
+        if (disposedRef.current) return
+        // Owned again, so a later close still tries to end it.
+        sessionRef.current = id
+        setSession((s) => (s.status === 'ending' && s.sessionId === id ? { status: 'end_failed', sessionId: id } : s))
+      },
+    )
   }, [bridge, session])
+
+  const retrySubscription = useCallback(() => {
+    setListening('connecting')
+    setSubscribeAttempt((attempt) => attempt + 1)
+  }, [])
 
   return (
     <aside
@@ -223,6 +284,16 @@ export function AssistantPanel({ bridge, onClose }: { bridge: AgentsBridge; onCl
                   The session has ended. Start a new one to continue.
                 </p>
               )}
+              {listening === 'failed' && (
+                <ErrorState
+                  title="Assistant replies could not be connected"
+                  body="Responses cannot be shown until the connection to the desktop runtime works."
+                  action={<Button size="sm" onClick={retrySubscription}>Try again</Button>}
+                />
+              )}
+              {listening === 'connecting' && (
+                <p role="status" className="text-sm text-zinc-500 dark:text-zinc-400">Connecting to the assistant runtime…</p>
+              )}
               <Field id="assistant-runtime" label="Runtime">
                 <Select
                   id="assistant-runtime"
@@ -237,9 +308,23 @@ export function AssistantPanel({ bridge, onClose }: { bridge: AgentsBridge; onCl
                   ))}
                 </Select>
               </Field>
-              <Button variant="primary" disabled={session.status === 'starting'} onClick={startSession}>
+              <Button variant="primary" disabled={session.status === 'starting' || listening !== 'ready'} onClick={startSession}>
                 {session.status === 'starting' ? 'Starting…' : 'Start session'}
               </Button>
+            </div>
+          )}
+
+          {session.status === 'ending' && (
+            <p role="status" className="p-4 text-sm text-zinc-500 dark:text-zinc-400">Ending the session…</p>
+          )}
+
+          {session.status === 'end_failed' && (
+            <div className="p-4">
+              <ErrorState
+                title="The session may still be running"
+                body="The runtime did not confirm that the session ended."
+                action={<Button size="sm" onClick={endSession}>Try ending again</Button>}
+              />
             </div>
           )}
 
@@ -279,7 +364,7 @@ export function AssistantPanel({ bridge, onClose }: { bridge: AgentsBridge; onCl
                   />
                 </Field>
                 <div className="flex flex-wrap gap-2">
-                  <Button variant="primary" size="sm" disabled={input.trim() === ''} onClick={sendMessage}>
+                  <Button variant="primary" size="sm" disabled={input.trim() === '' || session.streaming} onClick={sendMessage}>
                     Send
                   </Button>
                   <Button size="sm" disabled={!session.streaming} onClick={cancelTurn}>

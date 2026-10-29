@@ -14,7 +14,10 @@ import { CollaborationErrorSchema } from '../contract'
 import { GatewayError } from '../errors'
 import type { ReadContext } from '../gateway'
 import {
+  BOUNCE_PAGE_MAX_BYTES,
   BouncePageSchema,
+  DELIVERY_REPORTS_MAX_PAGE,
+  SUPPRESSION_PAGE_MAX_BYTES,
   SuppressionPageSchema,
   type BounceQuery,
   type DeliveryReportsGateway,
@@ -30,7 +33,7 @@ const headers = (ctx: ReadContext): Record<string, string> => ({
 
 function limitParam(params: URLSearchParams, limit: number | undefined): void {
   if (limit === undefined) return
-  if (!Number.isInteger(limit) || limit < 1 || limit > 50) {
+  if (!Number.isInteger(limit) || limit < 1 || limit > DELIVERY_REPORTS_MAX_PAGE) {
     throw new GatewayError('transport', 'malformed', 'Invalid page limit.')
   }
   params.set('limit', String(limit))
@@ -59,7 +62,7 @@ export function createHttpDeliveryReportsGateway(fetchImpl?: FetchLike): Deliver
       cursorParam(params, query.cursor)
       limitParam(params, query.limit)
       const suffix = params.toString() === '' ? '' : `?${params}`
-      const page = await requestJson(`/v2/mailboxes/${encodeURIComponent(scope)}/bounces${suffix}`, BouncePageSchema, 65_536, {
+      const page = await requestJson(`/v2/mailboxes/${encodeURIComponent(scope)}/bounces${suffix}`, BouncePageSchema, BOUNCE_PAGE_MAX_BYTES, {
         ...base, errorSchema: CollaborationErrorSchema, headers: headers(ctx), signal,
       })
       if (page.context_id !== ctx.contextId || page.authorization_version !== ctx.authorizationVersion || page.mailbox_id !== scope) {
@@ -77,7 +80,7 @@ export function createHttpDeliveryReportsGateway(fetchImpl?: FetchLike): Deliver
       cursorParam(params, query.cursor)
       limitParam(params, query.limit)
       const suffix = params.toString() === '' ? '' : `?${params}`
-      const page = await requestJson(`/v2/organizations/${encodeURIComponent(scope)}/suppressions${suffix}`, SuppressionPageSchema, 65_536, {
+      const page = await requestJson(`/v2/organizations/${encodeURIComponent(scope)}/suppressions${suffix}`, SuppressionPageSchema, SUPPRESSION_PAGE_MAX_BYTES, {
         ...base, errorSchema: CollaborationErrorSchema, headers: headers(ctx), signal,
       })
       if (page.context_id !== ctx.contextId || page.authorization_version !== ctx.authorizationVersion || page.organization_id !== scope) {

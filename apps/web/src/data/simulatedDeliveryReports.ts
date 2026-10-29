@@ -3,9 +3,12 @@
 // Data is synthetic and clearly labelled; `simulated` is true so the pages mark every row.
 //
 // AIDEV-NOTE: Echoes the caller's read context and scope id so it slots into any entry's session.
+// Paging is real (limit + opaque offset cursor) so the pages' "Load more" path is exercised (P20-3).
+import { GatewayError } from './errors'
 import type { ReadContext } from './gateway'
 import {
   BouncePageSchema,
+  DELIVERY_REPORTS_MAX_PAGE,
   SuppressionPageSchema,
   type BounceQuery,
   type BounceRecord,
@@ -35,6 +38,25 @@ function matchesType(record: BounceRecord, type: BounceQuery['type']): boolean {
   return record.bounce_type === type
 }
 
+const CURSOR_PREFIX = 'sim-offset:'
+
+/** One page of `items` per the query's limit/cursor, with next_cursor set while records remain. */
+function pageOf<T>(items: readonly T[], query: { cursor?: string; limit?: number }): { items: T[]; next_cursor: string | null } {
+  const limit = query.limit ?? DELIVERY_REPORTS_MAX_PAGE
+  if (!Number.isInteger(limit) || limit < 1 || limit > DELIVERY_REPORTS_MAX_PAGE) {
+    throw new GatewayError('api', 'request_invalid', 'Invalid page limit.')
+  }
+  let start = 0
+  if (query.cursor !== undefined) {
+    // Only cursors this adapter issued are accepted; anything else is an invalid request, not page 1.
+    const offset = query.cursor.startsWith(CURSOR_PREFIX) ? Number(query.cursor.slice(CURSOR_PREFIX.length)) : Number.NaN
+    if (!Number.isInteger(offset) || offset < 1 || offset > items.length) throw new GatewayError('api', 'request_invalid', 'Invalid page cursor.')
+    start = offset
+  }
+  const end = start + limit
+  return { items: items.slice(start, end), next_cursor: end < items.length ? `${CURSOR_PREFIX}${end}` : null }
+}
+
 /** Synthetic delivery-report adapter. Honors the same filters the real adapter will, over fixed data. */
 export function createSimulatedDeliveryReportsGateway(): DeliveryReportsGateway {
   return {
@@ -46,7 +68,7 @@ export function createSimulatedDeliveryReportsGateway(): DeliveryReportsGateway 
       )
       return BouncePageSchema.parse({
         context_id: ctx.contextId, authorization_version: ctx.authorizationVersion,
-        mailbox_id: mailboxId, items, next_cursor: null,
+        mailbox_id: mailboxId, ...pageOf(items, query),
       })
     },
     async listSuppressions(ctx: ReadContext, organizationId, query: SuppressionQuery) {
@@ -54,7 +76,7 @@ export function createSimulatedDeliveryReportsGateway(): DeliveryReportsGateway 
       const items = needle === '' ? SUPPRESSIONS : SUPPRESSIONS.filter((record) => record.address.toLowerCase().includes(needle))
       return SuppressionPageSchema.parse({
         context_id: ctx.contextId, authorization_version: ctx.authorizationVersion,
-        organization_id: organizationId, items, next_cursor: null,
+        organization_id: organizationId, ...pageOf(items, query),
       })
     },
   }

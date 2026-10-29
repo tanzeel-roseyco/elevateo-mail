@@ -18,6 +18,10 @@ export type ConnectorScope = (typeof CONNECTOR_SCOPES)[number]
 export const CONNECTOR_CLIENT_KINDS = ['claude', 'codex', 'other'] as const
 export type ConnectorClientKind = (typeof CONNECTOR_CLIENT_KINDS)[number]
 
+/** Per-user connection cap and per-connection mailbox cap; the byte budgets below derive from both. */
+export const CONNECTOR_GRANTS_MAX_ITEMS = 20
+export const CONNECTOR_GRANT_MAX_MAILBOXES = 50
+
 const id = z.uuid()
 // Timestamps carry an offset or Z; the client only formats them, never parses them into decisions.
 const isoDateTime = z.iso.datetime({ offset: true })
@@ -38,12 +42,12 @@ export const ConnectorGrantSchema = z.strictObject({
   created_at: isoDateTime,
   last_used_at: isoDateTime.nullable(),
   expires_at: isoDateTime.nullable(),
-  mailboxes: z.array(ConnectorGrantMailboxSchema).min(1).max(50),
+  mailboxes: z.array(ConnectorGrantMailboxSchema).min(1).max(CONNECTOR_GRANT_MAX_MAILBOXES),
 })
 export type ConnectorGrant = z.infer<typeof ConnectorGrantSchema>
 
 export const ConnectorGrantListSchema = z.strictObject({
-  items: z.array(ConnectorGrantSchema).max(100),
+  items: z.array(ConnectorGrantSchema).max(CONNECTOR_GRANTS_MAX_ITEMS),
 })
 export type ConnectorGrantList = z.infer<typeof ConnectorGrantListSchema>
 
@@ -66,12 +70,19 @@ export const ConnectorGrantCreateInputSchema = z.strictObject({
   mailboxes: z
     .array(z.strictObject({ mailbox_id: id, scopes: z.array(z.enum(CONNECTOR_SCOPES)).min(1) }))
     .min(1)
-    .max(50),
+    .max(CONNECTOR_GRANT_MAX_MAILBOXES),
 })
 export type ConnectorGrantCreateInput = z.infer<typeof ConnectorGrantCreateInputSchema>
 
-/** Response byte budget: at most 100 grants, each with up to 50 mailboxes. */
-export const CONNECTOR_GRANTS_MAX_BYTES = 262_144
+// AIDEV-NOTE: budgets are derived from the schema limits, never hand-picked, so a schema-valid
+// response is never rejected as oversized (review P19-1). Strings are costed at 6 bytes per character
+// (the worst JSON escape, a backslash-u sequence); 128/512 bytes cover keys, punctuation, timestamps.
+const MAILBOX_MAX_BYTES = 36 + 256 * 6 + 128
+const GRANT_MAX_BYTES = 36 + 120 * 6 + 512 + CONNECTOR_GRANT_MAX_MAILBOXES * MAILBOX_MAX_BYTES
+/** List response budget: every grant at its maximum size (about 1.7 MB). */
+export const CONNECTOR_GRANTS_MAX_BYTES = CONNECTOR_GRANTS_MAX_ITEMS * GRANT_MAX_BYTES + 64
+/** Single-grant response budget (create with its secret, or mailbox removal). */
+export const CONNECTOR_GRANT_MAX_BYTES = GRANT_MAX_BYTES + 512 * 6 + 64
 /** Request byte budget for a create body (mailbox id + scopes list). */
 export const CONNECTOR_GRANT_REQUEST_MAX_BYTES = 16_384
 

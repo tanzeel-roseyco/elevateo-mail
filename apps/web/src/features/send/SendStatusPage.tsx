@@ -1,7 +1,8 @@
 // Send-intent status (send pilot): the Resend-backed lifecycle as a timeline (queued -> submitted
 // -> delivered / bounced / complained / failed / unknown), honest wording about what acceptance does
 // and does not establish, the cancel/stop request, and polling with bounded backoff that stops on a
-// terminal state and while the page is hidden. Presentation follows the Flux page template.
+// terminal state and while the page is hidden. Failed polls retry a bounded number of times and then
+// say the status may be stale. Presentation follows the Flux page template.
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { Link, useParams } from 'react-router'
 import { useProtectedRequest } from '@/app/protectedRequest'
@@ -54,6 +55,8 @@ const STATE_TONE: Record<SendStatus['state'], 'neutral' | 'success' | 'warn' | '
 // above the test async window so unit tests never trigger an automatic poll.
 const POLL_BASE_MS = 4000
 const POLL_MAX_MS = 30_000
+// Consecutive failed polls tolerated (each retried at POLL_MAX_MS) before automatic updates stop.
+const POLL_MAX_FAILURES = 3
 
 const TERMINAL_DELIVERY: ReadonlyArray<NonNullable<SendStatus['delivery_status']>> = ['delivered', 'failed', 'bounced', 'complained', 'suppressed']
 
@@ -113,6 +116,8 @@ function deriveTimeline(status: SendStatus): TimelineStep[] {
 }
 
 type State = { kind: 'loading' } | { kind: 'error' } | { kind: 'ready'; status: SendStatus }
+/** Health of automatic updates: only `ok` may claim the page updates itself. */
+type PollHealth = 'ok' | 'retrying' | 'stopped'
 
 export function SendStatusPage() {
   const { mailboxId, sendId } = useParams()
@@ -133,7 +138,12 @@ function Status({ mailboxId, sendId }: { mailboxId: string; sendId: string }) {
   const [state, setState] = useState<State>({ kind: 'loading' })
   const [message, setMessage] = useState<string | null>(null)
   const [busy, setBusy] = useState(false)
+  const [pollHealth, setPollHealth] = useState<PollHealth>('ok')
   const pending = useRef(false)
+  // AIDEV-NOTE: every status read (load, refresh, poll) and every cancel takes a new generation;
+  // a response whose generation is no longer current is discarded, so a late queued poll can never
+  // overwrite a confirmed cancellation or a newer manual refresh (review finding P23-2).
+  const readGeneration = useRef(0)
   const heading = useRef<HTMLHeadingElement>(null)
   // Latest status and the poll re-arm hook live in refs so backoff survives silent re-renders and a
   // completed load/cancel can restart polling without re-creating the poller effect.
@@ -141,11 +151,12 @@ function Status({ mailboxId, sendId }: { mailboxId: string; sendId: string }) {
   const armRef = useRef<(() => void) | null>(null)
 
   const load = useCallback(async () => {
+    const generation = ++readGeneration.current
     setState({ kind: 'loading' })
     setBusy(false)
     pending.current = false
     const outcome = await request((ctx, signal) => gateway.getSendStatus(ctx, sendId, mailboxId, signal))
-    if (outcome.kind === 'stale') return
+    if (outcome.kind === 'stale' || generation !== readGeneration.current) return
     if (outcome.kind === 'failed' || outcome.value.send_id !== sendId || outcome.value.mailbox_id !== mailboxId) {
       statusRef.current = null
       setState({ kind: 'error' })
@@ -153,6 +164,7 @@ function Status({ mailboxId, sendId }: { mailboxId: string; sendId: string }) {
     }
     statusRef.current = outcome.value
     setState({ kind: 'ready', status: outcome.value })
+    // A successful read restores automatic updates after earlier poll failures.
     armRef.current?.()
   }, [gateway, request, sendId, mailboxId])
 
@@ -164,30 +176,49 @@ function Status({ mailboxId, sendId }: { mailboxId: string; sendId: string }) {
   }, [state.kind])
 
   // Bounded-backoff poller. Scheduling lives entirely in refs/closure so a silent status update does
-  // not reset the interval; it stops on a terminal status and whenever the document is hidden.
+  // not reset the interval; it stops on a terminal status and whenever the document is hidden. At
+  // most one automatic poll is in flight; a failed or mismatched poll is retried at POLL_MAX_MS up to
+  // POLL_MAX_FAILURES times, then automatic updates stop and the page says the status may be stale.
   useEffect(() => {
     let cancelled = false
     let handle: ReturnType<typeof setTimeout> | null = null
     let step = 0
+    let failures = 0
+    let inFlight = false
     const stop = () => { if (handle) { clearTimeout(handle); handle = null } }
     const arm = () => {
       stop()
       const current = statusRef.current
-      if (cancelled || current === null || isTerminal(current) || document.hidden) return
-      handle = setTimeout(() => void run(), Math.min(POLL_BASE_MS * 2 ** step, POLL_MAX_MS))
+      if (cancelled || inFlight || current === null || isTerminal(current) || document.hidden) return
+      if (failures >= POLL_MAX_FAILURES) return
+      const delay = failures > 0 ? POLL_MAX_MS : Math.min(POLL_BASE_MS * 2 ** step, POLL_MAX_MS)
+      handle = setTimeout(() => void run(), delay)
     }
     const run = async () => {
+      handle = null
       step += 1
+      inFlight = true
+      const generation = ++readGeneration.current
       const outcome = await request((ctx, signal) => gateway.getSendStatus(ctx, sendId, mailboxId, signal))
+      inFlight = false
       if (cancelled || outcome.kind === 'stale') return
-      // A failed or mismatched poll stops the automatic schedule; the manual Refresh button remains.
-      if (outcome.kind === 'failed' || outcome.value.send_id !== sendId || outcome.value.mailbox_id !== mailboxId) return
+      // Superseded by a refresh or cancel: that newer read owns the state. Its own re-arm was skipped
+      // while this poll was in flight, so re-arm here from the latest status (a no-op if terminal).
+      if (generation !== readGeneration.current) { arm(); return }
+      if (outcome.kind === 'failed' || outcome.value.send_id !== sendId || outcome.value.mailbox_id !== mailboxId) {
+        failures += 1
+        setPollHealth(failures >= POLL_MAX_FAILURES ? 'stopped' : 'retrying')
+        arm()
+        return
+      }
+      failures = 0
+      setPollHealth('ok')
       statusRef.current = outcome.value
       setState({ kind: 'ready', status: outcome.value })
       arm()
     }
     const onVisibility = () => { if (document.hidden) stop(); else { step = 0; arm() } }
-    armRef.current = () => { step = 0; arm() }
+    armRef.current = () => { step = 0; failures = 0; setPollHealth('ok'); arm() }
     document.addEventListener('visibilitychange', onVisibility)
     return () => { cancelled = true; stop(); document.removeEventListener('visibilitychange', onVisibility); armRef.current = null }
   }, [gateway, request, sendId, mailboxId])
@@ -197,6 +228,8 @@ function Status({ mailboxId, sendId }: { mailboxId: string; sendId: string }) {
     pending.current = true
     setBusy(true)
     setMessage(null)
+    // Invalidate any outstanding read: only the reload after this cancel may set the status.
+    readGeneration.current += 1
     const outcome = await request((ctx, signal) => gateway.cancelSend(ctx, proof, sendId, { mailbox_id: mailboxId }, signal))
     if (outcome.kind === 'stale') return
     pending.current = false
@@ -267,8 +300,14 @@ function Status({ mailboxId, sendId }: { mailboxId: string; sendId: string }) {
         </dl>
         {status.suppression_reason !== null && <Callout variant="warning" role="note" label="Suppression">{SUPPRESSION[status.suppression_reason]}</Callout>}
         {status.cancel_requested && <p className="text-sm text-zinc-500">Stop has been requested. A late acceptance can still appear.</p>}
-        {/* Honest cue that the page refreshes itself while an outcome is still pending. */}
-        {!isTerminal(status) && <p className="text-xs text-zinc-400">This status updates automatically while an outcome is pending.</p>}
+        {/* Honest cue that the page refreshes itself, shown only while automatic updates are healthy. */}
+        {!isTerminal(status) && pollHealth === 'ok' && <p className="text-xs text-zinc-400">This status updates automatically while an outcome is pending.</p>}
+        {!isTerminal(status) && pollHealth === 'retrying' && (
+          <Callout variant="warning" role="status" label="Status updates">The last automatic check failed, so this status may be out of date. Retrying automatically.</Callout>
+        )}
+        {!isTerminal(status) && pollHealth === 'stopped' && (
+          <Callout variant="warning" role="alert" label="Status updates">Automatic updates stopped after repeated failures. This status may be out of date: use Refresh status to check again.</Callout>
+        )}
         {message && <Callout variant="neutral" role="alert">{message}</Callout>}
         <div className="flex flex-wrap items-center gap-2 pt-2">
           <Button disabled={busy} onClick={() => void load()}>Refresh status</Button>

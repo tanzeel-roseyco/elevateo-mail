@@ -47,6 +47,7 @@ Client: `apps/web/src/data/connectorGrantsContract.ts` and `http/httpConnectorGr
   - Response: the updated `ConnectorGrant`.
 - `ConnectorGrant` shape: `{ id, client_name, client_kind, created_at, last_used_at: string|null, expires_at: string|null, mailboxes: [{ mailbox_id, display_name, scopes }] }`.
 - Gating: a session capability flag (for example `connector_grants: true`) should decide whether the client wires the HTTP adapter.
+- Limits: at most 20 connections per user and 50 mailboxes per connection, so the list is unpaged. The client derives its response budgets from these limits (about 1.7 MB for the list), so the server should declare the same limits and an `x-max-response-bytes` that is at least the client budget.
 
 ## 4. Delivery reports: bounces, suppressions, provider message id (web)
 
@@ -60,6 +61,7 @@ Client: `apps/web/src/data/deliveryReportsContract.ts` and `http/httpDeliveryRep
 - `GET /v2/organizations/{organization_id}/suppressions?q&cursor&limit`
   - Response: `{ context_id, authorization_version, organization_id, items[], next_cursor }`.
   - Item: `{ id, address, reason: "hard_bounce"|"complaint"|"manual"|"unsubscribe", since, source_send_id|null, removable }`.
+- Paging: `limit` 1–50 (default 50), opaque `cursor`, `next_cursor` null on the last page. Client response budgets are derived from the schema maxima (about 725 KB for a bounce page, about 108 KB for a suppression page).
   - `q` is a case-insensitive address substring.
   - No removal write is requested; removal stays server-managed.
 - `SendStatus.provider_message_id: string|null`: add it to the v1 `SendStatus` schema so the send-status page can show the Resend message id. It is not rendered today.

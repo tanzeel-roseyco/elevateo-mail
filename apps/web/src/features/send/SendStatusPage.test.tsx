@@ -77,7 +77,8 @@ describe('BE03 simulated status', () => {
 })
 
 // Polling with bounded backoff: a non-terminal status re-checks on a timer, a terminal status stops,
-// and a failed poll stops the automatic schedule while leaving the manual refresh in place.
+// failed polls retry a bounded number of times with a visible stale warning, and late reads never
+// overwrite newer ones.
 describe('BE03 status polling', () => {
   const flush = () => act(async () => {})
   afterEach(() => vi.useRealTimers())
@@ -104,7 +105,8 @@ describe('BE03 status polling', () => {
     expect(g.getSendStatus).toHaveBeenCalledTimes(2) // no further polls after a terminal status
   })
 
-  it('stops automatic polling when a poll fails and keeps the manual refresh working', async () => {
+  // Regression (P23-1, design defect 2): a failed poll is visible, retried, and finally reported stale.
+  it('warns after a failed poll, retries a bounded number of times, then reports the status as stale', async () => {
     vi.useFakeTimers()
     let calls = 0
     const g = renderStatus(async () => {
@@ -113,16 +115,55 @@ describe('BE03 status polling', () => {
       return STATUS
     })
     await flush()
-    expect(g.getSendStatus).toHaveBeenCalledTimes(1)
+    expect(screen.getByText(/updates automatically while an outcome is pending/)).toBeTruthy()
     await act(async () => { vi.advanceTimersByTime(4000) })
     await flush()
-    expect(g.getSendStatus).toHaveBeenCalledTimes(2) // poll failed -> schedule stops
-    await act(async () => { vi.advanceTimersByTime(20_000) })
+    expect(g.getSendStatus).toHaveBeenCalledTimes(2)
+    expect(screen.getByRole('status', { name: 'Status updates' }).textContent).toMatch(/may be out of date/)
+    expect(screen.queryByText(/updates automatically while an outcome is pending/)).toBeNull()
+    for (const expected of [3, 4]) {
+      await act(async () => { vi.advanceTimersByTime(30_000) })
+      await flush()
+      expect(g.getSendStatus).toHaveBeenCalledTimes(expected)
+    }
+    expect(screen.getByRole('alert', { name: 'Status updates' }).textContent).toMatch(/Automatic updates stopped/)
+    await act(async () => { vi.advanceTimersByTime(120_000) })
     await flush()
-    expect(g.getSendStatus).toHaveBeenCalledTimes(2) // no more automatic polls
-    fireEvent.click(screen.getByRole('button', { name: 'Refresh status' }))
+    expect(g.getSendStatus).toHaveBeenCalledTimes(4) // bounded: no further automatic polls
+    expect(screen.getByRole('heading', { name: 'Send intent: queued' })).toBeTruthy() // last good status kept
+  })
+
+  // Regression (P23-2): a queued poll that resolves after a confirmed cancellation is discarded.
+  it('never lets a late poll overwrite a confirmed cancellation', async () => {
+    vi.useFakeTimers()
+    const cancelled: SendStatus = { ...STATUS, state: 'cancelled', cancellable: false, cancel_requested: true }
+    let releasePoll: (() => void) | null = null
+    let calls = 0
+    const g = {
+      ...createFixtureGateway(),
+      getSendStatus: vi.fn(async () => {
+        calls += 1
+        if (calls === 2) {
+          // The automatic poll reads "queued" but its response is held until after the cancellation.
+          await new Promise<void>((resolve) => { releasePoll = resolve })
+          return STATUS
+        }
+        return calls === 1 ? STATUS : cancelled
+      }),
+      cancelSend: vi.fn(async () => ({ context_id: CD.contextId, authorization_version: CD.authorizationVersion, send_id: STATUS.send_id, result: 'cancelled' as const, state: 'cancelled' as const, cancel_requested: true as const, simulated: true as const })),
+    }
+    render(<SessionProvider gateway={g}><MemoryRouter initialEntries={[`/mailboxes/${CD.mailboxId}/send-intents/${STATUS.send_id}`]}><Routes><Route path="/mailboxes/:mailboxId/send-intents/:sendId" element={<SendStatusPage />} /></Routes></MemoryRouter></SessionProvider>)
     await flush()
-    expect(g.getSendStatus).toHaveBeenCalledTimes(3) // manual refresh still issues a request
-    expect(screen.getByText(/This send status is unavailable/)).toBeTruthy()
+    await act(async () => { vi.advanceTimersByTime(4000) })
+    await flush()
+    expect(g.getSendStatus).toHaveBeenCalledTimes(2) // poll in flight, held
+    fireEvent.click(screen.getByRole('button', { name: 'Cancel before dispatch' }))
+    await flush()
+    await flush()
+    expect(screen.getByRole('heading', { name: 'Send intent: cancelled' })).toBeTruthy()
+    await act(async () => { releasePoll?.() })
+    await flush()
+    expect(screen.getByRole('heading', { name: 'Send intent: cancelled' })).toBeTruthy()
+    expect(screen.queryByRole('heading', { name: 'Send intent: queued' })).toBeNull()
   })
 })
