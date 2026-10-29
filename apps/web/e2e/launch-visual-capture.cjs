@@ -1,6 +1,6 @@
 // Launch visual QA capture (2026-10-23 frontend lane). Runs ONLY inside the pinned Playwright image
-// on fleet-02 against the dev-fixtures entry served by Vite on 127.0.0.1:4173, plus the EmailGuard
-// reference pages opened from disk. For every page and width it writes a PNG and a geometry record
+// against the dev-fixtures entry served by Vite on 127.0.0.1:4173, plus the EmailGuard reference
+// pages opened from disk. For every page, width and theme it writes a PNG and a geometry record
 // (heading box, sidebar width, first card box, accent colours) so the 1–2px parity claim can be
 // checked from numbers, not eyeballing. Not a Playwright test: `.cjs` keeps it out of testMatch.
 //
@@ -22,6 +22,9 @@ const WIDTHS = [
   { name: '1440', width: 1440, height: 1000 },
   { name: '390', width: 390, height: 844 },
 ]
+// The app follows the OS colour scheme unless the user picks one, so emulating it covers both themes.
+// References are captured in light only: the parity geometry does not depend on colour.
+const THEMES = ['light', 'dark']
 // The fixture inbox and the collaboration mailbox (two mailboxes => the unified list renders).
 const CD_MAILBOX = '00000000-0000-4000-8000-000000000023'
 const CD_THREAD = '00000000-0000-4000-8000-000000000033'
@@ -50,6 +53,15 @@ const PAGES = [
   { key: 'settings-integrations', hash: '#/settings/integrations', query: 'production-settings', ref: 'source-html/settings/integrations.html' },
   { key: 'settings-integrations-mcp', hash: '#/settings/integrations/mcp', query: 'production-settings', ref: 'source-html/settings/integrations__emailguard-mcp.html' },
   { key: 'settings-tags-demo-adapter', hash: '#/settings/tags' },
+  // FC web-quality: these three captured their error states until the fixture entry gained simulated
+  // V2 administration and preference ports (src/dev/simulatedPeople.ts).
+  { key: 'people', hash: '#/people' },
+  { key: 'settings-workspace-members', hash: '#/settings/workspace/members' },
+  { key: 'settings-personal-details', hash: '#/settings/profile/personal-details' },
+  // FC screens over their simulated adapters (the production-settings variants above show unavailable).
+  { key: 'settings-integrations-mcp-simulated', hash: '#/settings/integrations/mcp' },
+  { key: 'bounces', hash: `#/mailboxes/${CD_MAILBOX}/bounces` },
+  { key: 'suppressions', hash: `#/mailboxes/${CD_MAILBOX}/suppressions` },
   { key: 'help', hash: '#/help' },
 ]
 
@@ -88,8 +100,8 @@ function isLocal(url) {
 ;(async () => {
   const browser = await chromium.launch()
   const results = []
-  for (const size of WIDTHS) {
-    const context = await browser.newContext({ viewport: { width: size.width, height: size.height }, deviceScaleFactor: 1, reducedMotion: 'reduce' })
+  for (const theme of THEMES) for (const size of WIDTHS) {
+    const context = await browser.newContext({ viewport: { width: size.width, height: size.height }, deviceScaleFactor: 1, reducedMotion: 'reduce', colorScheme: theme })
     // Offline references: anything that is not the dev server or a local file is aborted.
     await context.route('**/*', (route) => (isLocal(route.request().url()) ? route.continue() : route.abort()))
     for (const spec of PAGES) {
@@ -100,11 +112,11 @@ function isLocal(url) {
       const url = `${BASE}${spec.query ? `?${spec.query}` : ''}${spec.hash}`
       await page.goto(url)
       await settle(page, errors)
-      const file = `${spec.key}-${size.name}.png`
+      const file = `${spec.key}-${size.name}-${theme}.png`
       await page.screenshot({ path: path.join(outDir, file), fullPage: true })
       const geometry = await page.evaluate(GEOMETRY)
-      const record = { key: spec.key, width: size.width, url, file, geometry, errors }
-      if (spec.ref) {
+      const record = { key: spec.key, width: size.width, theme, url, file, geometry, errors }
+      if (spec.ref && theme === 'light') {
         const refPage = await context.newPage()
         const refErrors = []
         refPage.on('pageerror', (err) => refErrors.push(String(err)))

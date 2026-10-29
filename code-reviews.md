@@ -151,6 +151,8 @@ Also found while repairing (not in wave 1): the web app had no listener for `hos
 
 P15-1 (Cargo.lock) is regenerated at the start of the final Docker pass, where `cargo` runs.
 
+Found in the web-quality state pass (step 2, not in wave 1): a failed "Show more" on Bounces and Suppressions replaced the whole list with the error state and discarded the rows already loaded. Both pages now keep the rows and show a retryable inline alert (regression test `keeps loaded bounces when the next page fails and recovers on retry`). The other FC screens (send status, Connections, sign-in, People/Members, Personal Details, assistant panel) were checked for loading, empty and error states and labelled controls, and no further gaps were found.
+
 ## Self-hosted continuation reviews — 2026-10-23
 
 Mandatory full-rubric adversarial Orca Codex reviews, bounded to <=200 physical LOC per

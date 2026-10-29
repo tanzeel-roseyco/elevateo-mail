@@ -13,6 +13,13 @@ import type { AssigneeOptionsReadPort } from '@/data/v2AssigneeOptionsGateway'
 import type { AttachmentReadPort } from '@/features/thread/MessageAttachments'
 import type { ConnectorGrantsGateway } from '@/data/connectorGrantsContract'
 import type { DeliveryReportsGateway } from '@/data/deliveryReportsContract'
+import type { createV2Gateway } from '@/data/v2Gateway'
+
+// AIDEV-NOTE: Narrow V2 ports the People/Members and Personal Details pages depend on. Typed as a
+// Pick of the real gateway so a simulated adapter cannot drift from the production signatures.
+type V2GatewayShape = ReturnType<typeof createV2Gateway>
+export type V2AdministrationPort = Pick<V2GatewayShape, 'listOrganizationGrants' | 'getOrganizationRoster' | 'replaceOrganizationGrant'>
+export type V2PreferencesPort = Pick<V2GatewayShape, 'getUserDisplayPreference' | 'updateUserDisplayPreference'>
 
 export interface FeatureGateways {
   readonly outreach?: OutreachGateway
@@ -47,6 +54,15 @@ export interface FeatureGateways {
    * state instead of a local save that could be mistaken for server persistence.
    */
   readonly simulatedSettings?: true
+  /**
+   * Demo and dev-fixture entries only: the People/Members administration pages and the Personal
+   * Details form read their V2 ports from here. Absent in production → the pages fall back to the
+   * real createV2Gateway() HTTP port (and its honest error state when no server answers).
+   * AIDEV-NOTE: These exist so the fixture capture renders those pages with simulated, contract-
+   * shaped data instead of firing requests at routes that the preview server does not serve.
+   */
+  readonly administration?: V2AdministrationPort
+  readonly preferences?: V2PreferencesPort
   /**
    * Desktop in-app agents bridge for the assistant panel (FC-MAC). Normally unset: the panel
    * detects the typed desktop capability itself; tests and fixture hosts inject a fake here.

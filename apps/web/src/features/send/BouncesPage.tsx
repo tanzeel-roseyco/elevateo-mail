@@ -15,6 +15,7 @@ import { formatDateTime } from '@/lib/format'
 import { EmptyState, ErrorState, Skeleton } from '@/ui/Async'
 import { Badge } from '@/ui/Badge'
 import { Button, buttonClass } from '@/ui/Button'
+import { Callout } from '@/ui/Callout'
 import { Field, Select } from '@/ui/Field'
 import { ArrowUturnLeftIcon } from '@/ui/icons'
 import { PageHeader } from '@/ui/PageHeader'
@@ -39,7 +40,8 @@ function kindOf(record: BounceRecord): 'hard' | 'soft' | 'complaint' {
 type State =
   | { kind: 'loading' }
   | { kind: 'error' }
-  | { kind: 'ready'; items: BounceRecord[]; nextCursor: string | null; loadingMore: boolean }
+  // pageError: a failed "Show more" keeps the rows already shown and offers a retry instead.
+  | { kind: 'ready'; items: BounceRecord[]; nextCursor: string | null; loadingMore: boolean; pageError: boolean }
 
 export function BouncesPage() {
   const { mailboxId } = useParams()
@@ -84,7 +86,7 @@ function BounceList({ mailboxId, type, window }: { mailboxId: string; type: Type
 
   const load = useCallback(async (cursor: string | undefined, append: boolean) => {
     if (!port) return
-    if (append) setState((prev) => (prev.kind === 'ready' ? { ...prev, loadingMore: true } : prev))
+    if (append) setState((prev) => (prev.kind === 'ready' ? { ...prev, loadingMore: true, pageError: false } : prev))
     else setState({ kind: 'loading' })
     const since = windowSinceIso(window)
     const query: BounceQuery = {
@@ -94,11 +96,14 @@ function BounceList({ mailboxId, type, window }: { mailboxId: string; type: Type
     }
     const outcome = await request((ctx, signal) => port.listBounces(ctx, mailboxId, query, signal))
     if (outcome.kind === 'stale') return
-    if (outcome.kind === 'failed' || outcome.value.mailbox_id !== mailboxId) { setState({ kind: 'error' }); return }
+    if (outcome.kind === 'failed' || outcome.value.mailbox_id !== mailboxId) {
+      setState((prev) => (append && prev.kind === 'ready' ? { ...prev, loadingMore: false, pageError: true } : { kind: 'error' }))
+      return
+    }
     setState((prev) => {
       const existing = append && prev.kind === 'ready' ? prev.items : []
       const seen = new Set(existing.map((item) => item.id))
-      return { kind: 'ready', items: [...existing, ...outcome.value.items.filter((item) => !seen.has(item.id))], nextCursor: outcome.value.next_cursor, loadingMore: false }
+      return { kind: 'ready', items: [...existing, ...outcome.value.items.filter((item) => !seen.has(item.id))], nextCursor: outcome.value.next_cursor, loadingMore: false, pageError: false }
     })
   }, [port, request, mailboxId, type, window])
 
@@ -140,6 +145,7 @@ function BounceList({ mailboxId, type, window }: { mailboxId: string; type: Type
           })}
         </ul>
       )}
+      {state.pageError && <Callout variant="danger" role="alert">More bounces could not be loaded. The rows above are still current; use Show more to try again.</Callout>}
       {state.nextCursor !== null && (
         <div className="flex justify-center">
           <Button size="sm" disabled={state.loadingMore} onClick={() => void load(state.nextCursor ?? undefined, true)}>{state.loadingMore ? 'Loading…' : 'Show more'}</Button>

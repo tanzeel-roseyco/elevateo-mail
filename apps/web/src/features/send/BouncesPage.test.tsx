@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 import { MemoryRouter, Route, Routes } from 'react-router'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { SessionProvider } from '@/app/session'
@@ -52,5 +52,23 @@ describe('BouncesPage', () => {
   it('shows an honest unavailable state when the port is absent', async () => {
     renderPage(undefined)
     expect(await screen.findByText('Bounces are not available yet')).toBeTruthy()
+  })
+
+  // Regression (web-quality pass): a failed "Show more" keeps the loaded rows and offers a retry.
+  it('keeps loaded bounces when the next page fails and recovers on retry', async () => {
+    const SOFT: BounceRecord = { ...HARD, id: CD.threadId, bounce_type: 'soft', recipient: 'full@example.invalid' }
+    const page = (items: BounceRecord[], next_cursor: string | null) => ({ context_id: CD.contextId, authorization_version: CD.authorizationVersion, mailbox_id: CD.mailboxId, items, next_cursor })
+    const listBounces = vi.fn()
+      .mockResolvedValueOnce(page([HARD], 'page-2'))
+      .mockRejectedValueOnce(new GatewayError('transport', 'timeout', 'synthetic'))
+      .mockResolvedValueOnce(page([SOFT], null))
+    renderPage(port({ listBounces }))
+    fireEvent.click(await screen.findByRole('button', { name: 'Show more' }))
+    expect((await screen.findByRole('alert')).textContent).toMatch(/More bounces could not be loaded/)
+    expect(screen.getByText('nobody@example.invalid')).toBeTruthy()
+    fireEvent.click(screen.getByRole('button', { name: 'Show more' }))
+    expect(await screen.findByText('full@example.invalid')).toBeTruthy()
+    expect(screen.queryByRole('alert')).toBeNull()
+    expect(screen.getByText('nobody@example.invalid')).toBeTruthy()
   })
 })
