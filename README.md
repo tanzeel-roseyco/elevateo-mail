@@ -13,7 +13,7 @@ Goal: finish every frontend/client area so web, Mac, Windows and Android (plus i
 | Web: Resend send status, bounces, suppressions, attachment sending | pending merge |
 | Web: code-splitting (500 KB main chunk), People/Members/Personal Details fixtures, state/a11y pass | pending |
 | Mac (Tauri): menus, single instance, PKCE login with Keychain, signed auto-update with rollback, assistant panel, `.dmg` release script with env-only signing | pending merge |
-| Windows (`apps/windows`, .NET 8 + Avalonia, NSIS + osslsigncode): SSO login, mailboxes, threads, plain-text thread view, reply draft, assistant panel, installer script | pending merge |
+| Windows (`apps/windows`, .NET 8 + Avalonia, NSIS + osslsigncode): SSO login, mailboxes, threads, plain-text thread view, reply draft, assistant panel, installer script | merged, not yet built/tested |
 | Android (`apps/android/build`): current-API audit, local Docker APK build, headless emulator acceptance (needs `/dev/kvm`) | merged, not yet run |
 | iOS (`apps/ios`): ElevateoCore Swift package (Linux-testable) + SwiftUI app, Xcode project, `build.sh` | pending merge |
 
