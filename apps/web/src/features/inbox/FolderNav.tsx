@@ -1,11 +1,12 @@
 // Gmail folder column in the Flux navlist skin (INBOX-SPEC §1–2): mailbox picker, gold Compose,
-// then Inbox / Unread / Starred / Snoozed / Archive / Spam / Trash / Drafts / Members. The one
-// folder the backend still does not provide (Sent) is listed disabled as "Not available yet"
-// rather than hidden, so the structure matches the reference without inventing data.
+// then Inbox / Unread / Starred / Snoozed / Archive / Spam / Trash / Drafts / Members, followed by
+// the delivery pages Bounces and Suppressions. The one folder the backend still does not provide
+// (Sent) is listed disabled as "Not available yet" rather than hidden, so the structure matches
+// the reference without inventing data.
 //
 // AIDEV-NOTE: Every listed folder is a server view (BE-05); the URL `filter` query carries it.
 // Drafts and Members follow the mailbox capabilities the server reported; an unknown capability
-// hides the link.
+// hides the link. Bounces/Suppressions are always listed: their pages own the unavailable state.
 import type { ComponentType, SVGProps } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router'
 import type { Mailbox } from '@/data/contract'
@@ -15,6 +16,7 @@ import { Button } from '@/ui/Button'
 import { Select } from '@/ui/Field'
 import {
   ArchiveBoxIcon,
+  ArrowUturnLeftIcon,
   ClockIcon,
   DocumentTextIcon,
   EnvelopeIcon,
@@ -22,6 +24,7 @@ import {
   InboxIcon,
   PaperAirplaneIcon,
   PencilSquareIcon,
+  ShieldCheckIcon,
   StarIcon,
   TrashIcon,
   UserGroupIcon,
@@ -79,6 +82,10 @@ export function useFolders(mailboxId: string, mailbox: Mailbox | undefined, coun
   if (mailbox?.capabilities.manage_members === true) {
     folders.push({ key: 'members', label: 'Members', to: `${base}/members`, Icon: UserGroupIcon, current: pathname === `${base}/members`, within: false })
   }
+  // Send-delivery reports: visible to any mailbox member; the pages show an unavailable state when
+  // the server does not expose delivery reports, so the links stay stable rather than appearing/vanishing.
+  folders.push({ key: 'bounces', label: 'Bounces', to: `${base}/bounces`, Icon: ArrowUturnLeftIcon, current: pathname === `${base}/bounces`, within: false })
+  folders.push({ key: 'suppressions', label: 'Suppressions', to: `${base}/suppressions`, Icon: ShieldCheckIcon, current: pathname === `${base}/suppressions`, within: false })
   return folders
 }
 

@@ -25,6 +25,8 @@ const SearchPage = lazy(() => import('@/features/search/SearchPage').then((page)
 const ThreadPage = lazy(() => import('@/features/thread/ThreadPage').then((page) => ({ default: page.ThreadPage })))
 const SendReviewPage = lazy(() => import('@/features/send/SendReviewPage').then((page) => ({ default: page.SendReviewPage })))
 const SendStatusPage = lazy(() => import('@/features/send/SendStatusPage').then((page) => ({ default: page.SendStatusPage })))
+const BouncesPage = lazy(() => import('@/features/send/BouncesPage').then((page) => ({ default: page.BouncesPage })))
+const SuppressionsPage = lazy(() => import('@/features/send/SuppressionsPage').then((page) => ({ default: page.SuppressionsPage })))
 const CampaignRunsPage = lazy(() => import('@/features/outreach/CampaignRunsPage').then((page) => ({ default: page.CampaignRunsPage })))
 const SettingsRoutes = lazy(() => import('@/features/settings/SettingsRoutes').then((page) => ({ default: page.SettingsRoutes })))
 const HelpRoutes = lazy(() => import('@/features/help/HelpRoutes').then((page) => ({ default: page.HelpRoutes })))
@@ -79,6 +81,9 @@ export function App({ gateway, featureGateways = {} }: { gateway: MailroomGatewa
             <Route path="/mailboxes/:mailboxId/drafts/:draftId/send-review" element={<SendReviewPage />} />
             <Route path="/mailboxes/:mailboxId/send-intents/:sendId" element={<SendStatusPage />} />
             <Route path="/mailboxes/:mailboxId/members" element={<MembersPage />} />
+            {/* Send-delivery reports: mailbox-scoped bounces and organization-wide suppressions. */}
+            <Route path="/mailboxes/:mailboxId/bounces" element={<BouncesPage />} />
+            <Route path="/mailboxes/:mailboxId/suppressions" element={<SuppressionsPage />} />
             <Route path="/search" element={<SearchPage />} />
             <Route path="/settings/*" element={<SettingsRoutes />} />
             <Route path="/help/*" element={<HelpRoutes />} />

@@ -31,6 +31,9 @@ const featureGateways: FeatureGateways = {
   assigneeOptions: createV2AssigneeOptionsGateway(),
   attachmentPort: createV2AttachmentGateway(),
   readDirectMessage: (ctx, mailboxId, threadId, messageId, signal) => v2.getDirectMessage(ctx, mailboxId, threadId, messageId, signal),
+  // AIDEV-NOTE: contract-request — deliveryReports (Bounces/Suppressions) is intentionally unset:
+  // the proposed routes do not exist in contracts/v2 yet, so the pages show an honest unavailable
+  // state. createHttpDeliveryReportsGateway() is ready to bind here once the endpoints ship.
 }
 createRoot(root).render(
   <StrictMode>
