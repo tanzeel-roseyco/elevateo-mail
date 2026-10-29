@@ -1,6 +1,7 @@
 // Approval binding survives shell recovery and tab reload. Never store CSRF or snapshot bytes.
 import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from 'react'
 import type { SendApprovalInput } from '@/data/sendContract'
+import { reportDesktopBusy } from './desktopHost'
 import { useSession } from './session'
 import { approvalRecoveryMessage, clearApprovalRecovery, persistApprovalRecovery, readApprovalRecovery } from './approvalRecovery'
 
@@ -16,6 +17,10 @@ interface SendIntentStore {
   clear(key: string): void
 }
 const Context = createContext<SendIntentStore | null>(null)
+/** An approval not yet confirmed approved must survive: unload and desktop updates wait for it. */
+function hasUnresolvedApproval(attempts: ReadonlyMap<string, SendAttempt>): boolean {
+  return [...attempts.values()].some((attempt) => attempt.phase !== 'approved')
+}
 export function useSendIntent() {
   const store = useContext(Context)
   if (!store) throw new Error('SendIntentProvider missing')
@@ -49,6 +54,7 @@ export function SendIntentProvider({ children }: { children: ReactNode }) {
     const commit = (next: Map<string, SendAttempt>) => {
       persistApprovalRecovery(next)
       map.clear(); next.forEach((attempt, key) => map.set(key, attempt))
+      reportDesktopBusy('sendInProgress', hasUnresolvedApproval(map))
     }
     store.current = {
       read: (key) => { if (!scoped(key)) return null; hydrate(); return map.get(key) ?? null },
@@ -69,13 +75,16 @@ export function SendIntentProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (drop || (principal !== null && previous.current !== null && principal !== previous.current)) {
       entries.current.clear(); hydratedPrincipal.current = null; cleanupRequired.current = true
+      reportDesktopBusy('sendInProgress', false)
       try { clearApprovalRecovery(); cleanupRequired.current = false; setStorageFailure(false) } catch { setStorageFailure(true) }
     }
     if (drop || principal !== null) previous.current = principal
   }, [drop, principal])
   useEffect(() => {
+    // Initial report: the desktop host blocks update installs until every busy source has spoken.
+    reportDesktopBusy('sendInProgress', hasUnresolvedApproval(entries.current))
     const warn = (event: BeforeUnloadEvent) => {
-      if (![...entries.current.values()].some((attempt) => attempt.phase !== 'approved')) return
+      if (!hasUnresolvedApproval(entries.current)) return
       event.preventDefault()
       event.returnValue = ''
     }

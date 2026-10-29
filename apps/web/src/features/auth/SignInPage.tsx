@@ -12,6 +12,8 @@ import { classifyFailure, type ActionFailure } from '@/app/actionFailure'
 import { useGateway, useSession, type SignedOutNotice } from '@/app/session'
 import type { MailroomGateway } from '@/data/gateway'
 import {
+  isSsoProviderUnsupported,
+  isSsoUsable,
   readSsoLandingError,
   SSO_START_PATH,
   ssoLandingErrorText,
@@ -25,6 +27,7 @@ import { Button } from '@/ui/Button'
 import { Callout } from '@/ui/Callout'
 import { Field, TextInput } from '@/ui/Field'
 import { ArrowRightStartOnRectangleIcon, KeyIcon } from '@/ui/icons'
+import { useDesktopReady } from '@/app/desktopHost'
 
 // AIDEV-NOTE: Transport mode is only known after authentication; this form must not claim mail is simulated.
 const FOOTNOTE = 'Sign in securely to this Elevateo Mail installation.'
@@ -149,6 +152,8 @@ export function SignInPage({ navigation = browserNavigation }: { navigation?: Si
   const [landing, setLanding] = useState<SsoLandingError | null>(() => readSsoLandingError(navigation.readSearch()))
   const headingRef = useRef<HTMLHeadingElement | null>(null)
   const ids = { notice: useId(), landing: useId() }
+  // Reaching sign-in after an update is a healthy launch (desktop shell only; no-op in browsers).
+  useDesktopReady(true)
 
   // Consumed exactly once per mount (StrictMode runs effects twice; the ref keeps replaceSearch single).
   const landingConsumedRef = useRef(false)
@@ -203,7 +208,10 @@ export function SignInPage({ navigation = browserNavigation }: { navigation?: Si
   }
 
   const { options } = sso.state
-  const ssoEnabled = options.enabled && options.provider !== null
+  // AIDEV-NOTE: ssoEnabled requires a provider this client actually drives (Authentik). A reported
+  // `google` provider is "unsupported" and fails closed to the unavailable state below — never a button.
+  const ssoEnabled = isSsoUsable(options)
+  const ssoUnsupported = isSsoProviderUnsupported(options)
   const passwordEnabled = options.password_login_enabled
   // Recovery screens exist only while the password entry does; a status that turns password login
   // off while recovering falls back to the plain sign-in view instead of an orphaned heading.
@@ -220,14 +228,25 @@ export function SignInPage({ navigation = browserNavigation }: { navigation?: Si
   )
 
   if (!ssoEnabled && !passwordEnabled) {
+    // A server that reports SSO with a provider this client refuses to drive (e.g. google) is a
+    // distinct, honest "unavailable" state with what to do, not the plain "nothing enabled" card.
+    const unavailable = ssoUnsupported
+      ? {
+          title: 'Single sign-on is unavailable',
+          body: 'This installation uses a single sign-on provider that is not supported here. Ask your administrator, then check again.',
+        }
+      : {
+          title: 'Sign-in is not available',
+          body: 'No sign-in method is enabled for this installation. Ask your administrator, then check again.',
+        }
     return (
       <AuthFrame>
         {noticeCallout}
         {landingCallout}
         <EmptyState
           icon={<KeyIcon className="size-5" />}
-          title="Sign-in is not available"
-          body="No sign-in method is enabled for this installation. Ask your administrator, then check again."
+          title={unavailable.title}
+          body={unavailable.body}
           action={<Button variant="primary" onClick={sso.retry}>Check again</Button>}
         />
       </AuthFrame>

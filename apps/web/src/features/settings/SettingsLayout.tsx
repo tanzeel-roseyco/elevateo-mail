@@ -49,7 +49,7 @@ const PAGES: readonly PageMeta[] = [
   { path: '/settings/webhooks', title: 'Webhook URLs', subtitle: 'Manage webhook endpoints to receive real-time notifications' },
   { path: '/settings/webhooks/create', title: 'Add New Webhook', subtitle: 'Register an endpoint for workspace events', parents: [WEBHOOKS] },
   { path: '/settings/integrations', title: 'Integrations', subtitle: 'Connect Elevateo with the tools your workspace uses' },
-  { path: '/settings/integrations/mcp', title: 'Elevateo MCP Server', subtitle: 'Bring your mailboxes into an AI workflow', parents: [INTEGRATIONS] },
+  { path: '/settings/integrations/mcp', title: 'Connections', subtitle: 'AI clients that can read your mail and draft replies', parents: [INTEGRATIONS] },
   { path: '/settings/integrations/cli', title: 'Elevateo CLI', subtitle: 'Work with drafts and conversations from a terminal', parents: [INTEGRATIONS] },
 ]
 

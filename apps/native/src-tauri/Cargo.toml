@@ -11,9 +11,24 @@ crate-type = ["staticlib", "cdylib", "rlib"]
 [build-dependencies]
 tauri-build = "=2.7.2"
 
+# AIDEV-NOTE: Cargo.lock must be regenerated in the fleet lane for the new dependencies below;
+# caret ranges here, exact pins land in the reviewed lock (builds run with --locked).
 [dependencies]
 tauri = "=2.12.3"
 url = "=2.5.8"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+sha2 = "0.10"
+base64 = "0.22"
+rand = "0.8"
+
+# Desktop-only: the Android/iOS fixture lanes compile the crate without these plugins or keyring.
+[target.'cfg(not(any(target_os = "android", target_os = "ios")))'.dependencies]
+# No Linux secret-service feature: fleet Linux compile must not need libdbus; Linux is not a target OS.
+keyring = { version = "3", features = ["apple-native", "windows-native"] }
+tauri-plugin-opener = "2"
+tauri-plugin-updater = "2"
+tauri-plugin-single-instance = "2"
 
 [profile.release]
 panic = "abort"

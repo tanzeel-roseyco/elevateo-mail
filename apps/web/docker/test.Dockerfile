@@ -15,4 +15,4 @@ RUN npm ci
 
 # Regeneration, lint, types and tests precede the production bundle marker check.
 # AIDEV-NOTE: Bundle markers alone do not prove runtime fixture isolation; browser QA is separate.
-CMD ["bash", "-ceu", "npm run check:api && npm run check:api:v2 && npm run lint && npm run typecheck && npm run test -- --coverage && npm run build && ! grep -rl 'dev-fixtures\\|Development fixtures\\|fixture_token_a' dist"]
+CMD ["bash", "-ceu", "npm run check:api && npm run check:api:v2 && npm run lint && npm run typecheck && npm run test -- --coverage && npm run build && npm run check:bundle && ! grep -rl 'dev-fixtures\\|Development fixtures\\|fixture_token_a' dist"]

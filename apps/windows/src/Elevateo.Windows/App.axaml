@@ -1,0 +1,9 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="Elevateo.Windows.App"
+             RequestedThemeVariant="Default">
+  <!-- Fluent theme follows the OS light/dark/high-contrast variant; focus visuals stay enabled. -->
+  <Application.Styles>
+    <FluentTheme />
+  </Application.Styles>
+</Application>

@@ -8,6 +8,7 @@
     "dev": "vite",
     "dev:fixtures": "vite --mode fixtures",
     "build": "tsc -p tsconfig.json --noEmit && vite build",
+    "check:bundle": "node scripts/check-bundle-budget.mjs",
     "preview": "vite preview",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "lint": "eslint . --max-warnings 0",

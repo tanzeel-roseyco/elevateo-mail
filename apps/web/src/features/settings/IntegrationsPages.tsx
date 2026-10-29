@@ -28,8 +28,8 @@ interface Integration {
 export const INTEGRATIONS: readonly Integration[] = [
   {
     slug: 'mcp',
-    title: 'Elevateo MCP Server',
-    text: 'Bring your mailboxes into an AI workflow',
+    title: 'Connections',
+    text: 'Grant AI clients (Claude, Codex) access to your mailboxes, and revoke it',
     intro: 'The Model Context Protocol server exposes read-only mailbox tools (list conversations, read a message, search) to an MCP-capable assistant. Every call runs under the signed-in actor and the same permissions as this app.',
     steps: [
       { title: 'Install the server', text: 'The server ships as a small package that runs next to your assistant.', code: 'npm install --global @elevateo/mcp-server', language: 'bash' },

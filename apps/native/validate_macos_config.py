@@ -20,12 +20,11 @@ def validate(root: Path) -> list[str]:
     if base.get("build", {}).get("frontendDist") is not None:
         errors.append("online-only shell must not bundle web assets")
     security = base.get("app", {}).get("security", {})
-    if security.get("capabilities") != [] or security.get("assetProtocol", {}).get("enable") is not False:
-        errors.append("native capability or asset protocol enabled")
+    if security.get("capabilities") != ["main"] or security.get("assetProtocol", {}).get("enable") is not False:
+        errors.append("capability selection changed or asset protocol enabled")
     if base.get("app", {}).get("withGlobalTauri") is not False:
         errors.append("global Tauri bridge enabled")
-    if capabilities:
-        errors.append("Tauri capability files must be absent")
+    errors.extend(validate_capabilities(capabilities))
     if security.get("dangerousRemoteDomainIpcAccess"):
         errors.append("remote IPC access enabled")
     if base.get("app", {}).get("windows", [{}])[0].get("create") is not False:
@@ -41,6 +40,27 @@ def validate(root: Path) -> list[str]:
         errors.append("unreviewed entitlement requested")
     if "url" in json.dumps(mac).lower() or "deep-link" in json.dumps(mac).lower():
         errors.append("unapproved callback registration")
+    return errors
+
+
+# The single reviewed capability (FC-MAC): main window only, event IPC only; https://* is confined
+# to the one approved origin by the Rust exact-origin navigation guard, not by this file alone.
+ALLOWED_PERMISSIONS = {"core:event:default"}
+
+
+def validate_capabilities(capabilities: list[dict]) -> list[str]:
+    errors: list[str] = []
+    if len(capabilities) != 1:
+        return [f"expected exactly the one reviewed capability file, found {len(capabilities)}"]
+    cap = capabilities[0]
+    if cap.get("identifier") != "main" or cap.get("windows") != ["main"]:
+        errors.append("capability identifier/window selection changed")
+    if cap.get("remote", {}).get("urls") != ["https://*"]:
+        errors.append("capability remote context changed")
+    if not set(cap.get("permissions", [])) <= ALLOWED_PERMISSIONS:
+        errors.append("capability grants an unreviewed permission")
+    if cap.get("local") is True:
+        errors.append("capability must not add a local context")
     return errors
 
 

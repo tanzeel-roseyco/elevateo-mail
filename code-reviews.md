@@ -1,3 +1,158 @@
+## Frontend completion reviews — 2026-10-29 (`c1ac27bd..5218a274`)
+
+Adversarial reviewers: Codex CLI `codex exec -m gpt-6-astra -c model_reasoning_effort=low`, launched from PowerShell, read-only in a detached review worktree at `5218a274` (worktree verified clean afterwards). Model and effort were verified from each run's header (`model: gpt-6-astra`, `reasoning effort: low`). Each packet holds at most 380 changed lines. The rubric is the user's full review system prompt, verbatim, plus STANDARDS.md conformance; formatting is left to linters. Excluded as generated or boilerplate: `apps/ios/Elevateo.xcodeproj/project.pbxproj`, `apps/windows/Elevateo.Windows.sln`, `apps/windows/VERSION`, `.gitignore`. Full findings: [review-findings-wave1.md](docs/completion/frontend-completion-20261029/review-findings-wave1.md).
+
+**Wave 1 status: 23 of 34 packets complete; P24–P34 did not run** because Claude Code stopped the background review job when the host ran critically low on memory. Completed: 6280 lines, 65 defects (HIGH 18, MEDIUM 43, LOW 4), **10.35 defects/KLOC**. Repair dispositions are under "Repairs" below.
+
+| Packet | Scope | LOC | Defects | Defects/KLOC | Disposition |
+| --- | --- | ---: | ---: | ---: | --- |
+| P01 | android/build/Dockerfile, android/build/acceptance_results.py, android/build/build-apk.sh | 285 | 2 | 7.02 | open |
+| P02 | android/build/emulator-acceptance.sh, android/build/fixture_origin.py | 345 | 3 | 8.70 | open |
+| P03 | android/build/test_acceptance_results.py | 122 | 1 | 8.20 | open |
+| P04 | ios/Dockerfile.core, ios/Elevateo/Info.plist, ios/Elevateo/Sources/AppConfig.swift, ios/Elevateo/Sources/AppModel.swift, ios/Elevateo/Sources/ElevateoApp.swift, ios/Elevateo/Sources/KeychainTokenStore.swift | 347 | 3 | 8.65 | open |
+| P05 | ios/Elevateo/Sources/LoadState.swift, ios/Elevateo/Sources/MailboxListView.swift, ios/Elevateo/Sources/ReplyComposerView.swift | 281 | 5 | 17.79 | open |
+| P06 | ios/Elevateo/Sources/SignInView.swift, ios/Elevateo/Sources/ThreadDetailView.swift | 265 | 2 | 7.55 | open |
+| P07 | ios/Elevateo/Sources/ThreadListView.swift, ios/ElevateoCore/Package.swift | 192 | 3 | 15.62 | open |
+| P08 | ios/ElevateoCore/Sources/ElevateoCore/APIClient.swift | 264 | 3 | 11.36 | open |
+| P09 | ios/ElevateoCore/Sources/ElevateoCore/Auth/OIDCAuthFlow.swift, ios/ElevateoCore/Sources/ElevateoCore/Auth/PKCE.swift, ios/ElevateoCore/Sources/ElevateoCore/Auth/TokenExchangePort.swift, ios/ElevateoCore/Sources/ElevateoCore/Auth/TokenStore.swift | 234 | 2 | 8.55 | open |
+| P10 | ios/ElevateoCore/Sources/ElevateoCore/Models.swift | 375 | 2 | 5.33 | open |
+| P11 | ios/ElevateoCore/Tests/ElevateoCoreTests/APIClientTests.swift, ios/ElevateoCore/Tests/ElevateoCoreTests/AuthFlowTests.swift, ios/ElevateoCore/Tests/ElevateoCoreTests/DraftTests.swift, ios/ElevateoCore/Tests/ElevateoCoreTests/TestSupport.swift | 359 | 1 | 2.79 | open |
+| P12 | ios/build.sh, ios/project.yml | 166 | 3 | 18.07 | open |
+| P13 | native/src-tauri/src/auth.rs:1-380 | 380 | 5 | 13.16 | open |
+| P14 | native/src-tauri/src/auth.rs:381-403 | 22 | 1 | 45.45 | open |
+| P15 | native/ci/verify_boundary.py, native/macos-release.sh, native/src-tauri/Cargo.toml, native/src-tauri/capabilities/main.json | 239 | 2 | 8.37 | open |
+| P16 | native/src-tauri/src/host.rs | 266 | 5 | 18.80 | open |
+| P17 | native/src-tauri/src/lib.rs, native/src-tauri/src/navigation.rs | 211 | 4 | 18.96 | open |
+| P18 | native/src-tauri/src/update.rs, native/src-tauri/tauri.conf.json, native/src-tauri/tauri.macos.conf.json, native/test_macos_release.py, native/test_validate_macos_config.py, native/validate_macos_config.py | 357 | 3 | 8.40 | open |
+| P19 | web/src/app/App.tsx, web/src/app/Shell.tsx, web/src/app/featureGateways.tsx, web/src/data/connectorGrantsContract.ts, web/src/data/deliveryReportsContract.ts, web/src/data/fixtures/simulatedConnectorGrants.ts, web/src/data/http/httpConnectorGrantsGateway.ts | 378 | 4 | 10.58 | open |
+| P20 | web/src/data/http/httpDeliveryReportsGateway.ts, web/src/data/simulatedDeliveryReports.ts, web/src/data/ssoContract.ts, web/src/dev/demoMain.tsx, web/src/dev/fixtureMain.tsx, web/src/domain/sendSuppression.test.ts, web/src/domain/sendSuppression.ts, web/src/features/assistant/AssistantPanel.test.tsx | 299 | 3 | 10.03 | open |
+| P21 | web/src/features/assistant/AssistantPanel.tsx | 299 | 4 | 13.38 | open |
+| P22 | web/src/features/assistant/bridge.ts, web/src/features/auth/SignInPage.sso.test.tsx, web/src/features/auth/SignInPage.tsx, web/src/features/drafts/DraftAttachments.test.tsx, web/src/features/drafts/DraftAttachments.tsx, web/src/features/help/content.ts, web/src/features/inbox/FolderNav.tsx, web/src/features/send/BouncesPage.test.tsx | 262 | 2 | 7.63 | open |
+| P23 | web/src/features/send/BouncesPage.tsx, web/src/features/send/SendReviewPage.tsx, web/src/features/send/SendStatusPage.test.tsx, web/src/features/send/SendStatusPage.tsx | 332 | 2 | 6.02 | open |
+| P24 | web/src/features/settings/ConnectionsPage.tsx:1-380 | 380 | not run | — | stopped by host memory pressure |
+| P25 | web/src/features/settings/ConnectionsPage.tsx:381-579 | 199 | not run | — | stopped by host memory pressure |
+| P26 | web/src/features/send/SuppressionsPage.test.tsx, web/src/features/send/SuppressionsPage.tsx, web/src/features/send/deliveryFilters.ts, web/src/features/settings/ConnectionsPage.test.tsx, web/src/features/settings/IntegrationsPages.tsx, web/src/features/settings/SettingsLayout.tsx, web/src/features/settings/SettingsRoutes.tsx, web/src/main.tsx | 325 | not run | — | stopped by host memory pressure |
+| P27 | windows/Directory.Build.props, windows/build/Dockerfile, windows/build/build-installer.sh, windows/installer/elevateo.nsi, windows/src/Elevateo.Client.Core/Agents/IAgentsBridge.cs, windows/src/Elevateo.Client.Core/Api/ApiError.cs, windows/src/Elevateo.Client.Core/Api/ApiJsonContext.cs | 278 | not run | — | stopped by host memory pressure |
+| P28 | windows/src/Elevateo.Client.Core/Api/ElevateoApiClient.cs, windows/src/Elevateo.Client.Core/Api/IElevateoApiClient.cs | 264 | not run | — | stopped by host memory pressure |
+| P29 | windows/src/Elevateo.Client.Core/Api/Models.cs, windows/src/Elevateo.Client.Core/Auth/AuthCallbackValidator.cs, windows/src/Elevateo.Client.Core/Auth/ITokenStore.cs | 283 | not run | — | stopped by host memory pressure |
+| P30 | windows/src/Elevateo.Client.Core/Auth/LoopbackAuthenticator.cs, windows/src/Elevateo.Client.Core/Auth/Pkce.cs, windows/src/Elevateo.Client.Core/Auth/WindowsCredentialStore.cs | 377 | not run | — | stopped by host memory pressure |
+| P31 | windows/src/Elevateo.Client.Core/Configuration/ClientConfiguration.cs, windows/src/Elevateo.Client.Core/Elevateo.Client.Core.csproj, windows/src/Elevateo.Windows/App.axaml, windows/src/Elevateo.Windows/App.axaml.cs, windows/src/Elevateo.Windows/Elevateo.Windows.csproj, windows/src/Elevateo.Windows/Program.cs, windows/src/Elevateo.Windows/Services/AppServices.cs, windows/src/Elevateo.Windows/ViewModels/AssistantViewModel.cs | 324 | not run | — | stopped by host memory pressure |
+| P32 | windows/src/Elevateo.Windows/ViewModels/MainViewModel.cs | 340 | not run | — | stopped by host memory pressure |
+| P33 | windows/src/Elevateo.Windows/Views/MainWindow.axaml, windows/src/Elevateo.Windows/Views/MainWindow.axaml.cs, windows/src/Elevateo.Windows/app.manifest, windows/src/Elevateo.Windows/appsettings.json, windows/tests/Elevateo.Client.Core.Tests/ApiClientValidationTests.cs | 332 | not run | — | stopped by host memory pressure |
+| P34 | windows/tests/Elevateo.Client.Core.Tests/AuthFlowTests.cs, windows/tests/Elevateo.Client.Core.Tests/CredentialStoreTests.cs, windows/tests/Elevateo.Client.Core.Tests/Elevateo.Client.Core.Tests.csproj, windows/tests/Elevateo.Client.Core.Tests/TestSupport.cs | 185 | not run | — | stopped by host memory pressure |
+
+### Design-tradeoff review
+
+Reviewer: Claude Code `claude-fable-5`, low effort (verified from result metadata), read-only, dedicated to design tradeoffs with scenario simulations. It read about 1,900–2,300 lines directly. The Obsidian architecture notes exist only in the 2026-10-02 backup and are past their monthly review date (last reviewed 2026-07-08), so they were used only as background. Verdicts:
+- KEEP: Windows Avalonia; typed ports with unavailable states; send-status polling instead of push (one fix noted below); Connections and the assistant boundary; iOS core split; Android WebView.
+- CHANGE: the Mac update rollback (MEDIUM).
+- CHANGE-LATER: the dual native/WebView sign-in paths (HIGH).
+
+**6 design defects** (about 2.7/KLOC of the lines read, not comparable to the line-level density above):
+1. `update.rs` has an unenforced `READY_WINDOW_SECS`.
+2. A single failed send-status poll stops auto-polling silently.
+3. The native PKCE path conflicts with the recorded WebView-cookie decision. Windows and iOS need it under the 2026-10-29 brief; to be recorded.
+4. Rollback cannot fire if the new binary never launches; undocumented.
+5. The IdP-in-WebView risk acceptance is undocumented.
+6. Shared auth conformance vectors are needed across Rust/C#/Swift.
+
+Status: design defects 1 and 3–6 repaired in batch R1 (`cfd45c87`, below); 2 repaired in batch R4.
+
+### Repairs (step 1 of the 2026-10-29 resume order)
+
+Defect numbers are the order of the findings within each packet in review-findings-wave1.md. Every repair has a regression test unless marked doc-only. Tests run in the final local Docker pass.
+
+**Batch R1 — native updater, loopback login, desktop host wiring, auth alignment** (commit "Fix native updater rollback, loopback login bounds and desktop host wiring"):
+
+| Finding | Repair | Regression test |
+| --- | --- | --- |
+| P13-1 HIGH test does not compile | `matches!` on the exchange result | `auth.rs` test module compiles and runs |
+| P13-2 MED issuer path joined into authorize URL | authorize URL built from the issuer origin | `authorize_url_ignores_the_issuer_application_path` |
+| P13-3 HIGH insecure issuer accepted | https, no userinfo, else `InvalidIssuer`; command rejects before opening a socket | `authorize_url_rejects_cleartext_and_credential_issuers`, shared vectors |
+| P13-4 MED abandoned listener never stops | non-blocking accept with deadline and `ListenerHandle::cancel`; `abandon()` cancels | `cancelled_or_expired_listener_stops_and_disconnects_the_receiver`, `abandoning_the_login_cancels_its_listener` |
+| P13-5 HIGH unbounded callback read | 8 KiB request-line cap, 2 s read timeout, 400 on overflow | `oversized_request_line_is_rejected_and_listener_keeps_serving`, `stalled_client_cannot_block_the_genuine_callback` |
+| P14-1 MED listener failure paths untested | stray 404, provider error, oversized, stalled, cancelled | as above |
+| P15-2 MED missing python3 skipped validation | python3 required for every run | `test_missing_python3_fails_before_validation_or_build` |
+| P16-1, P17-1, P18-1 HIGH update rolled back before its first launch | phased marker Installed → Launched → Ready, written only after a successful install; failed install removes the archive | `healthy_update_gets_its_first_launch_and_is_kept_after_reporting_ready`, `update_that_never_reaches_ready_rolls_back_on_the_following_start` |
+| P16-2 HIGH busy gate never fed | web reports draft/send state (`desktopHost.ts`); host blocks until a complete report | `install_is_blocked_while_busy_or_before_the_web_ui_reported`, `desktopHost.test.ts` |
+| P16-3 HIGH busy state changes during download | download and install split; gate re-read right before install | gate unit test (install path is plugin I/O, covered by the re-check call site) |
+| P16-4, P17-4 MED probe ignores port | probe uses `port_or_known_default()` | covered by origin validation tests; call-site change |
+| P16-5 LOW emit errors discarded | `emit_or_log` for every native event | call-site change (no Tauri runtime in unit tests) |
+| P17-2 HIGH native Sign Out left web session | `useDesktopSignOut` runs the web `signOut('local')` | `desktopHost.test.ts` sign-out case |
+| P17-3 MED page load certified health | init-script load ping removed; `useDesktopReady` from the signed-in shell / sign-in page; failures logged | `desktopHost.test.ts` readiness case |
+| P18-2 MED marker read errors became "none" | `read_marker` returns `io::Result<Option<_>>`; startup reports and keeps the archive | `corrupt_or_unreadable_marker_is_an_error_not_absence` |
+| P18-3 MED cross-volume restore | archive copied to staging beside the bundle, same-volume swap, archive kept until success | `restore_copies_from_a_separate_archive_location_and_cleans_up`, `failed_restore_keeps_the_current_bundle_and_leaves_no_staging` |
+| P09-1 MED callback destination unchecked | scheme/host/port/path must equal the redirect URI; mismatch does not burn the attempt | `testCallbackToAnotherDestinationIsRejectedWithoutBurningTheAttempt` |
+| P09-2 HIGH cleartext authorization endpoint | `isAcceptableEndpoint` checked before building the URL | `testCleartextAuthorizationEndpointIsRejectedBeforeBuildingTheURL`, shared vectors |
+| Design 1 | `READY_WINDOW_SECS` removed; "never ready during its launch" is the failure signal | lifecycle tests above |
+| Design 3, 5 | sign-in paths and IdP-in-WebView risk acceptance recorded in `apps/native/README.md` | doc-only |
+| Design 4 | manual restore procedure in `apps/native/README.md` | doc-only |
+| Design 6 | `apps/shared/auth-conformance-vectors.json` read by the Rust, C# and Swift suites; Windows now exchanges codes at `POST /v1/native/sessions` and rejects credentialed endpoints | `conforms_to_shared_auth_vectors`, `Client_ConformsToSharedAuthVectors`, `testConformsToSharedAuthVectors` |
+
+Also found while repairing (not in wave 1): the web app had no listener for `host://update`, so "Check for Updates…" showed nothing. It is now shown as an "App update" status notice (test in `desktopHost.test.ts`). Follow-up, not repaired: the Mac PKCE broker (`auth_begin_login`) has no web caller, because the Mac signs in through WebView SSO; it is kept for parity until the native exchange exists.
+
+**Batch R2 — iOS client and core** (commit "Repair iOS session, draft-save, pagination and transport findings"). Batch R1 is commit `cfd45c87`.
+
+| Finding | Repair | Regression test |
+| --- | --- | --- |
+| P04-1 HIGH sign-out left the cookie session | `SessionLifecycle.signOut`: `POST /v1/auth/logout`, then always clears API-origin cookies and credentials; restore fenced by a sign-out generation | `testRestoreThenSignOutRevokesAndClearsEverything`, `testSignOutClearsLocallyWhenTheServerCannotConfirm`, `testRestoreSupersededBySignOutIsDiscarded`, `testSignOutReportsCredentialStorageFailure`, `testLogoutPostsTheContractedRequest` |
+| P04-2 MED config accepted unusable URLs | `ClientSettings`: HTTPS endpoints with hosts, registered callback scheme, no unexpanded client id | `testClientSettingsValidation` |
+| P04-3 MED lifecycle untested | lifecycle and config moved into `ElevateoCore` with tests (Keychain itself needs a Mac host) | as above |
+| P05-1 HIGH operation id reused with new content | `DraftSaveCoordinator`: one immutable payload per operation; unconfirmed saves replay it exactly | `testLostResponseReplaysTheSamePayloadDespiteEdits` |
+| P05-2 MED conflict advice could not work | conflict blocks saving; "Keep my edits" / "Load the saved version" adopt the server draft | `testConflictRequiresReconciliationBeforeSaving` |
+| P05-3 MED transport failure called "not saved" | `.unconfirmed` state and "Retry Save" wording | `testLostResponseReplaysTheSamePayloadDespiteEdits` |
+| P05-4 MED stale saved indicator | saved only when fields equal the acknowledged content; fields locked while saving | `testSavedIndicatorTracksTheAcknowledgedContent` |
+| P05-5 MED composer transitions untested | coordinator tests | `testConsecutiveSavesAdvanceVersionWithNewOperations` and the three above |
+| P06-1 MED detail hid newer messages | `CursorPager<Message>`: "Show newer messages" continuation; refresh resets | `testCursorPagerAppendsDeduplicatedPages`, `testRefreshInvalidatesAnOutstandingContinuation` |
+| P06-2 MED screen workflows untested | conversation loading covered through `CursorPager`; the `ASWebAuthenticationSession` sheet needs a Mac host (accepted blocker) | pager tests |
+| P07-1 MED pagination errors swallowed | visible pagination error with "Try again"; offline banner updated | `testCursorPagerReportsAndClearsPaginationFailure` |
+| P07-2 MED late page overwrote refresh | refresh generations; stale continuations discarded | `testRefreshInvalidatesAnOutstandingContinuation` |
+| P07-3 MED list transitions untested | pager tests | as above |
+| P08-1 HIGH unbounded response buffering | delegate-streamed `BoundedBody` per route limit (errors 4 KiB), plus a post-receipt check | `testOversizedSuccessBodyIsRejectedWithTheRouteLimit`, `testOversizedErrorBodyIsRejected`, `testBoundedBodyStopsAtTheLimit` |
+| P08-2 HIGH cross-origin redirects followed | `RedirectPolicy` same scheme/host/port, enforced in the session delegate | `testRedirectPolicyAllowsOnlySameOrigin`, `testRejectedRedirectIsTyped` |
+| P08-3 MED responses not bound to requests | context/version, mailbox, thread, draft and operation identity checks | `testPageForAnotherMailboxOrContextIsRejected`, `testSaveResultForAnotherOperationIsRejected` |
+| P10-1 HIGH null recipient keys omitted | `Address` encodes explicit nulls and requires both keys | `testNullRecipientFieldsAreEncodedAsExplicitNull` |
+| P10-2 MED contract-invalid DTOs accepted | `ContractValidated` bounds; required nullable `next_cursor` | `testContractInvalidPagesAreRejected`, `testContractInvalidSaveResultIsRejected` |
+| P11-1 HIGH test target could not compile | `MockTransport` uses synchronous `withLock` closures | whole ElevateoCore test target compiles |
+| P12-1 MED keychain search list replaced | saved list restored in the EXIT trap; failure fails the run | `test_build_keychain_is_prepended_and_original_list_restored`, `test_failed_restore_is_reported` |
+| P12-2 MED export lacked profile mapping | `provisioningProfiles` maps `co.elevateo.mail.ios` to the imported profile | `test_export_options_map_bundle_to_profile` |
+| P12-3 MED XcodeGen would overwrite Info.plist | `info:` section removed; `INFOPLIST_FILE` kept | spec change (XcodeGen needs a Mac host) |
+
+**Batch R3 — Android build and emulator acceptance** (commit "Repair Android signing cleanup and emulator acceptance oracles"). Batch R2 is commit `81bb3a9b`.
+
+| Finding | Repair | Regression test |
+| --- | --- | --- |
+| P01-1 HIGH keystore left in artifacts on failure | `release-signing.sh`: keystore in a private 0700 temp dir (umask 077), EXIT trap registered before decoding, never in `APK_BUILD_ROOT` | `ReleaseSigningTest` (success, apksigner failure, invalid base64) |
+| P01-2 MED emulator lacked KVM group | documented `--group-add "$(stat -c %g /dev/kvm)"` (Dockerfile, README, fail-fast message) | doc-only |
+| P02-1 MED unbounded `adb wait-for-device` | 180 s bounded `get-state` loop that also checks emulator liveness | shell change (needs an emulator; exercised in the final pass when RAM allows) |
+| P02-2 MED unknown focus became PASS | `classify_external_link`: failed launch or unknown focus is NOT_RUN, never PASS | `ExternalLinkTest` |
+| P02-3 MED rotation oracle passed on the notice alone | `signed_in_view` requires the signed-in shell controls and rejects the sign-in screen, checked before rotation, after it and after relaunch | `SignedInViewTest` |
+| P03-1 LOW untyped test methods | `-> None` on every test method | mypy-visible signatures |
+
+**Batch R4 — web send status, proposed-route adapters, assistant panel** (commit "Repair web send-status polling, proposed adapters and assistant session lifecycle"). Batch R3 is commit `e9b4066c`. This closes the 71 wave-1 findings plus the 6 design defects.
+
+| Finding | Repair | Regression test |
+| --- | --- | --- |
+| P23-1 MED, Design 2 failed poll left the auto-update claim | failed or mismatched polls retry at 30 s up to 3 times with a "may be out of date" notice, then an alert says automatic updates stopped; the auto-update claim shows only while polling is healthy | `warns after a failed poll, retries a bounded number of times, then reports the status as stale` |
+| P23-2 MED late poll overwrote newer results | one read generation shared by load, refresh, poll and cancel; superseded responses are discarded; one automatic poll in flight at a time | `never lets a late poll overwrite a confirmed cancellation` |
+| P19-1 MED grant list budget below schema maximum | 20 connections per user (proposed contract), budgets derived from the schema limits at 6 bytes per character | `accepts a maximum-size grant list` |
+| P19-2 LOW scopes arrays aliased the store | `copyGrant` copies every scopes array | `returns copies that cannot mutate stored grants` |
+| P19-3 MED simulated writes ignored cancellation | every simulated method rejects an aborted signal before touching state | `rejects cancelled writes without changing state` |
+| P19-4 MED HTTP grants adapter untested | direct adapter tests in `proposedAdapters.test.ts` | routes and headers, invalid create body not sent, contract-invalid response |
+| P20-1 MED bounce page budget below schema maximum | bounce and suppression budgets derived from the schema (the suppression budget was also too small) | `accepts a maximum-size bounce page` |
+| P20-2 MED delivery adapters untested | direct adapter tests | query string and headers, wrong-mailbox echo, out-of-range limit not sent |
+| P20-3 LOW simulated reads ignored paging | limit plus an opaque offset cursor; foreign cursors rejected | `pages through suppressions without omissions or duplicates`, `rejects a cursor it did not issue` |
+| P21-1 MED subscription failure left the session usable | Start waits for the event channel; failure shows an error with "Try again" | `keeps Start disabled until the event channel is ready and offers a retry when it fails` |
+| P21-2 MED closing abandoned the runtime session | unmount ends the owned session, and a start resolving after close is ended | `ends the owned session on close, and a start that resolves after close` |
+| P21-3 MED failed end shown as ended | `ending` / `end_failed` states; "Try ending again" | `shows a failed end with a retry instead of claiming the session ended` |
+| P21-4 MED concurrent sends | Send disabled and guarded while a reply streams | `locks Send while a response is streaming` |
+| P22-1 MED malformed events silently dropped | `subscribe(onEvent, onProtocolError)`; the panel stops the turn, cancels it and shows a notice (payload never shown or logged) | `stops the current response when the runtime sends an unreadable event`, `reports malformed events as protocol errors without forwarding them` |
+| P22-2 MED TauriAgentsBridge untested | tests against a fake `DesktopHost` | start and event forwarding, malformed events, malformed capability and start responses |
+
+P15-1 (Cargo.lock) is regenerated at the start of the final Docker pass, where `cargo` runs.
+
+Found in the web-quality state pass (step 2, not in wave 1): a failed "Show more" on Bounces and Suppressions replaced the whole list with the error state and discarded the rows already loaded. Both pages now keep the rows and show a retryable inline alert (regression test `keeps loaded bounces when the next page fails and recovers on retry`). The other FC screens (send status, Connections, sign-in, People/Members, Personal Details, assistant panel) were checked for loading, empty and error states and labelled controls, and no further gaps were found.
+
 ## Self-hosted continuation reviews — 2026-10-23
 
 Mandatory full-rubric adversarial Orca Codex reviews, bounded to <=200 physical LOC per

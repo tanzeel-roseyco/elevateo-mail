@@ -18,6 +18,9 @@ export function DraftAttachments({ draftId, mailboxId, disabled }: { draftId: st
   const [items, setItems] = useState<DraftAttachment[] | null>(null)
   const [message, setMessage] = useState<string | null>(null)
   const [busy, setBusy] = useState(false)
+  // AIDEV-NOTE: The attachment upload is a single base64 JSON POST, so no byte-level progress exists;
+  // this drives an honest INDETERMINATE progress indicator while the request is in flight.
+  const [uploading, setUploading] = useState(false)
   const [pending, setPending] = useState<DraftUpload | null>(null)
   const active = useRef(false)
   const revision = useRef(0)
@@ -35,7 +38,7 @@ export function DraftAttachments({ draftId, mailboxId, disabled }: { draftId: st
   const upload = async (file?: File) => {
     if (!proof || disabled || active.current || (!file && !pending)) return
     revision.current += 1
-    active.current = true; setBusy(true); setMessage(null)
+    active.current = true; setBusy(true); setUploading(true); setMessage(null)
     const outcome = await request(async (ctx, signal) => {
       const input = pending ?? await prepareDraftUpload(file!, mailboxId, newId())
       if (signal.aborted) throw signal.reason
@@ -45,7 +48,7 @@ export function DraftAttachments({ draftId, mailboxId, disabled }: { draftId: st
     })
     active.current = false
     if (outcome.kind === 'stale') return
-    setBusy(false)
+    setBusy(false); setUploading(false)
     if (outcome.kind === 'ok') { setItems([outcome.value]); setPending(null) }
     else setMessage(pending || file ? 'Upload was not confirmed. Keep this page open and retry the same file. Invalid files must be PDF, PNG, JPEG or text, at most 1 MiB.' : 'Upload unavailable.')
   }
@@ -75,7 +78,8 @@ export function DraftAttachments({ draftId, mailboxId, disabled }: { draftId: st
       <input id={inputId} type="file" accept="application/pdf,image/png,image/jpeg,text/plain" disabled={disabled || busy || !proof}
         onChange={(event) => { const file = event.target.files?.[0]; event.target.value = ''; if (file) void upload(file) }} />
     </div>}
-    {pending && <Button disabled={disabled || busy || !proof} onClick={() => void upload()}>Retry same attachment</Button>}
+    {uploading && <p role="progressbar" aria-label="Uploading attachment" aria-busy="true" className="my-2 text-zinc-500">Uploading…</p>}
+    {pending && !uploading && <Button disabled={disabled || busy || !proof} onClick={() => void upload()}>Retry same attachment</Button>}
     <Button disabled={busy} onClick={() => { setMessage(null); void load() }}>Refresh attachments</Button>
     {message && <p role="alert" className="mt-2">{message}</p>}
   </section>

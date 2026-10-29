@@ -1,0 +1,41 @@
+# AIDEV-NOTE: XcodeGen spec; keep in sync with the committed Elevateo.xcodeproj/project.pbxproj.
+# Regenerate with: xcodegen generate --spec project.yml
+name: Elevateo
+options:
+  bundleIdPrefix: co.elevateo
+  deploymentTarget:
+    iOS: "17.0"
+  createIntermediateGroups: true
+
+packages:
+  ElevateoCore:
+    path: ElevateoCore
+
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    SWIFT_STRICT_CONCURRENCY: complete
+    # Placeholder values; override per configuration or via xcodebuild ...=... at build time.
+    ELEVATEO_API_BASE_URL: https://mail.company.example
+    ELEVATEO_SSO_AUTHORIZATION_ENDPOINT: https://sso.company.example/application/o/authorize/
+    ELEVATEO_SSO_CLIENT_ID: elevateo-ios
+    ELEVATEO_SSO_REDIRECT_URI: elevateo://auth/callback
+
+targets:
+  Elevateo:
+    type: application
+    platform: iOS
+    sources:
+      - path: Elevateo/Sources
+    # No `info:` section on purpose: XcodeGen would regenerate Info.plist and drop the Elevateo*
+    # keys and the elevateo:// URL type. INFOPLIST_FILE points at the maintained file instead.
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: co.elevateo.mail.ios
+        INFOPLIST_FILE: Elevateo/Info.plist
+        TARGETED_DEVICE_FAMILY: "1,2"
+        CODE_SIGN_STYLE: Manual
+        CODE_SIGNING_ALLOWED: "NO"
+    dependencies:
+      - package: ElevateoCore
+        product: ElevateoCore

@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import { useProtectedRequest } from '@/app/protectedRequest'
+import { useFeatureGateways } from '@/app/featureGateways'
 import { useSession } from '@/app/session'
 import { RosterPersonSchema, type OrganizationGrant } from '@/data/v2Contract'
 import type { z } from 'zod'
@@ -18,7 +19,9 @@ import { CONFIG_PEOPLE, editableRoles, validActorProjection, validGrantProjectio
 type Grants = { actor: OrganizationGrant; grants: OrganizationGrant[] }
 type Roster = { status: 'loading' } | { status: 'ready'; items: z.infer<typeof RosterPersonSchema>[] } | { status: 'unavailable' } | { status: 'error' }
 type View = { status: 'loading' } | { status: 'ready'; value: Grants } | { status: 'denied' } | { status: 'error' }
-const adminGateway = createV2Gateway()
+// AIDEV-NOTE: Production uses this real HTTP port; demo/fixture entries inject a simulated one
+// through featureGateways.administration so the capture renders fixture data with no failed requests.
+const realAdminGateway = createV2Gateway()
 
 function isDenied(error: unknown): boolean {
   return error instanceof GatewayError && error.kind === 'api' && (error.status === 403 || error.status === 404 || error.code === 'not_available')
@@ -28,6 +31,7 @@ function isDenied(error: unknown): boolean {
 export function AdministrationPage({ section }: { section: 'people' | 'organization' }) {
   const { state, refresh } = useSession()
   const { request, proof } = useProtectedRequest()
+  const adminGateway = useFeatureGateways().administration ?? realAdminGateway
   const session = state.status === 'ready' ? state.session : null
   const organizationId = session?.organization.id ?? null
   const actorId = session?.actor.id ?? null
@@ -74,7 +78,7 @@ export function AdministrationPage({ section }: { section: 'people' | 'organizat
       cursor = next
     }
     setView({ status: 'error' })
-  }, [organizationId, actorId, request, session?.context_id, session?.authorization_version])
+  }, [adminGateway, organizationId, actorId, request, session?.context_id, session?.authorization_version])
   const loadRoster = useCallback(async () => {
     if (!organizationId) return
     setRoster({ status: 'loading' })
@@ -96,7 +100,7 @@ export function AdministrationPage({ section }: { section: 'people' | 'organizat
       cursor = next
     }
     setRoster({ status: 'error' })
-  }, [organizationId, request, session?.context_id, session?.authorization_version])
+  }, [adminGateway, organizationId, request, session?.context_id, session?.authorization_version])
   useEffect(() => { void load() }, [load])
   useEffect(() => { void loadRoster() }, [loadRoster])
 

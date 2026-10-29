@@ -8,6 +8,7 @@ import { useSendIntent, type SendAttempt } from '@/app/sendIntent'
 import { useGateway, useSession } from '@/app/session'
 import { GatewayError, isApiError, isUncertainWriteOutcome } from '@/data/errors'
 import { consentGate } from '@/domain/sendConsent'
+import { suppressedRecipientIndexes } from '@/domain/sendSuppression'
 import type { SendReview } from '@/data/sendContract'
 import { canonicalId, newId } from '@/lib/ids'
 import { Badge } from '@/ui/Badge'
@@ -118,6 +119,7 @@ function Review({ mailboxId, draftId }: { mailboxId: string; draftId: string }) 
   const review = state.review
   const retry = attempt?.phase === 'uncertain'
   const gate = consentGate(review.outbound_mode, review.recipient_checks, review.purpose)
+  const suppressed = suppressedRecipientIndexes(review.recipient_checks)
   const approvable = review.ready && gate.allowed
   const dt = 'text-xs font-medium uppercase tracking-wide text-zinc-500'
   // wrap-anywhere (CS-02): a 998-character unbroken subject must wrap at 390px too; break-words
@@ -137,10 +139,14 @@ function Review({ mailboxId, draftId }: { mailboxId: string; draftId: string }) 
         <div className="sm:col-span-2"><dt className={dt}>Message</dt><dd className={`${dd} whitespace-pre-wrap rounded-lg border border-zinc-200 bg-zinc-50 p-3 leading-6 dark:border-zinc-700 dark:bg-zinc-900`}>{review.body_text === '' ? '(empty message)' : review.body_text}</dd></div>
         <div className="sm:col-span-2"><dt className={dt}>Attachments</dt>
         <dd className={dd}>{review.attachments.length === 0 ? 'None.' : <ul className="list-disc ps-5">{review.attachments.map((attachment) =>
-          <li key={attachment.id} className="break-all">{attachment.filename} ({attachment.byte_size} bytes): {attachment.status === 'clean' ? 'Security scan passed' : 'Sending blocked: security scan not passed'}</li>)}</ul>}
+          <li key={attachment.id} className="break-all">{attachment.filename} — {attachment.content_type} ({attachment.byte_size} bytes): {attachment.status === 'clean' ? 'Security scan passed' : 'Sending blocked: security scan not passed'}</li>)}</ul>}
         {!review.attachments_supported && ' This sending route does not support attachments.'}</dd></div>
       </dl>
       {review.reply_to_thread_id !== null && <Link to={`/mailboxes/${mailboxId}/threads/${review.reply_to_thread_id}`} className={linkClass}>Reply context</Link>}
+      {suppressed.length > 0 && <Callout variant="warning" role="note" label="Suppressed recipients" actions={<Link to={`/mailboxes/${mailboxId}/suppressions`} className={buttonClass('outline', 'sm')}>View suppressions</Link>}>
+        <p>{suppressed.length === 1 ? 'A recipient is' : `${suppressed.length} recipients are`} suppressed and will not receive this message. Suppression is server-managed.</p>
+        <ul className="list-disc ps-5">{suppressed.map((index) => <li key={index} className="whitespace-pre-wrap">Recipient {index + 1}: {review.to[index]?.address ?? '(address missing)'}</li>)}</ul>
+      </Callout>}
       {!review.ready && <Callout variant="warning" role="alert"><p>This draft is not ready for approval.</p><ul className="list-disc ps-5">{review.issues.map((issue, index) => <li key={index}>{issue.code.replaceAll('_', ' ')}{issue.recipient_index === null ? '' : ` — recipient ${issue.recipient_index + 1}`}</li>)}</ul></Callout>}
       {!gate.allowed && <div role="alert" aria-label="Consent required"><Callout variant="danger" heading="Approval blocked: consent required" actions={<Link to="/outreach/leads" className={buttonClass('outline', 'sm')}>Record consent evidence</Link>}><p>{gate.reason}</p><ul className="list-disc ps-5">{gate.recipientIndexes.map((index) => <li key={index} className="whitespace-pre-wrap">Recipient {index + 1}: {review.to[index]?.address ?? '(address missing)'} has no consent evidence</li>)}</ul></Callout></div>}
       {message && <Callout variant="neutral" role="alert">{message}</Callout>}

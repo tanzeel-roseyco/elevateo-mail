@@ -136,6 +136,31 @@ describe('sign-in entries by server status', () => {
   })
 })
 
+describe('unsupported single sign-on provider (fails closed, no Google UI)', () => {
+  // The server still enumerates `google`, but Google Cloud is prohibited: the client must never
+  // render a Google button and treats the report as unavailable.
+  const googleOnly: Partial<MailroomGateway> = { getSsoStatus: async () => ({ enabled: true, provider: 'google', password_login_enabled: false }) }
+  const googleWithPassword: Partial<MailroomGateway> = { getSsoStatus: async () => ({ enabled: true, provider: 'google', password_login_enabled: true }) }
+
+  it('shows the unavailable state (not a Google button) when google is the only provider', async () => {
+    renderSignedOut({}, googleOnly)
+    await screen.findByRole('heading', { name: 'Single sign-on is unavailable' })
+    expect(screen.queryByRole('button', { name: 'Continue with single sign-on' })).toBeNull()
+    expect(screen.queryByText(/google/i)).toBeNull()
+    expect(screen.getByRole('button', { name: 'Check again' })).toBeTruthy()
+  })
+
+  it('falls back to the password form (no SSO button) when google is reported alongside password login', async () => {
+    renderSignedOut({}, googleWithPassword)
+    await screen.findByLabelText('Password')
+    expect(screen.queryByRole('button', { name: 'Continue with single sign-on' })).toBeNull()
+    expect(screen.queryByRole('separator')).toBeNull()
+    expect(screen.queryByText(/google/i)).toBeNull()
+    // The lone password submit is primary, exactly as when SSO is disabled entirely.
+    expect((screen.getByRole('button', { name: 'Sign in' })).className).toContain('bg-(--color-accent)')
+  })
+})
+
 describe('single sign-on entry', () => {
   it('navigates the document to the server start path, shows the redirecting state and locks the form', async () => {
     const { navigation } = renderSignedOut()

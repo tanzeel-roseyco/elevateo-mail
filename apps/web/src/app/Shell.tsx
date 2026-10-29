@@ -12,6 +12,7 @@ import { Outlet, useLocation } from 'react-router'
 import type { Mailbox, MailboxPage, Session } from '@/data/contract'
 import { GatewayError } from '@/data/errors'
 import { newTraversalBudget, readPage } from '@/lib/readPage'
+import { AssistantDock } from '@/features/assistant/AssistantPanel'
 import { SignInPage } from '@/features/auth/SignInPage'
 import { readSsoLandingError, stripSsoLandingError } from '@/data/ssoContract'
 import { EmptyState, ErrorState, Skeleton } from '@/ui/Async'
@@ -19,6 +20,7 @@ import { Badge } from '@/ui/Badge'
 import { useBottomNotice } from '@/ui/useBottomNotice'
 import { BrandLockup } from '@/ui/BrandLockup'
 import { Button, IconButton } from '@/ui/Button'
+import { Callout } from '@/ui/Callout'
 import { ConnectivityBanner } from '@/ui/ConnectivityBanner'
 import { Drawer } from '@/ui/Drawer'
 import { Bars3Icon, ExclamationTriangleIcon, UserIcon } from '@/ui/icons'
@@ -27,6 +29,7 @@ import { featureRegistry } from './features'
 import { MailboxesProvider, type MailboxesSnapshot } from './mailboxes'
 import { PageBoundary } from './PageBoundary'
 import { Sidebar, type MailboxNavState } from './Sidebar'
+import { useDesktopReady, useDesktopSignOut, useDesktopUpdateNotice } from './desktopHost'
 import { sessionIdentityKey, useGateway, useSession } from './session'
 import { UserMenu } from './UserMenu'
 
@@ -55,6 +58,12 @@ export function Shell() {
   useEffect(() => {
     if (identity !== null) lastIdentityRef.current = identity
   }, [identity])
+  // Desktop shell only: a signed-in screen proves the update healthy; the native Sign Out menu
+  // runs the same local sign-out as the user menu (its failures surface the same way).
+  useDesktopReady(identity !== null)
+  const signOutLocally = useCallback(() => void signOut('local'), [signOut])
+  useDesktopSignOut(signOutLocally)
+  const updateNotice = useDesktopUpdateNotice()
   // AIDEV-NOTE: An SSO callback failure that lands on an already-signed-in browser must not sit in
   // the URL until a later sign-out shows it as a stale alert; drop it once the app renders.
   useEffect(() => {
@@ -290,6 +299,11 @@ function ProtectedShell({ session, replacedIdentity }: { session: Session; repla
             </header>
             {/* Online-only: no cache, no queue; a drop is announced and a return offers an explicit reload. */}
             <ConnectivityBanner onReload={refresh} />
+            {updateNotice && (
+              <Callout role="status" label="App update" variant={updateNotice.status === 'error' ? 'danger' : updateNotice.status === 'blocked_busy' ? 'warning' : 'neutral'} className="mx-6 mt-4 lg:mx-8">
+                {updateNotice.message}
+              </Callout>
+            )}
             <main id="main" tabIndex={-1} className="flex min-h-0 flex-1 flex-col p-6 pb-[calc(1.5rem+var(--bottom-notices))] lg:p-8 lg:pb-[calc(2rem+var(--bottom-notices))]">
               <div className="flex w-full max-w-7xl flex-1 flex-col">
                 <PageBoundary><Outlet /></PageBoundary>
@@ -299,6 +313,8 @@ function ProtectedShell({ session, replacedIdentity }: { session: Session; repla
                 AIDEV-TODO: Shared safe-area-aware inset implemented; retain browser zoom regression coverage. */}
             {session.simulation_mode && <SimulationNotice />}
           </div>
+          {/* Desktop-host-only assistant (FC-MAC): renders nothing in a plain browser. */}
+          <AssistantDock />
         </div>
       </ToastProvider>
     </MailboxesProvider>

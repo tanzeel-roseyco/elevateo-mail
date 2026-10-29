@@ -1,0 +1,7 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- AIDEV-NOTE: no UI dependencies here; this library is shared by the Avalonia app and unit tests. -->
+  <PropertyGroup>
+    <RootNamespace>Elevateo.Client.Core</RootNamespace>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+  </PropertyGroup>
+</Project>

@@ -58,6 +58,15 @@ describe('saved draft attachment panel', () => {
     expect(calls).toHaveLength(2)
     expect(calls[1]).toEqual(calls[0])
   })
+  it('rejects a disallowed file type before calling the upload port', async () => {
+    const { port } = setup()
+    const input = await screen.findByLabelText('Choose attachment')
+    const bad = new File(['x'], 'archive.zip', { type: 'application/zip' })
+    Object.defineProperty(bad, 'arrayBuffer', { value: async () => new Uint8Array([120]).buffer })
+    fireEvent.change(input, { target: { files: [bad] } })
+    await screen.findByRole('alert')
+    expect(port.upload).not.toHaveBeenCalled()
+  })
   it('blocks uploads while draft edits are unsaved', async () => {
     const { port } = setup({}, true)
     const input = await screen.findByLabelText('Choose attachment') as HTMLInputElement
