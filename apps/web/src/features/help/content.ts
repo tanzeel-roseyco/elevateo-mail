@@ -291,7 +291,7 @@ export const ARTICLES: readonly Article[] = [
     summary: 'Read-only mailbox tools for Model Context Protocol clients.',
     blocks: [
       { kind: 'p', text: 'The planned MCP server exposes list, read and search tools over your mailboxes to an MCP-capable assistant, running under your own permissions. Writes stay in the app.' },
-      { kind: 'p', text: 'Installation and configuration steps are on Settings › Integrations › Elevateo MCP Server.' },
+      { kind: 'p', text: 'Grant a client access to the mailboxes you choose, see what each connection can read, and revoke it on Settings › Integrations › Connections. Each connection clearly shows that mail is shared with an external AI.' },
     ],
   },
   {

@@ -10,9 +10,16 @@ import type { OutreachGateway } from '@/features/outreach/contract'
 import type { DirectMessageRead } from '@/features/thread/ThreadPage'
 import type { AssigneeOptionsReadPort } from '@/data/v2AssigneeOptionsGateway'
 import type { AttachmentReadPort } from '@/features/thread/MessageAttachments'
+import type { ConnectorGrantsGateway } from '@/data/connectorGrantsContract'
 
 export interface FeatureGateways {
   readonly outreach?: OutreachGateway
+  /**
+   * Connector (MCP) access grants for the Connections screen. Present only when the server advertises
+   * support (or a simulated adapter in demo/dev). Absent in production today → honest unavailable state.
+   * AIDEV-NOTE: contract-request — the `/v2/me/connector-grants` routes are proposed, not in contracts.
+   */
+  readonly connectorGrants?: ConnectorGrantsGateway
   /**
    * Cassian's exact V2 `getDirectMessage(ctx, mailboxId, threadId, messageId, signal)` reader for
    * a message URL beyond the loaded thread page. Mira's ThreadPage applies the shared session
