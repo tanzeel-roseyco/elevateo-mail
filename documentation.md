@@ -1,3 +1,21 @@
+<!-- frontend-completion-20261029:start -->
+## Frontend completion — 2026-10-29 (branch `feature/frontend-completion`, base `c1ac27bd`)
+
+Goal: finish every frontend/client area so web, Mac, Windows and Android (plus iOS source) can ship together once credentials exist. Nothing is deployed, published or sent. Docker runs only in one final local Docker Desktop pass (user instruction 2026-10-29; fleet-02 is not used). Missing server contracts are listed in [docs/contract-requests.md](docs/contract-requests.md) and implemented client-side as typed ports with honest "not available" states.
+
+| Area | Status |
+| --- | --- |
+| Web: Authentik SSO sign-in, Connections (MCP grants) | pending merge |
+| Web: Resend send status, bounces, suppressions, attachment sending | pending merge |
+| Web: code-splitting (500 KB main chunk), People/Members/Personal Details fixtures, state/a11y pass | pending |
+| Mac (Tauri): menus, single instance, PKCE login with Keychain, signed auto-update with rollback, assistant panel, `.dmg` release script with env-only signing | pending merge |
+| Windows (`apps/windows`, .NET 8 + Avalonia, NSIS + osslsigncode): SSO login, mailboxes, threads, plain-text thread view, reply draft, assistant panel, installer script | pending merge |
+| Android (`apps/android/build`): current-API audit, local Docker APK build, headless emulator acceptance (needs `/dev/kvm`) | merged, not yet run |
+| iOS (`apps/ios`): ElevateoCore Swift package (Linux-testable) + SwiftUI app, Xcode project, `build.sh` | pending merge |
+
+Known gaps so far: native shells deny the cross-origin Authentik redirect (`apps/native/src-tauri/src/navigation.rs`), so native SSO cannot complete yet; `apps/native/src-tauri/Cargo.lock` must be refreshed for new Mac dependencies; desktop/mobile token exchange and the agents bridge are contract requests. `.dmg` signing/notarization and the iOS app build need a Mac host (accepted by the user).
+<!-- frontend-completion-20261029:end -->
+
 ## Frontend refinement checkpoint - 2026-10-24
 
 The user authorized direct Codex frontend implementation, superseding the earlier Fable-only block. Shared measured notice spacing now protects compose windows, mobile actions, content, sidebar and toasts. Mobile compose no longer covers an open draft's footer controls; draft-list trailing slashes retain the action. Fleet-02 Docker passes contracts, lint, typecheck, 89 test files / 1,099 tests, coverage (85.41% statements), production build and fixture exclusion. Ten regression cases were added across notice lifecycle and compose routing.
