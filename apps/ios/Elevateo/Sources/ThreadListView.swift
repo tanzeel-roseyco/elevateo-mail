@@ -7,9 +7,9 @@ struct ThreadListView: View {
     let mailbox: Mailbox
 
     @Environment(AppModel.self) private var model
-    @State private var state: LoadState<[ThreadSummary]> = .idle
-    @State private var nextCursor: String?
-    @State private var loadingMore = false
+    /// First-page load state; continuation pages live in `pager` (ElevateoCore, unit-tested).
+    @State private var state: LoadState<Void> = .idle
+    @State private var pager = CursorPager<ThreadSummary>()
 
     var body: some View {
         Group {
@@ -21,25 +21,31 @@ struct ThreadListView: View {
                 ErrorRetryView(message: message) {
                     Task { await load(reset: true) }
                 }
-            case .loaded(let threads) where threads.isEmpty:
+            case .loaded where pager.items.isEmpty:
                 EmptyStateView(
                     title: "No conversations",
                     detail: "This mailbox has no conversations in the inbox."
                 )
-            case .loaded(let threads):
+            case .loaded:
                 List {
-                    ForEach(threads) { thread in
+                    ForEach(pager.items) { thread in
                         NavigationLink(value: thread) {
                             ThreadRow(thread: thread)
                         }
                     }
-                    if nextCursor != nil {
+                    if let error = pager.paginationError {
+                        Text(error)
+                            .font(.footnote)
+                            .foregroundStyle(.red)
+                            .accessibilityAddTraits(.updatesFrequently)
+                    }
+                    if pager.hasMore {
                         HStack {
                             Spacer()
-                            if loadingMore {
+                            if pager.loadingMore {
                                 ProgressView().accessibilityLabel("Loading more conversations")
                             } else {
-                                Button("Load more") {
+                                Button(pager.paginationError == nil ? "Load more" : "Try again") {
                                     Task { await loadMore() }
                                 }
                             }
@@ -67,11 +73,13 @@ struct ThreadListView: View {
             return
         }
         if reset || isUnloaded { state = .loading }
+        // A refresh makes any outstanding "load more" stale, so its late page cannot overwrite this one.
+        let generation = pager.beginRefresh()
         do {
             let page = try await model.client.listThreads(mailboxID: mailbox.id, context: context)
-            nextCursor = page.nextCursor
+            guard pager.applyFirstPage(page.items, nextCursor: page.nextCursor, generation: generation) else { return }
             model.markOffline(false)
-            state = .loaded(page.items)
+            state = .loaded(())
         } catch APIClientError.sessionExpired {
             await model.sessionExpired()
         } catch APIClientError.network {
@@ -83,20 +91,22 @@ struct ThreadListView: View {
     }
 
     private func loadMore() async {
-        guard let context = model.context, let cursor = nextCursor, case .loaded(let current) = state else { return }
-        loadingMore = true
-        defer { loadingMore = false }
+        guard let context = model.context else {
+            await model.sessionExpired()
+            return
+        }
+        guard let request = pager.beginLoadMore() else { return }
         do {
-            let page = try await model.client.listThreads(mailboxID: mailbox.id, context: context, cursor: cursor)
-            nextCursor = page.nextCursor
-            // Mutable ordering is not a snapshot across pages; deduplicate by id per contract guidance.
-            var seen = Set(current.map(\.id))
-            let fresh = page.items.filter { seen.insert($0.id).inserted }
-            state = .loaded(current + fresh)
+            let page = try await model.client.listThreads(mailboxID: mailbox.id, context: context, cursor: request.cursor)
+            pager.applyMore(page.items, nextCursor: page.nextCursor, generation: request.generation)
+            model.markOffline(false)
         } catch APIClientError.sessionExpired {
             await model.sessionExpired()
+        } catch APIClientError.network {
+            model.markOffline(true)
+            pager.failMore("More conversations could not be loaded. Check your connection and try again.", generation: request.generation)
         } catch {
-            // Keep the loaded list; the "Load more" row stays available for retry.
+            pager.failMore("More conversations could not be loaded.", generation: request.generation)
         }
     }
 

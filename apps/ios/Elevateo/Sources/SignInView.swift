@@ -81,7 +81,7 @@ final class WebAuthenticationRunner: NSObject, ASWebAuthenticationPresentationCo
             // callbackURLScheme form: the .customScheme callback API needs iOS 17.4, our floor is 17.0.
             let session = ASWebAuthenticationSession(
                 url: authorizationURL,
-                callbackURLScheme: "elevateo"
+                callbackURLScheme: AppConfig.callbackScheme
             ) { url, error in
                 if let error = error as? ASWebAuthenticationSessionError, error.code == .canceledLogin {
                     continuation.resume(returning: nil)

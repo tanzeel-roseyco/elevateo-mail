@@ -1,33 +1,22 @@
 import Foundation
+import ElevateoCore
 
-// AIDEV-NOTE: single typed config boundary; API base URL comes from Info.plist (build setting), never hardcoded in views.
+// AIDEV-NOTE: single typed config boundary; values come from Info.plist (build settings), never
+// hardcoded in views. Validation rules live in ElevateoCore.ClientSettings so they are unit-tested.
 
-enum AppConfigError: Error {
-    case missingOrInvalid(key: String)
-}
-
-struct AppConfig: Sendable {
-    let apiBaseURL: URL
-    let ssoAuthorizationEndpoint: URL
-    let ssoClientID: String
-    let ssoRedirectURI: URL
+enum AppConfig {
+    /// The URL scheme registered in Info.plist CFBundleURLTypes and awaited by SignInView.
+    static let callbackScheme = "elevateo"
 
     /// Fails loud on a malformed bundle rather than silently pointing at a wrong host.
-    static func load(bundle: Bundle = .main) throws -> AppConfig {
-        func url(_ key: String) throws -> URL {
-            guard let raw = bundle.object(forInfoDictionaryKey: key) as? String,
-                  let url = URL(string: raw), url.scheme != nil
-            else { throw AppConfigError.missingOrInvalid(key: key) }
-            return url
-        }
-        guard let clientID = bundle.object(forInfoDictionaryKey: "ElevateoSSOClientID") as? String, !clientID.isEmpty else {
-            throw AppConfigError.missingOrInvalid(key: "ElevateoSSOClientID")
-        }
-        return AppConfig(
-            apiBaseURL: try url("ElevateoAPIBaseURL"),
-            ssoAuthorizationEndpoint: try url("ElevateoSSOAuthorizationEndpoint"),
-            ssoClientID: clientID,
-            ssoRedirectURI: try url("ElevateoSSORedirectURI")
+    static func load(bundle: Bundle = .main) throws -> ClientSettings {
+        func value(_ key: String) -> String? { bundle.object(forInfoDictionaryKey: key) as? String }
+        return try ClientSettings(
+            apiBaseURL: value("ElevateoAPIBaseURL"),
+            authorizationEndpoint: value("ElevateoSSOAuthorizationEndpoint"),
+            clientID: value("ElevateoSSOClientID"),
+            redirectURI: value("ElevateoSSORedirectURI"),
+            callbackScheme: callbackScheme
         )
     }
 }

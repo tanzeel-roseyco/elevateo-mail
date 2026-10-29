@@ -59,6 +59,27 @@ public struct UTCTimestamp: Sendable, Hashable, Codable {
 public enum ModelValidationError: Error, Sendable, Equatable {
     case invalidOpaqueToken
     case invalidTimestamp(String)
+    /// A decodable response that breaks a contract constant or bound (named for diagnostics).
+    case contractViolation(String)
+}
+
+/// Response DTOs whose contract bounds go beyond what Codable types can express. APIClient calls
+/// `validateContract()` on every decoded success before returning it to a caller.
+public protocol ContractValidated {
+    func validateContract() throws
+}
+
+func requireContract(_ condition: Bool, _ rule: @autoclosure () -> String) throws {
+    if !condition { throw ModelValidationError.contractViolation(rule()) }
+}
+
+/// Contract `next_cursor` is a required key whose value may be null; a missing key is a malformed
+/// page, not "no more pages" (synthesized decoding would silently read it as nil).
+func decodeRequiredNullableCursor<K: CodingKey>(_ c: KeyedDecodingContainer<K>, _ key: K) throws -> String? {
+    guard c.contains(key) else { throw ModelValidationError.contractViolation("next_cursor key is required") }
+    let cursor = try c.decodeNil(forKey: key) ? nil : c.decode(String.self, forKey: key)
+    try requireContract(cursor.map { (1...2048).contains($0.count) } ?? true, "next_cursor length 1...2048")
+    return cursor
 }
 
 public struct Address: Sendable, Hashable, Codable {
@@ -73,6 +94,24 @@ public struct Address: Sendable, Hashable, Codable {
     enum CodingKeys: String, CodingKey {
         case displayName = "display_name"
         case address
+    }
+
+    // Both keys are required by the contract even when null (Drafts::Payload rejects a recipient
+    // without them), so nil encodes as explicit JSON null instead of being omitted.
+    public func encode(to encoder: Encoder) throws {
+        var c = encoder.container(keyedBy: CodingKeys.self)
+        try c.encode(displayName, forKey: .displayName)
+        try c.encode(address, forKey: .address)
+    }
+
+    public init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        guard c.contains(.displayName), c.contains(.address) else {
+            throw ModelValidationError.contractViolation("address requires display_name and address keys")
+        }
+        displayName = try c.decodeNil(forKey: .displayName) ? nil : c.decode(String.self, forKey: .displayName)
+        address = try c.decodeNil(forKey: .address) ? nil : c.decode(String.self, forKey: .address)
+        try requireContract((displayName?.count ?? 0) <= 256 && (address?.count ?? 0) <= 256, "address fields at most 256")
     }
 }
 
@@ -133,7 +172,7 @@ public struct Session: Sendable, Equatable, Codable {
     }
 }
 
-public struct MailboxPage: Sendable, Equatable, Codable {
+public struct MailboxPage: Sendable, Equatable, Codable, ContractValidated {
     public let contextID: OpaqueToken
     public let authorizationVersion: OpaqueToken
     public let nextCursor: String?
@@ -144,6 +183,18 @@ public struct MailboxPage: Sendable, Equatable, Codable {
         case authorizationVersion = "authorization_version"
         case nextCursor = "next_cursor"
         case items
+    }
+
+    public init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        contextID = try c.decode(OpaqueToken.self, forKey: .contextID)
+        authorizationVersion = try c.decode(OpaqueToken.self, forKey: .authorizationVersion)
+        nextCursor = try decodeRequiredNullableCursor(c, .nextCursor)
+        items = try c.decode([Mailbox].self, forKey: .items)
+    }
+
+    public func validateContract() throws {
+        try requireContract(items.count <= 50, "mailbox page at most 50 items")
     }
 }
 
@@ -181,7 +232,7 @@ public struct ThreadSummary: Sendable, Hashable, Codable, Identifiable {
     }
 }
 
-public struct ThreadPage: Sendable, Equatable, Codable {
+public struct ThreadPage: Sendable, Equatable, Codable, ContractValidated {
     public let contextID: OpaqueToken
     public let authorizationVersion: OpaqueToken
     public let nextCursor: String?
@@ -194,6 +245,24 @@ public struct ThreadPage: Sendable, Equatable, Codable {
         case nextCursor = "next_cursor"
         case mailboxID = "mailbox_id"
         case items
+    }
+
+    public init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        contextID = try c.decode(OpaqueToken.self, forKey: .contextID)
+        authorizationVersion = try c.decode(OpaqueToken.self, forKey: .authorizationVersion)
+        nextCursor = try decodeRequiredNullableCursor(c, .nextCursor)
+        mailboxID = try c.decode(UUID.self, forKey: .mailboxID)
+        items = try c.decode([ThreadSummary].self, forKey: .items)
+    }
+
+    public func validateContract() throws {
+        try requireContract(items.count <= 50, "thread page at most 50 items")
+        for item in items {
+            try requireContract(item.mailboxID == mailboxID, "thread item belongs to the page mailbox")
+            try requireContract(item.previewText.count <= 256 && (item.subject?.count ?? 0) <= 256, "summary text bounds")
+            try requireContract(item.messageCount >= 0, "message_count is non-negative")
+        }
     }
 }
 
@@ -240,7 +309,7 @@ public struct Message: Sendable, Equatable, Codable, Identifiable {
     }
 }
 
-public struct ThreadDetailPage: Sendable, Equatable, Codable {
+public struct ThreadDetailPage: Sendable, Equatable, Codable, ContractValidated {
     public let contextID: OpaqueToken
     public let authorizationVersion: OpaqueToken
     public let nextCursor: String?
@@ -252,6 +321,24 @@ public struct ThreadDetailPage: Sendable, Equatable, Codable {
         case authorizationVersion = "authorization_version"
         case nextCursor = "next_cursor"
         case thread, messages
+    }
+
+    public init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        contextID = try c.decode(OpaqueToken.self, forKey: .contextID)
+        authorizationVersion = try c.decode(OpaqueToken.self, forKey: .authorizationVersion)
+        nextCursor = try decodeRequiredNullableCursor(c, .nextCursor)
+        thread = try c.decode(ThreadDetail.self, forKey: .thread)
+        messages = try c.decode([Message].self, forKey: .messages)
+    }
+
+    public func validateContract() throws {
+        try requireContract(thread.messageCount >= 0, "message_count is non-negative")
+        for message in messages {
+            try requireContract(message.bodyText.count <= 16384, "body_text at most 16384")
+            try requireContract((0...1000).contains(message.attachmentCount), "attachment_count 0...1000")
+            try requireContract(message.to.count <= 100, "at most 100 recipients")
+        }
     }
 }
 
@@ -297,7 +384,7 @@ public struct DraftSaveInput: Sendable, Equatable, Codable {
     }
 }
 
-public struct DraftSaveResult: Sendable, Equatable, Codable {
+public struct DraftSaveResult: Sendable, Equatable, Codable, ContractValidated {
     public let draftID: UUID
     public let operationID: UUID
     public let version: Int
@@ -307,6 +394,11 @@ public struct DraftSaveResult: Sendable, Equatable, Codable {
         case draftID = "draft_id"
         case operationID = "operation_id"
         case version, state
+    }
+
+    public func validateContract() throws {
+        try requireContract(version >= 1, "draft save version is at least 1")
+        try requireContract(state == "editable", "draft save state is editable")
     }
 }
 

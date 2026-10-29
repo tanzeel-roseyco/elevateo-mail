@@ -56,7 +56,7 @@ Reviewer: Claude Code `claude-fable-5`, low effort (verified from result metadat
 5. The IdP-in-WebView risk acceptance is undocumented.
 6. Shared auth conformance vectors are needed across Rust/C#/Swift.
 
-Status: design defects 1 and 3–6 repaired in batch R1 (below); 2 open.
+Status: design defects 1 and 3–6 repaired in batch R1 (`cfd45c87`, below); 2 open.
 
 ### Repairs (step 1 of the 2026-10-29 resume order)
 
@@ -90,6 +90,33 @@ Defect numbers are the order of the findings within each packet in review-findin
 | Design 6 | `apps/shared/auth-conformance-vectors.json` read by the Rust, C# and Swift suites; Windows now exchanges codes at `POST /v1/native/sessions` and rejects credentialed endpoints | `conforms_to_shared_auth_vectors`, `Client_ConformsToSharedAuthVectors`, `testConformsToSharedAuthVectors` |
 
 Also found while repairing (not in wave 1): the web app had no listener for `host://update`, so "Check for Updates…" showed nothing. It is now shown as an "App update" status notice (test in `desktopHost.test.ts`). Follow-up, not repaired: the Mac PKCE broker (`auth_begin_login`) has no web caller, because the Mac signs in through WebView SSO; it is kept for parity until the native exchange exists.
+
+**Batch R2 — iOS client and core** (commit "Repair iOS session, draft-save, pagination and transport findings"). Batch R1 is commit `cfd45c87`.
+
+| Finding | Repair | Regression test |
+| --- | --- | --- |
+| P04-1 HIGH sign-out left the cookie session | `SessionLifecycle.signOut`: `POST /v1/auth/logout`, then always clears API-origin cookies and credentials; restore fenced by a sign-out generation | `testRestoreThenSignOutRevokesAndClearsEverything`, `testSignOutClearsLocallyWhenTheServerCannotConfirm`, `testRestoreSupersededBySignOutIsDiscarded`, `testSignOutReportsCredentialStorageFailure`, `testLogoutPostsTheContractedRequest` |
+| P04-2 MED config accepted unusable URLs | `ClientSettings`: HTTPS endpoints with hosts, registered callback scheme, no unexpanded client id | `testClientSettingsValidation` |
+| P04-3 MED lifecycle untested | lifecycle and config moved into `ElevateoCore` with tests (Keychain itself needs a Mac host) | as above |
+| P05-1 HIGH operation id reused with new content | `DraftSaveCoordinator`: one immutable payload per operation; unconfirmed saves replay it exactly | `testLostResponseReplaysTheSamePayloadDespiteEdits` |
+| P05-2 MED conflict advice could not work | conflict blocks saving; "Keep my edits" / "Load the saved version" adopt the server draft | `testConflictRequiresReconciliationBeforeSaving` |
+| P05-3 MED transport failure called "not saved" | `.unconfirmed` state and "Retry Save" wording | `testLostResponseReplaysTheSamePayloadDespiteEdits` |
+| P05-4 MED stale saved indicator | saved only when fields equal the acknowledged content; fields locked while saving | `testSavedIndicatorTracksTheAcknowledgedContent` |
+| P05-5 MED composer transitions untested | coordinator tests | `testConsecutiveSavesAdvanceVersionWithNewOperations` and the three above |
+| P06-1 MED detail hid newer messages | `CursorPager<Message>`: "Show newer messages" continuation; refresh resets | `testCursorPagerAppendsDeduplicatedPages`, `testRefreshInvalidatesAnOutstandingContinuation` |
+| P06-2 MED screen workflows untested | conversation loading covered through `CursorPager`; the `ASWebAuthenticationSession` sheet needs a Mac host (accepted blocker) | pager tests |
+| P07-1 MED pagination errors swallowed | visible pagination error with "Try again"; offline banner updated | `testCursorPagerReportsAndClearsPaginationFailure` |
+| P07-2 MED late page overwrote refresh | refresh generations; stale continuations discarded | `testRefreshInvalidatesAnOutstandingContinuation` |
+| P07-3 MED list transitions untested | pager tests | as above |
+| P08-1 HIGH unbounded response buffering | delegate-streamed `BoundedBody` per route limit (errors 4 KiB), plus a post-receipt check | `testOversizedSuccessBodyIsRejectedWithTheRouteLimit`, `testOversizedErrorBodyIsRejected`, `testBoundedBodyStopsAtTheLimit` |
+| P08-2 HIGH cross-origin redirects followed | `RedirectPolicy` same scheme/host/port, enforced in the session delegate | `testRedirectPolicyAllowsOnlySameOrigin`, `testRejectedRedirectIsTyped` |
+| P08-3 MED responses not bound to requests | context/version, mailbox, thread, draft and operation identity checks | `testPageForAnotherMailboxOrContextIsRejected`, `testSaveResultForAnotherOperationIsRejected` |
+| P10-1 HIGH null recipient keys omitted | `Address` encodes explicit nulls and requires both keys | `testNullRecipientFieldsAreEncodedAsExplicitNull` |
+| P10-2 MED contract-invalid DTOs accepted | `ContractValidated` bounds; required nullable `next_cursor` | `testContractInvalidPagesAreRejected`, `testContractInvalidSaveResultIsRejected` |
+| P11-1 HIGH test target could not compile | `MockTransport` uses synchronous `withLock` closures | whole ElevateoCore test target compiles |
+| P12-1 MED keychain search list replaced | saved list restored in the EXIT trap; failure fails the run | `test_build_keychain_is_prepended_and_original_list_restored`, `test_failed_restore_is_reported` |
+| P12-2 MED export lacked profile mapping | `provisioningProfiles` maps `co.elevateo.mail.ios` to the imported profile | `test_export_options_map_bundle_to_profile` |
+| P12-3 MED XcodeGen would overwrite Info.plist | `info:` section removed; `INFOPLIST_FILE` kept | spec change (XcodeGen needs a Mac host) |
 
 ## Self-hosted continuation reviews — 2026-10-23
 

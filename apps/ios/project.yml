@@ -27,8 +27,8 @@ targets:
     platform: iOS
     sources:
       - path: Elevateo/Sources
-    info:
-      path: Elevateo/Info.plist
+    # No `info:` section on purpose: XcodeGen would regenerate Info.plist and drop the Elevateo*
+    # keys and the elevateo:// URL type. INFOPLIST_FILE points at the maintained file instead.
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: co.elevateo.mail.ios

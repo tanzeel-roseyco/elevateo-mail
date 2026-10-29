@@ -5,6 +5,9 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR"
+# shellcheck source=signing-helpers.sh
+source "$SCRIPT_DIR/signing-helpers.sh"
+BUNDLE_ID="co.elevateo.mail.ios"
 
 OS="$(uname -s)"
 
@@ -65,9 +68,19 @@ echo "== Signed archive =="
 WORK_DIR="$(mktemp -d)"
 KEYCHAIN="$WORK_DIR/elevateo-build.keychain-db"
 KEYCHAIN_PASSWORD="$(uuidgen)"
+SAVED_SEARCH_LIST="$WORK_DIR/keychain-search-list.txt"
+current_keychain_search_list > "$SAVED_SEARCH_LIST"
 cleanup() {
-    security delete-keychain "$KEYCHAIN" 2>/dev/null || true
+    local status=0
+    # The user's original keychain search list comes back first, success or failure.
+    restore_keychain_search_list "$SAVED_SEARCH_LIST" || status=1
+    if [[ -e "$KEYCHAIN" ]] && ! security delete-keychain "$KEYCHAIN"; then
+        echo "ERROR: temporary build keychain $KEYCHAIN could not be deleted" >&2
+        status=1
+    fi
     rm -rf "$WORK_DIR"
+    # A failed restore must fail the run even if the build itself succeeded.
+    if [[ $status -ne 0 ]]; then exit $status; fi
 }
 trap cleanup EXIT
 
@@ -83,7 +96,7 @@ security set-keychain-settings -lut 1200 "$KEYCHAIN"
 security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN"
 security import "$WORK_DIR/signing-cert.p12" -k "$KEYCHAIN" -P "$CERT_PASSWORD" -T /usr/bin/codesign
 security set-key-partition-list -S apple-tool:,apple: -s -k "$KEYCHAIN_PASSWORD" "$KEYCHAIN" >/dev/null
-security list-keychains -d user -s "$KEYCHAIN" login.keychain-db
+prepend_build_keychain "$KEYCHAIN" "$SAVED_SEARCH_LIST"
 
 ARCHIVE_PATH="$WORK_DIR/Elevateo.xcarchive"
 xcodebuild \
@@ -99,20 +112,7 @@ xcodebuild \
     archive
 
 EXPORT_OPTIONS="$WORK_DIR/ExportOptions.plist"
-cat > "$EXPORT_OPTIONS" <<PLIST
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-	<key>method</key>
-	<string>app-store-connect</string>
-	<key>teamID</key>
-	<string>$TEAM_ID</string>
-	<key>signingStyle</key>
-	<string>manual</string>
-</dict>
-</plist>
-PLIST
+write_export_options "$EXPORT_OPTIONS" "$TEAM_ID" "$BUNDLE_ID" "$PROFILE_UUID"
 
 OUTPUT_DIR="$SCRIPT_DIR/dist"
 mkdir -p "$OUTPUT_DIR"

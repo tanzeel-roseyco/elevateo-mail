@@ -9,7 +9,10 @@ struct ThreadDetailView: View {
     let threadSummary: ThreadSummary
 
     @Environment(AppModel.self) private var model
-    @State private var state: LoadState<ThreadDetailPage> = .idle
+    /// Thread metadata from the first page; messages (in contract order, oldest first) and the
+    /// continuation cursor live in `pager` (ElevateoCore, unit-tested).
+    @State private var state: LoadState<ThreadDetail> = .idle
+    @State private var pager = CursorPager<Message>()
     @State private var showComposer = false
 
     var body: some View {
@@ -22,25 +25,36 @@ struct ThreadDetailView: View {
                 ErrorRetryView(message: message) {
                     Task { await load() }
                 }
-            case .loaded(let page) where page.messages.isEmpty:
+            case .loaded where pager.items.isEmpty:
                 // Empty conversations are valid per the contract.
                 EmptyStateView(
                     title: "No messages",
                     detail: "This conversation has no messages yet."
                 )
-            case .loaded(let page):
+            case .loaded(let thread):
                 ScrollView {
                     LazyVStack(alignment: .leading, spacing: 16) {
-                        Text(page.thread.subject ?? "(no subject)")
+                        Text(thread.subject ?? "(no subject)")
                             .font(.title3.bold())
                             .accessibilityAddTraits(.isHeader)
-                        ForEach(page.messages) { message in
+                        ForEach(pager.items) { message in
                             MessageView(message: message)
                         }
-                        if page.nextCursor != nil {
-                            Text("Older messages are not shown. Pull to refresh for the latest.")
+                        // Contract order is oldest first, so the continuation holds NEWER messages.
+                        if let error = pager.paginationError {
+                            Text(error)
                                 .font(.footnote)
-                                .foregroundStyle(.secondary)
+                                .foregroundStyle(.red)
+                                .accessibilityAddTraits(.updatesFrequently)
+                        }
+                        if pager.hasMore {
+                            if pager.loadingMore {
+                                ProgressView().accessibilityLabel("Loading newer messages")
+                            } else {
+                                Button(pager.paginationError == nil ? "Show newer messages" : "Try again") {
+                                    Task { await loadMore() }
+                                }
+                            }
                         }
                     }
                     .padding()
@@ -95,14 +109,17 @@ struct ThreadDetailView: View {
             return
         }
         if !isLoaded { state = .loading }
+        // Refresh restarts from the first page and invalidates any in-flight continuation.
+        let generation = pager.beginRefresh()
         do {
             let page = try await model.client.getThread(
                 threadID: threadSummary.id,
                 mailboxID: mailbox.id,
                 context: context
             )
+            guard pager.applyFirstPage(page.messages, nextCursor: page.nextCursor, generation: generation) else { return }
             model.markOffline(false)
-            state = .loaded(page)
+            state = .loaded(page.thread)
         } catch APIClientError.sessionExpired {
             await model.sessionExpired()
         } catch APIClientError.network {
@@ -110,6 +127,31 @@ struct ThreadDetailView: View {
             state = .failed(message: "Could not load this conversation. Check your connection and try again.")
         } catch {
             state = .failed(message: "This conversation could not be loaded.")
+        }
+    }
+
+    private func loadMore() async {
+        guard let context = model.context else {
+            await model.sessionExpired()
+            return
+        }
+        guard let request = pager.beginLoadMore() else { return }
+        do {
+            let page = try await model.client.getThread(
+                threadID: threadSummary.id,
+                mailboxID: mailbox.id,
+                context: context,
+                cursor: request.cursor
+            )
+            pager.applyMore(page.messages, nextCursor: page.nextCursor, generation: request.generation)
+            model.markOffline(false)
+        } catch APIClientError.sessionExpired {
+            await model.sessionExpired()
+        } catch APIClientError.network {
+            model.markOffline(true)
+            pager.failMore("Newer messages could not be loaded. Check your connection and try again.", generation: request.generation)
+        } catch {
+            pager.failMore("Newer messages could not be loaded.", generation: request.generation)
         }
     }
 }

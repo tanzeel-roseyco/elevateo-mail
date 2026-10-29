@@ -19,6 +19,12 @@ struct ScriptedResponse: Sendable {
         self.failure = nil
     }
 
+    init(status: Int, body: Data) {
+        self.status = status
+        self.body = body
+        self.failure = nil
+    }
+
     init(failure: URLError.Code) {
         self.status = 0
         self.body = Data()
@@ -27,24 +33,32 @@ struct ScriptedResponse: Sendable {
 }
 
 /// Records requests and replays scripted responses in order.
+/// AIDEV-NOTE: NSLock.lock()/unlock() are unavailable from async contexts in Swift 6, so all shared
+/// state is touched inside synchronous `withLock` closures (regression for review finding P11-1).
 final class MockTransport: HTTPTransport, @unchecked Sendable {
     private let lock = NSLock()
     private var script: [ScriptedResponse]
-    private(set) var requests: [URLRequest] = []
+    private var recorded: [URLRequest] = []
+    private var recordedLimits: [ResponseLimits] = []
 
     init(_ script: [ScriptedResponse]) {
         self.script = script
     }
 
-    func send(_ request: URLRequest) async throws -> (Data, HTTPURLResponse) {
-        lock.lock()
-        requests.append(request)
-        guard !script.isEmpty else {
-            lock.unlock()
-            throw URLError(.badServerResponse)
+    var requests: [URLRequest] { lock.withLock { recorded } }
+    var limits: [ResponseLimits] { lock.withLock { recordedLimits } }
+
+    /// Records one request and dequeues its scripted response (nil when the script ran out).
+    private func record(_ request: URLRequest, _ limits: ResponseLimits) -> ScriptedResponse? {
+        lock.withLock {
+            recorded.append(request)
+            recordedLimits.append(limits)
+            return script.isEmpty ? nil : script.removeFirst()
         }
-        let next = script.removeFirst()
-        lock.unlock()
+    }
+
+    func send(_ request: URLRequest, limits: ResponseLimits) async throws -> (Data, HTTPURLResponse) {
+        guard let next = record(request, limits) else { throw URLError(.badServerResponse) }
         if let failure = next.failure {
             throw URLError(failure)
         }

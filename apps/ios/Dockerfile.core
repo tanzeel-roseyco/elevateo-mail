@@ -1,10 +1,15 @@
-# AIDEV-NOTE: Linux verification of ElevateoCore only; the iOS app target needs a macOS host.
-# Build context must be apps/ios:  docker build -f Dockerfile.core -t elevateo-ios-core .
+# AIDEV-NOTE: Linux verification of ElevateoCore and the signing helpers; the iOS app target needs a
+# macOS host. Build context is apps/ (for the shared auth vectors):
+#   docker build -f ios/Dockerfile.core -t elevateo-ios-core apps
 FROM swift:6.0
 
 WORKDIR /workspace
-COPY ElevateoCore ./ElevateoCore
+COPY shared ./shared
+COPY ios/ElevateoCore ./ios/ElevateoCore
+COPY ios/signing-helpers.sh ios/test_signing_helpers.py ./ios/
+# Same file the Rust and C# suites read (AuthFlowTests falls back to a #filePath-relative lookup).
+ENV ELEVATEO_AUTH_VECTORS=/workspace/shared/auth-conformance-vectors.json
 
-WORKDIR /workspace/ElevateoCore
+WORKDIR /workspace/ios/ElevateoCore
 RUN swift build
-CMD ["swift", "test"]
+CMD ["sh", "-c", "swift test && python3 ../test_signing_helpers.py"]

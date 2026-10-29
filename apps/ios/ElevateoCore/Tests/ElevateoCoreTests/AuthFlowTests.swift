@@ -143,4 +143,116 @@ final class AuthFlowTests: XCTestCase {
         let authorized = try await flow.handleCallback(callback(state: pending.state), now: Date(timeIntervalSince1970: 2))
         XCTAssertEqual(authorized.code, "abc123")
     }
+
+    private final class FakeSessionAPI: SessionAPI, @unchecked Sendable {
+        private let lock = NSLock()
+        var sessionResult: Result<Session, APIClientError>
+        var logoutResult: Result<AuthLogout, APIClientError>
+        private var logouts = 0
+        var logoutCount: Int { lock.withLock { logouts } }
+        /// When set, getSession waits for this before answering (to race a sign-out).
+        var gate: AsyncStream<Void>?
+
+        init(session: Result<Session, APIClientError>, logout: Result<AuthLogout, APIClientError>) {
+            sessionResult = session
+            logoutResult = logout
+        }
+
+        func getSession() async throws -> Session {
+            if let gate { for await _ in gate { break } }
+            return try sessionResult.get()
+        }
+
+        func logout(context: SessionContext) async throws -> AuthLogout {
+            lock.withLock { logouts += 1 }
+            return try logoutResult.get()
+        }
+    }
+
+    private final class FakeCookieJar: SessionCookieJar, @unchecked Sendable {
+        private let lock = NSLock()
+        private var cleared: [URL] = []
+        var clearedURLs: [URL] { lock.withLock { cleared } }
+        func removeCookies(for url: URL) { lock.withLock { cleared.append(url) } }
+    }
+
+    private struct FailingTokenStore: TokenStore {
+        func load() async throws -> TokenSet? { nil }
+        func save(_ tokens: TokenSet) async throws {}
+        func clear() async throws { throw TokenStoreError.storageUnavailable("keychain locked") }
+    }
+
+    private let apiURL = URL(string: "https://mail.company.example")!
+
+    private func completeLogout() throws -> AuthLogout {
+        try JSONDecoder().decode(AuthLogout.self, from: Data(#"{"local_revoked": true, "upstream_status": "complete"}"#.utf8))
+    }
+
+    // P04: restore adopts a live session; sign-out revokes it server-side and clears local state.
+    func testRestoreThenSignOutRevokesAndClearsEverything() async throws {
+        let api = FakeSessionAPI(session: .success(try Fixtures.session()), logout: .success(try completeLogout()))
+        let jar = FakeCookieJar()
+        let tokens = InMemoryTokenStore()
+        try await tokens.save(TokenSet(accessToken: "a", refreshToken: "r", expiresAt: Date()))
+        let lifecycle = SessionLifecycle(api: api, tokenStore: tokens, cookieJar: jar, apiBaseURL: apiURL)
+        guard case .signedIn = await lifecycle.restore() else { return XCTFail("expected signedIn") }
+        let outcome = await lifecycle.signOut()
+        XCTAssertEqual(outcome, .complete)
+        XCTAssertEqual(api.logoutCount, 1)
+        XCTAssertEqual(jar.clearedURLs, [apiURL])
+        let remaining = try await tokens.load()
+        XCTAssertNil(remaining)
+        let context = await lifecycle.context
+        XCTAssertNil(context)
+    }
+
+    // Regression (P04-1): an unreachable server still leaves this device signed out, and says so.
+    func testSignOutClearsLocallyWhenTheServerCannotConfirm() async throws {
+        let api = FakeSessionAPI(session: .success(try Fixtures.session()), logout: .failure(.network(underlying: URLError(.notConnectedToInternet))))
+        let jar = FakeCookieJar()
+        let lifecycle = SessionLifecycle(api: api, tokenStore: InMemoryTokenStore(), cookieJar: jar, apiBaseURL: apiURL)
+        _ = await lifecycle.restore()
+        let outcome = await lifecycle.signOut()
+        XCTAssertEqual(outcome, .serverUnconfirmed)
+        XCTAssertEqual(jar.clearedURLs, [apiURL])
+    }
+
+    // Regression (P04-1): a restore racing a sign-out cannot adopt the old session afterwards.
+    func testRestoreSupersededBySignOutIsDiscarded() async throws {
+        let api = FakeSessionAPI(session: .success(try Fixtures.session()), logout: .success(try completeLogout()))
+        let (gate, open) = AsyncStream<Void>.makeStream()
+        api.gate = gate
+        let lifecycle = SessionLifecycle(api: api, tokenStore: InMemoryTokenStore(), cookieJar: FakeCookieJar(), apiBaseURL: apiURL)
+        let restoring = Task { await lifecycle.restore() }
+        try await Task.sleep(nanoseconds: 50_000_000)
+        _ = await lifecycle.signOut()
+        open.yield()
+        let outcome = await restoring.value
+        XCTAssertEqual(outcome, .superseded)
+        let context = await lifecycle.context
+        XCTAssertNil(context)
+    }
+
+    // Regression (P04-1): credential storage failure is reported, not hidden behind "signed out".
+    func testSignOutReportsCredentialStorageFailure() async throws {
+        let api = FakeSessionAPI(session: .failure(.sessionExpired(requestID: nil)), logout: .success(try completeLogout()))
+        let lifecycle = SessionLifecycle(api: api, tokenStore: FailingTokenStore(), cookieJar: FakeCookieJar(), apiBaseURL: apiURL)
+        let outcome = await lifecycle.signOut()
+        guard case .localStorageFailed = outcome else { return XCTFail("unexpected \(outcome)") }
+        XCTAssertEqual(api.logoutCount, 0, "no context means nothing to revoke server-side")
+    }
+
+    // Regression (P04-2): configuration accepts only usable endpoints and the registered callback scheme.
+    func testClientSettingsValidation() throws {
+        func make(api: String = "https://mail.company.example", auth: String = "https://sso.company.example/application/o/authorize/",
+                  client: String? = "elevateo-ios", redirect: String = "elevateo://auth/callback") throws -> ClientSettings {
+            try ClientSettings(apiBaseURL: api, authorizationEndpoint: auth, clientID: client, redirectURI: redirect, callbackScheme: "elevateo")
+        }
+        XCTAssertNoThrow(try make())
+        XCTAssertThrowsError(try make(api: "https:///no-host"))
+        XCTAssertThrowsError(try make(auth: "http://sso.company.example/authorize/"))
+        XCTAssertThrowsError(try make(redirect: "otherapp://auth/callback"))
+        XCTAssertThrowsError(try make(client: "$(ELEVATEO_SSO_CLIENT_ID)"))
+        XCTAssertThrowsError(try make(client: "  "))
+    }
 }

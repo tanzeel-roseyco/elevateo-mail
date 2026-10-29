@@ -22,53 +22,68 @@ final class AppModel {
     let authFlow: OIDCAuthFlow
     let tokenStore: any TokenStore
     let tokenExchange: any TokenExchangePort
+    /// Restore/sign-out policy (tested in ElevateoCore): server logout, cookie and credential
+    /// cleanup, and fencing of a restore that races a sign-out.
+    let lifecycle: SessionLifecycle
     private(set) var context: SessionContext?
 
     init() {
+        #if canImport(Security)
+        let tokenStore: any TokenStore = KeychainTokenStore()
+        #else
+        let tokenStore: any TokenStore = InMemoryTokenStore()
+        #endif
+        self.tokenStore = tokenStore
+        self.tokenExchange = UnavailableTokenExchange()
+        let baseURL: URL
+        var configurationNotice: String?
         do {
             let config = try AppConfig.load()
-            self.client = ElevateoAPIClient(baseURL: config.apiBaseURL)
+            baseURL = config.apiBaseURL
             self.authFlow = OIDCAuthFlow(configuration: OIDCConfiguration(
-                authorizationEndpoint: config.ssoAuthorizationEndpoint,
-                clientID: config.ssoClientID,
-                redirectURI: config.ssoRedirectURI
+                authorizationEndpoint: config.authorizationEndpoint,
+                clientID: config.clientID,
+                redirectURI: config.redirectURI
             ))
         } catch {
             // Fail loud: a broken Info.plist is a build defect. The placeholder host keeps the
             // app renderable in previews; every call against it fails visibly as a network error.
             assertionFailure("Invalid app configuration: \(error)")
-            let fallback = URL(string: "https://invalid.configuration.local")!
-            self.client = ElevateoAPIClient(baseURL: fallback)
+            baseURL = URL(string: "https://invalid.configuration.local")!
             self.authFlow = OIDCAuthFlow(configuration: OIDCConfiguration(
-                authorizationEndpoint: fallback, clientID: "invalid", redirectURI: fallback
+                authorizationEndpoint: baseURL, clientID: "invalid", redirectURI: baseURL
             ))
-            self.signInNotice = "App configuration is invalid; contact support."
+            configurationNotice = "App configuration is invalid; contact support."
         }
-        #if canImport(Security)
-        self.tokenStore = KeychainTokenStore()
-        #else
-        self.tokenStore = InMemoryTokenStore()
-        #endif
-        self.tokenExchange = UnavailableTokenExchange()
+        let client = ElevateoAPIClient(baseURL: baseURL)
+        self.client = client
+        self.lifecycle = SessionLifecycle(
+            api: client, tokenStore: tokenStore, cookieJar: SharedCookieJar(), apiBaseURL: baseURL
+        )
+        // Assigned last: a class may not touch `self` before every stored property is set.
+        self.signInNotice = configurationNotice
     }
 
     /// Checks for an existing server session (cookie) at launch.
     func restoreSession() async {
         if case .signedIn = phase { return }
         phase = .loadingSession
-        do {
-            let session = try await client.getSession()
+        switch await lifecycle.restore() {
+        case .signedIn(let session):
             adopt(session)
-        } catch APIClientError.sessionExpired {
-            await clearSensitiveState()
+        case .signedOut:
+            context = nil
             phase = .signedOut
-        } catch APIClientError.network {
+        case .offline:
             offline = true
             phase = .signedOut
             signInNotice = "You appear to be offline. Connect and try again."
-        } catch {
+        case .failed:
             phase = .signedOut
             signInNotice = "Could not check your session. Try again."
+        case .superseded:
+            // A sign-out ran while this check was in flight; never adopt its result.
+            break
         }
     }
 
@@ -101,14 +116,28 @@ final class AppModel {
     }
 
     func signOut() async {
-        await clearSensitiveState()
+        context = nil
         phase = .signedOut
+        switch await lifecycle.signOut() {
+        case .complete:
+            signInNotice = nil
+        case .upstreamPending:
+            signInNotice = "Signed out. The sign-in provider is still finishing its sign-out."
+        case .serverUnconfirmed:
+            signInNotice = "Signed out on this device, but the server could not confirm it. Sign out again when online to end the session everywhere."
+        case .localStorageFailed(let detail):
+            signInNotice = "Signed out, but stored credentials could not be removed: \(detail)"
+        }
     }
 
     func sessionExpired() async {
-        await clearSensitiveState()
+        context = nil
+        if let failure = await lifecycle.clearLocalState() {
+            signInNotice = "Your session expired, and stored credentials could not be removed: \(failure)"
+        } else {
+            signInNotice = "Your session expired. Sign in again."
+        }
         phase = .signedOut
-        signInNotice = "Your session expired. Sign in again."
     }
 
     func markOffline(_ value: Bool) {
@@ -120,17 +149,6 @@ final class AppModel {
         offline = false
         signInNotice = nil
         phase = .signedIn(session)
-    }
-
-    // Contract: on 401 or sign-out, clear sensitive client state (tokens and context).
-    private func clearSensitiveState() async {
-        context = nil
-        do {
-            try await tokenStore.clear()
-        } catch {
-            // Keychain delete failures are visible but must not block sign-out.
-            signInNotice = "Signed out, but stored credentials could not be removed: \(error)"
-        }
     }
 
     private func describe(_ error: AuthFlowError) -> String {
@@ -145,5 +163,13 @@ final class AppModel {
         case .invalidConfiguration(let detail): "Sign-in configuration problem: \(detail)"
         case .unexpectedCallbackDestination: "Sign-in returned to an unexpected address. Try again."
         }
+    }
+}
+
+/// Removes this app's cookies for the API origin (the cookie session) from shared storage.
+struct SharedCookieJar: SessionCookieJar {
+    func removeCookies(for url: URL) {
+        let storage = HTTPCookieStorage.shared
+        storage.cookies(for: url)?.forEach(storage.deleteCookie)
     }
 }
