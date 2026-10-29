@@ -1,0 +1,236 @@
+diff --git a/apps/server/bin/attachment-scanner b/apps/server/bin/attachment-scanner
+index f65b045f..871a5d14 100755
+--- a/apps/server/bin/attachment-scanner
++++ b/apps/server/bin/attachment-scanner
+@@ -27,8 +27,15 @@ begin
+     AttachmentScannerConnection.connection_pool.with_connection do |connection|
+       raise Elevateo::ConfigError, "scanner database role mismatch" unless
+         connection.select_value("SELECT session_user") == "elevateo_worker"
+-      Elevateo::Attachments::ScanService.new(repository: Elevateo::Attachments::Repository.new(connection: connection),
+-        storage: settings.storage, scanner: Elevateo::Attachments::ClamdScanner.new).run_batch(limit: 1)
++      # AIDEV-NOTE: One item from each queue prevents inbound traffic from starving saved draft scans.
++      counts = { "clean" => 0, "malware" => 0, "held" => 0 }
++      [:inbox, :draft].each do |kind|
++        repository = Elevateo::Attachments::Repository.new(connection: connection, scan_kind: kind)
++        result = Elevateo::Attachments::ScanService.new(repository: repository,
++          storage: settings.storage, scanner: Elevateo::Attachments::ClamdScanner.new).run_batch(limit: 1)
++        result.each { |verdict, count| counts[verdict] = counts.fetch(verdict) + count }
++      end
++      counts
+     end
+   end
+   loop = Elevateo::Attachments::ScanLoop.new(scan: scan, logger: ->(line) { $stdout.puts(line); $stdout.flush })
+diff --git a/apps/server/lib/elevateo/attachments_repository.rb b/apps/server/lib/elevateo/attachments_repository.rb
+index 80ef2ed0..2110850e 100644
+--- a/apps/server/lib/elevateo/attachments_repository.rb
++++ b/apps/server/lib/elevateo/attachments_repository.rb
+@@ -7,8 +7,11 @@ module Elevateo
+   module Attachments
+     # AIDEV-NOTE: Caller owns the authenticated tenant transaction; SQL also checks current compose/RLS rights.
+     class Repository
+-      def initialize(connection:)
++      def initialize(connection:, scan_kind: :inbox)
++        raise ArgumentError, "invalid scan kind" unless [:inbox, :draft].include?(scan_kind)
+         @connection = connection
++        # AIDEV-NOTE: Only this allowlist selects SQL function names; values still use bound parameters.
++        @scan_kind = scan_kind.to_s
+       end
+ 
+       def create(organization_id:, mailbox_id:, thread_id:, message_id:, id:, storage_key:,
+@@ -36,7 +39,7 @@ module Elevateo
+       end
+ 
+       def due_scan_ids(limit:)
+-        rows("SELECT id FROM app.due_inbox_attachment_scans($1::integer)", [limit]).map do |row|
++        rows("SELECT id FROM app.due_#{@scan_kind}_attachment_scans($1::integer)", [limit]).map do |row|
+           id = row["id"]
+           raise NotAvailable unless id.is_a?(String)
+           id
+@@ -44,11 +47,11 @@ module Elevateo
+       end
+ 
+       def claim_scan(id:, token:)
+-        rows("SELECT * FROM app.claim_inbox_attachment_scan($1::uuid,$2::uuid)", [id, token]).first
++        rows("SELECT * FROM app.claim_#{@scan_kind}_attachment_scan($1::uuid,$2::uuid)", [id, token]).first
+       end
+ 
+       def record_scan(id:, sha256:, token:, attempt:, verdict:)
+-        row = rows("SELECT app.record_inbox_attachment_scan($1::uuid,$2,$3::uuid,$4::integer,$5) AS recorded",
++        row = rows("SELECT app.record_#{@scan_kind}_attachment_scan($1::uuid,$2,$3::uuid,$4::integer,$5) AS recorded",
+           [id, sha256, token, attempt, verdict]).first
+         raise NotAvailable unless row && row["recorded"] == true
+       end
+diff --git a/apps/server/lib/elevateo/attachments_storage.rb b/apps/server/lib/elevateo/attachments_storage.rb
+index fa3abafd..69018e74 100644
+--- a/apps/server/lib/elevateo/attachments_storage.rb
++++ b/apps/server/lib/elevateo/attachments_storage.rb
+@@ -12,6 +12,7 @@ module Elevateo
+     class PrivateStorage
+       class Unavailable < StandardError; end
+       KEY = %r{\Aquarantine/(?:[0-9a-f-]{36}/[0-9a-f-]{36}|imap/[0-9a-f-]{36}/[0-9]+/[0-9]+/[0-9]+)\z}
++      DRAFT_KEY = %r{\Adrafts/[0-9a-f-]{36}/[0-9a-f-]{36}\z}
+       API_KEY = %r{\Aquarantine/[0-9a-f-]{36}/[0-9a-f-]{36}\z}
+       METADATA_SECONDS = 5.0
+       OBJECT_SECONDS = 20.0
+@@ -54,7 +55,7 @@ module Elevateo
+       end
+ 
+       def get(key)
+-        raise ArgumentError, "invalid key" unless KEY.match?(key.to_s)
++        raise ArgumentError, "invalid key" unless KEY.match?(key.to_s) || DRAFT_KEY.match?(key.to_s)
+         raise Unavailable, "private bucket unavailable" unless private_bucket?
+         request(Net::HTTP::Get, key, expected: [200])
+       end
+diff --git a/apps/server/lib/elevateo/session_presentation.rb b/apps/server/lib/elevateo/session_presentation.rb
+index ca7fe207..13228034 100644
+--- a/apps/server/lib/elevateo/session_presentation.rb
++++ b/apps/server/lib/elevateo/session_presentation.rb
+@@ -7,7 +7,9 @@ require_relative "session_store"
+ module Elevateo
+   # AIDEV-NOTE: Wire versions are HMACs, never database generations; neither a version nor context grants authority.
+   class SessionPresentation
+-    def initialize(crypto:) = (@crypto = crypto)
++    def initialize(crypto:, simulation_mode: true)
++      @crypto, @simulation_mode = crypto, simulation_mode
++    end
+ 
+     def version(metadata)
+       fields = %w[user_id organization_id authorization_generation].map { |field| metadata.fetch(field) }
+@@ -27,7 +29,7 @@ module Elevateo
+       { "context_id" => required(metadata, "context_id"), "authorization_version" => version(metadata),
+         "actor" => { "id" => required(metadata, "user_id"), "display_name" => display_name },
+         "organization" => { "id" => required(metadata, "organization_id"), "name" => name },
+-        "simulation_mode" => true, "csrf_token" => required(metadata, "csrf_token") }
++        "simulation_mode" => @simulation_mode, "csrf_token" => required(metadata, "csrf_token") }
+     end
+ 
+     def lifecycle(metadata, expires_at:, display_name: nil)
+diff --git a/apps/server/lib/elevateo/sessions.rb b/apps/server/lib/elevateo/sessions.rb
+index d1cbde46..f2303031 100644
+--- a/apps/server/lib/elevateo/sessions.rb
++++ b/apps/server/lib/elevateo/sessions.rb
+@@ -13,7 +13,8 @@ module Elevateo
+       @config, @store = config, store
+       @client, @crypto = client || AuthClient.new(config: config), crypto || SessionCrypto.new(config: config)
+       @tokens = AuthTokens.new(config: config)
+-      @presentation = SessionPresentation.new(crypto: @crypto)
++      # AIDEV-NOTE: Installation mode informs labels; each send review still determines its own transport authority.
++      @presentation = SessionPresentation.new(crypto: @crypto, simulation_mode: config.mode != "resend")
+     end
+ 
+     def authenticate(cookie:, deadline:)
+diff --git a/apps/server/sig/attachments.rbs b/apps/server/sig/attachments.rbs
+index 6657b9ec..1ea57d4b 100644
+--- a/apps/server/sig/attachments.rbs
++++ b/apps/server/sig/attachments.rbs
+@@ -72,7 +72,8 @@ module Elevateo
+ 
+     class Repository
+       @connection: _Connection
+-      def initialize: (connection: _Connection) -> void
++      @scan_kind: String
++      def initialize: (connection: _Connection, ?scan_kind: :inbox | :draft) -> void
+       def create: (organization_id: String, mailbox_id: String, thread_id: String,
+         message_id: String, id: String, storage_key: String, filename: String,
+         content_type: String, byte_size: Integer, sha256: String, scan_status: String) -> Array[row]
+diff --git a/apps/server/sig/attachments_storage.rbs b/apps/server/sig/attachments_storage.rbs
+index 91de176f..a8070027 100644
+--- a/apps/server/sig/attachments_storage.rbs
++++ b/apps/server/sig/attachments_storage.rbs
+@@ -8,6 +8,7 @@ module Elevateo
+       end
+       type request_class = singleton(Net::HTTP::Post) | singleton(Net::HTTP::Get) | singleton(Net::HTTP::Delete)
+       KEY: Regexp
++      DRAFT_KEY: Regexp
+       API_KEY: Regexp
+       BUCKET: Regexp
+       METADATA_SECONDS: Float
+diff --git a/apps/server/sig/session_presentation.rbs b/apps/server/sig/session_presentation.rbs
+index 564440d4..f508c1a9 100644
+--- a/apps/server/sig/session_presentation.rbs
++++ b/apps/server/sig/session_presentation.rbs
+@@ -1,7 +1,8 @@
+ module Elevateo
+   class SessionPresentation
+     @crypto: SessionCrypto
+-    def initialize: (crypto: SessionCrypto) -> void
++    @simulation_mode: bool
++    def initialize: (crypto: SessionCrypto, ?simulation_mode: bool) -> void
+     def version: (auth_object) -> String
+     def check_context!: (auth_object, String?, String?) -> void
+     def session: (auth_object, ?display_name: String?) -> auth_object
+diff --git a/apps/server/test/attachments/private_storage_test.rb b/apps/server/test/attachments/private_storage_test.rb
+index ec13fbc1..78ed73dc 100644
+--- a/apps/server/test/attachments/private_storage_test.rb
++++ b/apps/server/test/attachments/private_storage_test.rb
+@@ -58,6 +58,16 @@ class PrivateAttachmentStorageTest < Minitest::Test
+     end
+   end
+ 
++  def test_draft_keys_are_readable_but_not_writable_through_inbox_adapter
++    key = KEY.sub("quarantine/", "drafts/")
++    with_exchange(bucket: Response.new) do
++      assert_equal "bytes", @adapter.get(key)
++    end
++    assert_raises(ArgumentError) { @adapter.put(key, "bytes", content_type: "application/octet-stream") }
++    assert_raises(ArgumentError) { @adapter.delete(key) }
++    assert_raises(ArgumentError) { @adapter.get(key + "/../secret") }
++  end
++
+   def test_public_missing_malformed_and_nonobject_metadata_never_reach_object
+     ['{"public":true}', '{"public":"false"}', '{}', '[]', 'null', 'false', '0', '"text"', '{', ''].each do |json|
+       with_exchange(bucket: Response.new(chunks: [json])) do |exchange|
+diff --git a/apps/server/test/attachments/service_test.rb b/apps/server/test/attachments/service_test.rb
+index 950c20ce..1f1f6e40 100644
+--- a/apps/server/test/attachments/service_test.rb
++++ b/apps/server/test/attachments/service_test.rb
+@@ -257,6 +257,28 @@ class AttachmentServiceTest < Minitest::Test
+     assert_raises(Elevateo::Attachments::NotAvailable) { repository.due_scan_ids(limit: 1) }
+   end
+ 
++  def test_scan_repository_selects_only_the_requested_queue
++    klass = Class.new(Elevateo::Attachments::Repository) do
++      attr_reader :queries
++      private
++      def rows(sql, values)
++        (@queries ||= []) << [sql, values]
++        [{ "id" => "attachment", "recorded" => true }]
++      end
++    end
++    [:inbox, :draft].each do |kind|
++      repository = klass.new(connection: nil, scan_kind: kind)
++      assert_equal ["attachment"], repository.due_scan_ids(limit: 1)
++      repository.claim_scan(id: ORG, token: BOX)
++      repository.record_scan(id: ORG, sha256: "a" * 64, token: BOX, attempt: 1, verdict: "clean")
++      assert_includes repository.queries[0][0], "app.due_#{kind}_attachment_scans"
++      assert_includes repository.queries[1][0], "app.claim_#{kind}_attachment_scan"
++      assert_includes repository.queries[2][0], "app.record_#{kind}_attachment_scan"
++      assert_equal [ORG, "a" * 64, BOX, 1, "clean"], repository.queries[2][1]
++    end
++    assert_raises(ArgumentError) { klass.new(connection: nil, scan_kind: "draft;DROP") }
++  end
++
+   def test_late_clean_attempt_cannot_overwrite_newer_malware
+     id = stage.fetch("id")
+     first = @repository.claim_scan(id: id, token: ORG)
+diff --git a/apps/server/test/be_02/session_security_test.rb b/apps/server/test/be_02/session_security_test.rb
+index ad91d187..ceef256b 100644
+--- a/apps/server/test/be_02/session_security_test.rb
++++ b/apps/server/test/be_02/session_security_test.rb
+@@ -5,6 +5,16 @@ require_relative "auth_test_helper"
+ class SessionSecurityTest < Minitest::Test
+   include AuthFixtures
+ 
++  def test_session_labels_follow_installation_mode_without_changing_authority
++    crypto = Elevateo::SessionCrypto.new(config: config)
++    simulated = Elevateo::SessionPresentation.new(crypto: crypto).session(metadata)
++    live = Elevateo::SessionPresentation.new(crypto: crypto, simulation_mode: false).session(metadata)
++    assert_equal true, simulated.fetch("simulation_mode")
++    assert_equal false, live.fetch("simulation_mode")
++    assert_equal simulated.reject { |key, _| key == "simulation_mode" },
++      live.reject { |key, _| key == "simulation_mode" }
++  end
++
+   def test_ciphertext_authentication_and_purpose_separation
+     crypto = Elevateo::SessionCrypto.new(config: config)
+     encrypted = crypto.encrypt("secret", purpose: "access")

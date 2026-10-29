@@ -1,8 +1,0 @@
-Untagged: elevateo-mail1017-app-r4-build:dependencies
-Deleted: sha256:952fead426d944c9f5a66208340dbf7be19214f3b555930e35efa329ecea06cd
-elevateo-mail1017-app-r4-build removed
-exit=0
-cleanup_failed=0
-free_before=255213076480
-free_after=255262892032
-shared_pinned_bases_retained=1
