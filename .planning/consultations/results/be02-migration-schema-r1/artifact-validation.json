@@ -1,0 +1,17 @@
+{
+  "checked_at_utc": "2026-10-13T23:06:08.666478+00:00",
+  "artifact_only_validation": true,
+  "application_tests_run": false,
+  "frozen_documents_and_source_unchanged": true,
+  "common_packet_and_focus_inputs_verified": true,
+  "exact_models_verified": [
+    "claude-fable-5",
+    "claude-opus-5-5",
+    "claude-fable-5-1"
+  ],
+  "independent_sessions": 3,
+  "opinion_exports_verbatim": true,
+  "authored_document_links_valid": true,
+  "design_report_sha256": "b08976256765ce546325418a403a23b958933cbbf97ec42a228c5412198d0acb",
+  "dispositions_sha256": "931e74aa8131905014c96c736eeed3a3b248cb4a80bfe3c8586d3ce24c9a8d6a"
+}

@@ -1,0 +1,220 @@
+# AIDEV-NOTE: Standalone, closed BE02 stack; never merge with foundation compose or publish host ports.
+x-rails: &rails
+  image: ${BE02_SERVER_IMAGE:?task image required}
+  pull_policy: never
+  working_dir: /workspace/apps/server
+  volumes:
+    - ${BE02_SOURCE:?source required}/apps/server:/workspace/apps/server:ro
+    - ${BE02_SOURCE:?source required}/contracts:/workspace/contracts:ro
+    - ${BE02_SOURCE:?source required}/ops/tests/be02:/workspace/ops/tests/be02:ro
+  tmpfs:
+    - /workspace/apps/server/tmp:uid=10001,gid=10001,mode=1770
+    - /workspace/apps/server/log:uid=10001,gid=10001,mode=1770
+    - /tmp
+  read_only: true
+  networks: [isolated]
+  mem_limit: 768m
+  cpus: 1
+  pids_limit: 256
+  init: true
+  security_opt: [no-new-privileges:true]
+  cap_drop: [ALL]
+x-runtime: &runtime
+  RAILS_ENV: test
+  ELEVATEO_MODE: local
+  ELEVATEO_OUTBOUND_HOLD: "true"
+  ELEVATEO_DB_HOST: db
+  ELEVATEO_DB_NAME: postgres
+  ELEVATEO_AUTH_URL: http://auth:9999
+  ELEVATEO_STORAGE_URL: http://storage:5000
+  ELEVATEO_SMTP_HOST: mailpit
+  ELEVATEO_SMTP_PORT: "1025"
+  ELEVATEO_MAILPIT_URL: http://mailpit:8025
+  SECRET_KEY_BASE: ${SECRET_KEY_BASE:?}
+  ELEVATEO_SESSION_KEY_BASE64: ${ELEVATEO_SESSION_KEY_BASE64:?}
+  ELEVATEO_BROWSER_ORIGIN: http://api:3000
+  ELEVATEO_COOKIE_SECURE: "false"
+  ELEVATEO_LOCAL_HTTP: "true"
+  ELEVATEO_AUTH_JWT_ISSUER: http://auth:9999
+  ELEVATEO_AUTH_JWT_AUDIENCE: authenticated
+  ELEVATEO_AUTH_JWT_ALGORITHM: HS256
+  ELEVATEO_AUTH_PASSWORD_MINIMUM: "12"
+services:
+  db:
+    image: supabase/postgres:17.6.1.136@sha256:f371b5f3f2ac0a05703f33d6e6134515fb2498cab708fb948a0aeb7481467c00
+    pull_policy: never
+    environment:
+      POSTGRES_HOST: /var/run/postgresql
+      PGPORT: "5432"
+      POSTGRES_PORT: "5432"
+      PGPASSWORD: ${POSTGRES_PASSWORD:?}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?}
+      PGDATABASE: postgres
+      POSTGRES_DB: postgres
+      JWT_EXP: "3600"
+    command: [postgres, -c, config_file=/etc/postgresql/postgresql.conf, -c, log_min_messages=fatal]
+    volumes:
+      - ./supabase/db/99-roles.sql:/docker-entrypoint-initdb.d/init-scripts/99-roles.sql:ro
+      - ./supabase/db/99-jwt.sql:/docker-entrypoint-initdb.d/init-scripts/99-jwt.sql:ro
+      - db-data:/var/lib/postgresql/data
+      - db-config:/etc/postgresql-custom
+    networks: [isolated]
+    mem_limit: 768m
+    cpus: 1
+    healthcheck:
+      test: [CMD, pg_isready, -U, postgres, -h, localhost]
+      interval: 2s
+      timeout: 3s
+      retries: 50
+  bootstrap:
+    image: supabase/postgres:17.6.1.136@sha256:f371b5f3f2ac0a05703f33d6e6134515fb2498cab708fb948a0aeb7481467c00
+    pull_policy: never
+    profiles: [tools]
+    entrypoint: [psql, -h, db, -U, supabase_admin, -d, postgres, -v, ON_ERROR_STOP=1, -q]
+    environment:
+      PGPASSWORD: ${POSTGRES_PASSWORD:?}
+      MIGRATOR_DB_PASSWORD: ${MIGRATOR_DB_PASSWORD:?}
+      API_DB_PASSWORD: ${API_DB_PASSWORD:?}
+      WORKER_DB_PASSWORD: ${WORKER_DB_PASSWORD:?}
+    volumes:
+      - ./db:/ops:ro
+    tmpfs:
+      - /var/lib/postgresql/data
+      - /etc/postgresql-custom
+    networks: [isolated]
+    mem_limit: 256m
+    cpus: 1
+  guards:
+    image: supabase/postgres:17.6.1.136@sha256:f371b5f3f2ac0a05703f33d6e6134515fb2498cab708fb948a0aeb7481467c00
+    pull_policy: never
+    profiles: [tools]
+    entrypoint: [bash, /workspace/ops/tests/be02-guards/run.sh]
+    environment:
+      PGHOST: db
+      PGUSER: supabase_admin
+      PGDATABASE: postgres
+      PGPASSWORD: ${POSTGRES_PASSWORD:?}
+      MIGRATOR_DB_PASSWORD: ${MIGRATOR_DB_PASSWORD:?}
+      API_DB_PASSWORD: ${API_DB_PASSWORD:?}
+      WORKER_DB_PASSWORD: ${WORKER_DB_PASSWORD:?}
+      BE02_GUARDS_DISPOSABLE: "1"
+    volumes:
+      - ./db:/workspace/ops/db:ro
+      - ./tests/be02-guards:/workspace/ops/tests/be02-guards:ro
+      - ${BE02_SOURCE:?}/apps/server:/workspace/apps/server:ro
+    tmpfs:
+      - /tmp
+      - /var/lib/postgresql/data
+      - /etc/postgresql-custom
+    networks: [isolated]
+    mem_limit: 256m
+    cpus: 1
+  mailpit:
+    image: axllent/mailpit:v1.31.5@sha256:94f6b70c1436defae6799d9ac7ff0eeff9540465b842026d5cdb018f1c0234ea
+    pull_policy: never
+    environment:
+      MP_SMTP_RELAY_ALL: "false"
+      MP_SMTP_DISABLE_RDNS: "true"
+      MP_SMTP_AUTH_ACCEPT_ANY: "true"
+      MP_SMTP_AUTH_ALLOW_INSECURE: "true"
+    tmpfs: [/data, /tmp]
+    networks: [isolated]
+    mem_limit: 128m
+    cpus: 0.5
+  auth:
+    image: supabase/gotrue:v2.196.0@sha256:c0c25187a6b835e65a6f6e6c6b39d090e832d40e6de5186f2c038e0411944232
+    pull_policy: never
+    environment:
+      GOTRUE_API_HOST: 0.0.0.0
+      GOTRUE_API_PORT: "9999"
+      API_EXTERNAL_URL: http://api:3000
+      GOTRUE_DB_DRIVER: postgres
+      GOTRUE_DB_DATABASE_URL: postgres://supabase_auth_admin:${POSTGRES_PASSWORD:?}@db:5432/postgres
+      GOTRUE_SITE_URL: http://api:3000
+      GOTRUE_URI_ALLOW_LIST: http://api:3000/auth/complete
+      GOTRUE_DISABLE_SIGNUP: "true"
+      GOTRUE_JWT_ADMIN_ROLES: service_role
+      GOTRUE_JWT_AUD: authenticated
+      GOTRUE_JWT_DEFAULT_GROUP_NAME: authenticated
+      GOTRUE_JWT_EXP: "3600"
+      GOTRUE_JWT_SECRET: ${BE02_FIXTURE_SIGNING_SECRET:?}
+      GOTRUE_JWT_ISSUER: http://auth:9999
+      GOTRUE_EXTERNAL_EMAIL_ENABLED: "true"
+      GOTRUE_EXTERNAL_ANONYMOUS_USERS_ENABLED: "false"
+      GOTRUE_EXTERNAL_PHONE_ENABLED: "false"
+      GOTRUE_MAILER_AUTOCONFIRM: "false"
+      GOTRUE_SMTP_ADMIN_EMAIL: auth@elevateo.invalid
+      GOTRUE_SMTP_HOST: mailpit
+      GOTRUE_SMTP_PORT: "1025"
+      GOTRUE_SMTP_USER: ""
+      GOTRUE_SMTP_PASS: ""
+      GOTRUE_SMTP_SENDER_NAME: Elevateo BE02 Isolated Auth
+      GOTRUE_MAILER_URLPATHS_INVITE: /auth/accept
+      GOTRUE_MAILER_URLPATHS_CONFIRMATION: /auth/accept
+      GOTRUE_MAILER_URLPATHS_RECOVERY: /auth/accept
+      GOTRUE_MAILER_URLPATHS_EMAIL_CHANGE: /auth/accept
+    networks: [isolated]
+    mem_limit: 256m
+    cpus: 1
+    healthcheck:
+      test: [CMD, wget, --no-verbose, --tries=1, --spider, http://127.0.0.1:9999/health]
+      interval: 2s
+      timeout: 3s
+      retries: 50
+  migrate:
+    <<: *rails
+    profiles: [tools]
+    environment:
+      <<: *runtime
+      ELEVATEO_DB_ROLE: elevateo_migrator
+      ELEVATEO_PROCESS: migrate
+      MIGRATOR_DB_PASSWORD: ${MIGRATOR_DB_PASSWORD:?}
+    command: [bundle, exec, rails, db:migrate]
+  api:
+    <<: *rails
+    environment:
+      <<: *runtime
+      ELEVATEO_DB_ROLE: elevateo_api
+      ELEVATEO_PROCESS: api
+      API_DB_PASSWORD: ${API_DB_PASSWORD:?}
+    command: [bundle, exec, rails, server, -b, 0.0.0.0, -p, "3000"]
+  worker:
+    <<: *rails
+    environment:
+      <<: *runtime
+      ELEVATEO_DB_ROLE: elevateo_worker
+      ELEVATEO_PROCESS: worker
+      WORKER_DB_PASSWORD: ${WORKER_DB_PASSWORD:?}
+    command: [bundle, exec, ruby, bin/worker]
+  test:
+    <<: *rails
+    profiles: [tools]
+    environment:
+      <<: *runtime
+      ELEVATEO_DB_ROLE: elevateo_api
+      ELEVATEO_PROCESS: api
+      API_DB_PASSWORD: ${API_DB_PASSWORD:?}
+      BE02_ADMIN_DATABASE_URL: postgres://supabase_admin:${POSTGRES_PASSWORD:?}@db:5432/postgres
+      BE02_API_DATABASE_URL: postgres://elevateo_api:${API_DB_PASSWORD:?}@db:5432/postgres
+      BE02_WORKER_DATABASE_URL: postgres://elevateo_worker:${WORKER_DB_PASSWORD:?}@db:5432/postgres
+      BE02_TASK_DATABASE_NAME: postgres
+    command: [bash, /workspace/ops/tests/be02/test-suites.sh]
+  fixture:
+    <<: *rails
+    profiles: [tools]
+    environment:
+      BE02_ADMIN_DATABASE_URL: postgres://supabase_admin:${POSTGRES_PASSWORD:?}@db:5432/postgres
+      BE02_FIXTURE_SIGNING_SECRET: ${BE02_FIXTURE_SIGNING_SECRET:?}
+    command: [bundle, exec, ruby, /workspace/ops/tests/be02/http_test.rb]
+networks:
+  isolated:
+    internal: true
+    labels:
+      elevateo.be02.project: ${BE02_PROJECT:?}
+volumes:
+  db-data:
+    labels:
+      elevateo.be02.project: ${BE02_PROJECT:?}
+  db-config:
+    labels:
+      elevateo.be02.project: ${BE02_PROJECT:?}

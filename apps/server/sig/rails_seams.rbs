@@ -1,0 +1,162 @@
+# AIDEV-NOTE: Rails 8.1.4/Rack 3.2.7 call-site subset; extend only for a demonstrated application call.
+module Rails
+  interface _Logger
+    def error: (String) -> void
+  end
+  def self.logger: () -> _Logger
+end
+
+module Rack
+  # AIDEV-NOTE: Environment objects stay Object until String guards; cookie headers can have several values.
+  type environment = Hash[String, Object]
+  type headers = Hash[String, String | Array[String]]
+  interface _Input
+    def read: (Integer) -> String?
+  end
+  interface _Body
+    def each: () { (String) -> void } -> void
+  end
+  type response = [Integer, headers, _Body]
+end
+
+module ActionDispatch
+  module Http
+    class Headers
+      # AIDEV-NOTE: Wire headers are strings; arbitrary Rack extension keys must still be narrowed by callers.
+      def []: ("X-CSRF-Token" | "X-Session-Context" | "X-Authorization-Version" | "Origin") -> String?
+            | (String) -> Object
+    end
+  end
+  class Request
+    def query_string: () -> String
+    def cookies: () -> Hash[String, String]
+    def headers: () -> Http::Headers
+    def media_type: () -> String?
+    def get_header: ("CONTENT_LENGTH") -> String?
+                 | (String) -> Object
+    def body: () -> Rack::_Input
+    def env: () -> Rack::environment
+    def request_id: () -> String?
+    def remote_ip: () -> String
+  end
+  class Response
+    def headers: () -> Rack::headers
+    def set_cookie: (String, value: String, path: String, httponly: bool,
+                     same_site: :strict, secure: bool, max_age: Integer) -> void
+    def delete_cookie: (String, path: String, httponly: bool, same_site: :strict, secure: bool) -> void
+  end
+end
+
+module ActionController
+  type parameter = nil | bool | String | Integer | Float | Array[parameter] | Parameters
+  type json_value = nil | bool | String | Integer | Float | Array[json_value] | Hash[String | Symbol, json_value]
+  class Parameters
+    # AIDEV-NOTE: Parsed parameters are not necessarily strings; readers require explicit boundary narrowing.
+    def []: (String | Symbol) -> parameter
+  end
+  class API
+    # AIDEV-NOTE: Rails instance_exec runs rescue handlers on the controller, not on its singleton class.
+    def self.rescue_from: (singleton(Exception), with: Symbol) -> void
+                       | (singleton(Exception)) { (Exception) [self: instance] -> void } -> void
+    def self.around_action: (Symbol) -> void
+    def request: () -> ActionDispatch::Request
+    def response: () -> ActionDispatch::Response
+    def params: () -> Parameters
+    def render: (json: json_value, ?status: Integer | Symbol) -> void
+              | (body: String, content_type: String, ?status: Integer | Symbol) -> void
+    def head: (Integer | Symbol) -> bool
+  end
+end
+
+module ActiveSupport
+  module IsolatedExecutionState
+    def self.context: () -> (Thread | Fiber)
+  end
+end
+
+module ActiveRecord
+  class ActiveRecordError < StandardError
+  end
+  class Rollback < ActiveRecordError
+  end
+  # AIDEV-NOTE: This target selects JSON/scalars or SQL-formatted dates; domain validators narrow row values.
+  type row = Hash[String, Elevateo::auth_value]
+  class Result
+    include Enumerable[row]
+    def each: () { (row) -> void } -> Array[row]
+            | () -> Enumerator[row, Array[row]]
+    def to_a: () -> Array[row]
+    def first: () -> row?
+             | (Integer) -> Array[row]
+  end
+  module Type
+    class String
+      def initialize: () -> void
+    end
+  end
+  class Relation
+    class QueryAttribute
+      def initialize: (::String, ::String?, Type::String) -> void
+    end
+  end
+  class Transaction
+    def open?: () -> bool
+  end
+  module ConnectionAdapters
+    interface _Lock
+      def synchronize: [T] () { () -> T } -> T
+    end
+    class Transaction
+      def open?: () -> bool
+    end
+    class NullTransaction
+      def open?: () -> bool
+    end
+    class AbstractAdapter
+      def lock: () -> _Lock
+      def owner: () -> (Thread | Fiber)?
+      def transaction_open?: () -> bool
+      def current_transaction: () -> (Transaction | NullTransaction)
+      def clear_query_cache: () -> void
+      def disconnect!: () -> void
+      def uncached: [T] (?dirties: bool) { () -> T } -> T
+      # AIDEV-NOTE: ActiveRecord::Rollback is swallowed; callers must reject nil before successful-read effects.
+      def transaction: [T] (?requires_new: bool?, ?isolation: Symbol?, ?joinable: bool)
+        { (ActiveRecord::Transaction) -> T } -> (T | nil)
+      def execute: (String, ?String?, ?allow_retry: bool) -> void
+      def exec_query: (String, ?String, ?Array[Relation::QueryAttribute], ?prepare: bool) -> Result
+      def select_value: (String) -> Elevateo::auth_value
+    end
+    class ConnectionPool
+      # AIDEV-NOTE: Rails 8.1.4 read-only queue proof; Object requires runtime class/array validation before use.
+      class Queue
+        def instance_variable_get: (:@queue) -> Object
+      end
+      def instance_variable_get: (:@available) -> Object
+      def with_connection: [T] (?prevent_permanent_checkout: bool) { (AbstractAdapter) -> T } -> T
+      # AIDEV-NOTE: Writes check in only clean registered owners; abnormal exits remove then disconnect.
+      def checkout: (Float) -> AbstractAdapter
+      def checkin: (AbstractAdapter) -> void
+      def remove: (AbstractAdapter) -> void
+      def connections: () -> Array[AbstractAdapter]
+      def synchronize: [T] () { () -> T } -> T
+      # AIDEV-NOTE: Despite its predicate name, active_connection? returns the leased adapter or nil.
+      def active_connection?: () -> AbstractAdapter?
+    end
+  end
+  class Base
+    def self.connection: () -> ConnectionAdapters::AbstractAdapter
+    def self.connection_pool: () -> ConnectionAdapters::ConnectionPool
+  end
+end
+
+class ApplicationController < ActionController::API
+end
+
+class HealthController < ApplicationController
+  def live: () -> void
+  def ready: () -> void
+  private
+  def check: () { () -> bool } -> bool
+  def http_ok?: (String) -> bool
+end

@@ -14,38 +14,79 @@ DO $$ BEGIN
 END $$;
 
 SELECT format('CREATE ROLE %I NOLOGIN NOINHERIT', r)
-  FROM unnest(ARRAY['elevateo_owner', 'elevateo_app_read']) AS r
+  FROM unnest(ARRAY['elevateo_owner', 'elevateo_app_read', 'elevateo_session_owner']) AS r
  WHERE NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = r) \gexec
 SELECT format('CREATE ROLE %I LOGIN NOINHERIT', r)
   FROM unnest(ARRAY['elevateo_migrator', 'elevateo_api', 'elevateo_worker']) AS r
  WHERE NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = r) \gexec
 
--- AIDEV-NOTE: Validate before mutation; unknown membership grants/options require a design disposition.
+-- AIDEV-NOTE: Validate every touching membership edge; unknown paths/options require a design disposition.
 DO $$ BEGIN
   IF EXISTS (
     SELECT 1 FROM pg_roles WHERE rolname IN
-      ('elevateo_owner', 'elevateo_app_read', 'elevateo_migrator', 'elevateo_api', 'elevateo_worker')
+      ('elevateo_owner', 'elevateo_app_read', 'elevateo_session_owner',
+       'elevateo_migrator', 'elevateo_api', 'elevateo_worker')
       AND (rolsuper OR rolcreatedb OR rolcreaterole OR rolreplication OR rolbypassrls
         OR (rolname <> 'elevateo_api' AND rolinherit)
         OR rolcanlogin <> (rolname IN ('elevateo_migrator', 'elevateo_api', 'elevateo_worker')))
   ) THEN RAISE EXCEPTION 'unexpected application role attributes'; END IF;
   IF EXISTS (
-    SELECT 1 FROM pg_auth_members WHERE roleid = 'elevateo_app_read'::regrole
-      AND member IN ('elevateo_api'::regrole, 'elevateo_owner'::regrole)
-      AND NOT (
-        (member = 'elevateo_api'::regrole AND NOT admin_option AND inherit_option
-          AND ((grantor = 'supabase_admin'::regrole AND set_option)
-            OR (grantor = 'elevateo_owner'::regrole AND NOT set_option)))
-        OR (member = 'elevateo_owner'::regrole AND grantor = 'supabase_admin'::regrole
-          AND admin_option AND NOT inherit_option AND NOT set_option)
-      )
-  ) THEN RAISE EXCEPTION 'unexpected elevateo_app_read membership; no changes accepted'; END IF;
-  IF EXISTS (
-    SELECT 1 FROM pg_auth_members WHERE roleid = 'elevateo_owner'::regrole
-      AND member = 'elevateo_migrator'::regrole
-      AND NOT (grantor = 'supabase_admin'::regrole AND NOT admin_option AND NOT inherit_option AND set_option)
-  ) THEN RAISE EXCEPTION 'unexpected elevateo_migrator owner prerequisite'; END IF;
+    WITH application_roles AS (
+      SELECT oid FROM pg_roles WHERE rolname IN ('elevateo_owner', 'elevateo_app_read',
+        'elevateo_session_owner', 'elevateo_migrator', 'elevateo_api', 'elevateo_worker')
+    ), permitted(role_name, member_name, grantor_name, admin_opt, inherit_opt, set_opt) AS (
+      VALUES
+        ('elevateo_app_read', 'elevateo_api', 'supabase_admin', false, true, true),
+        ('elevateo_app_read', 'elevateo_api', 'elevateo_owner', false, true, false),
+        ('elevateo_app_read', 'elevateo_owner', 'supabase_admin', true, false, false),
+        ('elevateo_owner', 'elevateo_migrator', 'supabase_admin', false, false, true),
+        ('elevateo_session_owner', 'elevateo_owner', 'supabase_admin', false, false, true)
+    )
+    SELECT 1 FROM pg_auth_members AS membership
+    WHERE (roleid IN (TABLE application_roles) OR member IN (TABLE application_roles)
+        OR grantor IN (TABLE application_roles))
+      AND NOT EXISTS (SELECT 1 FROM permitted
+        WHERE roleid = role_name::regrole AND member = member_name::regrole
+          AND grantor = grantor_name::regrole AND admin_option = admin_opt
+          AND inherit_option = inherit_opt AND set_option = set_opt)
+  ) THEN RAISE EXCEPTION 'unexpected application membership graph; no changes accepted'; END IF;
 END $$;
+
+-- AIDEV-NOTE: PG17 function SET clauses need this ACL; ordinary custom-GUC SET is not an identity boundary.
+DO $$ BEGIN
+  IF EXISTS (
+    SELECT 1 FROM pg_parameter_acl p CROSS JOIN LATERAL aclexplode(p.paracl) a
+    WHERE p.parname = 'app_auth.verified_user_id' AND NOT (
+      a.grantor = 'supabase_admin'::regrole AND (
+        a.grantee = 'supabase_admin'::regrole OR
+        (a.grantee = 'elevateo_session_owner'::regrole AND a.privilege_type = 'SET' AND NOT a.is_grantable)))
+  ) THEN RAISE EXCEPTION 'unexpected private identity parameter ACL; no changes accepted'; END IF;
+END $$;
+GRANT SET ON PARAMETER app_auth.verified_user_id TO elevateo_session_owner;
+DO $$ BEGIN
+  IF NOT has_parameter_privilege('elevateo_session_owner', 'app_auth.verified_user_id', 'SET')
+    OR has_parameter_privilege('elevateo_session_owner', 'app_auth.verified_user_id',
+      'SET WITH GRANT OPTION, ALTER SYSTEM')
+    OR EXISTS (SELECT 1 FROM unnest(ARRAY['elevateo_api', 'elevateo_worker', 'elevateo_app_read',
+      'elevateo_owner', 'elevateo_migrator']) runtime_role
+      WHERE has_parameter_privilege(runtime_role, 'app_auth.verified_user_id', 'SET, ALTER SYSTEM'))
+  THEN RAISE EXCEPTION 'private identity parameter privilege postcondition failed'; END IF;
+END $$;
+
+-- AIDEV-NOTE: Only the migration owner can assume this private function owner; runtime roles cannot inherit it.
+ALTER ROLE elevateo_session_owner NOLOGIN NOINHERIT NOSUPERUSER NOCREATEDB NOCREATEROLE NOREPLICATION NOBYPASSRLS;
+GRANT elevateo_session_owner TO elevateo_owner
+  WITH ADMIN FALSE, INHERIT FALSE, SET TRUE GRANTED BY supabase_admin;
+CREATE SCHEMA IF NOT EXISTS app_auth AUTHORIZATION elevateo_session_owner;
+DO $$ BEGIN
+  IF NOT EXISTS (SELECT 1 FROM pg_namespace WHERE nspname = 'app_auth'
+    AND nspowner = 'elevateo_session_owner'::regrole) THEN
+    RAISE EXCEPTION 'unexpected private schema owner';
+  END IF;
+END $$;
+REVOKE ALL ON SCHEMA app_auth FROM PUBLIC;
+ALTER DEFAULT PRIVILEGES FOR ROLE elevateo_session_owner REVOKE EXECUTE ON FUNCTIONS FROM PUBLIC;
+-- AIDEV-NOTE: Auth grants run separately after Auth migrations; initial bootstrap must work on an empty volume.
 
 ALTER ROLE elevateo_owner NOLOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE NOREPLICATION NOBYPASSRLS;
 ALTER ROLE elevateo_app_read NOLOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE NOREPLICATION NOBYPASSRLS;
@@ -79,6 +120,23 @@ BEGIN
       AND member = 'elevateo_owner'::regrole AND grantor = 'supabase_admin'::regrole
       AND admin_option AND NOT inherit_option AND NOT set_option)
   THEN RAISE EXCEPTION 'membership compatibility postcondition failed'; END IF;
+END $$;
+
+-- AIDEV-NOTE: Check effective reachability too; NOINHERIT alone does not prevent SET ROLE through a chain.
+DO $$ BEGIN
+  IF EXISTS (
+    SELECT 1 FROM unnest(ARRAY['elevateo_api', 'elevateo_worker']) AS runtime_role
+    CROSS JOIN unnest(ARRAY['elevateo_owner', 'elevateo_migrator', 'elevateo_session_owner']) AS owner_role
+    WHERE pg_has_role(runtime_role, owner_role, 'SET, USAGE, MEMBER WITH ADMIN OPTION')
+  ) OR EXISTS (
+    SELECT 1 FROM unnest(ARRAY['elevateo_api', 'elevateo_worker']) AS runtime_role
+    WHERE pg_has_role(runtime_role, 'elevateo_app_read', 'SET, MEMBER WITH ADMIN OPTION')
+  ) OR pg_has_role('elevateo_worker', 'elevateo_app_read', 'USAGE')
+    OR NOT pg_has_role('elevateo_migrator', 'elevateo_owner', 'SET')
+    OR NOT pg_has_role('elevateo_migrator', 'elevateo_session_owner', 'SET')
+    OR pg_has_role('elevateo_migrator', 'elevateo_owner', 'USAGE')
+    OR pg_has_role('elevateo_owner', 'elevateo_session_owner', 'USAGE')
+  THEN RAISE EXCEPTION 'application membership effective privilege postcondition failed'; END IF;
 END $$;
 
 CREATE SCHEMA IF NOT EXISTS app AUTHORIZATION elevateo_owner;

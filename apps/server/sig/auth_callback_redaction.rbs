@@ -1,0 +1,13 @@
+module Elevateo
+  class AuthCallbackRedaction
+    # AIDEV-NOTE: Rack objects stay opaque until String guards; this middleware passes the response through unchanged.
+    type environment = Rack::environment
+    interface _App
+      def call: (environment) -> Rack::response
+    end
+    QUERY_KEY: String
+    @app: _App
+    def initialize: (_App) -> void
+    def call: (environment) -> Rack::response
+  end
+end

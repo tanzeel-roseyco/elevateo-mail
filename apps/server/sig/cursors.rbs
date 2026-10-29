@@ -1,0 +1,25 @@
+module Elevateo
+  class Cursors
+    type json_value = nil | bool | Integer | Float | String | Array[json_value] | Hash[String, json_value]
+    type scope = Hash[String, json_value]
+    type position = Hash[String, String?]
+    class Invalid < StandardError
+    end
+    MAX_BYTES: Integer
+    TTL: Integer
+    SCOPE_KEYS: Array[String]
+    UUID: Regexp
+    TOKEN: Regexp
+    @secret: String
+    @clock: ^() -> Integer
+    def initialize: (secret: String, ?clock: ^() -> Integer) -> void
+    def encode: (position: position, scope: scope) -> String
+    def decode: (String token, scope: scope) -> position
+    private
+    def signature: (String) -> String
+    def validate_payload: (json_value, scope) -> position
+    def scope_digest: (scope) -> String
+    def validate_position: (json_value) -> position
+    def text?: (json_value, Integer) -> bool
+  end
+end

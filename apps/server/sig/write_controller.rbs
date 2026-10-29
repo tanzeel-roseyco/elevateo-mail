@@ -1,0 +1,14 @@
+module V1
+  class WriteController < ReadController
+    # AIDEV-NOTE: Write bodies preserve exact decimals; authenticated session metadata retains its Auth type.
+    type target_users = ^(input: Elevateo::WriteInput::object, query: Hash[String, String]) -> Array[String]
+    protected
+    def protected_write: (?allowed_query: Array[String], ?required: Array[String], ?max_bytes: Integer,
+                          ?budget: Integer, ?guard_users: target_users?, ?body: bool)
+      { (connection: Elevateo::WriteStatements,
+         identity: Elevateo::SessionIdentity, session: Elevateo::auth_object, input: Elevateo::WriteInput::object,
+         query: Hash[String, String], deadline: Elevateo::RequestDeadline) -> Elevateo::WriteResponse } -> void
+    def api_query: (?allowed: Array[String]) -> Hash[String, String]
+    def api_error: (Elevateo::AuthError | Elevateo::CollaborationError) -> void
+  end
+end
