@@ -1,9 +1,9 @@
 /* Elevateo application theme: the EmailGuard design system (Tailwind v4 + Flux UI recipes, see
    docs/design/emailguard-replica.md) with two brand exceptions, the Elevateo logo and a GOLD accent
    in place of blue. Neutrals are Tailwind slate (Flux aliases its zinc scale to slate), the type
-   stack is the OS system font, radii/shadows/spacing follow DESIGN-SPEC §2.4.
+   stack is the OS system font, radii/shadows/spacing follow DESIGN-SPEC Â§2.4.
    AIDEV-NOTE: Legacy semantic tokens (--color-surface, --color-line, --color-fg, --color-muted,
-   --color-accent-text …) are kept as aliases onto the slate/gold scales so every pre-existing page
+   --color-accent-text â€¦) are kept as aliases onto the slate/gold scales so every pre-existing page
    keeps compiling and picks up the new palette without touching its own classes. */
 @import "tailwindcss";
 
@@ -21,10 +21,10 @@
 }
 
 @theme {
-  /* §2.3 system stack, exactly as EmailGuard renders it (Figtree is loaded there but unused). */
+  /* Â§2.3 system stack, exactly as EmailGuard renders it (Figtree is loaded there but unused). */
   --font-sans: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 
-  /* §2.1 Flux's zinc scale aliased to Tailwind slate: every neutral in the app is slate. */
+  /* Â§2.1 Flux's zinc scale aliased to Tailwind slate: every neutral in the app is slate. */
   --color-zinc-50: var(--color-slate-50);
   --color-zinc-100: var(--color-slate-100);
   --color-zinc-200: var(--color-slate-200);
@@ -37,7 +37,7 @@
   --color-zinc-900: var(--color-slate-900);
   --color-zinc-950: var(--color-slate-950);
 
-  /* §2.2 Elevateo gold, matched to the logo's metallic gold (~#C9A65A). */
+  /* Â§2.2 Elevateo gold, matched to the logo's metallic gold (~#C9A65A). */
   --color-gold-50: #fbf7ec;
   --color-gold-100: #f5edd3;
   --color-gold-200: #ebdba8;
@@ -76,7 +76,7 @@
   --color-warn: var(--warn);
   --color-brand-tile: #0a0b0f;
 
-  /* §2.4 shadows (Tailwind v4 names; listed so the exact EmailGuard values are pinned here). */
+  /* Â§2.4 shadows (Tailwind v4 names; listed so the exact EmailGuard values are pinned here). */
   --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
   --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
@@ -175,7 +175,7 @@ body {
   }
 }
 
-/* §Acceptance 6: a visible accent ring on every keyboard-focused control, legacy controls included.
+/* Â§Acceptance 6: a visible accent ring on every keyboard-focused control, legacy controls included.
    Form controls keep the same ring hugging their own border instead of floating 2px outside it. */
 :focus-visible {
   outline: 2px solid var(--color-ring);
@@ -229,7 +229,7 @@ h2[tabindex="-1"]:focus {
   padding-bottom: env(safe-area-inset-bottom);
 }
 
-/* Touch devices: 40px nav rows (DESIGN-SPEC §4 mobile) and 44px header controls, desktop density unchanged. */
+/* Touch devices: 40px nav rows (DESIGN-SPEC Â§4 mobile) and 44px header controls, desktop density unchanged. */
 @media (pointer: coarse) {
   aside a,
   [role="dialog"] a {
@@ -249,4 +249,9 @@ h2[tabindex="-1"]:focus {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+/* AIDEV-NOTE: Defined on root so portals share notice geometry. Safe-area applies even without notices. */
+:root {
+  --bottom-notices: max(env(safe-area-inset-bottom, 0px), calc(var(--simulation-inset, 0px) + var(--fixture-inset, 0px)));
 }

@@ -24,6 +24,13 @@ export interface FeatureGateways {
   readonly assigneeOptions?: AssigneeOptionsReadPort
   /** Isolated candidate private read port; real byte, scan and scope fleet proof remains pending. */
   readonly attachmentPort?: AttachmentReadPort
+  /**
+   * Demo and dev-fixture entries only: lets the settings pages without a server endpoint (tags,
+   * webhooks, API tokens, invitations, workspace name) run on the labelled browser-local adapter.
+   * AIDEV-NOTE: The production entry never sets this, so those pages show an explicit unavailable
+   * state instead of a local save that could be mistaken for server persistence.
+   */
+  readonly simulatedSettings?: true
 }
 
 const NONE: FeatureGateways = {}

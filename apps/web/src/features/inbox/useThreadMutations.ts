@@ -27,7 +27,34 @@ export interface ThreadMutations {
   setStar(threadId: string, starred: boolean): Promise<MutationOutcome<ThreadStarState>>
 }
 
+/** The same writes with the mailbox named per call, for lists that span mailboxes (unified inbox). */
+export interface MailboxThreadWrites {
+  readonly canWrite: boolean
+  readonly busy: ReadonlySet<string>
+  readonly error: string | null
+  clearError(): void
+  setRead(mailboxId: string, threadId: string, read: boolean): Promise<MutationOutcome<ThreadReadState>>
+  setFolder(mailboxId: string, threadId: string, folder: ThreadFolder): Promise<MutationOutcome<ThreadFolderState>>
+  setSnooze(mailboxId: string, threadId: string, snoozedUntil: string | null): Promise<MutationOutcome<ThreadFolderState>>
+  setStar(mailboxId: string, threadId: string, starred: boolean): Promise<MutationOutcome<ThreadStarState>>
+}
+
+/** Binds every write to one mailbox; the per-thread reservation and error wording are shared. */
 export function useThreadMutations(mailboxId: string): ThreadMutations {
+  const writes = useMailboxThreadWrites()
+  return {
+    canWrite: writes.canWrite,
+    busy: writes.busy,
+    error: writes.error,
+    clearError: writes.clearError,
+    setRead: (threadId, read) => writes.setRead(mailboxId, threadId, read),
+    setFolder: (threadId, folder) => writes.setFolder(mailboxId, threadId, folder),
+    setSnooze: (threadId, snoozedUntil) => writes.setSnooze(mailboxId, threadId, snoozedUntil),
+    setStar: (threadId, starred) => writes.setStar(mailboxId, threadId, starred),
+  }
+}
+
+export function useMailboxThreadWrites(): MailboxThreadWrites {
   const gateway = useGateway()
   const { proof, request } = useProtectedRequest()
   const reserved = useRef(new Set<string>())
@@ -63,9 +90,9 @@ export function useThreadMutations(mailboxId: string): ThreadMutations {
     busy,
     error,
     clearError: () => setError(null),
-    setRead: (threadId, read) => run(threadId, (ctx, signal) => gateway.setThreadReadState(ctx, proof!, threadId, { mailbox_id: mailboxId, read }, signal)),
-    setFolder: (threadId, folder) => run(threadId, (ctx, signal) => gateway.setThreadFolder(ctx, proof!, threadId, { mailbox_id: mailboxId, folder }, signal)),
-    setSnooze: (threadId, snoozedUntil) => run(threadId, (ctx, signal) => gateway.setThreadSnooze(ctx, proof!, threadId, { mailbox_id: mailboxId, snoozed_until: snoozedUntil }, signal)),
-    setStar: (threadId, starred) => run(threadId, (ctx, signal) => gateway.setThreadStar(ctx, proof!, threadId, { mailbox_id: mailboxId, starred }, signal)),
+    setRead: (mailboxId, threadId, read) => run(threadId, (ctx, signal) => gateway.setThreadReadState(ctx, proof!, threadId, { mailbox_id: mailboxId, read }, signal)),
+    setFolder: (mailboxId, threadId, folder) => run(threadId, (ctx, signal) => gateway.setThreadFolder(ctx, proof!, threadId, { mailbox_id: mailboxId, folder }, signal)),
+    setSnooze: (mailboxId, threadId, snoozedUntil) => run(threadId, (ctx, signal) => gateway.setThreadSnooze(ctx, proof!, threadId, { mailbox_id: mailboxId, snoozed_until: snoozedUntil }, signal)),
+    setStar: (mailboxId, threadId, starred) => run(threadId, (ctx, signal) => gateway.setThreadStar(ctx, proof!, threadId, { mailbox_id: mailboxId, starred }, signal)),
   }
 }

@@ -6,7 +6,7 @@ import { createFixtureGateway } from './fixtures/fixtureGateway'
 import { createHttpGateway } from './http/httpGateway'
 import { AuthSsoStatusSchema, readSsoLandingError, SSO_START_PATH, ssoLandingErrorText, stripSsoLandingError } from './ssoContract'
 
-const GOOGLE = { enabled: true, provider: 'google', password_login_enabled: false }
+const SSO_ONLY = { enabled: true, provider: 'custom:authentik', password_login_enabled: false }
 
 function recording(status: number, body: unknown) {
   const calls: Array<{ path: string; init: RequestInit }> = []
@@ -19,26 +19,30 @@ function recording(status: number, body: unknown) {
 
 describe('AuthSsoStatusSchema', () => {
   it('accepts the three confirmed shapes', () => {
-    expect(AuthSsoStatusSchema.parse(GOOGLE)).toEqual(GOOGLE)
+    expect(AuthSsoStatusSchema.parse(SSO_ONLY)).toEqual(SSO_ONLY)
+    // The allowlist still carries the server's legacy identifier; the client names no vendor either way.
+    expect(AuthSsoStatusSchema.parse({ ...SSO_ONLY, provider: 'google' }).provider).toBe('google')
     expect(AuthSsoStatusSchema.parse({ enabled: false, provider: null, password_login_enabled: true }).provider).toBeNull()
   })
 
-  it('rejects an unknown provider and extra keys so the UI fails closed', () => {
-    expect(AuthSsoStatusSchema.safeParse({ ...GOOGLE, provider: 'okta' }).success).toBe(false)
-    expect(AuthSsoStatusSchema.safeParse({ ...GOOGLE, start_url: 'https://evil.example' }).success).toBe(false)
-    expect(AuthSsoStatusSchema.safeParse({ enabled: true, provider: 'google' }).success).toBe(false)
+  it('rejects a provider outside the allowlist and extra keys so the UI fails closed', () => {
+    expect(AuthSsoStatusSchema.safeParse({ ...SSO_ONLY, provider: 'okta' }).success).toBe(false)
+    expect(AuthSsoStatusSchema.safeParse({ ...SSO_ONLY, provider: 'authentik' }).success).toBe(false)
+    expect(AuthSsoStatusSchema.safeParse({ ...SSO_ONLY, provider: '' }).success).toBe(false)
+    expect(AuthSsoStatusSchema.safeParse({ ...SSO_ONLY, start_url: 'https://evil.example' }).success).toBe(false)
+    expect(AuthSsoStatusSchema.safeParse({ enabled: true, provider: 'custom:authentik' }).success).toBe(false)
   })
 
   it('rejects contradictory enabled/provider pairs so the page never has to resolve them', () => {
     expect(AuthSsoStatusSchema.safeParse({ enabled: true, provider: null, password_login_enabled: true }).success).toBe(false)
-    expect(AuthSsoStatusSchema.safeParse({ enabled: false, provider: 'google', password_login_enabled: true }).success).toBe(false)
+    expect(AuthSsoStatusSchema.safeParse({ enabled: false, provider: 'custom:authentik', password_login_enabled: true }).success).toBe(false)
   })
 })
 
 describe('HTTP adapter', () => {
   it('GETs /v1/auth/sso/status with no proof or context headers and validates the body', async () => {
-    const { gateway, calls } = recording(200, GOOGLE)
-    expect(await gateway.getSsoStatus()).toEqual(GOOGLE)
+    const { gateway, calls } = recording(200, SSO_ONLY)
+    expect(await gateway.getSsoStatus()).toEqual(SSO_ONLY)
     expect(calls).toHaveLength(1)
     expect(calls[0]!.path).toBe('/v1/auth/sso/status')
     const headers = new Headers(calls[0]!.init.headers)
@@ -48,7 +52,7 @@ describe('HTTP adapter', () => {
   })
 
   it('rejects a malformed status body as a transport error', async () => {
-    const { gateway } = recording(200, { enabled: 'yes', provider: 'google', password_login_enabled: false })
+    const { gateway } = recording(200, { enabled: 'yes', provider: 'custom:authentik', password_login_enabled: false })
     await expect(gateway.getSsoStatus()).rejects.toMatchObject({ kind: 'transport', code: 'malformed' })
   })
 
@@ -63,9 +67,9 @@ describe('HTTP adapter', () => {
 })
 
 describe('fixture adapter', () => {
-  it('defaults to Google plus password and scripts the other variants', async () => {
-    expect(await createFixtureGateway().getSsoStatus()).toEqual({ enabled: true, provider: 'google', password_login_enabled: true })
-    expect(await createFixtureGateway({ getSsoStatus: 'sso_google_only' }).getSsoStatus()).toEqual(GOOGLE)
+  it('defaults to single sign-on plus password and scripts the other variants', async () => {
+    expect(await createFixtureGateway().getSsoStatus()).toEqual({ enabled: true, provider: 'custom:authentik', password_login_enabled: true })
+    expect(await createFixtureGateway({ getSsoStatus: 'sso_only' }).getSsoStatus()).toEqual(SSO_ONLY)
     expect(await createFixtureGateway({ getSsoStatus: 'sso_password_only' }).getSsoStatus()).toEqual({ enabled: false, provider: null, password_login_enabled: true })
     expect(await createFixtureGateway({ getSsoStatus: 'sso_none' }).getSsoStatus()).toEqual({ enabled: false, provider: null, password_login_enabled: false })
     await expect(createFixtureGateway({ getSsoStatus: 'temporarily_unavailable' }).getSsoStatus()).rejects.toMatchObject({ kind: 'api', code: 'temporarily_unavailable' })

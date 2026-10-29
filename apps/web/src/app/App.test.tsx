@@ -78,7 +78,8 @@ describe('direct message binding on the thread route (FE-805)', () => {
   it('refuses a direct answer bound to another mailbox and shows the generic unavailable state', async () => {
     const { gateway } = pagedGateway()
     renderApp(gateway, async () => directPage(OTHER_MB))
-    await screen.findByText('This message is unavailable in this conversation.')
+    // Full-gate load pushed this past the default 1s once (1.12s) while it passes in isolation.
+    await screen.findByText('This message is unavailable in this conversation.', undefined, { timeout: 5000 })
     expect(screen.queryByText('Direct plaintext')).toBeNull()
   })
 

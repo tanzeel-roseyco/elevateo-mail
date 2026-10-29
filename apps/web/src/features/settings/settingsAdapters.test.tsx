@@ -7,6 +7,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { createFixtureGateway } from '@/data/fixtures/fixtureGateway'
 import { SessionProvider } from '@/app/session'
 import { Shell } from '@/app/Shell'
+import { FeatureGatewaysProvider } from '@/app/featureGateways'
 import { SettingsRoutes } from './SettingsRoutes'
 import { resetSimulatedCache } from './simulatedStore'
 import { TAG_LIMIT } from './TagsPage'
@@ -14,6 +15,8 @@ import { TAG_LIMIT } from './TagsPage'
 function renderSettings(entry: string) {
   return render(
     <SessionProvider gateway={createFixtureGateway()}>
+      {/* The demo/dev-fixture flag: these tests cover the labelled browser-local adapter path. */}
+      <FeatureGatewaysProvider value={{ simulatedSettings: true }}>
       <MemoryRouter initialEntries={[entry]}>
         <Routes>
           <Route element={<Shell />}>
@@ -22,6 +25,7 @@ function renderSettings(entry: string) {
           </Route>
         </Routes>
       </MemoryRouter>
+      </FeatureGatewaysProvider>
     </SessionProvider>,
   )
 }

@@ -1,7 +1,7 @@
 // BE-02 C/D shell wiring in the Gmail-structured inbox: capability-gated folders (Drafts for
 // compose, Members for manage_members) appear in the mailbox folder column only, the search form
 // sits in the inbox header, and the footnote states that drafts and notes are saved on the server.
-import { render, screen, within } from '@testing-library/react'
+import { configure, render, screen, within } from '@testing-library/react'
 import { MemoryRouter, Route, Routes } from 'react-router'
 import { describe, expect, it } from 'vitest'
 import { createFixtureGateway } from '@/data/fixtures/fixtureGateway'
@@ -9,6 +9,10 @@ import { CD_FIXTURE as CD } from '@/data/fixtures/collaborationState'
 import { InboxLayout } from '@/features/inbox/InboxLayout'
 import { SessionProvider } from './session'
 import { Shell } from './Shell'
+
+// The shell resolves the fixture grants after mount; under the full coverage gate on a shared host
+// that can exceed the 1s default (fleet-02 2026-10-23 gate3/gate4 flakes), so every find waits longer.
+configure({ asyncUtilTimeout: 5000 })
 
 const INBOX = '00000000-0000-4000-8000-000000000021'
 
@@ -64,7 +68,9 @@ describe('collaboration navigation', () => {
   it('marks only Drafts current and keeps reader navigation ancestors highlighted but unannounced', async () => {
     const drafts = renderShellAt(`/mailboxes/${CD.mailboxId}/drafts`)
     const folders = await screen.findByRole('navigation', { name: 'Folders' })
-    expect(within(folders).getByRole('link', { name: 'Drafts' }).getAttribute('aria-current')).toBe('page')
+    // Folders render before the mailbox grant resolves, so the capability-gated Drafts entry can land
+    // a frame later under load (gate flake, fleet-02 2026-10-23): wait for it like the other tests do.
+    expect((await within(folders).findByRole('link', { name: 'Drafts' })).getAttribute('aria-current')).toBe('page')
     expect(document.querySelectorAll('nav [aria-current="page"]')).toHaveLength(1)
     expect(screen.getByRole('link', { name: 'C/D fixture mailbox' }).getAttribute('data-current')).toBe('true')
     drafts.unmount()

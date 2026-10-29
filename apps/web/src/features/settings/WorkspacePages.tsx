@@ -1,6 +1,7 @@
 // Settings › Workspace: the EmailGuard hub (five link cards) and its detail pages. "Manage Members"
-// is real (organization grants + per-mailbox membership); name, invitations and workspace creation
-// have no backend endpoint and are labelled simulated adapters (settings/simulatedStore.ts).
+// is real (organization grants + per-mailbox membership). Name, invitations and workspace creation
+// have no backend endpoint: production shows an explicit unavailable state (UnavailableSetting);
+// demo/dev-fixture entries run the labelled simulated adapter (settings/simulatedStore.ts).
 import { useId, useState, type FormEvent } from 'react'
 import { Link } from 'react-router'
 import { z } from 'zod'
@@ -15,10 +16,11 @@ import { Card, LinkCard, LinkCardGrid } from '@/ui/Card'
 import { Field, Select, TextArea, TextInput } from '@/ui/Field'
 import { Modal } from '@/ui/Modal'
 import { SectionHeader } from '@/ui/PageHeader'
-import { EnvelopeIcon } from '@/ui/icons'
+import { BuildingOfficeIcon, EnvelopeIcon, UserGroupIcon } from '@/ui/icons'
 import { useToast } from '@/ui/Toast'
 import { SimulatedAdapterNotice } from './SettingsLayout'
 import { simulatedId, useSimulatedStore } from './simulatedStore'
+import { UnavailableSetting, useSimulatedSettings } from './UnavailableSetting'
 
 export function WorkspaceHubPage() {
   return (
@@ -32,12 +34,30 @@ export function WorkspaceHubPage() {
   )
 }
 
-// --- Workspace name (simulated) -------------------------------------------------------------
+// --- Workspace name -------------------------------------------------------------------------
 const WorkspaceNameSchema = z.object({ name: z.string().min(1).max(120) })
 
 export function WorkspaceNamePage() {
+  const simulated = useSimulatedSettings()
   const { state } = useSession()
   const serverName = state.status === 'ready' ? state.session.organization.name : ''
+  if (simulated) return <SimulatedWorkspaceNamePage serverName={serverName} />
+  return (
+    <div className="space-y-6">
+      <Card className="max-w-lg">
+        <p className="text-sm font-medium text-zinc-800 dark:text-white">Workspace name</p>
+        <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">{serverName === '' ? 'Unavailable' : serverName}</p>
+      </Card>
+      <UnavailableSetting
+        icon={<BuildingOfficeIcon className="size-5" />}
+        title="Renaming is not available yet"
+        body="The workspace name comes from the server and there is no endpoint to change it in this release. Ask an operator to rename the organization."
+      />
+    </div>
+  )
+}
+
+function SimulatedWorkspaceNamePage({ serverName }: { serverName: string }) {
   const store = useSimulatedStore('workspace-name', WorkspaceNameSchema, { name: '' })
   const [name, setName] = useState(store.value.name === '' ? serverName : store.value.name)
   const [error, setError] = useState<string | null>(null)
@@ -71,7 +91,7 @@ export function WorkspaceNamePage() {
   )
 }
 
-// --- Invitations (simulated) ----------------------------------------------------------------
+// --- Invitations ----------------------------------------------------------------------------
 const InvitationSchema = z.object({
   id: z.string().min(1),
   email: z.string().email().max(254),
@@ -89,6 +109,19 @@ function useInvitations() {
 }
 
 export function WorkspaceInvitePage() {
+  if (!useSimulatedSettings()) {
+    return (
+      <UnavailableSetting
+        icon={<EnvelopeIcon className="size-5" />}
+        title="Invitations are not available yet"
+        body="There is no endpoint to issue invitation emails in this release. People who can already sign in are granted access on the Manage Members page."
+      />
+    )
+  }
+  return <SimulatedWorkspaceInvitePage />
+}
+
+function SimulatedWorkspaceInvitePage() {
   const store = useInvitations()
   const [emails, setEmails] = useState('')
   const [role, setRole] = useState<Invitation['role']>('member')
@@ -152,6 +185,19 @@ export function WorkspaceInvitePage() {
 }
 
 export function WorkspaceInvitationsPage() {
+  if (!useSimulatedSettings()) {
+    return (
+      <UnavailableSetting
+        icon={<UserGroupIcon className="size-5" />}
+        title="No pending invitations to show"
+        body="Invitations are not issued in this release, so there is nothing to edit or remove here. Current access is managed on the Manage Members page."
+      />
+    )
+  }
+  return <SimulatedWorkspaceInvitationsPage />
+}
+
+function SimulatedWorkspaceInvitationsPage() {
   const store = useInvitations()
   const { toast } = useToast()
   const [editing, setEditing] = useState<Invitation | null>(null)
@@ -241,8 +287,22 @@ function EditInvitationModal({ invitation, onClose, onSave }: { invitation: Invi
   )
 }
 
-// --- Create workspace (simulated) -----------------------------------------------------------
+// --- Create workspace -----------------------------------------------------------------------
 export function WorkspaceCreatePage() {
+  if (!useSimulatedSettings()) {
+    return (
+      <UnavailableSetting
+        icon={<BuildingOfficeIcon className="size-5" />}
+        title="Creating a workspace is not available yet"
+        body="Workspaces are organizations created by an operator on the server; this release has no self-service endpoint. Switch between the workspaces you belong to from the sidebar."
+        action={{ to: '/settings/workspace', label: 'Current Workspace' }}
+      />
+    )
+  }
+  return <SimulatedWorkspaceCreatePage />
+}
+
+function SimulatedWorkspaceCreatePage() {
   const [name, setName] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [done, setDone] = useState<string | null>(null)

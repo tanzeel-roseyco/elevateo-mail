@@ -1,12 +1,15 @@
 // Settings › Profile: the hub (Personal Details · Password) and the password form. Personal
-// Details is the real V2 preference page (features/members/PersonalSettingsPage.tsx); password
-// changes have no endpoint in this build, so the form validates locally and stores nothing.
+// Details is the real V2 preference page (features/members/PersonalSettingsPage.tsx). Password
+// changes have no endpoint: production says sign-in is handled by the workspace identity provider;
+// demo/dev-fixture entries keep the local-validation form, which stores nothing.
 import { useId, useState, type FormEvent } from 'react'
 import { Button } from '@/ui/Button'
 import { Callout } from '@/ui/Callout'
 import { Card, LinkCard, LinkCardGrid } from '@/ui/Card'
 import { Field, TextInput } from '@/ui/Field'
+import { KeyIcon } from '@/ui/icons'
 import { SimulatedAdapterNotice } from './SettingsLayout'
+import { UnavailableSetting, useSimulatedSettings } from './UnavailableSetting'
 
 export function ProfileHubPage() {
   return (
@@ -20,6 +23,20 @@ export function ProfileHubPage() {
 const MIN_PASSWORD = 12
 
 export function PasswordPage() {
+  if (!useSimulatedSettings()) {
+    return (
+      <UnavailableSetting
+        icon={<KeyIcon className="size-5" />}
+        title="Password changes are not available here"
+        body="Sign-in is handled by your workspace identity provider and this release has no password endpoint, so there is no Elevateo password to change on this page."
+        action={{ to: '/settings/profile/personal-details', label: 'Personal Details' }}
+      />
+    )
+  }
+  return <SimulatedPasswordPage />
+}
+
+function SimulatedPasswordPage() {
   const id = useId()
   const [current, setCurrent] = useState('')
   const [next, setNext] = useState('')

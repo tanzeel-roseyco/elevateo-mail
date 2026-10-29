@@ -155,7 +155,7 @@ function Announcement() {
     }
   }
   return (
-    <Callout variant="accent" icon={false} className="mb-6 mt-2" role="note">
+    <Callout variant="accent" icon={false} className="mb-6" role="note">
       <div className="flex items-center justify-between gap-4">
         <Link to="/help/collections/mcp" className="flex flex-1 items-center justify-center gap-2 text-center text-sm leading-6 text-gold-700 hover:underline dark:text-gold-200">
           <Badge tone="accent">New</Badge>

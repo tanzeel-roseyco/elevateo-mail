@@ -1,5 +1,5 @@
 // Sign-in entry for the session gate (BE-02A password flow + launch-sprint app-level SSO).
-// The page first asks the server which entries it offers (ssoContract.ts): a Google SSO button,
+// The page first asks the server which entries it offers (ssoContract.ts): a single sign-on button,
 // the password form, both, or neither. Nothing is assumed client-side: a failed status read fails
 // closed (no form), and the password form appears only when the server reports it enabled.
 // Credentials live only in component state for the duration of the form; nothing is stored,
@@ -24,8 +24,7 @@ import { BrandLockup } from '@/ui/BrandLockup'
 import { Button } from '@/ui/Button'
 import { Callout } from '@/ui/Callout'
 import { Field, TextInput } from '@/ui/Field'
-import { KeyIcon } from '@/ui/icons'
-import { GoogleMark } from './GoogleMark'
+import { ArrowRightStartOnRectangleIcon, KeyIcon } from '@/ui/icons'
 
 // AIDEV-NOTE: Transport mode is only known after authentication; this form must not claim mail is simulated.
 const FOOTNOTE = 'Sign in securely to this Elevateo Mail installation.'
@@ -35,7 +34,7 @@ type Mode = 'sign_in' | 'recovery' | 'recovery_sent'
 /**
  * The browser surfaces the SSO entry needs. Production uses the real location; tests inject a
  * recorder so no jsdom navigation is attempted.
- * AIDEV-NOTE: SSO start is a top-level navigation (server redirects to Google), never fetch: the
+ * AIDEV-NOTE: SSO start is a top-level navigation (server redirects to the IdP), never fetch: the
  * IdP round trip must leave the document, and the callback's cookie lands on the next bootstrap.
  */
 export interface SignInNavigation {
@@ -204,7 +203,7 @@ export function SignInPage({ navigation = browserNavigation }: { navigation?: Si
   }
 
   const { options } = sso.state
-  const ssoEnabled = options.enabled && options.provider === 'google'
+  const ssoEnabled = options.enabled && options.provider !== null
   const passwordEnabled = options.password_login_enabled
   // Recovery screens exist only while the password entry does; a status that turns password login
   // off while recovering falls back to the plain sign-in view instead of an orphaned heading.
@@ -258,14 +257,14 @@ export function SignInPage({ navigation = browserNavigation }: { navigation?: Si
         {recovery ? (
           <p className="text-sm text-zinc-500 dark:text-zinc-400">Enter your email address. If an account exists, a message with a one-time link will be sent to it.</p>
         ) : (
-          ssoEnabled && !passwordEnabled && <p className="text-sm text-zinc-500 dark:text-zinc-400">Use your workspace Google account to continue.</p>
+          ssoEnabled && !passwordEnabled && <p className="text-sm text-zinc-500 dark:text-zinc-400">Use your organization's single sign-on account to continue.</p>
         )}
       </div>
       {!recovery && noticeCallout}
       {!recovery && landingCallout}
       {ssoEnabled && !recovery && (
-        <Button variant="primary" className="w-full" icon={<GoogleMark className="size-4" />} loading={redirecting} onClick={beginSso}>
-          {redirecting ? 'Redirecting to Google…' : 'Continue with Google'}
+        <Button variant="primary" className="w-full" icon={<ArrowRightStartOnRectangleIcon className="size-4" />} loading={redirecting} onClick={beginSso}>
+          {redirecting ? 'Redirecting to sign-in…' : 'Continue with single sign-on'}
         </Button>
       )}
       {ssoEnabled && passwordEnabled && !recovery && (
@@ -300,7 +299,7 @@ interface PasswordEntryProps {
   describedBy: Array<string | null>
   /** Holds the form still while an SSO navigation is leaving the page. */
   locked: boolean
-  /** True when the Google button is the primary entry; the password submit then reads as outline. */
+  /** True when the single sign-on button is the primary entry; the password submit then reads as outline. */
   secondary: boolean
 }
 

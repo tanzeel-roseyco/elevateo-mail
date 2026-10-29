@@ -38,6 +38,7 @@ import type {
   ThreadSnoozeInput,
   ThreadStarInput,
   ThreadStarState,
+  OrganizationThreadPage,
 } from './contract'
 
 /** Consistency headers from the session bootstrap; never an authorization grant. */
@@ -85,6 +86,11 @@ export interface MailroomGateway {
   getSession(signal?: AbortSignal): Promise<Session>
   listMailboxes(ctx: ReadContext, query: PageQuery, signal?: AbortSignal): Promise<MailboxPage>
   listThreads(ctx: ReadContext, mailboxId: string, query: PageQuery & { filter?: ThreadFilter }, signal?: AbortSignal): Promise<ThreadPage>
+  /**
+   * Organization-wide conversation list over every mailbox the actor can read (GET /v1/threads):
+   * same rows, filters, ordering and cursor semantics as `listThreads`, each row naming its mailbox.
+   */
+  listOrganizationThreads(ctx: ReadContext, query: PageQuery & { filter?: ThreadFilter }, signal?: AbortSignal): Promise<OrganizationThreadPage>
   getThread(ctx: ReadContext, threadId: string, mailboxId: string, query: PageQuery, signal?: AbortSignal): Promise<ThreadDetailPage>
 
   /** Five-minute signed challenge; no identity or account data. */

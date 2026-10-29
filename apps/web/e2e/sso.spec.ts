@@ -9,18 +9,18 @@ const signedOut = (search = '', extra = '') => `${ENTRY}${search}#/fixtures?getS
 const shot = (name: string, project: string) => `e2e/.results/${name}-${project}.png`
 const STUB = '<!doctype html><title>IdP stub</title><main><h1>IdP stub reached</h1></main>'
 
-test('Google and password entries: gold primary button, separator, form; Google starts a top-level navigation', async ({ page }, testInfo) => {
+test('single sign-on and password entries: gold primary button, separator, form; SSO starts a top-level navigation', async ({ page }, testInfo) => {
   await page.route('**/v1/auth/sso/start', (route) => route.fulfill({ status: 200, contentType: 'text/html', body: STUB }))
   await page.goto(signedOut())
-  const google = page.getByRole('button', { name: 'Continue with Google' })
-  await expect(google).toBeVisible()
+  const sso = page.getByRole('button', { name: 'Continue with single sign-on' })
+  await expect(sso).toBeVisible()
   await expect(page.getByRole('heading', { name: 'Sign in' })).toBeFocused()
   await expect(page.getByRole('separator', { name: 'or' })).toBeVisible()
   await expect(page.getByLabel('Password')).toBeVisible()
-  await page.screenshot({ path: shot('sso-google-and-password', testInfo.project.name), fullPage: true })
-  // Keyboard: Tab from the focused heading reaches the Google button first, with a visible ring.
+  await page.screenshot({ path: shot('sso-and-password', testInfo.project.name), fullPage: true })
+  // Keyboard: Tab from the focused heading reaches the SSO button first, with a visible ring.
   await page.keyboard.press('Tab')
-  await expect(google).toBeFocused()
+  await expect(sso).toBeFocused()
   // Visible focus: the global :focus-visible rule draws a 2px solid gold-600 outline (#a9853a,
   // light scheme). Checking style != 'none' alone would pass a transparent or zero-width ring, so
   // the computed width and colour are asserted, with the blurred (unfocused) heading as the control.
@@ -28,14 +28,14 @@ test('Google and password entries: gold primary button, separator, form; Google 
     const style = getComputedStyle(el)
     return { style: style.outlineStyle, width: parseFloat(style.outlineWidth), color: style.outlineColor }
   }
-  const ring = await google.evaluate(ringOf)
+  const ring = await sso.evaluate(ringOf)
   expect(ring.style).toBe('solid')
   expect(ring.width).toBeGreaterThanOrEqual(2)
   expect(ring.color).toBe('rgb(169, 133, 58)')
   // Negative control: the element that lost focus must not carry the ring any more.
   const blurred = await page.getByRole('heading', { name: 'Sign in' }).evaluate(ringOf)
   expect(blurred.width === 0 || blurred.style === 'none').toBe(true)
-  await page.screenshot({ path: shot('sso-google-focus', testInfo.project.name), fullPage: true })
+  await page.screenshot({ path: shot('sso-focus', testInfo.project.name), fullPage: true })
   const navigated = page.waitForURL('**/v1/auth/sso/start')
   await page.keyboard.press('Enter')
   await navigated
@@ -45,22 +45,22 @@ test('Google and password entries: gold primary button, separator, form; Google 
   expect(stored).toEqual({ local: 0, session: 0 })
 })
 
-test('Google only: no password fields, explanatory line', async ({ page }, testInfo) => {
-  await page.goto(signedOut('', '&getSsoStatus=sso_google_only'))
-  await expect(page.getByRole('button', { name: 'Continue with Google' })).toBeVisible()
-  await expect(page.getByText('Use your workspace Google account to continue.')).toBeVisible()
+test('single sign-on only: no password fields, explanatory line', async ({ page }, testInfo) => {
+  await page.goto(signedOut('', '&getSsoStatus=sso_only'))
+  await expect(page.getByRole('button', { name: 'Continue with single sign-on' })).toBeVisible()
+  await expect(page.getByText("Use your organization's single sign-on account to continue.")).toBeVisible()
   await expect(page.getByLabel('Password')).toHaveCount(0)
-  await page.screenshot({ path: shot('sso-google-only', testInfo.project.name), fullPage: true })
+  await page.screenshot({ path: shot('sso-only', testInfo.project.name), fullPage: true })
 })
 
-// AIDEV-NOTE: The "Redirecting to Google…" locked state is not asserted here: while the top-level
+// AIDEV-NOTE: The "Redirecting to sign-in…" locked state is not asserted here: while the top-level
 // navigation started by location.assign is pending, Playwright's locators, evaluate and screenshot
 // stall until it commits (a stubbed 204 never does; the 200 stub above commits and leaves the page).
 // SignInPage.sso.test.tsx covers the locked state and its release.
 test('callback failure: generic alert, parameter removed from the address bar', async ({ page }, testInfo) => {
   await page.goto(signedOut('?sso_error=access_denied'))
   const alert = page.getByRole('alert')
-  await expect(alert).toContainText('Google sign-in was not completed')
+  await expect(alert).toContainText('Single sign-on was not completed')
   await expect.poll(() => page.evaluate(() => window.location.search)).toBe('')
   await expect.poll(() => page.evaluate(() => window.location.hash)).toBe('#/fixtures?getSession=unauthenticated')
   await page.screenshot({ path: shot('sso-landing-error', testInfo.project.name), fullPage: true })

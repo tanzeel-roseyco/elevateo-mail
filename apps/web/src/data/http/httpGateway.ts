@@ -41,6 +41,7 @@ import {
   ThreadNotePageSchema,
   ThreadNoteResponseSchema,
   ThreadPageSchema,
+  OrganizationThreadPageSchema,
   ThreadReadStateInputSchema,
   ThreadReadStateSchema,
   ThreadSnoozeInputSchema,
@@ -109,6 +110,10 @@ export function createHttpGateway(fetchImpl?: FetchLike): MailroomGateway {
         MAX_BYTES.threads,
         { ...base, headers: contextHeaders(ctx), signal },
       )
+    },
+    listOrganizationThreads(ctx, q: PageQuery & { filter?: ThreadFilter }, signal) {
+      // Same byte budget as the per-mailbox list: the page carries at most 50 identical rows.
+      return requestJson(`/v1/threads${query({ cursor: q.cursor, limit: q.limit, filter: q.filter })}`, OrganizationThreadPageSchema, MAX_BYTES.threads, { ...base, headers: contextHeaders(ctx), signal })
     },
     getThread(ctx, threadId, mailboxId, q: PageQuery, signal) {
       return requestJson(

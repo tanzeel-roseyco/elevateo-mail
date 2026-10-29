@@ -23,7 +23,7 @@
   ],
   "item": [
     {
-      "name": "v1 · Elevateo local session and mailbox contract (1.0.0-folders.1)",
+      "name": "v1 · Elevateo local session and mailbox contract (1.0.0-organization-threads.1)",
       "description": "Canonical accepted BE-02A lifecycle amendment and unchanged FE-01 read checkpoint. Design contract, not implementation acceptance. All mail content is plaintext. See README.md for normative authorization, lifecycle, byte limits and transport rules.",
       "item": [
         {
@@ -1744,6 +1744,53 @@
               ]
             },
             "description": "Retire draft attachment metadata and reservation under fresh author, editable draft and CSRF checks. Private bytes remain for scoped storage cleanup."
+          }
+        },
+        {
+          "name": "listOrganizationThreads",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Session-Context",
+                "value": "{{sessionContext}}",
+                "description": "Current bootstrap context, never an authorization grant."
+              },
+              {
+                "key": "X-Authorization-Version",
+                "value": "{{authorizationVersion}}",
+                "description": "Current bootstrap authorization version; mismatch returns context_changed after authentication."
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/threads",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "threads"
+              ],
+              "query": [
+                {
+                  "key": "cursor",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "limit",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "filter",
+                  "value": "",
+                  "description": "all: folder=inbox and not currently snoozed. unread: all plus unread for the actor. starred: starred by the actor in any folder except spam and trash. snoozed: folder=inbox with snoozed_until in the future. archive/spam/trash: that folder regardless of snooze. Ordering is unchanged (last_message_at desc nulls last, id desc).",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "List threads across every mailbox currently readable by the authenticated actor in the active organization. One authorized repeatable-read snapshot; each mailbox contributes at most limit+1 candidates to the global keyset merge. Order last_message_at descending, null last, then id descending. Cursor binds actor, organization, session context, authorization version, filter, ordering and limit, and cannot be used with a mailbox list. Concurrent activity may move threads ahead of a continuation; refresh to see them. No totals and no read-state mutation."
           }
         }
       ]

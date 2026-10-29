@@ -1,6 +1,7 @@
 // Settings › Tags (EmailGuard "Custom Tags"): list of workspace tags and the "Add New Tag" modal
 // with the 20-swatch colour grid (`grid grid-cols-10 gap-2`, `w-8 h-8 rounded-full`). Tags have
-// no backend in this build and live in the simulated adapter store.
+// no backend in this build: production shows the unavailable state; demo/dev-fixture entries use
+// the labelled simulated adapter store.
 import { useId, useState, type FormEvent } from 'react'
 import { z } from 'zod'
 import { EmptyState } from '@/ui/Async'
@@ -14,6 +15,7 @@ import { cx } from '@/lib/format'
 import { useToast } from '@/ui/Toast'
 import { SimulatedAdapterNotice } from './SettingsLayout'
 import { simulatedId, useSimulatedStore } from './simulatedStore'
+import { UnavailableSetting, useSimulatedSettings } from './UnavailableSetting'
 
 /** The reference palette: two rows of ten, light tints first, then saturated hues. */
 export const TAG_COLOURS: readonly { name: string; hex: string }[] = [
@@ -35,6 +37,20 @@ const TagsSchema = z.array(TagSchema).max(TAG_LIMIT)
 const NO_TAGS: readonly Tag[] = []
 
 export function TagsPage() {
+  if (!useSimulatedSettings()) {
+    return (
+      <UnavailableSetting
+        icon={<TagIcon className="size-5" />}
+        title="Tags are not available yet"
+        body="Custom tags need a server endpoint that this release does not include, so none can be created or applied to conversations. Folders, stars and snooze are available in every mailbox."
+        action={{ to: '/inbox', label: 'Open inbox' }}
+      />
+    )
+  }
+  return <SimulatedTagsPage />
+}
+
+function SimulatedTagsPage() {
   const store = useSimulatedStore<readonly Tag[]>('tags', TagsSchema, NO_TAGS)
   const [open, setOpen] = useState(false)
   const { toast } = useToast()

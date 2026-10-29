@@ -1,6 +1,7 @@
 // Settings › Webhooks (EmailGuard "Webhook URLs"): list with "Add New Webhook" and the "No webhook
-// URLs yet" empty state, plus the create form. No delivery endpoint exists in this build, so
-// registrations are simulated adapters and nothing is ever called.
+// URLs yet" empty state, plus the create form. No registration or delivery endpoint exists in this
+// build: production shows the unavailable state; demo/dev-fixture entries keep the labelled
+// simulated adapter, and nothing is ever called.
 import { useId, useState, type FormEvent } from 'react'
 import { Link, useNavigate } from 'react-router'
 import { z } from 'zod'
@@ -14,6 +15,7 @@ import { BoltIcon, PlusIcon } from '@/ui/icons'
 import { useToast } from '@/ui/Toast'
 import { SimulatedAdapterNotice } from './SettingsLayout'
 import { simulatedId, useSimulatedStore } from './simulatedStore'
+import { UnavailableSetting, useSimulatedSettings } from './UnavailableSetting'
 
 export const WEBHOOK_EVENTS = [
   { key: 'conversation.received', label: 'Conversation received' },
@@ -41,7 +43,21 @@ function useWebhooks() {
   return useSimulatedStore<readonly Webhook[]>('webhooks', WebhooksSchema, NO_WEBHOOKS)
 }
 
+const WEBHOOKS_UNAVAILABLE = (
+  <UnavailableSetting
+    icon={<BoltIcon className="size-5" />}
+    title="Webhooks are not available yet"
+    body="Registering an endpoint needs a server-side dispatcher that this release does not include, so no URL can be saved or called. The Developer API page lists what the gateway exposes today."
+    action={{ to: '/settings/developer-api', label: 'Developer API' }}
+  />
+)
+
 export function WebhooksPage() {
+  if (!useSimulatedSettings()) return WEBHOOKS_UNAVAILABLE
+  return <SimulatedWebhooksPage />
+}
+
+function SimulatedWebhooksPage() {
   const store = useWebhooks()
   const { toast } = useToast()
   const remove = (hook: Webhook) => {
@@ -81,6 +97,11 @@ export function WebhooksPage() {
 }
 
 export function WebhookCreatePage() {
+  if (!useSimulatedSettings()) return WEBHOOKS_UNAVAILABLE
+  return <SimulatedWebhookCreatePage />
+}
+
+function SimulatedWebhookCreatePage() {
   const store = useWebhooks()
   const navigate = useNavigate()
   const { toast } = useToast()

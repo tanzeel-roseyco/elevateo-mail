@@ -12,12 +12,13 @@ import { Shell } from './Shell'
 import { RunIntentProvider } from '@/features/outreach/RunIntent'
 import { InboxLayout } from '@/features/inbox/InboxLayout'
 import { InboxPage } from '@/features/inbox/InboxPage'
-import { InboxRedirect } from '@/features/inbox/InboxRedirect'
 
 // AIDEV-NOTE: Dashboard and the inbox list stay eager (first paint); every other page is a lazy
 // chunk behind Shell's loading/error boundary and session guard.
 const ComposeWindow = lazy(() => import('@/features/drafts/ComposeWindow').then((page) => ({ default: page.ComposeWindow })))
 const DraftEditorPage = lazy(() => import('@/features/drafts/DraftEditorPage').then((page) => ({ default: page.DraftEditorPage })))
+// The unified list is lazy: /inbox redirects straight to the mailbox page when only one is visible.
+const UnifiedInboxPage = lazy(() => import('@/features/inbox/UnifiedInboxPage').then((page) => ({ default: page.UnifiedInboxPage })))
 const DraftsPage = lazy(() => import('@/features/drafts/DraftsPage').then((page) => ({ default: page.DraftsPage })))
 const MembersPage = lazy(() => import('@/features/members/MembersPage').then((page) => ({ default: page.MembersPage })))
 const SearchPage = lazy(() => import('@/features/search/SearchPage').then((page) => ({ default: page.SearchPage })))
@@ -62,9 +63,10 @@ export function App({ gateway, featureGateways = {} }: { gateway: MailroomGatewa
         <Routes>
           <Route element={<Shell />}>
             <Route index element={<DashboardPage />} />
-            {/* The old overview URL and the sidebar "Inbox" entry both resolve to real pages. */}
+            {/* The old overview URL resolves to the dashboard; the sidebar "Inbox" entry is the unified
+                list over every readable mailbox (one mailbox redirects to its own inbox page). */}
             <Route path="/overview" element={<Navigate to="/" replace />} />
-            <Route path="/inbox" element={<InboxRedirect />} />
+            <Route path="/inbox" element={<UnifiedInboxPage />} />
             <Route path="/outreach/campaigns/:campaignId/runs" element={<CampaignRunsPage />} />
             {/* Gmail-structured mailbox area: folder column + list/thread/drafts (INBOX-SPEC). */}
             <Route path="/mailboxes/:mailboxId" element={<InboxLayout />}>

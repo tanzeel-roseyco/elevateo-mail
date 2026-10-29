@@ -75,9 +75,15 @@ describe.each(BOTH)('shared cases via %s gateway', (_label, make) => {
 describe('HTTP request contract', () => {
   it('preserves paths, opaque queries, context headers and same-origin GET options', async () => {
     const seen: Array<{ path: string; init: RequestInit }> = []
-    const names = ['session_a', 'mailboxes', 'threads', 'thread_empty']
+    const names = ['session_a', 'mailboxes', 'threads', 'thread_empty', 'threads']
     const gateway = createHttpGateway(async (path, init) => {
       seen.push({ path, init })
+      if (seen.length === 5) {
+        // Organization-wide page: the per-mailbox example rows without the envelope's mailbox_id.
+        const body = { ...(examples['threads']!.body as Record<string, unknown>) }
+        delete body['mailbox_id']
+        return new Response(JSON.stringify(body), { status: 200, headers: { 'Content-Type': 'application/json' } })
+      }
       return jsonResponse(names[seen.length - 1]!)
     })
     const caller = new AbortController()
@@ -86,10 +92,12 @@ describe('HTTP request contract', () => {
     await gateway.listMailboxes(CTX, { cursor, limit: 50 }, caller.signal)
     await gateway.listThreads(CTX, 'mail/box', { cursor, limit: 50, filter: 'unread' }, caller.signal)
     await gateway.getThread(CTX, 'thread/id', 'mail/box', { cursor, limit: 20 }, caller.signal)
+    await gateway.listOrganizationThreads(CTX, { cursor, limit: 50, filter: 'starred' }, caller.signal)
     expect(seen[0]?.path).toBe('/v1/session')
     expect(seen[1]?.path).toBe('/v1/mailboxes?cursor=opaque+%2B%2F%26%3D%3F&limit=50')
     expect(seen[2]?.path).toBe('/v1/mailboxes/mail%2Fbox/threads?cursor=opaque+%2B%2F%26%3D%3F&limit=50&filter=unread')
     expect(seen[3]?.path).toBe('/v1/threads/thread%2Fid?mailbox_id=mail%2Fbox&cursor=opaque+%2B%2F%26%3D%3F&limit=20')
+    expect(seen[4]?.path).toBe('/v1/threads?cursor=opaque+%2B%2F%26%3D%3F&limit=50&filter=starred')
     seen.forEach(({ init }, index) => {
       expect(init).toMatchObject({ method: 'GET', credentials: 'same-origin', cache: 'no-store', redirect: 'manual' })
       expect(init.signal?.aborted).toBe(false)

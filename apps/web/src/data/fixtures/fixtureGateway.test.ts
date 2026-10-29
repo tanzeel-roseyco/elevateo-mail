@@ -1,5 +1,5 @@
 import { describe, expect, expectTypeOf, it } from 'vitest'
-import type { AuthChallenge, AuthLifecycle, AuthLogout, MailboxPage, OrganizationPage, Session, ThreadDetailPage, ThreadPage } from '../contract'
+import type { AuthChallenge, AuthLifecycle, AuthLogout, MailboxPage, OrganizationPage, OrganizationThreadPage, Session, ThreadDetailPage, ThreadPage } from '../contract'
 import type { ReadContext } from '../gateway'
 import { createFixtureGateway } from './fixtureGateway'
 
@@ -23,6 +23,19 @@ describe('operation-specific fixture validation', () => {
     expect(mailboxes.items[0]?.id).toBe(mailbox)
     expect(threads.mailbox_id).toBe(mailbox)
     expect(detail.thread.id).toBe(thread)
+  })
+
+  it('composes the organization list from both fixture mailboxes in server order, no envelope mailbox_id', async () => {
+    const gateway = createFixtureGateway()
+    const page = await gateway.listOrganizationThreads(context, {})
+    expectTypeOf(page).toEqualTypeOf<OrganizationThreadPage>()
+    expect('mailbox_id' in page).toBe(false)
+    expect(page.next_cursor).toBeNull()
+    expect(new Set(page.items.map((t) => t.mailbox_id)).size).toBe(2)
+    const times = page.items.map((t) => (t.last_message_at === null ? Number.NEGATIVE_INFINITY : Date.parse(t.last_message_at)))
+    expect(times).toEqual([...times].sort((x, y) => y - x))
+    expect((await gateway.listOrganizationThreads(context, { limit: 1 })).items).toHaveLength(1)
+    await expect(createFixtureGateway({ listOrganizationThreads: 'context_changed' }).listOrganizationThreads(context, {})).rejects.toMatchObject({ kind: 'api', code: 'context_changed' })
   })
 
   const operations = [

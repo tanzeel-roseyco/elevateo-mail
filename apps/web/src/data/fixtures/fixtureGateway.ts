@@ -33,6 +33,7 @@ import {
   ThreadNotePageSchema,
   ThreadNoteResponseSchema,
   ThreadPageSchema,
+  OrganizationThreadPageSchema,
   ThreadReadStateSchema,
   ThreadStarStateSchema,
   type ThreadSummary,
@@ -44,6 +45,7 @@ type Operation =
   | 'getSession'
   | 'listMailboxes'
   | 'listThreads'
+  | 'listOrganizationThreads'
   | 'getThread'
   | 'getLoginChallenge'
   | 'getSsoStatus'
@@ -83,9 +85,11 @@ const DEFAULTS: Record<Exclude<Operation, CdOperation>, string> = {
   getSession: 'session_a',
   listMailboxes: 'mailboxes_collaboration',
   listThreads: 'threads',
+  // No canonical example exists yet; the default answer is composed from the per-mailbox lists below.
+  listOrganizationThreads: 'threads',
   getThread: 'thread_hostile_plaintext',
   getLoginChallenge: 'challenge',
-  getSsoStatus: 'sso_google_and_password',
+  getSsoStatus: 'sso_and_password',
   login: 'lifecycle_a',
   requestRecovery: 'recovery_accepted',
   acceptAuthEntry: 'lifecycle_a',
@@ -152,8 +156,9 @@ const SYNTHETIC: Record<string, Example> = {
   mailboxes_collaboration: mailboxesWithCollaboration(),
   // SSO status variants (ssoContract.ts). The default keeps the password form so every earlier
   // sign-in test and browser check still finds it; the others script the launch SSO states.
-  sso_google_and_password: { status: 200, body: { enabled: true, provider: 'google', password_login_enabled: true } },
-  sso_google_only: { status: 200, body: { enabled: true, provider: 'google', password_login_enabled: false } },
+  // Provider is the self-hosted Authentik identifier the launch server reports; the client shows no vendor name.
+  sso_and_password: { status: 200, body: { enabled: true, provider: 'custom:authentik', password_login_enabled: true } },
+  sso_only: { status: 200, body: { enabled: true, provider: 'custom:authentik', password_login_enabled: false } },
   sso_password_only: { status: 200, body: { enabled: false, provider: null, password_login_enabled: true } },
   sso_none: { status: 200, body: { enabled: false, provider: null, password_login_enabled: false } },
 }
@@ -199,6 +204,14 @@ function resolve<S extends z.ZodType>(operation: Operation, script: FixtureScrip
 // AIDEV-NOTE: An already-aborted caller signal rejects like the HTTP adapter ('aborted', before
 // work). Resolution is otherwise synchronous, so a later abort is the caller's post-await concern
 // (D4); tests that need an abort-IGNORING gateway override individual methods instead.
+/** Server list order for summaries: last_message_at desc with nulls last, then id desc. */
+function compareByLastMessage(a: ThreadSummary, b: ThreadSummary): number {
+  const ta = a.last_message_at === null ? Number.NEGATIVE_INFINITY : Date.parse(a.last_message_at)
+  const tb = b.last_message_at === null ? Number.NEGATIVE_INFINITY : Date.parse(b.last_message_at)
+  if (ta !== tb) return ta > tb ? -1 : 1
+  return a.id === b.id ? 0 : a.id > b.id ? -1 : 1
+}
+
 function throwIfAborted(signal: AbortSignal | undefined): void {
   if (signal?.aborted) throw new GatewayError('transport', 'aborted', 'The request was cancelled.')
 }
@@ -254,7 +267,8 @@ export function createFixtureGateway(script: FixtureScript = {}, options: Fixtur
     return parsed.data
   }
 
-  return {
+  // Named so composed methods (the organization list) can reuse the per-mailbox adapters.
+  const gateway: MailroomGateway = {
     // BE03 has no implicit synthetic success: tests explicitly supply send methods.
     getSendReview: async (_ctx, _draftId, _mailboxId, signal) => { throwIfAborted(signal); throw new GatewayError('api', 'temporarily_unavailable', 'Send review is unavailable in this fixture.', { status: 503 }) },
     approveDraftSend: async (_ctx, _proof, _draftId, _input, signal) => { throwIfAborted(signal); throw new GatewayError('api', 'temporarily_unavailable', 'Send approval is unavailable in this fixture.', { status: 503 }) },
@@ -292,6 +306,20 @@ export function createFixtureGateway(script: FixtureScript = {}, options: Fixtur
           }
         })
       return { ...page, items: decorated.filter((t) => CollaborationState.matchesFilter(t, filter)) }
+    },
+    // AIDEV-NOTE: Unscripted, the organization list is the union of the two fixture mailboxes'
+    // per-mailbox answers in server order (last_message_at desc, nulls last, id desc), one page, so
+    // the unified inbox renders real rows with mixed mailbox ids. A scripted error name raises it.
+    listOrganizationThreads: async (ctx, query, signal) => {
+      throwIfAborted(signal)
+      const scripted = script['listOrganizationThreads']
+      if (scripted !== undefined && example(scripted).status >= 400) resolve('listOrganizationThreads', script, OrganizationThreadPageSchema)
+      const canonicalMailbox = (readExamples['threads']?.body as { mailbox_id?: string } | undefined)?.mailbox_id
+      const pages = await Promise.all([canonicalMailbox, CD_FIXTURE.mailboxId].filter((id): id is string => id !== undefined).map((id) => gateway.listThreads(ctx, id, query, signal)))
+      const seen = new Set<string>()
+      const items = pages.flatMap((page) => page.items).filter((t) => !seen.has(t.id) && seen.add(t.id) !== undefined).sort(compareByLastMessage)
+      const limit = query.limit ?? 50
+      return validated(OrganizationThreadPageSchema, { ...envelope(), next_cursor: null, items: items.slice(0, limit) })
     },
     getThread: async (_ctx, threadId, mailboxId, _query, signal) => {
       throwIfAborted(signal)
@@ -427,4 +455,5 @@ export function createFixtureGateway(script: FixtureScript = {}, options: Fixtur
       return scripted('searchMail', SearchPageSchema) ?? validated(SearchPageSchema, { ...envelope(), q: query.q, mailbox_id: query.mailbox_id ?? null, next_cursor: null, items: state.search(query.q, query.mailbox_id) })
     },
   }
+  return gateway
 }

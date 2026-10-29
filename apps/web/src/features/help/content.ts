@@ -33,7 +33,7 @@ export const COLLECTIONS: readonly Collection[] = [
   { slug: 'outreach', title: 'Outreach Campaigns', description: 'Campaigns, sequences, runs and the consent rules that gate marketing mail.' },
   { slug: 'members', title: 'Members and Permissions', description: 'Mailbox membership, organization grants and what each capability allows.' },
   { slug: 'search', title: 'Search', description: 'Literal search across the mailboxes you can read.' },
-  { slug: 'settings', title: 'Workspace Settings', description: 'Workspace, profile, tags and the settings that are simulated in this build.' },
+  { slug: 'settings', title: 'Workspace Settings', description: 'Workspace, profile and which settings the server supports in this release.' },
   { slug: 'webhooks', title: 'Webhooks', description: 'Event notifications for your workspace and how they will be delivered.' },
   { slug: 'developer', title: 'Developer API and MCP', description: 'The gateway API, tokens, the command-line connector and the MCP server.' },
   { slug: 'walkthroughs', title: 'Walkthroughs', description: 'End-to-end guides for common team routines.' },
@@ -44,9 +44,9 @@ export const ARTICLES: readonly Article[] = [
     slug: 'signing-in',
     collection: 'getting-started',
     title: 'How do I sign in to Elevateo Mail?',
-    summary: 'Google sign-in, email and password sign-in, recovery, and what happens when a session expires.',
+    summary: 'Single sign-on, email and password sign-in, recovery, and what happens when a session expires.',
     blocks: [
-      { kind: 'p', text: 'Open the app and choose "Continue with Google" to sign in with your workspace Google account. You are taken to Google and back; after a successful sign-in the app loads your organization and every mailbox you are a member of. If Google does not accept the account for this workspace, the sign-in page says so without naming the account.' },
+      { kind: 'p', text: 'Open the app and choose "Continue with single sign-on" to sign in with your organization account. You are taken to your organization’s identity provider and back; after a successful sign-in the app loads your organization and every mailbox you are a member of. If the identity provider does not accept the account for this workspace, the sign-in page says so without naming the account.' },
       { kind: 'p', text: 'The sign-in page only shows the entries your installation enables. Where password sign-in is enabled, enter the email address and password your workspace administrator gave you. If you forgot your password, choose "Forgot your password?"; the recovery message reads the same for any address so nobody can learn which accounts exist.' },
       { kind: 'note', text: 'When a session expires the app tries one silent refresh. If that fails you are returned to the sign-in page and nothing from the old session stays on screen.' },
     ],
@@ -234,20 +234,22 @@ export const ARTICLES: readonly Article[] = [
   {
     slug: 'simulated-settings',
     collection: 'settings',
-    title: 'Which settings are simulated?',
-    summary: 'Workspace name, invitations, tags, API tokens and webhooks are kept in your browser.',
+    title: 'Which settings are available?',
+    summary: 'Display name, members and grants are saved on the server; several pages say "not available yet".',
     blocks: [
-      { kind: 'p', text: 'Settings pages that carry the "Simulated UI adapter" notice have no server endpoint in this build. What you enter there is stored in this browser for the current workspace and never reaches other members.' },
-      { kind: 'list', items: ['Real: Personal Details (display name), mailbox members, organization grants.', 'Simulated: workspace name, invitations, workspace creation, tags, API tokens, webhooks.', 'Local check only: password change.'] },
+      { kind: 'p', text: 'A settings page either saves on the server or tells you plainly that its capability is not available yet. Nothing you type is kept in the browser in place of a server save.' },
+      { kind: 'list', items: ['Saved on the server: Personal Details (display name), mailbox members, organization grants, workspace switching.', 'Not available yet (no server endpoint): workspace rename, invitations, workspace creation, tags, API tokens, webhooks.', 'Password: sign-in is handled by your workspace identity provider, so there is no Elevateo password to change.'] },
+      { kind: 'note', text: 'The synthetic demo entry keeps a browser-local stand-in for the unavailable pages, clearly labelled "Simulated UI adapter". That label never appears in the production application.' },
     ],
   },
   {
     slug: 'tags',
     collection: 'settings',
-    title: 'How do I create tags?',
-    summary: 'Name a tag and pick one of twenty colours.',
+    title: 'Can I create tags?',
+    summary: 'Not yet: tags need a server endpoint that this release does not include.',
     blocks: [
-      { kind: 'steps', items: ['Open Settings › Tags and choose Add New Tag.', 'Enter a name and pick a colour swatch.', 'Choose Create Tag. The tag appears in the list with a preview chip.'] },
+      { kind: 'p', text: 'Settings › Tags explains that custom tags are not available yet. When the server gains tag endpoints, the page will offer Add New Tag with a name and one of twenty colours, and tags will appear as chips on conversation rows.' },
+      { kind: 'p', text: 'Until then, organise conversations with the per-mailbox folders (Archive, Spam, Trash), personal stars and snooze, which are all saved on the server.' },
     ],
   },
   {
@@ -258,7 +260,7 @@ export const ARTICLES: readonly Article[] = [
     blocks: [
       { kind: 'p', text: 'Each registered endpoint receives a POST with a JSON body describing the event: the event name, the workspace, the object id and a timestamp. Endpoints must use HTTPS.' },
       { kind: 'code', language: 'json', code: '{\n  "event": "conversation.received",\n  "organization_id": "…",\n  "mailbox_id": "…",\n  "thread_id": "…",\n  "occurred_at": "2026-10-20T09:00:00Z"\n}' },
-      { kind: 'note', text: 'Delivery is not part of this build; registrations are simulated adapters until the dispatcher ships.' },
+      { kind: 'note', text: 'Registration and delivery are not available yet: Settings › Webhooks says so, and no endpoint can be saved or called until the server-side dispatcher ships.' },
     ],
   },
   {
@@ -279,7 +281,7 @@ export const ARTICLES: readonly Article[] = [
     summary: 'Workspace-scoped api-user tokens for integrations; super-admin for cross-workspace tooling.',
     blocks: [
       { kind: 'p', text: 'An api-user token is scoped to one workspace and is the right choice for almost every integration, including no-code platforms. A super-admin token spans every workspace you administer and should be reserved for internal tooling.' },
-      { kind: 'note', text: 'Tokens generated in this build are shown once and kept only by prefix; the gateway does not accept them until token authentication ships.' },
+      { kind: 'note', text: 'Token issuing is not available yet: the gateway authenticates with the signed-in session only, and Settings › Developer API says so until token authentication ships.' },
     ],
   },
   {

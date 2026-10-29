@@ -92,6 +92,17 @@ export const ThreadPageSchema = z.strictObject({
   items: z.array(ThreadSummarySchema).max(50),
 })
 
+// AIDEV-NOTE: GET /v1/threads (organization-wide list, launch sprint 2026-10-23) returns the same
+// ThreadSummary rows and cursor semantics as the per-mailbox list, without `mailbox_id` in the
+// envelope because each row names its own mailbox (canonical: listOrganizationThreads in
+// contracts/v1/openapi.json; type from the pinned generator like every other page type below).
+export const OrganizationThreadPageSchema = z.strictObject({
+  context_id: opaqueToken,
+  authorization_version: opaqueToken,
+  next_cursor: cursor.nullable(),
+  items: z.array(ThreadSummarySchema).max(50),
+})
+
 export const MessageSchema = z.strictObject({
   id,
   sender: AddressSchema.nullable(),
@@ -192,6 +203,7 @@ export type MailboxPage = components['schemas']['MailboxPage']
 export type ThreadSummary = components['schemas']['ThreadSummary']
 export type ThreadFolder = components['schemas']['ThreadFolder']
 export type ThreadPage = components['schemas']['ThreadPage']
+export type OrganizationThreadPage = components['schemas']['OrganizationThreadPage']
 export type Message = components['schemas']['Message']
 export type ThreadDetailPage = components['schemas']['ThreadDetailPage']
 export type ApiError = components['schemas']['Error']

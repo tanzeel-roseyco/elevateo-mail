@@ -5,6 +5,7 @@
 // AIDEV-NOTE: Minimise hides the body visually (the editor stays mounted so unsaved text is never
 // lost); close navigates back to the drafts list, which the editor's write-through intent store
 // already survives.
+// AIDEV-NOTE: Both window sizes reserve measured notices so the editor footer stays reachable.
 import { useState, type ReactNode } from 'react'
 import { useNavigate, useParams } from 'react-router'
 import { cx } from '@/lib/format'
@@ -24,10 +25,10 @@ export function ComposeWindow({ title = 'New message', children }: { title?: str
       aria-label="Compose"
       className={cx(
         'z-20 flex flex-col overflow-hidden border border-zinc-200 bg-white shadow-lg dark:border-zinc-700 dark:bg-zinc-800',
-        'max-md:fixed max-md:inset-0',
-        'md:fixed md:bottom-0 md:end-6 md:rounded-t-xl',
+        'fixed bottom-[var(--bottom-notices)] max-md:inset-x-0 max-md:top-0',
+        'md:end-6 md:rounded-t-xl',
         wide ? 'md:end-6 md:top-6 md:w-[min(900px,calc(100vw-3rem))]' : 'md:w-[540px]',
-        minimised ? 'md:max-h-10' : 'md:max-h-[min(640px,calc(100dvh-2rem))]',
+        minimised ? 'md:max-h-10' : 'md:max-h-[min(640px,calc(100dvh-2rem-var(--bottom-notices)))]',
       )}
     >
       <header className="flex h-10 shrink-0 items-center gap-1 border-b border-zinc-200 bg-zinc-50 px-3 text-sm font-medium text-zinc-800 dark:border-zinc-700 dark:bg-zinc-900 dark:text-white">

@@ -535,6 +535,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/threads": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description List threads across every mailbox currently readable by the authenticated actor in the active organization. One authorized repeatable-read snapshot; each mailbox contributes at most limit+1 candidates to the global keyset merge. Order last_message_at descending, null last, then id descending. Cursor binds actor, organization, session context, authorization version, filter, ordering and limit, and cannot be used with a mailbox list. Concurrent activity may move threads ahead of a continuation; refresh to see them. No totals and no read-state mutation. */
+        get: operations["listOrganizationThreads"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -1102,6 +1119,13 @@ export interface components {
             starred: boolean;
             star_version: components["schemas"]["ResourceVersion"];
             updated_at: components["schemas"]["UtcTimestamp"] | null;
+        };
+        /** @description Organization-wide authorized ThreadSummary page. Each item retains its mailbox_id; no top-level mailbox_id. Empty authorized scope returns items=[] and next_cursor=null. */
+        OrganizationThreadPage: {
+            context_id: components["schemas"]["OpaqueToken"];
+            authorization_version: components["schemas"]["OpaqueToken"];
+            next_cursor: string | null;
+            items: components["schemas"]["ThreadSummary"][];
         };
     };
     responses: {
@@ -3708,6 +3732,124 @@ export interface operations {
             429: components["responses"]["CdRateLimited"];
             500: components["responses"]["CdInternalError"];
             503: components["responses"]["CdUnavailable"];
+        };
+    };
+    listOrganizationThreads: {
+        parameters: {
+            query?: {
+                cursor?: string;
+                limit?: number;
+                /** @description all: folder=inbox and not currently snoozed. unread: all plus unread for the actor. starred: starred by the actor in any folder except spam and trash. snoozed: folder=inbox with snoozed_until in the future. archive/spam/trash: that folder regardless of snooze. Ordering is unchanged (last_message_at desc nulls last, id desc). */
+                filter?: "all" | "unread" | "starred" | "snoozed" | "archive" | "spam" | "trash";
+            };
+            header: {
+                /** @description Current bootstrap context, never an authorization grant. */
+                "X-Session-Context": components["schemas"]["OpaqueToken"];
+                /** @description Current bootstrap authorization version; mismatch returns context_changed after authentication. */
+                "X-Authorization-Version": components["schemas"]["OpaqueToken"];
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Authorized, currently visible data. */
+            200: {
+                headers: {
+                    "Cache-Control": "no-store";
+                    Vary: "Cookie";
+                    "X-Content-Type-Options": "nosniff";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["OrganizationThreadPage"];
+                };
+            };
+            /** @description request_invalid; cursor_invalid for an expired, malformed or scope-mismatched cursor. */
+            400: {
+                headers: {
+                    "Cache-Control": "no-store";
+                    Vary: "Cookie";
+                    "X-Content-Type-Options": "nosniff";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description unauthenticated for missing, invalid, expired or revoked session. Clear sensitive client state. */
+            401: {
+                headers: {
+                    "Cache-Control": "no-store";
+                    Vary: "Cookie";
+                    "X-Content-Type-Options": "nosniff";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description not_available for absent OR inaccessible object. Identical shape and message; no existence disclosure. */
+            404: {
+                headers: {
+                    "Cache-Control": "no-store";
+                    Vary: "Cookie";
+                    "X-Content-Type-Options": "nosniff";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description context_changed: no data returned. Clear data and re-bootstrap current session. */
+            409: {
+                headers: {
+                    "Cache-Control": "no-store";
+                    Vary: "Cookie";
+                    "X-Content-Type-Options": "nosniff";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description rate_limited; optional Retry-After is delta-seconds 1..300. */
+            429: {
+                headers: {
+                    "Cache-Control": "no-store";
+                    Vary: "Cookie";
+                    "X-Content-Type-Options": "nosniff";
+                    "Retry-After"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description internal_error; bounded generic message; correlation only, no stack or mail content. */
+            500: {
+                headers: {
+                    "Cache-Control": "no-store";
+                    Vary: "Cookie";
+                    "X-Content-Type-Options": "nosniff";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description temporarily_unavailable; no fixture fallback. */
+            503: {
+                headers: {
+                    "Cache-Control": "no-store";
+                    Vary: "Cookie";
+                    "X-Content-Type-Options": "nosniff";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
         };
     };
 }

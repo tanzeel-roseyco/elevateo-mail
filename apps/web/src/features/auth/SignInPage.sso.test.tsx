@@ -1,5 +1,5 @@
-// SSO entry on the sign-in page: the server's status decides what is offered (Google button,
-// password form, both, nothing), a status failure fails closed with a retry, the Google button
+// SSO entry on the sign-in page: the server's status decides what is offered (single sign-on
+// button, password form, both, nothing), a status failure fails closed with a retry, the SSO button
 // is a full-page navigation that locks the page, and a callback failure is shown generically
 // once and removed from the URL.
 import { StrictMode } from 'react'
@@ -55,14 +55,14 @@ function renderSignedOut(script: FixtureScript = {}, extra: Partial<MailroomGate
 afterEach(() => vi.restoreAllMocks())
 
 describe('sign-in entries by server status', () => {
-  it('shows a Google primary button above the outline password form when both are enabled', async () => {
+  it('shows a single sign-on primary button above the outline password form when both are enabled', async () => {
     renderSignedOut()
-    const google = await screen.findByRole('button', { name: 'Continue with Google' })
+    const sso = await screen.findByRole('button', { name: 'Continue with single sign-on' })
     const submit = screen.getByRole('button', { name: 'Sign in' })
-    expect(google.className).toContain('bg-(--color-accent)')
+    expect(sso.className).toContain('bg-(--color-accent)')
     expect(submit.className).toContain('bg-white')
-    // DOCUMENT_POSITION_FOLLOWING: the submit comes after the Google button in document order.
-    expect(google.compareDocumentPosition(submit) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
+    // DOCUMENT_POSITION_FOLLOWING: the submit comes after the SSO button in document order.
+    expect(sso.compareDocumentPosition(submit) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
     expect(screen.getByRole('separator', { name: 'or' })).toBeTruthy()
     expect(screen.getByLabelText('Email address')).toBeTruthy()
     expect(screen.getByLabelText('Password')).toBeTruthy()
@@ -83,10 +83,10 @@ describe('sign-in entries by server status', () => {
     expect(((await screen.findByLabelText('Email address')) as HTMLInputElement).value).toBe('kept@example.test')
   })
 
-  it('shows only the Google entry when the server disables password login', async () => {
-    renderSignedOut({ getSsoStatus: 'sso_google_only' })
-    await screen.findByRole('button', { name: 'Continue with Google' })
-    expect(screen.getByText('Use your workspace Google account to continue.')).toBeTruthy()
+  it('shows only the single sign-on entry when the server disables password login', async () => {
+    renderSignedOut({ getSsoStatus: 'sso_only' })
+    await screen.findByRole('button', { name: 'Continue with single sign-on' })
+    expect(screen.getByText("Use your organization's single sign-on account to continue.")).toBeTruthy()
     expect(screen.queryByLabelText('Email address')).toBeNull()
     expect(screen.queryByLabelText('Password')).toBeNull()
     expect(screen.queryByRole('button', { name: 'Forgot your password?' })).toBeNull()
@@ -96,19 +96,19 @@ describe('sign-in entries by server status', () => {
   it('shows only the password form when SSO is disabled', async () => {
     renderSignedOut({ getSsoStatus: 'sso_password_only' })
     await screen.findByLabelText('Password')
-    expect(screen.queryByRole('button', { name: 'Continue with Google' })).toBeNull()
+    expect(screen.queryByRole('button', { name: 'Continue with single sign-on' })).toBeNull()
     expect(screen.queryByRole('separator')).toBeNull()
   })
 
   it('offers nothing but a re-check when no entry is enabled, and recovers on the next status', async () => {
-    const statuses = [createFixtureGateway({ getSsoStatus: 'sso_none' }), createFixtureGateway({ getSsoStatus: 'sso_google_only' })]
+    const statuses = [createFixtureGateway({ getSsoStatus: 'sso_none' }), createFixtureGateway({ getSsoStatus: 'sso_only' })]
     const getSsoStatus = vi.fn<MailroomGateway['getSsoStatus']>((signal) => statuses.shift()!.getSsoStatus(signal))
     renderSignedOut({}, { getSsoStatus })
     await screen.findByRole('heading', { name: 'Sign-in is not available' })
     expect(screen.queryByLabelText('Password')).toBeNull()
-    expect(screen.queryByRole('button', { name: 'Continue with Google' })).toBeNull()
+    expect(screen.queryByRole('button', { name: 'Continue with single sign-on' })).toBeNull()
     fireEvent.click(screen.getByRole('button', { name: 'Check again' }))
-    await screen.findByRole('button', { name: 'Continue with Google' })
+    await screen.findByRole('button', { name: 'Continue with single sign-on' })
     expect(getSsoStatus).toHaveBeenCalledTimes(2)
   })
 
@@ -129,19 +129,19 @@ describe('sign-in entries by server status', () => {
     const alert = await screen.findByRole('alert')
     expect(alert.textContent).toContain('Sign-in options could not be loaded')
     expect(screen.queryByLabelText('Password')).toBeNull()
-    expect(screen.queryByRole('button', { name: 'Continue with Google' })).toBeNull()
+    expect(screen.queryByRole('button', { name: 'Continue with single sign-on' })).toBeNull()
     fireEvent.click(screen.getByRole('button', { name: 'Try again' }))
-    await screen.findByRole('button', { name: 'Continue with Google' })
+    await screen.findByRole('button', { name: 'Continue with single sign-on' })
     expect(getSsoStatus).toHaveBeenCalledTimes(2)
   })
 })
 
-describe('Google entry', () => {
+describe('single sign-on entry', () => {
   it('navigates the document to the server start path, shows the redirecting state and locks the form', async () => {
     const { navigation } = renderSignedOut()
-    fireEvent.click(await screen.findByRole('button', { name: 'Continue with Google' }))
+    fireEvent.click(await screen.findByRole('button', { name: 'Continue with single sign-on' }))
     expect(navigation.assigned).toEqual(['/v1/auth/sso/start'])
-    const busy = screen.getByRole('button', { name: 'Redirecting to Google…' })
+    const busy = screen.getByRole('button', { name: 'Redirecting to sign-in…' })
     expect(busy.getAttribute('aria-busy')).toBe('true')
     expect((busy as HTMLButtonElement).disabled).toBe(true)
     expect((screen.getByLabelText('Password') as HTMLInputElement).disabled).toBe(true)
@@ -153,13 +153,13 @@ describe('Google entry', () => {
 
   it('starts SSO with a document navigation only: no fetch and no login exchange', async () => {
     const { gateway, navigation } = renderSignedOut()
-    const google = await screen.findByRole('button', { name: 'Continue with Google' })
+    const sso = await screen.findByRole('button', { name: 'Continue with single sign-on' })
     // The session bootstrap already spent its one challenge+refresh before this page rendered;
-    // the Google entry itself must add no gateway call and no fetch of the start path.
+    // the SSO entry itself must add no gateway call and no fetch of the start path.
     const fetchSpy = vi.spyOn(globalThis, 'fetch').mockImplementation(() => Promise.reject(new Error('fetch must not run')))
     const challenge = vi.spyOn(gateway, 'getLoginChallenge')
     const login = vi.spyOn(gateway, 'login')
-    fireEvent.click(google)
+    fireEvent.click(sso)
     expect(fetchSpy).not.toHaveBeenCalled()
     expect(challenge).not.toHaveBeenCalled()
     expect(login).not.toHaveBeenCalled()
@@ -168,10 +168,10 @@ describe('Google entry', () => {
 
   it('unlocks the page when the document is restored after a Back from the identity provider', async () => {
     const { navigation } = renderSignedOut()
-    fireEvent.click(await screen.findByRole('button', { name: 'Continue with Google' }))
-    expect(screen.getByRole('button', { name: 'Redirecting to Google…' })).toBeTruthy()
+    fireEvent.click(await screen.findByRole('button', { name: 'Continue with single sign-on' }))
+    expect(screen.getByRole('button', { name: 'Redirecting to sign-in…' })).toBeTruthy()
     act(() => navigation.restore())
-    expect(screen.getByRole('button', { name: 'Continue with Google' })).toBeTruthy()
+    expect(screen.getByRole('button', { name: 'Continue with single sign-on' })).toBeTruthy()
     expect((screen.getByLabelText('Password') as HTMLInputElement).disabled).toBe(false)
   })
 
@@ -180,8 +180,8 @@ describe('Google entry', () => {
     navigation.assign = () => {
       throw new Error('blocked')
     }
-    fireEvent.click(await screen.findByRole('button', { name: 'Continue with Google' }))
-    expect(screen.getByRole('button', { name: 'Continue with Google' })).toBeTruthy()
+    fireEvent.click(await screen.findByRole('button', { name: 'Continue with single sign-on' }))
+    expect(screen.getByRole('button', { name: 'Continue with single sign-on' })).toBeTruthy()
   })
 })
 
@@ -189,10 +189,10 @@ describe('callback failure landing', () => {
   it('shows the generic message once and strips the parameter from the URL', async () => {
     const { navigation } = renderSignedOut({}, {}, '?sso_error=access_denied')
     const alert = await screen.findByRole('alert')
-    expect(alert.textContent).toContain('Google sign-in was not completed')
+    expect(alert.textContent).toContain('Single sign-on was not completed')
     await waitFor(() => expect(navigation.replaced).toEqual(['']))
     // Starting again clears the stale message.
-    fireEvent.click(screen.getByRole('button', { name: 'Continue with Google' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Continue with single sign-on' }))
     expect(screen.queryByRole('alert')).toBeNull()
   })
 
@@ -227,7 +227,7 @@ describe('callback failure landing', () => {
   it('still shows the callback failure when no entry is enabled', async () => {
     renderSignedOut({ getSsoStatus: 'sso_none' }, {}, '?sso_error=access_denied')
     await screen.findByRole('heading', { name: 'Sign-in is not available' })
-    expect(screen.getByRole('alert').textContent).toContain('Google sign-in was not completed')
+    expect(screen.getByRole('alert').textContent).toContain('Single sign-on was not completed')
   })
 
   it('collapses an unknown value to generic copy and never echoes it', async () => {

@@ -14,7 +14,7 @@ createRoot(root).render(
       <p role="note" className="shrink-0 bg-warn/15 px-3 py-1 text-center text-[12px] font-semibold text-warn">
         Synthetic demo | Fictitious people and mail | No network or mail sending | Changes reset on reload
       </p>
-      <div className="min-h-0 flex-1"><App gateway={createDemoGateway()} /></div>
+      <div className="min-h-0 flex-1"><App gateway={createDemoGateway()} featureGateways={{ simulatedSettings: true }} /></div>
     </div>
   </StrictMode>,
 )

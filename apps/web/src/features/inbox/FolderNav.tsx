@@ -10,7 +10,6 @@ import type { ComponentType, SVGProps } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router'
 import type { Mailbox } from '@/data/contract'
 import { useMailboxes } from '@/app/mailboxes'
-import { useSession } from '@/app/session'
 import { cx } from '@/lib/format'
 import { Button } from '@/ui/Button'
 import { Select } from '@/ui/Field'
@@ -187,16 +186,16 @@ export function FolderSelect({ mailboxId, mailbox, counts }: FolderNavProps) {
 /** Phone floating action button (< 768px). */
 export function ComposeFab({ mailboxId, mailbox }: { mailboxId: string; mailbox: Mailbox | undefined }) {
   const navigate = useNavigate()
-  const { state } = useSession()
-  // The simulated-mail strip is fixed to the bottom edge (Shell); the button must sit above it.
-  const aboveStrip = state.status === 'ready' && state.session.simulation_mode
-  if (mailbox?.capabilities.compose !== true) return null
+  const { pathname } = useLocation()
+  // AIDEV-NOTE: Shared measured inset protects notices; hide inside drafts to protect editor footer controls.
+  const editingDraft = pathname.replace(/\/+$/, '').startsWith(`/mailboxes/${mailboxId}/drafts/`)
+  if (mailbox?.capabilities.compose !== true || editingDraft) return null
   return (
     <button
       type="button"
       aria-label="Compose a new draft"
       onClick={() => navigate(composeDraftPath(mailboxId))}
-      className={cx('fixed end-6 z-20 flex size-14 items-center justify-center rounded-full bg-(--color-accent) text-(--color-accent-foreground) shadow-lg hover:bg-gold-400 md:hidden', aboveStrip ? 'bottom-20' : 'bottom-6')}
+      className="fixed end-6 bottom-[calc(1.5rem+var(--bottom-notices))] z-20 flex size-14 items-center justify-center rounded-full bg-(--color-accent) text-(--color-accent-foreground) shadow-lg hover:bg-gold-400 md:hidden"
     >
       <PencilSquareIcon className="size-6" />
     </button>

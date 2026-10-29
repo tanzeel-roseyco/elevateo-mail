@@ -2,8 +2,10 @@
 // the white-label contact card, the
 // API Tokens section with the "Add New API Token" modal (Token Name, Token Type api-user |
 // super-admin, the recommendation callout, Generate Token) and the "No token yet." empty state.
-// Tokens have no issuing endpoint in this build: the secret is generated locally, shown once, and
-// only its name, type, prefix and creation time are kept in the simulated adapter store.
+// Tokens have no issuing endpoint in this build. Production shows an unavailable state for the
+// token section (the reference and Postman cards are real); demo/dev-fixture entries generate the
+// secret locally, show it once and keep only name, type, prefix and creation time in the simulated
+// adapter store.
 import { useId, useState, type FormEvent } from 'react'
 import { z } from 'zod'
 import { EmptyState } from '@/ui/Async'
@@ -21,6 +23,7 @@ import { KeyIcon, PlusIcon } from '@/ui/icons'
 import { useToast } from '@/ui/Toast'
 import { SimulatedAdapterNotice } from './SettingsLayout'
 import { simulatedId, useSimulatedStore } from './simulatedStore'
+import { UnavailableSetting, useSimulatedSettings } from './UnavailableSetting'
 
 const TokenSchema = z.object({
   id: z.string().min(1),
@@ -43,6 +46,39 @@ function generateSecret(): string {
 }
 
 export function DeveloperApiPage() {
+  const simulated = useSimulatedSettings()
+  return (
+    <>
+      <LinkCardGrid className="mb-8">
+        <LinkCard to="/help/articles/developer-api-overview" title="Full API Reference" text="Read the endpoints, envelopes and error codes the Elevateo gateway exposes" />
+        {/* Generated from contracts/v1+v2 by lib/postmanCollection.ts; the Docker test keeps it in sync. */}
+        <LinkCard to="/developer/elevateo-mail.postman_collection.json" download title="Postman Collection" text="Download the v2.1 collection for every v1 and v2 endpoint; fill baseUrl and the session variables" />
+      </LinkCardGrid>
+
+      <Card className="mb-8 max-w-3xl">
+        <h2 className="text-sm font-medium text-zinc-800 dark:text-white">White-label Elevateo Mail</h2>
+        <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">Run the mailroom under your own brand and domain for your clients. Each organization is a separate tenant with its own members, mailboxes and simulated-mail boundary.</p>
+        <Link to="/help/community" className={cx(buttonClass('outline', 'xs'), 'mt-4')}>Contact us about white-label</Link>
+      </Card>
+
+      {simulated ? (
+        <SimulatedTokensSection />
+      ) : (
+        <>
+          <SectionHeader title="API Tokens" subtitle="Manage all your API tokens for this workspace" />
+          <UnavailableSetting
+            icon={<KeyIcon className="size-5" />}
+            title="API tokens are not available yet"
+            body="The gateway authenticates with the signed-in session only; there is no endpoint that issues or revokes tokens in this release. The API reference above describes every current endpoint."
+            action={{ to: '/help/articles/developer-api-overview', label: 'Full API Reference' }}
+          />
+        </>
+      )}
+    </>
+  )
+}
+
+function SimulatedTokensSection() {
   const store = useSimulatedStore<readonly Token[]>('api-tokens', TokensSchema, NO_TOKENS)
   const [open, setOpen] = useState(false)
   const [revealed, setRevealed] = useState<{ name: string; secret: string } | null>(null)
@@ -69,18 +105,6 @@ export function DeveloperApiPage() {
   }
   return (
     <>
-      <LinkCardGrid className="mb-8">
-        <LinkCard to="/help/articles/developer-api-overview" title="Full API Reference" text="Read the endpoints, envelopes and error codes the Elevateo gateway exposes" />
-        {/* Generated from contracts/v1+v2 by lib/postmanCollection.ts; the Docker test keeps it in sync. */}
-        <LinkCard to="/developer/elevateo-mail.postman_collection.json" download title="Postman Collection" text="Download the v2.1 collection for every v1 and v2 endpoint; fill baseUrl and the session variables" />
-      </LinkCardGrid>
-
-      <Card className="mb-8 max-w-3xl">
-        <h2 className="text-sm font-medium text-zinc-800 dark:text-white">White-label Elevateo Mail</h2>
-        <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">Run the mailroom under your own brand and domain for your clients. Each organization is a separate tenant with its own members, mailboxes and simulated-mail boundary.</p>
-        <Link to="/help/community" className={cx(buttonClass('outline', 'xs'), 'mt-4')}>Contact us about white-label</Link>
-      </Card>
-
       <SectionHeader
         title="API Tokens"
         subtitle="Manage all your API tokens for this workspace"

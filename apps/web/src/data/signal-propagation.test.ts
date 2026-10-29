@@ -25,6 +25,7 @@ const METHODS: ReadonlyArray<[string, (gateway: MailroomGateway, signal: AbortSi
   ['getSession', (g, s) => g.getSession(s)],
   ['listMailboxes', (g, s) => g.listMailboxes(CTX, {}, s)],
   ['listThreads', (g, s) => g.listThreads(CTX, MB, {}, s)],
+  ['listOrganizationThreads', (g, s) => g.listOrganizationThreads(CTX, {}, s)],
   ['getThread', (g, s) => g.getThread(CTX, TH, MB, {}, s)],
   // BE-02A lifecycle surfaces share the same cancellation contract.
   ['getLoginChallenge', (g, s) => g.getLoginChallenge(s)],

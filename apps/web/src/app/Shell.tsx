@@ -11,12 +11,12 @@ import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react'
 import { Outlet, useLocation } from 'react-router'
 import type { Mailbox, MailboxPage, Session } from '@/data/contract'
 import { GatewayError } from '@/data/errors'
-import { cx } from '@/lib/format'
 import { newTraversalBudget, readPage } from '@/lib/readPage'
 import { SignInPage } from '@/features/auth/SignInPage'
 import { readSsoLandingError, stripSsoLandingError } from '@/data/ssoContract'
 import { EmptyState, ErrorState, Skeleton } from '@/ui/Async'
 import { Badge } from '@/ui/Badge'
+import { useBottomNotice } from '@/ui/useBottomNotice'
 import { BrandLockup } from '@/ui/BrandLockup'
 import { Button, IconButton } from '@/ui/Button'
 import { ConnectivityBanner } from '@/ui/ConnectivityBanner'
@@ -259,7 +259,7 @@ function ProtectedShell({ session, replacedIdentity }: { session: Session; repla
             Skip to content
           </a>
           <aside
-            className={`sticky top-0 z-10 hidden max-h-dvh shrink-0 flex-col overflow-y-auto overscroll-contain border-e border-zinc-200 bg-zinc-50 lg:flex dark:border-zinc-700 dark:bg-zinc-900 ${collapsed ? 'w-14' : 'w-66'}`}
+            className={`sticky top-0 z-10 hidden max-h-[calc(100dvh-var(--bottom-notices))] shrink-0 flex-col overflow-y-auto overscroll-contain border-e border-zinc-200 bg-zinc-50 lg:flex dark:border-zinc-700 dark:bg-zinc-900 ${collapsed ? 'w-14' : 'w-66'}`}
           >
             <Sidebar
               session={session}
@@ -290,24 +290,27 @@ function ProtectedShell({ session, replacedIdentity }: { session: Session; repla
             </header>
             {/* Online-only: no cache, no queue; a drop is announced and a return offers an explicit reload. */}
             <ConnectivityBanner onReload={refresh} />
-            <main id="main" tabIndex={-1} className={cx('flex min-h-0 flex-1 flex-col p-6 lg:p-8', session.simulation_mode && 'pb-16')}>
+            <main id="main" tabIndex={-1} className="flex min-h-0 flex-1 flex-col p-6 pb-[calc(1.5rem+var(--bottom-notices))] lg:p-8 lg:pb-[calc(2rem+var(--bottom-notices))]">
               <div className="flex w-full max-w-7xl flex-1 flex-col">
                 <PageBoundary><Outlet /></PageBoundary>
               </div>
             </main>
-            {/* AIDEV-NOTE: Simulated transport must be unmistakable, but only when the server says so. It is a
-                fixed bottom strip (main reserves its height) so page headings sit at the reference offset.
-                AIDEV-TODO: expose the strip's measured height as one shared bottom inset (safe-area aware) for
-                main, the compose FAB and the fixture pill; today each reserves a fixed 64px/80px by hand. */}
-            {session.simulation_mode && (
-              <div role="status" className="fixed inset-x-0 bottom-0 z-30 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 border-t border-amber-200 bg-amber-50 px-6 py-2 text-xs text-amber-800 dark:border-amber-400/30 dark:bg-amber-400/10 dark:text-amber-100">
-                <Badge tone="warn" size="sm">Simulated local mail</Badge>
-                <span>{SIMULATION_FOOTNOTE}</span>
-              </div>
-            )}
+            {/* AIDEV-NOTE: SimulationNotice measures its shared inset for every docked control.
+                AIDEV-TODO: Shared safe-area-aware inset implemented; retain browser zoom regression coverage. */}
+            {session.simulation_mode && <SimulationNotice />}
           </div>
         </div>
       </ToastProvider>
     </MailboxesProvider>
+  )
+}
+
+function SimulationNotice() {
+  const ref = useBottomNotice('--simulation-inset')
+  return (
+    <div ref={ref} role="status" className="fixed inset-x-0 bottom-0 z-30 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 border-t border-amber-200 bg-amber-50 px-6 pt-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] text-xs text-amber-800 dark:border-amber-400/30 dark:bg-zinc-900 dark:text-amber-100">
+      <Badge tone="warn" size="sm">Simulated local mail</Badge>
+      <span>{SIMULATION_FOOTNOTE}</span>
+    </div>
   )
 }

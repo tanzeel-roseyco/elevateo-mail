@@ -22,7 +22,10 @@ export function PageHeader({ title, subtitle, actions, help = true, className }:
   return (
     <div className={cx('mb-10 flex items-start max-md:flex-col', className)}>
       <div className="min-w-0 flex-1 self-stretch max-md:pt-6">
-        <div className="flex items-center justify-between gap-4 max-sm:flex-col max-sm:items-start">
+        {/* The reference keeps Get Help beside the title on phones (the 40px button row centres the
+            title block, which is why its heading sits 6px lower than on pages with a breadcrumb);
+            only page-specific actions (the inbox search box) need their own row below the title. */}
+        <div className={cx('flex items-center justify-between gap-4', Boolean(actions) && 'max-sm:flex-col max-sm:items-start')}>
           <div className="min-w-0 space-y-1">
             <h1 tabIndex={-1} className={cx('text-lg font-medium text-zinc-800 dark:text-white', subtitle && 'mb-2')}>{title}</h1>
             {/* wrap-anywhere (not break-words): only overflow-wrap:anywhere shrinks a 4096-character
