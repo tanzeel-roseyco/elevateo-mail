@@ -1,5 +1,48 @@
 # Native shell checkpoint (NATIVE-812)
 
+## FC-MAC Mac client (2026-10-29)
+
+The macOS shell now adds, on top of the guarded exact-origin WebView below: single instance,
+app/Edit menus (About, Check for Updates, Sign Out, Quit, clipboard), system-browser OIDC login
+(authorization code + PKCE S256 over a one-shot 127.0.0.1 loopback callback; `src/auth.rs`),
+signed auto-update with rollback (`src/update.rs`, `src/host.rs`), a background reachability probe
+surfaced to the web UI as standard online/offline events, and one reviewed Tauri capability
+(`capabilities/main.json`: main window, `core:event:default` only; the `https://*` remote context
+is confined to the single approved origin by the exact-origin navigation guard). The refresh
+credential lives in the macOS Keychain via the `keyring` crate; access tokens stay in memory. The
+server native token-exchange endpoint is not in contracts yet, so login ends in an honest
+"exchange unavailable" state (`ContractPendingExchange`).
+
+Build-time public configuration (not secrets): `ELEVATEO_WEB_ORIGIN`, `ELEVATEO_OIDC_ISSUER`,
+`ELEVATEO_OIDC_CLIENT_ID`, `ELEVATEO_UPDATE_MANIFEST_URL`, `ELEVATEO_UPDATER_PUBKEY`. The updater
+private key (`TAURI_SIGNING_PRIVATE_KEY`) exists only in release automation env.
+
+### Auto-update rollback flow
+
+1. "Check for Updates" asks the web UI's reported busy state first (`host_report_busy`): an
+   unsaved draft or in-flight send blocks the install; the user finishes and retries.
+2. Before `tauri-plugin-updater` installs a verified signed update, the current `.app` is copied
+   to `<app data dir>/Elevateo Mail.previous.app` and a launch marker
+   (`update-launch-marker.json`, `ready: false`) is written.
+3. On the next launch, the injected init script calls `host_ready` when the approved origin's page
+   finishes loading; that flips the marker to `ready: true`.
+4. The launch after that evaluates the marker (`update::post_launch_action`): ready → keep the new
+   version, delete marker and archive; not ready and archive present → the previous bundle is
+   restored over the failed one and the app re-execs itself (now the previous version); not ready
+   with no archive → keep running and clear the marker.
+5. Limitation: a new version that crashes before Tauri setup never re-evaluates the marker; the
+   user relaunches manually and step 4 then rolls back.
+
+### Release script
+
+`macos-release.sh` builds the universal (default) or `--arch arm64` `.app` + `.dmg` ready for
+notarization. All credentials come from environment variables only (signing identity/team,
+notarization keychain profile or API key or Apple ID, updater signing key). With no credential env
+set it performs an explicit UNSIGNED DRY RUN (validates config, prints the exact signed-run
+commands, exit 0); partial credentials fail with the missing names; `--dry-run` also runs on Linux
+(no Xcode) for CI validation. Covered by `test_macos_release.py` and
+`test_validate_macos_config.py`.
+
 ## Terminal DNS dot preflight
 
 The Rust launch validator and Windows unsigned-package preflight reject bare `invalid`/`test` and reserved fixture suffixes after stripping terminal DNS dots for the reserved-host comparison. Trailing-dot, uppercase and bare variants are regression inputs. Fleet Docker evidence covers the Rust validator and Linux PowerShell origin regressions; no Windows installation or runtime result follows from those checks. Platform icons are now generated and selected explicitly, as recorded below.

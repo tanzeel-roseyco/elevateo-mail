@@ -12,6 +12,7 @@ import { Outlet, useLocation } from 'react-router'
 import type { Mailbox, MailboxPage, Session } from '@/data/contract'
 import { GatewayError } from '@/data/errors'
 import { newTraversalBudget, readPage } from '@/lib/readPage'
+import { AssistantDock } from '@/features/assistant/AssistantPanel'
 import { SignInPage } from '@/features/auth/SignInPage'
 import { readSsoLandingError, stripSsoLandingError } from '@/data/ssoContract'
 import { EmptyState, ErrorState, Skeleton } from '@/ui/Async'
@@ -299,6 +300,8 @@ function ProtectedShell({ session, replacedIdentity }: { session: Session; repla
                 AIDEV-TODO: Shared safe-area-aware inset implemented; retain browser zoom regression coverage. */}
             {session.simulation_mode && <SimulationNotice />}
           </div>
+          {/* Desktop-host-only assistant (FC-MAC): renders nothing in a plain browser. */}
+          <AssistantDock />
         </div>
       </ToastProvider>
     </MailboxesProvider>
