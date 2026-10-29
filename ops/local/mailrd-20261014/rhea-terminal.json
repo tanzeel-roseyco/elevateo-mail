@@ -1,0 +1,21 @@
+{
+  "id": "179f0163-68a8-4be6-9b33-775ab92c9244",
+  "ok": true,
+  "result": {
+    "terminal": {
+      "handle": "term_0598b807-0140-44c0-8b68-cebb07374c94",
+      "tabId": "28884e94-1ada-4d2d-adc3-bb4af8f066bd",
+      "paneKey": "28884e94-1ada-4d2d-adc3-bb4af8f066bd:e0c14cea-657f-407e-abd5-840951e07596",
+      "ptyId": "3e4d4246-e3f8-41a1-954b-a9a8c5e90626::C:/Users/Tanzeel/Code and projects/Elevateo Mail - Mailserver R&D 20261014@@b02fee6f",
+      "worktreeId": "3e4d4246-e3f8-41a1-954b-a9a8c5e90626::C:/Users/Tanzeel/Code and projects/Elevateo Mail - Mailserver R&D 20261014",
+      "title": "Rhea",
+      "executionHostId": "local",
+      "incarnationId": "b4e4e24e-4ea1-40c2-8707-eacddd30217e",
+      "hostPlatform": "win32",
+      "surface": "visible"
+    }
+  },
+  "_meta": {
+    "runtimeId": "396fae0f-6272-4785-a590-c66df65a0af0"
+  }
+}

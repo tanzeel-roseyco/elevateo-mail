@@ -1,0 +1,12 @@
+﻿aster{"type":"thread.started","thread_id":"01a137d9-5b1f-7ff1-946b-bd220f99fdc5"}
+{"type":"turn.started"}
+rhea{"type":"thread.started","thread_id":"01a137d9-5c51-7fc1-a948-64cdbcb5ddab"}
+{"type":"turn.started"}
+corin{"type":"thread.started","thread_id":"01a137d9-6438-7991-91db-ea41695db794"}
+{"type":"turn.started"}
+vesper{"type":"thread.started","thread_id":"01a137d9-6280-72f2-aed0-38b456482408"}
+{"type":"turn.started"}
+leonie{"type":"thread.started","thread_id":"01a137d9-6433-7452-b784-5836df5d6993"}
+{"type":"turn.started"}
+darius{"type":"thread.started","thread_id":"01a137d9-65a4-7af2-a53e-d606b607372a"}
+{"type":"turn.started"}

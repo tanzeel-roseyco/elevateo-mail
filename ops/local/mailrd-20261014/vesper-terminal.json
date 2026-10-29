@@ -1,0 +1,21 @@
+{
+  "id": "40b77c82-38a7-4a6c-9a56-57d7bdaafb90",
+  "ok": true,
+  "result": {
+    "terminal": {
+      "handle": "term_d01e6356-742a-410e-9812-55a4640792e4",
+      "tabId": "d986c19d-7689-44ec-8f92-a6c12be0d333",
+      "paneKey": "d986c19d-7689-44ec-8f92-a6c12be0d333:488599a0-afb6-4921-87c1-dacf5a080582",
+      "ptyId": "3e4d4246-e3f8-41a1-954b-a9a8c5e90626::C:/Users/Tanzeel/Code and projects/Elevateo Mail - Mailserver R&D 20261014@@78f8f178",
+      "worktreeId": "3e4d4246-e3f8-41a1-954b-a9a8c5e90626::C:/Users/Tanzeel/Code and projects/Elevateo Mail - Mailserver R&D 20261014",
+      "title": "Vesper",
+      "executionHostId": "local",
+      "incarnationId": "751091b1-a71e-466f-ab53-4580b8604965",
+      "hostPlatform": "win32",
+      "surface": "visible"
+    }
+  },
+  "_meta": {
+    "runtimeId": "396fae0f-6272-4785-a590-c66df65a0af0"
+  }
+}

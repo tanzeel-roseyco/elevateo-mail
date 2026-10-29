@@ -1,0 +1,21 @@
+{
+  "id": "ed87714a-1746-4cbd-abe9-a185d468ed18",
+  "ok": true,
+  "result": {
+    "terminal": {
+      "handle": "term_fb7ab031-f4a2-4b7f-85aa-0692342b156f",
+      "tabId": "136cf308-521b-482c-94aa-e96e062ed960",
+      "paneKey": "136cf308-521b-482c-94aa-e96e062ed960:fa656a11-cf42-4a0c-a74a-c2d5cfedcb11",
+      "ptyId": "3e4d4246-e3f8-41a1-954b-a9a8c5e90626::C:/Users/Tanzeel/Code and projects/Elevateo Mail - Mailserver R&D 20261014@@b458fc08",
+      "worktreeId": "3e4d4246-e3f8-41a1-954b-a9a8c5e90626::C:/Users/Tanzeel/Code and projects/Elevateo Mail - Mailserver R&D 20261014",
+      "title": "Corin",
+      "executionHostId": "local",
+      "incarnationId": "5fc84cca-3120-44da-9d0a-b9564eb95f64",
+      "hostPlatform": "win32",
+      "surface": "visible"
+    }
+  },
+  "_meta": {
+    "runtimeId": "396fae0f-6272-4785-a590-c66df65a0af0"
+  }
+}
