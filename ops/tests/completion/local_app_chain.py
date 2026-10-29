@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import ipaddress
 import json
-import secrets
+import uuid
 import time
 
 from docker_task import Task
@@ -18,7 +18,8 @@ def run(task: Task, image: str) -> None:
         identifier = task.compose("chain-service", ["ps", "-q", service]).strip()
         item = task.inspect("container", [identifier])[0]
         addresses[service] = str(ipaddress.IPv4Address(item["NetworkSettings"]["Networks"][network]["IPAddress"]))
-    epoch = secrets.token_hex(16)
+    # AIDEV-NOTE: Dispatch controls require canonical UUID epochs; arbitrary hex correctly remains held.
+    epoch = str(uuid.uuid4())
     control = task.evidence / "app-chain-control.json"
     control.write_text(json.dumps({"epoch": epoch, "outbound_held": True}), encoding="ascii")
     overlay = task.evidence / "app-chain.compose.json"
@@ -57,16 +58,17 @@ def run(task: Task, image: str) -> None:
             if any(p.is_file() and not p.name.endswith((".example", ".sample")) for p in directory.rglob(".env*")):
                 raise RuntimeError("dotenv secret found in app-chain source mount")
             mounts += ["--mount", f"type=bind,source={directory},target=/source/{relative},readonly"]
+        # AIDEV-NOTE: Ruby runs from /app; mount the reviewed oracle there as well as the protocol script source path.
+        mounts += ["--mount", f"type=bind,source={task.root / 'apps/server/test/support/launch_mailflows'},target=/app/test/support/launch_mailflows,readonly"]
         hosts = [part for host, address in addresses.items() for part in ("--add-host", f"{host}:{address}")]
         # AIDEV-NOTE: Secrets and Mox data live only in tmpfs; fixture logs never enter Docker logs or host evidence.
         script = ("from pathlib import Path; import os; "
-                  "Path('/etc/resolv.conf').write_text('nameserver 127.0.0.1\\n'); "
                   "f=os.open('/private/fixture.log',os.O_WRONLY|os.O_CREAT,0o600); "
                   "os.dup2(f,1); os.dup2(f,2); "
                   "os.execv('/usr/bin/python3',['python3','/source/apps/server/test/support/launch_mailflows/protocol.py'])")
         task.docker("chain-create", ["create", "--name", name, "--network", network,
             "--label", f"com.docker.compose.project={task.project}", "--read-only", "--memory", "1g",
-            "--pids-limit", "128", "--tmpfs", "/private:rw,nosuid,size=512m,mode=755",
+            "--pids-limit", "128", "--dns", "127.0.0.1", "--tmpfs", "/private:rw,nosuid,size=512m,mode=755",
             "--tmpfs", "/tmp:rw,nosuid,size=128m,mode=1777", "--env-file", str(private),
             *mounts, *hosts,
             "--add-host", "mail.dispatch.company.com:127.0.0.1",

@@ -9,7 +9,9 @@ services:
       ELEVATEO_RESEND_FROM_DOMAIN: ${ELEVATEO_RESEND_FROM_DOMAIN:?}
       RESEND_API_KEY: ${RESEND_API_KEY:?}
   resend-events:
+    # AIDEV-NOTE: Extend the base file so event processing never inherits the outbound API credential.
     extends:
+      file: compose.yaml
       service: launch-worker
     environment:
       ELEVATEO_INBOUND_STORAGE_TOKEN: ${SERVICE_ROLE_KEY:?}

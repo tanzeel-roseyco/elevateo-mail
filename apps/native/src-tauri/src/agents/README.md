@@ -82,7 +82,8 @@ Official CLI enforcement references:
 - [Claude CLI flags](https://code.claude.com/docs/en/cli-reference)
 
 Dependencies: Tokio provides cancellable process supervision; Serde/serde_json and
-UUID enforce the wire types; URL validates the trusted MCP origin. No dependency
-or runtime installation, compilation, tests or provider requests were performed
-while implementing this source. Cargo.lock must be generated and retained by the
-final Docker gate; dependencies are exact-pinned in Cargo.toml.
+UUID enforce the wire types; URL validates the trusted MCP origin. Dependency
+versions are exact-pinned in Cargo.toml, with Cargo.lock retained from the final local
+Docker gate. That gate passed eight Rust tests, fifteen Python tests and the real
+Docker lifecycle test (completion, cancellation and timeout); no provider requests
+were made. Locked builds and test runs enforce the retained dependency resolution.

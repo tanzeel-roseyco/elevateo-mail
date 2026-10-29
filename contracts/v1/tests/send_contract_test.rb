@@ -31,13 +31,19 @@ class SendContractTest < Minitest::Test
     assert_equal "7284a572e5c9bc64961d4ae76fe6821c94341ef4672097277499642a959a2cae", extension.fetch("openapi_sha256")
     current = PRESERVATION.fetch("current_extension")
     assert_equal "organization_threads", current.fetch("name")
-    assert_equal Digest::SHA256.file(File.join(ROOT, "openapi.json")).hexdigest, current.fetch("openapi_sha256")
-    assert_equal Digest::SHA256.file(File.join(ROOT, "fixtures.json")).hexdigest,
+    assert_equal historical_file_digest("openapi.json"), current.fetch("openapi_sha256")
+    assert_equal historical_file_digest("fixtures.json"),
                  extension.fetch("fixtures_sha256")
     refute_equal PRESERVATION.fetch("baseline_openapi_sha256"), extension.fetch("openapi_sha256")
     refute_equal PRESERVATION.fetch("baseline_fixtures_sha256"), extension.fetch("fixtures_sha256")
     assert_equal "50387ddd8ad20c355b3d76f660941512e7fce83ee745111963c925219f3fc2c0",
                  Digest::SHA256.hexdigest(JSON.generate(sorted(PRESERVATION.fetch("frozen_sections"))))
+  end
+
+  # AIDEV-NOTE: The sealed Windows file hashes used CRLF; Git stores LF. Recreate only that historical encoding.
+  def historical_file_digest(name)
+    bytes = File.binread(File.join(ROOT, name)).gsub("\r\n", "\n").gsub("\n", "\r\n")
+    Digest::SHA256.hexdigest(bytes)
   end
 
   def test_organization_list_preserves_summary_and_mailbox_semantics
@@ -63,7 +69,7 @@ class SendContractTest < Minitest::Test
       assert_equal seal.fetch("sha256"), Digest::SHA256.hexdigest(JSON.generate(sorted(original))), path
     end
     assert_equal PRESERVATION.fetch("extension").fetch("fixtures_sha256"),
-                 Digest::SHA256.file(File.join(ROOT, "fixtures.json")).hexdigest
+                 historical_file_digest("fixtures.json")
   end
 
   def test_four_routes_have_closed_inputs_and_independent_send_errors

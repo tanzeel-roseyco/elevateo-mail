@@ -30,6 +30,8 @@ module V2
       version = read_sessions.presentation.version(metadata)
       result = Elevateo::SessionWrites.new(sessions: read_sessions).transaction(identity,
         context: context, version: version, csrf: csrf, guard_users: [], budget: 4_194_304, deadline: api_deadline) do |connection:, session:|
+        # @type var connection: Elevateo::WriteStatements
+        # @type var session: Elevateo::auth_object
         Elevateo::ConnectorGrants.new(connection: connection, session: session).authorize(token,
           digest: identity.digest, mailbox: Elevateo::WriteInput.uuid(input["mailbox_id"]), scope: operation)
         operations = Elevateo::ConnectorOperations.new(connection: connection, session: session)

@@ -100,6 +100,13 @@ module LaunchMailflowHttpChain
   end
 
   def grant_http_user(user)
+    # AIDEV-NOTE: The HTTP approver differs from the base SQL actor; each requires its own daily budget authority.
+    limit = SecureRandom.uuid
+    @admin.exec_params(<<~SQL, [limit, JSON.generate([user])])
+      INSERT INTO app_send_private.budget_limits(id,kind,scope,version,ceiling,enabled)
+        VALUES($1,'user',$2::jsonb,1,300,true)
+    SQL
+    @budget_limit_ids << limit
     fixture_change do
       @admin.exec_params("SELECT app_auth.lock_authorization_generations($1,$2)", [@org, user])
       @admin.exec_params("INSERT INTO app.organization_memberships(organization_id,user_id) VALUES($1,$2)", [@org, user])

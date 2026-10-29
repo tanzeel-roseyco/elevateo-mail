@@ -4,6 +4,8 @@
 class AddUserSendBudgets < ActiveRecord::Migration[8.1]
   def up
     execute File.read(File.expand_path("user_send_budget/up.sql", __dir__))
+    # AIDEV-NOTE: Restore migration authority before Rails writes app_meta.schema_migrations.
+    execute "RESET ROLE"
   end
 
   def down
@@ -20,5 +22,6 @@ class AddUserSendBudgets < ActiveRecord::Migration[8.1]
     SQL
     original = File.read(File.expand_path("../be03_send/budget_schema.sql", __dir__))
     execute original.split("CREATE TABLE", 2).first.sub("CREATE FUNCTION", "CREATE OR REPLACE FUNCTION")
+    execute "RESET ROLE"
   end
 end

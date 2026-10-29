@@ -38,19 +38,19 @@ class DeploymentTest(unittest.TestCase):
         self.csv = Path(self.directory.name) / "assignments.csv"
         self.csv.write_text("organization_id,user_id,mailbox_id,address\n"
                             "11111111-1111-4111-8111-111111111111,22222222-2222-4222-8222-222222222222,"
-                            "33333333-3333-4333-8333-333333333333,owner@mail.example.net\n", encoding="utf-8")
+                            "33333333-3333-4333-8333-333333333333,owner@mail.elevateo-fixture.net\n", encoding="utf-8")
         self.env = {name: "fixture" for name in settings.REQUIRED}
         self.env.update({name: "fixture/image@sha256:" + "a" * 64 for name in settings.IMAGES})
         self.env.update({name: str(i) + "x" * 40 for i, name in enumerate(settings.PASSWORDS)})
         self.env.update(SECRET_KEY_BASE="s" * 64, JWT_SECRET="j" * 32,
                         ELEVATEO_OPERATIONS_LOCK=str(Path(self.directory.name) / "operations.lock"),
-                        ELEVATEO_AUTHENTIK_ISSUER="https://id.example.net/application/o/mail/",
+                        ELEVATEO_AUTHENTIK_ISSUER="https://id.elevateo-fixture.net/application/o/mail/",
                         ELEVATEO_AUTHENTIK_GROUP="44444444-4444-4444-8444-444444444444",
                         ELEVATEO_EGRESS_ID="55555555-5555-4555-8555-555555555555",
-                        ELEVATEO_AUTHENTIK_API_TOKEN="t" * 32, ELEVATEO_MCP_HTTP_HOST="mcp.example.net",
-                        ELEVATEO_ATTACHMENT_BUCKET="attachments", ELEVATEO_MOX_HOSTNAME="mx.mail.example.net",
-                        ELEVATEO_MOX_IPV4="188.40.237.70", ELEVATEO_MAIL_DOMAINS="mail.example.net",
-                        ELEVATEO_WORKSPACE_DOMAINS="workspace.example.net", ELEVATEO_APPROVED_ASSIGNMENTS=str(self.csv))
+                        ELEVATEO_AUTHENTIK_API_TOKEN="t" * 32, ELEVATEO_MCP_HTTP_HOST="mcp.elevateo-fixture.net",
+                        ELEVATEO_ATTACHMENT_BUCKET="attachments", ELEVATEO_MOX_HOSTNAME="mx.mail.elevateo-fixture.net",
+                        ELEVATEO_MOX_IPV4="188.40.237.70", ELEVATEO_MAIL_DOMAINS="mail.elevateo-fixture.net",
+                        ELEVATEO_WORKSPACE_DOMAINS="workspace.elevateo-fixture.net", ELEVATEO_APPROVED_ASSIGNMENTS=str(self.csv))
         for name in ("ELEVATEO_SESSION_KEY_BASE64", "ELEVATEO_ATTACHMENT_GATEWAY_HMAC_KEY_BASE64"):
             self.env[name] = base64.b64encode(b"k" * 32).decode()
         for name, label in (("ELEVATEO_MOX_TLS_CERT_BASE64", "CERTIFICATE"),
@@ -84,7 +84,7 @@ class DeploymentTest(unittest.TestCase):
         self.assertEqual(before, dict(os.environ))
 
     def test_invalid_mox_configuration_and_tls_refuse_before_subprocess(self) -> None:
-        for name, value in (("ELEVATEO_MOX_IPV4", "127.0.0.1"), ("ELEVATEO_MAIL_DOMAINS", "other.example.net"),
+        for name, value in (("ELEVATEO_MOX_IPV4", "127.0.0.1"), ("ELEVATEO_MAIL_DOMAINS", "other.elevateo-fixture.net"),
                             ("ELEVATEO_MOX_TLS_CERT_BASE64", "not-base64")):
             with self.subTest(name=name), patch.object(deployment.subprocess, "run") as run:
                 with self.assertRaises(settings.AdmissionError):
@@ -92,7 +92,7 @@ class DeploymentTest(unittest.TestCase):
                 run.assert_not_called()
 
     def test_malformed_issuer_errors_do_not_echo_values(self) -> None:
-        for issuer in ("https://id.example.net:secret-marker/application/o/mail/", "https://[secret-marker"):
+        for issuer in ("https://id.elevateo-fixture.net:secret-marker/application/o/mail/", "https://[secret-marker"):
             with self.assertRaises(settings.AdmissionError) as caught:
                 settings.validate({**self.env, "ELEVATEO_AUTHENTIK_ISSUER": issuer})
             self.assertNotIn("secret-marker", str(caught.exception))

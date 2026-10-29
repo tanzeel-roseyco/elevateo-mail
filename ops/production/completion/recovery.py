@@ -8,6 +8,7 @@ import json
 import os
 from pathlib import Path
 import re
+import shutil
 import stat
 import subprocess
 import tarfile
@@ -81,7 +82,13 @@ def unpack(bundle: Path, directory: Path) -> dict[str, object]:
         for entry in entries:
             if not entry.isfile() or entry.size < 0 or (entry.name == "manifest.json" and entry.size > 16384):
                 raise ValueError("snapshot member type rejected")
-            archive.extract(entry, directory, filter="data")
+            # AIDEV-NOTE: Fixed flat names and exclusive writes avoid tar metadata/path handling on Python 3.11.
+            directory.mkdir(mode=0o700, exist_ok=True)
+            source = archive.extractfile(entry)
+            if source is None:
+                raise ValueError("snapshot member unreadable")
+            with source, (directory / entry.name).open("xb") as target:
+                shutil.copyfileobj(source, target)
     manifest: dict[str, object] = json.loads((directory / "manifest.json").read_text())
     if not isinstance(manifest, dict):
         raise ValueError("snapshot manifest object required")

@@ -5,6 +5,7 @@ import os
 import base64
 from pathlib import Path
 import tempfile
+import traceback
 
 from common import compose, required, run, sql
 from recovery import exclusive, restore
@@ -75,5 +76,8 @@ def drill() -> None:
 if __name__ == "__main__":
     try:
         drill()
-    except (ValueError, RuntimeError, OSError):
-        raise SystemExit("restore drill failed; private details withheld") from None
+    except (ValueError, RuntimeError, OSError) as error:
+        # AIDEV-NOTE: Source coordinates diagnose fixture failures without exposing child output or credential values.
+        frames = traceback.extract_tb(error.__traceback__)
+        locations = ",".join(f"{Path(frame.filename).name}:{frame.lineno}" for frame in frames)
+        raise SystemExit(f"restore drill failed ({type(error).__name__}; {locations}); private details withheld") from None

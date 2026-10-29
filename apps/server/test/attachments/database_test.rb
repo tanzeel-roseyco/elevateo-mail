@@ -4,7 +4,7 @@ require "minitest/autorun"
 require "pg"
 require "securerandom"
 
-# AIDEV-NOTE: Soren runs this only after 00015 in an exclusive disposable fleet database.
+# AIDEV-NOTE: Run against the fully migrated disposable database using restricted API and worker logins.
 class AttachmentDatabaseTest < Minitest::Test
   def setup
     @admin = connect("ATT823_ADMIN_DATABASE_URL", "supabase_admin")
@@ -98,6 +98,15 @@ class AttachmentDatabaseTest < Minitest::Test
     end
   ensure
     other&.close unless other&.finished?
+  end
+
+  def test_unrelated_primary_key_conflict_is_not_accepted_as_a_replay
+    insert_pending
+    assert_raises(PG::UniqueViolation) { import(id: @attachment) }
+    assert_equal "0", @migrator.exec_params(
+      "SELECT count(*) FROM app.inbox_attachments WHERE source_account_id=$1", [@source_account]).getvalue(0, 0)
+    assert_equal "quarantine/#{@org}/#{@attachment}", @migrator.exec_params(
+      "SELECT storage_key FROM app.inbox_attachments WHERE id=$1", [@attachment]).getvalue(0, 0)
   end
 
   def test_identical_replay_after_clean_preserves_canonical_id_and_verdict

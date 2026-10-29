@@ -49,6 +49,16 @@ class RecoveryTests(unittest.TestCase):
         for key in VOLUMES:
             self.assertEqual(contents(target / f"{key}.tar"), contents(self.root / f"{key}.tar"))
 
+    def test_existing_destination_is_never_overwritten(self) -> None:
+        source = self.bundle()
+        target = self.root / "restored"
+        target.mkdir()
+        sentinel = target / "manifest.json"
+        sentinel.write_text("preserve")
+        with self.assertRaises(FileExistsError):
+            recovery.unpack(source, target)
+        self.assertEqual(sentinel.read_text(), "preserve")
+
     def test_checksum_corruption_rejected(self) -> None:
         with self.assertRaises(ValueError):
             recovery.unpack(self.bundle(True), self.root / "restored")

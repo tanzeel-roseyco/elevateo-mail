@@ -54,6 +54,8 @@ class LauncherExecutionTest(unittest.TestCase):
             self.execute("import sys,time; sys.stdin.read(); print('{bad',flush=True); time.sleep(30)")
         self.assertEqual(len(children), 1)
         self.assertIsNotNone(children[0].poll())
+        self.assertTrue(children[0].stdin.closed)
+        self.assertTrue(children[0].stdout.closed)
 
 
 class HeaderDeadlineTest(unittest.TestCase):

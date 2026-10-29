@@ -2,7 +2,7 @@
 
 The current entrypoint is `sh ops/production/deploy.sh [--dry-run]`. It reads environment only, validates credentials and approved assignments before Docker, uses immutable images, then starts the project-owned Supabase database/Auth/PostgREST/Storage, API, revocation worker, attachment gateway, mailbox MCP, Mox and restricted OAuth proxy. Resend mode adds the provider event worker. It never builds images, changes cloud/DNS/MX, or submits mail. Sending stays held and CSV provisioning is dry-run unless explicitly enabled.
 
-See [credentials-last](../../docs/credentials-last.md) and the single root [.env.production.example](../../.env.production.example). Current source awaits the final local Docker gate; no deployment is claimed. This replaces the historical fleet/external-network launcher. Existing `initialize/` and `launch-controls/` scripts remain explicit operator tools; deployment does not invent tenant memberships or authorize a user by email alone.
+See [credentials-last](../../docs/credentials-last.md) and the single root [.env.production.example](../../.env.production.example). Final local Docker gates, encrypted restore drill and deploy dry-run passed; see the [verification receipt](../../docs/completion/backend-20261030-receipt.md). No deployment is claimed. This replaces the historical fleet/external-network launcher. Existing `initialize/` and `launch-controls/` scripts remain explicit operator tools; deployment does not invent tenant memberships or authorize a user by email alone.
 
 ## Data and authority
 

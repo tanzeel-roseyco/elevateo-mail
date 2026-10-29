@@ -2,11 +2,26 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { Readable, Writable } from "node:stream";
 import { resolve } from "node:path";
+import { request } from "node:http";
 import { server } from "../src/server.js";
 import { serveStream } from "../src/stdio.js";
 import { Protocol } from "../src/protocol.js";
 const protocol = () => new Protocol(resolve(__dirname, "../../../../contracts/v2/completion.openapi.json"), async () => assert.fail("no tool calls"));
 const ping = JSON.stringify({ jsonrpc: "2.0", id: 1, method: "ping" });
+// AIDEV-NOTE: Native fetch owns Host in Node 24; raw HTTP tests the server's exact authority boundary.
+function fetch(url: string, options: { method?: string; headers: Record<string, string>; body?: string }) {
+  return new Promise<{ status: number; json: () => Promise<unknown> }>((resolveResponse, reject) => {
+    const outbound = request(url, { method: options.method ?? "GET", headers: options.headers }, response => {
+      const chunks: Buffer[] = [];
+      response.on("data", (chunk: Buffer) => chunks.push(chunk));
+      response.on("error", reject);
+      response.on("end", () => resolveResponse({ status: response.statusCode ?? 0,
+        json: async () => JSON.parse(Buffer.concat(chunks).toString("utf8")) as unknown }));
+    });
+    outbound.on("error", reject);
+    outbound.end(options.body);
+  });
+}
 // AIDEV-NOTE: Loopback exists only inside the final test container; no host API is contacted.
 test("HTTP transport enforces headers and framing", async () => {
   const app = server(protocol(), "mcp.test");

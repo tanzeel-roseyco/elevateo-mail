@@ -157,6 +157,11 @@ def main() -> int:
         if child.poll() is None:
             os.killpg(child.pid, signal.SIGKILL)
         child.wait()
+        # AIDEV-NOTE: Reaping does not close PIPE descriptors; release them on every exit path.
+        if child.stdin is not None:
+            child.stdin.close()
+        if child.stdout is not None:
+            child.stdout.close()
 
 
 if __name__ == "__main__":

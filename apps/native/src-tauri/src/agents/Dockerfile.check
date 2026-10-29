@@ -6,10 +6,11 @@ FROM ${RUST_IMAGE}
 COPY --from=docker_cli /usr/local/bin/docker /usr/local/bin/docker
 RUN apt-get update && apt-get install -y --no-install-recommends python3 \
     && rm -rf /var/lib/apt/lists/*
+RUN rustup component add clippy rustfmt
 WORKDIR /check
-COPY Cargo.toml ./
+COPY Cargo.toml Cargo.lock ./
 COPY src/ src/
 COPY tests/ tests/
 COPY runtime/ runtime/
-RUN cargo test --no-run
-CMD ["sh", "-c", "cargo test && python3 -m unittest discover -s runtime -p 'test_*.py'"]
+RUN CARGO_BUILD_JOBS=1 cargo test --locked --no-run
+CMD ["sh", "-c", "cargo test --locked && python3 -m unittest discover -s runtime -p 'test_*.py'"]

@@ -62,7 +62,8 @@ class Task:
             result = subprocess.run(["docker", "--context", self.context, *args], env=env,
                                     stdout=subprocess.DEVNULL if quiet else subprocess.PIPE,
                                     stderr=subprocess.DEVNULL if quiet and not diagnostic_stderr else subprocess.PIPE,
-                                    text=True, timeout=bound, check=False)
+                                    # AIDEV-NOTE: Docker emits UTF-8; Windows locale decoding must not discard captured output.
+                                    text=True, encoding="utf-8", errors="replace", timeout=bound, check=False)
         except subprocess.TimeoutExpired as error:
             # AIDEV-NOTE: A killed CLI can leave its container running; final cleanup discovers by exact project.
             stderr = error.stderr or ""

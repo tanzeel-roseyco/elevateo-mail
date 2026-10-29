@@ -38,6 +38,9 @@ def prepare(task: Task, helper: str) -> dict[str, object]:
     # AIDEV-NOTE: Initialized database no longer needs host SQL binds; portable snapshots have no host-path coupling.
     db["volumes"] = [mount for mount in db["volumes"] if mount["type"] == "volume"]
     db.pop("container_name", None)
+    # AIDEV-NOTE: Compose drops unused volumes; read-only fixture mounts keep all six in the validated data plane.
+    db["volumes"].extend({"type": "volume", "source": key, "target": "/restore-markers/" + key,
+                          "read_only": True} for key in sorted(VOLUMES - {"db-data", "db-config"}))
     task.compose("stop-setup", ["down", "--remove-orphans", "--timeout", "30"], 90)
     for key in sorted(VOLUMES - {"db-data", "db-config"}):
         volume = task.project + "_" + key

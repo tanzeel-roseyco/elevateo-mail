@@ -34,10 +34,23 @@ def configure(task: Task) -> None:
         raise RuntimeError("unsafe dotenv input")
     task.env_file.write_text("".join(f"{key}='{value}'\n" for key, value in values.items()), encoding="utf-8")
     task.env_file.chmod(0o600)
+    seed = task.evidence / "postgres-config"
+    seed.mkdir()
+    database_image = re.search(r"image: (supabase/postgres:[^\s@]+@sha256:[a-f0-9]{64})(?=\s|$)",
+                               (ROOT / "ops/compose.be02-test.yaml").read_text())
+    if database_image is None:
+        raise RuntimeError("pinned database image missing")
+    task.docker("pull-database-seed-image", ["pull", database_image[1]], 600)
+    # AIDEV-NOTE: tmpfs does not auto-copy packaged config like named volumes; preserve mandatory Supabase includes.
+    task.docker("seed-database-config", ["run", "--rm", "--pull", "never", "--network", "none", "--entrypoint", "sh",
+        "--mount", f"type=bind,source={seed},target=/seed", database_image[1],
+        "-c", "cp -a /etc/postgresql-custom/. /seed/"], 60)
     override = {"services": {
-        "db": {"volumes": [{"type": "tmpfs", "target": target,
+        "db": {"entrypoint": ["sh", "-c", "cp -a /fixture-config/. /etc/postgresql-custom/ && chown -R postgres:postgres /etc/postgresql-custom && exec docker-entrypoint.sh \"$@\"", "--"],
+               "volumes": [{"type": "tmpfs", "target": target,
                              "tmpfs": {"size": 536870912}} for target in
-                            ("/var/lib/postgresql/data", "/etc/postgresql-custom")]},
+                            ("/var/lib/postgresql/data", "/etc/postgresql-custom")] +
+                           [{"type": "bind", "source": str(seed), "target": "/fixture-config", "read_only": True}]},
         "test": {"environment": {key: "${" + key + "}" for key in extra}},
         "migrate": {"environment": {"BE02_TASK_DATABASE_NAME": "postgres",
             "BE02_ADMIN_DATABASE_URL": "postgresql://supabase_admin:${POSTGRES_PASSWORD}@db:5432/postgres"}}}}
@@ -74,6 +87,21 @@ def run_suites(task: Task, mox_image: str) -> None:
     task.compose("api-start", ["up", "-d", "api"], 45)
     task.runtime_credentials()
     task.wait_http()
+    from local_app_chain import run as run_app_chain
+    task.docker("app-chain-boot-admission", ["run", "--rm", "--network", "none",
+        "--mount", f"type=bind,source={ROOT / 'ops/tests/completion/app_chain_boot.rb'},target=/fixture/app_chain_boot.rb,readonly",
+        "--mount", f"type=bind,source={ROOT / 'ops/tests/completion/app_chain_boot_test.rb'},target=/fixture/app_chain_boot_test.rb,readonly",
+        task.image, "bundle", "exec", "ruby", "/fixture/app_chain_boot_test.rb"], 60)
+    # AIDEV-NOTE: HTTP acceptance retains sessions; the self-cleaning chain must run first, with no worker racing it.
+    original_files = list(task.compose_files)
+    try:
+        run_app_chain(task, mox_image)
+    finally:
+        task.compose_files[:] = original_files
+    # Restore the normal API command/environment before exercising the independent HTTP/worker fixture.
+    task.compose("restore-api-after-chain", ["up", "-d", "--no-deps", "api"], 45)
+    task.runtime_credentials()
+    task.wait_http()
     task.compose("http-acceptance", ["run", "--rm", "--no-deps", "fixture"], 240)
     task.compose("worker-start", ["up", "-d", "worker"], 45)
     task.runtime_credentials()
@@ -94,12 +122,7 @@ def run_suites(task: Task, mox_image: str) -> None:
             failures.append(name)
     if failures:
         raise RuntimeError("failed gates: " + ", ".join(failures))
-    from local_app_chain import run as run_app_chain
-    task.docker("app-chain-boot-admission", ["run", "--rm", "--network", "none",
-        "--mount", f"type=bind,source={ROOT / 'ops/tests/completion/app_chain_boot.rb'},target=/fixture/app_chain_boot.rb,readonly",
-        "--mount", f"type=bind,source={ROOT / 'ops/tests/completion/app_chain_boot_test.rb'},target=/fixture/app_chain_boot_test.rb,readonly",
-        task.image, "bundle", "exec", "ruby", "/fixture/app_chain_boot_test.rb"], 60)
-    run_app_chain(task, mox_image)
+
 
 
 def main() -> int:
@@ -154,6 +177,12 @@ def main() -> int:
         # AIDEV-NOTE: No down -v or volume prune: the database uses tmpfs, unexpected persistent mounts are retained.
         task.deadline = time.monotonic() + 1800
         if armed:
+            if failure:
+                # AIDEV-NOTE: Capture bounded redacted service errors before removing ephemeral failed containers.
+                try:
+                    task.compose("failure-service-logs", ["logs", "--no-color", "--tail", "80", "db", "auth", "api"], 30)
+                except (RuntimeError, OSError):
+                    failure += "; service logs unavailable"
             try:
                 mounts = [mount.get("Name") for container in task.project_containers()
                           for mount in container.get("Mounts", []) if mount.get("Type") == "volume"]

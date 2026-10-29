@@ -26,9 +26,7 @@ def main() -> int:
     # AIDEV-NOTE: Network-none plus loopback DNS prevents all external delivery, including fixture misconfiguration.
     if set(Path('/sys/class/net').iterdir()) != {Path('/sys/class/net/lo')}:
         raise RuntimeError("protocol fixture requires --network none")
-    Path('/etc/resolv.conf').write_text('nameserver 127.0.0.1\noptions timeout:1 attempts:1\n')
-    with Path('/etc/hosts').open('a') as hosts:
-        hosts.write('\n127.0.0.1 mail.dispatch.company.com mail.second.company.com\n')
+    # AIDEV-NOTE: Docker supplies loopback DNS and host aliases; its read-only resolver files stay untouched.
     directory = Path('/private/runtime')
     # AIDEV-NOTE: Never echo fixture diagnostics: generated credentials and MIME remain in disposable memory.
     with Path('/private/fixture.log').open('wb') as log:

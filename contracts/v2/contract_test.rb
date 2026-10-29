@@ -34,7 +34,7 @@ class ContractV2Test < Minitest::Test
   def test_failure_no_live_dispatch_or_v1_collision
     assert_empty(@contract.fetch("paths").keys & JSON.parse(File.read(V1)).fetch("paths").keys)
     assert_equal %w[draft paused], @contract.dig("components", "schemas", "OutreachPlan", "properties", "status", "enum")
-    refute @contract.fetch("paths").keys.any? { |path| path.include?("send") }
+    refute @contract.fetch("paths").keys.any? { |path| path.split("/").include?("send") }
     assert_equal "disabled", @contract.dig("paths", "/v2/outreach/campaigns/{campaign_id}/accounts", "get", "x-elevateo-status")
     assert_equal "disabled", @contract.dig("paths", "/v2/worker/jobs/{job_id}", "get", "x-elevateo-status")
     assert_equal %w[draft held], @contract.dig("components", "schemas", "OutreachSequenceDraft", "properties", "status", "enum")
@@ -53,6 +53,10 @@ class ContractV2Test < Minitest::Test
     active = @contract.fetch("paths").values.flat_map(&:values)
       .select { |operation| operation.fetch("x-elevateo-status") == "active" }
       .map { |operation| operation.fetch("operationId") }
-    assert_equal V2RouteRegistry::ACTIVE_OPERATIONS.sort, active.sort
+    # AIDEV-NOTE: Signed provider ingestion is routed outside the browser-session registry.
+    webhook = @contract.dig("paths", "/v2/provider-events/resend", "post")
+    assert_equal [], webhook.fetch("security")
+    assert_equal "ingestResendProviderEvent", webhook.fetch("operationId")
+    assert_equal V2RouteRegistry::ACTIVE_OPERATIONS.sort, (active - [webhook.fetch("operationId")]).sort
   end
 end

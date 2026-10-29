@@ -1,5 +1,6 @@
 import { readFileSync } from "node:fs";
-import Ajv from "@redocly/ajv/dist/2020";
+// AIDEV-NOTE: Use the same Ajv implementation as ajv-formats; forked Ajv classes have incompatible plugin types.
+import Ajv from "ajv/dist/2020";
 import addFormats from "ajv-formats";
 
 export type ObjectValue = Record<string, unknown>;

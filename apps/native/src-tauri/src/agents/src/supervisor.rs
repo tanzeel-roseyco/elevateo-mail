@@ -1,11 +1,20 @@
 use crate::{sandbox::Sandbox, Bridge, Credentials, Error, EventType, Runtime, Start};
 use std::{sync::Arc, time::Duration};
-use tokio::{io::{AsyncReadExt, AsyncWriteExt}, sync::{oneshot, Notify}};
+use tokio::{
+    io::{AsyncReadExt, AsyncWriteExt},
+    sync::{oneshot, Notify},
+};
 use uuid::Uuid;
 
 // AIDEV-NOTE: The launcher has its own deadline so the container also terminates if the desktop disappears.
-pub(crate) async fn execute(bridge: Bridge, id: Uuid, request: Start, credentials: Credentials,
-    signal: Arc<Notify>, ready: oneshot::Sender<Result<(), Error>>) {
+pub(crate) async fn execute(
+    bridge: Bridge,
+    id: Uuid,
+    request: Start,
+    credentials: Credentials,
+    signal: Arc<Notify>,
+    ready: oneshot::Sender<Result<(), Error>>,
+) {
     let sandbox = Sandbox::new(bridge.config.clone(), id);
     let prepared = sandbox.prepare(request.runtime).await;
     let mut child = match prepared.and_then(|()| sandbox.spawn()) {
@@ -24,23 +33,42 @@ pub(crate) async fn execute(bridge: Bridge, id: Uuid, request: Start, credential
     let mut output = child.stdout.take();
     let initialized = async {
         let mut input = child.stdin.take().ok_or(Error::TemporarilyUnavailable)?;
-        input.write_all(payload.to_string().as_bytes()).await.map_err(|_| Error::TemporarilyUnavailable)?;
-        input.shutdown().await.map_err(|_| Error::TemporarilyUnavailable)?;
+        input
+            .write_all(payload.to_string().as_bytes())
+            .await
+            .map_err(|_| Error::TemporarilyUnavailable)?;
+        input
+            .shutdown()
+            .await
+            .map_err(|_| Error::TemporarilyUnavailable)?;
         drop(input);
         // AIDEV-NOTE: Do not report running until the fixed launcher has spawned its allowlisted CLI.
         let mut acknowledgement = [0_u8; 6];
-        output.as_mut().ok_or(Error::TemporarilyUnavailable)?.read_exact(&mut acknowledgement)
-            .await.map_err(|_| Error::TemporarilyUnavailable)?;
-        if &acknowledgement == b"READY\n" { Ok(()) } else { Err(Error::TemporarilyUnavailable) }
+        output
+            .as_mut()
+            .ok_or(Error::TemporarilyUnavailable)?
+            .read_exact(&mut acknowledgement)
+            .await
+            .map_err(|_| Error::TemporarilyUnavailable)?;
+        if &acknowledgement == b"READY\n" {
+            Ok(())
+        } else {
+            Err(Error::TemporarilyUnavailable)
+        }
     };
-    if !matches!(tokio::time::timeout(Duration::from_secs(10), initialized).await, Ok(Ok(()))) {
+    if !matches!(
+        tokio::time::timeout(Duration::from_secs(10), initialized).await,
+        Ok(Ok(()))
+    ) {
         let cleaned = sandbox.cleanup().await.is_ok();
         let _kill_result = child.kill().await;
         bridge.finish(id, EventType::Failed, cleaned).await;
         let _receiver_gone = ready.send(Err(Error::TemporarilyUnavailable));
         return;
     }
-    if ready.send(Ok(())).is_err() { signal.notify_one(); }
+    if ready.send(Ok(())).is_err() {
+        signal.notify_one();
+    }
     let kind = match output {
         None => EventType::Failed,
         Some(mut output) => {
@@ -50,11 +78,13 @@ pub(crate) async fn execute(bridge: Bridge, id: Uuid, request: Start, credential
                 loop {
                     match output.read(&mut buffer).await {
                         Ok(0) if !pending.is_empty() => return EventType::Failed,
-                        Ok(0) => return match child.wait().await {
-                            Ok(status) if status.success() => EventType::Completed,
-                            Ok(status) if status.code() == Some(124) => EventType::TimedOut,
-                            _ => EventType::Failed,
-                        },
+                        Ok(0) => {
+                            return match child.wait().await {
+                                Ok(status) if status.success() => EventType::Completed,
+                                Ok(status) if status.code() == Some(124) => EventType::TimedOut,
+                                _ => EventType::Failed,
+                            }
+                        }
                         Ok(count) => {
                             pending.extend_from_slice(&buffer[..count]);
                             let valid = match std::str::from_utf8(&pending) {
@@ -63,10 +93,13 @@ pub(crate) async fn execute(bridge: Bridge, id: Uuid, request: Start, credential
                                 Err(_) => return EventType::Failed,
                             };
                             if valid > 0 {
-                                let text = String::from_utf8(pending.drain(..valid).collect()).expect("validated UTF-8");
-                                if bridge.output(id, text).await.is_err() { return EventType::Failed; }
+                                let text = String::from_utf8(pending.drain(..valid).collect())
+                                    .expect("validated UTF-8");
+                                if bridge.output(id, text).await.is_err() {
+                                    return EventType::Failed;
+                                }
                             }
-                        },
+                        }
                         Err(_) => return EventType::Failed,
                     }
                 }

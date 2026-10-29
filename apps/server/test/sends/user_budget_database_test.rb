@@ -1,9 +1,28 @@
 # frozen_string_literal: true
 
 require_relative "budget_database_helper"
+require "active_record"
+require_relative "../../db/migrate/20261029000045_add_user_send_budgets"
 
 # AIDEV-NOTE: User admission uses immutable approval identity and the same atomic locks as mailbox admission.
 class UserBudgetDatabaseTest < SendBudgetDatabaseTestCase
+  def test_migration_restores_role_for_framework_bookkeeping
+    original_role = @admin.exec("SELECT current_user").getvalue(0, 0)
+    @admin.exec("BEGIN")
+    @admin.exec("DELETE FROM app_send_private.budget_limits WHERE kind='user'")
+    admin = @admin
+    migration = AddUserSendBudgets.new
+    migration.define_singleton_method(:execute) { |sql| admin.exec(sql) }
+    migration.down
+    assert_equal original_role, @admin.exec("SELECT current_user").getvalue(0, 0)
+    migration.up
+    assert_equal original_role, @admin.exec("SELECT current_user").getvalue(0, 0)
+    @admin.exec("SELECT version FROM app_meta.schema_migrations LIMIT 1")
+  ensure
+    # AIDEV-NOTE: Roll back schema and quota changes so admission tests retain their original fixtures.
+    @admin.exec("ROLLBACK") if @admin && @admin.transaction_status != PG::PQTRANS_IDLE
+  end
+
   def test_user_quota_is_charged_to_the_approver_and_final_checks_do_not_charge_again
     pair = prepare_submission
     authorization = authorize(pair)
@@ -37,7 +56,7 @@ class UserBudgetDatabaseTest < SendBudgetDatabaseTestCase
   end
   def test_two_mailboxes_concurrently_share_one_user_ceiling
     @admin.exec("UPDATE app_send_private.budget_limits SET ceiling=1,version=2 WHERE kind='user'")
-    first = prepare_submission
+    first_mailbox = @box
     second_connection = connect("BE02_WORKER_DATABASE_URL", "elevateo_worker")
     @box = SecureRandom.uuid
     fixture_change do
@@ -48,7 +67,10 @@ class UserBudgetDatabaseTest < SendBudgetDatabaseTestCase
       @admin.exec_params("INSERT INTO app_send_private.mailbox_policy VALUES ($1,$2,true)", [@org, @box])
     end
     create_smtp_account
+    # AIDEV-NOTE: Finish membership changes before either approval; provisioning revokes earlier capability generations.
     second = prepare_submission(connection: second_connection)
+    @box = first_mailbox
+    first = prepare_submission
     @worker.exec("BEGIN")
     refute_nil authorize(first)
     thread = Thread.new { authorize(second) }
@@ -59,7 +81,7 @@ class UserBudgetDatabaseTest < SendBudgetDatabaseTestCase
     assert_nil thread.value
     # AIDEV-NOTE: Admin sees committed rows only; assert exact winner totals after both workers have finished.
     assert_equal 7, usage.length
-    assert usage.all? { |row| row.fetch("used") == "1" }
+    assert(usage.all? { |row| row.fetch("used") == "1" })
     assert_equal "1", @admin.exec("SELECT count(*) FROM app_send_private.attempts").getvalue(0, 0)
     assert_equal "counter_exhausted", @admin.exec_params("SELECT hold_reason FROM app_send_private.jobs WHERE send_id=$1", [second.last.send_id]).getvalue(0, 0)
   ensure

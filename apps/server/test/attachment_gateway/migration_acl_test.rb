@@ -3,6 +3,7 @@
 require "minitest/autorun"
 require_relative "../../config/environment"
 require_relative "../../db/migrate/20261015000018_create_attachment_gateway_binding"
+require_relative "../../db/migrate/20261019000037_add_draft_attachment_gateway"
 
 # AIDEV-NOTE: Only a disposable migrated database may run this transaction-scoped grant lifecycle probe.
 class AttachmentGatewayMigrationAclTest < Minitest::Test
@@ -52,6 +53,17 @@ class AttachmentGatewayMigrationAclTest < Minitest::Test
       raise ActiveRecord::Rollback
     end
     assert_equal applied, snapshot(connection), "the disposable probe must leave original state intact"
+  end
+
+  def setup
+    @connection = ActiveRecord::Base.connection
+    @connection.begin_transaction(joinable: false)
+    # AIDEV-NOTE: Migration 18 requires its original bootstrap; rollback restores the later draft helper and ACL.
+    AddDraftAttachmentGateway.new.down
+  end
+
+  def teardown
+    @connection.rollback_transaction
   end
 
   private

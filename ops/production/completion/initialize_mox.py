@@ -15,7 +15,8 @@ import tempfile
 from assignments import Assignment, load
 from common import compose, helper_image, required, run
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "selfhosted-mail"))
+# AIDEV-NOTE: Keep completion modules first; selfhosted-mail also defines a different provision module.
+sys.path.append(str(Path(__file__).resolve().parents[2] / "selfhosted-mail"))
 from validation import fqdn  # noqa: E402
 
 

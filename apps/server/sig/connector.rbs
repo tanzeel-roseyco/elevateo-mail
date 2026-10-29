@@ -25,7 +25,7 @@ module Elevateo
     def initialize: (connection: _ThreadConnection, session: ReadResponse::item) -> void
     def search: (WriteInput::object) -> ReadResponse::item
     def read: (WriteInput::object) -> ReadResponse::item
-    def draft: (WriteInput::object, digest: String, request_id: String) -> WriteResponse
+    def draft: (WriteInput::object, digest: String, request_id: String?) -> WriteResponse
     def encode: (ReadResponse::item) -> WriteResponse
     private
     def message: (ReadResponse::item, String) -> ReadResponse::item
