@@ -27,7 +27,8 @@ const REASON_LABELS: Record<SuppressionReason, string> = {
 type State =
   | { kind: 'loading' }
   | { kind: 'error' }
-  | { kind: 'ready'; items: SuppressionRecord[]; nextCursor: string | null; loadingMore: boolean }
+  // pageError: a failed "Show more" keeps the rows already shown and offers a retry instead.
+  | { kind: 'ready'; items: SuppressionRecord[]; nextCursor: string | null; loadingMore: boolean; pageError: boolean }
 
 export function SuppressionsPage() {
   const { mailboxId } = useParams()
@@ -73,16 +74,19 @@ function SuppressionList({ organizationId, q }: { organizationId: string; q: str
 
   const load = useCallback(async (cursor: string | undefined, append: boolean) => {
     if (!port) return
-    if (append) setState((prev) => (prev.kind === 'ready' ? { ...prev, loadingMore: true } : prev))
+    if (append) setState((prev) => (prev.kind === 'ready' ? { ...prev, loadingMore: true, pageError: false } : prev))
     else setState({ kind: 'loading' })
     const query: SuppressionQuery = { ...(q === '' ? {} : { q }), ...(cursor === undefined ? {} : { cursor }) }
     const outcome = await request((ctx, signal) => port.listSuppressions(ctx, organizationId, query, signal))
     if (outcome.kind === 'stale') return
-    if (outcome.kind === 'failed' || outcome.value.organization_id !== organizationId) { setState({ kind: 'error' }); return }
+    if (outcome.kind === 'failed' || outcome.value.organization_id !== organizationId) {
+      setState((prev) => (append && prev.kind === 'ready' ? { ...prev, loadingMore: false, pageError: true } : { kind: 'error' }))
+      return
+    }
     setState((prev) => {
       const existing = append && prev.kind === 'ready' ? prev.items : []
       const seen = new Set(existing.map((item) => item.id))
-      return { kind: 'ready', items: [...existing, ...outcome.value.items.filter((item) => !seen.has(item.id))], nextCursor: outcome.value.next_cursor, loadingMore: false }
+      return { kind: 'ready', items: [...existing, ...outcome.value.items.filter((item) => !seen.has(item.id))], nextCursor: outcome.value.next_cursor, loadingMore: false, pageError: false }
     })
   }, [port, request, organizationId, q])
 
@@ -118,6 +122,7 @@ function SuppressionList({ organizationId, q }: { organizationId: string; q: str
           ))}
         </ul>
       )}
+      {state.pageError && <Callout variant="danger" role="alert">More suppressed addresses could not be loaded. The rows above are still current; use Show more to try again.</Callout>}
       {state.nextCursor !== null && (
         <div className="flex justify-center">
           <Button size="sm" disabled={state.loadingMore} onClick={() => void load(state.nextCursor ?? undefined, true)}>{state.loadingMore ? 'Loading…' : 'Show more'}</Button>

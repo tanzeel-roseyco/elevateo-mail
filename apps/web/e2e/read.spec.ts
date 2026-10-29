@@ -344,3 +344,31 @@ test('no request leaves for remote hosts while reading hostile content', async (
   await expect(page.getByText('alert(1)', { exact: false })).toBeVisible()
   expect(external).toEqual([])
 })
+
+// FC web-quality: People, workspace members and Personal Details render the fixture entry's simulated
+// V2 ports (src/dev/simulatedPeople.ts) instead of their error states, at desktop and phone width.
+for (const width of [1440, 390]) {
+  test(`People, workspace members and Personal Details show simulated data at ${width}px`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 900 })
+    await page.goto(`${ENTRY}#/people`)
+    await expect(page.getByText('Unbound roster verified with the organization gateway.')).toBeVisible()
+    await expect(page.getByRole('heading', { name: 'Current organization grants' })).toBeVisible()
+    await expect(page.getByText('Current grants could not be loaded')).toHaveCount(0)
+    await page.goto(`${ENTRY}#/settings/workspace/members`)
+    await expect(page.getByRole('heading', { name: 'Current organization grants' })).toBeVisible()
+    await expect(page.getByRole('button', { name: 'Save role' }).first()).toBeVisible()
+    await page.goto(`${ENTRY}#/settings/profile/personal-details`)
+    await expect(page.getByLabel('Display name')).toBeVisible()
+    await expect(page.getByText('Personal settings could not be loaded')).toHaveCount(0)
+    const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)
+    expect(overflow).toBeLessThanOrEqual(0)
+  })
+}
+
+// Failure path: `?production-settings` drops the simulated ports, so the pages keep their honest
+// error state rather than inventing data.
+test('without simulated ports Personal Details shows its error state, not invented data', async ({ page }) => {
+  await page.goto(`${ENTRY}?production-settings#/settings/profile/personal-details`)
+  await expect(page.getByText('Personal settings could not be loaded')).toBeVisible()
+  await expect(page.getByRole('button', { name: 'Retry' })).toBeVisible()
+})

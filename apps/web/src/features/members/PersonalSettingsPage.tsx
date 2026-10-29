@@ -3,6 +3,7 @@
 // page header, so this page renders only the form card.
 import { useCallback, useEffect, useId, useState } from 'react'
 import { useProtectedRequest } from '@/app/protectedRequest'
+import { useFeatureGateways } from '@/app/featureGateways'
 import { useSession } from '@/app/session'
 import { createV2Gateway } from '@/data/v2Gateway'
 import { GatewayError } from '@/data/errors'
@@ -12,7 +13,9 @@ import { EmptyState, ErrorState, Skeleton } from '@/ui/Async'
 import { Field, TextInput } from '@/ui/Field'
 import { Card } from '@/ui/Card'
 
-const gateway = createV2Gateway()
+// AIDEV-NOTE: Production uses this real HTTP port; demo/fixture entries inject a simulated one
+// through featureGateways.preferences so the capture renders fixture data with no failed requests.
+const realPreferencesGateway = createV2Gateway()
 type Preference = { display_name: string | null; revision: number }
 type View =
   | { status: 'loading'; key: string }
@@ -35,6 +38,7 @@ function Frame({ children }: { children: React.ReactNode }) {
 export function PersonalSettingsPage() {
   const { state } = useSession()
   const { request, proof } = useProtectedRequest()
+  const gateway = useFeatureGateways().preferences ?? realPreferencesGateway
   const session = state.status === 'ready' ? state.session : null
   const key = session ? `${session.actor.id}:${session.organization.id}:${session.context_id}:${session.authorization_version}` : null
   const [view, setView] = useState<View | null>(null)
@@ -65,7 +69,7 @@ export function PersonalSettingsPage() {
     }
     setName(outcome.value.display_name ?? '')
     setView({ status: 'ready', key, value: outcome.value })
-  }, [key, request, session])
+  }, [gateway, key, request, session])
 
   useEffect(() => {
     void load()

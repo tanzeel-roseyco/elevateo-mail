@@ -8,6 +8,7 @@ import { createSimulatedConnectorGrantsGateway } from '@/data/fixtures/simulated
 import { createSimulatedDeliveryReportsGateway } from '@/data/simulatedDeliveryReports'
 import type { FeatureGateways } from '@/app/featureGateways'
 import { AuthCompletePage } from '@/features/auth/AuthCompletePage'
+import { createSimulatedAdministrationGateway, createSimulatedPreferencesGateway } from './simulatedPeople'
 import '@/styles/index.css'
 import { useBottomNotice } from '@/ui/useBottomNotice'
 
@@ -29,13 +30,15 @@ const completion = window.location.hash === '#/auth/complete'
 // `?production-settings` renders the settings pages exactly as the production entry does (no
 // browser-local adapters), so their unavailable states can be captured against fixture data.
 const simulatedSettings = !new URLSearchParams(window.location.search).has('production-settings')
-// `?production-settings` also drops the simulated connector and delivery-report adapters so the
-// Connections and Bounces/Suppressions screens render their production unavailable states.
+// `?production-settings` also drops the simulated connector, delivery-report, People/Members and
+// Personal Details adapters so those screens render exactly what production shows.
 const featureGateways: FeatureGateways = simulatedSettings
   ? {
       simulatedSettings: true,
       connectorGrants: createSimulatedConnectorGrantsGateway(),
       deliveryReports: createSimulatedDeliveryReportsGateway(),
+      administration: createSimulatedAdministrationGateway(gateway),
+      preferences: createSimulatedPreferencesGateway(),
     }
   : {}
 createRoot(root).render(
