@@ -118,6 +118,17 @@ Also found while repairing (not in wave 1): the web app had no listener for `hos
 | P12-2 MED export lacked profile mapping | `provisioningProfiles` maps `co.elevateo.mail.ios` to the imported profile | `test_export_options_map_bundle_to_profile` |
 | P12-3 MED XcodeGen would overwrite Info.plist | `info:` section removed; `INFOPLIST_FILE` kept | spec change (XcodeGen needs a Mac host) |
 
+**Batch R3 — Android build and emulator acceptance** (commit "Repair Android signing cleanup and emulator acceptance oracles"). Batch R2 is commit `81bb3a9b`.
+
+| Finding | Repair | Regression test |
+| --- | --- | --- |
+| P01-1 HIGH keystore left in artifacts on failure | `release-signing.sh`: keystore in a private 0700 temp dir (umask 077), EXIT trap registered before decoding, never in `APK_BUILD_ROOT` | `ReleaseSigningTest` (success, apksigner failure, invalid base64) |
+| P01-2 MED emulator lacked KVM group | documented `--group-add "$(stat -c %g /dev/kvm)"` (Dockerfile, README, fail-fast message) | doc-only |
+| P02-1 MED unbounded `adb wait-for-device` | 180 s bounded `get-state` loop that also checks emulator liveness | shell change (needs an emulator; exercised in the final pass when RAM allows) |
+| P02-2 MED unknown focus became PASS | `classify_external_link`: failed launch or unknown focus is NOT_RUN, never PASS | `ExternalLinkTest` |
+| P02-3 MED rotation oracle passed on the notice alone | `signed_in_view` requires the signed-in shell controls and rejects the sign-in screen, checked before rotation, after it and after relaunch | `SignedInViewTest` |
+| P03-1 LOW untyped test methods | `-> None` on every test method | mypy-visible signatures |
+
 ## Self-hosted continuation reviews — 2026-10-23
 
 Mandatory full-rubric adversarial Orca Codex reviews, bounded to <=200 physical LOC per

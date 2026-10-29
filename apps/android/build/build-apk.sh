@@ -87,12 +87,11 @@ python3 "$android_dir/verify_manifest_tree.py" "$tools/aapt" "$apk"
 out_apk="$APK_BUILD_ROOT/elevateo-android-x86_64-qa.apk"
 cp "$apk" "$out_apk"
 if [[ $signing_set -eq ${#signing_vars[@]} ]]; then
-  keystore="$APK_BUILD_ROOT/release-keystore.jks"
-  # AIDEV-NOTE: Keystore material exists only inside the task-owned build root; never log or copy it.
-  printf '%s' "$ELEVATEO_ANDROID_KEYSTORE_BASE64" | base64 -d > "$keystore"
-  "$tools/apksigner" sign --ks "$keystore" --ks-pass env:ELEVATEO_ANDROID_KEYSTORE_PASSWORD \
-    --ks-key-alias "$ELEVATEO_ANDROID_KEY_ALIAS" --key-pass env:ELEVATEO_ANDROID_KEY_PASSWORD "$out_apk"
-  rm -f "$keystore"
+  # AIDEV-NOTE: keystore material lives only in a private 0700 temp dir removed on every exit path
+  # (release-signing.sh); it never touches APK_BUILD_ROOT, and is never logged or copied.
+  # shellcheck source=release-signing.sh
+  source "$android_dir/build/release-signing.sh"
+  sign_release_apk "$out_apk" "$tools"
   "$tools/apksigner" verify --verbose --print-certs "$out_apk"
   echo 'RELEASE-SIGNED APK (still the QA-origin debug build; not a production release)'
 else

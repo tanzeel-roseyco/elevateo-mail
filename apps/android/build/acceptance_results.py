@@ -54,6 +54,32 @@ def focused_package(dumpsys_output: str) -> str:
     raise ValueError("no resumed activity in dumpsys output")
 
 
+# Visible only in the signed-in shell (Shell.tsx header controls at phone width).
+SIGNED_IN_MARKERS = ("Open navigation", "Account menu")
+# The sign-in screen's primary action (SignInPage.tsx).
+SIGNED_OUT_MARKERS = ("Continue with single sign-on",)
+
+
+def signed_in_view(dump_xml: str) -> bool:
+    """True only for the authenticated shell; the fixture notice alone (rendered over sign-in and
+    error screens too) is not evidence of an authenticated view."""
+    if any(dump_contains_text(dump_xml, marker) for marker in SIGNED_OUT_MARKERS):
+        return False
+    return all(dump_contains_text(dump_xml, marker) for marker in SIGNED_IN_MARKERS)
+
+
+def classify_external_link(launch_ok: bool, package: str, focus: str | None) -> tuple[str, str]:
+    """Status for the system-https-link case. PASS needs a successful VIEW launch AND a known
+    foreground package other than the app; missing evidence is NOT_RUN, never PASS."""
+    if not launch_ok:
+        return "NOT_RUN", "the VIEW intent could not be launched; no evidence about link capture"
+    if not focus:
+        return "NOT_RUN", "foreground package could not be determined after the VIEW intent"
+    if focus == package:
+        return "FAIL", "the QA app captured a system https link"
+    return "PASS", f"https VIEW intent resolved outside the app: {focus}"
+
+
 def write_results(path: Path, cases: list[CaseResult], metadata: dict[str, str]) -> int:
     """Writes the JSON record; returns the process exit code (non-zero when any case failed)."""
     if not cases:
@@ -85,11 +111,19 @@ def main(argv: list[str]) -> int:
     """CLI used by emulator-acceptance.sh.
 
     assert-text DUMP NEEDLE          exit 0 when the dump shows the text, 1 otherwise
+    assert-signed-in DUMP            exit 0 when the dump shows the signed-in shell, 1 otherwise
+    classify-external-link OK PKG FOCUS   prints STATUS<TAB>DETAIL (OK is 1 or 0; FOCUS may be empty)
     focused-package DUMPSYS          prints the resumed package
     write OUT CASES KEY=VALUE...     writes the JSON record; exit 1 when any case failed
     """
     if len(argv) == 4 and argv[1] == "assert-text":
         return 0 if dump_contains_text(_read(argv[2]), argv[3]) else 1
+    if len(argv) == 3 and argv[1] == "assert-signed-in":
+        return 0 if signed_in_view(_read(argv[2])) else 1
+    if len(argv) == 5 and argv[1] == "classify-external-link":
+        status, detail = classify_external_link(argv[2] == "1", argv[3], argv[4] or None)
+        print(f"{status}\t{detail}")
+        return 0
     if len(argv) == 3 and argv[1] == "focused-package":
         print(focused_package(_read(argv[2])))
         return 0

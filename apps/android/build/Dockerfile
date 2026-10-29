@@ -7,7 +7,8 @@
 #
 #   docker build -f apps/android/build/Dockerfile --target emulator \
 #     --build-arg RUST_IMAGE="$RUST_IMAGE" -t elevateo-android-emulator .
-#   docker run --rm --device /dev/kvm -v "$APK_BUILD_ROOT:/artifacts" \
+#   # --group-add gives the unprivileged elevateoqa user the host KVM group (root:kvm 0660 hosts).
+#   docker run --rm --device /dev/kvm --group-add "$(stat -c %g /dev/kvm)" -v "$APK_BUILD_ROOT:/artifacts" \
 #     elevateo-android-emulator bash /opt/elevateo/apps/android/build/emulator-acceptance.sh \
 #       /artifacts/elevateo-android-x86_64-qa.apk /artifacts/qa-trust /artifacts/acceptance
 #

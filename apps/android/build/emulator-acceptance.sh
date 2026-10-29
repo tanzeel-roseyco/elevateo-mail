@@ -16,7 +16,8 @@ dist="${ELEVATEO_FIXTURE_DIST:?web fixture dist required (set by the emulator im
 support="$lane/build"
 
 if [[ ! -e /dev/kvm || ! -r /dev/kvm || ! -w /dev/kvm ]]; then
-  echo 'FATAL: /dev/kvm is unavailable. Run the container with --device /dev/kvm (Docker Desktop' >&2
+  echo 'FATAL: /dev/kvm is unavailable. Run the container with --device /dev/kvm and' >&2
+  echo '--group-add "$(stat -c %g /dev/kvm)" so this unprivileged user can open it (Docker Desktop' >&2
   echo 'needs nested virtualization / WSL2 with KVM); the x86_64 emulator cannot boot without it.' >&2
   exit 3
 fi
@@ -54,7 +55,13 @@ start_origin unauthenticated
   -gpu swiftshader_indirect -no-snapshot -memory 2048 \
   -http-proxy http://127.0.0.1:8080 > "$out/emulator.log" 2>&1 &
 emulator_pid=$!
-"$adb" wait-for-device
+# Bounded device discovery: `adb wait-for-device` has no timeout and never notices a dead emulator.
+for _ in $(seq 1 90); do
+  [[ $("$adb" get-state 2>/dev/null) == device ]] && break
+  kill -0 "$emulator_pid" 2>/dev/null || { echo 'emulator exited before registering with adb; see emulator.log' >&2; exit 2; }
+  sleep 2
+done
+[[ $("$adb" get-state 2>/dev/null) == device ]] || { echo 'emulator did not register with adb within 180 s' >&2; exit 2; }
 for _ in $(seq 1 120); do
   [[ $("$adb" shell getprop sys.boot_completed 2>/dev/null | tr -d '\r') == 1 ]] && break
   kill -0 "$emulator_pid" || { echo 'emulator exited during boot; see emulator.log' >&2; exit 2; }
@@ -73,10 +80,11 @@ dump_ui() { # $1 = evidence name; prints the pulled dump path
   echo "$out/$1.xml"
 }
 assert_text() { python3 "$support/acceptance_results.py" assert-text "$1" "$2"; }
-focused() {
-  "$adb" shell dumpsys activity activities > "$out/dumpsys.txt"
+focused() { # prints the resumed package; fails (no output) when it cannot be determined
+  "$adb" shell dumpsys activity activities > "$out/dumpsys.txt" || return 1
   python3 "$support/acceptance_results.py" focused-package "$out/dumpsys.txt"
 }
+assert_signed_in() { python3 "$support/acceptance_results.py" assert-signed-in "$1"; }
 launch_app() {
   "$adb" shell am start -W -n "$package/.MainActivity" >/dev/null
   sleep 8 # WebView load of the fixture bundle over the proxied TLS origin
@@ -115,6 +123,7 @@ fi
 start_origin authenticated
 "$adb" shell am force-stop "$package"
 launch_app
+before=$(dump_ui before-rotation)
 "$adb" shell settings put system accelerometer_rotation 0
 "$adb" shell settings put system user_rotation 1
 sleep 3
@@ -122,11 +131,14 @@ dump=$(dump_ui rotated)
 "$adb" shell am force-stop "$package"
 launch_app
 resumed=$(dump_ui resumed)
-if assert_text "$dump" 'Development fixtures' && assert_text "$resumed" 'Development fixtures' \
-   && [[ $(focused) == "$package" ]]; then
-  record rotation_resume_fenced PASS 'fixture shell stayed in-app through rotation and relaunch'
+# The fixture notice renders even over sign-in/error screens, so the signed-in shell itself is
+# asserted (acceptance_results.signed_in_view) before rotation, after it, and after relaunch.
+focus=$(focused || echo '')
+if assert_signed_in "$before" && assert_signed_in "$dump" && assert_signed_in "$resumed" \
+   && [[ $focus == "$package" ]]; then
+  record rotation_resume_fenced PASS 'signed-in shell stayed in-app through rotation and relaunch'
 else
-  record rotation_resume_fenced FAIL 'app content or focus lost across rotation/relaunch'
+  record rotation_resume_fenced FAIL 'signed-in shell or focus lost across rotation/relaunch (see before-rotation/rotated/resumed)'
 fi
 "$adb" shell settings put system user_rotation 0
 
@@ -144,14 +156,16 @@ fi
 sleep 4
 
 # Case: a system https link is not captured by the app (no VIEW intent filter)
-"$adb" shell am start -a android.intent.action.VIEW -d 'https://example.org/external-check' >/dev/null || true
+# A failed launch or unknown focus is not evidence of external resolution (NOT_RUN/FAIL, never PASS).
+launch_ok=1
+"$adb" shell am start -W -a android.intent.action.VIEW -d 'https://example.org/external-check' \
+  > "$out/view-intent.log" 2>&1 || launch_ok=0
+grep -q '^Error' "$out/view-intent.log" && launch_ok=0
 sleep 3
-focus=$(focused || echo unknown)
-if [[ $focus != "$package" ]]; then
-  record system_link_external PASS "https VIEW intent resolved outside the app: $focus"
-else
-  record system_link_external FAIL 'the QA app captured a system https link'
-fi
+focus=$(focused || echo '')
+IFS=$'\t' read -r link_status link_detail < <(python3 "$support/acceptance_results.py" \
+  classify-external-link "$launch_ok" "$package" "$focus")
+record system_link_external "$link_status" "$link_detail"
 
 # Case: uninstall
 if "$adb" uninstall "$package" > "$out/uninstall.log" 2>&1; then
