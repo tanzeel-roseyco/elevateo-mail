@@ -15,6 +15,7 @@ import { Button } from '@/ui/Button'
 import { Select } from '@/ui/Field'
 import {
   ArchiveBoxIcon,
+  ArrowUturnLeftIcon,
   ClockIcon,
   DocumentTextIcon,
   EnvelopeIcon,
@@ -22,6 +23,7 @@ import {
   InboxIcon,
   PaperAirplaneIcon,
   PencilSquareIcon,
+  ShieldCheckIcon,
   StarIcon,
   TrashIcon,
   UserGroupIcon,
@@ -79,6 +81,10 @@ export function useFolders(mailboxId: string, mailbox: Mailbox | undefined, coun
   if (mailbox?.capabilities.manage_members === true) {
     folders.push({ key: 'members', label: 'Members', to: `${base}/members`, Icon: UserGroupIcon, current: pathname === `${base}/members`, within: false })
   }
+  // Send-delivery reports: visible to any mailbox member; the pages show an unavailable state when
+  // the server does not expose delivery reports, so the links stay stable rather than appearing/vanishing.
+  folders.push({ key: 'bounces', label: 'Bounces', to: `${base}/bounces`, Icon: ArrowUturnLeftIcon, current: pathname === `${base}/bounces`, within: false })
+  folders.push({ key: 'suppressions', label: 'Suppressions', to: `${base}/suppressions`, Icon: ShieldCheckIcon, current: pathname === `${base}/suppressions`, within: false })
   return folders
 }
 
