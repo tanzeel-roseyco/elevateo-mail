@@ -1,0 +1,90 @@
+{
+    "retrieved_utc":  "2026-10-11T21:56:49.1415789Z",
+    "powershell_release":  {
+                               "id":  385023873,
+                               "tag_name":  "v7.4.20",
+                               "published_at":  "2026-09-08T21:09:53Z",
+                               "html_url":  "https://github.com/PowerShell/PowerShell/releases/tag/v7.4.20"
+                           },
+    "powershell_asset":  {
+                             "id":  551205602,
+                             "name":  "powershell-7.4.20-linux-x64.tar.gz",
+                             "size":  72533071,
+                             "digest":  "sha256:ed8008345c7f5337f5e293145f5e243ce132e5ee4dfc24ac551c45a4b3092181",
+                             "browser_download_url":  "https://github.com/PowerShell/PowerShell/releases/download/v7.4.20/powershell-7.4.20-linux-x64.tar.gz"
+                         },
+    "gems":  [
+                 {
+                     "name":  "minitest",
+                     "version":  "6.0.6",
+                     "sha":  "153ea36d1d987a62942382b61075745042a2b3123b1cd48f4c3675af9cc7d6f1",
+                     "dependencies":  {
+                                          "development":  [
+                                                              {
+                                                                  "name":  "hoe",
+                                                                  "requirements":  "~\u003e 4.7"
+                                                              },
+                                                              {
+                                                                  "name":  "rdoc",
+                                                                  "requirements":  "\u003e= 6.0, \u003c 8"
+                                                              },
+                                                              {
+                                                                  "name":  "simplecov",
+                                                                  "requirements":  "~\u003e 0.21"
+                                                              }
+                                                          ],
+                                          "runtime":  [
+                                                          {
+                                                              "name":  "drb",
+                                                              "requirements":  "~\u003e 2.0"
+                                                          },
+                                                          {
+                                                              "name":  "prism",
+                                                              "requirements":  "~\u003e 1.5"
+                                                          }
+                                                      ]
+                                      }
+                 },
+                 {
+                     "name":  "minitest-mock",
+                     "version":  "5.27.0",
+                     "sha":  "7040ed7185417a966920987eaa6eaf1be4ea1fc5b25bb03ff4703f98564a55b0",
+                     "dependencies":  {
+                                          "development":  [
+                                                              {
+                                                                  "name":  "hoe",
+                                                                  "requirements":  "~\u003e 4.3"
+                                                              },
+                                                              {
+                                                                  "name":  "hoe-git2",
+                                                                  "requirements":  "\u003e 0"
+                                                              },
+                                                              {
+                                                                  "name":  "rdoc",
+                                                                  "requirements":  "\u003e= 4.0, \u003c 7"
+                                                              }
+                                                          ],
+                                          "runtime":  [
+
+                                                      ]
+                                      }
+                 },
+                 {
+                     "name":  "base64",
+                     "version":  "0.3.0",
+                     "sha":  "27337aeabad6ffae05c265c450490628ef3ebd4b67be58257393227588f5a97b",
+                     "dependencies":  {
+                                          "development":  [
+
+                                                          ],
+                                          "runtime":  [
+
+                                                      ]
+                                      }
+                 }
+             ],
+    "ruby_index_digest":  "sha256:22165c5f904d76a8a02fbdd419d0269481369523fd66978232d16c88099730e2",
+    "ruby_linux_amd64_manifest":  "sha256:b297f2323b1adbcfdc3dbd2708bda208c8b48282ec026a8709007843947b3429",
+    "ruby_source":  "https://github.com/docker-library/ruby/tree/3f45e4c352eff67a95e61c8aa0bec55deee5a8fc/3.4/slim-bookworm",
+    "status":  "metadata only; no Docker build or runtime validation"
+}

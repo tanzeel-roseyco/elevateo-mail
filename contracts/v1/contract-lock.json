@@ -1,0 +1,15 @@
+{
+    "version":  "1.0.0-session.1",
+    "stage":  "accepted_be02a_design_deterministic_generation_pass_real_backend_pending",
+    "files":  {
+                  "openapi.json":  "f6524b78e870d9af7e6b8c38bda9a327c3d05c8e2c974ef450db489d31c2a7e4",
+                  "README.md":  "24592cbb5a42e269dc85e813d72d06ebaee6b856c56826a02e3df94912e5ddb2",
+                  "fixtures.json":  "ad33209fa8a4eb4ee0fcb7dc51249935023fdaf6b3ec45a876fb51271cd5133f"
+              },
+    "generated_output":  "apps/web/src/data/generated/api.d.ts",
+    "generation_owner":  "coordinator",
+    "generator":  "openapi-typescript 7.13.0",
+    "app_tests_or_schema_fixture_conformance_executed_here":  false,
+    "generated_sha256":  "19b95855911060455ef31418e4c4cf3339b0f658e38409c24c55581b5667112d",
+    "generation_evidence":  "docs/evidence/be02-contract-generation.json"
+}

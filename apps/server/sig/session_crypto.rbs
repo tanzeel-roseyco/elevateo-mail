@@ -1,0 +1,14 @@
+module Elevateo
+  class SessionCrypto
+    COOKIE: Regexp
+    @key: String
+    def initialize: (config: _AuthConfig) -> void
+    def cookie: () -> String
+    def digest: (String?) -> String
+    def binding: (String?) -> String
+    def encrypt: (auth_value, purpose: String) -> String
+    def decrypt: (auth_value, purpose: String) -> String
+    def sign: (String, purpose: String) -> String
+    def equal?: (auth_value, auth_value) -> bool
+  end
+end

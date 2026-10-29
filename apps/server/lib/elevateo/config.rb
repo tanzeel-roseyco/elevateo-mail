@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 require "uri"
+require "base64"
+require "openssl"
 
 module Elevateo
   class ConfigError < StandardError; end
@@ -15,7 +17,8 @@ module Elevateo
     PROVIDER_PREFIXES = %w[INSTANTLY_ POSTMARK_ SENDGRID_ MAILGUN_ SES_ RESEND_ SMTP_RELAY_].freeze
 
     attr_reader :db_host, :db_name, :db_role, :db_password, :auth_url, :storage_url, :mailpit_url,
-                :outbound_hold, :process
+                :outbound_hold, :process, :session_key, :browser_origin, :auth_jwt_issuer,
+                :auth_jwt_audience, :auth_jwt_algorithm, :cookie_secure, :auth_password_minimum, :cursor_signing_key
 
     def self.current = (@current ||= load!)
 
@@ -35,9 +38,42 @@ module Elevateo
       @auth_url, @storage_url, @mailpit_url = ALLOWED_HOSTS.map { |key, host| internal_url(key, fetch.(key), host) }
       reject_provider_settings(env)
       fetch.("SECRET_KEY_BASE")
+      configure_auth(env, fetch) unless @db_role == "elevateo_migrator"
     end
 
     private
+
+    # AIDEV-NOTE: The runtime gets an encryption key, never Auth's signing/admin key; issuer is an identifier only.
+    def configure_auth(env, fetch)
+      forbidden = %w[JWT_SECRET GOTRUE_JWT_SECRET SERVICE_ROLE_KEY SUPABASE_SERVICE_ROLE_KEY AUTH_ADMIN_PASSWORD]
+      raise ConfigError, "privileged Auth settings are forbidden" if forbidden.any? { |name| env.key?(name) }
+      @session_key = Base64.strict_decode64(fetch.("ELEVATEO_SESSION_KEY_BASE64"))
+      raise ConfigError, "session key must contain 32 bytes" unless @session_key.bytesize == 32
+      @session_key.freeze
+      @cursor_signing_key = OpenSSL::HMAC.digest("SHA256", @session_key, "elevateo:v1:cursor-key").freeze
+      @browser_origin = fetch.("ELEVATEO_BROWSER_ORIGIN")
+      origin = URI.parse(@browser_origin)
+      raise ConfigError, "browser origin must be an exact origin" unless
+        %w[http https].include?(origin.scheme) && origin.host && origin.path.empty? &&
+        origin.query.nil? && origin.fragment.nil? && origin.userinfo.nil?
+      secure = fetch.("ELEVATEO_COOKIE_SECURE")
+      raise ConfigError, "cookie security must be explicit" unless %w[true false].include?(secure)
+      @cookie_secure = secure == "true"
+      unless @cookie_secure ? origin.scheme == "https" : origin.scheme == "http" && env["ELEVATEO_LOCAL_HTTP"] == "true"
+        raise ConfigError, "insecure cookies require the isolated local HTTP profile"
+      end
+      @auth_jwt_issuer = fetch.("ELEVATEO_AUTH_JWT_ISSUER")
+      issuer = URI.parse(@auth_jwt_issuer)
+      raise ConfigError, "invalid Auth issuer" unless %w[http https].include?(issuer.scheme) && issuer.host &&
+        issuer.userinfo.nil? && issuer.query.nil? && issuer.fragment.nil?
+      @auth_jwt_audience = fetch.("ELEVATEO_AUTH_JWT_AUDIENCE")
+      @auth_jwt_algorithm = fetch.("ELEVATEO_AUTH_JWT_ALGORITHM")
+      raise ConfigError, "unsupported Auth JWT policy" unless @auth_jwt_audience == "authenticated" && @auth_jwt_algorithm == "HS256"
+      raise ConfigError, "local Auth password minimum must be 12" unless fetch.("ELEVATEO_AUTH_PASSWORD_MINIMUM") == "12"
+      @auth_password_minimum = 12
+    rescue ArgumentError, URI::InvalidURIError
+      raise ConfigError, "invalid authentication configuration"
+    end
 
     def parse_hold(value)
       raise ConfigError, "ELEVATEO_OUTBOUND_HOLD must be true; no release path exists" unless value == "true"
@@ -51,7 +87,8 @@ module Elevateo
 
     def internal_url(key, value, host)
       uri = URI.parse(value)
-      raise ConfigError, "#{key} must target internal service #{host}" unless uri.scheme == "http" && uri.host == host
+      raise ConfigError, "#{key} must target internal service #{host}" unless uri.scheme == "http" && uri.host == host &&
+        uri.userinfo.nil? && uri.query.nil? && uri.fragment.nil? && ["", "/"].include?(uri.path)
       value
     rescue URI::InvalidURIError
       raise ConfigError, "#{key} is not a valid URL"

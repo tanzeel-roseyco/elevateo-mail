@@ -1,0 +1,24 @@
+module Elevateo
+  class AuthClient
+    class PasswordRejected < AuthError
+      def initialize: () -> void
+    end
+    MAX_RESPONSE: Integer
+    type transport = ^(Symbol, String, auth_object?, String?, Float) -> [Integer, String, String]
+    @config: _AuthConfig
+    @transport: transport?
+    @transaction_open: ^() -> bool?
+    def initialize: (config: _AuthConfig, ?transport: transport?, ?transaction_open: (^() -> bool?)?) -> void
+    def login: (String, String, deadline: RequestDeadline) -> auth_object
+    def refresh: (String, deadline: RequestDeadline) -> auth_object
+    def user: (String, deadline: RequestDeadline) -> auth_object
+    def recover: (String, deadline: RequestDeadline) -> bool
+    def verify: (String, String, deadline: RequestDeadline) -> auth_object
+    def password: (String, String, deadline: RequestDeadline) -> auth_object
+    def logout: (String, String, deadline: RequestDeadline) -> bool
+    private
+    def request: (Symbol, String, auth_object?, deadline: RequestDeadline, ?access: String?, ?empty: bool,
+                  ?accepted_rejection: bool, ?password_update: bool) -> auth_object
+    def exchange: (Symbol, String, auth_object?, String?, RequestDeadline) -> [Integer, String, String]
+  end
+end

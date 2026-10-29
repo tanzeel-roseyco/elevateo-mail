@@ -36,6 +36,7 @@ module Elevateo
 
       connection.clear_query_cache
       connection.uncached(dirties: true) do
+        ownership_lost = false
         begin
           connection.transaction do
             binds = [principal.user_id, principal.org_id].map do |value|
@@ -47,14 +48,29 @@ module Elevateo
             )
             frame = Frame.new(principal: principal, connection: connection, transaction: connection.current_transaction)
             Thread.current[STACK_KEY] = frame
-            result = yield(connection)
-            raise ContextError, "owned tenant transaction ended or changed" unless active_frame?(frame, connection)
-            result
+            begin
+              yield(connection)
+            ensure
+              # AIDEV-NOTE: Check every exit, including caller exceptions, Rollback and non-local returns.
+              unless active_frame?(frame, connection)
+                ownership_lost = true
+                raise ContextError, "owned tenant transaction ended or changed"
+              end
+            end
           end
+        rescue StandardError => error
+          # AIDEV-NOTE: Rails may mask our error while unwinding an externally emptied transaction stack.
+          raise unless ownership_lost
+          raise ContextError, "owned tenant transaction ended or changed", cause: error
         ensure
-          # Only the outer invocation clears its marker, after commit/rollback has completed.
-          Thread.current[STACK_KEY] = nil
-          connection.clear_query_cache
+          begin
+            # AIDEV-NOTE: Discard the physical session after ownership loss; replacement frames cannot be trusted.
+            connection.disconnect! if ownership_lost
+          ensure
+            # Only the outer invocation clears its marker, after Rails unwinding and session disposal.
+            Thread.current[STACK_KEY] = nil
+            connection.clear_query_cache
+          end
         end
       end
     end

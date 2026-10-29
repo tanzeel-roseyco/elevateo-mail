@@ -50,9 +50,8 @@ class EgressTest < Minitest::Test
   # AIDEV-NOTE: Vary token and exit independently only after the real unrestricted checker succeeds.
   def check_wrapper_failure_protocol(shell, source, invocation)
     Dir.mktmpdir("r1-checker-") do |directory|
-      docker = File.join(directory, "docker")
+      docker = File.join(directory, "docker.rb")
       File.write(docker, <<~RUBY)
-        #!#{RbConfig.ruby}
         require "rbconfig"
         if ARGV.last == "denied" && ENV.fetch("R1_INJECT") != "none"
           puts ENV.fetch("R1_TOKEN") unless ENV.fetch("R1_TOKEN").empty?
@@ -60,17 +59,28 @@ class EgressTest < Minitest::Test
         end
         exec RbConfig.ruby, #{File.join(__dir__, "egress_assert.rb").inspect}, *ARGV.last(2)
       RUBY
-      File.chmod(0o700, docker)
+      # AIDEV-NOTE: Interpret the fake command explicitly so read-only containers can keep /tmp mounted noexec.
+      File.chmod(0o600, docker)
+      dispatch = if shell == "sh"
+                   'docker() { "$R1_TEST_RUBY" "$R1_TEST_DOCKER" "$@"; }'
+                 else
+                   # AIDEV-NOTE: Forward pipeline JSON; keep native Ruby last to preserve LASTEXITCODE for wrappers.
+                   'function docker { $input | & $env:R1_TEST_RUBY $env:R1_TEST_DOCKER @args }'
+                 end
       script = File.join(directory, shell == "sh" ? "check.sh" : "check.ps1")
-      File.write(script, source + "\n" + invocation)
+      File.write(script, dispatch + "\n" + source + "\n" + invocation)
       cases = %w[none 125 1 42 0].map { |injected| [injected, ""] }
       cases.concat(%w[0 1 125].map { |injected| [injected, "R1_OPEN_CONTROL_REJECTED"] })
       cases << ["42", "R1_OPEN_CONTROL_REJECTED_WRONG"]
       cases.each do |injected, token|
-        env = { "PATH" => "#{directory}:#{ENV.fetch('PATH')}", "R1_INJECT" => injected, "R1_TOKEN" => token }
+        env = { "R1_TEST_RUBY" => RbConfig.ruby, "R1_TEST_DOCKER" => docker,
+                "R1_INJECT" => injected, "R1_TOKEN" => token }
         command = shell == "sh" ? [shell, script] : [shell, "-NoProfile", "-File", script]
-        _, _, status = Open3.capture3(env, *command)
-        assert_equal injected == "none", status.success?, "#{shell}: denial-only injection #{injected}, token #{token.inspect}"
+        output, errors, status = Open3.capture3(env, *command)
+        assert_equal injected == "none", status.success?,
+                     "#{shell}: denial-only injection #{injected}, token #{token.inspect}, " \
+                     "exit #{status.exitstatus}, stdout #{output.byteslice(0, 1024).inspect}, " \
+                     "stderr #{errors.byteslice(0, 1024).inspect}"
       end
     end
   end

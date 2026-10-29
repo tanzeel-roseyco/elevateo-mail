@@ -1,0 +1,13 @@
+module Elevateo
+  class AuthCallbackRedaction
+    # AIDEV-NOTE: Rack environment owns framework objects; only String query keys are read or written here.
+    type environment = Hash[String, untyped]
+    interface _App
+      def call: (environment) -> [Integer, Hash[String, String], Enumerable[String]]
+    end
+    QUERY_KEY: String
+    @app: _App
+    def initialize: (_App) -> void
+    def call: (environment) -> [Integer, Hash[String, String], Enumerable[String]]
+  end
+end

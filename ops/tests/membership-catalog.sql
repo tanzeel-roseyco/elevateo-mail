@@ -7,8 +7,9 @@ BEGIN
   IF session_user <> 'supabase_admin' OR current_user <> 'supabase_admin'
     OR 'supabase_admin'::regrole::oid <> 10 THEN RAISE EXCEPTION 'catalog tool requires measured admin'; END IF;
   IF expected NOT IN ('legacy', 'absent', 'repair') THEN RAISE EXCEPTION 'invalid catalog state'; END IF;
+  -- AIDEV-NOTE: Parenthesize SQL CASE so PL/pgSQL does not treat its THEN as the IF expression terminator.
   IF (SELECT count(*) FROM pg_auth_members WHERE roleid = 'elevateo_app_read'::regrole
-      AND member = 'elevateo_api'::regrole) <> CASE WHEN expected = 'absent' THEN 0 ELSE 1 END
+      AND member = 'elevateo_api'::regrole) <> (CASE WHEN expected = 'absent' THEN 0 ELSE 1 END)
     OR EXISTS (SELECT 1 FROM pg_auth_members WHERE roleid = 'elevateo_app_read'::regrole
       AND member = 'elevateo_api'::regrole
       AND NOT (NOT admin_option AND inherit_option
