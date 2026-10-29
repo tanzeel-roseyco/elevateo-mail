@@ -1,0 +1,170 @@
+{
+  "task": "ACCEPTANCE-FIXTURE-OBSERVER-R1",
+  "task_id": "task_9b68c275c502",
+  "dispatch_id": "ctx_74e44d0bbc0c",
+  "run_id": "run_5cc7ae2ab900",
+  "synthesizer": {
+    "requested_model": "gpt-6-astra",
+    "requested_effort": "max",
+    "effective_model": "gpt-6-astra",
+    "effective_effort": "max",
+    "evidence": "Coordinator runtime confirmation msg_02d029ee96bc; live terminal reported GPT-6-Astra max."
+  },
+  "cli_version": "2.1.296 (Claude Code)",
+  "preflight": {
+    "--version": {
+      "exit_code": 0,
+      "stdout_sha256": "ced06c95bb4c0780504b700880ceea37cd764283d2be9d3ea2555683183207ea"
+    },
+    "--help": {
+      "exit_code": 0,
+      "stdout_sha256": "550db4f88ae1d97bf7244ca96dc89554aabd3978241ceb69f79001e816c35f09"
+    }
+  },
+  "execution": {
+    "all_valid": true,
+    "records": [
+      {
+        "requested_model": "claude-fable-5",
+        "started_at_utc": "2026-10-13T23:06:26.161119+00:00",
+        "argv": [
+          "C:\\Users\\Tanzeel\\.local\\bin\\claude.exe",
+          "--safe-mode",
+          "--print",
+          "--model",
+          "claude-fable-5",
+          "--tools",
+          "",
+          "--no-session-persistence",
+          "--output-format",
+          "json"
+        ],
+        "timeout_seconds": 900,
+        "stdin_sha256": "0f35eb1fac8002d88c3beb869ddfc94c6fec81fe8a434260dea53bc780af2a88",
+        "pid": 9180,
+        "exit_code": 0,
+        "timed_out": false,
+        "duration_seconds": 131.324,
+        "finished_at_utc": "2026-10-13T23:08:37.485506+00:00",
+        "raw_sha256": "5871543b2c66c865e0789616344af505c33f9f77a97132563134a30fc0ff1b88",
+        "returned_type": "result",
+        "returned_subtype": "success",
+        "is_error": false,
+        "session_id": "07dd2025-11cc-4712-91f5-78d91fd02355",
+        "model_usage_keys": [
+          "claude-fable-5"
+        ],
+        "result_characters": 15144,
+        "reported_cost_usd": 2.7973630000000003,
+        "valid": true
+      },
+      {
+        "requested_model": "claude-opus-5-5",
+        "started_at_utc": "2026-10-13T23:06:26.161366+00:00",
+        "argv": [
+          "C:\\Users\\Tanzeel\\.local\\bin\\claude.exe",
+          "--safe-mode",
+          "--print",
+          "--model",
+          "claude-opus-5-5",
+          "--tools",
+          "",
+          "--no-session-persistence",
+          "--output-format",
+          "json"
+        ],
+        "timeout_seconds": 900,
+        "stdin_sha256": "ea2d0b0d93ee6ca4b0062cf5672bb0a5429b73704ff25db4aec541029f59853d",
+        "pid": 33004,
+        "exit_code": 0,
+        "timed_out": false,
+        "duration_seconds": 131.203,
+        "finished_at_utc": "2026-10-13T23:08:37.366943+00:00",
+        "raw_sha256": "0a8e2dda1fc251da2e48f4c9006ffae3c8b5e056628f4809aa22454de97d9a7d",
+        "returned_type": "result",
+        "returned_subtype": "success",
+        "is_error": false,
+        "session_id": "8f32878e-9530-4032-825b-380c76b4831f",
+        "model_usage_keys": [
+          "claude-opus-5-5"
+        ],
+        "result_characters": 20447,
+        "reported_cost_usd": 1.1811144,
+        "valid": true
+      },
+      {
+        "requested_model": "claude-fable-5-1",
+        "started_at_utc": "2026-10-13T23:06:26.161609+00:00",
+        "argv": [
+          "C:\\Users\\Tanzeel\\.local\\bin\\claude.exe",
+          "--safe-mode",
+          "--print",
+          "--model",
+          "claude-fable-5-1",
+          "--tools",
+          "",
+          "--no-session-persistence",
+          "--output-format",
+          "json"
+        ],
+        "timeout_seconds": 900,
+        "stdin_sha256": "00f48261ba9f8dc31a0bcae8bdd651c8bf40ceafcae6b530c708440f4509c471",
+        "pid": 16352,
+        "exit_code": 0,
+        "timed_out": false,
+        "duration_seconds": 294.821,
+        "finished_at_utc": "2026-10-13T23:11:20.982689+00:00",
+        "raw_sha256": "fc51158fba04a5f4fdfed231806a1699a036fa2db17cb51ec6cb75e535d2894a",
+        "returned_type": "result",
+        "returned_subtype": "success",
+        "is_error": false,
+        "session_id": "52292992-52e9-46f0-bc1c-8188fb1d2e02",
+        "model_usage_keys": [
+          "claude-fable-5-1"
+        ],
+        "result_characters": 16405,
+        "reported_cost_usd": 3.31556825,
+        "valid": true
+      }
+    ]
+  },
+  "independence": {
+    "shared_packet_sha256": "7b3d7eccca8c29c4365f63205b90138036fcb359775e91f3b2cdcb41e684ca34",
+    "file_stdin": true,
+    "argument_arrays": true,
+    "shell": false,
+    "fresh_processes": 3,
+    "distinct_sessions": 3,
+    "tools_disabled": true,
+    "safe_mode": true,
+    "session_persistence": false,
+    "other_current_opinions_in_inputs": false,
+    "authentication": "Existing authorized native accounts; no credentials supplied or changed."
+  },
+  "published_opinions": [
+    {
+      "path": "claude-fable-5.md",
+      "sha256": "20f5dd397faf5a9d1f7608875b1aa88aeaf0c5edaa7036ea25991e38df9776a1",
+      "requested_model": "claude-fable-5"
+    },
+    {
+      "path": "claude-opus-5-5.md",
+      "sha256": "e803594c6b472b5fd125ac7e77b7fcae80d84ab8a1711b9a32eb58bbd2547912",
+      "requested_model": "claude-opus-5-5"
+    },
+    {
+      "path": "claude-fable-5-1.md",
+      "sha256": "9e20817e52a78d6599e387e1d8acf019dfdadbe7415d32fa465c14366c29ce11",
+      "requested_model": "claude-fable-5-1"
+    }
+  ],
+  "redaction_review": {
+    "result_text_reviewed": true,
+    "raw_logs_published": false,
+    "real_emails_tokens_cookies_or_credentials_in_published_text": false,
+    "opinion_text_changed": false,
+    "caveat": "Opinions are independent recommendations; the Astra synthesis adjudicates errors and dissent."
+  },
+  "application_tests_run": false,
+  "full_application_acceptance": "NOT_READY"
+}

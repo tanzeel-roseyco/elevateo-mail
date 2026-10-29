@@ -1,0 +1,34 @@
+{
+  "source_sha256": "0b912b001fcd7f0392b20434a57e47dfc90fd40a75788491f5922b57d910e07c",
+  "source_files": 420,
+  "results": [
+    {
+      "suite": "writable-targets",
+      "exit_code": 0,
+      "observed_exit": 0,
+      "log": "writable-targets-units.log"
+    },
+    {
+      "suite": "missing-log",
+      "exit_code": 0,
+      "observed_exit": 125,
+      "log": "missing-log-units.log"
+    },
+    {
+      "suite": "missing-tmp",
+      "exit_code": 0,
+      "observed_exit": 125,
+      "log": "missing-tmp-units.log"
+    }
+  ],
+  "container_absent": true,
+  "created_images": 0,
+  "created_volumes": 0,
+  "build_cache_created": false,
+  "shared_bases_retained": [
+    "node:24.21.0-bookworm-slim@sha256:d6aa754f16b3197301076f047b5def2f02ea1dbbc2ca920407d46d7ec7f87b20"
+  ],
+  "prior_prerequisites": "/home/tanzeel/elevateo-mail-tests-20261012-ultra/acceptance-integration-r2-20261014/unit-results.json",
+  "free_bytes_before": 266483408896,
+  "free_bytes_after": 266483609600
+}

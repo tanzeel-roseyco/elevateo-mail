@@ -1,6 +1,6 @@
 # Codex, Devin and the four-model design workflow
 
-Execution updated 2026-10-12. The user authorized autonomous local completion. Initial exact-model consultations and actual Astra MAX synthesis are accepted in [ADR 0002](../docs/decisions/0002-local-architecture.md). BE-01 has fresh successful opinions and its task synthesis is underway. No application implementation or live activation is claimed. [capability-status.json](capability-status.json) retains historical observations separately from current execution.
+Execution updated 2026-10-13. The latest user instruction requests Codex terminals through Orca to complete the application. Codex now owns bounded backend implementation; Fable remains the frontend owner. This supersedes the earlier Devin-only execution assignment for new work. Existing Devin credit authorization remains limited to the original $10 and requires proved remaining credit before use. The initial architecture remains accepted in [ADR 0002](../docs/decisions/0002-local-architecture.md); BE-02 has three valid opinions and completed, accepted Astra MAX synthesis. Three supervised Codex workers now implement its approved session/database, authentication and mailbox-read slices. Historical capability observations are not current execution evidence. No live activation is authorized.
 
 ## Roles and exact identities
 
@@ -11,7 +11,7 @@ Execution updated 2026-10-12. The user authorized autonomous local completion. I
 | Second opinion | Claude Fable 5, `claude-fable-5` | Independent maintainability, implementation and product-contract review |
 | Third opinion | Claude Opus 5.5, `claude-opus-5-5` | Independent UX/platform/performance and implementation review |
 | Fourth opinion | Claude Fable 5.1, `claude-fable-5-1` | Independent adversarial correctness, architectural tradeoff and recovery review |
-| Backend implementation | Devin through the authenticated official Devin MCP connection | Staff-level execution of bounded backend milestones with tests, commits, draft PRs and complete handoffs |
+| Backend implementation | Codex terminals supervised through Orca; Devin only within proved remaining authorized credit | Staff-level execution of bounded backend milestones with tests, commits, draft PRs and complete handoffs |
 | Bounded issue repair | GPT-6 Astra, `gpt-6-astra`, effort `low` | Reproduction, minimal fix, regression evidence and a linked fix PR |
 | Frontend | Separately started Fable 5 or Opus 5.5 | Reused local components, real API integration, browser/a11y evidence and coherent visual design |
 | Every C++ and motion-design task | Opus 5.5 | Native boundary or Anime.js patch, measurements, reduced-motion handling and review |

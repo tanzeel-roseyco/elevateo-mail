@@ -1,0 +1,540 @@
+{
+  "task_id": "task_c52cc4cbb85c",
+  "dispatch_id": "ctx_8d307b627ccb",
+  "frozen_at_utc": "2026-10-12T22:44:00.065434+00:00",
+  "coordinator_base_sha": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+  "application_base_sha": "5785eba47f3709debb2815c8d86608f7e62d02f3",
+  "files": [
+    {
+      "root": "coordinator",
+      "path": ".planning/consultations/shared-brief.md",
+      "sha256": "3895880fe89c255d3f00429fcd875e37bca64e55ac7e5b057bf1018b3c405bdd",
+      "bytes": 6237,
+      "included_lines": [
+        1,
+        40
+      ],
+      "total_lines": 40,
+      "complete": true
+    },
+    {
+      "root": "coordinator",
+      "path": "documentation.md",
+      "sha256": "a42faf56e5b0f5e472d398028e3fce559bfbceec66152f2342e523c71c81bab0",
+      "bytes": 117872,
+      "included_lines": [
+        1,
+        399
+      ],
+      "total_lines": 399,
+      "complete": true
+    },
+    {
+      "root": "coordinator",
+      "path": ".planning/POLYGLOT_ARCHITECTURE.md",
+      "sha256": "c8d3656cf7c8acc4a898c9a1603241b84ba9da254725856595c25be85ece2cea",
+      "bytes": 21799,
+      "included_lines": [
+        1,
+        122
+      ],
+      "total_lines": 122,
+      "complete": true
+    },
+    {
+      "root": "coordinator",
+      "path": ".planning/CLIENTS_AND_CLI_CONNECTORS.md",
+      "sha256": "82c92e8c007de491709e5149df7031651028ad5b6272d5fc3713f9d6d0d55801",
+      "bytes": 18610,
+      "included_lines": [
+        1,
+        113
+      ],
+      "total_lines": 113,
+      "complete": true
+    },
+    {
+      "root": "coordinator",
+      "path": ".planning/AGENT_ORCHESTRATION.md",
+      "sha256": "84562b8099de369f2498dd41f6d579323abbf741d70757c51486619082cfa21f",
+      "bytes": 12636,
+      "included_lines": [
+        1,
+        78
+      ],
+      "total_lines": 78,
+      "complete": true
+    },
+    {
+      "root": "coordinator",
+      "path": ".planning/MAIL_ACCOUNTS_AND_ACTIVATION.md",
+      "sha256": "9d759caa3ffb1430af0cf3b81a062a584122895fef659246d0c1f37d5028e9e9",
+      "bytes": 8034,
+      "included_lines": [
+        1,
+        51
+      ],
+      "total_lines": 51,
+      "complete": true
+    },
+    {
+      "root": "coordinator",
+      "path": ".planning/TASK_BACKLOG.md",
+      "sha256": "aba7e19ad1640015e30210d9d37fbfc55410bc5819f0747d4e2ba075dbb7487e",
+      "bytes": 6095,
+      "included_lines": [
+        1,
+        35
+      ],
+      "total_lines": 35,
+      "complete": true
+    },
+    {
+      "root": "coordinator",
+      "path": ".planning/research/reuse-market-scan.md",
+      "sha256": "6f798e4dfd837498cdc52aa1badd117c8c66d9298feb982d02f029bd6af83723",
+      "bytes": 28477,
+      "included_lines": [
+        1,
+        190
+      ],
+      "total_lines": 190,
+      "complete": true
+    },
+    {
+      "root": "coordinator",
+      "path": "docs/component-adoption.md",
+      "sha256": "99cdcc56128a4c4ae0864d17c5f95fdf063c72b5f2112336ec9118810936f7e3",
+      "bytes": 10322,
+      "included_lines": [
+        1,
+        48
+      ],
+      "total_lines": 48,
+      "complete": true
+    },
+    {
+      "root": "coordinator",
+      "path": "docs/contracts-and-reliability.md",
+      "sha256": "6834eee80f7bdfb9dd9437a3417e4a621554ec6f367530ed64fdd5b024a2a6d2",
+      "bytes": 11887,
+      "included_lines": [
+        1,
+        105
+      ],
+      "total_lines": 105,
+      "complete": true
+    },
+    {
+      "root": "coordinator",
+      "path": "docs/local-completion-plan.md",
+      "sha256": "7e7355a889fd0a24bb62d80dbef752d67b761b7bd97ad4b2c5b8f699b9f5adfa",
+      "bytes": 25230,
+      "included_lines": [
+        1,
+        151
+      ],
+      "total_lines": 151,
+      "complete": true
+    },
+    {
+      "root": "coordinator",
+      "path": ".planning/STANDARDS.md",
+      "sha256": "7c01430086ed2dc263c8edcb1b2a9f41b572a23a11b36c1179be802e2874bd10",
+      "bytes": 7218,
+      "included_lines": [
+        1,
+        49
+      ],
+      "total_lines": 49,
+      "complete": true
+    },
+    {
+      "root": "coordinator",
+      "path": "AGENTS.md",
+      "sha256": "33415df7f7cc5a595c45f5ef526744dd52a1d72d9d0a462fea8a9d9674d88971",
+      "bytes": 4279,
+      "included_lines": [
+        1,
+        21
+      ],
+      "total_lines": 21,
+      "complete": true
+    },
+    {
+      "root": "coordinator",
+      "path": "LOCAL_BUILD_PROMPT.md",
+      "sha256": "7bc9ffe8a3e8556fbba5b78f123941827a9f4bcd5043af35ecd39736eb5041d7",
+      "bytes": 14417,
+      "included_lines": [
+        1,
+        66
+      ],
+      "total_lines": 66,
+      "complete": true
+    },
+    {
+      "root": "coordinator",
+      "path": "docs/decisions/0002-local-architecture.md",
+      "sha256": "5a9c7bd24bb35f8a19f78925ea25786ec77e632622535ea3da184da03eef223b",
+      "bytes": 2977,
+      "included_lines": [
+        1,
+        17
+      ],
+      "total_lines": 17,
+      "complete": true
+    },
+    {
+      "root": "coordinator",
+      "path": ".planning/consultations/results/be-02/decisions.md",
+      "sha256": "173f9088cb548076a5a8d04ce87573f000338789744e92567bd7fa915de680f9",
+      "bytes": 31950,
+      "included_lines": [
+        1,
+        156
+      ],
+      "total_lines": 156,
+      "complete": true
+    },
+    {
+      "root": "coordinator",
+      "path": "docs/completion/review-be02-private-parameter.md",
+      "sha256": "e68030081f8b1e289c439375ae43ed1004545149206fb3f31c498d298b1c2c53",
+      "bytes": 13002,
+      "included_lines": [
+        1,
+        89
+      ],
+      "total_lines": 89,
+      "complete": true
+    },
+    {
+      "root": "coordinator",
+      "path": "README.md",
+      "sha256": "584cd88c1fd838cd2a609b3e837100c1e6582599d8b9348be93f7fd72d0d1ed7",
+      "bytes": 108058,
+      "included_lines": [
+        1,
+        36
+      ],
+      "total_lines": 378,
+      "complete": false
+    },
+    {
+      "root": "coordinator",
+      "path": "state.md",
+      "sha256": "950562e3843159a41815a297f8ffdbb682130320dbbb662452f93745c632dcca",
+      "bytes": 123842,
+      "included_lines": [
+        1,
+        36
+      ],
+      "total_lines": 414,
+      "complete": false
+    },
+    {
+      "root": "BE02 Codex",
+      "path": "ops/db/bootstrap.sql",
+      "sha256": "5a665cf865cf84246f38ec8819f6e64e6a49e14105768a46ba8b3ba1df15a225",
+      "bytes": 8899,
+      "included_lines": [
+        1,
+        148
+      ],
+      "total_lines": 148,
+      "complete": true
+    },
+    {
+      "root": "BE02 Codex",
+      "path": "ops/db/bootstrap-auth-grants.sql",
+      "sha256": "4c4dd33830d110a251985073c70f757f5b45d1ba8768752a5145ba02f9ffec8e",
+      "bytes": 3833,
+      "included_lines": [
+        1,
+        62
+      ],
+      "total_lines": 62,
+      "complete": true
+    },
+    {
+      "root": "BE02 Codex",
+      "path": "apps/server/db/migrate/20261013000001_create_private_sessions.rb",
+      "sha256": "14c480c927b70749e4f002fcdb1f133c29e0cd3832d6934d1b83f7ef25bdf3bd",
+      "bytes": 2023,
+      "included_lines": [
+        1,
+        37
+      ],
+      "total_lines": 37,
+      "complete": true
+    },
+    {
+      "root": "BE02 Codex",
+      "path": "apps/server/db/be02/helpers.sql",
+      "sha256": "e0e0d76c503c9739b4e8b5194ff6faa53ee2eacc8424d70469fcca39013a2f9f",
+      "bytes": 4566,
+      "included_lines": [
+        1,
+        80
+      ],
+      "total_lines": 80,
+      "complete": true
+    },
+    {
+      "root": "BE02 Codex",
+      "path": "apps/server/db/be02/entry.sql",
+      "sha256": "22474c1b1a59c0997a172c90668b6d283df8da4f48dc156d295ea500b85de8af",
+      "bytes": 5380,
+      "included_lines": [
+        1,
+        80
+      ],
+      "total_lines": 80,
+      "complete": true
+    },
+    {
+      "root": "BE02 Codex",
+      "path": "apps/server/db/be02/read.sql",
+      "sha256": "e81e13c42ae10c352486411547e6f392acd8db6fa40c5d6c8a30f9e4827d57d0",
+      "bytes": 4010,
+      "included_lines": [
+        1,
+        67
+      ],
+      "total_lines": 67,
+      "complete": true
+    },
+    {
+      "root": "BE02 Codex",
+      "path": "apps/server/db/be02/refresh.sql",
+      "sha256": "74355cb47301123afef7b9d9e3981c4a71d1d983fdb7848e9db3dcaafea60ff0",
+      "bytes": 6548,
+      "included_lines": [
+        1,
+        101
+      ],
+      "total_lines": 101,
+      "complete": true
+    },
+    {
+      "root": "BE02 Codex",
+      "path": "apps/server/db/be02/grants.sql",
+      "sha256": "840f1e348288540b0b7121c9680ff2aa89ae3df73409831c4e4fa7aeb79e7ee1",
+      "bytes": 4101,
+      "included_lines": [
+        1,
+        61
+      ],
+      "total_lines": 61,
+      "complete": true
+    },
+    {
+      "root": "BE02 Codex",
+      "path": "apps/server/db/be02/pending.sql",
+      "sha256": "71d074f7a5c799755c604892756d6101d0c52938367e54d4551c5102a71b7a2f",
+      "bytes": 6653,
+      "included_lines": [
+        1,
+        117
+      ],
+      "total_lines": 117,
+      "complete": true
+    },
+    {
+      "root": "BE02 Codex",
+      "path": "apps/server/db/be02/tables.sql",
+      "sha256": "9e6c0ce57fb67d285228e221a49463df86e0e5bbc6378cffe92c426f8b40dc19",
+      "bytes": 3945,
+      "included_lines": [
+        1,
+        76
+      ],
+      "total_lines": 76,
+      "complete": true
+    },
+    {
+      "root": "BE02 Codex",
+      "path": "apps/server/db/be02/down.sql",
+      "sha256": "9b8caf4c61a37481b15b58913c93f3385629e2a8c9b64084d60bdf149c315f20",
+      "bytes": 2910,
+      "included_lines": [
+        1,
+        43
+      ],
+      "total_lines": 43,
+      "complete": true
+    },
+    {
+      "root": "BE02 Codex",
+      "path": "ops/tests/be02-guards/auth.sh",
+      "sha256": "adeca4d4b4d6dbb64ccdbc7dbc832488483fceb0a3bbe020d5e3976ff90a4885",
+      "bytes": 3191,
+      "included_lines": [
+        1,
+        58
+      ],
+      "total_lines": 58,
+      "complete": true
+    },
+    {
+      "root": "BE02 Codex",
+      "path": "ops/tests/be02-guards/fixture.sql",
+      "sha256": "48f1b6cbf9d6c31989d0204d92fd7e1cb7bfcfa253317b02df111d5dbe5181d9",
+      "bytes": 2802,
+      "included_lines": [
+        1,
+        45
+      ],
+      "total_lines": 45,
+      "complete": true
+    },
+    {
+      "root": "BE02 Codex",
+      "path": "ops/tests/be02-guards/private-grants.sql",
+      "sha256": "37480c9b5c2dd2d1f442d556f0e09c6e9f0cef4de9e0331f9bf761932c226c02",
+      "bytes": 8338,
+      "included_lines": [
+        1,
+        165
+      ],
+      "total_lines": 165,
+      "complete": true
+    },
+    {
+      "root": "BE02 Codex",
+      "path": "ops/tests/be02-guards/run.sh",
+      "sha256": "688baa0a42271a0d8766ff06767257eeed6e9fb65f268c4b596db02b2692e1cb",
+      "bytes": 3637,
+      "included_lines": [
+        1,
+        94
+      ],
+      "total_lines": 94,
+      "complete": true
+    },
+    {
+      "root": "BE02 Codex",
+      "path": "ops/tests/be02-guards/membership.sh",
+      "sha256": "4b507c8a0b7b79284c7a2135c13c2b651e48b06f2dfd64ba87e8a050f15f1675",
+      "bytes": 6009,
+      "included_lines": [
+        1,
+        118
+      ],
+      "total_lines": 118,
+      "complete": true
+    },
+    {
+      "root": "BE02 Codex",
+      "path": "apps/server/test/be_02/database_test_helper.rb",
+      "sha256": "c614ed0098555a7404d166f224949a591a4f74d64b0a54cb00b2bb085f140a2e",
+      "bytes": 9036,
+      "included_lines": [
+        1,
+        199
+      ],
+      "total_lines": 199,
+      "complete": true
+    },
+    {
+      "root": "BE02 Codex",
+      "path": "apps/server/test/be_02/session_database_test.rb",
+      "sha256": "50496a45ab1c564536792e739bed61f78cada9eef10f74de48b0e5d96ea16a3e",
+      "bytes": 11115,
+      "included_lines": [
+        1,
+        176
+      ],
+      "total_lines": 176,
+      "complete": true
+    },
+    {
+      "root": "BE02 Codex",
+      "path": "apps/server/test/be_02/session_expiry_race_test.rb",
+      "sha256": "8666614868adc23c6d635e0f79bab4bb0ea09314c4aae79fc2d43ea9eecb450e",
+      "bytes": 10972,
+      "included_lines": [
+        1,
+        230
+      ],
+      "total_lines": 230,
+      "complete": true
+    },
+    {
+      "root": "BE02 Codex",
+      "path": "apps/server/test/be_02/refresh_publication_test.rb",
+      "sha256": "229c6a1e398e64af64bce4e1aab7d220cd72e5203b4e6988812db5d2e5d366d3",
+      "bytes": 6269,
+      "included_lines": [
+        1,
+        145
+      ],
+      "total_lines": 145,
+      "complete": true
+    },
+    {
+      "root": "BE02 Codex",
+      "path": "ops/compose.be02-test.yaml",
+      "sha256": "0489257e5600f16db380e9d5241686e76563cb92b29b8f91768b8e6802284f5c",
+      "bytes": 7843,
+      "included_lines": [
+        1,
+        220
+      ],
+      "total_lines": 220,
+      "complete": true
+    },
+    {
+      "root": "BE02 Codex",
+      "path": "ops/local/be02-runtime-stage-f1fd9202222a4454843f5e657356c7aa/evidence/014-privilege-guards.log",
+      "sha256": "a8679fc1b14d814b85e01cbd940fa6eb87cde6da218fca12485e4bc03a84dcd6",
+      "bytes": 2269,
+      "included_lines": [
+        1,
+        79
+      ],
+      "total_lines": 79,
+      "complete": true
+    },
+    {
+      "root": "BE02 Codex",
+      "path": "ops/local/be02-runtime-stage-f1fd9202222a4454843f5e657356c7aa/evidence/017-auth-grants.log",
+      "sha256": "9f072ca2aa0eed48e713893a6b402bbfb0cec08d57990fc2255b1136ad17a988",
+      "bytes": 300,
+      "included_lines": [
+        1,
+        7
+      ],
+      "total_lines": 7,
+      "complete": true
+    }
+  ],
+  "common_packet_sha256": "0f05e36cd730420a9d93cc10be75f0bb407fa34041d960b6fda455e17f5b11b3",
+  "inputs": [
+    {
+      "slug": "fable-5",
+      "requested_model": "claude-fable-5",
+      "input_sha256": "dc5f4575a126172f3fdb6271f768a2c5af07d770958fc75c2446f480d1019b68",
+      "focus_sha256": "8f2ddb6f9916650a8f8cb93c98e9e7cddaff7f44751e42460cb81b97ac11fc11",
+      "bytes": 557076,
+      "path": "fable-5.input.txt.log"
+    },
+    {
+      "slug": "opus-5-5",
+      "requested_model": "claude-opus-5-5",
+      "input_sha256": "6bd67c51b0d40bb468021bcc7ab1cf567e60c62d17eba39692f80635d0bd94b4",
+      "focus_sha256": "b0ae63e509cf23ed7283e0962a6305dfcb607d77f619047096203ddc83911704",
+      "bytes": 557130,
+      "path": "opus-5-5.input.txt.log"
+    },
+    {
+      "slug": "fable-5-1",
+      "requested_model": "claude-fable-5-1",
+      "input_sha256": "f285f86ff4a513e53f11fc3ef3deb3b4749429814a43730e5d4c885f3382a854",
+      "focus_sha256": "95d740050c77d242a452bc20b82313928426df11747658a02848411d0e3ff5cc",
+      "bytes": 557136,
+      "path": "fable-5-1.input.txt.log"
+    }
+  ]
+}

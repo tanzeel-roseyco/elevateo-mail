@@ -1,0 +1,805 @@
+{
+  "frozen_at_utc": "2026-10-12T23:09:32.181724+00:00",
+  "base_revisions": {
+    "coordinator": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+    "backend": "5785eba47f3709debb2815c8d86608f7e62d02f3"
+  },
+  "common_packet_sha256": "7df91a826548dac18c74a0d6d65e877ee1b223d1ba4da64ad2b827d56adf65d0",
+  "common_packet_bytes": 362660,
+  "inputs": [
+    {
+      "origin": "coordinator",
+      "path": ".planning/consultations/shared-brief.md",
+      "base_revision": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "sha256": "3895880fe89c255d3f00429fcd875e37bca64e55ac7e5b057bf1018b3c405bdd",
+      "physical_lines": 40,
+      "included_ranges": [
+        [
+          1,
+          40
+        ]
+      ],
+      "omitted": false
+    },
+    {
+      "origin": "coordinator",
+      "path": "AGENTS.md",
+      "base_revision": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "sha256": "33415df7f7cc5a595c45f5ef526744dd52a1d72d9d0a462fea8a9d9674d88971",
+      "physical_lines": 21,
+      "included_ranges": [
+        [
+          1,
+          21
+        ]
+      ],
+      "omitted": false
+    },
+    {
+      "origin": "coordinator",
+      "path": ".planning/STANDARDS.md",
+      "base_revision": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "sha256": "7c01430086ed2dc263c8edcb1b2a9f41b572a23a11b36c1179be802e2874bd10",
+      "physical_lines": 49,
+      "included_ranges": [
+        [
+          1,
+          49
+        ]
+      ],
+      "omitted": false
+    },
+    {
+      "origin": "coordinator",
+      "path": "README.md",
+      "base_revision": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "sha256": "bc87c9d58f31192faec4185d21e50c01b2222807fee166ed9107927235bf732c",
+      "physical_lines": 378,
+      "included_ranges": [
+        [
+          1,
+          8
+        ]
+      ],
+      "omitted": true
+    },
+    {
+      "origin": "coordinator",
+      "path": "state.md",
+      "base_revision": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "sha256": "cfcc1a060994e8233e42ecd1e8d4bccc3b06101801f3a6596d9f957be003285a",
+      "physical_lines": 414,
+      "included_ranges": [
+        [
+          1,
+          8
+        ]
+      ],
+      "omitted": true
+    },
+    {
+      "origin": "coordinator",
+      "path": "documentation.md",
+      "base_revision": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "sha256": "00ea3934c1b8b71cb53c7f41d55bffde6e3e929f5eb44483e5af3c83ebe608d8",
+      "physical_lines": 399,
+      "included_ranges": [
+        [
+          1,
+          8
+        ]
+      ],
+      "omitted": true
+    },
+    {
+      "origin": "coordinator",
+      "path": ".planning/POLYGLOT_ARCHITECTURE.md",
+      "base_revision": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "sha256": "c8d3656cf7c8acc4a898c9a1603241b84ba9da254725856595c25be85ece2cea",
+      "physical_lines": 122,
+      "included_ranges": [
+        [
+          1,
+          31
+        ],
+        [
+          46,
+          97
+        ]
+      ],
+      "omitted": true
+    },
+    {
+      "origin": "coordinator",
+      "path": ".planning/CLIENTS_AND_CLI_CONNECTORS.md",
+      "base_revision": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "sha256": "82c92e8c007de491709e5149df7031651028ad5b6272d5fc3713f9d6d0d55801",
+      "physical_lines": 113,
+      "included_ranges": [
+        [
+          1,
+          42
+        ],
+        [
+          81,
+          103
+        ]
+      ],
+      "omitted": true
+    },
+    {
+      "origin": "coordinator",
+      "path": ".planning/AGENT_ORCHESTRATION.md",
+      "base_revision": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "sha256": "84562b8099de369f2498dd41f6d579323abbf741d70757c51486619082cfa21f",
+      "physical_lines": 78,
+      "included_ranges": [
+        [
+          1,
+          78
+        ]
+      ],
+      "omitted": false
+    },
+    {
+      "origin": "coordinator",
+      "path": ".planning/MAIL_ACCOUNTS_AND_ACTIVATION.md",
+      "base_revision": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "sha256": "9d759caa3ffb1430af0cf3b81a062a584122895fef659246d0c1f37d5028e9e9",
+      "physical_lines": 51,
+      "included_ranges": [
+        [
+          1,
+          51
+        ]
+      ],
+      "omitted": false
+    },
+    {
+      "origin": "coordinator",
+      "path": ".planning/TASK_BACKLOG.md",
+      "base_revision": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "sha256": "aba7e19ad1640015e30210d9d37fbfc55410bc5819f0747d4e2ba075dbb7487e",
+      "physical_lines": 35,
+      "included_ranges": [
+        [
+          1,
+          35
+        ]
+      ],
+      "omitted": false
+    },
+    {
+      "origin": "coordinator",
+      "path": ".planning/research/reuse-market-scan.md",
+      "base_revision": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "sha256": "6f798e4dfd837498cdc52aa1badd117c8c66d9298feb982d02f029bd6af83723",
+      "physical_lines": 190,
+      "included_ranges": [
+        [
+          1,
+          26
+        ],
+        [
+          65,
+          109
+        ]
+      ],
+      "omitted": true
+    },
+    {
+      "origin": "coordinator",
+      "path": "docs/component-adoption.md",
+      "base_revision": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "sha256": "99cdcc56128a4c4ae0864d17c5f95fdf063c72b5f2112336ec9118810936f7e3",
+      "physical_lines": 48,
+      "included_ranges": [
+        [
+          1,
+          48
+        ]
+      ],
+      "omitted": false
+    },
+    {
+      "origin": "coordinator",
+      "path": "docs/contracts-and-reliability.md",
+      "base_revision": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "sha256": "6834eee80f7bdfb9dd9437a3417e4a621554ec6f367530ed64fdd5b024a2a6d2",
+      "physical_lines": 105,
+      "included_ranges": [
+        [
+          1,
+          105
+        ]
+      ],
+      "omitted": false
+    },
+    {
+      "origin": "coordinator",
+      "path": "docs/local-completion-plan.md",
+      "base_revision": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "sha256": "7e7355a889fd0a24bb62d80dbef752d67b761b7bd97ad4b2c5b8f699b9f5adfa",
+      "physical_lines": 151,
+      "included_ranges": [
+        [
+          1,
+          100
+        ]
+      ],
+      "omitted": true
+    },
+    {
+      "origin": "coordinator",
+      "path": "docs/completion/be02-cd-contract.md",
+      "base_revision": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "sha256": "2f37e8ecb60f40a17ab2e1f6edbbda64bf5f0312c38c55161f20f6abde87426e",
+      "physical_lines": 161,
+      "included_ranges": [
+        [
+          1,
+          134
+        ]
+      ],
+      "omitted": true
+    },
+    {
+      "origin": "coordinator",
+      "path": ".planning/consultations/results/be-02/decisions.md",
+      "base_revision": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "sha256": "173f9088cb548076a5a8d04ce87573f000338789744e92567bd7fa915de680f9",
+      "physical_lines": 156,
+      "included_ranges": [
+        [
+          21,
+          94
+        ]
+      ],
+      "omitted": true
+    },
+    {
+      "origin": "coordinator",
+      "path": "docs/completion/review-be02-write-deadline-repair.md",
+      "base_revision": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "sha256": "d05a789f3ed648d1f53376fdd65bca883d0946ff2dcfd7e9ae243d9de883a216",
+      "physical_lines": 105,
+      "included_ranges": [
+        [
+          1,
+          105
+        ]
+      ],
+      "omitted": false
+    },
+    {
+      "origin": "coordinator",
+      "path": "docs/completion/review-be02-write-design.md",
+      "base_revision": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "sha256": "b1527801a8f338144ed0a183a94dc4bd3994807a383411c78953498c8b48e856",
+      "physical_lines": 134,
+      "included_ranges": [
+        [
+          1,
+          134
+        ]
+      ],
+      "omitted": false
+    },
+    {
+      "origin": "coordinator",
+      "path": "docs/completion/review-be02-write-guard-schema.md",
+      "base_revision": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "sha256": "b27aa4050d8458a6e347f285dd549dadaf93959acff8b6e14c3bbaf014df3188",
+      "physical_lines": 78,
+      "included_ranges": [
+        [
+          1,
+          40
+        ]
+      ],
+      "omitted": true
+    },
+    {
+      "origin": "backend",
+      "path": "apps/server/lib/elevateo/session_writes.rb",
+      "base_revision": "5785eba47f3709debb2815c8d86608f7e62d02f3",
+      "sha256": "7d7ddb8c1a2e8167da2faab5e8e10682965ad40333408387c1018cda9815e0dc",
+      "physical_lines": 100,
+      "included_ranges": [
+        [
+          1,
+          100
+        ]
+      ],
+      "omitted": false
+    },
+    {
+      "origin": "backend",
+      "path": "apps/server/lib/elevateo/request_deadline.rb",
+      "base_revision": "5785eba47f3709debb2815c8d86608f7e62d02f3",
+      "sha256": "54850453cb28826a66ae0e9faf33c7194d120dcd7eb4c6490e59b8e39879f3ad",
+      "physical_lines": 30,
+      "included_ranges": [
+        [
+          1,
+          30
+        ]
+      ],
+      "omitted": false
+    },
+    {
+      "origin": "backend",
+      "path": "apps/server/lib/elevateo/tenancy.rb",
+      "base_revision": "5785eba47f3709debb2815c8d86608f7e62d02f3",
+      "sha256": "cadefac546c11c1fe119e9ff6b5fe66af6f39ab0b9a721989a085e46cc966a34",
+      "physical_lines": 82,
+      "included_ranges": [
+        [
+          1,
+          82
+        ]
+      ],
+      "omitted": false
+    },
+    {
+      "origin": "backend",
+      "path": "apps/server/lib/elevateo/write_response.rb",
+      "base_revision": "5785eba47f3709debb2815c8d86608f7e62d02f3",
+      "sha256": "64964fd1ae92f0c94470e80a1937a2050c10fe62637010126d08f5e98c5a6b39",
+      "physical_lines": 27,
+      "included_ranges": [
+        [
+          1,
+          27
+        ]
+      ],
+      "omitted": false
+    },
+    {
+      "origin": "backend",
+      "path": "apps/server/lib/elevateo/write_input.rb",
+      "base_revision": "5785eba47f3709debb2815c8d86608f7e62d02f3",
+      "sha256": "6536c922f1f64836720ca5acd193e390036ae092c5e932f9d86321854591f24d",
+      "physical_lines": 123,
+      "included_ranges": [
+        [
+          1,
+          123
+        ]
+      ],
+      "omitted": false
+    },
+    {
+      "origin": "backend",
+      "path": "apps/server/lib/elevateo/auth_error.rb",
+      "base_revision": "5785eba47f3709debb2815c8d86608f7e62d02f3",
+      "sha256": "98307297c57f7cafdd254d5e53b993f2cee621642cb6656016162065369fae86",
+      "physical_lines": 21,
+      "included_ranges": [
+        [
+          1,
+          21
+        ]
+      ],
+      "omitted": false
+    },
+    {
+      "origin": "backend",
+      "path": "apps/server/lib/elevateo/read_response.rb",
+      "base_revision": "5785eba47f3709debb2815c8d86608f7e62d02f3",
+      "sha256": "8659884bcf6321ce8a4ebf320c7bc8a6c45d874e17ed017a22d38b437e4e2915",
+      "physical_lines": 83,
+      "included_ranges": [
+        [
+          1,
+          83
+        ]
+      ],
+      "omitted": false
+    },
+    {
+      "origin": "backend",
+      "path": "apps/server/lib/elevateo/drafts/database.rb",
+      "base_revision": "5785eba47f3709debb2815c8d86608f7e62d02f3",
+      "sha256": "c7e7118385f86da05ce8542941a692f2ba7e3bc323cbef9a5de112f0d39c143f",
+      "physical_lines": 51,
+      "included_ranges": [
+        [
+          1,
+          51
+        ]
+      ],
+      "omitted": false
+    },
+    {
+      "origin": "backend",
+      "path": "apps/server/lib/elevateo/draft_operations.rb",
+      "base_revision": "5785eba47f3709debb2815c8d86608f7e62d02f3",
+      "sha256": "9fc8842e45ad69e20a81fd92e43e94dad5a3527b15510f91187b39acb6a925b7",
+      "physical_lines": 86,
+      "included_ranges": [
+        [
+          1,
+          86
+        ]
+      ],
+      "omitted": false
+    },
+    {
+      "origin": "backend",
+      "path": "apps/server/lib/elevateo/thread_collaboration.rb",
+      "base_revision": "5785eba47f3709debb2815c8d86608f7e62d02f3",
+      "sha256": "c4abf9d245c4b1d82183166bad67ac0e6859d133f02ce23690f79282184283b0",
+      "physical_lines": 71,
+      "included_ranges": [
+        [
+          1,
+          71
+        ]
+      ],
+      "omitted": false
+    },
+    {
+      "origin": "backend",
+      "path": "apps/server/app/controllers/v1/api_controller.rb",
+      "base_revision": "5785eba47f3709debb2815c8d86608f7e62d02f3",
+      "sha256": "13394057005c8fa546619cba2849c44355660f8c71c98fcf3a14e36bd0f81635",
+      "physical_lines": 66,
+      "included_ranges": [
+        [
+          1,
+          66
+        ]
+      ],
+      "omitted": false
+    },
+    {
+      "origin": "backend",
+      "path": "apps/server/app/controllers/v1/write_controller.rb",
+      "base_revision": "5785eba47f3709debb2815c8d86608f7e62d02f3",
+      "sha256": "a8755e7dfe2c279209d2fb5f242bec628c604a62a78c0c2a489e47ea1e7b6d10",
+      "physical_lines": 48,
+      "included_ranges": [
+        [
+          1,
+          48
+        ]
+      ],
+      "omitted": false
+    },
+    {
+      "origin": "backend",
+      "path": "apps/server/app/controllers/v1/drafts_controller.rb",
+      "base_revision": "5785eba47f3709debb2815c8d86608f7e62d02f3",
+      "sha256": "c73bd590b1c79939ca55a82e1aaea74ab1f20c81a7e24399f48840fb4edfecf0",
+      "physical_lines": 42,
+      "included_ranges": [
+        [
+          1,
+          42
+        ]
+      ],
+      "omitted": false
+    },
+    {
+      "origin": "backend",
+      "path": "apps/server/sig/session_writes.rbs",
+      "base_revision": "5785eba47f3709debb2815c8d86608f7e62d02f3",
+      "sha256": "0ad5936e51c1fc19671cdce4c581994667e66b549e52778eece9c1e36abb5e1f",
+      "physical_lines": 20,
+      "included_ranges": [
+        [
+          1,
+          20
+        ]
+      ],
+      "omitted": false
+    },
+    {
+      "origin": "backend",
+      "path": "apps/server/sig/request_deadline.rbs",
+      "base_revision": "5785eba47f3709debb2815c8d86608f7e62d02f3",
+      "sha256": "91443644ae9fd3575a675fdd03ac433f54541efed0b5b8c050d166617401ad6f",
+      "physical_lines": 13,
+      "included_ranges": [
+        [
+          1,
+          13
+        ]
+      ],
+      "omitted": false
+    },
+    {
+      "origin": "backend",
+      "path": "apps/server/sig/write_response.rbs",
+      "base_revision": "5785eba47f3709debb2815c8d86608f7e62d02f3",
+      "sha256": "bde029fd025b65c960214436fb2c6e5145093fbe240c584b698c8ef7cf4c8861",
+      "physical_lines": 8,
+      "included_ranges": [
+        [
+          1,
+          8
+        ]
+      ],
+      "omitted": false
+    },
+    {
+      "origin": "backend",
+      "path": "apps/server/sig/write_controller.rbs",
+      "base_revision": "5785eba47f3709debb2815c8d86608f7e62d02f3",
+      "sha256": "37d2d3f8f8b5f90dd7fbc87eae2b9fc8b25dfc235eb7d549261466d64dcf968d",
+      "physical_lines": 13,
+      "included_ranges": [
+        [
+          1,
+          13
+        ]
+      ],
+      "omitted": false
+    },
+    {
+      "origin": "backend",
+      "path": "apps/server/sig/rails_seams.rbs",
+      "base_revision": "5785eba47f3709debb2815c8d86608f7e62d02f3",
+      "sha256": "cab4289665cf64191b129d8bd5f9006a5424156144e86b1d9a37cfe5e1402851",
+      "physical_lines": 143,
+      "included_ranges": [
+        [
+          1,
+          143
+        ]
+      ],
+      "omitted": false
+    },
+    {
+      "origin": "backend",
+      "path": "apps/server/test/be_02/write_boundary_deadline_test.rb",
+      "base_revision": "5785eba47f3709debb2815c8d86608f7e62d02f3",
+      "sha256": "9395d3c7f31e8e661738894ca4d9910f1d2ef82b8d2da7e634ec073dea848f21",
+      "physical_lines": 102,
+      "included_ranges": [
+        [
+          1,
+          102
+        ]
+      ],
+      "omitted": false
+    },
+    {
+      "origin": "backend",
+      "path": "apps/server/test/be_02/write_boundary_database_deadline_test.rb",
+      "base_revision": "5785eba47f3709debb2815c8d86608f7e62d02f3",
+      "sha256": "8fb25217ef03a39070c1c598a9df44dc0ca2f7379c252cc4b495b86bf702bdb7",
+      "physical_lines": 47,
+      "included_ranges": [
+        [
+          1,
+          47
+        ]
+      ],
+      "omitted": false
+    },
+    {
+      "origin": "backend",
+      "path": "apps/server/test/be_02/write_boundary_test_helper.rb",
+      "base_revision": "5785eba47f3709debb2815c8d86608f7e62d02f3",
+      "sha256": "c610f8082452659c1feaeccea15a984b6853705ea42c943eecac6c5206e89cd0",
+      "physical_lines": 106,
+      "included_ranges": [
+        [
+          1,
+          106
+        ]
+      ],
+      "omitted": false
+    },
+    {
+      "origin": "backend",
+      "path": "apps/server/test/be_02/write_boundary_database_test_helper.rb",
+      "base_revision": "5785eba47f3709debb2815c8d86608f7e62d02f3",
+      "sha256": "18ab547dbae75fe148dd483e3cf5e54efdbbb8b48d23c9c207cce647227c0124",
+      "physical_lines": 58,
+      "included_ranges": [
+        [
+          1,
+          58
+        ]
+      ],
+      "omitted": false
+    },
+    {
+      "origin": "backend",
+      "path": "apps/server/test/be_02/write_boundary_database_test.rb",
+      "base_revision": "5785eba47f3709debb2815c8d86608f7e62d02f3",
+      "sha256": "7ccabe361b0b626ce8b20feee20dfffbe307488dce47ae5aea29eea62512dcd9",
+      "physical_lines": 85,
+      "included_ranges": [
+        [
+          1,
+          85
+        ]
+      ],
+      "omitted": false
+    },
+    {
+      "origin": "backend",
+      "path": "apps/server/test/be_02/database_test_helper.rb",
+      "base_revision": "5785eba47f3709debb2815c8d86608f7e62d02f3",
+      "sha256": "c614ed0098555a7404d166f224949a591a4f74d64b0a54cb00b2bb085f140a2e",
+      "physical_lines": 199,
+      "included_ranges": [
+        [
+          1,
+          199
+        ]
+      ],
+      "omitted": false
+    },
+    {
+      "origin": "backend",
+      "path": "apps/server/db/be02_writes/guard.sql",
+      "base_revision": "5785eba47f3709debb2815c8d86608f7e62d02f3",
+      "sha256": "a28b91e0b23016bc28ab6974da45ccf0af9efbceebe757a1948c2d9cea7d2fb4",
+      "physical_lines": 53,
+      "included_ranges": [
+        [
+          1,
+          53
+        ]
+      ],
+      "omitted": false
+    },
+    {
+      "origin": "backend",
+      "path": "apps/server/db/be02_writes/assertions.sql",
+      "base_revision": "5785eba47f3709debb2815c8d86608f7e62d02f3",
+      "sha256": "9b4dee564c225213135e7d16b421436d3262126e6b9f98975b4694efeb29ba8b",
+      "physical_lines": 18,
+      "included_ranges": [
+        [
+          1,
+          18
+        ]
+      ],
+      "omitted": false
+    },
+    {
+      "origin": "backend",
+      "path": "apps/server/Gemfile.lock",
+      "base_revision": "5785eba47f3709debb2815c8d86608f7e62d02f3",
+      "sha256": "67b2f69a0ed30c1d9926ab2940fe54173991d238192feca38a8f04b97390ea23",
+      "physical_lines": 306,
+      "included_ranges": [
+        [
+          1,
+          306
+        ]
+      ],
+      "omitted": false
+    },
+    {
+      "origin": "external",
+      "url": "https://raw.githubusercontent.com/rails/rails/v8.1.4/activerecord/lib/active_record/connection_adapters/abstract/transaction.rb",
+      "snapshot": "rails-transaction.rb",
+      "sha256": "c52289e60b202ac00aa58ca84849191b0cd0c608ae12891d45ab53a1543313fe",
+      "physical_lines": 698,
+      "included_ranges": [
+        [
+          530,
+          675
+        ]
+      ],
+      "omitted": true
+    },
+    {
+      "origin": "external",
+      "url": "https://raw.githubusercontent.com/rails/rails/v8.1.4/activerecord/lib/active_record/connection_adapters/abstract/connection_pool.rb",
+      "snapshot": "rails-pool.rb",
+      "sha256": "825edc0dd09cd3804515924d4cc3a6e87f424fce9c1998b6888b350bdff667e6",
+      "physical_lines": 1303,
+      "included_ranges": [
+        [
+          502,
+          511
+        ],
+        [
+          624,
+          710
+        ],
+        [
+          1162,
+          1201
+        ],
+        [
+          1275,
+          1305
+        ]
+      ],
+      "omitted": true
+    },
+    {
+      "origin": "external",
+      "url": "https://raw.githubusercontent.com/rails/rails/v8.1.4/activerecord/lib/active_record/connection_adapters/abstract_adapter.rb",
+      "snapshot": "rails-adapter.rb",
+      "sha256": "cd24ab0b645268e756ea5bee484d9c2e5498821e310814dcc72166ba0bea0f8b",
+      "physical_lines": 1319,
+      "included_ranges": [
+        [
+          752,
+          799
+        ],
+        [
+          1054,
+          1133
+        ]
+      ],
+      "omitted": true
+    },
+    {
+      "origin": "external",
+      "url": "https://raw.githubusercontent.com/postgres/postgres/REL_17_6/src/backend/access/transam/xact.c",
+      "snapshot": "postgres-xact.c",
+      "sha256": "a22ce79a0654be793bb988cb5b48ee9712c4ba6a4ce72d8bca1179c8c7b2370b",
+      "physical_lines": 6384,
+      "included_ranges": [
+        [
+          2150,
+          2435
+        ]
+      ],
+      "omitted": true
+    },
+    {
+      "origin": "external",
+      "url": "https://raw.githubusercontent.com/postgres/postgres/REL_17_6/src/backend/tcop/postgres.c",
+      "snapshot": "postgres-postgres.c",
+      "sha256": "801793541d67065a5e658e6eaf55f72ca70e30d3f23a8778b6205c9516b23832",
+      "physical_lines": 5258,
+      "included_ranges": [
+        [
+          3440,
+          3472
+        ],
+        [
+          3680,
+          3697
+        ]
+      ],
+      "omitted": true
+    },
+    {
+      "origin": "external",
+      "url": "https://raw.githubusercontent.com/postgres/postgres/REL_17_6/src/backend/utils/errcodes.txt",
+      "snapshot": "postgres-errcodes.txt",
+      "sha256": "bb53279934510355eb4135a807c90d989f07650bd90f87026a4441f11d3296b1",
+      "physical_lines": 494,
+      "included_ranges": [
+        [
+          240,
+          265
+        ]
+      ],
+      "omitted": true
+    }
+  ],
+  "prompts": [
+    {
+      "requested_model": "claude-fable-5",
+      "focus_path": ".planning/consultations/fable-5.md",
+      "focus_sha256": "8f2ddb6f9916650a8f8cb93c98e9e7cddaff7f44751e42460cb81b97ac11fc11",
+      "prompt_sha256": "f3823222d783990567fb3939679605ebe845051b492345aad85a20dfa918fcb2"
+    },
+    {
+      "requested_model": "claude-opus-5-5",
+      "focus_path": ".planning/consultations/opus-5-5.md",
+      "focus_sha256": "b0ae63e509cf23ed7283e0962a6305dfcb607d77f619047096203ddc83911704",
+      "prompt_sha256": "da05c304537aa6dbf59c8a20fbdc26773916468a29ca401874e2305d243d255b"
+    },
+    {
+      "requested_model": "claude-fable-5-1",
+      "focus_path": ".planning/consultations/fable-5-1.md",
+      "focus_sha256": "95d740050c77d242a452bc20b82313928426df11747658a02848411d0e3ff5cc",
+      "prompt_sha256": "f25d0eaaa6479f6ee6f5fe00c2f535325af4a2a1a48d95a2c53bde20dbea43c7"
+    }
+  ]
+}

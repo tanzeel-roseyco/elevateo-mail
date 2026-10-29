@@ -1,0 +1,26 @@
+{
+  "name": "elevateo-acceptance",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "engines": { "node": "24.21.0" },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "build": "tsc",
+    "test": "node --test \"dist/contracts/*.spec.js\" \"dist/playwright/*.unit.spec.js\" \"dist/puppeteer/*.unit.spec.js\" \"dist/selenium/*.unit.spec.js\" \"dist/proxy/*.spec.js\"",
+    "test:playwright": "playwright test --config playwright/playwright.config.ts",
+    "test:puppeteer": "node dist/puppeteer/run.js",
+    "test:selenium": "node dist/selenium/run.js"
+  },
+  "dependencies": {
+    "zod": "4.6.5",
+    "@playwright/test": "1.64.0",
+    "puppeteer-core": "25.13.0",
+    "selenium-webdriver": "4.49.0"
+  },
+  "devDependencies": {
+    "@types/node": "24.19.2",
+    "@types/selenium-webdriver": "4.35.7",
+    "typescript": "5.9.3"
+  }
+}

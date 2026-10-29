@@ -1,0 +1,285 @@
+{
+  "status": "three_successful_independent_exact_model_opinions_verified",
+  "verified_at": "2026-10-13T22:56:56.375685+00:00",
+  "task_id": "task_d1da752a40c7",
+  "dispatch_id": "ctx_6a0cdf9e4b2f",
+  "run_id": "run_5cc7ae2ab900",
+  "source_manifest_sha256": "27fe2fd93e4e4352e8746d74b46eecc78633c20671a58ee58b53a4692c0ae449",
+  "common_packet_sha256": "05f3699cae0e6b54e5b75d3913b88ec0c5e2b6893a90610a7336b2cddbfb040e",
+  "cli_version": "2.1.296 (Claude Code)",
+  "arguments": [
+    "--safe-mode",
+    "--print",
+    "--model",
+    "<exact-model>",
+    "--tools",
+    "",
+    "--no-session-persistence",
+    "--output-format",
+    "json",
+    "--disable-slash-commands",
+    "--no-chrome",
+    "--system-prompt",
+    "<full user review rubric and task constraints>"
+  ],
+  "invocation": "three fresh shell=False argument-array subprocesses in separate ignored working directories; common packet plus model-specific focus on stdin",
+  "isolation": "safe mode and empty tools; no resumed session, other opinions, fallback, application calls or app execution",
+  "wall_limit_seconds_per_process": 900,
+  "aggregate_returned_cost_usd": 5.885574,
+  "cost_caveat": "returned CLI accounting, not independent billing verification; no numeric cost cap was supplied",
+  "opinions": [
+    {
+      "requested_model": "claude-fable-5",
+      "started_at": "2026-10-13T22:52:13.675535+00:00",
+      "ended_at": "2026-10-13T22:53:46.086937+00:00",
+      "wall_seconds": 92.411,
+      "exit_code": 0,
+      "timed_out": false,
+      "stdout_sha256": "16f786c87a36701858235729631c90e4bf630872617cedc86e973d872d4b0b4f",
+      "stderr_bytes": 0,
+      "type": "result",
+      "subtype": "success",
+      "is_error": false,
+      "session_id": "870a9a1e-4126-42f9-a5c5-d79298eb3984",
+      "num_turns": 1,
+      "total_cost_usd": 2.29889,
+      "duration_ms": 90099,
+      "duration_api_ms": 89125,
+      "observed_models": [
+        "claude-fable-5"
+      ],
+      "result_characters": 10810,
+      "usage": {
+        "input_tokens": 2,
+        "cache_creation_input_tokens": 99866,
+        "cache_read_input_tokens": 0,
+        "output_tokens": 6031,
+        "output_tokens_details": {
+          "thinking_tokens": 2022
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 99866,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 2,
+            "output_tokens": 6031,
+            "cache_read_input_tokens": 0,
+            "cache_creation_input_tokens": 99866,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 99866
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null
+      },
+      "model_usage": {
+        "claude-fable-5": {
+          "inputTokens": 2,
+          "outputTokens": 6031,
+          "cacheReadInputTokens": 0,
+          "cacheCreationInputTokens": 99866,
+          "webSearchRequests": 0,
+          "costUSD": 2.29889,
+          "contextWindow": 1000000,
+          "maxOutputTokens": 64000,
+          "thinkingTokens": 2022,
+          "canonicalModel": "claude-fable-5",
+          "provider": "firstParty",
+          "costBasis": "list"
+        }
+      },
+      "opinion_path": ".planning/consultations/results/acceptance-existing-cases-r1/fable-5.md",
+      "opinion_sha256": "3b9c12094a9a9f64580f97635df5b60832be956ea12529addc0fc1358839d8eb",
+      "input_sha256": "710032b362136ea95ab69c4c27af39466acd6c67abda5204b8fa965de50f1771",
+      "identity_verification": "exact modelUsage key and canonicalModel; distinct returned session; exit and error state verified",
+      "coverage_verification": "all six assigned cases addressed; substantive recommendations, limitations, dissent and runtime checks inspected"
+    },
+    {
+      "requested_model": "claude-opus-5-5",
+      "started_at": "2026-10-13T22:52:13.675697+00:00",
+      "ended_at": "2026-10-13T22:53:28.979039+00:00",
+      "wall_seconds": 75.303,
+      "exit_code": 0,
+      "timed_out": false,
+      "stdout_sha256": "7bd67551d469f282c5efba38eca9cb6b24dfe22875a6005232d07148cf0a7903",
+      "stderr_bytes": 0,
+      "type": "result",
+      "subtype": "success",
+      "is_error": false,
+      "session_id": "16cd404a-277a-4861-a75a-befc38796997",
+      "num_turns": 1,
+      "total_cost_usd": 0.9362440000000001,
+      "duration_ms": 72927,
+      "duration_api_ms": 71921,
+      "observed_models": [
+        "claude-opus-5-5"
+      ],
+      "result_characters": 12830,
+      "usage": {
+        "input_tokens": 2,
+        "cache_creation_input_tokens": 99917,
+        "cache_read_input_tokens": 0,
+        "output_tokens": 6845,
+        "output_tokens_details": {
+          "thinking_tokens": 1917
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 99917,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 2,
+            "output_tokens": 6845,
+            "cache_read_input_tokens": 0,
+            "cache_creation_input_tokens": 99917,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 99917
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null
+      },
+      "model_usage": {
+        "claude-opus-5-5": {
+          "inputTokens": 2,
+          "outputTokens": 6845,
+          "cacheReadInputTokens": 0,
+          "cacheCreationInputTokens": 99917,
+          "webSearchRequests": 0,
+          "costUSD": 0.9362440000000001,
+          "contextWindow": 1000000,
+          "maxOutputTokens": 128000,
+          "thinkingTokens": 1917,
+          "canonicalModel": "claude-opus-5-5",
+          "provider": "firstParty",
+          "costBasis": "list"
+        }
+      },
+      "opinion_path": ".planning/consultations/results/acceptance-existing-cases-r1/opus-5-5.md",
+      "opinion_sha256": "eb8652d57870b81662078253dd6d0c66ccbc64b6365f3ae1c69c045badae0a35",
+      "input_sha256": "614ffc8955465c202c98e74c1454694970f85f5da82f7f2edc978372186c8402",
+      "identity_verification": "exact modelUsage key and canonicalModel; distinct returned session; exit and error state verified",
+      "coverage_verification": "all six assigned cases addressed; substantive recommendations, limitations, dissent and runtime checks inspected"
+    },
+    {
+      "requested_model": "claude-fable-5-1",
+      "started_at": "2026-10-13T22:52:13.676083+00:00",
+      "ended_at": "2026-10-13T22:55:36.027416+00:00",
+      "wall_seconds": 202.351,
+      "exit_code": 0,
+      "timed_out": false,
+      "stdout_sha256": "2a9fb6e1d15768b9339b41dd989d7562d3ab337f676678738574d0d5f7111501",
+      "stderr_bytes": 0,
+      "type": "result",
+      "subtype": "success",
+      "is_error": false,
+      "session_id": "7bee8ab3-bd3a-43ee-a322-dc4d6b7f558e",
+      "num_turns": 1,
+      "total_cost_usd": 2.6504399999999997,
+      "duration_ms": 199937,
+      "duration_api_ms": 199017,
+      "observed_models": [
+        "claude-fable-5-1"
+      ],
+      "result_characters": 12152,
+      "usage": {
+        "input_tokens": 2,
+        "cache_creation_input_tokens": 99911,
+        "cache_read_input_tokens": 0,
+        "output_tokens": 13044,
+        "output_tokens_details": {
+          "thinking_tokens": 8395
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 99911,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 2,
+            "output_tokens": 13044,
+            "cache_read_input_tokens": 0,
+            "cache_creation_input_tokens": 99911,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 99911
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null
+      },
+      "model_usage": {
+        "claude-fable-5-1": {
+          "inputTokens": 2,
+          "outputTokens": 13044,
+          "cacheReadInputTokens": 0,
+          "cacheCreationInputTokens": 99911,
+          "webSearchRequests": 0,
+          "costUSD": 2.6504399999999997,
+          "contextWindow": 1000000,
+          "maxOutputTokens": 64000,
+          "thinkingTokens": 8395,
+          "canonicalModel": "claude-fable-5-1",
+          "provider": "firstParty",
+          "costBasis": "list"
+        }
+      },
+      "opinion_path": ".planning/consultations/results/acceptance-existing-cases-r1/fable-5-1.md",
+      "opinion_sha256": "ae3ecc0b59732fced64f65a3ad777af733175ae3fa83693da7730c27f938172c",
+      "input_sha256": "0031878035492c0dfc63f39d650fcae943df9a26d5eb0dcc2e9cdf1f9587d34d",
+      "identity_verification": "exact modelUsage key and canonicalModel; distinct returned session; exit and error state verified",
+      "coverage_verification": "all six assigned cases addressed; substantive recommendations, limitations, dissent and runtime checks inspected"
+    }
+  ],
+  "synthesis_owner": {
+    "requested_model": "gpt-6-astra",
+    "requested_effort": "max",
+    "observed_terminal_label": "GPT-6-Astra max",
+    "agent_identity": "codex",
+    "terminal": "term_9987a7b6-7c4d-4cdd-a467-0cd46b334075",
+    "incarnation_id": "26c6c8f5-0825-4b94-9f7a-c559f47791d4",
+    "verification": "orca terminal show successful response 8a4b511c-3d09-4838-951f-036224753de0 plus root launch/effective-model confirmation msg_be8da0345fab",
+    "evidence_limit": "Orca terminal and coordinator launch metadata; no separate provider attestation was available"
+  },
+  "late_root_runtime_update": {
+    "message_id": "msg_93d8a941229b",
+    "received_after_packet_freeze": true,
+    "claim": "Root reports R3 Auth/RLS concurrency PASS in downloaded log 018: three schedules, 7.48 seconds, exact catalog restoration and no owned sessions",
+    "limit": "Not independently inspected here; no new application migration or integrated acceptance pass; does not change the case design"
+  },
+  "application_tests_run": false,
+  "source_inspection": {
+    "total_physical_lines": 347,
+    "pass_A": 166,
+    "pass_B": 181
+  }
+}

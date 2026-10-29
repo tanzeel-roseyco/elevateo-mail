@@ -1,0 +1,4052 @@
+[
+  {
+    "source": "results-fe02-typecheck-repair-20261014/browser-build.log",
+    "local": "browser-build.log",
+    "bytes": 12584,
+    "sha256": "7b603ff507f640184898c9183e97b4502843c204c063eb1529dd329f3a8756fc"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/runner.log",
+    "local": "runner.log",
+    "bytes": 1186,
+    "sha256": "fadbe2e19b3b512974eaf83328b15c5ada4638a672a874c8d6892addbd91e42b"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/package.json",
+    "local": "file-0002.json",
+    "bytes": 1597,
+    "sha256": "72ad074b9a52a77753bce785fd3e55a7b419112b5df550f2c088934118a8acfe"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/eslint.config.js",
+    "local": "file-0003.js",
+    "bytes": 630,
+    "sha256": "64b814d8f55ecd8ea85ae905f7f15b5debab5d9e6f5520afbf6f3e33408fcb67"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/e2e/support.ts",
+    "local": "file-0004.ts",
+    "bytes": 1706,
+    "sha256": "802e11b8eb803fae1b4bb6d3f12ed42bac56c9e6d967a7dfe9bba4f5f32ddb3f"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/e2e/session.spec.ts",
+    "local": "file-0005.ts",
+    "bytes": 7783,
+    "sha256": "903e493dcac5a0d78e61c1f1d4b80c4fcb46a99cdd3594577b75e052d431c7e2"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/e2e/visual-states.spec.ts",
+    "local": "file-0006.ts",
+    "bytes": 28327,
+    "sha256": "0c404aa6e2b4833619fae34b0ce8851c96f87302e9326fe4431b33e1e6753d14"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/e2e/collaboration.spec.ts",
+    "local": "file-0007.ts",
+    "bytes": 16158,
+    "sha256": "2ce9f901f33ab03569c552ec2a9293bfd61f9508eb63e9d6d25ae5d6ea9833cf"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/e2e/production.spec.ts",
+    "local": "file-0008.ts",
+    "bytes": 9307,
+    "sha256": "ac941add3700cc304e03995b6f9ed6bf622bc1b42f93f6647f09737cada2330f"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/e2e/read.spec.ts",
+    "local": "file-0009.ts",
+    "bytes": 19766,
+    "sha256": "c97ad650788d727d83d6392cf428d4024f78e339848e37e94c3fade6ff27f89c"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/vite.config.ts",
+    "local": "file-0010.ts",
+    "bytes": 1228,
+    "sha256": "2aad1a83237ee903e5f5515959ceb70293a2d1b7d5104d74e7b7f8a816e9e010"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/README.md",
+    "local": "file-0011.md",
+    "bytes": 6911,
+    "sha256": "5d7e213433c6f479b7627449c8844936ba856c6b754dc32130a465f8da129697"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/PROVENANCE.md",
+    "local": "file-0012.md",
+    "bytes": 3317,
+    "sha256": "639a1d90e41e623692a2599a20f821708c160b8f291f80391ce9271449a28c15"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/playwright.config.ts",
+    "local": "file-0013.ts",
+    "bytes": 983,
+    "sha256": "8fd383b7fa802e1e9ff94e28cec0db29fac8bbd2d9b9dae860d74b857a074ef8"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/tsconfig.json",
+    "local": "file-0014.json",
+    "bytes": 695,
+    "sha256": "77c5d7b4c9545e373c84262cd56dcca5c91c6ea5ae4d572634ac50646ebe6508"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/src/dev/fixtureMain.tsx",
+    "local": "file-0015.tsx",
+    "bytes": 1815,
+    "sha256": "9800ad02c91f8d5fe1b5b073d11cce1dbdd223526a6a8fc7f05421bc4700053d"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/src/features/inbox/InboxPage.tsx",
+    "local": "file-0016.tsx",
+    "bytes": 10382,
+    "sha256": "d175834b4ac04b23d36c5d2fd67f5a262ecda34ffafc75044471be2f162de98c"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/src/features/inbox/InboxPage.test.tsx",
+    "local": "file-0017.tsx",
+    "bytes": 15853,
+    "sha256": "26e0a156afbd27f59919d7982a5fa8181c89dc09d68b675ea9fe25785e8f3c4e"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/src/features/search/SearchPage.test.tsx",
+    "local": "file-0018.tsx",
+    "bytes": 4270,
+    "sha256": "e28f8b88323bd630e7b94dcca26ad58ebcc44de69750bd1dc2487c2c3fe7e48a"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/src/features/search/SearchPage.tsx",
+    "local": "file-0019.tsx",
+    "bytes": 8098,
+    "sha256": "bf9e78e781ad858fb738b66ad25facdb09f3597822762438ad9f2ca903890556"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/src/features/members/MembersPage.test.tsx",
+    "local": "file-0020.tsx",
+    "bytes": 8423,
+    "sha256": "08ede4fd52dfb707c5c0def8083c394b581249ff76eee12afad6a09da64740b5"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/src/features/members/MembersPage.tsx",
+    "local": "file-0021.tsx",
+    "bytes": 13782,
+    "sha256": "8c2409a2c0d2b83bb762b7680b2ee050dcbc3997c32eafc89e21c5f2cd4f1839"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/src/features/auth/AuthCompletePage.test.tsx",
+    "local": "file-0022.tsx",
+    "bytes": 5378,
+    "sha256": "11f194ba9224715f30b06076596fdc2c4fb50ef83928a799259da873eee32be7"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/src/features/auth/SignInPage.tsx",
+    "local": "file-0023.tsx",
+    "bytes": 7918,
+    "sha256": "48f72be606b9ad8a9eb15043f3d506567635f22463670cf403f9b72871fe8cac"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/src/features/auth/SignInPage.test.tsx",
+    "local": "file-0024.tsx",
+    "bytes": 8571,
+    "sha256": "e2e584b128b1c7cfbd12ac60d8c2f3501a731a6bf99f9041ca9ff7a6ec0ebe5b"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/src/features/auth/AuthCompletePage.tsx",
+    "local": "file-0025.tsx",
+    "bytes": 7472,
+    "sha256": "359d4c2d8da93dccaf74327bad7a4b1f4e5962924d2684cdeee4e811f96e24a8"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/src/features/thread/AssignmentPanel.tsx",
+    "local": "file-0026.tsx",
+    "bytes": 6771,
+    "sha256": "c28aa5fd5145a1ecf47859a3dd78a7a2271106eab5068830dff9a4417ef847f3"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/src/features/thread/NotesPanel.tsx",
+    "local": "file-0027.tsx",
+    "bytes": 9295,
+    "sha256": "30436ce171d0899eefe353795116a4a1bcba0bd58573641b1743cd98ba33a360"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/src/features/thread/ThreadPage.test.tsx",
+    "local": "file-0028.tsx",
+    "bytes": 13884,
+    "sha256": "08bdf55768b1a7211c335f21facdc521f7423335cd2f7728eebf21783be6bcf1"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/src/features/thread/CollaborationPanels.test.tsx",
+    "local": "file-0029.tsx",
+    "bytes": 12935,
+    "sha256": "d7b8ffc781b7ad00eb7083c1ff84ba854b7052c867b858c360b373796b56ab4d"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/src/features/thread/ThreadPage.tsx",
+    "local": "file-0030.tsx",
+    "bytes": 12121,
+    "sha256": "0f86df36ad2be92de9c23e70e8377df440ce0713988f07af9f3d4eb03c2db645"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/src/features/thread/ReadStateControl.tsx",
+    "local": "file-0031.tsx",
+    "bytes": 2087,
+    "sha256": "b72722d62721310fbabe31f6a7fdc127de8135f9b15937822cc3df9d2bd59a52"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/src/features/drafts/DraftsPage.tsx",
+    "local": "file-0032.tsx",
+    "bytes": 6990,
+    "sha256": "36517d3505120137a84b48eea69dbb7a60cf5f19aa58fa34f4520a281cd4abdd"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/src/features/drafts/DraftEditorPage.test.tsx",
+    "local": "file-0033.tsx",
+    "bytes": 36816,
+    "sha256": "cc4512ba31005f4d4302beb3cceb50dbb3b4ccbb003937ce65b7354e232a0145"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/src/features/drafts/DraftEditorPage.tsx",
+    "local": "file-0034.tsx",
+    "bytes": 23711,
+    "sha256": "51157f0426f956deae55a9eaa35c705460cd814e336ebb2a9ab89ea7d815990a"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/src/styles/index.css",
+    "local": "file-0035.css",
+    "bytes": 4020,
+    "sha256": "5d00d5ae76e61e55525a120580d572df2865bab710ade2053cf44b167fa151a3"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/src/ui/Button.tsx",
+    "local": "file-0036.tsx",
+    "bytes": 2026,
+    "sha256": "ca08a7d27aff9fc70cc56b76e1a1d780020696a412e256507a4e9cccd69d44ae"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/src/ui/Field.tsx",
+    "local": "file-0037.tsx",
+    "bytes": 1629,
+    "sha256": "24a1925f23ddcf87b17d5447ee1f3515e61eddaa5fc0ae8cdef98f626071cff3"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/src/ui/Async.tsx",
+    "local": "file-0038.tsx",
+    "bytes": 2130,
+    "sha256": "d6252d68e4b94ad22766e792a9cdf882391ccf22374478a91279110b08e47f5c"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/src/ui/Sheet.tsx",
+    "local": "file-0039.tsx",
+    "bytes": 1699,
+    "sha256": "d8d62dcfded212eb05a1858bed337594989a0926be21e458829569f9fc6449b4"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/src/ui/Drawer.tsx",
+    "local": "file-0040.tsx",
+    "bytes": 1802,
+    "sha256": "f6158d4bf608da5e0f4cfeb653625f44526a0684ba495a635dc53e641633bb89"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/src/ui/icons.tsx",
+    "local": "file-0041.tsx",
+    "bytes": 1634,
+    "sha256": "7ccfd984c9987d782c114dbdc147c31647342186a5752aedd8ac58e4ca796171"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/src/ui/Badge.tsx",
+    "local": "file-0042.tsx",
+    "bytes": 1064,
+    "sha256": "8743b4883c6ce9972236532ca997ddca4fc302e5474bdb93789643a69854fc7a"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/src/app/session-lifecycle.test.tsx",
+    "local": "file-0043.tsx",
+    "bytes": 19621,
+    "sha256": "a4487e1f256023ade530e0b1a47cfe228ae841cd95a049bfca9bc3732f0a5b9f"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/src/app/entry.test.ts",
+    "local": "file-0044.ts",
+    "bytes": 498,
+    "sha256": "07d910426728f93e7d51266dad8e9f91dd53ca82c6b2b42be26cdbed7e5c35ea"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/src/app/scope.ts",
+    "local": "file-0045.ts",
+    "bytes": 749,
+    "sha256": "51a4b28f8fe892ff03249d29bfa0f6b010c203f3998e8027e69ccd86619890ac"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/src/app/mailboxes.tsx",
+    "local": "file-0046.tsx",
+    "bytes": 1512,
+    "sha256": "d89065522efd37a552b2daeb1a6cbf1225343c1b6e7fe7423be3b3770d01a573"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/src/app/scope.test.ts",
+    "local": "file-0047.ts",
+    "bytes": 441,
+    "sha256": "bf4a063dbb3dd04453c7079dd7549583e1c3df99fc24258650644475ac8c09e7"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/src/app/entry.ts",
+    "local": "file-0048.ts",
+    "bytes": 532,
+    "sha256": "5f58c9c7a5463989b852f3ac8b81ff75142b3a44910c17c69b91847dfdaa3b44"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/src/app/App.tsx",
+    "local": "file-0049.tsx",
+    "bytes": 2057,
+    "sha256": "575587a133d457cfc6bdcade7619e24584231f4579f953dedbeaa2eec5d04506"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/src/app/Shell.tsx",
+    "local": "file-0050.tsx",
+    "bytes": 11626,
+    "sha256": "139569c869b74ae212f3cc6a006639ca5692c7f04c7ec3e7ff70cdc90d53b72a"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/src/app/draftIntent.tsx",
+    "local": "file-0051.tsx",
+    "bytes": 3915,
+    "sha256": "1e4f5639eb1b990918b8013002aeaaf6851f21c31c151a5757dc0b24e609769f"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/src/app/SearchBox.tsx",
+    "local": "file-0052.tsx",
+    "bytes": 1943,
+    "sha256": "3a58e44e08201bbf6fde5270505982e7e66fc3857ebac9fcf91b8097eba61d13"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/src/app/actionFailure.ts",
+    "local": "file-0053.ts",
+    "bytes": 2931,
+    "sha256": "70ab35c1aa2b514a78ba8c1272f21669685a5b79080fd6442dd442a96147a178"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/src/app/session.test.tsx",
+    "local": "file-0054.tsx",
+    "bytes": 17034,
+    "sha256": "9c2b46c183226fbc2d041bd3d2fd6a743f9f0b19775b86d0bece8de66d4ef7ed"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/src/app/membershipRecovery.test.tsx",
+    "local": "file-0055.tsx",
+    "bytes": 10436,
+    "sha256": "b56f1d582162cc156e821a2404261d315a7f22b8fe7ea613e766c920ff4c481f"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/src/app/protectedRequest.ts",
+    "local": "file-0056.ts",
+    "bytes": 2582,
+    "sha256": "f389ff712b5a570c4305e3c42a5cadc444a8f83c396ad0206f4ced35aa318b70"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/src/app/Sidebar.tsx",
+    "local": "file-0057.tsx",
+    "bytes": 4683,
+    "sha256": "36064b10dd2834388ae3c50a456a95d891bfe9478e5d3d0177d51ed382634c56"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/src/app/session.tsx",
+    "local": "file-0058.tsx",
+    "bytes": 21243,
+    "sha256": "28ddde7b0e01858011ffda49b703e40142fc8541b35294e700e7b65b2f2094ed"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/src/app/Shell.test.tsx",
+    "local": "file-0059.tsx",
+    "bytes": 17717,
+    "sha256": "f45aeee55d668de150f355b23c80812a4f4f33d6f0167c72742f8bbf1cac875a"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/src/app/collaborationNav.test.tsx",
+    "local": "file-0060.tsx",
+    "bytes": 3297,
+    "sha256": "e4eb7ddecef95987c0aac7b40c13201aadc146077927126530940fb41fea2571"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/src/app/collaborationFailure.ts",
+    "local": "file-0061.ts",
+    "bytes": 4167,
+    "sha256": "6b8b395235ad3c106e82aa0364e4c9b5c61b759ed438dd893813683dc3102704"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/src/app/AccountSheet.tsx",
+    "local": "file-0062.tsx",
+    "bytes": 8655,
+    "sha256": "1684e368bd36ee5509b12a680f96287b1d8a230a3ac998d28f5fa3f817444bc4"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/src/domain/draftOperation.ts",
+    "local": "file-0063.ts",
+    "bytes": 13757,
+    "sha256": "2c4cbb9031e31b269e7ea0ea386174b816bd4ede09de2dccbbd64c01f70f78fa"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/src/domain/draftOperation.test.ts",
+    "local": "file-0064.ts",
+    "bytes": 20177,
+    "sha256": "9ace8db6acd9684d564aa9e70417eac658c33e035c2263889510f6acadee3328"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/src/data/fixtures/fixtureGateway.test.ts",
+    "local": "file-0065.ts",
+    "bytes": 6133,
+    "sha256": "fdafe014a5728158195aeb28c6dee50cbaf804afbb8ce2aa1e5e325c0620fb15"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/src/data/fixtures/collaborationState.ts",
+    "local": "file-0066.ts",
+    "bytes": 16845,
+    "sha256": "daff35faad4d83047da5bcc868892588beedb936090b06ca21037562eb593fb9"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/src/data/fixtures/fixtureGateway.ts",
+    "local": "file-0067.ts",
+    "bytes": 18543,
+    "sha256": "7daf82c2209d9a2406f2721c483ffe72939e0865cd28c4a5693ef94ea091f5c9"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/src/data/fixtures/collaborationState.test.ts",
+    "local": "file-0068.ts",
+    "bytes": 18004,
+    "sha256": "276da8b0989fe4ef9cbac15dce24a0d3c64de4927061da2fd5464a0272c0ccaf"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/src/data/cd-conformance.test.ts",
+    "local": "file-0069.ts",
+    "bytes": 15878,
+    "sha256": "6bac6091fa5d44e3598b1fa3250fd1b9c095aa4650011dcc3babc60a726186b9"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/src/data/contract.ts",
+    "local": "file-0070.ts",
+    "bytes": 17745,
+    "sha256": "6e8179015aa47f0afa540f9d5c7cae4872d0f25137b0230a45bce872f45b7d85"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/src/data/conformance.test.ts",
+    "local": "file-0071.ts",
+    "bytes": 8962,
+    "sha256": "b6a24616f2a3320531222f7fd48a9ef8c160dc080f6d13437e7c550702f586a9"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/src/data/gateway.ts",
+    "local": "file-0072.ts",
+    "bytes": 7085,
+    "sha256": "22fb24afb0614938a200f54dd90fd05bc4570c31ff5a75affc02b245550f3f19"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/src/data/contract-collaboration.test.ts",
+    "local": "file-0073.ts",
+    "bytes": 17988,
+    "sha256": "a5be9542ea02cd7ff76c28f8b455aa5fe6149f78d079fb41dc45d6c43749dd4c"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/src/data/errors.ts",
+    "local": "file-0074.ts",
+    "bytes": 2505,
+    "sha256": "0c3a7eb1ce489a034950950e8194497df79f2c6646c9cb1f9ad7efc3ef3c938c"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/src/data/generated/api.d.ts",
+    "local": "file-0075.ts",
+    "bytes": 129531,
+    "sha256": "bb43a39e6fb514268ab9b89e1b443edb752f6e6eb3a7b0c87468cae5a75b077a"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/src/data/lifecycle-conformance.test.ts",
+    "local": "file-0076.ts",
+    "bytes": 10564,
+    "sha256": "91092bc1770952854f9188f06e459a05abb84938bd0e11ab898bbb98e37dbb2e"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/src/data/contract-unicode.test.ts",
+    "local": "file-0077.ts",
+    "bytes": 4726,
+    "sha256": "94c10bf2e77457d1559316fb96876f518bba10f9c342c916cc2dd1240d462eec"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/src/data/http/transport-boundaries.test.ts",
+    "local": "file-0078.ts",
+    "bytes": 4412,
+    "sha256": "86d24bbddf4e5d9843b9b944da9371208e63f7a50d6360f08dc190f1ad00f493"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/src/data/http/transport.ts",
+    "local": "file-0079.ts",
+    "bytes": 10493,
+    "sha256": "a116f5a7d526b1bb9ab2c155bbd22b8d298bf7d1da5c95ee19ef00746b1a1e49"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/src/data/http/transport-cancellation.test.ts",
+    "local": "file-0080.ts",
+    "bytes": 4666,
+    "sha256": "cbb76a366a1710af5ab20704e0021256862d757296977e1c8905d5fd8050c8bb"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/src/data/http/httpGateway.ts",
+    "local": "file-0081.ts",
+    "bytes": 11213,
+    "sha256": "b800cb7eacfe6ce60c4f8f0762f9795a1bf12160a76a494ccbb9302b38bf46a8"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/src/data/http/transport.test.ts",
+    "local": "file-0082.ts",
+    "bytes": 11083,
+    "sha256": "423308f0744bcfdd91a5b4761cf75b597f2d870d75346a27df065403c501a4ed"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/src/data/contract.test.ts",
+    "local": "file-0083.ts",
+    "bytes": 12379,
+    "sha256": "10f903f11b420aef1c59cc8acd095019d031716776c99a3287317043b7992cb8"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/src/data/signal-propagation.test.ts",
+    "local": "file-0084.ts",
+    "bytes": 6679,
+    "sha256": "f316e3dee1df2f5154514bdf1586e2a588bf72e0b85ee4c0e04afd6baf384098"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/src/test/setup.ts",
+    "local": "file-0085.ts",
+    "bytes": 212,
+    "sha256": "236346a5886e734049d4a320d5906d086eb23e381fdb2ccca52556e3e302ff0a"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/src/main.tsx",
+    "local": "file-0086.tsx",
+    "bytes": 794,
+    "sha256": "e0e8abe74a861a5f9d765cfc800abcf62c8115449bc0f6354608ecdedaf4d469"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/src/lib/readPage.ts",
+    "local": "file-0087.ts",
+    "bytes": 2023,
+    "sha256": "167d7e18063fadb2d5e34d40603db5328ce0dfb7aa08ad663bbaa1bbdf6dd87f"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/src/lib/format.ts",
+    "local": "file-0088.ts",
+    "bytes": 1391,
+    "sha256": "1df91b4ba60277c9236eac72310d405a9c33de477f67b69ed686354aa594a15e"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/src/lib/ids.ts",
+    "local": "file-0089.ts",
+    "bytes": 1497,
+    "sha256": "2386bceadf86d8abf7a50f3590994f06eb955cf926eb5b8710cbf3ab782a25b6"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/src/lib/readPage.test.ts",
+    "local": "file-0090.ts",
+    "bytes": 4741,
+    "sha256": "3a2893be607d99f8c7536104dc0bdeff36cb5fac66f47ae9f85475482602a837"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/package-lock.json",
+    "local": "file-0091.json",
+    "bytes": 205076,
+    "sha256": "243b52271400f657f1c5b10015b24491f49495dda1abf0c6c4cd3cedf406f022"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/docker/test.Dockerfile",
+    "local": "file-0092.Dockerfile",
+    "bytes": 994,
+    "sha256": "670ce0f10d783d883628e637e749e87f3fda531d30cde514068c64c95896529c"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/index.html",
+    "local": "file-0093.html",
+    "bytes": 351,
+    "sha256": "4feee5c2172dda95254b7b312d0d549f8741a6f9de4b2c2b8374f48d33de47ae"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/apps/web/dev-fixtures.html",
+    "local": "file-0094.html",
+    "bytes": 480,
+    "sha256": "61ff20cd39bed0d5a8ab975db1c4a671ce240ee2d91e0eedc305989f40533374"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/contracts/v1/openapi.json",
+    "local": "file-0095.json",
+    "bytes": 217402,
+    "sha256": "859041382484a3a001ae087ca88e02eeb23540f2cf46aec795b064aa8ea66073"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/contracts/v1/README.md",
+    "local": "file-0096.md",
+    "bytes": 13599,
+    "sha256": "24592cbb5a42e269dc85e813d72d06ebaee6b856c56826a02e3df94912e5ddb2"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/contracts/v1/contract-lock.json",
+    "local": "file-0097.json",
+    "bytes": 1011,
+    "sha256": "98b7379b024b639b22ef757552da859a5e7151d41b039ef17a3d5d7ccf9f2a07"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/context/contracts/v1/fixtures.json",
+    "local": "file-0098.json",
+    "bytes": 57553,
+    "sha256": "182d8dfad62c49d3a5b9eba836716808709255c66320e3a8a09fc4e7ddae2833"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/browser-test.log",
+    "local": "browser-test.log",
+    "bytes": 55133,
+    "sha256": "54dd155f2cd9ebc6d8607e0875f52605f7e47f2ac3ec4359d0c84d2b445f7ddc"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/unit-test.log",
+    "local": "unit-test.log",
+    "bytes": 10070,
+    "sha256": "7d2d67f2c16cab81ba300ae0b775aaa36909b83d3381a5b6583802268839ee03"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/independent-cleanup.json",
+    "local": "independent-cleanup.json",
+    "bytes": 3684,
+    "sha256": "6ff1109452df67702eb0e212e9a2a7083ff3571b2bfb703d9c4be79876a004cd"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/unit-build.log",
+    "local": "unit-build.log",
+    "bytes": 5258,
+    "sha256": "104eca660e5fdc7055588886637c4bfd8b04c6655e2181ea8ce248277164ae45"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/desktop-cd-drafts.png",
+    "local": "file-0103.png",
+    "bytes": 44436,
+    "sha256": "e8414f005294d1b36bc3f8bd0d62ad66a84b4fa85b1c47dc34b046dfb4cf44ad"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/collaboration-a-definitive-d8576-nd-rebase-re-enables-saving-reduced-motion/test-finished-1.png",
+    "local": "file-0104.png",
+    "bytes": 71977,
+    "sha256": "dec22dd7e11b6efa5a8bb4ea1f5df4cdb23ee2a11637fb1e4528caaba2ca3c8d"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-a9202-der-truncated-badges-light--desktop/test-finished-1.png",
+    "local": "file-0105.png",
+    "bytes": 73358,
+    "sha256": "a44bf55c530450067c066b66369e4beaa23cea88a5ace972dc5ad6675e13c863"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-cb08b-spection-reader-empty-dark--desktop/test-finished-1.png",
+    "local": "file-0106.png",
+    "bytes": 63559,
+    "sha256": "4d323d49984457ee57d13e68e232650654acc86e219ac5ab6eadedc49af25bf6"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/session-no-horizontal-over-4cf9f-d-completion-forms-at-390px-reduced-motion/test-finished-1.png",
+    "local": "file-0107.png",
+    "bytes": 25162,
+    "sha256": "1b6c9d2edfd511e917c6a497cf85c0fec3adde46cc54b655652127b141f80fec"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-cc450-ction-reader-loading-light--desktop/test-finished-1.png",
+    "local": "file-0108.png",
+    "bytes": 29160,
+    "sha256": "b8844965a972589c1380a87e58229943b3a96368645a1166d91460015398ba1c"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-c81bb--unread-filter-active-dark--reduced-motion/test-finished-1.png",
+    "local": "file-0109.png",
+    "bytes": 4254,
+    "sha256": "3878570f4a62a0d65f57cf1754e0269e56ec797f4e36e26b44c172eb6e800401"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/collaboration-an-uncertain-05703-p-does-not-invent-certainty-narrow-390/test-finished-1.png",
+    "local": "file-0110.png",
+    "bytes": 51353,
+    "sha256": "6325ae3ebc0e5c018c8aa83492def60750fd423947661105d73a91f3773106f6"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/desktop-cd-dark-search.png",
+    "local": "file-0111.png",
+    "bytes": 55333,
+    "sha256": "4d03c2281cdfcc60193e1a23ec1bcd30738f3d9eefdaaeae269b18dd46522a13"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/production-api-failure.png",
+    "local": "file-0112.png",
+    "bytes": 11104,
+    "sha256": "909477eb4e0a5087d4069472e7c79d95f18c87fbf804b3d39a490cf99c43de10"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-a9202-der-truncated-badges-light--narrow-390/test-finished-1.png",
+    "local": "file-0113.png",
+    "bytes": 53308,
+    "sha256": "e6ddc810286df6c5852157d1906f0affcc980aca0b1368596415bfecea08c57c"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-cfa2a-drawer-open-populated-dark--reduced-motion/test-finished-1.png",
+    "local": "file-0114.png",
+    "bytes": 4254,
+    "sha256": "3878570f4a62a0d65f57cf1754e0269e56ec797f4e36e26b44c172eb6e800401"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/session-the-completion-for-31fea-nce-and-never-reads-the-URL-narrow-390/test-finished-1.png",
+    "local": "file-0115.png",
+    "bytes": 23140,
+    "sha256": "e25ff9dac007435ff2b72704680949d5d1261ae4ad6bd13ef17906486bb75233"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-e2846-pection-reader-error-light--desktop/test-finished-1.png",
+    "local": "file-0116.png",
+    "bytes": 35220,
+    "sha256": "121b8cfd9e4c1655ffe2b77abb1e7542f12a3d0d44568cf81ee61921c5b63ccf"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/reduced-motion-cd-draft-conflict.png",
+    "local": "file-0117.png",
+    "bytes": 96273,
+    "sha256": "04a760ca96e2e3e005e0f4657952f120aece3276d19efa7d9034d0499d57ce7a"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-593e6-n-inbox-loading-more-light--reduced-motion/test-finished-1.png",
+    "local": "file-0118.png",
+    "bytes": 4254,
+    "sha256": "3878570f4a62a0d65f57cf1754e0269e56ec797f4e36e26b44c172eb6e800401"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-36875-ion-inbox-unavailable-dark--reduced-motion/test-finished-1.png",
+    "local": "file-0119.png",
+    "bytes": 4254,
+    "sha256": "3878570f4a62a0d65f57cf1754e0269e56ec797f4e36e26b44c172eb6e800401"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/read-no-horizontal-overflo-026de-px-and-readable-empty-state-desktop/test-finished-1.png",
+    "local": "file-0120.png",
+    "bytes": 18627,
+    "sha256": "eef438f406b560caf80692c68ae6c002ebd89369dae7a2c93e526a99f8dec44c"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-5ac4c-ection-session-error-light--narrow-390/test-finished-1.png",
+    "local": "file-0121.png",
+    "bytes": 10015,
+    "sha256": "354bd002b82612e8558c1f361801cb092dc0c0409025c8b73547cdb4224ab48d"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-65502--reader-ready-hostile-dark--narrow-390/test-finished-1.png",
+    "local": "file-0122.png",
+    "bytes": 52708,
+    "sha256": "d2351474427c93469a3fe8582410ed81dc58718bcd160a606d66594cb99fd0d6"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-3397f-spection-inbox-empty-light--narrow-390/test-finished-1.png",
+    "local": "file-0123.png",
+    "bytes": 16906,
+    "sha256": "d410bb55c89fa762aa7567fab3291a755f8b30a7630fe76ff66588b2b1eda634"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/read-real-keyboard-travers-fc4a7-ip-link-Enter-lands-on-main-desktop/test-finished-1.png",
+    "local": "file-0124.png",
+    "bytes": 38602,
+    "sha256": "1a3ba7dc101d6bb0e874c7873a46a9147c49b0439e7b89d560d4414130003ec4"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/collaboration-membership-a-41793-e-last-manager-is-protected-narrow-390/test-finished-1.png",
+    "local": "file-0125.png",
+    "bytes": 70408,
+    "sha256": "f7ae9b53ab07794822a34de783f8705875b64405bcb3cf8b935ec94f9db61482"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/session-a-rejected-sign-in-c548f-assword-and-keeps-the-email-narrow-390/test-finished-1.png",
+    "local": "file-0126.png",
+    "bytes": 32862,
+    "sha256": "8633d40513415dc64d5d2dcb553a38cfefa10545ac49723da73f16012e47f309"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/sign-in-rejected.png",
+    "local": "file-0127.png",
+    "bytes": 36778,
+    "sha256": "239e57742dfb079f3b6b8002c3cd8a440f0d3529b11181d927f23b16c32675c7"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/collaboration-the-C-D-mail-514f6-he-read-only-inbox-does-not-desktop/test-finished-1.png",
+    "local": "file-0128.png",
+    "bytes": 44429,
+    "sha256": "763c8678b69d294eb8d52dd779513b757572f5b453670307514f172fe7fbf8d1"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-ba6ff-pty-page-with-cursor-light--narrow-390/test-finished-1.png",
+    "local": "file-0129.png",
+    "bytes": 48147,
+    "sha256": "6e22cbdbf7e26013359e11a81dbd8090b351bd1040703366b9045af77e24b6aa"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/narrow-390-cd-reader-collaboration.png",
+    "local": "file-0130.png",
+    "bytes": 64456,
+    "sha256": "c453de56ab77879efc3b96e88a9db73114f3f81e565c86879cbb8ec78b313972"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/collaboration-dark-theme-r-73aa7-rom-a-freshly-scripted-load-reduced-motion/test-finished-1.png",
+    "local": "file-0131.png",
+    "bytes": 67169,
+    "sha256": "77ad8a07a14a8fedeb8da555bea5ce114f39e4ffa3d101600c04ee616f3f904d"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-6a22f-pection-reader-empty-light--narrow-390/test-finished-1.png",
+    "local": "file-0132.png",
+    "bytes": 44241,
+    "sha256": "f8c7e4721fc7f16d8d96a2c723ecf24895e64a95294f5320308bb0c1a49fdc4e"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-5ac4c-ection-session-error-light--desktop/test-finished-1.png",
+    "local": "file-0133.png",
+    "bytes": 11652,
+    "sha256": "e2054e75a20e1f6d10e9c758545534af2fd15027d253c40456c363a31e8ff009"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-a471d--succeeds-into-shell-light--desktop/test-finished-1.png",
+    "local": "file-0134.png",
+    "bytes": 30781,
+    "sha256": "21a54c5e2e7080fbbf7599805dbd9126a88f988d9b422c11d26a0d094a5608f2"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-c0644--in-rate-limited-hold-dark--desktop/test-finished-1.png",
+    "local": "file-0135.png",
+    "bytes": 30408,
+    "sha256": "2a9e07323eab18b1bdd09ddffed1acff0d2d573fe5b5bd42ab2a692cab8673e7"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-6d8f5-on-inbox-unavailable-light--narrow-390/test-finished-1.png",
+    "local": "file-0136.png",
+    "bytes": 17583,
+    "sha256": "be2af9d75e5d3be5ef4e1e44ccbc5755886fd1e6eca72008b1ce182360a173bf"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/production-production-arti-879ab-tion-and-long-task-baseline-narrow-390/test-finished-1.png",
+    "local": "file-0137.png",
+    "bytes": 86822,
+    "sha256": "bf74d5c250ea451b3c3d68d6a75a37bcc0fde61cc8dd63d1750ae02f8567f32c"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-74195-n-account-sheet-open-light--reduced-motion/test-finished-1.png",
+    "local": "file-0138.png",
+    "bytes": 4254,
+    "sha256": "3878570f4a62a0d65f57cf1754e0269e56ec797f4e36e26b44c172eb6e800401"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/production-production-arti-0c420-fixture-fallback-or-markers-reduced-motion/test-finished-1.png",
+    "local": "file-0139.png",
+    "bytes": 11104,
+    "sha256": "909477eb4e0a5087d4069472e7c79d95f18c87fbf804b3d39a490cf99c43de10"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-dd59a-n-session-refreshing-light--reduced-motion/test-finished-1.png",
+    "local": "file-0140.png",
+    "bytes": 4254,
+    "sha256": "3878570f4a62a0d65f57cf1754e0269e56ec797f4e36e26b44c172eb6e800401"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-40a24-ion-mailboxes-loading-dark--narrow-390/test-finished-1.png",
+    "local": "file-0141.png",
+    "bytes": 6611,
+    "sha256": "71fcd734ff165a1984aef630f380e699b3a4a190291feae0f2876234a3743db6"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-ba6ff-pty-page-with-cursor-light--desktop/test-finished-1.png",
+    "local": "file-0142.png",
+    "bytes": 64376,
+    "sha256": "f64fef9b898901fd6b9c2a1ef0eddc9132abd16374a0b37c4a41357ba41db019"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/reduced-motion-cd-dark-draft-uncertain.png",
+    "local": "file-0143.png",
+    "bytes": 91303,
+    "sha256": "5d43525ef149815d614c46d9a46038c34edbf9d3916b8ae7df15ffa1d6b3ae5d"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/desktop-cd-narrow-members.png",
+    "local": "file-0144.png",
+    "bytes": 53008,
+    "sha256": "e1877713e659febcf39ae350586d51ab140fb0183c9b5c6427c95b79d42f9d07"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/contrast-light.png",
+    "local": "file-0145.png",
+    "bytes": 45277,
+    "sha256": "6ebbeea365b1a08e3547f52dc6e15a6d12191315308adac529d312f92817f2d1"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-e2846-pection-reader-error-light--narrow-390/test-finished-1.png",
+    "local": "file-0146.png",
+    "bytes": 17372,
+    "sha256": "64413bf521d78d6d49aee28ced0be02746059fadb0d281ec1aad87a424e2f4c3"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-5e274-n-succeeds-into-shell-dark--desktop/test-finished-1.png",
+    "local": "file-0147.png",
+    "bytes": 31653,
+    "sha256": "1ba88231394132ecd53fae8d58071fd890cdee0a8148d91d0ece1f0b94f033a4"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-2c9f1-unread-filter-active-light--reduced-motion/test-finished-1.png",
+    "local": "file-0148.png",
+    "bytes": 4254,
+    "sha256": "3878570f4a62a0d65f57cf1754e0269e56ec797f4e36e26b44c172eb6e800401"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-b68b7-sion-no-organization-light--reduced-motion/test-finished-1.png",
+    "local": "file-0149.png",
+    "bytes": 4254,
+    "sha256": "3878570f4a62a0d65f57cf1754e0269e56ec797f4e36e26b44c172eb6e800401"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-2e76a-ection-recovery-form-light--desktop/test-finished-1.png",
+    "local": "file-0150.png",
+    "bytes": 26847,
+    "sha256": "abb822cffefb0dd69545b518462e56eae7607db14e7373f9e38037f98a4f8b38"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/reduced-motion-cd-dark-members.png",
+    "local": "file-0151.png",
+    "bytes": 80942,
+    "sha256": "9c1be790759479ac44048f06c9c7af64422280330843d95ededf835cd08224fe"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/narrow-390-cd-dark-reader.png",
+    "local": "file-0152.png",
+    "bytes": 60063,
+    "sha256": "88d84b784326d0a74c012306c9cbde4186838397ebc16642e76d11d2af793ee9"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-abdd8-ilable-keeps-entries-light--desktop/test-finished-1.png",
+    "local": "file-0153.png",
+    "bytes": 33107,
+    "sha256": "22e1cdfeabb9089462ee1b568a92d34776be11e146c3dacbbce6ff9d5dbe84b1"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/desktop-cd-dark-members.png",
+    "local": "file-0154.png",
+    "bytes": 80926,
+    "sha256": "79c7af8c4d495a37863ee36b8d053b7c61e3cc9ec255f2999d5c5524e7e30802"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-68726-nspection-inbox-empty-dark--desktop/test-finished-1.png",
+    "local": "file-0155.png",
+    "bytes": 35822,
+    "sha256": "448c80d2e14a29a1d885c8f5260f53671f19384aa6bab72ff8ecb53d0316be35"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-46f71-xes-paginated-loading-dark--narrow-390/test-finished-1.png",
+    "local": "file-0156.png",
+    "bytes": 6618,
+    "sha256": "58a10130f33e0a5ebda6e60ae33189bbc54dab7ee4fc9f66177ddb98d4f5f257"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-65637-on-session-refreshed-light--narrow-390/test-finished-1.png",
+    "local": "file-0157.png",
+    "bytes": 13493,
+    "sha256": "394bdddb641e27f24871cb2009c9ad525786f07b397438ea97b37d29635440c8"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-d3902-sign-out-unconfirmed-light--reduced-motion/test-finished-1.png",
+    "local": "file-0158.png",
+    "bytes": 4254,
+    "sha256": "3878570f4a62a0d65f57cf1754e0269e56ec797f4e36e26b44c172eb6e800401"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-ffd72-n-reader-unavailable-light--narrow-390/test-finished-1.png",
+    "local": "file-0159.png",
+    "bytes": 17513,
+    "sha256": "8f12736d1ad354c8d2214dbee9a73fe5daa31e3303b0c5d85f0c0ac806b81203"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/read-keyboard-traversal-sk-989d7-x-conversation-reader-focus-desktop/test-finished-1.png",
+    "local": "file-0160.png",
+    "bytes": 80575,
+    "sha256": "1d1bd083be41017e6b184787a541d59efef1261d718c06ae197776e72096d319"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/read-mobile-drawer-at-390p-7414e--has-no-horizontal-overflow-narrow-390/test-finished-1.png",
+    "local": "file-0161.png",
+    "bytes": 20794,
+    "sha256": "27731fa676f89926aa4b0923dbeea2204697bcff02bb6211207023dbe015acf5"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-2dcc5-spection-reader-error-dark--narrow-390/test-finished-1.png",
+    "local": "file-0162.png",
+    "bytes": 17579,
+    "sha256": "c56f157295af34d6913f0cc87b76e755dac344f6d46cb8c9e153ce5888e54def"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-d396c-ssion-retry-required-light--reduced-motion/test-finished-1.png",
+    "local": "file-0163.png",
+    "bytes": 4254,
+    "sha256": "3878570f4a62a0d65f57cf1754e0269e56ec797f4e36e26b44c172eb6e800401"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/narrow-390-cd-narrow-drafts.png",
+    "local": "file-0164.png",
+    "bytes": 21770,
+    "sha256": "09c2ac2e3600f1637f2128294348f8258c835acacf56ef306b692185bdf8b6d0"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/read-accent-text-meets-4-5-0e460-surfaces-in-the-light-theme-reduced-motion/test-finished-1.png",
+    "local": "file-0165.png",
+    "bytes": 45270,
+    "sha256": "c45f93061a6c913b45b4ab8a333673283e863f393ff5f5930574fab47ee41483"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/session-a-503-on-sign-in-k-f9097--entries-and-claims-no-save-desktop/test-finished-1.png",
+    "local": "file-0166.png",
+    "bytes": 37241,
+    "sha256": "b210d6c17b9651a391259dd41fff11fc6bb536e7a64484350cc58f08631b80bb"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/narrow-390-cd-dark-draft-editor.png",
+    "local": "file-0167.png",
+    "bytes": 50372,
+    "sha256": "f58e7837039a231eb1721782eade27d37dc7a1ae1de8ac0ac9bbb921f8406709"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-8477d-mpty-page-with-cursor-dark--reduced-motion/test-finished-1.png",
+    "local": "file-0168.png",
+    "bytes": 4254,
+    "sha256": "3878570f4a62a0d65f57cf1754e0269e56ec797f4e36e26b44c172eb6e800401"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/session-account-sheet-Esca-6370f-y-sign-out-fences-the-shell-desktop/test-finished-1.png",
+    "local": "file-0169.png",
+    "bytes": 30284,
+    "sha256": "3d15ed757573aea3e83c256f10bee579f8d98e892b8a37fc3d6c67ce351e893f"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/read-animations-respect-th-fc2f1-d-motion-preference-FE-R16--reduced-motion/test-finished-1.png",
+    "local": "file-0170.png",
+    "bytes": 38528,
+    "sha256": "09e81304adeef609b03cb8003465d174724c3276a459e1a88ddff378bcf1c1a0"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/read-fixture-entry-is-visi-c0a59-he-simulated-mail-indicator-desktop/test-finished-1.png",
+    "local": "file-0171.png",
+    "bytes": 38528,
+    "sha256": "09e81304adeef609b03cb8003465d174724c3276a459e1a88ddff378bcf1c1a0"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/collaboration-a-persistent-06ea0-n-be-deliberately-abandoned-reduced-motion/test-finished-1.png",
+    "local": "file-0172.png",
+    "bytes": 77538,
+    "sha256": "61a72e8d48202dea46dac3f4f127472d0ec53e0dbec39871ea40526659fa7a6a"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/session-the-completion-for-31fea-nce-and-never-reads-the-URL-desktop/test-finished-1.png",
+    "local": "file-0173.png",
+    "bytes": 26534,
+    "sha256": "8f963e04a76fb574a26097157b2505b7faab005b550fc21cd7ad99b7d6ca82b2"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/production-production-arti-c6dca-berate-error-never-fixtures-narrow-390/test-finished-1.png",
+    "local": "file-0174.png",
+    "bytes": 10732,
+    "sha256": "b8828808e18271bb17de35072ecda4a07f055f9c8f18b1475af41b6acff6db19"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/desktop-cd-narrow-drafts.png",
+    "local": "file-0175.png",
+    "bytes": 21770,
+    "sha256": "09c2ac2e3600f1637f2128294348f8258c835acacf56ef306b692185bdf8b6d0"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/read-mobile-drawer-at-390p-30d55-Escape-restores-the-trigger-narrow-390/test-finished-1.png",
+    "local": "file-0176.png",
+    "bytes": 19873,
+    "sha256": "dc500cead61356267014e568866d59bffef6af35e2da905b71c86fd3888cdda0"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-9b832-on-account-sheet-open-dark--desktop/test-finished-1.png",
+    "local": "file-0177.png",
+    "bytes": 52406,
+    "sha256": "ab4b751c0dc2bdde325707689b625319a880b3bdeedca955967db48f4ce79b8d"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-c81bb--unread-filter-active-dark--desktop/test-finished-1.png",
+    "local": "file-0178.png",
+    "bytes": 44844,
+    "sha256": "3e7b944a1cdaea802b14a9a47b8abb828716ff5dbea8e35c54974758bef22597"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/narrow-390-cd-draft-conflict.png",
+    "local": "file-0179.png",
+    "bytes": 68707,
+    "sha256": "b6cdec096620d82040528b268874af29ebd2cf1530a93b6bfaf8d4278f31a9f7"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-74195-n-account-sheet-open-light--desktop/test-finished-1.png",
+    "local": "file-0180.png",
+    "bytes": 50992,
+    "sha256": "296c0c98f9cb0f9c3870f780f6c94922c3034a80f6791831801e84ee74ce2433"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-c28d9-sion-unauthenticated-light--reduced-motion/test-finished-1.png",
+    "local": "file-0181.png",
+    "bytes": 4254,
+    "sha256": "3878570f4a62a0d65f57cf1754e0269e56ec797f4e36e26b44c172eb6e800401"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/desktop-cd-narrow-draft-editor.png",
+    "local": "file-0182.png",
+    "bytes": 49019,
+    "sha256": "bb3508c5eea89e9af909a122a590340545b962ef3b56f35ee72ea925044c3dff"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/production-production-arti-60eb3-tays-on-the-artifact-origin-desktop/test-finished-1.png",
+    "local": "file-0183.png",
+    "bytes": 73678,
+    "sha256": "d2bac2af67de2259aa7564ce8c1959692c3479148880a7b45fc17237f75d0491"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/read-no-request-leaves-for-7b50c-ile-reading-hostile-content-reduced-motion/test-finished-1.png",
+    "local": "file-0184.png",
+    "bytes": 80520,
+    "sha256": "850835e536217af8789143f1d84a976d38a4ec2f0120f9b24f4523a3a74de7c5"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-72d62-ction-mailboxes-empty-dark--narrow-390/test-finished-1.png",
+    "local": "file-0185.png",
+    "bytes": 17279,
+    "sha256": "7e3d3ef694b3437994a571c4a6ec1b836faf537dcf8693e6438e2cb7ed7b77de"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-dbe92-ction-mailboxes-error-dark--reduced-motion/test-finished-1.png",
+    "local": "file-0186.png",
+    "bytes": 4254,
+    "sha256": "3878570f4a62a0d65f57cf1754e0269e56ec797f4e36e26b44c172eb6e800401"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/production-production-arti-879ab-tion-and-long-task-baseline-desktop/test-finished-1.png",
+    "local": "file-0187.png",
+    "bytes": 137516,
+    "sha256": "79262f3281498c9bf5547bc09d3c1d48426338aafccccaa82fbe736973cda070"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/desktop-cd-search-refused.png",
+    "local": "file-0188.png",
+    "bytes": 44206,
+    "sha256": "c9fd681087815ccc5e91239702b99dcd16454228b337704894bb788f62eefa7f"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/read-animations-respect-th-fc2f1-d-motion-preference-FE-R16--desktop/test-finished-1.png",
+    "local": "file-0189.png",
+    "bytes": 38528,
+    "sha256": "09e81304adeef609b03cb8003465d174724c3276a459e1a88ddff378bcf1c1a0"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-6a22f-pection-reader-empty-light--desktop/test-finished-1.png",
+    "local": "file-0190.png",
+    "bytes": 61861,
+    "sha256": "973f69a4dc56944509b28abc06b20fd1abd5353d515abd7f1da611b7849ca8e2"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/reduced-motion-cd-draft-saved.png",
+    "local": "file-0191.png",
+    "bytes": 72146,
+    "sha256": "bab7cbbf3adf5e9e3c58af3169f9e08d17cce4b01fdce501499542772129c19d"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-c81bb--unread-filter-active-dark--narrow-390/test-finished-1.png",
+    "local": "file-0192.png",
+    "bytes": 21838,
+    "sha256": "3ad278bf33ae8ee557ab13cf8a7dad3f5e354736851d5580729f6ec5563d5f5b"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/read-accent-text-meets-4-5-dcf9f--surfaces-in-the-dark-theme-narrow-390/test-finished-1.png",
+    "local": "file-0193.png",
+    "bytes": 22822,
+    "sha256": "c6ff30b1802454e7ec9490088c2ac0cfa6c209b9f42f018819e44068a6a9050b"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-4ef35-ection-reader-loading-dark--reduced-motion/test-finished-1.png",
+    "local": "file-0194.png",
+    "bytes": 4254,
+    "sha256": "3878570f4a62a0d65f57cf1754e0269e56ec797f4e36e26b44c172eb6e800401"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-e361e-tion-sign-in-rejected-dark--desktop/test-finished-1.png",
+    "local": "file-0195.png",
+    "bytes": 32976,
+    "sha256": "4325cb6b0705622a0945ff7d677557a8970eea4d8ea11ce275ab3e67d8e0caaf"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/collaboration-dark-theme-C-7634d-ter-its-own-ready-assertion-reduced-motion/test-finished-1.png",
+    "local": "file-0196.png",
+    "bytes": 55346,
+    "sha256": "69b98978a39d3f273891912c3a89566abbc30024decf3e82c619af172f5ded32"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-65637-on-session-refreshed-light--reduced-motion/test-finished-1.png",
+    "local": "file-0197.png",
+    "bytes": 4254,
+    "sha256": "3878570f4a62a0d65f57cf1754e0269e56ec797f4e36e26b44c172eb6e800401"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/collaboration-a-new-draft--cdbaa-plicit-save-and-then-listed-reduced-motion/test-finished-1.png",
+    "local": "file-0198.png",
+    "bytes": 46744,
+    "sha256": "6e60d2680fbbd63bf3b495a5d06493e430aa14847fd09e59260db69bb2bd895b"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-4ef35-ection-reader-loading-dark--narrow-390/test-finished-1.png",
+    "local": "file-0199.png",
+    "bytes": 11537,
+    "sha256": "ea90ede6554d8a602cbb30671fa7dc431c1275e6ad6ae3e790072979e90a77f8"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-251fa-spection-inbox-ready-light--narrow-390/test-finished-1.png",
+    "local": "file-0200.png",
+    "bytes": 24860,
+    "sha256": "d7a2763c0f8d1b4c51941530a24b135d9b30f617d8d02860d188e1e5a02659d9"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-a471d--succeeds-into-shell-light--reduced-motion/test-finished-1.png",
+    "local": "file-0201.png",
+    "bytes": 4254,
+    "sha256": "3878570f4a62a0d65f57cf1754e0269e56ec797f4e36e26b44c172eb6e800401"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/narrow-390-cd-narrow-search.png",
+    "local": "file-0202.png",
+    "bytes": 27326,
+    "sha256": "6e82a0ade27b585e45bfcadd8a8fed9e678c6ce43a77bb0dd9a938cd090375b9"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/reduced-motion-cd-dark-draft-editor.png",
+    "local": "file-0203.png",
+    "bytes": 72840,
+    "sha256": "df4f2460510990037877dbcd49a95d119b2430cbb34702456821ff05626ffc48"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-8375c-pection-session-error-dark--desktop/test-finished-1.png",
+    "local": "file-0204.png",
+    "bytes": 11776,
+    "sha256": "d9b6b2e9ce6fa52546fae96ed8b1e8cdeb1570138676b136b3acf86ab82ae878"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/desktop-cd-members.png",
+    "local": "file-0205.png",
+    "bytes": 98529,
+    "sha256": "c54cdc695d3479bad5ec2644d9592ef88562a7ccb7a8cb8d21c50ea8e4332b23"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/collaboration-a-new-draft--cdbaa-plicit-save-and-then-listed-narrow-390/test-finished-1.png",
+    "local": "file-0206.png",
+    "bytes": 24018,
+    "sha256": "693b7829072d5a79d06d6d2b305d70085f447732fa24a344d05680ce903f44ae"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-593e6-n-inbox-loading-more-light--desktop/test-finished-1.png",
+    "local": "file-0207.png",
+    "bytes": 50686,
+    "sha256": "ec9742dd92580215bef46f9b851f3c3e942abe6809e69d83eaf87a501f16c281"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-bcd40-mpty-page-with-cursor-dark--desktop/test-finished-1.png",
+    "local": "file-0208.png",
+    "bytes": 40795,
+    "sha256": "88866570af862849f5204552bdb93777c0c1c915c60b5d59b8fe1ffc4e586f11"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-65502--reader-ready-hostile-dark--desktop/test-finished-1.png",
+    "local": "file-0209.png",
+    "bytes": 72968,
+    "sha256": "5efb7d698647d530e49eb660a0f4b9168dabd65071b416b4010f6eba5f0d179f"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/narrow-390-cd-drafts.png",
+    "local": "file-0210.png",
+    "bytes": 21546,
+    "sha256": "aecabebdce53b7da0d641ad5c685ccac251a42ac2e003f03cc16dcb253012747"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-ffd72-n-reader-unavailable-light--desktop/test-finished-1.png",
+    "local": "file-0211.png",
+    "bytes": 35213,
+    "sha256": "dd8f08ac46523460afc85991b3c56d018b8ffdc488d53cc85da0e3549f2f4f07"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-09d42-tion-session-loading-light--reduced-motion/test-finished-1.png",
+    "local": "file-0212.png",
+    "bytes": 4254,
+    "sha256": "3878570f4a62a0d65f57cf1754e0269e56ec797f4e36e26b44c172eb6e800401"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/switched-organization.png",
+    "local": "file-0213.png",
+    "bytes": 38557,
+    "sha256": "7ba5b2b5ad7b89ec3c6823878dc4c90dc4868ed5c7b98623c1c8e0bfb0122e58"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/reduced-motion-cd-dark-draft-conflict.png",
+    "local": "file-0214.png",
+    "bytes": 96930,
+    "sha256": "abb04a8d07c406a674a8cc08c770ed431b0c5461456dfb09934a58569ffcce76"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/read-animations-respect-th-fc2f1-d-motion-preference-FE-R16--narrow-390/test-finished-1.png",
+    "local": "file-0215.png",
+    "bytes": 18627,
+    "sha256": "eef438f406b560caf80692c68ae6c002ebd89369dae7a2c93e526a99f8dec44c"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-ab53a-tion-mailboxes-empty-light--desktop/test-finished-1.png",
+    "local": "file-0216.png",
+    "bytes": 31595,
+    "sha256": "d2b8c19b54b8aa8bb5c6583a8a5e40ad4b1b8df326dd22938ef0d9d850da9078"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/desktop-cd-dark-draft-conflict.png",
+    "local": "file-0217.png",
+    "bytes": 96909,
+    "sha256": "a2edd360723a40e675278050f80850445fd6316b0e132051766db62d8eba6c34"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/read-mobile-drawer-at-390p-3e9e1-s-it-and-shows-that-mailbox-reduced-motion/test-finished-1.png",
+    "local": "file-0218.png",
+    "bytes": 20807,
+    "sha256": "0db70d2760d6696cd7e3e2b3dc767ff77eb50926424aa099c5a21ccda0115f26"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/reader.png",
+    "local": "file-0219.png",
+    "bytes": 80583,
+    "sha256": "74125a87b6b987f3bc27232aad8002b07fa9076198d5ca33f4c69707bc5ea5ad"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-cb08b-spection-reader-empty-dark--reduced-motion/test-finished-1.png",
+    "local": "file-0220.png",
+    "bytes": 4254,
+    "sha256": "3878570f4a62a0d65f57cf1754e0269e56ec797f4e36e26b44c172eb6e800401"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/production-production-arti-0c420-fixture-fallback-or-markers-desktop/test-finished-1.png",
+    "local": "file-0221.png",
+    "bytes": 11104,
+    "sha256": "909477eb4e0a5087d4069472e7c79d95f18c87fbf804b3d39a490cf99c43de10"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/read-real-keyboard-navigat-3d32b--and-Enter-opens-its-reader-narrow-390/test-finished-1.png",
+    "local": "file-0222.png",
+    "bytes": 57290,
+    "sha256": "d0bf593f08b9e6a913428620a8113a26229cb36c1af562afb2cbe879daaef07b"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-4ee9b-n-reader-loading-more-dark--narrow-390/test-finished-1.png",
+    "local": "file-0223.png",
+    "bytes": 46579,
+    "sha256": "a82f5edf10363cac2f0a413a6ebff5eab428a0feac4ca74ec0341dddfcd963fe"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-9b832-on-account-sheet-open-dark--narrow-390/test-finished-1.png",
+    "local": "file-0224.png",
+    "bytes": 28729,
+    "sha256": "25f47b1a1fd5592c86aa1c4f3e241ccb1a268b9b0c890737a4bf1efd2550c604"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/narrow-390-cd-members.png",
+    "local": "file-0225.png",
+    "bytes": 70404,
+    "sha256": "c0e2902381151f82d8a9bec9e600e4577de88b704c67a5192ec14794830fff37"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-88cee-ailable-keeps-entries-dark--desktop/test-finished-1.png",
+    "local": "file-0226.png",
+    "bytes": 33533,
+    "sha256": "d98660326123a92ed21d56b9e0f52ddc16edec8c9b134ec98f0874948cdc454a"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-c04dd-reader-ready-hostile-light--reduced-motion/test-finished-1.png",
+    "local": "file-0227.png",
+    "bytes": 70831,
+    "sha256": "c1173098f546322cd1bc2a8a556ce35e717f682455f564cc76eb0bc9e00f8fb1"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-78b1b-on-mailboxes-loading-light--narrow-390/test-finished-1.png",
+    "local": "file-0228.png",
+    "bytes": 6844,
+    "sha256": "499cabbc062fd5d6e4745e472b3a7b032017418ba9e99fa08132ac2d9c5ffe96"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-0cc78-ader-truncated-badges-dark--desktop/test-finished-1.png",
+    "local": "file-0229.png",
+    "bytes": 74805,
+    "sha256": "953f6b048577f15ba8f389ffb03a6ad33af6d6925d0a8cfc5d5567e42ccc5dd4"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/reduced-motion-cd-dark-drafts.png",
+    "local": "file-0230.png",
+    "bytes": 44528,
+    "sha256": "f6a4758c08fb0062f1ac1cfb87c670d20297bf6fc3359629a43e9785e0d5aa35"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/collaboration-a-persistent-06ea0-n-be-deliberately-abandoned-narrow-390/test-finished-1.png",
+    "local": "file-0231.png",
+    "bytes": 58154,
+    "sha256": "6e126caef0c095132f93dd475dcaddad2040869f29853d3f62b369ebc3f61ae9"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-45c3b-n-session-recovering-light--reduced-motion/test-finished-1.png",
+    "local": "file-0232.png",
+    "bytes": 4254,
+    "sha256": "3878570f4a62a0d65f57cf1754e0269e56ec797f4e36e26b44c172eb6e800401"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-b2f20-nspection-shell-ready-dark--desktop/test-finished-1.png",
+    "local": "file-0233.png",
+    "bytes": 31653,
+    "sha256": "1ba88231394132ecd53fae8d58071fd890cdee0a8148d91d0ece1f0b94f033a4"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-65502--reader-ready-hostile-dark--reduced-motion/test-finished-1.png",
+    "local": "file-0234.png",
+    "bytes": 72969,
+    "sha256": "545860f87a243bc7575cfc68aa7d730452096390fc6bf434ad51342091283571"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-ab53a-tion-mailboxes-empty-light--reduced-motion/test-finished-1.png",
+    "local": "file-0235.png",
+    "bytes": 4254,
+    "sha256": "3878570f4a62a0d65f57cf1754e0269e56ec797f4e36e26b44c172eb6e800401"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/read-no-horizontal-overflo-026de-px-and-readable-empty-state-narrow-390/test-finished-1.png",
+    "local": "file-0236.png",
+    "bytes": 18627,
+    "sha256": "eef438f406b560caf80692c68ae6c002ebd89369dae7a2c93e526a99f8dec44c"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/collaboration-search-is-li-d6e06-L-and-links-into-the-reader-desktop/test-finished-1.png",
+    "local": "file-0237.png",
+    "bytes": 44198,
+    "sha256": "4d1b4e535b2faaa2800f664ed3dea44fb71d97b560d0e50bd1f3d8006b851bf5"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/inbox-390.png",
+    "local": "file-0238.png",
+    "bytes": 20807,
+    "sha256": "0db70d2760d6696cd7e3e2b3dc767ff77eb50926424aa099c5a21ccda0115f26"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-19e8d-ssion-no-organization-dark--reduced-motion/test-finished-1.png",
+    "local": "file-0239.png",
+    "bytes": 4254,
+    "sha256": "3878570f4a62a0d65f57cf1754e0269e56ec797f4e36e26b44c172eb6e800401"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-8b545-ssion-unauthenticated-dark--desktop/test-finished-1.png",
+    "local": "file-0240.png",
+    "bytes": 23697,
+    "sha256": "273c87d25980258d09a56c20ea09ea7a0e4e55d441b37bc714780986c0784b7c"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-c47fc-ion-signed-out-notice-dark--desktop/test-finished-1.png",
+    "local": "file-0241.png",
+    "bytes": 26087,
+    "sha256": "ab84735e308658a25fa9f867df6c5adff81d50f538d9e7891515eba7d4863510"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/read-no-request-leaves-for-7b50c-ile-reading-hostile-content-desktop/test-finished-1.png",
+    "local": "file-0242.png",
+    "bytes": 80526,
+    "sha256": "b75004a3579b25d3bf6b362af1515e1bbd48996241ef7c3aa8c69b8fe5debed3"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/read-no-request-leaves-for-7b50c-ile-reading-hostile-content-narrow-390/test-finished-1.png",
+    "local": "file-0243.png",
+    "bytes": 57215,
+    "sha256": "1d57b6b7fd3b3b45947907925da348a990ced02a428a758bda86aa55f09c14cd"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-6d8f5-on-inbox-unavailable-light--reduced-motion/test-finished-1.png",
+    "local": "file-0244.png",
+    "bytes": 4254,
+    "sha256": "3878570f4a62a0d65f57cf1754e0269e56ec797f4e36e26b44c172eb6e800401"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-617b5-on-session-recovering-dark--desktop/test-finished-1.png",
+    "local": "file-0245.png",
+    "bytes": 5488,
+    "sha256": "a5a4e1f4599cd7765fb2714ad540a3affe079fd5990bfec67b2becc7809bdbfc"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-4ee9b-n-reader-loading-more-dark--desktop/test-finished-1.png",
+    "local": "file-0246.png",
+    "bytes": 65963,
+    "sha256": "8e8ef5cc52c8c25ce433f98ea5379cd0619fc0fcf75e85eca420236b5d5b8c1b"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-b2f20-nspection-shell-ready-dark--reduced-motion/test-finished-1.png",
+    "local": "file-0247.png",
+    "bytes": 31653,
+    "sha256": "1ba88231394132ecd53fae8d58071fd890cdee0a8148d91d0ece1f0b94f033a4"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/.last-run.json",
+    "local": "file-0248.json",
+    "bytes": 45,
+    "sha256": "91d1c43004802cd49950d78eb11c8fa7d05da8ffffe219a8b13b2f561bc00903"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-96a3f-on-signed-out-notice-light--narrow-390/test-finished-1.png",
+    "local": "file-0249.png",
+    "bytes": 21524,
+    "sha256": "64a479f960e1d3b934b0686950d62e5c92648cb614dec0bbf8a571d00d005429"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-0cc78-ader-truncated-badges-dark--reduced-motion/test-finished-1.png",
+    "local": "file-0250.png",
+    "bytes": 4254,
+    "sha256": "3878570f4a62a0d65f57cf1754e0269e56ec797f4e36e26b44c172eb6e800401"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/desktop-cd-reader-collaboration.png",
+    "local": "file-0251.png",
+    "bytes": 87118,
+    "sha256": "ad5ffed3d14ac58dcce72c520fb3cab262161b0a90f7b806afdec1883b63f338"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-ab53a-tion-mailboxes-empty-light--narrow-390/test-finished-1.png",
+    "local": "file-0252.png",
+    "bytes": 16904,
+    "sha256": "471bbc3700caaae108d5ac0ceac88dda10282acb67b024e5ead5799700cf5d39"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/session-a-signed-out-fixtu-29a16-t-with-no-stored-credential-reduced-motion/test-finished-1.png",
+    "local": "file-0253.png",
+    "bytes": 28155,
+    "sha256": "942f7fab55c4b77fe9c0a7a48ebb73ec7fc8d713551e336a7c7a64abf67a2212"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-68726-nspection-inbox-empty-dark--reduced-motion/test-finished-1.png",
+    "local": "file-0254.png",
+    "bytes": 4254,
+    "sha256": "3878570f4a62a0d65f57cf1754e0269e56ec797f4e36e26b44c172eb6e800401"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-9b832-on-account-sheet-open-dark--reduced-motion/test-finished-1.png",
+    "local": "file-0255.png",
+    "bytes": 4254,
+    "sha256": "3878570f4a62a0d65f57cf1754e0269e56ec797f4e36e26b44c172eb6e800401"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-46f71-xes-paginated-loading-dark--reduced-motion/test-finished-1.png",
+    "local": "file-0256.png",
+    "bytes": 4254,
+    "sha256": "3878570f4a62a0d65f57cf1754e0269e56ec797f4e36e26b44c172eb6e800401"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-dd59a-n-session-refreshing-light--desktop/test-finished-1.png",
+    "local": "file-0257.png",
+    "bytes": 5339,
+    "sha256": "dceeb2f251cb08eacf16bb28eb4ba5713dacfb17ecee99923522e4e3c148e832"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-9b122-ion-session-refreshed-dark--narrow-390/test-finished-1.png",
+    "local": "file-0258.png",
+    "bytes": 13701,
+    "sha256": "f564d9493e0fac52a9c7d3854925d48787003969c1d389c6f49cc20a2ed8d778"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-6a22f-pection-reader-empty-light--reduced-motion/test-finished-1.png",
+    "local": "file-0259.png",
+    "bytes": 4254,
+    "sha256": "3878570f4a62a0d65f57cf1754e0269e56ec797f4e36e26b44c172eb6e800401"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-68726-nspection-inbox-empty-dark--narrow-390/test-finished-1.png",
+    "local": "file-0260.png",
+    "bytes": 17367,
+    "sha256": "45c9c5f69afdf3afaa93454f1c80c0c855fa2b9ffa091ad5d3468cba7b8b6bb6"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-9b122-ion-session-refreshed-dark--desktop/test-finished-1.png",
+    "local": "file-0261.png",
+    "bytes": 31653,
+    "sha256": "1ba88231394132ecd53fae8d58071fd890cdee0a8148d91d0ece1f0b94f033a4"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-dd59a-n-session-refreshing-light--narrow-390/test-finished-1.png",
+    "local": "file-0262.png",
+    "bytes": 3819,
+    "sha256": "ca5c6123faa73925e4fd9127386c1fd88c7279170008df6747d9fc7276e9f0f0"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/session-a-signed-out-fixtu-29a16-t-with-no-stored-credential-desktop/test-finished-1.png",
+    "local": "file-0263.png",
+    "bytes": 28155,
+    "sha256": "942f7fab55c4b77fe9c0a7a48ebb73ec7fc8d713551e336a7c7a64abf67a2212"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/collaboration-no-horizonta-dc265-ter-its-own-ready-assertion-reduced-motion/test-finished-1.png",
+    "local": "file-0264.png",
+    "bytes": 27326,
+    "sha256": "6e82a0ade27b585e45bfcadd8a8fed9e678c6ce43a77bb0dd9a938cd090375b9"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-d396c-ssion-retry-required-light--narrow-390/test-finished-1.png",
+    "local": "file-0265.png",
+    "bytes": 16823,
+    "sha256": "2cc6d29d8ef66e979b3f32fd3cc31ddb4aacaa536b9389459b52a6c7cd77ad24"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/drawer-390.png",
+    "local": "file-0266.png",
+    "bytes": 20099,
+    "sha256": "4ab1220b942bfcd809ec64c12fd2b5ac4b2d389e8c356f4de6293a620f0ab192"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-480b1-ection-inbox-loading-light--narrow-390/test-finished-1.png",
+    "local": "file-0267.png",
+    "bytes": 12537,
+    "sha256": "8e2863b7f3c5efb6b2f79512f93f85a61b41e1c4878477c627f51a7ee78f5409"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/narrow-390-cd-search-refused.png",
+    "local": "file-0268.png",
+    "bytes": 24094,
+    "sha256": "d8892e3ad54cc2826e1015ccf7d7c8b08de837931ef2cf3b152a38a2336adc7d"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-a9202-der-truncated-badges-light--reduced-motion/test-finished-1.png",
+    "local": "file-0269.png",
+    "bytes": 4254,
+    "sha256": "3878570f4a62a0d65f57cf1754e0269e56ec797f4e36e26b44c172eb6e800401"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-c04dd-reader-ready-hostile-light--narrow-390/test-finished-1.png",
+    "local": "file-0270.png",
+    "bytes": 50457,
+    "sha256": "41e91134c21fedad0f458b7a8c82661b24f214561564d4db09cc0d1e321ce2a7"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-8b545-ssion-unauthenticated-dark--narrow-390/test-finished-1.png",
+    "local": "file-0271.png",
+    "bytes": 20907,
+    "sha256": "2e61adaf3dba54c30d1c4df0670dea1b0c4ca7646236460d8030dabe9a1d121d"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/collaboration-membership-a-41793-e-last-manager-is-protected-desktop/test-finished-1.png",
+    "local": "file-0272.png",
+    "bytes": 98456,
+    "sha256": "5ae7529a412d5f01d46595853d7cc46add68c42fb2b4adc942afe97146c46233"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-bb591-nspection-inbox-ready-dark--narrow-390/test-finished-1.png",
+    "local": "file-0273.png",
+    "bytes": 25718,
+    "sha256": "ae371eb8f58e7ceb92e46ca63775d8e9240645dc94845fd428876dce097fd4f4"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-2a89e-spection-shell-ready-light--desktop/test-finished-1.png",
+    "local": "file-0274.png",
+    "bytes": 30781,
+    "sha256": "21a54c5e2e7080fbbf7599805dbd9126a88f988d9b422c11d26a0d094a5608f2"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/session-keyboard-sign-in-T-2ca4c-r-submits-the-shell-appears-reduced-motion/test-finished-1.png",
+    "local": "file-0275.png",
+    "bytes": 38528,
+    "sha256": "09e81304adeef609b03cb8003465d174724c3276a459e1a88ddff378bcf1c1a0"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-40a24-ion-mailboxes-loading-dark--reduced-motion/test-finished-1.png",
+    "local": "file-0276.png",
+    "bytes": 4254,
+    "sha256": "3878570f4a62a0d65f57cf1754e0269e56ec797f4e36e26b44c172eb6e800401"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/session-a-valid-identity-w-d94e3-cit-state-that-can-sign-out-desktop/test-finished-1.png",
+    "local": "file-0277.png",
+    "bytes": 30284,
+    "sha256": "3d15ed757573aea3e83c256f10bee579f8d98e892b8a37fc3d6c67ce351e893f"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-e9b46--reader-loading-more-light--desktop/test-finished-1.png",
+    "local": "file-0278.png",
+    "bytes": 64173,
+    "sha256": "6b233fb8eeee4e467dd621b61e78622ad6b41927263f86d752adab9d738770aa"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-251fa-spection-inbox-ready-light--reduced-motion/test-finished-1.png",
+    "local": "file-0279.png",
+    "bytes": 4254,
+    "sha256": "3878570f4a62a0d65f57cf1754e0269e56ec797f4e36e26b44c172eb6e800401"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-e9b46--reader-loading-more-light--reduced-motion/test-finished-1.png",
+    "local": "file-0280.png",
+    "bytes": 4254,
+    "sha256": "3878570f4a62a0d65f57cf1754e0269e56ec797f4e36e26b44c172eb6e800401"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/read-real-keyboard-travers-fc4a7-ip-link-Enter-lands-on-main-reduced-motion/test-finished-1.png",
+    "local": "file-0281.png",
+    "bytes": 38602,
+    "sha256": "1a3ba7dc101d6bb0e874c7873a46a9147c49b0439e7b89d560d4414130003ec4"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-490dc-pection-inbox-loading-dark--reduced-motion/test-finished-1.png",
+    "local": "file-0282.png",
+    "bytes": 31117,
+    "sha256": "37bf4f260bf4c3a3e1fa1acf3779faa607a61e002dbc6867b81a5632c21475db"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/read-real-keyboard-travers-fc4a7-ip-link-Enter-lands-on-main-narrow-390/test-finished-1.png",
+    "local": "file-0283.png",
+    "bytes": 18632,
+    "sha256": "608c5614f68a5843ef3a11e1a941260437407b88f3e526bc9cbb0bd9e0a3e48b"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/read-mobile-drawer-at-390p-3e9e1-s-it-and-shows-that-mailbox-narrow-390/test-finished-1.png",
+    "local": "file-0284.png",
+    "bytes": 20807,
+    "sha256": "0db70d2760d6696cd7e3e2b3dc767ff77eb50926424aa099c5a21ccda0115f26"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-d3902-sign-out-unconfirmed-light--desktop/test-finished-1.png",
+    "local": "file-0285.png",
+    "bytes": 23870,
+    "sha256": "af682264472c1b385cc9ec4a6e332d65dbce53117f7d67e19bd3fbe130ed16d4"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-644a0-pection-recovery-form-dark--narrow-390/test-finished-1.png",
+    "local": "file-0286.png",
+    "bytes": 23512,
+    "sha256": "67fd35711c849ab05c03469f3fa1008cb07e8e1f9ce1836b4506e352b7186380"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-490dc-pection-inbox-loading-dark--narrow-390/test-finished-1.png",
+    "local": "file-0287.png",
+    "bytes": 12829,
+    "sha256": "e93361d009c5ad2ae083fab6823ebafc06114bcf75e062c0ef410819afc22688"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/reduced-motion-cd-narrow-reader.png",
+    "local": "file-0288.png",
+    "bytes": 57628,
+    "sha256": "1f9d0e590d5695a4f9042be0585eb13f31164e4e5167c6954cfdbb1f2e3a9ba5"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-4c4e2-transparent-and-no-op-fills-reduced-motion/test-finished-1.png",
+    "local": "file-0289.png",
+    "bytes": 4254,
+    "sha256": "3878570f4a62a0d65f57cf1754e0269e56ec797f4e36e26b44c172eb6e800401"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-8b545-ssion-unauthenticated-dark--reduced-motion/test-finished-1.png",
+    "local": "file-0290.png",
+    "bytes": 4254,
+    "sha256": "3878570f4a62a0d65f57cf1754e0269e56ec797f4e36e26b44c172eb6e800401"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-bf2b6-ction-session-loading-dark--desktop/test-finished-1.png",
+    "local": "file-0291.png",
+    "bytes": 5514,
+    "sha256": "83b24cf24295581aa77e1923871a6e40afa9d7b2ee36be3c046685e2afdd687d"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-2e76a-ection-recovery-form-light--reduced-motion/test-finished-1.png",
+    "local": "file-0292.png",
+    "bytes": 4254,
+    "sha256": "3878570f4a62a0d65f57cf1754e0269e56ec797f4e36e26b44c172eb6e800401"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/read-accent-text-meets-4-5-0e460-surfaces-in-the-light-theme-desktop/test-finished-1.png",
+    "local": "file-0293.png",
+    "bytes": 45271,
+    "sha256": "7a1009f9ca32e5a7f18ecf28d40f6ad698008af5b0559f30deca0085dccdb743"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-78b1b-on-mailboxes-loading-light--desktop/test-finished-1.png",
+    "local": "file-0294.png",
+    "bytes": 20718,
+    "sha256": "da707b153ed504512c584756823296efb94be083e7ff06119d65276413278c05"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-e82e5-on-session-refreshing-dark--narrow-390/test-finished-1.png",
+    "local": "file-0295.png",
+    "bytes": 3875,
+    "sha256": "a20e28c71f38a2d532846227419cae9136bcf8068192d0085d246a21cc28a91a"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/desktop-cd-draft-conflict.png",
+    "local": "file-0296.png",
+    "bytes": 96273,
+    "sha256": "04a760ca96e2e3e005e0f4657952f120aece3276d19efa7d9034d0499d57ce7a"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-bcd40-mpty-page-with-cursor-dark--narrow-390/test-finished-1.png",
+    "local": "file-0297.png",
+    "bytes": 21942,
+    "sha256": "c1b4e610a528a338675a34e91deb167ee89f3bb4a447e6f6f2da3df659eba104"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-2ebed-on-inbox-loading-more-dark--reduced-motion/test-finished-1.png",
+    "local": "file-0298.png",
+    "bytes": 4254,
+    "sha256": "3878570f4a62a0d65f57cf1754e0269e56ec797f4e36e26b44c172eb6e800401"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-0655f-ion-sign-in-rejected-light--narrow-390/test-finished-1.png",
+    "local": "file-0299.png",
+    "bytes": 28370,
+    "sha256": "40e01356e5cd05ec9bc018ded3122f28e3f1df3ae9c00a6400a841bb7cab542d"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-dbe92-ction-mailboxes-error-dark--desktop/test-finished-1.png",
+    "local": "file-0300.png",
+    "bytes": 23445,
+    "sha256": "4c1f9daea4d89d185b7f80ecb4d89b4cf5d58e71ce94646d1240cbfe4416b205"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/narrow-390-cd-narrow-members.png",
+    "local": "file-0301.png",
+    "bytes": 53008,
+    "sha256": "e1877713e659febcf39ae350586d51ab140fb0183c9b5c6427c95b79d42f9d07"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-593e6-n-inbox-loading-more-light--narrow-390/test-finished-1.png",
+    "local": "file-0302.png",
+    "bytes": 26056,
+    "sha256": "4d31d82871a6281e32ffad834e059caf5c5103f61ae0492543030a37f78084b9"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-09d42-tion-session-loading-light--narrow-390/test-finished-1.png",
+    "local": "file-0303.png",
+    "bytes": 3781,
+    "sha256": "16d819afebcf25e1454c89ba08b28996a4e65b8aab6621135b09a8c675e8aafe"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-490dc-pection-inbox-loading-dark--desktop/test-finished-1.png",
+    "local": "file-0304.png",
+    "bytes": 31310,
+    "sha256": "3ebe77ecbf6aae3e4fb74e030c319e7cc8a20ee84be19fae075b2368d8bb3ecf"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/collaboration-a-new-draft--cdbaa-plicit-save-and-then-listed-desktop/test-finished-1.png",
+    "local": "file-0305.png",
+    "bytes": 46753,
+    "sha256": "d1b6378eb2eaa65392618f02cee5dd8296e5fe92b62718741a718f7252f460d9"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-b68b7-sion-no-organization-light--desktop/test-finished-1.png",
+    "local": "file-0306.png",
+    "bytes": 24603,
+    "sha256": "41a15276c278e929766bb9517c2c38be7e1ac2c04d3fe9df2809e654f2c6d319"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/desktop-cd-draft-saved.png",
+    "local": "file-0307.png",
+    "bytes": 72155,
+    "sha256": "0a74301e14f6605d34615130c68182ca97eb2ae0a07c634d8aa46bb545984339"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/collaboration-search-is-li-d6e06-L-and-links-into-the-reader-narrow-390/test-finished-1.png",
+    "local": "file-0308.png",
+    "bytes": 24094,
+    "sha256": "d8892e3ad54cc2826e1015ccf7d7c8b08de837931ef2cf3b152a38a2336adc7d"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-5e274-n-succeeds-into-shell-dark--reduced-motion/test-finished-1.png",
+    "local": "file-0309.png",
+    "bytes": 4254,
+    "sha256": "3878570f4a62a0d65f57cf1754e0269e56ec797f4e36e26b44c172eb6e800401"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-19e8d-ssion-no-organization-dark--narrow-390/test-finished-1.png",
+    "local": "file-0310.png",
+    "bytes": 20854,
+    "sha256": "f0b336a5869a694431425fe88dc3708f45441e951646224c7cce79a53b6edd6a"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-3f5b5-rawer-open-populated-light--narrow-390/test-finished-1.png",
+    "local": "file-0311.png",
+    "bytes": 20299,
+    "sha256": "abeaffe24252a6a04ced8b441006bd70edaedc27f4e5b78a1cf0266bfeecb176"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/collaboration-dark-theme-C-7634d-ter-its-own-ready-assertion-narrow-390/test-finished-1.png",
+    "local": "file-0312.png",
+    "bytes": 28128,
+    "sha256": "4173d1a6a15b4ec40c6391783af30f5fd29b03c313cbf428b05aeada58e2c410"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-e82e5-on-session-refreshing-dark--reduced-motion/test-finished-1.png",
+    "local": "file-0313.png",
+    "bytes": 4254,
+    "sha256": "3878570f4a62a0d65f57cf1754e0269e56ec797f4e36e26b44c172eb6e800401"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/session-a-refresh-that-suc-9fe63-ll-without-the-sign-in-form-desktop/test-finished-1.png",
+    "local": "file-0314.png",
+    "bytes": 38528,
+    "sha256": "09e81304adeef609b03cb8003465d174724c3276a459e1a88ddff378bcf1c1a0"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-45c3b-n-session-recovering-light--narrow-390/test-finished-1.png",
+    "local": "file-0315.png",
+    "bytes": 3765,
+    "sha256": "f499ed0dc056528ac6080ca6d04b0bdbecb1ac27738cd64a1c79e4382867c65e"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-e0819-spection-inbox-error-light--narrow-390/test-finished-1.png",
+    "local": "file-0316.png",
+    "bytes": 17820,
+    "sha256": "0af732adfd6cb6f00c27e813dc013264189a5a9bfe547fe7a07ad90e07cab2d1"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-8477d-mpty-page-with-cursor-dark--narrow-390/test-finished-1.png",
+    "local": "file-0317.png",
+    "bytes": 50009,
+    "sha256": "6ab4dbe2c655ef08080b74ecc5df81ecb3a99c5dc1fe6a07e2120339a33b17ad"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/session-no-horizontal-over-4cf9f-d-completion-forms-at-390px-desktop/test-finished-1.png",
+    "local": "file-0318.png",
+    "bytes": 25162,
+    "sha256": "1b6c9d2edfd511e917c6a497cf85c0fec3adde46cc54b655652127b141f80fec"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-65637-on-session-refreshed-light--desktop/test-finished-1.png",
+    "local": "file-0319.png",
+    "bytes": 30781,
+    "sha256": "21a54c5e2e7080fbbf7599805dbd9126a88f988d9b422c11d26a0d094a5608f2"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/contrast-dark.png",
+    "local": "file-0320.png",
+    "bytes": 46102,
+    "sha256": "b200bf0d1e3f673cb1cad8efcce1a80ed95c00c16270bf71fe20324a88bc33e7"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/narrow-390-cd-narrow-draft-editor.png",
+    "local": "file-0321.png",
+    "bytes": 49019,
+    "sha256": "bb3508c5eea89e9af909a122a590340545b962ef3b56f35ee72ea925044c3dff"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/desktop-light-sign-in-unavailable-keeps-entries.png",
+    "local": "file-0322.png",
+    "bytes": 33112,
+    "sha256": "59f61187a297f3ba483a7cba5695eb0089e940bc2eef5e7011d340f3b2381660"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/narrow-390-dark-inbox-loading-more.png",
+    "local": "file-0323.png",
+    "bytes": 27064,
+    "sha256": "03f0128463a07306aec4083e1c75e6c88f415c1597a749ed41e20c1281db7171"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/narrow-390-dark-sign-in-rejected.png",
+    "local": "file-0324.png",
+    "bytes": 29027,
+    "sha256": "5433419bd496f15f716d77585be923d3ef40e2ae39aea6c6895f7847509cb982"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/desktop-dark-sign-out-unconfirmed.png",
+    "local": "file-0325.png",
+    "bytes": 24368,
+    "sha256": "716353e8fbf996fe949494093ba256d8bae19d9ae29d96d64ab62e73317ee8c3"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/narrow-390-dark-mailboxes-paginated-loading.png",
+    "local": "file-0326.png",
+    "bytes": 6618,
+    "sha256": "58a10130f33e0a5ebda6e60ae33189bbc54dab7ee4fc9f66177ddb98d4f5f257"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/narrow-390-light-inbox-loading-more.png",
+    "local": "file-0327.png",
+    "bytes": 26079,
+    "sha256": "9a6b0997b0f29efea9235af5ea19acaf0ff3298d2062ac1a2cd9f207635fb14f"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/desktop-dark-inbox-empty.png",
+    "local": "file-0328.png",
+    "bytes": 35834,
+    "sha256": "d9252842a182f881b4cfd88f17a3720a80b935bbecad7c2322dcc7f7a979b664"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/reduced-motion-dark-reader-ready-hostile.png",
+    "local": "file-0329.png",
+    "bytes": 72976,
+    "sha256": "08b8c2db867fffb05abf06bf64cdca8c4ba5fcf9dd349c566cc0335ed6cd51a3"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/narrow-390-dark-inbox-unavailable.png",
+    "local": "file-0330.png",
+    "bytes": 17982,
+    "sha256": "6993d3295f60e88a2f858740419d855befee8591adebed531ca752e7eef376d2"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/narrow-390-light-inbox-ready.png",
+    "local": "file-0331.png",
+    "bytes": 24860,
+    "sha256": "d7a2763c0f8d1b4c51941530a24b135d9b30f617d8d02860d188e1e5a02659d9"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/desktop-light-reader-loading-more.png",
+    "local": "file-0332.png",
+    "bytes": 64238,
+    "sha256": "18b40c1f691d26df24289e67df0fa8865de1644707b3a088d1cbecf3a43742ec"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/desktop-dark-session-recovering.png",
+    "local": "file-0333.png",
+    "bytes": 5470,
+    "sha256": "c7efa0cd9efb146bea899eb98ba8c18308856b1f6f514806f595b23b99b01cb6"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/narrow-390-light-reader-empty.png",
+    "local": "file-0334.png",
+    "bytes": 44241,
+    "sha256": "f8c7e4721fc7f16d8d96a2c723ecf24895e64a95294f5320308bb0c1a49fdc4e"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/desktop-dark-reader-loading.png",
+    "local": "file-0335.png",
+    "bytes": 29983,
+    "sha256": "7395befbf026751ab13dd15c9b7885158ffe5a7dd55cb981cf260a600af43fc8"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/desktop-dark-inbox-loading.png",
+    "local": "file-0336.png",
+    "bytes": 31269,
+    "sha256": "ef0bec2ab6a722b471b86726bbe5d5bb7506c7b106f88bb6fe2feb708af57b02"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/narrow-390-light-session-recovering.png",
+    "local": "file-0337.png",
+    "bytes": 3765,
+    "sha256": "f499ed0dc056528ac6080ca6d04b0bdbecb1ac27738cd64a1c79e4382867c65e"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/desktop-light-shell-ready.png",
+    "local": "file-0338.png",
+    "bytes": 30781,
+    "sha256": "21a54c5e2e7080fbbf7599805dbd9126a88f988d9b422c11d26a0d094a5608f2"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/desktop-light-session-loading.png",
+    "local": "file-0339.png",
+    "bytes": 5405,
+    "sha256": "37d1c8237ba901f04a8fa3f98c20def7f7e9bb132e97303e0248a9adff9c7ddc"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/desktop-dark-inbox-empty-page-with-cursor.png",
+    "local": "file-0340.png",
+    "bytes": 40803,
+    "sha256": "2ee579c65622524743e5596b2c8b20b58e6c7203c93dcc313066843c326c63a2"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/reduced-motion-dark-shell-ready.png",
+    "local": "file-0341.png",
+    "bytes": 31653,
+    "sha256": "1ba88231394132ecd53fae8d58071fd890cdee0a8148d91d0ece1f0b94f033a4"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/narrow-390-dark-inbox-ready.png",
+    "local": "file-0342.png",
+    "bytes": 25718,
+    "sha256": "ae371eb8f58e7ceb92e46ca63775d8e9240645dc94845fd428876dce097fd4f4"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/narrow-390-light-reader-truncated-badges.png",
+    "local": "file-0343.png",
+    "bytes": 53308,
+    "sha256": "e6ddc810286df6c5852157d1906f0affcc980aca0b1368596415bfecea08c57c"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/desktop-light-reader-ready-hostile.png",
+    "local": "file-0344.png",
+    "bytes": 70831,
+    "sha256": "c1173098f546322cd1bc2a8a556ce35e717f682455f564cc76eb0bc9e00f8fb1"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/narrow-390-light-session-unauthenticated.png",
+    "local": "file-0345.png",
+    "bytes": 20408,
+    "sha256": "c1c17516f383d0901098900bf89326745f1b8d1cbb26267af3515ebd290df8d9"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/narrow-390-dark-drawer-open-populated.png",
+    "local": "file-0346.png",
+    "bytes": 20619,
+    "sha256": "d3dc5f6a0257987400e95e2ef7e890a9d229693cb918439aa6f9cb411498a706"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/narrow-390-light-sign-out-unconfirmed.png",
+    "local": "file-0347.png",
+    "bytes": 20286,
+    "sha256": "a7d92f8d8971e875fad8ae6f03340ece3cb47d470b201b7f16d4a2dce3008d72"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/desktop-light-session-no-organization.png",
+    "local": "file-0348.png",
+    "bytes": 24603,
+    "sha256": "41a15276c278e929766bb9517c2c38be7e1ac2c04d3fe9df2809e654f2c6d319"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/desktop-light-inbox-loading.png",
+    "local": "file-0349.png",
+    "bytes": 30419,
+    "sha256": "806ddcb73dc94fe7431d34fffbe191216e2d34cf1b395cca62b9b87a07b3c4e0"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/reduced-motion-dark-inbox-loading.png",
+    "local": "file-0350.png",
+    "bytes": 31267,
+    "sha256": "afdb16afff672eba78c5e482b74a3a88a4f60b4f1780d91da02836d427d03325"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/desktop-light-sign-in-rejected.png",
+    "local": "file-0351.png",
+    "bytes": 32470,
+    "sha256": "8b66363a25d78fc781785431d8d4a7738c2b046c23705d62bc6214be005cdfc2"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/narrow-390-dark-mailboxes-empty.png",
+    "local": "file-0352.png",
+    "bytes": 17279,
+    "sha256": "7e3d3ef694b3437994a571c4a6ec1b836faf537dcf8693e6438e2cb7ed7b77de"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/desktop-light-reader-empty.png",
+    "local": "file-0353.png",
+    "bytes": 61868,
+    "sha256": "edb8222035773aed5ab018b70f3c769479176b4a8705884a74798b7c42196ee4"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/desktop-light-inbox-unread-filter-active.png",
+    "local": "file-0354.png",
+    "bytes": 43471,
+    "sha256": "9981f3dde134304aac368f853b05f5a4eaac460d9f1c29964b87e45668bcf31f"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/desktop-dark-mailboxes-error.png",
+    "local": "file-0355.png",
+    "bytes": 23445,
+    "sha256": "4c1f9daea4d89d185b7f80ecb4d89b4cf5d58e71ce94646d1240cbfe4416b205"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/narrow-390-dark-inbox-loading.png",
+    "local": "file-0356.png",
+    "bytes": 12787,
+    "sha256": "ae13d6d2304cb93e6068e9bd7759b6baabf46fae16d1b0a6136213533f392f19"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/desktop-dark-inbox-ready.png",
+    "local": "file-0357.png",
+    "bytes": 51225,
+    "sha256": "bb3296c2db3d1e6bafd73aacb1f199f559cc3c41d8085410fb8d000f2427fa91"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/reduced-motion-light-inbox-loading.png",
+    "local": "file-0358.png",
+    "bytes": 30418,
+    "sha256": "25edce48eb75496e15a25750516e25f8a2717b277e14dac62133f24496a62bb3"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/narrow-390-light-sign-in-rejected.png",
+    "local": "file-0359.png",
+    "bytes": 28376,
+    "sha256": "ea9bed4e916688167b3671c24754ea272a7c23ff243d9673c81bf3205bdd21b2"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/narrow-390-dark-session-error.png",
+    "local": "file-0360.png",
+    "bytes": 10202,
+    "sha256": "86cd87aa4a5918b8eaa6721933de05b0956eae69cee9c9bff3431a893f7af6ac"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/narrow-390-light-reader-empty-page-with-cursor.png",
+    "local": "file-0361.png",
+    "bytes": 48147,
+    "sha256": "6e22cbdbf7e26013359e11a81dbd8090b351bd1040703366b9045af77e24b6aa"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/desktop-light-session-retry-required.png",
+    "local": "file-0362.png",
+    "bytes": 20192,
+    "sha256": "a245e3b42a221b5cb99450a1f723886ff84c20851f54acc0ca204537e4204eeb"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/desktop-light-inbox-error.png",
+    "local": "file-0363.png",
+    "bytes": 35756,
+    "sha256": "22a7f51623c8408c9ead96791690aa75cf0d40454571ce13cfbd35fc560aa878"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/desktop-dark-reader-empty.png",
+    "local": "file-0364.png",
+    "bytes": 63566,
+    "sha256": "af9e1ad5970f09a96ae59ff1a59711c2ae249d591e68e79ce00bb78e7da3713b"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/desktop-dark-sign-in-rate-limited-hold.png",
+    "local": "file-0365.png",
+    "bytes": 30386,
+    "sha256": "7893407b3a1e2eac73eeb10d9e7164f155bb349963563c40d0c5883883a46a2b"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/narrow-390-dark-sign-in-succeeds-into-shell.png",
+    "local": "file-0366.png",
+    "bytes": 13701,
+    "sha256": "f564d9493e0fac52a9c7d3854925d48787003969c1d389c6f49cc20a2ed8d778"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/desktop-dark-inbox-unread-filter-active.png",
+    "local": "file-0367.png",
+    "bytes": 44852,
+    "sha256": "69350a22c9f7edf362e204a4a74cb882284f8a50b15c60de4e308885edcde364"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/reduced-motion-light-reader-ready-hostile.png",
+    "local": "file-0368.png",
+    "bytes": 70831,
+    "sha256": "c1173098f546322cd1bc2a8a556ce35e717f682455f564cc76eb0bc9e00f8fb1"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/desktop-dark-reader-ready-hostile.png",
+    "local": "file-0369.png",
+    "bytes": 72977,
+    "sha256": "e31e32adc5637d9ff3a7e3114b39804858e452e315d3cbb271e89cb3e22f364e"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/narrow-390-light-session-no-organization.png",
+    "local": "file-0370.png",
+    "bytes": 20160,
+    "sha256": "54d3d7c7526557d7474d6c36e30675b6ee4016e6ec3dd3f2877808076f45d1ab"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/narrow-390-dark-reader-loading-more.png",
+    "local": "file-0371.png",
+    "bytes": 46595,
+    "sha256": "be1cc82ac6fe0f240df755b29ae6d7f36591f25e598173b12f69a62f28a90930"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/desktop-dark-session-no-organization.png",
+    "local": "file-0372.png",
+    "bytes": 25310,
+    "sha256": "b727e885c5343ca2677c780b4745bc937e2c601be5a84e215ecdec218051efd1"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/desktop-dark-session-error.png",
+    "local": "file-0373.png",
+    "bytes": 11776,
+    "sha256": "d9b6b2e9ce6fa52546fae96ed8b1e8cdeb1570138676b136b3acf86ab82ae878"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/desktop-dark-reader-error.png",
+    "local": "file-0374.png",
+    "bytes": 36069,
+    "sha256": "a2c0c0d5a7a7aae936f287087f29aae5e7166a287e4e25fdd0b890915ec415bb"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/narrow-390-light-mailboxes-loading.png",
+    "local": "file-0375.png",
+    "bytes": 6814,
+    "sha256": "a651edd211a3d01d3747c5a45e030e88f6073bb240ff014e4ff5e6866162e07d"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/narrow-390-dark-sign-in-unavailable-keeps-entries.png",
+    "local": "file-0376.png",
+    "bytes": 29598,
+    "sha256": "bc68589abcbe7e25502715bbe42fb01454ad323b4a6f2eebe3d1bf566c5123c6"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/narrow-390-light-inbox-unread-filter-active.png",
+    "local": "file-0377.png",
+    "bytes": 21229,
+    "sha256": "1a2582d608c24007a76f5aeb99ae9c66bf6e308e4ce0219b6badc30b408183d4"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/desktop-light-sign-in-rate-limited-hold.png",
+    "local": "file-0378.png",
+    "bytes": 29817,
+    "sha256": "10998233c68f28102149cb9ac15b70f1473b90bff3d58d0ded06e230b395bc78"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/desktop-light-account-sheet-open.png",
+    "local": "file-0379.png",
+    "bytes": 50645,
+    "sha256": "fc5eb8d26d99c757752a452fafcfbb86234ad47bb9dabbd578d3176e370376b0"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/desktop-dark-inbox-unavailable.png",
+    "local": "file-0380.png",
+    "bytes": 36273,
+    "sha256": "468788039487e08f40e7b9d3429d3ab549de70115b517b054b4437cee451b1ee"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/desktop-light-inbox-empty-page-with-cursor.png",
+    "local": "file-0381.png",
+    "bytes": 39672,
+    "sha256": "a57f3bcf92416a6e5d3645888723f5191929338d13cb063d6e7039eab8de4159"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/narrow-390-light-session-error.png",
+    "local": "file-0382.png",
+    "bytes": 10015,
+    "sha256": "354bd002b82612e8558c1f361801cb092dc0c0409025c8b73547cdb4224ab48d"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/desktop-dark-sign-in-unavailable-keeps-entries.png",
+    "local": "file-0383.png",
+    "bytes": 33437,
+    "sha256": "0141a0d4b5faf97aeb1f229f9d9d4adfdb51cab0515fce3477f16360f1bf3d2d"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/narrow-390-dark-reader-unavailable.png",
+    "local": "file-0384.png",
+    "bytes": 18013,
+    "sha256": "8c6bffc5547289f89f572609b164f8562db2f36e953f3880323d66d501ac8a51"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/desktop-dark-recovery-form.png",
+    "local": "file-0385.png",
+    "bytes": 27235,
+    "sha256": "8f0bbf1650933e62c0306be9dacf23842ac2666ebf99b8c7a9fc9045f971a375"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/narrow-390-light-reader-unavailable.png",
+    "local": "file-0386.png",
+    "bytes": 17513,
+    "sha256": "8f12736d1ad354c8d2214dbee9a73fe5daa31e3303b0c5d85f0c0ac806b81203"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/desktop-dark-reader-truncated-badges.png",
+    "local": "file-0387.png",
+    "bytes": 74805,
+    "sha256": "953f6b048577f15ba8f389ffb03a6ad33af6d6925d0a8cfc5d5567e42ccc5dd4"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/narrow-390-dark-session-refreshed.png",
+    "local": "file-0388.png",
+    "bytes": 13701,
+    "sha256": "f564d9493e0fac52a9c7d3854925d48787003969c1d389c6f49cc20a2ed8d778"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/desktop-light-recovery-form.png",
+    "local": "file-0389.png",
+    "bytes": 26847,
+    "sha256": "abb822cffefb0dd69545b518462e56eae7607db14e7373f9e38037f98a4f8b38"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/narrow-390-light-drawer-open-populated.png",
+    "local": "file-0390.png",
+    "bytes": 20299,
+    "sha256": "abeaffe24252a6a04ced8b441006bd70edaedc27f4e5b78a1cf0266bfeecb176"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/narrow-390-light-mailboxes-empty.png",
+    "local": "file-0391.png",
+    "bytes": 16904,
+    "sha256": "471bbc3700caaae108d5ac0ceac88dda10282acb67b024e5ead5799700cf5d39"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/narrow-390-light-session-loading.png",
+    "local": "file-0392.png",
+    "bytes": 3814,
+    "sha256": "b8625346583dfe4769da2c854f9a323875709c9dfb5a12557be04bf7266d32bb"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/narrow-390-light-mailboxes-paginated-loading.png",
+    "local": "file-0393.png",
+    "bytes": 6814,
+    "sha256": "a651edd211a3d01d3747c5a45e030e88f6073bb240ff014e4ff5e6866162e07d"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/narrow-390-dark-session-retry-required.png",
+    "local": "file-0394.png",
+    "bytes": 17379,
+    "sha256": "a276bd744c69203dd3abf530972d9951dee3484ab79f2a01a91035b272f14703"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/narrow-390-light-inbox-loading.png",
+    "local": "file-0395.png",
+    "bytes": 12579,
+    "sha256": "4059d9624edb4b5c82dd2cc7c4841317e27e62b9abfa0126efc4119bad04bf9b"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/narrow-390-dark-session-recovering.png",
+    "local": "file-0396.png",
+    "bytes": 3850,
+    "sha256": "1f4b7331a1b7e6a4a38efd180258e506e4aab9fdbeab8c49f0d2310f997c6ad2"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/narrow-390-dark-signed-out-notice.png",
+    "local": "file-0397.png",
+    "bytes": 22149,
+    "sha256": "c0d571346e6e1113e8ff94ca02b0a541a5c6c31e5f4f9bd8b5f65f98bf48fde5"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/narrow-390-light-sign-in-rate-limited-hold.png",
+    "local": "file-0398.png",
+    "bytes": 26478,
+    "sha256": "98319cc9fb9b453f00b4b7e19610b21f7875c5d035d2e24d7f29dc9788c2cede"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/narrow-390-dark-account-sheet-open.png",
+    "local": "file-0399.png",
+    "bytes": 28703,
+    "sha256": "3100698d4d724b31dbfab5496ab6b1f7378b9658711895d56439751c6e957a19"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/desktop-dark-mailboxes-empty.png",
+    "local": "file-0400.png",
+    "bytes": 32494,
+    "sha256": "f22d1b3b185f5037caca19f58ece2e2fe915b7259392e14f87ba62116d296304"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/desktop-dark-session-loading.png",
+    "local": "file-0401.png",
+    "bytes": 5499,
+    "sha256": "de395ba1865ea6fed94c49a79ec723b40068d7af9f56962371bcf2a18d2779c3"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/narrow-390-light-inbox-unavailable.png",
+    "local": "file-0402.png",
+    "bytes": 17583,
+    "sha256": "be2af9d75e5d3be5ef4e1e44ccbc5755886fd1e6eca72008b1ce182360a173bf"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/desktop-light-mailboxes-paginated-loading.png",
+    "local": "file-0403.png",
+    "bytes": 20733,
+    "sha256": "fea0c7275c5d17348aac4cf2e72a1b68ceb5e84aad6f9584053029bae14a4d6e"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/reduced-motion-light-shell-ready.png",
+    "local": "file-0404.png",
+    "bytes": 30781,
+    "sha256": "21a54c5e2e7080fbbf7599805dbd9126a88f988d9b422c11d26a0d094a5608f2"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/narrow-390-light-reader-loading-more.png",
+    "local": "file-0405.png",
+    "bytes": 44856,
+    "sha256": "d396b3734a0c471af5253afd55043d47c7c707d43355fe52790d155f4c3cf651"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/narrow-390-dark-inbox-empty.png",
+    "local": "file-0406.png",
+    "bytes": 17367,
+    "sha256": "45c9c5f69afdf3afaa93454f1c80c0c855fa2b9ffa091ad5d3468cba7b8b6bb6"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/desktop-dark-inbox-error.png",
+    "local": "file-0407.png",
+    "bytes": 36705,
+    "sha256": "1b9c5f192caa128228657a2191c479d718e1bc6a51bc105881f06d12c375555e"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/narrow-390-dark-reader-loading.png",
+    "local": "file-0408.png",
+    "bytes": 11490,
+    "sha256": "ba75c251e78d6976d8863a2751c59716669438b328cbe8dac77e7d92dc20ec7d"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/narrow-390-light-session-refreshed.png",
+    "local": "file-0409.png",
+    "bytes": 13493,
+    "sha256": "394bdddb641e27f24871cb2009c9ad525786f07b397438ea97b37d29635440c8"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/desktop-dark-mailboxes-paginated-loading.png",
+    "local": "file-0410.png",
+    "bytes": 20997,
+    "sha256": "79a1f0e586e2484beff5f40bc6a3844494d3d2e7a8d693fb974eccf95fb56a9c"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/narrow-390-dark-session-no-organization.png",
+    "local": "file-0411.png",
+    "bytes": 20854,
+    "sha256": "f0b336a5869a694431425fe88dc3708f45441e951646224c7cce79a53b6edd6a"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/desktop-light-session-recovering.png",
+    "local": "file-0412.png",
+    "bytes": 5407,
+    "sha256": "2012d600443200c72c5c5d8aa7cbb0e6092cb63e3ff8b1140d8353952beda703"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/narrow-390-dark-session-refreshing.png",
+    "local": "file-0413.png",
+    "bytes": 3853,
+    "sha256": "a9ff149f5f65136e9138e6244667a55bed6df41e1ff5fca5213c93b4efcc7f6c"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/desktop-light-inbox-empty.png",
+    "local": "file-0414.png",
+    "bytes": 34796,
+    "sha256": "4115f09193aa3b11b035f91995e8bdb9b668620fd236345271f8422e00af66b3"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/desktop-dark-reader-loading-more.png",
+    "local": "file-0415.png",
+    "bytes": 66026,
+    "sha256": "c9e803fadb2c7227a2c4b6a46ba560c10c927d6e97ea8be5f3a0692a4e301ecc"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/narrow-390-light-shell-ready.png",
+    "local": "file-0416.png",
+    "bytes": 13493,
+    "sha256": "394bdddb641e27f24871cb2009c9ad525786f07b397438ea97b37d29635440c8"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/narrow-390-dark-sign-out-unconfirmed.png",
+    "local": "file-0417.png",
+    "bytes": 20782,
+    "sha256": "29ae9358400f54dba22cca4c71fd15c54e33842823ec86726e2297d3a982d3e6"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/narrow-390-light-sign-in-unavailable-keeps-entries.png",
+    "local": "file-0418.png",
+    "bytes": 28972,
+    "sha256": "32b9de167abfc2c3d545439585957777e3876e164c2e7d2b68dbfdfc7747a8bd"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/desktop-dark-reader-empty-page-with-cursor.png",
+    "local": "file-0419.png",
+    "bytes": 66149,
+    "sha256": "6dab873dc90a1ed896f38f73b78295651b7313406f80ec48346dcb69f2c157b0"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/narrow-390-light-sign-in-succeeds-into-shell.png",
+    "local": "file-0420.png",
+    "bytes": 13493,
+    "sha256": "394bdddb641e27f24871cb2009c9ad525786f07b397438ea97b37d29635440c8"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/narrow-390-dark-sign-in-rate-limited-hold.png",
+    "local": "file-0421.png",
+    "bytes": 27136,
+    "sha256": "9609cb70a0e775794cb80bb9c742173ad1d7f7136762504a1e489003f1582f6f"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/desktop-light-mailboxes-empty.png",
+    "local": "file-0422.png",
+    "bytes": 31595,
+    "sha256": "d2b8c19b54b8aa8bb5c6583a8a5e40ad4b1b8df326dd22938ef0d9d850da9078"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/desktop-light-session-refreshed.png",
+    "local": "file-0423.png",
+    "bytes": 30781,
+    "sha256": "21a54c5e2e7080fbbf7599805dbd9126a88f988d9b422c11d26a0d094a5608f2"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/desktop-light-session-unauthenticated.png",
+    "local": "file-0424.png",
+    "bytes": 23312,
+    "sha256": "e4fef35ab22b1be86849d1385ba8e275a427341d523ef94894f1e22d8ef20e3c"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/narrow-390-dark-reader-truncated-badges.png",
+    "local": "file-0425.png",
+    "bytes": 55096,
+    "sha256": "102cf363202f41cc28d3eb0b65882b9f4eaf87eb52624310716114e804b616ce"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/desktop-light-signed-out-notice.png",
+    "local": "file-0426.png",
+    "bytes": 25583,
+    "sha256": "e1dbd3a1d015939cb9815d00b282ec4e05e6c680e83732e5c292455668a7f5d3"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/narrow-390-light-signed-out-notice.png",
+    "local": "file-0427.png",
+    "bytes": 21524,
+    "sha256": "64a479f960e1d3b934b0686950d62e5c92648cb614dec0bbf8a571d00d005429"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/narrow-390-light-account-sheet-open.png",
+    "local": "file-0428.png",
+    "bytes": 27953,
+    "sha256": "584d1359f6e67b3742943491ef838e586a1cc21d7cdaad100db9960d74d33138"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/narrow-390-dark-session-unauthenticated.png",
+    "local": "file-0429.png",
+    "bytes": 20907,
+    "sha256": "2e61adaf3dba54c30d1c4df0670dea1b0c4ca7646236460d8030dabe9a1d121d"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/narrow-390-light-session-refreshing.png",
+    "local": "file-0430.png",
+    "bytes": 3847,
+    "sha256": "8d42b6f555b4d4b488932836326b373306454061a7ce8e55770d883e6c06aa67"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/desktop-light-reader-unavailable.png",
+    "local": "file-0431.png",
+    "bytes": 35220,
+    "sha256": "f4007d36e04b35b8dce3bf55b66be109ee802158ff94d23db826b35af2a9b055"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/narrow-390-light-inbox-error.png",
+    "local": "file-0432.png",
+    "bytes": 17820,
+    "sha256": "0af732adfd6cb6f00c27e813dc013264189a5a9bfe547fe7a07ad90e07cab2d1"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/narrow-390-dark-reader-error.png",
+    "local": "file-0433.png",
+    "bytes": 17579,
+    "sha256": "c56f157295af34d6913f0cc87b76e755dac344f6d46cb8c9e153ce5888e54def"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/desktop-dark-shell-ready.png",
+    "local": "file-0434.png",
+    "bytes": 31653,
+    "sha256": "1ba88231394132ecd53fae8d58071fd890cdee0a8148d91d0ece1f0b94f033a4"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/desktop-light-reader-truncated-badges.png",
+    "local": "file-0435.png",
+    "bytes": 73365,
+    "sha256": "c241e9cfdc97a362a4578ad3d3704b5dc938d52c4764f41531394aae7ba1a753"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/narrow-390-light-inbox-empty.png",
+    "local": "file-0436.png",
+    "bytes": 16906,
+    "sha256": "d410bb55c89fa762aa7567fab3291a755f8b30a7630fe76ff66588b2b1eda634"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/desktop-dark-inbox-loading-more.png",
+    "local": "file-0437.png",
+    "bytes": 52392,
+    "sha256": "49c16cd575f32b8d4a2aaf1785d4c18dd9bba1e24ce56dd3a8b63978d4886312"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/narrow-390-dark-session-loading.png",
+    "local": "file-0438.png",
+    "bytes": 3853,
+    "sha256": "a9ff149f5f65136e9138e6244667a55bed6df41e1ff5fca5213c93b4efcc7f6c"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/desktop-dark-signed-out-notice.png",
+    "local": "file-0439.png",
+    "bytes": 26087,
+    "sha256": "ab84735e308658a25fa9f867df6c5adff81d50f538d9e7891515eba7d4863510"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/desktop-dark-mailboxes-loading.png",
+    "local": "file-0440.png",
+    "bytes": 20997,
+    "sha256": "79a1f0e586e2484beff5f40bc6a3844494d3d2e7a8d693fb974eccf95fb56a9c"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/desktop-dark-sign-in-succeeds-into-shell.png",
+    "local": "file-0441.png",
+    "bytes": 31653,
+    "sha256": "1ba88231394132ecd53fae8d58071fd890cdee0a8148d91d0ece1f0b94f033a4"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/narrow-390-dark-shell-ready.png",
+    "local": "file-0442.png",
+    "bytes": 13701,
+    "sha256": "f564d9493e0fac52a9c7d3854925d48787003969c1d389c6f49cc20a2ed8d778"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/desktop-light-inbox-unavailable.png",
+    "local": "file-0443.png",
+    "bytes": 35311,
+    "sha256": "cc5ac624db9e3605cb2bd4522fa479c36fcd0ab1f7a75e5e837f3f3bd3e4c5df"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/narrow-390-dark-inbox-unread-filter-active.png",
+    "local": "file-0444.png",
+    "bytes": 21838,
+    "sha256": "3ad278bf33ae8ee557ab13cf8a7dad3f5e354736851d5580729f6ec5563d5f5b"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/desktop-light-inbox-loading-more.png",
+    "local": "file-0445.png",
+    "bytes": 50751,
+    "sha256": "1048d43a1fe5be09505db8c812dd38c9439617c3620f5c50d00a2a2113056c5f"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/desktop-dark-session-refreshed.png",
+    "local": "file-0446.png",
+    "bytes": 31653,
+    "sha256": "1ba88231394132ecd53fae8d58071fd890cdee0a8148d91d0ece1f0b94f033a4"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/narrow-390-dark-mailboxes-error.png",
+    "local": "file-0447.png",
+    "bytes": 9219,
+    "sha256": "3084fd23601d22698222cd34be3d2798378229a674b8ad9e1aa965ed66afc015"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/narrow-390-light-reader-ready-hostile.png",
+    "local": "file-0448.png",
+    "bytes": 50457,
+    "sha256": "41e91134c21fedad0f458b7a8c82661b24f214561564d4db09cc0d1e321ce2a7"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/desktop-light-inbox-ready.png",
+    "local": "file-0449.png",
+    "bytes": 49532,
+    "sha256": "7bd81eb4cfbbc03dbbeb35b7da1aeef9cf6b95b33c835a7ab061af34fd5eebd2"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/desktop-dark-reader-unavailable.png",
+    "local": "file-0450.png",
+    "bytes": 36298,
+    "sha256": "f7004ad7ae0731717ed312d8cb48f44c7e1d48f665ecc6d67ee50a60e0519d17"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/desktop-dark-session-retry-required.png",
+    "local": "file-0451.png",
+    "bytes": 20600,
+    "sha256": "459742b9bc70352465984373beb04acd51c5c4995c8e5a946e1202daf101b244"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/desktop-light-reader-empty-page-with-cursor.png",
+    "local": "file-0452.png",
+    "bytes": 64376,
+    "sha256": "f64fef9b898901fd6b9c2a1ef0eddc9132abd16374a0b37c4a41357ba41db019"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/desktop-light-sign-out-unconfirmed.png",
+    "local": "file-0453.png",
+    "bytes": 23870,
+    "sha256": "af682264472c1b385cc9ec4a6e332d65dbce53117f7d67e19bd3fbe130ed16d4"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/desktop-dark-session-unauthenticated.png",
+    "local": "file-0454.png",
+    "bytes": 23697,
+    "sha256": "273c87d25980258d09a56c20ea09ea7a0e4e55d441b37bc714780986c0784b7c"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/desktop-dark-sign-in-rejected.png",
+    "local": "file-0455.png",
+    "bytes": 32977,
+    "sha256": "36a2cafa18b7c29b3bc8854e969fd216c3017bfe71067a12dc24f6e6f3f7cf2f"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/desktop-light-reader-error.png",
+    "local": "file-0456.png",
+    "bytes": 35225,
+    "sha256": "01290277ba415b244ea33ef242cc4a8192b7d5a5a03f7d8108bd101a4f4b590d"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/desktop-light-session-refreshing.png",
+    "local": "file-0457.png",
+    "bytes": 5369,
+    "sha256": "bccd7d092bf166b22689510b468d266f43e7056073635b16248e2cd72a93dd07"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/narrow-390-dark-reader-empty-page-with-cursor.png",
+    "local": "file-0458.png",
+    "bytes": 50009,
+    "sha256": "6ab4dbe2c655ef08080b74ecc5df81ecb3a99c5dc1fe6a07e2120339a33b17ad"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/narrow-390-dark-mailboxes-loading.png",
+    "local": "file-0459.png",
+    "bytes": 6620,
+    "sha256": "52493c89e38ef85ad7551f99f0f829c5e5055072ce6b696396954ad2c8c189cb"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/desktop-light-mailboxes-error.png",
+    "local": "file-0460.png",
+    "bytes": 22893,
+    "sha256": "1275911af7fe96eb23175f55e325626caabb6aa1b0cf769708abd7a01d03e9f8"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/narrow-390-light-session-retry-required.png",
+    "local": "file-0461.png",
+    "bytes": 16823,
+    "sha256": "2cc6d29d8ef66e979b3f32fd3cc31ddb4aacaa536b9389459b52a6c7cd77ad24"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/desktop-dark-session-refreshing.png",
+    "local": "file-0462.png",
+    "bytes": 5488,
+    "sha256": "a5a4e1f4599cd7765fb2714ad540a3affe079fd5990bfec67b2becc7809bdbfc"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/narrow-390-dark-recovery-form.png",
+    "local": "file-0463.png",
+    "bytes": 23512,
+    "sha256": "67fd35711c849ab05c03469f3fa1008cb07e8e1f9ce1836b4506e352b7186380"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/narrow-390-dark-reader-ready-hostile.png",
+    "local": "file-0464.png",
+    "bytes": 52708,
+    "sha256": "d2351474427c93469a3fe8582410ed81dc58718bcd160a606d66594cb99fd0d6"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/desktop-light-session-error.png",
+    "local": "file-0465.png",
+    "bytes": 11652,
+    "sha256": "e2054e75a20e1f6d10e9c758545534af2fd15027d253c40456c363a31e8ff009"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/narrow-390-light-recovery-form.png",
+    "local": "file-0466.png",
+    "bytes": 22977,
+    "sha256": "684faaea1008083e9504830f23cefd70c9a49e96d36fb9ee425949327ed33626"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/desktop-dark-account-sheet-open.png",
+    "local": "file-0467.png",
+    "bytes": 52457,
+    "sha256": "59ae379fd696f30bbaa777506ff9e9258f4d4da035252adffcbbebff33b71888"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/narrow-390-light-inbox-empty-page-with-cursor.png",
+    "local": "file-0468.png",
+    "bytes": 21301,
+    "sha256": "02f47cf79a53a3b08cf656d216d3ce58b77e4729de793aeec093f74a856024c5"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/narrow-390-light-reader-error.png",
+    "local": "file-0469.png",
+    "bytes": 17372,
+    "sha256": "64413bf521d78d6d49aee28ced0be02746059fadb0d281ec1aad87a424e2f4c3"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/narrow-390-light-reader-loading.png",
+    "local": "file-0470.png",
+    "bytes": 11393,
+    "sha256": "5202608bf6a30e7782ccf92e3e3117bd57ff39372f0b02b67d771d8f53de1026"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/narrow-390-dark-inbox-empty-page-with-cursor.png",
+    "local": "file-0471.png",
+    "bytes": 21942,
+    "sha256": "c1b4e610a528a338675a34e91deb167ee89f3bb4a447e6f6f2da3df659eba104"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/narrow-390-light-mailboxes-error.png",
+    "local": "file-0472.png",
+    "bytes": 9226,
+    "sha256": "5567256f26b4c5a6d38666cce4ad505dea3cb92fc409fc5ac9c7d5453fe5f375"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/desktop-light-sign-in-succeeds-into-shell.png",
+    "local": "file-0473.png",
+    "bytes": 30781,
+    "sha256": "21a54c5e2e7080fbbf7599805dbd9126a88f988d9b422c11d26a0d094a5608f2"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/narrow-390-dark-reader-empty.png",
+    "local": "file-0474.png",
+    "bytes": 45791,
+    "sha256": "c598ca179057446b7886a4973812c8529b5df8d38c8784a8437a2c06a4510050"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/desktop-light-mailboxes-loading.png",
+    "local": "file-0475.png",
+    "bytes": 20730,
+    "sha256": "18accd5d5e1b38ce5fc68ea670bffdfa176b28e89c37ff7c806df6a8f0a05956"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/narrow-390-dark-inbox-error.png",
+    "local": "file-0476.png",
+    "bytes": 18139,
+    "sha256": "34ec77c89a0d6cb87c0d48c5989b346c7f618b86b03eb7d993ace661157c786e"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual/desktop-light-reader-loading.png",
+    "local": "file-0477.png",
+    "bytes": 29186,
+    "sha256": "daabc0e7dcbf6fb7e831c2ed371be56762b43a20c808a5bc883239bf92f4ba19"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/reduced-motion-cd-search-refused.png",
+    "local": "file-0478.png",
+    "bytes": 44290,
+    "sha256": "3a878e66295578e1b29d7dcda496f6d73b6901caa6190aedcc4f665af9eaaaa4"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/reduced-motion-cd-members.png",
+    "local": "file-0479.png",
+    "bytes": 98456,
+    "sha256": "5ae7529a412d5f01d46595853d7cc46add68c42fb2b4adc942afe97146c46233"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-c47fc-ion-signed-out-notice-dark--narrow-390/test-finished-1.png",
+    "local": "file-0480.png",
+    "bytes": 22149,
+    "sha256": "c0d571346e6e1113e8ff94ca02b0a541a5c6c31e5f4f9bd8b5f65f98bf48fde5"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-3f5b5-rawer-open-populated-light--reduced-motion/test-finished-1.png",
+    "local": "file-0481.png",
+    "bytes": 4254,
+    "sha256": "3878570f4a62a0d65f57cf1754e0269e56ec797f4e36e26b44c172eb6e800401"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-36875-ion-inbox-unavailable-dark--desktop/test-finished-1.png",
+    "local": "file-0482.png",
+    "bytes": 36265,
+    "sha256": "85defb254f4dea2ee561058b7cd5be28fc285cb4b6421b9281fe5c144a22534e"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-4e2b7-on-reader-unavailable-dark--narrow-390/test-finished-1.png",
+    "local": "file-0483.png",
+    "bytes": 18013,
+    "sha256": "8c6bffc5547289f89f572609b164f8562db2f36e953f3880323d66d501ac8a51"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-4e2b7-on-reader-unavailable-dark--desktop/test-finished-1.png",
+    "local": "file-0484.png",
+    "bytes": 36291,
+    "sha256": "8f5ed6be9e22916d82199c2a0f4ebef077d75d8ee389a99f43e627704d99f94b"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/session-recovery-reads-the-same-for-any-address-reduced-motion/test-finished-1.png",
+    "local": "file-0485.png",
+    "bytes": 31437,
+    "sha256": "f235e1de0d04058fb50f0b8cbed448a97e735b85a91aad4efcf58dbc7ea9d32f"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/read-fixture-entry-is-visi-c0a59-he-simulated-mail-indicator-narrow-390/test-finished-1.png",
+    "local": "file-0486.png",
+    "bytes": 18627,
+    "sha256": "eef438f406b560caf80692c68ae6c002ebd89369dae7a2c93e526a99f8dec44c"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/session-a-503-on-sign-in-k-f9097--entries-and-claims-no-save-narrow-390/test-finished-1.png",
+    "local": "file-0487.png",
+    "bytes": 33319,
+    "sha256": "5459fc8a63fabbb5c5b6be27874c121f6c9ea3fa00dda92c6e4178a9f1fa7207"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/reduced-motion-cd-drafts.png",
+    "local": "file-0488.png",
+    "bytes": 44129,
+    "sha256": "07761cbb5ad2d39967c114e28e6eaaee5d16479e64d5d83f7b14ac7ccff22a9b"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-a471d--succeeds-into-shell-light--narrow-390/test-finished-1.png",
+    "local": "file-0489.png",
+    "bytes": 13493,
+    "sha256": "394bdddb641e27f24871cb2009c9ad525786f07b397438ea97b37d29635440c8"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-fa39c-pty-page-with-cursor-light--desktop/test-finished-1.png",
+    "local": "file-0490.png",
+    "bytes": 39665,
+    "sha256": "153fc2aba7206f0f201372b7cee1b46d4806f61a7820b0be712d6a67bf5e6965"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/session-a-rejected-sign-in-c548f-assword-and-keeps-the-email-reduced-motion/test-finished-1.png",
+    "local": "file-0491.png",
+    "bytes": 36778,
+    "sha256": "239e57742dfb079f3b6b8002c3cd8a440f0d3529b11181d927f23b16c32675c7"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/shell.png",
+    "local": "file-0492.png",
+    "bytes": 38528,
+    "sha256": "09e81304adeef609b03cb8003465d174724c3276a459e1a88ddff378bcf1c1a0"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-8375c-pection-session-error-dark--reduced-motion/test-finished-1.png",
+    "local": "file-0493.png",
+    "bytes": 4254,
+    "sha256": "3878570f4a62a0d65f57cf1754e0269e56ec797f4e36e26b44c172eb6e800401"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-6fa94-ession-retry-required-dark--desktop/test-finished-1.png",
+    "local": "file-0494.png",
+    "bytes": 20600,
+    "sha256": "459742b9bc70352465984373beb04acd51c5c4995c8e5a946e1202daf101b244"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/reduced-motion-cd-dark-search.png",
+    "local": "file-0495.png",
+    "bytes": 55341,
+    "sha256": "c3405eaae44a78a34e27ea44dfe3daa36efd77683c721321772205e8c8577eb2"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/session-a-refresh-that-suc-9fe63-ll-without-the-sign-in-form-reduced-motion/test-finished-1.png",
+    "local": "file-0496.png",
+    "bytes": 38528,
+    "sha256": "09e81304adeef609b03cb8003465d174724c3276a459e1a88ddff378bcf1c1a0"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/read-accent-text-meets-4-5-0e460-surfaces-in-the-light-theme-narrow-390/test-finished-1.png",
+    "local": "file-0497.png",
+    "bytes": 22594,
+    "sha256": "113321ff08117965bc103a62c5c3fc7ed4594c2b71a1c3cf98e638064fefacf2"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-644a0-pection-recovery-form-dark--reduced-motion/test-finished-1.png",
+    "local": "file-0498.png",
+    "bytes": 4254,
+    "sha256": "3878570f4a62a0d65f57cf1754e0269e56ec797f4e36e26b44c172eb6e800401"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/collaboration-a-definitive-d8576-nd-rebase-re-enables-saving-desktop/test-finished-1.png",
+    "local": "file-0499.png",
+    "bytes": 71868,
+    "sha256": "a1a1c775e13d0879efe1351053215d69cf2cf2519c4c0a1f99da4a8ac595d919"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/collaboration-the-C-D-mail-514f6-he-read-only-inbox-does-not-narrow-390/test-finished-1.png",
+    "local": "file-0500.png",
+    "bytes": 21546,
+    "sha256": "aecabebdce53b7da0d641ad5c685ccac251a42ac2e003f03cc16dcb253012747"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-bb591-nspection-inbox-ready-dark--desktop/test-finished-1.png",
+    "local": "file-0501.png",
+    "bytes": 51219,
+    "sha256": "c2c8a670e0e44e0d4278cf8313c47c162a4c20c202f8488e679c10336c4f771c"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-fa39c-pty-page-with-cursor-light--narrow-390/test-finished-1.png",
+    "local": "file-0502.png",
+    "bytes": 21301,
+    "sha256": "02f47cf79a53a3b08cf656d216d3ce58b77e4729de793aeec093f74a856024c5"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/collaboration-search-is-li-d6e06-L-and-links-into-the-reader-reduced-motion/test-finished-1.png",
+    "local": "file-0503.png",
+    "bytes": 44206,
+    "sha256": "c9fd681087815ccc5e91239702b99dcd16454228b337704894bb788f62eefa7f"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-cc450-ction-reader-loading-light--narrow-390/test-finished-1.png",
+    "local": "file-0504.png",
+    "bytes": 11343,
+    "sha256": "9e9895c6916b8d35d95445d2ecf4ad1a5e7b62f6ac7eae132587895343a315df"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/session-the-completion-for-31fea-nce-and-never-reads-the-URL-reduced-motion/test-finished-1.png",
+    "local": "file-0505.png",
+    "bytes": 26534,
+    "sha256": "8f963e04a76fb574a26097157b2505b7faab005b550fc21cd7ad99b7d6ca82b2"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/collaboration-a-definitive-d8576-nd-rebase-re-enables-saving-narrow-390/test-finished-1.png",
+    "local": "file-0506.png",
+    "bytes": 52005,
+    "sha256": "d7f07da413e3aa5bac97cf269d66c5ba3794cea1e4cce49006bcce600f0227cd"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/reduced-motion-cd-draft-uncertain-lookup.png",
+    "local": "file-0507.png",
+    "bytes": 98150,
+    "sha256": "0149e91468214ec16f1abb5c2f277371f5ed04469259f34730231ae05c9e8ea0"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-2e76a-ection-recovery-form-light--narrow-390/test-finished-1.png",
+    "local": "file-0508.png",
+    "bytes": 22977,
+    "sha256": "684faaea1008083e9504830f23cefd70c9a49e96d36fb9ee425949327ed33626"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-cb08b-spection-reader-empty-dark--narrow-390/test-finished-1.png",
+    "local": "file-0509.png",
+    "bytes": 45791,
+    "sha256": "c598ca179057446b7886a4973812c8529b5df8d38c8784a8437a2c06a4510050"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-dbe92-ction-mailboxes-error-dark--narrow-390/test-finished-1.png",
+    "local": "file-0510.png",
+    "bytes": 9219,
+    "sha256": "3084fd23601d22698222cd34be3d2798378229a674b8ad9e1aa965ed66afc015"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/desktop-cd-dark-drafts.png",
+    "local": "file-0511.png",
+    "bytes": 44528,
+    "sha256": "f6a4758c08fb0062f1ac1cfb87c670d20297bf6fc3359629a43e9785e0d5aa35"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/desktop-cd-draft-uncertain.png",
+    "local": "file-0512.png",
+    "bytes": 90047,
+    "sha256": "26455ab9d92f0fdf6aaf9597c1585d8b4493da29079c121b66ffa35a028c0c8f"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-e0819-spection-inbox-error-light--reduced-motion/test-finished-1.png",
+    "local": "file-0513.png",
+    "bytes": 4254,
+    "sha256": "3878570f4a62a0d65f57cf1754e0269e56ec797f4e36e26b44c172eb6e800401"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-96a3f-on-signed-out-notice-light--desktop/test-finished-1.png",
+    "local": "file-0514.png",
+    "bytes": 25583,
+    "sha256": "e1dbd3a1d015939cb9815d00b282ec4e05e6c680e83732e5c292455668a7f5d3"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/narrow-390-cd-dark-members.png",
+    "local": "file-0515.png",
+    "bytes": 55032,
+    "sha256": "a51283b8149dda075a0df7339c95a29c6e9cb81f12e28ef49644e1cb4d67b60a"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/desktop-cd-dark-reader.png",
+    "local": "file-0516.png",
+    "bytes": 80938,
+    "sha256": "d4bf602a97b7dacb6a44c437850ab075aef69cbacc8c5c09ff54ccd75f8e3d9a"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/session-a-503-on-sign-in-k-f9097--entries-and-claims-no-save-reduced-motion/test-finished-1.png",
+    "local": "file-0517.png",
+    "bytes": 37241,
+    "sha256": "b210d6c17b9651a391259dd41fff11fc6bb536e7a64484350cc58f08631b80bb"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-9b122-ion-session-refreshed-dark--reduced-motion/test-finished-1.png",
+    "local": "file-0518.png",
+    "bytes": 4254,
+    "sha256": "3878570f4a62a0d65f57cf1754e0269e56ec797f4e36e26b44c172eb6e800401"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/read-mobile-drawer-at-390p-30d55-Escape-restores-the-trigger-desktop/test-finished-1.png",
+    "local": "file-0519.png",
+    "bytes": 19873,
+    "sha256": "dc500cead61356267014e568866d59bffef6af35e2da905b71c86fd3888cdda0"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-4d483-nspection-inbox-error-dark--desktop/test-finished-1.png",
+    "local": "file-0520.png",
+    "bytes": 36697,
+    "sha256": "afdf81fecb0a1a81d699a71703a699497883a0b4620c71b00bd6101c1a18a2c2"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-74bb3--sign-out-unconfirmed-dark--reduced-motion/test-finished-1.png",
+    "local": "file-0521.png",
+    "bytes": 4254,
+    "sha256": "3878570f4a62a0d65f57cf1754e0269e56ec797f4e36e26b44c172eb6e800401"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/session-a-valid-identity-w-d94e3-cit-state-that-can-sign-out-reduced-motion/test-finished-1.png",
+    "local": "file-0522.png",
+    "bytes": 30284,
+    "sha256": "3d15ed757573aea3e83c256f10bee579f8d98e892b8a37fc3d6c67ce351e893f"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-6d8f5-on-inbox-unavailable-light--desktop/test-finished-1.png",
+    "local": "file-0523.png",
+    "bytes": 35303,
+    "sha256": "247a33e035e22ab4796f3d82ad0b70d1f1a36d1ef54a5248b83b1f0b70b93a66"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-4c4e2-transparent-and-no-op-fills-narrow-390/test-finished-1.png",
+    "local": "file-0524.png",
+    "bytes": 2740,
+    "sha256": "fb32313e11bc8ffbd5310a1660e630b64cedb4622f8462a5eae2d5464ac8279e"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-c28d9-sion-unauthenticated-light--narrow-390/test-finished-1.png",
+    "local": "file-0525.png",
+    "bytes": 20408,
+    "sha256": "c1c17516f383d0901098900bf89326745f1b8d1cbb26267af3515ebd290df8d9"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-c28d9-sion-unauthenticated-light--desktop/test-finished-1.png",
+    "local": "file-0526.png",
+    "bytes": 23312,
+    "sha256": "e4fef35ab22b1be86849d1385ba8e275a427341d523ef94894f1e22d8ef20e3c"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/read-mobile-drawer-at-390p-3e9e1-s-it-and-shows-that-mailbox-desktop/test-finished-1.png",
+    "local": "file-0527.png",
+    "bytes": 20807,
+    "sha256": "0db70d2760d6696cd7e3e2b3dc767ff77eb50926424aa099c5a21ccda0115f26"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-6fa94-ession-retry-required-dark--narrow-390/test-finished-1.png",
+    "local": "file-0528.png",
+    "bytes": 17379,
+    "sha256": "a276bd744c69203dd3abf530972d9951dee3484ab79f2a01a91035b272f14703"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/desktop-cd-draft-uncertain-lookup.png",
+    "local": "file-0529.png",
+    "bytes": 98150,
+    "sha256": "0149e91468214ec16f1abb5c2f277371f5ed04469259f34730231ae05c9e8ea0"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/read-keyboard-traversal-sk-989d7-x-conversation-reader-focus-reduced-motion/test-finished-1.png",
+    "local": "file-0530.png",
+    "bytes": 80575,
+    "sha256": "1d1bd083be41017e6b184787a541d59efef1261d718c06ae197776e72096d319"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/session-a-valid-identity-w-d94e3-cit-state-that-can-sign-out-narrow-390/test-finished-1.png",
+    "local": "file-0531.png",
+    "bytes": 26225,
+    "sha256": "aaa7609bc29e74585d845a68dcefe431afc7b17a708f4c8afd1165ec51e522f1"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-9f9a5-es-paginated-loading-light--narrow-390/test-finished-1.png",
+    "local": "file-0532.png",
+    "bytes": 6838,
+    "sha256": "babb91e4d0e0aa03efe3a60c4e9f4f9008ab2d1e67247629ae5a1f82b28e081c"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/production-production-arti-c6dca-berate-error-never-fixtures-desktop/test-finished-1.png",
+    "local": "file-0533.png",
+    "bytes": 12406,
+    "sha256": "c15bcbdd8a67148d1e4c701c326e57eab9c560e0d31b90cde66683284c8ae9d5"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-b2f20-nspection-shell-ready-dark--narrow-390/test-finished-1.png",
+    "local": "file-0534.png",
+    "bytes": 13701,
+    "sha256": "f564d9493e0fac52a9c7d3854925d48787003969c1d389c6f49cc20a2ed8d778"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/narrow-390-cd-draft-uncertain.png",
+    "local": "file-0535.png",
+    "bytes": 63250,
+    "sha256": "09bbbffada6a222988885431efa29b246bad08f0f2972490e387a371daf05056"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-88cee-ailable-keeps-entries-dark--narrow-390/test-finished-1.png",
+    "local": "file-0536.png",
+    "bytes": 29598,
+    "sha256": "bc68589abcbe7e25502715bbe42fb01454ad323b4a6f2eebe3d1bf566c5123c6"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-09d42-tion-session-loading-light--desktop/test-finished-1.png",
+    "local": "file-0537.png",
+    "bytes": 5385,
+    "sha256": "18e1ef081e9c8e19b1081018f4f22e900a90420aaec975b56e2f23c59a1e3e21"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-3397f-spection-inbox-empty-light--desktop/test-finished-1.png",
+    "local": "file-0538.png",
+    "bytes": 34789,
+    "sha256": "b550c204e14e4a8a908c05d371067c8664051cbfd3c9b8b0dc0d88918d900a56"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-bf2b6-ction-session-loading-dark--reduced-motion/test-finished-1.png",
+    "local": "file-0539.png",
+    "bytes": 4254,
+    "sha256": "3878570f4a62a0d65f57cf1754e0269e56ec797f4e36e26b44c172eb6e800401"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/narrow-390-cd-dark-drafts.png",
+    "local": "file-0540.png",
+    "bytes": 21532,
+    "sha256": "54c42f1fd369dbb0d00b2960be90a323a8414beedbd1ddde9be6b0f48bd9d636"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/narrow-390-cd-dark-draft-conflict.png",
+    "local": "file-0541.png",
+    "bytes": 69098,
+    "sha256": "765bf7a76c4a4413fdbcd1f73ad696140bf903463ec6c288d8f190ce69c9586c"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-4d483-nspection-inbox-error-dark--reduced-motion/test-finished-1.png",
+    "local": "file-0542.png",
+    "bytes": 4254,
+    "sha256": "3878570f4a62a0d65f57cf1754e0269e56ec797f4e36e26b44c172eb6e800401"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/collaboration-read-state-a-d5eff-nert-note-inside-the-reader-desktop/test-finished-1.png",
+    "local": "file-0543.png",
+    "bytes": 45485,
+    "sha256": "c2e16a8790ea89e2a378c9a96fb2731e91ff14077f7a28fcf071668e510fec6f"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-46f71-xes-paginated-loading-dark--desktop/test-finished-1.png",
+    "local": "file-0544.png",
+    "bytes": 20997,
+    "sha256": "79a1f0e586e2484beff5f40bc6a3844494d3d2e7a8d693fb974eccf95fb56a9c"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-bf2b6-ction-session-loading-dark--narrow-390/test-finished-1.png",
+    "local": "file-0545.png",
+    "bytes": 3875,
+    "sha256": "a20e28c71f38a2d532846227419cae9136bcf8068192d0085d246a21cc28a91a"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/collaboration-dark-theme-r-73aa7-rom-a-freshly-scripted-load-narrow-390/test-finished-1.png",
+    "local": "file-0546.png",
+    "bytes": 52759,
+    "sha256": "a690dbacbc23d8ca1dc8dbabe6291fbff2dd0e43c2ea00a3f181d8baf81ad3ab"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/collaboration-dark-theme-C-7634d-ter-its-own-ready-assertion-desktop/test-finished-1.png",
+    "local": "file-0547.png",
+    "bytes": 55333,
+    "sha256": "4d03c2281cdfcc60193e1a23ec1bcd30738f3d9eefdaaeae269b18dd46522a13"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/read-keyboard-traversal-sk-989d7-x-conversation-reader-focus-narrow-390/test-finished-1.png",
+    "local": "file-0548.png",
+    "bytes": 57290,
+    "sha256": "d0bf593f08b9e6a913428620a8113a26229cb36c1af562afb2cbe879daaef07b"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-74bb3--sign-out-unconfirmed-dark--desktop/test-finished-1.png",
+    "local": "file-0549.png",
+    "bytes": 24368,
+    "sha256": "716353e8fbf996fe949494093ba256d8bae19d9ae29d96d64ab62e73317ee8c3"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/read-mobile-drawer-at-390p-7414e--has-no-horizontal-overflow-desktop/test-finished-1.png",
+    "local": "file-0550.png",
+    "bytes": 20807,
+    "sha256": "0db70d2760d6696cd7e3e2b3dc767ff77eb50926424aa099c5a21ccda0115f26"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/session-a-rejected-sign-in-c548f-assword-and-keeps-the-email-desktop/test-finished-1.png",
+    "local": "file-0551.png",
+    "bytes": 36778,
+    "sha256": "239e57742dfb079f3b6b8002c3cd8a440f0d3529b11181d927f23b16c32675c7"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/session-keyboard-sign-in-T-2ca4c-r-submits-the-shell-appears-narrow-390/test-finished-1.png",
+    "local": "file-0552.png",
+    "bytes": 18627,
+    "sha256": "eef438f406b560caf80692c68ae6c002ebd89369dae7a2c93e526a99f8dec44c"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/collaboration-an-uncertain-05703-p-does-not-invent-certainty-reduced-motion/test-finished-1.png",
+    "local": "file-0553.png",
+    "bytes": 71811,
+    "sha256": "47b681e2d0ad9d4a209f50258df83730ac5395ed9b234d086a323d454954175e"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-617b5-on-session-recovering-dark--narrow-390/test-finished-1.png",
+    "local": "file-0554.png",
+    "bytes": 3850,
+    "sha256": "1f4b7331a1b7e6a4a38efd180258e506e4aab9fdbeab8c49f0d2310f997c6ad2"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-d3902-sign-out-unconfirmed-light--narrow-390/test-finished-1.png",
+    "local": "file-0555.png",
+    "bytes": 20286,
+    "sha256": "a7d92f8d8971e875fad8ae6f03340ece3cb47d470b201b7f16d4a2dce3008d72"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/collaboration-no-horizonta-dc265-ter-its-own-ready-assertion-desktop/test-finished-1.png",
+    "local": "file-0556.png",
+    "bytes": 27326,
+    "sha256": "6e82a0ade27b585e45bfcadd8a8fed9e678c6ce43a77bb0dd9a938cd090375b9"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-8375c-pection-session-error-dark--narrow-390/test-finished-1.png",
+    "local": "file-0557.png",
+    "bytes": 10202,
+    "sha256": "86cd87aa4a5918b8eaa6721933de05b0956eae69cee9c9bff3431a893f7af6ac"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/session-keyboard-sign-in-T-2ca4c-r-submits-the-shell-appears-desktop/test-finished-1.png",
+    "local": "file-0558.png",
+    "bytes": 38528,
+    "sha256": "09e81304adeef609b03cb8003465d174724c3276a459e1a88ddff378bcf1c1a0"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-abdd8-ilable-keeps-entries-light--narrow-390/test-finished-1.png",
+    "local": "file-0559.png",
+    "bytes": 28966,
+    "sha256": "5dd7182700d8beaf7e326d9c4a2989356ae4af3948ee176396a203a159477154"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/collaboration-read-state-a-d5eff-nert-note-inside-the-reader-reduced-motion/test-finished-1.png",
+    "local": "file-0560.png",
+    "bytes": 45485,
+    "sha256": "c2e16a8790ea89e2a378c9a96fb2731e91ff14077f7a28fcf071668e510fec6f"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/desktop-cd-dark-draft-uncertain.png",
+    "local": "file-0561.png",
+    "bytes": 91283,
+    "sha256": "f1b654770a8f2ec8217c9a49728a45286ce775e6f7fdf4ac6814c9e04204d21f"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-d396c-ssion-retry-required-light--desktop/test-finished-1.png",
+    "local": "file-0562.png",
+    "bytes": 20192,
+    "sha256": "a245e3b42a221b5cb99450a1f723886ff84c20851f54acc0ca204537e4204eeb"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/collaboration-dark-theme-r-73aa7-rom-a-freshly-scripted-load-desktop/test-finished-1.png",
+    "local": "file-0563.png",
+    "bytes": 67152,
+    "sha256": "98c7b3aca44191c9fec252051b6821fde562b95788e45e6a1693ee6d576a3533"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-5ac4c-ection-session-error-light--reduced-motion/test-finished-1.png",
+    "local": "file-0564.png",
+    "bytes": 4254,
+    "sha256": "3878570f4a62a0d65f57cf1754e0269e56ec797f4e36e26b44c172eb6e800401"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/collaboration-read-state-a-d5eff-nert-note-inside-the-reader-narrow-390/test-finished-1.png",
+    "local": "file-0565.png",
+    "bytes": 19583,
+    "sha256": "0be4694ac3aaac9557763d0deaea334b1d042bb297f50363eff80a185f474cd6"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-cc450-ction-reader-loading-light--reduced-motion/test-finished-1.png",
+    "local": "file-0566.png",
+    "bytes": 4254,
+    "sha256": "3878570f4a62a0d65f57cf1754e0269e56ec797f4e36e26b44c172eb6e800401"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/collaboration-membership-a-41793-e-last-manager-is-protected-reduced-motion/test-finished-1.png",
+    "local": "file-0567.png",
+    "bytes": 98456,
+    "sha256": "5ae7529a412d5f01d46595853d7cc46add68c42fb2b4adc942afe97146c46233"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-2ebed-on-inbox-loading-more-dark--desktop/test-finished-1.png",
+    "local": "file-0568.png",
+    "bytes": 52330,
+    "sha256": "4367c88092f6207ef99d8f06143899faf37c4235a8612623e8e69865842f4060"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/production-production-arti-879ab-tion-and-long-task-baseline-reduced-motion/test-finished-1.png",
+    "local": "file-0569.png",
+    "bytes": 137516,
+    "sha256": "79262f3281498c9bf5547bc09d3c1d48426338aafccccaa82fbe736973cda070"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-c0644--in-rate-limited-hold-dark--reduced-motion/test-finished-1.png",
+    "local": "file-0570.png",
+    "bytes": 4254,
+    "sha256": "3878570f4a62a0d65f57cf1754e0269e56ec797f4e36e26b44c172eb6e800401"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-e361e-tion-sign-in-rejected-dark--narrow-390/test-finished-1.png",
+    "local": "file-0571.png",
+    "bytes": 29056,
+    "sha256": "f5e40277e1668754beb829201c4d8e515d5ec4b92828bd055c42db97f4f9b69d"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-3f5b5-rawer-open-populated-light--desktop/test-finished-1.png",
+    "local": "file-0572.png",
+    "bytes": 4254,
+    "sha256": "3878570f4a62a0d65f57cf1754e0269e56ec797f4e36e26b44c172eb6e800401"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-cfa2a-drawer-open-populated-dark--narrow-390/test-finished-1.png",
+    "local": "file-0573.png",
+    "bytes": 20619,
+    "sha256": "d3dc5f6a0257987400e95e2ef7e890a9d229693cb918439aa6f9cb411498a706"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/read-mobile-drawer-at-390p-30d55-Escape-restores-the-trigger-reduced-motion/test-finished-1.png",
+    "local": "file-0574.png",
+    "bytes": 20306,
+    "sha256": "99e28765b1d3c33976c263665d447f6a499e6ad873209458bf5423033c1f150b"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-2dcc5-spection-reader-error-dark--desktop/test-finished-1.png",
+    "local": "file-0575.png",
+    "bytes": 36062,
+    "sha256": "0b14a967ab849047112f12da659ce14332e2776e0584093690ad0f926ca6896e"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-4d483-nspection-inbox-error-dark--narrow-390/test-finished-1.png",
+    "local": "file-0576.png",
+    "bytes": 18139,
+    "sha256": "34ec77c89a0d6cb87c0d48c5989b346c7f618b86b03eb7d993ace661157c786e"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-ba6ff-pty-page-with-cursor-light--reduced-motion/test-finished-1.png",
+    "local": "file-0577.png",
+    "bytes": 4254,
+    "sha256": "3878570f4a62a0d65f57cf1754e0269e56ec797f4e36e26b44c172eb6e800401"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/session-a-signed-out-fixtu-29a16-t-with-no-stored-credential-narrow-390/test-finished-1.png",
+    "local": "file-0578.png",
+    "bytes": 25162,
+    "sha256": "1b6c9d2edfd511e917c6a497cf85c0fec3adde46cc54b655652127b141f80fec"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-af928-tion-mailboxes-error-light--reduced-motion/test-finished-1.png",
+    "local": "file-0579.png",
+    "bytes": 4254,
+    "sha256": "3878570f4a62a0d65f57cf1754e0269e56ec797f4e36e26b44c172eb6e800401"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-74bb3--sign-out-unconfirmed-dark--narrow-390/test-finished-1.png",
+    "local": "file-0580.png",
+    "bytes": 20782,
+    "sha256": "29ae9358400f54dba22cca4c71fd15c54e33842823ec86726e2297d3a982d3e6"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-19e8d-ssion-no-organization-dark--desktop/test-finished-1.png",
+    "local": "file-0581.png",
+    "bytes": 25310,
+    "sha256": "b727e885c5343ca2677c780b4745bc937e2c601be5a84e215ecdec218051efd1"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/narrow-390-cd-draft-uncertain-lookup.png",
+    "local": "file-0582.png",
+    "bytes": 72134,
+    "sha256": "fb8363476478573ffbf0e9efe947a6574e67619ff015dd4082e1be0c1fc50383"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-96a3f-on-signed-out-notice-light--reduced-motion/test-finished-1.png",
+    "local": "file-0583.png",
+    "bytes": 4254,
+    "sha256": "3878570f4a62a0d65f57cf1754e0269e56ec797f4e36e26b44c172eb6e800401"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-abdd8-ilable-keeps-entries-light--reduced-motion/test-finished-1.png",
+    "local": "file-0584.png",
+    "bytes": 4254,
+    "sha256": "3878570f4a62a0d65f57cf1754e0269e56ec797f4e36e26b44c172eb6e800401"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-40a24-ion-mailboxes-loading-dark--desktop/test-finished-1.png",
+    "local": "file-0585.png",
+    "bytes": 20973,
+    "sha256": "040768e693297d56e9001d673f8890958dab33ef723220159b460067257e3e52"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/recovery-sent.png",
+    "local": "file-0586.png",
+    "bytes": 31437,
+    "sha256": "f235e1de0d04058fb50f0b8cbed448a97e735b85a91aad4efcf58dbc7ea9d32f"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/session-no-horizontal-over-4cf9f-d-completion-forms-at-390px-narrow-390/test-finished-1.png",
+    "local": "file-0587.png",
+    "bytes": 25162,
+    "sha256": "1b6c9d2edfd511e917c6a497cf85c0fec3adde46cc54b655652127b141f80fec"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/session-account-sheet-Esca-6370f-y-sign-out-fences-the-shell-narrow-390/test-finished-1.png",
+    "local": "file-0588.png",
+    "bytes": 26228,
+    "sha256": "52b6d1f259c023f1c2cee088579900ac3a7100b56b5c8bcefda531143d90b0f3"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-fa39c-pty-page-with-cursor-light--reduced-motion/test-finished-1.png",
+    "local": "file-0589.png",
+    "bytes": 4254,
+    "sha256": "3878570f4a62a0d65f57cf1754e0269e56ec797f4e36e26b44c172eb6e800401"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/read-real-keyboard-navigat-3d32b--and-Enter-opens-its-reader-reduced-motion/test-finished-1.png",
+    "local": "file-0590.png",
+    "bytes": 80575,
+    "sha256": "1d1bd083be41017e6b184787a541d59efef1261d718c06ae197776e72096d319"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/session-a-refresh-that-suc-9fe63-ll-without-the-sign-in-form-narrow-390/test-finished-1.png",
+    "local": "file-0591.png",
+    "bytes": 18627,
+    "sha256": "eef438f406b560caf80692c68ae6c002ebd89369dae7a2c93e526a99f8dec44c"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-e0819-spection-inbox-error-light--desktop/test-finished-1.png",
+    "local": "file-0592.png",
+    "bytes": 35749,
+    "sha256": "0f416904b600b52f8471e0c19791c5b0f5d5293e1121f9a5f901a10f30061e3c"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/reduced-motion-cd-narrow-draft-editor.png",
+    "local": "file-0593.png",
+    "bytes": 49019,
+    "sha256": "bb3508c5eea89e9af909a122a590340545b962ef3b56f35ee72ea925044c3dff"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/reduced-motion-cd-draft-uncertain.png",
+    "local": "file-0594.png",
+    "bytes": 90056,
+    "sha256": "9a514583709eaff6652b0d8215f45cd6303ff34b0e18af6546ef4c32eec459ad"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-cfa2a-drawer-open-populated-dark--desktop/test-finished-1.png",
+    "local": "file-0595.png",
+    "bytes": 4254,
+    "sha256": "3878570f4a62a0d65f57cf1754e0269e56ec797f4e36e26b44c172eb6e800401"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-644a0-pection-recovery-form-dark--desktop/test-finished-1.png",
+    "local": "file-0596.png",
+    "bytes": 27235,
+    "sha256": "8f0bbf1650933e62c0306be9dacf23842ac2666ebf99b8c7a9fc9045f971a375"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/desktop-cd-dark-draft-editor.png",
+    "local": "file-0597.png",
+    "bytes": 72821,
+    "sha256": "2fe1542ab3bd0895350aa08a88ef5d9b809e1d2f80c3307e8e41069939ee32b1"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/reduced-motion-cd-narrow-search.png",
+    "local": "file-0598.png",
+    "bytes": 27326,
+    "sha256": "6e82a0ade27b585e45bfcadd8a8fed9e678c6ce43a77bb0dd9a938cd090375b9"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/production-production-arti-c6dca-berate-error-never-fixtures-reduced-motion/test-finished-1.png",
+    "local": "file-0599.png",
+    "bytes": 12406,
+    "sha256": "c15bcbdd8a67148d1e4c701c326e57eab9c560e0d31b90cde66683284c8ae9d5"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/read-real-keyboard-navigat-3d32b--and-Enter-opens-its-reader-desktop/test-finished-1.png",
+    "local": "file-0600.png",
+    "bytes": 80593,
+    "sha256": "d2449fbe7b5b28c8901c98a2f11352070ce747f0da6d34f7bae89fad3a894510"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/read-accent-text-meets-4-5-dcf9f--surfaces-in-the-dark-theme-reduced-motion/test-finished-1.png",
+    "local": "file-0601.png",
+    "bytes": 46102,
+    "sha256": "b200bf0d1e3f673cb1cad8efcce1a80ed95c00c16270bf71fe20324a88bc33e7"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-0655f-ion-sign-in-rejected-light--desktop/test-finished-1.png",
+    "local": "file-0602.png",
+    "bytes": 32464,
+    "sha256": "3580dd57c2e934824e55dae4a37097db7dfa9dd38b1152053e3abbf902a52c86"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-4ee9b-n-reader-loading-more-dark--reduced-motion/test-finished-1.png",
+    "local": "file-0603.png",
+    "bytes": 4254,
+    "sha256": "3878570f4a62a0d65f57cf1754e0269e56ec797f4e36e26b44c172eb6e800401"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-c0644--in-rate-limited-hold-dark--narrow-390/test-finished-1.png",
+    "local": "file-0604.png",
+    "bytes": 27164,
+    "sha256": "8d08fbadf2e9156dce168e35f84a90f0ffdfbc8b08e07f630dd160636958eb21"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-e9b46--reader-loading-more-light--narrow-390/test-finished-1.png",
+    "local": "file-0605.png",
+    "bytes": 44831,
+    "sha256": "20b0e81398007e645cc6a4d343231dfb407a8aecb9ff08e062dd7fdb72ea947a"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-3397f-spection-inbox-empty-light--reduced-motion/test-finished-1.png",
+    "local": "file-0606.png",
+    "bytes": 4254,
+    "sha256": "3878570f4a62a0d65f57cf1754e0269e56ec797f4e36e26b44c172eb6e800401"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-4c4e2-transparent-and-no-op-fills-desktop/test-finished-1.png",
+    "local": "file-0607.png",
+    "bytes": 4254,
+    "sha256": "3878570f4a62a0d65f57cf1754e0269e56ec797f4e36e26b44c172eb6e800401"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/narrow-390-cd-narrow-reader.png",
+    "local": "file-0608.png",
+    "bytes": 57628,
+    "sha256": "1f9d0e590d5695a4f9042be0585eb13f31164e4e5167c6954cfdbb1f2e3a9ba5"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/reduced-motion-cd-narrow-drafts.png",
+    "local": "file-0609.png",
+    "bytes": 21770,
+    "sha256": "56cc1195aa370ef04e9942fa736cff4fefc3e802ac5736c509ddea3b402ade89"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-8477d-mpty-page-with-cursor-dark--desktop/test-finished-1.png",
+    "local": "file-0610.png",
+    "bytes": 66145,
+    "sha256": "8269270871f551d44419641455b5f8b051822e5d654fdacbf0891f680cc9e073"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/reduced-motion-cd-narrow-members.png",
+    "local": "file-0611.png",
+    "bytes": 53008,
+    "sha256": "e1877713e659febcf39ae350586d51ab140fb0183c9b5c6427c95b79d42f9d07"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-9f9a5-es-paginated-loading-light--desktop/test-finished-1.png",
+    "local": "file-0612.png",
+    "bytes": 20769,
+    "sha256": "26af2bad090ad3db8ef143d7c1de53116f8a0eb1f789639dd284a225a2932253"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/read-accent-text-meets-4-5-dcf9f--surfaces-in-the-dark-theme-desktop/test-finished-1.png",
+    "local": "file-0613.png",
+    "bytes": 46070,
+    "sha256": "582feb8123ce0d5650a9926876f0c85325b2aa6d60ed52fb93471529b0b50a68"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-36875-ion-inbox-unavailable-dark--narrow-390/test-finished-1.png",
+    "local": "file-0614.png",
+    "bytes": 17982,
+    "sha256": "6993d3295f60e88a2f858740419d855befee8591adebed531ca752e7eef376d2"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-ffd72-n-reader-unavailable-light--reduced-motion/test-finished-1.png",
+    "local": "file-0615.png",
+    "bytes": 4254,
+    "sha256": "3878570f4a62a0d65f57cf1754e0269e56ec797f4e36e26b44c172eb6e800401"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-9952d-in-rate-limited-hold-light--narrow-390/test-finished-1.png",
+    "local": "file-0616.png",
+    "bytes": 26471,
+    "sha256": "b5560b16c9d95a161b761fe716e7bdb955c1f533053350fdb2cad960dbd9d4c6"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-78b1b-on-mailboxes-loading-light--reduced-motion/test-finished-1.png",
+    "local": "file-0617.png",
+    "bytes": 4254,
+    "sha256": "3878570f4a62a0d65f57cf1754e0269e56ec797f4e36e26b44c172eb6e800401"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/session-recovery-reads-the-same-for-any-address-desktop/test-finished-1.png",
+    "local": "file-0618.png",
+    "bytes": 31437,
+    "sha256": "f235e1de0d04058fb50f0b8cbed448a97e735b85a91aad4efcf58dbc7ea9d32f"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-480b1-ection-inbox-loading-light--desktop/test-finished-1.png",
+    "local": "file-0619.png",
+    "bytes": 30334,
+    "sha256": "1f689ebfcb4df4dc32e6f20e191a4449be21dac533837a952abdf6cc8066a11a"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-2a89e-spection-shell-ready-light--narrow-390/test-finished-1.png",
+    "local": "file-0620.png",
+    "bytes": 13493,
+    "sha256": "394bdddb641e27f24871cb2009c9ad525786f07b397438ea97b37d29635440c8"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/production-production-arti-60eb3-tays-on-the-artifact-origin-reduced-motion/test-finished-1.png",
+    "local": "file-0621.png",
+    "bytes": 73678,
+    "sha256": "d2bac2af67de2259aa7564ce8c1959692c3479148880a7b45fc17237f75d0491"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/session-account-sheet-Esca-6370f-y-sign-out-fences-the-shell-reduced-motion/test-finished-1.png",
+    "local": "file-0622.png",
+    "bytes": 30284,
+    "sha256": "3d15ed757573aea3e83c256f10bee579f8d98e892b8a37fc3d6c67ce351e893f"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-c47fc-ion-signed-out-notice-dark--reduced-motion/test-finished-1.png",
+    "local": "file-0623.png",
+    "bytes": 4254,
+    "sha256": "3878570f4a62a0d65f57cf1754e0269e56ec797f4e36e26b44c172eb6e800401"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/narrow-390-cd-dark-draft-uncertain.png",
+    "local": "file-0624.png",
+    "bytes": 64291,
+    "sha256": "48aabf47a3e2d2ac86ae3745383c8f4103034c115319065b8f2f5c25f81afc8f"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/collaboration-the-C-D-mail-514f6-he-read-only-inbox-does-not-reduced-motion/test-finished-1.png",
+    "local": "file-0625.png",
+    "bytes": 44429,
+    "sha256": "763c8678b69d294eb8d52dd779513b757572f5b453670307514f172fe7fbf8d1"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-4ef35-ection-reader-loading-dark--desktop/test-finished-1.png",
+    "local": "file-0626.png",
+    "bytes": 29984,
+    "sha256": "661739b4092a0a2e9c975adc237a1bec640466695dc043cfebefdc5e7c38ed11"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-9952d-in-rate-limited-hold-light--reduced-motion/test-finished-1.png",
+    "local": "file-0627.png",
+    "bytes": 4254,
+    "sha256": "3878570f4a62a0d65f57cf1754e0269e56ec797f4e36e26b44c172eb6e800401"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-45c3b-n-session-recovering-light--desktop/test-finished-1.png",
+    "local": "file-0628.png",
+    "bytes": 5385,
+    "sha256": "2987a4f901c8e4f5e9afbce9fbebdd27252422413a33b299a10dcb866e362a14"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/reduced-motion-cd-dark-reader.png",
+    "local": "file-0629.png",
+    "bytes": 80961,
+    "sha256": "3b1432f685c1737ea509d223c323bc7f50898e6bf81447f21a597709e3d2b8f7"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/read-no-horizontal-overflo-026de-px-and-readable-empty-state-reduced-motion/test-finished-1.png",
+    "local": "file-0630.png",
+    "bytes": 18627,
+    "sha256": "eef438f406b560caf80692c68ae6c002ebd89369dae7a2c93e526a99f8dec44c"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/collaboration-a-persistent-06ea0-n-be-deliberately-abandoned-desktop/test-finished-1.png",
+    "local": "file-0631.png",
+    "bytes": 77591,
+    "sha256": "7aced1b15911e737611c05bc76c8d7aed974fe5bd1f2451de611711484bbc3af"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-9952d-in-rate-limited-hold-light--desktop/test-finished-1.png",
+    "local": "file-0632.png",
+    "bytes": 29817,
+    "sha256": "10998233c68f28102149cb9ac15b70f1473b90bff3d58d0ded06e230b395bc78"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-2ebed-on-inbox-loading-more-dark--narrow-390/test-finished-1.png",
+    "local": "file-0633.png",
+    "bytes": 27062,
+    "sha256": "df072f7a70465e96ce1c53232c4ce677bd812b07c8ece8336d0713f99e7dfcd9"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/production-production-arti-60eb3-tays-on-the-artifact-origin-narrow-390/test-finished-1.png",
+    "local": "file-0634.png",
+    "bytes": 50951,
+    "sha256": "a4ff7916760a88ed5cc470f995b0b757949e8229ec035bd6dccb9d33f1da2993"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-4e2b7-on-reader-unavailable-dark--reduced-motion/test-finished-1.png",
+    "local": "file-0635.png",
+    "bytes": 4254,
+    "sha256": "3878570f4a62a0d65f57cf1754e0269e56ec797f4e36e26b44c172eb6e800401"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-74195-n-account-sheet-open-light--narrow-390/test-finished-1.png",
+    "local": "file-0636.png",
+    "bytes": 27945,
+    "sha256": "ebf238f0d3dcb47dcc19e489466a29f30a624ebd253db0cbffd697005fa73277"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-617b5-on-session-recovering-dark--reduced-motion/test-finished-1.png",
+    "local": "file-0637.png",
+    "bytes": 4254,
+    "sha256": "3878570f4a62a0d65f57cf1754e0269e56ec797f4e36e26b44c172eb6e800401"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-0655f-ion-sign-in-rejected-light--reduced-motion/test-finished-1.png",
+    "local": "file-0638.png",
+    "bytes": 4254,
+    "sha256": "3878570f4a62a0d65f57cf1754e0269e56ec797f4e36e26b44c172eb6e800401"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/entry.png",
+    "local": "file-0639.png",
+    "bytes": 18627,
+    "sha256": "eef438f406b560caf80692c68ae6c002ebd89369dae7a2c93e526a99f8dec44c"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-2a89e-spection-shell-ready-light--reduced-motion/test-finished-1.png",
+    "local": "file-0640.png",
+    "bytes": 30781,
+    "sha256": "21a54c5e2e7080fbbf7599805dbd9126a88f988d9b422c11d26a0d094a5608f2"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-72d62-ction-mailboxes-empty-dark--reduced-motion/test-finished-1.png",
+    "local": "file-0641.png",
+    "bytes": 4254,
+    "sha256": "3878570f4a62a0d65f57cf1754e0269e56ec797f4e36e26b44c172eb6e800401"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/desktop-cd-narrow-search.png",
+    "local": "file-0642.png",
+    "bytes": 27326,
+    "sha256": "6e82a0ade27b585e45bfcadd8a8fed9e678c6ce43a77bb0dd9a938cd090375b9"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-9f9a5-es-paginated-loading-light--reduced-motion/test-finished-1.png",
+    "local": "file-0643.png",
+    "bytes": 4254,
+    "sha256": "3878570f4a62a0d65f57cf1754e0269e56ec797f4e36e26b44c172eb6e800401"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/auth-complete.png",
+    "local": "file-0644.png",
+    "bytes": 26534,
+    "sha256": "8f963e04a76fb574a26097157b2505b7faab005b550fc21cd7ad99b7d6ca82b2"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-2c9f1-unread-filter-active-light--narrow-390/test-finished-1.png",
+    "local": "file-0645.png",
+    "bytes": 21229,
+    "sha256": "1a2582d608c24007a76f5aeb99ae9c66bf6e308e4ce0219b6badc30b408183d4"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-0cc78-ader-truncated-badges-dark--narrow-390/test-finished-1.png",
+    "local": "file-0646.png",
+    "bytes": 55096,
+    "sha256": "102cf363202f41cc28d3eb0b65882b9f4eaf87eb52624310716114e804b616ce"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-bb591-nspection-inbox-ready-dark--reduced-motion/test-finished-1.png",
+    "local": "file-0647.png",
+    "bytes": 4254,
+    "sha256": "3878570f4a62a0d65f57cf1754e0269e56ec797f4e36e26b44c172eb6e800401"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-e82e5-on-session-refreshing-dark--desktop/test-finished-1.png",
+    "local": "file-0648.png",
+    "bytes": 5533,
+    "sha256": "935f5506b4a1e978f476dbed49ea99bd4295ea6ddc57d300cbd0676f2f002234"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-af928-tion-mailboxes-error-light--desktop/test-finished-1.png",
+    "local": "file-0649.png",
+    "bytes": 22893,
+    "sha256": "1275911af7fe96eb23175f55e325626caabb6aa1b0cf769708abd7a01d03e9f8"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-88cee-ailable-keeps-entries-dark--reduced-motion/test-finished-1.png",
+    "local": "file-0650.png",
+    "bytes": 4254,
+    "sha256": "3878570f4a62a0d65f57cf1754e0269e56ec797f4e36e26b44c172eb6e800401"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-bcd40-mpty-page-with-cursor-dark--reduced-motion/test-finished-1.png",
+    "local": "file-0651.png",
+    "bytes": 4254,
+    "sha256": "3878570f4a62a0d65f57cf1754e0269e56ec797f4e36e26b44c172eb6e800401"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-c04dd-reader-ready-hostile-light--desktop/test-finished-1.png",
+    "local": "file-0652.png",
+    "bytes": 70824,
+    "sha256": "7f01b8e55df2e1c9a5604eb98d95bd2cd65e5a9cf94e518574a3014970b1a977"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-2dcc5-spection-reader-error-dark--reduced-motion/test-finished-1.png",
+    "local": "file-0653.png",
+    "bytes": 4254,
+    "sha256": "3878570f4a62a0d65f57cf1754e0269e56ec797f4e36e26b44c172eb6e800401"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/reduced-motion-cd-reader-collaboration.png",
+    "local": "file-0654.png",
+    "bytes": 87125,
+    "sha256": "b189c69ed6bfee5c2f825801bec8238afee37307acad95fb86d29900723dbcd7"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/narrow-390-cd-draft-saved.png",
+    "local": "file-0655.png",
+    "bytes": 45720,
+    "sha256": "c7f9a81ffe95c874e6517c79eb46be79fde8d06bcf4455de23f6e8ecea02da21"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-5e274-n-succeeds-into-shell-dark--narrow-390/test-finished-1.png",
+    "local": "file-0656.png",
+    "bytes": 13701,
+    "sha256": "f564d9493e0fac52a9c7d3854925d48787003969c1d389c6f49cc20a2ed8d778"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-6fa94-ession-retry-required-dark--reduced-motion/test-finished-1.png",
+    "local": "file-0657.png",
+    "bytes": 4254,
+    "sha256": "3878570f4a62a0d65f57cf1754e0269e56ec797f4e36e26b44c172eb6e800401"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-2c9f1-unread-filter-active-light--desktop/test-finished-1.png",
+    "local": "file-0658.png",
+    "bytes": 43465,
+    "sha256": "2d9427cab95f2a3e1dce34e57007a7a1ea98e9facbfcefad026ab10b0e25c858"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/sign-in.png",
+    "local": "file-0659.png",
+    "bytes": 28155,
+    "sha256": "942f7fab55c4b77fe9c0a7a48ebb73ec7fc8d713551e336a7c7a64abf67a2212"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/read-mobile-drawer-at-390p-7414e--has-no-horizontal-overflow-reduced-motion/test-finished-1.png",
+    "local": "file-0660.png",
+    "bytes": 20807,
+    "sha256": "0db70d2760d6696cd7e3e2b3dc767ff77eb50926424aa099c5a21ccda0115f26"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/read-fixture-entry-is-visi-c0a59-he-simulated-mail-indicator-reduced-motion/test-finished-1.png",
+    "local": "file-0661.png",
+    "bytes": 38528,
+    "sha256": "09e81304adeef609b03cb8003465d174724c3276a459e1a88ddff378bcf1c1a0"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-e361e-tion-sign-in-rejected-dark--reduced-motion/test-finished-1.png",
+    "local": "file-0662.png",
+    "bytes": 4254,
+    "sha256": "3878570f4a62a0d65f57cf1754e0269e56ec797f4e36e26b44c172eb6e800401"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/narrow-390-cd-dark-search.png",
+    "local": "file-0663.png",
+    "bytes": 28128,
+    "sha256": "4173d1a6a15b4ec40c6391783af30f5fd29b03c313cbf428b05aeada58e2c410"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/collaboration-an-uncertain-05703-p-does-not-invent-certainty-desktop/test-finished-1.png",
+    "local": "file-0664.png",
+    "bytes": 71811,
+    "sha256": "47b681e2d0ad9d4a209f50258df83730ac5395ed9b234d086a323d454954175e"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/desktop-cd-narrow-reader.png",
+    "local": "file-0665.png",
+    "bytes": 57628,
+    "sha256": "1f9d0e590d5695a4f9042be0585eb13f31164e4e5167c6954cfdbb1f2e3a9ba5"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/session-recovery-reads-the-same-for-any-address-narrow-390/test-finished-1.png",
+    "local": "file-0666.png",
+    "bytes": 26297,
+    "sha256": "2cb4a4ed0bcf1072697015ba7746f8e05b8128642ca930f89a74ea31cb792516"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-251fa-spection-inbox-ready-light--desktop/test-finished-1.png",
+    "local": "file-0667.png",
+    "bytes": 49526,
+    "sha256": "a75332d5f0cdec7f5f7d684b481acde5c74e486676a5a171cba91f5c429a5b03"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-480b1-ection-inbox-loading-light--reduced-motion/test-finished-1.png",
+    "local": "file-0668.png",
+    "bytes": 30407,
+    "sha256": "20d16f04f008373f7baa4cdbee6ae0ee92bcb20cf35a68937792085b8970c2ca"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/collaboration-no-horizonta-dc265-ter-its-own-ready-assertion-narrow-390/test-finished-1.png",
+    "local": "file-0669.png",
+    "bytes": 27326,
+    "sha256": "6e82a0ade27b585e45bfcadd8a8fed9e678c6ce43a77bb0dd9a938cd090375b9"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-72d62-ction-mailboxes-empty-dark--desktop/test-finished-1.png",
+    "local": "file-0670.png",
+    "bytes": 32494,
+    "sha256": "f22d1b3b185f5037caca19f58ece2e2fe915b7259392e14f87ba62116d296304"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-e2846-pection-reader-error-light--reduced-motion/test-finished-1.png",
+    "local": "file-0671.png",
+    "bytes": 4254,
+    "sha256": "3878570f4a62a0d65f57cf1754e0269e56ec797f4e36e26b44c172eb6e800401"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-b68b7-sion-no-organization-light--narrow-390/test-finished-1.png",
+    "local": "file-0672.png",
+    "bytes": 20160,
+    "sha256": "54d3d7c7526557d7474d6c36e30675b6ee4016e6ec3dd3f2877808076f45d1ab"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/production-production-arti-0c420-fixture-fallback-or-markers-narrow-390/test-finished-1.png",
+    "local": "file-0673.png",
+    "bytes": 9515,
+    "sha256": "6c8f71918914f2057fbf1301d6882c00643260f8c2ba2a51d8b09bcb1311e81d"
+  },
+  {
+    "source": "results-fe02-typecheck-repair-20261014/e2e-results/visual-states-read-checkpo-af928-tion-mailboxes-error-light--narrow-390/test-finished-1.png",
+    "local": "file-0674.png",
+    "bytes": 9226,
+    "sha256": "5567256f26b4c5a6d38666cce4ad505dea3cb92fc409fc5ac9c7d5453fe5f375"
+  }
+]
