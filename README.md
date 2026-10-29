@@ -9,7 +9,7 @@ Goal: finish every frontend/client area so web, Mac, Windows and Android (plus i
 
 | Area | Status |
 | --- | --- |
-| Web: Authentik SSO sign-in, Connections (MCP grants) | pending merge |
+| Web: Authentik-only SSO sign-in (fails closed on a `google` provider report), Connections screen at `/settings/integrations/mcp` to grant/revoke per-mailbox MCP access with external-AI notices | merged, not yet built/tested |
 | Web: Resend send status, bounces, suppressions, attachment sending | pending merge |
 | Web: code-splitting (500 KB main chunk), People/Members/Personal Details fixtures, state/a11y pass | pending |
 | Mac (Tauri): menus, single instance, PKCE login with Keychain, signed auto-update with rollback, assistant panel, `.dmg` release script with env-only signing | merged, not yet built/tested |

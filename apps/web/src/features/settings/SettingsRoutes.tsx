@@ -9,6 +9,7 @@ import { TagsPage } from './TagsPage'
 import { DeveloperApiPage } from './DeveloperApiPage'
 import { WebhookCreatePage, WebhooksPage } from './WebhooksPages'
 import { IntegrationDetailPage, IntegrationsPage } from './IntegrationsPages'
+import { ConnectionsPage } from './ConnectionsPage'
 
 // The real V2 display-name page keeps its own chunk; it is the only server-backed settings form.
 const PersonalSettingsPage = lazy(() => import('@/features/members/PersonalSettingsPage').then((page) => ({ default: page.PersonalSettingsPage })))
@@ -33,6 +34,8 @@ export function SettingsRoutes() {
         <Route path="webhooks" element={<WebhooksPage />} />
         <Route path="webhooks/create" element={<WebhookCreatePage />} />
         <Route path="integrations" element={<IntegrationsPage />} />
+        {/* The MCP slug is the live Connections screen; other slugs keep the static detail page. */}
+        <Route path="integrations/mcp" element={<ConnectionsPage />} />
         <Route path="integrations/:slug" element={<IntegrationDetailPage />} />
         {/* Legacy routes registered by the former people/settings feature module. */}
         <Route path="personal" element={<Navigate to="/settings/profile/personal-details" replace />} />
