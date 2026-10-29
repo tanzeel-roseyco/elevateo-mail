@@ -15,6 +15,23 @@ Run on a disposable Android emulator and at least one actual Android device afte
 
 The test account is simulated or private test data only. No live provider sends, DNS change, OAuth registration or paid service is part of this request.
 
+The current web client signs in through Authentik SSO or the server-enabled password form. The "Launch and login" oracle therefore starts at the sign-in screen (SSO button and/or password form per `GET /v1/auth/sso/status`); a full SSO round trip additionally requires the native shell to carry the cross-origin Authentik authorization step (currently denied — see the README audit) and is NOT_RUN until that shell change lands.
+
+## Scripted emulator subset (apps/android/build/emulator-acceptance.sh)
+
+The local Docker recipe automates the cases below against a static HTTPS fixture origin (the apps/web fixtures build as `https://elevateo.qa.internal`) and writes `results.json` plus uiautomator dumps and screenshots. **Not run yet** — the coordinator runs it in the final local Docker pass. A static origin has no server session, so it narrows but does not replace the table above.
+
+| Scripted case | Oracle |
+| --- | --- |
+| install / uninstall | `adb install -r` / `adb uninstall` succeed |
+| cold launch reaches sign-in | unauthenticated fixture scenario; dump shows the sign-in screen text |
+| back does not escape | after KEYCODE_BACK the foreground is the app or the launcher, never another app |
+| rotation/resume fenced | authenticated scenario; fixture shell content and app focus survive rotation and force-stop/relaunch |
+| offline state | airplane mode shows the connectivity banner (ANDROID1035 saw WebView miss this; failures are recorded honestly) |
+| system link external | an `https` VIEW intent never resolves to the QA package (no VIEW filter) |
+
+Recorded NOT_RUN with reasons: login/logout session round trip, SSO round trip, host-boundary lookalikes, revoke/resume role change, keyboard/inset visual review, upgrade/signature comparison.
+
 An unsigned compile-only APK cannot be installed and cannot satisfy these cases. The separate QA package uses
 `com.elevateo.mail.qa`, a debug-only artifact marker and a domain-scoped disposable certificate. Release builds
 must reject the QA marker and host. Android API 34 has booted and attached to Orca; application acceptance is
