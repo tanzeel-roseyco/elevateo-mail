@@ -1,0 +1,6 @@
+# Final Unicode repair delta (3 changed physical lines; prior packet retained as reviewed history).
+## apps/server/config/database.yml SHA256 C4596C9186BB797EC5DE4DDE805C152FD956855E38EA0BEAD1B7665313B898BD
+<% require "json"; cfg = Elevateo::Config.load!; scalar = ->(value) { JSON.generate(value).gsub(/[\u007f-\u009f\u2028\u2029\ufffe\uffff]/) { |character| format("\\u%04x", character.ord) } } %>
+  # AIDEV-NOTE: Escape YAML separators/noncharacters; retain UTF-8 because Psych rejects JSON surrogate pairs.
+## apps/server/test/be_02/database_yaml_test.rb SHA256 D562229E997984A654BF477FBD8F7D1012C5852DA5C96903337B3C44DBFC1178
+    passwords = ["\u0085", "\u2028", "\u2029", "\ufffe", "\uffff", "ordinary-password", "#leading-comment", "contains: space", "true", "null", "123",

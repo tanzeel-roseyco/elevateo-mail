@@ -1,0 +1,27 @@
+[
+    {
+        "path":  "apps/server/lib/elevateo/authentik_identity.rb",
+        "lines":  90,
+        "sha256":  "7b9e83b6fcffb5fc45d5522cbeea8abf5cbf1f324cd1654bea232f37bdf04b5a"
+    },
+    {
+        "path":  "apps/server/lib/elevateo/authentik_discovery.rb",
+        "lines":  21,
+        "sha256":  "f9bcfbb671c2754e889e9e7aaa5353ec3e454b768539c113dab563425ff32e78"
+    },
+    {
+        "path":  "apps/server/lib/elevateo/google_sso.rb",
+        "lines":  66,
+        "sha256":  "d8fb83c5ca23ae1ed19ce1f449047d52582acadacf49744806f9200203c4bbfe"
+    },
+    {
+        "path":  "ops/production/initialize/tenant.sql",
+        "lines":  100,
+        "sha256":  "c024e10f4fce34a459d4edc51cd71310edefbc675f884e250ffd82c7906020d3"
+    },
+    {
+        "path":  "ops/production/launch-controls/enrollment.sql",
+        "lines":  118,
+        "sha256":  "9f2dae8b7e7011bf9afa6630aad66c8fcf21b1865353d0f225a16c698bdb61b2"
+    }
+]

@@ -1,0 +1,7 @@
+{
+  "tests": "FAILED",
+  "failure": "RuntimeError: privilege-guards failed; see 014-privilege-guards.log",
+  "cleanup_passed": true,
+  "finished_at": 1792692548.2458165,
+  "source_snapshot": "source.sha256.json"
+}

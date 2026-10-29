@@ -1,0 +1,47 @@
+[
+  {
+    "id": "2c15bf545b0ca0121ed8e8da64872ca39a7b0c4d471aff6c00648ed7e5413b15",
+    "mounts": [
+      {
+        "Type": "bind",
+        "Source": "/tmp/elevateo-launch-20261023-config-followup/source/ops/supabase/db/99-roles.sql",
+        "Destination": "/docker-entrypoint-initdb.d/init-scripts/99-roles.sql",
+        "Mode": "ro",
+        "RW": false,
+        "Propagation": "rprivate"
+      },
+      {
+        "Type": "bind",
+        "Source": "/tmp/elevateo-launch-20261023-config-followup/source/ops/supabase/db/99-jwt.sql",
+        "Destination": "/docker-entrypoint-initdb.d/init-scripts/99-jwt.sql",
+        "Mode": "ro",
+        "RW": false,
+        "Propagation": "rprivate"
+      },
+      {
+        "Type": "volume",
+        "Name": "be02-44cd40482f3e4b9c8bc854db7dede990_db-data",
+        "Source": "/var/lib/docker/volumes/be02-44cd40482f3e4b9c8bc854db7dede990_db-data/_data",
+        "Destination": "/var/lib/postgresql/data",
+        "Driver": "local",
+        "Mode": "rw",
+        "RW": true,
+        "Propagation": ""
+      },
+      {
+        "Type": "volume",
+        "Name": "be02-44cd40482f3e4b9c8bc854db7dede990_db-config",
+        "Source": "/var/lib/docker/volumes/be02-44cd40482f3e4b9c8bc854db7dede990_db-config/_data",
+        "Destination": "/etc/postgresql-custom",
+        "Driver": "local",
+        "Mode": "rw",
+        "RW": true,
+        "Propagation": ""
+      }
+    ]
+  },
+  {
+    "id": "5fe49942ef38fdc275c623194920fcd0f7749e89ec85a11f83adb10e4b8c77a4",
+    "mounts": []
+  }
+]

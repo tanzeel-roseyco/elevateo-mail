@@ -1,0 +1,103 @@
+# Config/YAML final source packet; root arranges independent functional and design review.
+
+## apps/server/config/database.yml SHA256 F74FBC4D13E6D52DA7B1E4286E3F751380EE7B8EA30DBC7334B7ABA48A0B28B0
+<% require "json"; cfg = Elevateo::Config.load!; scalar = ->(value) { JSON.generate(value).gsub(/[\u007f-\u009f\u2028\u2029]/) { |character| format("\\u%04x", character.ord) } } %>
+default: &default
+  adapter: postgresql
+  # AIDEV-NOTE: Escape YAML-sensitive Unicode without JSON surrogate pairs, which Psych rejects.
+  host: <%= scalar.call(cfg.db_host) %>
+  database: <%= scalar.call(cfg.db_name) %>
+  username: <%= scalar.call(cfg.db_role) %>
+  password: <%= scalar.call(cfg.db_password) %>
+  pool: <%= cfg.db_pool %>
+  schema_search_path: app,app_meta
+  migrations_paths: db/migrate
+development:
+  <<: *default
+test:
+  <<: *default
+# AIDEV-NOTE: Production keeps the same restricted API/worker/migrator roles and private database network.
+production:
+  <<: *default
+
+## apps/server/test/be_02/database_yaml_test.rb SHA256 51DCA88432FE8340076416AB31FEF2F8C5E28225562FE3474F607E1F1A499D8D
+# frozen_string_literal: true
+
+require "minitest/autorun"
+require "minitest/mock"
+require "erb"
+require "yaml"
+require_relative "../../lib/elevateo/config"
+
+# AIDEV-NOTE: Exercise the real ERB/YAML boundary without connecting to a database or exposing credentials.
+class DatabaseYamlTest < Minitest::Test
+  def test_password_scalars_round_trip_in_every_environment
+    passwords = ["\u0085", "\u2028", "\u2029", "ordinary-password", "#leading-comment", "contains: space", "true", "null", "123",
+                 "quote\"slash\\", "line\nbreak\tand space ", "\u96ea\u{1f510}", "x" * 4096]
+    passwords.each_with_index do |password, index|
+      config = Struct.new(:db_host, :db_name, :db_role, :db_password, :db_pool).new("db", "test", "elevateo_api", password, 5)
+      Elevateo::Config.stub(:load!, config) do
+        rendered = ERB.new(File.read(File.expand_path("../../config/database.yml", __dir__))).result
+        parsed = YAML.safe_load(rendered, aliases: true)
+        %w[development test production].each do |environment|
+          assert parsed.fetch(environment).fetch("password") == password, "scalar case #{index} in #{environment}"
+        end
+      end
+    end
+  end
+
+  def test_pool_default_and_inclusive_bounds_are_integers
+    [nil, "1", "100"].each do |pool|
+      config = pool_config(pool)
+      assert_equal pool ? pool.to_i : 5, config.db_pool
+      Elevateo::Config.stub(:load!, config) do
+        rendered = ERB.new(File.read(File.expand_path("../../config/database.yml", __dir__))).result
+        assert_equal config.db_pool, YAML.safe_load(rendered, aliases: true).fetch("production").fetch("pool")
+      end
+    end
+  end
+
+  def test_pool_rejects_empty_noninteger_unbounded_and_yaml_injection_values
+    ["", "0", "101", "-1", "+5", "01", "1.0", "five", " 5", "5\n  injected: true", "9" * 4096].each do |pool|
+      assert_raises(Elevateo::ConfigError) { pool_config(pool) }
+    end
+  end
+
+  private
+
+  def pool_config(pool)
+    values = { "ELEVATEO_MODE" => "local", "ELEVATEO_OUTBOUND_HOLD" => "true", "ELEVATEO_PROCESS" => "migrator",
+      "ELEVATEO_DB_HOST" => "db", "ELEVATEO_DB_NAME" => "test", "ELEVATEO_DB_ROLE" => "elevateo_migrator",
+      "MIGRATOR_DB_PASSWORD" => "disposable", "ELEVATEO_SMTP_HOST" => "mailpit", "ELEVATEO_SMTP_PORT" => "1025",
+      "ELEVATEO_AUTH_URL" => "http://auth:9999", "ELEVATEO_STORAGE_URL" => "http://storage:5000",
+      "ELEVATEO_MAILPIT_URL" => "http://mailpit:8025", "SECRET_KEY_BASE" => "disposable-test-secret" }
+    values["ELEVATEO_DB_POOL"] = pool unless pool.nil?
+    Elevateo::Config.load!(values)
+  end
+end
+
+## apps/server/lib/elevateo/config.rb lines24-27,57-67 SHA256 BEB97F4142A9A0B12E38A26B3870FC4F1409CD4CA2BE384BCCE03BB79877CCC5
+    attr_reader :mode, :db_host, :db_name, :db_role, :db_password, :db_pool, :auth_url, :storage_url, :mailpit_url,
+                :send_api_enabled, :send_control_path, :outbound_hold, :process, :session_key, :browser_origin, :auth_jwt_issuer,
+                :auth_jwt_audience, :auth_jwt_algorithm, :cookie_secure, :auth_password_minimum, :cursor_signing_key,
+                :attachment_gateway_hmac_key, :attachment_gateway_url, :outbound_mode, :resend_api_key,
+      @db_host = fetch.("ELEVATEO_DB_HOST")
+      @db_name = fetch.("ELEVATEO_DB_NAME")
+      @db_role = fetch.("ELEVATEO_DB_ROLE")
+      password_key = ROLE_PASSWORDS[@db_role] or raise ConfigError, "ELEVATEO_DB_ROLE is not an allowlisted runtime role"
+      @db_password = fetch.(password_key)
+      # AIDEV-NOTE: Bound connection demand and emit only integers into the Rails YAML pool setting.
+      pool = env.fetch("ELEVATEO_DB_POOL", "5")
+      raise ConfigError, "ELEVATEO_DB_POOL must be an integer from 1 to 100" unless /\A(?:[1-9][0-9]?|100)\z/.match?(pool)
+      @db_pool = pool.to_i
+      validate_smtp(fetch.("ELEVATEO_SMTP_HOST"), fetch.("ELEVATEO_SMTP_PORT"))
+      @auth_url = internal_url("ELEVATEO_AUTH_URL", fetch.("ELEVATEO_AUTH_URL"), ALLOWED_HOSTS.fetch("ELEVATEO_AUTH_URL"))
+
+## apps/server/sig/config.rbs lines17-23 SHA256 E61ACFCAD54EE926A2EADCF63F677D021068171C385C21DC425A695C5CB06A18
+    attr_reader mode: String
+    attr_reader db_host: String
+    attr_reader db_name: String
+    attr_reader db_role: String
+    attr_reader db_password: String
+    attr_reader db_pool: Integer
+    attr_reader auth_url: String

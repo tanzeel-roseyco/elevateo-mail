@@ -2260,3 +2260,114 @@ Admission: 75 physical LOC, 0 defects, 0/KLOC. Steep packets: 29 and 27 changed 
 Coordinator receipt msg_7aaa583ce7e8 accepted independent final review of 127 physical LOC: 0 defects, 0/KLOC. Original review: 2 MEDIUM defects / 138 LOC = 14.49/KLOC, both repaired (checked Docker logs; checked cleanup/absence). Real proxy plus four negative regressions PASS accepted. Coverage overlaps and is nonadditive. Final integration and live verification remain root-owned; no production/database mutation in this dispatch.
 
 Final Unicode rereview: 72 physical LOC, 0 defects, 0/KLOC (coordinator receipt msg_98e1d1170b1a). Full runtime additionally exposed one canonical test-fixture mount defect and one existing Git executable-mode defect; both repaired with coordinator approval, without folding runtime findings into source-review denominators. Corrected full fleet gate PASSED: 205 suites, 1169 runs, 13577 assertions, zero failures/errors/skips; full Steep and lint (470 files) PASS. Authenticated HTTP, worker drain, Mailpit and exact cleanup PASS; independent fixture review accepted 180 source lines plus mode metadata, zero defects (0/KLOC), coordinator receipt msg_133c499f4fb5. API and worker privileges remain unchanged.
+
+
+## Authentik preparation ? task_2e6a24165fce / ctx_0c4f8e19305e (2026-10-23)
+
+Root owns bounded independent functional and dedicated design review dispatch; requested packets cover backend delta (~60 LOC), enrollment SQL (126 LOC) and enrollment test delta (~35 LOC), each below 200 LOC. Independent receipts remain pending: 0 independently confirmed defects reported so far, defect density N/A until accepted coverage is supplied; no zero-defect approval is claimed. Fleet validation: 46 Ruby tests/320 assertions, scoped Steep/lint PASS, 19 disposable PostgreSQL plan/enrollment/harness tests PASS; exact evidence and failed setup history in docs/completion/launch-authentik-20261023.md. Production signature-only enforcement, verified first-owner identity, bootstrap and IdP revocation remain explicit gates.
+
+## 2026-10-23 coordinator triage of Claude security audit
+
+Report: `docs/completion/launch-claude-security-20261023.md`, dispatch `ctx_a9323e845a92`.
+Accepted as a limited static audit only; the settled Claude terminal was released. The report
+records about 2,996 physical LOC (about 2,974 unique), 33 claimed firm defects (9 MEDIUM,
+24 LOW), 15 plausible findings, and a reported firm density of 11.0/KLOC. These are reviewer
+claims awaiting implementation-owner validation, not 33 independently confirmed defects.
+Two reviewer scopes exceeded the 400-line ceiling (413 and 405), and the requested Codex
+teammates were unavailable through that agent's tool. This audit therefore does not satisfy
+mandatory bounded Codex review. No runtime or production approval follows from it.
+
+Coordinator routed the denied-enrollment upstream-session cleanup finding to the SSO owner,
+the null/newest reply-identity and cleanup/rollback findings to the mailflow owner, and
+mailbox-RLS/revocation/performance claims to the organization-list owner. Existing owners
+must verify each claim, repair actual defects with regressions and record refutations with
+evidence. Speculative architecture suggestions do not authorize unrelated rewrites.
+Dedicated design analysis was analytical; no Obsidian-connected simulation was performed.
+
+## 2026-10-23 12:24 UTC bounded mailflow harness review
+
+Accepted static reports: docs/completion/launch-mailflow-functional-review-20261023.md
+and docs/completion/launch-mailflow-design-review-20261023.md. Each reviewer inspected
+239 unique physical source lines in two packets (175 and 64 lines), within the limits.
+Functional review: 4 findings (3 MEDIUM, 1 conditional LOW), 16.74/KLOC.
+Dedicated design review: 3 findings, 12.55/KLOC: one implementation defect (4.18/KLOC)
+and two coverage gaps (8.37/KLOC). These overlapping findings are nonadditive.
+Cleanup failure and wrong-mailbox coverage appear in both reports. The owner has been
+sent all findings: nested teardown cleanup, explicit CSRF rejection assertions,
+authenticated wrong-mailbox rejection, revoked outbound authority and robust IMAP
+cursor traversal. Remediation and regression verification remain pending; no runtime
+or production approval is implied. Design simulations were analytical, not executed;
+the Obsidian connection was unavailable. Both completed reviewer terminals released.
+
+## 2026-10-23 12:32 UTC - bounded identity review checkpoint
+Functional report: docs/completion/launch-authentik-identity-functional-review-20261023.md.
+Coverage: 219 assigned LOC across two packets (166 and 53); one LOW TLS exception-mapping
+contract defect, historical density 4.57 defects/KLOC. Repair was reinspected statically;
+new regression beyond the assigned test range and fleet runtime acceptance remain pending.
+Design report: docs/completion/launch-authentik-identity-design-review-20261023.md.
+Coverage: 220 assigned LOC across two packets (167 and 53); one LOW same-instance revocation
+regression-test defect, density 4.55 defects/KLOC; no confirmed production defect in scope.
+Implementation owner reports stronger same-instance test, not yet independently accepted.
+The reports bind inspected revisions; whole-file hashes do not imply full-file coverage.
+Signed-token integration, actual upstream response/verification contracts and fresh UI QA
+remain acceptance gates. Obsidian was unavailable; design scenarios are analytical only.
+Both completed reviewer terminals were released after reports were read and findings routed.
+### 2026-10-23 12:33 UTC - SQL review receipt
+Read docs/completion/launch-authentik-sql-functional-review-20261023.md before releasing reviewer.
+Frozen coverage: tenant.sql 100 LOC plus enrollment.sql 115 LOC, two bounded packets, 215 total.
+Two findings: one reviewer-rated HIGH session-revocation race, one MEDIUM reinstall-contract
+failure; 9.30 defects/KLOC combined (17.39/KLOC enrollment, zero tenant). Findings were routed.
+Implementation reports session FOR SHARE/revalidation plus two-connection DELETE/expiry tests;
+installer clarified as one-shot with remove-first protocol. Current repairs and remove coupling
+require fresh bounded review and fleet runtime evidence; historical findings are not current
+revision acceptance. No tests or production exploit were executed by this reviewer.
+## 2026-10-23 12:40 UTC - bounded enrollment repair review
+Independent review `ctx_4e5ce8a9e33a` froze enrollment.sql (118 LOC, SHA256 9f2dae8b7e7011bf9afa6630aad66c8fcf21b1865353d0f225a16c698bdb61b2), remove.sql (18 LOC), and test_enrollment.py lines175-216 (42 LOC): 178 unique reviewed lines. One LOW test-oracle defect, 5.62 defects/KLOC: the timed revocation test can pass without proving lock contention. No new production SQL defect found within this bounded scope; source repair appears structurally sound, not runtime certified. Finding routed to auth owner for deterministic blocking-handshake regression. Full report: docs/completion/launch-authentik-sql-repair-review-20261023.md. Reviewer ran no tests. Auth v3 Docker gate independently observed FINAL_RESULT=0 with scoped typecheck and 12-file lint clean; exact task image/builder removed. Strict real-GoTrue harness has a fresh dedicated adversarial design reviewer `ctx_c99d9822dec1`. No deployment or live sends in this checkpoint.
+## 2026-10-23 Authentik implementation final runtime checkpoint
+Auth worker ctx_0c4f8e19305e completed fleet Docker auth v3 (59 runs/456 assertions, no failures/errors/skips), scoped Steep and 12-file RuboCop lint; initializer v2 14 tests, enrollment v3 21 tests and pinned GoTrue v9 three integration tests PASS. Exact task cleanup/absence PASS; no production activation. Historical review findings remain recorded: identity functional 1/219 LOC (4.57/KLOC), identity design 1/220 (4.55/KLOC), SQL original 2/215 (9.30/KLOC), SQL repair oracle 1/178 (5.62/KLOC), initial OIDC oracle 2/175 (11.43/KLOC). These overlapping denominators are not additive. Repairs include deterministic pg_blocking_pids handshake, real userinfo fallback control, exact rejection categories, bad PKCE and persisted-session invariance; fresh bounded re-review remains coordinator-owned, with no claimed zero-defect acceptance for unreviewed revisions. See docs/completion/launch-authentik-20261023.md and its SHA manifest/logs. External verified Tanzeel identity and dedicated least-privilege provider configuration remain activation gates.
+
+
+## Final mailflow and OIDC bounded review receipts — 2026-10-23 13:16 UTC
+Mailflow: docs/completion/launch-mailflow-final-repair-review-20261023.md, 324 unique LOC in four packets (180/104/16/24), zero actionable defects, density 0/KLOC. Source hashes match final attempt-x receipts. Read-only review establishes repair-source acceptance, not independent replay or HTTP approval coverage. Prior dedicated design review remains separate.
+OIDC: docs/completion/launch-oidc-final-repair-review-20261023.md, 197 unique LOC in two packets (96/101), one HIGH evidence-attribution defect, density 5.08/KLOC. Working ordinary-userinfo fallback control is repaired; generic safe errors and unchanged session counts alone do not prove each intended cryptographic rejection stage. Private bounded runtime evidence inspection/repair is active; finding remains open pending disposition. Provider-side PKCE is not claimed. Obsidian unavailable; report tradeoffs are analytical. Both completed reviewer terminals released after report inspection. Overlapping review denominators are not additive.
+
+Final SQL/runner receipt: docs/completion/launch-final-sql-runner-review-20261023.md inspected in full. 134 unique LOC (42 enrollment test, 29 dense fixture, 63 runner), zero actionable defects, 0/KLOC. Explicit pg_blocking_pids barrier resolves the prior timing oracle; production SQL itself is outside this packet. Dedicated Mox suite deferral remains explicit and its separate passing chain is recorded independently. Reviewer released. Contract-validator follow-up review is separate, not silently added to this completed assignment.
+
+### Coordinator acceptance checkpoint - 2026-10-23 13:24 UTC
+
+The bounded contract-validator review inspected 139 LOC (39 test + 100 schema/context), found 0 confirmed defects (0/KLOC), and matched exact file hashes. Independent fleet execution is recorded separately: 11 tests / 115 assertions, no failures/errors/skips. See docs/completion/launch-contract-validator-review-20261023.md; this does not certify the entire schema validator.
+
+The OIDC private stage-proof inspection resolves missing attribution for the historical v9 run only: distinct private causes for missing token, bad signature, issuer, audience and state were inspected against hashes. The reusable automated oracle still requires private-log inspection; do not report a general automated attribution fix. See docs/completion/launch-oidc-stage-proof-20261023.md (231 LOC, zero new defects, overlapping coverage).
+
+Current independent browser captures expose mobile banner/content occlusion and substantial dashboard/reference differences; visual acceptance is FAIL pending the final report, not implied by successful rendering. Root independently inspected sheet-00.png. UI remediation remains restricted to Fable 5.1, whose account quota is exhausted. The HTTP approval-to-SMTP/IMAP extension is in progress under ctx_4be80c8bfe6d; previous successful delivery used protected SQL fixture approval and does not establish this HTTP hop.
+### Coordinator visual acceptance checkpoint - 2026-10-23 13:29 UTC
+
+Independent visual QA completed: 172 current app screenshots plus 20 references, all 192 inspected across 16 sheets; 263 source hashes match. Strict parity and console gates FAIL. Zero document horizontal overflow does not prove scroll/keyboard usability. Offline banners account for heading offsets; separate online baseline is still required. Mobile overlay occlusion, responsive card differences, substantial reference content departures and six error captures remain. The root independently inspected all 16 sheets. Full source locations and cleanup receipt: docs/completion/launch-independent-visual-qa-20261023.md. Task disposable image/builder/containers removed; shared/persistent resources retained. Fable-only remediation remains blocked by its account limit. This is a visual outcome, not a source defect-density claim.
+
+HTTP approval integration is actively testing in fleet Docker, with fresh bounded adversarial and dedicated design reviewers dispatched. No external sends or production changes.
+
+### HTTP approval pre-runtime reviews - 2026-10-23 13:30 UTC
+Adversarial review: 176 target LOC, one MEDIUM replay-cardinality oracle defect, 5.68/KLOC (336 unique lines including context). Dedicated design review: 244 LOC, two MEDIUM oracle defects, 8.20/KLOC. Replay finding overlaps; two unique defects total, not three. Both routed to implementation owner: count all intents for draft, bind delivered RFC Message-ID to approved send ID. Reports: docs/completion/launch-http-approval-review-20261023.md and launch-http-approval-design-review-20261023.md. No runtime or Obsidian-backed simulation by reviewers. Repairs/fleet source-bound rerun pending; no production vulnerability or release acceptance inferred.
+
+### HTTP approval harness review - 2026-10-23 13:38 UTC
+Reviewed fleet_protocol.py in two packets (140 and 139 LOC), SHA256 80aacc1ccd38e6e89b7457260042264a8c1a2eda3b16fc9f355c29f6f9c510b8. One MEDIUM cleanup-bypass defect / 279 target LOC = 3.58 defects/KLOC. Interrupt or credential-unlink failure can skip dedicated fixture teardown. Routed to implementation owner; repair and failure-injection verification pending. Report docs/completion/launch-http-approval-harness-review-20261023.md. Supporting helpers were consulted but are not accepted as independently reviewed coverage; no runtime or whole-system acceptance implied.
+
+### HTTP approval final repairs - 2026-10-23 13:59 UTC
+
+- Functional receipt: docs/completion/launch-http-approval-final-repair-review-20261023.md. Three packets 69/122/194 LOC, 385 unique LOC, zero new defects (0/KLOC). Two unique historical oracle findings fixed; replay overlap across original reviews is counted once. Hashes match final attempt e; actual chain 1/88 passed.
+- Dedicated cleanup/design receipt: docs/completion/launch-http-approval-final-cleanup-design-review-20261023.md. Packets 151/151/26/37, 365 substantive LOC, 368 unique viewed including entrypoint. One new confirmed MEDIUM (2.74/KLOC), plus conditional expired-budget concern. Original interrupt/unlink bypass fixed. Latest cleanup-only refinements and regression test coverage pending. Presence test not read by this reviewer to preserve <=400 unique LOC. Analytical design scenarios only; Obsidian connection unavailable, no vault simulation claimed.
+## Final cleanup delta acceptance - 2026-10-23 14:05 UTC
+
+Receipt: docs/completion/launch-http-approval-cleanup-delta-review-20261023.md, ctx_1cf745d679c3. Authorized packets fleet_protocol.py 78-128 (51 LOC), 280-310 (31 LOC), fixture_presence_test.py 1-64 (64 LOC): 146 unique LOC, each packet <200 and reviewer <400. Zero new actionable defects; density 0/KLOC. Prior confirmed MEDIUM removal/absence defect closed; conditional deadline risk confirmed by implementation owner and repaired. Dedicated design review remains separately recorded. Final hashes independently matched 1d35e647cf69db9d2f88a24f6545268518af539e36c82df7fefb267c0b9afe06 and c9e6bee24568462a2e17914cc4c3d309c7ccc133f3ef0fb1b231fae1a522146f.
+
+Root read both final reports and fleet five-case regression receipt; accepts this bounded correction. Five helper tests plus three independent-finalization tests passed in fleet Docker. Helper deadline runtime does not execute the outer finally; its budget installation is source-reviewed only. Final overlay differs from frozen passing e; no whole-system or production acceptance is inferred. Obsidian unavailable; no vault simulation claimed. No unresolved actionable defects remain in these reviewed delta packets; broader UI/identity/storage launch gates remain.
+## Frontend notice layout refinement — 2026-10-24
+
+User explicitly authorized Codex to implement frontend directly, superseding the earlier Fable-only gate for this work. Shared measured notice insets now reserve space for the compose window, mobile compose action, sidebar, content and toast stack. Sign-out removes the simulation inset; fixture-only screens own their safe-area padding. Existing unrelated uncommitted work is preserved.
+
+Functional review: docs/completion/frontend-refine-functional-20261024.md, 146 LOC, zero defects (0/KLOC). Dedicated design review: docs/completion/frontend-refine-design-20261024.md, 167 LOC, one MEDIUM safe-area padding defect (5.99/KLOC). Fixed that defect. Independent follow-up reviewed fixtureMain.tsx 1–46, useBottomNotice.ts 1–25, index.css 252–257 and Shell.tsx 300–316: 94 LOC, zero new defects (0/KLOC), D1 closed at source level. Coverage overlaps; totals are not unique-source coverage. Every assignment remained below 200 lines. Design scenarios were analytical; no Obsidian connection was available and no vault simulation is claimed.
+
+Fleet Docker: contract regeneration checks, lint, typecheck, 88 suites / 1,092 tests, coverage and production build passed on current source. Statement coverage 85.39%. Three new regression tests cover notice resize, independent inset cleanup and missing ResizeObserver fallback. Large bundle warning remains. No blue-/sky- matches in apps/web/src. Visual verification results and cleanup are recorded separately in docs/completion/frontend-refinement-20261024.md; this review is not application-wide or production acceptance.
+### Compose footer follow-up - 2026-10-24
+
+Visual inspection reproduced the mobile floating compose action covering the draft attachment/delete controls. It is now absent on editor/review routes. Independent adversarial review applied the full rubric to 50 implementation/test lines, found one MEDIUM trailing-slash draft-list regression (20 defects/KLOC), and confirmed its repair on the same 50 lines (zero remaining, 0/KLOC). Seven route/capability regression cases pass. Latest full Docker gate: 89 files / 1,099 tests, 85.41% statements; lint, typecheck, contracts, production build pass. Earlier totals above describe the preceding snapshot. Dedicated design review and safe-area follow-up remain recorded above. No whole-application acceptance inferred.

@@ -1,0 +1,81 @@
+# Digest admission final source packet
+
+## ops/production/deploy.sh SHA256 DA4BB10E40F46C50FB56347BB4BA44616DD69BC7EA2164D46B2ECF965C71C6FB
+#!/bin/sh
+set -eu
+
+# AIDEV-NOTE: Gate every deployment command on a content digest before invoking Docker.
+image=${ELEVATEO_PRODUCTION_IMAGE-}
+case "$image" in
+  sha256:*) digest=${image#sha256:} ;;
+  ?*@sha256:*) digest=${image##*@sha256:} ;;
+  *) printf '%s\n' 'ELEVATEO_PRODUCTION_IMAGE must identify a SHA256 digest' >&2; exit 64 ;;
+esac
+case "$digest" in
+  ''|*[!0-9a-f]*) printf '%s\n' 'Invalid SHA256 image digest' >&2; exit 64 ;;
+esac
+if [ "${#digest}" -ne 64 ]; then
+  printf '%s\n' 'SHA256 image digest must contain 64 lowercase hex characters' >&2
+  exit 64
+fi
+ELEVATEO_ADMITTED_PRODUCTION_IMAGE=$image
+export ELEVATEO_ADMITTED_PRODUCTION_IMAGE
+script_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+exec docker compose -f "$script_dir/compose.yaml" "$@"
+
+## apps/server/test/be_02/production_image_admission_test.rb SHA256 927D4B828A82BABD5CBA574AAF501064B60567A2952F444783B410EC72271ADF
+# frozen_string_literal: true
+
+require "minitest/autorun"
+require "tmpdir"
+require "open3"
+
+# AIDEV-NOTE: A fake Docker executable proves rejected images cannot reach deployment admission.
+class ProductionImageAdmissionTest < Minitest::Test
+  def test_rejects_missing_mutable_and_malformed_images_before_docker
+    [nil, "", "server:latest", "sha256:abc", "repo@sha256:#{'a' * 63}",
+      "repo@sha256:#{'g' * 64}", "repo@sha256:#{'a' * 64}suffix"].each do |image|
+      with_fake_docker(image) do |status, called|
+        assert_equal 64, status.exitstatus
+        refute called
+      end
+    end
+  end
+
+  def test_accepts_local_and_repository_content_digests
+    ["sha256:#{'a' * 64}", "registry.example/server@sha256:#{'0' * 64}"].each do |image|
+      with_fake_docker(image) do |status, called, arguments, stderr|
+        assert status.success?, stderr
+        assert called
+        assert_equal image, arguments.first
+        assert_equal ["compose", "-f", File.expand_path("../../../../ops/production/compose.yaml", __dir__),
+          "config", "--quiet"], arguments.drop(1)
+      end
+    end
+  end
+
+  private
+
+  def with_fake_docker(image)
+    Dir.mktmpdir("image-admission") do |directory|
+      marker = File.join(directory, "called")
+      executable = File.join(directory, "docker")
+      File.write(executable, "#!/bin/sh\nprintf '%s\\n' \"$ELEVATEO_ADMITTED_PRODUCTION_IMAGE\" \"$@\" > \"$ADMISSION_MARKER\"\n")
+      File.chmod(0o700, executable)
+      script = File.expand_path("../../../../ops/production/deploy.sh", __dir__)
+      environment = { "PATH" => "#{directory}:#{ENV.fetch('PATH')}",
+        "ADMISSION_MARKER" => marker, "ELEVATEO_PRODUCTION_IMAGE" => image }
+      _stdout, stderr, status = Open3.capture3(environment, "sh", script, "config", "--quiet")
+      called = File.exist?(marker)
+      yield status, called, called ? File.readlines(marker, chomp: true) : [], stderr
+    end
+  end
+end
+## compose.yaml lines1-7
+# AIDEV-NOTE: Reuse the private data plane; API and OAuth bridge publish loopback ports, never database ports.
+name: elevateo-launch
+x-runtime: &runtime
+  image: ${ELEVATEO_ADMITTED_PRODUCTION_IMAGE:?run ops/production/deploy.sh with a reviewed SHA256 image}
+  restart: unless-stopped
+  init: true
+  user: "10001:10001"

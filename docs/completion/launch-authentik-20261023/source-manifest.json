@@ -1,0 +1,137 @@
+[
+    {
+        "path":  "apps/server/lib/elevateo/config.rb",
+        "sha256":  "f3b1e9d75ecdca18a43fdb3bab17097dabd3b17374d0c73c71a781317971e0d9",
+        "physical_lines":  282
+    },
+    {
+        "path":  "apps/server/lib/elevateo/auth_client.rb",
+        "sha256":  "48d5cf31901f500d5c36e56321b84db7fda790cbe896605ca5fada7d7786918a",
+        "physical_lines":  132
+    },
+    {
+        "path":  "apps/server/lib/elevateo/google_sso.rb",
+        "sha256":  "d8fb83c5ca23ae1ed19ce1f449047d52582acadacf49744806f9200203c4bbfe",
+        "physical_lines":  66
+    },
+    {
+        "path":  "apps/server/lib/elevateo/authentik_identity.rb",
+        "sha256":  "7b9e83b6fcffb5fc45d5522cbeea8abf5cbf1f324cd1654bea232f37bdf04b5a",
+        "physical_lines":  90
+    },
+    {
+        "path":  "apps/server/lib/elevateo/authentik_discovery.rb",
+        "sha256":  "f9bcfbb671c2754e889e9e7aaa5353ec3e454b768539c113dab563425ff32e78",
+        "physical_lines":  21
+    },
+    {
+        "path":  "apps/server/app/controllers/authentik_discovery_controller.rb",
+        "sha256":  "12386bbf5e7546a2795a304b4775171b053bd00a19024d34f04ea9ae9d8fb1af",
+        "physical_lines":  13
+    },
+    {
+        "path":  "apps/server/config/routes.rb",
+        "sha256":  "cf1bd148de78709926b241ccad0c0f74ab17c20858cef82035bb99de3d701854",
+        "physical_lines":  58
+    },
+    {
+        "path":  "apps/server/sig/config.rbs",
+        "sha256":  "26fe0a7b9183ffe0e8b0759e121f80135d4a2c8ea4d547ac1d094060fcac6fb7",
+        "physical_lines":  68
+    },
+    {
+        "path":  "apps/server/sig/auth_types.rbs",
+        "sha256":  "e8e70ccb32eb51cb851ca5b2f2ee96ac61ec52aac56f3ddd69ce3f3a95ec5ad7",
+        "physical_lines":  55
+    },
+    {
+        "path":  "apps/server/sig/authentik.rbs",
+        "sha256":  "c8ae56c79aad6f4a47cc9d7f9a4b7aaa5ba2180ea0adbf2a42159fa9a74b1ebc",
+        "physical_lines":  19
+    },
+    {
+        "path":  "apps/server/test/be_02/auth_config_test.rb",
+        "sha256":  "a69f54c323d54e75b7da51e4f83acc381e0655435e89fb16c14bb9afe7b971fe",
+        "physical_lines":  222
+    },
+    {
+        "path":  "apps/server/test/be_02/auth_client_test.rb",
+        "sha256":  "5439002d4fa95deba878f956ac9064b49205aa32d9d47e0dd65081e08b2b1c7f",
+        "physical_lines":  144
+    },
+    {
+        "path":  "apps/server/test/be_02/google_sso_test.rb",
+        "sha256":  "92739df66ef494b1537ad2acb1050da3af9773695c0edeeaa0c4fb24a298283a",
+        "physical_lines":  179
+    },
+    {
+        "path":  "apps/server/test/be_02/sso_controller_request_test.rb",
+        "sha256":  "137d19e6503f13ffd14acbbffeb4d9f4edc91a827e3dd46bbc78b007eda83263",
+        "physical_lines":  95
+    },
+    {
+        "path":  "apps/server/test/be_02/authentik_identity_test.rb",
+        "sha256":  "bdca3178cc30481c9cf9a12b4479be2a74660b344595bb5f68e0fcbd0af4e0a2",
+        "physical_lines":  100
+    },
+    {
+        "path":  "apps/server/test/be_02/authentik_discovery_request_test.rb",
+        "sha256":  "3cfa262809add2af39f90c305d5ba161dba95fcb7b880cfa40cfd1d6f08d140f",
+        "physical_lines":  44
+    },
+    {
+        "path":  "ops/production/initialize/admission.py",
+        "sha256":  "1814c82db5dcae17b70126cf24c4a0f057d1f74dff8d2c07d1b2718190c392da",
+        "physical_lines":  119
+    },
+    {
+        "path":  "ops/production/initialize/initialize.py",
+        "sha256":  "e3b1d86f0d57a9e5f4abf8b3e99de1484ebc9ac93ba261ab003acd7a19a9ab4a",
+        "physical_lines":  96
+    },
+    {
+        "path":  "ops/production/initialize/tenant.sql",
+        "sha256":  "c024e10f4fce34a459d4edc51cd71310edefbc675f884e250ffd82c7906020d3",
+        "physical_lines":  100
+    },
+    {
+        "path":  "ops/production/initialize/test_admission.py",
+        "sha256":  "31060764d5495270d2ca678fc98228bc3e90e5ebe47a8d7d1318de9677177882",
+        "physical_lines":  94
+    },
+    {
+        "path":  "ops/production/initialize/test_tenant.py",
+        "sha256":  "054082064ee732a79ad35828b1a3c2d3b3bfc5d01b0b9b671c59b7603596a5d7",
+        "physical_lines":  128
+    },
+    {
+        "path":  "ops/production/initialize/rehearsal.py",
+        "sha256":  "54d2ee3de1faa759704c28f29a50a5903a0aa52a4932c8c7feda43a4ed0113c3",
+        "physical_lines":  93
+    },
+    {
+        "path":  "ops/production/launch-controls/enrollment.sql",
+        "sha256":  "9f2dae8b7e7011bf9afa6630aad66c8fcf21b1865353d0f225a16c698bdb61b2",
+        "physical_lines":  118
+    },
+    {
+        "path":  "ops/production/launch-controls/test_enrollment.py",
+        "sha256":  "e3bec09b70e68e75fe3b87549c18cb2b2028b7d7fc461edf32ff0589ce57dfef",
+        "physical_lines":  238
+    },
+    {
+        "path":  "ops/production/launch-controls/plan.py",
+        "sha256":  "b0713640e1035501c24a6d5e729d0372de8276a6c89c015c9f9dd38c6a1a154d",
+        "physical_lines":  108
+    },
+    {
+        "path":  "ops/production/authentik/oidc_fixture.py",
+        "sha256":  "25569a9d401af1922568fa7b2d66d00ed8b5172c96940c862edb56f0bdb0a56b",
+        "physical_lines":  96
+    },
+    {
+        "path":  "ops/production/authentik/test_oidc_runtime.py",
+        "sha256":  "4c3a7d75d31b56666f9582444db1932b471a46ab3efaf42ac0382dc22fc751e9",
+        "physical_lines":  101
+    }
+]

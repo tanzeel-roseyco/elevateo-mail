@@ -1,3 +1,15 @@
+## Frontend refinement checkpoint - 2026-10-24
+
+The user authorized direct Codex frontend implementation, superseding the earlier Fable-only block. Shared measured notice spacing now protects compose windows, mobile actions, content, sidebar and toasts. Mobile compose no longer covers an open draft's footer controls; draft-list trailing slashes retain the action. Fleet-02 Docker passes contracts, lint, typecheck, 89 test files / 1,099 tests, coverage (85.41% statements), production build and fixture exclusion. Ten regression cases were added across notice lifecycle and compose routing.
+
+Final browser capture completed: 172 app screenshots and 20 references; zero horizontal overflows, eight focused portrait/landscape safe-area cases pass. Six fixture API-error captures remain on People, Members and Personal Details, so the full browser gate fails. Strict reference parity and real-device keyboard/safe-area behaviour are not certified. No deployment or live sending. Changes remain uncommitted alongside prior work. See docs/completion/frontend-refinement-20261024.md for current evidence and limitations. Historical entries below do not supersede this checkpoint.
+## Current coordinator checkpoint - 2026-10-23 14:05 UTC
+
+Development continued. Combined backend: 1,251 tests / 14,142 assertions, zero failures/errors, four skips; strict types/lint PASS. Contracts: 11/115 PASS. Frozen-baseline actual HTTP review/approval -> worker -> real isolated SMTP/IMAP reply chain: 1/88 PASS, approved message identity, original mailbox From/recipient and RFC ancestry checked. Final e cleanup and independent exact absence PASS. Narrow cleanup-only failure refinements passed five Docker mocked regressions; final 146-LOC adversarial review accepted with zero new defects. Three separate finalization tests also passed, eight distinct focused tests overall. Outer budget ordering has static review only, not full-main runtime coverage. Exact source/evidence boundaries: ../docs/completion/launch-http-approval-mailflow-20261023.md.
+
+Fresh visual QA: 172 app plus 20 reference screenshots; 263 matching source hashes. Strict parity and console gates FAIL. Exact-model Claude Fable 5.1 UI remediation is blocked by its account limit; no substitute model or purchase. Production identity/dedicated provider activation, sufficient existing storage for 120 mailboxes, provisioning, UI repairs and production acceptance remain unresolved. Not live. No Google Cloud, Cloudflare application/proxy/Access, Workspace apex routing changes, live sends or warmup. Earlier Google OAuth credential requirements are superseded by self-hosted SSO direction.
+
+Historical entries below retain their original revision-specific limits.
 Latest self-hosted continuation (2026-10-23): implementation checkpoint; dedicated integration proof blocked;
 NOT LIVE / NOT PRODUCTION ACCEPTED. See `../docs/completion/selfhosted-production-20261023-handoff.md`.
 Held Mox source, separate production application profiles and source-bound initializer exist.

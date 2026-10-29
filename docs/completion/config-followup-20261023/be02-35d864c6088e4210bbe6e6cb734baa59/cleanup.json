@@ -1,0 +1,11 @@
+{
+  "removed": [
+    "container:8d9fd43e3b748ef3555685e3a5f2ff68e32dc8e92de94ba2964274131ec26ba9",
+    "container:78d921c343cdfa9f6fa9cb9d14ae77afbe4faf5124af9c7dd76c6af5cc5c5479",
+    "volume:be02-35d864c6088e4210bbe6e6cb734baa59_db-config",
+    "volume:be02-35d864c6088e4210bbe6e6cb734baa59_db-data",
+    "network:40787c67a265e7084a3eac4e5ade1b882b327ef7a89f9f2ac59902653c3536bb"
+  ],
+  "errors": [],
+  "shared_bases_retained": true
+}

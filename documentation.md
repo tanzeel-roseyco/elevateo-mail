@@ -1,3 +1,27 @@
+## Frontend refinement checkpoint - 2026-10-24
+
+The user authorized direct Codex frontend implementation, superseding the earlier Fable-only block. Shared measured notice spacing now protects compose windows, mobile actions, content, sidebar and toasts. Mobile compose no longer covers an open draft's footer controls; draft-list trailing slashes retain the action. Fleet-02 Docker passes contracts, lint, typecheck, 89 test files / 1,099 tests, coverage (85.41% statements), production build and fixture exclusion. Ten regression cases were added across notice lifecycle and compose routing.
+
+Final browser capture completed: 172 app screenshots and 20 references; zero horizontal overflows, eight focused portrait/landscape safe-area cases pass. Six fixture API-error captures remain on People, Members and Personal Details, so the full browser gate fails. Strict reference parity and real-device keyboard/safe-area behaviour are not certified. No deployment or live sending. Changes remain uncommitted alongside prior work. See docs/completion/frontend-refinement-20261024.md for current evidence and limitations. Historical entries below do not supersede this checkpoint.
+### Active continuation — 2026-10-23 (supersedes historical Google credential gates)
+
+Continued development and incremental production launch remain authorized. Google Cloud is prohibited;
+this does not suspend implementation. An existing healthy Authentik service was discovered on
+`hetzner-platform`; secure application SSO integration is in progress, not yet accepted or activated.
+Orca run `run_38406b5846e5` has fresh workers for Authentik backend (`ctx_0c4f8e19305e`),
+organization-wide thread API (`ctx_12a85bc4f59f`), isolated send/receive/reply-chain verification
+(`ctx_4b7700cd00c9`), and frontend integration (`ctx_7c3224b73c5c`, effective model
+`claude-fable-5-1` confirmed in launch metadata). Backend worker prompt submission was independently
+checked and resumed after Orca initially left the prompts in their composers.
+
+The completed frontend checkpoint reports 1,094 passing tests and 23 pages captured at two widths;
+see `docs/completion/launch-frontend-20261023.md` for evidence and limitations. This does not establish
+production readiness of current uncommitted backend changes. Whole-backend strict typechecking,
+real app reply-chain proof, SSO activation, mailbox storage capacity and deployment remain gates.
+The app is not live; 120 mailbox assignments are planned, not provisioned. All live sending and
+warmup remain held. Resend usage remains six HTTP calls and zero sends. No Google Cloud resources,
+Cloudflare application/proxy/Access changes, purchases or Workspace MX changes are authorized.
+
 Latest edge follow-up: 234 fleet Docker assertions PASS; independent 156-line review, zero defects.
 Task containers/image/base reference and staging removed; persistent data and shared cache retained.
 Receipt: `docs/completion/launch-20261023-edge-followup.md`. No live deployment or delivery.
@@ -903,3 +927,65 @@ SSO task_8bef3d83f3ab addendum: coordinator-authorized private nginx OAuth bridg
 Transport task_7232b18516ab: isolated fleet Docker verification PASS for two allowed forwards, denied shell/arbitrary/loopback/remote/Unix forwards, wrong host pin and unauthorized key, minimal caps and read-only mounts. Exact task containers/network/image/builder volume/keys removed and independently absent. Evidence: docs/completion/launch-20261023-transport.md; independent functional/design reviews and production integration remain coordinator-owned, no deployment.
 
 Google SSO final receipt: docs/completion/launch-20261023-google-sso.md records accepted final proxy rereview (127 LOC, zero defects, 0/KLOC), original repaired findings and fleet evidence. Separate read-only initialization assessment documents bootstrap order and data-preservation boundaries; no database/Auth mutation or public activation was performed.
+
+### Coordinator evidence update — 2026-10-23 12:08 UTC
+
+The latest Authentik affected/regression tests passed 46 tests / 320 assertions, with scoped Steep and Ruby lint passing. Enrollment SQL validation and first-owner bootstrap adaptation continue; strict signed-token-only OIDC and upstream revocation enforcement remain implementation/activation gates. Claude security dispatch `ctx_a9323e845a92` is actively reviewing bounded source packets and design tradeoffs. The coordinator independently verified the operator backup hashes and created an encrypted off-host DPAPI copy, including a successful decryption/hash check; recovery-key escrow and populated recovery remain unverified. See `docs/completion/launch-backup-coordinator-20261023.md`. No public deployment or live email sends have occurred. Development remains authorized and active.
+
+### Coordinator continuation � 2026-10-23 12:24 UTC
+
+Continued development and improvement remain authorized; individual blockers do not pause
+independent work. Fable dispatch ctx_7c3224b73c5c reached its account usage limit, verified
+in the terminal. No substitute model or credit purchase was made. Fleet frontend gate8
+log reports 87 passing files / 1,089 tests plus lint, typechecks, contract checks and build;
+source binding, six pending review receipts and fresh visual acceptance remain unverified.
+The log also contains nested-paragraph hydration warnings; earlier captures do not prove
+this latest revision. Backend unified tests passed, but the full gate found one SSO contract
+failure now assigned to auth. New strict Authentik/revocation changes are not yet tested.
+Mailflow attempt s passed scoped units/types/lint/DB/real protocol but failed fixture file
+permissions before the app chain; cleanup passed. Attempt t is queued/running to repair
+that harness failure. Admission order: mailflow, targeted auth, latest full unified gate.
+Two bounded harness reviews completed and findings were routed (see code-reviews.md).
+No public deployment, mailbox provisioning or live sends are claimed.
+
+## 2026-10-23 12:32 UTC - continued implementation checkpoint
+Development remains authorized and active. Mailflow u reached real invitation/login after
+SMTP, IMAP ingestion, inbox and RLS-denial checks, then failed a fixture second-owner constraint;
+cleanup passed. Owner is correcting fixture enrollment to an operator without relaxing constraints.
+Targeted auth suites report 59 runs / 462 assertions and lint passing; scoped typecheck found
+two URI optional-string issues, repaired with rerun pending. Same-instance revocation regression
+was strengthened after independent review. SQL review is active; preliminary race/reinstall
+findings were routed to the implementation owner before SQL acceptance. No deployment or
+live sends occurred in this checkpoint; no claim that these scoped results certify production.
+Continuation checkpoint 2026-10-23 12:40 UTC: auth Ruby v3 fleet gate passed (FINAL_RESULT=0), scoped typecheck/lint green and disposable image removed. Fresh SQL repair review completed: 178 LOC, one LOW regression timing-oracle weakness (5.62/KLOC), routed for deterministic lock-wait proof; no runtime SQL acceptance yet. Strict OIDC runtime design review is active. Mailflow attempt v reached real SMTP/IMAP and authenticated HTTP inbox, then rejected a different actor's draft as expected; corrected attempt w is active. Auth gates take next fleet lease, followed by unified aggregate validation. Frontend Fable usage limit and real visual QA remain unresolved. No public deployment or live sends claimed.
+### Resumed development checkpoint — 2026-10-23 13:11 UTC
+Development is active following the user's explicit resume. Authentik scoped fleet evidence is now 59 Ruby tests/456 assertions, 14 initializer tests, 21 enrollment tests and three real GoTrue OIDC tests; activation still requires genuine first-admin identity proof and a dedicated provider. Mailflow final attempt x passed 80 unit tests/526 assertions, 26 database tests/182 assertions, four real protocol tests/424 assertions and the real HTTP-to-worker reply chain/41 assertions. These are isolated tests, not live production sends. Independent bounded repair reviews are active. The combined backend gate is running with the newly added test suites correctly classified in the canonical runner. Visual QA retry is explicitly authorized under the common fleet lock; no screenshots are accepted yet. Fable was retried on its exact required model and again reported its usage limit; no model substitution or credit purchase occurred. Mailboxes, production launch, capacity and final visual acceptance remain unresolved. Live sends and warmup stay disabled.
+
+### Coordinator checkpoint - 2026-10-23 13:25 UTC
+
+Development is active. The combined backend gate passed 1,251 tests / 14,142 assertions (four skips), strict types, lint and authenticated HTTP/worker checks. The separate contract rerun passed 11 tests / 115 assertions; its bounded review found zero defects in 139 LOC. Historical strict OIDC v9 private failure attribution was inspected and accepted for that run only; future runs still require that inspection.
+
+Fresh current-source browser captures exist at C:/Users/Tanzeel/Code and projects/elevateo-independent-visual-qa-20261023/captures. Visual acceptance is FAIL: mobile fixture/simulation banners obscure content and reference parity differs. Final per-page evidence and cleanup are being completed by ctx_4824574b268d. Exact-model Fable 5.1 UI implementation remains blocked by the account usage limit; no substitute model or credit purchase was used.
+
+An isolated HTTP approval-to-worker-to-SMTP/IMAP test extension is being implemented by ctx_4be80c8bfe6d. Earlier real reply delivery passed but used protected SQL fixture approval, so the product HTTP approval hop remains unproven until this extension passes. No production activation, live sends, warmup, purchases, Google Cloud or Cloudflare application changes. Genuine administrator identity/provider activation, sufficient existing mailbox storage, visual repairs and production deployment remain unresolved.
+### Coordinator visual acceptance checkpoint - 2026-10-23 13:29 UTC
+
+Independent visual QA completed: 172 current app screenshots plus 20 references, all 192 inspected across 16 sheets; 263 source hashes match. Strict parity and console gates FAIL. Zero document horizontal overflow does not prove scroll/keyboard usability. Offline banners account for heading offsets; separate online baseline is still required. Mobile overlay occlusion, responsive card differences, substantial reference content departures and six error captures remain. The root independently inspected all 16 sheets. Full source locations and cleanup receipt: docs/completion/launch-independent-visual-qa-20261023.md. Task disposable image/builder/containers removed; shared/persistent resources retained. Fable-only remediation remains blocked by its account limit. This is a visual outcome, not a source defect-density claim.
+
+HTTP approval integration is actively testing in fleet Docker, with fresh bounded adversarial and dedicated design reviewers dispatched. No external sends or production changes.
+
+## Coordinator checkpoint - 2026-10-23 13:59 UTC
+
+Development continues. The real isolated HTTP review/approval -> worker -> SMTP delivery -> recipient IMAP chain passed 1 test / 88 assertions, with approved send identity, original mailbox From/recipient, RFC ancestry and a bounded duplicate observation. Targeted units 80/526, database 26/182 and real protocol 4/424 passed; Steep/lint passed. Final attempt e cleanup and independent absence checks passed. This is frozen-baseline evidence, not deployed SSO or public deliverability acceptance. Source and receipts: docs/completion/launch-http-approval-mailflow-20261023.md.
+
+Independent final functional review: 385 source LOC, zero new defects, both prior oracle defects fixed. Cleanup design review: 365 reviewed LOC, one new MEDIUM (removal lacked verified absence), plus a conditional expired-budget concern. Owner is making narrow harness-only repairs and focused Docker regressions; those repairs remain pending final acceptance. No additional full application rerun is required for cleanup-only changes. Central review ledger preserves historical findings rather than adding overlapping counts.
+
+Combined backend remains 1,251 tests / 14,142 assertions (four skips), contracts 11/115. Current browser evidence remains FAIL: 172 app captures plus 20 references, mobile occlusion/parity and console issues. Exact-model Fable UI repairs remain blocked by the account limit. The app is not live. Genuine production identity/provider activation, storage capacity and 120 mailbox provisioning remain unresolved. No Google Cloud, Cloudflare application/proxy/Access, Workspace routing changes, live sends or warmup.
+
+## Accepted continuation checkpoint - 2026-10-23 14:05 UTC
+
+Real isolated authenticated HTTP approval -> actual worker -> SMTP -> recipient IMAP reply chain passed 88 assertions. Combined backend gates remain 1,251 tests / 14,142 assertions, four skips; contracts 11 / 115 PASS. Final cleanup-only overlay passed five mocked Docker regressions, plus three separate independent-finalization regressions: eight distinct focused tests overall. Final delta adversarial review accepted 146 LOC with zero new defects, on exact matching source hashes. Outer backstop budget ordering is statically verified, not full-main runtime covered. Frozen attempt e does not establish integration with concurrent OIDC configuration or browser/TLS/public delivery. See docs/completion/launch-http-approval-mailflow-20261023.md.
+
+Task-owned disposable containers, images, builder/cache volumes, synthetic database volumes and networks are absent; source and evidence retained, shared prerequisites and persistent data preserved. No global prune. Exact reclaimed bytes cannot be separated from rounded shared-host totals; final measured host available space 71,697,043,456 bytes. No laptop Docker use; compaction not applicable.
+
+NOT LIVE. Fresh visual parity/console gates fail; required exact-model Fable UI repairs blocked by account usage limit. Genuine production identity/provider activation, enough existing storage for 120 x 2GB mailboxes, provisioning and production acceptance remain unresolved. No live sends, warmup, Google Cloud, Cloudflare application/proxy/Access or Workspace routing changes. Existing dirty work preserved; no implementation commit or public deployment made by this coordinator.

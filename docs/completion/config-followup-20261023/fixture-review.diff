@@ -1,0 +1,18 @@
+ mode change 100644 => 100755 apps/server/bin/resend-events-worker
+diff --git a/ops/compose.be02-test.yaml b/ops/compose.be02-test.yaml
+index aa134a04..4e7e0b0d 100644
+--- a/ops/compose.be02-test.yaml
++++ b/ops/compose.be02-test.yaml
+@@ -202,6 +202,12 @@ services:
+       - ${BE02_SOURCE:?source required}/contracts:/workspace/contracts:ro
+       - ${BE02_SOURCE:?source required}/ops/tests/be02:/workspace/ops/tests/be02:ro
+       - ${BE02_SOURCE:?source required}/ops/db/bootstrap.sql:/workspace/ops/db/bootstrap.sql:ro
++      - ${BE02_SOURCE:?source required}/ops/production:/workspace/ops/production:ro
++    # AIDEV-NOTE: Admission tests execute a fake Docker binary only inside this disposable test tmpfs.
++    tmpfs:
++      - /workspace/apps/server/tmp:uid=10001,gid=10001,mode=1770
++      - /workspace/apps/server/log:uid=10001,gid=10001,mode=1770
++      - /tmp:rw,nosuid,exec,size=256m
+     environment:
+       <<: *runtime
+       ELEVATEO_DB_ROLE: elevateo_api

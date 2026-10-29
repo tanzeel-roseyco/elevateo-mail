@@ -1,0 +1,5 @@
+# Compose action review - 2026-10-24
+
+Independent reviewer /root/safe_area_followup applied the user's complete adversarial rubric to ComposeFab and ComposeFab.test.tsx: 50 implementation/test lines. One MEDIUM defect found (20/KLOC): a draft-list URL ending /drafts/ incorrectly hid the mobile action. Normalizing trailing slashes before editor-prefix matching fixes it; regression coverage includes /drafts/. Follow-up reviewed the same 50 lines: zero remaining defects (0/KLOC). Other editor and send-review paths match registered route shapes. Undefined mailbox capabilities remain fail-closed.
+
+Reviewer performed source inspection only. Coordinator's fleet-02 Docker suite subsequently passed all seven compose tests in the 1,099-test full gate. Mobile screenshot confirms attachment/delete controls are clear. Review does not certify entire routes or backend authorization.

@@ -1,0 +1,102 @@
+﻿[
+    {
+        "value":  [
+                      {
+                          "path":  "apps/server/lib/elevateo/thread_reads.rb",
+                          "sha256":  "f8e271f3790415a0b24e0dcc91930768fcec4a8268f347d42928c23f3bddcb91",
+                          "fleet_normalized_sha256":  "d87f88147b1984f3f38a1468c5792c31f9c6fc81d833ec14e3d7c1211f4bfee7",
+                          "run7_sha256":  "d87f88147b1984f3f38a1468c5792c31f9c6fc81d833ec14e3d7c1211f4bfee7",
+                          "matches_run7":  true,
+                          "note":  ""
+                      },
+                      {
+                          "path":  "apps/server/app/controllers/v1/threads_controller.rb",
+                          "sha256":  "3722bdf576303d6c32dbf0862e9e5ede473e18d7ae37a524803f1ed1e9238a5f",
+                          "fleet_normalized_sha256":  "0dff54ec0d53dca17a3e0f928c42ac82e20783355d77d09bdf5f3745d7eeb3ff",
+                          "run7_sha256":  "0dff54ec0d53dca17a3e0f928c42ac82e20783355d77d09bdf5f3745d7eeb3ff",
+                          "matches_run7":  true,
+                          "note":  ""
+                      },
+                      {
+                          "path":  "apps/server/config/routes.rb",
+                          "sha256":  "cf1bd148de78709926b241ccad0c0f74ab17c20858cef82035bb99de3d701854",
+                          "fleet_normalized_sha256":  "089ecad661054545e5a7f3cf806c5fb101a9d73a3ef9ae29193f7f2b91fbd15a",
+                          "run7_sha256":  "089ecad661054545e5a7f3cf806c5fb101a9d73a3ef9ae29193f7f2b91fbd15a",
+                          "matches_run7":  true,
+                          "note":  ""
+                      },
+                      {
+                          "path":  "apps/server/sig/thread_reads.rbs",
+                          "sha256":  "ecde6a8ea7b7b644ce3be349b6a4736a459bb045b10e0523de53511e0ff2e79e",
+                          "fleet_normalized_sha256":  "84c63defe86077864f4607dec7253e2cc9018d0923261a87b71258e33ac46949",
+                          "run7_sha256":  "84c63defe86077864f4607dec7253e2cc9018d0923261a87b71258e33ac46949",
+                          "matches_run7":  true,
+                          "note":  ""
+                      },
+                      {
+                          "path":  "apps/server/sig/threads_controller.rbs",
+                          "sha256":  "96bc9304fb315db52b89871657741ed45950b373abaa01f6446027ee272209b3",
+                          "fleet_normalized_sha256":  "4a9a9e35be39959c08767db778eadec43dd4127160d9164cb1e0a30a20231430",
+                          "run7_sha256":  "4a9a9e35be39959c08767db778eadec43dd4127160d9164cb1e0a30a20231430",
+                          "matches_run7":  true,
+                          "note":  ""
+                      },
+                      {
+                          "path":  "apps/server/test/be_02/thread_reads_test.rb",
+                          "sha256":  "56336cb60b197bb7b115032f0568ba63244abb4065fd9fc6e670bf3d88173290",
+                          "fleet_normalized_sha256":  "f6470fa10f009de82afe439e3e85812c8c5c7d4693574228957514c387c04f3c",
+                          "run7_sha256":  "f6470fa10f009de82afe439e3e85812c8c5c7d4693574228957514c387c04f3c",
+                          "matches_run7":  true,
+                          "note":  ""
+                      },
+                      {
+                          "path":  "apps/server/test/be_02/thread_database_test.rb",
+                          "sha256":  "072a69371a313ef7b7df0f3a6bf9c884eb39864fede701d71efa97374e632d11",
+                          "fleet_normalized_sha256":  "9e657ab0f5f4e96b8f4e488ea39152d0319bb9800f949830aecf6b42bb180eab",
+                          "run7_sha256":  "9e657ab0f5f4e96b8f4e488ea39152d0319bb9800f949830aecf6b42bb180eab",
+                          "matches_run7":  true,
+                          "note":  ""
+                      },
+                      {
+                          "path":  "apps/server/test/be_02/organization_threads_http_test.rb",
+                          "sha256":  "b88dd2c6b26b493766c0213de8f2d83696dbf0adc137c5a4368f87b820551c4a",
+                          "fleet_normalized_sha256":  "b88dd2c6b26b493766c0213de8f2d83696dbf0adc137c5a4368f87b820551c4a",
+                          "run7_sha256":  "b88dd2c6b26b493766c0213de8f2d83696dbf0adc137c5a4368f87b820551c4a",
+                          "matches_run7":  true,
+                          "note":  ""
+                      },
+                      {
+                          "path":  "contracts/v1/openapi.json",
+                          "sha256":  "66ed9483d661271846b5dad75afd61bb521929ea8577ada3ec141cf146ea5a76",
+                          "fleet_normalized_sha256":  "66ed9483d661271846b5dad75afd61bb521929ea8577ada3ec141cf146ea5a76",
+                          "run7_sha256":  "66ed9483d661271846b5dad75afd61bb521929ea8577ada3ec141cf146ea5a76",
+                          "matches_run7":  true,
+                          "note":  ""
+                      },
+                      {
+                          "path":  "contracts/v1/tests/send_contract_test.rb",
+                          "sha256":  "89a0b17673615c30d04fa1cdbee0e98401c72d799a4786ad6a2507d4be54f589",
+                          "fleet_normalized_sha256":  "89a0b17673615c30d04fa1cdbee0e98401c72d799a4786ad6a2507d4be54f589",
+                          "run7_sha256":  "1bbaec4309031ca4ed8733f158178b939850b2289fddca6a0f0328481e438ea0",
+                          "matches_run7":  false,
+                          "note":  "Post-run7 contract-only test repair, verified 11 runs /115 assertions"
+                      },
+                      {
+                          "path":  "ops/tests/be02/test-suites.sh",
+                          "sha256":  "b7297b5ba0540e8f4c465961d36b0f30bb91aecc0367e0093f2846e8b319bfc2",
+                          "fleet_normalized_sha256":  "72b0da4e8034804c23bddb06488b1f1d694d2b552c3c270435fdc7ca37faed2e",
+                          "run7_sha256":  "72b0da4e8034804c23bddb06488b1f1d694d2b552c3c270435fdc7ca37faed2e",
+                          "matches_run7":  true,
+                          "note":  ""
+                      }
+                  ],
+        "Count":  11
+    },
+    {
+        "path":  "apps/server/app/controllers/v2/admin/organization_grants_controller.rb",
+        "sha256":  "318c1fece463d89f90e61fde769c26eb6a245fe9ef720be891a9680871eb048f",
+        "fleet_normalized_sha256":  "318c1fece463d89f90e61fde769c26eb6a245fe9ef720be891a9680871eb048f",
+        "run7_sha256":  "318c1fece463d89f90e61fde769c26eb6a245fe9ef720be891a9680871eb048f",
+        "matches_run7":  true
+    }
+]

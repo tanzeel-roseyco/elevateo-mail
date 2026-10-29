@@ -2,7 +2,36 @@
 
 ## Current state
 
-### Self-hosted mail continuation — 2026-10-23
+## Frontend refinement checkpoint - 2026-10-24
+
+The user authorized direct Codex frontend implementation, superseding the earlier Fable-only block. Shared measured notice spacing now protects compose windows, mobile actions, content, sidebar and toasts. Mobile compose no longer covers an open draft's footer controls; draft-list trailing slashes retain the action. Fleet-02 Docker passes contracts, lint, typecheck, 89 test files / 1,099 tests, coverage (85.41% statements), production build and fixture exclusion. Ten regression cases were added across notice lifecycle and compose routing.
+
+Final browser capture completed: 172 app screenshots and 20 references; zero horizontal overflows, eight focused portrait/landscape safe-area cases pass. Six fixture API-error captures remain on People, Members and Personal Details, so the full browser gate fails. Strict reference parity and real-device keyboard/safe-area behaviour are not certified. No deployment or live sending. Changes remain uncommitted alongside prior work. See docs/completion/frontend-refinement-20261024.md for current evidence and limitations. Historical entries below do not supersede this checkpoint.
+
+
+Latest coordinator checkpoint: 2026-10-23 14:05 UTC. Development has continued. Backend: 1,251 tests / 14,142 assertions (four skips), strict types and lint PASS; contracts: 11 tests / 115 assertions PASS. Real isolated HTTP review/approval -> worker -> SMTP -> recipient IMAP reply chain passed 88 assertions, with approved message identity and original-mailbox reply checks. Final attempt e and independent exact-resource cleanup passed; narrow cleanup-only refinements passed five focused Docker regressions and final 146-LOC adversarial review (zero new defects). Three independent finalization regressions also passed; eight distinct focused cleanup tests overall. Outer-backstop budget ordering is statically verified; its full-main runtime branch is not covered. See docs/completion/launch-http-approval-mailflow-20261023.md for source bindings and limits.
+
+The app is not live. Fresh visual QA (172 app screenshots plus 20 references) fails strict parity/console gates; exact-model Fable 5.1 repairs are blocked by its account usage limit. Genuine production identity/provider activation, sufficient existing storage for 120 mailboxes, provisioning and visual repairs remain launch gates. No live sends or warmup, Google Cloud, Cloudflare application/proxy/Access or Workspace routing changes. Historical checkpoint sections below retain revision-specific evidence and do not supersede this status.
+### Active continuation â€” 2026-10-23 (supersedes historical Google credential gates)
+
+Continued development and incremental production launch remain authorized. Google Cloud is prohibited;
+this does not suspend implementation. An existing healthy Authentik service was discovered on
+`hetzner-platform`; secure application SSO integration is in progress, not yet accepted or activated.
+Orca run `run_38406b5846e5` has fresh workers for Authentik backend (`ctx_0c4f8e19305e`),
+organization-wide thread API (`ctx_12a85bc4f59f`), isolated send/receive/reply-chain verification
+(`ctx_4b7700cd00c9`), and frontend integration (`ctx_7c3224b73c5c`, effective model
+`claude-fable-5-1` confirmed in launch metadata). Backend worker prompt submission was independently
+checked and resumed after Orca initially left the prompts in their composers.
+
+The completed frontend checkpoint reports 1,094 passing tests and 23 pages captured at two widths;
+see `docs/completion/launch-frontend-20261023.md` for evidence and limitations. This does not establish
+production readiness of current uncommitted backend changes. Whole-backend strict typechecking,
+real app reply-chain proof, SSO activation, mailbox storage capacity and deployment remain gates.
+The app is not live; 120 mailbox assignments are planned, not provisioned. All live sending and
+warmup remain held. Resend usage remains six HTTP calls and zero sends. No Google Cloud resources,
+Cloudflare application/proxy/Access changes, purchases or Workspace MX changes are authorized.
+
+### Self-hosted mail continuation â€” 2026-10-23
 
 Self-hosted deployment source lives in `ops/selfhosted-mail`, protected schema/tenant initialization
 in `ops/production/initialize`, and a distinct production SMTP/IMAP route in `apps/server`.
@@ -14,7 +43,7 @@ off-host backups and external acceptance remain release gates. Workspace routing
 remain unchanged. See the [current handoff](docs/completion/selfhosted-production-20261023-handoff.md).
 Historical totals below describe their recorded revisions, not acceptance of this continuation.
 
-### Launch preparation — 2026-10-23
+### Launch preparation â€” 2026-10-23
 
 Application Google SSO, the Fable 5.1 login interface, a restricted fleet transport and the Railway
 edge are implemented and tested in isolated fleet-02 Docker. **The application is not live.**
@@ -68,7 +97,7 @@ does not own are explicitly labelled simulated UI adapters (browser-local, never
 persistence); real gateway, consent and authorization rules, plaintext rendering, backend and contracts
 are unchanged. Route inventory, decisions and review disposition: `docs/design/emailguard-replica.md`.
 Verification ran only in fleet-02 Docker under the shell worker. Canonical candidate `521f6942` (R9,
-archive SHA256 `0c90b20e…bf670f`): check:api, check:api:v2, lint, typecheck PASS, affected unit files
+archive SHA256 `0c90b20eâ€¦bf670f`): check:api, check:api:v2, lint, typecheck PASS, affected unit files
 19/19 PASS, production build and fixture exclusion PASS; the last full unit run (R7 `9f647973`) was
 977/979 with both failures fixed in R9. Synthetic browser matrices (Chromium 1440/390) pass for
 shell 32/32, compose 52/52, campaigns 74/74, contacts 44/44, profile 26/26, API/tags/webhooks 14/14
@@ -277,7 +306,7 @@ LINT932 correction: the fake inbound authorization callback now accepts unused k
 
 **Outbound V2 decision follow-up:** Root chose a draft-owned one-file 1 MiB raw cap and separate proposed 2 MiB complete MIME cap, with current V1 limits unchanged. Cassian's design packet reserves migration 00020 for Nadia staging/selection and 00021 for Rowan snapshot/worker, pending their confirmation; raw binary control headers and operation names remain proposals. No outbound source or route is active.
 
-**Activated V2 generation and focused backend:** Soren fleet `5b699c6d` generated/checked the active V2 declaration; contract SHA-256 `e97ca2f8…`, generated declaration `0c5f0969…`, matching this candidate's committed bytes. Separate exact `bdb8da6d` focused Steep, three-file lint and attachment authorization 4 tests/20 assertions passed. These are bounded earlier pins; current expanded backend/HTTP/worker/browser remain pending.
+**Activated V2 generation and focused backend:** Soren fleet `5b699c6d` generated/checked the active V2 declaration; contract SHA-256 `e97ca2f8â€¦`, generated declaration `0c5f0969â€¦`, matching this candidate's committed bytes. Separate exact `bdb8da6d` focused Steep, three-file lint and attachment authorization 4 tests/20 assertions passed. These are bounded earlier pins; current expanded backend/HTTP/worker/browser remain pending.
 
 **TEST929 ADV159 review:** Orion FIX939 exact `07411a15` was independently reviewed across 55 manifest LOC with zero defects. Its static count is 137 standard and nine separately gated suites; Soren fleet execution remains pending.
 
@@ -311,7 +340,7 @@ SEND-810 simulated cancellation source is integrated over Rowan worker authority
 
 ### INT-801 integrated source candidate (2026-10-14)
 
-The maintained web test Dockerfile now copies canonical `contracts/v2` beside V1 so Soren can generate and check draft.5 declarations without a task-only COPY overlay. The generated draft.5 declaration is still absent; no Docker build or web gate ran in this worktree. The recipe change followed root’s explicit integration instruction and remains pending Soren fleet validation.
+The maintained web test Dockerfile now copies canonical `contracts/v2` beside V1 so Soren can generate and check draft.5 declarations without a task-only COPY overlay. The generated draft.5 declaration is still absent; no Docker build or web gate ran in this worktree. The recipe change followed rootâ€™s explicit integration instruction and remains pending Soren fleet validation.
 
 OUT-824/SEQ-831 parallel phase: a noncanonical V2 proposal defines one inert campaign sequence draft at GET/PUT `/v2/outreach/campaigns/{campaign_id}/sequence`, with strict path/body equality, optimistic revision and replay, bounded steps/timezone, and deliberate 400/404/409 errors. No due claim, send eligibility, active route or canonical generated DTO is added. Maeve persistence and Celeste editor remain isolated pending authority review and fleet SQL/HTTP proof.
 
@@ -321,7 +350,7 @@ ATT-823 config preparation now rejects `ELEVATEO_ATTACHMENT_STORAGE_SERVICE_TOKE
 
 Soren exact 7aa61be disposable PostgreSQL/Auth run passed migrations through Mailpit 00013 and reached isolated Minitest/Steep, then failed the full Ruby suites: 74 suite summaries, 518 runs/6,935 assertions/6 failures/17 errors/0 skips across 11 failing suites; Steep also reported 70 problems in 8 files. The first failure is a BE02 mail-search fixture hitting `app.prevent_owner_loss()` while deleting an owner membership; later fixture dependency, protected-write-guard, lock-timeout, missing-send-ID and snapshot-byte errors also appear. Cleanup passed. Authenticated HTTP, worker and browser gates were not reached; the stronger owner guard is preserved while owners repair fixtures/security seams.
 
-The isolated preference gateway is now re-exported through `createV2Gateway()` to match Lyra’s proposed PersonalSettingsPage call names. The Lyra UI and Theo route remain unmerged/unregistered pending bounded review and fleet checks, so this adapter seam does not expose a production preferences page yet.
+The isolated preference gateway is now re-exported through `createV2Gateway()` to match Lyraâ€™s proposed PersonalSettingsPage call names. The Lyra UI and Theo route remain unmerged/unregistered pending bounded review and fleet checks, so this adapter seam does not expose a production preferences page yet.
 
 Rowan `d9d428e` replaced the IF-embedded Mailpit profile CASE that blocked exact 4a0ba0b migration with explicit permitted profile/hash pairs and added a real-DB regression. It is merged; Soren has been asked for a fresh disposable migration and targeted worker/schema/HTTP gates. No corrected-source runtime PASS is claimed yet.
 
@@ -341,13 +370,13 @@ Dorian `ebfe780` repaired the SQL predicate concatenation that produced the exac
 
 Soren exact fa3082a disposable PostgreSQL/Auth run failed during CreateCampaignFoundation migration at line 174 with `PG::SyntaxError` near `ENDAND`; backend Ruby, SQL/HTTP and worker gates did not run, and task resources were cleaned. Dorian owns the SQL interpolation repair. Fable `2ce4c54` stale consumed Outreach error policy/tests were cherry-picked as `d89b4cd`; this later frontend source has no full fleet pass. Root requested a maintained web Dockerfile V2 copy; Soren, its recipe owner, received the exact change request.
 
-Soren’s exact older f210b5b frontend fleet gate passed API generation/check, lint, typecheck, 791 units and build; draft.5 consent/UI source still requires its own rerun and generated declaration.
+Sorenâ€™s exact older f210b5b frontend fleet gate passed API generation/check, lint, typecheck, 791 units and build; draft.5 consent/UI source still requires its own rerun and generated declaration.
 
-V2 draft.5 now source-registers manual lead consent attestation and redacted evidence detail through Dorian’s guarded controller and the production browser adapter. It is an unverified manual claim and cannot send mail. Dorian’s actor mailbox-membership account repair is merged, while account routes remain gated pending mixed-private/shared/revocation fleet proof.
+V2 draft.5 now source-registers manual lead consent attestation and redacted evidence detail through Dorianâ€™s guarded controller and the production browser adapter. It is an unverified manual claim and cannot send mail. Dorianâ€™s actor mailbox-membership account repair is merged, while account routes remain gated pending mixed-private/shared/revocation fleet proof.
 
 Latest isolated integration adds Dorian's monotonic consent-history binding and strict V2 route allowlist. Account and worker routes remain disabled; the independent account-policy finding and generated V2 declaration remain open. The latest merged source has not passed fleet Docker; prior exact web and DB failures remain recorded below and in `docs/completion/cassian.md`.
 
-Cassian merged the Foundation, Frontend, Delivery, Native, QA and Mail owner candidates in the isolated `completion-cassian-int801` worktree. A validated active-operation registry source-registers guarded V2 organization grants/roster, inert Outreach reads and draft writes, and a scoped direct-message read; no V2 route can dispatch mail or expose the disabled worker proposal. Canonical V2 operation statuses and the Rails allowlist are checked for exact agreement in source tests. Fable binds the production Outreach adapter and Mira’s direct-message UI through the typed App route capability. Account, worker status, native authentication and inbound ingestion routes remain gated. Soren’s fleet V2 contract/route and fake-ingress unit checks passed on ba6151b (3/18, 5/13, 6/32); the earlier 696549b JSON failure remains recorded. Exact 45be80b DB migration passed through inbound, then full Ruby suites failed on cross-migration fixture dependencies; cleanup passed and SQL/HTTP acceptance was not reached. Exact 8eb840d web check:api, lint and typecheck passed, then Vitest recorded 779 passed/10 failed across Fable and Celeste suites; build was not reached and cleanup passed. Owner repairs and a later integrated web rerun remain pending. Canonical V2 draft.4 declarations, browser acceptance and latest integrated web/HTTP checks remain pending. No integrated acceptance, live sending or production release is claimed. See `docs/completion/cassian.md` and owner records.
+Cassian merged the Foundation, Frontend, Delivery, Native, QA and Mail owner candidates in the isolated `completion-cassian-int801` worktree. A validated active-operation registry source-registers guarded V2 organization grants/roster, inert Outreach reads and draft writes, and a scoped direct-message read; no V2 route can dispatch mail or expose the disabled worker proposal. Canonical V2 operation statuses and the Rails allowlist are checked for exact agreement in source tests. Fable binds the production Outreach adapter and Miraâ€™s direct-message UI through the typed App route capability. Account, worker status, native authentication and inbound ingestion routes remain gated. Sorenâ€™s fleet V2 contract/route and fake-ingress unit checks passed on ba6151b (3/18, 5/13, 6/32); the earlier 696549b JSON failure remains recorded. Exact 45be80b DB migration passed through inbound, then full Ruby suites failed on cross-migration fixture dependencies; cleanup passed and SQL/HTTP acceptance was not reached. Exact 8eb840d web check:api, lint and typecheck passed, then Vitest recorded 779 passed/10 failed across Fable and Celeste suites; build was not reached and cleanup passed. Owner repairs and a later integrated web rerun remain pending. Canonical V2 draft.4 declarations, browser acceptance and latest integrated web/HTTP checks remain pending. No integrated acceptance, live sending or production release is claimed. See `docs/completion/cassian.md` and owner records.
 
 
 ### INT-801 additive V2 interface candidate (2026-10-14)
@@ -403,7 +432,7 @@ Isolated on exact integrated base `42cfcffc1a97fbf8b3fd1a6caca5bbd6f62d839e`; no
 
 Regression source covers reload with a newer review/fresh proof, original metadata replay, blocked persistence before POST, owner separation, corrupt/oversized/extra-field input, entry bounds and write/remove readback failures. Docker tests, independent functional/design review and actual UI validation are pending. No backend, frozen wire contract, fixture or dispatch behavior changes.
 
-Application IN PROGRESS — R24 isolated BE03 candidate (2026-10-14). Root authorizes implementation on baseline `03ae770c56271cd8236726bfd8fe63248e81283d` in parallel with BE02 acceptance. BE02 remains OPEN/unaccepted; integration/release gated. S1+S2 priority: saved draft -> consistent review -> human approval -> durable queued intent. Canonical additive `contracts/v1/openapi.json` version `1.0.0-send.1` is prepared; every baseline C/D operation/component and original fixture is preserved.
+Application IN PROGRESS â€” R24 isolated BE03 candidate (2026-10-14). Root authorizes implementation on baseline `03ae770c56271cd8236726bfd8fe63248e81283d` in parallel with BE02 acceptance. BE02 remains OPEN/unaccepted; integration/release gated. S1+S2 priority: saved draft -> consistent review -> human approval -> durable queued intent. Canonical additive `contracts/v1/openapi.json` version `1.0.0-send.1` is prepared; every baseline C/D operation/component and original fixture is preserved.
 
 Contract source `013fe663563165a986f866ca9119b8b49c4332bf` passed fleet pinned-bundle Docker regressions (8 runs/78 assertions/zero failures/errors/skips, exit0) and affected lint (1 file/zero offenses, exit0). Four independent review findings and one lint-derived warning were repaired and re-reviewed; dedicated design review found no additional defects. Initial setup failures and lint history remain recorded. All task containers independently absent; shared images/persistent resources/Lyra18140 preserved. Reviewed SQL persistence source is assembled in the isolated candidate; reviewed API source and fail-closed control dependency are also assembled; real SQL/Auth/API runtime, UI intake, generation and S3-S5 lifecycle remain pending. Root R21f closure and six-worker deployment registry are integrated as documentation-only lineage; actual vault remains untouched. No BE03 completion, live activation or vault synchronization claim. Requested Fast billing remains unverified. See [R24 record](docs/completion/be03-r24-contract-integration.md) and [Docker receipt](docs/completion/be03-r24-contract-docker.json).
 
@@ -412,9 +441,9 @@ R24 continuation: prepared a bounded real HTTP/Auth/PostgreSQL S1/S2 fixture und
 
 R24 Nadia BE03 API isolated work is explicitly authorized by root while BE02 remains OPEN and integration/release gated. S1/S2 Rails API source and regression fixtures are committed; routes default disabled. Independent source/design reviews found two MEDIUM defects and one LOW test gap, repaired and re-reviewed. Capped fleet API fixtures PASS22runs193assertions, strict Steep and affected --lint PASS after preserved initial failures; exact own container cleanup verified. Integrated SQL/Auth runtime remains pending. See [Nadia API evidence](docs/completion/be03-nadia-r24-api.md). Historical R23 BE03-CLOSED wording below is superseded only for isolated implementation.
 
-## Historical R23 checkpoint — sequencing superseded only for isolated R24
+## Historical R23 checkpoint â€” sequencing superseded only for isolated R24
 
-Application IN PROGRESS — R23 documentation checkpoint (2026-10-14). BE02 OPEN/unaccepted; BE03 CLOSED until root accepts BE02. Application completion has priority; R&D remains separate. Invitation source is exact 51ca5d2eadd74b7ac4c1a2f5f82cd49323b15dc5; core/empty/revoked/logout evidence belongs to exact 86036e276df9c3294206e6bfa14d478c223c54dd. Observer remains OFF. Production, contracts, observer boundary and four Docker recipes are unchanged.
+Application IN PROGRESS â€” R23 documentation checkpoint (2026-10-14). BE02 OPEN/unaccepted; BE03 CLOSED until root accepts BE02. Application completion has priority; R&D remains separate. Invitation source is exact 51ca5d2eadd74b7ac4c1a2f5f82cd49323b15dc5; core/empty/revoked/logout evidence belongs to exact 86036e276df9c3294206e6bfa14d478c223c54dd. Observer remains OFF. Production, contracts, observer boundary and four Docker recipes are unchanged.
 
 R19 core login/read/persisted-draft/search PASS stands with restoration, authenticated HTTP, worker drain and cleanup. Its sixteen screenshots do not establish complete visual acceptance: search was loading; settled-search evidence remains in R12. R12's 21 PNGs and R18 conflict/revocation PASS stand. R18 logout FAILED, cause UNKNOWN; F2 memory-only recovery limitation remains OPEN.
 
@@ -422,7 +451,7 @@ R21d build/TypeScript compile/privacy regression PASS. First empty visual partit
 
 Remaining: diagnosis/fix of four mobile empty/revoked failures and root manual visual acceptance; R22 invitation affected unit/lint/type checks, frozen genuine SCN-AUTH-006-P and separate supplemental keyboard/visual evidence on exact51ca; corrected logout on exact86036. Root owns acceptance and actual vault; Jules supervises Soren fleet runtime; Cassian OFF401 / INT-403 owns this documentation integration. No new research gate or repeat of passed unchanged suites is implied.
 
-Project obsidian.md and the remote pending record are NOT synchronized to the actual vault. Actual Obsidian remains 134117 bytes, SHA256 de210bf0205ae28125d2c6125ff18fdbac87f947b6e2f92fff89b4b09e54b372, unchanged because C: is full. Automatic approval review rejected deleting a verified duplicate as “blocked by policy”, with no detailed reason; no deletion or retry. Requested LOW/Fast is not verified effective billing. See the R23 journal for receipt hashes, process history and BE03 readiness; R18 seal and failed histories remain linked.
+Project obsidian.md and the remote pending record are NOT synchronized to the actual vault. Actual Obsidian remains 134117 bytes, SHA256 de210bf0205ae28125d2c6125ff18fdbac87f947b6e2f92fff89b4b09e54b372, unchanged because C: is full. Automatic approval review rejected deleting a verified duplicate as â€œblocked by policyâ€, with no detailed reason; no deletion or retry. Requested LOW/Fast is not verified effective billing. See the R23 journal for receipt hashes, process history and BE03 readiness; R18 seal and failed histories remain linked.
 
 Evidence: [R23 journal](docs/completion/int403-r23-application-state.md), [R18 seal](docs/completion/int401-r18-handoff.md), [history](docs/completion/int401-status-history-20261014.md).
 
@@ -443,7 +472,7 @@ Use [ADR 0002](docs/decisions/0002-local-architecture.md) to interpret the expan
 
 ## Source collection and goals
 
-- [Codex-first market/reuse scan: 25 repositories and eight Reddit threads](.planning/research/reuse-market-scan.md) â€” comparative discovery, with new pins/deep audits pending
+- [Codex-first market/reuse scan: 25 repositories and eight Reddit threads](.planning/research/reuse-market-scan.md) Ã¢â‚¬â€ comparative discovery, with new pins/deep audits pending
 - [Devin, Astra MAX/LOW and independent Claude-agent workflow](.planning/AGENT_ORCHESTRATION.md)
 - [Language, platform and in-app CLI connector plan](.planning/CLIENTS_AND_CLI_CONNECTORS.md)
 - [Nine-address inventory, Resend CLI and disabled Instantly warmup](.planning/MAIL_ACCOUNTS_AND_ACTIVATION.md)
@@ -511,7 +540,7 @@ Rowan canonical SQL header controls are explicitly C-locale C0/DEL, preserving a
 
 Rowan final SQL source ebf64cd: all bounded functional/design reviews complete, zero remaining actionable source findings; fleet Docker syntax7/lint7 PASS exit0 and exact taskcontainer absence PASS. Real SQL/API vertical-slice tests remain NOT_RUN pending Soren lease on one integrated immutable source.
 
-## Historical R23 checkpoint — sequencing superseded only for isolated R24
+## Historical R23 checkpoint â€” sequencing superseded only for isolated R24
 
 FE-PREVIEW-01 final checkpoint: corrected synthetic demo remains private on 18141/demo.html (image 4ce7aefe738e); original fixture 18140 retained. Root actual reader paragraphs and mobile 375px draft-save v4 visually passed. Bounded Docker Playwright inbox-to-reader click passed both with and without ?qa=345d0f9; no router defect reproduced and no source change made. Disposable readonly browser container removed via --rm; no build, database lease, mounts or unrelated cleanup. Ada independent copy review: 0 defects / 9 changed LOC (0 per 1000); dedicated design review: 0 defects / 195 reviewed LOC (0 per 1000). All mail and actions remain synthetic and memory-only.
 
@@ -578,7 +607,7 @@ OUT-804 actual-role policy assertions now cover API positive, denied app-read pr
 ATT838 Rails configuration now accepts only the internal http://attachment-gateway:4708 endpoint paired with the dedicated 32-byte HMAC key; the gateway client/route and fleet checks remain pending.
 FE807 gateway seam: Cassian `fa3082a` now exports lead detail and manual consent POST; the form binding is ready. New denied and replay-conflict component cases are authored for fleet execution.
 
-FE807 sequence candidate: a distinct campaign-scoped sequence editor route is authored against Cassian's additive V2 proposal. It supports 1–20 ordered steps, local time, bounded delays, draft/held state and atomic versioned Save; all due-time, consent, suppression and delivery authority remains backend-owned. Exact contract review and fleet tests are pending; no sending path exists.
+FE807 sequence candidate: a distinct campaign-scoped sequence editor route is authored against Cassian's additive V2 proposal. It supports 1â€“20 ordered steps, local time, bounded delays, draft/held state and atomic versioned Save; all due-time, consent, suppression and delivery authority remains backend-owned. Exact contract review and fleet tests are pending; no sending path exists.
 MAC-814 continuation: Orion NATIVE-812 shell lineage is present in the Mac branch; `apps/native/src-tauri/tauri.macos.conf.json` and `apps/native/macos-release.sh` now provide a real macOS DMG configuration and gated release command. Native auth, Mac build, signing and installation remain unverified.
 
 MAC-814 sequence gap: an isolated pure Ruby draft scheduling primitive now resolves unambiguous local times to UTC, derives stable occurrence keys, and blocks candidates with reply/unsubscribe signals. No sequence schema, API, send intent, worker integration or live delivery is present; see `docs/completion/maeve-sequence-draft.md`.
@@ -616,7 +645,7 @@ ADV093's restricted-role follow-up requires minimal SEC802 EXECUTE grants for bo
 
 OUT839 integrated SEC802 grants allow only elevateo_api and restricted elevateo_app_read to execute two existing protected outreach helpers used by campaign/sequence RLS; PUBLIC and worker revokes remain. Dorian actual-role positive and copied-digest negative tests are source-only pending fleet PostgreSQL proof.
 
-ATT838 Rails now has a pure fixed-field HMAC request builder for the private read gateway: exact ordered JSON, UUID/digest/hint checks and a 0–30 second expiry. It is unbound from any public route until Sabine gateway source and Soren fleet evidence are ready; no Storage token or live bytes were used.
+ATT838 Rails now has a pure fixed-field HMAC request builder for the private read gateway: exact ordered JSON, UUID/digest/hint checks and a 0â€“30 second expiry. It is unbound from any public route until Sabine gateway source and Soren fleet evidence are ready; no Storage token or live bytes were used.
 
 ATT838 wire correction: signed context_id must be the same lowercase UUID as context_uuid; authorization_version remains an opaque signed hint. Sequence migration already occupies 00016, so attachment gateway helper must use 00017 or later.
 
@@ -631,7 +660,7 @@ ATT838 wire now validates the signed authorization_version as an exact 43-charac
 Cassian integrated the two narrow helper grants at 338a442. OUT-804 role proof now records both `session_user` and `current_user` before and after restricted-role switch and asserts worker still lacks draft-write EXECUTE; actual fleet results remain pending.
 ATT-823 private attachment gateway candidate: a new internal signed byte endpoint and additive migration 00018 bind live session, mailbox READ and clean private object metadata inside one restricted-login helper before and after Storage I/O. It requires Nadia's 00015, Leonie's gateway-role bootstrap, Soren's private container, Cassian's Rails signed route, scanner evidence and fleet Docker tests before activation; no download route or live Storage credential is enabled here.
 
-ATT823 now has an unregistered Rails metadata read adapter that binds one mailbox/thread/message to a current direct-message authorization snapshot and projects only Nadia’s bounded metadata page. The binary download route and production UI port stay inactive pending Sabine gateway proof and fresh post-fetch reauthorization.
+ATT823 now has an unregistered Rails metadata read adapter that binds one mailbox/thread/message to a current direct-message authorization snapshot and projects only Nadiaâ€™s bounded metadata page. The binary download route and production UI port stay inactive pending Sabine gateway proof and fresh post-fetch reauthorization.
 
 Soren fleet exact `cb1ec5be4546` reported six affected SEND809 database suites with zero failures/errors: cancellation 5/37, cancellation races 4/40, receipt 8/72, Mailpit worker 3/24, schema 6/82, worker authority 9/89. The overall Ruby job still FAILED in other suites and Steep; authenticated HTTP/worker/browser acceptance did not follow. Cleanup passed. This result applies to cb1ec5b only, not the current candidate.
 
@@ -647,18 +676,18 @@ INT801 added a narrow RBS/controller annotation for the unregistered attachment 
 
 Nadia confirmed ATT823 rejected metadata must remain visible with byte_size=0 and no private rejection reason. The noncanonical proposal and unbound browser port now match that source decision; Mira UI still needs an explicit held label and no download before any route can activate.
 
-Soren exact web `882a471` generated canonical V2 draft.6 declaration from OpenAPI SHA256 `7ee511a7…2e744`; the exported `api-v2.d.ts` SHA256 is `5c943ec1…0307e34` and is now adopted in source. V1/V2 generation/check, lint and TypeScript passed there; Vitest 58 files/827 cases reached 57 files/825 cases PASS with two Fable shell expectation failures, so build was NOT_REACHED. The maintained Docker CMD now checks both V1 and V2 generated declarations; this later source has no fleet PASS.
+Soren exact web `882a471` generated canonical V2 draft.6 declaration from OpenAPI SHA256 `7ee511a7â€¦2e744`; the exported `api-v2.d.ts` SHA256 is `5c943ec1â€¦0307e34` and is now adopted in source. V1/V2 generation/check, lint and TypeScript passed there; Vitest 58 files/827 cases reached 57 files/825 cases PASS with two Fable shell expectation failures, so build was NOT_REACHED. The maintained Docker CMD now checks both V1 and V2 generated declarations; this later source has no fleet PASS.
 
 Elara CORE854 exact `836efc6` integer idle-delay compatibility repair for send worker drain is imported, with a focused regression. It has not been fleet-executed on the integrated SHA; source review and current backend Steep/full-suite rerun remain pending.
 
 Elara CORE854 `cc2ac33` source repair for SEC802 mailbox-membership concurrency fixture actor and rollback oracles is imported. It preserves the stronger production owner guard; exact integrated disposable PostgreSQL rerun and independent review remain pending.
 
-After Nadia’s precise Attachments RBS import, the inactive metadata adapter uses an explicit no-storage port that raises on accidental put/get and returns void from its direct-message authorization callback. This reconciles the typed read-only service seam without granting Storage authority or activating a route; fleet Steep remains pending.
+After Nadiaâ€™s precise Attachments RBS import, the inactive metadata adapter uses an explicit no-storage port that raises on accidental put/get and returns void from its direct-message authorization callback. This reconciles the typed read-only service seam without granting Storage authority or activating a route; fleet Steep remains pending.
 QA816 inspected eight actual fleet browser PNGs on f210b5bf, labeled SEEDED-SIMULATED: desktop/390 light/dark inbox layout is readable without visible clipping, but reader captures expose two visual-fixture defects in assignment/notes mocking and message count. See docs/completion/tessa-visual-f210.md. Real-auth/API QA816 browser and screenshots remain pending.
 
 QA816 authored a focused visual-fixture repair after inspecting the eight simulated PNGs: thread detail routing is scoped, assignment/notes receive valid synthetic responses, and the ready-reader screenshot waits for settled nonerror panels with a consistent message count. Fleet rerun and replacement images are pending; original f210b5bf evidence is retained.
 
-Tessa QA816 exact `e567213` visual fixture repair is integrated over the newer Fable shell source: current visual spec hash differs from Tessa’s isolated hash only where existing Navigation/Personal labels were retained. The new fixture now mocks schema-valid assignment/notes, anchors thread detail, aligns message count and requires no reader alerts before a PNG; a fresh eight-case simulated fleet rerun is pending, and old f210 PNGs remain historical.
+Tessa QA816 exact `e567213` visual fixture repair is integrated over the newer Fable shell source: current visual spec hash differs from Tessaâ€™s isolated hash only where existing Navigation/Personal labels were retained. The new fixture now mocks schema-valid assignment/notes, anchors thread detail, aligns message count and requires no reader alerts before a PNG; a fresh eight-case simulated fleet rerun is pending, and old f210 PNGs remain historical.
 
 
 The 00009 policy now separates ordinary content reads from inert writes: SELECT requires session and content-role proof, while INSERT and UPDATE require the protected draft-write marker and the existing tenant, mailbox and consent integrity checks. A disposable valid-digest/no-marker direct UPDATE regression is authored; migration and database runtime on this source are pending.
@@ -757,7 +786,7 @@ QA815 exact `211df76` focused Steep found 80 problems/8 files. Four of eight sel
 QA815 exact `37b20c2` reviewed `business_role` successor passed the single protected outreach same-scope case 1 run/14 assertions: both read and write returned `ok` with sales role and live session; 21 migrations and exact cleanup passed. Full backend, HTTP, worker and real-auth browser remain unrun on this source.
 
 QA815 pure Ruby focused runner now loads Minitest mock for future candidates; its corrected behavior is verified only by the separate `211df76` two-suite probe so far.
-The Android lane now targets Orion’s shared Tauri shell and online React web app through an Android-only configuration and fleet build script; the earlier Java placeholder has been removed. Root selected an online-only exact HTTPS app origin using the existing web session; Orion’s online-only source is merged in the isolated APK candidate, with mobile build wiring still pending. Root authorized `https://app.elevateo.invalid` only as a compile fixture; Orion rejects it at runtime. Soren fleet Python Gradle-pin cases passed 3/3 on the earlier scoped candidate, and Cargo.lock generation hit Orion's `url` pin conflict; Orion `5108625` repair/mobile library and reviewed Cargo.lock `abdf268` are merged. A raw Rust image compile stopped at missing `gdk-3.0.pc`; Soren then reached a missing Tauri icon; Orion `4028d8d` first-party icon repair is merged for rerun. Soren's API 36 image built and a nonroot fleet run passed static checks, Rust 7/7, Tauri init and aarch64 Rust compile. Gradle requested `platforms;android-37.0` and failed because the runtime SDK was read-only; the recipe now pins both SDK 37.0 for the app and SDK 36 for Tauri's Android library. Exact `32d043f` fleet Gradle generated `app-universal-release-unsigned.apk`, but the script stopped before copying/hash/signature checks because AndroidX Core added its package-scoped signature receiver permission. The oracle now allows exactly that and INTERNET and checks the merged declaration remains fixture-scoped with signature protection and contains no extra permission use; regression cases also cover missing/duplicate declarations and empty aapt output; a rerun remains pending. ADV102 identified fail-open aapt xmltree/apksigner tool-error checks; a fail-closed successor now also requires recognizable manifest-tree output and no tool diagnostics after ADV107, with fleet execution pending. Exact `8625387` fleet Tauri/Gradle again generated one unsigned-named APK after pinning 3/3 and Rust 7/7, but the new manifest-tree classifier exited 2 before artifact copy/hash/signature acceptance: it expected `E: manifest` at column zero. A retained `32d043f` APK probe shows the namespace line followed by a two-space-indented manifest and four-space-indented application; the classifier now requires that shape, rejects garbage/stderr/VIEW, and awaits a focused pinned-tool fleet rerun. No accepted APK or installed-runtime proof exists. Native login, emulator/device validation and release signing remain NOT_RUN. See `docs/completion/astrid.md`. REV894 then found a root/application ancestry gap in the first parser correction; the successor rejects a root-level sibling before the application and adds that counterexample regression. Focused pinned-tool Docker validation remains pending.
+The Android lane now targets Orionâ€™s shared Tauri shell and online React web app through an Android-only configuration and fleet build script; the earlier Java placeholder has been removed. Root selected an online-only exact HTTPS app origin using the existing web session; Orionâ€™s online-only source is merged in the isolated APK candidate, with mobile build wiring still pending. Root authorized `https://app.elevateo.invalid` only as a compile fixture; Orion rejects it at runtime. Soren fleet Python Gradle-pin cases passed 3/3 on the earlier scoped candidate, and Cargo.lock generation hit Orion's `url` pin conflict; Orion `5108625` repair/mobile library and reviewed Cargo.lock `abdf268` are merged. A raw Rust image compile stopped at missing `gdk-3.0.pc`; Soren then reached a missing Tauri icon; Orion `4028d8d` first-party icon repair is merged for rerun. Soren's API 36 image built and a nonroot fleet run passed static checks, Rust 7/7, Tauri init and aarch64 Rust compile. Gradle requested `platforms;android-37.0` and failed because the runtime SDK was read-only; the recipe now pins both SDK 37.0 for the app and SDK 36 for Tauri's Android library. Exact `32d043f` fleet Gradle generated `app-universal-release-unsigned.apk`, but the script stopped before copying/hash/signature checks because AndroidX Core added its package-scoped signature receiver permission. The oracle now allows exactly that and INTERNET and checks the merged declaration remains fixture-scoped with signature protection and contains no extra permission use; regression cases also cover missing/duplicate declarations and empty aapt output; a rerun remains pending. ADV102 identified fail-open aapt xmltree/apksigner tool-error checks; a fail-closed successor now also requires recognizable manifest-tree output and no tool diagnostics after ADV107, with fleet execution pending. Exact `8625387` fleet Tauri/Gradle again generated one unsigned-named APK after pinning 3/3 and Rust 7/7, but the new manifest-tree classifier exited 2 before artifact copy/hash/signature acceptance: it expected `E: manifest` at column zero. A retained `32d043f` APK probe shows the namespace line followed by a two-space-indented manifest and four-space-indented application; the classifier now requires that shape, rejects garbage/stderr/VIEW, and awaits a focused pinned-tool fleet rerun. No accepted APK or installed-runtime proof exists. Native login, emulator/device validation and release signing remain NOT_RUN. See `docs/completion/astrid.md`. REV894 then found a root/application ancestry gap in the first parser correction; the successor rejects a root-level sibling before the application and adds that counterexample regression. Focused pinned-tool Docker validation remains pending.
 
 INT801 current attachment metadata controller strict candidate binds path UUIDs and the read-only authorization callback to declared types after exact QA815 `211df76` Steep diagnostics. Its route and private byte gateway state are unchanged; successor fleet strict/unit/HTTP proof is pending.
 
@@ -823,7 +852,7 @@ Sabine's `28ef4d56` gateway ACL test-only lint repair is staged in both candidat
 
 Corin's `f8d54cd7` fake inbound unused guard callback lint fix is staged in both candidates; the protected actor guard and test-only route behavior remain the same. Orion authority fixture syntax is the remaining fatal lint owner patch.
 
-QA815 fleet-only V2 declaration generation/check passed on exact canonical source `263047b4`; INT801 adopted the generated `api-v2.d.ts` byte hash `0c5f0969…62bb1` against unchanged contract hash `2f36ac34…64dc`. This proves code generation/check only; integrated web lint/type/unit/build, guarded route HTTP and browser remain pending.
+QA815 fleet-only V2 declaration generation/check passed on exact canonical source `263047b4`; INT801 adopted the generated `api-v2.d.ts` byte hash `0c5f0969â€¦62bb1` against unchanged contract hash `2f36ac34â€¦64dc`. This proves code generation/check only; integrated web lint/type/unit/build, guarded route HTTP and browser remain pending.
 
 ADV146 independently reviewed the current V2 error-envelope repair, 134 source LOC/zero defects, closing ADV145's earlier finding statically. Fleet codegen/check passed separately; scoped HTTP responses remain unverified.
 
@@ -866,3 +895,8 @@ ADV153 reviewed the isolated ATT902 route/shell activation over 171 source LOC: 
 Independent source reviews now cover Orion TEST929 manifest (REV934 91 LOC/zero defects) and Nadia FIX933 type repair (ADV154 115 LOC/zero defects). Nadia QA816 producer reviews found zero defects in its first 130 LOC (REV935) and one LOW missing negative test oracle across a separate 194-LOC packet (REV936, 5.15/KLOC); FIX938 adds status/header/length denial tests but is unexecuted and not yet rereviewed. Rhea REV928 reviewed Tessa's closed-error browser oracles, 194 test LOC plus 43 renderer context, zero new defects; actual fixture and browser proof still pending.
 
 Android runtime completion: Android1037 passed all nine isolated checks (login, navigation, inbox, thread, rotation, keyboard, lifecycle, offline, logout), including visual inspection and force-stop session recovery. Evidence: docs/completion/android1037-acceptance.md. Disposable runtime cleanup passed; no live release performed.
+
+### Coordinator evidence update â€” 2026-10-23 12:08 UTC
+
+The latest Authentik affected/regression tests passed 46 tests / 320 assertions, with scoped Steep and Ruby lint passing. Enrollment SQL validation and first-owner bootstrap adaptation continue; strict signed-token-only OIDC and upstream revocation enforcement remain implementation/activation gates. Claude security dispatch `ctx_a9323e845a92` is actively reviewing bounded source packets and design tradeoffs. The coordinator independently verified the operator backup hashes and created an encrypted off-host DPAPI copy, including a successful decryption/hash check; recovery-key escrow and populated recovery remain unverified. See `docs/completion/launch-backup-coordinator-20261023.md`. No public deployment or live email sends have occurred. Development remains authorized and active.
+

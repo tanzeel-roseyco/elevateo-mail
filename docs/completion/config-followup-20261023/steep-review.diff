@@ -1,0 +1,263 @@
+diff --git a/apps/server/app/controllers/v1/api_controller.rb b/apps/server/app/controllers/v1/api_controller.rb
+index 2dda9a8c..1579738c 100644
+--- a/apps/server/app/controllers/v1/api_controller.rb
++++ b/apps/server/app/controllers/v1/api_controller.rb
+@@ -12,7 +12,8 @@ module V1
+ 
+     # AIDEV-NOTE: Rails instrumentation otherwise parses/truncates raw input before our bounded boundary runs.
+     def process_action(*arguments)
+-      empty_parameters = {} # : Hash[String, Object?]
++      # @type var empty_parameters: Hash[String, Object?]
++      empty_parameters = {}
+       request.request_parameters = empty_parameters
+       request.set_header("action_dispatch.request.query_parameters", empty_parameters)
+       super
+diff --git a/apps/server/app/controllers/v2/admin/organization_grants_controller.rb b/apps/server/app/controllers/v2/admin/organization_grants_controller.rb
+index 915b0a60..8a9e507b 100644
+--- a/apps/server/app/controllers/v2/admin/organization_grants_controller.rb
++++ b/apps/server/app/controllers/v2/admin/organization_grants_controller.rb
+@@ -82,11 +82,11 @@ module V2
+       end
+ 
+       def self.project_grants(rows, organization, limit)
++        # @type var previous: String?
++        previous = nil
+         unless rows.is_a?(Array) && rows.length <= limit
+           raise Elevateo::CollaborationError.new("internal_error")
+         end
+-        # @type var previous: String?
+-        previous = nil
+         rows.map do |row|
+           unless row.is_a?(Hash) && row.keys.sort == %w[revision role user_id]
+             raise Elevateo::CollaborationError.new("internal_error")
+@@ -155,9 +155,9 @@ module V2
+       end
+ 
+       def update
++        # @type var guards: V1::WriteController::target_users
+         organization = path_uuid(:organization_id)
+         target = path_uuid(:user_id)
+-        # @type var guards: V1::WriteController::target_users
+         guards = ->(input:, query:) do
+           # @type var input: Elevateo::WriteInput::object
+           # @type var query: Hash[String, String]
+diff --git a/apps/server/lib/elevateo/auth_input.rb b/apps/server/lib/elevateo/auth_input.rb
+index 37edce87..37660fac 100644
+--- a/apps/server/lib/elevateo/auth_input.rb
++++ b/apps/server/lib/elevateo/auth_input.rb
+@@ -33,7 +33,8 @@ module Elevateo
+ 
+     def self.query(raw, allowed: [])
+       raise AuthError.invalid if raw.bytesize > 8192 || /%(?![0-9a-f]{2})/i.match?(raw)
+-      result = {} # : Hash[String, String]
++      # @type var result: Hash[String, String]
++      result = {}
+       URI.decode_www_form(raw, Encoding::UTF_8).each do |key, value|
+         raise AuthError.invalid if !allowed.include?(key) || result.key?(key) || !value.valid_encoding?
+         result[key] = value
+diff --git a/apps/server/lib/elevateo/campaigns/repository.rb b/apps/server/lib/elevateo/campaigns/repository.rb
+index 38be42be..818152b7 100644
+--- a/apps/server/lib/elevateo/campaigns/repository.rb
++++ b/apps/server/lib/elevateo/campaigns/repository.rb
+@@ -112,7 +112,8 @@ module Elevateo
+         org = WriteInput.uuid(organization_id)
+         after = cursor.nil? ? nil : WriteInput.uuid(cursor)
+         table = table_for(kind)
+-        values = [org] # : Array[untyped]
++        # @type var values: Array[String | Integer | nil]
++        values = [org]
+         filter = "organization_id=$1::uuid"
+         WriteInput.invalid! if %w[lead account].include?(kind) && campaign_id.nil?
+         if campaign_id
+diff --git a/apps/server/lib/elevateo/inbound/fake_ingress.rb b/apps/server/lib/elevateo/inbound/fake_ingress.rb
+index 91373686..7a2c8b25 100644
+--- a/apps/server/lib/elevateo/inbound/fake_ingress.rb
++++ b/apps/server/lib/elevateo/inbound/fake_ingress.rb
+@@ -124,8 +124,10 @@ module Elevateo
+       end
+ 
+       def leaf_parts(message)
++        # AIDEV-NOTE: Explicit tuple context keeps MIME nodes and depth counters distinct during stack traversal.
+         # @type var stack: Array[[Mail::Message, Integer]]
+-        stack = [[message, 0]]
++        stack = []
++        stack << [message, 0]
+         # @type var leaves: Array[Mail::Message]
+         leaves = []
+         seen = 0
+diff --git a/apps/server/lib/elevateo/inbound/imap_mime_tree.rb b/apps/server/lib/elevateo/inbound/imap_mime_tree.rb
+index d95b0e5c..679b51fa 100644
+--- a/apps/server/lib/elevateo/inbound/imap_mime_tree.rb
++++ b/apps/server/lib/elevateo/inbound/imap_mime_tree.rb
+@@ -32,6 +32,8 @@ module Elevateo
+       end
+ 
+       def multipart(part, depth, counts)
++        # @type var bodies: Array[Mail::Message]
++        # @type var attachments: Array[Mail::Message]
+         children = part.parts
+         raise MimeRejected, "invalid_mime" unless children.length.between?(1, FakeIngress::MAX_PARTS)
+         raise MimeRejected, "unsupported_mime" unless %w[multipart/alternative multipart/mixed multipart/related].include?(part.mime_type)
+@@ -39,9 +41,7 @@ module Elevateo
+         if part.mime_type == "multipart/alternative"
+           return alternatives(children, depth, counts)
+         end
+-        # @type var bodies: Array[Mail::Message]
+         bodies = []
+-        # @type var attachments: Array[Mail::Message]
+         attachments = []
+         children.each do |child|
+           selected, attached = visit(child, depth + 1, counts)
+diff --git a/apps/server/lib/elevateo/inbound/imap_poll_store.rb b/apps/server/lib/elevateo/inbound/imap_poll_store.rb
+index ff20fcc1..181509bc 100644
+--- a/apps/server/lib/elevateo/inbound/imap_poll_store.rb
++++ b/apps/server/lib/elevateo/inbound/imap_poll_store.rb
+@@ -12,6 +12,7 @@ module Elevateo
+       end
+ 
+       def claim_next
++        # @type var lease: imap_poll_lease
+         row = @connection.exec_query("SELECT app.lease_due_imap_account()::text AS result", "IMAP due", []).first
+         raise Rejected, "poll_unavailable" unless row && row.key?("result")
+         raw = row.fetch("result")
+@@ -24,10 +25,10 @@ module Elevateo
+             result["credential_version"].is_a?(Integer) && result["credential_version"].positive?
+           raise Rejected, "poll_unavailable"
+         end
+-        # @type var lease: imap_poll_lease
+         lease = { "account_id" => result.fetch("account_id"), "credential_version" => result.fetch("credential_version"),
+           "lease_token" => result.fetch("lease_token") }
+         lease.freeze
++        lease
+       rescue JSON::ParserError
+         raise Rejected, "poll_unavailable", cause: nil
+       end
+diff --git a/apps/server/lib/elevateo/mailbox_reads.rb b/apps/server/lib/elevateo/mailbox_reads.rb
+index 36356d18..478984e9 100644
+--- a/apps/server/lib/elevateo/mailbox_reads.rb
++++ b/apps/server/lib/elevateo/mailbox_reads.rb
+@@ -33,7 +33,8 @@ module Elevateo
+       envelope = { "context_id" => session_token(session, "context_id"),
+                    "authorization_version" => session_token(session, "authorization_version") }
+       # @type var scope: Cursors::scope
+-      filters = {} # : Hash[String, String]
++      # @type var filters: Hash[String, String]
++      filters = {}
+       scope = envelope.merge("actor_id" => identity.user_id, "organization_id" => identity.org_id,
+                              "resource" => "mailboxes", "filters" => filters, "order" => "id:asc", "limit" => limit)
+       after = cursor_position(query["cursor"], scope)
+diff --git a/apps/server/lib/elevateo/resend_events/client.rb b/apps/server/lib/elevateo/resend_events/client.rb
+index 64748599..a053b9d0 100644
+--- a/apps/server/lib/elevateo/resend_events/client.rb
++++ b/apps/server/lib/elevateo/resend_events/client.rb
+@@ -18,6 +18,7 @@ module Elevateo
+       end
+ 
+       def retrieve(email_id)
++        # @type var value: object
+         raise Invalid, "invalid email id" unless Signature::UUID.match?(email_id)
+         value = json("/emails/receiving/#{email_id}?html_format=cid")
+         raise Invalid, "invalid received content" unless value["id"] == email_id
+diff --git a/apps/server/lib/elevateo/send_api/review.rb b/apps/server/lib/elevateo/send_api/review.rb
+index b9023a4d..c7ab7314 100644
+--- a/apps/server/lib/elevateo/send_api/review.rb
++++ b/apps/server/lib/elevateo/send_api/review.rb
+@@ -68,7 +68,8 @@ module Elevateo
+       def attachments(binding)
+         values = binding.fetch("attachment_binding", [])
+         raise ReadResponse::Invalid unless values.is_a?(Array) && values.length <= 1
+-        tuples = [] # : Array[Array[String | Integer]]
++        # @type var tuples: Array[Array[String | Integer]]
++        tuples = []
+         items = values.map do |value|
+           raise ReadResponse::Invalid unless value.is_a?(Hash) && value.keys.sort == %w[byte_size content_type filename id object_key sha256 status]
+           id = ThreadProjection.uuid(value["id"])
+@@ -91,6 +92,7 @@ module Elevateo
+       end
+ 
+       def recipients(binding)
++        # @type var seen: Hash[String, bool]
+         values = binding["recipients"]
+         suppressed = binding["suppressed_addresses"]
+         consented = binding["consented_addresses"]
+@@ -101,8 +103,9 @@ module Elevateo
+           raise ReadResponse::Invalid
+         end
+         issue("recipient_required") if values.empty?
+-        seen = {} # : Hash[String, bool]
+-        checks = [] # : Array[ReadResponse::item]
++        seen = {}
++        # @type var checks: Array[ReadResponse::item]
++        checks = []
+         items = values.each_with_index.map do |value, index|
+           unless value.is_a?(Hash) && value.keys.sort == %w[address display_name]
+             raise ReadResponse::Invalid
+diff --git a/apps/server/lib/elevateo/send_worker/drain.rb b/apps/server/lib/elevateo/send_worker/drain.rb
+index 19a38f54..46fc1119 100644
+--- a/apps/server/lib/elevateo/send_worker/drain.rb
++++ b/apps/server/lib/elevateo/send_worker/drain.rb
+@@ -30,7 +30,8 @@ module Elevateo
+         deadline = @clock.call + @max_seconds
+         steps = 0
+         idle_checks = 0
+-        excluded = [] # : Array[String]
++        # @type var excluded: Array[String]
++        excluded = []
+         while steps < @max_steps && @clock.call < deadline
+           state = @control.read
+           break unless state.submission_allowed?
+diff --git a/apps/server/lib/elevateo/send_worker/resend_transport.rb b/apps/server/lib/elevateo/send_worker/resend_transport.rb
+index 5b99fa6b..27d0bc23 100644
+--- a/apps/server/lib/elevateo/send_worker/resend_transport.rb
++++ b/apps/server/lib/elevateo/send_worker/resend_transport.rb
+@@ -40,7 +40,8 @@ module Elevateo
+         raise SmtpSnapshot::Invalid unless snapshot.is_a?(Array) && snapshot.length == 14
+         normalized = snapshot.dup
+         normalized[0] = "elevateo.send.snapshot.v1"
+-        empty_attachments = [] # : Array[String]
++        # @type var empty_attachments: Array[String]
++        empty_attachments = []
+         normalized[12] = empty_attachments
+         message = SmtpSnapshot.render(JSON.generate(normalized), send_id: send_id, verified_sender: snapshot_sender(bytes))
+         return rejected unless message.sender.split("@", 2).last.downcase == @from_domain
+diff --git a/apps/server/lib/elevateo/send_worker/smtp_snapshot.rb b/apps/server/lib/elevateo/send_worker/smtp_snapshot.rb
+index f372dc17..d6ea79b2 100644
+--- a/apps/server/lib/elevateo/send_worker/smtp_snapshot.rb
++++ b/apps/server/lib/elevateo/send_worker/smtp_snapshot.rb
+@@ -50,10 +50,11 @@ module Elevateo
+       end
+ 
+       def self.parse_recipients(value)
++        # @type var seen: Hash[String, bool]
+         unless value.is_a?(Array) && value.length.between?(1, 100)
+           raise Invalid, "invalid recipients"
+         end
+-        seen = {} # : Hash[String, bool]
++        seen = {}
+         value.map do |item|
+           unless item.is_a?(Array) && item.length == 2 &&
+               (item[0].nil? || (item[0].is_a?(String) && item[0].bytesize <= 256 && SendAPI::Address.header?(item[0]))) &&
+@@ -83,7 +84,8 @@ module Elevateo
+       # RFC 2047 encoded words are bounded by 30 UTF-8 bytes so every folded line stays short.
+       def self.encoded_words(value)
+         return "" if value.empty?
+-        chunks = [] # : Array[String]
++        # @type var chunks: Array[String]
++        chunks = []
+         chunk = +""
+         value.each_char do |character|
+           if chunk.bytesize + character.bytesize > 30
+diff --git a/apps/server/lib/elevateo/write_input.rb b/apps/server/lib/elevateo/write_input.rb
+index ea80a7c6..01f29471 100644
+--- a/apps/server/lib/elevateo/write_input.rb
++++ b/apps/server/lib/elevateo/write_input.rb
+@@ -80,7 +80,8 @@ module Elevateo
+ 
+     def self.query(raw, allowed:)
+       invalid! unless raw.bytesize <= 8192
+-      result = {} # : Hash[String, String]
++      # @type var result: Hash[String, String]
++      result = {}
+       return result if raw.empty?
+       raw.split("&", -1).each do |pair|
+         key, value = pair.split("=", 2)

@@ -1,0 +1,77 @@
+[
+    {
+        "path":  "auth-regressions.log",
+        "sha256":  "a099c8933438d4aa1f17f4f242edaf46f275bf35bbc894f9931ca86dd00938a2",
+        "bytes":  12114
+    },
+    {
+        "path":  "auth-v2.log",
+        "sha256":  "424f400fa67fadf52197e4fa4355112f6ea71cef8a084cfd2067da1d2bbba498",
+        "bytes":  56879
+    },
+    {
+        "path":  "auth-v3.log",
+        "sha256":  "69306d4b35bba228dd36747eb454609292aa0254f3af2e8070b8582a39809f98",
+        "bytes":  55671
+    },
+    {
+        "path":  "build-and-affected-tests.log",
+        "sha256":  "40e13574cc274c789c77755aaf6c0f924d13da50cb905407708dab73ddef04e3",
+        "bytes":  42110
+    },
+    {
+        "path":  "enrollment-v3.log",
+        "sha256":  "22dd56f405da938e6691169f9ea8e7c041ba027334f83f45ad514c2e82ae91fd",
+        "bytes":  2387
+    },
+    {
+        "path":  "enrollment.log",
+        "sha256":  "2e84b6f943d50495d6991a3fe11fc46aa5481844fcc8cd1ed9269d80489df8f1",
+        "bytes":  2182
+    },
+    {
+        "path":  "fleet-oidc-harness.sh",
+        "sha256":  "4364889db308ffeb9098869fe4a7d8f8698616678811c5e299089bf54bcef7d8",
+        "bytes":  3796
+    },
+    {
+        "path":  "initial-broad-checks.log",
+        "sha256":  "d22db6ce5fc23c5e52d880e9fe6ebe4d72104a05f1950ebd3ff50ebfa8699d54",
+        "bytes":  234495
+    },
+    {
+        "path":  "initializer-v2.log",
+        "sha256":  "a825377709a20f1df6a9d059ecf3367989a2ebe6744fa7e809ddfc88dc4161a6",
+        "bytes":  1824
+    },
+    {
+        "path":  "oidc-v7-failed.log",
+        "sha256":  "7596648f2edf235c16986fb61f5a86c78185497a86624153ea01d2363579bb9e",
+        "bytes":  2846
+    },
+    {
+        "path":  "oidc-v8.log",
+        "sha256":  "08720975d56b47b7d623d043d6e0a48967fb11307840e2b6164adeb61c6fa70c",
+        "bytes":  23685
+    },
+    {
+        "path":  "oidc-v9.log",
+        "sha256":  "c492ba1d93a3e359315f2cdc341f8f4115985d72884514c02f4d535238722c79",
+        "bytes":  23685
+    },
+    {
+        "path":  "review-config-bootstrap.txt",
+        "sha256":  "f2576042e293d935055e2aae755573e003923c3623680be41fa8ee0d464d438b",
+        "bytes":  1069
+    },
+    {
+        "path":  "review-packets.json",
+        "sha256":  "cbe6c73a684a675014f4ae28ee88a85184dac0f0c47b2ec9a98a4196ebe8d313",
+        "bytes":  952
+    },
+    {
+        "path":  "source-manifest.json",
+        "sha256":  "defd92ea04450b91ed4cb4f5d403a7499495c325b8cb8018444640faf0143176",
+        "bytes":  5342
+    }
+]

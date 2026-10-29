@@ -1,0 +1,109 @@
+[
+  {
+    "id": "3fdb4e685051093d59e0d03ed435f5590c15c1528cc0a9a3e2f1733a5e94ffb9",
+    "mounts": [
+      {
+        "Type": "bind",
+        "Source": "/tmp/elevateo-launch-20261023-config-followup/source/apps/server",
+        "Destination": "/workspace/apps/server",
+        "Mode": "ro",
+        "RW": false,
+        "Propagation": "rprivate"
+      },
+      {
+        "Type": "bind",
+        "Source": "/tmp/elevateo-launch-20261023-config-followup/source/contracts",
+        "Destination": "/workspace/contracts",
+        "Mode": "ro",
+        "RW": false,
+        "Propagation": "rprivate"
+      },
+      {
+        "Type": "bind",
+        "Source": "/tmp/elevateo-launch-20261023-config-followup/source/ops/tests/be02",
+        "Destination": "/workspace/ops/tests/be02",
+        "Mode": "ro",
+        "RW": false,
+        "Propagation": "rprivate"
+      }
+    ]
+  },
+  {
+    "id": "e4405a490037ea31cffad241dda6e018010cb89662d0c341d53ed082f9eaff18",
+    "mounts": [
+      {
+        "Type": "bind",
+        "Source": "/tmp/elevateo-launch-20261023-config-followup/source/apps/server",
+        "Destination": "/workspace/apps/server",
+        "Mode": "ro",
+        "RW": false,
+        "Propagation": "rprivate"
+      },
+      {
+        "Type": "bind",
+        "Source": "/tmp/elevateo-launch-20261023-config-followup/source/contracts",
+        "Destination": "/workspace/contracts",
+        "Mode": "ro",
+        "RW": false,
+        "Propagation": "rprivate"
+      },
+      {
+        "Type": "bind",
+        "Source": "/tmp/elevateo-launch-20261023-config-followup/source/ops/tests/be02",
+        "Destination": "/workspace/ops/tests/be02",
+        "Mode": "ro",
+        "RW": false,
+        "Propagation": "rprivate"
+      }
+    ]
+  },
+  {
+    "id": "3eb961723368ff35dc15f0597a5e5c1c60924dd06d6efb98addd94181e851c26",
+    "mounts": []
+  },
+  {
+    "id": "820b98acafc7b2735c7246855ff01755855650d3d606dd7980c2fe553ac68e2b",
+    "mounts": [
+      {
+        "Type": "volume",
+        "Name": "be02-daa32bd9f7274cbb961760ce9bbc90d9_db-config",
+        "Source": "/var/lib/docker/volumes/be02-daa32bd9f7274cbb961760ce9bbc90d9_db-config/_data",
+        "Destination": "/etc/postgresql-custom",
+        "Driver": "local",
+        "Mode": "rw",
+        "RW": true,
+        "Propagation": ""
+      },
+      {
+        "Type": "bind",
+        "Source": "/tmp/elevateo-launch-20261023-config-followup/source/ops/supabase/db/99-roles.sql",
+        "Destination": "/docker-entrypoint-initdb.d/init-scripts/99-roles.sql",
+        "Mode": "ro",
+        "RW": false,
+        "Propagation": "rprivate"
+      },
+      {
+        "Type": "bind",
+        "Source": "/tmp/elevateo-launch-20261023-config-followup/source/ops/supabase/db/99-jwt.sql",
+        "Destination": "/docker-entrypoint-initdb.d/init-scripts/99-jwt.sql",
+        "Mode": "ro",
+        "RW": false,
+        "Propagation": "rprivate"
+      },
+      {
+        "Type": "volume",
+        "Name": "be02-daa32bd9f7274cbb961760ce9bbc90d9_db-data",
+        "Source": "/var/lib/docker/volumes/be02-daa32bd9f7274cbb961760ce9bbc90d9_db-data/_data",
+        "Destination": "/var/lib/postgresql/data",
+        "Driver": "local",
+        "Mode": "rw",
+        "RW": true,
+        "Propagation": ""
+      }
+    ]
+  },
+  {
+    "id": "f42937c2f9cc97d14fe0e954ab1d8613b1be851345c90ee84c10381ebfb0d3e2",
+    "mounts": []
+  }
+]
