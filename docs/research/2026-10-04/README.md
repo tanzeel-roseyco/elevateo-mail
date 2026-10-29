@@ -2,6 +2,8 @@
 
 Research completed 4 October 2026 for the [master plan](../../product-master-plan.md) and [engineering blueprint](../../backend-blueprint.md). Research is evidence and competing advice, not approved implementation instructions.
 
+Latest role clarification supersedes earlier wording: Hunter and AMF provide optional enrichment; AI performs personalisation. AMF's precise product/API still needs identification. Historical research and prompts below are preserved as evidence, not silently rewritten.
+
 ## Assignments completed
 
 | Researcher | Scope | Report |

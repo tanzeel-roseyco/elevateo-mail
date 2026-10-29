@@ -4,6 +4,7 @@ Status: proposal, 4 October 2026. Read the [master plan](product-master-plan.md)
 
 ## 1. Rules the implementation must preserve
 
+- Client scope now includes web, Windows and macOS; all share this backend and its quotas. See master plan section 11 and the distribution PDF addendum. Local CLI AI is initially desktop-only. Mac credential storage, sandboxing, OAuth return handling and CLI discovery require OS-specific validation; Windows-specific guidance below must not be assumed portable.
 - Ten independent users, each with up to ten connected mailboxes (100 total). No shared workspace, delegated mailbox or shared campaign features in the first release.
 - Existing Google inboxes connect through Gmail API; self-hosted mail requires a tested capability adapter. Resend is the chosen sender for opted-in campaigns on verified domains. Personal Gmail addresses require Gmail sending, not a forged Resend From address.
 - Maximum 30 outgoing emails per connected mailbox per day, including manual/AI/campaign sends. Proposed conservative definition: each recipient delivery counts in a rolling 24 hours. Aliases share the mailbox counter; reconnect does not reset it. Ten mailboxes make the effective pilot maximum 300/user/day and 3,000 total/day. The earlier 600/user/day ceiling is relevant only to a later mailbox expansion. Lower provider limits win. Sending outside this app is not enforceable by this app.
@@ -146,7 +147,7 @@ Close-to-tray may keep notifications active; Quit stops the desktop process. Mak
 
 ## 7. Consent, imports and optional enrichment
 
-Store permission evidence and purpose, not just a checkbox copied from a CSV. Hunter/AMF/EmailGuard may enrich or validate a contact; none can set consent. Integration failure leaves sending rules intact. Consent withdrawals, complaints and hard bounces stop applicable campaigns; repeated soft failures follow an explicit bounded retry policy. Personal correspondence requires its own policy and cannot be a way to reclassify marketing.
+Store permission evidence and purpose, not just a checkbox copied from a CSV. Hunter and AMF provide optional enrichment data; AI performs personalisation from permitted facts and user instructions. EmailGuard provides optional validation/deliverability information. None can set consent. Store enrichment source and freshness separately from generated drafts and approval versions; missing enrichment must not block ordinary inbox use or already-approved sending. Integration failure leaves sending rules intact. Consent withdrawals, complaints and hard bounces stop applicable campaigns; repeated soft failures follow an explicit bounded retry policy. Personal correspondence requires its own policy and cannot be a way to reclassify marketing.
 
 Unsubscribe uses a high-entropy, recipient/list-scoped token and an idempotent unauthenticated endpoint with no exposed address. Support standards-compatible one-click POST where required; a normal GET displays a confirmation page so link scanners do not casually unsubscribe people. A successful unsubscribe commits suppression and cancellation eligibility together. Do not require login or a CSRF cookie for the verified one-click flow. [Google sender requirements](https://support.google.com/mail/answer/81126)
 
