@@ -6,7 +6,7 @@ All notable changes to Elevateo Mail are recorded here. The format follows Keep 
 
 ### Added
 
-- `financial planning/`: cost model (`cost-model.csv`), pilot, growth and enterprise-readiness scenarios with live-checked prices dated 2026-10-18.
+- `docs/business/financial-planning/`: cost model (`cost-model.csv`), pilot, growth and enterprise-readiness scenarios with live-checked prices dated 2026-10-18.
 - `docs/production-readiness-plan.md`: 141 numbered readiness items with verdicts, owners, effort, a risk-ordered pilot plan and the backend task list.
 - `SECURITY.md`: private reporting process, response targets and tester rules.
 - `.github/workflows/ci.yml`: web lint, typecheck, OpenAPI contract checks and Vitest; server RuboCop lint and Steep; gitleaks secret scan.

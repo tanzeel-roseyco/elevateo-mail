@@ -54,7 +54,7 @@ Every APPLIES-NOW item, ordered by the damage its absence could do during the pi
 | 15 | 116 | Android network-loss handling | Frontend | S |
 | 16 | 133 | README quick start at the top | Tech lead | S |
 | 17 | 35, 46, 47, 58, 73, 82, 83, 129, 137 | Applied in this branch: Dependabot, SECURITY.md, runbooks, DR draft, CHANGELOG | - | - |
-| 18 | 141 | Staff the roles above at the fractional days costed in `financial planning/pilot.md` | Tech lead | - |
+| 18 | 141 | Staff the roles above at the fractional days costed in `docs/business/financial-planning/pilot.md` | Tech lead | - |
 
 ## Backend tasks handed to the backend route
 
@@ -155,7 +155,7 @@ Columns: number, item, verdict, evidence or reason (paths are relative to the re
 | 41 | Encryption | APPLIES-NOW | Session and refresh material is encrypted (`lib/elevateo/session_crypto`, `be02/tables.sql` `refresh_token_ciphertext`); TLS in transit; VPS disk encryption and encrypted off-host backups are not configured | DevOps | S |
 | 42 | Least privilege including AI agents | ALREADY-DONE | Separate migrator, API, worker and gateway logins with FORCE RLS (`ops/db/bootstrap-auth-grants.sql`, `apps/server/db/sec802`); AI connector grants are specified in `docs/end-goal.md` and covered by item 108 | Backend | - |
 | 43 | Safe audit logs | ALREADY-DONE | `app.organization_role_audit`, `app_send_private.audit_events`, receipt tables; callback secret redaction (`lib/elevateo/auth_callback_redaction`), redacted worker logs | Backend | - |
-| 44 | Pentest | APPLIES-LATER | Before external customers; `financial planning/cost-model.csv` X01 | Security | L |
+| 44 | Pentest | APPLIES-LATER | Before external customers; `docs/business/financial-planning/cost-model.csv` X01 | Security | L |
 | 45 | Security questionnaire | APPLIES-LATER | Enterprise | Tech lead | S |
 | 46 | Disclosure process | APPLIES-NOW (applied) | `SECURITY.md` | Tech lead | S |
 | 47 | Stolen-laptop plan | APPLIES-NOW (applied) | `docs/runbooks/stolen-laptop.md` | Tech lead | S |
@@ -237,7 +237,7 @@ Columns: number, item, verdict, evidence or reason (paths are relative to the re
 | 103 | Customer API keys | NOT-APPLICABLE | No public API; connector access is a scoped expiring user grant by design | - | - |
 | 104 | API rate limits | APPLIES-LATER | Only auth endpoints are limited; body size limits exist; per-session limits at growth | Backend | S |
 | 105 | Upstream format changes | ALREADY-DONE | Strict fail-closed parsing of Auth and IMAP responses; the Resend adapter must pin its API version (backend task B1) | Backend | - |
-| 106 | OAuth refresh | APPLIES-NOW (decision) | Supabase Auth refresh is implemented (`be02/refresh.sql`); Gmail OAuth is not; decide app passwords versus OAuth before enrolling mailboxes (`financial planning/pilot.md`, decision 1) | Tech lead | S |
+| 106 | OAuth refresh | APPLIES-NOW (decision) | Supabase Auth refresh is implemented (`be02/refresh.sql`); Gmail OAuth is not; decide app passwords versus OAuth before enrolling mailboxes (`docs/business/financial-planning/pilot.md`, decision 1) | Tech lead | S |
 | 107 | Sandbox | ALREADY-DONE | Provider simulator, Mailpit, Mox and `ELEVATEO_OUTBOUND_HOLD` | Backend | - |
 
 ### AI
@@ -292,4 +292,4 @@ Columns: number, item, verdict, evidence or reason (paths are relative to the re
 
 | # | Item | Verdict | Evidence or reason | Owner | Effort |
 | --- | --- | --- | --- | --- | --- |
-| 141 | Roles needed | APPLIES-NOW | Tech lead, backend, senior full-stack, DevOps, security and QA at the fractional days in `financial planning/pilot.md` | Tech lead | - |
+| 141 | Roles needed | APPLIES-NOW | Tech lead, backend, senior full-stack, DevOps, security and QA at the fractional days in `docs/business/financial-planning/pilot.md` | Tech lead | - |

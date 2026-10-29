@@ -1,0 +1,5 @@
+# Application attempt4 dispatch — observed 2026-10-14
+Mira: PID2655755; branch feat/mira-mailroom-experience; thread01a137e4-4b5e-7842-a3a4-5a80002c13f6; terminal term_13c1ee6d-bc7e-47b2-9a70-c8a6a331b99c.
+Elara: PID2656112; branch test/elara-acceptance; thread01a137e4-4c05-75e3-aa24-2101498c6163; terminal term_ce5b29e8-eeb6-4369-8dc6-4bd64002dacd.
+Nadia: PID2657172; branch research/nadia-deliverability; thread01a137e4-4f90-7600-a46c-48f40b90d3d7; terminal term_8412c601-dcfd-407e-981d-47f2a479eb11.
+All previous R3 exit0 and idle prompts observed. All new thread.started AND turn.started observed in reports/{name}-r4-events.jsonl. Manual SSH processes, no invented dispatch lifecycle. Codex0.160 gpt-6.1-sol low Fast requested; billing tier unverified. Existing RowanR3/SorenR2 untouched; Soren sole Docker owner. No host application tests. Exact requested integration7b0678c20d1b58e02e70c23b7844f9538b157eb0 absent incoming bundle HEAD discovery; exact path requested root, no substitution. Payloads incoming/{name}-task-r4.md and runners incoming/{name}-run-r4.sh. Timeout2400/TERM/kill20s.

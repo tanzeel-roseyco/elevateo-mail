@@ -1,0 +1,21 @@
+{
+  "id": "f9631fb4-ad8d-464e-97c5-2e2af9adc4e5",
+  "ok": true,
+  "result": {
+    "terminal": {
+      "handle": "term_217ccd7f-7e42-448b-8e94-7e8f5f61b2e1",
+      "tabId": "a4765783-7b51-4997-bfa7-640ef88a2838",
+      "paneKey": "a4765783-7b51-4997-bfa7-640ef88a2838:7d1c8dd8-495b-4264-9d88-9bde62fce03a",
+      "ptyId": "3e4d4246-e3f8-41a1-954b-a9a8c5e90626::C:/Users/Tanzeel/Code and projects/Elevateo Mail - Mailserver R&D 20261014@@8c645445",
+      "worktreeId": "3e4d4246-e3f8-41a1-954b-a9a8c5e90626::C:/Users/Tanzeel/Code and projects/Elevateo Mail - Mailserver R&D 20261014",
+      "title": "Darius",
+      "executionHostId": "local",
+      "incarnationId": "85a1218c-c2d9-47b5-87fc-ccaa0cba3cb2",
+      "hostPlatform": "win32",
+      "surface": "visible"
+    }
+  },
+  "_meta": {
+    "runtimeId": "396fae0f-6272-4785-a590-c66df65a0af0"
+  }
+}
