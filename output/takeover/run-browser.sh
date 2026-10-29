@@ -1,0 +1,3 @@
+set -eu
+cd /tmp/elevateo-integration-1006
+docker run --rm --name elevateo-integration-1006-browser-check --network elevateo-integration-1006-preview -e API_PROXY_TARGET=http://server:8787 -e IT_CONTROL_URL=http://server:8788 -e VITE_FIXTURE_SESSION=1 -v /tmp/elevateo-integration-1006/src:/app/src:ro -v /tmp/elevateo-integration-1006/e2e-integration:/app/e2e-integration:ro -v /tmp/elevateo-integration-1006/vite.config.ts:/app/vite.config.ts:ro -v /tmp/elevateo-integration-1006/playwright.integration.config.ts:/app/playwright.integration.config.ts:ro elevateo-integration-1006-web:latest npm run e2e:integration > integration-latest-check.log 2>&1

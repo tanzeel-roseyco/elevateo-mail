@@ -1,0 +1,33 @@
+[package]
+name = "elevateo-mail-preview"
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+[build-dependencies]
+tauri-build = { version = "=2.7.1", features = [] }
+
+[dependencies]
+tauri = { version = "=2.12.1", features = [] }
+serde = { version = "=1.0.229", features = ["derive"] }
+serde_json = "=1.0.151"
+sha2 = "=0.10.9"
+reqwest = { version = "=0.13.5", features = ["blocking", "json"] }
+
+[features]
+default = ["custom-protocol"]
+custom-protocol = ["tauri/custom-protocol"]
+containment-fixtures = []
+
+[[bin]]
+name = "bridge-fixture"
+path = "src/bin/bridge-fixture.rs"
+required-features = ["containment-fixtures"]
+
+[[bin]]
+name = "elevateo-draft"
+path = "src/bin/elevateo-draft.rs"
+
+# AIDEV-NOTE: Platform bindings contain the opt-in companion process tree; no renderer shell API is exposed.
+[target.'cfg(windows)'.dependencies]
+windows-sys = { version = "=0.59.0", features = ["Win32_Foundation", "Win32_Security", "Win32_System_JobObjects", "Win32_System_Threading", "Win32_System_Pipes"] }
