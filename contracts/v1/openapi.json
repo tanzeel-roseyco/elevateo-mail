@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Elevateo local session and mailbox contract",
-    "version": "1.0.0-folders.1",
+    "version": "1.0.0-organization-threads.1",
     "description": "Canonical accepted BE-02A lifecycle amendment and unchanged FE-01 read checkpoint. Design contract, not implementation acceptance. All mail content is plaintext. See README.md for normative authorization, lifecycle, byte limits and transport rules."
   },
   "servers": [
@@ -5730,6 +5730,319 @@
         "x-request-validation": "Reject unknown/duplicate decoded query keys (including aliases/brackets), duplicate JSON keys at every depth, unknown properties, malformed UTF-8, unpaired surrogates and U+0000 before framework merging or mutation. GET has no body; only declared query keys are allowed. JSON maxLength counts Unicode code points. UUIDs are parsed and canonicalized before binding/digest comparison.",
         "x-deadline-ms": 10000
       }
+    },
+    "/v1/threads": {
+      "get": {
+        "operationId": "listOrganizationThreads",
+        "description": "List threads across every mailbox currently readable by the authenticated actor in the active organization. One authorized repeatable-read snapshot; each mailbox contributes at most limit+1 candidates to the global keyset merge. Order last_message_at descending, null last, then id descending. Cursor binds actor, organization, session context, authorization version, filter, ordering and limit, and cannot be used with a mailbox list. Concurrent activity may move threads ahead of a continuation; refresh to see them. No totals and no read-state mutation.",
+        "parameters": [
+          {
+            "name": "X-Session-Context",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/OpaqueToken"
+            },
+            "description": "Current bootstrap context, never an authorization grant."
+          },
+          {
+            "name": "X-Authorization-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/OpaqueToken"
+            },
+            "description": "Current bootstrap authorization version; mismatch returns context_changed after authentication."
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2048
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50,
+              "default": 50
+            }
+          },
+          {
+            "name": "filter",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "all",
+                "unread",
+                "starred",
+                "snoozed",
+                "archive",
+                "spam",
+                "trash"
+              ],
+              "default": "all"
+            },
+            "description": "all: folder=inbox and not currently snoozed. unread: all plus unread for the actor. starred: starred by the actor in any folder except spam and trash. snoozed: folder=inbox with snoozed_until in the future. archive/spam/trash: that folder regardless of snooze. Ordering is unchanged (last_message_at desc nulls last, id desc)."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Authorized, currently visible data.",
+            "headers": {
+              "Cache-Control": {
+                "required": true,
+                "schema": {
+                  "const": "no-store"
+                }
+              },
+              "Vary": {
+                "required": true,
+                "schema": {
+                  "const": "Cookie"
+                }
+              },
+              "X-Content-Type-Options": {
+                "required": true,
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrganizationThreadPage"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "request_invalid; cursor_invalid for an expired, malformed or scope-mismatched cursor.",
+            "headers": {
+              "Cache-Control": {
+                "required": true,
+                "schema": {
+                  "const": "no-store"
+                }
+              },
+              "Vary": {
+                "required": true,
+                "schema": {
+                  "const": "Cookie"
+                }
+              },
+              "X-Content-Type-Options": {
+                "required": true,
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "unauthenticated for missing, invalid, expired or revoked session. Clear sensitive client state.",
+            "headers": {
+              "Cache-Control": {
+                "required": true,
+                "schema": {
+                  "const": "no-store"
+                }
+              },
+              "Vary": {
+                "required": true,
+                "schema": {
+                  "const": "Cookie"
+                }
+              },
+              "X-Content-Type-Options": {
+                "required": true,
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "not_available for absent OR inaccessible object. Identical shape and message; no existence disclosure.",
+            "headers": {
+              "Cache-Control": {
+                "required": true,
+                "schema": {
+                  "const": "no-store"
+                }
+              },
+              "Vary": {
+                "required": true,
+                "schema": {
+                  "const": "Cookie"
+                }
+              },
+              "X-Content-Type-Options": {
+                "required": true,
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "context_changed: no data returned. Clear data and re-bootstrap current session.",
+            "headers": {
+              "Cache-Control": {
+                "required": true,
+                "schema": {
+                  "const": "no-store"
+                }
+              },
+              "Vary": {
+                "required": true,
+                "schema": {
+                  "const": "Cookie"
+                }
+              },
+              "X-Content-Type-Options": {
+                "required": true,
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "rate_limited; optional Retry-After is delta-seconds 1..300.",
+            "headers": {
+              "Cache-Control": {
+                "required": true,
+                "schema": {
+                  "const": "no-store"
+                }
+              },
+              "Vary": {
+                "required": true,
+                "schema": {
+                  "const": "Cookie"
+                }
+              },
+              "X-Content-Type-Options": {
+                "required": true,
+                "schema": {
+                  "const": "nosniff"
+                }
+              },
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 300
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "temporarily_unavailable; no fixture fallback.",
+            "headers": {
+              "Cache-Control": {
+                "required": true,
+                "schema": {
+                  "const": "no-store"
+                }
+              },
+              "Vary": {
+                "required": true,
+                "schema": {
+                  "const": "Cookie"
+                }
+              },
+              "X-Content-Type-Options": {
+                "required": true,
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "internal_error; bounded generic message; correlation only, no stack or mail content.",
+            "headers": {
+              "Cache-Control": {
+                "required": true,
+                "schema": {
+                  "const": "no-store"
+                }
+              },
+              "Vary": {
+                "required": true,
+                "schema": {
+                  "const": "Cookie"
+                }
+              },
+              "X-Content-Type-Options": {
+                "required": true,
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "x-max-response-bytes": 262144
+      }
     }
   },
   "components": {
@@ -8385,6 +8698,44 @@
           }
         },
         "description": "Actor-specific star after a star write. Missing state is starred=false/version=0/updated_at=null. Repeating the same desired state is a no-op."
+      },
+      "OrganizationThreadPage": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "context_id",
+          "authorization_version",
+          "next_cursor",
+          "items"
+        ],
+        "properties": {
+          "context_id": {
+            "$ref": "#/components/schemas/OpaqueToken"
+          },
+          "authorization_version": {
+            "$ref": "#/components/schemas/OpaqueToken"
+          },
+          "next_cursor": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2048
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "items": {
+            "type": "array",
+            "maxItems": 50,
+            "items": {
+              "$ref": "#/components/schemas/ThreadSummary"
+            }
+          }
+        },
+        "description": "Organization-wide authorized ThreadSummary page. Each item retains its mailbox_id; no top-level mailbox_id. Empty authorized scope returns items=[] and next_cursor=null."
       }
     },
     "parameters": {
@@ -8785,7 +9136,7 @@
         ]
       },
       "Send404": {
-        "description": "not_available \u00e2\u20ac\u201d This item is unavailable.",
+        "description": "not_available â€” This item is unavailable.",
         "headers": {
           "Cache-Control": {
             "required": true,

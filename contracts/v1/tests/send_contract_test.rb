@@ -19,7 +19,7 @@ class SendContractTest < Minitest::Test
     end
   end
 
-  # AIDEV-NOTE: Historical BE-03 bytes and additive folder bytes are separate claims in this seal.
+  # AIDEV-NOTE: Historical BE-03/folder bytes stay sealed separately from the current additive organization list.
   def test_preservation_manifest_separates_baseline_from_folders_extension
     assert_equal "03ae770c56271cd8236726bfd8fe63248e81283d", PRESERVATION.fetch("baseline_commit")
     assert_equal "5b89d3478a40f8046efd9273699edd3cfc6ce706f6607ee38752affcd889e772",
@@ -28,14 +28,32 @@ class SendContractTest < Minitest::Test
                  PRESERVATION.fetch("baseline_openapi_sha256")
     extension = PRESERVATION.fetch("extension")
     assert_equal "folders", extension.fetch("name")
-    assert_equal Digest::SHA256.file(File.join(ROOT, "openapi.json")).hexdigest,
-                 extension.fetch("openapi_sha256")
+    assert_equal "7284a572e5c9bc64961d4ae76fe6821c94341ef4672097277499642a959a2cae", extension.fetch("openapi_sha256")
+    current = PRESERVATION.fetch("current_extension")
+    assert_equal "organization_threads", current.fetch("name")
+    assert_equal Digest::SHA256.file(File.join(ROOT, "openapi.json")).hexdigest, current.fetch("openapi_sha256")
     assert_equal Digest::SHA256.file(File.join(ROOT, "fixtures.json")).hexdigest,
                  extension.fetch("fixtures_sha256")
     refute_equal PRESERVATION.fetch("baseline_openapi_sha256"), extension.fetch("openapi_sha256")
     refute_equal PRESERVATION.fetch("baseline_fixtures_sha256"), extension.fetch("fixtures_sha256")
     assert_equal "50387ddd8ad20c355b3d76f660941512e7fce83ee745111963c925219f3fc2c0",
                  Digest::SHA256.hexdigest(JSON.generate(sorted(PRESERVATION.fetch("frozen_sections"))))
+  end
+
+  def test_organization_list_preserves_summary_and_mailbox_semantics
+    mailbox = DOCUMENT.fetch("paths").fetch("/v1/mailboxes/{mailbox_id}/threads").fetch("get")
+    organization = DOCUMENT.fetch("paths").fetch("/v1/threads").fetch("get")
+    assert_equal "listOrganizationThreads", organization.fetch("operationId")
+    assert_equal mailbox.fetch("parameters").reject { |parameter| parameter.fetch("name") == "mailbox_id" },
+                 organization.fetch("parameters")
+    assert_equal "#/components/schemas/OrganizationThreadPage",
+                 organization.fetch("responses").fetch("200").fetch("content").fetch("application/json").fetch("schema").fetch("$ref")
+    schemas = DOCUMENT.fetch("components").fetch("schemas")
+    page = schemas.fetch("OrganizationThreadPage")
+    refute page.fetch("properties").key?("mailbox_id")
+    assert_equal %w[authorization_version context_id items next_cursor], page.fetch("required").sort
+    assert_equal schemas.fetch("ThreadPage").fetch("properties").reject { |key, _| key == "mailbox_id" }, page.fetch("properties")
+    assert_equal false, page.fetch("additionalProperties")
   end
 
   def test_every_folders_path_and_component_is_structurally_unchanged
@@ -78,6 +96,8 @@ class SendContractTest < Minitest::Test
       return false if schema.key?(branch) && !valid?(schema.fetch(branch), value)
     end
     type = schema["type"]
+    # AIDEV-NOTE: OpenAPI 3.1 nullable unions apply the same constraints to each permitted JSON type.
+    return type.any? { |part| valid?(schema.merge("type" => part), value) } if type.is_a?(Array)
     return false if type == "null" && !value.nil?
     return false if type == "boolean" && value != true && value != false
     return false if type == "integer" && !value.is_a?(Integer)
@@ -108,6 +128,14 @@ class SendContractTest < Minitest::Test
     DOCUMENT.fetch("components").fetch("schemas").fetch(name)
   end
 
+  def test_nullable_type_union_keeps_constraints_and_rejects_wrong_types
+    nullable = { "type" => ["string", "null"], "maxLength" => 2 }
+    assert valid?(nullable, nil)
+    assert valid?(nullable, "ok")
+    refute valid?(nullable, "long")
+    refute valid?(nullable, 12)
+  end
+
   def test_synthetic_examples_conform_to_declared_send_shapes
     FIXTURES.fetch("examples").each do |example|
       assert valid?(schema(example.fetch("schema")), example.fetch("value")), example.fetch("name")
@@ -133,7 +161,8 @@ class SendContractTest < Minitest::Test
     refute valid?(schema("SendReview"), review.merge("ready" => true))
     refute valid?(schema("SendReview"), review.merge("to" => review.fetch("to") * 101))
     refute valid?(schema("SendReview"), review.merge("attachments" => ["unsupported"]))
-    refute valid?(schema("SendReview"), review.merge("simulated" => false))
+    # AIDEV-NOTE: Held/live transport modes share this response; simulated is deliberately a boolean.
+    assert valid?(schema("SendReview"), review.merge("simulated" => false))
     refute valid?(schema("SendReview"), review.reject { |key, _| key == "outbound_mode" })
     refute valid?(schema("SendReview"), review.merge("outbound_mode" => "smtp"))
     check = review.fetch("recipient_checks").first

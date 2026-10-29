@@ -138,5 +138,11 @@
   },
   "runtime": "NOT_RUN",
   "be02": "OPEN",
-  "integration_release": "GATED"
+  "integration_release": "GATED",
+  "current_extension": {
+    "name": "organization_threads",
+    "openapi_sha256": "66ed9483d661271846b5dad75afd61bb521929ea8577ada3ec141cf146ea5a76",
+    "fixtures_sha256": "4e3051d9d42d98914f324c0351288d04d7be58d33696f57828230de7381ef3e5",
+    "historical_folders_extension_unchanged": true
+  }
 }
