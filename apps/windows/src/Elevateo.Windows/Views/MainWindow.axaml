@@ -1,0 +1,206 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:Elevateo.Windows.ViewModels"
+        xmlns:api="using:Elevateo.Client.Core.Api"
+        x:Class="Elevateo.Windows.Views.MainWindow"
+        x:DataType="vm:MainViewModel"
+        Title="Elevateo Mail"
+        Width="1280" Height="800"
+        MinWidth="960" MinHeight="600">
+
+  <!-- AIDEV-NOTE: message bodies render in SelectableTextBlock only — no HTML control, no WebView. -->
+
+  <Panel>
+
+    <!-- ======================= Sign-in screen ======================= -->
+    <StackPanel IsVisible="{Binding !IsSignedIn}"
+                VerticalAlignment="Center" HorizontalAlignment="Center"
+                Spacing="16" MaxWidth="420">
+      <TextBlock Text="Elevateo Mail" FontSize="28" FontWeight="SemiBold"
+                 HorizontalAlignment="Center"/>
+      <TextBlock Text="Sign in with your company Elevateo account. Your system browser will open."
+                 TextWrapping="Wrap" HorizontalAlignment="Center" TextAlignment="Center"/>
+      <Button Content="Sign in with Elevateo SSO"
+              Command="{Binding SignInCommand}"
+              IsEnabled="{Binding !SignInBusy}"
+              HorizontalAlignment="Center"
+              AutomationProperties.Name="Sign in with Elevateo SSO"/>
+      <ProgressBar IsIndeterminate="True" IsVisible="{Binding SignInBusy}"
+                   AutomationProperties.Name="Signing in"/>
+      <TextBlock Text="{Binding SignInError}"
+                 IsVisible="{Binding SignInError, Converter={x:Static ObjectConverters.IsNotNull}}"
+                 Foreground="{DynamicResource SystemControlErrorTextForegroundBrush}"
+                 TextWrapping="Wrap" TextAlignment="Center"
+                 AutomationProperties.LiveSetting="Assertive"/>
+    </StackPanel>
+
+    <!-- ======================= Signed-in shell ======================= -->
+    <DockPanel IsVisible="{Binding IsSignedIn}">
+
+      <Border DockPanel.Dock="Top" Padding="12,8" BorderThickness="0,0,0,1"
+              BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}">
+        <DockPanel>
+          <Button DockPanel.Dock="Right" Content="Sign out"
+                  Command="{Binding SignOutCommand}"
+                  AutomationProperties.Name="Sign out and erase stored credentials"/>
+          <TextBlock Text="{Binding AccountLabel}" VerticalAlignment="Center" FontWeight="SemiBold"/>
+        </DockPanel>
+      </Border>
+
+      <Grid ColumnDefinitions="220,320,*,320">
+
+        <!-- Mailboxes -->
+        <DockPanel Grid.Column="0" Margin="8">
+          <TextBlock DockPanel.Dock="Top" Text="Mailboxes" FontWeight="SemiBold" Margin="0,0,0,8"/>
+          <StackPanel DockPanel.Dock="Top" Spacing="8">
+            <ProgressBar IsIndeterminate="True" IsVisible="{Binding MailboxesLoading}"
+                         AutomationProperties.Name="Loading mailboxes"/>
+            <TextBlock Text="{Binding MailboxesError}" TextWrapping="Wrap"
+                       IsVisible="{Binding MailboxesError, Converter={x:Static ObjectConverters.IsNotNull}}"
+                       AutomationProperties.LiveSetting="Assertive"/>
+            <Button Content="Retry" Command="{Binding LoadMailboxesCommand}"
+                    IsVisible="{Binding MailboxesError, Converter={x:Static ObjectConverters.IsNotNull}}"
+                    AutomationProperties.Name="Retry loading mailboxes"/>
+            <TextBlock Text="No mailboxes are available to you yet."
+                       IsVisible="{Binding MailboxesEmpty}" TextWrapping="Wrap"/>
+          </StackPanel>
+          <ListBox ItemsSource="{Binding Mailboxes}" SelectedItem="{Binding SelectedMailbox}"
+                   AutomationProperties.Name="Mailbox list">
+            <ListBox.ItemTemplate>
+              <DataTemplate x:DataType="api:Mailbox">
+                <StackPanel>
+                  <TextBlock Text="{Binding DisplayName}" FontWeight="SemiBold"/>
+                  <TextBlock Text="{Binding DisplayAddress}" FontSize="12" Opacity="0.7"/>
+                </StackPanel>
+              </DataTemplate>
+            </ListBox.ItemTemplate>
+          </ListBox>
+        </DockPanel>
+
+        <!-- Conversation list -->
+        <DockPanel Grid.Column="1" Margin="0,8,8,8">
+          <TextBlock DockPanel.Dock="Top" Text="Conversations" FontWeight="SemiBold" Margin="0,0,0,8"/>
+          <StackPanel DockPanel.Dock="Top" Spacing="8">
+            <ProgressBar IsIndeterminate="True" IsVisible="{Binding ThreadsLoading}"
+                         AutomationProperties.Name="Loading conversations"/>
+            <TextBlock Text="{Binding ThreadsError}" TextWrapping="Wrap"
+                       IsVisible="{Binding ThreadsError, Converter={x:Static ObjectConverters.IsNotNull}}"
+                       AutomationProperties.LiveSetting="Assertive"/>
+            <Button Content="Retry" Command="{Binding LoadThreadsCommand}"
+                    IsVisible="{Binding ThreadsError, Converter={x:Static ObjectConverters.IsNotNull}}"
+                    AutomationProperties.Name="Retry loading conversations"/>
+            <TextBlock Text="This mailbox has no conversations." IsVisible="{Binding ThreadsEmpty}"
+                       TextWrapping="Wrap"/>
+          </StackPanel>
+          <ListBox ItemsSource="{Binding Threads}" SelectedItem="{Binding SelectedThread}"
+                   AutomationProperties.Name="Conversation list">
+            <ListBox.ItemTemplate>
+              <DataTemplate x:DataType="vm:ThreadRow">
+                <StackPanel Margin="0,4">
+                  <TextBlock Text="{Binding Subject}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"/>
+                  <TextBlock Text="{Binding Sender}" FontSize="12" Opacity="0.8"/>
+                  <TextBlock Text="{Binding Preview}" FontSize="12" Opacity="0.6"
+                             TextTrimming="CharacterEllipsis"/>
+                </StackPanel>
+              </DataTemplate>
+            </ListBox.ItemTemplate>
+          </ListBox>
+        </DockPanel>
+
+        <!-- Thread view + composer -->
+        <Grid Grid.Column="2" RowDefinitions="Auto,Auto,*,Auto" Margin="0,8,8,8">
+          <TextBlock Grid.Row="0" Text="{Binding ThreadSubject}" FontSize="18" FontWeight="SemiBold"
+                     TextWrapping="Wrap"/>
+          <StackPanel Grid.Row="1" Spacing="8" Margin="0,8,0,0">
+            <ProgressBar IsIndeterminate="True" IsVisible="{Binding ThreadLoading}"
+                         AutomationProperties.Name="Loading conversation"/>
+            <TextBlock Text="{Binding ThreadError}" TextWrapping="Wrap"
+                       IsVisible="{Binding ThreadError, Converter={x:Static ObjectConverters.IsNotNull}}"
+                       AutomationProperties.LiveSetting="Assertive"/>
+          </StackPanel>
+          <ScrollViewer Grid.Row="2">
+            <ItemsControl ItemsSource="{Binding Messages}" AutomationProperties.Name="Messages">
+              <ItemsControl.ItemTemplate>
+                <DataTemplate x:DataType="vm:MessageRow">
+                  <Border Margin="0,6" Padding="10" CornerRadius="6"
+                          Background="{DynamicResource SystemControlBackgroundListLowBrush}">
+                    <StackPanel Spacing="4">
+                      <DockPanel>
+                        <TextBlock DockPanel.Dock="Right" Text="{Binding SentAt}" FontSize="12" Opacity="0.6"/>
+                        <TextBlock Text="{Binding Sender}" FontWeight="SemiBold"/>
+                      </DockPanel>
+                      <SelectableTextBlock Text="{Binding Body}" TextWrapping="Wrap"/>
+                      <TextBlock Text="Message truncated by the server." FontSize="12" Opacity="0.6"
+                                 IsVisible="{Binding Truncated}"/>
+                    </StackPanel>
+                  </Border>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+          </ScrollViewer>
+          <StackPanel Grid.Row="3" Spacing="6" Margin="0,8,0,0">
+            <TextBlock Text="Reply (saved as a draft; approval and sending happen in the web app)"
+                       FontSize="12" Opacity="0.8"/>
+            <TextBox Text="{Binding ComposerBody}" AcceptsReturn="True" MinHeight="90" MaxHeight="200"
+                     Watermark="Write your reply…"
+                     AutomationProperties.Name="Reply body"/>
+            <DockPanel>
+              <Button DockPanel.Dock="Right" Content="Save draft"
+                      Command="{Binding SaveDraftCommand}"
+                      IsEnabled="{Binding !ComposerBusy}"
+                      AutomationProperties.Name="Save reply as draft"/>
+              <TextBlock Text="{Binding ComposerStatus}" VerticalAlignment="Center" TextWrapping="Wrap"
+                         AutomationProperties.LiveSetting="Polite"/>
+            </DockPanel>
+          </StackPanel>
+        </Grid>
+
+        <!-- Assistant side panel -->
+        <Border Grid.Column="3" Margin="0,8,8,8" Padding="10" CornerRadius="6"
+                BorderThickness="1"
+                BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}">
+          <Grid RowDefinitions="Auto,Auto,Auto,Auto,*,Auto,Auto" DataContext="{Binding Assistant}"
+                x:DataType="vm:AssistantViewModel">
+            <TextBlock Grid.Row="0" Text="Assistant" FontWeight="SemiBold"/>
+            <ComboBox Grid.Row="1" ItemsSource="{Binding Runtimes}"
+                      SelectedItem="{Binding SelectedRuntime}" Margin="0,8,0,0"
+                      AutomationProperties.Name="Assistant runtime"/>
+            <TextBlock Grid.Row="2" Text="{x:Static vm:AssistantViewModel.ExternalAiNotice}"
+                       FontSize="12" Opacity="0.8" TextWrapping="Wrap" Margin="0,8,0,0"/>
+            <TextBlock Grid.Row="3" Text="{x:Static vm:AssistantViewModel.PermissionsNotice}"
+                       FontSize="12" Opacity="0.8" TextWrapping="Wrap" Margin="0,4,0,0"/>
+            <StackPanel Grid.Row="4" Margin="0,8,0,0" Spacing="8">
+              <TextBlock Text="{Binding UnavailableReason}" TextWrapping="Wrap"
+                         IsVisible="{Binding UnavailableReason, Converter={x:Static ObjectConverters.IsNotNull}}"
+                         AutomationProperties.LiveSetting="Polite"/>
+              <ScrollViewer MaxHeight="420">
+                <ItemsControl ItemsSource="{Binding Transcript}" AutomationProperties.Name="Assistant transcript">
+                  <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="vm:TranscriptLine">
+                      <StackPanel Margin="0,4">
+                        <TextBlock Text="{Binding Speaker}" FontWeight="SemiBold" FontSize="12"/>
+                        <SelectableTextBlock Text="{Binding Text}" TextWrapping="Wrap"/>
+                      </StackPanel>
+                    </DataTemplate>
+                  </ItemsControl.ItemTemplate>
+                </ItemsControl>
+              </ScrollViewer>
+            </StackPanel>
+            <TextBox Grid.Row="5" Text="{Binding Input}" Watermark="Ask the assistant…"
+                     IsEnabled="{Binding IsAvailable}" Margin="0,8,0,0"
+                     AutomationProperties.Name="Assistant message"/>
+            <DockPanel Grid.Row="6" Margin="0,6,0,0">
+              <Button DockPanel.Dock="Right" Content="Cancel" Command="{Binding CancelCommand}"
+                      IsEnabled="{Binding Busy}"
+                      AutomationProperties.Name="Cancel assistant response"/>
+              <Button Content="Send" Command="{Binding SendCommand}"
+                      IsEnabled="{Binding IsAvailable}"
+                      AutomationProperties.Name="Send message to assistant"/>
+            </DockPanel>
+          </Grid>
+        </Border>
+
+      </Grid>
+    </DockPanel>
+  </Panel>
+</Window>
