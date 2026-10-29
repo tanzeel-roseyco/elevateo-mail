@@ -17,7 +17,7 @@ Goal: finish every frontend/client area so web, Mac, Windows and Android (plus i
 | Android (`apps/android/build`): current-API audit, local Docker APK build, headless emulator acceptance (needs `/dev/kvm`) | merged, not yet run |
 | iOS (`apps/ios`): ElevateoCore Swift package (Linux-testable) + SwiftUI app, Xcode project, `build.sh` | merged; app target cannot be built: no macOS host |
 
-Known gaps so far: native shells deny the cross-origin Authentik redirect (`apps/native/src-tauri/src/navigation.rs`), so native SSO cannot complete yet; `apps/native/src-tauri/Cargo.lock` must be refreshed for new Mac dependencies; desktop/mobile token exchange and the agents bridge are contract requests. `.dmg` signing/notarization and the iOS app build need a Mac host (accepted by the user).
+Known gaps so far: native shells now allow only the configured Authentik origin for the web-session SSO round trip (host commands stay app-origin-only; unverified on a device); `apps/native/src-tauri/Cargo.lock` must be refreshed for new Mac dependencies; desktop/mobile token exchange and the agents bridge are contract requests. `.dmg` signing/notarization and the iOS app build need a Mac host (accepted by the user).
 <!-- frontend-completion-20261029:end -->
 
 ## Frontend refinement checkpoint - 2026-10-24

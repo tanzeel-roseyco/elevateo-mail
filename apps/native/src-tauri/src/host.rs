@@ -1,4 +1,5 @@
-// Narrow native command surface exposed to the one approved web origin, plus the update flow.
+// Narrow native command surface exposed to the one approved web origin (enforced per command by
+// require_first_party), plus the update flow.
 // Email content never crosses this boundary: commands carry only booleans, runtime names and
 // status strings. Everything else (mail, drafts, search) stays HTTPS between WebView and server.
 //
@@ -7,7 +8,7 @@
 use std::time::Duration;
 
 use serde::Serialize;
-use tauri::{AppHandle, Emitter, Manager, State};
+use tauri::{AppHandle, Emitter, Manager, State, Webview};
 
 use crate::auth::{
     authorize_url, AuthError, ContractPendingExchange, CredentialStore, ExchangeError, KeychainStore,
@@ -32,25 +33,52 @@ pub struct HostCapabilities {
     pub assistant_bridge: bool,
 }
 
+/// The one approved app origin, managed as state so every command can check its caller.
+pub struct FirstPartyOrigin(pub url::Url);
+
+/// Rejects a command unless the calling page is on the approved app origin.
+///
+/// AIDEV-NOTE: required because the window may also show the IdP origin during SSO and the capability's
+/// remote context is `https://*`; navigation.rs alone no longer implies "only our page can invoke".
+fn require_first_party(webview: &Webview, origin: &FirstPartyOrigin) -> Result<(), String> {
+    let current = webview.url().map_err(|e| format!("caller page unknown: {e}"))?;
+    if crate::navigation::is_approved_navigation(&origin.0, None, &current) {
+        Ok(())
+    } else {
+        Err("This page is not allowed to use desktop commands.".into())
+    }
+}
+
 #[tauri::command]
-pub fn host_capabilities() -> HostCapabilities {
-    HostCapabilities {
+pub fn host_capabilities(webview: Webview, origin: State<'_, FirstPartyOrigin>) -> Result<HostCapabilities, String> {
+    require_first_party(&webview, &origin)?;
+    Ok(HostCapabilities {
         desktop: true,
         platform: std::env::consts::OS,
         version: env!("CARGO_PKG_VERSION"),
         assistant_bridge: false,
-    }
+    })
 }
 
 /// The web UI reports work an update install must not interrupt.
 #[tauri::command]
-pub fn host_report_busy(busy: State<'_, SharedBusy>, unsaved_draft: bool, send_in_progress: bool) {
+pub fn host_report_busy(
+    webview: Webview,
+    origin: State<'_, FirstPartyOrigin>,
+    busy: State<'_, SharedBusy>,
+    unsaved_draft: bool,
+    send_in_progress: bool,
+) -> Result<(), String> {
+    require_first_party(&webview, &origin)?;
     *busy.0.lock().expect("busy lock poisoned") = BusyState { unsaved_draft, send_in_progress };
+    Ok(())
 }
 
 /// The web UI reached its first meaningful screen: the post-update health check passes.
 #[tauri::command]
-pub fn host_ready(app: AppHandle) -> Result<(), String> {
+pub fn host_ready(app: AppHandle, webview: Webview, origin: State<'_, FirstPartyOrigin>) -> Result<(), String> {
+    // An IdP page finishing its load is not the app becoming healthy.
+    require_first_party(&webview, &origin)?;
     let data_dir = app.path().app_data_dir().map_err(|e| e.to_string())?;
     mark_ready(&data_dir).map_err(|e| e.to_string())
 }
@@ -68,7 +96,13 @@ fn emit_auth(app: &AppHandle, status: &'static str, message: String) {
 /// Starts system-browser OIDC login: loopback listener, pending state+verifier, browser launch.
 /// The outcome arrives as `host://auth` events; the command returns once the browser is opened.
 #[tauri::command]
-pub fn auth_begin_login(app: AppHandle, broker: State<'_, LoginBroker>) -> Result<(), String> {
+pub fn auth_begin_login(
+    app: AppHandle,
+    webview: Webview,
+    origin: State<'_, FirstPartyOrigin>,
+    broker: State<'_, LoginBroker>,
+) -> Result<(), String> {
+    require_first_party(&webview, &origin)?;
     let (Some(issuer), Some(client_id)) = (OIDC_ISSUER, OIDC_CLIENT_ID) else {
         return Err("Desktop sign-in is not configured in this build (OIDC issuer/client id absent).".into());
     };
@@ -111,7 +145,8 @@ pub fn auth_begin_login(app: AppHandle, broker: State<'_, LoginBroker>) -> Resul
             Err(ExchangeError::Rejected(message)) => emit_auth(&app_for_thread, "error", message),
         }
     });
-    // AIDEV-NOTE: the system browser owns credentials entry; the WebView never sees the IdP page.
+    // AIDEV-NOTE: native PKCE login enters credentials in the system browser; only the web-session SSO
+    // flow shows the IdP in the WebView (allowed by navigation.rs, denied host commands).
     tauri_plugin_opener::OpenerExt::opener(&app)
         .open_url(url.as_str(), None::<&str>)
         .map_err(|e| format!("system browser could not be opened: {e}"))
@@ -120,7 +155,8 @@ pub fn auth_begin_login(app: AppHandle, broker: State<'_, LoginBroker>) -> Resul
 /// Erases local tokens: pending login, keychain refresh credential. Server-side revocation is a
 /// separate contract (reported); the web UI still performs its own cookie sign-out.
 #[tauri::command]
-pub fn auth_sign_out(broker: State<'_, LoginBroker>) -> Result<(), String> {
+pub fn auth_sign_out(webview: Webview, origin: State<'_, FirstPartyOrigin>, broker: State<'_, LoginBroker>) -> Result<(), String> {
+    require_first_party(&webview, &origin)?;
     broker.abandon();
     KeychainStore.clear().map_err(|e| format!("keychain clear failed: {e:?}"))
 }

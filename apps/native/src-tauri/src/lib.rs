@@ -24,10 +24,12 @@ use tauri::{Emitter, Manager};
 ///
 /// AIDEV-NOTE: couples to apps/web/src/features/assistant/bridge.ts (desktopHostSchema) and to
 /// Tauri's __TAURI_INTERNALS__ IPC object; revisit on Tauri major upgrades.
-fn init_script() -> String {
+fn init_script(app_origin: &str) -> String {
     format!(
         r#"(function () {{
   'use strict';
+  // The IdP origin may load in this window during SSO; it gets no capability object.
+  if (window.location.origin !== '{app_origin}') return;
   var internals = window.__TAURI_INTERNALS__;
   if (!internals) return; // IPC not granted to this page: expose no capability object.
   function invoke(cmd, args) {{ return internals.invoke(cmd, args || {{}}); }}
@@ -53,6 +55,8 @@ fn init_script() -> String {
 }})();"#,
         platform = std::env::consts::OS,
         version = env!("CARGO_PKG_VERSION"),
+        // validate_web_origin guarantees a bare https origin, so this cannot break out of the JS string.
+        app_origin = app_origin,
     )
 }
 
@@ -78,6 +82,7 @@ pub fn run() {
     let builder = builder
         .plugin(tauri_plugin_opener::init())
         .plugin(tauri_plugin_updater::Builder::new().build())
+        .manage(host::FirstPartyOrigin(approved.clone()))
         .manage(auth::LoginBroker::default())
         .manage(update::SharedBusy::default())
         .invoke_handler(tauri::generate_handler![
@@ -161,11 +166,13 @@ pub fn run() {
             }
 
             let navigation_origin = approved.clone();
+            // Web-session SSO leaves the app origin for the configured IdP and returns via its callback.
+            let identity_provider = navigation::identity_provider_origin(option_env!("ELEVATEO_OIDC_ISSUER"));
             tauri::WebviewWindowBuilder::new(app, "main", tauri::WebviewUrl::External(approved.clone()))
                 .title("Elevateo Mail")
                 .inner_size(1120.0, 760.0)
-                .initialization_script(&init_script())
-                .on_navigation(move |url| navigation::is_approved_navigation(&navigation_origin, url))
+                .initialization_script(&init_script(&approved.origin().ascii_serialization()))
+                .on_navigation(move |url| navigation::is_approved_navigation(&navigation_origin, identity_provider.as_ref(), url))
                 .on_new_window(|_, _| tauri::webview::NewWindowResponse::Deny)
                 .on_permission_request(|_, _| tauri::webview::PermissionResponse::Deny)
                 .build()?;

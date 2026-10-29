@@ -8,7 +8,8 @@ app/Edit menus (About, Check for Updates, Sign Out, Quit, clipboard), system-bro
 signed auto-update with rollback (`src/update.rs`, `src/host.rs`), a background reachability probe
 surfaced to the web UI as standard online/offline events, and one reviewed Tauri capability
 (`capabilities/main.json`: main window, `core:event:default` only; the `https://*` remote context
-is confined to the single approved origin by the exact-origin navigation guard). The refresh
+is confined by `navigation.rs` to the approved origin plus the configured SSO identity-provider origin,
+and every host command rejects callers that are not on the approved origin). The refresh
 credential lives in the macOS Keychain via the `keyring` crate; access tokens stay in memory. The
 server native token-exchange endpoint is not in contracts yet, so login ends in an honest
 "exchange unavailable" state (`ContractPendingExchange`).
