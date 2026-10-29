@@ -38,8 +38,8 @@ def fixture() -> None:
       CREATE SCHEMA app AUTHORIZATION elevateo_owner;
       CREATE SCHEMA app_auth AUTHORIZATION elevateo_owner;
       CREATE SCHEMA auth;
-      CREATE TABLE auth.users(id uuid PRIMARY KEY,email_confirmed_at timestamptz,deleted_at timestamptz,banned_until timestamptz);
-      CREATE TABLE auth.identities(user_id uuid REFERENCES auth.users(id),provider text);
+      CREATE TABLE auth.users(id uuid PRIMARY KEY,email_confirmed_at timestamptz,deleted_at timestamptz,banned_until timestamptz,email text);
+      CREATE TABLE auth.identities(user_id uuid REFERENCES auth.users(id),provider text,identity_data jsonb);
       CREATE TABLE app_auth.authorization_generations(organization_id uuid,user_id uuid,generation bigint DEFAULT 1);
       SET ROLE elevateo_owner;
     """ + tables + "CREATE TABLE app.organization_access" + access_table + "CREATE TABLE app.organization_enrollment_receipts" + receipts
@@ -61,8 +61,9 @@ class TenantDatabaseTest(unittest.TestCase):
         if os.environ.get("PGHOST") != "db" or os.environ.get("INIT62817_TEST_ONLY") != "disposable":
             raise RuntimeError("task-owned disposable Docker database required")
         fixture()
-        result = sql("INSERT INTO auth.users VALUES ('" + VALUES["user_id"] + "',now(),NULL,NULL);"
-                     "INSERT INTO auth.identities VALUES ('" + VALUES["user_id"] + "','google');")
+        result = sql("INSERT INTO auth.users VALUES ('" + VALUES["user_id"] + "',now(),NULL,NULL,'owner@elevateoco.com');"
+                     "INSERT INTO auth.identities VALUES ('" + VALUES["user_id"] + "','custom:authentik',"
+                     "jsonb_build_object('sub','" + VALUES["subject"] + "','email','owner@elevateoco.com','email_verified',true));")
         if result.returncode:
             raise RuntimeError(result.stderr)
 
@@ -103,12 +104,24 @@ class TenantDatabaseTest(unittest.TestCase):
 
     def test_05_unreceipted_membership_cannot_be_elevated(self) -> None:
         other = "55555555-5555-4555-8555-555555555555"
-        result = sql("INSERT INTO auth.users VALUES ('" + other + "',now(),NULL,NULL);"
-                     "INSERT INTO auth.identities VALUES ('" + other + "','google');"
+        result = sql("INSERT INTO auth.users VALUES ('" + other + "',now(),NULL,NULL,'other@elevateoco.com');"
+                     "INSERT INTO auth.identities VALUES ('" + other + "','custom:authentik',"
+                     "jsonb_build_object('sub','" + VALUES["subject"] + "','email','other@elevateoco.com','email_verified',true));"
                      "INSERT INTO app.organization_memberships VALUES ('" + VALUES["organization_id"] + "','" + other + "');")
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertNotEqual(self.enroll(user_id=other, role="admin").returncode, 0)
         self.assertEqual(sql("SELECT count(*) FROM app.organization_access").stdout.strip(), "1")
+
+    def test_06_unverified_wrong_provider_subject_and_company_denied(self) -> None:
+        for mutation in ("provider='google'", "identity_data=identity_data-'sub'",
+                         "identity_data=jsonb_set(identity_data,'{email_verified}','false')",
+                         "identity_data=jsonb_set(identity_data,'{email}', '\"owner@example.com\"')"):
+            with self.subTest(mutation=mutation):
+                sql("BEGIN; UPDATE auth.identities SET " + mutation + "; COMMIT;")
+                self.assertNotEqual(self.enroll().returncode, 0)
+                sql("UPDATE auth.identities SET provider='custom:authentik',identity_data="
+                    "jsonb_build_object('sub','" + VALUES['subject'] + "','email','owner@elevateoco.com','email_verified',true)")
+        self.assertNotEqual(self.enroll(subject="77777777-7777-4777-8777-777777777777").returncode, 0)
 
 
 if __name__ == "__main__":

@@ -11,6 +11,7 @@ from admission import Tenant, require, source_digest
 from initialize import ROOT, environment, execute
 
 USER = "22222222-2222-4222-8222-222222222222"
+SUBJECT = "66666666-6666-4666-8666-666666666666"
 ORG = "11111111-1111-4111-8111-111111111111"
 SENTINEL = "initrepair20261023-preserve"
 
@@ -34,10 +35,11 @@ def protected() -> str:
 
 
 def seed() -> None:
+    # AIDEV-NOTE: Fabricated verified claims exist only in this guarded disposable restore database, never live Auth.
     sql("INSERT INTO auth.users(id,email,email_confirmed_at,raw_app_meta_data,raw_user_meta_data) VALUES ('" + USER +
-        "','sentinel@initrepair.invalid','2026-10-23T00:00:00Z','{\"provider\":\"google\"}','{\"sentinel\":true}');"
-        "INSERT INTO auth.identities(id,provider_id,user_id,identity_data,provider) VALUES ('" + USER + "','" + USER +
-        "','" + USER + "','{\"sub\":\"" + USER + "\"}','google');"
+        "','sentinel@elevateoco.com','2026-10-23T00:00:00Z','{\"provider\":\"custom:authentik\"}','{\"sentinel\":true}');"
+        "INSERT INTO auth.identities(id,provider_id,user_id,identity_data,provider) VALUES ('" + USER + "','" + SUBJECT +
+        "','" + USER + "','{\"sub\":\"" + SUBJECT + "\",\"email\":\"sentinel@elevateoco.com\",\"email_verified\":true}','custom:authentik');"
         "INSERT INTO auth.sessions(id,user_id,not_after) VALUES ('" + USER + "','" + USER + "','2099-01-01T00:00:00Z');"
         "INSERT INTO storage.buckets(id,name,public) VALUES ('" + SENTINEL + "','" + SENTINEL + "',false);"
         "INSERT INTO storage.objects(id,bucket_id,name,metadata) VALUES ('" + USER + "','" + SENTINEL +
@@ -52,12 +54,12 @@ def forward() -> None:
     versions = sql("SELECT version FROM app_meta.schema_migrations ORDER BY version").splitlines()
     expected = sorted(path.name.split("_", 1)[0] for path in (ROOT / "apps/server/db/migrate").glob("*.rb"))
     require(versions == expected and bool(versions), "all exact Rails migrations must complete")
-    tenant = Tenant(ORG, USER, "Disposable restore rehearsal", "owner", "rehearsal:initrepair20261023")
+    tenant = Tenant(ORG, USER, "Disposable restore rehearsal", "owner", "rehearsal:initrepair20261023", SUBJECT)
     execute("tenant", environment(os.environ, "tenant"), tenant)
     execute("tenant", environment(os.environ, "tenant"), tenant)
-    for candidate in (Tenant(ORG, USER, tenant.name, "admin", tenant.receipt),
+    for candidate in (Tenant(ORG, USER, tenant.name, "admin", tenant.receipt, SUBJECT),
                       Tenant("33333333-3333-4333-8333-333333333333", "44444444-4444-4444-8444-444444444444",
-                             tenant.name, "owner", tenant.receipt)):
+                             tenant.name, "owner", tenant.receipt, SUBJECT)):
         try:
             execute("tenant", environment(os.environ, "tenant"), candidate)
         except ValueError:

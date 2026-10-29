@@ -73,7 +73,7 @@ def main() -> int:
     parser.add_argument("phase", choices=["schema", "tenant"])
     parser.add_argument("--apply", action="store_true")
     parser.add_argument("--gate", type=Path)
-    for field in ("organization-id", "user-id", "name", "role", "receipt"):
+    for field in ("organization-id", "user-id", "name", "role", "receipt", "subject"):
         parser.add_argument("--" + field)
     args = parser.parse_args()
     try:

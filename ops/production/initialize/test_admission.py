@@ -12,7 +12,8 @@ from initialize import ROOT, environment, execute, main
 
 VALUES = {"organization_id": "11111111-1111-4111-8111-111111111111",
           "user_id": "22222222-2222-4222-8222-222222222222", "name": "Approved organization",
-          "role": "owner", "receipt": "approval:tenant-20261023"}
+          "role": "owner", "receipt": "approval:tenant-20261023",
+          "subject": "66666666-6666-4666-8666-666666666666"}
 
 
 class AdmissionTest(unittest.TestCase):
@@ -23,7 +24,7 @@ class AdmissionTest(unittest.TestCase):
     def test_invalid_tenant(self) -> None:
         for key, value in (("user_id", "person@example.com"), ("user_id", "00000000-0000-0000-0000-000000000000"),
                            ("name", ""), ("name", "x" * 201), ("name", "x\ny"),
-                           ("role", "superuser"), ("receipt", "short")):
+                           ("role", "superuser"), ("receipt", "short"), ("subject", ""), ("subject", "Tanzeel")):
             with self.subTest(key=key, value=value), self.assertRaises(ValueError):
                 Tenant.parse(dict(VALUES, **{key: value}))
 
@@ -67,7 +68,7 @@ class AdmissionTest(unittest.TestCase):
             evidence.write_text("independently verified restore evidence")
             gate: dict[str, object] = {"target": "elevateo-mail-live/postgres", "phase": "tenant",
                 "source_sha256": source_digest(ROOT), "approval": "approval:operator-20261023",
-                "tenant": Tenant.parse(VALUES).__dict__}
+                "tenant": Tenant.parse(VALUES).__dict__, "verified_first_owner_is_tanzeel_ahmad": True}
             for key in ("services_stopped", "outbound_held", "independent_review_passed", "isolated_restore_passed",
                         "auth_storage_preserved", "restore_instructions_verified"):
                 gate[key] = True
@@ -76,6 +77,12 @@ class AdmissionTest(unittest.TestCase):
             path = directory / "gate.json"
             path.write_text(json.dumps(gate))
             approve(path, ROOT, "tenant", Tenant.parse(VALUES))
+            gate["verified_first_owner_is_tanzeel_ahmad"] = False
+            path.write_text(json.dumps(gate))
+            with self.assertRaises(ValueError):
+                approve(path, ROOT, "tenant", Tenant.parse(VALUES))
+            gate["verified_first_owner_is_tanzeel_ahmad"] = True
+            path.write_text(json.dumps(gate))
             with self.assertRaises(ValueError):
                 approve(path, ROOT, "schema", None)
             evidence.write_text("changed backup")

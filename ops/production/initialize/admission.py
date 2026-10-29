@@ -81,10 +81,12 @@ class Tenant:
     name: str
     role: str
     receipt: str
+    subject: str
 
     @classmethod
     def parse(cls, values: Mapping[str, str]) -> Tenant:
-        for key in ("organization_id", "user_id"):
+        # AIDEV-NOTE: Dedicated Authentik uses user_uuid; root attests this exact subject as Tanzeel for first owner.
+        for key in ("organization_id", "user_id", "subject"):
             value = values.get(key, "")
             require(str(uuid.UUID(value)) == value and uuid.UUID(value).int != 0, "canonical nonzero UUID required")
         name = values.get("name", "")
@@ -92,7 +94,7 @@ class Tenant:
                 "organization name must contain 1..200 printable characters")
         require(values.get("role") in ROLES, "unrecognized organization role")
         require(REF.fullmatch(values.get("receipt", "")) is not None, "nonsecret approval receipt required")
-        return cls(values["organization_id"], values["user_id"], name, values["role"], values["receipt"])
+        return cls(values["organization_id"], values["user_id"], name, values["role"], values["receipt"], values["subject"])
 
 
 def approve(path: Path, root: Path, phase: str, tenant: Tenant | None) -> None:
@@ -112,4 +114,6 @@ def approve(path: Path, root: Path, phase: str, tenant: Tenant | None) -> None:
         artifact = Path(entry["path"])
         require(artifact.is_absolute() and artifact.is_file() and artifact.stat().st_size > 0, "missing evidence artifact")
         require(entry.get("sha256") == digest(artifact), "evidence digest mismatch: " + key)
+    if tenant is not None and tenant.role == "owner":
+        require(gate.get("verified_first_owner_is_tanzeel_ahmad") is True, "verified first-owner identity required")
     require(gate.get("tenant") == (tenant.__dict__ if tenant else None), "tenant approval mismatch")

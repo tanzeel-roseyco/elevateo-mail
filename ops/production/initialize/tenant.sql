@@ -5,12 +5,13 @@
 \getenv name INIT_NAME
 \getenv role INIT_ROLE
 \getenv receipt INIT_RECEIPT
+\getenv subject INIT_SUBJECT
 BEGIN;
 SET LOCAL lock_timeout = '5s';
 SET LOCAL statement_timeout = '30s';
 SELECT set_config('initialize.org', :'org', true), set_config('initialize.user', :'usr', true),
   set_config('initialize.name', :'name', true), set_config('initialize.role', :'role', true),
-  set_config('initialize.receipt', :'receipt', true);
+  set_config('initialize.receipt', :'receipt', true), set_config('initialize.subject', :'subject', true);
 -- Serialize operator initializations, including two different users racing to become the first owner.
 SELECT pg_advisory_xact_lock(62817, 1);
 DO $$
@@ -20,12 +21,14 @@ DECLARE
   org_name text := current_setting('initialize.name');
   grant_role text := current_setting('initialize.role');
   receipt text := current_setting('initialize.receipt');
+  subject uuid := current_setting('initialize.subject')::uuid;
 BEGIN
   IF session_user <> 'supabase_admin' OR current_user <> 'supabase_admin' THEN
     RAISE EXCEPTION 'privileged tenant operator required';
   END IF;
   IF org = '00000000-0000-0000-0000-000000000000'::uuid
     OR usr = '00000000-0000-0000-0000-000000000000'::uuid
+    OR subject = '00000000-0000-0000-0000-000000000000'::uuid
     OR length(org_name) NOT BETWEEN 1 AND 200 OR org_name <> btrim(org_name)
     OR org_name ~ '[[:cntrl:]]' OR grant_role NOT IN
       ('owner','admin','operator','sales_manager','sales','auditor','associate')
@@ -53,8 +56,17 @@ BEGIN
   PERFORM 1 FROM auth.users WHERE id = usr AND email_confirmed_at IS NOT NULL
     AND deleted_at IS NULL AND (banned_until IS NULL OR banned_until <= clock_timestamp()) FOR UPDATE;
   IF NOT FOUND THEN RAISE EXCEPTION 'existing confirmed active Auth UUID required'; END IF;
-  PERFORM 1 FROM auth.identities WHERE user_id = usr AND provider = 'google' FOR SHARE;
-  IF NOT FOUND THEN RAISE EXCEPTION 'existing Google identity required'; END IF;
+  -- AIDEV-NOTE: Root's signed operator gate pins the first owner's subject; account names never confer authority.
+  PERFORM 1 FROM auth.identities i JOIN auth.users u ON u.id = i.user_id
+    WHERE i.user_id = usr AND i.provider = 'custom:authentik'
+      AND i.identity_data->>'sub' = subject::text
+      AND i.identity_data->'email_verified' = 'true'::jsonb
+      AND lower(i.identity_data->>'email') = lower(u.email)
+      AND lower(u.email) ~ '^[a-z0-9.!#$%&''*+/=?^_`{|}~-]+@elevateoco[.]com$' FOR SHARE OF i;
+  IF NOT FOUND THEN RAISE EXCEPTION 'verified company Authentik identity with approved subject required'; END IF;
+  IF EXISTS (SELECT 1 FROM app.organization_memberships WHERE user_id = usr AND organization_id <> org) THEN
+    RAISE EXCEPTION 'cross-tenant bootstrap denied';
+  END IF;
   PERFORM app_auth.lock_authorization_generations(org, usr);
   PERFORM 1 FROM app.organizations WHERE id = org FOR UPDATE;
   IF FOUND THEN

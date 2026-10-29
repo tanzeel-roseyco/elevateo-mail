@@ -32,7 +32,9 @@ for test_file in test/**/*_test.rb; do
       deferred+=("$test_file: migrator DDL with private admin fixtures") ;;
     test/send_worker/mailpit_protocol_test.rb)
       deferred+=("$test_file: isolated Mailpit protocol flag and network") ;;
-    test/v2_attachment_error_test.rb|test/v2_route_registry_test.rb)
+    test/support/launch_mailflows/app_chain_test.rb)
+      deferred+=("$test_file: dedicated isolated Mox app-chain harness") ;;
+    test/support/launch_mailflows/cleanup_test.rb|test/v2_attachment_error_test.rb|test/v2_route_registry_test.rb)
       tests+=("$test_file") ;;
     test/administration/*|test/attachment_gateway/*|test/attachments/*|test/be_02/*|test/campaigns/*|test/inbound/*|test/resend_events/*|test/outreach_sequence/*|test/qa817/*|test/requests/*|test/send_worker/*|test/sends/*)
       tests+=("$test_file") ;;
