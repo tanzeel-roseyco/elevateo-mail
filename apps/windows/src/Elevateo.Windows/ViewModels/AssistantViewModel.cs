@@ -16,8 +16,10 @@ public sealed record TranscriptLine(string Speaker, string Text);
 /// AIDEV-NOTE: with UnavailableAgentsBridge the panel stays disabled and shows the reason — it never
 /// fakes a working assistant. Real adapters only replace the bridge, not this view model.
 /// </summary>
-public partial class AssistantViewModel : ObservableObject
+public partial class AssistantViewModel : ObservableObject, IDisposable
 {
+    public void Dispose() => _responseCts?.Dispose();
+
     public const string ExternalAiNotice =
         "Messages and any mail content you include are sent to an external AI service.";
 

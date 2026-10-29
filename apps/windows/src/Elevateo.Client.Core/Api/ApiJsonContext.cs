@@ -16,4 +16,6 @@ namespace Elevateo.Client.Core.Api;
 [JsonSerializable(typeof(DraftSaveResult))]
 [JsonSerializable(typeof(ErrorBody))]
 [JsonSerializable(typeof(TokenResponse))]
-public sealed partial class ApiJsonContext : JsonSerializerContext;
+public sealed partial class ApiJsonContext : JsonSerializerContext
+{
+}

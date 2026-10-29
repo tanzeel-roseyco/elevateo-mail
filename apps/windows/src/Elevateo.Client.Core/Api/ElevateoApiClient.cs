@@ -12,7 +12,7 @@ namespace Elevateo.Client.Core.Api;
 /// client sends Authorization: Bearer from the OIDC flow; server must accept bearer sessions for
 /// desktop clients (see final report / docs/contract-requests.md). Until then calls return 401.
 /// </summary>
-public sealed class ElevateoApiClient : IElevateoApiClient
+public sealed class ElevateoApiClient : IElevateoApiClient, IDisposable
 {
     private const long MaxResponseBytes = 1_048_576; // generous upper bound over per-route contract limits
 
@@ -35,6 +35,8 @@ public sealed class ElevateoApiClient : IElevateoApiClient
             Timeout = config.RequestTimeout,
         };
     }
+
+    public void Dispose() => _http.Dispose();
 
     public async Task<ApiResult<Session>> GetSessionAsync(CancellationToken ct)
     {

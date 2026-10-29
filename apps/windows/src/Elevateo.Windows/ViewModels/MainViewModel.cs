@@ -21,10 +21,12 @@ public sealed record MessageRow(string Sender, string SentAt, string Body, bool 
 /// AIDEV-NOTE: every pane exposes explicit Loading / Error / IsEmpty state; the XAML binds those
 /// directly so there is no implicit "blank means loading" state anywhere.
 /// </summary>
-public partial class MainViewModel : ObservableObject
+public partial class MainViewModel : ObservableObject, IDisposable
 {
     private readonly AppServices _services;
     private CancellationTokenSource? _threadLoadCts;
+
+    public void Dispose() => _threadLoadCts?.Dispose();
 
     public MainViewModel(AppServices services)
     {
