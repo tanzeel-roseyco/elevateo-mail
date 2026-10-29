@@ -7,10 +7,14 @@ import { AlertIcon } from './icons'
 import { Button } from './Button'
 
 export function Skeleton({ rows = 5 }: { rows?: number }) {
+  // AIDEV-NOTE: bg-skeleton, not bg-surface-2: the light theme's --surface-2 equals the page
+  // canvas, which made these bars invisible on bg-canvas loading screens (r10 visual QA).
+  // The dedicated token contrasts with both the canvas and panel surfaces in both themes;
+  // animate-pulse stays and the global reduced-motion rule still stills it.
   return (
     <div aria-hidden className="flex flex-col gap-2 p-4">
       {Array.from({ length: rows }, (_, i) => (
-        <div key={i} className="h-9 animate-pulse rounded-lg bg-surface-2" />
+        <div key={i} className="h-9 animate-pulse rounded-lg bg-skeleton" />
       ))}
     </div>
   )

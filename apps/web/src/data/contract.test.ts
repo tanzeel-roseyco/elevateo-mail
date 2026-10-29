@@ -4,13 +4,33 @@ import { describe, expect, it } from 'vitest'
 import type { z } from 'zod'
 import fixtures from '../../../../contracts/v1/fixtures.json'
 import {
+  AcceptInputSchema,
+  AuthAcceptedSchema,
+  AuthChallengeSchema,
+  AuthLifecycleSchema,
+  AuthLogoutSchema,
   ErrorSchema,
+  LoginInputSchema,
+  LogoutInputSchema,
   MailboxPageSchema,
+  OrganizationInputSchema,
+  OrganizationPageSchema,
+  RecoveryInputSchema,
   SessionSchema,
   ThreadDetailPageSchema,
   ThreadPageSchema,
+  type AcceptInput,
   type ApiError,
+  type AuthAccepted,
+  type AuthChallenge,
+  type AuthLifecycle,
+  type AuthLogout,
+  type LoginInput,
+  type LogoutInput,
   type MailboxPage,
+  type OrganizationInput,
+  type OrganizationPage,
+  type RecoveryInput,
   type Session,
   type ThreadDetailPage,
   type ThreadPage,
@@ -23,7 +43,19 @@ const _mailboxPage: Mutual<z.infer<typeof MailboxPageSchema>, MailboxPage> = tru
 const _threadPage: Mutual<z.infer<typeof ThreadPageSchema>, ThreadPage> = true
 const _detail: Mutual<z.infer<typeof ThreadDetailPageSchema>, ThreadDetailPage> = true
 const _error: Mutual<z.infer<typeof ErrorSchema>, ApiError> = true
+// BE-02A lifecycle pins (RefreshInput is an empty object and is not pinned).
+const _challenge: Mutual<z.infer<typeof AuthChallengeSchema>, AuthChallenge> = true
+const _lifecycle: Mutual<z.infer<typeof AuthLifecycleSchema>, AuthLifecycle> = true
+const _accepted: Mutual<z.infer<typeof AuthAcceptedSchema>, AuthAccepted> = true
+const _logout: Mutual<z.infer<typeof AuthLogoutSchema>, AuthLogout> = true
+const _organizations: Mutual<z.infer<typeof OrganizationPageSchema>, OrganizationPage> = true
+const _loginInput: Mutual<z.infer<typeof LoginInputSchema>, LoginInput> = true
+const _recoveryInput: Mutual<z.infer<typeof RecoveryInputSchema>, RecoveryInput> = true
+const _acceptInput: Mutual<z.infer<typeof AcceptInputSchema>, AcceptInput> = true
+const _logoutInput: Mutual<z.infer<typeof LogoutInputSchema>, LogoutInput> = true
+const _organizationInput: Mutual<z.infer<typeof OrganizationInputSchema>, OrganizationInput> = true
 void [_session, _mailboxPage, _threadPage, _detail, _error]
+void [_challenge, _lifecycle, _accepted, _logout, _organizations, _loginInput, _recoveryInput, _acceptInput, _logoutInput, _organizationInput]
 
 const examples = fixtures.examples as Record<string, { status: number; body: unknown }>
 
@@ -114,5 +146,66 @@ describe('exact contract boundaries', () => {
     expect(ThreadDetailPageSchema.safeParse({ ...page, messages: null }).success).toBe(false)
     expect(ThreadDetailPageSchema.safeParse({ ...page, thread: null }).success).toBe(false)
     expect(ThreadDetailPageSchema.safeParse({ ...page, messages: [{ ...message, to: [null] }] }).success).toBe(false)
+  })
+})
+
+// BE-02A: lifecycle examples and browser-side input bounds (contract README "Acceptance").
+const lifecycle = fixtures.lifecycle_examples as Record<string, { value: unknown }>
+
+describe('lifecycle responses', () => {
+  it('canonical lifecycle examples validate', () => {
+    expect(AuthChallengeSchema.safeParse(lifecycle['challenge']?.value).success).toBe(true)
+    expect(AuthLogoutSchema.safeParse(lifecycle['logout_pending']?.value).success).toBe(true)
+    expect(AuthAcceptedSchema.safeParse(lifecycle['recovery_accepted']?.value).success).toBe(true)
+  })
+  it('a lifecycle result embeds the unchanged Session and a UTC timestamp', () => {
+    const session = examples['session_a']!.body
+    expect(AuthLifecycleSchema.safeParse({ session, access_expires_at: '2026-10-13T01:00:00Z' }).success).toBe(true)
+    expect(AuthLifecycleSchema.safeParse({ session, access_expires_at: 'soon' }).success).toBe(false)
+    expect(AuthLifecycleSchema.safeParse({ session: { ...(session as object), csrf_token: undefined }, access_expires_at: '2026-10-13T01:00:00Z' }).success).toBe(false)
+    expect(AuthLifecycleSchema.safeParse({ session, access_expires_at: '2026-10-13T01:00:00Z', extra: 1 }).success).toBe(false)
+  })
+  it('rejects a challenge token outside the opaque-token alphabet and non-literal flags', () => {
+    expect(AuthChallengeSchema.safeParse({ csrf_token: 'not valid!', expires_at: '2026-10-13T00:05:00Z' }).success).toBe(false)
+    expect(AuthAcceptedSchema.safeParse({ accepted: false }).success).toBe(false)
+    expect(AuthLogoutSchema.safeParse({ local_revoked: false, upstream_status: 'pending' }).success).toBe(false)
+    expect(AuthLogoutSchema.safeParse({ local_revoked: true, upstream_status: 'later' }).success).toBe(false)
+  })
+  it('an organization page is bounded like every other page', () => {
+    const base = { context_id: 'context_A_0123456789', authorization_version: 'authz_A_0123456789', next_cursor: null }
+    const org = { id: '00000000-0000-4000-8000-000000000011', name: 'Org' }
+    expect(OrganizationPageSchema.safeParse({ ...base, items: [] }).success).toBe(true)
+    expect(OrganizationPageSchema.safeParse({ ...base, items: Array.from({ length: 51 }, () => org) }).success).toBe(false)
+    expect(OrganizationPageSchema.safeParse({ ...base, items: [{ ...org, members: 3 }] }).success).toBe(false)
+  })
+})
+
+describe('lifecycle inputs are bounded in the browser', () => {
+  it('login requires a syntactically valid email of at most 320 characters and a non-empty password', () => {
+    expect(LoginInputSchema.safeParse({ email: 'a@example.test', password: 'x' }).success).toBe(true)
+    expect(LoginInputSchema.safeParse({ email: 'not-an-email', password: 'x' }).success).toBe(false)
+    expect(LoginInputSchema.safeParse({ email: `${'a'.repeat(310)}@example.test`, password: 'x' }).success).toBe(false)
+    expect(LoginInputSchema.safeParse({ email: 'a@example.test', password: '' }).success).toBe(false)
+    expect(LoginInputSchema.safeParse({ email: 'a@example.test', password: 'x', remember: true }).success).toBe(false)
+  })
+  it('passwords are bounded by UTF-8 bytes, not characters', () => {
+    expect(LoginInputSchema.safeParse({ email: 'a@example.test', password: 'x'.repeat(1024) }).success).toBe(true)
+    expect(LoginInputSchema.safeParse({ email: 'a@example.test', password: 'x'.repeat(1025) }).success).toBe(false)
+    // 4-byte code points: 256 of them are 1024 bytes, 257 exceed it although only 257 characters long.
+    expect(LoginInputSchema.safeParse({ email: 'a@example.test', password: '\u{1F48C}'.repeat(256) }).success).toBe(true)
+    expect(LoginInputSchema.safeParse({ email: 'a@example.test', password: '\u{1F48C}'.repeat(257) }).success).toBe(false)
+  })
+  it('entry completion requires at least 12 characters, counted in code points', () => {
+    expect(AcceptInputSchema.safeParse({ password: 'x'.repeat(11) }).success).toBe(false)
+    expect(AcceptInputSchema.safeParse({ password: 'x'.repeat(12) }).success).toBe(true)
+    expect(AcceptInputSchema.safeParse({ password: '\u{1F48C}'.repeat(12) }).success).toBe(true) // 12 code points, 24 UTF-16 units
+    expect(AcceptInputSchema.safeParse({ password: '\u{1F48C}'.repeat(11) }).success).toBe(false)
+  })
+  it('logout scope and organization ids are closed enumerations', () => {
+    expect(LogoutInputSchema.safeParse({ scope: 'global' }).success).toBe(true)
+    expect(LogoutInputSchema.safeParse({ scope: 'everywhere' }).success).toBe(false)
+    expect(LogoutInputSchema.safeParse({ scope: 'local', user_id: 'x' }).success).toBe(false)
+    expect(OrganizationInputSchema.safeParse({ organization_id: '00000000-0000-4000-8000-000000000011' }).success).toBe(true)
+    expect(OrganizationInputSchema.safeParse({ organization_id: 'org-1' }).success).toBe(false)
   })
 })

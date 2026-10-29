@@ -16,13 +16,25 @@ import { Shell } from './Shell'
 const contextChanged = () => new GatewayError('api', 'context_changed', 'synthetic', { status: 409, requestId: 'r1' })
 const cursorInvalid = () => new GatewayError('api', 'cursor_invalid', 'synthetic', { status: 400, requestId: 'r1' })
 
+// A stable id per distinct name: equal names model the same mailbox across pages, while distinct
+// names never collide across pages (a per-page index would alias them and dedup would drop rows).
+const mailboxIdByName = new Map<string, string>()
+function mailboxIdFor(name: string): string {
+  let id = mailboxIdByName.get(name)
+  if (id === undefined) {
+    id = `00000000-0000-4000-8000-${String(mailboxIdByName.size + 61).padStart(12, '0')}`
+    mailboxIdByName.set(name, id)
+  }
+  return id
+}
+
 function mailboxPage(names: string[], nextCursor: string | null): MailboxPage {
   return {
     context_id: 'context_A_0123456789',
     authorization_version: 'authz_A_0123456789',
     next_cursor: nextCursor,
-    items: names.map((name, index) => ({
-      id: `00000000-0000-4000-8000-00000000006${index + 1}`,
+    items: names.map((name) => ({
+      id: mailboxIdFor(name),
       display_name: name,
       display_address: `${name.toLowerCase().replaceAll(' ', '-')}@example.test`,
       capabilities: { read: true, compose: false, approve_send: false, manage_members: false },
@@ -54,6 +66,9 @@ function renderShell(gateway: MailroomGateway, outlet = <p>outlet-content</p>) {
         <Routes>
           <Route element={<Shell />}>
             <Route index element={outlet} />
+            {/* Sidebar/drawer links target mailbox routes; without this route a drawer selection
+                would leave the Shell's route tree and unmount the whole shell under test. */}
+            <Route path="mailboxes/:mailboxId" element={outlet} />
           </Route>
         </Routes>
       </MemoryRouter>
@@ -81,6 +96,107 @@ beforeEach(() => {
 afterEach(() => {
   vi.restoreAllMocks()
   vi.useRealTimers()
+})
+
+describe('BE-02A session controls', () => {
+  it('a signed-out session shows the sign-in form instead of a terminal screen', async () => {
+    renderShell(createFixtureGateway({ getSession: 'unauthenticated' }))
+    await screen.findByRole('heading', { name: 'Sign in' })
+    expect(screen.queryByText('Simulated local mail')).toBeNull()
+    expect(screen.queryByText('outlet-content')).toBeNull()
+  })
+
+  it('signing in from the form reaches the protected shell', async () => {
+    renderShell(createFixtureGateway({ getSession: 'unauthenticated' }))
+    fireEvent.change(await screen.findByLabelText('Email address'), { target: { value: 'a@example.test' } })
+    fireEvent.change(screen.getByLabelText('Password'), { target: { value: 'secret-password' } })
+    fireEvent.click(screen.getByRole('button', { name: 'Sign in' }))
+    await screen.findByText('Synthetic organization A')
+    expect(screen.getByText('outlet-content')).toBeTruthy()
+  })
+
+  it('a valid identity without an organization is an explicit state with sign-out', async () => {
+    renderShell(createFixtureGateway({ getSession: 'not_available' }))
+    await screen.findByText('No organization is available')
+    expect(screen.queryByText('outlet-content')).toBeNull()
+    fireEvent.click(screen.getByRole('button', { name: 'Sign out' }))
+    await screen.findByRole('heading', { name: 'Sign in' })
+  })
+
+  it('the account sheet lists memberships and an explicit switch replaces the identity', async () => {
+    renderShell(createFixtureGateway())
+    await screen.findByText('Synthetic organization A')
+    fireEvent.click(screen.getByRole('button', { name: 'Account and sign-out' }))
+    const dialog = await screen.findByRole('dialog', { name: 'Account' })
+    expect(within(dialog).getByText('Fixture user A')).toBeTruthy()
+    const current = await within(dialog).findByRole('button', { name: /Synthetic organization A/ })
+    expect(current.getAttribute('aria-current')).toBe('true')
+    expect((current as HTMLButtonElement).disabled).toBe(true)
+    fireEvent.click(within(dialog).getByRole('button', { name: /Synthetic organization B/ }))
+    // The replaced identity remounts the protected subtree: new header, sheet closed.
+    await screen.findByText('Synthetic organization B')
+    await waitFor(() => expect(screen.queryByRole('dialog', { name: 'Account' })).toBeNull())
+    expect(screen.getByText('outlet-content')).toBeTruthy()
+  })
+
+  it('a failed switch reports in the sheet and keeps the current organization', async () => {
+    const gateway: MailroomGateway = {
+      ...createFixtureGateway(),
+      switchOrganization: async () => { throw new GatewayError('api', 'not_available', 'synthetic', { status: 404, requestId: 'r1' }) },
+    }
+    renderShell(gateway)
+    await screen.findByText('Synthetic organization A')
+    fireEvent.click(screen.getByRole('button', { name: 'Account and sign-out' }))
+    const dialog = await screen.findByRole('dialog', { name: 'Account' })
+    fireEvent.click(await within(dialog).findByRole('button', { name: /Synthetic organization B/ }))
+    await within(dialog).findByRole('alert')
+    // Session A survives: the shell header (banner; aria-hidden while the Radix dialog is open)
+    // still names organization A, the routed outlet is still mounted, and no no-organization or
+    // sign-in screen replaced the protected subtree. The sheet repeats the name, so scope to the header.
+    expect(screen.getByRole('banner', { hidden: true }).textContent).toContain('Synthetic organization A')
+    expect(screen.getByText('outlet-content')).toBeTruthy()
+    expect(screen.queryByText('No organization is available')).toBeNull()
+    expect(screen.queryByRole('heading', { name: 'Sign in' })).toBeNull()
+  })
+
+  it('sign-out hides the mail at once and ends on the sign-in form with the sign-out notice', async () => {
+    let release!: () => void
+    const base = createFixtureGateway()
+    const gateway: MailroomGateway = {
+      ...base,
+      logout: async (proof, input, signal) => {
+        await new Promise<void>((resolve) => (release = resolve))
+        return base.logout(proof, input, signal)
+      },
+    }
+    renderShell(gateway)
+    await screen.findByText('Synthetic organization A')
+    fireEvent.click(screen.getByRole('button', { name: 'Account and sign-out' }))
+    const dialog = await screen.findByRole('dialog', { name: 'Account' })
+    fireEvent.click(within(dialog).getByRole('button', { name: 'Sign out' }))
+    await screen.findByRole('status', { name: 'Signing out' })
+    expect(screen.queryByText('Synthetic organization A')).toBeNull()
+    expect(screen.queryByText('outlet-content')).toBeNull()
+    act(() => release())
+    await screen.findByRole('heading', { name: 'Sign in' })
+    expect(screen.getByRole('status').textContent).toContain('signed out')
+  })
+
+  it('an unconfirmed sign-out keeps the mail hidden and offers to retry or return', async () => {
+    const gateway: MailroomGateway = {
+      ...createFixtureGateway(),
+      logout: async () => { throw new GatewayError('api', 'temporarily_unavailable', 'synthetic', { status: 503, requestId: 'r1' }) },
+    }
+    renderShell(gateway)
+    await screen.findByText('Synthetic organization A')
+    fireEvent.click(screen.getByRole('button', { name: 'Account and sign-out' }))
+    const dialog = await screen.findByRole('dialog', { name: 'Account' })
+    fireEvent.click(within(dialog).getByRole('button', { name: 'Sign out' }))
+    await screen.findByText('Sign-out was not confirmed')
+    expect(screen.queryByText('outlet-content')).toBeNull()
+    fireEvent.click(screen.getByRole('button', { name: 'Return to mail' }))
+    await screen.findByText('Synthetic organization A')
+  })
 })
 
 describe('session gate', () => {
@@ -235,7 +351,8 @@ describe('identity replacement privacy (V3)', () => {
     await act(async () => {})
     expect(screen.getByText('Synthetic organization A')).toBeTruthy()
     await act(async () => {})
-    expect(screen.getByText('Fixture inbox')).toBeTruthy()
+    // The header search form lists the same display name as an <option>; the loaded rail is the link.
+    expect(screen.getByRole('link', { name: 'Fixture inbox' })).toBeTruthy()
 
     await act(async () => {
       vi.advanceTimersByTime(SESSION_FRESHNESS_INTERVAL_MS) // freshness returns session B
