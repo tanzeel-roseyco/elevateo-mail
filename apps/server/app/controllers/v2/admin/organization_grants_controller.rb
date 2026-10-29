@@ -52,12 +52,13 @@ module V2
             raise Elevateo::CollaborationError.new("internal_error")
           end
           actor = self.class.project_grants([result["actor"]], organization, 1).first
-          unless actor["user_id"] == identity.user_id && %w[organization_owner organization_admin].include?(actor["role"])
+          unless actor && actor["user_id"] == identity.user_id && %w[organization_owner organization_admin].include?(actor["role"])
             raise Elevateo::CollaborationError.new("internal_error")
           end
           items = self.class.project_grants(result["items"], organization, limit)
           after = result["next_user_id"]
-          if !after.nil? && (!after.is_a?(String) || items.empty? || after != items.last["user_id"])
+          last_item = items.last
+          if !after.nil? && (!after.is_a?(String) || !last_item || after != last_item["user_id"])
             raise Elevateo::CollaborationError.new("internal_error")
           end
           # @type var after_id: String?
@@ -125,7 +126,7 @@ module V2
             raise Elevateo::CollaborationError.new("internal_error")
           end
           actor = self.class.project_grants([result["actor"]], organization, 1).first
-          unless actor["user_id"] == identity.user_id && %w[organization_owner organization_admin].include?(actor["role"])
+          unless actor && actor["user_id"] == identity.user_id && %w[organization_owner organization_admin].include?(actor["role"])
             raise Elevateo::CollaborationError.new("internal_error")
           end
           cursors = Elevateo::Cursors.new(secret: read_config.cursor_signing_key)
@@ -142,7 +143,12 @@ module V2
             offset = index + 1
           end
           items = people.slice(offset, limit) || []
-          next_key = offset + limit < people.length ? items.last.fetch("key") : nil
+          # AIDEV-NOTE: A continuing roster page must have a last item; reject inconsistent data before encoding it.
+          last_item = items.last
+          if offset + limit < people.length && !last_item
+            raise Elevateo::CollaborationError.new("internal_error")
+          end
+          next_key = offset + limit < people.length && last_item ? last_item.fetch("key") : nil
           cursor = next_key && cursors.encode(position: { "config_key" => next_key }, scope: scope)
           JSON.generate({ "context_id" => session.fetch("context_id"),
             "authorization_version" => session.fetch("authorization_version"),

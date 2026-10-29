@@ -6,6 +6,7 @@ require_relative "request_deadline"
 module Elevateo
   class SessionStore
     FUNCTIONS = {
+      "enroll_company_identity" => %w[uuid uuid],
       "create_session" => %w[text uuid uuid text text timestamptz uuid text],
       "resolve_session" => %w[text], "authorize_session" => %w[text uuid uuid uuid bigint],
       "touch_session" => %w[text uuid uuid], "list_organizations" => %w[text uuid uuid uuid integer],

@@ -3,6 +3,7 @@
 require_relative "address"
 require_relative "canonical"
 require_relative "../thread_projection"
+require_relative "../mail_message_identity"
 
 module Elevateo
   module SendAPI
@@ -14,7 +15,7 @@ module Elevateo
       attr_reader :snapshot, :result
 
       def initialize(binding, outbound_mode: "held")
-        allowed = FIELDS + %w[attachment_binding purpose]
+        allowed = FIELDS + %w[attachment_binding purpose reply_message_id]
         raise ReadResponse::Invalid unless (FIELDS - binding.keys).empty? && (binding.keys - allowed).empty?
         purpose = binding.fetch("purpose", "correspondence")
         raise ReadResponse::Invalid unless purpose.is_a?(String) && %w[correspondence marketing].include?(purpose)
@@ -30,6 +31,11 @@ module Elevateo
         @subject = ThreadProjection.text(binding["subject"], 998)
         @body = ThreadProjection.text(binding["body_text"], 65_536)
         @reply = binding["reply_to_thread_id"].nil? ? nil : ThreadProjection.uuid(binding["reply_to_thread_id"])
+        # AIDEV-NOTE: Mox replies require a protected imported RFC identity; a thread UUID is never a mail header.
+        reply_message_id = binding["reply_message_id"]
+        raise ReadResponse::Invalid unless reply_message_id.nil? || MailMessageIdentity.valid?(reply_message_id)
+        wire_reply = outbound_mode == "mox" && @reply && reply_message_id.is_a?(String) ? reply_message_id : nil
+        issue("reply_unavailable") if outbound_mode == "mox" && @reply && wire_reply.nil?
         @policy = binding["policy_revision"].nil? ? "0" : ThreadProjection.text(binding["policy_revision"], 19)
         raise ReadResponse::Invalid unless /\A(?:0|[1-9][0-9]{0,18})\z/.match?(@policy) && @policy.to_i <= 9_223_372_036_854_775_807
         sender = ThreadProjection.nullable_text(binding["sender_address"], 256)
@@ -46,7 +52,7 @@ module Elevateo
         attachment_items, attachment_tuples = attachments(binding)
         @snapshot = Canonical.bytes(organization_id: @organization, mailbox_id: @mailbox, draft_id: @draft,
           version: @version, sender: @sender, recipients: @recipients, subject: @subject, body: @body,
-          reply_id: @reply, policy: @policy, attachments: attachment_tuples, purpose: @purpose)
+          reply_id: @reply, policy: @policy, attachments: attachment_tuples, purpose: @purpose, reply_message_id: wire_reply)
         issue("snapshot_too_large") if @snapshot.bytesize > Canonical::MAXIMUM
         @result = { "draft_id" => @draft, "mailbox_id" => @mailbox, "draft_version" => @version,
           "sender" => { "display_name" => nil, "address" => @sender || sender }, "to" => @recipients,
@@ -104,6 +110,7 @@ module Elevateo
         end
         issue("recipient_required") if values.empty?
         seen = {}
+        # AIDEV-NOTE: Collection types keep Steep inference local after boundary validation.
         # @type var checks: Array[ReadResponse::item]
         checks = []
         items = values.each_with_index.map do |value, index|

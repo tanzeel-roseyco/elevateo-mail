@@ -38,7 +38,7 @@ module Elevateo
         expected: Integer, replacement: Integer) -> bool
       def insert_once: (account_id: String, credential_version: Integer, uidvalidity: Integer, uid: Integer,
         content_sha256: String, from: String, to: Array[String], subject: String, text: String,
-        attachments: Array[staged_attachment]) -> Hash[String, untyped]
+        attachments: Array[staged_attachment], rfc_message_id: String?) -> Hash[String, untyped]
     end
 
     interface _ImapSession
@@ -71,7 +71,7 @@ module Elevateo
       def initialize: (connection: Elevateo::WriteStatements, ?lease_token: String?) -> void
       def insert_once: (account_id: String, credential_version: Integer, uidvalidity: Integer, uid: Integer,
         content_sha256: String, from: String, to: Array[String], subject: String, text: String,
-        ?attachments: Array[staged_attachment]) -> Hash[String, untyped]
+        ?attachments: Array[staged_attachment], ?rfc_message_id: String?) -> Hash[String, untyped]
       def reject_once: (account_id: String, credential_version: Integer, uidvalidity: Integer, uid: Integer,
         content_sha256: String, reason: String) -> Hash[String, untyped]
       def reset_uidvalidity: (account_id: String, credential_version: Integer,

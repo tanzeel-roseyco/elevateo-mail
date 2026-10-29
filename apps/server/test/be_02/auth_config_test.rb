@@ -24,6 +24,27 @@ class AuthConfigTest < Minitest::Test
     assert config.session_key.frozen?
   end
 
+  def test_company_signup_requires_explicit_sso_only_and_daily_limit_is_globally_capped
+    refute Elevateo::Config.load!(environment).company_signup_enabled
+    values = environment.merge("ELEVATEO_COMPANY_SIGNUP_ENABLED" => "true", "ELEVATEO_SSO_ENABLED" => "true",
+      "ELEVATEO_SSO_ONLY" => "true", "ELEVATEO_AUTH_PUBLIC_URL" => "https://auth.test")
+    assert Elevateo::Config.load!(values).company_signup_enabled
+    [nil, "yes", true].each do |flag|
+      assert_raises(Elevateo::ConfigError) { Elevateo::Config.load!(values.merge("ELEVATEO_COMPANY_SIGNUP_ENABLED" => flag)) }
+    end
+    ["false", "invalid"].each do |flag|
+      assert_raises(Elevateo::ConfigError) { Elevateo::Config.load!(values.merge("ELEVATEO_SSO_ONLY" => flag)) }
+    end
+    [nil, "0", "31", "9999", "-1", "30.0", "true"].each do |limit|
+      assert_raises(Elevateo::ConfigError) do
+        Elevateo::Config.load!(environment.merge("ELEVATEO_MAILBOX_DAILY_SEND_LIMIT" => limit))
+      end
+    end
+    ["1", "30"].each do |limit|
+      assert_equal limit.to_i, Elevateo::Config.load!(environment.merge("ELEVATEO_MAILBOX_DAILY_SEND_LIMIT" => limit)).mailbox_daily_send_limit
+    end
+  end
+
   # AIDEV-NOTE: Deployment profile must never broaden local endpoint policy or unlock delivery by configuration.
   def test_production_profile_accepts_only_secure_held_private_runtime
     values = environment.merge("ELEVATEO_MODE" => "production", "RAILS_ENV" => "production",
@@ -50,6 +71,31 @@ class AuthConfigTest < Minitest::Test
       error = assert_raises(Elevateo::ConfigError) { Elevateo::Config.load!(environment.merge("ELEVATEO_SESSION_KEY_BASE64" => key)) }
       refute_includes error.message, "too-short"
       refute_includes error.message, "not*base64"
+    end
+  end
+
+  def test_authentik_requires_pinned_https_issuer_group_and_private_token
+    values = environment.merge("ELEVATEO_SSO_PROVIDER" => "custom:authentik", "ELEVATEO_SSO_ENABLED" => "true",
+      "ELEVATEO_AUTH_PUBLIC_URL" => "https://auth.test", "ELEVATEO_AUTHENTIK_ISSUER" => "https://identity.test/application/o/elevateo-mail/",
+      "ELEVATEO_AUTHENTIK_GROUP" => "11111111-1111-4111-8111-111111111111", "ELEVATEO_AUTHENTIK_API_TOKEN" => "x" * 32)
+    assert_equal values.fetch("ELEVATEO_AUTHENTIK_ISSUER"), Elevateo::Config.load!(values).authentik_issuer
+    %w[ELEVATEO_AUTHENTIK_ISSUER ELEVATEO_AUTHENTIK_GROUP ELEVATEO_AUTHENTIK_API_TOKEN].each do |key|
+      [nil, ""].each { |value| assert_raises(Elevateo::ConfigError) { Elevateo::Config.load!(values.merge(key => value)) } }
+    end
+    ["http://identity.test/application/o/mail/", "https://identity.test/application/o/mail/?x=1",
+      "https://identity.test:8443/application/o/mail/", "https://user@identity.test/application/o/mail/"].each do |issuer|
+      assert_raises(Elevateo::ConfigError) { Elevateo::Config.load!(values.merge("ELEVATEO_AUTHENTIK_ISSUER" => issuer)) }
+    end
+  end
+
+  def test_sso_provider_is_explicitly_allowlisted
+    assert_equal "google", Elevateo::Config.load!(environment).sso_provider
+    assert_equal "custom:authentik", Elevateo::Config.load!(environment.merge(
+      "ELEVATEO_SSO_PROVIDER" => "custom:authentik")).sso_provider
+    [nil, "", "authentik", "custom:other", "https://issuer.test", "Google"].each do |provider|
+      assert_raises(Elevateo::ConfigError) do
+        Elevateo::Config.load!(environment.merge("ELEVATEO_SSO_PROVIDER" => provider))
+      end
     end
   end
 

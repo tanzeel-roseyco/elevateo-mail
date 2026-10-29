@@ -26,6 +26,24 @@ class AuthClientTest < Minitest::Test
     Elevateo::AuthClient.new(config: config, transport: transport, transaction_open: -> { transaction })
   end
 
+  def test_custom_identity_is_revalidated_before_returning_user
+    custom = config.tap { |value| value.sso_provider = "custom:authentik" }
+    transport = ->(*) { [200, "application/json", '{"id":"trusted-user"}'] }
+    service = Elevateo::AuthClient.new(config: custom, transport: transport, transaction_open: -> { false })
+    guard = Minitest::Mock.new
+    budget = deadline
+    guard.expect(:check!, true, [{ "id" => "trusted-user" }], deadline: budget)
+    Elevateo::AuthentikIdentity.stub(:new, guard) do
+      assert_equal "trusted-user", service.user("token", deadline: budget).fetch("id")
+    end
+    guard.verify
+    rejected = Object.new
+    rejected.define_singleton_method(:check!) { |*, **| raise Elevateo::AuthError.unauthorized }
+    Elevateo::AuthentikIdentity.stub(:new, rejected) do
+      assert_auth(401) { service.user("token", deadline: deadline) }
+    end
+  end
+
   def test_password_login_uses_fixed_internal_path_and_bounded_timeout
     calls = []
     result = client([200, "application/json", '{"access_token":"ok"}'], calls: calls).login("a@b.test", "pw", deadline: deadline)

@@ -29,14 +29,24 @@ module Elevateo
       end
 
       def insert_once(account_id:, credential_version:, uidvalidity:, uid:, content_sha256:, from:, to:, subject:, text:,
-        attachments: [])
+        attachments: [], rfc_message_id: nil)
         values = [account_id, credential_version, uidvalidity, uid, content_sha256,
                   { display_name: nil, address: from }.to_json,
                   to.map { |address| { display_name: nil, address: address } }.to_json, subject, text,
                   attachments.to_json]
         statement = attachments.empty? ? PLAIN_SQL : SQL
         values.pop if attachments.empty?
-        row = query(statement, "IMAP receive", values).first
+        if rfc_message_id
+          # AIDEV-NOTE: Identity persistence shares the fenced ingest transaction, including duplicate receipt checks.
+          statement = "SELECT app.ingest_imap_mail_with_identity(" +
+            "$1::uuid,$2::integer,$3::bigint,$4::bigint,$5::text,$6::jsonb,$7::jsonb,$8::text,$9::text," +
+            "$10::jsonb,$11::text,$12::uuid)::text AS result"
+          values << attachments.to_json if attachments.empty?
+          values += [rfc_message_id, @lease_token]
+          row = @connection.exec_query(statement, "IMAP receive identity", binds(values)).first
+        else
+          row = query(statement, "IMAP receive", values).first
+        end
         raise Rejected, "store_unavailable" unless row
 
         raw = row.fetch("result")

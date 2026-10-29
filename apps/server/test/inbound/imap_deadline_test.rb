@@ -28,7 +28,7 @@ class ImapDeadlineTest < Minitest::Test
     def uid_search(*) = [1, 2]
     def uid_fetch(uid, *)
       sleep @pause if uid == 2
-      [Struct.new(:attr).new({ "BODY[]" => "From: sender@example.invalid\r\nTo: inbox@example.invalid\r\nContent-Type: text/plain\r\n\r\nsynthetic" })]
+      [Struct.new(:attr).new({ "UID" => uid, "BODY[]" => "From: sender@example.invalid\r\nTo: inbox@example.invalid\r\nContent-Type: text/plain\r\n\r\nsynthetic" })]
     end
     def disconnect
       @closed = true

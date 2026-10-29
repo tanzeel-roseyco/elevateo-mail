@@ -20,6 +20,19 @@ module V1
       raise Elevateo::AuthError.invalid
     end
 
+    def organization_index
+      protected_read(allowed_query: %w[cursor limit filter], budget: Elevateo::ReadResponse::THREAD_BYTES) do
+        |connection:, identity:, session:, query:, **|
+        # @type var connection: ActiveRecord::ConnectionAdapters::AbstractAdapter
+        # @type var identity: Elevateo::SessionIdentity
+        # @type var session: Elevateo::auth_object
+        # @type var query: Hash[String, String]
+        reader(connection, identity, session).organization_list(query: query)
+      end
+    rescue Elevateo::ThreadReads::InvalidQuery
+      raise Elevateo::AuthError.invalid
+    end
+
     def show
       protected_read(allowed_query: %w[mailbox_id cursor limit], budget: Elevateo::ReadResponse::MESSAGE_BYTES) do
         |connection:, identity:, session:, query:, **|

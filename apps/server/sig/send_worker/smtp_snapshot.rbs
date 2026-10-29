@@ -8,7 +8,8 @@ module Elevateo
       end
       def self.render: (String, send_id: String, verified_sender: String) -> RenderedMessage
       def self.parse_recipients: (untyped) -> Array[[String?, String]]
-      def self.build_mime: (String, RenderedMessage) -> String
+      def self.valid_reply?: (untyped, untyped) -> bool
+      def self.build_mime: (String, RenderedMessage, String?) -> String
       def self.encoded_words: (String) -> String
     end
   end

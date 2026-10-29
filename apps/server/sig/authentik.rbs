@@ -1,0 +1,19 @@
+module Elevateo
+  class AuthentikIdentity
+    type transport = ^(String, Float) -> [Integer, String, String]
+    @config: _AuthConfig
+    @transport: transport?
+    def initialize: (config: _AuthConfig, ?transport: transport?) -> void
+    def check!: (auth_object, deadline: RequestDeadline) -> bool
+    private
+    def company_email?: (String) -> bool
+    def lookup: (String, RequestDeadline) -> auth_object
+    def exchange: (String, RequestDeadline) -> [Integer, String, String]
+  end
+  class AuthentikDiscovery
+    def self.document: (_AuthConfig) -> auth_object
+  end
+end
+class AuthentikDiscoveryController < ActionController::API
+  def show: () -> void
+end

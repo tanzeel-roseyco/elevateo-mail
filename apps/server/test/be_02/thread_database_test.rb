@@ -75,6 +75,110 @@ class ThreadDatabaseTest < SessionDatabaseTestCase
     super
   end
 
+  def test_organization_keyset_merges_120_mailboxes_with_ties_and_nulls
+    rows = [[@thread, @box, nil]]
+    119.times do |number|
+      box = mailbox
+      id = thread(box: box)
+      timestamp = number % 3 == 0 ? nil : "2026-10-23T00:00:00Z"
+      fixture_message(box: box, thread_id: id, sent_at: timestamp)
+      rows << [id, box, timestamp]
+    end
+    # AIDEV-NOTE: More than a page in one mailbox catches merges that incorrectly cap each mailbox below limit+1.
+    53.times do
+      id = thread
+      fixture_message(thread_id: id, sent_at: "2026-10-23T00:00:01Z")
+      rows << [id, @box, "2026-10-23T00:00:01Z"]
+    end
+    expected = rows.sort_by { |id, _, timestamp| [timestamp || "", id] }.reverse.map(&:first)
+    started = Process.clock_gettime(Process::CLOCK_MONOTONIC)
+    pages = walk do |cursor|
+      snapshot { |reader| JSON.parse(reader.organization_list(query: { "limit" => "50" }.merge(cursor ? { "cursor" => cursor } : {}))) }
+    end
+    actual = pages.flat_map { |page| page.fetch("items") }
+    assert_equal expected, (actual.map { |row| row.fetch("id") })
+    assert_equal 120, actual.map { |row| row.fetch("mailbox_id") }.uniq.length
+    assert_equal [50, 50, 50, 23], (pages.map { |page| page.fetch("items").length })
+    refute pages.first.key?("mailbox_id")
+    assert_nil pages.last.fetch("next_cursor")
+    puts "Organization threads: 120 mailboxes; traversal seconds: #{Process.clock_gettime(Process::CLOCK_MONOTONIC) - started}"
+  end
+
+  def test_organization_list_excludes_foreign_and_ungranted_private_mailboxes
+    private_box = mailbox(visibility: "private")
+    private_thread = thread(box: private_box)
+    foreign_org = SecureRandom.uuid
+    @foreign_orgs << foreign_org
+    @admin.exec_params("INSERT INTO app.organizations(id, name) VALUES ($1, 'organization list foreign')", [foreign_org])
+    foreign_box = mailbox(org: foreign_org)
+    thread(org: foreign_org, box: foreign_box)
+    page = snapshot { |reader| JSON.parse(reader.organization_list(query: {})) }
+    assert_equal [@thread], (page.fetch("items").map { |row| row.fetch("id") })
+    # AIDEV-NOTE: Private visibility must track actual membership, including revocation between snapshots.
+    fixture_change do
+      @admin.exec_params("INSERT INTO app.mailbox_memberships(organization_id, mailbox_id, user_id) VALUES ($1, $2, $3)", [@org, private_box, @user])
+    end
+    page = snapshot { |reader| JSON.parse(reader.organization_list(query: {})) }
+    assert_equal [@thread, private_thread].sort, page.fetch("items").map { |row| row.fetch("id") }.sort
+    fixture_change { @admin.exec_params("DELETE FROM app.mailbox_memberships WHERE mailbox_id = $1 AND user_id = $2", [private_box, @user]) }
+    page = snapshot { |reader| JSON.parse(reader.organization_list(query: {})) }
+    assert_equal [@thread], (page.fetch("items").map { |row| row.fetch("id") })
+    @identity.org_id = foreign_org
+    assert_empty snapshot { |reader| JSON.parse(reader.organization_list(query: {})) }.fetch("items")
+    assert_empty snapshot(tenant_org: foreign_org) { |reader| JSON.parse(reader.organization_list(query: {})) }.fetch("items")
+    @identity.org_id = @org
+    membership(present: false)
+    assert_empty snapshot { |reader| JSON.parse(reader.organization_list(query: {})) }.fetch("items")
+  end
+
+  def test_organization_list_snapshot_and_keyset_survive_concurrent_new_activity
+    second_box = mailbox
+    older = thread(box: second_box)
+    fixture_message(thread_id: @thread, sent_at: "2026-10-23T00:00:02Z")
+    fixture_message(box: second_box, thread_id: older, sent_at: "2026-10-23T00:00:01Z")
+    first = nil
+    snapshot do |reader|
+      first = JSON.parse(reader.organization_list(query: { "limit" => "1" }))
+      fixture_message(box: second_box, thread_id: older, sent_at: "2026-10-23T00:00:03Z")
+      assert_equal first, JSON.parse(reader.organization_list(query: { "limit" => "1" }))
+    end
+    # AIDEV-NOTE: Cursors seek current ordering, not a cross-request snapshot; newly bumped rows appear on refresh.
+    continuation = snapshot do |reader|
+      JSON.parse(reader.organization_list(query: { "limit" => "1", "cursor" => first.fetch("next_cursor") }))
+    end
+    assert_empty continuation.fetch("items")
+    refreshed = snapshot { |reader| JSON.parse(reader.organization_list(query: { "limit" => "1" })) }
+    assert_equal older, refreshed.fetch("items").first.fetch("id")
+  end
+
+  def test_organization_list_bounds_dense_120_mailbox_query
+    119.times { mailbox }
+    # AIDEV-NOTE: Dense fixtures expose scan cost separately from the 173-row exhaustive keyset regression.
+    @admin.exec_params(<<~SQL, [@org])
+      INSERT INTO app.threads(id, organization_id, mailbox_id)
+      SELECT gen_random_uuid(), mailbox.organization_id, mailbox.id
+        FROM app.mailboxes mailbox CROSS JOIN generate_series(1, 100)
+       WHERE mailbox.organization_id = $1::uuid
+    SQL
+    @admin.exec_params(<<~SQL, [@org])
+      INSERT INTO app.messages(id, organization_id, mailbox_id, thread_id, sent_at)
+      SELECT gen_random_uuid(), organization_id, mailbox_id, id, timestamptz '2026-10-23 00:00:00Z'
+        FROM app.threads WHERE organization_id = $1::uuid
+    SQL
+    snapshot do |reader|
+      page = JSON.parse(reader.organization_list(query: {}))
+      assert_equal 50, page.fetch("items").length
+      refute_nil page.fetch("next_cursor")
+      connection = ThreadReadsApiRecord.connection.raw_connection
+      plan = JSON.parse(connection.exec_params(
+        "EXPLAIN (ANALYZE, FORMAT JSON) #{Elevateo::ThreadReads::ORGANIZATION_LIST_SQL}",
+        [@org, nil, @user, "all", nil, nil, 51]
+      ).getvalue(0, 0)).first
+      assert_equal 51, plan.fetch("Plan").fetch("Actual Rows")
+      puts "Organization threads: 120 mailboxes, 12001 threads; plan: #{JSON.pretty_generate(plan)}"
+    end
+  end
+
   def test_empty_conversation_null_values_and_source_text_limits
     empty = detail
     assert_empty empty.fetch("messages")
@@ -446,9 +550,9 @@ class ThreadDatabaseTest < SessionDatabaseTestCase
     raise
   end
 
-  def snapshot
+  def snapshot(tenant_org: @org)
     ThreadReadsApiRecord.connection_pool.with_connection do |connection|
-      principal = Elevateo::Tenancy::Principal.new(user_id: @user, org_id: @org)
+      principal = Elevateo::Tenancy::Principal.new(user_id: @user, org_id: tenant_org)
       Elevateo::Tenancy.with_context(principal, connection: connection, read_only: true) do
         assert_equal "repeatable read", connection.select_value("SHOW transaction_isolation")
         assert_equal "on", connection.select_value("SHOW transaction_read_only")

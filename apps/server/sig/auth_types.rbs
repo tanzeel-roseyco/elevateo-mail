@@ -5,8 +5,13 @@ module Elevateo
   type session_argument = String | Integer | bool | nil
 
   interface _AuthConfig
+    def sso_provider: () -> String
+    def authentik_issuer: () -> String
+    def authentik_group: () -> String
+    def authentik_api_token: () -> String
     def sso_enabled: () -> bool
     def sso_only: () -> bool
+    def company_signup_enabled: () -> bool
     def auth_public_url: () -> String?
     def mode: () -> String
     def outbound_mode: () -> String

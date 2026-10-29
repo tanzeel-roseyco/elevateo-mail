@@ -28,7 +28,8 @@ module Elevateo
       MAXIMUM: Integer
       def self.bytes: (organization_id: String, mailbox_id: String, draft_id: String, version: Integer,
         sender: String?, recipients: Array[Hash[String, String?]], subject: String, body: String,
-        reply_id: String?, policy: String, ?attachments: Array[Array[String | Integer]], ?purpose: String) -> String
+          reply_id: String?, policy: String, ?attachments: Array[Array[String | Integer]], ?purpose: String,
+          ?reply_message_id: String?) -> String
       def self.digest: (String) -> String
     end
   end

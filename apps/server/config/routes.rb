@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   post "/webhooks/resend", to: "resend_events#create"
   get "/health", to: "health#live"
   get "/ready", to: "health#ready"
+  get "/.well-known/elevateo-authentik", to: "authentik_discovery#show"
 
   # AIDEV-NOTE: The callback stages opaque entry material; only the CSRF-protected POST consumes it.
   get "/auth/accept", to: "auth_entries#stage"
@@ -21,6 +22,7 @@ Rails.application.routes.draw do
   get "/v1/organizations", to: "v1/organizations#index"
   get "/v1/mailboxes", to: "v1/mailboxes#index"
   get "/v1/mailboxes/:mailbox_id/threads", to: "v1/threads#index"
+  get "/v1/threads", to: "v1/threads#organization_index"
   get "/v1/threads/:thread_id", to: "v1/threads#show"
 
   # AIDEV-NOTE: C/D routes use WriteController's guarded writes and the shared authorized read snapshots.

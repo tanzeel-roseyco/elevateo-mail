@@ -5,6 +5,7 @@ require "base64"
 require_relative "../send_api/address"
 require_relative "control"
 require_relative "rendered_message"
+require_relative "../mail_message_identity"
 
 module Elevateo
   module SendWorker
@@ -21,11 +22,12 @@ module Elevateo
           bytes.dup.force_encoding(Encoding::UTF_8).valid_encoding? && Control.valid_epoch?(send_id)
         value = JSON.parse(bytes, max_nesting: 5)
         identities = value.is_a?(Array) ? value[1, 3] : nil
-        raise Invalid, "invalid send snapshot" unless value.is_a?(Array) && value.length == 14 && value[0] == FORMAT &&
+        raise Invalid, "invalid send snapshot" unless value.is_a?(Array) && value.length == 14 &&
+          [FORMAT, "elevateo.send.snapshot.v3"].include?(value[0]) &&
           identities.is_a?(Array) && identities.all? { |id| Control.valid_epoch?(id) } &&
           value[4].is_a?(Integer) && value[4].positive? &&
           value[5].is_a?(Array) && value[5].length == 2 && value[5][0].nil? &&
-          (value[9].nil? || Control.valid_epoch?(value[9]))
+          valid_reply?(value[0], value[9])
         sender = value[5][1]
         unless sender.is_a?(String) && sender == verified_sender && sender == SendAPI::Address.canonical(sender)
           raise Invalid, "sender not verified"
@@ -42,7 +44,8 @@ module Elevateo
         end
         message = RenderedMessage.new(sender: sender, recipients: recipients, subject: subject, text: body,
           attachments: value[12], organization_id: value[1], mailbox_id: value[2])
-        mime = build_mime(send_id, message)
+        wire_reply = value[0] == "elevateo.send.snapshot.v3" ? value[9][1] : nil
+        mime = build_mime(send_id, message, wire_reply)
         raise Invalid, "MIME size exceeded" if mime.bytesize > MAX_MIME_BYTES
         message.with_mime(mime)
       rescue JSON::ParserError, TypeError
@@ -67,7 +70,13 @@ module Elevateo
       end
       private_class_method :parse_recipients
 
-      def self.build_mime(send_id, message)
+      def self.valid_reply?(format, reply)
+        return reply.nil? || Control.valid_epoch?(reply) if format == FORMAT
+        reply.is_a?(Array) && reply.length == 2 && Control.valid_epoch?(reply[0]) && MailMessageIdentity.valid?(reply[1])
+      end
+      private_class_method :valid_reply?
+
+      def self.build_mime(send_id, message, reply_message_id)
         encoded_subject = encoded_words(message.subject)
         encoded_body = Base64.strict_encode64(message.text.encode(Encoding::UTF_8)).scan(/.{1,76}/).join("\r\n")
         domain = message.sender.split("@", 2).last
@@ -77,6 +86,8 @@ module Elevateo
         headers = ["From: #{message.sender}", "To: #{destinations.join(",\r\n ")}", "Subject: #{encoded_subject}",
           "Message-ID: <elevateo-#{send_id}@#{domain}>", "MIME-Version: 1.0",
           "Content-Type: text/plain; charset=UTF-8", "Content-Transfer-Encoding: base64"]
+        # AIDEV-NOTE: Headers come exclusively from the approved snapshot, never a mutable draft or client field.
+        headers.concat(["In-Reply-To: #{reply_message_id}", "References: #{reply_message_id}"]) if reply_message_id
         headers.join("\r\n") + "\r\n\r\n" + encoded_body + "\r\n"
       end
       private_class_method :build_mime

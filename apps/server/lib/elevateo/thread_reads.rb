@@ -64,6 +64,19 @@ module Elevateo
        ORDER BY page.activity DESC NULLS LAST, page.id DESC
     SQL
 
+    # AIDEV-NOTE: Each RLS-visible mailbox contributes at most limit+1 rows before the global keyset merge.
+    # Bind $2 stays typed and nil so both list paths share their parameter layout without widening mailbox scope.
+    ORGANIZATION_LIST_SQL = <<~SQL.freeze
+      SELECT authorized_page.*
+        FROM app.mailboxes AS mailbox
+        CROSS JOIN LATERAL (
+          #{LIST_SQL.gsub("$2::uuid", "mailbox.id")}
+        ) AS authorized_page
+       WHERE mailbox.organization_id = $1::uuid AND $2::uuid IS NULL
+       ORDER BY authorized_page.last_message_at DESC NULLS LAST, authorized_page.id DESC
+       LIMIT $7::integer
+    SQL
+
     THREAD_SQL = <<~SQL.freeze
       SELECT thread.id, thread.mailbox_id, left(thread.subject, 999) AS subject,
              NOT COALESCE(state.is_read, FALSE) AS unread, thread.folder,
@@ -133,6 +146,20 @@ module Elevateo
       values = [@identity.org_id, mailbox, @identity.user_id, filter, after["id"], after["last_message_at"], (limit + 1).to_s]
       items = rows(LIST_SQL, values).map { |row| ThreadProjection.thread(row, summary: true) }
       ReadResponse.page(items: items, limit: limit, envelope: envelope, budget: ReadResponse::THREAD_BYTES,
+                        cursor_for: ->(item) { encode_position(item, "last_message_at", scope) })
+    end
+
+    def organization_list(query:)
+      limit = query_limit(query, maximum: 50, allowed: %w[cursor limit filter])
+      filter = query.fetch("filter", "all")
+      raise InvalidQuery, "invalid request" unless %w[all unread starred snoozed archive spam trash].include?(filter)
+
+      scope = cursor_scope(resource: "organization_threads", filters: { "filter" => filter },
+                           order: "last_message_at:desc:nulls_last,id:desc", limit: limit)
+      after = position(query["cursor"], scope, "last_message_at")
+      values = [@identity.org_id, nil, @identity.user_id, filter, after["id"], after["last_message_at"], (limit + 1).to_s]
+      items = rows(ORGANIZATION_LIST_SQL, values).map { |row| ThreadProjection.thread(row, summary: true) }
+      ReadResponse.page(items: items, limit: limit, envelope: session_envelope, budget: ReadResponse::THREAD_BYTES,
                         cursor_for: ->(item) { encode_position(item, "last_message_at", scope) })
     end
 

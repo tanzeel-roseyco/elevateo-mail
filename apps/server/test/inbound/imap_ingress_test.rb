@@ -55,6 +55,17 @@ class ImapIngressTest < Minitest::Test
     assert_empty @store.calls
   end
 
+  def test_only_unambiguous_header_identity_reaches_atomic_store
+    # AIDEV-NOTE: Imported mail remains readable without an identity, but cannot authorize an RFC reply.
+    ingest(raw_mime: "Message-ID: <original@example.invalid>\r\n" + MIME)
+    assert_equal "<original@example.invalid>", @store.calls.last.fetch(:rfc_message_id)
+    [MIME, "Message-ID: <a@example.invalid>\r\nMessage-ID: <b@example.invalid>\r\n" + MIME,
+      MIME.sub("hello", "Message-ID: <body@example.invalid>")].each do |raw|
+      ingest(raw_mime: raw)
+      assert_nil @store.calls.last.fetch(:rfc_message_id)
+    end
+  end
+
   def test_supported_attachment_is_rejected_until_quarantine_exists
     multipart = "From: sender@example.invalid\r\nTo: inbox@example.invalid\r\n" \
       "Content-Type: multipart/mixed; boundary=x\r\n\r\n--x\r\nContent-Type: text/plain\r\n\r\nhello\r\n" \

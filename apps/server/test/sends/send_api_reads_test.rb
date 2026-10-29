@@ -89,6 +89,32 @@ class SendAPIReadsTest < Minitest::Test
     refute result[2].key?("snapshot_bytes")
   end
 
+  def test_mox_reply_snapshot_binds_original_sender_and_rfc_identity
+    # AIDEV-NOTE: Wire identity is private approval metadata; public review retains the thread UUID contract.
+    value = binding.merge("reply_to_thread_id" => THREAD, "reply_message_id" => "<original@example.invalid>",
+      "consented_addresses" => ["Local@example.invalid"])
+    review = Elevateo::SendAPI::Review.new(value, outbound_mode: "mox")
+    assert review.result.fetch("ready")
+    snapshot = JSON.parse(review.snapshot)
+    assert_equal "elevateo.send.snapshot.v3", snapshot[0]
+    assert_equal [nil, "Sender@example.invalid"], snapshot[5]
+    assert_equal [THREAD, "<original@example.invalid>"], snapshot[9]
+    assert_equal THREAD, review.result.fetch("reply_to_thread_id")
+    refute review.result.key?("reply_message_id")
+  end
+
+  def test_mox_reply_without_imported_identity_is_not_ready
+    value = binding.merge("reply_to_thread_id" => THREAD,
+      "consented_addresses" => ["Local@example.invalid"])
+    review = Elevateo::SendAPI::Review.new(value, outbound_mode: "mox")
+    refute review.result.fetch("ready")
+    assert_nil review.result.fetch("review_digest")
+    assert_includes review.result.fetch("issues").map { |issue| issue.fetch("code") }, "reply_unavailable"
+    assert_raises(Elevateo::ReadResponse::Invalid) do
+      Elevateo::SendAPI::Review.new(value.merge("reply_message_id" => "<a@example.invalid>\r\nBcc: hidden"), outbound_mode: "mox")
+    end
+  end
+
   def test_foreign_scope_is_generic_and_invalid_status_projection_is_internal
     @connection.rows = [row("code" => "not_available")]
     result = dispatch_read(Reviews)

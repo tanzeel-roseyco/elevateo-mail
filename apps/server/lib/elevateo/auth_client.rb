@@ -4,6 +4,7 @@ require "net/http"
 require "json"
 require_relative "auth_input"
 require_relative "request_deadline"
+require_relative "authentik_identity"
 
 module Elevateo
   class AuthClient
@@ -32,7 +33,13 @@ module Elevateo
       request(:post, "/token?grant_type=pkce", { "auth_code" => code, "code_verifier" => verifier }, deadline: deadline)
     end
 
-    def user(access, deadline:) = request(:get, "/user", nil, access: access, deadline: deadline)
+    def user(access, deadline:)
+      user = request(:get, "/user", nil, access: access, deadline: deadline)
+      if @config.sso_provider == "custom:authentik"
+        AuthentikIdentity.new(config: @config).check!(user, deadline: deadline)
+      end
+      user
+    end
 
     def recover(email, deadline:)
       path = "/recover?redirect_to=#{URI.encode_www_form_component(@config.browser_origin + '/auth/complete')}"

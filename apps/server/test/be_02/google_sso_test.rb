@@ -9,6 +9,7 @@ class GoogleSsoTest < Minitest::Test
 
   def config
     super.tap do |value|
+      value.sso_provider = "google"
       value.sso_enabled = true
       value.sso_only = false
       value.auth_public_url = "https://auth.test"
@@ -59,6 +60,23 @@ class GoogleSsoTest < Minitest::Test
     assert_equal @params.fetch("code_challenge"), Base64.urlsafe_encode64(Digest::SHA256.digest(verifier), padding: false)
     assert(@store.calls.any? { |name, _| name == "create_session" })
     refute_includes @issued.fetch(:location), verifier
+  end
+
+  def test_authentik_uses_custom_provider_and_preserves_private_session_exchange
+    @sso = Elevateo::GoogleSso.new(sessions: @service, config: config.tap { |value| value.sso_provider = "custom:authentik" })
+    @issued = @sso.start
+    params = URI.decode_www_form(URI.parse(@issued.fetch(:location)).query).to_h
+    @state = URI.decode_www_form(URI.parse(params.fetch("redirect_to")).query).to_h.fetch("state")
+    assert_equal "custom:authentik", params.fetch("provider")
+    assert_equal "openid email profile", params.fetch("scopes")
+    assert_equal "custom:authentik", @sso.status.fetch("provider")
+    assert_equal "ok", complete.metadata.fetch("status")
+  end
+
+  def test_provider_change_rejects_inflight_flow_before_network
+    @sso = Elevateo::GoogleSso.new(sessions: @service, config: config.tap { |value| value.sso_provider = "custom:authentik" })
+    assert_auth(400) { complete }
+    assert_empty @calls
   end
 
   def test_bad_state_and_missing_cookie_never_contact_auth
@@ -117,5 +135,45 @@ class GoogleSsoTest < Minitest::Test
     assert_equal "", environment.fetch("QUERY_STRING")
     assert_equal Elevateo::GoogleSso::CALLBACK, environment.fetch("REQUEST_URI")
     assert_equal "code=private&state=secret", environment.fetch(Elevateo::AuthCallbackRedaction::QUERY_KEY)
+  end
+
+  def signup_result(status)
+    enabled = config.tap { |value| value.company_signup_enabled = true }
+    @sso = Elevateo::GoogleSso.new(sessions: @service, config: enabled)
+    original = @store.method(:call)
+    @store.define_singleton_method(:call) do |name, args, **options|
+      if name == "enroll_company_identity"
+        @calls << [name, args]
+        { "status" => status }
+      else
+        original.call(name, args, **options)
+      end
+    end
+  end
+
+  def test_signup_uses_verified_ids_before_establishing_session
+    signup_result("ok")
+    assert_equal "ok", complete.metadata.fetch("status")
+    assert_equal ["enroll_company_identity", [USER, SID]], @store.calls.first
+    assert_equal "create_session", @store.calls[1][0]
+  end
+
+  def test_denied_enrollment_never_creates_a_session
+    signup_result("unauthorized")
+    assert_auth(401) { complete }
+    refute(@store.calls.any? { |name, _| name == "create_session" })
+    assert(@calls.any? { |_, path, _| path == "/logout?scope=local" })
+  end
+
+  def test_unavailable_enrollment_never_creates_a_session
+    signup_result("temporarily_unavailable")
+    assert_auth(503) { complete }
+    refute(@store.calls.any? { |name, _| name == "create_session" })
+    assert(@calls.any? { |_, path, _| path == "/logout?scope=local" })
+  end
+
+  def test_default_existing_membership_flow_does_not_enroll
+    complete
+    refute(@store.calls.any? { |name, _| name == "enroll_company_identity" })
   end
 end

@@ -18,6 +18,7 @@ class SsoControllerRequestTest < Minitest::Test
 
   def config
     super.tap do |value|
+      value.sso_provider = "custom:authentik"
       value.sso_enabled = true
       value.sso_only = true
       value.auth_public_url = "https://auth.test"
@@ -33,7 +34,7 @@ class SsoControllerRequestTest < Minitest::Test
   def test_status_and_start_expose_only_public_contract
     status, headers, body = dispatch("status")
     assert_equal 200, status
-    assert_equal({ "enabled" => true, "provider" => "google", "password_login_enabled" => false }, JSON.parse(body))
+    assert_equal({ "enabled" => true, "provider" => "custom:authentik", "password_login_enabled" => false }, JSON.parse(body))
     assert_equal "no-store", headers.fetch("cache-control")
     status, headers, = dispatch("start")
     assert_equal 303, status

@@ -43,8 +43,13 @@ module Elevateo
     attr_reader resend_webhook_secret: String?
     attr_reader resend_base_url: String?
     attr_reader mailbox_daily_send_limit: Integer
+    attr_reader sso_provider: String
+    attr_reader authentik_issuer: String
+    attr_reader authentik_group: String
+    attr_reader authentik_api_token: String
     attr_reader sso_enabled: bool
     attr_reader sso_only: bool
+    attr_reader company_signup_enabled: bool
     attr_reader auth_public_url: String?
     def self.current: () -> Config
     def self.load!: (?_ConfigEnvironment) -> Config
@@ -54,6 +59,7 @@ module Elevateo
     def configure_outbound: (_ConfigEnvironment) -> void
     def configure_auth: (_ConfigEnvironment, ^(String) -> String) -> void
     def configure_sso: (_ConfigEnvironment) -> void
+    def configure_authentik: (_ConfigEnvironment) -> void
     def parse_hold: (String) -> bool
     def validate_smtp: (String, String) -> void
     def internal_url: (String, String, String) -> String

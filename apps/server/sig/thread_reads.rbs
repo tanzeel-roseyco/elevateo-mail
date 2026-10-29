@@ -16,6 +16,7 @@ module Elevateo
     end
     MAILBOX_SQL: String
     LIST_SQL: String
+    ORGANIZATION_LIST_SQL: String
     THREAD_SQL: String
     MESSAGES_SQL: String
     DIRECT_MESSAGE_SQL: String
@@ -26,6 +27,7 @@ module Elevateo
     def initialize: (connection: _ThreadConnection, identity: _ThreadIdentity,
                      session: ReadResponse::item, cursors: Cursors) -> void
     def list: (mailbox_id: String?, query: Hash[String, String]) -> String
+    def organization_list: (query: Hash[String, String]) -> String
     def detail: (thread_id: String?, query: Hash[String, String]) -> String
     def direct_message: (thread_id: String?, message_id: String?, query: Hash[String, String]) -> String
     private

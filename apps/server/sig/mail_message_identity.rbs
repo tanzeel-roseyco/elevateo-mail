@@ -1,0 +1,7 @@
+module Elevateo
+  module MailMessageIdentity
+    PATTERN: Regexp
+    def self.valid?: (Object?) -> bool
+    def self.from_mime: (String) -> String?
+  end
+end

@@ -44,9 +44,15 @@ module Elevateo
           # AIDEV-NOTE: Fetch the smallest pending UIDs first; committing only that prefix preserves the next scan.
           remaining.first(limit).map do |uid|
             rows = @deadline.call { @client.uid_fetch(uid, ["BODY.PEEK[]<0.#{FakeIngress::MAX_RAW + 1}>"]) }
-            raise Rejected, "invalid_imap_batch" unless rows.is_a?(Array) && rows.length == 1
+            raise Rejected, "invalid_imap_batch" unless rows.is_a?(Array)
 
-            attributes = rows.first.attr
+            # AIDEV-NOTE: Mox can interleave unsolicited FLAGS; only the requested UID's BODY proves this fetch.
+            bodies = rows.select do |row|
+              row.attr["UID"] == uid && row.attr.keys.any? { |key| key.start_with?("BODY[") }
+            end
+            raise Rejected, "invalid_imap_batch" unless bodies.length == 1
+
+            attributes = bodies.first.attr
             pair = attributes.find { |key, value| key.start_with?("BODY[") && value.is_a?(String) }
             raw = pair&.last
             raise Rejected, "invalid_mime" unless raw.is_a?(String) && raw.bytesize.between?(1, FakeIngress::MAX_RAW)

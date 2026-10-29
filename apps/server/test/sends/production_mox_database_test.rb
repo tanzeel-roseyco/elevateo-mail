@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative "mox_worker_database_test"
+require_relative "../../lib/elevateo/send_api/review"
 
 # AIDEV-NOTE: Restricted API/worker connections exercise production authority without any SMTP network IO.
 class ProductionMoxDatabaseTest < SendMoxWorkerDatabaseTest
@@ -68,6 +69,36 @@ class ProductionMoxDatabaseTest < SendMoxWorkerDatabaseTest
     SQL
     assert_equal({ "profile" => MODE, "source" => SOURCE, "receipt_ref" => RECEIPT }, row)
     assert_equal [:idle, 0], run_worker(send_id)
+  end
+
+  def test_imported_reply_identity_survives_approval_and_worker_authority
+    account = SecureRandom.uuid
+    @admin.exec_params(<<~SQL, [account, @org, @box])
+      INSERT INTO app.inbound_imap_accounts(id,organization_id,mailbox_id,credential_ref,credential_version,active)
+        VALUES($1,$2,$3,'test:synthetic-only',1,true)
+    SQL
+    imported = JSON.parse(@worker.exec_params(<<~SQL, [account]).getvalue(0, 0))
+      SELECT app.ingest_imap_mail_with_identity($1::uuid,1,42,1,repeat('a',64),
+        '{"display_name":null,"address":"Recipient@example.invalid"}'::jsonb,'[]'::jsonb,
+        'Original','Original body','[]'::jsonb,'<original@example.invalid>',NULL::uuid)
+    SQL
+    assert_equal 2, save(payload(expected_version: 1, operation_id: SecureRandom.uuid,
+      reply_to_thread_id: imported.fetch("thread_id"), subject: "Reply", body_text: "Reply body",
+      to: [{ "display_name" => nil, "address" => "Recipient@example.invalid" }])).fetch("version")
+    projection = Elevateo::SendAPI::Review.new(review, outbound_mode: "mox")
+    assert projection.result.fetch("ready")
+    # AIDEV-NOTE: Actual approval re-reads the protected binding; a renderer-only test cannot prove this fence.
+    approved = approve(version: 2, bytes: projection.snapshot,
+      review_digest: Digest::SHA256.hexdigest(projection.snapshot))
+    send_id = approved.fetch("send_id")
+    assert_equal "elevateo.send.snapshot.v3", @admin.exec_params(
+      "SELECT snapshot_format FROM app_send_private.intents WHERE send_id=$1", [send_id]).getvalue(0, 0)
+    assert_equal [:accepted, 1], run_worker(send_id)
+  ensure
+    if @admin && account
+      @admin.exec_params("DELETE FROM app.inbound_imap_receipts WHERE account_id=$1", [account])
+      @admin.exec_params("DELETE FROM app.inbound_imap_accounts WHERE id=$1", [account])
+    end
   end
 
   def test_unknown_is_durable_and_reconciliation_never_resubmits

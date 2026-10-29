@@ -2,6 +2,7 @@
 
 require_relative "fake_ingress"
 require_relative "imap_mime_parser"
+require_relative "../mail_message_identity"
 
 module Elevateo
   module Inbound
@@ -42,7 +43,7 @@ module Elevateo
         @store.insert_once(account_id: account_id.downcase, credential_version: credential_version,
           uidvalidity: uidvalidity, uid: uid, content_sha256: parsed.fetch(:content_sha256),
           from: parsed.fetch(:from), to: parsed.fetch(:to), subject: parsed.fetch(:subject), text: parsed.fetch(:text),
-          attachments: handles)
+          attachments: handles, rfc_message_id: MailMessageIdentity.from_mime(raw_mime))
       end
     end
   end

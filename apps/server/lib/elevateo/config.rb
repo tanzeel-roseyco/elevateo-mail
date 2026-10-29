@@ -21,12 +21,13 @@ module Elevateo
     PROVIDER_PREFIXES = %w[INSTANTLY_ POSTMARK_ SENDGRID_ MAILGUN_ SES_ SMTP_RELAY_].freeze
     OUTBOUND_MODES = %w[held mailpit resend mox].freeze
 
-    attr_reader :mode, :db_host, :db_name, :db_role, :db_password, :db_pool, :auth_url, :storage_url, :mailpit_url,
+    attr_reader :authentik_issuer, :authentik_group, :authentik_api_token,
+                :mode, :db_host, :db_name, :db_role, :db_password, :db_pool, :auth_url, :storage_url, :mailpit_url,
                 :send_api_enabled, :send_control_path, :outbound_hold, :process, :session_key, :browser_origin, :auth_jwt_issuer,
                 :auth_jwt_audience, :auth_jwt_algorithm, :cookie_secure, :auth_password_minimum, :cursor_signing_key,
                 :attachment_gateway_hmac_key, :attachment_gateway_url, :outbound_mode, :resend_api_key,
                 :resend_from_domain, :resend_webhook_secret, :resend_base_url, :mailbox_daily_send_limit,
-                :sso_enabled, :sso_only, :auth_public_url
+                :sso_enabled, :sso_provider, :sso_only, :auth_public_url, :company_signup_enabled
 
     # Credentials live on this boundary object, so the default instance-variable dump is unsafe.
     def inspect = "#<Elevateo::Config redacted>"
@@ -107,7 +108,10 @@ module Elevateo
         raise ConfigError, "production Mox requires production mode"
       end
       raw_limit = env.fetch("ELEVATEO_MAILBOX_DAILY_SEND_LIMIT", "30")
-      raise ConfigError, "invalid ELEVATEO_MAILBOX_DAILY_SEND_LIMIT" unless /\A[1-9][0-9]{0,3}\z/.match?(raw_limit)
+      # AIDEV-NOTE: This is a configuration ceiling; transport must atomically reserve each actual delivery.
+      unless raw_limit.is_a?(String) && /\A[1-9][0-9]?\z/.match?(raw_limit) && raw_limit.to_i <= 30
+        raise ConfigError, "invalid ELEVATEO_MAILBOX_DAILY_SEND_LIMIT"
+      end
       @mailbox_daily_send_limit = raw_limit.to_i
 
       required_names = ["ELEVATEO_RESEND_FROM_DOMAIN", @process == "worker" ? "RESEND_API_KEY" : "RESEND_WEBHOOK_SECRET"]
@@ -192,14 +196,31 @@ module Elevateo
 
     # AIDEV-NOTE: Public Auth supports the explicit gateway prefix; server requests retain the private auth_url.
     def configure_sso(env)
+      configure_authentik(env)
       enabled = env.fetch("ELEVATEO_SSO_ENABLED", "false")
       only = env.fetch("ELEVATEO_SSO_ONLY", "false")
       unless [enabled, only].all? { |value| %w[true false].include?(value) }
         raise ConfigError, "invalid SSO switch"
       end
+      @sso_provider = env.fetch("ELEVATEO_SSO_PROVIDER", "google")
+      unless %w[google custom:authentik].include?(@sso_provider)
+        raise ConfigError, "unsupported SSO provider"
+      end
       @sso_enabled = enabled == "true"
+      if @sso_enabled && @sso_provider == "custom:authentik" &&
+          [@authentik_issuer, @authentik_group, @authentik_api_token].any?(&:empty?)
+        raise ConfigError, "Authentik requires pinned issuer, tenant group and private revalidation token"
+      end
       @sso_only = only == "true"
       raise ConfigError, "SSO-only requires SSO enabled" if @sso_only && !@sso_enabled
+      signup = env.fetch("ELEVATEO_COMPANY_SIGNUP_ENABLED", "false")
+      raise ConfigError, "invalid company signup switch" unless %w[true false].include?(signup)
+      @company_signup_enabled = signup == "true"
+      # AIDEV-NOTE: Enrollment also needs an enabled, pinned database policy; this flag cannot grant roles.
+      if @company_signup_enabled && (!@sso_enabled || !@sso_only)
+        raise ConfigError, "company signup requires SSO-only"
+      end
+
       @auth_public_url = env["ELEVATEO_AUTH_PUBLIC_URL"]
       return unless @sso_enabled || @auth_public_url
       uri = URI.parse(@auth_public_url.to_s)
@@ -209,6 +230,29 @@ module Elevateo
       end
     rescue URI::InvalidURIError
       raise ConfigError, "invalid public Auth endpoint"
+    end
+
+    # AIDEV-NOTE: No discovery or API URL comes from a browser; one pinned HTTPS origin owns both trust channels.
+    def configure_authentik(env)
+      @authentik_issuer = env.fetch("ELEVATEO_AUTHENTIK_ISSUER", "")
+      @authentik_group = env.fetch("ELEVATEO_AUTHENTIK_GROUP", "")
+      @authentik_api_token = env.fetch("ELEVATEO_AUTHENTIK_API_TOKEN", "")
+      unless [@authentik_issuer, @authentik_group, @authentik_api_token].all? { |value| value.is_a?(String) }
+        raise ConfigError, "Authentik settings must be strings"
+      end
+      unless @authentik_issuer.empty?
+        uri = URI.parse(@authentik_issuer)
+        unless uri.scheme == "https" && uri.host && uri.port == 443 && uri.userinfo.nil? &&
+            uri.query.nil? && uri.fragment.nil? && %r{\A/application/o/[a-z0-9-]+/\z}.match?(uri.path.to_s)
+          raise ConfigError, "invalid pinned Authentik issuer"
+        end
+      end
+      unless @authentik_group.empty? || /\A[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}\z/.match?(@authentik_group)
+        raise ConfigError, "invalid Authentik tenant group"
+      end
+      unless @authentik_api_token.empty? || /\A[A-Za-z0-9_-]{32,4096}\z/.match?(@authentik_api_token)
+        raise ConfigError, "invalid private Authentik token"
+      end
     end
 
     def parse_hold(value)

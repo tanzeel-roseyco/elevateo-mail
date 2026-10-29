@@ -18,8 +18,8 @@ class TlsImapTransportTest < Minitest::Test
       @search_criteria = criteria
       [7]
     end
-    def uid_fetch(_, _)
-      [Struct.new(:attr).new({ "BODY[]<0>" => "From: sender@example.invalid\r\nTo: inbox@example.invalid\r\nContent-Type: text/plain\r\n\r\nhello" })]
+    def uid_fetch(uid, _)
+      [Struct.new(:attr).new({ "UID" => uid, "BODY[]<0>" => "From: sender@example.invalid\r\nTo: inbox@example.invalid\r\nContent-Type: text/plain\r\n\r\nhello" })]
     end
     def disconnect = (@disconnected = true)
   end
@@ -62,6 +62,28 @@ class TlsImapTransportTest < Minitest::Test
     assert_equal "account_unavailable", assert_raises(Elevateo::Inbound::Rejected) {
       transport.open(binding: "prod:mailbox")
     }.code
+  end
+
+  def test_unsolicited_flags_do_not_hide_requested_body
+    client = Client.new("mox.test")
+    body = client.uid_fetch(7, []).first
+    flags = Struct.new(:attr).new({ "UID" => 7, "FLAGS" => [] })
+    client.define_singleton_method(:uid_fetch) { |*_| [body, flags] }
+    session = Elevateo::Inbound::TlsImapTransport::Session.new(client)
+    assert_equal 7, session.fetch_after(0, limit: 50).first.fetch(:uid)
+  end
+
+  def test_wrong_uid_and_duplicate_bodies_are_rejected
+    client = Client.new("mox.test")
+    body = client.uid_fetch(7, []).first
+    wrong = client.uid_fetch(8, []).first
+    session = Elevateo::Inbound::TlsImapTransport::Session.new(client)
+    [[], [wrong], [body, body]].each do |rows|
+      client.define_singleton_method(:uid_fetch) { |*_| rows }
+      assert_equal "invalid_imap_batch", assert_raises(Elevateo::Inbound::Rejected) {
+        session.fetch_after(0, limit: 50)
+      }.code
+    end
   end
 
   def test_uid_ceiling_is_empty_without_searching_an_invalid_range

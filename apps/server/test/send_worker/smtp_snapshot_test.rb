@@ -64,6 +64,26 @@ class SendWorkerSmtpSnapshotTest < Minitest::Test
     assert_raises(Elevateo::SendWorker::SmtpSnapshot::Invalid) { render(JSON.generate(value)) }
   end
 
+  def test_reply_snapshot_preserves_sender_and_original_wire_identity
+    value = JSON.parse(snapshot)
+    value[0] = "elevateo.send.snapshot.v3"
+    value[9] = [DRAFT, "<original@example.invalid>"]
+    message = render(JSON.generate(value))
+    assert_equal SENDER, message.sender
+    assert_includes message.mime, "From: #{SENDER}\r\n"
+    assert_includes message.mime, "In-Reply-To: <original@example.invalid>\r\n"
+    assert_includes message.mime, "References: <original@example.invalid>\r\n"
+  end
+
+  def test_reply_identity_rejects_missing_malformed_and_injected_headers
+    value = JSON.parse(snapshot)
+    value[0] = "elevateo.send.snapshot.v3"
+    [nil, DRAFT, [DRAFT, nil], [DRAFT, "<a@example.invalid>\r\nBcc: stolen@example.invalid>"]].each do |reply|
+      value[9] = reply
+      assert_raises(Elevateo::SendWorker::SmtpSnapshot::Invalid) { render(JSON.generate(value)) }
+    end
+  end
+
   private
 
   def render(bytes)

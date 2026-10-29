@@ -1,6 +1,7 @@
 module V1
   class ThreadsController < ReadController
     def index: () -> void
+    def organization_index: () -> void
     def show: () -> void
     def message: () -> void
     private

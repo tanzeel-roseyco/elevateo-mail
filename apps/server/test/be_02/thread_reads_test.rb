@@ -41,6 +41,50 @@ class ThreadReadsTest < Minitest::Test
     @examples.fetch("threads").fetch("body").fetch("items").first
   end
 
+  def test_organization_list_reuses_summary_and_one_bounded_query
+    connection = Connection.new([summary_row])
+    page = JSON.parse(reader(connection).organization_list(query: {}))
+    assert_equal [summary_row], page.fetch("items")
+    refute page.key?("mailbox_id")
+    assert_nil page.fetch("next_cursor")
+    assert_equal 1, connection.calls.length
+    assert_equal [@identity.org_id, nil, @identity.user_id, "all", nil, nil, "51"], connection.calls.first.last
+    assert_includes connection.calls.first.first, "CROSS JOIN LATERAL"
+    assert_empty JSON.parse(reader(Connection.new([])).organization_list(query: {})).fetch("items")
+  end
+
+  def test_organization_cursor_cannot_cross_mailbox_filter_limit_or_tenant
+    first = JSON.parse(reader(Connection.new([summary_row, summary_row])).organization_list(query: { "limit" => "1" }))
+    token = first.fetch("next_cursor")
+    connection = Connection.new([])
+    reader(connection).organization_list(query: { "limit" => "1", "cursor" => token })
+    assert_equal summary_row.fetch("id"), connection.calls.first.last.fetch(4)
+    [{ "limit" => "2" }, { "limit" => "1", "filter" => "unread" }].each do |query|
+      assert_raises(Elevateo::Cursors::Invalid) do
+        reader(Connection.new).organization_list(query: query.merge("cursor" => token))
+      end
+    end
+    assert_raises(Elevateo::Cursors::Invalid) do
+      reader(Connection.new).list(mailbox_id: @mailbox, query: { "limit" => "1", "cursor" => token })
+    end
+    @identity.org_id = "00000000-0000-4000-8000-000000000001"
+    assert_raises(Elevateo::Cursors::Invalid) do
+      reader(Connection.new).organization_list(query: { "limit" => "1", "cursor" => token })
+    end
+  end
+
+  def test_organization_validates_query_before_database_access
+    [{ "limit" => "0" }, { "limit" => "51" }, { "limit" => "01" }, { "filter" => "private" },
+     { "mailbox_id" => @mailbox }, { "organization_id" => @identity.org_id }, { "cursor" => "" }].each do |query|
+      assert_raises(Invalid) { reader(Connection.new).organization_list(query: query) }
+    end
+    %w[all unread starred snoozed archive spam trash].each do |filter|
+      connection = Connection.new([])
+      reader(connection).organization_list(query: { "filter" => filter })
+      assert_equal filter, connection.calls.first.last.fetch(3)
+    end
+  end
+
   def test_canonical_list_empty_and_plaintext_detail_fixtures
     connection = Connection.new([{ "id" => @mailbox }], [summary_row])
     assert_equal @examples.fetch("threads").fetch("body"), JSON.parse(reader(connection).list(mailbox_id: @mailbox, query: {}))
