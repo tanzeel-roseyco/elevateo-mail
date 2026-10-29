@@ -17,7 +17,7 @@ class SendBudgetConcurrencyTest < SendBudgetDatabaseTestCase
     @worker.exec("COMMIT")
     assert thread.join(3), "second worker failed to finish"
     assert_nil thread.value
-    assert_equal 6, usage.length
+    assert_equal 7, usage.length
     assert(usage.all? { |row| row.fetch("used") == "1" })
     assert_equal "1", @admin.exec("SELECT count(*) FROM app_send_private.attempts").getvalue(0, 0)
     row = @admin.exec_params("SELECT state,hold_reason,attempt_count FROM app_send_private.jobs WHERE send_id=$1", [second_pair.last.send_id]).first

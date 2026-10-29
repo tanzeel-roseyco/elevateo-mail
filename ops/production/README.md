@@ -1,4 +1,4 @@
-# Held production backend
+# Production assembly
 
 ## Email finder worker
 
@@ -18,96 +18,26 @@ The private origin is `http://launch-api:3000` on
 existing private `db`, `auth`, `storage`, and `mailpit` services. No database port is published.
 API port 4709 and the two-path Auth browser proxy port 4712 bind to fleet loopback; database ports remain private. No Cloudflare component, DNS change,
 MX change or Google Workspace email routing change is included or authorized by this manifest.
+The current entrypoint is `sh ops/production/deploy.sh [--dry-run]`. It reads environment only, validates credentials and approved assignments before Docker, uses immutable images, then starts the project-owned Supabase database/Auth/PostgREST/Storage, API, revocation worker, attachment gateway, mailbox MCP, Mox and restricted OAuth proxy. Resend mode adds the provider event worker. It never builds images, changes cloud/DNS/MX, or submits mail. Sending stays held and CSV provisioning is dry-run unless explicitly enabled.
 
-## Proxy contract
+See [credentials-last](../../docs/credentials-last.md) and the single root [.env.production.example](../../.env.production.example). Final local Docker gates, encrypted restore drill and deploy dry-run passed; see the [verification receipt](../../docs/completion/backend-20261030-receipt.md). No deployment is claimed. This replaces the historical fleet/external-network launcher. Existing `initialize/` and `launch-controls/` scripts remain explicit operator tools; deployment does not invent tenant memberships or authorize a user by email alone.
 
-Preserve method, body, query, cookies, Set-Cookie and response status. Set Host to
-`mail.elevateoco.com`, X-Forwarded-Proto to `https`; strip client-supplied forwarding headers.
-Proxy `/v1/*`, `/v2/*`, `/auth/accept`, `/health`, `/ready`. Keep `/webhooks/resend` and
-`/v2/provider-events/resend` blocked during this held launch. Never forward arbitrary URLs.
-Do not cache authenticated responses. Backend credentials and transport credentials must never
-enter browser bundles. Browser origin and secure cookie policy remain exact.
+## Data and authority
 
-## Protected configuration
+All six persistent volumes belong to `elevateo-production`; no external data network is assumed. Database, REST, Storage and mailbox credentials remain private. API and MCP publish only loopback ports 4709 and 4713; OAuth proxy uses loopback 4712 and exposes only authorize/callback. Mox requires the approved Linux host IPv4 and host networking, with held domains/logins. An existing trusted edge must route the public application origin; edge/DNS/TLS changes are outside this task.
 
-Use separate absolute, mode-0600 API/worker/gateway env files outside the repository.
-API: `API_DB_PASSWORD`, `SECRET_KEY_BASE` (at least 64 bytes),
-`ELEVATEO_SESSION_KEY_BASE64` (32 decoded bytes), `ELEVATEO_ATTACHMENT_GATEWAY_HMAC_KEY_BASE64`
-(32 decoded bytes), `ELEVATEO_AUTH_JWT_ISSUER`, `ELEVATEO_AUTH_JWT_AUDIENCE=authenticated`,
-`ELEVATEO_AUTH_JWT_ALGORITHM=HS256`, `ELEVATEO_AUTH_PASSWORD_MINIMUM=12`.
-Worker: same policy/key fields, replacing API_DB_PASSWORD with WORKER_DB_PASSWORD.
-For the SSO launch, set `ELEVATEO_SSO_ENABLED=true`, `ELEVATEO_SSO_ONLY=true` and
-`ELEVATEO_AUTH_PUBLIC_URL=https://mail.elevateoco.com/auth/v1`.
-These default to disabled for existing local tests; SSO-only rejects password login, recovery and password invitation acceptance.
-The public endpoint is browser redirect metadata, never the server Auth endpoint.
-Issuer must match the existing Auth issuer exactly; inspect it privately, never copy signing keys.
-Gateway: `ELEVATEO_ATTACHMENT_GATEWAY_DATABASE_URL` (existing least-privilege gateway role),
-`ELEVATEO_ATTACHMENT_GATEWAY_HMAC_KEY_BASE64`, `ELEVATEO_DB_NAME=postgres`,
-`ELEVATEO_STORAGE_URL=http://storage:5000`, `ELEVATEO_ATTACHMENT_BUCKET` (existing private bucket),
-`ELEVATEO_ATTACHMENT_STORAGE_SERVICE_TOKEN`. Only this process receives Storage authority.
-Do not include Resend keys, webhook secrets, admin/signing keys, or local HTTP bypass settings.
-Runtime production mode rejects a released outbound hold, provider mode, role/process mismatch,
-insecure cookies, another browser origin, a short Rails secret, and a nonprivate DB hostname.
+Authentik replaces Google. GoTrue's private custom-provider administration registers `custom:authentik`; the API rechecks active directory/group membership and local authorization. The actual app callback is `/v1/auth/sso/callback`, while Authentik returns to `/auth/v1/callback`. Proxy requests must preserve cookies/method/body and strip user-supplied forwarding headers. Do not expose Auth admin/token routes through the browser proxy.
 
-## Coordinator commands and gates
+Runtime credentials are split: API database password and webhook verification; worker database password and provider API credential; gateway private object credential and restricted DB role; MCP receives no database or provider key. Environment settings are never copied into application logs. The operations image performs one-shot provider registration with the Auth service credential; normal API containers never receive it.
 
-Build from repository root using the existing pinned Dockerfile (local test recipes are unchanged):
+The one-shot `configure-storage` service creates the selected attachment bucket when absent and reads it back as private. Repeated deployment leaves an existing private bucket unchanged; a public or conflicting bucket fails deployment. No manual bucket creation is required.
 
-```sh
-docker build -f apps/server/Dockerfile -t elevateo-server:launch-reviewed apps/server
-# Set ELEVATEO_PRODUCTION_IMAGE to sha256:<64 lowercase hex> or repository@sha256:<64 lowercase hex>.
-# Export only paths: ELEVATEO_API_ENV_FILE, ELEVATEO_WORKER_ENV_FILE, ELEVATEO_GATEWAY_ENV_FILE.
-sh ops/production/deploy.sh config --quiet
-sh ops/production/deploy.sh up -d
-sh ops/production/deploy.sh ps
-```
+Preflight parses the supplied TLS certificate chain and private key and verifies that they match before writing Mox volumes. The `mox-readiness` service shares host networking with Mox and checks live IMAPS certificate/hostname validation and SMTP/submission greetings without authentication or mail submission. Gateway readiness checks the initialized application's unsigned-request denial; proxy readiness uses a loopback-only health route to private Auth. Isolated restore configurations must omit both Mox and `mox-readiness` host networking.
 
-The admission wrapper rejects missing, mutable-tag and malformed image references before Docker runs.
-It supplies the manifest's internal admitted-image variable only after validation; use the wrapper
-for every Compose command. These are deployment instructions, not authorization for this worker to execute them.
-Before launch, prove the existing database has the reviewed schema, runtime grants and gateway
-role. Do not run automatic migrations or initialize data from this manifest. Confirm existing
-Auth callback/site settings support the public origin without widening its allowlist globally.
-Root must validate actual login/read/search/draft/attachment/logout in the secured application,
-including ready-state checks, empty/error paths and screenshots. A healthy process alone is
-not acceptance. Outbound stays held; no provider API calls or external test mail are required.
+## Operations
 
-Rollback: stop only this compose project's API/worker/gateway and return the edge to maintenance;
-retain every database/storage volume and the existing Supabase project. No volume cleanup command
-is part of this deployment. If an older gateway already owns the network alias, resolve ownership
-before starting this manifest; never run two authorities under the same alias.
+The deployment wrapper refuses empty required values and released outbound hold. It is forward-only: a failed stage retains named volumes for investigation, never silently rolls back data or prunes volumes. Stop affected services before correcting persistent configuration. Existing database password changes require a separate reviewed rotation, not a new environment value.
 
-## Restricted SSH transport (coordinator provisions)
+[Completion operations](completion/README.md) describe approved CSV provisioning, six-volume cold backup, encrypted off-host transfer and isolated restore. Restore revokes stale sessions/grants and quarantines unfinished sends. A successful backup upload is insufficient without restore verification. Native bridge integration and its separate isolated runtime image are documented in `apps/native/src-tauri/src/agents/README.md`.
 
-The coordinator-owned `ops/railway/transport.compose.yaml` overlay connects API and OAuth proxy
-to a separate transport network. The SSH container joins only that network and permits TCP local
-forwards to `launch-api:3000` and `oauth-proxy:8080`; it has no private data-network attachment.
-Its dedicated read-only key directory, public port 2223, pinned transport image, host-key verification
-and shell/password/remote/Unix-forwarding denial remain separate coordinator deployment gates.
-The optional fleet loopback ports 4709/4712 are diagnostic endpoints, not the selected edge transport.
-
-Railway forwards local 4710 to `launch-api:3000` and local 4711 to `oauth-proxy:8080` using the
-restricted transport identity. Edge uses the latter only for `/auth/v1/authorize` and
-`/auth/v1/callback`, stripping `/auth/v1`. The private pinned nginx bridge accepts only
-`/authorize` and `/callback` (GET/HEAD), preserves query/cookies/redirects, suppresses OAuth
-access logs, fixes forwarding headers and uses bounded upstream timeouts. Token, admin and other
-Auth paths return 404. A lost forward fails closed, never selecting another upstream.
-Transport secrets and independently verified host keys remain server-only coordinator settings.
-
-The isolated fake-Auth Docker check is `sh ops/production/check-auth-proxy.sh`; run only under a
-separate fleet lease. It creates no published ports, provider requests or persistent data. Its named
-containers/network are removed on success and failure. See `auth-proxy-evidence.txt` for the receipt.
-
-## Google identity setup
-
-The separate SSO owner implements the existing Supabase Auth identity bridge; no frontend code
-is changed here. Coordinator supplies a Google web OAuth client ID/secret to Supabase Auth only,
-the Google redirect registration `https://mail.elevateoco.com/auth/v1/callback`, the exact application callback
-`https://mail.elevateoco.com/v1/auth/sso/callback`, and invite-only existing identity mapping.
-Request `openid` explicitly; GoTrue additionally defaults to `email profile` identity scopes.
-Enable Google only and keep all other social providers disabled; verify this before launch alongside
-application `ELEVATEO_SSO_ONLY=true`. Require verified identity and preserve the existing subject mapping;
-do not grant access by an unchecked email or a broad email-domain match. State/nonce, PKCE,
-single-use callback validation and session rotation belong to the SSO implementation and review.
-Google's [OpenID Connect documentation](https://developers.google.com/identity/openid-connect/openid-connect)
-defines token validation and the stable `sub` identifier. This needs no Gmail scopes or mail routing changes.
+Local Docker builds/tests are reserved for the absolute final verification stage. No fleet host, live provider, deployment or public-network change is part of this implementation task.

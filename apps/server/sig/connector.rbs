@@ -1,0 +1,48 @@
+module Elevateo
+  module ConnectorInput
+    GRANT_FIELDS: Array[String]
+    SEARCH_FIELDS: Array[String]
+    READ_FIELDS: Array[String]
+    DRAFT_FIELDS: Array[String]
+    def self.grant: (WriteInput::object) -> WriteInput::object
+    def self.operation: (String, WriteInput::object) -> WriteInput::object
+    def self.citations: (WriteInput::value, String) -> Array[Hash[String, String]]
+  end
+  class ConnectorGrants
+    @database: Drafts::Database
+    def initialize: (connection: _ThreadConnection, session: ReadResponse::item) -> void
+    def issue: (WriteInput::object, digest: String) -> ReadResponse::item
+    def revoke: (String, digest: String) -> ReadResponse::item
+    def list: () -> ReadResponse::item
+    def resolve: (String) -> String
+    def authorize: (String, digest: String, mailbox: String, scope: String) -> void
+    def token_hash: (String) -> String
+  end
+  class ConnectorOperations
+    SELECT: String
+    @database: Drafts::Database
+    @drafts: DraftOperations
+    def initialize: (connection: _ThreadConnection, session: ReadResponse::item) -> void
+    def search: (WriteInput::object) -> ReadResponse::item
+    def read: (WriteInput::object) -> ReadResponse::item
+    def draft: (WriteInput::object, digest: String, request_id: String?) -> WriteResponse
+    def encode: (ReadResponse::item) -> WriteResponse
+    private
+    def message: (ReadResponse::item, String) -> ReadResponse::item
+  end
+end
+module V2
+  class ConnectorGrantsController < V1::WriteController
+    def index: () -> void
+    def create: () -> void
+    def revoke: () -> void
+  end
+  class ConnectorController < V1::WriteController
+    def search: () -> void
+    def read: () -> void
+    def draft: () -> void
+    private
+    def execute: (String, Array[String]) -> void
+    def resolve: (String) -> String
+  end
+end

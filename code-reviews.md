@@ -152,6 +152,62 @@ Also found while repairing (not in wave 1): the web app had no listener for `hos
 P15-1 (Cargo.lock) is regenerated at the start of the final Docker pass, where `cargo` runs.
 
 Found in the web-quality state pass (step 2, not in wave 1): a failed "Show more" on Bounces and Suppressions replaced the whole list with the error state and discarded the rows already loaded. Both pages now keep the rows and show a retryable inline alert (regression test `keeps loaded bounces when the next page fails and recovers on retry`). The other FC screens (send status, Connections, sign-in, People/Members, Personal Details, assistant panel) were checked for loading, empty and error states and labelled controls, and no further gaps were found.
+## Backend completion final source reviews - 2026-10-30
+
+These are source reviews, not passing runtime results. Each assignment used the full AGENTS rubric with at most 200 primary lines; related follow-up passes overlap and must not be summed. Density is confirmed defects per 1,000 reviewed lines. Linters remain a final Docker gate.
+
+| Scope | LOC | Defects | Defects/KLOC | Disposition |
+| --- | ---: | ---: | ---: | --- |
+| Native protocol and supervisor | 164 | 0 | 0 | Owner-bound bounded process events |
+| Native library | 114 | 0 | 0 | Grant resolver is the trusted integration boundary |
+| Native sandbox and supervisor follow-up | 176 | 0 | 0 | No host filesystem or socket in runtime sandbox |
+| Native launcher | 166 | 1 | 6.02 | Added actual offline child execution tests |
+| Native proxy and fixture | 114 | 1 | 8.77 | Absolute header deadline prevents slowloris |
+| Native Rust tests | 148 | 0 | 0 | Actual Docker lifecycle remains final gate |
+| Native Python tests and Dockerfiles | 110 | 0 | 0 | Runtime execution deferred |
+| Provisioning Python boundaries | 169 | 1 | 5.92 | DNS label length validation fixed |
+| Provisioning SQL | 67 | 0 | 0 | Locked verified membership and fail-closed routing |
+| Volume backup | 113 | 1 | 8.85 | Missing source volumes now fail before Docker can create empty ones |
+| Recovery | 146 | 1 | 6.85 | Non-object manifest rejected |
+| Mox initializer | 137 | 1 | 7.30 | Parse certificate and prove private-key match before writes |
+| Restore fence and drill | 95 | 0 | 0 | Rollback revokes authority and holds pending sends |
+| Production deployment admission/orchestration | 173 | 4 | 23.12 | Shared lock, budget bounds, running-Mox retry and missing private-bucket initialization fixed |
+| Production Compose first batch | 140 | 0 | 0 | Private services and environment secrets |
+| Production Compose second batch | 103 | 1 | 9.71 | Added missing service health checks |
+| Authentik registration and tests | 141 | 0 | 0 | Fixed private origin, bounded responses, fail-closed conflicts |
+| Resend worker overlay/storage/tests | 92 | 0 | 0 | Scoped environment credential, no API credential fallback |
+| Backend runner original | 150 | 0 | 0 | Adjacent suite integration duplicate wire execution repaired separately |
+| Backend runner independent follow-up | 163 | 0 | 0 | Local-only context and offline contract/wire execution |
+| Resend wire suite | 77 | 0 | 0 | Exactly six loopback stub calls, no provider traffic |
+| Restore runner, seed, operations image | 186 | 0 | 0 | Six-volume archive proof and temporal authority fencing |
+| Private storage initializer and tests | 102 | 0 | 0 | Independent parent review: creation readback refuses public/conflicting bucket |
+| Mox protocol readiness and tests follow-up | 97 | 0 | 0 | Independent parent review after fragmented-greeting fix |
+| Restore drill readiness and tests | 112 | 0 | 0 | Independent follow-up confirms readiness precedes mutation |
+| Historical R1 local runner | 94 | 0 | 0 | Isolated exact two-migration snapshot, pools 1/5 and worker role |
+| Native header fix and execution regressions | 181 | 1 | 5.52 | Malformed-JSON regression requested in addition to valid JSON null case |
+
+Integration review also found two defects outside those denominators: deploy bucket validation differed from PrivateStorage (now same 3-63 lowercase/hyphen rule with regression), and the restore drill could issue SQL before the restarted database was ready (bounded readiness barrier plus three tests). Neither is hidden in an unrelated zero-defect count.
+
+Dedicated design review compared live per-request grant checks versus caching, globally locked user budgets versus per-mailbox counters, cold six-volume snapshots versus online partial snapshots, and host process access versus disposable containers. Request-first/revoke-first, concurrent final budget unit, restore-after-provider-acceptance and partial provisioning retry were simulated as explicit state schedules in `docs/backend-completion-design.md`. Cold recovery favors consistent authority and no replay over availability; concurrency locks favor correctness over same-user throughput. Obsidian is unavailable, so these are recorded analytical simulations, not claimed connector executions.
+
+## Backend completion source reviews - 2026-10-29
+
+Runtime tests are deferred until all implementation is complete, per the user. Review density is defects per 1,000 reviewed lines; overlapping passes are not additive. Full user rubric applied; lint is a separate final Docker gate.
+
+| Scope | LOC | Defects | Defects/KLOC | Disposition |
+| --- | ---: | ---: | ---: | --- |
+| Resend V3 transport | 149 | 0 | 0 | Source review only; reply and attachment regressions pending execution |
+| MCP protocol/backend initial | 118 | 1 | 8.47 | Standard tool `_meta` rejected; now accepted as inert metadata, never forwarded |
+| MCP transports initial | 94 | 2 | 21.28 | Error-write backpressure and transport test coverage repaired |
+| MCP transports follow-up | 147 | 1 | 6.80 | Oversize upload reset hazard repaired by retaining iterator input until response finish |
+| MCP transports final | 153 | 0 | 0 | Streamed-disconnect edge remains a final verification concern |
+| Connector controllers/operations | 163 | 1 | 6.13 | UTF-8 response budget enforced while selecting search results; regression added |
+| Grant database/design review | 160 | 2 | 12.50 | Active-first list and NULL proof rejection repaired; actor locks serialize revocation |
+| Grant migration/bootstrap follow-up | 141 | 0 | 0 | Privileged bootstrap owns schema; rollback retains empty bootstrap schema |
+| Authentik/production configuration | 86 | 0 | 0 | Source review; disabled-SSO regression added, all execution deferred |
+| Connector database regressions | 144 | 0 | 0 | Source-only review; HTTP and concurrency gates remain separate |
+
+Design tradeoff: resolve locates a source session but grants no authority; the subsequent live identity check and guarded database transaction decide every request. Actor-wide serialization favors immediate revocation correctness over same-user parallel throughput. No network I/O occurs while the authorization transaction is open. Request-first/revoke-first schedules were reasoned through statically; runtime race proof is pending. No Obsidian connector is available, so this is a repository-recorded analysis, not a claimed Obsidian simulation.
 
 ## Self-hosted continuation reviews — 2026-10-23
 
@@ -2556,3 +2612,75 @@ The final Docker harness also exposed two harness defects: PowerShell interprete
 Docker integration tests subsequently exposed one production defect: a broad `FOR ALL` RLS policy invoked the write guard during reads. Separate INSERT and DELETE policies fixed it; the database round-trip regression passes. A controller test constant and the route mapper/count fixture also needed correction. These execution findings are separate from review defect-density counts.
 
 Final integration checks caught stale generated Postman content and navigation expectations. Regenerated the artifact from the canonical builder and updated the registry and real keyboard traversal budget for the added sidebar link. Windows nested shell quoting was replaced by a mounted gate script. Final Steep and backend lint pass; detailed execution results and unrelated repository failures are in `docs/completion/email-finder-20261029.md`.
+## Backend completion design review - 2026-10-29
+
+Independent design reviewer: docs/backend-completion-design.md, initial lines 1-39; 39 LOC, 3 defects (2 high, 1 medium), 76.92 defects/KLOC. Added coordinated backup barriers/manifests, restore session/grant invalidation and send quarantine, and unique UTC-attributed budget reservation semantics. These are specification repairs, not implemented or tested guarantees. Analytical failure simulations only; no Obsidian connection was available.
+
+### Completion contract checkpoint reviews - 2026-10-29
+
+Initial bounded contract packets: schema430-629 (200 LOC, 1 defect, 5/KLOC); contract1-200 (200 LOC, 2 defects, 10/KLOC); native810-1009 (200 LOC, 2 defects, 10/KLOC); schema630-809 (180 LOC, 1 defect, 5.56/KLOC); contract201-400 (200 LOC, 2 defects, 10/KLOC); tail1010-1038 plus401-429 and68 Ruby test lines (126 LOC, 3 defects, 23.81/KLOC). Ranges refer to the initial review snapshot. Repaired citation grammar, machine-readable session headers, no-store grants, native errors, anchored provider identifiers, int32 version bounds, Svix header bounds, outage response, cancellation response, health schemas and executable payload validation.
+
+Payload review: 190 LOC (80 test lines plus110 example lines), 1 format-validation defect, 5.26/KLOC. Enabled pinned standard format validators and malformed UUID/date cases. Independent repair review: 90 LOC, 0 residual defects, 0/KLOC. Final response delta review: 145 LOC, 1 readiness HTTP/body consistency defect, 6.90/KLOC; added per-status schema constraints and both reversed-status regression cases. Review totals overlap and are not unique-source coverage. All results are static only; no Docker test/build acceptance, runtime authorization or production readiness is inferred. No Obsidian connection available; design scenarios are analytical.
+
+Readiness repair independently reviewed: 57 LOC, 0 new defects, 0/KLOC; prior finding resolved by inspection. Regression tests remain unexecuted because fleet-02 is unreachable.
+
+## Completion user quotas and readiness - 2026-10-29
+
+Bounded quota review: 128 LOC, one missing cross-mailbox concurrency regression (7.81 defects/KLOC). Added the competing-mailbox test. Follow-up 69 LOC found one transaction-visibility defect in its oracle (14.49/KLOC); corrected assertions to observe committed winner totals. Final independent review: 71 LOC, zero new defects (0/KLOC). Readiness review: 117 LOC, one unbounded dependency body defect (8.55/KLOC). Header-only response handling and total timeout repair reviewed over 100 LOC, zero new defects (0/KLOC). Counts overlap and do not represent unique coverage. Runtime, strict types and lint remain unexecuted until the final local Docker gate. No fleet usage, deployment or provider calls.
+
+## Portable Mox protocol harness review - 2026-10-29
+
+Independent adversarial review covered 105 LOC across the container definition, runner and admission tests. One defect (9.52 defects/KLOC): a ready marker bypassed fixture liveness validation. The runner now polls before accepting readiness, and a stale-marker regression was added. No Docker build or test has run; runtime acceptance remains pending.
+
+## Historical application-chain wrapper review - 2026-10-30
+
+Independent adversarial review of the initial 93-LOC wrapper identified three defects
+(one P1, two P2), 32.26 defects/KLOC: local/Mox configuration rejected boot, a broad
+repository mount exposed unchecked source credentials, and failed container removal
+skipped temporary credential deletion. Repairs use a guarded test-only boot adapter,
+three scoped read-only mounts with dotenv rejection, and unconditional credential cleanup.
+Production configuration guards are unchanged. Final bounded review covered wrapper97,
+adapter17 and admission tests29 (143 LOC), plus the five-line test invocation separately;
+zero remaining concrete source defects, 0/KLOC. Two admission test methods cover four
+rejected configurations; the actual chain provides accepted boot coverage. All remain
+unexecuted. This pipeline oracle proves HTTP/SQL/SMTP/IMAP only when run successfully,
+not production Authentik composition. Design scenarios were analytical; Obsidian was
+unavailable. Review denominators overlap and must not be summed as unique coverage.
+
+## Final local verification repairs - 2026-10-30
+
+Runtime checks exposed connector Steep annotations/signature mismatch, a Ruby test block lint ambiguity, and a read-only Docker DNS-file write in the Mox harness. Independent repair packets covered 115 LOC (connector/signature/assertion, zero remaining defects) and approximately 100 LOC (Mox runner context, zero remaining defects). Mox then passed 4 tests / 412 assertions. MCP strict compilation exposed an Ajv import/type mismatch; its 42-LOC repair review found zero remaining defects. A 30-LOC transport test review confirmed exact Host-header testing through node:http, with zero remaining defects. MCP passes 11 tests and Node contracts pass 50 tests, in network-disabled Docker.
+
+Operations execution exposed Python 3.11 tar extraction incompatibility, module import precedence, and invalid example-domain fixtures. The 85-LOC independent repair review found zero remaining defects (0/KLOC); exclusive destination creation has a regression. Operations passes 59 tests. These review denominators include context and overlap prior coverage; they are not unique-source defect densities. Full backend, native lifecycle, encrypted restore and final cleanup evidence is still pending.
+
+The Resend Compose repair independently covered 3 changed LOC plus service context, zero remaining defects (0/KLOC). Resolved held and Resend configurations both pass; private configuration assertions confirm only the outbound worker receives RESEND_API_KEY. Native launcher cleanup, closed-pipe regression and locked check-image changes were independently reviewed over 35 LOC, zero remaining defects (0/KLOC). Eight Rust and fifteen Python tests pass without resource warnings; container lifecycle proof is pending.
+
+Local database harness repair: an initial 30-LOC review found one fresh-machine pull-timeout defect (33.33/KLOC). Explicit digest-pinned pull precedes the network-disabled seed copy; final 33-LOC review found zero remaining defects (0/KLOC). Temporary database storage now preserves image-shipped configuration without creating persistent test volumes. Initial container startup is healthy. Final native Docker lifecycle test also passed completion, cancellation and deadline behavior (one integration test).
+
+Final independent hygiene packets: migration and quota regression117 LOC; native production/contract comparison185 LOC; compatibility/runner delta and security context136 LOC. Each found zero concrete defects (0/KLOC). All34 changed/new files inspected at that point used LF; no frontend, Android or desktop UI paths changed. Native gates pass8 Rust,15 Python and1 Docker lifecycle test, Clippy with warnings denied and rustfmt. Actual operations runtime (UID10001) passes the same59 tests as the test image. All45 database migrations now pass; full backend gate remains in progress.
+
+Final regression review packets: migration46 replay conflict repair and unrelated-key denial103 LOC, zero defects; historical contract preservation and signed-webhook routing20 LOC, zero defects; historical migration fixture compatibility175 LOC, zero defects. The concurrency repair broadens unique-conflict recovery only when the complete immutable source binding matches. Historical file seals retain their original CRLF encoding without changing schema bytes.
+
+Windows Docker evidence decoding repair and three real-child-process regressions53 LOC, zero defects; all3 tests pass in Docker. Restore fixture retained-volume mounts33 LOC and private error-coordinate diagnostics7 LOC independently reviewed, zero defects. All densities0/KLOC; denominators include context and overlap. The encrypted restore drill passed six-volume byte/metadata readback and real PostgreSQL authority/send fencing; historical R1 passes31 tests/1531 assertions. No off-host connection or live mail was exercised.
+
+Credentials checklist/environment inventory final consistency review70 LOC, zero defects (0/KLOC). Clarified that the operations lock is required by deployment as well as recovery. Final production operations packaging passes62 tests (59 operations plus3 evidence decoding regressions); rebuilt Mox packaging passes4 tests/412 assertions.
+
+Final browser/API boundary audit: two bounded read-only packets covered approximately185 frontend wiring LOC and130 backend route/regression LOC, zero confirmed backend defects (0/KLOC). The fixture entrypoint injects MailroomGateway, while AdministrationPage and PersonalSettingsPage instantiate independent HTTP gateways. Grants, roster and preferences routes have authorization, validation and concurrency regressions. The six historical browser errors therefore remain a frontend fixture integration limitation; weakening backend session checks is not a repair.
+
+Historical SMTP rollback fixture repair: independent33-LOC review plus bounded SQL context found zero defects (0/KLOC). The committed historical roundtrip now preserves current user-quota function definitions, restores them before commit and asserts exact definitions; failed restoration rolls back. This fixes six subsequent fixture errors without weakening production constraints.
+
+Final design/checklist review used separate69/14-LOC packets. One P2 documentation overclaim (14.49 defects/KLOC in design;0/KLOC in checklist) incorrectly promised every-object/cursor reconciliation by the restore drill. Corrected to the actually verified archive/representative-data/authority scope; synthetic non-database markers do not establish semantic Mox recovery. No additional implementation gap was established within this bounded review.
+
+Correction to the initial SMTP fixture review: focused Docker execution exposed one missed ownership defect in the33-LOC packet (30.30/KLOC). Historical authority SQL leaves elevateo_owner active, which cannot replace send-owner functions. Explicit local send-owner role now encloses replay, then restores the prior expected role. Independent rereview covered36 method LOC plus4 SQL role lines, zero residual defects (0/KLOC). Runtime discovery is not attributed to the initial reviewer.
+
+User-quota concurrency fixture repair independently reviewed37 method LOC plus114 helper LOC (151 total), zero residual defects (0/KLOC). Both mailbox memberships now precede either approval, so legitimate generation revocation does not mask quota contention. The real lock wait, exact winner-only usage and loser exhaustion assertions remain.
+
+Final mailflow orchestration repair: historical HTTP acceptance intentionally retains its fixture sessions, so it must follow the empty-database app-chain oracle. The runner now executes app-chain while the worker is stopped, restores original Compose configuration and recreates normal API before HTTP acceptance. Independent review covered61 orchestration LOC plus96 wrapper context LOC (157 total), zero defects (0/KLOC). No broad fixture deletion or production permission change.
+
+Final deployment-admission audit independently reviewed185 LOC (shell5, typed settings90, orchestration90), zero concrete defects (0/KLOC). Required credentials reject empty values, Resend credentials are conditional, Compose dotenv loading is disabled, and dry-run returns before Docker, locking or provisioning. Imported validators retain their earlier bounded coverage.
+
+Final application-chain repair review covered115 primary LOC (wrapper99, HTTP user provisioning16), zero residual defects (0/KLOC). Execution had exposed two fixture defects: non-UUID epoch and missing authenticated-actor daily quota. The fixed actor receives only its own ceiling300 budget, with existing cleanup tracking; mailbox grants remain separate. Read-only /app and /source mounts use the same dotenv-scanned oracle directory. Focused real-chain acceptance passed1 test/88 assertions; this does not certify production identity or live mail.
+
+Further correction to the historical SMTP fixture review: the coherent run exposed a second missed defect in the original33-LOC repair packet: committing historical DDL restored obsolete SMTP credential constraints and authority functions. Together with the previously recorded role defect, that packet had2 execution-discovered defects (60.61/KLOC). The replacement uses transaction rollback for the entire historical experiment, asserts exact current credential constraint restoration, then runs the separate worker against current schema. Independent final review covered28 method LOC, zero residual defects (0/KLOC). It supersedes the earlier ad hoc function replay repair.
+
+Final coherent local acceptance: standard1285/14595 (four protocol skips covered by separate Mox4/412), dedicated28/202, boot2/12, app-chain1/88, HTTP1/33, Mailpit2/107, Ruby contracts19/264, Resend stub3/26 and worker revocation drain all passed; Steep and RuboCop506files clean. Independent MCP11, Node contracts50, operations62, native8Rust/15Python/1Docker lifecycle, historical31/1531, encrypted restore and deployment dry-run also passed. Evidence: docs/completion/backend-20261030-receipt.md. Historical pending statements above describe earlier checkpoints and are superseded only within this final tested scope.

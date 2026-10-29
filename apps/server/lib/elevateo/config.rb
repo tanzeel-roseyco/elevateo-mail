@@ -26,7 +26,7 @@ module Elevateo
                 :send_api_enabled, :send_control_path, :outbound_hold, :process, :session_key, :browser_origin, :auth_jwt_issuer,
                 :auth_jwt_audience, :auth_jwt_algorithm, :cookie_secure, :auth_password_minimum, :cursor_signing_key,
                 :attachment_gateway_hmac_key, :attachment_gateway_url, :outbound_mode, :resend_api_key,
-                :resend_from_domain, :resend_webhook_secret, :resend_base_url, :mailbox_daily_send_limit,
+                :resend_from_domain, :resend_webhook_secret, :resend_base_url, :mailbox_daily_send_limit, :user_daily_send_limit,
                 :sso_enabled, :sso_provider, :sso_only, :auth_public_url, :company_signup_enabled
 
     # Credentials live on this boundary object, so the default instance-variable dump is unsafe.
@@ -76,14 +76,14 @@ module Elevateo
 
     private
 
-    # AIDEV-NOTE: Production Mox needs separate operator activation as well as the independent runtime hold.
+    # AIDEV-NOTE: Mox activation remains separate; Resend still requires credentials, approved sends and runtime hold checks.
     def validate_production(env)
       raise ConfigError, "production requires Rails production" unless env["RAILS_ENV"] == "production"
       raise ConfigError, "production requires private database" unless @db_host == "db"
       activation = env.fetch("ELEVATEO_MOX_PRODUCTION_ENABLED", "false")
       raise ConfigError, "invalid Mox production activation" unless %w[true false].include?(activation)
       allowed = (@outbound_hold && %w[held mox].include?(@outbound_mode)) ||
-        (@outbound_mode == "mox" && activation == "true")
+        (@outbound_mode == "mox" && activation == "true") || @outbound_mode == "resend"
       raise ConfigError, "production transport is held" unless allowed
       raise ConfigError, "production local HTTP is forbidden" if env.key?("ELEVATEO_LOCAL_HTTP")
       raise ConfigError, "production secret key is too short" unless env["SECRET_KEY_BASE"].to_s.bytesize >= 64
@@ -93,8 +93,8 @@ module Elevateo
       unless @cookie_secure && @browser_origin == "https://mail.elevateoco.com"
         raise ConfigError, "production requires the secure launch origin"
       end
-      # AIDEV-NOTE: Enabling production SSO must not leave password/recovery entry as an alternate login path.
-      if @sso_enabled && (!@sso_only || @auth_public_url != "https://mail.elevateoco.com/auth/v1")
+      # AIDEV-NOTE: Production has no password fallback: missing Authentik configuration prevents startup.
+      unless @sso_enabled && @sso_only && @auth_public_url == "https://mail.elevateoco.com/auth/v1"
         raise ConfigError, "production SSO requires SSO-only and the exact public Auth endpoint"
       end
     end
@@ -113,6 +113,11 @@ module Elevateo
         raise ConfigError, "invalid ELEVATEO_MAILBOX_DAILY_SEND_LIMIT"
       end
       @mailbox_daily_send_limit = raw_limit.to_i
+      user_limit = env.fetch("ELEVATEO_USER_DAILY_SEND_LIMIT", "300")
+      unless user_limit.is_a?(String) && /\A[1-9][0-9]{0,2}\z/.match?(user_limit) && user_limit.to_i <= 300
+        raise ConfigError, "invalid ELEVATEO_USER_DAILY_SEND_LIMIT"
+      end
+      @user_daily_send_limit = user_limit.to_i
 
       required_names = ["ELEVATEO_RESEND_FROM_DOMAIN", @process == "worker" ? "RESEND_API_KEY" : "RESEND_WEBHOOK_SECRET"]
       names = %w[RESEND_API_KEY ELEVATEO_RESEND_FROM_DOMAIN RESEND_WEBHOOK_SECRET ELEVATEO_RESEND_BASE_URL]
@@ -143,6 +148,10 @@ module Elevateo
       @resend_base_url = env.fetch("ELEVATEO_RESEND_BASE_URL", "https://api.resend.com")
       unless ["https://api.resend.com", "http://resend-stub:8788"].include?(@resend_base_url)
         raise ConfigError, "invalid ELEVATEO_RESEND_BASE_URL"
+      end
+      # AIDEV-NOTE: The cleartext stub is confined to isolated local verification, never production credentials.
+      if @mode == "production" && @resend_base_url != "https://api.resend.com"
+        raise ConfigError, "production Resend requires the pinned HTTPS endpoint"
       end
       @resend_base_url = @resend_base_url.dup.freeze
     rescue ArgumentError
@@ -202,8 +211,8 @@ module Elevateo
       unless [enabled, only].all? { |value| %w[true false].include?(value) }
         raise ConfigError, "invalid SSO switch"
       end
-      @sso_provider = env.fetch("ELEVATEO_SSO_PROVIDER", "google")
-      unless %w[google custom:authentik].include?(@sso_provider)
+      @sso_provider = env.fetch("ELEVATEO_SSO_PROVIDER", "custom:authentik")
+      unless @sso_provider == "custom:authentik"
         raise ConfigError, "unsupported SSO provider"
       end
       @sso_enabled = enabled == "true"

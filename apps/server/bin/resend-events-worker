@@ -2,6 +2,7 @@
 # frozen_string_literal: true
 
 require "json"
+require_relative "../lib/elevateo/heartbeat"
 require "active_record"
 require_relative "../lib/elevateo/config"
 require_relative "../lib/elevateo/attachments_worker_storage"
@@ -27,6 +28,7 @@ begin
     username: cfg.db_role, password: cfg.db_password, pool: 1, checkout_timeout: 5, connect_timeout: 5,
     variables: { statement_timeout: "3s", lock_timeout: "1s" })
   failures = 0
+  Elevateo::Heartbeat.publish
   until stopping
     begin
       outcome = ResendEventsConnection.connection_pool.with_connection do |connection|
@@ -42,6 +44,7 @@ begin
       outcome, delay = "failed", [2.0**(failures - 1), 30.0].min
     end
     puts JSON.generate(event: "resend_events.poll", result: outcome) unless outcome == "empty"
+    Elevateo::Heartbeat.publish
     if ARGV == ["--once"]
       exit_code = 1 if outcome == "failed"
       break

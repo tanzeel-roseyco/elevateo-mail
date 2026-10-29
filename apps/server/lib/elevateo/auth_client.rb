@@ -33,9 +33,10 @@ module Elevateo
       request(:post, "/token?grant_type=pkce", { "auth_code" => code, "code_verifier" => verifier }, deadline: deadline)
     end
 
+    # AIDEV-NOTE: Local password fixtures are isolated; enabled SSO always revalidates upstream membership.
     def user(access, deadline:)
       user = request(:get, "/user", nil, access: access, deadline: deadline)
-      if @config.sso_provider == "custom:authentik"
+      if @config.sso_enabled && @config.sso_provider == "custom:authentik"
         AuthentikIdentity.new(config: @config).check!(user, deadline: deadline)
       end
       user

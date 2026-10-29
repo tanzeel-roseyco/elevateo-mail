@@ -27,7 +27,7 @@ class AuthClientTest < Minitest::Test
   end
 
   def test_custom_identity_is_revalidated_before_returning_user
-    custom = config.tap { |value| value.sso_provider = "custom:authentik" }
+    custom = config.tap { |value| value.sso_provider = "custom:authentik"; value.sso_enabled = true }
     transport = ->(*) { [200, "application/json", '{"id":"trusted-user"}'] }
     service = Elevateo::AuthClient.new(config: custom, transport: transport, transaction_open: -> { false })
     guard = Minitest::Mock.new
@@ -41,6 +41,15 @@ class AuthClientTest < Minitest::Test
     rejected.define_singleton_method(:check!) { |*, **| raise Elevateo::AuthError.unauthorized }
     Elevateo::AuthentikIdentity.stub(:new, rejected) do
       assert_auth(401) { service.user("token", deadline: deadline) }
+    end
+  end
+
+  def test_disabled_sso_password_fixture_does_not_contact_identity_provider
+    local = config.tap { |value| value.sso_provider = "custom:authentik"; value.sso_enabled = false }
+    transport = ->(*) { [200, "application/json", '{"id":"trusted-user"}'] }
+    service = Elevateo::AuthClient.new(config: local, transport: transport, transaction_open: -> { false })
+    Elevateo::AuthentikIdentity.stub(:new, ->(**) { flunk "disabled SSO contacted identity provider" }) do
+      assert_equal "trusted-user", service.user("token", deadline: deadline).fetch("id")
     end
   end
 

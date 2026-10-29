@@ -18,7 +18,12 @@ module Elevateo
     end
 
     def authenticate(cookie:, deadline:)
-      digest = @crypto.digest(cookie)
+      authenticate_digest(@crypto.digest(cookie), deadline: deadline)
+    end
+
+    # AIDEV-NOTE: Connector hashes locate a source session; live identity verification remains identical to cookie auth.
+    def authenticate_digest(digest, deadline:)
+      raise AuthError.unauthorized unless /\A[0-9a-f]{64}\z/.match?(digest)
       metadata = checked("resolve_session", [digest], deadline)
       access = @crypto.decrypt(string(metadata, "access_token_ciphertext"), purpose: "access")
       @tokens.claims(access)

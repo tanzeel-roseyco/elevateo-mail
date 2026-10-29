@@ -10,6 +10,8 @@ class SendSmtpBindingRollbackTest < SendDatabaseTestCase
   def test_empty_down_up_preserves_function_acl_and_legacy_profile
     signature = "app_send_private.authorize_attempt(uuid,uuid,bigint,uuid,uuid,bytea,text,integer)"
     before = @admin.exec_params("SELECT oid,proowner,proacl FROM pg_proc WHERE oid=$1::regprocedure", [signature]).first
+    # AIDEV-NOTE: Snapshot the current constraint; historical SQL predates production Mox secret references.
+    credential_constraint = @admin.exec("SELECT pg_get_constraintdef(oid) FROM pg_constraint WHERE conrelid='app_send_private.smtp_accounts'::regclass AND conname='smtp_accounts_credential_ref_check'").getvalue(0, 0)
     @admin.exec("BEGIN")
     @admin.exec(File.read(File.join(root, "budget_down.sql")))
     @admin.exec(File.read(File.join(root, "smtp_account_binding_down.sql")))
@@ -20,8 +22,10 @@ class SendSmtpBindingRollbackTest < SendDatabaseTestCase
     end
     after = @admin.exec_params("SELECT oid,proowner,proacl FROM pg_proc WHERE oid=$1::regprocedure", [signature]).first
     assert_equal before, after
-    @admin.exec("COMMIT")
-    # AIDEV-NOTE: Commit the round trip so the separate worker session tests the restored functions.
+    # AIDEV-NOTE: Roll back obsolete DDL before another session runs; preserve every later migration atomically.
+    @admin.exec("ROLLBACK")
+    assert_equal credential_constraint, @admin.exec("SELECT pg_get_constraintdef(oid) FROM pg_constraint WHERE conrelid='app_send_private.smtp_accounts'::regclass AND conname='smtp_accounts_credential_ref_check'").getvalue(0, 0)
+    # AIDEV-NOTE: The separate worker verifies the restored current schema after historical round-trip assertions.
     send_id = approve.fetch("send_id")
     store = Elevateo::SendWorker::DatabaseStore.new(connection: @worker, send_id: send_id)
     claim = store.claim(epoch: @epoch)

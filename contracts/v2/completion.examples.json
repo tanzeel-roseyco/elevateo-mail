@@ -1,0 +1,172 @@
+{
+  "grant_request": {
+    "mailbox_id": "11111111-1111-4111-8111-111111111111",
+    "client": "codex",
+    "scopes": [
+      "search",
+      "read",
+      "draft"
+    ],
+    "expires_in_seconds": 3600
+  },
+  "error": {
+    "code": "not_available",
+    "message": "This item is unavailable.",
+    "request_id": "example-request"
+  },
+  "search_request": {
+    "mailbox_id": "11111111-1111-4111-8111-111111111111",
+    "query": "invoice",
+    "limit": 10
+  },
+  "revocation": {
+    "id": "22222222-2222-4222-8222-222222222222",
+    "revoked": true
+  },
+  "agent_event": {
+    "run_id": "33333333-3333-4333-8333-333333333333",
+    "sequence": 0,
+    "type": "cancelled",
+    "text": ""
+  },
+  "grant": {
+    "id": "22222222-2222-4222-8222-222222222222",
+    "mailbox_id": "11111111-1111-4111-8111-111111111111",
+    "client": "codex",
+    "scopes": [
+      "read"
+    ],
+    "expires_at": "2026-10-29T12:00:00Z",
+    "revoked": false
+  },
+  "issued_grant": {
+    "grant": {
+      "id": "22222222-2222-4222-8222-222222222222",
+      "mailbox_id": "11111111-1111-4111-8111-111111111111",
+      "client": "codex",
+      "scopes": [
+        "read"
+      ],
+      "expires_at": "2026-10-29T12:00:00Z",
+      "revoked": false
+    },
+    "token": "example-only-not-a-real-token"
+  },
+  "grants": {
+    "items": [
+      {
+        "id": "22222222-2222-4222-8222-222222222222",
+        "mailbox_id": "11111111-1111-4111-8111-111111111111",
+        "client": "codex",
+        "scopes": [
+          "read"
+        ],
+        "expires_at": "2026-10-29T12:00:00Z",
+        "revoked": false
+      }
+    ]
+  },
+  "citation": {
+    "mailbox_id": "11111111-1111-4111-8111-111111111111",
+    "thread_id": "33333333-3333-4333-8333-333333333333",
+    "message_id": "22222222-2222-4222-8222-222222222222",
+    "uri": "elevateo://mailboxes/11111111-1111-4111-8111-111111111111/threads/33333333-3333-4333-8333-333333333333/messages/22222222-2222-4222-8222-222222222222"
+  },
+  "read_request": {
+    "mailbox_id": "11111111-1111-4111-8111-111111111111",
+    "thread_id": "33333333-3333-4333-8333-333333333333",
+    "message_id": "22222222-2222-4222-8222-222222222222"
+  },
+  "message": {
+    "citation": {
+      "mailbox_id": "11111111-1111-4111-8111-111111111111",
+      "thread_id": "33333333-3333-4333-8333-333333333333",
+      "message_id": "22222222-2222-4222-8222-222222222222",
+      "uri": "elevateo://mailboxes/11111111-1111-4111-8111-111111111111/threads/33333333-3333-4333-8333-333333333333/messages/22222222-2222-4222-8222-222222222222"
+    },
+    "subject": "Invoice",
+    "text": "Untrusted email text",
+    "untrusted_content": true
+  },
+  "draft_request": {
+    "mailbox_id": "11111111-1111-4111-8111-111111111111",
+    "draft_id": "33333333-3333-4333-8333-333333333333",
+    "operation_id": "22222222-2222-4222-8222-222222222222",
+    "expected_version": 0,
+    "subject": "Reply",
+    "body_text": "Thank you",
+    "citations": [
+      {
+        "mailbox_id": "11111111-1111-4111-8111-111111111111",
+        "thread_id": "33333333-3333-4333-8333-333333333333",
+        "message_id": "22222222-2222-4222-8222-222222222222",
+        "uri": "elevateo://mailboxes/11111111-1111-4111-8111-111111111111/threads/33333333-3333-4333-8333-333333333333/messages/22222222-2222-4222-8222-222222222222"
+      }
+    ],
+    "to": [],
+    "reply_to_thread_id": null
+  },
+  "draft_result": {
+    "draft_id": "33333333-3333-4333-8333-333333333333",
+    "version": 1,
+    "status": "draft",
+    "citations": [
+      {
+        "mailbox_id": "11111111-1111-4111-8111-111111111111",
+        "thread_id": "33333333-3333-4333-8333-333333333333",
+        "message_id": "22222222-2222-4222-8222-222222222222",
+        "uri": "elevateo://mailboxes/11111111-1111-4111-8111-111111111111/threads/33333333-3333-4333-8333-333333333333/messages/22222222-2222-4222-8222-222222222222"
+      }
+    ]
+  },
+  "agent_start": {
+    "runtime": "codex",
+    "grant_id": "22222222-2222-4222-8222-222222222222",
+    "prompt": "Find the invoice",
+    "timeout_seconds": 60
+  },
+  "agent_started": {
+    "run_id": "33333333-3333-4333-8333-333333333333",
+    "status": "running"
+  },
+  "agent_cancelled": {
+    "run_id": "33333333-3333-4333-8333-333333333333",
+    "status": "cancelled"
+  },
+  "provider_event": {
+    "type": "email.delivered",
+    "created_at": "2026-10-29T12:00:00Z",
+    "data": {
+      "email_id": "stub-1"
+    }
+  },
+  "liveness": {
+    "status": "ok"
+  },
+  "readiness": {
+    "status": "ready",
+    "outbound_hold": true,
+    "checks": {
+      "database": true,
+      "auth": true,
+      "storage": true,
+      "mail_catcher": true
+    }
+  },
+  "search_result": {
+    "messages": [
+      {
+        "citation": {
+          "mailbox_id": "11111111-1111-4111-8111-111111111111",
+          "thread_id": "33333333-3333-4333-8333-333333333333",
+          "message_id": "22222222-2222-4222-8222-222222222222",
+          "uri": "elevateo://mailboxes/11111111-1111-4111-8111-111111111111/threads/33333333-3333-4333-8333-333333333333/messages/22222222-2222-4222-8222-222222222222"
+        },
+        "subject": "Invoice",
+        "text": "Untrusted email text",
+        "untrusted_content": true
+      }
+    ],
+    "truncated": false
+  }
+}

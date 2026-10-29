@@ -1,0 +1,13 @@
+# AIDEV-NOTE: Reuse the exact tested server image; no fleet filesystem or downloaded binary is required.
+ARG SERVER_IMAGE
+FROM r.xmox.nl/mox@sha256:831c6f11b3c2ee1633077052e6d4b7ae53f73972adf4bf08be0a740121d24cc7 AS mox
+FROM ${SERVER_IMAGE}
+USER root
+RUN apt-get update -qq && apt-get install -y --no-install-recommends python3 openssl \
+ && rm -rf /var/lib/apt/lists/*
+COPY --from=mox /bin/mox /release/mox
+COPY ops/selfhosted-mail /source/ops/selfhosted-mail
+COPY apps/server/test/support/launch_mailflows/protocol.py /source/protocol.py
+COPY ops/tests/completion/mox_protocol.py /source/mox_protocol.py
+RUN install -d -m 0755 /private
+ENTRYPOINT ["python3", "/source/mox_protocol.py"]

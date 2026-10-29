@@ -1,0 +1,26 @@
+# AIDEV-NOTE: Provider settings are absent in held mode; API never receives the submission credential.
+services:
+  launch-api:
+    environment:
+      ELEVATEO_RESEND_FROM_DOMAIN: ${ELEVATEO_RESEND_FROM_DOMAIN:?}
+      RESEND_WEBHOOK_SECRET: ${RESEND_WEBHOOK_SECRET:?}
+  launch-worker:
+    environment:
+      ELEVATEO_RESEND_FROM_DOMAIN: ${ELEVATEO_RESEND_FROM_DOMAIN:?}
+      RESEND_API_KEY: ${RESEND_API_KEY:?}
+  resend-events:
+    # AIDEV-NOTE: Extend the base file so event processing never inherits the outbound API credential.
+    extends:
+      file: compose.yaml
+      service: launch-worker
+    environment:
+      ELEVATEO_INBOUND_STORAGE_TOKEN: ${SERVICE_ROLE_KEY:?}
+      ELEVATEO_INBOUND_STORAGE_BUCKET: ${ELEVATEO_ATTACHMENT_BUCKET:?}
+    command: [bundle, exec, ruby, bin/resend-events-worker, --run]
+    # AIDEV-NOTE: Event processing is bounded at 300 seconds; it never calls the outbound submission transport.
+    healthcheck:
+      test: [CMD, ruby, -e, "exit(File.file?('/tmp/worker.alive') && (Time.now-File.mtime('/tmp/worker.alive')).between?(0,330) ? 0 : 1)"]
+      interval: 30s
+      timeout: 5s
+      retries: 2
+      start_period: 15s

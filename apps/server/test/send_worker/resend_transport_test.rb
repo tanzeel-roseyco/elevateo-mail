@@ -85,6 +85,31 @@ class SendWorkerResendTransportTest < Minitest::Test
     assert_operator http.write_timeout, :>, 0
   end
 
+  # AIDEV-NOTE: The transport must retain V3 reply metadata and reject malformed wire identities before HTTP.
+  def test_reply_snapshot_preserves_wire_thread_headers
+    value = JSON.parse(snapshot)
+    value[0] = "elevateo.send.snapshot.v3"
+    value[9] = [ATTEMPT, "<original@example.net>"]
+    http = FakeHTTP.new([FakeResponse.new("200", '{"id":"reply_1"}')])
+    result = transport(http).submit(JSON.generate(value), send_id: SEND, attempt_id: ATTEMPT, deadline: deadline)
+    assert_equal "accepted", result.kind
+    headers = JSON.parse(http.requests.fetch(0).body).fetch("headers")
+    assert_equal "<original@example.net>", headers.fetch("In-Reply-To")
+    assert_equal headers.fetch("In-Reply-To"), headers.fetch("References")
+  end
+
+  def test_reply_snapshot_rejects_header_injection_and_missing_identity
+    [nil, [ATTEMPT, "<original@example.net>\r\nBcc: victim@example.net"]].each do |reply|
+      value = JSON.parse(snapshot)
+      value[0] = "elevateo.send.snapshot.v3"
+      value[9] = reply
+      http = FakeHTTP.new([])
+      assert_equal "unknown", transport(http).submit(JSON.generate(value), send_id: SEND,
+        attempt_id: ATTEMPT, deadline: deadline).kind
+      assert_empty http.requests
+    end
+  end
+
   private
 
   def transport(http)

@@ -11,7 +11,7 @@ module SendBudgetFixture
         (id,organization_id,mailbox_id,group_name,egress_id,version,enabled)
         VALUES ($1,$2,$3,'outreach',$4,1,true)
     SQL
-    scopes = [["organization", [@org]], ["group", [@org, "outreach"]], ["mailbox", [@org, @box]],
+    scopes = [["user", [@user]], ["organization", [@org]], ["group", [@org, "outreach"]], ["mailbox", [@org, @box]],
       ["sender_domain", [sender.split("@").last]], ["egress", [@budget_egress]],
       *destination_domains.uniq.map { |domain| ["destination_domain", [domain]] }]
     scopes.each do |kind, scope|

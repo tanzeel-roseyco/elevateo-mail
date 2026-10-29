@@ -8,7 +8,7 @@ class SendBudgetDatabaseTest < SendBudgetDatabaseTestCase
     authorization = authorize(pair)
     refute_nil authorization
     rows = usage
-    assert_equal 7, rows.length
+    assert_equal 8, rows.length
     assert_equal [1, 2], rows.select { |row| row.fetch("kind") == "destination_domain" }.map { |row| row.fetch("used").to_i }.sort
     assert(rows.reject { |row| row.fetch("kind") == "destination_domain" }.all? { |row| row.fetch("used") == "3" })
     2.times { assert final_allowed(pair, authorization) }
@@ -59,8 +59,8 @@ class SendBudgetDatabaseTest < SendBudgetDatabaseTestCase
     SQL
     pair = prepare_submission
     assert final_allowed(pair, authorize(pair))
-    assert_equal "6", @admin.exec("SELECT count(*) FROM app_send_private.budget_usage WHERE day=(clock_timestamp() AT TIME ZONE 'UTC')::date").getvalue(0, 0)
-    assert_equal "7", @admin.exec("SELECT count(*) FROM app_send_private.budget_usage WHERE day=(clock_timestamp() AT TIME ZONE 'UTC')::date-1").getvalue(0, 0)
+    assert_equal "7", @admin.exec("SELECT count(*) FROM app_send_private.budget_usage WHERE day=(clock_timestamp() AT TIME ZONE 'UTC')::date").getvalue(0, 0)
+    assert_equal "8", @admin.exec("SELECT count(*) FROM app_send_private.budget_usage WHERE day=(clock_timestamp() AT TIME ZONE 'UTC')::date-1").getvalue(0, 0)
   end
 
   def test_disable_reenable_and_limit_rotation_do_not_restore_authority
@@ -71,7 +71,7 @@ class SendBudgetDatabaseTest < SendBudgetDatabaseTestCase
     refute final_allowed(pair, authorization)
     update_limit("enabled=true")
     refute final_allowed(pair, authorization)
-    assert_equal 6, usage.length
+    assert_equal 7, usage.length
   end
 
   def test_route_change_requires_new_reservations
@@ -90,7 +90,7 @@ class SendBudgetDatabaseTest < SendBudgetDatabaseTestCase
     @admin.exec("DELETE FROM app_send_private.attempt_budgets WHERE limit_id=(SELECT min(id::text)::uuid FROM app_send_private.budget_limits WHERE kind='mailbox')")
     @admin.exec("COMMIT")
     refute final_allowed(pair, authorization)
-    assert_equal 6, usage.length
+    assert_equal 7, usage.length
   end
 
   def test_previous_day_reservations_are_denied
@@ -112,7 +112,7 @@ class SendBudgetDatabaseTest < SendBudgetDatabaseTestCase
     SQL
     @admin.exec("COMMIT")
     refute final_allowed(pair, authorization)
-    assert_equal 6, usage.length
+    assert_equal 7, usage.length
   end
 
   def test_runtime_roles_cannot_manipulate_limits_or_call_reservation_helpers

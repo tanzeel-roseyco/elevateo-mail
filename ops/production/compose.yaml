@@ -1,7 +1,7 @@
-# AIDEV-NOTE: Reuse the private data plane; API and OAuth bridge publish loopback ports, never database ports.
-name: elevateo-launch
+# AIDEV-NOTE: The private data plane is project-owned; only API, MCP and OAuth publish loopback ports.
+name: elevateo-production
 x-runtime: &runtime
-  image: ${ELEVATEO_ADMITTED_PRODUCTION_IMAGE:?run ops/production/deploy.sh with a reviewed SHA256 image}
+  image: ${ELEVATEO_PRODUCTION_IMAGE:?required pinned server image}
   restart: unless-stopped
   init: true
   user: "10001:10001"
@@ -9,16 +9,14 @@ x-runtime: &runtime
   tmpfs: ["/app/tmp:uid=10001,gid=10001,mode=0700", "/tmp:uid=10001,gid=10001,mode=0700"]
   cap_drop: [ALL]
   security_opt: ["no-new-privileges:true"]
-  networks: [private]
-  logging:
-    driver: json-file
-    options: {max-size: "10m", max-file: "3"}
+  networks: [private, egress]
+  logging: {driver: json-file, options: {max-size: "10m", max-file: "3"}}
 x-env: &environment
   RAILS_ENV: production
   ELEVATEO_MODE: production
-  ELEVATEO_OUTBOUND_MODE: held
+  ELEVATEO_OUTBOUND_MODE: ${ELEVATEO_OUTBOUND_MODE:-held}
   ELEVATEO_OUTBOUND_HOLD: "true"
-  ELEVATEO_SEND_API_ENABLED: "false"
+  ELEVATEO_SEND_API_ENABLED: "true"
   ELEVATEO_DB_HOST: db
   ELEVATEO_DB_NAME: postgres
   ELEVATEO_AUTH_URL: http://auth:9999
@@ -30,63 +28,267 @@ x-env: &environment
   ELEVATEO_COOKIE_SECURE: "true"
   ELEVATEO_SSO_ENABLED: "true"
   ELEVATEO_SSO_ONLY: "true"
+  ELEVATEO_SSO_PROVIDER: custom:authentik
+  ELEVATEO_AUTH_PUBLIC_URL: https://mail.elevateoco.com/auth/v1
+  ELEVATEO_AUTH_JWT_ISSUER: https://mail.elevateoco.com/auth/v1
+  ELEVATEO_AUTH_JWT_AUDIENCE: authenticated
+  ELEVATEO_AUTH_JWT_ALGORITHM: HS256
+  ELEVATEO_AUTH_PASSWORD_MINIMUM: "12"
+  ELEVATEO_AUTHENTIK_ISSUER: ${ELEVATEO_AUTHENTIK_ISSUER:?}
+  ELEVATEO_AUTHENTIK_GROUP: ${ELEVATEO_AUTHENTIK_GROUP:?}
+  ELEVATEO_AUTHENTIK_API_TOKEN: ${ELEVATEO_AUTHENTIK_API_TOKEN:?}
+  ELEVATEO_SESSION_KEY_BASE64: ${ELEVATEO_SESSION_KEY_BASE64:?}
+  SECRET_KEY_BASE: ${SECRET_KEY_BASE:?}
+  ELEVATEO_ATTACHMENT_GATEWAY_HMAC_KEY_BASE64: ${ELEVATEO_ATTACHMENT_GATEWAY_HMAC_KEY_BASE64:?}
   ELEVATEO_ATTACHMENT_GATEWAY_URL: http://attachment-gateway:4708
-
+  ELEVATEO_MAILBOX_DAILY_SEND_LIMIT: ${ELEVATEO_MAILBOX_DAILY_SEND_LIMIT:-30}
+  ELEVATEO_USER_DAILY_SEND_LIMIT: ${ELEVATEO_USER_DAILY_SEND_LIMIT:-300}
 services:
-  auth-browser-proxy:
-    image: nginx:1.28.3-alpine@sha256:a8b39bd9cf0f83869a2162827a0caf6137ddf759d50a171451b335cecc87d236
+  db:
+    image: supabase/postgres:17.6.1.136@sha256:f371b5f3f2ac0a05703f33d6e6134515fb2498cab708fb948a0aeb7481467c00
     restart: unless-stopped
+    networks: [private]
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?}
+      PGPASSWORD: ${POSTGRES_PASSWORD:?}
+      POSTGRES_DB: postgres
+      AUTH_DB_PASSWORD: ${AUTH_DB_PASSWORD:?}
+      REST_DB_PASSWORD: ${REST_DB_PASSWORD:?}
+      STORAGE_DB_PASSWORD: ${STORAGE_DB_PASSWORD:?}
+      MIGRATOR_DB_PASSWORD: ${MIGRATOR_DB_PASSWORD:?}
+      API_DB_PASSWORD: ${API_DB_PASSWORD:?}
+      WORKER_DB_PASSWORD: ${WORKER_DB_PASSWORD:?}
+      ATTACHMENT_GATEWAY_DB_PASSWORD: ${ATTACHMENT_GATEWAY_DB_PASSWORD:?}
+      JWT_EXP: "3600"
+    volumes:
+      - ../supabase/db/98-service-identities.sql:/docker-entrypoint-initdb.d/init-scripts/99-identities.sql:ro
+      - ../supabase/db/99-jwt.sql:/docker-entrypoint-initdb.d/init-scripts/99-jwt.sql:ro
+      - ../db:/bootstrap:ro
+      - ../ops820/bootstrap-gateway.sql:/bootstrap-gateway.sql:ro
+      - db-data:/var/lib/postgresql/data
+      - db-config:/etc/postgresql-custom
+    healthcheck: {test: [CMD, pg_isready, -U, postgres, -h, localhost], interval: 5s, timeout: 5s, retries: 30}
+    command: [postgres, -c, config_file=/etc/postgresql/postgresql.conf, -c, log_min_messages=fatal]
+  auth:
+    image: supabase/gotrue:v2.196.0@sha256:c0c25187a6b835e65a6f6e6c6b39d090e832d40e6de5186f2c038e0411944232
+    restart: unless-stopped
+    networks: [private, egress]
+    depends_on: {db: {condition: service_healthy}}
+    environment:
+      GOTRUE_API_HOST: "0.0.0.0"
+      GOTRUE_API_PORT: "9999"
+      API_EXTERNAL_URL: https://mail.elevateoco.com/auth/v1
+      GOTRUE_DB_DRIVER: postgres
+      GOTRUE_DB_DATABASE_URL: postgres://supabase_auth_admin:${AUTH_DB_PASSWORD:?}@db:5432/postgres
+      GOTRUE_SITE_URL: https://mail.elevateoco.com
+      GOTRUE_URI_ALLOW_LIST: https://mail.elevateoco.com/v1/auth/sso/callback
+      GOTRUE_DISABLE_SIGNUP: "false"
+      GOTRUE_JWT_ADMIN_ROLES: service_role
+      GOTRUE_JWT_AUD: authenticated
+      GOTRUE_JWT_DEFAULT_GROUP_NAME: authenticated
+      GOTRUE_JWT_EXP: "3600"
+      GOTRUE_SESSIONS_TIMEBOX: "12h"
+      GOTRUE_JWT_SECRET: ${JWT_SECRET:?}
+      GOTRUE_JWT_ISSUER: https://mail.elevateoco.com/auth/v1
+      GOTRUE_EXTERNAL_EMAIL_ENABLED: "false"
+      GOTRUE_EXTERNAL_PHONE_ENABLED: "false"
+      GOTRUE_EXTERNAL_ANONYMOUS_USERS_ENABLED: "false"
+      GOTRUE_CUSTOM_OAUTH_ENABLED: "true"
+      GOTRUE_CUSTOM_OAUTH_MAX_PROVIDERS: "1"
+      GOTRUE_LOG_LEVEL: error
+    healthcheck: {test: [CMD, wget, --no-verbose, --tries=1, --spider, "http://127.0.0.1:9999/health"], interval: 5s, timeout: 5s, retries: 20}
+  rest:
+    image: postgrest/postgrest:v14.17@sha256:c9dc201e555f5d8e37e7f39cdd4df0229774996e213bfd7de8d10ac609030f2c
+    restart: unless-stopped
+    networks: [private]
+    depends_on: {db: {condition: service_healthy}}
+    environment:
+      PGRST_DB_URI: postgres://authenticator:${REST_DB_PASSWORD:?}@db:5432/postgres
+      PGRST_DB_SCHEMAS: public
+      PGRST_DB_ANON_ROLE: anon
+      PGRST_JWT_SECRET: ${JWT_SECRET:?}
+      PGRST_DB_MAX_ROWS: "1000"
+      PGRST_LOG_LEVEL: error
+  storage:
+    image: supabase/storage-api:v1.74.0@sha256:f1546fac6d1c7e345428ac904bfaa7be7cecd50a1f549fe1cf38c628a7b15c85
+    restart: unless-stopped
+    networks: [private]
+    depends_on: {db: {condition: service_healthy}, rest: {condition: service_started}}
+    environment:
+      ANON_KEY: ${ANON_KEY:?}
+      SERVICE_KEY: ${SERVICE_ROLE_KEY:?}
+      AUTH_JWT_SECRET: ${JWT_SECRET:?}
+      POSTGREST_URL: http://rest:3000
+      DATABASE_URL: postgres://supabase_storage_admin:${STORAGE_DB_PASSWORD:?}@db:5432/postgres
+      STORAGE_PUBLIC_URL: http://storage:5000
+      FILE_SIZE_LIMIT: "10485760"
+      STORAGE_BACKEND: file
+      FILE_STORAGE_BACKEND_PATH: /var/lib/storage
+      GLOBAL_S3_BUCKET: private
+      TENANT_ID: elevateo-production
+      REGION: local
+      ENABLE_IMAGE_TRANSFORMATION: "false"
+    volumes: ["storage-data:/var/lib/storage"]
+    healthcheck: {test: [CMD, wget, --no-verbose, --tries=1, --spider, "http://127.0.0.1:5000/status"], interval: 5s, timeout: 5s, retries: 20}
+  mailpit:
+    image: axllent/mailpit:v1.31.5@sha256:94f6b70c1436defae6799d9ac7ff0eeff9540465b842026d5cdb018f1c0234ea
+    restart: unless-stopped
+    networks: [private]
+    environment: {MP_SMTP_RELAY_ALL: "false", MP_SMTP_DISABLE_RDNS: "true"}
+  migrate:
+    <<: *runtime
+    profiles: [initialize]
+    restart: "no"
+    environment:
+      <<: *environment
+      ELEVATEO_OUTBOUND_MODE: held
+      ELEVATEO_PROCESS: migrate
+      ELEVATEO_DB_ROLE: elevateo_migrator
+      MIGRATOR_DB_PASSWORD: ${MIGRATOR_DB_PASSWORD:?}
+    command: [bundle, exec, rails, db:migrate]
+  configure-auth:
+    image: ${ELEVATEO_OPERATIONS_IMAGE:?required pinned operations image}
+    profiles: [initialize]
+    networks: [private]
     user: "10001:10001"
     read_only: true
-    tmpfs: ["/tmp:uid=10001,gid=10001,mode=0700"]
     cap_drop: [ALL]
     security_opt: ["no-new-privileges:true"]
+    environment:
+      ELEVATEO_AUTHENTIK_ISSUER: ${ELEVATEO_AUTHENTIK_ISSUER:?}
+      ELEVATEO_AUTHENTIK_CLIENT_ID: ${ELEVATEO_AUTHENTIK_CLIENT_ID:?}
+      ELEVATEO_AUTHENTIK_CLIENT_SECRET: ${ELEVATEO_AUTHENTIK_CLIENT_SECRET:?}
+      SERVICE_ROLE_KEY: ${SERVICE_ROLE_KEY:?}
+    command: [python3, /ops/production/authentik/configure_provider.py]
+  configure-storage:
+    image: ${ELEVATEO_OPERATIONS_IMAGE:?required pinned operations image}
+    profiles: [initialize]
+    networks: [private]
+    user: "10001:10001"
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    environment:
+      ELEVATEO_ATTACHMENT_BUCKET: ${ELEVATEO_ATTACHMENT_BUCKET:?}
+      SERVICE_ROLE_KEY: ${SERVICE_ROLE_KEY:?}
+    command: [python3, /ops/production/configure_storage.py]
+  launch-api:
+    <<: *runtime
+    environment:
+      <<: *environment
+      ELEVATEO_PROCESS: api
+      ELEVATEO_DB_ROLE: elevateo_api
+      API_DB_PASSWORD: ${API_DB_PASSWORD:?}
+    command: [bundle, exec, rails, server, -b, "0.0.0.0", -p, "3000"]
+    # AIDEV-NOTE: Only the trusted edge can reach this loopback origin; never expose an unauthenticated public port.
+    ports: ["127.0.0.1:4709:3000"]
+    healthcheck:
+      test: [CMD, ruby, -rnet/http, -e, "r=Net::HTTP.start('127.0.0.1',3000){|h| h.get('/ready',{'Host'=>'api'})}; exit(r.code=='200' ? 0 : 1)"]
+      interval: 15s
+      timeout: 12s
+      retries: 4
+      start_period: 30s
+  launch-worker:
+    <<: *runtime
+    environment:
+      <<: *environment
+      ELEVATEO_PROCESS: worker
+      ELEVATEO_DB_ROLE: elevateo_worker
+      WORKER_DB_PASSWORD: ${WORKER_DB_PASSWORD:?}
+    command: [bundle, exec, ruby, bin/worker]
+    healthcheck: {test: [CMD, bundle, exec, ruby, bin/worker-health], interval: 10s, timeout: 5s, retries: 4}
+  email-finder-worker:
+    <<: *runtime
+    environment:
+      <<: *environment
+      ELEVATEO_PROCESS: worker
+      ELEVATEO_DB_ROLE: elevateo_worker
+      WORKER_DB_PASSWORD: ${WORKER_DB_PASSWORD:?}
+      # AIDEV-NOTE: Use an IP separate from Mox outbound; port-25 probes can blocklist the sending IP.
+      ELEVATEO_FINDER_PUBLIC_IP: ${ELEVATEO_FINDER_PUBLIC_IP:-}
+    # AIDEV-NOTE: A database advisory lock serializes discovery and probes even if this service is scaled.
+    command: [bundle, exec, ruby, bin/email-finder-worker]
+  attachment-gateway:
+    <<: *runtime
+    networks: [private]
+    environment:
+      ELEVATEO_PROCESS: attachment_gateway
+      ELEVATEO_DB_NAME: postgres
+      ELEVATEO_ATTACHMENT_GATEWAY_DATABASE_URL: postgres://elevateo_attachment_gateway:${ATTACHMENT_GATEWAY_DB_PASSWORD:?}@db:5432/postgres
+      ELEVATEO_STORAGE_URL: http://storage:5000
+      ELEVATEO_ATTACHMENT_BUCKET: ${ELEVATEO_ATTACHMENT_BUCKET:?}
+      ELEVATEO_ATTACHMENT_STORAGE_SERVICE_TOKEN: ${SERVICE_ROLE_KEY:?}
+      ELEVATEO_ATTACHMENT_GATEWAY_HMAC_KEY_BASE64: ${ELEVATEO_ATTACHMENT_GATEWAY_HMAC_KEY_BASE64:?}
+    command: [bundle, exec, puma, -b, "tcp://0.0.0.0:4708", attachment_gateway/config.ru]
+    # AIDEV-NOTE: An unsigned request must reach the initialized gateway and fail closed, without touching message data.
+    healthcheck:
+      test: [CMD, ruby, -rnet/http, -e, "h=Net::HTTP.new('127.0.0.1',4708); h.open_timeout=2; h.read_timeout=3; r=h.get('/'); exit(r.code=='404' ? 0 : 1)"]
+      interval: 15s
+      timeout: 6s
+      retries: 4
+  mailbox-mcp:
+    <<: *runtime
+    image: ${ELEVATEO_MCP_IMAGE:?required pinned MCP image}
+    networks: [private]
+    environment:
+      ELEVATEO_MCP_BACKEND_ORIGIN: http://launch-api:3000
+      ELEVATEO_MCP_HTTP_HOST: ${ELEVATEO_MCP_HTTP_HOST:?}
+      PORT: "4713"
+    command: [node, dist/src/server.js]
+    ports: ["127.0.0.1:4713:4713"]
+    healthcheck:
+      test: [CMD, node, -e, "fetch('http://127.0.0.1:4713/health',{headers:{Host:process.env.ELEVATEO_MCP_HTTP_HOST}}).then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 15s
+      timeout: 5s
+      retries: 4
+  auth-browser-proxy:
+    <<: *runtime
+    image: nginx:1.28.3-alpine@sha256:a8b39bd9cf0f83869a2162827a0caf6137ddf759d50a171451b335cecc87d236
     networks: [private]
     ports: ["127.0.0.1:4712:8080"]
     volumes: ["./auth-browser-proxy.conf:/etc/nginx/elevateo.conf:ro"]
     entrypoint: [nginx]
     command: [-c, /etc/nginx/elevateo.conf, -g, "daemon off;"]
-  launch-api:
-    <<: *runtime
-    env_file: ["${ELEVATEO_API_ENV_FILE:?set absolute protected API env file}"]
-    environment:
-      <<: *environment
-      ELEVATEO_PROCESS: api
-      ELEVATEO_DB_ROLE: elevateo_api
-    command: [bundle, exec, rails, server, -b, "0.0.0.0", -p, "3000"]
-    # AIDEV-NOTE: Only the restricted SSH forward can reach this loopback origin; never bind 0.0.0.0 here.
-    ports: ["127.0.0.1:4709:3000"]
     healthcheck:
-      test: [CMD, ruby, -rnet/http, -e, "r=Net::HTTP.start('127.0.0.1',3000){|h| h.get('/health',{'Host'=>'api'})}; exit(r.code=='200' ? 0 : 1)"]
+      test: [CMD, wget, -q, -T, "4", -O, /dev/null, "http://127.0.0.1:8080/health"]
       interval: 15s
       timeout: 5s
       retries: 4
+  mox-readiness:
+    image: ${ELEVATEO_OPERATIONS_IMAGE:?required pinned operations image}
+    network_mode: host
+    user: "10001:10001"
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    environment:
+      ELEVATEO_MOX_IPV4: ${ELEVATEO_MOX_IPV4:?}
+      ELEVATEO_MOX_HOSTNAME: ${ELEVATEO_MOX_HOSTNAME:?}
+    command: [python3, -c, "import time; time.sleep(2147483647)"]
+    healthcheck:
+      test: [CMD, python3, /ops/production/mox_readiness.py]
+      interval: 15s
+      timeout: 10s
+      retries: 4
       start_period: 30s
-  launch-worker:
-    <<: *runtime
-    env_file: ["${ELEVATEO_WORKER_ENV_FILE:?set absolute protected worker env file}"]
-    environment:
-      <<: *environment
-      ELEVATEO_PROCESS: worker
-      ELEVATEO_DB_ROLE: elevateo_worker
-    command: [bundle, exec, ruby, bin/worker]
-  email-finder-worker:
-    <<: *runtime
-    env_file: ["${ELEVATEO_WORKER_ENV_FILE:?set absolute protected worker env file}"]
-    environment:
-      <<: *environment
-      ELEVATEO_PROCESS: worker
-      ELEVATEO_DB_ROLE: elevateo_worker
-    # AIDEV-NOTE: A database advisory lock serializes discovery and probes even if this service is scaled.
-    command: [bundle, exec, ruby, bin/email-finder-worker]
-  attachment-gateway:
-    <<: *runtime
-    env_file: ["${ELEVATEO_GATEWAY_ENV_FILE:?set absolute protected gateway env file}"]
-    environment:
-      ELEVATEO_PROCESS: attachment_gateway
-    command: [bundle, exec, puma, -b, "tcp://0.0.0.0:4708", attachment_gateway/config.ru]
-
+  mox:
+    image: r.xmox.nl/mox@sha256:831c6f11b3c2ee1633077052e6d4b7ae53f73972adf4bf08be0a740121d24cc7
+    restart: unless-stopped
+    network_mode: host
+    working_dir: /mox
+    environment: {MOX_DOCKER: "yes", GOMAXPROCS: "2", GOMEMLIMIT: 768MiB}
+    command: [mox, serve]
+    volumes: ["mox-config:/mox/config", "mox-data:/mox/data", "mox-tls:/mox/tls:ro"]
+    mem_limit: 2g
+    pids_limit: 128
+    stop_grace_period: 60s
 networks:
-  private:
-    external: true
-    name: elevateo-mail-live_private
+  private: {internal: true}
+  egress: {}
+volumes:
+  db-data: {}
+  db-config: {}
+  storage-data: {}
+  mox-config: {}
+  mox-data: {}
+  mox-tls: {}

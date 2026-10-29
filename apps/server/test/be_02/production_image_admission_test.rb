@@ -4,44 +4,37 @@ require "minitest/autorun"
 require "tmpdir"
 require "open3"
 
-# AIDEV-NOTE: A fake Docker executable proves rejected images cannot reach deployment admission.
+# AIDEV-NOTE: Python operations tests own credential admission; this checks the real shell wrapper boundary.
 class ProductionImageAdmissionTest < Minitest::Test
-  def test_rejects_missing_mutable_and_malformed_images_before_docker
-    [nil, "", "server:latest", "sha256:abc", "repo@sha256:#{'a' * 63}",
-      "repo@sha256:#{'g' * 64}", "repo@sha256:#{'a' * 64}suffix"].each do |image|
-      with_fake_docker(image) do |status, called|
-        assert_equal 64, status.exitstatus
-        refute called
-      end
+  def test_forwards_arguments_without_splitting_or_shell_expansion
+    arguments = ["--dry-run", "fixture with spaces", "$(must-not-execute)"]
+    invoke(arguments, exit_code: 0) do |status, recorded|
+      assert status.success?
+      assert_equal [File.expand_path("../../../../ops/production/deployment.py", __dir__), *arguments], recorded
     end
   end
 
-  def test_accepts_local_and_repository_content_digests
-    ["sha256:#{'a' * 64}", "registry.example/server@sha256:#{'0' * 64}"].each do |image|
-      with_fake_docker(image) do |status, called, arguments, stderr|
-        assert status.success?, stderr
-        assert called
-        assert_equal image, arguments.first
-        assert_equal ["compose", "-f", File.expand_path("../../../../ops/production/compose.yaml", __dir__),
-          "config", "--quiet"], arguments.drop(1)
-      end
-    end
+  def test_propagates_rejected_configuration_exit_status
+    invoke(["--dry-run"], exit_code: 64) { |status, _recorded| assert_equal 64, status.exitstatus }
+  end
+
+  def test_propagates_runtime_failure_exit_status
+    invoke([], exit_code: 1) { |status, _recorded| assert_equal 1, status.exitstatus }
   end
 
   private
 
-  def with_fake_docker(image)
-    Dir.mktmpdir("image-admission") do |directory|
+  def invoke(arguments, exit_code:)
+    Dir.mktmpdir("deployment-wrapper") do |directory|
       marker = File.join(directory, "called")
-      executable = File.join(directory, "docker")
-      File.write(executable, "#!/bin/sh\nprintf '%s\\n' \"$ELEVATEO_ADMITTED_PRODUCTION_IMAGE\" \"$@\" > \"$ADMISSION_MARKER\"\n")
+      executable = File.join(directory, "python3")
+      File.write(executable, "#!/bin/sh\nprintf '%s\\n' \"$@\" > \"$ADMISSION_MARKER\"\nexit \"$ADMISSION_EXIT\"\n")
       File.chmod(0o700, executable)
       script = File.expand_path("../../../../ops/production/deploy.sh", __dir__)
       environment = { "PATH" => "#{directory}:#{ENV.fetch('PATH')}",
-        "ADMISSION_MARKER" => marker, "ELEVATEO_PRODUCTION_IMAGE" => image }
-      _stdout, stderr, status = Open3.capture3(environment, "sh", script, "config", "--quiet")
-      called = File.exist?(marker)
-      yield status, called, called ? File.readlines(marker, chomp: true) : [], stderr
+        "ADMISSION_MARKER" => marker, "ADMISSION_EXIT" => exit_code.to_s }
+      _stdout, _stderr, status = Open3.capture3(environment, "sh", script, *arguments)
+      yield status, File.exist?(marker) ? File.readlines(marker, chomp: true) : []
     end
   end
 end

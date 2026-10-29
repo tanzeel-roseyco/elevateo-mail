@@ -12,7 +12,37 @@ class AuthConfigTest < Minitest::Test
       "ELEVATEO_SESSION_KEY_BASE64" => Base64.strict_encode64("k" * 32), "ELEVATEO_BROWSER_ORIGIN" => "https://app.test",
       "ELEVATEO_COOKIE_SECURE" => "true", "ELEVATEO_AUTH_JWT_ISSUER" => "http://auth:9999",
       "ELEVATEO_AUTH_JWT_AUDIENCE" => "authenticated", "ELEVATEO_AUTH_JWT_ALGORITHM" => "HS256",
-      "ELEVATEO_AUTH_PASSWORD_MINIMUM" => "12" }
+      "ELEVATEO_AUTH_PASSWORD_MINIMUM" => "12",
+      "ELEVATEO_AUTHENTIK_ISSUER" => "https://identity.test/application/o/elevateo-mail/",
+      "ELEVATEO_AUTHENTIK_GROUP" => "11111111-1111-4111-8111-111111111111", "ELEVATEO_AUTHENTIK_API_TOKEN" => "x" * 32 }
+  end
+
+  def test_user_daily_budget_defaults_and_rejects_invalid_or_excessive_limits
+    assert_equal 300, Elevateo::Config.load!(environment).user_daily_send_limit
+    ["1", "299", "300"].each do |limit|
+      assert_equal limit.to_i, Elevateo::Config.load!(environment.merge(
+        "ELEVATEO_USER_DAILY_SEND_LIMIT" => limit)).user_daily_send_limit
+    end
+    [nil, "", "0", "301", "-1", "1.5", "0300", "300\n"].each do |limit|
+      assert_raises(Elevateo::ConfigError) do
+        Elevateo::Config.load!(environment.merge("ELEVATEO_USER_DAILY_SEND_LIMIT" => limit))
+      end
+    end
+  end
+
+  def test_production_resend_allows_explicit_mode_but_denies_stub_endpoint
+    values = environment.merge("ELEVATEO_MODE" => "production", "RAILS_ENV" => "production",
+      "ELEVATEO_SSO_ENABLED" => "true", "ELEVATEO_SSO_ONLY" => "true",
+      "ELEVATEO_AUTH_PUBLIC_URL" => "https://mail.elevateoco.com/auth/v1",
+      "SECRET_KEY_BASE" => "s" * 64, "ELEVATEO_BROWSER_ORIGIN" => "https://mail.elevateoco.com",
+      "ELEVATEO_OUTBOUND_MODE" => "resend", "ELEVATEO_RESEND_FROM_DOMAIN" => "example.test",
+      "RESEND_WEBHOOK_SECRET" => "whsec_" + Base64.strict_encode64("w" * 32))
+    assert_equal "resend", Elevateo::Config.load!(values).outbound_mode
+    assert Elevateo::Config.load!(values).outbound_hold
+    assert_raises(Elevateo::ConfigError) do
+      Elevateo::Config.load!(values.merge("ELEVATEO_RESEND_BASE_URL" => "http://resend-stub:8788"))
+    end
+    assert_raises(Elevateo::ConfigError) { Elevateo::Config.load!(values.except("RESEND_WEBHOOK_SECRET")) }
   end
 
   def test_dedicated_key_and_cursor_derivative
@@ -45,9 +75,11 @@ class AuthConfigTest < Minitest::Test
     end
   end
 
-  # AIDEV-NOTE: Deployment profile must never broaden local endpoint policy or unlock delivery by configuration.
+  # AIDEV-NOTE: Held deployment cannot bypass private endpoints; provider mode requires separate explicit credentials.
   def test_production_profile_accepts_only_secure_held_private_runtime
     values = environment.merge("ELEVATEO_MODE" => "production", "RAILS_ENV" => "production",
+      "ELEVATEO_SSO_ENABLED" => "true", "ELEVATEO_SSO_ONLY" => "true",
+      "ELEVATEO_AUTH_PUBLIC_URL" => "https://mail.elevateoco.com/auth/v1",
       "SECRET_KEY_BASE" => "s" * 64, "ELEVATEO_BROWSER_ORIGIN" => "https://mail.elevateoco.com")
     assert_equal "production", Elevateo::Config.load!(values).mode
     { "RAILS_ENV" => "development", "ELEVATEO_DB_HOST" => "public.example.test",
@@ -89,10 +121,10 @@ class AuthConfigTest < Minitest::Test
   end
 
   def test_sso_provider_is_explicitly_allowlisted
-    assert_equal "google", Elevateo::Config.load!(environment).sso_provider
+    assert_equal "custom:authentik", Elevateo::Config.load!(environment).sso_provider
     assert_equal "custom:authentik", Elevateo::Config.load!(environment.merge(
       "ELEVATEO_SSO_PROVIDER" => "custom:authentik")).sso_provider
-    [nil, "", "authentik", "custom:other", "https://issuer.test", "Google"].each do |provider|
+    [nil, "", "google", "authentik", "custom:other", "https://issuer.test", "Google"].each do |provider|
       assert_raises(Elevateo::ConfigError) do
         Elevateo::Config.load!(environment.merge("ELEVATEO_SSO_PROVIDER" => provider))
       end
@@ -126,10 +158,13 @@ class AuthConfigTest < Minitest::Test
 
   def test_production_sso_requires_password_lock_and_exact_gateway
     values = environment.merge("ELEVATEO_MODE" => "production", "RAILS_ENV" => "production",
-      "SECRET_KEY_BASE" => "s" * 64, "ELEVATEO_BROWSER_ORIGIN" => "https://mail.elevateoco.com",
       "ELEVATEO_SSO_ENABLED" => "true", "ELEVATEO_SSO_ONLY" => "true",
-      "ELEVATEO_AUTH_PUBLIC_URL" => "https://mail.elevateoco.com/auth/v1")
+      "ELEVATEO_AUTH_PUBLIC_URL" => "https://mail.elevateoco.com/auth/v1",
+      "SECRET_KEY_BASE" => "s" * 64, "ELEVATEO_BROWSER_ORIGIN" => "https://mail.elevateoco.com")
     assert Elevateo::Config.load!(values).sso_only
+    assert_raises(Elevateo::ConfigError) do
+      Elevateo::Config.load!(values.merge("ELEVATEO_SSO_ENABLED" => "false", "ELEVATEO_SSO_ONLY" => "false"))
+    end
     assert_raises(Elevateo::ConfigError) { Elevateo::Config.load!(values.merge("ELEVATEO_SSO_ONLY" => "false")) }
     assert_raises(Elevateo::ConfigError) do
       Elevateo::Config.load!(values.merge("ELEVATEO_AUTH_PUBLIC_URL" => "https://auth.example.test/auth/v1"))

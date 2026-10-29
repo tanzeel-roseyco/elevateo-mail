@@ -43,6 +43,7 @@ module Elevateo
     attr_reader resend_webhook_secret: String?
     attr_reader resend_base_url: String?
     attr_reader mailbox_daily_send_limit: Integer
+    attr_reader user_daily_send_limit: Integer
     attr_reader sso_provider: String
     attr_reader authentik_issuer: String
     attr_reader authentik_group: String

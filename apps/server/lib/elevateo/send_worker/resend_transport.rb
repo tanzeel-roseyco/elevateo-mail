@@ -39,15 +39,21 @@ module Elevateo
         snapshot = JSON.parse(bytes, max_nesting: 5)
         raise SmtpSnapshot::Invalid unless snapshot.is_a?(Array) && snapshot.length == 14
         normalized = snapshot.dup
-        normalized[0] = "elevateo.send.snapshot.v1"
+        normalized[0] = snapshot[0] == "elevateo.send.snapshot.v3" ? snapshot[0] : "elevateo.send.snapshot.v1"
         # @type var empty_attachments: Array[String]
         empty_attachments = []
         normalized[12] = empty_attachments
         message = SmtpSnapshot.render(JSON.generate(normalized), send_id: send_id, verified_sender: snapshot_sender(bytes))
         return rejected unless message.sender.split("@", 2).last.downcase == @from_domain
+        # AIDEV-NOTE: Preserve the validated V3 wire identity; replies must remain in the recipient's thread.
+        headers = { "Message-ID" => "<elevateo.#{send_id}@#{message.sender.split('@', 2).last}>" }
+        if snapshot[0] == "elevateo.send.snapshot.v3"
+          headers["In-Reply-To"] = snapshot[9][1]
+          headers["References"] = snapshot[9][1]
+        end
         payload = JSON.generate(from: message.sender, to: message.recipient_addresses, subject: message.subject,
           text: message.text, attachments: attachment_payload(snapshot, deadline),
-          headers: { "Message-ID" => "<elevateo.#{send_id}@#{message.sender.split('@', 2).last}>" },
+          headers: headers,
           tags: [{ name: "send_id", value: send_id }, { name: "attempt_id", value: attempt_id }])
         response = request(Net::HTTP::Post, "/emails", deadline: deadline, body: payload,
           headers: { "Idempotency-Key" => "elevateo/#{send_id}" })
@@ -76,7 +82,7 @@ module Elevateo
         items = snapshot[12]
         raise SmtpSnapshot::Invalid unless items.is_a?(Array) && items.length <= 1
         expected = items.empty? ? "elevateo.send.snapshot.v1" : "elevateo.send.snapshot.v2"
-        raise SmtpSnapshot::Invalid unless snapshot[0] == expected
+        raise SmtpSnapshot::Invalid unless [expected, "elevateo.send.snapshot.v3"].include?(snapshot[0])
         items.map do |item|
           raise SmtpSnapshot::Invalid unless item.is_a?(Array) && item.length == 6
           id, key, name, type, size, sha = item

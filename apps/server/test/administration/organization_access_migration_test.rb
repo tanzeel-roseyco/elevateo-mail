@@ -5,6 +5,7 @@ require_relative "../../config/environment"
 require_relative "../../db/migrate/20261013000008_create_organization_access"
 require_relative "../../db/migrate/20261013000009_create_campaign_foundation"
 require_relative "../../db/migrate/20261013000016_create_outreach_sequences"
+require_relative "../../db/migrate/20261020000039_create_marketing_runs"
 
 # AIDEV-NOTE: Exercise actual rollback DDL in a disposable transaction, including the preserved API security boundary.
 class OrganizationAccessMigrationTest < Minitest::Test
@@ -18,7 +19,8 @@ class OrganizationAccessMigrationTest < Minitest::Test
     assert_equal ["elevateo_owner", "true", "true", "false", "false", "false"], before[1, 6]
     assert_includes before.last, "app.mailbox_security"
     connection.transaction do
-      # AIDEV-NOTE: Reverse dependent empty campaign policies first; the outer rollback restores all fixture tables.
+      # AIDEV-NOTE: Reverse marketing FKs and campaign policies first; the outer rollback restores all fixture tables.
+      CreateMarketingRuns.new.down
       CreateOutreachSequences.new.down
       CreateCampaignFoundation.new.down
       migration = CreateOrganizationAccess.new
