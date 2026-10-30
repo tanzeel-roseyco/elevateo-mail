@@ -1,0 +1,27 @@
+module Elevateo
+  class Sessions
+    @config: _AuthConfig
+    attr_reader store: _SessionStore
+    attr_reader client: _AuthClient
+    attr_reader crypto: SessionCrypto
+    attr_reader tokens: AuthTokens
+    attr_reader presentation: SessionPresentation
+    def initialize: (?config: _AuthConfig, ?store: _SessionStore, ?client: _AuthClient?, ?crypto: SessionCrypto?) -> void
+    def authenticate: (cookie: String?, deadline: RequestDeadline) -> SessionIdentity
+    def authorize: (SessionIdentity, context: String?, version: String?, deadline: RequestDeadline,
+                    connection: _SessionConnection) -> auth_object
+    def touch: (SessionIdentity, deadline: RequestDeadline) -> auth_object
+    def limits!: (String, String, deadline: RequestDeadline) -> auth_object
+    def login: (email: auth_value, password: auth_value, source_ip: String, caller_cookie: String?, deadline: RequestDeadline) -> SessionResult
+    def recovery: (email: auth_value, source_ip: String, deadline: RequestDeadline) -> bool
+    def refresh: (cookie: String?, deadline: RequestDeadline) -> SessionResult
+    def logout_csrf!: (cookie: String?, proof: String?, deadline: RequestDeadline) -> bool
+    def logout: (cookie: String?, scope: String, deadline: RequestDeadline) -> auth_object
+    def switch: (SessionIdentity, organization_id: String, context: String, version: String,
+                 csrf: String, deadline: RequestDeadline) -> SessionResult
+    def creation_result: (String, auth_object, AuthTokens::Verified) -> SessionResult
+    def replace_caller: (String?, RequestDeadline) -> (auth_object | nil)
+    def checked: (String, Array[session_argument], RequestDeadline) -> auth_object
+    def string: (auth_object, String) -> String
+  end
+end

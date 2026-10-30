@@ -1,0 +1,81 @@
+# AIDEV-NOTE: Lane C preserves actual commands; all data expires with verified task containers.
+x-large: &large
+  cpus: 2
+  mem_limit: 2g
+  memswap_limit: 2g
+  pids_limit: 256
+  restart: "no"
+  labels: {elevateo.lane: "${R1_PROJECT:?}"}
+x-medium: &medium
+  <<: *large
+  cpus: 1
+  mem_limit: 1g
+  memswap_limit: 1g
+x-small: &small
+  <<: *large
+  cpus: 0.5
+  mem_limit: 256m
+  memswap_limit: 256m
+services:
+  db:
+    <<: *large
+    container_name: ${R1_PROJECT:?}-db
+    volumes: !override
+      - type: bind
+        source: ./ops/supabase/db/99-roles.sql
+        target: /docker-entrypoint-initdb.d/init-scripts/99-roles.sql
+        read_only: true
+        bind: {create_host_path: false}
+      - type: bind
+        source: ./ops/supabase/db/99-jwt.sql
+        target: /docker-entrypoint-initdb.d/init-scripts/99-jwt.sql
+        read_only: true
+        bind: {create_host_path: false}
+      - type: tmpfs
+        target: /var/lib/postgresql/data
+        tmpfs: {size: 1073741824}
+    # Image-baked /etc/postgresql-custom stays in this container's disposable writable layer.
+  bootstrap:
+    <<: *small
+    container_name: ${R1_PROJECT:?}-bootstrap
+    # psql does not use PGDATA; cover the image's inherited volume without allocating persistent storage.
+    volumes:
+      - type: tmpfs
+        target: /var/lib/postgresql/data
+        tmpfs: {size: 16777216}
+  auth:
+    <<: *medium
+    container_name: ${R1_PROJECT:?}-auth
+  rest:
+    <<: *medium
+    container_name: ${R1_PROJECT:?}-rest
+  storage:
+    <<: *medium
+    container_name: ${R1_PROJECT:?}-storage
+    volumes: !override
+      - type: tmpfs
+        target: /var/lib/storage
+        tmpfs: {size: 268435456}
+  mailpit:
+    <<: *small
+    container_name: ${R1_PROJECT:?}-mailpit
+  api:
+    <<: *large
+    container_name: ${R1_PROJECT:?}-api
+    image: ${R1_APP_IMAGE:?}
+    build: !reset null
+  worker:
+    <<: *large
+    container_name: ${R1_PROJECT:?}-worker
+    image: ${R1_APP_IMAGE:?}
+  migrate:
+    <<: *large
+    container_name: ${R1_PROJECT:?}-migrate
+    image: ${R1_APP_IMAGE:?}
+networks:
+  runtime:
+    name: ${R1_PROJECT:?}-runtime
+    # Driver creates and verifies the internal bridge before Compose can attach any service.
+    external: true
+    internal: !reset null
+volumes: !reset {}
