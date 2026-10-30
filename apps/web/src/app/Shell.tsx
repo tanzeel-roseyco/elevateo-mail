@@ -10,21 +10,25 @@ import { Outlet } from 'react-router'
 import type { Mailbox, MailboxPage, Session } from '@/data/contract'
 import { GatewayError } from '@/data/errors'
 import { newTraversalBudget, readPage } from '@/lib/readPage'
+import { SignInPage } from '@/features/auth/SignInPage'
 import { Badge } from '@/ui/Badge'
 import { Button } from '@/ui/Button'
 import { Drawer } from '@/ui/Drawer'
 import { EmptyState, Skeleton } from '@/ui/Async'
 import { IconButton } from '@/ui/Button'
 import { MenuIcon } from '@/ui/icons'
+import { AccountSheet } from './AccountSheet'
+import { MailboxesProvider, type MailboxesSnapshot } from './mailboxes'
+import { SearchBox } from './SearchBox'
 import { Sidebar } from './Sidebar'
 import { sessionIdentityKey, useGateway, useSession } from './session'
 
-const FOOTNOTE = 'Read-only checkpoint. Simulated local data; no mail is sent or received.'
+const FOOTNOTE = 'Simulated local data; drafts and notes stay on this installation. No mail is sent or received.'
 
 type MailboxState = { status: 'loading' } | { status: 'ready'; mailboxes: Mailbox[] } | { status: 'error'; message: string }
 
 export function Shell() {
-  const { state: sessionState, refresh } = useSession()
+  const { state: sessionState, refresh, signOut } = useSession()
   // Tracks the previously committed identity so only an actual replacement moves focus (D3).
   const lastIdentityRef = useRef<string | null>(null)
   const identity = sessionState.status === 'ready' ? sessionIdentityKey(sessionState.session) : null
@@ -58,13 +62,53 @@ export function Shell() {
       </main>
     )
   }
+  if (sessionState.status === 'refreshing') {
+    // One bounded challenge+refresh after a 401: nothing protected is shown meanwhile (BE-02A).
+    return (
+      <div role="status" aria-label="Restoring access" className="mx-auto max-w-lg p-8">
+        <Skeleton rows={4} />
+      </div>
+    )
+  }
+  if (sessionState.status === 'signing_out') {
+    return (
+      <div role="status" aria-label="Signing out" className="mx-auto max-w-lg p-8">
+        <Skeleton rows={4} />
+      </div>
+    )
+  }
   if (sessionState.status === 'unauthenticated') {
+    // Nothing from a previous session is kept on this screen; the page owns only its own fields.
+    return <SignInPage />
+  }
+  if (sessionState.status === 'no_organization') {
     return (
       <main className="mx-auto max-w-lg p-8">
         <EmptyState
-          title="Your session is unavailable"
-          body="You are signed out or your session expired. Nothing from the previous session is kept on this screen. Sign-in is not part of this checkpoint; retry once a session exists."
-          action={<Button variant="primary" onClick={refresh}>Check again</Button>}
+          title="No organization is available"
+          body="You are signed in, but this account is not a member of any organization yet. Ask an administrator to add you, then check again. Nothing is shown until a membership exists."
+          action={
+            <div className="flex flex-wrap justify-center gap-2">
+              <Button variant="primary" onClick={refresh}>Check again</Button>
+              <Button onClick={() => void signOut('local')}>Sign out</Button>
+            </div>
+          }
+        />
+      </main>
+    )
+  }
+  if (sessionState.status === 'sign_out_failed') {
+    return (
+      <main role="alert" className="mx-auto max-w-lg p-8">
+        <EmptyState
+          title="Sign-out was not confirmed"
+          body={`${sessionState.message} Your mail stays hidden on this screen until sign-out succeeds or you return to it.`}
+          action={
+            <div className="flex flex-wrap justify-center gap-2">
+              <Button variant="primary" onClick={() => void signOut('local')}>Try signing out again</Button>
+              <Button onClick={refresh}>Return to mail</Button>
+            </div>
+          }
         />
       </main>
     )
@@ -164,6 +208,10 @@ function ProtectedShell({ session, replacedIdentity }: { session: Session; repla
     return () => media.removeEventListener('change', onChange)
   }, [drawerOpen])
 
+  // Pages read capabilities from this snapshot (display hints only; the server stays authoritative).
+  const mailboxesSnapshot: MailboxesSnapshot =
+    mailboxState.status === 'ready' ? { status: 'ready', mailboxes: mailboxState.mailboxes } : mailboxState.status === 'loading' ? { status: 'loading' } : { status: 'error' }
+
   const sidebar =
     mailboxState.status === 'loading' ? (
       <div role="status" aria-label="Loading mailboxes"><Skeleton rows={4} /></div>
@@ -177,6 +225,7 @@ function ProtectedShell({ session, replacedIdentity }: { session: Session; repla
     )
 
   return (
+    <MailboxesProvider value={mailboxesSnapshot}>
     <div className="flex h-full min-h-0">
       <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:left-2 focus:top-2 focus:z-20 focus:rounded-lg focus:bg-surface focus:px-3 focus:py-2">
         Skip to content
@@ -193,13 +242,17 @@ function ProtectedShell({ session, replacedIdentity }: { session: Session; repla
             <span className="font-semibold">{session.organization.name}</span>
             <span className="text-muted"> · {session.actor.display_name ?? 'Unnamed user'}</span>
           </p>
+          {/* Below sm the header has no room for the form; the sidebar's Search link covers it. */}
+          <span className="ml-auto hidden sm:block"><SearchBox /></span>
           {/* Local-mode indicator: simulated transport must be unmistakable. */}
-          <Badge tone="warn" className="ml-auto">Simulated local mail</Badge>
+          <Badge tone="warn" className="ml-auto sm:ml-0">Simulated local mail</Badge>
+          <AccountSheet session={session} />
         </header>
         <main id="main" tabIndex={-1} className="min-h-0 flex-1 overflow-y-auto">
           <Outlet />
         </main>
       </div>
     </div>
+    </MailboxesProvider>
   )
 }

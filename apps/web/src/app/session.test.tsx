@@ -87,7 +87,8 @@ describe('SessionProvider bootstrap', () => {
     await screen.findByText('status:ready')
   })
 
-  it('an unauthenticated bootstrap shows the session-unavailable state', async () => {
+  it('an unauthenticated bootstrap attempts one bounded refresh, then shows sign-in', async () => {
+    // The fixture refresh fails like an absent cookie, so the controller lands on sign-in (BE-02A).
     renderSession(createFixtureGateway({ getSession: 'unauthenticated' }))
     await screen.findByText('status:unauthenticated')
   })
@@ -203,7 +204,7 @@ describe('context recovery through rendered reads', () => {
     expect(sessionCalls()).toBe(2)
   })
 
-  it('a current 401 clears the session immediately', async () => {
+  it('a current 401 clears the session immediately (one bounded refresh runs with no context)', async () => {
     const { gateway } = scriptedGateway({ reads: ['unauthenticated'] })
     const { controller } = renderSession(gateway)
     await screen.findByText('status:ready')

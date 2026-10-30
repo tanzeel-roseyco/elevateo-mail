@@ -2,9 +2,17 @@
 // src/data/http/httpClient.ts (blob 8f8e6e08…): credentials same-origin, no-store, 10s abort
 // deadline, streamed byte bound, Zod result/error parsing. Changes: per-endpoint byte budgets,
 // redirect rejection, content-type check before body use, and no legacy x-elevateo-* headers.
+// BE-02A adds JSON POST with an 8 KiB request bound; the browser supplies Origin itself (it is a
+// forbidden request header and must never be synthesized here), and the only proof header the
+// caller may add is X-CSRF-Token from component memory. BE-02 C/D adds PUT/DELETE, per-route
+// request budgets (1 MiB draft, 64 KiB note) and the wider CollaborationError envelope.
 import type { z } from 'zod'
 import { GatewayError } from '../errors'
-import { ErrorSchema, MAX_BYTES } from '../contract'
+import type { CollaborationErrorCode } from '../errors'
+import { ErrorSchema, MAX_BYTES, MAX_REQUEST_BYTES } from '../contract'
+
+/** Error envelope accepted for a route: the closed A/B Error or the C/D CollaborationError. */
+export type ErrorEnvelopeSchema = z.ZodType<{ code: CollaborationErrorCode; message: string; request_id: string }>
 
 export const REQUEST_TIMEOUT_MS = 10_000
 
@@ -70,34 +78,82 @@ async function readBounded(response: Response, maxBytes: number, signal: AbortSi
   }
 }
 
-async function toApiError(response: Response, raw: string): Promise<GatewayError> {
+async function toApiError(response: Response, raw: string, errorSchema: ErrorEnvelopeSchema): Promise<GatewayError> {
   let parsed: unknown
   try {
     parsed = JSON.parse(raw)
   } catch {
     return new GatewayError('transport', 'malformed', 'The server returned an unreadable error.', { status: response.status })
   }
-  const result = ErrorSchema.safeParse(parsed)
+  const result = errorSchema.safeParse(parsed)
   if (!result.success) return new GatewayError('transport', 'malformed', 'The server returned an unexpected error shape.', { status: response.status })
-  const retryAfterHeader = response.headers.get('Retry-After')
-  const retryAfter = retryAfterHeader === null ? Number.NaN : Number.parseInt(retryAfterHeader, 10)
+  // AIDEV-NOTE: The ENTIRE header must be whole seconds: parseInt would truncate '1.5'/'300.9'
+  // and accept '1oops' as 1. HTTP-date Retry-After values are deliberately discarded, not parsed.
+  const retryAfterHeader = response.headers.get('Retry-After')?.trim() ?? null
+  const retryAfter = retryAfterHeader !== null && /^\d{1,3}$/.test(retryAfterHeader) ? Number(retryAfterHeader) : Number.NaN
   const opts: { status: number; requestId: string; retryAfterSeconds?: number } = { status: response.status, requestId: result.data.request_id }
   if (Number.isInteger(retryAfter) && retryAfter >= 1 && retryAfter <= 300) opts.retryAfterSeconds = retryAfter
   return new GatewayError('api', result.data.code, result.data.message, opts)
 }
 
+export type JsonMethod = 'GET' | 'POST' | 'PUT' | 'DELETE'
+
+export interface RequestOptions {
+  headers?: Record<string, string>
+  signal?: AbortSignal | undefined
+  fetchImpl?: FetchLike
+  /** JSON body. Absent means a body-less request (GET, or DELETE when `method` says so). */
+  body?: unknown
+  /** Defaults to POST when a body is present, otherwise GET. DELETE never carries a body. */
+  method?: JsonMethod
+  /** Request budget in serialized UTF-8 bytes (x-max-request-bytes); defaults to the 8 KiB lifecycle bound. */
+  maxRequestBytes?: number
+  /** Error envelope for this route; defaults to the closed A/B Error. */
+  errorSchema?: ErrorEnvelopeSchema
+}
+
+export interface JsonResult<T> {
+  data: T
+  /** The 2xx status, so a caller can tell 201 (created) from 200 (replayed) without re-reading the body. */
+  status: number
+}
+
 /**
- * GET a relative /v1 path and validate the body. Rejects absolute URLs, redirects, non-JSON
- * content types and oversized or malformed bodies with deliberate GatewayErrors.
+ * GET (or POST a JSON body to) a relative /v1 path and validate the response body. Rejects
+ * absolute URLs, redirects, non-JSON content types and oversized or malformed bodies with
+ * deliberate GatewayErrors. The request body is never included in any error.
  */
 export async function requestJson<S extends z.ZodType>(
   path: string,
   schema: S,
   maxBytes: number,
-  options: { headers?: Record<string, string>; signal?: AbortSignal | undefined; fetchImpl?: FetchLike },
+  options: RequestOptions,
 ): Promise<z.output<S>> {
+  return (await requestJsonWithStatus(path, schema, maxBytes, options)).data
+}
+
+export async function requestJsonWithStatus<S extends z.ZodType>(
+  path: string,
+  schema: S,
+  maxBytes: number,
+  options: RequestOptions,
+): Promise<JsonResult<z.output<S>>> {
   if (!path.startsWith('/v1/')) throw new GatewayError('transport', 'network', 'Only relative /v1 paths are allowed.')
   if (options.signal?.aborted) throw new GatewayError('transport', 'aborted', 'The request was cancelled.')
+  const hasBody = 'body' in options
+  const method: JsonMethod = options.method ?? (hasBody ? 'POST' : 'GET')
+  if (hasBody && (method === 'GET' || method === 'DELETE')) throw new GatewayError('transport', 'malformed', `${method} cannot carry a body.`)
+  if (!hasBody && (method === 'POST' || method === 'PUT')) throw new GatewayError('transport', 'malformed', `${method} requires a JSON body.`)
+  const errorSchema = options.errorSchema ?? ErrorSchema
+  let serializedBody: string | undefined
+  if (hasBody) {
+    serializedBody = JSON.stringify(options.body)
+    // AIDEV-NOTE: Bound the REQUEST before dispatch too (x-max-request-bytes); the server would
+    // reject it anyway, but a too-large password or draft must never leave the browser at all.
+    if (new TextEncoder().encode(serializedBody).byteLength > (options.maxRequestBytes ?? MAX_REQUEST_BYTES)) {
+      throw new GatewayError('transport', 'oversized', 'The request exceeded its size limit.')
+    }
+  }
   const fetchImpl = options.fetchImpl ?? ((input, init) => fetch(input, init))
   const controller = new AbortController()
   const timeout = setTimeout(() => controller.abort(new GatewayError('transport', 'timeout', 'The request timed out.')), REQUEST_TIMEOUT_MS)
@@ -107,11 +163,14 @@ export async function requestJson<S extends z.ZodType>(
   try {
     // AIDEV-NOTE: Race both fetch and reads so even an abort-ignoring implementation obeys the same deadline.
     const receivedResponse = await untilAborted(fetchImpl(path, {
-        method: 'GET',
+        method,
         credentials: 'same-origin',
         cache: 'no-store',
         redirect: 'manual',
-        headers: { Accept: 'application/json', ...options.headers },
+        headers: hasBody
+          ? { Accept: 'application/json', 'Content-Type': 'application/json', ...options.headers }
+          : { Accept: 'application/json', ...options.headers },
+        ...(serializedBody === undefined ? {} : { body: serializedBody }),
         signal: controller.signal,
       }).then((received) => {
         response = received
@@ -126,7 +185,7 @@ export async function requestJson<S extends z.ZodType>(
     if (contentType.split(';', 1)[0]?.trim().toLowerCase() !== 'application/json') {
       throw new GatewayError('transport', 'wrong_content_type', 'The server returned a non-JSON response.', { status: receivedResponse.status })
     }
-    if (!receivedResponse.ok) throw await toApiError(receivedResponse, await readBounded(receivedResponse, MAX_BYTES.error, controller.signal))
+    if (!receivedResponse.ok) throw await toApiError(receivedResponse, await readBounded(receivedResponse, MAX_BYTES.error, controller.signal), errorSchema)
     const raw = await readBounded(receivedResponse, maxBytes, controller.signal)
     let parsed: unknown
     try {
@@ -136,7 +195,7 @@ export async function requestJson<S extends z.ZodType>(
     }
     const result = schema.safeParse(parsed)
     if (!result.success) throw new GatewayError('transport', 'malformed', 'The server returned data that does not match the contract.')
-    return result.data
+    return { data: result.data, status: receivedResponse.status }
   } catch (cause) {
     if (cause instanceof GatewayError) throw cause
     if (controller.signal.aborted && controller.signal.reason instanceof GatewayError) throw controller.signal.reason

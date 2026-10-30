@@ -1,7 +1,7 @@
 import type { SVGProps } from 'react'
 
 // First-party minimal icon set. The Ledger source used lucide-react; these original SVGs avoid
-// adding that dependency for the four icons this checkpoint needs. All are decorative (aria-hidden).
+// adding that dependency for the handful of icons this checkpoint needs. All are decorative (aria-hidden).
 
 type IconProps = SVGProps<SVGSVGElement>
 
@@ -53,6 +53,24 @@ export function MenuIcon(props: IconProps) {
       <path d="M4 6h16" />
       <path d="M4 12h16" />
       <path d="M4 18h16" />
+    </svg>
+  )
+}
+
+export function CloseIcon(props: IconProps) {
+  return (
+    <svg {...base(props)}>
+      <path d="M6 6l12 12" />
+      <path d="M18 6 6 18" />
+    </svg>
+  )
+}
+
+export function UserIcon(props: IconProps) {
+  return (
+    <svg {...base(props)}>
+      <circle cx="12" cy="8" r="4" />
+      <path d="M4 20c0-3.3 3.6-6 8-6s8 2.7 8 6" />
     </svg>
   )
 }

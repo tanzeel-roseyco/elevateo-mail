@@ -2,6 +2,7 @@
 // runs this spec against it (V7, D01). It must be the real `vite build` output; adapter-level unit
 // tests cannot stand in for this proof. Skips, visibly, when no artifact URL is provided.
 import { expect, test } from '@playwright/test'
+import { openMailbox } from './support'
 
 const PRODUCTION_URL = process.env['ELEVATEO_PRODUCTION_URL']
 
@@ -129,7 +130,7 @@ test.describe('production artifact', () => {
     await page.route('**/v1/mailboxes/*/threads**', (route) => route.fulfill(json(FIFTY_THREADS)))
     await page.route('**/v1/threads/**', (route) => route.fulfill(json(HOSTILE_THREAD)))
     await page.goto('/')
-    await page.getByRole('link', { name: 'Routed mailbox' }).click()
+    await openMailbox(page, 'Routed mailbox')
     // Exact intended row: the full sender-and-subject line of row 1, so rows 10-19 cannot match.
     await expect(page.getByText(/^Sender 1 — Routed conversation 1$/)).toBeVisible()
     await page.locator('a[data-thread]').first().click()
@@ -155,14 +156,16 @@ test.describe('production artifact', () => {
         for (const entry of list.getEntries()) w.__longTasks.push(entry.duration)
       }).observe({ type: 'longtask', buffered: true })
     })
-    await page.getByRole('link', { name: 'Routed mailbox' }).click()
-    await expect(page.getByText('Routed conversation 50', { exact: false })).toBeVisible()
+    await openMailbox(page, 'Routed mailbox')
+    // Row-link name: a bare getByText would match both the subject span and the preview span.
+    await expect(page.getByRole('link', { name: /Routed conversation 50/ })).toBeVisible()
 
     const started = Date.now()
-    await page.getByRole('link', { name: 'Unread' }).click()
-    await expect(page.getByRole('link', { name: 'Unread' })).toHaveAttribute('aria-current', 'page')
-    await page.getByRole('link', { name: 'All' }).click()
-    await expect(page.getByRole('link', { name: 'All' })).toHaveAttribute('aria-current', 'page')
+    // exact filter-pill names: a substring 'Unread' also matches rows carrying the Unread badge.
+    await page.getByRole('link', { name: 'Unread', exact: true }).click()
+    await expect(page.getByRole('link', { name: 'Unread', exact: true })).toHaveAttribute('aria-current', 'page')
+    await page.getByRole('link', { name: 'All', exact: true }).click()
+    await expect(page.getByRole('link', { name: 'All', exact: true })).toHaveAttribute('aria-current', 'page')
     const interactionMs = Date.now() - started
 
     const longTasks = await page.evaluate(() => (window as typeof window & { __longTasks: number[] }).__longTasks)

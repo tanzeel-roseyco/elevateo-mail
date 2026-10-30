@@ -1,17 +1,23 @@
 // Paginated plaintext conversation reader. Escaped-text-in-<pre> presentation follows the audited
 // first-party live reader; no HTML, Markdown, autolinks, remote images or attachment fetching.
-// A read never marks mail read (GET-only contract).
+// A read never marks mail read (GET-only contract); BE-02 D adds the explicit read-state control,
+// the assignment panel and immutable notes below the messages, and a reply-as-draft entry (C).
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { Link, useParams, useSearchParams } from 'react-router'
 import type { Message, ThreadDetailPage } from '@/data/contract'
 import { GatewayError, isApiError } from '@/data/errors'
+import { useMailbox } from '@/app/mailboxes'
 import { useGateway, useSession } from '@/app/session'
+import { newId } from '@/lib/ids'
 import { newTraversalBudget, readPage } from '@/lib/readPage'
 import { formatDateTime } from '@/lib/format'
 import { Badge } from '@/ui/Badge'
 import { Button } from '@/ui/Button'
 import { EmptyState, Skeleton } from '@/ui/Async'
 import { BackIcon } from '@/ui/icons'
+import { AssignmentPanel } from './AssignmentPanel'
+import { NotesPanel } from './NotesPanel'
+import { ReadStateControl } from './ReadStateControl'
 
 type ReaderState =
   | { status: 'loading' }
@@ -43,12 +49,16 @@ function ConversationReader({ mailboxId, threadId }: { mailboxId: string; thread
   const filter = searchParams.get('filter') === 'unread' ? 'unread' : 'all'
   const gateway = useGateway()
   const { scope, context, handleError } = useSession()
+  const mailbox = useMailbox(mailboxId)
   const [state, setState] = useState<ReaderState>({ status: 'loading' })
   // AIDEV-NOTE: One traversal budget for the whole conversation read; continuations share it and
   // a second invalid cursor surfaces manual retry instead of another automatic reset (D4, FE-R10).
   const budgetRef = useRef(newTraversalBudget())
   const abortRef = useRef<AbortController | null>(null)
   const headingRef = useRef<HTMLHeadingElement | null>(null)
+  // One reply-draft id per opened conversation: the link is stable across renders, and nothing
+  // exists on the server until the editor's first explicit save (BE-02 C).
+  const replyDraftIdRef = useRef(newId())
 
   const load = useCallback(
     (cursor: string | undefined, append: boolean) => {
@@ -148,9 +158,26 @@ function ConversationReader({ mailboxId, threadId }: { mailboxId: string; thread
             {state.thread.subject ?? '(no subject)'}
             {state.thread.subject_truncated && <Badge tone="warn" className="ml-2">Subject shortened</Badge>}
           </h1>
-          <p className="mb-3 text-[12px] text-muted">
+          <p className="mb-2 text-[12px] text-muted">
             {state.thread.message_count} message{state.thread.message_count === 1 ? '' : 's'} in this conversation
           </p>
+          <div className="mb-3 flex flex-wrap items-center gap-2">
+            <ReadStateControl
+              threadId={threadId}
+              mailboxId={mailboxId}
+              unread={state.thread.unread}
+              onConfirmed={(read) => setState((prev) => (prev.status === 'ready' ? { ...prev, thread: { ...prev.thread, unread: !read } } : prev))}
+            />
+            {state.thread.unread && <Badge tone="accent">Unread</Badge>}
+            {(mailbox === undefined || mailbox.capabilities.compose) && (
+              <Link
+                to={`/mailboxes/${mailboxId}/drafts/${replyDraftIdRef.current}?new=1&reply_to=${threadId}`}
+                className="inline-flex h-8 items-center rounded-lg border border-line bg-surface px-2.5 text-[13px] font-medium hover:bg-surface-2"
+              >
+                Reply as draft
+              </Link>
+            )}
+          </div>
           {/* An empty page with a continuation cursor is not a terminal empty conversation (D4). */}
           {state.messages.length === 0 && state.nextCursor === null && (
             <EmptyState title="No messages" body="This conversation exists but has no readable messages yet." />
@@ -172,7 +199,8 @@ function ConversationReader({ mailboxId, threadId }: { mailboxId: string; thread
                 </header>
                 {/* Escaped plaintext only: React text rendering in a wrapping <pre>; nothing is parsed. */}
                 <pre className="whitespace-pre-wrap break-words font-sans text-sm">{message.body_text}</pre>
-                <footer className="mt-2 flex gap-2">
+                {/* flex-wrap: both badges together overflow a 390px viewport otherwise (r10 visual QA). */}
+                <footer className="mt-2 flex flex-wrap gap-2">
                   {message.body_truncated && <Badge tone="warn">Message shortened by the server</Badge>}
                   {message.attachment_count > 0 && (
                     <Badge tone="neutral">
@@ -190,6 +218,10 @@ function ConversationReader({ mailboxId, threadId }: { mailboxId: string; thread
               </Button>
             </div>
           )}
+          <div className="mt-4 flex flex-col gap-3">
+            <AssignmentPanel threadId={threadId} mailboxId={mailboxId} />
+            <NotesPanel threadId={threadId} mailboxId={mailboxId} />
+          </div>
         </>
       )}
     </article>

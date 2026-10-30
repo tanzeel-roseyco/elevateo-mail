@@ -1,6 +1,6 @@
 # Project state
 
-Frontend review checkpoint: Fable authored session freshness, recovery, pagination, responsive shell, resource-owned navigation and regression repairs. The user requested at most two Claude CLI ultrareviews; this frontend is prioritized on review/ultra/frontend-reader against ce95e89. Review findings, current-source Docker checks and actual visual validation are pending. Earlier 123-test results cover only the data checkpoint and do not accept this source. No production publication or live mail occurred.
+Frontend review checkpoint: Fable authored session freshness, recovery, pagination, responsive shell, resource-owned navigation and regression repairs on review/ultra/frontend-reader. CURRENT STATUS (2026-10-12, r11): the full Docker suite PASSES on fleet-02 against this working tree (lint --max-warnings 0, strict typecheck, 209 unit tests with coverage, production build, browser matrix 163/0/50), all 112 visual-state captures were taken and individually inspected at zero defects (agent visual verification of the FE01 read checkpoint — not whole-application acceptance), and the review-found defects are repaired with bounded re-reviews recorded in code-reviews.md. Real Rails integration, mutation flows and the jobs scheduler remain open gates. No production publication or live mail occurred. No further ultrareviews will be run.
 
 Updated: 2026-10-12.
 Status: **autonomous local completion in progress; initial architecture and BE-01 task design accepted; Devin partial draft preserved and suspended; FE-01 read checkpoint accepted**.
@@ -13,7 +13,7 @@ Status: **autonomous local completion in progress; initial architecture and BE-0
 - Official Devin MCP authenticated; read-only session `b111d44287f34ba4be9f62961e5b6424` verified repository main/base and Docker 29.7.2/Compose 5.4.0. The subsequent BE-01 session produced incomplete draft PR #5 at 5a9d83a and is verified suspended; code and reported checks remain unaccepted. Current-user DPAPI protects the organization Member credential outside Git.
 - Fable 5.1 completed a read-only inventory of first-party Ledger frontend primitives and API components at integration commit `4322cfb`; the read checkpoint contract is accepted and implementation dispatch is next.
 - Full user review rubric is available in the current conversation. Obsidian has no callable connection in this environment; analytical tradeoff scenarios cannot be claimed as Obsidian execution.
-- No application tests or visual QA have run. No mail, purchases, production changes or signing actions occurred.
+- SUPERSEDED (historical): "No application tests or visual QA have run" described the pre-r8 state. As of r11 (2026-10-12) the full suite and visual QA are complete — see the FE-01 r8–r11 validation section below. No mail, purchases, production changes or signing actions occurred at any point.
 
 ## Historical preparation and completed work
 
@@ -84,3 +84,10 @@ Bounded Astra LOW data repair is ready for the serialized Fable UI handoff, not 
 Logs and source hashes: docs/evidence/fe-01-r1-data. npm audited 325 packages with zero reported vulnerabilities. Full suite coverage: statements83.28%, branches68.54%, functions81.81%, lines89.09%; no coverage-completeness claim. No UI/browser, real Rails or publication acceptance. Disposable containers auto-removed; task Node image removed; zero containers/cache. Pre-existing Playwright/Python images and nine persistent volumes retained. Host free space1,030,987,776bytes; no VHD compaction/reclaimed-host-byte claim.
 
 Stage A source checkpoint: 3ab182fd7100628758165111ba3bf32054ae7045. This follow-up preserves the four sanitized Docker transcripts explicitly despite the global log ignore. No application bytes changed; the recorded tests still apply.
+
+
+### FE-01 r8–r11 fleet-02 validation and full visual QA (2026-10-12) — CURRENT FRONTEND STATUS
+
+Four validation rounds of the frozen rev-5 workflow ran on fleet-02 under coordinator-granted exclusive reservations (browser results r8 156/4/50 → r9 158/2/50 → r10 160/0/50 → r11 163/0/50), each round's spec/product deltas frozen by hash and review-gated before execution. r11 (task `fe01r1-20261011-232744-84542099`, archive `0eedf661…b0a350`) is the accepted evidence set: runner exit 0; lint `--max-warnings 0`, strict typecheck, 209 unit tests with coverage and production build all PASS; 112/112 visual PNGs captured; exact cleanup attested with per-command exits; fleet explicitly released (msg `e78cd0cc`). The two r10-found visual defects (invisible light-theme skeletons because `--surface-2` equaled `--bg`; attachment badges overflowing the 390px viewport) were repaired via a dedicated `--skeleton` token and footer flex-wrap, review-gated, and re-validated in r11.
+
+All 112 r11 captures were then individually inspected locally at full resolution: **112/112 PASS, zero defects** (agent visual verification of the FE01 read checkpoint only — not whole-application acceptance). Limitations recorded: static images do not prove interaction; reduced-motion covers three representative rows per theme (no reduced-motion session-loading capture by design); the contrast oracle is closed statically within the opaque-hex theme scope. Open gates: real Rails integration and mutation flows (`docs/fe-rails-integration-packet.md`; BE-01 base `5785eba` unaccepted) and the jobs-checkpoint scheduler. Evidence: the `Elevateo Mail - FE Validation 20261012-r8` … `-r11` directories, `code-reviews.md`, `docs/frontend-regression-repair-status.md`, `docs/visual-qa-matrix.md`.
