@@ -1,0 +1,209 @@
+#!/bin/sh
+# AIDEV-NOTE: Fake `docker` CLI for the PERF-01 guard tests. It talks to no daemon: it logs every invocation and
+# returns scripted exit codes/outputs shaped like the real commands the ops/perf scripts parse.
+# Environment:
+#   FAKE_DOCKER_LOG           required; one line per invocation (all arguments). "$FAKE_DOCKER_LOG.removed" and
+#                             "$FAKE_DOCKER_LOG.fpcount" hold small pieces of fake daemon state
+#   FAKE_IDS                  container ids returned by `docker ps -q/-aq` (default "c1 c2")
+#   FAKE_COLLISION=1          collision scans (`docker ps -a --filter ... --format`) list a preexisting container
+#   FAKE_STOP_EXIT            exit status of `docker stop` (default 0)
+#   FAKE_RUNNING_AFTER_STOP   value printed for `{{.State.Running}}` (default false)
+#   FAKE_SQL_EXIT             exit status of `docker compose ... run ... perf-sql ...` (default 0)
+#   FAKE_STATS_EXIT           exit status of `docker stats` (default 0; non-zero prints nothing)
+#   FAKE_EXEC_MODE            full (default) | partial (status only, no separator/io) | fail (exit 1)
+#   FAKE_FAIL_CMD             "<sub> <sub2>" prefix (e.g. "volume ls", "network ls", "images", "ps -a") that exits 1
+#   FAKE_FAIL_STDERR          stderr text for the scripted failure (default "fake: scripted failure")
+#   FAKE_SLEEP_CMDS           space-separated subcommands (e.g. "stats", "ps") that sleep FAKE_SLEEP_SECONDS
+#                             (default 30) before answering, to exercise the caller's timeout handling
+#   FAKE_SLEEP_SUB            when set, only invocations whose second word equals it sleep (e.g. FAKE_SLEEP_CMDS=volume
+#                             FAKE_SLEEP_SUB=create hangs `volume create` but not `volume ls`)
+#   FAKE_SLEEP_MATCH          when set, an invocation sleeps iff its full argument string STARTS with this value
+#                             (overrides FAKE_SLEEP_CMDS), e.g. "ps -aq --filter label=elevateo.perf.run=" hangs only
+#                             the exit trap's ownership discovery
+#   FAKE_FIXTURES_EXIT        exit status of `docker compose ... run ... perf-fixtures` (default 0)
+#   FAKE_FIXTURES_TAMPER      path appended to by the fake perf-fixtures run (simulates the fixture file changing
+#                             between the recorded hash and finalize)
+#   FAKE_UP_EXIT              exit status of `docker compose ... up ...` (default 0)
+#   FAKE_DISCOVERY_EXIT       exit status of `docker ps ... --filter label=elevateo.perf.run=...` (default 0)
+#   FAKE_INSPECT_RUNNING_EXIT exit status of `docker inspect --format {{.State.Running}}` (default 0)
+#   FAKE_ANCESTORS            ids printed for `docker ps ... --filter ancestor=...` (default none)
+#   FAKE_VOLUME_USERS         ids printed for `docker ps ... --filter volume=...` (default FAKE_IDS), minus any id
+#                             already removed with `docker rm`
+#   FAKE_NET_ATTACHED         value printed for `{{len .Containers}}` (default 0)
+#   FAKE_BAD_MOUNT=1          container mounts include a bind outside the task directory
+#   FAKE_IMAGE_ABSENT         space-separated image references answered with zero lines by `image ls`
+#   FAKE_IMAGE_ID_AT_EXEC     id printed by `image inspect --format '{{.Id}} {{index .Config.Labels ...}}'`
+#                             (default: the queried id itself; set another value to simulate a re-pointed tag)
+#   FAKE_IMAGE_TAGS_AT_EXEC   RepoTags (space-separated) reported for the server image id at execution
+#                             (default "<project>-server:perf"); RepoDigests are always reported empty
+#   FAKE_DANGLING             ids printed for `images -q --no-trunc --filter dangling=true` (default none)
+#   FAKE_DANGLING_TAGS_AT_EXEC RepoTags reported for a FAKE_DANGLING id at execution (default none)
+#   FAKE_VOLUME_ABSENT        space-separated volume names answered with zero lines by `volume ls`
+#   FAKE_VOLUME_EXTRA         foreign volume names reported by the unfiltered `volume ls -q` and APPENDED to every
+#                             `volume ls -q --filter name=^...$` answer (a deliberately leaky listing); they carry
+#                             no elevateo.perf.* labels and never appear in label/prefix-filtered listings
+#   FAKE_VOLUME_GEN           generation label reported by the identity inspect (`--format '{{.Name}}|{{.CreatedAt}}|...'`)
+#                             for every volume; default: the value recorded by a fake `volume create` for that name,
+#                             else gen-0123456789abcdef. The run label likewise defaults to the created one, else
+#                             $PERF01_RUN_ID
+#   FAKE_VOLUME_NO_GEN        space-separated volume names whose identity inspect reports "<no value>" as generation
+#                             (the label is absent)
+#   FAKE_VOLUME_FP_FLIP_AFTER after this many identity inspects, answer a different CreatedAt (volume replaced)
+set -u
+: "${FAKE_DOCKER_LOG:?FAKE_DOCKER_LOG must point at a writable log file}"
+all="$*"
+printf '%s\n' "$all" >> "$FAKE_DOCKER_LOG"
+ids=${FAKE_IDS-c1 c2}
+project=${PERF01_PROJECT-perf01-fake}
+removed_file="$FAKE_DOCKER_LOG.removed"
+fp_file="$FAKE_DOCKER_LOG.fpcount"
+
+if [ -n "${FAKE_SLEEP_MATCH-}" ]; then
+  case "$all" in "$FAKE_SLEEP_MATCH"*) sleep "${FAKE_SLEEP_SECONDS-30}" ;; esac
+else
+  case " ${FAKE_SLEEP_CMDS-} " in
+    *" $1 "*) if [ -z "${FAKE_SLEEP_SUB-}" ] || [ "${2-}" = "${FAKE_SLEEP_SUB-}" ]; then sleep "${FAKE_SLEEP_SECONDS-30}"; fi ;;
+  esac
+fi
+if [ -n "${FAKE_FAIL_CMD-}" ]; then
+  case "$all" in "$FAKE_FAIL_CMD"*) echo "${FAKE_FAIL_STDERR-fake: scripted failure for $FAKE_FAIL_CMD}" >&2; exit 1 ;; esac
+fi
+
+print_ids() { for id in $ids; do echo "$id"; done; }
+print_lines() { for item in $1; do echo "$item"; done; }
+labels() { printf 'elevateo.perf.task=perf01\nelevateo.perf.project=%s\ncom.docker.compose.project=%s\n' "$project" "$project"; }
+last_arg() { for a in "$@"; do last=$a; done; echo "${last-}"; }
+in_list() { case " $2 " in *" $1 "*) return 0 ;; esac; return 1; }
+not_removed() { for item in $1; do if [ -f "$removed_file" ] && grep -Fqx -- "$item" "$removed_file"; then :; else echo "$item"; fi; done; }
+fingerprint() {
+  n=0; [ -f "$fp_file" ] && n=$(cat "$fp_file"); n=$((n + 1)); echo "$n" > "$fp_file"
+  if [ -n "${FAKE_VOLUME_FP_FLIP_AFTER-}" ] && [ "$n" -gt "$FAKE_VOLUME_FP_FLIP_AFTER" ]; then
+    echo "2026-10-12T00:00:09Z|/var/lib/docker/volumes/$1/_data"
+  else
+    echo "2026-10-12T00:00:00Z|/var/lib/docker/volumes/$1/_data"
+  fi
+}
+
+case "$1" in
+  version) echo fake-29.0; exit 0 ;;
+  info) echo fake; exit 0 ;;
+  system) printf 'TYPE TOTAL ACTIVE SIZE RECLAIMABLE\nBuild Cache 6 0 118.5MB 118.5MB (100%%)\n'; exit 0 ;;
+  buildx) exit 0 ;;
+  images)
+    case "$all" in *dangling=true*) print_lines "${FAKE_DANGLING-}" ;; esac
+    exit 0 ;;
+  rm) echo "$2" >> "$removed_file"; exit 0 ;;
+  volume)
+    name=$(last_arg "$@")
+    case "$all" in
+      *" create "*)
+        for a in "$@"; do
+          case $a in
+            elevateo.perf.generation=*) echo "${a#elevateo.perf.generation=}" > "$FAKE_DOCKER_LOG.gen.$name" ;;
+            elevateo.perf.run=*) echo "${a#elevateo.perf.run=}" > "$FAKE_DOCKER_LOG.run.$name" ;;
+          esac
+        done
+        echo "$name" ;;
+      "volume ls -q") print_lines "${FAKE_VOLUME_EXTRA-}" ;;
+      *" ls -q --filter name=^"*)
+        ref=${name#name=^}; ref=${ref%\$}
+        in_list "$ref" "${FAKE_VOLUME_ABSENT-}" || echo "$ref"
+        print_lines "${FAKE_VOLUME_EXTRA-}" ;;
+      *" inspect --format {{.Name}}|{{.CreatedAt}}|"*)
+        if in_list "$name" "${FAKE_VOLUME_EXTRA-}"; then echo "$name|2026-10-01T00:00:00Z|<no value>|<no value>|<no value>"; exit 0; fi
+        if [ -n "${FAKE_VOLUME_GEN+x}" ]; then gen=$FAKE_VOLUME_GEN
+        elif [ -f "$FAKE_DOCKER_LOG.gen.$name" ]; then gen=$(cat "$FAKE_DOCKER_LOG.gen.$name")
+        else gen=gen-0123456789abcdef; fi
+        in_list "$name" "${FAKE_VOLUME_NO_GEN-}" && gen='<no value>'
+        if [ -f "$FAKE_DOCKER_LOG.run.$name" ]; then run=$(cat "$FAKE_DOCKER_LOG.run.$name"); else run=${PERF01_RUN_ID-}; fi
+        echo "$name|$(fingerprint "$name" | cut -d'|' -f1)|$run|$gen|$project" ;;
+      *" inspect "*) in_list "$name" "${FAKE_VOLUME_EXTRA-}" || labels ;;
+    esac
+    exit 0 ;;
+  network)
+    case "$all" in
+      *" ls -q --filter label=elevateo.perf.project="*) echo n1 ;;
+      *" inspect --format {{.Name}} "*) echo "${project}-runtime" ;;
+      *" inspect --format {{len .Containers}} "*) echo "${FAKE_NET_ATTACHED-0}" ;;
+      *" inspect "*) echo "internal=true driver=bridge containers=7" ;;
+    esac
+    exit 0 ;;
+  ps)
+    case "$all" in
+      *--format*) [ "${FAKE_COLLISION-0}" = 1 ] && echo "container abc123 ${project}-db-1 Up 5 minutes"; exit 0 ;;
+      *ancestor=*) print_lines "${FAKE_ANCESTORS-}"; exit 0 ;;
+      *"--filter volume="*) not_removed "${FAKE_VOLUME_USERS-$ids}"; exit 0 ;;
+      *service=worker*) echo "${ids%% *}"; exit 0 ;;
+      *compose.project=*) print_ids; exit 0 ;;
+      *label=elevateo.perf.run=*) [ "${FAKE_DISCOVERY_EXIT-0}" -eq 0 ] || exit "$FAKE_DISCOVERY_EXIT"; print_ids; exit 0 ;;
+      *) print_ids; exit 0 ;;
+    esac ;;
+  image)
+    case "$2" in
+      rm) exit 0 ;;
+      ls)
+        ref=$(last_arg "$@"); ref=${ref#reference=}
+        in_list "$ref" "${FAKE_IMAGE_ABSENT-}" || echo "sha256:fade0000000000000000000000000000000000000000000000000000000000ab"
+        exit 0 ;;
+      inspect)
+        target=$(last_arg "$@")
+        case "$all" in
+          *"{{join .RepoTags"*)
+            if in_list "$target" "${FAKE_DANGLING-}"; then echo "${FAKE_DANGLING_TAGS_AT_EXEC-}|"
+            else echo "${FAKE_IMAGE_TAGS_AT_EXEC-$project-server:perf}|"; fi ;;
+          *"{{.Id}} {{index .Config.Labels"*) echo "${FAKE_IMAGE_ID_AT_EXEC-$target} $project" ;;
+          *"index .Config.Labels"*) echo "$project" ;;
+          *RepoDigests*) echo "sha256:fade0000000000000000000000000000000000000000000000000000000000ab fake@sha256:fakedigest 1" ;;
+          *"--format {{.Id}} "*) echo "sha256:fade0000000000000000000000000000000000000000000000000000000000ab" ;;
+          *) echo "[{}]" ;;
+        esac
+        exit 0 ;;
+      *) exit 0 ;;
+    esac ;;
+  inspect)
+    shift
+    fmt=''
+    while [ $# -gt 0 ]; do
+      case $1 in --format) fmt=$2; shift 2 ;; *) break ;; esac
+    done
+    case $fmt in *State.Running*) [ "${FAKE_INSPECT_RUNNING_EXIT-0}" -eq 0 ] || exit "$FAKE_INSPECT_RUNNING_EXIT" ;; esac
+    for id in "$@"; do
+      case $fmt in
+        *State.Running*) echo "${FAKE_RUNNING_AFTER_STOP-false}" ;;
+        *"index .Config.Labels"*) echo perf01 ;;
+        *Config.Labels*) labels ;;
+        *.Mounts*)
+          echo "volume /var/lib/docker/volumes/${project}-db-data/_data ${project}-db-data"
+          echo "tmpfs  "
+          [ "${FAKE_BAD_MOUNT-0}" = 1 ] && echo "bind /etc/passwd " ;;
+        *ports=*) echo "/fake-$id ports={} privileged=false netmode=${project}-runtime nanocpus=1000000000 memory=805306368 pids=256 restart=no" ;;
+        *) echo "/fake-$id" ;;
+      esac
+    done
+    exit 0 ;;
+  stop) exit "${FAKE_STOP_EXIT-0}" ;;
+  stats)
+    [ "${FAKE_STATS_EXIT-0}" -eq 0 ] || exit "$FAKE_STATS_EXIT"
+    for id in $ids; do echo "$id,fake-$id,1.00%,10MiB / 512MiB,2.00%,0B / 0B,0B / 0B,5"; done
+    exit 0 ;;
+  exec)
+    case "${FAKE_EXEC_MODE-full}" in
+      fail) exit 1 ;;
+      partial) printf 'Name:\tworker\nvoluntary_ctxt_switches:\t10\nnonvoluntary_ctxt_switches:\t2\n'; exit 0 ;;
+      *) printf 'Name:\tworker\nvoluntary_ctxt_switches:\t10\nnonvoluntary_ctxt_switches:\t2\n---\nrchar: 100\nwchar: 50\nsyscr: 10\nsyscw: 5\nread_bytes: 0\nwrite_bytes: 4096\n'; exit 0 ;;
+    esac ;;
+  compose)
+    case "$all" in
+      *" perf-sql "*) exit "${FAKE_SQL_EXIT-0}" ;;
+      *" perf-fixtures"*)
+        [ -n "${FAKE_FIXTURES_TAMPER-}" ] && echo "-- tampered by the fake fixtures run" >> "$FAKE_FIXTURES_TAMPER"
+        exit "${FAKE_FIXTURES_EXIT-0}" ;;
+      *" up "*) exit "${FAKE_UP_EXIT-0}" ;;
+      *" perf-load "*) echo '{"tool":"fake-load","aborted":false,"requests":0}'; exit 0 ;;
+      *" version "*) echo fake-5.0; exit 0 ;;
+      *" ps "*) echo "[]"; exit 0 ;;
+      *" config") echo "fake-config"; exit 0 ;;
+      *) exit 0 ;;
+    esac ;;
+  *) exit 0 ;;
+esac

@@ -5,4 +5,6 @@ scripts/dev text eol=lf
 apps/server/bin/* text eol=lf
 ops/**/*.sql text eol=lf
 ops/**/*.rb text eol=lf
+ops/perf/*.yaml text eol=lf
+ops/perf/tests/fakebin/* text eol=lf
 *.ps1 text eol=crlf
