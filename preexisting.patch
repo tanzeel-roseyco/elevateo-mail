@@ -1,0 +1,478 @@
+diff --git a/.planning/STATE.md b/.planning/STATE.md
+index ec6a4dee..95ef93ee 100644
+--- a/.planning/STATE.md
++++ b/.planning/STATE.md
+@@ -1,3 +1,5 @@
++RESEND-FIRST scope (2026-10-17): user deferred self-hosted mailserver deployment to ongoing repository development and selected Resend for the immediate app launch. Existing research/tests/plans remain preserved. Web gate: 874 Vitest tests plus API checks/lint/typecheck/build PASS; Android restart acceptance remains unresolved. Live Resend transport/production configuration is not implemented; the current worker supports simulated/Mailpit sends only. Final provider/browser/operational acceptance and live activation remain: NOT credentials-only ready. Lead opt-in is unresolved; Resend prohibits cold outreach. See docs/completion/resend-first-launch.md. GitHub publication of this update is not yet verified.
++
+ ANDROID1035: real Android 14/WebView113 fleet acceptance passed login, inbox, message links, plaintext rendering, drawer navigation and session restart/resume. Acceptance FAILED: system bars overlap the app after rotation, network loss is not reflected by navigator.onLine, and logout was not verified before the emulator stopped with a graphics error. The final private UNIX transport gate passed 112 Python tests plus 9 socket/TLS tests and strict TypeScript; the emulator harness passed 19 tests. Independent checks verified 35 exact task resources/private paths absent. No live spend, credentials, mail, DNS or production changes. Upload integration, outbound attachment MIME, native fixes and final browser/native acceptance remain open: NOT credentials-only ready. See docs/completion/android1035-acceptance.md.
+ 
+ ANDROID1034: the isolated Android HTTPS fixture and fixed-destination CONNECT edge passed fleet-02 gate android1034-r4-e276609dd607: 108 Python tests, 9 real socket/TLS tests and strict TypeScript compilation. The fixture checks the actual published loopback path before READY, seeds fresh private synthetic credentials, limits its lifetime to 15 minutes, and reports full app acceptance as NOT_RUN. Exact cleanup verified the task container, image, builder container, builder registration, cache volume and working directory absent; shared bases and persistent data were retained. Host free bytes 254197170176 -> 254197088256 (shared delta -81920, not attributable reclamation). Emulator installation/login/lifecycle/visual acceptance, upload integration, outbound attachment MIME and remaining browser/native acceptance are still open: NOT credentials-only ready. No spend, live credentials, external mail, DNS or production mutation. See docs/completion/android1034-fixture.md.
+diff --git a/README.md b/README.md
+index 22ebb22e..0f1a910e 100644
+--- a/README.md
++++ b/README.md
+@@ -14,6 +14,9 @@ Shared company mailroom with one Rails domain authority and a React/TypeScript c
+ 
+ ## Current state
+ 
++RESEND-FIRST scope (2026-10-17): user deferred self-hosted mailserver deployment to ongoing repository development and selected Resend for the immediate app launch. Existing research/tests/plans remain preserved. Web gate: 874 Vitest tests plus API checks/lint/typecheck/build PASS; Android restart acceptance remains unresolved. Live Resend transport/production configuration is not implemented; the current worker supports simulated/Mailpit sends only. Final provider/browser/operational acceptance and live activation remain: NOT credentials-only ready. Lead opt-in is unresolved; Resend prohibits cold outreach. See docs/completion/resend-first-launch.md. GitHub publication of this update is not yet verified.
++
++
+ ANDROID1035: real Android 14/WebView113 fleet acceptance passed login, inbox, message links, plaintext rendering, drawer navigation and session restart/resume. Acceptance FAILED: system bars overlap the app after rotation, network loss is not reflected by navigator.onLine, and logout was not verified before the emulator stopped with a graphics error. The final private UNIX transport gate passed 112 Python tests plus 9 socket/TLS tests and strict TypeScript; the emulator harness passed 19 tests. Independent checks verified 35 exact task resources/private paths absent. No live spend, credentials, mail, DNS or production changes. Upload integration, outbound attachment MIME, native fixes and final browser/native acceptance remain open: NOT credentials-only ready. See docs/completion/android1035-acceptance.md.
+ 
+ ANDROID1034: the isolated Android HTTPS fixture and fixed-destination CONNECT edge passed fleet-02 gate android1034-r4-e276609dd607: 108 Python tests, 9 real socket/TLS tests and strict TypeScript compilation. The fixture checks the actual published loopback path before READY, seeds fresh private synthetic credentials, limits its lifetime to 15 minutes, and reports full app acceptance as NOT_RUN. Exact cleanup verified the task container, image, builder container, builder registration, cache volume and working directory absent; shared bases and persistent data were retained. Host free bytes 254197170176 -> 254197088256 (shared delta -81920, not attributable reclamation). Emulator installation/login/lifecycle/visual acceptance, upload integration, outbound attachment MIME and remaining browser/native acceptance are still open: NOT credentials-only ready. No spend, live credentials, external mail, DNS or production mutation. See docs/completion/android1034-fixture.md.
+diff --git a/apps/android/test_verify_permissions.py b/apps/android/test_verify_permissions.py
+index fe5caf93..57480717 100644
+--- a/apps/android/test_verify_permissions.py
++++ b/apps/android/test_verify_permissions.py
+@@ -11,14 +11,16 @@ def merged_manifest(protection: str = "signature", package: str = "com.elevateo.
+         '<manifest xmlns:android="http://schemas.android.com/apk/res/android">'
+         f'<permission android:name="{permission}" android:protectionLevel="{protection}" />'
+         '<uses-permission android:name="android.permission.INTERNET" />'
++        '<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />'
+         f'<uses-permission android:name="{permission}" />'
+         '</manifest>'
+     )
+ 
+ 
+ class VerifyPermissionsTest(unittest.TestCase):
+-    def test_allows_internet_and_androidx_signature_receiver(self) -> None:
++    def test_allows_network_state_internet_and_androidx_signature_receiver(self) -> None:
+         verify_permissions(
++            "android.permission.ACCESS_NETWORK_STATE\n"
+             "android.permission.INTERNET\n"
+             "com.elevateo.mail.fixture.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION\n"
+         )
+@@ -26,11 +28,20 @@ class VerifyPermissionsTest(unittest.TestCase):
+     def test_rejects_extra_platform_permission(self) -> None:
+         with self.assertRaises(ValueError):
+             verify_permissions(
+-                "android.permission.INTERNET\n"
++                "android.permission.ACCESS_NETWORK_STATE\n"
++            "android.permission.INTERNET\n"
+                 "android.permission.CAMERA\n"
+                 "com.elevateo.mail.fixture.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION\n"
+             )
+ 
++    def test_rejects_missing_network_state(self) -> None:
++        with self.assertRaises(ValueError):
++            verify_permissions("android.permission.INTERNET\n"
++                               "com.elevateo.mail.fixture.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION\n")
++        with self.assertRaises(ValueError):
++            verify_receiver_declaration(merged_manifest().replace(
++                '<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />', ""))
++
+     def test_rejects_empty_aapt_permission_output(self) -> None:
+         with self.assertRaises(ValueError):
+             verify_permissions("")
+@@ -38,7 +49,8 @@ class VerifyPermissionsTest(unittest.TestCase):
+     def test_rejects_lookalike_receiver_permission(self) -> None:
+         with self.assertRaises(ValueError):
+             verify_permissions(
+-                "android.permission.INTERNET\n"
++                "android.permission.ACCESS_NETWORK_STATE\n"
++            "android.permission.INTERNET\n"
+                 "com.elevateo.mail.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION\n"
+             )
+ 
+diff --git a/apps/android/test_verify_qa_package.py b/apps/android/test_verify_qa_package.py
+index 05adcf90..f49c3049 100644
+--- a/apps/android/test_verify_qa_package.py
++++ b/apps/android/test_verify_qa_package.py
+@@ -10,6 +10,7 @@ from test_qa_resource_table import TABLE
+ 
+ MANIFEST = '''<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.elevateo.mail.qa">
+ <uses-permission android:name="android.permission.INTERNET" />
++<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+ <uses-permission android:name="com.elevateo.mail.qa.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
+ <permission android:name="com.elevateo.mail.qa.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" android:protectionLevel="signature" />
+ <application android:debuggable="true" android:usesCleartextTraffic="false"
+@@ -56,6 +57,12 @@ class QaPackageTest(unittest.TestCase):
+             with self.subTest(new=new), self.assertRaises(ValueError):
+                 verify_manifest(MANIFEST.replace(old, new), BINDINGS)
+ 
++    def test_manifest_requires_unique_network_state_permission(self) -> None:
++        permission = '<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />'
++        for replacement in ("", permission * 2):
++            with self.subTest(replacement=replacement), self.assertRaises(ValueError):
++                verify_manifest(MANIFEST.replace(permission, replacement), BINDINGS)
++
+     def test_network_rejects_broad_or_changed_trust(self) -> None:
+         for old, new in [('includeSubdomains="false"', 'includeSubdomains="true"'),
+                          ('cleartextTrafficPermitted="false"', 'cleartextTrafficPermitted="true"'),
+diff --git a/apps/android/verify_permissions.py b/apps/android/verify_permissions.py
+index 0ea62bcd..12965989 100644
+--- a/apps/android/verify_permissions.py
++++ b/apps/android/verify_permissions.py
+@@ -6,6 +6,8 @@ from xml.etree import ElementTree
+ 
+ EXPECTED = frozenset(
+     {
++        # AIDEV-NOTE: WebView requires this normal permission to observe offline/online network changes.
++        "android.permission.ACCESS_NETWORK_STATE",
+         "android.permission.INTERNET",
+         "com.elevateo.mail.fixture.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION",
+     }
+diff --git a/apps/android/verify_qa_package.py b/apps/android/verify_qa_package.py
+index 5ae66e99..2f1c64e7 100644
+--- a/apps/android/verify_qa_package.py
++++ b/apps/android/verify_qa_package.py
+@@ -27,7 +27,9 @@ def verify_manifest(manifest: str, bindings: dict[str, str]) -> None:
+     require(bound_reference(app.get(ANDROID + "networkSecurityConfig"),
+                             "xml/elevateo_qa_network_security", bindings), "unbound network policy")
+     permissions = [e.get(ANDROID + "name") for e in root if e.tag.startswith("uses-permission")]
+-    require(len(permissions) == 2 and set(permissions) == {"android.permission.INTERNET", RECEIVER},
++    # AIDEV-NOTE: Network-state access enables WebView connectivity events without privileged WiFi/location access.
++    require(len(permissions) == 3 and set(permissions) == {"android.permission.INTERNET",
++            "android.permission.ACCESS_NETWORK_STATE", RECEIVER},
+             "unexpected QA permissions")
+     declarations = root.findall("permission")
+     require(len(declarations) == 1 and declarations[0].get(ANDROID + "name") == RECEIVER
+diff --git a/apps/web/src/app/App.tsx b/apps/web/src/app/App.tsx
+index f8a64db8..ed1fc172 100644
+--- a/apps/web/src/app/App.tsx
++++ b/apps/web/src/app/App.tsx
+@@ -1,4 +1,5 @@
+ import { lazy } from 'react'
++import { useEditableViewport } from '@/ui/useEditableViewport'
+ import { SendIntentProvider } from './sendIntent'
+ import { HashRouter, Navigate, Route, Routes } from 'react-router'
+ import type { MailroomGateway } from '@/data/gateway'
+@@ -30,6 +31,7 @@ function ThreadRoute() {
+ // AIDEV-NOTE: Hash routing keeps deep links working when Rails or the dev proxy serves one page;
+ // swap to BrowserRouter once the host serves the SPA for every route.
+ export function App({ gateway, featureGateways = {} }: { gateway: MailroomGateway; featureGateways?: FeatureGateways }) {
++  useEditableViewport()
+   return (
+     <SessionProvider gateway={gateway}>
+       {/* FE-805: optional feature capabilities (Outreach reads, V2 admin) sit beside the frozen V1 gateway. */}
+diff --git a/apps/web/src/app/Shell.test.tsx b/apps/web/src/app/Shell.test.tsx
+index 9bc7a02d..cc3f34a6 100644
+--- a/apps/web/src/app/Shell.test.tsx
++++ b/apps/web/src/app/Shell.test.tsx
+@@ -490,7 +490,7 @@ describe('simulation labelling derives from the session (ADV033)', () => {
+     renderShell(createFixtureGateway())
+     await screen.findByText('Synthetic organization A')
+     expect(screen.getByText('Simulated local mail')).toBeTruthy()
+-    expect(screen.getByText('Simulation mode: no mail is sent or received. Drafts and notes are saved on the server.')).toBeTruthy()
++    expect(await screen.findByText('Simulation mode: no mail is sent or received. Drafts and notes are saved on the server.')).toBeTruthy()
+     expect(screen.queryByText(/stay on this installation/)).toBeNull()
+   })
+ })
+diff --git a/code-reviews.md b/code-reviews.md
+index 561b94a2..1c468a73 100644
+--- a/code-reviews.md
++++ b/code-reviews.md
+@@ -1,3 +1,5 @@
++RESEND-FIRST readiness: Mara performed a read-only outbound/configuration review using the full user rubric, <=200 LOC per read and 335 unique implementation LOC plus a20-line checklist. Zero confirmed implementation defects; density0/KLOC. Live Resend submission is absent from the intentionally local/held worker and is a launch gap, not a defect in that local design. No new test or production capability claim. Exact file evidence and release implications: docs/completion/resend-first-launch.md.
++
+ ANDROID1035 review: full user rubric, at most200 LOC per inspection/400 unique per reviewer. Ada socket design145, Leona socket136, Mira policy288, Oren runtime328, Nia cleanup230, Soren relay331, Leona CDP/Compose/wrapper197: total1,655 reviewer-lines including overlaps. Ten findings repaired, density6.04/KLOC; final follow-up0 new defects. Findings cover private transport isolation, marker/signal/late-acceptance cleanup, half-close and false-positive assertions, bounded CDP input and Compose/orchestration gates. Runtime acceptance separately found two app defects (insets/offline state), one unresolved emulator graphics exit and one logout check not run. Runtime failures are not counted as source-review defect density. Dedicated design reviewed private UNIX transport versus host ports and lifecycle cleanup. Final112+9 proxy tests and19 harness tests passed; full Android acceptance FAILED.
+ 
+ ANDROID1034 adversarial review used the full user rubric, at most200 LOC per inspection and400 unique LOC per assignment. Coverage: Marin368, Ada readiness389, Rowan399, Selene373, Ada resource399, Elena399, Lydia204, Nora179 plus29 closure lines, Vera198; total2,937 reviewer-lines including overlaps. Four reports identify three distinct defects: unpublished-path false READY (Ada/Rowan duplicate), FIFO certificate read blocking (Selene), and an untracked BuildKit pull in the gate (Nora). All three were repaired; distinct-defect density1.02/KLOC, report density1.36/KLOC; this is reviewer coverage, not unique repository size. Dedicated design review covered seed/auth restoration, published-port evidence, bounded TLS/CONNECT, resource ownership and partial-failure cleanup. Vera's198-line follow-up found0 new defects and verified that Android fixture closure cannot claim full app PASS. R3 failures exposed missing runner Node/executable tmpfs and outdated structural/inventory regressions; R4 corrected those and passed108 Python plus9 socket/TLS tests. Runtime Android and full browser acceptance remain NOT_RUN.
+diff --git a/docs/mailserver/readiness.md b/docs/mailserver/readiness.md
+index deb9b1fa..6b556f1b 100644
+--- a/docs/mailserver/readiness.md
++++ b/docs/mailserver/readiness.md
+@@ -1,3 +1,5 @@
++RESEND-FIRST scope (2026-10-17): user deferred self-hosted mailserver deployment to ongoing repository development and selected Resend for the immediate app launch. Existing research/tests/plans remain preserved. Web gate: 874 Vitest tests plus API checks/lint/typecheck/build PASS; Android restart acceptance remains unresolved. Live Resend transport/production configuration is not implemented; the current worker supports simulated/Mailpit sends only. Final provider/browser/operational acceptance and live activation remain: NOT credentials-only ready. Lead opt-in is unresolved; Resend prohibits cold outreach. See docs/completion/resend-first-launch.md. GitHub publication of this update is not yet verified.
++
+ MAIL1032: durable draft-attachment reservations, per-draft limits, quarantine scan leases and deletion/rollback race protection passed fleet-02 gate be02-20c3f1d9302a4daa8de238792d326154: 184 standard suites / 1,065 tests / 12,666 assertions; API and worker checks bring the total to 1,068 tests / 12,806 assertions, zero failures/errors/skips. Steep and RuboCop408 files passed. Twelve dedicated suites remain deferred; this gate did not rerun the earlier Mox or scanner-process scenarios. Exact cleanup removed 12 task resources and 17 independent absence checks passed, with shared bases and persistent data retained. Host free bytes 254219001856 -> 254116356096 (shared delta -102645760, not attributable reclamation). Upload HTTP/Storage integration, outbound attachment MIME, Android runtime and remaining app/native acceptance are still open: NOT credentials-only ready. No spend, live credentials, external mail, DNS or production mutation. See docs/mailserver/draft-attachment-staging.md.
+ 
+ MAIL1029/1030: the standalone held attachment scanner now scans one claimed item at a time, uses bounded idle/error backoff and redacted logs, and handles TERM/INT between bounded I/O operations. Private Storage reads/writes have aggregate deadlines, reject truncated responses and never silently retry writes. Fleet-02 gate be02-d833c3471a1e41088072711a2c02ad06 passed 179 standard suites / 1,044 tests / 12,267 assertions; combined Mox, attachment HTTP, real scanner process, API and worker checks total 1,069 tests / 12,879 assertions, zero failures/errors/skips. Steep, RuboCop401 files, Mox fixture lint10, scanner fixture lint3 and frozen-source checks passed. Twelve dedicated suites remain deferred; earlier isolated runner checks passed108. Exact cleanup and21 independent absence checks passed; the task-acquired ClamAV image was removed and shared bases/persistent data retained. Host free bytes 254192549888 -> 254206836736 (shared delta +14286848, not attributable reclamation). Production endpoints/secrets, operational supervision, outbound attachments and app/native acceptance remain: NOT credentials-only ready. No spend, live credentials, external mail, DNS or production mutation. See docs/mailserver/attachment-scanner.md.
+diff --git a/documentation.md b/documentation.md
+index 561d5d24..12bfcbf7 100644
+--- a/documentation.md
++++ b/documentation.md
+@@ -1,3 +1,5 @@
++RESEND-FIRST scope (2026-10-17): user deferred self-hosted mailserver deployment to ongoing repository development and selected Resend for the immediate app launch. Existing research/tests/plans remain preserved. Web gate: 874 Vitest tests plus API checks/lint/typecheck/build PASS; Android restart acceptance remains unresolved. Live Resend transport/production configuration is not implemented; the current worker supports simulated/Mailpit sends only. Final provider/browser/operational acceptance and live activation remain: NOT credentials-only ready. Lead opt-in is unresolved; Resend prohibits cold outreach. See docs/completion/resend-first-launch.md. GitHub publication of this update is not yet verified.
++
+ ANDROID1035: real Android 14/WebView113 fleet acceptance passed login, inbox, message links, plaintext rendering, drawer navigation and session restart/resume. Acceptance FAILED: system bars overlap the app after rotation, network loss is not reflected by navigator.onLine, and logout was not verified before the emulator stopped with a graphics error. The final private UNIX transport gate passed 112 Python tests plus 9 socket/TLS tests and strict TypeScript; the emulator harness passed 19 tests. Independent checks verified 35 exact task resources/private paths absent. No live spend, credentials, mail, DNS or production changes. Upload integration, outbound attachment MIME, native fixes and final browser/native acceptance remain open: NOT credentials-only ready. See docs/completion/android1035-acceptance.md.
+ 
+ ANDROID1034: the isolated Android HTTPS fixture and fixed-destination CONNECT edge passed fleet-02 gate android1034-r4-e276609dd607: 108 Python tests, 9 real socket/TLS tests and strict TypeScript compilation. The fixture checks the actual published loopback path before READY, seeds fresh private synthetic credentials, limits its lifetime to 15 minutes, and reports full app acceptance as NOT_RUN. Exact cleanup verified the task container, image, builder container, builder registration, cache volume and working directory absent; shared bases and persistent data were retained. Host free bytes 254197170176 -> 254197088256 (shared delta -81920, not attributable reclamation). Emulator installation/login/lifecycle/visual acceptance, upload integration, outbound attachment MIME and remaining browser/native acceptance are still open: NOT credentials-only ready. No spend, live credentials, external mail, DNS or production mutation. See docs/completion/android1034-fixture.md.
+diff --git a/obsidian.md b/obsidian.md
+index 9d2343fe..6c53142d 100644
+--- a/obsidian.md
++++ b/obsidian.md
+@@ -1,3 +1,5 @@
++RESEND-FIRST scope (2026-10-17): user deferred self-hosted mailserver deployment to ongoing repository development and selected Resend for the immediate app launch. Existing research/tests/plans remain preserved. Web gate: 874 Vitest tests plus API checks/lint/typecheck/build PASS; Android restart acceptance remains unresolved. Live Resend transport/production configuration is not implemented; the current worker supports simulated/Mailpit sends only. Final provider/browser/operational acceptance and live activation remain: NOT credentials-only ready. Lead opt-in is unresolved; Resend prohibits cold outreach. See docs/completion/resend-first-launch.md. GitHub publication of this update is not yet verified.
++
+ ANDROID1035: real Android 14/WebView113 fleet acceptance passed login, inbox, message links, plaintext rendering, drawer navigation and session restart/resume. Acceptance FAILED: system bars overlap the app after rotation, network loss is not reflected by navigator.onLine, and logout was not verified before the emulator stopped with a graphics error. The final private UNIX transport gate passed 112 Python tests plus 9 socket/TLS tests and strict TypeScript; the emulator harness passed 19 tests. Independent checks verified 35 exact task resources/private paths absent. No live spend, credentials, mail, DNS or production changes. Upload integration, outbound attachment MIME, native fixes and final browser/native acceptance remain open: NOT credentials-only ready. See docs/completion/android1035-acceptance.md.
+ 
+ # ANDROID1035: installed APK acceptance and private transport
+diff --git a/ops/build/android/build-isolated-qa.sh b/ops/build/android/build-isolated-qa.sh
+index 100cd09f..0b55b20e 100755
+--- a/ops/build/android/build-isolated-qa.sh
++++ b/ops/build/android/build-isolated-qa.sh
+@@ -24,6 +24,7 @@ cargo test --locked
+ # Release profile is required to execute cfg!(debug_assertions)==false rather than infer release rejection.
+ cargo test --locked --release config::tests
+ cargo tauri android init --ci --config "$android_dir/tauri.android.conf.json" --config "$native_dir/tauri.qa.conf.json"
++python3 "$android_dir/customize_generated.py" "$native_dir/gen/android"
+ debug="$native_dir/gen/android/app/src/debug"
+ mkdir -p "$debug/res/xml" "$debug/res/raw"
+ cp "$android_dir/qa/AndroidManifest.xml" "$debug/AndroidManifest.xml"
+diff --git a/ops/build/android/build-unsigned.sh b/ops/build/android/build-unsigned.sh
+index ec711b14..805589aa 100755
+--- a/ops/build/android/build-unsigned.sh
++++ b/ops/build/android/build-unsigned.sh
+@@ -37,6 +37,7 @@ cd "$native_dir"
+ cargo test --locked
+ cargo_lock_before="$(sha256sum Cargo.lock | cut -d " " -f 1)"
+ cargo tauri android init --ci --config "$android_dir/tauri.android.conf.json" --config "$native_dir/tauri.fixture.conf.json"
++python3 "$android_dir/customize_generated.py" "$native_dir/gen/android"
+ wrapper="$native_dir/gen/android/gradle/wrapper/gradle-wrapper.properties"
+ [[ -f "$wrapper" ]] || { echo 'Generated Gradle wrapper missing' >&2; exit 2; }
+ python3 "$android_dir/pin_gradle.py" "$wrapper"
+diff --git a/ops/tests/android/Dockerfile b/ops/tests/android/Dockerfile
+index d6ba7462..75228eef 100644
+--- a/ops/tests/android/Dockerfile
++++ b/ops/tests/android/Dockerfile
+@@ -2,7 +2,7 @@
+ FROM mcr.microsoft.com/playwright@sha256:35246d87a7c88ea9b771c65d33171b2611b02a8253b4b12ce6f94376c55f99f2
+ COPY fetch_sdk.py /qa/fetch_sdk.py
+ RUN python3 -I -B /qa/fetch_sdk.py
+-COPY boot.py relay.py runtime.py gui.mjs test_*.py /qa/
++COPY boot.py relay.py runtime.py boundaries.py gui.mjs test_*.py /qa/
+ ENV ANDROID_HOME=/opt/android-sdk ANDROID_SDK_ROOT=/opt/android-sdk \
+     ANDROID_USER_HOME=/work/.android ANDROID_AVD_HOME=/work/avd HOME=/work \
+     PATH=/opt/android-sdk/platform-tools:/opt/android-sdk/emulator:${PATH} \
+diff --git a/ops/tests/android/boot.py b/ops/tests/android/boot.py
+index c6d1ab17..476776b4 100644
+--- a/ops/tests/android/boot.py
++++ b/ops/tests/android/boot.py
+@@ -36,11 +36,11 @@ def main() -> None:
+     (avd / 'config.ini').write_text(''.join(key + '=' + value + '\n' for key, value in options.items()))
+     with (EVIDENCE / 'emulator.log').open('w') as log:
+         children: list[subprocess.Popen[str]] = []
+-        # AIDEV-NOTE: Track each child immediately so partial startup failures still terminate the emulator.
++        # AIDEV-NOTE: Track children immediately; disable Vulkan as a bounded graphics-crash diagnostic.
+         try:
+             emulator = subprocess.Popen(['emulator', '-avd', 'ElevateoFleetQA', '-no-window', '-no-audio',
+                 '-no-boot-anim', '-no-snapshot', '-gpu', 'swiftshader', '-accel', 'on', '-port', '5554',
+-                '-no-metrics'], stdout=log, stderr=subprocess.STDOUT)
++                '-no-metrics', '-feature', '-Vulkan'], stdout=log, stderr=subprocess.STDOUT)
+             children.append(emulator)
+             relay = subprocess.Popen(['python3', '-I', '-B', '/qa/relay.py', 'container'], stdout=log, stderr=subprocess.STDOUT)
+             children.append(relay)
+diff --git a/ops/tests/android/runtime.py b/ops/tests/android/runtime.py
+index f5a01f00..a8a7878c 100644
+--- a/ops/tests/android/runtime.py
++++ b/ops/tests/android/runtime.py
+@@ -17,6 +17,9 @@ def stop_fixture(fixture: subprocess.Popen[str], fixture_evidence: Path | None,
+     try:
+         if fixture_evidence is not None:
+             (fixture_evidence / 'android-stop').touch()
++        elif fixture.poll() is None:
++            # AIDEV-NOTE: Startup can fail before the marker path is known; interrupt immediately to release resources.
++            fixture.send_signal(signal.SIGINT)
+     except OSError as error:
+         errors.append(error)
+         try:
+@@ -44,7 +47,7 @@ def stop_fixture(fixture: subprocess.Popen[str], fixture_evidence: Path | None,
+     except (OSError, subprocess.TimeoutExpired) as error:
+         errors.append(error)
+     try:
+-        (control / 'android1035-active.json').write_text(json.dumps({'status': 'CLOSED' if fixture.returncode is not None else 'CLEANUP_FAILED', 'evidence': str(evidence)}) + '\n')
++        (control / 'android-active.json').write_text(json.dumps({'status': 'CLOSED' if fixture.returncode is not None else 'CLEANUP_FAILED', 'evidence': str(evidence)}) + '\n')
+     except OSError as error:
+         errors.append(error)
+     if fixture.returncode != 0:
+@@ -53,18 +56,21 @@ def stop_fixture(fixture: subprocess.Popen[str], fixture_evidence: Path | None,
+         raise BaseExceptionGroup('Android acceptance or cleanup failed', ([failure] if failure else []) + errors)
+ 
+ 
+-def exercise(root: Path, control: Path, evidence: Path, emulator: str, socket_directory: Path, run: Callable[[list[str]], subprocess.CompletedProcess[str]],
++
++def require_emulator(emulator: str, run: Callable[[list[str]], subprocess.CompletedProcess[str]], phase: str) -> None:
++    state = json.loads(run(['docker', 'inspect', emulator]).stdout)[0]['State']
++    if not state['Running']:
++        raise RuntimeError('Emulator stopped ' + phase)
++
++def exercise(root: Path, control: Path, evidence: Path, emulator: str, socket_directory: Path, tls: Path, run: Callable[[list[str]], subprocess.CompletedProcess[str]],
+              logged: Callable[[list[str], int], None]) -> None:
+     deadline = time.monotonic() + 500
+     ready = evidence / 'emulator-ready.json'
+     while not ready.exists() and time.monotonic() < deadline:
+-        state = json.loads(run(['docker', 'inspect', emulator]).stdout)[0]['State']
+-        if not state['Running']:
+-            raise RuntimeError('Emulator stopped before installation')
++        require_emulator(emulator, run, 'before installation')
+         time.sleep(2)
+     if not ready.exists():
+         raise RuntimeError('Emulator installation deadline exceeded')
+-    tls = control / 'qa815-artifacts/android1031-qa-r2-94e8afbee937'
+     digest = hashlib.sha256((tls / 'ca.pem').read_bytes()).hexdigest()
+     # AIDEV-NOTE: run.py validates hostname -s; the outer gate separately verifies the full fleet hostname.
+     arguments = ['python3', str(root / 'ops/tests/be02/run.py'), '--context', 'default',
+@@ -79,6 +85,7 @@ def exercise(root: Path, control: Path, evidence: Path, emulator: str, socket_di
+             while time.monotonic() < deadline:
+                 if fixture.poll() is not None:
+                     raise RuntimeError('Android fixture stopped before READY')
++                require_emulator(emulator, run, 'while fixture startup was active')
+                 content = (evidence / 'fixture.log').read_text()[:10000]
+                 match = re.search(r'BE02 project=(be02-[a-f0-9]{32}) evidence=(\S+)', content)
+                 if match:
+@@ -96,27 +103,34 @@ def exercise(root: Path, control: Path, evidence: Path, emulator: str, socket_di
+                 raise RuntimeError('Android fixture startup deadline exceeded')
+             # AIDEV-NOTE: This traverses emulator loopback, the owned UNIX socket and verified TLS before any GUI claim.
+             logged(['docker', 'exec', emulator, 'python3', '-I', '-B', '/probe.py'], 70)
++            # AIDEV-NOTE: Installation does not launch Android; fail startup before advertising GUI readiness.
++            launch = run(['docker', 'exec', emulator, 'adb', '-s', 'emulator-5554', 'shell', 'am', 'start',
++                          '-W', '-n', 'com.elevateo.mail.qa/.MainActivity'])
++            if not re.search(r'^Status: ok$', launch.stdout, re.MULTILINE):
++                raise RuntimeError('Activity launch did not report success')
++            (evidence / 'activity-launch.txt').write_text(launch.stdout)
+             active = {'status': 'READY', 'emulator': emulator, 'evidence': str(evidence),
+                       'fixture_evidence': str(fixture_evidence), 'acceptance': 'NOT_RUN'}
+-            (control / 'android1035-active.json').write_text(json.dumps(active, indent=2) + '\n')
++            (control / 'android-active.json').write_text(json.dumps(active, indent=2) + '\n')
+             (evidence / 'relay-chain.json').write_text(json.dumps({'status': 'PASSED'}) + '\n')
+             remaining = min(850, readiness['expires_at'] - time.time() - 30)
+             if remaining <= 0:
+                 raise RuntimeError('Fixture has no GUI acceptance budget remaining')
+             deadline = time.monotonic() + remaining
+             completed = False
+-            # AIDEV-NOTE: A completion discovered after expiry cannot retroactively pass the acceptance window.
++            # AIDEV-NOTE: Accept only within expiry while both the fixture and installed emulator remain alive.
+             while time.monotonic() < deadline:
++                if fixture.poll() is not None:
++                    raise RuntimeError('Fixture ended while GUI acceptance was active')
++                require_emulator(emulator, run, 'while GUI acceptance was active')
+                 if (evidence / 'acceptance-done').exists():
+                     completed = time.monotonic() < deadline
+                     break
+-                if fixture.poll() is not None:
+-                    raise RuntimeError('Fixture ended while GUI acceptance was active')
+                 time.sleep(2)
+             if not completed:
+                 raise RuntimeError('GUI acceptance deadline reached without completion')
+             result = json.loads((evidence / 'acceptance-result.json').read_text())
+-            required = {'login', 'inbox', 'thread', 'navigation', 'rotation', 'lifecycle', 'offline', 'logout'}
++            required = {'login', 'inbox', 'thread', 'navigation', 'rotation', 'lifecycle', 'offline', 'logout', 'keyboard'}
+             if result.get('status') != 'PASSED' or set(result.get('checks', {})) != required or any(
+                     result['checks'][check] != 'PASSED' for check in required):
+                 raise RuntimeError('Required Android acceptance checks did not pass')
+diff --git a/ops/tests/android/test_boot.py b/ops/tests/android/test_boot.py
+index 8698fedc..dd4705f7 100644
+--- a/ops/tests/android/test_boot.py
++++ b/ops/tests/android/test_boot.py
+@@ -28,11 +28,12 @@ class StartupTest(unittest.TestCase):
+             emulator.poll.return_value = relay.poll.return_value = None
+             with patch.object(boot, 'WORK', work), patch.object(boot, 'EVIDENCE', evidence), \
+                     patch.object(boot.subprocess, 'run'), \
+-                    patch.object(boot.subprocess, 'Popen', side_effect=[emulator, relay]), \
++                    patch.object(boot.subprocess, 'Popen', side_effect=[emulator, relay]) as start, \
+                     patch.object(boot.signal, 'signal'), \
+                     patch.object(boot.time, 'monotonic', side_effect=[0, 1, 0, 3601]), \
+                     patch.object(boot, 'adb', return_value='1') as adb:
+                 boot.main()
++            self.assertEqual(start.call_args_list[0].args[0][-3:], ['-no-metrics', '-feature', '-Vulkan'])
+             adb.assert_any_call('shell', 'getprop', 'sys.boot_completed', timeout=5)
+             adb.assert_any_call('install', '--no-streaming', '/apk/elevateo.apk', timeout=180)
+             self.assertTrue((evidence / 'emulator-ready.json').is_file())
+diff --git a/ops/tests/android/test_runtime.py b/ops/tests/android/test_runtime.py
+index ccc9a354..a14c28bc 100644
+--- a/ops/tests/android/test_runtime.py
++++ b/ops/tests/android/test_runtime.py
+@@ -1,23 +1,24 @@
+ """Regression checks for the real fixture-expiry and evidence acceptance boundary."""
+ import json
++from itertools import chain, repeat
+ from pathlib import Path
+ import tempfile
+ import unittest
+ from unittest.mock import Mock, patch
+ import runtime
+ 
+-CHECKS = ('login', 'inbox', 'thread', 'navigation', 'rotation', 'lifecycle', 'offline', 'logout')
++CHECKS = ('login', 'inbox', 'thread', 'navigation', 'rotation', 'lifecycle', 'offline', 'logout', 'keyboard')
+ 
+ 
+ class RuntimeTest(unittest.TestCase):
+-    def exercise(self, *, expiry: int = 1200, done: bool = True, result: object = None, late: bool = False) -> tuple[Mock, Path]:
++    def exercise(self, *, expiry: int = 1200, done: bool = True, result: object = None, late: bool = False, emulator_alive: bool = True, startup_alive: bool = True, launch_fails: bool = False, launch_output: str = "Status: ok\n") -> tuple[Mock, Path]:
+         directory = tempfile.TemporaryDirectory()
+         self.addCleanup(directory.cleanup)
+         base = Path(directory.name); root = base / 'root'; control = base / 'control'; evidence = base / 'evidence'
+         evidence.mkdir(); control.mkdir(); (evidence / 'emulator-ready.json').write_text('{}')
+         fixture_evidence = root / 'ops/local' / ('be02-' + 'a' * 32); fixture_evidence.mkdir(parents=True)
+         (fixture_evidence / 'android-ready.json').write_text(json.dumps({'status': 'READY', 'expires_at': expiry}))
+-        tls = control / 'qa815-artifacts/android1031-qa-r2-94e8afbee937'; tls.mkdir(parents=True)
++        tls = control / 'selected-apk-tls'; tls.mkdir(parents=True)
+         (tls / 'ca.pem').write_text('synthetic-public-ca')
+         if done:
+             (evidence / 'acceptance-done').touch()
+@@ -26,25 +27,58 @@ class RuntimeTest(unittest.TestCase):
+         def start(_args: list[str], **kwargs: object) -> Mock:
+             self.assertEqual(_args[_args.index('--expect-host') + 1], 'Ubuntu-noble-latest-amd64-base')
+             self.assertEqual(_args[_args.index('--android-socket-dir') + 1], str(base / 'relay'))
++            self.assertEqual(_args[_args.index('--android-certs') + 1], str(tls))
+             log = kwargs['stdout']
+             log.write('BE02 project=' + fixture_evidence.name + ' evidence=' + str(fixture_evidence) + '\n')
+             log.flush()
+             return process
++        states = chain([startup_alive], repeat(emulator_alive))
++        logged = Mock()
++        def run(args: list[str]) -> Mock:
++            if args[1] == 'inspect':
++                return Mock(stdout=json.dumps([{'State': {'Running': next(states)}}]))
++            self.assertEqual(args, ['docker', 'exec', 'owned-emulator', 'adb', '-s', 'emulator-5554',
++                                   'shell', 'am', 'start', '-W', '-n', 'com.elevateo.mail.qa/.MainActivity'])
++            if launch_fails:
++                raise RuntimeError('Activity launch failed')
++            return Mock(stdout=launch_output)
+         # AIDEV-NOTE: Advance beyond the derived GUI window without sleeping or launching any process.
+         with patch.object(runtime.subprocess, 'Popen', side_effect=start), \
+                 patch.object(runtime.time, 'time', return_value=1000), \
+                 patch.object(runtime.time, 'monotonic', side_effect=[0, 0, 1, 2, 900] if late else [0, 0, 1, 2, 3, 4, 900]):
+             try:
+-                runtime.exercise(root, control, evidence, 'owned-emulator', base / 'relay', Mock(), Mock())
++                runtime.exercise(root, control, evidence, 'owned-emulator', base / 'relay', tls,
++                    run, logged)
++                self.assertEqual(logged.call_args_list[0].args[0][-1], '/probe.py')
++                self.assertEqual((evidence / 'activity-launch.txt').read_text(), launch_output)
+             finally:
+-                self.assertTrue((fixture_evidence / 'android-stop').is_file())
++                self.assertEqual((fixture_evidence / 'android-stop').is_file(), startup_alive)
++                if not startup_alive:
++                    process.send_signal.assert_called_once_with(runtime.signal.SIGINT)
+                 process.wait.assert_called_once_with(timeout=300)
+-                self.assertEqual(json.loads((control / 'android1035-active.json').read_text())['status'], 'CLOSED')
++                self.assertEqual(json.loads((control / 'android-active.json').read_text())['status'], 'CLOSED')
+         return process, evidence
+ 
+-    def test_complete_eight_checks_accept(self) -> None:
++    def test_complete_nine_checks_accept(self) -> None:
+         self.exercise(result={'status': 'PASSED', 'checks': dict.fromkeys(CHECKS, 'PASSED')})
+ 
++    def test_launch_failure_stops_fixture_and_never_accepts_result(self) -> None:
++        with self.assertRaisesRegex(RuntimeError, 'Activity launch failed'):
++            self.exercise(launch_fails=True, result={'status': 'PASSED', 'checks': dict.fromkeys(CHECKS, 'PASSED')})
++
++    def test_error_output_without_process_failure_is_rejected(self) -> None:
++        with self.assertRaisesRegex(RuntimeError, 'did not report success'):
++            self.exercise(launch_output='Error: Activity class does not exist',
++                result={'status': 'PASSED', 'checks': dict.fromkeys(CHECKS, 'PASSED')})
++
++    def test_emulator_death_rejects_even_complete_result(self) -> None:
++        with self.assertRaisesRegex(RuntimeError, 'Emulator stopped while GUI acceptance'):
++            self.exercise(emulator_alive=False, result={'status': 'PASSED', 'checks': dict.fromkeys(CHECKS, 'PASSED')})
++
++    def test_emulator_death_during_fixture_startup_stops_fixture(self) -> None:
++        with self.assertRaisesRegex(RuntimeError, 'Emulator stopped while fixture startup'):
++            self.exercise(startup_alive=False)
++
+     def test_expired_fixture_rejects_even_complete_result(self) -> None:
+         with self.assertRaisesRegex(RuntimeError, 'no GUI acceptance budget'):
+             self.exercise(expiry=1020, result={'status': 'PASSED', 'checks': dict.fromkeys(CHECKS, 'PASSED')})
+diff --git a/state.md b/state.md
+index 1d6d9f8a..e6729503 100644
+--- a/state.md
++++ b/state.md
+@@ -1,3 +1,5 @@
++RESEND-FIRST scope (2026-10-17): user deferred self-hosted mailserver deployment to ongoing repository development and selected Resend for the immediate app launch. Existing research/tests/plans remain preserved. Web gate: 874 Vitest tests plus API checks/lint/typecheck/build PASS; Android restart acceptance remains unresolved. Live Resend transport/production configuration is not implemented; the current worker supports simulated/Mailpit sends only. Final provider/browser/operational acceptance and live activation remain: NOT credentials-only ready. Lead opt-in is unresolved; Resend prohibits cold outreach. See docs/completion/resend-first-launch.md. GitHub publication of this update is not yet verified.
++
+ ANDROID1035: real Android 14/WebView113 fleet acceptance passed login, inbox, message links, plaintext rendering, drawer navigation and session restart/resume. Acceptance FAILED: system bars overlap the app after rotation, network loss is not reflected by navigator.onLine, and logout was not verified before the emulator stopped with a graphics error. The final private UNIX transport gate passed 112 Python tests plus 9 socket/TLS tests and strict TypeScript; the emulator harness passed 19 tests. Independent checks verified 35 exact task resources/private paths absent. No live spend, credentials, mail, DNS or production changes. Upload integration, outbound attachment MIME, native fixes and final browser/native acceptance remain open: NOT credentials-only ready. See docs/completion/android1035-acceptance.md.
+ 
+ ANDROID1034: the isolated Android HTTPS fixture and fixed-destination CONNECT edge passed fleet-02 gate android1034-r4-e276609dd607: 108 Python tests, 9 real socket/TLS tests and strict TypeScript compilation. The fixture checks the actual published loopback path before READY, seeds fresh private synthetic credentials, limits its lifetime to 15 minutes, and reports full app acceptance as NOT_RUN. Exact cleanup verified the task container, image, builder container, builder registration, cache volume and working directory absent; shared bases and persistent data were retained. Host free bytes 254197170176 -> 254197088256 (shared delta -81920, not attributable reclamation). Emulator installation/login/lifecycle/visual acceptance, upload integration, outbound attachment MIME and remaining browser/native acceptance are still open: NOT credentials-only ready. No spend, live credentials, external mail, DNS or production mutation. See docs/completion/android1034-fixture.md.
