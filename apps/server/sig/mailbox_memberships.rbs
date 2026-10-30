@@ -1,0 +1,36 @@
+module Elevateo
+  module MailboxMembershipInput
+    MAX_VERSION: Integer
+    FLAGS: Array[String]
+    def self.capabilities: (WriteInput::value) -> Hash[String, bool]
+    def self.put: (WriteInput::object) -> [Integer, Hash[String, bool]]
+    def self.delete: (Hash[String, String]) -> Integer
+    def self.member: (ReadResponse::item) -> ReadResponse::item
+  end
+  class MailboxMemberships < ThreadReads
+    VERSION_SQL: String
+    PAGE_SQL: String
+    CHANGE_SQL: String
+    def list: (mailbox_id: String?, query: Hash[String, String]) -> String
+    def put: (mailbox_id: String, user_id: String, input: WriteInput::object, digest: String,
+              presentation: SessionPresentation) -> WriteResponse
+    def delete: (mailbox_id: String, user_id: String, query: Hash[String, String], digest: String,
+                 presentation: SessionPresentation) -> WriteResponse
+    private
+    def member_position: (String?, Cursors::scope) -> String?
+    def change: (mailbox_id: String, user_id: String, expected: Integer, flags: Hash[String, bool]?,
+                 digest: String, presentation: SessionPresentation) -> WriteResponse
+  end
+end
+
+module V1
+  class MailboxMembersController < WriteController
+    def index: () -> void
+    def update: () -> void
+    def destroy: () -> void
+    private
+    def path_id: (Symbol) -> String
+    def reader: (Elevateo::_ThreadConnection, Elevateo::_ThreadIdentity,
+                 Elevateo::ReadResponse::item) -> Elevateo::MailboxMemberships
+  end
+end

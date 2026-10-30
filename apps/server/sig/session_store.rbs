@@ -1,0 +1,13 @@
+module Elevateo
+  class SessionStore
+    FUNCTIONS: Hash[String, Array[String]]
+    SNAPSHOT_FUNCTIONS: Array[String]
+    @pool: _SessionPool
+    def initialize: (?pool: _SessionPool) -> void
+    def call: (String, Array[session_argument], deadline: RequestDeadline, ?connection: _SessionConnection?) -> auth_object
+    def self.check!: (auth_object) -> auth_object
+    private
+    def execute: (_SessionConnection, String, Array[String], Array[session_argument], RequestDeadline) -> auth_object
+    def bind: (String?) -> ActiveRecord::Relation::QueryAttribute
+  end
+end

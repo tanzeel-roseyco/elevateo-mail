@@ -1,0 +1,12 @@
+module Elevateo
+  class AuthError < StandardError
+    MESSAGES: Hash[String, String]
+    attr_reader code: String
+    attr_reader status: Integer
+    attr_reader retry_after: Integer?
+    def initialize: (?String, ?status: Integer, ?retry_after: Integer?) -> void
+    def self.invalid: () -> AuthError
+    def self.unauthorized: () -> AuthError
+    def self.unavailable: () -> AuthError
+  end
+end

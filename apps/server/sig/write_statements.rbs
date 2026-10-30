@@ -1,0 +1,8 @@
+module Elevateo
+  class WriteStatements
+    @connection: ActiveRecord::ConnectionAdapters::AbstractAdapter
+    @deadline: RequestDeadline
+    def initialize: (ActiveRecord::ConnectionAdapters::AbstractAdapter, RequestDeadline) -> void
+    def exec_query: (String, String, Array[ActiveRecord::Relation::QueryAttribute]) -> ActiveRecord::Result
+  end
+end

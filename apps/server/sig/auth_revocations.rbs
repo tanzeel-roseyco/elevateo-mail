@@ -1,0 +1,9 @@
+module Elevateo
+  class AuthRevocations
+    @store: _SessionStore
+    @client: _AuthClient
+    @crypto: SessionCrypto
+    def initialize: (?store: _SessionStore, ?config: _AuthConfig, ?client: _AuthClient?, ?crypto: SessionCrypto?) -> void
+    def run_once: (?deadline: RequestDeadline) -> Integer
+  end
+end

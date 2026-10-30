@@ -1,0 +1,184 @@
+[
+  {
+    "path": "AGENTS.md",
+    "kind": "governing_document",
+    "expected_sha256": "33415df7f7cc5a595c45f5ef526744dd52a1d72d9d0a462fea8a9d9674d88971",
+    "actual_sha256": "33415df7f7cc5a595c45f5ef526744dd52a1d72d9d0a462fea8a9d9674d88971",
+    "unchanged": true
+  },
+  {
+    "path": "README.md",
+    "kind": "governing_document",
+    "expected_sha256": "71c2330e5120b15068dd23ba37dba0d4b36f2b641bcedd0db80e2a89b3800f78",
+    "actual_sha256": "71c2330e5120b15068dd23ba37dba0d4b36f2b641bcedd0db80e2a89b3800f78",
+    "unchanged": true
+  },
+  {
+    "path": "state.md",
+    "kind": "governing_document",
+    "expected_sha256": "1e3ed8ec13389f16dd1c5ba32ad0fde96f4cc6696d8745b62ee7c70b9a0ab44e",
+    "actual_sha256": "1e3ed8ec13389f16dd1c5ba32ad0fde96f4cc6696d8745b62ee7c70b9a0ab44e",
+    "unchanged": true
+  },
+  {
+    "path": "documentation.md",
+    "kind": "governing_document",
+    "expected_sha256": "956b3b016f8c91ed124345fc40c8be34548019293176be6cea06d025c4d2cb60",
+    "actual_sha256": "956b3b016f8c91ed124345fc40c8be34548019293176be6cea06d025c4d2cb60",
+    "unchanged": true
+  },
+  {
+    "path": ".planning/STANDARDS.md",
+    "kind": "governing_document",
+    "expected_sha256": "7c01430086ed2dc263c8edcb1b2a9f41b572a23a11b36c1179be802e2874bd10",
+    "actual_sha256": "7c01430086ed2dc263c8edcb1b2a9f41b572a23a11b36c1179be802e2874bd10",
+    "unchanged": true
+  },
+  {
+    "path": ".planning/README.md",
+    "kind": "governing_document",
+    "expected_sha256": "c66ed014226854477394b03659cbc23050ecdd3900de1532f87f27bd7039bb87",
+    "actual_sha256": "c66ed014226854477394b03659cbc23050ecdd3900de1532f87f27bd7039bb87",
+    "unchanged": true
+  },
+  {
+    "path": "LOCAL_BUILD_PROMPT.md",
+    "kind": "governing_document",
+    "expected_sha256": "7bc9ffe8a3e8556fbba5b78f123941827a9f4bcd5043af35ecd39736eb5041d7",
+    "actual_sha256": "7bc9ffe8a3e8556fbba5b78f123941827a9f4bcd5043af35ecd39736eb5041d7",
+    "unchanged": true
+  },
+  {
+    "path": ".planning/consultations/README.md",
+    "kind": "governing_document",
+    "expected_sha256": "26c1665ea5220654ef84d7393272edf2ff66efae3e8534f3cd8851ad3c2e4338",
+    "actual_sha256": "26c1665ea5220654ef84d7393272edf2ff66efae3e8534f3cd8851ad3c2e4338",
+    "unchanged": true
+  },
+  {
+    "path": ".planning/consultations/shared-brief.md",
+    "kind": "governing_document",
+    "expected_sha256": "6ab9d56660546f753fc1b46784900e7025af11719a3bcb8f0bc78d1008dbbf20",
+    "actual_sha256": "6ab9d56660546f753fc1b46784900e7025af11719a3bcb8f0bc78d1008dbbf20",
+    "unchanged": true
+  },
+  {
+    "path": ".planning/POLYGLOT_ARCHITECTURE.md",
+    "kind": "governing_document",
+    "expected_sha256": "c8d3656cf7c8acc4a898c9a1603241b84ba9da254725856595c25be85ece2cea",
+    "actual_sha256": "c8d3656cf7c8acc4a898c9a1603241b84ba9da254725856595c25be85ece2cea",
+    "unchanged": true
+  },
+  {
+    "path": ".planning/CLIENTS_AND_CLI_CONNECTORS.md",
+    "kind": "governing_document",
+    "expected_sha256": "82c92e8c007de491709e5149df7031651028ad5b6272d5fc3713f9d6d0d55801",
+    "actual_sha256": "82c92e8c007de491709e5149df7031651028ad5b6272d5fc3713f9d6d0d55801",
+    "unchanged": true
+  },
+  {
+    "path": ".planning/AGENT_ORCHESTRATION.md",
+    "kind": "governing_document",
+    "expected_sha256": "a973e3bff367f775f254b11c8bb754569112a59da30fb3ff7df547275cc5d088",
+    "actual_sha256": "a973e3bff367f775f254b11c8bb754569112a59da30fb3ff7df547275cc5d088",
+    "unchanged": true
+  },
+  {
+    "path": ".planning/MAIL_ACCOUNTS_AND_ACTIVATION.md",
+    "kind": "governing_document",
+    "expected_sha256": "9d759caa3ffb1430af0cf3b81a062a584122895fef659246d0c1f37d5028e9e9",
+    "actual_sha256": "9d759caa3ffb1430af0cf3b81a062a584122895fef659246d0c1f37d5028e9e9",
+    "unchanged": true
+  },
+  {
+    "path": ".planning/TASK_BACKLOG.md",
+    "kind": "governing_document",
+    "expected_sha256": "aba7e19ad1640015e30210d9d37fbfc55410bc5819f0747d4e2ba075dbb7487e",
+    "actual_sha256": "aba7e19ad1640015e30210d9d37fbfc55410bc5819f0747d4e2ba075dbb7487e",
+    "unchanged": true
+  },
+  {
+    "path": ".planning/research/reuse-market-scan.md",
+    "kind": "governing_document",
+    "expected_sha256": "87146034aa8eb8ace2833bcd25e543c4cad5c672b6b2e596b1fd78b1737d3cb4",
+    "actual_sha256": "87146034aa8eb8ace2833bcd25e543c4cad5c672b6b2e596b1fd78b1737d3cb4",
+    "unchanged": true
+  },
+  {
+    "path": "docs/component-adoption.md",
+    "kind": "governing_document",
+    "expected_sha256": "87226f4d3f1967df75a2f1d223771d28a165f9c9eefeee78275cbd9ec4168bc2",
+    "actual_sha256": "87226f4d3f1967df75a2f1d223771d28a165f9c9eefeee78275cbd9ec4168bc2",
+    "unchanged": true
+  },
+  {
+    "path": "docs/contracts-and-reliability.md",
+    "kind": "governing_document",
+    "expected_sha256": "6834eee80f7bdfb9dd9437a3417e4a621554ec6f367530ed64fdd5b024a2a6d2",
+    "actual_sha256": "6834eee80f7bdfb9dd9437a3417e4a621554ec6f367530ed64fdd5b024a2a6d2",
+    "unchanged": true
+  },
+  {
+    "path": "docs/local-completion-plan.md",
+    "kind": "governing_document",
+    "expected_sha256": "7e7355a889fd0a24bb62d80dbef752d67b761b7bd97ad4b2c5b8f699b9f5adfa",
+    "actual_sha256": "7e7355a889fd0a24bb62d80dbef752d67b761b7bd97ad4b2c5b8f699b9f5adfa",
+    "unchanged": true
+  },
+  {
+    "path": "ops/db/bootstrap.sql",
+    "kind": "source_slice",
+    "expected_sha256": "5a665cf865cf84246f38ec8819f6e64e6a49e14105768a46ba8b3ba1df15a225",
+    "actual_sha256": "5a665cf865cf84246f38ec8819f6e64e6a49e14105768a46ba8b3ba1df15a225",
+    "unchanged": true
+  },
+  {
+    "path": "apps/server/db/migrate/20261013000004_create_app_drafts_operations.rb",
+    "kind": "source_slice",
+    "expected_sha256": "ef47e2bbc9ecd2fee1fbad78d0249bedbd4384517c3fe1ab06c8e4686259d8f8",
+    "actual_sha256": "ef47e2bbc9ecd2fee1fbad78d0249bedbd4384517c3fe1ab06c8e4686259d8f8",
+    "unchanged": true
+  },
+  {
+    "path": "apps/server/db/be02_drafts/tables.sql",
+    "kind": "source_slice",
+    "expected_sha256": "c2c507d3d301703eca1091b7e5243242bbdb76b3ffe6e1f592fad362f4947cf1",
+    "actual_sha256": "c2c507d3d301703eca1091b7e5243242bbdb76b3ffe6e1f592fad362f4947cf1",
+    "unchanged": true
+  },
+  {
+    "path": "apps/server/db/be02_drafts/down.sql",
+    "kind": "source_slice",
+    "expected_sha256": "366b25b0ccbc783bd0cf6ae319e5293c51425771ee7d3a7fee50fcc76ba164ea",
+    "actual_sha256": "366b25b0ccbc783bd0cf6ae319e5293c51425771ee7d3a7fee50fcc76ba164ea",
+    "unchanged": true
+  },
+  {
+    "path": "apps/server/db/be02_drafts/grants.sql",
+    "kind": "source_slice",
+    "expected_sha256": "5bef9b13237e5dfb7d0ea53d6ad87988370847a58136079cdc5da7087d642058",
+    "actual_sha256": "5bef9b13237e5dfb7d0ea53d6ad87988370847a58136079cdc5da7087d642058",
+    "unchanged": true
+  },
+  {
+    "path": "apps/server/test/be_02/draft_database_test_helper.rb",
+    "kind": "source_slice",
+    "expected_sha256": "93f8e02b887400cc646719fe45a89ba147533a77c4d68e32c3f76cc9a1051e5e",
+    "actual_sha256": "93f8e02b887400cc646719fe45a89ba147533a77c4d68e32c3f76cc9a1051e5e",
+    "unchanged": true
+  },
+  {
+    "path": "ops/tests/be02-guards/fixture.sql",
+    "kind": "source_slice",
+    "expected_sha256": "48f1b6cbf9d6c31989d0204d92fd7e1cb7bfcfa253317b02df111d5dbe5181d9",
+    "actual_sha256": "48f1b6cbf9d6c31989d0204d92fd7e1cb7bfcfa253317b02df111d5dbe5181d9",
+    "unchanged": true
+  },
+  {
+    "path": "apps/server/test/be_02/draft_database_test.rb",
+    "kind": "source_slice",
+    "expected_sha256": "015663b9a0b062db29f8a4ea4978a12320be0fa5e72e15ec8d2a9d09b2600656",
+    "actual_sha256": "015663b9a0b062db29f8a4ea4978a12320be0fa5e72e15ec8d2a9d09b2600656",
+    "unchanged": true
+  }
+]

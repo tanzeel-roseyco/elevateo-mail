@@ -1,15 +1,24 @@
 #!/usr/bin/env ruby
-# Idle worker: validates configuration and holds; the heartbeat proves loop liveness only.
+# Local worker reconciles Auth logout intents; outbound mail remains held.
 require_relative "../config/environment"
 require_relative "../lib/elevateo/heartbeat"
+require_relative "../lib/elevateo/auth_revocations"
 cfg = Elevateo::Config.current
 raise Elevateo::ConfigError, "worker requires outbound hold" unless cfg.outbound_hold
 $stdout.sync = true
-puts({ event: "worker.idle", outbound_hold: cfg.outbound_hold, dispatch: "disabled" }.to_json)
+puts({ event: "worker.started", outbound_hold: cfg.outbound_hold, dispatch: "disabled" }.to_json)
+revocations = Elevateo::AuthRevocations.new(config: cfg)
 stop = false
 %w[TERM INT].each { |s| Signal.trap(s) { stop = true } }
 Elevateo::Heartbeat.publish
 until stop
-  sleep 1
+  begin
+    # AIDEV-NOTE: Durable logout retries use their own deadline and never enable the outbound-mail dispatcher.
+    deadline = Elevateo::RequestDeadline.new
+    deadline.within { revocations.run_once(deadline: deadline) }
+  rescue Elevateo::AuthError => error
+    puts({ event: "worker.auth_revocation_retry", code: error.code }.to_json)
+  end
   Elevateo::Heartbeat.publish
+  sleep 1 unless stop
 end

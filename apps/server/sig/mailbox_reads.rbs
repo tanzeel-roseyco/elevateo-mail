@@ -1,0 +1,27 @@
+module Elevateo
+  interface _MailboxIdentity
+    def user_id: () -> String
+    def org_id: () -> String
+  end
+  interface _MailboxResult
+    def to_a: () -> Array[ReadResponse::item]
+  end
+  interface _MailboxConnection
+    def exec_query: (String, String, Array[ActiveRecord::Relation::QueryAttribute]) -> _MailboxResult
+  end
+  class MailboxReads
+    class InvalidQuery < StandardError
+    end
+    SQL: String
+    @cursor: Cursors
+    def initialize: (cursor: Cursors) -> void
+    def call: (connection: _MailboxConnection, identity: _MailboxIdentity,
+               session: ReadResponse::item, query: Hash[String, String]) -> String
+    private
+    def query_limit: (Hash[String, String]) -> Integer
+    def cursor_position: (String?, Cursors::scope) -> String?
+    def session_token: (ReadResponse::item, String) -> String
+    def mailbox: (ReadResponse::item) -> ReadResponse::item
+    def display_text: (ReadResponse::json_value) -> String
+  end
+end
