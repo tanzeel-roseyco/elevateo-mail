@@ -30,9 +30,11 @@ been built or tested yet.
 | Restore and deployment | Encrypted six-volume restore drill; deploy dry run accepts valid and rejects missing configuration | same |
 | Email finder (on `feature/email-finder`) | 53 backend tests, 12 browser cases, 1,131 web unit tests, build, `deploy.sh config` | [finder receipt](docs/completion/email-finder-20261029.md) |
 
+| Web gate (merged `main`, `feature/final-readiness`) | Contract checks, lint, typecheck, 1,184 unit tests, build, bundle budget | `apps/web/docker/test.Dockerfile` run, 2026-10-30 |
+
 ## Open
 
-1. **Final Docker pass on merged `main`:** regenerate `apps/native/src-tauri/Cargo.lock`, then web lint, typecheck,
+1. **Final Docker pass on merged `main`** (web gate done; the rest below is outstanding): regenerate `apps/native/src-tauri/Cargo.lock`, then web lint, typecheck,
    unit tests, build, Playwright, and screenshot visual QA at 1440 and 390 px in light and dark. Then the Windows and Mac
    packaging dry runs, the Android APK build and emulator acceptance, and the full backend gate.
 2. **Review packets P24–P34** (rest of Connections, Suppressions, all of Windows) never ran. Run them and fix the findings.

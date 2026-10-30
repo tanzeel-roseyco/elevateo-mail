@@ -107,7 +107,7 @@ Its port-25 checks can get an IP blocklisted.
 | Backend, contracts, Mox, MCP, native bridge | Implemented. Full local Docker gate passed on `feature/backend-completion`: 1,285 tests / 14,595 assertions, 412-assertion Mox protocol suite, real SMTP→IMAP application chain, encrypted restore, deploy dry run |
 | Email finder | Implemented. Module gates passed (53 backend tests, 12 browser cases) |
 | Web, macOS, Windows, Android, iOS clients | Implemented, and all 71 review defects fixed. **Not yet built or tested:** lint, typecheck, tests, packaging and visual QA run in one final Docker pass. `apps/native/src-tauri/Cargo.lock` must be regenerated first. Review packets P24–P34 have not run |
-| Merged `main` | Not yet tested as a whole after the three merges of 2026-10-29/30 |
+| Merged `main` | Web gate passes (1,184 unit tests). Browser, packaging and backend gates not yet run on the merged tree |
 | Deployment | Not deployed. No live sends, DNS, MX or Cloudflare changes. Credentials are pending |
 | Known limits | Mac `.dmg` signing/notarization and the iOS app build need a macOS host. The Android emulator run needs about 8 GB free RAM |
 
